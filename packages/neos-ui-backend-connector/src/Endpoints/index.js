@@ -158,6 +158,76 @@ export default routes => {
         return parts.length ? '.' + parts[parts.length - 1] : '';
     };
 
+    const assetProxyImport = (identifiers) => fetchWithErrorHandling.withCsrfToken(csrfToken => {
+        return {
+            url: `${routes.core.service.assetProxies}/${identifiers.substr(0, identifiers.indexOf('/'))}/${identifiers.substr(identifiers.indexOf('/') + 1)}`,
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'X-Flow-Csrftoken': csrfToken
+            },
+            body: ''
+        };
+    })
+        .then(result => result.text())
+        .then(result => {
+            const assetProxyTable = document.createElement('table');
+            assetProxyTable.innerHTML = result;
+            const assetProxy = assetProxyTable.querySelector('.asset-proxy');
+            return assetProxy.querySelector('.local-asset-identifier').innerText;
+        });
+
+    const assetProxySearch = (searchTerm = '', assetSourceIdentifier = '') => fetchWithErrorHandling.withCsrfToken(() => ({
+        url: urlWithParams(routes.core.service.assetProxies, {searchTerm, assetSourceIdentifier}),
+
+        method: 'GET',
+        credentials: 'include'
+    }))
+        .then(result => result.text())
+        .then(result => {
+            const assetProxyTable = document.createElement('table');
+            assetProxyTable.innerHTML = result;
+
+            return Array.prototype.map.call(assetProxyTable.querySelectorAll('.asset-proxy'), assetProxy => {
+                const assetSourceIdentifier = assetProxy.querySelector('.asset-source-identifier').innerText;
+                const assetProxyIdentifier = assetProxy.querySelector('.asset-proxy-identifier').innerText;
+                return {
+                    dataType: 'Neos.Media:Asset',
+                    loaderUri: 'assetProxy://' + assetProxy.querySelector('.asset-source-identifier').innerText + '/' + assetProxy.querySelector('.asset-proxy-identifier').innerText,
+                    label: assetProxy.querySelector('.asset-proxy-label').innerText,
+                    preview: assetProxy.querySelector('[rel=thumbnail]').getAttribute('href'),
+                    identifier: assetProxy.querySelector('.local-asset-identifier').innerText || (assetSourceIdentifier + '/' + assetProxyIdentifier),
+                    assetSourceIdentifier: assetSourceIdentifier,
+                    assetProxyIdentifier: assetProxyIdentifier
+                };
+            });
+        });
+
+    const assetProxyDetail = (assetSourceIdentifier, assetProxyIdentifier) => fetchWithErrorHandling.withCsrfToken(() => ({
+        url: `${routes.core.service.assetProxies}/${assetSourceIdentifier}/${assetProxyIdentifier}`,
+
+        method: 'GET',
+        credentials: 'include'
+    }))
+        .then(result => result.text())
+        .then(result => {
+            const assetProxyTable = document.createElement('table');
+            assetProxyTable.innerHTML = result;
+
+            const assetProxy = assetProxyTable.querySelector('.asset-proxy');
+
+            return {
+                dataType: 'Neos.Media:Asset',
+                loaderUri: 'assetProxy://' + assetProxy.querySelector('.asset-source-identifier').innerText + '/' + assetProxy.querySelector('.asset-proxy-identifier').innerText,
+                label: assetProxy.querySelector('.asset-proxy-label').innerText,
+                preview: assetProxy.querySelector('[rel=thumbnail]').getAttribute('href'),
+                identifier: assetProxy.querySelector('.local-asset-identifier').innerText,
+                localAssetIdentifier: assetProxy.querySelector('.local-asset-identifier').innerText,
+                assetSourceIdentifier: assetProxy.querySelector('.asset-source-identifier').innerText,
+                assetProxyIdentifier: assetProxy.querySelector('.asset-proxy-identifier').innerText
+            };
+        });
+
     const assetSearch = (searchTerm = '') => fetchWithErrorHandling.withCsrfToken(() => ({
         url: urlWithParams(routes.core.service.assets, {searchTerm}),
 
@@ -381,6 +451,9 @@ export default routes => {
         loadMasterPlugins,
         loadPluginViews,
         uploadAsset,
+        assetProxyImport,
+        assetProxySearch,
+        assetProxyDetail,
         assetSearch,
         assetDetail,
         searchNodes,

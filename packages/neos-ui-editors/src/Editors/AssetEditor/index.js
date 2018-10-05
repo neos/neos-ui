@@ -8,6 +8,7 @@ import {$get} from 'plow-js';
 import Controls from './Components/Controls/index';
 import AssetOption from '../../Library/AssetOption';
 import {AssetUpload} from '../../Library/index';
+import backend from "@neos-project/neos-ui-backend-connector";
 
 const DEFAULT_FEATURES = {
     mediaBrowser: true,
@@ -107,6 +108,7 @@ export default class AssetEditor extends PureComponent {
             this.setState({isLoading: true, searchOptions: []});
             this.props.assetLookupDataLoader.search({}, searchTerm)
                 .then(searchOptions => {
+                    console.log('searchOptions',searchOptions);
                     this.setState({
                         isLoading: false,
                         searchOptions
@@ -125,9 +127,27 @@ export default class AssetEditor extends PureComponent {
         this.props.commit(Array.isArray(value) ? this.getIdentity(value[0]) : this.getIdentity(value));
     }
 
-    handleValuesChange = value => {
+    handleValuesChange = values => {
         this.setState({searchOptions: []});
-        this.props.commit(Array.isArray(value) ? value.map(this.getIdentity) : value);
+        const {assetProxyImport} = backend.get().endpoints;
+        this.setState({isLoading: true});
+
+        if (Array.isArray(values)) {
+            const valuePromises = values.map(value => {
+                return (value.indexOf('/') === -1) ? Promise.resolve(value) : assetProxyImport(value);
+            });
+            Promise.all(valuePromises).then(values => {
+                this.props.commit(values.map(this.getIdentity));
+                this.setState({isLoading: false});
+            });
+        } else {
+            const value = values;
+            const valuePromise = (value.indexOf('/') === -1) ? Promise.resolve(value) : assetProxyImport(value);
+            valuePromise.then(value => {
+                this.props.commit(value.map(this.getIdentity));
+                this.setState({isLoading: false});
+            });
+        }
     }
 
     handleChooseFromMedia = () => {
@@ -140,6 +160,7 @@ export default class AssetEditor extends PureComponent {
     }
 
     handleMediaSelected = assetIdentifier => {
+        console.log('handleMediaSelected', assetIdentifier, this.props);
         const {value} = this.props;
         if (this.props.options.multiple) {
             const values = value ? value.slice() : [];

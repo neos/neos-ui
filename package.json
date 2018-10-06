@@ -135,7 +135,7 @@
     "ramda": "^0.25.0",
     "react": "^16.4",
     "react-click-outside": "^3.0.1",
-    "react-close-on-escape": "^2.0.0",
+    "react-close-on-escape": "^3.0.0",
     "react-codemirror2": "^5.0.1",
     "react-collapse": "^2.4.1",
     "react-datetime": "^2.8.10",

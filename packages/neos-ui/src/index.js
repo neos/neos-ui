@@ -22,6 +22,7 @@ import apiExposureMap from './apiExposureMap';
 import DelegatingReducer from './DelegatingReducer';
 
 import Icon from '@neos-project/react-ui-components/src/Icon/';
+import style from './style.css';
 
 const devToolsArePresent = typeof window === 'object' && typeof window.devToolsExtension !== 'undefined';
 const devToolsStoreEnhancer = () => devToolsArePresent ? window.devToolsExtension() : f => f;
@@ -62,7 +63,7 @@ function * application() {
     //
     ReactDOM.render(
         <div style={{width: '100vw', height: '100vh', backgroundColor: 'black', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '30px'}}>
-            <Icon icon="circle-notch" label="Loading..." spin={true} size="2x"/>
+            <Icon icon="neos" className={style.loadingIcon} label="Loading..." size="3x"/>
         </div>,
         appContainer
     );

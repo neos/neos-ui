@@ -1,0 +1,24 @@
+@keyframes color_change {
+    0% {
+        color: blue;
+    }
+    25% {
+        color: orange;
+    }
+    50% {
+        color: yellow;
+    }
+    75% {
+        color: green;
+    }
+    100% {
+        color: red;
+    }
+}
+
+.loadingIcon {
+    animation-name: color_change;
+    animation-duration: .8s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}

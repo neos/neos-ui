@@ -190,10 +190,11 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
      * @param NodeInterface $node
      * @return array
      */
-    protected function getCurrentDimensionPresetIdentifiersForNode($node) {
+    protected function getCurrentDimensionPresetIdentifiersForNode($node)
+    {
         $targetPresets = $this->contentDimensionsPresetSource->findPresetsByTargetValues($node->getDimensions());
         $presetCombo = [];
-        foreach($targetPresets as $dimensionName => $presetConfig) {
+        foreach ($targetPresets as $dimensionName => $presetConfig) {
             $fullPresetConfig = $this->contentDimensionsPresetSource->findPresetByDimensionValues($dimensionName, $presetConfig['values']);
             $presetCombo[$dimensionName] = $fullPresetConfig['identifier'];
         }

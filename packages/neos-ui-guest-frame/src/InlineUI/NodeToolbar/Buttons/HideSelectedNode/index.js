@@ -19,29 +19,28 @@ export default class HideSelectedNode extends PureComponent {
         hideNode: PropTypes.func.isRequired,
         showNode: PropTypes.func.isRequired,
         destructiveOperationsAreDisabled: PropTypes.bool.isRequired,
-        canBeEdited: PropTypes.bool.isRequired,
         visibilityCanBeToggled: PropTypes.bool.isRequired,
         i18nRegistry: PropTypes.object.isRequired
     };
 
     handleHideNode = () => {
-        const {node, hideNode, canBeEdited, visibilityCanBeToggled} = this.props;
+        const {node, hideNode, visibilityCanBeToggled} = this.props;
 
-        if (canBeEdited && visibilityCanBeToggled) {
+        if (visibilityCanBeToggled) {
             hideNode($get('contextPath', node));
         }
     }
 
     handleShowNode = () => {
-        const {node, showNode, canBeEdited, visibilityCanBeToggled} = this.props;
+        const {node, showNode, visibilityCanBeToggled} = this.props;
 
-        if (canBeEdited && visibilityCanBeToggled) {
+        if (visibilityCanBeToggled) {
             showNode($get('contextPath', node));
         }
     }
 
     render() {
-        const {className, node, destructiveOperationsAreDisabled, canBeEdited, visibilityCanBeToggled, i18nRegistry} = this.props;
+        const {className, node, destructiveOperationsAreDisabled, visibilityCanBeToggled, i18nRegistry} = this.props;
         const isHidden = $get('properties._hidden', node);
 
         return (
@@ -49,7 +48,7 @@ export default class HideSelectedNode extends PureComponent {
                 id="neos-InlineToolbar-HideSelectedNode"
                 className={className}
                 isActive={isHidden}
-                disabled={destructiveOperationsAreDisabled || !canBeEdited || !visibilityCanBeToggled}
+                disabled={destructiveOperationsAreDisabled || !visibilityCanBeToggled}
                 onClick={isHidden ? this.handleShowNode : this.handleHideNode}
                 icon="eye-slash"
                 hoverStyle="brand"

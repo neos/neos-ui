@@ -8,7 +8,7 @@ import {$get} from 'plow-js';
 import Controls from './Components/Controls/index';
 import AssetOption from '../../Library/AssetOption';
 import {AssetUpload} from '../../Library/index';
-import backend from "@neos-project/neos-ui-backend-connector";
+import backend from '@neos-project/neos-ui-backend-connector';
 
 const DEFAULT_FEATURES = {
     mediaBrowser: true,

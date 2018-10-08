@@ -158,17 +158,15 @@ export default routes => {
         return parts.length ? '.' + parts[parts.length - 1] : '';
     };
 
-    const assetProxyImport = (identifiers) => fetchWithErrorHandling.withCsrfToken(csrfToken => {
-        return {
-            url: `${routes.core.service.assetProxies}/${identifiers.substr(0, identifiers.indexOf('/'))}/${identifiers.substr(identifiers.indexOf('/') + 1)}`,
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-                'X-Flow-Csrftoken': csrfToken
-            },
-            body: ''
-        };
-    })
+    const assetProxyImport = identifiers => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+        url: `${routes.core.service.assetProxies}/${identifiers.substr(0, identifiers.indexOf('/'))}/${identifiers.substr(identifiers.indexOf('/') + 1)}`,
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'X-Flow-Csrftoken': csrfToken
+        },
+        body: ''
+    }))
         .then(result => result.text())
         .then(result => {
             const assetProxyTable = document.createElement('table');
@@ -196,8 +194,8 @@ export default routes => {
                     label: assetProxy.querySelector('.asset-proxy-label').innerText,
                     preview: assetProxy.querySelector('[rel=thumbnail]').getAttribute('href'),
                     identifier: assetProxy.querySelector('.local-asset-identifier').innerText || (assetSourceIdentifier + '/' + assetProxyIdentifier),
-                    assetSourceIdentifier: assetSourceIdentifier,
-                    assetProxyIdentifier: assetProxyIdentifier
+                    assetSourceIdentifier,
+                    assetProxyIdentifier
                 };
             });
             return mappedAssetProxies.filter(assetProxy => options.assetsToExclude.indexOf(assetProxy.identifier) === -1);

@@ -301,7 +301,7 @@ export default class Node extends PureComponent {
                     onToggle={this.handleNodeToggle}
                     onClick={this.handleNodeClick}
                     dragAndDropContext={this.getDragAndDropContext()}
-                    dragForbidden={$get('isAutoCreated', node)}
+                    dragForbidden={$get('isAutoCreated', node) && !$get('policy.canEdit', node)}
                     title={labelTitle}
                     />
                 {this.isCollapsed() ? null : (

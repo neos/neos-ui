@@ -1,4 +1,4 @@
-import {$get} from 'plow-js';
+import {$get, $set} from 'plow-js';
 import {createSelector, defaultMemoize} from 'reselect';
 
 import {getCurrentContentCanvasContextPath} from './../../UI/ContentCanvas/selectors';
@@ -145,6 +145,13 @@ export const focusedNodeTypeSelector = createSelector(
     ],
     focused =>
         $get('nodeType', focused)
+);
+
+export const focusedNodeVariantsSelector = createSelector(
+    [
+        focusedSelector
+    ],
+    focused => $get('otherNodeVariants', focused)
 );
 
 export const focusedNodeIdentifierSelector = createSelector(

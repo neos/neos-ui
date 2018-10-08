@@ -18,6 +18,7 @@ use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\Domain\Service\ContentContext;
+use Neos\Neos\Domain\Service\ContentDimensionPresetSourceInterface;
 use Neos\Neos\Service\LinkingService;
 use Neos\Neos\Service\Mapping\NodePropertyConverterService;
 use Neos\Neos\TypeConverter\EntityToIdentityConverter;
@@ -90,6 +91,12 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     protected $ignoredNodeTypeRole;
 
     /**
+     * @Flow\Inject
+     * @var ContentDimensionPresetSourceInterface
+     */
+    protected $contentDimensionsPresetSource;
+
+    /**
      * @param NodeInterface $node
      * @param ControllerContext $controllerContext
      * @param bool $omitMostPropertiesForTreeState
@@ -159,6 +166,12 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         $nodeInfo['properties'] = $this->nodePropertyConverterService->getPropertiesArray($node);
         $nodeInfo['isFullyLoaded'] = true;
 
+        $otherNodeVariants = array_values(array_filter(array_map(function ($node) {
+            return $this->getCurrentDimensionPresetIdentifiersForNode($node);
+        }, $node->getOtherNodeVariants())));
+        $nodeInfo['dimensions'] = $this->getCurrentDimensionPresetIdentifiersForNode($node);
+        $nodeInfo['otherNodeVariants'] = $otherNodeVariants;
+
         if ($controllerContext !== null) {
             $nodeInfo = array_merge($nodeInfo, $this->getUriInformation($node, $controllerContext));
         }
@@ -169,6 +182,22 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         $this->userLocaleService->switchToUILocale(true);
 
         return $nodeInfo;
+    }
+
+    /**
+     * Gets an array of current preset identifiers for each dimension of the give node
+     *
+     * @param NodeInterface $node
+     * @return array
+     */
+    protected function getCurrentDimensionPresetIdentifiersForNode($node) {
+        $targetPresets = $this->contentDimensionsPresetSource->findPresetsByTargetValues($node->getDimensions());
+        $presetCombo = [];
+        foreach($targetPresets as $dimensionName => $presetConfig) {
+            $fullPresetConfig = $this->contentDimensionsPresetSource->findPresetByDimensionValues($dimensionName, $presetConfig['values']);
+            $presetCombo[$dimensionName] = $fullPresetConfig['identifier'];
+        }
+        return $presetCombo;
     }
 
     /**

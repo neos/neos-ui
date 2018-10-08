@@ -147,7 +147,7 @@ export default class DimensionSwitcher extends PureComponent {
     }
 
     handleApplyPresets = () => {
-        this.props.selectPreset(this.state.transientPresets);
+        this.props.selectPreset(this.getEffectivePresets());
         this.setState({isOpen: false, transientPresets: {}});
     }
 

@@ -12,7 +12,6 @@ namespace Neos\Neos\Ui\Aspects;
  */
 
 use Neos\ContentRepository\Domain\Model\NodeInterface;
-use Neos\ContentRepository\Service\AuthorizationService;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Aop\JoinPointInterface;
 use Neos\Flow\Persistence\Exception\IllegalObjectTypeException;
@@ -22,6 +21,7 @@ use Neos\Fusion\Service\HtmlAugmenter;
 use Neos\Neos\Domain\Service\ContentContext;
 use Neos\Neos\Ui\Domain\Service\UserLocaleService;
 use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
+use Neos\Neos\Ui\Service\NodePolicyService;
 
 /**
  * - Serialize all nodes related to the currently rendered document
@@ -32,12 +32,11 @@ use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
  */
 class AugmentationAspect
 {
-
     /**
      * @Flow\Inject
-     * @var AuthorizationService
+     * @var NodePolicyService
      */
-    protected $nodeAuthorizationService;
+    protected $nodePolicyService;
 
     /**
      * @Flow\Inject
@@ -193,16 +192,42 @@ class AugmentationAspect
 
     /**
      * @param NodeInterface $node
-     * @param boolean $renderCurrentDocumentMetadata
-     * @return boolean
+     * @param bool $renderCurrentDocumentMetadata
+     * @return bool
      * @throws IllegalObjectTypeException
      */
-    protected function needsMetadata(NodeInterface $node, $renderCurrentDocumentMetadata)
+    protected function needsMetadata(NodeInterface $node, bool $renderCurrentDocumentMetadata): bool
     {
         /** @var $contentContext ContentContext */
         $contentContext = $node->getContext();
 
-        return ($contentContext->isInBackend() === true && ($renderCurrentDocumentMetadata === true || $this->nodeAuthorizationService->isGrantedToEditNode($node) === true));
+        if (!$contentContext->isInBackend()) {
+            return false;
+        }
+
+        if ($renderCurrentDocumentMetadata || $this->nodePolicyService->canEditNode($node)) {
+            return true;
+        }
+
+        $inlineEditableProperties = array_filter(
+            $node->getNodeType()->getProperties(),
+            function ($property) {
+                return $property['ui']['inlineEditable'] ?? false;
+            }
+        );
+
+        if ($inlineEditableProperties === []) {
+            return false;
+        }
+
+        $disallowedProperties = $this->nodePolicyService->getDisallowedProperties($node);
+        foreach ($inlineEditableProperties as $propertyName => $property) {
+            if (!in_array($propertyName, $disallowedProperties, true)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

@@ -13,12 +13,16 @@ namespace Neos\Neos\Ui\Service;
 
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Domain\Service\NodeTypeManager;
+use Neos\ContentRepository\Security\Authorization\Privilege\Node\EditNodePrivilege;
+use Neos\ContentRepository\Security\Authorization\Privilege\Node\EditNodePropertyPrivilege;
 use Neos\ContentRepository\Security\Authorization\Privilege\Node\NodePrivilegeSubject;
+use Neos\ContentRepository\Security\Authorization\Privilege\Node\PropertyAwareNodePrivilegeSubject;
 use Neos\ContentRepository\Service\AuthorizationService;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\Security\Authorization\Privilege\PrivilegeInterface;
 use Neos\Flow\Security\Authorization\PrivilegeManagerInterface;
+use Neos\Flow\Security\Context as SecurityContext;
 use Neos\Flow\Security\Policy\PolicyService;
 use Neos\Neos\Security\Authorization\Privilege\NodeTreePrivilege;
 
@@ -50,6 +54,12 @@ class NodePolicyService
      * @var ObjectManagerInterface
      */
     protected $objectManager;
+
+    /**
+     * @Flow\Inject
+     * @var SecurityContext
+     */
+    protected $securityContext;
 
     /**
      * @param ObjectManagerInterface $objectManager
@@ -135,6 +145,43 @@ class NodePolicyService
      */
     public function getDisallowedProperties(NodeInterface $node): array
     {
-        return $this->authorizationService->getDeniedNodePropertiesForEditing($node);
+        if ($this->canEditNode($node)) {
+            return $this->authorizationService->getDeniedNodePropertiesForEditing($node);
+        }
+
+        // If node editing was denied explicitly, property editing privilege can't overwrite
+        $privilegeSubject = new NodePrivilegeSubject($node);
+        foreach ($this->securityContext->getRoles() as $role) {
+            /** @var PrivilegeInterface[] $effectivePrivileges */
+            foreach ($role->getPrivilegesByType(EditNodePrivilege::class) as $privilege) {
+                if ($privilege->matchesSubject($privilegeSubject) && $privilege->isDenied()) {
+                    return array_keys($node->getNodeType()->getProperties());
+                }
+            }
+        }
+
+        // Matching node editing privileges only abstained
+        // Filter out node properties where editing is explicitly granted
+        $filter = function (string $propertyName) use ($node) {
+            $privilegeSubject = new PropertyAwareNodePrivilegeSubject($node, null, $propertyName);
+            $grants = 0;
+            foreach ($this->securityContext->getRoles() as $role) {
+                /** @var PrivilegeInterface[] $effectivePrivileges */
+                foreach ($role->getPrivilegesByType(EditNodePropertyPrivilege::class) as $privilege) {
+                    if ($privilege->matchesSubject($privilegeSubject)) {
+                        if ($privilege->isDenied()) {
+                            return true;
+                        }
+                        if ($privilege->isGranted()) {
+                            $grants++;
+                        }
+                    }
+                }
+            }
+
+            return $grants === 0;
+        };
+
+        return array_filter(array_keys($node->getNodeType()->getProperties()), $filter);
     }
 }

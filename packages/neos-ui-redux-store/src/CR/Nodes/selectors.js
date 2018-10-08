@@ -1,4 +1,4 @@
-import {$get, $set} from 'plow-js';
+import {$get} from 'plow-js';
 import {createSelector, defaultMemoize} from 'reselect';
 
 import {getCurrentContentCanvasContextPath} from './../../UI/ContentCanvas/selectors';

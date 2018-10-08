@@ -65,13 +65,13 @@ export default class SelectedElement extends PureComponent {
         }
 
         const currentVariant = {
-            value: $get(['dimensions'], focusedNode).toJS(),
+            value: $get('dimensions', focusedNode).toJS(),
             label: (
                 <div>
                     {$get('matchesCurrentDimensions', focusedNode) ? (
-                        <Icon title="The node dimensions of the selected node match the active dimension configuration, you may edit the node in place freely" icon="check-circle" padded="right" color="primaryBlue" />
+                        <Icon title={i18nRegistry.translate('Neos.Neos.Ui:Main:NodeVariantsSelector.matchingTooltip')} icon="check-circle" padded="right" color="primaryBlue" />
                     ) : (
-                        <Icon title="The selected node is a shine-through node, you may want to switch to its original dimension to edit it there, editing in-place would create a copy" icon="exclamation-circle" padded="right" color="warn" />
+                        <Icon title={i18nRegistry.translate('Neos.Neos.Ui:Main:NodeVariantsSelector.shinethroughTooltip')} icon="exclamation-circle" padded="right" color="warn" />
                     )}
                     {contentDimensions.map((dimensionValue, dimensionName) => {
                         const dimensionPresetId = $get(['dimensions', dimensionName], focusedNode);
@@ -87,25 +87,35 @@ export default class SelectedElement extends PureComponent {
         const otherVariants = focusedNodeVariants.map(nodeVariant => {
             return {
                 value: nodeVariant.toJS(),
-                label: contentDimensions.map((dimensionValue, dimensionName) => {
-                    const dimensionPresetId = $get(dimensionName, nodeVariant);
-                    const presetLabel = $get([dimensionName, 'presets', dimensionPresetId, 'label'], contentDimensions);
-                    return (<span key={dimensionName} style={{marginRight: 20}}>
-                        <Icon icon={$get('icon', dimensionValue)} padded="right" />
-                        <I18n id={presetLabel} />
-                    </span>);
-                }).toArray()
+                label: (
+                    <div>
+                        {contentDimensions.map((dimensionValue, dimensionName) => {
+                            const dimensionPresetId = $get(dimensionName, nodeVariant);
+                            const presetLabel = $get([dimensionName, 'presets', dimensionPresetId, 'label'], contentDimensions);
+                            return (<span key={dimensionName} style={{marginRight: 20}}>
+                                <Icon icon={$get('icon', dimensionValue)} padded="right" />
+                                <I18n id={presetLabel} />
+                            </span>);
+                        }).toArray()}
+                    </div>
+                )
             };
         }).toArray();
         const nodeVariantOptions = [currentVariant, ...otherVariants];
 
         return (
             <div className={style.content}>
-                <label title="Switch to the other variants of the selected node" for="#__neos__nodeVariantsSelector" style={{marginBottom: 4, display: 'block'}}>Node variants</label>
+                <label
+                    title={i18nRegistry.translate('Neos.Neos.Ui:Main:NodeVariantsSelector.tooltip')}
+                    htmlFor="#__neos__nodeVariantsSelector"
+                    style={{marginBottom: 4, display: 'block'}}
+                    >
+                    <I18n id={'Neos.Neos.Ui:Main:NodeVariantsSelector.label'} />
+                </label>
                 <SelectBox
                     id="__neos__nodeVariantsSelector"
                     options={nodeVariantOptions}
-                    value={nodeVariantOptions[0].value}
+                    value={$get([0, 'value'], nodeVariantOptions)}
                     onValueChange={preset => this.props.selectPreset(preset)}
                 />
             </div>

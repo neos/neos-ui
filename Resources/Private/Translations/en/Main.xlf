@@ -264,6 +264,18 @@
 			<trans-unit id="Shortcut__CR.Nodes.unfocus" xml:space="preserve">
 				<source>Unfocus Node</source>
 			</trans-unit>
+			<trans-unit id="NodeVariantsSelector.label" xml:space="preserve">
+				<source>Node variants</source>
+			</trans-unit>
+			<trans-unit id="NodeVariantsSelector.tooltip" xml:space="preserve">
+				<source>Use the dropdown to switch to other variants of the selected node</source>
+			</trans-unit>
+			<trans-unit id="NodeVariantsSelector.matchingTooltip" xml:space="preserve">
+				<source>The node dimensions of the selected node match the active dimension configuration, you may edit the node in place freely</source>
+			</trans-unit>
+			<trans-unit id="NodeVariantsSelector.shinethroughTooltip" xml:space="preserve">
+				<source>The selected node is a shine-through node from another dimension, you may want to switch to its original dimension to edit it there, editing it in-place would create a copy</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

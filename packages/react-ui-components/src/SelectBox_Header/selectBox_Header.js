@@ -13,7 +13,10 @@ class SelectBox_Header extends PureComponent {
         // API with SelectBox
         option: PropTypes.shape({
             icon: PropTypes.string,
-            label: PropTypes.string.isRequired
+            label: PropTypes.oneOfType([
+                PropTypes.string,
+                PropTypes.object
+            ]).isRequired
         }),
         placeholder: PropTypes.string,
         placeholderIcon: PropTypes.string,

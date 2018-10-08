@@ -7,7 +7,10 @@ import mergeClassNames from 'classnames';
 class SelectBox_Option_SingleLine extends PureComponent {
     static propTypes = {
         option: PropTypes.shape({
-            label: PropTypes.string.isRequired,
+            label: PropTypes.oneOfType([
+                PropTypes.string,
+                PropTypes.object
+            ]).isRequired,
             icon: PropTypes.string,
             disabled: PropTypes.bool
         }).isRequired,

@@ -20,7 +20,10 @@ export default class SelectBox_ListPreviewFlat extends PureComponent {
         // API with SelectBox
         optionValueAccessor: PropTypes.func.isRequired,
         onChange: PropTypes.func.isRequired,
-        focusedValue: PropTypes.string,
+        focusedValue: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.object
+        ]).isRequired,
         onOptionFocus: PropTypes.func,
 
         // ------------------------------

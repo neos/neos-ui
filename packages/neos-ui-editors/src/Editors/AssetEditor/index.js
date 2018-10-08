@@ -108,7 +108,6 @@ export default class AssetEditor extends PureComponent {
             this.setState({isLoading: true, searchOptions: []});
             this.props.assetLookupDataLoader.search({}, searchTerm)
                 .then(searchOptions => {
-                    console.log('searchOptions',searchOptions);
                     this.setState({
                         isLoading: false,
                         searchOptions
@@ -160,7 +159,6 @@ export default class AssetEditor extends PureComponent {
     }
 
     handleMediaSelected = assetIdentifier => {
-        console.log('handleMediaSelected', assetIdentifier, this.props);
         const {value} = this.props;
         if (this.props.options.multiple) {
             const values = value ? value.slice() : [];

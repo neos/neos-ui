@@ -11,16 +11,11 @@ namespace Neos\Neos\Ui\Service;
  * source code.
  */
 
-use Neos\ContentRepository\Domain\Service\NodeTypeManager;
-use Neos\ContentRepository\Security\Authorization\Privilege\Node\CreateNodePrivilege;
-use Neos\ContentRepository\Security\Authorization\Privilege\Node\CreateNodePrivilegeSubject;
-use Neos\ContentRepository\Security\Authorization\Privilege\Node\EditNodePrivilege;
-use Neos\ContentRepository\Security\Authorization\Privilege\Node\EditNodePropertyPrivilege;
-use Neos\ContentRepository\Security\Authorization\Privilege\Node\NodePrivilegeSubject;
-use Neos\ContentRepository\Security\Authorization\Privilege\Node\PropertyAwareNodePrivilegeSubject;
-use Neos\ContentRepository\Security\Authorization\Privilege\Node\RemoveNodePrivilege;
-use Neos\Flow\Annotations as Flow;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Domain\Service\NodeTypeManager;
+use Neos\ContentRepository\Security\Authorization\Privilege\Node\NodePrivilegeSubject;
+use Neos\ContentRepository\Service\AuthorizationService;
+use Neos\Flow\Annotations as Flow;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\Security\Authorization\Privilege\PrivilegeInterface;
 use Neos\Flow\Security\Authorization\PrivilegeManagerInterface;
@@ -32,6 +27,11 @@ use Neos\Neos\Security\Authorization\Privilege\NodeTreePrivilege;
  */
 class NodePolicyService
 {
+    /**
+     * @Flow\Inject
+     * @var AuthorizationService
+     */
+    protected $authorizationService;
 
     /**
      * @Flow\Inject
@@ -104,30 +104,11 @@ class NodePolicyService
 
     /**
      * @param NodeInterface $node
-     * @return array
+     * @return string[]
      */
     public function getDisallowedNodeTypes(NodeInterface $node): array
     {
-        $disallowedNodeTypes = [];
-
-        if (!isset(self::getUsedPrivilegeClassNames($this->objectManager)[CreateNodePrivilege::class])) {
-            return $disallowedNodeTypes;
-        }
-
-        $filter = function ($nodeType) use ($node) {
-            return !$this->privilegeManager->isGranted(
-                CreateNodePrivilege::class,
-                new CreateNodePrivilegeSubject($node, $nodeType)
-            );
-        };
-
-        $disallowedNodeTypeObjects = array_filter($this->nodeTypeManager->getNodeTypes(), $filter);
-
-        $mapper = function ($nodeType) {
-            return $nodeType->getName();
-        };
-
-        return array_values(array_map($mapper, $disallowedNodeTypeObjects));
+        return array_values($this->authorizationService->getNodeTypeNamesDeniedForCreation($node));
     }
 
     /**
@@ -136,12 +117,7 @@ class NodePolicyService
      */
     public function canRemoveNode(NodeInterface $node): bool
     {
-        $canRemove = true;
-        if (isset(self::getUsedPrivilegeClassNames($this->objectManager)[RemoveNodePrivilege::class])) {
-            $canRemove = $this->privilegeManager->isGranted(RemoveNodePrivilege::class, new NodePrivilegeSubject($node));
-        }
-
-        return $canRemove;
+        return $this->authorizationService->isGrantedToRemoveNode($node);
     }
 
     /**
@@ -150,34 +126,15 @@ class NodePolicyService
      */
     public function canEditNode(NodeInterface $node): bool
     {
-        $canEdit = true;
-        if (isset(self::getUsedPrivilegeClassNames($this->objectManager)[EditNodePrivilege::class])) {
-            $canEdit = $this->privilegeManager->isGranted(EditNodePrivilege::class, new NodePrivilegeSubject($node));
-        }
-
-        return $canEdit;
+        return $this->authorizationService->isGrantedToEditNode($node);
     }
 
     /**
      * @param NodeInterface $node
-     * @return array
+     * @return string[]
      */
     public function getDisallowedProperties(NodeInterface $node): array
     {
-        $disallowedProperties = [];
-
-        if (!isset(self::getUsedPrivilegeClassNames($this->objectManager)[EditNodePropertyPrivilege::class])) {
-            return $disallowedProperties;
-        }
-
-        $filter = function ($propertyName) use ($node) {
-            return !$this->privilegeManager->isGranted(
-                EditNodePropertyPrivilege::class,
-                new PropertyAwareNodePrivilegeSubject($node, null, $propertyName)
-            );
-        };
-
-        $disallowedProperties = array_filter(array_keys($node->getNodeType()->getProperties()), $filter);
-        return $disallowedProperties;
+        return $this->authorizationService->getDeniedNodePropertiesForEditing($node);
     }
 }

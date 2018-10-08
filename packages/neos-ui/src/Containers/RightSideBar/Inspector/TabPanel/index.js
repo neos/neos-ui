@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {$get, $contains} from 'plow-js';
+import {$contains, $get} from 'plow-js';
 import Tabs from '@neos-project/react-ui-components/src/Tabs/';
 
 import PropertyGroup from '../PropertyGroup/index';
@@ -19,10 +19,10 @@ export default class TabPanel extends PureComponent {
         handleInspectorApply: PropTypes.func
     };
 
-    isPropertyEnabled = ({id}) => {
+    isPropertyEnabled = property => {
         const {node} = this.props;
 
-        return !$contains(id, 'policy.disallowedProperties', node);
+        return !$contains($get('id', property), 'policy.disallowedProperties', node);
     };
 
     render() {

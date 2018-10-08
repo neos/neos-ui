@@ -198,11 +198,10 @@ manifest('main.dataloaders', {}, globalRegistry => {
             ).then(results => [].concat(...results));
         },
 
-        search(options, searchTerm) {
+        search(options = {assetsToExclude: []}, searchTerm) {
             if (!searchTerm) {
                 return Promise.resolve([]);
             }
-
             const cacheKey = makeCacheKey('search', {options, searchTerm});
 
             if (this._lru().has(cacheKey)) {
@@ -218,7 +217,7 @@ manifest('main.dataloaders', {}, globalRegistry => {
             }).then(() => {
                 // Trigger query
                 const assetProxySearchApi = backend.get().endpoints.assetProxySearch;
-                const resultPromise = assetProxySearchApi(searchTerm);
+                const resultPromise = assetProxySearchApi(searchTerm, '', options);
 
                 this._lru().set(cacheKey, resultPromise);
 

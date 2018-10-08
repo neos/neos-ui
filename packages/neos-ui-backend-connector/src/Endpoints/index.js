@@ -177,7 +177,7 @@ export default routes => {
             return assetProxy.querySelector('.local-asset-identifier').innerText;
         });
 
-    const assetProxySearch = (searchTerm = '', assetSourceIdentifier = '') => fetchWithErrorHandling.withCsrfToken(() => ({
+    const assetProxySearch = (searchTerm = '', assetSourceIdentifier = '', options = {}) => fetchWithErrorHandling.withCsrfToken(() => ({
         url: urlWithParams(routes.core.service.assetProxies, {searchTerm, assetSourceIdentifier}),
 
         method: 'GET',
@@ -187,8 +187,7 @@ export default routes => {
         .then(result => {
             const assetProxyTable = document.createElement('table');
             assetProxyTable.innerHTML = result;
-
-            return Array.prototype.map.call(assetProxyTable.querySelectorAll('.asset-proxy'), assetProxy => {
+            const mappedAssetProxies = Array.prototype.map.call(assetProxyTable.querySelectorAll('.asset-proxy'), assetProxy => {
                 const assetSourceIdentifier = assetProxy.querySelector('.asset-source-identifier').innerText;
                 const assetProxyIdentifier = assetProxy.querySelector('.asset-proxy-identifier').innerText;
                 return {
@@ -201,6 +200,7 @@ export default routes => {
                     assetProxyIdentifier: assetProxyIdentifier
                 };
             });
+            return mappedAssetProxies.filter(assetProxy => options.assetsToExclude.indexOf(assetProxy.identifier) === -1);
         });
 
     const assetProxyDetail = (assetSourceIdentifier, assetProxyIdentifier) => fetchWithErrorHandling.withCsrfToken(() => ({

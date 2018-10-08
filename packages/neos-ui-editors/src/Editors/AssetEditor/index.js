@@ -106,7 +106,7 @@ export default class AssetEditor extends PureComponent {
     handleSearchTermChange = searchTerm => {
         if (searchTerm) {
             this.setState({isLoading: true, searchOptions: []});
-            this.props.assetLookupDataLoader.search({}, searchTerm)
+            this.props.assetLookupDataLoader.search({assetsToExclude: this.getValues()}, searchTerm)
                 .then(searchOptions => {
                     this.setState({
                         isLoading: false,

@@ -350,7 +350,7 @@ export default class LinkInput extends PureComponent {
     }
 
     render() {
-        const linkingOptions = $get('linking', this.props.options);
+        const linkingOptions = this.props.options;
         const optionsPanelEnabled = Boolean(linkingOptions && Object.values(linkingOptions).filter(i => i).length);
         return (
             <div>

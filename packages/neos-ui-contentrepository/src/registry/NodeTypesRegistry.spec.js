@@ -5,10 +5,31 @@ test(`
     for a given node type`, () => {
     const nodeTypesRegistry = new NodeTypesRegistry(``);
 
+    nodeTypesRegistry.set('Neos.Neos.NodeTypes:Page', {
+        name: 'Neos.Neos.NodeTypes:Page',
+        label: 'Neos.Neos.NodeTypes:NodeTypes.Page:ui.label',
+        ui: {
+            label: 'Neos.Neos.NodeTypes:NodeTypes.Page:ui.label'
+        }
+    });
+    nodeTypesRegistry.set('Test:Page', {
+        name: 'Test:Page',
+        ui: {
+            label: 'The test page type'
+        }
+    });
+    nodeTypesRegistry.set('Test:Page2', {
+        name: 'Test:Page2',
+        ui: {
+            label: 'The test page type 2'
+        }
+    });
+
     nodeTypesRegistry.setConstraints({
         'Neos.Neos.NodeTypes:Page': {
             nodeTypes: {
                 'Neos.Neos.NodeTypes:Page': true,
+                'Test:Mixin': true,
                 'Test:Page': true,
                 'Test:Page2': true
             }
@@ -30,11 +51,32 @@ test(`
     node types for a given node type`, () => {
     const nodeTypesRegistry = new NodeTypesRegistry(``);
 
+    nodeTypesRegistry.set('Neos.Neos.NodeTypes:Page', {
+        name: 'Neos.Neos.NodeTypes:Page',
+        label: 'Neos.Neos.NodeTypes:NodeTypes.Page:ui.label',
+        ui: {
+            label: 'Neos.Neos.NodeTypes:NodeTypes.Page:ui.label'
+        }
+    });
+    nodeTypesRegistry.set('Test:Page', {
+        name: 'Test:Page',
+        ui: {
+            label: 'The test page type'
+        }
+    });
+    nodeTypesRegistry.set('Test:Page2', {
+        name: 'Test:Page2',
+        ui: {
+            label: 'The test page type 2'
+        }
+    });
+
     nodeTypesRegistry.setConstraints({
         'Neos.Neos.NodeTypes:Page': {
             childNodes: {
                 main: {
                     nodeTypes: {
+                        'Test:Mixin': true,
                         'Test:Page': true
                     }
                 }

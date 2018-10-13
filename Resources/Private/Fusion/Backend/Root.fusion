@@ -77,6 +77,9 @@ backend = Neos.Fusion:Template {
                 cutNode = Neos.Fusion:UriBuilder {
                     action = 'cutNode'
                 }
+                clearClipboard = Neos.Fusion:UriBuilder {
+                    action = 'clearClipboard'
+                }
                 loadTree = Neos.Fusion:UriBuilder {
                     action = 'loadTree'
                 }

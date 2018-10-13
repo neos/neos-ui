@@ -94,6 +94,18 @@ export default routes => {
     })).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
+    const clearClipboard = () => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+        url: routes.ui.service.clearClipboard,
+
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'X-Flow-Csrftoken': csrfToken,
+            'Content-Type': 'application/json'
+        }
+    })).then(response => fetchWithErrorHandling.parseJson(response))
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+
     const loadImageMetadata = imageVariantUuid => fetchWithErrorHandling.withCsrfToken(() => ({
         url: `${routes.core.content.imageWithMetadata}?image=${imageVariantUuid}`,
 
@@ -409,6 +421,7 @@ export default routes => {
         changeBaseWorkspace,
         copyNode,
         cutNode,
+        clearClipboard,
         createImageVariant,
         loadMasterPlugins,
         loadPluginViews,

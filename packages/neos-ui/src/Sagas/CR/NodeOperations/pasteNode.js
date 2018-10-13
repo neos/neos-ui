@@ -29,16 +29,12 @@ export default function * pasteNode({globalRegistry}) {
         );
 
         if (mode) {
+            yield put(actions.CR.Nodes.commitPaste(clipboardMode));
             yield put(actions.Changes.persistChanges([{
                 type: calculateChangeTypeFromMode(mode, clipboardMode),
                 subject,
                 payload: calculateDomAddressesFromMode(mode, reference, fusionPath)
             }]));
         }
-
-        //
-        // Keep the loop runnning
-        //
-        yield put(actions.CR.Nodes.copy(subject));
     });
 }

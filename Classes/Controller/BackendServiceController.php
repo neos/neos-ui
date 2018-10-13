@@ -345,6 +345,16 @@ class BackendServiceController extends ActionController
     }
 
     /**
+     * Clears the clipboard state
+     *
+     * @return void
+     */
+    public function clearClipboardAction()
+    {
+        $this->clipboard->clear();
+    }
+
+    /**
      * Persists the clipboard node on cut
      *
      * @param NodeInterface $node

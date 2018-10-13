@@ -24,6 +24,7 @@ const COPY = '@neos/neos-ui/CR/Nodes/COPY';
 const CUT = '@neos/neos-ui/CR/Nodes/CUT';
 const MOVE = '@neos/neos-ui/CR/Nodes/MOVE';
 const PASTE = '@neos/neos-ui/CR/Nodes/PASTE';
+const COMMIT_PASTE = '@neos/neos-ui/CR/Nodes/COMMIT_PASTE';
 const HIDE = '@neos/neos-ui/CR/Nodes/HIDE';
 const SHOW = '@neos/neos-ui/CR/Nodes/SHOW';
 const UPDATE_URI = '@neos/neos-ui/CR/Nodes/UPDATE_URI';
@@ -47,6 +48,7 @@ export const actionTypes = {
     CUT,
     MOVE,
     PASTE,
+    COMMIT_PASTE,
     HIDE,
     SHOW,
     UPDATE_URI
@@ -167,6 +169,12 @@ const move = createAction(MOVE, (nodeToBeMoved, targetNode, position) => ({nodeT
 const paste = createAction(PASTE, (contextPath, fusionPath) => ({contextPath, fusionPath}));
 
 /**
+ * Marks the moment when the actual paste request is commited
+ *
+ */
+const commitPaste = createAction(COMMIT_PASTE, clipboardMode => clipboardMode);
+
+/**
  * Hide the given node
  *
  * @param {String} contextPath The context path of the node to be hidden
@@ -208,6 +216,7 @@ export const actions = {
     cut,
     move,
     paste,
+    commitPaste,
     hide,
     show,
     updateUri
@@ -341,6 +350,16 @@ export const reducer = handleActions({
         $set('cr.nodes.clipboard', contextPath),
         $set('cr.nodes.clipboardMode', 'Move')
     ),
+    [COMMIT_PASTE]: clipboardMode => state => {
+        if (clipboardMode === 'Move') {
+            return $all(
+                $set('cr.nodes.clipboard', ''),
+                $set('cr.nodes.clipboardMode', ''),
+                state
+            );
+        }
+        return state;
+    },
     [HIDE]: contextPath => $set(['cr', 'nodes', 'byContextPath', contextPath, 'properties', '_hidden'], true),
     [SHOW]: contextPath => $set(['cr', 'nodes', 'byContextPath', contextPath, 'properties', '_hidden'], false),
     [UPDATE_URI]: ({oldUriFragment, newUriFragment}) => state => {

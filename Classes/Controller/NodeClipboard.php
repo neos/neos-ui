@@ -23,7 +23,7 @@ use Neos\ContentRepository\Domain\Model\NodeInterface;
 class NodeClipboard
 {
     const MODE_COPY = 'Copy';
-    const MODE_CUT = 'Cut';
+    const MODE_MOVE = 'Move';
 
     /**
      * @var NodeInterface
@@ -58,7 +58,19 @@ class NodeClipboard
     public function cutNode(NodeInterface $node)
     {
         $this->node = $node;
-        $this->mode = self::MODE_CUT;
+        $this->mode = self::MODE_MOVE;
+    }
+
+    /**
+     * Reset clipboard.
+     *
+     * @return void
+     * @Flow\Session(autoStart=true)
+     */
+    public function clear()
+    {
+        $this->node = null;
+        $this->mode = '';
     }
 
     /**

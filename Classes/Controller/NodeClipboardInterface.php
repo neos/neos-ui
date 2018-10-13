@@ -36,6 +36,13 @@ interface NodeClipboardInterface
     public function cutNode(NodeInterface $clipboardNode);
 
     /**
+     * Clears clipboard state.
+     *
+     * @return void
+     */
+    public function clear();
+
+    /**
      * Get clipboard node context path.
      *
      * @return string $nodeContextPath

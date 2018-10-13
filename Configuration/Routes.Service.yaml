@@ -47,6 +47,14 @@
   httpMethods: ['POST']
 
 -
+  name: 'Clear clipboard'
+  uriPattern: 'clear-clipboard'
+  defaults:
+    '@controller': 'BackendService'
+    '@action': 'clearClipboard'
+  httpMethods: ['POST']
+
+-
   name: 'Load Tree'
   uriPattern: 'load-tree'
   defaults:

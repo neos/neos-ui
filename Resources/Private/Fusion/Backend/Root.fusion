@@ -71,8 +71,11 @@ backend = Neos.Fusion:Template {
                 changeBaseWorkspace = Neos.Fusion:UriBuilder {
                     action = 'changeBaseWorkspace'
                 }
-                persistClipboardState = Neos.Fusion:UriBuilder {
-                    action = 'persistClipboardState'
+                copyNode = Neos.Fusion:UriBuilder {
+                    action = 'copyNode'
+                }
+                cutNode = Neos.Fusion:UriBuilder {
+                    action = 'cutNode'
                 }
                 loadTree = Neos.Fusion:UriBuilder {
                     action = 'loadTree'
@@ -278,7 +281,7 @@ backend = Neos.Fusion:Template {
             documentNode = ${documentNode}
             site = ${site}
             user = ${user}
-            clipboardSubject = ${clipboardSubject}
+            clipboardNode = ${clipboardNode}
             clipboardMode = ${clipboardMode}
         }
 

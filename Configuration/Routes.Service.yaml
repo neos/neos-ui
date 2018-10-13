@@ -31,11 +31,19 @@
   httpMethods: ['POST']
 
 -
-  name: 'Persist clipboard state'
-  uriPattern: 'persist-clipboard-state'
+  name: 'Copy node to clipboard'
+  uriPattern: 'copy-node'
   defaults:
     '@controller': 'BackendService'
-    '@action': 'persistClipboardState'
+    '@action': 'copyNode'
+  httpMethods: ['POST']
+
+-
+  name: 'Cut node to clipboard'
+  uriPattern: 'cut-node'
+  defaults:
+    '@controller': 'BackendService'
+    '@action': 'cutNode'
   httpMethods: ['POST']
 
 -

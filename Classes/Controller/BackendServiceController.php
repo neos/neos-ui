@@ -109,9 +109,9 @@ class BackendServiceController extends ActionController
 
     /**
      * @Flow\Inject
-     * @var ClipboardStateContainer
+     * @var NodeClipboardInterface
      */
-    protected $clipboardStateContainer;
+    protected $clipboard;
 
     /**
      * Set the controller context on the feedback collection after the controller
@@ -334,21 +334,25 @@ class BackendServiceController extends ActionController
     }
 
     /**
-     * Persists the clipboard state
+     * Persists the clipboard node on copy
      *
-     * @param NodeInterface $clipboardSubject
-     * @param string $clipboardMode
+     * @param NodeInterface $node
      * @return void
      */
-    public function persistClipboardStateAction(NodeInterface $clipboardSubject, string $clipboardMode)
+    public function copyNodeAction(NodeInterface $node)
     {
-        if ($clipboardMode === 'Copy') {
-            $this->clipboardStateContainer->copyNode($clipboardSubject);
-        } elseif ($clipboardMode === 'Cut') {
-            $this->clipboardStateContainer->cutNode($clipboardSubject);
-        } else {
-            throw new \Exception('clipboardMode must be either "Copy" or "Cut"');
-        }
+        $this->clipboard->copyNode($node);
+    }
+
+    /**
+     * Persists the clipboard node on cut
+     *
+     * @param NodeInterface $node
+     * @return void
+     */
+    public function cutNodeAction(NodeInterface $node)
+    {
+        $this->clipboard->cutNode($node);
     }
 
     public function getWorkspaceInfoAction()

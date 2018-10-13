@@ -103,10 +103,9 @@ class BackendController extends ActionController
 
     /**
      * @Flow\Inject
-     * @var ClipboardStateContainer
+     * @var NodeClipboardInterface
      */
-    protected $clipboardStateContainer;
-
+    protected $clipboard;
 
     public function initializeView(ViewInterface $view)
     {
@@ -135,14 +134,11 @@ class BackendController extends ActionController
 
         $siteNode = $node->getContext()->getCurrentSiteNode();
 
-        $clipboardSubject = $this->clipboardStateContainer->getClipboardSubject();
-        $clipboardMode = $this->clipboardStateContainer->getClipboardMode();
-
         $this->view->assign('user', $user);
         $this->view->assign('documentNode', $node);
         $this->view->assign('site', $siteNode);
-        $this->view->assign('clipboardSubject', $clipboardSubject);
-        $this->view->assign('clipboardMode', $clipboardMode);
+        $this->view->assign('clipboardNode', $this->clipboard->getNodeContextPath());
+        $this->view->assign('clipboardMode', $this->clipboard->getMode());
         $this->view->assign('headScripts', $this->styleAndJavascriptInclusionService->getHeadScripts());
         $this->view->assign('headStylesheets', $this->styleAndJavascriptInclusionService->getHeadStylesheets());
         $this->view->assign('sitesForMenu', $this->menuHelper->buildSiteList($this->getControllerContext()));

@@ -25,8 +25,12 @@ const clipboardMiddleware = ({getState}) => {
             clearTimeout(timer);
             timer = setTimeout(() => {
                 const state = getState();
-                const {persistClipboardState} = backend.get().endpoints;
-                persistClipboardState($get('cr.nodes.clipboard', state), $get('cr.nodes.clipboardMode', state));
+                const {copyNode, cutNode} = backend.get().endpoints;
+                if ($get('cr.nodes.clipboardMode', state) === 'Copy') {
+                    copyNode($get('cr.nodes.clipboard', state));
+                } else if ($get('cr.nodes.clipboardMode', state) === 'Cut') {
+                    cutNode($get('cr.nodes.clipboard', state));
+                }
                 timer = null;
             }, debounceLocalStorageTimeout);
         }

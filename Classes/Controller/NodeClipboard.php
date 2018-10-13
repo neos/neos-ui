@@ -20,61 +20,64 @@ use Neos\ContentRepository\Domain\Model\NodeInterface;
  *
  * @Flow\Scope("session")
  */
-class ClipboardStateContainer
+class NodeClipboard
 {
+    const MODE_COPY = 'Copy';
+    const MODE_CUT = 'Cut';
+
     /**
      * @var NodeInterface
      */
-    protected $clipboardSubject = null;
+    protected $node = null;
 
     /**
-     * @var string
+     * @var string one of the NodeClipboardInterface::MODE_*  constants
      */
-    protected $clipboardMode = '';
+    protected $mode = '';
 
     /**
      * Save copied node to clipboard.
      *
-     * @param NodeInterface $clipboardSubject
+     * @param NodeInterface $node
      * @return void
      * @Flow\Session(autoStart=true)
      */
-    public function copyNode(NodeInterface $clipboardSubject)
+    public function copyNode(NodeInterface $node)
     {
-        $this->clipboardSubject = $clipboardSubject;
-        $this->clipboardMode = 'Copy';
+        $this->node = $node;
+        $this->mode = self::MODE_COPY;
     }
 
     /**
      * Save cut node to clipboard.
      *
-     * @param NodeInterface $clipboardSubject
+     * @param NodeInterface $node
      * @return void
      * @Flow\Session(autoStart=true)
      */
-    public function cutNode(NodeInterface $clipboardSubject)
+    public function cutNode(NodeInterface $node)
     {
-        $this->clipboardSubject = $clipboardSubject;
-        $this->clipboardMode = 'Cut';
+        $this->node = $node;
+        $this->mode = self::MODE_CUT;
     }
 
     /**
-     * Get clipboard subject.
+     * Get clipboard node.
      *
-     * @return string $clipboardSubject
+     * @return string $nodeContextPath
      */
-    public function getClipboardSubject()
+    public function getNodeContextPath()
     {
-        return $this->clipboardSubject ? $this->clipboardSubject->getContextPath() : '';
+        return $this->node ? $this->node->getContextPath() : '';
     }
 
     /**
      * Get clipboard mode.
      *
-     * @return string $clipboardMode
+     * @return string $mode
      */
-    public function getClipboardMode()
+    public function getMode()
     {
-        return $this->clipboardMode;
+        return $this->mode;
     }
 }

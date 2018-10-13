@@ -64,8 +64,8 @@ export default routes => {
     })).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
-    const persistClipboardState = (clipboardSubject, clipboardMode) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
-        url: routes.ui.service.persistClipboardState,
+    const copyNode = node => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+        url: routes.ui.service.copyNode,
 
         method: 'POST',
         credentials: 'include',
@@ -74,8 +74,22 @@ export default routes => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            clipboardSubject,
-            clipboardMode
+            node
+        })
+    })).then(response => fetchWithErrorHandling.parseJson(response))
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+
+    const cutNode = node => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+        url: routes.ui.service.cutNode,
+
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'X-Flow-Csrftoken': csrfToken,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            node
         })
     })).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
@@ -393,7 +407,8 @@ export default routes => {
         publish,
         discard,
         changeBaseWorkspace,
-        persistClipboardState,
+        copyNode,
+        cutNode,
         createImageVariant,
         loadMasterPlugins,
         loadPluginViews,

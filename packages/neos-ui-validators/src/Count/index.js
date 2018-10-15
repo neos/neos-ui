@@ -1,6 +1,7 @@
 import React from 'react';
 import I18n from '@neos-project/neos-ui-i18n';
 import logger from '@neos-project/utils-logger';
+import {List} from 'immutable';
 
 /**
  * Checks if the given value is an object or array
@@ -20,6 +21,9 @@ const Count = (value, validatorOptions) => {
         return <I18n id="content.inspector.validators.countValidator.notCountable"/>;
     }
 
+    if (value instanceof List) {
+        value = value.toJS();
+    }
     const {length} = Object.keys(value);
 
     if (length < minimum || length > maximum) {

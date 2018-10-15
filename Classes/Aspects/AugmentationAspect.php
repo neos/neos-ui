@@ -174,9 +174,10 @@ class AugmentationAspect
         $node = $joinPoint->getMethodArgument('node');
         $content = $joinPoint->getMethodArgument('content');
 
+        $disallowedProperties = $this->nodePolicyService->getDisallowedProperties($node);
         /** @var ContentContext $contentContext */
         $contentContext = $node->getContext();
-        if (!$contentContext->isInBackend()) {
+        if (!$contentContext->isInBackend() || in_array($property, $disallowedProperties, true)) {
             return $content;
         }
 

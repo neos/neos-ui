@@ -253,7 +253,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             return $this->$methodName($node, $controllerContext);
         };
 
-        return array_filter(array_map($mapper, $nodes));
+        return array_values(array_filter(array_map($mapper, $nodes)));
     }
 
     /**

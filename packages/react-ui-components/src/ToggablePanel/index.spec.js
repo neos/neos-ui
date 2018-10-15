@@ -1,4 +1,4 @@
-import ToggablePanel from './index.js';
+import ToggablePanel from '.';
 
 describe('<ToggablePanel/> (entry point)', () => {
     it('should export a Component.', () => {

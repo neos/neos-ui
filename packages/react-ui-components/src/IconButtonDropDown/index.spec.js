@@ -1,4 +1,4 @@
-import IconButtonDropDown from './index.js';
+import IconButtonDropDown from '.';
 
 describe('<IconButtonDropDown/> (entry point)', () => {
     it('should export a Component.', () => {

@@ -1,4 +1,4 @@
-import {makeFocusNode} from './focusNode.js';
+import {makeFocusNode} from './focusNode';
 
 describe('makeFocusNode()', () => {
     it('should return curried function.', () => {

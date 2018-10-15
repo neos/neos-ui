@@ -1,4 +1,4 @@
-import ButtonGroup from './index.js';
+import ButtonGroup from '.';
 
 describe('<ButtonGroup/> (entry point)', () => {
     it('should export a Component.', () => {

@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/react-ui-components",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "description": "The UI components which power the Neos backend application.",
   "main": "./src/index",
   "scripts": {
@@ -12,16 +12,16 @@
     "babel": "babel ./src --out-dir ./lib",
     "css": "cpx './src/**/*.css' ./lib && cpx './src/**/*.woff' ./lib && cpx './src/**/*.woff2' ./lib",
     "clean": "rimraf ./lib ./dist",
-    "lint": "eslint src && stylelint 'src/**/*.css'",
+    "lint": "eslint src && stylelint 'src/**/*.css' && tslint -t codeFrame -p ../tsconfig.json -c ../../tslint.json",
     "jest": "NODE_ENV=test jest",
     "jest:updateSnapshots": "NODE_ENV=test jest -u",
     "start": "cross-env STORY=true start-storybook -p 9001"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "1.3.3",
-    "@neos-project/build-essentials": "1.3.3",
-    "@neos-project/debug-reason-for-rendering": "1.3.3",
-    "@neos-project/jest-preset-neos-ui": "1.3.3",
+    "@neos-project/babel-preset-neos-ui": "1.3.4",
+    "@neos-project/build-essentials": "1.3.4",
+    "@neos-project/debug-reason-for-rendering": "1.3.4",
+    "@neos-project/jest-preset-neos-ui": "1.3.4",
     "@storybook/addon-info": "^3.2.16",
     "@storybook/addon-knobs": "3.2.16",
     "@storybook/react": "3.2.16",

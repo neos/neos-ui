@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import Badge from './badge.js';
+import Badge from './badge';
 
 describe('<Badge/>', () => {
     let props;

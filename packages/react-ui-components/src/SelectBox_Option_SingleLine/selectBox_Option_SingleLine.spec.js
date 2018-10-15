@@ -2,8 +2,8 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import {createStubComponent} from './../_lib/testUtils.js';
-import SelectBox_Option_SingleLine from './selectBox_Option_SingleLine.js';
+import {createStubComponent} from './../_lib/testUtils';
+import SelectBox_Option_SingleLine from './selectBox_Option_SingleLine';
 
 describe('<SelectBox_Option_SingleLine/>', () => {
     let props;

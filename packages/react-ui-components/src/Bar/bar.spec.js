@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import Bar from './bar.js';
+import Bar from './bar';
 
 describe('<Bar/>', () => {
     let props;

@@ -115,6 +115,7 @@ export default class SelectBox_ListPreviewGrouped extends PureComponent {
                     }
                 }}
                 role="option"
+                aria-selected={isHighlighted ? 'true' : 'false'}
                 className={theme.selectBox__item}
                 >
                 <ListPreviewElement

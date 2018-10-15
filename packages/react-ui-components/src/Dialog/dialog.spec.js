@@ -1,8 +1,8 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import {createStubComponent} from './../_lib/testUtils.js';
-import {DialogWithoutEscape as Dialog} from './dialog.js';
+import {createStubComponent} from './../_lib/testUtils';
+import {DialogWithoutEscape as Dialog} from './dialog';
 import Portal from 'react-portal';
 
 describe('<Dialog/>', () => {

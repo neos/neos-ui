@@ -17,7 +17,7 @@ class BackendFusionView extends FusionView
 {
     public function __construct(array $options = [])
     {
-        parent::__construct($options);
         $this->setFusionPathPattern('resource://Neos.Neos.Ui/Private/Fusion/Backend');
+        parent::__construct($options);
     }
 }

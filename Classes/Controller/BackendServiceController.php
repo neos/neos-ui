@@ -14,6 +14,7 @@ namespace Neos\Neos\Ui\Controller;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Domain\Repository\WorkspaceRepository;
 use Neos\Eel\FlowQuery\FlowQuery;
+use Neos\EventSourcedNeosAdjustments\Ui\Fusion\Helper\NodeInfoHelper;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\Flow\Mvc\RequestInterface;
@@ -38,7 +39,6 @@ use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
 use Neos\Neos\Ui\Domain\Model\FeedbackCollection;
 use Neos\Neos\Ui\Service\NodePolicyService;
 use Neos\Neos\Ui\Domain\Service\NodeTreeBuilder;
-use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 use Neos\Neos\Ui\Fusion\Helper\WorkspaceHelper;
 
 class BackendServiceController extends ActionController
@@ -396,6 +396,7 @@ class BackendServiceController extends ActionController
             $flowQuery = call_user_func_array([$flowQuery, $operation['type']], $operation['payload']);
         }
 
+        // FIXME: wrong instance here!
         $nodeInfoHelper = new NodeInfoHelper();
         $result = [];
         switch ($finisher['type']) {

@@ -41,7 +41,7 @@
     "moment": "^2.14.1",
     "prop-types": "^15.5.10",
     "react": "^16.0.0",
-    "react-click-outside": "^2.3.1",
+    "react-click-outside": "^3.0.1",
     "react-close-on-escape": "^2.0.0",
     "react-collapse": "^2.4.1",
     "react-datetime": "^2.8.10",

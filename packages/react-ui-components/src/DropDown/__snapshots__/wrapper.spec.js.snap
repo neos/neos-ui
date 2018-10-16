@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<DropDownWrapper/> should render correctly. 1`] = `
-<WrappedStatelessDropDownWrapperWithoutClickOutsideBehavior
+<clickOutside(StatelessDropDownWrapperWithoutClickOutsideBehavior)
   isOpen={false}
   onClose={[Function]}
   onToggle={[Function]}
@@ -9,5 +9,5 @@ exports[`<DropDownWrapper/> should render correctly. 1`] = `
   theme={Object {}}
 >
   Foo children
-</WrappedStatelessDropDownWrapperWithoutClickOutsideBehavior>
+</clickOutside(StatelessDropDownWrapperWithoutClickOutsideBehavior)>
 `;

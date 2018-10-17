@@ -21,6 +21,10 @@
     line-height: var(--spacing-GoldenUnit);
     background: var(--colors-ContrastNeutral);
 
+    &:hover {
+        color: var(--colors-PrimaryBlue);
+    }
+
     &:focus{
         outline: 1px solid var(--colors-PrimaryBlue);
     }

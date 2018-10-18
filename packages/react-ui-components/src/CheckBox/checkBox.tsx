@@ -9,7 +9,7 @@ interface CheckBoxTheme {
     readonly 'checkbox__inputMirror--active': string;
 }
 
-interface CheckBoxProps {
+export interface CheckBoxProps {
     /**
      * This prop controls the visual active state of the CheckBox.
      */

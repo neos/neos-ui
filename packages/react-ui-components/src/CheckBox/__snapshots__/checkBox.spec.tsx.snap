@@ -2,16 +2,17 @@
 
 exports[`<CheckBox/> should render correctly. 1`] = `
 <div
-  className=""
+  className="checkboxClassName"
 >
   <input
     aria-checked={false}
     checked={false}
+    className="inputClassName"
     onChange={[Function]}
     type="checkbox"
   />
   <div
-    className=""
+    className="inputMirrorClassName"
   />
 </div>
 `;

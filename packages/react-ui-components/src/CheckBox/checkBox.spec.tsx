@@ -1,17 +1,20 @@
-import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import CheckBox from './checkBox';
+import React from 'react';
+
+import CheckBox, {CheckBoxProps} from './checkBox';
 
 describe('<CheckBox/>', () => {
-    let props;
-
-    beforeEach(() => {
-        props = {
-            isChecked: false,
-            theme: {}
-        };
-    });
+    const props: CheckBoxProps = {
+        isChecked: false,
+        theme: {
+            checkbox: 'checkboxClassName',
+            checkbox__disabled: 'disabledClassName',
+            checkbox__input: 'inputClassName',
+            checkbox__inputMirror: 'inputMirrorClassName',
+            'checkbox__inputMirror--active': 'inputMirrorActiveClassName',
+        }
+    };
 
     it('should render correctly.', () => {
         const wrapper = shallow(<CheckBox {...props}/>);
@@ -23,13 +26,6 @@ describe('<CheckBox/>', () => {
         const wrapper = shallow(<CheckBox {...props} className="fooClassName"/>);
 
         expect(wrapper.prop('className')).toContain('fooClassName');
-    });
-
-    it('should allow the propagation of additional props to the wrapper.', () => {
-        const wrapper = shallow(<CheckBox {...props} foo="bar"/>);
-        const input = wrapper.find('[type="checkbox"]');
-
-        expect(input.prop('foo')).toBe('bar');
     });
 
     it('should throw no errors if no "onChange" prop was passed when clicking on the hidden checkbox.', () => {
@@ -49,7 +45,7 @@ describe('<CheckBox/>', () => {
     });
 
     it('should set truthy aria and checked attribute when passing a truthy "isChecked" prop.', () => {
-        const wrapper = shallow(<CheckBox {...props} isChecked/>);
+        const wrapper = shallow(<CheckBox {...props} isChecked={true}/>);
         const input = wrapper.find('[type="checkbox"]');
 
         expect(input.prop('checked')).toBe(true);

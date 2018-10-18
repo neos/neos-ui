@@ -2,10 +2,8 @@
 
 exports[`<Icon/> should render correctly. 1`] = `
 <FontAwesomeIcon
-  _makeGetClassName={[Function]}
-  _makeValidateId={[Function]}
   border={false}
-  className="fooIconClassName"
+  className="iconClassName fooIconClassName"
   fixedWidth={false}
   flip={null}
   icon={
@@ -14,11 +12,9 @@ exports[`<Icon/> should render correctly. 1`] = `
       "fooIconClassName",
     ]
   }
-  iconMap={Object {}}
   inverse={false}
   listItem={false}
   mask={null}
-  onDeprecate={[Function]}
   pull={null}
   pulse={false}
   rotation={null}

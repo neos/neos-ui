@@ -7,7 +7,6 @@ import {themr} from '@friendsofreactjs/react-css-themr';
 import identifiers from '../identifiers';
 import Icon from './icon';
 
-
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import style from './style.css';
 

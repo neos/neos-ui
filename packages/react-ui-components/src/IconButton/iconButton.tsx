@@ -3,15 +3,16 @@ import mergeClassNames from 'classnames';
 import React, {PureComponent} from 'react';
 
 import {PickDefaultProps} from '../../types';
-import {ButtonHoverStyle, ButtonProps, ButtonSize, ButtonStyle} from '../Button/button';
-import {IconProps} from '../Icon/icon';
+import Button from '../Button';
+import {ButtonHoverStyle, ButtonSize, ButtonStyle} from '../Button/button';
+import Icon from '../Icon';
 
 interface IconButtonTheme {
     readonly 'iconButton': string;
     readonly 'iconButton--disabled': string;
 }
 
-interface IconButtonProps {
+export interface IconButtonProps {
     /**
      * The icon key which gets passed to the Icon Component.
      */
@@ -32,13 +33,6 @@ interface IconButtonProps {
      */
     readonly theme?: IconButtonTheme;
 
-    // TODO: This feels strange. Can we use the actual class here?
-    /**
-     * Static component dependencies which are injected from the outside (index.js)
-     */
-    readonly IconComponent: React.ComponentClass<IconProps>;
-    readonly ButtonComponent: React.ComponentClass<ButtonProps>;
-
     /**
      * Optional disabled flag
      */
@@ -51,7 +45,7 @@ interface IconButtonProps {
 
 type DefaultProps = PickDefaultProps<IconButtonProps, 'hoverStyle' | 'size' | 'style'>;
 
-const defaultProps: DefaultProps = {
+export const defaultProps: DefaultProps = {
     hoverStyle: 'brand',
     size: 'regular',
     style: 'transparent',
@@ -62,8 +56,6 @@ class IconButton extends PureComponent<IconButtonProps> {
 
     public render(): JSX.Element {
         const {
-            IconComponent,
-            ButtonComponent,
             className,
             theme,
             icon,
@@ -82,9 +74,9 @@ class IconButton extends PureComponent<IconButtonProps> {
         );
 
         return (
-            <ButtonComponent {...rest} size={size} className={finalClassName}>
-                <IconComponent icon={icon}/>
-            </ButtonComponent>
+            <Button {...rest} size={size} className={finalClassName}>
+                <Icon icon={icon}/>
+            </Button>
         );
     }
 }

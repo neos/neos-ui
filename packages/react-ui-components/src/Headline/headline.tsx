@@ -7,10 +7,10 @@ type HeadlineType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 
 interface HeadlineTheme {
     readonly 'heading': string;
-    readonly 'heading--h1': string;
+    readonly 'heading--h1': string; // TODO ?
 }
 
-interface HeadlineProps {
+export interface HeadlineProps {
     /**
      * The contents to be rendered.
      */
@@ -20,12 +20,6 @@ interface HeadlineProps {
      * The semantic tag type of the headline.
      */
     readonly type: HeadlineType;
-
-    /**
-     * Optional style identifier, this enables the possibility to diff the
-     * semantic value of the UI to the displayed style.
-     */
-    readonly style?: HeadlineType;
 
     /**
      * An optional `className` to attach to the wrapper.
@@ -40,10 +34,12 @@ interface HeadlineProps {
 
 type DefaultProps = PickDefaultProps<HeadlineProps, 'type'>;
 
+export const defaultProps: DefaultProps = {
+    type: 'h1',
+};
+
 class Headline extends PureComponent<HeadlineProps> {
-    public static readonly defaultProps: DefaultProps = {
-        type: 'h1',
-    };
+    public static readonly defaultProps = defaultProps;
 
     public render(): JSX.Element {
         const {
@@ -51,10 +47,13 @@ class Headline extends PureComponent<HeadlineProps> {
             className,
             children,
             theme,
-            style, // TODO: Discuss what this style prop should do.
             ...rest
         } = this.props;
-        const classNames = mergeClassNames(theme!.heading, theme!['heading--h1'], className);
+        const classNames = mergeClassNames(
+            theme!.heading,
+            theme!['heading--h1'],
+            className
+        );
 
         switch (type) {
             case 'h1':

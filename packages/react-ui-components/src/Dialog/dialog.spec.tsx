@@ -1,26 +1,31 @@
-import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import {createStubComponent} from './../_lib/testUtils';
-import {DialogWithoutEscape as Dialog} from './dialog';
+import React from 'react';
 import Portal from 'react-portal';
 
-describe('<Dialog/>', () => {
-    let props;
+import IconButton from '../IconButton';
+import {DialogProps, DialogWithoutEscape as Dialog} from './dialog';
 
-    beforeEach(() => {
-        props = {
-            isOpen: false,
-            theme: {
-                'dialog--wide': 'wideClassName',
-                'dialog--narrow': 'narrowClassName'
-            },
-            children: 'Foo children',
-            actions: ['Foo 1', 'Foo 2'],
-            onRequestClose: () => null,
-            IconButtonComponent: createStubComponent()
-        };
-    });
+describe('<Dialog/>', () => {
+    const props: DialogProps = {
+        actions: ['Foo 1', 'Foo 2'],
+        children: 'Foo children',
+        isOpen: false,
+        onRequestClose: () => null,
+        style: 'wide',
+        theme: {
+            'dialog': 'dialogClassName',
+            'dialog--narrow': 'narrowClassName',
+            'dialog--wide': 'wideClassName',
+            'dialog__actions': 'actionsClassName',
+            'dialog__body': 'bodyClassName',
+            'dialog__closeBtn': 'closeBtnClassName',
+            'dialog__contents': 'contentsClassName',
+            'dialog__contentsPosition': 'contentsPositionClassName',
+            'dialog__title': 'titleClassName',
+        },
+        title: 'Foo title',
+    };
 
     it('should render correctly.', () => {
         const wrapper = shallow(<Dialog {...props}/>);
@@ -36,7 +41,7 @@ describe('<Dialog/>', () => {
     });
 
     it('should pass a truthy "isOpened" tag to the "Portal" component if the "isOpen" prop is truthy.', () => {
-        const wrapper = shallow(<Dialog {...props} isOpen/>);
+        const wrapper = shallow(<Dialog {...props} isOpen={true}/>);
         const portal = wrapper.find(Portal);
 
         expect(portal.prop('isOpened')).toBe(true);
@@ -71,7 +76,7 @@ describe('<Dialog/>', () => {
         const onRequestClose = jest.fn();
         const wrapper = shallow(<Dialog {...props} onRequestClose={onRequestClose}/>);
         const portal = wrapper.find(Portal);
-        const btn = portal.find(props.IconButtonComponent);
+        const btn = portal.find(IconButton);
 
         btn.simulate('click');
 

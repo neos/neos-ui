@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Dialog/> should render correctly. 1`] = `
+<Portal
+  isOpened={false}
+  onClose={[Function]}
+  onOpen={[Function]}
+  onUpdate={[Function]}
+>
+  <section
+    className="dialogClassName wideClassName"
+    role="dialog"
+    tabIndex={0}
+  >
+    <div
+      className="contentsPositionClassName"
+    >
+      <div
+        className="contentsClassName"
+      >
+        <ThemedIconButton
+          className="closeBtnClassName"
+          composeTheme="deeply"
+          hoverStyle="darken"
+          icon="times"
+          mapThemrProps={[Function]}
+          onClick={[Function]}
+          size="regular"
+          style="brand"
+        />
+        <div
+          className="titleClassName"
+        >
+          Foo title
+        </div>
+        <div
+          className="bodyClassName dialog__body"
+        >
+          Foo children
+        </div>
+        <div
+          className="actionsClassName"
+        >
+          <span
+            key="0/.0"
+          >
+            Foo 1
+          </span>
+          <span
+            key="1/.1"
+          >
+            Foo 2
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+</Portal>
+`;

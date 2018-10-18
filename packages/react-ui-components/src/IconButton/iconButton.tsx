@@ -4,7 +4,7 @@ import React, {PureComponent} from 'react';
 
 import {PickDefaultProps} from '../../types';
 import Button from '../Button';
-import {ButtonHoverStyle, ButtonSize, ButtonStyle} from '../Button/button';
+import {ButtonHoverStyle, ButtonSize, ButtonStyle, HTMLButtonElementAttributesExceptStyle} from '../Button/button';
 import Icon from '../Icon';
 
 interface IconButtonTheme {
@@ -12,7 +12,7 @@ interface IconButtonTheme {
     readonly 'iconButton--disabled': string;
 }
 
-export interface IconButtonProps {
+export interface IconButtonProps extends HTMLButtonElementAttributesExceptStyle {
     /**
      * The icon key which gets passed to the Icon Component.
      */

@@ -13,6 +13,7 @@ interface DialogTheme {
     readonly 'dialog__body': string;
     readonly 'dialog__contentsPosition': string;
     readonly 'dialog__contents': string;
+    readonly 'dialog__backDrop': string;
     readonly 'dialog__title': string;
     readonly 'dialog__closeBtn': string;
     readonly 'dialog__actions': string;
@@ -97,9 +98,15 @@ export class DialogWithoutEscape extends PureComponent<DialogProps> {
             'dialog__body'
         );
 
+        const backDropClassName = mergeClassNames(
+            theme.dialog__backDrop,
+            'dialog__backDrop'
+        );
+
         return (
             <Portal isOpened={isOpen}>
                 <section {...rest} className={finalClassName} role="dialog" tabIndex={0}>
+                    <div className={backDropClassName} role="button" onClick={onRequestClose}/>
                     <div className={theme.dialog__contentsPosition}>
                         <div className={theme.dialog__contents}>
                             {onRequestClose && (
@@ -110,6 +117,7 @@ export class DialogWithoutEscape extends PureComponent<DialogProps> {
                                     size="regular"
                                     style="brand"
                                     hoverStyle="darken"
+                                    autoFocus={true}
                                 />
                             )}
                             <div className={theme.dialog__title}>

@@ -18,6 +18,7 @@ describe('<Dialog/>', () => {
             'dialog--narrow': 'narrowClassName',
             'dialog--wide': 'wideClassName',
             'dialog__actions': 'actionsClassName',
+            'dialog__backDrop': 'backDropClassName',
             'dialog__body': 'bodyClassName',
             'dialog__closeBtn': 'closeBtnClassName',
             'dialog__contents': 'contentsClassName',

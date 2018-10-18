@@ -13,12 +13,18 @@ exports[`<Dialog/> should render correctly. 1`] = `
     tabIndex={0}
   >
     <div
+      className="backDropClassName dialog__backDrop"
+      onClick={[Function]}
+      role="button"
+    />
+    <div
       className="contentsPositionClassName"
     >
       <div
         className="contentsClassName"
       >
         <ThemedIconButton
+          autoFocus={true}
           className="closeBtnClassName"
           composeTheme="deeply"
           hoverStyle="darken"

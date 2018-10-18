@@ -56,3 +56,9 @@
 .dialog__actions > * {
     margin-left: calc(var(--spacing-Full) / 2);
 }
+.dialog__backDrop {
+    composes: reset from './../reset.css';
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}

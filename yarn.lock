@@ -865,7 +865,7 @@
     "@types/node" "*"
     "@types/react" "*"
 
-"@types/react-portal@3":
+"@types/react-portal@3.0.6":
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/@types/react-portal/-/react-portal-3.0.6.tgz#79cd79448807f3486e1677c595d2ac65473c49d4"
   integrity sha512-2x/mx4EXgepEpZ2QUXkaraejnUfZJBLFVOCp4pFTH/rFNco4YwcRzhj3T2MiUqVO6pCllfbYGf8BsR7k43hJFg==
@@ -11074,7 +11074,7 @@ react-onclickoutside@^6.5.0:
   resolved "https://registry.yarnpkg.com/react-onclickoutside/-/react-onclickoutside-6.7.1.tgz#6a5b5b8b4eae6b776259712c89c8a2b36b17be93"
   integrity sha512-p84kBqGaMoa7VYT0vZ/aOYRfJB+gw34yjpda1Z5KeLflg70HipZOT+MXQenEhdkPAABuE2Astq4zEPdMqUQxcg==
 
-react-portal@^3.1.0:
+react-portal@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/react-portal/-/react-portal-3.2.0.tgz#4224e19b2b05d5cbe730a7ba0e34ec7585de0043"
   integrity sha512-avb1FreAZAVCvNNyS2dCpxZiPYPJnAasHYPxdVBTROgNFeI+KSb+OoMHNsC1GbDawESCriPwCX+qKua6WSPIFw==

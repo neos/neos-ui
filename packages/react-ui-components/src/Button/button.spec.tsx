@@ -1,27 +1,30 @@
-import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import Button from './button';
+import React from 'react';
+
+import Button, {ButtonProps, defaultProps} from './button';
 
 describe('<Button/>', () => {
-    let props;
-
-    beforeEach(() => {
-        props = {
-            theme: {
-                'btn--clean': 'cleanClassName',
-                'btn--brand': 'brandClassName',
-                'btn--cleanHover': 'cleanHoverClassName',
-                'btn--brandHover': 'brandHoverClassName'
-            },
-            className: 'foo className',
-            children: 'Foo children',
-            onClick: () => null,
-            style: 'clean',
-            hoverStyle: 'clean',
-            type: 'button'
-        };
-    });
+    const props: ButtonProps = {
+        ...defaultProps,
+        children: 'Foo children',
+        className: 'foo className',
+        hoverStyle: 'clean',
+        onClick: () => null,
+        style: 'clean',
+        theme: {
+            'btn': 'btnClassName',
+            'btn--brand': 'brandClassName',
+            'btn--brandActive': 'brandActiveClassName',
+            'btn--brandHover': 'brandHoverClassName',
+            'btn--clean': 'cleanClassName',
+            'btn--cleanHover': 'cleanHoverClassName',
+            'btn--darkenHover': 'darkenHoverClassName',
+            'btn--isPressed': 'isPressedClassName',
+            'btn--lighter': 'lighterClassName',
+            'btn--transparent': 'transparentClassName',
+        },
+    };
 
     it('should render correctly.', () => {
         const wrapper = shallow(<Button {...props}/>);
@@ -42,27 +45,27 @@ describe('<Button/>', () => {
     });
 
     it('should allow the propagation of additional props to the wrapper.', () => {
-        const wrapper = shallow(<Button {...props} foo="bar"/>);
+        const wrapper = shallow(<Button {...props} autoFocus={true}/>);
 
-        expect(wrapper.prop('foo')).toBe('bar');
+        expect(wrapper.prop('autoFocus')).toBe(true);
     });
 
     it('should always render the "brand" and "brandHover" theme classNames in case the "isActive" prop is truthy.', () => {
-        const wrapper = shallow(<Button {...props} isActive/>);
+        const wrapper = shallow(<Button {...props} isActive={true}/>);
 
-        expect(wrapper.hasClass(props.theme['btn--clean'])).toBeFalsy();
-        expect(wrapper.hasClass(props.theme['btn--cleanHover'])).toBeFalsy();
-        expect(wrapper.hasClass(props.theme['btn--brand'])).toBeTruthy();
-        expect(wrapper.hasClass(props.theme['btn--brandHover'])).toBeTruthy();
+        expect(wrapper.hasClass(props.theme!['btn--clean'])).toBeFalsy();
+        expect(wrapper.hasClass(props.theme!['btn--cleanHover'])).toBeFalsy();
+        expect(wrapper.hasClass(props.theme!['btn--brand'])).toBeTruthy();
+        expect(wrapper.hasClass(props.theme!['btn--brandHover'])).toBeTruthy();
     });
 
     it('should render the "style" and "hoverStyle" theme classNames in case the "isActive" prop is falsy.', () => {
         const wrapper = shallow(<Button {...props} isActive={false}/>);
 
-        expect(wrapper.hasClass(props.theme['btn--clean'])).toBeTruthy();
-        expect(wrapper.hasClass(props.theme['btn--cleanHover'])).toBeTruthy();
-        expect(wrapper.hasClass(props.theme['btn--brand'])).toBeFalsy();
-        expect(wrapper.hasClass(props.theme['btn--brandHover'])).toBeFalsy();
+        expect(wrapper.hasClass(props.theme!['btn--clean'])).toBeTruthy();
+        expect(wrapper.hasClass(props.theme!['btn--cleanHover'])).toBeTruthy();
+        expect(wrapper.hasClass(props.theme!['btn--brand'])).toBeFalsy();
+        expect(wrapper.hasClass(props.theme!['btn--brandHover'])).toBeFalsy();
     });
 
     it('should not render the disabled attribute when passing a falsy "isDisabled" prop.', () => {
@@ -72,7 +75,7 @@ describe('<Button/>', () => {
     });
 
     it('should render the disabled attribute when passing a truthy "isDisabled" prop.', () => {
-        const wrapper = shallow(<Button {...props} isActive/>);
+        const wrapper = shallow(<Button {...props} isActive={true}/>);
 
         expect(wrapper.html()).not.toContain('disabled=""');
     });

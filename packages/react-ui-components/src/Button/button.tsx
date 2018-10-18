@@ -97,7 +97,7 @@ type DefaultProps = PickDefaultProps<ButtonProps,
     'type'
 >;
 
-const defaultProps: DefaultProps = {
+export const defaultProps: DefaultProps = {
     _refHandler: makeFocusNode,
     hoverStyle: 'brand',
     isActive: false,

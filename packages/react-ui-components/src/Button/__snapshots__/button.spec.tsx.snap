@@ -2,7 +2,7 @@
 
 exports[`<Button/> should render correctly. 1`] = `
 <button
-  className="cleanClassName cleanHoverClassName foo className"
+  className="btnClassName cleanClassName cleanHoverClassName foo className"
   disabled={false}
   onClick={[Function]}
   role="button"

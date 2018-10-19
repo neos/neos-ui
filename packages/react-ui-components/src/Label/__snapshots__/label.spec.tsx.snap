@@ -2,7 +2,7 @@
 
 exports[`<Label/> should render correctly. 1`] = `
 <label
-  className=""
+  className="labelClassName"
   htmlFor="test for"
 />
 `;

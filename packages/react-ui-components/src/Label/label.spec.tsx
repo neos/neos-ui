@@ -1,17 +1,17 @@
-import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import Label from './label';
+import React from 'react';
+
+import Label, {LabelProps} from './label';
 
 describe('<Label/>', () => {
-    let props;
+    const props: LabelProps = {
+        htmlFor: 'test for',
+        theme: {
+            label: 'labelClassName'
+        }
 
-    beforeEach(() => {
-        props = {
-            theme: {},
-            htmlFor: 'test for'
-        };
-    });
+    };
 
     it('should render correctly.', () => {
         const wrapper = shallow(<Label {...props}/>); // eslint-disable-line jsx-a11y/label-has-for
@@ -26,8 +26,8 @@ describe('<Label/>', () => {
     });
 
     it('should allow the propagation of additional props to the wrapper.', () => {
-        const wrapper = shallow(<Label {...props} foo="bar"/>); // eslint-disable-line jsx-a11y/label-has-for
+        const wrapper = shallow(<Label {...props} title="foo"/>); // eslint-disable-line jsx-a11y/label-has-for
 
-        expect(wrapper.prop('foo')).toBe('bar');
+        expect(wrapper.prop('title')).toBe('foo');
     });
 });

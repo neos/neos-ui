@@ -2,7 +2,7 @@
 
 exports[`<ButtonGroup/> should render correctly. 1`] = `
 <div
-  className=""
+  className="buttonGroupClassName"
 >
   <ButtonGroupItem
     element={
@@ -14,7 +14,7 @@ exports[`<ButtonGroup/> should render correctly. 1`] = `
     }
     id="foo"
     isPressed={true}
-    key="0/.$foo"
+    key="0"
     onClick={[MockFunction]}
   >
     Foo button
@@ -29,7 +29,7 @@ exports[`<ButtonGroup/> should render correctly. 1`] = `
     }
     id="bar"
     isPressed={false}
-    key="1/.$bar"
+    key="1"
     onClick={[MockFunction]}
   >
     Bar button

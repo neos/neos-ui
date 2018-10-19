@@ -1,18 +1,15 @@
-import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import ButtonGroupItem from './buttonGroupItem';
+import React from 'react';
+
+import ButtonGroupItem, {ButtonGroupItemProps} from './buttonGroupItem';
 
 describe('<ButtonGroupItem/>', () => {
-    let props;
-
-    beforeEach(() => {
-        props = {
-            id: 'foo',
-            onClick: jest.fn(),
-            element: <div id="foo">Foo button</div>
-        };
-    });
+    const props: ButtonGroupItemProps = {
+        element: <div id="foo">Foo button</div>,
+        id: 'foo',
+        onClick: jest.fn(),
+    };
 
     it('should render correctly.', () => {
         const wrapper = shallow(<ButtonGroupItem {...props}/>);
@@ -27,8 +24,8 @@ describe('<ButtonGroupItem/>', () => {
     });
 
     it('should allow the propagation of additional props to the wrapper.', () => {
-        const wrapper = shallow(<ButtonGroupItem {...props} foo="bar"/>);
+        const wrapper = shallow(<ButtonGroupItem {...props} autoFocus={true}/>);
 
-        expect(wrapper.prop('foo')).toBe('bar');
+        expect(wrapper.prop('autoFocus')).toBe(true);
     });
 });

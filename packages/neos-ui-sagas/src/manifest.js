@@ -1,19 +1,21 @@
 import manifest from '@neos-project/neos-ui-extensibility';
 import {SynchronousRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
 
-import * as browser from './Sagas/Browser/index';
-import * as changes from './Sagas/Changes/index';
-import * as crContentDimensions from './Sagas/CR/ContentDimensions/index';
-import * as crNodeOperations from './Sagas/CR/NodeOperations/index';
-import * as crPolicies from './Sagas/CR/Policies/index';
-import * as publish from './Sagas/Publish/index';
-import * as serverFeedback from './Sagas/ServerFeedback/index';
-import * as uiContentCanvas from './Sagas/UI/ContentCanvas/index';
-import * as uiContentTree from './Sagas/UI/ContentTree/index';
-import * as uiEditPreviewMode from './Sagas/UI/EditPreviewMode/index';
-import * as uiInspector from './Sagas/UI/Inspector/index';
-import * as uiPageTree from './Sagas/UI/PageTree/index';
-import * as uiHotkeys from './Sagas/UI/Hotkeys/index';
+import {
+    browser,
+    changes,
+    crContentDimensions,
+    crNodeOperations,
+    crPolicies,
+    publish,
+    serverFeedback,
+    uiContentCanvas,
+    uiContentTree,
+    uiEditPreviewMode,
+    uiInspector,
+    uiPageTree,
+    uiHotkeys
+} from './index';
 
 manifest('main.sagas', {}, globalRegistry => {
     //

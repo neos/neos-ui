@@ -42,6 +42,7 @@ const globalRegistry = new SynchronousMetaRegistry(`The global registry`);
 createConsumerApi(manifests, apiExposureMap);
 require('./manifest');
 require('@neos-project/neos-ui-contentrepository');
+require('@neos-project/neos-ui-sagas/src/manifest');
 require('@neos-project/neos-ui-editors');
 require('@neos-project/neos-ui-views/src/manifest');
 require('@neos-project/neos-ui-guest-frame');

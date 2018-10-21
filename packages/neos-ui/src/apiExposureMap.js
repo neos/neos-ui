@@ -13,6 +13,7 @@ import * as reselect from 'reselect';
 import * as reactCssThemr from '@friendsofreactjs/react-css-themr';
 
 import ReactUiComponents from '@neos-project/react-ui-components';
+import * as NeosUiSagas from '@neos-project/neos-ui-sagas/src/index';
 import * as NeosUiReduxStore from '@neos-project/neos-ui-redux-store';
 import * as NeosUiDecorators from '@neos-project/neos-ui-decorators';
 import EditorEnvelope from '@neos-project/neos-ui-editors/src/EditorEnvelope/index';
@@ -99,6 +100,7 @@ export default {
         NeosUiEditors: EditorEnvelope,
         NeosUiI18n,
         NeosUiReduxStore,
+        NeosUiSagas,
         NeosUiViews,
         // react-proptypes (optional)
         ReactUiComponents,

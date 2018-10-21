@@ -70,6 +70,9 @@
             "@neos-project/neos-ui-redux-store" : ["neos-ui-redux-store/src/index"],
             "@neos-project/neos-ui-redux-store/*" : ["neos-ui-redux-store/*/index", "neos-ui-redux-store/*"],
 
+            "@neos-project/neos-ui-sagas" : ["neos-ui-sagas/src/index"],
+            "@neos-project/neos-ui-sagas/*" : ["neos-ui-sagas/*/index", "neos-ui-sagas/*"],
+
             "@neos-project/neos-ui-validators" : ["neos-ui-validators/src/index"],
             "@neos-project/neos-ui-validators/*" : ["neos-ui-validators/*/index", "neos-ui-validators/*"],
 

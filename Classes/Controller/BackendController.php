@@ -101,6 +101,12 @@ class BackendController extends ActionController
      */
     protected $styleAndJavascriptInclusionService;
 
+    /**
+     * @Flow\Inject
+     * @var NodeClipboardInterface
+     */
+    protected $clipboard;
+
     public function initializeView(ViewInterface $view)
     {
         $view->setFusionPath('backend');
@@ -131,6 +137,8 @@ class BackendController extends ActionController
         $this->view->assign('user', $user);
         $this->view->assign('documentNode', $node);
         $this->view->assign('site', $siteNode);
+        $this->view->assign('clipboardNode', $this->clipboard->getNodeContextPath());
+        $this->view->assign('clipboardMode', $this->clipboard->getMode());
         $this->view->assign('headScripts', $this->styleAndJavascriptInclusionService->getHeadScripts());
         $this->view->assign('headStylesheets', $this->styleAndJavascriptInclusionService->getHeadStylesheets());
         $this->view->assign('sitesForMenu', $this->menuHelper->buildSiteList($this->getControllerContext()));

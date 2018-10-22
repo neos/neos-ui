@@ -25,6 +25,9 @@ Neos:
         Neos.Neos.Ui: true
     Ui:
 
+      splashScreen:
+        partial: 'SplashScreen'
+
       # API: "start 100" and smaller numbers; "no numbers", ...
       resources:
 

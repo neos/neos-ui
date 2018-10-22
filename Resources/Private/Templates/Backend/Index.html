@@ -11,6 +11,7 @@
         <script>_NEOS_UI_routes = {routes -> f:format.raw()};</script>
 
         {headStylesheets -> f:format.raw()}
+        {headScripts -> f:format.raw()}
     </head>
     <body>
         <div id="appContainer" data-csrf-token="{f:security.csrfToken()}" data-first-tab="{documentNodeUri}" data-env="{env}">
@@ -48,6 +49,5 @@
                 </svg>
             </div>
         </div>
-        {headScripts -> f:format.raw()}
     </body>
 </html>

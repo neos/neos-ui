@@ -1,5 +1,5 @@
-const getVersion = () => {
-    return 'v1.4.0';
+const getVersion = () : string => {
+    return 'v1.3.4';
 };
 
 export default getVersion;

@@ -93,8 +93,8 @@ export default class LinkButton extends PureComponent {
                             options={$get('linking', inlineEditorOptions)}
                             linkValue={this.getLinkValue()}
                             linkTitleValue={this.getLinkTitleValue()}
-                            linkRelValue={this.getLinkRelValue()}
-                            linkTargetValue={this.getLinkTargetValue()}
+                            linkRelNofollowValue={this.getLinkRelValue()}
+                            linkTargetBlankValue={this.getLinkTargetValue()}
                             onLinkChange={this.handleLinkChange}
                             onLinkTitleChange={this.handleLinkTitleChange}
                             onLinkRelChange={this.handleLinkRelChange}
@@ -120,10 +120,10 @@ export default class LinkButton extends PureComponent {
     }
 
     getLinkRelValue() {
-        return $get('linkRel', this.props.formattingUnderCursor) || '';
+        return $get('linkRelNofollow', this.props.formattingUnderCursor) || false;
     }
 
     getLinkTargetValue() {
-        return $get('linkTarget', this.props.formattingUnderCursor) || '';
+        return $get('linkTargetBlank', this.props.formattingUnderCursor) || false;
     }
 }

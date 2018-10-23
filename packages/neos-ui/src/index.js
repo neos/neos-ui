@@ -50,6 +50,7 @@ require('@neos-project/neos-ui-ckeditor-bindings');
 require('@neos-project/neos-ui-ckeditor5-bindings');
 require('@neos-project/neos-ui-validators');
 require('@neos-project/neos-ui-i18n/src/manifest');
+require('@neos-project/neos-ui-sagas/src/manifest');
 
 //
 // The main application

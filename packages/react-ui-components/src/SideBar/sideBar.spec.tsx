@@ -1,18 +1,19 @@
-import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import SideBar from './sideBar';
+import React from 'react';
+
+import SideBar, {SideBarProps} from './sideBar';
 
 describe('<SideBar/>', () => {
-    let props;
-
-    beforeEach(() => {
-        props = {
-            position: 'left',
-            children: 'Foo children',
-            theme: {}
-        };
-    });
+    const props: SideBarProps = {
+        children: 'Foo children',
+        position: 'left',
+        theme: {
+            'sideBar': 'sideBarClassName',
+            'sideBar--left': 'leftClassName',
+            'sideBar--right': 'rightClassName',
+        }
+    };
 
     it('should render correctly.', () => {
         const wrapper = shallow(<SideBar {...props}/>);
@@ -24,11 +25,5 @@ describe('<SideBar/>', () => {
         const wrapper = shallow(<SideBar {...props} className="fooClassName"/>);
 
         expect(wrapper.prop('className')).toContain('fooClassName');
-    });
-
-    it('should allow the propagation of additional props to the wrapper.', () => {
-        const wrapper = shallow(<SideBar {...props} foo="bar"/>);
-
-        expect(wrapper.prop('foo')).toBe('bar');
     });
 });

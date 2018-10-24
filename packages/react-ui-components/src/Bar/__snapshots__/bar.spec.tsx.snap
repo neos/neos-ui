@@ -2,7 +2,7 @@
 
 exports[`<Bar/> should render correctly. 1`] = `
 <div
-  className=""
+  className="barClassName topClassName"
 >
   Foo children
 </div>

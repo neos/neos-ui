@@ -5,26 +5,41 @@ exports[`<IconButtonDropDown/> should render correctly. 1`] = `
   className="baseWrapperClassName"
   onMouseLeave={[Function]}
 >
-  <Component
+  <ThemedButton
+    _refHandler={[Function]}
     aria-haspopup="true"
     className="baseBtnClassName"
+    composeTheme="deeply"
     hoverStyle="clean"
+    isActive={false}
     isDisabled={false}
+    isFocused={false}
+    mapThemrProps={[Function]}
     onClick={[Function]}
     onFocus={[Function]}
     onMouseDown={[Function]}
     onMouseEnter={[Function]}
     size="regular"
     style="clean"
+    type="button"
   >
-    <Component
-      className="baseBtnIconClassName"
+    <ThemedIcon
+      className="baseBtnModeIconClassName"
+      color="default"
+      composeTheme="deeply"
       icon="fooModeIcon"
+      mapThemrProps={[Function]}
+      padded="none"
     />
-    <Component
+    <ThemedIcon
+      className="baseBtnIconClassName"
+      color="default"
+      composeTheme="deeply"
       icon="barGeneralIcon"
+      mapThemrProps={[Function]}
+      padded="none"
     />
-  </Component>
+  </ThemedButton>
   <div
     aria-hidden="true"
     className="baseDropDownClassName"
@@ -37,7 +52,6 @@ exports[`<IconButtonDropDown/> should render correctly. 1`] = `
     >
       <div
         dropDownId="foo1"
-        style={Object {}}
       />
     </DropDownItem>
     <DropDownItem
@@ -48,7 +62,6 @@ exports[`<IconButtonDropDown/> should render correctly. 1`] = `
     >
       <div
         dropDownId="foo2"
-        style={Object {}}
       />
     </DropDownItem>
   </div>

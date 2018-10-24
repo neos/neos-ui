@@ -2,6 +2,7 @@
 
 exports[`<DropDownItem/> should render correctly. 1`] = `
 <a
+  className="fooClassName"
   id="fooId"
   onClick={[Function]}
   role="button"

@@ -4,14 +4,10 @@ import {far} from '@fortawesome/free-regular-svg-icons';
 import {fas} from '@fortawesome/free-solid-svg-icons';
 import {themr} from '@friendsofreactjs/react-css-themr';
 
+import '@fortawesome/fontawesome-svg-core/styles.css';
 import identifiers from '../identifiers';
 import Icon from './icon';
-
-
-// tslint:disable:no-var-requires
-const style = require('./style.css');
-require('@fortawesome/fontawesome-svg-core/styles.css');
-// tslint:enable:no-var-requires
+import style from './style.css';
 
 // tslint:disable:no-object-mutation
 config.autoAddCss = false;

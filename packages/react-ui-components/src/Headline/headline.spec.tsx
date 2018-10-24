@@ -10,7 +10,6 @@ describe('<Headline/>', () => {
         children: 'Foo children',
         theme: {
             'heading': 'headingClassName',
-            'heading--h1': 'h1ClassName',
         }
     };
 

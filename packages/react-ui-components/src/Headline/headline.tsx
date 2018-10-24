@@ -7,7 +7,6 @@ type HeadlineType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 
 interface HeadlineTheme {
     readonly 'heading': string;
-    readonly 'heading--h1': string; // TODO ?
 }
 
 export interface HeadlineProps {
@@ -51,7 +50,6 @@ class Headline extends PureComponent<HeadlineProps> {
         } = this.props;
         const classNames = mergeClassNames(
             theme!.heading,
-            theme!['heading--h1'],
             className
         );
 

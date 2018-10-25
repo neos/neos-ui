@@ -110,7 +110,10 @@ export default class AssetEditor extends PureComponent {
                 .then(searchOptions => {
                     this.setState({
                         isLoading: false,
-                        searchOptions
+                        searchOptions: searchOptions.map(result => {
+                            result.group = result.assetSourceLabel;
+                            return result;
+                        })
                     });
                 });
         } else {

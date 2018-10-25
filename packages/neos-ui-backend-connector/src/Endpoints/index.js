@@ -187,6 +187,7 @@ export default routes => {
             assetProxyTable.innerHTML = result;
             const mappedAssetProxies = Array.prototype.map.call(assetProxyTable.querySelectorAll('.asset-proxy'), assetProxy => {
                 const assetSourceIdentifier = assetProxy.querySelector('.asset-source-identifier').innerText;
+                const assetSourceLabel = assetProxy.querySelector('.asset-source-label').innerText;
                 const assetProxyIdentifier = assetProxy.querySelector('.asset-proxy-identifier').innerText;
                 return {
                     dataType: 'Neos.Media:Asset',
@@ -195,6 +196,7 @@ export default routes => {
                     preview: assetProxy.querySelector('[rel=thumbnail]').getAttribute('href'),
                     identifier: assetProxy.querySelector('.local-asset-identifier').innerText || (assetSourceIdentifier + '/' + assetProxyIdentifier),
                     assetSourceIdentifier,
+                    assetSourceLabel,
                     assetProxyIdentifier
                 };
             });
@@ -222,6 +224,7 @@ export default routes => {
                 identifier: assetProxy.querySelector('.local-asset-identifier').innerText,
                 localAssetIdentifier: assetProxy.querySelector('.local-asset-identifier').innerText,
                 assetSourceIdentifier: assetProxy.querySelector('.asset-source-identifier').innerText,
+                assetSourceLabel: assetProxy.querySelector('.asset-source-label').innerText,
                 assetProxyIdentifier: assetProxy.querySelector('.asset-proxy-identifier').innerText
             };
         });

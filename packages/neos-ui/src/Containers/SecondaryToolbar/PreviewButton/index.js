@@ -12,23 +12,35 @@ import {neos} from '@neos-project/neos-ui-decorators';
 }))
 
 @connect($transform({
-    previewUrl: $get('ui.contentCanvas.previewUrl')
+    previewUrl: $get('ui.contentCanvas.previewUrl'),
+    focusedDocumentNodeContextPath: $get('ui.pageTree.isFocused'),
+    nodes: $get('cr.nodes.byContextPath')
 }))
 export default class PreviewButton extends PureComponent {
     static propTypes = {
         previewUrl: PropTypes.string,
+        focusedDocumentNodeContextPath: PropTypes.string,
+        nodes: PropTypes.object,
         i18nRegistry: PropTypes.object.isRequired
     };
 
     render() {
-        const {previewUrl, i18nRegistry} = this.props;
+        const {previewUrl, i18nRegistry, focusedDocumentNodeContextPath, nodes} = this.props;
+
+        const isCurrentDocumentNodeHidden = nodes.reduce((isHidden, currentNode) => {
+            if ($get('contextPath', currentNode) === focusedDocumentNodeContextPath) {
+                return isHidden || $get('properties._hidden', currentNode);
+            }
+
+            return isHidden;
+        }, false);
 
         const previewButtonClassNames = mergeClassNames({
             [style.secondaryToolbar__buttonLink]: true,
             [style['secondaryToolbar__buttonLink--isDisabled']]: !previewUrl
         });
 
-        if (previewUrl) {
+        if (previewUrl && !isCurrentDocumentNodeHidden) {
             return (
                 <a
                     id="neos-PreviewButton"

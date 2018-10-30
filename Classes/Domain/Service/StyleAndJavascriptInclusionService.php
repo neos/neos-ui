@@ -55,15 +55,15 @@ class StyleAndJavascriptInclusionService
 
     public function getHeadScripts()
     {
-        return $this->build($this->javascriptResources, function ($uri) {
-            return '<script src="' . $uri . '"></script>';
+        return $this->build($this->javascriptResources, function ($uri, $defer) {
+            return '<script src="' . $uri . '" ' . $defer . '></script>';
         });
     }
 
     public function getHeadStylesheets()
     {
-        return $this->build($this->stylesheetResources, function ($uri) {
-            return '<link rel="stylesheet" href="' . $uri . '" />';
+        return $this->build($this->stylesheetResources, function ($uri, $defer) {
+            return '<link rel="stylesheet" href="' . $uri . '" ' . $defer . '/>';
         });
     }
 
@@ -86,7 +86,8 @@ class StyleAndJavascriptInclusionService
                 $resourceExpression = $this->resourceManager->getPublicPackageResourceUriByPath($resourceExpression);
             }
             $finalUri = $hash ? $resourceExpression . '?' . $hash : $resourceExpression;
-            $result .= $builderForLine($finalUri);
+            $defer = key_exists('defer', $element) && $element['defer'] ? 'defer ' : '';
+            $result .= $builderForLine($finalUri, $defer);
         }
 
         return $result;

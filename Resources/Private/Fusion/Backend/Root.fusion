@@ -9,6 +9,7 @@ backend = Neos.Fusion:Template {
 
     headScripts = ${headScripts}
     headStylesheets = ${headStylesheets}
+    splashScreenPartial = ${splashScreenPartial}
 
     configuration = Neos.Fusion:RawArray {
         nodeTree = ${Configuration.setting('Neos.Neos.userInterface.navigateComponent.nodeTree')}

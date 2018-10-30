@@ -141,6 +141,7 @@ class BackendController extends ActionController
         $this->view->assign('clipboardMode', $this->clipboard->getMode());
         $this->view->assign('headScripts', $this->styleAndJavascriptInclusionService->getHeadScripts());
         $this->view->assign('headStylesheets', $this->styleAndJavascriptInclusionService->getHeadStylesheets());
+        $this->view->assign('splashScreenPartial', $this->settings['splashScreen']['partial']);
         $this->view->assign('sitesForMenu', $this->menuHelper->buildSiteList($this->getControllerContext()));
 
         $this->view->assign('interfaceLanguage', $this->userService->getInterfaceLanguage());

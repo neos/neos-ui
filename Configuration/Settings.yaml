@@ -25,6 +25,9 @@ Neos:
         Neos.Neos.Ui: true
     Ui:
 
+      splashScreen:
+        partial: 'SplashScreen'
+
       # API: "start 100" and smaller numbers; "no numbers", ...
       resources:
 
@@ -32,9 +35,11 @@ Neos:
           'Neos.Neos.UI:Vendor':
             resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/JavaScript/Vendor.js"}'
             position: 'start 1000'
+            defer: true
           'Neos.Neos.UI:Host':
             resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/JavaScript/Host.js"}'
             position: 'start 900'
+            defer: true
 
         stylesheets:
           'Neos.Neos.UI:Host':

@@ -138,8 +138,8 @@ export function * watchSearch({configuration}) {
             } else {
                 const clipboardNodeContextPath = yield select($get('cr.nodes.clipboard'));
                 const toggledNodes = yield select($get('ui.pageTree.toggled'));
-                const documentNodeContextPath = yield $get('payload.documentNodeContextPath', action) || select($get('ui.contentCanvas.contextPath'));
-                
+                const documentNodeContextPath = yield select($get('ui.contentCanvas.contextPath'));
+
                 matchingNodes = yield q([contextPath, documentNodeContextPath]).neosUiDefaultNodes(
                     configuration.nodeTree.presets.default.baseNodeType,
                     configuration.nodeTree.loadingDepth,

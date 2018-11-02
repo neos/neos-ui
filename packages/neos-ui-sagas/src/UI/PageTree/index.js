@@ -132,7 +132,21 @@ export function * watchSearch({configuration}) {
         try {
             const {q} = backend.get();
             const query = q(contextPath);
-            matchingNodes = yield query.search(searchQuery, effectiveFilterNodeType).getForTreeWithParents();
+
+            if (filterNodeType || searchQuery) {
+                matchingNodes = yield query.search(searchQuery, effectiveFilterNodeType).getForTreeWithParents();
+            } else {
+                const clipboardNodeContextPath = yield select($get('cr.nodes.clipboard'));
+                const toggledNodes = yield select($get('ui.pageTree.toggled'));
+                const documentNodeContextPath = yield $get('payload.documentNodeContextPath', action) || select($get('ui.contentCanvas.contextPath'));
+                
+                matchingNodes = yield q([contextPath, documentNodeContextPath]).neosUiDefaultNodes(
+                    configuration.nodeTree.presets.default.baseNodeType,
+                    configuration.nodeTree.loadingDepth,
+                    toggledNodes.toJS(),
+                    clipboardNodeContextPath
+                ).getForTree();
+            }
         } catch (err) {
             console.error('Error while executing a tree search: ', err);
             yield put(actions.UI.PageTree.invalidate(contextPath));

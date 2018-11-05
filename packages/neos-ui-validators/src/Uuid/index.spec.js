@@ -24,6 +24,8 @@ test('123 should not be a valid uuid', () => {
     expect(uuidValidator('123')).not.toBe(null);
 });
 
-test('empty value should be valid', () => {
+test('emptyish should pass', () => {
+    expect(uuidValidator(null)).toBe(null);
+    expect(uuidValidator(undefined)).toBe(null);
     expect(uuidValidator('')).toBe(null);
 });

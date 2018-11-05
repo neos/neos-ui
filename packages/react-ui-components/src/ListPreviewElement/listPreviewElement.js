@@ -80,6 +80,7 @@ class ListPreviewElement extends PureComponent {
                 onMouseEnter={disabled ? noop : onMouseEnter}
                 onClick={disabled ? noop : onClick}
                 className={optionClassName}
+                role="button"
                 >
                 {Boolean(icon) && <Icon className={theme.listPreviewElement__icon} icon={icon}/>}
                 {children}

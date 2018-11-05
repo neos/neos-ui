@@ -1,8 +1,8 @@
 import React from 'react';
 import {storiesOf} from '@storybook/react';
 import {withKnobs} from '@storybook/addon-knobs';
-import {StoryWrapper} from './../_lib/storyUtils.js';
-import Tabs from './index.js';
+import {StoryWrapper} from './../_lib/storyUtils';
+import Tabs from '.';
 
 storiesOf('Tabs', module)
     .addDecorator(withKnobs)

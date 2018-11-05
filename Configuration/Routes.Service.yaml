@@ -31,6 +31,30 @@
   httpMethods: ['POST']
 
 -
+  name: 'Copy node to clipboard'
+  uriPattern: 'copy-node'
+  defaults:
+    '@controller': 'BackendService'
+    '@action': 'copyNode'
+  httpMethods: ['POST']
+
+-
+  name: 'Cut node to clipboard'
+  uriPattern: 'cut-node'
+  defaults:
+    '@controller': 'BackendService'
+    '@action': 'cutNode'
+  httpMethods: ['POST']
+
+-
+  name: 'Clear clipboard'
+  uriPattern: 'clear-clipboard'
+  defaults:
+    '@controller': 'BackendService'
+    '@action': 'clearClipboard'
+  httpMethods: ['POST']
+
+-
   name: 'Load Tree'
   uriPattern: 'load-tree'
   defaults:

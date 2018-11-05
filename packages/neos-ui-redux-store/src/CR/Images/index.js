@@ -1,4 +1,4 @@
-import Immutable, {Map} from 'immutable';
+import {Map} from 'immutable';
 import {createAction} from 'redux-actions';
 import {$set, $all} from 'plow-js';
 
@@ -6,6 +6,7 @@ import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from '../../System/index';
 
 import * as selectors from './selectors';
+import {fromJSOrdered} from '@neos-project/utils-helpers';
 
 const START_LOADING = '@neos/neos-ui/CR/Images/START_LOADING';
 const FINISH_LOADING = '@neos/neos-ui/CR/Images/FINISH_LOADING';
@@ -51,7 +52,7 @@ export const reducer = handleActions({
     ),
     [START_LOADING]: ({imageUuid}) => $set(['cr', 'images', 'byUuid', imageUuid, 'status'], 'LOADING'),
     [FINISH_LOADING]: ({imageUuid, loadedData}) => $all(
-        $set(['cr', 'images', 'byUuid', imageUuid], Immutable.fromJS(loadedData)),
+        $set(['cr', 'images', 'byUuid', imageUuid], fromJSOrdered(loadedData)),
         $set(['cr', 'images', 'byUuid', imageUuid, 'status'], 'LOADED')
     )
 });

@@ -1,6 +1,6 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import {StoryWrapper} from './storyUtils.js';
+import {StoryWrapper} from './storyUtils';
 
 describe('<StoryWrapper/>', () => {
     it('should be a React element.', () => {

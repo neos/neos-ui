@@ -11,11 +11,17 @@
     width: 100%;
     text-align: center;
 }
-.discardButton,
-.discardButton:hover {
+.discardButton {
     background: var(--colors-Warn) !important;
+
+    &:hover {
+        background: var(--colors-WarnHover) !important;
+    }
 }
-.publishButton,
-.publishButton:hover {
+.publishButton {
     background: var(--colors-Success) !important;
+
+    &:hover {
+        background: var(--colors-SuccessHover) !important;
+    }
 }

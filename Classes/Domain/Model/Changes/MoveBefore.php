@@ -44,7 +44,8 @@ class MoveBefore extends AbstractMove
             $before = self::cloneNodeWithNodeData($this->getSubject());
             $parent = $before->getParent();
 
-            $this->getSubject()->moveBefore($this->getSiblingNode());
+            $nodeName = $this->generateUniqueNodeName($this->getSiblingNode()->getParent());
+            $this->getSubject()->moveBefore($this->getSiblingNode(), $nodeName);
 
             $updateParentNodeInfo = new UpdateNodeInfo();
             $updateParentNodeInfo->setNode($parent);

@@ -207,7 +207,7 @@ export default class ImageEditor extends Component {
         const {secondaryEditorsRegistry} = this.props;
         const {component: MediaSelectionScreen} = secondaryEditorsRegistry.get('Neos.Neos/Inspector/Secondary/Editors/MediaSelectionScreen');
 
-        this.props.renderSecondaryInspector('IMAGE_SELECT_MEDIA', () => <MediaSelectionScreen onComplete={this.handleMediaSelected}/>);
+        this.props.renderSecondaryInspector('IMAGE_SELECT_MEDIA', () => <MediaSelectionScreen type="images" onComplete={this.handleMediaSelected}/>);
     }
 
     handleOpenImageCropper = () => {

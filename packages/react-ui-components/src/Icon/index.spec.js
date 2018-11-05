@@ -1,4 +1,4 @@
-import Icon from './index.js';
+import Icon from '.';
 
 describe('<Icon/> (entry point)', () => {
     it('should export a Component.', () => {

@@ -13,6 +13,10 @@
     border: 0;
     background-color: var(--colors-ContrastDarker);
     text-align: right;
+
+    &:hover {
+        color: var(--colors-PrimaryBlue);
+    }
 }
 .dropDown__btnIcon {
     margin-right: .5em;

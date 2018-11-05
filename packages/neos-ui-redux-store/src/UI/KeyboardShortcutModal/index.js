@@ -1,9 +1,9 @@
 import {createAction} from 'redux-actions';
-import Immutable from 'immutable';
 import {$get, $set} from 'plow-js';
 
 import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from '../../System/index';
+import {fromJSOrdered} from '@neos-project/utils-helpers';
 
 const OPEN = '@neos/neos-ui/UI/KeyboardShortcutModal/OPEN';
 const CLOSE = '@neos/neos-ui/UI/KeyboardShortcutModal/CLOSE';
@@ -40,7 +40,7 @@ export const actions = {
 export const reducer = handleActions({
     [system.INIT]: payload => $set(
         'ui.keyboardShortcutModal',
-        Immutable.fromJS($get('ui.keyboardShortcutModal', payload) ? $get('ui.keyboardShortcutModal', payload) : {isOpen: false})
+        fromJSOrdered($get('ui.keyboardShortcutModal', payload) ? $get('ui.keyboardShortcutModal', payload) : {isOpen: false})
     ),
     [OPEN]: () => $set('ui.keyboardShortcutModal.isOpen', true),
     [CLOSE]: () => $set('ui.keyboardShortcutModal.isOpen', false)

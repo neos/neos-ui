@@ -27,3 +27,9 @@ test('["123", "abc"] should not be a valid string', () => {
 test('{} should not be a valid string', () => {
     expect(stringValidator({})).not.toBe(null);
 });
+
+test('emptyish should pass', () => {
+    expect(stringValidator(null)).toBe(null);
+    expect(stringValidator(undefined)).toBe(null);
+    expect(stringValidator('')).toBe(null);
+});

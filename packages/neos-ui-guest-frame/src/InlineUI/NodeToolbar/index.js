@@ -63,10 +63,14 @@ export default class NodeToolbar extends PureComponent {
         }
     };
 
+    debouncedSticky = debounce(this.updateStickyness, 5);
+
+    debouncedUpdate = debounce(() => this.forceUpdate(), 5);
+
     componentDidMount() {
-        this.iframeWindow.addEventListener('resize', debounce(() => this.forceUpdate(), 20));
-        this.iframeWindow.addEventListener('scroll', debounce(this.updateStickyness, 5));
-        this.iframeWindow.addEventListener('load', debounce(() => this.forceUpdate(), 5));
+        this.iframeWindow.addEventListener('resize', this.debouncedUpdate);
+        this.iframeWindow.addEventListener('scroll', this.debouncedSticky);
+        this.iframeWindow.addEventListener('load', this.debouncedUpdate);
 
         this.scrollIntoView();
         this.updateStickyness();
@@ -75,6 +79,20 @@ export default class NodeToolbar extends PureComponent {
     componentDidUpdate() {
         this.scrollIntoView();
         this.updateStickyness();
+    }
+
+    componentWillUnmount() {
+        this.iframeWindow.removeEventListener('resize', this.debouncedUpdate);
+        this.iframeWindow.removeEventListener('scroll', this.debouncedSticky);
+        this.iframeWindow.removeEventListener('load', this.debouncedUpdate);
+
+        if (this.debouncedUpdate && this.debouncedUpdate.cancel) {
+            this.debouncedUpdate.cancel();
+        }
+
+        if (this.debouncedSticky && this.debouncedSticky.cancel) {
+            this.debouncedSticky.cancel();
+        }
     }
 
     scrollIntoView() {
@@ -117,6 +135,12 @@ export default class NodeToolbar extends PureComponent {
         };
 
         const nodeElement = findNodeInGuestFrame(contextPath, fusionPath);
+
+        // Check if nodeElement exists before accessing its props
+        if (!nodeElement) {
+            return null;
+        }
+
         const {top, right} = getAbsolutePositionOfElementInGuestFrame(nodeElement);
 
         // TODO: hardcoded dimensions

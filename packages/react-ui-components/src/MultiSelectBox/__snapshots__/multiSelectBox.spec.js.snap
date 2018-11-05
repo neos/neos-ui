@@ -1,9 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<MultiSelectBox/> should render correctly. 1`] = `
-<div>
+<div
+  className="undefined"
+>
   <ul
-    className=""
+    className="undefined"
   >
     <Component
       IconButtonComponent={[Function]}
@@ -13,8 +15,8 @@ exports[`<MultiSelectBox/> should render correctly. 1`] = `
       SelectBox={[Function]}
       allowEmpty={true}
       dndType="multiselect-box-value"
-      onCreateNew={[Function]}
-      onValuesChange={[Function]}
+      onCreateNew={[MockFunction]}
+      onValuesChange={[MockFunction]}
       optionValueAccessor={[Function]}
       optionValueField="value"
       values={Array []}
@@ -28,10 +30,9 @@ exports[`<MultiSelectBox/> should render correctly. 1`] = `
     SelectBox={[Function]}
     allowEmpty={true}
     dndType="multiselect-box-value"
-    highlight={false}
-    onCreateNew={[Function]}
+    onCreateNew={[MockFunction]}
     onValueChange={[Function]}
-    onValuesChange={[Function]}
+    onValuesChange={[MockFunction]}
     optionValueField="value"
     options={Array []}
     value=""

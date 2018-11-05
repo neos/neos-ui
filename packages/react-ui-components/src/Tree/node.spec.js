@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import TreeNode from './node.js';
+import TreeNode from './node';
 
 describe('<TreeNode/>', () => {
     let props;

@@ -9,11 +9,16 @@ import style from './style.css';
 class MediaSelectionScreen extends PureComponent {
     static propTypes = {
         onComplete: PropTypes.func.isRequired,
-        neos: PropTypes.object.isRequired
+        neos: PropTypes.object.isRequired,
+        type: PropTypes.oneOf(['assets', 'images']).isRequired
+    };
+
+    static defaultProps = {
+        type: 'assets'
     };
 
     render() {
-        const {onComplete, neos} = this.props;
+        const {onComplete, neos, type} = this.props;
         window.NeosMediaBrowserCallbacks = {
             assetChosen: assetIdentifier => {
                 onComplete(assetIdentifier);
@@ -22,9 +27,8 @@ class MediaSelectionScreen extends PureComponent {
 
         const mediaBrowserUri = $get('routes.core.modules.mediaBrowser', neos);
 
-        // TODO: hard-coded url
         return (
-            <iframe src={mediaBrowserUri + '/assets.html'} className={style.iframe}/>
+            <iframe src={`${mediaBrowserUri}/${type}.html`} className={style.iframe}/>
         );
     }
 }

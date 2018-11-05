@@ -22,12 +22,19 @@ use Neos\Neos\Service\LinkingService;
 use Neos\Neos\Service\Mapping\NodePropertyConverterService;
 use Neos\Neos\TypeConverter\EntityToIdentityConverter;
 use Neos\Neos\Ui\Domain\Service\UserLocaleService;
+use Neos\Neos\Ui\Service\NodePolicyService;
 
 /**
  * @Flow\Scope("singleton")
  */
 class NodeInfoHelper implements ProtectedContextAwareInterface
 {
+    /**
+     * @Flow\Inject
+     * @var NodePolicyService
+     */
+    protected $nodePolicyService;
+
     /**
      * @Flow\Inject
      * @var UserLocaleService
@@ -102,10 +109,13 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
      * @param NodeInterface $node
      * @param ControllerContext|null $controllerContext
      * @param string $nodeTypeFilterOverride
-     * @return array
+     * @return array|null
      */
-    public function renderNodeWithMinimalPropertiesAndChildrenInformation(NodeInterface $node, ControllerContext $controllerContext = null, string $nodeTypeFilterOverride = null): array
+    public function renderNodeWithMinimalPropertiesAndChildrenInformation(NodeInterface $node, ControllerContext $controllerContext = null, string $nodeTypeFilterOverride = null)
     {
+        if (!$this->nodePolicyService->isNodeTreePrivilegeGranted($node)) {
+            return null;
+        }
         $this->userLocaleService->switchToUILocale();
 
         $nodeInfo = $this->getBasicNodeInformation($node);
@@ -135,10 +145,14 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
      * @param NodeInterface $node
      * @param ControllerContext|null $controllerContext
      * @param string $nodeTypeFilterOverride
-     * @return array
+     * @return array|null
      */
-    public function renderNodeWithPropertiesAndChildrenInformation(NodeInterface $node, ControllerContext $controllerContext = null, string $nodeTypeFilterOverride = null): array
+    public function renderNodeWithPropertiesAndChildrenInformation(NodeInterface $node, ControllerContext $controllerContext = null, string $nodeTypeFilterOverride = null)
     {
+        if (!$this->nodePolicyService->isNodeTreePrivilegeGranted($node)) {
+            return null;
+        }
+
         $this->userLocaleService->switchToUILocale();
 
         $nodeInfo = $this->getBasicNodeInformation($node);
@@ -239,7 +253,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             return $this->$methodName($node, $controllerContext);
         };
 
-        return array_map($mapper, $nodes);
+        return array_values(array_filter(array_map($mapper, $nodes)));
     }
 
     /**
@@ -281,8 +295,10 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
                     $renderedNodes[$parentNode->getPath()]['intermediate'] = true;
                 } else {
                     $renderedParentNode = $this->renderNodeWithMinimalPropertiesAndChildrenInformation($parentNode, $controllerContext, $baseNodeTypeOverride);
-                    $renderedParentNode['intermediate'] = true;
-                    $renderedNodes[$parentNode->getPath()] = $renderedParentNode;
+                    if ($renderedParentNode) {
+                        $renderedParentNode['intermediate'] = true;
+                        $renderedNodes[$parentNode->getPath()] = $renderedParentNode;
+                    }
                 }
                 $parentNode = $parentNode->getParent();
                 if ($parentNode === null) {

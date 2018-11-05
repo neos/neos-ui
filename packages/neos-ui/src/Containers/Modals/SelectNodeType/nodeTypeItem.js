@@ -25,7 +25,8 @@ class NodeTypeItem extends PureComponent {
         nodeType: PropTypes.shape({
             name: PropTypes.string.isRequired,
             ui: PropTypes.object
-        }).isRequired
+        }).isRequired,
+        groupName: PropTypes.string.isRequired
     };
 
     render() {
@@ -33,7 +34,7 @@ class NodeTypeItem extends PureComponent {
         const icon = $get('icon', ui);
         const label = $get('label', ui);
         const helpMessage = $get('help.message', ui);
-        const {onHelpMessage} = this.props;
+        const {onHelpMessage, groupName} = this.props;
 
         return (
             <div className={style.nodeType}>
@@ -45,11 +46,13 @@ class NodeTypeItem extends PureComponent {
                     title={helpMessage ? helpMessage : ''}
                 >
                     <span>
-                        {icon && <Icon icon={icon} className={style.nodeType__icon} padded="right"/>}
+                        <span className={style.nodeType__iconWrapper}>
+                            {icon && <Icon icon={icon} className={style.nodeType__icon} padded="right"/>}
+                        </span>
                         <I18n id={label} fallback={label}/>
                     </span>
                 </Button>
-                {helpMessage ? <IconButton className={style.nodeType__helpIcon} onClick={() => onHelpMessage(name)} icon="question-circle" /> : null}
+                {helpMessage ? <IconButton className={style.nodeType__helpIcon} onClick={() => onHelpMessage(name, groupName)} icon="question-circle" /> : null}
             </div>
         );
     }

@@ -1,4 +1,4 @@
-import MultiSelectBox from './index.js';
+import MultiSelectBox from '.';
 
 describe('<MultiSelectBox/> (entry point)', () => {
     it('should export a Component.', () => {

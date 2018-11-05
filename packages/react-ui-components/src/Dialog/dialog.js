@@ -7,7 +7,7 @@ import CloseOnEscape from 'react-close-on-escape';
 
 const validStyleKeys = ['wide', 'narrow'];
 
-class DialogWithoutEscape extends PureComponent {
+export class DialogWithoutEscape extends PureComponent {
     static propTypes = {
         /**
          * This prop controls the rendered state of the Dialog, when falsy, nothing gets rendered into the DOM.
@@ -89,6 +89,10 @@ class DialogWithoutEscape extends PureComponent {
             [theme['dialog--narrow']]: style === 'narrow',
             [className]: className && className.length
         });
+        const finalClassNameBody = mergeClassNames({
+            [theme.dialog__body]: Boolean(theme.dialog__body), // set only if it's not a faulty value
+            'dialog__body': true
+        });
 
         return (
             <Portal isOpened={isOpen}>
@@ -106,7 +110,7 @@ class DialogWithoutEscape extends PureComponent {
                                 {title}
                             </div>
 
-                            <div className={theme.dialog__body}>
+                            <div className={finalClassNameBody}>
                                 {children}
                             </div>
 

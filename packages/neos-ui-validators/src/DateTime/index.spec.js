@@ -20,6 +20,8 @@ test('1234-12-12D12:12:12+12:12 should not be a valid datetime', () => {
     expect(dateTimeValidator('1234-12-12D12:12:12+12:12')).not.toBe(null);
 });
 
-test('empty value should be valid', () => {
+test('emptyish should pass', () => {
+    expect(dateTimeValidator(null)).toBe(null);
+    expect(dateTimeValidator(undefined)).toBe(null);
     expect(dateTimeValidator('')).toBe(null);
 });

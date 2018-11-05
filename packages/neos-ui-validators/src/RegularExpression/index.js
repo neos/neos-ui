@@ -16,7 +16,7 @@ const RegularExpression = (value, validatorOptions) => {
     }
     const regularExpression = new RegExp(match[1], match[2]);
 
-    if (value.length === 0 || value.match(regularExpression) !== null) {
+    if (value === undefined || value === null || value.length === 0 || value.match(regularExpression) !== null) {
         return null;
     }
     const pattern = regularExpression.toString();

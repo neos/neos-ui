@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import Button from './button.js';
+import Button from './button';
 
 describe('<Button/>', () => {
     let props;

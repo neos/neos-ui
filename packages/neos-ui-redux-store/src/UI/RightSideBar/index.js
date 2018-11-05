@@ -1,9 +1,9 @@
 import {createAction} from 'redux-actions';
-import Immutable from 'immutable';
 import {$toggle, $set, $get} from 'plow-js';
 
 import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from '../../System/index';
+import {fromJSOrdered} from '@neos-project/utils-helpers';
 
 const TOGGLE = '@neos/neos-ui/UI/RightSidebar/TOGGLE';
 
@@ -32,7 +32,7 @@ export const actions = {
 export const reducer = handleActions({
     [system.INIT]: payload => $set(
         'ui.rightSideBar',
-        Immutable.fromJS($get('ui.rightSideBar', payload) ? $get('ui.rightSideBar', payload) : {isHidden: false})
+        fromJSOrdered($get('ui.rightSideBar', payload) ? $get('ui.rightSideBar', payload) : {isHidden: false})
     ),
     [TOGGLE]: () => $toggle('ui.rightSideBar.isHidden')
 });

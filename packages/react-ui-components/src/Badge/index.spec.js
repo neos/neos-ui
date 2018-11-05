@@ -1,4 +1,4 @@
-import Badge from './index.js';
+import Badge from '.';
 
 describe('<Badge/> (entry point)', () => {
     it('should export a Component.', () => {

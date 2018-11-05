@@ -1,4 +1,4 @@
-import Frame from './index.js';
+import Frame from '.';
 
 describe('<Frame/> (entry point)', () => {
     it('should export a Component.', () => {

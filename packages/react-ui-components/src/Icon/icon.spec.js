@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import Icon, {iconPropValidator} from './icon.js';
+import Icon from './icon';
 
 describe('<Icon/>', () => {
     let props;
@@ -17,13 +17,13 @@ describe('<Icon/>', () => {
     });
 
     it('should render correctly.', () => {
-        const wrapper = shallow(<Icon {...props}/>);
+        const wrapper = shallow(<Icon icon="fooIconClassName" {...props}/>);
 
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
     it('should allow the propagation of "className" with the "className" prop.', () => {
-        const wrapper = shallow(<Icon {...props} className="fooClassName"/>);
+        const wrapper = shallow(<Icon {...props} icon="fooIconClassName" className="fooClassName"/>);
 
         expect(wrapper.prop('className')).toContain('fooClassName');
     });
@@ -41,37 +41,3 @@ describe('<Icon/>', () => {
     });
 });
 
-describe('iconPropValidator()', () => {
-    it('should call the "onDeprecate" in case a migration is needed.', () => {
-        const props = {
-            icon: 'fooIconClassName',
-            _makeValidateId: () => id => ({isValid: false, isMigrationNeeded: true, iconName: id}),
-            onDeprecate: jest.fn()
-        };
-
-        iconPropValidator(props, 'icon');
-
-        expect(props.onDeprecate.mock.calls.length).toBe(1);
-    });
-    it('should not call the "onDeprecate" multiple times for the same icon id.', () => {
-        const props = {
-            icon: 'barIconClassName',
-            _makeValidateId: () => id => ({isValid: false, isMigrationNeeded: true, iconName: id}),
-            onDeprecate: jest.fn()
-        };
-
-        iconPropValidator(props, 'icon');
-        iconPropValidator(props, 'icon');
-
-        expect(props.onDeprecate.mock.calls.length).toBe(1);
-    });
-    it('should not return an error if no condition was matched.', () => {
-        const props = {
-            icon: 'bazIconClassName',
-            _makeValidateId: () => () => ({})
-        };
-        const result = iconPropValidator(props, 'icon');
-
-        expect(result).toBe(undefined);
-    });
-});

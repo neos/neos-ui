@@ -203,7 +203,14 @@ export class Header extends PureComponent {
                                         <IconComponent icon={icon || 'question'} label={iconLabel} />
                                     }
                                 </div>
-                                <span {...rest} id={labelIdentifier} className={theme.header__label} onClick={onLabelClick} data-neos-integrational-test="tree__item__nodeHeader__itemLabel">
+                                <span
+                                    {...rest}
+                                    id={labelIdentifier}
+                                    className={theme.header__label}
+                                    onClick={onLabelClick}
+                                    data-neos-integrational-test="tree__item__nodeHeader__itemLabel"
+                                    role="treeitem"
+                                >
                                     {label}
                                 </span>
                             </div>

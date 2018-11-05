@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import ButtonGroup from './buttonGroup.js';
+import ButtonGroup from './buttonGroup';
 
 describe('<ButtonGroup/>', () => {
     let props;

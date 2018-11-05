@@ -16,6 +16,13 @@ module.exports = (storybookBaseConfig, configType) => {
             mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
             rules: [
                 {
+                    test: /\.tsx?$/,
+                    exclude: /(node_modules)/,
+                    use: [{
+                        loader: 'ts-loader'
+                    }]
+                },
+                {
                     test: /\.js$/,
                     exclude: /(node_modules)/,
                     use: [{
@@ -60,6 +67,10 @@ module.exports = (storybookBaseConfig, configType) => {
                     }]
                 }
             ]
-        }
+        },
+
+        resolve: {
+            extensions: ['.ts', '.tsx', '.js']
+        },
     });
 };

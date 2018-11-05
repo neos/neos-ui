@@ -38,7 +38,6 @@ const looksLikeExternalLink = link => {
 export default class LinkInput extends PureComponent {
     static propTypes = {
         i18nRegistry: PropTypes.object,
-        linkValue: PropTypes.string,
         options: PropTypes.shape({
             nodeTypes: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
             placeholder: PropTypes.string,
@@ -51,6 +50,10 @@ export default class LinkInput extends PureComponent {
             nodes: PropTypes.bool
         }),
         setFocus: PropTypes.bool,
+        linkValue: PropTypes.string,
+        linkTitleValue: PropTypes.string,
+        linkRelNofollowValue: PropTypes.bool,
+        linkTargetBlankValue: PropTypes.bool,
         onLinkChange: PropTypes.func.isRequired,
         onLinkRelChange: PropTypes.func,
         onLinkTargetChange: PropTypes.func,
@@ -317,7 +320,7 @@ export default class LinkInput extends PureComponent {
                         <div>
                             <TextInput
                                 id="__neos__linkEditor--title"
-                                value={$get('linkTitle', this.props.formattingUnderCursor) || ''}
+                                value={this.props.linkTitleValue || ''}
                                 placeholder={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__titlePlaceholder', 'Enter link title')}
                                 onChange={value => {
                                     this.props.onLinkTitleChange(value);
@@ -331,7 +334,7 @@ export default class LinkInput extends PureComponent {
                             <label>
                                 <CheckBox
                                     onChange={this.props.onLinkTargetChange}
-                                    isChecked={$get('linkTargetBlank', this.props.formattingUnderCursor) || false}
+                                    isChecked={this.props.linkTargetBlankValue || false}
                                 /> {this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__targetBlank', 'Open in new window')}
                             </label>
                         </div>)}
@@ -340,7 +343,7 @@ export default class LinkInput extends PureComponent {
                             <label>
                                 <CheckBox
                                     onChange={this.props.onLinkRelChange}
-                                    isChecked={$get('linkRelNofollow', this.props.formattingUnderCursor) || false}
+                                    isChecked={this.props.linkRelNofollowValue || false}
                                 /> {this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__noFollow', 'No follow')}
                             </label>
                         </div>)}

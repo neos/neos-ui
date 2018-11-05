@@ -21,6 +21,11 @@
     top: 40px;
 }
 
+.nodeType__iconWrapper {
+    width: 2em;
+    display: inline-block;
+    text-align: center;
+}
 .nodeType__icon {
     color: var(--colors-PrimaryBlue);
 

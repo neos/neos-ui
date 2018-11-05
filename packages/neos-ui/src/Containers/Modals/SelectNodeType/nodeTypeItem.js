@@ -46,7 +46,9 @@ class NodeTypeItem extends PureComponent {
                     title={helpMessage ? helpMessage : ''}
                 >
                     <span>
-                        {icon && <Icon icon={icon} className={style.nodeType__icon} padded="right"/>}
+                        <span className={style.nodeType__iconWrapper}>
+                            {icon && <Icon icon={icon} className={style.nodeType__icon} padded="right"/>}
+                        </span>
                         <I18n id={label} fallback={label}/>
                     </span>
                 </Button>

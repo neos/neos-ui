@@ -850,6 +850,13 @@
   resolved "https://registry.yarnpkg.com/@types/ramda/-/ramda-0.25.38.tgz#6c945fcc91a5fa470cc3c5a4cd4a62d7f8d03576"
   integrity sha512-6vkbUF1cg9CIaeZiSvbk6e25rOBbXBXixiZiV4Eai4WgwrmI3wBaH/TKE0tp9JEfzQFrv3eOoI0EjdBJaUfnIQ==
 
+"@types/react-click-outside@^3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@types/react-click-outside/-/react-click-outside-3.0.2.tgz#9d1d1362c7dc339c60b358a50f83ec0c531819b7"
+  integrity sha512-KmIsymVcuTNnz/AJ9Dqqs22zSV6rYq/5IM60HQ247tVcLsxJTSGI8vS3/91CqRr0yE0HZGfPNVtLWMBa6ps+8A==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-close-on-escape@^3.0.0":
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@types/react-close-on-escape/-/react-close-on-escape-3.0.0.tgz#b7d368ec53e14e45dcd33ce0cf63f30d038c4600"

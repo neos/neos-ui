@@ -22,7 +22,7 @@ php:
 # Cache the composer and node_modules directory to speed up the the installation of dependencies.
 #
 cache:
-  yarn: false
+  yarn: true
   directories:
     - ../Neos/Packages/Application/Neos.Neos.Ui/node_modules
     - ../Neos/Packages/Framework

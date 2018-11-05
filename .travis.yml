@@ -47,14 +47,13 @@ before_install:
   - sleep 3
   - fluxbox >/dev/null 2>&1 &
   - export FLOW_CONTEXT=Production
-  - nvm install && nvm use
-  - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.12.1
-  - export PATH="$HOME/.yarn/bin:$PATH"
 
 #
 # Install and setup the neos instance.
 #
 install:
+  # The correct version of node is taken from .nvmrc file
+  - nvm install && nvm use
   # Execute the optional install shell script for the environment.
   - if [ -f "Build/TravisCi/InstallScripts/$TEST_SUITE.sh" ]; then source Build/TravisCi/InstallScripts/$TEST_SUITE.sh; fi
   # Since all environments depend on the node dependencies, install and

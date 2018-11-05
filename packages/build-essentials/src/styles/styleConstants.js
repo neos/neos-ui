@@ -26,7 +26,7 @@ const config = {
         fullScreenClose: ['context'],
         drawer: ['context'],
         bar: ['context'],
-        primaryToolbar: ['context'],
+        primaryToolbar: '2',
         checkboxInput: ['context'],
         dropdownContents: ['context'],
         selectBoxContents: '3',

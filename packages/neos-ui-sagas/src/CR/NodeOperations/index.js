@@ -1,7 +1,6 @@
 import addNode from './addNode';
 import removeNodeIfConfirmed from './removeNodeIfConfirmed';
-import copyAndPasteNode from './copyAndPasteNode';
-import cutAndPasteNode from './cutAndPasteNode';
+import pasteNode from './pasteNode';
 import moveDroppedNode from './moveDroppedNode';
 import hideNode from './hideNode';
 import showNode from './showNode';
@@ -10,8 +9,7 @@ import reloadState from './reloadState';
 export {
     addNode,
     removeNodeIfConfirmed,
-    copyAndPasteNode,
-    cutAndPasteNode,
+    pasteNode,
     moveDroppedNode,
     hideNode,
     showNode,

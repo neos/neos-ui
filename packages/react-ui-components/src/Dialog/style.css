@@ -15,6 +15,7 @@
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
     background: var(--colors-ContrastDarker);
+    outline: none;
 }
 .dialog__contents {
     composes: reset from './../reset.css';

@@ -1,6 +1,6 @@
 import mergeClassNames from 'classnames';
-import {omit} from 'lodash';
 import React, {PureComponent, ReactNode} from 'react';
+import enhanceWithClickOutside from 'react-click-outside';
 import CloseOnEscape from 'react-close-on-escape';
 import Portal from 'react-portal';
 
@@ -13,7 +13,6 @@ interface DialogTheme {
     readonly 'dialog__body': string;
     readonly 'dialog__contentsPosition': string;
     readonly 'dialog__contents': string;
-    readonly 'dialog__backDrop': string;
     readonly 'dialog__title': string;
     readonly 'dialog__closeBtn': string;
     readonly 'dialog__actions': string;
@@ -69,6 +68,74 @@ export interface DialogProps {
 }
 
 export class DialogWithoutEscape extends PureComponent<DialogProps> {
+    // tslint:disable-next-line:readonly-keyword
+    private ref: any = undefined;
+
+    public render(): JSX.Element {
+        const {
+            title,
+            children,
+            onRequestClose,
+            actions,
+            theme,
+        } = this.props;
+
+        const finalClassNameBody = mergeClassNames(
+            theme.dialog__body,
+            'dialog__body'
+        );
+
+        return (
+            <div ref={this.handleReference} className={theme.dialog__contentsPosition} tabIndex={0}>
+                <div className={theme.dialog__contents}>
+                    {onRequestClose && (
+                        <IconButton
+                            icon="times"
+                            className={theme.dialog__closeBtn}
+                            onClick={onRequestClose}
+                            size="regular"
+                            style="clean"
+                            hoverStyle="brand"
+                        />
+                    )}
+                    <div className={theme.dialog__title}>
+                        {title}
+                    </div>
+
+                    <div className={finalClassNameBody}>
+                        {children}
+                    </div>
+
+                    {actions && actions.length ?
+                        <div className={theme.dialog__actions}>
+                            {React.Children.map(actions, (action, index) => <span key={index}>{action}</span>)}
+                        </div> : null
+                    }
+                </div>
+            </div>
+        );
+    }
+
+    private readonly handleReference = (ref: any) => {
+        // tslint:disable-next-line:no-object-mutation
+        this.ref = ref;
+    }
+
+    public readonly handleClickOutside = () => {
+        this.props.onRequestClose();
+    }
+
+    public readonly componentDidMount = (): void => {
+        if (this.ref) {
+            this.ref.focus();
+        }
+    }
+}
+
+const EnhancedDialogWithoutEscapeWithClickOutside = enhanceWithClickOutside(DialogWithoutEscape);
+
+// tslint:disable-next-line:max-classes-per-file
+class DialogWithEscape extends PureComponent<DialogProps> {
     public render(): JSX.Element {
         const {
             className,
@@ -79,12 +146,10 @@ export class DialogWithoutEscape extends PureComponent<DialogProps> {
             onRequestClose,
             actions,
             theme,
-            ...restProps
+            ...rest
         } = this.props;
 
-        const rest = omit(restProps, ['isOpen']); // TODO: ?
-
-        const finalClassName = mergeClassNames(
+        const sectionClassName = mergeClassNames(
             theme.dialog,
             {
                 [theme['dialog--wide']]: style === 'wide',
@@ -93,60 +158,13 @@ export class DialogWithoutEscape extends PureComponent<DialogProps> {
             className,
         );
 
-        const finalClassNameBody = mergeClassNames(
-            theme.dialog__body,
-            'dialog__body'
-        );
-
-        const backDropClassName = mergeClassNames(
-            theme.dialog__backDrop,
-            'dialog__backDrop'
-        );
-
-        return (
-            <Portal isOpened={isOpen}>
-                <section {...rest} className={finalClassName} role="dialog" tabIndex={0}>
-                    <div className={backDropClassName} role="button" onClick={onRequestClose}/>
-                    <div className={theme.dialog__contentsPosition}>
-                        <div className={theme.dialog__contents}>
-                            {onRequestClose && (
-                                <IconButton
-                                    icon="times"
-                                    className={theme.dialog__closeBtn}
-                                    onClick={onRequestClose}
-                                    size="regular"
-                                    style="brand"
-                                    hoverStyle="darken"
-                                    autoFocus={true}
-                                />
-                            )}
-                            <div className={theme.dialog__title}>
-                                {title}
-                            </div>
-
-                            <div className={finalClassNameBody}>
-                                {children}
-                            </div>
-
-                            {actions && actions.length ?
-                                <div className={theme.dialog__actions}>
-                                    {React.Children.map(actions, (action, index) => <span key={index}>{action}</span>)}
-                                </div> : null
-                            }
-                        </div>
-                    </div>
-                </section>
-            </Portal>
-        );
-    }
-}
-
-// tslint:disable-next-line:max-classes-per-file
-class DialogWithEscape extends PureComponent<DialogProps> {
-    public render(): JSX.Element {
         return (
             <CloseOnEscape onEscape={this.onEscape}>
-                <DialogWithoutEscape {...this.props}/>
+                <Portal isOpened={this.props.isOpen}>
+                    <section {...rest} className={sectionClassName} role="dialog" tabIndex={0}>
+                        <EnhancedDialogWithoutEscapeWithClickOutside {...this.props}/>
+                    </section>
+                </Portal>
             </CloseOnEscape>
         );
     }

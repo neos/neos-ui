@@ -1,11 +1,8 @@
 import React, {PureComponent} from 'react';
-import {Omit} from '../../types';
-
-import {ButtonProps} from '../Button/button';
 
 export type ButtonGroupItemId = string;
 
-export interface ButtonGroupItemProps extends Partial<Omit<ButtonProps, 'onClick'>> {
+export interface ButtonGroupItemProps {
     readonly className?: string;
     readonly id: ButtonGroupItemId;
     readonly onClick: (id: ButtonGroupItemId) => void;

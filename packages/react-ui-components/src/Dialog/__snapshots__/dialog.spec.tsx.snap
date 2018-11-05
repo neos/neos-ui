@@ -1,65 +1,94 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Dialog/> should render correctly. 1`] = `
-<Portal
-  isOpened={false}
-  onClose={[Function]}
-  onOpen={[Function]}
-  onUpdate={[Function]}
+<CloseOnEscape
+  onEscape={[Function]}
 >
-  <section
-    className="dialogClassName wideClassName"
-    role="dialog"
-    tabIndex={0}
+  <Portal
+    isOpened={false}
+    onClose={[Function]}
+    onOpen={[Function]}
+    onUpdate={[Function]}
   >
-    <div
-      className="backDropClassName dialog__backDrop"
+    <section
+      className="dialogClassName wideClassName"
+      role="dialog"
+      tabIndex={0}
+    >
+      <clickOutside(DialogWithoutEscape)
+        actions={
+          Array [
+            "Foo 1",
+            "Foo 2",
+          ]
+        }
+        isOpen={false}
+        onRequestClose={[Function]}
+        style="wide"
+        theme={
+          Object {
+            "dialog": "dialogClassName",
+            "dialog--narrow": "narrowClassName",
+            "dialog--wide": "wideClassName",
+            "dialog__actions": "actionsClassName",
+            "dialog__body": "bodyClassName",
+            "dialog__closeBtn": "closeBtnClassName",
+            "dialog__contents": "contentsClassName",
+            "dialog__contentsPosition": "contentsPositionClassName",
+            "dialog__title": "titleClassName",
+          }
+        }
+        title="Foo title"
+      >
+        Foo children
+      </clickOutside(DialogWithoutEscape)>
+    </section>
+  </Portal>
+</CloseOnEscape>
+`;
+
+exports[`<Dialog/> should render correctly. 2`] = `
+<div
+  className="contentsPositionClassName"
+  tabIndex={0}
+>
+  <div
+    className="contentsClassName"
+  >
+    <ThemedIconButton
+      className="closeBtnClassName"
+      composeTheme="deeply"
+      hoverStyle="brand"
+      icon="times"
+      mapThemrProps={[Function]}
       onClick={[Function]}
-      role="button"
+      size="regular"
+      style="clean"
     />
     <div
-      className="contentsPositionClassName"
+      className="titleClassName"
     >
-      <div
-        className="contentsClassName"
-      >
-        <ThemedIconButton
-          autoFocus={true}
-          className="closeBtnClassName"
-          composeTheme="deeply"
-          hoverStyle="darken"
-          icon="times"
-          mapThemrProps={[Function]}
-          onClick={[Function]}
-          size="regular"
-          style="brand"
-        />
-        <div
-          className="titleClassName"
-        >
-          Foo title
-        </div>
-        <div
-          className="bodyClassName dialog__body"
-        >
-          Foo children
-        </div>
-        <div
-          className="actionsClassName"
-        >
-          <span
-            key="0/.0"
-          >
-            Foo 1
-          </span>
-          <span
-            key="1/.1"
-          >
-            Foo 2
-          </span>
-        </div>
-      </div>
+      Foo title
     </div>
-  </section>
-</Portal>
+    <div
+      className="bodyClassName dialog__body"
+    >
+      Foo children
+    </div>
+    <div
+      className="actionsClassName"
+    >
+      <span
+        key="0/.0"
+      >
+        Foo 1
+      </span>
+      <span
+        key="1/.1"
+      >
+        Foo 2
+      </span>
+    </div>
+  </div>
+</div>
 `;

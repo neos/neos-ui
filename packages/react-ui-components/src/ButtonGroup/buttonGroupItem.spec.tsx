@@ -22,10 +22,4 @@ describe('<ButtonGroupItem/>', () => {
 
         expect(wrapper.prop('className')).toContain('fooClassName');
     });
-
-    it('should allow the propagation of additional props to the wrapper.', () => {
-        const wrapper = shallow(<ButtonGroupItem {...props} autoFocus={true}/>);
-
-        expect(wrapper.prop('autoFocus')).toBe(true);
-    });
 });

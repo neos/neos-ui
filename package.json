@@ -85,7 +85,7 @@
     "@ckeditor/ckeditor5-alignment": "^10.0",
     "@ckeditor/ckeditor5-basic-styles": "^10.0",
     "@ckeditor/ckeditor5-editor-decoupled": "^11.0",
-    "@ckeditor/ckeditor5-engine": "https://github.com/dimaip/ckeditor5-engine#iframe",
+    "@ckeditor/ckeditor5-engine": "https://github.com/dimaip/ckeditor5-engine.git#iframe",
     "@ckeditor/ckeditor5-essentials": "^10.0",
     "@ckeditor/ckeditor5-heading": "^10.0",
     "@ckeditor/ckeditor5-link": "^10.0",

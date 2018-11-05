@@ -245,6 +245,7 @@
 "@ckeditor/ckeditor5-editor-decoupled@^10.0":
   version "10.0.2"
   resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-editor-decoupled/-/ckeditor5-editor-decoupled-10.0.2.tgz#de2d0419ef5f5e745736667629ee3febeabd8a40"
+  integrity sha1-3i0EGe9fXnRXNmZ2Ke4/6+q9ikA=
   dependencies:
     "@ckeditor/ckeditor5-core" "^10.1.0"
     "@ckeditor/ckeditor5-engine" "^10.1.0"
@@ -255,6 +256,7 @@
 "@ckeditor/ckeditor5-editor-decoupled@^11.0":
   version "11.0.0"
   resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-editor-decoupled/-/ckeditor5-editor-decoupled-11.0.0.tgz#185a60abac86a1d3febf2355eba881af1852b38c"
+  integrity sha512-UH6CmQXnpJ/suggpPmeuhakluYWsMyplt39V3rMPhCDcXL7XHxx3zpFl+/TNZ+yHh4EmkJf8JSh0V1gKHmTGUg==
   dependencies:
     "@ckeditor/ckeditor5-core" "^11.0.0"
     "@ckeditor/ckeditor5-engine" "^10.2.0"
@@ -262,7 +264,14 @@
     "@ckeditor/ckeditor5-ui" "^11.0.0"
     "@ckeditor/ckeditor5-utils" "^10.2.0"
 
-"@ckeditor/ckeditor5-engine@^10.0.0", "@ckeditor/ckeditor5-engine@^10.1.0", "@ckeditor/ckeditor5-engine@^10.2.0", "@ckeditor/ckeditor5-engine@https://github.com/dimaip/ckeditor5-engine#iframe":
+"@ckeditor/ckeditor5-engine@^10.0.0", "@ckeditor/ckeditor5-engine@^10.1.0", "@ckeditor/ckeditor5-engine@^10.2.0":
+  version "10.2.0"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-engine/-/ckeditor5-engine-10.2.0.tgz#f4cf448c0482233557f48d4b9a97baa571c0e9cc"
+  integrity sha512-QHXozzZ3Ppzc/8yuu3/dcdwz65kWK81iCiadCgTTi+y7ts2i7GjmWSG4Xb0jOeXEbKEKnkWJ9UVO+V7efs8c0g==
+  dependencies:
+    "@ckeditor/ckeditor5-utils" "^10.2.0"
+
+"@ckeditor/ckeditor5-engine@https://github.com/dimaip/ckeditor5-engine#iframe":
   version "10.2.0"
   resolved "https://github.com/dimaip/ckeditor5-engine#c0d426f95cc75d966fe11cf9f000f236213ff404"
   dependencies:

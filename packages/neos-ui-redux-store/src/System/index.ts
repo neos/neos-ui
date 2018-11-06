@@ -1,7 +1,6 @@
-import {handleActions} from '@neos-project/utils-redux';
 import produce from 'immer';
 import {$get} from 'plow-js';
-import {createAction} from 'typesafe-actions';
+import {action as createAction, ActionType as ActionTypeHelper} from 'typesafe-actions';
 
 const BOOT = '@neos/neos-ui/System/BOOT';
 const INIT = '@neos/neos-ui/System/INIT';
@@ -24,11 +23,11 @@ interface State {
     readonly authenticationTimeout: boolean;
 }
 
-const boot = createAction(BOOT);
-const init = createAction(INIT, resolve => (state: State) => resolve(state));
-const ready = createAction(READY);
-const authenticationTimeout = createAction(AUTHENTICATION_TIMEOUT);
-const reauthenticationSucceeded = createAction(REAUTHENTICATION_SUCCEEDED);
+const boot = () => createAction(BOOT);
+const init = (state: State) => createAction(INIT, state);
+const ready = () => createAction(READY);
+const authenticationTimeout = () => createAction(AUTHENTICATION_TIMEOUT);
+const reauthenticationSucceeded = () => createAction(REAUTHENTICATION_SUCCEEDED);
 
 //
 // Export the actions
@@ -41,20 +40,30 @@ export const actions = {
     reauthenticationSucceeded
 };
 
+export type ActionType = ActionTypeHelper<typeof actions>;
+
+const defaultState: State = {
+    authenticationTimeout: false
+};
+
 //
 // Export the reducer
 //
-export const reducer = handleActions({
-    [INIT]: () => (): State => ({
-        authenticationTimeout: false
-    }),
-    [AUTHENTICATION_TIMEOUT]: () => (state: State) => produce(state, draft => {
-        draft.authenticationTimeout = true;
-    }),
-    [REAUTHENTICATION_SUCCEEDED]: () => (state: State) => produce(state, draft => {
-        draft.authenticationTimeout = false;
-    })
-});
+export const reducer = (state: State = defaultState, action: ActionType) => {
+    return produce(state, draft => {
+        switch (action.type) {
+            case INIT:
+                draft.authenticationTimeout = false;
+                break;
+            case AUTHENTICATION_TIMEOUT:
+                draft.authenticationTimeout = true;
+                break;
+            case REAUTHENTICATION_SUCCEEDED:
+                draft.authenticationTimeout = false;
+                break;
+        }
+    });
+};
 
 //
 // Export the selectors

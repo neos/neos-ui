@@ -25,6 +25,11 @@ describe('<Headline/>', () => {
         expect(wrapper.prop('className')).toContain('fooClassName');
     });
 
+    it('should allow the propagation of additional props to the wrapper.', () => {
+        const wrapper = shallow(<Headline {...props} draggable={true}/>);
+        expect(wrapper.prop('draggable')).toBe(true);
+    });
+
     it('should render a "h1" node if no "type" prop was passed.', () => {
         const wrapper = shallow(<Headline {...props}/>);
 

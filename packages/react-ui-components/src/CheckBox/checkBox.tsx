@@ -1,5 +1,6 @@
 import mergeClassNames from 'classnames';
 import React, {PureComponent} from 'react';
+import {Omit} from '../../types';
 
 interface CheckBoxTheme {
     readonly checkbox: string;
@@ -9,7 +10,9 @@ interface CheckBoxTheme {
     readonly 'checkbox__inputMirror--active': string;
 }
 
-export interface CheckBoxProps {
+type HTMLInputElementAttributesExceptOnChange = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'>;
+
+export interface CheckBoxProps extends HTMLInputElementAttributesExceptOnChange {
     /**
      * This prop controls the visual active state of the CheckBox.
      */

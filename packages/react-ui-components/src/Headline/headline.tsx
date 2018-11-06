@@ -9,7 +9,7 @@ interface HeadlineTheme {
     readonly 'heading': string;
 }
 
-export interface HeadlineProps {
+export interface HeadlineProps extends React.HTMLAttributes<HTMLHeadingElement> {
     /**
      * The contents to be rendered.
      */

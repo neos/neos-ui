@@ -28,6 +28,12 @@ describe('<CheckBox/>', () => {
         expect(wrapper.prop('className')).toContain('fooClassName');
     });
 
+    it('should allow the propagation of additional props to the wrapper.', () => {
+        const wrapper = shallow(<CheckBox {...props} id="foo"/>);
+        const input = wrapper.find('[type="checkbox"]');
+        expect(input.prop('id')).toBe('foo');
+    });
+
     it('should throw no errors if no "onChange" prop was passed when clicking on the hidden checkbox.', () => {
         const wrapper = shallow(<CheckBox {...props}/>);
         const fn = () => wrapper.find('[type="checkbox"]').simulate('change');

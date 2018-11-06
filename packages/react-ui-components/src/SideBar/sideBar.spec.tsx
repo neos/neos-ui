@@ -26,4 +26,9 @@ describe('<SideBar/>', () => {
 
         expect(wrapper.prop('className')).toContain('fooClassName');
     });
+
+    it('should allow the propagation of additional props to the wrapper.', () => {
+        const wrapper = shallow(<SideBar {...props} aria-hidden={true}/>);
+        expect(wrapper.prop('aria-hidden')).toBe(true);
+    });
 });

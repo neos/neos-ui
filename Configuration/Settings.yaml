@@ -102,7 +102,7 @@ Neos:
       #################################
       # INTERNAL CONFIG (no API)
       #################################
-      frontendDevelopmentMode: false
+      frontendDevelopmentMode: true
       nodeTypeRoles:
         # The ignored types will never have metadata in the UI, they are invisible to the content module.
         ignored: 'unstructured'

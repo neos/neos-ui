@@ -72,7 +72,6 @@
     "tslib": "^1.9.3",
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.15.0",
-    "tslint-immutable": "^4.7.0",
     "tslint-react": "^3.6.0",
     "typescript": "^3.0.1",
     "watch": "^1.0.2",
@@ -114,6 +113,7 @@
     "hash-sum": "^1.0.2",
     "hashlru": "2.2.0",
     "he": "^1.1.1",
+    "immer": "^1.7.4",
     "immutable": "^3.8.0",
     "lodash.assign": "^4.2.0",
     "lodash.debounce": "^4.0.8",
@@ -167,6 +167,7 @@
     "redux-saga": "^0.15.0",
     "regenerator": "^0.8.46",
     "reselect": "^3.0.1",
+    "typesafe-actions": "^2.0.4",
     "url-loader": "^1.0.1",
     "uuid": "^3.2.1",
     "whatwg-fetch": "^2.0.0"

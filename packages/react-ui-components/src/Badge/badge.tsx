@@ -5,7 +5,7 @@ interface BadgeTheme {
     readonly badge: string;
 }
 
-interface BadgeProps {
+export interface BadgeProps {
     /**
      * An optional `className` to attach to the wrapper.
      */

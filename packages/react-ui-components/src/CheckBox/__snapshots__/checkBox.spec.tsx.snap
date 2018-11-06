@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CheckBox/> should render correctly. 1`] = `
+<div
+  className="checkboxClassName"
+>
+  <input
+    aria-checked={false}
+    checked={false}
+    className="inputClassName"
+    onChange={[Function]}
+    type="checkbox"
+  />
+  <div
+    className="inputMirrorClassName"
+  />
+</div>
+`;

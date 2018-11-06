@@ -2,6 +2,8 @@
 import mergeClassNames from 'classnames';
 import React, {PureComponent} from 'react';
 
+// TODO hint: options prop should be a Map of all possible options
+
 type Option = any; // TODO: what is the type of an option?
 
 interface SelectBox_ListPreviewGrouped_Props {
@@ -20,7 +22,7 @@ interface SelectBox_ListPreviewGrouped_Props {
 }
 
 type Options = ReadonlyArray<{
-    readonly group: string;
+    readonly group?: string;
     readonly [key: string]: Option;
 }>; // TODO: what is actually in there?
 

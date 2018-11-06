@@ -1,7 +1,7 @@
-import {createAction} from 'redux-actions';
-import {Map} from 'immutable';
-import {$set, $get} from 'plow-js';
 import {handleActions} from '@neos-project/utils-redux';
+import produce from 'immer';
+import {$get} from 'plow-js';
+import {createAction} from 'typesafe-actions';
 
 const BOOT = '@neos/neos-ui/System/BOOT';
 const INIT = '@neos/neos-ui/System/INIT';
@@ -13,15 +13,19 @@ const REAUTHENTICATION_SUCCEEDED = '@neos/neos-ui/System/REAUTHENTICATION_SUCCEE
 // Export the action types
 //
 export const actionTypes = {
+    AUTHENTICATION_TIMEOUT,
     BOOT,
     INIT,
     READY,
-    AUTHENTICATION_TIMEOUT,
     REAUTHENTICATION_SUCCEEDED
 };
 
+interface State {
+    readonly authenticationTimeout: boolean;
+}
+
 const boot = createAction(BOOT);
-const init = createAction(INIT, state => state);
+const init = createAction(INIT, resolve => (state: State) => resolve(state));
 const ready = createAction(READY);
 const authenticationTimeout = createAction(AUTHENTICATION_TIMEOUT);
 const reauthenticationSucceeded = createAction(REAUTHENTICATION_SUCCEEDED);
@@ -30,10 +34,10 @@ const reauthenticationSucceeded = createAction(REAUTHENTICATION_SUCCEEDED);
 // Export the actions
 //
 export const actions = {
+    authenticationTimeout,
     boot,
     init,
     ready,
-    authenticationTimeout,
     reauthenticationSucceeded
 };
 
@@ -41,19 +45,20 @@ export const actions = {
 // Export the reducer
 //
 export const reducer = handleActions({
-    [INIT]: () => $set(
-        'system',
-        new Map({
-            authenticationTimeout: false
-        })
-    ),
-    [AUTHENTICATION_TIMEOUT]: () => $set('system.authenticationTimeout', true),
-    [REAUTHENTICATION_SUCCEEDED]: () => $set('system.authenticationTimeout', false)
+    [INIT]: () => (): State => ({
+        authenticationTimeout: false
+    }),
+    [AUTHENTICATION_TIMEOUT]: () => (state: State) => produce(state, draft => {
+        draft.authenticationTimeout = true;
+    }),
+    [REAUTHENTICATION_SUCCEEDED]: () => (state: State) => produce(state, draft => {
+        draft.authenticationTimeout = false;
+    })
 });
 
 //
 // Export the selectors
 //
 export const selectors = {
-    authenticationTimeout: $get('system.authenticationTimeout')
+    authenticationTimeout: (state: any) => $get(['system'], state).authenticationTimeout
 };

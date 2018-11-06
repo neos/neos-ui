@@ -2,7 +2,6 @@
 
 exports[`<Label/> should render correctly. 1`] = `
 <ListPreviewElement
-  onClick={[MockFunction]}
   theme={
     Object {
       "listPreviewElement": "listPreviewElementClassName",

@@ -1,30 +1,29 @@
-/* eslint-disable camelcase, react/jsx-pascal-case */
-import React, {PureComponent} from 'react';
-import PropTypes from 'prop-types';
-import ListPreviewElement from '../ListPreviewElement';
+// tslint:disable:class-name
 import mergeClassNames from 'classnames';
+import React, {PureComponent} from 'react';
 
-class SelectBox_Option_SingleLine extends PureComponent {
-    static propTypes = {
-        option: PropTypes.shape({
-            label: PropTypes.string.isRequired,
-            icon: PropTypes.string,
-            disabled: PropTypes.bool
-        }).isRequired,
+import ListPreviewElement from '../ListPreviewElement';
+import {ListPreviewElementProps} from '../ListPreviewElement/listPreviewElement';
 
-        disabled: PropTypes.bool,
+export interface SelectBox_Option_SingleLineProps extends ListPreviewElementProps {
+    readonly option: Options;
+    readonly disabled?: boolean;
+    readonly className?: string;
+}
 
-        className: PropTypes.string
-    }
+interface Options {
+    readonly label: string;
+    readonly icon?: string;
+    readonly disabled?: boolean;
+}
 
-    render() {
+export default class SelectBox_Option_SingleLine extends PureComponent<SelectBox_Option_SingleLineProps> {
+    public render(): JSX.Element {
         const {option, className, disabled} = this.props;
 
         const isDisabled = disabled || option.disabled;
 
-        const finalClassNames = mergeClassNames({
-            [className]: className
-        });
+        const finalClassNames = mergeClassNames(className);
 
         return (
             <ListPreviewElement {...this.props} icon={option.icon} disabled={isDisabled} className={finalClassNames}>
@@ -33,5 +32,3 @@ class SelectBox_Option_SingleLine extends PureComponent {
         );
     }
 }
-
-export default SelectBox_Option_SingleLine;

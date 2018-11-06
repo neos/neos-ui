@@ -8,7 +8,6 @@ import {ListPreviewElementProps} from './listPreviewElement';
 describe('<Label/>', () => {
     const props: ListPreviewElementProps = {
         children: 'Foo Children',
-        onClick: jest.fn(),
         theme: {
             listPreviewElement: 'listPreviewElementClassName',
             'listPreviewElement--isDisabled': 'disabledClassName',
@@ -33,5 +32,14 @@ describe('<Label/>', () => {
         const wrapper = shallow(<ListPreviewElement {...props} data-foo="bar"/>);
 
         expect(wrapper.prop('data-foo')).toBe('bar');
+    });
+
+    it('should handle the click callback if the component is clicked.', () => {
+        const onClick = jest.fn();
+        const wrapper = shallow(<ListPreviewElement {...props} onClick={onClick}/>);
+
+        wrapper.simulate('click');
+
+        expect(onClick.mock.calls.length).toBe(1);
     });
 });

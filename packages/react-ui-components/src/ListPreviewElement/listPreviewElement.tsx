@@ -15,14 +15,14 @@ export interface ListPreviewElementProps {
     // ------------------------------
     // API as needed by SelectBox
     // ------------------------------
-    readonly onClick: () => void; // TODO: correct Signature; required prop?
+    readonly onClick?: () => void;
     readonly isHighlighted?: boolean;
-    readonly onMouseEnter?: () => void; // TODO: correct Signature; required prop?
+    readonly onMouseEnter?: () => void;
 
     // ------------------------------
     // Theme & Dependencies
     // ------------------------------
-    readonly theme: ListPreviewElementTheme;
+    readonly theme?: ListPreviewElementTheme;
 }
 
 interface ListPreviewElementTheme {
@@ -66,10 +66,10 @@ export default class ListPreviewElement extends PureComponent<ListPreviewElement
         } = this.props;
 
         const optionClassName = mergeClassNames(
-            theme.listPreviewElement,
+            theme!.listPreviewElement,
             {
-                [theme['listPreviewElement--isHighlighted']]: isHighlighted,
-                [theme['listPreviewElement--isDisabled']]: disabled,
+                [theme!['listPreviewElement--isHighlighted']]: isHighlighted,
+                [theme!['listPreviewElement--isDisabled']]: disabled,
             },
             className
         );
@@ -81,7 +81,7 @@ export default class ListPreviewElement extends PureComponent<ListPreviewElement
                 className={optionClassName}
                 role="button"
             >
-                {Boolean(icon) && <Icon className={theme.listPreviewElement__icon} icon={icon!}/>}
+                {Boolean(icon) && <Icon className={theme!.listPreviewElement__icon} icon={icon!}/>}
                 {children}
             </div>
         );
@@ -94,7 +94,7 @@ export default class ListPreviewElement extends PureComponent<ListPreviewElement
     }
 
     private readonly handleClick = () => {
-        if (!this.props.disabled) {
+        if (!this.props.disabled && this.props.onClick) {
             this.props.onClick();
         }
     }

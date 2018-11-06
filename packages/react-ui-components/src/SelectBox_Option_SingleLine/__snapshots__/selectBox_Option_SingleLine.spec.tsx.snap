@@ -2,19 +2,18 @@
 
 exports[`<SelectBox_Option_SingleLine/> should render correctly. 1`] = `
 <ThemedListPreviewElement
-  ListPreviewElement={[Function]}
   className=""
   composeTheme="deeply"
-  label="Foo label"
   mapThemrProps={[Function]}
   onClick={[MockFunction]}
   option={
     Object {
-      "label": "",
+      "label": "Foo label",
     }
   }
-  theme={Object {}}
 >
-  <span />
+  <span>
+    Foo label
+  </span>
 </ThemedListPreviewElement>
 `;

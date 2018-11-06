@@ -24,7 +24,7 @@ interface ButtonTheme {
 // We omit the standard HTML button style attribute,
 // so we have no collision with the Button component's style property,
 // while still enjoying the intellisense and type checking for the rest of the HTML button attributes
-type HTMLButtonElementAttributesExceptStyle = Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'style'>;
+export type HTMLButtonElementAttributesExceptStyle = Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'style'>;
 
 // own props and (optional) HTML button attributes except 'style'
 export interface ButtonProps extends HTMLButtonElementAttributesExceptStyle {
@@ -97,7 +97,7 @@ type DefaultProps = PickDefaultProps<ButtonProps,
     'type'
 >;
 
-const defaultProps: DefaultProps = {
+export const defaultProps: DefaultProps = {
     _refHandler: makeFocusNode,
     hoverStyle: 'brand',
     isActive: false,

@@ -9,7 +9,7 @@ interface SideBarTheme {
     readonly 'sideBar--right': string;
 }
 
-interface SideBarProps {
+export interface SideBarProps {
     /**
      * This prop controls the absolute positioning of the SideBar.
      */

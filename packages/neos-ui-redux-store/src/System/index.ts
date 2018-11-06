@@ -35,6 +35,8 @@ export const actions = {
     reauthenticationSucceeded: () => createAction(actionTypes.REAUTHENTICATION_SUCCEEDED)
 };
 
+export type InitAction = ActionType<typeof actions.init>;
+
 //
 // Export the union type of all actions
 //
@@ -43,21 +45,20 @@ export type Action = ActionType<typeof actions>;
 //
 // Export the reducer
 //
-export const reducer = (state: State = defaultState, action: Action) => {
-    return produce(state, draft => {
-        switch (action.type) {
-            case actionTypes.INIT:
-                draft.authenticationTimeout = false;
-                break;
-            case actionTypes.AUTHENTICATION_TIMEOUT:
-                draft.authenticationTimeout = true;
-                break;
-            case actionTypes.REAUTHENTICATION_SUCCEEDED:
-                draft.authenticationTimeout = false;
-                break;
-        }
-    });
-};
+export const reducer = (state: State = defaultState, action: Action) => produce(state, draft => {
+    switch (action.type) {
+        case actionTypes.INIT:
+            draft.authenticationTimeout = false;
+            break;
+        case actionTypes.AUTHENTICATION_TIMEOUT:
+            draft.authenticationTimeout = true;
+            break;
+        case actionTypes.REAUTHENTICATION_SUCCEEDED:
+            draft.authenticationTimeout = false;
+            break;
+    }
+});
+
 
 //
 // Export the selectors

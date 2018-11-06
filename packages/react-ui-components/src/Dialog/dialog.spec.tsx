@@ -27,13 +27,13 @@ describe('<Dialog/>', () => {
         title: 'Foo title',
     };
 
-    it('should render correctly.', () => {
+    it('Portal should render correctly.', () => {
         const wrapper = shallow(<DialogWithEscape {...props}/>);
 
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
-    it('should render correctly.', () => {
+    it('Content should render correctly.', () => {
         const wrapper = shallow(<DialogWithoutEscape {...props}/>);
 
         expect(toJson(wrapper)).toMatchSnapshot();

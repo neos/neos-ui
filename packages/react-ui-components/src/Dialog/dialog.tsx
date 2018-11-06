@@ -69,7 +69,7 @@ export interface DialogProps {
 
 export class DialogWithoutEscape extends PureComponent<DialogProps> {
     // tslint:disable-next-line:readonly-keyword
-    private ref: any = undefined;
+    private ref?: HTMLDivElement;
 
     public render(): JSX.Element {
         const {
@@ -116,7 +116,7 @@ export class DialogWithoutEscape extends PureComponent<DialogProps> {
         );
     }
 
-    private readonly handleReference = (ref: any) => {
+    private readonly handleReference = (ref: HTMLDivElement) => {
         // tslint:disable-next-line:no-object-mutation
         this.ref = ref;
     }

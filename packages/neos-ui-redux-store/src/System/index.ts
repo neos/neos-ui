@@ -1,64 +1,58 @@
 import produce from 'immer';
 import {$get} from 'plow-js';
-import {action as createAction, ActionType as ActionTypeHelper} from 'typesafe-actions';
-
-const BOOT = '@neos/neos-ui/System/BOOT';
-const INIT = '@neos/neos-ui/System/INIT';
-const READY = '@neos/neos-ui/System/READY';
-const AUTHENTICATION_TIMEOUT = '@neos/neos-ui/System/AUTHENTICATION_TIMEOUT';
-const REAUTHENTICATION_SUCCEEDED = '@neos/neos-ui/System/REAUTHENTICATION_SUCCEEDED';
+import {action as createAction, ActionType} from 'typesafe-actions';
 
 //
-// Export the action types
+// Export the subreducer state shape interface
 //
-export const actionTypes = {
-    AUTHENTICATION_TIMEOUT,
-    BOOT,
-    INIT,
-    READY,
-    REAUTHENTICATION_SUCCEEDED
-};
-
-interface State {
+export interface State {
     readonly authenticationTimeout: boolean;
 }
-
-const boot = () => createAction(BOOT);
-const init = (state: State) => createAction(INIT, state);
-const ready = () => createAction(READY);
-const authenticationTimeout = () => createAction(AUTHENTICATION_TIMEOUT);
-const reauthenticationSucceeded = () => createAction(REAUTHENTICATION_SUCCEEDED);
-
-//
-// Export the actions
-//
-export const actions = {
-    authenticationTimeout,
-    boot,
-    init,
-    ready,
-    reauthenticationSucceeded
-};
-
-export type ActionType = ActionTypeHelper<typeof actions>;
 
 const defaultState: State = {
     authenticationTimeout: false
 };
 
 //
+// Export the action types
+//
+export const actionTypes = {
+    BOOT: '@neos/neos-ui/System/BOOT',
+    INIT: '@neos/neos-ui/System/INIT',
+    READY: '@neos/neos-ui/System/READY',
+    AUTHENTICATION_TIMEOUT: '@neos/neos-ui/System/AUTHENTICATION_TIMEOUT',
+    REAUTHENTICATION_SUCCEEDED: '@neos/neos-ui/System/REAUTHENTICATION_SUCCEEDED'
+};
+
+//
+// Export the actions
+//
+export const actions = {
+    boot: () => createAction(actionTypes.BOOT),
+    init: (state: State) => createAction(actionTypes.INIT, state),
+    ready: () => createAction(actionTypes.READY),
+    authenticationTimeout: () => createAction(actionTypes.AUTHENTICATION_TIMEOUT),
+    reauthenticationSucceeded: () => createAction(actionTypes.REAUTHENTICATION_SUCCEEDED)
+};
+
+//
+// Export the union type of all actions
+//
+export type Action = ActionType<typeof actions>;
+
+//
 // Export the reducer
 //
-export const reducer = (state: State = defaultState, action: ActionType) => {
+export const reducer = (state: State = defaultState, action: Action) => {
     return produce(state, draft => {
         switch (action.type) {
-            case INIT:
+            case actionTypes.INIT:
                 draft.authenticationTimeout = false;
                 break;
-            case AUTHENTICATION_TIMEOUT:
+            case actionTypes.AUTHENTICATION_TIMEOUT:
                 draft.authenticationTimeout = true;
                 break;
-            case REAUTHENTICATION_SUCCEEDED:
+            case actionTypes.REAUTHENTICATION_SUCCEEDED:
                 draft.authenticationTimeout = false;
                 break;
         }

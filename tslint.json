@@ -3,6 +3,8 @@
   "rules": {
     "interface-name": false,
     "member-ordering": false,
+    "ordered-imports": false,
+    "object-literal-sort-keys": false,
     "no-console": true,
     "no-debugger": true,
     "no-delete": true,

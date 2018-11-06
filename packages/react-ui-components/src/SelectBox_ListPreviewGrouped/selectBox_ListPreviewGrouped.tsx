@@ -1,7 +1,34 @@
-/* eslint-disable camelcase, react/jsx-pascal-case, react/jsx-no-bind */
-import React, {PureComponent} from 'react';
-import PropTypes from 'prop-types';
+// tslint:disable:class-name
 import mergeClassNames from 'classnames';
+import React, {PureComponent} from 'react';
+
+type Option = any; // TODO: what is the type of an option?
+
+interface SelectBox_ListPreviewGrouped_Props {
+    // For explanations of the PropTypes, see SelectBox.js
+    readonly options: Options;
+    readonly ListPreviewElement: any; // TODO: properly type this; should satisfy a certain interface
+
+    readonly theme: SelectBox_ListPreviewGrouped_Theme;
+
+    // API with SelectBox
+    readonly optionValueAccessor: (option: Option) => string | undefined;
+    readonly onChange: (option: Option) => void;
+    readonly focusedValue?: string;
+    readonly onOptionFocus?: (option: Option) => void;
+    readonly withoutGroupLabel: string;
+}
+
+type Options = ReadonlyArray<{
+    readonly group: string;
+    readonly [key: string]: Option;
+}>; // TODO: what is actually in there?
+
+interface SelectBox_ListPreviewGrouped_Theme {
+    readonly 'selectBox__item': string;
+    readonly 'selectBox__item--isGroup': string;
+    readonly 'selectBox__groupHeader': string;
+}
 
 /**
  * **SelectBox_ListPreviewUngrouped is an internal implementation detail of SelectBox**, meant to improve code quality.
@@ -9,32 +36,26 @@ import mergeClassNames from 'classnames';
  * It is used inside SelectBox_ListPreview if the options do not contain group elements;
  * and inside MultiSelectBox_ListPreviewSortable (which, in turn, is inside MultiSelect).
  */
-export default class SelectBox_ListPreviewGrouped extends PureComponent {
-    static propTypes = {
-        // For explanations of the PropTypes, see SelectBox.js
-        options: PropTypes.arrayOf(
-            PropTypes.shape({
-            }),
-        ),
-        ListPreviewElement: PropTypes.any.isRequired,
+export default class SelectBox_ListPreviewGrouped extends PureComponent<SelectBox_ListPreviewGrouped_Props> {
+    // tslint:disable-next-line:readonly-keyword
+    private focusedElement?: HTMLLIElement;
 
-        theme: PropTypes.shape({
-            'selectBox__item': PropTypes.string,
-            'selectBox__item--isGroup': PropTypes.string,
-            'selectBox__groupHeader': PropTypes.string
-        }),
+    public render(): ReadonlyArray<JSX.Element> {
+        const {
+            options
+        } = this.props;
 
-        // API with SelectBox
-        optionValueAccessor: PropTypes.func.isRequired,
-        onChange: PropTypes.func.isRequired,
-        focusedValue: PropTypes.string,
-        onOptionFocus: PropTypes.func,
-        withoutGroupLabel: PropTypes.string.isRequired
+        // tslint:disable-next-line:no-object-mutation
+        this.focusedElement = undefined;
+
+        const groupedOptions = this.getGroupedOptions(options);
+
+        return Object.entries(groupedOptions).map(this.renderGroup);
     }
 
     // Scroll the sidebar if needed
-    componentDidUpdate() {
-        if (this.focusedElement !== null) {
+    public componentDidUpdate(): void {
+        if (this.focusedElement) {
             const rect = this.focusedElement.getBoundingClientRect();
             if (rect.bottom >= window.innerHeight) {
                 this.focusedElement.scrollIntoView();
@@ -42,26 +63,15 @@ export default class SelectBox_ListPreviewGrouped extends PureComponent {
         }
     }
 
-    render() {
-        const {
-            options
-        } = this.props;
-
-        this.focusedElement = null;
-
-        const groupedOptions = this.getGroupedOptions(options);
-
-        return Object.entries(groupedOptions).map(this.renderGroup);
-    }
-
     /**
      * Groups the options of the selectBox by their group-attribute. Returns a javascript Map with the group names
      * as key and an array of options as values.
      * Options without a group-attribute assigned will receive the key specified in props.withoutGroupLabel.
      */
-    getGroupedOptions = options => {
+    private readonly getGroupedOptions = (options: Options) => {
         return options.reduce((accumulator, currentOpt) => {
             const groupLabel = currentOpt.group ? currentOpt.group : this.props.withoutGroupLabel;
+            // tslint:disable-next-line:no-object-mutation
             accumulator[groupLabel] = accumulator[groupLabel] || [];
             accumulator[groupLabel].push(currentOpt);
             return accumulator;
@@ -73,13 +83,14 @@ export default class SelectBox_ListPreviewGrouped extends PureComponent {
      * that displays their group name.
      * @returns {JSX} option elements grouped by and labeled with their group-attribute.
      */
-    renderGroup = group => {
+    private readonly renderGroup = (group: ReadonlyArray<any>): JSX.Element => {
         const [groupLabel, optionsList] = group;
         const {theme} = this.props;
-        const groupClassName = mergeClassNames({
-            [theme.selectBox__item]: true,
-            [theme['selectBox__item--isGroup']]: true
-        });
+        const groupClassName = mergeClassNames(
+            theme.selectBox__item,
+            theme['selectBox__item--isGroup'],
+        );
+
         return (
             <li key={groupLabel} className={groupClassName}>
                 <div className={theme.selectBox__groupHeader}>
@@ -92,7 +103,7 @@ export default class SelectBox_ListPreviewGrouped extends PureComponent {
         );
     }
 
-    renderOption = (option, index) => {
+    private readonly renderOption = (option: Option, index: number) => {
         const {
             ListPreviewElement,
             optionValueAccessor,
@@ -110,30 +121,30 @@ export default class SelectBox_ListPreviewGrouped extends PureComponent {
             <li
                 key={index}
                 ref={ref => {
-                    if (ref !== null && isHighlighted) {
+                    if (ref && isHighlighted) {
+                        // tslint:disable-next-line:no-object-mutation
                         this.focusedElement = ref;
                     }
                 }}
                 role="option"
                 aria-selected={isHighlighted ? 'true' : 'false'}
                 className={theme.selectBox__item}
-                >
+            >
                 <ListPreviewElement
-
                     isHighlighted={isHighlighted}
                     option={option}
                     onClick={this.handlePreviewElementClick(option)}
                     onMouseEnter={this.handlePreviewElementMouseEnter(option)}
-                    />
+                />
             </li>
         );
     }
 
-    handlePreviewElementClick = option => () => {
+    private readonly handlePreviewElementClick = (option: Option) => () => {
         this.props.onChange(option);
     }
 
-    handlePreviewElementMouseEnter = option => () => {
+    private readonly handlePreviewElementMouseEnter = (option: Option) => () => {
         if (this.props.onOptionFocus) {
             this.props.onOptionFocus(option);
         }

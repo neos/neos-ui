@@ -79,7 +79,9 @@ class StatelessDropDownWrapperWithoutClickOutsideBehavior extends PureComponent 
     };
 
     handleClickOutside = () => {
-        this.handleClose();
+        if (this.props.isOpen) {
+            this.handleClose();
+        }
     }
 
     handleClose = event => {

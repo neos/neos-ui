@@ -19,10 +19,34 @@ export default class Frame extends PureComponent {
 
     componentDidMount() {
         this.updateIframeUrlIfNecessary();
+        this.addClickListener();
+    }
+
+    addClickListener() {
+        if (this.ref) {
+            this.ref.contentDocument.addEventListener('click', e => {
+                this.relayClickEventToHostDocument(e);
+            });
+        }
+    }
+
+    removeClickListener() {
+        if (this.ref) {
+            this.ref.contentDocument.removeEventListener('click', this.relayClickEventToHostDocument);
+        }
+    }
+
+    relayClickEventToHostDocument() {
+        window.document.dispatchEvent(new MouseEvent('click'));
+    }
+
+    componentWillUpdate() {
+        this.removeClickListener();
     }
 
     componentDidUpdate() {
         this.updateIframeUrlIfNecessary();
+        this.addClickListener();
     }
 
     // We do not use react's magic to change to a different URL in the iFrame, but do it
@@ -91,5 +115,6 @@ export default class Frame extends PureComponent {
         if (doc) {
             ReactDOM.unmountComponentAtNode(doc.body);
         }
+        this.removeClickListener();
     }
 }

@@ -1,73 +1,21 @@
-import React, {PureComponent} from 'react';
-import PropTypes from 'prop-types';
-import omit from 'lodash.omit';
+import {omit} from 'lodash';
+import React, {PureComponent, ReactNode, SyntheticEvent} from 'react';
 import ReactDOM from 'react-dom';
 
-export default class Frame extends PureComponent {
-    static propTypes = {
-        src: PropTypes.string,
-        mountTarget: PropTypes.string.isRequired,
-        contentDidUpdate: PropTypes.func.isRequired,
-        onLoad: PropTypes.func,
-        onUnload: PropTypes.func,
-        children: PropTypes.node
-    };
+export interface FrameProps extends React.IframeHTMLAttributes<HTMLIFrameElement> {
+    readonly src: string;
+    readonly mountTarget: string;
+    readonly contentDidUpdate: (window: Window, document: Document, mountTarget: Element) => void;
+    readonly onLoad: (event: SyntheticEvent<HTMLIFrameElement>) => void;
+    readonly onUnload: () => void;
+    readonly children: ReactNode;
+}
 
-    handleReference = ref => {
-        this.ref = ref;
-    };
+export default class Frame extends PureComponent<FrameProps> {
+    // tslint:disable-next-line:readonly-keyword
+    private ref?: HTMLIFrameElement;
 
-    componentDidMount() {
-        this.updateIframeUrlIfNecessary();
-        this.addClickListener();
-    }
-
-    addClickListener() {
-        if (this.ref) {
-            this.ref.contentDocument.addEventListener('click', e => {
-                this.relayClickEventToHostDocument(e);
-            });
-        }
-    }
-
-    removeClickListener() {
-        if (this.ref) {
-            this.ref.contentDocument.removeEventListener('click', this.relayClickEventToHostDocument);
-        }
-    }
-
-    relayClickEventToHostDocument() {
-        window.document.dispatchEvent(new MouseEvent('click'));
-    }
-
-    componentWillUpdate() {
-        this.removeClickListener();
-    }
-
-    componentDidUpdate() {
-        this.updateIframeUrlIfNecessary();
-        this.addClickListener();
-    }
-
-    // We do not use react's magic to change to a different URL in the iFrame, but do it
-    // explicitely (in order to avoid reloads if we are already on the correct page)
-    updateIframeUrlIfNecessary() {
-        if (!this.ref) {
-            return;
-        }
-
-        try {
-            const win = this.ref.contentWindow; // eslint-disable-line react/no-find-dom-node
-            if (win.location.href !== this.props.src) {
-                win.location = this.props.src;
-            }
-        } catch (err) {
-            console.error(`Could not update iFrame Url from within. Trying to set src attribute manually...`);
-            this.ref.setAttribute('src', this.props.src);
-        }
-    }
-
-    render() {
+    public render(): JSX.Element {
         const rest = omit(this.props, [
             'mountTarget',
             'contentDidUpdate',
@@ -78,42 +26,111 @@ export default class Frame extends PureComponent {
             'src'
         ]);
 
-        return <iframe ref={this.handleReference} onLoad={this.handleLoad} {...rest}/>;
+        return <iframe ref={this.handleReference} {...rest} onLoad={this.handleLoad} />;
     }
 
-    componentWillMount() {
-        document.addEventListener('Neos.Neos.Ui.ContentReady', this.renderFrameContents);
+    private readonly handleReference = (ref: HTMLIFrameElement) => {
+        // tslint:disable-next-line:no-object-mutation
+        this.ref = ref;
     }
 
-    handleLoad = () => {
-        const {onLoad} = this.props;
+    public componentDidMount(): void {
+        this.updateIframeUrlIfNecessary();
+        this.addClickListener();
+    }
 
-        if (typeof onLoad === 'function') {
-            onLoad(this.ref);
+    private readonly addClickListener = () => {
+        if (this.ref && this.ref.contentDocument) {
+            this.ref.contentDocument.addEventListener('click', () => {
+                this.relayClickEventToHostDocument();
+            });
         }
     }
 
-    renderFrameContents = () => {
-        const doc = ReactDOM.findDOMNode(this).contentDocument; // eslint-disable-line react/no-find-dom-node
-        const win = ReactDOM.findDOMNode(this).contentWindow; // eslint-disable-line react/no-find-dom-node
-        win.addEventListener('unload', this.props.onUnload);
-        const mountTarget = doc.querySelector(this.props.mountTarget);
-        const contents = React.createElement('div', undefined, this.props.children);
-        const iframeHtml = doc.querySelector('html');
-
-        // Center iframe
-        iframeHtml.style.margin = '0 auto';
-
-        ReactDOM.unstable_renderSubtreeIntoContainer(this, contents, mountTarget, () => {
-            this.props.contentDidUpdate(win, doc, mountTarget);
-        });
+    private readonly removeClickListener = () => {
+        if (this.ref && this.ref.contentDocument) {
+            this.ref.contentDocument.removeEventListener('click', this.relayClickEventToHostDocument);
+        }
     }
 
-    componentWillUnmount() {
-        const doc = ReactDOM.findDOMNode(this).contentDocument; // eslint-disable-line react/no-find-dom-node
-        document.removeEventListener('Neos.Neos.Ui.ContentReady', this.renderFrameContents);
-        if (doc) {
-            ReactDOM.unmountComponentAtNode(doc.body);
+    private readonly relayClickEventToHostDocument = () => {
+        window.document.dispatchEvent(new MouseEvent('click'));
+    }
+
+    public componentWillUpdate(): void {
+        this.removeClickListener();
+    }
+
+    public componentDidUpdate(): void {
+        this.updateIframeUrlIfNecessary();
+        this.addClickListener();
+    }
+
+    // We do not use react's magic to change to a different URL in the iFrame, but do it
+    // explicitely (in order to avoid reloads if we are already on the correct page)
+    private updateIframeUrlIfNecessary(): void {
+        if (!this.ref) {
+            return;
+        }
+
+        try {
+            const win = this.ref.contentWindow; // eslint-disable-line react/no-find-dom-node
+            if (win && win.location.href !== this.props.src) {
+                win.location.replace(this.props.src);
+            }
+        } catch (err) {
+            // tslint:disable-next-line:no-console
+            console.error('Could not update iFrame Url from within. Trying to set src attribute manually...');
+            this.ref.setAttribute('src', this.props.src);
+        }
+    }
+
+    public componentWillMount(): void {
+        document.addEventListener('Neos.Neos.Ui.ContentReady', this.renderFrameContents);
+    }
+
+    private readonly handleLoad = (e: SyntheticEvent<HTMLIFrameElement>) => {
+        const {onLoad} = this.props;
+
+        if (typeof onLoad === 'function' && this.ref) {
+            onLoad(e);
+        }
+    }
+
+    private readonly renderFrameContents = () => {
+        if (this.ref) {
+            const doc = this.ref.contentDocument;
+            const win = this.ref.contentWindow;
+
+            if (win && doc) {
+                win.addEventListener('unload', this.props.onUnload);
+
+                const mountTarget = doc.querySelector(this.props.mountTarget);
+                const contents = React.createElement('div', undefined, this.props.children);
+                const iframeHtml = doc.querySelector('html');
+
+                if (iframeHtml) {
+                    // Center iframe
+                    iframeHtml.style.setProperty('margin', '0 auto');
+                }
+
+                if (mountTarget) {
+                    // TODO: the way to fix this, we could use a portal: https://gist.github.com/robertgonzales/b1966af8d2a428a8299663b92fb2fe03
+                    ReactDOM.unstable_renderSubtreeIntoContainer(this, contents, mountTarget, () => {
+                        this.props.contentDidUpdate(win, doc, mountTarget);
+                    });
+                }
+            }
+        }
+    }
+
+    public componentWillUnmount(): void {
+        if (this.ref) {
+            const doc = this.ref.contentDocument; // eslint-disable-line react/no-find-dom-node
+            document.removeEventListener('Neos.Neos.Ui.ContentReady', this.renderFrameContents);
+            if (doc) {
+                ReactDOM.unmountComponentAtNode(doc.body);
+            }
         }
         this.removeClickListener();
     }

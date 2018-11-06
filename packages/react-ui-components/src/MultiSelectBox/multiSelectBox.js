@@ -4,17 +4,9 @@ import PropTypes from 'prop-types';
 import {$get} from 'plow-js';
 import mergeClassNames from 'classnames';
 import omit from 'lodash.omit';
-import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine/index';
+import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine';
 
-// TODO: document component usage && check code in detail
-export default class MultiSelectBox extends PureComponent {
-    static defaultProps = {
-        optionValueField: 'value',
-        dndType: 'multiselect-box-value',
-        allowEmpty: true,
-        ListPreviewElement: SelectBox_Option_SingleLine
-    };
-
+class MultiSelectBox extends PureComponent {
     static propTypes = {
         // ------------------------------
         // Basic Props for core functionality
@@ -33,6 +25,11 @@ export default class MultiSelectBox extends PureComponent {
                 ]).isRequired
             })
         ),
+
+        /**
+         * Additional className wich will be applied
+         */
+        className: PropTypes.string,
 
         /**
          * Field name specifying which field in a single "option" contains the "value"
@@ -76,11 +73,6 @@ export default class MultiSelectBox extends PureComponent {
          * Limit height and show scrollbars if needed, defaults to true
          */
         scrollable: PropTypes.bool,
-
-        /**
-         * Should the MultiSelectBox be highlighted? (e.g. if the property was modified)
-         */
-        highlight: PropTypes.bool,
 
         /**
          * Component used for rendering the individual option elements; Usually this component uses "SelectBoxOption" internally for common styling.
@@ -150,7 +142,6 @@ export default class MultiSelectBox extends PureComponent {
         // ------------------------------
         theme: PropTypes.shape({/* eslint-disable quote-props */
             'selectedOptions': PropTypes.string,
-            'selectedOptions--highlight': PropTypes.string,
             'selectedOptions__item': PropTypes.string
         }).isRequired, /* eslint-enable quote-props */
 
@@ -158,16 +149,27 @@ export default class MultiSelectBox extends PureComponent {
         IconComponent: PropTypes.any.isRequired,
         IconButtonComponent: PropTypes.any.isRequired,
         MultiSelectBox_ListPreviewSortable: PropTypes.any.isRequired
-    };
-
-    state = {
-        isExpanded: false,
-        focusedValue: ''
-    };
-
-    getOptionValueAccessor() {
-        return $get([this.props.optionValueField]);
     }
+
+    static defaultProps = {
+        optionValueField: 'value',
+        dndType: 'multiselect-box-value',
+        allowEmpty: true,
+        ListPreviewElement: SelectBox_Option_SingleLine
+    }
+
+    getOptionValueAccessor = () => {
+        const {optionValueField} = this.props;
+        return $get([optionValueField]);
+    };
+
+    handleNewValueSelected = value => {
+        const {onValuesChange} = this.props;
+        const values = this.props.values || [];
+        const updatedValues = [...values, value];
+
+        onValuesChange(updatedValues);
+    };
 
     render() {
         const {
@@ -175,24 +177,28 @@ export default class MultiSelectBox extends PureComponent {
             values,
             optionValueField,
             theme,
-            highlight,
             SelectBox,
             MultiSelectBox_ListPreviewSortable,
-            disabled
+            disabled,
+            className
         } = this.props;
 
         const filteredSearchOptions = (searchOptions || [])
             .filter(option => !(values && values.indexOf(option[optionValueField]) !== -1));
 
         const selectedOptionsClassNames = mergeClassNames({
-            [theme.selectedOptions]: true,
-            [theme['selectedOptions--highlight']]: highlight
+            [theme.selectedOptions]: true
         });
 
         const optionValueAccessor = this.getOptionValueAccessor();
 
+        const classNames = mergeClassNames({
+            [className]: true,
+            [theme.wrapper]: true
+        });
+
         return (
-            <div className={theme.wrapper}>
+            <div className={classNames}>
                 <ul className={selectedOptionsClassNames}>
                     <MultiSelectBox_ListPreviewSortable
                         {...omit(this.props, ['theme'])}
@@ -201,9 +207,8 @@ export default class MultiSelectBox extends PureComponent {
                         />
                 </ul>
                 <SelectBox
-                    {...omit(this.props, ['theme'])}
+                    {...omit(this.props, ['theme', 'className'])}
                     options={filteredSearchOptions}
-                    highlight={false}
                     value=""
                     onValueChange={this.handleNewValueSelected}
                     disabled={disabled}
@@ -211,10 +216,6 @@ export default class MultiSelectBox extends PureComponent {
             </div>
         );
     }
-
-    handleNewValueSelected = value => {
-        const values = this.props.values || [];
-        const updatedValues = [...values, value];
-        this.props.onValuesChange(updatedValues);
-    }
 }
+
+export default MultiSelectBox;

@@ -114,7 +114,10 @@ export default class PublishDropDown extends PureComponent {
         const mainButton = this.getTranslatedMainButton(baseWorkspaceTitle);
         const dropDownBtnClassName = mergeClassNames({
             [style.dropDown__btn]: true,
-            [style['dropDown__item--canPublish']]: canPublishGlobally
+            [style['dropDown__item--canPublish']]: canPublishGlobally,
+            [style['dropDown__item--isPublishing']]: isPublishing,
+            [style['dropDown__item--isSaving']]: isSaving,
+            [style['dropDown__item--isDiscarding']]: isDiscarding
         });
         const publishableNodesInDocumentCount = publishableNodesInDocument ? publishableNodesInDocument.count() : 0;
         const publishableNodesCount = publishableNodes ? publishableNodes.count() : 0;
@@ -123,8 +126,8 @@ export default class PublishDropDown extends PureComponent {
                 <AbstractButton
                     id="neos-PublishDropDown-Publish"
                     className={style.publishBtn}
-                    isEnabled={!isWorkspaceReadOnly && (canPublishLocally || isSaving)}
-                    isHighlighted={canPublishLocally || isSaving}
+                    isEnabled={!isWorkspaceReadOnly && (canPublishLocally)}
+                    isHighlighted={canPublishLocally || isSaving || isPublishing}
                     onClick={this.handlePublishClick}
                     >
                     {mainButton} {isWorkspaceReadOnly ? (<Icon icon="lock"/>) : ''}
@@ -132,11 +135,21 @@ export default class PublishDropDown extends PureComponent {
                 </AbstractButton>
 
                 <DropDown className={style.dropDown}>
-                    <DropDown.Header
-                        className={dropDownBtnClassName}
-                        aria-label={i18nRegistry.translate('Neos.Neos:Main:showPublishOptions', 'Show publishing options')}
+                    {isPublishing || isSaving || isDiscarding ? (
+                        <DropDown.Header
+                            iconIsOpen={'spinner'}
+                            iconIsClosed={'spinner'}
+                            iconRest={{spin: true, transform: 'up-8'}}
+                            className={dropDownBtnClassName}
+                            disabled
+                            aria-label={i18nRegistry.translate('Neos.Neos:Main:showPublishOptions', 'Show publishing options')}
                         />
-
+                    ) : (
+                        <DropDown.Header
+                            className={dropDownBtnClassName}
+                            aria-label={i18nRegistry.translate('Neos.Neos:Main:showPublishOptions', 'Show publishing options')}
+                        />
+                    )}
                     <DropDown.Contents
                         className={style.dropDown__contents}
                         >

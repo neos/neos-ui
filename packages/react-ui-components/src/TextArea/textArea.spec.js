@@ -2,16 +2,14 @@ import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
 import TextareaAutoresize from 'react-textarea-autosize';
-import {createStubComponent} from './../_lib/testUtils.js';
-import {undecorated as TextArea} from './textArea.js';
+import {undecorated as TextArea} from './textArea';
 
 describe('<TextArea/>', () => {
     let props;
 
     beforeEach(() => {
         props = {
-            theme: {},
-            TooltipComponent: createStubComponent()
+            theme: {}
         };
     });
 

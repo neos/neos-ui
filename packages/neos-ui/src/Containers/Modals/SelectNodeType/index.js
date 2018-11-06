@@ -66,7 +66,9 @@ export default class SelectNodeType extends PureComponent {
         insertMode: calculateInitialMode(
             this.props.allowedSiblingNodeTypes,
             this.props.allowedChildNodeTypes
-        )
+        ),
+        activeHelpMessageGroupPanel: '',
+        showHelpMessageFor: ''
     };
 
     componentWillReceiveProps(nextProps) {
@@ -97,6 +99,19 @@ export default class SelectNodeType extends PureComponent {
 
         apply(insertMode, nodeType);
     };
+
+    handleCloseHelpMessage = () => {
+        this.setState({
+            showHelpMessageFor: ''
+        });
+    }
+
+    handleHelpMessage = (nodeType, groupPanel) => {
+        this.setState({
+            showHelpMessageFor: nodeType === this.state.showHelpMessageFor ? '' : nodeType,
+            activeHelpMessageGroupPanel: groupPanel
+        });
+    }
 
     getAllowedNodeTypesByCurrentInsertMode() {
         const {insertMode} = this.state;
@@ -172,6 +187,10 @@ export default class SelectNodeType extends PureComponent {
                             group={group}
                             filterSearchTerm={this.state.filterSearchTerm}
                             onSelect={this.handleApply}
+                            showHelpMessageFor ={this.state.showHelpMessageFor}
+                            activeHelpMessageGroupPanel ={this.state.activeHelpMessageGroupPanel}
+                            onHelpMessage={this.handleHelpMessage}
+                            onCloseHelpMessage={this.handleCloseHelpMessage}
                             />
                     </div>
                 ))}

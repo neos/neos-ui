@@ -2,12 +2,13 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import MultiSelectBox from '@neos-project/react-ui-components/src/MultiSelectBox/';
 import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
-import AssetOption from '@neos-project/neos-ui-ckeditor-bindings/src/EditorToolbar/AssetOption';
 import {dndTypes} from '@neos-project/neos-ui-constants';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {$get} from 'plow-js';
 import Controls from './Components/Controls/index';
+import AssetOption from '../../Library/AssetOption';
 import {AssetUpload} from '../../Library/index';
+import backend from '@neos-project/neos-ui-backend-connector';
 
 const DEFAULT_FEATURES = {
     mediaBrowser: true,
@@ -29,11 +30,10 @@ export default class AssetEditor extends PureComponent {
     static propTypes = {
         // The propertyName this editor is used for, coming from the inspector
         identifier: PropTypes.string,
-
+        className: PropTypes.string,
         value: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.arrayOf(PropTypes.string), PropTypes.arrayOf(PropTypes.object)]),
         options: PropTypes.object,
         searchOptions: PropTypes.array,
-        highlight: PropTypes.bool,
         placeholder: PropTypes.string,
         onSearchTermChange: PropTypes.func,
         commit: PropTypes.func.isRequired,
@@ -79,7 +79,7 @@ export default class AssetEditor extends PureComponent {
     }
 
     getValues() {
-        const value = this.props.value;
+        const {value} = this.props;
         return Array.isArray(value) ? value.map(this.getIdentity) : [];
     }
 
@@ -106,11 +106,14 @@ export default class AssetEditor extends PureComponent {
     handleSearchTermChange = searchTerm => {
         if (searchTerm) {
             this.setState({isLoading: true, searchOptions: []});
-            this.props.assetLookupDataLoader.search({}, searchTerm)
+            this.props.assetLookupDataLoader.search({assetsToExclude: this.getValues()}, searchTerm)
                 .then(searchOptions => {
                     this.setState({
                         isLoading: false,
-                        searchOptions
+                        searchOptions: searchOptions.map(result => {
+                            result.group = result.assetSourceLabel;
+                            return result;
+                        })
                     });
                 });
         } else {
@@ -126,9 +129,27 @@ export default class AssetEditor extends PureComponent {
         this.props.commit(Array.isArray(value) ? this.getIdentity(value[0]) : this.getIdentity(value));
     }
 
-    handleValuesChange = value => {
+    handleValuesChange = values => {
         this.setState({searchOptions: []});
-        this.props.commit(Array.isArray(value) ? value.map(this.getIdentity) : value);
+        const {assetProxyImport} = backend.get().endpoints;
+        this.setState({isLoading: true});
+
+        if (Array.isArray(values)) {
+            const valuePromises = values.map(value => {
+                return (value.indexOf('/') === -1) ? Promise.resolve(value) : assetProxyImport(value);
+            });
+            Promise.all(valuePromises).then(values => {
+                this.props.commit(values.map(this.getIdentity));
+                this.setState({isLoading: false});
+            });
+        } else {
+            const value = values;
+            const valuePromise = (value.indexOf('/') === -1) ? Promise.resolve(value) : assetProxyImport(value);
+            valuePromise.then(value => {
+                this.props.commit(value.map(this.getIdentity));
+                this.setState({isLoading: false});
+            });
+        }
     }
 
     handleChooseFromMedia = () => {
@@ -175,17 +196,20 @@ export default class AssetEditor extends PureComponent {
         }
 
         const disabled = $get('options.disabled', this.props);
+        const accept = $get('options.accept', this.props);
+        const {className} = this.props;
 
         if (this.props.options.multiple) {
             return (
                 <AssetUpload
-                    highlight={this.props.highlight}
+                    className={className}
                     multiple={true}
                     multipleData={this.props.value}
                     onAfterUpload={this.handleValuesChange}
                     ref={this.setAssetUploadReference}
                     isLoading={false}
                     imagesOnly={this.props.imagesOnly}
+                    accept={accept}
                     >
                     <MultiSelectBox
                         dndType={dndTypes.MULTISELECT}
@@ -196,7 +220,6 @@ export default class AssetEditor extends PureComponent {
                         placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}
                         options={this.state.options || []}
                         values={this.getValues()}
-                        highlight={this.props.highlight}
                         onValuesChange={this.handleValuesChange}
                         displayLoadingIndicator={this.state.isLoading}
                         searchOptions={this.state.searchOptions}
@@ -212,12 +235,13 @@ export default class AssetEditor extends PureComponent {
         }
         return (
             <AssetUpload
-                highlight={this.props.highlight}
+                className={className}
                 multiple={false}
                 onAfterUpload={this.handleValueChange}
                 ref={this.setAssetUploadReference}
                 isLoading={false}
                 imagesOnly={this.props.imagesOnly}
+                accept={accept}
                 >
                 <SelectBox
                     optionValueField="identifier"
@@ -227,7 +251,6 @@ export default class AssetEditor extends PureComponent {
                     placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}
                     options={this.props.value ? this.state.options : this.state.searchOptions}
                     value={this.getValue()}
-                    highlight={this.props.highlight}
                     onValueChange={this.handleValueChange}
                     displayLoadingIndicator={this.state.isLoading}
                     showDropDownToggle={false}

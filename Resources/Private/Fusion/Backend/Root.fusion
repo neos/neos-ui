@@ -9,6 +9,7 @@ backend = Neos.Fusion:Template {
 
     headScripts = ${headScripts}
     headStylesheets = ${headStylesheets}
+    splashScreenPartial = ${splashScreenPartial}
 
     configuration = Neos.Fusion:RawArray {
         nodeTree = ${Configuration.setting('Neos.Neos.userInterface.navigateComponent.nodeTree')}
@@ -71,6 +72,15 @@ backend = Neos.Fusion:Template {
                 changeBaseWorkspace = Neos.Fusion:UriBuilder {
                     action = 'changeBaseWorkspace'
                 }
+                copyNode = Neos.Fusion:UriBuilder {
+                    action = 'copyNode'
+                }
+                cutNode = Neos.Fusion:UriBuilder {
+                    action = 'cutNode'
+                }
+                clearClipboard = Neos.Fusion:UriBuilder {
+                    action = 'clearClipboard'
+                }
                 loadTree = Neos.Fusion:UriBuilder {
                     action = 'loadTree'
                 }
@@ -79,6 +89,9 @@ backend = Neos.Fusion:Template {
                 }
                 getWorkspaceInfo = Neos.Fusion:UriBuilder {
                     action = 'getWorkspaceInfo'
+                }
+                getPolicyInfo = Neos.Fusion:UriBuilder {
+                    action = 'getPolicyInformation'
                 }
             }
         }
@@ -109,6 +122,10 @@ backend = Neos.Fusion:Template {
                 }
             }
             service = Neos.Fusion:RawArray {
+                assetProxies = Neos.Fusion:UriBuilder {
+                    controller = 'Service\\AssetProxies'
+                    action = 'index'
+                }
                 assets = Neos.Fusion:UriBuilder {
                     controller = 'Service\\Assets'
                     action = 'index'
@@ -190,7 +207,7 @@ backend = Neos.Fusion:Template {
             label = 'Neos.Neos:Main:content'
             icon = 'file'
             uri = Neos.Neos:NodeUri {
-                node = ${q(site).parent().children().get(0)}
+                node = ${site}
             }
             target = 'ContentCanvas'
 
@@ -251,7 +268,7 @@ backend = Neos.Fusion:Template {
 
                         @if {
                             isNotHiddenInMenu = ${!submodule.hideInMenu}
-                            isAvailable = ${Neos.Ui.Modules.isAvailable(submoduleName)}
+                            isAvailable = ${Neos.Ui.Modules.isAvailable(moduleName + '/' + submoduleName)}
                         }
                     }
                 }
@@ -272,6 +289,8 @@ backend = Neos.Fusion:Template {
             documentNode = ${documentNode}
             site = ${site}
             user = ${user}
+            clipboardNode = ${clipboardNode}
+            clipboardMode = ${clipboardMode}
         }
 
         @process.json = ${Json.stringify(value)}

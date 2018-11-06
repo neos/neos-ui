@@ -1,0 +1,166 @@
+/* This CSS code was extracted by hand from CKE build and some colors were altered.
+ It's not worth to set up proper CKE theme build as we only need this code for the table feature currently.
+ Feel free to remove it and setup a proper CKE styles build together with a custom theme. */
+
+.ck-hidden{
+    display:none!important
+}
+
+:root{
+    --ck-color-base-foreground:#fafafa;
+    --ck-color-base-background:#fff;
+    --ck-color-base-border:#c4c4c4;
+    --ck-color-base-action:#61b045;
+    --ck-color-base-focus:#6cb5f9;
+    --ck-color-base-text:#333;
+    --ck-color-base-active:#198cf0;
+    --ck-color-base-active-focus:#0e7fe1;
+    --ck-color-focus-border:#47a4f5;
+    --ck-color-focus-shadow:rgba(119,186,248,.5);
+    --ck-color-focus-disabled-shadow:rgba(119,186,248,.3);
+    --ck-color-text:var(--ck-color-base-text);
+    --ck-color-shadow-drop:rgba(0,0,0,.15);
+    --ck-color-shadow-inner:rgba(0,0,0,.1);
+    --ck-focus-outer-shadow-geometry:0 0 0 3px;
+    --ck-focus-outer-shadow:var(--ck-focus-outer-shadow-geometry) var(--ck-color-focus-shadow);
+    --ck-focus-disabled-outer-shadow:var(--ck-focus-outer-shadow-geometry) var(--ck-color-focus-disabled-shadow);
+    --ck-focus-ring:1px solid var(--ck-color-focus-border);
+    --ck-border-radius:2px;
+    --ck-inner-shadow:2px 2px 3px var(--ck-color-shadow-inner) inset;
+    --ck-drop-shadow:0 1px 2px 1px var(--ck-color-shadow-drop);
+    --ck-spacing-unit:0.6em;
+    --ck-spacing-large:calc(var(--ck-spacing-unit) * 1.5);
+    --ck-spacing-standard:var(--ck-spacing-unit);
+    --ck-spacing-medium:calc(var(--ck-spacing-unit) * 0.8);
+    --ck-spacing-small:calc(var(--ck-spacing-unit) * 0.5);
+    --ck-spacing-tiny:calc(var(--ck-spacing-unit) * 0.3);
+    --ck-spacing-extra-tiny:calc(var(--ck-spacing-unit) * 0.16);
+    --ck-icon-size:calc(var(--ck-line-height-base) * var(--ck-font-size-normal))
+}
+.ck.ck-icon{
+    vertical-align:middle;
+    width:var(--ck-icon-size);
+    height:var(--ck-icon-size);
+    font-size:.8333350694em;
+    will-change:transform
+}
+.ck.ck-icon,.ck.ck-icon *{
+    color:inherit;
+    cursor:inherit
+}
+.ck.ck-icon *{
+    fill:currentColor
+}
+.ck .ck-widget.ck-widget_selectable{
+    position:relative
+}
+.ck .ck-widget.ck-widget_selectable .ck-widget__selection-handler{
+    visibility:hidden;
+    position:absolute
+}
+.ck .ck-widget.ck-widget_selectable .ck-widget__selection-handler .ck-icon{
+    display:block
+}
+.ck .ck-widget.ck-widget_selectable.ck-widget_selected .ck-widget__selection-handler,.ck .ck-widget.ck-widget_selectable:hover .ck-widget__selection-handler{
+    visibility:visible
+}
+:root{
+    --ck-widget-outline-thickness:3px;
+    --ck-widget-handler-icon-size:16px;
+    --ck-widget-handler-animation-duration:200ms;
+    --ck-widget-handler-animation-curve:ease;
+    --ck-color-widget-blurred-border:#dedede;
+    --ck-color-widget-hover-border:#ffc83d;
+    --ck-color-widget-editable-focus-background:var(--ck-color-base-background);
+    --ck-color-widget-drag-handler-icon-color:var(--ck-color-base-background);
+}
+.ck .ck-widget{
+    margin:var(--ck-spacing-standard) 0;
+    padding:0;
+    outline-width:var(--ck-widget-outline-thickness);
+    outline-style:solid;
+    outline-color:transparent;
+    transition:outline-color var(--ck-widget-handler-animation-duration) var(--ck-widget-handler-animation-curve)
+}
+.ck .ck-widget.ck-widget_selected,.ck .ck-widget.ck-widget_selected:hover{
+    outline:var(--ck-widget-outline-thickness) solid var(--ck-color-focus-border)
+}
+.ck .ck-widget:hover{
+    outline-color:var(--ck-color-widget-hover-border)
+}
+.ck .ck-editor__nested-editable{
+    border:1px solid transparent
+}
+.ck .ck-editor__nested-editable.ck-editor__nested-editable_focused,.ck .ck-editor__nested-editable:focus{
+    outline:none;
+    border:var(--ck-focus-ring);
+    box-shadow:var(--ck-inner-shadow),0 0;
+    background-color:var(--ck-color-widget-editable-focus-background)
+}
+.ck .ck-widget.ck-widget_selectable .ck-widget__selection-handler{
+    padding:4px;
+    box-sizing:border-box;
+    background-color:transparent;
+    opacity:0;
+    transition:background-color var(--ck-widget-handler-animation-duration) var(--ck-widget-handler-animation-curve),visibility var(--ck-widget-handler-animation-duration) var(--ck-widget-handler-animation-curve),opacity var(--ck-widget-handler-animation-duration) var(--ck-widget-handler-animation-curve);
+    border-radius:var(--ck-border-radius) var(--ck-border-radius) 0 0;
+    transform:translateY(-100%);
+    left:calc(0px - var(--ck-widget-outline-thickness))
+}
+.ck .ck-widget.ck-widget_selectable .ck-widget__selection-handler:hover .ck-icon .ck-icon__selected-indicator{
+    opacity:1
+}
+.ck .ck-widget.ck-widget_selectable .ck-widget__selection-handler .ck-icon{
+    width:var(--ck-widget-handler-icon-size);
+    height:var(--ck-widget-handler-icon-size);
+    color:var(--ck-color-widget-drag-handler-icon-color)
+}
+.ck .ck-widget.ck-widget_selectable .ck-widget__selection-handler .ck-icon .ck-icon__selected-indicator{
+    opacity:0;
+    transition:opacity .3s var(--ck-widget-handler-animation-curve)
+}
+.ck .ck-widget.ck-widget_selectable.ck-widget_selected .ck-widget__selection-handler,.ck .ck-widget.ck-widget_selectable.ck-widget_selected:hover .ck-widget__selection-handler{
+    opacity:1;
+    background-color:var(--ck-color-focus-border)
+}
+.ck .ck-widget.ck-widget_selectable.ck-widget_selected .ck-widget__selection-handler .ck-icon .ck-icon__selected-indicator,.ck .ck-widget.ck-widget_selectable.ck-widget_selected:hover .ck-widget__selection-handler .ck-icon .ck-icon__selected-indicator{
+    opacity:1
+}
+.ck .ck-widget.ck-widget_selectable:hover .ck-widget__selection-handler{
+    opacity:1;
+    background-color:var(--ck-color-widget-hover-border)
+}
+.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected,.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected:hover{
+    outline-color:var(--ck-color-widget-blurred-border)
+}
+.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected .ck-widget__selection-handler,.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected .ck-widget__selection-handler:hover,.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected:hover .ck-widget__selection-handler,.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected:hover .ck-widget__selection-handler:hover{
+    background:var(--ck-color-widget-blurred-border)
+}
+:root{
+    --ck-color-table-focused-cell-background:#f5fafe
+}
+.ck-widget.table td.ck-editor__nested-editable.ck-editor__nested-editable_focused,.ck-widget.table th.ck-editor__nested-editable.ck-editor__nested-editable_focused{
+    background:var(--ck-color-table-focused-cell-background);
+    border-style:none;
+    outline:1px solid var(--ck-color-focus-border);
+    outline-offset:-1px
+}
+.ck-content .table{
+    display:table;
+    width: initial;
+}
+.ck-content .table table{
+    border-collapse:collapse;
+    border-spacing:0;
+    border:1px double #b3b3b3
+}
+.ck-content .table table td,.ck-content .table table th{
+    min-width:2em;
+    padding:.4em;
+    text-align:center;
+    border-color:#d9d9d9
+}
+.ck-content .table table th{
+    font-weight:700;
+    background:#fafafa
+}

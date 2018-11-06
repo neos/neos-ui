@@ -1,0 +1,7 @@
+.linkButton__flyout {
+    background-color: var(--colors-ContrastDarker);
+    position: fixed;
+    z-index: var(--zIndex-SecondaryToolbar-LinkIconButtonFlyout);
+    width: 460px;
+    border: var(--spacing-Half) solid var(--colors-ContrastDarker);
+}

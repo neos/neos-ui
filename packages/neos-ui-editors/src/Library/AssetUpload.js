@@ -19,16 +19,19 @@ export default class AssetUpload extends PureComponent {
     };
 
     static propTypes = {
+        className: PropTypes.string,
         propertyName: PropTypes.string,
         isLoading: PropTypes.bool.isRequired,
         onAfterUpload: PropTypes.func.isRequired,
+        onFileDialogCancel: PropTypes.func,
         siteNodePath: PropTypes.string.isRequired,
         focusedNodePath: PropTypes.string.isRequired,
         highlight: PropTypes.bool,
         children: PropTypes.any.isRequired,
         multiple: PropTypes.bool,
         multipleData: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.array]),
-        imagesOnly: PropTypes.bool
+        imagesOnly: PropTypes.bool,
+        accept: PropTypes.string
     };
 
     chooseFromLocalFileSystem = () => {
@@ -54,7 +57,14 @@ export default class AssetUpload extends PureComponent {
         this.uploadMultipleFiles(0, values, files);
     }
 
-    uploadMultipleFiles(index, values, files) {
+    handleFileDialogCancel = () => {
+        const {onFileDialogCancel} = this.props;
+        if (onFileDialogCancel) {
+            onFileDialogCancel();
+        }
+    }
+
+    uploadMultipleFiles = (index, values, files) => {
         const {uploadAsset} = backend.get().endpoints;
         const {onAfterUpload, focusedNodePath, siteNodePath} = this.props;
 
@@ -73,16 +83,16 @@ export default class AssetUpload extends PureComponent {
         });
     }
 
-    getUploadMetaData() {
+    getUploadMetaData = () => {
         return this.props.imagesOnly ? 'Image' : 'Asset';
     }
 
     render() {
-        const {isLoading, highlight} = this.props;
+        const {isLoading, multiple, children, accept, className} = this.props;
 
         const classNames = mergeClassNames({
-            [style.thumbnail]: true,
-            [style['thumbnail--highlight']]: highlight
+            [className]: true,
+            [style.thumbnail]: true
         });
 
         return (
@@ -91,22 +101,25 @@ export default class AssetUpload extends PureComponent {
                     <div className={classNames}>
                         {/* We should not put thumbnail__loader onto the icon, as animation would kill transform */}
                         <div className={style.thumbnail__loader}>
-                            <Icon icon="spinner" spin={true} size="big"/>
+                            <Icon icon="spinner" spin={true} size="2x"/>
                         </div>
                     </div>
                 )}
                 {/* We should not remove Dropzone element when loading, as that would kill the upload */}
-                <div style={{display: isLoading ? 'none' : 'block'}}>
+                <div className={className} style={{display: isLoading ? 'none' : 'block'}}>
                     <Dropzone
                         ref={this.setDropzoneReference}
-                        onDropAccepted={this.props.multiple ? this.handleMultiUpload : this.handleUpload}
+                        accept={accept}
+                        onDropAccepted={multiple ? this.handleMultiUpload : this.handleUpload}
+                        onDropRejected={this.handleFileDialogCancel}
+                        onFileDialogCancel={this.handleFileDialogCancel}
                         className={style.dropzone}
                         activeClassName={style['dropzone--isActive']}
                         rejectClassName={style['dropzone--isRejecting']}
                         disableClick={true}
-                        multiple={Boolean(this.props.multiple)}
+                        multiple={Boolean(multiple)}
                         >
-                        {this.props.children}
+                        {children}
                     </Dropzone>
                 </div>
             </React.Fragment>

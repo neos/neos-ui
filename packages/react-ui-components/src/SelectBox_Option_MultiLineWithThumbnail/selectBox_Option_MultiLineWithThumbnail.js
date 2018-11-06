@@ -1,10 +1,10 @@
 /* eslint-disable camelcase, react/jsx-pascal-case */
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import ListPreviewElement from '../ListPreviewElement/index';
+import ListPreviewElement from '../ListPreviewElement';
 import mergeClassNames from 'classnames';
 
-export default class SelectBox_Option_MultiLineWithThumbnail extends PureComponent {
+class SelectBox_Option_MultiLineWithThumbnail extends PureComponent {
     static propTypes = {
         label: PropTypes.string.isRequired,
         secondaryLabel: PropTypes.string,
@@ -20,7 +20,7 @@ export default class SelectBox_Option_MultiLineWithThumbnail extends PureCompone
             multiLineWithThumbnail__tertiaryLabel: PropTypes.string.isRequired,
             multiLineWithThumbnail__image: PropTypes.string.isRequired
         }).isRequired
-    };
+    }
 
     render() {
         const {
@@ -49,3 +49,5 @@ export default class SelectBox_Option_MultiLineWithThumbnail extends PureCompone
         );
     }
 }
+
+export default SelectBox_Option_MultiLineWithThumbnail;

@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import omit from 'lodash.omit';
 import mergeClassNames from 'classnames';
 import enhanceWithClickOutside from 'react-click-outside';
-import ShallowDropDownHeader from './header.js';
-import ShallowDropDownContents from './contents.js';
+import ShallowDropDownHeader from './header';
+import ShallowDropDownContents from './contents';
 
 const wrapperPropTypes = {
     /**
@@ -55,6 +55,7 @@ class StatelessDropDownWrapperWithoutClickOutsideBehavior extends PureComponent 
         onToggle: PropTypes.func.isRequired,
         onClose: PropTypes.func.isRequired
     };
+
     static defaultProps = defaultProps;
 
     static childContextTypes = {
@@ -78,7 +79,9 @@ class StatelessDropDownWrapperWithoutClickOutsideBehavior extends PureComponent 
     };
 
     handleClickOutside = () => {
-        this.handleClose();
+        if (this.props.isOpen) {
+            this.handleClose();
+        }
     }
 
     handleClose = event => {
@@ -117,6 +120,7 @@ export const StatelessDropDownWrapper = enhanceWithClickOutside(StatelessDropDow
 
 export class DropDownWrapper extends PureComponent {
     static propTypes = wrapperPropTypes;
+
     static defaultProps = defaultProps;
 
     state = {

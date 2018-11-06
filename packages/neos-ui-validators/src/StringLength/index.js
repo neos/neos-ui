@@ -14,16 +14,18 @@ const StringLength = (value, validatorOptions) => {
     if (maximum < minimum) {
         logger.error('The maximum is less than the minimum.');
         return 'The maximum is less than the minimum.';
-    } else if (minimum < 0) {
+    }
+    if (minimum < 0) {
         logger.error('The minimum StringLength can not be less than zero');
         return 'The minimum StringLength can not be less than zero';
     }
 
-    const stringLength = value.toString().length;
+    const stringLength = (value !== undefined && value !== null && value.toString) ? value.toString().length : 0;
     if (stringLength < minimum || stringLength > maximum) {
         if (minimum > 0 && maximum < 10000) {
             return <I18n id="content.inspector.validators.stringLength.outOfBounds" params={{minimum, maximum}}/>;
-        } else if (minimum > 0) {
+        }
+        if (minimum > 0) {
             return <I18n id="content.inspector.validators.stringLength.smallerThanMinimum" params={{minimum}}/>;
         }
         return <I18n id="content.inspector.validators.stringLength.greaterThanMaximum" params={{maximum}}/>;

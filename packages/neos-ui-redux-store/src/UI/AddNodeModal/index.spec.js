@@ -95,34 +95,34 @@ test(`The "toggleGroup" action should work with fresh state.`, () => {
     const state = Immutable.fromJS({
         ui: {
             addNodeModal: {
-                collapsedGroups: []
+                toggledGroups: []
             }
         }
     });
     const nextState = reducer(state, actions.toggleGroup('test'));
 
-    expect(nextState.get('ui').get('addNodeModal').get('collapsedGroups').toJS()).toEqual(['test']);
+    expect(nextState.get('ui').get('addNodeModal').get('toggledGroups').toJS()).toEqual(['test']);
 });
 
 test(`The "toggleGroup" action should toggle set group.`, () => {
     const state = Immutable.fromJS({
         ui: {
             addNodeModal: {
-                collapsedGroups: []
+                toggledGroups: []
             }
         }
     });
     const nextState1 = reducer(state, actions.toggleGroup('test'));
     const nextState2 = reducer(nextState1, actions.toggleGroup('test'));
 
-    expect(nextState2.get('ui').get('addNodeModal').get('collapsedGroups').toJS()).toEqual([]);
+    expect(nextState2.get('ui').get('addNodeModal').get('toggledGroups').toJS()).toEqual([]);
 });
 
 test(`The "toggleGroup" action should work with multiple groups.`, () => {
     const state = Immutable.fromJS({
         ui: {
             addNodeModal: {
-                collapsedGroups: []
+                toggledGroups: []
             }
         }
     });
@@ -131,8 +131,8 @@ test(`The "toggleGroup" action should work with multiple groups.`, () => {
     const nextState3 = reducer(nextState2, actions.toggleGroup('test1'));
     const nextState4 = reducer(nextState3, actions.toggleGroup('test2'));
 
-    expect(nextState1.get('ui').get('addNodeModal').get('collapsedGroups').toJS()).toEqual(['test1']);
-    expect(nextState2.get('ui').get('addNodeModal').get('collapsedGroups').toJS()).toEqual(['test1', 'test2']);
-    expect(nextState3.get('ui').get('addNodeModal').get('collapsedGroups').toJS()).toEqual(['test2']);
-    expect(nextState4.get('ui').get('addNodeModal').get('collapsedGroups').toJS()).toEqual([]);
+    expect(nextState1.get('ui').get('addNodeModal').get('toggledGroups').toJS()).toEqual(['test1']);
+    expect(nextState2.get('ui').get('addNodeModal').get('toggledGroups').toJS()).toEqual(['test1', 'test2']);
+    expect(nextState3.get('ui').get('addNodeModal').get('toggledGroups').toJS()).toEqual(['test2']);
+    expect(nextState4.get('ui').get('addNodeModal').get('toggledGroups').toJS()).toEqual([]);
 });

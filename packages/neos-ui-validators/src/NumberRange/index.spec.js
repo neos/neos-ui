@@ -98,3 +98,9 @@ test('"abc" should not be valid', () => {
 
     expect(numberRangeValidator('abc', validatorOptions)).not.toBe(null);
 });
+
+test('emptyish should pass', () => {
+    expect(numberRangeValidator(null)).toBe(null);
+    expect(numberRangeValidator(undefined)).toBe(null);
+    expect(numberRangeValidator('')).toBe(null);
+});

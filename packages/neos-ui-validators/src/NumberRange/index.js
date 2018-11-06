@@ -8,6 +8,9 @@ import logger from '@neos-project/utils-logger';
  * specified in the validation options.
  */
 const NumberRange = (value, validatorOptions) => {
+    if (value === undefined || value === null || value === '') {
+        return null;
+    }
     const minimum = parseInt(validatorOptions.minimum, 10);
     const maximum = parseInt(validatorOptions.maximum, 10);
 
@@ -26,7 +29,8 @@ const NumberRange = (value, validatorOptions) => {
 
     if (value.length > 0 && !Number.isSafeInteger(number)) {
         return <I18n id="content.inspector.validators.numberRangeValidator.validNumberExpected"/>;
-    } else if (number < minimum || number > maximum) {
+    }
+    if (number < minimum || number > maximum) {
         return <I18n id="content.inspector.validators.numberRangeValidator.numberShouldBeInRange" params={{minimum, maximum}}/>;
     }
     return null;

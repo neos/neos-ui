@@ -1,7 +1,7 @@
 import React from 'react';
 import {storiesOf, action} from '@storybook/react';
-import {StoryWrapper} from './../_lib/storyUtils.js';
-import Tree from './index.js';
+import {StoryWrapper} from './../_lib/storyUtils';
+import Tree from '.';
 
 storiesOf('Tree', module)
     .addWithInfo(

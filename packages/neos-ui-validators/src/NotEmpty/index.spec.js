@@ -15,3 +15,9 @@ test('[] should be empty', () => {
 test('[1,2,3] should not be empty', () => {
     expect(notEmptyValidator([1, 2, 3])).toBe(null);
 });
+
+test('emptyish should fail', () => {
+    expect(notEmptyValidator(null)).not.toBe(null);
+    expect(notEmptyValidator(undefined)).not.toBe(null);
+    expect(notEmptyValidator('')).not.toBe(null);
+});

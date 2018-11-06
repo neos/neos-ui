@@ -1,0 +1,16 @@
+.contents {
+    width: 180px;
+}
+.button {
+    width: 100%;
+    border-top: 1px solid var(--colors-ContrastDarker);
+    text-align: left;
+}
+.checkBox {
+    height: var(--spacing-GoldenUnit);
+    border-top: 1px solid var(--colors-ContrastDarker);
+    padding-top: var(--spacing-Half);
+    padding-left: var(--spacing-Full);
+    display: block;
+    cursor: pointer;
+}

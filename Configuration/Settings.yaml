@@ -25,6 +25,9 @@ Neos:
         Neos.Neos.Ui: true
     Ui:
 
+      splashScreen:
+        partial: 'SplashScreen'
+
       # API: "start 100" and smaller numbers; "no numbers", ...
       resources:
 
@@ -32,9 +35,11 @@ Neos:
           'Neos.Neos.UI:Vendor':
             resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/JavaScript/Vendor.js"}'
             position: 'start 1000'
+            defer: true
           'Neos.Neos.UI:Host':
             resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/JavaScript/Host.js"}'
             position: 'start 900'
+            defer: true
 
         stylesheets:
           'Neos.Neos.UI:Host':
@@ -54,17 +59,53 @@ Neos:
         #   someKey: someValue
 
         hotkeys:
+
           'UI.RightSideBar.toggle': 't i'
+
           'UI.FullScreen.toggle': 't f'
+          'UI.LeftSideBar.toggle': 't l'
+          'UI.LeftSideBar.toggleContentTree': 't c'
+
+          'UI.AddNodeModal.close': 'c m'
+
+          'UI.Drawer.toggle': 't d'
+
+          'UI.EditModePanel.toggle': 't e'
+
+          'UI.InsertionModeModal.cancel': 'c i'
+          'UI.InsertionModeModal.apply': 'a i'
+
+          'UI.ContentCanvas.reload': 'r c'
+
+          'UI.Inspector.discard': 'd i'
+          'UI.Inspector.escape': 'e i'
+          'UI.Inspector.resume': 'r i'
+
+          'UI.NodeCreationDialog.back': 'b n'
+          'UI.NodeCreationDialog.cancel': 'c n'
+          'UI.NodeCreationDialog.apply': 'a n'
+
+          'UI.NodeVariantCreationDialog.cancel': 'c v'
+          'UI.NodeVariantCreationDialog.createEmpty': 'c e v'
+          'UI.NodeVariantCreationDialog.createAndCopy': 'c c v'
+
+          'UI.SelectNodeTypeModal.cancel': 'c s'
+          'UI.SelectNodeTypeModal.apply': 'a s'
+
+          'CR.Nodes.unfocus': 'u n'
 
         legacy:
           enableUiSwitch: false
+
+        defaultInlineEditor: 'ckeditor'
 
       #################################
       # INTERNAL CONFIG (no API)
       #################################
       frontendDevelopmentMode: false
       nodeTypeRoles:
+        # The ignored types will never have metadata in the UI, they are invisible to the content module.
+        ignored: 'unstructured'
         document: 'Neos.Neos:Document'
         content: 'Neos.Neos:Content'
         contentCollection: 'Neos.Neos:ContentCollection'
@@ -85,11 +126,11 @@ Neos:
         metaData:
           contextPath: '${q(documentNode).property("_contextPath")}'
           siteNode: '${q(site).property(''_contextPath'')}'
-          previewUrl: '${Neos.Ui.NodeInfo.uri(q(documentNode).context({workspaceName: documentNode.context.workspace.baseWorkspace.name}).get(0), controllerContext)}'
+          previewUrl: '${Neos.Ui.NodeInfo.createRedirectToNode(controllerContext, q(documentNode).context({workspaceName: documentNode.context.workspace.baseWorkspace.name}).get(0))}'
           contentDimensions:
             active: '${documentNode.context.dimensions}'
             allowedPresets: '${Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions)}'
-          documentNodeSerialization: '${Neos.Ui.NodeInfo.renderNode(documentNode, controllerContext)}'
+          documentNodeSerialization: '${Neos.Ui.NodeInfo.renderNodeWithPropertiesAndChildrenInformation(documentNode, controllerContext)}'
           url: '${Neos.Ui.NodeInfo.uri(documentNode, controllerContext)}'
       initialState:
         changes:
@@ -100,6 +141,8 @@ Neos:
           nodes:
             byContextPath: '${Neos.Ui.NodeInfo.defaultNodesForBackend(site, documentNode, controllerContext)}'
             siteNode: '${q(site).property(''_contextPath'')}'
+            clipboard: '${clipboardNode || ""}'
+            clipboardMode: '${clipboardMode || ""}'
           contentDimensions:
             byName: '${Neos.Ui.ContentDimensions.contentDimensionsByName()}'
             active: '${documentNode.context.dimensions}'

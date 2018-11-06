@@ -1,5 +1,5 @@
 import {createAction} from 'redux-actions';
-import Immutable, {Map} from 'immutable';
+import {Map} from 'immutable';
 import {$all, $set, $drop, $get, $merge} from 'plow-js';
 
 import {handleActions} from '@neos-project/utils-redux';
@@ -7,6 +7,7 @@ import {actionTypes as system} from '../../System/index';
 
 import * as selectors from './selectors';
 import {parentNodeContextPath} from './helpers';
+import {fromJSOrdered} from '@neos-project/utils-helpers';
 
 const ADD = '@neos/neos-ui/CR/Nodes/ADD';
 const MERGE = '@neos/neos-ui/CR/Nodes/MERGE';
@@ -23,6 +24,7 @@ const COPY = '@neos/neos-ui/CR/Nodes/COPY';
 const CUT = '@neos/neos-ui/CR/Nodes/CUT';
 const MOVE = '@neos/neos-ui/CR/Nodes/MOVE';
 const PASTE = '@neos/neos-ui/CR/Nodes/PASTE';
+const COMMIT_PASTE = '@neos/neos-ui/CR/Nodes/COMMIT_PASTE';
 const HIDE = '@neos/neos-ui/CR/Nodes/HIDE';
 const SHOW = '@neos/neos-ui/CR/Nodes/SHOW';
 const UPDATE_URI = '@neos/neos-ui/CR/Nodes/UPDATE_URI';
@@ -46,6 +48,7 @@ export const actionTypes = {
     CUT,
     MOVE,
     PASTE,
+    COMMIT_PASTE,
     HIDE,
     SHOW,
     UPDATE_URI
@@ -166,6 +169,12 @@ const move = createAction(MOVE, (nodeToBeMoved, targetNode, position) => ({nodeT
 const paste = createAction(PASTE, (contextPath, fusionPath) => ({contextPath, fusionPath}));
 
 /**
+ * Marks the moment when the actual paste request is commited
+ *
+ */
+const commitPaste = createAction(COMMIT_PASTE, clipboardMode => clipboardMode);
+
+/**
  * Hide the given node
  *
  * @param {String} contextPath The context path of the node to be hidden
@@ -207,6 +216,7 @@ export const actions = {
     cut,
     move,
     paste,
+    commitPaste,
     hide,
     show,
     updateUri
@@ -219,23 +229,23 @@ export const reducer = handleActions({
     [system.INIT]: state => $set(
         'cr.nodes',
         new Map({
-            byContextPath: Immutable.fromJS($get('cr.nodes.byContextPath', state)) || new Map(),
+            byContextPath: fromJSOrdered($get('cr.nodes.byContextPath', state)) || new Map(),
             siteNode: $get('cr.nodes.siteNode', state) || '',
             focused: new Map({
                 contextPath: '',
                 fusionPath: ''
             }),
             toBeRemoved: '',
-            clipboard: '',
-            clipboardMode: ''
+            clipboard: $get('cr.nodes.clipboard', state) || '',
+            clipboardMode: $get('cr.nodes.clipboardMode', state) || ''
         })
     ),
     [ADD]: ({nodeMap}) => $all(
         ...Object.keys(nodeMap).map(contextPath => $set(
             ['cr', 'nodes', 'byContextPath', contextPath],
-            Immutable.fromJS(
+            fromJSOrdered(
                 //
-                // the data is passed from *the guest iFrame*. Because of this, at least in Chrome, Immutable.fromJS() does not do anything;
+                // the data is passed from *the guest iFrame*. Because of this, at least in Chrome, fromJSOrdered() does not do anything;
                 // as the object has a different prototype than the default "Object". For this reason, we need to JSON-encode-and-decode
                 // the data, to scope it relative to *this* frame.
                 //
@@ -285,25 +295,29 @@ export const reducer = handleActions({
     [MERGE]: ({nodeMap}) => $all(
         ...Object.keys(nodeMap).map(contextPath => $merge(
             ['cr', 'nodes', 'byContextPath', contextPath],
-            Immutable.fromJS(
+            fromJSOrdered(
                 //
-                // the data is passed from *the guest iFrame*. Because of this, at least in Chrome, Immutable.fromJS() does not do anything;
+                // the data is passed from *the guest iFrame*. Because of this, at least in Chrome, fromJSOrdered() does not do anything;
                 // as the object has a different prototype than the default "Object". For this reason, we need to JSON-encode-and-decode
                 // the data, to scope it relative to *this* frame.
                 //
                 JSON.parse(JSON.stringify(nodeMap[contextPath]))
             )
         )),
-        ...Object.keys(nodeMap).map(contextPath => $set(
+        ...Object.keys(nodeMap).filter(contextPath => nodeMap[contextPath].children !== undefined).map(contextPath => $set(
             ['cr', 'nodes', 'byContextPath', contextPath, 'children'],
-            Immutable.fromJS(
+            fromJSOrdered(
                 //
-                // the data is passed from *the guest iFrame*. Because of this, at least in Chrome, Immutable.fromJS() does not do anything;
+                // the data is passed from *the guest iFrame*. Because of this, at least in Chrome, fromJSOrdered() does not do anything;
                 // as the object has a different prototype than the default "Object". For this reason, we need to JSON-encode-and-decode
                 // the data, to scope it relative to *this* frame.
                 //
                 JSON.parse(JSON.stringify(nodeMap[contextPath].children))
             )
+        )),
+        ...Object.keys(nodeMap).filter(contextPath => nodeMap[contextPath].matchesCurrentDimensions !== undefined).map(contextPath => $set(
+            ['cr', 'nodes', 'byContextPath', contextPath, 'matchesCurrentDimensions'],
+            nodeMap[contextPath].matchesCurrentDimensions
         )),
     ),
     [FOCUS]: ({contextPath, fusionPath}) => state => $all(
@@ -330,7 +344,7 @@ export const reducer = handleActions({
             contextPath: '',
             fusionPath: ''
         })),
-        merge ? $merge('cr.nodes.byContextPath', Immutable.fromJS(nodes)) : $set('cr.nodes.byContextPath', Immutable.fromJS(nodes))
+        merge ? $merge('cr.nodes.byContextPath', fromJSOrdered(nodes)) : $set('cr.nodes.byContextPath', fromJSOrdered(nodes))
     ),
     [COPY]: contextPath => $all(
         $set('cr.nodes.clipboard', contextPath),
@@ -340,7 +354,16 @@ export const reducer = handleActions({
         $set('cr.nodes.clipboard', contextPath),
         $set('cr.nodes.clipboardMode', 'Move')
     ),
-    [PASTE]: () => $set('cr.nodes.clipboard', ''),
+    [COMMIT_PASTE]: clipboardMode => state => {
+        if (clipboardMode === 'Move') {
+            return $all(
+                $set('cr.nodes.clipboard', ''),
+                $set('cr.nodes.clipboardMode', ''),
+                state
+            );
+        }
+        return state;
+    },
     [HIDE]: contextPath => $set(['cr', 'nodes', 'byContextPath', contextPath, 'properties', '_hidden'], true),
     [SHOW]: contextPath => $set(['cr', 'nodes', 'byContextPath', contextPath, 'properties', '_hidden'], false),
     [UPDATE_URI]: ({oldUriFragment, newUriFragment}) => state => {

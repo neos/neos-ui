@@ -1,9 +1,9 @@
 {
   "collectCoverageFrom": [
-    "src/**/*.js"
+    "src/**/*.{js,ts,tsx}"
   ],
   "coveragePathIgnorePatterns": [
-    "\\.(story.js)$"
+    "\\.((story|spec).(js|tsx?))$"
   ],
   "transformIgnorePatterns": ["node_modules/(?!@neos-project)"],
   "unmockedModulePathPatterns": [
@@ -15,12 +15,21 @@
   ],
   "testEnvironment": "node",
   "testMatch": [
-    "./src/**/?(*.)spec.js"
+    "**/src/**/?(*.)spec.{js,ts,tsx}"
   ],
   "transform": {
-    "^.+\\.js$": "babel-jest"
+    "^.+\\.js$": "babel-jest",
+    "^.+\\.tsx?$": "ts-jest"
   },
   "moduleNameMapper": {
     "\\.css$": "identity-obj-proxy"
-  }
+  },
+  "moduleFileExtensions": [
+    "ts",
+    "tsx",
+    "js",
+    "jsx",
+    "json",
+    "node"
+  ]
 }

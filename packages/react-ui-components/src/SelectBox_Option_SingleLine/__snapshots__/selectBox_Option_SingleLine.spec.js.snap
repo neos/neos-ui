@@ -5,7 +5,7 @@ exports[`<SelectBox_Option_SingleLine/> should render correctly. 1`] = `
   ListPreviewElement={[Function]}
   className=""
   label="Foo label"
-  onClick={[Function]}
+  onClick={[MockFunction]}
   option={
     Object {
       "label": "",

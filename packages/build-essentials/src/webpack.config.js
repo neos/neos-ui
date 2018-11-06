@@ -34,20 +34,36 @@ const webpackConfig = {
         rules: [
             {
                 test: /\.js$/,
-                exclude: /node_modules\/((?!@neos-project).)*$/,
+                exclude: /node_modules\/(?!@ckeditor)(?!@neos-project).*$/,
                 use: [{
                     loader: 'babel-loader'
                 }]
             },
             {
+                test: /\.tsx?$/,
+                exclude: /node_modules/,
+                use: [{
+                    loader: 'ts-loader'
+                }]
+            },
+            {
                 test: /\.json$/,
-                exclude: /node_modules\/((?!@neos-project).)*$/,
+                exclude: /node_modules\/(?!@neos-project).*$/,
                 use: [{
                     loader: 'json-loader'
                 }]
             },
             {
+                test: /node_modules\/@ckeditor\/.*\.svg$/,
+                use: ['raw-loader']
+            },
+            {
+                test: /node_modules\/@ckeditor\/.*\.css$/,
+                use: ['null-loader']
+            },
+            {
                 test: /\.(woff|woff2|eot|ttf|svg)$/,
+                exclude: /node_modules\/@ckeditor.*$/,
                 use: [{
                     loader: 'url-loader',
                     options: {
@@ -58,7 +74,7 @@ const webpackConfig = {
                 }]
             },
             {
-                test: /node_modules\/@fortawesome\/fontawesome\/styles\.css$/,
+                test: /node_modules\/@fortawesome\/fontawesome-svg-core\/styles\.css$/,
                 use: extractCss.extract({
                     use: [{
                         loader: 'css-loader'
@@ -75,7 +91,10 @@ const webpackConfig = {
             },
             {
                 test: /\.css$/,
-                exclude: /node_modules\/@fortawesome\/fontawesome\/styles\.css$/,
+                exclude: [
+                    /node_modules\/@fortawesome\/fontawesome-svg-core\/styles\.css$/,
+                    /node_modules\/@ckeditor.*$/
+                ],
                 use: extractCss.extract({
                     use: [{
                         loader: 'css-loader',
@@ -122,7 +141,8 @@ const webpackConfig = {
     resolve: {
         modules: [
             path.resolve(rootPath, './node_modules')
-        ]
+        ],
+        extensions: ['.ts', '.tsx', '.js']
     },
 
     output: {

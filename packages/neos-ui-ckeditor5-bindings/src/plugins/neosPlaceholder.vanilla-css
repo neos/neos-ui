@@ -1,0 +1,5 @@
+[data-neos-placeholder]:before {
+    color: #999;
+    content: attr(data-neos-placeholder);
+    cursor: text;
+}

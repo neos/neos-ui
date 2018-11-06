@@ -1,8 +1,8 @@
 import {$get} from 'plow-js';
-import Immutable from 'immutable';
 import {createSelector, defaultMemoize} from 'reselect';
 
 import {getCurrentContentCanvasContextPath} from './../../UI/ContentCanvas/selectors';
+import {fromJSOrdered} from '@neos-project/utils-helpers';
 
 const nodes = $get(['cr', 'nodes', 'byContextPath']);
 const siteNode = $get('cr.nodes.siteNode');
@@ -75,7 +75,10 @@ export const makeChildrenOfSelector = allowedNodeTypes => createSelector(
     ],
     (childNodeEnvelopes, nodesByContextPath) => (childNodeEnvelopes || [])
     .filter(
-        childNodeEnvelope => allowedNodeTypes.includes($get('nodeType', childNodeEnvelope))
+        childNodeEnvelope => {
+            const nodeType = $get('nodeType', childNodeEnvelope);
+            return allowedNodeTypes.includes(nodeType) || nodeType === 'Neos.Neos:FallbackNode';
+        }
     )
     .map(
         $get('contextPath')
@@ -314,7 +317,7 @@ export const focusedNodeParentLineSelector = createSelector(
         (_, highestConsideredParentNode) => highestConsideredParentNode
     ],
     (focusedNode, nodesByContextPath, highestConsideredParentNode) => {
-        let result = Immutable.fromJS([focusedNode]);
+        let result = fromJSOrdered([focusedNode]);
         let currentNode = focusedNode;
 
         while (currentNode && $get('contextPath', currentNode) !== $get('contextPath', highestConsideredParentNode)) {

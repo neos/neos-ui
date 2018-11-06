@@ -1,13 +1,14 @@
 /* eslint-disable camelcase, react/jsx-pascal-case */
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
+import omit from 'lodash.omit';
 
 /**
  * **SelectBox_Header is an internal implementation detail of SelectBox**, meant to improve code quality.
  *
  * It is used inside SelectBox as the header component which displays the currently selected value.
  */
-export default class SelectBox_Header extends PureComponent {
+class SelectBox_Header extends PureComponent {
     static propTypes = {
         // API with SelectBox
         option: PropTypes.shape({
@@ -34,12 +35,27 @@ export default class SelectBox_Header extends PureComponent {
         ListPreviewElement: PropTypes.any.isRequired
     }
 
+    resetButton = () => {
+        const {showResetButton} = this.props;
+        if (showResetButton) {
+            const {IconButton, theme, disabled, onReset} = this.props;
+            const onClick = event => disabled ? null : onReset(event);
+
+            return (
+                <span>
+                    <IconButton className={theme.selectBoxHeader__icon} disabled={disabled} icon="times" onClick={onClick}/>
+                    <span className={theme.selectBoxHeader__seperator}/>
+                </span>
+            );
+        }
+
+        return '';
+    }
+
     render() {
         const {
             option,
-            showResetButton,
             theme,
-            IconButton,
             placeholder,
             placeholderIcon,
             displayLoadingIndicator,
@@ -50,20 +66,7 @@ export default class SelectBox_Header extends PureComponent {
 
         const label = option ? option.label : placeholder;
         const icon = option && option.icon ? option.icon : placeholderIcon;
-        const onClick = event => disabled ? null : this.props.onReset(event);
-
-        const resetButton = () => {
-            if (showResetButton) {
-                return (
-                    <span>
-                        <IconButton className={theme.selectBoxHeader__icon} disabled={disabled} icon="times" onClick={onClick}/>
-                        <span className={theme.selectBoxHeader__seperator}/>
-                    </span>
-                );
-            }
-
-            return '';
-        };
+        const restProps = omit(this.props, ['showResetButton, IconButton']);
 
         return (
             <div className={theme.selectBoxHeader}>
@@ -74,15 +77,17 @@ export default class SelectBox_Header extends PureComponent {
                 ) : (
                     <div className={theme.selectBoxHeader__innerPreview}>
                         {option ? <ListPreviewElement
-                            {...this.props}
+                            {...restProps}
                             label={label}
                             icon={icon}
                             disabled={disabled}
                             /> : <div className={theme.selectBoxHeader__label}>{label}</div>}
                     </div>
                 )}
-                {resetButton()}
+                {this.resetButton()}
             </div>
         );
     }
 }
+
+export default SelectBox_Header;

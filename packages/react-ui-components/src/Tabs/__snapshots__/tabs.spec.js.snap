@@ -106,19 +106,7 @@ exports[`<Tabs/> should render correctly. 1`] = `
           "display": "none",
         }
       }
-    >
-      <Panel
-        icon="icon 2"
-        theme={
-          Object {
-            "panel": "panelBaseClassName",
-          }
-        }
-        title="foo 2"
-      >
-        Foo 2
-      </Panel>
-    </div>
+    />
     <div
       aria-hidden="true"
       key="2/.2"
@@ -128,19 +116,7 @@ exports[`<Tabs/> should render correctly. 1`] = `
           "display": "none",
         }
       }
-    >
-      <Panel
-        icon="icon 3"
-        theme={
-          Object {
-            "panel": "panelBaseClassName",
-          }
-        }
-        title="foo 3"
-      >
-        Foo 3
-      </Panel>
-    </div>
+    />
   </div>
 </div>
 `;

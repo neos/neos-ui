@@ -1,9 +1,9 @@
 import {createAction} from 'redux-actions';
-import Immutable from 'immutable';
 import {$get, $set, $toggle} from 'plow-js';
 
 import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from '../../System/index';
+import {fromJSOrdered} from '@neos-project/utils-helpers';
 
 const TOGGLE = '@neos/neos-ui/UI/EditModePanel/TOGGLE';
 
@@ -32,7 +32,7 @@ export const actions = {
 export const reducer = handleActions({
     [system.INIT]: payload => $set(
         'ui.editModePanel',
-        Immutable.fromJS($get('ui.editModePanel', payload) ? $get('ui.editModePanel', payload) : {isHidden: true})
+        fromJSOrdered($get('ui.editModePanel', payload) ? $get('ui.editModePanel', payload) : {isHidden: true})
     ),
     [TOGGLE]: () => $toggle('ui.editModePanel.isHidden')
 });

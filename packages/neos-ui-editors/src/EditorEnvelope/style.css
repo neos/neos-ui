@@ -1,4 +1,26 @@
-.envelope__error {
-    padding: .5em;
-    border: 1px solid var(--colors-Error);
+.envelope__label {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.envelope__tooltipButton {
+    padding-left: var(--spacing-Half);
+}
+
+.envelope__helpmessage {
+    position: absolute;
+    z-index: var(--zIndex-NodeToolBar);
+    max-width: 100%;
+}
+.envelope--invalid {
+    outline: 2px solid var(--colors-Error);
+}
+
+.envelope--highlight {
+    outline: 2px solid var(--colors-Success);
+}
+
+.envelope__helpThumbnail {
+    max-width: 100%;
 }

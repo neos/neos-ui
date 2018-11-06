@@ -10,17 +10,14 @@ const defaultOptions = {
     maxlength: null,
     readonly: false
 };
-
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')
 }))
-
 export default class TextField extends PureComponent {
     static propTypes = {
+        className: PropTypes.string,
         value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         commit: PropTypes.func.isRequired,
-        validationErrors: PropTypes.array,
-        highlight: PropTypes.bool,
         options: PropTypes.object,
         onKeyPress: PropTypes.func,
         onEnterKey: PropTypes.func,
@@ -34,20 +31,19 @@ export default class TextField extends PureComponent {
     };
 
     render() {
-        const {id, value, commit, validationErrors, options, i18nRegistry, highlight, onKeyPress, onEnterKey} = this.props;
+        const {id, value, className, commit, options, i18nRegistry, onKeyPress, onEnterKey} = this.props;
 
         // Placeholder text must be unescaped in case html entities were used
         const placeholder = options && options.placeholder && i18nRegistry.translate(unescape(options.placeholder));
         const finalOptions = Object.assign({}, defaultOptions, options);
 
         return (<TextInput
+            className={className}
             id={id}
             autoFocus={finalOptions.autoFocus}
             value={value}
             onChange={commit}
-            validationErrors={validationErrors}
             placeholder={placeholder}
-            highlight={highlight}
             onKeyPress={onKeyPress}
             onEnterKey={onEnterKey}
             disabled={finalOptions.disabled}

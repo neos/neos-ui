@@ -105,7 +105,7 @@ test(`The reducer should create a valid initial state`, () => {
 
 test(`SELECT_PRESET should add the selected preset's dimension values to the active state`, () => {
     const state = Immutable.fromJS(fixtures.dimensionState);
-    const action = actions.selectPreset('topicfocus', 'sports');
+    const action = actions.selectPreset({topicfocus: 'sports'});
     const nextState = reducer(state, action);
 
     expect(nextState).toMatchSnapshot();
@@ -113,7 +113,7 @@ test(`SELECT_PRESET should add the selected preset's dimension values to the act
 
 test(`SELECT_PRESET should overwrite the currently selected dimension values`, () => {
     const state = Immutable.fromJS(fixtures.dimensionState);
-    const action = actions.selectPreset('language', 'en_UK');
+    const action = actions.selectPreset({language: 'en_UK'});
     const nextState = reducer(state, action);
 
     expect(nextState).toMatchSnapshot();

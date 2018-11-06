@@ -31,12 +31,18 @@ class RenderConfigurationImplementation extends AbstractFusionObject
      */
     protected $settings;
 
-    protected function getContext()
+    /**
+     * @return array
+     */
+    protected function getContext(): array
     {
         return $this->fusionValue('context');
     }
 
-    protected function getPath()
+    /**
+     * @return string
+     */
+    protected function getPath(): string
     {
         return $this->fusionValue('path');
     }

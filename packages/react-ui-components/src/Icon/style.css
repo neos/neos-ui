@@ -7,18 +7,6 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-.icon--big {
-    font-size: 1.5em;
-}
-.icon--medium {
-    font-size: 1.25em;
-}
-.icon--small {
-    font-size: .75em;
-}
-.icon--tiny {
-    font-size: .5em;
-}
 .icon--paddedLeft {
     margin-left: .75em;
 }
@@ -26,15 +14,14 @@
     margin-right: .75em;
 }
 
-@keyframes fa-spin {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(359deg);
-    }
+.icon--color-warn {
+    color: var(--colors-Warn);
 }
 
-.icon--spin {
-    animation: fa-spin 2s infinite linear;
+.icon--color-error {
+    color: var(--colors-Error);
+}
+
+.icon--color-primaryBlue {
+    color: var(--colors-PrimaryBlue);
 }

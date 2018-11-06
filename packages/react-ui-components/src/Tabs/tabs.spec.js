@@ -1,9 +1,9 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import {createStubComponent} from './../_lib/testUtils.js';
-import Tabs, {TabMenuItem} from './tabs.js';
-import Panel from './panel.js';
+import {createStubComponent} from './../_lib/testUtils';
+import Tabs, {TabMenuItem} from './tabs';
+import Panel from './panel';
 
 describe('<Tabs/>', () => {
     let panelProps;

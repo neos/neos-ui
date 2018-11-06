@@ -17,7 +17,11 @@
     &[disabled] {
         cursor: not-allowed;
     }
- }
+}
 .btn--highlighted {
     background: var(--colors-Warn);
+
+    &:hover {
+        background: var(--colors-WarnHover);
+    }
 }

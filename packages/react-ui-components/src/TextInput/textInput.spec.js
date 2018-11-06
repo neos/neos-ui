@@ -1,16 +1,14 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import {createStubComponent} from './../_lib/testUtils.js';
-import TextInput from './textInput.js';
+import TextInput from './textInput';
 
 describe('<TextInput/>', () => {
     let props;
 
     beforeEach(() => {
         props = {
-            theme: {},
-            TooltipComponent: createStubComponent()
+            theme: {}
         };
     });
 

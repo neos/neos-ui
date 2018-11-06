@@ -17,26 +17,27 @@ class DateTime extends PureComponent {
     static propTypes = {
         value: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
         commit: PropTypes.func.isRequired,
-        highlight: PropTypes.bool,
-        placeholder: PropTypes.string,
-        options: PropTypes.object,
+        className: PropTypes.string,
+        options: PropTypes.shape({
+            format: PropTypes.string,
+            placeholder: PropTypes.string,
+            minuteStep: PropTypes.number,
+            timeConstraints: PropTypes.object
+        }),
         id: PropTypes.string,
         i18nRegistry: PropTypes.object,
-        interfaceLanguage: PropTypes.string,
-        validationErrors: PropTypes.array
+        interfaceLanguage: PropTypes.string
     }
 
     render() {
         const {
             id,
+            className,
             value,
             commit,
-            placeholder,
             options,
             i18nRegistry,
-            highlight,
-            interfaceLanguage,
-            validationErrors
+            interfaceLanguage
         } = this.props;
         const mappedValue = (typeof value === 'string' && value.length) ? moment(value).toDate() : (value || undefined);
 
@@ -44,21 +45,27 @@ class DateTime extends PureComponent {
             commit(date ? moment(date).format('YYYY-MM-DDTHH:mm:ssZ') : '');
         };
 
+        const timeConstraints = Object.assign({
+            minutes: {
+                step: $get('minuteStep', options) || 5
+            }
+        }, $get('timeConstraints', options));
+
         return (
             <DateInput
                 id={id}
+                className={className}
                 value={mappedValue}
                 onChange={onChange}
                 labelFormat={convertPhpDateFormatToMoment(options.format)}
-                highlight={highlight}
                 dateOnly={!hasTimeFormat(options.format)}
                 timeOnly={!hasDateFormat(options.format)}
-                placeholder={placeholder || i18nRegistry.translate('content.inspector.editors.dateTimeEditor.noDateSet', '', {}, 'Neos.Neos', 'Main')}
+                placeholder={i18nRegistry.translate($get('placeholder', options) || 'Neos.Neos:Main:content.inspector.editors.dateTimeEditor.noDateSet')}
                 todayLabel={i18nRegistry.translate('content.inspector.editors.dateTimeEditor.today', 'Today', {}, 'Neos.Neos', 'Main')}
                 applyLabel={i18nRegistry.translate('content.inspector.editors.dateTimeEditor.apply', 'Apply', {}, 'Neos.Neos', 'Main')}
                 locale={interfaceLanguage}
-                validationErrors={validationErrors}
                 disabled={options.disabled}
+                timeConstraints={timeConstraints}
                 />
         );
     }

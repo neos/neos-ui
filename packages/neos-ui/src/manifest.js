@@ -114,13 +114,13 @@ manifest('main', {}, globalRegistry => {
         - propertyName: Name of the property to edit (of the node)
         - options: additional editor options
         - commit: a callback function when the content changes.
-          - 1st argument: the new value
-          - 2nd argument (optional): an object whose keys are to-be-triggered *saveHooks*, and the values
+            - 1st argument: the new value
+            - 2nd argument (optional): an object whose keys are to-be-triggered *saveHooks*, and the values
             are hook-specific options.
             Example: {'Neos.UI:Hook.BeforeSave.CreateImageVariant': nextImage}
         - renderSecondaryInspector(inspectorIdentifier, secondaryInspectorComponentFactory):
-          - 1st argument: a string identifier of the inspector; used to implement toggling of the inspector when calling this method twice.
-          - 2nd argument: a callback function which can be used to render the secondary inspector. The callback function should return the secondary inspector content itself; or "undefined/null" to close the secondary inspector.
+            - 1st argument: a string identifier of the inspector; used to implement toggling of the inspector when calling this method twice.
+            - 2nd argument: a callback function which can be used to render the secondary inspector. The callback function should return the secondary inspector content itself; or "undefined/null" to close the secondary inspector.
 
             Example usage: props.renderSecondaryInspector('IMAGE_CROPPING', () => <MySecondaryInspectorContent />)
 
@@ -246,7 +246,7 @@ manifest('main', {}, globalRegistry => {
     // When the server has updated node info, apply it to the store
     //
     serverFeedbackHandlers.set('Neos.Neos.Ui:UpdateNodeInfo/Main', (feedbackPayload, {store}) => {
-        store.dispatch(actions.CR.Nodes.add(feedbackPayload.byContextPath));
+        store.dispatch(actions.CR.Nodes.merge(feedbackPayload.byContextPath));
     });
 
     //
@@ -313,8 +313,14 @@ manifest('main', {}, globalRegistry => {
             siblingDomAddress.contextPath,
             siblingDomAddress.fusionPath
         );
-        const contentElement = (new DOMParser())
-            .parseFromString(renderedContent, 'text/html')
+
+        // We need to create the new DOM nodes from within the iframe document,
+        // because many frameworkds (e.g. CKE, React) use the following checks
+        // `obj instanceof obj.ownerDocument.defaultView.Node`
+        // which would fail if this node was created in Host
+        const tempNodeInGuest = getGuestFrameDocument().createElement('div');
+        tempNodeInGuest.innerHTML = renderedContent;
+        const contentElement = tempNodeInGuest
             .querySelector(`[data-__neos-node-contextpath="${contextPath}"]`);
 
         if (!contentElement) {
@@ -390,8 +396,14 @@ manifest('main', {}, globalRegistry => {
             nodeDomAddress.contextPath,
             nodeDomAddress.fusionPath
         );
-        const contentElement = (new DOMParser())
-            .parseFromString(renderedContent, 'text/html')
+
+        // We need to create the new DOM nodes from within the iframe document,
+        // because many frameworkds (e.g. CKE, React) use the following checks
+        // `obj instanceof obj.ownerDocument.defaultView.Node`
+        // which would fail if this node was created in Host
+        const tempNodeInGuest = getGuestFrameDocument().createElement('div');
+        tempNodeInGuest.innerHTML = renderedContent;
+        const contentElement = tempNodeInGuest
             .querySelector(`[data-__neos-node-contextpath="${contextPath}"]`);
 
         if (!contentElement) {
@@ -446,6 +458,5 @@ manifest('main', {}, globalRegistry => {
 
 require('./manifest.containers');
 require('./manifest.dataloaders');
-require('./manifest.sagas');
 require('./manifest.reducer');
 require('./manifest.hotkeys');

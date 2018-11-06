@@ -1,14 +1,18 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import Slider from 'react-slick';
-
-/* eslint-disable no-unused-vars */
-import SlickStyles from './slick-styles.vanilla-css';
-/* eslint-enable no-unused-vars */
-
 import Button from '@neos-project/react-ui-components/src/Button/index';
 import IconComponent from '@neos-project/react-ui-components/src/Icon/index';
 import I18n from '@neos-project/neos-ui-i18n';
+
+const Arrow = props => {
+    const {className, style, onClick, direction, size} = props;
+    return (
+        <div className={className} style={{...style}} onClick={onClick} role="button">
+            <IconComponent icon={`angle-${direction}`} size={size} />
+        </div>
+    );
+};
 
 export default class Panel extends PureComponent {
     static propTypes = {
@@ -34,8 +38,8 @@ export default class Panel extends PureComponent {
             slidesToShow: Math.round(modes.length / 2), // https://github.com/kenwheeler/slick/issues/1207#issuecomment-105663300
             variableWidth: true,
             adaptiveHeight: true,
-            nextArrow: <div><IconComponent icon="angle-right" size="big" /></div>,
-            prevArrow: <div><IconComponent icon="angle-left" size="big" /></div>
+            nextArrow: <Arrow direction="right" size="lg" />,
+            prevArrow: <Arrow direction="left" size="lg" />
         };
 
         return (

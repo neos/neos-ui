@@ -13,25 +13,11 @@ export default class Modals extends PureComponent {
     render() {
         const {containerRegistry} = this.props;
 
-        const DiscardDialog = containerRegistry.get('Modals/DiscardDialog');
-        const DeleteNodeModal = containerRegistry.get('Modals/DeleteNodeModal');
-        const InsertModeModal = containerRegistry.get('Modals/InsertModeModal');
-        const SelectNodeTypeModal = containerRegistry.get('Modals/SelectNodeTypeModal');
-        const NodeCreationDialog = containerRegistry.get('Modals/NodeCreationDialog');
-        const NodeVariantCreationDialog = containerRegistry.get('Modals/NodeVariantCreationDialog');
-        const ReloginDialog = containerRegistry.get('Modals/ReloginDialog');
-        const UnappliedChangesDialog = containerRegistry.get('Modals/UnappliedChangesDialog');
+        const modals = containerRegistry.getChildren('Modals');
 
         return (
             <div>
-                <DiscardDialog/>
-                <DeleteNodeModal/>
-                <InsertModeModal/>
-                <SelectNodeTypeModal/>
-                <NodeCreationDialog/>
-                <NodeVariantCreationDialog/>
-                <ReloginDialog/>
-                <UnappliedChangesDialog/>
+                {modals.map((Component, key) => <Component key={key} />)}
             </div>
         );
     }

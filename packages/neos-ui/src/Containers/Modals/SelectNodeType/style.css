@@ -1,7 +1,30 @@
 .nodeType {
-    flex: 0 1 auto;
     width: calc(100% / 3);
     text-align: left;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+
+    &:hover {
+        button {
+            background-color: var(--colors-PrimaryBlue);
+        }
+
+        .nodeType__helpIcon {
+            background-color: var(--colors-PrimaryBlue);
+            border-left: 1px solid var(--colors-ContrastDark);
+        }
+    }
+}
+
+.nodeType__toolTip {
+    top: 40px;
+}
+
+.nodeType__iconWrapper {
+    width: 2em;
+    display: inline-block;
+    text-align: center;
 }
 .nodeType__icon {
     color: var(--colors-PrimaryBlue);
@@ -10,7 +33,47 @@
         color: var(--colors-ContrastBrightest);
     }
 }
+.nodeType__item {
+    text-align: left;
+    flex-grow: 1;
+}
+.nodeType__helpIcon {
+    flex-grow: 0;
+    &:focus {
+        outline: none;
+    }
+}
 
+.helpMessage__wrapper {
+    position: relative;
+    width: 100%;
+    background-color: var(--colors-ContrastDark);
+    clear: right;
+}
+
+.helpMessage {
+    background-color: var(--colors-ContrastDark);
+    border-top: 1px solid var(--colors-ContrastDark);
+    padding: var(--spacing-Full);
+}
+
+.helpMessage__label {
+    display: block;
+    margin-bottom: var(--spacing-Half);
+}
+.helpMessage__closeButton {
+    position: absolute;
+    right: 1px;
+    top: 1px;
+    background-color: var(--colors-ContrastDark);
+}
+
+.helpThumbnail {
+    float: right;
+    max-width: 342px;
+    margin-bottom: 16px;
+    margin-left: 16px;
+}
 /* TODO: refactor such typography things to Headline component */
 .groupHeader {
     border-bottom: 1px solid var(--colors-ContrastDark);

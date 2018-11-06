@@ -1,12 +1,12 @@
-import {themr} from 'react-css-themr';
-import identifiers from './../identifiers.js';
+import {themr} from '@friendsofreactjs/react-css-themr';
+import identifiers from '../identifiers';
 import treeStyle from './tree.css';
 import nodeStyle from './node.css';
-import Tree from './tree.js';
+import Tree from './tree';
 import Node, {
     Header,
     Contents
-} from './node.js';
+} from './node';
 
 const ThemedTree = themr(identifiers.tree, treeStyle)(Tree);
 const ThemedTreeNode = themr(identifiers.treeNode, nodeStyle)(Node);
@@ -16,8 +16,8 @@ const ThemedTreeNodeContents = themr(identifiers.treeNodeContents, nodeStyle)(Co
 //
 // Dependency injection
 //
-import injectProps from './../_lib/injectProps.js';
-import Icon from './../Icon/index';
+import injectProps from './../_lib/injectProps';
+import Icon from './../Icon';
 
 const FinalTreeComponent = injectProps({
     NodeComponent: ThemedTreeNode

@@ -17,16 +17,12 @@ import {
 import style from './style.css';
 
 //
-// Polyfil for event path
-// see: https://stackoverflow.com/questions/39245488/event-path-undefined-with-firefox-and-vue-js
-// TODO: extract into helpers if needed elsewhere
+// Get all parent elements of the event target.
+//
+// It's not possible to use `event.composedPath()` here because
+// it doesn't work in FF with past events stored in a closure.
 //
 const eventPath = event => {
-    const eventPath = event.path || (event.composedPath && event.composedPath());
-    if (eventPath) {
-        return eventPath;
-    }
-
     let element = event.target;
     const path = [];
 
@@ -51,7 +47,7 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
         [documentInformation.metaData.contextPath]: documentInformation.metaData.documentNodeSerialization
     });
 
-    yield put(actions.CR.Nodes.add(nodes));
+    yield put(actions.CR.Nodes.merge(nodes));
 
     // Remove the inline scripts after initialization
     Array.prototype.forEach.call(guestFrameWindow.document.querySelectorAll('script[data-neos-nodedata]'), element => element.parentElement.removeChild(element));
@@ -100,8 +96,16 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
         }
     };
 
-    getGuestFrameDocument().addEventListener('click', e => {
-        focusSelectedNode(e);
+    // We store the original mousedown event in order to prevent bugs like this: https://github.com/neos/neos-ui/issues/1934
+    let mouseDownEvent = null;
+    getGuestFrameDocument().addEventListener('mousedown', event => {
+        mouseDownEvent = event;
+    });
+    getGuestFrameDocument().addEventListener('mouseup', () => {
+        if (mouseDownEvent) {
+            focusSelectedNode(mouseDownEvent);
+        }
+        mouseDownEvent = null;
     });
 
     getGuestFrameDocument().addEventListener('keyup', e => {

@@ -1,12 +1,9 @@
 .toolBar {
     position: absolute;
-    border-bottom: 1px solid var(--colors-ContrastDark);
-    background: #222;
+    background: var(--colors-ContrastDarker);
     z-index: var(--zIndex-NodeToolBar);
 }
 .toolBar__btnGroup {
-    border-bottom: 1px solid var(--colors-ContrastDark);
-
     &:before,
     &:after {
         content: '';
@@ -18,6 +15,10 @@
 }
 .toolBar__btnGroup__btn {
     float: left;
+
+    &:hover {
+        background-color: var(--colors-PrimaryBlue);
+    }
 
     svg {
         width: 1em;

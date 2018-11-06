@@ -6,7 +6,7 @@ import mergeClassNames from 'classnames';
 const ScrollingComponent = withScrolling('div');
 const verticalStrength = createVerticalStrength(50);
 
-export class Tree extends PureComponent {
+class Tree extends PureComponent {
     static propTypes = {
         focused: PropTypes.string,
         active: PropTypes.string,
@@ -25,7 +25,7 @@ export class Tree extends PureComponent {
         // Static component dependencies which are injected from the outside (index.js)
         //
         NodeComponent: PropTypes.any.isRequired
-    };
+    }
 
     render() {
         const {NodeComponent, className, theme, ...rest} = this.props;

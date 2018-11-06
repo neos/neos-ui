@@ -115,7 +115,7 @@ export default class ReloginDialog extends PureComponent {
 
                     </Button>
                     {this.state.message ?
-                        <Tooltip>{this.state.message}</Tooltip> : null}
+                        <Tooltip asError={true}>{this.state.message}</Tooltip> : null}
 
                 </div>
             </Dialog>

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import MultiSelectBox from '@neos-project/react-ui-components/src/MultiSelectBox/';
 import createNew from '../Reference/createNew';
 import dataLoader from '../Reference/referenceDataLoader';
-import NodeOption from '@neos-project/neos-ui-ckeditor-bindings/src/EditorToolbar/NodeOption';
+import NodeOption from '../../Library/NodeOption';
 import {dndTypes} from '@neos-project/neos-ui-constants';
 import {neos} from '@neos-project/neos-ui-decorators';
 
@@ -17,7 +17,6 @@ export default class ReferencesEditor extends PureComponent {
         value: PropTypes.arrayOf(PropTypes.string),
         options: PropTypes.array,
         searchOptions: PropTypes.array,
-        highlight: PropTypes.bool,
         placeholder: PropTypes.string,
         displayLoadingIndicator: PropTypes.bool,
         threshold: PropTypes.number,
@@ -33,28 +32,30 @@ export default class ReferencesEditor extends PureComponent {
     }
 
     render() {
+        const {className, i18nRegistry, threshold, placeholder, options, value, displayLoadingIndicator, searchOptions, onSearchTermChange, onCreateNew, disabled} = this.props;
+
         return (<MultiSelectBox
+            className={className}
             dndType={dndTypes.MULTISELECT}
             optionValueField="identifier"
-            loadingLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:loading')}
+            loadingLabel={i18nRegistry.translate('Neos.Neos:Main:loading')}
             displaySearchBox={true}
             ListPreviewElement={NodeOption}
-            createNewLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:createNew')}
-            placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}
-            threshold={this.props.threshold}
-            noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:noMatchesFound')}
-            searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:searchBoxLeftToType')}
-            options={this.props.options}
-            values={this.props.value}
-            highlight={this.props.highlight}
+            createNewLabel={i18nRegistry.translate('Neos.Neos:Main:createNew')}
+            placeholder={i18nRegistry.translate(placeholder)}
+            threshold={threshold}
+            noMatchesFoundLabel={i18nRegistry.translate('Neos.Neos:Main:noMatchesFound')}
+            searchBoxLeftToTypeLabel={i18nRegistry.translate('Neos.Neos:Main:searchBoxLeftToType')}
+            options={options}
+            values={value}
             onValuesChange={this.handleValueChange}
-            displayLoadingIndicator={this.props.displayLoadingIndicator}
+            displayLoadingIndicator={displayLoadingIndicator}
             showDropDownToggle={false}
             allowEmpty={true}
-            searchOptions={this.props.searchOptions}
-            onSearchTermChange={this.props.onSearchTermChange}
-            onCreateNew={this.props.onCreateNew}
-            disabled={this.props.disabled}
+            searchOptions={searchOptions}
+            onSearchTermChange={onSearchTermChange}
+            onCreateNew={onCreateNew}
+            disabled={disabled}
             />);
     }
 }

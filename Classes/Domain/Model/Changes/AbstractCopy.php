@@ -32,6 +32,6 @@ abstract class AbstractCopy extends AbstractStructuralChange
     protected function generateUniqueNodeName(NodeInterface $parentNode)
     {
         return $this->contentRepositoryNodeService
-            ->generateUniqueNodeName($parentNode->getPath(), $this->getSubject()->getName());
+            ->generateUniqueNodeName($parentNode->getPath());
     }
 }

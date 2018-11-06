@@ -22,7 +22,7 @@ import mergeClassNames from 'classnames';
  * }
  * ```
  */
-export default class ListPreviewElement extends PureComponent {
+class ListPreviewElement extends PureComponent {
     static propTypes = {
         // ------------------------------
         // API inside custom ListPreviewElements
@@ -80,6 +80,7 @@ export default class ListPreviewElement extends PureComponent {
                 onMouseEnter={disabled ? noop : onMouseEnter}
                 onClick={disabled ? noop : onClick}
                 className={optionClassName}
+                role="button"
                 >
                 {Boolean(icon) && <Icon className={theme.listPreviewElement__icon} icon={icon}/>}
                 {children}
@@ -88,3 +89,5 @@ export default class ListPreviewElement extends PureComponent {
         );
     }
 }
+
+export default ListPreviewElement;

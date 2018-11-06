@@ -1,8 +1,8 @@
 /* eslint-disable camelcase, react/jsx-pascal-case */
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import injectProps from './../_lib/injectProps.js';
-import MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement from '../MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement/index';
+import injectProps from './../_lib/injectProps';
+import MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement from '../MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement';
 
 const ensureIsArray = v => {
     if (Array.isArray(v)) {
@@ -77,7 +77,7 @@ export default class MultiSelectBox_ListPreviewSortable extends PureComponent {
             optionValueAccessor
         } = this.props;
 
-        const DraggableListPreviewElement = this.DraggableListPreviewElement;
+        const {DraggableListPreviewElement} = this;
 
         return (
             <DraggableListPreviewElement

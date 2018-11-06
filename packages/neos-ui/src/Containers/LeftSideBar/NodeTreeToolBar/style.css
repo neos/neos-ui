@@ -19,4 +19,8 @@
 .toolBar__btnGroup__btn {
     float: left;
     width: var(--spacing-GoldenUnit);
+
+    &:hover {
+        background-color: var(--colors-PrimaryBlue);
+    }
 }

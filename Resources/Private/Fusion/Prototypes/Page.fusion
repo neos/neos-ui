@@ -54,8 +54,8 @@ prototype(Neos.Neos:Page) {
                     inBackend = ${documentNode.context.inBackend}
                 }
                 entryTags {
-                    1 = ${'Node_' + documentNode.identifier}
-                    2 = ${'DescendantOf_' + documentNode.identifier}
+                    1 = ${Neos.Caching.nodeTag(documentNode)}
+                    2 = ${Neos.Caching.descendantOfTag(documentNode)}
                 }
             }
         }
@@ -117,4 +117,6 @@ prototype(Neos.Neos:Page) {
         }
         node = ${node}
     }
+
+    @exceptionHandler = 'Neos\\Neos\\Ui\\Fusion\\ExceptionHandler\\PageExceptionHandler'
 }

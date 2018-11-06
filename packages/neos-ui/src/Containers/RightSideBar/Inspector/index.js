@@ -7,8 +7,8 @@ import Bar from '@neos-project/react-ui-components/src/Bar/';
 import Button from '@neos-project/react-ui-components/src/Button/';
 import Tabs from '@neos-project/react-ui-components/src/Tabs/';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
-import Immutable from 'immutable';
 import debounce from 'lodash.debounce';
+import {fromJSOrdered} from '@neos-project/utils-helpers';
 
 import {SecondaryInspector} from '@neos-project/neos-ui-inspector';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
@@ -70,7 +70,7 @@ export default class Inspector extends PureComponent {
 
     state = {
         secondaryInspectorComponent: null,
-        toggledPanels: Immutable.fromJS({})
+        toggledPanels: fromJSOrdered({})
     };
 
     constructor(props) {
@@ -100,7 +100,7 @@ export default class Inspector extends PureComponent {
     //
     cloneViewConfiguration = props => {
         if (props.focusedNode) {
-            this.viewConfiguration = Immutable.fromJS(props.nodeTypesRegistry.getInspectorViewConfigurationFor($get('nodeType', props.focusedNode)));
+            this.viewConfiguration = fromJSOrdered(props.nodeTypesRegistry.getInspectorViewConfigurationFor($get('nodeType', props.focusedNode)));
             this.originalViewConfiguration = this.viewConfiguration;
         }
     };
@@ -121,6 +121,7 @@ export default class Inspector extends PureComponent {
                 const {node} = context; // eslint-disable-line
                 const evaluatedValue = eval(originalPropertyValue.replace('ClientEval:', '')); // eslint-disable-line
                 if (evaluatedValue !== propertyValue) {
+                    this.configurationIsProcessed = true;
                     this.viewConfiguration = $set(newPath, evaluatedValue, this.viewConfiguration);
                 }
             }
@@ -136,11 +137,13 @@ export default class Inspector extends PureComponent {
             nodeForContext.properties = Object.assign({}, nodeForContext.properties, transientValues.map(item => $get('value', item)).toJS());
         }
 
-        // Eval the view configuration
+        // Eval the view configuration and re-render if the configuration has changed
+        this.configurationIsProcessed = false;
         this.preprocessViewConfiguration({node: nodeForContext});
-        // Force re-render, since we were debounced
-        this.setState({});
-    }, 250);
+        if (this.configurationIsProcessed) {
+            this.forceUpdate();
+        }
+    }, 250, {leading: true});
 
     handleCloseSecondaryInspector = () => {
         this.props.closeSecondaryInspector();
@@ -197,7 +200,7 @@ export default class Inspector extends PureComponent {
     }
 
     renderFallback() {
-        return (<div className={style.loader}><div><Icon icon="spinner" spin={true} size="big" /></div></div>);
+        return (<div className={style.loader}><div><Icon icon="spinner" spin={true} size="lg" /></div></div>);
     }
 
     handlePanelToggle = path => {
@@ -225,7 +228,7 @@ export default class Inspector extends PureComponent {
         }
 
         this.preprocessViewConfigurationDebounced();
-        const viewConfiguration = this.viewConfiguration;
+        const {viewConfiguration} = this;
 
         if (!$get('tabs', viewConfiguration)) {
             return this.renderFallback();
@@ -277,10 +280,10 @@ export default class Inspector extends PureComponent {
                     }
                 </Tabs>
                 <Bar position="bottom" className={style.actions}>
-                    <Button id="neos-Inspector-Discard" style="lighter" disabled={isDiscardDisabled} onClick={this.handleDiscard} className={`${style.button} ${style.discardButton}`}>
+                    <Button id="neos-Inspector-Discard" style="lighter" isDisabled={isDiscardDisabled} onClick={this.handleDiscard} className={`${style.button} ${style.discardButton}`}>
                         <I18n id="Neos.Neos:Main:discard" fallback="discard"/>
                     </Button>
-                    <Button id="neos-Inspector-Apply" style="lighter" disabled={isApplyDisabled} onClick={this.handleApply} className={`${style.button} ${style.publishButton}`}>
+                    <Button id="neos-Inspector-Apply" style="lighter" isDisabled={isApplyDisabled} onClick={this.handleApply} className={`${style.button} ${style.publishButton}`}>
                         <I18n id="Neos.Neos:Main:apply" fallback="apply"/>
                     </Button>
                 </Bar>

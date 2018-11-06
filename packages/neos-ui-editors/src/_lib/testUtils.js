@@ -48,12 +48,14 @@ export class WrapWithMockGlobalRegistry extends PureComponent {
 
     static childContextTypes = {
         globalRegistry: PropTypes.object.isRequired,
+        routes: PropTypes.object.isRequired,
         configuration: PropTypes.object.isRequired
     };
 
     getChildContext() {
         const configuration = {};
-        return {globalRegistry, configuration};
+        const routes = {};
+        return {globalRegistry, configuration, routes};
     }
 
     render() {

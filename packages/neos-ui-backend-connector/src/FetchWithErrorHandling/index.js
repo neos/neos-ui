@@ -10,8 +10,11 @@ class FetchWithErrorHandling {
      *   - this._shouldEnqueueRequests is set to TRUE, to ensure upcoming requests (which rely on authentication) will not be executed, but parked.
      */
     _authenticationErrorHandlerFn = null;
+
     _generalErrorHandlerFn = () => null;
+
     _shouldEnqueueRequests = false;
+
     _requestQueue = [];
 
     registerAuthenticationErrorHandler(handlerFn) {
@@ -67,7 +70,7 @@ class FetchWithErrorHandling {
     _executeFetchRequest(makeFetchRequest) {
         // Build the actual fetch request by passing in the current CSRF token
         const fetchOptions = makeFetchRequest(this._csrfToken);
-        const url = fetchOptions.url;
+        const {url} = fetchOptions;
         delete fetchOptions.url;
 
         // We manually return a new promise (and do not reuse the promise returned from fetch()), because
@@ -149,7 +152,9 @@ class FetchWithErrorHandling {
         } else {
             errorText = String(reason);
         }
-        this._generalErrorHandlerFn(errorText);
+        if (errorText) {
+            this._generalErrorHandlerFn(errorText);
+        }
         // Re-throw, so the promise chain would be interrupted
         throw new Error(errorText);
     }

@@ -1,8 +1,8 @@
 import React from 'react';
 import {storiesOf} from '@storybook/react';
 import {withKnobs, select} from '@storybook/addon-knobs';
-import {StoryWrapper} from './../_lib/storyUtils.js';
-import Bar from './index.js';
+import {StoryWrapper} from './../_lib/storyUtils';
+import Bar from '.';
 
 storiesOf('Bar', module)
     .addDecorator(withKnobs)

@@ -19,22 +19,19 @@ const collect = (connect, monitor) => ({
     isOver: monitor.isOver()
 });
 
-export class Node extends PureComponent {
-    static propTypes = {
-        children: PropTypes.node
-    };
+export const Node = props => {
+    const {children, ...restProps} = props;
+    const rest = omit(restProps, ['theme']);
 
-    render() {
-        const {children, ...restProps} = this.props;
-        const rest = omit(restProps, ['theme']);
-
-        return (
-            <div {...rest} role="treeitem">
-                {children}
-            </div>
-        );
-    }
-}
+    return (
+        <div {...rest} role="treeitem">
+            {children}
+        </div>
+    );
+};
+Node.propTypes = {
+    children: PropTypes.node
+};
 
 @DropTarget(({nodeDndType}) => nodeDndType, spec, collect)
 class NodeDropTarget extends PureComponent {
@@ -46,6 +43,7 @@ class NodeDropTarget extends PureComponent {
         theme: PropTypes.object,
         mode: PropTypes.string.isRequired
     };
+
     render() {
         const {connectDropTarget, isOver, canDrop, mode, theme} = this.props;
         const classNames = mergeClassNames({
@@ -97,6 +95,7 @@ export class Header extends PureComponent {
         hasError: PropTypes.bool.isRequired,
         label: PropTypes.string.isRequired,
         icon: PropTypes.string,
+        customIconComponent: PropTypes.node,
         iconLabel: PropTypes.string,
         level: PropTypes.number.isRequired,
         dragAndDropContext: PropTypes.shape({
@@ -124,7 +123,7 @@ export class Header extends PureComponent {
             'header__chevron': PropTypes.string,
             'header__chevron--isCollapsed': PropTypes.string,
             'header__chevron--isLoading': PropTypes.string,
-            'header__icon': PropTypes.string,
+            'header__iconWrapper': PropTypes.string,
             'dropZone': PropTypes.string,
             'dropZone--accepts': PropTypes.string,
             'dropZone--denies': PropTypes.string
@@ -152,6 +151,7 @@ export class Header extends PureComponent {
             isLoading,
             label,
             icon,
+            customIconComponent,
             iconLabel,
             level,
             onClick,
@@ -197,8 +197,20 @@ export class Header extends PureComponent {
                             style={{paddingLeft: (level * 18) + 'px'}}
                             >
                             <div className={theme.header__labelWrapper}>
-                                <IconComponent icon={icon || 'question'} label={iconLabel} className={theme.header__icon}/>
-                                <span {...rest} id={labelIdentifier} className={theme.header__label} onClick={onLabelClick} data-neos-integrational-test="tree__item__nodeHeader__itemLabel">
+                                <div className={theme.header__iconWrapper}>
+                                    {customIconComponent ?
+                                        customIconComponent :
+                                        <IconComponent icon={icon || 'question'} label={iconLabel} />
+                                    }
+                                </div>
+                                <span
+                                    {...rest}
+                                    id={labelIdentifier}
+                                    className={theme.header__label}
+                                    onClick={onLabelClick}
+                                    data-neos-integrational-test="tree__item__nodeHeader__itemLabel"
+                                    role="treeitem"
+                                >
                                     {label}
                                 </span>
                             </div>

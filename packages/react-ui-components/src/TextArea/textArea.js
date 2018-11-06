@@ -11,16 +11,6 @@ class TextArea extends PureComponent {
 
     static propTypes = {
         /**
-         * Array of validation errors
-         */
-        validationErrors: PropTypes.array,
-
-        /**
-         * Highlight input
-         */
-        highlight: PropTypes.bool,
-
-        /**
          * An optional className to render on the textarea node.
          */
         className: PropTypes.string,
@@ -44,14 +34,9 @@ class TextArea extends PureComponent {
          * An optional css theme to be injected.
          */
         theme: PropTypes.shape({
-            'textArea': PropTypes.string,
+            textArea: PropTypes.string,
             'textArea--invalid': PropTypes.string
         }).isRequired,
-
-        /**
-         * Static component dependencies which are injected from the outside (index.js)
-         */
-        TooltipComponent: PropTypes.any.isRequired,
 
         /**
          * Optional number to set the minRows of the TextArea if not expanded
@@ -70,7 +55,7 @@ class TextArea extends PureComponent {
     };
 
     handleValueChange = e => {
-        const value = e.target.value;
+        const {value} = e.target;
         const {onChange} = this.props;
 
         if (onChange) {
@@ -92,7 +77,6 @@ class TextArea extends PureComponent {
 
     render() {
         const {
-            TooltipComponent,
             placeholder,
             className,
             validationErrors,
@@ -106,12 +90,7 @@ class TextArea extends PureComponent {
         const classNames = mergeClassNames({
             [className]: className && className.length,
             [theme.textArea]: true,
-            [theme['textArea--invalid']]: validationErrors && validationErrors.length > 0,
-            [theme['textArea--highlight']]: highlight,
             [theme['textArea--disabled']]: disabled
-        });
-        const renderedErrors = validationErrors && validationErrors.length > 0 && validationErrors.map((validationError, key) => {
-            return <div key={key}>{validationError}</div>;
         });
 
         return (
@@ -128,7 +107,6 @@ class TextArea extends PureComponent {
                     onClick={this.handleOnClick}
                     minRows={this.state.isFocused ? expandedRows : minRows}
                     />
-                {renderedErrors && <TooltipComponent>{renderedErrors}</TooltipComponent>}
             </div>
         );
     }

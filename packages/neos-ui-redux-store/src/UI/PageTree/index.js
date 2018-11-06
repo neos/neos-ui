@@ -81,20 +81,12 @@ export const reducer = handleActions({
     [SET_AS_LOADED]: ({contextPath}) => $all(
         $remove('ui.pageTree.loading', contextPath)
     ),
-    [COMMENCE_SEARCH]: ({query, filterNodeType}) => state => {
-        if (!query && !filterNodeType) {
-            return $all(
-              $set('ui.pageTree.hidden', new Set()),
-              $set('ui.pageTree.intermediate', new Set()),
-              $set('ui.pageTree.toggled', new Set())
-            )(state);
-        }
-
+    [COMMENCE_SEARCH]: () => state => {
         const hiddenContextPaths = new Set([...$get('cr.nodes.byContextPath', state).keys()]);
 
         return $all(
-          $set('ui.pageTree.hidden', hiddenContextPaths.delete($get('cr.nodes.siteNode', state))),
-          $set('ui.pageTree.toggled', new Set())
+            $set('ui.pageTree.hidden', hiddenContextPaths.delete($get('cr.nodes.siteNode', state))),
+            $set('ui.pageTree.toggled', new Set())
         )(state);
     },
     [SET_SEARCH_RESULT]: result => $all(

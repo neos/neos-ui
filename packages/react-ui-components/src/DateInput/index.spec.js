@@ -1,4 +1,4 @@
-import DateInput from './index.js';
+import DateInput from '.';
 
 describe('<DateInput/> (entry point)', () => {
     it('should export a Component.', () => {

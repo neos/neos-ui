@@ -5,7 +5,7 @@ import {$get, $transform} from 'plow-js';
 
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
-import LinkOption from './LinkOption';
+import LinkOption from '@neos-project/neos-ui-editors/src/Library/LinkOption';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {getGuestFrameWindow} from '@neos-project/neos-ui-guest-frame/src/dom';
 
@@ -29,7 +29,8 @@ export default class LinkIconButton extends PureComponent {
         formattingUnderCursor: PropTypes.objectOf(PropTypes.oneOfType([
             PropTypes.number,
             PropTypes.bool,
-            PropTypes.object
+            PropTypes.object,
+            PropTypes.string
         ])),
         formattingRule: PropTypes.string,
         i18nRegistry: PropTypes.object.isRequired

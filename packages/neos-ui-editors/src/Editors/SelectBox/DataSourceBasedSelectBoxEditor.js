@@ -18,6 +18,7 @@ import {shouldDisplaySearchBox, searchOptions, processSelectBoxOptions} from './
 export default class DataSourceBasedSelectBoxEditor extends PureComponent {
     static propTypes = {
         commit: PropTypes.func.isRequired,
+        className: PropTypes.string,
         value: PropTypes.oneOfType([
             PropTypes.string,
             PropTypes.arrayOf(PropTypes.string)
@@ -45,7 +46,6 @@ export default class DataSourceBasedSelectBoxEditor extends PureComponent {
             )
 
         }).isRequired,
-        highlight: PropTypes.bool,
         i18nRegistry: PropTypes.object.isRequired,
         dataSourcesDataLoader: PropTypes.shape({
             resolveValue: PropTypes.func.isRequired
@@ -87,7 +87,7 @@ export default class DataSourceBasedSelectBoxEditor extends PureComponent {
     }
 
     render() {
-        const {commit, value, i18nRegistry, highlight} = this.props;
+        const {commit, value, i18nRegistry, className} = this.props;
         const options = Object.assign({}, this.constructor.defaultOptions, this.props.options);
 
         const processedSelectBoxOptions = processSelectBoxOptions(i18nRegistry, this.state.selectBoxOptions);
@@ -98,13 +98,13 @@ export default class DataSourceBasedSelectBoxEditor extends PureComponent {
 
         if (options.multiple) {
             return (<MultiSelectBox
+                className={className}
                 options={processedSelectBoxOptions}
                 values={value || []}
                 onValuesChange={commit}
                 loadingLabel={loadingLabel}
                 displayLoadingIndicator={this.state.isLoading}
                 placeholder={placeholder}
-                highlight={highlight}
                 allowEmpty={options.allowEmpty}
                 displaySearchBox={shouldDisplaySearchBox(options, processedSelectBoxOptions)}
                 searchOptions={searchOptions(this.state.searchTerm, processedSelectBoxOptions)}
@@ -117,13 +117,13 @@ export default class DataSourceBasedSelectBoxEditor extends PureComponent {
 
         // multiple = FALSE
         return (<SelectBox
+            className={className}
             options={this.state.searchTerm ? searchOptions(this.state.searchTerm, processedSelectBoxOptions) : processedSelectBoxOptions}
             value={value}
             onValueChange={commit}
             loadingLabel={loadingLabel}
             displayLoadingIndicator={this.state.isLoading}
             placeholder={placeholder}
-            highlight={highlight}
             allowEmpty={options.allowEmpty}
             displaySearchBox={shouldDisplaySearchBox(options, processedSelectBoxOptions)}
             onSearchTermChange={this.handleSearchTermChange}

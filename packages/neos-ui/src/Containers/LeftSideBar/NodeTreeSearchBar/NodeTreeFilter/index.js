@@ -1,5 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
+import {$get} from 'plow-js';
 
 import {neos} from '@neos-project/neos-ui-decorators';
 import {SelectBox} from '@neos-project/react-ui-components';
@@ -17,6 +18,7 @@ export default class NodeTreeFilter extends PureComponent {
     static propTypes = {
         i18nRegistry: PropTypes.object.isRequired,
         nodeTypesRegistry: PropTypes.object.isRequired,
+        neos: PropTypes.object.isRequired,
         onChange: PropTypes.func.isRequired,
         value: PropTypes.any
     }
@@ -30,18 +32,30 @@ export default class NodeTreeFilter extends PureComponent {
     }
 
     render() {
-        const {i18nRegistry, nodeTypesRegistry, onChange, value} = this.props;
+        const {i18nRegistry, nodeTypesRegistry, neos, onChange, value} = this.props;
         const label = i18nRegistry.translate('filter', 'Filter', {}, 'Neos.Neos', 'Main');
 
-        const documentNodeTypes = nodeTypesRegistry
-            .getSubTypesOf('Neos.Neos:Document')
-            .map(nodeTypeName => nodeTypesRegistry.getNodeType(nodeTypeName))
-            .filter(i => i);
-        const options = documentNodeTypes.map(nodeType => ({
-            value: nodeType.name,
-            label: i18nRegistry.translate(nodeType.label),
-            icon: nodeType.ui.icon
-        }));
+        const presets = $get('configuration.nodeTree.presets', neos);
+        let options = Object.keys(presets)
+            .filter(presetName => (presetName !== 'default'))
+            .map(presetName => ({
+                value: $get([presetName, 'baseNodeType'], presets),
+                label: $get([presetName, 'ui', 'label'], presets) || '[' + presetName + ']',
+                icon: $get([presetName, 'ui', 'icon'], presets)
+            }));
+
+        if (options.length === 0) {
+            const documentNodeTypes = nodeTypesRegistry
+                .getSubTypesOf(nodeTypesRegistry.getRole('document'))
+                .map(nodeTypeName => nodeTypesRegistry.getNodeType(nodeTypeName))
+                .filter(i => i);
+
+            options = documentNodeTypes.map(nodeType => ({
+                value: nodeType.name,
+                label: i18nRegistry.translate(nodeType.label),
+                icon: $get('ui.icon', nodeType)
+            }));
+        }
 
         return (
             <div id="neos-NodeTreeFilter" className={style.searchBar}>

@@ -29,7 +29,8 @@ export default class EditorToolbar extends PureComponent {
         formattingUnderCursor: PropTypes.objectOf(PropTypes.oneOfType([
             PropTypes.number,
             PropTypes.bool,
-            PropTypes.object
+            PropTypes.object,
+            PropTypes.string
         ])),
 
         globalRegistry: PropTypes.object.isRequired,

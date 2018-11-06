@@ -1,4 +1,5 @@
 import {map} from 'ramda';
+import merge from 'lodash.merge';
 import {$get, $transform} from 'plow-js';
 import {SynchronousRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
 import getNormalizedDeepStructureFromNodeType from './getNormalizedDeepStructureFromNodeType';
@@ -6,9 +7,14 @@ import positionalArraySorter from '@neos-project/positional-array-sorter';
 
 export default class NodeTypesRegistry extends SynchronousRegistry {
     _constraints = [];
+
     _inheritanceMap = [];
+
     _groups = [];
+
     _roles = [];
+
+    _defaultInlineEditor = 'ckeditor';
 
     _inspectorViewConfigurationCache = {};
 
@@ -32,6 +38,16 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
         return this._roles[roleName];
     }
 
+    setDefaultInlineEditor(defaultInlineEditor) {
+        if (defaultInlineEditor) {
+            this._defaultInlineEditor = defaultInlineEditor;
+        }
+    }
+
+    getDefaultInlineEditor() {
+        return this._defaultInlineEditor;
+    }
+
     hasRole(nodeTypeName, roleName) {
         return this.isOfType(nodeTypeName, this.getRole(roleName));
     }
@@ -39,13 +55,13 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
     getAllowedChildNodeTypes(nodeTypeName) {
         const result = $get([nodeTypeName, 'nodeTypes'], this._constraints);
 
-        return Object.keys(result || []).filter(key => result[key]);
+        return Object.keys(result || []).filter(key => result[key] && this.has(key), this);
     }
 
     getAllowedGrandChildNodeTypes(nodeTypeName, childNodeName) {
         const result = $get([nodeTypeName, 'childNodes', childNodeName, 'nodeTypes'], this._constraints);
 
-        return Object.keys(result || []).filter(key => result[key]);
+        return Object.keys(result || []).filter(key => result[key] && this.has(key), this);
     }
 
     getAllowedNodeTypesTakingAutoCreatedIntoAccount(isSubjectNodeAutocreated, referenceParentName, referenceParentNodeType, referenceGrandParentNodeType, role) {
@@ -133,7 +149,10 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
                                         label: $get('ui.label'),
                                         editor: $get('ui.inspector.editor'),
                                         editorOptions: $get('ui.inspector.editorOptions'),
-                                        position: $get('ui.inspector.position')
+                                        position: $get('ui.inspector.position'),
+                                        hidden: $get('ui.inspector.hidden'),
+                                        helpMessage: $get('ui.help.message'),
+                                        helpThumbnail: $get('ui.help.thumbnail')
                                     }),
                                     properties.filter(p => $get('ui.inspector.group', p) === group.id)
                                 ),
@@ -144,7 +163,8 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
                                         label: $get('label'),
                                         view: $get('view'),
                                         viewOptions: $get('viewOptions'),
-                                        position: $get('position')
+                                        position: $get('position'),
+                                        helpMessage: $get('helpMessage')
                                     }),
                                     views.filter(v => $get('group', v) === group.id)
                                 )
@@ -173,14 +193,14 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
         //
         // TODO: Add documentation for this node type configuration, once it can be considered to be public API
         //
-        return $get(['properties', propertyName, 'ui', 'inline', 'editor'], nodeType) || 'ckeditor';
+        return $get(['properties', propertyName, 'ui', 'inline', 'editor'], nodeType) || this._defaultInlineEditor;
     }
 
     /**
      * Inline Editor Configuration looks as follows:
      *
      * formatting: // what formatting is enabled / disabled
-     *   b: true
+     *   strong: true
      *   a: true
      *   MyFormattingRule: {Configuration Object if needed}
      * placeholder: "Placeholder text"
@@ -189,16 +209,18 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
     getInlineEditorOptionsForProperty(nodeTypeName, propertyName) {
         const nodeType = this.get(nodeTypeName);
 
-        const inlineEditorOptions = $get(['properties', propertyName, 'ui', 'inline', 'editorOptions'], nodeType);
+        const defautlInlineEditorOptions = {
+            formatting: {},
+            placeholder: '',
+            autoparagraph: false
+        };
 
-        if (inlineEditorOptions) {
-            return inlineEditorOptions;
-        }
+        const inlineEditorOptions = $get(['properties', propertyName, 'ui', 'inline', 'editorOptions'], nodeType) || {};
 
         // OLD variant of configuration
-        const legacyConfiguration = $get(['properties', propertyName, 'ui', 'aloha'], nodeType);
+        const legacyConfiguration = $get(['properties', propertyName, 'ui', 'aloha'], nodeType) || {};
 
-        const convertedLegacyFormatting = [].concat(
+        legacyConfiguration.formatting = [].concat(
             ...['format', 'link', 'list', 'table', 'alignment']
                 .map(configurationKey => (legacyConfiguration && legacyConfiguration[configurationKey]) || [])
         ).reduce((acc, item) => {
@@ -206,11 +228,16 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
             return acc;
         }, {});
 
-        return {
-            formatting: convertedLegacyFormatting,
-            placeholder: $get('placeholder', legacyConfiguration),
-            autoparagraph: $get('autoparagraph', legacyConfiguration)
-        };
+        const mergedConfig = merge(defautlInlineEditorOptions, legacyConfiguration, inlineEditorOptions);
+
+        if ($get('formatting.b', mergedConfig)) {
+            mergedConfig.formatting.strong = true;
+        }
+        if ($get('formatting.i', mergedConfig)) {
+            mergedConfig.formatting.em = true;
+        }
+
+        return mergedConfig;
     }
 
     isInlineEditable(nodeTypeName) {

@@ -9,21 +9,23 @@ import {getVersion} from '@neos-project/utils-helpers';
 
 import MenuItemGroup from './MenuItemGroup/index';
 import style from './style.css';
-
-const TARGET_WINDOW = 'Window';
-const TARGET_CONTENT_CANVAS = 'ContentCanvas';
-const THRESHOLD_MOUSE_LEAVE = 500;
+import {TARGET_WINDOW, TARGET_CONTENT_CANVAS, THRESHOLD_MOUSE_LEAVE} from './constants';
 
 @connect($transform({
-    isHidden: $get('ui.drawer.isHidden')
+    isHidden: $get('ui.drawer.isHidden'),
+    collapsedMenuGroups: $get('ui.drawer.collapsedMenuGroups')
 }), {
     hideDrawer: actions.UI.Drawer.hide,
+    toggleMenuGroup: actions.UI.Drawer.toggleMenuGroup,
     setContentCanvasSrc: actions.UI.ContentCanvas.setSrc
 })
 export default class Drawer extends PureComponent {
     static propTypes = {
         isHidden: PropTypes.bool.isRequired,
+        collapsedMenuGroups: PropTypes.array.isRequired,
+
         hideDrawer: PropTypes.func.isRequired,
+        toggleMenuGroup: PropTypes.func.isRequired,
         setContentCanvasSrc: PropTypes.func.isRequired,
 
         menuData: PropTypes.objectOf(
@@ -91,13 +93,15 @@ export default class Drawer extends PureComponent {
 
             case TARGET_WINDOW:
             default:
-                window.location.href = uri;
+                // we do not need to do anything here, as MenuItems of type TARGET_WINDOW automatically
+                // wrap their contents in an <a>-tag (such that the user can crtl-click it to open in a
+                // new window).
                 break;
         }
     }
 
     render() {
-        const {isHidden, menuData} = this.props;
+        const {isHidden, menuData, collapsedMenuGroups, toggleMenuGroup} = this.props;
         const classNames = mergeClassNames({
             [style.drawer]: true,
             [style['drawer--isHidden']]: isHidden
@@ -113,14 +117,18 @@ export default class Drawer extends PureComponent {
                 onMouseLeave={this.handleMouseLeave}
                 aria-hidden={isHidden ? 'true' : 'false'}
                 >
-                {!isHidden && Object.values(menuData).map((item, index) => (
-                    <MenuItemGroup
-                        key={index}
-                        onClick={this.handleMenuItemClick}
-                        onChildClick={this.handleMenuItemClick}
-                        {...item}
-                        />
-                ))}
+                <div className={style.drawer__menuItemGroupsWrapper}>
+                    {!isHidden && Object.entries(menuData).map(([menuGroup, menuGroupConfiguration]) => (
+                        <MenuItemGroup
+                            key={menuGroup}
+                            onClick={this.handleMenuItemClick}
+                            onChildClick={this.handleMenuItemClick}
+                            collapsed={Boolean(collapsedMenuGroups.includes(menuGroup))}
+                            handleMenuGroupToggle={() => toggleMenuGroup(menuGroup)}
+                            {...menuGroupConfiguration}
+                            />
+                    ))}
+                </div>
                 <div className={style.drawer__version}>{version}</div>
             </div>
         );

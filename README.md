@@ -53,7 +53,9 @@ In order to start contributing, follow the following steps:
 
 2) We require [Chrome](https://www.google.com/chrome/browser/desktop/index.html) as well as the `yarn`(https://yarnpkg.com/en/) command and GNU Make(https://www.gnu.org/software/make/) to be installed on your system.
 
-3) Inside `Configuration/Settings.yaml`, set the following property for disabling the pre-compiled files:
+3) The currently supported version of `node` is defined in `.nvmrc` file. If you have [nvm](https://github.com/creationix/nvm) installed, you can just run `nvm install && nvm use` from the project directory.
+
+4) Inside `Configuration/Settings.yaml`, set the following property for disabling the pre-compiled files:
 
    ```
    Neos:
@@ -62,13 +64,13 @@ In order to start contributing, follow the following steps:
          frontendDevelopmentMode: true
    ```
 
-4) Run the initialization script:
+5) Run the initialization script:
 
    ```
    make setup
    ```
 
-5) Get an overview about the codebase. We've recorded [an introduction on YouTube](https://www.youtube.com/watch?v=RYBUS5Nxxxk) which
+6) Get an overview about the codebase. We've recorded [an introduction on YouTube](https://www.youtube.com/watch?v=RYBUS5Nxxxk) which
    gets you acquainted with the basics. Additionally, please get in touch with us on [Slack](http://slack.neos.io) in the
    channel #project-ui-rewrite. We're eager to help you get started!
 
@@ -122,17 +124,9 @@ For end to end testing we use the headless chrome. So it is mandatory to install
 Since Chrome 59 the headless mode is integrated. So please install a Chome 59 or higher to execute the end to end tests.
 
 #### Releasing
-Run `VERSION=<VERSION_YOU_WANT_TO_RELEASE> make release`
-e.g `VERSION=1.0.2 make release`.
-This checks if you set the environment variable, reinstall all node_modules,
-builds a production release runs `make lint`, `make test` and `make test-e2e`,
-bumps the version locally via lerna and publish the version as a new npm tag.
-After that you should carefully revisit your local changes, commit then and
-open a pull request on Github. When travis runs through merge it an tag a new
-release on Github.
 
-After that trigger jenkins with the new version.
-
+You only need to trigger the jenkins release with the version you want to release.
+After jenkins has finished you need release a new version on github.
 
 ## License
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR

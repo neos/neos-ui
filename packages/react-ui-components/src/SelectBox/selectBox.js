@@ -2,7 +2,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {$get} from 'plow-js';
-import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine/index';
+import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine';
 import mergeClassNames from 'classnames';
 import isEqual from 'lodash.isequal';
 
@@ -37,6 +37,11 @@ export default class SelectBox extends PureComponent {
                 disabled: PropTypes.bool
             })
         ),
+
+        /**
+         * Additional className wich will be applied
+         */
+        className: PropTypes.string,
 
         /**
          * Field name specifying which field in a single "option" contains the "value"
@@ -88,11 +93,6 @@ export default class SelectBox extends PureComponent {
         scrollable: PropTypes.bool,
 
         /**
-         * Should the SelectBox be highlighted? (e.g. if the property was modified)
-         */
-        highlight: PropTypes.bool,
-
-        /**
          * Component used for rendering the individual option elements; Usually this component uses "ListPreviewElement" internally for common styling.
          */
         ListPreviewElement: PropTypes.any,
@@ -116,6 +116,7 @@ export default class SelectBox extends PureComponent {
         // ------------------------------
         displaySearchBox: PropTypes.bool,
         onSearchTermChange: PropTypes.func,
+        onSearchTermKeyPress: PropTypes.func,
         threshold: PropTypes.number,
         searchTerm: PropTypes.string,
         searchBoxLeftToTypeLabel: PropTypes.string,
@@ -149,7 +150,6 @@ export default class SelectBox extends PureComponent {
         // Theme & Dependencies
         // ------------------------------
         theme: PropTypes.shape({/* eslint-disable quote-props */
-            'wrapper--highlight': PropTypes.string,
             'selectBox__btn--noRightPadding': PropTypes.string
         }).isRequired, /* eslint-enable quote-props */
 
@@ -177,7 +177,6 @@ export default class SelectBox extends PureComponent {
         const {
             options,
             theme,
-            highlight,
             showDropDownToggle,
             threshold,
             displaySearchBox,
@@ -185,19 +184,19 @@ export default class SelectBox extends PureComponent {
             ListPreviewElement,
             plainInputMode,
             disabled,
-
+            className,
             DropDown,
             SelectBox_ListPreview
         } = this.props;
 
         const searchTerm = this.getSearchTerm();
 
-        const focusedValue = this.state.focusedValue;
+        const {focusedValue} = this.state;
         const isExpanded = disabled ? false : this.state.isExpanded;
 
         const headerClassName = mergeClassNames({
+            [className]: true,
             [theme.selectBox__btn]: true,
-            [theme['selectBox--highlight']]: highlight,
             [theme['selectBox__btn--noRightPadding']]: !showDropDownToggle,
             [theme['selectBox--disabled']]: disabled
         });
@@ -351,11 +350,15 @@ export default class SelectBox extends PureComponent {
     }
 
     handleKeyDown = e => {
+        const {options, onSearchTermKeyPress} = this.props;
+        if (typeof onSearchTermKeyPress === 'function') {
+            // Pass through keydown event, needed for keyboard handling
+            onSearchTermKeyPress(e);
+        }
         if (this.state.isExpanded && e && ['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(e.key)) {
             // Do not scroll while we are doing keyboard interaction
             e.preventDefault();
 
-            const {options} = this.props;
             const optionValueAccessor = this.getOptionValueAccessor();
             const currentIndex = options.findIndex(option => optionValueAccessor(option) === this.state.focusedValue);
 

@@ -1,9 +1,9 @@
 import {createAction} from 'redux-actions';
-import Immutable from 'immutable';
 import {$get, $set, $toggle} from 'plow-js';
 
 import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from '../../System/index';
+import {fromJSOrdered} from '@neos-project/utils-helpers';
 
 const TOGGLE = '@neos/neos-ui/UI/FullScreen/TOGGLE';
 
@@ -32,7 +32,7 @@ export const actions = {
 export const reducer = handleActions({
     [system.INIT]: payload => $set(
         'ui.fullScreen',
-        Immutable.fromJS($get('ui.fullScreen', payload) ? $get('ui.fullScreen', payload) : {isFullScreen: false})
+        fromJSOrdered($get('ui.fullScreen', payload) ? $get('ui.fullScreen', payload) : {isFullScreen: false})
     ),
     [TOGGLE]: () => $toggle('ui.fullScreen.isFullScreen')
 });

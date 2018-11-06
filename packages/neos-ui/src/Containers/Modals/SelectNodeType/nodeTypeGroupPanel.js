@@ -7,44 +7,118 @@ import {neos} from '@neos-project/neos-ui-decorators';
 import escaperegexp from 'lodash.escaperegexp';
 import {actions} from '@neos-project/neos-ui-redux-store';
 
+import ReactMarkdown from 'react-markdown';
+import Icon from '@neos-project/react-ui-components/src/Icon/';
+import IconButton from '@neos-project/react-ui-components/src/IconButton/';
+
 import I18n from '@neos-project/neos-ui-i18n';
 
 import NodeTypeItem from './nodeTypeItem';
 import style from './style.css';
 
 @neos(globalRegistry => ({
-    i18nRegistry: globalRegistry.get('i18n')
+    i18nRegistry: globalRegistry.get('i18n'),
+    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
 }))
 @connect($transform({
-    collapsedGroups: $get('ui.addNodeModal.collapsedGroups')
+    toggledGroups: $get('ui.addNodeModal.toggledGroups')
 }), {
     toggleNodeTypeGroup: actions.UI.AddNodeModal.toggleGroup
 })
 class NodeTypeGroupPanel extends PureComponent {
     static propTypes = {
+        nodeTypesRegistry: PropTypes.object.isRequired,
         toggleNodeTypeGroup: PropTypes.func.isRequired,
-        collapsedGroups: PropTypes.array.isRequired,
+        toggledGroups: PropTypes.array.isRequired,
         filterSearchTerm: PropTypes.string,
 
         group: PropTypes.shape({
             name: PropTypes.string.isRequired,
             label: PropTypes.string.isRequired,
-            nodeTypes: PropTypes.array.isRequired
+            nodeTypes: PropTypes.array.isRequired,
+            collapsed: PropTypes.bool
         }).isRequired,
         onSelect: PropTypes.func.isRequired,
+
+        showHelpMessageFor: PropTypes.string.isRequired,
+        activeHelpMessageGroupPanel: PropTypes.string.isRequired,
+        onHelpMessage: PropTypes.func.isRequired,
+        onCloseHelpMessage: PropTypes.func.isRequired,
 
         i18nRegistry: PropTypes.object.isRequired
     };
 
+    componentDidUpdate() {
+        this.scrollIntoView();
+    }
+
+    scrollIntoView() {
+        const {
+            showHelpMessageFor,
+            activeHelpMessageGroupPanel,
+            group
+        } = this.props;
+
+        if (showHelpMessageFor !== '' && activeHelpMessageGroupPanel !== group.name) {
+            const helpMessage = document.querySelector('#nodeTypeGroupPanelhelpMessage');
+            const scrollParent = document.getElementById('neos-SelectNodeTypeDialog').querySelector('.dialog__body');
+
+            if (helpMessage && scrollParent && scrollParent.getBoundingClientRect().bottom < helpMessage.getBoundingClientRect().top + 100) {
+                scrollParent.scrollTop += helpMessage.getBoundingClientRect().bottom - scrollParent.getBoundingClientRect().bottom;
+            }
+        }
+    }
+
+    renderHelpMessage = () => {
+        const {
+            i18nRegistry,
+            nodeTypesRegistry,
+            activeHelpMessageGroupPanel,
+            showHelpMessageFor,
+            onCloseHelpMessage,
+            group
+        } = this.props;
+
+        const nodeType = nodeTypesRegistry.getNodeType(showHelpMessageFor);
+        const message = i18nRegistry.translate($get('ui.help.message', nodeType));
+        const thumbnail = $get('ui.help.thumbnail', nodeType);
+
+        const icon = $get('ui.icon', nodeType);
+        const label = $get('ui.label', nodeType);
+
+        if (activeHelpMessageGroupPanel !== group.name) {
+            return null;
+        }
+
+        return (
+            <div className={style.helpMessage__wrapper} id="nodeTypeGroupPanelhelpMessage">
+                <div className={style.helpMessage}>
+                    <span className={style.helpMessage__label}>
+                        {icon && <Icon icon={icon} className={style.nodeType__icon} padded="right"/>}
+                        <I18n id={label} fallback={label}/>
+                    </span>
+                    {thumbnail ? <img alt={label} src={thumbnail} className={style.helpThumbnail} /> : ''}
+                    <ReactMarkdown source={message} />
+                </div>
+
+                <IconButton className={style.helpMessage__closeButton} icon="times" onClick={onCloseHelpMessage} />
+            </div>
+        );
+    }
+
     render() {
         const {
             group,
-            collapsedGroups,
+            toggledGroups,
             onSelect,
             filterSearchTerm,
-            i18nRegistry
+            i18nRegistry,
+            onHelpMessage,
+            showHelpMessageFor
         } = this.props;
         const {name, label, nodeTypes} = group;
+
+        const showHelpMessage = showHelpMessageFor !== '';
 
         const filteredNodeTypes = (nodeTypes || [])
             .filter(nodeType => {
@@ -55,16 +129,20 @@ class NodeTypeGroupPanel extends PureComponent {
                 return false;
             });
 
+        // Take `collapsed: true` group setting into account
+        const isOpen = $get('collapsed', group) ? toggledGroups.includes(name) : !toggledGroups.includes(name);
+
         return (
             <ToggablePanel
-                isOpen={collapsedGroups.includes(name) === false}
+                isOpen={isOpen}
                 onPanelToggle={this.handleToggleGroup}
                 >
                 <ToggablePanel.Header className={style.groupHeader}>
                     <I18n className={style.groupTitle} fallback={label} id={label}/>
                 </ToggablePanel.Header>
                 <ToggablePanel.Contents className={style.groupContents}>
-                    {filteredNodeTypes.map((nodeType, key) => <NodeTypeItem nodeType={nodeType} key={key} onSelect={onSelect}/>)}
+                    {filteredNodeTypes.map((nodeType, key) => <NodeTypeItem nodeType={nodeType} key={key} onSelect={onSelect} onHelpMessage={onHelpMessage} groupName={group.name} />)}
+                    {showHelpMessage ? this.renderHelpMessage() : null}
                 </ToggablePanel.Contents>
             </ToggablePanel>
         );

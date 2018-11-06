@@ -101,6 +101,12 @@ class BackendController extends ActionController
      */
     protected $styleAndJavascriptInclusionService;
 
+    /**
+     * @Flow\Inject
+     * @var NodeClipboardInterface
+     */
+    protected $clipboard;
+
     public function initializeView(ViewInterface $view)
     {
         $view->setFusionPath('backend');
@@ -131,8 +137,11 @@ class BackendController extends ActionController
         $this->view->assign('user', $user);
         $this->view->assign('documentNode', $node);
         $this->view->assign('site', $siteNode);
+        $this->view->assign('clipboardNode', $this->clipboard->getNodeContextPath());
+        $this->view->assign('clipboardMode', $this->clipboard->getMode());
         $this->view->assign('headScripts', $this->styleAndJavascriptInclusionService->getHeadScripts());
         $this->view->assign('headStylesheets', $this->styleAndJavascriptInclusionService->getHeadStylesheets());
+        $this->view->assign('splashScreenPartial', $this->settings['splashScreen']['partial']);
         $this->view->assign('sitesForMenu', $this->menuHelper->buildSiteList($this->getControllerContext()));
 
         $this->view->assign('interfaceLanguage', $this->userService->getInterfaceLanguage());
@@ -153,6 +162,17 @@ class BackendController extends ActionController
         $this->session->start();
         $this->session->putData('__neosLegacyUiEnabled__', true);
 
+        $this->redirect('show', 'Frontend\Node', 'Neos.Neos', ['node' => $node]);
+    }
+
+    /**
+     * @param NodeInterface $node
+     * @throws \Neos\Flow\Mvc\Exception\StopActionException
+     */
+    public function redirectToAction(NodeInterface $node)
+    {
+        $this->response->getHeaders()->setCacheControlDirective('no-cache');
+        $this->response->getHeaders()->setCacheControlDirective('no-store');
         $this->redirect('show', 'Frontend\Node', 'Neos.Neos', ['node' => $node]);
     }
 

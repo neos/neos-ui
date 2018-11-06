@@ -11,6 +11,8 @@ namespace Neos\Neos\Ui\FlowQueryOperations;
  * source code.
  */
 
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Property\PropertyMapper;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Eel\FlowQuery\Operations\AbstractOperation;
@@ -35,6 +37,12 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
     protected static $priority = 100;
 
     /**
+     * @Flow\Inject
+     * @var PropertyMapper
+     */
+    protected $propertyMapper;
+
+    /**
      * {@inheritdoc}
      *
      * @param array (or array-like object) $context onto which this operation should be applied
@@ -55,7 +63,7 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
     public function evaluate(FlowQuery $flowQuery, array $arguments)
     {
         list($siteNode, $documentNode) = $flowQuery->getContext();
-        list($baseNodeType, $loadingDepth, $toggledNodes) = $arguments;
+        list($baseNodeType, $loadingDepth, $toggledNodes, $clipboardNodeContextPath) = $arguments;
 
         // Collect all parents of documentNode up to siteNode
         $parents = [];
@@ -86,6 +94,13 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
 
         if (!in_array($documentNode, $nodes)) {
             $nodes[] = $documentNode;
+        }
+
+        if ($clipboardNodeContextPath) {
+            $clipboardNode = $this->propertyMapper->convert($clipboardNodeContextPath, NodeInterface::class);
+            if ($clipboardNode && !in_array($clipboardNode, $nodes)) {
+                $nodes[] = $clipboardNode;
+            }
         }
 
         $flowQuery->setContext($nodes);

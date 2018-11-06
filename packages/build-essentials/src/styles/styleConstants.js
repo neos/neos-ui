@@ -18,7 +18,7 @@ const config = {
     },
     zIndex: {
         secondaryToolbar: ['linkIconButtonFlyout'],
-        flashMessageContainer: '2',
+        flashMessageContainer: '5',
         loadingIndicatorContainer: '2',
         secondaryInspector: ['context', 'iframe', 'close'],
         secondaryInspectorElevated: ['context', 'dropdownContents'],
@@ -26,7 +26,7 @@ const config = {
         fullScreenClose: ['context'],
         drawer: ['context'],
         bar: ['context'],
-        primaryToolbar: ['context'],
+        primaryToolbar: '4',
         checkboxInput: ['context'],
         dropdownContents: ['context'],
         selectBoxContents: '3',

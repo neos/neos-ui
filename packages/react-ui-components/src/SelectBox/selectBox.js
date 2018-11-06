@@ -5,12 +5,14 @@ import {$get} from 'plow-js';
 import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine';
 import mergeClassNames from 'classnames';
 import isEqual from 'lodash.isequal';
+import {styleConstants} from '@neos-project/build-essentials/src/styles';
 
 // TODO: document component usage && check code in detail
 export default class SelectBox extends PureComponent {
     static defaultProps = {
         options: [],
         optionValueField: 'value',
+        limitRenderedOptions: 0,
         withoutGroupLabel: 'Without group',
         scrollable: true,
         showDropDownToggle: true,
@@ -47,6 +49,11 @@ export default class SelectBox extends PureComponent {
          * Field name specifying which field in a single "option" contains the "value"
          */
         optionValueField: PropTypes.string,
+
+        /**
+         * Field that limits the height of the rendered options
+         */
+        limitRenderedOptions: PropTypes.number,
 
         /**
          * This prop represents the currently selected value.
@@ -169,6 +176,17 @@ export default class SelectBox extends PureComponent {
         return $get([this.props.optionValueField]);
     }
 
+    /**
+     * Returns cumulated height of the given amount of options.
+     *
+     * @param {int} amountOfOptions
+     * @return {int}
+     */
+    getOptionHeight(amountOfOptions) {
+        const singleOptionHeight = parseInt($get('config.spacing.goldenUnit', styleConstants), 10);
+        return amountOfOptions > 0 ? amountOfOptions * (singleOptionHeight + 1) : 0;
+    }
+
     getSearchTerm() {
         return this.props.searchTerm || this.state.searchTerm;
     }
@@ -185,6 +203,7 @@ export default class SelectBox extends PureComponent {
             plainInputMode,
             disabled,
             className,
+            limitRenderedOptions,
             DropDown,
             SelectBox_ListPreview
         } = this.props;
@@ -202,6 +221,7 @@ export default class SelectBox extends PureComponent {
         });
 
         const optionValueAccessor = this.getOptionValueAccessor();
+        const optionLimitHeight = this.getOptionHeight(limitRenderedOptions);
 
         const searchTermLeftToType = displaySearchBox ? threshold - searchTerm.length : 0;
         const noMatchesFound = searchTermLeftToType > 0 || displayLoadingIndicator ? false : !options.length;
@@ -211,7 +231,7 @@ export default class SelectBox extends PureComponent {
                 <DropDown.Header className={headerClassName} shouldKeepFocusState={false} showDropDownToggle={showDropDownToggle && Boolean(options.length)}>
                     {this.renderHeader()}
                 </DropDown.Header>
-                <DropDown.Contents className={theme.selectBox__contents} scrollable={true}>
+                <DropDown.Contents className={theme.selectBox__contents} scrollable={true} limitHeight={optionLimitHeight}>
                     {!plainInputMode && <ul className={theme.selectBox__list}>
                         <SelectBox_ListPreview
                             {...this.props}

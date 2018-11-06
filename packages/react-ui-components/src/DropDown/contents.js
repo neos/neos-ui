@@ -20,6 +20,11 @@ class ShallowDropDownContents extends PureComponent {
         scrollable: PropTypes.bool,
 
         /**
+         * Limit height.
+         */
+        limitHeight: PropTypes.number,
+
+        /**
          * An optional css theme to be injected.
          */
         theme: PropTypes.shape({// eslint-disable-line quote-props
@@ -43,6 +48,7 @@ class ShallowDropDownContents extends PureComponent {
             isOpen,
             closeDropDown,
             scrollable,
+            limitHeight,
             ...rest
         } = this.props;
         const finalClassName = mergeClassNames({
@@ -51,6 +57,7 @@ class ShallowDropDownContents extends PureComponent {
             [theme['dropDown__contents--scrollable']]: scrollable,
             [theme['dropDown__contents--isOpen']]: isOpen
         });
+        const inlineHeightLimit = limitHeight > 0 ? {style: {'maxHeight': limitHeight + 'px'}} : {};
 
         return (
             <ul
@@ -60,6 +67,7 @@ class ShallowDropDownContents extends PureComponent {
                 aria-label="dropdown"
                 role="listbox"
                 onClick={closeDropDown}
+                {...inlineHeightLimit}
                 >
                 {isOpen && children}
             </ul>

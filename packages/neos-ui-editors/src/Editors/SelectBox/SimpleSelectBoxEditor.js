@@ -21,6 +21,7 @@ export default class SimpleSelectBoxEditor extends PureComponent {
             multiple: PropTypes.bool,
 
             minimumResultsForSearch: PropTypes.number,
+            limitRenderedOptions: PropTypes.number,
 
             values: PropTypes.objectOf(
                 PropTypes.shape({
@@ -40,6 +41,7 @@ export default class SimpleSelectBoxEditor extends PureComponent {
     static defaultOptions = {
         // Use "5" as minimum result for search default; same as with old UI
         minimumResultsForSearch: 5,
+        limitRenderedOptions: 0,
         threshold: 0,
         disabled: false
     };
@@ -63,6 +65,7 @@ export default class SimpleSelectBoxEditor extends PureComponent {
             return (<MultiSelectBox
                 className={className}
                 options={processedSelectBoxOptions}
+                limitRenderedOptions={options.limitRenderedOptions}
                 values={value || []}
                 onValuesChange={commit}
                 placeholder={placeholder}
@@ -80,6 +83,7 @@ export default class SimpleSelectBoxEditor extends PureComponent {
         // Multiple == FALSE
         return (<SelectBox
             options={this.state.searchTerm ? searchOptions(this.state.searchTerm, processedSelectBoxOptions) : processedSelectBoxOptions}
+            limitRenderedOptions={options.limitRenderedOptions}
             value={value}
             className={className}
             onValueChange={commit}

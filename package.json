@@ -101,6 +101,7 @@
     "@types/react-click-outside": "^3.0.2",
     "@types/react-close-on-escape": "^3.0.0",
     "@types/react-portal": "3.0.6",
+    "@types/react-textarea-autosize": "^4.3.3",
     "amator": "^1.0.1",
     "classnames": "^2.2.3",
     "codemirror": "^5.24.0",

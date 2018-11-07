@@ -761,6 +761,13 @@
     "@types/react" "*"
     redux "^4.0.0"
 
+"@types/react-textarea-autosize@^4.3.3":
+  version "4.3.3"
+  resolved "https://registry.yarnpkg.com/@types/react-textarea-autosize/-/react-textarea-autosize-4.3.3.tgz#85f542a4c582836d01b9751b3948dfad1642f0cb"
+  integrity sha512-fl0yK995xJg31Y/7EkR0rkg9hbIqX6mas7e/DZdMr0mb+CDZ6gwdYXor6XjWJqGW3MRsuKY9HbqHne9ZWQqNVg==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react@*", "@types/react@^16.4.11":
   version "16.4.13"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.4.13.tgz#1385f5dc3486aa493849a32ccce626a817543e28"

@@ -1,35 +1,33 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import {createStubComponent} from './../_lib/testUtils';
-import Tabs, {TabMenuItem} from './tabs';
-import Panel from './panel';
+import Tabs, {TabMenuItem, TabsProps, tabsDefaultProps} from './tabs';
+import Panel, {PanelProps} from './panel';
 
 describe('<Tabs/>', () => {
-    let panelProps;
-    let props;
+    const panelProps: PanelProps = {
+        title: 'TitleString',
+        children: [<div key={'foo'}>'Foo children'</div>],
+        theme: {
+            panel: 'panelBaseClassName',
+            'tabNavigation__itemBtnIcon--hasLabel': 'hasLabelClassName'
+        }
+    };
 
-    beforeEach(() => {
-        panelProps = {
-            theme: {
-                panel: 'panelBaseClassName'
-            }
-        };
-        props = {
-            theme: {
-                'tabs': 'baseTabsClassName',
-                'tabs__content': 'basTabsContentsClassName',
-                'tabNavigation': 'baseTabsNavigationClassName',
-                'tabNavigation__item': 'baseTabsNavigationItemClassName',
-                'tabNavigation__item--isActive': 'activeTabsNavigationItemClassName',
-                'tabNavigation__itemBtn': 'baseTabsNavigationItemBtnClassName',
-                'tabNavigation__itemBtnIcon': 'baseTabsNavigationItemBtnIconClassName',
-                'tabNavigation__itemBtnIcon--hasLabel': 'baseTabsNavigationItemBtnIconWithLabelClassName'
-            },
-            children: 'Foo children',
-            IconComponent: createStubComponent()
-        };
-    });
+    const props: TabsProps = {
+        ...tabsDefaultProps,
+        theme: {
+            'tabs': 'baseTabsClassName',
+            'tabs__content': 'basTabsContentsClassName',
+            'tabNavigation': 'baseTabsNavigationClassName',
+            'tabNavigation__item': 'baseTabsNavigationItemClassName',
+            'tabNavigation__item--isActive': 'activeTabsNavigationItemClassName',
+            'tabNavigation__itemBtn': 'baseTabsNavigationItemBtnClassName',
+            'tabNavigation__itemBtnIcon': 'baseTabsNavigationItemBtnIconClassName',
+            'tabNavigation__itemBtnIcon--hasLabel': 'baseTabsNavigationItemBtnIconWithLabelClassName'
+        },
+        children: [<div key={'foo'}>'Foo children'</div>]
+    };
 
     it('should render correctly.', () => {
         const wrapper = shallow(
@@ -80,6 +78,7 @@ describe('<Tabs/>', () => {
         );
         const items = wrapper.find(TabMenuItem);
 
+        // @ts-ignore
         expect(items.at(0).prop('onClick')).toBe(wrapper.instance().handleTabNavItemClick);
     });
 
@@ -107,7 +106,6 @@ describe('<Tabs/>', () => {
         );
         const items = wrapper.find(TabMenuItem);
 
-        expect(items.at(0).prop('IconComponent')).toBe(props.IconComponent);
         expect(items.at(0).prop('theme')).toBe(props.theme);
     });
 
@@ -122,7 +120,7 @@ describe('<Tabs/>', () => {
         const items = wrapper.find(TabMenuItem);
 
         expect(
-            items.at(0).html().includes(panelProps.theme['tabNavigation__itemBtnIcon--hasLabel'])
+            items.at(0).html().includes(panelProps.theme!['tabNavigation__itemBtnIcon--hasLabel'])
         ).toBe(false);
     });
 });

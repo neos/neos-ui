@@ -1,10 +1,11 @@
 import React, {PureComponent} from 'react';
 
-interface PanelTheme {
+export interface PanelTheme {
     readonly 'panel': string;
+    readonly 'tabNavigation__itemBtnIcon--hasLabel': string;
 }
 
-interface PanelProps {
+export interface PanelProps {
     /**
      * The title to be rendered within the navigation item of this Panel.
      */
@@ -26,7 +27,7 @@ interface PanelProps {
     readonly theme?: PanelTheme;
 }
 
-class Panel extends PureComponent<PanelProps> {
+export default class Panel extends PureComponent<PanelProps> {
     public static readonly displayName = 'Panel';
 
     public render(): JSX.Element {
@@ -36,5 +37,3 @@ class Panel extends PureComponent<PanelProps> {
         );
     }
 }
-
-export default Panel;

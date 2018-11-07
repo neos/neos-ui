@@ -8,7 +8,7 @@ export interface State extends Readonly<{
     interfaceLanguage: string;
 }> {}
 
-const defaultState: State = {
+export const defaultState: State = {
     interfaceLanguage: ''
 };
 

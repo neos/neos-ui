@@ -1,6 +1,4 @@
-import {Map} from 'immutable';
-
-import {reducer} from './index';
+import {reducer, defaultState} from './index';
 
 import {actionTypes as system} from '../../System/index';
 
@@ -9,27 +7,31 @@ test(`should export a reducer`, () => {
     expect(typeof (reducer)).toBe('function');
 });
 
-test(`The reducer should return an Immutable.Map as the initial state.`, () => {
-    const state = new Map({});
-    const nextState = reducer(state, {
-        type: system.INIT
+test(`The reducer should return the default state when called with undefined.`, () => {
+    const nextState = reducer(undefined, {
+        type: 'unknown'
     });
 
-    expect(nextState.get('user').get('name') instanceof Map).toBe(true);
+    expect(nextState).toBe(defaultState);
 });
 
-test(`The reducer should initially create placeholder data.`, () => {
-    const state = new Map({});
-    const nextState = reducer(state, {
-        type: system.INIT
+test(`The reducer should correctly rehydrate data on INIT.`, () => {
+    const initValues = {
+        title: '1',
+        firstName: '2',
+        middleName: '3',
+        lastName: '4',
+        otherName: '5',
+        fullName: '6'
+    };
+    const nextState = reducer(undefined, {
+        type: system.INIT,
+        payload: {
+            user: {
+                name: initValues
+            }
+        }
     });
 
-    expect(nextState.get('user').get('name').toJS()).toEqual({
-        title: '',
-        firstName: '',
-        middleName: '',
-        lastName: '',
-        otherName: '',
-        fullName: ''
-    });
+    expect(nextState).toEqual(initValues);
 });

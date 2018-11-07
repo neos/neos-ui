@@ -13,7 +13,7 @@ export interface State extends Readonly<{
     fullName: string;
 }> {}
 
-const defaultState: State = {
+export const defaultState: State = {
     title: '',
     firstName: '',
     middleName: '',

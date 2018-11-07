@@ -6,11 +6,11 @@ import {actionTypes as system, InitAction} from '../../System';
 //
 // Export the subreducer state shape interface
 //
-export interface State {
-    readonly isAutoPublishingEnabled: boolean;
-}
+export interface State extends Readonly<{
+    isAutoPublishingEnabled: boolean;
+}> {}
 
-const defaultState: State = {
+export const defaultState: State = {
     isAutoPublishingEnabled: false
 };
 

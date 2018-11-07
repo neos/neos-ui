@@ -1,4 +1,4 @@
-import {actionTypes, actions, reducer, defaultState} from './index';
+import {actionTypes, actions, reducer, defaultState, selectors} from './index';
 
 test(`should export actionTypes`, () => {
     expect(actionTypes).not.toBe(undefined);
@@ -16,6 +16,12 @@ test(`should export action creators`, () => {
     expect(typeof (actions.ready)).toBe('function');
     expect(typeof (actions.authenticationTimeout)).toBe('function');
     expect(typeof (actions.reauthenticationSucceeded)).toBe('function');
+
+    expect(typeof (actions.boot().type)).toBe('string');
+    expect(typeof (actions.init().type)).toBe('string');
+    expect(typeof (actions.ready().type)).toBe('string');
+    expect(typeof (actions.authenticationTimeout().type)).toBe('string');
+    expect(typeof (actions.reauthenticationSucceeded().type)).toBe('string');
 });
 
 test(`should export a reducer`, () => {
@@ -31,13 +37,24 @@ test(`The reducer should return the default state when called with undefined.`, 
     expect(nextState).toBe(defaultState);
 });
 
-test(`The "toggle" action should be able to reverse the value of the "isAutoPublishingEnabled" key.`, () => {
+test(`The "authenticationTimeout" and "reauthenticationSucceeded" actions should toggle the "authenticationTimeout" key.`, () => {
     const state = {
-        isAutoPublishingEnabled: false
+        authenticationTimeout: false
     };
     const nextState1 = reducer(state, actions.authenticationTimeout());
     const nextState2 = reducer(nextState1, actions.reauthenticationSucceeded());
 
     expect(nextState1.authenticationTimeout).toBe(true);
     expect(nextState2.authenticationTimeout).toBe(false);
+});
+
+test(`The "authenticationTimeout" selector`, () => {
+    const state = {
+        system: {
+            authenticationTimeout: true
+        }
+    };
+    const authenticationTimeoutValue = selectors.authenticationTimeout(state);
+
+    expect(authenticationTimeoutValue).toBe(true);
 });

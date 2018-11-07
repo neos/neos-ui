@@ -4,7 +4,7 @@ exports[`<TextInput/> should render correctly. 1`] = `
 <input
   aria-disabled="false"
   aria-multiline="false"
-  className=""
+  className="textInputClassName fooClassName"
   onChange={[Function]}
   onKeyPress={[Function]}
   role="textbox"

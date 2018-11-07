@@ -1,14 +1,18 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import TextInput from './textInput';
+import TextInput, {TextInputProps} from './textInput';
 
 describe('<TextInput/>', () => {
-    let props;
+    let props: TextInputProps;
 
     beforeEach(() => {
         props = {
-            theme: {}
+            className: 'fooClassName',
+            theme: {
+                'textInput': 'textInputClassName',
+                'textInput--disabled': 'disabledClassName',
+            }
         };
     });
 

@@ -1,9 +1,9 @@
 //
 // Handle redux actions
 //
-const handleActions = (handlers = {}) => (state, action) => {
+const handleActions = (handlers: any = {}) => (state: any, action: any) => {
     if (Array.isArray(handlers)) {
-        return handlers.reduce((state, handler) => handler(state, action), state);
+        return handlers.reduce((currentState, innerHandler) => innerHandler(currentState, action), state);
     }
 
     const handler = handlers[action.type];

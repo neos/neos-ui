@@ -1,6 +1,7 @@
 import produce from 'immer';
 import {$get} from 'plow-js';
 import {action as createAction, ActionType} from 'typesafe-actions';
+import {State as UserState} from './../User/index';
 
 //
 // Export the subreducer state shape interface
@@ -9,9 +10,10 @@ export interface State {
     readonly authenticationTimeout: boolean;
 }
 
-// TODO: temp
+// TODO: move up when possible
 export interface GlobalState {
-    [key: string]: any;
+    system: State;
+    user: UserState;
 }
 
 const defaultState: State = {
@@ -21,13 +23,13 @@ const defaultState: State = {
 //
 // Export the action types
 //
-export const actionTypes = {
-    BOOT: '@neos/neos-ui/System/BOOT',
-    INIT: '@neos/neos-ui/System/INIT',
-    READY: '@neos/neos-ui/System/READY',
-    AUTHENTICATION_TIMEOUT: '@neos/neos-ui/System/AUTHENTICATION_TIMEOUT',
-    REAUTHENTICATION_SUCCEEDED: '@neos/neos-ui/System/REAUTHENTICATION_SUCCEEDED'
-};
+export enum actionTypes {
+    BOOT = '@neos/neos-ui/System/BOOT',
+    INIT = '@neos/neos-ui/System/INIT',
+    READY = '@neos/neos-ui/System/READY',
+    AUTHENTICATION_TIMEOUT = '@neos/neos-ui/System/AUTHENTICATION_TIMEOUT',
+    REAUTHENTICATION_SUCCEEDED = '@neos/neos-ui/System/REAUTHENTICATION_SUCCEEDED'
+}
 
 //
 // Export the actions
@@ -60,7 +62,6 @@ export const reducer = (state: State = defaultState, action: Action) => produce(
             break;
     }
 });
-
 
 //
 // Export the selectors

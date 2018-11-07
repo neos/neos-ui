@@ -17,10 +17,9 @@ const defaultState: State = {
 //
 // Export the action types
 //
-export const actionTypes = {
-    TOGGLE_AUTO_PUBLISHING: '@neos/neos-ui/User/Settings/TOGGLE_AUTO_PUBLISHING'
-};
-
+export enum actionTypes {
+    TOGGLE_AUTO_PUBLISHING = '@neos/neos-ui/User/Settings/TOGGLE_AUTO_PUBLISHING'
+}
 
 //
 // Export the actions
@@ -40,7 +39,7 @@ export type Action = ActionType<typeof actions>;
 //
 // Export the reducer
 //
-export const reducer = (state: State = defaultState, action: Action & InitAction) => produce(state, draft => {
+export const reducer = (state: State = defaultState, action: Action | InitAction) => produce(state, draft => {
     switch (action.type) {
         case system.INIT:
             draft.isAutoPublishingEnabled = action.payload.user.settings.isAutoPublishingEnabled;

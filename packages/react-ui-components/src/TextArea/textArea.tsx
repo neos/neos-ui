@@ -1,60 +1,65 @@
-import React, {PureComponent} from 'react';
-import PropTypes from 'prop-types';
+import React, {PureComponent, ChangeEvent} from 'react';
 import mergeClassNames from 'classnames';
-import TextareaAutoresize from 'react-textarea-autosize';
+import TextareaAutosize from 'react-textarea-autosize';
 import enhanceWithClickOutside from 'react-click-outside';
+import { PickDefaultProps } from '../../types';
 
-class TextArea extends PureComponent {
-    state = {
-        isFocused: false
-    };
-
-    static propTypes = {
+export interface TextAreaProps {
         /**
          * An optional className to render on the textarea node.
          */
-        className: PropTypes.string,
+        readonly className?: string;
 
         /**
          * An optional HTML5 placeholder.
          */
-        placeholder: PropTypes.string,
+        readonly placeholder?: string;
 
         /**
          * The handler which will be called once the user changes the value of the input.
          */
-        onChange: PropTypes.func,
+        readonly onChange?: (value: any) => void;
 
         /**
          * This prop controls if the CheckBox is disabled or not.
          */
-        disabled: PropTypes.bool,
+        readonly disabled?: boolean;
 
         /**
          * An optional css theme to be injected.
          */
-        theme: PropTypes.shape({
-            textArea: PropTypes.string,
-            'textArea--invalid': PropTypes.string
-        }).isRequired,
+        readonly theme?: TextAreaTheme;
 
         /**
          * Optional number to set the minRows of the TextArea if not expanded
          */
-        minRows: PropTypes.number,
+        readonly minRows?: number;
 
         /**
          * Optional number to set the expandedRows of the TextArea if expanded
          */
-        expandedRows: PropTypes.number
+        readonly expandedRows?: number;
+}
+
+export const defaultProps: PickDefaultProps<TextAreaProps, 'minRows' | 'expandedRows'> = {
+    minRows: 2,
+    expandedRows: 6
+};
+
+interface TextAreaTheme {
+    readonly textArea: string;
+    readonly 'textArea--invalid': string;
+    readonly 'textArea--disabled': string;
+}
+
+class TextArea extends PureComponent<TextAreaProps> {
+    public state = {
+        isFocused: false
     };
 
-    static defaultProps = {
-        minRows: 2,
-        expandedRows: 6
-    };
+    public static defaultProps = defaultProps;
 
-    handleValueChange = e => {
+    private readonly handleValueChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
         const {value} = e.target;
         const {onChange} = this.props;
 
@@ -63,39 +68,39 @@ class TextArea extends PureComponent {
         }
     }
 
-    handleOnClick = () => {
+    private readonly handleOnClick = () => {
         this.setState({
             isFocused: true
         });
     }
 
-    handleClickOutside = () => {
+    public readonly handleClickOutside = () => {
         this.setState({
             isFocused: false
         });
     }
 
-    render() {
+    public render(): JSX.Element {
         const {
             placeholder,
             className,
-            validationErrors,
             theme,
-            highlight,
             disabled,
             minRows,
             expandedRows,
             ...rest
         } = this.props;
-        const classNames = mergeClassNames({
-            [className]: className && className.length,
-            [theme.textArea]: true,
-            [theme['textArea--disabled']]: disabled
-        });
+        const classNames = mergeClassNames(
+            theme!.textArea,
+            className,
+            {
+                [theme!['textArea--disabled']]: disabled
+            }
+        );
 
         return (
             <div>
-                <TextareaAutoresize
+                <TextareaAutosize
                     {...rest}
                     className={classNames}
                     role="textbox"

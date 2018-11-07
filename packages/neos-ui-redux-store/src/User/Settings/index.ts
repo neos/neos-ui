@@ -1,7 +1,7 @@
 import produce from 'immer';
 import {action as createAction, ActionType} from 'typesafe-actions';
 
-import {actionTypes as system} from '../../System';
+import {actionTypes as system, InitAction} from '../../System';
 
 //
 // Export the subreducer state shape interface
@@ -40,10 +40,10 @@ export type Action = ActionType<typeof actions>;
 //
 // Export the reducer
 //
-export const reducer = (state: State = defaultState, action: Action) => produce(state, draft => {
+export const reducer = (state: State = defaultState, action: Action & InitAction) => produce(state, draft => {
     switch (action.type) {
         case system.INIT:
-            draft.isAutoPublishingEnabled = state.isAutoPublishingEnabled;
+            draft.isAutoPublishingEnabled = action.payload.user.settings.isAutoPublishingEnabled;
             break;
         case actionTypes.TOGGLE_AUTO_PUBLISHING:
             draft.isAutoPublishingEnabled = !state.isAutoPublishingEnabled;

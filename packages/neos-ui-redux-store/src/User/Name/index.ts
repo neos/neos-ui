@@ -31,12 +31,12 @@ export const actions = {};
 export const reducer = (state: State = defaultState, action: InitAction) => produce(state, draft => {
     switch (action.type) {
         case system.INIT:
-            draft.title = state.title || '';
-            draft.firstName = state.firstName || '';
-            draft.middleName = state.middleName || '';
-            draft.lastName = state.lastName || '';
-            draft.otherName = state.otherName || '';
-            draft.fullName = state.fullName || '';
+            draft.title = action.payload.user.name.title;
+            draft.firstName = action.payload.user.name.firstName;
+            draft.middleName = action.payload.user.name.middleName;
+            draft.lastName = action.payload.user.name.lastName;
+            draft.otherName = action.payload.user.name.otherName;
+            draft.fullName = action.payload.user.name.fullName;
             break;
     }
 });

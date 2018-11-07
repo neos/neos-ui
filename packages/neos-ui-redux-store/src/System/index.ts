@@ -9,6 +9,11 @@ export interface State {
     readonly authenticationTimeout: boolean;
 }
 
+// TODO: temp
+export interface GlobalState {
+    [key: string]: any;
+}
+
 const defaultState: State = {
     authenticationTimeout: false
 };
@@ -29,7 +34,7 @@ export const actionTypes = {
 //
 export const actions = {
     boot: () => createAction(actionTypes.BOOT),
-    init: (state: State) => createAction(actionTypes.INIT, state),
+    init: (state: GlobalState) => createAction(actionTypes.INIT, state),
     ready: () => createAction(actionTypes.READY),
     authenticationTimeout: () => createAction(actionTypes.AUTHENTICATION_TIMEOUT),
     reauthenticationSucceeded: () => createAction(actionTypes.REAUTHENTICATION_SUCCEEDED)
@@ -47,9 +52,6 @@ export type Action = ActionType<typeof actions>;
 //
 export const reducer = (state: State = defaultState, action: Action) => produce(state, draft => {
     switch (action.type) {
-        case actionTypes.INIT:
-            draft.authenticationTimeout = false;
-            break;
         case actionTypes.AUTHENTICATION_TIMEOUT:
             draft.authenticationTimeout = true;
             break;

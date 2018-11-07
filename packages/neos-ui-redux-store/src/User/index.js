@@ -1,5 +1,5 @@
-import {map, keys} from 'ramda';
-import {handleActions} from '@neos-project/utils-redux';
+import {map} from 'ramda';
+import {combineReducers} from '@neos-project/utils-redux';
 
 import * as Settings from './Settings/index';
 import * as Preferences from './Preferences/index';
@@ -20,7 +20,11 @@ export const actions = map(a => a.actions, all);
 //
 // Export the reducer
 //
-export const reducer = handleActions(map(k => all[k].reducer, keys(all)));
+export const reducer = combineReducers({
+    settings: Settings.reducer,
+    preferences: Preferences.reducer,
+    name: Name.reducer
+});
 
 //
 // Export the selectors

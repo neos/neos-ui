@@ -21,7 +21,7 @@ export const actions = {};
 export const reducer = (state: State = defaultState, action: InitAction) => produce(state, draft => {
     switch (action.type) {
         case system.INIT:
-            draft.interfaceLanguage = state.interfaceLanguage || '';
+            draft.interfaceLanguage = action.payload.user.preferences.interfaceLanguage;
             break;
     }
 });

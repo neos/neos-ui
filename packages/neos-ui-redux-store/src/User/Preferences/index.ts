@@ -12,7 +12,7 @@ const defaultState: State = {
     interfaceLanguage: ''
 };
 
-export const actionTypes = {};
+export enum actionTypes {}
 export const actions = {};
 
 //

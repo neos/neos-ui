@@ -22,7 +22,7 @@ const defaultState: State = {
     fullName: ''
 };
 
-export const actionTypes = {};
+export enum actionTypes {}
 export const actions = {};
 
 //

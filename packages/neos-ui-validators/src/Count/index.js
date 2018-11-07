@@ -20,7 +20,11 @@ const Count = (value, validatorOptions) => {
         return <I18n id="content.inspector.validators.countValidator.notCountable"/>;
     }
 
-    const {length} = Object.keys(value);
+    const {length} = value.hasOwnProperty('size') ? value.size : Object.keys(value);
+
+    if (length == 0) {
+        return null;
+    }
 
     if (length < minimum || length > maximum) {
         return <I18n id="content.inspector.validators.countValidator.countBetween" params={{minimum, maximum}}/>;

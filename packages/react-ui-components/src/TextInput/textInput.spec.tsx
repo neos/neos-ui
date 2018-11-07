@@ -29,13 +29,6 @@ describe('<TextInput/>', () => {
         expect(input.prop('className')).toContain('fooClassName');
     });
 
-    it('should allow the propagation of additional props to the wrapper.', () => {
-        const wrapper = shallow(<TextInput {...props} foo="bar"/>);
-        const input = wrapper.find('input');
-
-        expect(input.prop('foo')).toBe('bar');
-    });
-
     it('should call the passed "onChange" prop with the value of the input when changing it.', () => {
         const onChange = jest.fn();
         const wrapper = shallow(<TextInput {...props} onChange={onChange}/>);

@@ -16,7 +16,7 @@ export interface GlobalState {
     user: UserState;
 }
 
-const defaultState: State = {
+export const defaultState: State = {
     authenticationTimeout: false
 };
 

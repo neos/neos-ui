@@ -20,7 +20,7 @@ const Count = (value, validatorOptions) => {
         return <I18n id="content.inspector.validators.countValidator.notCountable"/>;
     }
 
-    const {length} = value.hasOwnProperty('size') ? value.size : Object.keys(value);
+    const {length} = Object.keys(value);
 
     if (length == 0) {
         return null;

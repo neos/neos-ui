@@ -1,6 +1,6 @@
 import Immutable, {Map} from 'immutable';
 
-import {actionTypes, actions, reducer} from './index.js';
+import {actionTypes, actions, reducer} from './index';
 
 import {actionTypes as system} from '../../System/index';
 

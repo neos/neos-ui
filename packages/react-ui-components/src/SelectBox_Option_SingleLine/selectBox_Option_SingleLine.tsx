@@ -5,7 +5,7 @@ import React, {PureComponent} from 'react';
 import ListPreviewElement from '../ListPreviewElement';
 import {ListPreviewElementProps} from '../ListPreviewElement/listPreviewElement';
 
-export interface SelectBox_Option_SingleLineProps extends ListPreviewElementProps {
+export interface SelectBox_Option_SingleLineProps extends Partial<ListPreviewElementProps> {
     readonly option: Options;
     readonly disabled?: boolean;
     readonly className?: string;

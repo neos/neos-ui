@@ -1,9 +1,25 @@
-/* eslint-disable camelcase, react/jsx-pascal-case */
+// tslint:disable:class-name
 import React, {PureComponent} from 'react';
-import PropTypes from 'prop-types';
 import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine';
 
 const CREATE_NEW_IS_FOCUSED = 'NEOS_UI_CREATE_NEW_IS_FOCUSED';
+
+interface SelectedOption {
+    readonly [key: string]: typeof CREATE_NEW_IS_FOCUSED;
+}
+
+interface SelectBox_CreateNew_Props {
+    // For explanations of the PropTypes, see SelectBox.js
+    readonly optionValueField: string;
+    readonly searchTerm?: string;
+    readonly onSearchTermChange: (searchTerm: string) => void;
+    readonly onCreateNew: (value: string) => void;
+    readonly createNewLabel?: string;
+
+    // API with SelectBox
+    readonly focusedValue?: string;
+    readonly onOptionFocus: (selectedOption: SelectedOption) => void;
+}
 
 /**
  * **SelectBox_CreateNew is an internal implementation detail of SelectBox**, meant to improve code quality.
@@ -11,46 +27,8 @@ const CREATE_NEW_IS_FOCUSED = 'NEOS_UI_CREATE_NEW_IS_FOCUSED';
  * It is used inside SelectBox_ListPreview as the last list element; and it is rendered if the `onCreateNew`
  * prop is specified.
  */
-
-class SelectBox_CreateNew extends PureComponent {
-    static propTypes = {
-        // For explanations of the PropTypes, see SelectBox.js
-        optionValueField: PropTypes.string.isRequired,
-        searchTerm: PropTypes.string,
-        onSearchTermChange: PropTypes.func,
-        onCreateNew: PropTypes.func,
-        createNewLabel: PropTypes.string,
-
-        // API with SelectBox
-        focusedValue: PropTypes.string,
-        onOptionFocus: PropTypes.func.isRequired
-    }
-
-    handleCreateNew = () => {
-        const {
-            searchTerm,
-            onSearchTermChange,
-            onCreateNew
-        } = this.props;
-        onCreateNew(searchTerm);
-        // Clear search box on creating new
-        onSearchTermChange('');
-    }
-
-    handleMouseEnter = () => {
-        const {
-            optionValueField,
-            onOptionFocus
-        } = this.props;
-
-        const selectedOption = {
-            [optionValueField]: CREATE_NEW_IS_FOCUSED
-        };
-
-        onOptionFocus(selectedOption);
-    };
-
-    render() {
+export default class SelectBox_CreateNew extends PureComponent<SelectBox_CreateNew_Props> {
+    public render(): JSX.Element | null {
         const {
             searchTerm,
             onCreateNew,
@@ -71,9 +49,34 @@ class SelectBox_CreateNew extends PureComponent {
                 isHighlighted={isHighlighted}
                 onClick={this.handleCreateNew}
                 onMouseEnter={this.handleMouseEnter}
-                />
+            />
         );
     }
-}
 
-export default SelectBox_CreateNew;
+    private readonly handleCreateNew = () => {
+        const {
+            searchTerm,
+            onSearchTermChange,
+            onCreateNew
+        } = this.props;
+
+        if (searchTerm && searchTerm.length) {
+            onCreateNew(searchTerm);
+        }
+        // Clear search box on creating new
+        onSearchTermChange('');
+    }
+
+    private readonly handleMouseEnter = () => {
+        const {
+            optionValueField,
+            onOptionFocus
+        } = this.props;
+
+        const selectedOption: SelectedOption = {
+            [optionValueField]: CREATE_NEW_IS_FOCUSED
+        };
+
+        onOptionFocus(selectedOption);
+    }
+}

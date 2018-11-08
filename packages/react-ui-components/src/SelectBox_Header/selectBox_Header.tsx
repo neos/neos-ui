@@ -82,6 +82,8 @@ export default class SelectBox_Header extends PureComponent<SelectBox_Header_Pro
 
         return (
             <span>
+                // TODO: themr looses default props type information of components
+                // @ts-ignore
                 <IconButton className={theme!.selectBoxHeader__icon} disabled={disabled} icon="times" onClick={disabled ? undefined : onReset}/>
                 <span className={theme!.selectBoxHeader__seperator}/>
             </span>

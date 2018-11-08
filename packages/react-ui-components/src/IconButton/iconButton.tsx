@@ -26,7 +26,7 @@ export interface IconButtonProps extends HTMLButtonElementAttributesExceptStyle 
     /**
      * Defines the size of the icon button.
      */
-    readonly size?: ButtonSize;
+    readonly size: ButtonSize;
 
     /**
      * An optional css theme to be injected.
@@ -38,9 +38,9 @@ export interface IconButtonProps extends HTMLButtonElementAttributesExceptStyle 
      */
     readonly disabled?: boolean;
 
-    readonly style?: ButtonStyle;
+    readonly style: ButtonStyle;
 
-    readonly hoverStyle?: ButtonHoverStyle;
+    readonly hoverStyle: ButtonHoverStyle;
 }
 
 type DefaultProps = PickDefaultProps<IconButtonProps, 'hoverStyle' | 'size' | 'style'>;

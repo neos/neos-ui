@@ -1,19 +1,21 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import ToolTip from './tooltip';
+
+import ToolTip, {TooltipProps, defaultProps} from './tooltip';
 
 describe('<ToolTip/>', () => {
-    let props;
-
-    beforeEach(() => {
-        props = {
-            theme: {
-                tooltip: 'tooltipClassName'
-            },
-            children: 'Foo children'
-        };
-    });
+    const props: TooltipProps = {
+        ...defaultProps,
+        children: 'Foo children',
+        theme: {
+            tooltip: 'tooltipClassName',
+            'tooltip--asError': 'asErrorClassName',
+            'tooltip--inline': 'inlineClassName',
+            'tooltip--arrow': 'arrowClassName',
+            'tooltip--inner': 'innerClassName',
+        },
+    };
 
     it('should render correctly.', () => {
         const wrapper = shallow(<ToolTip {...props}/>);
@@ -25,11 +27,5 @@ describe('<ToolTip/>', () => {
         const wrapper = shallow(<ToolTip {...props} className="fooClassName"/>);
 
         expect(wrapper.prop('className')).toContain('fooClassName');
-    });
-
-    it('should allow the propagation of additional props to the wrapper.', () => {
-        const wrapper = shallow(<ToolTip {...props} foo="bar"/>);
-
-        expect(wrapper.prop('foo')).toBe('bar');
     });
 });

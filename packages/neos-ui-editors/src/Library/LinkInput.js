@@ -1,5 +1,6 @@
 import React, {PureComponent, Fragment} from 'react';
 import PropTypes from 'prop-types';
+import pick from 'lodash.pick';
 import {connect} from 'react-redux';
 import {$get, $transform} from 'plow-js';
 
@@ -353,7 +354,8 @@ export default class LinkInput extends PureComponent {
     }
 
     render() {
-        const linkingOptions = this.props.options;
+        const linkingOptions = pick(this.props.options, ['anchor', 'title', 'targetBlank', 'relNofollow']);
+
         const optionsPanelEnabled = Boolean(linkingOptions && Object.values(linkingOptions).filter(i => i).length);
         return (
             <div>

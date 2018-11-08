@@ -19,18 +19,18 @@ export interface ShallowDropDownHeaderProps {
         /**
          * Icon to use if the dropdown is opened
          */
-        readonly iconIsOpen?: string;
+        readonly iconIsOpen: string;
 
         /**
          * Icon to use if the dropdown is opened
          */
-        readonly iconIsClosed?: string;
+        readonly iconIsClosed: string;
 
         /**
          * These props control the visual state of the contents, and are passed
          * from the outside via the `ContextDropDownHeader` component.
          */
-        readonly isOpen?: boolean;
+        readonly isOpen: boolean;
 
         readonly showDropDownToggle?: boolean;
 
@@ -51,12 +51,12 @@ export interface ShallowDropDownHeaderProps {
          */
         readonly _refHandler?: (isFocused: boolean) => (node: any) => void;
 
-        readonly toggleDropDown?: () => void;
+        readonly toggleDropDown: () => void;
 
         /**
          * Static component dependencies which are injected from the outside (index.js)
          */
-        readonly IconComponent?: any;
+        readonly IconComponent: any;
 
         /**
          * A object wich will be spreaded on the icon component
@@ -93,6 +93,11 @@ export const defaultProps: DefaultProps = {
 class ShallowDropDownHeader extends PureComponent<ShallowDropDownHeaderProps> {
     public static readonly defaultProps = defaultProps;
 
+    protected readonly handleReferenceHandler = () => {
+        const {_refHandler, shouldKeepFocusState, isOpen} = this.props;
+        return shouldKeepFocusState && _refHandler && _refHandler(isOpen!);
+    }
+
     public render(): JSX.Element {
         const {
             className,
@@ -119,14 +124,12 @@ class ShallowDropDownHeader extends PureComponent<ShallowDropDownHeaderProps> {
             }
         );
 
-        // const emptyFn = () => null;
-
         return (
             <div
                 {...rest}
                 role="button"
-                onClick={disabled ? null : toggleDropDown}
-                // ref={shouldKeepFocusState ? _refHandler(isOpen) : emptyFn}
+                onClick={disabled ? undefined : toggleDropDown}
+                ref={this.handleReferenceHandler}
                 className={finalClassName}
                 aria-haspopup="true"
                 >

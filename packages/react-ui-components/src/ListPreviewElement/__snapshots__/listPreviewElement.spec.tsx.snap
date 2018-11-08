@@ -2,6 +2,7 @@
 
 exports[`<Label/> should render correctly. 1`] = `
 <ListPreviewElement
+  isHighlighted={false}
   theme={
     Object {
       "listPreviewElement": "listPreviewElementClassName",

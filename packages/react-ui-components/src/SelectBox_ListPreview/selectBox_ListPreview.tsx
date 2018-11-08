@@ -14,9 +14,9 @@ export interface SelectOption {
 }
 
 export interface SelectBox_ListPreviewElement_Props {
-    readonly isHighlighted: boolean;
-    readonly onClick: () => void;
-    readonly onMouseEnter: () => void;
+    readonly isHighlighted?: boolean;
+    readonly onClick?: () => void;
+    readonly onMouseEnter?: () => void;
 }
 
 export interface SelectBox_ListPreviewGroup_Props {

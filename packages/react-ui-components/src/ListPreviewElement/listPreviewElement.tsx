@@ -3,6 +3,7 @@ import React, {PureComponent, ReactNode} from 'react';
 
 import Icon from '../Icon';
 import {SelectBox_ListPreviewElement_Props} from '../SelectBox_ListPreview/selectBox_ListPreview';
+import {PickDefaultProps} from '@neos-project/react-ui-components/types';
 
 export interface ListPreviewElementProps extends SelectBox_ListPreviewElement_Props {
     // ------------------------------
@@ -26,6 +27,10 @@ interface ListPreviewElementTheme {
     readonly 'listPreviewElement__icon': string;
 }
 
+const defaultProps: PickDefaultProps<ListPreviewElementProps, 'isHighlighted'> = {
+    isHighlighted: false,
+};
+
 /**
  * The ListPreviewElement is responsible for rendering a single element in a Select Box
  * or a MultiSelectBox.
@@ -47,6 +52,8 @@ interface ListPreviewElementTheme {
  * ```
  */
 export default class ListPreviewElement extends PureComponent<ListPreviewElementProps> {
+    public static readonly defaultProps = defaultProps;
+
     public render(): JSX.Element {
         const {
             icon,

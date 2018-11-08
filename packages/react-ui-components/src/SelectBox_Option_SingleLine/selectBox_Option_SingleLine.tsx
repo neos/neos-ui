@@ -19,14 +19,14 @@ interface Options {
 
 export default class SelectBox_Option_SingleLine extends PureComponent<SelectBox_Option_SingleLineProps> {
     public render(): JSX.Element {
-        const {option, className, disabled} = this.props;
+        const {option, className, disabled, ...rest} = this.props;
 
         const isDisabled = disabled || option.disabled;
 
         const finalClassNames = mergeClassNames(className);
 
         return (
-            <ListPreviewElement {...this.props} icon={option.icon} disabled={isDisabled} className={finalClassNames}>
+            <ListPreviewElement {...rest} icon={option.icon} disabled={isDisabled} className={finalClassNames}>
                 <span>{option.label}</span>
             </ListPreviewElement>
         );

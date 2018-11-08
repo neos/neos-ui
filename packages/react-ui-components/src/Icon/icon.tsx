@@ -55,6 +55,11 @@ export interface IconProps {
     readonly color?: IconColor;
 
     /**
+     * Enable spinning of the Icon
+     */
+    readonly spin?: boolean;
+
+    /**
      *  An optional css theme to be injected.
      */
     readonly theme?: IconTheme;

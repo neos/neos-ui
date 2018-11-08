@@ -4,13 +4,9 @@ exports[`<SelectBox_Option_SingleLine/> should render correctly. 1`] = `
 <ThemedListPreviewElement
   className=""
   composeTheme="deeply"
+  isHighlighted={false}
   mapThemrProps={[Function]}
   onClick={[MockFunction]}
-  option={
-    Object {
-      "label": "Foo label",
-    }
-  }
 >
   <span>
     Foo label

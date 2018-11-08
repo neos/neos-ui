@@ -120,7 +120,8 @@ export default class NodeVariantCreationDialog extends PureComponent {
         }
 
         let currentDimensionChoiceText = '';
-        activePresets.forEach((dimensionConfig, dimensionName) => {
+        Object.keys(activePresets).forEach(dimensionName => {
+            const dimensionConfig = activePresets[dimensionName];
             const dimensionLabel = i18nRegistry.translate($get([dimensionName, 'label'], contentDimensions));
             const dimensionValueLabel = i18nRegistry.translate($get('label', dimensionConfig));
 

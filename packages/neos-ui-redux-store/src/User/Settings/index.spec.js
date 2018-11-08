@@ -1,7 +1,4 @@
-import Immutable, {Map} from 'immutable';
-
-import {actionTypes, actions, reducer} from './index.js';
-
+import {actionTypes, actions, reducer, defaultState} from './index';
 import {actionTypes as system} from '../../System/index';
 
 test(`should export actionTypes`, () => {
@@ -19,37 +16,38 @@ test(`should export a reducer`, () => {
     expect(typeof (reducer)).toBe('function');
 });
 
-test(`The reducer should return an Immutable.Map as the initial state.`, () => {
-    const state = new Map({});
-    const nextState = reducer(state, {
-        type: system.INIT
+test(`The reducer should return the default state when called with undefined.`, () => {
+    const nextState = reducer(undefined, {
+        type: 'unknown'
     });
 
-    expect(nextState.get('user').get('settings') instanceof Map).toBe(true);
+    expect(nextState).toBe(defaultState);
 });
 
-test(`The reducer should initially mark auto publishing as disabled.`, () => {
-    const state = new Map({});
-    const nextState = reducer(state, {
-        type: system.INIT
+test(`The reducer should correctly rehydrate data on INIT.`, () => {
+    const initValues = {
+        isAutoPublishingEnabled: true
+    };
+    const nextState = reducer(undefined, {
+        type: system.INIT,
+        payload: {
+            user: {
+                settings: initValues
+            }
+        }
     });
-
-    expect(nextState.get('user').get('settings').get('isAutoPublishingEnabled')).toBe(false);
+    expect(nextState).toEqual(initValues);
 });
 
 test(`
     The "toggle" action should be able to reverse the value of the
     "isAutoPublishingEnabled" key.`, () => {
-    const state = Immutable.fromJS({
-        user: {
-            settings: {
-                isAutoPublishingEnabled: false
-            }
-        }
-    });
+    const state = {
+        isAutoPublishingEnabled: false
+    };
     const nextState1 = reducer(state, actions.toggleAutoPublishing());
     const nextState2 = reducer(nextState1, actions.toggleAutoPublishing());
 
-    expect(nextState1.get('user').get('settings').get('isAutoPublishingEnabled')).toBe(true);
-    expect(nextState2.get('user').get('settings').get('isAutoPublishingEnabled')).toBe(false);
+    expect(nextState1.isAutoPublishingEnabled).toBe(true);
+    expect(nextState2.isAutoPublishingEnabled).toBe(false);
 });

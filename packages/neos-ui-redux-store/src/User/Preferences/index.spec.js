@@ -1,5 +1,3 @@
-import {Map} from 'immutable';
-
 import {reducer, defaultState} from './index';
 
 import {actionTypes as system} from '../../System/index';

@@ -2,6 +2,7 @@ import produce from 'immer';
 import {$get} from 'plow-js';
 import {action as createAction, ActionType} from 'typesafe-actions';
 import {State as UserState} from './../User/index';
+import {State as ContentDimensionsState} from './../CR/ContentDimensions/index';
 
 //
 // Export the subreducer state shape interface
@@ -14,6 +15,9 @@ export interface State {
 export interface GlobalState {
     system: State;
     user: UserState;
+    cr: {
+        contentDimensions: ContentDimensionsState;
+    };
 }
 
 export const defaultState: State = {

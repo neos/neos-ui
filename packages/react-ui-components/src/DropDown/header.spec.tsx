@@ -1,23 +1,23 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import {createStubComponent} from './../_lib/testUtils';
-import ShallowDropDownHeader from './header';
+import ShallowDropDownHeader, {ShallowDropDownHeaderProps, defaultProps} from './header';
 
 describe('<ShallowDropDownHeader/>', () => {
-    let props;
+    let props: ShallowDropDownHeaderProps;
 
     beforeEach(() => {
         props = {
+            ...defaultProps,
             children: 'Foo children',
-            IconComponent: createStubComponent(),
             isOpen: false,
             toggleDropDown: () => null,
-            theme: {/* eslint-disable quote-props */
+            theme: {
                 'dropDown__btn': 'baseDropDownHeaderClassName',
+                'dropDown__btnLabel': 'baseDropDownHeaderLabelClassName',
+                'dropDown__chevron': 'baseDropDownHeaderChevronClassName',
                 'dropDown__btn--withChevron': 'baseDropDownHeaderWithChevronClassName',
-                'dropDown__chevron': 'baseDropDownHeaderChevronClassName'
-            }/* eslint-enable quote-props */
+             }
         };
     });
 
@@ -33,12 +33,6 @@ describe('<ShallowDropDownHeader/>', () => {
         expect(wrapper.prop('className')).toContain('fooClassName');
     });
 
-    it('should allow the propagation of additional props to the wrapper.', () => {
-        const wrapper = shallow(<ShallowDropDownHeader {...props} foo="bar"/>);
-
-        expect(wrapper.prop('foo')).toBe('bar');
-    });
-
     it('should call the "toggleDropDown" prop when clicking on the wrapper.', () => {
         const toggleDropDown = jest.fn();
         const wrapper = shallow(<ShallowDropDownHeader {...props} toggleDropDown={toggleDropDown}/>);
@@ -46,14 +40,6 @@ describe('<ShallowDropDownHeader/>', () => {
         wrapper.simulate('click');
 
         expect(toggleDropDown.mock.calls.length).toBe(1);
-    });
-
-    it('should call the "_refHandler" prop with the current "isOpen" prop when rendering the node.', () => {
-        const refHandler = jest.fn();
-        shallow(<ShallowDropDownHeader {...props} _refHandler={refHandler} itemScope={false}/>);
-
-        expect(refHandler.mock.calls.length).toBe(1);
-        expect(refHandler.mock.calls[0][0]).toBe(false);
     });
 
     it('should render a node with a aria-haspopup attribute if the "isOpen" prop is falsy.', () => {

@@ -56,7 +56,7 @@ export interface ShallowDropDownHeaderProps {
         /**
          * Static component dependencies which are injected from the outside (index.js)
          */
-        readonly IconComponent: any;
+        readonly IconComponent?: any;
 
         /**
          * A object wich will be spreaded on the icon component

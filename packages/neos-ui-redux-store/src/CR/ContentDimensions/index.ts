@@ -213,7 +213,7 @@ const activePresetsSelector = createSelector([
             return Object.assign({}, finalActivePreset, {name: presetName});
         }, active);
     }
-    return null;
+    return {};
 });
 
 //

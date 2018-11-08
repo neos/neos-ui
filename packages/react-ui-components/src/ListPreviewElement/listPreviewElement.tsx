@@ -2,22 +2,16 @@ import mergeClassNames from 'classnames';
 import React, {PureComponent, ReactNode} from 'react';
 
 import Icon from '../Icon';
+import {SelectBox_ListPreviewElement_Props} from '../SelectBox_ListPreview/selectBox_ListPreview';
 
-export interface ListPreviewElementProps {
+export interface ListPreviewElementProps extends SelectBox_ListPreviewElement_Props {
     // ------------------------------
     // API inside custom ListPreviewElements
     // ------------------------------
     readonly icon?: string;
     readonly className?: string;
     readonly disabled?: boolean;
-    readonly children: ReactNode;
-
-    // ------------------------------
-    // API as needed by SelectBox
-    // ------------------------------
-    readonly onClick?: () => void;
-    readonly isHighlighted?: boolean;
-    readonly onMouseEnter?: () => void;
+    readonly children?: ReactNode;
 
     // ------------------------------
     // Theme & Dependencies

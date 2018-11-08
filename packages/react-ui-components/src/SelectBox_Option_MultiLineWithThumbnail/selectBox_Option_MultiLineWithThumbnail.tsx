@@ -5,7 +5,7 @@ import React, {PureComponent} from 'react';
 
 import ListPreviewElement from '../ListPreviewElement';
 
-interface SelectBox_Option_MultiLineWithThumbnail_Props {
+export interface SelectBox_Option_MultiLineWithThumbnail_Props {
     readonly label: string;
     readonly secondaryLabel?: string;
     readonly tertiaryLabel?: string;

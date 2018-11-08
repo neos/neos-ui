@@ -1,25 +1,10 @@
 // tslint:disable:class-name
 import React, {PureComponent} from 'react';
+import ListPreviewElement from '../ListPreviewElement';
+import {SelectBox_ListPreviewGroup_Props, SelectOption} from '../SelectBox_ListPreview/selectBox_ListPreview';
 
-type Option = any; // TODO: what is the type of an option?
-
-interface SelectBox_ListPreviewFlat_Props {
-    // For explanations of the PropTypes, see SelectBox.js
-    readonly options: ReadonlyArray<{
-        readonly [key: string]: any;
-    }>;
-    readonly ListPreviewElement: any; // TODO type interface
-
-    // API with SelectBox
-    readonly optionValueAccessor: (option: Option) => string | undefined;
-    readonly onChange: (option: Option) => void;
-    readonly focusedValue?: string;
-    readonly onOptionFocus?: (option: Option) => void;
-
-    // ------------------------------
-    // Theme & Dependencies
-    // ------------------------------
-    readonly theme: SelectBox_ListPreviewFlat_Theme;
+export interface SelectBox_ListPreviewFlat_Props extends SelectBox_ListPreviewGroup_Props {
+    readonly theme?: SelectBox_ListPreviewFlat_Theme;
 }
 
 interface SelectBox_ListPreviewFlat_Theme {
@@ -57,9 +42,8 @@ export default class SelectBox_ListPreviewFlat extends PureComponent<SelectBox_L
         }
     }
 
-    private readonly renderOption = (option: Option, index: number) => {
+    private readonly renderOption = (option: SelectOption, index: number) => {
         const {
-            ListPreviewElement,
             optionValueAccessor,
             focusedValue,
             theme
@@ -82,11 +66,10 @@ export default class SelectBox_ListPreviewFlat extends PureComponent<SelectBox_L
                 }}
                 role="option"
                 aria-selected={isHighlighted ? 'true' : 'false'}
-                className={theme.selectBox__item}
+                className={theme!.selectBox__item}
             >
                 <ListPreviewElement
                     isHighlighted={isHighlighted}
-                    option={option}
                     onClick={this.handlePreviewElementClick(option)}
                     onMouseEnter={this.handlePreviewElementMouseEnter(option)}
                 />
@@ -94,11 +77,11 @@ export default class SelectBox_ListPreviewFlat extends PureComponent<SelectBox_L
         );
     }
 
-    private readonly handlePreviewElementClick = (option: Option) => () => {
+    private readonly handlePreviewElementClick = (option: SelectOption) => () => {
         this.props.onChange(option);
     }
 
-    private readonly handlePreviewElementMouseEnter = (option: Option) => () => {
+    private readonly handlePreviewElementMouseEnter = (option: SelectOption) => () => {
         if (this.props.onOptionFocus) {
             this.props.onOptionFocus(option);
         }

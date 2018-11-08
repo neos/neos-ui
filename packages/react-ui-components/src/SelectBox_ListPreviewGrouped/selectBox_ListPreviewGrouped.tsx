@@ -1,30 +1,17 @@
 // tslint:disable:class-name
 import mergeClassNames from 'classnames';
 import React, {PureComponent} from 'react';
+import ListPreviewElement from '../ListPreviewElement';
+import {SelectBox_ListPreviewGroup_Props, SelectOption, SelectOptions} from '../SelectBox_ListPreview/selectBox_ListPreview';
 
-// TODO hint: options prop should be a Map of all possible options
-
-type Option = any; // TODO: what is the type of an option?
-
-interface SelectBox_ListPreviewGrouped_Props {
-    // For explanations of the PropTypes, see SelectBox.js
-    readonly options: Options;
-    readonly ListPreviewElement: any; // TODO: properly type this; should satisfy a certain interface
-
-    readonly theme: SelectBox_ListPreviewGrouped_Theme;
-
-    // API with SelectBox
-    readonly optionValueAccessor: (option: Option) => string | undefined;
-    readonly onChange: (option: Option) => void;
-    readonly focusedValue?: string;
-    readonly onOptionFocus?: (option: Option) => void;
-    readonly withoutGroupLabel: string;
+interface SelectOptionGroups {
+    readonly [groupLabel: string]: SelectOptions;
 }
 
-type Options = ReadonlyArray<{
-    readonly group?: string;
-    readonly [key: string]: Option;
-}>; // TODO: what is actually in there?
+export interface SelectBox_ListPreviewGrouped_Props extends SelectBox_ListPreviewGroup_Props {
+    readonly withoutGroupLabel: string;
+    readonly theme?: SelectBox_ListPreviewGrouped_Theme;
+}
 
 interface SelectBox_ListPreviewGrouped_Theme {
     readonly 'selectBox__item': string;
@@ -70,14 +57,16 @@ export default class SelectBox_ListPreviewGrouped extends PureComponent<SelectBo
      * as key and an array of options as values.
      * Options without a group-attribute assigned will receive the key specified in props.withoutGroupLabel.
      */
-    private readonly getGroupedOptions = (options: Options) => {
-        return options.reduce((accumulator, currentOpt) => {
-            const groupLabel = currentOpt.group ? currentOpt.group : this.props.withoutGroupLabel;
-            // tslint:disable-next-line:no-object-mutation
-            accumulator[groupLabel] = accumulator[groupLabel] || [];
-            accumulator[groupLabel].push(currentOpt);
-            return accumulator;
-        }, Object.create(null)); // <-- Initial value of the accumulator
+    private readonly getGroupedOptions = (options: SelectOptions): SelectOptionGroups => {
+        return options.reduce((selectOptionGroups, currentOption) => {
+            const groupLabel = currentOption.group ? currentOption.group : this.props.withoutGroupLabel;
+            const optionGroup = selectOptionGroups[groupLabel] || [];
+
+            return {
+                ...selectOptionGroups,
+                [groupLabel]: optionGroup.concat(currentOption),
+            };
+        }, {} as SelectOptionGroups); // <-- Initial value of the accumulator
     }
 
     /**
@@ -85,17 +74,17 @@ export default class SelectBox_ListPreviewGrouped extends PureComponent<SelectBo
      * that displays their group name.
      * @returns {JSX} option elements grouped by and labeled with their group-attribute.
      */
-    private readonly renderGroup = (group: ReadonlyArray<any>): JSX.Element => {
-        const [groupLabel, optionsList] = group;
+    private readonly renderGroup = (optionsEntry: [string, SelectOptions]): JSX.Element => {
+        const [groupLabel, optionsList] = optionsEntry;
         const {theme} = this.props;
         const groupClassName = mergeClassNames(
-            theme.selectBox__item,
-            theme['selectBox__item--isGroup'],
+            theme!.selectBox__item,
+            theme!['selectBox__item--isGroup'],
         );
 
         return (
             <li key={groupLabel} className={groupClassName}>
-                <div className={theme.selectBox__groupHeader}>
+                <div className={theme!.selectBox__groupHeader}>
                     {groupLabel}
                 </div>
                 <ul>
@@ -105,9 +94,8 @@ export default class SelectBox_ListPreviewGrouped extends PureComponent<SelectBo
         );
     }
 
-    private readonly renderOption = (option: Option, index: number) => {
+    private readonly renderOption = (option: SelectOption, index: number) => {
         const {
-            ListPreviewElement,
             optionValueAccessor,
             focusedValue,
             theme
@@ -130,11 +118,10 @@ export default class SelectBox_ListPreviewGrouped extends PureComponent<SelectBo
                 }}
                 role="option"
                 aria-selected={isHighlighted ? 'true' : 'false'}
-                className={theme.selectBox__item}
+                className={theme!.selectBox__item}
             >
                 <ListPreviewElement
                     isHighlighted={isHighlighted}
-                    option={option}
                     onClick={this.handlePreviewElementClick(option)}
                     onMouseEnter={this.handlePreviewElementMouseEnter(option)}
                 />
@@ -142,11 +129,11 @@ export default class SelectBox_ListPreviewGrouped extends PureComponent<SelectBo
         );
     }
 
-    private readonly handlePreviewElementClick = (option: Option) => () => {
+    private readonly handlePreviewElementClick = (option: SelectOption) => () => {
         this.props.onChange(option);
     }
 
-    private readonly handlePreviewElementMouseEnter = (option: Option) => () => {
+    private readonly handlePreviewElementMouseEnter = (option: SelectOption) => () => {
         if (this.props.onOptionFocus) {
             this.props.onOptionFocus(option);
         }

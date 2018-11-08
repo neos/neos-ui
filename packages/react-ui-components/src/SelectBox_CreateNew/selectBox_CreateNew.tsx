@@ -8,17 +8,17 @@ interface SelectedOption {
     readonly [key: string]: typeof CREATE_NEW_IS_FOCUSED;
 }
 
-interface SelectBox_CreateNew_Props {
+export interface SelectBox_CreateNew_Props {
     // For explanations of the PropTypes, see SelectBox.js
     readonly optionValueField: string;
     readonly searchTerm?: string;
     readonly onSearchTermChange: (searchTerm: string) => void;
     readonly onCreateNew: (value: string) => void;
-    readonly createNewLabel?: string;
+    readonly createNewLabel: string;
 
     // API with SelectBox
     readonly focusedValue?: string;
-    readonly onOptionFocus: (selectedOption: SelectedOption) => void;
+    readonly onOptionFocus?: (selectedOption: SelectedOption) => void;
 }
 
 /**
@@ -77,6 +77,8 @@ export default class SelectBox_CreateNew extends PureComponent<SelectBox_CreateN
             [optionValueField]: CREATE_NEW_IS_FOCUSED
         };
 
-        onOptionFocus(selectedOption);
+        if (onOptionFocus) {
+            onOptionFocus(selectedOption);
+        }
     }
 }

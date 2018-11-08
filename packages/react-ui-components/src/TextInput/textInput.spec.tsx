@@ -1,20 +1,17 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
+
 import TextInput, {TextInputProps} from './textInput';
 
 describe('<TextInput/>', () => {
-    let props: TextInputProps;
-
-    beforeEach(() => {
-        props = {
-            className: 'fooClassName',
-            theme: {
-                'textInput': 'textInputClassName',
-                'textInput--disabled': 'disabledClassName',
-            }
-        };
-    });
+    const props: TextInputProps = {
+        className: 'fooClassName',
+        theme: {
+            'textInput': 'textInputClassName',
+            'textInput--disabled': 'disabledClassName',
+        },
+    };
 
     it('should render correctly.', () => {
         const wrapper = shallow(<TextInput {...props}/>);
@@ -45,7 +42,7 @@ describe('<TextInput/>', () => {
     });
 
     it('should throw no error if no "onChange" prop was passed when changing the value of the input.', () => {
-        const wrapper = shallow(<TextInput {...props}/>);
+        const wrapper = shallow(<TextInput {...props} />);
         const input = wrapper.find('input');
 
         expect(() => {

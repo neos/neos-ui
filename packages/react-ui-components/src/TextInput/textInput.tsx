@@ -1,13 +1,14 @@
 import React, {PureComponent, ChangeEvent} from 'react';
 import mergeClassNames from 'classnames';
 import {omit} from 'lodash';
+import {Omit} from '../../types';
 
 interface TextInputTheme {
     readonly textInput: string;
     readonly 'textInput--disabled': string;
 }
 
-export interface TextInputProps {
+export interface TextInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
     /**
      * An optional className to render on the textarea node.
      */
@@ -17,21 +18,6 @@ export interface TextInputProps {
      * An optional className for the surrounding container div.
      */
     readonly containerClassName?: string;
-
-    /**
-     * An optional HTML5 placeholder.
-     */
-    readonly placeholder?: string;
-
-    /**
-     * This prop controls if the CheckBox is disabled or not.
-     */
-    readonly disabled?: boolean;
-
-    /**
-     * A prop of which type this input field is eg password
-     */
-    readonly type?: string;
 
     /**
      * Set the focus to this input element after mount
@@ -84,11 +70,9 @@ class TextInput extends PureComponent<TextInputProps> {
     }
 
     private readonly handleValueChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const {value} = event.target;
         const {onChange} = this.props;
-
         if (onChange) {
-            onChange(value);
+            onChange(event.target.value);
         }
     }
 

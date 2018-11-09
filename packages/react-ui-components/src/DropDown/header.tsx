@@ -2,6 +2,7 @@ import React, {PureComponent, ReactNode} from 'react';
 import mergeClassNames from 'classnames';
 import {PickDefaultProps} from '../../types';
 import {makeFocusNode} from './../_lib/focusNode';
+import Icon from '../Icon';
 
 interface ShallowDropDownHeaderTheme {
     readonly 'dropDown__btn': string;
@@ -54,11 +55,6 @@ export interface ShallowDropDownHeaderProps {
         readonly toggleDropDown: () => void;
 
         /**
-         * Static component dependencies which are injected from the outside (index.js)
-         */
-        readonly IconComponent: any;
-
-        /**
          * A object wich will be spreaded on the icon component
          */
         readonly iconRest?: object;
@@ -106,7 +102,6 @@ class ShallowDropDownHeader extends PureComponent<ShallowDropDownHeaderProps> {
             isOpen,
             showDropDownToggle,
             toggleDropDown,
-            IconComponent,
             _refHandler,
             shouldKeepFocusState,
             iconIsOpen,
@@ -134,7 +129,7 @@ class ShallowDropDownHeader extends PureComponent<ShallowDropDownHeaderProps> {
                 aria-haspopup="true"
                 >
                 {children}
-                {showDropDownToggle && <IconComponent icon={iconName} className={theme!.dropDown__chevron} {...iconRest!} />}
+                {showDropDownToggle && <Icon icon={iconName} className={theme!.dropDown__chevron} {...iconRest!} />}
             </div>
         );
     }

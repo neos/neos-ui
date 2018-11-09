@@ -1,6 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
+import Icon from '../Icon';
 import ShallowDropDownHeader, {ShallowDropDownHeaderProps, defaultProps} from './header';
 
 describe('<ShallowDropDownHeader/>', () => {
@@ -48,17 +49,17 @@ describe('<ShallowDropDownHeader/>', () => {
         expect(wrapper.html().includes('aria-haspopup')).toBeTruthy();
     });
 
-    it('should render the passed "IconComponent" with the themes "dropDown__chevron" className and a "chevron-down" icon prop.', () => {
+    it('should render the passed "Icon" with the themes "dropDown__chevron" className and a "chevron-down" icon prop.', () => {
         const wrapper = shallow(<ShallowDropDownHeader {...props}/>);
-        const icon = wrapper.find(props.IconComponent);
+        const icon = wrapper.find(Icon);
 
         expect(icon.hasClass('baseDropDownHeaderChevronClassName')).toBeTruthy();
         expect(icon.prop('icon')).toBe('chevron-down');
     });
 
-    it('should render the passed "IconComponent" with a "chevron-up" icon prop in case the "isOpen" prop is truthy.', () => {
+    it('should render the passed "Icon" with a "chevron-up" icon prop in case the "isOpen" prop is truthy.', () => {
         const wrapper = shallow(<ShallowDropDownHeader {...props} isOpen/>);
-        const icon = wrapper.find(props.IconComponent);
+        const icon = wrapper.find(Icon);
 
         expect(icon.hasClass('baseDropDownHeaderChevronClassName')).toBeTruthy();
         expect(icon.prop('icon')).toBe('chevron-up');

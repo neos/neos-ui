@@ -8,9 +8,13 @@ exports[`<ShallowDropDownHeader/> should render correctly. 1`] = `
   role="button"
 >
   Foo children
-  <Component
+  <ThemedIcon
     className="baseDropDownHeaderChevronClassName"
+    color="default"
+    composeTheme="deeply"
     icon="chevron-down"
+    mapThemrProps={[Function]}
+    padded="none"
   />
 </div>
 `;

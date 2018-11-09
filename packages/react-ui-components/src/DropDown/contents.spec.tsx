@@ -1,10 +1,10 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import ShallowDropDownContents from './contents';
+import ShallowDropDownContents, {ShallowDropDownContentsProps} from './contents';
 
 describe('<ShallowDropDownContents/>', () => {
-    let props;
+    let props: ShallowDropDownContentsProps;
 
     beforeEach(() => {
         props = {
@@ -28,12 +28,6 @@ describe('<ShallowDropDownContents/>', () => {
         const wrapper = shallow(<ShallowDropDownContents {...props} className="fooClassName"/>);
 
         expect(wrapper.prop('className')).toContain('fooClassName');
-    });
-
-    it('should allow the propagation of additional props to the wrapper.', () => {
-        const wrapper = shallow(<ShallowDropDownContents {...props} foo="bar"/>);
-
-        expect(wrapper.prop('foo')).toBe('bar');
     });
 
     it('should render the themes "dropDown__contents--isOpen" className in case the "isOpen" prop is truthy.', () => {

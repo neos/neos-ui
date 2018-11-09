@@ -1,16 +1,17 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import TextInput from './textInput';
+
+import TextInput, {TextInputProps} from './textInput';
 
 describe('<TextInput/>', () => {
-    let props;
-
-    beforeEach(() => {
-        props = {
-            theme: {}
-        };
-    });
+    const props: TextInputProps = {
+        className: 'fooClassName',
+        theme: {
+            'textInput': 'textInputClassName',
+            'textInput--disabled': 'disabledClassName',
+        },
+    };
 
     it('should render correctly.', () => {
         const wrapper = shallow(<TextInput {...props}/>);
@@ -23,13 +24,6 @@ describe('<TextInput/>', () => {
         const input = wrapper.find('input');
 
         expect(input.prop('className')).toContain('fooClassName');
-    });
-
-    it('should allow the propagation of additional props to the wrapper.', () => {
-        const wrapper = shallow(<TextInput {...props} foo="bar"/>);
-        const input = wrapper.find('input');
-
-        expect(input.prop('foo')).toBe('bar');
     });
 
     it('should call the passed "onChange" prop with the value of the input when changing it.', () => {
@@ -48,7 +42,7 @@ describe('<TextInput/>', () => {
     });
 
     it('should throw no error if no "onChange" prop was passed when changing the value of the input.', () => {
-        const wrapper = shallow(<TextInput {...props}/>);
+        const wrapper = shallow(<TextInput {...props} />);
         const input = wrapper.find('input');
 
         expect(() => {

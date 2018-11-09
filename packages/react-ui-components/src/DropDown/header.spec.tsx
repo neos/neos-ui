@@ -5,22 +5,18 @@ import Icon from '../Icon';
 import ShallowDropDownHeader, {ShallowDropDownHeaderProps, defaultProps} from './header';
 
 describe('<ShallowDropDownHeader/>', () => {
-    let props: ShallowDropDownHeaderProps;
-
-    beforeEach(() => {
-        props = {
-            ...defaultProps,
-            children: 'Foo children',
-            isOpen: false,
-            toggleDropDown: () => null,
-            theme: {
-                'dropDown__btn': 'baseDropDownHeaderClassName',
-                'dropDown__btnLabel': 'baseDropDownHeaderLabelClassName',
-                'dropDown__chevron': 'baseDropDownHeaderChevronClassName',
-                'dropDown__btn--withChevron': 'baseDropDownHeaderWithChevronClassName',
-             }
-        };
-    });
+    const props: ShallowDropDownHeaderProps = {
+        ...defaultProps,
+        children: 'Foo children',
+        isOpen: false,
+        toggleDropDown: () => null,
+        theme: {
+            'dropDown__btn': 'baseDropDownHeaderClassName',
+            'dropDown__btnLabel': 'baseDropDownHeaderLabelClassName',
+            'dropDown__chevron': 'baseDropDownHeaderChevronClassName',
+            'dropDown__btn--withChevron': 'baseDropDownHeaderWithChevronClassName',
+         }
+    };
 
     it('should render correctly.', () => {
         const wrapper = shallow(<ShallowDropDownHeader {...props}/>);

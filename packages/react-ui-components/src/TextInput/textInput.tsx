@@ -47,7 +47,7 @@ export interface TextInputProps extends Omit<React.InputHTMLAttributes<HTMLInput
     /**
      * An optional css theme to be injected.
      */
-    readonly theme: TextInputTheme;
+    readonly theme?: TextInputTheme;
 }
 
 class TextInput extends PureComponent<TextInputProps> {

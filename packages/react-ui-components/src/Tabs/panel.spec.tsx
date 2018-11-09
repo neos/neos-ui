@@ -8,9 +8,8 @@ describe('<Panel/>', () => {
         title: 'TitleString',
         theme: {
             panel: 'panelBaseClassName',
-            'tabNavigation__itemBtnIcon--hasLabel': 'hasLabelClassName'
         },
-        children: [<div key={'foo'}>'Foo children'</div>]
+        children: 'Foo children',
     };
 
     it('should render correctly.', () => {

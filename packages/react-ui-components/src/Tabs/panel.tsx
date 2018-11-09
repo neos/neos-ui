@@ -1,15 +1,14 @@
-import React, {PureComponent} from 'react';
+import React, {PureComponent, ReactNode} from 'react';
 
 export interface PanelTheme {
     readonly 'panel': string;
-    readonly 'tabNavigation__itemBtnIcon--hasLabel': string;
 }
 
 export interface PanelProps {
     /**
      * The title to be rendered within the navigation item of this Panel.
      */
-    readonly title: string;
+    readonly title?: string;
 
     /**
      * An optional icon identifier which will be rendered within the navigation item of this Panel.
@@ -19,7 +18,7 @@ export interface PanelProps {
     /**
      * The children to render within the div node.
      */
-    readonly children: any;
+    readonly children: ReactNode;
 
     /**
      * An optional css theme to be injected.

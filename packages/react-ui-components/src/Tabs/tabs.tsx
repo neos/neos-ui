@@ -1,10 +1,9 @@
 import React, {PureComponent} from 'react';
-// @ts-ignore
-import omit from 'lodash.omit';
 import mergeClassNames from 'classnames';
-import IconComponent from '../Icon';
+
 import {PickDefaultProps} from '../../types';
 import Panel from './panel.index';
+import Icon from '../Icon';
 
 export interface TabsProps {
     /**
@@ -28,15 +27,10 @@ export interface TabsProps {
     readonly theme?: TabsTheme;
 }
 
-interface TabsTheme {
+interface TabsTheme extends TabMenuItemTheme {
     readonly 'tabs': string;
     readonly 'tabs__content': string;
     readonly 'tabNavigation': string;
-    readonly 'tabNavigation__item': string;
-    readonly 'tabNavigation__item--isActive': string;
-    readonly 'tabNavigation__itemBtn': string;
-    readonly 'tabNavigation__itemBtnIcon': string;
-    readonly 'tabNavigation__itemBtnIcon--hasLabel': string;
 }
 
 export const tabsDefaultProps: PickDefaultProps<TabsProps, 'activeTab'> = {
@@ -92,7 +86,7 @@ export default class Tabs extends PureComponent<TabsProps> {
                 title={panel.props.title}
                 icon={panel.props.icon}
                 tooltip={panel.props.tooltip}
-                />
+            />
         ));
 
         return (
@@ -124,7 +118,7 @@ export default class Tabs extends PureComponent<TabsProps> {
                             style={style}
                             role="tabpanel"
                             aria-hidden={isActive ? 'false' : 'true'}
-                            >
+                        >
                             {isActive && panel}
                         </div>
                     );
@@ -194,12 +188,7 @@ export const tabMenuItemDefaultProps: PickDefaultProps<TabMenuItemProps, 'isActi
 
 // tslint:disable-next-line:max-classes-per-file
 export class TabMenuItem extends PureComponent<TabMenuItemProps> {
-
-    public static defaultProps = tabMenuItemDefaultProps;
-
-    private handleClick = () => {
-        this.props.onClick(this.props.index);
-    }
+    public static readonly defaultProps = tabMenuItemDefaultProps;
 
     public render(): JSX.Element {
         const {
@@ -209,20 +198,22 @@ export class TabMenuItem extends PureComponent<TabMenuItemProps> {
             icon,
             title,
             tooltip,
-            ...restProps
         } = this.props;
-        const rest = omit(restProps, ['onClick']);
-        const finalClassName = mergeClassNames({
-            [theme!.tabNavigation__item]: true,
-            [theme!['tabNavigation__item--isActive']]: isActive
-        });
-        const finalIconClassName = mergeClassNames({
-            [theme!.tabNavigation__itemBtnIcon]: true,
-            [theme!['tabNavigation__itemBtnIcon--hasLabel']]: title && title.length
-        });
+        const finalClassName = mergeClassNames(
+            theme!.tabNavigation__item,
+            {
+                [theme!['tabNavigation__item--isActive']]: isActive,
+            },
+        );
+        const finalIconClassName = mergeClassNames(
+            theme!.tabNavigation__itemBtnIcon,
+            {
+                [theme!['tabNavigation__itemBtnIcon--hasLabel']]: title && title.length,
+            },
+        );
 
         return (
-            <li className={finalClassName} role="presentation" {...rest}>
+            <li className={finalClassName} role="presentation">
                 <button
                     className={theme!.tabNavigation__itemBtn}
                     onClick={this.handleClick}
@@ -230,11 +221,15 @@ export class TabMenuItem extends PureComponent<TabMenuItemProps> {
                     aria-selected={isActive ? 'true' : 'false'}
                     aria-controls={`section${index}`}
                     title={tooltip}
-                    >
-                    {icon ? <IconComponent icon={icon} className={finalIconClassName}/> : null}
+                >
+                    {icon ? <Icon icon={icon} className={finalIconClassName}/> : null}
                     {title}
                 </button>
             </li>
         );
+    }
+
+    private readonly handleClick = () => {
+        this.props.onClick(this.props.index);
     }
 }

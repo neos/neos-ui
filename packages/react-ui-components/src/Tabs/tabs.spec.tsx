@@ -2,15 +2,13 @@ import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
 import Tabs, {TabMenuItem, TabsProps, tabsDefaultProps} from './tabs';
-import Panel, {PanelProps} from './panel';
+import {PanelProps} from './panel';
 
 describe('<Tabs/>', () => {
     const panelProps: PanelProps = {
-        title: 'TitleString',
         children: [<div key={'foo'}>'Foo children'</div>],
         theme: {
             panel: 'panelBaseClassName',
-            'tabNavigation__itemBtnIcon--hasLabel': 'hasLabelClassName'
         }
     };
 
@@ -32,9 +30,9 @@ describe('<Tabs/>', () => {
     it('should render correctly.', () => {
         const wrapper = shallow(
             <Tabs {...props}>
-                <Panel title="foo 1" icon="icon 1" {...panelProps}>Foo 1</Panel>
-                <Panel title="foo 2" icon="icon 2" {...panelProps}>Foo 2</Panel>
-                <Panel title="foo 3" icon="icon 3" {...panelProps}>Foo 3</Panel>
+                <Tabs.Panel {...panelProps} title="foo 1" icon="level-up">Foo 1</Tabs.Panel>
+                <Tabs.Panel {...panelProps} title="foo 2" icon="level-down">Foo 2</Tabs.Panel>
+                <Tabs.Panel {...panelProps} title="foo 3" icon="mobile">Foo 3</Tabs.Panel>
             </Tabs>
         );
 
@@ -44,9 +42,9 @@ describe('<Tabs/>', () => {
     it('should initialize with a state of {activeTab: 0}.', () => {
         const wrapper = shallow(
             <Tabs {...props}>
-                <Panel title="foo 1" icon="icon 1" {...panelProps}>Foo 1</Panel>
-                <Panel title="foo 2" icon="icon 2" {...panelProps}>Foo 2</Panel>
-                <Panel title="foo 3" icon="icon 3" {...panelProps}>Foo 3</Panel>
+                <Tabs.Panel {...panelProps} title="foo 1" icon="level-up">Foo 1</Tabs.Panel>
+                <Tabs.Panel {...panelProps} title="foo 2" icon="level-down">Foo 2</Tabs.Panel>
+                <Tabs.Panel {...panelProps} title="foo 3" icon="mobile">Foo 3</Tabs.Panel>
             </Tabs>
         );
 
@@ -56,9 +54,9 @@ describe('<Tabs/>', () => {
     it('should pass a "isActive" prop to each "TabMenuItem".', () => {
         const wrapper = shallow(
             <Tabs {...props}>
-                <Panel title="foo 1" icon="icon 1" {...panelProps}>Foo 1</Panel>
-                <Panel title="foo 2" icon="icon 2" {...panelProps}>Foo 2</Panel>
-                <Panel title="foo 3" icon="icon 3" {...panelProps}>Foo 3</Panel>
+                <Tabs.Panel {...panelProps} title="foo 1" icon="level-up">Foo 1</Tabs.Panel>
+                <Tabs.Panel {...panelProps} title="foo 2" icon="level-down">Foo 2</Tabs.Panel>
+                <Tabs.Panel {...panelProps} title="foo 3" icon="mobile">Foo 3</Tabs.Panel>
             </Tabs>
         );
         const items = wrapper.find(TabMenuItem);
@@ -71,9 +69,9 @@ describe('<Tabs/>', () => {
     it('should pass a "onClick" prop to each "TabMenuItem" which matches the instances "handleTabNavItemClick" method.', () => {
         const wrapper = shallow(
             <Tabs {...props}>
-                <Panel title="foo 1" icon="icon 1" {...panelProps}>Foo 1</Panel>
-                <Panel title="foo 2" icon="icon 2" {...panelProps}>Foo 2</Panel>
-                <Panel title="foo 3" icon="icon 3" {...panelProps}>Foo 3</Panel>
+                <Tabs.Panel {...panelProps} title="foo 1" icon="level-up">Foo 1</Tabs.Panel>
+                <Tabs.Panel {...panelProps} title="foo 2" icon="level-down">Foo 2</Tabs.Panel>
+                <Tabs.Panel {...panelProps} title="foo 3" icon="mobile">Foo 3</Tabs.Panel>
             </Tabs>
         );
         const items = wrapper.find(TabMenuItem);
@@ -85,23 +83,23 @@ describe('<Tabs/>', () => {
     it('should pass the Panels props to the "TabMenuItem" as well.', () => {
         const wrapper = shallow(
             <Tabs {...props}>
-                <Panel title="foo 1" icon="icon 1" {...panelProps}>Foo 1</Panel>
-                <Panel title="foo 2" icon="icon 2" {...panelProps}>Foo 2</Panel>
-                <Panel title="foo 3" icon="icon 3" {...panelProps}>Foo 3</Panel>
+                <Tabs.Panel {...panelProps} title="foo 1" icon="level-up">Foo 1</Tabs.Panel>
+                <Tabs.Panel {...panelProps} title="foo 2" icon="level-down">Foo 2</Tabs.Panel>
+                <Tabs.Panel {...panelProps} title="foo 3" icon="mobile">Foo 3</Tabs.Panel>
             </Tabs>
         );
         const items = wrapper.find(TabMenuItem);
 
         expect(items.at(0).prop('title')).toBe('foo 1');
-        expect(items.at(0).prop('icon')).toBe('icon 1');
+        expect(items.at(0).prop('icon')).toBe('level-up');
     });
 
     it('should pass the static props of the "Tabs" component to the "TabMenuItem" as well.', () => {
         const wrapper = shallow(
             <Tabs {...props}>
-                <Panel title="foo 1" icon="icon 1" {...panelProps}>Foo 1</Panel>
-                <Panel title="foo 2" icon="icon 2" {...panelProps}>Foo 2</Panel>
-                <Panel title="foo 3" icon="icon 3" {...panelProps}>Foo 3</Panel>
+                <Tabs.Panel {...panelProps} title="foo 1" icon="level-up">Foo 1</Tabs.Panel>
+                <Tabs.Panel {...panelProps} title="foo 2" icon="level-down">Foo 2</Tabs.Panel>
+                <Tabs.Panel {...panelProps} title="foo 3" icon="mobile">Foo 3</Tabs.Panel>
             </Tabs>
         );
         const items = wrapper.find(TabMenuItem);
@@ -112,15 +110,15 @@ describe('<Tabs/>', () => {
     it('should not attach the "tabNavigation__itemBtnIcon--hasLabel" className to the "TabMenuItem" if the Panels do not contain a titlte.', () => {
         const wrapper = shallow(
             <Tabs {...props}>
-                <Panel icon="icon 1" {...panelProps}>Foo 1</Panel>
-                <Panel title="foo title" icon="icon 2" {...panelProps}>Foo 2</Panel>
-                <Panel icon="icon 3" {...panelProps}>Foo 3</Panel>
+                <Tabs.Panel {...panelProps} icon="level-up">Foo 1</Tabs.Panel>
+                <Tabs.Panel {...panelProps} title="foo title" icon="level-down">Foo 2</Tabs.Panel>
+                <Tabs.Panel {...panelProps} icon="mobile">Foo 3</Tabs.Panel>
             </Tabs>
         );
         const items = wrapper.find(TabMenuItem);
 
-        expect(
-            items.at(0).html().includes(panelProps.theme!['tabNavigation__itemBtnIcon--hasLabel'])
-        ).toBe(false);
+        expect(items.at(0).html().includes(props.theme!['tabNavigation__itemBtnIcon--hasLabel'])).toBe(false);
+        expect(items.at(1).html().includes(props.theme!['tabNavigation__itemBtnIcon--hasLabel'])).toBe(true);
+        expect(items.at(2).html().includes(props.theme!['tabNavigation__itemBtnIcon--hasLabel'])).toBe(false);
     });
 });

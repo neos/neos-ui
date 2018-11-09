@@ -4,7 +4,7 @@ import ListPreviewElement from '../ListPreviewElement';
 import {SelectBox_ListPreviewGroup_Props, SelectOption} from '../SelectBox_ListPreview/selectBox_ListPreview';
 
 export interface SelectBox_ListPreviewFlat_Props extends SelectBox_ListPreviewGroup_Props {
-    readonly theme?: SelectBox_ListPreviewFlat_Theme;
+    readonly theme: SelectBox_ListPreviewFlat_Theme;
 }
 
 interface SelectBox_ListPreviewFlat_Theme {
@@ -69,10 +69,12 @@ export default class SelectBox_ListPreviewFlat extends PureComponent<SelectBox_L
                 className={theme!.selectBox__item}
             >
                 <ListPreviewElement
+                    icon={option.icon}
+                    disabled={option.disabled}
                     isHighlighted={isHighlighted}
                     onClick={this.handlePreviewElementClick(option)}
                     onMouseEnter={this.handlePreviewElementMouseEnter(option)}
-                />
+                >{option.label}</ListPreviewElement>
             </li>
         );
     }

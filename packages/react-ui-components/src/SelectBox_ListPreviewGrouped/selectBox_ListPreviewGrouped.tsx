@@ -10,7 +10,7 @@ interface SelectOptionGroups {
 
 export interface SelectBox_ListPreviewGrouped_Props extends SelectBox_ListPreviewGroup_Props {
     readonly withoutGroupLabel: string;
-    readonly theme?: SelectBox_ListPreviewGrouped_Theme;
+    readonly theme: SelectBox_ListPreviewGrouped_Theme;
 }
 
 interface SelectBox_ListPreviewGrouped_Theme {
@@ -121,10 +121,12 @@ export default class SelectBox_ListPreviewGrouped extends PureComponent<SelectBo
                 className={theme!.selectBox__item}
             >
                 <ListPreviewElement
+                    icon={option.icon}
+                    disabled={option.disabled}
                     isHighlighted={isHighlighted}
                     onClick={this.handlePreviewElementClick(option)}
                     onMouseEnter={this.handlePreviewElementMouseEnter(option)}
-                />
+                >{option.label}</ListPreviewElement>
             </li>
         );
     }

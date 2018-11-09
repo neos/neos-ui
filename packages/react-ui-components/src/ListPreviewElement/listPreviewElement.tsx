@@ -2,16 +2,18 @@ import mergeClassNames from 'classnames';
 import React, {PureComponent, ReactNode} from 'react';
 
 import Icon from '../Icon';
-import {SelectBox_ListPreviewElement_Props} from '../SelectBox_ListPreview/selectBox_ListPreview';
 import {PickDefaultProps} from '@neos-project/react-ui-components/types';
 
-export interface ListPreviewElementProps extends SelectBox_ListPreviewElement_Props {
+export interface ListPreviewElementProps {
     // ------------------------------
     // API inside custom ListPreviewElements
     // ------------------------------
     readonly icon?: string;
     readonly className?: string;
     readonly disabled?: boolean;
+    readonly isHighlighted?: boolean;
+    readonly onClick?: () => void;
+    readonly onMouseEnter?: () => void;
     readonly children?: ReactNode;
 
     // ------------------------------

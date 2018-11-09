@@ -13,12 +13,6 @@ export interface SelectOption {
     readonly [valueField: string]: any;
 }
 
-export interface SelectBox_ListPreviewElement_Props {
-    readonly isHighlighted?: boolean;
-    readonly onClick?: () => void;
-    readonly onMouseEnter?: () => void;
-}
-
 export interface SelectBox_ListPreviewGroup_Props {
     readonly options: SelectOptions;
 
@@ -52,6 +46,9 @@ interface SelectBox_ListPreview_Props extends SelectBoxProps, SelectBox_ListPrev
 
 interface SelectBox_ListPreview_Theme {
     readonly selectBox__item: string;
+
+    readonly 'selectBox__item--isGroup': string;
+    readonly 'selectBox__groupHeader': string;
 }
 
 /**
@@ -73,6 +70,7 @@ class SelectBox_ListPreview extends PureComponent<SelectBox_ListPreview_Props> {
         const ListPreviewComponent = options.some(option => option.group !== undefined) ?
             (
                 <SelectBox_ListPreviewGrouped
+                    theme={theme!}
                     options={options}
                     optionValueAccessor={this.props.optionValueAccessor}
                     onChange={this.props.onChange}
@@ -84,6 +82,7 @@ class SelectBox_ListPreview extends PureComponent<SelectBox_ListPreview_Props> {
             ) :
             (
                 <SelectBox_ListPreviewFlat
+                    theme={theme!}
                     options={options}
                     optionValueAccessor={this.props.optionValueAccessor}
                     onChange={this.props.onChange}

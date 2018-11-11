@@ -4,8 +4,12 @@ exports[`<ToolTip/> should render correctly. 1`] = `
 <div
   className="tooltipClassName"
 >
-  <div />
-  <div>
+  <div
+    className="arrowClassName"
+  />
+  <div
+    className="innerClassName"
+  >
     Foo children
   </div>
 </div>

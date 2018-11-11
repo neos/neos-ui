@@ -7,7 +7,8 @@ import DropDown from '@neos-project/react-ui-components/src/DropDown/';
 import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
 import style from './style.css';
 import backend from '@neos-project/neos-ui-backend-connector';
-import {$map, $get, $transform} from 'plow-js';
+import {$get, $transform} from 'plow-js';
+import {mapObjIndexed} from 'ramda';
 import {Map} from 'immutable';
 import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 import I18n from '@neos-project/neos-ui-i18n';
@@ -33,7 +34,7 @@ SelectedPreset.propTypes = {
 const DimensionSelector = props => {
     const {icon, dimensionLabel, presets, dimensionName, activePreset, onSelect, isLoading} = props;
 
-    const presetOptions = $map(
+    const presetOptions = mapObjIndexed(
         (presetConfiguration, presetName) => {
             return $transform({
                 label: $get('label'),
@@ -41,9 +42,8 @@ const DimensionSelector = props => {
                 disabled: $get('disabled')
             }, presetConfiguration);
         },
-        [],
         presets
-    ).toArray();
+    );
 
     const sortedPresetOptions = sortBy(presetOptions, ['label']);
 
@@ -109,13 +109,13 @@ export default class DimensionSwitcher extends PureComponent {
     // Merge active presets comming from redux with local transientPresets state (i.e. presents selected, but not yet applied)
     //
     getEffectivePresets = () => {
-        const activePresets = this.props.activePresets.map(dimensionPreset => $get('name', dimensionPreset));
-        return Object.assign({}, activePresets.toJS(), this.state.transientPresets);
+        const activePresets = mapObjIndexed(dimensionPreset => dimensionPreset.name, this.props.activePresets);
+        return Object.assign({}, activePresets, this.state.transientPresets);
     };
 
     handleSelectPreset = (selectedDimensionName, presetName) => {
         // If only one dimension commit right away; else store in the transient state
-        if (this.props.contentDimensions.count() === 1) {
+        if (Object.keys(this.props.contentDimensions).length === 1) {
             this.setState({isOpen: false});
             this.props.selectPreset({[selectedDimensionName]: presetName});
         } else {
@@ -161,7 +161,7 @@ export default class DimensionSwitcher extends PureComponent {
 
     render() {
         const {contentDimensions, activePresets} = this.props;
-        const contentDimensionsObject = contentDimensions.toObject();
+        const contentDimensionsObject = contentDimensions;
         const contentDimensionsObjectKeys = Object.keys(contentDimensionsObject);
 
         return contentDimensionsObjectKeys.length ? (
@@ -205,7 +205,7 @@ export default class DimensionSwitcher extends PureComponent {
                             />
                         );
                     })}
-                    {contentDimensions.count() > 1 && <div className={style.buttonGroup}>
+                    {Object.keys(contentDimensions).length > 1 && <div className={style.buttonGroup}>
                         <Button
                             onClick={this.handleClose}
                             style="lighter"
@@ -229,8 +229,10 @@ export default class DimensionSwitcher extends PureComponent {
         const {contentDimensions, allowedPresets} = this.props;
         const dimensionConfiguration = $get(dimensionName, contentDimensions);
 
-        return dimensionConfiguration.get('presets').map(
-            (presetConfiguration, presetName) => allowedPresets.get(dimensionName) && allowedPresets.get(dimensionName).contains(presetName) ? presetConfiguration : presetConfiguration.set('disabled', true)
-        );
+        return mapObjIndexed((presetConfiguration, presetName) => {
+            return Object.assign({}, presetConfiguration, {
+                disabled: !(allowedPresets[dimensionName] && allowedPresets[dimensionName].includes(presetName))
+            });
+        }, dimensionConfiguration.presets);
     }
 }

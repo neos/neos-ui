@@ -232,7 +232,7 @@ export class DateInput extends PureComponent<DateInputProps, DateInputState> {
         );
     }
 
-    private readonly handleClick = (event: React.MouseEvent<HTMLButtonElement> | React.MouseEvent<HTMLDivElement>) => {
+    private readonly handleClick = () => {
         if (!this.props.disabled) {
             this.toggle();
         }
@@ -244,7 +244,7 @@ export class DateInput extends PureComponent<DateInputProps, DateInputState> {
         }
     }
 
-    private readonly handleClearValueClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    private readonly handleClearValueClick = () => {
         if (!this.props.disabled) {
             this.setState({isOpen: false}, () => {
                 this.props.onChange(null);

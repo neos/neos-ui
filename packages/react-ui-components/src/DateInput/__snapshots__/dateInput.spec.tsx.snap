@@ -2,26 +2,33 @@
 
 exports[`<DateInput/> should render correctly. 1`] = `
 <div
-  className=""
+  className="wrapperClassName"
 >
   <div
-    className="undefined"
+    className="calendarInputWrapperClassName"
   >
     <button
-      className=""
+      className="calendarIconBtnClassName"
       onClick={[Function]}
     >
-      <Component
+      <ThemedIcon
+        color="default"
+        composeTheme="deeply"
         icon="far calendar-alt"
+        mapThemrProps={[Function]}
+        padded="none"
       />
     </button>
-    <div>
+    <div
+      className="calendarFakeInputWrapperClassName"
+    >
       <div
-        className=""
+        className="calendarFakeInputMirrorClassName"
         onClick={[Function]}
         role="presentation"
       />
       <input
+        className="calendarFakeInputClassName"
         onFocus={[Function]}
         readOnly={true}
         type="datetime"
@@ -29,37 +36,85 @@ exports[`<DateInput/> should render correctly. 1`] = `
       />
     </div>
     <button
-      className=""
+      className="closeCalendarIconBtnClassName"
       onClick={[Function]}
     >
-      <Component
+      <ThemedIcon
+        color="default"
+        composeTheme="deeply"
         icon="times"
+        mapThemrProps={[Function]}
+        padded="none"
       />
     </button>
   </div>
-  <Component
+  <Collapse
+    fixedHeight={-1}
+    forceInitialAnimation={false}
+    hasNestedCollapse={false}
     isOpened={false}
+    onMeasure={[Function]}
+    onRender={[Function]}
+    onRest={[Function]}
+    style={Object {}}
+    theme={
+      Object {
+        "collapse": "ReactCollapse--collapse",
+        "content": "ReactCollapse--content",
+      }
+    }
   >
     <button
+      className="selectTodayBtnClassName"
       onClick={[Function]}
-    />
-    <Component
+    >
+      todayLabel
+    </button>
+    <DateTime
+      className=""
+      closeOnSelect={false}
+      closeOnTab={true}
       dateFormat={true}
+      defaultValue=""
+      input={true}
+      inputProps={Object {}}
+      locale="en-US"
+      onBlur={[Function]}
       onChange={[Function]}
+      onFocus={[Function]}
+      onNavigateBack={[Function]}
+      onNavigateForward={[Function]}
+      onViewModeChange={[Function]}
       open={true}
+      strictParsing={true}
       timeConstraints={
         Object {
           "minutes": Object {
+            "max": 59,
+            "min": 0,
             "step": 5,
           },
         }
       }
       timeFormat={true}
+      utc={false}
     />
-    <Component
+    <ThemedButton
+      _refHandler={[Function]}
+      className="applyBtnClassName"
+      composeTheme="deeply"
+      hoverStyle="brand"
+      isActive={false}
+      isDisabled={false}
+      isFocused={false}
+      mapThemrProps={[Function]}
       onClick={[Function]}
+      size="regular"
       style="brand"
-    />
-  </Component>
+      type="button"
+    >
+      applyLabel
+    </ThemedButton>
+  </Collapse>
 </div>
 `;

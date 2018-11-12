@@ -1,115 +1,132 @@
 import React, {PureComponent} from 'react';
-import PropTypes from 'prop-types';
 import enhanceWithClickOutside from 'react-click-outside';
-import moment from 'moment';
+import moment, {Moment, isMoment} from 'moment';
 import mergeClassNames from 'classnames';
+import {Collapse} from 'react-collapse';
+import DatePicker, {TimeConstraints} from 'react-datetime';
 
-export class DateInput extends PureComponent {
-    state = {
-        isOpen: false,
-        transientDate: null
-    };
+import {PickDefaultProps} from '../../types';
+import Button from '../Button';
+import Icon from '../Icon';
 
-    static propTypes = {
-        /**
-         * The Date instance which represents the selected value.
-         */
-        value: PropTypes.instanceOf(Date),
 
-        /**
-         * Additional className to render into the wrapper div
-         */
-        className: PropTypes.string,
+interface DateInputProps {
+    /**
+     * The Date instance which represents the selected value.
+     */
+    readonly value?: Date;
 
-        /**
-         * An optional placeholder which will be rendered if no date was selected.
-         */
-        placeholder: PropTypes.string,
+    /**
+     * Additional className to render into the wrapper div
+     */
+    readonly className?: string;
 
-        /**
-         * An optional id for the input.
-         */
-        id: PropTypes.string,
+    /**
+     * An optional placeholder which will be rendered if no date was selected.
+     */
+    readonly placeholder?: string;
 
-        /**
-         * The label which will be displayed within the `Select Today` btn.
-         */
-        todayLabel: PropTypes.string,
+    /**
+     * An optional id for the input.
+     */
+    readonly id?: string;
 
-        /**
-         * The label which will be displayed within the `Select Today` btn.
-         */
-        applyLabel: PropTypes.string,
+    /**
+     * The label which will be displayed within the `Select Today` btn.
+     */
+    readonly todayLabel: string;
 
-        /**
-         * The moment format string to use to format the passed value.
-         */
-        labelFormat: PropTypes.string,
+    /**
+     * The label which will be displayed within the `Apply` btn.
+     */
+    readonly applyLabel: string;
 
-        /**
-         * Display only date picker
-         */
-        dateOnly: PropTypes.bool,
+    /**
+     * The moment format string to use to format the passed value.
+     */
+    readonly labelFormat?: string;
 
-        /**
-         * Display only time picker
-         */
-        timeOnly: PropTypes.bool,
+    /**
+     * Display only date picker
+     */
+    readonly dateOnly?: boolean;
 
-        /**
-         * Add some constraints to the timepicker.
-         * It accepts an object with the format { hours: { min: 9, max: 15, step: 2 }},
-         * this example means the hours can't be lower than 9 and higher than 15,
-         * and it will change adding or subtracting 2 hours everytime the buttons are clicked.
-         * The constraints can be added to the hours, minutes, seconds and milliseconds.
-         */
-        timeConstraints: PropTypes.object,
+    /**
+     * Display only time picker
+     */
+    readonly timeOnly?: boolean;
 
-        /**
-         * Locale for the date picker (determines time format)
-         */
-        locale: PropTypes.string,
+    /**
+     * Add some constraints to the timepicker.
+     * It accepts an object with the format { hours: { min: 9, max: 15, step: 2 }},
+     * this example means the hours can't be lower than 9 and higher than 15,
+     * and it will change adding or subtracting 2 hours everytime the buttons are clicked.
+     * The constraints can be added to the hours, minutes, seconds and milliseconds.
+     */
+    readonly timeConstraints?: TimeConstraints;
 
-        /**
-         * Disable the DateInput
-         */
-        disabled: PropTypes.bool,
+    /**
+     * Locale for the date picker (determines time format)
+     */
+    readonly locale: string;
 
-        /**
-         * The changehandler to call when the date changes.
-         */
-        onChange: PropTypes.func.isRequired,
-        theme: PropTypes.shape({/* eslint-disable quote-props */
-            'wrapper': PropTypes.string,
-            'calendarInputWrapper': PropTypes.string,
-            'calendarIconBtn': PropTypes.string,
-            'calendarFakeInputWrapper': PropTypes.string,
-            'calendarFakeInputMirror': PropTypes.string,
-            'calendarFakeInput': PropTypes.string,
-            'closeCalendarIconBtn': PropTypes.string,
-            'selectTodayBtn': PropTypes.string
-        }).isRequired, /* eslint-enable quote-props */
+    /**
+     * Disable the DateInput
+     */
+    readonly disabled?: boolean;
 
-        //
-        // Static component dependencies which are injected from the outside (index.js)
-        //
-        ButtonComponent: PropTypes.any.isRequired,
-        IconComponent: PropTypes.any.isRequired,
-        DatePickerComponent: PropTypes.any.isRequired,
-        CollapseComponent: PropTypes.any.isRequired
-    };
+    /**
+     * The changehandler to call when the date changes.
+     */
+    readonly onChange: (date: Date | null) => void;
 
-    static defaultProps = {
-        labelFormat: 'DD-MM-YYYY hh:mm',
-        timeConstraints: {minutes: {step: 5}}
-    };
+    /**
+     * An optional theme using tremr
+     */
+    readonly theme?: DateInputTheme;
+}
 
-    render() {
+interface DateInputTheme {
+    'wrapper': string;
+    'disabled': string;
+    'disabled-cursor': string;
+    'calendarInputWrapper': string;
+    'calendarIconBtn': string;
+    'calendarFakeInputWrapper': string;
+    'calendarFakeInputMirror': string;
+    'calendarFakeInput': string;
+    'applyBtn': string;
+    'closeCalendarIconBtn': string;
+    'selectTodayBtn': string;
+}
+
+const defaultProps: PickDefaultProps<DateInputProps, 'labelFormat' | 'timeConstraints'> = {
+    labelFormat: 'DD-MM-YYYY hh:mm',
+    timeConstraints: {
+        minutes: {
+            min: 0,
+            max: 59,
+            step: 5
+        }
+    },
+};
+
+interface DateInputState {
+    readonly isOpen: boolean;
+    readonly transientDate: Date | null; // TODO do we have a breaking change when we use 'undefined' in favor of 'null'?
+}
+
+const initialState: DateInputState = {
+    isOpen: false,
+    transientDate: null
+};
+
+export class DateInput extends PureComponent<DateInputProps, DateInputState> {
+    public static readonly defaultProps = defaultProps;
+    public readonly state = initialState;
+
+    public render(): JSX.Element {
         const {
-            ButtonComponent,
-            IconComponent,
-            DatePickerComponent,
-            CollapseComponent,
             placeholder,
             theme,
             value,
@@ -124,75 +141,77 @@ export class DateInput extends PureComponent {
             disabled
         } = this.props;
         const selectedDate = value ? moment(value).format(labelFormat) : '';
-        const handleClick = () => disabled ? null : this.handleClick;
-        const handleFocus = () => disabled ? null : this.handleFocus;
-        const handleClearValueClick = () => disabled ? null : this.handleClearValueClick;
 
-        const wrapper = mergeClassNames({
-            [theme.wrapper]: true,
-            [theme.disabled]: disabled
-        });
+        const wrapper = mergeClassNames(
+            theme!.wrapper,
+            {
+                [theme!.disabled]: disabled,
+            },
+        );
 
-        const calendarInputWrapper = mergeClassNames({
-            [className]: true,
-            [theme.calendarInputWrapper]: true
-        });
+        const calendarInputWrapper = mergeClassNames(className, theme!.calendarInputWrapper);
 
-        const calendarFakeInputMirror = mergeClassNames({
-            [theme.calendarFakeInputMirror]: true,
-            [theme['disabled-cursor']]: disabled
-        });
+        const calendarFakeInputMirror = mergeClassNames(
+            theme!.calendarFakeInputMirror,
+            {
+                [theme!['disabled-cursor']]: disabled,
+            },
+        );
 
-        const calendarIconBtn = mergeClassNames({
-            [theme.calendarIconBtn]: true,
-            [theme['disabled-cursor']]: disabled
-        });
+        const calendarIconBtn = mergeClassNames(
+            theme!.calendarIconBtn,
+            {
+                [theme!['disabled-cursor']]: disabled,
+            },
+        );
 
-        const closeCalendarIconBtn = mergeClassNames({
-            [theme.closeCalendarIconBtn]: true,
-            [theme['disabled-cursor']]: disabled
-        });
+        const closeCalendarIconBtn = mergeClassNames(
+            theme!.closeCalendarIconBtn,
+            {
+                [theme!['disabled-cursor']]: disabled,
+            },
+        );
 
         return (
             <div className={wrapper}>
                 <div className={calendarInputWrapper}>
                     <button
-                        onClick={handleClick()}
+                        onClick={this.handleClick}
                         className={calendarIconBtn}
-                        >
-                        <IconComponent icon="far calendar-alt"/>
+                    >
+                        <Icon icon="far calendar-alt"/>
                     </button>
-                    <div className={theme.calendarFakeInputWrapper}>
+                    <div className={theme!.calendarFakeInputWrapper}>
                         <div
                             role="presentation"
-                            onClick={handleClick()}
+                            onClick={this.handleClick}
                             className={calendarFakeInputMirror}
-                            />
+                        />
                         <input
                             id={id}
-                            onFocus={handleFocus()}
+                            onFocus={this.handleFocus}
                             type="datetime"
                             placeholder={placeholder}
-                            className={theme.calendarFakeInput}
+                            className={theme!.calendarFakeInput}
                             value={selectedDate}
-                            readOnly
-                            />
+                            readOnly={true}
+                        />
                     </div>
                     <button
-                        onClick={handleClearValueClick()}
+                        onClick={this.handleClearValueClick}
                         className={closeCalendarIconBtn}
-                        >
-                        <IconComponent icon="times"/>
+                    >
+                        <Icon icon="times"/>
                     </button>
                 </div>
-                <CollapseComponent isOpened={this.state.isOpen}>
+                <Collapse isOpened={this.state.isOpen}>
                     <button
-                        className={theme.selectTodayBtn}
+                        className={theme!.selectTodayBtn}
                         onClick={this.handleSelectTodayBtnClick}
-                        >
+                    >
                         {todayLabel}
                     </button>
-                    <DatePickerComponent
+                    <DatePicker
                         open={true}
                         defaultValue={value}
                         dateFormat={!timeOnly}
@@ -200,27 +219,40 @@ export class DateInput extends PureComponent {
                         timeFormat={!dateOnly}
                         onChange={this.handleChange}
                         timeConstraints={this.props.timeConstraints}
-                        />
-                    <ButtonComponent
+                    />
+                    <Button
                         onClick={this.handleApply}
-                        className={theme.applyBtn}
+                        className={theme!.applyBtn}
                         style="brand"
-                        >
+                    >
                         {applyLabel}
-                    </ButtonComponent>
-                </CollapseComponent>
+                    </Button>
+                </Collapse>
             </div>
         );
     }
 
-    handleChange = momentVal => {
-        const date = momentVal.toDate();
-        this.setState({
-            transientDate: date
-        });
+    private readonly handleClick = (event: React.MouseEvent<HTMLButtonElement> | React.MouseEvent<HTMLDivElement>) => {
+        if (!this.props.disabled) {
+            this.toggle();
+        }
     }
 
-    handleApply = () => {
+    private readonly handleFocus = () => {
+        if (!this.props.disabled) {
+            this.open();
+        }
+    }
+
+    private readonly handleClearValueClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        if (!this.props.disabled) {
+            this.setState({isOpen: false}, () => {
+                this.props.onChange(null);
+            });
+        }
+    }
+
+    private readonly handleApply = () => {
         this.setState({
             isOpen: false
         }, () => {
@@ -228,15 +260,14 @@ export class DateInput extends PureComponent {
         });
     }
 
-    handleClearValueClick = () => {
+    private readonly handleChange = (value: Moment | string) => {
+        const momentVal: Moment = isMoment(value) ? value : moment(value);
         this.setState({
-            isOpen: false
-        }, () => {
-            this.props.onChange(null);
+            transientDate: momentVal.toDate()
         });
     }
 
-    handleSelectTodayBtnClick = () => {
+    private readonly handleSelectTodayBtnClick = () => {
         this.setState({
             isOpen: false
         }, () => {
@@ -244,25 +275,21 @@ export class DateInput extends PureComponent {
         });
     }
 
-    handleFocus = () => this.open();
+    public handleClickOutside = () => this.close();
 
-    handleClick = () => this.toggle();
-
-    handleClickOutside = () => this.close();
-
-    toggle() {
+    private readonly toggle = () => {
         this.setState({
             isOpen: !this.state.isOpen
         });
     }
 
-    open() {
+    private readonly open = () => {
         this.setState({
             isOpen: true
         });
     }
 
-    close() {
+    private readonly close = () => {
         this.setState({
             isOpen: false
         });

@@ -22,7 +22,7 @@ const Count = (value, validatorOptions) => {
 
     const {length} = Object.keys(value);
 
-    if (length == 0) {
+    if (length === 0) {
         return null;
     }
 

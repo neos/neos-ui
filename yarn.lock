@@ -828,13 +828,6 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-collapse@^4.0.2":
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/@types/react-collapse/-/react-collapse-4.0.2.tgz#891ebb8598a10d2168d5b3bfe5dedb4fb05e6537"
-  integrity sha512-hW9T8bPLAf7EZrMapES8YeoByQ2sy8T+QebcoJjOcsdVeqFfjmOlOyApLiIq7kaOeiJ7iiPFoG02VttHMVX5YA==
-  dependencies:
-    "@types/react" "*"
-
 "@types/react-dom@^16.0.7":
   version "16.0.7"
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-16.0.7.tgz#54d0f867a76b90597e8432030d297982f25c20ba"
@@ -10820,12 +10813,12 @@ react-codemirror2@^5.0.1:
   resolved "https://registry.yarnpkg.com/react-codemirror2/-/react-codemirror2-5.1.0.tgz#62de4460178adea40eb52eabf7491669bf3794b8"
   integrity sha512-Cksbgbviuf2mJfMyrKmcu7ycK6zX/ukuQO8dvRZdFWqATf5joalhjFc6etnBdGCcPA2LbhIwz+OPnQxLN/j1Fw==
 
-react-collapse@^4.0.3:
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/react-collapse/-/react-collapse-4.0.3.tgz#b96de959ed0092a43534630b599a4753dd76d543"
-  integrity sha512-OO4NhtEqFtz+1ma31J1B7+ezdRnzHCZiTGSSd/Pxoks9hxrZYhzFEddeYt05A/1477xTtdrwo7xEa2FLJyWGCQ==
+react-collapse@^2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/react-collapse/-/react-collapse-2.4.1.tgz#999a9969b2633752acba4847c28101edd2dcab89"
+  integrity sha1-mZqZabJjN1KsukhHwoEB7dLcq4k=
   dependencies:
-    prop-types "^15.5.8"
+    prop-types "15.5.8"
 
 react-color@^2.11.4:
   version "2.14.1"

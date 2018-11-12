@@ -2,7 +2,8 @@ import React, {PureComponent} from 'react';
 import enhanceWithClickOutside from 'react-click-outside';
 import moment, {Moment, isMoment} from 'moment';
 import mergeClassNames from 'classnames';
-import {Collapse} from 'react-collapse';
+// @ts-ignore
+import Collapse from 'react-collapse';
 import DatePicker, {TimeConstraints} from 'react-datetime';
 
 import {PickDefaultProps} from '../../types';
@@ -58,10 +59,6 @@ interface DateInputProps {
 
     /**
      * Add some constraints to the timepicker.
-     * It accepts an object with the format { hours: { min: 9, max: 15, step: 2 }},
-     * this example means the hours can't be lower than 9 and higher than 15,
-     * and it will change adding or subtracting 2 hours everytime the buttons are clicked.
-     * The constraints can be added to the hours, minutes, seconds and milliseconds.
      */
     readonly timeConstraints?: TimeConstraints;
 

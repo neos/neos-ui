@@ -167,11 +167,11 @@ export default class SelectNodeType extends PureComponent {
 
     componentDidUpdate() {
         const {insertMode} = this.state;
-        if (insertMode === 'into'
-            && this.getAllowedNodeTypesByCurrentInsertMode().length === 1
-            && this.getAllowedNodeTypesByCurrentInsertMode()[0]['nodeTypes'].length === 1 ) {
+        if (insertMode === 'into' &&
+            this.getAllowedNodeTypesByCurrentInsertMode().length === 1 &&
+            this.getAllowedNodeTypesByCurrentInsertMode()[0].nodeTypes.length === 1) {
             setTimeout(() => {
-                this.handleApply(this.getAllowedNodeTypesByCurrentInsertMode()[0]['nodeTypes'][0]['name']);
+                this.handleApply(this.getAllowedNodeTypesByCurrentInsertMode()[0].nodeTypes[0].name);
             }, 1);
         }
     }

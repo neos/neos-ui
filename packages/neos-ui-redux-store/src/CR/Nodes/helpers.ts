@@ -1,39 +1,39 @@
-import {$get} from 'plow-js';
+import {Node, NodeContextPath} from './index';
 
 //
 // Helper function to determine allowed node types
 //
-export const getAllowedNodeTypesTakingAutoCreatedIntoAccount = (baseNode, parentOfBaseNode, nodeTypesRegistry) => {
+export const getAllowedNodeTypesTakingAutoCreatedIntoAccount = (baseNode: Node, parentOfBaseNode: Node, nodeTypesRegistry: any) => {
     if (!baseNode) {
         return [];
     }
-    if ($get('isAutoCreated', baseNode)) {
+    if (baseNode.isAutoCreated) {
         if (!parentOfBaseNode) {
             return [];
         }
         return nodeTypesRegistry.getAllowedGrandChildNodeTypes(
-            $get('nodeType', parentOfBaseNode),
-            $get('name', baseNode)
+            parentOfBaseNode.nodeType,
+            baseNode.name
         );
     }
 
     // Not auto created
-    return nodeTypesRegistry.getAllowedChildNodeTypes($get('nodeType', baseNode));
+    return nodeTypesRegistry.getAllowedChildNodeTypes(baseNode.nodeType);
 };
 
 //
 // Helper function to get parent contextPath from current contextPath
 //
-export const parentNodeContextPath = contextPath => {
+export const parentNodeContextPath = (contextPath: NodeContextPath) => {
     if (typeof contextPath !== 'string') {
+        console.error('`contextPath` must be a string!'); // tslint:disable-line
         return null;
     }
-
     const [path, context] = contextPath.split('@');
 
     if (path.length === 0) {
         // We are at top level; so there is no parent anymore!
-        return false;
+        return null;
     }
 
     return `${path.substr(0, path.lastIndexOf('/'))}@${context}`;
@@ -42,7 +42,7 @@ export const parentNodeContextPath = contextPath => {
 //
 // Helper function to check if the node is collapsed
 //
-export const isNodeCollapsed = (node, isToggled, rootNode, loadingDepth) => {
-    const isCollapsedByDefault = loadingDepth === 0 ? false : $get('depth', node) - $get('depth', rootNode) >= loadingDepth;
+export const isNodeCollapsed = (node: Node, isToggled: boolean, rootNode: Node, loadingDepth: number) => {
+    const isCollapsedByDefault = loadingDepth === 0 ? false : node.depth - rootNode.depth >= loadingDepth;
     return (isCollapsedByDefault && !isToggled) || (!isCollapsedByDefault && isToggled);
 };

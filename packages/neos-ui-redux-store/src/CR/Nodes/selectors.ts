@@ -1,0 +1,481 @@
+import {$get} from 'plow-js';
+import {createSelector, defaultMemoize} from 'reselect';
+import {GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
+import {parentNodeContextPath} from './helpers';
+import {NodeContextPath, NodeMap, Node, NodeTypeName, ClipboardMode} from '@neos-project/neos-ui-redux-store/src/CR/Nodes';
+
+export interface NodeType {
+    superTypes: {
+        [propName: string]: boolean;
+    };
+    constraints: {
+        nodeTypes: {
+            [propName: string]: boolean;
+        }
+    };
+    label?: string;
+    ui?: {
+        group?: string;
+        icon?: string;
+        label?: string;
+        position?: number | string;
+        inspector?: {
+            groups?: {
+                [propName: string]: {
+                    title?: string;
+                    label?: string;
+                    icon?: string;
+                    tab?: string;
+                    position?: number | string;
+                    collapsed?: boolean;
+                }
+            };
+            tabs?: {
+                [propName: string]: {
+                    label?: string;
+                    position?: number | string;
+                    icon?: string;
+                };
+            };
+            views?: {
+                group?: string;
+                label?: string;
+                view?: string;
+                viewOptions?: {
+                    [propName: string]: any;
+                };
+            };
+        };
+        creationDialog?: {
+            elements?: {
+                [propName: string]: {
+                    type?: string;
+                    ui?: {
+                        label?: string;
+                        editor?: string;
+                        editorOptions?: {
+                            [propName: string]: any;
+                        };
+                    };
+                    validation?: {
+                        [propName: string]: {
+                            [propName: string]: any;
+                        };
+                    };
+                };
+            };
+        };
+    };
+    properties?: {
+        type?: string;
+        ui?: {
+            label?: string;
+            reloadIfChanged?: boolean;
+            inspector?: {
+                defaultValue?: string;
+                editor?: string;
+                editorOptions?: {
+                    [propName: string]: any;
+                }
+                group?: string;
+                position?: number | string;
+            };
+        };
+        validation?: {
+            [propName: string]: {
+                [propName: string]: any;
+            }
+        };
+    };
+}
+
+// TODO: move to nodetypesregistry itself
+interface NodeTypesRegistry {
+    getRole: (roleName: string) => NodeTypeName;
+    getSubTypesOf: (nodeType: NodeTypeName) => NodeTypeName[];
+    getAllowedNodeTypesTakingAutoCreatedIntoAccount: (isSubjectNodeAutocreated: boolean, referenceParentName: string, referenceParentNodeType: NodeTypeName, referenceGrandParentNodeType: NodeTypeName, role: string) => NodeTypeName[];
+}
+
+const nodes = (state: GlobalState) => $get(['cr', 'nodes', 'byContextPath'], state);
+const siteNode = (state: GlobalState) => $get(['cr', 'nodes', 'siteNode'], state);
+const documentNode = (state: GlobalState) => $get(['cr', 'nodes', 'documentNode'], state);
+const focused = (state: GlobalState) => $get(['cr', 'nodes', 'focused', 'contextPath'], state);
+
+export const isDocumentNodeSelectedSelector = createSelector(
+    [
+        focused,
+        documentNode
+    ],
+    (focused, currentContentCanvasContextPath) => {
+        return !focused || (focused === currentContentCanvasContextPath);
+    }
+);
+
+export const hasFocusedContentNode = createSelector(
+    [
+        focused,
+        documentNode
+    ],
+    (focused, currentContentCanvasContextPath) => {
+        return Boolean(focused && (focused !== currentContentCanvasContextPath));
+    }
+);
+
+export const nodeByContextPath = (state: GlobalState) => (contextPath: NodeContextPath) =>
+    $get(['cr', 'nodes', 'byContextPath', contextPath], state);
+
+export const makeGetDocumentNodes = (nodeTypesRegistry: NodeTypesRegistry) => createSelector(
+    [
+        nodes
+    ],
+    nodesMap => {
+        const documentSubNodeTypes = nodeTypesRegistry.getSubTypesOf(nodeTypesRegistry.getRole('document'));
+
+        const result: NodeMap = {};
+        Object.keys(nodesMap).forEach(contextPath => {
+            const node = nodesMap[contextPath];
+            if (documentSubNodeTypes.includes(node.nodeType)) {
+                result[contextPath] = node;
+            } 
+        });
+        return result;
+    }
+);
+
+export const makeGetNodeByContextPathSelector = (contextPath: NodeContextPath) => createSelector(
+    [
+        (state: GlobalState) => $get(['cr', 'nodes', 'byContextPath', contextPath], state)
+    ],
+    node => node
+);
+
+export const makeHasChildrenSelector = (allowedNodeTypes: NodeTypeName[]) => createSelector(
+    [
+        (state: GlobalState, contextPath: NodeContextPath) => $get(['cr', 'nodes', 'byContextPath', contextPath, 'children'], state)
+    ],
+    childNodeEnvelopes => (childNodeEnvelopes || []).some(
+        childNodeEnvelope => allowedNodeTypes.includes(childNodeEnvelope.nodeType)
+    )
+);
+
+export const makeChildrenOfSelector = (allowedNodeTypes: NodeTypeName[]) => createSelector(
+    [
+        (state: GlobalState, contextPath: NodeContextPath) => $get(['cr', 'nodes', 'byContextPath', contextPath, 'children'], state),
+        nodes
+    ],
+    (childNodeEnvelopes, nodesByContextPath: NodeMap) => (childNodeEnvelopes || [])
+    .filter(
+        childNodeEnvelope => {
+            const nodeType = childNodeEnvelope.nodeType;
+            return allowedNodeTypes.includes(nodeType) || nodeType === 'Neos.Neos:FallbackNode';
+        }
+    )
+    .map(
+        childNodeEnvelope => {
+            return nodesByContextPath[childNodeEnvelope.contextPath];
+        }
+    )
+);
+
+export const siteNodeSelector = createSelector(
+    [
+        siteNode,
+        nodes
+    ],
+    (siteNodeContextPath, nodesByContextPath) => {
+        if (siteNodeContextPath) {
+            return nodesByContextPath[siteNodeContextPath];
+        }
+        return null;
+    }
+);
+
+export const currentContentCanvasNodeSelector = createSelector(
+    [
+        documentNode,
+        nodes
+    ],
+    (currentContentCanvasNode, nodesByContextPath) => {
+        if (currentContentCanvasNode !== null) {
+            return nodesByContextPath[currentContentCanvasNode];
+        }
+        return null;
+    }
+);
+
+export const byContextPathSelector = defaultMemoize(
+    (contextPath: NodeContextPath) => createSelector(
+        [
+            nodeByContextPath
+        ],
+        getNodeByContextPath => getNodeByContextPath(contextPath)
+    )
+);
+
+export const parentNodeSelector = (state: GlobalState) => (baseNode: Node) => {
+    const parent = parentNodeContextPath(baseNode.contextPath);
+    if (parent !== null) {
+        return byContextPathSelector(parent)(state);
+    }
+    return null;
+};
+
+export const grandParentNodeSelector = (state: GlobalState) => (baseNode: Node) => {
+    const parent = parentNodeContextPath(baseNode.contextPath);
+    if (parent !== null) {
+        const grandParent = parentNodeContextPath(parent);
+        if (grandParent !== null) {
+            byContextPathSelector(grandParent)(state);
+        }
+    }
+    return null;
+};
+
+export const focusedNodePathSelector = createSelector(
+    [
+        focused,
+        documentNode
+    ],
+    (focused, currentContentCanvasContextPath) => {
+        return focused || currentContentCanvasContextPath;
+    }
+);
+
+export const focusedSelector = createSelector(
+    [
+        focusedNodePathSelector,
+        nodeByContextPath
+    ],
+    (focusedNodePath, getNodeByContextPath) => {
+        if (focusedNodePath !== null) {
+            return getNodeByContextPath(focusedNodePath);
+        }
+        return null;
+    }
+);
+
+export const focusedNodeTypeSelector = createSelector(
+    [
+        focusedSelector
+    ],
+    focused => focused && focused.nodeType
+);
+
+export const focusedNodeIdentifierSelector = createSelector(
+    [
+        focusedSelector
+    ],
+    focused => focused && focused.identifier
+);
+
+export const focusedParentSelector = createSelector(
+    [
+        focusedSelector,
+        state => state
+    ],
+    (focusedNode, state) => {
+        if (!focusedNode) {
+            return null;
+        }
+
+        return parentNodeSelector(state)(focusedNode);
+    }
+);
+
+export const focusedGrandParentSelector = createSelector(
+    [
+        focusedParentSelector,
+        state => state
+    ],
+    (focusedParentNode, state) => {
+        if (!focusedParentNode) {
+            return null;
+        }
+
+        return parentNodeSelector(state)(focusedParentNode);
+    }
+);
+
+export const clipboardNodeContextPathSelector = createSelector(
+    [
+        (state: GlobalState) => $get(['cr', 'nodes', 'clipboard'], state)
+    ],
+    clipboardNodeContextPath => clipboardNodeContextPath
+);
+
+export const clipboardIsEmptySelector = createSelector(
+    [
+        clipboardNodeContextPathSelector
+    ],
+    clipboardNodePath => Boolean(clipboardNodePath)
+);
+
+// TODO: deprecate
+export const getPathInNode = (state: GlobalState, contextPath: NodeContextPath, propertyPath: any) => {
+    const node = $get(['cr', 'nodes', 'byContextPath', contextPath], state);
+
+    return $get(propertyPath, node);
+};
+
+export const makeGetAllowedChildNodeTypesSelector = (nodeTypesRegistry: NodeTypesRegistry, elevator: (id: string) => string | null = id => id) => createSelector(
+    [
+        (state: GlobalState, {reference}: {reference: NodeContextPath, role: string}) => {
+            if (reference === null) {
+                return null;
+            }
+            const elevatedReference = elevator(reference);
+            if (elevatedReference) {
+                return $get(['cr', 'nodes', 'byContextPath', elevatedReference], state) || null;
+            }
+            return null;
+        },
+        (state: GlobalState, {reference}: {reference: NodeContextPath, role: string}) => {
+            if (reference === null) {
+                return null;
+            }
+            const parentReference = parentNodeContextPath(reference);
+            if (parentReference !== null) {
+                const elevatedReferenceParent = elevator(parentReference);
+                if (elevatedReferenceParent !== null) {
+                    return $get(['cr', 'nodes', 'byContextPath', elevatedReferenceParent], state) || null;
+                }
+            } 
+            return null;
+        },
+        (_: GlobalState, {role}: {reference: NodeContextPath, role: string, subject: NodeContextPath}) => role
+    ],
+    (referenceNode, referenceParentNode, role) => {
+        if (referenceNode === null || referenceParentNode === null || (referenceNode.policy && referenceNode.policy.canEdit === false)) {
+            return [];
+        }
+        const isSubjectNodeAutocreated = referenceNode.isAutoCreated;
+        const referenceParentName = referenceNode.name;
+        const referenceParentNodeType = referenceNode.nodeType;
+        const referenceGrandParentNodeType = referenceParentNode.nodeType;
+        return nodeTypesRegistry
+            .getAllowedNodeTypesTakingAutoCreatedIntoAccount(isSubjectNodeAutocreated, referenceParentName, referenceParentNodeType, referenceGrandParentNodeType, role)
+            .filter(nodeType => !(referenceNode.policy && referenceNode.policy.disallowedNodeTypes.includes(nodeType)));
+    }
+    
+    
+);
+
+export const makeGetAllowedSiblingNodeTypesSelector = (nodeTypesRegistry: NodeTypesRegistry) =>
+    makeGetAllowedChildNodeTypesSelector(nodeTypesRegistry, parentNodeContextPath);
+
+export const makeIsAllowedToAddChildOrSiblingNodes = (nodeTypesRegistry: NodeTypesRegistry) => createSelector(
+    [
+        makeGetAllowedChildNodeTypesSelector(nodeTypesRegistry),
+        makeGetAllowedSiblingNodeTypesSelector(nodeTypesRegistry)
+    ],
+    (allowedChildNodeTypes, allowedSiblingNodeTypes) =>
+        Boolean(allowedChildNodeTypes.length + allowedSiblingNodeTypes.length)
+);
+
+export const makeCanBeCopiedAlongsideSelector = (nodeTypesRegistry: NodeTypesRegistry) => createSelector(
+    [
+        (state: GlobalState, {subject}: {subject: NodeContextPath}) => $get(['cr', 'nodes', 'byContextPath', subject, 'nodeType'], state),
+        makeGetAllowedSiblingNodeTypesSelector(nodeTypesRegistry)
+    ],
+    (subjectNodeType, allowedNodeTypes) => allowedNodeTypes.includes(subjectNodeType)
+);
+
+export const makeCanBeCopiedIntoSelector = (nodeTypesRegistry: NodeTypesRegistry) => createSelector(
+    [
+        (state: GlobalState, {subject}) => $get(['cr', 'nodes', 'byContextPath', subject, 'nodeType'], state),
+        makeGetAllowedChildNodeTypesSelector(nodeTypesRegistry)
+    ],
+    (subjectNodeType, allowedNodeTypes) => allowedNodeTypes.includes(subjectNodeType)
+);
+
+export const makeCanBeMovedIntoSelector = (nodeTypesRegistry: NodeTypesRegistry) => createSelector(
+    [
+        makeCanBeCopiedIntoSelector(nodeTypesRegistry),
+        (_, {subject, reference}) => {
+            const subjectPath = subject && subject.split('@')[0];
+            return subjectPath ? reference.indexOf(subjectPath) === 0 : false;
+        }
+    ],
+    (canBeInsertedInto, referenceIsDescendantOfSubject) => canBeInsertedInto && !referenceIsDescendantOfSubject
+);
+
+export const makeCanBeMovedAlongsideSelector = (nodeTypesRegistry: NodeTypesRegistry) => createSelector(
+    [
+        makeCanBeCopiedAlongsideSelector(nodeTypesRegistry),
+        (_, {subject, reference}) => {
+            if (reference === null) {
+                return false;
+            }
+            const subjectPath = subject && subject.split('@')[0];
+            const referenceParent = parentNodeContextPath(reference);
+            if (referenceParent === null) {
+                return false;
+            }
+            return subjectPath ? referenceParent.indexOf(subjectPath) === 0 : false;
+        }
+    ],
+    (canBeInsertedInto, referenceIsDescendantOfSubject) => canBeInsertedInto && !referenceIsDescendantOfSubject
+);
+
+export const makeCanBeCopiedSelector = (nodeTypesRegistry: NodeTypesRegistry) => createSelector(
+    [
+        makeCanBeCopiedAlongsideSelector(nodeTypesRegistry),
+        makeCanBeCopiedIntoSelector(nodeTypesRegistry)
+    ],
+    (canBeInsertedAlongside, canBeInsertedInto) => (canBeInsertedAlongside || canBeInsertedInto)
+);
+
+export const makeCanBeMovedSelector = (nodeTypesRegistry: NodeTypesRegistry) => createSelector(
+    [
+        makeCanBeMovedAlongsideSelector(nodeTypesRegistry),
+        makeCanBeMovedIntoSelector(nodeTypesRegistry)
+    ],
+    (canBeMovedAlongside, canBeMovedInto) => (canBeMovedAlongside || canBeMovedInto)
+);
+
+export const makeCanBePastedSelector = (nodeTypesRegistry: NodeTypesRegistry) => createSelector(
+    [
+        makeCanBeMovedSelector(nodeTypesRegistry),
+        makeCanBeCopiedSelector(nodeTypesRegistry),
+        (state: GlobalState) => $get(['cr', 'nodes', 'clipboardMode'], state)
+    ],
+    (canBeMoved, canBeCopied, mode) => mode === ClipboardMode.COPY ? canBeCopied : canBeMoved
+);
+
+export const destructiveOperationsAreDisabledSelector = createSelector(
+    [
+        siteNode,
+        focused,
+        focusedSelector
+    ],
+    (siteNodeContextPath, focusedNodeContextPath, focusedNode) => {
+        return (
+            focusedNode === null ||
+            focusedNode.isAutoCreated ||
+            siteNodeContextPath === focusedNodeContextPath
+        );
+    }
+);
+
+export const focusedNodeParentLineSelector = createSelector(
+    [
+        focusedSelector,
+        nodes
+    ],
+    (focusedNode, nodesByContextPath) => {
+        const result = [focusedNode];
+        let currentNode = focusedNode;
+
+        while (currentNode) {
+            const parent = parentNodeContextPath(currentNode.contextPath);
+            if (parent !== null) {
+                currentNode = nodesByContextPath[parent];
+                if (currentNode) {
+                    result.push(currentNode);
+                }
+            }
+        }
+
+        return result;
+    }
+);

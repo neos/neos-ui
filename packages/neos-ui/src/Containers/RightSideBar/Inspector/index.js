@@ -131,7 +131,7 @@ export default class Inspector extends PureComponent {
     preprocessViewConfigurationDebounced = debounce(() => {
         // Calculate node property values for context
         const {focusedNode, transientValues} = this.props;
-        const nodeForContext = focusedNode.toJS();
+        const nodeForContext = focusedNode;
         if (transientValues && transientValues.toJS) {
             transientValues.map(item => item.value).toJS();
             nodeForContext.properties = Object.assign({}, nodeForContext.properties, transientValues.map(item => $get('value', item)).toJS());

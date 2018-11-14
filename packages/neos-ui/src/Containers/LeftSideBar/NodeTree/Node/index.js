@@ -270,7 +270,7 @@ export default class Node extends PureComponent {
         const refHandler = div => {
             this.domNode = div;
         };
-        const childNodesCount = childNodes.count();
+        const childNodesCount = childNodes.length;
 
         const labelIdentifier = (isContentTreeNode ? 'content-' : '') + 'treeitem-' + hashSum($get('contextPath', node)) + '-label';
 

@@ -3,6 +3,7 @@ import {$get} from 'plow-js';
 import {action as createAction, ActionType} from 'typesafe-actions';
 import {State as UserState} from './../User/index';
 import {State as ContentDimensionsState} from './../CR/ContentDimensions/index';
+import {State as NodesState} from './../CR/Nodes/index';
 
 //
 // Export the subreducer state shape interface
@@ -17,6 +18,7 @@ export interface GlobalState {
     user: UserState;
     cr: {
         contentDimensions: ContentDimensionsState;
+        nodes: NodesState;
     };
 }
 

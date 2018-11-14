@@ -67,7 +67,7 @@ export default class SelectedElement extends PureComponent {
                 </Headline>
                 <div className={style.content}>
                     <SelectBox
-                        options={focusedNodeParentLine.map(this.createNodeOption).toJS()}
+                        options={focusedNodeParentLine.map(this.createNodeOption)}
                         value={$get('contextPath', focusedNode)}
                         onValueChange={this.handleSelectNode}
                         />

@@ -1,13 +1,14 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
+
 import ShallowDropDownContents, {ShallowDropDownContentsProps} from './contents';
 
 describe('<ShallowDropDownContents/>', () => {
     const props: ShallowDropDownContentsProps = {
         children: 'Foo children',
         isOpen: false,
-        closeDropDown: () => null,
+        closeDropDown: jest.fn(),
         theme: {
             'dropDown__contents': 'baseDropDownContentsClassName',
             'dropDown__contents--isOpen': 'openDropDownContentsClassName',
@@ -30,19 +31,19 @@ describe('<ShallowDropDownContents/>', () => {
     it('should render the themes "dropDown__contents--isOpen" className in case the "isOpen" prop is true.', () => {
         const wrapper = shallow(<ShallowDropDownContents {...props} isOpen={true}/>);
 
-        expect(wrapper.hasClass('openDropDownContentsClassName')).toBeTruthy();
+        expect(wrapper.hasClass('openDropDownContentsClassName')).toBe(true);
     });
 
     it('should render a aria-hidden="false" attribute in the wrapper in case the "isOpen" prop is true.', () => {
         const wrapper = shallow(<ShallowDropDownContents {...props} isOpen={true}/>);
 
-        expect(wrapper.html().includes('aria-hidden="false"')).toBeTruthy();
+        expect(wrapper.html().includes('aria-hidden="false"')).toBe(true);
     });
 
     it('should render a aria-label="dropdown" and role="button" attribute in the wrapper in case the "isOpen" prop is true.', () => {
         const wrapper = shallow(<ShallowDropDownContents {...props} isOpen={true}/>);
 
-        expect(wrapper.html().includes('aria-label="dropdown"')).toBeTruthy();
+        expect(wrapper.html().includes('aria-label="dropdown"')).toBe(true);
     });
 
     it('should call the "closeDropDown" prop when clicking on the wrapper.', () => {

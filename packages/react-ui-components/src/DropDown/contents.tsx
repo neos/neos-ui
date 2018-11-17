@@ -21,26 +21,23 @@ export interface ShallowDropDownContentsProps {
     /**
      * Limit height and add scrollbar.
      */
-    readonly scrollable?: boolean,
+    readonly scrollable?: boolean;
 
     /**
      * These props control the visual state of the contents, and are passed
      * from the outside via the `ContextDropDownContents` component.
      */
-    readonly isOpen: boolean,
+    readonly isOpen: boolean;
+
     readonly closeDropDown: () => void;
 
      /**
-     * An optional css theme to be injected.
-     */
+      * An optional css theme to be injected.
+      */
     readonly theme?: ShallowDropDownContentsTheme;
 }
 
-class ShallowDropDownContents extends PureComponent<ShallowDropDownContentsProps> {
-    static propTypes = {
-
-    };
-
+export default class ShallowDropDownContents extends PureComponent<ShallowDropDownContentsProps> {
     public render(): JSX.Element {
         const {
             className,
@@ -49,7 +46,6 @@ class ShallowDropDownContents extends PureComponent<ShallowDropDownContentsProps
             isOpen,
             closeDropDown,
             scrollable,
-            ...rest
         } = this.props;
         const finalClassName = mergeClassNames(
             theme!.dropDown__contents,
@@ -62,17 +58,14 @@ class ShallowDropDownContents extends PureComponent<ShallowDropDownContentsProps
 
         return (
             <ul
-                {...rest}
                 className={finalClassName}
                 aria-hidden={isOpen ? 'false' : 'true'}
                 aria-label="dropdown"
                 role="listbox"
                 onClick={closeDropDown}
-                >
+            >
                 {isOpen && children}
             </ul>
         );
     }
 }
-
-export default ShallowDropDownContents;

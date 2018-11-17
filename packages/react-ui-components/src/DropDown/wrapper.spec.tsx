@@ -1,17 +1,19 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import {DropDownWrapper} from './wrapper';
+
+import {DropDownWrapper, DropDownWrapperProps, defaultProps} from '@neos-project/react-ui-components/src/DropDown/wrapper';
 
 describe('<DropDownWrapper/>', () => {
-    let props;
-
-    beforeEach(() => {
-        props = {
-            children: 'Foo children',
-            theme: {}
-        };
-    });
+    const props: DropDownWrapperProps = {
+        ...defaultProps,
+        children: 'Foo children',
+        theme: {
+            'dropDown': 'dropDownClassName',
+            'dropDown__btn': 'btnClassName',
+            'dropDown--padded': 'paddedClassName',
+        }
+    };
 
     it('should render correctly.', () => {
         const wrapper = shallow(<DropDownWrapper {...props}/>);
@@ -25,16 +27,10 @@ describe('<DropDownWrapper/>', () => {
         expect(wrapper.prop('className')).toContain('fooClassName');
     });
 
-    it('should allow the propagation of additional props to the wrapper.', () => {
-        const wrapper = shallow(<DropDownWrapper {...props} foo="bar"/>);
-
-        expect(wrapper.prop('foo')).toBe('bar');
-    });
-
     it('should initially have a falsy "isOpen" state value.', () => {
         const wrapper = shallow(<DropDownWrapper {...props}/>);
 
-        expect(wrapper.state('isOpen')).toBeFalsy();
+        expect(wrapper.state('isOpen')).toBe(false);
     });
 
     it('should set the "isOpen" state value to opposite when calling the toggle method.', () => {
@@ -42,17 +38,17 @@ describe('<DropDownWrapper/>', () => {
 
         wrapper.instance().handleToggle();
 
-        expect(wrapper.state('isOpen')).toBeTruthy();
+        expect(wrapper.state('isOpen')).toBe(true);
 
         wrapper.instance().handleToggle();
 
-        expect(wrapper.state('isOpen')).toBeFalsy();
+        expect(wrapper.state('isOpen')).toBe(false);
     });
     it('should set the "isOpen" state value to false when calling the close method.', () => {
         const wrapper = shallow(<DropDownWrapper {...props}/>);
 
         wrapper.instance().handleClose();
 
-        expect(wrapper.state('isOpen')).toBeFalsy();
+        expect(wrapper.state('isOpen')).toBe(false);
     });
 });

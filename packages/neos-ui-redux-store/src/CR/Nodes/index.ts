@@ -10,6 +10,26 @@ import {parentNodeContextPath} from './helpers';
 export type NodeContextPath = string;
 export type NodeTypeName = string;
 
+// TODO: move out domain-specific interface definitions into a separate file (or package?)
+export enum InsertPosition {
+    INTO = 'into',
+    BEFORE = 'before',
+    AFTER = 'after'
+}
+
+// TODO: for some reason (probably due to immer) I can not use ReadonlyArray here
+export interface NodeChildren extends Array<{
+    contextPath: NodeContextPath;
+    nodeType: NodeTypeName;
+}> {}
+
+export interface NodePolicy extends Readonly<{
+    disallowedNodeTypes: NodeTypeName[];
+    canRemove: boolean;
+    canEdit: boolean;
+    disallowedProperties: string[];
+}> {}
+// TODO: for some reason (probably due to immer) I can not use Readonly here
 export interface Node {
     contextPath: NodeContextPath;
     name: string;
@@ -18,22 +38,14 @@ export interface Node {
     label: string;
     isAutoCreated: boolean;
     depth: number;
-    children: Array<{
-        contextPath: NodeContextPath;
-        nodeType: NodeTypeName;
-    }>;
+    children: NodeChildren;
     matchesCurrentDimensions: boolean;
     properties: {
         [propName: string]: any;
     };
     isFullyLoaded: boolean;
     uri: string;
-    policy?: {
-        disallowedNodeTypes: NodeTypeName[],
-        canRemove: boolean,
-        canEdit: boolean,
-        disallowedProperties: string[]
-    };
+    policy?: NodePolicy;
 }
 
 export interface NodeMap {
@@ -229,7 +241,7 @@ const cut = (contextPath: NodeContextPath) => createAction(actionTypes.CUT, cont
 const move = (
     nodeToBeMoved: NodeContextPath,
     targetNode: NodeContextPath,
-    position: 'into' | 'before' | 'after'
+    position: InsertPosition
 ) => createAction(actionTypes.MOVE, {nodeToBeMoved, targetNode, position});
 
 /**

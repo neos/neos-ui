@@ -73,7 +73,7 @@ abstract class AbstractMove extends AbstractStructuralChange
      *
      * @param NodeInterface $parentNode
      * @param NodeInterface $node
-     * @return string|null
+     * @return string|null If the current name can be used, null is returned
      */
     protected function generateUniqueNodeNameIfNeeded(NodeInterface $parentNode, NodeInterface $node)
     {

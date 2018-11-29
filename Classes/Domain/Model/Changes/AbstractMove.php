@@ -69,7 +69,7 @@ abstract class AbstractMove extends AbstractStructuralChange
     }
 
     /**
-     * Generate a unique node name for the copied node if needed
+     * Generate a (new) unique node name for the copied node if the current name is in use already
      *
      * @param NodeInterface $parentNode
      * @param NodeInterface $node

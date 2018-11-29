@@ -82,7 +82,7 @@ class MoveInto extends AbstractMove
             $before = self::cloneNodeWithNodeData($this->getSubject());
             $parent = $before->getParent();
 
-            $nodeName = $this->generateUniqueNodeName($this->getParentNode());
+            $nodeName = $this->generateUniqueNodeNameIfNeeded($this->getParentNode(), $this->getSubject());
             $this->getSubject()->moveInto($this->getParentNode(), $nodeName);
 
             $updateParentNodeInfo = new UpdateNodeInfo();

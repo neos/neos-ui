@@ -67,4 +67,20 @@ abstract class AbstractMove extends AbstractStructuralChange
         return $this->contentRepositoryNodeService
             ->generateUniqueNodeName($parentNode->getPath());
     }
+
+    /**
+     * Generate a unique node name for the copied node if needed
+     *
+     * @param NodeInterface $parentNode
+     * @param NodeInterface $node
+     * @return string
+     */
+    protected function generateUniqueNodeNameIfNeeded(NodeInterface $parentNode, NodeInterface $node)
+    {
+        if ($this->contentRepositoryNodeService->nodePathAvailableForNode($parentNode->getPath() . $node->getName(), $node)) {
+            return $node->getName();
+        }
+
+        return $this->generateUniqueNodeName($parentNode);
+    }
 }

@@ -59,7 +59,7 @@ export const reducer = handleActions({
     [system.INIT]: state => $set(
         'ui.pageTree',
         new Map({
-            isFocused: $get('ui.contentCanvas.contextPath', state) || $get('cr.nodes.siteNode', state),
+            isFocused: $get('cr.nodes.documentNode', state) || $get('cr.nodes.siteNode', state),
             toggled: new Set(),
             hidden: new Set(),
             intermediate: new Set(),

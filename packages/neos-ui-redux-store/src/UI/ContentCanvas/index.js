@@ -8,7 +8,6 @@ import {actionTypes as system} from '../../System/index';
 
 import * as selectors from './selectors';
 
-const SET_CONTEXT_PATH = '@neos/neos-ui/UI/ContentCanvas/SET_CONTEXT_PATH';
 const SET_PREVIEW_URL = '@neos/neos-ui/UI/ContentCanvas/SET_PREVIEW_URL';
 const SET_SRC = '@neos/neos-ui/UI/ContentCanvas/SET_SRC';
 const FORMATTING_UNDER_CURSOR = '@neos/neos-ui/UI/ContentCanvas/FORMATTING_UNDER_CURSOR';
@@ -25,7 +24,6 @@ const REQUEST_LOGIN = '@neos/neos-ui/UI/ContentCanvas/REQUEST_LOGIN';
 // Export the action types
 //
 export const actionTypes = {
-    SET_CONTEXT_PATH,
     SET_PREVIEW_URL,
     SET_SRC,
     FORMATTING_UNDER_CURSOR,
@@ -39,7 +37,6 @@ export const actionTypes = {
     REQUEST_LOGIN
 };
 
-const setContextPath = createAction(SET_CONTEXT_PATH, (contextPath, siteNode = null) => ({contextPath, siteNode}));
 const setPreviewUrl = createAction(SET_PREVIEW_URL, previewUrl => ({previewUrl}));
 const setSrc = createAction(SET_SRC, (src, openInNewWindow = false) => ({src, openInNewWindow}));
 const setFormattingUnderCursor = createAction(FORMATTING_UNDER_CURSOR, formatting => ({formatting}));
@@ -57,7 +54,6 @@ const requestLogin = createAction(REQUEST_LOGIN);
 // Export the actions
 //
 export const actions = {
-    setContextPath,
     setPreviewUrl,
     setSrc,
     setFormattingUnderCursor,
@@ -77,7 +73,6 @@ export const reducer = handleActions({
     [system.INIT]: state => $set(
         'ui.contentCanvas',
         new Map({
-            contextPath: $get('ui.contentCanvas.contextPath', state) || '',
             previewUrl: '',
             src: $get('ui.contentCanvas.src', state) || '',
             formattingUnderCursor: new Map(),
@@ -89,27 +84,6 @@ export const reducer = handleActions({
             shouldScrollIntoView: false
         })
     ),
-    [SET_CONTEXT_PATH]: ({contextPath, siteNode}) => state => {
-        if ($get('ui.contentCanvas.contextPath', state) !== contextPath) {
-            // If context path changed, ensure to reset the "focused node". Otherwise, when switching
-            // to different Document nodes and having a (content) node selected previously, the Inspector
-            // does not properly refresh. We just need to ensure that everytime we switch pages, we
-            // reset the focused (content) node of the page.
-            state = $set('cr.nodes.focused', new Map({
-                contextPath: '',
-                fusionPath: ''
-            }), state);
-        }
-
-        state = $set('ui.contentCanvas.contextPath', contextPath, state);
-
-        if (siteNode) {
-            // !! HINT: set site node in case it is defined in SET_CONTEXT_PATH; otherwise the dimension switcher does not work.
-            state = $set('cr.nodes.siteNode', siteNode, state);
-        }
-
-        return state;
-    },
     [SET_PREVIEW_URL]: ({previewUrl}) => $set('ui.contentCanvas.previewUrl', previewUrl),
     [SET_SRC]: ({src}) => $set('ui.contentCanvas.src', src),
     [FORMATTING_UNDER_CURSOR]: ({formatting}) => $set('ui.contentCanvas.formattingUnderCursor', new Map(formatting)),

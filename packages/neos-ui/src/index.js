@@ -173,7 +173,7 @@ function * application() {
     );
 
     const siteNodeContextPath = yield select($get('cr.nodes.siteNode'));
-    const documentNodeContextPath = yield select($get('ui.contentCanvas.contextPath'));
+    const documentNodeContextPath = yield select($get('cr.nodes.documentNode'));
     yield put(actions.CR.Nodes.reloadState({
         siteNodeContextPath,
         documentNodeContextPath,

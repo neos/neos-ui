@@ -79,8 +79,8 @@ export function * watchNodeCreated() {
 }
 
 export function * watchCurrentDocument({configuration}) {
-    yield takeLatest(actionTypes.UI.ContentCanvas.SET_CONTEXT_PATH, function * loadDocumentRootLine(action) {
-        const {contextPath} = action.payload;
+    yield takeLatest(actionTypes.CR.Nodes.SET_DOCUMENT_NODE, function * loadDocumentRootLine(action) {
+        const contextPath = action.payload;
         const siteNodeContextPath = yield select($get('cr.nodes.siteNode'));
         const {q} = backend.get();
 
@@ -138,7 +138,7 @@ export function * watchSearch({configuration}) {
             } else {
                 const clipboardNodeContextPath = yield select($get('cr.nodes.clipboard'));
                 const toggledNodes = yield select($get('ui.pageTree.toggled'));
-                const documentNodeContextPath = yield select($get('ui.contentCanvas.contextPath'));
+                const documentNodeContextPath = yield select($get('cr.nodes.documentNode'));
 
                 matchingNodes = yield q([contextPath, documentNodeContextPath]).neosUiDefaultNodes(
                     configuration.nodeTree.presets.default.baseNodeType,

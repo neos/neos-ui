@@ -29,7 +29,7 @@ import style from './style.css';
 export default class SelectedElement extends PureComponent {
     static propTypes = {
         focusedNode: PropTypes.object.isRequired,
-        focusedNodeParentLine: PropTypes.object.isRequired,
+        focusedNodeParentLine: PropTypes.array.isRequired,
 
         focusNode: PropTypes.func.isRequired,
         nodeTypesRegistry: PropTypes.object.isRequired

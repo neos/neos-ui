@@ -11,7 +11,7 @@ export default function * watchReloadState({configuration}) {
         const clipboardNodeContextPath = yield select($get('cr.nodes.clipboard'));
         const toggledNodes = yield select($get('ui.pageTree.toggled'));
         const siteNodeContextPath = $get('payload.siteNodeContextPath', action) || currentSiteNodeContextPath;
-        const documentNodeContextPath = yield $get('payload.documentNodeContextPath', action) || select($get('ui.contentCanvas.contextPath'));
+        const documentNodeContextPath = yield $get('payload.documentNodeContextPath', action) || select($get('cr.nodes.documentNode'));
         yield put(actions.UI.PageTree.setAsLoading(currentSiteNodeContextPath));
         const nodes = yield q([siteNodeContextPath, documentNodeContextPath]).neosUiDefaultNodes(
             configuration.nodeTree.presets.default.baseNodeType,

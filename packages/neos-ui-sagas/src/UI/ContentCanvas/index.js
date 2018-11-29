@@ -12,7 +12,7 @@ export function * watchNodeCreated() {
     yield takeLatest(actionTypes.UI.Remote.DOCUMENT_NODE_CREATED, function * nodeCreated(action) {
         const {contextPath} = action.payload;
         const node = yield select($get(['cr', 'nodes', 'byContextPath', contextPath]));
-        yield put(actions.UI.ContentCanvas.setContextPath(contextPath));
+        yield put(actions.CR.Nodes.setDocumentNode(contextPath));
         yield put(actions.UI.ContentCanvas.setSrc($get('uri', node)));
     });
 }

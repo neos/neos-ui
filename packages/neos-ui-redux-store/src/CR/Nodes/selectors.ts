@@ -96,15 +96,15 @@ interface NodeTypesRegistry {
     getAllowedNodeTypesTakingAutoCreatedIntoAccount: (isSubjectNodeAutocreated: boolean, referenceParentName: string, referenceParentNodeType: NodeTypeName, referenceGrandParentNodeType: NodeTypeName, role: string) => NodeTypeName[];
 }
 
-const nodes = (state: GlobalState) => $get(['cr', 'nodes', 'byContextPath'], state);
-const siteNode = (state: GlobalState) => $get(['cr', 'nodes', 'siteNode'], state);
-const documentNode = (state: GlobalState) => $get(['cr', 'nodes', 'documentNode'], state);
-const focused = (state: GlobalState) => $get(['cr', 'nodes', 'focused', 'contextPath'], state);
+export const nodesByContextPathSelector = (state: GlobalState) => $get(['cr', 'nodes', 'byContextPath'], state);
+export const siteNodeContextPathSelector = (state: GlobalState) => $get(['cr', 'nodes', 'siteNode'], state);
+export const documentNodeContextPathSelector = (state: GlobalState) => $get(['cr', 'nodes', 'documentNode'], state);
+export const focusedNodeContextPathSelector = (state: GlobalState) => $get(['cr', 'nodes', 'focused', 'contextPath'], state);
 
 export const isDocumentNodeSelectedSelector = createSelector(
     [
-        focused,
-        documentNode
+        focusedNodeContextPathSelector,
+        documentNodeContextPathSelector
     ],
     (focused, currentContentCanvasContextPath) => {
         return !focused || (focused === currentContentCanvasContextPath);
@@ -113,8 +113,8 @@ export const isDocumentNodeSelectedSelector = createSelector(
 
 export const hasFocusedContentNode = createSelector(
     [
-        focused,
-        documentNode
+        focusedNodeContextPathSelector,
+        documentNodeContextPathSelector
     ],
     (focused, currentContentCanvasContextPath) => {
         return Boolean(focused && (focused !== currentContentCanvasContextPath));
@@ -126,7 +126,7 @@ export const nodeByContextPath = (state: GlobalState) => (contextPath: NodeConte
 
 export const makeGetDocumentNodes = (nodeTypesRegistry: NodeTypesRegistry) => createSelector(
     [
-        nodes
+        nodesByContextPathSelector
     ],
     nodesMap => {
         const documentSubNodeTypes = nodeTypesRegistry.getSubTypesOf(nodeTypesRegistry.getRole('document'));
@@ -161,7 +161,7 @@ export const makeHasChildrenSelector = (allowedNodeTypes: NodeTypeName[]) => cre
 export const makeChildrenOfSelector = (allowedNodeTypes: NodeTypeName[]) => createSelector(
     [
         (state: GlobalState, contextPath: NodeContextPath) => $get(['cr', 'nodes', 'byContextPath', contextPath, 'children'], state),
-        nodes
+        nodesByContextPathSelector
     ],
     (childNodeEnvelopes, nodesByContextPath: NodeMap) => (childNodeEnvelopes || [])
     .filter(
@@ -179,8 +179,8 @@ export const makeChildrenOfSelector = (allowedNodeTypes: NodeTypeName[]) => crea
 
 export const siteNodeSelector = createSelector(
     [
-        siteNode,
-        nodes
+        siteNodeContextPathSelector,
+        nodesByContextPathSelector
     ],
     (siteNodeContextPath, nodesByContextPath) => {
         if (siteNodeContextPath) {
@@ -192,8 +192,8 @@ export const siteNodeSelector = createSelector(
 
 export const currentContentCanvasNodeSelector = createSelector(
     [
-        documentNode,
-        nodes
+        documentNodeContextPathSelector,
+        nodesByContextPathSelector
     ],
     (currentContentCanvasNode, nodesByContextPath) => {
         if (currentContentCanvasNode !== null) {
@@ -233,8 +233,8 @@ export const grandParentNodeSelector = (state: GlobalState) => (baseNode: Node) 
 
 export const focusedNodePathSelector = createSelector(
     [
-        focused,
-        documentNode
+        focusedNodeContextPathSelector,
+        documentNodeContextPathSelector
     ],
     (focused, currentContentCanvasContextPath) => {
         return focused || currentContentCanvasContextPath;
@@ -444,8 +444,8 @@ export const makeCanBePastedSelector = (nodeTypesRegistry: NodeTypesRegistry) =>
 
 export const destructiveOperationsAreDisabledSelector = createSelector(
     [
-        siteNode,
-        focused,
+        siteNodeContextPathSelector,
+        focusedNodeContextPathSelector,
         focusedSelector
     ],
     (siteNodeContextPath, focusedNodeContextPath, focusedNode) => {
@@ -460,7 +460,7 @@ export const destructiveOperationsAreDisabledSelector = createSelector(
 export const focusedNodeParentLineSelector = createSelector(
     [
         focusedSelector,
-        nodes
+        nodesByContextPathSelector
     ],
     (focusedNode, nodesByContextPath) => {
         const result = [focusedNode];

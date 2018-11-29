@@ -239,7 +239,7 @@ manifest('main', {}, globalRegistry => {
     //
     serverFeedbackHandlers.set('Neos.Neos.Ui:Redirect/Main', (feedbackPayload, {store}) => {
         store.dispatch(actions.UI.ContentCanvas.setSrc(feedbackPayload.redirectUri));
-        store.dispatch(actions.UI.ContentCanvas.setContextPath(feedbackPayload.redirectContextPath));
+        store.dispatch(actions.CR.Nodes.setDocumentNode(feedbackPayload.redirectContextPath));
     });
 
     //
@@ -263,7 +263,7 @@ manifest('main', {}, globalRegistry => {
         }
 
         // If we are removing current document node...
-        if ($get('ui.contentCanvas.contextPath', state) === contextPath) {
+        if ($get('cr.nodes.documentNode', state) === contextPath) {
             let redirectContextPath = contextPath;
             let redirectUri = null;
             // Determine closest parent that is not being removed
@@ -279,13 +279,13 @@ manifest('main', {}, globalRegistry => {
             }
 
             store.dispatch(actions.UI.ContentCanvas.setSrc(redirectUri));
-            store.dispatch(actions.UI.ContentCanvas.setContextPath(redirectContextPath));
+            store.dispatch(actions.CR.Nodes.setDocumentNode(redirectContextPath));
         }
 
         store.dispatch(actions.CR.Nodes.remove(contextPath));
 
         // Remove the node from the dom
-        if ($get('ui.contentCanvas.contextPath', state) !== contextPath) {
+        if ($get('cr.nodes.documentNode', state) !== contextPath) {
             findAllOccurrencesOfNodeInGuestFrame(contextPath).forEach(el => {
                 const closestContentCollection = el.closest('.neos-contentcollection');
                 el.remove();

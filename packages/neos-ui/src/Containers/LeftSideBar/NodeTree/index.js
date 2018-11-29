@@ -131,7 +131,7 @@ export const PageTree = connect(state => ({
     focus: actions.UI.PageTree.focus,
     reload: actions.UI.ContentCanvas.reload,
     setActiveContentCanvasSrc: actions.UI.ContentCanvas.setSrc,
-    setActiveContentCanvasContextPath: actions.UI.ContentCanvas.setContextPath,
+    setActiveContentCanvasContextPath: actions.CR.Nodes.setDocumentNode,
     moveNode: actions.CR.Nodes.move,
     requestScrollIntoView: null
 })(NodeTree);

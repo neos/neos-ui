@@ -77,7 +77,7 @@ abstract class AbstractMove extends AbstractStructuralChange
      */
     protected function generateUniqueNodeNameIfNeeded(NodeInterface $parentNode, NodeInterface $node)
     {
-        if ($this->contentRepositoryNodeService->nodePathAvailableForNode($parentNode->getPath() . $node->getName(), $node)) {
+        if ($this->contentRepositoryNodeService->nodePathAvailableForNode($parentNode->getPath() . '/' . $node->getName(), $node)) {
             return null;
         }
 

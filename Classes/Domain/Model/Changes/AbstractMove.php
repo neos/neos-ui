@@ -69,18 +69,14 @@ abstract class AbstractMove extends AbstractStructuralChange
     }
 
     /**
-     * Generate a (new) unique node name for the copied node if the current name is in use already
+     * Returns true if the current name of $node is "free" below $parentNode
      *
      * @param NodeInterface $parentNode
      * @param NodeInterface $node
-     * @return string|null If the current name can be used, null is returned
+     * @return bool
      */
-    protected function generateUniqueNodeNameIfNeeded(NodeInterface $parentNode, NodeInterface $node)
+    protected function nodeNameAvailableBelowNode(NodeInterface $parentNode, NodeInterface $node)
     {
-        if ($this->contentRepositoryNodeService->nodePathAvailableForNode($parentNode->getPath() . '/' . $node->getName(), $node)) {
-            return null;
-        }
-
-        return $this->generateUniqueNodeName($parentNode);
+        return $this->contentRepositoryNodeService->nodePathAvailableForNode($parentNode->getPath() . '/' . $node->getName(), $node);
     }
 }

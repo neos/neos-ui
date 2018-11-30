@@ -13,14 +13,22 @@ function * nodeCreationWorkflow(context, step = STEP_SELECT_NODETYPE, workflowDa
     const {
         nodeTypesRegistry,
         referenceNodeContextPath,
-        referenceNodeFusionPath
+        referenceNodeFusionPath,
+        preferredMode,
+        nodeType
     } = context;
     switch (step) {
         //
         // Start with showing a dialog for node type selection
         //
         case STEP_SELECT_NODETYPE: {
-            yield put(actions.UI.SelectNodeTypeModal.open(referenceNodeContextPath));
+            yield put(actions.UI.SelectNodeTypeModal.open(referenceNodeContextPath, preferredMode));
+
+            // If nodeType option is passed, skip selection of nodetype and immediately jump to the next step
+            if (nodeType) {
+                yield put(actions.UI.SelectNodeTypeModal.apply(preferredMode, nodeType));
+                return yield call(nodeCreationWorkflow, context, STEP_NODE_CREATION_DIALOG, {preferredMode, nodeType});
+            }
             const waitForNextAction = yield race([
                 take(actionTypes.UI.SelectNodeTypeModal.CANCEL),
                 take(actionTypes.UI.SelectNodeTypeModal.APPLY)
@@ -99,11 +107,13 @@ function * nodeCreationWorkflow(context, step = STEP_SELECT_NODETYPE, workflowDa
 export default function * addNode({globalRegistry}) {
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
     yield takeLatest(actionTypes.CR.Nodes.COMMENCE_CREATION, function * (action) {
-        const {referenceNodeContextPath, referenceNodeFusionPath} = action.payload;
+        const {referenceNodeContextPath, referenceNodeFusionPath, preferredMode, nodeType} = action.payload;
         const context = {
             nodeTypesRegistry,
             referenceNodeContextPath,
-            referenceNodeFusionPath
+            referenceNodeFusionPath,
+            preferredMode,
+            nodeType
         };
         yield call(nodeCreationWorkflow, context);
     });

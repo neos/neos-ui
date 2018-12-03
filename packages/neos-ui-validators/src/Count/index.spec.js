@@ -62,3 +62,12 @@ test('[1, 2, 3, 4] should result in an error message for min: 1 max: 3', () => {
 
     expect(countValidator([1, 2, 3, 4], validatorOptions)).not.toBe(null);
 });
+
+test('no element object should be valid for min:5 max: 10', () => {
+    const validatorOptions = {
+        minimum: 5,
+        maximum: 10
+    };
+
+    expect(countValidator([], validatorOptions)).toBe(null);
+});

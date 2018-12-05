@@ -50,19 +50,10 @@ exports[`<DateInput/> should render correctly. 1`] = `
   </div>
   <Collapse
     fixedHeight={-1}
-    forceInitialAnimation={false}
-    hasNestedCollapse={false}
     isOpened={false}
-    onMeasure={[Function]}
-    onRender={[Function]}
-    onRest={[Function]}
+    keepCollapsedContent={false}
+    onHeightReady={[Function]}
     style={Object {}}
-    theme={
-      Object {
-        "collapse": "ReactCollapse--collapse",
-        "content": "ReactCollapse--content",
-      }
-    }
   >
     <button
       className="selectTodayBtnClassName"

@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import enhanceWithClickOutside from 'react-click-outside';
 import moment, {Moment, isMoment} from 'moment';
 import mergeClassNames from 'classnames';
-// @ts-ignore
+// @ts-ignore missing typings - we can not update due to a know issue with firefox (https://github.com/neos/neos-ui/pull/1874)
 import Collapse from 'react-collapse';
 import DatePicker, {TimeConstraints} from 'react-datetime';
 

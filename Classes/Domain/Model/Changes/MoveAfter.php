@@ -43,8 +43,12 @@ class MoveAfter extends AbstractMove
             $before = self::cloneNodeWithNodeData($this->getSubject());
             $parent = $before->getParent();
 
-            $nodeName = $this->generateUniqueNodeName($this->getSiblingNode()->getParent());
-            $this->getSubject()->moveAfter($this->getSiblingNode(), $nodeName);
+            if ($this->nodeNameAvailableBelowNode($this->getSiblingNode()->getParent(), $this->getSubject())) {
+                $this->getSubject()->moveAfter($this->getSiblingNode());
+            } else {
+                $nodeName = $this->generateUniqueNodeName($this->getSiblingNode()->getParent());
+                $this->getSubject()->moveAfter($this->getSiblingNode(), $nodeName);
+            }
 
             $updateParentNodeInfo = new UpdateNodeInfo();
             $updateParentNodeInfo->setNode($parent);

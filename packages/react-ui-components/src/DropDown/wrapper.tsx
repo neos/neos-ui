@@ -62,9 +62,13 @@ interface DropDownWrapperState {
 
 export default class DropDownWrapper extends PureComponent<DropDownWrapperProps, DropDownWrapperState> {
     public static readonly defaultProps = defaultProps;
-    public state = {
-        isOpen: this.props.isOpen
-    };
+
+    constructor(props: DropDownWrapperProps) {
+        super(props);
+        this.state = {
+            isOpen: props.isOpen
+        };
+    }
 
     public render(): JSX.Element {
         return <StatelessDropDownWrapper {...this.props} isOpen={this.state.isOpen} onToggle={this.handleToggle} onClose={this.handleClose}/>;
@@ -78,7 +82,7 @@ export default class DropDownWrapper extends PureComponent<DropDownWrapperProps,
         this.setState({isOpen: !this.state.isOpen});
     }
 
-    private handleClose = () => {
+    private readonly handleClose = () => {
         this.setState({isOpen: false});
     }
 }
@@ -122,10 +126,10 @@ class StatelessDropDownWrapperWithoutClickOutsideBehavior extends PureComponent<
         return (
             <div {...rest} className={finalClassName}>
                 {React.Children.map(children, child => {
-                    if (React.isValidElement(child)) {
+                    if (React.isValidElement<{context: ChildContext}>(child)) {
                         return React.cloneElement(child, {
                             ...child.props,
-                            context: this.context
+                            context: this.getChildContext()
                         });
                     } else {
                         return child;

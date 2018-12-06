@@ -1,18 +1,18 @@
-import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import Frame from './frame';
+import React from 'react';
+
+import Frame, {FrameProps} from './frame';
 
 describe('<Frame/>', () => {
-    let props;
-
-    beforeEach(() => {
-        props = {
-            mountTarget: 'foo',
-            children: 'Foo children',
-            contentDidUpdate: jest.fn()
-        };
-    });
+    const props: FrameProps = {
+        children: 'Foo children',
+        contentDidUpdate: jest.fn(),
+        mountTarget: 'foo',
+        onLoad: jest.fn(),
+        onUnload: jest.fn(),
+        src: 'localhost',
+    };
 
     it('should render correctly.', () => {
         const wrapper = shallow(<Frame {...props}/>);
@@ -27,8 +27,8 @@ describe('<Frame/>', () => {
     });
 
     it('should allow the propagation of additional props to the wrapper.', () => {
-        const wrapper = shallow(<Frame {...props} foo="bar"/>);
+        const wrapper = shallow(<Frame {...props} frameBorder="0"/>);
 
-        expect(wrapper.prop('foo')).toBe('bar');
+        expect(wrapper.prop('frameBorder')).toBe('0');
     });
 });

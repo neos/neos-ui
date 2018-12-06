@@ -48,8 +48,8 @@ export interface DropDownWrapperProps {
 
 interface DropDownWrapperTheme {
     readonly 'dropDown': string;
-    readonly 'dropDown__btn': string;
     readonly 'dropDown--padded': string;
+    readonly 'dropDown__btn': string;
 }
 
 export const defaultProps: PickDefaultProps<DropDownWrapperProps, 'isOpen' | 'style'> = {
@@ -93,13 +93,15 @@ class StatelessDropDownWrapperWithoutClickOutsideBehavior extends PureComponent<
     public render(): JSX.Element {
         const {children, className, theme, style, padded, ...restProps} = this.props;
         const rest = omit(restProps, ['isOpen', 'onToggle', 'onClose']);
-        // const styleClassName: string = style ? `dropDown--${style}` : '';
+        const styleClassName: string = style ? `dropDown--${style}` : '';
         const finalClassName = mergeClassNames(
-            theme!.dropDown__btn,
-            className,
             {
+                // @ts-ignore
+                [theme[styleClassName]]: styleClassName,
                 [theme!['dropDown--padded']]: padded
-            }
+            },
+            theme!.dropDown,
+            className,
         );
 
         return (

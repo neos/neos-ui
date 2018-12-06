@@ -31,9 +31,9 @@ export interface ShallowDropDownContentsProps {
 
     readonly closeDropDown: () => void;
 
-     /**
-      * An optional css theme to be injected.
-      */
+    /**
+     * An optional css theme to be injected.
+     */
     readonly theme?: ShallowDropDownContentsTheme;
 }
 

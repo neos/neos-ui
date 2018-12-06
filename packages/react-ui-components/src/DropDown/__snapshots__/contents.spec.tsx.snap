@@ -5,7 +5,7 @@ exports[`<ShallowDropDownContents/> should render correctly. 1`] = `
   aria-hidden="true"
   aria-label="dropdown"
   className="baseDropDownContentsClassName"
-  onClick={[Function]}
+  onClick={[MockFunction]}
   role="listbox"
 />
 `;

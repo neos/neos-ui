@@ -6,7 +6,13 @@ exports[`<DropDownWrapper/> should render correctly. 1`] = `
   onClose={[Function]}
   onToggle={[Function]}
   style="default"
-  theme={Object {}}
+  theme={
+    Object {
+      "dropDown": "dropDownClassName",
+      "dropDown--padded": "paddedClassName",
+      "dropDown__btn": "btnClassName",
+    }
+  }
 >
   Foo children
 </clickOutside(StatelessDropDownWrapperWithoutClickOutsideBehavior)>

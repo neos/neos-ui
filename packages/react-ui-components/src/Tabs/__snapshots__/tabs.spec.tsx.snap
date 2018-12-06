@@ -9,11 +9,10 @@ exports[`<Tabs/> should render correctly. 1`] = `
     className="baseTabsNavigationClassName"
   >
     <TabMenuItem
-      IconComponent={[Function]}
-      icon="icon 1"
+      icon="level-up"
       index={0}
       isActive={true}
-      key="0/.0"
+      key="0"
       onClick={[Function]}
       theme={
         Object {
@@ -30,11 +29,10 @@ exports[`<Tabs/> should render correctly. 1`] = `
       title="foo 1"
     />
     <TabMenuItem
-      IconComponent={[Function]}
-      icon="icon 2"
+      icon="level-down"
       index={1}
       isActive={false}
-      key="1/.1"
+      key="1"
       onClick={[Function]}
       theme={
         Object {
@@ -51,11 +49,10 @@ exports[`<Tabs/> should render correctly. 1`] = `
       title="foo 2"
     />
     <TabMenuItem
-      IconComponent={[Function]}
-      icon="icon 3"
+      icon="mobile"
       index={2}
       isActive={false}
-      key="2/.2"
+      key="2"
       onClick={[Function]}
       theme={
         Object {
@@ -85,8 +82,10 @@ exports[`<Tabs/> should render correctly. 1`] = `
         }
       }
     >
-      <Panel
-        icon="icon 1"
+      <ThemedPanel
+        composeTheme="deeply"
+        icon="level-up"
+        mapThemrProps={[Function]}
         theme={
           Object {
             "panel": "panelBaseClassName",
@@ -95,7 +94,7 @@ exports[`<Tabs/> should render correctly. 1`] = `
         title="foo 1"
       >
         Foo 1
-      </Panel>
+      </ThemedPanel>
     </div>
     <div
       aria-hidden="true"

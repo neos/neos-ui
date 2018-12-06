@@ -7,6 +7,7 @@ import enhanceWithClickOutside from 'react-click-outside';
 import { PickDefaultProps } from '../../types';
 import ShallowDropDownHeader from './header';
 import ShallowDropDownContents from './contents';
+import PropTypes from 'prop-types';
 
 export interface DropDownWrapperProps {
     /**
@@ -60,33 +61,6 @@ interface DropDownWrapperState {
     readonly isOpen: boolean;
 }
 
-export default class DropDownWrapper extends PureComponent<DropDownWrapperProps, DropDownWrapperState> {
-    public static readonly defaultProps = defaultProps;
-
-    constructor(props: DropDownWrapperProps) {
-        super(props);
-        this.state = {
-            isOpen: props.isOpen
-        };
-    }
-
-    public render(): JSX.Element {
-        return <StatelessDropDownWrapper {...this.props} isOpen={this.state.isOpen} onToggle={this.handleToggle} onClose={this.handleClose}/>;
-    }
-
-    private readonly handleToggle = (event: MouseEvent) => {
-        if (this.props.onToggle) {
-            this.props.onToggle(event);
-        }
-
-        this.setState({isOpen: !this.state.isOpen});
-    }
-
-    private readonly handleClose = () => {
-        this.setState({isOpen: false});
-    }
-}
-
 export interface StatelessDropDownWrapperWithoutClickOutsideBehaviorProps extends DropDownWrapperProps {
     onToggle: (event: MouseEvent) => void;
     onClose: (event?: MouseEvent) => void;
@@ -100,7 +74,12 @@ export interface ChildContext {
 class StatelessDropDownWrapperWithoutClickOutsideBehavior extends PureComponent<StatelessDropDownWrapperWithoutClickOutsideBehaviorProps> {
     public static readonly defaultProps = defaultProps;
 
-    public getChildContext = (): ChildContext => ({
+    public static readonly childContextTypes = {
+        toggleDropDown: PropTypes.func.isRequired,
+        closeDropDown: PropTypes.func.isRequired,
+    };
+
+    public readonly getChildContext = (): ChildContext => ({
         toggleDropDown: this.handleToggle,
         closeDropDown: this.handleClose,
     })
@@ -125,16 +104,11 @@ class StatelessDropDownWrapperWithoutClickOutsideBehavior extends PureComponent<
 
         return (
             <div {...rest} className={finalClassName}>
-                {React.Children.map(children, child => {
-                    if (React.isValidElement<{context: ChildContext}>(child)) {
-                        return React.cloneElement(child, {
-                            ...child.props,
-                            context: this.getChildContext()
-                        });
-                    } else {
-                        return child;
-                    }
-                })}
+                {React.Children.map(
+                    children,
+                    // @ts-ignore
+                    child => typeof child.type === 'string' ? child : <child.type {...child.props} isDropdownOpen={this.props.isOpen}/>
+                )}
             </div>
         );
     }
@@ -161,13 +135,41 @@ class StatelessDropDownWrapperWithoutClickOutsideBehavior extends PureComponent<
 export const StatelessDropDownWrapper = enhanceWithClickOutside(StatelessDropDownWrapperWithoutClickOutsideBehavior);
 
 
+export class DropDownWrapper extends PureComponent<DropDownWrapperProps, DropDownWrapperState> {
+    public static readonly defaultProps = defaultProps;
+
+    constructor(props: DropDownWrapperProps) {
+        super(props);
+        this.state = {
+            isOpen: props.isOpen
+        };
+    }
+
+    public render(): JSX.Element {
+        return <StatelessDropDownWrapper {...this.props} isOpen={this.state.isOpen} onToggle={this.handleToggle} onClose={this.handleClose}/>;
+    }
+
+    private readonly handleToggle = (event: MouseEvent) => {
+        if (this.props.onToggle) {
+            this.props.onToggle(event);
+        }
+
+        this.setState({isOpen: !this.state.isOpen});
+    }
+
+    private readonly handleClose = () => {
+        this.setState({isOpen: false});
+    }
+}
+
+export default DropDownWrapper;
 
 export interface ContextDropDownProps extends DropDownWrapperProps {
     isDropdownOpen?: boolean;
 }
 
 export class ContextDropDownHeader extends PureComponent<ContextDropDownProps> {
-    public static contextTypes = {
+    public static readonly contextTypes = {
         toggleDropDown: PropTypes.func.isRequired
     };
 
@@ -177,15 +179,9 @@ export class ContextDropDownHeader extends PureComponent<ContextDropDownProps> {
         return <ShallowDropDownHeader isOpen={isDropdownOpen} {...rest} {...this.context}/>;
     }
 }
-export class ContextDropDownContents extends PureComponent<ContextDropDownProps> {
-    public static propTypes = {
-        /**
-         * The propagated isOpen state from the dropDown
-         */
-        isDropdownOpen: PropTypes.bool
-    };
 
-    public static contextTypes = {
+export class ContextDropDownContents extends PureComponent<ContextDropDownProps> {
+    public static readonly contextTypes = {
         closeDropDown: PropTypes.func.isRequired
     };
 

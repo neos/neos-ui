@@ -2,7 +2,7 @@ import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
 
-import {DropDownWrapper, DropDownWrapperProps, defaultProps} from '@neos-project/react-ui-components/src/DropDown/wrapper';
+import {DropDownWrapper, DropDownWrapperProps, defaultProps} from './wrapper';
 
 describe('<DropDownWrapper/>', () => {
     const props: DropDownWrapperProps = {
@@ -36,10 +36,12 @@ describe('<DropDownWrapper/>', () => {
     it('should set the "isOpen" state value to opposite when calling the toggle method.', () => {
         const wrapper = shallow(<DropDownWrapper {...props}/>);
 
+        // @ts-ignore
         wrapper.instance().handleToggle();
 
         expect(wrapper.state('isOpen')).toBe(true);
 
+        // @ts-ignore
         wrapper.instance().handleToggle();
 
         expect(wrapper.state('isOpen')).toBe(false);
@@ -47,6 +49,7 @@ describe('<DropDownWrapper/>', () => {
     it('should set the "isOpen" state value to false when calling the close method.', () => {
         const wrapper = shallow(<DropDownWrapper {...props}/>);
 
+        // @ts-ignore
         wrapper.instance().handleClose();
 
         expect(wrapper.state('isOpen')).toBe(false);

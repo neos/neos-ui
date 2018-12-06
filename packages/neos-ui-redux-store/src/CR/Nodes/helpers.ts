@@ -1,4 +1,4 @@
-import {Node, NodeContextPath} from './index';
+import {Node, NodeContextPath} from '@neos-project/neos-ts-interfaces';
 
 //
 // Helper function to determine allowed node types

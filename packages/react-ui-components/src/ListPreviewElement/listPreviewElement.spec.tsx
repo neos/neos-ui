@@ -5,7 +5,7 @@ import React from 'react';
 import ListPreviewElement from '.';
 import {ListPreviewElementProps} from './listPreviewElement';
 
-describe('<Label/>', () => {
+describe('ListPreviewElement', () => {
     const props: ListPreviewElementProps = {
         children: 'Foo Children',
         theme: {

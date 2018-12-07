@@ -21,4 +21,8 @@ DropDown.Contents = DropDownContents;
 // @ts-ignore
 DropDown.Stateless = StatelessDropDown;
 
-export default DropDown;
+export default DropDown as typeof DropDown & {
+    Header: typeof DropDownHeader;
+    Contents: typeof DropDownContents;
+    Stateless: typeof StatelessDropDown;
+};

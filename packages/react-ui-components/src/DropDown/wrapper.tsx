@@ -4,9 +4,9 @@ import {omit} from 'lodash';
 import mergeClassNames from 'classnames';
 import enhanceWithClickOutside from 'react-click-outside';
 
-import { PickDefaultProps } from '../../types';
-import ShallowDropDownHeader from './header';
-import ShallowDropDownContents from './contents';
+import {PickDefaultProps} from '../../types';
+import ShallowDropDownHeader, {ShallowDropDownHeaderProps} from './header';
+import ShallowDropDownContents, {ShallowDropDownContentsProps} from './contents';
 import PropTypes from 'prop-types';
 
 export interface DropDownWrapperProps {
@@ -74,6 +74,7 @@ export interface ChildContext {
 class StatelessDropDownWrapperWithoutClickOutsideBehavior extends PureComponent<StatelessDropDownWrapperWithoutClickOutsideBehaviorProps> {
     public static readonly defaultProps = defaultProps;
 
+    // TODO: deprecated
     public static readonly childContextTypes = {
         toggleDropDown: PropTypes.func.isRequired,
         closeDropDown: PropTypes.func.isRequired,
@@ -166,11 +167,11 @@ export class DropDownWrapper extends PureComponent<DropDownWrapperProps, DropDow
 
 export default DropDownWrapper;
 
-export interface ContextDropDownProps extends DropDownWrapperProps {
+export interface ContextDropDownHeaderProps extends Partial<ShallowDropDownHeaderProps> {
     isDropdownOpen?: boolean;
 }
 
-export class ContextDropDownHeader extends PureComponent<ContextDropDownProps> {
+export class ContextDropDownHeader extends PureComponent<ContextDropDownHeaderProps> {
     public static readonly contextTypes = {
         toggleDropDown: PropTypes.func.isRequired
     };
@@ -182,7 +183,11 @@ export class ContextDropDownHeader extends PureComponent<ContextDropDownProps> {
     }
 }
 
-export class ContextDropDownContents extends PureComponent<ContextDropDownProps> {
+export interface ContextDropDownContentProps extends Partial<ShallowDropDownContentsProps> {
+    readonly isDropdownOpen?: boolean;
+}
+
+export class ContextDropDownContents extends PureComponent<ContextDropDownContentProps> {
     public static readonly contextTypes = {
         closeDropDown: PropTypes.func.isRequired
     };

@@ -4,17 +4,12 @@ import React, {PureComponent} from 'react';
 
 import ListPreviewElement from '../ListPreviewElement';
 import {ListPreviewElementProps} from '../ListPreviewElement/listPreviewElement';
+import {SelectBoxOption} from '../SelectBox/selectBox';
 
 export interface SelectBox_Option_SingleLineProps extends Partial<ListPreviewElementProps> {
-    readonly option: Options;
+    readonly option: SelectBoxOption;
     readonly disabled?: boolean;
     readonly className?: string;
-}
-
-interface Options {
-    readonly label: string;
-    readonly icon?: string;
-    readonly disabled?: boolean;
 }
 
 export default class SelectBox_Option_SingleLine extends PureComponent<SelectBox_Option_SingleLineProps> {

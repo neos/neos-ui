@@ -1,5 +1,6 @@
 // Temporary Plow typings
 // TODO: move to Plow
+// TODO: rename 'state' to 'obj' as it's not for state objects exclusively
 declare module 'plow-js' {
     export function $get<K1 extends keyof S, S>(path: [K1], state: S): S[K1];
     export function $get<K1 extends keyof S, K2 extends keyof S[K1], S>(path: [K1, K2], state: S): S[K1][K2];

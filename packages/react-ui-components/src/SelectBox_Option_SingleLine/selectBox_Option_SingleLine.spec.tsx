@@ -10,7 +10,8 @@ describe('<SelectBox_Option_SingleLine/>', () => {
         children: 'Foo children',
         onClick: jest.fn(),
         option: {
-            label: 'Foo label'
+            label: 'Foo label',
+            icon: 'level-up',
         },
     };
 

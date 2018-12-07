@@ -1,52 +1,34 @@
 // tslint:disable:class-name
 import React, {Fragment, PureComponent} from 'react';
+
 import SelectBox_CreateNew from '../SelectBox_CreateNew';
 import SelectBox_ListPreviewFlat from '../SelectBox_ListPreviewFlat';
 import SelectBox_ListPreviewGrouped from '../SelectBox_ListPreviewGrouped';
 import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine';
-
-export interface SelectOption {
-    readonly icon?: string;
-    readonly label?: string | object; // TODO object is not a good choice
-    readonly disabled?: boolean;
-    readonly group?: string;
-    readonly [valueField: string]: any;
-}
+import {SelectBoxOption, SelectBoxOptions, SelectBoxProps} from '../SelectBox/selectBox';
+import {Omit} from '../../types';
 
 export interface SelectBox_ListPreviewGroup_Props {
-    readonly options: SelectOptions;
+    readonly options: SelectBoxOptions;
 
     // API with SelectBox
-    readonly optionValueAccessor: (option: SelectOption) => string | undefined;
-    readonly onChange: (option: SelectOption) => void;
-    readonly focusedValue: string;
-    readonly onOptionFocus: (option: SelectOption) => void;
+    readonly optionValueAccessor: (option: SelectBoxOption) => string | undefined;
+    readonly onChange: (option: SelectBoxOption) => void;
+    readonly focusedValue?: string;
+    readonly onOptionFocus: (option: SelectBoxOption) => void;
 }
 
-export type SelectOptions = ReadonlyArray<SelectOption>;
-
-interface SelectBoxProps {
-    readonly optionValueField: string;
-    readonly searchTerm: string;
-    readonly onSearchTermChange: (searchTerm: string) => void;
-    readonly onCreateNew: (value: string) => void;
-    readonly createNewLabel: string;
-    readonly withoutGroupLabel: string;
-}
-
-interface SelectBox_ListPreview_Props extends SelectBoxProps, SelectBox_ListPreviewGroup_Props {
-    readonly options: SelectOptions;
+export interface SelectBox_ListPreview_Props extends Omit<SelectBoxProps, 'theme'>, SelectBox_ListPreviewGroup_Props {
     // Number of characters left to type before search
     readonly searchTermLeftToType: number;
     readonly noMatchesFound?: boolean;
-    readonly searchBoxLeftToTypeLabel?: string;
+    readonly searchBoxLeftToTypeLabel: string;
     readonly noMatchesFoundLabel: string;
     readonly theme?: SelectBox_ListPreview_Theme;
 }
 
-interface SelectBox_ListPreview_Theme {
-    readonly selectBox__item: string;
-
+export interface SelectBox_ListPreview_Theme {
+    readonly 'selectBox__item': string;
     readonly 'selectBox__item--isGroup': string;
     readonly 'selectBox__groupHeader': string;
 }
@@ -99,7 +81,7 @@ class SelectBox_ListPreview extends PureComponent<SelectBox_ListPreview_Props> {
                         <SelectBox_Option_SingleLine
                             option={{label: `${searchBoxLeftToTypeLabel && searchBoxLeftToTypeLabel.replace('###CHARACTERS###', `${searchTermLeftToType}`)}`, icon: 'ellipsis-h'}}
                             key={'___leftToType'}
-                            />
+                        />
                     </div>
                 ) : ListPreviewComponent}
                 {noMatchesFound && (
@@ -107,7 +89,7 @@ class SelectBox_ListPreview extends PureComponent<SelectBox_ListPreview_Props> {
                         <SelectBox_Option_SingleLine
                             option={{label: noMatchesFoundLabel, icon: 'ban'}}
                             key={'___noResults'}
-                            />
+                        />
                     </div>
                 )}
                 <div className={theme!.selectBox__item}>

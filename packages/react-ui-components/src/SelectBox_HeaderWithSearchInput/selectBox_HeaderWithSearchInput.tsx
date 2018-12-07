@@ -16,7 +16,7 @@ interface SelectBox_HeaderWithSearchInput_Props {
     readonly disabled?: boolean;
 
     // For keyboard handling
-    readonly onKeyDown: () => void;
+    readonly onKeyDown: (event: KeyboardEvent) => void;
 
     /* ------------------------------
      * Theme & Dependencies
@@ -24,11 +24,11 @@ interface SelectBox_HeaderWithSearchInput_Props {
     readonly theme?: SelectBox_HeaderWithSearchInput_Theme;
 }
 
-interface SelectBox_HeaderWithSearchInput_Theme {
-    readonly selectBoxHeaderWithSearchInput: string;
-    readonly selectBoxHeaderWithSearchInput__inputContainer: string;
-    readonly selectBoxHeaderWithSearchInput__icon: string;
-    readonly selectBoxHeaderWithSearchInput__input: string;
+export interface SelectBox_HeaderWithSearchInput_Theme {
+    readonly 'selectBoxHeaderWithSearchInput': string;
+    readonly 'selectBoxHeaderWithSearchInput__inputContainer': string;
+    readonly 'selectBoxHeaderWithSearchInput__icon': string;
+    readonly 'selectBoxHeaderWithSearchInput__input': string;
 }
 
 const defaultProps: PickDefaultProps<SelectBox_HeaderWithSearchInput_Props, 'placeholder'> = {

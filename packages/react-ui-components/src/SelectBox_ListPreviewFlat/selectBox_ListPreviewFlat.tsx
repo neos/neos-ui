@@ -1,7 +1,8 @@
 // tslint:disable:class-name
 import React, {PureComponent} from 'react';
 import ListPreviewElement from '../ListPreviewElement';
-import {SelectBox_ListPreviewGroup_Props, SelectOption} from '../SelectBox_ListPreview/selectBox_ListPreview';
+import {SelectBox_ListPreviewGroup_Props} from '../SelectBox_ListPreview/selectBox_ListPreview';
+import {SelectBoxOption} from '../SelectBox/selectBox';
 
 export interface SelectBox_ListPreviewFlat_Props extends SelectBox_ListPreviewGroup_Props {
     readonly theme: SelectBox_ListPreviewFlat_Theme;
@@ -42,7 +43,7 @@ export default class SelectBox_ListPreviewFlat extends PureComponent<SelectBox_L
         }
     }
 
-    private readonly renderOption = (option: SelectOption, index: number) => {
+    private readonly renderOption = (option: SelectBoxOption, index: number) => {
         const {
             optionValueAccessor,
             focusedValue,
@@ -79,11 +80,11 @@ export default class SelectBox_ListPreviewFlat extends PureComponent<SelectBox_L
         );
     }
 
-    private readonly handlePreviewElementClick = (option: SelectOption) => () => {
+    private readonly handlePreviewElementClick = (option: SelectBoxOption) => () => {
         this.props.onChange(option);
     }
 
-    private readonly handlePreviewElementMouseEnter = (option: SelectOption) => () => {
+    private readonly handlePreviewElementMouseEnter = (option: SelectBoxOption) => () => {
         if (this.props.onOptionFocus) {
             this.props.onOptionFocus(option);
         }

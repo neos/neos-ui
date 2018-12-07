@@ -1,0 +1,82 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SelectBox_ListPreviewGrouped should render correctly empty. 1`] = `null`;
+
+exports[`SelectBox_ListPreviewGrouped should render correctly with options. 1`] = `
+Array [
+  <li
+    className="selectBox__item-ThemeClassName selectBox__item--isGroup-ThemeClassName"
+    key="grouped"
+  >
+    <div
+      className="selectBox__groupHeader-ThemeClassName"
+    >
+      grouped
+    </div>
+    <ul>
+      <li
+        aria-selected="false"
+        className="selectBox__item-ThemeClassName"
+        key="0"
+        role="option"
+      >
+        <ThemedListPreviewElement
+          composeTheme="deeply"
+          isHighlighted={false}
+          mapThemrProps={[Function]}
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          option1
+        </ThemedListPreviewElement>
+      </li>
+      <li
+        aria-selected="false"
+        className="selectBox__item-ThemeClassName"
+        key="1"
+        role="option"
+      >
+        <ThemedListPreviewElement
+          composeTheme="deeply"
+          icon="level-up"
+          isHighlighted={false}
+          mapThemrProps={[Function]}
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          option2
+        </ThemedListPreviewElement>
+      </li>
+    </ul>
+  </li>,
+  <li
+    className="selectBox__item-ThemeClassName selectBox__item--isGroup-ThemeClassName"
+    key="ungrouped"
+  >
+    <div
+      className="selectBox__groupHeader-ThemeClassName"
+    >
+      ungrouped
+    </div>
+    <ul>
+      <li
+        aria-selected="false"
+        className="selectBox__item-ThemeClassName"
+        key="0"
+        role="option"
+      >
+        <ThemedListPreviewElement
+          composeTheme="deeply"
+          disabled={true}
+          isHighlighted={false}
+          mapThemrProps={[Function]}
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          option3
+        </ThemedListPreviewElement>
+      </li>
+    </ul>
+  </li>,
+]
+`;

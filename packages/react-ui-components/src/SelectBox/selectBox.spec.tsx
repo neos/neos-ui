@@ -1,38 +1,101 @@
 /* eslint-disable camelcase, react/jsx-pascal-case */
 import React from 'react';
-import {shallow} from 'enzyme';
+import {render, shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import {createStubComponent} from './../_lib/testUtils';
-import SelectBox from './selectBox';
+
+import SelectBox, {defaultProps, SelectBoxProps, SelectBoxOptions} from './selectBox';
 
 describe('<SelectBox/>', () => {
-    let props;
+    const props: SelectBoxProps = {
+        ...defaultProps,
+        theme: {
+            'selectBox': 'selectBoxClassName',
+            'selectBox--disabled': 'selectBox--disabledClassName',
+            'selectBox__btn': 'selectBox__btnClassName',
+            'selectBox__btn--noRightPadding': 'selectBox__btn--noRightPaddingClassName',
+            'selectBox__contents': 'selectBox__contentsClassName',
+            'selectBox__list': 'selectBox__listClassName',
+            'wrapper': 'wrapperClassName',
+            'wrapper--highlight': 'wrapper--highlightClassName',
+            'selectBoxHeader': 'selectBoxHeaderClassName',
+            'selectBox__item': 'selectBox__itemClassName',
+            'selectBox__item--isGroup': 'selectBox__item--isGroupClassName',
+            'selectBox__groupHeader': 'selectBox__groupHeaderClassName',
+            'selectBoxHeader__icon': 'selectBoxHeader__iconClassName',
+            'selectBoxHeader__innerPreview': 'selectBoxHeader__innerPreviewClassName',
+            'selectBoxHeader__label': 'selectBoxHeader__labelClassName',
+            'selectBoxHeader__seperator': 'selectBoxHeader__seperatorClassName',
+            'selectBoxHeader__wrapperIconWrapper': 'selectBoxHeader__wrapperIconWrapperClassName',
+            'selectBoxHeaderWithSearchInput': 'selectBoxHeaderWithSearchInputClassName',
+            'selectBoxHeaderWithSearchInput__inputContainer': 'selectBoxHeaderWithSearchInput__inputContainerClassName',
+            'selectBoxHeaderWithSearchInput__icon': 'selectBoxHeaderWithSearchInput__iconClassName',
+            'selectBoxHeaderWithSearchInput__input': 'selectBoxHeaderWithSearchInput__inputClassName',
+        },
+        options: [],
+        placeholder: 'placeholder',
+        createNewLabel: 'createNewLabel',
+        noMatchesFoundLabel: 'noMatchesFoundLabel',
+        searchBoxLeftToTypeLabel: 'searchBoxLeftToTypeLabel',
+        loadingLabel: 'loadingLabel',
+        displayLoadingIndicator: false,
+        displaySearchBox: false,
+        onCreateNew: jest.fn(),
+        onSearchTermChange: jest.fn(),
+        onSearchTermKeyPress: jest.fn(),
+        onValueChange: jest.fn(),
+        keydown: {},
+    };
 
-    beforeEach(() => {
-        const DropDown = createStubComponent();
-        DropDown.Stateless = createStubComponent();
-        DropDown.Header = createStubComponent();
-        DropDown.Contents = createStubComponent();
-        props = {
-            theme: {
-                'wrapper': 'wrapperClassName',
-                'wrapper--highlight': 'wrapperHighlightClassName',
-                'selectBoxHeader': 'selectBoxHeaderClassName'
-            },
-            searchBoxLeftToTypeLabel: 'searchBoxLeftToTypeLabel',
-            noMatchesFoundLabel: 'noMatchesFoundLabel',
-            onValueChange: jest.fn(),
-            options: [],
-            DropDown,
-            SelectBox_Header: createStubComponent(),
-            SelectBox_HeaderWithSearchInput: createStubComponent(),
-            SelectBox_ListPreview: createStubComponent()
-        };
+    it('should render correctly with DropDownToggle', () => {
+        const shallowResult = shallow(<SelectBox {...props} showDropDownToggle={true} />);
+        const renderResult = render(<SelectBox {...props} showDropDownToggle={true} />);
+
+        expect(toJson(shallowResult)).toMatchSnapshot();
+        expect(toJson(renderResult)).toMatchSnapshot();
     });
 
-    it('should render correctly.', () => {
-        const wrapper = shallow(<SelectBox {...props}/>);
+    it('should render correctly with LoadingIndicator', () => {
+        const shallowResult = shallow(<SelectBox {...props} displayLoadingIndicator={true} />);
+        const renderResult = render(<SelectBox {...props} displayLoadingIndicator={true} />);
 
-        expect(toJson(wrapper)).toMatchSnapshot();
+        expect(toJson(shallowResult)).toMatchSnapshot();
+        expect(toJson(renderResult)).toMatchSnapshot();
+    });
+
+    it('should render correctly with SearchBox', () => {
+        const shallowResult = shallow(<SelectBox {...props} displaySearchBox={true} />);
+        const renderResult = render(<SelectBox {...props} displaySearchBox={true} />);
+
+        expect(toJson(shallowResult)).toMatchSnapshot();
+        expect(toJson(renderResult)).toMatchSnapshot();
+    });
+
+    it('should render correctly with no matches found', () => {
+        const shallowResult = shallow(<SelectBox {...props} threshold={0} />);
+        const renderResult = render(<SelectBox {...props} threshold={0} />);
+
+        expect(toJson(shallowResult)).toMatchSnapshot();
+        expect(toJson(renderResult)).toMatchSnapshot();
+    });
+
+    it('should render correctly with options', () => {
+        const options: SelectBoxOptions = [
+            {
+                label: 'option 1',
+            },
+            {
+                label: 'option 2',
+                disabled: true,
+            },
+            {
+                label: 'option 3',
+                icon: 'level-up'
+            },
+        ];
+        const shallowResult = shallow(<SelectBox {...props} options={options} />);
+        const renderResult = render(<SelectBox {...props} options={options} />);
+
+        expect(toJson(shallowResult)).toMatchSnapshot();
+        expect(toJson(renderResult)).toMatchSnapshot();
     });
 });

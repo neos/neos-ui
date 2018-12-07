@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SelectBox_ListPreviewFlat should render correctly empty. 1`] = `null`;
+
+exports[`SelectBox_ListPreviewFlat should render correctly with options. 1`] = `
+Array [
+  <li
+    aria-selected="false"
+    className="selectBox__itemClassName"
+    key="0"
+    role="option"
+  >
+    <ThemedListPreviewElement
+      composeTheme="deeply"
+      isHighlighted={false}
+      mapThemrProps={[Function]}
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+    >
+      option1
+    </ThemedListPreviewElement>
+  </li>,
+  <li
+    aria-selected="false"
+    className="selectBox__itemClassName"
+    key="1"
+    role="option"
+  >
+    <ThemedListPreviewElement
+      composeTheme="deeply"
+      icon="level-up"
+      isHighlighted={false}
+      mapThemrProps={[Function]}
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+    >
+      option2
+    </ThemedListPreviewElement>
+  </li>,
+  <li
+    aria-selected="false"
+    className="selectBox__itemClassName"
+    key="2"
+    role="option"
+  >
+    <ThemedListPreviewElement
+      composeTheme="deeply"
+      disabled={true}
+      isHighlighted={false}
+      mapThemrProps={[Function]}
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+    >
+      option3
+    </ThemedListPreviewElement>
+  </li>,
+]
+`;

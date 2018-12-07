@@ -4,11 +4,11 @@ import React, {PureComponent} from 'react';
 import Icon from '../Icon';
 import IconButton from '../IconButton';
 import ListPreviewElement from '../ListPreviewElement';
-import {SelectOption} from '../SelectBox_ListPreview/selectBox_ListPreview';
+import {SelectBoxOption} from '../SelectBox/selectBox';
 
 interface SelectBox_Header_Props {
     // API with SelectBox
-    readonly option?: SelectOption;
+    readonly option?: SelectBoxOption;
     readonly placeholder: string;
     readonly placeholderIcon?: string;
     readonly showResetButton: boolean;
@@ -22,13 +22,13 @@ interface SelectBox_Header_Props {
     readonly theme?: SelectBox_Header_Theme;
 }
 
-interface SelectBox_Header_Theme {
-    readonly selectBoxHeader: string;
-    readonly selectBoxHeader__icon: string;
-    readonly selectBoxHeader__innerPreview: string;
-    readonly selectBoxHeader__label: string;
-    readonly selectBoxHeader__seperator: string;
-    readonly selectBoxHeader__wrapperIconWrapper: string;
+export interface SelectBox_Header_Theme {
+    readonly 'selectBoxHeader': string;
+    readonly 'selectBoxHeader__icon': string;
+    readonly 'selectBoxHeader__innerPreview': string;
+    readonly 'selectBoxHeader__label': string;
+    readonly 'selectBoxHeader__seperator': string;
+    readonly 'selectBoxHeader__wrapperIconWrapper': string;
 }
 
 /**

@@ -2,10 +2,11 @@
 import mergeClassNames from 'classnames';
 import React, {PureComponent} from 'react';
 import ListPreviewElement from '../ListPreviewElement';
-import {SelectBox_ListPreviewGroup_Props, SelectOption, SelectOptions} from '../SelectBox_ListPreview/selectBox_ListPreview';
+import {SelectBox_ListPreviewGroup_Props} from '../SelectBox_ListPreview/selectBox_ListPreview';
+import {SelectBoxOption, SelectBoxOptions} from '../SelectBox/selectBox';
 
 interface SelectOptionGroups {
-    readonly [groupLabel: string]: SelectOptions;
+    readonly [groupLabel: string]: SelectBoxOptions;
 }
 
 export interface SelectBox_ListPreviewGrouped_Props extends SelectBox_ListPreviewGroup_Props {
@@ -57,7 +58,7 @@ export default class SelectBox_ListPreviewGrouped extends PureComponent<SelectBo
      * as key and an array of options as values.
      * Options without a group-attribute assigned will receive the key specified in props.withoutGroupLabel.
      */
-    private readonly getGroupedOptions = (options: SelectOptions): SelectOptionGroups => {
+    private readonly getGroupedOptions = (options: SelectBoxOptions): SelectOptionGroups => {
         return options.reduce((selectOptionGroups, currentOption) => {
             const groupLabel = currentOption.group ? currentOption.group : this.props.withoutGroupLabel;
             const optionGroup = selectOptionGroups[groupLabel] || [];
@@ -74,7 +75,7 @@ export default class SelectBox_ListPreviewGrouped extends PureComponent<SelectBo
      * that displays their group name.
      * @returns {JSX} option elements grouped by and labeled with their group-attribute.
      */
-    private readonly renderGroup = (optionsEntry: [string, SelectOptions]): JSX.Element => {
+    private readonly renderGroup = (optionsEntry: [string, SelectBoxOptions]): JSX.Element => {
         const [groupLabel, optionsList] = optionsEntry;
         const {theme} = this.props;
         const groupClassName = mergeClassNames(
@@ -94,7 +95,7 @@ export default class SelectBox_ListPreviewGrouped extends PureComponent<SelectBo
         );
     }
 
-    private readonly renderOption = (option: SelectOption, index: number) => {
+    private readonly renderOption = (option: SelectBoxOption, index: number) => {
         const {
             optionValueAccessor,
             focusedValue,
@@ -131,11 +132,11 @@ export default class SelectBox_ListPreviewGrouped extends PureComponent<SelectBo
         );
     }
 
-    private readonly handlePreviewElementClick = (option: SelectOption) => () => {
+    private readonly handlePreviewElementClick = (option: SelectBoxOption) => () => {
         this.props.onChange(option);
     }
 
-    private readonly handlePreviewElementMouseEnter = (option: SelectOption) => () => {
+    private readonly handlePreviewElementMouseEnter = (option: SelectBoxOption) => () => {
         if (this.props.onOptionFocus) {
             this.props.onOptionFocus(option);
         }

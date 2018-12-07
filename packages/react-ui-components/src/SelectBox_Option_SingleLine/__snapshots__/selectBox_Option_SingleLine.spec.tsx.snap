@@ -4,6 +4,7 @@ exports[`<SelectBox_Option_SingleLine/> should render correctly. 1`] = `
 <ThemedListPreviewElement
   className=""
   composeTheme="deeply"
+  icon="level-up"
   isHighlighted={false}
   mapThemrProps={[Function]}
   onClick={[MockFunction]}

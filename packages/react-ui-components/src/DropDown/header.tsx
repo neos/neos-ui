@@ -4,7 +4,7 @@ import mergeClassNames from 'classnames';
 import {PickDefaultProps} from '../../types';
 import {makeFocusNode} from './../_lib/focusNode';
 import Icon from '../Icon';
-import {IconProps} from '@neos-project/react-ui-components/src/Icon/icon';
+import {IconProps} from '../Icon/icon';
 
 interface ShallowDropDownHeaderTheme {
     readonly 'dropDown__btn': string;
@@ -22,12 +22,12 @@ export interface ShallowDropDownHeaderProps {
     /**
      * Icon to use if the dropdown is opened
      */
-    readonly iconIsOpen: string;
+    readonly iconIsOpen?: string;
 
     /**
      * Icon to use if the dropdown is opened
      */
-    readonly iconIsClosed: string;
+    readonly iconIsClosed?: string;
 
     /**
      * These props control the visual state of the contents, and are passed
@@ -104,7 +104,7 @@ class ShallowDropDownHeader extends PureComponent<ShallowDropDownHeaderProps> {
             iconRest,
             disabled
         } = this.props;
-        const iconName = isOpen ? iconIsOpen : iconIsClosed;
+        const iconName = isOpen ? iconIsOpen! : iconIsClosed!;
         const finalClassName = mergeClassNames(
             theme!.dropDown__btn,
             className,

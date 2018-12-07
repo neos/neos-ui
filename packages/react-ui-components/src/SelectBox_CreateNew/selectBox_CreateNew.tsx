@@ -1,12 +1,9 @@
 // tslint:disable:class-name
 import React, {PureComponent} from 'react';
 import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine';
+import {SelectBoxOption} from '@neos-project/react-ui-components/src/SelectBox/selectBox';
 
 const CREATE_NEW_IS_FOCUSED = 'NEOS_UI_CREATE_NEW_IS_FOCUSED';
-
-interface SelectedOption {
-    readonly [key: string]: typeof CREATE_NEW_IS_FOCUSED;
-}
 
 export interface SelectBox_CreateNew_Props {
     // For explanations of the PropTypes, see SelectBox.js
@@ -18,7 +15,7 @@ export interface SelectBox_CreateNew_Props {
 
     // API with SelectBox
     readonly focusedValue?: string;
-    readonly onOptionFocus?: (selectedOption: SelectedOption) => void;
+    readonly onOptionFocus?: (selectedOption: SelectBoxOption) => void;
 }
 
 /**
@@ -73,7 +70,8 @@ export default class SelectBox_CreateNew extends PureComponent<SelectBox_CreateN
             onOptionFocus
         } = this.props;
 
-        const selectedOption: SelectedOption = {
+        const selectedOption: SelectBoxOption = {
+            label: '',
             [optionValueField]: CREATE_NEW_IS_FOCUSED
         };
 

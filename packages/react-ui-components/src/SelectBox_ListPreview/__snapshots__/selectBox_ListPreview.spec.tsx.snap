@@ -1,0 +1,88 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SelectBox_ListPreview should render correctly empty. 1`] = `
+<Fragment>
+  <div
+    className="selectBox__item-ThemeClassName"
+  >
+    <SelectBox_Option_SingleLine
+      key="___leftToType"
+      option={
+        Object {
+          "icon": "ellipsis-h",
+          "label": "left to type",
+        }
+      }
+    />
+  </div>
+  <div
+    className="selectBox__item-ThemeClassName"
+  >
+    <SelectBox_CreateNew
+      createNewLabel="create new"
+      onCreateNew={[MockFunction]}
+      onOptionFocus={[MockFunction]}
+      onSearchTermChange={[MockFunction]}
+      optionValueField="testValue"
+    />
+  </div>
+</Fragment>
+`;
+
+exports[`SelectBox_ListPreview should render correctly with grouped options. 1`] = `
+<Fragment>
+  <div
+    className="selectBox__item-ThemeClassName"
+  >
+    <SelectBox_Option_SingleLine
+      key="___leftToType"
+      option={
+        Object {
+          "icon": "ellipsis-h",
+          "label": "left to type",
+        }
+      }
+    />
+  </div>
+  <div
+    className="selectBox__item-ThemeClassName"
+  >
+    <SelectBox_CreateNew
+      createNewLabel="create new"
+      onCreateNew={[MockFunction]}
+      onOptionFocus={[MockFunction]}
+      onSearchTermChange={[MockFunction]}
+      optionValueField="testValue"
+    />
+  </div>
+</Fragment>
+`;
+
+exports[`SelectBox_ListPreview should render correctly with ungrouped options. 1`] = `
+<Fragment>
+  <div
+    className="selectBox__item-ThemeClassName"
+  >
+    <SelectBox_Option_SingleLine
+      key="___leftToType"
+      option={
+        Object {
+          "icon": "ellipsis-h",
+          "label": "left to type",
+        }
+      }
+    />
+  </div>
+  <div
+    className="selectBox__item-ThemeClassName"
+  >
+    <SelectBox_CreateNew
+      createNewLabel="create new"
+      onCreateNew={[MockFunction]}
+      onOptionFocus={[MockFunction]}
+      onSearchTermChange={[MockFunction]}
+      optionValueField="testValue"
+    />
+  </div>
+</Fragment>
+`;

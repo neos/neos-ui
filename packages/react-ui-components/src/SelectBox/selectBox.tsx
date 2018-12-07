@@ -1,179 +1,215 @@
 /* eslint-disable camelcase, react/jsx-pascal-case */
-import React, {PureComponent} from 'react';
-import PropTypes from 'prop-types';
+import React, {PureComponent, ReactElement} from 'react';
 import {$get} from 'plow-js';
-import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine';
 import mergeClassNames from 'classnames';
-import isEqual from 'lodash.isequal';
+import {isEqual} from 'lodash';
+
+import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine';
+import {PickDefaultProps} from '../../types';
+import {ListPreviewElementProps} from '../ListPreviewElement/listPreviewElement';
+
+import DropDown from '../DropDown';
+import SelectBox_ListPreview from '../SelectBox_ListPreview';
+import SelectBox_HeaderWithSearchInput from '../SelectBox_HeaderWithSearchInput';
+import SelectBox_Header from '../SelectBox_Header';
+import {SelectBox_ListPreview_Theme} from '../SelectBox_ListPreview/selectBox_ListPreview';
+import {SelectBox_Header_Theme} from '../SelectBox_Header/selectBox_Header';
+import {SelectBox_HeaderWithSearchInput_Theme} from '../SelectBox_HeaderWithSearchInput/selectBox_HeaderWithSearchInput';
+
+export type SelectBoxOption = Readonly<{
+    label: string | ReactElement<any>;
+    icon?: string;
+    disabled?: boolean;
+    group?: string;
+    [key: string]: any;
+}>;
+
+export type SelectBoxOptions = ReadonlyArray<SelectBoxOption>;
+
+interface SelectBoxTheme extends SelectBox_ListPreview_Theme, SelectBox_Header_Theme, SelectBox_HeaderWithSearchInput_Theme {
+    readonly 'selectBox': string;
+    readonly 'selectBox--disabled': string;
+    readonly 'selectBox__btn': string;
+    readonly 'selectBox__btn--noRightPadding': string;
+    readonly 'selectBox__contents': string;
+    readonly 'selectBox__list': string;
+    readonly 'wrapper': string;
+    readonly 'wrapper--highlight': string;
+}
+
+export interface SelectBoxProps {
+    // ------------------------------
+    // Basic Props for core functionality
+    // ------------------------------
+    /**
+     * This prop represents the set of options to be chosen from
+     * Each option must have a value and can have a label and an icon.
+     */
+    readonly options: SelectBoxOptions;
+
+    /**
+     * Additional className wich will be applied
+     */
+    readonly className?: string;
+
+    /**
+     * Field name specifying which field in a single "option" contains the "value"
+     */
+    readonly optionValueField: string;
+
+    /**
+     * This prop represents the currently selected value.
+     */
+    readonly value?: string;
+
+    /**
+     * This prop gets called when an option was selected. It returns the new value.
+     */
+    readonly onValueChange: (newValue: string) => void;
+
+    /**
+     * This prop controls if the SelectBox is disabled.
+     */
+    readonly disabled?: boolean;
+
+    // ------------------------------
+    // Visual customization of the Select Box
+    // ------------------------------
+
+    /**
+     * This prop is the placeholder text which is displayed in the selectbox when no option was selected.
+     */
+    readonly placeholder: string;
+
+    /**
+     * This prop is an icon for the placeholder.
+     */
+    readonly placeholderIcon?: string;
+
+    /**
+     * Text for the group label of options without a group
+     */
+    readonly withoutGroupLabel: string;
+
+    /**
+     * If true, allows to clear the selected element completely (without choosing another one)
+     */
+    readonly allowEmpty?: boolean;
+
+    /**
+     * Shows dropdown toggle. Set by default. Useful in components that display search, where you don't want to let the user manually controll the collapsing of selectbox
+     */
+    readonly showDropDownToggle?: boolean;
+
+    /**
+     * Limit height and show scrollbars if needed, defaults to true
+     */
+    readonly scrollable?: boolean;
+
+    /**
+     * Component used for rendering the individual option elements; Usually this component uses "ListPreviewElement" internally for common styling.
+     */
+    readonly ListPreviewElement?: React.ComponentClass<ListPreviewElementProps & any>; // TODO maybe enhance ListPreviewElementProps with an index signature ([key: string]: any)
+
+    // ------------------------------
+    // Asynchronous loading of data
+    // ------------------------------
+
+    /**
+     * This prop is the loading text which is displayed in the selectbox when displayLoadingIndicator ist set to true.
+     */
+    readonly loadingLabel?: string;
+
+    /**
+     * Helper for asynchronous loading; should be set to "true" as long as "options" is not yet populated.
+     */
+    readonly displayLoadingIndicator: boolean;
+
+    // ------------------------------
+    // Search-As-You-Type related functionality
+    // ------------------------------
+    readonly displaySearchBox: boolean;
+    readonly onSearchTermChange: (searchTerm: string) => void;
+    readonly onSearchTermKeyPress: (event: KeyboardEvent) => void;
+    readonly threshold: number;
+    readonly searchTerm?: string;
+    readonly searchBoxLeftToTypeLabel: string;
+    readonly noMatchesFoundLabel: string;
+
+    /**
+     * Turn SelectBox into a plain input field: not showing any search results and always showing the search input. Useful in LinkEditor to be able to input links by hand.
+     */
+    readonly plainInputMode?: boolean;
+
+    /**
+     * If set to true, the search box is directly focussed once the SelectBox is rendered;
+     * such that the user can start typing right away.
+     */
+    readonly setFocus?: boolean;
+
+    // ------------------------------
+    // "Create new if not exists" functionality
+    // ------------------------------
+    /**
+     * This prop gets called when requested to create a new element
+     */
+    readonly onCreateNew: (value: string) => void;
+
+    /**
+     * "Create new" label
+     */
+    readonly createNewLabel: string;
+
+    // ------------------------------
+    // Theme & Dependencies
+    // ------------------------------
+    readonly theme?: SelectBoxTheme;
+
+    /**
+     * keydown // TODO comes from keydown enhancement, so maybe use decorator/enhancer
+     */
+    readonly keydown: {event?: KeyboardEvent};
+}
+
+type SelectBoxDefaultProps = PickDefaultProps<SelectBoxProps,
+    'options' |
+    'optionValueField' |
+    'withoutGroupLabel' |
+    'scrollable' |
+    'showDropDownToggle' |
+    'threshold' |
+    'ListPreviewElement'
+>;
+
+export const defaultProps: SelectBoxDefaultProps = {
+    options: [],
+    optionValueField: 'value',
+    withoutGroupLabel: 'Without group',
+    scrollable: true,
+    showDropDownToggle: true,
+    threshold: 2,
+    ListPreviewElement: SelectBox_Option_SingleLine,
+};
+
+interface SelectBoxState {
+    readonly searchTerm: string;
+    readonly isExpanded: boolean;
+    readonly focusedValue: string;
+}
+
+const initialState: SelectBoxState = {
+    searchTerm: '',
+    isExpanded: false,
+    focusedValue: '',
+};
 
 // TODO: document component usage && check code in detail
-export default class SelectBox extends PureComponent {
-    static defaultProps = {
-        options: [],
-        optionValueField: 'value',
-        withoutGroupLabel: 'Without group',
-        scrollable: true,
-        showDropDownToggle: true,
-        threshold: 2,
-        ListPreviewElement: SelectBox_Option_SingleLine
-    };
+export default class SelectBox extends PureComponent<SelectBoxProps, SelectBoxState> {
+    public static readonly defaultProps = defaultProps;
 
-    static propTypes = {
-        // ------------------------------
-        // Basic Props for core functionality
-        // ------------------------------
-        /**
-         * This prop represents the set of options to be chosen from
-         * Each option must have a value and can have a label and an icon.
-         */
-        options: PropTypes.arrayOf(
-            PropTypes.shape({
-                icon: PropTypes.string,
-                // "value" is not part of PropTypes validation, as the "value field" is specified via the "optionValueField" property
-                label: PropTypes.oneOfType([
-                    PropTypes.string,
-                    PropTypes.object
-                ]).isRequired,
-                disabled: PropTypes.bool
-            })
-        ),
+    public readonly state = initialState;
 
-        /**
-         * Additional className wich will be applied
-         */
-        className: PropTypes.string,
-
-        /**
-         * Field name specifying which field in a single "option" contains the "value"
-         */
-        optionValueField: PropTypes.string,
-
-        /**
-         * This prop represents the currently selected value.
-         */
-        value: PropTypes.any,
-
-        /**
-         * This prop gets called when an option was selected. It returns the new value.
-         */
-        onValueChange: PropTypes.func.isRequired,
-
-        // ------------------------------
-        // Visual customization of the Select Box
-        // ------------------------------
-
-        /**
-         * This prop is the placeholder text which is displayed in the selectbox when no option was selected.
-         */
-        placeholder: PropTypes.string,
-
-        /**
-         * This prop is an icon for the placeholder.
-         */
-        placeholderIcon: PropTypes.string,
-
-        /**
-         * Text for the group label of options without a group
-         */
-        withoutGroupLabel: PropTypes.string,
-
-        /**
-         * If true, allows to clear the selected element completely (without choosing another one)
-         */
-        allowEmpty: PropTypes.bool,
-
-        /**
-         * Shows dropdown toggle. Set by default. Useful in components that display search, where you don't want to let the user manually controll the collapsing of selectbox
-         */
-        showDropDownToggle: PropTypes.bool,
-
-        /**
-         * Limit height and show scrollbars if needed, defaults to true
-         */
-        scrollable: PropTypes.bool,
-
-        /**
-         * Component used for rendering the individual option elements; Usually this component uses "ListPreviewElement" internally for common styling.
-         */
-        ListPreviewElement: PropTypes.any,
-
-        // ------------------------------
-        // Asynchronous loading of data
-        // ------------------------------
-
-        /**
-         * This prop is the loading text which is displayed in the selectbox when displayLoadingIndicator ist set to true.
-         */
-        loadingLabel: PropTypes.string,
-
-        /**
-         * Helper for asynchronous loading; should be set to "true" as long as "options" is not yet populated.
-         */
-        displayLoadingIndicator: PropTypes.bool,
-
-        // ------------------------------
-        // Search-As-You-Type related functionality
-        // ------------------------------
-        displaySearchBox: PropTypes.bool,
-        onSearchTermChange: PropTypes.func,
-        onSearchTermKeyPress: PropTypes.func,
-        threshold: PropTypes.number,
-        searchTerm: PropTypes.string,
-        searchBoxLeftToTypeLabel: PropTypes.string,
-        noMatchesFoundLabel: PropTypes.string,
-
-        /**
-         * Turn SelectBox into a plain input field: not showing any search results and always showing the search input. Useful in LinkEditor to be able to input links by hand.
-         */
-        plainInputMode: PropTypes.bool,
-
-        /**
-         * If set to true, the search box is directly focussed once the SelectBox is rendered;
-         * such that the user can start typing right away.
-         */
-        setFocus: PropTypes.bool,
-
-        // ------------------------------
-        // "Create new if not exists" functionality
-        // ------------------------------
-        /**
-         * This prop gets called when requested to create a new element
-         */
-        onCreateNew: PropTypes.func,
-
-        /**
-         * "Create new" label
-         */
-        createNewLabel: PropTypes.string,
-
-        // ------------------------------
-        // Theme & Dependencies
-        // ------------------------------
-        theme: PropTypes.shape({/* eslint-disable quote-props */
-            'selectBox__btn--noRightPadding': PropTypes.string
-        }).isRequired, /* eslint-enable quote-props */
-
-        DropDown: PropTypes.any.isRequired,
-        SelectBox_Header: PropTypes.any.isRequired,
-        SelectBox_HeaderWithSearchInput: PropTypes.any.isRequired,
-        SelectBox_ListPreview: PropTypes.any.isRequired
-    };
-
-    state = {
-        searchTerm: '',
-        isExpanded: false,
-        focusedValue: ''
-    };
-
-    getOptionValueAccessor() {
-        return $get([this.props.optionValueField]);
-    }
-
-    getSearchTerm() {
-        return this.props.searchTerm || this.state.searchTerm;
-    }
-
-    render() {
+    public render(): JSX.Element {
         const {
             options,
             theme,
@@ -185,8 +221,6 @@ export default class SelectBox extends PureComponent {
             plainInputMode,
             disabled,
             className,
-            DropDown,
-            SelectBox_ListPreview
         } = this.props;
 
         const searchTerm = this.getSearchTerm();
@@ -194,12 +228,14 @@ export default class SelectBox extends PureComponent {
         const {focusedValue} = this.state;
         const isExpanded = disabled ? false : this.state.isExpanded;
 
-        const headerClassName = mergeClassNames({
-            [className]: true,
-            [theme.selectBox__btn]: true,
-            [theme['selectBox__btn--noRightPadding']]: !showDropDownToggle,
-            [theme['selectBox--disabled']]: disabled
-        });
+        const headerClassName = mergeClassNames(
+            className,
+            theme!.selectBox__btn,
+            {
+                [theme!['selectBox__btn--noRightPadding']]: !showDropDownToggle,
+                [theme!['selectBox--disabled']]: disabled
+            }
+        );
 
         const optionValueAccessor = this.getOptionValueAccessor();
 
@@ -207,32 +243,44 @@ export default class SelectBox extends PureComponent {
         const noMatchesFound = searchTermLeftToType > 0 || displayLoadingIndicator ? false : !options.length;
 
         return (
-            <DropDown.Stateless className={theme.selectBox} isOpen={isExpanded} onToggle={this.handleToggleExpanded} onClose={this.handleClose}>
-                <DropDown.Header className={headerClassName} shouldKeepFocusState={false} showDropDownToggle={showDropDownToggle && Boolean(options.length)}>
+            <DropDown.Stateless className={theme!.selectBox} isOpen={isExpanded} onToggle={this.handleToggleExpanded} onClose={this.handleClose}>
+                <DropDown.Header className={headerClassName} shouldKeepFocusState={false} showDropDownToggle={showDropDownToggle && options.length > 0}>
                     {this.renderHeader()}
                 </DropDown.Header>
-                <DropDown.Contents className={theme.selectBox__contents} scrollable={true}>
-                    {!plainInputMode && <ul className={theme.selectBox__list}>
-                        <SelectBox_ListPreview
-                            {...this.props}
+                <DropDown.Contents className={theme!.selectBox__contents} scrollable={true}>
+                    {!plainInputMode &&
+                        <ul className={theme!.selectBox__list}>
+                            <SelectBox_ListPreview
+                                {...this.props}
 
-                            theme={theme}
-                            optionValueAccessor={optionValueAccessor}
-                            ListPreviewElement={ListPreviewElement}
-                            focusedValue={focusedValue}
-                            onChange={this.handleChange}
-                            onOptionFocus={this.handleOptionFocusChange}
-                            searchTermLeftToType={searchTermLeftToType}
-                            noMatchesFound={noMatchesFound}
-                            searchTerm={searchTerm}
+                                theme={theme}
+                                optionValueAccessor={optionValueAccessor}
+                                ListPreviewElement={ListPreviewElement}
+                                focusedValue={focusedValue}
+                                onChange={this.handleChange}
+                                onOptionFocus={this.handleOptionFocusChange}
+                                searchTermLeftToType={searchTermLeftToType}
+                                noMatchesFound={noMatchesFound}
+                                searchTerm={searchTerm}
                             />
-                    </ul>}
+                        </ul>}
                 </DropDown.Contents>
             </DropDown.Stateless>
         );
     }
 
-    renderHeader() {
+    private getSearchTerm(): string {
+        return this.props.searchTerm || this.state.searchTerm;
+    }
+
+    private getOptionValueAccessor(): (option: SelectBoxOption) => string {
+        // returns a function that extract a value from the object
+        // TODO extend $get path to return a curried function if called with _path_ arg only
+        // @ts-ignore
+        return $get([this.props.optionValueField]);
+    }
+
+    private renderHeader(): JSX.Element {
         const {
             displaySearchBox,
             displayLoadingIndicator,
@@ -241,15 +289,13 @@ export default class SelectBox extends PureComponent {
             allowEmpty,
             plainInputMode,
             disabled,
-
-            SelectBox_HeaderWithSearchInput,
-            SelectBox_Header
         } = this.props;
         const searchTerm = this.getSearchTerm();
         const optionValueAccessor = this.getOptionValueAccessor();
 
         // Compare selected value less strictly: allow loose comparision and deep equality of objects
-        const selectedOption = options.find(option => optionValueAccessor(option) == value || isEqual(optionValueAccessor(option), value)); // eslint-disable-line eqeqeq
+        // tslint:disable-next-line:triple-equals
+        const selectedOption = options.find(option => optionValueAccessor(option) == value || isEqual(optionValueAccessor(option), value));
 
         if (displaySearchBox && (!value || plainInputMode)) {
             return (
@@ -259,7 +305,7 @@ export default class SelectBox extends PureComponent {
                     onSearchTermChange={this.handleSearchTermChange}
                     searchTerm={searchTerm}
                     onKeyDown={this.handleKeyDown}
-                    />
+                />
             );
         }
 
@@ -271,11 +317,11 @@ export default class SelectBox extends PureComponent {
                 option={selectedOption}
                 showResetButton={showResetButton}
                 onReset={this.handleDeleteClick}
-                />
+            />
         );
     }
 
-    handleChange = option => {
+    private readonly handleChange = (option: SelectBoxOption) => {
         const optionValueAccessor = this.getOptionValueAccessor();
         this.props.onValueChange(optionValueAccessor(option));
         this.setState({
@@ -283,7 +329,7 @@ export default class SelectBox extends PureComponent {
         });
     }
 
-    handleDeleteClick = event => {
+    private readonly handleDeleteClick = (event?: MouseEvent) => {
         if (event) {
             // Don't open SelectBox on value clear
             event.stopPropagation();
@@ -291,45 +337,47 @@ export default class SelectBox extends PureComponent {
         this.props.onValueChange('');
     }
 
-    handleToggleExpanded = () => {
-        // Return earyl if disabled
+    private readonly handleToggleExpanded = () => {
+        // Return early if disabled
         if (this.props.disabled) {
             return;
         }
 
-        let isExpanded;
         if (this.props.displaySearchBox) {
             if (this.props.value) {
                 // When click on header in search mode with value selected, clear it
                 this.props.onValueChange('');
-                isExpanded = true;
+                this.setState({
+                    isExpanded: true,
+                });
             } else {
                 // Force expanded dropdown unless has showDropDownToggle (e.g. for nodetypes filter in the PageTree)
-                isExpanded = this.props.showDropDownToggle ? !this.state.isExpanded : true;
+                this.setState({
+                    isExpanded: this.props.showDropDownToggle ? !this.state.isExpanded : true,
+                });
             }
         } else {
             // If simple SelectBox, just toggle it
-            isExpanded = !this.state.isExpanded;
+            this.setState({
+                isExpanded: !this.state.isExpanded,
+            });
         }
-        this.setState({
-            isExpanded
-        });
     }
 
-    handleClose = () => {
+    private readonly handleClose = () => {
         this.setState({
             isExpanded: false
         });
     }
 
-    handleOptionFocusChange = option => {
+    private readonly handleOptionFocusChange = (option: SelectBoxOption) => {
         const optionValueAccessor = this.getOptionValueAccessor();
         this.setState({
             focusedValue: optionValueAccessor(option)
         });
     }
 
-    handleSearchTermChange = searchTerm => {
+    private readonly handleSearchTermChange = (searchTerm: string) => {
         if (searchTerm.length >= this.props.threshold) {
             this.props.onSearchTermChange(searchTerm);
         } else {
@@ -345,11 +393,13 @@ export default class SelectBox extends PureComponent {
     /**
      * Keyboard handling
      */
-    componentWillReceiveProps({keydown}) {
-        this.handleKeyDown(keydown.event);
+    public componentWillReceiveProps({keydown}: SelectBoxProps): void {
+        if (keydown.event) {
+            this.handleKeyDown(keydown.event);
+        }
     }
 
-    handleKeyDown = e => {
+    private readonly handleKeyDown = (e: KeyboardEvent) => {
         const {options, onSearchTermKeyPress} = this.props;
         if (typeof onSearchTermKeyPress === 'function') {
             // Pass through keydown event, needed for keyboard handling

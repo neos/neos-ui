@@ -1,7 +1,10 @@
 interface KeyMap {
-    [key: string]: number;
+    readonly [key: string]: number;
 }
 
+declare const keydown: (args: number | ReadonlyArray<number>) => any
+
 declare module 'react-keydown' {
-    const Keys: KeyMap
+    export const Keys: KeyMap
+    export default keydown
 }

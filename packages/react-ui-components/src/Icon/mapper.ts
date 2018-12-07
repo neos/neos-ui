@@ -1,7 +1,7 @@
 /**
  * Simple mapper from Neos Icon names to Fontawesome 5 icon classes.
  */
-// TODO: create type for this, so we can have autocompletion
+// TODO: create type for this, so we can have autocompletion for icon names
 // alternatively just use IconName or even better IconLookup (has IconPrefix & IconName) of FontAwesome typings
 const map: {readonly [key: string]: string} = {
     'address-book-o': 'far fa-address-book',

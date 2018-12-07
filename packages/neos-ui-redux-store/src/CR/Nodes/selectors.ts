@@ -44,7 +44,7 @@ export const makeGetDocumentNodes = (nodeTypesRegistry: NodeTypesRegistry) => cr
             const node = nodesMap[contextPath];
             if (documentSubNodeTypes.includes(node.nodeType)) {
                 result[contextPath] = node;
-            } 
+            }
         });
         return result;
     }
@@ -247,7 +247,7 @@ export const makeGetAllowedChildNodeTypesSelector = (nodeTypesRegistry: NodeType
                 if (elevatedReferenceParent !== null) {
                     return $get(['cr', 'nodes', 'byContextPath', elevatedReferenceParent], state) || null;
                 }
-            } 
+            }
             return null;
         },
         (_: GlobalState, {role}: {reference: NodeContextPath, role: string, subject: NodeContextPath}) => role
@@ -264,8 +264,6 @@ export const makeGetAllowedChildNodeTypesSelector = (nodeTypesRegistry: NodeType
             .getAllowedNodeTypesTakingAutoCreatedIntoAccount(isSubjectNodeAutocreated, referenceParentName, referenceParentNodeType, referenceGrandParentNodeType, role)
             .filter(nodeType => !(referenceNode.policy && referenceNode.policy.disallowedNodeTypes.includes(nodeType)));
     }
-    
-    
 );
 
 export const makeGetAllowedSiblingNodeTypesSelector = (nodeTypesRegistry: NodeTypesRegistry) =>

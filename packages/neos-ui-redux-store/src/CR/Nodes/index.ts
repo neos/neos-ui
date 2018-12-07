@@ -302,7 +302,7 @@ export const subReducer = (state: State = defaultState, action: InitAction | Act
         }
         case actionTypes.MOVE: {
             const {nodeToBeMoved: sourceNodeContextPath, targetNode: targetNodeContextPath, position} = action.payload;
-            
+
             let baseNodeContextPath;
             if (position === 'into') {
                 baseNodeContextPath = targetNodeContextPath;

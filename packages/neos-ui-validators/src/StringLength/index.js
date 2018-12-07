@@ -8,6 +8,10 @@ import logger from '@neos-project/utils-logger';
  * specified in the validation options.
  */
 const StringLength = (value, validatorOptions) => {
+    if (value === undefined || value === null || value === '') {
+        return null;
+    }
+
     const minimum = parseInt(validatorOptions.minimum, 10);
     const maximum = parseInt(validatorOptions.maximum, 10);
 

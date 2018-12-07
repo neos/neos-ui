@@ -15,7 +15,7 @@ import * as reactCssThemr from '@friendsofreactjs/react-css-themr';
 import ReactUiComponents from '@neos-project/react-ui-components';
 import * as NeosUiReduxStore from '@neos-project/neos-ui-redux-store';
 import * as NeosUiDecorators from '@neos-project/neos-ui-decorators';
-import EditorEnvelope from '@neos-project/neos-ui-editors/src/EditorEnvelope/index';
+import * as NeosUiEditors from '@neos-project/neos-ui-editors/src/EditorEnvelope/index';
 import * as UtilsRedux from '@neos-project/utils-redux';
 import NeosUiI18n from '@neos-project/neos-ui-i18n';
 import * as CkEditorApi from '@neos-project/neos-ui-ckeditor5-bindings/src/ckEditorApi';
@@ -96,7 +96,7 @@ export default {
         NeosUiBackendConnector,
         CkEditorApi,
         NeosUiDecorators,
-        NeosUiEditors: EditorEnvelope,
+        NeosUiEditors,
         NeosUiI18n,
         NeosUiReduxStore,
         NeosUiViews,

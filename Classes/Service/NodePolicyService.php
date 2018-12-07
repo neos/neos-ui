@@ -53,7 +53,7 @@ class NodePolicyService
         foreach ($policyService->getPrivilegeTargets() as $privilegeTarget) {
             $usedPrivilegeClassNames[$privilegeTarget->getPrivilegeClassName()] = true;
             foreach (class_parents($privilegeTarget->getPrivilegeClassName()) as $parentPrivilege) {
-                if (is_a($parentPrivilege, PrivilegeInterface::class)) {
+                if (is_a($parentPrivilege, PrivilegeInterface::class, true)) {
                     $usedPrivilegeClassNames[$parentPrivilege] = true;
                 }
             }

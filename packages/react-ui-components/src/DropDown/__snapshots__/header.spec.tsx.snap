@@ -4,13 +4,17 @@ exports[`<ShallowDropDownHeader/> should render correctly. 1`] = `
 <div
   aria-haspopup="true"
   className="baseDropDownHeaderClassName baseDropDownHeaderWithChevronClassName"
-  onClick={[Function]}
+  onClick={[MockFunction]}
   role="button"
 >
   Foo children
-  <Component
+  <ThemedIcon
     className="baseDropDownHeaderChevronClassName"
+    color="default"
+    composeTheme="deeply"
     icon="chevron-down"
+    mapThemrProps={[Function]}
+    padded="none"
   />
 </div>
 `;

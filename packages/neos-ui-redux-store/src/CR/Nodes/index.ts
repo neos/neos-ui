@@ -7,7 +7,7 @@ import {actionTypes as system, InitAction, GlobalState} from '@neos-project/neos
 import * as selectors from './selectors';
 import {parentNodeContextPath} from './helpers';
 
-import {NodeContextPath, InsertPosition, NodeMap, ClipboardMode} from '@neos-project/neos-ts-interfaces';
+import {NodeContextPath, InsertPosition, NodeMap, ClipboardMode, NodeTypeName} from '@neos-project/neos-ts-interfaces';
 
 //
 // Export the subreducer state shape interface
@@ -109,11 +109,15 @@ const commenceRemoval = (contextPath: NodeContextPath) => createAction(actionTyp
  * Start node creation workflow
  *
  * @param {String} referenceNodeContextPath The context path of the referenceNode
- * @param {String} referenceNodeFusionPath The fusion path of the referenceNode
+ * @param {String} referenceNodeFusionPath (optional) The fusion path of the referenceNode
+ * @param {String} preferredMode (optional) The default mode to use in the nodetype selection dialog. Currently not used withing the system but may be useful for extensibility.
+ * @param {String} nodeType (optional) If set, then the select nodetype step would be skipped completely. Currently not used withing the system but may be useful for extensibility.
  */
-const commenceCreation = (referenceNodeContextPath: NodeContextPath, referenceNodeFusionPath: string) => createAction(actionTypes.COMMENCE_CREATION, {
+const commenceCreation = (referenceNodeContextPath: NodeContextPath, referenceNodeFusionPath: string, preferredMode: InsertPosition = InsertPosition.AFTER, nodeType: NodeTypeName | null = null) => createAction(actionTypes.COMMENCE_CREATION, {
     referenceNodeContextPath,
-    referenceNodeFusionPath
+    referenceNodeFusionPath,
+    preferredMode,
+    nodeType
 });
 
 /**

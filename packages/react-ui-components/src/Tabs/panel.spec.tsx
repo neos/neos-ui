@@ -1,19 +1,16 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import Panel from './panel';
+import Panel, {PanelProps} from './panel';
 
 describe('<Panel/>', () => {
-    let props;
-
-    beforeEach(() => {
-        props = {
-            theme: {
-                panel: 'panelBaseClassName'
-            },
-            children: 'Foo children'
-        };
-    });
+    const props: PanelProps = {
+        title: 'TitleString',
+        theme: {
+            panel: 'panelBaseClassName',
+        },
+        children: 'Foo children',
+    };
 
     it('should render correctly.', () => {
         const wrapper = shallow(<Panel {...props}/>);

@@ -2,25 +2,31 @@ import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
 import moment from 'moment';
-import {createStubComponent} from './../_lib/testUtils';
+import DatePicker from 'react-datetime';
+
+import Button from '../Button';
 import {DateInput} from './dateInput';
 
 describe('<DateInput/>', () => {
-    let props;
-
-    beforeEach(() => {
-        props = {
-            onChange: () => null,
-            IconComponent: createStubComponent(),
-            DatePickerComponent: createStubComponent(),
-            ButtonComponent: createStubComponent(),
-            CollapseComponent: createStubComponent(),
-            theme: {
-                'dropDown__contents': 'baseDropDownContentsClassName',
-                'dropDown__contents--isOpen': 'openDropDownContentsClassName'
-            }
-        };
-    });
+    const props: DateInput['props'] = {
+        onChange: jest.fn(),
+        locale: 'en-US',
+        applyLabel: 'applyLabel',
+        todayLabel: 'todayLabel',
+        theme: {
+            'wrapper': 'wrapperClassName',
+            'disabled': 'disabledClassName',
+            'disabled-cursor': 'disabledClassName',
+            'calendarInputWrapper': 'calendarInputWrapperClassName',
+            'calendarIconBtn': 'calendarIconBtnClassName',
+            'calendarFakeInputWrapper': 'calendarFakeInputWrapperClassName',
+            'calendarFakeInputMirror': 'calendarFakeInputMirrorClassName',
+            'calendarFakeInput': 'calendarFakeInputClassName',
+            'applyBtn': 'applyBtnClassName',
+            'closeCalendarIconBtn': 'closeCalendarIconBtnClassName',
+            'selectTodayBtn': 'selectTodayBtnClassName',
+        }
+    };
 
     it('should render correctly.', () => {
         const wrapper = shallow(<DateInput {...props}/>);
@@ -58,10 +64,9 @@ describe('<DateInput/>', () => {
 
     it('should call the "onChange" prop when triggering the change event on the "DatePicker" Component and clicking apply.', () => {
         const onChange = jest.fn();
-        const value = new Date();
-        const wrapper = shallow(<DateInput {...props} value={value} onChange={onChange}/>);
-        const picker = wrapper.find(props.DatePickerComponent);
-        const applyButton = wrapper.find(props.ButtonComponent);
+        const wrapper = shallow(<DateInput {...props} value={new Date()} onChange={onChange}/>);
+        const picker = wrapper.find(DatePicker);
+        const applyButton = wrapper.find(Button);
         const newVal = moment();
 
         picker.simulate('change', newVal);

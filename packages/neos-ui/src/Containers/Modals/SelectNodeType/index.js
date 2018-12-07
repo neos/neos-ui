@@ -15,7 +15,13 @@ import NodeTypeGroupPanel from './nodeTypeGroupPanel';
 import NodeTypeFilter from './nodeTypeFilter';
 import style from './style.css';
 
-const calculateInitialMode = (allowedSiblingNodeTypes, allowedChildNodeTypes) => {
+const calculateInitialMode = (allowedSiblingNodeTypes, allowedChildNodeTypes, preferredMode) => {
+    if (
+        ((preferredMode === 'before' || preferredMode === 'after') && allowedSiblingNodeTypes.length) ||
+        (preferredMode === 'into' && allowedChildNodeTypes.length)
+    ) {
+        return preferredMode;
+    }
     if (allowedSiblingNodeTypes.length) {
         return 'after';
     }
@@ -50,6 +56,7 @@ const calculateInitialMode = (allowedSiblingNodeTypes, allowedChildNodeTypes) =>
 
         return {
             isOpen: $get('ui.selectNodeTypeModal.isOpen', state),
+            preferredMode: $get('ui.selectNodeTypeModal.preferredMode', state),
             allowedSiblingNodeTypes,
             allowedChildNodeTypes
         };
@@ -61,6 +68,7 @@ const calculateInitialMode = (allowedSiblingNodeTypes, allowedChildNodeTypes) =>
 export default class SelectNodeType extends PureComponent {
     static propTypes = {
         isOpen: PropTypes.bool.isRequired,
+        preferredMode: PropTypes.string,
         nodeTypesRegistry: PropTypes.object.isRequired,
         allowedSiblingNodeTypes: PropTypes.array,
         allowedChildNodeTypes: PropTypes.array,
@@ -72,7 +80,8 @@ export default class SelectNodeType extends PureComponent {
         filterSearchTerm: '',
         insertMode: calculateInitialMode(
             this.props.allowedSiblingNodeTypes,
-            this.props.allowedChildNodeTypes
+            this.props.allowedChildNodeTypes,
+            this.props.preferredMode
         ),
         activeHelpMessageGroupPanel: '',
         showHelpMessageFor: ''
@@ -84,7 +93,8 @@ export default class SelectNodeType extends PureComponent {
             this.setState({
                 insertMode: calculateInitialMode(
                     nextProps.allowedSiblingNodeTypes,
-                    nextProps.allowedChildNodeTypes
+                    nextProps.allowedChildNodeTypes,
+                    nextProps.preferredMode
                 )
             });
         }
@@ -172,10 +182,22 @@ export default class SelectNodeType extends PureComponent {
 
     handleNodeTypeFilterChange = filterSearchTerm => this.setState({filterSearchTerm});
 
+    skipNodeTypeDialogIfPossible() {
+        const {insertMode} = this.state;
+        if (insertMode === 'into' &&
+            this.getAllowedNodeTypesByCurrentInsertMode().length === 1 &&
+            this.getAllowedNodeTypesByCurrentInsertMode()[0].nodeTypes.length === 1) {
+            this.handleApply(this.getAllowedNodeTypesByCurrentInsertMode()[0].nodeTypes[0].name);
+            return true;
+        }
+
+        return false;
+    }
+
     render() {
         const {isOpen} = this.props;
 
-        if (!isOpen) {
+        if (!isOpen || this.skipNodeTypeDialogIfPossible()) {
             return null;
         }
 

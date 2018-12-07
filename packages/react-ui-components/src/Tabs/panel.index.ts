@@ -1,7 +1,6 @@
 import {themr} from '@friendsofreactjs/react-css-themr';
-
 import identifiers from '../identifiers';
-import ButtonGroup from './buttonGroup';
 import style from './style.css';
+import Panel from './panel';
 
-export default themr(identifiers.buttonGroup, style)(ButtonGroup);
+export default themr(identifiers.tabsPanel, style)(Panel);

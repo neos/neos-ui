@@ -463,9 +463,6 @@ export const subReducer = (state: State = defaultState, action: InitAction | Act
             });
             break;
         }
-        default: {
-            return state;
-        }
     }
 });
 

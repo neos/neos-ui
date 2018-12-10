@@ -253,13 +253,13 @@ export const makeGetAllowedChildNodeTypesSelector = (nodeTypesRegistry: NodeType
         (_: GlobalState, {role}: {reference: NodeContextPath, role: string, subject: NodeContextPath}) => role
     ],
     (referenceNode, referenceParentNode, role) => {
-        if (referenceNode === null || referenceParentNode === null || (referenceNode.policy && referenceNode.policy.canEdit === false)) {
+        if (referenceNode === null || (referenceNode.policy && referenceNode.policy.canEdit === false)) {
             return [];
         }
         const isSubjectNodeAutocreated = referenceNode.isAutoCreated;
         const referenceParentName = referenceNode.name;
         const referenceParentNodeType = referenceNode.nodeType;
-        const referenceGrandParentNodeType = referenceParentNode.nodeType;
+        const referenceGrandParentNodeType = referenceParentNode ? referenceParentNode.nodeType : null;
         return nodeTypesRegistry
             .getAllowedNodeTypesTakingAutoCreatedIntoAccount(isSubjectNodeAutocreated, referenceParentName, referenceParentNodeType, referenceGrandParentNodeType, role)
             .filter(nodeType => !(referenceNode.policy && referenceNode.policy.disallowedNodeTypes.includes(nodeType)));

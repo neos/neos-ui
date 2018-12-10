@@ -30,7 +30,7 @@ export default class InlineUI extends PureComponent {
         destructiveOperationsAreDisabled: PropTypes.bool.isRequired,
         requestScrollIntoView: PropTypes.func.isRequired,
         shouldScrollIntoView: PropTypes.bool.isRequired,
-        clipboardMode: PropTypes.string.isRequired,
+        clipboardMode: PropTypes.string,
         clipboardNodeContextPath: PropTypes.string
     };
 

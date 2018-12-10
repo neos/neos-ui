@@ -137,5 +137,5 @@ export interface NodeType {
 export interface NodeTypesRegistry {
     getRole: (roleName: string) => NodeTypeName;
     getSubTypesOf: (nodeType: NodeTypeName) => NodeTypeName[];
-    getAllowedNodeTypesTakingAutoCreatedIntoAccount: (isSubjectNodeAutocreated: boolean, referenceParentName: string, referenceParentNodeType: NodeTypeName, referenceGrandParentNodeType: NodeTypeName, role: string) => NodeTypeName[];
+    getAllowedNodeTypesTakingAutoCreatedIntoAccount: (isSubjectNodeAutocreated: boolean, referenceParentName: string, referenceParentNodeType: NodeTypeName, referenceGrandParentNodeType: NodeTypeName | null, role: string) => NodeTypeName[];
 }

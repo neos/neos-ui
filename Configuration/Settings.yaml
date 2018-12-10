@@ -140,8 +140,8 @@ Neos:
             byContextPath: '${Neos.Ui.NodeInfo.defaultNodesForBackend(site, documentNode, controllerContext)}'
             siteNode: '${q(site).property(''_contextPath'')}'
             documentNode: '${q(documentNode).property(''_contextPath'')}'
-            clipboard: '${clipboardNode || ""}'
-            clipboardMode: '${clipboardMode || ""}'
+            clipboard: '${clipboardNode || null}'
+            clipboardMode: '${clipboardMode || null}'
           contentDimensions:
             byName: '${Neos.Ui.ContentDimensions.contentDimensionsByName()}'
             active: '${documentNode.context.dimensions}'

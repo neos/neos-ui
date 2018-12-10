@@ -1,6 +1,4 @@
-import Immutable, {Map} from 'immutable';
-
-import {actionTypes, reducer, actions, selectors} from './index';
+import {actionTypes, subReducer as reducer, actions, selectors} from './index';
 
 import {actionTypes as system} from '../../System/index';
 
@@ -48,89 +46,34 @@ test(`should export selectors`, () => {
 });
 
 test(`The reducer should create a valid initial state`, () => {
-    const state = new Map({});
-    const nextState = reducer(state, {
-        type: system.INIT
-    });
-
-    expect(nextState.get('cr').get('nodes') instanceof Map).toBe(true);
-    expect(nextState.get('cr').get('nodes').get('byContextPath') instanceof Map).toBe(true);
-    expect(typeof (nextState.get('cr').get('nodes').get('siteNode'))).toBe('string');
-    expect(nextState.get('cr').get('nodes').get('focused') instanceof Map).toBe(true);
-    expect(
-        typeof (nextState.get('cr').get('nodes').get('focused').get('contextPath'))
-    ).toBe('string');
-    expect(typeof (nextState.get('cr').get('nodes').get('focused').get('fusionPath'))).toBe('string');
-});
-
-test(`The reducer should take initially existing nodes into account`, () => {
-    const state = new Map({});
-    const serverState = Immutable.fromJS({
-        cr: {
-            nodes: {
-                byContextPath: {
-                    someContextPath: {
-                        some: 'property'
-                    }
-                }
-            }
-        }
-    });
-    const nextState = reducer(state, {
+    const initialState = {
+        byContextPath: {},
+        siteNode: 'siteNode',
+        documentNode: 'documentNode',
+        clipboard: null,
+        clipboardMode: null
+    };
+    const expectedState = {
+        byContextPath: {},
+        siteNode: 'siteNode',
+        documentNode: 'documentNode',
+        focused: {
+            contextPath: null,
+            fusionPath: null
+        },
+        toBeRemoved: null,
+        clipboard: null,
+        clipboardMode: null
+    };
+    const nextState = reducer(undefined, {
         type: system.INIT,
-        payload: serverState
-    });
-
-    expect(nextState.get('cr').get('nodes').get('byContextPath') instanceof Map).toBe(true);
-    expect(
-        nextState.get('cr').get('nodes').get('byContextPath').get('someContextPath')
-    ).not.toBe(undefined);
-    expect(nextState.get('cr').get('nodes').get('byContextPath').toJS()).toEqual({
-        someContextPath: {
-            some: 'property'
-        }
-    });
-});
-
-test(`The reducer should take an initially configured siteNode into account`, () => {
-    const state = new Map({});
-    const serverState = Immutable.fromJS({
-        cr: {
-            nodes: {
-                siteNode: 'theSiteNode'
+        payload: {
+            cr: {
+                nodes: initialState
             }
         }
     });
-    const nextState = reducer(state, {
-        type: system.INIT,
-        payload: serverState
-    });
-
-    expect(nextState.get('cr').get('nodes').get('siteNode')).toBe('theSiteNode');
-});
-
-test(`The reducer should add nodes to the store`, () => {
-    const state = Immutable.fromJS({
-        cr: {
-            nodes: {
-                byContextPath: {}
-            }
-        }
-    });
-    const contextPath = '/path/top/my/node@user-username;language=en_US';
-    const nextState = reducer(state, actions.add({
-        [contextPath]: {
-            foo: 'bar'
-        }
-    }));
-
-    const addedItem = nextState.get('cr').get('nodes').get('byContextPath').get(contextPath);
-
-    expect(addedItem).not.toBe(undefined);
-    expect(addedItem instanceof Map).toBe(true);
-    expect(addedItem.toJS()).toEqual({
-        foo: 'bar'
-    });
+    expect(nextState).toEqual(expectedState);
 });
 
 test(`The reducer should mark a node for removal`, () => {
@@ -153,119 +96,103 @@ test(`The reducer should paste nodes`, () => {
 });
 
 test(`The "move" action should move things right.`, () => {
-    const state = Immutable.fromJS({
-        cr: {
-            nodes: {
-                byContextPath: {
-                    'abc@user-admin;language=en_US': {
-                        contextPath: 'abc@user-admin;language=en_US',
-                        children: [
-                            {
-                                contextPath: 'abc/abc@user-admin;language=en_US'
-                            },
-                            {
-                                contextPath: 'abc/abc2@user-admin;language=en_US'
-                            }
-                        ]
+    const state = {
+        byContextPath: {
+            'abc@user-admin;language=en_US': {
+                contextPath: 'abc@user-admin;language=en_US',
+                children: [
+                    {
+                        contextPath: 'abc/abc@user-admin;language=en_US'
                     },
-                    'abc/abc@user-admin;language=en_US': {
-                        contextPath: 'abc/abc@user-admin;language=en_US',
-                        children: [
-                            {
-                                contextPath: 'abc/abc/abc@user-admin;language=en_US'
-                            }
-                        ]
-                    },
-                    'abc/abc2@user-admin;language=en_US': {
-                        contextPath: 'abc/abc@user-admin;language=en_US',
-                        children: []
-                    },
-                    'abc/abc/abc@user-admin;language=en_US': {
-                        contextPath: 'abc/abc/abc@user-admin;language=en_US',
-                        children: []
+                    {
+                        contextPath: 'abc/abc2@user-admin;language=en_US'
                     }
-                }
+                ]
+            },
+            'abc/abc@user-admin;language=en_US': {
+                contextPath: 'abc/abc@user-admin;language=en_US',
+                children: [
+                    {
+                        contextPath: 'abc/abc/abc@user-admin;language=en_US'
+                    }
+                ]
+            },
+            'abc/abc2@user-admin;language=en_US': {
+                contextPath: 'abc/abc@user-admin;language=en_US',
+                children: []
+            },
+            'abc/abc/abc@user-admin;language=en_US': {
+                contextPath: 'abc/abc/abc@user-admin;language=en_US',
+                children: []
             }
         }
-    });
+    };
     const nextState = reducer(state, actions.move('abc/abc/abc@user-admin;language=en_US', 'abc@user-admin;language=en_US', 'into'));
 
-    expect(nextState.toJS()).toEqual({
-        cr: {
-            nodes: {
-                byContextPath: {
-                    'abc@user-admin;language=en_US': {
-                        contextPath: 'abc@user-admin;language=en_US',
-                        children: [
-                            {
-                                contextPath: 'abc/abc@user-admin;language=en_US'
-                            },
-                            {
-                                contextPath: 'abc/abc2@user-admin;language=en_US'
-                            },
-                            {
-                                contextPath: 'abc/abc/abc@user-admin;language=en_US'
-                            }
-                        ]
+    expect(nextState).toEqual({
+        byContextPath: {
+            'abc@user-admin;language=en_US': {
+                contextPath: 'abc@user-admin;language=en_US',
+                children: [
+                    {
+                        contextPath: 'abc/abc@user-admin;language=en_US'
                     },
-                    'abc/abc@user-admin;language=en_US': {
-                        contextPath: 'abc/abc@user-admin;language=en_US',
-                        children: []
+                    {
+                        contextPath: 'abc/abc2@user-admin;language=en_US'
                     },
-                    'abc/abc2@user-admin;language=en_US': {
-                        contextPath: 'abc/abc@user-admin;language=en_US',
-                        children: []
-                    },
-                    'abc/abc/abc@user-admin;language=en_US': {
-                        contextPath: 'abc/abc/abc@user-admin;language=en_US',
-                        children: []
+                    {
+                        contextPath: 'abc/abc/abc@user-admin;language=en_US'
                     }
-                }
+                ]
+            },
+            'abc/abc@user-admin;language=en_US': {
+                contextPath: 'abc/abc@user-admin;language=en_US',
+                children: []
+            },
+            'abc/abc2@user-admin;language=en_US': {
+                contextPath: 'abc/abc@user-admin;language=en_US',
+                children: []
+            },
+            'abc/abc/abc@user-admin;language=en_US': {
+                contextPath: 'abc/abc/abc@user-admin;language=en_US',
+                children: []
             }
         }
     });
 });
 
 test(`The "updateUri" action should update uris.`, () => {
-    const state = Immutable.fromJS({
-        cr: {
-            nodes: {
-                byContextPath: {
-                    'abc@user-admin;language=en_US': {
-                        contextPath: 'abc@user-admin;language=en_US',
-                        uri: 'https://domain/someUri@user-admin;language=en_US'
-                    },
-                    'abc/abc@user-admin;language=en_US': {
-                        contextPath: 'abc/abc@user-admin;language=en_US',
-                        uri: 'https://domain/someUri/someUri@user-admin;language=en_US'
-                    },
-                    'cda/abc@user-admin;language=en_US': {
-                        contextPath: 'abc/abc@user-admin;language=en_US',
-                        uri: 'https://domain/someUri2/someUri@user-admin;language=en_US'
-                    }
-                }
+    const state = {
+        byContextPath: {
+            'abc@user-admin;language=en_US': {
+                contextPath: 'abc@user-admin;language=en_US',
+                uri: 'https://domain/someUri@user-admin;language=en_US'
+            },
+            'abc/abc@user-admin;language=en_US': {
+                contextPath: 'abc/abc@user-admin;language=en_US',
+                uri: 'https://domain/someUri/someUri@user-admin;language=en_US'
+            },
+            'cda/abc@user-admin;language=en_US': {
+                contextPath: 'abc/abc@user-admin;language=en_US',
+                uri: 'https://domain/someUri2/someUri@user-admin;language=en_US'
             }
         }
-    });
+    };
     const nextState = reducer(state, actions.updateUri('https://domain/someUri', 'https://domain/someUri2'));
 
-    expect(nextState.toJS()).toEqual({
-        cr: {
-            nodes: {
-                byContextPath: {
-                    'abc@user-admin;language=en_US': {
-                        contextPath: 'abc@user-admin;language=en_US',
-                        uri: 'https://domain/someUri2@user-admin;language=en_US'
-                    },
-                    'abc/abc@user-admin;language=en_US': {
-                        contextPath: 'abc/abc@user-admin;language=en_US',
-                        uri: 'https://domain/someUri2/someUri@user-admin;language=en_US'
-                    },
-                    'cda/abc@user-admin;language=en_US': {
-                        contextPath: 'abc/abc@user-admin;language=en_US',
-                        uri: 'https://domain/someUri2/someUri@user-admin;language=en_US'
-                    }
-                }
+    expect(nextState).toEqual({
+        byContextPath: {
+            'abc@user-admin;language=en_US': {
+                contextPath: 'abc@user-admin;language=en_US',
+                uri: 'https://domain/someUri2@user-admin;language=en_US'
+            },
+            'abc/abc@user-admin;language=en_US': {
+                contextPath: 'abc/abc@user-admin;language=en_US',
+                uri: 'https://domain/someUri2/someUri@user-admin;language=en_US'
+            },
+            'cda/abc@user-admin;language=en_US': {
+                contextPath: 'abc/abc@user-admin;language=en_US',
+                uri: 'https://domain/someUri2/someUri@user-admin;language=en_US'
             }
         }
     });

@@ -317,19 +317,19 @@ export const subReducer = (state: State = defaultState, action: InitAction | Act
             if (sourceNodeParentContextPath === null) {
                 throw new Error(`The source node "{sourceNodeParentContextPath}" doesn't have a parent, you can't move it`);
             }
-            const originalSourceChildren = draft.byContextPath[sourceNodeContextPath].children;
+            const originalSourceChildren = draft.byContextPath[sourceNodeParentContextPath].children;
             const sourceIndex = originalSourceChildren.findIndex(child => child.contextPath === sourceNodeContextPath);
             const childRepresentationOfSourceNode = originalSourceChildren[sourceIndex];
 
-            let processedChildren = draft.byContextPath[baseNodeContextPath].children;
+            const processedChildren = draft.byContextPath[baseNodeContextPath].children;
 
             if (sourceNodeParentContextPath === baseNodeContextPath) {
                 // If moving into the same parent, delete source node from it
-                processedChildren = processedChildren.splice(sourceIndex, 1);
+                processedChildren.splice(sourceIndex, 1);
             } else {
                 // Else delete the source node from its parent
-                const processedSourceChildren = originalSourceChildren.splice(sourceIndex, 1);
-                draft.byContextPath[sourceNodeParentContextPath].children = processedSourceChildren;
+                originalSourceChildren.splice(sourceIndex, 1);
+                draft.byContextPath[sourceNodeParentContextPath].children = originalSourceChildren;
             }
 
             // Add source node to the children of the base node, at the right position
@@ -461,6 +461,10 @@ export const subReducer = (state: State = defaultState, action: InitAction | Act
                     draft.byContextPath[contextPath].uri = newNodeUri;
                 }
             });
+            break;
+        }
+        default: {
+            return state;
         }
     }
 });

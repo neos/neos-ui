@@ -38,6 +38,12 @@ export const defaultState: State = {
     clipboardMode: null
 };
 
+// An object describing a node property change
+export interface PropertyChange extends Readonly<{
+    subject: NodeContextPath;
+    propertyName: string;
+    value: any;
+}> {}
 
 //
 // Export the action types
@@ -45,6 +51,7 @@ export const defaultState: State = {
 export enum actionTypes {
     ADD = '@neos/neos-ui/CR/Nodes/ADD',
     MERGE = '@neos/neos-ui/CR/Nodes/MERGE',
+    CHANGE_PROPERTY = '@neos/neos-ui/CR/Nodes/CHANGE_PROPERTY',
     FOCUS = '@neos/neos-ui/CR/Nodes/FOCUS',
     UNFOCUS = '@neos/neos-ui/CR/Nodes/UNFOCUS',
     COMMENCE_CREATION = '@neos/neos-ui/CR/Nodes/COMMENCE_CREATION',
@@ -83,6 +90,11 @@ const add = (nodeMap: NodeMap) => createAction(actionTypes.ADD, {nodeMap});
  * @param {Object} nodeMap A map of nodes, with contextPaths as key
  */
 const merge = (nodeMap: NodeMap) => createAction(actionTypes.MERGE, {nodeMap});
+
+/**
+ * Updates node properties according to `propertyChanges` array
+ */
+const changeProperty = (propertyChanges: ReadonlyArray<PropertyChange>) => createAction(actionTypes.CHANGE_PROPERTY, {propertyChanges});
 
 /**
  * Marks a node as focused
@@ -259,6 +271,7 @@ const updateUri = (oldUriFragment: string, newUriFragment: string) => createActi
 export const actions = {
     add,
     merge,
+    changeProperty,
     focus,
     unFocus,
     commenceCreation,
@@ -297,6 +310,13 @@ export const subReducer = (state: State = defaultState, action: InitAction | Act
             const {nodeMap} = action.payload;
             Object.keys(nodeMap).forEach(contextPath => {
                 draft.byContextPath[contextPath] = nodeMap[contextPath];
+            });
+            break;
+        }
+        case actionTypes.CHANGE_PROPERTY: {
+            const {propertyChanges} = action.payload;
+            propertyChanges.forEach(propertyChange => {
+                draft.byContextPath[propertyChange.subject].properties[propertyChange.propertyName] = propertyChange.value;
             });
             break;
         }

@@ -23,11 +23,9 @@ const stateFixture = {
                 ],
                 baseWorkspace: 'live'
             }
-        }
-    },
-    ui: {
-        contentCanvas: {
-            contextPath: '/sites/neosdemo@user-text;language=en_US'
+        },
+        nodes: {
+            documentNode: '/sites/neosdemo@user-text;language=en_US'
         }
     }
 };

@@ -35,6 +35,17 @@ export function * watchPersist() {
 
     yield takeEvery([actionTypes.Changes.PERSIST, actionTypes.UI.Remote.FINISH_SAVING], function * (action) {
         if (action.type === actionTypes.Changes.PERSIST) {
+            const propertyChanges = action.payload.changes
+                .filter(change => change.type === 'Neos.Neos.Ui:Property')
+                .map(change => ({
+                    subject: change.subject,
+                    propertyName: change.payload.propertyName,
+                    value: change.payload.value
+                }));
+            if (propertyChanges.length > 0) {
+                yield put(actions.CR.Nodes.changeProperty(propertyChanges));
+            }
+
             changes.push(...action.payload.changes);
         }
 

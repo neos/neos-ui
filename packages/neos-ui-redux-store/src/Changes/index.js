@@ -1,7 +1,4 @@
 import {createAction} from 'redux-actions';
-import {$set, $all} from 'plow-js';
-
-import {handleActions} from '@neos-project/utils-redux';
 
 const PERSIST = '@neos/neos-ui/Transient/Changes/PERSIST';
 
@@ -32,26 +29,6 @@ const persistChanges = createAction(PERSIST, changes => ({changes}));
 export const actions = {
     persistChanges
 };
-
-//
-// Export the reducer
-//
-export const reducer = handleActions({
-    [PERSIST]: ({changes}) => state => {
-        return $all(
-            ...changes.map(change => {
-                if (change.type === 'Neos.Neos.Ui:Property') {
-                    return $set(
-                        ['cr', 'nodes', 'byContextPath', change.subject, 'properties', change.payload.propertyName],
-                        change.payload.value
-                    );
-                }
-                return null;
-            }).filter(Boolean),
-            state
-        );
-    }
-});
 
 //
 // Export the selectors

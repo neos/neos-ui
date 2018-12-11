@@ -1,5 +1,6 @@
 import {$get} from 'plow-js';
 import {createSelector} from 'reselect';
+import {mapObjIndexed} from 'ramda';
 
 import {siteNodeSelector} from '../../CR/Nodes/selectors';
 import {isNodeCollapsed} from '../../CR/Nodes/helpers';
@@ -25,14 +26,13 @@ export const getUncollapsed = createSelector(
         siteNodeSelector,
         (_, {loadingDepth = 0}) => loadingDepth
     ],
-    (toggleTreeNodeContextPaths, nodesByContextPath, siteNode, loadingDepth) => {
-        return nodesByContextPath.filter(
-            node => !isNodeCollapsed(
-                node,
-                toggleTreeNodeContextPaths.includes($get('contextPath', node)),
-                siteNode,
-                loadingDepth
-            )
-        ).map($get('contextPath')).toArray();
-    }
+    (toggleTreeNodeContextPaths, nodesByContextPath, siteNode, loadingDepth) => Object.keys(nodesByContextPath).filter(contextPath => {
+        const node = nodesByContextPath[contextPath];
+        return !isNodeCollapsed(
+            node,
+            toggleTreeNodeContextPaths.includes(contextPath),
+            siteNode,
+            loadingDepth
+        );
+    })
 );

@@ -1,6 +1,5 @@
 import {$get} from 'plow-js';
 import {createSelector} from 'reselect';
-import {mapObjIndexed} from 'ramda';
 
 import {siteNodeSelector} from '../../CR/Nodes/selectors';
 import {isNodeCollapsed} from '../../CR/Nodes/helpers';

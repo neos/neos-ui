@@ -6,7 +6,7 @@ export interface NodeChild {
     nodeType: NodeTypeName;
 }
 // TODO: for some reason (probably due to immer) I can not use ReadonlyArray here
-export interface NodeChildren extends ReadonlyArray<NodeChild> {}
+export interface NodeChildren extends Array<NodeChild> {}
 
 export interface NodePolicy extends Readonly<{
     disallowedNodeTypes: NodeTypeName[];

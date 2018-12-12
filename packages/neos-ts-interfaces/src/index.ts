@@ -1,11 +1,12 @@
 export type NodeContextPath = string;
 export type NodeTypeName = string;
 
-// TODO: for some reason (probably due to immer) I can not use ReadonlyArray here
-export interface NodeChildren extends Array<{
+export interface NodeChild {
     contextPath: NodeContextPath;
     nodeType: NodeTypeName;
-}> {}
+}
+// TODO: for some reason (probably due to immer) I can not use ReadonlyArray here
+export interface NodeChildren extends ReadonlyArray<NodeChild> {}
 
 export interface NodePolicy extends Readonly<{
     disallowedNodeTypes: NodeTypeName[];

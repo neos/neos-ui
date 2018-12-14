@@ -35,7 +35,7 @@ export interface Node {
 }
 
 // Type guard using duck-typing on some random properties to know if object is a Node
-export const isNode = (node: any): node is Node => Boolean(typeof node === 'object' && node.contextPath && node.depth);
+export const isNode = (node: any): node is Node => Boolean(typeof node === 'object' && node.contextPath);
 
 export interface NodeMap {
     [propName: string]: Node | undefined;

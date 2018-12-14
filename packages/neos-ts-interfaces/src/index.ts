@@ -34,8 +34,11 @@ export interface Node {
     policy?: NodePolicy;
 }
 
+// Type guard using duck-typing on some random properties to know if object is a Node
+export const isNode = (node: any): node is Node => Boolean(typeof node === 'object' && node.contextPath && node.depth);
+
 export interface NodeMap {
-    [propName: string]: Node;
+    [propName: string]: Node | undefined;
 }
 
 export enum ClipboardMode {
@@ -51,11 +54,11 @@ export enum InsertPosition {
 
 export interface NodeType {
     superTypes: {
-        [propName: string]: boolean;
+        [propName: string]: boolean | undefined;
     };
     constraints: {
         nodeTypes: {
-            [propName: string]: boolean;
+            [propName: string]: boolean | undefined;
         }
     };
     label?: string;
@@ -73,14 +76,14 @@ export interface NodeType {
                     tab?: string;
                     position?: number | string;
                     collapsed?: boolean;
-                }
+                } | undefined;
             };
             tabs?: {
                 [propName: string]: {
                     label?: string;
                     position?: number | string;
                     icon?: string;
-                };
+                } | undefined;
             };
             views?: {
                 group?: string;
@@ -129,7 +132,7 @@ export interface NodeType {
         validation?: {
             [propName: string]: {
                 [propName: string]: any;
-            }
+            } | undefined;
         };
     };
 }

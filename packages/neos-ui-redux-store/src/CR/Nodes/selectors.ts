@@ -42,6 +42,9 @@ export const makeGetDocumentNodes = (nodeTypesRegistry: NodeTypesRegistry) => cr
         const result: NodeMap = {};
         Object.keys(nodesMap).forEach(contextPath => {
             const node = nodesMap[contextPath];
+            if (!node) {
+                throw new Error('This error should never be thrown, it\'s a way to fool TypeScript');
+            }
             if (documentSubNodeTypes.includes(node.nodeType)) {
                 result[contextPath] = node;
             }
@@ -59,19 +62,19 @@ export const makeGetNodeByContextPathSelector = (contextPath: NodeContextPath) =
 
 export const makeHasChildrenSelector = (allowedNodeTypes: NodeTypeName[]) => createSelector(
     [
-        (state: GlobalState, contextPath: NodeContextPath) => $get(['cr', 'nodes', 'byContextPath', contextPath, 'children'], state)
+        (state: GlobalState, contextPath: NodeContextPath) => state.cr.nodes.byContextPath[contextPath]
     ],
-    childNodeEnvelopes => (childNodeEnvelopes || []).some(
+    node => (node && node.children || []).some(
         childNodeEnvelope => allowedNodeTypes.includes(childNodeEnvelope.nodeType)
     )
 );
 
 export const makeChildrenOfSelector = (allowedNodeTypes: NodeTypeName[]) => createSelector(
     [
-        (state: GlobalState, contextPath: NodeContextPath) => $get(['cr', 'nodes', 'byContextPath', contextPath, 'children'], state),
+        (state: GlobalState, contextPath: NodeContextPath) => $get(['cr', 'nodes', 'byContextPath', contextPath], state),
         nodesByContextPathSelector
     ],
-    (childNodeEnvelopes, nodesByContextPath: NodeMap) => (childNodeEnvelopes || [])
+    (node, nodesByContextPath: NodeMap) => (node && node.children || [])
     .filter(
         childNodeEnvelope => {
             const nodeType = childNodeEnvelope.nodeType;
@@ -92,7 +95,8 @@ export const siteNodeSelector = createSelector(
     ],
     (siteNodeContextPath, nodesByContextPath) => {
         if (siteNodeContextPath) {
-            return nodesByContextPath[siteNodeContextPath];
+            const a = nodesByContextPath[siteNodeContextPath];
+            return a;
         }
         return null;
     }
@@ -156,7 +160,7 @@ export const focusedSelector = createSelector(
     ],
     (focusedNodePath, getNodeByContextPath) => {
         if (focusedNodePath !== null) {
-            return getNodeByContextPath(focusedNodePath);
+            return getNodeByContextPath(focusedNodePath) || null;
         }
         return null;
     }
@@ -280,18 +284,18 @@ export const makeIsAllowedToAddChildOrSiblingNodes = (nodeTypesRegistry: NodeTyp
 
 export const makeCanBeCopiedAlongsideSelector = (nodeTypesRegistry: NodeTypesRegistry) => createSelector(
     [
-        (state: GlobalState, {subject}: {subject: NodeContextPath}) => $get(['cr', 'nodes', 'byContextPath', subject, 'nodeType'], state),
+        (state: GlobalState, {subject}: {subject: NodeContextPath}) => $get(['cr', 'nodes', 'byContextPath', subject], state),
         makeGetAllowedSiblingNodeTypesSelector(nodeTypesRegistry)
     ],
-    (subjectNodeType, allowedNodeTypes) => allowedNodeTypes.includes(subjectNodeType)
+    (subjectNode, allowedNodeTypes) => subjectNode ? allowedNodeTypes.includes(subjectNode.nodeType) : false
 );
 
 export const makeCanBeCopiedIntoSelector = (nodeTypesRegistry: NodeTypesRegistry) => createSelector(
     [
-        (state: GlobalState, {subject}) => $get(['cr', 'nodes', 'byContextPath', subject, 'nodeType'], state),
+        (state: GlobalState, {subject}) => $get(['cr', 'nodes', 'byContextPath', subject], state),
         makeGetAllowedChildNodeTypesSelector(nodeTypesRegistry)
     ],
-    (subjectNodeType, allowedNodeTypes) => allowedNodeTypes.includes(subjectNodeType)
+    (subjectNode, allowedNodeTypes) => subjectNode ? allowedNodeTypes.includes(subjectNode.nodeType) : false
 );
 
 export const makeCanBeMovedIntoSelector = (nodeTypesRegistry: NodeTypesRegistry) => createSelector(
@@ -375,7 +379,7 @@ export const focusedNodeParentLineSelector = createSelector(
         while (currentNode) {
             const parent = parentNodeContextPath(currentNode.contextPath);
             if (parent !== null) {
-                currentNode = nodesByContextPath[parent];
+                currentNode = nodesByContextPath[parent] || null;
                 if (currentNode) {
                     result.push(currentNode);
                 }

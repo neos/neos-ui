@@ -5,7 +5,7 @@ import {action as createAction, ActionType} from 'typesafe-actions';
 import {actionTypes as system, InitAction, GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
 
 import * as selectors from './selectors';
-import {parentNodeContextPath} from './helpers';
+import {parentNodeContextPath, getNodeOrThrow} from './helpers';
 
 import {NodeContextPath, InsertPosition, NodeMap, ClipboardMode, NodeTypeName} from '@neos-project/neos-ts-interfaces';
 
@@ -316,7 +316,8 @@ export const subReducer = (state: State = defaultState, action: InitAction | Act
         case actionTypes.CHANGE_PROPERTY: {
             const {propertyChanges} = action.payload;
             propertyChanges.forEach(propertyChange => {
-                draft.byContextPath[propertyChange.subject].properties[propertyChange.propertyName] = propertyChange.value;
+                const node = getNodeOrThrow(draft.byContextPath, propertyChange.subject);
+                node.properties[propertyChange.propertyName] = propertyChange.value;
             });
             break;
         }
@@ -337,11 +338,14 @@ export const subReducer = (state: State = defaultState, action: InitAction | Act
             if (sourceNodeParentContextPath === null) {
                 throw new Error(`The source node "{sourceNodeParentContextPath}" doesn't have a parent, you can't move it`);
             }
-            const originalSourceChildren = draft.byContextPath[sourceNodeParentContextPath].children;
+            const baseNode = getNodeOrThrow(draft.byContextPath, baseNodeContextPath);
+            const sourceNodeParent = getNodeOrThrow(draft.byContextPath, sourceNodeParentContextPath);
+
+            const originalSourceChildren = sourceNodeParent.children;
             const sourceIndex = originalSourceChildren.findIndex(child => child.contextPath === sourceNodeContextPath);
             const childRepresentationOfSourceNode = originalSourceChildren[sourceIndex];
 
-            const processedChildren = draft.byContextPath[baseNodeContextPath].children;
+            const processedChildren = baseNode.children;
 
             if (sourceNodeParentContextPath === baseNodeContextPath) {
                 // If moving into the same parent, delete source node from it
@@ -349,7 +353,7 @@ export const subReducer = (state: State = defaultState, action: InitAction | Act
             } else {
                 // Else delete the source node from its parent
                 originalSourceChildren.splice(sourceIndex, 1);
-                draft.byContextPath[sourceNodeParentContextPath].children = originalSourceChildren;
+                sourceNodeParent.children = originalSourceChildren;
             }
 
             // Add source node to the children of the base node, at the right position
@@ -360,13 +364,16 @@ export const subReducer = (state: State = defaultState, action: InitAction | Act
                 const insertIndex = position === 'before' ? targetIndex : targetIndex + 1;
                 processedChildren.splice(insertIndex, 0, childRepresentationOfSourceNode);
             }
-            draft.byContextPath[baseNodeContextPath].children = processedChildren;
+            baseNode.children = processedChildren;
             break;
         }
         case actionTypes.MERGE: {
             const {nodeMap} = action.payload;
             Object.keys(nodeMap).forEach(contextPath => {
                 const newNode = nodeMap[contextPath];
+                if (!newNode) {
+                    throw new Error('This error should never be thrown, it\'s a way to fool TypeScript');
+                }
                 const mergedNode = mergeDeepRight(draft.byContextPath[contextPath], newNode);
                 // Force overwrite of children
                 if (newNode.children !== undefined) {
@@ -456,17 +463,22 @@ export const subReducer = (state: State = defaultState, action: InitAction | Act
             break;
         }
         case actionTypes.HIDE: {
-            draft.byContextPath[action.payload].properties.hidden = true;
+            const node = getNodeOrThrow(draft.byContextPath, action.payload);
+            node.properties.hidden = true;
             break;
         }
         case actionTypes.SHOW: {
-            draft.byContextPath[action.payload].properties.hidden = false;
+            const node = getNodeOrThrow(draft.byContextPath, action.payload);
+            node.properties.hidden = false;
             break;
         }
         case actionTypes.UPDATE_URI: {
             const {oldUriFragment, newUriFragment} = action.payload;
             Object.keys(draft.byContextPath).forEach(contextPath => {
                 const node = draft.byContextPath[contextPath];
+                if (!node) {
+                    throw new Error('This error should never be thrown, it\'s a way to fool TypeScript');
+                }
                 const nodeUri = node.uri;
                 if (
                     nodeUri &&
@@ -478,7 +490,7 @@ export const subReducer = (state: State = defaultState, action: InitAction | Act
                             .replace(oldUriFragment + '@', newUriFragment + '@')
                             // Descendant of a node with changed uriPathSegment
                             .replace(oldUriFragment + '/', newUriFragment + '/');
-                    draft.byContextPath[contextPath].uri = newNodeUri;
+                    node.uri = newNodeUri;
                 }
             });
             break;
@@ -492,8 +504,14 @@ export const subReducer = (state: State = defaultState, action: InitAction | Act
 export const reducer = (globalState: GlobalState, action: InitAction | Action) => {
     // TODO: substitute global state with State when conversion of all CR reducers is done
     const state = $get(['cr', 'nodes'], globalState) || undefined;
-    const newState = subReducer(state, action);
-    return $set(['cr', 'nodes'], newState, globalState);
+    try {
+        const newState = subReducer(state, action);
+        return $set(['cr', 'nodes'], newState, globalState);
+    } catch (error) {
+        console.error('The following error was thrown in CR/Nodes reducer:', error, action); //tslint:disable-line
+        return state;
+    }
+
 };
 
 //

@@ -1,4 +1,4 @@
-import {Node, NodeContextPath} from '@neos-project/neos-ts-interfaces';
+import {isNode, Node, NodeMap, NodeContextPath} from '@neos-project/neos-ts-interfaces';
 
 //
 // Helper function to determine allowed node types
@@ -45,4 +45,12 @@ export const parentNodeContextPath = (contextPath: NodeContextPath) => {
 export const isNodeCollapsed = (node: Node, isToggled: boolean, rootNode: Node, loadingDepth: number) => {
     const isCollapsedByDefault = loadingDepth === 0 ? false : node.depth - rootNode.depth >= loadingDepth;
     return (isCollapsedByDefault && !isToggled) || (!isCollapsedByDefault && isToggled);
+};
+
+export const getNodeOrThrow = (nodeMap: NodeMap, contextPath: NodeContextPath) => {
+    const node = nodeMap[contextPath];
+    if (!isNode(node)) {
+        throw new Error(`Node with context path ${contextPath} is not in state`);
+    }
+    return node;
 };

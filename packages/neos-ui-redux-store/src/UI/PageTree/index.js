@@ -82,7 +82,7 @@ export const reducer = handleActions({
         $remove('ui.pageTree.loading', contextPath)
     ),
     [COMMENCE_SEARCH]: () => state => {
-        const hiddenContextPaths = new Set([...$get('cr.nodes.byContextPath', state).keys()]);
+        const hiddenContextPaths = new Set(Object.keys($get('cr.nodes.byContextPath', state)));
 
         return $all(
             $set('ui.pageTree.hidden', hiddenContextPaths.delete($get('cr.nodes.siteNode', state))),

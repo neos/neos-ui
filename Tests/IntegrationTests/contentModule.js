@@ -110,7 +110,7 @@ test('Discarding: create multiple nodes nested within each other and then discar
     await t
         .expect(ReactSelector('Provider').getReact(({props}) => {
             const reduxState = props.store.getState().toJS();
-            return reduxState.ui.contentCanvas.contextPath;
+            return reduxState.cr.nodes.documentNode;
         })).eql('/sites/neosdemo@user-admin;language=en_US', 'After discarding we are back to the main page');
 });
 

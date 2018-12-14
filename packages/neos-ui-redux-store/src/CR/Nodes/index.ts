@@ -186,7 +186,7 @@ const setState = (
 /**
  * Reload CR nodes state
  */
-const reloadState = (payload: {
+const reloadState = ((payload: {
     siteNodeContextPath?: NodeContextPath;
     documentNodeContextPath?: NodeContextPath;
     nodes?: NodeMap;
@@ -202,7 +202,6 @@ const reloadState = (payload: {
             merge
         }
     );
-
 });
 
 

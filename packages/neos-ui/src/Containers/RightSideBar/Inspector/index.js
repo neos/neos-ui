@@ -8,6 +8,7 @@ import Button from '@neos-project/react-ui-components/src/Button/';
 import Tabs from '@neos-project/react-ui-components/src/Tabs/';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 import debounce from 'lodash.debounce';
+import produce from 'immer';
 import {fromJSOrdered} from '@neos-project/utils-helpers';
 
 import {SecondaryInspector} from '@neos-project/neos-ui-inspector';
@@ -131,10 +132,11 @@ export default class Inspector extends PureComponent {
     preprocessViewConfigurationDebounced = debounce(() => {
         // Calculate node property values for context
         const {focusedNode, transientValues} = this.props;
-        const nodeForContext = focusedNode;
+        let nodeForContext = focusedNode;
         if (transientValues && transientValues.toJS) {
-            transientValues.map(item => item.value).toJS();
-            nodeForContext.properties = Object.assign({}, nodeForContext.properties, transientValues.map(item => $get('value', item)).toJS());
+            nodeForContext = produce(nodeForContext, draft => {
+                draft.properties = Object.assign({}, draft.properties, transientValues.map(item => $get('value', item)).toJS());
+            });
         }
 
         // Eval the view configuration and re-render if the configuration has changed

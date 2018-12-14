@@ -136,10 +136,6 @@ export default class NodeTreeToolBar extends PureComponent {
             treeType
         } = this.props;
 
-        if (!focusedNodeContextPath) {
-            return null;
-        }
-
         return (
             <div className={style.toolBar}>
                 <div className={style.toolBar__btnGroup}>

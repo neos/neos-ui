@@ -87,6 +87,12 @@ export function * watchCurrentDocument({configuration}) {
         let parentContextPath = contextPath;
 
         const siteNode = yield select(selectors.CR.Nodes.siteNodeSelector);
+
+        // siteNode may be null for a short time when navigating to a page in a different dimension, before the new state is loaded
+        if (!siteNode) {
+            return;
+        }
+
         const {loadingDepth} = configuration.nodeTree;
         let hasLoadedNodes = false;
         while (parentContextPath !== siteNodeContextPath) {

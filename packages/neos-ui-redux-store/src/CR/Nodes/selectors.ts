@@ -62,7 +62,7 @@ export const makeGetNodeByContextPathSelector = (contextPath: NodeContextPath) =
 
 export const makeHasChildrenSelector = (allowedNodeTypes: NodeTypeName[]) => createSelector(
     [
-        (state: GlobalState, contextPath: NodeContextPath) => state.cr.nodes.byContextPath[contextPath]
+        (state: GlobalState, contextPath: NodeContextPath) => $get(['cr', 'nodes', 'byContextPath', contextPath], state)
     ],
     node => (node && node.children || []).some(
         childNodeEnvelope => allowedNodeTypes.includes(childNodeEnvelope.nodeType)

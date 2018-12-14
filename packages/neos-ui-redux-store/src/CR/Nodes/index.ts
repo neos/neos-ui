@@ -186,20 +186,27 @@ const setState = (
 /**
  * Reload CR nodes state
  */
-const reloadState = ({siteNodeContextPath, documentNodeContextPath, nodes, merge}: {
-    siteNodeContextPath: NodeContextPath;
-    documentNodeContextPath: NodeContextPath;
-    nodes: NodeMap;
-    merge: boolean;
-}) => createAction(
-    actionTypes.RELOAD_STATE,
-    {
-        siteNodeContextPath,
-        documentNodeContextPath,
-        nodes,
-        merge
-    }
-);
+const reloadState = (payload: {
+    siteNodeContextPath?: NodeContextPath;
+    documentNodeContextPath?: NodeContextPath;
+    nodes?: NodeMap;
+    merge?: boolean;
+} = {}) => {
+    const {siteNodeContextPath, documentNodeContextPath, nodes, merge} = payload;
+    return createAction(
+        actionTypes.RELOAD_STATE,
+        {
+            siteNodeContextPath,
+            documentNodeContextPath,
+            nodes,
+            merge
+        }
+    );
+
+});
+
+
+
 
 /**
  * Mark a node for copy on paste

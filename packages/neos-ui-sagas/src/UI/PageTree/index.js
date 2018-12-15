@@ -80,7 +80,7 @@ export function * watchNodeCreated() {
 
 export function * watchCurrentDocument({configuration}) {
     yield takeLatest(actionTypes.CR.Nodes.SET_DOCUMENT_NODE, function * loadDocumentRootLine(action) {
-        const contextPath = action.payload;
+        const contextPath = action.payload.documentNode;
         const siteNodeContextPath = yield select($get('cr.nodes.siteNode'));
         const {q} = backend.get();
 

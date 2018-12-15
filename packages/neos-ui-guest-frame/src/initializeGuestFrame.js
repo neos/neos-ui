@@ -52,8 +52,7 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     // Remove the inline scripts after initialization
     Array.prototype.forEach.call(guestFrameWindow.document.querySelectorAll('script[data-neos-nodedata]'), element => element.parentElement.removeChild(element));
 
-    yield put(actions.CR.Nodes.setSiteNode(documentInformation.metaData.siteNode));
-    yield put(actions.CR.Nodes.setDocumentNode(documentInformation.metaData.documentNode));
+    yield put(actions.CR.Nodes.setDocumentNode(documentInformation.metaData.documentNode, documentInformation.metaData.siteNode));
     yield put(actions.UI.ContentCanvas.setPreviewUrl(documentInformation.metaData.previewUrl));
     yield put(actions.CR.ContentDimensions.setActive(documentInformation.metaData.contentDimensions.active));
     // The user may have navigated by clicking an inline link - that's why we need to update the contentCanvas URL to be in sync with the shown content.

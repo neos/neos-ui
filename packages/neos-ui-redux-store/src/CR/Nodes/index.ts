@@ -59,7 +59,6 @@ export enum actionTypes {
     REMOVAL_ABORTED = '@neos/neos-ui/CR/Nodes/REMOVAL_ABORTED',
     REMOVAL_CONFIRMED = '@neos/neos-ui/CR/Nodes/REMOVAL_CONFIRMED',
     REMOVE = '@neos/neos-ui/CR/Nodes/REMOVE',
-    SET_SITE_NODE = '@neos/neos-ui/CR/Nodes/SET_SITE_NODE',
     SET_DOCUMENT_NODE = '@neos/neos-ui/CR/Nodes/SET_DOCUMENT_NODE',
     SET_STATE = '@neos/neos-ui/CR/Nodes/SET_STATE',
     RELOAD_STATE = '@neos/neos-ui/CR/Nodes/RELOAD_STATE',
@@ -150,18 +149,9 @@ const confirmRemoval = () => createAction(actionTypes.REMOVAL_CONFIRMED);
 const remove = (contextPath: NodeContextPath) => createAction(actionTypes.REMOVE, contextPath);
 
 /**
- * Set site node
- *
- * @param {String} contextPath The context path of the site node
+ * Set the document node and optionally site node
  */
-const setSiteNode = (contextPath: NodeContextPath) => createAction(actionTypes.SET_SITE_NODE, contextPath);
-
-/**
- * Set the document node
- *
- * @param {String} contextPath The context path of the document node
- */
-const setDocumentNode = (contextPath: NodeContextPath) => createAction(actionTypes.SET_DOCUMENT_NODE, contextPath);
+const setDocumentNode = (documentNode: NodeContextPath, siteNode?: NodeContextPath) => createAction(actionTypes.SET_DOCUMENT_NODE, {documentNode, siteNode});
 
 /**
  * Set CR state on page load or after dimensions or workspaces switch
@@ -249,7 +239,7 @@ const paste = (contextPath: NodeContextPath, fusionPath: string) => createAction
 const commitPaste = (clipboardMode: ClipboardMode) => createAction(actionTypes.COMMIT_PASTE, clipboardMode);
 
 /**
- * Hide the given node
+ * Hide the given node draft.documentNode !== action.payload
  *
  * @param {String} contextPath The context path of the node to be hidden
  */
@@ -285,7 +275,6 @@ export const actions = {
     abortRemoval,
     confirmRemoval,
     remove,
-    setSiteNode,
     setDocumentNode,
     setState,
     reloadState,
@@ -420,13 +409,12 @@ export const subReducer = (state: State = defaultState, action: InitAction | Act
             delete draft.byContextPath[action.payload];
             break;
         }
-        case actionTypes.SET_SITE_NODE: {
-            draft.siteNode = action.payload;
-            break;
-        }
         case actionTypes.SET_DOCUMENT_NODE: {
-            if (draft.documentNode !== action.payload) {
-                draft.documentNode = action.payload;
+            if (action.payload.siteNode) {
+                draft.siteNode = action.payload.siteNode;
+            }
+            if (draft.documentNode !== action.payload.documentNode) {
+                draft.documentNode = action.payload.documentNode;
                 // If context path changed, ensure to reset the "focused node". Otherwise, when switching
                 // to different Document nodes and having a (content) node selected previously, the Inspector
                 // does not properly refresh. We just need to ensure that everytime we switch pages, we
@@ -442,7 +430,9 @@ export const subReducer = (state: State = defaultState, action: InitAction | Act
             draft.documentNode = documentNodeContextPath;
             draft.focused.contextPath = null;
             draft.focused.fusionPath = null;
-            draft.byContextPath = merge ? mergeDeepRight(draft.byContextPath, nodes) : nodes;
+            if (nodes) {
+                draft.byContextPath = merge ? mergeDeepRight(draft.byContextPath, nodes) : nodes;
+            }
             break;
         }
         case actionTypes.COPY: {

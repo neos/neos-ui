@@ -89,8 +89,6 @@ export const reducer = handleActions({
     [FORMATTING_UNDER_CURSOR]: ({formatting}) => $set('ui.contentCanvas.formattingUnderCursor', new Map(formatting)),
     [SET_CURRENTLY_EDITED_PROPERTY_NAME]: ({propertyName}) => $all(
         $set('ui.contentCanvas.currentlyEditedPropertyName', propertyName),
-        // See SET_FOCUS why it's needed
-        $set('ui.contentCanvas.currentlyEditedPropertyNameIntermediate', propertyName)
     ),
     [STOP_LOADING]: () => $set('ui.contentCanvas.isLoading', false),
     [START_LOADING]: () => $set('ui.contentCanvas.isLoading', true),

@@ -398,12 +398,6 @@ export const subReducer = (state: State = defaultState, action: InitAction | Act
             draft.focused.contextPath = contextPath;
             draft.focused.fusionPath = fusionPath;
             break;
-            // TODO: fix this code
-            // Set currentlyEditedPropertyName to currentlyEditedPropertyNameIntermediate and clear out currentlyEditedPropertyNameIntermediate
-            // This is needed because SET_CURRENTLY_EDITED_PROPERTY_NAME if fired before SET_FOCUS, but we still want to clear out currentlyEditedPropertyName
-            // when SET_FOCUS is triggered not from inline
-            // globalState.ui.contentCanvas.currentlyEditedPropertyName = globalState.ui.contentCanvas.currentlyEditedPropertyNameIntermediate;
-            // globalState.ui.contentCanvas.currentlyEditedPropertyNameIntermediate = '';
         }
         case actionTypes.UNFOCUS: {
             draft.focused.contextPath = null;

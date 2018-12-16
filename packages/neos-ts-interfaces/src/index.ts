@@ -137,6 +137,18 @@ export interface NodeType {
     };
 }
 
+//
+// Change object from our Changes API
+//
+export interface Change extends Readonly<{
+    type: string;
+    subject: NodeContextPath;
+    payload: {
+        propertyName: string;
+        value: any;
+    };
+}> {}
+
 // TODO: move to nodetypesregistry itself
 export interface NodeTypesRegistry {
     getRole: (roleName: string) => NodeTypeName;

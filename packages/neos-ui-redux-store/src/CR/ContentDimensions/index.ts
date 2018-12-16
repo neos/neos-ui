@@ -1,5 +1,5 @@
 import produce from 'immer';
-import {$get, $set} from 'plow-js';
+import {$get} from 'plow-js';
 import {mapObjIndexed} from 'ramda';
 import {createSelector} from 'reselect';
 import {action as createAction, ActionType} from 'typesafe-actions';
@@ -88,7 +88,7 @@ export const actions = {
 //
 // Export the reducer
 //
-export const subReducer = (state: State = defaultState, action: InitAction | Action) => produce(state, draft => {
+export const reducer = (state: State = defaultState, action: InitAction | Action) => produce(state, draft => {
     switch (action.type) {
         case system.INIT: {
             draft.byName = action.payload.cr.contentDimensions.byName;
@@ -126,17 +126,6 @@ export const subReducer = (state: State = defaultState, action: InitAction | Act
         }
     }
 });
-
-//
-// Export the reducer
-//
-export const reducer = (globalState: GlobalState, action: InitAction | Action) => {
-    // TODO: substitute global state with State when conversion of all CR reducers is done
-    const mockDefaultState = {cr: {contentDimensions: {}}};
-    const state = $get(['cr', 'contentDimensions'], globalState) || mockDefaultState;
-    const newState = subReducer(state, action);
-    return $set(['cr', 'contentDimensions'], newState, globalState);
-};
 
 /**
  * Get the currently active dimension values by dimension name

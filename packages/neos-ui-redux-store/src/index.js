@@ -11,10 +11,11 @@ import * as ServerFeedback from './ServerFeedback/index';
 const all = {Changes, CR, System, UI, User, ServerFeedback};
 
 // TODO: we'll get rid of untyped reducers soonish, this is just for transition period
-const untypedReducersSubparts = {CR, UI, ServerFeedback};
+const untypedReducersSubparts = {UI, ServerFeedback};
 const untypedReducers = map(k => untypedReducersSubparts[k].reducer, keys(untypedReducersSubparts));
 
 const typedReducer = combineReducers({
+    cr: CR.reducer,
     system: System.reducer,
     user: User.reducer
 });

@@ -1,8 +1,7 @@
 import produce from 'immer';
 import {mergeDeepRight} from 'ramda';
-import {$get, $set} from 'plow-js';
 import {action as createAction, ActionType} from 'typesafe-actions';
-import {actionTypes as system, InitAction, GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
+import {actionTypes as system, InitAction} from '@neos-project/neos-ui-redux-store/src/System';
 
 import * as selectors from './selectors';
 import {parentNodeContextPath, getNodeOrThrow} from './helpers';
@@ -291,7 +290,7 @@ export const actions = {
 //
 // Export the reducer
 //
-export const subReducer = (state: State = defaultState, action: InitAction | Action) => produce(state, draft => {
+export const reducer = (state: State = defaultState, action: InitAction | Action) => produce(state, draft => {
     switch (action.type) {
         case system.INIT: {
             draft.byContextPath = action.payload.cr.nodes.byContextPath;
@@ -487,22 +486,6 @@ export const subReducer = (state: State = defaultState, action: InitAction | Act
         }
     }
 });
-
-//
-// Export the reducer
-//
-export const reducer = (globalState: GlobalState, action: InitAction | Action) => {
-    // TODO: substitute global state with State when conversion of all CR reducers is done
-    const state = $get(['cr', 'nodes'], globalState) || undefined;
-    try {
-        const newState = subReducer(state, action);
-        return $set(['cr', 'nodes'], newState, globalState);
-    } catch (error) {
-        console.error('The following error was thrown in CR/Nodes reducer:', error, action); //tslint:disable-line
-        return state;
-    }
-
-};
 
 //
 // Export the selectors

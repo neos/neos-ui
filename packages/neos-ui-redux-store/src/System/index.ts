@@ -4,6 +4,7 @@ import {action as createAction, ActionType} from 'typesafe-actions';
 import {State as UserState} from './../User/index';
 import {State as ContentDimensionsState} from './../CR/ContentDimensions/index';
 import {State as NodesState} from './../CR/Nodes/index';
+import {State as WorkspacesState} from './../CR/Workspaces/index';
 
 //
 // Export the subreducer state shape interface
@@ -19,6 +20,7 @@ export interface GlobalState {
     cr: {
         contentDimensions: ContentDimensionsState;
         nodes: NodesState;
+        workspaces: WorkspacesState;
     };
 }
 

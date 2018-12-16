@@ -4,7 +4,7 @@ import {mapObjIndexed} from 'ramda';
 import {createSelector} from 'reselect';
 import {action as createAction, ActionType} from 'typesafe-actions';
 import {actionTypes as system, InitAction, GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
-
+import isEqual from 'lodash.isequal';
 
 type DimensionValue = string;
 
@@ -207,7 +207,7 @@ const activePresetsSelector = createSelector([
         return mapObjIndexed((dimensionValues, name) => {
             const dimensionConfiguration = byName[name];
             const presets = dimensionConfiguration.presets;
-            const activePreset = Object.keys(presets).find(dimensionName => presets[dimensionName].values === dimensionValues);
+            const activePreset = Object.keys(presets).find(dimensionName => isEqual(presets[dimensionName].values, dimensionValues));
             const presetName = activePreset || dimensionConfiguration.defaultPreset;
             const finalActivePreset = presets[presetName];
             return Object.assign({}, finalActivePreset, {name: presetName});

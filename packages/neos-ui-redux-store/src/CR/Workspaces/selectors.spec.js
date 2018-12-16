@@ -1,12 +1,10 @@
-import Immutable from 'immutable';
-
 import {
     baseWorkspaceSelector,
     publishableNodesSelector,
     publishableNodesInDocumentSelector,
     makeIsDocumentNodeDirtySelector,
     makeIsContentNodeDirtySelector
-} from './selectors.js';
+} from './selectors';
 
 const isDocumentNodeDirtySelector = makeIsDocumentNodeDirtySelector();
 const isContentNodeDirtySelector = makeIsContentNodeDirtySelector();
@@ -53,15 +51,15 @@ test(`
 });
 
 test(`isDocumentNodeDirtySelector should reflect the publishing state`, () => {
-    expect(isDocumentNodeDirtySelector(Immutable.fromJS(stateFixture), '/sites/neosdemo@user-text;language=en_US')).toBe(true);
-    expect(isDocumentNodeDirtySelector(Immutable.fromJS(stateFixture), '/sites/neosdemo/blah-blah@user-text;language=en_US')).toBe(true);
-    expect(isDocumentNodeDirtySelector(Immutable.fromJS(stateFixture), '/sites/neosdemo/content@user-text;language=en_US')).toBe(true);
-    expect(isDocumentNodeDirtySelector(Immutable.fromJS(stateFixture), '/sites/neosdemo/some-page@user-text;language=en_US')).toBe(false);
+    expect(isDocumentNodeDirtySelector(stateFixture, '/sites/neosdemo@user-text;language=en_US')).toBe(true);
+    expect(isDocumentNodeDirtySelector(stateFixture, '/sites/neosdemo/blah-blah@user-text;language=en_US')).toBe(true);
+    expect(isDocumentNodeDirtySelector(stateFixture, '/sites/neosdemo/content@user-text;language=en_US')).toBe(true);
+    expect(isDocumentNodeDirtySelector(stateFixture, '/sites/neosdemo/some-page@user-text;language=en_US')).toBe(false);
 });
 
 test(`isContentNodeDirtySelector should reflect the publishing state`, () => {
-    expect(isDocumentNodeDirtySelector(Immutable.fromJS(stateFixture), '/sites/neosdemo/content@user-text;language=en_US')).toBe(true);
-    expect(isContentNodeDirtySelector(Immutable.fromJS(stateFixture), '/sites/neosdemo@user-text;language=en_US')).toBe(false);
-    expect(isContentNodeDirtySelector(Immutable.fromJS(stateFixture), '/sites/neosdemo/blah-blah@user-text;language=en_US')).toBe(false);
-    expect(isContentNodeDirtySelector(Immutable.fromJS(stateFixture), '/sites/neosdemo/some-page@user-text;language=en_US')).toBe(false);
+    expect(isDocumentNodeDirtySelector(stateFixture, '/sites/neosdemo/content@user-text;language=en_US')).toBe(true);
+    expect(isContentNodeDirtySelector(stateFixture, '/sites/neosdemo@user-text;language=en_US')).toBe(false);
+    expect(isContentNodeDirtySelector(stateFixture, '/sites/neosdemo/blah-blah@user-text;language=en_US')).toBe(false);
+    expect(isContentNodeDirtySelector(stateFixture, '/sites/neosdemo/some-page@user-text;language=en_US')).toBe(false);
 });

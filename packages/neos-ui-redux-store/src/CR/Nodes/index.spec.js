@@ -1,4 +1,4 @@
-import {actionTypes, subReducer as reducer, actions, selectors} from './index';
+import {actionTypes, reducer, actions, selectors} from './index';
 
 import {actionTypes as system} from '../../System/index';
 

@@ -12,7 +12,7 @@ export function * watchToggle({globalRegistry}) {
         const state = yield select();
         const {contextPath} = action.payload;
 
-        const childrenAreFullyLoaded = $get(['cr', 'nodes', 'byContextPath', contextPath, 'children'], state).toJS()
+        const childrenAreFullyLoaded = $get(['cr', 'nodes', 'byContextPath', contextPath, 'children'], state)
             .filter(childEnvelope => nodeTypesRegistry.hasRole(childEnvelope.nodeType, 'document'))
             .every(
                 childEnvelope => Boolean($get(['cr', 'nodes', 'byContextPath', $get('contextPath', childEnvelope)], state))
@@ -81,7 +81,7 @@ export function * watchNodeCreated() {
 export function * watchCurrentDocument({configuration}) {
     yield takeLatest(actionTypes.CR.Nodes.SET_DOCUMENT_NODE, function * loadDocumentRootLine(action) {
         const contextPath = action.payload.documentNode;
-        const siteNodeContextPath = yield select($get('cr.nodes.siteNode'));
+        const siteNodeContextPath = yield select(selectors.CR.Nodes.siteNodeContextPathSelector);
         const {q} = backend.get();
 
         let parentContextPath = contextPath;
@@ -129,6 +129,16 @@ export function * watchCurrentDocument({configuration}) {
 
 export function * watchSearch({configuration}) {
     yield takeLatest(actionTypes.UI.PageTree.COMMENCE_SEARCH, function * searchForNode(action) {
+        const siteNodeContextPath = yield select(selectors.CR.Nodes.siteNodeContextPathSelector);
+        const nodesByContextPath = yield select(selectors.CR.Nodes.nodesByContextPathSelector);
+        const hiddenContextPaths = Object.keys(nodesByContextPath).filter(i => i !== siteNodeContextPath);
+        const result = {
+            hiddenContextPaths,
+            toggledContextPaths: [],
+            intermediateContextPaths: []
+        };
+        yield put(actions.UI.PageTree.setSearchResult(result));
+
         const {contextPath, query: searchQuery, filterNodeType} = action.payload;
         const effectiveFilterNodeType = filterNodeType || configuration.nodeTree.presets.default.baseNodeType;
 
@@ -149,7 +159,7 @@ export function * watchSearch({configuration}) {
                 matchingNodes = yield q([contextPath, documentNodeContextPath]).neosUiDefaultNodes(
                     configuration.nodeTree.presets.default.baseNodeType,
                     configuration.nodeTree.loadingDepth,
-                    toggledNodes.toJS(),
+                    toggledNodes,
                     clipboardNodeContextPath
                 ).getForTree();
             }
@@ -170,9 +180,9 @@ export function * watchSearch({configuration}) {
 
             yield put(actions.CR.Nodes.merge(nodes));
 
-            const resultContextPaths = new Set(Object.keys(nodes));
-            const oldHidden = yield select($get('ui.pageTree.hidden'));
-            const hiddenContextPaths = oldHidden.subtract(resultContextPaths);
+            const resultContextPaths = Object.keys(nodes);
+            const oldHidden = yield select(selectors.UI.PageTree.getHidden);
+            const hiddenContextPaths = oldHidden.filter(i => !resultContextPaths.includes(i));
 
             const toggledContextPaths = [];
             const intermediateContextPaths = [];

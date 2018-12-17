@@ -16,7 +16,7 @@ export default function * watchReloadState({configuration}) {
         const nodes = yield q([siteNodeContextPath, documentNodeContextPath]).neosUiDefaultNodes(
             configuration.nodeTree.presets.default.baseNodeType,
             configuration.nodeTree.loadingDepth,
-            toggledNodes.toJS(),
+            toggledNodes,
             clipboardNodeContextPath
         ).getForTree();
         const nodeMap = nodes.reduce((nodeMap, node) => {

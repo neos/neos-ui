@@ -95,8 +95,7 @@ export const siteNodeSelector = createSelector(
     ],
     (siteNodeContextPath, nodesByContextPath) => {
         if (siteNodeContextPath) {
-            const a = nodesByContextPath[siteNodeContextPath];
-            return a;
+            return nodesByContextPath[siteNodeContextPath] || null;
         }
         return null;
     }
@@ -108,8 +107,8 @@ export const documentNodeSelector = createSelector(
         nodesByContextPathSelector
     ],
     (currentContentCanvasNode, nodesByContextPath) => {
-        if (currentContentCanvasNode !== null) {
-            return nodesByContextPath[currentContentCanvasNode];
+        if (currentContentCanvasNode) {
+            return nodesByContextPath[currentContentCanvasNode] || null;
         }
         return null;
     }

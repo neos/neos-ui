@@ -39,12 +39,12 @@ test(`The reducer should return plain object as the initial state.`, () => {
         type: system.INIT,
         payload: {
             ui: {
-                addNodeModal: {}
+                contentCanvas: {}
             }
         }
     });
 
-    expect(typeof nextState.contentCanvas).toBe('object');
+    expect(typeof nextState).toBe('object');
 });
 
 test(`The "setSrc" action should set the currently opened documents src uri.`, () => {

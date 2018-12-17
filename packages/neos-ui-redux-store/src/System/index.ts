@@ -4,6 +4,7 @@ import {action as createAction, ActionType} from 'typesafe-actions';
 import {State as AddNodeModalState} from './../UI/AddNodeModal/index';
 import {State as ContentCanvasState} from './../UI/ContentCanvas/index';
 import {State as ContentTreeState} from './../UI/ContentTree/index';
+import {State as PageTreeState} from './../UI/PageTree/index';
 import {State as UserState} from './../User/index';
 import {State as CRState} from './../CR/index';
 
@@ -23,6 +24,7 @@ export interface GlobalState {
         addNodeModal: AddNodeModalState;
         contentCanvas: ContentCanvasState;
         contentTree: ContentTreeState;
+        pageTree: PageTreeState;
     };
 }
 

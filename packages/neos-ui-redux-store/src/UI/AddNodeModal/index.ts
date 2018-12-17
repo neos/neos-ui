@@ -101,9 +101,6 @@ export const subReducer = (state: State = defaultState, action: InitAction | Act
     }
 });
 
-//
-// Export the reducer
-//
 export const reducer = (globalState: GlobalState, action: InitAction | Action) => {
     // TODO: substitute global state with State when conversion of all UI reducers is done
     const state = $get(['ui', 'addNodeModal'], globalState) || undefined;

@@ -58,7 +58,7 @@ export default class Node extends PureComponent {
         level: PropTypes.number.isRequired,
         isActive: PropTypes.bool,
         isFocused: PropTypes.bool,
-        toggledNodeContextPaths: PropTypes.object,
+        toggledNodeContextPaths: PropTypes.array,
         hiddenContextPaths: PropTypes.object,
         intermediateContextPaths: PropTypes.object,
         loadingNodeContextPaths: PropTypes.object,

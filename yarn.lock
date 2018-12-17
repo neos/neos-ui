@@ -14657,7 +14657,7 @@ webpack-livereload-plugin@^2.1.1:
   dependencies:
     tiny-lr "^1.1.1"
 
-webpack-merge@^4.1.1, webpack-merge@^4.1.4:
+webpack-merge@^4.1.1, webpack-merge@^4.1.5:
   version "4.1.5"
   resolved "https://registry.yarnpkg.com/webpack-merge/-/webpack-merge-4.1.5.tgz#2be31e846c20767d1bef56bdca64c328a681190a"
   integrity sha512-sVcM+MMJv6DO0C0GLLltx8mUlGMKXE0zBsuMqZ9jz2X9gsekALw6Rs0cAfTWc97VuWS6NpVUa78959zANnMMLQ==

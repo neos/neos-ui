@@ -6,7 +6,7 @@ import {actionTypes as system, InitAction} from '@neos-project/neos-ui-redux-sto
 import * as selectors from './selectors';
 import {parentNodeContextPath, getNodeOrThrow} from './helpers';
 
-import {NodeContextPath, InsertPosition, NodeMap, ClipboardMode, NodeTypeName} from '@neos-project/neos-ts-interfaces';
+import {FusionPath, NodeContextPath, InsertPosition, NodeMap, ClipboardMode, NodeTypeName} from '@neos-project/neos-ts-interfaces';
 
 //
 // Export the subreducer state shape interface
@@ -17,7 +17,7 @@ export interface State extends Readonly<{
     documentNode: NodeContextPath | null;
     focused: {
         contextPath: NodeContextPath | null;
-        fusionPath: string | null;
+        fusionPath: FusionPath | null;
     },
     toBeRemoved: NodeContextPath | null;
     clipboard: NodeContextPath | null;
@@ -101,7 +101,7 @@ const changeProperty = (propertyChanges: ReadonlyArray<PropertyChange>) => creat
  * @param {String} fusionPath The fusion path of the focused node, needed for out-of-band-rendering, e.g. when
  *                            adding new nodes
  */
-const focus = (contextPath: NodeContextPath, fusionPath: string) => createAction(actionTypes.FOCUS, {contextPath, fusionPath});
+const focus = (contextPath: NodeContextPath, fusionPath: FusionPath) => createAction(actionTypes.FOCUS, {contextPath, fusionPath});
 
 /**
  * Un-marks all nodes as not focused.
@@ -123,7 +123,7 @@ const commenceRemoval = (contextPath: NodeContextPath) => createAction(actionTyp
  * @param {String} preferredMode (optional) The default mode to use in the nodetype selection dialog. Currently not used withing the system but may be useful for extensibility.
  * @param {String} nodeType (optional) If set, then the select nodetype step would be skipped completely. Currently not used withing the system but may be useful for extensibility.
  */
-const commenceCreation = (referenceNodeContextPath: NodeContextPath, referenceNodeFusionPath: string, preferredMode: InsertPosition = InsertPosition.AFTER, nodeType: NodeTypeName | null = null) => createAction(actionTypes.COMMENCE_CREATION, {
+const commenceCreation = (referenceNodeContextPath: NodeContextPath, referenceNodeFusionPath: FusionPath, preferredMode: InsertPosition = InsertPosition.AFTER, nodeType: NodeTypeName | null = null) => createAction(actionTypes.COMMENCE_CREATION, {
     referenceNodeContextPath,
     referenceNodeFusionPath,
     preferredMode,
@@ -229,7 +229,7 @@ const move = (
  * @param {String} contextPath The context path of the target node
  * @param {String} fusionPath The fusion path of the target node, needed for out-of-band-rendering
  */
-const paste = (contextPath: NodeContextPath, fusionPath: string) => createAction(actionTypes.PASTE, {contextPath, fusionPath});
+const paste = (contextPath: NodeContextPath, fusionPath: FusionPath) => createAction(actionTypes.PASTE, {contextPath, fusionPath});
 
 /**
  * Marks the moment when the actual paste request is commited

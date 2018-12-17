@@ -1,4 +1,5 @@
 export type NodeContextPath = string;
+export type FusionPath = string;
 export type NodeTypeName = string;
 export type WorkspaceName = string;
 

@@ -14,7 +14,6 @@ import * as AddNodeModal from './AddNodeModal/index';
 import * as PageTree from './PageTree/index';
 import * as ContentCanvas from './ContentCanvas/index';
 import * as Inspector from './Inspector/index';
-import * as Editors from './Editors/index';
 import * as InsertionModeModal from './InsertionModeModal/index';
 import * as NodeLinking from './NodeLinking/index';
 import * as SelectNodeTypeModal from './SelectNodeTypeModal/index';
@@ -36,7 +35,6 @@ const all = {
     PageTree,
     ContentCanvas,
     Inspector,
-    Editors,
     InsertionModeModal,
     NodeLinking,
     SelectNodeTypeModal,

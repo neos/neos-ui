@@ -7,6 +7,7 @@ import {State as ContentTreeState} from './../UI/ContentTree/index';
 import {State as PageTreeState} from './../UI/PageTree/index';
 import {State as DrawerState} from './../UI/Drawer/index';
 import {State as EditModePanelState} from './../UI/EditModePanel/index';
+import {State as EditPreviewModeState} from './../UI/EditPreviewMode/index';
 import {State as UserState} from './../User/index';
 import {State as CRState} from './../CR/index';
 
@@ -29,6 +30,7 @@ export interface GlobalState {
         pageTree: PageTreeState;
         drawer: DrawerState;
         editModePanel: EditModePanelState;
+        editPreviewMode: EditPreviewModeState;
     };
 }
 

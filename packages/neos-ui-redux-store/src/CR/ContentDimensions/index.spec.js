@@ -171,7 +171,7 @@ test(`activePresets selector should return the active dimensions configuration`,
     const state = fixtures.globalState;
     const activePresets = selectors.activePresets(state);
 
-    expect(activePresets.language.name).toBe('en_US');
+    expect(activePresets.language.name).toBe('fr');
 });
 
 test(`activePresets selector should fall back to default preset, if none is set`, () => {

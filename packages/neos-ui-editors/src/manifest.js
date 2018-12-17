@@ -1,33 +1,9 @@
-import {
-    TextField,
-    TextArea,
-    Boolean,
-    DateTime,
-    Image,
-    SelectBox,
-    Link,
-    Reference,
-    References,
-    NodeType,
-    CodeMirror,
-    MasterPlugin,
-    AssetEditor,
-    PluginViews,
-    PluginView
-} from './Editors/index';
-import EditorEnvelope from './EditorEnvelope/index';
-
-import {
-    CodeMirrorWrap,
-    ImageCropper,
-    MediaDetailsScreen,
-    MediaSelectionScreen
-} from './SecondaryEditors/index';
+import * as Editors from './index';
 
 import manifest from '@neos-project/neos-ui-extensibility';
 import backend from '@neos-project/neos-ui-backend-connector';
 
-export default EditorEnvelope;
+export default Editors.EditorEnvelope;
 
 manifest('inspectorEditors', {}, globalRegistry => {
     const editorsRegistry = globalRegistry.get('inspector').get('editors');
@@ -40,66 +16,66 @@ manifest('inspectorEditors', {}, globalRegistry => {
     //
 
     editorsRegistry.set('Neos.Neos/Inspector/Editors/TextFieldEditor', {
-        component: TextField
+        component: Editors.TextField
     });
 
     editorsRegistry.set('Neos.Neos/Inspector/Editors/TextAreaEditor', {
-        component: TextArea
+        component: Editors.TextArea
     });
 
     editorsRegistry.set('Neos.Neos/Inspector/Editors/BooleanEditor', {
-        component: Boolean,
+        component: Editors.Boolean,
         hasOwnLabel: true
     });
 
     editorsRegistry.set('Neos.Neos/Inspector/Editors/DateTimeEditor', {
-        component: DateTime
+        component: Editors.DateTime
     });
 
     editorsRegistry.set('Neos.Neos/Inspector/Editors/ImageEditor', {
-        component: Image
+        component: Editors.Image
     });
 
     editorsRegistry.set('Neos.Neos/Inspector/Editors/SelectBoxEditor', {
-        component: SelectBox
+        component: Editors.SelectBox
     });
 
     editorsRegistry.set('Neos.Neos/Inspector/Editors/LinkEditor', {
-        component: Link
+        component: Editors.Link
     });
 
     editorsRegistry.set('Neos.Neos/Inspector/Editors/ReferenceEditor', {
-        component: Reference
+        component: Editors.Reference
     });
 
     editorsRegistry.set('Neos.Neos/Inspector/Editors/ReferencesEditor', {
-        component: References
+        component: Editors.References
     });
 
     editorsRegistry.set('Neos.Neos/Inspector/Editors/NodeTypeEditor', {
-        component: NodeType
+        component: Editors.NodeType
     });
 
     editorsRegistry.set('Neos.Neos/Inspector/Editors/CodeEditor', {
-        component: CodeMirror,
+        component: Editors.CodeMirror,
         hasOwnLabel: true
     });
 
     editorsRegistry.set('Neos.Neos/Inspector/Editors/AssetEditor', {
-        component: AssetEditor
+        component: Editors.AssetEditor
     });
 
     editorsRegistry.set('Neos.Neos/Inspector/Editors/MasterPluginEditor', {
-        component: MasterPlugin
+        component: Editors.MasterPlugin
     });
 
     editorsRegistry.set('Neos.Neos/Inspector/Editors/PluginViewsEditor', {
-        component: PluginViews,
+        component: Editors.PluginViews,
         hasOwnLabel: true
     });
 
     editorsRegistry.set('Neos.Neos/Inspector/Editors/PluginViewEditor', {
-        component: PluginView
+        component: Editors.PluginView
     });
 
     //
@@ -107,19 +83,19 @@ manifest('inspectorEditors', {}, globalRegistry => {
     //
 
     secondaryEditorsRegistry.set('Neos.Neos/Inspector/Secondary/Editors/CodeMirrorWrap', {
-        component: CodeMirrorWrap
+        component: Editors.CodeMirrorWrap
     });
 
     secondaryEditorsRegistry.set('Neos.Neos/Inspector/Secondary/Editors/ImageCropper', {
-        component: ImageCropper
+        component: Editors.ImageCropper
     });
 
     secondaryEditorsRegistry.set('Neos.Neos/Inspector/Secondary/Editors/MediaDetailsScreen', {
-        component: MediaDetailsScreen
+        component: Editors.MediaDetailsScreen
     });
 
     secondaryEditorsRegistry.set('Neos.Neos/Inspector/Secondary/Editors/MediaSelectionScreen', {
-        component: MediaSelectionScreen
+        component: Editors.MediaSelectionScreen
     });
 
     //

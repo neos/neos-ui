@@ -95,11 +95,15 @@ const commenceRemoval = createAction(COMMENCE_REMOVAL, contextPath => contextPat
  * Start node creation workflow
  *
  * @param {String} referenceNodeContextPath The context path of the referenceNode
- * @param {String} referenceNodeFusionPath The fusion path of the referenceNode
+ * @param {String} referenceNodeFusionPath (optional) The fusion path of the referenceNode
+ * @param {String} preferredMode (optional) The default mode to use in the nodetype selection dialog. Currently not used withing the system but may be useful for extensibility.
+ * @param {String} nodeType (optional) If set, then the select nodetype step would be skipped completely. Currently not used withing the system but may be useful for extensibility.
  */
-const commenceCreation = createAction(COMMENCE_CREATION, (referenceNodeContextPath, referenceNodeFusionPath) => ({
+const commenceCreation = createAction(COMMENCE_CREATION, (referenceNodeContextPath, referenceNodeFusionPath, preferredMode = 'after', nodeType = null) => ({
     referenceNodeContextPath,
-    referenceNodeFusionPath
+    referenceNodeFusionPath,
+    preferredMode,
+    nodeType
 }));
 
 /**

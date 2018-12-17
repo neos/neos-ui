@@ -5,6 +5,7 @@ import {State as AddNodeModalState} from './../UI/AddNodeModal/index';
 import {State as ContentCanvasState} from './../UI/ContentCanvas/index';
 import {State as ContentTreeState} from './../UI/ContentTree/index';
 import {State as PageTreeState} from './../UI/PageTree/index';
+import {State as DrawerState} from './../UI/Drawer/index';
 import {State as UserState} from './../User/index';
 import {State as CRState} from './../CR/index';
 
@@ -25,6 +26,7 @@ export interface GlobalState {
         contentCanvas: ContentCanvasState;
         contentTree: ContentTreeState;
         pageTree: PageTreeState;
+        drawer: DrawerState;
     };
 }
 

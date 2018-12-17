@@ -102,7 +102,7 @@ export const siteNodeSelector = createSelector(
     }
 );
 
-export const currentContentCanvasNodeSelector = createSelector(
+export const documentNodeSelector = createSelector(
     [
         documentNodeContextPathSelector,
         nodesByContextPathSelector

@@ -137,7 +137,7 @@ export const PageTree = connect(state => ({
 })(NodeTree);
 
 export const ContentTree = connect(state => ({
-    rootNode: selectors.UI.ContentCanvas.documentNodeSelector(state),
+    rootNode: selectors.CR.Nodes.documentNodeSelector(state),
     ChildRenderer: ContentTreeNode,
     allowOpeningNodesInNewWindow: false
 }), {

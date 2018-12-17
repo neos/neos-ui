@@ -398,7 +398,7 @@ export const ContentTreeNode = withNodeTypeRegistryAndI18nRegistry(connect(
 
         return (state, {node, currentlyDraggedNode}) => ({
             isContentTreeNode: true,
-            rootNode: selectors.UI.ContentCanvas.documentNodeSelector(state),
+            rootNode: selectors.CR.Nodes.documentNodeSelector(state),
             loadingDepth: neos.configuration.structureTree.loadingDepth,
             childNodes: childrenOfSelector(state, getContextPath(node)),
             hasChildren: hasChildrenSelector(state, getContextPath(node)),

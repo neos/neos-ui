@@ -2,6 +2,7 @@ import produce from 'immer';
 import {$get} from 'plow-js';
 import {action as createAction, ActionType} from 'typesafe-actions';
 import {State as AddNodeModalState} from './../UI/AddNodeModal/index';
+import {State as ContentCanvasState} from './../UI/ContentCanvas/index';
 import {State as UserState} from './../User/index';
 import {State as CRState} from './../CR/index';
 
@@ -18,7 +19,8 @@ export interface GlobalState {
     user: UserState;
     cr: CRState;
     ui: {
-        addNodeModal: AddNodeModalState
+        addNodeModal: AddNodeModalState;
+        contentCanvas: ContentCanvasState;
     };
 }
 

@@ -98,7 +98,6 @@ export const subReducer = (state: State = defaultState, action: InitAction | Act
             }
             break;
         }
-        
     }
 });
 
@@ -107,8 +106,7 @@ export const subReducer = (state: State = defaultState, action: InitAction | Act
 //
 export const reducer = (globalState: GlobalState, action: InitAction | Action) => {
     // TODO: substitute global state with State when conversion of all UI reducers is done
-    const mockDefaultState = {ui: {addNodeModal: {}}};
-    const state = $get(['ui', 'addNodeModal'], globalState) || mockDefaultState;
+    const state = $get(['ui', 'addNodeModal'], globalState) || undefined;
     const newState = subReducer(state, action);
     return $set(['ui', 'addNodeModal'], newState, globalState);
 };

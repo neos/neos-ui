@@ -1,5 +1,6 @@
 export type NodeContextPath = string;
 export type NodeTypeName = string;
+export type WorkspaceName = string;
 
 export interface NodeChild {
     contextPath: NodeContextPath;

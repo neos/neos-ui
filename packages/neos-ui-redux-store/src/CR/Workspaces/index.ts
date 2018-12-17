@@ -4,10 +4,9 @@ import {action as createAction, ActionType} from 'typesafe-actions';
 import {NodeContextPath} from '@neos-project/neos-ts-interfaces';
 
 import {actionTypes as system, InitAction} from '@neos-project/neos-ui-redux-store/src/System';
+import {WorkspaceName} from '@neos-project/neos-ts-interfaces';
 
 import * as selectors from './selectors';
-
-export type WorkspaceName = string;
 
 export interface WorkspaceInformation {
     name: WorkspaceName;

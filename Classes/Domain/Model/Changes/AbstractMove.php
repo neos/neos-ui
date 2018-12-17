@@ -67,4 +67,16 @@ abstract class AbstractMove extends AbstractStructuralChange
         return $this->contentRepositoryNodeService
             ->generateUniqueNodeName($parentNode->getPath());
     }
+
+    /**
+     * Returns true if the current name of $node is "free" below $parentNode
+     *
+     * @param NodeInterface $parentNode
+     * @param NodeInterface $node
+     * @return bool
+     */
+    protected function nodeNameAvailableBelowNode(NodeInterface $parentNode, NodeInterface $node)
+    {
+        return $this->contentRepositoryNodeService->nodePathAvailableForNode($parentNode->getPath() . '/' . $node->getName(), $node);
+    }
 }

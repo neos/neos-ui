@@ -73,7 +73,7 @@
     "testcafe-react-selectors": "^2.1.0",
     "true": "^0.0.4",
     "ts-jest": "^23.1.4",
-    "ts-loader": "^4.5.0",
+    "ts-loader": "^5.3.1",
     "tslib": "^1.9.3",
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.15.0",

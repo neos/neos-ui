@@ -104,20 +104,22 @@ class TextInput extends PureComponent<TextInputProps> {
         };
 
         return (
-            <input
-                {...rest}
-                className={classNames}
-                role="textbox"
-                aria-multiline="false"
-                aria-disabled={disabled ? 'true' : 'false'}
-                type={type}
-                placeholder={placeholder}
-                disabled={disabled}
-                onChange={this.handleValueChange}
-                onKeyDown={onKeyDown as unknown as React.KeyboardEventHandler<HTMLInputElement>}
-                onKeyPress={this.handleKeyPress}
-                ref={inputRef}
-            />
+            <div className={containerClassName}>
+                <input
+                    {...rest}
+                    className={classNames}
+                    role="textbox"
+                    aria-multiline="false"
+                    aria-disabled={disabled ? 'true' : 'false'}
+                    type={type}
+                    placeholder={placeholder}
+                    disabled={disabled}
+                    onChange={this.handleValueChange}
+                    onKeyPress={this.handleKeyPress}
+                    onKeyDown={onKeyDown as unknown as React.KeyboardEventHandler<HTMLInputElement>}
+                    ref={inputRef}
+                />
+            </div>
         );
     }
 }

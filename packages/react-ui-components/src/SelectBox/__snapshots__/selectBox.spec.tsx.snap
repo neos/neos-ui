@@ -501,15 +501,19 @@ exports[`<SelectBox/> should render correctly with SearchBox 2`] = `
           fill="currentColor"
         />
       </svg>
-      <input
-        aria-disabled="false"
-        aria-multiline="false"
-        class="selectBoxHeaderWithSearchInput__inputClassName"
-        placeholder="placeholder"
-        role="textbox"
-        type="search"
-        value=""
-      />
+      <div
+        class="selectBoxHeaderWithSearchInput__inputContainerClassName"
+      >
+        <input
+          aria-disabled="false"
+          aria-multiline="false"
+          class="selectBoxHeaderWithSearchInput__inputClassName"
+          placeholder="placeholder"
+          role="textbox"
+          type="search"
+          value=""
+        />
+      </div>
     </div>
   </div>
   <ul

@@ -1,4 +1,4 @@
-import {actionTypes, actions, subReducer as reducer} from './index';
+import {actionTypes, actions, reducer} from './index';
 
 import {actionTypes as system} from '../../System/index';
 
@@ -17,9 +17,8 @@ test(`should export a reducer`, () => {
     expect(typeof (reducer)).toBe('function');
 });
 
-test(`The reducer should return an Immutable.Map as the initial state.`, () => {
-    const state = new Map({});
-    const nextState = reducer(state, {
+test(`The reducer should return a plain JS object as the initial state.`, () => {
+    const nextState = reducer(undefined, {
         type: system.INIT
     });
 

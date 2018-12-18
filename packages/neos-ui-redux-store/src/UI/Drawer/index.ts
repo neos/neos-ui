@@ -55,8 +55,8 @@ export type Action = ActionType<typeof actions>;
 export const subReducer = (state: State = defaultState, action: InitAction | Action) => produce(state, draft => {
     switch (action.type) {
         case system.INIT: {
-            draft.isHidden = action.payload.ui.drawer.isHidden || false;
-            draft.collapsedMenuGroups = action.payload.ui.drawer.collapsedMenuGroups || ['content'];
+            draft.isHidden = $get(['payload', 'ui', 'drawer', 'isHidden'], action) || false;
+            draft.collapsedMenuGroups = $get(['payload', 'ui', 'drawer', 'collapsedMenuGroups'], action) || ['content'];
             break;
         }
         case actionTypes.TOGGLE: {

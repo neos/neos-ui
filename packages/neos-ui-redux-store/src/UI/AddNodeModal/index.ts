@@ -70,7 +70,7 @@ export enum errorMessages {
 export const subReducer = (state: State = defaultState, action: InitAction | Action) => produce(state, draft => {
     switch (action.type) {
         case system.INIT: {
-            draft.toggledGroups = action.payload.ui.addNodeModal.toggledGroups || [];
+            draft.toggledGroups = $get(['payload', 'ui', 'addNodeModal', 'toggledGroups'], action) || [];
             break;
         }
         case actionTypes.OPEN: {

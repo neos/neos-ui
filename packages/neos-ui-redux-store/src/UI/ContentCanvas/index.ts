@@ -87,8 +87,8 @@ export type Action = ActionType<typeof actions>;
 export const subReducer = (state: State = defaultState, action: InitAction | Action) => produce(state, draft => {
     switch (action.type) {
         case system.INIT: {
-            draft.backgroundColor = action.payload.ui.contentCanvas.backgroundColor;
-            draft.src = action.payload.ui.contentCanvas.src || null;
+            draft.backgroundColor = $get(['payload', 'ui', 'contentCanvas', 'backgroundColor'], action);
+            draft.src = $get(['payload', 'ui', 'contentCanvas', 'src'], action) || null;
             break;
         }
         case actionTypes.SET_PREVIEW_URL: {

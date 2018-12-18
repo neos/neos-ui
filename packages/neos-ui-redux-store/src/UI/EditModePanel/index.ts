@@ -2,7 +2,7 @@ import produce from 'immer';
 import {action as createAction, ActionType} from 'typesafe-actions';
 import {$get, $set} from 'plow-js';
 
-import {actionTypes as system, InitAction, GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
+import {InitAction, GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
 
 export interface State extends Readonly<{
     isHidden: boolean;
@@ -37,10 +37,6 @@ export type Action = ActionType<typeof actions>;
 //
 export const subReducer = (state: State = defaultState, action: InitAction | Action) => produce(state, draft => {
     switch (action.type) {
-        case system.INIT: {
-            draft.isHidden = action.payload.ui.editModePanel.isHidden || true;
-            break;
-        }
         case actionTypes.TOGGLE: {
             draft.isHidden = !draft.isHidden;
             break;

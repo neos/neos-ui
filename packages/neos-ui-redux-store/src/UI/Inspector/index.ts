@@ -33,7 +33,7 @@ export enum actionTypes {
     //
     COMMIT = '@neos/neos-ui/UI/Inspector/COMMIT',
     CLEAR = '@neos/neos-ui/UI/Inspector/CLEAR',
-    
+
     //
     // User actions, which are handled by a saga
     //
@@ -41,7 +41,7 @@ export enum actionTypes {
     DISCARD = '@neos/neos-ui/UI/Inspector/DISCARD',
     ESCAPE = '@neos/neos-ui/UI/Inspector/ESCAPE',
     RESUME = '@neos/neos-ui/UI/Inspector/RESUME',
-    
+
     //
     // Actions to control the secondary inspector window
     //

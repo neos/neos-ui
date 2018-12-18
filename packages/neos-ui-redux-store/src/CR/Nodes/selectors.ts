@@ -110,9 +110,9 @@ export const documentNodeSelector = createSelector(
         documentNodeContextPathSelector,
         nodesByContextPathSelector
     ],
-    (currentContentCanvasNode, nodesByContextPath) => {
-        if (currentContentCanvasNode) {
-            return nodesByContextPath[currentContentCanvasNode] || null;
+    (documentNodeContextPath, nodesByContextPath) => {
+        if (documentNodeContextPath) {
+            return nodesByContextPath[documentNodeContextPath] || null;
         }
         return null;
     }

@@ -153,7 +153,17 @@ export interface Change extends Readonly<{
 
 // TODO: move to nodetypesregistry itself
 export interface NodeTypesRegistry {
-    getRole: (roleName: string) => NodeTypeName;
+    get: (nodeType: NodeTypeName) => NodeType | null;
+    getRole: (roleName: string) => NodeTypeName | null;
     getSubTypesOf: (nodeType: NodeTypeName) => NodeTypeName[];
     getAllowedNodeTypesTakingAutoCreatedIntoAccount: (isSubjectNodeAutocreated: boolean, referenceParentName: string, referenceParentNodeType: NodeTypeName, referenceGrandParentNodeType: NodeTypeName | null, role: string) => NodeTypeName[];
+}
+
+// TODO: move to validatorsregistry itself
+type Validator = (
+    values: {},
+    elementConfigurations: {}
+) => null | {} | string;
+export interface ValidatorRegistry {
+    get: (validatorName: string) => Validator;
 }

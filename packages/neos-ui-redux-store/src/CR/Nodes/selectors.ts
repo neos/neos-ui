@@ -37,7 +37,11 @@ export const makeGetDocumentNodes = (nodeTypesRegistry: NodeTypesRegistry) => cr
         nodesByContextPathSelector
     ],
     nodesMap => {
-        const documentSubNodeTypes = nodeTypesRegistry.getSubTypesOf(nodeTypesRegistry.getRole('document'));
+        const documentRole = nodeTypesRegistry.getRole('document');
+        if (!documentRole) {
+            throw new Error('Document role is not loaded!');
+        }
+        const documentSubNodeTypes = nodeTypesRegistry.getSubTypesOf(documentRole);
 
         const result: NodeMap = {};
         Object.keys(nodesMap).forEach(contextPath => {
@@ -230,7 +234,7 @@ export const getPathInNode = (state: GlobalState, contextPath: NodeContextPath, 
 
 export const makeGetAllowedChildNodeTypesSelector = (nodeTypesRegistry: NodeTypesRegistry, elevator: (id: string) => string | null = id => id) => createSelector(
     [
-        (state: GlobalState, {reference}: {reference: NodeContextPath, role: string}) => {
+        (state: GlobalState, {reference}: {reference: NodeContextPath | null, role: string}) => {
             if (reference === null) {
                 return null;
             }
@@ -240,7 +244,7 @@ export const makeGetAllowedChildNodeTypesSelector = (nodeTypesRegistry: NodeType
             }
             return null;
         },
-        (state: GlobalState, {reference}: {reference: NodeContextPath, role: string}) => {
+        (state: GlobalState, {reference}: {reference: NodeContextPath | null, role: string}) => {
             if (reference === null) {
                 return null;
             }
@@ -253,7 +257,7 @@ export const makeGetAllowedChildNodeTypesSelector = (nodeTypesRegistry: NodeType
             }
             return null;
         },
-        (_: GlobalState, {role}: {reference: NodeContextPath, role: string, subject: NodeContextPath}) => role
+        (_: GlobalState, {role}: {reference: NodeContextPath | null, role: string, subject: NodeContextPath | null}) => role
     ],
     (referenceNode, referenceParentNode, role) => {
         if (referenceNode === null || (referenceNode.policy && referenceNode.policy.canEdit === false)) {
@@ -283,7 +287,7 @@ export const makeIsAllowedToAddChildOrSiblingNodes = (nodeTypesRegistry: NodeTyp
 
 export const makeCanBeCopiedAlongsideSelector = (nodeTypesRegistry: NodeTypesRegistry) => createSelector(
     [
-        (state: GlobalState, {subject}: {subject: NodeContextPath}) => $get(['cr', 'nodes', 'byContextPath', subject], state),
+        (state: GlobalState, {subject}: {subject: NodeContextPath | null}) => subject ? $get(['cr', 'nodes', 'byContextPath', subject], state) : false,
         makeGetAllowedSiblingNodeTypesSelector(nodeTypesRegistry)
     ],
     (subjectNode, allowedNodeTypes) => subjectNode ? allowedNodeTypes.includes(subjectNode.nodeType) : false
@@ -291,7 +295,7 @@ export const makeCanBeCopiedAlongsideSelector = (nodeTypesRegistry: NodeTypesReg
 
 export const makeCanBeCopiedIntoSelector = (nodeTypesRegistry: NodeTypesRegistry) => createSelector(
     [
-        (state: GlobalState, {subject}) => $get(['cr', 'nodes', 'byContextPath', subject], state),
+        (state: GlobalState, {subject}: {subject: NodeContextPath | null}) => subject ? $get(['cr', 'nodes', 'byContextPath', subject], state) : false,
         makeGetAllowedChildNodeTypesSelector(nodeTypesRegistry)
     ],
     (subjectNode, allowedNodeTypes) => subjectNode ? allowedNodeTypes.includes(subjectNode.nodeType) : false
@@ -300,9 +304,9 @@ export const makeCanBeCopiedIntoSelector = (nodeTypesRegistry: NodeTypesRegistry
 export const makeCanBeMovedIntoSelector = (nodeTypesRegistry: NodeTypesRegistry) => createSelector(
     [
         makeCanBeCopiedIntoSelector(nodeTypesRegistry),
-        (_, {subject, reference}) => {
+        (_, {subject, reference}: {subject: NodeContextPath | null, reference: NodeContextPath | null}) => {
             const subjectPath = subject && subject.split('@')[0];
-            return subjectPath ? reference.indexOf(subjectPath) === 0 : false;
+            return subjectPath && reference ? reference.indexOf(subjectPath) === 0 : false;
         }
     ],
     (canBeInsertedInto, referenceIsDescendantOfSubject) => canBeInsertedInto && !referenceIsDescendantOfSubject

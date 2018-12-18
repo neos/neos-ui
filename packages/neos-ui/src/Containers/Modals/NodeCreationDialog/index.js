@@ -6,7 +6,7 @@ import {memoize} from 'ramda';
 
 import {neos} from '@neos-project/neos-ui-decorators';
 import {actions} from '@neos-project/neos-ui-redux-store';
-import validate from '@neos-project/neos-ui-validators/src/index';
+import validate from '@neos-project/neos-ui-validators';
 
 import Button from '@neos-project/react-ui-components/src/Button/';
 import Dialog from '@neos-project/react-ui-components/src/Dialog/';

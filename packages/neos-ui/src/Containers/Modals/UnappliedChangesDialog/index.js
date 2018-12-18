@@ -21,7 +21,8 @@ import style from './style.css';
     return {
         shouldAppear: selectors.UI.Inspector.shouldPromptToHandleUnappliedChanges(state),
         isApplyDisabled: isApplyDisabledSelector(state),
-        isDiscardDisabled: selectors.UI.Inspector.isDiscardDisabledSelector(state)
+        isDiscardDisabled: selectors.UI.Inspector.isDiscardDisabledSelector(state),
+        focusedNodeContextPath: selectors.CR.Nodes.focusedNodeContextPathSelector(state)
     };
 }, {
     resume: actions.UI.Inspector.resume,
@@ -48,7 +49,7 @@ export default class UnappliedChangesDialog extends PureComponent {
     handleDiscard = () => {
         const {discard} = this.props;
 
-        discard();
+        discard(this.props.focusedNodeContextPath);
     };
 
     handleApply = () => {

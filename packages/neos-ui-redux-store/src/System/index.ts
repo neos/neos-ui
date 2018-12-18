@@ -11,6 +11,7 @@ import {State as EditPreviewModeState} from './../UI/EditPreviewMode/index';
 import {State as FlashMessagesState} from './../UI/FlashMessages/index';
 import {State as FullScreenState} from './../UI/FullScreen/index';
 import {State as InsertionModeModalState} from './../UI/InsertionModeModal/index';
+import {State as InspectorState} from './../UI/Inspector/index';
 import {State as UserState} from './../User/index';
 import {State as CRState} from './../CR/index';
 
@@ -37,6 +38,7 @@ export interface GlobalState {
         flashMessages: FlashMessagesState;
         fullScreen: FullScreenState;
         insertionModeModal: InsertionModeModalState;
+        inspector: InspectorState;
     };
 }
 

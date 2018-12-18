@@ -63,7 +63,8 @@ export function * inspectorSaga({globalRegistry}) {
                     // Persist the inspector changes
                     //
                     yield call(flushInspector, inspectorRegistry);
-                    yield put(actions.UI.Inspector.clear());
+                    const focusedNodeContextPath = yield select(selectors.CR.Nodes.focusedNodeContextPathSelector);
+                    yield put(actions.UI.Inspector.clear(focusedNodeContextPath));
                 } catch (err) {
                     //
                     // An error occured, we should not leave the loop until

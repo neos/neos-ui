@@ -152,7 +152,7 @@ export default class Inspector extends PureComponent {
     }
 
     handleDiscard = () => {
-        this.props.discard();
+        this.props.discard(this.props.focusedNode.contextPath);
         this.closeSecondaryInspectorIfNeeded();
     }
 
@@ -222,6 +222,10 @@ export default class Inspector extends PureComponent {
             i18nRegistry
         } = this.props;
 
+        const augmentedCommit = (propertyId, value, hooks) => {
+            commit(propertyId, value, hooks, focusedNode);
+        };
+
         if (!focusedNode) {
             return null;
         }
@@ -272,7 +276,7 @@ export default class Inspector extends PureComponent {
                                     tooltip={i18nRegistry.translate($get('label', tab))}
                                     renderSecondaryInspector={this.renderSecondaryInspector}
                                     node={focusedNode}
-                                    commit={commit}
+                                    commit={augmentedCommit}
                                     handlePanelToggle={path => {
                                         this.handlePanelToggle([$get('id', tab), ...path]);
                                     }}

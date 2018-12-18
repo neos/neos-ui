@@ -3,7 +3,7 @@
   "version": "1.4.1",
   "description": "Validators for Neos CMS UI.",
   "private": true,
-  "main": "./src/manifest.js",
+  "main": "./src/index.js",
   "scripts": {
     "prebuild": "check-dependencies && yarn clean",
     "test": "yarn jest -- -w 2 --coverage",

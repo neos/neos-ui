@@ -6,3 +6,5 @@ export const shouldScrollIntoView = (state: GlobalState) => $get(['ui', 'content
 export const currentlyEditedPropertyName = (state: GlobalState) => $get(['ui', 'contentCanvas', 'currentlyEditedPropertyName'], state);
 
 export const formattingUnderCursor = (state: GlobalState) => $get(['ui', 'contentCanvas', 'formattingUnderCursor'], state);
+
+export const selectors = {};

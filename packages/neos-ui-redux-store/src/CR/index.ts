@@ -1,6 +1,7 @@
 import {keys} from 'ramda';
 
-import {combineReducers} from '@neos-project/utils-redux';
+import {combineReducers} from 'redux';
+
 
 import * as ContentDimensions from '@neos-project/neos-ui-redux-store/src/CR/ContentDimensions';
 import * as Nodes from '@neos-project/neos-ui-redux-store/src/CR/Nodes';
@@ -34,7 +35,7 @@ export const reducer = combineReducers({
     contentDimensions: ContentDimensions.reducer,
     nodes: Nodes.reducer,
     workspaces: Workspaces.reducer
-});
+} as any); // TODO: when we update redux, this shouldn't be necessary https://github.com/reduxjs/redux/issues/2709#issuecomment-357328709
 
 //
 // Export the selectors

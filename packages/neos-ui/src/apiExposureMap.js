@@ -1,10 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import Immutable from 'immutable';
 import * as plow from 'plow-js';
 import classnames from 'classnames';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import * as reactRedux from 'react-redux';
 import * as reduxActions from 'redux-actions';
 import * as reduxSaga from 'redux-saga';
@@ -78,10 +76,8 @@ export default {
         React,
         ReactDOM,
         PropTypes,
-        Immutable,
         plow,
         classnames,
-        ImmutablePropTypes,
         reactRedux,
         reduxActions,
         reduxSaga,

@@ -13,7 +13,7 @@ export function * watchPublish() {
     yield takeEvery(actionTypes.CR.Workspaces.PUBLISH, function * publishNodes(action) {
         const {nodeContextPaths, targetWorkspaceName} = action.payload;
 
-        if (nodeContextPaths.count() > 0) {
+        if (nodeContextPaths.length > 0) {
             yield put(actions.UI.Remote.startPublishing());
 
             try {

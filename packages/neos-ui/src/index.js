@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import {createStore, applyMiddleware, compose} from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import {put, select} from 'redux-saga/effects';
-import {Map} from 'immutable';
 import merge from 'lodash.merge';
 import {$get} from 'plow-js';
 
@@ -27,7 +26,7 @@ const devToolsStoreEnhancer = () => devToolsArePresent ? window.devToolsExtensio
 const sagaMiddleWare = createSagaMiddleware();
 
 const delegatingReducer = new DelegatingReducer();
-const store = createStore(delegatingReducer.reducer(), new Map(), compose(
+const store = createStore(delegatingReducer.reducer(), {}, compose(
     applyMiddleware(sagaMiddleWare, localStorageMiddleware, clipboardMiddleware),
     devToolsStoreEnhancer()
 ));

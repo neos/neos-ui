@@ -1,19 +1,7 @@
 import produce from 'immer';
 import {$get} from 'plow-js';
 import {action as createAction, ActionType} from 'typesafe-actions';
-import {State as AddNodeModalState} from './../UI/AddNodeModal/index';
-import {State as ContentCanvasState} from './../UI/ContentCanvas/index';
-import {State as ContentTreeState} from './../UI/ContentTree/index';
-import {State as PageTreeState} from './../UI/PageTree/index';
-import {State as DrawerState} from './../UI/Drawer/index';
-import {State as EditModePanelState} from './../UI/EditModePanel/index';
-import {State as EditPreviewModeState} from './../UI/EditPreviewMode/index';
-import {State as FlashMessagesState} from './../UI/FlashMessages/index';
-import {State as FullScreenState} from './../UI/FullScreen/index';
-import {State as InsertionModeModalState} from './../UI/InsertionModeModal/index';
-import {State as InspectorState} from './../UI/Inspector/index';
-import {State as KeyboardShortcutModalState} from './../UI/KeyboardShortcutModal/index';
-import {State as LeftSideBarState} from './../UI/LeftSideBar/index';
+import {State as UIState} from './../UI/index';
 import {State as UserState} from './../User/index';
 import {State as CRState} from './../CR/index';
 
@@ -29,21 +17,7 @@ export interface GlobalState {
     system: State;
     user: UserState;
     cr: CRState;
-    ui: {
-        addNodeModal: AddNodeModalState;
-        contentCanvas: ContentCanvasState;
-        contentTree: ContentTreeState;
-        pageTree: PageTreeState;
-        drawer: DrawerState;
-        editModePanel: EditModePanelState;
-        editPreviewMode: EditPreviewModeState;
-        flashMessages: FlashMessagesState;
-        fullScreen: FullScreenState;
-        insertionModeModal: InsertionModeModalState;
-        inspector: InspectorState;
-        keyboardShortcutModal: KeyboardShortcutModalState;
-        leftSideBar: LeftSideBarState;
-    };
+    ui: UIState;
 }
 
 export const defaultState: State = {

@@ -1,5 +1,4 @@
 import uuid from 'uuid';
-import {Map} from 'immutable';
 import {$get} from 'plow-js';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
@@ -350,14 +349,12 @@ manifest('main', {}, globalRegistry => {
 
         const children = findAllChildNodes(contentElement);
 
-        const nodes = new Map(
-            Object.assign(
-                {[contextPath]: selectors.CR.Nodes.byContextPathSelector(contextPath)(store.getState())},
-                ...children.map(el => {
-                    const contextPath = el.getAttribute('data-__neos-node-contextpath');
-                    return {[contextPath]: selectors.CR.Nodes.byContextPathSelector(contextPath)(store.getState())};
-                })
-            )
+        const nodes = Object.assign(
+            {[contextPath]: selectors.CR.Nodes.byContextPathSelector(contextPath)(store.getState())},
+            ...children.map(el => {
+                const contextPath = el.getAttribute('data-__neos-node-contextpath');
+                return {[contextPath]: selectors.CR.Nodes.byContextPathSelector(contextPath)(store.getState())};
+            })
         );
         const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
         const inlineEditorRegistry = globalRegistry.get('inlineEditors');

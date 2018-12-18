@@ -1,6 +1,6 @@
 import {actionTypes as system} from '../../System/index';
 
-import {actionTypes, actions, subReducer as reducer} from './index';
+import {actionTypes, actions, reducer} from './index';
 
 test(`should export actionTypes`, () => {
     expect(actionTypes).not.toBe(undefined);

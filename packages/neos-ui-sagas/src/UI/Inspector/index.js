@@ -9,7 +9,7 @@ const getFocusedNode = selectors.CR.Nodes.focusedSelector;
 const getTransientInspectorValues = state => {
     const values = $get(['ui', 'inspector', 'valuesByNodePath'], state);
 
-    return values.toJS ? values.toJS() : values;
+    return values;
 };
 
 export function * inspectorSaga({globalRegistry}) {

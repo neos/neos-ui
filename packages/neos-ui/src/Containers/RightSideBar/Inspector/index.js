@@ -135,9 +135,9 @@ export default class Inspector extends PureComponent {
         // Calculate node property values for context
         const {focusedNode, transientValues} = this.props;
         let nodeForContext = focusedNode;
-        if (transientValues && transientValues.toJS) {
+        if (transientValues) {
             nodeForContext = produce(nodeForContext, draft => {
-                draft.properties = Object.assign({}, draft.properties, transientValues.map(item => $get('value', item)).toJS());
+                draft.properties = Object.assign({}, draft.properties, transientValues.map(item => $get('value', item)));
             });
         }
 

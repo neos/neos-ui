@@ -22,7 +22,7 @@ const adminUser = Role(adminUrl, async t => {
 
 async function waitForIframeLoading(t) {
     await t.expect(ReactSelector('Provider').getReact(({props}) => {
-        const reduxState = props.store.getState().toJS();
+        const reduxState = props.store.getState();
         return !reduxState.ui.contentCanvas.isLoading;
     })).ok('Loading stopped');
 }
@@ -60,13 +60,13 @@ test('Switching dimensions', async t => {
         .click(ReactSelector('DimensionSwitcher SelectBox').find('li').withText('Latvian'))
         .click('#neos-NodeVariantCreationDialog-CreateEmpty')
         .expect(ReactSelector('Provider').getReact(({props}) => {
-            const reduxState = props.store.getState().toJS();
+            const reduxState = props.store.getState();
             const {isLoading} = reduxState.ui.contentCanvas;
             const activeDimension = reduxState.cr.contentDimensions.active.language[0];
             return !isLoading && activeDimension === 'lv';
         })).ok('Loading stopped and dimension switched to Latvian')
         .expect(ReactSelector('Provider').getReact(({props}) => {
-            const reduxState = props.store.getState().toJS();
+            const reduxState = props.store.getState();
             return reduxState.cr.workspaces.personalWorkspace.publishableNodes.length;
         })).gt(0, 'There are some unpublished nodes after adoption')
         .expect(page.treeNode.withText('Navigation elements').exists).notOk('Untranslated node gone from the tree');
@@ -77,7 +77,7 @@ test('Switching dimensions', async t => {
         .click(ReactSelector('DimensionSwitcher SelectBox'))
         .click(ReactSelector('DimensionSwitcher SelectBox').find('li').withText('English (US)'))
         .expect(ReactSelector('Provider').getReact(({props}) => {
-            const reduxState = props.store.getState().toJS();
+            const reduxState = props.store.getState();
             const {isLoading} = reduxState.ui.contentCanvas;
             const activeDimension = reduxState.cr.contentDimensions.active.language[0];
             return !isLoading && activeDimension === 'en_US';
@@ -109,7 +109,7 @@ test('Discarding: create multiple nodes nested within each other and then discar
     await discardAll(t);
     await t
         .expect(ReactSelector('Provider').getReact(({props}) => {
-            const reduxState = props.store.getState().toJS();
+            const reduxState = props.store.getState();
             return reduxState.cr.nodes.documentNode;
         })).eql('/sites/neosdemo@user-admin;language=en_US', 'After discarding we are back to the main page');
 });
@@ -124,7 +124,7 @@ test('Discarding: create a document node and then discard it', async t => {
         .click(Selector('#neos-NodeCreationDialog-CreateNew'))
         .expect(page.treeNode.withText(pageTitleToCreate).exists).ok('Node with the given title appeared in the tree')
         .expect(ReactSelector('Provider').getReact(({props}) => {
-            const reduxState = props.store.getState().toJS();
+            const reduxState = props.store.getState();
             return reduxState.cr.workspaces.personalWorkspace.publishableNodes.length;
         })).gt(0, 'There are some unpublished nodes');
 
@@ -133,7 +133,7 @@ test('Discarding: create a document node and then discard it', async t => {
     await t
         .expect(page.treeNode.withText(pageTitleToCreate).exists).notOk('Discarded node gone from the tree')
         .expect(ReactSelector('Provider').getReact(({props}) => {
-            const reduxState = props.store.getState().toJS();
+            const reduxState = props.store.getState();
             return reduxState.cr.workspaces.personalWorkspace.publishableNodes.length;
         })).eql(0, 'No unpublished nodes left');
     await waitForIframeLoading(t);
@@ -182,7 +182,7 @@ test('Discarding: create a content node and then discard it', async t => {
         .switchToMainWindow()
         .expect(page.treeNode.withText(defaultHeadlineTitle).exists).ok('New headline appeared in the tree')
         .expect(ReactSelector('Provider').getReact(({props}) => {
-            const reduxState = props.store.getState().toJS();
+            const reduxState = props.store.getState();
             return reduxState.cr.workspaces.personalWorkspace.publishableNodes.length;
         })).gt(0, 'There are some unpublished nodes');
 
@@ -191,7 +191,7 @@ test('Discarding: create a content node and then discard it', async t => {
     await t
         .expect(page.treeNode.withText(defaultHeadlineTitle).exists).notOk('Discarded node gone from the tree')
         .expect(ReactSelector('Provider').getReact(({props}) => {
-            const reduxState = props.store.getState().toJS();
+            const reduxState = props.store.getState();
             return reduxState.cr.workspaces.personalWorkspace.publishableNodes.length;
         })).eql(0, 'No unpublished nodes left');
     await waitForIframeLoading(t);

@@ -64,7 +64,6 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
             draft.isOpen = false;
             break;
         }
-        
     }
 });
 

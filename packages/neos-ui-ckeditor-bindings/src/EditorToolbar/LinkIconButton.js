@@ -110,7 +110,7 @@ class LinkTextField extends PureComponent {
     getDataLoaderOptions() {
         return {
             nodeTypes: ['Neos.Neos:Document'],
-            contextForNodeLinking: this.props.contextForNodeLinking.toJS()
+            contextForNodeLinking: this.props.contextForNodeLinking
         };
     }
 

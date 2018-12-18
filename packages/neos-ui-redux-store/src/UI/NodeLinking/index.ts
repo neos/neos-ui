@@ -1,8 +1,7 @@
-import {$get} from 'plow-js';
-
-import {handleActions} from '@neos-project/utils-redux';
 import {createSelector} from 'reselect';
-import {fromJSOrdered} from '@neos-project/utils-helpers';
+import {personalWorkspaceNameSelector} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces/selectors';
+import {siteNodeContextPathSelector} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/selectors';
+import {selectors as CDSelectors} from '@neos-project/neos-ui-redux-store/src/CR/ContentDimensions/index';
 
 //
 // Export the action types
@@ -16,27 +15,22 @@ export const actionTypes = {
 export const actions = {
 };
 
-//
-// Export the reducer
-//
-export const reducer = handleActions({});
-
 const contextForNodeLinking = createSelector(
     [
-        $get('cr.workspaces.personalWorkspace.name'),
-        $get('cr.nodes.siteNode'),
-        $get('cr.contentDimensions.active')
+        personalWorkspaceNameSelector,
+        siteNodeContextPathSelector,
+        CDSelectors.active
     ],
     (
         activeWorkspace,
         siteNodePath,
         activeContentDimensions
     ) => {
-        return fromJSOrdered({
+        return {
             workspaceName: activeWorkspace,
             contextNode: siteNodePath,
             dimensions: activeContentDimensions
-        });
+        };
     }
 );
 

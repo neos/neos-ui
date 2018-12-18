@@ -1,7 +1,7 @@
 import {action as createAction, ActionType} from 'typesafe-actions';
 import {$get} from 'plow-js';
 
-import {InitAction, GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
+import {actionTypes as system, InitAction, GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
 
 export type State = string;
 
@@ -31,6 +31,9 @@ export const actions = {
 //
 export const reducer = (state: State = defaultState, action: InitAction | Action) => {
     switch (action.type) {
+        case system.INIT: {
+            return $get(['payload', 'ui', 'editPreviewMode'], action) || defaultState;
+        }
         case actionTypes.SET: {
             return action.payload.editPreviewMode;
         }

@@ -9,6 +9,7 @@ import {State as DrawerState} from './../UI/Drawer/index';
 import {State as EditModePanelState} from './../UI/EditModePanel/index';
 import {State as EditPreviewModeState} from './../UI/EditPreviewMode/index';
 import {State as FlashMessagesState} from './../UI/FlashMessages/index';
+import {State as FullScreenState} from './../UI/FullScreen/index';
 import {State as UserState} from './../User/index';
 import {State as CRState} from './../CR/index';
 
@@ -33,6 +34,7 @@ export interface GlobalState {
         editModePanel: EditModePanelState;
         editPreviewMode: EditPreviewModeState;
         flashMessages: FlashMessagesState;
+        fullScreen: FullScreenState;
     };
 }
 

@@ -122,7 +122,7 @@ Neos:
         Neos.Ui.PositionalArraySorter: Neos\Neos\Ui\Fusion\Helper\PositionalArraySorterHelper
       documentNodeInformation:
         metaData:
-          contextPath: '${q(documentNode).property("_contextPath")}'
+          documentNode: '${q(documentNode).property("_contextPath")}'
           siteNode: '${q(site).property(''_contextPath'')}'
           previewUrl: '${Neos.Ui.NodeInfo.createRedirectToNode(controllerContext, q(documentNode).context({workspaceName: documentNode.context.workspace.baseWorkspace.name}).get(0))}'
           contentDimensions:
@@ -139,8 +139,9 @@ Neos:
           nodes:
             byContextPath: '${Neos.Ui.NodeInfo.defaultNodesForBackend(site, documentNode, controllerContext)}'
             siteNode: '${q(site).property(''_contextPath'')}'
-            clipboard: '${clipboardNode || ""}'
-            clipboardMode: '${clipboardMode || ""}'
+            documentNode: '${q(documentNode).property(''_contextPath'')}'
+            clipboard: '${clipboardNode || null}'
+            clipboardMode: '${clipboardMode || null}'
           contentDimensions:
             byName: '${Neos.Ui.ContentDimensions.contentDimensionsByName()}'
             active: '${documentNode.context.dimensions}'
@@ -150,7 +151,6 @@ Neos:
         ui:
           contentCanvas:
             src: '${Neos.Ui.NodeInfo.uri(documentNode, controllerContext)}'
-            contextPath: '${q(documentNode).property(''_contextPath'')}'
             backgroundColor: '${Configuration.setting(''Neos.Neos.Ui.contentCanvas.backgroundColor'')}'
           debugMode: false
           editPreviewMode: '${q(user).property("preferences.preferences")["contentEditing.editPreviewMode"] || Configuration.setting(''Neos.Neos.userInterface.defaultEditPreviewMode'')}'

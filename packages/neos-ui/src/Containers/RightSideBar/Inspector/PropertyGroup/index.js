@@ -58,7 +58,7 @@ export default class PropertyGroup extends PureComponent {
                                     id={itemId}
                                     label={label}
                                     editor={$get('editor', item)}
-                                    options={$get('editorOptions', item) && $get('editorOptions', item).toJS ? $get('editorOptions', item).toJS() : $get('editorOptions', item)}
+                                    options={$get('editorOptions', item) && $get('editorOptions', item)}
                                     renderSecondaryInspector={renderSecondaryInspector}
                                     node={node}
                                     commit={commit}
@@ -74,7 +74,7 @@ export default class PropertyGroup extends PureComponent {
                                     id={itemId}
                                     label={$get('label', item)}
                                     view={$get('view', item)}
-                                    options={$get('viewOptions', item) && $get('viewOptions', item).toJS ? $get('viewOptions', item).toJS() : $get('viewOptions', item)}
+                                    options={$get('viewOptions', item)}
                                     renderSecondaryInspector={renderSecondaryInspector}
                                     node={node}
                                     commit={commit}

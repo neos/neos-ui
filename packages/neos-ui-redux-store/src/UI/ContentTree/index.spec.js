@@ -1,6 +1,4 @@
-import {Map} from 'immutable';
-
-import {actionTypes, actions, reducer} from './index.js';
+import {actionTypes, actions, reducer} from './index';
 
 import {actionTypes as system} from '../../System/index';
 
@@ -21,11 +19,10 @@ test(`should export a reducer`, () => {
     expect(typeof (reducer)).toBe('function');
 });
 
-test(`The reducer should return an Immutable.Map as the initial state.`, () => {
-    const state = new Map({});
-    const nextState = reducer(state, {
+test(`The reducer should return an plain js object as the initial state.`, () => {
+    const nextState = reducer(undefined, {
         type: system.INIT
     });
 
-    expect(nextState.get('ui').get('contentTree') instanceof Map).toBe(true);
+    expect(typeof nextState).toBe('object');
 });

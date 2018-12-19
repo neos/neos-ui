@@ -1,6 +1,4 @@
-import Immutable, {Map} from 'immutable';
-
-import {actionTypes, actions, reducer} from './index.js';
+import {actionTypes, actions, reducer} from './index';
 
 import {actionTypes as system} from '../../System/index';
 
@@ -25,139 +23,117 @@ test(`should export a reducer`, () => {
     expect(typeof (reducer)).toBe('function');
 });
 
-test(`The reducer should return an Immutable.Map as the initial state.`, () => {
-    const state = new Map({});
-    const nextState = reducer(state, {
-        type: system.INIT
+test(`The reducer should return a plain JS object as the initial state.`, () => {
+    const nextState = reducer(undefined, {
+        type: system.INIT,
+        payload: {
+            ui: {
+                pageTree: {}
+            },
+            cr: {
+                nodes: {
+                    siteNode: 'siteNode',
+                    documentNode: 'documentNode'
+                }
+            }
+        }
     });
 
-    expect(nextState.get('ui').get('pageTree') instanceof Map).toBe(true);
+    expect(typeof nextState).toBe('object');
 });
 
 test(`The "focus" action should set the focused node context path.`, () => {
-    const state = Immutable.fromJS({
-        ui: {
-            pageTree: {
-                isFocused: 'someContextPath'
-            }
-        }
-    });
-    const nextState = reducer(state, actions.focus('someOtherContextPath'));
+    const nextState = reducer(undefined, actions.focus('someOtherContextPath'));
 
-    expect(nextState.get('ui').get('pageTree').get('isFocused')).not.toBe('someContextPath');
-    expect(nextState.get('ui').get('pageTree').get('isFocused')).toBe('someOtherContextPath');
+    expect(nextState.isFocused).toBe('someOtherContextPath');
 });
 
 test(`The "invalidate" action should remove the given node from toggled state`, () => {
-    const state = Immutable.fromJS({
-        ui: {
-            pageTree: {
-                loading: [],
-                errors: [],
-                toggled: ['someContextPath', 'someOtherContextPath']
-            }
-        }
-    });
+    const state = {
+        loading: [],
+        errors: [],
+        toggled: ['someContextPath', 'someOtherContextPath']
+    };
     const nextState1 = reducer(state, actions.invalidate('someContextPath'));
     const nextState2 = reducer(state, actions.invalidate('someOtherContextPath'));
     const nextState3 = reducer(nextState1, actions.invalidate('someOtherContextPath'));
 
-    expect(nextState1.get('ui').get('pageTree').get('toggled').toJS()).toEqual(['someOtherContextPath']);
-    expect(nextState2.get('ui').get('pageTree').get('toggled').toJS()).toEqual(['someContextPath']);
-    expect(nextState3.get('ui').get('pageTree').get('toggled').toJS()).toEqual([]);
+    expect(nextState1.toggled).toEqual(['someOtherContextPath']);
+    expect(nextState2.toggled).toEqual(['someContextPath']);
+    expect(nextState3.toggled).toEqual([]);
 });
 
 test(`The "invalidate" action should remove the given node from loading state`, () => {
-    const state = Immutable.fromJS({
-        ui: {
-            pageTree: {
-                toggled: [],
-                errors: [],
-                loading: ['someContextPath', 'someOtherContextPath']
-            }
-        }
-    });
+    const state = {
+        toggled: [],
+        errors: [],
+        loading: ['someContextPath', 'someOtherContextPath']
+    };
     const nextState1 = reducer(state, actions.invalidate('someContextPath'));
     const nextState2 = reducer(state, actions.invalidate('someOtherContextPath'));
     const nextState3 = reducer(nextState1, actions.invalidate('someOtherContextPath'));
 
-    expect(nextState1.get('ui').get('pageTree').get('loading').toJS()).toEqual(['someOtherContextPath']);
-    expect(nextState2.get('ui').get('pageTree').get('loading').toJS()).toEqual(['someContextPath']);
-    expect(nextState3.get('ui').get('pageTree').get('loading').toJS()).toEqual([]);
+    expect(nextState1.loading).toEqual(['someOtherContextPath']);
+    expect(nextState2.loading).toEqual(['someContextPath']);
+    expect(nextState3.loading).toEqual([]);
 });
 
 test(`The "invalidate" action should add the given node to error state`, () => {
-    const state = Immutable.fromJS({
-        ui: {
-            pageTree: {
-                toggled: [],
-                loading: [],
-                errors: []
-            }
-        }
-    });
+    const state = {
+        toggled: [],
+        loading: [],
+        errors: []
+    };
     const nextState1 = reducer(state, actions.invalidate('someContextPath'));
     const nextState2 = reducer(state, actions.invalidate('someOtherContextPath'));
     const nextState3 = reducer(nextState1, actions.invalidate('someOtherContextPath'));
 
-    expect(nextState1.get('ui').get('pageTree').get('errors').toJS()).toEqual(['someContextPath']);
-    expect(nextState2.get('ui').get('pageTree').get('errors').toJS()).toEqual(['someOtherContextPath']);
-    expect(nextState3.get('ui').get('pageTree').get('errors').toJS()).toEqual(['someContextPath', 'someOtherContextPath']);
+    expect(nextState1.errors).toEqual(['someContextPath']);
+    expect(nextState2.errors).toEqual(['someOtherContextPath']);
+    expect(nextState3.errors).toEqual(['someContextPath', 'someOtherContextPath']);
 });
 
 test(`The "setAsLoading" action should remove the given node from error state`, () => {
-    const state = Immutable.fromJS({
-        ui: {
-            pageTree: {
-                toggled: [],
-                loading: [],
-                errors: ['someContextPath', 'someOtherContextPath']
-            }
-        }
-    });
+    const state = {
+        toggled: [],
+        loading: [],
+        errors: ['someContextPath', 'someOtherContextPath']
+    };
     const nextState1 = reducer(state, actions.setAsLoading('someContextPath'));
     const nextState2 = reducer(state, actions.setAsLoading('someOtherContextPath'));
     const nextState3 = reducer(nextState1, actions.setAsLoading('someOtherContextPath'));
 
-    expect(nextState1.get('ui').get('pageTree').get('errors').toJS()).toEqual(['someOtherContextPath']);
-    expect(nextState2.get('ui').get('pageTree').get('errors').toJS()).toEqual(['someContextPath']);
-    expect(nextState3.get('ui').get('pageTree').get('errors').toJS()).toEqual([]);
+    expect(nextState1.errors).toEqual(['someOtherContextPath']);
+    expect(nextState2.errors).toEqual(['someContextPath']);
+    expect(nextState3.errors).toEqual([]);
 });
 
 test(`The "setAsLoading" action should add the given node to loading state`, () => {
-    const state = Immutable.fromJS({
-        ui: {
-            pageTree: {
-                toggled: [],
-                errors: [],
-                loading: []
-            }
-        }
-    });
+    const state = {
+        toggled: [],
+        errors: [],
+        loading: []
+    };
     const nextState1 = reducer(state, actions.setAsLoading('someContextPath'));
     const nextState2 = reducer(state, actions.setAsLoading('someOtherContextPath'));
     const nextState3 = reducer(nextState1, actions.setAsLoading('someOtherContextPath'));
 
-    expect(nextState1.get('ui').get('pageTree').get('loading').toJS()).toEqual(['someContextPath']);
-    expect(nextState2.get('ui').get('pageTree').get('loading').toJS()).toEqual(['someOtherContextPath']);
-    expect(nextState3.get('ui').get('pageTree').get('loading').toJS()).toEqual(['someContextPath', 'someOtherContextPath']);
+    expect(nextState1.loading).toEqual(['someContextPath']);
+    expect(nextState2.loading).toEqual(['someOtherContextPath']);
+    expect(nextState3.loading).toEqual(['someContextPath', 'someOtherContextPath']);
 });
 
 test(`The "setAsLoaded" action should remove the given node to loading state`, () => {
-    const state = Immutable.fromJS({
-        ui: {
-            pageTree: {
-                toggled: [],
-                errors: [],
-                loading: ['someContextPath', 'someOtherContextPath']
-            }
-        }
-    });
+    const state = {
+        toggled: [],
+        errors: [],
+        loading: ['someContextPath', 'someOtherContextPath']
+    };
     const nextState1 = reducer(state, actions.setAsLoaded('someContextPath'));
     const nextState2 = reducer(state, actions.setAsLoaded('someOtherContextPath'));
     const nextState3 = reducer(nextState1, actions.setAsLoaded('someOtherContextPath'));
 
-    expect(nextState1.get('ui').get('pageTree').get('loading').toJS()).toEqual(['someOtherContextPath']);
-    expect(nextState2.get('ui').get('pageTree').get('loading').toJS()).toEqual(['someContextPath']);
-    expect(nextState3.get('ui').get('pageTree').get('loading').toJS()).toEqual([]);
+    expect(nextState1.loading).toEqual(['someOtherContextPath']);
+    expect(nextState2.loading).toEqual(['someContextPath']);
+    expect(nextState3.loading).toEqual([]);
 });

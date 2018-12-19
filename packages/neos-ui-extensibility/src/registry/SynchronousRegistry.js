@@ -46,10 +46,10 @@ export default class SynchronousRegistry extends AbstractRegistry {
     get(key) {
         if (typeof key !== 'string') {
             console.error('Key must be a string');
-            return false;
+            return null;
         }
         const result = this._registry.find(item => item.key === key);
-        return result ? result.value : false;
+        return result ? result.value : null;
     }
 
     _getChildrenWrapped(searchKey) {

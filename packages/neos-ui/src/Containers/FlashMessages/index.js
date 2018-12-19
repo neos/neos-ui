@@ -1,6 +1,5 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
 
@@ -16,7 +15,7 @@ import style from './style.css';
 })
 export default class FlashMessages extends PureComponent {
     static propTypes = {
-        flashMessages: ImmutablePropTypes.map,
+        flashMessages: PropTypes.object,
         removeMessage: PropTypes.func.isRequired
     };
 
@@ -29,8 +28,9 @@ export default class FlashMessages extends PureComponent {
 
         return (
             <div className={style.flashMessageContainer}>
-                {flashMessages.map(flashMessage => {
-                    const {id, message, severity, timeout} = flashMessage.toJS();
+                {Object.keys(flashMessages).map(flashMessageId => {
+                    const flashMessage = flashMessages[flashMessageId];
+                    const {id, message, severity, timeout} = flashMessage;
 
                     return (
                         <FlashMessage
@@ -42,7 +42,7 @@ export default class FlashMessages extends PureComponent {
                             onClose={removeMessage}
                             />
                     );
-                }).toArray()}
+                })}
             </div>
         );
     }

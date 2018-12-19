@@ -138,7 +138,7 @@ export class DialogWithoutEscape extends PureComponent<DialogProps> {
 
     /**
      * Closes the dialog when the escape key has been pressed.
-     * 
+     *
      * @param {KeyboardEvent} event
      * @returns {void}
      */

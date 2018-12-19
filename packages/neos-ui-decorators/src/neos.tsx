@@ -38,7 +38,7 @@ export default <
                 <NeosContext.Consumer>
                     {context => {
                         if (!context) {
-                            // This could happen during initialization
+                            console.error('Context missing! Are you using `unstable_renderSubtreeIntoContainer` by any chance?', this.props); // tslint:disable-line
                             return null;
                         }
                         const registriesToPropsMap = mapRegistriesToProps ? mapRegistriesToProps(context.globalRegistry) : {};

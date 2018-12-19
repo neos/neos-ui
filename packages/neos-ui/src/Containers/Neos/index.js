@@ -1,5 +1,7 @@
-import {PureComponent, Children} from 'react';
+import React, {PureComponent, Children} from 'react';
 import PropTypes from 'prop-types';
+
+import {NeosContext} from '@neos-project/neos-ui-decorators';
 
 export default class Neos extends PureComponent {
     static propTypes = {
@@ -9,18 +11,12 @@ export default class Neos extends PureComponent {
         children: PropTypes.element.isRequired
     };
 
-    static childContextTypes = {
-        globalRegistry: PropTypes.object.isRequired,
-        configuration: PropTypes.object.isRequired,
-        routes: PropTypes.object.isRequired
-    };
-
-    getChildContext() {
-        const {configuration, globalRegistry, routes} = this.props;
-        return {configuration, globalRegistry, routes};
-    }
-
     render() {
-        return Children.only(this.props.children);
+        const {configuration, globalRegistry, routes} = this.props;
+        return (
+            <NeosContext.Provider value={{configuration, globalRegistry, routes}}>
+                {Children.only(this.props.children)}
+            </NeosContext.Provider>
+        );
     }
 }

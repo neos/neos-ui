@@ -165,5 +165,8 @@ type Validator = (
     elementConfigurations: {}
 ) => null | {} | string;
 export interface ValidatorRegistry {
-    get: (validatorName: string) => Validator;
+    get: (validatorName: string) => Validator | null;
+}
+export interface GlobalRegistry {
+    get: (validatorName: string) => any | null;
 }

@@ -4,7 +4,6 @@ import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 import TestBackend from 'react-dnd-test-backend';
 import {DragDropContextProvider} from 'react-dnd';
-import Immutable from 'immutable';
 
 import SelectBoxEditor from './index.js';
 import {WrapWithMockGlobalRegistry, MockDataSourceDataLoader} from '../../_lib/testUtils';
@@ -92,7 +91,7 @@ test(`SelectBox > multi, no dataSource, preselected value`, () => {
 /**
  * DATA SOURCES
  */
-const store = createStore(state => state, Immutable.fromJS({
+const store = createStore(state => state, {
     cr: {
         nodes: {
             focused: {
@@ -100,7 +99,7 @@ const store = createStore(state => state, Immutable.fromJS({
             }
         }
     }
-}));
+});
 
 test(`SelectBox > single, dataSource, no preselected value`, () => {
     MockDataSourceDataLoader.reset();

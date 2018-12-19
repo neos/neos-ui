@@ -1,5 +1,5 @@
 import {keys} from 'ramda';
-import {combineReducers} from '@neos-project/utils-redux';
+import {combineReducers} from 'redux';
 
 import * as Settings from '@neos-project/neos-ui-redux-store/src/User/Settings';
 import * as Preferences from '@neos-project/neos-ui-redux-store/src/User/Preferences';
@@ -33,7 +33,7 @@ export const reducer = combineReducers({
     settings: Settings.reducer,
     preferences: Preferences.reducer,
     name: Name.reducer
-});
+} as any);
 
 //
 // Export the selectors

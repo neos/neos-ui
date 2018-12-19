@@ -12,7 +12,7 @@ export default class TabPanel extends PureComponent {
     static displayName = 'Inspector Tab Panel';
 
     static propTypes = {
-        groups: PropTypes.object,
+        groups: PropTypes.array,
         renderSecondaryInspector: PropTypes.func.isRequired,
         node: PropTypes.object.isRequired,
         commit: PropTypes.func.isRequired,
@@ -36,7 +36,7 @@ export default class TabPanel extends PureComponent {
             <Tabs.Panel theme={{panel: style.inspectorTabPanel}}>
                 <SelectedElement/>
                 {
-                    groups.filter(g => ($get('items', g) && $get('items', g).filter(this.isPropertyEnabled).count())).map(group => (
+                    groups.filter(g => ($get('items', g) && $get('items', g).filter(this.isPropertyEnabled).length)).map(group => (
                         <PropertyGroup
                             handlePanelToggle={() => handlePanelToggle([$get('id', group)])}
                             handleInspectorApply={handleInspectorApply}

@@ -1,6 +1,6 @@
 import {$all, $set, $get} from 'plow-js';
 
-import {actionTypes, actions, subReducer as reducer, selectors, defaultState} from './index';
+import {actionTypes, actions, reducer, selectors, defaultState} from './index';
 import {actionTypes as system} from '../../System/index';
 
 const fixtures = {};
@@ -171,7 +171,7 @@ test(`activePresets selector should return the active dimensions configuration`,
     const state = fixtures.globalState;
     const activePresets = selectors.activePresets(state);
 
-    expect(activePresets.language.name).toBe('en_US');
+    expect(activePresets.language.name).toBe('fr');
 });
 
 test(`activePresets selector should fall back to default preset, if none is set`, () => {

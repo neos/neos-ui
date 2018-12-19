@@ -20,7 +20,7 @@ import style from './style.css';
 })
 export default class DiscardDialog extends PureComponent {
     static propTypes = {
-        nodesToBeDiscarded: PropTypes.object,
+        nodesToBeDiscarded: PropTypes.array,
         confirm: PropTypes.func.isRequired,
         abort: PropTypes.func.isRequired
     };
@@ -78,10 +78,10 @@ export default class DiscardDialog extends PureComponent {
 
     render() {
         const {nodesToBeDiscarded} = this.props;
-        if (!nodesToBeDiscarded) {
+        if (nodesToBeDiscarded.length === 0) {
             return null;
         }
-        const numberOfChanges = nodesToBeDiscarded.count();
+        const numberOfChanges = nodesToBeDiscarded.length;
 
         return (
             <Dialog

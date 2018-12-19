@@ -35,7 +35,7 @@ export default class NodeTypesRegistry extends SynchronousRegistry {
     }
 
     getRole(roleName) {
-        return this._roles[roleName];
+        return this._roles[roleName] || null;
     }
 
     setDefaultInlineEditor(defaultInlineEditor) {

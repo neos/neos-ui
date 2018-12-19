@@ -1,110 +1,42 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`The "clear" action should remove pending changes for the currently focused node. 1`] = `
-Immutable.Map {
-  "cr": Immutable.Map {
-    "nodes": Immutable.Map {
-      "byContextPath": Immutable.Map {
-        "/my/path@user-foo": Immutable.Map {
-          "contextPath": "/my/path@user-foo",
-        },
-      },
-      "focused": Immutable.Map {
-        "contextPath": "/my/path@user-foo",
-      },
-    },
-  },
-  "ui": Immutable.Map {
-    "inspector": Immutable.Map {
-      "valuesByNodePath": Immutable.Map {
-        "/my/other/path@user-foo": Immutable.Map {
-          "test4": Immutable.Map {
-            "value": "value4",
-          },
-        },
-      },
-      "shouldPromptToHandleUnappliedChanges": false,
+Object {
+  "shouldPromptToHandleUnappliedChanges": false,
+  "valuesByNodePath": Object {
+    "someOtherContextPath": Object {
+      "someProperty": "value",
     },
   },
 }
 `;
 
 exports[`The "clear" action should remove pending changes for the currently focused node. 2`] = `
-Immutable.Map {
-  "cr": Immutable.Map {
-    "nodes": Immutable.Map {
-      "byContextPath": Immutable.Map {
-        "/my/path@user-foo": Immutable.Map {
-          "contextPath": "/my/path@user-foo",
-        },
-      },
-      "focused": Immutable.Map {
-        "contextPath": "/my/path@user-foo",
-      },
-    },
-  },
-  "ui": Immutable.Map {
-    "inspector": Immutable.Map {
-      "valuesByNodePath": Immutable.Map {
-        "/my/other/path@user-foo": Immutable.Map {
-          "test4": Immutable.Map {
-            "value": "value4",
-          },
-        },
-      },
-      "shouldPromptToHandleUnappliedChanges": false,
+Object {
+  "shouldPromptToHandleUnappliedChanges": false,
+  "valuesByNodePath": Object {
+    "someOtherContextPath": Object {
+      "someProperty": "value",
     },
   },
 }
 `;
 
 exports[`The "commit" action should ignore the last modification, if it doesn't differ from the current node state 1`] = `
-Immutable.Map {
-  "cr": Immutable.Map {
-    "nodes": Immutable.Map {
-      "byContextPath": Immutable.Map {
-        "/my/path@user-foo": Immutable.Map {
-          "contextPath": "/my/path@user-foo",
-          "properties": Immutable.Map {
-            "title": "Foo",
-          },
-        },
-      },
-      "focused": Immutable.Map {
-        "contextPath": "/my/path@user-foo",
-      },
-    },
-  },
-  "ui": Immutable.Map {
-    "inspector": Immutable.Map {
-      "valuesByNodePath": Immutable.Map {},
-    },
+Object {
+  "valuesByNodePath": Object {
+    "someContextPath": Object {},
   },
 }
 `;
 
 exports[`The "commit" action should store the last modification on the currently focused node. 1`] = `
-Immutable.Map {
-  "cr": Immutable.Map {
-    "nodes": Immutable.Map {
-      "byContextPath": Immutable.Map {
-        "/my/path@user-foo": Immutable.Map {
-          "contextPath": "/my/path@user-foo",
-        },
-      },
-      "focused": Immutable.Map {
-        "contextPath": "/my/path@user-foo",
-      },
-    },
-  },
-  "ui": Immutable.Map {
-    "inspector": Immutable.Map {
-      "valuesByNodePath": Immutable.Map {
-        "/my/path@user-foo": Immutable.Map {
-          "test": Immutable.OrderedMap {
-            "value": "value",
-          },
-        },
+Object {
+  "valuesByNodePath": Object {
+    "someContextPath": Object {
+      "test": Object {
+        "hooks": Object {},
+        "value": "value",
       },
     },
   },
@@ -112,27 +44,12 @@ Immutable.Map {
 `;
 
 exports[`The "commit" action should store the last modification on the currently focused node. 2`] = `
-Immutable.Map {
-  "cr": Immutable.Map {
-    "nodes": Immutable.Map {
-      "byContextPath": Immutable.Map {
-        "/my/path@user-foo": Immutable.Map {
-          "contextPath": "/my/path@user-foo",
-        },
-      },
-      "focused": Immutable.Map {
-        "contextPath": "/my/path@user-foo",
-      },
-    },
-  },
-  "ui": Immutable.Map {
-    "inspector": Immutable.Map {
-      "valuesByNodePath": Immutable.Map {
-        "/my/path@user-foo": Immutable.Map {
-          "test": Immutable.OrderedMap {
-            "value": "another value",
-          },
-        },
+Object {
+  "valuesByNodePath": Object {
+    "someContextPath": Object {
+      "test": Object {
+        "hooks": Object {},
+        "value": "another value",
       },
     },
   },
@@ -140,27 +57,12 @@ Immutable.Map {
 `;
 
 exports[`The "commit" action should store the last modification on the currently focused node. 3`] = `
-Immutable.Map {
-  "cr": Immutable.Map {
-    "nodes": Immutable.Map {
-      "byContextPath": Immutable.Map {
-        "/my/path@user-foo": Immutable.Map {
-          "contextPath": "/my/path@user-foo",
-        },
-      },
-      "focused": Immutable.Map {
-        "contextPath": "/my/path@user-foo",
-      },
-    },
-  },
-  "ui": Immutable.Map {
-    "inspector": Immutable.Map {
-      "valuesByNodePath": Immutable.Map {
-        "/my/path@user-foo": Immutable.Map {
-          "test": Immutable.OrderedMap {
-            "value": "another value",
-          },
-        },
+Object {
+  "valuesByNodePath": Object {
+    "someContextPath": Object {
+      "test": Object {
+        "hooks": Object {},
+        "value": "another value",
       },
     },
   },
@@ -168,30 +70,14 @@ Immutable.Map {
 `;
 
 exports[`The "commit" action should store the last modification on the currently focused node. 4`] = `
-Immutable.Map {
-  "cr": Immutable.Map {
-    "nodes": Immutable.Map {
-      "byContextPath": Immutable.Map {
-        "/my/path@user-foo": Immutable.Map {
-          "contextPath": "/my/path@user-foo",
+Object {
+  "valuesByNodePath": Object {
+    "someContextPath": Object {
+      "test": Object {
+        "hooks": Object {
+          "some": "hook",
         },
-      },
-      "focused": Immutable.Map {
-        "contextPath": "/my/path@user-foo",
-      },
-    },
-  },
-  "ui": Immutable.Map {
-    "inspector": Immutable.Map {
-      "valuesByNodePath": Immutable.Map {
-        "/my/path@user-foo": Immutable.Map {
-          "test": Immutable.OrderedMap {
-            "value": "another value",
-            "hooks": Immutable.OrderedMap {
-              "some": "hook",
-            },
-          },
-        },
+        "value": "another value",
       },
     },
   },
@@ -199,58 +85,22 @@ Immutable.Map {
 `;
 
 exports[`The "discard" action should remove pending changes for the currently focused node. 1`] = `
-Immutable.Map {
-  "cr": Immutable.Map {
-    "nodes": Immutable.Map {
-      "byContextPath": Immutable.Map {
-        "/my/path@user-foo": Immutable.Map {
-          "contextPath": "/my/path@user-foo",
-        },
-      },
-      "focused": Immutable.Map {
-        "contextPath": "/my/path@user-foo",
-      },
-    },
-  },
-  "ui": Immutable.Map {
-    "inspector": Immutable.Map {
-      "valuesByNodePath": Immutable.Map {
-        "/my/other/path@user-foo": Immutable.Map {
-          "test4": Immutable.Map {
-            "value": "value4",
-          },
-        },
-      },
-      "shouldPromptToHandleUnappliedChanges": false,
+Object {
+  "shouldPromptToHandleUnappliedChanges": false,
+  "valuesByNodePath": Object {
+    "someOtherContextPath": Object {
+      "someProperty": "value",
     },
   },
 }
 `;
 
 exports[`The "discard" action should remove pending changes for the currently focused node. 2`] = `
-Immutable.Map {
-  "cr": Immutable.Map {
-    "nodes": Immutable.Map {
-      "byContextPath": Immutable.Map {
-        "/my/path@user-foo": Immutable.Map {
-          "contextPath": "/my/path@user-foo",
-        },
-      },
-      "focused": Immutable.Map {
-        "contextPath": "/my/path@user-foo",
-      },
-    },
-  },
-  "ui": Immutable.Map {
-    "inspector": Immutable.Map {
-      "valuesByNodePath": Immutable.Map {
-        "/my/other/path@user-foo": Immutable.Map {
-          "test4": Immutable.Map {
-            "value": "value4",
-          },
-        },
-      },
-      "shouldPromptToHandleUnappliedChanges": false,
+Object {
+  "shouldPromptToHandleUnappliedChanges": false,
+  "valuesByNodePath": Object {
+    "someOtherContextPath": Object {
+      "someProperty": "value",
     },
   },
 }

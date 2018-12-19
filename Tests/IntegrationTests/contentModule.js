@@ -325,3 +325,48 @@ test('Can create content node from inside InlineUI', async t => {
         .expect(Selector('.neos-contentcollection').withText(headlineTitle).exists).ok()
         .switchToMainWindow();
 });
+
+test('Can edit the page title via inspector', async t => {
+    const InspectorTitleProperty = Selector('#__neos__editor__property---title');
+    await waitForIframeLoading(t);
+
+    subSection('Rename home page via inspector');
+    await t
+        .expect(InspectorTitleProperty.value).eql('Home')
+        .click(InspectorTitleProperty)
+        .typeText(InspectorTitleProperty, '-1')
+        .expect(InspectorTitleProperty.value).eql('Home-1')
+        .click(Selector('#neos-Inspector-Discard'))
+        .expect(InspectorTitleProperty.value).eql('Home')
+        .typeText(InspectorTitleProperty, '-1')
+        .click(Selector('#neos-Inspector-Apply'))
+        .expect(InspectorTitleProperty.value).eql('Home-1');
+    await waitForIframeLoading(t);
+    await t
+        .expect(InspectorTitleProperty.value).eql('Home-1');
+
+    subSection('Test unapplied changes dialog - resume');
+    await t
+        .click(InspectorTitleProperty)
+        .typeText(InspectorTitleProperty, '-2')
+        .click(Selector('[name="neos-content-main"]'))
+        .expect(Selector('#neos-UnappliedChangesDialog').exists).ok()
+        .click(Selector('#neos-UnappliedChangesDialog-resume'))
+        .expect(Selector('#neos-UnappliedChangesDialog').exists).notOk()
+        .expect(InspectorTitleProperty.value).eql('Home-1-2');
+
+    subSection('Test unapplied changes dialog - discard');
+    await t
+        .click(Selector('[name="neos-content-main"]'))
+        .click(Selector('#neos-UnappliedChangesDialog-discard'))
+        .expect(InspectorTitleProperty.value).eql('Home-1');
+
+    subSection('Test unapplied changes dialog - apply');
+    await t
+        .typeText(InspectorTitleProperty, '-3')
+        .click(Selector('[name="neos-content-main"]'))
+        .click(Selector('#neos-UnappliedChangesDialog-apply'))
+        .expect(InspectorTitleProperty.value).eql('Home-1-3')
+        .click(Selector('[name="neos-content-main"]'))
+        .expect(Selector('#neos-UnappliedChangesDialog').exists).notOk();
+});

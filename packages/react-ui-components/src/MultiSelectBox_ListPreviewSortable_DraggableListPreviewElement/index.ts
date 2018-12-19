@@ -7,14 +7,4 @@ import MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement from './mu
 
 const ThemedMultiSelectBox_ListPreviewSortable_DraggableListPreviewElement = themr(identifiers.multiSelectBox_ListPreviewSortable_DraggableListPreviewElement, style)(MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement);
 
-//
-// Dependency injection
-//
-import injectProps from './../_lib/injectProps';
-import Icon from './../Icon';
-import IconButton from './../IconButton';
-
-export default injectProps({
-    Icon,
-    IconButton
-})(ThemedMultiSelectBox_ListPreviewSortable_DraggableListPreviewElement);
+export default ThemedMultiSelectBox_ListPreviewSortable_DraggableListPreviewElement;

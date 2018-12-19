@@ -1,94 +1,105 @@
-/* eslint-disable camelcase, react/jsx-pascal-case */
+// tslint:disable:class-name
 import React, {PureComponent} from 'react';
-import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
 import {DragSource, DropTarget} from 'react-dnd';
+import IconButton from '../IconButton/iconButton';
+
+type MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement_Props = Readonly<{
+    // For explanations of the PropTypes, see MultiSelectBox.js
+    option: any,
+    values: ReadonlyArray<string>,
+
+    // Drag&Drop specific
+    dndType: string,
+    connectDragSource: <P>(el: React.ReactElement<P>) => React.ReactElement<P>,
+    connectDropTarget: <P>(el: React.ReactElement<P>) => React.ReactElement<P>,
+    isDragging: boolean,
+
+    // API with MultiSelectBox_ListPreviewSortable
+    InnerListPreviewElement: any,
+    onMoveSelectedValue: (dragIndex: number, hoverIndex: number) => void,
+    onSelectedValueWasMoved: () => void,
+    onRemoveItem: (index: number) => void,
+    index: number,
+
+    // Dependency Injection & Theme
+    theme: MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement_Theme,
+}>;
+
+type MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement_Theme = Readonly<{
+    'selectedOptions__item': string,
+    'selectedOptions__item--draggable': string,
+    'selectedOption__removeButton': string,
+    'selectedOptions__innerPreview': string,
+}>;
 
 /**
  * **MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement is an internal implementation detail of MultiSelectBox**, meant to improve code quality.
  *
  * It is used inside MultiSelectBox_ListPreviewSortable for rendering an individual element and implementing drag&drop behavior.
  */
-const spec = {
-    hover(props, monitor, component) {
-        const dragIndex = monitor.getItem().index;
-        const hoverIndex = props.index;
-
-        if (dragIndex === hoverIndex) {
-            return;
-        }
-        const hoverBoundingRect = component.node.getBoundingClientRect();
-        const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-        const clientOffset = monitor.getClientOffset();
-        const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-        if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-            return;
-        }
-
-        if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-            return;
-        }
-
-        props.onMoveSelectedValue(dragIndex, hoverIndex);
-
-        // Note: we're mutating the monitor item here!
-        // Generally it's better to avoid mutations,
-        // but it's good here for the sake of performance
-        // to avoid expensive index searches.
-        monitor.getItem().index = hoverIndex;
-    },
-    drop(props) {
-        props.onSelectedValueWasMoved();
-    }
-};
-
-@DragSource(({dndType}) => dndType, {
-    beginDrag(props) {
-        return {
+@DragSource<MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement_Props>(
+    (props) => props.dndType,
+    {
+        beginDrag: (props) => ({
             index: props.index
-        };
-    },
-    canDrag({values}) {
-        return values && values.length > 1;
-    }
-}, (connect, monitor) => ({
-    connectDragSource: connect.dragSource(),
-    isDragging: monitor.isDragging()
-}))
-@DropTarget(({dndType}) => dndType, spec, connect => ({
-    connectDropTarget: connect.dropTarget()
-}))
-export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement extends PureComponent {
-    static propTypes = {
-        // For explanations of the PropTypes, see MultiSelectBox.js
-        option: PropTypes.shape({
         }),
-        values: PropTypes.arrayOf(PropTypes.string),
+        canDrag: ({values}) => values && values.length > 1
+    },
+    (connect, monitor) => ({
+        connectDragSource: connect.dragSource(),
+        isDragging: monitor.isDragging()
+    })
+)
+@DropTarget<MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement_Props>(
+    (props) => props.dndType,
+    {
+        hover: (props, monitor, component: {node: HTMLLIElement}) => {
+            const dragIndex = monitor.getItem().index as number;
+            const hoverIndex = props.index;
 
-        // Drag&Drop specific propTypes
-        dndType: PropTypes.string.isRequired,
-        connectDragSource: PropTypes.func.isRequired,
-        connectDropTarget: PropTypes.func.isRequired,
-        isDragging: PropTypes.bool.isRequired,
+            // dragging over itself
+            if (dragIndex === hoverIndex) {
+                return;
+            }
 
-        // API with MultiSelectBox_ListPreviewSortable
-        InnerListPreviewElement: PropTypes.any.isRequired,
-        onMoveSelectedValue: PropTypes.func.isRequired,
-        onSelectedValueWasMoved: PropTypes.func.isRequired,
-        onRemoveItem: PropTypes.func.isRequired,
-        index: PropTypes.number.isRequired,
+            const hoverBoundingRect = component.node.getBoundingClientRect();
+            const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+            const clientOffset = monitor.getClientOffset();
 
-        // Dependency Injection & Theme
-        theme: PropTypes.shape({
-            'selectedOptions__item': PropTypes.string,
-            'selectedOptions__item--draggable': PropTypes.string,
-            'selectedOption__removeButton': PropTypes.string
-        }).isRequired,
-        Icon: PropTypes.any.isRequired,
-        IconButton: PropTypes.any.isRequired
-    }
+            if (clientOffset === null) {
+                return;
+            }
 
-    render() {
+            const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+
+            if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+                return;
+            }
+
+            if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+                return;
+            }
+
+            props.onMoveSelectedValue(dragIndex, hoverIndex);
+
+            // TODO
+            // Note: we're mutating the monitor item here!
+            // Generally it's better to avoid mutations,
+            // but it's good here for the sake of performance
+            // to avoid expensive index searches.
+            monitor.getItem().index = hoverIndex;
+        },
+        drop: (props) => {
+            props.onSelectedValueWasMoved();
+        }
+    },
+    connect => ({
+        connectDropTarget: connect.dropTarget()
+    })
+)
+export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement extends PureComponent<MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement_Props> {
+    public render(): React.ReactNode {
         const {
             option,
             connectDragSource,
@@ -99,7 +110,6 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
             values,
             onRemoveItem,
             index,
-            IconButton
         } = this.props;
 
         // TODO Loading State: const {icon, label} = option || {label: `[Loading ${value}]`};
@@ -110,27 +120,23 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
         });
         const opacity = isDragging ? 0 : 1;
 
-        const refName = node => {
-            this.node = node;
-        };
-
         const handleRemoveItem = () => onRemoveItem(index);
 
         return connectDragSource(connectDropTarget(
-            <li style={{opacity}} ref={refName}>
+            <li style={{opacity}}>
                 <div className={finalClassNames}>
                     <div className={theme.selectedOptions__innerPreview}>
                         <InnerListPreviewElement
                             {...this.props}
                             isHighlighted={false}
                             option={option}
-                            />
+                        />
                     </div>
                     <IconButton
                         icon={'close'}
                         onClick={handleRemoveItem}
                         className={theme.selectedOption__removeButton}
-                        />
+                    />
                 </div>
             </li>
         ));

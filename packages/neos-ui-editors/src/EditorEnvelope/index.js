@@ -47,7 +47,7 @@ export default class EditorEnvelope extends PureComponent {
     };
 
     generateIdentifier() {
-        return `#__neos__editor__property---${this.props.identifier}`;
+        return `__neos__editor__property---${this.props.identifier}`;
     }
 
     getEditorDefinition() {

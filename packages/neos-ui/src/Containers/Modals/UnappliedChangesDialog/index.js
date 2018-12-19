@@ -22,7 +22,7 @@ import style from './style.css';
         shouldAppear: selectors.UI.Inspector.shouldPromptToHandleUnappliedChanges(state),
         isApplyDisabled: isApplyDisabledSelector(state),
         isDiscardDisabled: selectors.UI.Inspector.isDiscardDisabledSelector(state),
-        focusedNodeContextPath: selectors.CR.Nodes.focusedNodeContextPathSelector(state)
+        focusedNodeContextPath: selectors.CR.Nodes.focusedNodePathSelector(state)
     };
 }, {
     resume: actions.UI.Inspector.resume,

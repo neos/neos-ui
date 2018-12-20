@@ -173,7 +173,7 @@ test('Discarding: create a content node and then discard it', async t => {
     await t
         .click(Selector('#neos-ContentTree-ToggleContentTree'))
         .click(page.treeNode.withText('Content Collection (main)'))
-        .click(ReactSelector('AddNode').nth(1).find('button'))
+        .click(Selector('#neos-ContentTree-AddNode'))
         .click(ReactSelector('NodeTypeItem').find('button>span').withText('Headline'));
     await waitForIframeLoading(t);
     await t

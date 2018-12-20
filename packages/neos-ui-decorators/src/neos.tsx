@@ -2,8 +2,6 @@ import React from 'react';
 import {defaultMemoize} from 'reselect';
 import {GlobalRegistry} from '@neos-project/neos-ts-interfaces';
 
-type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
-
 // We need to memoize configuration and global registry; otherwise a new object is created at every render; leading to
 // LOADS of unnecessary re-draws.
 const buildConfigurationAndGlobalRegistry = defaultMemoize((configuration: {}, globalRegistry: GlobalRegistry, routes: {}) => ({configuration, globalRegistry, routes}));
@@ -20,13 +18,9 @@ export const NeosContext = React.createContext<NeosContextInterface | null>(null
 // A higher order component to easily spread global
 // configuration
 //
-export default <
-    P extends {
-        neos?: NeosContextInterface;
-    },
-    R = Omit<P, 'neos'>
-    >(mapRegistriesToProps: (globalRegistry: GlobalRegistry) => {}) => (WrappedComponent: React.ComponentType<P>) => {
-    const Decorator = class NeosDecorator extends React.PureComponent<R> {
+export default <P extends {}> (mapRegistriesToProps: (globalRegistry: GlobalRegistry) => any) => (WrappedComponent: React.ComponentType<P>) => {
+    const Decorator = class NeosDecorator extends React.PureComponent<P> {
+
         public static readonly Original = WrappedComponent;
 
         public static readonly contextType = NeosContext;

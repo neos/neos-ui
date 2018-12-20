@@ -167,6 +167,10 @@ type Validator = (
 export interface ValidatorRegistry {
     get: (validatorName: string) => Validator | null;
 }
+export interface I18nRegistry {
+    translate: (id?: string, fallback?: string, params?: {}, packageKey?: string, sourceName?: string) => string;
+}
 export interface GlobalRegistry {
-    get: (validatorName: string) => any | null;
+    get: <K extends string>(key: K) => K extends 'i18n' ? I18nRegistry :
+        K extends 'validators' ? ValidatorRegistry : null;
 }

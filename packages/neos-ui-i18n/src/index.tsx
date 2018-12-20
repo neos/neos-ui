@@ -1,15 +1,14 @@
 import React from 'react';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {GlobalRegistry} from '@neos-project/neos-ts-interfaces';
-import {NeosContextInterface} from '@neos-project/neos-ui-decorators/src/neos';
+import {NeosInjectedProps} from '@neos-project/neos-ui-decorators/src/neos';
 
 const regsToProps = (globalRegistry: GlobalRegistry) => ({
     i18nRegistry: globalRegistry.get('i18n')
 });
+type InjectedProps = NeosInjectedProps<typeof regsToProps>;
 
-type InjectedProps = ReturnType<typeof regsToProps>;
-
-interface I18nProps extends InjectedProps {
+interface I18nProps {
     // Fallback key which gets rendered once the i18n service doesn't return a translation.
     fallback?: string;
 
@@ -25,12 +24,9 @@ interface I18nProps extends InjectedProps {
 
     // Optional className which gets added to the translation span.
     className?: string;
-
-    neos: NeosContextInterface;
 }
 
-@neos<I18nProps>(regsToProps)
-export default class I18n extends React.PureComponent<I18nProps> {
+class I18n extends React.PureComponent<I18nProps & InjectedProps> {
     public render(): JSX.Element {
         const {i18nRegistry, packageKey, sourceName, params, id, fallback} = this.props;
 
@@ -39,3 +35,5 @@ export default class I18n extends React.PureComponent<I18nProps> {
         );
     }
 }
+
+export default neos<I18nProps, InjectedProps>(regsToProps)(I18n);

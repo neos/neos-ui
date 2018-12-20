@@ -12,14 +12,15 @@ export interface NeosContextInterface {
     routes: {};
 }
 
+export type NeosInjectedProps<R extends (...args: any[]) => any> = ReturnType<R> & {neos: NeosContextInterface};
+
 export const NeosContext = React.createContext<NeosContextInterface | null>(null);
 
 //
 // A higher order component to easily spread global
 // configuration
-//
-export default <P extends {}> (mapRegistriesToProps: (globalRegistry: GlobalRegistry) => any) => (WrappedComponent: React.ComponentType<P>) => {
-    const Decorator = class NeosDecorator extends React.PureComponent<P> {
+export default <OwnProps extends {}, InjectedProps extends {}> (mapRegistriesToProps: (globalRegistry: GlobalRegistry) => any) => (WrappedComponent: React.ComponentType<OwnProps & InjectedProps>) => {
+    const Decorator = class NeosDecorator extends React.PureComponent<OwnProps> {
 
         public static readonly Original = WrappedComponent;
 

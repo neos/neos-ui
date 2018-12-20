@@ -4,7 +4,7 @@ import I18n from '@neos-project/neos-ui-i18n';
 /**
  * Checks if the given value contains only alphanumeric characters
  */
-const Alphanumeric = value => {
+const Alphanumeric = (value: any) => {
     // See https://mothereff.in/regexpu#input=%2F%5E%5B%5Cp%7BL%7D%5Cp%7BNd%7D%5D*%24%2Fu&unicodePropertyEscape=1
     // used es6 regex: /^[\p{L}\p{Nd}]*$/u
     // I doesn't want to include a special library like xregexp for that single purpose

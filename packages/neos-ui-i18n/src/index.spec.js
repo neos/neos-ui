@@ -1,7 +1,7 @@
 import React from 'react';
 import {mount} from 'enzyme';
 
-import I18n from './index.js';
+import I18n from './index';
 
 const FakeRegistry = {
     translate(key) {

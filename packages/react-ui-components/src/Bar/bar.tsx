@@ -9,7 +9,7 @@ interface BarTheme {
     readonly 'bar--bottom': string;
 }
 
-interface BarProps {
+export interface BarProps {
     /**
      * This prop controls the vertical positioning of the Bar.
      */

@@ -25,6 +25,9 @@ Neos:
         Neos.Neos.Ui: true
     Ui:
 
+      splashScreen:
+        partial: 'SplashScreen'
+
       # API: "start 100" and smaller numbers; "no numbers", ...
       resources:
 
@@ -136,6 +139,8 @@ Neos:
           nodes:
             byContextPath: '${Neos.Ui.NodeInfo.defaultNodesForBackend(site, documentNode, controllerContext)}'
             siteNode: '${q(site).property(''_contextPath'')}'
+            clipboard: '${clipboardNode || ""}'
+            clipboardMode: '${clipboardMode || ""}'
           contentDimensions:
             byName: '${Neos.Ui.ContentDimensions.contentDimensionsByName()}'
             active: '${documentNode.context.dimensions}'

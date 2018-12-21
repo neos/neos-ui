@@ -15,6 +15,7 @@
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
     background: var(--colors-ContrastDarker);
+    outline: none;
 }
 .dialog__contents {
     composes: reset from './../reset.css';
@@ -55,4 +56,10 @@
 }
 .dialog__actions > * {
     margin-left: calc(var(--spacing-Full) / 2);
+}
+.dialog__backDrop {
+    composes: reset from './../reset.css';
+    position: absolute;
+    height: 100%;
+    width: 100%;
 }

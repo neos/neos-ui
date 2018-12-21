@@ -62,7 +62,7 @@ export interface IconProps {
 
 type DefaultProps = PickDefaultProps<IconProps, 'color' | 'padded'>;
 
-const defaultProps: DefaultProps = {
+export const defaultProps: DefaultProps = {
     color: 'default',
     padded: 'none'
 };

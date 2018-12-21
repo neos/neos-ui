@@ -18,7 +18,7 @@ const config = {
     },
     zIndex: {
         secondaryToolbar: ['linkIconButtonFlyout'],
-        flashMessageContainer: '2',
+        flashMessageContainer: '5',
         loadingIndicatorContainer: '2',
         secondaryInspector: ['context', 'iframe', 'close'],
         secondaryInspectorElevated: ['context', 'dropdownContents'],
@@ -26,7 +26,7 @@ const config = {
         fullScreenClose: ['context'],
         drawer: ['context'],
         bar: ['context'],
-        primaryToolbar: ['context'],
+        primaryToolbar: '4',
         checkboxInput: ['context'],
         dropdownContents: ['context'],
         selectBoxContents: '3',
@@ -56,7 +56,9 @@ const config = {
     },
     colors: {
         primaryViolet: '#26224C',
+        primaryVioletHover: '#342f5f',
         primaryBlue: '#00ADEE',
+        primaryBlueHover: '#35c3f8',
         contrastDarkest: '#141414',
         contrastDarker: '#222',
         contrastDark: '#3f3f3f',
@@ -65,8 +67,11 @@ const config = {
         contrastBrighter: '#adadad',
         contrastBrightest: '#FFF',
         success: '#00a338',
+        successHover: '#0bb344',
         warn: '#ff8700',
+        warnHover: '#fda23d',
         error: '#ff460d',
+        errorHover: '#ff6a3c',
         uncheckedCheckboxTick: '#5B5B5B'
     }
 };

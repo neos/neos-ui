@@ -15,7 +15,7 @@ import * as reactCssThemr from '@friendsofreactjs/react-css-themr';
 import ReactUiComponents from '@neos-project/react-ui-components';
 import * as NeosUiReduxStore from '@neos-project/neos-ui-redux-store';
 import * as NeosUiDecorators from '@neos-project/neos-ui-decorators';
-import EditorEnvelope from '@neos-project/neos-ui-editors/src/EditorEnvelope/index';
+import * as NeosUiEditors from '@neos-project/neos-ui-editors/src/EditorEnvelope/index';
 import * as UtilsRedux from '@neos-project/utils-redux';
 import NeosUiI18n from '@neos-project/neos-ui-i18n';
 import * as CkEditorApi from '@neos-project/neos-ui-ckeditor5-bindings/src/ckEditorApi';
@@ -66,12 +66,12 @@ import ViewTextProxy from '@ckeditor/ckeditor5-engine/src/view/textproxy.js';
 import ViewTreeWalker from '@ckeditor/ckeditor5-engine/src/view/treewalker.js';
 import ViewUIElement from '@ckeditor/ckeditor5-engine/src/view/uielement.js';
 import View from '@ckeditor/ckeditor5-engine/src/view/view.js';
-import ViewWriter from '@ckeditor/ckeditor5-engine/src/view/writer';
+import DownCastWriter from '@ckeditor/ckeditor5-engine/src/view/downcastwriter';
 
 import * as UpcastConverters from '@ckeditor/ckeditor5-engine/src/conversion/upcast-converters';
 import * as DowncastConverters from '@ckeditor/ckeditor5-engine/src/conversion/downcast-converters';
 
-const CkEditor5 = {Plugin, Command, UpcastConverters, DowncastConverters, ModelDocument, ModelDocumentFragment, ModelDocumentSelection, ModelElement, ModelNode, ModelNodeList, ModelPosition, ModelRange, ModelSchema, ModelSelection, ModelText, ModelTextProxy, ModelTreeWalker, ModelWriter, ViewAttributeElement, ViewContainerElement, ViewDocument, ViewDocumentFragment, ViewDocumentSelection, ViewDOMConverter, ViewEditableElement, ViewElement, ViewEmptyElement, ViewFiller, ViewMatcher, ViewNode, ViewPlaceholder, ViewPosition, ViewRange, ViewRenderer, ViewSelection, ViewText, ViewTextProxy, ViewTreeWalker, ViewUIElement, View, ViewWriter};
+const CkEditor5 = {Plugin, Command, UpcastConverters, DowncastConverters, ModelDocument, ModelDocumentFragment, ModelDocumentSelection, ModelElement, ModelNode, ModelNodeList, ModelPosition, ModelRange, ModelSchema, ModelSelection, ModelText, ModelTextProxy, ModelTreeWalker, ModelWriter, ViewAttributeElement, ViewContainerElement, ViewDocument, ViewDocumentFragment, ViewDocumentSelection, ViewDOMConverter, ViewEditableElement, ViewElement, ViewEmptyElement, ViewFiller, ViewMatcher, ViewNode, ViewPlaceholder, ViewPosition, ViewRange, ViewRenderer, ViewSelection, ViewText, ViewTextProxy, ViewTreeWalker, ViewUIElement, View, DownCastWriter};
 
 export default {
     '@vendor': () => ({
@@ -96,7 +96,7 @@ export default {
         NeosUiBackendConnector,
         CkEditorApi,
         NeosUiDecorators,
-        NeosUiEditors: EditorEnvelope,
+        NeosUiEditors,
         NeosUiI18n,
         NeosUiReduxStore,
         NeosUiViews,

@@ -67,6 +67,10 @@
 }
 .dropDown__item--canPublish {
     background: var(--colors-Warn);
+
+    &:hover {
+        background: var(--colors-WarnHover);
+    }
 }
 .dropDown__item--isPublishing,
 .dropDown__item--isSaving {

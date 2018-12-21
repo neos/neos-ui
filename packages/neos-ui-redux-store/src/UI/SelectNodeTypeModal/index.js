@@ -5,6 +5,8 @@ import {$set} from 'plow-js';
 import {handleActions} from '@neos-project/utils-redux';
 import {actionTypes as system} from '../../System/index';
 
+const PREFERRED_MODE_DEFAULT = 'after';
+
 const OPEN = '@neos/neos-ui/UI/SelectNodeTypeModal/OPEN';
 const CANCEL = '@neos/neos-ui/UI/SelectNodeTypeModal/CANCEL';
 const APPLY = '@neos/neos-ui/UI/SelectNodeTypeModal/APPLY';
@@ -18,7 +20,13 @@ export const actionTypes = {
     APPLY
 };
 
-const open = createAction(OPEN, referenceNodeContextPath => referenceNodeContextPath);
+/**
+ * Opens the select nodetype modal.
+ *
+ * @param {string} referenceNodeContextPath ContextPath of the node relative to which the new node ought to be created
+ * @param {string} preferredMode (optional) Allows to override the default insertion mode. Currently not used in the system, but useful for extensibility.
+ */
+const open = createAction(OPEN, (referenceNodeContextPath, preferredMode = PREFERRED_MODE_DEFAULT) => ({referenceNodeContextPath, preferredMode}));
 const cancel = createAction(CANCEL);
 const apply = createAction(APPLY, (mode, nodeType) => ({mode, nodeType}));
 
@@ -39,20 +47,24 @@ export const reducer = handleActions({
         'ui.selectNodeTypeModal',
         new Map({
             isOpen: false,
-            referenceNodeContextPath: ''
+            referenceNodeContextPath: '',
+            preferredMode: PREFERRED_MODE_DEFAULT
         })
     ),
-    [OPEN]: referenceNodeContextPath =>
+    [OPEN]: ({referenceNodeContextPath, preferredMode}) =>
         $set('ui.selectNodeTypeModal', new Map({
             isOpen: true,
-            referenceNodeContextPath
+            referenceNodeContextPath,
+            preferredMode
         })),
     [CANCEL]: () => $set('ui.selectNodeTypeModal', new Map({
         isOpen: false,
-        referenceNodeContextPath: ''
+        referenceNodeContextPath: '',
+        preferredMode: PREFERRED_MODE_DEFAULT
     })),
     [APPLY]: () => $set('ui.selectNodeTypeModal', new Map({
         isOpen: false,
-        referenceNodeContextPath: ''
+        referenceNodeContextPath: '',
+        preferredMode: PREFERRED_MODE_DEFAULT
     }))
 });

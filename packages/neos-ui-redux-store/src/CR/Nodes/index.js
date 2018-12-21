@@ -24,6 +24,7 @@ const COPY = '@neos/neos-ui/CR/Nodes/COPY';
 const CUT = '@neos/neos-ui/CR/Nodes/CUT';
 const MOVE = '@neos/neos-ui/CR/Nodes/MOVE';
 const PASTE = '@neos/neos-ui/CR/Nodes/PASTE';
+const COMMIT_PASTE = '@neos/neos-ui/CR/Nodes/COMMIT_PASTE';
 const HIDE = '@neos/neos-ui/CR/Nodes/HIDE';
 const SHOW = '@neos/neos-ui/CR/Nodes/SHOW';
 const UPDATE_URI = '@neos/neos-ui/CR/Nodes/UPDATE_URI';
@@ -47,6 +48,7 @@ export const actionTypes = {
     CUT,
     MOVE,
     PASTE,
+    COMMIT_PASTE,
     HIDE,
     SHOW,
     UPDATE_URI
@@ -93,11 +95,15 @@ const commenceRemoval = createAction(COMMENCE_REMOVAL, contextPath => contextPat
  * Start node creation workflow
  *
  * @param {String} referenceNodeContextPath The context path of the referenceNode
- * @param {String} referenceNodeFusionPath The fusion path of the referenceNode
+ * @param {String} referenceNodeFusionPath (optional) The fusion path of the referenceNode
+ * @param {String} preferredMode (optional) The default mode to use in the nodetype selection dialog. Currently not used withing the system but may be useful for extensibility.
+ * @param {String} nodeType (optional) If set, then the select nodetype step would be skipped completely. Currently not used withing the system but may be useful for extensibility.
  */
-const commenceCreation = createAction(COMMENCE_CREATION, (referenceNodeContextPath, referenceNodeFusionPath) => ({
+const commenceCreation = createAction(COMMENCE_CREATION, (referenceNodeContextPath, referenceNodeFusionPath, preferredMode = 'after', nodeType = null) => ({
     referenceNodeContextPath,
-    referenceNodeFusionPath
+    referenceNodeFusionPath,
+    preferredMode,
+    nodeType
 }));
 
 /**
@@ -167,6 +173,12 @@ const move = createAction(MOVE, (nodeToBeMoved, targetNode, position) => ({nodeT
 const paste = createAction(PASTE, (contextPath, fusionPath) => ({contextPath, fusionPath}));
 
 /**
+ * Marks the moment when the actual paste request is commited
+ *
+ */
+const commitPaste = createAction(COMMIT_PASTE, clipboardMode => clipboardMode);
+
+/**
  * Hide the given node
  *
  * @param {String} contextPath The context path of the node to be hidden
@@ -208,6 +220,7 @@ export const actions = {
     cut,
     move,
     paste,
+    commitPaste,
     hide,
     show,
     updateUri
@@ -227,8 +240,8 @@ export const reducer = handleActions({
                 fusionPath: ''
             }),
             toBeRemoved: '',
-            clipboard: '',
-            clipboardMode: ''
+            clipboard: $get('cr.nodes.clipboard', state) || '',
+            clipboardMode: $get('cr.nodes.clipboardMode', state) || ''
         })
     ),
     [ADD]: ({nodeMap}) => $all(
@@ -345,7 +358,16 @@ export const reducer = handleActions({
         $set('cr.nodes.clipboard', contextPath),
         $set('cr.nodes.clipboardMode', 'Move')
     ),
-    [PASTE]: () => $set('cr.nodes.clipboard', ''),
+    [COMMIT_PASTE]: clipboardMode => state => {
+        if (clipboardMode === 'Move') {
+            return $all(
+                $set('cr.nodes.clipboard', ''),
+                $set('cr.nodes.clipboardMode', ''),
+                state
+            );
+        }
+        return state;
+    },
     [HIDE]: contextPath => $set(['cr', 'nodes', 'byContextPath', contextPath, 'properties', '_hidden'], true),
     [SHOW]: contextPath => $set(['cr', 'nodes', 'byContextPath', contextPath, 'properties', '_hidden'], false),
     [UPDATE_URI]: ({oldUriFragment, newUriFragment}) => state => {

@@ -108,6 +108,12 @@ class BackendServiceController extends ActionController
     protected $nodePolicyService;
 
     /**
+     * @Flow\Inject
+     * @var NodeClipboardInterface
+     */
+    protected $clipboard;
+
+    /**
      * Set the controller context on the feedback collection after the controller
      * has been initialized
      *
@@ -325,6 +331,38 @@ class BackendServiceController extends ActionController
         }
 
         $this->view->assign('value', $this->feedbackCollection);
+    }
+
+    /**
+     * Persists the clipboard node on copy
+     *
+     * @param NodeInterface $node
+     * @return void
+     */
+    public function copyNodeAction(NodeInterface $node)
+    {
+        $this->clipboard->copyNode($node);
+    }
+
+    /**
+     * Clears the clipboard state
+     *
+     * @return void
+     */
+    public function clearClipboardAction()
+    {
+        $this->clipboard->clear();
+    }
+
+    /**
+     * Persists the clipboard node on cut
+     *
+     * @param NodeInterface $node
+     * @return void
+     */
+    public function cutNodeAction(NodeInterface $node)
+    {
+        $this->clipboard->cutNode($node);
     }
 
     public function getWorkspaceInfoAction()

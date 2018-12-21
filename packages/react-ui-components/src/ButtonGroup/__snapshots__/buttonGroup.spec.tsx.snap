@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ButtonGroup/> should render correctly. 1`] = `
+<div
+  className="buttonGroupClassName"
+>
+  <ButtonGroupItem
+    element={
+      <div
+        id="foo"
+      >
+        Foo button
+      </div>
+    }
+    id="foo"
+    isPressed={true}
+    key="0"
+    onClick={[MockFunction]}
+  >
+    Foo button
+  </ButtonGroupItem>
+  <ButtonGroupItem
+    element={
+      <div
+        id="bar"
+      >
+        Bar button
+      </div>
+    }
+    id="bar"
+    isPressed={false}
+    key="1"
+    onClick={[MockFunction]}
+  >
+    Bar button
+  </ButtonGroupItem>
+</div>
+`;

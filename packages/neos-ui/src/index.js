@@ -17,11 +17,10 @@ import {handleActions} from '@neos-project/utils-redux';
 
 import * as system from './System';
 import localStorageMiddleware from './localStorageMiddleware';
+import clipboardMiddleware from './clipboardMiddleware';
 import Root from './Containers/Root';
 import apiExposureMap from './apiExposureMap';
 import DelegatingReducer from './DelegatingReducer';
-
-import Icon from '@neos-project/react-ui-components/src/Icon/';
 
 const devToolsArePresent = typeof window === 'object' && typeof window.devToolsExtension !== 'undefined';
 const devToolsStoreEnhancer = () => devToolsArePresent ? window.devToolsExtension() : f => f;
@@ -29,7 +28,7 @@ const sagaMiddleWare = createSagaMiddleware();
 
 const delegatingReducer = new DelegatingReducer();
 const store = createStore(delegatingReducer.reducer(), new Map(), compose(
-    applyMiddleware(sagaMiddleWare, localStorageMiddleware),
+    applyMiddleware(sagaMiddleWare, localStorageMiddleware, clipboardMiddleware),
     devToolsStoreEnhancer()
 ));
 
@@ -49,23 +48,13 @@ require('@neos-project/neos-ui-ckeditor-bindings');
 require('@neos-project/neos-ui-ckeditor5-bindings');
 require('@neos-project/neos-ui-validators');
 require('@neos-project/neos-ui-i18n/src/manifest');
+require('@neos-project/neos-ui-sagas/src/manifest');
 
 //
 // The main application
 //
 function * application() {
     const appContainer = yield system.getAppContainer;
-
-    //
-    // We'll show just some loading screen,
-    // until we're good to go
-    //
-    ReactDOM.render(
-        <div style={{width: '100vw', height: '100vh', backgroundColor: 'black', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '30px'}}>
-            <Icon icon="circle-notch" label="Loading..." spin={true} size="2x"/>
-        </div>,
-        appContainer
-    );
 
     //
     // Initialize Neos JS API

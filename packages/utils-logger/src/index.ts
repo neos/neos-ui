@@ -18,7 +18,7 @@ const deprecate = _debug('Neos:deprecated');
 // this enable step, but we cannot say for certain that the API has
 // booted up correctly at the end of the event-loop.
 //
-const initialize = systemEnv => {
+const initialize = (systemEnv: string) => {
     //
     // Disable deprecation warnings for now while in `Development`,
     // since debugging would be a mess otherwise.

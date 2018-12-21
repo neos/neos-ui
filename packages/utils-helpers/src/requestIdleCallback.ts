@@ -2,7 +2,7 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/Background_Tasks_API#Falling_back_to_setTimeout
 //
 // ToDo: Check if we could switch to using https://github.com/aFarkas/requestIdleCallback
-const requestIdleCallback = window.requestIdleCallback || function (handler) {
+const polyfil = (handler: any) => {
     const startTime = Date.now();
 
     return setTimeout(() => {
@@ -14,4 +14,5 @@ const requestIdleCallback = window.requestIdleCallback || function (handler) {
         });
     }, 1);
 };
+const requestIdleCallback = window.requestIdleCallback || polyfil;
 export default requestIdleCallback;

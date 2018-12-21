@@ -1,7 +1,6 @@
 import mergeClassNames from 'classnames';
 import React, {PureComponent, ReactNode} from 'react';
 import enhanceWithClickOutside from 'react-click-outside';
-import CloseOnEscape from 'react-close-on-escape';
 import Portal from 'react-portal';
 
 import IconButton from '../IconButton';
@@ -126,8 +125,26 @@ export class DialogWithoutEscape extends PureComponent<DialogProps> {
     }
 
     public readonly componentDidMount = (): void => {
+        document.addEventListener('keydown', (event : KeyboardEvent) => this.handleKeyPress(event));
+
         if (this.ref) {
             this.ref.focus();
+        }
+    }
+
+    public readonly componentWillUnmount = (): void => {
+        document.removeEventListener('keydown', (event : KeyboardEvent) => this.handleKeyPress(event));
+    }
+
+    /**
+     * Closes the dialog when the escape key has been pressed.
+     *
+     * @param {KeyboardEvent} event
+     * @returns {void}
+     */
+    public readonly handleKeyPress = (event : KeyboardEvent): void => {
+        if (event.key === 'Escape') {
+            this.props.onRequestClose();
         }
     }
 }
@@ -159,18 +176,12 @@ class DialogWithEscape extends PureComponent<DialogProps> {
         );
 
         return (
-            <CloseOnEscape onEscape={this.onEscape}>
-                <Portal isOpened={this.props.isOpen}>
-                    <section {...rest} className={sectionClassName} role="dialog" tabIndex={0}>
-                        <EnhancedDialogWithoutEscapeWithClickOutside {...this.props}/>
-                    </section>
-                </Portal>
-            </CloseOnEscape>
+            <Portal isOpened={this.props.isOpen}>
+                <section {...rest} className={sectionClassName} role="dialog" tabIndex={0}>
+                    <EnhancedDialogWithoutEscapeWithClickOutside {...this.props}/>
+                </section>
+            </Portal>
         );
-    }
-
-    private readonly onEscape = () => {
-        this.props.onRequestClose();
     }
 }
 

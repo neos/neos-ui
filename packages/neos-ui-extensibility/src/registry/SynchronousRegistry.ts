@@ -1,8 +1,16 @@
 import AbstractRegistry from './AbstractRegistry';
 import positionalArraySorter from '@neos-project/positional-array-sorter';
 
-export default class SynchronousRegistry extends AbstractRegistry {
-    constructor(description) {
+interface Entry<T> {
+    key: string;
+    value: T;
+    position?: string | number;
+}
+
+export default class SynchronousRegistry<T> extends AbstractRegistry {
+    protected _registry: Array<Entry<T>>;
+
+    constructor(description: string) {
         super(description);
 
         this._registry = [];
@@ -16,14 +24,14 @@ export default class SynchronousRegistry extends AbstractRegistry {
      * @param string|number position A position inside a registry that the given element should get, supports full positionalArraySorter syntax. Defaults to 0.
      * @return returns the value element.
      */
-    set(key, value, position = 0) {
+    public set(key: string, value: T, position: string | number = 0): T {
         if (typeof key !== 'string') {
             throw new Error('Key must be a string');
         }
         if (typeof position !== 'string' && typeof position !== 'number') {
             throw new Error('Position must be a string or a number');
         }
-        const entry = {key, value};
+        const entry: Entry<T> = {key, value};
         if (position) {
             entry.position = position;
         }
@@ -39,20 +47,17 @@ export default class SynchronousRegistry extends AbstractRegistry {
 
     /*
      * Gets a registry value at a certain key
-     *
-     * @param string key
-     * @return Object value
      */
-    get(key) {
+    public get(key: string): T | null {
         if (typeof key !== 'string') {
-            console.error('Key must be a string');
+            console.error('Key must be a string'); // tslint:disable-line no-console
             return null;
         }
         const result = this._registry.find(item => item.key === key);
         return result ? result.value : null;
     }
 
-    _getChildrenWrapped(searchKey) {
+    private _getChildrenWrapped(searchKey: string): any[] {
         const unsortedChildren = this._registry.filter(item => item.key.indexOf(searchKey + '/') === 0);
         return positionalArraySorter(unsortedChildren);
     }
@@ -63,8 +68,8 @@ export default class SynchronousRegistry extends AbstractRegistry {
      * @param string searchKey to match, e.g. `test` would match `test/abc` and `test/abc2`, but not `test` itself
      * @return Object Result Object
      */
-    getChildrenAsObject(searchKey) {
-        const result = {};
+    public getChildrenAsObject(searchKey: string): {[propName: string]: T | undefined} {
+        const result: {[propName: string]: T | undefined} = {};
         this._getChildrenWrapped(searchKey).forEach(item => {
             result[item.key] = item.value;
         });
@@ -77,7 +82,7 @@ export default class SynchronousRegistry extends AbstractRegistry {
      * @param string searchKey to match, e.g. `test` would match `test/abc` and `test/abc2`, but not `test` itself
      * @return array
      */
-    getChildren(searchKey) {
+    public getChildren(searchKey: string): T[] {
         return this._getChildrenWrapped(searchKey).map(item => item.value);
     }
 
@@ -87,15 +92,15 @@ export default class SynchronousRegistry extends AbstractRegistry {
      * @param string key
      * @return true|undefined
      */
-    has(key) {
+    public has(key: string): boolean {
         if (typeof key !== 'string') {
-            console.error('Key must be a string');
+            console.error('Key must be a string'); // tslint:disable-line:no-console
             return false;
         }
-        return this._registry.find(item => item.key === key) && true;
+        return Boolean(this._registry.find(item => item.key === key));
     }
 
-    _getAllWrapped() {
+    private _getAllWrapped(): any[] {
         return positionalArraySorter(this._registry);
     }
 
@@ -104,8 +109,8 @@ export default class SynchronousRegistry extends AbstractRegistry {
      *
      * @return Object Result object
      */
-    getAllAsObject() {
-        const result = {};
+    public getAllAsObject(): {[propName: string]: T | undefined} {
+        const result: {[propName: string]: T} = {};
         this._getAllWrapped().forEach(item => {
             result[item.key] = item.value;
         });
@@ -117,7 +122,7 @@ export default class SynchronousRegistry extends AbstractRegistry {
      *
      * @return array Result list
      */
-    getAllAsList() {
+    public getAllAsList(): T[] {
         return this._getAllWrapped().map(item => Object.assign({id: item.key}, item.value));
     }
 }

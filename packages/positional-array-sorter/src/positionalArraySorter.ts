@@ -1,5 +1,10 @@
-const isOriginal = value => value && value.indexOf && value.indexOf('_original_') === 0;
-const getOriginal = value => value && value.substring && Number(value.substring(10));
+const isOriginal = (value: any) => value && value.indexOf && value.indexOf('_original_') === 0;
+const getOriginal = (value: any) => value && value.substring && Number(value.substring(10));
+
+interface Value {
+    [propName: string]: any;
+}
+type Index = number;
 
 /**
  * Flexible array sorter that sorts an array according to a "position" meta data.
@@ -27,8 +32,9 @@ const getOriginal = value => value && value.substring && Number(value.substring(
  * "key" is a string that references another key in the subject
  * and "numerical-order" is an integer that defines the order independently from the other keys.
  */
-const positionalArraySorter = (subject, position = 'position', idKey = 'key') => {
-    const positionAccessor = typeof position === 'string' ? value => value[position] : position;
+type PositionAccessor = (value: Value) => string | number;
+const positionalArraySorter = <T extends Value[]>(subject: T, position: string | PositionAccessor = 'position', idKey = 'key'): T => {
+    const positionAccessor = typeof position === 'string' ? (value: Value) => value[position] : position;
     // Extract all position keys from the subject.
     // If the position is not in the value, we encode its original position into a string
     // to preserve original sort order later
@@ -39,12 +45,12 @@ const positionalArraySorter = (subject, position = 'position', idKey = 'key') =>
     // Extract valid id keys
     const validKeys = subject.map(value => idKey in value && value[idKey]).filter(i => i).map(i => String(i));
 
-    const middleKeys = [];
-    const startKeys = [];
-    const endKeys = [];
-    const beforeKeys = [];
-    const afterKeys = [];
-    const corruptKeys = [];
+    const middleKeys: Array<[Index, any]> = [];
+    const startKeys: Array<[Index, number]> = [];
+    const endKeys: Array<[Index, number]> = [];
+    const beforeKeys: Array<[Index, string]> = [];
+    const afterKeys: Array<[Index, string]> = [];
+    const corruptKeys: number[] = [];
 
     // Split all positions into start, end, before, after and middle keys
     positionsArray.forEach((value, index) => {
@@ -66,7 +72,7 @@ const positionalArraySorter = (subject, position = 'position', idKey = 'key') =>
                     beforeKeys.push([index, key]);
                 } else {
                     corruptKeys.push(index);
-                    console.warn('The following position value is corrupt: %s', value);
+                    console.warn('The following position value is corrupt: %s', value); // tslint:disable-line no-console
                 }
             } else if (value.includes('after')) {
                 const keyMatch = value.match(/after\s+(\S+)/);
@@ -75,45 +81,46 @@ const positionalArraySorter = (subject, position = 'position', idKey = 'key') =>
                     afterKeys.push([index, key]);
                 } else {
                     corruptKeys.push(index);
-                    console.warn('The following position value is corrupt: %s', value);
+                    console.warn('The following position value is corrupt: %s', value); // tslint:disable-line no-console
                 }
             } else {
                 corruptKeys.push(index);
-                console.warn('The following position value is corrupt: %s', value);
+                console.warn('The following position value is corrupt: %s', value); // tslint:disable-line no-console
             }
         } else {
             corruptKeys.push(index);
-            console.warn('The following position value is corrupt: %s', value);
+            console.warn('The following position value is corrupt: %s', value); // tslint:disable-line no-console
         }
     });
 
-    const sortByWeightFunc = (a, b) => a[1] - b[1];
-    const sortWithRetainingOriginalPos = (a, b) => {
-        a = a[1];
-        b = b[1];
+    const sortByWeightFunc = (a: [any, number], b: [any, number]) => a[1] - b[1];
+    const sortWithRetainingOriginalPos = (_a: [any, string | number], _b: [any, string | number]) => {
+        const a = _a[1];
+        const b = _b[1];
         // If both items don't have position, retain original sorting order
         if (isOriginal(a) && isOriginal(b)) {
             return getOriginal(a) - getOriginal(b);
         }
         // If only item `a` doesn't have position, push it down
-        if (a && a.includes && a.includes('_original_')) {
+        if (typeof a === 'string' && a.includes && a.includes('_original_')) {
             return 1;
         }
         // If only item `b` doesn't have position, push it down
-        if (b && b.includes && b.includes('_original_')) {
+        if (typeof b === 'string' && b.includes && b.includes('_original_')) {
             return -1;
         }
         // If both items have position, sort them in a standard way
         return Number(a) - Number(b);
     };
 
+
     // Merged array of all sorted indexes, except for before and after
-    let sortedIndexes = [].concat(
-        startKeys.sort(sortByWeightFunc).map(pair => pair[0]),
-        middleKeys.sort(sortWithRetainingOriginalPos).map(pair => pair[0]),
-        corruptKeys,
-        endKeys.sort(sortByWeightFunc).map(pair => pair[0])
-    );
+    let sortedIndexes = [
+        ...startKeys.sort(sortByWeightFunc).map(pair => pair[0]),
+        ...middleKeys.sort(sortWithRetainingOriginalPos).map(pair => pair[0]),
+        ...corruptKeys,
+        ...endKeys.sort(sortByWeightFunc).map(pair => pair[0])
+    ];
 
     // Go through all before and after keys and move them to the right position in sortedIndexes.
     // We may need multiple iterations for this, as before or after keys may point at one another.
@@ -141,7 +148,7 @@ const positionalArraySorter = (subject, position = 'position', idKey = 'key') =>
         // If no operations were performed in a loop, it means we got stuck in a circular reference.
         // Break out of it and just append faulty values at the end.
         if (alteredNumber === 0) {
-            console.warn('Circular reference detected. Append broken entries at the end.');
+            console.warn('Circular reference detected. Append broken entries at the end.'); // tslint:disable-line no-console
             sortedIndexes = sortedIndexes.concat(
                 beforeKeys.map(pair => pair[0]),
                 afterKeys.map(pair => pair[0])
@@ -149,7 +156,7 @@ const positionalArraySorter = (subject, position = 'position', idKey = 'key') =>
             break;
         }
     }
-
-    return sortedIndexes.map(index => subject[index]);
+    // TODO fix type assertion
+    return sortedIndexes.map(index => subject[index]) as T;
 };
 export default positionalArraySorter;

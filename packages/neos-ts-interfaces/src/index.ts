@@ -63,7 +63,15 @@ export interface PropertyConfiguration {
     ui?: {
         label?: string;
         reloadIfChanged?: boolean;
+        inline?: {
+            editor?: string;
+            editorOptions?: {
+                [propName: string]: any;
+            };
+        }
+        inlineEditable?: boolean;
         inspector?: {
+            hidden?: boolean;
             defaultValue?: string;
             editor?: string;
             editorOptions?: {
@@ -72,6 +80,11 @@ export interface PropertyConfiguration {
             group?: string;
             position?: number | string;
         };
+        help?: {
+            message?: string;
+            thumbnail?: string;
+        };
+        aloha?: any; // deprecated format
     };
     validation?: {
         [propName: string]: ValidatorConfiguration | undefined;
@@ -79,6 +92,7 @@ export interface PropertyConfiguration {
 }
 
 export interface NodeType {
+    name?: string;
     superTypes: {
         [propName: string]: boolean | undefined;
     };
@@ -93,6 +107,7 @@ export interface NodeType {
         icon?: string;
         label?: string;
         position?: number | string;
+        inlineEditable?: boolean;
         inspector?: {
             groups?: {
                 [propName: string]: {
@@ -112,12 +127,16 @@ export interface NodeType {
                 } | undefined;
             };
             views?: {
-                group?: string;
-                label?: string;
-                view?: string;
-                viewOptions?: {
-                    [propName: string]: any;
-                };
+                [propName: string]: {
+                    group?: string;
+                    label?: string;
+                    position?: number | string;
+                    helpMessage?: string;
+                    view?: string;
+                    viewOptions?: {
+                        [propName: string]: any;
+                    };
+                }
             };
         };
         creationDialog?: {

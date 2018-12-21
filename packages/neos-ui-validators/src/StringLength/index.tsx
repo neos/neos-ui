@@ -7,13 +7,17 @@ import logger from '@neos-project/utils-logger';
  * if an object is given) and its length is between minimum and maximum
  * specified in the validation options.
  */
-const StringLength = (value, validatorOptions) => {
+interface StringLengthOptions {
+    minimum: number | string;
+    maximum: number | string;
+}
+const StringLength = (value: any, validatorOptions: StringLengthOptions) => {
     if (value === undefined || value === null || value === '') {
         return null;
     }
 
-    const minimum = parseInt(validatorOptions.minimum, 10);
-    const maximum = parseInt(validatorOptions.maximum, 10);
+    const minimum = typeof validatorOptions.minimum === 'number' ? validatorOptions.minimum : parseInt(validatorOptions.minimum, 10);
+    const maximum = typeof validatorOptions.maximum === 'number' ? validatorOptions.maximum : parseInt(validatorOptions.maximum, 10);
 
     if (maximum < minimum) {
         logger.error('The maximum is less than the minimum.');

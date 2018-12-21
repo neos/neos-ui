@@ -7,9 +7,19 @@ import logger from '@neos-project/utils-logger';
  * and its amount is between minimum and maximum
  * specified in the validation options.
  */
-const Count = (value, validatorOptions) => {
-    const minimum = Math.max(parseInt(validatorOptions.minimum, 10), 0);
-    const maximum = Math.min(parseInt(validatorOptions.maximum, 10), Number.MAX_SAFE_INTEGER);
+interface CountOptions {
+    minimum: number | string;
+    maximum: number | string;
+}
+const Count = (value: any, validatorOptions: CountOptions) => {
+    const minimum = Math.max(
+        typeof validatorOptions.minimum === 'number' ? validatorOptions.minimum : parseInt(validatorOptions.minimum, 10),
+        0
+    );
+    const maximum = Math.min(
+        typeof validatorOptions.maximum === 'number' ? validatorOptions.maximum : parseInt(validatorOptions.maximum, 10),
+        Number.MAX_SAFE_INTEGER
+    );
 
     if (maximum < minimum) {
         logger.error('The maximum is less than the minimum.');

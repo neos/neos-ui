@@ -4,7 +4,10 @@ import I18n from '@neos-project/neos-ui-i18n';
 /**
  * Checks if a given value matches a given regular expression
  */
-const RegularExpression = (value, validatorOptions) => {
+interface RegularExpressionOptions {
+    regularExpression: string;
+}
+const RegularExpression = (value: any, validatorOptions: RegularExpressionOptions) => {
     // NOTE: we do not need to localize the two strings here; as they are purely integrator issues which an end user
     // will never see.
     if (!validatorOptions.regularExpression) {

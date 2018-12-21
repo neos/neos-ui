@@ -4,7 +4,7 @@ import I18n from '@neos-project/neos-ui-i18n';
 /**
  * Checks if the given value is a valid label
  */
-const Label = value => {
+const Label = (value: any) => {
     // See https://mothereff.in/regexpu#input=%2F%5E%5B%5Cp%7BL%7D%5Cp%7BSc%7D+%2C.%3A%3B%3F%21%25%C2%A7%26%22%5C%27%5C%2F%2B%5C-_%3D%5C%28%5C%29%230-9%5D*%24%2Fu&unicodePropertyEscape=1&useUnicodeFlag=1
     // used es6 regex: /^[\p{L}\p{Sc} ,.:;?!%§&"\'\/+\-_=\(\)#0-9]*$/u
     // I doesn't want to include a special library like xregexp for that single purpose

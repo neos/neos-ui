@@ -1,14 +1,14 @@
 import React from 'react';
 import I18n from '@neos-project/neos-ui-i18n';
 
-const isNotEmpty = value => {
+const isNotEmpty = (value: any) => {
     return value !== null && value !== undefined && value.length !== 0;
 };
 
 /**
  * Checks if the given value is a valid Integer number
  */
-const Integer = value => {
+const Integer = (value: any) => {
     const number = parseInt(value, 10);
 
     if (isNotEmpty(value) &&

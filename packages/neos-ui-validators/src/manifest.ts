@@ -1,21 +1,22 @@
-import Alphanumeric from './Alphanumeric/index';
-import Count from './Count/index';
-import DateTime from './DateTime/index';
-import EmailAddress from './EmailAddress/index';
-import Float from './Float/index';
-import Integer from './Integer/index';
-import Label from './Label/index';
-import NotEmpty from './NotEmpty/index';
-import NumberRange from './NumberRange/index';
-import RegularExpression from './RegularExpression/index';
-import String from './String/index';
-import StringLength from './StringLength/index';
-import Text from './Text/index';
-import Uuid from './Uuid/index';
+import Alphanumeric from '@neos-project/neos-ui-validators/src/Alphanumeric';
+import Count from '@neos-project/neos-ui-validators/src/Count';
+import DateTime from '@neos-project/neos-ui-validators/src/DateTime';
+import EmailAddress from '@neos-project/neos-ui-validators/src/EmailAddress';
+import Float from '@neos-project/neos-ui-validators/src/Float';
+import Integer from '@neos-project/neos-ui-validators/src/Integer';
+import Label from '@neos-project/neos-ui-validators/src/Label';
+import NotEmpty from '@neos-project/neos-ui-validators/src/NotEmpty';
+import NumberRange from '@neos-project/neos-ui-validators/src/NumberRange';
+import RegularExpression from '@neos-project/neos-ui-validators/src/RegularExpression';
+import String from '@neos-project/neos-ui-validators/src/String';
+import StringLength from '@neos-project/neos-ui-validators/src/StringLength';
+import Text from '@neos-project/neos-ui-validators/src/Text';
+import Uuid from '@neos-project/neos-ui-validators/src/Uuid';
 
 import manifest from '@neos-project/neos-ui-extensibility';
+import {GlobalRegistry} from '@neos-project/neos-ts-interfaces';
 
-manifest('validators', {}, globalRegistry => {
+manifest('validators', {}, (globalRegistry: GlobalRegistry) => {
     const validatorRegistry = globalRegistry.get('validators');
 
     validatorRegistry.set('Neos.Neos/Validation/AlphanumericValidator', Alphanumeric);

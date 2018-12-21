@@ -54,6 +54,30 @@ export enum InsertPosition {
     AFTER = 'after'
 }
 
+export interface ValidatorConfiguration {
+    [propName: string]: any;
+}
+
+export interface PropertyConfiguration {
+    type?: string;
+    ui?: {
+        label?: string;
+        reloadIfChanged?: boolean;
+        inspector?: {
+            defaultValue?: string;
+            editor?: string;
+            editorOptions?: {
+                [propName: string]: any;
+            }
+            group?: string;
+            position?: number | string;
+        };
+    };
+    validation?: {
+        [propName: string]: ValidatorConfiguration | undefined;
+    };
+}
+
 export interface NodeType {
     superTypes: {
         [propName: string]: boolean | undefined;
@@ -117,25 +141,7 @@ export interface NodeType {
         };
     };
     properties?: {
-        type?: string;
-        ui?: {
-            label?: string;
-            reloadIfChanged?: boolean;
-            inspector?: {
-                defaultValue?: string;
-                editor?: string;
-                editorOptions?: {
-                    [propName: string]: any;
-                }
-                group?: string;
-                position?: number | string;
-            };
-        };
-        validation?: {
-            [propName: string]: {
-                [propName: string]: any;
-            } | undefined;
-        };
+        [propName: string]: PropertyConfiguration | undefined;
     };
 }
 
@@ -162,10 +168,11 @@ export interface NodeTypesRegistry {
 // TODO: move to validatorsregistry itself
 type Validator = (
     values: {},
-    elementConfigurations: {}
+    elementConfigurations: any
 ) => null | {} | string;
 export interface ValidatorRegistry {
     get: (validatorName: string) => Validator | null;
+    set: (validatorName: string, validator: Validator) => void;
 }
 export interface I18nRegistry {
     translate: (id?: string, fallback?: string, params?: {}, packageKey?: string, sourceName?: string) => string;

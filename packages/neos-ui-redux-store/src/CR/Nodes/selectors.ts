@@ -7,11 +7,12 @@ import {NodeContextPath, NodeMap, Node, NodeTypeName, ClipboardMode, NodeTypesRe
 export const nodesByContextPathSelector = (state: GlobalState) => $get(['cr', 'nodes', 'byContextPath'], state);
 export const siteNodeContextPathSelector = (state: GlobalState) => $get(['cr', 'nodes', 'siteNode'], state);
 export const documentNodeContextPathSelector = (state: GlobalState) => $get(['cr', 'nodes', 'documentNode'], state);
-export const focusedNodeContextPathSelector = (state: GlobalState) => $get(['cr', 'nodes', 'focused', 'contextPath'], state);
+// This is internal, as in most cases you want `focusedNodePathSelector`, which is able to fallback to documentNode, when no node is focused
+const _focusedNodeContextPathSelector = (state: GlobalState) => $get(['cr', 'nodes', 'focused', 'contextPath'], state);
 
 export const isDocumentNodeSelectedSelector = createSelector(
     [
-        focusedNodeContextPathSelector,
+        _focusedNodeContextPathSelector,
         documentNodeContextPathSelector
     ],
     (focused, currentContentCanvasContextPath) => {
@@ -21,7 +22,7 @@ export const isDocumentNodeSelectedSelector = createSelector(
 
 export const hasFocusedContentNode = createSelector(
     [
-        focusedNodeContextPathSelector,
+        _focusedNodeContextPathSelector,
         documentNodeContextPathSelector
     ],
     (focused, currentContentCanvasContextPath) => {
@@ -148,7 +149,7 @@ export const grandParentNodeSelector = (state: GlobalState) => (baseNode: Node) 
 
 export const focusedNodePathSelector = createSelector(
     [
-        focusedNodeContextPathSelector,
+        _focusedNodeContextPathSelector,
         documentNodeContextPathSelector
     ],
     (focused, currentContentCanvasContextPath) => {
@@ -358,7 +359,7 @@ export const makeCanBePastedSelector = (nodeTypesRegistry: NodeTypesRegistry) =>
 export const destructiveOperationsAreDisabledSelector = createSelector(
     [
         siteNodeContextPathSelector,
-        focusedNodeContextPathSelector,
+        _focusedNodeContextPathSelector,
         focusedSelector
     ],
     (siteNodeContextPath, focusedNodeContextPath, focusedNode) => {

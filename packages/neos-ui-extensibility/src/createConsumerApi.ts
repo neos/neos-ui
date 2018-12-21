@@ -1,14 +1,17 @@
-import {version} from '../package.json';
+// import {version} from '../package.json';
 import createManifestFunction from './manifest';
 
-const createReadOnlyValue = value => ({
+const createReadOnlyValue = (value: any) => ({
     value,
     writable: false,
     enumerable: false,
     configurable: true
 });
 
-export default function createConsumerApi(manifests, exposureMap) {
+interface ExposureMap {
+    [propName: string]: any;
+}
+export default function createConsumerApi(manifests: any[], exposureMap: ExposureMap): void {
     const api = {};
 
     Object.keys(exposureMap).forEach(key => {
@@ -20,5 +23,6 @@ export default function createConsumerApi(manifests, exposureMap) {
     ));
 
     Object.defineProperty(window, '@Neos:HostPluginAPI', createReadOnlyValue(api));
-    Object.defineProperty(window['@Neos:HostPluginAPI'], 'VERSION', createReadOnlyValue(version));
+    // TODO: bring back VERSION
+    // Object.defineProperty(window['@Neos:HostPluginAPI'], 'VERSION', createReadOnlyValue(version));
 }

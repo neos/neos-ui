@@ -1,5 +1,5 @@
-export default manifests => {
-    return function (identifier, options, bootstrap) {
+export default (manifests: any[]) => {
+    return (identifier: string, options: {}, bootstrap: () => void) => {
         manifests.push({
             [identifier]: {
                 options,

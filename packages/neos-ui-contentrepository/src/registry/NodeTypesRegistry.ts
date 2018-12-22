@@ -21,16 +21,18 @@ interface InheritanceMap {
         [nodeTypeName: string]: NodeTypeName[] | undefined;
     };
 }
+
+interface Group {
+    label: string;
+    position?: number;
+}
 interface GroupsMap {
-    [groupName: string]: {
-        label: string;
-        position?: number;
-    };
+    [groupName: string]: Group;
 }
 interface RolesMap {
     [roleName: string]: string | undefined;
 }
-interface GroupedNodeTypeListItem {
+interface GroupedNodeTypeListItem extends Group {
     name: string;
     nodeTypes: NodeType[];
 }
@@ -140,21 +142,24 @@ export default class NodeTypesRegistry extends SynchronousRegistry<NodeType> {
         const nodeTypes = nodeTypesWrapped.map(item => item.value) as NodeType[];
 
         // It's important to preserve the ordering of `this._groups` as we can't sort them again by position in JS (sorting logic is too complex)
-        const j = Object.keys(this._groups).map(groupName => {
+        return Object.keys(this._groups).map(groupName => {
             // If a nodetype does not have group defined it means it's a system nodetype like "unstrctured"
             const nodesForGroup = nodeTypes
                 // Filter by current group
                 .filter(i => i && i.ui && i.ui.group === groupName);
             const nodesForGroupSorted = positionalArraySorter(nodesForGroup, (nodeType: any) => nodeType.ui && nodeType.ui.position, 'name');
             if (nodesForGroup.length > 0) {
-                return {
-                    nodeTypes: nodesForGroupSorted,
-                    name: groupName
-                };
+                return Object.assign(
+                    {},
+                    this._groups[groupName],
+                    {
+                        nodeTypes: nodesForGroupSorted,
+                        name: groupName
+                    }
+                );
             }
             return null;
         }).filter(isGroupedNodeTypeListItem);
-        return j;
     }
 
     public isOfType(nodeTypeName: NodeTypeName, referenceNodeTypeName: NodeTypeName): boolean {

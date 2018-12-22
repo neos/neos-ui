@@ -78,7 +78,7 @@
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.15.0",
     "tslint-react": "^3.6.0",
-    "typescript": "^3.0.1",
+    "typescript": "^3.2.2",
     "watch": "^1.0.2",
     "webpack": "^3.8.1",
     "webpack-livereload-plugin": "^1.0.0",

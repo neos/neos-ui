@@ -26,7 +26,11 @@ export default class Frame extends PureComponent<FrameProps> {
             'src'
         ]);
 
-        return <iframe ref={this.handleReference} {...rest} onLoad={this.handleLoad} />;
+        return (
+            <iframe ref={this.handleReference} {...rest} onLoad={this.handleLoad}>
+                {this.renderFrameContents()}
+            </iframe>
+        );
     }
 
     private readonly handleReference = (ref: HTMLIFrameElement) => {
@@ -86,7 +90,16 @@ export default class Frame extends PureComponent<FrameProps> {
     }
 
     public componentWillMount(): void {
-        document.addEventListener('Neos.Neos.Ui.ContentReady', this.renderFrameContents);
+        document.addEventListener('Neos.Neos.Ui.ContentReady', () => {
+            if (this.ref && this.ref.contentDocument && this.ref.contentWindow) {
+                const doc = this.ref.contentDocument;
+                const win = this.ref.contentWindow;
+                const mountTarget = doc.querySelector(this.props.mountTarget);
+                if (mountTarget) {
+                    this.props.contentDidUpdate(win, doc, mountTarget);
+                }
+            }
+        });
     }
 
     private readonly handleLoad = (e: SyntheticEvent<HTMLIFrameElement>) => {
@@ -115,22 +128,16 @@ export default class Frame extends PureComponent<FrameProps> {
                 }
 
                 if (mountTarget) {
-                    // TODO: the way to fix this, we could use a portal: https://gist.github.com/robertgonzales/b1966af8d2a428a8299663b92fb2fe03
-                    ReactDOM.unstable_renderSubtreeIntoContainer(this, contents, mountTarget, () => {
-                        this.props.contentDidUpdate(win, doc, mountTarget);
-                    });
+                    return ReactDOM.createPortal(contents, mountTarget);
                 }
             }
         }
+        return null;
     }
 
     public componentWillUnmount(): void {
         if (this.ref) {
-            const doc = this.ref.contentDocument; // eslint-disable-line react/no-find-dom-node
             document.removeEventListener('Neos.Neos.Ui.ContentReady', this.renderFrameContents);
-            if (doc) {
-                ReactDOM.unmountComponentAtNode(doc.body);
-            }
         }
         this.removeClickListener();
     }

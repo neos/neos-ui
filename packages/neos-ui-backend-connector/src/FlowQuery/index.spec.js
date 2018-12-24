@@ -4,7 +4,7 @@ import factory, {
     createNodeEnvelope,
     isNodeEnvelope,
     resolveChain
-} from './index.js';
+} from './index';
 
 test(`
     "api.flowQuery > isStartingOperation" utility should return a falsy boolean

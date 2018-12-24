@@ -1,16 +1,17 @@
+import Immutable from 'immutable';
 import {$all, $set, $get} from 'plow-js';
 
-import {actionTypes, actions, subReducer as reducer, selectors, defaultState} from './index';
+import {actionTypes, actions, reducer, selectors} from './index.js';
 import {actionTypes as system} from '../../System/index';
 
 const fixtures = {};
 
 fixtures.dimensionState = $all(
-    $set('active', {language: ['fr']}),
-    $set('allowedPresets', {
+    $set('cr.contentDimensions.active', {language: ['fr']}),
+    $set('cr.contentDimensions.allowedPresets', {
         language: ['en_US', 'en_UK', 'de', 'fr']
     }),
-    $set('byName', {
+    $set('cr.contentDimensions.byName', {
         language: {
             label: 'Language',
             icon: 'fa-language',
@@ -71,12 +72,6 @@ fixtures.dimensionState = $all(
     {}
 );
 
-fixtures.globalState = {
-    cr: {
-        contentDimensions: fixtures.dimensionState
-    }
-};
-
 test(`should export actionTypes`, () => {
     expect(actionTypes).not.toBe(undefined);
     expect(typeof (actionTypes.SELECT_PRESET)).toBe('string');
@@ -98,84 +93,78 @@ test(`should export selectors`, () => {
     expect(selectors).not.toBe(undefined);
 });
 
-test(`The reducer should return the default state when called with undefined.`, () => {
-    const nextState = reducer(undefined, {
-        type: 'unknown'
-    });
-
-    expect(nextState).toBe(defaultState);
-});
-
-test(`The reducer should correctly rehydrate data on INIT.`, () => {
-    const nextState = reducer(undefined, {
+test(`The reducer should create a valid initial state`, () => {
+    const state = new Immutable.Map({});
+    const nextState = reducer(state, {
         type: system.INIT,
-        payload: fixtures.globalState
+        payload: fixtures.dimensionState
     });
 
-    expect(nextState).toEqual(fixtures.dimensionState);
+    expect(nextState).toMatchSnapshot();
 });
 
 test(`SELECT_PRESET should add the selected preset's dimension values to the active state`, () => {
-    const state = fixtures.dimensionState;
+    const state = Immutable.fromJS(fixtures.dimensionState);
     const action = actions.selectPreset({topicfocus: 'sports'});
     const nextState = reducer(state, action);
 
-    expect(nextState.active.topicfocus).toEqual(['sports']);
+    expect(nextState).toMatchSnapshot();
 });
 
 test(`SELECT_PRESET should overwrite the currently selected dimension values`, () => {
-    const state = fixtures.dimensionState;
+    const state = Immutable.fromJS(fixtures.dimensionState);
     const action = actions.selectPreset({language: 'en_UK'});
     const nextState = reducer(state, action);
 
-    expect(nextState.active.language).toEqual(['en_UK']);
+    expect(nextState).toMatchSnapshot();
 });
 
 test(`SET_ACTIVE should overwrite the currently selected dimension values`, () => {
-    const state = fixtures.dimensionState;
+    const state = Immutable.fromJS(fixtures.dimensionState);
     const action = actions.setActive({
         language: ['en_UK']
     });
     const nextState = reducer(state, action);
 
-    expect(nextState.active.language).toEqual(['en_UK']);
+    expect(nextState).toMatchSnapshot();
 });
 
 test(`SET_ACTIVE should ignore dimensions that haven't been previously active`, () => {
-    const state = fixtures.dimensionState;
+    const state = Immutable.fromJS(fixtures.dimensionState);
     const action = actions.setActive({
         language: ['en_UK'],
         topicfocus: ['sports']
     });
     const nextState = reducer(state, action);
 
-    expect(nextState.active.language).toEqual(['en_UK']);
-    expect(nextState.active.topicfocus).not.toEqual(['sports']);
+    expect(nextState).toMatchSnapshot();
 });
 
 test(`allowedPresets selector should return the allowed Presets`, () => {
-    const state = fixtures.globalState;
+    const state = Immutable.fromJS(fixtures.dimensionState);
     const allowedPresets = selectors.allowedPresets(state);
 
-    expect(allowedPresets.language).toEqual(['en_US', 'en_UK', 'de', 'fr']);
+    expect(allowedPresets).toMatchSnapshot();
 });
 
 test(`active selector should return the active dimension values`, () => {
-    const state = fixtures.globalState;
+    const state = Immutable.fromJS(fixtures.dimensionState);
     const active = selectors.active(state);
 
-    expect(active.language).toEqual(['fr']);
+    expect(active).toMatchSnapshot();
 });
 
 test(`activePresets selector should return the active dimensions configuration`, () => {
-    const state = fixtures.globalState;
+    const state = Immutable.fromJS(fixtures.dimensionState);
     const activePresets = selectors.activePresets(state);
 
-    expect(activePresets.language.name).toBe('fr');
+    expect(activePresets).toMatchSnapshot();
 });
 
 test(`activePresets selector should fall back to default preset, if none is set`, () => {
-    const state = $set('cr.contentDimensions.active.language', null, fixtures.globalState);
+    const state = Immutable.fromJS(
+        $set('cr.contentDimensions.active.language', null, fixtures.dimensionState)
+    );
     const activePresets = selectors.activePresets(state);
 
     expect($get('language.name', activePresets)).toBe('en_US');

@@ -73,7 +73,7 @@ function * ensureNodeInSelectedDimension({nodeIdentifier, sourceDimensions, targ
         nodeContextPath,
         numberOfNodesMissingOnRootline
     } = yield getSingleNode(nodeIdentifier, {
-        dimensions: targetDimensions,
+        dimensions: targetDimensions.toJS(),
         workspaceName: currentWorkspaceName
     });
 
@@ -95,8 +95,8 @@ function * ensureNodeInSelectedDimension({nodeIdentifier, sourceDimensions, targ
         const {nodeFrontendUri, nodeContextPath} = yield adoptNodeToOtherDimension({
             identifier: nodeIdentifier,
             workspaceName: currentWorkspaceName,
-            targetDimensions,
-            sourceDimensions,
+            targetDimensions: targetDimensions.toJS(),
+            sourceDimensions: sourceDimensions.toJS(),
             copyContent
         });
 

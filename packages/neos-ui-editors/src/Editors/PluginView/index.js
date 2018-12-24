@@ -80,7 +80,7 @@ class PluginViewEditor extends React.PureComponent {
             const pluginNodeIdentifier = $get('plugin.value', transientValues) === undefined ? pluginNode.get('plugin') : $get('plugin.value', transientValues);
             this.setState({isLoading: true});
 
-            loadPluginViews(pluginNodeIdentifier, personalWorkspace, activeContentDimensions)
+            loadPluginViews(pluginNodeIdentifier, personalWorkspace, activeContentDimensions.toJS())
                 .then(views => {
                     this.setState({
                         isLoading: false,

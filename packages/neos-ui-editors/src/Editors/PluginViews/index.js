@@ -49,7 +49,7 @@ class PluginViewsEditor extends React.PureComponent {
         if (!this.state.views.length) {
             this.setState({isLoading: true});
 
-            loadPluginViews(focusedNodeIdentifier, personalWorkspace, activeContentDimensions)
+            loadPluginViews(focusedNodeIdentifier, personalWorkspace, activeContentDimensions.toJS())
                 .then(views => {
                     const viewsArray = [];
                     for (const viewName in views) {

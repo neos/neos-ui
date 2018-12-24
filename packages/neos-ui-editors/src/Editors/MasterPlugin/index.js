@@ -63,7 +63,7 @@ class MasterPluginEditor extends React.PureComponent {
         if (!this.state.options.length) {
             this.setState({isLoading: true});
 
-            loadMasterPlugins(personalWorkspace, activeContentDimensions)
+            loadMasterPlugins(personalWorkspace, activeContentDimensions.toJS())
                 .then(options => {
                     this.setState({
                         isLoading: false,

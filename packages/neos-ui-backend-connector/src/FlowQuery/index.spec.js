@@ -5,6 +5,7 @@ import factory, {
     isNodeEnvelope,
     resolveChain
 } from './index';
+import fetchWithErrorHandling from '../FetchWithErrorHandling';
 
 test(`
     "api.flowQuery > isStartingOperation" utility should return a falsy boolean
@@ -15,13 +16,13 @@ test(`
 test(`
     "api.flowQuery > isStartingOperation" utility should return a falsy boolean
     if the given operation is not a type of "CREATE_CONTEXT".`, () => {
-    expect(isStartingOperation({type: 'FOO'})).toBe(false);
+    expect(isStartingOperation({type: 'FOO', payload: 'bar'})).toBe(false);
 });
 
 test(`
     "api.flowQuery > isStartingOperation" utility should return a truthy boolean
     if the given operation is a type of "createContext".`, () => {
-    expect(isStartingOperation({type: 'createContext'})).toBe(true);
+    expect(isStartingOperation({type: 'createContext', payload: []})).toBe(true);
 });
 
 test(`
@@ -33,19 +34,19 @@ test(`
 test(`
     "api.flowQuery > isFinishingOperation" utility should return a falsy boolean
     if the given operation is not a type of "GET" or "COUNT".`, () => {
-    expect(isFinishingOperation({type: 'CREATE_CONTEXT'})).toBe(false);
+    expect(isFinishingOperation({type: 'CREATE_CONTEXT', payload: []})).toBe(false);
 });
 
 test(`
     "api.flowQuery > isFinishingOperation" utility should return a truthy boolean
     if the given operation is a type of "GET".`, () => {
-    expect(isFinishingOperation({type: 'get'})).toBe(true);
+    expect(isFinishingOperation({type: 'get', payload: 'anything'})).toBe(true);
 });
 
 test(`
     "api.flowQuery > isFinishingOperation" utility should return a truthy boolean
     if the given operation is a type of "count".`, () => {
-    expect(isFinishingOperation({type: 'count'})).toBe(true);
+    expect(isFinishingOperation({type: 'count', payload: []})).toBe(true);
 });
 
 test(`
@@ -126,7 +127,8 @@ test(`
 });
 
 test(`"api.flowQuery > resolveChain" utility should make a fetch call.`, () => {
-    const result = resolveChain({}, {ui: {service: {flowQuery: ''}}});
+    fetchWithErrorHandling.setCsrfToken('asdf');
+    const result = resolveChain({}, {ui: {service: {flowQuery: 'https://hello.world'}}});
 
     expect(result.then).not.toBe(undefined);
     expect(typeof (result.then)).toBe('function');

@@ -437,18 +437,15 @@ export default (routes: Routes) => {
                 }
                 const previewElement = asset.querySelector('[rel=thumbnail]') as HTMLElement;
                 if (!previewElement) {
-                    throw new Error('.asset-label not found in the asset search result');
+                    throw new Error('[rel=thumbnail] not found in the asset search result');
                 }
-                const identifierElement = asset.querySelector('.asset-identifier') as HTMLElement;
-                if (!identifierElement) {
-                    throw new Error('.asset-label not found in the asset search result');
-                }
+
                 return ({
                     dataType: 'Neos.Media:Asset',
                     loaderUri: 'asset://' + assetIdentifierElement.innerText,
                     label: assetLabelElement.innerText,
                     preview: previewElement.getAttribute('href'),
-                    identifier: identifierElement.innerText
+                    identifier: assetIdentifierElement.innerText
                 });
             });
         });
@@ -475,13 +472,9 @@ export default (routes: Routes) => {
             if (!assetLabelElement) {
                 throw new Error('.asset-label not found in the asset lookup result');
             }
-            const previewElement = asset.querySelector('[rel=thumbnail]') as HTMLElement;
+            const previewElement = asset.querySelector('[rel=preview]') as HTMLElement;
             if (!previewElement) {
-                throw new Error('.asset-label not found in the asset lookup result');
-            }
-            const identifierElement = asset.querySelector('.asset-identifier') as HTMLElement;
-            if (!identifierElement) {
-                throw new Error('.asset-label not found in the asset lookup result');
+                throw new Error('[rel=preview] not found in the asset lookup result');
             }
 
             return ({
@@ -489,7 +482,7 @@ export default (routes: Routes) => {
                 loaderUri: 'asset://' + assetIdentifierElement.innerText,
                 label: assetLabelElement.innerText,
                 preview: previewElement.getAttribute('href'),
-                identifier: identifierElement.innerText
+                identifier: assetIdentifierElement.innerText
             });
         });
 

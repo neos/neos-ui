@@ -1,16 +1,16 @@
 import initializeUse from './Use/index';
 import initializeFlowQuery from './FlowQuery/index';
-import initializeEndpoints from './Endpoints/index';
+import initializeEndpoints, {Routes} from './Endpoints/index';
 import fetchWithErrorHandling from './FetchWithErrorHandling/index';
 
-const createReadOnlyValue = value => ({
+const createReadOnlyValue = <T>(value: T) => ({
     value,
     writable: false,
     enumerable: false,
     configurable: false
 });
 
-export const define = parent => (name, value) => {
+export const define = (parent: {[propName: string]: any}) => (name: string, value: any) => {
     if (parent[name] !== undefined) {
         throw new Error(`Could not add library ${name}, because it is already defined.`);
     }
@@ -21,7 +21,7 @@ export const define = parent => (name, value) => {
 //
 // Initializes the Neos API
 //
-export const initializeJsAPI = (parent, {alias = 'neos', systemEnv = 'Development', routes}) => {
+export const initializeJsAPI = (parent: {[propName: string]: any}, {alias = 'neos', systemEnv = 'Development', routes}: {alias: string, systemEnv: string, routes: Routes}) => {
     if (parent[alias] !== undefined) {
         throw new Error(`Could not initialize Neos API, because ${alias} is already defined.`);
     }
@@ -41,11 +41,12 @@ export const initializeJsAPI = (parent, {alias = 'neos', systemEnv = 'Developmen
     return parent[alias];
 };
 
+
 //
 // Expose methods to access the initialized api
 //
 export default {
-    get(alias = 'neos', ctx = window) {
+    get(alias: string = 'neos', ctx: {[propName: string]: any} = window): any {
         return ctx[alias];
     }
 };
@@ -53,7 +54,7 @@ export default {
 //
 // Expose a method to create API plugins
 //
-export const createPlugin = (identifier, factory) => {
+export const createPlugin = (identifier: string, factory: any) => {
     factory.identifier = identifier;
     return factory;
 };

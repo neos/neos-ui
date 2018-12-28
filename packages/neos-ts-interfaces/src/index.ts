@@ -3,6 +3,45 @@ export type FusionPath = string;
 export type NodeTypeName = string;
 export type WorkspaceName = string;
 
+export type DimensionName = string;
+export type DimensionValue = string;
+export type DimensionPresetName = string;
+
+export type DimensionValues = DimensionValue[];
+
+export interface DimensionCombination {
+    [propName: string]: DimensionValues;
+}
+
+
+export interface DimensionPresetCombination {
+    [propName: string]: DimensionPresetName;
+}
+
+export interface PresetConfiguration {
+    name?: string;
+    label: string;
+    values: DimensionValues;
+    uriSegment: string;
+}
+
+export interface DimensionInformation {
+    default: string;
+    defaultPreset: string;
+    label: string;
+    icon: string;
+    presets: {
+        [propName: string]: PresetConfiguration;
+    };
+}
+
+export interface ContextProperties {
+    contextPath?: NodeContextPath;
+    workspaceName?: WorkspaceName;
+    invisibleContentShown?: boolean;
+    removedContentShown?: boolean;
+}
+
 export interface NodeChild {
     contextPath: NodeContextPath;
     nodeType: NodeTypeName;

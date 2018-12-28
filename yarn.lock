@@ -721,6 +721,18 @@
   dependencies:
     "@types/lodash" "*"
 
+"@types/lodash.isobject@^3.0.4":
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/@types/lodash.isobject/-/lodash.isobject-3.0.4.tgz#99b8dad21ff0bfb26645edd60f48847951d63681"
+  dependencies:
+    "@types/lodash" "*"
+
+"@types/lodash.isstring@^4.0.4":
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/@types/lodash.isstring/-/lodash.isstring-4.0.4.tgz#d049735cd098c39227a9974068b61c874ac107bc"
+  dependencies:
+    "@types/lodash" "*"
+
 "@types/lodash.merge@^4.6.4":
   version "4.6.4"
   resolved "https://registry.yarnpkg.com/@types/lodash.merge/-/lodash.merge-4.6.4.tgz#0eaae4c82b82d0426612ba929f53edafe5402c58"

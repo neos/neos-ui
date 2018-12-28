@@ -5,37 +5,7 @@ import {createSelector} from 'reselect';
 import {action as createAction, ActionType} from 'typesafe-actions';
 import {actionTypes as system, InitAction, GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
 import isEqual from 'lodash.isequal';
-
-type DimensionValue = string;
-
-type DimensionValues = DimensionValue[];
-
-interface DimensionCombination {
-    [propName: string]: DimensionValues;
-}
-
-type DimensionPresetName = string;
-
-interface DimensionPresetCombination {
-    [propName: string]: DimensionPresetName;
-}
-
-interface PresetConfiguration {
-    name?: string;
-    label: string;
-    values: DimensionValues;
-    uriSegment: string;
-}
-
-interface DimensionInformation {
-    default: string;
-    defaultPreset: string;
-    label: string;
-    icon: string;
-    presets: {
-        [propName: string]: PresetConfiguration;
-    };
-}
+import {DimensionInformation, DimensionCombination, DimensionPresetName, DimensionPresetCombination} from '@neos-project/neos-ts-interfaces';
 
 //
 // Export the subreducer state shape interface

@@ -1,11 +1,11 @@
-const concatenatePrependAndKey = (prepend, key) => {
+const concatenatePrependAndKey = (prepend?: string, key?: string) => {
     if (prepend) {
         return prepend + '[' + key + ']';
     }
-    return key;
+    return key || '';
 };
 
-const urlWithParamsInner = (searchParams, prepend, params = {}) => {
+const urlWithParamsInner = (searchParams: {[propName: string]: any}, prepend: string, params: {[propName: string]: any} = {}) => {
     Object.keys(params).forEach(key => {
         const value = params[key];
         if (Array.isArray(value)) {
@@ -33,7 +33,7 @@ export const searchParams = (params = {}) => {
  * @param params
  * @return strinf
  */
-export const urlWithParams = (urlString, params = {}) => {
+export const urlWithParams = (urlString: string, params = {}) => {
     const url = new URL(
         urlString.indexOf(window.location.origin) === 0 ?
             urlString :

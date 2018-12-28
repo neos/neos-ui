@@ -1,31 +1,39 @@
+type MakeFetchRequest = (csrf: string) => RequestInit & {url?: string};
+
+interface RequestQueueItem {
+    makeFetchRequest: MakeFetchRequest;
+    resolve: (value?: any | undefined) => void;
+    reject: (reason?: any) => void;
+}
+
 class FetchWithErrorHandling {
     /**
      * The current CSRF token being used.
      */
-    _csrfToken = null;
+    public _csrfToken: string | null = null;
 
     /**
      * In case a request failed because we are not logged in anymore, the following happens:
      *   - the failed request is put to this._requestQueue; so that it can be re-tried after a successful login.
      *   - this._shouldEnqueueRequests is set to TRUE, to ensure upcoming requests (which rely on authentication) will not be executed, but parked.
      */
-    _authenticationErrorHandlerFn = null;
+    private _authenticationErrorHandlerFn: (() => void) | null = null;
 
-    _generalErrorHandlerFn = () => null;
+    private _generalErrorHandlerFn: ((errorMessage: string) => void) = () => null;
 
-    _shouldEnqueueRequests = false;
+    private _shouldEnqueueRequests = false;
 
-    _requestQueue = [];
+    private _requestQueue: RequestQueueItem[] = [];
 
-    registerAuthenticationErrorHandler(handlerFn) {
+    public registerAuthenticationErrorHandler(handlerFn: () => void): void {
         this._authenticationErrorHandlerFn = handlerFn;
     }
 
-    registerGeneralErrorHandler(handlerFn) {
+    public registerGeneralErrorHandler(handlerFn: (errorMessage: string) => void): void {
         this._generalErrorHandlerFn = handlerFn;
     }
 
-    setCsrfToken(csrfToken) {
+    public setCsrfToken(csrfToken: string): void {
         this._csrfToken = csrfToken;
     }
 
@@ -49,7 +57,7 @@ class FetchWithErrorHandling {
      *
      * makeFetchRequest is a function which takes just the csrfToken as argument and returns the fetch request specification.
      */
-    withCsrfToken(makeFetchRequest) {
+    public withCsrfToken(makeFetchRequest: MakeFetchRequest): Promise<any> {
         if (this._shouldEnqueueRequests) {
             // We are currently not authenticated anymore; so we know the request cannot work. Instead, we just enqueue it so that we can run it
             // once authentication is successful.
@@ -59,7 +67,7 @@ class FetchWithErrorHandling {
         return this._executeFetchRequest(makeFetchRequest);
     }
 
-    _enqueueRequest(makeFetchRequest) {
+    private _enqueueRequest(makeFetchRequest: MakeFetchRequest): Promise<any> {
         return new Promise((resolve, reject) => {
             // This promise is never resolved inside the function body here; but it is resolved after a successful
             // re-login; when the requestQueue is executed (inside _executeSingleQueueElement)
@@ -67,10 +75,16 @@ class FetchWithErrorHandling {
         });
     }
 
-    _executeFetchRequest(makeFetchRequest) {
+    private _executeFetchRequest(makeFetchRequest: MakeFetchRequest): Promise<any> {
         // Build the actual fetch request by passing in the current CSRF token
+        if (!this._csrfToken) {
+            throw new Error('csrfToken not set');
+        }
         const fetchOptions = makeFetchRequest(this._csrfToken);
         const {url} = fetchOptions;
+        if (!url) {
+            throw new Error('Url option not provided');
+        }
         delete fetchOptions.url;
 
         // We manually return a new promise (and do not reuse the promise returned from fetch()), because
@@ -113,7 +127,7 @@ class FetchWithErrorHandling {
      * all requests currently in the waiting queue and resolves the original promises; so that the application can
      * continue working.
      */
-    updateCsrfTokenAndWorkThroughQueue(newCsrfToken) {
+    public updateCsrfTokenAndWorkThroughQueue(newCsrfToken: string): void {
         this.setCsrfToken(newCsrfToken);
 
         // Store the current request queue in a local variable (to ensure it is not modified while we replay them); and disable the queuing.
@@ -124,12 +138,12 @@ class FetchWithErrorHandling {
         // Execute the requests in the queue one-by-one (not in parallel), as there might be dependencies between the requests (unlikely, but
         // might be possible).
         let currentPromise = Promise.resolve(true);
-        for (let i = 0; i < requestQueueToWorkThrough.length; i++) {
-            currentPromise = this._executeSingleQueueElement(currentPromise, requestQueueToWorkThrough[i]);
-        }
+        requestQueueToWorkThrough.forEach(item => {
+            currentPromise = this._executeSingleQueueElement(currentPromise, item);
+        });
     }
 
-    _executeSingleQueueElement(currentPromise, queueElement) {
+    private _executeSingleQueueElement(currentPromise: Promise<any>, queueElement: RequestQueueItem): Promise<any> {
         const {makeFetchRequest, resolve, reject} = queueElement;
         return currentPromise.then(() => {
             // We execute our request; and if we were successful, resolve or reject the *original* promise (which is stored in the queueElement).
@@ -143,7 +157,7 @@ class FetchWithErrorHandling {
      * should end with this catch block:
      * `.catch(reason => fetchWithErrorHandling.generalErrorHandler(reason))`
      */
-    generalErrorHandler(reason) {
+    public generalErrorHandler(reason: string | Error): void {
         let errorText;
         if (typeof reason === 'string') {
             errorText = reason;
@@ -162,7 +176,7 @@ class FetchWithErrorHandling {
     /**
      * Safely parse JSON from response
      */
-    parseJson(response) {
+    public parseJson(response: Body): any {
         return response.text().then(response => {
             try {
                 return JSON.parse(response);

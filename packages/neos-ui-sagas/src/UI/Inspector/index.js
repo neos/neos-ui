@@ -63,7 +63,7 @@ export function * inspectorSaga({globalRegistry}) {
                     // Persist the inspector changes
                     //
                     yield call(flushInspector, inspectorRegistry);
-                    const focusedNodeContextPath = yield select(selectors.CR.Nodes.focusedNodeContextPathSelector);
+                    const focusedNodeContextPath = yield select(selectors.CR.Nodes.focusedNodePathSelector);
                     yield put(actions.UI.Inspector.clear(focusedNodeContextPath));
                 } catch (err) {
                     //

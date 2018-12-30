@@ -2,7 +2,7 @@
   "name": "@neos-project/positional-array-sorter",
   "version": "1.4.1",
   "description": "Flexible array sorter that sorts an array according to a 'position' meta data.",
-  "main": "./src/positionalArraySorter.js",
+  "main": "./src/positionalArraySorter.ts",
   "license": "GNU GPLv3",
   "scripts": {
     "prebuild": "check-dependencies && yarn clean",

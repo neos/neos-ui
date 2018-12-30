@@ -66,7 +66,9 @@ export default class LinkInput extends PureComponent {
         }).isRequired,
 
         contextForNodeLinking: PropTypes.shape({
-            toJS: PropTypes.func.isRequired
+            workspaceName: PropTypes.string.isRequired,
+            contextNode: PropTypes.string,
+            dimensions: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.string))
         }).isRequired
     };
 

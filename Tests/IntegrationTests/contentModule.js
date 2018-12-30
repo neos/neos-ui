@@ -155,7 +155,7 @@ test('Discarding: delete a document node and then discard deletion', async t => 
 
     subSection('Delete that page');
     await t
-        .click(ReactSelector('DeleteSelectedNode'))
+        .click(Selector('#neos-PageTree-DeleteSelectedNode'))
         .click(Selector('#neos-DeleteNodeModal-Confirm'))
         .expect(page.treeNode.withText(pageTitleToDelete).exists).notOk('Deleted node gone from the tree')
         .expect(Selector('.neos-message-header').withText('Page Not Found').exists).notOk('Make sure we don\'t end up on 404 page');
@@ -173,7 +173,7 @@ test('Discarding: create a content node and then discard it', async t => {
     await t
         .click(Selector('#neos-ContentTree-ToggleContentTree'))
         .click(page.treeNode.withText('Content Collection (main)'))
-        .click(ReactSelector('AddNode').nth(1).find('button'))
+        .click(Selector('#neos-ContentTree-AddNode'))
         .click(ReactSelector('NodeTypeItem').find('button>span').withText('Headline'));
     await waitForIframeLoading(t);
     await t
@@ -208,7 +208,7 @@ test('Discarding: delete a content node and then discard deletion', async t => {
     await t
         .click(Selector('#neos-ContentTree-ToggleContentTree'))
         .click(page.treeNode.withText(headlineToDelete))
-        .click(ReactSelector('DeleteSelectedNode').nth(1))
+        .click(Selector('#neos-ContentTree-DeleteSelectedNode'))
         .click(Selector('#neos-DeleteNodeModal-Confirm'));
     await waitForIframeLoading(t);
     await t
@@ -303,14 +303,14 @@ test('Can create a new page', async t => {
         .switchToMainWindow();
 });
 
-test('Can create content node from inside InlineUI', async t => {
+test.only('Can create content node from inside InlineUI', async t => {
     const headlineTitle = 'Helloworld!';
     subSection('Create a headline node');
     await waitForIframeLoading(t);
     await t
         .switchToIframe('[name="neos-content-main"]')
         .click(Selector('.neos-contentcollection'))
-        .click(ReactSelector('AddNode Button'))
+        .click(Selector('#neos-InlineToolbar-AddNode'))
         .switchToMainWindow()
         .click(Selector('button#into'))
         // TODO: this selector will only work with English translation.
@@ -324,4 +324,49 @@ test('Can create content node from inside InlineUI', async t => {
         .typeText(Selector('.neos-inline-editable h1'), headlineTitle)
         .expect(Selector('.neos-contentcollection').withText(headlineTitle).exists).ok()
         .switchToMainWindow();
+});
+
+test('Can edit the page title via inspector', async t => {
+    const InspectorTitleProperty = Selector('#__neos__editor__property---title');
+    await waitForIframeLoading(t);
+
+    subSection('Rename home page via inspector');
+    await t
+        .expect(InspectorTitleProperty.value).eql('Home')
+        .click(InspectorTitleProperty)
+        .typeText(InspectorTitleProperty, '-1')
+        .expect(InspectorTitleProperty.value).eql('Home-1')
+        .click(Selector('#neos-Inspector-Discard'))
+        .expect(InspectorTitleProperty.value).eql('Home')
+        .typeText(InspectorTitleProperty, '-1')
+        .click(Selector('#neos-Inspector-Apply'))
+        .expect(InspectorTitleProperty.value).eql('Home-1');
+    await waitForIframeLoading(t);
+    await t
+        .expect(InspectorTitleProperty.value).eql('Home-1');
+
+    subSection('Test unapplied changes dialog - resume');
+    await t
+        .click(InspectorTitleProperty)
+        .typeText(InspectorTitleProperty, '-2')
+        .click(Selector('[name="neos-content-main"]'))
+        .expect(Selector('#neos-UnappliedChangesDialog').exists).ok()
+        .click(Selector('#neos-UnappliedChangesDialog-resume'))
+        .expect(Selector('#neos-UnappliedChangesDialog').exists).notOk()
+        .expect(InspectorTitleProperty.value).eql('Home-1-2');
+
+    subSection('Test unapplied changes dialog - discard');
+    await t
+        .click(Selector('[name="neos-content-main"]'))
+        .click(Selector('#neos-UnappliedChangesDialog-discard'))
+        .expect(InspectorTitleProperty.value).eql('Home-1');
+
+    subSection('Test unapplied changes dialog - apply');
+    await t
+        .typeText(InspectorTitleProperty, '-3')
+        .click(Selector('[name="neos-content-main"]'))
+        .click(Selector('#neos-UnappliedChangesDialog-apply'))
+        .expect(InspectorTitleProperty.value).eql('Home-1-3')
+        .click(Selector('[name="neos-content-main"]'))
+        .expect(Selector('#neos-UnappliedChangesDialog').exists).notOk();
 });

@@ -22,7 +22,7 @@ import style from './style.css';
         shouldAppear: selectors.UI.Inspector.shouldPromptToHandleUnappliedChanges(state),
         isApplyDisabled: isApplyDisabledSelector(state),
         isDiscardDisabled: selectors.UI.Inspector.isDiscardDisabledSelector(state),
-        focusedNodeContextPath: selectors.CR.Nodes.focusedNodeContextPathSelector(state)
+        focusedNodeContextPath: selectors.CR.Nodes.focusedNodePathSelector(state)
     };
 }, {
     resume: actions.UI.Inspector.resume,
@@ -79,6 +79,7 @@ export default class UnappliedChangesDialog extends PureComponent {
                 >
                 <div className={style.modalContents}>
                     <Button
+                        id="neos-UnappliedChangesDialog-discard"
                         style="lighter"
                         disabled={isDiscardDisabled}
                         onClick={this.handleDiscard}
@@ -87,6 +88,7 @@ export default class UnappliedChangesDialog extends PureComponent {
                         <I18n id="Neos.Neos:Main:content.inspector.unappliedChangesDialog.button.danger"/>
                     </Button>
                     <Button
+                        id="neos-UnappliedChangesDialog-resume"
                         style="lighter"
                         onClick={this.handleResume}
                         className={`${style.button} ${style.resumeButton}`}
@@ -94,6 +96,7 @@ export default class UnappliedChangesDialog extends PureComponent {
                         <I18n id="Neos.Neos:Main:content.inspector.unappliedChangesDialog.button.default"/>
                     </Button>
                     <Button
+                        id="neos-UnappliedChangesDialog-apply"
                         style="lighter"
                         disabled={isApplyDisabled}
                         onClick={this.handleApply}

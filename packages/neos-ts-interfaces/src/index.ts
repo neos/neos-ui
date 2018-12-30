@@ -3,6 +3,45 @@ export type FusionPath = string;
 export type NodeTypeName = string;
 export type WorkspaceName = string;
 
+export type DimensionName = string;
+export type DimensionValue = string;
+export type DimensionPresetName = string;
+
+export type DimensionValues = DimensionValue[];
+
+export interface DimensionCombination {
+    [propName: string]: DimensionValues;
+}
+
+
+export interface DimensionPresetCombination {
+    [propName: string]: DimensionPresetName;
+}
+
+export interface PresetConfiguration {
+    name?: string;
+    label: string;
+    values: DimensionValues;
+    uriSegment: string;
+}
+
+export interface DimensionInformation {
+    default: string;
+    defaultPreset: string;
+    label: string;
+    icon: string;
+    presets: {
+        [propName: string]: PresetConfiguration;
+    };
+}
+
+export interface ContextProperties {
+    contextPath?: NodeContextPath;
+    workspaceName?: WorkspaceName;
+    invisibleContentShown?: boolean;
+    removedContentShown?: boolean;
+}
+
 export interface NodeChild {
     contextPath: NodeContextPath;
     nodeType: NodeTypeName;
@@ -54,7 +93,45 @@ export enum InsertPosition {
     AFTER = 'after'
 }
 
+export interface ValidatorConfiguration {
+    [propName: string]: any;
+}
+
+export interface PropertyConfiguration {
+    type?: string;
+    ui?: {
+        label?: string;
+        reloadIfChanged?: boolean;
+        inline?: {
+            editor?: string;
+            editorOptions?: {
+                [propName: string]: any;
+            };
+        }
+        inlineEditable?: boolean;
+        inspector?: {
+            hidden?: boolean;
+            defaultValue?: string;
+            editor?: string;
+            editorOptions?: {
+                [propName: string]: any;
+            }
+            group?: string;
+            position?: number | string;
+        };
+        help?: {
+            message?: string;
+            thumbnail?: string;
+        };
+        aloha?: any; // deprecated format
+    };
+    validation?: {
+        [propName: string]: ValidatorConfiguration | undefined;
+    };
+}
+
 export interface NodeType {
+    name?: string;
     superTypes: {
         [propName: string]: boolean | undefined;
     };
@@ -69,6 +146,7 @@ export interface NodeType {
         icon?: string;
         label?: string;
         position?: number | string;
+        inlineEditable?: boolean;
         inspector?: {
             groups?: {
                 [propName: string]: {
@@ -88,12 +166,16 @@ export interface NodeType {
                 } | undefined;
             };
             views?: {
-                group?: string;
-                label?: string;
-                view?: string;
-                viewOptions?: {
-                    [propName: string]: any;
-                };
+                [propName: string]: {
+                    group?: string;
+                    label?: string;
+                    position?: number | string;
+                    helpMessage?: string;
+                    view?: string;
+                    viewOptions?: {
+                        [propName: string]: any;
+                    };
+                }
             };
         };
         creationDialog?: {
@@ -117,25 +199,7 @@ export interface NodeType {
         };
     };
     properties?: {
-        type?: string;
-        ui?: {
-            label?: string;
-            reloadIfChanged?: boolean;
-            inspector?: {
-                defaultValue?: string;
-                editor?: string;
-                editorOptions?: {
-                    [propName: string]: any;
-                }
-                group?: string;
-                position?: number | string;
-            };
-        };
-        validation?: {
-            [propName: string]: {
-                [propName: string]: any;
-            } | undefined;
-        };
+        [propName: string]: PropertyConfiguration | undefined;
     };
 }
 
@@ -162,8 +226,16 @@ export interface NodeTypesRegistry {
 // TODO: move to validatorsregistry itself
 type Validator = (
     values: {},
-    elementConfigurations: {}
+    elementConfigurations: any
 ) => null | {} | string;
 export interface ValidatorRegistry {
-    get: (validatorName: string) => Validator;
+    get: (validatorName: string) => Validator | null;
+    set: (validatorName: string, validator: Validator) => void;
+}
+export interface I18nRegistry {
+    translate: (id?: string, fallback?: string, params?: {}, packageKey?: string, sourceName?: string) => string;
+}
+export interface GlobalRegistry {
+    get: <K extends string>(key: K) => K extends 'i18n' ? I18nRegistry :
+        K extends 'validators' ? ValidatorRegistry : null;
 }

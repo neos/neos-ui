@@ -16,18 +16,18 @@ export const getIsLoading = createSelector(
     [
         getLoading
     ],
-    list => Boolean(list.length)
+    list => Boolean(list && list.length)
 );
 
 export const getUncollapsed = createSelector(
     [
-        getToggled,
+        (state: GlobalState) => $get(['ui', 'pageTree', 'toggled'], state),
         nodesByContextPathSelector,
         siteNodeSelector,
         (_: GlobalState, {loadingDepth = 0}) => loadingDepth
     ],
-    (toggleTreeNodeContextPaths, nodesByContextPath, siteNode, loadingDepth) => Object.keys(nodesByContextPath).filter(contextPath => {
-        const node = nodesByContextPath[contextPath];
+    (toggleTreeNodeContextPaths, nodesByContextPath, siteNode, loadingDepth) => Object.keys(nodesByContextPath || {}).filter(contextPath => {
+        const node = nodesByContextPath && nodesByContextPath[contextPath];
         if (!node || !siteNode) {
             return false;
         }

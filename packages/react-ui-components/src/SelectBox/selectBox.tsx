@@ -37,6 +37,8 @@ interface SelectBoxTheme extends SelectBox_ListPreview_Theme, SelectBox_Header_T
     readonly 'wrapper--highlight': string;
 }
 
+export type SelectBoxOptionValueAccessor = (option: SelectBoxOption) => string;
+
 export interface SelectBoxProps {
     // ------------------------------
     // Basic Props for core functionality
@@ -273,7 +275,7 @@ export default class SelectBox extends PureComponent<SelectBoxProps, SelectBoxSt
         return this.props.searchTerm || this.state.searchTerm;
     }
 
-    private getOptionValueAccessor(): (option: SelectBoxOption) => string {
+    private getOptionValueAccessor(): SelectBoxOptionValueAccessor {
         // returns a function that extract a value from the object
         // TODO extend $get path to return a curried function if called with _path_ arg only
         // @ts-ignore

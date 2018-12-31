@@ -1,62 +1,60 @@
-/* eslint-disable camelcase, react/jsx-pascal-case */
+// tslint:disable:class-name
 import React, {PureComponent} from 'react';
-import PropTypes from 'prop-types';
-import injectProps from './../_lib/injectProps';
 import MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement from '../MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement';
+import {SelectBoxOption, SelectBoxOptions, SelectBoxOptionValueAccessor} from '../SelectBox/selectBox';
 
-const ensureIsArray = v => {
+// TODO is this type guard still needed with TS?
+function ensureIsArray<T>(v: any): ReadonlyArray<T> {
     if (Array.isArray(v)) {
         return v;
     }
+    // tslint:disable-next-line:no-console
     console.warn('<MultiSelectBox/> Expected "values" to be an Array but found the following value (Falling back to an empty list): ', v);
     return [];
-};
+}
 
-const makeDraggableListPreviewElement = ListPreviewElement =>
-    injectProps({
-        InnerListPreviewElement: ListPreviewElement
-    })(MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement);
+type MultiSelectBox_ListPreviewSortableProps = Readonly<{
+    // For explanations of the PropTypes, see MultiSelectBox.js
+    options: SelectBoxOptions,
+    values: ReadonlyArray<string>,
+    onValuesChange: (values: ReadonlyArray<string>) => void,
+    ListPreviewElement: any, // TODO
+
+    // API with MultiSelectBox
+    optionValueAccessor: SelectBoxOptionValueAccessor,
+}>;
+
+type MultiSelectBox_ListPreviewSortableState = Readonly<{
+    draggableValues: ReadonlyArray<string>;
+}>;
 
 /**
  * **MultiSelectBox_ListPreviewSortable is an internal implementation detail of MultiSelectBox**, meant to improve code quality.
  *
  * It is used inside MultiSelectBox, to render the selected elements in the list.
  */
-export default class MultiSelectBox_ListPreviewSortable extends PureComponent {
-    static propTypes = {
-        // For explanations of the PropTypes, see MultiSelectBox.js
-        options: PropTypes.arrayOf(
-            PropTypes.shape({})
-        ).isRequired,
-        values: PropTypes.arrayOf(PropTypes.string),
-        onValuesChange: PropTypes.func.isRequired,
-        ListPreviewElement: PropTypes.any.isRequired,
-
-        // API with MultiSelectBox
-        optionValueAccessor: PropTypes.func.isRequired
-    }
-
-    constructor(props) {
+export default class MultiSelectBox_ListPreviewSortable extends PureComponent<MultiSelectBox_ListPreviewSortableProps, MultiSelectBox_ListPreviewSortableState> {
+    constructor(props: MultiSelectBox_ListPreviewSortableProps) {
         super(props);
 
         this.state = {
             draggableValues: ensureIsArray(this.props.values)
         };
 
-        this.DraggableListPreviewElement = makeDraggableListPreviewElement(props.ListPreviewElement);
+        // this.DraggableListPreviewElement = makeDraggableListPreviewElement(props.ListPreviewElement);
     }
 
-    componentWillReceiveProps(nextProps) {
+    public componentWillReceiveProps(nextProps: MultiSelectBox_ListPreviewSortableProps): void {
         if (this.props.values !== nextProps.values) {
             this.setState({
                 draggableValues: ensureIsArray(nextProps.values)
             });
         }
 
-        this.DraggableListPreviewElement = makeDraggableListPreviewElement(nextProps.ListPreviewElement);
+        // this.DraggableListPreviewElement = makeDraggableListPreviewElement(nextProps.ListPreviewElement);
     }
 
-    render() {
+    public render(): ReadonlyArray<JSX.Element> { // TODO
         const {
             options,
             optionValueAccessor
@@ -65,34 +63,35 @@ export default class MultiSelectBox_ListPreviewSortable extends PureComponent {
         const {draggableValues} = this.state;
 
         // Sorted options by draggable value ordering
-        const draggableOptions = draggableValues.map(value =>
-            options.find(option => optionValueAccessor(option) === value)
-        ).filter(Boolean);
+        // TODO somehow TS does not seem to understand that we filter all undefined values out of the array
+        // @ts-ignore
+        const draggableOptions: SelectBoxOptions = draggableValues
+            .map(value => options.find(option => optionValueAccessor(option) === value))
+            .filter(Boolean);
 
         return draggableOptions.map(this.renderOption);
     }
 
-    renderOption = (option, index) => {
+    private renderOption = (option: SelectBoxOption, index: number) => {
         const {
             optionValueAccessor
         } = this.props;
 
-        const {DraggableListPreviewElement} = this;
-
         return (
-            <DraggableListPreviewElement
-                {...this.props}
+            <MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement
+                {...this.props as any} // TODO there are a lot of strange props missing
+                InnerListPreviewElement={this.props.ListPreviewElement}
                 key={optionValueAccessor(option)}
                 index={index}
                 option={option}
                 onMoveSelectedValue={this.handleMoveSelectedValue}
                 onSelectedValueWasMoved={this.handleSelectedValueWasMoved}
                 onRemoveItem={this.handleRemoveItem}
-                />
+            />
         );
     }
 
-    handleMoveSelectedValue = (dragIndex, hoverIndex) => {
+    private handleMoveSelectedValue = (dragIndex: number, hoverIndex: number) => {
         const {draggableValues} = this.state;
         const movedOption = draggableValues[dragIndex];
 
@@ -104,11 +103,11 @@ export default class MultiSelectBox_ListPreviewSortable extends PureComponent {
         this.setState({draggableValues: reorderedValues});
     }
 
-    handleSelectedValueWasMoved = () => {
+    private handleSelectedValueWasMoved = () => {
         this.props.onValuesChange(this.state.draggableValues);
     }
 
-    handleRemoveItem = removeIndex => {
+    private handleRemoveItem = (removeIndex: number) => {
         const newValues = this.state.draggableValues.slice();
         newValues.splice(removeIndex, 1);
         this.setState({draggableValues: newValues});

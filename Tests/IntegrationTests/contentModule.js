@@ -303,7 +303,7 @@ test('Can create a new page', async t => {
         .switchToMainWindow();
 });
 
-test.only('Can create content node from inside InlineUI', async t => {
+test('Can create content node from inside InlineUI', async t => {
     const headlineTitle = 'Helloworld!';
     subSection('Create a headline node');
     await waitForIframeLoading(t);
@@ -371,7 +371,7 @@ test('Can edit the page title via inspector', async t => {
         .expect(Selector('#neos-UnappliedChangesDialog').exists).notOk();
 });
 
-test.only('Can crop an image', async t => {
+test('Can crop an image', async t => {
     await waitForIframeLoading(t);
 
     await t.switchToIframe('[name="neos-content-main"]');

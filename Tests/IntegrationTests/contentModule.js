@@ -370,3 +370,24 @@ test('Can edit the page title via inspector', async t => {
         .click(Selector('[name="neos-content-main"]'))
         .expect(Selector('#neos-UnappliedChangesDialog').exists).notOk();
 });
+
+test.only('Can crop an image', async t => {
+    await waitForIframeLoading(t);
+
+    await t.switchToIframe('[name="neos-content-main"]');
+    const initialBackgroundImage = await Selector('.main-header.image').getStyleProperty('background-image');
+    await t.switchToMainWindow();
+
+    const imageEditor = await ReactSelector('InspectorEditorEnvelope').withProps('id', 'image');
+    await t
+        .click(imageEditor.findReact('IconButton').withProps('icon', 'crop'));
+    const initialTopOffset = await imageEditor.find('img').getStyleProperty('top');
+    await t
+        .drag(ReactSelector('ReactCrop'), 50, 50, {offsetX: 5, offsetY: 5})
+        .expect(imageEditor.find('img').getStyleProperty('top')).notEql(initialTopOffset, 'The preview image should reflect the cropping results')
+        .click(Selector('#neos-Inspector-Apply'));
+    await waitForIframeLoading(t);
+    await t.switchToIframe('[name="neos-content-main"]');
+    await t.expect(Selector('.main-header.image').getStyleProperty('background-image')).notEql(initialBackgroundImage, 'Header image should have changed after crop');
+    await t.switchToMainWindow();
+});

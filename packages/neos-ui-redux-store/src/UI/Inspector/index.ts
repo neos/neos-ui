@@ -98,7 +98,8 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
             }
             const focusedValues = draft.valuesByNodePath[focusedNodePath];
             if (focusedValues) { // dummy type guard
-                if (transientValueDiffers) {
+                // if hooks are defined for given property, the value should not be cleared even if it doesn't differ
+                if (transientValueDiffers || hooks) {
                     focusedValues[propertyId] = hooks ? {value, hooks} : {value};
                 } else {
                     delete focusedValues[propertyId];

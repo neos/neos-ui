@@ -1,186 +1,160 @@
 /* eslint-disable camelcase, react/jsx-pascal-case */
-import React, {PureComponent} from 'react';
-import PropTypes from 'prop-types';
+import React, {PureComponent, ComponentClass} from 'react';
 import {$get} from 'plow-js';
 import mergeClassNames from 'classnames';
-import omit from 'lodash.omit';
+import {omit} from 'lodash';
 import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine';
+import SelectBox from '../SelectBox';
+import {SelectBoxOptions, SelectBoxOptionValueAccessor} from '../SelectBox/selectBox';
+import {PickDefaultProps} from '../../types';
+import MultiSelectBox_ListPreviewSortable from '../MultiSelectBox_ListPreviewSortable';
+import {SelectBox_Option_SingleLineProps} from '../SelectBox_Option_SingleLine/selectBox_Option_SingleLine';
 
-class MultiSelectBox extends PureComponent {
-    static propTypes = {
-        // ------------------------------
-        // Basic Props for core functionality
-        // ------------------------------
-        /**
-         * This prop represents a set of options.
-         * Each option must have a value and can have a label and an icon.
-         */
-        options: PropTypes.arrayOf(
-            PropTypes.shape({
-                icon: PropTypes.string,
-                // "value" is not part of PropTypes validation, as the "value field" is specified via the "optionValueField" property
-                label: PropTypes.oneOfType([
-                    PropTypes.string,
-                    PropTypes.object
-                ]).isRequired
-            })
-        ),
+export interface MultiSelectBoxProps extends Readonly<{
+    // ------------------------------
+    // Basic Props for core functionality
+    // ------------------------------
+    /**
+     * This prop represents a set of options.
+     * Each option must have a value and can have a label and an icon.
+     */
+    options: SelectBoxOptions;
 
-        /**
-         * Additional className wich will be applied
-         */
-        className: PropTypes.string,
+    /**
+     * Additional className wich will be applied
+     */
+    className?: string;
 
-        /**
-         * Field name specifying which field in a single "option" contains the "value"
-         */
-        optionValueField: PropTypes.string,
+    /**
+     * Field name specifying which field in a single "option" contains the "value"
+     */
+    optionValueField: string;
 
-        /**
-         * This prop represents the current selected value.
-         */
-        values: PropTypes.arrayOf(PropTypes.string),
+    /**
+     * This prop represents the current selected value.
+     */
+    values: ReadonlyArray<string>;
 
-        /**
-         * This prop gets called when an option was selected. It returns the new values as array.
-         */
-        onValuesChange: PropTypes.func.isRequired,
+    /**
+     * This prop gets called when an option was selected. It returns the new values as array.
+     */
+    onValuesChange: (values: ReadonlyArray<string>) => void;
 
-        // ------------------------------
-        // Visual customization of the MultiSelect Box
-        // ------------------------------
-        /**
-         * This prop is the placeholder text which is displayed in the selectbox when no option was selected.
-         */
-        placeholder: PropTypes.string,
+    // ------------------------------
+    // Visual customization of the MultiSelect Box
+    // ------------------------------
+    /**
+     * This prop is the placeholder text which is displayed in the selectbox when no option was selected.
+     */
+    placeholder?: string;
 
-        /**
-         * This prop is an icon for the placeholder.
-         */
-        placeholderIcon: PropTypes.string,
+    /**
+     * This prop is an icon for the placeholder.
+     */
+    placeholderIcon?: string;
 
-        /**
-         * Text for the group label of options without a group
-         */
-        withoutGroupLabel: PropTypes.string,
+    /**
+     * Text for the group label of options without a group
+     */
+    withoutGroupLabel?: string;
 
-        /**
-         * If false, prevents removing the last element.
-         */
-        allowEmpty: PropTypes.bool,
+    /**
+     * If false, prevents removing the last element.
+     */
+    allowEmpty?: boolean;
 
-        /**
-         * Limit height and show scrollbars if needed, defaults to true
-         */
-        scrollable: PropTypes.bool,
+    /**
+     * Limit height and show scrollbars if needed, defaults to true
+     */
+    scrollable: boolean;
 
-        /**
-         * Component used for rendering the individual option elements; Usually this component uses "SelectBoxOption" internally for common styling.
-         */
-        ListPreviewElement: PropTypes.any,
+    /**
+     * Component used for rendering the individual option elements; Usually this component uses "SelectBoxOption" internally for common styling.
+     */
+    ListPreviewElement?: ComponentClass<SelectBox_Option_SingleLineProps>; // TODO type the Props
 
-        // ------------------------------
-        // Asynchronous loading of data
-        // ------------------------------
+    disabled: boolean;
 
-        /**
-         * This prop is the loading text which is displayed in the selectbox when displayLoadingIndicator ist set to true.
-         */
-        loadingLabel: PropTypes.string,
+    // ------------------------------
+    // Asynchronous loading of data
+    // ------------------------------
 
-        /**
-         * Helper for asynchronous loading; should be set to "true" as long as "options" is not yet populated.
-         */
-        displayLoadingIndicator: PropTypes.bool,
+    /**
+     * This prop is the loading text which is displayed in the selectbox when displayLoadingIndicator ist set to true.
+     */
+    loadingLabel?: string;
 
-        // ------------------------------
-        // Search-As-You-Type related functionality
-        // ------------------------------
-        displaySearchBox: PropTypes.bool,
-        searchTerm: PropTypes.string,
-        onSearchTermChange: PropTypes.func,
-        searchOptions: PropTypes.arrayOf(
-            PropTypes.shape({
-                icon: PropTypes.string,
-                // "value" is not part of PropTypes validation, as the "value field" is specified via the "optionValueField" property
-                label: PropTypes.oneOfType([
-                    PropTypes.string,
-                    PropTypes.object
-                ]).isRequired
-            })
-        ),
+    /**
+     * Helper for asynchronous loading; should be set to "true" as long as "options" is not yet populated.
+     */
+    displayLoadingIndicator: boolean;
 
-        /**
-         * If set to true, the search box is directly focussed once the SelectBox is rendered;
-         * such that the user can start typing right away.
-         */
-        setFocus: PropTypes.bool,
+    // ------------------------------
+    // Search-As-You-Type related functionality
+    // ------------------------------
+    displaySearchBox: boolean;
+    searchTerm: string;
+    onSearchTermChange: (searchTerm: string) => void;
+    searchOptions?: SelectBoxOptions;
 
-        // ------------------------------
-        // "Create new if not exists" functionality
-        // ------------------------------
-        /**
-         * This prop gets called when requested to create a new element
-         */
-        onCreateNew: PropTypes.func,
+    /**
+     * If set to true, the search box is directly focussed once the SelectBox is rendered;
+     * such that the user can start typing right away.
+     */
+    setFocus: boolean;
 
-        /**
-         * "Create new" label
-         */
-        createNewLabel: PropTypes.string,
+    // ------------------------------
+    // "Create new if not exists" functionality
+    // ------------------------------
+    /**
+     * This prop gets called when requested to create a new element
+     */
+    onCreateNew: () => void; // TODO
 
-        // ------------------------------
-        // Drag&Drop Reordering of Selected Values
-        // ------------------------------
-        /**
-         * Specifying the dnd type. Defaults to 'multiselect-box-value'
-         */
-        dndType: PropTypes.string.isRequired,
+    /**
+     * "Create new" label
+     */
+    createNewLabel: string;
 
-        // ------------------------------
-        // Theme & Dependencies
-        // ------------------------------
-        theme: PropTypes.shape({/* eslint-disable quote-props */
-            'selectedOptions': PropTypes.string,
-            'selectedOptions__item': PropTypes.string
-        }).isRequired, /* eslint-enable quote-props */
+    // ------------------------------
+    // Drag&Drop Reordering of Selected Values
+    // ------------------------------
+    /**
+     * Specifying the dnd type. Defaults to 'multiselect-box-value'
+     */
+    dndType?: string;
 
-        SelectBox: PropTypes.any.isRequired,
-        IconComponent: PropTypes.any.isRequired,
-        IconButtonComponent: PropTypes.any.isRequired,
-        MultiSelectBox_ListPreviewSortable: PropTypes.any.isRequired
-    }
+    // ------------------------------
+    // Theme & Dependencies
+    // ------------------------------
+    theme: MultiSelectBoxTheme;
+}> {}
 
-    static defaultProps = {
-        optionValueField: 'value',
-        dndType: 'multiselect-box-value',
-        allowEmpty: true,
-        ListPreviewElement: SelectBox_Option_SingleLine
-    }
+interface MultiSelectBoxTheme extends Readonly<{
+    'selectedOptions': string;
+    'selectedOptions__item': string;
+    'wrapper': string;
+}> {}
 
-    getOptionValueAccessor = () => {
-        const {optionValueField} = this.props;
-        return $get([optionValueField]);
-    };
+export const defaultProps: PickDefaultProps<MultiSelectBoxProps, 'optionValueField' | 'dndType' | 'allowEmpty' | 'ListPreviewElement' | 'disabled'> = {
+    optionValueField: 'value',
+    dndType: 'multiselect-box-value',
+    allowEmpty: true,
+    ListPreviewElement: SelectBox_Option_SingleLine,
+    disabled: false,
+};
 
-    handleNewValueSelected = value => {
-        const {onValuesChange} = this.props;
-        const values = this.props.values || [];
-        const updatedValues = [...values, value];
+export default class MultiSelectBox extends PureComponent<MultiSelectBoxProps> {
+    public static readonly defaultProps = defaultProps;
 
-        onValuesChange(updatedValues);
-    };
-
-    render() {
+    public render(): JSX.Element {
         const {
             searchOptions,
             values,
             optionValueField,
             theme,
-            SelectBox,
-            MultiSelectBox_ListPreviewSortable,
-            disabled,
-            className
+            className,
+            disabled
         } = this.props;
 
         const filteredSearchOptions = (searchOptions || [])
@@ -192,10 +166,7 @@ class MultiSelectBox extends PureComponent {
 
         const optionValueAccessor = this.getOptionValueAccessor();
 
-        const classNames = mergeClassNames({
-            [className]: true,
-            [theme.wrapper]: true
-        });
+        const classNames = mergeClassNames(className, theme.wrapper);
 
         return (
             <div className={classNames}>
@@ -204,7 +175,7 @@ class MultiSelectBox extends PureComponent {
                         {...omit(this.props, ['theme'])}
                         optionValueAccessor={optionValueAccessor}
                         disabled={disabled}
-                        />
+                    />
                 </ul>
                 <SelectBox
                     {...omit(this.props, ['theme', 'className'])}
@@ -212,10 +183,22 @@ class MultiSelectBox extends PureComponent {
                     value=""
                     onValueChange={this.handleNewValueSelected}
                     disabled={disabled}
-                    />
+                />
             </div>
         );
     }
-}
 
-export default MultiSelectBox;
+    private getOptionValueAccessor(): SelectBoxOptionValueAccessor {
+        const {optionValueField} = this.props;
+        // @ts-ignore
+        return $get([optionValueField]);
+    }
+
+    private handleNewValueSelected = (value: string) => {
+        const {onValuesChange} = this.props;
+        const values = this.props.values || [];
+        const updatedValues = [...values, value];
+
+        onValuesChange(updatedValues);
+    }
+}

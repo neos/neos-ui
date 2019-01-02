@@ -13,20 +13,21 @@ function ensureIsArray<T>(v: any): ReadonlyArray<T> {
     return [];
 }
 
-type MultiSelectBox_ListPreviewSortableProps = Readonly<{
+interface MultiSelectBox_ListPreviewSortableProps extends Readonly<{
     // For explanations of the PropTypes, see MultiSelectBox.js
-    options: SelectBoxOptions,
-    values: ReadonlyArray<string>,
-    onValuesChange: (values: ReadonlyArray<string>) => void,
-    ListPreviewElement: any, // TODO
+    options: SelectBoxOptions;
+    values: ReadonlyArray<string>;
+    onValuesChange: (values: ReadonlyArray<string>) => void;
+    ListPreviewElement?: any; // TODO
 
     // API with MultiSelectBox
-    optionValueAccessor: SelectBoxOptionValueAccessor,
-}>;
+    optionValueAccessor: SelectBoxOptionValueAccessor;
+    disabled: boolean;
+}> {}
 
-type MultiSelectBox_ListPreviewSortableState = Readonly<{
+interface MultiSelectBox_ListPreviewSortableState extends Readonly<{
     draggableValues: ReadonlyArray<string>;
-}>;
+}> {}
 
 /**
  * **MultiSelectBox_ListPreviewSortable is an internal implementation detail of MultiSelectBox**, meant to improve code quality.

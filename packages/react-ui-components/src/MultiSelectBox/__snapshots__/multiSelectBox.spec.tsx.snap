@@ -2,39 +2,48 @@
 
 exports[`<MultiSelectBox/> should render correctly. 1`] = `
 <div
-  className="undefined"
+  className="wrapperClassName"
 >
   <ul
-    className="undefined"
+    className="selectedOptionsClassName"
   >
-    <Component
-      IconButtonComponent={[Function]}
-      IconComponent={[Function]}
+    <MultiSelectBox_ListPreviewSortable
       ListPreviewElement={[Function]}
-      MultiSelectBox_ListPreviewSortable={[Function]}
-      SelectBox={[Function]}
       allowEmpty={true}
+      createNewLabel="create new label"
+      disabled={false}
+      displayLoadingIndicator={false}
+      displaySearchBox={false}
       dndType="multiselect-box-value"
       onCreateNew={[MockFunction]}
+      onSearchTermChange={[MockFunction]}
       onValuesChange={[MockFunction]}
       optionValueAccessor={[Function]}
       optionValueField="value"
+      options={Array []}
+      scrollable={true}
+      searchTerm=""
+      setFocus={true}
       values={Array []}
     />
   </ul>
-  <Component
-    IconButtonComponent={[Function]}
-    IconComponent={[Function]}
+  <KeyBoardHelper
     ListPreviewElement={[Function]}
-    MultiSelectBox_ListPreviewSortable={[Function]}
-    SelectBox={[Function]}
     allowEmpty={true}
+    createNewLabel="create new label"
+    disabled={false}
+    displayLoadingIndicator={false}
+    displaySearchBox={false}
     dndType="multiselect-box-value"
     onCreateNew={[MockFunction]}
+    onSearchTermChange={[MockFunction]}
     onValueChange={[Function]}
     onValuesChange={[MockFunction]}
     optionValueField="value"
     options={Array []}
+    scrollable={true}
+    searchTerm=""
+    setFocus={true}
     value=""
     values={Array []}
   />

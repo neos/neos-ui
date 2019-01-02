@@ -4,7 +4,7 @@ import mergeClassNames from 'classnames';
 import {DragSource, DropTarget} from 'react-dnd';
 import IconButton from '../IconButton/iconButton';
 
-type MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement_Props = Readonly<{
+interface MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement_Props extends Readonly<{
     // For explanations of the PropTypes, see MultiSelectBox.js
     option: any,
     values: ReadonlyArray<string>,
@@ -24,14 +24,14 @@ type MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement_Props = Read
 
     // Dependency Injection & Theme
     theme: MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement_Theme,
-}>;
+}> {}
 
-type MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement_Theme = Readonly<{
+interface MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement_Theme extends Readonly<{
     'selectedOptions__item': string,
     'selectedOptions__item--draggable': string,
     'selectedOption__removeButton': string,
     'selectedOptions__innerPreview': string,
-}>;
+}> {}
 
 /**
  * **MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement is an internal implementation detail of MultiSelectBox**, meant to improve code quality.

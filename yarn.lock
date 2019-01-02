@@ -827,13 +827,6 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-close-on-escape@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@types/react-close-on-escape/-/react-close-on-escape-3.0.0.tgz#b7d368ec53e14e45dcd33ce0cf63f30d038c4600"
-  integrity sha512-bmo3RYe2Bbpaej8NtVkkoxiakLQJ9UsqkPgPlImPRnhGQKHGr+TeWvVawMoHMcS4vIYQNBzU8t8OVmcakRwvQQ==
-  dependencies:
-    "@types/react" "*"
-
 "@types/react-dom@^16.0.7":
   version "16.0.11"
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-16.0.11.tgz#bd10ccb0d9260343f4b9a49d4f7a8330a5c1f081"
@@ -11364,10 +11357,6 @@ react-click-outside@^3.0.1:
   dependencies:
     hoist-non-react-statics "^2.1.1"
 
-react-close-on-escape@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/react-close-on-escape/-/react-close-on-escape-2.0.0.tgz#d3bf6d18fac516979d76e7732fda39057176f017"
-  integrity sha1-079tGPrFFpeddudzL9o5BXF28Bc=
 
 react-codemirror2@^5.0.1:
   version "5.1.0"

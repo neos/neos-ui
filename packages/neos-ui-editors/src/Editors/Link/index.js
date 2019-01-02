@@ -10,6 +10,7 @@ class LinkEditor extends PureComponent {
         commit: PropTypes.func.isRequired,
         options: PropTypes.shape({
             nodeTypes: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
+            startingPoint: PropTypes.string,
             placeholder: PropTypes.string,
             disabled: PropTypes.bool
         })

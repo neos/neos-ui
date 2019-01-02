@@ -22,19 +22,6 @@ cd $DIR/../../
 # go to $BRANCH
 git reset --hard origin/$BRANCH
 
-# download JQ if we don't have it yet, for manipulating composer.json
-if [ ! -f "jq-linux64" ]; then
-    wget https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
-    chmod +x jq-linux64
-fi
-
-
-# update neos-ui-compiled version
-jq ".require[\"neos/neos-ui-compiled\"] = \"$VERSION || master\"" composer.json > composer.json.new
-rm composer.json
-mv composer.json.new composer.json
-rm jq-linux64
-
 # install yarn if not already
 path_to_yarn=$(which yarn)
 if [ -z "$path_to_yarn" ] ; then

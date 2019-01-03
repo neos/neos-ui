@@ -35,7 +35,6 @@ Object {
   "valuesByNodePath": Object {
     "someContextPath": Object {
       "test": Object {
-        "hooks": Object {},
         "value": "value",
       },
     },
@@ -48,7 +47,6 @@ Object {
   "valuesByNodePath": Object {
     "someContextPath": Object {
       "test": Object {
-        "hooks": Object {},
         "value": "another value",
       },
     },
@@ -61,7 +59,6 @@ Object {
   "valuesByNodePath": Object {
     "someContextPath": Object {
       "test": Object {
-        "hooks": Object {},
         "value": "another value",
       },
     },

@@ -54,7 +54,7 @@ type Hook = (value: any, options: []) => any;
 interface HookMap extends Readonly<{
     [propName: string]: Hook | undefined;
 }> {}
-const commit = (propertyId: string, value: any, hooks: HookMap = {}, focusedNode: Node) => createAction(actionTypes.COMMIT, {propertyId, value, hooks, focusedNode});
+const commit = (propertyId: string, value: any, hooks: HookMap | null = null, focusedNode: Node) => createAction(actionTypes.COMMIT, {propertyId, value, hooks, focusedNode});
 const clear = (focusedNodeContextPath: NodeContextPath) => createAction(actionTypes.CLEAR, {focusedNodeContextPath});
 
 const apply = () => createAction(actionTypes.APPLY);
@@ -98,7 +98,8 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
             }
             const focusedValues = draft.valuesByNodePath[focusedNodePath];
             if (focusedValues) { // dummy type guard
-                if (transientValueDiffers) {
+                // if hooks are defined for given property, the value should not be cleared even if it doesn't differ
+                if (transientValueDiffers || hooks) {
                     focusedValues[propertyId] = hooks ? {value, hooks} : {value};
                 } else {
                     delete focusedValues[propertyId];

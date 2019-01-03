@@ -4,7 +4,7 @@ import fetchWithErrorHandling from '../FetchWithErrorHandling/index';
 import {Node, NodeContextPath, ContextProperties} from '@neos-project/neos-ts-interfaces';
 import {Routes} from '../Endpoints';
 
-const isOperation = (operation: any): operation is OperationDescriptor => Boolean(operation && operation.type && operation.payload);
+const isOperation = (operation: any): operation is OperationDescriptor => Boolean(operation && operation.type !== undefined && operation.payload !== undefined);
 export const isStartingOperation = (operation: unknown) => isOperation(operation) && operation.type === 'createContext';
 export const isFinishingOperation = (operation = {}) => isOperation(operation) && ['get', 'getForTree', 'count', 'getForTreeWithParents'].indexOf(operation.type) !== -1;
 

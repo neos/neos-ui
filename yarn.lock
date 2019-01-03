@@ -1230,7 +1230,7 @@ assert@^1.1.1:
   dependencies:
     util "0.10.3"
 
-assertion-error@^1.0.1:
+assertion-error@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/assertion-error/-/assertion-error-1.1.0.tgz#e60b6b0e8f301bd97e5375215bda406c85118c0b"
 
@@ -2020,6 +2020,10 @@ babel-plugin-transform-flow-strip-types@^6.22.0:
   dependencies:
     babel-plugin-syntax-flow "^6.18.0"
     babel-runtime "^6.22.0"
+
+babel-plugin-transform-for-of-as-array@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/babel-plugin-transform-for-of-as-array/-/babel-plugin-transform-for-of-as-array-1.1.1.tgz#f18fcbcbfa2b8caed1445c3153893d37439a6537"
 
 babel-plugin-transform-function-bind@^6.22.0:
   version "6.22.0"
@@ -2861,13 +2865,16 @@ center-align@^0.1.1:
     align-text "^0.1.3"
     lazy-cache "^1.0.3"
 
-chai@^3.0.0:
-  version "3.5.0"
-  resolved "https://registry.yarnpkg.com/chai/-/chai-3.5.0.tgz#4d02637b067fe958bdbfdd3a40ec56fef7373247"
+chai@^4.1.2:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/chai/-/chai-4.2.0.tgz#760aa72cf20e3795e84b12877ce0e83737aa29e5"
   dependencies:
-    assertion-error "^1.0.1"
-    deep-eql "^0.1.3"
-    type-detect "^1.0.0"
+    assertion-error "^1.1.0"
+    check-error "^1.0.2"
+    deep-eql "^3.0.1"
+    get-func-name "^2.0.0"
+    pathval "^1.1.0"
+    type-detect "^4.0.5"
 
 chalk@1.1.3, chalk@^1.1.0, chalk@^1.1.3:
   version "1.1.3"
@@ -2925,6 +2932,10 @@ check-dependencies@^1.0.1:
     lodash.camelcase "^4.3.0"
     minimist "^1.2.0"
     semver "^5.4.1"
+
+check-error@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/check-error/-/check-error-1.0.2.tgz#574d312edd88bb5dd8912e9286dd6c0aed4aac82"
 
 cheerio@^1.0.0-rc.2:
   version "1.0.0-rc.2"
@@ -3097,6 +3108,10 @@ code-point-at@^1.0.0:
 codemirror@^5.24.0:
   version "5.40.0"
   resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.40.0.tgz#2f5ed47366e514f41349ba0fe34daaa39be4e257"
+
+coffeescript@^2.3.1:
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/coffeescript/-/coffeescript-2.3.2.tgz#e854a7020dfe47b7cf4dd412042e32ef1e269810"
 
 collapse-white-space@^1.0.2:
   version "1.0.4"
@@ -3892,11 +3907,11 @@ dedent@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/dedent/-/dedent-0.7.0.tgz#2495ddbaf6eb874abb0e1be9df22d2e5a544326c"
 
-deep-eql@^0.1.3:
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/deep-eql/-/deep-eql-0.1.3.tgz#ef558acab8de25206cd713906d74e56930eb69f2"
+deep-eql@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/deep-eql/-/deep-eql-3.0.1.tgz#dfc9404400ad1c8fe023e7da1df1c147c4b444df"
   dependencies:
-    type-detect "0.1.1"
+    type-detect "^4.0.0"
 
 deep-equal@^1.0.1:
   version "1.0.1"
@@ -4231,6 +4246,10 @@ elliptic@^6.0.0:
     inherits "^2.0.1"
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.0"
+
+emittery@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/emittery/-/emittery-0.4.1.tgz#abe9d3297389ba424ac87e53d1c701962ce7433d"
 
 emoji-regex@^6.5.1:
   version "6.5.1"
@@ -5244,6 +5263,10 @@ gauge@~2.7.3:
 get-caller-file@^1.0.1:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/get-caller-file/-/get-caller-file-1.0.3.tgz#f978fa4c90d1dfe7ff2d6beda2a515e713bdcf4a"
+
+get-func-name@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/get-func-name/-/get-func-name-2.0.0.tgz#ead774abee72e20409433a066366023dd6887a41"
 
 get-node-dimensions@^1.2.0:
   version "1.2.1"
@@ -7698,7 +7721,7 @@ lru-cache@4.1.x, lru-cache@^4.0.1:
     pseudomap "^1.0.2"
     yallist "^2.1.2"
 
-make-dir@^1.0.0:
+make-dir@^1.0.0, make-dir@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/make-dir/-/make-dir-1.3.0.tgz#79c1033b80515bd6d24ec9933e860ca75ee27f0c"
   dependencies:
@@ -8058,9 +8081,9 @@ modify-values@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/modify-values/-/modify-values-1.0.1.tgz#b3939fa605546474e3e3e3c63d64bd43b4ee6022"
 
-moment-duration-format@^2.2.2:
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/moment-duration-format/-/moment-duration-format-2.2.2.tgz#b957612de26016c9ad9eb6087c054573e5127779"
+moment-duration-format-commonjs@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/moment-duration-format-commonjs/-/moment-duration-format-commonjs-1.0.0.tgz#dc5de612e6d6ff41f774d03772a139a363563bc3"
 
 moment@*, moment@^2.10.3, moment@^2.14.1, moment@^2.19.2, moment@^2.20.1, moment@^2.6.0:
   version "2.22.2"
@@ -8868,6 +8891,10 @@ path-type@^3.0.0:
   resolved "https://registry.yarnpkg.com/path-type/-/path-type-3.0.0.tgz#cef31dc8e0a1a3bb0d105c0cd97cf3bf47f4e36f"
   dependencies:
     pify "^3.0.0"
+
+pathval@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/pathval/-/pathval-1.1.0.tgz#b942e6d4bde653005ef6b71361def8727d0645e0"
 
 pause-stream@^0.0.11:
   version "0.0.11"
@@ -10437,9 +10464,9 @@ replace-ext@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/replace-ext/-/replace-ext-1.0.0.tgz#de63128373fcbf7c3ccfa4de5a480c45a67958eb"
 
-replicator@^1.0.0:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/replicator/-/replicator-1.0.2.tgz#f21812f28f3b853a34795a7d52814581df652fe1"
+replicator@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/replicator/-/replicator-1.0.3.tgz#c0b3ea31e749015bae5d52273f2ae35d541b87ef"
 
 request-promise-core@1.1.1:
   version "1.1.1"
@@ -11547,9 +11574,9 @@ test-exclude@^4.2.1:
     read-pkg-up "^1.0.1"
     require-main-filename "^1.0.1"
 
-testcafe-browser-tools@1.6.4:
-  version "1.6.4"
-  resolved "https://registry.yarnpkg.com/testcafe-browser-tools/-/testcafe-browser-tools-1.6.4.tgz#e7113e43358948ddd0e7b73f4ed6963a4eed2816"
+testcafe-browser-tools@1.6.5:
+  version "1.6.5"
+  resolved "https://registry.yarnpkg.com/testcafe-browser-tools/-/testcafe-browser-tools-1.6.5.tgz#8b41ebf844dccc810e82e7f19cc9d257f8c6ad86"
   dependencies:
     array-find "^1.0.0"
     babel-runtime "^5.6.15"
@@ -11563,9 +11590,9 @@ testcafe-browser-tools@1.6.4:
     read-file-relative "^1.2.0"
     which-promise "^1.0.0"
 
-testcafe-hammerhead@14.2.2:
-  version "14.2.2"
-  resolved "https://registry.yarnpkg.com/testcafe-hammerhead/-/testcafe-hammerhead-14.2.2.tgz#be0261465f9e2aba234db99097f7e90a82e66d30"
+testcafe-hammerhead@14.4.7:
+  version "14.4.7"
+  resolved "https://registry.yarnpkg.com/testcafe-hammerhead/-/testcafe-hammerhead-14.4.7.tgz#9b2794864199b40a3445859c1f987191d3b9650f"
   dependencies:
     bowser "1.6.0"
     brotli "^1.3.1"
@@ -11590,11 +11617,10 @@ testcafe-hammerhead@14.2.2:
     tough-cookie "2.3.3"
     tunnel-agent "0.6.0"
     webauth "^1.1.0"
-    yakaa "1.0.1"
 
-testcafe-legacy-api@3.1.7:
-  version "3.1.7"
-  resolved "https://registry.yarnpkg.com/testcafe-legacy-api/-/testcafe-legacy-api-3.1.7.tgz#7aec8b9fcef64bf73fbd6b076e7dab5ebe1c635f"
+testcafe-legacy-api@3.1.9:
+  version "3.1.9"
+  resolved "https://registry.yarnpkg.com/testcafe-legacy-api/-/testcafe-legacy-api-3.1.9.tgz#9f1a730aeae56c72484f3b4e65cd58bdeac6bd0e"
   dependencies:
     async "0.2.6"
     babel-runtime "^5.8.34"
@@ -11609,9 +11635,9 @@ testcafe-legacy-api@3.1.7:
     pinkie "^2.0.1"
     strip-bom "^2.0.0"
 
-testcafe-react-selectors@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/testcafe-react-selectors/-/testcafe-react-selectors-2.1.0.tgz#529dcdcceb427f86dc56b6fceff68905abc63b9f"
+testcafe-react-selectors@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/testcafe-react-selectors/-/testcafe-react-selectors-3.0.2.tgz#6f3e1295499af8eb84afa78759fb05c72bc46484"
 
 testcafe-reporter-json@^2.1.0:
   version "2.1.0"
@@ -11633,13 +11659,14 @@ testcafe-reporter-xunit@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/testcafe-reporter-xunit/-/testcafe-reporter-xunit-2.1.0.tgz#e6d66c572ce15af266706af0fd610b2a841dd443"
 
-testcafe@^0.20.4:
-  version "0.20.5"
-  resolved "https://registry.yarnpkg.com/testcafe/-/testcafe-0.20.5.tgz#3230d2731d1ec2d84856115c218228dafb16883c"
+testcafe@^0.23.3:
+  version "0.23.3"
+  resolved "https://registry.yarnpkg.com/testcafe/-/testcafe-0.23.3.tgz#8f9c6511b43ac99593d532bb08ae06c55ff72b5c"
   dependencies:
     async-exit-hook "^1.1.2"
     babel-core "^6.22.1"
     babel-plugin-transform-class-properties "^6.24.1"
+    babel-plugin-transform-for-of-as-array "^1.1.1"
     babel-plugin-transform-runtime "^6.22.0"
     babel-preset-env "^1.1.8"
     babel-preset-flow "^6.23.0"
@@ -11648,28 +11675,33 @@ testcafe@^0.20.4:
     bin-v8-flags-filter "^1.1.2"
     callsite "^1.0.0"
     callsite-record "^4.0.0"
-    chai "^3.0.0"
+    chai "^4.1.2"
     chalk "^1.1.0"
     chrome-emulated-devices-list "^0.1.0"
     chrome-remote-interface "^0.25.3"
+    coffeescript "^2.3.1"
     commander "^2.8.1"
     debug "^2.2.0"
     dedent "^0.4.0"
+    del "^3.0.0"
     elegant-spinner "^1.0.1"
+    emittery "^0.4.1"
     endpoint-utils "^1.0.2"
     error-stack-parser "^1.3.6"
     globby "^3.0.1"
     graceful-fs "^4.1.11"
     gulp-data "^1.3.1"
+    import-lazy "^3.1.0"
     indent-string "^1.2.2"
     is-ci "^1.0.10"
     is-glob "^2.0.1"
+    is-stream "^1.1.0"
     lodash "^4.17.10"
     log-update-async-hook "^2.0.2"
+    make-dir "^1.3.0"
     map-reverse "^1.0.1"
-    mkdirp "^0.5.1"
     moment "^2.10.3"
-    moment-duration-format "^2.2.2"
+    moment-duration-format-commonjs "^1.0.0"
     mustache "^2.1.2"
     nanoid "^1.0.1"
     node-version "^1.0.0"
@@ -11682,15 +11714,15 @@ testcafe@^0.20.4:
     ps-node "^0.1.6"
     qrcode-terminal "^0.10.0"
     read-file-relative "^1.2.0"
-    replicator "^1.0.0"
+    replicator "^1.0.3"
     resolve-cwd "^1.0.0"
     resolve-from "^4.0.0"
     sanitize-filename "^1.6.0"
     source-map-support "^0.5.5"
     strip-bom "^2.0.0"
-    testcafe-browser-tools "1.6.4"
-    testcafe-hammerhead "14.2.2"
-    testcafe-legacy-api "3.1.7"
+    testcafe-browser-tools "1.6.5"
+    testcafe-hammerhead "14.4.7"
+    testcafe-legacy-api "3.1.9"
     testcafe-reporter-json "^2.1.0"
     testcafe-reporter-list "^2.1.0"
     testcafe-reporter-minimal "^2.1.0"
@@ -11977,13 +12009,9 @@ type-check@~0.3.2:
   dependencies:
     prelude-ls "~1.1.2"
 
-type-detect@0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/type-detect/-/type-detect-0.1.1.tgz#0ba5ec2a885640e470ea4e8505971900dac58822"
-
-type-detect@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/type-detect/-/type-detect-1.0.0.tgz#762217cc06db258ec48908a1298e8b95121e8ea2"
+type-detect@^4.0.0, type-detect@^4.0.5:
+  version "4.0.8"
+  resolved "https://registry.yarnpkg.com/type-detect/-/type-detect-4.0.8.tgz#7646fb5f18871cfbb7749e69bd39a6388eb7450c"
 
 type-is@~1.6.15, type-is@~1.6.16:
   version "1.6.16"
@@ -12652,10 +12680,6 @@ xtend@^4.0.0, xtend@^4.0.1, xtend@~4.0.0, xtend@~4.0.1:
 y18n@^3.2.0, y18n@^3.2.1:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/y18n/-/y18n-3.2.1.tgz#6d15fba884c08679c0d77e88e7759e811e07fa41"
-
-yakaa@1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/yakaa/-/yakaa-1.0.1.tgz#3ecaae72f3d089da58089403126204cec772e60a"
 
 yallist@^2.1.2:
   version "2.1.2"

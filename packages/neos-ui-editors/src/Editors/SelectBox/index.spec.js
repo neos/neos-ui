@@ -16,7 +16,7 @@ const optionValues = {
     }
 };
 const dropdownElementLabels = component =>
-    component.find('SelectBox_ListPreview').find('SelectBox_Option_SingleLine').map(node => node.text());
+    component.find('SelectBox_ListPreview').find('ListPreviewElement').map(node => node.text());
 
 const dropdownHeader = component =>
     component.find('ShallowDropDownHeader');
@@ -24,7 +24,7 @@ const dropdownHeader = component =>
 const multiselectLabels = component =>
     component.find('MultiSelectBox_ListPreviewSortable').find('ListPreviewElement').map(node => node.text());
 
-const commit = () => {};
+const commit = jest.fn();
 
 test(`SelectBox > single, no dataSource, no preselected value`, () => {
     const expectedDropdownElementLabels = ['fooLabel', 'barLabel'];

@@ -1,12 +1,14 @@
 // tslint:disable:class-name
 import React, {PureComponent} from 'react';
-import mergeClassNames from 'classnames';
 import {DragSource, DropTarget} from 'react-dnd';
-import IconButton from '../IconButton/iconButton';
+import mergeClassNames from 'classnames';
+
+import IconButton from '../IconButton';
+import {SelectBoxOption} from '../SelectBox/selectBox';
 
 interface MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement_Props extends Readonly<{
     // For explanations of the PropTypes, see MultiSelectBox.js
-    option: any,
+    option: SelectBoxOption,
     values: ReadonlyArray<string>,
 
     // Drag&Drop specific
@@ -39,22 +41,27 @@ interface MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement_Theme e
  * It is used inside MultiSelectBox_ListPreviewSortable for rendering an individual element and implementing drag&drop behavior.
  */
 @DragSource<MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement_Props>(
+    // type
     (props) => props.dndType,
+    // spec
     {
         beginDrag: (props) => ({
             index: props.index
         }),
         canDrag: ({values}) => values && values.length > 1
     },
+    // collect
     (connect, monitor) => ({
         connectDragSource: connect.dragSource(),
         isDragging: monitor.isDragging()
     })
 )
 @DropTarget<MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement_Props>(
+    // type
     (props) => props.dndType,
+    // spec
     {
-        hover: (props, monitor, component: {node: HTMLLIElement}) => {
+        hover: (props, monitor, component: any) => {
             const dragIndex = monitor.getItem().index as number;
             const hoverIndex = props.index;
 
@@ -94,6 +101,7 @@ interface MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement_Theme e
             props.onSelectedValueWasMoved();
         }
     },
+    // collect
     connect => ({
         connectDropTarget: connect.dropTarget()
     })
@@ -112,8 +120,6 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
             index,
         } = this.props;
 
-        // TODO Loading State: const {icon, label} = option || {label: `[Loading ${value}]`};
-
         const finalClassNames = mergeClassNames({
             [theme.selectedOptions__item]: true,
             [theme['selectedOptions__item--draggable']]: values && values.length > 1
@@ -122,8 +128,14 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
 
         const handleRemoveItem = () => onRemoveItem(index);
 
+        const refName = (node: any) => {
+            // @ts-ignore
+            this.node = node;
+        };
+
         return connectDragSource(connectDropTarget(
-            <li style={{opacity}}>
+            // @ts-ignore
+            <li ref={refName} style={{opacity}}>
                 <div className={finalClassNames}>
                     <div className={theme.selectedOptions__innerPreview}>
                         <InnerListPreviewElement

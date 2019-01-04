@@ -391,3 +391,28 @@ test('Can crop an image', async t => {
     await t.expect(Selector('.main-header.image').getStyleProperty('background-image')).notEql(initialBackgroundImage, 'Header image should have changed after crop');
     await t.switchToMainWindow();
 });
+
+test('Can drag and drop inside a multi select box', async t => {
+    subSection('Create node with reference editor in inspector');
+    await t
+        .click(Selector('#neos-ContentTree-ToggleContentTree'))
+        .click(page.treeNode.withText('Content Collection (main)'))
+        .click(Selector('#neos-ContentTree-AddNode'))
+        .click(ReactSelector('NodeTypeItem').withProps({nodeType: {name: 'Neos.NodeTypes:ContentReferences'}}));
+    await waitForIframeLoading(t);
+    await t.click(page.treeNode.withText('Insert content references'));
+
+    const multiSelectBox = await ReactSelector('MultiSelectBox');
+    const input = await multiSelectBox.findReact('TextInput').find('div input');
+    await t.typeText(input, 'ad')
+        .wait(2000);
+
+    subSection('Type to search for references and select 2 different options');
+    await t.expect(ReactSelector('MultiSelectBox').findReact('ListPreviewElement').count).gt(0);
+    // TODO
+
+    subSection('Select an option from the dropDown');
+    await t
+        .click(ReactSelector('MultiSelectBox').findReact('ListPreviewElement'));
+    subSection('Apply changes');
+});

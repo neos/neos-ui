@@ -1,6 +1,7 @@
 import {Selector, Role} from 'testcafe';
 import {ReactSelector} from 'testcafe-react-selectors';
 import checkPropTypes from '../checkPropTypes';
+import waitForRequestsToFinish from '../waitForRequestsToFinish';
 
 import Page from './pageModel';
 
@@ -49,7 +50,8 @@ fixture`Content Module`
         await discardAll(t);
         await goToPage(t, 'Home');
     })
-    .afterEach(() => checkPropTypes());
+    .afterEach(() => checkPropTypes())
+    .afterEach(async t => waitForRequestsToFinish(t));
 
 test('Switching dimensions', async t => {
     subSection('Navigate to some inner page and switch dimension');
@@ -61,7 +63,7 @@ test('Switching dimensions', async t => {
         .click('#neos-NodeVariantCreationDialog-CreateEmpty')
         .expect(ReactSelector('Provider').getReact(({props}) => {
             const reduxState = props.store.getState().toJS();
-            const isLoading = reduxState.ui.contentCanvas.isLoading;
+            const {isLoading} = reduxState.ui.contentCanvas;
             const activeDimension = reduxState.cr.contentDimensions.active.language[0];
             return !isLoading && activeDimension === 'lv';
         })).ok('Loading stopped and dimension switched to Latvian')
@@ -78,7 +80,7 @@ test('Switching dimensions', async t => {
         .click(ReactSelector('DimensionSwitcher SelectBox').find('li').withText('English (US)'))
         .expect(ReactSelector('Provider').getReact(({props}) => {
             const reduxState = props.store.getState().toJS();
-            const isLoading = reduxState.ui.contentCanvas.isLoading;
+            const {isLoading} = reduxState.ui.contentCanvas;
             const activeDimension = reduxState.cr.contentDimensions.active.language[0];
             return !isLoading && activeDimension === 'en_US';
         })).ok('Loading stopped and dimension back to English')

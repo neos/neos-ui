@@ -67,7 +67,15 @@ class FetchWithErrorHandling {
         });
     }
 
+    _handleWindowClosing(event) {
+        const dialogText = 'You have attempted to leave this page. Your changes are currently being persisted, if you leave now your changes will may not be saved. Are you sure you want to exit this page?';
+        event.returnValue = dialogText;
+        return dialogText;
+    }
+
     _executeFetchRequest(makeFetchRequest) {
+        window.addEventListener('beforeunload', this._handleWindowClosing);
+
         // Build the actual fetch request by passing in the current CSRF token
         const fetchOptions = makeFetchRequest(this._csrfToken);
         const {url} = fetchOptions;
@@ -80,6 +88,7 @@ class FetchWithErrorHandling {
             fetch(url, fetchOptions).then(response => {
                 if (response.ok) {
                     // CASE: all good; no errors!
+                    window.removeEventListener('beforeunload', this._handleWindowClosing);
                     resolve(response);
                 } else if (response.status === 401) {
                     // CASE: Unauthorized!

@@ -404,15 +404,54 @@ test('Can drag and drop inside a multi select box', async t => {
 
     const multiSelectBox = await ReactSelector('MultiSelectBox');
     const input = await multiSelectBox.findReact('TextInput').find('div input');
-    await t.typeText(input, 'ad')
-        .wait(2000);
+    await t
+        .typeText(input, 'ad')
+        .wait(1000);
 
     subSection('Type to search for references and select 2 different options');
-    await t.expect(ReactSelector('MultiSelectBox').findReact('ListPreviewElement').count).gt(0);
-    // TODO
-
-    subSection('Select an option from the dropDown');
+    const numberOfOptions = await ReactSelector('MultiSelectBox').findReact('ListPreviewElement').count;
     await t
-        .click(ReactSelector('MultiSelectBox').findReact('ListPreviewElement'));
+        .expect(numberOfOptions).gt(0)
+        .click(ReactSelector('MultiSelectBox').findReact('ListPreviewElement').nth(0))
+        .typeText(input, 'ad').wait(1000)
+        .click(ReactSelector('MultiSelectBox').findReact('ListPreviewElement').nth(2))
+        .expect(ReactSelector('MultiSelectBox').getReact(({props}) => props.options.length)).eql(2);
+
+    subSection('Rearange selected options via drag and drop');
+    const idsBeforeFirstDrag = await ReactSelector('MultiSelectBox').getReact(({props}) => props.options.map(option => option.identifier));
+    await t.drag(ReactSelector('MultiSelectBox').findReact('NodeOption').nth(0), 0, 80, {offsetX: 5, offsetY: 5});
+    const idsAfterFirstDrag = await ReactSelector('MultiSelectBox').getReact(({props}) => props.options.map(option => option.identifier));
+    // Option 2 should come before option 1
+    await t
+        .expect(idsBeforeFirstDrag[0]).eql(idsAfterFirstDrag[1])
+        .expect(idsBeforeFirstDrag[1]).eql(idsAfterFirstDrag[0]);
+
     subSection('Apply changes');
+    await t.click(Selector('#neos-Inspector-Apply'));
+    await waitForIframeLoading(t);
+
+    const idsAfterFirstApply = await ReactSelector('MultiSelectBox').getReact(({props}) => props.options.map(option => option.identifier));
+    await t
+        .expect(idsAfterFirstDrag[0]).eql(idsAfterFirstApply[0])
+        .expect(idsAfterFirstDrag[1]).eql(idsAfterFirstApply[1]);
+
+    // TODO would be nice to test if the Nodes are rendered in content frame
+
+    subSection('select another option, drag and apply');
+    await t
+        .typeText(input, 'ad').wait(1000)
+        .click(ReactSelector('MultiSelectBox').findReact('ListPreviewElement').nth(5))
+        .expect(ReactSelector('MultiSelectBox').getReact(({props}) => props.options.length)).eql(3);
+
+    const idsBeforeSecondDrag = await ReactSelector('MultiSelectBox').getReact(({props}) => props.options.map(option => option.identifier));
+    await t.drag(ReactSelector('MultiSelectBox').findReact('NodeOption').nth(2), 0, -50, {offsetX: 5, offsetY: 5});
+    const idsAfterSecondDrag = await ReactSelector('MultiSelectBox').getReact(({props}) => props.options.map(option => option.identifier));
+    await t.wait(5000);
+    await t
+        .expect(idsAfterFirstApply[0]).eql(idsAfterSecondDrag[0])
+        .expect(idsAfterFirstApply[1]).eql(idsAfterSecondDrag[2])
+        .expect(idsBeforeSecondDrag[2]).eql(idsAfterSecondDrag[1]);
+
+    await t.click(Selector('#neos-Inspector-Apply'));
+    await waitForIframeLoading(t);
 });

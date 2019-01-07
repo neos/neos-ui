@@ -24,4 +24,5 @@ a.secondaryToolbar__buttonLink:hover {
 
 .secondaryToolbar__buttonLink--isDisabled {
     opacity: .5;
+    cursor: not-allowed;
 }

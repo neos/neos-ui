@@ -37,7 +37,7 @@ export default class PreviewButton extends PureComponent {
 
         const previewButtonClassNames = mergeClassNames({
             [style.secondaryToolbar__buttonLink]: true,
-            [style['secondaryToolbar__buttonLink--isDisabled']]: !previewUrl
+            [style['secondaryToolbar__buttonLink--isDisabled']]: isCurrentDocumentNodeHidden || previewUrl === ''
         });
 
         if (previewUrl && !isCurrentDocumentNodeHidden) {

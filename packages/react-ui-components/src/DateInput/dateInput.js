@@ -196,6 +196,7 @@ export class DateInput extends PureComponent {
                         open={true}
                         defaultValue={value}
                         dateFormat={!timeOnly}
+                        utc={dateOnly}
                         locale={locale}
                         timeFormat={!dateOnly}
                         onChange={this.handleChange}
@@ -240,7 +241,11 @@ export class DateInput extends PureComponent {
         this.setState({
             isOpen: false
         }, () => {
-            this.props.onChange(moment().toDate());
+            let date = moment().toDate();
+            if (this.props.dateOnly) {
+                date = moment().utc().startOf('day').toDate();
+            }
+            this.props.onChange(date);
         });
     }
 

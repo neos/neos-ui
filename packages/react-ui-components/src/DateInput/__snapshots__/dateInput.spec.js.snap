@@ -63,3 +63,68 @@ exports[`<DateInput/> should render correctly. 1`] = `
   </Component>
 </div>
 `;
+
+exports[`<DateInput/> should set "utc" on DatePickerComponent if "dateOnly" prop is set. 1`] = `
+<div
+  className=""
+>
+  <div
+    className="undefined"
+  >
+    <button
+      className=""
+      onClick={[Function]}
+    >
+      <Component
+        icon="far calendar-alt"
+      />
+    </button>
+    <div>
+      <div
+        className=""
+        onClick={[Function]}
+        role="presentation"
+      />
+      <input
+        onFocus={[Function]}
+        readOnly={true}
+        type="datetime"
+        value=""
+      />
+    </div>
+    <button
+      className=""
+      onClick={[Function]}
+    >
+      <Component
+        icon="times"
+      />
+    </button>
+  </div>
+  <Component
+    isOpened={false}
+  >
+    <button
+      onClick={[Function]}
+    />
+    <Component
+      dateFormat={true}
+      onChange={[Function]}
+      open={true}
+      timeConstraints={
+        Object {
+          "minutes": Object {
+            "step": 5,
+          },
+        }
+      }
+      timeFormat={false}
+      utc={true}
+    />
+    <Component
+      onClick={[Function]}
+      style="brand"
+    />
+  </Component>
+</div>
+`;

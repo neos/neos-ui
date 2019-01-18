@@ -20,6 +20,14 @@ export function * watchPublish() {
                 const feedback = yield call(publish, nodeContextPaths, targetWorkspaceName);
                 yield put(actions.UI.Remote.finishPublishing());
                 yield put(actions.ServerFeedback.handleServerFeedback(feedback));
+
+                const documentNodeContextPath = yield select($get('ui.contentCanvas.contextPath'));
+                const documentNode = yield select(selectors.CR.Nodes.byContextPathSelector(documentNodeContextPath));
+                const documentUri = decodeURIComponent($get('uri', documentNode));
+                const documentUriFragment = documentUri.split('@')[0];
+                const previewUrl = documentUriFragment + '@' + targetWorkspaceName;
+
+                yield put(actions.UI.ContentCanvas.setPreviewUrl(previewUrl));
             } catch (error) {
                 console.error('Failed to publish', error);
             }

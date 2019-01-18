@@ -89,4 +89,31 @@ describe('<DateInput/>', () => {
         expect(onChange.mock.calls.length).toBe(1);
         expect(onChange.mock.calls[0][0].toTimeString()).toBe(date.toTimeString());
     });
+
+    it('should set "utc" on DatePickerComponent if "dateOnly" prop is set.', () => {
+        const wrapper = shallow(<DateInput {...props} dateOnly={true}/>);
+
+        expect(toJson(wrapper)).toMatchSnapshot();
+    });
+
+    it('should call "onChange" with beginning of day in UTC for todays date if "dateOnly" is set.', () => {
+        const onChange = jest.fn();
+        const wrapper = shallow(<DateInput {...props} dateOnly={true} onChange={onChange}/>);
+        const btn = wrapper.find('button').at(2);
+        const date = new Date();
+
+        wrapper.setState({isOpen: true});
+        btn.simulate('click');
+
+        expect(onChange.mock.calls.length).toBe(1);
+
+        const receivedDate = onChange.mock.calls[0][0];
+        expect(receivedDate.getUTCDate()).toBe(date.getDate());
+        expect(receivedDate.getUTCMonth()).toBe(date.getMonth());
+        expect(receivedDate.getUTCFullYear()).toBe(date.getFullYear());
+        expect(receivedDate.getUTCHours()).toBe(0);
+        expect(receivedDate.getUTCMinutes()).toBe(0);
+        expect(receivedDate.getUTCSeconds()).toBe(0);
+        expect(receivedDate.getUTCMilliseconds()).toBe(0);
+    });
 });

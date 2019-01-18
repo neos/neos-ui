@@ -126,8 +126,26 @@ export class DialogWithoutEscape extends PureComponent<DialogProps> {
     }
 
     public readonly componentDidMount = (): void => {
+        document.addEventListener('keydown', (event : KeyboardEvent) => this.handleKeyPress(event));
+
         if (this.ref) {
             this.ref.focus();
+        }
+    }
+
+    public readonly componentWillUnmount = (): void => {
+        document.removeEventListener('keydown', (event : KeyboardEvent) => this.handleKeyPress(event));
+    }
+
+    /**
+     * Closes the dialog when the escape key has been pressed.
+     *
+     * @param {KeyboardEvent} event
+     * @returns {void}
+     */
+    public readonly handleKeyPress = (event : KeyboardEvent): void => {
+        if (event.key === 'Escape') {
+            this.props.onRequestClose();
         }
     }
 }

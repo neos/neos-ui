@@ -6,10 +6,9 @@
         "bin-dir": "bin"
     },
     "require": {
-        "neos/neos": "~4.2.0",
-        "neos/nodetypes": "~4.2.0",
-        "neos/demo": "~4.2.0",
-        "neos/site-kickstarter": "~4.2.0",
+        "neos/neos": "~3.3.0",
+        "neos/nodetypes": "~3.3.0",
+        "neos/demo": "~3.3.0",
 
         "neos/neos-ui": "@dev",
         "neos/neos-ui-compiled": "@dev",

@@ -13,7 +13,7 @@ export function * watchPublish() {
     yield takeEvery(actionTypes.CR.Workspaces.PUBLISH, function * publishNodes(action) {
         const {nodeContextPaths, targetWorkspaceName} = action.payload;
 
-        if (nodeContextPaths.count() > 0) {
+        if (nodeContextPaths.length > 0) {
             yield put(actions.UI.Remote.startPublishing());
 
             try {
@@ -51,7 +51,7 @@ export function * watchChangeBaseWorkspace() {
     const {changeBaseWorkspace} = backend.get().endpoints;
     yield takeEvery(actionTypes.CR.Workspaces.CHANGE_BASE_WORKSPACE, function * change(action) {
         try {
-            const documentNode = yield select($get('ui.contentCanvas.contextPath'));
+            const documentNode = yield select($get('cr.nodes.documentNode'));
             const feedback = yield call(changeBaseWorkspace, action.payload, documentNode);
             yield put(actions.ServerFeedback.handleServerFeedback(feedback));
 
@@ -82,7 +82,7 @@ export function * discardIfConfirmed() {
             const nodesToBeDiscarded = $get('cr.workspaces.toBeDiscarded', state);
 
             try {
-                const currentContentCanvasContextPath = yield select(selectors.UI.ContentCanvas.getCurrentContentCanvasContextPath);
+                const currentContentCanvasContextPath = yield select(selectors.CR.Nodes.documentNodeContextPathSelector);
 
                 const feedback = yield call(discard, nodesToBeDiscarded);
                 yield put(actions.UI.Remote.finishDiscarding());

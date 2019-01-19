@@ -1,6 +1,4 @@
-import Immutable, {Map} from 'immutable';
-
-import {actionTypes, actions, reducer} from './index.js';
+import {actionTypes, actions, reducer} from './index';
 
 import {actionTypes as system} from '../../System/index';
 
@@ -19,37 +17,31 @@ test(`should export a reducer`, () => {
     expect(typeof (reducer)).toBe('function');
 });
 
-test(`The reducer should return an Immutable.Map as the initial state.`, () => {
-    const state = new Map({});
-    const nextState = reducer(state, {
+test(`The reducer should return a plain JS object as the initial state.`, () => {
+    const nextState = reducer(undefined, {
         type: system.INIT
     });
 
-    expect(nextState.get('ui').get('leftSideBar') instanceof Map).toBe(true);
+    expect(typeof nextState).toBe('object');
 });
 
 test(`The reducer should initially mark the sidebar as visible.`, () => {
-    const state = new Map({});
-    const nextState = reducer(state, {
+    const nextState = reducer(undefined, {
         type: system.INIT
     });
 
-    expect(nextState.get('ui').get('leftSideBar').get('isHidden')).toBe(false);
+    expect(nextState.isHidden).toBe(false);
 });
 
 test(`
     The "toggle" action should be able to reverse the value of the
     "isHidden" key.`, () => {
-    const state = Immutable.fromJS({
-        ui: {
-            leftSideBar: {
-                isHidden: false
-            }
-        }
-    });
+    const state = {
+        isHidden: false
+    };
     const nextState1 = reducer(state, actions.toggle());
     const nextState2 = reducer(nextState1, actions.toggle());
 
-    expect(nextState1.get('ui').get('leftSideBar').get('isHidden')).toBe(true);
-    expect(nextState2.get('ui').get('leftSideBar').get('isHidden')).toBe(false);
+    expect(nextState1.isHidden).toBe(true);
+    expect(nextState2.isHidden).toBe(false);
 });

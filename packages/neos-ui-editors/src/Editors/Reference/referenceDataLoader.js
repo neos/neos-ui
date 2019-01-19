@@ -112,7 +112,7 @@ export default ({isMulti}) => WrappedComponent => {
 
             return {
                 nodeTypes: $get('options.nodeTypes', this.props) || ['Neos.Neos:Document'],
-                contextForNodeLinking: contextNode.toJS()
+                contextForNodeLinking: contextNode
             };
         }
 

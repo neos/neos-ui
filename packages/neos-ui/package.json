@@ -1,13 +1,13 @@
 {
   "name": "@neos-project/neos-ui",
   "version": "1.4.1",
-  "description": "Neos CMS UI written in ReactJS with Immutable data structures.",
+  "description": "Neos CMS UI written in ReactJS and a tonn of other fun technology.",
   "main": "Resources/Public/JavaScript/Host.js",
   "private": true,
   "scripts": {
     "prebuild": "check-dependencies && yarn clean",
-    "test": "yarn jest -- -w 2 --coverage",
-    "test:watch": "yarn jest -- --watch",
+    "test": "yarn jest -w 2 --coverage",
+    "test:watch": "yarn jest --watch",
     "build": "webpack --progress --colors",
     "build:watch": "yarn build -- --watch",
     "clean": "rimraf ./lib ./dist",

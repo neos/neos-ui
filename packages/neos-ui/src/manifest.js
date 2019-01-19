@@ -1,5 +1,4 @@
 import uuid from 'uuid';
-import {Map} from 'immutable';
 import {$get} from 'plow-js';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
@@ -239,7 +238,7 @@ manifest('main', {}, globalRegistry => {
     //
     serverFeedbackHandlers.set('Neos.Neos.Ui:Redirect/Main', (feedbackPayload, {store}) => {
         store.dispatch(actions.UI.ContentCanvas.setSrc(feedbackPayload.redirectUri));
-        store.dispatch(actions.UI.ContentCanvas.setContextPath(feedbackPayload.redirectContextPath));
+        store.dispatch(actions.CR.Nodes.setDocumentNode(feedbackPayload.redirectContextPath));
     });
 
     //
@@ -263,7 +262,7 @@ manifest('main', {}, globalRegistry => {
         }
 
         // If we are removing current document node...
-        if ($get('ui.contentCanvas.contextPath', state) === contextPath) {
+        if ($get('cr.nodes.documentNode', state) === contextPath) {
             let redirectContextPath = contextPath;
             let redirectUri = null;
             // Determine closest parent that is not being removed
@@ -279,13 +278,13 @@ manifest('main', {}, globalRegistry => {
             }
 
             store.dispatch(actions.UI.ContentCanvas.setSrc(redirectUri));
-            store.dispatch(actions.UI.ContentCanvas.setContextPath(redirectContextPath));
+            store.dispatch(actions.CR.Nodes.setDocumentNode(redirectContextPath));
         }
 
         store.dispatch(actions.CR.Nodes.remove(contextPath));
 
         // Remove the node from the dom
-        if ($get('ui.contentCanvas.contextPath', state) !== contextPath) {
+        if ($get('cr.nodes.documentNode', state) !== contextPath) {
             findAllOccurrencesOfNodeInGuestFrame(contextPath).forEach(el => {
                 const closestContentCollection = el.closest('.neos-contentcollection');
                 el.remove();
@@ -350,14 +349,12 @@ manifest('main', {}, globalRegistry => {
 
         const children = findAllChildNodes(contentElement);
 
-        const nodes = new Map(
-            Object.assign(
-                {[contextPath]: selectors.CR.Nodes.byContextPathSelector(contextPath)(store.getState())},
-                ...children.map(el => {
-                    const contextPath = el.getAttribute('data-__neos-node-contextpath');
-                    return {[contextPath]: selectors.CR.Nodes.byContextPathSelector(contextPath)(store.getState())};
-                })
-            )
+        const nodes = Object.assign(
+            {[contextPath]: selectors.CR.Nodes.byContextPathSelector(contextPath)(store.getState())},
+            ...children.map(el => {
+                const contextPath = el.getAttribute('data-__neos-node-contextpath');
+                return {[contextPath]: selectors.CR.Nodes.byContextPathSelector(contextPath)(store.getState())};
+            })
         );
         const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
         const inlineEditorRegistry = globalRegistry.get('inlineEditors');

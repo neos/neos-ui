@@ -1,7 +1,8 @@
 import mergeClassNames from 'classnames';
 import React, {PureComponent, ReactNode} from 'react';
 import enhanceWithClickOutside from 'react-click-outside';
-import Portal from 'react-portal';
+import CloseOnEscape from 'react-close-on-escape';
+import {Portal} from 'react-portal';
 
 import IconButton from '../IconButton';
 
@@ -153,7 +154,7 @@ const EnhancedDialogWithoutEscapeWithClickOutside = enhanceWithClickOutside(Dial
 
 // tslint:disable-next-line:max-classes-per-file
 class DialogWithEscape extends PureComponent<DialogProps> {
-    public render(): JSX.Element {
+    public render(): JSX.Element | null {
         const {
             className,
             title,
@@ -175,13 +176,23 @@ class DialogWithEscape extends PureComponent<DialogProps> {
             className,
         );
 
+        if (!this.props.isOpen) {
+            return null;
+        }
+
         return (
-            <Portal isOpened={this.props.isOpen}>
-                <section {...rest} className={sectionClassName} role="dialog" tabIndex={0}>
-                    <EnhancedDialogWithoutEscapeWithClickOutside {...this.props}/>
-                </section>
-            </Portal>
+            <CloseOnEscape onEscape={this.onEscape}>
+                <Portal>
+                    <section {...rest} className={sectionClassName} role="dialog" tabIndex={0}>
+                        <EnhancedDialogWithoutEscapeWithClickOutside {...this.props}/>
+                    </section>
+                </Portal>
+            </CloseOnEscape>
         );
+    }
+
+    private readonly onEscape = () => {
+        this.props.onRequestClose();
     }
 }
 

@@ -1,7 +1,7 @@
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
 import React from 'react';
-import Portal from 'react-portal';
+import {Portal} from 'react-portal';
 
 import IconButton from '../IconButton';
 import DialogWithEscape, {DialogProps, DialogWithoutEscape} from './dialog';
@@ -10,7 +10,7 @@ describe('<Dialog/>', () => {
     const props: DialogProps = {
         actions: ['Foo 1', 'Foo 2'],
         children: 'Foo children',
-        isOpen: false,
+        isOpen: true,
         onRequestClose: () => null,
         style: 'wide',
         theme: {
@@ -37,20 +37,6 @@ describe('<Dialog/>', () => {
         const wrapper = shallow(<DialogWithoutEscape {...props}/>);
 
         expect(toJson(wrapper)).toMatchSnapshot();
-    });
-
-    it('should pass a falsy "isOpened" tag to the "Portal" component if the "isOpen" prop is falsy.', () => {
-        const wrapper = shallow(<DialogWithEscape {...props}/>);
-        const portal = wrapper.find(Portal);
-
-        expect(portal.prop('isOpened')).toBe(false);
-    });
-
-    it('should pass a truthy "isOpened" tag to the "Portal" component if the "isOpen" prop is truthy.', () => {
-        const wrapper = shallow(<DialogWithEscape {...props} isOpen={true}/>);
-        const portal = wrapper.find(Portal);
-
-        expect(portal.prop('isOpened')).toBe(true);
     });
 
     it('should render the "dialog--wide" className from the "theme" prop if the style is wide.', () => {

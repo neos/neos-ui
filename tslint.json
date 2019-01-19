@@ -13,6 +13,7 @@
     "semicolon": [true, "always"],
     "typedef": [true, "call-signature"],
     "variable-name": false,
+    "no-shadowed-variable": false,
     "whitespace": [true,
       "check-branch",
       "check-decl",

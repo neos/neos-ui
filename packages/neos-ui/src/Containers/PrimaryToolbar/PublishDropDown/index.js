@@ -1,6 +1,5 @@
 import React, {Fragment, PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
@@ -47,8 +46,8 @@ export default class PublishDropDown extends PureComponent {
         isPublishing: PropTypes.bool,
         isDiscarding: PropTypes.bool,
         isWorkspaceReadOnly: PropTypes.bool,
-        publishableNodes: ImmutablePropTypes.list,
-        publishableNodesInDocument: ImmutablePropTypes.list,
+        publishableNodes: PropTypes.array,
+        publishableNodesInDocument: PropTypes.array,
         personalWorkspaceName: PropTypes.string.isRequired,
         baseWorkspace: PropTypes.string.isRequired,
         neos: PropTypes.object.isRequired,
@@ -104,8 +103,8 @@ export default class PublishDropDown extends PureComponent {
         const workspaceModuleUri = $get('routes.core.modules.workspaces', neos);
         const allowedWorkspaces = $get('configuration.allowedTargetWorkspaces', neos);
         const baseWorkspaceTitle = $get([baseWorkspace, 'title'], allowedWorkspaces);
-        const canPublishLocally = !isSaving && !isPublishing && !isDiscarding && publishableNodesInDocument && (publishableNodesInDocument.count() > 0);
-        const canPublishGlobally = !isSaving && !isPublishing && !isDiscarding && publishableNodes && (publishableNodes.count() > 0);
+        const canPublishLocally = !isSaving && !isPublishing && !isDiscarding && publishableNodesInDocument && (publishableNodesInDocument.length > 0);
+        const canPublishGlobally = !isSaving && !isPublishing && !isDiscarding && publishableNodes && (publishableNodes.length > 0);
         const changingWorkspaceAllowed = !canPublishGlobally;
         const autoPublishWrapperClassNames = mergeClassNames({
             [style.dropDown__item]: true,
@@ -119,8 +118,8 @@ export default class PublishDropDown extends PureComponent {
             [style['dropDown__item--isSaving']]: isSaving,
             [style['dropDown__item--isDiscarding']]: isDiscarding
         });
-        const publishableNodesInDocumentCount = publishableNodesInDocument ? publishableNodesInDocument.count() : 0;
-        const publishableNodesCount = publishableNodes ? publishableNodes.count() : 0;
+        const publishableNodesInDocumentCount = publishableNodesInDocument ? publishableNodesInDocument.length : 0;
+        const publishableNodesCount = publishableNodes ? publishableNodes.length : 0;
         return (
             <div id="neos-PublishDropDown" className={style.wrapper}>
                 <AbstractButton
@@ -235,7 +234,7 @@ export default class PublishDropDown extends PureComponent {
             isDiscarding,
             isAutoPublishingEnabled
         } = this.props;
-        const canPublishLocally = publishableNodesInDocument && (publishableNodesInDocument.count() > 0);
+        const canPublishLocally = publishableNodesInDocument && (publishableNodesInDocument.length > 0);
 
         if (isSaving) {
             return <I18n id="Neos.Neos:Main:saving" fallback="saving"/>;

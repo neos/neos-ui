@@ -1,25 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`The reducer should create a valid initial state 1`] = `
-Immutable.Map {
-  "cr": Immutable.Map {
-    "workspaces": Immutable.Map {
-      "personalWorkspace": Immutable.OrderedMap {
-        "initial": "workspace-data",
-      },
-    },
+Object {
+  "personalWorkspace": Object {
+    "initial": "workspace-data",
   },
 }
 `;
 
 exports[`UPDATE should set personal workspace data to given data 1`] = `
-Immutable.Map {
-  "cr": Immutable.Map {
-    "workspaces": Immutable.Map {
-      "personalWorkspace": Immutable.OrderedMap {
-        "totally": "different-workspace-data",
-      },
-    },
+Object {
+  "personalWorkspace": Object {
+    "totally": "different-workspace-data",
   },
 }
 `;

@@ -45,17 +45,6 @@ export interface Routes {
     };
 }
 
-interface AssetProxy {
-    dataType: string;
-    loaderUri: string;
-    label: string;
-    preview: string;
-    identifier: string;
-    assetSourceIdentifier: string;
-    assetSourceLabel: string;
-    assetProxyIdentifier: string;
-}
-
 export default (routes: Routes) => {
     const change = (changes: Change[]) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
         url: routes.ui.service.change,

@@ -92,7 +92,7 @@ export default class LinkInput extends PureComponent {
             asset: $get('options.assets', this.props),
             node: $get('options.nodes', this.props),
             startingPoint: $get('options.startingPoint', this.props),
-            contextForNodeLinking: this.props.contextForNodeLinking
+            contextForNodeLinking: contextNode
         };
     }
 

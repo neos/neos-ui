@@ -4,6 +4,24 @@
 
 > The next generation Neos CMS interface written in ReactJS and a tonn of other fun technology.
 
+## Versioning
+
+Since Neos 5.0 (scheduled April 2019) this repository will become obsolete and `neos-ui` will be versioned and releases together with with the rest of Neos core packages.
+
+Until then, the following version conventions are in place:
+- 2.x versions are Neos 3.3 compatible (released from the `2.x` branch)
+- 3.x branch is Neos 4.x compatible (released from `master`)
+- We follow semver, but do not make bugfix releases for previous minor branches
+
+For users this means: **You will not get bugfixes for previous minor releases, so use a more relaxed version constraint like these:**
+
+```
+"neos/neos-ui": "3^",
+"neos/neos-ui-compiled": "3^",
+```
+
+For developers this means: **All development happens in `2.x` branch and then getting upmered to `master`**
+
 ## Browser support
 
 The new interface supports all evergreen (i.e. self-updating) browsers, including: Chrome, Firefox, Safari, Edge, Opera and other webkit-based browsers. In addition IE11 should also work, but please try to use more modern browsers, as the performance might suffer. If you discover bugs in any of the supported browsers, please [report them](https://github.com/neos/neos-ui/issues/new)!

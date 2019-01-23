@@ -21,7 +21,7 @@ make install
 make build-production
 
 rm -Rf tmp_compiled_pkg
-git clone git@github.com:neos/neos-ui-compiled.git tmp_compiled_pkg
+git clone --branch $GIT_BRANCH git@github.com:neos/neos-ui-compiled.git tmp_compiled_pkg
 mkdir -p tmp_compiled_pkg/Resources/Public/JavaScript
 mkdir -p tmp_compiled_pkg/Resources/Public/Styles
 

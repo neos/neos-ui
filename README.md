@@ -92,6 +92,20 @@ In order to start contributing, follow the following steps:
    gets you acquainted with the basics. Additionally, please get in touch with us on [Slack](http://slack.neos.io) in the
    channel #project-ui-rewrite. We're eager to help you get started!
 
+#### Doing upmerges
+
+1) Develop only in the `2.x` branch, unless this feature is only compatible with Neos 4.x, then in `master`
+
+2) To do the upmerge do the following commands
+
+   ```
+   git checkout master
+   git merge --no-ff --no-commit 2.x
+   ```
+Review the changes and commit the changes with the following commit message:
+
+`MERGE: Merge branch '2.x' into master`
+
 #### Development commands
 | Command         | Description                    |
 | --------------- | ------------------------------ |

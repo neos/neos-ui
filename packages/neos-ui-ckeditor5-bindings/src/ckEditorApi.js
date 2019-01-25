@@ -3,6 +3,11 @@ import DecoupledEditor from '@ckeditor/ckeditor5-editor-decoupled/src/decouplede
 
 // We remove opening and closing span tags that are produced by the inlineMode plugin
 const cleanupContentBeforeCommit = content => {
+    // TODO: remove when this is fixed: https://github.com/ckeditor/ckeditor5/issues/401
+    if (content.match(/<([a-z][a-z0-9]*)\b[^>]*>&nbsp;<\/\1>/)) {
+        return '';
+    }
+
     if (content.match(/^<span>/) && content.match(/<\/span>$/)) {
         return content
             .replace(/^<span>/, '')

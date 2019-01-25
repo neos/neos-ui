@@ -32,7 +32,7 @@ export interface IconProps {
     /**
      * The ID of the icon to render.
      */
-    readonly icon: string;
+    readonly icon?: string;
 
     /**
      * The (accessibility) label for this icon
@@ -86,7 +86,7 @@ class Icon extends PureComponent<IconProps> {
             }
         );
 
-        return <FontAwesomeIcon icon={this.getIconProp(icon) || 'question'} aria-label={label} className={classNames} {...rest} />;
+        return <FontAwesomeIcon icon={icon ? this.getIconProp(icon) : 'question'} aria-label={label} className={classNames} {...rest} />;
     }
 
     private readonly getIconProp = (icon: string): IconProp => {

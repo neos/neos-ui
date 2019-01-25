@@ -1,5 +1,5 @@
 <?php
-namespace Neos\Neos\Ui\Controller;
+namespace Neos\Neos\Ui\Service;
 
 /*
  * This file is part of the Neos.Neos.Ui package.
@@ -12,7 +12,6 @@ namespace Neos\Neos\Ui\Controller;
  */
 
 use Neos\Flow\Annotations as Flow;
-use Neos\Error\Messages\Message;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 
 /**
@@ -26,12 +25,12 @@ class NodeClipboard
     const MODE_MOVE = 'Move';
 
     /**
-     * @var NodeInterface
+     * @var string
      */
-    protected $node = null;
+    protected $nodeContextPath = '';
 
     /**
-     * @var string one of the NodeClipboardInterface::MODE_*  constants
+     * @var string one of the NodeClipboard::MODE_*  constants
      */
     protected $mode = '';
 
@@ -44,7 +43,7 @@ class NodeClipboard
      */
     public function copyNode(NodeInterface $node)
     {
-        $this->node = $node;
+        $this->nodeContextPath = $node->getContextPath();
         $this->mode = self::MODE_COPY;
     }
 
@@ -57,7 +56,7 @@ class NodeClipboard
      */
     public function cutNode(NodeInterface $node)
     {
-        $this->node = $node;
+        $this->nodeContextPath = $node->getContextPath();
         $this->mode = self::MODE_MOVE;
     }
 
@@ -69,7 +68,7 @@ class NodeClipboard
      */
     public function clear()
     {
-        $this->node = null;
+        $this->nodeContextPath = '';
         $this->mode = '';
     }
 
@@ -80,7 +79,7 @@ class NodeClipboard
      */
     public function getNodeContextPath()
     {
-        return $this->node ? $this->node->getContextPath() : '';
+        return $this->nodeContextPath ? $this->nodeContextPath : '';
     }
 
     /**

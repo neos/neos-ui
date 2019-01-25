@@ -117,7 +117,7 @@ class NodePolicyService
             return $nodeType->getName();
         };
 
-        return array_map($mapper, $disallowedNodeTypeObjects);
+        return array_values(array_map($mapper, $disallowedNodeTypeObjects));
     }
 
     /**

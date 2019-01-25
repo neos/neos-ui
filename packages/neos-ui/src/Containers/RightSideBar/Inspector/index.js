@@ -10,6 +10,7 @@ import Button from '@neos-project/react-ui-components/src/Button/';
 import Tabs from '@neos-project/react-ui-components/src/Tabs/';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 import debounce from 'lodash.debounce';
+import setIn from 'lodash.set';
 
 import {SecondaryInspector} from '@neos-project/neos-ui-inspector';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
@@ -125,7 +126,7 @@ export default class Inspector extends PureComponent {
                 if (evaluatedValue !== propertyValue) {
                     this.configurationIsProcessed = true;
                     this.viewConfiguration = produce(this.viewConfiguration, draft => {
-                        draft[newPath] = evaluatedValue;
+                        setIn(draft, newPath, evaluatedValue);
                     });
                 }
             }

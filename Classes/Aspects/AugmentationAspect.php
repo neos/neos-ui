@@ -15,6 +15,7 @@ use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Service\AuthorizationService;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Aop\JoinPointInterface;
+use Neos\Flow\Persistence\Exception\IllegalObjectTypeException;
 use Neos\Flow\Session\SessionInterface;
 use Neos\FluidAdaptor\Core\Rendering\FlowAwareRenderingContextInterface;
 use Neos\Fusion\Service\HtmlAugmenter;
@@ -126,19 +127,12 @@ class AugmentationAspect
      * @Flow\Around("method(Neos\Neos\Service\ContentElementWrappingService->wrapContentObject())")
      * @param JoinPointInterface $joinPoint the join point
      * @return mixed
+     * @throws IllegalObjectTypeException
      */
     public function contentElementAugmentation(JoinPointInterface $joinPoint)
     {
         /** @var NodeInterface $node */
         $node = $joinPoint->getMethodArgument('node');
-
-        if (
-            !$this->session->isStarted()
-            || $this->session->getData('__neosLegacyUiEnabled__')
-            || $node->getContext()->getWorkspace()->isPublicWorkspace()
-        ) {
-            return $joinPoint->getAdviceChain()->proceed($joinPoint);
-        }
 
         $content = $joinPoint->getMethodArgument('content');
 
@@ -173,13 +167,10 @@ class AugmentationAspect
      * @Flow\Around("method(Neos\Neos\Service\ContentElementEditableService->wrapContentProperty())")
      * @param JoinPointInterface $joinPoint the join point
      * @return mixed
+     * @throws IllegalObjectTypeException
      */
     public function editableElementAugmentation(JoinPointInterface $joinPoint)
     {
-        if (!$this->session->isStarted() || $this->session->getData('__neosLegacyUiEnabled__')) {
-            return $joinPoint->getAdviceChain()->proceed($joinPoint);
-        }
-
         $property = $joinPoint->getMethodArgument('property');
         $node = $joinPoint->getMethodArgument('node');
         $content = $joinPoint->getMethodArgument('content');
@@ -204,6 +195,7 @@ class AugmentationAspect
      * @param NodeInterface $node
      * @param boolean $renderCurrentDocumentMetadata
      * @return boolean
+     * @throws IllegalObjectTypeException
      */
     protected function needsMetadata(NodeInterface $node, $renderCurrentDocumentMetadata)
     {
@@ -220,6 +212,7 @@ class AugmentationAspect
      *
      * @param NodeInterface $documentNode
      * @return void
+     * @throws IllegalObjectTypeException
      */
     protected function appendNonRenderedContentNodeMetadata(NodeInterface $documentNode)
     {
@@ -258,6 +251,7 @@ class AugmentationAspect
     /**
      * @param NodeInterface $documentNode
      * @return string
+     * @throws IllegalObjectTypeException
      */
     public function getNonRenderedContentNodeMetadata(NodeInterface $documentNode)
     {

@@ -220,7 +220,6 @@ Neos:
           position: 'before Neos.Neos'
   Fusion:
     defaultContext:
-      Neos.Ui.Activation: Neos\Neos\Ui\Fusion\Helper\ActivationHelper
       Neos.Ui.Sites: Neos\Neos\Ui\Fusion\Helper\SitesHelper
       Neos.Ui.Modules: Neos\Neos\Ui\Fusion\Helper\ModulesHelper
       Neos.Ui.Workspace: Neos\Neos\Ui\Fusion\Helper\WorkspaceHelper

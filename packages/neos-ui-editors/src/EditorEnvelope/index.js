@@ -78,7 +78,10 @@ export default class EditorEnvelope extends PureComponent {
             });
 
             return (
-                <EditorComponent className={classNames} id={this.generateIdentifier()} {...restProps} />
+                <EditorComponent className={classNames}
+                                 id={this.generateIdentifier()}
+                                 renderHelpIcon={this.renderHelpIcon.bind(this)}
+                                 {...restProps} />
             );
         }
 

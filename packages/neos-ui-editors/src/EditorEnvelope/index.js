@@ -80,7 +80,7 @@ export default class EditorEnvelope extends PureComponent {
             return (
                 <EditorComponent className={classNames}
                     id={this.generateIdentifier()}
-                    renderHelpIcon={this.renderHelpIcon.bind(this)}
+                    renderHelpIcon={this.renderHelpIcon}
                     {...restProps} />
             );
         }
@@ -140,7 +140,7 @@ export default class EditorEnvelope extends PureComponent {
         );
     }
 
-    renderHelpIcon() {
+    renderHelpIcon = () => {
         if (this.props.helpMessage || this.props.helpThumbnail) {
             return (
                 <span role="button" onClick={this.toggleHelmpessage} className={style.envelope__tooltipButton}>

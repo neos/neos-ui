@@ -83,16 +83,17 @@ export default class LinkInput extends PureComponent {
     };
 
     getDataLoaderOptions() {
-        const contextNode = $get('options.startingPoint', this.props) ?
-            this.props.contextForNodeLinking.set('contextNode', $get('options.startingPoint', this.props)) :
+        const contextForNodeLinking = this.props.options.startingPoint ?
+            Object.assign({}, this.props.contextForNodeLinking, {
+                contextNode: this.props.options.startingPoint
+            }) :
             this.props.contextForNodeLinking;
-
         return {
             nodeTypes: $get('options.nodeTypes', this.props) || ['Neos.Neos:Document'],
             asset: $get('options.assets', this.props),
             node: $get('options.nodes', this.props),
             startingPoint: $get('options.startingPoint', this.props),
-            contextForNodeLinking: contextNode
+            contextForNodeLinking
         };
     }
 

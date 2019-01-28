@@ -11,9 +11,17 @@ export interface FrameProps extends React.IframeHTMLAttributes<HTMLIFrameElement
     readonly children: ReactNode;
 }
 
+interface FrameState {
+    readonly transitioning: boolean;
+}
+
+const initialState: FrameState = {
+    transitioning: false
+};
 export default class Frame extends PureComponent<FrameProps> {
     // tslint:disable-next-line:readonly-keyword
     private ref?: HTMLIFrameElement;
+    public readonly state = initialState;
 
     public render(): JSX.Element {
         const rest = omit(this.props, [
@@ -44,9 +52,12 @@ export default class Frame extends PureComponent<FrameProps> {
     }
 
     private readonly addClickListener = () => {
-        if (this.ref && this.ref.contentDocument) {
+        if (this.ref && this.ref.contentDocument && this.ref.contentWindow) {
             this.ref.contentDocument.addEventListener('click', () => {
                 this.relayClickEventToHostDocument();
+            });
+            this.ref.contentWindow.addEventListener('unload', () => {
+                this.handleUnload();
             });
         }
     }
@@ -80,6 +91,9 @@ export default class Frame extends PureComponent<FrameProps> {
         try {
             const win = this.ref.contentWindow; // eslint-disable-line react/no-find-dom-node
             if (win && win.location.href !== this.props.src) {
+                this.setState({
+                    transitioning: true
+                });
                 win.location.replace(this.props.src);
             }
         } catch (err) {
@@ -102,7 +116,17 @@ export default class Frame extends PureComponent<FrameProps> {
         });
     }
 
+    private readonly handleUnload = () => {
+        this.setState({
+            transitioning: true
+        });
+    }
+
     private readonly handleLoad = (e: SyntheticEvent<HTMLIFrameElement>) => {
+        this.setState({
+            transitioning: false
+        });
+
         const {onLoad} = this.props;
 
         if (typeof onLoad === 'function' && this.ref) {
@@ -111,6 +135,11 @@ export default class Frame extends PureComponent<FrameProps> {
     }
 
     private readonly renderFrameContents = () => {
+        if (this.state.transitioning) {
+            // Don't render the UI inside contentCanvas while transitioning.
+            // Doing so may cause "Permission denied" errors in IE & Edge
+            return null;
+        }
         if (this.ref) {
             const doc = this.ref.contentDocument;
             const win = this.ref.contentWindow;

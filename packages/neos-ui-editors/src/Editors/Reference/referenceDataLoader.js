@@ -106,13 +106,15 @@ export default ({isMulti}) => WrappedComponent => {
         }
 
         getDataLoaderOptions() {
-            const contextNode = this.props.options.startingPoint ?
-                this.props.contextForNodeLinking.set('contextNode', this.props.options.startingPoint) :
+            const contextForNodeLinking = this.props.options.startingPoint ?
+                Object.assign({}, this.props.contextForNodeLinking, {
+                    contextNode: this.props.options.startingPoint
+                }) :
                 this.props.contextForNodeLinking;
 
             return {
                 nodeTypes: $get('options.nodeTypes', this.props) || ['Neos.Neos:Document'],
-                contextForNodeLinking: contextNode
+                contextForNodeLinking
             };
         }
 

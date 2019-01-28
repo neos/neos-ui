@@ -193,8 +193,10 @@ const reloadState = ((payload: {
     );
 });
 
-
-
+// This data may be coming from the Guest frame, so we need to re-create it at host/
+// Otherwise we get all "can't execute code from a freed script" errors in Edge,
+// when the guest frame has been navigated away and old guest frame document was destroyed
+const adoptDataToHost = <T>(object: T): T => JSON.parse(JSON.stringify(object));
 
 /**
  * Mark a node for copy on paste
@@ -303,7 +305,7 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
         case actionTypes.ADD: {
             const {nodeMap} = action.payload;
             Object.keys(nodeMap).forEach(contextPath => {
-                draft.byContextPath[contextPath] = nodeMap[contextPath];
+                draft.byContextPath[contextPath] = adoptDataToHost(nodeMap[contextPath]);
             });
             break;
         }
@@ -364,7 +366,10 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
         case actionTypes.MERGE: {
             const {nodeMap} = action.payload;
             Object.keys(nodeMap).forEach(contextPath => {
-                const newNode = nodeMap[contextPath];
+                // This data may be coming from the Guest frame, so we need to re-create it at host/
+                // Otherwise we get all "can't execute code from a freed script" errors in Edge,
+                // when the guest frame has been navigated away and old guest frame document was destroyed
+                const newNode = adoptDataToHost(nodeMap[contextPath]);
                 if (!newNode) {
                     throw new Error('This error should never be thrown, it\'s a way to fool TypeScript');
                 }

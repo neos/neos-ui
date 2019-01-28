@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/react-ui-components",
-  "version": "1.4.1",
+  "version": "3.0.0",
   "description": "The UI components which power the Neos backend application.",
   "main": "./src/index",
   "scripts": {
@@ -18,10 +18,10 @@
     "start": "cross-env STORY=true start-storybook -p 9001"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "1.4.1",
-    "@neos-project/build-essentials": "1.4.1",
-    "@neos-project/debug-reason-for-rendering": "1.4.1",
-    "@neos-project/jest-preset-neos-ui": "1.4.1",
+    "@neos-project/babel-preset-neos-ui": "3.0.0",
+    "@neos-project/build-essentials": "3.0.0",
+    "@neos-project/debug-reason-for-rendering": "3.0.0",
+    "@neos-project/jest-preset-neos-ui": "3.0.0",
     "@storybook/addon-info": "^3.2.16",
     "@storybook/addon-knobs": "3.2.16",
     "@storybook/react": "3.2.16",
@@ -33,11 +33,11 @@
     "@friendsofreactjs/react-css-themr": "^3.3.2",
     "classnames": "^2.2.3",
     "lodash.debounce": "^4.0.8",
-    "lodash.throttle": "^4.0.8",
     "lodash.escaperegexp": "^4.1.2",
     "lodash.isequal": "^4.5.0",
     "lodash.isfunction": "^3.0.8",
     "lodash.omit": "^4.3.0",
+    "lodash.throttle": "^4.0.8",
     "moment": "^2.14.1",
     "prop-types": "^15.5.10",
     "react": "^16.0.0",

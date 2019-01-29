@@ -371,6 +371,39 @@ test('Can edit the page title via inspector', async t => {
         .expect(Selector('#neos-UnappliedChangesDialog').exists).notOk();
 });
 
+test('Create an Image node from ContentTree', async t => {
+    await t.switchToIframe('[name="neos-content-main"]');
+    const initialImageCount = await Selector('.neos-nodetypes-image img[src]').count;
+    await t.switchToMainWindow();
+
+    subSection('Create Image node');
+    await t
+        .click(Selector('#neos-ContentTree-ToggleContentTree'))
+        .click(page.treeNode.withText('Content Collection (main)'))
+        .click(Selector('#neos-ContentTree-AddNode'))
+        .click(ReactSelector('NodeTypeItem').find('button>span').withText('Image'));
+    await waitForIframeLoading(t);
+
+    subSection('Select image from media library');
+    const imageEditor = await ReactSelector('InspectorEditorEnvelope').withProps('id', 'image');
+    await t
+        .click(imageEditor.findReact('IconButton').withProps('icon', 'camera'));
+    await t.switchToIframe('[name="neos-media-selection-screen"]');
+    await t.click('.asset-list .asset a');
+    await t.switchToMainWindow();
+
+    subSection('Toggle caption');
+    const hasCaptionEditor = await ReactSelector('InspectorEditorEnvelope').withProps('id', 'hasCaption');
+    await t
+        .click(hasCaptionEditor.findReact('CheckBox'))
+        .click(Selector('#neos-Inspector-Apply'));
+
+    await t.switchToIframe('[name="neos-content-main"]');
+    const finalImageCount = await Selector('.neos-nodetypes-image img[src]').count;
+
+    await t.expect(initialImageCount + 1).eql(finalImageCount, 'Final image count is one more than initial');
+});
+
 test('Can crop an image', async t => {
     await waitForIframeLoading(t);
 

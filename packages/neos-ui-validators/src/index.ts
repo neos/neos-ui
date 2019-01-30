@@ -20,7 +20,7 @@ interface ElementConfiguarionsMap {
 }
 // TODO: typing could be greatly improved. E.g. we could gather all possible options interfaces and make a discriminated union out of them
 const validate = (values: ValuesMap, elementConfigurations: ElementConfiguarionsMap, validatorRegistry: ValidatorRegistry) => {
-    const checkValidator = (elementValue: any, validatorName: string, validatorConfiguration: ValidatorConfiguration) => {
+    const checkValidator = (elementValue: any, validatorName: string, validatorConfiguration: ValidatorConfiguration | undefined) => {
         const validator = validatorRegistry.get(validatorName);
         if (validator) {
             return validator(elementValue, validatorConfiguration);
@@ -34,9 +34,6 @@ const validate = (values: ValuesMap, elementConfigurations: ElementConfiguarions
             const validators = elementConfiguration.validation;
             const validationResults = Object.keys(validators).map(validatorName => {
                 const validatorConfiguration = validators[validatorName];
-                if (!validatorConfiguration) {
-                    throw new Error('Dummy TypeScript type guard, will never be thrown');
-                }
                 return checkValidator(elementValue, validatorName, validatorConfiguration);
             });
             return validationResults.filter(result => result);

@@ -18,7 +18,9 @@
 }
 
 .envelope--highlight {
-    outline: 2px solid var(--colors-Success);
+    /* outline: 2px solid var(--colors-Success); */
+    box-shadow: 0 0 0 2px var(--colors-Warn);
+    border-radius: 2px;
 }
 
 .envelope__helpThumbnail {

@@ -15,6 +15,7 @@
     font-size: var(--fontSize-Base);
     padding: 0 var(--spacing-Full);
     border: 0;
+    border-radius: 2px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

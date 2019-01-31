@@ -11,7 +11,7 @@ exports[`<Dialog/> Content should render correctly. 1`] = `
     <ThemedIconButton
       className="closeBtnClassName"
       composeTheme="deeply"
-      hoverStyle="brand"
+      hoverStyle="clean"
       icon="times"
       mapThemrProps={[Function]}
       onClick={[Function]}

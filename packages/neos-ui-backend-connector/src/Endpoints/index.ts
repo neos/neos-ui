@@ -45,17 +45,6 @@ export interface Routes {
     };
 }
 
-interface AssetProxy {
-    dataType: string;
-    loaderUri: string;
-    label: string;
-    preview: string;
-    identifier: string;
-    assetSourceIdentifier: string;
-    assetSourceLabel: string;
-    assetProxyIdentifier: string;
-}
-
 export default (routes: Routes) => {
     const change = (changes: Change[]) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
         url: routes.ui.service.change,
@@ -253,161 +242,6 @@ export default (routes: Routes) => {
         const parts = uri.split('.');
         return parts.length ? '.' + parts[parts.length - 1] : '';
     };
-
-    const assetProxyImport = (identifiers: string) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
-        url: `${routes.core.service.assetProxies}/${identifiers.substr(0, identifiers.indexOf('/'))}/${identifiers.substr(identifiers.indexOf('/') + 1)}`,
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-            'X-Flow-Csrftoken': csrfToken
-        },
-        body: ''
-    }))
-        .then(result => result.text())
-        .then(result => {
-            const assetProxyTable = document.createElement('table');
-            assetProxyTable.innerHTML = result;
-            const assetProxy = assetProxyTable.querySelector('.asset-proxy');
-            if (!assetProxy) {
-                throw new Error('Asset proxy import didn\'t return correct result: .asset-proxy not found');
-            }
-            const localAssetIdentifer = assetProxy.querySelector('.local-asset-identifier') as HTMLElement;
-            if (!localAssetIdentifer) {
-                throw new Error('Asset proxy import didn\'t return correct result: .local-asset-identifier not found');
-            }
-            return localAssetIdentifer.innerText;
-        });
-
-    const assetProxySearch = (searchTerm = '', assetSourceIdentifier = '', options: {assetsToExclude?: any[]} = {}) => fetchWithErrorHandling.withCsrfToken(() => ({
-        url: urlWithParams(routes.core.service.assetProxies, {searchTerm, assetSourceIdentifier}),
-
-        method: 'GET',
-        credentials: 'include'
-    }))
-        .then(result => result.text())
-        .then(result => {
-            const assetProxyTable = document.createElement('table');
-            assetProxyTable.innerHTML = result;
-            const assetProxyElements = Array.from(assetProxyTable.querySelectorAll('.asset-proxy')) as HTMLElement[];
-            const mappedAssetProxies = assetProxyElements.map((assetProxy: HTMLElement): AssetProxy => {
-                const assetSourceIdentifierElement = assetProxy.querySelector('.asset-source-identifier') as HTMLElement | null;
-                if (!assetSourceIdentifierElement) {
-                    throw new Error('Asset proxy search failed, .asset-source-identifier not found in result');
-                }
-                const assetSourceIdentifier = assetSourceIdentifierElement.innerText;
-
-                const assetSourceLabelElement = assetProxy.querySelector('.asset-source-label') as HTMLElement | null;
-                if (!assetSourceLabelElement) {
-                    throw new Error('Asset proxy search failed, .asset-source-label not found in result');
-                }
-                const assetSourceLabel = assetSourceLabelElement.innerText;
-
-                const assetProxyIdentifierElement = assetProxy.querySelector('.asset-proxy-identifier') as HTMLElement | null;
-                if (!assetProxyIdentifierElement) {
-                    throw new Error('Asset proxy search failed, .asset-proxy-identifier not found in result');
-                }
-                const assetProxyIdentifier = assetProxyIdentifierElement.innerText;
-
-                const localAssetIdentiferElement = assetProxy.querySelector('.local-asset-identifier') as HTMLElement | null;
-                if (!localAssetIdentiferElement) {
-                    throw new Error('Asset proxy search failed, .local-asset-identifier not found in result');
-                }
-                const localAssetIdentifer = localAssetIdentiferElement.innerText;
-
-                const assetProxyLabelElement = assetProxy.querySelector('.asset-proxy-label') as HTMLElement | null;
-                if (!assetProxyLabelElement) {
-                    throw new Error('Asset proxy search failed, .asset-proxy-label not found in result');
-                }
-                const assetProxyLabel = assetProxyLabelElement.innerText;
-
-                const assetProxyPreviewElement = assetProxy.querySelector('[rel=thumbnail]') as HTMLElement | null;
-                if (!assetProxyPreviewElement) {
-                    throw new Error('Asset proxy search failed, [rel=thumbnail] not found in result');
-                }
-                const assetProxyPreview = assetProxyPreviewElement.getAttribute('href') || '';
-
-                return {
-                    dataType: 'Neos.Media:Asset',
-                    loaderUri: 'assetProxy://' + assetSourceIdentifier + '/' + assetProxyIdentifier,
-                    label: assetProxyLabel,
-                    preview: assetProxyPreview,
-                    identifier: localAssetIdentifer || (assetSourceIdentifier + '/' + assetProxyIdentifier),
-                    assetSourceIdentifier,
-                    assetSourceLabel,
-                    assetProxyIdentifier
-                };
-            });
-            const {assetsToExclude} = options;
-            if (Array.isArray(assetsToExclude)) {
-                return mappedAssetProxies.filter(assetProxy => assetsToExclude.indexOf(assetProxy.identifier) === -1);
-            }
-            return mappedAssetProxies;
-        });
-
-    const assetProxyDetail = (assetSourceIdentifier: string, assetProxyIdentifier: string) => fetchWithErrorHandling.withCsrfToken(() => ({
-        url: `${routes.core.service.assetProxies}/${assetSourceIdentifier}/${assetProxyIdentifier}`,
-
-        method: 'GET',
-        credentials: 'include'
-    }))
-        .then(result => result.text())
-        .then(result => {
-            const assetProxyTable = document.createElement('table');
-            assetProxyTable.innerHTML = result;
-
-            const assetProxy = assetProxyTable.querySelector('.asset-proxy') as HTMLElement | null;
-            if (!assetProxy) {
-                throw new Error('Asset proxy detail retrieval failed, .asset-proxy not found in result');
-            }
-
-            const assetSourceIdentifierElement = assetProxy.querySelector('.asset-source-identifier') as HTMLElement | null;
-            if (!assetSourceIdentifierElement) {
-                throw new Error('Asset proxy detail retrieval failed, .asset-source-identifier not found in result');
-            }
-            const assetSourceIdentifier = assetSourceIdentifierElement.innerText;
-
-            const assetSourceLabelElement = assetProxy.querySelector('.asset-source-label') as HTMLElement | null;
-            if (!assetSourceLabelElement) {
-                throw new Error('Asset proxy detail retrieval failed, .asset-source-label not found in result');
-            }
-            const assetSourceLabel = assetSourceLabelElement.innerText;
-
-            const assetProxyIdentifierElement = assetProxy.querySelector('.asset-proxy-identifier') as HTMLElement | null;
-            if (!assetProxyIdentifierElement) {
-                throw new Error('Asset proxy detail retrieval failed, .asset-proxy-identifier not found in result');
-            }
-            const assetProxyIdentifier = assetProxyIdentifierElement.innerText;
-
-            const localAssetIdentiferElement = assetProxy.querySelector('.local-asset-identifier') as HTMLElement | null;
-            if (!localAssetIdentiferElement) {
-                throw new Error('Asset proxy detail retrieval failed, .local-asset-identifier not found in result');
-            }
-            const localAssetIdentifer = localAssetIdentiferElement.innerText;
-
-            const assetProxyLabelElement = assetProxy.querySelector('.asset-proxy-label') as HTMLElement | null;
-            if (!assetProxyLabelElement) {
-                throw new Error('Asset proxy detail retrieval failed, .asset-proxy-label not found in result');
-            }
-            const assetProxyLabel = assetProxyLabelElement.innerText;
-
-            const assetProxyPreviewElement = assetProxy.querySelector('[rel=thumbnail]') as HTMLElement | null;
-            if (!assetProxyPreviewElement) {
-                throw new Error('Asset proxy detail retrieval failed, [rel=thumbnail] not found in result');
-            }
-            const assetProxyPreview = assetProxyPreviewElement.getAttribute('href') || '';
-
-            return {
-                dataType: 'Neos.Media:Asset',
-                loaderUri: 'assetProxy://' + assetSourceIdentifier + '/' + assetProxyIdentifier,
-                label: assetProxyLabel,
-                preview: assetProxyPreview,
-                identifier: localAssetIdentifer || (assetSourceIdentifier + '/' + assetProxyIdentifier),
-                assetSourceIdentifier,
-                assetSourceLabel,
-                assetProxyIdentifier,
-                localAssetIdentifer
-            };
-        });
 
     const assetSearch = (searchTerm = '') => fetchWithErrorHandling.withCsrfToken(() => ({
         url: urlWithParams(routes.core.service.assets, {searchTerm}),
@@ -701,9 +535,6 @@ export default (routes: Routes) => {
         loadMasterPlugins,
         loadPluginViews,
         uploadAsset,
-        assetProxyImport,
-        assetProxySearch,
-        assetProxyDetail,
         assetSearch,
         assetDetail,
         searchNodes,

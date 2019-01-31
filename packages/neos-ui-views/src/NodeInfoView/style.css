@@ -1,17 +1,24 @@
 .nodeInfoView {
-    background-color: var(--colors-ContrastNeutral);
     margin: 0;
     padding: 0;
     list-style: none;
 
     &__item {
+        background-color: var(--colors-ContrastNeutral);
         padding: 8px;
-        border-bottom: 1px solid #222;
+        margin-bottom: 1px;
         line-height: 20px;
         min-height: 20px;
 
+        &:first-child {
+            border-top-left-radius: 2px;
+            border-top-right-radius: 2px;
+        }
+
         &:last-child {
             border-bottom: none;
+            border-bottom-left-radius: 2px;
+            border-bottom-right-radius: 2px;
         }
     }
 

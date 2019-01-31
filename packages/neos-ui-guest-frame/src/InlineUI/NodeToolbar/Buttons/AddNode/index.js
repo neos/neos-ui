@@ -58,7 +58,7 @@ export default class AddNode extends PureComponent {
                     className={this.props.className}
                     icon="plus"
                     onClick={this.handleCommenceNodeCreation}
-                    hoverStyle="clean"
+                    hoverStyle="brand"
                     title={i18nRegistry.translate('createNew')}
                     />
             </span>

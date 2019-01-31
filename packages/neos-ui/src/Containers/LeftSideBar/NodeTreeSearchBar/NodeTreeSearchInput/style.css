@@ -7,9 +7,6 @@
         border-radius: 0;
     }
 }
-.searchInput--focused {
-
-}
 
 .clearButton {
     background: var(--colors-ContrastNeutral);

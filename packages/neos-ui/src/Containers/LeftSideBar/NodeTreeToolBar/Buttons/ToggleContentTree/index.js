@@ -24,7 +24,7 @@ export default class ToggleContentTree extends PureComponent {
     }
 
     render() {
-        const {className, id, isPanelOpen, i18nRegistry} = this.props;
+        const {id, isPanelOpen, i18nRegistry} = this.props;
 
         return (
             <IconButton

@@ -7,7 +7,7 @@
     border-radius: 2px;
     background: var(--colors-ContrastNeutral);
     resize: vertical;
-    transition: 0.3s height;
+    transition: .3s height;
 
     &:focus {
         outline: 0;

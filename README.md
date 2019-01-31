@@ -16,8 +16,8 @@ Until then, the following version conventions are in place:
 For users this means: **You will not get bugfixes for previous minor releases, so use a more relaxed version constraint like these:**
 
 ```
-"neos/neos-ui": "3^",
-"neos/neos-ui-compiled": "3^",
+"neos/neos-ui": "^3",
+"neos/neos-ui-compiled": "^3",
 ```
 
 For developers this means: **All development happens in `2.x` branch and then getting upmered to `master`**

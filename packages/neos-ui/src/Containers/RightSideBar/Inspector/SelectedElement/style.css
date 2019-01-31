@@ -18,3 +18,10 @@
 .content {
     padding: 0 var(--spacing-Full) var(--spacing-Full);
 }
+
+.iconWrapper {
+    width: 2em;
+    display: inline-block;
+    text-align: center;
+    margin-left: -5px;
+}

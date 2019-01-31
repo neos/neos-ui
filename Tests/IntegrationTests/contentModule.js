@@ -321,8 +321,18 @@ test('Can create content node from inside InlineUI', async t => {
     await waitForIframeLoading(t);
     await t
         .switchToIframe('[name="neos-content-main"]')
-        .typeText(Selector('.neos-inline-editable h1'), headlineTitle)
-        .expect(Selector('.neos-contentcollection').withText(headlineTitle).exists).ok()
+        .typeText(Selector('.neos-nodetypes-headline:nth-child(2) h1'), headlineTitle)
+        .expect(Selector('.neos-contentcollection').withText(headlineTitle).exists).ok('Typed headline text exists');
+
+    subSection('Create a link to node');
+    await t
+        .doubleClick('.neos-nodetypes-headline:nth-child(2) h1')
+        .switchToMainWindow()
+        .click(ReactSelector('EditorToolbar LinkButton'))
+        .typeText(ReactSelector('EditorToolbar LinkButton TextInput'), 'down')
+        .click(ReactSelector('EditorToolbar NodeOption'))
+        .switchToIframe('[name="neos-content-main"]')
+        .expect(Selector('.neos-nodetypes-headline:nth-child(2) h1 a').withAttribute('href').exists).ok('Newly inserted link exists')
         .switchToMainWindow();
 });
 

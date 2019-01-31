@@ -17,6 +17,13 @@
     opacity: 0;
     cursor: pointer;
 }
+.checkbox__icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    opacity: 0.2;
+}
 .checkbox__inputMirror {
     composes: reset from './../reset.css';
     display: inline-block;
@@ -32,26 +39,15 @@
     .label:hover & {
         border-color: var(--colors-PrimaryBlue);
     }
-
-    &:before {
-        content: '\2713';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translateX(-50%) translateY(-50%);
-    }
 }
 .checkbox__inputMirror--active {
     background: var(--colors-PrimaryBlue);
     border-color: var(--colors-PrimaryBlue);
     color: #fff;
-
-    &:before {
-        content: '\2713';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translateX(-50%) translateY(-50%);
+}
+.checkbox__checked {
+    .checkbox__icon {
+        opacity: 1.0;
     }
 }
 .checkbox__disabled {

@@ -36,7 +36,7 @@ export default class PasteClipBoardNode extends PureComponent {
                 id={id}
                 icon="paste"
                 onClick={this.handleClick}
-                hoverStyle="clean"
+                hoverStyle="brand"
                 title={i18nRegistry.translate('paste')}
                 />
         );

@@ -95,7 +95,7 @@ export class DialogWithoutEscape extends PureComponent<DialogProps> {
                             onClick={onRequestClose}
                             size="regular"
                             style="clean"
-                            hoverStyle="brand"
+                            hoverStyle="clean"
                         />
                     )}
                     <div className={theme.dialog__title}>

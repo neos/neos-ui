@@ -83,7 +83,7 @@ export default class LinkInput extends PureComponent {
     };
 
     getDataLoaderOptions() {
-        const contextForNodeLinking = this.props.options.startingPoint ?
+        const contextForNodeLinking = $get('options.startingPoint', this.props) ?
             Object.assign({}, this.props.contextForNodeLinking, {
                 contextNode: this.props.options.startingPoint
             }) :

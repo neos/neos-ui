@@ -29,21 +29,14 @@
     display: inline-block;
     width: 20px;
     height: 20px;
-    border: 1px solid var(--colors-ContrastBrighter);
+    border-radius: 2px;
     vertical-align: text-bottom;
     background: var(--colors-ContrastDark);
     font-size: 20px;
     font-weight: bold;
-    color: #5b5b5b;
-
-    .label:hover & {
-        border-color: var(--colors-PrimaryBlue);
-    }
 }
 .checkbox__inputMirror--active {
     background: var(--colors-PrimaryBlue);
-    border-color: var(--colors-PrimaryBlue);
-    color: #fff;
 }
 .checkbox__checked {
     .checkbox__icon {

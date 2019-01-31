@@ -1,34 +1,30 @@
 .searchInput {
     flex-grow: 1;
-}
 
-.searchInput {
-    /* magic number, sorry */
-    padding-left: 32px;
+    input {
+        padding-left: 40px;
+        border-radius: 0;
+    }
 }
 .searchInput--focused {
-    padding-left: 0;
+
 }
 
 .clearButton {
     background: var(--colors-ContrastNeutral);
 }
-
 .clearButton--focused {
     background: white;
-}
-
-.clearButton--focused > i {
-    color: var(--colors-ContrastNeutral);
 }
 
 .wrapper {
     display: flex;
     border-right: 1px solid var(--colors-ContrastDark);
+    position: relative;
 }
 
 .hidden {
-    display: none;
+     display: none;
 }
 
 .placeholderIcon {

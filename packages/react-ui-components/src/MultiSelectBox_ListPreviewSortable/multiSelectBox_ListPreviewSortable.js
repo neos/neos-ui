@@ -1,6 +1,7 @@
 /* eslint-disable camelcase, react/jsx-pascal-case */
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
+import isEqual from 'lodash.isequal';
 import injectProps from './../_lib/injectProps';
 import MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement from '../MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement';
 
@@ -28,7 +29,7 @@ export default class MultiSelectBox_ListPreviewSortable extends PureComponent {
         options: PropTypes.arrayOf(
             PropTypes.shape({})
         ).isRequired,
-        values: PropTypes.arrayOf(PropTypes.string),
+        values: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.string), PropTypes.arrayOf(PropTypes.object)]),
         onValuesChange: PropTypes.func.isRequired,
         ListPreviewElement: PropTypes.any.isRequired,
 
@@ -66,7 +67,7 @@ export default class MultiSelectBox_ListPreviewSortable extends PureComponent {
 
         // Sorted options by draggable value ordering
         const draggableOptions = draggableValues.map(value =>
-            options.find(option => optionValueAccessor(option) === value)
+            options.find(option => optionValueAccessor(option) === value || isEqual(optionValueAccessor(option), value))
         ).filter(Boolean);
 
         return draggableOptions.map(this.renderOption);
@@ -82,7 +83,7 @@ export default class MultiSelectBox_ListPreviewSortable extends PureComponent {
         return (
             <DraggableListPreviewElement
                 {...this.props}
-                key={optionValueAccessor(option)}
+                key={optionValueAccessor(option, true)}
                 index={index}
                 option={option}
                 onMoveSelectedValue={this.handleMoveSelectedValue}

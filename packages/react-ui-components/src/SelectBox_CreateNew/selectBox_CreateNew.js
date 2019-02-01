@@ -22,7 +22,7 @@ class SelectBox_CreateNew extends PureComponent {
         createNewLabel: PropTypes.string,
 
         // API with SelectBox
-        focusedValue: PropTypes.string,
+        focusedValue: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
         onOptionFocus: PropTypes.func.isRequired
     }
 

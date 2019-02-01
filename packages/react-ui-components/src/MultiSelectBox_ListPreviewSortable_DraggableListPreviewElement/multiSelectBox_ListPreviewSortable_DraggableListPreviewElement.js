@@ -63,7 +63,7 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
         // For explanations of the PropTypes, see MultiSelectBox.js
         option: PropTypes.shape({
         }),
-        values: PropTypes.arrayOf(PropTypes.string),
+        values: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.string), PropTypes.arrayOf(PropTypes.object)]),
 
         // Drag&Drop specific propTypes
         dndType: PropTypes.string.isRequired,

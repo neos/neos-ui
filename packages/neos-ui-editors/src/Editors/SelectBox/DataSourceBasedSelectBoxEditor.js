@@ -21,7 +21,9 @@ export default class DataSourceBasedSelectBoxEditor extends PureComponent {
         className: PropTypes.string,
         value: PropTypes.oneOfType([
             PropTypes.string,
-            PropTypes.arrayOf(PropTypes.string)
+            PropTypes.object,
+            PropTypes.arrayOf(PropTypes.string),
+            PropTypes.arrayOf(PropTypes.object)
         ]),
         options: PropTypes.shape({
             allowEmpty: PropTypes.bool,

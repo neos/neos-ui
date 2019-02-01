@@ -76,6 +76,7 @@ class NodePropertyConversionService
                 return $this->convertArray($rawValue);
 
             default:
+                $parsedType = null;
                 $innerType = $propertyType;
                 if ($propertyType !== null) {
                     try {
@@ -92,6 +93,12 @@ class NodePropertyConversionService
                     $propertyMappingConfiguration->skipUnknownProperties();
                     $propertyMappingConfiguration->setTypeConverterOption(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED, true);
                     $propertyMappingConfiguration->setTypeConverterOption(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED, true);
+
+                    if ($parsedType && TypeHandling::isCollectionType($parsedType['type'])) {
+                        $subConfiguration = $propertyMappingConfiguration->forProperty('*');
+                        $subConfiguration->setTypeConverterOption(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED, true);
+                        $subConfiguration->setTypeConverterOption(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_OVERRIDE_TARGET_TYPE_ALLOWED, true);
+                    }
 
                     return $this->propertyMapper->convert($rawValue, $propertyType, $propertyMappingConfiguration);
                 } else {

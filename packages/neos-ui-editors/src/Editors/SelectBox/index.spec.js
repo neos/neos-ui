@@ -15,6 +15,20 @@ const optionValues = {
         label: 'barLabel'
     }
 };
+const optionValuesForModelDataSource = {
+    0: {
+        label: 'fooLabel',
+        value: {
+            __identity: 'fooIdentity'
+        }
+    },
+    1: {
+        label: 'barLabel',
+        value: {
+            __identity: 'barIdentity'
+        }
+    }
+};
 const dropdownElementLabels = component =>
     component.find('SelectBox_ListPreview').find('SelectBox_Option_SingleLine').map(node => node.text());
 
@@ -186,6 +200,56 @@ test(`SelectBox > multi, dataSource, preselected value`, () => {
     expect(dropdownElementLabels(component)).toEqual([]);
 
     return MockDataSourceDataLoader.resolveCurrentPromise(optionValues).then(() => {
+        const expectedDropdownElementLabels = ['barLabel'];
+        component.update();
+        expect(multiselectLabels(component)).toEqual(['fooLabel']);
+        // Already selected values should not be in the list to choose anymore
+        expect(dropdownElementLabels(component)).toEqual(expectedDropdownElementLabels);
+    });
+});
+
+test(`SelectBox > multi, dataSource returns models, no preselected value`, () => {
+    MockDataSourceDataLoader.reset();
+    const component = mount(
+        <WrapWithMockGlobalRegistry>
+            <Provider store={store}>
+                <SelectBoxEditor commit={commit} options={{dataSourceIdentifier: 'ds1', multiple: true}}/>
+            </Provider>
+        </WrapWithMockGlobalRegistry>
+    );
+
+    dropdownHeader(component).simulate('click');
+    expect(multiselectLabels(component)).toEqual([]);
+    expect(dropdownHeader(component).text()).toBe('');
+    expect(dropdownElementLabels(component)).toEqual([]);
+
+    return MockDataSourceDataLoader.resolveCurrentPromise(optionValuesForModelDataSource).then(() => {
+        const expectedDropdownElementLabels = ['fooLabel', 'barLabel'];
+        component.update();
+        expect(multiselectLabels(component)).toEqual([]);
+        expect(dropdownHeader(component).text()).toBe('');
+        expect(dropdownElementLabels(component)).toEqual(expectedDropdownElementLabels);
+    });
+});
+
+test(`SelectBox > multi, dataSource returns models, preselected value`, () => {
+    MockDataSourceDataLoader.reset();
+    const component = mount(
+        <DragDropContextProvider backend={TestBackend}>
+            <WrapWithMockGlobalRegistry>
+                <Provider store={store}>
+                    <SelectBoxEditor commit={commit} options={{dataSourceIdentifier: 'ds1', multiple: true}} value={[{__identity: 'fooIdentity'}]}/>
+                </Provider>
+            </WrapWithMockGlobalRegistry>
+        </DragDropContextProvider>
+    );
+
+    dropdownHeader(component).simulate('click');
+    expect(multiselectLabels(component)).toEqual([]);
+    expect(dropdownHeader(component).text()).toBe('');
+    expect(dropdownElementLabels(component)).toEqual([]);
+
+    return MockDataSourceDataLoader.resolveCurrentPromise(optionValuesForModelDataSource).then(() => {
         const expectedDropdownElementLabels = ['barLabel'];
         component.update();
         expect(multiselectLabels(component)).toEqual(['fooLabel']);

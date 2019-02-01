@@ -5,6 +5,7 @@ import {$get} from 'plow-js';
 import mergeClassNames from 'classnames';
 import omit from 'lodash.omit';
 import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine';
+import isEqual from 'lodash.isequal';
 
 class MultiSelectBox extends PureComponent {
     static propTypes = {
@@ -32,6 +33,11 @@ class MultiSelectBox extends PureComponent {
         className: PropTypes.string,
 
         /**
+         * Field name containing the option identifier if the "optionValueField" points to an object.
+         */
+        optionObjectIdentifierField: PropTypes.string,
+
+        /**
          * Field name specifying which field in a single "option" contains the "value"
          */
         optionValueField: PropTypes.string,
@@ -39,7 +45,10 @@ class MultiSelectBox extends PureComponent {
         /**
          * This prop represents the current selected value.
          */
-        values: PropTypes.arrayOf(PropTypes.string),
+        values: PropTypes.oneOfType([
+            PropTypes.arrayOf(PropTypes.string),
+            PropTypes.arrayOf(PropTypes.object)
+        ]),
 
         /**
          * This prop gets called when an option was selected. It returns the new values as array.
@@ -152,6 +161,7 @@ class MultiSelectBox extends PureComponent {
     }
 
     static defaultProps = {
+        optionObjectIdentifierField: '__identity',
         optionValueField: 'value',
         dndType: 'multiselect-box-value',
         allowEmpty: true,
@@ -159,9 +169,18 @@ class MultiSelectBox extends PureComponent {
     }
 
     getOptionValueAccessor = () => {
-        const {optionValueField} = this.props;
-        return $get([optionValueField]);
-    };
+        const {optionObjectIdentifierField, optionValueField} = this.props;
+
+        return (option, identifierOnly = false) => {
+            let key = $get(optionValueField, option);
+
+            if (typeof key === 'object' && identifierOnly) {
+                key = $get(optionObjectIdentifierField, key);
+            }
+
+            return key;
+        };
+    }
 
     handleNewValueSelected = value => {
         const {onValuesChange} = this.props;
@@ -184,7 +203,7 @@ class MultiSelectBox extends PureComponent {
         } = this.props;
 
         const filteredSearchOptions = (searchOptions || [])
-            .filter(option => !(values && values.indexOf(option[optionValueField]) !== -1));
+            .filter(option => !(values && values.find(value => value === option[optionValueField] || isEqual(value, option[optionValueField])) !== undefined));
 
         const selectedOptionsClassNames = mergeClassNames({
             [theme.selectedOptions]: true

@@ -51,7 +51,7 @@
     margin: 0;
     list-style: none;
     background: var(--colors-ContrastNeutral);
-    box-shadow: 1px 2px 5px var(--colors-ContrastDarker);
+    box-shadow: 0 5px 5px rgba(0, 0, 0, .2);
 }
 .dropDown__contents--scrollable {
     max-height: 80vh;

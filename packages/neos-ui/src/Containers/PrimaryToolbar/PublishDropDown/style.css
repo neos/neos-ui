@@ -12,6 +12,10 @@
 .dropDown {
     position: static;
 }
+.dropDown__contents {
+    padding: 2px !important;
+    background: var(--colors-Success);
+}
 .dropDown__btn {
     position: absolute;
     right: 0;
@@ -31,9 +35,14 @@
 
 .dropDown__item {
     border-top: 1px solid var(--colors-ContrastDarker);
+    background: var(--colors-ContrastDarkest);
 
     &:hover {
         background: var(--colors-PrimaryBlue);
+    }
+
+    > label {
+        margin-bottom: 0;
     }
 
     > a,
@@ -56,7 +65,7 @@
     }
 }
 .dropDown__item--noHover:hover {
-    background: 0;
+    background: var(--colors-ContrastDarker);
 }
 .dropDown__item--disabled {
     opacity: .5;
@@ -71,6 +80,10 @@
 
     &:hover {
         background: var(--colors-WarnHover);
+    }
+
+    + .dropDown__contents {
+        background: var(--colors-Warn);
     }
 }
 .dropDown__item--isPublishing,

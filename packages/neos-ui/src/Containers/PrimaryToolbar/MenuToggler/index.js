@@ -8,6 +8,8 @@ import Button from '@neos-project/react-ui-components/src/Button/';
 import {actions} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 
+import logo from './logo.svg';
+import logoLight from './logo-light.svg';
 import style from './style.css';
 
 @neos(globalRegistry => ({
@@ -38,6 +40,7 @@ export default class MenuToggler extends PureComponent {
         const {className, isMenuHidden, i18nRegistry} = this.props;
         const isMenuVisible = !isMenuHidden;
         const classNames = mergeClassNames({
+            [style.menuToggler]: true,
             [style['menuToggler--isActive']]: isMenuVisible,
             [className]: className && className.length
         });
@@ -59,6 +62,11 @@ export default class MenuToggler extends PureComponent {
                 aria-expanded={isMenuHidden ? 'false' : 'true'}
                 >
                 <div className={style.menuToggler__icon}/>
+                {isMenuHidden ? (
+                    <img className={style.menuToggler__logo} src={logo} alt="Neos" />
+                ) : (
+                    <img className={style.menuToggler__logo} src={logoLight} alt="Neos" />
+                )}
             </Button>
         );
     }

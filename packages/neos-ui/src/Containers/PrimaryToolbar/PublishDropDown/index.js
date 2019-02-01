@@ -169,7 +169,7 @@ export default class PublishDropDown extends PureComponent {
                                 >
                                 <Icon icon="upload"/>
                                 <I18n id="Neos.Neos:Main:publishAll" fallback="Publish All"/>
-                                {publishableNodesCount > 0 && ` (${publishableNodesCount})`}
+                                {publishableNodesCount > 0 && <Badge className={style.badge} label={String(publishableNodesCount)}/>}
                             </AbstractButton>
                         </li>
                         <li className={style.dropDown__item}>
@@ -183,7 +183,7 @@ export default class PublishDropDown extends PureComponent {
                                 >
                                 <Icon icon="ban"/>
                                 <I18n id="Neos.Neos:Main:discard" fallback="Discard"/>
-                                {publishableNodesInDocumentCount > 0 && ` (${publishableNodesInDocumentCount})`}
+                                {publishableNodesInDocumentCount > 0 && <Badge className={style.badge} label={String(publishableNodesInDocumentCount)}/>}
                             </AbstractButton>
                         </li>
                         <li className={style.dropDown__item}>
@@ -195,7 +195,7 @@ export default class PublishDropDown extends PureComponent {
                                 >
                                 <Icon icon="ban"/>
                                 <I18n id="Neos.Neos:Main:discardAll" fallback="Discard All"/>
-                                {publishableNodesCount > 0 && ` (${publishableNodesCount})`}
+                                {publishableNodesCount > 0 && <Badge className={style.badge} label={String(publishableNodesCount)}/>}
                             </AbstractButton>
                         </li>
                         {publishableNodesCount > 0 && (<li className={style.dropDown__item}>

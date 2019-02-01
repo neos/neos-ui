@@ -63,6 +63,10 @@
             margin-right: .5em;
         }
     }
+
+    .badge {
+        color: #000;
+    }
 }
 .dropDown__item--noHover:hover {
     background: var(--colors-ContrastDarker);

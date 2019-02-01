@@ -14,7 +14,8 @@
     max-width: 100%;
 }
 .envelope--invalid {
-    outline: 2px solid var(--colors-Error);
+    box-shadow: 0 0 0 2px var(--colors-Error);
+    border-radius: 2px;
 }
 
 .envelope--highlight {

@@ -9,6 +9,7 @@ export default readFromConsumerApi('manifest');
 
 export {
     createConsumerApi,
+    readFromConsumerApi,
     SynchronousRegistry,
     SynchronousMetaRegistry
 };

@@ -4,7 +4,6 @@
   "description": "The UI components which power the Neos backend application.",
   "main": "./src/index",
   "scripts": {
-    "prebuild": "yarn clean",
     "build": "exit 0",
     "build:watch": "exit 0",
     "test": "yarn jest -w 2 --coverage",

@@ -405,15 +405,14 @@ test('Can drag and drop inside a multi select box', async t => {
     const multiSelectBox = await ReactSelector('MultiSelectBox');
     const input = await multiSelectBox.findReact('TextInput').find('div input');
     await t
-        .typeText(input, 'ad')
-        .wait(1000);
+        .typeText(input, 'ad');
 
     subSection('Type to search for references and select 2 different options');
     const numberOfOptions = await ReactSelector('MultiSelectBox').findReact('ListPreviewElement').count;
     await t
         .expect(numberOfOptions).gt(0)
         .click(ReactSelector('MultiSelectBox').findReact('ListPreviewElement').nth(0))
-        .typeText(input, 'ad').wait(1000)
+        .typeText(input, 'ad')
         .click(ReactSelector('MultiSelectBox').findReact('ListPreviewElement').nth(2))
         .expect(ReactSelector('MultiSelectBox').getReact(({props}) => props.options.length)).eql(2);
 
@@ -439,14 +438,13 @@ test('Can drag and drop inside a multi select box', async t => {
 
     subSection('select another option, drag and apply');
     await t
-        .typeText(input, 'ad').wait(1000)
+        .typeText(input, 'ad')
         .click(ReactSelector('MultiSelectBox').findReact('ListPreviewElement').nth(5))
         .expect(ReactSelector('MultiSelectBox').getReact(({props}) => props.options.length)).eql(3);
 
     const idsBeforeSecondDrag = await ReactSelector('MultiSelectBox').getReact(({props}) => props.options.map(option => option.identifier));
     await t.drag(ReactSelector('MultiSelectBox').findReact('NodeOption').nth(2), 0, -50, {offsetX: 5, offsetY: 5});
     const idsAfterSecondDrag = await ReactSelector('MultiSelectBox').getReact(({props}) => props.options.map(option => option.identifier));
-    await t.wait(5000);
     await t
         .expect(idsAfterFirstApply[0]).eql(idsAfterSecondDrag[0])
         .expect(idsAfterFirstApply[1]).eql(idsAfterSecondDrag[2])

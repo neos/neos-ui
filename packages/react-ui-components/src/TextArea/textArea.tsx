@@ -7,6 +7,11 @@ import { PickDefaultProps } from '../../types';
 
 export interface TextAreaProps {
         /**
+         * An optional initial value.
+         */
+        readonly value?: string;
+
+        /**
          * An optional className to render on the textarea node.
          */
         readonly className?: string;
@@ -72,6 +77,7 @@ export class TextArea extends PureComponent<TextAreaProps> {
             disabled,
             minRows,
             expandedRows,
+            value
         } = this.props;
         const classNames = mergeClassNames(
             className,
@@ -92,6 +98,7 @@ export class TextArea extends PureComponent<TextAreaProps> {
                 onChange={this.handleValueChange}
                 onClick={this.handleOnClick}
                 minRows={this.state.isFocused ? expandedRows : minRows}
+                value={value}
             />
         );
     }

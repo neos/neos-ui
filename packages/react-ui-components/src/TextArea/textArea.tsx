@@ -1,7 +1,7 @@
 import React, {PureComponent, ChangeEvent} from 'react';
 import mergeClassNames from 'classnames';
 import TextareaAutosize from 'react-textarea-autosize';
-import enhanceWithClickOutside from 'react-click-outside';
+import enhanceWithClickOutside from '../enhanceWithClickOutside/index';
 
 import { PickDefaultProps } from '../../types';
 

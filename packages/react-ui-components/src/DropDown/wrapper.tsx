@@ -2,7 +2,7 @@
 import React, {PureComponent, ReactNode} from 'react';
 import {omit} from 'lodash';
 import mergeClassNames from 'classnames';
-import enhanceWithClickOutside from 'react-click-outside';
+import enhanceWithClickOutside from '../enhanceWithClickOutside/index';
 
 import { PickDefaultProps } from '../../types';
 import ShallowDropDownHeader from './header';

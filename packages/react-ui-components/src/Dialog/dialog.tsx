@@ -1,6 +1,6 @@
 import mergeClassNames from 'classnames';
 import React, {PureComponent, ReactNode} from 'react';
-import enhanceWithClickOutside from 'react-click-outside';
+import enhanceWithClickOutside from '../enhanceWithClickOutside/index';
 import CloseOnEscape from 'react-close-on-escape';
 import {Portal} from 'react-portal';
 

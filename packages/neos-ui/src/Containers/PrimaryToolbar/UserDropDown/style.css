@@ -24,12 +24,15 @@
 .dropDown__contents {
     position: relative;
     min-width: 160px;
-    box-shadow: 0 5px 10px rgba(#000, .2);
+    padding: 2px !important;
+    margin-top: -2px;
+    background: var(--colors-ContrastDarker);
+    box-shadow: 0 5px 5px rgba(0, 0, 0, .2);
 }
 .dropDown__item {
     height: var(--spacing-GoldenUnit);
-    background: var(--colors-ContrastNeutral);
     border-top: 1px solid var(--colors-ContrastDarker);
+    background: var(--colors-ContrastDarkest);
 
     &:hover {
         background: var(--colors-PrimaryBlue);

@@ -1,30 +1,16 @@
 .menuToggler {
-    width: 160px;
-
     &:focus {
         outline: 0;
     }
 }
 
 .menuToggler--isActive {
-    background: var(--colors-PrimaryBlue);
-    color: #fff;
-
-    .menuToggler__icon {
-        color: #fff;
-
-        &:hover,
-        &:focus {
-            color: #fff;
-        }
-    }
+    color: var(--colors-PrimaryBlue);
 }
 
 .menuToggler__icon {
-    position: absolute;
-    top: 2px;
-    left: var(--spacing-Full);
-    display: block;
+    position: relative;
+    display: inline-block;
     width: 22px;
     height: 34px;
 
@@ -55,12 +41,4 @@
         text-decoration: none;
         color: var(--colors-PrimaryBlue);
     }
-}
-
-.menuToggler__logo {
-    position: absolute;
-    top: 8px;
-    left: 56px;
-    height: 22px;
-    width: auto;
 }

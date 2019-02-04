@@ -24,7 +24,10 @@
     width: calc(1.33 * (var(--spacing-GoldenUnit) + var(--spacing-Full)));
     height: calc(var(--spacing-GoldenUnit) + var(--spacing-Full));
     object-fit: contain;
-    background-color: var(--colors-ContrastDarkest);
+    background-color: #fff;
+    background-size: 10px 10px;
+    background-position: 0 0, 25px 25px;
+    background-image: linear-gradient(45deg, #cccccc 25%, transparent 25%, transparent 75%, #cccccc 75%, #cccccc), linear-gradient(45deg, #cccccc 25%, transparent 25%, transparent 75%, #cccccc 75%, #cccccc);
     margin-right: .75em;
     display: inline-block;
     vertical-align: middle;

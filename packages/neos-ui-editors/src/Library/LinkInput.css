@@ -8,6 +8,12 @@
     flex-shrink: 1;
     /* see https://css-tricks.com/flexbox-truncated-text/ */
     min-width: 0;
+
+    &,
+    > div {
+        border-top-left-radius: 2px;
+        border-bottom-left-radius: 2px;
+    }
 }
 
 .linkInput__optionsPanelDouble {
@@ -32,6 +38,9 @@
 
 .linkInput__innerButton {
     height: auto;
+    background: var(--colors-ContrastNeutral);
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
 }
 
 .linkInput__loader {

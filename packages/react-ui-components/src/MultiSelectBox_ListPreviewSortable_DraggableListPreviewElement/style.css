@@ -31,6 +31,7 @@
 }
 .selectedOption__removeButton {
     height: auto;
+    background: var(--colors-ContrastNeutral);
     border-top-right-radius: 2px;
     border-bottom-right-radius: 2px;
 }

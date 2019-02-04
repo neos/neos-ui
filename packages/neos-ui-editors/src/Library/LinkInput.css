@@ -43,6 +43,13 @@
     border-bottom-right-radius: 2px;
 }
 
+.linkInput__loaderWrapper {
+    padding: 4px 16px;
+    height: var(--spacing-GoldenUnit);
+    line-height: var(--spacing-GoldenUnit);
+    background: var(--colors-ContrastNeutral);
+}
+
 .linkInput__loader {
     margin: var(--spacing-Quarter);
 }

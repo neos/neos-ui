@@ -275,7 +275,7 @@ export default class LinkInput extends PureComponent {
         return (
             <Fragment>
                 <div className={style.linkInput__optionWrapper} onClick={this.handleSwitchToEditMode} role="button">
-                    {this.state.isLoading ? <Icon icon="spinner" className={style.linkInput__loader} spin={true} size="lg" /> : this.renderLinkOption()}
+                    {this.state.isLoading ? <div class={style.linkInput__loaderWrapper}><Icon icon="spinner" className={style.linkInput__loader} spin={true} size="lg" /></div> : this.renderLinkOption()}
                 </div>
                 <IconButton
                     className={style.linkInput__innerButton}

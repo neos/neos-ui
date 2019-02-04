@@ -44,6 +44,8 @@ const enhanceWithClickOutside = <P extends {}>(Component: React.ComponentClass<P
         }
     }
 
+    (EnhancedComponent as any).displayName = `clickOutside(${Component.displayName || Component.name})`;
+
     return EnhancedComponent;
 };
 

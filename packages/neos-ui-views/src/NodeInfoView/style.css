@@ -4,8 +4,8 @@
     list-style: none;
 
     &__item {
-        background-color: var(--colors-ContrastNeutral);
-        padding: 8px;
+        background-color: var(--colors-ContrastDarkest);
+        padding: 8px 12px;
         margin-bottom: 1px;
         line-height: 20px;
         min-height: 20px;

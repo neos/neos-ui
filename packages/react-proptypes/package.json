@@ -1,11 +1,10 @@
 {
   "name": "@neos-project/react-proptypes",
-  "version": "2.0.2",
+  "version": "2.0.3-beta",
   "description": "Neos CMS specific proptypes for react",
   "private": true,
   "main": "./src/index.js",
   "scripts": {
-    "prebuild": "check-dependencies && yarn clean",
     "test": "yarn jest -w 2 --coverage",
     "test:watch": "yarn jest --watch",
     "build": "exit 0",
@@ -15,9 +14,9 @@
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "2.0.2",
-    "@neos-project/build-essentials": "2.0.2",
-    "@neos-project/jest-preset-neos-ui": "2.0.2"
+    "@neos-project/babel-preset-neos-ui": "2.0.3-beta",
+    "@neos-project/build-essentials": "2.0.3-beta",
+    "@neos-project/jest-preset-neos-ui": "2.0.3-beta"
   },
   "license": "GNU GPLv3",
   "jest": {

@@ -1,4 +1,5 @@
 /* eslint-disable camelcase, react/jsx-pascal-case */
+import enhanceWithClickOutside from './enhanceWithClickOutside';
 import Badge from './Badge';
 import Bar from './Bar';
 import Button from './Button';
@@ -27,6 +28,7 @@ import SelectBox_Option_SingleLine from './SelectBox_Option_SingleLine';
 import SelectBox_Option_MultiLineWithThumbnail from './SelectBox_Option_MultiLineWithThumbnail';
 
 export {
+    enhanceWithClickOutside,
     Badge,
     Bar,
     Button,
@@ -56,6 +58,7 @@ export {
 };
 
 export default {
+    enhanceWithClickOutside,
     Badge,
     Bar,
     Button,

@@ -1,7 +1,7 @@
 {
   "name": "neos/neos-ui",
   "type": "neos-package",
-  "description": "NEOS CMS UI rewritten in React",
+  "description": "Neos CMS UI written in React",
   "license": [
     "GPL-3.0-or-later"
   ],

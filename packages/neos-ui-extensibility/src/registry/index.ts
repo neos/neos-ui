@@ -1,5 +1,5 @@
-import SynchronousRegistry from '@neos-project/neos-ui-extensibility/src/registry/SynchronousRegistry';
-import SynchronousMetaRegistry from '@neos-project/neos-ui-extensibility/src/registry/SynchronousMetaRegistry';
+import SynchronousRegistry from './SynchronousRegistry';
+import SynchronousMetaRegistry from './SynchronousMetaRegistry';
 
 export {
     SynchronousRegistry,

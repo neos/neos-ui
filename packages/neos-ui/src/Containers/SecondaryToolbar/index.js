@@ -44,7 +44,7 @@ export default class SecondaryToolbar extends PureComponent {
 
         // Focused node is not yet in state, we need to wait a bit
         if (!focusedNodeTypeName) {
-            return null;
+            return () => null;
         }
 
         if (!hasFocusedContentNode && !currentlyEditedPropertyName) {

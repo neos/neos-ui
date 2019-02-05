@@ -23,7 +23,6 @@ use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\Domain\Service\ContentContextFactory;
 use Neos\Neos\Service\PublishingService;
 use Neos\Neos\Service\UserService;
-use Neos\Neos\TypeConverter\NodeConverter;
 use Neos\Neos\Ui\ContentRepository\Service\NodeService;
 use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService;
 use Neos\Neos\Ui\Domain\Model\ChangeCollection;
@@ -36,6 +35,7 @@ use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
 use Neos\Neos\Ui\Domain\Model\FeedbackCollection;
+use Neos\Neos\Ui\Service\NodeClipboard;
 use Neos\Neos\Ui\Service\NodePolicyService;
 use Neos\Neos\Ui\Domain\Service\NodeTreeBuilder;
 use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
@@ -109,7 +109,7 @@ class BackendServiceController extends ActionController
 
     /**
      * @Flow\Inject
-     * @var NodeClipboardInterface
+     * @var NodeClipboard
      */
     protected $clipboard;
 

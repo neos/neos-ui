@@ -2,11 +2,33 @@
 [![Build Status](https://travis-ci.org/neos/neos-ui.svg?branch=master)](https://travis-ci.org/neos/neos-ui) [![Dependency Status](https://david-dm.org/neos/neos-ui.svg)](https://david-dm.org/neos/neos-ui) [![devDependency Status](https://david-dm.org/neos/neos-ui/dev-status.svg)](https://david-dm.org/neos/neos-ui#info=devDependencies&view=table)
 [![Slack](http://slack.neos.io/badge.svg)](http://slack.neos.io) [![Forum](https://img.shields.io/badge/forum-Discourse-39c6ff.svg)](https://discuss.neos.io/) [![Twitter](https://img.shields.io/twitter/follow/neoscms.svg?style=social)](https://twitter.com/NeosCMS)
 
-> The next generation Neos CMS interface written in ReactJS with Immutable data structures.
+> The next generation Neos CMS interface written in ReactJS and a tonn of other fun technology.
+
+## Versioning
+
+Since Neos 5.0 (scheduled April 2019) this repository will become obsolete and `neos-ui` will be versioned and releases together with with the rest of Neos core packages.
+
+Until then, the following version conventions are in place:
+- 2.x versions are Neos 3.3 compatible (released from the `2.x` branch)
+- 3.x branch is Neos 4.x compatible (released from `master`)
+- We follow semver, but do not make bugfix releases for previous minor branches
+
+For users this means: **You will not get bugfixes for previous minor releases, so use a more relaxed version constraint like these:**
+
+```
+"neos/neos-ui": "^3",
+"neos/neos-ui-compiled": "^3",
+```
+
+For developers this means: **All development happens in `2.x` branch and then getting upmered to `master`**
 
 ## Browser support
 
-The new interface supports all evergreen (i.e. self-updating) browsers, including: Chrome, Firefox, Safari, Edge, Opera and other webkit-based browsers. In addition IE11 should also work, but please try to use more modern browsers, as the performance might suffer. If you discover bugs in any of the supported browsers, please [report them](https://github.com/neos/neos-ui/issues/new)!
+The new interface supports all evergreen (i.e. self-updating) browsers, including: **Chrome, Firefox, Safari, Edge, Opera and other webkit-based browsers**.
+
+In order to get **IE11** to work, please switch to CKEditor 4, as CKEditor 5 doesn't support it. But doing so is highly discouraged, so where possibly encourage your editors to use modern browsers.
+
+If you discover bugs in any of the supported browsers, please [report them](https://github.com/neos/neos-ui/issues/new)!
 
 ## Features
 
@@ -73,6 +95,20 @@ In order to start contributing, follow the following steps:
 6) Get an overview about the codebase. We've recorded [an introduction on YouTube](https://www.youtube.com/watch?v=RYBUS5Nxxxk) which
    gets you acquainted with the basics. Additionally, please get in touch with us on [Slack](http://slack.neos.io) in the
    channel #project-ui-rewrite. We're eager to help you get started!
+
+#### Doing upmerges
+
+1) Develop only in the `2.x` branch, unless this feature is only compatible with Neos 4.x, then in `master`
+
+2) To do the upmerge do the following commands
+
+   ```
+   git checkout master
+   git merge --no-ff --no-commit 2.x
+   ```
+Review the changes and commit the changes with the following commit message:
+
+`MERGE: Merge branch '2.x' into master`
 
 #### Development commands
 | Command         | Description                    |

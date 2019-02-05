@@ -33,6 +33,7 @@ export default class DeleteSelectedNode extends PureComponent {
 
         return (
             <IconButton
+                id="neos-InlineToolbar-DeleteSelectedNode"
                 className={className}
                 isDisabled={destructiveOperationsAreDisabled || !canBeDeleted || !canBeEdited}
                 onClick={this.handleDeleteSelectedNodeClick}

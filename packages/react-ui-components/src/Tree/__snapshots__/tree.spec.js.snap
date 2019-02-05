@@ -1,9 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Tree/> should render correctly. 1`] = `
-<DragDropMonitorWrapper
+<Scrolling(div)
   className="undefined"
   horizontalStrength={[Function]}
+  onScrollChange={[Function]}
   role="tree"
   strengthMultiplier={20}
   tabIndex="0"
@@ -12,5 +13,5 @@ exports[`<Tree/> should render correctly. 1`] = `
   <Component>
     Foo children
   </Component>
-</DragDropMonitorWrapper>
+</Scrolling(div)>
 `;

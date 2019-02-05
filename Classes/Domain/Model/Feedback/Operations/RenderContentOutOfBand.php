@@ -20,7 +20,6 @@ use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 use Neos\Neos\Ui\Domain\Model\RenderedNodeDomAddress;
 use Neos\Neos\View\FusionView as FusionView;
-use Neos\Neos\Fusion\Helper\CachingHelper;
 
 class RenderContentOutOfBand extends AbstractFeedback
 {
@@ -53,12 +52,6 @@ class RenderContentOutOfBand extends AbstractFeedback
      * @var ContentCache
      */
     protected $contentCache;
-
-    /**
-     * @Flow\Inject
-     * @var CachingHelper
-     */
-    protected $cachingHelper;
 
     /**
      * Set the node
@@ -206,10 +199,7 @@ class RenderContentOutOfBand extends AbstractFeedback
      */
     protected function renderContent(ControllerContext $controllerContext)
     {
-        $cacheTags = $this->cachingHelper->nodeTag($this->getNode()->getParent());
-        foreach ($cacheTags as $tag) {
-            $this->contentCache->flushByTag($tag);
-        }
+        $this->contentCache->flushByTag(sprintf('Node_%s', $this->getNode()->getParent()->getIdentifier()));
 
         $parentDomAddress = $this->getParentDomAddress();
 

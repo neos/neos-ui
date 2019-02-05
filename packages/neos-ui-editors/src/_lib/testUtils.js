@@ -1,7 +1,6 @@
-import React, {PureComponent, Children} from 'react';
+import {PureComponent, Children} from 'react';
 import PropTypes from 'prop-types';
 import {SynchronousRegistry, SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
-import {NeosContext} from '@neos-project/neos-ui-decorators';
 
 const globalRegistry = new SynchronousMetaRegistry();
 
@@ -47,13 +46,19 @@ export class WrapWithMockGlobalRegistry extends PureComponent {
         children: PropTypes.element.isRequired
     };
 
-    static contextType = NeosContext;
+    static childContextTypes = {
+        globalRegistry: PropTypes.object.isRequired,
+        routes: PropTypes.object.isRequired,
+        configuration: PropTypes.object.isRequired
+    };
 
-    render() {
+    getChildContext() {
         const configuration = {};
         const routes = {};
-        return <NeosContext.Provider value={{configuration, globalRegistry, routes}}>
-            {Children.only(this.props.children)}
-        </NeosContext.Provider>;
+        return {globalRegistry, configuration, routes};
+    }
+
+    render() {
+        return Children.only(this.props.children);
     }
 }

@@ -9,7 +9,7 @@ const getFocusedNode = selectors.CR.Nodes.focusedSelector;
 const getTransientInspectorValues = state => {
     const values = $get(['ui', 'inspector', 'valuesByNodePath'], state);
 
-    return values;
+    return values.toJS ? values.toJS() : values;
 };
 
 export function * inspectorSaga({globalRegistry}) {
@@ -63,8 +63,7 @@ export function * inspectorSaga({globalRegistry}) {
                     // Persist the inspector changes
                     //
                     yield call(flushInspector, inspectorRegistry);
-                    const focusedNodeContextPath = yield select(selectors.CR.Nodes.focusedNodePathSelector);
-                    yield put(actions.UI.Inspector.clear(focusedNodeContextPath));
+                    yield put(actions.UI.Inspector.clear());
                 } catch (err) {
                     //
                     // An error occured, we should not leave the loop until

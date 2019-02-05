@@ -1,12 +1,22 @@
-import {actionTypes, actions, reducer, selectors} from './index';
+import Immutable from 'immutable';
+import {$all, $set, $get} from 'plow-js';
+
+import {actionTypes, actions, reducer, selectors} from './index.js';
 
 import {actionTypes as system} from '../../System/index';
 
 const fixtures = {};
 
-fixtures.focusedNodeStateWithEmptyInspector = {
-    valuesByNodePath: {}
-};
+fixtures.focusedNodeStateWithEmptyInspector = $all(
+    $set('cr.nodes.byContextPath', {
+        '/my/path@user-foo': {
+            contextPath: '/my/path@user-foo'
+        }
+    }),
+    $set('cr.nodes.focused.contextPath', '/my/path@user-foo'),
+    $set('ui.inspector.valuesByNodePath', {}),
+    {}
+);
 
 test(`should export actionTypes`, () => {
     expect(actionTypes).not.toBe(undefined);
@@ -40,63 +50,40 @@ test(`should export selectors`, () => {
     expect(typeof (selectors.shouldPromptToHandleUnappliedChanges)).toBe('function');
 });
 
-test(`The reducer should return a plain JS object as the initial state.`, () => {
-    const nextState = reducer(undefined, {
-        type: system.INIT,
-        payload: {
-            ui: {
-                inspector: {}
-            }
-        }
+test(`The reducer should return an Immutable.Map as the initial state.`, () => {
+    const state = new Immutable.Map({});
+    const nextState = reducer(state, {
+        type: system.INIT
     });
 
-    expect(typeof nextState).toBe('object');
+    expect($get('ui.inspector', nextState) instanceof Immutable.Map).toBe(true);
+    expect($get('ui.inspector.valuesByNodePath', nextState) instanceof Immutable.Map).toBe(true);
 });
 
 test(`The initial state should not be dirty`, () => {
-    const nextState = reducer(undefined, {
-        type: system.INIT,
-        payload: {
-            ui: {
-                inspector: {}
-            }
-        }
+    const state = new Immutable.Map({});
+    const nextState = reducer(state, {
+        type: system.INIT
     });
 
     expect(selectors.isDirty(nextState)).toBe(false);
 });
 
 test(`The initial state should not be forcing apply`, () => {
-    const nextState = reducer(undefined, {
-        type: system.INIT,
-        payload: {
-            ui: {
-                inspector: {}
-            }
-        }
+    const state = new Immutable.Map({});
+    const nextState = reducer(state, {
+        type: system.INIT
     });
 
-    const fullState = {
-        ui: {
-            inspector: nextState
-        }
-    };
-
-    expect(selectors.shouldPromptToHandleUnappliedChanges(fullState)).toBe(false);
+    expect(selectors.shouldPromptToHandleUnappliedChanges(nextState)).toBe(false);
 });
 
 test(`The "commit" action should store the last modification on the currently focused node.`, () => {
-    const state = fixtures.focusedNodeStateWithEmptyInspector;
-    const focusedNode = {
-        contextPath: 'someContextPath',
-        properties: {
-            some: 'property'
-        }
-    };
-    const nextState1 = reducer(state, actions.commit('test', 'value', undefined, focusedNode));
-    const nextState2 = reducer(state, actions.commit('test', 'another value', undefined, focusedNode));
-    const nextState3 = reducer(nextState1, actions.commit('test', 'another value', undefined, focusedNode));
-    const nextState4 = reducer(nextState1, actions.commit('test', 'another value', {some: 'hook'}, focusedNode));
+    const state = Immutable.fromJS(fixtures.focusedNodeStateWithEmptyInspector);
+    const nextState1 = reducer(state, actions.commit('test', 'value'));
+    const nextState2 = reducer(state, actions.commit('test', 'another value'));
+    const nextState3 = reducer(nextState1, actions.commit('test', 'another value'));
+    const nextState4 = reducer(nextState1, actions.commit('test', 'another value', {some: 'hook'}));
 
     expect(nextState1).toMatchSnapshot();
     expect(nextState2).toMatchSnapshot();
@@ -105,125 +92,137 @@ test(`The "commit" action should store the last modification on the currently fo
 });
 
 test(`The "commit" action should ignore the last modification, if it doesn't differ from the current node state`, () => {
-    const state = fixtures.focusedNodeStateWithEmptyInspector;
-    const focusedNode = {
-        contextPath: 'someContextPath',
-        properties: {
-            some: 'property'
-        }
-    };
-    const nextState = reducer(state, actions.commit('some', 'property', undefined, focusedNode));
+    const state = Immutable.fromJS($set(
+        'cr.nodes.byContextPath./my/path@user-foo.properties.title',
+        'Foo',
+        fixtures.focusedNodeStateWithEmptyInspector
+    ));
+    const nextState = reducer(state, actions.commit('title', 'Foo'));
 
     expect(nextState).toMatchSnapshot();
 });
 
 test(`The "clear" action should remove pending changes for the currently focused node.`, () => {
-    const state = {
-        valuesByNodePath: {
-            someContextPath: {
-                someProperty: 'value'
+    const state = Immutable.fromJS($set(
+        'ui.inspector.valuesByNodePath',
+        {
+            '/my/path@user-foo': {
+                test1: {
+                    value: 'value1'
+                },
+                test2: {
+                    value: 'value2'
+                },
+                test3: {
+                    value: 'value3'
+                }
             },
-            someOtherContextPath: {
-                someProperty: 'value'
+            '/my/other/path@user-foo': {
+                test4: {
+                    value: 'value4'
+                }
             }
-        }
-    };
-    const focusedNodeContextPath = 'someContextPath';
-    const nextState1 = reducer(state, actions.clear(focusedNodeContextPath));
-    const nextState2 = reducer(nextState1, actions.clear(focusedNodeContextPath));
+        },
+        fixtures.focusedNodeStateWithEmptyInspector
+    ));
+    const nextState1 = reducer(state, actions.clear());
+    const nextState2 = reducer(nextState1, actions.clear());
 
     expect(nextState1).toMatchSnapshot();
     expect(nextState2).toMatchSnapshot();
 });
 
 test(`The "clear" action should reset the shouldPromptToHandleUnappliedChanges state to false`, () => {
-    const state = {
-        shouldPromptToHandleUnappliedChanges: true,
-        valuesByNodePath: {
-            someContextPath: {}
-        }
-    };
-    const focusedNodeContextPath = 'someContextPath';
-    const nextState = reducer(state, actions.clear(focusedNodeContextPath));
+    const state = Immutable.fromJS(
+        $set('ui.inspector.shouldPromptToHandleUnappliedChanges', true, {})
+    );
+    const nextState = reducer(state, actions.clear());
 
-    expect(nextState.shouldPromptToHandleUnappliedChanges).toBe(false);
+    expect($get('ui.inspector.shouldPromptToHandleUnappliedChanges', nextState)).toBe(false);
 });
 
 test(`The "discard" action should remove pending changes for the currently focused node.`, () => {
-    const state = {
-        valuesByNodePath: {
-            someContextPath: {
-                someProperty: 'value'
+    const state = Immutable.fromJS($set(
+        'ui.inspector.valuesByNodePath',
+        {
+            '/my/path@user-foo': {
+                test1: {
+                    value: 'value1'
+                },
+                test2: {
+                    value: 'value2'
+                },
+                test3: {
+                    value: 'value3'
+                }
             },
-            someOtherContextPath: {
-                someProperty: 'value'
+            '/my/other/path@user-foo': {
+                test4: {
+                    value: 'value4'
+                }
             }
-        }
-    };
-    const focusedNodeContextPath = 'someContextPath';
-    const nextState1 = reducer(state, actions.discard(focusedNodeContextPath));
-    const nextState2 = reducer(nextState1, actions.discard(focusedNodeContextPath));
+        },
+        fixtures.focusedNodeStateWithEmptyInspector
+    ));
+    const nextState1 = reducer(state, actions.discard());
+    const nextState2 = reducer(nextState1, actions.discard());
 
     expect(nextState1).toMatchSnapshot();
     expect(nextState2).toMatchSnapshot();
 });
 
 test(`The "discard" action should reset the shouldPromptToHandleUnappliedChanges state to false`, () => {
-    const state = {
-        shouldPromptToHandleUnappliedChanges: true,
-        valuesByNodePath: {
-            someContextPath: {}
-        }
-    };
-    const focusedNodeContextPath = 'someContextPath';
-    const nextState = reducer(state, actions.discard(focusedNodeContextPath));
+    const state = Immutable.fromJS(
+        $set('ui.inspector.shouldPromptToHandleUnappliedChanges', true, {})
+    );
+    const nextState = reducer(state, actions.discard());
 
-    expect(nextState.shouldPromptToHandleUnappliedChanges).toBe(false);
+    expect($get('ui.inspector.shouldPromptToHandleUnappliedChanges', nextState)).toBe(false);
 });
 
 test(`The "escape" action should reset the shouldPromptToHandleUnappliedChanges state to true`, () => {
-    const state = {
-        shouldPromptToHandleUnappliedChanges: false
-    };
+    const state = Immutable.fromJS(
+        $set('ui.inspector.shouldPromptToHandleUnappliedChanges', false, {})
+    );
     const nextState = reducer(state, actions.escape());
 
-    expect(nextState.shouldPromptToHandleUnappliedChanges).toBe(true);
+    expect($get('ui.inspector.shouldPromptToHandleUnappliedChanges', nextState)).toBe(true);
 });
 
 test(`The "resume" action should reset the shouldPromptToHandleUnappliedChanges state to false`, () => {
-    const state = {
-        shouldPromptToHandleUnappliedChanges: true
-    };
+    const state = Immutable.fromJS(
+        $set('ui.inspector.shouldPromptToHandleUnappliedChanges', true, {})
+    );
     const nextState = reducer(state, actions.resume());
 
-    expect(nextState.shouldPromptToHandleUnappliedChanges).toBe(false);
+    expect($get('ui.inspector.shouldPromptToHandleUnappliedChanges', nextState)).toBe(false);
 });
 
 test(`The "openSecondaryInspector" action should set the secondaryInspectorIsOpen state to true`, () => {
-    const state = {
-        secondaryInspectorIsOpen: false
-    };
+    const state = Immutable.fromJS(
+        $set('ui.inspector.secondaryInspectorIsOpen', false, {})
+    );
     const nextState = reducer(state, actions.openSecondaryInspector());
 
-    expect(nextState.secondaryInspectorIsOpen).toBe(true);
+    expect($get('ui.inspector.secondaryInspectorIsOpen', nextState)).toBe(true);
 });
 
 test(`The "closeSecondaryInspector" action should set the secondaryInspectorIsOpen state to false`, () => {
-    const state = {
-        secondaryInspectorIsOpen: true
-    };
+    const state = Immutable.fromJS(
+        $set('ui.inspector.secondaryInspectorIsOpen', true, {})
+    );
     const nextState = reducer(state, actions.closeSecondaryInspector());
 
-    expect(nextState.secondaryInspectorIsOpen).toBe(false);
+    expect($get('ui.inspector.secondaryInspectorIsOpen', nextState)).toBe(false);
 });
 
 test(`The "toggleSecondaryInspector" action should negate the secondaryInspectorIsOpen state`, () => {
-    const state = {
-        secondaryInspectorIsOpen: true
-    };
+    const state = Immutable.fromJS(
+        $set('ui.inspector.secondaryInspectorIsOpen', true, {})
+    );
     const nextState1 = reducer(state, actions.toggleSecondaryInspector());
     const nextState2 = reducer(nextState1, actions.toggleSecondaryInspector());
 
-    expect(nextState1.secondaryInspectorIsOpen).toBe(false);
-    expect(nextState2.secondaryInspectorIsOpen).toBe(true);
+    expect($get('ui.inspector.secondaryInspectorIsOpen', nextState1)).toBe(false);
+    expect($get('ui.inspector.secondaryInspectorIsOpen', nextState2)).toBe(true);
 });

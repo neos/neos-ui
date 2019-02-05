@@ -33,7 +33,7 @@ class MediaDetailsScreen extends PureComponent {
         const uri = `${mediaBrowserUri}/images/edit.html?asset[__identity]=${imageIdentity}`;
 
         return (
-            <iframe name="neos-media-details-screen" ref={setRef} src={uri} className={style.iframe}/>
+            <iframe ref={setRef} src={uri} className={style.iframe}/>
         );
     }
 }

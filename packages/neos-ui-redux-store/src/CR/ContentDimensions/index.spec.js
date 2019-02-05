@@ -1,6 +1,6 @@
 import {$all, $set, $get} from 'plow-js';
 
-import {actionTypes, actions, reducer, selectors, defaultState} from './index';
+import {actionTypes, actions, subReducer as reducer, selectors, defaultState} from './index';
 import {actionTypes as system} from '../../System/index';
 
 const fixtures = {};

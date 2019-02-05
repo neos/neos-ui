@@ -1,4 +1,6 @@
-import {actionTypes, actions, reducer} from './index';
+import Immutable from 'immutable';
+
+import {actionTypes, actions, reducer} from './index.js';
 
 import {actions as system} from '../../System/index';
 
@@ -18,14 +20,20 @@ test(`should export a reducer`, () => {
 });
 
 test(`The reducer should initialize from the init action payload.`, () => {
-    const nextState = reducer(undefined, system.init({ui: {editPreviewMode: 'bar'}}));
+    const state = Immutable.fromJS({ui: {editPreviewMode: undefined}});
+    const nextState = reducer(state, system.init({ui: {editPreviewMode: 'bar'}}));
 
-    expect(nextState).toBe('bar');
+    expect(nextState.get('ui').get('editPreviewMode')).toBe('bar');
 });
 
 test(`
     The "set" action should set the edit preview mode`, () => {
-    const nextState = reducer(undefined, actions.set('baz'));
+    const state = Immutable.fromJS({
+        ui: {
+            editPreviewMode: 'bar'
+        }
+    });
+    const nextState = reducer(state, actions.set('baz'));
 
-    expect(nextState).toBe('baz');
+    expect(nextState.get('ui').get('editPreviewMode')).toBe('baz');
 });

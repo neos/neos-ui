@@ -156,9 +156,8 @@ export default class ContentCanvas extends PureComponent {
         stopLoading();
     }
 
-    handleFrameAccess = event => {
+    handleFrameAccess = iframe => {
         const {requestRegainControl, requestLogin} = this.props;
-        const iframe = event.target;
 
         try {
             if (iframe) {

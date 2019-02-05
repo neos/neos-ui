@@ -15,11 +15,10 @@ export default ({propertyDomNode, propertyName, contextPath, editorOptions, glob
         .reduce((ckEditorConfiguration, [formattingRuleId, isFormattingRuleEnabled]) => {
             if (isFormattingRuleEnabled) {
                 const formattingDefinition = formattingRulesRegistry.get(formattingRuleId);
-                if (formattingDefinition) {
-                    const {config} = formattingDefinition;
-                    if (config) {
-                        ckEditorConfiguration = Object.assign({}, ckEditorConfiguration, config(ckEditorConfiguration, formattingEditorOptions[formattingRuleId]));
-                    }
+                const {config} = formattingDefinition;
+
+                if (config) {
+                    ckEditorConfiguration = Object.assign({}, ckEditorConfiguration, config(ckEditorConfiguration, formattingEditorOptions[formattingRuleId]));
                 }
             }
 

@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {Portal} from 'react-portal';
+import Portal from 'react-portal';
 import mergeClassNames from 'classnames';
 import {$get} from 'plow-js';
 
@@ -51,7 +51,7 @@ export default class SecondaryInspector extends PureComponent {
         });
 
         return (
-            <Portal>
+            <Portal isOpened={true}>
                 <div className={finalClassName}>
                     <Button
                         style="clean"

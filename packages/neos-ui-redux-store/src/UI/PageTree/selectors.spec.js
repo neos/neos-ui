@@ -1,9 +1,10 @@
+import Immutable from 'immutable';
 import {$all, $set} from 'plow-js';
 
 import {getUncollapsed} from './selectors';
 
 test('getUncollapsed should return the context paths of manually toggled nodes', () => {
-    const state = $all(
+    const state = Immutable.fromJS($all(
         $set('cr.nodes.siteNode', '/sites/site@some-user'),
         $set('cr.nodes.byContextPath', {
             '/sites/site@some-user': {contextPath: '/sites/site@some-user', depth: 1},
@@ -16,7 +17,7 @@ test('getUncollapsed should return the context paths of manually toggled nodes',
             '/sites/site/context-path-2@some-user'
         ]),
         {}
-    );
+    ));
 
     const result = getUncollapsed(state, {loadingDepth: 1});
 
@@ -26,7 +27,7 @@ test('getUncollapsed should return the context paths of manually toggled nodes',
 });
 
 test('getUncollapsed should return the context paths of nodes within the loading depth that have not been toggled', () => {
-    const state = $all(
+    const state = Immutable.fromJS($all(
         $set('cr.nodes.siteNode', '/sites/site@some-user'),
         $set('cr.nodes.byContextPath', {
             '/sites/site@some-user': {contextPath: '/sites/site@some-user', depth: 1},
@@ -45,7 +46,7 @@ test('getUncollapsed should return the context paths of nodes within the loading
             '/sites/site/deeper/context-path-2@some-user'
         ]),
         {}
-    );
+    ));
 
     const result = getUncollapsed(state, {loadingDepth: 2});
 

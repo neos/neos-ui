@@ -28,7 +28,7 @@ class MediaSelectionScreen extends PureComponent {
         const mediaBrowserUri = $get('routes.core.modules.mediaBrowser', neos);
 
         return (
-            <iframe name="neos-media-selection-screen" src={`${mediaBrowserUri}/${type}.html`} className={style.iframe}/>
+            <iframe src={`${mediaBrowserUri}/${type}.html`} className={style.iframe}/>
         );
     }
 }

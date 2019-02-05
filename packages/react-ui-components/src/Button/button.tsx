@@ -63,7 +63,7 @@ export interface ButtonProps extends HTMLButtonElementAttributesExceptStyle {
     /**
      * Defines the size of the button.
      */
-    readonly size?: ButtonSize;
+    readonly size: ButtonSize;
 
     /**
      * An optional `className` to attach to the wrapper.

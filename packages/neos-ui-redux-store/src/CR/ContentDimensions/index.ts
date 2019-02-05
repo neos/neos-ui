@@ -1,11 +1,41 @@
 import produce from 'immer';
-import {$get} from 'plow-js';
+import {$get, $set} from 'plow-js';
 import {mapObjIndexed} from 'ramda';
 import {createSelector} from 'reselect';
 import {action as createAction, ActionType} from 'typesafe-actions';
 import {actionTypes as system, InitAction, GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
 import isEqual from 'lodash.isequal';
-import {DimensionInformation, DimensionCombination, DimensionPresetName, DimensionPresetCombination} from '@neos-project/neos-ts-interfaces';
+
+type DimensionValue = string;
+
+type DimensionValues = DimensionValue[];
+
+interface DimensionCombination {
+    [propName: string]: DimensionValues;
+}
+
+type DimensionPresetName = string;
+
+interface DimensionPresetCombination {
+    [propName: string]: DimensionPresetName;
+}
+
+interface PresetConfiguration {
+    name?: string;
+    label: string;
+    values: DimensionValues;
+    uriSegment: string;
+}
+
+interface DimensionInformation {
+    default: string;
+    defaultPreset: string;
+    label: string;
+    icon: string;
+    presets: {
+        [propName: string]: PresetConfiguration;
+    };
+}
 
 //
 // Export the subreducer state shape interface
@@ -58,7 +88,7 @@ export const actions = {
 //
 // Export the reducer
 //
-export const reducer = (state: State = defaultState, action: InitAction | Action) => produce(state, draft => {
+export const subReducer = (state: State = defaultState, action: InitAction | Action) => produce(state, draft => {
     switch (action.type) {
         case system.INIT: {
             draft.byName = action.payload.cr.contentDimensions.byName;
@@ -96,6 +126,17 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
         }
     }
 });
+
+//
+// Export the reducer
+//
+export const reducer = (globalState: GlobalState, action: InitAction | Action) => {
+    // TODO: substitute global state with State when conversion of all CR reducers is done
+    const mockDefaultState = {cr: {contentDimensions: {}}};
+    const state = $get(['cr', 'contentDimensions'], globalState) || mockDefaultState;
+    const newState = subReducer(state, action);
+    return $set(['cr', 'contentDimensions'], newState, globalState);
+};
 
 /**
  * Get the currently active dimension values by dimension name

@@ -16,23 +16,6 @@ storiesOf('DateInput', module)
                     onChange={action('onChange')}
                     dateOnly={boolean('Date only', false)}
                     timeOnly={boolean('Time only', false)}
-                    todayLabel="Today"
-                    />
-            </StoryWrapper>
-        ),
-        {inline: true, source: false}
-    )
-    .addWithInfo(
-        'dateOnly',
-        'Date only DateInput selector.',
-        () => (
-            <StoryWrapper>
-                <DateInput
-                    placeholder={text('Placeholder', 'No date set')}
-                    onChange={action('onChange')}
-                    dateOnly={boolean('Date only', true)}
-                    timeOnly={boolean('Time only', false)}
-                    todayLabel="Today"
                     />
             </StoryWrapper>
         ),

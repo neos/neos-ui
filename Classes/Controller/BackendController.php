@@ -27,7 +27,6 @@ use Neos\Neos\Domain\Service\ContentContext;
 use Neos\Neos\Service\BackendRedirectionService;
 use Neos\Neos\Service\UserService;
 use Neos\Neos\Ui\Domain\Service\StyleAndJavascriptInclusionService;
-use Neos\Neos\Ui\Service\NodeClipboard;
 
 class BackendController extends ActionController
 {
@@ -104,7 +103,7 @@ class BackendController extends ActionController
 
     /**
      * @Flow\Inject
-     * @var NodeClipboard
+     * @var NodeClipboardInterface
      */
     protected $clipboard;
 

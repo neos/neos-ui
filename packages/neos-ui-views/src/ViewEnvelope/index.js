@@ -20,7 +20,7 @@ export default class ViewEnvelope extends PureComponent {
     };
 
     generateIdentifier() {
-        return `__neos__view---${this.props.identifier}`;
+        return `#__neos__view---${this.props.identifier}`;
     }
 
     getViewDefinition() {

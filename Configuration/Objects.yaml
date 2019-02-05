@@ -4,3 +4,5 @@
       object: Neos\Fusion\Core\Parser
     fallbackView:
       object: Neos\FluidAdaptor\View\TemplateView
+'Neos\Neos\Ui\Controller\NodeClipboardInterface':
+  className: Neos\Neos\Ui\Controller\NodeClipboard

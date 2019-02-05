@@ -2,7 +2,6 @@
 # Test suite & generated coverage.
 #
 Coverage/
-packages/*/dist/
 packages/*/.nyc_output/
 packages/*/coverage/
 Build/Selenium/Screenshots/*.png

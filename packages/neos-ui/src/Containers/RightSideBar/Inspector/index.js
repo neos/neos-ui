@@ -1,7 +1,5 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {produce} from 'immer';
-import {mapObjIndexed} from 'ramda';
 import {connect} from 'react-redux';
 import {$get, $contains, $set} from 'plow-js';
 import I18n from '@neos-project/neos-ui-i18n';
@@ -10,7 +8,7 @@ import Button from '@neos-project/react-ui-components/src/Button/';
 import Tabs from '@neos-project/react-ui-components/src/Tabs/';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 import debounce from 'lodash.debounce';
-import setIn from 'lodash.set';
+import {fromJSOrdered} from '@neos-project/utils-helpers';
 
 import {SecondaryInspector} from '@neos-project/neos-ui-inspector';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
@@ -72,7 +70,7 @@ export default class Inspector extends PureComponent {
 
     state = {
         secondaryInspectorComponent: null,
-        toggledPanels: {}
+        toggledPanels: fromJSOrdered({})
     };
 
     constructor(props) {
@@ -102,7 +100,7 @@ export default class Inspector extends PureComponent {
     //
     cloneViewConfiguration = props => {
         if (props.focusedNode) {
-            this.viewConfiguration = props.nodeTypesRegistry.getInspectorViewConfigurationFor($get('nodeType', props.focusedNode));
+            this.viewConfiguration = fromJSOrdered(props.nodeTypesRegistry.getInspectorViewConfigurationFor($get('nodeType', props.focusedNode)));
             this.originalViewConfiguration = this.viewConfiguration;
         }
     };
@@ -112,8 +110,7 @@ export default class Inspector extends PureComponent {
     //
     preprocessViewConfiguration = (context = {}, path = []) => {
         const currentLevel = path.length === 0 ? this.viewConfiguration : $get(path, this.viewConfiguration);
-        Object.keys(currentLevel).forEach(propertyName => {
-            const propertyValue = currentLevel[propertyName];
+        currentLevel.forEach((propertyValue, propertyName) => {
             const newPath = path.slice();
             newPath.push(propertyName);
             const originalPropertyValue = $get(newPath, this.originalViewConfiguration);
@@ -125,9 +122,7 @@ export default class Inspector extends PureComponent {
                 const evaluatedValue = eval(originalPropertyValue.replace('ClientEval:', '')); // eslint-disable-line
                 if (evaluatedValue !== propertyValue) {
                     this.configurationIsProcessed = true;
-                    this.viewConfiguration = produce(this.viewConfiguration, draft => {
-                        setIn(draft, newPath, evaluatedValue);
-                    });
+                    this.viewConfiguration = $set(newPath, evaluatedValue, this.viewConfiguration);
                 }
             }
         });
@@ -136,12 +131,10 @@ export default class Inspector extends PureComponent {
     preprocessViewConfigurationDebounced = debounce(() => {
         // Calculate node property values for context
         const {focusedNode, transientValues} = this.props;
-        let nodeForContext = focusedNode;
-        if (transientValues) {
-            nodeForContext = produce(nodeForContext, draft => {
-                const mappedTransientValues = mapObjIndexed(item => $get('value', item), transientValues);
-                draft.properties = Object.assign({}, draft.properties, mappedTransientValues);
-            });
+        const nodeForContext = focusedNode.toJS();
+        if (transientValues && transientValues.toJS) {
+            transientValues.map(item => item.value).toJS();
+            nodeForContext.properties = Object.assign({}, nodeForContext.properties, transientValues.map(item => $get('value', item)).toJS());
         }
 
         // Eval the view configuration and re-render if the configuration has changed
@@ -157,7 +150,7 @@ export default class Inspector extends PureComponent {
     }
 
     handleDiscard = () => {
-        this.props.discard(this.props.focusedNode.contextPath);
+        this.props.discard();
         this.closeSecondaryInspectorIfNeeded();
     }
 
@@ -227,10 +220,6 @@ export default class Inspector extends PureComponent {
             i18nRegistry
         } = this.props;
 
-        const augmentedCommit = (propertyId, value, hooks) => {
-            commit(propertyId, value, hooks, focusedNode);
-        };
-
         if (!focusedNode) {
             return null;
         }
@@ -263,9 +252,9 @@ export default class Inspector extends PureComponent {
                         //
                         // Only display tabs, that have groups and these groups have properties
                         //
-                        .filter(t => $get('groups', t) && $get('groups', t).length > 0 && $get('groups', t).reduce((acc, group) => (
+                        .filter(t => $get('groups', t) && $get('groups', t).count() > 0 && $get('groups', t).reduce((acc, group) => (
                             acc ||
-                            $get('items', group).filter(this.isPropertyEnabled).length > 0
+                            $get('items', group).filter(this.isPropertyEnabled).count() > 0
                         ), false))
 
                         //
@@ -281,7 +270,7 @@ export default class Inspector extends PureComponent {
                                     tooltip={i18nRegistry.translate($get('label', tab))}
                                     renderSecondaryInspector={this.renderSecondaryInspector}
                                     node={focusedNode}
-                                    commit={augmentedCommit}
+                                    commit={commit}
                                     handlePanelToggle={path => {
                                         this.handlePanelToggle([$get('id', tab), ...path]);
                                     }}

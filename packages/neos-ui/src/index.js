@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import {createStore, applyMiddleware, compose} from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import {put, select} from 'redux-saga/effects';
+import {Map} from 'immutable';
 import merge from 'lodash.merge';
 import {$get} from 'plow-js';
 
@@ -26,7 +27,7 @@ const devToolsStoreEnhancer = () => devToolsArePresent ? window.devToolsExtensio
 const sagaMiddleWare = createSagaMiddleware();
 
 const delegatingReducer = new DelegatingReducer();
-const store = createStore(delegatingReducer.reducer(), {}, compose(
+const store = createStore(delegatingReducer.reducer(), new Map(), compose(
     applyMiddleware(sagaMiddleWare, localStorageMiddleware, clipboardMiddleware),
     devToolsStoreEnhancer()
 ));
@@ -45,7 +46,7 @@ require('@neos-project/neos-ui-views/src/manifest');
 require('@neos-project/neos-ui-guest-frame');
 require('@neos-project/neos-ui-ckeditor-bindings');
 require('@neos-project/neos-ui-ckeditor5-bindings');
-require('@neos-project/neos-ui-validators/src/manifest');
+require('@neos-project/neos-ui-validators');
 require('@neos-project/neos-ui-i18n/src/manifest');
 require('@neos-project/neos-ui-sagas/src/manifest');
 
@@ -172,7 +173,7 @@ function * application() {
     );
 
     const siteNodeContextPath = yield select($get('cr.nodes.siteNode'));
-    const documentNodeContextPath = yield select($get('cr.nodes.documentNode'));
+    const documentNodeContextPath = yield select($get('ui.contentCanvas.contextPath'));
     yield put(actions.CR.Nodes.reloadState({
         siteNodeContextPath,
         documentNodeContextPath,

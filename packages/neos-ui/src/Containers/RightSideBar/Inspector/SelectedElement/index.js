@@ -29,7 +29,7 @@ import style from './style.css';
 export default class SelectedElement extends PureComponent {
     static propTypes = {
         focusedNode: PropTypes.object.isRequired,
-        focusedNodeParentLine: PropTypes.array.isRequired,
+        focusedNodeParentLine: PropTypes.object.isRequired,
 
         focusNode: PropTypes.func.isRequired,
         nodeTypesRegistry: PropTypes.object.isRequired
@@ -67,7 +67,7 @@ export default class SelectedElement extends PureComponent {
                 </Headline>
                 <div className={style.content}>
                     <SelectBox
-                        options={focusedNodeParentLine.map(this.createNodeOption)}
+                        options={focusedNodeParentLine.map(this.createNodeOption).toJS()}
                         value={$get('contextPath', focusedNode)}
                         onValueChange={this.handleSelectNode}
                         />

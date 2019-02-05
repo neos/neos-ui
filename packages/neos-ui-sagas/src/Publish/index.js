@@ -13,20 +13,13 @@ export function * watchPublish() {
     yield takeEvery(actionTypes.CR.Workspaces.PUBLISH, function * publishNodes(action) {
         const {nodeContextPaths, targetWorkspaceName} = action.payload;
 
-        if (nodeContextPaths.length > 0) {
+        if (nodeContextPaths.count() > 0) {
             yield put(actions.UI.Remote.startPublishing());
 
             try {
                 const feedback = yield call(publish, nodeContextPaths, targetWorkspaceName);
                 yield put(actions.UI.Remote.finishPublishing());
                 yield put(actions.ServerFeedback.handleServerFeedback(feedback));
-
-                const documentNode = yield select(selectors.CR.Nodes.documentNodeSelector);
-                const documentUri = decodeURIComponent($get('uri', documentNode));
-                const documentUriFragment = documentUri.split('@')[0];
-                const previewUrl = documentUriFragment + '@' + targetWorkspaceName;
-
-                yield put(actions.UI.ContentCanvas.setPreviewUrl(previewUrl));
             } catch (error) {
                 console.error('Failed to publish', error);
             }
@@ -50,7 +43,7 @@ export function * watchChangeBaseWorkspace() {
     const {changeBaseWorkspace} = backend.get().endpoints;
     yield takeEvery(actionTypes.CR.Workspaces.CHANGE_BASE_WORKSPACE, function * change(action) {
         try {
-            const documentNode = yield select($get('cr.nodes.documentNode'));
+            const documentNode = yield select($get('ui.contentCanvas.contextPath'));
             const feedback = yield call(changeBaseWorkspace, action.payload, documentNode);
             yield put(actions.ServerFeedback.handleServerFeedback(feedback));
 
@@ -81,7 +74,7 @@ export function * discardIfConfirmed() {
             const nodesToBeDiscarded = $get('cr.workspaces.toBeDiscarded', state);
 
             try {
-                const currentContentCanvasContextPath = yield select(selectors.CR.Nodes.documentNodeContextPathSelector);
+                const currentContentCanvasContextPath = yield select(selectors.UI.ContentCanvas.getCurrentContentCanvasContextPath);
 
                 const feedback = yield call(discard, nodesToBeDiscarded);
                 yield put(actions.UI.Remote.finishDiscarding());

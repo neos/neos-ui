@@ -17,7 +17,7 @@ export function * watchReloadTree({globalRegistry}) {
 
         yield put(actions.UI.ContentTree.startLoading());
 
-        const documentNodeContextPath = yield select($get('cr.nodes.documentNode'));
+        const documentNodeContextPath = yield select($get('ui.contentCanvas.contextPath'));
         const self = yield q(documentNodeContextPath).get();
         const directChildNodes = yield q(documentNodeContextPath).children(FILTER_BOTH).get();
         const consecutiveChildNodes = yield q(directChildNodes).find(FILTER_BOTH).get();
@@ -34,11 +34,11 @@ export function * watchReloadTree({globalRegistry}) {
 export function * watchNodeFocus({configuration}) {
     yield takeLatest(actionTypes.CR.Nodes.FOCUS, function * loadContentNodeRootLine(action) {
         const {contextPath} = action.payload;
-        const documentNodeContextPath = yield select($get('cr.nodes.documentNode'));
+        const documentNodeContextPath = yield select($get('ui.contentCanvas.contextPath'));
 
         let parentContextPath = contextPath;
 
-        const documentNode = yield select(selectors.CR.Nodes.documentNodeSelector);
+        const documentNode = yield select(selectors.UI.ContentCanvas.documentNodeSelector);
         const {loadingDepth} = configuration.structureTree;
         while (parentContextPath !== documentNodeContextPath) {
             parentContextPath = parentNodeContextPath(parentContextPath);

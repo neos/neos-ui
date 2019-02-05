@@ -1,14 +1,14 @@
-import React, {PureComponent, ReactNode} from 'react';
+import React, {PureComponent} from 'react';
 
-export interface PanelTheme {
+interface PanelTheme {
     readonly 'panel': string;
 }
 
-export interface PanelProps {
+interface PanelProps {
     /**
      * The title to be rendered within the navigation item of this Panel.
      */
-    readonly title?: string;
+    readonly title: string;
 
     /**
      * An optional icon identifier which will be rendered within the navigation item of this Panel.
@@ -18,7 +18,7 @@ export interface PanelProps {
     /**
      * The children to render within the div node.
      */
-    readonly children: ReactNode;
+    readonly children: any;
 
     /**
      * An optional css theme to be injected.
@@ -26,7 +26,7 @@ export interface PanelProps {
     readonly theme?: PanelTheme;
 }
 
-export default class Panel extends PureComponent<PanelProps> {
+class Panel extends PureComponent<PanelProps> {
     public static readonly displayName = 'Panel';
 
     public render(): JSX.Element {
@@ -36,3 +36,5 @@ export default class Panel extends PureComponent<PanelProps> {
         );
     }
 }
+
+export default Panel;

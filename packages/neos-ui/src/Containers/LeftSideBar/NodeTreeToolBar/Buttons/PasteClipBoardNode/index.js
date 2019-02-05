@@ -8,7 +8,7 @@ export default class PasteClipBoardNode extends PureComponent {
         className: PropTypes.string,
         id: PropTypes.string,
 
-        focusedNodeContextPath: PropTypes.string,
+        focusedNodeContextPath: PropTypes.string.isRequired,
         isDisabled: PropTypes.bool.isRequired,
 
         onClick: PropTypes.func.isRequired,

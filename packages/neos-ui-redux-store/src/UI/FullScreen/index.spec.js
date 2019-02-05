@@ -1,4 +1,6 @@
-import {actionTypes, actions, reducer} from './index';
+import Immutable, {Map} from 'immutable';
+
+import {actionTypes, actions, reducer} from './index.js';
 
 import {actionTypes as system} from '../../System/index';
 
@@ -17,41 +19,37 @@ test(`should export a reducer`, () => {
     expect(typeof (reducer)).toBe('function');
 });
 
-test(`The reducer should return a plain JS object as the initial state.`, () => {
-    const nextState = reducer(undefined, {
-        type: system.INIT,
-        payload: {
-            ui: {
-                fullScreen: {}
-            }
-        }
+test(`The reducer should return an Immutable.Map as the initial state.`, () => {
+    const state = new Map({});
+    const nextState = reducer(state, {
+        type: system.INIT
     });
 
-    expect(typeof nextState).toBe('object');
+    expect(nextState.get('ui').get('fullScreen') instanceof Map).toBe(true);
 });
 
 test(`The reducer should initially set fullscreen mode to off.`, () => {
-    const nextState = reducer(undefined, {
-        type: system.INIT,
-        payload: {
-            ui: {
-                fullScreen: {}
-            }
-        }
+    const state = new Map({});
+    const nextState = reducer(state, {
+        type: system.INIT
     });
 
-    expect(nextState.isFullScreen).toBe(false);
+    expect(nextState.get('ui').get('fullScreen').get('isFullScreen')).toBe(false);
 });
 
 test(`
     The "toggle" action should be able to reverse the value of the
     "isFullScreen" key.`, () => {
-    const state = {
-        isFullScreen: false
-    };
+    const state = Immutable.fromJS({
+        ui: {
+            fullScreen: {
+                isFullScreen: false
+            }
+        }
+    });
     const nextState1 = reducer(state, actions.toggle());
     const nextState2 = reducer(nextState1, actions.toggle());
 
-    expect(nextState1.isFullScreen).toBe(true);
-    expect(nextState2.isFullScreen).toBe(false);
+    expect(nextState1.get('ui').get('fullScreen').get('isFullScreen')).toBe(true);
+    expect(nextState2.get('ui').get('fullScreen').get('isFullScreen')).toBe(false);
 });

@@ -26,7 +26,7 @@ const extractPreviewDimensions = $transform({
 
 export class Image {
     constructor(image) {
-        this.image = image;
+        this.image = image && image.toJS ? image.toJS() : image;
     }
 
     static fromImageData = imageData => new Image(imageData);

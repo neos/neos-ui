@@ -88,5 +88,5 @@ test(`getAllAsList should return a sorted list with ids`, () => {
 test(`has should work`, () => {
     const testRegistry = prepareTestRegistry();
     expect(testRegistry.has('test')).toBe(true);
-    expect(testRegistry.has('tes')).toBe(false);
+    expect(testRegistry.has('tes')).toBe(undefined);
 });

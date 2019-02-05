@@ -50,6 +50,6 @@ VERSION=$VERSION make publish-npm
 git add .
 git commit -m "Updating composer dependency and npm versions for release of $VERSION"
 
-git push origin HEAD:$BRANCH
+git push origin HEAD:master
 git tag -a -m "$VERSION" $VERSION
 git push origin $VERSION

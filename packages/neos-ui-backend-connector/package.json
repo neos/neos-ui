@@ -1,12 +1,13 @@
 {
   "name": "@neos-project/neos-ui-backend-connector",
-  "version": "2.0.3-beta",
+  "version": "1.4.1",
   "description": "Endoints and fetch cals to the Neos CMS backend",
   "private": true,
-  "main": "./src/index.ts",
+  "main": "./src/index.js",
   "scripts": {
-    "test": "yarn jest -w 2 --coverage",
-    "test:watch": "yarn jest --watch",
+    "prebuild": "check-dependencies && yarn clean",
+    "test": "yarn jest -- -w 2 --coverage",
+    "test:watch": "yarn jest -- --watch",
     "build": "exit 0",
     "build:watch": "exit 0",
     "clean": "rimraf ./lib ./dist",
@@ -14,13 +15,13 @@
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "2.0.3-beta",
-    "@neos-project/build-essentials": "2.0.3-beta",
-    "@neos-project/jest-preset-neos-ui": "2.0.3-beta"
+    "@neos-project/babel-preset-neos-ui": "1.4.1",
+    "@neos-project/build-essentials": "1.4.1",
+    "@neos-project/jest-preset-neos-ui": "1.4.1"
   },
   "dependencies": {
-    "@neos-project/neos-ui-extensibility": "2.0.3-beta",
-    "@neos-project/utils-redux": "2.0.3-beta"
+    "@neos-project/neos-ui-extensibility": "1.4.1",
+    "@neos-project/utils-redux": "1.4.1"
   },
   "license": "GNU GPLv3",
   "jest": {

@@ -6,24 +6,25 @@
         "bin-dir": "bin"
     },
     "require": {
-        "neos/neos": "~3.3.0",
-        "neos/nodetypes": "~3.3.0",
-        "neos/demo": "~3.3.0",
+        "neos/neos-development-collection": "@dev",
+        "neos/flow-development-collection": "@dev",
+        "neos/demo": "@dev",
 
         "neos/neos-ui": "@dev",
         "neos/neos-ui-compiled": "@dev",
 
-        "neos/seo": "~2.0",
-        "neos/setup": "~4.0",
-        "neos/redirecthandler-neosadapter": "~2.0",
-        "neos/redirecthandler-databasestorage": "~2.0"
-    },
-    "require-dev": {
-        "neos/buildessentials": "^5.0",
-        "mikey179/vfsstream": "^1.6",
-        "phpunit/phpunit": "^7.0",
+        "neos/party": "@dev",
+        "neos/seo": "@dev",
+        "neos/imagine": "@dev",
+        "neos/twitter-bootstrap": "@dev",
+        "neos/form": "@dev",
+        "neos/setup": "@dev",
+        "flowpack/neos-frontendlogin": "@dev",
+        "neos/buildessentials": "@dev",
+        "mikey179/vfsstream": "~1.6",
+        "phpunit/phpunit": "^7.1",
         "symfony/css-selector": "~2.0",
-        "neos/behat": "^5.0"
+        "neos/behat": "dev-master"
     },
     "scripts": {
         "post-update-cmd": "Neos\\Flow\\Composer\\InstallerScripts::postUpdateAndInstall",

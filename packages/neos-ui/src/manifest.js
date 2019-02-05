@@ -1,4 +1,5 @@
 import uuid from 'uuid';
+import {Map} from 'immutable';
 import {$get} from 'plow-js';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
@@ -238,7 +239,7 @@ manifest('main', {}, globalRegistry => {
     //
     serverFeedbackHandlers.set('Neos.Neos.Ui:Redirect/Main', (feedbackPayload, {store}) => {
         store.dispatch(actions.UI.ContentCanvas.setSrc(feedbackPayload.redirectUri));
-        store.dispatch(actions.CR.Nodes.setDocumentNode(feedbackPayload.redirectContextPath));
+        store.dispatch(actions.UI.ContentCanvas.setContextPath(feedbackPayload.redirectContextPath));
     });
 
     //
@@ -262,7 +263,7 @@ manifest('main', {}, globalRegistry => {
         }
 
         // If we are removing current document node...
-        if ($get('cr.nodes.documentNode', state) === contextPath) {
+        if ($get('ui.contentCanvas.contextPath', state) === contextPath) {
             let redirectContextPath = contextPath;
             let redirectUri = null;
             // Determine closest parent that is not being removed
@@ -278,13 +279,13 @@ manifest('main', {}, globalRegistry => {
             }
 
             store.dispatch(actions.UI.ContentCanvas.setSrc(redirectUri));
-            store.dispatch(actions.CR.Nodes.setDocumentNode(redirectContextPath));
+            store.dispatch(actions.UI.ContentCanvas.setContextPath(redirectContextPath));
         }
 
         store.dispatch(actions.CR.Nodes.remove(contextPath));
 
         // Remove the node from the dom
-        if ($get('cr.nodes.documentNode', state) !== contextPath) {
+        if ($get('ui.contentCanvas.contextPath', state) !== contextPath) {
             findAllOccurrencesOfNodeInGuestFrame(contextPath).forEach(el => {
                 const closestContentCollection = el.closest('.neos-contentcollection');
                 el.remove();
@@ -323,7 +324,7 @@ manifest('main', {}, globalRegistry => {
             .querySelector(`[data-__neos-node-contextpath="${contextPath}"]`);
 
         if (!contentElement) {
-            console.error(`!!! Content Element with context path "${contextPath}" not found in returned HTML from server (which you see below) - Reloading the full page!`);
+            console.warn(`!!! Content Element with context path "${contextPath}" not found in returned HTML from server (which you see below) - Reloading the full page!`);
             console.log(renderedContent);
 
             getGuestFrameDocument().location.reload();
@@ -349,12 +350,14 @@ manifest('main', {}, globalRegistry => {
 
         const children = findAllChildNodes(contentElement);
 
-        const nodes = Object.assign(
-            {[contextPath]: selectors.CR.Nodes.byContextPathSelector(contextPath)(store.getState())},
-            ...children.map(el => {
-                const contextPath = el.getAttribute('data-__neos-node-contextpath');
-                return {[contextPath]: selectors.CR.Nodes.byContextPathSelector(contextPath)(store.getState())};
-            })
+        const nodes = new Map(
+            Object.assign(
+                {[contextPath]: selectors.CR.Nodes.byContextPathSelector(contextPath)(store.getState())},
+                ...children.map(el => {
+                    const contextPath = el.getAttribute('data-__neos-node-contextpath');
+                    return {[contextPath]: selectors.CR.Nodes.byContextPathSelector(contextPath)(store.getState())};
+                })
+            )
         );
         const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
         const inlineEditorRegistry = globalRegistry.get('inlineEditors');
@@ -404,7 +407,7 @@ manifest('main', {}, globalRegistry => {
             .querySelector(`[data-__neos-node-contextpath="${contextPath}"]`);
 
         if (!contentElement) {
-            console.error(`!!! Content Element with context path "${contextPath}" not found in returned HTML from server (which you see below) - Reloading the full page!`);
+            console.warn(`!!! Content Element with context path "${contextPath}" not found in returned HTML from server (which you see below) - Reloading the full page!`);
             console.log(renderedContent);
 
             getGuestFrameDocument().location.reload();
@@ -417,12 +420,14 @@ manifest('main', {}, globalRegistry => {
 
         const children = findAllChildNodes(contentElement);
 
-        const nodes = Object.assign(
-            {[contextPath]: selectors.CR.Nodes.byContextPathSelector(contextPath)(store.getState())},
-            ...children.map(el => {
-                const contextPath = el.getAttribute('data-__neos-node-contextpath');
-                return {[contextPath]: selectors.CR.Nodes.byContextPathSelector(contextPath)(store.getState())};
-            })
+        const nodes = new Map(
+            Object.assign(
+                {[contextPath]: selectors.CR.Nodes.byContextPathSelector(contextPath)(store.getState())},
+                ...children.map(el => {
+                    const contextPath = el.getAttribute('data-__neos-node-contextpath');
+                    return {[contextPath]: selectors.CR.Nodes.byContextPathSelector(contextPath)(store.getState())};
+                })
+            )
         );
         const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
         const inlineEditorRegistry = globalRegistry.get('inlineEditors');

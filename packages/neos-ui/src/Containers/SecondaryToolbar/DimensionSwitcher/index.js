@@ -9,6 +9,7 @@ import style from './style.css';
 import backend from '@neos-project/neos-ui-backend-connector';
 import {$get, $transform} from 'plow-js';
 import {mapObjIndexed} from 'ramda';
+import {Map} from 'immutable';
 import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 import I18n from '@neos-project/neos-ui-i18n';
 import sortBy from 'lodash.sortby';
@@ -93,9 +94,9 @@ export default class DimensionSwitcher extends PureComponent {
     };
 
     static defaultProps = {
-        contentDimensions: {},
-        allowedPresets: {},
-        activePresets: {}
+        contentDimensions: new Map(),
+        allowedPresets: new Map(),
+        activePresets: new Map()
     };
 
     state = {

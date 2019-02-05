@@ -21,7 +21,7 @@ import style from './style.css';
     ),
     isHiddenContentTree: $get('ui.leftSideBar.contentTree.isHidden'),
     siteNode: selectors.CR.Nodes.siteNodeSelector,
-    documentNode: selectors.CR.Nodes.documentNodeSelector
+    documentNode: selectors.UI.ContentCanvas.documentNodeSelector
 }))
 export default class LeftSideBar extends PureComponent {
     static propTypes = {

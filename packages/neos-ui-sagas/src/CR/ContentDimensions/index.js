@@ -21,7 +21,7 @@ export function * watchSelectPreset() {
         while (true) { // eslint-disable-line no-constant-condition
             yield take(actionTypes.CR.ContentDimensions.SELECT_PRESET);
             const targetDimensions = yield select(selectors.CR.ContentDimensions.active);
-            const currentContentCanvasNode = yield select(selectors.CR.Nodes.documentNodeSelector);
+            const currentContentCanvasNode = yield select(selectors.CR.Nodes.currentContentCanvasNodeSelector);
             const currentContentCanvasNodeIdentifier = $get('identifier', currentContentCanvasNode);
 
             const informationAboutNodeInTargetDimension = yield call(ensureNodeInSelectedDimension, {

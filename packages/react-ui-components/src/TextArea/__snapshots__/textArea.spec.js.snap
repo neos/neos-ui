@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TextArea/> should render correctly. 1`] = `
+<div>
+  <TextareaAutosize
+    aria-disabled="false"
+    aria-multiline="true"
+    className=""
+    minRows={2}
+    onChange={[Function]}
+    onClick={[Function]}
+    onHeightChange={[Function]}
+    role="textbox"
+    useCacheForDOMMeasurements={false}
+  />
+</div>
+`;

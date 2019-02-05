@@ -30,7 +30,7 @@ describe('reflectChangeInAddressBar()', () => {
     });
 
     it('should call the history.replaceState method with the actions payload "contextPath" property.', async () => {
-        const result = await expectSaga(reflectChangeInAddressBar, {type: 'DATA', payload: {documentNode: 'fooContextPath'}}).run();
+        const result = await expectSaga(reflectChangeInAddressBar, {type: 'DATA', payload: {contextPath: 'fooContextPath'}}).run();
 
         expect(result.toJSON()).toMatchSnapshot();
     });

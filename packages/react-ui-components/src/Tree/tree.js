@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import withScrolling, {createVerticalStrength, createHorizontalStrength} from './reactDndScrollzoneFork';
+import withScrolling, {createVerticalStrength, createHorizontalStrength} from 'react-dnd-scrollzone';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
 

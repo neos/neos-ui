@@ -17,7 +17,7 @@ import style from './style.css';
     numberOfParentNodesToBeCreated: selectors.UI.NodeVariantCreationDialog.numberOfParentNodesToBeCreated,
     contentDimensions: selectors.CR.ContentDimensions.byName,
     activePresets: selectors.CR.ContentDimensions.activePresets,
-    documentNode: selectors.CR.Nodes.documentNodeSelector
+    documentNode: selectors.UI.ContentCanvas.documentNodeSelector
 }), {
     cancel: actions.UI.NodeVariantCreationDialog.cancel,
     createEmpty: actions.UI.NodeVariantCreationDialog.createEmpty,

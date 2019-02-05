@@ -22,7 +22,7 @@ const adminUser = Role(adminUrl, async t => {
 
 async function waitForIframeLoading(t) {
     await t.expect(ReactSelector('Provider').getReact(({props}) => {
-        const reduxState = props.store.getState();
+        const reduxState = props.store.getState().toJS();
         return !reduxState.ui.contentCanvas.isLoading;
     })).ok('Loading stopped');
 }
@@ -60,13 +60,13 @@ test('Switching dimensions', async t => {
         .click(ReactSelector('DimensionSwitcher SelectBox').find('li').withText('Latvian'))
         .click('#neos-NodeVariantCreationDialog-CreateEmpty')
         .expect(ReactSelector('Provider').getReact(({props}) => {
-            const reduxState = props.store.getState();
-            const {isLoading} = reduxState.ui.contentCanvas;
+            const reduxState = props.store.getState().toJS();
+            const isLoading = reduxState.ui.contentCanvas.isLoading;
             const activeDimension = reduxState.cr.contentDimensions.active.language[0];
             return !isLoading && activeDimension === 'lv';
         })).ok('Loading stopped and dimension switched to Latvian')
         .expect(ReactSelector('Provider').getReact(({props}) => {
-            const reduxState = props.store.getState();
+            const reduxState = props.store.getState().toJS();
             return reduxState.cr.workspaces.personalWorkspace.publishableNodes.length;
         })).gt(0, 'There are some unpublished nodes after adoption')
         .expect(page.treeNode.withText('Navigation elements').exists).notOk('Untranslated node gone from the tree');
@@ -77,8 +77,8 @@ test('Switching dimensions', async t => {
         .click(ReactSelector('DimensionSwitcher SelectBox'))
         .click(ReactSelector('DimensionSwitcher SelectBox').find('li').withText('English (US)'))
         .expect(ReactSelector('Provider').getReact(({props}) => {
-            const reduxState = props.store.getState();
-            const {isLoading} = reduxState.ui.contentCanvas;
+            const reduxState = props.store.getState().toJS();
+            const isLoading = reduxState.ui.contentCanvas.isLoading;
             const activeDimension = reduxState.cr.contentDimensions.active.language[0];
             return !isLoading && activeDimension === 'en_US';
         })).ok('Loading stopped and dimension back to English')
@@ -109,8 +109,8 @@ test('Discarding: create multiple nodes nested within each other and then discar
     await discardAll(t);
     await t
         .expect(ReactSelector('Provider').getReact(({props}) => {
-            const reduxState = props.store.getState();
-            return reduxState.cr.nodes.documentNode;
+            const reduxState = props.store.getState().toJS();
+            return reduxState.ui.contentCanvas.contextPath;
         })).eql('/sites/neosdemo@user-admin;language=en_US', 'After discarding we are back to the main page');
 });
 
@@ -124,7 +124,7 @@ test('Discarding: create a document node and then discard it', async t => {
         .click(Selector('#neos-NodeCreationDialog-CreateNew'))
         .expect(page.treeNode.withText(pageTitleToCreate).exists).ok('Node with the given title appeared in the tree')
         .expect(ReactSelector('Provider').getReact(({props}) => {
-            const reduxState = props.store.getState();
+            const reduxState = props.store.getState().toJS();
             return reduxState.cr.workspaces.personalWorkspace.publishableNodes.length;
         })).gt(0, 'There are some unpublished nodes');
 
@@ -133,7 +133,7 @@ test('Discarding: create a document node and then discard it', async t => {
     await t
         .expect(page.treeNode.withText(pageTitleToCreate).exists).notOk('Discarded node gone from the tree')
         .expect(ReactSelector('Provider').getReact(({props}) => {
-            const reduxState = props.store.getState();
+            const reduxState = props.store.getState().toJS();
             return reduxState.cr.workspaces.personalWorkspace.publishableNodes.length;
         })).eql(0, 'No unpublished nodes left');
     await waitForIframeLoading(t);
@@ -155,7 +155,7 @@ test('Discarding: delete a document node and then discard deletion', async t => 
 
     subSection('Delete that page');
     await t
-        .click(Selector('#neos-PageTree-DeleteSelectedNode'))
+        .click(ReactSelector('DeleteSelectedNode'))
         .click(Selector('#neos-DeleteNodeModal-Confirm'))
         .expect(page.treeNode.withText(pageTitleToDelete).exists).notOk('Deleted node gone from the tree')
         .expect(Selector('.neos-message-header').withText('Page Not Found').exists).notOk('Make sure we don\'t end up on 404 page');
@@ -173,7 +173,7 @@ test('Discarding: create a content node and then discard it', async t => {
     await t
         .click(Selector('#neos-ContentTree-ToggleContentTree'))
         .click(page.treeNode.withText('Content Collection (main)'))
-        .click(Selector('#neos-ContentTree-AddNode'))
+        .click(ReactSelector('AddNode').nth(1).find('button'))
         .click(ReactSelector('NodeTypeItem').find('button>span').withText('Headline'));
     await waitForIframeLoading(t);
     await t
@@ -182,7 +182,7 @@ test('Discarding: create a content node and then discard it', async t => {
         .switchToMainWindow()
         .expect(page.treeNode.withText(defaultHeadlineTitle).exists).ok('New headline appeared in the tree')
         .expect(ReactSelector('Provider').getReact(({props}) => {
-            const reduxState = props.store.getState();
+            const reduxState = props.store.getState().toJS();
             return reduxState.cr.workspaces.personalWorkspace.publishableNodes.length;
         })).gt(0, 'There are some unpublished nodes');
 
@@ -191,7 +191,7 @@ test('Discarding: create a content node and then discard it', async t => {
     await t
         .expect(page.treeNode.withText(defaultHeadlineTitle).exists).notOk('Discarded node gone from the tree')
         .expect(ReactSelector('Provider').getReact(({props}) => {
-            const reduxState = props.store.getState();
+            const reduxState = props.store.getState().toJS();
             return reduxState.cr.workspaces.personalWorkspace.publishableNodes.length;
         })).eql(0, 'No unpublished nodes left');
     await waitForIframeLoading(t);
@@ -208,7 +208,7 @@ test('Discarding: delete a content node and then discard deletion', async t => {
     await t
         .click(Selector('#neos-ContentTree-ToggleContentTree'))
         .click(page.treeNode.withText(headlineToDelete))
-        .click(Selector('#neos-ContentTree-DeleteSelectedNode'))
+        .click(ReactSelector('DeleteSelectedNode').nth(1))
         .click(Selector('#neos-DeleteNodeModal-Confirm'));
     await waitForIframeLoading(t);
     await t
@@ -310,7 +310,7 @@ test('Can create content node from inside InlineUI', async t => {
     await t
         .switchToIframe('[name="neos-content-main"]')
         .click(Selector('.neos-contentcollection'))
-        .click(Selector('#neos-InlineToolbar-AddNode'))
+        .click(ReactSelector('AddNode Button'))
         .switchToMainWindow()
         .click(Selector('button#into'))
         // TODO: this selector will only work with English translation.
@@ -321,116 +321,7 @@ test('Can create content node from inside InlineUI', async t => {
     await waitForIframeLoading(t);
     await t
         .switchToIframe('[name="neos-content-main"]')
-        .typeText(Selector('.neos-nodetypes-headline:nth-child(2) h1'), headlineTitle)
-        .expect(Selector('.neos-contentcollection').withText(headlineTitle).exists).ok('Typed headline text exists');
-
-    subSection('Create a link to node');
-    await t
-        .doubleClick('.neos-nodetypes-headline:nth-child(2) h1')
-        .switchToMainWindow()
-        .click(ReactSelector('EditorToolbar LinkButton'))
-        .typeText(ReactSelector('EditorToolbar LinkButton TextInput'), 'down')
-        .click(ReactSelector('EditorToolbar NodeOption'))
-        .switchToIframe('[name="neos-content-main"]')
-        .expect(Selector('.neos-nodetypes-headline:nth-child(2) h1 a').withAttribute('href').exists).ok('Newly inserted link exists')
+        .typeText(Selector('.neos-inline-editable h1'), headlineTitle)
+        .expect(Selector('.neos-contentcollection').withText(headlineTitle).exists).ok()
         .switchToMainWindow();
-});
-
-test('Can edit the page title via inspector', async t => {
-    const InspectorTitleProperty = Selector('#__neos__editor__property---title');
-    await waitForIframeLoading(t);
-
-    subSection('Rename home page via inspector');
-    await t
-        .expect(InspectorTitleProperty.value).eql('Home')
-        .click(InspectorTitleProperty)
-        .typeText(InspectorTitleProperty, '-1')
-        .expect(InspectorTitleProperty.value).eql('Home-1')
-        .click(Selector('#neos-Inspector-Discard'))
-        .expect(InspectorTitleProperty.value).eql('Home')
-        .typeText(InspectorTitleProperty, '-1')
-        .click(Selector('#neos-Inspector-Apply'))
-        .expect(InspectorTitleProperty.value).eql('Home-1');
-    await waitForIframeLoading(t);
-    await t
-        .expect(InspectorTitleProperty.value).eql('Home-1');
-
-    subSection('Test unapplied changes dialog - resume');
-    await t
-        .click(InspectorTitleProperty)
-        .typeText(InspectorTitleProperty, '-2')
-        .click(Selector('[name="neos-content-main"]'))
-        .expect(Selector('#neos-UnappliedChangesDialog').exists).ok()
-        .click(Selector('#neos-UnappliedChangesDialog-resume'))
-        .expect(Selector('#neos-UnappliedChangesDialog').exists).notOk()
-        .expect(InspectorTitleProperty.value).eql('Home-1-2');
-
-    subSection('Test unapplied changes dialog - discard');
-    await t
-        .click(Selector('[name="neos-content-main"]'))
-        .click(Selector('#neos-UnappliedChangesDialog-discard'))
-        .expect(InspectorTitleProperty.value).eql('Home-1');
-
-    subSection('Test unapplied changes dialog - apply');
-    await t
-        .typeText(InspectorTitleProperty, '-3')
-        .click(Selector('[name="neos-content-main"]'))
-        .click(Selector('#neos-UnappliedChangesDialog-apply'))
-        .expect(InspectorTitleProperty.value).eql('Home-1-3')
-        .click(Selector('[name="neos-content-main"]'))
-        .expect(Selector('#neos-UnappliedChangesDialog').exists).notOk();
-});
-
-test('Create an Image node from ContentTree', async t => {
-    await t.switchToIframe('[name="neos-content-main"]');
-    const initialImageCount = await Selector('.neos-nodetypes-image img[src]').count;
-    await t.switchToMainWindow();
-
-    subSection('Create Image node');
-    await t
-        .click(Selector('#neos-ContentTree-ToggleContentTree'))
-        .click(page.treeNode.withText('Content Collection (main)'))
-        .click(Selector('#neos-ContentTree-AddNode'))
-        .click(ReactSelector('NodeTypeItem').find('button>span').withText('Image'));
-    await waitForIframeLoading(t);
-
-    subSection('Select image from media library');
-    const imageEditor = await ReactSelector('InspectorEditorEnvelope').withProps('id', 'image');
-    await t
-        .click(imageEditor.findReact('IconButton').withProps('icon', 'camera'));
-    await t.switchToIframe('[name="neos-media-selection-screen"]');
-    await t.click('.asset-list .asset a');
-    await t.switchToMainWindow();
-
-    subSection('Toggle caption');
-    const hasCaptionEditor = await ReactSelector('InspectorEditorEnvelope').withProps('id', 'hasCaption');
-    await t
-        .click(hasCaptionEditor.findReact('CheckBox'))
-        .click(Selector('#neos-Inspector-Apply'));
-
-    await t.switchToIframe('[name="neos-content-main"]');
-    const finalImageCount = await Selector('.neos-nodetypes-image img[src]').count;
-
-    await t.expect(initialImageCount + 1).eql(finalImageCount, 'Final image count is one more than initial');
-});
-
-test('Can crop an image', async t => {
-    await waitForIframeLoading(t);
-
-    await t.switchToIframe('[name="neos-content-main"]');
-    const initialBackgroundImage = await Selector('.main-header.image').getStyleProperty('background-image');
-    await t.switchToMainWindow();
-
-    const imageEditor = await ReactSelector('InspectorEditorEnvelope').withProps('id', 'image');
-    await t
-        .click(imageEditor.findReact('IconButton').withProps('icon', 'crop'));
-    const initialTopOffset = await imageEditor.find('img').getStyleProperty('top');
-    await t
-        .drag(ReactSelector('ReactCrop'), 50, 50, {offsetX: 5, offsetY: 5})
-        .expect(imageEditor.find('img').getStyleProperty('top')).notEql(initialTopOffset, 'The preview image should reflect the cropping results')
-        .click(Selector('#neos-Inspector-Apply'));
-    await waitForIframeLoading(t);
-    await t.switchToIframe('[name="neos-content-main"]');
-    await t.expect(Selector('.main-header.image').getStyleProperty('background-image')).notEql(initialBackgroundImage, 'Header image should have changed after crop');
-    await t.switchToMainWindow();
 });

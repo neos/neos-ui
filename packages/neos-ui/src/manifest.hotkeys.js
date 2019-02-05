@@ -61,6 +61,11 @@ manifest('main.hotkeys', {}, (globalRegistry, {frontendConfiguration}) => {
             action: actions.UI.ContentCanvas.reload
         });
 
+        hotkeyRegistry.set('UI.Inspector.discard', {
+            description: 'Discard Inspector',
+            action: actions.UI.Inspector.discard
+        });
+
         hotkeyRegistry.set('UI.Inspector.escape', {
             description: 'Escape Inspector',
             action: actions.UI.Inspector.escape

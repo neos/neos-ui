@@ -30,12 +30,12 @@ export default class InlineUI extends PureComponent {
         destructiveOperationsAreDisabled: PropTypes.bool.isRequired,
         requestScrollIntoView: PropTypes.func.isRequired,
         shouldScrollIntoView: PropTypes.bool.isRequired,
-        clipboardMode: PropTypes.string,
+        clipboardMode: PropTypes.string.isRequired,
         clipboardNodeContextPath: PropTypes.string
     };
 
     render() {
-        const {focused} = this.props;
+        const focused = this.props.focused.toJS();
         const focusedNodeContextPath = focused.contextPath;
         const {nodeTypesRegistry, focusedNode, shouldScrollIntoView, requestScrollIntoView, destructiveOperationsAreDisabled, clipboardMode, clipboardNodeContextPath} = this.props;
         const isDocument = nodeTypesRegistry.hasRole($get('nodeType', focusedNode), 'document');

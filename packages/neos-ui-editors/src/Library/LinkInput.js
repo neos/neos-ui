@@ -67,9 +67,7 @@ export default class LinkInput extends PureComponent {
         }).isRequired,
 
         contextForNodeLinking: PropTypes.shape({
-            workspaceName: PropTypes.string.isRequired,
-            contextNode: PropTypes.string,
-            dimensions: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.string))
+            toJS: PropTypes.func.isRequired
         }).isRequired
     };
 
@@ -83,17 +81,16 @@ export default class LinkInput extends PureComponent {
     };
 
     getDataLoaderOptions() {
-        const contextForNodeLinking = $get('options.startingPoint', this.props) ?
-            Object.assign({}, this.props.contextForNodeLinking, {
-                contextNode: this.props.options.startingPoint
-            }) :
+        const contextNode = $get('options.startingPoint', this.props) ?
+            this.props.contextForNodeLinking.set('contextNode', $get('options.startingPoint', this.props)) :
             this.props.contextForNodeLinking;
+
         return {
             nodeTypes: $get('options.nodeTypes', this.props) || ['Neos.Neos:Document'],
             asset: $get('options.assets', this.props),
             node: $get('options.nodes', this.props),
             startingPoint: $get('options.startingPoint', this.props),
-            contextForNodeLinking
+            contextForNodeLinking: contextNode.toJS()
         };
     }
 

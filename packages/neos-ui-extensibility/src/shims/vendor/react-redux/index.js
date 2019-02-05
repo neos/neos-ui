@@ -1,3 +1,3 @@
-import readFromConsumerApi from '../../../../dist/readFromConsumerApi';
+import readFromConsumerApi from '../../../readFromConsumerApi';
 
 module.exports = readFromConsumerApi('vendor')().reactRedux;

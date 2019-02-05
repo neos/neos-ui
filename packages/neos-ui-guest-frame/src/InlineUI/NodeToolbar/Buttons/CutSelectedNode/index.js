@@ -37,7 +37,6 @@ export default class CutSelectedNode extends PureComponent {
 
         return (
             <IconButton
-                id="neos-InlineToolbar-CutSelectedNode"
                 className={className}
                 isActive={isActive}
                 isDisabled={destructiveOperationsAreDisabled || !canBeEdited}

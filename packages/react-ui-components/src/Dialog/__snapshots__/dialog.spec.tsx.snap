@@ -47,43 +47,44 @@ exports[`<Dialog/> Content should render correctly. 1`] = `
 `;
 
 exports[`<Dialog/> Portal should render correctly. 1`] = `
-<CloseOnEscape
-  onEscape={[Function]}
+<Portal
+  isOpened={false}
+  onClose={[Function]}
+  onOpen={[Function]}
+  onUpdate={[Function]}
 >
-  <Portal>
-    <section
-      className="dialogClassName wideClassName"
-      role="dialog"
-      tabIndex={0}
+  <section
+    className="dialogClassName wideClassName"
+    role="dialog"
+    tabIndex={0}
+  >
+    <clickOutside(DialogWithoutEscape)
+      actions={
+        Array [
+          "Foo 1",
+          "Foo 2",
+        ]
+      }
+      isOpen={false}
+      onRequestClose={[Function]}
+      style="wide"
+      theme={
+        Object {
+          "dialog": "dialogClassName",
+          "dialog--narrow": "narrowClassName",
+          "dialog--wide": "wideClassName",
+          "dialog__actions": "actionsClassName",
+          "dialog__body": "bodyClassName",
+          "dialog__closeBtn": "closeBtnClassName",
+          "dialog__contents": "contentsClassName",
+          "dialog__contentsPosition": "contentsPositionClassName",
+          "dialog__title": "titleClassName",
+        }
+      }
+      title="Foo title"
     >
-      <clickOutside(DialogWithoutEscape)
-        actions={
-          Array [
-            "Foo 1",
-            "Foo 2",
-          ]
-        }
-        isOpen={true}
-        onRequestClose={[Function]}
-        style="wide"
-        theme={
-          Object {
-            "dialog": "dialogClassName",
-            "dialog--narrow": "narrowClassName",
-            "dialog--wide": "wideClassName",
-            "dialog__actions": "actionsClassName",
-            "dialog__body": "bodyClassName",
-            "dialog__closeBtn": "closeBtnClassName",
-            "dialog__contents": "contentsClassName",
-            "dialog__contentsPosition": "contentsPositionClassName",
-            "dialog__title": "titleClassName",
-          }
-        }
-        title="Foo title"
-      >
-        Foo children
-      </clickOutside(DialogWithoutEscape)>
-    </section>
-  </Portal>
-</CloseOnEscape>
+      Foo children
+    </clickOutside(DialogWithoutEscape)>
+  </section>
+</Portal>
 `;

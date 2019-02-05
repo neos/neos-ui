@@ -53,7 +53,6 @@ export default class AddNode extends PureComponent {
         return (
             <span>
                 <IconButton
-                    id="neos-InlineToolbar-AddNode"
                     isDisabled={!isAllowedToAddChildOrSiblingNodes}
                     className={this.props.className}
                     icon="plus"

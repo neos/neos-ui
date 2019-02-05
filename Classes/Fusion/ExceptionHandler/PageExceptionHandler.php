@@ -1,7 +1,18 @@
 <?php
 namespace Neos\Neos\Ui\Fusion\ExceptionHandler;
 
+/*
+ * This file is part of the Neos.Neos.Ui package.
+ *
+ * (c) Contributors of the Neos Project - www.neos.io
+ *
+ * This package is Open Source Software. For the full copyright and license
+ * information, please view the LICENSE file which was distributed with this
+ * source code.
+ */
+
 use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Exception;
 use Neos\Flow\Http\ContentStream;
 use Neos\Flow\Http\Response;
 use Neos\Flow\Mvc\View\ViewInterface;
@@ -9,8 +20,6 @@ use Neos\Flow\Utility\Environment;
 use Neos\FluidAdaptor\View\StandaloneView;
 use Neos\Fusion\Core\ExceptionHandlers\AbstractRenderingExceptionHandler;
 use Neos\Fusion\Core\ExceptionHandlers\HtmlMessageHandler;
-use Neos\Neos\Fusion\ExceptionHandlers\PageHandler;
-use Neos\Neos\Ui\Fusion\Helper\ActivationHelper;
 
 /**
  * A page exception handler for the new UI.
@@ -20,12 +29,6 @@ use Neos\Neos\Ui\Fusion\Helper\ActivationHelper;
  */
 class PageExceptionHandler extends AbstractRenderingExceptionHandler
 {
-    /**
-     * @Flow\Inject
-     * @var ActivationHelper
-     */
-    protected $activationHelper;
-
     /**
      * @Flow\Inject
      * @var Environment
@@ -45,11 +48,6 @@ class PageExceptionHandler extends AbstractRenderingExceptionHandler
      */
     protected function handle($fusionPath, \Exception $exception, $referenceCode)
     {
-        if ($this->activationHelper->isLegacyBackendEnabled()) {
-            $handler = new PageHandler();
-            return $handler->handleRenderingException($fusionPath, $exception);
-        }
-
         $handler = new HtmlMessageHandler($this->environment->getContext()->isDevelopment());
         $handler->setRuntime($this->runtime);
         $output = $handler->handleRenderingException($fusionPath, $exception);
@@ -76,7 +74,7 @@ class PageExceptionHandler extends AbstractRenderingExceptionHandler
 
         /** @var Response $response */
         $response = (new Response())
-            ->withStatus($exception instanceof FlowException ? $exception->getStatusCode() : 500)
+            ->withStatus($exception instanceof Exception ? $exception->getStatusCode() : 500)
             ->withBody(new ContentStream($body))
             ->withHeader('Cache-Control', 'no-store');
 

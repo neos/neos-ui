@@ -6,9 +6,10 @@
         "bin-dir": "bin"
     },
     "require": {
-        "neos/neos-development-collection": "@dev",
-        "neos/flow-development-collection": "@dev",
-        "neos/demo": "@dev",
+        "neos/neos": "~4.2.0",
+        "neos/nodetypes": "~4.2.0",
+        "neos/demo": "~4.2.0",
+        "neos/site-kickstarter": "~4.2.0",
 
         "neos/neos-ui": "@dev",
         "neos/neos-ui-compiled": "@dev",

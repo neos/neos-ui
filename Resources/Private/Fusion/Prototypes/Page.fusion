@@ -8,18 +8,18 @@ prototype(Neos.Neos:Page) {
     // Disable all html attributes printed for the Neos backend
     //
     htmlTag.attributes {
-        version.@if.oldBackend = ${Neos.Ui.Activation.isLegacyBackendEnabled()}
-        xmlns.@if.oldBackend = ${Neos.Ui.Activation.isLegacyBackendEnabled()}
-        xmlns:typo3.@if.oldBackend = ${Neos.Ui.Activation.isLegacyBackendEnabled()}
-        xmlns:xsd.@if.oldBackend = ${Neos.Ui.Activation.isLegacyBackendEnabled()}
+        version.@if.oldBackend = ${false}
+        xmlns.@if.oldBackend = ${false}
+        xmlns:typo3.@if.oldBackend = ${false}
+        xmlns:xsd.@if.oldBackend = ${false}
     }
 
     //
     // Disable rendering of the Neos backend
     //
     head {
-        neosBackendHeader.@if.oldBackend = ${Neos.Ui.Activation.isLegacyBackendEnabled()}
-        neosBackendEndpoints.@if.oldBackend = ${Neos.Ui.Activation.isLegacyBackendEnabled()}
+        neosBackendHeader.@if.oldBackend = ${false}
+        neosBackendEndpoints.@if.oldBackend = ${false}
 
         javascriptBackendInformation = Neos.Neos.Ui:RenderConfiguration {
             path = 'documentNodeInformation'
@@ -34,7 +34,6 @@ prototype(Neos.Neos:Page) {
             @process.wrapInJsObject = ${'<script>window[\'@Neos.Neos.Ui:DocumentInformation\']=' + value + '</script>'}
             @if {
                 inBackend = ${documentNode.context.inBackend}
-                newBackend = ${!Neos.Ui.Activation.isLegacyBackendEnabled()}
             }
 
             // We need to ensure the JS backend information is always up to date, especially
@@ -69,7 +68,6 @@ prototype(Neos.Neos:Page) {
             sectionName = 'guestFrameApplication'
             @if {
                 inBackend = ${documentNode.context.inBackend}
-                newBackend = ${!Neos.Ui.Activation.isLegacyBackendEnabled()}
             }
         }
     }
@@ -77,32 +75,26 @@ prototype(Neos.Neos:Page) {
     //
     // Do not print document meta data
     //
-    neosBackendDocumentNodeData.@if.oldBackend = ${Neos.Ui.Activation.isLegacyBackendEnabled()}
+    neosBackendDocumentNodeData.@if.oldBackend = ${false}
 
     //
     // Do not render the Neos backend container
     //
-    neosBackendContainer.@if.oldBackend = ${Neos.Ui.Activation.isLegacyBackendEnabled()}
+    neosBackendContainer.@if.oldBackend = ${false}
 
     newNeosBackendWrappingElement = '<div id="neos-new-backend-container"></div>'
     newNeosBackendWrappingElement.@position = 'after neosBackendContainer'
-    newNeosBackendWrappingElement.@if {
-        inBackend = ${documentNode.context.inBackend}
-        newBackend = ${!Neos.Ui.Activation.isLegacyBackendEnabled()}
-    }
+    newNeosBackendWrappingElement.@if.inBackend = ${documentNode.context.inBackend}
 
     //
     // Do not render the Neos backend footer
     //
-    neosBackendFooter.@if.oldBackend = ${Neos.Ui.Activation.isLegacyBackendEnabled()}
+    neosBackendFooter.@if.oldBackend = ${false}
 
     neosBackendNotification = Neos.Fusion:Template {
         @position = 'before closingBodyTag'
         templatePath = 'resource://Neos.Neos.Ui/Private/Templates/Backend/GuestNotificationScript.html'
-        @if {
-            inBackend = ${documentNode.context.inBackend}
-            newBackend = ${!Neos.Ui.Activation.isLegacyBackendEnabled()}
-        }
+        @if.inBackend = ${documentNode.context.inBackend}
     }
 
     //
@@ -111,10 +103,7 @@ prototype(Neos.Neos:Page) {
     neosUiNonRenderedNodeMetadata = Neos.Neos.Ui:RenderNonRenderedNodeMetadata {
         @position = 'before neosBackendNotification'
         @class = 'Neos\\Neos\\Ui\\Fusion\\RenderNonRenderedNodeMetadataImplementation'
-        @if {
-            inBackend = ${documentNode.context.inBackend}
-            newBackend = ${!Neos.Ui.Activation.isLegacyBackendEnabled()}
-        }
+        @if.inBackend = ${documentNode.context.inBackend}
         node = ${node}
     }
 

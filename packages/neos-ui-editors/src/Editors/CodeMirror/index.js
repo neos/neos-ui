@@ -23,7 +23,8 @@ export default class CodeMirror extends PureComponent {
         highlightingMode: PropTypes.string,
         value: PropTypes.string,
         secondaryEditorsRegistry: PropTypes.object.isRequired,
-        options: PropTypes.object
+        options: PropTypes.object,
+        renderHelpIcon: PropTypes.func
     };
 
     static defaultProps = {
@@ -43,6 +44,7 @@ export default class CodeMirror extends PureComponent {
                         <I18n id={label}/>
                     </Button>
                 </Label>
+                {this.props.renderHelpIcon ? this.props.renderHelpIcon() : ''}
             </div>
         );
     }

@@ -166,7 +166,7 @@ manifest('main.dataloaders', {}, globalRegistry => {
         description: `
             Look up assets:
 
-            - by local asset identifier (UUID) (resolveValue())
+            - by identifier (UUID) (resolveValue())
             - by searching (search())
         `,
 
@@ -177,14 +177,14 @@ manifest('main.dataloaders', {}, globalRegistry => {
             return this._lruCache;
         },
 
-        resolveValue(options, localAssetIdentifier) {
-            const cacheKey = makeCacheKey('resolve', {options, identifier: localAssetIdentifier});
+        resolveValue(options, identifier) {
+            const cacheKey = makeCacheKey('resolve', {options, identifier});
             if (this._lru().has(cacheKey)) {
                 return this._lru().get(cacheKey);
             }
 
             const assetDetailApi = backend.get().endpoints.assetDetail;
-            const result = assetDetailApi(localAssetIdentifier);
+            const result = assetDetailApi(identifier);
             const resultPromise = Promise.all([result]);
             this._lru().set(cacheKey, resultPromise);
             return resultPromise;
@@ -198,10 +198,11 @@ manifest('main.dataloaders', {}, globalRegistry => {
             ).then(results => [].concat(...results));
         },
 
-        search(options = {assetsToExclude: []}, searchTerm) {
+        search(options, searchTerm) {
             if (!searchTerm) {
                 return Promise.resolve([]);
             }
+
             const cacheKey = makeCacheKey('search', {options, searchTerm});
 
             if (this._lru().has(cacheKey)) {
@@ -216,8 +217,8 @@ manifest('main.dataloaders', {}, globalRegistry => {
                 this._debounceTimer = window.setTimeout(resolve, 300);
             }).then(() => {
                 // Trigger query
-                const assetProxySearchApi = backend.get().endpoints.assetProxySearch;
-                const resultPromise = assetProxySearchApi(searchTerm, '', options);
+                const assetSearchApi = backend.get().endpoints.assetSearch;
+                const resultPromise = assetSearchApi(searchTerm);
 
                 this._lru().set(cacheKey, resultPromise);
 
@@ -226,11 +227,7 @@ manifest('main.dataloaders', {}, globalRegistry => {
                 // to be loaded once the element has been selected.
                 resultPromise.then(results => {
                     results.forEach(result => {
-                        const cacheKey = makeCacheKey('resolve', {
-                            options,
-                            assetSourceIdentifier: result.assetSourceIdentifier,
-                            assetProxyIdentifier: result.assetProxyIdentifier
-                        });
+                        const cacheKey = makeCacheKey('resolve', {options, identifier: result.identifier});
                         this._lru().set(cacheKey, Promise.all([result]));
                     });
                 });

@@ -50,12 +50,7 @@ exports[`<Dialog/> Portal should render correctly. 1`] = `
 <CloseOnEscape
   onEscape={[Function]}
 >
-  <Portal
-    isOpened={false}
-    onClose={[Function]}
-    onOpen={[Function]}
-    onUpdate={[Function]}
-  >
+  <Portal>
     <section
       className="dialogClassName wideClassName"
       role="dialog"
@@ -68,7 +63,7 @@ exports[`<Dialog/> Portal should render correctly. 1`] = `
             "Foo 2",
           ]
         }
-        isOpen={false}
+        isOpen={true}
         onRequestClose={[Function]}
         style="wide"
         theme={

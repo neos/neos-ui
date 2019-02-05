@@ -21,7 +21,7 @@ export function * watchSelectPreset() {
         while (true) { // eslint-disable-line no-constant-condition
             yield take(actionTypes.CR.ContentDimensions.SELECT_PRESET);
             const targetDimensions = yield select(selectors.CR.ContentDimensions.active);
-            const currentContentCanvasNode = yield select(selectors.CR.Nodes.currentContentCanvasNodeSelector);
+            const currentContentCanvasNode = yield select(selectors.CR.Nodes.documentNodeSelector);
             const currentContentCanvasNodeIdentifier = $get('identifier', currentContentCanvasNode);
 
             const informationAboutNodeInTargetDimension = yield call(ensureNodeInSelectedDimension, {
@@ -73,7 +73,7 @@ function * ensureNodeInSelectedDimension({nodeIdentifier, sourceDimensions, targ
         nodeContextPath,
         numberOfNodesMissingOnRootline
     } = yield getSingleNode(nodeIdentifier, {
-        dimensions: targetDimensions.toJS(),
+        dimensions: targetDimensions,
         workspaceName: currentWorkspaceName
     });
 
@@ -95,8 +95,8 @@ function * ensureNodeInSelectedDimension({nodeIdentifier, sourceDimensions, targ
         const {nodeFrontendUri, nodeContextPath} = yield adoptNodeToOtherDimension({
             identifier: nodeIdentifier,
             workspaceName: currentWorkspaceName,
-            targetDimensions: targetDimensions.toJS(),
-            sourceDimensions: sourceDimensions.toJS(),
+            targetDimensions,
+            sourceDimensions,
             copyContent
         });
 

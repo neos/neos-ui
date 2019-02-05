@@ -74,7 +74,11 @@ setup: check-requirements install build
 
 
 # TODO: figure out how to pass a parameter to other targets to reduce redundancy
+build-subpackages:
+	$(lerna) run build --concurrency 1
+
 build:
+	make build-subpackages
 	NEOS_BUILD_ROOT=$(shell pwd) $(webpack) --progress --colors
 
 build-watch:
@@ -86,6 +90,7 @@ build-watch-poll:
 
 # clean anything before building for production just to be sure
 build-production:
+	make build-subpackages
 	$(cross-env) NODE_ENV=production NEOS_BUILD_ROOT=$(shell pwd) \
 		$(webpack) --progress --colors
 
@@ -106,7 +111,7 @@ test:
 
 test-e2e:
 	yarn run testcafe chrome:headless Tests/IntegrationTests/* \
-		--selector-timeout=30000 --assertion-timeout=30000
+		--selector-timeout=1000 --assertion-timeout=30000
 
 lint: lint-js lint-editorconfig
 
@@ -118,7 +123,7 @@ lint-editorconfig:
 	$(editorconfigChecker) \
 		--exclude-regexp 'LICENSE|\.vanilla\-css$$|banner\.js$$' \
 		--exclude-pattern \
-		'./{README.md,**/*.snap,**/*{fontAwesome,Resources}/**/*}'
+		'./{README.md,**/*.snap,**/*{fontAwesome,Resources,dist}/**/*}'
 
 
 ################################################################################

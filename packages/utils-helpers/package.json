@@ -1,13 +1,12 @@
 {
   "name": "@neos-project/utils-helpers",
-  "version": "1.4.1",
+  "version": "2.0.3-beta",
   "description": "Helper functions for Neos CMS UI.",
   "private": true,
-  "main": "./src/index.js",
+  "main": "./src/index.ts",
   "scripts": {
-    "prebuild": "check-dependencies && yarn clean",
-    "test": "yarn jest -- -w 2 --coverage",
-    "test:watch": "yarn jest -- --watch",
+    "test": "yarn jest -w 2 --coverage",
+    "test:watch": "yarn jest --watch",
     "build": "exit 0",
     "build:watch": "exit 0",
     "clean": "rimraf ./lib ./dist",
@@ -15,9 +14,9 @@
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "1.4.1",
-    "@neos-project/build-essentials": "1.4.1",
-    "@neos-project/jest-preset-neos-ui": "1.4.1"
+    "@neos-project/babel-preset-neos-ui": "2.0.3-beta",
+    "@neos-project/build-essentials": "2.0.3-beta",
+    "@neos-project/jest-preset-neos-ui": "2.0.3-beta"
   },
   "license": "GNU GPLv3",
   "jest": {

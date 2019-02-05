@@ -16,8 +16,6 @@ use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\Property\PropertyMappingConfigurationInterface;
 use Neos\Flow\Property\TypeConverter\AbstractTypeConverter;
 use Neos\Media\TypeConverter\ImageInterfaceArrayPresenter;
-use Neos\Media\TypeConverter\ImageInterfaceJsonSerializer;
-use Neos\Neos\Ui\Fusion\Helper\ActivationHelper;
 
 /**
  * Chooses the right converter to provide image data to the user interface
@@ -41,14 +39,7 @@ class UiDependentImageSerializer extends AbstractTypeConverter
      */
     public function convertFrom($source, $targetType, array $convertedChildProperties = [], PropertyMappingConfigurationInterface $configuration = null)
     {
-        $activationHelper = $this->objectManager->get(ActivationHelper::class);
-
         $innerConverter = $this->objectManager->get(ImageInterfaceArrayPresenter::class);
-        if ($activationHelper->isLegacyBackendEnabled()) {
-            // Old UI is active so we need to deliver the JSON as string.
-            $innerConverter = $this->objectManager->get(ImageInterfaceJsonSerializer::class);
-        }
-
         return $innerConverter->convertFrom($source, $targetType, $convertedChildProperties, $configuration);
     }
 }

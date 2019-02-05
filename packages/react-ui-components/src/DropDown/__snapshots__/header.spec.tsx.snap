@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ShallowDropDownHeader/> should render correctly. 1`] = `
+<div
+  aria-haspopup="true"
+  className="baseDropDownHeaderClassName baseDropDownHeaderWithChevronClassName"
+  onClick={[MockFunction]}
+  role="button"
+>
+  Foo children
+  <ThemedIcon
+    className="baseDropDownHeaderChevronClassName"
+    color="default"
+    composeTheme="deeply"
+    icon="chevron-down"
+    mapThemrProps={[Function]}
+    padded="none"
+  />
+</div>
+`;

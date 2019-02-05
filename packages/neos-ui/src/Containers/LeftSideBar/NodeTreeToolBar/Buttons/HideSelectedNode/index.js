@@ -8,7 +8,7 @@ export default class HideSelectedNode extends PureComponent {
         className: PropTypes.string,
         id: PropTypes.string,
 
-        focusedNodeContextPath: PropTypes.string.isRequired,
+        focusedNodeContextPath: PropTypes.string,
         isDisabled: PropTypes.bool.isRequired,
         isHidden: PropTypes.bool.isRequired,
 

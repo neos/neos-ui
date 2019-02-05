@@ -15,9 +15,13 @@ use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Domain\Service\ContextFactoryInterface;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ActionController;
+use Neos\Flow\Mvc\Exception\StopActionException;
+use Neos\Flow\Mvc\Exception\UnsupportedRequestTypeException;
+use Neos\Flow\Mvc\Routing\Exception\MissingActionNameException;
 use Neos\Flow\Mvc\View\ViewInterface;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Flow\ResourceManagement\ResourceManager;
+use Neos\Flow\Session\Exception\SessionNotStartedException;
 use Neos\Flow\Session\SessionInterface;
 use Neos\Fusion\View\FusionView;
 use Neos\Neos\Controller\Backend\MenuHelper;
@@ -27,6 +31,7 @@ use Neos\Neos\Domain\Service\ContentContext;
 use Neos\Neos\Service\BackendRedirectionService;
 use Neos\Neos\Service\UserService;
 use Neos\Neos\Ui\Domain\Service\StyleAndJavascriptInclusionService;
+use Neos\Neos\Ui\Service\NodeClipboard;
 
 class BackendController extends ActionController
 {
@@ -103,7 +108,7 @@ class BackendController extends ActionController
 
     /**
      * @Flow\Inject
-     * @var NodeClipboardInterface
+     * @var NodeClipboard
      */
     protected $clipboard;
 
@@ -117,11 +122,13 @@ class BackendController extends ActionController
      *
      * @param NodeInterface $node The node that will be displayed on the first tab
      * @return void
+     * @throws StopActionException
+     * @throws UnsupportedRequestTypeException
+     * @throws MissingActionNameException
+     * @throws \ReflectionException
      */
     public function indexAction(NodeInterface $node = null)
     {
-        $this->session->start();
-        $this->session->putData('__neosLegacyUiEnabled__', false);
         $user = $this->userService->getBackendUser();
 
         if ($user === null) {
@@ -148,26 +155,8 @@ class BackendController extends ActionController
     }
 
     /**
-     * Deactivates the new UI and redirects back to the old one
-     *
-     * @param NodeInterface|null $node
-     * @return void
-     */
-    public function deactivateAction(NodeInterface $node = null)
-    {
-        if ($node === null) {
-            $node = $this->findNodeToEdit();
-        }
-
-        $this->session->start();
-        $this->session->putData('__neosLegacyUiEnabled__', true);
-
-        $this->redirect('show', 'Frontend\Node', 'Neos.Neos', ['node' => $node]);
-    }
-
-    /**
      * @param NodeInterface $node
-     * @throws \Neos\Flow\Mvc\Exception\StopActionException
+     * @throws StopActionException
      */
     public function redirectToAction(NodeInterface $node)
     {
@@ -194,6 +183,7 @@ class BackendController extends ActionController
 
     /**
      * @return NodeInterface|null
+     * @throws \ReflectionException
      */
     protected function findNodeToEdit()
     {

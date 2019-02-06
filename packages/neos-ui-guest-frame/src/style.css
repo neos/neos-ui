@@ -1,9 +1,9 @@
 .markHoveredNodeAsHovered {
-    outline-offset: .5em;
+    outline-offset: 10px;
     outline: 2px solid rgba(#000, .2);
 }
 .markHiddenNodeAsHidden {
-    opacity: .5;
+    opacity: .3;
 }
 
 .addEmptyContentCollectionOverlay {
@@ -13,7 +13,7 @@
 }
 
 .markActiveNodeAsFocused--focusedNode {
-    outline-offset: .5em;
+    outline-offset: 10px;
     outline: 2px solid var(--colors-PrimaryBlue);
 }
 
@@ -27,7 +27,7 @@
 }
 
 :global([data-neos-inline-editor-is-initialized]:hover) {
-    outline-offset: .3em;
+    outline-offset: 5px;
     outline: 2px dashed var(--colors-PrimaryBlue);
 }
 

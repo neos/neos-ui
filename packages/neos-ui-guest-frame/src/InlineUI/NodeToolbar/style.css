@@ -2,9 +2,10 @@
     position: absolute;
     background: var(--colors-ContrastDarker);
     z-index: var(--zIndex-NodeToolBar);
-    border-radius: 3px;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.2);
-    margin: 0 5px;
+    margin: -2px 5px 0 5px;
+    border: 2px solid var(--colors-PrimaryBlue);
+    border-bottom: 0;
+    transition: var(--transition-Fast) margin;
 }
 .toolBar__btnGroup {
     &:before,
@@ -26,15 +27,6 @@
     svg {
         width: 1em;
     }
-
-    &:first-child {
-        border-top-left-radius: 2px;
-        border-bottom-left-radius: 2px;
-    }
-    &:last-child {
-        border-top-right-radius: 2px;
-        border-bottom-right-radius: 2px;
-    }
 }
 
 .toolBar--isHidden {
@@ -44,6 +36,8 @@
 .toolBar--isSticky {
     position: fixed;
     top: 0!important;
+    margin-top: 5px;
+    border-bottom: 2px solid var(--colors-PrimaryBlue);
 }
 
 .toolBar--isBlurred {

@@ -17,7 +17,7 @@
     }
 }
 .textInput::-webkit-input-placeholder {
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Noto Sans', sans-serif;
     font-weight: normal;
     color: var(--colors-ContrastBright);
 }

@@ -189,7 +189,7 @@ export default class ImageEditor extends Component {
     handleThumbnailClicked = () => {
         const {secondaryEditorsRegistry} = this.props;
         const {component: MediaDetailsScreen} = secondaryEditorsRegistry.get('Neos.Neos/Inspector/Secondary/Editors/MediaDetailsScreen');
-        const imageIdentity = $get('__identity', this.props.value);
+        const imageIdentity = $get('originalAsset.__identity', this.props.value) || $get('__identity', this.props.value);
 
         if (imageIdentity) {
             this.props.renderSecondaryInspector('IMAGE_MEDIA_DETAILS', () => <MediaDetailsScreen onClose={this.handleCloseSecondaryScreen} imageIdentity={imageIdentity}/>);

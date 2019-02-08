@@ -166,7 +166,13 @@ class MultiSelectBox extends PureComponent {
     handleNewValueSelected = value => {
         const {onValuesChange} = this.props;
         const values = this.props.values || [];
-        const updatedValues = [...values, value];
+        let updatedValues;
+        if (Array.isArray(values)) {
+            updatedValues = [...values, value];
+        } else {
+            console.error('MultiSelectBox received an invalid value, invalid value will be discarded', values);
+            updatedValues = [value];
+        }
 
         onValuesChange(updatedValues);
     };

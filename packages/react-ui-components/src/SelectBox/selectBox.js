@@ -251,7 +251,13 @@ export default class SelectBox extends PureComponent {
         // Compare selected value less strictly: allow loose comparision and deep equality of objects
         const selectedOption = options.find(option => optionValueAccessor(option) == value || isEqual(optionValueAccessor(option), value)); // eslint-disable-line eqeqeq
 
-        if (displaySearchBox && (!value || plainInputMode)) {
+        if (
+            displaySearchBox && (
+                !value ||
+                this.state.isExpanded ||
+                plainInputMode
+            )
+        ) {
             return (
                 <SelectBox_HeaderWithSearchInput
                     {...this.props}
@@ -300,8 +306,6 @@ export default class SelectBox extends PureComponent {
         let isExpanded;
         if (this.props.displaySearchBox) {
             if (this.props.value) {
-                // When click on header in search mode with value selected, clear it
-                this.props.onValueChange('');
                 isExpanded = true;
             } else {
                 // Force expanded dropdown unless has showDropDownToggle (e.g. for nodetypes filter in the PageTree)

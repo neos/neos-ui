@@ -9,10 +9,12 @@ describe('<CheckBox/>', () => {
         isChecked: false,
         theme: {
             checkbox: 'checkboxClassName',
+            checkbox__checked: 'checkedClassName',
             checkbox__disabled: 'disabledClassName',
             checkbox__input: 'inputClassName',
             checkbox__inputMirror: 'inputMirrorClassName',
             'checkbox__inputMirror--active': 'inputMirrorActiveClassName',
+            checkbox__icon: 'checkboxIconClassName',
         }
     };
 

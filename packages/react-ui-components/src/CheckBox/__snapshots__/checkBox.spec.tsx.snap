@@ -11,6 +11,14 @@ exports[`<CheckBox/> should render correctly. 1`] = `
     onChange={[Function]}
     type="checkbox"
   />
+  <ThemedIcon
+    className="checkboxIconClassName"
+    color="default"
+    composeTheme="deeply"
+    icon="check"
+    mapThemrProps={[Function]}
+    padded="none"
+  />
   <div
     className="inputMirrorClassName"
   />

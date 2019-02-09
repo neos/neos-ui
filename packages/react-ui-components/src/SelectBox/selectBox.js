@@ -251,7 +251,13 @@ export default class SelectBox extends PureComponent {
         // Compare selected value less strictly: allow loose comparision and deep equality of objects
         const selectedOption = options.find(option => optionValueAccessor(option) == value || isEqual(optionValueAccessor(option), value)); // eslint-disable-line eqeqeq
 
-        if (displaySearchBox && (this.state.isExpanded || plainInputMode)) {
+        if (
+            displaySearchBox && (
+                !value ||
+                this.state.isExpanded ||
+                plainInputMode
+            )
+        ) {
             return (
                 <SelectBox_HeaderWithSearchInput
                     {...this.props}

@@ -1,5 +1,6 @@
 .dropzone {
     border: none;
+    background: var(--colors-ContrastDarkest);
 }
 
 .dropzone--isActive {
@@ -13,14 +14,17 @@
 .thumbnail {
     position: relative;
     border: 1px dashed var(--colors-ContrastNeutral);
+    border-radius: 2px;
     margin-bottom: calc(var(--spacing-Full) - var(--spacing-Quarter));
     height: 216px;
     overflow: hidden;
     cursor: pointer;
+    background: var(--colors-ContrastDarkest);
 }
 
 .thumbnail__overlay {
     transition: var(--transition-Default) background-color ease-out;
+    border-radius: 2px;
 }
 
 .thumbnail:hover > .thumbnail__overlay {
@@ -68,6 +72,10 @@
 
 .cropArea__image {
     position: absolute;
+    background-color: #fff;
+    background-size: 10px 10px;
+    background-position: 0 0, 25px 25px;
+    background-image: linear-gradient(45deg, #cccccc 25%, transparent 25%, transparent 75%, #cccccc 75%, #cccccc), linear-gradient(45deg, #cccccc 25%, transparent 25%, transparent 75%, #cccccc 75%, #cccccc);
 }
 
 .cropArea__image--placeholder {

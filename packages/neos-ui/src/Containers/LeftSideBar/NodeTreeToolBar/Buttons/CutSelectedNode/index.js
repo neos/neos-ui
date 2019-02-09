@@ -32,7 +32,7 @@ export default class CutSelectedNode extends PureComponent {
                 isActive={isActive}
                 onClick={this.handleClick}
                 icon="cut"
-                hoverStyle="clean"
+                hoverStyle="brand"
                 title={i18nRegistry.translate('cut')}
                 />
         );

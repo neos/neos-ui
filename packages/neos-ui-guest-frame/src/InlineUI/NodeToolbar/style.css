@@ -2,6 +2,10 @@
     position: absolute;
     background: var(--colors-ContrastDarker);
     z-index: var(--zIndex-NodeToolBar);
+    margin: -2px 5px 0 5px;
+    border: 2px solid var(--colors-PrimaryBlue);
+    border-bottom: 0;
+    transition: var(--transition-Fast) margin;
 }
 .toolBar__btnGroup {
     &:before,
@@ -32,6 +36,8 @@
 .toolBar--isSticky {
     position: fixed;
     top: 0!important;
+    margin-top: 5px;
+    border-bottom: 2px solid var(--colors-PrimaryBlue);
 }
 
 .toolBar--isBlurred {

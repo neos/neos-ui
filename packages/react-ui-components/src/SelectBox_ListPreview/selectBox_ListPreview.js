@@ -49,7 +49,7 @@ class SelectBox_ListPreview extends PureComponent {
                 {searchTermLeftToType > 0 ? (
                     <div className={theme.selectBox__item}>
                         <SelectBox_Option_SingleLine
-                            option={{label: `${searchBoxLeftToTypeLabel && searchBoxLeftToTypeLabel.replace('###CHARACTERS###', searchTermLeftToType)}`, icon: 'ellipsis-h'}}
+                            option={{label: `${searchBoxLeftToTypeLabel && searchBoxLeftToTypeLabel.replace('###CHARACTERS###', searchTermLeftToType)}`}}
                             key={'___leftToType'}
                             />
                     </div>

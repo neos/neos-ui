@@ -2,8 +2,9 @@
     display: flex;
     width: 100%;
     position: relative;
-    background: var(--colors-ContrastNeutral);
+    background: var(--colors-ContrastDarkest);
     border-bottom: 1px solid var(--colors-ContrastDarker);
+    border-radius: 2px;
 
     &:hover {
         .selectedOptions__itemIcon {
@@ -23,7 +24,33 @@
     border-right: 1px solid var(--colors-ContrastDarker);
     overflow: hidden;
     width: 100%;
+
+    > div {
+        box-shadow: none !important;
+    }
 }
 .selectedOption__removeButton {
     height: auto;
+    background: var(--colors-ContrastNeutral);
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+}
+.selectedOption__moveButton {
+    cursor: move;
+    height: auto;
+    width: 20px;
+    min-width: 20px;
+    color: var(--colors-ContrastDark);
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+    border-right: 1px solid var(--colors-ContrastDarker);
+
+    svg {
+        color: var(--colors-ContrastDark);
+    }
+
+    &:hover,
+    &:focus {
+        background: var(--colors-ContrastDark);
+    }
 }

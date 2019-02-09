@@ -111,7 +111,7 @@ test:
 
 test-e2e:
 	yarn run testcafe chrome:headless Tests/IntegrationTests/* \
-		--selector-timeout=1000 --assertion-timeout=30000
+		--selector-timeout=10000 --assertion-timeout=30000
 
 lint: lint-js lint-editorconfig
 

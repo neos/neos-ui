@@ -38,6 +38,7 @@ export default class MenuToggler extends PureComponent {
         const {className, isMenuHidden, i18nRegistry} = this.props;
         const isMenuVisible = !isMenuHidden;
         const classNames = mergeClassNames({
+            [style.menuToggler]: true,
             [style['menuToggler--isActive']]: isMenuVisible,
             [className]: className && className.length
         });

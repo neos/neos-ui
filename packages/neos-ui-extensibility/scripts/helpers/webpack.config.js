@@ -48,6 +48,8 @@ module.exports = function (neosPackageJson) {
             alias: {
                 'react': '@neos-project/neos-ui-extensibility/src/shims/vendor/react/index',
                 'react-dom': '@neos-project/neos-ui-extensibility/src/shims/vendor/react-dom/index',
+                'react-dnd': '@neos-project/neos-ui-extensibility/src/shims/vendor/react-dnd/index',
+                'react-dnd-html5-backend': '@neos-project/neos-ui-extensibility/src/shims/vendor/react-dnd-html5-backend/index',
                 'prop-types': '@neos-project/neos-ui-extensibility/src/shims/vendor/prop-types/index',
                 'plow-js': '@neos-project/neos-ui-extensibility/src/shims/vendor/plow-js/index',
                 'classnames': '@neos-project/neos-ui-extensibility/src/shims/vendor/classnames/index',

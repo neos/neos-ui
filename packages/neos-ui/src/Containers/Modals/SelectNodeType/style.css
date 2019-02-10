@@ -1,9 +1,10 @@
 .nodeType {
-    width: calc(100% / 3);
+    width: calc(100% / 6);
     text-align: left;
     display: flex;
     flex-direction: row;
     position: relative;
+    padding: 1px;
 
     &:hover {
         button {
@@ -22,9 +23,9 @@
 }
 
 .nodeType__iconWrapper {
-    width: 2em;
-    display: inline-block;
+    display: block;
     text-align: center;
+    margin: var(--spacing-Half);
 }
 .nodeType__icon {
     color: var(--colors-PrimaryBlue);
@@ -34,8 +35,12 @@
     }
 }
 .nodeType__item {
-    text-align: left;
+    text-align: center;
     flex-grow: 1;
+    height: auto;
+    padding: var(--spacing-Half);
+    background: var(--colors-ContrastNeutral);
+    border-radius: 2px;
 }
 .nodeType__helpIcon {
     flex-grow: 0;
@@ -76,10 +81,11 @@
 }
 /* TODO: refactor such typography things to Headline component */
 .groupHeader {
-    border-bottom: 1px solid var(--colors-ContrastDark);
+    border-top: 1px solid var(--colors-ContrastDark);
 }
 .groupTitle {
-    color: var(--colors-ContrastBrighter);
+    color: var(--colors-ContrastBrightest);
+    font-weight: bold !important;
     line-height: 1.2;
     font-weight: normal;
 }
@@ -87,7 +93,8 @@
     display: flex;
     width: 100%;
     flex-wrap: wrap;
-    padding: 0 !important;
+    padding: var(--spacing-Full) !important;
+    padding-top: 0 !important;
 }
 
 .nodeTypeDialogHeader {

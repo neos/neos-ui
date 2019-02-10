@@ -85,9 +85,8 @@
 }
 .groupTitle {
     color: var(--colors-ContrastBrightest);
-    font-weight: bold !important;
     line-height: 1.2;
-    font-weight: normal;
+    font-weight: bold;
 }
 .groupContents {
     display: flex;

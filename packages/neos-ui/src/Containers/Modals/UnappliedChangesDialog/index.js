@@ -95,8 +95,8 @@ export default class UnappliedChangesDialog extends PureComponent {
         return (
             <Button
                 id="neos-UnappliedChangesDialog-resume"
-                style="lighter"
-                hoverStyle="brand"
+                style="warn"
+                hoverStyle="warn"
                 onClick={this.handleResume}
                 className={`${style.button} ${style.resumeButton}`}
                 >
@@ -111,8 +111,8 @@ export default class UnappliedChangesDialog extends PureComponent {
         return (
             <Button
                 id="neos-UnappliedChangesDialog-apply"
-                style="warn"
-                hoverStyle="warn"
+                style="success"
+                hoverStyle="success"
                 disabled={isApplyDisabled}
                 onClick={this.handleApply}
                 className={`${style.button} ${style.publishButton}`}

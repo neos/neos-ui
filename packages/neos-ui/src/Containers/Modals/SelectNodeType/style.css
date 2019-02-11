@@ -101,7 +101,7 @@
     justify-content: space-between;
     padding-left: var(--spacing-Full);
     padding-right: var(--spacing-Full);
-    background: var(--colors-ContrastNeutral);
+    padding-bottom: var(--spacing-Full);
 }
 
 .nodeTypeDialogHeader__filter {

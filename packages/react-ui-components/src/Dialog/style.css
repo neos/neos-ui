@@ -58,6 +58,7 @@
 .dialog__actions {
     composes: reset from './../reset.css';
     text-align: right;
+    margin-top: var(--spacing-Full);
 }
 .dialog__actions > * {
     margin-left: 2px;

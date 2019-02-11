@@ -86,6 +86,7 @@ export default class UnappliedChangesDialog extends PureComponent {
                 onClick={this.handleDiscard}
                 className={`${style.button} ${style.discardButton}`}
                 >
+                <Icon icon="ban" className={style.buttonIcon}/>
                 <I18n id="Neos.Neos:Main:content.inspector.unappliedChangesDialog.button.danger"/>
             </Button>
         );
@@ -117,6 +118,7 @@ export default class UnappliedChangesDialog extends PureComponent {
                 onClick={this.handleApply}
                 className={`${style.button} ${style.publishButton}`}
                 >
+                <Icon icon="check" className={style.buttonIcon}/>
                 <I18n id="Neos.Neos:Main:content.inspector.unappliedChangesDialog.button.success"/>
             </Button>
         );

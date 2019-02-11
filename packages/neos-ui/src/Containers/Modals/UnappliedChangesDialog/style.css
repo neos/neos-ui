@@ -7,3 +7,6 @@
 .discardButton {
     margin-left: 0;
 }
+.buttonIcon {
+    margin-right: var(--spacing-Half);
+}

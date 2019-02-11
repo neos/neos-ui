@@ -99,10 +99,12 @@
 .nodeTypeDialogHeader {
     display: flex;
     justify-content: space-between;
+    padding-left: var(--spacing-Full);
+    padding-right: var(--spacing-Full);
+    background: var(--colors-ContrastNeutral);
 }
 
 .nodeTypeDialogHeader__filter {
-    margin-right: var(--spacing-GoldenUnit);
     display: flex;
     align-items: center;
 }

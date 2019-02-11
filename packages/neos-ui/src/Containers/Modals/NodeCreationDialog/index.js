@@ -143,8 +143,8 @@ export default class NodeCreationDialog extends PureComponent {
             <Button
                 id="neos-NodeCreationDialog-CreateNew"
                 key="save"
-                style="lighter"
-                hoverStyle="brand"
+                style="success"
+                hoverStyle="success"
                 onClick={this.handleApply}
                 disabled={validationErrors && isDirty}
                 >
@@ -167,6 +167,7 @@ export default class NodeCreationDialog extends PureComponent {
                 actions={[this.renderBackAction(), this.renderSaveAction()]}
                 title={this.renderTitle()}
                 onRequestClose={this.handleCancel}
+                type="success"
                 isOpen
                 style="wide"
                 id="neos-NodeCreationDialog"

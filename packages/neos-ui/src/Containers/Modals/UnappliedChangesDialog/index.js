@@ -74,6 +74,7 @@ export default class UnappliedChangesDialog extends PureComponent {
                         />
                 }
                 onRequestClose={this.handleResume}
+                type="warn"
                 isOpen
                 id="neos-UnappliedChangesDialog"
                 >

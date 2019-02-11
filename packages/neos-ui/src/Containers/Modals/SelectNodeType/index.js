@@ -161,21 +161,11 @@ export default class SelectNodeType extends PureComponent {
     }
 
     renderSelectNodeTypeDialogHeader() {
-        const {insertMode, filterSearchTerm} = this.state;
-        const {allowedSiblingNodeTypes, allowedChildNodeTypes} = this.props;
-
         return (
-            <div className={style.nodeTypeDialogHeader} key="nodeTypeDialogHeader">
-                <InsertModeSelector
-                    mode={insertMode}
-                    onSelect={this.handleModeChange}
-                    enableAlongsideModes={Boolean(allowedSiblingNodeTypes.length)}
-                    enableIntoMode={Boolean(allowedChildNodeTypes.length)}
-                    />
-                <NodeTypeFilter
-                    filterSearchTerm={filterSearchTerm}
-                    onChange={this.handleNodeTypeFilterChange}
-                    />
+            <div>
+                <span className={style.modalTitle}>
+                    <I18n fallback="Create new" id="createNew"/>
+                </span>
             </div>
         );
     }
@@ -195,7 +185,8 @@ export default class SelectNodeType extends PureComponent {
     }
 
     render() {
-        const {isOpen} = this.props;
+        const {insertMode, filterSearchTerm} = this.state;
+        const {isOpen, allowedSiblingNodeTypes, allowedChildNodeTypes} = this.props;
 
         if (!isOpen || this.skipNodeTypeDialogIfPossible()) {
             return null;
@@ -210,6 +201,18 @@ export default class SelectNodeType extends PureComponent {
                 style="wide"
                 id="neos-SelectNodeTypeDialog"
                 >
+                <div className={style.nodeTypeDialogHeader} key="nodeTypeDialogHeader">
+                    <InsertModeSelector
+                        mode={insertMode}
+                        onSelect={this.handleModeChange}
+                        enableAlongsideModes={Boolean(allowedSiblingNodeTypes.length)}
+                        enableIntoMode={Boolean(allowedChildNodeTypes.length)}
+                        />
+                    <NodeTypeFilter
+                        filterSearchTerm={filterSearchTerm}
+                        onChange={this.handleNodeTypeFilterChange}
+                        />
+                </div>
                 {this.getAllowedNodeTypesByCurrentInsertMode().map((group, key) => (
                     <div key={key}>
                         <NodeTypeGroupPanel

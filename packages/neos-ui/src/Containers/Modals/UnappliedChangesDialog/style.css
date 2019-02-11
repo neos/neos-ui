@@ -11,17 +11,3 @@
     width: 100%;
     text-align: center;
 }
-.discardButton {
-    background: var(--colors-Warn) !important;
-
-    &:hover {
-        background: var(--colors-WarnHover) !important;
-    }
-}
-.publishButton {
-    background: var(--colors-Success) !important;
-
-    &:hover {
-        background: var(--colors-SuccessHover) !important;
-    }
-}

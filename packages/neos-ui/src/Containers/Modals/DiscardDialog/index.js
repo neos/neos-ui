@@ -71,6 +71,7 @@ export default class DiscardDialog extends PureComponent {
                 hoverStyle="error"
                 onClick={this.handleConfirm}
                 >
+                <Icon icon="ban" className={style.buttonIcon}/>
                 <I18n id="Neos.Neos:Main:confirm" fallback="Confirm"/>
             </Button>
         );

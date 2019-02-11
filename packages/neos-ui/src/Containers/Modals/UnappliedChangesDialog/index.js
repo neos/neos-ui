@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 
+import Icon from '@neos-project/react-ui-components/src/Icon/';
 import Dialog from '@neos-project/react-ui-components/src/Dialog/';
 import Button from '@neos-project/react-ui-components/src/Button/';
 import I18n from '@neos-project/neos-ui-i18n';
@@ -58,8 +59,71 @@ export default class UnappliedChangesDialog extends PureComponent {
         apply();
     };
 
+    renderTitle() {
+        return (
+            <div>
+                <Icon icon="exclamation-triangle"/>
+                <span className={style.modalTitle}>
+                    <I18n
+                        id="Neos.Neos:Main:content.inspector.unappliedChangesDialog.header"
+                        fallback="You still have changes. What do you want to do with them?"
+                        />
+                </span>
+            </div>
+
+        );
+    }
+
+    renderDiscard() {
+        const {isDiscardDisabled} = this.props;
+
+        return (
+            <Button
+                id="neos-UnappliedChangesDialog-discard"
+                style="error"
+                hoverStyle="error"
+                disabled={isDiscardDisabled}
+                onClick={this.handleDiscard}
+                className={`${style.button} ${style.discardButton}`}
+                >
+                <I18n id="Neos.Neos:Main:content.inspector.unappliedChangesDialog.button.danger"/>
+            </Button>
+        );
+    }
+
+    renderResume() {
+        return (
+            <Button
+                id="neos-UnappliedChangesDialog-resume"
+                style="lighter"
+                hoverStyle="brand"
+                onClick={this.handleResume}
+                className={`${style.button} ${style.resumeButton}`}
+                >
+                <I18n id="Neos.Neos:Main:content.inspector.unappliedChangesDialog.button.default"/>
+            </Button>
+        );
+    }
+
+    renderApply() {
+        const {isApplyDisabled} = this.props;
+
+        return (
+            <Button
+                id="neos-UnappliedChangesDialog-apply"
+                style="warn"
+                hoverStyle="warn"
+                disabled={isApplyDisabled}
+                onClick={this.handleApply}
+                className={`${style.button} ${style.publishButton}`}
+                >
+                <I18n id="Neos.Neos:Main:content.inspector.unappliedChangesDialog.button.success"/>
+            </Button>
+        );
+    }
+
     render() {
-        const {shouldAppear, isDiscardDisabled, isApplyDisabled} = this.props;
+        const {shouldAppear} = this.props;
 
         if (!shouldAppear) {
             return null;
@@ -67,47 +131,18 @@ export default class UnappliedChangesDialog extends PureComponent {
 
         return (
             <Dialog
-                title={
-                    <I18n
-                        id="Neos.Neos:Main:content.inspector.unappliedChangesDialog.header"
-                        fallback="You still have changes. What do you want to do with them?"
-                        />
-                }
+                actions={[this.renderDiscard(), this.renderResume(), this.renderApply()]}
+                title={this.renderTitle()}
                 onRequestClose={this.handleResume}
                 type="warn"
                 isOpen
                 id="neos-UnappliedChangesDialog"
                 >
                 <div className={style.modalContents}>
-                    <Button
-                        id="neos-UnappliedChangesDialog-discard"
-                        style="warn"
-                        hoverStyle="warn"
-                        disabled={isDiscardDisabled}
-                        onClick={this.handleDiscard}
-                        className={`${style.button} ${style.discardButton}`}
-                        >
-                        <I18n id="Neos.Neos:Main:content.inspector.unappliedChangesDialog.button.danger"/>
-                    </Button>
-                    <Button
-                        id="neos-UnappliedChangesDialog-resume"
-                        style="lighter"
-                        hoverStyle="brand"
-                        onClick={this.handleResume}
-                        className={`${style.button} ${style.resumeButton}`}
-                        >
-                        <I18n id="Neos.Neos:Main:content.inspector.unappliedChangesDialog.button.default"/>
-                    </Button>
-                    <Button
-                        id="neos-UnappliedChangesDialog-apply"
-                        style="success"
-                        hoverStyle="success"
-                        disabled={isApplyDisabled}
-                        onClick={this.handleApply}
-                        className={`${style.button} ${style.publishButton}`}
-                        >
-                        <I18n id="Neos.Neos:Main:content.inspector.unappliedChangesDialog.button.success"/>
-                    </Button>
+                    <I18n
+                        id="Neos.Neos:Main:content.inspector.unappliedChangesDialog.header"
+                        fallback="You still have changes. What do you want to do with them?"
+                        />
                 </div>
             </Dialog>
         );

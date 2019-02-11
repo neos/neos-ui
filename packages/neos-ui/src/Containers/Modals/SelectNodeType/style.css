@@ -18,6 +18,22 @@
     }
 }
 
+@media (max-width: 992px) {
+    .nodeType {
+        width: calc(100% / 4);
+    }
+}
+@media (max-width: 768px) {
+    .nodeType {
+        width: calc(100% / 3);
+    }
+}
+@media (max-width: 576px) {
+    .nodeType {
+        width: calc(100% / 2);
+    }
+}
+
 .nodeType__toolTip {
     top: 40px;
 }

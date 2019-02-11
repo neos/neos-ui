@@ -3,7 +3,6 @@ import toJson from 'enzyme-to-json';
 import React from 'react';
 import {Portal} from 'react-portal';
 
-import IconButton from '../IconButton';
 import DialogWithEscape, {DialogProps, DialogWithoutEscape} from './dialog';
 
 describe('<Dialog/>', () => {
@@ -64,15 +63,5 @@ describe('<Dialog/>', () => {
 
         expect(wrapper.html().includes('Foo 1')).toBeTruthy();
         expect(wrapper.html().includes('Foo 2')).toBeTruthy();
-    });
-
-    it('should call the "onRequestClose" prop when clicking on the "IconButtonComponent" component.', () => {
-        const onRequestClose = jest.fn();
-        const wrapper = shallow(<DialogWithoutEscape {...props} onRequestClose={onRequestClose}/>);
-        const btn = wrapper.find(IconButton);
-
-        btn.simulate('click');
-
-        expect(onRequestClose.mock.calls.length).toBe(1);
     });
 });

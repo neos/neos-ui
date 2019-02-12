@@ -41,20 +41,17 @@
 .nodeType__iconWrapper {
     display: block;
     text-align: center;
-    margin: var(--spacing-Half);
+    margin-top: var(--spacing-Quarter);
+    margin-bottom: var(--spacing-Half);
 }
 .nodeType__icon {
-    color: var(--colors-PrimaryBlue);
-
-    .nodeType:hover & {
-        color: var(--colors-ContrastBrightest);
-    }
+    color: var(--colors-ContrastBrightest);
 }
 .nodeType__item {
     text-align: center;
     flex-grow: 1;
     height: auto;
-    padding: var(--spacing-Half);
+    padding: var(--spacing-Full);
     background: var(--colors-ContrastNeutral);
     border-radius: 2px;
 }

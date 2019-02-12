@@ -429,6 +429,40 @@
   dependencies:
     lodash.upperfirst "^4.3.0"
 
+"@neos-project/build-essentials@*":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@neos-project/build-essentials/-/build-essentials-2.1.0.tgz#a922ba0f2a3fd95b1530f143b3c7ff93fa60b155"
+  integrity sha512-3ugdJvTV+bID5apz/WRNHgpHxHqCq7JrwQ38C17an4cmDyJIParPZt0g/ppqjbmYlW2kVcDR7UcE1pK3sXdk5Q==
+  dependencies:
+    "@ckeditor/ckeditor5-dev-utils" "^9.0"
+    babel-core "^6.13.2"
+    babel-eslint "^7.1.1"
+    babel-loader "^7.1.2"
+    check-dependencies "^1.0.1"
+    cpx "^1.3.1"
+    cross-env "^5.1.3"
+    eslint "^5.3.0"
+    extract-text-webpack-plugin "^3.0.2"
+    lodash.upperfirst "^4.3.0"
+    postcss-css-variables "^0.9.0"
+    postcss-hexrgba "^1.0.0"
+    postcss-import "^11.0.0"
+    postcss-loader "^2.0.10"
+    postcss-nested "^3.0.0"
+    rimraf "^2.5.4"
+    stylelint "^9.3.0"
+    ts-jest "^23.10.5"
+    ts-loader "^3"
+    tslib "^1.9.3"
+    tslint "^5.11.0"
+    tslint-config-prettier "^1.15.0"
+    tslint-react "^3.6.0"
+    typescript "^3.2.2"
+    url-loader "^1.0.1"
+    watch "^1.0.2"
+    webpack "^3.8.1"
+    webpack-livereload-plugin "^1.0.0"
+
 "@neos-project/eslint-config-neos@^2.2.0":
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/@neos-project/eslint-config-neos/-/eslint-config-neos-2.2.0.tgz#d0ce9ecce72fc096fd88550e5b23d0aab48c75c0"
@@ -770,12 +804,6 @@
 "@types/ramda@^0.25.38":
   version "0.25.38"
   resolved "https://registry.yarnpkg.com/@types/ramda/-/ramda-0.25.38.tgz#6c945fcc91a5fa470cc3c5a4cd4a62d7f8d03576"
-
-"@types/react-click-outside@^3.0.2":
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/@types/react-click-outside/-/react-click-outside-3.0.2.tgz#9d1d1362c7dc339c60b358a50f83ec0c531819b7"
-  dependencies:
-    "@types/react" "*"
 
 "@types/react-close-on-escape@^3.0.0":
   version "3.0.0"
@@ -5795,7 +5823,7 @@ hoist-non-react-statics@1.x.x, hoist-non-react-statics@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-1.2.0.tgz#aa448cf0986d55cc40773b17174b7dd066cb7cfb"
 
-hoist-non-react-statics@^2.1.1, hoist-non-react-statics@^2.3.1, hoist-non-react-statics@^2.5.0:
+hoist-non-react-statics@^2.3.1, hoist-non-react-statics@^2.5.0:
   version "2.5.5"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.5.tgz#c5903cf409c0dfd908f388e619d86b9c1174cb47"
 
@@ -9693,12 +9721,6 @@ react-addons-create-fragment@^15.5.3:
     fbjs "^0.8.4"
     loose-envify "^1.3.1"
     object-assign "^4.1.0"
-
-react-click-outside@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/react-click-outside/-/react-click-outside-3.0.1.tgz#6e77e84d2f17afaaac26dbad743cbbf909f5e24c"
-  dependencies:
-    hoist-non-react-statics "^2.1.1"
 
 react-close-on-escape@^2.0.0:
   version "2.0.0"

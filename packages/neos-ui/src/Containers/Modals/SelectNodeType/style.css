@@ -10,11 +10,6 @@
         button {
             background-color: var(--colors-PrimaryBlue);
         }
-
-        .nodeType__helpIcon {
-            background-color: var(--colors-PrimaryBlue);
-            border-left: 1px solid var(--colors-ContrastDark);
-        }
     }
 }
 
@@ -54,9 +49,22 @@
     padding: var(--spacing-Full);
     background: var(--colors-ContrastNeutral);
     border-radius: 2px;
+    position: relative;
 }
 .nodeType__helpIcon {
-    flex-grow: 0;
+    display: block;
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    min-width: 24px;
+    width: 24px;
+    height: 24px;
+    border-radius: 2px;
+
+    &:hover {
+        background-color: var(--colors-ContrastDarker) !important;
+    }
+
     &:focus {
         outline: none;
     }
@@ -65,14 +73,16 @@
 .helpMessage__wrapper {
     position: relative;
     width: 100%;
-    background-color: var(--colors-ContrastDark);
     clear: right;
+    margin-top: var(--spacing-Half);
 }
 
 .helpMessage {
-    background-color: var(--colors-ContrastDark);
-    border-top: 1px solid var(--colors-ContrastDark);
+    background-color: var(--colors-ContrastDarkest);
     padding: var(--spacing-Full);
+    border-radius: 2px;
+    margin: 1px;
+    position: relative;
 }
 
 .helpMessage__label {
@@ -83,7 +93,7 @@
     position: absolute;
     right: 1px;
     top: 1px;
-    background-color: var(--colors-ContrastDark);
+    background-color: transparent;
 }
 
 .helpThumbnail {

@@ -63,6 +63,9 @@
 .dialog__actions > * {
     margin-left: 2px;
 }
+.dialog__closeBtn {
+    display: none;
+}
 .dialog__backDrop {
     composes: reset from './../reset.css';
     position: absolute;

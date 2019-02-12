@@ -8,6 +8,16 @@ exports[`<Dialog/> Content should render correctly. 1`] = `
   <div
     className="contentsClassName"
   >
+    <ThemedIconButton
+      className="closeBtnClassName"
+      composeTheme="deeply"
+      hoverStyle="clean"
+      icon="times"
+      mapThemrProps={[Function]}
+      onClick={[Function]}
+      size="regular"
+      style="clean"
+    />
     <div
       className="titleClassName"
     >
@@ -43,7 +53,6 @@ exports[`<Dialog/> Portal should render correctly. 1`] = `
   <Portal>
     <section
       className="dialogClassName wideClassName errorClassName"
-      onRequestClose={[Function]}
       role="dialog"
       tabIndex={0}
     >

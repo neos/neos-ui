@@ -12,19 +12,18 @@
 :global #appContainer ::-webkit-scrollbar,
 :global #appContainer ~ * ::-webkit-scrollbar,
 :global body::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 4px;
+    height: 4px;
 }
 :global #appContainer ::-webkit-scrollbar-track,
 :global #appContainer ~ * ::-webkit-scrollbar-track,
 :global body::-webkit-scrollbar-track {
-    background-color: var(--colors-ContrastDark);
+    background-color: transparent;
 }
 :global #appContainer ::-webkit-scrollbar-thumb,
 :global #appContainer ~ * ::-webkit-scrollbar-thumb,
 :global body::-webkit-scrollbar-thumb {
-    background-color: var(--colors-ContrastDarker);
-    border: 1px solid var(--colors-ContrastDark);
+    background-color: var(--colors-PrimaryBlue);
 }
 :global #appContainer ::-webkit-scrollbar-corner,
 :global #appContainer ~ * ::-webkit-scrollbar-corner,

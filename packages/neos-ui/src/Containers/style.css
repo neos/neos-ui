@@ -23,7 +23,7 @@
 :global #appContainer ::-webkit-scrollbar-thumb,
 :global #appContainer ~ * ::-webkit-scrollbar-thumb,
 :global body::-webkit-scrollbar-thumb {
-    background-color: var(--colors-PrimaryBlue);
+    background-color: var(--colors-ContrastBright);
 }
 :global #appContainer ::-webkit-scrollbar-corner,
 :global #appContainer ~ * ::-webkit-scrollbar-corner,

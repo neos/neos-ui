@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Neos\Neos\Ui\Service;
 
 use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Log\SystemLoggerInterface;
 use Neos\Flow\Validation\Validator\ValidatorInterface;
 
 /**
@@ -21,6 +22,12 @@ use Neos\Flow\Validation\Validator\ValidatorInterface;
  */
 class NodePropertyValidationService
 {
+
+    /**
+     * @Flow\Inject
+     * @var SystemLoggerInterface
+     */
+    protected $logger;
 
     /**
      * @param $value
@@ -45,16 +52,18 @@ class NodePropertyValidationService
      * @param array $validatorConfiguration
      * @return ValidatorInterface|null
      */
-    protected function resolveValidator(string $validatorName, array $validatorConfiguration): ?ValidatorInterface
+    protected function resolveValidator(string $validatorName, array $validatorConfiguration)
     {
         $nameParts = explode('/', $validatorName);
         if (!$nameParts[0] === 'Neos.Neos') {
+            $this->logger->log(sprintf('The custom frontend property validator %s" is used. This property is not validated in the backend.', $validatorName), LOG_INFO);
             return null;
         }
 
         $fullQualifiedValidatorClassName = '\\Neos\\Flow\\Validation\\Validator\\' . end($nameParts);
 
         if (!class_exists($fullQualifiedValidatorClassName)) {
+            $this->logger->log(sprintf('Could not find a backend validator fitting to the frontend validator "%s"', $validatorName), LOG_WARNING);
             return null;
         }
 

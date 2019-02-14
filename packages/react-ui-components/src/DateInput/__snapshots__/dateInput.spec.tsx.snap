@@ -96,7 +96,7 @@ exports[`<DateInput/> should render correctly. 1`] = `
       composeTheme="deeply"
       hoverStyle="brand"
       isActive={false}
-      isDisabled={false}
+      disabled={false}
       isFocused={false}
       mapThemrProps={[Function]}
       onClick={[Function]}
@@ -206,7 +206,7 @@ exports[`<DateInput/> should set "utc" on DatePickerComponent if "dateOnly" prop
       composeTheme="deeply"
       hoverStyle="brand"
       isActive={false}
-      isDisabled={false}
+      disabled={false}
       isFocused={false}
       mapThemrProps={[Function]}
       onClick={[Function]}

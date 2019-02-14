@@ -105,7 +105,7 @@ export default class ReloginDialog extends PureComponent {
                         style="brand"
                         hoverStyle="brand"
                         onClick={this.handleTryLogin}
-                        isDisabled={this.state.isLoading}
+                        disabled={this.state.isLoading}
                         className={style.loginButton}
                         >
                         {this.state.isLoading ?

@@ -143,7 +143,7 @@ export default class NodeTreeToolBar extends PureComponent {
                         i18nRegistry={i18nRegistry}
                         className={style.toolBar__btnGroup__btn}
                         focusedNodeContextPath={focusedNodeContextPath}
-                        isDisabled={!isAllowedToAddChildOrSiblingNodes}
+                        disabled={!isAllowedToAddChildOrSiblingNodes}
                         onClick={this.handleAddNode}
                         id={`neos-${treeType}-AddNode`}
                         />
@@ -151,7 +151,7 @@ export default class NodeTreeToolBar extends PureComponent {
                         i18nRegistry={i18nRegistry}
                         className={style.toolBar__btnGroup__btn}
                         focusedNodeContextPath={focusedNodeContextPath}
-                        isDisabled={destructiveOperationsAreDisabled || !canBeEdited || !visibilityCanBeToggled}
+                        disabled={destructiveOperationsAreDisabled || !canBeEdited || !visibilityCanBeToggled}
                         isHidden={isHidden}
                         onHide={this.handleHideNode}
                         onShow={this.handleShowNode}
@@ -163,7 +163,7 @@ export default class NodeTreeToolBar extends PureComponent {
                         focusedNodeContextPath={focusedNodeContextPath}
                         onClick={this.handleCopyNode}
                         isActive={isCopied}
-                        isDisabled={destructiveOperationsAreDisabled}
+                        disabled={destructiveOperationsAreDisabled}
                         id={`neos-${treeType}-CopySelectedNode`}
                         />
                     <CutSelectedNode
@@ -171,7 +171,7 @@ export default class NodeTreeToolBar extends PureComponent {
                         className={style.toolBar__btnGroup__btn}
                         focusedNodeContextPath={focusedNodeContextPath}
                         isActive={isCut}
-                        isDisabled={destructiveOperationsAreDisabled || !canBeEdited}
+                        disabled={destructiveOperationsAreDisabled || !canBeEdited}
                         onClick={this.handleCutNode}
                         id={`neos-${treeType}-CutSelectedNode`}
                         />
@@ -179,7 +179,7 @@ export default class NodeTreeToolBar extends PureComponent {
                         i18nRegistry={i18nRegistry}
                         className={style.toolBar__btnGroup__btn}
                         focusedNodeContextPath={focusedNodeContextPath}
-                        isDisabled={!canBePasted}
+                        disabled={!canBePasted}
                         onClick={this.handlePasteNode}
                         id={`neos-${treeType}-PasteClipBoardNode`}
                         />
@@ -187,7 +187,7 @@ export default class NodeTreeToolBar extends PureComponent {
                         i18nRegistry={i18nRegistry}
                         className={style.toolBar__btnGroup__btn}
                         focusedNodeContextPath={focusedNodeContextPath}
-                        isDisabled={destructiveOperationsAreDisabled || !canBeDeleted || !canBeEdited}
+                        disabled={destructiveOperationsAreDisabled || !canBeDeleted || !canBeEdited}
                         onClick={this.handleDeleteNode}
                         id={`neos-${treeType}-DeleteSelectedNode`}
                         />

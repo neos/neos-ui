@@ -81,7 +81,7 @@ export default class UnappliedChangesDialog extends PureComponent {
                     <Button
                         id="neos-UnappliedChangesDialog-discard"
                         style="lighter"
-                        disabled={isDiscardDisabled}
+                        isDisabled={isDiscardDisabled}
                         onClick={this.handleDiscard}
                         className={`${style.button} ${style.discardButton}`}
                         >
@@ -98,7 +98,7 @@ export default class UnappliedChangesDialog extends PureComponent {
                     <Button
                         id="neos-UnappliedChangesDialog-apply"
                         style="lighter"
-                        disabled={isApplyDisabled}
+                        isDisabled={isApplyDisabled}
                         onClick={this.handleApply}
                         className={`${style.button} ${style.publishButton}`}
                         >

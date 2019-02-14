@@ -233,13 +233,13 @@ export const getPathInNode = (state: GlobalState, contextPath: NodeContextPath, 
     return $get(propertyPath, node);
 };
 
-export const makeGetAllowedChildNodeTypesSelector = (nodeTypesRegistry: NodeTypesRegistry, elevator: (id: string) => string | null = id => id) => createSelector(
+export const makeGetAllowedChildNodeTypesSelector = (nodeTypesRegistry: NodeTypesRegistry, elevator: (id: string, state: GlobalState) => string | null = id => id) => createSelector(
     [
         (state: GlobalState, {reference}: {reference: NodeContextPath | null, role: string}) => {
             if (reference === null) {
                 return null;
             }
-            const elevatedReference = elevator(reference);
+            const elevatedReference = elevator(reference, state);
             if (elevatedReference) {
                 return $get(['cr', 'nodes', 'byContextPath', elevatedReference], state) || null;
             }
@@ -249,9 +249,9 @@ export const makeGetAllowedChildNodeTypesSelector = (nodeTypesRegistry: NodeType
             if (reference === null) {
                 return null;
             }
-            const parentReference = parentNodeContextPath(reference);
+            const parentReference = getPathInNode(state, reference, 'parent');
             if (parentReference !== null) {
-                const elevatedReferenceParent = elevator(parentReference);
+                const elevatedReferenceParent = elevator(parentReference, state);
                 if (elevatedReferenceParent !== null) {
                     return $get(['cr', 'nodes', 'byContextPath', elevatedReferenceParent], state) || null;
                 }
@@ -275,7 +275,8 @@ export const makeGetAllowedChildNodeTypesSelector = (nodeTypesRegistry: NodeType
 );
 
 export const makeGetAllowedSiblingNodeTypesSelector = (nodeTypesRegistry: NodeTypesRegistry) =>
-    makeGetAllowedChildNodeTypesSelector(nodeTypesRegistry, parentNodeContextPath);
+    makeGetAllowedChildNodeTypesSelector(nodeTypesRegistry, (nodeContextPath, state) => getPathInNode(state, nodeContextPath, 'parent'));
+
 
 export const makeIsAllowedToAddChildOrSiblingNodes = (nodeTypesRegistry: NodeTypesRegistry) => createSelector(
     [

@@ -55,7 +55,7 @@ class NodePropertyValidationService
     protected function resolveValidator(string $validatorName, array $validatorConfiguration)
     {
         $nameParts = explode('/', $validatorName);
-        if (!$nameParts[0] === 'Neos.Neos') {
+        if ($nameParts[0] !== 'Neos.Neos') {
             $this->logger->log(sprintf('The custom frontend property validator %s" is used. This property is not validated in the backend.', $validatorName), LOG_INFO);
             return null;
         }

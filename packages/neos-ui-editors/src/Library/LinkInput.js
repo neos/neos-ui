@@ -48,7 +48,8 @@ export default class LinkInput extends PureComponent {
             targetBlank: PropTypes.bool,
             relNofollow: PropTypes.bool,
             assets: PropTypes.bool,
-            nodes: PropTypes.bool
+            nodes: PropTypes.bool,
+            startingPoint: PropTypes.string
         }),
         setFocus: PropTypes.bool,
         linkValue: PropTypes.string,
@@ -66,7 +67,9 @@ export default class LinkInput extends PureComponent {
         }).isRequired,
 
         contextForNodeLinking: PropTypes.shape({
-            toJS: PropTypes.func.isRequired
+            workspaceName: PropTypes.string.isRequired,
+            contextNode: PropTypes.string,
+            dimensions: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.string))
         }).isRequired
     };
 
@@ -80,11 +83,17 @@ export default class LinkInput extends PureComponent {
     };
 
     getDataLoaderOptions() {
+        const contextForNodeLinking = $get('options.startingPoint', this.props) ?
+            Object.assign({}, this.props.contextForNodeLinking, {
+                contextNode: this.props.options.startingPoint
+            }) :
+            this.props.contextForNodeLinking;
         return {
             nodeTypes: $get('options.nodeTypes', this.props) || ['Neos.Neos:Document'],
             asset: $get('options.assets', this.props),
             node: $get('options.nodes', this.props),
-            contextForNodeLinking: this.props.contextForNodeLinking.toJS()
+            startingPoint: $get('options.startingPoint', this.props),
+            contextForNodeLinking
         };
     }
 
@@ -266,7 +275,7 @@ export default class LinkInput extends PureComponent {
         return (
             <Fragment>
                 <div className={style.linkInput__optionWrapper} onClick={this.handleSwitchToEditMode} role="button">
-                    {this.state.isLoading ? <Icon icon="spinner" className={style.linkInput__loader} spin={true} size="lg" /> : this.renderLinkOption()}
+                    {this.state.isLoading ? <div className={style.linkInput__loaderWrapper}><Icon icon="spinner" className={style.linkInput__loader} spin={true} size="lg" /></div> : this.renderLinkOption()}
                 </div>
                 <IconButton
                     className={style.linkInput__innerButton}

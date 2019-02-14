@@ -22,8 +22,7 @@ module.exports = merge(
                 './polyfills.js',
                 'react',
                 'react-redux',
-                'plow-js',
-                'immutable'
+                'plow-js'
             ]
         },
 

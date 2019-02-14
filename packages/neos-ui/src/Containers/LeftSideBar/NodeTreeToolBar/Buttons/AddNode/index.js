@@ -8,7 +8,7 @@ export default class AddNode extends PureComponent {
         className: PropTypes.string,
         id: PropTypes.string,
         onClick: PropTypes.func.isRequired,
-        focusedNodeContextPath: PropTypes.string.isRequired,
+        focusedNodeContextPath: PropTypes.string,
         isDisabled: PropTypes.bool.isRequired,
         i18nRegistry: PropTypes.object.isRequired
     };
@@ -30,7 +30,7 @@ export default class AddNode extends PureComponent {
                     id={id}
                     icon="plus"
                     onClick={this.handleClick}
-                    hoverStyle="clean"
+                    hoverStyle="brand"
                     title={i18nRegistry.translate('createNew')}
                     />
             </span>

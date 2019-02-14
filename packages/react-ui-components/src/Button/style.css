@@ -75,6 +75,10 @@
 .btn--cleanHover:hover:enabled,
 .btn--cleanHover:hover:enabled i {
     color: var(--colors-PrimaryBlue);
+
+    svg {
+        color: var(--colors-PrimaryBlue);
+    }
 }
 .btn--darkenHover.btn--isPressed,
 .btn--darkenHover.btn--isPressed i,

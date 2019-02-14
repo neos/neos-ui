@@ -1,27 +1,26 @@
 {
   "name": "@neos-project/neos-ui-guest-frame",
-  "version": "1.4.1",
+  "version": "3.1.0",
   "description": "Guest frame initialization bindings",
   "private": true,
   "main": "./src/manifest.js",
   "scripts": {
-    "prebuild": "check-dependencies && yarn run clean",
-    "test": "yarn jest -- -w 2 --coverage",
+    "test": "yarn jest -w 2 --coverage",
     "test:watch": "yarn run jest -- --watch",
-    "build": "NEOS_BUILD_ROOT=$(pwd) webpack --progress --colors",
-    "build:watch": "yarn run build -- --watch",
+    "build": "exit 0",
+    "build:watch": "exit 0",
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src",
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "1.4.1",
-    "@neos-project/build-essentials": "1.4.1",
-    "@neos-project/jest-preset-neos-ui": "1.4.1"
+    "@neos-project/babel-preset-neos-ui": "3.1.0",
+    "@neos-project/build-essentials": "3.1.0",
+    "@neos-project/jest-preset-neos-ui": "3.1.0"
   },
   "dependencies": {
-    "@neos-project/neos-ui-extensibility": "1.4.1",
-    "@neos-project/utils-helpers": "1.4.1"
+    "@neos-project/neos-ui-extensibility": "3.1.0",
+    "@neos-project/utils-helpers": "3.1.0"
   },
   "license": "GNU GPLv3",
   "jest": {

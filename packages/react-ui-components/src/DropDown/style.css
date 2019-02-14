@@ -15,6 +15,7 @@
     font-size: var(--fontSize-Base);
     padding: 0 var(--spacing-Full);
     border: 0;
+    border-radius: 2px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -47,11 +48,10 @@
     z-index: var(--zIndex-DropdownContents-Context);
     display: none;
     width: 100%;
-    padding: 0;
     margin: 0;
     list-style: none;
     background: var(--colors-ContrastNeutral);
-    box-shadow: 1px 2px 5px var(--colors-ContrastDarker);
+    box-shadow: 0 5px 5px rgba(0, 0, 0, .2);
 }
 .dropDown__contents--scrollable {
     max-height: 80vh;

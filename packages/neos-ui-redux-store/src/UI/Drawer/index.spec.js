@@ -1,8 +1,6 @@
-import Immutable, {Map} from 'immutable';
-
 import {actionTypes as system} from '../../System/index';
 
-import {actionTypes, actions, reducer} from './index.js';
+import {actionTypes, actions, reducer} from './index';
 
 test(`should export actionTypes`, () => {
     expect(actionTypes).not.toBe(undefined);
@@ -23,72 +21,68 @@ test(`should export a reducer`, () => {
     expect(typeof (reducer)).toBe('function');
 });
 
-test(`The reducer should return an Immutable.Map as the initial state.`, () => {
-    const state = new Map({});
-    const nextState = reducer(state, {
-        type: system.INIT
+test(`The reducer should return a plain js object as the initial state.`, () => {
+    const nextState = reducer(undefined, {
+        type: system.INIT,
+        payload: {
+            ui: {
+                drawer: {}
+            }
+        }
     });
 
-    expect(nextState.get('ui').get('drawer') instanceof Map).toBe(true);
+    expect(typeof nextState).toBe('object');
 });
 
 test(`The "toggle" action should be able to reverse the value of the "isHidden" key.`, () => {
-    const state = Immutable.fromJS({
-        ui: {
-            drawer: {
-                isHidden: true
-            }
-        }
-    });
+    const state = {
+        isHidden: true
+    };
     const nextState1 = reducer(state, actions.toggle());
     const nextState2 = reducer(nextState1, actions.toggle());
 
-    expect(nextState1.get('ui').get('drawer').get('isHidden')).toBe(false);
-    expect(nextState2.get('ui').get('drawer').get('isHidden')).toBe(true);
+    expect(nextState1.isHidden).toBe(false);
+    expect(nextState2.isHidden).toBe(true);
 });
 
 test(`The "hide" action should set the "isHidden" key to "true".`, () => {
-    const state = Immutable.fromJS({
-        ui: {
-            drawer: {
-                isHidden: false
-            }
-        }
-    });
+    const state = {
+        isHidden: false
+    };
     const nextState1 = reducer(state, actions.hide());
     const nextState2 = reducer(nextState1, actions.hide());
 
-    expect(nextState1.get('ui').get('drawer').get('isHidden')).toBe(true);
-    expect(nextState2.get('ui').get('drawer').get('isHidden')).toBe(true);
+    expect(nextState1.isHidden).toBe(true);
+    expect(nextState2.isHidden).toBe(true);
 });
 
 test(`The reducer should initially mark the menu group "content" as collapsed.`, () => {
-    const state = new Map({});
-    const nextState = reducer(state, {
-        type: system.INIT
-    });
-
-    expect(nextState.get('ui').get('drawer').get('collapsedMenuGroups').includes('content')).toBe(true);
-});
-
-test(`The "toggleMenuGroup" action should add or remove given group from "collapsedMenuGroups".`, () => {
-    const state = Immutable.fromJS({
-        ui: {
-            drawer: {
-                collapsedMenuGroups: []
+    const nextState = reducer(undefined, {
+        type: system.INIT,
+        payload: {
+            ui: {
+                drawer: {}
             }
         }
     });
+
+    expect(nextState.collapsedMenuGroups.includes('content')).toBe(true);
+});
+
+test(`The "toggleMenuGroup" action should add or remove given group from "collapsedMenuGroups".`, () => {
+    const state = {
+        collapsedMenuGroups: []
+    };
     const nextState1 = reducer(state, actions.toggleMenuGroup('content'));
     const nextState2 = reducer(nextState1, actions.toggleMenuGroup('management'));
     const nextState3 = reducer(nextState2, actions.toggleMenuGroup('content'));
     const nextState4 = reducer(nextState3, actions.toggleMenuGroup('management'));
 
-    expect(nextState1.get('ui').get('drawer').get('collapsedMenuGroups').includes('content')).toBe(true);
-    expect(nextState2.get('ui').get('drawer').get('collapsedMenuGroups').includes('content')).toBe(true);
-    expect(nextState2.get('ui').get('drawer').get('collapsedMenuGroups').includes('management')).toBe(true);
-    expect(nextState3.get('ui').get('drawer').get('collapsedMenuGroups').includes('content')).toBe(false);
-    expect(nextState3.get('ui').get('drawer').get('collapsedMenuGroups').includes('management')).toBe(true);
-    expect(nextState4.get('ui').get('drawer').get('collapsedMenuGroups').includes('content')).toBe(false);
-    expect(nextState4.get('ui').get('drawer').get('collapsedMenuGroups').includes('management')).toBe(false);
+    expect(nextState1.collapsedMenuGroups.includes('content')).toBe(true);
+    expect(nextState2.collapsedMenuGroups.includes('content')).toBe(true);
+    expect(nextState2.collapsedMenuGroups.includes('management')).toBe(true);
+    expect(nextState3.collapsedMenuGroups.includes('content')).toBe(false);
+    expect(nextState3.collapsedMenuGroups.includes('management')).toBe(true);
+    expect(nextState4.collapsedMenuGroups.includes('content')).toBe(false);
+    expect(nextState4.collapsedMenuGroups.includes('management')).toBe(false);
 });

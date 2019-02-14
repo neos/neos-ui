@@ -1,16 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import Immutable from 'immutable';
 import * as plow from 'plow-js';
 import classnames from 'classnames';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import * as reactRedux from 'react-redux';
 import * as reduxActions from 'redux-actions';
 import * as reduxSaga from 'redux-saga';
 import * as reduxSagaEffects from 'redux-saga/effects';
 import * as reselect from 'reselect';
 import * as reactCssThemr from '@friendsofreactjs/react-css-themr';
+import * as ReactDND from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 
 import ReactUiComponents from '@neos-project/react-ui-components';
 import * as NeosUiReduxStore from '@neos-project/neos-ui-redux-store';
@@ -78,17 +78,17 @@ export default {
         React,
         ReactDOM,
         PropTypes,
-        Immutable,
         plow,
         classnames,
-        ImmutablePropTypes,
         reactRedux,
         reduxActions,
         reduxSaga,
         reduxSagaEffects,
         reselect,
         reactCssThemr,
-        CkEditor5
+        CkEditor5,
+        HTML5Backend,
+        ReactDND
     }),
 
     '@NeosProjectPackages': () => ({

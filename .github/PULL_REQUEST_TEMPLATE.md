@@ -1,5 +1,7 @@
 <!--
 Thanks for your contribution, we appreciate it!
+
+ATTENTION: ALL NEW PRs SHOULD TARGET 2.x BRANCH (unless they are not compatible with Neos 3.3)
 -->
 
 

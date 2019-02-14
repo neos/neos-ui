@@ -1,13 +1,13 @@
 {
   "name": "neos/neos-ui",
   "type": "neos-package",
-  "description": "NEOS CMS UI rewritten in React",
+  "description": "Neos CMS UI written in React",
   "license": [
     "GPL-3.0-or-later"
   ],
   "require": {
-    "neos/neos": "^3.3 || ^4.0 || dev-master",
-    "neos/neos-ui-compiled": "1.4.1 || master"
+    "neos/neos": "^4.0 || dev-master",
+    "neos/neos-ui-compiled": "self.version"
   },
   "autoload": {
     "psr-4": {

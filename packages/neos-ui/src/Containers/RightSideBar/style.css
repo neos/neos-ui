@@ -21,7 +21,7 @@
     right: 0;
     top: 41px;
     border-left: 1px solid var(--colors-ContrastDark);
-    background: var(--colors-ContrastDarker);
+    background: var(--colors-ContrastDark);
     transition: var(--transition-Default)  ease transform;
     will-change: transform;
 

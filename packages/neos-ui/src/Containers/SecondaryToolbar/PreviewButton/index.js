@@ -36,6 +36,7 @@ export default class PreviewButton extends PureComponent {
                     target="neosPreview"
                     className={previewButtonClassNames}
                     aria-label={i18nRegistry.translate('Neos.Neos:Main:showPreview', 'Show Preview')}
+                    title={i18nRegistry.translate('Neos.Neos:Main:showPreview', 'Show Preview')}
                     >
                     <Icon icon="external-link-alt"/>
                 </a>

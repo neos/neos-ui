@@ -56,10 +56,8 @@ export default class InspectorEditorEnvelope extends PureComponent {
         // nodeType needs to be read directly from node
         //
         const sourceValueRaw = id === '_nodeType' ? $get('nodeType', node) : $get(['properties', id], node);
-        const sourceValue = sourceValueRaw && sourceValueRaw.toJS ?
-            sourceValueRaw.toJS() : sourceValueRaw;
-        const transientValue = transientValueRaw && transientValueRaw.toJS ?
-            transientValueRaw.toJS() : transientValueRaw;
+        const sourceValue = sourceValueRaw;
+        const transientValue = transientValueRaw;
 
         return (
             <div className={style.wrap}>

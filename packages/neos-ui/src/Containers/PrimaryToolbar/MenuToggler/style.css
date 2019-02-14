@@ -1,3 +1,9 @@
+.menuToggler {
+    &:focus {
+        outline: 0;
+    }
+}
+
 .menuToggler--isActive {
     color: var(--colors-PrimaryBlue);
 }

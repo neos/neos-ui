@@ -24,7 +24,7 @@ export interface CheckBoxProps extends HTMLInputElementAttributesExceptOnChange 
     /**
      * This prop controls if the CheckBox is disabled or not.
      */
-    readonly isDisabled?: boolean;
+    readonly disabled?: boolean;
 
     /**
      * An optional `className` to attach to the wrapper.
@@ -46,7 +46,7 @@ class CheckBox extends PureComponent<CheckBoxProps> {
     public render(): JSX.Element {
         const {
             isChecked,
-            isDisabled,
+            disabled,
             className,
             theme,
             ...rest
@@ -56,7 +56,7 @@ class CheckBox extends PureComponent<CheckBoxProps> {
             theme.checkbox,
             {
                 [theme.checkbox__checked]: isChecked,
-                [theme.checkbox__disabled]: isDisabled,
+                [theme.checkbox__disabled]: disabled,
             }
         );
         const mirrorClassNames = mergeClassNames(
@@ -75,7 +75,7 @@ class CheckBox extends PureComponent<CheckBoxProps> {
                     checked={isChecked}
                     aria-checked={isChecked}
                     onChange={this.handleChange}
-                    disabled={isDisabled}
+                    disabled={disabled}
                     />
                 <Icon
                     className={theme.checkbox__icon}

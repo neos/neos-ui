@@ -58,7 +58,7 @@ const ResizeControls = props => {
                             onChange={toggleResizeAdjustment(props)}
                             isChecked={Boolean(props.resizeAdjustment)}
                             className={style.resizeControls__checkbox}
-                            isDisabled={props.disabled}
+                            disabled={props.disabled}
                             />
                     </span>
                     <span className={style.resizeControls__main}>
@@ -83,7 +83,7 @@ const ResizeControls = props => {
                             onChange={toggleResizeAdjustment(props)}
                             isChecked={Boolean(props.resizeAdjustment)}
                             className={style.resizeControls__checkbox}
-                            isDisabled={props.disabled}
+                            disabled={props.disabled}
                             />
                     </span>
                     <span className={style.resizeControls__main}>

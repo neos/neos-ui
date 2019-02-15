@@ -93,7 +93,7 @@ export default class InsertModeSelector extends PureComponent {
                 <ButtonGroup value={mode} onSelect={this.handleSelect}>
                     <IconButton
                         id={MODE_BEFORE}
-                        isDisabled={!enableAlongsideModes}
+                        disabled={!enableAlongsideModes}
                         style="lighter"
                         size="small"
                         icon="level-up-alt"
@@ -101,7 +101,7 @@ export default class InsertModeSelector extends PureComponent {
                         />
                     <IconButton
                         id={MODE_INTO}
-                        isDisabled={!enableIntoMode}
+                        disabled={!enableIntoMode}
                         style="lighter"
                         size="small"
                         icon="long-arrow-alt-right"
@@ -109,7 +109,7 @@ export default class InsertModeSelector extends PureComponent {
                         />
                     <IconButton
                         id={MODE_AFTER}
-                        isDisabled={!enableAlongsideModes}
+                        disabled={!enableAlongsideModes}
                         style="lighter"
                         size="small"
                         icon="level-down-alt"

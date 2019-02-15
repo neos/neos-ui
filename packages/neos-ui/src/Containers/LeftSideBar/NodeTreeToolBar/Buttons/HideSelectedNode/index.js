@@ -9,7 +9,7 @@ export default class HideSelectedNode extends PureComponent {
         id: PropTypes.string,
 
         focusedNodeContextPath: PropTypes.string,
-        isDisabled: PropTypes.bool.isRequired,
+        disabled: PropTypes.bool.isRequired,
         isHidden: PropTypes.bool.isRequired,
 
         onHide: PropTypes.func.isRequired,
@@ -30,14 +30,14 @@ export default class HideSelectedNode extends PureComponent {
     }
 
     render() {
-        const {className, id, isDisabled, isHidden, i18nRegistry} = this.props;
+        const {className, id, disabled, isHidden, i18nRegistry} = this.props;
 
         return (
             <IconButton
                 className={className}
                 id={id}
                 isActive={isHidden}
-                isDisabled={isDisabled}
+                disabled={disabled}
                 onClick={isHidden ? this.handleShow : this.handleHide}
                 icon="eye-slash"
                 hoverStyle="brand"

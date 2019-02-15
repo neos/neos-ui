@@ -60,11 +60,11 @@ describe('<IconButtonDropDown/>', () => {
         expect(btn.hasClass('baseBtnClassName')).toBeTruthy();
     });
 
-    it('should render a "ButtonComponent" component which reflects the "isDisabled" prop.', () => {
-        const wrapper = shallow(<IconButtonDropDown {...props} isDisabled={false}/>);
+    it('should render a "ButtonComponent" component which reflects the "disabled" prop.', () => {
+        const wrapper = shallow(<IconButtonDropDown {...props} disabled={false}/>);
         const btn = wrapper.find(Button);
 
-        expect(btn.prop('isDisabled')).toBe(false);
+        expect(btn.prop('disabled')).toBe(false);
     });
 
     it('should set the "isOpen" state to "true" when pressing the "ButtonComponent" for more than 200 ms.', () => {

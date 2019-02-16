@@ -14,8 +14,7 @@ import style from './style.css';
 }))
 export default class UserDropDown extends PureComponent {
     static propTypes = {
-        userName: PropTypes.string.isRequired,
-        neos: PropTypes.object.isRequired
+        userName: PropTypes.string.isRequired
     };
 
     render() {

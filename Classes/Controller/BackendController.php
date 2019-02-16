@@ -116,6 +116,7 @@ class BackendController extends ActionController
     /**
      * Displays the backend interface
      *
+     * @Flow\IgnoreValidation("$node")
      * @param NodeInterface $node The node that will be displayed on the first tab
      * @return void
      */

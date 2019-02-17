@@ -92,9 +92,6 @@ Neos:
 
           'CR.Nodes.unfocus': 'u n'
 
-        legacy:
-          enableUiSwitch: false
-
         defaultInlineEditor: 'ckeditor5'
 
       #################################

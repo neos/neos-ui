@@ -60,7 +60,7 @@ export default class LeftSideBar extends PureComponent {
 
         const ContentTreeToolbar = containerRegistry.get('LeftSideBar/ContentTreeToolbar');
 
-        const toggleIcon = isHidden ? 'angle-double-right' : 'angle-double-left';
+        const toggleIcon = isHidden ? 'chevron-circle-right' : 'chevron-circle-left';
         const toggle = isFullScreen ? null : (
             <IconButton
                 id="neos-LeftSideBarToggler"
@@ -87,8 +87,7 @@ export default class LeftSideBar extends PureComponent {
                     {!isHidden && LeftSideBarTop.map((Item, key) => <Item key={key} isExpanded={!isHiddenContentTree}/>)}
                 </div>
 
-                {/* Disable top border to get only a 1px combined border size */}
-                <hr style={{borderTop: 'none'}}/>
+                <hr className={style.hr}/>
 
                 <div className={bottomClassNames}>
                     <ContentTreeToolbar/>

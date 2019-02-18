@@ -1,10 +1,9 @@
 .toolBar {
     border-top: 1px solid var(--colors-ContrastDark);
     border-bottom: 1px solid var(--colors-ContrastDark);
-    &:first-child {
-        border-top: 0;
-    }
+    border-right: 1px solid var(--colors-ContrastDark);
     flex: 0 0 var(--spacing-GoldenUnit);
+    background: var(--colors-ContrastDarker);
 }
 .toolBar__btnGroup {
     &:before,

@@ -4,7 +4,9 @@ import mergeClassNames from 'classnames';
 import {connect} from 'react-redux';
 import {$transform, $get, $or} from 'plow-js';
 
-import {selectors} from '@neos-project/neos-ui-redux-store';
+import {actions, selectors} from '@neos-project/neos-ui-redux-store';
+
+import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 
 import SideBar from '@neos-project/react-ui-components/src/SideBar/';
 import {neos} from '@neos-project/neos-ui-decorators';
@@ -12,31 +14,40 @@ import {neos} from '@neos-project/neos-ui-decorators';
 import style from './style.css';
 
 @neos(globalRegistry => ({
-    containerRegistry: globalRegistry.get('containers')
+    containerRegistry: globalRegistry.get('containers'),
+    i18nRegistry: globalRegistry.get('i18n')
 }))
 @connect($transform({
-    isHidden: $or(
-        $get('ui.leftSideBar.isHidden'),
-        $get('ui.fullScreen.isFullScreen')
-    ),
+    isHidden: $get('ui.leftSideBar.isHidden'),
+    isFullScreen: $get('ui.fullScreen.isFullScreen'),
     isHiddenContentTree: $get('ui.leftSideBar.contentTree.isHidden'),
     siteNode: selectors.CR.Nodes.siteNodeSelector,
     documentNode: selectors.CR.Nodes.documentNodeSelector
-}))
+}), {
+    toggleSidebar: actions.UI.LeftSideBar.toggle
+})
 export default class LeftSideBar extends PureComponent {
     static propTypes = {
         containerRegistry: PropTypes.object.isRequired,
+        i18nRegistry: PropTypes.object.isRequired,
 
         isHidden: PropTypes.bool.isRequired,
-        isHiddenContentTree: PropTypes.bool.isRequired
+        isHiddenContentTree: PropTypes.bool.isRequired,
+        toggleSidebar: PropTypes.func.isRequired
     };
 
+    handleToggle = () => {
+        const {toggleSidebar} = this.props;
+
+        toggleSidebar();
+    }
+
     render() {
-        const {isHidden, isHiddenContentTree, containerRegistry} = this.props;
+        const {isHidden, isFullScreen, isHiddenContentTree, containerRegistry, i18nRegistry} = this.props;
 
         const classNames = mergeClassNames({
             [style.leftSideBar]: true,
-            [style['leftSideBar--isHidden']]: isHidden
+            [style['leftSideBar--isHidden']]: isHidden || isFullScreen
         });
 
         const bottomClassNames = mergeClassNames({
@@ -49,12 +60,29 @@ export default class LeftSideBar extends PureComponent {
 
         const ContentTreeToolbar = containerRegistry.get('LeftSideBar/ContentTreeToolbar');
 
+        const toggleIcon = isHidden ? 'angle-double-right' : 'angle-double-left';
+        const toggle = isFullScreen ? null : (
+            <IconButton
+                id="neos-LeftSideBarToggler"
+                icon={toggleIcon}
+                className={style.leftSideBar__toggleBtn}
+                hoverStyle="clean"
+                onClick={this.handleToggle}
+                title={i18nRegistry.translate('Neos.Neos:Main:navigate')}
+                />
+        );
+
         return (
             <SideBar
                 position="left"
                 className={classNames}
                 aria-hidden={isHidden ? 'true' : 'false'}
                 >
+                <div className={style.leftSideBar__header}>
+                    {toggle}
+                    {i18nRegistry.translate('Neos.Neos:Main:navigate')}
+                </div>
+
                 <div className={style.leftSideBar__top}>
                     {!isHidden && LeftSideBarTop.map((Item, key) => <Item key={key} isExpanded={!isHiddenContentTree}/>)}
                 </div>

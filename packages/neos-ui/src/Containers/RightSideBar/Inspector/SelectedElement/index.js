@@ -60,9 +60,6 @@ export default class SelectedElement extends PureComponent {
         return (
             <section className={sidebarStyle.rightSideBar__header}>
                 <Headline className={style.label}>
-                    <div className={style.iconWrapper}>
-                        <Icon icon="mouse-pointer"/>
-                    </div>
                     <span>
                         <I18n id="Neos.Neos:Main:content.inspector.inspectorView.selectedElement"/>
                     </span>

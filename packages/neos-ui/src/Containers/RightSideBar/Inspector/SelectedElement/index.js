@@ -58,7 +58,7 @@ export default class SelectedElement extends PureComponent {
         const {focusedNode, focusedNodeParentLine} = this.props;
 
         return (
-            <section className={sidebarStyle.rightSideBar__section}>
+            <section className={sidebarStyle.rightSideBar__header}>
                 <Headline className={style.label}>
                     <div className={style.iconWrapper}>
                         <Icon icon="mouse-pointer"/>

@@ -9,7 +9,7 @@ export default class PasteClipBoardNode extends PureComponent {
         id: PropTypes.string,
 
         focusedNodeContextPath: PropTypes.string,
-        isDisabled: PropTypes.bool.isRequired,
+        disabled: PropTypes.bool.isRequired,
 
         onClick: PropTypes.func.isRequired,
         i18nRegistry: PropTypes.object.isRequired
@@ -25,13 +25,13 @@ export default class PasteClipBoardNode extends PureComponent {
         const {
             className,
             id,
-            isDisabled,
+            disabled,
             i18nRegistry
         } = this.props;
 
         return (
             <IconButton
-                isDisabled={isDisabled}
+                disabled={disabled}
                 className={className}
                 id={id}
                 icon="paste"

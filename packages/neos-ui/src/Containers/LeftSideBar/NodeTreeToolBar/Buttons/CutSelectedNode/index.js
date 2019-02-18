@@ -8,7 +8,7 @@ export default class CutSelectedNode extends PureComponent {
         id: PropTypes.string,
 
         focusedNodeContextPath: PropTypes.string,
-        isDisabled: PropTypes.bool.isRequired,
+        disabled: PropTypes.bool.isRequired,
         isActive: PropTypes.bool.isRequired,
 
         onClick: PropTypes.func.isRequired,
@@ -22,13 +22,13 @@ export default class CutSelectedNode extends PureComponent {
     }
 
     render() {
-        const {className, id, isDisabled, isActive, i18nRegistry} = this.props;
+        const {className, id, disabled, isActive, i18nRegistry} = this.props;
 
         return (
             <IconButton
                 className={className}
                 id={id}
-                isDisabled={isDisabled}
+                disabled={disabled}
                 isActive={isActive}
                 onClick={this.handleClick}
                 icon="cut"

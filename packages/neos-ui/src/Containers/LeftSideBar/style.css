@@ -40,3 +40,25 @@
     flex: 0 0 var(--spacing-GoldenUnit);
     overflow-y: hidden;
 }
+.leftSideBar__toggleBtn {
+    width: 46px;
+    position: absolute!important;
+    left: 0;
+    top: 41px;
+    border: none;
+    background: var(--colors-ContrastDarkest);
+    transition: var(--transition-Default)  ease transform;
+    will-change: transform;
+
+    .leftSideBar--isHidden & {
+        transform: translateX(var(--size-SidebarWidth));
+    }
+}
+.leftSideBar__header {
+    height: 41px;
+    padding-left: 50px;
+    line-height: 40px;
+    font-weight: bold;
+    background: var(--colors-ContrastDarkest);
+    border-bottom: 1px solid var(--colors-ContrastDark);
+}

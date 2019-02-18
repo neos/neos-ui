@@ -17,7 +17,6 @@ import PrimaryToolbar from './Containers/PrimaryToolbar/index';
 import UserDropDown from './Containers/PrimaryToolbar/UserDropDown/index';
 import PublishDropDown from './Containers/PrimaryToolbar/PublishDropDown/index';
 import MenuToggler from './Containers/PrimaryToolbar/MenuToggler/index';
-import LeftSideBarToggler from './Containers/PrimaryToolbar/LeftSideBarToggler/index';
 import EditModePanelToggler from './Containers/PrimaryToolbar/EditModePanelToggler/index';
 
 import EditModePanel from './Containers/EditModePanel/index';
@@ -59,7 +58,6 @@ manifest('main.containers', {}, globalRegistry => {
 
     containerRegistry.set('PrimaryToolbar', PrimaryToolbar);
     containerRegistry.set('PrimaryToolbar/Left/MenuToggler', MenuToggler);
-    containerRegistry.set('PrimaryToolbar/Left/LeftSideBarToggler', LeftSideBarToggler);
     containerRegistry.set('PrimaryToolbar/Left/EditModePanelToggler', EditModePanelToggler);
     containerRegistry.set('PrimaryToolbar/Right/UserDropDown', UserDropDown);
     containerRegistry.set('PrimaryToolbar/Right/PublishDropDown', PublishDropDown);

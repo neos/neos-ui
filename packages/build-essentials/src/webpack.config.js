@@ -23,11 +23,6 @@ if (fs.existsSync(liveReloadOptionsFile) && fs.lstatSync(liveReloadOptionsFile).
     finalLiveReloadOptions = Object.assign({}, finalLiveReloadOptions, liveReloadOptions);
 }
 
-const extractCss = new ExtractTextPlugin({
-    publicPath: './../',
-    filename: 'Styles/[name].css'
-});
-
 const webpackConfig = {
     // https://github.com/webpack/docs/wiki/build-performance#sourcemaps
     devtool: 'source-map',
@@ -147,7 +142,6 @@ const webpackConfig = {
     },
 
     plugins: [
-        extractCss,
         new webpack.DefinePlugin({
             'process.env': {
                 NODE_ENV: JSON.stringify(process.env.NODE_ENV)

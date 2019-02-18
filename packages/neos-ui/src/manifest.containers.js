@@ -58,7 +58,7 @@ manifest('main.containers', {}, globalRegistry => {
 
     containerRegistry.set('PrimaryToolbar', PrimaryToolbar);
     containerRegistry.set('PrimaryToolbar/Left/MenuToggler', MenuToggler);
-    containerRegistry.set('PrimaryToolbar/Left/EditModePanelToggler', EditModePanelToggler);
+    containerRegistry.set('PrimaryToolbar/Right/EditModePanelToggler', EditModePanelToggler);
     containerRegistry.set('PrimaryToolbar/Right/UserDropDown', UserDropDown);
     containerRegistry.set('PrimaryToolbar/Right/PublishDropDown', PublishDropDown);
 

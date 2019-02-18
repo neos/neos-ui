@@ -257,8 +257,9 @@ export default class Inspector extends PureComponent {
                 }
                 <SelectedElement/>
                 <Tabs
+                    className={style.tabs}
                     theme={{
-                        tabs__content: style.tabs // eslint-disable-line camelcase
+                        tabs__content: style.tabsContent // eslint-disable-line camelcase
                     }}
                     >
                     {$get('tabs', viewConfiguration)

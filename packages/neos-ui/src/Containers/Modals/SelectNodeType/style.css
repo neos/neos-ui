@@ -59,10 +59,10 @@
     min-width: 24px;
     width: 24px;
     height: 24px;
-    border-radius: 2px;
+    opacity: .5;
 
     &:hover {
-        background-color: var(--colors-ContrastDarker) !important;
+        opacity: 1.0;
     }
 
     &:focus {

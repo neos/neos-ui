@@ -36,7 +36,7 @@ export default class PrimaryToolbar extends PureComponent {
                 {PrimaryToolbarLeft.map((Item, key) => <Item className={style.primaryToolbar__btn} key={key}/>)}
 
                 <div className={style.primaryToolbar__rightSidedActions}>
-                    {PrimaryToolbarRight.map((Item, key) => <Item key={key}/>)}
+                    {PrimaryToolbarRight.map((Item, key) => <Item className={style.primaryToolbar__btn} key={key}/>)}
                 </div>
             </Bar>
         );

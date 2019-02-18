@@ -4,6 +4,7 @@
     overflow: hidden;
 }
 .actions {
+    margin-left: var(--spacing-Half);
     border-top: 2px solid var(--colors-ContrastDarker);
     display: flex;
 }
@@ -19,7 +20,11 @@
         background: var(--colors-SuccessHover) !important;
     }
 }
-.tabs > div {
+.tabs {
+    margin-left: var(--spacing-Half);
+    border-left: 1px solid var(--colors-ContrastDark);
+}
+.tabsContent > div {
     height: 100%;
 }
 .unappliedChangesOverlay {

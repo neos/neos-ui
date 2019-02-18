@@ -5,7 +5,6 @@
 }
 .actions {
     margin-left: var(--spacing-Half);
-    border-top: 2px solid var(--colors-ContrastDarker);
     display: flex;
 }
 .discardButton,

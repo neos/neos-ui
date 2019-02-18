@@ -1,3 +1,9 @@
 .toggleBtn {
-    background: var(--colors-ContrastDark);
+    background: var(--colors-ContrastDarkest);
+    width: 46px;
+}
+.toggleLabel {
+    line-height: 40px;
+    font-weight: bold;
+    padding-left: 9px;
 }

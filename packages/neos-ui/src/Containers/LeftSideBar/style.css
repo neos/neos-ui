@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     flex-basis: 100%;
-
+    background: var(--colors-ContrastDarkest);
     padding-top: 41px;
     transition: var(--transition-Default) ease transform;
     will-change: transform;
@@ -26,6 +26,7 @@
     display: flex;
     flex-direction: column;
     min-height: 40px;
+    margin-right: var(--spacing-Half);
 }
 
 .leftSideBar__bottom {
@@ -34,6 +35,7 @@
     display: flex;
     flex-direction: column;
     min-height: 40px;
+    margin-right: var(--spacing-Half);
 }
 
 .leftSideBar__bottom--isCollapsed {
@@ -60,5 +62,10 @@
     line-height: 40px;
     font-weight: bold;
     background: var(--colors-ContrastDarkest);
-    border-bottom: 1px solid var(--colors-ContrastDark);
+}
+
+.hr {
+    height: var(--spacing-Half);
+    background: var(--colors-ContrastDarkest);
+    border: none;
 }

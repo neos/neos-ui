@@ -4,7 +4,6 @@ import {connect} from 'react-redux';
 import {$get} from 'plow-js';
 
 import Headline from '@neos-project/react-ui-components/src/Headline/';
-import Icon from '@neos-project/react-ui-components/src/Icon/';
 import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
 
 import I18n from '@neos-project/neos-ui-i18n';

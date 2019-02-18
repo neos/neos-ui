@@ -56,7 +56,7 @@
 }
 .leftSideBar__header {
     height: 41px;
-    padding-left: 50px;
+    padding-left: 55px;
     line-height: 40px;
     font-weight: bold;
     background: var(--colors-ContrastDarkest);

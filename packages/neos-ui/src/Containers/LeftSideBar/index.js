@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
 import {connect} from 'react-redux';
-import {$transform, $get, $or} from 'plow-js';
+import {$transform, $get} from 'plow-js';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 

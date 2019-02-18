@@ -43,7 +43,7 @@ export default class RightSideBar extends PureComponent {
             [style.rightSideBar]: true,
             [style['rightSideBar--isHidden']]: isSideBarHidden
         });
-        const toggleIcon = isHidden ? 'chevron-circle-left' : 'chevron-circle-right';
+        const toggleIcon = isHidden ? 'angle-double-left' : 'angle-double-right';
         const toggle = isFullScreen ? null : (
             <IconButton
                 id="neos-ToggleInspector"

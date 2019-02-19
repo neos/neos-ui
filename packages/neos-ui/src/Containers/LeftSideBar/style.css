@@ -30,7 +30,7 @@
 }
 
 .leftSideBar__bottom {
-    flex: 0 0 50%;
+    flex: 0 0 40%;
     transition: flex-basis var(--transition-Default), height var(--transition-Default), overflow-y var(--transition-Default);
     display: flex;
     flex-direction: column;

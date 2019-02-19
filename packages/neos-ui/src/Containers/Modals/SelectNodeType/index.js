@@ -195,7 +195,7 @@ export default class SelectNodeType extends PureComponent {
         return (
             <Dialog
                 actions={[this.renderCancelAction()]}
-                title={[this.renderSelectNodeTypeDialogHeader()]}
+                title={this.renderSelectNodeTypeDialogHeader()}
                 onRequestClose={this.handleCancel}
                 isOpen
                 style="wide"

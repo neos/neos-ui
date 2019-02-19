@@ -230,10 +230,12 @@ test('Discarding: delete a content node and then discard deletion', async t => {
 
 test('PageTree search and filter', async t => {
     subSection('Search the page tree');
+    const nodeTreeSearchToggler = ReactSelector('NodeTreeSearchBar IconButton');
     const nodeTreeSearchInput = ReactSelector('NodeTreeSearchInput');
     const nodeTreeFilter = ReactSelector('NodeTreeFilter');
     const shortcutFilter = ReactSelector('NodeTreeFilter').find('li').withText('Shortcut');
     await t
+        .click(nodeTreeSearchToggler)
         .typeText(nodeTreeSearchInput, 'Download')
         .expect(page.treeNode.withText('Download').count).eql(2, 'Two "Download" nodes should be found, on shortcut and one normal page')
         .expect(page.treeNode.withText('Try me').exists).notOk('Top level "Try me" page should be hidden ');
@@ -262,7 +264,7 @@ test('PageTree search and filter', async t => {
 
 test('Can toggle sidebars', async t => {
     subSection('LeftSideBar');
-    const leftSideBarToggler = ReactSelector('LeftSideBarToggler Button');
+    const leftSideBarToggler = Selector('#neos-LeftSideBarToggler');
     const leftSideBar = ReactSelector('LeftSideBar');
     await t
     .expect(leftSideBar.getReact(({props}) => props.isHidden)).eql(false)

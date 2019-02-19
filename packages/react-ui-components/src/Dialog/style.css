@@ -1,3 +1,10 @@
+@keyframes slideDialogContents {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-50%) scale(.9);
+    }
+}
+
 .dialog {
     composes: reset from './../reset.css';
     position: fixed;
@@ -13,11 +20,13 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%) scale(1);
     background: var(--colors-ContrastDarker);
     box-shadow: 0 20px 40px rgba(0, 0, 0, .4);
     border-radius: 0;
     outline: none;
+    opacity: 1;
+    animation: slideDialogContents .3s ease-in-out;
 }
 .dialog__contents {
     composes: reset from './../reset.css';

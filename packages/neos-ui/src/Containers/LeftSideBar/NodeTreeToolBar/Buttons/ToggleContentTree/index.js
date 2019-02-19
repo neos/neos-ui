@@ -37,7 +37,7 @@ export default class ToggleContentTree extends PureComponent {
                     aria-label={i18nRegistry.translate('Neos.Neos:Main:toggleContentTree', 'Toggle content tree')}
                     />
                 <span className={style.toggleLabel}>
-                    {i18nRegistry.translate('Neos.Neos:Main:toggleContentTree')}
+                    {i18nRegistry.translate('Neos.Neos.Ui:Main:Containers.LeftSideBar.ContentTree.heading')}
                 </span>
             </div>
         );

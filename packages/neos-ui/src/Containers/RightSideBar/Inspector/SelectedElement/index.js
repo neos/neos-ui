@@ -60,7 +60,7 @@ export default class SelectedElement extends PureComponent {
             <section className={sidebarStyle.rightSideBar__header}>
                 <Headline className={style.label}>
                     <span>
-                        <I18n id="Neos.Neos:Main:content.inspector.inspectorView.selectedElement"/>
+                        <I18n id="Neos.Neos.Ui:Main:Containers.RightSideBar.Inspector.heading"/>
                     </span>
                 </Headline>
                 <div className={style.content}>

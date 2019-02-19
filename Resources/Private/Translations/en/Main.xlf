@@ -191,6 +191,15 @@
 			<trans-unit id="searchBoxLeftToType" xml:space="preserve">
 				<source>Please enter ###CHARACTERS### more character</source>
 			</trans-unit>
+            <trans-unit id="Containers.LeftSideBar.DocumentTree.heading" xml:space="preserve">
+				<source>Document Tree</source>
+			</trans-unit>
+            <trans-unit id="Containers.LeftSideBar.ContentTree.heading" xml:space="preserve">
+				<source>Content Tree</source>
+			</trans-unit>
+            <trans-unit id="Containers.RightSideBar.Inspector.heading" xml:space="preserve">
+				<source>Element Inspector</source>
+			</trans-unit>
             <trans-unit id="Shortcut__Introduction" xml:space="preserve">
                 <source>
                     These are Keyboard-Shortcuts we are providing.

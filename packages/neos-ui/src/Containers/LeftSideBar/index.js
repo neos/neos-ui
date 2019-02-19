@@ -80,7 +80,7 @@ export default class LeftSideBar extends PureComponent {
                 >
                 <div className={style.leftSideBar__header}>
                     {toggle}
-                    {i18nRegistry.translate('Neos.Neos:Main:navigate')}
+                    {i18nRegistry.translate('Neos.Neos.Ui:Main:Containers.LeftSideBar.DocumentTree.heading')}
                 </div>
 
                 <div className={style.leftSideBar__top}>

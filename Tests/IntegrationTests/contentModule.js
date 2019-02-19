@@ -174,7 +174,7 @@ test('Discarding: create a content node and then discard it', async t => {
         .click(Selector('#neos-ContentTree-ToggleContentTree'))
         .click(page.treeNode.withText('Content Collection (main)'))
         .click(Selector('#neos-ContentTree-AddNode'))
-        .click(ReactSelector('NodeTypeItem').find('button>span').withText('Headline'));
+        .click(ReactSelector('NodeTypeItem').find('button>span>span').withText('Headline'));
     await waitForIframeLoading(t);
     await t
         .switchToIframe('[name="neos-content-main"]')
@@ -315,7 +315,7 @@ test('Can create content node from inside InlineUI', async t => {
         .click(Selector('button#into'))
         // TODO: this selector will only work with English translation.
         // Change to `withProps` when implemented: https://github.com/DevExpress/testcafe-react-selectors/issues/14
-        .click(ReactSelector('NodeTypeItem').find('button>span').withText('Headline'));
+        .click(ReactSelector('NodeTypeItem').find('button>span>span').withText('Headline'));
 
     subSection('Type something inside of it');
     await waitForIframeLoading(t);
@@ -391,7 +391,7 @@ test('Create an Image node from ContentTree', async t => {
         .click(Selector('#neos-ContentTree-ToggleContentTree'))
         .click(page.treeNode.withText('Content Collection (main)'))
         .click(Selector('#neos-ContentTree-AddNode'))
-        .click(ReactSelector('NodeTypeItem').find('button>span').withText('Image'));
+        .click(ReactSelector('NodeTypeItem').find('button>span>span').withText('Image'));
     await waitForIframeLoading(t);
 
     subSection('Select image from media library');

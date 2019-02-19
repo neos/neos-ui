@@ -60,11 +60,12 @@
     text-align: right;
     margin-top: var(--spacing-Full);
 }
-.dialog__actions > * {
-    margin-left: 2px;
-}
 .dialog__closeBtn {
-    display: none;
+    composes: reset from './../reset.css';
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: var(--colors-ContrastDark);
 }
 .dialog__backDrop {
     composes: reset from './../reset.css';

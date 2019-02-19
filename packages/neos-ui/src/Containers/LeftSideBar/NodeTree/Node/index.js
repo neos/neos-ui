@@ -14,6 +14,7 @@ import {neos} from '@neos-project/neos-ui-decorators';
 
 import animate from 'amator';
 import hashSum from 'hash-sum';
+import moment from 'moment';
 
 const getContextPath = $get('contextPath');
 
@@ -174,7 +175,7 @@ export default class Node extends PureComponent {
             );
         }
 
-        if (isHiddenBefore || isHiddenAfter) {
+        if ((isHiddenBefore && moment(isHiddenBefore).isAfter(moment())) || isHiddenAfter) {
             return (
                 <span className="fa-layers fa-fw">
                     <Icon icon={this.getIcon()} />

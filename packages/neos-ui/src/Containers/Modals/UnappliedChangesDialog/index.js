@@ -80,6 +80,7 @@ export default class UnappliedChangesDialog extends PureComponent {
         return (
             <Button
                 id="neos-UnappliedChangesDialog-discard"
+                key="discard"
                 style="error"
                 hoverStyle="error"
                 disabled={isDiscardDisabled}
@@ -96,6 +97,7 @@ export default class UnappliedChangesDialog extends PureComponent {
         return (
             <Button
                 id="neos-UnappliedChangesDialog-resume"
+                key="resume"
                 style="lighter"
                 hoverStyle="brand"
                 onClick={this.handleResume}
@@ -112,6 +114,7 @@ export default class UnappliedChangesDialog extends PureComponent {
         return (
             <Button
                 id="neos-UnappliedChangesDialog-apply"
+                key="apply"
                 style="success"
                 hoverStyle="success"
                 disabled={isApplyDisabled}

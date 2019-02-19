@@ -87,7 +87,7 @@ export class DialogWithoutEscape extends PureComponent<DialogProps> {
             actions,
             theme,
             type,
-            onRequestClose,
+            onRequestClose
         } = this.props;
 
         const finalClassNameBody = mergeClassNames(

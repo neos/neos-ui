@@ -5,7 +5,7 @@
 
 .tabs__content {
     composes: reset from './../reset.css';
-    height: calc(100% - 41px);
+    height: calc(100% - 141px);
     overflow-y: auto;
 }
 

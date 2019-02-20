@@ -52,5 +52,9 @@
     &:hover,
     &:focus {
         background: var(--colors-ContrastDark);
+
+        svg {
+            color: var(--colors-ContrastNeutral);
+        }
     }
 }

@@ -124,7 +124,7 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
                 <div className={finalClassNames}>
                     {isDraggable && (
                         <IconButton
-                            icon={'grip-lines-vertical'}
+                            icon={'ellipsis-v'}
                             className={theme.selectedOption__moveButton}
                             hoverStyle={'clean'}
                             />

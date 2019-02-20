@@ -73,6 +73,8 @@ export interface Node {
     isFullyLoaded: boolean;
     uri: string;
     policy?: NodePolicy;
+    dimensions?: DimensionPresetCombination;
+    otherNodeVariants?: DimensionPresetCombination[];
 }
 
 // Type guard using duck-typing on some random properties to know if object is a Node

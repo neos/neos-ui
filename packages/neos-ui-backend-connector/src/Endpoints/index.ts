@@ -16,7 +16,7 @@ export interface Routes {
             loadTree: string;
             flowQuery: string;
             getWorkspaceInfo: string;
-            getPolicyInfo: string;
+            getLazyNodeData: string;
         };
     };
     core: {
@@ -475,9 +475,9 @@ export default (routes: Routes) => {
         }
     })).then(response => fetchWithErrorHandling.parseJson(response));
 
-    const getPolicyInfo = (nodeContextPaths: NodeContextPath) => fetchWithErrorHandling.withCsrfToken(csrfToken => {
+    const getLazyNodeData = (nodeContextPaths: NodeContextPath) => fetchWithErrorHandling.withCsrfToken(csrfToken => {
         return {
-            url: routes.ui.service.getPolicyInfo,
+            url: routes.ui.service.getLazyNodeData,
             method: 'POST',
             credentials: 'include',
             body: JSON.stringify({nodes: nodeContextPaths}),
@@ -487,7 +487,7 @@ export default (routes: Routes) => {
             }
         };
     }).then(response => fetchWithErrorHandling.parseJson(response))
-    .catch(reason => console.warn('Something went wrong with requesting policy information:', reason)); // tslint:disable-line no-console
+    .catch(reason => console.warn('Something went wrong with requesting lazy node information:', reason)); // tslint:disable-line no-console
 
     const dataSource = (dataSourceIdentifier: string, dataSourceUri: string, params = {}) => fetchWithErrorHandling.withCsrfToken(() => ({
         url: urlWithParams(dataSourceUri || `${routes.core.service.dataSource}/${dataSourceIdentifier}`, params),
@@ -544,7 +544,7 @@ export default (routes: Routes) => {
         dataSource,
         getJsonResource,
         getWorkspaceInfo,
-        getPolicyInfo,
+        getLazyNodeData,
         tryLogin,
         contentDimensions
     };

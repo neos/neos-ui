@@ -79,8 +79,8 @@
   httpMethods: ['GET']
 -
   name: 'Get Policy Info'
-  uriPattern: 'get-policy-info'
+  uriPattern: 'get-lazy-node-data'
   defaults:
     '@controller': 'BackendService'
-    '@action': 'getPolicyInformation'
+    '@action': 'getLazyNodeData'
   httpMethods: ['POST']

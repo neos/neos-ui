@@ -72,7 +72,7 @@ export default class DiscardDialog extends PureComponent {
                 onClick={this.handleConfirm}
                 >
                 <Icon icon="ban" className={style.buttonIcon}/>
-                <I18n id="Neos.Neos:Main:confirm" fallback="Confirm"/>
+                <I18n id="Neos.Neos:Main:discard" fallback="Discard"/>
             </Button>
         );
     }

@@ -90,8 +90,8 @@ backend = Neos.Fusion:Template {
                 getWorkspaceInfo = Neos.Fusion:UriBuilder {
                     action = 'getWorkspaceInfo'
                 }
-                getLazyNodeData = Neos.Fusion:UriBuilder {
-                    action = 'getLazyNodeData'
+                getAdditionalNodeMetadata = Neos.Fusion:UriBuilder {
+                    action = 'getAdditionalNodeMetadata'
                 }
             }
         }

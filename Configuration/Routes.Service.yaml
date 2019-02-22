@@ -78,9 +78,9 @@
     '@action': 'getWorkspaceInfo'
   httpMethods: ['GET']
 -
-  name: 'Get Policy Info'
-  uriPattern: 'get-lazy-node-data'
+  name: 'Get Additional Node Metadata'
+  uriPattern: 'get-additional-node-metadata'
   defaults:
     '@controller': 'BackendService'
-    '@action': 'getLazyNodeData'
+    '@action': 'getAdditionalNodeMetadata'
   httpMethods: ['POST']

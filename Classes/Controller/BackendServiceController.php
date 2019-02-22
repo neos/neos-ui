@@ -410,7 +410,7 @@ class BackendServiceController extends ActionController
      *
      * @param array<NodeInterface> $nodes
      */
-    public function getLazyNodeDataAction(array $nodes)
+    public function getAdditionalNodeMetadataAction(array $nodes)
     {
         $result = [];
         /** @var NodeInterface $node */

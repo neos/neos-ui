@@ -400,7 +400,7 @@ class BackendServiceController extends ActionController
     /**
      * @throws \Neos\Flow\Mvc\Exception\NoSuchArgumentException
      */
-    public function initializeGetLazyNodeDataAction()
+    public function initializeGetAdditionalNodeMetadataAction()
     {
         $this->arguments->getArgument('nodes')->getPropertyMappingConfiguration()->allowAllProperties();
     }

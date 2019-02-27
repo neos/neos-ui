@@ -72,6 +72,7 @@ export interface Node {
     };
     isFullyLoaded: boolean;
     uri: string;
+    parent: NodeContextPath;
     policy?: NodePolicy;
 }
 

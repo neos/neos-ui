@@ -129,19 +129,17 @@ export const byContextPathSelector = defaultMemoize(
 );
 
 export const parentNodeSelector = (state: GlobalState) => (baseNode: Node) => {
-    const parent = parentNodeContextPath(baseNode.contextPath);
-    if (parent !== null) {
-        return byContextPathSelector(parent)(state);
+    if (baseNode.parent !== null) {
+        return byContextPathSelector(baseNode.parent)(state);
     }
     return null;
 };
 
 export const grandParentNodeSelector = (state: GlobalState) => (baseNode: Node) => {
-    const parent = parentNodeContextPath(baseNode.contextPath);
-    if (parent !== null) {
-        const grandParent = parentNodeContextPath(parent);
-        if (grandParent !== null) {
-            byContextPathSelector(grandParent)(state);
+    if (baseNode.parent !== null) {
+        const parentNode = byContextPathSelector(baseNode.parent)(state);
+        if (parentNode && parentNode.parent) {
+            return byContextPathSelector(parentNode.parent)(state);
         }
     }
     return null;

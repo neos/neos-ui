@@ -1,7 +1,9 @@
 .body {
     padding: var(--spacing-Full);
 }
-
 .editor {
     margin-bottom: var(--spacing-Full);
+}
+.buttonIcon {
+    margin-right: var(--spacing-Half);
 }

@@ -140,7 +140,6 @@ export function * watchSearch({configuration}) {
         yield put(actions.UI.PageTree.setSearchResult(result));
 
         const {contextPath, query: searchQuery, filterNodeType} = action.payload;
-        const effectiveFilterNodeType = filterNodeType || configuration.nodeTree.presets.default.baseNodeType;
 
         yield put(actions.UI.PageTree.setAsLoading(contextPath));
         let matchingNodes = [];
@@ -150,7 +149,7 @@ export function * watchSearch({configuration}) {
             const query = q(contextPath);
 
             if (filterNodeType || searchQuery) {
-                matchingNodes = yield query.search(searchQuery, effectiveFilterNodeType).getForTreeWithParents();
+                matchingNodes = yield query.search(searchQuery, filterNodeType).getForTreeWithParents();
             } else {
                 const clipboardNodeContextPath = yield select($get('cr.nodes.clipboard'));
                 const toggledNodes = yield select($get('ui.pageTree.toggled'));

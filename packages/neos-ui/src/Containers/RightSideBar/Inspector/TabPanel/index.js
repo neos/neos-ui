@@ -12,6 +12,7 @@ export default class TabPanel extends PureComponent {
     static displayName = 'Inspector Tab Panel';
 
     static propTypes = {
+        id: PropTypes.string,
         groups: PropTypes.array,
         renderSecondaryInspector: PropTypes.func.isRequired,
         node: PropTypes.object.isRequired,

@@ -7,9 +7,9 @@ import Icon from '../Icon';
 
 export interface TabsProps {
     /**
-     * The index of the active tab, defaults to 0.
+     * The id of the active tab, defaults to an empty string.
      */
-    readonly activeTab?: number;
+    readonly activeTab?: string|number;
 
     /**
      * An optional className to render on the wrapping div.
@@ -34,37 +34,37 @@ interface TabsTheme extends TabMenuItemTheme {
 }
 
 export const tabsDefaultProps: PickDefaultProps<TabsProps, 'activeTab'> = {
-    activeTab: 0
+    activeTab: '',
 };
 
 interface TabsState {
-    readonly activeTab: number;
+    readonly activeTab: string|number;
 }
 
 export default class Tabs extends PureComponent<TabsProps> {
     public static Panel = Panel;
     public state: TabsState = {
-        activeTab: 0
+        activeTab: '',
     };
 
     public static defaultProps = tabsDefaultProps;
 
     public componentWillReceiveProps(newProps: TabsProps): void {
-        const newActiveTab = newProps.activeTab;
+        const newactiveTab = newProps.activeTab;
         const {activeTab} = this.state;
 
-        if (newActiveTab && newActiveTab !== activeTab) {
+        if (newactiveTab && newactiveTab !== activeTab) {
             this.setState({
-                activeTab: newActiveTab
+                activeTab: newactiveTab
             });
         }
     }
 
-    public getActiveTab(): number {
+    public getActiveTab(): string|number {
         // If activeTab is out of bounds, choose the first tab
         const {activeTab} = this.state;
-        const childrenCount = React.Children.count(this.props.children);
-        return childrenCount < activeTab + 1 ? 0 : activeTab;
+        const activeTabs = this.props.children.filter(panel => panel.props.id === activeTab);
+        return activeTabs.length === 0 ? this.props.children[0].props.id : activeTab;
     }
 
     public renderMenuItems(): JSX.Element {
@@ -78,10 +78,11 @@ export default class Tabs extends PureComponent<TabsProps> {
             <TabMenuItem
                 key={index}
                 index={index}
+                id={panel.props.id || index}
                 // tslint:disable-next-line:jsx-no-string-ref
                 ref={`tab-${index}`}
                 onClick={this.handleTabNavItemClick}
-                isActive={activeTab === index}
+                isActive={activeTab === panel.props.id}
                 theme={theme!}
                 title={panel.props.title}
                 icon={panel.props.icon}
@@ -96,8 +97,8 @@ export default class Tabs extends PureComponent<TabsProps> {
         );
     }
 
-    public handleTabNavItemClick = (index: number) => {
-        this.setState({activeTab: index});
+    public handleTabNavItemClick = (id: string|number) => {
+        this.setState({activeTab: id});
     }
 
     public renderPanels(): JSX.Element {
@@ -106,8 +107,8 @@ export default class Tabs extends PureComponent<TabsProps> {
 
         return (
             <div className={theme!.tabs__content}>
-                {React.Children.map(children, (panel, index) => {
-                    const isActive = activeTab === index;
+                {children.map((panel, index) => {
+                    const isActive = activeTab === panel.props.id;
                     const style = {
                         display: isActive ? 'block' : 'none'
                     };
@@ -142,9 +143,14 @@ export default class Tabs extends PureComponent<TabsProps> {
 
 export interface TabMenuItemProps {
     /**
-     * The index which will be handed over to the onClick handler.
+     * The index
      */
     index: number;
+
+    /**
+     * The identifier which will be handed over to the onClick handler.
+     */
+    id: string|number;
 
     /**
      * The title to render for the given Panel.
@@ -154,7 +160,7 @@ export interface TabMenuItemProps {
     /**
      * The click handler which will be called with the passed index as it's only argument.
      */
-    onClick: (index: number) => void;
+    onClick: (id: string|number) => void;
 
     /**
      * A boolean which controls if the rendered anchor is displayed as active or not.
@@ -230,6 +236,6 @@ export class TabMenuItem extends PureComponent<TabMenuItemProps> {
     }
 
     private readonly handleClick = () => {
-        this.props.onClick(this.props.index);
+        this.props.onClick(this.props.id);
     }
 }

@@ -3,12 +3,12 @@ import {$get} from 'plow-js';
 //
 // Local storage middleware.
 //
-// Saves "ui" part of the state to local storage on every action
+// Saves relevant parts of the state to local storage on every action
 // that matches the "persistentActionsPattern"
 //
 const localStorageMiddleware = ({getState}) => {
     let timer = null;
-    const debounceLocalStorageTimeout = 1000;
+    const debounceLocalStorageTimeout = 100;
     const persistentActionsPatterns = [
         '@neos/neos-ui/UI/LeftSideBar/TOGGLE',
         '@neos/neos-ui/UI/LeftSideBar/TOGGLE_CONTENT_TREE',
@@ -27,7 +27,7 @@ const localStorageMiddleware = ({getState}) => {
             clearTimeout(timer);
             timer = setTimeout(() => {
                 const state = getState();
-                // TODO: figure out a more declarative way to manage this. Or just move all persistent state under "ui"
+                // TODO: figure out a more declarative way to manage this
                 const persistentStateSubset = {
                     ui: {
                         drawer: {

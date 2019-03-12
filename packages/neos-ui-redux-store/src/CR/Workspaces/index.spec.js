@@ -1,7 +1,6 @@
-import Immutable from 'immutable';
 import {$set} from 'plow-js';
 
-import {actionTypes, actions, reducer, selectors} from './index.js';
+import {actionTypes, actions, reducer, selectors} from './index';
 import {actionTypes as system} from '../../System/index';
 
 test(`should export actionTypes`, () => {
@@ -34,7 +33,7 @@ test(`should export selectors`, () => {
 });
 
 test(`The reducer should create a valid initial state`, () => {
-    const state = new Immutable.Map({});
+    const state = {};
     const nextState = reducer(state, {
         type: system.INIT,
         payload: $set('cr.workspaces.personalWorkspace', {initial: 'workspace-data'}, {})
@@ -44,7 +43,7 @@ test(`The reducer should create a valid initial state`, () => {
 });
 
 test(`UPDATE should set personal workspace data to given data`, () => {
-    const state = reducer(new Immutable.Map({}), {
+    const state = reducer({}, {
         type: system.INIT,
         payload: $set('cr.workspaces.personalWorkspace', {initial: 'workspace-data'}, {})
     });

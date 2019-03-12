@@ -1,8 +1,8 @@
 import React from 'react';
 import {storiesOf} from '@storybook/react';
 import {withKnobs, boolean, text, select} from '@storybook/addon-knobs';
-import {StoryWrapper} from './../_lib/storyUtils.js';
-import Icon from './index.js';
+import {StoryWrapper} from './../_lib/storyUtils';
+import Icon from '.';
 
 storiesOf('Icon', module)
     .addDecorator(withKnobs)

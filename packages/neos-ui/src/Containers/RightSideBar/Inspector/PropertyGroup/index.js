@@ -40,7 +40,7 @@ export default class PropertyGroup extends PureComponent {
         const propertyGroup = items => (
             <ToggablePanel onPanelToggle={handlePanelToggle} isOpen={!collapsed} className={sidebarStyle.rightSideBar__section}>
                 <ToggablePanel.Header theme={headerTheme}>
-                    {icon && <Icon icon={icon}/>} <I18n id={label}/>
+                    {icon && <div className={style.iconWrapper}><Icon icon={icon}/></div>} <I18n id={label}/>
                 </ToggablePanel.Header>
                 <ToggablePanel.Contents>
                     {items.map(item => {
@@ -58,7 +58,7 @@ export default class PropertyGroup extends PureComponent {
                                     id={itemId}
                                     label={label}
                                     editor={$get('editor', item)}
-                                    options={$get('editorOptions', item) && $get('editorOptions', item).toJS ? $get('editorOptions', item).toJS() : $get('editorOptions', item)}
+                                    options={$get('editorOptions', item) && $get('editorOptions', item)}
                                     renderSecondaryInspector={renderSecondaryInspector}
                                     node={node}
                                     commit={commit}
@@ -74,7 +74,7 @@ export default class PropertyGroup extends PureComponent {
                                     id={itemId}
                                     label={$get('label', item)}
                                     view={$get('view', item)}
-                                    options={$get('viewOptions', item) && $get('viewOptions', item).toJS ? $get('viewOptions', item).toJS() : $get('viewOptions', item)}
+                                    options={$get('viewOptions', item)}
                                     renderSecondaryInspector={renderSecondaryInspector}
                                     node={node}
                                     commit={commit}

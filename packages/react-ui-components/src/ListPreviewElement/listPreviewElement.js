@@ -82,7 +82,7 @@ class ListPreviewElement extends PureComponent {
                 className={optionClassName}
                 role="button"
                 >
-                {Boolean(icon) && <Icon className={theme.listPreviewElement__icon} icon={icon}/>}
+                {Boolean(icon) && <div className={theme.listPreviewElement__iconWrapper}><Icon className={theme.listPreviewElement__icon} icon={icon}/></div>}
                 {children}
 
             </div>

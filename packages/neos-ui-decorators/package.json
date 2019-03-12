@@ -1,13 +1,12 @@
 {
   "name": "@neos-project/neos-ui-decorators",
-  "version": "1.3.4",
+  "version": "3.1.0",
   "description": "Decorators for Neos CMS UI.",
   "private": true,
-  "main": "./src/index.js",
+  "main": "./src/index.ts",
   "scripts": {
-    "prebuild": "check-dependencies && yarn clean",
-    "test": "yarn jest -- -w 2 --coverage",
-    "test:watch": "yarn jest -- --watch",
+    "test": "yarn jest -w 2 --coverage",
+    "test:watch": "yarn jest --watch",
     "build": "exit 0",
     "build:watch": "exit 0",
     "clean": "rimraf ./lib ./dist",
@@ -15,9 +14,9 @@
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "1.3.4",
-    "@neos-project/build-essentials": "1.3.4",
-    "@neos-project/jest-preset-neos-ui": "1.3.4"
+    "@neos-project/babel-preset-neos-ui": "3.1.0",
+    "@neos-project/build-essentials": "3.1.0",
+    "@neos-project/jest-preset-neos-ui": "3.1.0"
   },
   "peerDependencies": {
     "prop-types": "^15.5.10",

@@ -2,6 +2,7 @@ import React, {PureComponent, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
 import ReactMarkdown from 'react-markdown';
+import omit from 'lodash.omit';
 
 import Label from '@neos-project/react-ui-components/src/Label/';
 import {Tooltip} from '@neos-project/react-ui-components';
@@ -46,7 +47,7 @@ export default class EditorEnvelope extends PureComponent {
     };
 
     generateIdentifier() {
-        return `#__neos__editor__property---${this.props.identifier}`;
+        return `__neos__editor__property---${this.props.identifier}`;
     }
 
     getEditorDefinition() {
@@ -56,23 +57,31 @@ export default class EditorEnvelope extends PureComponent {
         return editorRegistry.get(editorName);
     }
 
+    isInvalid() {
+        const {validationErrors} = this.props;
+        return validationErrors && validationErrors.length > 0;
+    }
+
     renderEditorComponent() {
         const editorDefinition = this.getEditorDefinition();
 
         if (editorDefinition && editorDefinition.component) {
             const EditorComponent = editorDefinition && editorDefinition.component;
 
-            const {highlight, validationErrors, ...rest} = this.props;
-            const isInvalid = validationErrors && validationErrors.length > 0;
+            const {highlight} = this.props;
+            const restProps = omit(this.props, ['validationErrors']);
 
             // We pass down a classname to render a highlight status on the editor field
             const classNames = mergeClassNames({
-                [style['envelope--highlight']]: highlight && !isInvalid,
-                [style['envelope--invalid']]: isInvalid
+                [style['envelope--highlight']]: highlight && !this.isInvalid(),
+                [style['envelope--invalid']]: this.isInvalid()
             });
 
             return (
-                <EditorComponent className={classNames} id={this.generateIdentifier()} {...rest} />
+                <EditorComponent className={classNames}
+                    id={this.generateIdentifier()}
+                    renderHelpIcon={this.renderHelpIcon}
+                    {...restProps} />
             );
         }
 
@@ -131,7 +140,7 @@ export default class EditorEnvelope extends PureComponent {
         );
     }
 
-    renderHelpIcon() {
+    renderHelpIcon = () => {
         if (this.props.helpMessage || this.props.helpThumbnail) {
             return (
                 <span role="button" onClick={this.toggleHelmpessage} className={style.envelope__tooltipButton}>
@@ -158,11 +167,9 @@ export default class EditorEnvelope extends PureComponent {
                 <span>
                     {this.renderLabel()}
                 </span>
-
-                {this.state.showHelpmessage ? this.renderHelpmessage() : ''}
-
                 {this.renderEditorComponent()}
-                {validationErrors && validationErrors.length > 0 && <Tooltip renderInline asError><ul>{validationErrors.map((error, index) => <li key={index}>{error}</li>)}</ul></Tooltip>}
+                {this.state.showHelpmessage ? this.renderHelpmessage() : ''}
+                {this.isInvalid() && <Tooltip renderInline asError><ul>{validationErrors.map((error, index) => <li key={index}>{error}</li>)}</ul></Tooltip>}
             </Fragment>
         );
     }

@@ -1,4 +1,3 @@
-import Immutable from 'immutable';
 import {$all, $set, $drop} from 'plow-js';
 
 import * as selectors from './selectors';
@@ -23,8 +22,6 @@ test(`Inspector is dirty when transient values are set`, () => {
     );
 
     expect(selectors.isDirty(state)).toBe(true);
-
-    expect(selectors.isDirty(Immutable.fromJS(state))).toBe(true);
 });
 
 test(`Inspector is not dirty when no transient values are set`, () => {
@@ -38,9 +35,9 @@ test(`Inspector is not dirty when no transient values are set`, () => {
     expect(selectors.isDirty($set('ui.inspector.valuesByNodePath.dummyContextPath', null, state))).toBe(false);
     expect(selectors.isDirty($set('ui.inspector.valuesByNodePath.dummyContextPath', undefined, state))).toBe(false);
 
-    expect(selectors.isDirty(Immutable.fromJS(state))).toBe(false);
-    expect(selectors.isDirty($set('ui.inspector.valuesByNodePath.dummyContextPath', null, Immutable.fromJS(state)))).toBe(false);
-    expect(selectors.isDirty($set('ui.inspector.valuesByNodePath.dummyContextPath', undefined, Immutable.fromJS(state)))).toBe(false);
+    expect(selectors.isDirty(state)).toBe(false);
+    expect(selectors.isDirty($set('ui.inspector.valuesByNodePath.dummyContextPath', null, state))).toBe(false);
+    expect(selectors.isDirty($set('ui.inspector.valuesByNodePath.dummyContextPath', undefined, state))).toBe(false);
 });
 
 test(`Inspector is not dirty when no transient values have been dropped`, () => {
@@ -52,7 +49,7 @@ test(`Inspector is not dirty when no transient values have been dropped`, () => 
 
     expect(selectors.isDirty($drop('ui.inspector.valuesByNodePath.dummyContextPath', state))).toBe(false);
 
-    expect(selectors.isDirty($drop('ui.inspector.valuesByNodePath.dummyContextPath', Immutable.fromJS(state)))).toBe(false);
+    expect(selectors.isDirty($drop('ui.inspector.valuesByNodePath.dummyContextPath', state))).toBe(false);
 });
 
 test(`validationErrorsSelector should return null, when there's no validator configuration`, () => {
@@ -66,6 +63,7 @@ test(`validationErrorsSelector should return null, when there's no validator con
     };
     const validationErrorsSelector = selectors.makeValidationErrorsSelector(nodeTypesRegistry, validatorRegistry);
     const state = $all(
+        $set('ui.inspector.valuesByNodePath', {}),
         $set('cr.nodes.focused.contextPath', 'dummyContextPath'),
         $set('cr.nodes.byContextPath.dummyContextPath.properties', {
             title: 'Foo'
@@ -86,6 +84,7 @@ test(`validationErrorsSelector should read the nodeType configuration for the cu
 
     const validationErrorsSelector = selectors.makeValidationErrorsSelector(nodeTypesRegistry, validatorRegistry);
     const state = $all(
+        $set('ui.inspector.valuesByNodePath', {}),
         $set('cr.nodes.focused.contextPath', 'dummyContextPath'),
         $set('cr.nodes.byContextPath.dummyContextPath.nodeType', 'DummyNodeType'),
         {}
@@ -99,6 +98,7 @@ test(`validationErrorsSelector should read the nodeType configuration for the cu
 test(`validationErrorsSelector should return validationErrors, when there are invalid field`, () => {
     const nodeTypesRegistry = {
         get: () => $all(
+            $set('ui.inspector.valuesByNodePath', {}),
             $set('properties.title.validation.required', {}),
             $set('properties.label.validation.required', {}),
             {}
@@ -109,6 +109,7 @@ test(`validationErrorsSelector should return validationErrors, when there are in
     };
     const validationErrorsSelector = selectors.makeValidationErrorsSelector(nodeTypesRegistry, validatorRegistry);
     const state = $all(
+        $set('ui.inspector.valuesByNodePath', {}),
         $set('cr.nodes.focused.contextPath', 'dummyContextPath'),
         $set('cr.nodes.byContextPath.dummyContextPath.properties', {
             title: '',

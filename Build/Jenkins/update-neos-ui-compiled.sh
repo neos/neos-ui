@@ -22,6 +22,11 @@ make build-production
 
 rm -Rf tmp_compiled_pkg
 git clone git@github.com:neos/neos-ui-compiled.git tmp_compiled_pkg
+cd tmp_compiled_pkg
+git checkout "$GIT_BRANCH"
+cd ..
+
+
 mkdir -p tmp_compiled_pkg/Resources/Public/JavaScript
 mkdir -p tmp_compiled_pkg/Resources/Public/Styles
 
@@ -32,7 +37,7 @@ cd tmp_compiled_pkg
 git add Resources/Public/
 git commit -m "Compile Neos UI - $GIT_SHA1" || true
 
-if [ "$GIT_BRANCH" == "origin/master" ]; then
+if [[ "$GIT_BRANCH" == "origin/master" || "$GIT_BRANCH" == "origin/2.x" ]]; then
     echo "Git branch $GIT_BRANCH found, pushing to this branch."
     git push origin HEAD:${GIT_BRANCH#*/}
 fi

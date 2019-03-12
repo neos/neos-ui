@@ -25,17 +25,26 @@
 
 
 ################################################################################
+# Make ALL targets phony targets (Rebuild every time)
+################################################################################
+
+.PHONY: check-requirements install setup \
+	build build-watch build-watch-poll build-production \
+	storybook test test-e2e lint lint-js lint-editorconfig \
+	called-with-version bump-version publish-npm \
+	clean
+
+################################################################################
 # Variables
 ################################################################################
 
-
-# Add node_modules and composer binaries to $PATH
-export PATH := ./node_modules/.bin:./bin:$(PATH)
 
 # Add lerna alias as there are currently some MacOS problems
 # and putting it into the $PATH is simply not enough
 lerna = ./node_modules/.bin/lerna
 editorconfigChecker = ./node_modules/.bin/editorconfig-checker
+webpack = ./node_modules/.bin/webpack
+crossenv = ./node_modules/.bin/crossenv
 
 ################################################################################
 # Setup
@@ -65,20 +74,25 @@ setup: check-requirements install build
 
 
 # TODO: figure out how to pass a parameter to other targets to reduce redundancy
+build-subpackages:
+	$(lerna) run build --concurrency 1
+
 build:
-	NEOS_BUILD_ROOT=$(shell pwd) webpack --progress --colors
+	make build-subpackages
+	NEOS_BUILD_ROOT=$(shell pwd) $(webpack) --progress --colors
 
 build-watch:
-	NEOS_BUILD_ROOT=$(shell pwd) webpack --progress --colors --watch
+	NEOS_BUILD_ROOT=$(shell pwd) $(webpack) --progress --colors --watch
 
 build-watch-poll:
-	NEOS_BUILD_ROOT=$(shell pwd) webpack \
+	NEOS_BUILD_ROOT=$(shell pwd) $(webpack) \
 		--progress --colors --watch-poll --watch
 
 # clean anything before building for production just to be sure
 build-production:
-	cross-env NODE_ENV=production NEOS_BUILD_ROOT=$(shell pwd) \
-		webpack --progress --colors
+	make build-subpackages
+	$(cross-env) NODE_ENV=production NEOS_BUILD_ROOT=$(shell pwd) \
+		$(webpack) --progress --colors
 
 
 ################################################################################
@@ -97,7 +111,7 @@ test:
 
 test-e2e:
 	yarn run testcafe chrome:headless Tests/IntegrationTests/* \
-		--selector-timeout=30000 --assertion-timeout=30000
+		--selector-timeout=10000 --assertion-timeout=30000
 
 lint: lint-js lint-editorconfig
 
@@ -109,7 +123,7 @@ lint-editorconfig:
 	$(editorconfigChecker) \
 		--exclude-regexp 'LICENSE|\.vanilla\-css$$|banner\.js$$' \
 		--exclude-pattern \
-		'./{README.md,**/*.snap,**/*{fontAwesome,Resources}/**/*}'
+		'./{README.md,**/*.snap,**/*{fontAwesome,Resources,dist}/**/*}'
 
 
 ################################################################################
@@ -142,8 +156,3 @@ publish-npm: called-with-version
 
 clean:
 	rm -Rf node_modules; rm -rf packages/*/node_modules
-
-
-# Make ALL targets phony targets
-# (Rebuild every time)
-.PHONY: *

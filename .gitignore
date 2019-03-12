@@ -2,6 +2,7 @@
 # Test suite & generated coverage.
 #
 Coverage/
+packages/*/dist/
 packages/*/.nyc_output/
 packages/*/coverage/
 Build/Selenium/Screenshots/*.png
@@ -33,3 +34,9 @@ Resources/Public/Styles/**/*.map
 Resources/Public/Styles/Font*
 lerna-debug.log
 npm-debug.log
+
+#
+# editors / IDEs
+#
+.vscode/
+.idea/

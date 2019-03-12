@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {$get} from 'plow-js';
 import mergeClassNames from 'classnames';
 import omit from 'lodash.omit';
-import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine/index';
+import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine';
 
 class MultiSelectBox extends PureComponent {
     static propTypes = {
@@ -166,7 +166,13 @@ class MultiSelectBox extends PureComponent {
     handleNewValueSelected = value => {
         const {onValuesChange} = this.props;
         const values = this.props.values || [];
-        const updatedValues = [...values, value];
+        let updatedValues;
+        if (Array.isArray(values)) {
+            updatedValues = [...values, value];
+        } else {
+            console.error('MultiSelectBox received an invalid value, invalid value will be discarded', values);
+            updatedValues = [value];
+        }
 
         onValuesChange(updatedValues);
     };

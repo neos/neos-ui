@@ -1,6 +1,6 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import injectProps from './injectProps.js';
+import injectProps from './injectProps';
 
 const WrappedComponent = props => <div {...props}/>;
 

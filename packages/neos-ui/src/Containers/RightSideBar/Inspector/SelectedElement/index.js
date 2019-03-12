@@ -29,7 +29,7 @@ import style from './style.css';
 export default class SelectedElement extends PureComponent {
     static propTypes = {
         focusedNode: PropTypes.object.isRequired,
-        focusedNodeParentLine: PropTypes.object.isRequired,
+        focusedNodeParentLine: PropTypes.array.isRequired,
 
         focusNode: PropTypes.func.isRequired,
         nodeTypesRegistry: PropTypes.object.isRequired
@@ -60,14 +60,16 @@ export default class SelectedElement extends PureComponent {
         return (
             <section className={sidebarStyle.rightSideBar__section}>
                 <Headline className={style.label}>
-                    <Icon icon="mouse-pointer"/>
+                    <div className={style.iconWrapper}>
+                        <Icon icon="mouse-pointer"/>
+                    </div>
                     <span>
                         <I18n id="Neos.Neos:Main:content.inspector.inspectorView.selectedElement"/>
                     </span>
                 </Headline>
                 <div className={style.content}>
                     <SelectBox
-                        options={focusedNodeParentLine.map(this.createNodeOption).toJS()}
+                        options={focusedNodeParentLine.map(this.createNodeOption)}
                         value={$get('contextPath', focusedNode)}
                         onValueChange={this.handleSelectNode}
                         />

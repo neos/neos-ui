@@ -12,9 +12,12 @@
     width: 100%;
     text-align: center;
 }
-.publishButton,
-.publishButton:hover {
+.publishButton {
     background: var(--colors-Success) !important;
+
+    &:hover {
+        background: var(--colors-SuccessHover) !important;
+    }
 }
 .tabs > div {
     height: 100%;

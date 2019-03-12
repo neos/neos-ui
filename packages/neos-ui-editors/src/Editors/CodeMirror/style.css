@@ -1,3 +1,5 @@
 .codemirror__label {
     padding: 2px;
+    max-width: none;
+    display: inline;
 }

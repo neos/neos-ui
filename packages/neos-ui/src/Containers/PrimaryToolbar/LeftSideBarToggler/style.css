@@ -1,5 +1,9 @@
 .btn {
     vertical-align: top;
+
+    &:focus {
+        outline: none;
+    }
 }
 
 .btn--isActive {

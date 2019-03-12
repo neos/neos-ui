@@ -72,6 +72,15 @@ test('empty value should be valid for min: 0', () => {
     expect(stringLengthValidator('', validatorOptions)).toBe(null);
 });
 
+test('empty value should be valid for min: 5 max: 10', () => {
+    const validatorOptions = {
+        minimum: 5,
+        maximum: 10
+    };
+
+    expect(stringLengthValidator('', validatorOptions)).toBe(null);
+});
+
 test('should return an error message if maximum < minimum', () => {
     const validatorOptions = {
         minimum: 10,

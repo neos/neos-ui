@@ -1,6 +1,6 @@
 const sharedWebPackConfig = require('@neos-project/build-essentials/src/webpack.config.js');
 const path = require('path');
-const ExtractTextPlugin = sharedWebPackConfig.__internalDependencies.ExtractTextPlugin;
+const {ExtractTextPlugin} = sharedWebPackConfig.__internalDependencies;
 delete sharedWebPackConfig.__internalDependencies;
 
 module.exports = function (neosPackageJson) {
@@ -48,11 +48,11 @@ module.exports = function (neosPackageJson) {
             alias: {
                 'react': '@neos-project/neos-ui-extensibility/src/shims/vendor/react/index',
                 'react-dom': '@neos-project/neos-ui-extensibility/src/shims/vendor/react-dom/index',
+                'react-dnd': '@neos-project/neos-ui-extensibility/src/shims/vendor/react-dnd/index',
+                'react-dnd-html5-backend': '@neos-project/neos-ui-extensibility/src/shims/vendor/react-dnd-html5-backend/index',
                 'prop-types': '@neos-project/neos-ui-extensibility/src/shims/vendor/prop-types/index',
-                'immutable': '@neos-project/neos-ui-extensibility/src/shims/vendor/immutable/index',
                 'plow-js': '@neos-project/neos-ui-extensibility/src/shims/vendor/plow-js/index',
                 'classnames': '@neos-project/neos-ui-extensibility/src/shims/vendor/classnames/index',
-                'react-immutable-proptypes': '@neos-project/neos-ui-extensibility/src/shims/vendor/react-immutable-proptypes/index',
                 'react-redux': '@neos-project/neos-ui-extensibility/src/shims/vendor/react-redux/index',
                 'redux-actions': '@neos-project/neos-ui-extensibility/src/shims/vendor/redux-actions/index',
                 'redux-saga/effects': '@neos-project/neos-ui-extensibility/src/shims/vendor/redux-saga-effects/index',

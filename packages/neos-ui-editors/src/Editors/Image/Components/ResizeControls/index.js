@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {$get} from 'plow-js';
-import {Map} from 'immutable';
 
 import TextInput from '@neos-project/react-ui-components/src/TextInput/';
 import CheckBox from '@neos-project/react-ui-components/src/CheckBox/';
@@ -9,7 +8,7 @@ import I18n from '@neos-project/neos-ui-i18n';
 
 import style from './style.css';
 
-const buildResizeAdjustment = (width, height) => new Map({
+const buildResizeAdjustment = (width, height) => ({
     allowUpScaling: null,
     height,
     maximumHeight: null,

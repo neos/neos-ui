@@ -1,4 +1,4 @@
-import * as API from './index.js';
+import * as API from '.';
 
 describe('API entry point', () => {
     it('should export an object of components.', () => {

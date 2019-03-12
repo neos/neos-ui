@@ -33,10 +33,7 @@ export default ({isMulti}) => WrappedComponent => {
                 getNodeType: PropTypes.func.isRequired
             }),
 
-            contextForNodeLinking: PropTypes.shape({
-                toJS: PropTypes.func.isRequired,
-                set: PropTypes.func.isRequired
-            }).isRequired
+            contextForNodeLinking: PropTypes.object.isRequired
         };
 
         state = {
@@ -106,13 +103,15 @@ export default ({isMulti}) => WrappedComponent => {
         }
 
         getDataLoaderOptions() {
-            const contextNode = this.props.options.startingPoint ?
-                this.props.contextForNodeLinking.set('contextNode', this.props.options.startingPoint) :
+            const contextForNodeLinking = this.props.options.startingPoint ?
+                Object.assign({}, this.props.contextForNodeLinking, {
+                    contextNode: this.props.options.startingPoint
+                }) :
                 this.props.contextForNodeLinking;
 
             return {
                 nodeTypes: $get('options.nodeTypes', this.props) || ['Neos.Neos:Document'],
-                contextForNodeLinking: contextNode.toJS()
+                contextForNodeLinking
             };
         }
 

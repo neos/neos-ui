@@ -95,9 +95,7 @@ class LinkTextField extends PureComponent {
             search: PropTypes.func.isRequired
         }).isRequired,
 
-        contextForNodeLinking: PropTypes.shape({
-            toJS: PropTypes.func.isRequired
-        }).isRequired
+        contextForNodeLinking: PropTypes.object.isRequired
     };
 
     state = {
@@ -110,7 +108,7 @@ class LinkTextField extends PureComponent {
     getDataLoaderOptions() {
         return {
             nodeTypes: ['Neos.Neos:Document'],
-            contextForNodeLinking: this.props.contextForNodeLinking.toJS()
+            contextForNodeLinking: this.props.contextForNodeLinking
         };
     }
 

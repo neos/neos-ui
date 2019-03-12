@@ -1,7 +1,7 @@
 /* eslint-disable camelcase, react/jsx-pascal-case */
 import React, {Fragment, PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine/index';
+import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine';
 
 /**
  * **SelectBox_ListPreview is an internal implementation detail of SelectBox**, meant to improve code quality.
@@ -49,7 +49,7 @@ class SelectBox_ListPreview extends PureComponent {
                 {searchTermLeftToType > 0 ? (
                     <div className={theme.selectBox__item}>
                         <SelectBox_Option_SingleLine
-                            option={{label: `${searchBoxLeftToTypeLabel && searchBoxLeftToTypeLabel.replace('###CHARACTERS###', searchTermLeftToType)}`, icon: 'ellipsis-h'}}
+                            option={{label: `${searchBoxLeftToTypeLabel && searchBoxLeftToTypeLabel.replace('###CHARACTERS###', searchTermLeftToType)}`}}
                             key={'___leftToType'}
                             />
                     </div>

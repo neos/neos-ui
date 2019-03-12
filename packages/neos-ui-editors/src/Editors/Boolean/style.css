@@ -10,3 +10,8 @@
         margin-bottom: 0 !important;
     }
 }
+
+.boolean__label {
+    max-width: none;
+    display: inline;
+}

@@ -1,32 +1,34 @@
 /* eslint-disable camelcase, react/jsx-pascal-case */
-import Badge from './Badge/index';
-import Bar from './Bar/index';
-import Button from './Button/index';
-import ButtonGroup from './ButtonGroup/index';
-import CheckBox from './CheckBox/index';
-import DateInput from './DateInput/index';
-import Dialog from './Dialog/index';
-import DropDown from './DropDown/index';
-import Frame from './Frame/index';
-import Headline from './Headline/index';
-import Icon from './Icon/index';
-import IconButton from './IconButton/index';
-import IconButtonDropDown from './IconButtonDropDown/index';
-import Label from './Label/index';
-import SelectBox from './SelectBox/index';
-import SideBar from './SideBar/index';
-import Tabs from './Tabs/index';
-import TextArea from './TextArea/index';
-import TextInput from './TextInput/index';
-import ToggablePanel from './ToggablePanel/index';
-import Tooltip from './Tooltip/index';
-import Tree from './Tree/index';
-import MultiSelectBox from './MultiSelectBox/index';
-import MultiSelectBox_ListPreviewSortable from './MultiSelectBox_ListPreviewSortable/index';
-import SelectBox_Option_SingleLine from './SelectBox_Option_SingleLine/index';
-import SelectBox_Option_MultiLineWithThumbnail from './SelectBox_Option_MultiLineWithThumbnail/index';
+import enhanceWithClickOutside from './enhanceWithClickOutside';
+import Badge from './Badge';
+import Bar from './Bar';
+import Button from './Button';
+import ButtonGroup from './ButtonGroup';
+import CheckBox from './CheckBox';
+import DateInput from './DateInput';
+import Dialog from './Dialog';
+import DropDown from './DropDown';
+import Frame from './Frame';
+import Headline from './Headline';
+import Icon from './Icon';
+import IconButton from './IconButton';
+import IconButtonDropDown from './IconButtonDropDown';
+import Label from './Label';
+import SelectBox from './SelectBox';
+import SideBar from './SideBar';
+import Tabs from './Tabs';
+import TextArea from './TextArea';
+import TextInput from './TextInput';
+import ToggablePanel from './ToggablePanel';
+import Tooltip from './Tooltip';
+import Tree from './Tree';
+import MultiSelectBox from './MultiSelectBox';
+import MultiSelectBox_ListPreviewSortable from './MultiSelectBox_ListPreviewSortable';
+import SelectBox_Option_SingleLine from './SelectBox_Option_SingleLine';
+import SelectBox_Option_MultiLineWithThumbnail from './SelectBox_Option_MultiLineWithThumbnail';
 
 export {
+    enhanceWithClickOutside,
     Badge,
     Bar,
     Button,
@@ -56,6 +58,7 @@ export {
 };
 
 export default {
+    enhanceWithClickOutside,
     Badge,
     Bar,
     Button,

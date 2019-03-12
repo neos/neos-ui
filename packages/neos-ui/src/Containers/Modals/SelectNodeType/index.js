@@ -2,13 +2,10 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {$get} from 'plow-js';
-import ReactMarkdown from 'react-markdown';
 
 import {neos} from '@neos-project/neos-ui-decorators';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 
-import Icon from '@neos-project/react-ui-components/src/Icon/';
-import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 import Button from '@neos-project/react-ui-components/src/Button/';
 import Dialog from '@neos-project/react-ui-components/src/Dialog/';
 import I18n from '@neos-project/neos-ui-i18n';
@@ -18,7 +15,13 @@ import NodeTypeGroupPanel from './nodeTypeGroupPanel';
 import NodeTypeFilter from './nodeTypeFilter';
 import style from './style.css';
 
-const calculateInitialMode = (allowedSiblingNodeTypes, allowedChildNodeTypes) => {
+const calculateInitialMode = (allowedSiblingNodeTypes, allowedChildNodeTypes, preferredMode) => {
+    if (
+        ((preferredMode === 'before' || preferredMode === 'after') && allowedSiblingNodeTypes.length) ||
+        (preferredMode === 'into' && allowedChildNodeTypes.length)
+    ) {
+        return preferredMode;
+    }
     if (allowedSiblingNodeTypes.length) {
         return 'after';
     }
@@ -39,6 +42,13 @@ const calculateInitialMode = (allowedSiblingNodeTypes, allowedChildNodeTypes) =>
 
     return state => {
         const reference = $get('ui.selectNodeTypeModal.referenceNodeContextPath', state);
+        if (!reference) {
+            return {
+                isOpen: false,
+                allowedSiblingNodeTypes: [],
+                allowedChildNodeTypes: []
+            };
+        }
         const referenceNodeType = selectors.CR.Nodes.getPathInNode(state, reference, 'nodeType');
         const role = nodeTypesRegistry.hasRole(referenceNodeType, 'document') ? 'document' : 'content';
         const allowedSiblingNodeTypes = nodeTypesRegistry.getGroupedNodeTypeList(getAllowedSiblingNodeTypesSelector(state, {reference, role}));
@@ -46,6 +56,7 @@ const calculateInitialMode = (allowedSiblingNodeTypes, allowedChildNodeTypes) =>
 
         return {
             isOpen: $get('ui.selectNodeTypeModal.isOpen', state),
+            preferredMode: $get('ui.selectNodeTypeModal.preferredMode', state),
             allowedSiblingNodeTypes,
             allowedChildNodeTypes
         };
@@ -57,6 +68,7 @@ const calculateInitialMode = (allowedSiblingNodeTypes, allowedChildNodeTypes) =>
 export default class SelectNodeType extends PureComponent {
     static propTypes = {
         isOpen: PropTypes.bool.isRequired,
+        preferredMode: PropTypes.string,
         nodeTypesRegistry: PropTypes.object.isRequired,
         allowedSiblingNodeTypes: PropTypes.array,
         allowedChildNodeTypes: PropTypes.array,
@@ -68,8 +80,10 @@ export default class SelectNodeType extends PureComponent {
         filterSearchTerm: '',
         insertMode: calculateInitialMode(
             this.props.allowedSiblingNodeTypes,
-            this.props.allowedChildNodeTypes
+            this.props.allowedChildNodeTypes,
+            this.props.preferredMode
         ),
+        activeHelpMessageGroupPanel: '',
         showHelpMessageFor: ''
     };
 
@@ -79,7 +93,8 @@ export default class SelectNodeType extends PureComponent {
             this.setState({
                 insertMode: calculateInitialMode(
                     nextProps.allowedSiblingNodeTypes,
-                    nextProps.allowedChildNodeTypes
+                    nextProps.allowedChildNodeTypes,
+                    nextProps.preferredMode
                 )
             });
         }
@@ -101,6 +116,19 @@ export default class SelectNodeType extends PureComponent {
 
         apply(insertMode, nodeType);
     };
+
+    handleCloseHelpMessage = () => {
+        this.setState({
+            showHelpMessageFor: ''
+        });
+    }
+
+    handleHelpMessage = (nodeType, groupPanel) => {
+        this.setState({
+            showHelpMessageFor: nodeType === this.state.showHelpMessageFor ? '' : nodeType,
+            activeHelpMessageGroupPanel: groupPanel
+        });
+    }
 
     getAllowedNodeTypesByCurrentInsertMode() {
         const {insertMode} = this.state;
@@ -154,56 +182,27 @@ export default class SelectNodeType extends PureComponent {
 
     handleNodeTypeFilterChange = filterSearchTerm => this.setState({filterSearchTerm});
 
-    renderHelpMessage = () => {
-        const {showHelpMessageFor} = this.state;
-        const {nodeTypesRegistry} = this.props;
+    skipNodeTypeDialogIfPossible() {
+        const {insertMode} = this.state;
+        if (insertMode === 'into' &&
+            this.getAllowedNodeTypesByCurrentInsertMode().length === 1 &&
+            this.getAllowedNodeTypesByCurrentInsertMode()[0].nodeTypes.length === 1) {
+            this.handleApply(this.getAllowedNodeTypesByCurrentInsertMode()[0].nodeTypes[0].name);
+            return true;
+        }
 
-        const nodeType = nodeTypesRegistry.getNodeType(showHelpMessageFor);
-        const message = $get('ui.help.message', nodeType);
-
-        const icon = $get('ui.icon', nodeType);
-        const label = $get('ui.label', nodeType);
-
-        return (
-            <div className={style.helpMessage__wrapper}>
-                <div className={style.helpMessage}>
-                    <span className={style.helpMessage__label}>
-                        {icon && <Icon icon={icon} className={style.nodeType__icon} padded="right"/>}
-                        <I18n id={label} fallback={label}/>
-                    </span>
-                    <ReactMarkdown source={message} />
-                </div>
-
-                <IconButton className={style.helpMessage__closeButton} icon="times" onClick={() => this.handleCloseHelpMessage()} />
-            </div>
-        );
-    }
-
-    handleCloseHelpMessage = () => {
-        this.setState({
-            showHelpMessageFor: ''
-        });
-    }
-
-    handleHelpMessage = nodeType => {
-        this.setState({
-            showHelpMessageFor: nodeType === this.state.showHelpMessageFor ? '' : nodeType
-        });
+        return false;
     }
 
     render() {
         const {isOpen} = this.props;
-        const {showHelpMessageFor} = this.state;
 
-        const showHelpMessage = showHelpMessageFor !== '';
-
-        if (!isOpen) {
+        if (!isOpen || this.skipNodeTypeDialogIfPossible()) {
             return null;
         }
 
         return (
             <Dialog
-                className={showHelpMessage ? style.dialog__padded : ''}
                 actions={[this.renderCancelAction()]}
                 title={[this.renderSelectNodeTypeDialogHeader()]}
                 onRequestClose={this.handleCancel}
@@ -217,11 +216,13 @@ export default class SelectNodeType extends PureComponent {
                             group={group}
                             filterSearchTerm={this.state.filterSearchTerm}
                             onSelect={this.handleApply}
+                            showHelpMessageFor ={this.state.showHelpMessageFor}
+                            activeHelpMessageGroupPanel ={this.state.activeHelpMessageGroupPanel}
                             onHelpMessage={this.handleHelpMessage}
+                            onCloseHelpMessage={this.handleCloseHelpMessage}
                             />
                     </div>
                 ))}
-                {showHelpMessage ? this.renderHelpMessage() : null}
             </Dialog>
         );
     }

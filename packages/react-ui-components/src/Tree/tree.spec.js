@@ -1,8 +1,8 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
-import {createStubComponent} from './../_lib/testUtils.js';
-import Tree from './tree.js';
+import {createStubComponent} from './../_lib/testUtils';
+import Tree from './tree';
 
 describe('<Tree/>', () => {
     let props;

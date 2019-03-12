@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TextInput/> should render correctly. 1`] = `
+<div>
+  <input
+    aria-disabled="false"
+    aria-multiline="false"
+    className="textInputClassName fooClassName"
+    onChange={[Function]}
+    onKeyPress={[Function]}
+    role="textbox"
+  />
+</div>
+`;

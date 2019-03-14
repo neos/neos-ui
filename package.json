@@ -140,7 +140,7 @@
     "lodash.upperfirst": "^4.3.0",
     "moment": "^2.20.1",
     "monet": "^0.8.10",
-    "mousetrap": "^1.6.1",
+    "mousetrap": "^1.6.3",
     "normalize.css": "^8.0.0",
     "plow-js": "^2.2.0",
     "prop-types": "^15.5.10",

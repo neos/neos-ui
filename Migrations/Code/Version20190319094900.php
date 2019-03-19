@@ -59,11 +59,11 @@ class Version20190319094900 extends AbstractMigration
     {
 
         if (isset($editorOptions['formatting']['u'])) {
-            $editorOptions['formatting']['underline'] = true;
+            $editorOptions['formatting']['underline'] = $editorOptions['formatting']['u'];
             unset($editorOptions['formatting']['u']);
         }
         if (isset($editorOptions['formatting']['del'])) {
-            $editorOptions['formatting']['strikethrough'] = true;
+            $editorOptions['formatting']['strikethrough'] = $editorOptions['formatting']['del'];
             unset($editorOptions['formatting']['del']);
         }
     }

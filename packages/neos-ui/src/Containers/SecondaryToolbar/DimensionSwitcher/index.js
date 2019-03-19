@@ -12,6 +12,7 @@ import {mapObjIndexed} from 'ramda';
 import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 import I18n from '@neos-project/neos-ui-i18n';
 import sortBy from 'lodash.sortby';
+import {neos} from '@neos-project/neos-ui-decorators';
 
 // TODO Add title prop to Icon component
 const SelectedPreset = props => {
@@ -83,13 +84,18 @@ DimensionSelector.propTypes = {
     selectPreset: actions.CR.ContentDimensions.selectPreset,
     setAllowed: actions.CR.ContentDimensions.setAllowed
 })
+@neos(globalRegistry => ({
+    i18nRegistry: globalRegistry.get('i18n')
+}))
 export default class DimensionSwitcher extends PureComponent {
     static propTypes = {
         contentDimensions: PropTypes.object.isRequired,
         activePresets: PropTypes.object.isRequired,
         allowedPresets: PropTypes.object.isRequired,
         selectPreset: PropTypes.func.isRequired,
-        setAllowed: PropTypes.func.isRequired
+        setAllowed: PropTypes.func.isRequired,
+
+        i18nRegistry: PropTypes.object.isRequired
     };
 
     static defaultProps = {
@@ -159,7 +165,7 @@ export default class DimensionSwitcher extends PureComponent {
     }
 
     render() {
-        const {contentDimensions, activePresets} = this.props;
+        const {contentDimensions, activePresets, i18nRegistry} = this.props;
         const contentDimensionsObject = contentDimensions;
         const contentDimensionsObjectKeys = Object.keys(contentDimensionsObject);
 
@@ -180,8 +186,8 @@ export default class DimensionSwitcher extends PureComponent {
                             key={dimensionName}
                             dimensionName={dimensionName}
                             icon={icon}
-                            dimensionLabel={$get('label', dimensionConfiguration)}
-                            presetLabel={$get([dimensionName, 'label'], activePresets)}
+                            dimensionLabel={i18nRegistry.translate($get('label', dimensionConfiguration))}
+                            presetLabel={i18nRegistry.translate($get([dimensionName, 'label'], activePresets))}
                             />
                         );
                     })}
@@ -225,11 +231,12 @@ export default class DimensionSwitcher extends PureComponent {
     }
 
     presetsForDimension(dimensionName) {
-        const {contentDimensions, allowedPresets} = this.props;
+        const {contentDimensions, allowedPresets, i18nRegistry} = this.props;
         const dimensionConfiguration = $get(dimensionName, contentDimensions);
 
         return mapObjIndexed((presetConfiguration, presetName) => {
             return Object.assign({}, presetConfiguration, {
+                label: i18nRegistry.translate(presetConfiguration.label),
                 disabled: !(allowedPresets[dimensionName] && allowedPresets[dimensionName].includes(presetName))
             });
         }, dimensionConfiguration.presets);

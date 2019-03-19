@@ -25,6 +25,7 @@ import style from './style.css';
     i18nRegistry: globalRegistry.get('i18n')
 }))
 @connect((state, {nodeTypesRegistry, validatorRegistry}) => {
+    const validationErrorsSelector = selectors.UI.Inspector.makeValidationErrorsSelector(nodeTypesRegistry, validatorRegistry);
     const isApplyDisabledSelector = selectors.UI.Inspector.makeIsApplyDisabledSelector(nodeTypesRegistry, validatorRegistry);
 
     return state => {
@@ -35,6 +36,7 @@ import style from './style.css';
 
         return {
             focusedNode: selectors.CR.Nodes.focusedSelector(state),
+            validationErrors: validationErrorsSelector(state),
             isApplyDisabled: isApplyDisabledSelector(state),
             transientValues: selectors.UI.Inspector.transientValues(state),
             isDiscardDisabled: selectors.UI.Inspector.isDiscardDisabledSelector(state),
@@ -220,6 +222,7 @@ export default class Inspector extends PureComponent {
         const {
             focusedNode,
             commit,
+            validationErrors,
             isApplyDisabled,
             isDiscardDisabled,
             shouldShowUnappliedChangesOverlay,
@@ -272,11 +275,20 @@ export default class Inspector extends PureComponent {
                         // Render each tab as a TabPanel
                         //
                         .map(tab => {
+                            const notifications = validationErrors ?
+                                tab.groups.reduce((notifications, group) => {
+                                    return group.items.reduce((notifications, item) => (
+                                        Object.keys(validationErrors).includes(item.id) ? notifications + 1 : notifications
+                                    ), 0);
+                                }, 0)
+                                : 0;
+
                             return (
                                 <TabPanel
                                     key={$get('id', tab)}
                                     icon={$get('icon', tab)}
                                     groups={$get('groups', tab)}
+                                    notifications={notifications}
                                     toggledPanels={$get($get('id', tab), this.state.toggledPanels)}
                                     tooltip={i18nRegistry.translate($get('label', tab))}
                                     renderSecondaryInspector={this.renderSecondaryInspector}

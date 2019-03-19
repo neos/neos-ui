@@ -4,6 +4,7 @@ import mergeClassNames from 'classnames';
 import {PickDefaultProps} from '../../types';
 import Panel from './panel.index';
 import Icon from '../Icon';
+import Badge from '@neos-project/react-ui-components/src/Badge/';
 
 export interface TabsProps {
     /**
@@ -86,6 +87,7 @@ export default class Tabs extends PureComponent<TabsProps> {
                 title={panel.props.title}
                 icon={panel.props.icon}
                 tooltip={panel.props.tooltip}
+                notifications={panel.props.notifications}
             />
         ));
 
@@ -171,6 +173,11 @@ export interface TabMenuItemProps {
      */
     tooltip?: string;
 
+    /**
+     * An optional notification count displayed as a badge.
+     */
+    notifications?: number;
+
     theme?: TabMenuItemTheme;
 }
 
@@ -180,6 +187,7 @@ interface TabMenuItemTheme {
     readonly 'tabNavigation__itemBtn': string;
     readonly 'tabNavigation__itemBtnIcon': string;
     readonly 'tabNavigation__itemBtnIcon--hasLabel': string;
+    readonly 'tabNavigation__itemBtnNotificationBadge': string;
 }
 
 export const tabMenuItemDefaultProps: PickDefaultProps<TabMenuItemProps, 'isActive'> = {
@@ -198,6 +206,7 @@ export class TabMenuItem extends PureComponent<TabMenuItemProps> {
             icon,
             title,
             tooltip,
+            notifications,
         } = this.props;
         const finalClassName = mergeClassNames(
             theme!.tabNavigation__item,
@@ -224,6 +233,7 @@ export class TabMenuItem extends PureComponent<TabMenuItemProps> {
                 >
                     {icon ? <Icon icon={icon} className={finalIconClassName}/> : null}
                     {title}
+                    {!!notifications && <Badge className={theme!.tabNavigation__itemBtnNotificationBadge} label={String(notifications)}/>}
                 </button>
             </li>
         );

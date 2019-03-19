@@ -80,6 +80,15 @@
 .tabNavigation__itemBtnIcon--hasLabel {
     margin-right: var(--spacing-Half);
 }
+.tabNavigation__itemBtnNotificationBadge {
+    position: absolute;
+    right: 1px;
+    top: 1px;
+    z-index: 1;
+    background-color: var(--colors-Error);
+    color: var(--colors-ContrastBrightest);
+    transform: scale(0.75);
+}
 
 .panel {
     composes: reset from './../reset.css';

@@ -86,7 +86,7 @@ class DimensionSelector extends PureComponent {
                     onValueChange={onPresetSelect}
                     value={activePreset}
                     allowEmpty={false}
-                    displaySearchBox={true}
+                    displaySearchBox={sortedPresetOptions.length >= 10}
                     searchOptions={searchOptions(this.state.searchTerm, sortedPresetOptions)}
                     onSearchTermChange={this.handleSearchTermChange}
                     noMatchesFoundLabel={i18nRegistry.translate('Neos.Neos:Main:noMatchesFound')}

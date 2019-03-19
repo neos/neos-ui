@@ -205,8 +205,4 @@ if (env.isProduction) {
     );
 }
 
-webpackConfig.__internalDependencies = {
-    MiniCssExtractPlugin
-};
-
 module.exports = webpackConfig;

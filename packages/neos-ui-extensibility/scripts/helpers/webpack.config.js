@@ -1,7 +1,6 @@
 const sharedWebPackConfig = require('@neos-project/build-essentials/src/webpack.config.js');
 const path = require('path');
-const MiniCssExtractPlugin = sharedWebPackConfig.__internalDependencies.MiniCssExtractPlugin;
-delete sharedWebPackConfig.__internalDependencies;
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = function (neosPackageJson) {
     return Object.assign({}, sharedWebPackConfig, {

@@ -33,6 +33,7 @@
     min-width: 160px;
     box-shadow: 0 5px 10px rgba(#000, .2);
     z-index: var(--zIndex-SelectBoxContents);
+    max-height: calc(30vh);
 }
 
 .selectBox__item {

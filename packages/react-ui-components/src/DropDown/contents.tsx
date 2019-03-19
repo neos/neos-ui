@@ -24,11 +24,6 @@ export interface ShallowDropDownContentsProps {
     readonly scrollable?: boolean;
 
     /**
-     * Limit height.
-     */
-    readonly limitHeight?: number;
-
-    /**
      * These props control the visual state of the contents, and are passed
      * from the outside via the `ContextDropDownContents` component.
      */
@@ -51,7 +46,6 @@ export default class ShallowDropDownContents extends PureComponent<ShallowDropDo
             isOpen,
             closeDropDown,
             scrollable,
-            limitHeight
         } = this.props;
         const finalClassName = mergeClassNames(
             theme!.dropDown__contents,
@@ -61,7 +55,6 @@ export default class ShallowDropDownContents extends PureComponent<ShallowDropDo
                 [theme!['dropDown__contents--isOpen']]: isOpen
             }
         );
-        const inlineHeightLimit = limitHeight && limitHeight > 0 ? {style: {'maxHeight': limitHeight + 'px'}} : {};
 
         return (
             <ul
@@ -70,7 +63,6 @@ export default class ShallowDropDownContents extends PureComponent<ShallowDropDo
                 aria-label="dropdown"
                 role="listbox"
                 onClick={closeDropDown}
-                {...inlineHeightLimit}
             >
                 {isOpen && children}
             </ul>

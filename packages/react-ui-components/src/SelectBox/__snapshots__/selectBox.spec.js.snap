@@ -17,7 +17,6 @@ exports[`<SelectBox/> should render correctly. 1`] = `
       SelectBox_Header={[Function]}
       SelectBox_HeaderWithSearchInput={[Function]}
       SelectBox_ListPreview={[Function]}
-      limitRenderedOptions={0}
       noMatchesFoundLabel="noMatchesFoundLabel"
       onReset={[Function]}
       onValueChange={[MockFunction]}
@@ -39,7 +38,6 @@ exports[`<SelectBox/> should render correctly. 1`] = `
     />
   </Component>
   <Component
-    limitHeight={0}
     scrollable={true}
   >
     <ul>
@@ -50,7 +48,6 @@ exports[`<SelectBox/> should render correctly. 1`] = `
         SelectBox_HeaderWithSearchInput={[Function]}
         SelectBox_ListPreview={[Function]}
         focusedValue=""
-        limitRenderedOptions={0}
         noMatchesFound={true}
         noMatchesFoundLabel="noMatchesFoundLabel"
         onChange={[Function]}

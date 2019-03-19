@@ -10,7 +10,6 @@ namespace Neos\Flow\Core\Migrations;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use Neos\Flow\Configuration\ConfigurationManager;
 
 /**
  * Migrate RTE formatting configuration to new format

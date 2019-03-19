@@ -74,10 +74,10 @@ class PluginViewEditor extends React.PureComponent {
         }
 
         const {loadPluginViews} = backend.get().endpoints;
-        const pluginNode = focusedNode.get('properties');
+        const pluginNode = $get('properties', focusedNode);
 
         if (pluginNode.size > 0) {
-            const pluginNodeIdentifier = $get('plugin.value', transientValues) === undefined ? pluginNode.get('plugin') : $get('plugin.value', transientValues);
+            const pluginNodeIdentifier = $get('plugin.value', transientValues) === undefined ? $get('plugin', pluginNode) : $get('plugin.value', transientValues);
             this.setState({isLoading: true});
 
             loadPluginViews(pluginNodeIdentifier, personalWorkspace, activeContentDimensions)
@@ -107,6 +107,7 @@ class PluginViewEditor extends React.PureComponent {
                 displayLoadingIndicator={isLoading}
                 displaySearchBox={false}
                 placeholder={this.renderPlaceholder()}
+                noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:content.inspector.editors.masterPluginEditor.noPluginConfigured')}
                 allowEmpty
                 disabled={disabled}
                 />

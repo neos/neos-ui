@@ -171,10 +171,16 @@ export default class ImageEditor extends Component {
     }
 
     handleMediaSelected = assetIdentifier => {
-        const {commit} = this.props;
+        const {commit, value} = this.props;
         const newAsset = {
             __identity: assetIdentifier
         };
+
+        // Same image selected as before?
+        if (value && value.__identity === assetIdentifier) {
+            this.handleCloseSecondaryScreen();
+            return;
+        }
 
         this.setState({
             image: null,

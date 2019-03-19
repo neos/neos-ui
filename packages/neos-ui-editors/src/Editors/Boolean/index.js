@@ -46,7 +46,7 @@ const BooleanEditor = props => {
     return (
         <div className={wrapperClassName}>
             <Label htmlFor={identifier} className={finalClassName}>
-                <CheckBox id={identifier} isChecked={toBoolean(value)} isDisabled={finalOptions.disabled} onChange={commit}/>
+                <CheckBox id={identifier} isChecked={toBoolean(value)} disabled={finalOptions.disabled} onChange={commit}/>
                 <I18n id={label}/>
             </Label>
             {props.renderHelpIcon ? props.renderHelpIcon() : ''}

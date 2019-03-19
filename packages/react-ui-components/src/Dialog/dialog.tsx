@@ -6,6 +6,7 @@ import {Portal} from 'react-portal';
 
 import IconButton from '../IconButton';
 
+type DialogType = 'success' | 'warn' | 'error';
 type DialogStyle = 'wide' | 'narrow';
 
 interface DialogTheme {
@@ -18,6 +19,9 @@ interface DialogTheme {
     readonly 'dialog__actions': string;
     readonly 'dialog--wide': string;
     readonly 'dialog--narrow': string;
+    readonly 'dialog--success': string;
+    readonly 'dialog--warn': string;
+    readonly 'dialog--error': string;
 }
 
 export interface DialogProps {
@@ -35,6 +39,11 @@ export interface DialogProps {
      * The title to be rendered on top of the Dialogs contents.
      */
     readonly title: ReactNode;
+
+    /**
+     * The `type` prop defines the type of the `Dialog`.
+     */
+    readonly type: DialogType;
 
     /**
      * The `style` prop defines the visual style of the `Dialog`.
@@ -75,13 +84,19 @@ export class DialogWithoutEscape extends PureComponent<DialogProps> {
         const {
             title,
             children,
-            onRequestClose,
             actions,
             theme,
+            type,
+            onRequestClose
         } = this.props;
 
         const finalClassNameBody = mergeClassNames(
             theme.dialog__body,
+            {
+                [theme['dialog--success']]: type === 'success',
+                [theme['dialog--warn']]: type === 'warn',
+                [theme['dialog--error']]: type === 'error',
+            },
             'dialog__body'
         );
 
@@ -98,10 +113,10 @@ export class DialogWithoutEscape extends PureComponent<DialogProps> {
                             hoverStyle="clean"
                         />
                     )}
+
                     <div className={theme.dialog__title}>
                         {title}
                     </div>
-
                     <div className={finalClassNameBody}>
                         {children}
                     </div>
@@ -161,9 +176,10 @@ class DialogWithEscape extends PureComponent<DialogProps> {
             style,
             children,
             isOpen,
-            onRequestClose,
             actions,
             theme,
+            type,
+            onRequestClose,
             ...rest
         } = this.props;
 
@@ -172,6 +188,11 @@ class DialogWithEscape extends PureComponent<DialogProps> {
             {
                 [theme['dialog--wide']]: style === 'wide',
                 [theme['dialog--narrow']]: style === 'narrow',
+            },
+            {
+                [theme['dialog--success']]: type === 'success',
+                [theme['dialog--warn']]: type === 'warn',
+                [theme['dialog--error']]: type === 'error',
             },
             className,
         );

@@ -15,6 +15,8 @@ namespace Neos\Neos\Ui\Service;
 
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Log\SystemLoggerInterface;
+use Neos\Flow\Property\TypeConverter\DateTimeConverter;
+use Neos\Flow\Validation\Validator\DateTimeValidator;
 use Neos\Flow\Validation\Validator\ValidatorInterface;
 
 /**
@@ -30,6 +32,12 @@ class NodePropertyValidationService
     protected $logger;
 
     /**
+     * @FLow\Inject
+     * @var DateTimeConverter
+     */
+    protected $dateTimeConverter;
+
+    /**
      * @param $value
      * @param string $validatorName
      * @param array $validatorConfiguration
@@ -41,6 +49,13 @@ class NodePropertyValidationService
 
         if ($validator === null) {
             return true;
+        }
+
+        if ($validator instanceof DateTimeValidator && $this->dateTimeConverter->canConvertFrom($value, 'DateTime')) {
+            $value = $this->dateTimeConverter->convertFrom($value, 'DateTime');
+            if (!$value instanceof \DateTime) {
+                return false;
+            }
         }
 
         $result = $validator->validate($value);

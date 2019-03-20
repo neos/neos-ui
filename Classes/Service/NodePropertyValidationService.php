@@ -53,9 +53,15 @@ class NodePropertyValidationService
 
         // Fixme: The from the UI delivered datetime string (2019-03-21T00:00:00+01:00) is not parsed correctly by the DateTimeParser in the DateTimeValidator,
         // so we cast it in prior and use this as final validation result.
-        if ($validator instanceof DateTimeValidator && $this->dateTimeConverter->canConvertFrom($value, 'DateTime')) {
-            $value = $this->dateTimeConverter->convertFrom($value, 'DateTime');
-            return $value instanceof \DateTime;
+        if ($validator instanceof DateTimeValidator) {
+            if ($value === '') {
+                return true;
+            }
+
+            if ($this->dateTimeConverter->canConvertFrom($value, 'DateTime')) {
+                $value = $this->dateTimeConverter->convertFrom($value, 'DateTime');
+                return $value instanceof \DateTime;
+            }
         }
 
         $result = $validator->validate($value);

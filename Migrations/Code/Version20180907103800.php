@@ -10,7 +10,6 @@ namespace Neos\Flow\Core\Migrations;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use Neos\Flow\Configuration\ConfigurationManager;
 
 /**
  * Migrate RTE formatting configuration to new format
@@ -82,11 +81,11 @@ class Version20180907103800 extends AbstractMigration
             $editorOptions['placeholder'] = $aloha['placeholder'];
         }
         if (isset($editorOptions['formatting']['b'])) {
-            $editorOptions['formatting']['strong'] = true;
+            $editorOptions['formatting']['strong'] = $editorOptions['formatting']['b'];
             unset($editorOptions['formatting']['b']);
         }
         if (isset($editorOptions['formatting']['i'])) {
-            $editorOptions['formatting']['em'] = true;
+            $editorOptions['formatting']['em'] = $editorOptions['formatting']['i'];
             unset($editorOptions['formatting']['i']);
         }
         if ($editorOptions['formatting'] === []) {

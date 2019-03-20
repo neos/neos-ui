@@ -177,7 +177,7 @@ export default class Node extends PureComponent {
 
         if (isHiddenBefore || isHiddenAfter) {
             let isCurrentlyHidden = false;
-            isCurrentlyHidden = (isHiddenBefore && moment(isHiddenBefore).isAfter(moment()) ? true : isCurrentlyHidden;
+            isCurrentlyHidden = isHiddenBefore && moment(isHiddenBefore).isAfter(moment()) ? true : isCurrentlyHidden;
             isCurrentlyHidden = isHiddenAfter && moment(isHiddenAfter).isBefore(moment()) ? true : isCurrentlyHidden;
             const circleColor = isCurrentlyHidden ? 'error' : 'primaryBlue';
 

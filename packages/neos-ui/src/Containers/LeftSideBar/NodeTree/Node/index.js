@@ -175,7 +175,7 @@ export default class Node extends PureComponent {
             );
         }
 
-        if ((isHiddenBefore && moment(isHiddenBefore).isAfter(moment())) || isHiddenAfter) {
+        if (isHiddenBefore || isHiddenAfter) {
             return (
                 <span className="fa-layers fa-fw">
                     <Icon icon={this.getIcon()} />

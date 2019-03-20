@@ -48,7 +48,7 @@ class NodePropertyValidationService
         $validator = $this->resolveValidator($validatorName, $validatorConfiguration);
 
         if ($validator === null) {
-            return false;
+            return true;
         }
 
         if ($validator instanceof DateTimeValidator && $this->dateTimeConverter->canConvertFrom($value, 'DateTime')) {

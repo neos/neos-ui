@@ -12,8 +12,8 @@ fixture`Switching dimensions`
 
 test('Switching dimensions', async t => {
     subSection('Navigate to some inner page and switch dimension');
-    const translatedPageName = 'Page 1';
-    const otherPageName = 'Page 2';
+    const translatedPageName = 'Translated page';
+    const otherPageName = 'Untranslated page';
 
     await Page.goToPage(translatedPageName);
     await DimensionSwitcher.switchLanguageDimension('Latvian');

@@ -22,6 +22,7 @@ exports[`<Tabs/> should render correctly. 1`] = `
           "tabNavigation__itemBtn": "baseTabsNavigationItemBtnClassName",
           "tabNavigation__itemBtnIcon": "baseTabsNavigationItemBtnIconClassName",
           "tabNavigation__itemBtnIcon--hasLabel": "baseTabsNavigationItemBtnIconWithLabelClassName",
+          "tabNavigation__itemBtnNotificationBadge": "baseTabsNavigationItemBtnNotificationBadgeClassName",
           "tabs": "baseTabsClassName",
           "tabs__content": "basTabsContentsClassName",
         }
@@ -42,6 +43,7 @@ exports[`<Tabs/> should render correctly. 1`] = `
           "tabNavigation__itemBtn": "baseTabsNavigationItemBtnClassName",
           "tabNavigation__itemBtnIcon": "baseTabsNavigationItemBtnIconClassName",
           "tabNavigation__itemBtnIcon--hasLabel": "baseTabsNavigationItemBtnIconWithLabelClassName",
+          "tabNavigation__itemBtnNotificationBadge": "baseTabsNavigationItemBtnNotificationBadgeClassName",
           "tabs": "baseTabsClassName",
           "tabs__content": "basTabsContentsClassName",
         }
@@ -62,6 +64,7 @@ exports[`<Tabs/> should render correctly. 1`] = `
           "tabNavigation__itemBtn": "baseTabsNavigationItemBtnClassName",
           "tabNavigation__itemBtnIcon": "baseTabsNavigationItemBtnIconClassName",
           "tabNavigation__itemBtnIcon--hasLabel": "baseTabsNavigationItemBtnIconWithLabelClassName",
+          "tabNavigation__itemBtnNotificationBadge": "baseTabsNavigationItemBtnNotificationBadgeClassName",
           "tabs": "baseTabsClassName",
           "tabs__content": "basTabsContentsClassName",
         }

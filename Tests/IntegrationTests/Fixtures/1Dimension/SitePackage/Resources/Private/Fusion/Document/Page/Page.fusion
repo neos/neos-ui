@@ -1,0 +1,17 @@
+prototype(Neos.TestSite:Document.Page)>
+prototype(Neos.TestSite:Document.Page) < prototype(Neos.Neos:Page) {
+    body = Neos.Neos:ContentComponent {
+        titleEditable = Neos.Neos:Editable {
+            property = 'title'
+        }
+        main = Neos.Neos:ContentCollection {
+            nodePath = 'main'
+        }
+        renderer = afx`
+            <h1>{props.titleEditable}</h1>
+            <main class="main">
+                {props.main}
+            </main>
+        `
+    }
+}

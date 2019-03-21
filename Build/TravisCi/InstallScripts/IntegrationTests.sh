@@ -22,7 +22,7 @@ shopt -s dotglob
 # Create a separate working directory in which the neos instance can be installed in.
 cd ..
 if [ ! -d "Neos" ]; then mkdir Neos; fi;
-cp neos-ui/Build/TravisCi/composer* Neos/
+cp neos-ui/Tests/IntegrationTests/TestDistribution* Neos/
 cd Neos
 
 # Move our repository and the configuration files into place.
@@ -37,15 +37,10 @@ composer install --no-interaction
 rm -rf Packages/Application/Neos.Neos.Ui
 mv temp Packages/Application/Neos.Neos.Ui
 
-# Move the configuration files into place.
-cp Packages/Application/Neos.Neos.Ui/Build/TravisCi/Settings.yaml Configuration/Settings.yaml
-
 # Setup the database and import the demo site package.
 mysql -e 'create database neos collate utf8mb4_unicode_ci;'
 FLOW_CONTEXT=Production ./flow cache:warmup
 FLOW_CONTEXT=Production ./flow doctrine:migrate
-FLOW_CONTEXT=Production ./flow site:import --package-key=Neos.Demo
-FLOW_CONTEXT=Production ./flow resource:publish
 
 # Create the demo backend user.
 FLOW_CONTEXT=Production ./flow user:create --username=admin --password=password --first-name=John --last-name=Doe --roles=Administrator &

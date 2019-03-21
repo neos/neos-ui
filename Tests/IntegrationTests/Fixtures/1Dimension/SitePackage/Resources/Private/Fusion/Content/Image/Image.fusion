@@ -1,0 +1,10 @@
+prototype(Neos.TestSite:Content.Image) < prototype(Neos.Neos:ContentComponent) {
+    alternativeText = ${node.properties.alternativeText}
+    src = Neos.Neos:ImageUri {
+        asset = ${q(node).property('image')}
+    }
+
+    renderer = afx`
+        <img src={props.src} alt={props.alternativeText} />
+    `
+}

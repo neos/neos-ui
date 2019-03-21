@@ -1,47 +1,8 @@
-import {Selector, Role} from 'testcafe';
+import {Selector} from 'testcafe';
 import {ReactSelector} from 'testcafe-react-selectors';
-import checkPropTypes from '../checkPropTypes';
-
-import Page from './pageModel';
-
-const subSection = name => console.log('\x1b[33m%s\x1b[0m', ' - ' + name);
+import {waitForIframeLoading, adminUser, discardAll, subSection, checkPropTypes, goToPage, page} from './utils';
 
 /* global fixture:true */
-/* eslint babel/new-cap: 0 */
-
-const page = new Page();
-
-const adminUrl = 'http://127.0.0.1:8081/neos!';
-
-const adminUser = Role(adminUrl, async t => {
-    await t
-        .typeText('#username', 'admin')
-        .typeText('#password', 'password')
-        .click('button.neos-login-btn');
-}, {preserveUrl: true});
-
-async function waitForIframeLoading(t) {
-    await t.expect(ReactSelector('Provider').getReact(({props}) => {
-        const reduxState = props.store.getState();
-        return !reduxState.ui.contentCanvas.isLoading;
-    })).ok('Loading stopped');
-}
-
-async function discardAll(t) {
-    await t
-        .click(ReactSelector('PublishDropDown ContextDropDownHeader'))
-        .click(ReactSelector('PublishDropDown ShallowDropDownContents').find('button').withText('Discard all'));
-    const confirmButtonExists = await Selector('#neos-DiscardDialog-Confirm').exists;
-    if (confirmButtonExists) {
-        await t.click(Selector('#neos-DiscardDialog-Confirm'));
-    }
-    await waitForIframeLoading(t);
-}
-
-async function goToPage(t, pageTitle) {
-    await t.click(page.treeNode.withText(pageTitle));
-    await waitForIframeLoading(t);
-}
 
 fixture`Content Module`
     .beforeEach(async t => {

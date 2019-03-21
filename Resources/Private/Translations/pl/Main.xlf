@@ -259,12 +259,6 @@
       <trans-unit id="Shortcut__UI.NodeVariantCreationDialog.createAndCopy" xml:space="preserve">
 				<source>NodeVariantCreationDialog Create and Copy</source>
 			<target xml:lang="pl" state="needs-translation">NodeVariantCreationDialog Create and Copy</target></trans-unit>
-      <trans-unit id="Shortcut__UI.SelectNodeTypeModal.cancel" xml:space="preserve">
-				<source>SelectNodeTypeModal Cancel</source>
-			<target xml:lang="pl" state="needs-translation">SelectNodeTypeModal Cancel</target></trans-unit>
-      <trans-unit id="Shortcut__UI.SelectNodeTypeModal.apply" xml:space="preserve">
-				<source>SelectNodeTypeModal Apply</source>
-			<target xml:lang="pl" state="needs-translation">SelectNodeTypeModal Apply</target></trans-unit>
       <trans-unit id="Shortcut__CR.Nodes.unfocus" xml:space="preserve">
 				<source>Unfocus Node</source>
 			<target xml:lang="pl" state="needs-translation">Unfocus Node</target></trans-unit>

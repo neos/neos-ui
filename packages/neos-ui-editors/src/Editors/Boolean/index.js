@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
+import {randomizeString} from '@neos-project/utils-helpers';
 
 import CheckBox from '@neos-project/react-ui-components/src/CheckBox/';
 import Label from '@neos-project/react-ui-components/src/Label/';
@@ -43,10 +44,12 @@ const BooleanEditor = props => {
         [style.boolean__label]: true
     });
 
+    const saltedIdentifier = randomizeString(identifier);
+
     return (
         <div className={wrapperClassName}>
-            <Label htmlFor={identifier} className={finalClassName}>
-                <CheckBox id={identifier} isChecked={toBoolean(value)} disabled={finalOptions.disabled} onChange={commit}/>
+            <Label htmlFor={saltedIdentifier} className={finalClassName}>
+                <CheckBox id={saltedIdentifier} isChecked={toBoolean(value)} disabled={finalOptions.disabled} onChange={commit}/>
                 <I18n id={label}/>
             </Label>
             {props.renderHelpIcon ? props.renderHelpIcon() : ''}

@@ -8,6 +8,7 @@ import cancelIdleCallback from './cancelIdleCallback';
 import getVersion from './getVersion';
 import isEmail from './isEmail';
 import {isUri} from './isUri';
+import {randomizeString} from './randomizeString';
 
 export {
     delay,
@@ -20,5 +21,6 @@ export {
     stripTags,
     stripTagsEncoded,
     cancelIdleCallback,
-    requestIdleCallback
+    requestIdleCallback,
+    randomizeString
 };

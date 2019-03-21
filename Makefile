@@ -110,7 +110,7 @@ test:
 	$(lerna) run test --concurrency 1
 
 test-e2e:
-	Tests/IntegrationTests/e2e.sh
+	bash Tests/IntegrationTests/e2e.sh
 
 lint: lint-js lint-editorconfig
 

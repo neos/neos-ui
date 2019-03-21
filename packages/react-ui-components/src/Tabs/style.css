@@ -87,7 +87,7 @@
     z-index: 1;
     background-color: var(--colors-Error);
     color: var(--colors-ContrastBrightest);
-    transform: scale(0.75);
+    transform: scale(.75);
 }
 
 .panel {

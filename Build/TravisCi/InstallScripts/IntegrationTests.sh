@@ -5,7 +5,7 @@
 # The script will be executed in the neos instance root directory.
 #
 
-set -e
+set -ex
 
 # Add the oAuth token to git to avoid errors with composer because of https://github.com/composer/composer/issues/1314
 if [ -n "$GITHUB_OAUTH_TOKEN" ]; then composer config github-oauth.github.com ${GITHUB_OAUTH_TOKEN}; fi;
@@ -21,7 +21,8 @@ shopt -s dotglob
 
 # Create a separate working directory in which the neos instance can be installed in.
 cd ..
-if [ ! -d "Neos" ]; then cp -r neos-ui/Tests/IntegrationTests/TestDistribution Neos; fi;
+if [ -d "Neos" ]; then rm -rf Neos; fi;
+cp -r neos-ui/Tests/IntegrationTests/TestDistribution Neos
 cd Neos
 
 # Move our repository and the configuration files into place.

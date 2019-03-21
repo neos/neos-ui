@@ -255,12 +255,6 @@
 			<trans-unit id="Shortcut__UI.NodeVariantCreationDialog.createAndCopy" xml:space="preserve">
 				<source>NodeVariantCreationDialog Create and Copy</source>
 			</trans-unit>
-			<trans-unit id="Shortcut__UI.SelectNodeTypeModal.cancel" xml:space="preserve">
-				<source>SelectNodeTypeModal Cancel</source>
-			</trans-unit>
-			<trans-unit id="Shortcut__UI.SelectNodeTypeModal.apply" xml:space="preserve">
-				<source>SelectNodeTypeModal Apply</source>
-			</trans-unit>
 			<trans-unit id="Shortcut__CR.Nodes.unfocus" xml:space="preserve">
 				<source>Unfocus Node</source>
 			</trans-unit>

@@ -21,8 +21,7 @@ shopt -s dotglob
 
 # Create a separate working directory in which the neos instance can be installed in.
 cd ..
-if [ ! -d "Neos" ]; then mkdir Neos; fi;
-cp neos-ui/Tests/IntegrationTests/TestDistribution* Neos/
+if [ ! -d "Neos" ]; then cp -r neos-ui/Tests/IntegrationTests/TestDistribution Neos; fi;
 cd Neos
 
 # Move our repository and the configuration files into place.

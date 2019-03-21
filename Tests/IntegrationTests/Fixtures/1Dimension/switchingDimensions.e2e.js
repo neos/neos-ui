@@ -1,5 +1,5 @@
-import {adminUser, subSection, checkPropTypes} from './../utils';
-import Page from './../pageModel';
+import {adminUser, subSection, checkPropTypes} from './../../utils';
+import Page from './../../pageModel';
 
 /* global fixture:true */
 /* eslint babel/new-cap: 0 */

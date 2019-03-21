@@ -280,8 +280,7 @@ export default class Inspector extends PureComponent {
                                     return group.items.reduce((notifications, item) => (
                                         Object.keys(validationErrors).includes(item.id) ? notifications + 1 : notifications
                                     ), 0);
-                                }, 0)
-                                : 0;
+                                }, 0) : 0;
 
                             return (
                                 <TabPanel

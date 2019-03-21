@@ -5,7 +5,7 @@ import {Page} from './../../pageModel';
 
 /* global fixture:true */
 
-fixture`Inspector`
+fixture`Image editor`
     .beforeEach(beforeEach)
     .afterEach(() => checkPropTypes());
 

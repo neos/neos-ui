@@ -3,7 +3,7 @@ import {beforeEach, subSection, checkPropTypes} from './../../utils.js';
 
 /* global fixture:true */
 
-fixture`Discarding`
+fixture`Sidebar toggle`
     .beforeEach(beforeEach)
     .afterEach(() => checkPropTypes());
 

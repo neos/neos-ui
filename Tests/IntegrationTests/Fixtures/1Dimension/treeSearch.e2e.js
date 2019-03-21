@@ -4,7 +4,7 @@ import {Page} from './../../pageModel';
 
 /* global fixture:true */
 
-fixture`Discarding`
+fixture`Tree search`
     .beforeEach(beforeEach)
     .afterEach(() => checkPropTypes());
 

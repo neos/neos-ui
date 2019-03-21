@@ -1,19 +1,13 @@
-import {adminUser, subSection, checkPropTypes} from './../../utils';
+import {beforeEach, subSection, checkPropTypes} from './../../utils';
 import {
     Page,
-    DimensionSwitcher,
-    PublishDropDown
+    DimensionSwitcher
 } from './../../pageModel';
 
 /* global fixture:true */
 
 fixture`Switching dimensions`
-    .beforeEach(async t => {
-        await t.useRole(adminUser);
-        PublishDropDown.discardAll();
-        await PublishDropDown.discardAll();
-        await Page.goToPage('Home');
-    })
+    .beforeEach(beforeEach)
     .afterEach(() => checkPropTypes());
 
 test('Switching dimensions', async t => {

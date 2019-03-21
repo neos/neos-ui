@@ -1,4 +1,6 @@
 import {t, Role} from 'testcafe';
+import {waitForReact} from 'testcafe-react-selectors';
+import {PublishDropDown, Page} from './pageModel';
 
 export const subSection = name => console.log('\x1b[33m%s\x1b[0m', ' - ' + name);
 
@@ -19,4 +21,11 @@ export async function checkPropTypes() {
         console.log('These console errors were the cause of the failed test:', error);
     }
     await t.expect(error[0]).notOk();
+}
+
+export async function beforeEach(t) {
+    await t.useRole(adminUser);
+    await waitForReact();
+    await PublishDropDown.discardAll();
+    await Page.goToPage('Home');
 }

@@ -4,6 +4,6 @@ prototype(Neos.TestSite:Content.Text) < prototype(Neos.Neos:ContentComponent) {
     }
 
     renderer = afx`
-        <div class="text">{props.text}</div>
+        <div class="test-text">{props.text}</div>
     `
 }

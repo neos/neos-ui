@@ -9,6 +9,7 @@
   properties:
     title:
       type: string
+      defaultValue: '<h1>Enter headline here</h1>'
       ui:
         inlineEditable: true
         inline:

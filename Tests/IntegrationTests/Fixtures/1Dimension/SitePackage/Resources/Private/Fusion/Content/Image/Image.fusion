@@ -5,6 +5,6 @@ prototype(Neos.TestSite:Content.Image) < prototype(Neos.Neos:ContentComponent) {
     }
 
     renderer = afx`
-        <img src={props.src} alt={props.alternativeText} />
+        <img class="test-image" src={props.src} alt={props.alternativeText} />
     `
 }

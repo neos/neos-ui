@@ -1,17 +1,18 @@
 import {Selector} from 'testcafe';
 import {ReactSelector} from 'testcafe-react-selectors';
 import {adminUser, subSection, checkPropTypes} from './../../utils.js';
-import Page from './../../pageModel';
+import {
+    Page,
+    PublishDropDown
+} from './../../pageModel';
 
 /* global fixture:true */
-/* eslint babel/new-cap: 0 */
-export const page = new Page();
 
 fixture`Discarding`
     .beforeEach(async t => {
         await t.useRole(adminUser);
-        await page.discardAll();
-        await page.goToPage('Home');
+        await PublishDropDown.discardAll();
+        await Page.goToPage('Home');
     })
     .afterEach(() => checkPropTypes());
 
@@ -24,7 +25,7 @@ test('Discarding: create multiple nodes nested within each other and then discar
         .click(ReactSelector('NodeTypeItem'))
         .typeText(Selector('#neos-NodeCreationDialog-Body input'), pageTitleToCreate)
         .click(Selector('#neos-NodeCreationDialog-CreateNew'));
-    await page.waitForIframeLoading();
+    await Page.waitForIframeLoading();
 
     subSection('Create another node inside it');
     await t
@@ -33,10 +34,10 @@ test('Discarding: create multiple nodes nested within each other and then discar
         .click(ReactSelector('NodeTypeItem'))
         .typeText(Selector('#neos-NodeCreationDialog-Body input'), pageTitleToCreate)
         .click(Selector('#neos-NodeCreationDialog-CreateNew'));
-    await page.waitForIframeLoading();
+    await Page.waitForIframeLoading();
 
     subSection('Discard all nodes and hope to be redirected to root');
-    await page.discardAll();
+    await PublishDropDown.discardAll();
     await t
         .expect(ReactSelector('Provider').getReact(({props}) => {
             const reduxState = props.store.getState();

@@ -1,13 +1,38 @@
 import {t, Selector} from 'testcafe';
 import {ReactSelector} from 'testcafe-react-selectors';
 
-class DimensionSwitcher {
-    constructor() {
-        this.dimensionSwitcher = ReactSelector('DimensionSwitcher');
-        this.dimensionSwitcherFirstDimensionSelector = ReactSelector('DimensionSwitcher SelectBox');
+//
+// We define all methods as static here so it would be possible to use these classes without `new`
+//
+export class Page {
+    static treeNode = ReactSelector('Node').find('span');
+
+    static async goToPage(pageTitle) {
+        await t.click(this.treeNode.withText(pageTitle));
+        await this.waitForIframeLoading(t);
     }
 
-    async switchLanguageDimension(name) {
+    static async getReduxState(selector) {
+        const reduxState = await ReactSelector('Provider').getReact(({props}) => {
+            return props.store.getState();
+        });
+        return selector(reduxState);
+    }
+
+    static async waitForIframeLoading() {
+        await t.expect(ReactSelector('Provider').getReact(({props}) => {
+            const reduxState = props.store.getState();
+            return !reduxState.ui.contentCanvas.isLoading;
+        })).ok('Loading stopped');
+    }
+}
+
+export class DimensionSwitcher {
+    static dimensionSwitcher = ReactSelector('DimensionSwitcher');
+
+    static dimensionSwitcherFirstDimensionSelector = ReactSelector('DimensionSwitcher SelectBox');
+
+    static async switchLanguageDimension(name) {
         await t
             .click(this.dimensionSwitcher)
             .click(this.dimensionSwitcherFirstDimensionSelector)
@@ -15,55 +40,25 @@ class DimensionSwitcher {
     }
 }
 
-class PublishDropDown {
-    constructor() {
-        this.publishDropdown = ReactSelector('PublishDropDown ContextDropDownHeader');
-        this.publishDropdownDiscardAll = ReactSelector('PublishDropDown ShallowDropDownContents').find('button').withText('Discard all');
-    }
+export class PublishDropDown {
+    static publishDropdown = ReactSelector('PublishDropDown ContextDropDownHeader');
 
-    async discardAll() {
+    static publishDropdownDiscardAll = ReactSelector('PublishDropDown ShallowDropDownContents').find('button').withText('Discard all');
+
+    static async discardAll() {
         await t
             .click(this.publishDropdown)
             .click(this.publishDropdownDiscardAll);
-    }
-}
-
-export default class Page {
-    constructor() {
-        this.dimensionSwitcher = new DimensionSwitcher();
-        this.publishDropdown = new PublishDropDown();
-        this.treeNode = ReactSelector('Node').find('span');
-    }
-
-    async getReduxState(selector) {
-        const reduxState = await ReactSelector('Provider').getReact(({props}) => {
-            return props.store.getState();
-        });
-        return selector(reduxState);
-    }
-
-    async waitForIframeLoading() {
-        await t.expect(ReactSelector('Provider').getReact(({props}) => {
-            const reduxState = props.store.getState();
-            return !reduxState.ui.contentCanvas.isLoading;
-        })).ok('Loading stopped');
-    }
-
-    async goToPage(pageTitle) {
-        await t.click(this.treeNode.withText(pageTitle));
-        await this.waitForIframeLoading(t);
-    }
-
-    async discardAll() {
-        await this.publishDropdown.discardAll();
         const confirmButtonExists = await Selector('#neos-DiscardDialog-Confirm').exists;
         if (confirmButtonExists) {
             await t.click(Selector('#neos-DiscardDialog-Confirm'));
         }
-        await this.waitForIframeLoading();
+        await Page.waitForIframeLoading();
     }
+}
 
-    async switchLanguageDimension(name) {
-        await this.dimensionSwitcher.switchLanguageDimension(name);
+export class Inspector {
+    static async getInspectorEditor(propertyName) {
+        return ReactSelector('InspectorEditorEnvelope').withProps('id', propertyName);
     }
 }

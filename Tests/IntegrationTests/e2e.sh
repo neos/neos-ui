@@ -16,6 +16,7 @@ for fixture in Packages/Application/Neos.Neos.Ui/Tests/IntegrationTests/Fixtures
     FLOW_CONTEXT=Production ./flow flow:cache:flushone Neos_Fusion_Content
     FLOW_CONTEXT=Production ./flow site:prune
     FLOW_CONTEXT=Production ./flow site:import --package-key=Neos.TestSite
+    FLOW_CONTEXT=Production ./flow resource:publish
 
     cd Packages/Application/Neos.Neos.Ui
     yarn run testcafe chrome "../../../${fixture}*.e2e.js" \

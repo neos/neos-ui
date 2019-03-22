@@ -9,7 +9,7 @@ export interface TabsProps {
     /**
      * The id of the active tab, defaults to an empty string.
      */
-    readonly activeTab?: string|number;
+    readonly activeTab?: string | number;
 
     /**
      * An optional className to render on the wrapping div.
@@ -38,7 +38,7 @@ export const tabsDefaultProps: PickDefaultProps<TabsProps, 'activeTab'> = {
 };
 
 interface TabsState {
-    readonly activeTab: string|number;
+    readonly activeTab: string | number;
 }
 
 export default class Tabs extends PureComponent<TabsProps> {
@@ -60,7 +60,7 @@ export default class Tabs extends PureComponent<TabsProps> {
         }
     }
 
-    public getActiveTab(): string|number {
+    public getActiveTab(): string | number {
         // If activeTab is out of bounds, choose the first tab
         const {activeTab} = this.state;
         const activeTabs = this.props.children.filter(panel => panel.props.id === activeTab);
@@ -97,7 +97,7 @@ export default class Tabs extends PureComponent<TabsProps> {
         );
     }
 
-    public handleTabNavItemClick = (id: string|number) => {
+    public handleTabNavItemClick = (id: string | number) => {
         this.setState({activeTab: id});
     }
 
@@ -150,7 +150,7 @@ export interface TabMenuItemProps {
     /**
      * The identifier which will be handed over to the onClick handler.
      */
-    id: string|number;
+    id: string | number;
 
     /**
      * The title to render for the given Panel.
@@ -160,7 +160,7 @@ export interface TabMenuItemProps {
     /**
      * The click handler which will be called with the passed index as it's only argument.
      */
-    onClick: (id: string|number) => void;
+    onClick: (id: string | number) => void;
 
     /**
      * A boolean which controls if the rendered anchor is displayed as active or not.

@@ -2,7 +2,7 @@
 // https://github.com/azuqua/react-dnd-scrollzone/pull/38#issuecomment-434385410
 
 import React, {Component, createContext} from 'react';
-import {Consumer as DragDropContextConsumer} from 'react-dnd/lib/DragDropContext';
+import {DragDropContextConsumer} from 'react-dnd';
 import PropTypes from 'prop-types';
 import {findDOMNode} from 'react-dom';
 import throttle from 'lodash.throttle';

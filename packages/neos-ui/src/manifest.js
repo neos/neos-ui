@@ -359,9 +359,8 @@ manifest('main', {}, globalRegistry => {
         const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
         const inlineEditorRegistry = globalRegistry.get('inlineEditors');
 
-        const emptyContentCollectionOverlay = parentElement.querySelector(`.${style.addEmptyContentCollectionOverlay}`);
-        if (emptyContentCollectionOverlay && emptyContentCollectionOverlay.parentElement.children.length > 1) {
-            emptyContentCollectionOverlay.remove();
+        if (parentElement.querySelector(`.${style.addEmptyContentCollectionOverlay}`)) {
+            parentElement.querySelector(`.${style.addEmptyContentCollectionOverlay}`).remove();
         }
 
         //

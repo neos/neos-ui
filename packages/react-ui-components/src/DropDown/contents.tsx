@@ -38,7 +38,7 @@ export interface ShallowDropDownContentsProps {
 }
 
 export default class ShallowDropDownContents extends PureComponent<ShallowDropDownContentsProps> {
-    public render(): JSX.Element | null {
+    public render(): JSX.Element {
         const {
             className,
             children,
@@ -56,7 +56,7 @@ export default class ShallowDropDownContents extends PureComponent<ShallowDropDo
             }
         );
 
-        return isOpen ? (
+        return (
             <ul
                 className={finalClassName}
                 aria-hidden={isOpen ? 'false' : 'true'}
@@ -66,6 +66,6 @@ export default class ShallowDropDownContents extends PureComponent<ShallowDropDo
             >
                 {isOpen && children}
             </ul>
-        ) : null;
+        );
     }
 }

@@ -42,9 +42,9 @@ class SelectBox_Option_MultiLineWithThumbnail extends PureComponent {
         return (
             <ListPreviewElement {...rest} icon={icon} className={finalClassNames}>
                 {Boolean(imageUri) && <img src={imageUri} alt={label} className={theme.multiLineWithThumbnail__image}/>}
-                <span>{label}</span>
-                {Boolean(secondaryLabel) && <span className={theme.multiLineWithThumbnail__secondaryLabel}>{secondaryLabel}</span>}
-                {Boolean(tertiaryLabel) && <span className={theme.multiLineWithThumbnail__tertiaryLabel}>{tertiaryLabel}</span>}
+                <span title={label}>{label}</span>
+                {Boolean(secondaryLabel) && <span className={theme.multiLineWithThumbnail__secondaryLabel} title={secondaryLabel}>{secondaryLabel}</span>}
+                {Boolean(tertiaryLabel) && <span className={theme.multiLineWithThumbnail__tertiaryLabel} title={tertiaryLabel}>{tertiaryLabel}</span>}
             </ListPreviewElement>
         );
     }

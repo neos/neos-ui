@@ -32,7 +32,7 @@ class NodePropertyValidationService
     protected $logger;
 
     /**
-     * @FLow\Inject
+     * @Flow\Inject
      * @var DateTimeConverter
      */
     protected $dateTimeConverter;

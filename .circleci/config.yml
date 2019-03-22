@@ -54,7 +54,7 @@ jobs:
       - restore_cache:
           keys:
             - full-app-cache2-{{ checksum "Build/CircleCi/composer.json" }}
-      - run: mkdir -p /home/circleci/app
+      - run: mkdir -p /home/circleci/app/Configuration
       - run: cp Build/CircleCi/composer.* /home/circleci/app
       - run: cp Build/CircleCi/Settings.yaml /home/circleci/app/Configuration/Settings.yaml
       - run: cd /home/circleci/app && composer install

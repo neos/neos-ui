@@ -16,14 +16,14 @@ describe('<ShallowDropDownContents/>', () => {
         }
     };
 
-    it('should render correctly.', () => {
+    it('should not render when having no children.', () => {
         const wrapper = shallow(<ShallowDropDownContents {...props}/>);
 
-        expect(toJson(wrapper)).toMatchSnapshot();
+        expect(toJson(wrapper)).toBeFalsy();
     });
 
     it('should allow the propagation of "className" with the "className" prop.', () => {
-        const wrapper = shallow(<ShallowDropDownContents {...props} className="fooClassName"/>);
+        const wrapper = shallow(<ShallowDropDownContents {...props} isOpen={true} className="fooClassName"/>);
 
         expect(wrapper.prop('className')).toContain('fooClassName');
     });
@@ -48,7 +48,7 @@ describe('<ShallowDropDownContents/>', () => {
 
     it('should call the "closeDropDown" prop when clicking on the wrapper.', () => {
         const closeDropDown = jest.fn();
-        const wrapper = shallow(<ShallowDropDownContents {...props} closeDropDown={closeDropDown}/>);
+        const wrapper = shallow(<ShallowDropDownContents {...props} isOpen={true} closeDropDown={closeDropDown}/>);
 
         wrapper.simulate('click');
 

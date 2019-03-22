@@ -11,6 +11,7 @@
 }
 .dropDown {
     position: static;
+    width: auto;
 }
 .dropDown__contents {
     padding: 2px !important;

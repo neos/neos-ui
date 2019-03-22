@@ -1,4 +1,4 @@
-import {urlWithParams, searchParams} from './Helpers';
+import {urlWithParams, searchParams, getElementInnerText, getElementAttributeValue} from './Helpers';
 
 import fetchWithErrorHandling from '../FetchWithErrorHandling/index';
 import {Change, NodeContextPath, WorkspaceName, DimensionCombination, DimensionPresetCombination, DimensionName} from '@neos-project/neos-ts-interfaces';
@@ -167,7 +167,6 @@ export default (routes: Routes) => {
      * asset[adjustments][Neos\Media\Domain\Model\Adjustment\CropImageAdjustment][x]:0
      * asset[adjustments][Neos\Media\Domain\Model\Adjustment\CropImageAdjustment][y]:0
      * asset[originalAsset]:56d183f2-ee66-c845-7e2d-40661fb27571
-     * @param asset
      */
     const createImageVariant = (originalAssetUuid: string, adjustments: {[propName: string]: any}) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
         url: routes.core.content.createImageVariant,
@@ -242,6 +241,89 @@ export default (routes: Routes) => {
         const parts = uri.split('.');
         return parts.length ? '.' + parts[parts.length - 1] : '';
     };
+
+    const assetProxyImport = (identifier: string) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+        url: `${routes.core.service.assetProxies}/${identifier.substr(0, identifier.indexOf('/'))}/${identifier.substr(identifier.indexOf('/') + 1)}`,
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'X-Flow-Csrftoken': csrfToken
+        },
+        body: ''
+    }))
+        .then(result => result.text())
+        .then(result => {
+            const assetProxyTable = document.createElement('table');
+            assetProxyTable.innerHTML = result;
+            const assetProxy = assetProxyTable.querySelector('.asset-proxy') as HTMLElement;
+            if (!assetProxy) {
+                throw new Error('No ".asset-proxy" element found in result.');
+            }
+            return getElementInnerText(assetProxy, '.local-asset-identifier');
+        });
+
+    const assetProxySearch = (searchTerm = '', assetSourceIdentifier = '', options: {assetsToExclude: string[]} = {assetsToExclude: []}) => fetchWithErrorHandling.withCsrfToken(() => ({
+        url: urlWithParams(routes.core.service.assetProxies, {searchTerm, assetSourceIdentifier}),
+
+        method: 'GET',
+        credentials: 'include'
+    }))
+        .then(result => result.text())
+        .then(result => {
+            const assetProxyTable = document.createElement('table');
+            assetProxyTable.innerHTML = result;
+            const assetProxies = Array.from(assetProxyTable.querySelectorAll('.asset')) as HTMLElement[];
+
+
+            const mappedAssetProxies = assetProxies.map((assetProxy: HTMLElement) => {
+                const assetSourceIdentifier = getElementInnerText(assetProxy, '.asset-source-identifier');
+                const assetSourceLabel = getElementInnerText(assetProxy, '.asset-source-label');
+                const assetProxyIdentifier = getElementInnerText(assetProxy, '.asset-proxy-identifier');
+                return {
+                    dataType: 'Neos.Media:Asset',
+                    loaderUri: 'assetProxy://' + assetSourceIdentifier + '/' + assetProxyIdentifier,
+                    label: getElementInnerText(assetProxy, '.asset-proxy-label'),
+                    preview: getElementAttributeValue(assetProxy, '[rel=thumbnail]', 'href'),
+                    identifier: getElementInnerText(assetProxy, '.local-asset-identifier') || (assetSourceIdentifier + '/' + assetProxyIdentifier),
+                    assetSourceIdentifier,
+                    assetSourceLabel,
+                    assetProxyIdentifier
+                };
+            });
+            return mappedAssetProxies.filter((assetProxy: {identifier?: string}) => assetProxy.identifier && options.assetsToExclude.indexOf(assetProxy.identifier) === -1);
+        });
+
+    const assetProxyDetail = (assetSourceIdentifier: string, assetProxyIdentifier: string) => fetchWithErrorHandling.withCsrfToken(() => ({
+        url: `${routes.core.service.assetProxies}/${assetSourceIdentifier}/${assetProxyIdentifier}`,
+
+        method: 'GET',
+        credentials: 'include'
+    }))
+        .then(result => result.text())
+        .then(result => {
+            const assetProxyTable = document.createElement('table');
+            assetProxyTable.innerHTML = result;
+
+            const assetProxy = assetProxyTable.querySelector('.asset-proxy') as HTMLElement;
+            if (!assetProxy) {
+                throw new Error('An ".asset-proxy" element was not in the results');
+            }
+
+            const assetSourceIdentifier = getElementInnerText(assetProxy, '.asset-source-identifier');
+            const assetProxyIdentifier = getElementInnerText(assetProxy, '.asset-proxy-identifier');
+
+            return {
+                dataType: 'Neos.Media:Asset',
+                loaderUri: 'assetProxy://' + assetSourceIdentifier + '/' + assetProxyIdentifier,
+                label: getElementInnerText(assetProxy, '.asset-proxy-label'),
+                preview: getElementAttributeValue(assetProxy, '[rel=thumbnail]', 'href'),
+                identifier: getElementInnerText(assetProxy, '.local-asset-identifier'),
+                localAssetIdentifier: getElementInnerText(assetProxy, '.local-asset-identifier'),
+                assetSourceIdentifier,
+                assetSourceLabel: getElementInnerText(assetProxy, '.asset-source-label'),
+                assetProxyIdentifier
+            };
+        });
 
     const assetSearch = (searchTerm = '') => fetchWithErrorHandling.withCsrfToken(() => ({
         url: urlWithParams(routes.core.service.assets, {searchTerm}),
@@ -535,6 +617,9 @@ export default (routes: Routes) => {
         loadMasterPlugins,
         loadPluginViews,
         uploadAsset,
+        assetProxyImport,
+        assetProxySearch,
+        assetProxyDetail,
         assetSearch,
         assetDetail,
         searchNodes,

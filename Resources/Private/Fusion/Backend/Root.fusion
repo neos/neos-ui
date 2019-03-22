@@ -122,6 +122,10 @@ backend = Neos.Fusion:Template {
                 }
             }
             service = Neos.Fusion:RawArray {
+                assetProxies = Neos.Fusion:UriBuilder {
+                    controller = 'Service\\AssetProxies'
+                    action = 'index'
+                }
                 assets = Neos.Fusion:UriBuilder {
                     controller = 'Service\\Assets'
                     action = 'index'

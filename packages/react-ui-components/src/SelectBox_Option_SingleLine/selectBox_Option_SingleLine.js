@@ -28,7 +28,7 @@ class SelectBox_Option_SingleLine extends PureComponent {
 
         return (
             <ListPreviewElement {...this.props} icon={option.icon} disabled={isDisabled} className={finalClassNames}>
-                <span>{option.label}</span>
+                <span title={option.label}>{option.label}</span>
             </ListPreviewElement>
         );
     }

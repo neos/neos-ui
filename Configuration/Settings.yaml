@@ -87,9 +87,6 @@ Neos:
           'UI.NodeVariantCreationDialog.createEmpty': 'c e v'
           'UI.NodeVariantCreationDialog.createAndCopy': 'c c v'
 
-          'UI.SelectNodeTypeModal.cancel': 'c s'
-          'UI.SelectNodeTypeModal.apply': 'a s'
-
           'CR.Nodes.unfocus': 'u n'
 
         defaultInlineEditor: 'ckeditor5'

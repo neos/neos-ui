@@ -1,11 +1,11 @@
 const sharedWebPackConfig = require('@neos-project/build-essentials/src/webpack.config.js');
 const path = require('path');
-const {ExtractTextPlugin} = sharedWebPackConfig.__internalDependencies;
-delete sharedWebPackConfig.__internalDependencies;
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = function (neosPackageJson) {
     return Object.assign({}, sharedWebPackConfig, {
         module: {
+            mode: sharedWebPackConfig.mode,
             rules: sharedWebPackConfig.module.rules.map(loaderConfig => {
                 if (loaderConfig.use[0].loader === 'babel-loader') {
                     loaderConfig.use[0].options = {
@@ -29,7 +29,7 @@ module.exports = function (neosPackageJson) {
             Plugin: './src/index.js'
         },
         plugins: [
-            new ExtractTextPlugin('./[name].css', {allChunks: true})
+            new MiniCssExtractPlugin({filename: './[name].css'})
         ],
         output: {
             path: path.resolve(process.cwd(), neosPackageJson.buildTargetDirectory),

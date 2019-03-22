@@ -360,7 +360,7 @@ export default (routes: Routes) => {
                 if (!nodeType) {
                     throw new Error('.node-type not found in result');
                 }
-                const uri = uriElement.innerText;
+                const uri = uriElement.innerText.trim();
                 return {
                     dataType: 'Neos.ContentRepository:Node',
                     loaderUri: 'node://' + nodeIdentifier.innerText,

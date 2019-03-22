@@ -172,23 +172,11 @@ export default class SelectNodeType extends PureComponent {
 
     handleNodeTypeFilterChange = filterSearchTerm => this.setState({filterSearchTerm});
 
-    skipNodeTypeDialogIfPossible() {
-        const {insertMode} = this.state;
-        if (insertMode === 'into' &&
-            this.getAllowedNodeTypesByCurrentInsertMode().length === 1 &&
-            this.getAllowedNodeTypesByCurrentInsertMode()[0].nodeTypes.length === 1) {
-            this.handleApply(this.getAllowedNodeTypesByCurrentInsertMode()[0].nodeTypes[0].name);
-            return true;
-        }
-
-        return false;
-    }
-
     render() {
         const {insertMode, filterSearchTerm} = this.state;
         const {isOpen, allowedSiblingNodeTypes, allowedChildNodeTypes} = this.props;
 
-        if (!isOpen || this.skipNodeTypeDialogIfPossible()) {
+        if (!isOpen) {
             return null;
         }
 

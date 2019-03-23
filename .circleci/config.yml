@@ -53,13 +53,13 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - full-app-cache2-{{ checksum "Build/CircleCi/composer.json" }}
+            - full-app-cache-{{ checksum "Build/CircleCi/composer.json" }}
       - run: mkdir -p /home/circleci/app/Configuration
       - run: cp Build/CircleCi/composer.* /home/circleci/app
       - run: cp Build/CircleCi/Settings.yaml /home/circleci/app/Configuration/Settings.yaml
       - run: cd /home/circleci/app && composer install
       - save_cache:
-          key: full-app-cache2-{{ checksum "Build/CircleCi/composer.json" }}
+          key: full-app-cache-{{ checksum "Build/CircleCi/composer.json" }}
           paths:
             -  /home/circleci/app
 
@@ -85,7 +85,6 @@ jobs:
 
       - run: rm -rf /home/circleci/app/Application/Packages/Neos.Neos.Ui/*
       - run: cp -r /home/circleci/project/* /home/circleci/app/Packages/Application/Neos.Neos.Ui/
-      - run: cd /home/circleci/app/Packages/Application/Neos.Neos.Ui/ && ls -lsha
       - run: |
           cd /home/circleci/app/
           ./flow cache:warmup

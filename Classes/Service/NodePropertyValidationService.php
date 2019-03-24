@@ -15,6 +15,8 @@ namespace Neos\Neos\Ui\Service;
 
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Log\SystemLoggerInterface;
+use Neos\Flow\Property\TypeConverter\DateTimeConverter;
+use Neos\Flow\Validation\Validator\DateTimeValidator;
 use Neos\Flow\Validation\Validator\ValidatorInterface;
 
 /**
@@ -30,6 +32,12 @@ class NodePropertyValidationService
     protected $logger;
 
     /**
+     * @Flow\Inject
+     * @var DateTimeConverter
+     */
+    protected $dateTimeConverter;
+
+    /**
      * @param $value
      * @param string $validatorName
      * @param array $validatorConfiguration
@@ -41,6 +49,19 @@ class NodePropertyValidationService
 
         if ($validator === null) {
             return true;
+        }
+
+        // Fixme: The from the UI delivered datetime string (2019-03-21T00:00:00+01:00) is not parsed correctly by the DateTimeParser in the DateTimeValidator,
+        // so we cast it in prior and use this as final validation result.
+        if ($validator instanceof DateTimeValidator) {
+            if ($value === '') {
+                return true;
+            }
+
+            if ($this->dateTimeConverter->canConvertFrom($value, 'DateTime')) {
+                $value = $this->dateTimeConverter->convertFrom($value, 'DateTime');
+                return $value instanceof \DateTime;
+            }
         }
 
         $result = $validator->validate($value);

@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
+import {neos} from '@neos-project/neos-ui-decorators';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 import DropDown from '@neos-project/react-ui-components/src/DropDown/';
 
@@ -12,6 +13,7 @@ import style from './style.css';
 @connect($transform({
     userName: $get('user.name.fullName')
 }))
+@neos()
 export default class UserDropDown extends PureComponent {
     static propTypes = {
         userName: PropTypes.string.isRequired

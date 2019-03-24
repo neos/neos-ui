@@ -314,6 +314,12 @@ export default class NodeTypesRegistry extends SynchronousRegistry<NodeType> {
         if ($get(['formatting', 'i'], mergedConfig)) {
             mergedConfig.formatting.em = true;
         }
+        if ($get(['formatting', 'u'], mergedConfig)) {
+            mergedConfig.formatting.underline = true;
+        }
+        if ($get(['formatting', 'del'], mergedConfig)) {
+            mergedConfig.formatting.strikethrough = true;
+        }
 
         return mergedConfig;
     }

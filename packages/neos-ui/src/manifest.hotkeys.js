@@ -101,16 +101,6 @@ manifest('main.hotkeys', {}, (globalRegistry, {frontendConfiguration}) => {
             action: actions.UI.NodeVariantCreationDialog.createAndCopy
         });
 
-        hotkeyRegistry.set('UI.SelectNodeTypeModal.cancel', {
-            description: 'SelectNodeTypeModal Cancel',
-            action: actions.UI.SelectNodeTypeModal.cancel
-        });
-
-        hotkeyRegistry.set('UI.SelectNodeTypeModal.apply', {
-            description: 'SelectNodeTypeModal Apply',
-            action: actions.UI.SelectNodeTypeModal.apply
-        });
-
         hotkeyRegistry.set('CR.Nodes.unfocus', {
             description: 'Unfocus Node',
             action: actions.CR.Nodes.unFocus

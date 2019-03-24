@@ -1,0 +1,11 @@
+Neos:
+  Flow:
+    persistence:
+      backendOptions:
+        dbname: neos
+        user: root
+        password: kXFRYdVoi3f4QNqh
+        host: 127.0.0.1
+  Neos:
+    Ui:
+      frontendDevelopmentMode: true

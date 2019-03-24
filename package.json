@@ -177,7 +177,7 @@
     "url-loader": "^1.0.1",
     "uuid": "^3.2.1",
     "webpack-cli": "^3.2.3",
-    "whatwg-fetch": "^2.0.0"
+    "whatwg-fetch": "^3.0.0"
   },
   "workspaces": [
     "packages/*"

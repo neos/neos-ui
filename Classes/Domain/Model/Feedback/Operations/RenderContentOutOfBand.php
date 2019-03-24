@@ -44,6 +44,8 @@ class RenderContentOutOfBand extends AbstractFeedback
     protected $siblingDomAddress;
 
     /**
+     * the insertion mode (before|after|into)
+     *
      * @var string
      */
     protected $mode;

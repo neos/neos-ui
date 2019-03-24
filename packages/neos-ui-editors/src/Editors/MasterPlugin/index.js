@@ -90,6 +90,7 @@ class MasterPluginEditor extends React.PureComponent {
                 displayLoadingIndicator={isLoading}
                 displaySearchBox={false}
                 placeholder={this.renderPlaceholder()}
+                noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:content.inspector.editors.masterPluginEditor.noPluginConfigured')}
                 allowEmpty
                 disabled={disabled}
                 />

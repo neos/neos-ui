@@ -31,50 +31,76 @@ SelectedPreset.propTypes = {
     dimensionName: PropTypes.string.isRequired
 };
 
-const DimensionSelector = props => {
-    const {icon, dimensionLabel, presets, dimensionName, activePreset, onSelect, isLoading} = props;
+const searchOptions = (searchTerm, processedSelectBoxOptions) =>
+    processedSelectBoxOptions.filter(option => option.label && option.label.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1);
 
-    const presetOptions = mapObjIndexed(
-        (presetConfiguration, presetName) => {
-            return $transform({
-                label: $get('label'),
-                value: presetName,
-                disabled: $get('disabled')
-            }, presetConfiguration);
-        },
-        presets
-    );
+@neos(globalRegistry => ({
+    i18nRegistry: globalRegistry.get('i18n')
+}))
+class DimensionSelector extends PureComponent {
+    static propTypes = {
+        icon: PropTypes.string.isRequired,
+        dimensionLabel: PropTypes.string.isRequired,
+        presets: PropTypes.object.isRequired,
+        activePreset: PropTypes.string.isRequired,
+        dimensionName: PropTypes.string.isRequired,
+        isLoading: PropTypes.bool,
+        onSelect: PropTypes.func.isRequired,
 
-    const sortedPresetOptions = sortBy(presetOptions, ['label']);
-
-    const onPresetSelect = presetName => {
-        onSelect(dimensionName, presetName);
+        i18nRegistry: PropTypes.object.isRequired
     };
 
-    return (
-        <li key={dimensionName} className={style.dimensionCategory}>
-            <div className={style.dimensionLabel}>
-                <Icon icon={icon} padded="right" className={style.dimensionCategory__icon}/>
-                <I18n id={dimensionLabel}/>
-            </div>
-            <SelectBox
-                displayLoadingIndicator={isLoading}
-                options={sortedPresetOptions}
-                onValueChange={onPresetSelect}
-                value={activePreset}
-                />
-        </li>
-    );
-};
-DimensionSelector.propTypes = {
-    icon: PropTypes.string.isRequired,
-    dimensionLabel: PropTypes.string.isRequired,
-    presets: PropTypes.object.isRequired,
-    activePreset: PropTypes.string.isRequired,
-    dimensionName: PropTypes.string.isRequired,
-    isLoading: PropTypes.bool,
-    onSelect: PropTypes.func.isRequired
-};
+    state = {
+        searchTerm: ''
+    };
+
+    render() {
+        const {icon, dimensionLabel, presets, dimensionName, activePreset, onSelect, isLoading, i18nRegistry} = this.props;
+
+        const presetOptions = mapObjIndexed(
+            (presetConfiguration, presetName) => {
+                return $transform({
+                    label: $get('label'),
+                    value: presetName,
+                    disabled: $get('disabled')
+                }, presetConfiguration);
+            },
+            presets
+        );
+
+        const sortedPresetOptions = sortBy(presetOptions, ['label']);
+
+        const onPresetSelect = presetName => {
+            onSelect(dimensionName, presetName);
+        };
+
+        return (
+            <li key={dimensionName} className={style.dimensionCategory}>
+                <div className={style.dimensionLabel}>
+                    <Icon icon={icon} padded="right" className={style.dimensionCategory__icon}/>
+                    <I18n id={dimensionLabel}/>
+                </div>
+                <SelectBox
+                    displayLoadingIndicator={isLoading}
+                    options={this.state.searchTerm ? searchOptions(this.state.searchTerm, sortedPresetOptions) : sortedPresetOptions}
+                    onValueChange={onPresetSelect}
+                    value={activePreset}
+                    allowEmpty={false}
+                    displaySearchBox={sortedPresetOptions.length >= 10}
+                    searchOptions={searchOptions(this.state.searchTerm, sortedPresetOptions)}
+                    onSearchTermChange={this.handleSearchTermChange}
+                    noMatchesFoundLabel={i18nRegistry.translate('Neos.Neos:Main:noMatchesFound')}
+                    searchBoxLeftToTypeLabel={i18nRegistry.translate('Neos.Neos:Main:searchBoxLeftToType')}
+                    threshold={0}
+                    />
+            </li>
+        );
+    }
+
+    handleSearchTermChange = searchTerm => {
+        this.setState({searchTerm});
+    }
+}
 
 @connect($transform({
     contentDimensions: selectors.CR.ContentDimensions.byName,

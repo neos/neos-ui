@@ -80,7 +80,7 @@ jobs:
             - full-package-cache-{{ .Revision }}
       - restore_cache:
           keys:
-            - full-app-cache2-{{ checksum "/home/circleci/project/Tests/IntegrationTests/TestDistribution/composer.json" }}
+            - full-app-cache-{{ checksum "/home/circleci/project/Tests/IntegrationTests/TestDistribution/composer.json" }}
 
       - run: rm -rf /home/circleci/app/Application/Packages/Neos.Neos.Ui
       - run: cd /home/circleci/app/Packages/Application && ln -s /home/circleci/project Neos.Neos.Ui

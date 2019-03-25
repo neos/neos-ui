@@ -8,6 +8,7 @@ Neos:
         dbname: neos
         user: root
         host: 127.0.0.1
+        password: not_a_real_password
   Neos:
     Ui:
       frontendDevelopmentMode: true

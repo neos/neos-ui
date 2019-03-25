@@ -53,13 +53,12 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - full-app-cache-{{ checksum "Build/CircleCi/composer.json" }}
+            - full-app-cache-{{ checksum "Tests/IntegrationTests/TestDistribution/composer.json" }}
       - run: mkdir -p /home/circleci/app/Configuration
-      - run: cp Build/CircleCi/composer.* /home/circleci/app
-      - run: cp Build/CircleCi/Settings.yaml /home/circleci/app/Configuration/Settings.yaml
+      - run: rm -rf /home/circleci/app && mv Tests/IntegrationTests/TestDistribution/ /home/circleci/app
       - run: cd /home/circleci/app && composer install
       - save_cache:
-          key: full-app-cache-{{ checksum "Build/CircleCi/composer.json" }}
+          key: full-app-cache-{{ checksum "Tests/IntegrationTests/TestDistribution/composer.json" }}
           paths:
             -  /home/circleci/app
 
@@ -71,7 +70,7 @@ jobs:
       - image: circleci/mariadb:10.2
         environment:
           MYSQL_DATABASE: neos
-          MYSQL_ROOT_PASSWORD: kXFRYdVoi3f4QNqh
+          MYSQL_ROOT_PASSWORD: not_a_real_password
     working_directory: /home/circleci/project
     steps:
       - checkout
@@ -81,22 +80,20 @@ jobs:
             - full-package-cache-{{ .Revision }}
       - restore_cache:
           keys:
-            - full-app-cache2-{{ checksum "Build/CircleCi/composer.json" }}
+            - full-app-cache2-{{ checksum "Tests/IntegrationTests/TestDistribution/composer.json" }}
 
-      - run: rm -rf /home/circleci/app/Application/Packages/Neos.Neos.Ui/*
-      - run: cp -r /home/circleci/project/* /home/circleci/app/Packages/Application/Neos.Neos.Ui/
+      - run: rm -rf /home/circleci/app/Application/Packages/Neos.Neos.Ui
+      - run: cd /home/circleci/app/Packages/Application && ln -s /home/circleci/project Neos.Neos.Ui
       - run: |
           cd /home/circleci/app/
           ./flow cache:warmup
           ./flow doctrine:migrate
-          ./flow site:import --package-key=Neos.Demo
-          ./flow resource:publish
           ./flow user:create --username=admin --password=password --first-name=John --last-name=Doe --roles=Administrator
       - run:
           name: Start flow server
           command: /home/circleci/app/flow server:run --port 8081
           background: true
-      - run: cd /home/circleci/app/Packages/Application/Neos.Neos.Ui && make test-e2e-saucelabs
+      - run: cd /home/circleci/app/Packages/Application/Neos.Neos.Ui && make test-e2e
 
 workflows:
   version: 2

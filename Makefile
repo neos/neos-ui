@@ -112,10 +112,6 @@ test:
 test-e2e:
 	bash Tests/IntegrationTests/e2e.sh
 
-test-e2e-saucelabs:
-	yarn run testcafe "saucelabs:chrome" Tests/IntegrationTests/* \
-		--selector-timeout=1000 --assertion-timeout=30000
-
 lint: lint-js lint-editorconfig
 
 lint-js:

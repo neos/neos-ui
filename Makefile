@@ -117,11 +117,7 @@ test: ## Executes the unit test on all source files.
 	$(lerna) run test --concurrency 1
 
 test-e2e-saucelabs:
-	bash Tests/IntegrationTests/e2e.sh "saucelabs:safari"
-	bash Tests/IntegrationTests/e2e.sh "saucelabs:chrome"
-	# TODO: fix firefox
-	# bash Tests/IntegrationTests/e2e.sh "saucelabs:firefox"
-	bash Tests/IntegrationTests/e2e.sh "saucelabs:microsoftedge"
+	bash Tests/IntegrationTests/e2e.sh "saucelabs:safari,saucelabs:chrome,saucelabs:firefox,saucelabs:microsoftedge"
 
 test-e2e: ## Executes integration tests locally.
 	bash Tests/IntegrationTests/e2e.sh chrome

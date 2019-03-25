@@ -81,8 +81,8 @@ jobs:
           keys:
             - full-app-cache-{{ checksum "Tests/IntegrationTests/TestDistribution/composer.json" }}-{{ checksum "Tests/IntegrationTests/TestDistribution/Configuration/Settings.yaml" }}
 
-      - run: rm -rf /home/circleci/app/Application/Packages/Neos.Neos.Ui
-      - run: cd /home/circleci/app/Packages/Application && ln -s /home/circleci/project Neos.Neos.Ui
+      - run: rm -rf /home/circleci/app/Packages/Application/Neos.Neos.Ui
+      - run: cd /home/circleci/app/Packages/Application && mv /home/circleci/project Neos.Neos.Ui
       - run: |
           cd /home/circleci/app/
           ./flow flow:cache:warmup

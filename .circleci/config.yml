@@ -53,9 +53,9 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - full-app-cache-{{ checksum "/home/circleci/project/Tests/IntegrationTests/TestDistribution/composer.json" }}
+            - full-app-cache-{{ checksum "Tests/IntegrationTests/TestDistribution/composer.json" }}
       - run: mkdir -p /home/circleci/app/Configuration
-      - run: rm -rf /home/circleci/app && mv /home/circleci/project/Tests/IntegrationTests/TestDistribution/ /home/circleci/app
+      - run: rm -rf /home/circleci/app && mv Tests/IntegrationTests/TestDistribution/ /home/circleci/app
       - run: cd /home/circleci/app && composer install
       - save_cache:
           key: full-app-cache-{{ checksum "Tests/IntegrationTests/TestDistribution/composer.json" }}

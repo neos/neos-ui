@@ -26,16 +26,16 @@
     display: flex;
     flex-direction: column;
     min-height: 40px;
-    margin-right: var(--spacing-Half);
+    margin-right: var(--spacing-Quarter);
 }
 
 .leftSideBar__bottom {
-    flex: 0 0 40%;
+    flex: 0 0 50%;
     transition: flex-basis var(--transition-Default), height var(--transition-Default), overflow-y var(--transition-Default);
     display: flex;
     flex-direction: column;
     min-height: 40px;
-    margin-right: var(--spacing-Half);
+    margin-right: var(--spacing-Quarter);
 }
 
 .leftSideBar__bottom--isCollapsed {

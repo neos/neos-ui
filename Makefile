@@ -109,13 +109,11 @@ storybook:
 test:
 	$(lerna) run test --concurrency 1
 
-test-e2e:
-	yarn run testcafe chrome:headless Tests/IntegrationTests/* \
-		--selector-timeout=10000 --assertion-timeout=30000
-
 test-e2e-saucelabs:
-	yarn run testcafe "saucelabs:chrome" Tests/IntegrationTests/* \
-		--selector-timeout=1000 --assertion-timeout=30000
+	bash Tests/IntegrationTests/e2e.sh saucelabs:chrome
+
+test-e2e:
+	bash Tests/IntegrationTests/e2e.sh chrome
 
 lint: lint-js lint-editorconfig
 

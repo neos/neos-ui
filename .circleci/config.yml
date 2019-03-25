@@ -61,6 +61,8 @@ jobs:
           key: full-app-cache-{{ checksum "Tests/IntegrationTests/TestDistribution/composer.json" }}-{{ checksum "Tests/IntegrationTests/TestDistribution/Configuration/Settings.yaml" }}
           paths:
             -  /home/circleci/app
+      - store_artifacts:
+          path: /home/circleci/app/Data/Logs
 
   e2e:
     environment:
@@ -93,6 +95,8 @@ jobs:
           command: /home/circleci/app/flow server:run --port 8081
           background: true
       - run: cd /home/circleci/app/Packages/Application/Neos.Neos.Ui && make test-e2e
+      - store_artifacts:
+          path: /home/circleci/app/Data/Logs
 
 workflows:
   version: 2

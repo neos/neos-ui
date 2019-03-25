@@ -30,7 +30,7 @@ const defaultOptions = {
 };
 
 const BooleanEditor = props => {
-    const {value, label, identifier, commit, options, className} = props;
+    const {value, label, commit, options, className} = props;
     const finalOptions = Object.assign({}, defaultOptions, options);
 
     const wrapperClassName = mergeClassNames({
@@ -45,8 +45,8 @@ const BooleanEditor = props => {
 
     return (
         <div className={wrapperClassName}>
-            <Label htmlFor={identifier} className={finalClassName}>
-                <CheckBox id={identifier} isChecked={toBoolean(value)} disabled={finalOptions.disabled} onChange={commit}/>
+            <Label className={finalClassName}>
+                <CheckBox isChecked={toBoolean(value)} disabled={finalOptions.disabled} onChange={commit}/>
                 <I18n id={label}/>
             </Label>
             {props.renderHelpIcon ? props.renderHelpIcon() : ''}

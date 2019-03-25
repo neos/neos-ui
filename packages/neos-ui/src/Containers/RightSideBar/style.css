@@ -35,5 +35,5 @@
 }
 .rightSideBar__header {
     background: var(--colors-ContrastDarkest);
-    margin-left: var(--spacing-Half);
+    margin-left: var(--spacing-Quarter);
 }

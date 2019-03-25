@@ -4,7 +4,7 @@
     overflow: hidden;
 }
 .actions {
-    margin-left: var(--spacing-Half);
+    margin-left: var(--spacing-Quarter);
     display: flex;
 }
 .discardButton,
@@ -20,8 +20,9 @@
     }
 }
 .tabs {
-    margin-left: var(--spacing-Half);
+    margin-left: var(--spacing-Quarter);
     border-left: 1px solid var(--colors-ContrastDark);
+    background: var(--colors-ContrastDarker);
 }
 .tabsContent > div {
     height: 100%;

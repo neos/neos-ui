@@ -8,5 +8,5 @@
     border-right: 1px solid var(--colors-ContrastDark);
 }
 .loader {
-    margin: var(--spacing-Half);
+    margin: var(--spacing-Quarter);
 }

@@ -20,7 +20,7 @@ for fixture in Packages/Application/Neos.Neos.Ui/Tests/IntegrationTests/Fixtures
     ./flow resource:publish
 
     cd Packages/Application/Neos.Neos.Ui
-    yarn run testcafe "chrome" "../../../${fixture}*.e2e.js" \
+    yarn run testcafe "saucelabs:chrome" "../../../${fixture}*.e2e.js" \
             --selector-timeout=10000 --assertion-timeout=30000
     cd ../../..
     rm -f DistributionPackages/Neos.TestSite

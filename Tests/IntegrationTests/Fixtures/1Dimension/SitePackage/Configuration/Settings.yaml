@@ -1,9 +1,4 @@
 Neos:
-  Flow:
-    reflection:
-      ignoredTags:
-        template: true
-        psalm: true
   ContentRepository:
     contentDimensions:
       language:

@@ -9,6 +9,10 @@ Neos:
         user: root
         host: 127.0.0.1
         password: not_a_real_password
+    reflection:
+      ignoredTags:
+        template: true
+        psalm: true
   Neos:
     Ui:
       frontendDevelopmentMode: true

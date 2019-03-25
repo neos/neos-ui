@@ -275,6 +275,7 @@ export default class Inspector extends PureComponent {
                             return (
                                 <TabPanel
                                     key={$get('id', tab)}
+                                    id={$get('id', tab)}
                                     icon={$get('icon', tab)}
                                     groups={$get('groups', tab)}
                                     toggledPanels={$get($get('id', tab), this.state.toggledPanels)}

@@ -53,12 +53,12 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - full-app-cache-{{ checksum "Tests/IntegrationTests/TestDistribution/composer.json" }}
+            - full-app-cache-{{ checksum "Tests/IntegrationTests/TestDistribution/composer.json" }}-{{ checksum "Tests/IntegrationTests/TestDistribution/Configuration/Settings.yaml" }}
       - run: mkdir -p /home/circleci/app/Configuration
       - run: rm -rf /home/circleci/app && cp -r Tests/IntegrationTests/TestDistribution/ /home/circleci/app
       - run: cd /home/circleci/app && composer install
       - save_cache:
-          key: full-app-cache-{{ checksum "Tests/IntegrationTests/TestDistribution/composer.json" }}
+          key: full-app-cache-{{ checksum "Tests/IntegrationTests/TestDistribution/composer.json" }}-{{ checksum "Tests/IntegrationTests/TestDistribution/Configuration/Settings.yaml" }}
           paths:
             -  /home/circleci/app
 
@@ -79,13 +79,13 @@ jobs:
             - full-package-cache-{{ .Revision }}
       - restore_cache:
           keys:
-            - full-app-cache-{{ checksum "Tests/IntegrationTests/TestDistribution/composer.json" }}
+            - full-app-cache-{{ checksum "Tests/IntegrationTests/TestDistribution/composer.json" }}-{{ checksum "Tests/IntegrationTests/TestDistribution/Configuration/Settings.yaml" }}
 
       - run: rm -rf /home/circleci/app/Application/Packages/Neos.Neos.Ui
       - run: cd /home/circleci/app/Packages/Application && ln -s /home/circleci/project Neos.Neos.Ui
       - run: |
           cd /home/circleci/app/
-          ./flow flow:cache:flush
+          ./flow flow:cache:warmup
           ./flow doctrine:migrate
           ./flow user:create --username=admin --password=password --first-name=John --last-name=Doe --roles=Administrator
       - run:

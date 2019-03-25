@@ -1,0 +1,35 @@
+{
+    "name": "neos/neos-test-distribution",
+    "description" : "Neos Test Distribution",
+    "config": {
+        "vendor-dir": "Packages/Libraries",
+        "bin-dir": "bin"
+    },
+    "require": {
+        "neos/neos": "~4.2.0",
+        "neos/nodetypes": "~4.2.0",
+        "neos/demo": "~4.2.0",
+        "neos/site-kickstarter": "~4.2.0",
+
+        "neos/neos-ui": "@dev",
+        "neos/neos-ui-compiled": "@dev",
+
+        "neos/seo": "~2.0",
+        "neos/setup": "~4.0",
+        "neos/redirecthandler-neosadapter": "~2.0",
+        "neos/redirecthandler-databasestorage": "~2.0"
+    },
+    "require-dev": {
+        "neos/buildessentials": "^5.0",
+        "mikey179/vfsstream": "^1.6",
+        "phpunit/phpunit": "^7.0",
+        "symfony/css-selector": "~2.0",
+        "neos/behat": "^5.0"
+    },
+    "scripts": {
+        "post-update-cmd": "Neos\\Flow\\Composer\\InstallerScripts::postUpdateAndInstall",
+        "post-install-cmd": "Neos\\Flow\\Composer\\InstallerScripts::postUpdateAndInstall",
+        "post-package-update": "Neos\\Flow\\Composer\\InstallerScripts::postPackageUpdateAndInstall",
+        "post-package-install": "Neos\\Flow\\Composer\\InstallerScripts::postPackageUpdateAndInstall"
+    }
+}

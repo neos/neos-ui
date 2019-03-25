@@ -1,3 +1,10 @@
+@keyframes slideDialogContents {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-50%) scale(.9);
+    }
+}
+
 .dialog {
     composes: reset from './../reset.css';
     position: fixed;
@@ -6,25 +13,27 @@
     z-index: var(--zIndex-Dialog-Context);
     width: 100vw;
     height: 100vh;
-    background: rgba(#000, .35);
+    background: rgba(#000, .8);
 }
 .dialog__contentsPosition {
     composes: reset from './../reset.css';
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%) scale(1);
     background: var(--colors-ContrastDarker);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, .2);
-    border-radius: 2px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, .4);
+    border-radius: 0;
     outline: none;
+    opacity: 1;
+    animation: slideDialogContents .3s ease-in-out;
 }
 .dialog__contents {
     composes: reset from './../reset.css';
     position: relative;
     width: calc(100vw - var(--spacing-GoldenUnit) * 2);
     max-width: calc(var(--spacing-GoldenUnit) * 16);
-    border: 1px solid var(--colors-ContrastDark);
+    border: 2px solid var(--colors-ContrastDark);
 
     .dialog--wide & {
         max-width: calc(var(--spacing-GoldenUnit) * 24);
@@ -33,31 +42,39 @@
     .dialog--narrow & {
         max-width: 400px;
     }
+
+    .dialog--success & {
+        border-color: var(--colors-Success);
+    }
+    .dialog--warn & {
+        border-color: var(--colors-Warn);
+    }
+    .dialog--error & {
+        border-color: var(--colors-Error);
+    }
 }
 .dialog__title {
     composes: reset from './../reset.css';
-    font-size: 16px;
+    font-size: 20px;
     line-height: 1.2;
     padding: var(--spacing-Full);
+    padding-right: var(--spacing-GoldenUnit);
+}
+.dialog__body {
+    max-height: calc(65vh);
+    overflow-y: visible;
+}
+.dialog__actions {
+    composes: reset from './../reset.css';
+    text-align: right;
+    margin-top: var(--spacing-Full);
 }
 .dialog__closeBtn {
     composes: reset from './../reset.css';
     position: absolute;
     top: 0;
     right: 0;
-}
-.dialog__body {
-    max-height: calc(65vh);
-    overflow-y: auto;
-}
-.dialog__actions {
-    composes: reset from './../reset.css';
-    text-align: right;
-    border-top: 1px solid var(--colors-ContrastDark);
-    padding: var(--spacing-Full);
-}
-.dialog__actions > * {
-    margin-left: calc(var(--spacing-Full) / 2);
+    background: var(--colors-ContrastDark);
 }
 .dialog__backDrop {
     composes: reset from './../reset.css';

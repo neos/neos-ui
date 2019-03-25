@@ -2,3 +2,16 @@
     display: flex;
     align-items: center;
 }
+
+.buttonGroup {
+    margin-left: 4px;
+
+    > button:first-child {
+        border-top-left-radius: 2px;
+        border-bottom-left-radius: 2px;
+    }
+    > button:last-child {
+        border-top-right-radius: 2px;
+        border-bottom-right-radius: 2px;
+    }
+}

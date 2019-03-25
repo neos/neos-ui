@@ -5,19 +5,19 @@ import backend from '@neos-project/neos-ui-backend-connector';
 
 let nodesCurrentlyProcessed = [];
 
-function * fetchPolicies(nodesWithoutPolicies) {
-    const nodesNotProcessed = nodesWithoutPolicies.filter(nodePath => !nodesCurrentlyProcessed.includes(nodePath));
+function * fetchAdditionalNodeMetadata(nodesWithoutAdditionalMetadata) {
+    const nodesNotProcessed = nodesWithoutAdditionalMetadata.filter(nodePath => !nodesCurrentlyProcessed.includes(nodePath));
     if (nodesNotProcessed.length === 0) {
         return;
     }
 
-    nodesCurrentlyProcessed.push(...nodesWithoutPolicies);
+    nodesCurrentlyProcessed.push(...nodesWithoutAdditionalMetadata);
 
     const {endpoints} = backend.get();
-    const policyData = yield endpoints.getPolicyInfo(nodesWithoutPolicies);
-    if (policyData) {
-        yield put(actions.CR.Nodes.merge(policyData));
-        nodesCurrentlyProcessed = nodesCurrentlyProcessed.filter(nodePath => !nodesWithoutPolicies.includes(nodePath));
+    const additionalNodeMetadata = yield endpoints.getAdditionalNodeMetadata(nodesWithoutAdditionalMetadata);
+    if (additionalNodeMetadata) {
+        yield put(actions.CR.Nodes.merge(additionalNodeMetadata));
+        nodesCurrentlyProcessed = nodesCurrentlyProcessed.filter(nodePath => !nodesWithoutAdditionalMetadata.includes(nodePath));
     }
 }
 
@@ -27,7 +27,7 @@ export function * watchNodeInformationChanges() {
         const nodeMap = (action.type === actionTypes.CR.Nodes.SET_STATE) ? action.payload.nodes : action.payload.nodeMap;
         const state = yield select();
 
-        const nodesWithoutPolicies = Object.keys(nodeMap).filter(contextPath => {
+        const nodesWithoutAdditionalMetadata = Object.keys(nodeMap).filter(contextPath => {
             const node = selectors.CR.Nodes.nodeByContextPath(state)(contextPath);
 
             if ($get('properties._removed', node)) {
@@ -38,11 +38,11 @@ export function * watchNodeInformationChanges() {
             return (!policyInfo);
         });
 
-        if (nodesWithoutPolicies.length === 0) {
+        if (nodesWithoutAdditionalMetadata.length === 0) {
             continue;
         }
 
-        yield fork(fetchPolicies, nodesWithoutPolicies);
+        yield fork(fetchAdditionalNodeMetadata, nodesWithoutAdditionalMetadata);
     }
 }
 

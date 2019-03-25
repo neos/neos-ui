@@ -271,12 +271,6 @@
       <trans-unit id="Shortcut__UI.NodeVariantCreationDialog.createAndCopy" xml:space="preserve" approved="yes">
 				<source>NodeVariantCreationDialog Create and Copy</source>
 			<target xml:lang="de">Neue Seite erstellen Dialog neue Seite von Kopie erstellen</target></trans-unit>
-      <trans-unit id="Shortcut__UI.SelectNodeTypeModal.cancel" xml:space="preserve" approved="yes">
-				<source>SelectNodeTypeModal Cancel</source>
-			<target xml:lang="de">Nodetype Auswahl Modal schliessen</target></trans-unit>
-      <trans-unit id="Shortcut__UI.SelectNodeTypeModal.apply" xml:space="preserve" approved="yes">
-				<source>SelectNodeTypeModal Apply</source>
-			<target xml:lang="de">Nodetype Auswahl Modal übernehmen</target></trans-unit>
       <trans-unit id="Shortcut__CR.Nodes.unfocus" xml:space="preserve" approved="yes">
 				<source>Unfocus Node</source>
 			<target xml:lang="de">Fokus vom Node entfernen</target></trans-unit>

@@ -69,7 +69,7 @@ export default class Frame extends PureComponent<FrameProps> {
     }
 
     private readonly relayClickEventToHostDocument = (e: MouseEvent) => {
-        const hostEvent: any = new MouseEvent(e.type, e);
+        const hostEvent: any = new MouseEvent(e.type);
         // Needed for enhanceWithClickOutside
         hostEvent.iframeTarget = e.target;
         window.document.dispatchEvent(hostEvent);

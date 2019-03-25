@@ -116,8 +116,8 @@ storybook: ## Starts the storybook server on port 9001.
 test: ## Executes the unit test on all source files.
 	$(lerna) run test --concurrency 1
 
-test-e2e-saucelabs: ## Executes integration tests on saucelabs.
-	bash Tests/IntegrationTests/e2e.sh saucelabs:chrome
+test-e2e-saucelabs:
+	bash Tests/IntegrationTests/e2e.sh "saucelabs:safari,saucelabs:chrome,saucelabs:firefox,saucelabs:microsoftedge"
 
 test-e2e: ## Executes integration tests locally.
 	bash Tests/IntegrationTests/e2e.sh chrome

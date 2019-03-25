@@ -8,7 +8,6 @@
     "require": {
         "neos/neos": "^3.3",
         "neos/neos-ui": "*",
-        "neos/neos-ui-compiled": "*",
         "neos/fusion-afx": "^1.0",
         "neos/test-site": "@dev"
     },

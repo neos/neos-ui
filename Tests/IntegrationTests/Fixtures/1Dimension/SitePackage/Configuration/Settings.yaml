@@ -1,0 +1,46 @@
+Neos:
+  ContentRepository:
+    contentDimensions:
+      language:
+        label: 'Language'
+        icon: icon-language
+        default: en_US
+        defaultPreset: en_US
+        presets:
+          en_US:
+            label: 'English (US)'
+            values:
+              - en_US
+            uriSegment: en
+          en_UK:
+            label: 'English (UK)'
+            values:
+              - en_UK
+              - en_US
+            uriSegment: uk
+          de:
+            label: German
+            values:
+              - de
+            uriSegment: de
+          fr:
+            label: French
+            values:
+              - fr
+            uriSegment: fr
+          nl:
+            label: Dutch
+            values:
+              - nl
+              - de
+            uriSegment: nl
+          da:
+            label: Danish
+            values:
+              - da
+            uriSegment: da
+          lv:
+            label: Latvian
+            values:
+              - lv
+            uriSegment: lv

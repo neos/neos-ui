@@ -10,6 +10,7 @@ exports[`<Tabs/> should render correctly. 1`] = `
   >
     <TabMenuItem
       icon="level-up"
+      id={0}
       index={0}
       isActive={true}
       key="0"
@@ -31,6 +32,7 @@ exports[`<Tabs/> should render correctly. 1`] = `
     />
     <TabMenuItem
       icon="level-down"
+      id={1}
       index={1}
       isActive={false}
       key="1"
@@ -52,6 +54,7 @@ exports[`<Tabs/> should render correctly. 1`] = `
     />
     <TabMenuItem
       icon="mobile"
+      id={2}
       index={2}
       isActive={false}
       key="2"
@@ -77,7 +80,7 @@ exports[`<Tabs/> should render correctly. 1`] = `
   >
     <div
       aria-hidden="false"
-      key="0/.0"
+      key="0"
       role="tabpanel"
       style={
         Object {
@@ -101,7 +104,7 @@ exports[`<Tabs/> should render correctly. 1`] = `
     </div>
     <div
       aria-hidden="true"
-      key="1/.1"
+      key="1"
       role="tabpanel"
       style={
         Object {
@@ -111,7 +114,7 @@ exports[`<Tabs/> should render correctly. 1`] = `
     />
     <div
       aria-hidden="true"
-      key="2/.2"
+      key="2"
       role="tabpanel"
       style={
         Object {

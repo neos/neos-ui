@@ -34,7 +34,7 @@ interface TabsTheme extends TabMenuItemTheme {
 }
 
 export const tabsDefaultProps: PickDefaultProps<TabsProps, 'activeTab'> = {
-    activeTab: '',
+    activeTab: 0,
 };
 
 interface TabsState {
@@ -44,7 +44,7 @@ interface TabsState {
 export default class Tabs extends PureComponent<TabsProps> {
     public static Panel = Panel;
     public state: TabsState = {
-        activeTab: '',
+        activeTab: 0,
     };
 
     public static defaultProps = tabsDefaultProps;
@@ -64,7 +64,7 @@ export default class Tabs extends PureComponent<TabsProps> {
         // If activeTab is out of bounds, choose the first tab
         const {activeTab} = this.state;
         const activeTabs = this.props.children.filter(panel => panel.props.id === activeTab);
-        return activeTabs.length === 0 ? this.props.children[0].props.id : activeTab;
+        return activeTabs.length === 0 ? (this.props.children[0].props.id || 0) : activeTab;
     }
 
     public renderMenuItems(): JSX.Element {
@@ -82,7 +82,7 @@ export default class Tabs extends PureComponent<TabsProps> {
                 // tslint:disable-next-line:jsx-no-string-ref
                 ref={`tab-${index}`}
                 onClick={this.handleTabNavItemClick}
-                isActive={activeTab === panel.props.id}
+                isActive={activeTab === (panel.props.id || index)}
                 theme={theme!}
                 title={panel.props.title}
                 icon={panel.props.icon}
@@ -108,7 +108,7 @@ export default class Tabs extends PureComponent<TabsProps> {
         return (
             <div className={theme!.tabs__content}>
                 {children.map((panel, index) => {
-                    const isActive = activeTab === panel.props.id;
+                    const isActive = activeTab === (panel.props.id || index);
                     const style = {
                         display: isActive ? 'block' : 'none'
                     };

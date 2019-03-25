@@ -3,8 +3,8 @@
 set -ex
 
 if [ -z "$1" ]
-  then
-    echo "No testcafe browser supplied, e.g. 'chrome:headless'"
+    then
+        echo "No testcafe browser supplied, e.g. 'chrome:headless'"
 fi
 
 cd ../../..

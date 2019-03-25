@@ -95,7 +95,7 @@ jobs:
           name: Start flow server
           command: /home/circleci/app/flow server:run --port 8081
           background: true
-      - run: cd /home/circleci/app/Packages/Application/Neos.Neos.Ui && make test-e2e
+      - run: cd /home/circleci/app/Packages/Application/Neos.Neos.Ui && make test-e2e-saucelabs
       - store_artifacts:
           path: /home/circleci/app/Data/Logs
 

@@ -109,8 +109,11 @@ storybook:
 test:
 	$(lerna) run test --concurrency 1
 
+test-e2e-saucelabs:
+	bash Tests/IntegrationTests/e2e.sh saucelabs:chrome
+
 test-e2e:
-	bash Tests/IntegrationTests/e2e.sh
+	bash Tests/IntegrationTests/e2e.sh chrome
 
 lint: lint-js lint-editorconfig
 

@@ -87,6 +87,7 @@ jobs:
       - run: cd /home/circleci/app/Packages/Application && mv /home/circleci/project Neos.Neos.Ui
       - run: |
           cd /home/circleci/app/
+          ./flow flow:cache:flush
           ./flow flow:cache:warmup
           ./flow doctrine:migrate
           ./flow user:create --username=admin --password=password --first-name=John --last-name=Doe --roles=Administrator

@@ -92,7 +92,7 @@ build-watch-poll:
 build-production:
 	make build-subpackages
 	$(cross-env) NODE_ENV=production NEOS_BUILD_ROOT=$(shell pwd) \
-		$(webpack) --progress --colors
+		$(webpack) --colors
 
 
 ################################################################################

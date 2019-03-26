@@ -172,11 +172,12 @@
     "redux-saga": "^0.15.0",
     "regenerator": "^0.8.46",
     "reselect": "^3.0.1",
-    "typesafe-actions": "^2.0.4",
+    "testcafe-browser-provider-saucelabs": "^1.6.1",
+    "typesafe-actions": "^3.2.1",
     "url-loader": "^1.0.1",
     "uuid": "^3.2.1",
     "webpack-cli": "^3.2.3",
-    "whatwg-fetch": "^2.0.0"
+    "whatwg-fetch": "^3.0.0"
   },
   "workspaces": [
     "packages/*"

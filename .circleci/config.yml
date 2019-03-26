@@ -1,0 +1,118 @@
+version: 2.0
+
+jobs:
+  checkout:
+    docker:
+      - image: circleci/ruby:2-node-browsers
+    environment:
+      FLOW_CONTEXT=Production
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - yarn-cache-{{ checksum "yarn.lock" }}
+
+      - run: curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
+      - run: chmod +x ~/.nvm/nvm.sh
+      - run: ~/.nvm/nvm.sh install && ~/.nvm/nvm.sh use
+      - run: make install && make build-production
+
+      - save_cache:
+          key: yarn-cache-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+      - save_cache:
+          key: full-package-cache-{{ .Revision }}
+          paths:
+            - /home/circleci/project
+
+  codestyle:
+    docker:
+      - image: circleci/ruby:2-node-browsers
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - full-package-cache-{{ .Revision }}
+      - run: make lint
+
+  unittests:
+    docker:
+      - image: circleci/ruby:2-node-browsers
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - full-package-cache-{{ .Revision }}
+      - run: make test
+
+  build_flow_app:
+    docker:
+      - image: quay.io/yeebase/ci-build:7.2
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - full-app-cache-{{ checksum "Tests/IntegrationTests/TestDistribution/composer.json" }}-{{ checksum "Tests/IntegrationTests/TestDistribution/Configuration/Settings.yaml" }}
+      - run: mkdir -p /home/circleci/app/Configuration
+      - run: rm -rf /home/circleci/app && cp -r Tests/IntegrationTests/TestDistribution/ /home/circleci/app
+      - run: cd /home/circleci/app && composer install
+      - save_cache:
+          key: full-app-cache-{{ checksum "Tests/IntegrationTests/TestDistribution/composer.json" }}-{{ checksum "Tests/IntegrationTests/TestDistribution/Configuration/Settings.yaml" }}
+          paths:
+            -  /home/circleci/app
+      - store_artifacts:
+          path: /home/circleci/app/Data/Logs
+
+  e2e:
+    environment:
+      FLOW_CONTEXT=Production
+    docker:
+      - image: quay.io/yeebase/ci-build:7.2
+      - image: circleci/mariadb:10.2
+        environment:
+          MYSQL_DATABASE: neos
+          MYSQL_ROOT_PASSWORD: not_a_real_password
+    working_directory: /home/circleci/project
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - full-package-cache-{{ .Revision }}
+      - restore_cache:
+          keys:
+            - full-app-cache-{{ checksum "Tests/IntegrationTests/TestDistribution/composer.json" }}-{{ checksum "Tests/IntegrationTests/TestDistribution/Configuration/Settings.yaml" }}
+
+      - run: rm -rf /home/circleci/app/Packages/Application/Neos.Neos.Ui
+      - run: cd /home/circleci/app/Packages/Application && mv /home/circleci/project Neos.Neos.Ui
+      - run: |
+          cd /home/circleci/app/
+          ./flow flow:cache:flush
+          ./flow flow:cache:warmup
+          ./flow doctrine:migrate
+          ./flow user:create --username=admin --password=password --first-name=John --last-name=Doe --roles=Administrator
+      - run:
+          name: Start flow server
+          command: /home/circleci/app/flow server:run --port 8081
+          background: true
+      - run: cd /home/circleci/app/Packages/Application/Neos.Neos.Ui && make test-e2e-saucelabs
+      - store_artifacts:
+          path: /home/circleci/app/Data/Logs
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - checkout
+      - build_flow_app:
+          requires:
+            - checkout
+      - codestyle:
+          requires:
+            - checkout
+      - unittests:
+          requires:
+            - checkout
+      - e2e:
+          requires:
+            - build_flow_app

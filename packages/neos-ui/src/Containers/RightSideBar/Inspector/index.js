@@ -16,6 +16,7 @@ import {SecondaryInspector} from '@neos-project/neos-ui-inspector';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 
+import SelectedElement from './SelectedElement/index';
 import TabPanel from './TabPanel/index';
 import style from './style.css';
 
@@ -254,9 +255,11 @@ export default class Inspector extends PureComponent {
                         onClick={this.handleEscape}
                         />
                 }
+                <SelectedElement/>
                 <Tabs
+                    className={style.tabs}
                     theme={{
-                        tabs__content: style.tabs // eslint-disable-line camelcase
+                        tabs__content: style.tabsContent // eslint-disable-line camelcase
                     }}
                     >
                     {$get('tabs', viewConfiguration)
@@ -275,6 +278,7 @@ export default class Inspector extends PureComponent {
                             return (
                                 <TabPanel
                                     key={$get('id', tab)}
+                                    id={$get('id', tab)}
                                     icon={$get('icon', tab)}
                                     groups={$get('groups', tab)}
                                     toggledPanels={$get($get('id', tab), this.state.toggledPanels)}

@@ -1,3 +1,4 @@
+import {Selector} from 'testcafe';
 import {ReactSelector} from 'testcafe-react-selectors';
 import {beforeEach, subSection, checkPropTypes} from './../../utils.js';
 
@@ -9,7 +10,7 @@ fixture`Sidebar toggle`
 
 test('Can toggle sidebars', async t => {
     subSection('LeftSideBar');
-    const leftSideBarToggler = ReactSelector('LeftSideBarToggler Button');
+    const leftSideBarToggler = Selector('#neos-LeftSideBarToggler');
     const leftSideBar = ReactSelector('LeftSideBar');
     await t
         .expect(leftSideBar.getReact(({props}) => props.isHidden)).eql(false)

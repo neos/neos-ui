@@ -35,6 +35,7 @@ exports[`<Header/> should render correctly. 1`] = `
   </Component>
   <Component
     className="panelToggleBtnClassName"
+    hoverStyle="clean"
     icon="closed-icon-prop"
     onClick={[MockFunction]}
   />
@@ -67,10 +68,10 @@ exports[`<ToggablePanel/> should render correctly. 1`] = `
   <Header
     HeadlineComponent={[Function]}
     IconButtonComponent={[Function]}
-    closedIcon="chevron-down"
+    closedIcon="chevron-circle-down"
     isPanelOpen={true}
     key="header"
-    openedIcon="chevron-up"
+    openedIcon="chevron-circle-up"
     theme={
       Object {
         "panel": "baseClassName",

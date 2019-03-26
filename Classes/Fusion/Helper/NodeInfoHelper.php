@@ -123,8 +123,8 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             // if we are only rendering the tree state, ensure _isHidden is sent to hidden nodes are correctly shown in the tree.
             '_hidden' => $node->isHidden(),
             '_hiddenInIndex' => $node->isHiddenInIndex(),
-            '_hiddenBeforeDateTime' => $node->getHiddenBeforeDateTime() instanceof \DateTimeInterface,
-            '_hiddenAfterDateTime' => $node->getHiddenAfterDateTime() instanceof \DateTimeInterface,
+            '_hiddenBeforeDateTime' => $node->getHiddenBeforeDateTime() instanceof \DateTimeInterface ? $node->getHiddenBeforeDateTime()->format(\DateTime::W3C) : '',
+            '_hiddenAfterDateTime' => $node->getHiddenAfterDateTime() instanceof \DateTimeInterface ? $node->getHiddenAfterDateTime()->format(\DateTime::W3C) : '',
         ];
 
         if ($controllerContext !== null) {

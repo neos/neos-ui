@@ -43,8 +43,17 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     const inlineEditorRegistry = globalRegistry.get('inlineEditors');
     const guestFrameWindow = getGuestFrameWindow();
     const documentInformation = Object.assign({}, guestFrameWindow['@Neos.Neos.Ui:DocumentInformation']);
+
+    const state = store.getState();
+    const editPreviewMode = $get(['ui', 'editPreviewMode'], state);
+    const editPreviewModes = globalRegistry.get('frontendConfiguration').get('editPreviewModes');
+    const currentEditMode = editPreviewModes[editPreviewMode];
+    if (!currentEditMode.isEditingMode) {
+        return;
+    }
+
     const nodes = Object.assign({}, guestFrameWindow['@Neos.Neos.Ui:Nodes'], {
-        [documentInformation.metaData.contextPath]: documentInformation.metaData.documentNodeSerialization
+        [documentInformation.metaData.documentNode]: documentInformation.metaData.documentNodeSerialization
     });
 
     yield put(actions.CR.Nodes.merge(nodes));
@@ -52,7 +61,7 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     // Remove the inline scripts after initialization
     Array.prototype.forEach.call(guestFrameWindow.document.querySelectorAll('script[data-neos-nodedata]'), element => element.parentElement.removeChild(element));
 
-    yield put(actions.UI.ContentCanvas.setContextPath(documentInformation.metaData.contextPath, documentInformation.metaData.siteNode));
+    yield put(actions.CR.Nodes.setDocumentNode(documentInformation.metaData.documentNode, documentInformation.metaData.siteNode));
     yield put(actions.UI.ContentCanvas.setPreviewUrl(documentInformation.metaData.previewUrl));
     yield put(actions.CR.ContentDimensions.setActive(documentInformation.metaData.contentDimensions.active));
     // The user may have navigated by clicking an inline link - that's why we need to update the contentCanvas URL to be in sync with the shown content.

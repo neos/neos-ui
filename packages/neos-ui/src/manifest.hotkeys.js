@@ -61,11 +61,6 @@ manifest('main.hotkeys', {}, (globalRegistry, {frontendConfiguration}) => {
             action: actions.UI.ContentCanvas.reload
         });
 
-        hotkeyRegistry.set('UI.Inspector.discard', {
-            description: 'Discard Inspector',
-            action: actions.UI.Inspector.discard
-        });
-
         hotkeyRegistry.set('UI.Inspector.escape', {
             description: 'Escape Inspector',
             action: actions.UI.Inspector.escape
@@ -104,16 +99,6 @@ manifest('main.hotkeys', {}, (globalRegistry, {frontendConfiguration}) => {
         hotkeyRegistry.set('UI.NodeVariantCreationDialog.createAndCopy', {
             description: 'NodeVariantCreationDialog Create and Copy',
             action: actions.UI.NodeVariantCreationDialog.createAndCopy
-        });
-
-        hotkeyRegistry.set('UI.SelectNodeTypeModal.cancel', {
-            description: 'SelectNodeTypeModal Cancel',
-            action: actions.UI.SelectNodeTypeModal.cancel
-        });
-
-        hotkeyRegistry.set('UI.SelectNodeTypeModal.apply', {
-            description: 'SelectNodeTypeModal Apply',
-            action: actions.UI.SelectNodeTypeModal.apply
         });
 
         hotkeyRegistry.set('CR.Nodes.unfocus', {

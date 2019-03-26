@@ -1,33 +1,32 @@
 {
   "name": "@neos-project/neos-ui-ckeditor-bindings",
-  "version": "1.3.4",
+  "version": "2.2.0",
   "description": "Prepare CKEditor for the Neos CMS UI",
   "private": true,
   "main": "./src/manifest.js",
   "scripts": {
-    "prebuild": "check-dependencies && yarn clean",
-    "test": "yarn jest -- -w 2 --coverage",
-    "test:watch": "yarn jest -- --watch",
-    "build": "NEOS_BUILD_ROOT=$(pwd) webpack --progress --colors",
-    "build:watch": "yarn build -- --watch",
+    "test": "yarn jest -w 2 --coverage",
+    "test:watch": "yarn jest --watch",
+    "build": "exit 0",
+    "build:watch": "exit 0",
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src",
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "1.3.4",
-    "@neos-project/build-essentials": "1.3.4",
-    "@neos-project/jest-preset-neos-ui": "1.3.4"
+    "@neos-project/babel-preset-neos-ui": "2.2.0",
+    "@neos-project/build-essentials": "2.2.0",
+    "@neos-project/jest-preset-neos-ui": "2.2.0"
   },
   "dependencies": {
-    "@neos-project/neos-ui-backend-connector": "1.3.4",
-    "@neos-project/neos-ui-decorators": "1.3.4",
-    "@neos-project/neos-ui-extensibility": "1.3.4",
-    "@neos-project/neos-ui-guest-frame": "1.3.4",
-    "@neos-project/neos-ui-i18n": "1.3.4",
-    "@neos-project/neos-ui-redux-store": "1.3.4",
-    "@neos-project/react-ui-components": "1.3.4",
-    "@neos-project/utils-helpers": "1.3.4"
+    "@neos-project/neos-ui-backend-connector": "2.2.0",
+    "@neos-project/neos-ui-decorators": "2.2.0",
+    "@neos-project/neos-ui-extensibility": "2.2.0",
+    "@neos-project/neos-ui-guest-frame": "2.2.0",
+    "@neos-project/neos-ui-i18n": "2.2.0",
+    "@neos-project/neos-ui-redux-store": "2.2.0",
+    "@neos-project/react-ui-components": "2.2.0",
+    "@neos-project/utils-helpers": "2.2.0"
   },
   "license": "GNU GPLv3",
   "jest": {

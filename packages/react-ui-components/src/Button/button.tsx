@@ -4,8 +4,8 @@ import React from 'react';
 import {Omit, PickDefaultProps} from '../../types';
 import {makeFocusNode} from '../_lib/focusNode';
 
-export type ButtonStyle = 'clean' | 'brand' | 'lighter' | 'transparent' | 'warn';
-export type ButtonHoverStyle = 'clean' | 'brand' | 'darken' | 'warn';
+export type ButtonStyle = 'clean' | 'brand' | 'lighter' | 'transparent' | 'success' | 'warn' | 'error';
+export type ButtonHoverStyle = 'clean' | 'brand' | 'darken' | 'success' | 'warn' | 'error';
 export type ButtonSize = 'small' | 'regular';
 
 interface ButtonTheme {
@@ -24,7 +24,7 @@ interface ButtonTheme {
 // We omit the standard HTML button style attribute,
 // so we have no collision with the Button component's style property,
 // while still enjoying the intellisense and type checking for the rest of the HTML button attributes
-type HTMLButtonElementAttributesExceptStyle = Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'style'>;
+export type HTMLButtonElementAttributesExceptStyle = Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'style'>;
 
 // own props and (optional) HTML button attributes except 'style'
 export interface ButtonProps extends HTMLButtonElementAttributesExceptStyle {
@@ -42,6 +42,11 @@ export interface ButtonProps extends HTMLButtonElementAttributesExceptStyle {
     /**
      * This prop controls the visual and interactive disabled state of the `Button`.
      * When `true`, the node gets rendered with a truthy `disabled` prop.
+     */
+    readonly disabled?: boolean;
+
+    /**
+     * DEPRECATED, will be removed in the future
      */
     readonly isDisabled?: boolean;
 
@@ -63,7 +68,7 @@ export interface ButtonProps extends HTMLButtonElementAttributesExceptStyle {
     /**
      * Defines the size of the button.
      */
-    readonly size: ButtonSize;
+    readonly size?: ButtonSize;
 
     /**
      * An optional `className` to attach to the wrapper.
@@ -90,18 +95,18 @@ type DefaultProps = PickDefaultProps<ButtonProps,
     '_refHandler' |
     'hoverStyle' |
     'isActive' |
-    'isDisabled' |
+    'disabled' |
     'isFocused' |
     'size' |
     'style' |
     'type'
 >;
 
-const defaultProps: DefaultProps = {
+export const defaultProps: DefaultProps = {
     _refHandler: makeFocusNode,
     hoverStyle: 'brand',
     isActive: false,
-    isDisabled: false,
+    disabled: false,
     isFocused: false,
     size: 'regular',
     style: 'lighter',
@@ -111,13 +116,19 @@ const defaultProps: DefaultProps = {
 class Button extends React.PureComponent<ButtonProps> {
     public static readonly defaultProps = defaultProps;
 
+    private getDisabled(): boolean {
+        if (this.props.isDisabled !== undefined) {
+            console.error('`isDisabled` prop on Button component is DEPRECATED, use `disabled instead`'); // tslint:disable-line no-console
+        }
+        return Boolean(this.props.disabled || this.props.isDisabled);
+    }
+
     public render(): JSX.Element {
         const {
             children,
             className,
             isPressed,
             isFocused,
-            isDisabled,
             isActive,
             style,
             hoverStyle,
@@ -127,6 +138,7 @@ class Button extends React.PureComponent<ButtonProps> {
             _refHandler,
             ...rest
         } = this.props;
+        const disabled = this.getDisabled();
         const effectiveStyle = isActive ? 'brand' : style;
         const effectiveHoverStyle = isActive ? 'brand' : hoverStyle;
         const finalClassName = mergeClassNames(
@@ -145,7 +157,7 @@ class Button extends React.PureComponent<ButtonProps> {
         );
 
         return (
-            <button {...rest} disabled={isDisabled} type={type} className={finalClassName} role="button" ref={_refHandler && _refHandler(isFocused!)}>
+            <button {...rest} disabled={disabled} type={type} className={finalClassName} role="button" ref={_refHandler && _refHandler(isFocused!)}>
                 {children}
             </button>
         );

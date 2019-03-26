@@ -1,6 +1,4 @@
-import Immutable, {Map} from 'immutable';
-
-import {actionTypes, actions, reducer} from './index.js';
+import {actionTypes, actions, reducer} from './index';
 
 import {actionTypes as system} from '../../System/index';
 
@@ -19,37 +17,41 @@ test(`should export a reducer`, () => {
     expect(typeof (reducer)).toBe('function');
 });
 
-test(`The reducer should return an Immutable.Map as the initial state.`, () => {
-    const state = new Map({});
-    const nextState = reducer(state, {
-        type: system.INIT
+test(`The reducer should return a plain JS object as the initial state.`, () => {
+    const nextState = reducer(undefined, {
+        type: system.INIT,
+        payload: {
+            ui: {
+                editModePanel: {}
+            }
+        }
     });
 
-    expect(nextState.get('ui').get('editModePanel') instanceof Map).toBe(true);
+    expect(typeof nextState).toBe('object');
 });
 
 test(`The reducer should initially mark the editmode panel as invisible.`, () => {
-    const state = new Map({});
-    const nextState = reducer(state, {
-        type: system.INIT
+    const nextState = reducer(undefined, {
+        type: system.INIT,
+        payload: {
+            ui: {
+                editModePanel: {}
+            }
+        }
     });
 
-    expect(nextState.get('ui').get('editModePanel').get('isHidden')).toBe(true);
+    expect(nextState.isHidden).toBe(true);
 });
 
 test(`
     The "toggle" action should be able to reverse the value of the
     "isHidden" key.`, () => {
-    const state = Immutable.fromJS({
-        ui: {
-            editModePanel: {
-                isHidden: true
-            }
-        }
-    });
+    const state = {
+        isHidden: true
+    };
     const nextState1 = reducer(state, actions.toggle());
     const nextState2 = reducer(nextState1, actions.toggle());
 
-    expect(nextState1.get('ui').get('editModePanel').get('isHidden')).toBe(false);
-    expect(nextState2.get('ui').get('editModePanel').get('isHidden')).toBe(true);
+    expect(nextState1.isHidden).toBe(false);
+    expect(nextState2.isHidden).toBe(true);
 });

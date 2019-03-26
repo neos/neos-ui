@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 
 type DropDownItemId = string;
 
-interface DropDownItemProps {
+export interface DropDownItemProps {
     /**
      * The handler to call when clicking on the item of the DropDown.
      */

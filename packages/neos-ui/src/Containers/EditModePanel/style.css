@@ -17,7 +17,7 @@
     padding-left: 2rem;
 }
 .editModePanel--isFringeLeft {
-    padding-left: 0;
+    padding-left: 46px;
 }
 .editModePanel--isFringeRight {
     padding-right: var(--spacing-GoldenUnit);

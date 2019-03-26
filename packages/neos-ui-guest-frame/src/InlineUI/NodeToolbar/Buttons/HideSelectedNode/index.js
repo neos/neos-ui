@@ -46,12 +46,13 @@ export default class HideSelectedNode extends PureComponent {
 
         return (
             <IconButton
+                id="neos-InlineToolbar-HideSelectedNode"
                 className={className}
                 isActive={isHidden}
-                isDisabled={destructiveOperationsAreDisabled || !canBeEdited || !visibilityCanBeToggled}
+                disabled={destructiveOperationsAreDisabled || !canBeEdited || !visibilityCanBeToggled}
                 onClick={isHidden ? this.handleShowNode : this.handleHideNode}
                 icon="eye-slash"
-                hoverStyle="clean"
+                hoverStyle="brand"
                 title={i18nRegistry.translate('hideUnhide')}
                 />
         );

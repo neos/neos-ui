@@ -20,7 +20,7 @@ import style from './style.css';
 })
 export default class DiscardDialog extends PureComponent {
     static propTypes = {
-        nodesToBeDiscarded: PropTypes.object,
+        nodesToBeDiscarded: PropTypes.array,
         confirm: PropTypes.func.isRequired,
         abort: PropTypes.func.isRequired
     };
@@ -67,27 +67,29 @@ export default class DiscardDialog extends PureComponent {
             <Button
                 id="neos-DiscardDialog-Confirm"
                 key="confirm"
-                style="warn"
-                hoverStyle="brand"
+                style="error"
+                hoverStyle="error"
                 onClick={this.handleConfirm}
                 >
-                <I18n id="Neos.Neos:Main:confirm" fallback="Confirm"/>
+                <Icon icon="ban" className={style.buttonIcon}/>
+                <I18n id="Neos.Neos:Main:discard" fallback="Discard"/>
             </Button>
         );
     }
 
     render() {
         const {nodesToBeDiscarded} = this.props;
-        if (!nodesToBeDiscarded) {
+        if (nodesToBeDiscarded.length === 0) {
             return null;
         }
-        const numberOfChanges = nodesToBeDiscarded.count();
+        const numberOfChanges = nodesToBeDiscarded.length;
 
         return (
             <Dialog
                 actions={[this.renderAbort(), this.renderConfirm()]}
                 title={this.renderTitle()}
                 onRequestClose={this.handleAbort}
+                type="error"
                 isOpen
                 id="neos-DiscardDialog"
                 >

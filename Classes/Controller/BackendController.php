@@ -27,6 +27,7 @@ use Neos\Neos\Domain\Service\ContentContext;
 use Neos\Neos\Service\BackendRedirectionService;
 use Neos\Neos\Service\UserService;
 use Neos\Neos\Ui\Domain\Service\StyleAndJavascriptInclusionService;
+use Neos\Neos\Ui\Service\NodeClipboard;
 
 class BackendController extends ActionController
 {
@@ -101,6 +102,12 @@ class BackendController extends ActionController
      */
     protected $styleAndJavascriptInclusionService;
 
+    /**
+     * @Flow\Inject
+     * @var NodeClipboard
+     */
+    protected $clipboard;
+
     public function initializeView(ViewInterface $view)
     {
         $view->setFusionPath('backend');
@@ -109,6 +116,7 @@ class BackendController extends ActionController
     /**
      * Displays the backend interface
      *
+     * @Flow\IgnoreValidation("$node")
      * @param NodeInterface $node The node that will be displayed on the first tab
      * @return void
      */
@@ -131,8 +139,11 @@ class BackendController extends ActionController
         $this->view->assign('user', $user);
         $this->view->assign('documentNode', $node);
         $this->view->assign('site', $siteNode);
+        $this->view->assign('clipboardNode', $this->clipboard->getNodeContextPath());
+        $this->view->assign('clipboardMode', $this->clipboard->getMode());
         $this->view->assign('headScripts', $this->styleAndJavascriptInclusionService->getHeadScripts());
         $this->view->assign('headStylesheets', $this->styleAndJavascriptInclusionService->getHeadStylesheets());
+        $this->view->assign('splashScreenPartial', $this->settings['splashScreen']['partial']);
         $this->view->assign('sitesForMenu', $this->menuHelper->buildSiteList($this->getControllerContext()));
 
         $this->view->assign('interfaceLanguage', $this->userService->getInterfaceLanguage());

@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<IconButtonDropDown/> should render correctly. 1`] = `
+<div
+  className="baseWrapperClassName"
+  onMouseLeave={[Function]}
+>
+  <ThemedButton
+    _refHandler={[Function]}
+    aria-haspopup="true"
+    className="baseBtnClassName"
+    composeTheme="deeply"
+    disabled={false}
+    hoverStyle="clean"
+    isActive={false}
+    isFocused={false}
+    mapThemrProps={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onMouseDown={[Function]}
+    onMouseEnter={[Function]}
+    size="regular"
+    style="clean"
+    type="button"
+  >
+    <ThemedIcon
+      className="baseBtnModeIconClassName"
+      color="default"
+      composeTheme="deeply"
+      icon="fooModeIcon"
+      mapThemrProps={[Function]}
+      padded="none"
+    />
+    <ThemedIcon
+      className="baseBtnIconClassName"
+      color="default"
+      composeTheme="deeply"
+      icon="barGeneralIcon"
+      mapThemrProps={[Function]}
+      padded="none"
+    />
+  </ThemedButton>
+  <div
+    aria-hidden="true"
+    className="baseDropDownClassName"
+  >
+    <DropDownItem
+      className="baseIconButtonDropDownClassName"
+      id="foo1"
+      key="0"
+      onClick={[Function]}
+    >
+      <div
+        dropDownId="foo1"
+      />
+    </DropDownItem>
+    <DropDownItem
+      className="baseIconButtonDropDownClassName"
+      id="foo2"
+      key="1"
+      onClick={[Function]}
+    >
+      <div
+        dropDownId="foo2"
+      />
+    </DropDownItem>
+  </div>
+</div>
+`;

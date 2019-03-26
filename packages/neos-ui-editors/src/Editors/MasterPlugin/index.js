@@ -63,7 +63,7 @@ class MasterPluginEditor extends React.PureComponent {
         if (!this.state.options.length) {
             this.setState({isLoading: true});
 
-            loadMasterPlugins(personalWorkspace, activeContentDimensions.toJS())
+            loadMasterPlugins(personalWorkspace, activeContentDimensions)
                 .then(options => {
                     this.setState({
                         isLoading: false,
@@ -90,6 +90,7 @@ class MasterPluginEditor extends React.PureComponent {
                 displayLoadingIndicator={isLoading}
                 displaySearchBox={false}
                 placeholder={this.renderPlaceholder()}
+                noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:content.inspector.editors.masterPluginEditor.noPluginConfigured')}
                 allowEmpty
                 disabled={disabled}
                 />

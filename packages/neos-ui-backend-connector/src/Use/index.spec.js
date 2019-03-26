@@ -1,4 +1,4 @@
-import initializeUse from './index.js';
+import initializeUse from './index';
 
 test(`"api.use" should return a function when called.`, () => {
     expect(typeof (initializeUse())).toBe('function');

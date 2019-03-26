@@ -15,7 +15,13 @@ import NodeTypeGroupPanel from './nodeTypeGroupPanel';
 import NodeTypeFilter from './nodeTypeFilter';
 import style from './style.css';
 
-const calculateInitialMode = (allowedSiblingNodeTypes, allowedChildNodeTypes) => {
+const calculateInitialMode = (allowedSiblingNodeTypes, allowedChildNodeTypes, preferredMode) => {
+    if (
+        ((preferredMode === 'before' || preferredMode === 'after') && allowedSiblingNodeTypes.length) ||
+        (preferredMode === 'into' && allowedChildNodeTypes.length)
+    ) {
+        return preferredMode;
+    }
     if (allowedSiblingNodeTypes.length) {
         return 'after';
     }
@@ -36,6 +42,13 @@ const calculateInitialMode = (allowedSiblingNodeTypes, allowedChildNodeTypes) =>
 
     return state => {
         const reference = $get('ui.selectNodeTypeModal.referenceNodeContextPath', state);
+        if (!reference) {
+            return {
+                isOpen: false,
+                allowedSiblingNodeTypes: [],
+                allowedChildNodeTypes: []
+            };
+        }
         const referenceNodeType = selectors.CR.Nodes.getPathInNode(state, reference, 'nodeType');
         const role = nodeTypesRegistry.hasRole(referenceNodeType, 'document') ? 'document' : 'content';
         const allowedSiblingNodeTypes = nodeTypesRegistry.getGroupedNodeTypeList(getAllowedSiblingNodeTypesSelector(state, {reference, role}));
@@ -43,6 +56,7 @@ const calculateInitialMode = (allowedSiblingNodeTypes, allowedChildNodeTypes) =>
 
         return {
             isOpen: $get('ui.selectNodeTypeModal.isOpen', state),
+            preferredMode: $get('ui.selectNodeTypeModal.preferredMode', state),
             allowedSiblingNodeTypes,
             allowedChildNodeTypes
         };
@@ -54,6 +68,7 @@ const calculateInitialMode = (allowedSiblingNodeTypes, allowedChildNodeTypes) =>
 export default class SelectNodeType extends PureComponent {
     static propTypes = {
         isOpen: PropTypes.bool.isRequired,
+        preferredMode: PropTypes.string,
         nodeTypesRegistry: PropTypes.object.isRequired,
         allowedSiblingNodeTypes: PropTypes.array,
         allowedChildNodeTypes: PropTypes.array,
@@ -65,7 +80,8 @@ export default class SelectNodeType extends PureComponent {
         filterSearchTerm: '',
         insertMode: calculateInitialMode(
             this.props.allowedSiblingNodeTypes,
-            this.props.allowedChildNodeTypes
+            this.props.allowedChildNodeTypes,
+            this.props.preferredMode
         ),
         activeHelpMessageGroupPanel: '',
         showHelpMessageFor: ''
@@ -77,7 +93,8 @@ export default class SelectNodeType extends PureComponent {
             this.setState({
                 insertMode: calculateInitialMode(
                     nextProps.allowedSiblingNodeTypes,
-                    nextProps.allowedChildNodeTypes
+                    nextProps.allowedChildNodeTypes,
+                    nextProps.preferredMode
                 )
             });
         }
@@ -144,21 +161,11 @@ export default class SelectNodeType extends PureComponent {
     }
 
     renderSelectNodeTypeDialogHeader() {
-        const {insertMode, filterSearchTerm} = this.state;
-        const {allowedSiblingNodeTypes, allowedChildNodeTypes} = this.props;
-
         return (
-            <div className={style.nodeTypeDialogHeader} key="nodeTypeDialogHeader">
-                <InsertModeSelector
-                    mode={insertMode}
-                    onSelect={this.handleModeChange}
-                    enableAlongsideModes={Boolean(allowedSiblingNodeTypes.length)}
-                    enableIntoMode={Boolean(allowedChildNodeTypes.length)}
-                    />
-                <NodeTypeFilter
-                    filterSearchTerm={filterSearchTerm}
-                    onChange={this.handleNodeTypeFilterChange}
-                    />
+            <div>
+                <span className={style.modalTitle}>
+                    <I18n fallback="Create new" id="createNew"/>
+                </span>
             </div>
         );
     }
@@ -166,7 +173,8 @@ export default class SelectNodeType extends PureComponent {
     handleNodeTypeFilterChange = filterSearchTerm => this.setState({filterSearchTerm});
 
     render() {
-        const {isOpen} = this.props;
+        const {insertMode, filterSearchTerm} = this.state;
+        const {isOpen, allowedSiblingNodeTypes, allowedChildNodeTypes} = this.props;
 
         if (!isOpen) {
             return null;
@@ -175,12 +183,24 @@ export default class SelectNodeType extends PureComponent {
         return (
             <Dialog
                 actions={[this.renderCancelAction()]}
-                title={[this.renderSelectNodeTypeDialogHeader()]}
+                title={this.renderSelectNodeTypeDialogHeader()}
                 onRequestClose={this.handleCancel}
                 isOpen
                 style="wide"
                 id="neos-SelectNodeTypeDialog"
                 >
+                <div className={style.nodeTypeDialogHeader} key="nodeTypeDialogHeader">
+                    <InsertModeSelector
+                        mode={insertMode}
+                        onSelect={this.handleModeChange}
+                        enableAlongsideModes={Boolean(allowedSiblingNodeTypes.length)}
+                        enableIntoMode={Boolean(allowedChildNodeTypes.length)}
+                        />
+                    <NodeTypeFilter
+                        filterSearchTerm={filterSearchTerm}
+                        onChange={this.handleNodeTypeFilterChange}
+                        />
+                </div>
                 {this.getAllowedNodeTypesByCurrentInsertMode().map((group, key) => (
                     <div key={key}>
                         <NodeTypeGroupPanel

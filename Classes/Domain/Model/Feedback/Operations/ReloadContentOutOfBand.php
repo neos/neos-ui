@@ -20,6 +20,7 @@ use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 use Neos\Neos\Ui\Domain\Model\RenderedNodeDomAddress;
 use Neos\Neos\View\FusionView as FusionView;
+use Neos\Neos\Fusion\Helper\CachingHelper;
 
 class ReloadContentOutOfBand extends AbstractFeedback
 {
@@ -40,6 +41,12 @@ class ReloadContentOutOfBand extends AbstractFeedback
      * @var ContentCache
      */
     protected $contentCache;
+
+    /**
+     * @Flow\Inject
+     * @var CachingHelper
+     */
+    protected $cachingHelper;
 
     /**
      * Set the node
@@ -143,7 +150,10 @@ class ReloadContentOutOfBand extends AbstractFeedback
      */
     protected function renderContent(ControllerContext $controllerContext)
     {
-        $this->contentCache->flushByTag(sprintf('Node_%s', $this->getNode()->getIdentifier()));
+        $cacheTags = $this->cachingHelper->nodeTag($this->getNode());
+        foreach ($cacheTags as $tag) {
+            $this->contentCache->flushByTag($tag);
+        }
 
         $nodeDomAddress = $this->getNodeDomAddress();
 

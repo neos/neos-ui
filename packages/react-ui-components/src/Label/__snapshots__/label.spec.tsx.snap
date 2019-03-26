@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Label/> should render correctly. 1`] = `
+<label
+  className="labelClassName"
+  htmlFor="test for"
+/>
+`;

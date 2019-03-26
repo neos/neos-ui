@@ -8,7 +8,7 @@
         clear: both;
     }
 
-    z-index: var(--zIndex-PrimaryToolbar-Context);
+    z-index: var(--zIndex-PrimaryToolbar);
 }
 .primaryToolbar--isHidden {
     display: none;
@@ -17,7 +17,4 @@
     position: absolute;
     right: 0;
     top: 0;
-}
-.primaryToolbar__btn {
-    border-right: 1px solid var(--colors-ContrastDark);
 }

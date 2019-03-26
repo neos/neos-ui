@@ -4,7 +4,6 @@ import {connect} from 'react-redux';
 import {$get} from 'plow-js';
 
 import Headline from '@neos-project/react-ui-components/src/Headline/';
-import Icon from '@neos-project/react-ui-components/src/Icon/';
 import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
 
 import I18n from '@neos-project/neos-ui-i18n';
@@ -29,7 +28,7 @@ import style from './style.css';
 export default class SelectedElement extends PureComponent {
     static propTypes = {
         focusedNode: PropTypes.object.isRequired,
-        focusedNodeParentLine: PropTypes.object.isRequired,
+        focusedNodeParentLine: PropTypes.array.isRequired,
 
         focusNode: PropTypes.func.isRequired,
         nodeTypesRegistry: PropTypes.object.isRequired
@@ -58,16 +57,15 @@ export default class SelectedElement extends PureComponent {
         const {focusedNode, focusedNodeParentLine} = this.props;
 
         return (
-            <section className={sidebarStyle.rightSideBar__section}>
+            <section className={sidebarStyle.rightSideBar__header}>
                 <Headline className={style.label}>
-                    <Icon icon="mouse-pointer"/>
                     <span>
                         <I18n id="Neos.Neos:Main:content.inspector.inspectorView.selectedElement"/>
                     </span>
                 </Headline>
                 <div className={style.content}>
                     <SelectBox
-                        options={focusedNodeParentLine.map(this.createNodeOption).toJS()}
+                        options={focusedNodeParentLine.map(this.createNodeOption)}
                         value={$get('contextPath', focusedNode)}
                         onValueChange={this.handleSelectNode}
                         />

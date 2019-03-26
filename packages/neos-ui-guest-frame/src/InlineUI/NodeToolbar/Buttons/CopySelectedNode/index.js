@@ -30,12 +30,13 @@ export default class CopySelectedNode extends PureComponent {
 
         return (
             <IconButton
+                id="neos-InlineToolbar-CopySelectedNode"
                 className={className}
-                isDisabled={destructiveOperationsAreDisabled}
+                disabled={destructiveOperationsAreDisabled}
                 isActive={isActive}
                 onClick={this.handleCopySelectedNodeClick}
                 icon="far copy"
-                hoverStyle="clean"
+                hoverStyle="brand"
                 title={i18nRegistry.translate('copy')}
                 />
         );

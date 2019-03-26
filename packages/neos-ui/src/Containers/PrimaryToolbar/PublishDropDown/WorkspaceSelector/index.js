@@ -37,6 +37,7 @@ export default class WorkspaceSelector extends PureComponent {
         return (<div>
             {anyWorkspacesAvailable && (changingWorkspaceAllowed ?
                 <SelectBox
+                    className={style.selectBox}
                     options={workspacesOptions}
                     value={baseWorkspace}
                     onValueChange={onWorkspaceSelect}

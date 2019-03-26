@@ -89,11 +89,11 @@ export default class InsertModeSelector extends PureComponent {
 
         return (
             <div className={style.root}>
-                <I18n id="Neos.Neos:Main:insertMode"/>:&nbsp;
-                <ButtonGroup value={mode} onSelect={this.handleSelect}>
+                <I18n id="Neos.Neos:Main:insertMode"/>&nbsp;
+                <ButtonGroup value={mode} onSelect={this.handleSelect} className={style.buttonGroup}>
                     <IconButton
                         id={MODE_BEFORE}
-                        isDisabled={!enableAlongsideModes}
+                        disabled={!enableAlongsideModes}
                         style="lighter"
                         size="small"
                         icon="level-up-alt"
@@ -101,7 +101,7 @@ export default class InsertModeSelector extends PureComponent {
                         />
                     <IconButton
                         id={MODE_INTO}
-                        isDisabled={!enableIntoMode}
+                        disabled={!enableIntoMode}
                         style="lighter"
                         size="small"
                         icon="long-arrow-alt-right"
@@ -109,7 +109,7 @@ export default class InsertModeSelector extends PureComponent {
                         />
                     <IconButton
                         id={MODE_AFTER}
-                        isDisabled={!enableAlongsideModes}
+                        disabled={!enableAlongsideModes}
                         style="lighter"
                         size="small"
                         icon="level-down-alt"

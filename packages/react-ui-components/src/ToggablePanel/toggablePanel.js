@@ -191,8 +191,8 @@ export class Header extends PureComponent {
 
     static defaultProps = {
         isPanelOpen: true,
-        openedIcon: 'chevron-up',
-        closedIcon: 'chevron-down'
+        openedIcon: 'chevron-circle-up',
+        closedIcon: 'chevron-circle-down'
     }
 
     static contextTypes = {
@@ -228,6 +228,7 @@ export class Header extends PureComponent {
                 </HeadlineComponent>
                 <IconButtonComponent
                     className={theme.panel__toggleBtn}
+                    hoverStyle="clean"
                     icon={isPanelOpen ? openedIcon : closedIcon}
                     onClick={onPanelToggle}
                     id={toggleButtonId}

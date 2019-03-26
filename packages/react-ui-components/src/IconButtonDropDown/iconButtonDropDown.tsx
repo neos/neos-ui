@@ -2,8 +2,9 @@ import mergeClassNames from 'classnames';
 import React, {PureComponent} from 'react';
 
 import {PickDefaultProps} from '../../types';
+import Button from '../Button';
 import {ButtonProps} from '../Button/button';
-import {IconProps} from '../Icon/icon';
+import Icon from '../Icon';
 import DropDownItem from './dropDownItem';
 
 type DropDownId = string;
@@ -18,7 +19,7 @@ interface IconButtonDropDownTheme {
     readonly 'wrapper__btnIcon': string;
 }
 
-interface IconButtonDropDownProps {
+export interface IconButtonDropDownProps {
     /**
      * The key of the Icon which is always displayed.
      */
@@ -59,13 +60,6 @@ interface IconButtonDropDownProps {
     readonly theme?: IconButtonDropDownTheme;
 
     /**
-     * Static component dependencies which are injected from the outside (index.js)
-     */
-    readonly IconComponent: React.ComponentClass<IconProps>;
-
-    readonly ButtonComponent: React.ComponentClass<ButtonProps>;
-
-    /**
      * An optional `className` to attach to the wrapper.
      */
     readonly className?: string;
@@ -73,7 +67,7 @@ interface IconButtonDropDownProps {
     /**
      * Controls the whole components disabled state.
      */
-    readonly isDisabled: boolean;
+    readonly disabled: boolean;
 
     /**
      * Props which are propagated to the <Button> component.
@@ -81,20 +75,24 @@ interface IconButtonDropDownProps {
     readonly directButtonProps: ButtonProps;
 }
 
-type DefaultProps = PickDefaultProps<IconButtonDropDownProps, 'directButtonProps' | 'isDisabled' | 'modeIcon'>;
+type DefaultProps = PickDefaultProps<IconButtonDropDownProps, 'directButtonProps' | 'disabled' | 'modeIcon'>;
 
-const defaultProps: DefaultProps = {
+export const defaultProps: DefaultProps = {
     directButtonProps: {
         children: undefined,
         size: 'regular',
     },
-    isDisabled: false,
+    disabled: false,
     modeIcon: 'long-arrow-right',
 };
 
 interface IconButtonDropDownState {
     readonly isOpen: boolean;
 }
+
+const initialState: IconButtonDropDownState = {
+    isOpen: false,
+};
 
 export default class IconButtonDropDown extends PureComponent<IconButtonDropDownProps, IconButtonDropDownState> {
     // tslint:disable:readonly-keyword
@@ -107,9 +105,7 @@ export default class IconButtonDropDown extends PureComponent<IconButtonDropDown
     constructor(props: IconButtonDropDownProps) {
         super(props);
 
-        this.state = {
-            isOpen: false,
-        };
+        this.state = initialState;
 
         this._timeouts = {
             hold: undefined,
@@ -121,10 +117,8 @@ export default class IconButtonDropDown extends PureComponent<IconButtonDropDown
 
     public render(): JSX.Element {
         const {
-            IconComponent,
-            ButtonComponent,
             className,
-            isDisabled,
+            disabled,
             icon,
             modeIcon,
             theme,
@@ -144,28 +138,28 @@ export default class IconButtonDropDown extends PureComponent<IconButtonDropDown
 
         return (
             <div className={finalClassName} onMouseLeave={this.handleMouseLeave}>
-                <ButtonComponent
+                <Button
                     {...rest}
                     style="clean"
                     hoverStyle="clean"
                     aria-haspopup="true"
                     className={theme!.wrapper__btn}
-                    isDisabled={isDisabled}
+                    disabled={disabled}
                     onMouseDown={this.handleHoldTimeout}
                     onMouseEnter={this.handleHoverTimeout}
                     onFocus={this.handleHoverTimeout}
                     onClick={this.handleClick}
                     size={size}
                 >
-                    <IconComponent icon={modeIcon} className={theme!.wrapper__btnModeIcon}/>
-                    <IconComponent icon={icon} className={theme!.wrapper__btnIcon}/>
-                </ButtonComponent>
+                    <Icon icon={modeIcon} className={theme!.wrapper__btnModeIcon}/>
+                    <Icon icon={icon} className={theme!.wrapper__btnIcon}/>
+                </Button>
                 <div className={dropDownClassNames} aria-hidden={isOpen ? 'false' : 'true'}>
                     {children.map((child, index) => (
                         <DropDownItem
                             key={index}
                             className={theme!.wrapper__dropDownItem}
-                            onClick={this.handleItemSelected}
+                            onClick={this.createItemSelectedHandler(child.props.dropDownId)}
                             id={child.props.dropDownId}
                         >
                             {child}
@@ -216,8 +210,8 @@ export default class IconButtonDropDown extends PureComponent<IconButtonDropDown
         this.closeDropDown();
     }
 
-    private readonly handleItemSelected = (ref: DropDownId) => {
-        this.props.onItemSelect(ref);
+    private readonly createItemSelectedHandler = (dropDownId: DropDownId) => () => {
+        this.props.onItemSelect(dropDownId);
         this.closeDropDown();
     }
 

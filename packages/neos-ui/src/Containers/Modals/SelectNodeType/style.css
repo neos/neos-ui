@@ -1,19 +1,31 @@
 .nodeType {
-    width: calc(100% / 3);
+    width: calc(100% / 6);
     text-align: left;
     display: flex;
     flex-direction: row;
     position: relative;
+    padding: 1px;
 
     &:hover {
         button {
             background-color: var(--colors-PrimaryBlue);
         }
+    }
+}
 
-        .nodeType__helpIcon {
-            background-color: var(--colors-PrimaryBlue);
-            border-left: 1px solid var(--colors-ContrastDark);
-        }
+@media (max-width: 992px) {
+    .nodeType {
+        width: calc(100% / 4);
+    }
+}
+@media (max-width: 768px) {
+    .nodeType {
+        width: calc(100% / 3);
+    }
+}
+@media (max-width: 576px) {
+    .nodeType {
+        width: calc(100% / 2);
     }
 }
 
@@ -21,19 +33,39 @@
     top: 40px;
 }
 
+.nodeType__iconWrapper {
+    display: block;
+    text-align: center;
+    margin-top: var(--spacing-Quarter);
+    margin-bottom: var(--spacing-Half);
+}
 .nodeType__icon {
-    color: var(--colors-PrimaryBlue);
-
-    .nodeType:hover & {
-        color: var(--colors-ContrastBrightest);
-    }
+    color: var(--colors-ContrastBrightest);
 }
 .nodeType__item {
-    text-align: left;
+    text-align: center;
     flex-grow: 1;
+    height: auto;
+    padding: var(--spacing-Full);
+    background: var(--colors-ContrastNeutral);
+    border-radius: 2px;
+    position: relative;
 }
 .nodeType__helpIcon {
-    flex-grow: 0;
+    display: block;
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    min-width: 24px;
+    width: 24px;
+    height: 24px;
+    opacity: .5;
+    background: transparent;
+
+    &:hover {
+        opacity: 1;
+    }
+
     &:focus {
         outline: none;
     }
@@ -42,14 +74,16 @@
 .helpMessage__wrapper {
     position: relative;
     width: 100%;
-    background-color: var(--colors-ContrastDark);
     clear: right;
+    margin-top: var(--spacing-Half);
 }
 
 .helpMessage {
-    background-color: var(--colors-ContrastDark);
-    border-top: 1px solid var(--colors-ContrastDark);
+    background-color: var(--colors-ContrastDarkest);
     padding: var(--spacing-Full);
+    border-radius: 2px;
+    margin: 1px;
+    position: relative;
 }
 
 .helpMessage__label {
@@ -60,7 +94,7 @@
     position: absolute;
     right: 1px;
     top: 1px;
-    background-color: var(--colors-ContrastDark);
+    background-color: transparent;
 }
 
 .helpThumbnail {
@@ -71,27 +105,30 @@
 }
 /* TODO: refactor such typography things to Headline component */
 .groupHeader {
-    border-bottom: 1px solid var(--colors-ContrastDark);
+    border-top: 1px solid var(--colors-ContrastDark);
 }
 .groupTitle {
-    color: var(--colors-ContrastBrighter);
+    color: var(--colors-ContrastBrightest);
     line-height: 1.2;
-    font-weight: normal;
+    font-weight: bold;
 }
 .groupContents {
     display: flex;
     width: 100%;
     flex-wrap: wrap;
-    padding: 0 !important;
+    padding: var(--spacing-Full) !important;
+    padding-top: 0 !important;
 }
 
 .nodeTypeDialogHeader {
     display: flex;
     justify-content: space-between;
+    padding-left: var(--spacing-Full);
+    padding-right: var(--spacing-Full);
+    padding-bottom: var(--spacing-Full);
 }
 
 .nodeTypeDialogHeader__filter {
-    margin-right: var(--spacing-GoldenUnit);
     display: flex;
     align-items: center;
 }

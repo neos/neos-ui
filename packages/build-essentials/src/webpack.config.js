@@ -1,7 +1,8 @@
 const webpack = require('webpack');
 const path = require('path');
 const fs = require('fs');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
 const env = require('./environment');
 //
@@ -22,14 +23,10 @@ if (fs.existsSync(liveReloadOptionsFile) && fs.lstatSync(liveReloadOptionsFile).
     finalLiveReloadOptions = Object.assign({}, finalLiveReloadOptions, liveReloadOptions);
 }
 
-const extractCss = new ExtractTextPlugin({
-    publicPath: './../',
-    filename: 'Styles/[name].css'
-});
-
 const webpackConfig = {
     // https://github.com/webpack/docs/wiki/build-performance#sourcemaps
     devtool: 'source-map',
+    mode: env.isProduction ? 'production' : 'development',
     module: {
         rules: [
             {
@@ -47,6 +44,7 @@ const webpackConfig = {
                 }]
             },
             {
+                type: 'javascript/auto',
                 test: /\.json$/,
                 exclude: /node_modules\/(?!@neos-project).*$/,
                 use: [{
@@ -75,19 +73,25 @@ const webpackConfig = {
             },
             {
                 test: /node_modules\/@fortawesome\/fontawesome-svg-core\/styles\.css$/,
-                use: extractCss.extract({
-                    use: [{
+                use: [
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                        options: {
+                            publicPath: './../'
+                        }
+                    },
+                    {
                         loader: 'css-loader'
-                    }, {
+                    },
+                    {
                         loader: 'string-replace-loader',
                         options: {
                             search: 'svg-inline--fa',
                             replace: 'neos-svg-inline--fa',
                             flags: 'g'
                         }
-                    }],
-                    fallback: 'style-loader'
-                })
+                    }
+                ]
             },
             {
                 test: /\.css$/,
@@ -95,48 +99,64 @@ const webpackConfig = {
                     /node_modules\/@fortawesome\/fontawesome-svg-core\/styles\.css$/,
                     /node_modules\/@ckeditor.*$/
                 ],
-                use: extractCss.extract({
-                    use: [{
+                use: [
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                        options: {
+                            publicPath: './../'
+                        }
+                    },
+                    {
                         loader: 'css-loader',
                         options: {
                             modules: true,
                             importLoaders: 1,
                             localIdentName: '[name]__[local]___[hash:base64:5]'
                         }
-                    }, {
+                    },
+                    {
                         loader: 'postcss-loader',
                         options: {
                             config: {
                                 path: path.join(__dirname, 'postcss.config.js')
                             }
                         }
-                    }],
-                    fallback: 'style-loader'
-                })
+                    }
+                ]
             },
             {
                 test: /\.vanilla-css$/,
-                use: extractCss.extract({
-                    use: [{
+                use: [
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                        options: {
+                            publicPath: './../'
+                        }
+                    },
+                    {
                         loader: 'css-loader'
-                    }],
-                    fallback: 'style-loader'
-                })
+                    }
+                ]
             }
         ]
     },
 
     plugins: [
-        extractCss,
         new webpack.DefinePlugin({
             'process.env': {
                 NODE_ENV: JSON.stringify(process.env.NODE_ENV)
             }
         }),
         new webpack.optimize.OccurrenceOrderPlugin(),
-        new ExtractTextPlugin('./Styles/[name].css', {allChunks: true}),
-        new webpack.optimize.CommonsChunkPlugin({names: ['Vendor']})
+        new MiniCssExtractPlugin({filename: './Styles/[name].css'})
     ],
+
+    optimization: {
+        splitChunks: {
+            name: 'Vendor'
+        },
+        minimizer: []
+    },
 
     resolve: {
         modules: [
@@ -152,6 +172,9 @@ const webpackConfig = {
     stats: {
         assets: false,
         children: false
+    },
+    performance: {
+        hints: env.isProduction ? 'warning' : false
     }
 };
 
@@ -165,21 +188,21 @@ if (!env.isCi && !env.isTesting && !env.isStorybook && !env.isProduction) {
 
 /* eslint camelcase: ["error", {properties: "never"}] */
 if (env.isProduction) {
-    webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({
-        sourceMap: true,
-        minimize: true,
-        compress: {
-            keep_fnames: true,
-            warnings: false
-        },
-        mangle: {
-            keep_fnames: true
-        }
-    }));
+    webpackConfig.optimization.minimizer.push(
+        new UglifyJsPlugin({
+            uglifyOptions: {
+                sourceMap: true,
+                minimize: true,
+                compress: {
+                    keep_fnames: true,
+                    warnings: false
+                },
+                mangle: {
+                    keep_fnames: true
+                }
+            }
+        })
+    );
 }
-
-webpackConfig.__internalDependencies = {
-    ExtractTextPlugin
-};
 
 module.exports = webpackConfig;

@@ -6,8 +6,9 @@ import {memoize} from 'ramda';
 
 import {neos} from '@neos-project/neos-ui-decorators';
 import {actions} from '@neos-project/neos-ui-redux-store';
-import validate from '@neos-project/neos-ui-validators/src/index';
+import validate from '@neos-project/neos-ui-validators';
 
+import Icon from '@neos-project/react-ui-components/src/Icon/';
 import Button from '@neos-project/react-ui-components/src/Button/';
 import Dialog from '@neos-project/react-ui-components/src/Dialog/';
 import I18n from '@neos-project/neos-ui-i18n';
@@ -143,11 +144,12 @@ export default class NodeCreationDialog extends PureComponent {
             <Button
                 id="neos-NodeCreationDialog-CreateNew"
                 key="save"
-                style="lighter"
-                hoverStyle="brand"
+                style="success"
+                hoverStyle="success"
                 onClick={this.handleApply}
                 disabled={validationErrors && isDirty}
                 >
+                <Icon icon="plus-square" className={style.buttonIcon}/>
                 <I18n id="Neos.Neos:Main:createNew" fallback="Create"/>
             </Button>
         );
@@ -167,6 +169,7 @@ export default class NodeCreationDialog extends PureComponent {
                 actions={[this.renderBackAction(), this.renderSaveAction()]}
                 title={this.renderTitle()}
                 onRequestClose={this.handleCancel}
+                type="success"
                 isOpen
                 style="wide"
                 id="neos-NodeCreationDialog"

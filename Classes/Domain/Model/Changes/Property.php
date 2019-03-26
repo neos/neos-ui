@@ -15,12 +15,14 @@ use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Domain\Model\NodeType;
 use Neos\ContentRepository\Domain\Service\NodeServiceInterface;
 use Neos\ContentRepository\Domain\Service\NodeTypeManager;
+use Neos\ContentRepository\Exception\NodeTypeNotFoundException;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Ui\Domain\Model\AbstractChange;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadContentOutOfBand;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 use Neos\Neos\Ui\Domain\Model\RenderedNodeDomAddress;
 use Neos\Neos\Ui\Domain\Service\NodePropertyConversionService;
+use Neos\Neos\Ui\Service\NodePropertyValidationService;
 use Neos\Utility\ObjectAccess;
 
 /**
@@ -34,6 +36,12 @@ class Property extends AbstractChange
      * @var NodePropertyConversionService
      */
     protected $nodePropertyConversionService;
+
+    /**
+     * @Flow\Inject
+     * @var NodePropertyValidationService
+     */
+    protected $nodePropertyValidationService;
 
     /**
      * @Flow\Inject
@@ -168,13 +176,26 @@ class Property extends AbstractChange
         $propertyName = $this->getPropertyName();
         $nodeTypeProperties = $nodeType->getProperties();
 
-        return isset($nodeTypeProperties[$propertyName]);
+        if (!isset($nodeTypeProperties[$propertyName])) {
+            return false;
+        }
+
+        if (isset($nodeTypeProperties[$propertyName]['validation'])) {
+            foreach ($nodeTypeProperties[$propertyName]['validation'] as $validatorName => $validatorConfiguration) {
+                if ($this->nodePropertyValidationService->validate($this->value, $validatorName, $validatorConfiguration) === false) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     /**
      * Applies this change
      *
      * @return void
+     * @throws NodeTypeNotFoundException
      */
     public function apply()
     {
@@ -202,7 +223,10 @@ class Property extends AbstractChange
 
             $reloadIfChangedConfigurationPath = sprintf('properties.%s.ui.reloadIfChanged', $propertyName);
             if (!$this->getIsInline() && $node->getNodeType()->getConfiguration($reloadIfChangedConfigurationPath)) {
-                if ($this->getNodeDomAddress() && $this->getNodeDomAddress()->getFusionPath() && $node->getParent()->getNodeType()->isOfType('Neos.Neos:ContentCollection')) {
+                if ($this->getNodeDomAddress() && $this->getNodeDomAddress()->getFusionPath()
+                    && $node->getNodeType()->isOfType('Neos.Neos:Content')
+                    && $node->getParent()->getNodeType()->isOfType('Neos.Neos:ContentCollection')
+                ) {
                     $reloadContentOutOfBand = new ReloadContentOutOfBand();
                     $reloadContentOutOfBand->setNode($node);
                     $reloadContentOutOfBand->setNodeDomAddress($this->getNodeDomAddress());

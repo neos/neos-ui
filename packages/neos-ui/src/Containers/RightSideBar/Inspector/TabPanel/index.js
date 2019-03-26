@@ -4,7 +4,6 @@ import {$get, $contains} from 'plow-js';
 import Tabs from '@neos-project/react-ui-components/src/Tabs/';
 
 import PropertyGroup from '../PropertyGroup/index';
-import SelectedElement from '../SelectedElement/index';
 
 import style from './style.css';
 
@@ -12,7 +11,8 @@ export default class TabPanel extends PureComponent {
     static displayName = 'Inspector Tab Panel';
 
     static propTypes = {
-        groups: PropTypes.object,
+        id: PropTypes.string,
+        groups: PropTypes.array,
         renderSecondaryInspector: PropTypes.func.isRequired,
         node: PropTypes.object.isRequired,
         commit: PropTypes.func.isRequired,
@@ -34,9 +34,8 @@ export default class TabPanel extends PureComponent {
 
         return (
             <Tabs.Panel theme={{panel: style.inspectorTabPanel}}>
-                <SelectedElement/>
                 {
-                    groups.filter(g => ($get('items', g) && $get('items', g).filter(this.isPropertyEnabled).count())).map(group => (
+                    groups.filter(g => ($get('items', g) && $get('items', g).filter(this.isPropertyEnabled).length)).map(group => (
                         <PropertyGroup
                             handlePanelToggle={() => handlePanelToggle([$get('id', group)])}
                             handleInspectorApply={handleInspectorApply}

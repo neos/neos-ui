@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<IconButton/> should render correctly. 1`] = `
+<ThemedButton
+  _refHandler={[Function]}
+  className="fooClassName iconButtonClassName"
+  composeTheme="deeply"
+  disabled={false}
+  hoverStyle="brand"
+  isActive={false}
+  isFocused={false}
+  mapThemrProps={[Function]}
+  size="regular"
+  style="transparent"
+  type="button"
+>
+  <ThemedIcon
+    color="default"
+    composeTheme="deeply"
+    icon="fooIconName"
+    mapThemrProps={[Function]}
+    padded="none"
+  />
+</ThemedButton>
+`;

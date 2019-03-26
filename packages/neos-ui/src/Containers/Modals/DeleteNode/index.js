@@ -85,10 +85,11 @@ export default class DeleteNodeModal extends PureComponent {
             <Button
                 id="neos-DeleteNodeModal-Confirm"
                 key="confirm"
-                style="warn"
-                hoverStyle="brand"
+                style="error"
+                hoverStyle="error"
                 onClick={this.handleConfirm}
                 >
+                <Icon icon="ban" className={style.buttonIcon}/>
                 <I18n id="Neos.Neos:Main:deleteConfirm" fallback="Confirm"/>
             </Button>
         );
@@ -107,6 +108,7 @@ export default class DeleteNodeModal extends PureComponent {
                 actions={[this.renderAbort(), this.renderConfirm()]}
                 title={this.renderTitle()}
                 onRequestClose={this.handleAbort}
+                type="error"
                 isOpen
                 id="neos-DeleteNodeDialog"
                 >

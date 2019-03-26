@@ -1,15 +1,21 @@
 import mergeClassNames from 'classnames';
 import React, {PureComponent} from 'react';
+import {Omit} from '../../types';
+import Icon from './../Icon';
 
 interface CheckBoxTheme {
     readonly checkbox: string;
+    readonly checkbox__checked: string;
     readonly checkbox__disabled: string;
     readonly checkbox__input: string; // eslint-disable-line
     readonly checkbox__inputMirror: string; // eslint-disable-line
     readonly 'checkbox__inputMirror--active': string;
+    readonly checkbox__icon: string;
 }
 
-interface CheckBoxProps {
+type HTMLInputElementAttributesExceptOnChange = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'>;
+
+export interface CheckBoxProps extends HTMLInputElementAttributesExceptOnChange {
     /**
      * This prop controls the visual active state of the CheckBox.
      */
@@ -18,7 +24,7 @@ interface CheckBoxProps {
     /**
      * This prop controls if the CheckBox is disabled or not.
      */
-    readonly isDisabled?: boolean;
+    readonly disabled?: boolean;
 
     /**
      * An optional `className` to attach to the wrapper.
@@ -40,7 +46,7 @@ class CheckBox extends PureComponent<CheckBoxProps> {
     public render(): JSX.Element {
         const {
             isChecked,
-            isDisabled,
+            disabled,
             className,
             theme,
             ...rest
@@ -49,7 +55,8 @@ class CheckBox extends PureComponent<CheckBoxProps> {
             className,
             theme.checkbox,
             {
-                [theme.checkbox__disabled]: isDisabled,
+                [theme.checkbox__checked]: isChecked,
+                [theme.checkbox__disabled]: disabled,
             }
         );
         const mirrorClassNames = mergeClassNames(
@@ -68,7 +75,11 @@ class CheckBox extends PureComponent<CheckBoxProps> {
                     checked={isChecked}
                     aria-checked={isChecked}
                     onChange={this.handleChange}
-                    disabled={isDisabled}
+                    disabled={disabled}
+                    />
+                <Icon
+                    className={theme.checkbox__icon}
+                    icon="check"
                     />
                 <div className={mirrorClassNames}/>
             </div>

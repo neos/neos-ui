@@ -14,6 +14,7 @@ import {neos} from '@neos-project/neos-ui-decorators';
 
 import animate from 'amator';
 import hashSum from 'hash-sum';
+import moment from 'moment';
 
 const getContextPath = $get('contextPath');
 
@@ -54,15 +55,15 @@ export default class Node extends PureComponent {
         currentlyDraggedNode: PropTypes.object,
         hasChildren: PropTypes.bool,
         isLastChild: PropTypes.bool,
-        childNodes: PropTypes.object,
+        childNodes: PropTypes.array,
         level: PropTypes.number.isRequired,
         isActive: PropTypes.bool,
         isFocused: PropTypes.bool,
-        toggledNodeContextPaths: PropTypes.object,
-        hiddenContextPaths: PropTypes.object,
-        intermediateContextPaths: PropTypes.object,
-        loadingNodeContextPaths: PropTypes.object,
-        errorNodeContextPaths: PropTypes.object,
+        toggledNodeContextPaths: PropTypes.array,
+        hiddenContextPaths: PropTypes.array,
+        intermediateContextPaths: PropTypes.array,
+        loadingNodeContextPaths: PropTypes.array,
+        errorNodeContextPaths: PropTypes.array,
         canBeInsertedAlongside: PropTypes.bool,
         canBeInsertedInto: PropTypes.bool,
         isNodeDirty: PropTypes.bool.isRequired,
@@ -175,10 +176,15 @@ export default class Node extends PureComponent {
         }
 
         if (isHiddenBefore || isHiddenAfter) {
+            let isCurrentlyHidden = false;
+            isCurrentlyHidden = isHiddenBefore && moment(isHiddenBefore).isAfter(moment()) ? true : isCurrentlyHidden;
+            isCurrentlyHidden = isHiddenAfter && moment(isHiddenAfter).isBefore(moment()) ? true : isCurrentlyHidden;
+            const circleColor = isCurrentlyHidden ? 'error' : 'primaryBlue';
+
             return (
                 <span className="fa-layers fa-fw">
                     <Icon icon={this.getIcon()} />
-                    <Icon icon="circle" color="primaryBlue" transform="shrink-5 down-6 right-4" />
+                    <Icon icon="circle" color={circleColor} transform="shrink-5 down-6 right-4" />
                     <Icon icon="clock" transform="shrink-9 down-6 right-4" />
                 </span>
             );
@@ -270,7 +276,7 @@ export default class Node extends PureComponent {
         const refHandler = div => {
             this.domNode = div;
         };
-        const childNodesCount = childNodes.count();
+        const childNodesCount = childNodes.length;
 
         const labelIdentifier = (isContentTreeNode ? 'content-' : '') + 'treeitem-' + hashSum($get('contextPath', node)) + '-label';
 
@@ -363,7 +369,7 @@ export const PageTreeNode = withNodeTypeRegistryAndI18nRegistry(connect(
             loadingDepth: neos.configuration.nodeTree.loadingDepth,
             childNodes: childrenOfSelector(state, getContextPath(node)),
             hasChildren: hasChildrenSelector(state, getContextPath(node)),
-            isActive: selectors.UI.ContentCanvas.getCurrentContentCanvasContextPath(state) === $get('contextPath', node),
+            isActive: selectors.CR.Nodes.documentNodeContextPathSelector(state) === $get('contextPath', node),
             isFocused: selectors.UI.PageTree.getFocused(state) === $get('contextPath', node),
             toggledNodeContextPaths: selectors.UI.PageTree.getToggled(state),
             hiddenContextPaths: selectors.UI.PageTree.getHidden(state),
@@ -398,11 +404,11 @@ export const ContentTreeNode = withNodeTypeRegistryAndI18nRegistry(connect(
 
         return (state, {node, currentlyDraggedNode}) => ({
             isContentTreeNode: true,
-            rootNode: selectors.UI.ContentCanvas.documentNodeSelector(state),
+            rootNode: selectors.CR.Nodes.documentNodeSelector(state),
             loadingDepth: neos.configuration.structureTree.loadingDepth,
             childNodes: childrenOfSelector(state, getContextPath(node)),
             hasChildren: hasChildrenSelector(state, getContextPath(node)),
-            isActive: selectors.UI.ContentCanvas.getCurrentContentCanvasContextPath(state) === $get('contextPath', node),
+            isActive: selectors.CR.Nodes.documentNodeContextPathSelector(state) === $get('contextPath', node),
             isFocused: $get('cr.nodes.focused.contextPath', state) === $get('contextPath', node),
             toggledNodeContextPaths: selectors.UI.ContentTree.getToggled(state),
             isNodeDirty: isContentNodeDirtySelector(state, $get('contextPath', node)),

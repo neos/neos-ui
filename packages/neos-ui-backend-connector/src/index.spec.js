@@ -1,4 +1,4 @@
-import {initializeJsAPI, createPlugin, define} from './index.js';
+import {initializeJsAPI, createPlugin, define} from './index';
 
 test(`
     "createPlugin" utility should expose a method to create plugins which will

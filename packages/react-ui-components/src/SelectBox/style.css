@@ -29,21 +29,29 @@
 }
 
 .selectBox__contents {
-    composes: reset from './../reset.css';
     min-width: 160px;
-    box-shadow: 0 5px 10px rgba(#000, .2);
+    box-shadow: 0 5px 5px rgba(#000, .2);
     z-index: var(--zIndex-SelectBoxContents);
+    padding: 2px !important;
+    margin-top: -2px;
+    max-height: calc(30vh);
 }
 
 .selectBox__item {
     border-top: 1px solid var(--colors-ContrastDarker);
+    background: var(--colors-ContrastDarkest);
+
+    div {
+        padding: 5px 14px;
+    }
 }
 
 .selectBox__groupHeader {
-    background-color: var(--colors-ContrastDark);
+    background-color: var(--colors-ContrastDarker);
     font-weight: bold;
     padding-left: var(--spacing-Full);
-    line-height: var(--spacing-GoldenUnit);
+    line-height: 30px;
+    text-transform: uppercase;
 }
 
 .selectBox--disabled {

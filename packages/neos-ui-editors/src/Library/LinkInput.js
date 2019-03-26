@@ -1,5 +1,6 @@
 import React, {PureComponent, Fragment} from 'react';
 import PropTypes from 'prop-types';
+import pick from 'lodash.pick';
 import {connect} from 'react-redux';
 import {$get, $transform} from 'plow-js';
 
@@ -38,7 +39,6 @@ const looksLikeExternalLink = link => {
 export default class LinkInput extends PureComponent {
     static propTypes = {
         i18nRegistry: PropTypes.object,
-        linkValue: PropTypes.string,
         options: PropTypes.shape({
             nodeTypes: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
             placeholder: PropTypes.string,
@@ -48,9 +48,14 @@ export default class LinkInput extends PureComponent {
             targetBlank: PropTypes.bool,
             relNofollow: PropTypes.bool,
             assets: PropTypes.bool,
-            nodes: PropTypes.bool
+            nodes: PropTypes.bool,
+            startingPoint: PropTypes.string
         }),
         setFocus: PropTypes.bool,
+        linkValue: PropTypes.string,
+        linkTitleValue: PropTypes.string,
+        linkRelNofollowValue: PropTypes.bool,
+        linkTargetBlankValue: PropTypes.bool,
         onLinkChange: PropTypes.func.isRequired,
         onLinkRelChange: PropTypes.func,
         onLinkTargetChange: PropTypes.func,
@@ -62,7 +67,9 @@ export default class LinkInput extends PureComponent {
         }).isRequired,
 
         contextForNodeLinking: PropTypes.shape({
-            toJS: PropTypes.func.isRequired
+            workspaceName: PropTypes.string.isRequired,
+            contextNode: PropTypes.string,
+            dimensions: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.string))
         }).isRequired
     };
 
@@ -76,11 +83,17 @@ export default class LinkInput extends PureComponent {
     };
 
     getDataLoaderOptions() {
+        const contextForNodeLinking = $get('options.startingPoint', this.props) ?
+            Object.assign({}, this.props.contextForNodeLinking, {
+                contextNode: this.props.options.startingPoint
+            }) :
+            this.props.contextForNodeLinking;
         return {
             nodeTypes: $get('options.nodeTypes', this.props) || ['Neos.Neos:Document'],
             asset: $get('options.assets', this.props),
             node: $get('options.nodes', this.props),
-            contextForNodeLinking: this.props.contextForNodeLinking.toJS()
+            startingPoint: $get('options.startingPoint', this.props),
+            contextForNodeLinking
         };
     }
 
@@ -262,7 +275,7 @@ export default class LinkInput extends PureComponent {
         return (
             <Fragment>
                 <div className={style.linkInput__optionWrapper} onClick={this.handleSwitchToEditMode} role="button">
-                    {this.state.isLoading ? <Icon icon="spinner" className={style.linkInput__loader} spin={true} size="lg" /> : this.renderLinkOption()}
+                    {this.state.isLoading ? <div className={style.linkInput__loaderWrapper}><Icon icon="spinner" className={style.linkInput__loader} spin={true} size="lg" /></div> : this.renderLinkOption()}
                 </div>
                 <IconButton
                     className={style.linkInput__innerButton}
@@ -317,7 +330,7 @@ export default class LinkInput extends PureComponent {
                         <div>
                             <TextInput
                                 id="__neos__linkEditor--title"
-                                value={$get('linkTitle', this.props.formattingUnderCursor) || ''}
+                                value={this.props.linkTitleValue || ''}
                                 placeholder={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__titlePlaceholder', 'Enter link title')}
                                 onChange={value => {
                                     this.props.onLinkTitleChange(value);
@@ -331,7 +344,7 @@ export default class LinkInput extends PureComponent {
                             <label>
                                 <CheckBox
                                     onChange={this.props.onLinkTargetChange}
-                                    isChecked={$get('linkTargetBlank', this.props.formattingUnderCursor) || false}
+                                    isChecked={this.props.linkTargetBlankValue || false}
                                 /> {this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__targetBlank', 'Open in new window')}
                             </label>
                         </div>)}
@@ -340,7 +353,7 @@ export default class LinkInput extends PureComponent {
                             <label>
                                 <CheckBox
                                     onChange={this.props.onLinkRelChange}
-                                    isChecked={$get('linkRelNofollow', this.props.formattingUnderCursor) || false}
+                                    isChecked={this.props.linkRelNofollowValue || false}
                                 /> {this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__noFollow', 'No follow')}
                             </label>
                         </div>)}
@@ -350,7 +363,8 @@ export default class LinkInput extends PureComponent {
     }
 
     render() {
-        const linkingOptions = $get('linking', this.props.options);
+        const linkingOptions = pick(this.props.options, ['anchor', 'title', 'targetBlank', 'relNofollow']);
+
         const optionsPanelEnabled = Boolean(linkingOptions && Object.values(linkingOptions).filter(i => i).length);
         return (
             <div>

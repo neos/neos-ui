@@ -51,9 +51,19 @@
     background-color: var(--colors-PrimaryBlue);
     color: white !important;
 }
+.btn--success,
+.btn--success i {
+    background-color: var(--colors-Success);
+    color: white !important;
+}
 .btn--warn,
 .btn--warn i {
     background-color: var(--colors-Warn);
+}
+.btn--error,
+.btn--error i {
+    background-color: var(--colors-Error);
+    color: white !important;
 }
 
 .btn--brandActive {
@@ -75,6 +85,10 @@
 .btn--cleanHover:hover:enabled,
 .btn--cleanHover:hover:enabled i {
     color: var(--colors-PrimaryBlue);
+
+    svg {
+        color: var(--colors-PrimaryBlue);
+    }
 }
 .btn--darkenHover.btn--isPressed,
 .btn--darkenHover.btn--isPressed i,
@@ -82,9 +96,21 @@
 .btn--darkenHover:hover:enabled i {
     background-color: rgba(0, 0, 0, .1);
 }
+.btn--successHover.btn--isPressed,
+.btn--successHover.btn--isPressed i,
+.btn--successHover:hover:enabled,
+.btn--successHover:hover:enabled i {
+    background-color: var(--colors-SuccessHover);
+}
 .btn--warnHover.btn--isPressed,
 .btn--warnHover.btn--isPressed i,
 .btn--warnHover:hover:enabled,
 .btn--warnHover:hover:enabled i {
-    background-color: var(--colors-Warn);
+    background-color: var(--colors-WarnHover);
+}
+.btn--errorHover:hover:enabled,
+.btn--errorHover:hover:enabled i,
+.btn--errorHover.btn--isPressed,
+.btn--errorHover.btn--isPressed i {
+    background-color: var(--colors-ErrorHover);
 }

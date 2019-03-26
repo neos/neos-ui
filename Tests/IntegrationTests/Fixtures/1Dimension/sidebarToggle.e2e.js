@@ -1,3 +1,4 @@
+import {Selector} from 'testcafe';
 import {ReactSelector} from 'testcafe-react-selectors';
 import {beforeEach, subSection, checkPropTypes} from './../../utils.js';
 

@@ -191,18 +191,6 @@
       <trans-unit id="searchBoxLeftToType" xml:space="preserve">
 				<source>Please enter ###CHARACTERS### more character</source>
 			<target xml:lang="de" state="translated">Bitte geben Sie ###CHARACTERS### mehr Zeichen ein</target></trans-unit>
-            <trans-unit id="Containers.LeftSideBar.DocumentTree.heading" xml:space="preserve">
-				<source>Document Tree</source>
-                <target xml:lang="de" state="translated">Seitenbaum</target>
-			</trans-unit>
-            <trans-unit id="Containers.LeftSideBar.ContentTree.heading" xml:space="preserve">
-				<source>Content Tree</source>
-                <target xml:lang="de" state="translated">Inhaltsbaum</target>
-			</trans-unit>
-            <trans-unit id="Containers.RightSideBar.Inspector.heading" xml:space="preserve">
-				<source>Element Inspector</source>
-                <target xml:lang="de" state="translated">Element-Inspektor</target>
-			</trans-unit>
       <trans-unit id="Shortcut__Introduction" xml:space="preserve" approved="yes">
                 <source>
                     These are Keyboard-Shortcuts we are providing.

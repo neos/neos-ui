@@ -63,8 +63,13 @@ export default class Tabs extends PureComponent<TabsProps> {
     public getActiveTab(): string | number {
         // If activeTab is out of bounds, choose the first tab
         const {activeTab} = this.state;
-        const activeTabs = this.props.children.filter(panel => panel.props.id === activeTab);
-        return activeTabs.length === 0 ? (this.props.children[0].props.id || 0) : activeTab;
+        if (isNaN(activeTab as number)) {
+            const activeTabs = this.props.children.filter(panel => panel.props.id === activeTab);
+            return activeTabs.length === 0 ? (this.props.children[0].props.id || 0) : activeTab;
+        } else if (activeTab < React.Children.count(this.props.children)) {
+            return activeTab;
+        }
+        return 0;
     }
 
     public renderMenuItems(): JSX.Element {
@@ -82,7 +87,7 @@ export default class Tabs extends PureComponent<TabsProps> {
                 // tslint:disable-next-line:jsx-no-string-ref
                 ref={`tab-${index}`}
                 onClick={this.handleTabNavItemClick}
-                isActive={activeTab === (panel.props.id || index)}
+                isActive={activeTab === (isNaN(activeTab as number) ? panel.props.id : index)}
                 theme={theme!}
                 title={panel.props.title}
                 icon={panel.props.icon}
@@ -108,7 +113,7 @@ export default class Tabs extends PureComponent<TabsProps> {
         return (
             <div className={theme!.tabs__content}>
                 {children.map((panel, index) => {
-                    const isActive = activeTab === (panel.props.id || index);
+                    const isActive = activeTab === (isNaN(activeTab as number) ? panel.props.id : index);
                     const style = {
                         display: isActive ? 'block' : 'none'
                     };

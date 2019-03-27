@@ -45,9 +45,9 @@ The new UI is [already included](https://github.com/neos/neos-base-distribution/
 1. You need to have Neos CMS 3.3 or newer up & running.
 
 2. Run the following command:
-   ```
-   composer require neos/neos-ui neos/neos-ui-compiled
-   ```
+```
+composer require neos/neos-ui neos/neos-ui-compiled
+```
 
 3. Now you are all set up and you can login to the new interface as usual via `/neos` route.
 
@@ -79,22 +79,20 @@ In order to start contributing, follow the following steps:
 
 4) Inside `Configuration/Settings.yaml`, set the following property for disabling the pre-compiled files:
 
-   ```
-   Neos:
-     Neos:
-       Ui:
-         frontendDevelopmentMode: true
-   ```
+```
+Neos:
+  Neos:
+    Ui:
+      frontendDevelopmentMode: true
+```
 
 5) Run the initialization script:
 
-   ```
-   make setup
-   ```
+```
+make setup
+```
 
-6) Get an overview about the codebase. We've recorded [an introduction on YouTube](https://www.youtube.com/watch?v=RYBUS5Nxxxk) which
-   gets you acquainted with the basics. Additionally, please get in touch with us on [Slack](http://slack.neos.io) in the
-   channel #project-ui-rewrite. We're eager to help you get started!
+6) Get an overview about the codebase. We've recorded [an introduction on YouTube](https://www.youtube.com/watch?v=RYBUS5Nxxxk) which gets you acquainted with the basics. Additionally, please get in touch with us on [Slack](http://slack.neos.io) in the channel #project-ui-rewrite. We're eager to help you get started!
 
 #### Doing upmerges
 
@@ -102,10 +100,9 @@ In order to start contributing, follow the following steps:
 
 2) To do the upmerge do the following commands
 
-   ```
-   git checkout master
-   git merge --no-ff --no-commit 2.x
-   ```
+```
+git checkout master && git fetch && git reset --hard origin/master && git merge --no-ff --no-commit origin/2.x --strategy-option=ours
+```
 Review the changes and commit the changes with the following commit message:
 
 `MERGE: Merge branch '2.x' into master`
@@ -137,9 +134,9 @@ An example file would look like this:
 
 ```
 module.exports = {
-       protocol: 'http',
-       port: '123',
-       hostname: 'localhost'
+    protocol: 'http',
+    port: '123',
+    hostname: 'localhost'
 };
 ```
 

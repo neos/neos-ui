@@ -23,6 +23,10 @@ if (fs.existsSync(liveReloadOptionsFile) && fs.lstatSync(liveReloadOptionsFile).
     finalLiveReloadOptions = Object.assign({}, finalLiveReloadOptions, liveReloadOptions);
 }
 
+const transpileNodeModule = [
+    'debug'
+];
+
 const webpackConfig = {
     // https://github.com/webpack/docs/wiki/build-performance#sourcemaps
     devtool: 'source-map',
@@ -35,6 +39,11 @@ const webpackConfig = {
                 use: [{
                     loader: 'babel-loader'
                 }]
+            },
+            {
+                test: /\.js$/,
+                include: new RegExp(`node_modules/(?!(${transpileNodeModule.join('|')})/).*`),
+                loader: 'babel-loader'
             },
             {
                 test: /\.tsx?$/,

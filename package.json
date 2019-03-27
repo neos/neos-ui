@@ -139,7 +139,7 @@
     "lodash.unescape": "4.0.1",
     "lodash.upperfirst": "^4.3.0",
     "moment": "^2.20.1",
-    "monet": "^0.8.10",
+    "monet": "^0.9.0",
     "mousetrap": "^1.6.3",
     "normalize.css": "^8.0.0",
     "plow-js": "^2.2.0",

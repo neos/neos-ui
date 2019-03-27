@@ -8627,9 +8627,10 @@ moment@*, moment@^2.10.3, moment@^2.14.1, moment@^2.19.2, moment@^2.20.1, moment
   version "2.22.2"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.2.tgz#3c257f9839fc0e93ff53149632239eb90783ff66"
 
-monet@^0.8.10:
-  version "0.8.10"
-  resolved "https://registry.yarnpkg.com/monet/-/monet-0.8.10.tgz#af82af50591466f78baf97c053e2ffe5e9108224"
+monet@^0.9.0:
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/monet/-/monet-0.9.0.tgz#77a5d112950243ac89189fadb745fb542313cbdb"
+  integrity sha512-63UOb3RD3zXP3F2kMhYDKZD0V4HBxWgaIHNkp1p+BBCS1AYX51o0o9JJ31KZKuX4aISw4lUwaH4oFbyiKsswgg==
 
 moo@^0.4.3:
   version "0.4.3"

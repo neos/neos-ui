@@ -101,8 +101,7 @@ make setup
 2) To do the upmerge do the following commands
 
 ```
-git checkout master
-git merge --no-ff --no-commit 2.x
+git checkout master && git fetch && git reset --hard origin/master && git merge --no-ff --no-commit origin/2.x --strategy-option=ours
 ```
 Review the changes and commit the changes with the following commit message:
 

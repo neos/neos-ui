@@ -30,6 +30,7 @@ export interface TabsProps {
 interface TabsTheme extends TabMenuItemTheme {
     readonly 'tabs': string;
     readonly 'tabs__content': string;
+    readonly 'tabs__panel': string;
     readonly 'tabNavigation': string;
 }
 
@@ -120,6 +121,7 @@ export default class Tabs extends PureComponent<TabsProps> {
 
                     return (
                         <div
+                            className={theme!.tabs__panel}
                             key={index}
                             style={style}
                             role="tabpanel"

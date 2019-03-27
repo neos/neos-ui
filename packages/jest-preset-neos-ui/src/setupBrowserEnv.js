@@ -1,5 +1,5 @@
-require('regenerator-runtime/runtime');
-require('core-js/shim');
+import 'core-js/shim';
+import 'regenerator-runtime/runtime';
 const browserEnv = require('browser-env');
 
 browserEnv();

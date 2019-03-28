@@ -16,8 +16,8 @@ describe('<Tabs/>', () => {
         ...tabsDefaultProps,
         theme: {
             'tabs': 'baseTabsClassName',
-            'tabs__content': 'basTabsContentsClassName',
-            'tabs__panel': 'basTabsPanelsClassName',
+            'tabs__content': 'baseTabsContentsClassName',
+            'tabs__panel': 'baseTabsPanelsClassName',
             'tabNavigation': 'baseTabsNavigationClassName',
             'tabNavigation__item': 'baseTabsNavigationItemClassName',
             'tabNavigation__item--isActive': 'activeTabsNavigationItemClassName',

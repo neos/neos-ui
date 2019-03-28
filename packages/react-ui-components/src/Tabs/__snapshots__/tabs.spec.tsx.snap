@@ -24,7 +24,8 @@ exports[`<Tabs/> should render correctly. 1`] = `
           "tabNavigation__itemBtnIcon": "baseTabsNavigationItemBtnIconClassName",
           "tabNavigation__itemBtnIcon--hasLabel": "baseTabsNavigationItemBtnIconWithLabelClassName",
           "tabs": "baseTabsClassName",
-          "tabs__content": "basTabsContentsClassName",
+          "tabs__content": "baseTabsContentsClassName",
+          "tabs__panel": "baseTabsPanelsClassName",
         }
       }
       title="foo 1"
@@ -45,7 +46,8 @@ exports[`<Tabs/> should render correctly. 1`] = `
           "tabNavigation__itemBtnIcon": "baseTabsNavigationItemBtnIconClassName",
           "tabNavigation__itemBtnIcon--hasLabel": "baseTabsNavigationItemBtnIconWithLabelClassName",
           "tabs": "baseTabsClassName",
-          "tabs__content": "basTabsContentsClassName",
+          "tabs__content": "baseTabsContentsClassName",
+          "tabs__panel": "baseTabsPanelsClassName",
         }
       }
       title="foo 2"
@@ -66,17 +68,19 @@ exports[`<Tabs/> should render correctly. 1`] = `
           "tabNavigation__itemBtnIcon": "baseTabsNavigationItemBtnIconClassName",
           "tabNavigation__itemBtnIcon--hasLabel": "baseTabsNavigationItemBtnIconWithLabelClassName",
           "tabs": "baseTabsClassName",
-          "tabs__content": "basTabsContentsClassName",
+          "tabs__content": "baseTabsContentsClassName",
+          "tabs__panel": "baseTabsPanelsClassName",
         }
       }
       title="foo 3"
     />
   </ul>
   <div
-    className="basTabsContentsClassName"
+    className="baseTabsContentsClassName"
   >
     <div
       aria-hidden="false"
+      className="baseTabsPanelsClassName"
       key="0"
       role="tabpanel"
       style={
@@ -101,6 +105,7 @@ exports[`<Tabs/> should render correctly. 1`] = `
     </div>
     <div
       aria-hidden="true"
+      className="baseTabsPanelsClassName"
       key="1"
       role="tabpanel"
       style={
@@ -111,6 +116,7 @@ exports[`<Tabs/> should render correctly. 1`] = `
     />
     <div
       aria-hidden="true"
+      className="baseTabsPanelsClassName"
       key="2"
       role="tabpanel"
       style={

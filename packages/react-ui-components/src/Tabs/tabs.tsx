@@ -22,14 +22,15 @@ export interface TabsProps {
     readonly children: ReadonlyArray<React.ReactElement<any>>;
 
     /**
-     * An optional css theme to be injected.
+     * A css theme to be injected.
      */
-    readonly theme?: TabsTheme;
+    readonly theme: TabsTheme;
 }
 
 interface TabsTheme extends TabMenuItemTheme {
     readonly 'tabs': string;
     readonly 'tabs__content': string;
+    readonly 'tabs__panel': string;
     readonly 'tabNavigation': string;
 }
 
@@ -88,7 +89,7 @@ export default class Tabs extends PureComponent<TabsProps> {
                 ref={`tab-${index}`}
                 onClick={this.handleTabNavItemClick}
                 isActive={activeTab === (isNaN(activeTab as number) ? panel.props.id : index)}
-                theme={theme!}
+                theme={theme}
                 title={panel.props.title}
                 icon={panel.props.icon}
                 tooltip={panel.props.tooltip}
@@ -96,7 +97,7 @@ export default class Tabs extends PureComponent<TabsProps> {
         ));
 
         return (
-            <ul className={theme!.tabNavigation}>
+            <ul className={theme.tabNavigation}>
                 {menuItems}
             </ul>
         );
@@ -111,7 +112,7 @@ export default class Tabs extends PureComponent<TabsProps> {
         const activeTab = this.getActiveTab();
 
         return (
-            <div className={theme!.tabs__content}>
+            <div className={theme.tabs__content}>
                 {children.map((panel, index) => {
                     const isActive = activeTab === (isNaN(activeTab as number) ? panel.props.id : index);
                     const style = {
@@ -120,6 +121,7 @@ export default class Tabs extends PureComponent<TabsProps> {
 
                     return (
                         <div
+                            className={theme.tabs__panel}
                             key={index}
                             style={style}
                             role="tabpanel"
@@ -135,7 +137,7 @@ export default class Tabs extends PureComponent<TabsProps> {
 
     public render(): JSX.Element {
         const {theme, className} = this.props;
-        const finalClassName = mergeClassNames(theme!.tabs, className);
+        const finalClassName = mergeClassNames(theme.tabs, className);
 
         return (
             <div className={finalClassName} role="tablist">

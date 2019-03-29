@@ -74,7 +74,7 @@ class IconButton extends PureComponent<IconButtonProps> {
         );
 
         return (
-            <Button {...rest} size={size} className={finalClassName}>
+            <Button {...rest} size={size} className={finalClassName} disabled={disabled}>
                 <Icon icon={icon}/>
             </Button>
         );

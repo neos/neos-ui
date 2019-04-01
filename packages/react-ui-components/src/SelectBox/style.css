@@ -34,7 +34,6 @@
     z-index: var(--zIndex-SelectBoxContents);
     padding: 2px !important;
     margin-top: -2px;
-    max-height: calc(30vh);
 }
 
 .selectBox__item {

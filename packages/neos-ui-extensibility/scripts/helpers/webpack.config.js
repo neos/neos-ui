@@ -4,8 +4,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = function (neosPackageJson) {
     return Object.assign({}, sharedWebPackConfig, {
+        mode: sharedWebPackConfig.mode,
         module: {
-            mode: sharedWebPackConfig.mode,
             rules: sharedWebPackConfig.module.rules.map(loaderConfig => {
                 if (loaderConfig.use[0].loader === 'babel-loader') {
                     loaderConfig.use[0].options = {

@@ -21,7 +21,7 @@ for fixture in Packages/Application/Neos.Neos.Ui/Tests/IntegrationTests/Fixtures
     #./flow flow:cache:flushone Neos_Neos_Fusion
     #./flow flow:cache:flushone Neos_Fusion_Content
     ./flow flow:cache:flush
-    ./flow site:prune
+    ./flow site:prune --site-node=site
     ./flow site:import --package-key=Neos.TestSite
     ./flow resource:publish
 

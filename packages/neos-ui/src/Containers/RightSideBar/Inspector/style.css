@@ -4,10 +4,10 @@
     overflow: hidden;
 }
 .actions {
+    position: absolute;
     display: flex;
-    width: 316px; /* 320px - var(--spacing-Quarter) */
     border-left: 1px solid var(--colors-ContrastDark);
-    left: auto;
+    left: var(--spacing-Quarter);
     right: 0;
     bottom: 0;
 }

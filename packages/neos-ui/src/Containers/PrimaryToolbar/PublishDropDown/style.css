@@ -8,6 +8,10 @@
 
 .publishBtn {
     min-width: 212px;
+
+    @media(max-width: 720px) {
+        min-width: auto;
+    }
 }
 .dropDown {
     position: static;

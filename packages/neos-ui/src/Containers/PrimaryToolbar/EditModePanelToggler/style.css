@@ -6,6 +6,10 @@
     &:focus {
         outline: none;
     }
+
+    @media(max-width: 720px) {
+        display: none;
+    }
 }
 
 .btn--isActive {

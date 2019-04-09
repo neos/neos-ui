@@ -15,10 +15,18 @@
     &:after {
         clear: both;
     }
+
+    @media(max-width: 540px) {
+        width: 100%;
+    }
 }
 
 .leftSideBar--isHidden {
     transform: translateX(-var(--size-SidebarWidth));
+
+    @media(max-width: 540px) {
+        transform: translateX(-540px);
+    }
 }
 
 .leftSideBar__top {
@@ -54,6 +62,10 @@
 
     .leftSideBar--isHidden & {
         transform: translateX(var(--size-SidebarWidth));
+
+        @media(max-width: 540px) {
+            transform: translateX(540px);
+        }
     }
 }
 .leftSideBar__header {

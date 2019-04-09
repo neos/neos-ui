@@ -6,6 +6,10 @@
 .actions {
     margin-left: var(--spacing-Quarter);
     display: flex;
+    width: 320px;
+    left: auto;
+    right: 0;
+    bottom: 0;
 }
 .discardButton,
 .publishButton {

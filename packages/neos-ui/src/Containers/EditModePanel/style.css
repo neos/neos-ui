@@ -1,5 +1,5 @@
 .editModePanel {
-    position: absolute;
+    position: fixed;
     top: 41px; /*-70px;*/
     left: 0;
     padding: 0 370px; /*leave some space for slider button --size-SidebarWidth + 50px*/

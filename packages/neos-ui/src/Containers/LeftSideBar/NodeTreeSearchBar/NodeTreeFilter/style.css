@@ -1,9 +1,6 @@
 .searchBar {
     display: flex;
-}
-
-.searchBar__searchInput {
-    flex-grow: 1;
+    width: 160px;
 }
 
 .searchBar__clearButton {

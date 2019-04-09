@@ -4,9 +4,9 @@
     overflow: hidden;
 }
 .actions {
-    margin-left: var(--spacing-Quarter);
     display: flex;
-    width: 320px;
+    width: 316px; /* 320px - var(--spacing-Quarter) */
+    border-left: 1px solid var(--colors-ContrastDark);
     left: auto;
     right: 0;
     bottom: 0;

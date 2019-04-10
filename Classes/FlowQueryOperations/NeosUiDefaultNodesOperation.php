@@ -11,7 +11,7 @@ namespace Neos\Neos\Ui\FlowQueryOperations;
  * source code.
  */
 
-use Neos\ContentRepository\Domain\Factory\NodeTypeConstraintFactory;
+use Neos\ContentRepository\Domain\NodeType\NodeTypeConstraintFactory;
 use Neos\ContentRepository\Domain\Projection\Content\TraversableNodeInterface;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Property\PropertyMapper;

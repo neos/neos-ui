@@ -37,6 +37,11 @@
 
     .dialog--wide & {
         max-width: calc(var(--spacing-GoldenUnit) * 24);
+
+        @media(max-width: 576px) {
+            max-width: 100vw;
+            width: 100vw;
+        }
     }
 
     .dialog--narrow & {
@@ -63,6 +68,10 @@
 .dialog__body {
     max-height: calc(65vh);
     overflow-y: auto;
+
+    @media(max-width: 576px) {
+        max-height: calc(55vh);
+    }
 }
 .dialog__actions {
     composes: reset from './../reset.css';

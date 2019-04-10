@@ -9,7 +9,7 @@
 .publishBtn {
     min-width: 212px;
 
-    @media(max-width: 720px) {
+    @media(max-width: 768px) {
         min-width: auto;
     }
 }

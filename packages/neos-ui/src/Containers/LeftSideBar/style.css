@@ -16,7 +16,7 @@
         clear: both;
     }
 
-    @media(max-width: 540px) {
+    @media(max-width: 576px) {
         width: 100%;
     }
 }
@@ -24,7 +24,7 @@
 .leftSideBar--isHidden {
     transform: translateX(-var(--size-SidebarWidth));
 
-    @media(max-width: 540px) {
+    @media(max-width: 576px) {
         transform: translateX(-540px);
     }
 }
@@ -63,7 +63,7 @@
     .leftSideBar--isHidden & {
         transform: translateX(var(--size-SidebarWidth));
 
-        @media(max-width: 540px) {
+        @media(max-width: 576px) {
             transform: translateX(540px);
         }
     }

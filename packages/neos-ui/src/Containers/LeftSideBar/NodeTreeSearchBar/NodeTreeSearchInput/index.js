@@ -23,12 +23,15 @@ const NodeTreeSearchInput = ({
         [style.wrapper]: true,
         [style['wrapper--focused']]: focused
     });
+    const searchIconClassName = mergeClassNames({
+        [style.placeholderIcon]: true,
+        [style.clearButton]: true
+    });
     return (
         <div className={wrapperClassName} id="neos-NodeTreeSearchInput">
             <Icon
                 icon="search"
-                className={style.placeholderIcon}
-                theme={style.clearButton}
+                className={searchIconClassName}
                 onClick={onClearClick}
                 />
             <TextInput
@@ -44,7 +47,6 @@ const NodeTreeSearchInput = ({
                 <IconButton
                     icon="times"
                     className={style.clearButton}
-                    theme={style.clearButton}
                     onClick={onClearClick}
                     />
             )}

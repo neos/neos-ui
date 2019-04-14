@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
 const fs = require('fs');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
 const env = require('./environment');
@@ -41,7 +41,9 @@ const webpackConfig = {
                 include: [
                     /node_modules\/d3-scale/
                 ],
-                loader: 'babel-loader'
+                use: [{
+                    loader: 'babel-loader'
+                }]
             },
             {
                 test: /\.tsx?$/,
@@ -196,19 +198,16 @@ if (!env.isCi && !env.isTesting && !env.isStorybook && !env.isProduction) {
 /* eslint camelcase: ["error", {properties: "never"}] */
 if (env.isProduction) {
     webpackConfig.optimization.minimizer.push(
-        new UglifyJsPlugin({
-            uglifyOptions: {
+        new TerserPlugin({
+            terserOptions: {
                 sourceMap: true,
-                minimize: true,
-                compress: {
-                    keep_fnames: true,
-                    warnings: false
-                },
-                mangle: {
-                    keep_fnames: true
-                }
+                warnings: false,
+                parse: {},
+                compress: {},
+                mangle: true,
+                keep_fnames: true
             }
-        })
+        }),
     );
 }
 

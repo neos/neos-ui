@@ -1,4 +1,4 @@
-'Neos.TestSite:Content.Headline':
+'Neos.TestNodeTypes:Content.Headline':
   superTypes:
     'Neos.Neos:Content': true
   ui:

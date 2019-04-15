@@ -13,7 +13,7 @@ import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 import I18n from '@neos-project/neos-ui-i18n';
 import sortBy from 'lodash.sortby';
 import {neos} from '@neos-project/neos-ui-decorators';
-import DimensionSwitcherOption from './DimensionSwitcherOption';
+import DimensionSelectorOption from './DimensionSelectorOption';
 
 // TODO Add title prop to Icon component
 const SelectedPreset = props => {
@@ -96,7 +96,7 @@ class DimensionSelector extends PureComponent {
                     noMatchesFoundLabel={i18nRegistry.translate('Neos.Neos:Main:noMatchesFound')}
                     searchBoxLeftToTypeLabel={i18nRegistry.translate('Neos.Neos:Main:searchBoxLeftToType')}
                     threshold={0}
-                    ListPreviewElement={DimensionSwitcherOption}
+                    ListPreviewElement={DimensionSelectorOption}
                 />
             </li>
         );
@@ -275,6 +275,7 @@ export default class DimensionSwitcher extends PureComponent {
                     })}
                     {Object.keys(contentDimensions).length > 1 && <div className={style.buttonGroup}>
                         <Button
+                            id="neos-DimensionSwitcher-Cancel"
                             onClick={this.handleClose}
                             style="lighter"
                             className={style.cancelButton}
@@ -282,6 +283,7 @@ export default class DimensionSwitcher extends PureComponent {
                             <I18n id="Neos.Neos:Main:cancel" fallback="Cancel"/>
                         </Button>
                         <Button
+                            id="neos-DimensionSwitcher-Apply"
                             onClick={this.handleApplyPresets}
                             style="brand"
                             >

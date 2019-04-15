@@ -1,4 +1,4 @@
-prototype(Neos.TestSite:Content.Image) < prototype(Neos.Neos:ContentComponent) {
+prototype(Neos.TestNodeTypes:Content.Image) < prototype(Neos.Neos:ContentComponent) {
     alternativeText = ${node.properties.alternativeText}
     src = Neos.Neos:ImageUri {
         asset = ${q(node).property('image')}

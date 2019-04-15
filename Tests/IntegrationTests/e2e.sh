@@ -9,9 +9,8 @@ fi
 
 cd ../../..
 
-rm -rf DummyTestPackage
-mv DistributionPackages/Neos.TestSite DummyTestPackage
-rm DistributionPackages/Neos.TestNodeTypes || true
+rm -rf DummyDistributionPackages || true
+mv DistributionPackages DummyDistributionPackages
 
 for fixture in Packages/Application/Neos.Neos.Ui/Tests/IntegrationTests/Fixtures/*/; do
     echo "$fixture"
@@ -35,4 +34,5 @@ for fixture in Packages/Application/Neos.Neos.Ui/Tests/IntegrationTests/Fixtures
 
 done
 
-mv DummyTestPackage DistributionPackages/Neos.TestSite
+rm -rf DistributionPackages
+mv DummyDistributionPackages DistributionPackages

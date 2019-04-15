@@ -122,7 +122,7 @@ Neos:
           previewUrl: '${Neos.Ui.NodeInfo.createRedirectToNode(controllerContext, q(documentNode).context({workspaceName: documentNode.context.workspace.baseWorkspace.name}).get(0))}'
           contentDimensions:
             active: '${documentNode.context.dimensions}'
-            allowedPresets: '${Neos.Ui.Api.keepAssociative(Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions))}'
+            allowedPresets: '${Neos.Ui.Api.emptyArrayToObject(Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions))}'
           documentNodeSerialization: '${Neos.Ui.NodeInfo.renderNodeWithPropertiesAndChildrenInformation(documentNode, controllerContext)}'
           url: '${Neos.Ui.NodeInfo.uri(documentNode, controllerContext)}'
       initialState:
@@ -140,7 +140,7 @@ Neos:
           contentDimensions:
             byName: '${Neos.Ui.ContentDimensions.contentDimensionsByName()}'
             active: '${documentNode.context.dimensions}'
-            allowedPresets: '${Neos.Ui.Api.keepAssociative(Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions))}'
+            allowedPresets: '${Neos.Ui.Api.emptyArrayToObject(Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions))}'
           workspaces:
             personalWorkspace: '${Neos.Ui.Workspace.getPersonalWorkspace()}'
         ui:

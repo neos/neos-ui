@@ -253,6 +253,7 @@
      <node identifier="45270070-0d7c-4a89-90a8-a43ef454edf1" nodeName="node-8ws6hkn4o36q1">
       <variant sortingIndex="200" workspace="live" nodeType="Neos.TestNodeTypes:Document.Page" version="2" removed="" hidden="" hiddenInIndex="">
        <dimensions>
+        <country>deu</country>
         <language>en_US</language>
        </dimensions>
        <accessRoles __type="array"/>
@@ -267,7 +268,8 @@
       <node identifier="d1d3bfdc-ce6a-cf2e-4eeb-02c11bbe87f4" nodeName="main">
        <variant sortingIndex="100" workspace="live" nodeType="Neos.Neos:ContentCollection" version="2" removed="" hidden="" hiddenInIndex="">
         <dimensions>
-         <language>en_US</language>
+          <country>deu</country>
+          <language>en_US</language>
         </dimensions>
         <accessRoles __type="array"/>
         <creationDateTime __type="object" __classname="DateTime">2019-03-21T17:56:50+00:00</creationDateTime>

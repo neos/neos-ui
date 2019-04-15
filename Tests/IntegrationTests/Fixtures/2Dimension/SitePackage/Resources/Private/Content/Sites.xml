@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
- <site name="Site" state="1" siteResourcesPackageKey="Neos.TestSite" siteNodeName="neosTestSite">
+ <site name="Site" state="1" siteResourcesPackageKey="Neos.TestSite" siteNodeName="neos-test-site">
   <nodes formatVersion="2.0">
-   <node identifier="f676459d-ca77-44bc-aeea-44114814c279" nodeName="neosTestSite">
+   <node identifier="f676459d-ca77-44bc-aeea-44114814c279" nodeName="neos-test-site">
     <variant sortingIndex="100" workspace="live" nodeType="Neos.TestNodeTypes:Document.Page" version="4" removed="" hidden="" hiddenInIndex="">
      <dimensions>
       <country>deu</country>

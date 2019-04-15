@@ -1,6 +1,6 @@
 .searchBar {
     display: flex;
-    width: 160px;
+    width: calc(var(--spacing-GoldenUnit) * 4);
 }
 
 .searchBar__clearButton {

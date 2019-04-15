@@ -1,12 +1,12 @@
 .searchInput {
     input {
         /* magic number, sorry */
-        padding-left: 40px;
+        padding-left: var(--spacing-GoldenUnit);
         border-radius: 0;
 
         &:focus {
             background: var(--colors-ContrastDark);
-            color: #fff;
+            color: var(--contrastBrightest);
         }
     }
 }
@@ -22,14 +22,14 @@
 .placeholderIcon {
     position: absolute;
     left: var(--spacing-Full);
-    height: 40px;
+    height: var(--spacing-GoldenUnit);
 }
 
 .wrapper {
     display: flex;
     border-right: 1px solid var(--colors-ContrastDark);
     position: relative;
-    width: 153px;
+    width: calc((var(--size-SidebarWidth) / 2) - var(--spacing-Quarter));
 }
 
 .wrapper--focused {

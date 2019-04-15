@@ -9,14 +9,12 @@ fi
 
 cd ../../..
 
-rm -rf DummyDistributionPackages || true
-mv DistributionPackages DummyDistributionPackages
-mkdir DistributionPackages
+rm -rf DummySitePackage || true
+mv DistributionPackages/Neos.TestSite DummySitePackage
 
 for fixture in Packages/Application/Neos.Neos.Ui/Tests/IntegrationTests/Fixtures/*/; do
     echo "$fixture"
 
-    ln -s "../Packages/Application/Neos.Neos.Ui/Tests/IntegrationTests/SharedNodeTypesPackage" DistributionPackages/Neos.TestNodeTypes
     ln -s "../${fixture}SitePackage" DistributionPackages/Neos.TestSite
 
     # TODO: optimize this
@@ -35,5 +33,4 @@ for fixture in Packages/Application/Neos.Neos.Ui/Tests/IntegrationTests/Fixtures
 
 done
 
-rm -rf DistributionPackages
-mv DummyDistributionPackages DistributionPackages
+mv DummySitePackage DistributionPackages/Neos.TestSite

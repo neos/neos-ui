@@ -7,3 +7,4 @@ bin
 Readme.rst
 Upgrading.rst
 flow*
+composer.lock

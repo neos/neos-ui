@@ -1,2 +1,0 @@
-include: **/*.fusion
-page = Neos.TestSite:Document.Page

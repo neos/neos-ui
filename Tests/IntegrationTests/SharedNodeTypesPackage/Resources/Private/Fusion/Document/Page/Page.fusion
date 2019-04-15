@@ -1,5 +1,5 @@
-prototype(Neos.TestSite:Document.Page)>
-prototype(Neos.TestSite:Document.Page) < prototype(Neos.Neos:Page) {
+prototype(Neos.TestNodeTypes:Document.Page)>
+prototype(Neos.TestNodeTypes:Document.Page) < prototype(Neos.Neos:Page) {
     body = Neos.Neos:ContentComponent {
         titleEditable = Neos.Neos:Editable {
             property = 'title'
@@ -7,7 +7,7 @@ prototype(Neos.TestSite:Document.Page) < prototype(Neos.Neos:Page) {
         main = Neos.Neos:ContentCollection {
             nodePath = 'main'
         }
-        nav = Neos.TestSite:Navigation
+        nav = Neos.TestNodeTypes:Navigation
         imageUri = Neos.Neos:ImageUri {
             asset = ${node.properties.image}
             maximumHeight = 100

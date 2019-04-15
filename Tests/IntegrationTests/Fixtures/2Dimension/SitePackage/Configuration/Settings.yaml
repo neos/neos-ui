@@ -1,0 +1,103 @@
+Neos:
+  ContentRepository:
+    contentDimensions:
+      'country':
+        default: 'deu'
+        defaultPreset: 'deu'
+        label: 'Country'
+        icon: 'icon-globe'
+        presets:
+          'deu':
+            label: 'Germany'
+            values: ['deu']
+            uriSegment: 'deu'
+          'aut':
+            label: 'Austria'
+            values: ['aut', 'deu']
+            uriSegment: 'aut'
+          'lux':
+            label: 'Luxembourg'
+            values: ['lux', 'deu']
+            uriSegment: 'lux'
+          'dnk':
+            label: 'Denmark'
+            values: ['dnk']
+            uriSegment: 'dnk'
+      'language':
+        label: 'Language'
+        icon: icon-language
+        default: en_US
+        defaultPreset: en_US
+        presets:
+          en_US:
+            label: 'English (US)'
+            values:
+              - en_US
+            uriSegment: en
+            constraints:
+              country:
+                '*': false
+                'deu': true
+                'aut': true
+          en_UK:
+            label: 'English (UK)'
+            values:
+              - en_UK
+              - en_US
+            uriSegment: uk
+            constraints:
+              country:
+                '*': false
+                'deu': true
+                'aut': true
+          de:
+            label: German
+            values:
+              - de
+            uriSegment: de
+            constraints:
+              country:
+                '*': false
+                'deu': true
+                'aut': true
+                'lux': true
+          fr:
+            label: French
+            values:
+              - fr
+            uriSegment: fr
+            constraints:
+              country:
+                '*': false
+                'deu': true
+                'aut': true
+          nl:
+            label: Dutch
+            values:
+              - nl
+              - de
+            uriSegment: nl
+            constraints:
+              country:
+                '*': false
+                'deu': true
+                'aut': true
+          da:
+            label: Danish
+            values:
+              - da
+            uriSegment: da
+            constraints:
+              country:
+                '*': false
+                'dnk': true
+          lv:
+            label: Latvian
+            values:
+              - lv
+            uriSegment: lv
+            constraints:
+              country:
+                '*': false
+                'deu': true
+                'aut': true

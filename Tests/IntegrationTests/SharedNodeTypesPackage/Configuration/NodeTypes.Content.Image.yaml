@@ -1,4 +1,4 @@
-'Neos.TestSite:Content.Image':
+'Neos.TestNodeTypes:Content.Image':
   superTypes:
     'Neos.Neos:Content': true
   ui:

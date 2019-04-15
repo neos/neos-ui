@@ -23,3 +23,7 @@
 .selectPreset {
     margin-right: var(--spacing-Full);
 }
+
+.dimmed {
+    filter: opacity(50%);
+}

@@ -11,6 +11,7 @@ cd ../../..
 
 rm -rf DummyDistributionPackages || true
 mv DistributionPackages DummyDistributionPackages
+mkdir DistributionPackages
 
 for fixture in Packages/Application/Neos.Neos.Ui/Tests/IntegrationTests/Fixtures/*/; do
     echo "$fixture"

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
- <site name="Site" state="1" siteResourcesPackageKey="Neos.TestNodeTypes" siteNodeName="neos-test-site">
+ <site name="Neos Test Site" state="1" siteResourcesPackageKey="Neos.TestNodeTypes" siteNodeName="neos-test-site">
   <nodes formatVersion="2.0">
    <node identifier="f676459d-ca77-44bc-aeea-44114814c279" nodeName="neos-test-site">
     <variant sortingIndex="100" workspace="live" nodeType="Neos.TestNodeTypes:Document.Page" version="3" removed="" hidden="" hiddenInIndex="">

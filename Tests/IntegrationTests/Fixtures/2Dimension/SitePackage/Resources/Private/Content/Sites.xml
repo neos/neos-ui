@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
- <site name="Site" state="1" siteResourcesPackageKey="Neos.TestSite" siteNodeName="neos-test-site">
+ <site name="Neos Test Site" state="1" siteResourcesPackageKey="Neos.TestSite" siteNodeName="neos-test-site">
   <nodes formatVersion="2.0">
    <node identifier="f676459d-ca77-44bc-aeea-44114814c279" nodeName="neos-test-site">
     <variant sortingIndex="100" workspace="live" nodeType="Neos.TestNodeTypes:Document.Page" version="4" removed="" hidden="" hiddenInIndex="">
@@ -249,6 +249,33 @@
        <lastPublicationDateTime __type="object" __classname="DateTime">2019-03-21T17:57:30+00:00</lastPublicationDateTime>
        <properties/>
       </variant>
+     </node>
+     <node identifier="45270070-0d7c-4a89-90a8-a43ef454edf1" nodeName="node-8ws6hkn4o36q1">
+      <variant sortingIndex="200" workspace="live" nodeType="Neos.TestNodeTypes:Document.Page" version="2" removed="" hidden="" hiddenInIndex="">
+       <dimensions>
+        <language>en_US</language>
+       </dimensions>
+       <accessRoles __type="array"/>
+       <creationDateTime __type="object" __classname="DateTime">2019-03-21T17:56:50+00:00</creationDateTime>
+       <lastModificationDateTime __type="object" __classname="DateTime">2019-03-21T17:57:31+00:00</lastModificationDateTime>
+       <lastPublicationDateTime __type="object" __classname="DateTime">2019-03-21T17:57:30+00:00</lastPublicationDateTime>
+       <properties>
+        <uriPathSegment __type="string">translated-page</uriPathSegment>
+        <title __type="string">Translated page</title>
+       </properties>
+      </variant>
+      <node identifier="d1d3bfdc-ce6a-cf2e-4eeb-02c11bbe87f4" nodeName="main">
+       <variant sortingIndex="100" workspace="live" nodeType="Neos.Neos:ContentCollection" version="2" removed="" hidden="" hiddenInIndex="">
+        <dimensions>
+         <language>en_US</language>
+        </dimensions>
+        <accessRoles __type="array"/>
+        <creationDateTime __type="object" __classname="DateTime">2019-03-21T17:56:50+00:00</creationDateTime>
+        <lastModificationDateTime __type="object" __classname="DateTime">2019-03-21T17:57:31+00:00</lastModificationDateTime>
+        <lastPublicationDateTime __type="object" __classname="DateTime">2019-03-21T17:57:30+00:00</lastPublicationDateTime>
+        <properties/>
+       </variant>
+      </node>
      </node>
      <node identifier="555c9f80-7682-4916-a4c3-851ab5ea0559" nodeName="node-f8e3ze7jvbxkl">
       <variant sortingIndex="250" workspace="live" nodeType="Neos.TestNodeTypes:Document.Page" version="4" removed="" hidden="" hiddenInIndex="">

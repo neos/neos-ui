@@ -21,7 +21,7 @@
     transform: translateX(var(--size-SidebarWidth));
 
     @media(max-width: 576px) {
-        transform: translateX(540px);
+        transform: translateX(576px);
     }
 }
 .rightSideBar__toggleBtn {
@@ -38,7 +38,7 @@
         transform: translateX(-var(--size-SidebarWidth));
 
         @media(max-width: 576px) {
-            transform: translateX(-540px);
+            transform: translateX(-576px);
         }
     }
 }

@@ -7,16 +7,15 @@
 }
 
 .menuToggler--isActive {
-    color: var(--colors-PrimaryBlue);
+    color: var(--colors-ContrastBrightest);
     background: var(--colors-PrimaryBlue);
-    color: #fff;
 
     .menuToggler__icon {
-        color: #fff;
+        color: var(--colors-ContrastBrightest);
 
         &:hover,
         &:focus {
-            color: #fff;
+            color: var(--colors-ContrastBrightest);
         }
     }
 }
@@ -60,8 +59,8 @@
 
 .menuToggler__logo {
     position: absolute;
-    top: 8px;
-    left: 56px;
+    top: var(--spacing-Half);
+    left: calc(var(--spacing-GoldenUnit) + var(--spacing-Full));
     height: 22px;
     width: auto;
 }

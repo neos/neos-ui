@@ -144,5 +144,7 @@
     border-radius: 2px;
     color: var(--colors-ContrastBright);
 
-    svg { color: var(--colors-ContrastBright); }
+    svg {
+        color: var(--colors-ContrastBright);
+    }
 }

@@ -142,7 +142,13 @@ class NodeTypeGroupPanel extends PureComponent {
                     <I18n className={style.groupTitle} fallback={label} id={label}/>
                 </ToggablePanel.Header>
                 <ToggablePanel.Contents className={style.groupContents}>
-                    {filteredNodeTypes.length > 0 ? filteredNodeTypes.map((nodeType, key) => <NodeTypeItem nodeType={nodeType} key={key} onSelect={onSelect} onHelpMessage={onHelpMessage} groupName={group.name} />) : <p>{i18nRegistry.translate('noMatchesFound')}</p>}
+                    {filteredNodeTypes.length > 0 ? (
+                        filteredNodeTypes.map((nodeType, key) => <NodeTypeItem nodeType={nodeType} key={key} onSelect={onSelect} onHelpMessage={onHelpMessage} groupName={group.name} />)
+                    ) : (
+                        <div className={style.noMatchesFound}>
+                            <Icon icon="exclamation-triangle" padded="right"/>{i18nRegistry.translate('noMatchesFound')}.
+                        </div>
+                    )}
                     {showHelpMessage ? this.renderHelpMessage() : null}
                 </ToggablePanel.Contents>
             </ToggablePanel>

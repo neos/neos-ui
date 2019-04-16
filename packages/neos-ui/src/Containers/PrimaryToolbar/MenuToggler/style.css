@@ -1,4 +1,6 @@
 .menuToggler {
+    width: calc(var(--spacing-GoldenUnit) * 4);
+
     &:focus {
         outline: 0;
     }
@@ -6,11 +8,24 @@
 
 .menuToggler--isActive {
     color: var(--colors-PrimaryBlue);
+    background: var(--colors-PrimaryBlue);
+    color: #fff;
+
+    .menuToggler__icon {
+        color: #fff;
+
+        &:hover,
+        &:focus {
+            color: #fff;
+        }
+    }
 }
 
 .menuToggler__icon {
-    position: relative;
-    display: inline-block;
+    position: absolute;
+    top: 2px;
+    left: var(--spacing-Full);
+    display: block;
     width: 22px;
     height: 34px;
 
@@ -41,4 +56,12 @@
         text-decoration: none;
         color: var(--colors-PrimaryBlue);
     }
+}
+
+.menuToggler__logo {
+    position: absolute;
+    top: 8px;
+    left: 56px;
+    height: 22px;
+    width: auto;
 }

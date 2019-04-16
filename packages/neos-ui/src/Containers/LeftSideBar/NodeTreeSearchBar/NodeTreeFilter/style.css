@@ -1,9 +1,6 @@
 .searchBar {
     display: flex;
-}
-
-.searchBar__searchInput {
-    flex-grow: 1;
+    width: calc(var(--spacing-GoldenUnit) * 4);
 }
 
 .searchBar__clearButton {

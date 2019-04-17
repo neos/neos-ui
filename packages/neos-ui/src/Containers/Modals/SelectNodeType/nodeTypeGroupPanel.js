@@ -146,7 +146,7 @@ class NodeTypeGroupPanel extends PureComponent {
                         filteredNodeTypes.map((nodeType, key) => <NodeTypeItem nodeType={nodeType} key={key} onSelect={onSelect} onHelpMessage={onHelpMessage} groupName={group.name} />)
                     ) : (
                         <div className={style.noMatchesFound}>
-                            <Icon icon="exclamation-triangle" padded="right"/>{i18nRegistry.translate('noMatchesFound')}.
+                            <Icon icon="ban" padded="right"/>{i18nRegistry.translate('noMatchesFound')}.
                         </div>
                     )}
                     {showHelpMessage ? this.renderHelpMessage() : null}

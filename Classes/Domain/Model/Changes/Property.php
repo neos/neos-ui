@@ -182,6 +182,9 @@ class Property extends AbstractChange
 
         if (isset($nodeTypeProperties[$propertyName]['validation'])) {
             foreach ($nodeTypeProperties[$propertyName]['validation'] as $validatorName => $validatorConfiguration) {
+                if (!\is_array($validatorConfiguration)) {
+                    $validatorConfiguration = [];
+                }
                 if ($this->nodePropertyValidationService->validate($this->value, $validatorName, $validatorConfiguration) === false) {
                     return false;
                 }

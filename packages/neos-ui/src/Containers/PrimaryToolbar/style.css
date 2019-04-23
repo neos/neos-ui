@@ -1,12 +1,5 @@
 .primaryToolbar {
-    &:before,
-    &:after {
-        content: '';
-        display: table;
-    }
-    &:after {
-        clear: both;
-    }
+    display: flex;
 
     z-index: var(--zIndex-PrimaryToolbar);
 }

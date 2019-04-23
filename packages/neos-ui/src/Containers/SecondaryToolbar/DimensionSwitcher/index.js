@@ -197,14 +197,16 @@ export default class DimensionSwitcher extends PureComponent {
 
         return contentDimensionsObjectKeys.length ? (
             <DropDown.Stateless
-                style="darker"
+                style="darkest"
                 padded={true}
                 className={style.dropDown}
                 isOpen={this.state.isOpen}
                 onToggle={this.handleToggle}
                 onClose={this.handleClose}
                 >
-                <DropDown.Header>
+                <DropDown.Header
+                    className={style.dropDown__header}
+                >
                     {contentDimensionsObjectKeys.map(dimensionName => {
                         const dimensionConfiguration = contentDimensionsObject[dimensionName];
                         const icon = $get('icon', dimensionConfiguration) && $get('icon', dimensionConfiguration);

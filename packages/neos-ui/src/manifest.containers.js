@@ -58,6 +58,7 @@ manifest('main.containers', {}, globalRegistry => {
 
     containerRegistry.set('PrimaryToolbar', PrimaryToolbar);
     containerRegistry.set('PrimaryToolbar/Left/MenuToggler', MenuToggler);
+    containerRegistry.set('PrimaryToolbar/Left/DimensionSwitcher', DimensionSwitcher);
     containerRegistry.set('PrimaryToolbar/Right/EditModePanelToggler', EditModePanelToggler);
     containerRegistry.set('PrimaryToolbar/Right/UserDropDown', UserDropDown);
     containerRegistry.set('PrimaryToolbar/Right/PublishDropDown', PublishDropDown);
@@ -65,7 +66,6 @@ manifest('main.containers', {}, globalRegistry => {
     containerRegistry.set('EditModePanel', EditModePanel);
 
     containerRegistry.set('SecondaryToolbar', SecondaryToolbar);
-    containerRegistry.set('SecondaryToolbar/DimensionSwitcher', DimensionSwitcher);
     containerRegistry.set('SecondaryToolbar/LoadingIndicator', LoadingIndicator);
     containerRegistry.set('SecondaryToolbar/Right/KeyboardShortcutButton', KeyboardShortcutButton);
     containerRegistry.set('SecondaryToolbar/Right/PreviewButton', PreviewButton);

@@ -1,6 +1,10 @@
 .dropDown {
-    max-width: 352px;
+    max-width: 296px;
     border-right: 1px solid var(--colors-ContrastDark);
+    border-left: 1px solid var(--colors-ContrastDark);
+}
+.dropDown__header {
+    background-color: transparent;
 }
 .dropDown__btnIcon {
     margin-right: .5em;

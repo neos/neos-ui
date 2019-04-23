@@ -69,6 +69,15 @@
         background-color: var(--colors-ContrastDarker);
     }
 }
+.dropDown--darkest {
+    > .dropDown__btn--open {
+        background-color: var(--colors-ContrastDarkest);
+    }
+
+    > .dropDown__contents {
+        background-color: var(--colors-ContrastDarkest);
+    }
+}
 .dropDown--padded {
     > .dropDown__contents {
         padding: var(--spacing-Full);

@@ -18,6 +18,6 @@ class BackendFusionView extends FusionView
     public function __construct(array $options = [])
     {
         parent::__construct($options);
-        $this->setFusionPathPattern('resource://@package/Private/Fusion/Backend/');
+        $this->setFusionPathPattern('resource://@package/Private/Fusion/Backend');
     }
 }

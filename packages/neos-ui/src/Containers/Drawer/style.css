@@ -38,6 +38,7 @@
 .drawer__menuItemGroupBtn,
 .drawer__menuItemBtn {
     display: flex;
+    align-items: center;
     width: 100%;
     padding: 0;
     text-align: left;

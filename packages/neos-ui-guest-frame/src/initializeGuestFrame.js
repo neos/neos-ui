@@ -44,14 +44,6 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     const guestFrameWindow = getGuestFrameWindow();
     const documentInformation = Object.assign({}, guestFrameWindow['@Neos.Neos.Ui:DocumentInformation']);
 
-    const state = store.getState();
-    const editPreviewMode = $get(['ui', 'editPreviewMode'], state);
-    const editPreviewModes = globalRegistry.get('frontendConfiguration').get('editPreviewModes');
-    const currentEditMode = editPreviewModes[editPreviewMode];
-    if (!currentEditMode.isEditingMode) {
-        return;
-    }
-
     const nodes = Object.assign({}, guestFrameWindow['@Neos.Neos.Ui:Nodes'], {
         [documentInformation.metaData.documentNode]: documentInformation.metaData.documentNodeSerialization
     });
@@ -67,6 +59,14 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     // The user may have navigated by clicking an inline link - that's why we need to update the contentCanvas URL to be in sync with the shown content.
     // We need to set the src to the actual src of the iframe, and not retrive it from documentInformation, as it may differ, e.g. contain additional arguments.
     yield put(actions.UI.ContentCanvas.setSrc(guestFrameWindow.document.location.href));
+
+    const state = store.getState();
+    const editPreviewMode = $get(['ui', 'editPreviewMode'], state);
+    const editPreviewModes = globalRegistry.get('frontendConfiguration').get('editPreviewModes');
+    const currentEditMode = editPreviewModes[editPreviewMode];
+    if (!currentEditMode.isEditingMode) {
+        return;
+    }
 
     const focusSelectedNode = event => {
         const clickPath = Array.prototype.slice.call(eventPath(event));

@@ -6,7 +6,9 @@ import {$transform, $get} from 'plow-js';
 
 import {actions} from '@neos-project/neos-ui-redux-store';
 import {getVersion} from '@neos-project/utils-helpers';
+import Button from '@neos-project/react-ui-components/src/Button/';
 
+import logo from './logo.svg';
 import MenuItemGroup from './MenuItemGroup/index';
 import style from './style.css';
 import {TARGET_WINDOW, TARGET_CONTENT_CANVAS, THRESHOLD_MOUSE_LEAVE} from './constants';
@@ -129,7 +131,24 @@ export default class Drawer extends PureComponent {
                             />
                     ))}
                 </div>
-                <div className={style.drawer__version}>{version}</div>
+                <div className={style.drawer__brand}>
+                    <img className={style.drawer__brandLogo} src={logo} alt="Neos" />
+                    <div className={style.drawer__brandLinks}>
+                        <Button style="brand">
+                            Official Website
+                        </Button>
+                        <Button style="brand">
+                            Forum
+                        </Button>
+                        <Button>
+                            Github
+                        </Button>
+                        <Button>
+                            Slack
+                        </Button>
+                    </div>
+                    <div className={style.drawer__version}>Neos UI {version}</div>
+                </div>
             </div>
         );
     }

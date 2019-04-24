@@ -38,6 +38,7 @@
 .drawer__menuItemGroupBtn,
 .drawer__menuItemBtn {
     display: flex;
+    align-items: center;
     width: 100%;
     padding: 0;
     text-align: left;
@@ -54,6 +55,26 @@
 }
 .drawer__version {
     color: var(--colors-ContrastBright);
-    padding: var(--spacing-Full);
+    padding-left: var(--spacing-Full);
+    padding-right: var(--spacing-Full);
+    font-style: italic;
+}
+
+.drawer__brand {
+    border-top: 1px solid var(--colors-ContrastDark);
     margin-top: auto;
+    padding-bottom: var(--spacing-Full);
+}
+.drawer__brandLogo {
+    width: 100%;
+    padding: var(--spacing-Full);
+}
+.drawer__brandLinks {
+    display: flex;
+    flex-direction: column;
+    padding-left: var(--spacing-Full);
+    padding-right: var(--spacing-Full);
+}
+.drawer__brandLinks > button {
+    margin-bottom: calc(var(--spacing-GoldenUnit) / 4);
 }

@@ -14,6 +14,7 @@ import KeyboardShortcutModal from './Containers/Modals/KeyboardShortcutModal/ind
 import UnappliedChangesDialog from './Containers/Modals/UnappliedChangesDialog/index';
 
 import PrimaryToolbar from './Containers/PrimaryToolbar/index';
+import DimensionSwitcher from './Containers/PrimaryToolbar/DimensionSwitcher/index';
 import UserDropDown from './Containers/PrimaryToolbar/UserDropDown/index';
 import PublishDropDown from './Containers/PrimaryToolbar/PublishDropDown/index';
 import MenuToggler from './Containers/PrimaryToolbar/MenuToggler/index';
@@ -22,7 +23,6 @@ import EditModePanelToggler from './Containers/PrimaryToolbar/EditModePanelToggl
 import EditModePanel from './Containers/EditModePanel/index';
 
 import SecondaryToolbar from './Containers/SecondaryToolbar/index';
-import DimensionSwitcher from './Containers/SecondaryToolbar/DimensionSwitcher/index';
 import LoadingIndicator from './Containers/SecondaryToolbar/LoadingIndicator/index';
 import KeyboardShortcutButton from './Containers/SecondaryToolbar/KeyboardShortcutButton/index';
 import PreviewButton from './Containers/SecondaryToolbar/PreviewButton/index';
@@ -58,8 +58,8 @@ manifest('main.containers', {}, globalRegistry => {
 
     containerRegistry.set('PrimaryToolbar', PrimaryToolbar);
     containerRegistry.set('PrimaryToolbar/Left/MenuToggler', MenuToggler);
-    containerRegistry.set('PrimaryToolbar/Left/DimensionSwitcher', DimensionSwitcher);
-    containerRegistry.set('PrimaryToolbar/Right/EditModePanelToggler', EditModePanelToggler);
+    containerRegistry.set('PrimaryToolbar/Middle/DimensionSwitcher', DimensionSwitcher);
+    containerRegistry.set('PrimaryToolbar/Middle/EditModePanelToggler', EditModePanelToggler);
     containerRegistry.set('PrimaryToolbar/Right/UserDropDown', UserDropDown);
     containerRegistry.set('PrimaryToolbar/Right/PublishDropDown', PublishDropDown);
 

@@ -14,6 +14,7 @@ import KeyboardShortcutModal from './Containers/Modals/KeyboardShortcutModal/ind
 import UnappliedChangesDialog from './Containers/Modals/UnappliedChangesDialog/index';
 
 import PrimaryToolbar from './Containers/PrimaryToolbar/index';
+import DimensionSwitcher from './Containers/PrimaryToolbar/DimensionSwitcher/index';
 import UserDropDown from './Containers/PrimaryToolbar/UserDropDown/index';
 import PublishDropDown from './Containers/PrimaryToolbar/PublishDropDown/index';
 import MenuToggler from './Containers/PrimaryToolbar/MenuToggler/index';
@@ -21,7 +22,6 @@ import Brand from './Containers/PrimaryToolbar/Brand/index';
 import EditPreviewDropDown from './Containers/PrimaryToolbar/EditPreviewDropDown/index';
 
 import SecondaryToolbar from './Containers/SecondaryToolbar/index';
-import DimensionSwitcher from './Containers/SecondaryToolbar/DimensionSwitcher/index';
 import LoadingIndicator from './Containers/SecondaryToolbar/LoadingIndicator/index';
 import KeyboardShortcutButton from './Containers/SecondaryToolbar/KeyboardShortcutButton/index';
 import PreviewButton from './Containers/SecondaryToolbar/PreviewButton/index';

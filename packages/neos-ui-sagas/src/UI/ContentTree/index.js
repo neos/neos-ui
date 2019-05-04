@@ -51,7 +51,7 @@ export function * watchNodeFocus({configuration}) {
             const getNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(parentContextPath);
             const node = yield select(getNodeByContextPathSelector);
             const isToggled = yield select($contains(parentContextPath, 'ui.contentTree.toggled'));
-            const isCollapsed = isNodeCollapsed(node, isToggled, documentNode, loadingDepth);
+            const isCollapsed = (node ? isNodeCollapsed(node, isToggled, documentNode, loadingDepth) : false);
 
             if (!node || isCollapsed) {
                 yield put(actions.UI.ContentTree.toggle(parentContextPath));

@@ -29,7 +29,6 @@
 }
 
 .selectBox__contents {
-    composes: reset from './../reset.css';
     min-width: 160px;
     box-shadow: 0 5px 5px rgba(#000, .2);
     z-index: var(--zIndex-SelectBoxContents);

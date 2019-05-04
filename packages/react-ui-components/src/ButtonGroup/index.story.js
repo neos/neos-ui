@@ -23,7 +23,7 @@ storiesOf('ButtonGroup', module)
                         id="two"
                         style="lighter"
                         icon="long-arrow-alt-right"
-                        isDisabled="true"
+                        disabled="true"
                         title="Two (disabled)"
                     />
                     <IconButton

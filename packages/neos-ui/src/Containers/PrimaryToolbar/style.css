@@ -18,6 +18,3 @@
     right: 0;
     top: 0;
 }
-.primaryToolbar__btn {
-    border-right: 1px solid var(--colors-ContrastDark);
-}

@@ -27,14 +27,19 @@ export default class ToggleContentTree extends PureComponent {
         const {id, isPanelOpen, i18nRegistry} = this.props;
 
         return (
-            <IconButton
-                id={id}
-                className={style.toggleBtn}
-                onClick={this.handleClick}
-                icon={isPanelOpen ? 'chevron-circle-down' : 'chevron-circle-up'}
-                hoverStyle="clean"
-                aria-label={i18nRegistry.translate('Neos.Neos:Main:toggleContentTree', 'Toggle content tree')}
-                />
+            <div className={style.toggle}>
+                <IconButton
+                    id={id}
+                    className={style.toggleBtn}
+                    onClick={this.handleClick}
+                    icon={isPanelOpen ? 'chevron-circle-down' : 'chevron-circle-up'}
+                    hoverStyle="clean"
+                    aria-label={i18nRegistry.translate('Neos.Neos:Main:toggleContentTree', 'Toggle content tree')}
+                    />
+                <span className={style.toggleLabel}>
+                    {i18nRegistry.translate('Neos.Neos:Main:contentTree', 'Content Tree')}
+                </span>
+            </div>
         );
     }
 }

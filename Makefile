@@ -92,7 +92,7 @@ build-watch-poll:
 build-production:
 	make build-subpackages
 	$(cross-env) NODE_ENV=production NEOS_BUILD_ROOT=$(shell pwd) \
-		$(webpack) --progress --colors
+		$(webpack) --colors
 
 
 ################################################################################
@@ -109,9 +109,11 @@ storybook:
 test:
 	$(lerna) run test --concurrency 1
 
+test-e2e-saucelabs:
+	bash Tests/IntegrationTests/e2e.sh saucelabs:chrome
+
 test-e2e:
-	yarn run testcafe chrome:headless Tests/IntegrationTests/* \
-		--selector-timeout=10000 --assertion-timeout=30000
+	bash Tests/IntegrationTests/e2e.sh chrome
 
 lint: lint-js lint-editorconfig
 
@@ -120,11 +122,7 @@ lint-js:
 
 
 lint-editorconfig:
-	$(editorconfigChecker) \
-		--exclude-regexp 'LICENSE|\.vanilla\-css$$|banner\.js$$' \
-		--exclude-pattern \
-		'./{README.md,**/*.snap,**/*{fontAwesome,Resources,dist}/**/*}'
-
+	$(editorconfigChecker)
 
 ################################################################################
 # Releasing

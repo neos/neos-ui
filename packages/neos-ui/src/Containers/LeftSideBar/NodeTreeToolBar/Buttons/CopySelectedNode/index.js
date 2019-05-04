@@ -13,7 +13,7 @@ export default class CopySelectedNode extends PureComponent {
 
         onClick: PropTypes.func.isRequired,
 
-        isDisabled: PropTypes.bool,
+        disabled: PropTypes.bool,
 
         isActive: PropTypes.bool,
 
@@ -30,7 +30,7 @@ export default class CopySelectedNode extends PureComponent {
         const {
             className,
             id,
-            isDisabled,
+            disabled,
             isActive,
             i18nRegistry
         } = this.props;
@@ -39,7 +39,7 @@ export default class CopySelectedNode extends PureComponent {
             <IconButton
                 className={className}
                 id={id}
-                isDisabled={isDisabled}
+                disabled={disabled}
                 isActive={isActive}
                 onClick={this.handleClick}
                 icon="far copy"

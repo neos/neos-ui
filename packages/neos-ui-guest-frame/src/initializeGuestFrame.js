@@ -43,6 +43,15 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     const inlineEditorRegistry = globalRegistry.get('inlineEditors');
     const guestFrameWindow = getGuestFrameWindow();
     const documentInformation = Object.assign({}, guestFrameWindow['@Neos.Neos.Ui:DocumentInformation']);
+
+    const state = store.getState();
+    const editPreviewMode = $get(['ui', 'editPreviewMode'], state);
+    const editPreviewModes = globalRegistry.get('frontendConfiguration').get('editPreviewModes');
+    const currentEditMode = editPreviewModes[editPreviewMode];
+    if (!currentEditMode.isEditingMode) {
+        return;
+    }
+
     const nodes = Object.assign({}, guestFrameWindow['@Neos.Neos.Ui:Nodes'], {
         [documentInformation.metaData.documentNode]: documentInformation.metaData.documentNodeSerialization
     });

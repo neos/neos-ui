@@ -1,27 +1,12 @@
-.modalContents {
-    display: flex;
-    padding: var(--spacing-Full);
-}
-.button:not(:first-of-type) {
+.modalTitle {
     margin-left: var(--spacing-Full);
 }
-.discardButton,
-.resumeButton,
-.publishButton {
-    width: 100%;
-    text-align: center;
+.modalContents {
+    padding: var(--spacing-Full);
 }
 .discardButton {
-    background: var(--colors-Warn) !important;
-
-    &:hover {
-        background: var(--colors-WarnHover) !important;
-    }
+    margin-left: 0;
 }
-.publishButton {
-    background: var(--colors-Success) !important;
-
-    &:hover {
-        background: var(--colors-SuccessHover) !important;
-    }
+.buttonIcon {
+    margin-right: var(--spacing-Half);
 }

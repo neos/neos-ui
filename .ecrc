@@ -1,0 +1,4 @@
+LICENSE(\.txt)?$
+\.vanilla-css$
+banner\.js$
+Plugins\/ckeditor

@@ -8,11 +8,15 @@ exports[`<SelectBox_Option_SingleLine/> should render correctly. 1`] = `
   onClick={[MockFunction]}
   option={
     Object {
-      "label": "",
+      "label": "Bar label",
     }
   }
   theme={Object {}}
 >
-  <span />
+  <span
+    title="Bar label"
+  >
+    Bar label
+  </span>
 </ThemedListPreviewElement>
 `;

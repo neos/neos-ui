@@ -16,6 +16,7 @@ import {SecondaryInspector} from '@neos-project/neos-ui-inspector';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 
+import SelectedElement from './SelectedElement/index';
 import TabPanel from './TabPanel/index';
 import style from './style.css';
 
@@ -254,9 +255,11 @@ export default class Inspector extends PureComponent {
                         onClick={this.handleEscape}
                         />
                 }
+                <SelectedElement/>
                 <Tabs
+                    className={style.tabs}
                     theme={{
-                        tabs__content: style.tabs // eslint-disable-line camelcase
+                        tabs__content: style.tabsContent // eslint-disable-line camelcase
                     }}
                     >
                     {$get('tabs', viewConfiguration)
@@ -275,6 +278,7 @@ export default class Inspector extends PureComponent {
                             return (
                                 <TabPanel
                                     key={$get('id', tab)}
+                                    id={$get('id', tab)}
                                     icon={$get('icon', tab)}
                                     groups={$get('groups', tab)}
                                     toggledPanels={$get($get('id', tab), this.state.toggledPanels)}
@@ -291,10 +295,10 @@ export default class Inspector extends PureComponent {
                     }
                 </Tabs>
                 <Bar position="bottom" className={style.actions}>
-                    <Button id="neos-Inspector-Discard" style="lighter" isDisabled={isDiscardDisabled} onClick={this.handleDiscard} className={`${style.button} ${style.discardButton}`}>
+                    <Button id="neos-Inspector-Discard" style="lighter" disabled={isDiscardDisabled} onClick={this.handleDiscard} className={`${style.button} ${style.discardButton}`}>
                         <I18n id="Neos.Neos:Main:discard" fallback="discard"/>
                     </Button>
-                    <Button id="neos-Inspector-Apply" style="lighter" isDisabled={isApplyDisabled} onClick={this.handleApply} className={`${style.button} ${style.publishButton}`}>
+                    <Button id="neos-Inspector-Apply" style="lighter" disabled={isApplyDisabled} onClick={this.handleApply} className={`${style.button} ${style.publishButton}`}>
                         <I18n id="Neos.Neos:Main:apply" fallback="apply"/>
                     </Button>
                 </Bar>

@@ -1,0 +1,15 @@
+{
+    "name": "neos/test-site",
+    "description": "A dummy site package that will be replaced by fixtures during tests",
+    "type": "neos-site",
+    "require": {
+        "neos/neos": "*",
+        "neos/neos-ui": "*",
+        "neos/neos-ui-compiled": "*"
+    },
+    "extra": {
+        "neos": {
+            "package-key": "Neos.TestSite"
+        }
+    }
+}

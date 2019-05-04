@@ -14,6 +14,7 @@ import {neos} from '@neos-project/neos-ui-decorators';
 
 import animate from 'amator';
 import hashSum from 'hash-sum';
+import moment from 'moment';
 
 const getContextPath = $get('contextPath');
 
@@ -175,10 +176,15 @@ export default class Node extends PureComponent {
         }
 
         if (isHiddenBefore || isHiddenAfter) {
+            let isCurrentlyHidden = false;
+            isCurrentlyHidden = isHiddenBefore && moment(isHiddenBefore).isAfter(moment()) ? true : isCurrentlyHidden;
+            isCurrentlyHidden = isHiddenAfter && moment(isHiddenAfter).isBefore(moment()) ? true : isCurrentlyHidden;
+            const circleColor = isCurrentlyHidden ? 'error' : 'primaryBlue';
+
             return (
                 <span className="fa-layers fa-fw">
                     <Icon icon={this.getIcon()} />
-                    <Icon icon="circle" color="primaryBlue" transform="shrink-5 down-6 right-4" />
+                    <Icon icon="circle" color={circleColor} transform="shrink-5 down-6 right-4" />
                     <Icon icon="clock" transform="shrink-9 down-6 right-4" />
                 </span>
             );

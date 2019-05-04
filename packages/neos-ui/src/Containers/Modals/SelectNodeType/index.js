@@ -161,55 +161,46 @@ export default class SelectNodeType extends PureComponent {
     }
 
     renderSelectNodeTypeDialogHeader() {
-        const {insertMode, filterSearchTerm} = this.state;
-        const {allowedSiblingNodeTypes, allowedChildNodeTypes} = this.props;
-
         return (
-            <div className={style.nodeTypeDialogHeader} key="nodeTypeDialogHeader">
-                <InsertModeSelector
-                    mode={insertMode}
-                    onSelect={this.handleModeChange}
-                    enableAlongsideModes={Boolean(allowedSiblingNodeTypes.length)}
-                    enableIntoMode={Boolean(allowedChildNodeTypes.length)}
-                    />
-                <NodeTypeFilter
-                    filterSearchTerm={filterSearchTerm}
-                    onChange={this.handleNodeTypeFilterChange}
-                    />
+            <div>
+                <span className={style.modalTitle}>
+                    <I18n fallback="Create new" id="createNew"/>
+                </span>
             </div>
         );
     }
 
     handleNodeTypeFilterChange = filterSearchTerm => this.setState({filterSearchTerm});
 
-    skipNodeTypeDialogIfPossible() {
-        const {insertMode} = this.state;
-        if (insertMode === 'into' &&
-            this.getAllowedNodeTypesByCurrentInsertMode().length === 1 &&
-            this.getAllowedNodeTypesByCurrentInsertMode()[0].nodeTypes.length === 1) {
-            this.handleApply(this.getAllowedNodeTypesByCurrentInsertMode()[0].nodeTypes[0].name);
-            return true;
-        }
-
-        return false;
-    }
-
     render() {
-        const {isOpen} = this.props;
+        const {insertMode, filterSearchTerm} = this.state;
+        const {isOpen, allowedSiblingNodeTypes, allowedChildNodeTypes} = this.props;
 
-        if (!isOpen || this.skipNodeTypeDialogIfPossible()) {
+        if (!isOpen) {
             return null;
         }
 
         return (
             <Dialog
                 actions={[this.renderCancelAction()]}
-                title={[this.renderSelectNodeTypeDialogHeader()]}
+                title={this.renderSelectNodeTypeDialogHeader()}
                 onRequestClose={this.handleCancel}
                 isOpen
                 style="wide"
                 id="neos-SelectNodeTypeDialog"
                 >
+                <div className={style.nodeTypeDialogHeader} key="nodeTypeDialogHeader">
+                    <InsertModeSelector
+                        mode={insertMode}
+                        onSelect={this.handleModeChange}
+                        enableAlongsideModes={Boolean(allowedSiblingNodeTypes.length)}
+                        enableIntoMode={Boolean(allowedChildNodeTypes.length)}
+                        />
+                    <NodeTypeFilter
+                        filterSearchTerm={filterSearchTerm}
+                        onChange={this.handleNodeTypeFilterChange}
+                        />
+                </div>
                 {this.getAllowedNodeTypesByCurrentInsertMode().map((group, key) => (
                     <div key={key}>
                         <NodeTypeGroupPanel

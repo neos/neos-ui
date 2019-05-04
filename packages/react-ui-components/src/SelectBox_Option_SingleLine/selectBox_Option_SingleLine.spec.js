@@ -11,7 +11,7 @@ describe('<SelectBox_Option_SingleLine/>', () => {
     beforeEach(() => {
         props = {
             label: 'Foo label',
-            option: {label: ''},
+            option: {label: 'Bar label'},
             onClick: jest.fn(),
             theme: {},
             ListPreviewElement: createStubComponent()

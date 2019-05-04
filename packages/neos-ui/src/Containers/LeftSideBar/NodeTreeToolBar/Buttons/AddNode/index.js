@@ -9,7 +9,7 @@ export default class AddNode extends PureComponent {
         id: PropTypes.string,
         onClick: PropTypes.func.isRequired,
         focusedNodeContextPath: PropTypes.string,
-        isDisabled: PropTypes.bool.isRequired,
+        disabled: PropTypes.bool.isRequired,
         i18nRegistry: PropTypes.object.isRequired
     };
 
@@ -20,12 +20,12 @@ export default class AddNode extends PureComponent {
     }
 
     render() {
-        const {focusedNodeContextPath, isDisabled, className, id, i18nRegistry} = this.props;
+        const {focusedNodeContextPath, disabled, className, id, i18nRegistry} = this.props;
 
         return (
             <span>
                 <IconButton
-                    isDisabled={Boolean(focusedNodeContextPath) === false || isDisabled}
+                    disabled={Boolean(focusedNodeContextPath) === false || disabled}
                     className={className}
                     id={id}
                     icon="plus"

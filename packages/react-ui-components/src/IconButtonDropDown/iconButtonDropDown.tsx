@@ -67,7 +67,7 @@ export interface IconButtonDropDownProps {
     /**
      * Controls the whole components disabled state.
      */
-    readonly isDisabled: boolean;
+    readonly disabled: boolean;
 
     /**
      * Props which are propagated to the <Button> component.
@@ -75,14 +75,14 @@ export interface IconButtonDropDownProps {
     readonly directButtonProps: ButtonProps;
 }
 
-type DefaultProps = PickDefaultProps<IconButtonDropDownProps, 'directButtonProps' | 'isDisabled' | 'modeIcon'>;
+type DefaultProps = PickDefaultProps<IconButtonDropDownProps, 'directButtonProps' | 'disabled' | 'modeIcon'>;
 
 export const defaultProps: DefaultProps = {
     directButtonProps: {
         children: undefined,
         size: 'regular',
     },
-    isDisabled: false,
+    disabled: false,
     modeIcon: 'long-arrow-right',
 };
 
@@ -118,7 +118,7 @@ export default class IconButtonDropDown extends PureComponent<IconButtonDropDown
     public render(): JSX.Element {
         const {
             className,
-            isDisabled,
+            disabled,
             icon,
             modeIcon,
             theme,
@@ -144,7 +144,7 @@ export default class IconButtonDropDown extends PureComponent<IconButtonDropDown
                     hoverStyle="clean"
                     aria-haspopup="true"
                     className={theme!.wrapper__btn}
-                    isDisabled={isDisabled}
+                    disabled={disabled}
                     onMouseDown={this.handleHoldTimeout}
                     onMouseEnter={this.handleHoverTimeout}
                     onFocus={this.handleHoverTimeout}

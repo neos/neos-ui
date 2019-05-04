@@ -9,7 +9,7 @@ export default class DeleteSelectedNode extends PureComponent {
         id: PropTypes.string,
 
         focusedNodeContextPath: PropTypes.string,
-        isDisabled: PropTypes.bool.isRequired,
+        disabled: PropTypes.bool.isRequired,
 
         onClick: PropTypes.func.isRequired,
 
@@ -23,13 +23,13 @@ export default class DeleteSelectedNode extends PureComponent {
     }
 
     render() {
-        const {className, id, isDisabled, i18nRegistry} = this.props;
+        const {className, id, disabled, i18nRegistry} = this.props;
 
         return (
             <IconButton
                 className={className}
                 id={id}
-                isDisabled={isDisabled}
+                disabled={disabled}
                 onClick={this.handleClick}
                 icon="trash-alt"
                 hoverStyle="brand"

@@ -35,7 +35,7 @@ export default class RefreshPageTree extends PureComponent {
             <IconButton
                 className={finalClassName}
                 id={id}
-                isDisabled={isLoading}
+                disabled={isLoading}
                 onClick={this.handleClick}
                 icon="sync"
                 hoverStyle="brand"

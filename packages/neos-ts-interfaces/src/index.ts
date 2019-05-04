@@ -74,6 +74,8 @@ export interface Node {
     uri: string;
     parent: NodeContextPath;
     policy?: NodePolicy;
+    dimensions?: DimensionPresetCombination;
+    otherNodeVariants?: DimensionPresetCombination[];
 }
 
 // Type guard using duck-typing on some random properties to know if object is a Node

@@ -13,10 +13,14 @@ describe('<Dialog/>', () => {
         isOpen: true,
         onRequestClose: () => null,
         style: 'wide',
+        type: 'error',
         theme: {
             'dialog': 'dialogClassName',
             'dialog--narrow': 'narrowClassName',
             'dialog--wide': 'wideClassName',
+            'dialog--success': 'successClassName',
+            'dialog--warn': 'warnClassName',
+            'dialog--error': 'errorClassName',
             'dialog__actions': 'actionsClassName',
             'dialog__body': 'bodyClassName',
             'dialog__closeBtn': 'closeBtnClassName',
@@ -55,13 +59,6 @@ describe('<Dialog/>', () => {
         expect(section.prop('className')).toContain('narrowClassName');
     });
 
-    it('should render the actions if passed.', () => {
-        const wrapper = shallow(<DialogWithoutEscape {...props}/>);
-
-        expect(wrapper.html().includes('Foo 1')).toBeTruthy();
-        expect(wrapper.html().includes('Foo 2')).toBeTruthy();
-    });
-
     it('should call the "onRequestClose" prop when clicking on the "IconButtonComponent" component.', () => {
         const onRequestClose = jest.fn();
         const wrapper = shallow(<DialogWithoutEscape {...props} onRequestClose={onRequestClose}/>);
@@ -70,5 +67,12 @@ describe('<Dialog/>', () => {
         btn.simulate('click');
 
         expect(onRequestClose.mock.calls.length).toBe(1);
+    });
+
+    it('should render the actions if passed.', () => {
+        const wrapper = shallow(<DialogWithoutEscape {...props}/>);
+
+        expect(wrapper.html().includes('Foo 1')).toBeTruthy();
+        expect(wrapper.html().includes('Foo 2')).toBeTruthy();
     });
 });

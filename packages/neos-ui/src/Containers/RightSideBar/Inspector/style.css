@@ -1,10 +1,10 @@
 .inspector {
     height: 100%;
     width: 100%;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 .actions {
-    border-top: 2px solid var(--colors-ContrastDarker);
+    margin-left: var(--spacing-Quarter);
     display: flex;
 }
 .discardButton,
@@ -19,7 +19,12 @@
         background: var(--colors-SuccessHover) !important;
     }
 }
-.tabs > div {
+.tabs {
+    margin-left: var(--spacing-Quarter);
+    border-left: 1px solid var(--colors-ContrastDark);
+    background: var(--colors-ContrastDarker);
+}
+.tabsContent > div {
     height: 100%;
 }
 .unappliedChangesOverlay {

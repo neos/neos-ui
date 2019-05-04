@@ -5,7 +5,7 @@
 
 .tabs__content {
     composes: reset from './../reset.css';
-    height: calc(100% - 41px);
+    height: calc(100% - 141px);
     overflow-y: auto;
 }
 
@@ -31,6 +31,7 @@
     composes: reset from './../reset.css';
     position: relative;
     float: left;
+    border-top: 1px solid var(--colors-ContrastDark);
     border-right: 1px solid var(--colors-ContrastDark);
     color: var(--colors-ContrastBrightest);
 }
@@ -44,7 +45,7 @@
         display: block;
         content: ' ';
         position: absolute;
-        top: 0;
+        top: -1px;
         left: 0;
         right: 0;
         height: 2px;

@@ -217,6 +217,23 @@ test('Handles non-word keys', () => {
     ];
     expect(positionalArraySorter(source)).toEqual(result);
 });
+test('Handle invalid position strings', () => {
+    const source = [
+        {position: 10},
+        {position: 'after'},
+        {position: 'end'},
+        {position: 'before'},
+        {position: 'twenty'}
+    ];
+    const result = [
+        {position: 'after'},
+        {position: 'before'},
+        {position: 'twenty'},
+        {position: 10},
+        {position: 'end'}
+    ];
+    expect(positionalArraySorter(source)).toEqual(result);
+});
 test('Access position value by callback', () => {
     const source = [
         {__meta: {position: 'end'}},

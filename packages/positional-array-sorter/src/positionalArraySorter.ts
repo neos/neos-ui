@@ -134,14 +134,14 @@ const positionalArraySorter = <T extends Value[]>(subject: T, position: string |
             processedKeys.push(key);
             if (beforeKeys[key]) {
                 const beforeWeights = sortedWeights(beforeKeys[key], true);
-                for (let i of beforeWeights) {
+                for (const i of beforeWeights) {
                     addToResults(beforeKeys[key][i], result);
                 }
             }
             result.push(key);
             if (afterKeys[key]) {
                 const afterWeights = sortedWeights(afterKeys[key], false);
-                for (let i of afterWeights) {
+                for (const i of afterWeights) {
                     addToResults(afterKeys[key][i], result);
                 }
             }
@@ -149,33 +149,33 @@ const positionalArraySorter = <T extends Value[]>(subject: T, position: string |
     };
 
     // add all start* keys weighted in descending order
-    for (let i of sortedWeights(startKeys, false)) {
+    for (const i of sortedWeights(startKeys, false)) {
         addToResults(startKeys[i], resultStart);
     }
     // add all middle keys weighted in ascending order
-    for (let i of sortedWeights(middleKeys, true)) {
+    for (const i of sortedWeights(middleKeys, true)) {
         addToResults(middleKeys[i], resultMiddle);
     }
     // add all after* keys weighted in ascending order
-    for (let i of sortedWeights(endKeys, true)) {
+    for (const i of sortedWeights(endKeys, true)) {
         addToResults(endKeys[i], resultEnd);
     }
     // orphaned items
-    for (let key of Object.keys(beforeKeys)) {
+    for (const key of Object.keys(beforeKeys)) {
         if (processedKeys.indexOf(key) >= 0) {
             continue;
         }
         // add all "orphaned" before* key in descending order before the middle keys
-        for (let i of sortedWeights(beforeKeys[key], false)) {
+        for (const i of sortedWeights(beforeKeys[key], false)) {
             addToResults(beforeKeys[key][i], resultStart);
         }
     }
-    for (let key of Object.keys(afterKeys)) {
+    for (const key of Object.keys(afterKeys)) {
         if (processedKeys.indexOf(key) >= 0) {
             continue;
         }
         // add all "orphaned" after* key in descending order before the end* keys
-        for (let i of sortedWeights(afterKeys[key], false)) {
+        for (const i of sortedWeights(afterKeys[key], false)) {
             addToResults(afterKeys[key][i], resultMiddle);
         }
     }

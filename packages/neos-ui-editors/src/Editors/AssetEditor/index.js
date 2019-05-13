@@ -16,7 +16,7 @@ const DEFAULT_FEATURES = {
 };
 
 @neos(globalRegistry => ({
-    assetLookupDataLoader: globalRegistry.get('dataLoaders').get('AssetLookup'),
+    assetLookupDataLoader: globalRegistry.get('dataLoaders').get('NeosAssetLookup'),
     i18nRegistry: globalRegistry.get('i18n'),
     secondaryEditorsRegistry: globalRegistry.get('inspector').get('secondaryEditors')
 }))
@@ -136,6 +136,9 @@ export default class AssetEditor extends PureComponent {
 
         if (Array.isArray(values)) {
             const valuePromises = values.map(value => {
+                if (typeof value === 'object' || value instanceof Object) {
+                    return Promise.resolve(value);
+                }
                 return (value.indexOf('/') === -1) ? Promise.resolve(value) : assetProxyImport(value);
             });
             Promise.all(valuePromises).then(values => {

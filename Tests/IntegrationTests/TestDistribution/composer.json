@@ -9,7 +9,8 @@
         "neos/neos": "^4.2",
         "neos/neos-ui": "*",
         "neos/fusion-afx": "^1.0",
-        "neos/test-site": "@dev"
+        "neos/test-site": "@dev",
+        "neos/test-nodetypes": "@dev"
     },
     "repositories": {
         "distribution": {

@@ -1,4 +1,4 @@
-'Neos.TestSite:Document.Page':
+'Neos.TestNodeTypes:Document.Page':
   superTypes:
     'Neos.Neos:Document': true
   ui:

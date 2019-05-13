@@ -1,6 +1,10 @@
 {
   "name": "@neos-project/neos-ui-validators",
+<<<<<<< HEAD
   "version": "3.3.0",
+=======
+  "version": "3.3.0",
+>>>>>>> 2.x
   "description": "Validators for Neos CMS UI.",
   "private": true,
   "main": "./src/index.ts",
@@ -12,6 +16,7 @@
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
+<<<<<<< HEAD
     "@neos-project/babel-preset-neos-ui": "3.3.0",
     "@neos-project/jest-preset-neos-ui": "3.3.0"
   },
@@ -20,6 +25,16 @@
     "@neos-project/neos-ui-extensibility": "3.3.0",
     "@neos-project/neos-ui-i18n": "3.3.0",
     "@neos-project/utils-logger": "3.3.0"
+=======
+    "@neos-project/babel-preset-neos-ui": "3.3.0",
+    "@neos-project/jest-preset-neos-ui": "3.3.0"
+  },
+  "dependencies": {
+    "@neos-project/build-essentials": "3.3.0",
+    "@neos-project/neos-ui-extensibility": "3.3.0",
+    "@neos-project/neos-ui-i18n": "3.3.0",
+    "@neos-project/utils-logger": "3.3.0"
+>>>>>>> 2.x
   },
   "license": "GNU GPLv3",
   "jest": {

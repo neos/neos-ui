@@ -1,6 +1,10 @@
 {
   "name": "@neos-project/jest-preset-neos-ui",
+<<<<<<< HEAD
   "version": "3.3.0",
+=======
+  "version": "3.3.0",
+>>>>>>> 2.x
   "description": "The jest preset for all packags of the neos-ui mono-repo.",
   "main": "jest-preset.json",
   "private": true,

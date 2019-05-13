@@ -17,7 +17,6 @@ For users this means: **You will not get bugfixes for previous minor releases, s
 
 ```
 "neos/neos-ui": "^3",
-"neos/neos-ui-compiled": "^3",
 ```
 
 For developers this means: **All development happens in `2.x` branch and then getting upmered to `master`**
@@ -46,7 +45,7 @@ The new UI is [already included](https://github.com/neos/neos-base-distribution/
 
 2. Run the following command:
 ```
-composer require neos/neos-ui neos/neos-ui-compiled
+composer require neos/neos-ui
 ```
 
 3. Now you are all set up and you can login to the new interface as usual via `/neos` route.
@@ -54,7 +53,7 @@ composer require neos/neos-ui neos/neos-ui-compiled
 ### Updating
 
 ```
-composer update neos/neos-ui neos/neos-ui-compiled
+composer update neos/neos-ui
 ```
 
 ### Installing dev-master
@@ -64,7 +63,7 @@ However, if you want to stay on bleeding-edge, or want to help out developing, y
 need the `dev-master` release. You can install the master release using:
 
 ```
-composer require neos/neos-ui:dev-master neos/neos-ui-compiled:dev-master
+composer require neos/neos-ui:dev-master
 ```
 
 ## Contributing

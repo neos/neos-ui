@@ -1,6 +1,10 @@
 {
   "name": "@neos-project/neos-ui-editors",
+<<<<<<< HEAD
   "version": "3.3.0",
+=======
+  "version": "3.3.0",
+>>>>>>> 2.x
   "description": "Neos CMS UI Editors for use in the inspector.",
   "main": "src/manifest.js",
   "private": true,
@@ -14,6 +18,7 @@
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
+<<<<<<< HEAD
     "@neos-project/babel-preset-neos-ui": "3.3.0",
     "@neos-project/build-essentials": "3.3.0",
     "@neos-project/debug-reason-for-rendering": "3.3.0",
@@ -30,6 +35,24 @@
     "@neos-project/neos-ui-inspector": "3.3.0",
     "@neos-project/neos-ui-redux-store": "3.3.0",
     "@neos-project/react-ui-components": "3.3.0"
+=======
+    "@neos-project/babel-preset-neos-ui": "3.3.0",
+    "@neos-project/build-essentials": "3.3.0",
+    "@neos-project/debug-reason-for-rendering": "3.3.0",
+    "@neos-project/jest-preset-neos-ui": "3.3.0",
+    "react-dnd-test-backend": "^7.0.2"
+  },
+  "dependencies": {
+    "@neos-project/neos-ui-ckeditor-bindings": "3.3.0",
+    "@neos-project/neos-ui-ckeditor5-bindings": "3.3.0",
+    "@neos-project/neos-ui-constants": "3.3.0",
+    "@neos-project/neos-ui-decorators": "3.3.0",
+    "@neos-project/neos-ui-extensibility": "3.3.0",
+    "@neos-project/neos-ui-i18n": "3.3.0",
+    "@neos-project/neos-ui-inspector": "3.3.0",
+    "@neos-project/neos-ui-redux-store": "3.3.0",
+    "@neos-project/react-ui-components": "3.3.0"
+>>>>>>> 2.x
   },
   "license": "GNU GPLv3",
   "jest": {

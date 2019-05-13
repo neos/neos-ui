@@ -1,4 +1,4 @@
-prototype(Neos.TestSite:Content.Text) < prototype(Neos.Neos:ContentComponent) {
+prototype(Neos.TestNodeTypes:Content.Text) < prototype(Neos.Neos:ContentComponent) {
     text = Neos.Neos:Editable {
         property = 'text'
     }

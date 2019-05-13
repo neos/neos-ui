@@ -1,13 +1,23 @@
 {
   "name": "@neos-project/neos-ui-ckeditor5-bindings",
+<<<<<<< HEAD
   "version": "3.3.0",
+=======
+  "version": "3.3.0",
+>>>>>>> 2.x
   "description": "Prepare CKEditor5 for the Neos CMS UI",
   "private": true,
   "main": "./src/manifest.js",
   "devDependencies": {
+<<<<<<< HEAD
     "@neos-project/babel-preset-neos-ui": "3.3.0",
     "@neos-project/build-essentials": "3.3.0",
     "@neos-project/jest-preset-neos-ui": "3.3.0"
+=======
+    "@neos-project/babel-preset-neos-ui": "3.3.0",
+    "@neos-project/build-essentials": "3.3.0",
+    "@neos-project/jest-preset-neos-ui": "3.3.0"
+>>>>>>> 2.x
   },
   "dependencies": {
     "@ckeditor/ckeditor5-alignment": "^10.0.3",
@@ -19,6 +29,7 @@
     "@ckeditor/ckeditor5-list": "^11.0.2",
     "@ckeditor/ckeditor5-paragraph": "^10.0.3",
     "@ckeditor/ckeditor5-table": "^11.0",
+<<<<<<< HEAD
     "@neos-project/neos-ui-backend-connector": "3.3.0",
     "@neos-project/neos-ui-decorators": "3.3.0",
     "@neos-project/neos-ui-extensibility": "3.3.0",
@@ -27,6 +38,16 @@
     "@neos-project/neos-ui-redux-store": "3.3.0",
     "@neos-project/react-ui-components": "3.3.0",
     "@neos-project/utils-helpers": "3.3.0",
+=======
+    "@neos-project/neos-ui-backend-connector": "3.3.0",
+    "@neos-project/neos-ui-decorators": "3.3.0",
+    "@neos-project/neos-ui-extensibility": "3.3.0",
+    "@neos-project/neos-ui-guest-frame": "3.3.0",
+    "@neos-project/neos-ui-i18n": "3.3.0",
+    "@neos-project/neos-ui-redux-store": "3.3.0",
+    "@neos-project/react-ui-components": "3.3.0",
+    "@neos-project/utils-helpers": "3.3.0",
+>>>>>>> 2.x
     "raw-loader": "^0.5"
   },
   "license": "GNU GPLv3"

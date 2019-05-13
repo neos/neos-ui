@@ -136,3 +136,15 @@
 .nodeTypeFilter__label {
     margin-right: var(--spacing-Half);
 }
+
+.noMatchesFound {
+    width: 100%;
+    padding: var(--spacing-Full);
+    background: var(--colors-ContrastDarkest);
+    border-radius: 2px;
+    color: var(--colors-ContrastBright);
+
+    svg {
+        color: var(--colors-ContrastBright);
+    }
+}

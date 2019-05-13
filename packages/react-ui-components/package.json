@@ -1,10 +1,6 @@
 {
   "name": "@neos-project/react-ui-components",
-<<<<<<< HEAD
   "version": "3.3.0",
-=======
-  "version": "3.3.0",
->>>>>>> 2.x
   "description": "The UI components which power the Neos backend application.",
   "main": "./src/index",
   "scripts": {
@@ -21,17 +17,10 @@
     "start": "cross-env STORY=true start-storybook -p 9001"
   },
   "devDependencies": {
-<<<<<<< HEAD
     "@neos-project/babel-preset-neos-ui": "3.3.0",
     "@neos-project/build-essentials": "3.3.0",
     "@neos-project/debug-reason-for-rendering": "3.3.0",
     "@neos-project/jest-preset-neos-ui": "3.3.0",
-=======
-    "@neos-project/babel-preset-neos-ui": "3.3.0",
-    "@neos-project/build-essentials": "3.3.0",
-    "@neos-project/debug-reason-for-rendering": "3.3.0",
-    "@neos-project/jest-preset-neos-ui": "3.3.0",
->>>>>>> 2.x
     "@storybook/addon-info": "^3.2.16",
     "@storybook/addon-knobs": "3.2.16",
     "@storybook/react": "3.2.16",

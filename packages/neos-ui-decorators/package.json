@@ -1,10 +1,6 @@
 {
   "name": "@neos-project/neos-ui-decorators",
-<<<<<<< HEAD
   "version": "3.3.0",
-=======
-  "version": "3.3.0",
->>>>>>> 2.x
   "description": "Decorators for Neos CMS UI.",
   "private": true,
   "main": "./src/index.ts",
@@ -18,15 +14,9 @@
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-<<<<<<< HEAD
     "@neos-project/babel-preset-neos-ui": "3.3.0",
     "@neos-project/build-essentials": "3.3.0",
     "@neos-project/jest-preset-neos-ui": "3.3.0"
-=======
-    "@neos-project/babel-preset-neos-ui": "3.3.0",
-    "@neos-project/build-essentials": "3.3.0",
-    "@neos-project/jest-preset-neos-ui": "3.3.0"
->>>>>>> 2.x
   },
   "peerDependencies": {
     "prop-types": "^15.5.10",

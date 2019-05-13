@@ -1,10 +1,6 @@
 {
   "name": "@neos-project/build-essentials",
-<<<<<<< HEAD
   "version": "3.3.0",
-=======
-  "version": "3.3.0",
->>>>>>> 2.x
   "description": "Dependencies for building @neos-project packages",
   "main": "./src",
   "bin": {
@@ -21,11 +17,7 @@
     "lint": "eslint src"
   },
   "devDependencies": {
-<<<<<<< HEAD
     "@neos-project/babel-preset-neos-ui": "3.3.0"
-=======
-    "@neos-project/babel-preset-neos-ui": "3.3.0"
->>>>>>> 2.x
   },
   "dependencies": {
     "@ckeditor/ckeditor5-dev-utils": "^9.0",

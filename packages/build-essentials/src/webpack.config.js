@@ -23,6 +23,9 @@ if (fs.existsSync(liveReloadOptionsFile) && fs.lstatSync(liveReloadOptionsFile).
     finalLiveReloadOptions = Object.assign({}, finalLiveReloadOptions, liveReloadOptions);
 }
 
+const transpileNodeModule = ['debug', 'd3_scale'];
+const transpileNodeModuleRegex = new RegExp('node_modules/(' + transpileNodeModule.join('|') + ').*$', 'gm');
+
 const webpackConfig = {
     // https://github.com/webpack/docs/wiki/build-performance#sourcemaps
     devtool: 'source-map',
@@ -38,12 +41,8 @@ const webpackConfig = {
             },
             {
                 test: /\.js$/,
-                include: [
-                    /node_modules\/d3-scale/
-                ],
-                use: [{
-                    loader: 'babel-loader'
-                }]
+                include: transpileNodeModuleRegex,
+                loader: 'babel-loader'
             },
             {
                 test: /\.tsx?$/,

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
- <site name="Site" state="1" siteResourcesPackageKey="Neos.TestSite" siteNodeName="site">
+ <site name="Neos Test Site" state="1" siteResourcesPackageKey="Neos.TestNodeTypes" siteNodeName="neos-test-site">
   <nodes formatVersion="2.0">
-   <node identifier="f676459d-ca77-44bc-aeea-44114814c279" nodeName="site">
-    <variant sortingIndex="100" workspace="live" nodeType="Neos.TestSite:Document.Page" version="3" removed="" hidden="" hiddenInIndex="">
+   <node identifier="f676459d-ca77-44bc-aeea-44114814c279" nodeName="neos-test-site">
+    <variant sortingIndex="100" workspace="live" nodeType="Neos.TestNodeTypes:Document.Page" version="3" removed="" hidden="" hiddenInIndex="">
      <dimensions>
       <language>fr</language>
      </dimensions>
@@ -16,7 +16,7 @@
       <uriPathSegment __type="string">home</uriPathSegment>
      </properties>
     </variant>
-    <variant sortingIndex="100" workspace="live" nodeType="Neos.TestSite:Document.Page" version="5" removed="" hidden="" hiddenInIndex="">
+    <variant sortingIndex="100" workspace="live" nodeType="Neos.TestNodeTypes:Document.Page" version="5" removed="" hidden="" hiddenInIndex="">
      <dimensions>
       <language>en_US</language>
      </dimensions>
@@ -30,7 +30,7 @@
       <image __type="object" __identifier="50cd4a3e-1cc3-4bbb-b2ab-919abb4011f1" __classname="Neos\Media\Domain\Model\ImageVariant" __encoding="json">{&quot;__identity&quot;:&quot;50cd4a3e-1cc3-4bbb-b2ab-919abb4011f1&quot;,&quot;__type&quot;:&quot;Neos\\Media\\Domain\\Model\\ImageVariant&quot;,&quot;originalAsset&quot;:{&quot;__identity&quot;:&quot;ee3d239e-48b0-4f99-90be-054301b91792&quot;,&quot;__type&quot;:&quot;Neos\\Media\\Domain\\Model\\Image&quot;,&quot;title&quot;:&quot;&quot;,&quot;resource&quot;:{&quot;filename&quot;:&quot;neos_primary.png&quot;,&quot;collectionName&quot;:&quot;persistent&quot;,&quot;relativePublicationPath&quot;:&quot;&quot;,&quot;mediaType&quot;:&quot;image\/png&quot;,&quot;sha1&quot;:&quot;aac28f51e5ca842e2646e88e7d242ac3c27e1f25&quot;,&quot;hash&quot;:&quot;aac28f51e5ca842e2646e88e7d242ac3c27e1f25&quot;,&quot;__identity&quot;:&quot;71abb35f-f167-4677-a3f5-386785e9d874&quot;}},&quot;adjustments&quot;:[{&quot;height&quot;:126,&quot;position&quot;:10,&quot;width&quot;:126,&quot;x&quot;:328,&quot;y&quot;:0,&quot;__identity&quot;:&quot;d39c6f64-b4e4-4851-aa6a-be27d46bba11&quot;,&quot;__type&quot;:&quot;Neos\\Media\\Domain\\Model\\Adjustment\\CropImageAdjustment&quot;}]}</image>
      </properties>
     </variant>
-    <variant sortingIndex="100" workspace="live" nodeType="Neos.TestSite:Document.Page" version="3" removed="" hidden="" hiddenInIndex="">
+    <variant sortingIndex="100" workspace="live" nodeType="Neos.TestNodeTypes:Document.Page" version="3" removed="" hidden="" hiddenInIndex="">
      <dimensions>
       <language>en_UK</language>
      </dimensions>
@@ -44,7 +44,7 @@
       <image __type="object" __identifier="50cd4a3e-1cc3-4bbb-b2ab-919abb4011f1" __classname="Neos\Media\Domain\Model\ImageVariant" __encoding="json">{&quot;__identity&quot;:&quot;50cd4a3e-1cc3-4bbb-b2ab-919abb4011f1&quot;,&quot;__type&quot;:&quot;Neos\\Media\\Domain\\Model\\ImageVariant&quot;,&quot;originalAsset&quot;:{&quot;__identity&quot;:&quot;ee3d239e-48b0-4f99-90be-054301b91792&quot;,&quot;__type&quot;:&quot;Neos\\Media\\Domain\\Model\\Image&quot;,&quot;title&quot;:&quot;&quot;,&quot;resource&quot;:{&quot;filename&quot;:&quot;neos_primary.png&quot;,&quot;collectionName&quot;:&quot;persistent&quot;,&quot;relativePublicationPath&quot;:&quot;&quot;,&quot;mediaType&quot;:&quot;image\/png&quot;,&quot;sha1&quot;:&quot;aac28f51e5ca842e2646e88e7d242ac3c27e1f25&quot;,&quot;hash&quot;:&quot;aac28f51e5ca842e2646e88e7d242ac3c27e1f25&quot;,&quot;__identity&quot;:&quot;71abb35f-f167-4677-a3f5-386785e9d874&quot;}},&quot;adjustments&quot;:[{&quot;height&quot;:126,&quot;position&quot;:10,&quot;width&quot;:126,&quot;x&quot;:328,&quot;y&quot;:0,&quot;__identity&quot;:&quot;d39c6f64-b4e4-4851-aa6a-be27d46bba11&quot;,&quot;__type&quot;:&quot;Neos\\Media\\Domain\\Model\\Adjustment\\CropImageAdjustment&quot;}]}</image>
      </properties>
     </variant>
-    <variant sortingIndex="100" workspace="live" nodeType="Neos.TestSite:Document.Page" version="3" removed="" hidden="" hiddenInIndex="">
+    <variant sortingIndex="100" workspace="live" nodeType="Neos.TestNodeTypes:Document.Page" version="3" removed="" hidden="" hiddenInIndex="">
      <dimensions>
       <language>nl</language>
      </dimensions>
@@ -57,7 +57,7 @@
       <uriPathSegment __type="string">home</uriPathSegment>
      </properties>
     </variant>
-    <variant sortingIndex="100" workspace="live" nodeType="Neos.TestSite:Document.Page" version="3" removed="" hidden="" hiddenInIndex="">
+    <variant sortingIndex="100" workspace="live" nodeType="Neos.TestNodeTypes:Document.Page" version="3" removed="" hidden="" hiddenInIndex="">
      <dimensions>
       <language>lv</language>
      </dimensions>
@@ -70,7 +70,7 @@
       <uriPathSegment __type="string">home</uriPathSegment>
      </properties>
     </variant>
-    <variant sortingIndex="100" workspace="live" nodeType="Neos.TestSite:Document.Page" version="3" removed="" hidden="" hiddenInIndex="">
+    <variant sortingIndex="100" workspace="live" nodeType="Neos.TestNodeTypes:Document.Page" version="3" removed="" hidden="" hiddenInIndex="">
      <dimensions>
       <language>de</language>
      </dimensions>
@@ -83,7 +83,7 @@
       <uriPathSegment __type="string">home</uriPathSegment>
      </properties>
     </variant>
-    <variant sortingIndex="100" workspace="live" nodeType="Neos.TestSite:Document.Page" version="3" removed="" hidden="" hiddenInIndex="">
+    <variant sortingIndex="100" workspace="live" nodeType="Neos.TestNodeTypes:Document.Page" version="3" removed="" hidden="" hiddenInIndex="">
      <dimensions>
       <language>da</language>
      </dimensions>
@@ -167,7 +167,7 @@
       <properties/>
      </variant>
      <node identifier="53c72be8-befb-409f-b2b6-ad54b68cbe05" nodeName="node-chdxek8m9mgp8">
-      <variant sortingIndex="100" workspace="live" nodeType="Neos.TestSite:Content.Headline" version="4" removed="" hidden="" hiddenInIndex="">
+      <variant sortingIndex="100" workspace="live" nodeType="Neos.TestNodeTypes:Content.Headline" version="4" removed="" hidden="" hiddenInIndex="">
        <dimensions>
         <language>en_US</language>
        </dimensions>
@@ -182,7 +182,7 @@
      </node>
     </node>
     <node identifier="000b42ff-c9d3-4b5e-b6de-56d35832dc0e" nodeName="node-0t1w0st5k6ffr">
-     <variant sortingIndex="500" workspace="live" nodeType="Neos.TestSite:Document.Page" version="3" removed="" hidden="" hiddenInIndex="">
+     <variant sortingIndex="500" workspace="live" nodeType="Neos.TestNodeTypes:Document.Page" version="3" removed="" hidden="" hiddenInIndex="">
       <dimensions>
        <language>en_US</language>
       </dimensions>
@@ -208,7 +208,7 @@
       </variant>
      </node>
      <node identifier="edee62d3-4561-4c0c-bce0-41324b0df5db" nodeName="node-32bltfl4ugqi1">
-      <variant sortingIndex="200" workspace="live" nodeType="Neos.TestSite:Document.Page" version="4" removed="" hidden="" hiddenInIndex="">
+      <variant sortingIndex="200" workspace="live" nodeType="Neos.TestNodeTypes:Document.Page" version="4" removed="" hidden="" hiddenInIndex="">
        <dimensions>
         <language>en_US</language>
        </dimensions>
@@ -236,7 +236,7 @@
      </node>
     </node>
     <node identifier="5d9a965c-884b-41af-9f21-ae305c2af2af" nodeName="node-8apiz7zen1sig">
-     <variant sortingIndex="550" workspace="live" nodeType="Neos.TestSite:Document.Page" version="3" removed="" hidden="" hiddenInIndex="">
+     <variant sortingIndex="550" workspace="live" nodeType="Neos.TestNodeTypes:Document.Page" version="3" removed="" hidden="" hiddenInIndex="">
       <dimensions>
        <language>en_US</language>
       </dimensions>
@@ -262,7 +262,7 @@
       </variant>
      </node>
      <node identifier="6c66e888-70ba-4e6c-838d-a13b642505ac" nodeName="node-bezmi9v7mq8gm">
-      <variant sortingIndex="200" workspace="live" nodeType="Neos.TestSite:Document.Page" version="2" removed="" hidden="" hiddenInIndex="">
+      <variant sortingIndex="200" workspace="live" nodeType="Neos.TestNodeTypes:Document.Page" version="2" removed="" hidden="" hiddenInIndex="">
        <dimensions>
         <language>en_US</language>
        </dimensions>
@@ -287,7 +287,7 @@
         <properties/>
        </variant>
        <node identifier="f4be0477-85ad-4e7b-bc6d-b4f8d5da448c" nodeName="node-1jek82tofuzch">
-        <variant sortingIndex="100" workspace="live" nodeType="Neos.TestSite:Content.Headline" version="3" removed="" hidden="" hiddenInIndex="">
+        <variant sortingIndex="100" workspace="live" nodeType="Neos.TestNodeTypes:Content.Headline" version="3" removed="" hidden="" hiddenInIndex="">
          <dimensions>
           <language>en_US</language>
          </dimensions>
@@ -304,7 +304,7 @@
      </node>
     </node>
     <node identifier="ce9e7dd2-2f7e-4cd7-94dc-e2dbd5bdec73" nodeName="node-g1gxvdbn8vq07">
-     <variant sortingIndex="450" workspace="live" nodeType="Neos.TestSite:Document.Page" version="3" removed="" hidden="" hiddenInIndex="">
+     <variant sortingIndex="450" workspace="live" nodeType="Neos.TestNodeTypes:Document.Page" version="3" removed="" hidden="" hiddenInIndex="">
       <dimensions>
        <language>en_US</language>
       </dimensions>
@@ -362,7 +362,7 @@
       </variant>
      </node>
      <node identifier="18b037dc-c06c-4d96-a991-893256a32e89" nodeName="node-a8hbzgg4vij8o">
-      <variant sortingIndex="300" workspace="live" nodeType="Neos.TestSite:Document.Page" version="3" removed="" hidden="" hiddenInIndex="">
+      <variant sortingIndex="300" workspace="live" nodeType="Neos.TestNodeTypes:Document.Page" version="3" removed="" hidden="" hiddenInIndex="">
        <dimensions>
         <language>en_US</language>
        </dimensions>
@@ -389,7 +389,7 @@
       </node>
      </node>
      <node identifier="ae7baddc-656a-4e57-9886-17d8783dae65" nodeName="node-r6au40dkxh5k6">
-      <variant sortingIndex="200" workspace="live" nodeType="Neos.TestSite:Document.Page" version="2" removed="" hidden="" hiddenInIndex="">
+      <variant sortingIndex="200" workspace="live" nodeType="Neos.TestNodeTypes:Document.Page" version="2" removed="" hidden="" hiddenInIndex="">
        <dimensions>
         <language>en_US</language>
        </dimensions>
@@ -417,7 +417,7 @@
      </node>
     </node>
     <node identifier="af9db7c2-3cf0-4091-978e-1a0f81766242" nodeName="node-w0p249o10vma4">
-     <variant sortingIndex="600" workspace="live" nodeType="Neos.TestSite:Document.Page" version="3" removed="" hidden="" hiddenInIndex="">
+     <variant sortingIndex="600" workspace="live" nodeType="Neos.TestNodeTypes:Document.Page" version="3" removed="" hidden="" hiddenInIndex="">
       <dimensions>
        <language>en_US</language>
       </dimensions>
@@ -443,7 +443,7 @@
       </variant>
      </node>
      <node identifier="45270070-0d7c-4a89-90a8-a43ef454edf1" nodeName="node-8ws6hkn4o36q1">
-      <variant sortingIndex="200" workspace="live" nodeType="Neos.TestSite:Document.Page" version="2" removed="" hidden="" hiddenInIndex="">
+      <variant sortingIndex="200" workspace="live" nodeType="Neos.TestNodeTypes:Document.Page" version="2" removed="" hidden="" hiddenInIndex="">
        <dimensions>
         <language>en_US</language>
        </dimensions>
@@ -470,7 +470,7 @@
       </node>
      </node>
      <node identifier="555c9f80-7682-4916-a4c3-851ab5ea0559" nodeName="node-f8e3ze7jvbxkl">
-      <variant sortingIndex="250" workspace="live" nodeType="Neos.TestSite:Document.Page" version="3" removed="" hidden="" hiddenInIndex="">
+      <variant sortingIndex="250" workspace="live" nodeType="Neos.TestNodeTypes:Document.Page" version="3" removed="" hidden="" hiddenInIndex="">
        <dimensions>
         <language>en_US</language>
        </dimensions>

@@ -19,12 +19,19 @@ const NodeTreeSearchInput = ({
         [style.searchInput]: true,
         [style['searchInput--focused']]: focused
     });
+    const wrapperClassName = mergeClassNames({
+        [style.wrapper]: true,
+        [style['wrapper--focused']]: focused
+    });
+    const searchIconClassName = mergeClassNames({
+        [style.placeholderIcon]: true,
+        [style.clearButton]: true
+    });
     return (
-        <div className={style.wrapper} id="neos-NodeTreeSearchInput">
+        <div className={wrapperClassName} id="neos-NodeTreeSearchInput">
             <Icon
                 icon="search"
-                className={focused ? style.hidden : style.placeholderIcon}
-                theme={{iconButton: focused ? style['clearButton--focused'] : style.clearButton}}
+                className={searchIconClassName}
                 onClick={onClearClick}
                 />
             <TextInput
@@ -39,7 +46,7 @@ const NodeTreeSearchInput = ({
             {showClear && (
                 <IconButton
                     icon="times"
-                    theme={{iconButton: focused ? style['clearButton--focused'] : style.clearButton}}
+                    className={style.clearButton}
                     onClick={onClearClick}
                     />
             )}

@@ -74,12 +74,12 @@ class PluginViewEditor extends React.PureComponent {
         }
 
         const {loadPluginViews} = backend.get().endpoints;
-        const pluginNode = $get('properties', focusedNode);
 
-        if (pluginNode.size > 0) {
-            const pluginNodeIdentifier = $get('plugin.value', transientValues) === undefined ? $get('plugin', pluginNode) : $get('plugin.value', transientValues);
+        const pluginNodeProperties = $get('properties', focusedNode);
+
+        if (pluginNodeProperties.plugin) {
+            const pluginNodeIdentifier = $get('plugin.value', transientValues) === undefined ? $get('plugin', pluginNodeProperties) : $get('plugin.value', transientValues);
             this.setState({isLoading: true});
-
             loadPluginViews(pluginNodeIdentifier, personalWorkspace, activeContentDimensions)
                 .then(views => {
                     this.setState({

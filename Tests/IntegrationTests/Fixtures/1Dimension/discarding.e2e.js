@@ -38,7 +38,7 @@ test('Discarding: create multiple nodes nested within each other and then discar
         .expect(ReactSelector('Provider').getReact(({props}) => {
             const reduxState = props.store.getState();
             return reduxState.cr.nodes.documentNode;
-        })).eql('/sites/site@user-admin;language=en_US', 'After discarding we are back to the main page');
+        })).eql('/sites/neos-test-site@user-admin;language=en_US', 'After discarding we are back to the main page');
 });
 
 test('Discarding: create a document node and then discard it', async t => {

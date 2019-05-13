@@ -63,9 +63,3 @@
     font-weight: bold;
     background: var(--colors-ContrastDarkest);
 }
-
-.hr {
-    height: var(--spacing-Half);
-    background: var(--colors-ContrastDarkest);
-    border: none;
-}

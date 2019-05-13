@@ -1,4 +1,4 @@
-prototype(Neos.TestSite:Navigation) < prototype(Neos.Fusion:Collection) {
+prototype(Neos.TestNodeTypes:Navigation) < prototype(Neos.Fusion:Collection) {
     @process.wrap = afx`<ul class="test-nav">{value}</ul>`
     collection = ${q(site).children('[instanceof Neos.Neos:Document]').get()}
     itemName = 'node'

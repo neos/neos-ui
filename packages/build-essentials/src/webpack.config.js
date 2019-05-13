@@ -37,6 +37,13 @@ const webpackConfig = {
                 }]
             },
             {
+                test: /\.js$/,
+                include: [
+                    /node_modules\/debug/
+                ],
+                loader: 'babel-loader'
+            },
+            {
                 test: /\.tsx?$/,
                 exclude: /node_modules/,
                 use: [{

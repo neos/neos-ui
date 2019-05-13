@@ -17,6 +17,7 @@ use Neos\Flow\Log\SystemLoggerInterface;
 use Neos\Flow\Tests\FunctionalTestCase;
 use Neos\Flow\Validation\Validator\NotEmptyValidator;
 use Neos\Neos\Ui\Service\NodePropertyValidationService;
+use PHPUnit\Framework\Assert;
 
 class NodePropertyValidationServiceTest extends FunctionalTestCase
 {
@@ -26,7 +27,7 @@ class NodePropertyValidationServiceTest extends FunctionalTestCase
      */
     protected $nodePropertyValidationService;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -43,7 +44,7 @@ class NodePropertyValidationServiceTest extends FunctionalTestCase
     public function resolveValidator()
     {
         $validator = $this->nodePropertyValidationService->_call('resolveValidator', 'Neos.Neos/Validation/NotEmptyValidator', []);
-        $this->assertInstanceOf(NotEmptyValidator::class, $validator);
+        Assert::assertInstanceOf(NotEmptyValidator::class, $validator);
     }
 
     /**
@@ -52,7 +53,7 @@ class NodePropertyValidationServiceTest extends FunctionalTestCase
     public function resolveCustomValidatorReturnsNull()
     {
         $validator = $this->nodePropertyValidationService->_call('resolveValidator', 'My.Own/Validation/NotEmptyValidator', []);
-        $this->assertNull($validator);
+        Assert::assertNull($validator);
     }
 
     /**
@@ -65,7 +66,7 @@ class NodePropertyValidationServiceTest extends FunctionalTestCase
             'Neos.Neos/Validation/StringLengthValidator',
             ['minimum' => 1, 'maximum' => 2]);
 
-        $this->assertFalse($result);
+        Assert::assertFalse($result);
     }
 
     /**
@@ -78,6 +79,6 @@ class NodePropertyValidationServiceTest extends FunctionalTestCase
             'My.Own/Validation/StringLengthValidator',
             ['minimum' => 1, 'maximum' => 255]);
 
-        $this->assertTrue($result);
+        Assert::assertTrue($result);
     }
 }

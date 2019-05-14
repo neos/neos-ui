@@ -174,7 +174,7 @@
     "reselect": "^3.0.1",
     "terser-webpack-plugin": "^1.2.3",
     "testcafe-browser-provider-saucelabs": "^1.6.1",
-    "typesafe-actions": "^3.2.1",
+    "typesafe-actions": "^4.3.0",
     "url-loader": "^1.0.1",
     "uuid": "^3.2.1",
     "webpack-cli": "^3.2.3",

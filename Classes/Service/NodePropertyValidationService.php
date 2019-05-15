@@ -14,10 +14,11 @@ declare(strict_types=1);
 namespace Neos\Neos\Ui\Service;
 
 use Neos\Flow\Annotations as Flow;
-use Neos\Flow\Log\SystemLoggerInterface;
+use Neos\Flow\Log\Utility\LogEnvironment;
 use Neos\Flow\Property\TypeConverter\DateTimeConverter;
 use Neos\Flow\Validation\Validator\DateTimeValidator;
 use Neos\Flow\Validation\Validator\ValidatorInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * @Flow\Scope("singleton")
@@ -27,7 +28,7 @@ class NodePropertyValidationService
 
     /**
      * @Flow\Inject
-     * @var SystemLoggerInterface
+     * @var LoggerInterface
      */
     protected $logger;
 
@@ -77,14 +78,14 @@ class NodePropertyValidationService
     {
         $nameParts = explode('/', $validatorName);
         if ($nameParts[0] !== 'Neos.Neos') {
-            $this->logger->log(sprintf('The custom frontend property validator %s" is used. This property is not validated in the backend.', $validatorName), LOG_INFO);
+            $this->logger->info(sprintf('The custom frontend property validator %s" is used. This property is not validated in the backend.', $validatorName), LogEnvironment::fromMethodName(__METHOD__));
             return null;
         }
 
         $fullQualifiedValidatorClassName = '\\Neos\\Flow\\Validation\\Validator\\' . end($nameParts);
 
         if (!class_exists($fullQualifiedValidatorClassName)) {
-            $this->logger->log(sprintf('Could not find a backend validator fitting to the frontend validator "%s"', $validatorName), LOG_WARNING);
+            $this->logger->warning(sprintf('Could not find a backend validator fitting to the frontend validator "%s"', $validatorName), LogEnvironment::fromMethodName(__METHOD__));
             return null;
         }
 

@@ -89,7 +89,9 @@ export default class InsertModeSelector extends PureComponent {
 
         return (
             <div className={style.root}>
-                <I18n id="Neos.Neos:Main:insertMode"/>&nbsp;
+                <span className={style.label}>
+                    <I18n id="Neos.Neos:Main:insertMode"/>&nbsp;
+                </span>
                 <ButtonGroup value={mode} onSelect={this.handleSelect} className={style.buttonGroup}>
                     <IconButton
                         id={MODE_BEFORE}

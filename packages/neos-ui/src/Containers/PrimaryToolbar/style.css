@@ -12,7 +12,7 @@
 }
 .primaryToolbar__actions {
     display: flex;
-    flex: 1
+    flex: 1;
 }
 .primaryToolbar__rightSidedActions {
     display: flex;

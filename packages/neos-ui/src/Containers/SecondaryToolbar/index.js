@@ -76,7 +76,7 @@ export default class SecondaryToolbar extends PureComponent {
 
         return (
             <div className={classNames}>
-                { Toolbar !== null ? <Toolbar/> : null }
+                { Toolbar === null ? null : <Toolbar/> }
 
                 <div className={style.secondaryToolbar__rightHandedActions}>
                     {SecondaryToolbarRight.map((Item, key) => <Item key={key}/>)}

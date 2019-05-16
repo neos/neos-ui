@@ -36,10 +36,16 @@ class StyleAndJavascriptInclusionService
     protected $eelEvaluator;
 
     /**
+     * @Flow\InjectConfiguration(package="Neos.Fusion", path="defaultContext")
+     * @var array
+     */
+    protected $fusionDefaultEelContext;
+
+    /**
      * @Flow\InjectConfiguration(path="configurationDefaultEelContext")
      * @var array
      */
-    protected $defaultContext;
+    protected $additionalEelDefaultContext;
 
     /**
      * @Flow\InjectConfiguration(path="resources.javascript")
@@ -75,7 +81,12 @@ class StyleAndJavascriptInclusionService
         foreach ($sortedResources as $element) {
             $resourceExpression = $element['resource'];
             if (substr($resourceExpression, 0, 2) === '${' && substr($resourceExpression, -1) === '}') {
-                $resourceExpression = Utility::evaluateEelExpression($resourceExpression, $this->eelEvaluator, [], $this->defaultContext);
+                $resourceExpression = Utility::evaluateEelExpression(
+                    $resourceExpression,
+                    $this->eelEvaluator,
+                    [],
+                    array_merge($this->fusionDefaultEelContext, $this->additionalEelDefaultContext)
+                );
             }
 
             $hash = null;

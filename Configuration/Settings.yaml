@@ -102,13 +102,6 @@ Neos:
         content: 'Neos.Neos:Content'
         contentCollection: 'Neos.Neos:ContentCollection'
       configurationDefaultEelContext:
-        String: Neos\Eel\Helper\StringHelper
-        Array: Neos\Eel\Helper\ArrayHelper
-        Date: Neos\Eel\Helper\DateHelper
-        Configuration: Neos\Eel\Helper\ConfigurationHelper
-        Math: Neos\Eel\Helper\MathHelper
-        Json: Neos\Eel\Helper\JsonHelper
-        I18n: Neos\Flow\I18n\EelHelper\TranslationHelper
         Neos.Ui.Api: Neos\Neos\Ui\Fusion\Helper\ApiHelper
         Neos.Ui.Workspace: Neos\Neos\Ui\Fusion\Helper\WorkspaceHelper
         Neos.Ui.NodeInfo: Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper

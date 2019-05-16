@@ -13,15 +13,14 @@ namespace Neos\Neos\Ui\Tests\Functional\Service;
  * source code.
  */
 
-use Neos\Flow\Log\SystemLoggerInterface;
 use Neos\Flow\Tests\FunctionalTestCase;
 use Neos\Flow\Validation\Validator\NotEmptyValidator;
 use Neos\Neos\Ui\Service\NodePropertyValidationService;
 use PHPUnit\Framework\Assert;
+use Psr\Log\LoggerInterface;
 
 class NodePropertyValidationServiceTest extends FunctionalTestCase
 {
-
     /**
      * @var NodePropertyValidationService
      */
@@ -34,14 +33,14 @@ class NodePropertyValidationServiceTest extends FunctionalTestCase
         $nodePropertyValidatorServiceProxy = $this->buildAccessibleProxy(NodePropertyValidationService::class);
         $this->nodePropertyValidationService = $this->objectManager->get($nodePropertyValidatorServiceProxy);
 
-        $logger = $this->objectManager->get(SystemLoggerInterface::class);
+        $logger = $this->objectManager->get(LoggerInterface::class);
         $this->inject($this->nodePropertyValidationService, 'logger', $logger);
     }
 
     /**
      * @test
      */
-    public function resolveValidator()
+    public function resolveValidator(): void
     {
         $validator = $this->nodePropertyValidationService->_call('resolveValidator', 'Neos.Neos/Validation/NotEmptyValidator', []);
         Assert::assertInstanceOf(NotEmptyValidator::class, $validator);
@@ -50,7 +49,7 @@ class NodePropertyValidationServiceTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function resolveCustomValidatorReturnsNull()
+    public function resolveCustomValidatorReturnsNull(): void
     {
         $validator = $this->nodePropertyValidationService->_call('resolveValidator', 'My.Own/Validation/NotEmptyValidator', []);
         Assert::assertNull($validator);
@@ -59,7 +58,7 @@ class NodePropertyValidationServiceTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function validate()
+    public function validate(): void
     {
         $result = $this->nodePropertyValidationService->validate(
             'test',
@@ -72,7 +71,7 @@ class NodePropertyValidationServiceTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function ifNoBackendValidatorCanBeFoundValidationReturnsTrue()
+    public function ifNoBackendValidatorCanBeFoundValidationReturnsTrue(): void
     {
         $result = $this->nodePropertyValidationService->validate(
             'test',

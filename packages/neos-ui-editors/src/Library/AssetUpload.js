@@ -117,6 +117,7 @@ export default class AssetUpload extends PureComponent {
                         activeClassName={style['dropzone--isActive']}
                         rejectClassName={style['dropzone--isRejecting']}
                         disableClick={true}
+                        disablePreview={true}
                         multiple={Boolean(multiple)}
                         >
                         {children}

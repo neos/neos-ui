@@ -24,7 +24,6 @@ for fixture in Packages/Application/Neos.Neos.Ui/Tests/IntegrationTests/Fixtures
     #./flow flow:cache:flushone Neos_Neos_Fusion
     #./flow flow:cache:flushone Neos_Fusion_Content
     ./flow site:list
-    ./flow site:prune '*'
     ./flow site:import --package-key=Neos.TestSite
     ./flow resource:publish
 

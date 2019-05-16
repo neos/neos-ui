@@ -76,7 +76,7 @@ export default class ReloginDialog extends PureComponent {
         return (
             <Dialog
                 title={<I18n id="Neos.Neos:Main:login.expired" fallback="Your login has expired. Please log in again."/>}
-                onRequestClose={emptyFn}
+                onRequestClose=""
                 style="narrow"
                 isOpen
                 id="neos-ReloginDialog"

@@ -317,7 +317,8 @@ manifest('main', {}, globalRegistry => {
         // because many frameworkds (e.g. CKE, React) use the following checks
         // `obj instanceof obj.ownerDocument.defaultView.Node`
         // which would fail if this node was created in Host
-        const tempNodeInGuest = getGuestFrameDocument().createElement('div');
+        const wrapTagName = parentElement.tagName ? parentElement.tagName : 'div';
+        const tempNodeInGuest = getGuestFrameDocument().createElement(wrapTagName);
         tempNodeInGuest.innerHTML = renderedContent;
         const contentElement = tempNodeInGuest
             .querySelector(`[data-__neos-node-contextpath="${contextPath}"]`);

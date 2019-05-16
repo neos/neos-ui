@@ -140,9 +140,8 @@ export default class AssetEditor extends PureComponent {
     }
 
     handleMediaSelected = assetIdentifier => {
-        const {value} = this.props;
         if (this.props.options.multiple) {
-            const values = value ? value.slice() : [];
+            const values = this.getValues();
             values.push(assetIdentifier);
             this.handleValuesChange(values);
         } else {

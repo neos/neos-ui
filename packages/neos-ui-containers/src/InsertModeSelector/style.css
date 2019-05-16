@@ -3,6 +3,12 @@
     align-items: center;
 }
 
+.label {
+    @media(max-width: 720px) {
+        display: none;
+    }
+}
+
 .buttonGroup {
     margin-left: 4px;
 

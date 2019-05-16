@@ -1,6 +1,6 @@
 .bar {
     composes: reset from './../reset.css';
-    position: absolute;
+    position: fixed;
     left: 0;
     z-index: var(--zIndex-CheckboxInput-Context);
     width: 100%;

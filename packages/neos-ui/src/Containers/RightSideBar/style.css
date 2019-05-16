@@ -12,9 +12,17 @@
     &:after {
         clear: both;
     }
+
+    @media(max-width: 576px) {
+        width: 100%;
+    }
 }
 .rightSideBar--isHidden {
     transform: translateX(var(--size-SidebarWidth));
+
+    @media(max-width: 576px) {
+        transform: translateX(576px);
+    }
 }
 .rightSideBar__toggleBtn {
     width: 46px;
@@ -28,6 +36,10 @@
 
     .rightSideBar--isHidden & {
         transform: translateX(-var(--size-SidebarWidth));
+
+        @media(max-width: 576px) {
+            transform: translateX(-576px);
+        }
     }
 }
 .rightSideBar__section {

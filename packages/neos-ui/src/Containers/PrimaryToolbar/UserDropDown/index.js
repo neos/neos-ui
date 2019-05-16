@@ -29,7 +29,7 @@ export default class UserDropDown extends PureComponent {
                 <DropDown className={style.dropDown}>
                     <DropDown.Header className={style.dropDown__btn}>
                         <Icon className={style.dropDown__btnIcon} icon="user"/>
-                        {this.props.userName}
+                        <span className={style.dropDown__userName}>{this.props.userName}</span>
                     </DropDown.Header>
                     <DropDown.Contents className={style.dropDown__contents}>
                         <li className={style.dropDown__item}>

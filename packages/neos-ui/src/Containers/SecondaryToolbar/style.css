@@ -1,6 +1,6 @@
 .secondaryToolbar {
     display: flex;
-    position: absolute;
+    position: fixed;
     top: 41px;
     left: 0;
     padding: 0 var(--size-SidebarWidth);

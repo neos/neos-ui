@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
 const fs = require('fs');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
 const env = require('./environment');
@@ -23,6 +23,9 @@ if (fs.existsSync(liveReloadOptionsFile) && fs.lstatSync(liveReloadOptionsFile).
     finalLiveReloadOptions = Object.assign({}, finalLiveReloadOptions, liveReloadOptions);
 }
 
+const transpileNodeModule = ['debug', 'd3_scale'];
+const transpileNodeModuleRegex = new RegExp('node_modules/(' + transpileNodeModule.join('|') + ').*$', 'gm');
+
 const webpackConfig = {
     // https://github.com/webpack/docs/wiki/build-performance#sourcemaps
     devtool: 'source-map',
@@ -35,6 +38,11 @@ const webpackConfig = {
                 use: [{
                     loader: 'babel-loader'
                 }]
+            },
+            {
+                test: /\.js$/,
+                include: transpileNodeModuleRegex,
+                loader: 'babel-loader'
             },
             {
                 test: /\.tsx?$/,
@@ -189,19 +197,16 @@ if (!env.isCi && !env.isTesting && !env.isStorybook && !env.isProduction) {
 /* eslint camelcase: ["error", {properties: "never"}] */
 if (env.isProduction) {
     webpackConfig.optimization.minimizer.push(
-        new UglifyJsPlugin({
-            uglifyOptions: {
+        new TerserPlugin({
+            terserOptions: {
                 sourceMap: true,
-                minimize: true,
-                compress: {
-                    keep_fnames: true,
-                    warnings: false
-                },
-                mangle: {
-                    keep_fnames: true
-                }
+                warnings: false,
+                parse: {},
+                compress: {},
+                mangle: true,
+                keep_fnames: true
             }
-        })
+        }),
     );
 }
 

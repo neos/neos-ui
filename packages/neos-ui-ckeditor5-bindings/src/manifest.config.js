@@ -56,17 +56,17 @@ export default ckEditorRegistry => {
             ckeConfig.mySetting = true;
             return ckeConfig;
         });
-        
-        The callback function actually gets passed TWO parameters; aside of the ckeConfig as first parameter, an object
+
+        The callback function gets passed TWO parameters; aside of the ckeConfig as first parameter, an object
         gets passed in as the second parameter with the following fields:
-        
-           - 'editorOptions': gets '[propertyName].ui.inline.editorOptions' from the NodeTypes.yaml
-           - 'userPreferences': 'user.preferences' from redux store
-           - 'globalRegistry': the global registry
-           - 'propertyDomNode': the DOM node where the editor should be initialized.
-           
+
+            - 'editorOptions': gets '[propertyName].ui.inline.editorOptions' from the NodeTypes.yaml
+            - 'userPreferences': 'user.preferences' from redux store
+            - 'globalRegistry': the global registry
+            - 'propertyDomNode': the DOM node where the editor should be initialized.
+
         Thus, to e.g. only adjust the CKEditor config if a certain formatting option is enabled, you can do the following:
-       
+
         config.set('doSmthWithConfig', (ckeConfig, {editorOptions}) => {
             if ($get(['formatting', 'myCustomField'], editorOptions)) {
                 ckeConfig.mySetting = true;
@@ -75,7 +75,7 @@ export default ckEditorRegistry => {
         });
 
         That is all you need to know about configuring CKE in Neos,
-        refer to CKeditor5 documentation for more details on what you can do with it: https://docs.ckeditor.com/ckeditor5/latest/index.html
+        refer to CKEditor 5 documentation for more details on what you can do with it: https://docs.ckeditor.com/ckeditor5/latest/index.html
     `));
 
     //

@@ -6,7 +6,7 @@
 
 ## Versioning
 
-Since Neos 5.0 (scheduled April 2019) this repository will become obsolete and `neos-ui` will be versioned and releases together with with the rest of Neos core packages.
+Since Neos 5.0 (scheduled August 2019) this repository will become obsolete and `neos-ui` will be versioned and releases together with with the rest of Neos core packages.
 
 Until then, the following version conventions are in place:
 - 2.x versions are Neos 3.3 compatible (released from the `2.x` branch)

@@ -164,7 +164,7 @@ export default class NodeToolbar extends PureComponent {
         });
 
         return (
-            <div className={classNames} style={toolbarPosition}>
+            <div className={classNames} data-ignore_click_outside="true" style={toolbarPosition}>
                 <div className={style.toolBar__btnGroup}>
                     <AddNode {...props}/>
                     <HideSelectedNode {...props}/>

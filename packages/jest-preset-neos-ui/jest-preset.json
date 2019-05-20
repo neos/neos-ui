@@ -22,7 +22,7 @@
     "^.+\\.tsx?$": "ts-jest"
   },
   "moduleNameMapper": {
-    "\\.css$": "identity-obj-proxy"
+    "\\.(css|svg)$": "identity-obj-proxy"
   },
   "moduleFileExtensions": [
     "ts",

@@ -4,8 +4,6 @@ import enhanceWithClickOutside from '../enhanceWithClickOutside/index';
 import CloseOnEscape from 'react-close-on-escape';
 import {Portal} from 'react-portal';
 
-import IconButton from '../IconButton';
-
 type DialogType = 'success' | 'warn' | 'error';
 type DialogStyle = 'wide' | 'narrow';
 
@@ -86,8 +84,7 @@ export class DialogWithoutEscape extends PureComponent<DialogProps> {
             children,
             actions,
             theme,
-            type,
-            onRequestClose
+            type
         } = this.props;
 
         const finalClassNameBody = mergeClassNames(
@@ -103,16 +100,6 @@ export class DialogWithoutEscape extends PureComponent<DialogProps> {
         return (
             <div ref={this.handleReference} className={theme.dialog__contentsPosition} tabIndex={0}>
                 <div className={theme.dialog__contents}>
-                    {onRequestClose && (
-                        <IconButton
-                            icon="times"
-                            className={theme.dialog__closeBtn}
-                            onClick={onRequestClose}
-                            size="regular"
-                            style="clean"
-                            hoverStyle="clean"
-                        />
-                    )}
 
                     <div className={theme.dialog__title}>
                         {title}

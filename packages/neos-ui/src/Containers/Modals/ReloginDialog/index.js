@@ -15,8 +15,6 @@ import Tooltip from '@neos-project/react-ui-components/src/Tooltip/';
 import I18n from '@neos-project/neos-ui-i18n';
 import style from './style.css';
 
-const emptyFn = () => {};
-
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')
 }))
@@ -84,6 +82,7 @@ export default class ReloginDialog extends PureComponent {
                 <div className={style.modalContents}>
                     <TextInput
                         className={style.inputField}
+                        containerClassName={style.inputFieldWrapper}
                         value={this.state.username}
                         name="__authentication[Neos][Flow][Security][Authentication][Token][UsernamePassword][username]"
                         placeholder={i18nRegistry.translate('Neos.Neos:Main:username', 'Username')}
@@ -94,6 +93,7 @@ export default class ReloginDialog extends PureComponent {
                     <TextInput
                         type="password"
                         className={style.inputField}
+                        containerClassName={style.inputFieldWrapper}
                         value={this.state.password}
                         name="__authentication[Neos][Flow][Security][Authentication][Token][UsernamePassword][password]"
                         placeholder={i18nRegistry.translate('Neos.Neos:Main:password', 'Password')}

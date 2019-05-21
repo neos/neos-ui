@@ -2,7 +2,7 @@
     padding: var(--spacing-Full);
 }
 .inputFieldWrapper {
-    margin-bottom: 15px;
+    margin-bottom: var(--spacing-Half);
 }
 .loginButton {
     width: 100%;

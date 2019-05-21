@@ -93,6 +93,11 @@ make setup
 
 6) Get an overview about the codebase. We've recorded [an introduction on YouTube](https://www.youtube.com/watch?v=RYBUS5Nxxxk) which gets you acquainted with the basics. Additionally, please get in touch with us on [Slack](http://slack.neos.io) in the channel #project-ui-rewrite. We're eager to help you get started!
 
+#### Guideline for PR and commit messages
+
+Please see [our guideline](https://neos.readthedocs.io/en/latest/Contribute/Documentation/BeginnersGuide.html#guideline-commit-messages)
+on how to write meaningful descriptions for your contributions.  
+
 #### Doing upmerges
 
 1) Develop only in the `2.x` branch, unless this feature is only compatible with Neos 4.x, then in `master`

@@ -458,7 +458,7 @@ class BackendServiceController extends ActionController
 
         $flowQuery = new FlowQuery(array_map(
             function ($envelope) {
-                return $this->nodeService->getNodeFromContextPath($envelope['$node']);
+                return $this->nodeService->getNodeFromContextPath($envelope['$node'], null, null, true);
             },
             $createContext['payload']
         ));
@@ -472,13 +472,13 @@ class BackendServiceController extends ActionController
         switch ($finisher['type']) {
             case 'get':
                 $result = $nodeInfoHelper->renderNodes($flowQuery->get(), $this->getControllerContext());
-            break;
+                break;
             case 'getForTree':
                 $result = $nodeInfoHelper->renderNodes($flowQuery->get(), $this->getControllerContext(), true);
-            break;
+                break;
             case 'getForTreeWithParents':
                 $result = $nodeInfoHelper->renderNodesWithParents($flowQuery->get(), $this->getControllerContext());
-            break;
+                break;
         }
 
         return json_encode($result);

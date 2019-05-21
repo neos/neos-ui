@@ -197,7 +197,7 @@ export class Header extends PureComponent {
                         <div
                             role="button"
                             className={dataClassNames}
-                            onClick={onClick}
+                            onClick={isRemoved ? null : onClick}
                             style={{paddingLeft: (level * 18) + 'px'}}
                             >
                             <div className={theme.header__labelWrapper}>
@@ -211,7 +211,7 @@ export class Header extends PureComponent {
                                     {...rest}
                                     id={labelIdentifier}
                                     className={theme.header__label}
-                                    onClick={isRemoved ? null : onLabelClick}
+                                    onClick={isRemoved ? null : onClick}
                                     data-neos-integrational-test="tree__item__nodeHeader__itemLabel"
                                     role="treeitem"
                                 >

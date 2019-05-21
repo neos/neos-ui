@@ -374,7 +374,7 @@ export const PageTreeNode = withNodeTypeRegistryAndI18nRegistry(connect(
             hasChildren: hasChildrenSelector(state, getContextPath(node)),
             isActive: selectors.CR.Nodes.documentNodeContextPathSelector(state) === $get('contextPath', node),
             isFocused: selectors.UI.PageTree.getFocused(state) === $get('contextPath', node),
-            isNodeRemoved: $get('cr.nodes.byContextPath.' + getContextPath(node) + '.removed', state) || false,
+            isNodeRemoved: $get('removed', node),
             toggledNodeContextPaths: selectors.UI.PageTree.getToggled(state),
             hiddenContextPaths: selectors.UI.PageTree.getHidden(state),
             intermediateContextPaths: selectors.UI.PageTree.getIntermediate(state),
@@ -416,7 +416,7 @@ export const ContentTreeNode = withNodeTypeRegistryAndI18nRegistry(connect(
             isFocused: $get('cr.nodes.focused.contextPath', state) === $get('contextPath', node),
             toggledNodeContextPaths: selectors.UI.ContentTree.getToggled(state),
             isNodeDirty: isContentNodeDirtySelector(state, $get('contextPath', node)),
-            isNodeRemoved: $get('cr.nodes.byContextPath.' + getContextPath(node) + '.removed', state) || false,
+            isNodeRemoved: $get('removed', node),
             canBeInsertedAlongside: canBeMovedAlongsideSelector(state, {
                 subject: getContextPath(currentlyDraggedNode),
                 reference: getContextPath(node)

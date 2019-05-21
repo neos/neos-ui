@@ -91,6 +91,7 @@ export class Header extends PureComponent {
         isLoading: PropTypes.bool.isRequired,
         isHidden: PropTypes.bool,
         isDirty: PropTypes.bool,
+        isRemoved: PropTypes.bool,
         isHiddenInIndex: PropTypes.bool,
         hasError: PropTypes.bool.isRequired,
         label: PropTypes.string.isRequired,
@@ -148,6 +149,7 @@ export class Header extends PureComponent {
             isHidden,
             isHiddenInIndex,
             isDirty,
+            isRemoved,
             isLoading,
             label,
             icon,
@@ -173,7 +175,8 @@ export class Header extends PureComponent {
             [theme['header__data--isLastChild']]: isLastChild,
             [theme['header__data--isHiddenInIndex']]: isHiddenInIndex,
             [theme['header__data--isHidden']]: isHidden,
-            [theme['header__data--isDirty']]: isDirty,
+            [theme['header__data--isDirty']]: isDirty && !isRemoved,
+            [theme['header__data--isRemoved']]: isRemoved,
             [theme['header__data--isDragging']]: isDragging,
             [theme['header__data--acceptsDrop']]: isOver && canDrop,
             [theme['header__data--deniesDrop']]: isOver && !canDrop
@@ -193,7 +196,7 @@ export class Header extends PureComponent {
                         <div
                             role="button"
                             className={dataClassNames}
-                            onClick={onClick}
+                            onClick={isRemoved ? null : onClick}
                             style={{paddingLeft: (level * 18) + 'px'}}
                             >
                             <div className={theme.header__labelWrapper}>
@@ -207,7 +210,7 @@ export class Header extends PureComponent {
                                     {...rest}
                                     id={labelIdentifier}
                                     className={theme.header__label}
-                                    onClick={onLabelClick}
+                                    onClick={isRemoved ? null : onLabelClick}
                                     data-neos-integrational-test="tree__item__nodeHeader__itemLabel"
                                     role="treeitem"
                                 >

@@ -119,6 +119,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         $this->userLocaleService->switchToUILocale();
 
         $nodeInfo = $this->getBasicNodeInformation($node);
+        $nodeInfo['removed'] = $node->isRemoved();
         $nodeInfo['properties'] = [
             // if we are only rendering the tree state, ensure _isHidden is sent to hidden nodes are correctly shown in the tree.
             '_hidden' => $node->isHidden(),

@@ -6,7 +6,7 @@
 
         &:focus {
             background: var(--colors-ContrastDark);
-            color: var(--contrastBrightest);
+            color: var(--colors-ContrastBrightest);
         }
     }
 }

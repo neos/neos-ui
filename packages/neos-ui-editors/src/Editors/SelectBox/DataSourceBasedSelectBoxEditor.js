@@ -31,6 +31,7 @@ export default class DataSourceBasedSelectBoxEditor extends PureComponent {
 
             dataSourceIdentifier: PropTypes.string,
             dataSourceUri: PropTypes.string,
+            dataSourceDisableCaching: PropTypes.bool,
             dataSourceAdditionalData: PropTypes.objectOf(PropTypes.any),
 
             minimumResultsForSearch: PropTypes.number,
@@ -71,7 +72,8 @@ export default class DataSourceBasedSelectBoxEditor extends PureComponent {
             contextNodePath: this.props.focusedNodePath,
             dataSourceIdentifier: this.props.options.dataSourceIdentifier,
             dataSourceUri: this.props.options.dataSourceUri,
-            dataSourceAdditionalData: this.props.options.dataSourceAdditionalData
+            dataSourceAdditionalData: this.props.options.dataSourceAdditionalData,
+            dataSourceDisableCaching: Boolean(this.props.options.dataSourceDisableCaching)
         };
     }
 

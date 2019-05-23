@@ -53,9 +53,8 @@ export default class Frame extends PureComponent<FrameProps> {
 
     private readonly addClickListener = () => {
         if (this.ref && this.ref.contentDocument && this.ref.contentWindow) {
-            this.ref.contentDocument.addEventListener('click', (e) => {
-                this.relayClickEventToHostDocument(e);
-            });
+            this.ref.contentDocument.removeEventListener('click', this.relayClickEventToHostDocument);
+            this.ref.contentDocument.addEventListener('click', this.relayClickEventToHostDocument);
             this.ref.contentWindow.addEventListener('unload', () => {
                 this.handleUnload();
             });

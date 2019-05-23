@@ -323,6 +323,7 @@ manifest('main.dataloaders', {}, globalRegistry => {
                 - contextNodePath: ...
                 - dataSourceIdentifier: The data source to load. Either this or dataSourceUri is required.
                 - dataSourceUri: The data source URL to load.
+                - dataSourceDisableCaching: Disable default _lru caching option.
                 - dataSourceAdditionalData: Additional data to send to the server
         `,
 
@@ -348,7 +349,9 @@ manifest('main.dataloaders', {}, globalRegistry => {
             const params = Object.assign({node: options.contextNodePath}, options.dataSourceAdditionalData || {});
             const resultPromise = dataSource(options.dataSourceIdentifier, options.dataSourceUri, params);
 
-            this._lru().set(cacheKey, resultPromise);
+            if (!options.dataSourceDisableCaching) {
+                this._lru().set(cacheKey, resultPromise);
+            }
             return resultPromise;
         },
 

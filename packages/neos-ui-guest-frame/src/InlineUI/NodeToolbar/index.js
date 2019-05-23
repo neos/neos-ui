@@ -163,8 +163,12 @@ export default class NodeToolbar extends PureComponent {
             [style['toolBar--isSticky']]: isSticky
         });
 
+        // The data attribute data-ignore_click_outside is used to disable the enhanceWithClickOutside
+        // handling. For the special case that the outOfBandRender returns an empty rendered content
+        // we need to disable the enhanceWithClickOutside handling to prevent hick ups in the event
+        // registration after guest frame reload.
         return (
-            <div className={classNames} style={toolbarPosition}>
+            <div className={classNames} data-ignore_click_outside="true" style={toolbarPosition}>
                 <div className={style.toolBar__btnGroup}>
                     <AddNode {...props}/>
                     <HideSelectedNode {...props}/>

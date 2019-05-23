@@ -73,7 +73,7 @@ export default class DataSourceBasedSelectBoxEditor extends PureComponent {
             dataSourceIdentifier: this.props.options.dataSourceIdentifier,
             dataSourceUri: this.props.options.dataSourceUri,
             dataSourceAdditionalData: this.props.options.dataSourceAdditionalData,
-            dataSourceDisableCaching: !!this.props.options.dataSourceDisableCaching
+            dataSourceDisableCaching: Boolean(this.props.options.dataSourceDisableCaching)
         };
     }
 

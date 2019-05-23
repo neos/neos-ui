@@ -273,7 +273,7 @@ manifest('main.dataloaders', {}, globalRegistry => {
             const params = Object.assign({node: options.contextNodePath}, options.dataSourceAdditionalData || {});
             const resultPromise = dataSource(options.dataSourceIdentifier, options.dataSourceUri, params);
 
-            if( !options.dataSourceDisableCaching ) {
+            if (!options.dataSourceDisableCaching) {
                 this._lru().set(cacheKey, resultPromise);
             }
             return resultPromise;

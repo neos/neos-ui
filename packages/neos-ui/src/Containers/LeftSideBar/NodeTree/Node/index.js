@@ -261,7 +261,6 @@ export default class Node extends PureComponent {
             childNodes,
             hasChildren,
             isLastChild,
-            isNodeRemoved,
             level,
             onNodeToggle,
             onNodeClick,
@@ -298,7 +297,7 @@ export default class Node extends PureComponent {
                     isFocused={this.isFocused()}
                     isLoading={this.isLoading()}
                     isDirty={this.props.isNodeDirty}
-                    isRemoved={isNodeRemoved}
+                    isRemoved={$get('properties._removed', node)}
                     isHidden={$get('properties._hidden', node)}
                     isHiddenInIndex={$get('properties._hiddenInIndex', node) || this.isIntermediate()}
                     hasError={this.hasError()}
@@ -310,7 +309,7 @@ export default class Node extends PureComponent {
                     onToggle={this.handleNodeToggle}
                     onClick={this.handleNodeClick}
                     dragAndDropContext={this.getDragAndDropContext()}
-                    dragForbidden={$get('isAutoCreated', node) || isNodeRemoved}
+                    dragForbidden={$get('isAutoCreated', node) || $get('properties._hidden', node)}
                     title={labelTitle}
                     />
                 {this.isCollapsed() ? null : (
@@ -374,7 +373,7 @@ export const PageTreeNode = withNodeTypeRegistryAndI18nRegistry(connect(
             hasChildren: hasChildrenSelector(state, getContextPath(node)),
             isActive: selectors.CR.Nodes.documentNodeContextPathSelector(state) === $get('contextPath', node),
             isFocused: selectors.UI.PageTree.getFocused(state) === $get('contextPath', node),
-            isNodeRemoved: $get('removed', node),
+            isNodeRemoved: $get('properties._removed', node),
             toggledNodeContextPaths: selectors.UI.PageTree.getToggled(state),
             hiddenContextPaths: selectors.UI.PageTree.getHidden(state),
             intermediateContextPaths: selectors.UI.PageTree.getIntermediate(state),
@@ -416,7 +415,7 @@ export const ContentTreeNode = withNodeTypeRegistryAndI18nRegistry(connect(
             isFocused: $get('cr.nodes.focused.contextPath', state) === $get('contextPath', node),
             toggledNodeContextPaths: selectors.UI.ContentTree.getToggled(state),
             isNodeDirty: isContentNodeDirtySelector(state, $get('contextPath', node)),
-            isNodeRemoved: $get('removed', node),
+            isNodeRemoved: $get('properties._removed', node),
             canBeInsertedAlongside: canBeMovedAlongsideSelector(state, {
                 subject: getContextPath(currentlyDraggedNode),
                 reference: getContextPath(node)

@@ -125,6 +125,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             '_hiddenInIndex' => $node->isHiddenInIndex(),
             '_hiddenBeforeDateTime' => $node->getHiddenBeforeDateTime() instanceof \DateTimeInterface ? $node->getHiddenBeforeDateTime()->format(\DateTime::W3C) : '',
             '_hiddenAfterDateTime' => $node->getHiddenAfterDateTime() instanceof \DateTimeInterface ? $node->getHiddenAfterDateTime()->format(\DateTime::W3C) : '',
+            '_removed' => $node->isRemoved(),
         ];
 
         if ($controllerContext !== null) {
@@ -210,7 +211,6 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             'nodeType' => $node->getNodeType()->getName(),
             'label' => $node->getLabel(),
             'isAutoCreated' => $node->isAutoCreated(),
-            'removed' => $node->isRemoved(),
             'depth' => $node->getDepth(),
             'children' => [],
             'matchesCurrentDimensions' => ($node instanceof Node && $node->dimensionsAreMatchingTargetDimensionValues())

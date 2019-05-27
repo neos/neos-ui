@@ -410,7 +410,8 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
             break;
         }
         case actionTypes.REMOVE: {
-            delete draft.byContextPath[action.payload];
+            const node = getNodeOrThrow(draft.byContextPath, action.payload);
+            node.properties._removed = true;
             break;
         }
         case actionTypes.SET_DOCUMENT_NODE: {

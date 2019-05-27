@@ -17,6 +17,8 @@ export function * watchPublish() {
             yield put(actions.UI.Remote.startPublishing());
 
             try {
+                const currentContentCanvasContextPath = yield select(selectors.CR.Nodes.documentNodeContextPathSelector);
+
                 const feedback = yield call(publish, nodeContextPaths, targetWorkspaceName);
                 yield put(actions.UI.Remote.finishPublishing());
                 yield put(actions.ServerFeedback.handleServerFeedback(feedback));
@@ -27,6 +29,14 @@ export function * watchPublish() {
                 const previewUrl = documentUriFragment + '@' + targetWorkspaceName;
 
                 yield put(actions.UI.ContentCanvas.setPreviewUrl(previewUrl));
+
+                // Check if the currently focused document node has been removed
+                const contentCanvasNodeIsStillThere = Boolean(yield select(selectors.CR.Nodes.byContextPathSelector(currentContentCanvasContextPath)));
+
+                // If not, reload the document
+                if (contentCanvasNodeIsStillThere) {
+                    getGuestFrameDocument().location.reload();
+                }
             } catch (error) {
                 console.error('Failed to publish', error);
             }

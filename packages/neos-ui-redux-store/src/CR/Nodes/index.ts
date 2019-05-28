@@ -58,6 +58,7 @@ export enum actionTypes {
     REMOVAL_ABORTED = '@neos/neos-ui/CR/Nodes/REMOVAL_ABORTED',
     REMOVAL_CONFIRMED = '@neos/neos-ui/CR/Nodes/REMOVAL_CONFIRMED',
     REMOVE = '@neos/neos-ui/CR/Nodes/REMOVE',
+    REMOVE_FROM_TREE = '@neos/neos-ui/CR/Nodes/REMOVE_FROM_TREE',
     SET_DOCUMENT_NODE = '@neos/neos-ui/CR/Nodes/SET_DOCUMENT_NODE',
     SET_STATE = '@neos/neos-ui/CR/Nodes/SET_STATE',
     RELOAD_STATE = '@neos/neos-ui/CR/Nodes/RELOAD_STATE',
@@ -146,6 +147,13 @@ const confirmRemoval = () => createAction(actionTypes.REMOVAL_CONFIRMED);
  * @param {String} contextPath The context path of the node to be removed
  */
 const remove = (contextPath: NodeContextPath) => createAction(actionTypes.REMOVE, contextPath);
+
+/**
+ * Remove the node from tree that was marked for removal
+ *
+ * @param {String} contextPath The context path of the node to be removed from tree
+ */
+const removeFromTree = (contextPath: NodeContextPath) => createAction(actionTypes.REMOVE_FROM_TREE, contextPath);
 
 /**
  * Set the document node and optionally site node
@@ -276,6 +284,7 @@ export const actions = {
     abortRemoval,
     confirmRemoval,
     remove,
+    removeFromTree,
     setDocumentNode,
     setState,
     reloadState,
@@ -414,6 +423,10 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
             if (node) {
                 node.properties._removed = true;
             }
+            break;
+        }
+        case actionTypes.REMOVE_FROM_TREE: {
+            delete draft.byContextPath[action.payload];
             break;
         }
         case actionTypes.SET_DOCUMENT_NODE: {

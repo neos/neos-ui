@@ -299,6 +299,56 @@ manifest('main', {}, globalRegistry => {
     });
 
     //
+    // When the server has removed a node, remove it as well from the store amd the dom
+    //
+    serverFeedbackHandlers.set('Neos.Neos.Ui:RemoveNodeFromTree/Main', ({contextPath, parentContextPath}, {store}) => {
+        const state = store.getState();
+        if ($get('cr.nodes.focused.contextPath', state) === contextPath) {
+            store.dispatch(actions.CR.Nodes.unFocus());
+        }
+
+        if ($get('ui.pageTree.isFocused', state) === contextPath) {
+            store.dispatch(actions.UI.PageTree.focus(parentContextPath));
+        }
+
+        // If we are removing current document node...
+        if ($get('cr.nodes.documentNode', state) === contextPath) {
+            let redirectContextPath = contextPath;
+            let redirectUri = null;
+            // Determine closest parent that is not being removed
+            while (!redirectUri) {
+                redirectContextPath = parentNodeContextPath(redirectContextPath);
+                // This is an extreme case when even the top node does not exist in the given dimension
+                // TODO: still find a nicer way to break out of this situation
+                if (redirectContextPath === false) {
+                    window.location = '/neos';
+                    break;
+                }
+                redirectUri = $get(['cr', 'nodes', 'byContextPath', redirectContextPath, 'uri'], state);
+            }
+
+            store.dispatch(actions.UI.ContentCanvas.setSrc(redirectUri));
+            store.dispatch(actions.CR.Nodes.setDocumentNode(redirectContextPath));
+        }
+
+        store.dispatch(actions.CR.Nodes.removeFromTree(contextPath));
+
+        // Remove the node from the dom
+        if ($get('cr.nodes.documentNode', state) !== contextPath) {
+            findAllOccurrencesOfNodeInGuestFrame(contextPath).forEach(el => {
+                const closestContentCollection = el.closest('.neos-contentcollection');
+                el.remove();
+
+                createEmptyContentCollectionPlaceholderIfMissing(closestContentCollection);
+
+                dispatchCustomEvent('Neos.NodeRemoved', 'Node was removed.', {
+                    element: el
+                });
+            });
+        }
+    });
+
+    //
     // When the server advices to render a new node, put the delivered html to the
     // correct place inside the DOM
     //

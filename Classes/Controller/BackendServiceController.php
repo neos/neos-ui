@@ -33,6 +33,7 @@ use Neos\Neos\Ui\Domain\Model\Feedback\Messages\Success;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\Redirect;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNodeFromTree;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
 use Neos\Neos\Ui\Domain\Model\FeedbackCollection;
@@ -243,7 +244,7 @@ class BackendServiceController extends ActionController
                     }
                 } elseif (!$this->nodeService->nodeExistsInWorkspace($node, $node->getWorkSpace()->getBaseWorkspace())) {
                     // If the node doesn't exist in the target workspace, tell the UI to remove it
-                    $removeNode = new RemoveNode();
+                    $removeNode = new RemoveNodeFromTree();
                     $removeNode->setNode($node);
                     $this->feedbackCollection->add($removeNode);
                 }

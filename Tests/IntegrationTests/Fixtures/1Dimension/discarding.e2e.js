@@ -140,7 +140,7 @@ test('Discarding: delete a content node and then discard deletion', async t => {
         .click(Selector('#neos-ContentTree-ToggleContentTree'))
         .click(Page.treeNode.withText(headlineToDelete))
         .click(Selector('#neos-ContentTree-DeleteSelectedNode'))
-        .click(Selector('#neos-DeleteNodeModal-Confirm'));
+        .click(Selector('#neos-DeleteNodeModal-Confirm'))
         .expect(ReactSelector('Node').withProps('isNodeRemoved', true).find('span').withText(headlineToDelete).exists).ok('Deleted node marked as removed in the tree')
         .switchToIframe('[name="neos-content-main"]')
         .expect(Selector('.neos-inline-editable').withText(headlineToDelete).exists).notOk('New headline gone from the page')

@@ -4,7 +4,7 @@ import {action as createAction, ActionType} from 'typesafe-actions';
 import {actionTypes as system, InitAction} from '@neos-project/neos-ui-redux-store/src/System';
 
 import * as selectors from './selectors';
-import {parentNodeContextPath, getNodeOrThrow} from './helpers';
+import {parentNodeContextPath, getNode, getNodeOrThrow} from './helpers';
 
 import {FusionPath, NodeContextPath, InsertPosition, NodeMap, ClipboardMode, NodeTypeName} from '@neos-project/neos-ts-interfaces';
 
@@ -410,8 +410,10 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
             break;
         }
         case actionTypes.REMOVE: {
-            const node = getNodeOrThrow(draft.byContextPath, action.payload);
-            node.properties._removed = true;
+            const node = getNode(draft.byContextPath, action.payload);
+            if (node) {
+                node.properties._removed = true;
+            }
             break;
         }
         case actionTypes.SET_DOCUMENT_NODE: {

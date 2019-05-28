@@ -47,6 +47,15 @@ export const isNodeCollapsed = (node: Node, isToggled: boolean, rootNode: Node, 
     return (isCollapsedByDefault && !isToggled) || (!isCollapsedByDefault && isToggled);
 };
 
+export const getNode = (nodeMap: NodeMap, contextPath: NodeContextPath) => {
+    if (nodeMap[contextPath]) {
+        const node = nodeMap[contextPath];
+        return node;
+    }
+
+    return null;
+};
+
 export const getNodeOrThrow = (nodeMap: NodeMap, contextPath: NodeContextPath) => {
     const node = nodeMap[contextPath];
     if (!isNode(node)) {

@@ -153,8 +153,6 @@ test('Discarding: delete a content node and then discard deletion', async t => {
     await Page.waitForIframeLoading(t);
     await t
         .expect(ReactSelector('Node').withProps('isNodeRemoved', false).find('span').withText(headlineToDelete).exists).ok('Deleted node unmarked as removed in the tree')
-    await Page.waitForIframeLoading(t);
-    await t
         .switchToIframe('[name="neos-content-main"]')
         .expect(Selector('.neos-inline-editable').withText(headlineToDelete).exists).ok('New headline reappeared on the page')
         .switchToMainWindow();

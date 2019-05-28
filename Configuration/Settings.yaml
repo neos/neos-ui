@@ -138,7 +138,7 @@ Neos:
             clipboard: '${clipboardNode || null}'
             clipboardMode: '${clipboardMode || null}'
           contentDimensions:
-            byName: '${Neos.Ui.ContentDimensions.contentDimensionsByName()}'
+            byName: '${Neos.Ui.Api.emptyArrayToObject(Neos.Ui.ContentDimensions.contentDimensionsByName())}'
             active: '${documentNode.context.dimensions}'
             allowedPresets: '${Neos.Ui.Api.emptyArrayToObject(Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions))}'
           workspaces:

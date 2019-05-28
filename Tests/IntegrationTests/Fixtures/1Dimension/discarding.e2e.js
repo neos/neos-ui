@@ -84,12 +84,15 @@ test('Discarding: delete a document node and then discard deletion', async t => 
     subSection('Delete that page');
     await t
         .click(Selector('#neos-PageTree-DeleteSelectedNode'))
-        .click(Selector('#neos-DeleteNodeModal-Confirm'))
+        .click(Selector('#neos-DeleteNodeModal-Confirm'));
+    await Page.waitForIframeLoading(t);
+    await t
         .expect(ReactSelector('Node').withProps('isNodeRemoved', true).find('span').withText(pageTitleToDelete).exists).ok('Deleted node marked as removed in the tree')
         .expect(Selector('.neos-message-header').withText('Page Not Found').exists).notOk('Make sure we don\'t end up on 404 page');
 
     subSection('Discard page deletion');
     await PublishDropDown.discardAll(t);
+    await Page.waitForIframeLoading(t);
     await t
         .expect(ReactSelector('Node').withProps('isNodeRemoved', false).find('span').withText(pageTitleToDelete).exists).ok('Deleted node unmarked as removed in the tree')
 });
@@ -147,6 +150,7 @@ test('Discarding: delete a content node and then discard deletion', async t => {
 
     subSection('Discard page deletion');
     await PublishDropDown.discardAll(t);
+    await Page.waitForIframeLoading(t);
     await t
         .expect(ReactSelector('Node').withProps('isNodeRemoved', false).find('span').withText(headlineToDelete).exists).ok('Deleted node unmarked as removed in the tree')
     await Page.waitForIframeLoading(t);

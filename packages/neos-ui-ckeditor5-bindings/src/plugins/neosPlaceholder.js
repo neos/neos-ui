@@ -38,15 +38,19 @@ export default class NeosPlaceholder extends Plugin {
     }
 
     addPlaceholder() {
-        this.editor.sourceElement.dataset.neosPlaceholder = this.getPlaceholder();
+        this.editor.editing.view.change( writer => {
+            writer.setAttribute( 'data-neos-placeholder', this.getPlaceholder(), this.editor.editing.view.document.getRoot() );
+        } );
     }
 
     removePlaceholder() {
-        delete this.editor.sourceElement.dataset.neosPlaceholder;
+        this.editor.editing.view.change( writer => {
+            writer.removeAttribute( 'data-neos-placeholder', this.editor.editing.view.document.getRoot() );
+        } );
     }
 
     updatePlaceholder() {
-        if (htmlIsEmptyish(this.editor.getData()) && !this.editor.ui.focusTracker.isFocused) {
+        if (htmlIsEmptyish(this.editor.getData( { trim: 'none' })) && !this.editor.ui.focusTracker.isFocused) {
             this.addPlaceholder();
         } else {
             this.removePlaceholder();

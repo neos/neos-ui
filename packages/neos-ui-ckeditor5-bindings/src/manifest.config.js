@@ -3,6 +3,7 @@ import {$add, $get, $or} from 'plow-js';
 
 import NeosPlaceholder from './plugins/neosPlaceholder';
 import InlineMode from './plugins/inlineMode';
+import DebugInspector from './plugins/debugInspector';
 import Sub from './plugins/sub';
 import Sup from './plugins/sup';
 import LinkTargetBlank from './plugins/linkTargetBlank';
@@ -96,6 +97,7 @@ export default ckEditorRegistry => {
     config.set('paragraph', addPlugin(Paragraph));
     config.set('inlineMode', addPlugin(InlineMode, disableParagraph));
     config.set('neosPlaceholder', addPlugin(NeosPlaceholder));
+    config.set('ckeditorInspector', addPlugin(DebugInspector, $get('ckeditorInspector')));
     config.set('sub', addPlugin(Sub, $get('formatting.sub')));
     config.set('sup', addPlugin(Sup, $get('formatting.sup')));
     config.set('bold', addPlugin(Bold, $get('formatting.strong')));

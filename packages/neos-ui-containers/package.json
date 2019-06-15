@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-containers",
-  "version": "2.5.0",
+  "version": "2.6.0",
   "description": "Smart components for Neos CMS UI.",
   "private": true,
   "main": "./src/index.js",
@@ -13,15 +13,15 @@
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "2.5.0",
-    "@neos-project/build-essentials": "2.5.0",
-    "@neos-project/jest-preset-neos-ui": "2.5.0"
+    "@neos-project/babel-preset-neos-ui": "2.6.0",
+    "@neos-project/build-essentials": "2.6.0",
+    "@neos-project/jest-preset-neos-ui": "2.6.0"
   },
   "dependencies": {
-    "@neos-project/neos-ui-decorators": "2.5.0",
-    "@neos-project/neos-ui-extensibility": "2.5.0",
-    "@neos-project/react-ui-components": "2.5.0",
-    "@neos-project/utils-logger": "2.5.0"
+    "@neos-project/neos-ui-decorators": "2.6.0",
+    "@neos-project/neos-ui-extensibility": "2.6.0",
+    "@neos-project/react-ui-components": "2.6.0",
+    "@neos-project/utils-logger": "2.6.0"
   },
   "license": "GNU GPLv3",
   "jest": {

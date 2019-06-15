@@ -68,10 +68,7 @@ import ViewUIElement from '@ckeditor/ckeditor5-engine/src/view/uielement.js';
 import View from '@ckeditor/ckeditor5-engine/src/view/view.js';
 import DownCastWriter from '@ckeditor/ckeditor5-engine/src/view/downcastwriter';
 
-import * as UpcastConverters from '@ckeditor/ckeditor5-engine/src/conversion/upcast-converters';
-import * as DowncastConverters from '@ckeditor/ckeditor5-engine/src/conversion/downcast-converters';
-
-const CkEditor5 = {Plugin, Command, UpcastConverters, DowncastConverters, ModelDocument, ModelDocumentFragment, ModelDocumentSelection, ModelElement, ModelNode, ModelNodeList, ModelPosition, ModelRange, ModelSchema, ModelSelection, ModelText, ModelTextProxy, ModelTreeWalker, ModelWriter, ViewAttributeElement, ViewContainerElement, ViewDocument, ViewDocumentFragment, ViewDocumentSelection, ViewDOMConverter, ViewEditableElement, ViewElement, ViewEmptyElement, ViewFiller, ViewMatcher, ViewNode, ViewPlaceholder, ViewPosition, ViewRange, ViewRenderer, ViewSelection, ViewText, ViewTextProxy, ViewTreeWalker, ViewUIElement, View, DownCastWriter};
+const CkEditor5 = {Plugin, Command, ModelDocument, ModelDocumentFragment, ModelDocumentSelection, ModelElement, ModelNode, ModelNodeList, ModelPosition, ModelRange, ModelSchema, ModelSelection, ModelText, ModelTextProxy, ModelTreeWalker, ModelWriter, ViewAttributeElement, ViewContainerElement, ViewDocument, ViewDocumentFragment, ViewDocumentSelection, ViewDOMConverter, ViewEditableElement, ViewElement, ViewEmptyElement, ViewFiller, ViewMatcher, ViewNode, ViewPlaceholder, ViewPosition, ViewRange, ViewRenderer, ViewSelection, ViewText, ViewTextProxy, ViewTreeWalker, ViewUIElement, View, DownCastWriter};
 
 export default {
     '@vendor': () => ({

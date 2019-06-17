@@ -125,7 +125,14 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - checkout
+      - checkout:
+          filters:
+            tags:
+              only:
+                - /^\d\.\d\.\d/
+            branches:
+              only:
+                - /.*/
       - build_flow_app:
           requires:
             - checkout

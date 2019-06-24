@@ -95,9 +95,13 @@ class NodePropertyConversionService
                     $propertyMappingConfiguration->setTypeConverterOption(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED, true);
 
                     if ($parsedType && TypeHandling::isCollectionType($parsedType['type'])) {
-                        $subConfiguration = $propertyMappingConfiguration->forProperty('*');
-                        $subConfiguration->setTypeConverterOption(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED, true);
-                        $subConfiguration->setTypeConverterOption(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_OVERRIDE_TARGET_TYPE_ALLOWED, true);
+                        /** @var MvcPropertyMappingConfiguration $subPropertyMappingConfiguration */
+                        $subPropertyMappingConfiguration = $propertyMappingConfiguration->forProperty('*');
+                        $subPropertyMappingConfiguration->allowOverrideTargetType();
+                        $subPropertyMappingConfiguration->allowAllProperties();
+                        $subPropertyMappingConfiguration->skipUnknownProperties();
+                        $subPropertyMappingConfiguration->setTypeConverterOption(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED, true);
+                        $subPropertyMappingConfiguration->setTypeConverterOption(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED, true);
                     }
 
                     return $this->propertyMapper->convert($rawValue, $propertyType, $propertyMappingConfiguration);

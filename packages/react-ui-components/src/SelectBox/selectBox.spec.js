@@ -21,6 +21,8 @@ describe('<SelectBox/>', () => {
             },
             searchBoxLeftToTypeLabel: 'searchBoxLeftToTypeLabel',
             noMatchesFoundLabel: 'noMatchesFoundLabel',
+            placeholder: 'placeholder',
+            placeholderIcon: 'placeholderIcon',
             onValueChange: jest.fn(),
             options: [],
             DropDown,

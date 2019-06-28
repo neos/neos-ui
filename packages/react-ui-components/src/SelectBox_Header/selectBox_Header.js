@@ -81,7 +81,16 @@ class SelectBox_Header extends PureComponent {
                             label={label}
                             icon={icon}
                             disabled={disabled}
-                            /> : <div className={theme.selectBoxHeader__label}>{label}</div>}
+                            /> : (
+                                <div className={theme.selectBoxHeader__label}>
+                                    {icon &&
+                                        <span className={theme.selectBoxHeader__wrapperPlaceholderIconWrapper}>
+                                            <Icon className={theme.selectBoxHeader__icon} icon={icon}/>
+                                        </span>}
+                                    {label}
+                                </div>
+                            )
+                        }
                     </div>
                 )}
                 {this.resetButton()}

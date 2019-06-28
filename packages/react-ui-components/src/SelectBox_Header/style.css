@@ -23,6 +23,10 @@
     padding: 0 var(--spacing-Full);
 }
 
+.selectBoxHeader__wrapperPlaceholderIconWrapper {
+    padding: 0 var(--spacing-Half) 0 0;
+}
+
 .selectBoxHeader--disabled {
     cursor: not-allowed;
 }

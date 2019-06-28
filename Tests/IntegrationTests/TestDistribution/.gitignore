@@ -1,9 +1,0 @@
-Packages
-Web
-Configuration/*
-!Configuration/Settings.yaml
-Data
-bin
-Readme.rst
-Upgrading.rst
-flow*

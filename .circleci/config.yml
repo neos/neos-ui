@@ -63,7 +63,7 @@ jobs:
       - attach_workspace: *attach_workspace
 
       - run: mkdir -p /home/circleci/app/Configuration
-      - run: rm -rf /home/circleci/app && git clone git@github.com:neos/neos-ui-testing-distribution.git /home/circleci/app
+      - run: rm -rf /home/circleci/app && git clone https://github.com/neos/neos-ui-testing-distribution.git /home/circleci/app
       - run: cd /home/circleci/app && composer install
 
   e2e:

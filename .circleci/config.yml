@@ -2,6 +2,7 @@ version: 2.0
 
 aliases:
   - &workspace_root ~/neos-ui-workspace
+  - &distribution_root ~/neos-ui-workspace/distribution_root
   - &store_yarn_package_cache
     key: yarn-cache-v1-{{ checksum "yarn.lock" }}
     paths:
@@ -18,6 +19,7 @@ aliases:
     root: .
     paths:
       - .
+      - distribution_root
 
   - &store_app_cache
     key: full-app-cache-v1-{{ checksum "/home/circleci/app/composer.json" }}-{{ checksum "/home/circleci/app/Configuration/Settings.yaml" }}
@@ -44,6 +46,7 @@ jobs:
       - run: chmod +x ~/.nvm/nvm.sh
       - run: ~/.nvm/nvm.sh install && ~/.nvm/nvm.sh use
       - run: make install && make build-production
+      - run: git clone https://github.com/neos/neos-ui-testing-distribution.git ~/neos-ui-workspace/distribution_root
 
       - save_cache: *store_yarn_package_cache
       - persist_to_workspace: *persist_to_workspace
@@ -74,7 +77,8 @@ jobs:
       - attach_workspace: *attach_workspace
 
       - run: mkdir -p /home/circleci/app/Configuration
-      - run: rm -rf /home/circleci/app && git clone https://github.com/neos/neos-ui-testing-distribution.git /home/circleci/app
+      - run: ls -lah ~/neos-ui-workspace
+      - run: rm -rf /home/circleci/app && mv ~/neos-ui-workspace/distribution_root/ /home/circleci/app
       - run: cd /home/circleci/app && composer install
       - save_cache: *store_app_cache
 

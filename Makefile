@@ -125,7 +125,7 @@ lint-editorconfig:
 	$(editorconfigChecker) \
 		--exclude-regexp 'LICENSE|\.vanilla\-css$$|banner\.js$$' \
 		--exclude-pattern \
-		'./{README.md,**/*.snap,**/*{fontAwesome,Resources,dist}/**/*}'
+		'./{README.md,**/README.md,**/*.snap,**/*{fontAwesome,Resources,dist}/**/*}'
 
 
 ################################################################################

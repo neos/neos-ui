@@ -46,9 +46,10 @@ jobs:
       - run: chmod +x ~/.nvm/nvm.sh
       - run: ~/.nvm/nvm.sh install && ~/.nvm/nvm.sh use
       - run: make install && make build-production
+      - save_cache: *store_yarn_package_cache
+
       - run: git clone https://github.com/neos/neos-ui-testing-distribution.git ~/neos-ui-workspace/distribution_root
 
-      - save_cache: *store_yarn_package_cache
       - persist_to_workspace: *persist_to_workspace
 
   codestyle:

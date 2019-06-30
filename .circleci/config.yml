@@ -79,7 +79,9 @@ jobs:
     steps:
       - attach_workspace: *attach_workspace
 
+      - run: ls -lah /home/circleci/app/Packages/Application
       - run: rm -rf /home/circleci/app/Packages/Application/Neos.Neos.Ui
+      - run: ls -lah /home/circleci/app/Packages/Application
       - run: cd /home/circleci/app/Packages/Application && mv ~/neos-ui-workspace Neos.Neos.Ui
       - run: |
           cd /home/circleci/app/

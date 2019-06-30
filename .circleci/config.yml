@@ -22,15 +22,25 @@ aliases:
       - distribution_root
 
   - &store_app_cache
-    key: full-app-cache-v1-{{ checksum "/home/circleci/app/composer.json" }}-{{ checksum "/home/circleci/app/Configuration/Settings.yaml" }}
+    key: full-app-cache-v1-{{ checksum "distribution_root/composer.json" }}-{{ checksum "distribution_root/Configuration/Settings.yaml" }}
     paths:
       - /home/circleci/app
 
   - &restore_app_cache
     keys:
-      - full-app-cache-v1-{{ checksum "/home/circleci/app/composer.json" }}-{{ checksum "/home/circleci/app/Configuration/Settings.yaml" }}
-      - full-app-cache-v1-{{ checksum "/home/circleci/app/composer.json" }}-
+      - full-app-cache-v1-{{ checksum "distribution_root/composer.json" }}-{{ checksum "distribution_root/Configuration/Settings.yaml" }}
+      - full-app-cache-v1-{{ checksum "distribution_root/composer.json" }}-
       - full-app-cache-v1-
+
+  - &save_composer_cache
+    key: composer-cache-v1-{{ checksum "distribution_root/composer.json" }}
+    paths:
+      - /composer/cache-dir
+
+  - &restore_composer_cache
+    keys:
+      - composer-cache-v1-{{ checksum "distribution_root/composer.json" }}
+      - composer-cache-v1-
 
 jobs:
   checkout:
@@ -76,11 +86,12 @@ jobs:
       - image: quay.io/yeebase/ci-build:7.2
     steps:
       - attach_workspace: *attach_workspace
+      - restore_cache: *restore_composer_cache
 
       - run: mkdir -p /home/circleci/app/Configuration
-      - run: ls -lah ~/neos-ui-workspace
       - run: rm -rf /home/circleci/app && mv ~/neos-ui-workspace/distribution_root/ /home/circleci/app
       - run: cd /home/circleci/app && composer install
+      - save_cache: *save_composer_cache
       - save_cache: *store_app_cache
 
   e2e:

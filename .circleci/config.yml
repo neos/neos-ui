@@ -2,7 +2,6 @@ version: 2.0
 
 aliases:
   - &workspace_root ~/neos-ui-workspace
-  - &distribution_root ~/neos-ui-workspace/distribution_root
   - &store_yarn_package_cache
     key: yarn-cache-v1-{{ checksum "yarn.lock" }}
     paths:
@@ -108,9 +107,7 @@ jobs:
       - attach_workspace: *attach_workspace
       - restore_cache: *restore_app_cache
 
-      - run: ls -lah /home/circleci/app/Packages/Application
       - run: rm -rf /home/circleci/app/Packages/Application/Neos.Neos.Ui
-      - run: ls -lah /home/circleci/app/Packages/Application
       - run: cd /home/circleci/app/Packages/Application && mv ~/neos-ui-workspace Neos.Neos.Ui
       - run: |
           cd /home/circleci/app/

@@ -48,7 +48,7 @@ jobs:
       - run: make install && make build-production
       - save_cache: *store_yarn_package_cache
 
-      - run: git clone https://github.com/neos/neos-ui-testing-distribution.git ~/neos-ui-workspace/distribution_root
+      - run: git clone https://github.com/neos/neos-ui-testing-distribution.git distribution_root
 
       - persist_to_workspace: *persist_to_workspace
 

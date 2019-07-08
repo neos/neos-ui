@@ -29,7 +29,7 @@ import * as NeosUiViews from '@neos-project/neos-ui-views';
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 import Command from '@ckeditor/ckeditor5-core/src/command';
 import Widget from '@ckeditor/ckeditor5-widget/src/widget';
-import {toWidget} from '@ckeditor/ckeditor5-widget/src/utils';
+import {toWidget, viewToModelPositionOutsideModelElement} from '@ckeditor/ckeditor5-widget/src/utils';
 import HighlightEditing from '@ckeditor/ckeditor5-highlight/src/highlightediting';
 
 import ModelDocument from '@ckeditor/ckeditor5-engine/src/model/document';
@@ -76,6 +76,7 @@ const CkEditor5 = {
     Command,
     Widget,
     toWidget,
+    viewToModelPositionOutsideModelElement,
     HighlightEditing,
     ModelDocument,
     ModelDocumentFragment,

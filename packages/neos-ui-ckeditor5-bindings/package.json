@@ -19,6 +19,8 @@
     "@ckeditor/ckeditor5-list": "^12.0.2",
     "@ckeditor/ckeditor5-paragraph": "^11.0.2",
     "@ckeditor/ckeditor5-table": "^13.0.0",
+    "@ckeditor/ckeditor5-highlight": "^11.0.2",
+    "@ckeditor/ckeditor5-widget": "^11.0.2",
     "@neos-project/neos-ui-backend-connector": "3.6.1",
     "@neos-project/neos-ui-decorators": "3.6.1",
     "@neos-project/neos-ui-extensibility": "3.6.1",

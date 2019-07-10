@@ -5,7 +5,16 @@
 }
 
 .menuToggler--isActive {
-    color: var(--colors-PrimaryBlue);
+    color: var(--colors-ContrastBrightest);
+
+    .menuToggler__icon {
+        color: var(--colors-PrimaryBlue);
+
+        &:hover,
+        &:focus {
+            color: var(--colors-PrimaryBlue);
+        }
+    }
 }
 
 .menuToggler__icon {

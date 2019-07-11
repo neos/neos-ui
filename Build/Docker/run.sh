@@ -7,6 +7,14 @@
 #
 set -e
 
-npm prune
-npm update
-npm run watch:build
+yarn install
+node_modules/.bin/lerna run build --concurrency 1
+
+echo "Please remember to set frontendDevelopmentMode to true in your Settings.yaml."
+echo ""
+echo "Neos:"
+echo "  Neos:"
+echo "    Ui:"
+echo "      frontendDevelopmentMode: true"
+
+NEOS_BUILD_ROOT=$(pwd) node_modules/.bin/webpack --progress --colors --watch-poll --watch

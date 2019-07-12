@@ -8,7 +8,7 @@ import {selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {shouldDisplaySearchBox, searchOptions, processSelectBoxOptions} from './SelectBoxHelpers';
 
-const getDataLoaderOptionsForProps = (props) => ({
+const getDataLoaderOptionsForProps = props => ({
     contextNodePath: props.focusedNodePath,
     dataSourceIdentifier: props.options.dataSourceIdentifier,
     dataSourceUri: props.options.dataSourceUri,

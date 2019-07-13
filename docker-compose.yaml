@@ -7,5 +7,5 @@ services:
     working_dir: /app
 
     volumes:
-      - .:/app
-      - $HOME/.npm:/root/.npm
+      - .:/app:cached
+      - $HOME/.npm:/root/.npm:cached

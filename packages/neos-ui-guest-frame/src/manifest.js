@@ -5,11 +5,20 @@ import makeInitializeGuestFrame from './initializeGuestFrame';
 
 import InlineUI from './InlineUI';
 
+import {
+    AddNode,
+    CopySelectedNode,
+    CutSelectedNode,
+    DeleteSelectedNode,
+    HideSelectedNode,
+    PasteClipBoardNode
+} from './InlineUI/NodeToolbar/Buttons/index';
+
 manifest('@neos-project/neos-ui-guestframe', {}, globalRegistry => {
     const guestFrameRegistry = new SynchronousRegistry(`
         # Registry for guest-frame specific functionalities
 
-        This registry consists of two entries:
+        This registry consists of the following entries:
 
         ## makeInitializeGuestFrame
 
@@ -28,9 +37,22 @@ manifest('@neos-project/neos-ui-guestframe', {}, globalRegistry => {
 
         This is supposed to be a react component, that will be rendered inside the guest frame. As a default this
         consists of the Inline node toolbar that can be seen, if a node is selected inside the frame.
+
+        ## NodeToolbar/Buttons/*
+
+        This are react components for the buttons for the Node Toolbar, so that you can add new buttons.
+
     `);
 
     guestFrameRegistry.set('makeInitializeGuestFrame', makeInitializeGuestFrame);
     guestFrameRegistry.set('InlineUIComponent', InlineUI);
+
+    guestFrameRegistry.set('NodeToolbar/Buttons/AddNode', AddNode);
+    guestFrameRegistry.set('NodeToolbar/Buttons/HideSelectedNode', HideSelectedNode);
+    guestFrameRegistry.set('NodeToolbar/Buttons/CopySelectedNode', CopySelectedNode);
+    guestFrameRegistry.set('NodeToolbar/Buttons/CutSelectedNode', CutSelectedNode);
+    guestFrameRegistry.set('NodeToolbar/Buttons/PasteClipBoardNode', PasteClipBoardNode);
+    guestFrameRegistry.set('NodeToolbar/Buttons/DeleteSelectedNode', DeleteSelectedNode);
+
     globalRegistry.set('@neos-project/neos-ui-guest-frame', guestFrameRegistry);
 });

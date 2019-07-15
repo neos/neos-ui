@@ -12,20 +12,12 @@ import {
 } from '@neos-project/neos-ui-guest-frame/src/dom';
 
 import {neos} from '@neos-project/neos-ui-decorators';
-
-import {
-    AddNode,
-    CopySelectedNode,
-    CutSelectedNode,
-    DeleteSelectedNode,
-    HideSelectedNode,
-    PasteClipBoardNode
-} from './Buttons/index';
 import style from './style.css';
 
 @neos(globalRegistry => ({
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),
-    i18nRegistry: globalRegistry.get('i18n')
+    i18nRegistry: globalRegistry.get('i18n'),
+    guestFrameRegistry: globalRegistry.get('@neos-project/neos-ui-guest-frame')
 }))
 export default class NodeToolbar extends PureComponent {
     static propTypes = {
@@ -41,7 +33,8 @@ export default class NodeToolbar extends PureComponent {
         visibilityCanBeToggled: PropTypes.bool.isRequired,
         // Unsets the flag
         requestScrollIntoView: PropTypes.func.isRequired,
-        i18nRegistry: PropTypes.object.isRequired
+        i18nRegistry: PropTypes.object.isRequired,
+        guestFrameRegistry: PropTypes.object.isRequired
     };
 
     state = {
@@ -116,7 +109,8 @@ export default class NodeToolbar extends PureComponent {
             canBeDeleted,
             canBeEdited,
             visibilityCanBeToggled,
-            i18nRegistry
+            i18nRegistry,
+            guestFrameRegistry
         } = this.props;
 
         if (!contextPath) {
@@ -130,6 +124,8 @@ export default class NodeToolbar extends PureComponent {
             destructiveOperationsAreDisabled,
             canBeDeleted,
             canBeEdited,
+            isCopied,
+            isCut,
             visibilityCanBeToggled,
             className: style.toolBar__btnGroup__btn
         };
@@ -163,6 +159,8 @@ export default class NodeToolbar extends PureComponent {
             [style['toolBar--isSticky']]: isSticky
         });
 
+        const NodeToolbarButtons = guestFrameRegistry.getChildren('NodeToolbar/Buttons');
+
         // The data attribute data-ignore_click_outside is used to disable the enhanceWithClickOutside
         // handling. For the special case that the outOfBandRender returns an empty rendered content
         // we need to disable the enhanceWithClickOutside handling to prevent hick ups in the event
@@ -170,12 +168,7 @@ export default class NodeToolbar extends PureComponent {
         return (
             <div className={classNames} data-ignore_click_outside="true" style={toolbarPosition}>
                 <div className={style.toolBar__btnGroup}>
-                    <AddNode {...props}/>
-                    <HideSelectedNode {...props}/>
-                    <CopySelectedNode {...props} isActive={isCopied}/>
-                    <CutSelectedNode {...props} isActive={isCut}/>
-                    <PasteClipBoardNode {...props}/>
-                    <DeleteSelectedNode {...props}/>
+                    {NodeToolbarButtons.map((Item, key) => <Item key={key} {...props} />)}
                 </div>
             </div>
         );

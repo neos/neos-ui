@@ -44,12 +44,12 @@ const config = {
     },
     fonts: {
         headings: {
-            family: 'Open Sans',
-            style: 'Light',
-            cssWeight: '300'
+            family: 'Noto Sans',
+            style: 'Regular',
+            cssWeight: '400'
         },
         copy: {
-            family: 'Open Sans',
+            family: 'Noto Sans',
             style: 'Regular',
             cssWeight: '400'
         }

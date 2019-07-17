@@ -1,0 +1,15 @@
+{
+    "name": "neos/test-site",
+    "description": "A Neos website",
+    "type": "neos-site",
+    "require": {
+        "neos/neos": "*",
+        "neos/neos-ui": "*",
+        "neos/test-nodetypes": "*"
+    },
+    "extra": {
+        "neos": {
+            "package-key": "Neos.TestSite"
+        }
+    }
+}

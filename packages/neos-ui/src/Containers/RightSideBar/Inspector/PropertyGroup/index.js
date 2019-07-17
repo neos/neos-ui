@@ -40,7 +40,7 @@ export default class PropertyGroup extends PureComponent {
         const propertyGroup = items => (
             <ToggablePanel onPanelToggle={handlePanelToggle} isOpen={!collapsed} className={sidebarStyle.rightSideBar__section}>
                 <ToggablePanel.Header theme={headerTheme}>
-                    {icon && <Icon icon={icon}/>} <I18n id={label}/>
+                    {icon && <div className={style.iconWrapper}><Icon icon={icon}/></div>} <I18n id={label}/>
                 </ToggablePanel.Header>
                 <ToggablePanel.Contents>
                     {items.map(item => {

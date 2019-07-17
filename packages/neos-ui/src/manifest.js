@@ -300,7 +300,7 @@ manifest('main', {}, globalRegistry => {
 
     //
     // When the server advices to render a new node, put the delivered html to the
-    // corrent place inside the DOM
+    // correct place inside the DOM
     //
     serverFeedbackHandlers.set('Neos.Neos.Ui:RenderContentOutOfBand/Main', (feedbackPayload, {store, globalRegistry}) => {
         const {contextPath, renderedContent, parentDomAddress, siblingDomAddress, mode} = feedbackPayload;
@@ -317,13 +317,14 @@ manifest('main', {}, globalRegistry => {
         // because many frameworkds (e.g. CKE, React) use the following checks
         // `obj instanceof obj.ownerDocument.defaultView.Node`
         // which would fail if this node was created in Host
-        const tempNodeInGuest = getGuestFrameDocument().createElement('div');
+        const wrapTagName = parentElement.tagName ? parentElement.tagName : 'div';
+        const tempNodeInGuest = getGuestFrameDocument().createElement(wrapTagName);
         tempNodeInGuest.innerHTML = renderedContent;
         const contentElement = tempNodeInGuest
             .querySelector(`[data-__neos-node-contextpath="${contextPath}"]`);
 
         if (!contentElement) {
-            console.error(`!!! Content Element with context path "${contextPath}" not found in returned HTML from server (which you see below) - Reloading the full page!`);
+            console.error(`!!! Content Element (rendered out-of-band) with context path "${contextPath}" not found in returned HTML from server (which you see below) - Reloading the full page!`);
             console.log(renderedContent);
 
             getGuestFrameDocument().location.reload();
@@ -359,8 +360,9 @@ manifest('main', {}, globalRegistry => {
         const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
         const inlineEditorRegistry = globalRegistry.get('inlineEditors');
 
-        if (parentElement.querySelector(`.${style.addEmptyContentCollectionOverlay}`)) {
-            parentElement.querySelector(`.${style.addEmptyContentCollectionOverlay}`).remove();
+        const emptyContentCollectionOverlay = parentElement.querySelector(`.${style.addEmptyContentCollectionOverlay}`);
+        if (emptyContentCollectionOverlay && emptyContentCollectionOverlay.parentElement.children.length > 1) {
+            emptyContentCollectionOverlay.remove();
         }
 
         //
@@ -385,7 +387,7 @@ manifest('main', {}, globalRegistry => {
 
     //
     // When the server advices to replace a node (e.g. on property change), put the delivered html to the
-    // corrent place inside the DOM
+    // correct place inside the DOM
     //
     serverFeedbackHandlers.set('Neos.Neos.Ui:ReloadContentOutOfBand/Main', (feedbackPayload, {store, globalRegistry}) => {
         const {contextPath, renderedContent, nodeDomAddress} = feedbackPayload;
@@ -404,7 +406,7 @@ manifest('main', {}, globalRegistry => {
             .querySelector(`[data-__neos-node-contextpath="${contextPath}"]`);
 
         if (!contentElement) {
-            console.error(`!!! Content Element with context path "${contextPath}" not found in returned HTML from server (which you see below) - Reloading the full page!`);
+            console.error(`!!! Content Element (reloaded out-of-band) with context path "${contextPath}" not found in returned HTML from server (which you see below) - Reloading the full page!`);
             console.log(renderedContent);
 
             getGuestFrameDocument().location.reload();

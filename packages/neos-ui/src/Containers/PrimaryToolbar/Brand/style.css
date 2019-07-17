@@ -1,0 +1,10 @@
+.wrapper {
+    position: relative;
+    display: inline-block;
+    padding: var(--spacing-Half) 1px; /* 1px to prevent spacing issue */
+    vertical-align: top;
+
+    @media(max-width: 576px) {
+        display: none;
+    }
+}

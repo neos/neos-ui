@@ -1,11 +1,16 @@
 import React, {PureComponent, ChangeEvent} from 'react';
 import mergeClassNames from 'classnames';
 import TextareaAutosize from 'react-textarea-autosize';
-import enhanceWithClickOutside from 'react-click-outside';
+import enhanceWithClickOutside from '../enhanceWithClickOutside/index';
 
 import { PickDefaultProps } from '../../types';
 
 export interface TextAreaProps {
+        /**
+         * An optional initial value.
+         */
+        readonly value?: string;
+
         /**
          * An optional className to render on the textarea node.
          */
@@ -72,6 +77,7 @@ export class TextArea extends PureComponent<TextAreaProps> {
             disabled,
             minRows,
             expandedRows,
+            value
         } = this.props;
         const classNames = mergeClassNames(
             className,
@@ -92,6 +98,7 @@ export class TextArea extends PureComponent<TextAreaProps> {
                 onChange={this.handleValueChange}
                 onClick={this.handleOnClick}
                 minRows={this.state.isFocused ? expandedRows : minRows}
+                value={value}
             />
         );
     }

@@ -1,4 +1,5 @@
 /* eslint-disable camelcase, react/jsx-pascal-case */
+import enhanceWithClickOutside from './enhanceWithClickOutside';
 import Badge from './Badge';
 import Bar from './Bar';
 import Button from './Button';
@@ -13,6 +14,7 @@ import Icon from './Icon';
 import IconButton from './IconButton';
 import IconButtonDropDown from './IconButtonDropDown';
 import Label from './Label';
+import Logo from './Logo';
 import SelectBox from './SelectBox';
 import SideBar from './SideBar';
 import Tabs from './Tabs';
@@ -27,6 +29,7 @@ import SelectBox_Option_SingleLine from './SelectBox_Option_SingleLine';
 import SelectBox_Option_MultiLineWithThumbnail from './SelectBox_Option_MultiLineWithThumbnail';
 
 export {
+    enhanceWithClickOutside,
     Badge,
     Bar,
     Button,
@@ -41,6 +44,7 @@ export {
     IconButton,
     IconButtonDropDown,
     Label,
+    Logo,
     SelectBox,
     SideBar,
     Tabs,
@@ -56,6 +60,7 @@ export {
 };
 
 export default {
+    enhanceWithClickOutside,
     Badge,
     Bar,
     Button,
@@ -70,6 +75,7 @@ export default {
     IconButton,
     IconButtonDropDown,
     Label,
+    Logo,
     SelectBox,
     SideBar,
     Tabs,

@@ -9,11 +9,13 @@ import * as reduxSaga from 'redux-saga';
 import * as reduxSagaEffects from 'redux-saga/effects';
 import * as reselect from 'reselect';
 import * as reactCssThemr from '@friendsofreactjs/react-css-themr';
+import * as ReactDND from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 
 import ReactUiComponents from '@neos-project/react-ui-components';
 import * as NeosUiReduxStore from '@neos-project/neos-ui-redux-store';
 import * as NeosUiDecorators from '@neos-project/neos-ui-decorators';
-import * as NeosUiEditors from '@neos-project/neos-ui-editors/src/EditorEnvelope/index';
+import * as NeosUiEditors from '@neos-project/neos-ui-editors/src/index';
 import * as UtilsRedux from '@neos-project/utils-redux';
 import NeosUiI18n from '@neos-project/neos-ui-i18n';
 import * as CkEditorApi from '@neos-project/neos-ui-ckeditor5-bindings/src/ckEditorApi';
@@ -26,6 +28,9 @@ import * as NeosUiViews from '@neos-project/neos-ui-views';
 // Feel free to export more parts as needed.
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 import Command from '@ckeditor/ckeditor5-core/src/command';
+import Widget from '@ckeditor/ckeditor5-widget/src/widget';
+import {toWidget, viewToModelPositionOutsideModelElement} from '@ckeditor/ckeditor5-widget/src/utils';
+import HighlightEditing from '@ckeditor/ckeditor5-highlight/src/highlightediting';
 
 import ModelDocument from '@ckeditor/ckeditor5-engine/src/model/document';
 import ModelDocumentFragment from '@ckeditor/ckeditor5-engine/src/model/documentfragment';
@@ -66,10 +71,51 @@ import ViewUIElement from '@ckeditor/ckeditor5-engine/src/view/uielement.js';
 import View from '@ckeditor/ckeditor5-engine/src/view/view.js';
 import DownCastWriter from '@ckeditor/ckeditor5-engine/src/view/downcastwriter';
 
-import * as UpcastConverters from '@ckeditor/ckeditor5-engine/src/conversion/upcast-converters';
-import * as DowncastConverters from '@ckeditor/ckeditor5-engine/src/conversion/downcast-converters';
-
-const CkEditor5 = {Plugin, Command, UpcastConverters, DowncastConverters, ModelDocument, ModelDocumentFragment, ModelDocumentSelection, ModelElement, ModelNode, ModelNodeList, ModelPosition, ModelRange, ModelSchema, ModelSelection, ModelText, ModelTextProxy, ModelTreeWalker, ModelWriter, ViewAttributeElement, ViewContainerElement, ViewDocument, ViewDocumentFragment, ViewDocumentSelection, ViewDOMConverter, ViewEditableElement, ViewElement, ViewEmptyElement, ViewFiller, ViewMatcher, ViewNode, ViewPlaceholder, ViewPosition, ViewRange, ViewRenderer, ViewSelection, ViewText, ViewTextProxy, ViewTreeWalker, ViewUIElement, View, DownCastWriter};
+const CkEditor5 = {
+    Plugin,
+    Command,
+    Widget,
+    toWidget,
+    viewToModelPositionOutsideModelElement,
+    HighlightEditing,
+    ModelDocument,
+    ModelDocumentFragment,
+    ModelDocumentSelection,
+    ModelElement,
+    ModelNode,
+    ModelNodeList,
+    ModelPosition,
+    ModelRange,
+    ModelSchema,
+    ModelSelection,
+    ModelText,
+    ModelTextProxy,
+    ModelTreeWalker,
+    ModelWriter,
+    ViewAttributeElement,
+    ViewContainerElement,
+    ViewDocument,
+    ViewDocumentFragment,
+    ViewDocumentSelection,
+    ViewDOMConverter,
+    ViewEditableElement,
+    ViewElement,
+    ViewEmptyElement,
+    ViewFiller,
+    ViewMatcher,
+    ViewNode,
+    ViewPlaceholder,
+    ViewPosition,
+    ViewRange,
+    ViewRenderer,
+    ViewSelection,
+    ViewText,
+    ViewTextProxy,
+    ViewTreeWalker,
+    ViewUIElement,
+    View,
+    DownCastWriter
+};
 
 export default {
     '@vendor': () => ({
@@ -84,7 +130,9 @@ export default {
         reduxSagaEffects,
         reselect,
         reactCssThemr,
-        CkEditor5
+        CkEditor5,
+        HTML5Backend,
+        ReactDND
     }),
 
     '@NeosProjectPackages': () => ({

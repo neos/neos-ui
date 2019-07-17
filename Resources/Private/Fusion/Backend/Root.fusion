@@ -11,6 +11,51 @@ backend = Neos.Fusion:Template {
     headStylesheets = ${headStylesheets}
     splashScreenPartial = ${splashScreenPartial}
 
+    headIcons = Neos.Fusion:Array {
+        appleTouchIcon = Neos.Fusion:Tag {
+            tagName = 'link'
+            attributes {
+                href = Neos.Fusion:ResourceUri {
+                    path = 'resource://Neos.Neos.Ui/Public/Images/apple-touch-icon.png'
+                }
+                sizes = '180x180'
+                rel = 'apple-touch-icon'
+            }
+        }
+        favicon16 = Neos.Fusion:Tag {
+            tagName = 'link'
+            attributes {
+                href = Neos.Fusion:ResourceUri {
+                    path = 'resource://Neos.Neos.Ui/Public/Images/favicon-16x16.png'
+                }
+                sizes = '16x16'
+                rel = 'icon'
+                type = 'image/png'
+            }
+        }
+        favicon32 = Neos.Fusion:Tag {
+            tagName = 'link'
+            attributes {
+                href = Neos.Fusion:ResourceUri {
+                    path = 'resource://Neos.Neos.Ui/Public/Images/favicon-32x32.png'
+                }
+                sizes = '32x32'
+                rel = 'icon'
+                type = 'image/png'
+            }
+        }
+        safariPinnedTab = Neos.Fusion:Tag {
+            tagName = 'link'
+            attributes {
+                href = Neos.Fusion:ResourceUri {
+                    path = 'resource://Neos.Neos.Ui/Public/Images/safari-pinned-tab.svg'
+                }
+                rel = 'mask-icon'
+                color = '#00adee'
+            }
+        }
+    }
+
     configuration = Neos.Fusion:RawArray {
         nodeTree = ${Configuration.setting('Neos.Neos.userInterface.navigateComponent.nodeTree')}
         structureTree = ${Configuration.setting('Neos.Neos.userInterface.navigateComponent.structureTree')}
@@ -90,8 +135,8 @@ backend = Neos.Fusion:Template {
                 getWorkspaceInfo = Neos.Fusion:UriBuilder {
                     action = 'getWorkspaceInfo'
                 }
-                getPolicyInfo = Neos.Fusion:UriBuilder {
-                    action = 'getPolicyInformation'
+                getAdditionalNodeMetadata = Neos.Fusion:UriBuilder {
+                    action = 'getAdditionalNodeMetadata'
                 }
             }
         }

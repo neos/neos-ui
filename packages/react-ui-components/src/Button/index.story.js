@@ -24,7 +24,7 @@ storiesOf('Button', module)
                         onMouseDown={action('onMouseDown')}
                         onMouseUp={action('onMouseUp')}
                         isActive={boolean('Active', false)}
-                        isDisabled={boolean('Disabled', false)}
+                        disabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
                     >
                         <span>{text('Label', 'Button Clean')}</span>
@@ -38,7 +38,7 @@ storiesOf('Button', module)
                         onMouseDown={action('onMouseDown')}
                         onMouseUp={action('onMouseUp')}
                         isActive={boolean('Active', false)}
-                        isDisabled={boolean('Disabled', false)}
+                        disabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
                     >
                         <span>{text('Label', 'Button Brand')}</span>
@@ -52,7 +52,7 @@ storiesOf('Button', module)
                         onMouseDown={action('onMouseDown')}
                         onMouseUp={action('onMouseUp')}
                         isActive={boolean('Active', false)}
-                        isDisabled={boolean('Disabled', false)}
+                        disabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
                     >
                         <span>{text('Label', 'Button Lighter')}</span>
@@ -66,7 +66,7 @@ storiesOf('Button', module)
                         onMouseDown={action('onMouseDown')}
                         onMouseUp={action('onMouseUp')}
                         isActive={boolean('Active', false)}
-                        isDisabled={boolean('Disabled', false)}
+                        disabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
                     >
                         <span>{text('Label', 'Button Transparent')}</span>
@@ -84,7 +84,7 @@ storiesOf('Button', module)
                         onMouseDown={action('onMouseDown')}
                         onMouseUp={action('onMouseUp')}
                         isActive={boolean('Active', false)}
-                        isDisabled={boolean('Disabled', false)}
+                        disabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
                     >
                         <span>{text('Label', 'Button Clean')}</span>
@@ -99,7 +99,7 @@ storiesOf('Button', module)
                         onMouseDown={action('onMouseDown')}
                         onMouseUp={action('onMouseUp')}
                         isActive={boolean('Active', false)}
-                        isDisabled={boolean('Disabled', false)}
+                        disabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
                     >
                         <span>{text('Label', 'Button Brand')}</span>
@@ -114,7 +114,7 @@ storiesOf('Button', module)
                         onMouseDown={action('onMouseDown')}
                         onMouseUp={action('onMouseUp')}
                         isActive={boolean('Active', false)}
-                        isDisabled={boolean('Disabled', false)}
+                        disabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
                     >
                         <span>{text('Label', 'Button Lighter')}</span>
@@ -129,7 +129,7 @@ storiesOf('Button', module)
                         onMouseDown={action('onMouseDown')}
                         onMouseUp={action('onMouseUp')}
                         isActive={boolean('Active', false)}
-                        isDisabled={boolean('Disabled', false)}
+                        disabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
                     >
                         <span>{text('Label', 'Button Transparent')}</span>
@@ -147,7 +147,7 @@ storiesOf('Button', module)
                         onMouseDown={action('onMouseDown')}
                         onMouseUp={action('onMouseUp')}
                         isActive={boolean('Active', false)}
-                        isDisabled={boolean('Disabled', false)}
+                        disabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
                     >
                         <span>{text('Label', 'Button Clean')}</span>
@@ -162,7 +162,7 @@ storiesOf('Button', module)
                         onMouseDown={action('onMouseDown')}
                         onMouseUp={action('onMouseUp')}
                         isActive={boolean('Active', false)}
-                        isDisabled={boolean('Disabled', false)}
+                        disabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
                     >
                         <span>{text('Label', 'Button Brand')}</span>
@@ -177,7 +177,7 @@ storiesOf('Button', module)
                         onMouseDown={action('onMouseDown')}
                         onMouseUp={action('onMouseUp')}
                         isActive={boolean('Active', false)}
-                        isDisabled={boolean('Disabled', false)}
+                        disabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
                     >
                         <span>{text('Label', 'Button Lighter')}</span>
@@ -192,7 +192,7 @@ storiesOf('Button', module)
                         onMouseDown={action('onMouseDown')}
                         onMouseUp={action('onMouseUp')}
                         isActive={boolean('Active', false)}
-                        isDisabled={boolean('Disabled', false)}
+                        disabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
                     >
                         <span>{text('Label', 'Button Transparent')}</span>
@@ -210,7 +210,7 @@ storiesOf('Button', module)
                         onMouseDown={action('onMouseDown')}
                         onMouseUp={action('onMouseUp')}
                         isActive={boolean('Active', false)}
-                        isDisabled={boolean('Disabled', false)}
+                        disabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
                     >
                         <span>{text('Label', 'Button Clean')}</span>
@@ -225,7 +225,7 @@ storiesOf('Button', module)
                         onMouseDown={action('onMouseDown')}
                         onMouseUp={action('onMouseUp')}
                         isActive={boolean('Active', false)}
-                        isDisabled={boolean('Disabled', false)}
+                        disabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
                     >
                         <span>{text('Label', 'Button Brand')}</span>
@@ -240,7 +240,7 @@ storiesOf('Button', module)
                         onMouseDown={action('onMouseDown')}
                         onMouseUp={action('onMouseUp')}
                         isActive={boolean('Active', false)}
-                        isDisabled={boolean('Disabled', false)}
+                        disabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
                     >
                         <span>{text('Label', 'Button Lighter')}</span>
@@ -255,7 +255,7 @@ storiesOf('Button', module)
                         onMouseDown={action('onMouseDown')}
                         onMouseUp={action('onMouseUp')}
                         isActive={boolean('Active', false)}
-                        isDisabled={boolean('Disabled', false)}
+                        disabled={boolean('Disabled', false)}
                         size={select('Size', validSizes, 'regular')}
                     >
                         <span>{text('Label', 'Button Transparent')}</span>

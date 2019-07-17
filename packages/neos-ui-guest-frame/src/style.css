@@ -1,9 +1,9 @@
 .markHoveredNodeAsHovered {
-    outline-offset: .5em;
+    outline-offset: 10px;
     outline: 2px solid rgba(#000, .2);
 }
 .markHiddenNodeAsHidden {
-    opacity: .5;
+    opacity: .3;
 }
 
 .addEmptyContentCollectionOverlay {
@@ -13,7 +13,7 @@
 }
 
 .markActiveNodeAsFocused--focusedNode {
-    outline-offset: .5em;
+    outline-offset: 10px;
     outline: 2px solid var(--colors-PrimaryBlue);
 }
 
@@ -27,7 +27,7 @@
 }
 
 :global([data-neos-inline-editor-is-initialized]:hover) {
-    outline-offset: .3em;
+    outline-offset: 5px;
     outline: 2px dashed var(--colors-PrimaryBlue);
 }
 
@@ -42,7 +42,15 @@
     background-image: linear-gradient(to bottom, rgba(50, 50, 50, .1), rgba(50, 50, 50, .2), rgba(50, 50, 50, .1));
 }
 
-:global(td) {
+:global(.ck-content .table table td) {
     padding: 5px;
     border: 1px solid gray;
+}
+
+:global body::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+:global body::-webkit-scrollbar-track {
+    background-color: var(--colors-ContrastDarkest) !important;
 }

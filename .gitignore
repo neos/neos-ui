@@ -2,6 +2,7 @@
 # Test suite & generated coverage.
 #
 Coverage/
+packages/*/dist/
 packages/*/.nyc_output/
 packages/*/coverage/
 Build/Selenium/Screenshots/*.png
@@ -21,6 +22,7 @@ Build/Selenium/Settings.yaml
 # Application & development dependencies.
 #
 node_modules/
+packages/*/yarn.lock
 
 #
 # Compiled assets.

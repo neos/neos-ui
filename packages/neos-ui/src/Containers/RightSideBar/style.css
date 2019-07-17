@@ -2,6 +2,7 @@
     padding-top: 41px;
     padding-bottom: 41px;
     transition: var(--transition-Default)  ease transform;
+    background: var(--colors-ContrastDarkest);
 
     &:before,
     &:after {
@@ -11,24 +12,40 @@
     &:after {
         clear: both;
     }
+
+    @media(max-width: 576px) {
+        width: 100%;
+    }
 }
 .rightSideBar--isHidden {
     transform: translateX(var(--size-SidebarWidth));
+
+    @media(max-width: 576px) {
+        transform: translateX(576px);
+    }
 }
 .rightSideBar__toggleBtn {
     width: 46px;
     position: absolute!important;
     right: 0;
     top: 41px;
-    border-left: 1px solid var(--colors-ContrastDark);
-    background: var(--colors-ContrastDarker);
+    border: none;
+    background: var(--colors-ContrastDarkest);
     transition: var(--transition-Default)  ease transform;
     will-change: transform;
 
     .rightSideBar--isHidden & {
         transform: translateX(-var(--size-SidebarWidth));
+
+        @media(max-width: 576px) {
+            transform: translateX(-576px);
+        }
     }
 }
 .rightSideBar__section {
     border-bottom: 1px solid var(--colors-ContrastDark);
+}
+.rightSideBar__header {
+    background: var(--colors-ContrastDarkest);
+    margin-left: var(--spacing-Quarter);
 }

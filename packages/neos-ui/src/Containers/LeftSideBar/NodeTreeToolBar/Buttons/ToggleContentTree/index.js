@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
+import style from './style.css';
 
 export default class ToggleContentTree extends PureComponent {
     static propTypes = {
@@ -23,17 +24,22 @@ export default class ToggleContentTree extends PureComponent {
     }
 
     render() {
-        const {className, id, isPanelOpen, i18nRegistry} = this.props;
+        const {id, isPanelOpen, i18nRegistry} = this.props;
 
         return (
-            <IconButton
-                id={id}
-                className={className}
-                onClick={this.handleClick}
-                icon={isPanelOpen ? 'chevron-down' : 'chevron-up'}
-                hoverStyle="clean"
-                aria-label={i18nRegistry.translate('Neos.Neos:Main:toggleContentTree', 'Toggle content tree')}
-                />
+            <div className={style.toggle}>
+                <IconButton
+                    id={id}
+                    className={style.toggleBtn}
+                    onClick={this.handleClick}
+                    icon={isPanelOpen ? 'chevron-circle-down' : 'chevron-circle-up'}
+                    hoverStyle="clean"
+                    aria-label={i18nRegistry.translate('Neos.Neos:Main:toggleContentTree', 'Toggle content tree')}
+                    />
+                <span className={style.toggleLabel}>
+                    {i18nRegistry.translate('Neos.Neos:Main:contentTree', 'Content Tree')}
+                </span>
+            </div>
         );
     }
 }

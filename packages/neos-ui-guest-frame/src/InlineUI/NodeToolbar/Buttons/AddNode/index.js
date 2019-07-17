@@ -51,17 +51,15 @@ export default class AddNode extends PureComponent {
         const {isAllowedToAddChildOrSiblingNodes, i18nRegistry} = this.props;
 
         return (
-            <span>
-                <IconButton
-                    id="neos-InlineToolbar-AddNode"
-                    isDisabled={!isAllowedToAddChildOrSiblingNodes}
-                    className={this.props.className}
-                    icon="plus"
-                    onClick={this.handleCommenceNodeCreation}
-                    hoverStyle="clean"
-                    title={i18nRegistry.translate('createNew')}
-                    />
-            </span>
+            <IconButton
+                id="neos-InlineToolbar-AddNode"
+                disabled={!isAllowedToAddChildOrSiblingNodes}
+                className={this.props.className}
+                icon="plus"
+                onClick={this.handleCommenceNodeCreation}
+                hoverStyle="brand"
+                title={i18nRegistry.translate('createNew')}
+                />
         );
     }
 }

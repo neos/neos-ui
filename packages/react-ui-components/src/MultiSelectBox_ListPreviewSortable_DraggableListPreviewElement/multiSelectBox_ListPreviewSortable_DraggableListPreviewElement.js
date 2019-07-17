@@ -82,7 +82,8 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
         theme: PropTypes.shape({
             'selectedOptions__item': PropTypes.string,
             'selectedOptions__item--draggable': PropTypes.string,
-            'selectedOption__removeButton': PropTypes.string
+            'selectedOption__removeButton': PropTypes.string,
+            'selectedOption__moveButton': PropTypes.string
         }).isRequired,
         Icon: PropTypes.any.isRequired,
         IconButton: PropTypes.any.isRequired
@@ -104,9 +105,11 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
 
         // TODO Loading State: const {icon, label} = option || {label: `[Loading ${value}]`};
 
+        const isDraggable = values && values.length > 1;
+
         const finalClassNames = mergeClassNames({
             [theme.selectedOptions__item]: true,
-            [theme['selectedOptions__item--draggable']]: values && values.length > 1
+            [theme['selectedOptions__item--draggable']]: isDraggable
         });
         const opacity = isDragging ? 0 : 1;
 
@@ -119,6 +122,13 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
         return connectDragSource(connectDropTarget(
             <li style={{opacity}} ref={refName}>
                 <div className={finalClassNames}>
+                    {isDraggable && (
+                        <IconButton
+                            icon={'grip-lines-vertical'}
+                            className={theme.selectedOption__moveButton}
+                            hoverStyle={'clean'}
+                            />
+                    )}
                     <div className={theme.selectedOptions__innerPreview}>
                         <InnerListPreviewElement
                             {...this.props}

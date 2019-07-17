@@ -4,8 +4,10 @@
     height: 40px;
     padding: 10px 14px;
     border: 0;
+    border-radius: 2px;
     background: var(--colors-ContrastNeutral);
     resize: vertical;
+    transition: .3s height;
 
     &:focus {
         outline: 0;
@@ -14,7 +16,7 @@
     }
 }
 .textArea::-webkit-input-placeholder {
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Noto Sans', sans-serif;
     color: var(--colors-ContrastBright);
 }
 .textArea--invalid {

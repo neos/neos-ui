@@ -27,7 +27,9 @@ export const reducer = combineReducers({
     cr: CR.reducer,
     system: System.reducer,
     ui: UI.reducer,
-    user: User.reducer
+    user: User.reducer,
+    // NOTE: The plugins reducer is UNPLANNED EXTENSIBILITY, do not modify unless you know what you are doing!
+    plugins: (state) => state || {}
 });
 
 //

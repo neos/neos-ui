@@ -8,23 +8,13 @@ exports[`<Dialog/> Content should render correctly. 1`] = `
   <div
     className="contentsClassName"
   >
-    <ThemedIconButton
-      className="closeBtnClassName"
-      composeTheme="deeply"
-      hoverStyle="brand"
-      icon="times"
-      mapThemrProps={[Function]}
-      onClick={[Function]}
-      size="regular"
-      style="clean"
-    />
     <div
       className="titleClassName"
     >
       Foo title
     </div>
     <div
-      className="bodyClassName dialog__body"
+      className="bodyClassName errorClassName dialog__body"
     >
       Foo children
     </div>
@@ -52,7 +42,7 @@ exports[`<Dialog/> Portal should render correctly. 1`] = `
 >
   <Portal>
     <section
-      className="dialogClassName wideClassName"
+      className="dialogClassName wideClassName errorClassName"
       role="dialog"
       tabIndex={0}
     >
@@ -69,7 +59,10 @@ exports[`<Dialog/> Portal should render correctly. 1`] = `
         theme={
           Object {
             "dialog": "dialogClassName",
+            "dialog--error": "errorClassName",
             "dialog--narrow": "narrowClassName",
+            "dialog--success": "successClassName",
+            "dialog--warn": "warnClassName",
             "dialog--wide": "wideClassName",
             "dialog__actions": "actionsClassName",
             "dialog__body": "bodyClassName",
@@ -80,6 +73,7 @@ exports[`<Dialog/> Portal should render correctly. 1`] = `
           }
         }
         title="Foo title"
+        type="error"
       >
         Foo children
       </clickOutside(DialogWithoutEscape)>

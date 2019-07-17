@@ -68,13 +68,13 @@ describe('<Button/>', () => {
         expect(wrapper.hasClass(props.theme!['btn--brandHover'])).toBeFalsy();
     });
 
-    it('should not render the disabled attribute when passing a falsy "isDisabled" prop.', () => {
+    it('should not render the disabled attribute when passing a falsy "disabled" prop.', () => {
         const wrapper = shallow(<Button {...props} isActive={false}/>);
 
         expect(wrapper.html()).not.toContain('disabled=""');
     });
 
-    it('should render the disabled attribute when passing a truthy "isDisabled" prop.', () => {
+    it('should render the disabled attribute when passing a truthy "disabled" prop.', () => {
         const wrapper = shallow(<Button {...props} isActive={true}/>);
 
         expect(wrapper.html()).not.toContain('disabled=""');

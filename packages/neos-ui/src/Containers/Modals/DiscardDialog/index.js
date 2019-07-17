@@ -67,11 +67,12 @@ export default class DiscardDialog extends PureComponent {
             <Button
                 id="neos-DiscardDialog-Confirm"
                 key="confirm"
-                style="warn"
-                hoverStyle="brand"
+                style="error"
+                hoverStyle="error"
                 onClick={this.handleConfirm}
                 >
-                <I18n id="Neos.Neos:Main:confirm" fallback="Confirm"/>
+                <Icon icon="ban" className={style.buttonIcon}/>
+                <I18n id="Neos.Neos:Main:discard" fallback="Discard"/>
             </Button>
         );
     }
@@ -88,6 +89,7 @@ export default class DiscardDialog extends PureComponent {
                 actions={[this.renderAbort(), this.renderConfirm()]}
                 title={this.renderTitle()}
                 onRequestClose={this.handleAbort}
+                type="error"
                 isOpen
                 id="neos-DiscardDialog"
                 >

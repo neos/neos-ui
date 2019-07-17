@@ -87,13 +87,7 @@ Neos:
           'UI.NodeVariantCreationDialog.createEmpty': 'c e v'
           'UI.NodeVariantCreationDialog.createAndCopy': 'c c v'
 
-          'UI.SelectNodeTypeModal.cancel': 'c s'
-          'UI.SelectNodeTypeModal.apply': 'a s'
-
           'CR.Nodes.unfocus': 'u n'
-
-        legacy:
-          enableUiSwitch: false
 
         defaultInlineEditor: 'ckeditor5'
 
@@ -115,6 +109,7 @@ Neos:
         Math: Neos\Eel\Helper\MathHelper
         Json: Neos\Eel\Helper\JsonHelper
         I18n: Neos\Flow\I18n\EelHelper\TranslationHelper
+        Neos.Ui.Api: Neos\Neos\Ui\Fusion\Helper\ApiHelper
         Neos.Ui.Workspace: Neos\Neos\Ui\Fusion\Helper\WorkspaceHelper
         Neos.Ui.NodeInfo: Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper
         Neos.Ui.ContentDimensions: Neos\Neos\Ui\Fusion\Helper\ContentDimensionsHelper
@@ -127,7 +122,7 @@ Neos:
           previewUrl: '${Neos.Ui.NodeInfo.createRedirectToNode(controllerContext, q(documentNode).context({workspaceName: documentNode.context.workspace.baseWorkspace.name}).get(0))}'
           contentDimensions:
             active: '${documentNode.context.dimensions}'
-            allowedPresets: '${Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions)}'
+            allowedPresets: '${Neos.Ui.Api.emptyArrayToObject(Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions))}'
           documentNodeSerialization: '${Neos.Ui.NodeInfo.renderNodeWithPropertiesAndChildrenInformation(documentNode, controllerContext)}'
           url: '${Neos.Ui.NodeInfo.uri(documentNode, controllerContext)}'
       initialState:
@@ -145,7 +140,7 @@ Neos:
           contentDimensions:
             byName: '${Neos.Ui.ContentDimensions.contentDimensionsByName()}'
             active: '${documentNode.context.dimensions}'
-            allowedPresets: '${Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions)}'
+            allowedPresets: '${Neos.Ui.Api.emptyArrayToObject(Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions))}'
           workspaces:
             personalWorkspace: '${Neos.Ui.Workspace.getPersonalWorkspace()}'
         ui:

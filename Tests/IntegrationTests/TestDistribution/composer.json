@@ -1,0 +1,27 @@
+{
+    "name": "neos/test-distribution",
+    "description": "Neos test distribution",
+    "config": {
+        "vendor-dir": "Packages/Libraries",
+        "bin-dir": "bin"
+    },
+    "require": {
+        "neos/neos": "^3.3",
+        "neos/neos-ui": "*",
+        "neos/fusion-afx": "^1.0",
+        "neos/test-site": "@dev",
+        "neos/test-nodetypes": "@dev"
+    },
+    "repositories": {
+        "distribution": {
+            "type": "path",
+            "url": "./DistributionPackages/*"
+        }
+    },
+    "scripts": {
+        "post-update-cmd": "Neos\\Flow\\Composer\\InstallerScripts::postUpdateAndInstall",
+        "post-install-cmd": "Neos\\Flow\\Composer\\InstallerScripts::postUpdateAndInstall",
+        "post-package-update": "Neos\\Flow\\Composer\\InstallerScripts::postPackageUpdateAndInstall",
+        "post-package-install": "Neos\\Flow\\Composer\\InstallerScripts::postPackageUpdateAndInstall"
+    }
+}

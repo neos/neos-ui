@@ -11,6 +11,7 @@ class SelectBox_HeaderWithSearchInput extends PureComponent {
     static propTypes = {
         // For explanations of the PropTypes, see SelectBox.js
         placeholder: PropTypes.string,
+        placeholderIcon: PropTypes.string,
         displayLoadingIndicator: PropTypes.bool,
         searchTerm: PropTypes.string.isRequired,
         onSearchTermChange: PropTypes.func.isRequired,
@@ -35,7 +36,8 @@ class SelectBox_HeaderWithSearchInput extends PureComponent {
     }
 
     static defaultProps = {
-        placeholder: ''
+        placeholder: '',
+        placeholderIcon: 'search'
     }
 
     clearSearch = event => {
@@ -49,6 +51,7 @@ class SelectBox_HeaderWithSearchInput extends PureComponent {
             onSearchTermChange,
             onKeyDown,
             placeholder,
+            placeholderIcon,
             displayLoadingIndicator,
             setFocus,
             theme,
@@ -61,7 +64,7 @@ class SelectBox_HeaderWithSearchInput extends PureComponent {
         return (
             <div className={theme.selectBoxHeaderWithSearchInput}>
                 <Icon
-                    icon="search"
+                    icon={placeholderIcon}
                     className={theme.selectBoxHeaderWithSearchInput__icon}
                     />
                 <TextInput

@@ -1,10 +1,10 @@
 const sharedWebPackConfig = require('@neos-project/build-essentials/src/webpack.config.js');
 const path = require('path');
-const {ExtractTextPlugin} = sharedWebPackConfig.__internalDependencies;
-delete sharedWebPackConfig.__internalDependencies;
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = function (neosPackageJson) {
     return Object.assign({}, sharedWebPackConfig, {
+        mode: sharedWebPackConfig.mode,
         module: {
             rules: sharedWebPackConfig.module.rules.map(loaderConfig => {
                 if (loaderConfig.use[0].loader === 'babel-loader') {
@@ -29,7 +29,7 @@ module.exports = function (neosPackageJson) {
             Plugin: './src/index.js'
         },
         plugins: [
-            new ExtractTextPlugin('./[name].css', {allChunks: true})
+            new MiniCssExtractPlugin({filename: './[name].css'})
         ],
         output: {
             path: path.resolve(process.cwd(), neosPackageJson.buildTargetDirectory),
@@ -48,6 +48,8 @@ module.exports = function (neosPackageJson) {
             alias: {
                 'react': '@neos-project/neos-ui-extensibility/src/shims/vendor/react/index',
                 'react-dom': '@neos-project/neos-ui-extensibility/src/shims/vendor/react-dom/index',
+                'react-dnd': '@neos-project/neos-ui-extensibility/src/shims/vendor/react-dnd/index',
+                'react-dnd-html5-backend': '@neos-project/neos-ui-extensibility/src/shims/vendor/react-dnd-html5-backend/index',
                 'prop-types': '@neos-project/neos-ui-extensibility/src/shims/vendor/prop-types/index',
                 'plow-js': '@neos-project/neos-ui-extensibility/src/shims/vendor/plow-js/index',
                 'classnames': '@neos-project/neos-ui-extensibility/src/shims/vendor/classnames/index',

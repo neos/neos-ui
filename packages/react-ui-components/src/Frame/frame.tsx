@@ -53,9 +53,8 @@ export default class Frame extends PureComponent<FrameProps> {
 
     private readonly addClickListener = () => {
         if (this.ref && this.ref.contentDocument && this.ref.contentWindow) {
-            this.ref.contentDocument.addEventListener('click', () => {
-                this.relayClickEventToHostDocument();
-            });
+            this.ref.contentDocument.removeEventListener('click', this.relayClickEventToHostDocument);
+            this.ref.contentDocument.addEventListener('click', this.relayClickEventToHostDocument);
             this.ref.contentWindow.addEventListener('unload', () => {
                 this.handleUnload();
             });
@@ -68,8 +67,11 @@ export default class Frame extends PureComponent<FrameProps> {
         }
     }
 
-    private readonly relayClickEventToHostDocument = () => {
-        window.document.dispatchEvent(new MouseEvent('click'));
+    private readonly relayClickEventToHostDocument = (e: MouseEvent) => {
+        const hostEvent: any = new MouseEvent(e.type);
+        // Needed for enhanceWithClickOutside
+        hostEvent.iframeTarget = e.target;
+        window.document.dispatchEvent(hostEvent);
     }
 
     public componentWillUpdate(): void {

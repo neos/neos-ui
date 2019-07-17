@@ -5,7 +5,7 @@
 
 .tabs__content {
     composes: reset from './../reset.css';
-    height: calc(100% - 41px);
+    height: calc(100% - 141px);
     overflow-y: auto;
 }
 
@@ -29,22 +29,32 @@
 }
 .tabNavigation__item {
     composes: reset from './../reset.css';
+    position: relative;
     float: left;
+    border-top: 1px solid var(--colors-ContrastDark);
     border-right: 1px solid var(--colors-ContrastDark);
     color: var(--colors-ContrastBrightest);
 }
 .tabNavigation__item--isActive {
     background-color: var(--colors-ContrastDarker);
     cursor: default;
-    border-bottom: 1px solid var(--colors-PrimaryBlue);
+    border-bottom: 1px solid var(--colors-ContrastDarker);
     margin-bottom: -1px;
+
+    &:after {
+        display: block;
+        content: ' ';
+        position: absolute;
+        top: -1px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        width: 100%;
+        background: var(--colors-PrimaryBlue);
+    }
 
     > .tabNavigation__itemBtn {
         color: var(--colors-PrimaryBlue);
-
-        &:hover {
-            color: var(--colors-ContrastBrightest);
-        }
     }
 }
 .tabNavigation__itemBtn {
@@ -58,7 +68,7 @@
     background: 0;
 
     &:hover {
-        background-color: var(--colors-PrimaryBlue);
+        color: var(--colors-PrimaryBlue);
     }
 
     &:focus {

@@ -7,9 +7,9 @@ import Icon from '../Icon';
 
 export interface TabsProps {
     /**
-     * The index of the active tab, defaults to 0.
+     * The id of the active tab, defaults to an empty string.
      */
-    readonly activeTab?: number;
+    readonly activeTab?: string | number;
 
     /**
      * An optional className to render on the wrapping div.
@@ -22,49 +22,55 @@ export interface TabsProps {
     readonly children: ReadonlyArray<React.ReactElement<any>>;
 
     /**
-     * An optional css theme to be injected.
+     * A css theme to be injected.
      */
-    readonly theme?: TabsTheme;
+    readonly theme: TabsTheme;
 }
 
 interface TabsTheme extends TabMenuItemTheme {
     readonly 'tabs': string;
     readonly 'tabs__content': string;
+    readonly 'tabs__panel': string;
     readonly 'tabNavigation': string;
 }
 
 export const tabsDefaultProps: PickDefaultProps<TabsProps, 'activeTab'> = {
-    activeTab: 0
+    activeTab: 0,
 };
 
 interface TabsState {
-    readonly activeTab: number;
+    readonly activeTab: string | number;
 }
 
 export default class Tabs extends PureComponent<TabsProps> {
     public static Panel = Panel;
     public state: TabsState = {
-        activeTab: 0
+        activeTab: 0,
     };
 
     public static defaultProps = tabsDefaultProps;
 
     public componentWillReceiveProps(newProps: TabsProps): void {
-        const newActiveTab = newProps.activeTab;
+        const newactiveTab = newProps.activeTab;
         const {activeTab} = this.state;
 
-        if (newActiveTab && newActiveTab !== activeTab) {
+        if (newactiveTab && newactiveTab !== activeTab) {
             this.setState({
-                activeTab: newActiveTab
+                activeTab: newactiveTab
             });
         }
     }
 
-    public getActiveTab(): number {
+    public getActiveTab(): string | number {
         // If activeTab is out of bounds, choose the first tab
         const {activeTab} = this.state;
-        const childrenCount = React.Children.count(this.props.children);
-        return childrenCount < activeTab + 1 ? 0 : activeTab;
+        if (isNaN(activeTab as number)) {
+            const activeTabs = this.props.children.filter(panel => panel.props.id === activeTab);
+            return activeTabs.length === 0 ? (this.props.children[0].props.id || 0) : activeTab;
+        } else if (activeTab < React.Children.count(this.props.children)) {
+            return activeTab;
+        }
+        return 0;
     }
 
     public renderMenuItems(): JSX.Element {
@@ -78,11 +84,12 @@ export default class Tabs extends PureComponent<TabsProps> {
             <TabMenuItem
                 key={index}
                 index={index}
+                id={panel.props.id || index}
                 // tslint:disable-next-line:jsx-no-string-ref
                 ref={`tab-${index}`}
                 onClick={this.handleTabNavItemClick}
-                isActive={activeTab === index}
-                theme={theme!}
+                isActive={activeTab === (isNaN(activeTab as number) ? panel.props.id : index)}
+                theme={theme}
                 title={panel.props.title}
                 icon={panel.props.icon}
                 tooltip={panel.props.tooltip}
@@ -90,14 +97,14 @@ export default class Tabs extends PureComponent<TabsProps> {
         ));
 
         return (
-            <ul className={theme!.tabNavigation}>
+            <ul className={theme.tabNavigation}>
                 {menuItems}
             </ul>
         );
     }
 
-    public handleTabNavItemClick = (index: number) => {
-        this.setState({activeTab: index});
+    public handleTabNavItemClick = (id: string | number) => {
+        this.setState({activeTab: id});
     }
 
     public renderPanels(): JSX.Element {
@@ -105,15 +112,16 @@ export default class Tabs extends PureComponent<TabsProps> {
         const activeTab = this.getActiveTab();
 
         return (
-            <div className={theme!.tabs__content}>
-                {React.Children.map(children, (panel, index) => {
-                    const isActive = activeTab === index;
+            <div className={theme.tabs__content}>
+                {children.map((panel, index) => {
+                    const isActive = activeTab === (isNaN(activeTab as number) ? panel.props.id : index);
                     const style = {
                         display: isActive ? 'block' : 'none'
                     };
 
                     return (
                         <div
+                            className={theme.tabs__panel}
                             key={index}
                             style={style}
                             role="tabpanel"
@@ -129,7 +137,7 @@ export default class Tabs extends PureComponent<TabsProps> {
 
     public render(): JSX.Element {
         const {theme, className} = this.props;
-        const finalClassName = mergeClassNames(theme!.tabs, className);
+        const finalClassName = mergeClassNames(theme.tabs, className);
 
         return (
             <div className={finalClassName} role="tablist">
@@ -142,9 +150,14 @@ export default class Tabs extends PureComponent<TabsProps> {
 
 export interface TabMenuItemProps {
     /**
-     * The index which will be handed over to the onClick handler.
+     * The index
      */
     index: number;
+
+    /**
+     * The identifier which will be handed over to the onClick handler.
+     */
+    id: string | number;
 
     /**
      * The title to render for the given Panel.
@@ -154,7 +167,7 @@ export interface TabMenuItemProps {
     /**
      * The click handler which will be called with the passed index as it's only argument.
      */
-    onClick: (index: number) => void;
+    onClick: (id: string | number) => void;
 
     /**
      * A boolean which controls if the rendered anchor is displayed as active or not.
@@ -230,6 +243,6 @@ export class TabMenuItem extends PureComponent<TabMenuItemProps> {
     }
 
     private readonly handleClick = () => {
-        this.props.onClick(this.props.index);
+        this.props.onClick(this.props.id);
     }
 }

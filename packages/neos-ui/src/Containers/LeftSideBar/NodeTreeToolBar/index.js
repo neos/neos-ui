@@ -137,75 +137,81 @@ export default class NodeTreeToolBar extends PureComponent {
         } = this.props;
 
         return (
-            <div className={style.toolBar}>
-                <div className={style.toolBar__btnGroup}>
-                    <AddNode
-                        i18nRegistry={i18nRegistry}
-                        className={style.toolBar__btnGroup__btn}
-                        focusedNodeContextPath={focusedNodeContextPath}
-                        isDisabled={!isAllowedToAddChildOrSiblingNodes}
-                        onClick={this.handleAddNode}
-                        id={`neos-${treeType}-AddNode`}
-                        />
-                    <HideSelectedNode
-                        i18nRegistry={i18nRegistry}
-                        className={style.toolBar__btnGroup__btn}
-                        focusedNodeContextPath={focusedNodeContextPath}
-                        isDisabled={destructiveOperationsAreDisabled || !canBeEdited || !visibilityCanBeToggled}
-                        isHidden={isHidden}
-                        onHide={this.handleHideNode}
-                        onShow={this.handleShowNode}
-                        id={`neos-${treeType}-HideSelectedNode`}
-                        />
-                    <CopySelectedNode
-                        i18nRegistry={i18nRegistry}
-                        className={style.toolBar__btnGroup__btn}
-                        focusedNodeContextPath={focusedNodeContextPath}
-                        onClick={this.handleCopyNode}
-                        isActive={isCopied}
-                        isDisabled={destructiveOperationsAreDisabled}
-                        id={`neos-${treeType}-CopySelectedNode`}
-                        />
-                    <CutSelectedNode
-                        i18nRegistry={i18nRegistry}
-                        className={style.toolBar__btnGroup__btn}
-                        focusedNodeContextPath={focusedNodeContextPath}
-                        isActive={isCut}
-                        isDisabled={destructiveOperationsAreDisabled || !canBeEdited}
-                        onClick={this.handleCutNode}
-                        id={`neos-${treeType}-CutSelectedNode`}
-                        />
-                    <PasteClipBoardNode
-                        i18nRegistry={i18nRegistry}
-                        className={style.toolBar__btnGroup__btn}
-                        focusedNodeContextPath={focusedNodeContextPath}
-                        isDisabled={!canBePasted}
-                        onClick={this.handlePasteNode}
-                        id={`neos-${treeType}-PasteClipBoardNode`}
-                        />
-                    <DeleteSelectedNode
-                        i18nRegistry={i18nRegistry}
-                        className={style.toolBar__btnGroup__btn}
-                        focusedNodeContextPath={focusedNodeContextPath}
-                        isDisabled={destructiveOperationsAreDisabled || !canBeDeleted || !canBeEdited}
-                        onClick={this.handleDeleteNode}
-                        id={`neos-${treeType}-DeleteSelectedNode`}
-                        />
-                    <RefreshPageTree
-                        i18nRegistry={i18nRegistry}
-                        className={style.toolBar__btnGroup__btn}
-                        focusedNodeContextPath={focusedNodeContextPath}
-                        isLoading={isLoading}
-                        onClick={this.handleReloadTree}
-                        id={`neos-${treeType}-RefreshPageTree`}
-                        />
-                    {Boolean(displayToggleContentTreeButton) && <ToggleContentTree
-                        i18nRegistry={i18nRegistry}
-                        className={style.toolBar__btnGroup__btn}
-                        isPanelOpen={!isHiddenContentTree}
-                        onClick={this.handleToggleContentTree}
-                        id={`neos-${treeType}-ToggleContentTree`}
-                        />}
+            <div>
+                {Boolean(displayToggleContentTreeButton) && (
+                    <div className={style.header}>
+                        <ToggleContentTree
+                            i18nRegistry={i18nRegistry}
+                            className={style.toolBar__btnGroup__btn}
+                            isPanelOpen={!isHiddenContentTree}
+                            onClick={this.handleToggleContentTree}
+                            id={`neos-${treeType}-ToggleContentTree`}
+                            />
+                    </div>
+                )}
+                <div className={style.toolBar}>
+                    <div className={style.toolBar__btnGroup}>
+                        <AddNode
+                            i18nRegistry={i18nRegistry}
+                            className={style.toolBar__btnGroup__btn}
+                            focusedNodeContextPath={focusedNodeContextPath}
+                            disabled={!isAllowedToAddChildOrSiblingNodes}
+                            onClick={this.handleAddNode}
+                            id={`neos-${treeType}-AddNode`}
+                            />
+                        <HideSelectedNode
+                            i18nRegistry={i18nRegistry}
+                            className={style.toolBar__btnGroup__btn}
+                            focusedNodeContextPath={focusedNodeContextPath}
+                            disabled={destructiveOperationsAreDisabled || !canBeEdited || !visibilityCanBeToggled}
+                            isHidden={isHidden}
+                            onHide={this.handleHideNode}
+                            onShow={this.handleShowNode}
+                            id={`neos-${treeType}-HideSelectedNode`}
+                            />
+                        <CopySelectedNode
+                            i18nRegistry={i18nRegistry}
+                            className={style.toolBar__btnGroup__btn}
+                            focusedNodeContextPath={focusedNodeContextPath}
+                            onClick={this.handleCopyNode}
+                            isActive={isCopied}
+                            disabled={destructiveOperationsAreDisabled || !canBeEdited}
+                            id={`neos-${treeType}-CopySelectedNode`}
+                            />
+                        <CutSelectedNode
+                            i18nRegistry={i18nRegistry}
+                            className={style.toolBar__btnGroup__btn}
+                            focusedNodeContextPath={focusedNodeContextPath}
+                            isActive={isCut}
+                            disabled={destructiveOperationsAreDisabled || !canBeEdited}
+                            onClick={this.handleCutNode}
+                            id={`neos-${treeType}-CutSelectedNode`}
+                            />
+                        <PasteClipBoardNode
+                            i18nRegistry={i18nRegistry}
+                            className={style.toolBar__btnGroup__btn}
+                            focusedNodeContextPath={focusedNodeContextPath}
+                            disabled={!canBePasted}
+                            onClick={this.handlePasteNode}
+                            id={`neos-${treeType}-PasteClipBoardNode`}
+                            />
+                        <DeleteSelectedNode
+                            i18nRegistry={i18nRegistry}
+                            className={style.toolBar__btnGroup__btn}
+                            focusedNodeContextPath={focusedNodeContextPath}
+                            disabled={destructiveOperationsAreDisabled || !canBeDeleted || !canBeEdited}
+                            onClick={this.handleDeleteNode}
+                            id={`neos-${treeType}-DeleteSelectedNode`}
+                            />
+                        <RefreshPageTree
+                            i18nRegistry={i18nRegistry}
+                            className={style.toolBar__btnGroup__btn}
+                            focusedNodeContextPath={focusedNodeContextPath}
+                            isLoading={isLoading}
+                            onClick={this.handleReloadTree}
+                            id={`neos-${treeType}-RefreshPageTree`}
+                            />
+                    </div>
                 </div>
             </div>
         );

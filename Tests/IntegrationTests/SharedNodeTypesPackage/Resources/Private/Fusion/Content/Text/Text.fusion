@@ -1,0 +1,9 @@
+prototype(Neos.TestNodeTypes:Content.Text) < prototype(Neos.Neos:ContentComponent) {
+    text = Neos.Neos:Editable {
+        property = 'text'
+    }
+
+    renderer = afx`
+        <div class="test-text">{props.text}</div>
+    `
+}

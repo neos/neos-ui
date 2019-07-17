@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     flex-basis: 100%;
-
+    background: var(--colors-ContrastDarkest);
     padding-top: 41px;
     transition: var(--transition-Default) ease transform;
     will-change: transform;
@@ -15,10 +15,18 @@
     &:after {
         clear: both;
     }
+
+    @media(max-width: 576px) {
+        width: 100%;
+    }
 }
 
 .leftSideBar--isHidden {
     transform: translateX(-var(--size-SidebarWidth));
+
+    @media(max-width: 576px) {
+        transform: translateX(-576px);
+    }
 }
 
 .leftSideBar__top {
@@ -26,6 +34,7 @@
     display: flex;
     flex-direction: column;
     min-height: 40px;
+    margin-right: var(--spacing-Quarter);
 }
 
 .leftSideBar__bottom {
@@ -34,9 +43,35 @@
     display: flex;
     flex-direction: column;
     min-height: 40px;
+    margin-right: var(--spacing-Quarter);
 }
 
 .leftSideBar__bottom--isCollapsed {
     flex: 0 0 var(--spacing-GoldenUnit);
     overflow-y: hidden;
+}
+.leftSideBar__toggleBtn {
+    width: 46px;
+    position: absolute!important;
+    left: 0;
+    top: 41px;
+    border: none;
+    background: var(--colors-ContrastDarkest);
+    transition: var(--transition-Default)  ease transform;
+    will-change: transform;
+
+    .leftSideBar--isHidden & {
+        transform: translateX(var(--size-SidebarWidth));
+
+        @media(max-width: 576px) {
+            transform: translateX(576px);
+        }
+    }
+}
+.leftSideBar__header {
+    height: 41px;
+    padding-left: 55px;
+    line-height: 40px;
+    font-weight: bold;
+    background: var(--colors-ContrastDarkest);
 }

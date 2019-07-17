@@ -1,12 +1,12 @@
 # @neos/neos-ui
-[![Build Status](https://travis-ci.org/neos/neos-ui.svg?branch=master)](https://travis-ci.org/neos/neos-ui) [![Dependency Status](https://david-dm.org/neos/neos-ui.svg)](https://david-dm.org/neos/neos-ui) [![devDependency Status](https://david-dm.org/neos/neos-ui/dev-status.svg)](https://david-dm.org/neos/neos-ui#info=devDependencies&view=table)
+[![CircleCI](https://circleci.com/gh/neos/neos-ui.svg?style=svg)](https://circleci.com/gh/neos/neos-ui) [![Dependency Status](https://david-dm.org/neos/neos-ui.svg)](https://david-dm.org/neos/neos-ui) [![devDependency Status](https://david-dm.org/neos/neos-ui/dev-status.svg)](https://david-dm.org/neos/neos-ui#info=devDependencies&view=table)
 [![Slack](http://slack.neos.io/badge.svg)](http://slack.neos.io) [![Forum](https://img.shields.io/badge/forum-Discourse-39c6ff.svg)](https://discuss.neos.io/) [![Twitter](https://img.shields.io/twitter/follow/neoscms.svg?style=social)](https://twitter.com/NeosCMS)
 
 > The next generation Neos CMS interface written in ReactJS and a tonn of other fun technology.
 
 ## Versioning
 
-Since Neos 5.0 (scheduled April 2019) this repository will become obsolete and `neos-ui` will be versioned and releases together with with the rest of Neos core packages.
+Since Neos 5.0 (scheduled August 2019) this repository will become obsolete and `neos-ui` will be versioned and releases together with with the rest of Neos core packages.
 
 Until then, the following version conventions are in place:
 - 2.x versions are Neos 3.3 compatible (released from the `2.x` branch)
@@ -17,7 +17,6 @@ For users this means: **You will not get bugfixes for previous minor releases, s
 
 ```
 "neos/neos-ui": "^3",
-"neos/neos-ui-compiled": "^3",
 ```
 
 For developers this means: **All development happens in `2.x` branch and then getting upmered to `master`**
@@ -45,16 +44,16 @@ The new UI is [already included](https://github.com/neos/neos-base-distribution/
 1. You need to have Neos CMS 3.3 or newer up & running.
 
 2. Run the following command:
-   ```
-   composer require neos/neos-ui neos/neos-ui-compiled
-   ```
+```
+composer require neos/neos-ui
+```
 
 3. Now you are all set up and you can login to the new interface as usual via `/neos` route.
 
 ### Updating
 
 ```
-composer update neos/neos-ui neos/neos-ui-compiled
+composer update neos/neos-ui
 ```
 
 ### Installing dev-master
@@ -64,14 +63,37 @@ However, if you want to stay on bleeding-edge, or want to help out developing, y
 need the `dev-master` release. You can install the master release using:
 
 ```
-composer require neos/neos-ui:dev-master neos/neos-ui-compiled:dev-master
+composer require neos/neos-ui:dev-master
 ```
 
 ## Contributing
 
-In order to start contributing, follow the following steps:
+Please follow the respective guides for contributing on OSX and on Linux.
 
-1) Ensure you have the `dev-master` version installed (see above).
+### on Windows
+
+1) Ensure you have the `2.x` or `dev-master` version installed (see above).
+
+2) Please install Docker for Windows.
+
+3) Run `docker-compose up`.
+
+4) Inside `Configuration/Settings.yaml`, set the following property for disabling the pre-compiled files:
+
+```
+Neos:
+  Neos:
+    Ui:
+      frontendDevelopmentMode: true
+```
+
+6) Get an overview about the codebase. We've recorded [an introduction on YouTube](https://www.youtube.com/watch?v=RYBUS5Nxxxk) which gets you acquainted with the basics. Additionally, please get in touch with us on [Slack](http://slack.neos.io) in the channel #project-ui-rewrite. We're eager to help you get started!
+
+### on OSX / Linux
+
+In order to start contributing on OSX / Linux, follow the following steps:
+
+1) Ensure you have the `2.x` or `dev-master` version installed (see above).
 
 2) We require [Chrome](https://www.google.com/chrome/browser/desktop/index.html) as well as the `yarn`(https://yarnpkg.com/en/) command and GNU Make(https://www.gnu.org/software/make/) to be installed on your system.
 
@@ -79,22 +101,25 @@ In order to start contributing, follow the following steps:
 
 4) Inside `Configuration/Settings.yaml`, set the following property for disabling the pre-compiled files:
 
-   ```
-   Neos:
-     Neos:
-       Ui:
-         frontendDevelopmentMode: true
-   ```
+```
+Neos:
+  Neos:
+    Ui:
+      frontendDevelopmentMode: true
+```
 
 5) Run the initialization script:
 
-   ```
-   make setup
-   ```
+```
+make setup
+```
 
-6) Get an overview about the codebase. We've recorded [an introduction on YouTube](https://www.youtube.com/watch?v=RYBUS5Nxxxk) which
-   gets you acquainted with the basics. Additionally, please get in touch with us on [Slack](http://slack.neos.io) in the
-   channel #project-ui-rewrite. We're eager to help you get started!
+6) Get an overview about the codebase. We've recorded [an introduction on YouTube](https://www.youtube.com/watch?v=RYBUS5Nxxxk) which gets you acquainted with the basics. Additionally, please get in touch with us on [Slack](http://slack.neos.io) in the channel #project-ui-rewrite. We're eager to help you get started!
+
+#### Guideline for PR and commit messages
+
+Please see [our guideline](https://neos.readthedocs.io/en/latest/Contribute/Documentation/BeginnersGuide.html#guideline-commit-messages)
+on how to write meaningful descriptions for your contributions.
 
 #### Doing upmerges
 
@@ -102,10 +127,9 @@ In order to start contributing, follow the following steps:
 
 2) To do the upmerge do the following commands
 
-   ```
-   git checkout master
-   git merge --no-ff --no-commit 2.x
-   ```
+```
+git checkout master && git fetch && git reset --hard origin/master && git merge --no-ff --no-commit origin/2.x --strategy-option=ours
+```
 Review the changes and commit the changes with the following commit message:
 
 `MERGE: Merge branch '2.x' into master`
@@ -137,9 +161,9 @@ An example file would look like this:
 
 ```
 module.exports = {
-       protocol: 'http',
-       port: '123',
-       hostname: 'localhost'
+    protocol: 'http',
+    port: '123',
+    hostname: 'localhost'
 };
 ```
 
@@ -156,8 +180,7 @@ Use `it.only(() => {})` and `describe.only(() => {})` if you want to run a speci
 
 #### Integration tests
 
-For end to end testing we use the headless chrome. So it is mandatory to install the chrome browser for integration tests.
-Since Chrome 59 the headless mode is integrated. So please install a Chome 59 or higher to execute the end to end tests.
+To setup end-to-end tests locally you have got to do the same things described in [CircleCI workflow](https://github.com/neos/neos-ui/blob/2.x/.circleci/config.yml), namely take the [test disribution](https://github.com/neos/neos-ui/blob/2.x/Tests/IntegrationTests/TestDistribution/composer.json) and `composer install` in it, put the right branch into Neos.Neos.Ui folder and run webserver and mysql server with the same config as described in the test distribution's [Settings.yaml](https://github.com/neos/neos-ui/blob/2.x/Tests/IntegrationTests/TestDistribution/Configuration/Settings.yaml) (or adjust it).
 
 #### Releasing
 

@@ -30,7 +30,7 @@ const defaultOptions = {
 };
 
 const BooleanEditor = props => {
-    const {value, label, identifier, commit, options, className} = props;
+    const {value, label, commit, options, className} = props;
     const finalOptions = Object.assign({}, defaultOptions, options);
 
     const wrapperClassName = mergeClassNames({
@@ -39,15 +39,17 @@ const BooleanEditor = props => {
     });
 
     const finalClassName = mergeClassNames({
-        [style.boolean__disabled]: finalOptions.disabled
+        [style.boolean__disabled]: finalOptions.disabled,
+        [style.boolean__label]: true
     });
 
     return (
         <div className={wrapperClassName}>
-            <Label htmlFor={identifier} className={finalClassName}>
-                <CheckBox id={identifier} isChecked={toBoolean(value)} isDisabled={finalOptions.disabled} onChange={commit}/>
+            <Label className={finalClassName}>
+                <CheckBox isChecked={toBoolean(value)} disabled={finalOptions.disabled} onChange={commit}/>
                 <I18n id={label}/>
             </Label>
+            {props.renderHelpIcon ? props.renderHelpIcon() : ''}
         </div>
     );
 };
@@ -57,6 +59,7 @@ BooleanEditor.propTypes = {
     label: PropTypes.string.isRequired,
     value: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
     commit: PropTypes.func.isRequired,
+    renderHelpIcon: PropTypes.func,
     options: PropTypes.object
 };
 

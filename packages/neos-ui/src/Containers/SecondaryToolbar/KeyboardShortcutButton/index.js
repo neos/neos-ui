@@ -32,6 +32,7 @@ export default class KeyboardShortcutButton extends PureComponent {
             <IconButton
                 icon="keyboard"
                 aria-label={i18nRegistry.translate('Neos.Neos:Main:displayKeyboardShortcuts', 'Display Keyboard Shortcuts')}
+                title={i18nRegistry.translate('Neos.Neos:Main:displayKeyboardShortcuts', 'Display Keyboard Shortcuts')}
                 onClick={open}
                 />
         );

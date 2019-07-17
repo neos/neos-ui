@@ -8,6 +8,14 @@ import {selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {shouldDisplaySearchBox, searchOptions, processSelectBoxOptions} from './SelectBoxHelpers';
 
+const getDataLoaderOptionsForProps = props => ({
+    contextNodePath: props.focusedNodePath,
+    dataSourceIdentifier: props.options.dataSourceIdentifier,
+    dataSourceUri: props.options.dataSourceUri,
+    dataSourceAdditionalData: props.options.dataSourceAdditionalData,
+    dataSourceDisableCaching: Boolean(props.options.dataSourceDisableCaching)
+});
+
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n'),
     dataSourcesDataLoader: globalRegistry.get('dataLoaders').get('DataSources')
@@ -33,6 +41,7 @@ export default class DataSourceBasedSelectBoxEditor extends PureComponent {
 
             dataSourceIdentifier: PropTypes.string,
             dataSourceUri: PropTypes.string,
+            dataSourceDisableCaching: PropTypes.bool,
             dataSourceAdditionalData: PropTypes.objectOf(PropTypes.any),
 
             minimumResultsForSearch: PropTypes.number,
@@ -68,18 +77,20 @@ export default class DataSourceBasedSelectBoxEditor extends PureComponent {
         selectBoxOptions: {}
     };
 
-    getDataLoaderOptions() {
-        return {
-            contextNodePath: this.props.focusedNodePath,
-            dataSourceIdentifier: this.props.options.dataSourceIdentifier,
-            dataSourceUri: this.props.options.dataSourceUri,
-            dataSourceAdditionalData: this.props.options.dataSourceAdditionalData
-        };
+    componentDidMount() {
+        this.loadSelectBoxOptions();
     }
 
-    componentDidMount() {
+    componentDidUpdate(prevProps) {
+        // if our data loader options have changed (e.g. due to use of ClientEval), we want to re-initialize the data source.
+        if (JSON.stringify(getDataLoaderOptionsForProps(this.props)) !== JSON.stringify(getDataLoaderOptionsForProps(prevProps))) {
+            this.loadSelectBoxOptions();
+        }
+    }
+
+    loadSelectBoxOptions() {
         this.setState({isLoading: true});
-        this.props.dataSourcesDataLoader.resolveValue(this.getDataLoaderOptions(), this.props.value)
+        this.props.dataSourcesDataLoader.resolveValue(getDataLoaderOptionsForProps(this.props), this.props.value)
             .then(selectBoxOptions => {
                 this.setState({
                     isLoading: false,

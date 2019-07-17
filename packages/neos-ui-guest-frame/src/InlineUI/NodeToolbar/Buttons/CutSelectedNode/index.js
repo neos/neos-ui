@@ -14,7 +14,7 @@ export default class CutSelectedNode extends PureComponent {
         className: PropTypes.string,
         contextPath: PropTypes.string,
         destructiveOperationsAreDisabled: PropTypes.bool.isRequired,
-        isActive: PropTypes.bool.isRequired,
+        isCut: PropTypes.bool.isRequired,
         canBeEdited: PropTypes.bool.isRequired,
         cutNode: PropTypes.func.isRequired,
         i18nRegistry: PropTypes.object.isRequired
@@ -29,7 +29,7 @@ export default class CutSelectedNode extends PureComponent {
     render() {
         const {
             destructiveOperationsAreDisabled,
-            isActive,
+            isCut,
             className,
             canBeEdited,
             i18nRegistry
@@ -39,7 +39,7 @@ export default class CutSelectedNode extends PureComponent {
             <IconButton
                 id="neos-InlineToolbar-CutSelectedNode"
                 className={className}
-                isActive={isActive}
+                isActive={isCut}
                 disabled={destructiveOperationsAreDisabled || !canBeEdited}
                 onClick={this.handleCutSelectedNodeClick}
                 icon="cut"

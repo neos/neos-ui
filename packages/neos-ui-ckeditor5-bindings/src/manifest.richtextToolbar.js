@@ -388,11 +388,11 @@ export default ckEditorRegistry => {
                 type: 'checkBox'
             },
             {
-                commandName: 'insertTableColumnBefore',
+                commandName: 'insertTableColumnLeft',
                 label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__insertTableColumnBefore'
             },
             {
-                commandName: 'insertTableColumnAfter',
+                commandName: 'insertTableColumnRight',
                 label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__insertTableColumnAfter'
             },
             {

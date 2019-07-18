@@ -143,10 +143,10 @@
       <trans-unit id="ckeditor__toolbar__setTableColumnHeader" xml:space="preserve" approved="yes">
 				<source>Header column</source>
 			<target xml:lang="de">Kopfspalte</target><alt-trans><target xml:lang="de">Kopfzeile Spalte</target></alt-trans><alt-trans><target xml:lang="de">Kopfzeile</target></alt-trans></trans-unit>
-      <trans-unit id="ckeditor__toolbar__insertTableColumnBefore" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__insertTableColumnLeft" xml:space="preserve" approved="yes">
 				<source>Insert column before</source>
 			<target xml:lang="de">Spalte links einfügen</target><alt-trans><target xml:lang="de">füge als erst eine Spalte ein</target></alt-trans></trans-unit>
-      <trans-unit id="ckeditor__toolbar__insertTableColumnAfter" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__insertTableColumnRight" xml:space="preserve" approved="yes">
 				<source>Insert column after</source>
 			<target xml:lang="de">Spalte rechts einfügen</target><alt-trans><target xml:lang="de">füge Spalte danach ein</target></alt-trans></trans-unit>
       <trans-unit id="ckeditor__toolbar__removeTableColumn" xml:space="preserve" approved="yes">

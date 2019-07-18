@@ -389,11 +389,11 @@ export default ckEditorRegistry => {
             },
             {
                 commandName: 'insertTableColumnLeft',
-                label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__insertTableColumnBefore'
+                label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__insertTableColumnLeft'
             },
             {
                 commandName: 'insertTableColumnRight',
-                label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__insertTableColumnAfter'
+                label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__insertTableColumnRight'
             },
             {
                 commandName: 'removeTableColumn',

@@ -19,7 +19,7 @@ const LinkInputOptions = ({
 }) => {
     const anchorValue = typeof linkValue === 'string' ? linkValue.split('#')[1] : '';
     const baseValue = typeof linkValue === 'string' ? linkValue.split('#')[0] : '';
-    return $get('anchor', options) && (
+    return (
         <Fragment>
             {$get('anchor', options) && (
                 <div className={style.linkInput__optionsPanelItem}>

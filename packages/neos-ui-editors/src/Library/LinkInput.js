@@ -1,10 +1,9 @@
 import React, {PureComponent, Fragment} from 'react';
 import PropTypes from 'prop-types';
-import pick from 'lodash.pick';
 import {connect} from 'react-redux';
 import {$get, $transform} from 'plow-js';
 
-import {IconButton, SelectBox, Icon, CheckBox, TextInput} from '@neos-project/react-ui-components';
+import {IconButton, SelectBox, Icon} from '@neos-project/react-ui-components';
 import LinkOption from '@neos-project/neos-ui-editors/src/Library/LinkOption';
 import {neos} from '@neos-project/neos-ui-decorators';
 
@@ -31,7 +30,8 @@ const looksLikeExternalLink = link => {
 
 @neos(globalRegistry => ({
     linkLookupDataLoader: globalRegistry.get('dataLoaders').get('LinkLookup'),
-    i18nRegistry: globalRegistry.get('i18n')
+    i18nRegistry: globalRegistry.get('i18n'),
+    containerRegistry: globalRegistry.get('containers')
 }))
 @connect($transform({
     contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking
@@ -39,14 +39,12 @@ const looksLikeExternalLink = link => {
 export default class LinkInput extends PureComponent {
     static propTypes = {
         i18nRegistry: PropTypes.object,
+        containerRegistry: PropTypes.object,
+        linkingOptions: PropTypes.object,
         options: PropTypes.shape({
             nodeTypes: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
             placeholder: PropTypes.string,
             disabled: PropTypes.bool,
-            anchor: PropTypes.bool,
-            title: PropTypes.bool,
-            targetBlank: PropTypes.bool,
-            relNofollow: PropTypes.bool,
             assets: PropTypes.bool,
             nodes: PropTypes.bool,
             startingPoint: PropTypes.string
@@ -306,64 +304,14 @@ export default class LinkInput extends PureComponent {
     renderOptionsPanel() {
         return (
             <div className={style.linkInput__optionsPanel}>
-                {$get('anchor', this.props.options) && (
-                    <div className={style.linkInput__optionsPanelItem}>
-                        <label className={style.linkInput__optionsPanelLabel} htmlFor="__neos__linkEditor--anchor">
-                            {this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__anchor', 'Link to anchor')}
-                        </label>
-                        <div>
-                            <TextInput
-                                id="__neos__linkEditor--anchor"
-                                value={this.getAnchorValue()}
-                                placeholder={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__anchorPlaceholder', 'Enter anchor name')}
-                                onChange={value => {
-                                    this.props.onLinkChange(value ? `${this.getBaseValue()}#${value}` : this.getBaseValue());
-                                }}
-                            />
-                        </div>
-                    </div>)}
-                {$get('title', this.props.options) && (
-                    <div className={style.linkInput__optionsPanelItem}>
-                        <label className={style.linkInput__optionsPanelLabel} htmlFor="__neos__linkEditor--title">
-                            {this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__title', 'Title')}
-                        </label>
-                        <div>
-                            <TextInput
-                                id="__neos__linkEditor--title"
-                                value={this.props.linkTitleValue || ''}
-                                placeholder={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__titlePlaceholder', 'Enter link title')}
-                                onChange={value => {
-                                    this.props.onLinkTitleChange(value);
-                                }}
-                            />
-                        </div>
-                    </div>)}
-                <div className={style.linkInput__optionsPanelDouble}>
-                    {$get('targetBlank', this.props.options) && (
-                        <div className={style.linkInput__optionsPanelItem}>
-                            <label>
-                                <CheckBox
-                                    onChange={this.props.onLinkTargetChange}
-                                    isChecked={this.props.linkTargetBlankValue || false}
-                                /> {this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__targetBlank', 'Open in new window')}
-                            </label>
-                        </div>)}
-                    {$get('relNofollow', this.props.options) && (
-                        <div className={style.linkInput__optionsPanelItem}>
-                            <label>
-                                <CheckBox
-                                    onChange={this.props.onLinkRelChange}
-                                    isChecked={this.props.linkRelNofollowValue || false}
-                                /> {this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__noFollow', 'No follow')}
-                            </label>
-                        </div>)}
-                </div>
+                {this.props.containerRegistry.getChildren('LinkInput/OptionsPanel').map((Item, key) => <Item key={key} {...this.props} />)}
+
             </div>
         );
     }
 
     render() {
-        const linkingOptions = pick(this.props.options, ['anchor', 'title', 'targetBlank', 'relNofollow']);
+        const {linkingOptions, linkValue} = this.props;
 
         const optionsPanelEnabled = Boolean(linkingOptions && Object.values(linkingOptions).filter(i => i).length);
         return (
@@ -372,6 +320,7 @@ export default class LinkInput extends PureComponent {
                     {this.state.isEditMode && !$get('options.disabled', this.props) ? this.renderEditMode() : this.renderViewMode()}
                     {optionsPanelEnabled && (
                         <IconButton
+                            disabled={!linkValue}
                             onClick={this.handleToggleOptionsPanel}
                             style={this.state.optionsPanelIsOpen ? 'brand' : 'transparent'}
                             className={style.linkInput__innerButton}

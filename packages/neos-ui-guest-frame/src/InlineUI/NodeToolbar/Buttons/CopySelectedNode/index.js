@@ -14,7 +14,7 @@ export default class CopySelectedNode extends PureComponent {
         className: PropTypes.string,
         contextPath: PropTypes.string,
         destructiveOperationsAreDisabled: PropTypes.bool.isRequired,
-        isActive: PropTypes.bool.isRequired,
+        isCopied: PropTypes.bool.isRequired,
         copyNode: PropTypes.func.isRequired,
         i18nRegistry: PropTypes.object.isRequired
     };
@@ -26,14 +26,14 @@ export default class CopySelectedNode extends PureComponent {
     }
 
     render() {
-        const {destructiveOperationsAreDisabled, className, isActive, i18nRegistry} = this.props;
+        const {destructiveOperationsAreDisabled, className, isCopied, i18nRegistry} = this.props;
 
         return (
             <IconButton
                 id="neos-InlineToolbar-CopySelectedNode"
                 className={className}
                 disabled={destructiveOperationsAreDisabled}
-                isActive={isActive}
+                isActive={isCopied}
                 onClick={this.handleCopySelectedNodeClick}
                 icon="far copy"
                 hoverStyle="brand"

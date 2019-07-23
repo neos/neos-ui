@@ -311,7 +311,7 @@ export default class LinkInput extends PureComponent {
     }
 
     render() {
-        const {linkingOptions} = this.props;
+        const {linkingOptions, linkValue} = this.props;
 
         const optionsPanelEnabled = Boolean(linkingOptions && Object.values(linkingOptions).filter(i => i).length);
         return (
@@ -320,6 +320,7 @@ export default class LinkInput extends PureComponent {
                     {this.state.isEditMode && !$get('options.disabled', this.props) ? this.renderEditMode() : this.renderViewMode()}
                     {optionsPanelEnabled && (
                         <IconButton
+                            disabled={!linkValue}
                             onClick={this.handleToggleOptionsPanel}
                             style={this.state.optionsPanelIsOpen ? 'brand' : 'transparent'}
                             className={style.linkInput__innerButton}

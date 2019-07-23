@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-redux-store",
-  "version": "2.7.0",
+  "version": "2.8.0",
   "description": "Redux store implementation for the Neos CMS UI",
   "private": true,
   "main": "./src/index.ts",
@@ -14,15 +14,15 @@
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "2.7.0",
-    "@neos-project/build-essentials": "2.7.0",
-    "@neos-project/jest-preset-neos-ui": "2.7.0"
+    "@neos-project/babel-preset-neos-ui": "2.8.0",
+    "@neos-project/build-essentials": "2.8.0",
+    "@neos-project/jest-preset-neos-ui": "2.8.0"
   },
   "dependencies": {
-    "@neos-project/neos-ts-interfaces": "2.7.0",
-    "@neos-project/neos-ui-extensibility": "2.7.0",
-    "@neos-project/neos-ui-validators": "2.7.0",
-    "@neos-project/utils-redux": "2.7.0"
+    "@neos-project/neos-ts-interfaces": "2.8.0",
+    "@neos-project/neos-ui-extensibility": "2.8.0",
+    "@neos-project/neos-ui-validators": "2.8.0",
+    "@neos-project/utils-redux": "2.8.0"
   },
   "license": "GNU GPLv3",
   "jest": {

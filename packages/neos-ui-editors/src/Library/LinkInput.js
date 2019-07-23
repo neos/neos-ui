@@ -40,14 +40,11 @@ export default class LinkInput extends PureComponent {
     static propTypes = {
         i18nRegistry: PropTypes.object,
         containerRegistry: PropTypes.object,
+        linkingOptions: PropTypes.object,
         options: PropTypes.shape({
             nodeTypes: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
             placeholder: PropTypes.string,
             disabled: PropTypes.bool,
-            anchor: PropTypes.bool,
-            title: PropTypes.bool,
-            targetBlank: PropTypes.bool,
-            relNofollow: PropTypes.bool,
             assets: PropTypes.bool,
             nodes: PropTypes.bool,
             startingPoint: PropTypes.string
@@ -314,7 +311,7 @@ export default class LinkInput extends PureComponent {
     }
 
     render() {
-        const linkingOptions = this.props.options;
+        const {linkingOptions} = this.props;
 
         const optionsPanelEnabled = Boolean(linkingOptions && Object.values(linkingOptions).filter(i => i).length);
         return (

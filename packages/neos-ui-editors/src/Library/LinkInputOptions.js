@@ -8,7 +8,7 @@ import style from './LinkInput.css';
 const LinkInputOptions = ({
     i18nRegistry,
     onLinkChange,
-    options,
+    linkingOptions,
     linkValue,
     linkTitleValue,
     onLinkTitleChange,
@@ -21,7 +21,7 @@ const LinkInputOptions = ({
     const baseValue = typeof linkValue === 'string' ? linkValue.split('#')[0] : '';
     return (
         <Fragment>
-            {$get('anchor', options) && (
+            {$get('anchor', linkingOptions) && (
                 <div className={style.linkInput__optionsPanelItem}>
                     <label className={style.linkInput__optionsPanelLabel} htmlFor="__neos__linkEditor--anchor">
                         {i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__anchor', 'Link to anchor')}
@@ -38,7 +38,7 @@ const LinkInputOptions = ({
                     </div>
                 </div>
             )}
-            {$get('title', options) && (
+            {$get('title', linkingOptions) && (
                 <div className={style.linkInput__optionsPanelItem}>
                     <label className={style.linkInput__optionsPanelLabel} htmlFor="__neos__linkEditor--title">
                         {i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__title', 'Title')}
@@ -57,7 +57,7 @@ const LinkInputOptions = ({
             )}
 
             <div className={style.linkInput__optionsPanelDouble}>
-                {$get('targetBlank', options) && (
+                {$get('targetBlank', linkingOptions) && (
                     <div className={style.linkInput__optionsPanelItem}>
                         <label>
                             <CheckBox
@@ -66,7 +66,7 @@ const LinkInputOptions = ({
                             /> {i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__targetBlank', 'Open in new window')}
                         </label>
                     </div>)}
-                {$get('relNofollow', options) && (
+                {$get('relNofollow', linkingOptions) && (
                     <div className={style.linkInput__optionsPanelItem}>
                         <label>
                             <CheckBox

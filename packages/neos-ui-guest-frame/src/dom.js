@@ -52,6 +52,11 @@ export const findAllPropertiesInGuestFrame = () =>
     findAllInGuestFrame('[data-__neos-property]');
 
 //
+// Find all DOM nodes that represent a particular node property in the guest frame
+//
+export const findAllOccurrencesOfNodePropertyInGuestFrame = (contextPath, propertyName) => findAllInGuestFrame(`[data-__neos-editable-node-contextpath="${contextPath}"][data-__neos-property="${propertyName}"]`);
+
+//
 // Find all DOM nodes that represent CR node properties in the guest frame
 //
 export const findRelativePropertiesInGuestFrame = contentDomNode =>
@@ -208,7 +213,9 @@ export const getAbsolutePositionOfElementInGuestFrame = element => {
             top: relativeElementDimensions.top - relativeDocumentDimensions.top,
             left: relativeElementDimensions.left - relativeDocumentDimensions.left,
             bottom: relativeDocumentDimensions.bottom - relativeElementDimensions.bottom,
-            right: relativeDocumentDimensions.right - relativeElementDimensions.right
+            right: relativeDocumentDimensions.right - relativeElementDimensions.right,
+            width: relativeElementDimensions.width,
+            height: relativeElementDimensions.height
         };
     }
 

@@ -48,7 +48,7 @@ export const bootstrap = _editorConfig => {
 };
 
 export const createEditor = options => {
-    const {propertyDomNode, propertyName, contextPath, editorOptions, globalRegistry, userPreferences, persistChange} = options;
+    const {propertyDomNode, propertyName, editorOptions, globalRegistry, userPreferences, onChange} = options;
     const ckEditorConfig = editorConfig.configRegistry.getCkeditorConfig({
         editorOptions,
         userPreferences,
@@ -70,15 +70,7 @@ export const createEditor = options => {
             editor.neos = options;
 
             editor.model.document.on('change', () => handleUserInteractionCallback());
-            editor.model.document.on('change:data', debounce(() => persistChange({
-                type: 'Neos.Neos.Ui:Property',
-                subject: contextPath,
-                payload: {
-                    propertyName,
-                    value: cleanupContentBeforeCommit(editor.getData()),
-                    isInline: true
-                }
-            }), 500, {maxWait: 5000}));
+            editor.model.document.on('change:data', debounce(() => onChange(cleanupContentBeforeCommit(editor.getData())), 500, {maxWait: 5000}));
         }).catch(e => console.error(e));
 };
 

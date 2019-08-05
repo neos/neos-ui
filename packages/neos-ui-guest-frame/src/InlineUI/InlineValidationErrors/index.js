@@ -70,7 +70,7 @@ export default class InlineValidationTooltips extends PureComponent {
 
         return <Fragment>{Object.keys(inlineValidationErrors).map(contextAndPropertyName => {
             const validationErrorsForProperty = inlineValidationErrors[contextAndPropertyName];
-            const [contextPath, propertyName] = contextAndPropertyName.split('~');
+            const [contextPath, propertyName] = contextAndPropertyName.split(' ');
             const domNodes = findAllOccurrencesOfNodePropertyInGuestFrame(contextPath, propertyName);
             return domNodes.map((domNode, index) => {
                 this.invalidInlinePropertiesDomNodes.push(domNode);

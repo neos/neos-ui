@@ -509,9 +509,9 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
         case actionTypes.SET_INLINE_VALIDATION_ERRORS: {
             const {node, propertyName, errors} = action.payload;
             if (errors) {
-                draft.inlineValidationErrors[`${node}~${propertyName}`] = errors;
+                draft.inlineValidationErrors[`${node} ${propertyName}`] = errors;
             } else {
-                delete draft.inlineValidationErrors[`${node}~${propertyName}`];
+                delete draft.inlineValidationErrors[`${node} ${propertyName}`];
             }
             break;
         }

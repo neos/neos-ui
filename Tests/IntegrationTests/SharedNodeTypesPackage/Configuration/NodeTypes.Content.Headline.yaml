@@ -22,3 +22,8 @@
               h4: true
               h5: true
               a: true
+      validation:
+        'Neos.Neos/Validation/NotEmptyValidator': []
+        'Neos.Neos/Validation/StringLengthValidator':
+          minimum: 1
+          maximum: 255

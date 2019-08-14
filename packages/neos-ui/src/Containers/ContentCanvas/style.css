@@ -20,9 +20,6 @@
 .contentCanvas--isFringeRight {
     padding-right: 0;
 }
-.contentCanvas--isMovedDown {
-    padding-top: 192px; /* height of EditModePanel added */
-}
 .contentCanvas--isFullScreen {
     padding: var(--spacing-GoldenUnit) 0 0 0;
 }

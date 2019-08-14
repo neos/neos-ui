@@ -5,7 +5,6 @@ import * as FlashMessages from '@neos-project/neos-ui-redux-store/src/UI/FlashMe
 import * as FullScreen from '@neos-project/neos-ui-redux-store/src/UI/FullScreen';
 import * as KeyboardShortcutModal from '@neos-project/neos-ui-redux-store/src/UI/KeyboardShortcutModal';
 import * as LeftSideBar from '@neos-project/neos-ui-redux-store/src/UI/LeftSideBar';
-import * as EditModePanel from '@neos-project/neos-ui-redux-store/src/UI/EditModePanel';
 import * as EditPreviewMode from '@neos-project/neos-ui-redux-store/src/UI/EditPreviewMode';
 import * as Drawer from '@neos-project/neos-ui-redux-store/src/UI/Drawer';
 import * as Remote from '@neos-project/neos-ui-redux-store/src/UI/Remote';
@@ -26,7 +25,6 @@ const all = {
     FullScreen,
     KeyboardShortcutModal,
     LeftSideBar,
-    EditModePanel,
     EditPreviewMode,
     Drawer,
     Remote,
@@ -51,7 +49,6 @@ export interface State {
     fullScreen: FullScreen.State;
     keyboardShortcutModal: KeyboardShortcutModal.State;
     leftSideBar: LeftSideBar.State;
-    editModePanel: EditModePanel.State;
     editPreviewMode: EditPreviewMode.State;
     drawer: Drawer.State;
     remote: Remote.State;
@@ -86,7 +83,6 @@ export const reducer = combineReducers({
     fullScreen: FullScreen.reducer,
     keyboardShortcutModal: KeyboardShortcutModal.reducer,
     leftSideBar: LeftSideBar.reducer,
-    editModePanel: EditModePanel.reducer,
     editPreviewMode: EditPreviewMode.reducer,
     drawer: Drawer.reducer,
     remote: Remote.reducer,

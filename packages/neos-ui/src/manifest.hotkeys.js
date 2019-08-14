@@ -41,11 +41,6 @@ manifest('main.hotkeys', {}, (globalRegistry, {frontendConfiguration}) => {
             action: actions.UI.Drawer.toggle
         });
 
-        hotkeyRegistry.set('UI.EditModePanel.toggle', {
-            description: 'Toggle EditModePanel',
-            action: actions.UI.EditModePanel.toggle
-        });
-
         hotkeyRegistry.set('UI.InsertionModeModal.cancel', {
             description: 'Cancel InsertionModeModal',
             action: actions.UI.InsertionModeModal.cancel

@@ -68,8 +68,6 @@ Neos:
 
           'UI.Drawer.toggle': 't d'
 
-          'UI.EditModePanel.toggle': 't e'
-
           'UI.InsertionModeModal.cancel': 'c i'
           'UI.InsertionModeModal.apply': 'a i'
 
@@ -151,8 +149,6 @@ Neos:
           editPreviewMode: '${q(user).property("preferences.preferences")["contentEditing.editPreviewMode"] || Configuration.setting(''Neos.Neos.userInterface.defaultEditPreviewMode'')}'
           fullScreen:
             isFullScreen: false
-          editModePanel:
-            isHidden: true
           leftSideBar:
             isHidden: false
             contentTree:

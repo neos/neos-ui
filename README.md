@@ -68,7 +68,30 @@ composer require neos/neos-ui:dev-master
 
 ## Contributing
 
-In order to start contributing, follow the following steps:
+Please follow the respective guides for contributing on OSX and on Linux.
+
+### on Windows
+
+1) Ensure you have the `2.x` or `dev-master` version installed (see above).
+
+2) Please install Docker for Windows.
+
+3) Run `docker-compose up`.
+
+4) Inside `Configuration/Settings.yaml`, set the following property for disabling the pre-compiled files:
+
+```
+Neos:
+  Neos:
+    Ui:
+      frontendDevelopmentMode: true
+```
+
+6) Get an overview about the codebase. We've recorded [an introduction on YouTube](https://www.youtube.com/watch?v=RYBUS5Nxxxk) which gets you acquainted with the basics. Additionally, please get in touch with us on [Slack](http://slack.neos.io) in the channel #project-ui-rewrite. We're eager to help you get started!
+
+### on OSX / Linux
+
+In order to start contributing on OSX / Linux, follow the following steps:
 
 1) Ensure you have the `2.x` or `dev-master` version installed (see above).
 
@@ -92,6 +115,11 @@ make setup
 ```
 
 6) Get an overview about the codebase. We've recorded [an introduction on YouTube](https://www.youtube.com/watch?v=RYBUS5Nxxxk) which gets you acquainted with the basics. Additionally, please get in touch with us on [Slack](http://slack.neos.io) in the channel #project-ui-rewrite. We're eager to help you get started!
+
+#### Guideline for PR and commit messages
+
+Please see [our guideline](https://neos.readthedocs.io/en/latest/Contribute/Documentation/BeginnersGuide.html#guideline-commit-messages)
+on how to write meaningful descriptions for your contributions.
 
 #### Doing upmerges
 

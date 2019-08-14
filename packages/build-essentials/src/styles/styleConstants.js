@@ -36,7 +36,7 @@ const config = {
         sideBar: ['dropTargetBefore', 'dropTargetAfter'],
         wrapperDropdown: ['context'],
         unappliedChangesOverlay: ['context'],
-        nodeToolBar: '2147483647'
+        nodeToolBar: '2147483646'
     },
     fontSize: {
         base: '14px',

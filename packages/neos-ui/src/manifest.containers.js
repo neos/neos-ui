@@ -18,6 +18,7 @@ import DimensionSwitcher from './Containers/PrimaryToolbar/DimensionSwitcher/ind
 import UserDropDown from './Containers/PrimaryToolbar/UserDropDown/index';
 import PublishDropDown from './Containers/PrimaryToolbar/PublishDropDown/index';
 import MenuToggler from './Containers/PrimaryToolbar/MenuToggler/index';
+import Brand from './Containers/PrimaryToolbar/Brand/index';
 import EditModePanelToggler from './Containers/PrimaryToolbar/EditModePanelToggler/index';
 
 import EditModePanel from './Containers/EditModePanel/index';
@@ -58,8 +59,10 @@ manifest('main.containers', {}, globalRegistry => {
 
     containerRegistry.set('PrimaryToolbar', PrimaryToolbar);
     containerRegistry.set('PrimaryToolbar/Left/MenuToggler', MenuToggler);
-    containerRegistry.set('PrimaryToolbar/Middle/DimensionSwitcher', DimensionSwitcher);
     containerRegistry.set('PrimaryToolbar/Middle/EditModePanelToggler', EditModePanelToggler);
+    containerRegistry.set('PrimaryToolbar/Left/Brand', Brand);
+    containerRegistry.set('PrimaryToolbar/Middle/DimensionSwitcher', DimensionSwitcher);
+    containerRegistry.set('PrimaryToolbar/Right/EditModePanelToggler', EditModePanelToggler);
     containerRegistry.set('PrimaryToolbar/Right/UserDropDown', UserDropDown);
     containerRegistry.set('PrimaryToolbar/Right/PublishDropDown', PublishDropDown);
 

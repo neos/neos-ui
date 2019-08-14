@@ -14,6 +14,7 @@ import Icon from './Icon';
 import IconButton from './IconButton';
 import IconButtonDropDown from './IconButtonDropDown';
 import Label from './Label';
+import Logo from './Logo';
 import SelectBox from './SelectBox';
 import SideBar from './SideBar';
 import Tabs from './Tabs';
@@ -43,6 +44,7 @@ export {
     IconButton,
     IconButtonDropDown,
     Label,
+    Logo,
     SelectBox,
     SideBar,
     Tabs,
@@ -73,6 +75,7 @@ export default {
     IconButton,
     IconButtonDropDown,
     Label,
+    Logo,
     SelectBox,
     SideBar,
     Tabs,

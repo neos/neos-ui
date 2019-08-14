@@ -7,6 +7,7 @@ import {neos} from '@neos-project/neos-ui-decorators';
 import {actions} from '@neos-project/neos-ui-redux-store';
 import Dialog from '@neos-project/react-ui-components/src/Dialog/';
 import I18n from '@neos-project/neos-ui-i18n';
+import Button from '@neos-project/react-ui-components/src/Button/';
 
 import style from './style.css';
 
@@ -33,11 +34,26 @@ class KeyboardShortcutModal extends PureComponent {
         </div>
     )
 
+    renderCloseAction() {
+        return (
+            <Button
+                id="neos-KeyboardShortcutModal-Close"
+                key="close"
+                style="lighter"
+                hoverStyle="brand"
+                onClick={() => this.props.close()}
+                >
+                <I18n id="Neos.Neos:Main:close" fallback="Close"/>
+            </Button>
+        );
+    }
+
     render() {
         const {close, isOpen, hotkeyRegistry} = this.props;
 
         return (
             <Dialog
+                actions={[this.renderCloseAction()]}
                 title={<I18n fallback="Keyboard Shortcuts" />}
                 isOpen={isOpen}
                 onRequestClose={() => close()}

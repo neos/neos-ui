@@ -1,8 +1,8 @@
 .modalContents {
     padding: var(--spacing-Full);
 }
-.inputField {
-    margin-bottom: 15px;
+.inputFieldWrapper {
+    margin-bottom: var(--spacing-Half);
 }
 .loginButton {
     width: 100%;

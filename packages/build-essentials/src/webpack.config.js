@@ -42,7 +42,9 @@ const webpackConfig = {
             {
                 test: /\.js$/,
                 include: transpileNodeModuleRegex,
-                loader: 'babel-loader'
+                use: [{
+                    loader: 'babel-loader'
+                }]
             },
             {
                 test: /\.tsx?$/,

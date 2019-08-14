@@ -31,6 +31,9 @@ module.exports = merge(
                 path.resolve(__dirname, './packages/neos-ui/node_modules'),
                 path.resolve(__dirname, './node_modules')
             ]
+        },
+        watchOptions: {
+            ignored: /node_modules/
         }
     }
 );

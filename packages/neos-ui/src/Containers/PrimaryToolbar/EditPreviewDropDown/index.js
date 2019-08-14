@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$transform, $get, $or} from 'plow-js';
+import {$transform} from 'plow-js';
 import {neos} from '@neos-project/neos-ui-decorators';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 import DropDown from '@neos-project/react-ui-components/src/DropDown/';
@@ -9,14 +9,12 @@ import DropDown from '@neos-project/react-ui-components/src/DropDown/';
 import I18n from '@neos-project/neos-ui-i18n';
 
 import style from './style.css';
-import {actions, selectors} from "@neos-project/neos-ui-redux-store/src";
-import memoize from "lodash.memoize";
-import mergeClassNames from "classnames";
-import Slider from "react-slick/lib";
-import Button from "@neos-project/react-ui-components/src/Button";
+import {actions, selectors} from '@neos-project/neos-ui-redux-store/src';
+import memoize from 'lodash.memoize';
+import Button from '@neos-project/react-ui-components/src/Button';
 
 @connect($transform({
-    editPreviewMode: selectors.UI.EditPreviewMode.currentEditPreviewMode,
+    editPreviewMode: selectors.UI.EditPreviewMode.currentEditPreviewMode
 }), {
     setEditPreviewMode: actions.UI.EditPreviewMode.set
 })
@@ -61,12 +59,12 @@ export default class EditPreviewModeDropDown extends PureComponent {
             <div className={style.wrapper}>
                 <DropDown className={style.dropDown}>
                     <DropDown.Header className={style.dropDown__btn}>
-                        <Icon className={style.dropDown__btnIcon} icon={currentEditMode.isEditingMode ? "pencil" : "eye"}/>
+                        <Icon className={style.dropDown__btnIcon} icon={currentEditMode.isEditingMode ? 'pencil' : 'eye'}/>
                         <span className={style.dropDown__userName}><I18n id={currentEditMode.title}/></span>
                     </DropDown.Header>
                     <DropDown.Contents className={style.dropDown__contents}>
                         <div className={style.dropDown__groupHeader}>
-                            <Icon className={style.dropDown__btnIcon} icon={"pencil"}/> {i18nRegistry.translate('content.components.editPreviewPanel.modes', 'Editing Modes')}
+                            <Icon className={style.dropDown__btnIcon} icon={'pencil'}/> {i18nRegistry.translate('content.components.editPreviewPanel.modes', 'Editing Modes')}
                         </div>
                         <ul>
                             {editingModes.map(editingMode => (
@@ -82,7 +80,7 @@ export default class EditPreviewModeDropDown extends PureComponent {
                             ))}
                         </ul>
                         <div className={style.dropDown__groupHeader}>
-                            <Icon className={style.dropDown__btnIcon} icon={"eye"}/> {i18nRegistry.translate('content.components.editPreviewPanel.previewCentral', 'Preview Central')}
+                            <Icon className={style.dropDown__btnIcon} icon={'eye'}/> {i18nRegistry.translate('content.components.editPreviewPanel.previewCentral', 'Preview Central')}
                         </div>
                         <ul>
                             {previewModes.map(previewMode => (

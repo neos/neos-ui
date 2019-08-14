@@ -163,7 +163,6 @@
     "react-motion": "^0.5.0",
     "react-portal": "^4.2.0",
     "react-redux": "^5.0.5",
-    "react-slick": "^0.23.1",
     "react-test-renderer": "^16.0.0",
     "react-textarea-autosize": "^5.0.6",
     "recharts": "^1.0.0-alpha.6",

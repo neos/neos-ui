@@ -1,13 +1,16 @@
-import {Selector} from 'testcafe';
+import {Selector, RequestLogger} from 'testcafe';
 import {ReactSelector} from 'testcafe-react-selectors';
 import {beforeEach, subSection, checkPropTypes} from './../../utils.js';
 import {Page} from './../../pageModel';
 
 /* global fixture:true */
 
+const changeRequestLogger = RequestLogger(request => request.url.endsWith('/neos/ui-services/change') && request.method === 'post' && request.isAjax);
+
 fixture`Create new nodes`
     .beforeEach(beforeEach)
-    .afterEach(() => checkPropTypes());
+    .afterEach(() => checkPropTypes())
+    .requestHooks(changeRequestLogger);
 
 test('Create an Image node from ContentTree', async t => {
     await t.switchToIframe('[name="neos-content-main"]');
@@ -77,6 +80,25 @@ test('Can create content node from inside InlineUI', async t => {
         .switchToIframe('[name="neos-content-main"]')
         .typeText(Selector('.test-headline h1'), headlineTitle)
         .expect(Selector('.neos-contentcollection').withText(headlineTitle).exists).ok('Typed headline text exists');
+
+    subSection('Inline validation');
+    // We have to wait for ajax requests to be triggered, since they are debounced for 0.5s
+    await t.wait(600);
+    await changeRequestLogger.clear();
+    await t
+        .expect(Selector('.test-headline h1').exists).ok('Validation tooltip appeared')
+        .click('.test-headline h1')
+        .pressKey('ctrl+a delete')
+        .switchToMainWindow()
+        .wait(600)
+        .expect(ReactSelector('InlineValidationTooltips').exists).ok('Validation tooltip appeared');
+    await t
+        .expect(changeRequestLogger.count(() => true)).eql(0, 'No requests were fired with invalid state')
+    await t
+        .switchToIframe('[name="neos-content-main"]')
+        .typeText(Selector('.test-headline h1'), 'Some text')
+        .wait(600)
+    await t.expect(changeRequestLogger.count(() => true)).eql(1, 'Request fired when field became valid')
 
     subSection('Create a link to node');
     const linkTargetPage = 'Link target';

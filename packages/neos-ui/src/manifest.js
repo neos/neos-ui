@@ -77,7 +77,8 @@ manifest('main', {}, globalRegistry => {
             - nodeType: The nodeType of the associated node
             - editorOptions: The configuration for this inline editor
             - globalRegistry: The global registry
-            - persistChange: Will dispatch the respective action in from '@neos-project/neos-ui-redux-store' package (actions.Changes.persistChanges)
+            - onChange: Will first validate the property value and then persist the change if valid
+            - persistChange: Low level, use "onChange" in instead. Will dispatch the respective action in from '@neos-project/neos-ui-redux-store' package (actions.Changes.persistChanges)
     `));
 
     //

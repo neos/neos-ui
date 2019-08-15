@@ -1,6 +1,7 @@
 import {$get, $contains} from 'plow-js';
 
 import {actions} from '@neos-project/neos-ui-redux-store';
+import {validateElement} from '@neos-project/neos-ui-validators';
 
 import {getGuestFrameWindow, closestContextPathInGuestFrame} from './dom';
 
@@ -64,7 +65,29 @@ export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry,
                     userPreferences,
                     persistChange: change => store.dispatch(
                         actions.Changes.persistChanges([change])
-                    )
+                    ),
+                    onChange: value => {
+                        const validationResult = validateElement(value, $get(['properties', propertyName], nodeType), globalRegistry.get('validators'));
+                        // Update inline validation errors
+                        store.dispatch(
+                            actions.CR.Nodes.setInlineValidationErrors(contextPath, propertyName, validationResult)
+                        );
+                        // If there are no validation errors, update
+                        if (validationResult === null) {
+                            const change = {
+                                type: 'Neos.Neos.Ui:Property',
+                                subject: contextPath,
+                                payload: {
+                                    propertyName,
+                                    value,
+                                    isInline: true
+                                }
+                            };
+                            store.dispatch(
+                                actions.Changes.persistChanges([change])
+                            );
+                        }
+                    }
                 });
 
                 propertyDomNode.dataset.neosInlineEditorIsInitialized = true;

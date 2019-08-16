@@ -10,7 +10,8 @@ Since Neos 5.0 (scheduled August 2019) this repository will become obsolete and 
 
 Until then, the following version conventions are in place:
 - 2.x versions are Neos 3.3 compatible (released from the `2.x` branch)
-- 3.x branch is Neos 4.x compatible (released from `master`)
+- 3.x versions are Neos 4.x compatible (released from `3.x` branch)
+- 5.x versions are Neos 5.x compatible (released from `master`)
 - We follow semver, but do not make bugfix releases for previous minor branches
 
 For users this means: **You will not get bugfixes for previous minor releases, so use a more relaxed version constraint like these:**
@@ -19,7 +20,7 @@ For users this means: **You will not get bugfixes for previous minor releases, s
 "neos/neos-ui": "^3",
 ```
 
-For developers this means: **All development happens in `2.x` branch and then getting upmered to `master`**
+For developers this means: **All development happens in `3.x` branch and then getting upmered to `master`**
 
 ## Browser support
 
@@ -72,7 +73,7 @@ Please follow the respective guides for contributing on OSX and on Linux.
 
 ### on Windows
 
-1) Ensure you have the `2.x` or `dev-master` version installed (see above).
+1) Ensure you have the `3.x` or `dev-master` version installed (see above).
 
 2) Please install Docker for Windows.
 
@@ -93,7 +94,7 @@ Neos:
 
 In order to start contributing on OSX / Linux, follow the following steps:
 
-1) Ensure you have the `2.x` or `dev-master` version installed (see above).
+1) Ensure you have the `3.x` or `dev-master` version installed (see above).
 
 2) We require [Chrome](https://www.google.com/chrome/browser/desktop/index.html) as well as the `yarn`(https://yarnpkg.com/en/) command and GNU Make(https://www.gnu.org/software/make/) to be installed on your system.
 
@@ -123,16 +124,16 @@ on how to write meaningful descriptions for your contributions.
 
 #### Doing upmerges
 
-1) Develop only in the `2.x` branch, unless this feature is only compatible with Neos 4.x, then in `master`
+1) Develop only in the `3.x` branch, unless this feature is only compatible with Neos 5.x, then in `master`
 
 2) To do the upmerge do the following commands
 
 ```
-git checkout master && git fetch && git reset --hard origin/master && git merge --no-ff --no-commit origin/2.x --strategy-option=ours
+git checkout master && git fetch && git reset --hard origin/master && git merge --no-ff --no-commit origin/3.x --strategy-option=ours
 ```
 Review the changes and commit the changes with the following commit message:
 
-`MERGE: Merge branch '2.x' into master`
+`MERGE: Merge branch '3.x' into master`
 
 #### Development commands
 | Command         | Description                    |
@@ -180,7 +181,7 @@ Use `it.only(() => {})` and `describe.only(() => {})` if you want to run a speci
 
 #### Integration tests
 
-To setup end-to-end tests locally you have got to do the same things described in [CircleCI workflow](https://github.com/neos/neos-ui/blob/2.x/.circleci/config.yml), namely take the [test disribution](https://github.com/neos/neos-ui/blob/2.x/Tests/IntegrationTests/TestDistribution/composer.json) and `composer install` in it, put the right branch into Neos.Neos.Ui folder and run webserver and mysql server with the same config as described in the test distribution's [Settings.yaml](https://github.com/neos/neos-ui/blob/2.x/Tests/IntegrationTests/TestDistribution/Configuration/Settings.yaml) (or adjust it).
+To setup end-to-end tests locally you have got to do the same things described in [CircleCI workflow](https://github.com/neos/neos-ui/blob/3.x/.circleci/config.yml), namely take the [test disribution](https://github.com/neos/neos-ui/blob/3.x/Tests/IntegrationTests/TestDistribution/composer.json) and `composer install` in it, put the right branch into Neos.Neos.Ui folder and run webserver and mysql server with the same config as described in the test distribution's [Settings.yaml](https://github.com/neos/neos-ui/blob/3.x/Tests/IntegrationTests/TestDistribution/Configuration/Settings.yaml) (or adjust it).
 
 #### Releasing
 

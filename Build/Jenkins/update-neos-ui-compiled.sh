@@ -37,7 +37,7 @@ cd tmp_compiled_pkg
 git add Resources/Public/
 git commit -m "Compile Neos UI - $GIT_SHA1" || true
 
-if [[ "$GIT_BRANCH" == "origin/master" || "$GIT_BRANCH" == "origin/2.x" ]]; then
+if [[ "$GIT_BRANCH" == "origin/master" || "$GIT_BRANCH" == "origin/3.x" ]]; then
     echo "Git branch $GIT_BRANCH found, pushing to this branch."
     git push origin HEAD:${GIT_BRANCH#*/}
 fi

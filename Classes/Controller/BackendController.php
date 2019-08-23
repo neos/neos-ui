@@ -29,6 +29,7 @@ use Neos\Neos\Domain\Repository\DomainRepository;
 use Neos\Neos\Domain\Repository\SiteRepository;
 use Neos\Neos\Domain\Service\ContentContext;
 use Neos\Neos\Service\BackendRedirectionService;
+use Neos\Neos\Service\LinkingService;
 use Neos\Neos\Service\UserService;
 use Neos\Neos\Ui\Domain\Service\StyleAndJavascriptInclusionService;
 use Neos\Neos\Ui\Service\NodeClipboard;
@@ -112,6 +113,12 @@ class BackendController extends ActionController
      */
     protected $clipboard;
 
+    /**
+     * @Flow\Inject
+     * @var LinkingService
+     */
+    protected $linkingService;
+
     public function initializeView(ViewInterface $view)
     {
         $view->setFusionPath('backend');
@@ -165,7 +172,7 @@ class BackendController extends ActionController
             'no-cache',
             'no-store'
         ]);
-        $this->redirect('show', 'Frontend\Node', 'Neos.Neos', ['node' => $node]);
+        $this->redirectToUri($this->linkingService->createNodeUri($this->controllerContext, $node));
     }
 
     /**

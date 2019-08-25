@@ -1,23 +1,15 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {$transform} from 'plow-js';
 
 import {IconButton} from '@neos-project/react-ui-components';
 import mergeClassNames from 'classnames';
 import {neos} from '@neos-project/neos-ui-decorators';
-import {executeCommand} from './../ckEditorApi';
-
-import {selectors} from '@neos-project/neos-ui-redux-store';
 
 import style from './TableButton.css';
 import tableStyling from './TableStyles.vanilla-css'; // eslint-disable-line
 
 const numberRange = (start, end) => new Array(end - start + 1).fill().map((d, i) => i + start);
 
-@connect($transform({
-    formattingUnderCursor: selectors.UI.ContentCanvas.formattingUnderCursor
-}))
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')
 }))
@@ -44,7 +36,7 @@ export default class TableButton extends PureComponent {
     }
 
     handleCreate = (rows, columns) => {
-        executeCommand('insertTable', {rows, columns}, true);
+        this.props.executeCommand('insertTable', {rows, columns}, true);
         this.setState({
             isOpen: false
         });
@@ -60,11 +52,11 @@ export default class TableButton extends PureComponent {
                     isActive={this.state.isOpen}
                     icon={icon}
                     onClick={this.handleTableButtonClick}
-                    />
+                />
                 {this.state.isOpen ? <TableCreationGrid
                     onCreate={this.handleCreate}
                     inlineEditorOptions={inlineEditorOptions}
-                    /> : null}
+                /> : null}
             </div>
         );
     }

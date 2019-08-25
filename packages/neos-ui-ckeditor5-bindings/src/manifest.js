@@ -1,11 +1,13 @@
 import manifest from '@neos-project/neos-ui-extensibility';
 
-import EditorToolbar from './EditorToolbar';
+import InlineEditorToolbar, {EditorToolbar} from './EditorToolbar';
 import {bootstrap, createEditor} from './ckEditorApi';
 import {SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
 
 import initializeRichtextToolbarRegistry from './manifest.richtextToolbar';
 import initializeConfigRegistry from './manifest.config';
+
+export {EditorToolbar, InlineEditorToolbar};
 
 manifest('@neos-project/neos-ui-ckeditor5-bindings', {}, globalRegistry => {
     const ckEditorRegistry = globalRegistry.set(
@@ -32,6 +34,6 @@ manifest('@neos-project/neos-ui-ckeditor5-bindings', {}, globalRegistry => {
             configRegistry
         }),
         createInlineEditor: createEditor,
-        ToolbarComponent: EditorToolbar
+        ToolbarComponent: InlineEditorToolbar
     });
 });

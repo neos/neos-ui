@@ -18,9 +18,10 @@ class IconButtonComponent extends PureComponent {
         i18nRegistry: PropTypes.object,
         tooltip: PropTypes.string
     };
+
     render() {
-        const finalProps = omit(this.props, ['formattingRule', 'inlineEditorOptions', 'i18nRegistry', 'tooltip', 'isActive']);
-        return (<IconButton {...finalProps} isActive={Boolean(this.props.isActive)} title={this.props.i18nRegistry.translate(this.props.tooltip)}/>);
+        const finalProps = omit(this.props, ['executeCommand', 'formattingRule', 'formattingUnderCursor', 'inlineEditorOptions', 'i18nRegistry', 'tooltip', 'isActive']);
+        return (<IconButton {...finalProps} isActive={Boolean(this.props.isActive)} title={this.props.i18nRegistry.translate(this.props.tooltip)} />);
     }
 }
 

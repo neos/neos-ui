@@ -1,13 +1,11 @@
 import manifest from '@neos-project/neos-ui-extensibility';
 
-import InlineEditorToolbar, {EditorToolbar} from './EditorToolbar';
+import InlineEditorToolbar from './EditorToolbar';
 import {bootstrap, createEditor} from './ckEditorApi';
 import {SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
 
 import initializeRichtextToolbarRegistry from './manifest.richtextToolbar';
 import initializeConfigRegistry from './manifest.config';
-
-export {EditorToolbar, InlineEditorToolbar};
 
 manifest('@neos-project/neos-ui-ckeditor5-bindings', {}, globalRegistry => {
     const ckEditorRegistry = globalRegistry.set(

@@ -46,8 +46,9 @@ export default ckEditorRegistry => {
                 component: Button // the React component being used for rendering
                 isVisible: (editorOptions, formattingUnderCursor) => true // A function that decides is the button should be visible or not
                 isActive: (formattingUnderCursor, editorOptions) => true // A function that decides is the button should be active or not
-                callbackPropName: 'onClick' // Name of the callback prop of the Component which is
-                                            fired when the component's value changes.
+                callbackPropName: 'onClick' // Name of the callback prop of the Component which is fired when the component's value changes
+                executeCommand: (command, argument, reFocusEditor = true) => void // An "executeCommand" from the current CKE5 instance
+                formattingUnderCursor: {formattingRule: value} // Formatting state under the cursor
 
                 // all other properties are directly passed on to the component.
             }

@@ -20,6 +20,7 @@ export default class LinkButton extends PureComponent {
             PropTypes.object
         ])),
         inlineEditorOptions: PropTypes.object,
+        executeCommand: PropTypes.func.isRequired,
         i18nRegistry: PropTypes.object.isRequired
     };
 

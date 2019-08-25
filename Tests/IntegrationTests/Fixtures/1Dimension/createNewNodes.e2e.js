@@ -93,12 +93,12 @@ test('Can create content node from inside InlineUI', async t => {
         .wait(600)
         .expect(ReactSelector('InlineValidationTooltips').exists).ok('Validation tooltip appeared');
     await t
-        .expect(changeRequestLogger.count(() => true)).eql(0, 'No requests were fired with invalid state')
+        .expect(changeRequestLogger.count(() => true)).eql(0, 'No requests were fired with invalid state');
     await t
         .switchToIframe('[name="neos-content-main"]')
         .typeText(Selector('.test-headline h1'), 'Some text')
-        .wait(600)
-    await t.expect(changeRequestLogger.count(() => true)).eql(1, 'Request fired when field became valid')
+        .wait(600);
+    await t.expect(changeRequestLogger.count(() => true)).eql(1, 'Request fired when field became valid');
 
     subSection('Create a link to node');
     const linkTargetPage = 'Link target';

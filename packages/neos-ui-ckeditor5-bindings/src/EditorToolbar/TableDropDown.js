@@ -26,7 +26,7 @@ export default class TableDropDownButton extends PureComponent {
             PropTypes.string,
             PropTypes.object
         ])),
-
+        executeCommand: PropTypes.func.isRequired,
         i18nRegistry: PropTypes.object.isRequired
     };
 

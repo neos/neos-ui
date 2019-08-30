@@ -6,7 +6,7 @@
 
 ## Versioning
 
-This repository follows the same versioning scheme as Neos itself.
+This repository follows the same versioning scheme as Neos itself, with the only exception that the 4.0 branch works with all Neos 4.x releases.
 Release roadmap is [available here](https://www.neos.io/features/release-process.html)
 
 That means:
@@ -119,11 +119,9 @@ on how to write meaningful descriptions for your contributions.
 To do the upmerge run the following commands
 
 ```
-git checkout 4.1 && git fetch && git reset --hard origin/4.1 && git merge --no-ff --no-commit origin/4.0 --strategy-option=ours
+git checkout 5.0 && git fetch && git reset --hard origin/5.0 && git merge --no-ff --no-commit origin/4.0 --strategy-option=ours
 # review and `git commit`
-git checkout 4.2 && git fetch && git reset --hard origin/4.2 && git merge --no-ff --no-commit origin/4.1 --strategy-option=ours
-# review and `git commit`
-git checkout 5.0 && git fetch && git reset --hard origin/5.0 && git merge --no-ff --no-commit origin/4.2 --strategy-option=ours
+git checkout master && git fetch && git reset --hard origin/master && git merge --no-ff --no-commit origin/5.0 --strategy-option=ours
 # review and `git commit`
 ```
 

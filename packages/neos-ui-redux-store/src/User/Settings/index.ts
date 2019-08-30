@@ -8,17 +8,20 @@ import {State as UserState} from './../index';
 //
 export interface State extends Readonly<{
     isAutoPublishingEnabled: boolean;
+    isPublishingModeAll: boolean;
 }> {}
 
 export const defaultState: State = {
-    isAutoPublishingEnabled: false
+    isAutoPublishingEnabled: false,
+    isPublishingModeAll: false
 };
 
 //
 // Export the action types
 //
 export enum actionTypes {
-    TOGGLE_AUTO_PUBLISHING = '@neos/neos-ui/User/Settings/TOGGLE_AUTO_PUBLISHING'
+    TOGGLE_AUTO_PUBLISHING = '@neos/neos-ui/User/Settings/TOGGLE_AUTO_PUBLISHING',
+    TOGGLE_PUBLISHING_MODE_ALL = '@neos/neos-ui/User/Settings/TOGGLE_PUBLISHING_MODE_ALL'
 }
 
 //
@@ -26,7 +29,7 @@ export enum actionTypes {
 //
 export const actions = {
     /**
-     * Toggles the auto publishing mode for the current logged in user.
+     * Toggles the publishing modes for the current logged in user.
      */
     toggleAutoPublishing: (state: UserState) => createAction(actionTypes.TOGGLE_AUTO_PUBLISHING, state),
     togglePublishingModeAll: (state: UserState) => createAction(actionTypes.TOGGLE_PUBLISHING_MODE_ALL, state)
@@ -44,9 +47,13 @@ export const reducer = (state: State = defaultState, action: Action | InitAction
     switch (action.type) {
         case system.INIT:
             draft.isAutoPublishingEnabled = action.payload.user.settings.isAutoPublishingEnabled;
+            draft.isPublishingModeAll = action.payload.user.settings.isPublishingModeAll;
             break;
         case actionTypes.TOGGLE_AUTO_PUBLISHING:
             draft.isAutoPublishingEnabled = !state.isAutoPublishingEnabled;
+            break;
+        case actionTypes.TOGGLE_PUBLISHING_MODE_ALL:
+            draft.isPublishingModeAll = !state.isPublishingModeAll;
             break;
     }
 });

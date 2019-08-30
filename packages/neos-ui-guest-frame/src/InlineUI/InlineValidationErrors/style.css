@@ -1,0 +1,9 @@
+.border {
+    border: 2px solid var(--colors-Error);
+    position: absolute;
+    pointer-events: none;
+}
+
+.tooltip {
+    position: absolute;
+}

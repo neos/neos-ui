@@ -36,7 +36,7 @@ class Version20190319094900 extends AbstractMigration
             function (&$configuration) {
                 foreach ($configuration as &$nodeType) {
                     if (!isset($nodeType['properties'])) {
-                        return;
+                        continue;
                     }
 
                     foreach ($nodeType['properties'] as &$propertyConfiguration) {

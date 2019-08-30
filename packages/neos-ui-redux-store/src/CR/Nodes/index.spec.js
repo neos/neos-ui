@@ -17,6 +17,7 @@ test(`should export actionTypes`, () => {
     expect(typeof (actionTypes.HIDE)).toBe('string');
     expect(typeof (actionTypes.SHOW)).toBe('string');
     expect(typeof (actionTypes.UPDATE_URI)).toBe('string');
+    expect(typeof (actionTypes.SET_INLINE_VALIDATION_ERRORS)).toBe('string');
 });
 
 test(`should export action creators`, () => {
@@ -34,6 +35,7 @@ test(`should export action creators`, () => {
     expect(typeof (actions.hide)).toBe('function');
     expect(typeof (actions.show)).toBe('function');
     expect(typeof (actions.updateUri)).toBe('function');
+    expect(typeof (actions.setInlineValidationErrors)).toBe('function');
 });
 
 test(`should export a reducer`, () => {
@@ -51,7 +53,8 @@ test(`The reducer should create a valid initial state`, () => {
         siteNode: 'siteNode',
         documentNode: 'documentNode',
         clipboard: null,
-        clipboardMode: null
+        clipboardMode: null,
+        inlineValidationErrors: {}
     };
     const expectedState = {
         byContextPath: {},
@@ -63,7 +66,8 @@ test(`The reducer should create a valid initial state`, () => {
         },
         toBeRemoved: null,
         clipboard: null,
-        clipboardMode: null
+        clipboardMode: null,
+        inlineValidationErrors: {}
     };
     const nextState = reducer(undefined, {
         type: system.INIT,
@@ -195,5 +199,22 @@ test(`The "updateUri" action should update uris.`, () => {
                 uri: 'https://domain/someUri2/someUri@user-admin;language=en_US'
             }
         }
+    });
+});
+
+test(`The "setInlineValidationErrors" action should set validation errors.`, () => {
+    const state = {
+        inlineValidationErrors: {}
+    };
+    const nextState = reducer(state, actions.setInlineValidationErrors('abc@user-admin;language=en_US', 'title', ['Some error']));
+    expect(nextState).toEqual({
+        inlineValidationErrors: {
+            'abc@user-admin;language=en_US title': ['Some error']
+        }
+    });
+
+    const nextState2 = reducer(nextState, actions.setInlineValidationErrors('abc@user-admin;language=en_US', 'title', null));
+    expect(nextState2).toEqual({
+        inlineValidationErrors: {}
     });
 });

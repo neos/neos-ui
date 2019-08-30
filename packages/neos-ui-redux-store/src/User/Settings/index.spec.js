@@ -4,11 +4,13 @@ import {actionTypes as system} from '../../System/index';
 test(`should export actionTypes`, () => {
     expect(actionTypes).not.toBe(undefined);
     expect(typeof (actionTypes.TOGGLE_AUTO_PUBLISHING)).toBe('string');
+    expect(typeof (actionTypes.TOGGLE_PUBLISHING_MODE_ALL)).toBe('string');
 });
 
 test(`should export action creators`, () => {
     expect(actions).not.toBe(undefined);
     expect(typeof (actions.toggleAutoPublishing)).toBe('function');
+    expect(typeof (actions.togglePublishingModeAll)).toBe('function');
 });
 
 test(`should export a reducer`, () => {
@@ -26,7 +28,8 @@ test(`The reducer should return the default state when called with undefined.`, 
 
 test(`The reducer should correctly rehydrate data on INIT.`, () => {
     const initValues = {
-        isAutoPublishingEnabled: true
+        isAutoPublishingEnabled: true,
+        isPublishingModeAll: true
     };
     const nextState = reducer(undefined, {
         type: system.INIT,
@@ -50,4 +53,17 @@ test(`
 
     expect(nextState1.isAutoPublishingEnabled).toBe(true);
     expect(nextState2.isAutoPublishingEnabled).toBe(false);
+});
+
+test(`
+    The "toggle" action should be able to reverse the value of the
+    "isPublishingModeAll" key.`, () => {
+    const state = {
+        isPublishingModeAll: false
+    };
+    const nextState1 = reducer(state, actions.togglePublishingModeAll());
+    const nextState2 = reducer(nextState1, actions.togglePublishingModeAll());
+
+    expect(nextState1.isPublishingModeAll).toBe(true);
+    expect(nextState2.isPublishingModeAll).toBe(false);
 });

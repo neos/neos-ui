@@ -11,6 +11,8 @@ import * as uiEditPreviewMode from './UI/EditPreviewMode/index';
 import * as uiInspector from './UI/Inspector/index';
 import * as uiPageTree from './UI/PageTree/index';
 import * as uiHotkeys from './UI/Hotkeys/index';
+import * as userAutoPublishingEnabled from './User/AutoPublishingEnabled/index';
+import * as userPublishingModeAll from './User/PublishingModeAll/index';
 
 module.exports = {
     browser,
@@ -25,5 +27,7 @@ module.exports = {
     uiEditPreviewMode,
     uiInspector,
     uiPageTree,
-    uiHotkeys
+    uiHotkeys,
+    userPublishingModeAll,
+    userAutoPublishingEnabled
 };

@@ -1,7 +1,7 @@
 import produce from 'immer';
 import {action as createAction, ActionType} from 'typesafe-actions';
-
 import {actionTypes as system, InitAction} from '../../System';
+import {State as UserState} from './../index';
 
 //
 // Export the subreducer state shape interface
@@ -28,7 +28,8 @@ export const actions = {
     /**
      * Toggles the auto publishing mode for the current logged in user.
      */
-    toggleAutoPublishing: () => createAction(actionTypes.TOGGLE_AUTO_PUBLISHING)
+    toggleAutoPublishing: (state: UserState) => createAction(actionTypes.TOGGLE_AUTO_PUBLISHING, state),
+    togglePublishingModeAll: (state: UserState) => createAction(actionTypes.TOGGLE_PUBLISHING_MODE_ALL, state)
 };
 
 //

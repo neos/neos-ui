@@ -184,7 +184,8 @@ Neos:
           preferences:
             interfaceLanguage: '${q(user).property(''preferences.interfaceLanguage'')}'
           settings:
-            isAutoPublishingEnabled: false
+            isAutoPublishingEnabled: '${q(user).property("preferences.preferences")["isAutoPublishingEnabled"]}'
+            isPublishingModeAll: '${q(user).property("preferences.preferences")["isPublishingModeAll"]}'
             targetWorkspace: 'live'
       changes:
         types:

@@ -14,7 +14,9 @@ import {
     uiEditPreviewMode,
     uiInspector,
     uiPageTree,
-    uiHotkeys
+    uiHotkeys,
+    userPublishingModeAll,
+    userAutoPublishingEnabled
 } from './index';
 
 manifest('main.sagas', {}, globalRegistry => {
@@ -73,4 +75,7 @@ manifest('main.sagas', {}, globalRegistry => {
     sagasRegistry.set('neos-ui/UI/PageTree/watchToggle', {saga: uiPageTree.watchToggle});
 
     sagasRegistry.set('neos-ui/UI/Hotkeys/handleHotkeys', {saga: uiHotkeys.handleHotkeys});
+
+    sagasRegistry.set('neos-ui/User/AutoPublishingEnabled/watchAutoPublishingEnabledChanged', {saga: userAutoPublishingEnabled.watchAutoPublishingEnabledChanged});
+    sagasRegistry.set('neos-ui/User/PublishingModeAll/watchPublishingModeAllChanged', {saga: userPublishingModeAll.watchPublishingModeAllChanged});
 });

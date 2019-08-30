@@ -221,12 +221,15 @@ class BackendServiceController extends ActionController
                     $updateNodeInfo = new UpdateNodeInfo();
                     $updateNodeInfo->setNode($node);
                     $updateNodeInfo->recursive();
-
-                    $updateParentNodeInfo = new UpdateNodeInfo();
-                    $updateParentNodeInfo->setNode($node->getParent());
-
                     $this->feedbackCollection->add($updateNodeInfo);
-                    $this->feedbackCollection->add($updateParentNodeInfo);
+
+                    // handle parent node, if needed
+                    $parentNode = $node->getParent();
+                    if ($parentNode instanceof NodeInterface) {
+                        $updateParentNodeInfo = new UpdateNodeInfo();
+                        $updateParentNodeInfo->setNode($parentNode);
+                        $this->feedbackCollection->add($updateParentNodeInfo);
+                    }
 
                     // Reload document for content node changes
                     // (as we can't RenderContentOutOfBand from here, we don't know dom addresses)

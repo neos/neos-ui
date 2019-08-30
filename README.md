@@ -168,7 +168,7 @@ Use `it.only(() => {})` and `describe.only(() => {})` if you want to run a speci
 
 #### Integration tests
 
-To setup end-to-end tests locally you have got to do the same things described in [CircleCI workflow](https://github.com/neos/neos-ui/blob/2.x/.circleci/config.yml), namely take the [test disribution](https://github.com/neos/neos-ui/blob/2.x/Tests/IntegrationTests/TestDistribution/composer.json) and `composer install` in it, put the right branch into Neos.Neos.Ui folder and run webserver and mysql server with the same config as described in the test distribution's [Settings.yaml](https://github.com/neos/neos-ui/blob/2.x/Tests/IntegrationTests/TestDistribution/Configuration/Settings.yaml) (or adjust it).
+To setup end-to-end tests locally you have got to do the same things described in [CircleCI workflow](https://github.com/neos/neos-ui/blob/3.x/.circleci/config.yml), namely take the [test disribution](https://github.com/neos/neos-ui/blob/3.x/Tests/IntegrationTests/TestDistribution/composer.json) and `composer install` in it, put the right branch into Neos.Neos.Ui folder and run webserver and mysql server with the same config as described in the test distribution's [Settings.yaml](https://github.com/neos/neos-ui/blob/3.x/Tests/IntegrationTests/TestDistribution/Configuration/Settings.yaml) (or adjust it).
 
 #### Releasing
 

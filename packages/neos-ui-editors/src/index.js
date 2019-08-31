@@ -12,6 +12,7 @@ import {
     References,
     NodeType,
     CodeMirror,
+    CKEditor,
     MasterPlugin,
     AssetEditor,
     PluginViews,
@@ -20,6 +21,7 @@ import {
 
 import {
     CodeMirrorWrap,
+    CKEditorWrap,
     ImageCropper,
     MediaDetailsScreen,
     MediaSelectionScreen
@@ -47,12 +49,14 @@ export {
     References,
     NodeType,
     CodeMirror,
+    CKEditor,
     MasterPlugin,
     AssetEditor,
     PluginViews,
     PluginView,
 
     CodeMirrorWrap,
+    CKEditorWrap,
     ImageCropper,
     MediaDetailsScreen,
     MediaSelectionScreen,
@@ -78,12 +82,14 @@ export default {
     References,
     NodeType,
     CodeMirror,
+    CKEditor,
     MasterPlugin,
     AssetEditor,
     PluginViews,
     PluginView,
 
     CodeMirrorWrap,
+    CKEditorWrap,
     ImageCropper,
     MediaDetailsScreen,
     MediaSelectionScreen,

@@ -19,8 +19,7 @@ export default richtextToolbarRegistry => {
 
     return (executeCommand, inlineEditorOptions, formattingUnderCursor) => {
         return toolbarComponents
-            .filter(isTopLevelToolbarComponent)
-            .filter(isToolbarItemVisible(inlineEditorOptions, formattingUnderCursor))
+            .filter(isTopLevelToolbarComponent && isToolbarItemVisible(inlineEditorOptions, formattingUnderCursor))
             .map((componentDefinition, index) => {
                 const {component, commandName, commandArgs = [], callbackPropName, ...props} = componentDefinition;
                 if (!component) {
@@ -34,12 +33,14 @@ export default richtextToolbarRegistry => {
                     key: index,
                     isActive: isActiveProp,
                     inlineEditorOptions,
+                    executeCommand,
+                    formattingUnderCursor,
                     [callbackPropName]: e => e.stopPropagation() || executeCommand(commandName, ...commandArgs)
                 };
 
                 const Component = component;
 
-                return <Component {...finalProps}/>;
+                return <Component {...finalProps} />;
             });
     };
 };

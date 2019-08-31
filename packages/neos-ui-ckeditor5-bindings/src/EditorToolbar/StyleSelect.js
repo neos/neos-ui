@@ -1,12 +1,7 @@
 import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {$get, $transform} from 'plow-js';
-
-import {selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
-import {executeCommand} from './../ckEditorApi';
 
 import {isToolbarItemVisible, isToolbarItemActive} from './Helpers';
 
@@ -18,11 +13,6 @@ const startsWith = prefix => element => element.id.startsWith(prefix);
 /**
  * The Actual StyleSelect component
  */
-@connect($transform({
-    focusedNode: selectors.CR.Nodes.focusedSelector,
-    currentlyEditedPropertyName: selectors.UI.ContentCanvas.currentlyEditedPropertyName,
-    formattingUnderCursor: selectors.UI.ContentCanvas.formattingUnderCursor
-}))
 @neos(globalRegistry => ({
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),
     toolbarRegistry: globalRegistry.get('ckEditor5').get('richtextToolbar')
@@ -41,13 +31,13 @@ export default class StyleSelect extends PureComponent {
             PropTypes.string,
             PropTypes.object
         ])),
-
+        executeCommand: PropTypes.func.isRequired,
         nodeTypesRegistry: PropTypes.object.isRequired,
         toolbarRegistry: PropTypes.object.isRequired
     };
 
     handleOnSelect = selectedStyleId => {
-        const {toolbarRegistry} = this.props;
+        const {toolbarRegistry, executeCommand} = this.props;
         const style = toolbarRegistry.get(selectedStyleId);
         if (style && style.commandName) {
             executeCommand(style.commandName, ...style.commandArgs);
@@ -57,10 +47,7 @@ export default class StyleSelect extends PureComponent {
     }
 
     render() {
-        const {nodeTypesRegistry, toolbarRegistry, currentlyEditedPropertyName, focusedNode} = this.props;
-        const nodeTypeName = $get('nodeType', focusedNode);
-
-        const inlineEditorOptions = nodeTypesRegistry.getInlineEditorOptionsForProperty(nodeTypeName, currentlyEditedPropertyName);
+        const {toolbarRegistry, inlineEditorOptions} = this.props;
         const nestedStyles = toolbarRegistry.getAllAsList()
             .filter(startsWith(`${this.props.id}/`))
             .filter(isToolbarItemVisible(inlineEditorOptions || []));
@@ -83,7 +70,7 @@ export default class StyleSelect extends PureComponent {
                 options={options}
                 value={selectedStyle ? selectedStyle.id : null}
                 onValueChange={this.handleOnSelect}
-                />
+            />
         );
     }
 }

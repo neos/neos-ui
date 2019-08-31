@@ -1,19 +1,13 @@
 import {DropDown, CheckBox, Button} from '@neos-project/react-ui-components';
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {$transform, $get} from 'plow-js';
+import {$get} from 'plow-js';
 
-import {selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
-import {executeCommand} from './../ckEditorApi';
 import ckeIcons from './icons';
 
 import style from './TableDropDown.css';
 
-@connect($transform({
-    formattingUnderCursor: selectors.UI.ContentCanvas.formattingUnderCursor
-}))
 @neos(globalRegistry => ({
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),
     i18nRegistry: globalRegistry.get('i18n'),
@@ -32,7 +26,7 @@ export default class TableDropDownButton extends PureComponent {
             PropTypes.string,
             PropTypes.object
         ])),
-
+        executeCommand: PropTypes.func.isRequired,
         i18nRegistry: PropTypes.object.isRequired
     };
 
@@ -41,7 +35,7 @@ export default class TableDropDownButton extends PureComponent {
     };
 
     handleClick = commandName => {
-        executeCommand(commandName);
+        this.props.executeCommand(commandName);
         this.setState({isOpen: false});
     }
 
@@ -59,20 +53,17 @@ export default class TableDropDownButton extends PureComponent {
                             key={item.commandName}
                             className={style.checkBox}
                             onClick={() => this.handleClick(item.commandName)}
-                            >
+                        >
                             <CheckBox isChecked={$get(item.commandName, this.props.formattingUnderCursor)} />
                             {this.props.i18nRegistry.translate(item.label)}
                         </label>
-                    ) : (
-                        <Button
-                            key={item.commandName}
-                            style="transparent"
-                            onClick={() => this.handleClick(item.commandName)}
-                            className={style.button}
-                            >
-                            {this.props.i18nRegistry.translate(item.label)}
-                        </Button>
-                    ))}
+                    ) : <Button
+                        key={item.commandName}
+                        style="transparent"
+                        onClick={() => this.handleClick(item.commandName)}
+                        className={style.button}
+                    >{this.props.i18nRegistry.translate(item.label)}</Button>
+                    )}
                 </DropDown.Contents>
             </DropDown>
         );

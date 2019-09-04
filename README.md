@@ -10,7 +10,7 @@ This repository follows the same versioning scheme as Neos itself, with the only
 Release roadmap is [available here](https://www.neos.io/features/release-process.html)
 
 That means:
-* All bugfixes go to the last maintained branch
+* All bugfixes go to the lowest maintained branch
 * All new features go only to master
 * New minor and major releases are made in sync with Neos/Flow. Bugfix releases may be available independantly
 

@@ -8,12 +8,10 @@
     "require": {
         "neos/neos": "dev-master",
         "neos/flow": "dev-master",
-        "flowpack/neos-frontendlogin": "dev-master as 3.0.3",
         "neos/eel": "dev-master",
         "neos/fluid-adaptor": "dev-master",
         "neos/neos-ui": "dev-master",
         "neos/neos-ui-compiled": "dev-master",
-        "neos/seo": "dev-master as 2.0.7",
         "neos/fusion-afx": "dev-master",
         "neos/media": "dev-master",
         "neos/content-repository": "dev-master",

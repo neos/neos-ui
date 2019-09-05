@@ -317,6 +317,10 @@ export default class PublishDropDown extends PureComponent {
             return <I18n id="Neos.Neos:Main:autoPublish" fallback="Auto publish"/>;
         }
 
+        if (canPublish && isPublishingModeAll) {
+            return <I18n id="Neos.Neos:Main:publishAllTo" fallback={'Publish all to ' + baseWorkspaceTitle} params={{0: baseWorkspaceTitle}}/>;
+        }
+
         if (canPublish) {
             return <I18n id="Neos.Neos:Main:publishTo" fallback="Publish to" params={{0: baseWorkspaceTitle}}/>;
         }

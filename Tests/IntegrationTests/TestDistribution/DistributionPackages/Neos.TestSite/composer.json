@@ -5,7 +5,7 @@
     "require": {
         "neos/neos": "*",
         "neos/neos-ui": "*",
-        "neos/neos-ui-compiled": "*"
+        "neos/fusion-afx": "*"
     },
     "extra": {
         "neos": {

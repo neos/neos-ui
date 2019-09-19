@@ -6,21 +6,7 @@
         "bin-dir": "bin"
     },
     "require": {
-        "neos/neos": "dev-master",
-        "neos/flow": "dev-master",
-        "neos/eel": "dev-master",
-        "neos/fluid-adaptor": "dev-master",
-        "neos/neos-ui": "dev-master",
-        "neos/neos-ui-compiled": "dev-master",
-        "neos/fusion-afx": "dev-master",
-        "neos/media": "dev-master",
-        "neos/content-repository": "dev-master",
-        "neos/fusion": "dev-master",
-        "neos/media-browser": "dev-master",
-        "neos/http-factories": "dev-master",
-        "neos/form": "dev-master",
-        "neos/neos-setup": "dev-master",
-        "neos/setup": "dev-master",
+        "neos/neos-ui": "^5.0",
         "neos/test-site": "@dev",
         "neos/test-nodetypes": "@dev"
     },

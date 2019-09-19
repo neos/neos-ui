@@ -7,7 +7,6 @@
     },
     "require": {
         "neos/neos-ui": "^5.0.0",
-        "neos/fusion-afx": "*",
         "neos/test-site": "@dev",
         "neos/test-nodetypes": "@dev"
     },

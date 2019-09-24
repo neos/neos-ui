@@ -15,13 +15,13 @@ use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Domain\Service\ContextFactoryInterface;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ActionController;
+use Neos\Flow\Mvc\Exception\NoSuchArgumentException;
 use Neos\Flow\Mvc\Exception\StopActionException;
 use Neos\Flow\Mvc\Exception\UnsupportedRequestTypeException;
 use Neos\Flow\Mvc\Routing\Exception\MissingActionNameException;
 use Neos\Flow\Mvc\View\ViewInterface;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Flow\ResourceManagement\ResourceManager;
-use Neos\Flow\Session\Exception\SessionNotStartedException;
 use Neos\Flow\Session\SessionInterface;
 use Neos\Fusion\View\FusionView;
 use Neos\Neos\Controller\Backend\MenuHelper;
@@ -30,6 +30,7 @@ use Neos\Neos\Domain\Repository\SiteRepository;
 use Neos\Neos\Domain\Service\ContentContext;
 use Neos\Neos\Service\BackendRedirectionService;
 use Neos\Neos\Service\UserService;
+use Neos\Neos\TypeConverter\NodeConverter;
 use Neos\Neos\Ui\Domain\Service\StyleAndJavascriptInclusionService;
 use Neos\Neos\Ui\Service\NodeClipboard;
 
@@ -112,6 +113,12 @@ class BackendController extends ActionController
      */
     protected $clipboard;
 
+    /**
+     * Initializes the view before invoking an action method.
+     *
+     * @param ViewInterface $view The view to be initialized
+     * @return void
+     */
     public function initializeView(ViewInterface $view)
     {
         $view->setFusionPath('backend');
@@ -153,6 +160,17 @@ class BackendController extends ActionController
         $this->view->assign('sitesForMenu', $this->menuHelper->buildSiteList($this->getControllerContext()));
 
         $this->view->assign('interfaceLanguage', $this->userService->getInterfaceLanguage());
+    }
+
+    /**
+     * Allow invisible nodes to be redirected to
+     *
+     * @return void
+     * @throws NoSuchArgumentException
+     */
+    protected function initializeRedirectToAction()
+    {
+        $this->arguments->getArgument('node')->getPropertyMappingConfiguration()->setTypeConverterOption(NodeConverter::class, NodeConverter::INVISIBLE_CONTENT_SHOWN, true);
     }
 
     /**

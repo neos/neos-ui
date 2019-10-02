@@ -90,7 +90,7 @@ describe('<DateInput/>', () => {
         expect(onChange.mock.calls[0][0].toTimeString()).toBe(date.toTimeString());
     });
 
-    it('should set "utc" on DatePickerComponent if "dateOnly" prop is set.', () => {
+    it('should not set "UTC" on DatePickerComponent if "dateOnly" prop is set.', () => {
         const wrapper = shallow(<DateInput {...props} dateOnly={true}/>);
 
         expect(toJson(wrapper)).toMatchSnapshot();

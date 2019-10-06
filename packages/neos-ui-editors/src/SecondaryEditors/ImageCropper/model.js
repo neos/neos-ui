@@ -1,4 +1,3 @@
-import {merge} from 'ramda';
 import {memoize} from 'lodash';
 import {Maybe, Some, None} from 'monet';
 import {$get} from 'plow-js';
@@ -264,7 +263,7 @@ export default class CropConfiguration {
             .map(aspect => ({aspect}))
             .orSome({});
 
-        return merge(boundaries, aspectRatio);
+        return {...boundaries, ...aspectRatio};
     }
 
     selectAspectRatioOption(option) {

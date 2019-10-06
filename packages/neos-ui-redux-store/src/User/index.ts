@@ -1,4 +1,3 @@
-import {keys} from 'ramda';
 import {combineReducers} from 'redux';
 
 import * as Settings from '@neos-project/neos-ui-redux-store/src/User/Settings';
@@ -16,15 +15,19 @@ export interface State {
     name: Name.State;
 }
 
+function typedKeys<T>(o: T) : Array<keyof T> {
+    return Object.keys(o) as Array<keyof T>;
+}
+
 //
 // Export the actionTypes
 //
-export const actionTypes = keys(all).reduce((acc, cur) => ({...acc, [cur]: all[cur].actionTypes}), {});
+export const actionTypes = typedKeys(all).reduce((acc, cur) => ({...acc, [cur]: all[cur].actionTypes}), {});
 
 //
 // Export the actions
 //
-export const actions = keys(all).reduce((acc, cur) => ({...acc, [cur]: all[cur].actions}), {});
+export const actions = typedKeys(all).reduce((acc, cur) => ({...acc, [cur]: all[cur].actions}), {});
 
 //
 // Export the reducer
@@ -38,4 +41,4 @@ export const reducer = combineReducers({
 //
 // Export the selectors
 //
-export const selectors = keys(all).reduce((acc, cur) => ({...acc, [cur]: all[cur].selectors}), {});
+export const selectors = typedKeys(all).reduce((acc, cur) => ({...acc, [cur]: all[cur].selectors}), {});

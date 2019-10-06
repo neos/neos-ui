@@ -124,6 +124,7 @@
     "immer": "^2.1.4",
     "lodash.assign": "^4.2.0",
     "lodash.debounce": "^4.0.8",
+    "lodash.defaultsdeep": "^4.6.1",
     "lodash.defer": "^4.1.0",
     "lodash.escaperegexp": "^4.1.2",
     "lodash.flowright": "^3.5.0",

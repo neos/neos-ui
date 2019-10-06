@@ -1,4 +1,4 @@
-import {map, values} from 'ramda';
+import {map} from 'ramda';
 import {merge, mapValues} from 'lodash';
 import {$get} from 'plow-js';
 import {SynchronousRegistry} from '@neos-project/neos-ui-extensibility';
@@ -192,16 +192,16 @@ export default class NodeTypesRegistry extends SynchronousRegistry<NodeType> {
 
         const withId = <S>(state: {[propName: string]: S}): {[propName: string]: S & {id: string}} => mapValues(state, (subject, id) => Object.assign({}, subject, {id}));
 
-        const _tabs = values(withId($get(['ui', 'inspector', 'tabs'], nodeType) || {}));
+        const _tabs = Object.values(withId($get(['ui', 'inspector', 'tabs'], nodeType) || {}));
         const tabs = positionalArraySorter(_tabs, 'position', 'id');
 
-        const _groups = values(withId($get(['ui', 'inspector', 'groups'], nodeType) || {}));
+        const _groups = Object.values(withId($get(['ui', 'inspector', 'groups'], nodeType) || {}));
         const groups = positionalArraySorter(_groups, 'position', 'id');
 
-        const _views = values(withId($get(['ui', 'inspector', 'views'], nodeType) || {}));
+        const _views = Object.values(withId($get(['ui', 'inspector', 'views'], nodeType) || {}));
         const views = positionalArraySorter(_views, 'position', 'id');
 
-        const _properties = values(withId($get(['properties'], nodeType) || {}));
+        const _properties = Object.values(withId($get(['properties'], nodeType) || {}));
         const properties = positionalArraySorter(_properties, 'position', 'id');
 
         const viewConfiguration = {

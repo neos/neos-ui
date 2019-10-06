@@ -14,7 +14,7 @@
     "@types/enzyme": "^3.1.14",
     "@types/he": "^1.1.0",
     "@types/jest": "^23.3.10",
-    "@types/lodash": "^4.14.119",
+    "@types/lodash": "^4.14.141",
     "@types/lodash.isequal": "^4.5.3",
     "@types/lodash.isobject": "^3.0.4",
     "@types/lodash.isstring": "^4.0.4",

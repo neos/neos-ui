@@ -1,5 +1,5 @@
-import {map, values, mapObjIndexed} from 'ramda';
-import merge from 'lodash.merge';
+import {map, values} from 'ramda';
+import {merge, mapValues} from 'lodash';
 import {$get} from 'plow-js';
 import {SynchronousRegistry} from '@neos-project/neos-ui-extensibility';
 import positionalArraySorter from '@neos-project/positional-array-sorter';
@@ -190,7 +190,7 @@ export default class NodeTypesRegistry extends SynchronousRegistry<NodeType> {
             return this._inspectorViewConfigurationCache[nodeTypeName];
         }
 
-        const withId = <S>(state: {[propName: string]: S}): {[propName: string]: S & {id: string}} => mapObjIndexed((subject, id) => Object.assign({}, subject, {id}), state);
+        const withId = <S>(state: {[propName: string]: S}): {[propName: string]: S & {id: string}} => mapValues(state, (subject, id) => Object.assign({}, subject, {id}));
 
         const _tabs = values(withId($get(['ui', 'inspector', 'tabs'], nodeType) || {}));
         const tabs = positionalArraySorter(_tabs, 'position', 'id');

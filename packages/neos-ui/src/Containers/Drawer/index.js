@@ -5,12 +5,15 @@ import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
 
 import {actions} from '@neos-project/neos-ui-redux-store';
-import {getVersion} from '@neos-project/utils-helpers';
+import {neos} from '@neos-project/neos-ui-decorators';
 
 import MenuItemGroup from './MenuItemGroup/index';
 import style from './style.css';
 import {TARGET_WINDOW, TARGET_CONTENT_CANVAS, THRESHOLD_MOUSE_LEAVE} from './constants';
 
+@neos(globalRegistry => ({
+    containerRegistry: globalRegistry.get('containers')
+}))
 @connect($transform({
     isHidden: $get('ui.drawer.isHidden'),
     collapsedMenuGroups: $get('ui.drawer.collapsedMenuGroups')
@@ -27,6 +30,8 @@ export default class Drawer extends PureComponent {
         hideDrawer: PropTypes.func.isRequired,
         toggleMenuGroup: PropTypes.func.isRequired,
         setContentCanvasSrc: PropTypes.func.isRequired,
+
+        containerRegistry: PropTypes.object.isRequired,
 
         menuData: PropTypes.objectOf(
             PropTypes.shape({
@@ -101,14 +106,13 @@ export default class Drawer extends PureComponent {
     }
 
     render() {
-        const {isHidden, menuData, collapsedMenuGroups, toggleMenuGroup} = this.props;
+        const {isHidden, menuData, collapsedMenuGroups, toggleMenuGroup, containerRegistry} = this.props;
         const classNames = mergeClassNames({
             [style.drawer]: true,
             [style['drawer--isHidden']]: isHidden
         });
 
-        // Current version to enhance bugreports
-        const version = getVersion();
+        const BottomComponents = containerRegistry.getChildren('Drawer/Bottom');
 
         return (
             <div
@@ -129,7 +133,9 @@ export default class Drawer extends PureComponent {
                             />
                     ))}
                 </div>
-                <div className={style.drawer__version}>{version}</div>
+                <div className={style.drawer__bottom}>
+                    {BottomComponents.map((Item, key) => <Item key={key}/>)}
+                </div>
             </div>
         );
     }

@@ -28,6 +28,7 @@ import PreviewButton from './Containers/SecondaryToolbar/PreviewButton/index';
 import FullScreenButton from './Containers/SecondaryToolbar/FullScreenButton/index';
 
 import Drawer from './Containers/Drawer/index';
+import VersionPanel from './Containers/Drawer/VersionPanel/index';
 
 import LeftSideBar from './Containers/LeftSideBar/index';
 import {PageTreeToolbar, ContentTreeToolbar} from './Containers/LeftSideBar/NodeTreeToolBar/index';
@@ -70,6 +71,7 @@ manifest('main.containers', {}, globalRegistry => {
     containerRegistry.set('SecondaryToolbar/Right/FullScreenButton', FullScreenButton);
 
     containerRegistry.set('Drawer', Drawer);
+    containerRegistry.set('Drawer/Bottom/VersionPanel', VersionPanel);
 
     containerRegistry.set('LeftSideBar', LeftSideBar);
     containerRegistry.set('LeftSideBar/Top/PageTreeToolbar', PageTreeToolbar);

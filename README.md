@@ -171,14 +171,13 @@ Use `it.only(() => {})` and `describe.only(() => {})` if you want to run a speci
 To setup end-to-end tests you need to do the following:
 
 ```
-# fetch the test distribution
-git clone https://github.com/neos/neos-ui
-cd neos-ui
-git checkout 5.0 # or whatever branch you want
-mv Tests/IntegrationTests/TestDistribution ~/WhereverYouWantItToBe
-cd ~/WhereverYouWantItToBe
+# we need to get the TestDistribution folder out of the ui repository (specify a specific branch using -b if you want)
+git clone -b 5.0 https://github.com/neos/neos-ui tmp-neos-ui
+mv tmp-neos-ui/Tests/IntegrationTests/TestDistribution neos-ui-test-distribution
+rm -rf tmp-neos-ui
+cd neos-ui-test-distribution
 
-# create a database
+# create a database (if needed)
 mysql -u root -pnot_a_real_password --execute='CREATE DATABASE `neos`' # or whatever you want to call it
 vi Configuration/Settings.yaml # adjust to the database that you have created
 ./setup.sh

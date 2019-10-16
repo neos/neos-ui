@@ -14,7 +14,7 @@
     nodeCreationHandlers:
       documentTitle:
         nodeCreationHandler: 'Neos\Neos\Ui\NodeCreationHandler\DocumentTitleNodeCreationHandler'
-  
+
 'Neos.Neos:Content':
   options:
     nodeCreationHandlers:

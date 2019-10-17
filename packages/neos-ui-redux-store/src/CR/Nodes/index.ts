@@ -27,7 +27,7 @@ export interface State extends Readonly<{
         fusionPath: FusionPath | null;
         contextPaths: NodeContextPath[];
     },
-    toBeRemoved: NodeContextPath | null;
+    toBeRemoved: NodeContextPath[];
     clipboard: NodeContextPath | null;
     clipboardMode: ClipboardMode | null;
     inlineValidationErrors: InlineValidationErrors
@@ -41,7 +41,7 @@ export const defaultState: State = {
         contextPaths: [],
         fusionPath: null
     },
-    toBeRemoved: null,
+    toBeRemoved: [],
     clipboard: null,
     clipboardMode: null,
     inlineValidationErrors: {}
@@ -65,6 +65,7 @@ export enum actionTypes {
     UNFOCUS = '@neos/neos-ui/CR/Nodes/UNFOCUS',
     COMMENCE_CREATION = '@neos/neos-ui/CR/Nodes/COMMENCE_CREATION',
     COMMENCE_REMOVAL = '@neos/neos-ui/CR/Nodes/COMMENCE_REMOVAL',
+    COMMENCE_REMOVAL_MULTIPLE = '@neos/neos-ui/CR/Nodes/COMMENCE_REMOVAL_MULTIPLE',
     REMOVAL_ABORTED = '@neos/neos-ui/CR/Nodes/REMOVAL_ABORTED',
     REMOVAL_CONFIRMED = '@neos/neos-ui/CR/Nodes/REMOVAL_CONFIRMED',
     REMOVE = '@neos/neos-ui/CR/Nodes/REMOVE',
@@ -127,6 +128,8 @@ const unFocus = () => createAction(actionTypes.UNFOCUS);
  * @param {String} contextPath The context path of the node to be removed
  */
 const commenceRemoval = (contextPath: NodeContextPath) => createAction(actionTypes.COMMENCE_REMOVAL, contextPath);
+
+const commenceRemovalMultiple = (contextPaths: NodeContextPath[]) => createAction(actionTypes.COMMENCE_REMOVAL_MULTIPLE, contextPaths);
 
 /**
  * Start node creation workflow
@@ -295,6 +298,7 @@ export const actions = {
     unFocus,
     commenceCreation,
     commenceRemoval,
+    commenceRemovalMultiple,
     abortRemoval,
     confirmRemoval,
     remove,
@@ -433,15 +437,19 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
             break;
         }
         case actionTypes.COMMENCE_REMOVAL: {
+            draft.toBeRemoved = [action.payload];
+            break;
+        }
+        case actionTypes.COMMENCE_REMOVAL_MULTIPLE: {
             draft.toBeRemoved = action.payload;
             break;
         }
         case actionTypes.REMOVAL_ABORTED: {
-            draft.toBeRemoved = null;
+            draft.toBeRemoved = [];
             break;
         }
         case actionTypes.REMOVAL_CONFIRMED: {
-            draft.toBeRemoved = null;
+            draft.toBeRemoved = [];
             break;
         }
         case actionTypes.REMOVE: {

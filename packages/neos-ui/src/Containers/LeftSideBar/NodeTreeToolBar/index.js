@@ -43,7 +43,7 @@ export default class NodeTreeToolBar extends PureComponent {
         addNode: PropTypes.func.isRequired,
         copyNode: PropTypes.func.isRequired,
         cutNode: PropTypes.func.isRequired,
-        deleteNode: PropTypes.func.isRequired,
+        deleteNodes: PropTypes.func.isRequired,
         hideNode: PropTypes.func.isRequired,
         showNode: PropTypes.func.isRequired,
         pasteNode: PropTypes.func.isRequired,
@@ -96,11 +96,11 @@ export default class NodeTreeToolBar extends PureComponent {
         pasteNode(contextPath);
     }
 
-    handleDeleteNode = contextPath => {
-        const {deleteNode, canBeDeleted, canBeEdited} = this.props;
+    handleDeleteNodes = () => {
+        const {deleteNodes, canBeDeleted, canBeEdited, focusedNodesContextPaths} = this.props;
 
         if (canBeDeleted && canBeEdited) {
-            deleteNode(contextPath);
+            deleteNodes(focusedNodesContextPaths);
         }
     }
 
@@ -198,7 +198,7 @@ export default class NodeTreeToolBar extends PureComponent {
                             className={style.toolBar__btnGroup__btn}
                             focusedNodeContextPath={focusedNodeContextPath}
                             disabled={destructiveOperationsAreDisabled || !canBeDeleted || !canBeEdited}
-                            onClick={this.handleDeleteNode}
+                            onClick={this.handleDeleteNodes}
                             id={`neos-${treeType}-DeleteSelectedNode`}
                             />
                         <RefreshPageTree
@@ -268,7 +268,7 @@ export const PageTreeToolbar = withNodeTypesRegistry(connect(
         addNode: actions.CR.Nodes.commenceCreation,
         copyNode: actions.CR.Nodes.copy,
         cutNode: actions.CR.Nodes.cut,
-        deleteNode: actions.CR.Nodes.commenceRemoval,
+        deleteNodes: actions.CR.Nodes.commenceRemovalMultiple,
         hideNode: actions.CR.Nodes.hide,
         hideMultipleNodes: actions.CR.Nodes.hideMultiple,
         showNode: actions.CR.Nodes.show,
@@ -329,7 +329,7 @@ export const ContentTreeToolbar = withNodeTypesRegistry(connect(
         addNode: actions.CR.Nodes.commenceCreation,
         copyNode: actions.CR.Nodes.copy,
         cutNode: actions.CR.Nodes.cut,
-        deleteNode: actions.CR.Nodes.commenceRemoval,
+        deleteNodes: actions.CR.Nodes.commenceRemovalMultiple,
         hideNode: actions.CR.Nodes.hide,
         hideMultipleNodes: actions.CR.Nodes.hideMultiple,
         showNode: actions.CR.Nodes.show,

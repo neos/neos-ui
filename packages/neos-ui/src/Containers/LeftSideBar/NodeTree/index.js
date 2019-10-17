@@ -7,6 +7,7 @@ import mergeClassNames from 'classnames';
 import {Tree, Icon} from '@neos-project/react-ui-components';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
+import {SelectionModeTypes} from '@neos-project/neos-ts-interfaces';
 import {dndTypes} from '@neos-project/neos-ui-constants';
 
 import {PageTreeNode, ContentTreeNode} from './Node/index';
@@ -39,20 +40,24 @@ export default class NodeTree extends PureComponent {
         toggle(contextPath);
     }
 
-    handleFocus = (contextPath, openInNewWindow) => {
-        const {focus, allowOpeningNodesInNewWindow} = this.props;
-        if (openInNewWindow && allowOpeningNodesInNewWindow) {
-            // We do not need to change focus if we open the clicked node in the new window.
+    handleFocus = (contextPath, metaKeyPressed, altKeyPressed) => {
+        const {focus} = this.props;
+
+        if (altKeyPressed) {
             return;
         }
 
-        focus(contextPath);
+        focus(contextPath, undefined, metaKeyPressed ? SelectionModeTypes.MULTIPLE_SELECT : SelectionModeTypes.SINGLE_SELECT);
     }
 
-    handleClick = (src, contextPath, openInNewWindow) => {
-        const {setActiveContentCanvasSrc, setActiveContentCanvasContextPath, requestScrollIntoView, allowOpeningNodesInNewWindow, reload, contentCanvasSrc} = this.props;
-        if (openInNewWindow && allowOpeningNodesInNewWindow) {
+    handleClick = (src, contextPath, metaKeyPressed, altKeyPressed) => {
+        const {setActiveContentCanvasSrc, setActiveContentCanvasContextPath, requestScrollIntoView, reload, contentCanvasSrc} = this.props;
+        if (altKeyPressed) {
             window.open(window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port : '') + window.location.pathname + '?node=' + contextPath);
+            return;
+        }
+
+        if (metaKeyPressed) {
             return;
         }
 

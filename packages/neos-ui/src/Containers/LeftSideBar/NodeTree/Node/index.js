@@ -342,9 +342,10 @@ export default class Node extends PureComponent {
 
     handleNodeClick = e => {
         const {node, onNodeFocus, onNodeClick} = this.props;
-        const openInNewWindow = e.metaKey || e.shiftKey || e.ctrlKey;
-        onNodeFocus($get('contextPath', node), openInNewWindow);
-        onNodeClick($get('uri', node), $get('contextPath', node), openInNewWindow);
+        const metaKeyPressed = e.metaKey || e.shiftKey || e.ctrlKey;
+        const altKeyPressed = e.altKey;
+        onNodeFocus($get('contextPath', node), metaKeyPressed, altKeyPressed);
+        onNodeClick($get('uri', node), $get('contextPath', node), metaKeyPressed, altKeyPressed);
     }
 }
 
@@ -370,7 +371,7 @@ export const PageTreeNode = withNodeTypeRegistryAndI18nRegistry(connect(
             childNodes: childrenOfSelector(state, getContextPath(node)),
             hasChildren: hasChildrenSelector(state, getContextPath(node)),
             isActive: selectors.CR.Nodes.documentNodeContextPathSelector(state) === $get('contextPath', node),
-            isFocused: selectors.UI.PageTree.getFocused(state) === $get('contextPath', node),
+            isFocused: selectors.UI.PageTree.getAllFocused(state).includes($get('contextPath', node)),
             toggledNodeContextPaths: selectors.UI.PageTree.getToggled(state),
             hiddenContextPaths: selectors.UI.PageTree.getHidden(state),
             intermediateContextPaths: selectors.UI.PageTree.getIntermediate(state),
@@ -409,7 +410,7 @@ export const ContentTreeNode = withNodeTypeRegistryAndI18nRegistry(connect(
             childNodes: childrenOfSelector(state, getContextPath(node)),
             hasChildren: hasChildrenSelector(state, getContextPath(node)),
             isActive: selectors.CR.Nodes.documentNodeContextPathSelector(state) === $get('contextPath', node),
-            isFocused: $get('cr.nodes.focused.contextPath', state) === $get('contextPath', node),
+            isFocused: selectors.CR.Nodes.focusedNodePathsSelector(state).includes($get('contextPath', node)),
             toggledNodeContextPaths: selectors.UI.ContentTree.getToggled(state),
             isNodeDirty: isContentNodeDirtySelector(state, $get('contextPath', node)),
             canBeInsertedAlongside: canBeMovedAlongsideSelector(state, {

@@ -2,12 +2,12 @@ import produce from 'immer';
 import {action as createAction, ActionType} from 'typesafe-actions';
 
 import {actionTypes as system, InitAction} from '@neos-project/neos-ui-redux-store/src/System';
-import {NodeContextPath} from '@neos-project/neos-ts-interfaces';
+import {NodeContextPath, SelectionModeTypes} from '@neos-project/neos-ts-interfaces';
 
 import * as selectors from './selectors';
 
 export interface State extends Readonly<{
-    isFocused: NodeContextPath | null;
+    focused: NodeContextPath[];
     toggled: NodeContextPath[];
     hidden: NodeContextPath[];
     intermediate: NodeContextPath[];
@@ -16,7 +16,7 @@ export interface State extends Readonly<{
 }> {}
 
 export const defaultState: State = {
-    isFocused: null,
+    focused: [],
     toggled: [],
     hidden: [],
     intermediate: [],
@@ -38,7 +38,7 @@ export enum actionTypes {
     SET_SEARCH_RESULT = '@neos/neos-ui/UI/PageTree/SET_SEARCH_RESULT'
 }
 
-const focus = (contextPath: NodeContextPath) => createAction(actionTypes.FOCUS, {contextPath});
+const focus = (contextPath: NodeContextPath, _: undefined, selectionMode: SelectionModeTypes = SelectionModeTypes.SINGLE_SELECT) => createAction(actionTypes.FOCUS, {contextPath, selectionMode});
 const toggle = (contextPath: NodeContextPath) => createAction(actionTypes.TOGGLE, {contextPath});
 const invalidate = (contextPath: NodeContextPath) => createAction(actionTypes.INVALIDATE, {contextPath});
 const requestChildren = (contextPath: NodeContextPath, {unCollapse = true, activate = false} = {}) =>  createAction(actionTypes.REQUEST_CHILDREN, {contextPath, opts: {unCollapse, activate}});
@@ -78,11 +78,23 @@ export type Action = ActionType<typeof actions>;
 export const reducer = (state: State = defaultState, action: InitAction | Action) => produce(state, draft => {
     switch (action.type) {
         case system.INIT: {
-            draft.isFocused = action.payload.cr.nodes.documentNode || action.payload.cr.nodes.siteNode || null;
+            const contextPath = action.payload.cr.nodes.documentNode || action.payload.cr.nodes.siteNode
+            draft.focused = contextPath ? [contextPath] : [];
             break;
         }
         case actionTypes.FOCUS: {
-            draft.isFocused = action.payload.contextPath;
+            const {contextPath, selectionMode} = action.payload;
+            if (selectionMode === SelectionModeTypes.SINGLE_SELECT) {
+                draft.focused = [contextPath]
+            } else {
+                const contextPaths = new Set(draft.focused);
+                if (contextPaths.has(contextPath)) {
+                    contextPaths.delete(contextPath)
+                } else {
+                    contextPaths.add(contextPath)
+                }
+                draft.focused = [...contextPaths]
+            }
             break;
         }
         case actionTypes.TOGGLE: {

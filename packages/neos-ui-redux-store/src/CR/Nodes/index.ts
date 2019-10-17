@@ -6,7 +6,7 @@ import {actionTypes as system, InitAction} from '@neos-project/neos-ui-redux-sto
 import * as selectors from './selectors';
 import {parentNodeContextPath, getNodeOrThrow} from './helpers';
 
-import {FusionPath, NodeContextPath, InsertPosition, NodeMap, ClipboardMode, NodeTypeName} from '@neos-project/neos-ts-interfaces';
+import {FusionPath, NodeContextPath, InsertPosition, NodeMap, ClipboardMode, SelectionModeTypes, NodeTypeName} from '@neos-project/neos-ts-interfaces';
 
 interface InlineValidationErrors {
     [itemProp: string]: any;
@@ -24,8 +24,8 @@ export interface State extends Readonly<{
     siteNode: NodeContextPath | null;
     documentNode: NodeContextPath | null;
     focused: {
-        contextPath: NodeContextPath | null;
         fusionPath: FusionPath | null;
+        contextPaths: NodeContextPath[];
     },
     toBeRemoved: NodeContextPath | null;
     clipboard: NodeContextPath | null;
@@ -38,7 +38,7 @@ export const defaultState: State = {
     siteNode: null,
     documentNode: null,
     focused: {
-        contextPath: null,
+        contextPaths: [],
         fusionPath: null
     },
     toBeRemoved: null,
@@ -77,7 +77,9 @@ export enum actionTypes {
     PASTE = '@neos/neos-ui/CR/Nodes/PASTE',
     COMMIT_PASTE = '@neos/neos-ui/CR/Nodes/COMMIT_PASTE',
     HIDE = '@neos/neos-ui/CR/Nodes/HIDE',
+    HIDE_MULTIPLE = '@neos/neos-ui/CR/Nodes/HIDE_MULTIPLE',
     SHOW = '@neos/neos-ui/CR/Nodes/SHOW',
+    SHOW_MULTIPLE = '@neos/neos-ui/CR/Nodes/SHOW_MULTIPLE',
     UPDATE_URI = '@neos/neos-ui/CR/Nodes/UPDATE_URI',
     SET_INLINE_VALIDATION_ERRORS = '@neos/neos-ui/CR/Nodes/SET_INLINE_VALIDATION_ERRORS'
 }
@@ -112,7 +114,7 @@ const changeProperty = (propertyChanges: ReadonlyArray<PropertyChange>) => creat
  * @param {String} fusionPath The fusion path of the focused node, needed for out-of-band-rendering, e.g. when
  *                            adding new nodes
  */
-const focus = (contextPath: NodeContextPath, fusionPath: FusionPath) => createAction(actionTypes.FOCUS, {contextPath, fusionPath});
+const focus = (contextPath: NodeContextPath, fusionPath: FusionPath, selectionMode: SelectionModeTypes = SelectionModeTypes.SINGLE_SELECT) => createAction(actionTypes.FOCUS, {contextPath, fusionPath, selectionMode});
 
 /**
  * Un-marks all nodes as not focused.
@@ -262,12 +264,16 @@ const commitPaste = (clipboardMode: ClipboardMode) => createAction(actionTypes.C
  */
 const hide = (contextPath: NodeContextPath) => createAction(actionTypes.HIDE, contextPath);
 
+const hideMultiple = (contextPaths: NodeContextPath[]) => createAction(actionTypes.HIDE_MULTIPLE, contextPaths);
+
 /**
  * Show the given node
  *
  * @param {String} contextPath The context path of the node to be shown
  */
 const show = (contextPath: NodeContextPath) => createAction(actionTypes.SHOW, contextPath);
+
+const showMultiple = (contextPaths: NodeContextPath[]) => createAction(actionTypes.SHOW_MULTIPLE, contextPaths);
 
 /**
  * Update uris of all affected nodes after uriPathSegment of a node has changed
@@ -301,7 +307,9 @@ export const actions = {
     paste,
     commitPaste,
     hide,
+    hideMultiple,
     show,
+    showMultiple,
     updateUri,
     setInlineValidationErrors
 };
@@ -404,14 +412,24 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
             break;
         }
         case actionTypes.FOCUS: {
-            const {contextPath, fusionPath} = action.payload;
-            draft.focused.contextPath = contextPath;
+            const {contextPath, fusionPath, selectionMode} = action.payload;
             draft.focused.fusionPath = fusionPath;
+            if (selectionMode === SelectionModeTypes.SINGLE_SELECT) {
+                draft.focused.contextPaths = [contextPath]
+            } else {
+                const contextPaths = new Set(draft.focused.contextPaths);
+                if (contextPaths.has(contextPath)) {
+                    contextPaths.delete(contextPath)
+                } else {
+                    contextPaths.add(contextPath)
+                }
+                draft.focused.contextPaths = [...contextPaths]
+            }
             break;
         }
         case actionTypes.UNFOCUS: {
-            draft.focused.contextPath = null;
             draft.focused.fusionPath = null;
+            draft.focused.contextPaths = [];
             break;
         }
         case actionTypes.COMMENCE_REMOVAL: {
@@ -440,8 +458,8 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
                 // to different Document nodes and having a (content) node selected previously, the Inspector
                 // does not properly refresh. We just need to ensure that everytime we switch pages, we
                 // reset the focused (content) node of the page.
-                draft.focused.contextPath = null;
                 draft.focused.fusionPath = null;
+                draft.focused.contextPaths = [];
             }
             break;
         }
@@ -449,8 +467,8 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
             const {siteNodeContextPath, documentNodeContextPath, nodes, merge} = action.payload;
             draft.siteNode = siteNodeContextPath;
             draft.documentNode = documentNodeContextPath;
-            draft.focused.contextPath = null;
             draft.focused.fusionPath = null;
+            draft.focused.contextPaths = [];
             if (nodes) {
                 draft.byContextPath = merge ? mergeDeepRight(draft.byContextPath, nodes) : nodes;
             }
@@ -475,12 +493,28 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
         }
         case actionTypes.HIDE: {
             const node = getNodeOrThrow(draft.byContextPath, action.payload);
-            node.properties.hidden = true;
+            node.properties._hidden = true;
+            break;
+        }
+        case actionTypes.HIDE_MULTIPLE: {
+            const contextPaths = action.payload;
+            contextPaths.forEach(contextPath => {
+                const node = getNodeOrThrow(draft.byContextPath, contextPath);
+                node.properties._hidden = true;
+            });
             break;
         }
         case actionTypes.SHOW: {
             const node = getNodeOrThrow(draft.byContextPath, action.payload);
-            node.properties.hidden = false;
+            node.properties._hidden = false;
+            break;
+        }
+        case actionTypes.SHOW_MULTIPLE: {
+            const contextPaths = action.payload;
+            contextPaths.forEach(contextPath => {
+                const node = getNodeOrThrow(draft.byContextPath, contextPath);
+                node.properties._hidden = false;
+            });
             break;
         }
         case actionTypes.UPDATE_URI: {
@@ -497,10 +531,10 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
                     (nodeUri.includes(oldUriFragment + '/') || nodeUri.includes(oldUriFragment + '@'))
                 ) {
                     const newNodeUri = nodeUri
-                            // Node with changes uriPathSegment
-                            .replace(oldUriFragment + '@', newUriFragment + '@')
-                            // Descendant of a node with changed uriPathSegment
-                            .replace(oldUriFragment + '/', newUriFragment + '/');
+                        // Node with changes uriPathSegment
+                        .replace(oldUriFragment + '@', newUriFragment + '@')
+                        // Descendant of a node with changed uriPathSegment
+                        .replace(oldUriFragment + '/', newUriFragment + '/');
                     node.uri = newNodeUri;
                 }
             });

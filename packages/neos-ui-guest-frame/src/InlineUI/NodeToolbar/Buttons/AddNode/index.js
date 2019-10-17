@@ -15,7 +15,7 @@ import {neos} from '@neos-project/neos-ui-decorators';
     const isAllowedToAddChildOrSiblingNodesSelector = selectors.CR.Nodes.makeIsAllowedToAddChildOrSiblingNodes(nodeTypesRegistry);
 
     return state => {
-        const focusedNodeContextPath = $get('cr.nodes.focused.contextPath', state);
+        const focusedNodeContextPath = selectors.CR.Nodes.focusedNodePathSelector(state);
         const isAllowedToAddChildOrSiblingNodes = isAllowedToAddChildOrSiblingNodesSelector(state, {
             reference: focusedNodeContextPath
         });

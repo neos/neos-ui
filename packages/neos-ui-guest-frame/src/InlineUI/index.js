@@ -37,8 +37,8 @@ export default class InlineUI extends PureComponent {
 
     render() {
         const {focused} = this.props;
-        const focusedNodeContextPath = focused.contextPath;
         const {nodeTypesRegistry, focusedNode, shouldScrollIntoView, requestScrollIntoView, destructiveOperationsAreDisabled, clipboardMode, clipboardNodeContextPath} = this.props;
+        const focusedNodeContextPath = focusedNode.contextPath;
         const isDocument = nodeTypesRegistry.hasRole($get('nodeType', focusedNode), 'document');
         const isCut = focusedNodeContextPath === clipboardNodeContextPath && clipboardMode === 'Move';
         const isCopied = focusedNodeContextPath === clipboardNodeContextPath && clipboardMode === 'Copy';

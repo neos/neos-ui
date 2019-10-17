@@ -92,7 +92,7 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
             const contextPath = selectedDomNode.getAttribute('data-__neos-node-contextpath');
             const fusionPath = selectedDomNode.getAttribute('data-__neos-fusion-path');
             const state = store.getState();
-            const focusedNodeContextPath = $get('cr.nodes.focused.contextPath', state);
+            const focusedNodeContextPath = selectors.CR.Nodes.focusedNodePathSelector(state);
             if (!isInsideEditableProperty) {
                 store.dispatch(actions.UI.ContentCanvas.setCurrentlyEditedPropertyName(''));
             }

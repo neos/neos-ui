@@ -19,4 +19,19 @@ export default function * hideNode() {
             }
         }]));
     });
+    yield takeLatest(actionTypes.CR.Nodes.HIDE_MULTIPLE, function * performPropertyChange(action) {
+        const contextPaths = action.payload;
+        const changes = [...contextPaths].map(contextPath => {
+            markNodeAsHidden(contextPath);
+            return {
+                type: 'Neos.Neos.Ui:Property',
+                subject: contextPath,
+                payload: {
+                    propertyName: '_hidden',
+                    value: true
+                }
+            };
+        });
+        yield put(actions.Changes.persistChanges(changes));
+    });
 }

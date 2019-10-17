@@ -1,0 +1,26 @@
+prototype(Neos.TestNodeTypes:Document.Page)>
+prototype(Neos.TestNodeTypes:Document.Page) < prototype(Neos.Neos:Page) {
+    body = Neos.Neos:ContentComponent {
+        titleEditable = Neos.Neos:Editable {
+            property = 'title'
+        }
+        main = Neos.Neos:ContentCollection {
+            nodePath = 'main'
+        }
+        nav = Neos.TestNodeTypes:Navigation
+        imageUri = Neos.Neos:ImageUri {
+            asset = ${node.properties.image}
+            maximumHeight = 100
+        }
+        rte = ${node.properties.rte}
+        renderer = afx`
+            {props.nav}
+            <img class="test-page-image" src={props.imageUri} @if.image={node.properties.image}/>
+            <div class="test-page-rte">{props.rte}</div>
+            <h1>{props.titleEditable}</h1>
+            <main class="main">
+                {props.main}
+            </main>
+        `
+    }
+}

@@ -6,21 +6,13 @@
 
 ## Versioning
 
-Since Neos 5.0 (scheduled April 2019) this repository will become obsolete and `neos-ui` will be versioned and releases together with with the rest of Neos core packages.
+This repository follows the same versioning scheme as Neos itself, with the only exception that the 4.0 branch works with all Neos 4.x releases.
+Release roadmap is [available here](https://www.neos.io/features/release-process.html)
 
-Until then, the following version conventions are in place:
-- 2.x versions are Neos 3.3 compatible (released from the `2.x` branch)
-- 3.x branch is Neos 4.x compatible (released from `master`)
-- We follow semver, but do not make bugfix releases for previous minor branches
-
-For users this means: **You will not get bugfixes for previous minor releases, so use a more relaxed version constraint like these:**
-
-```
-"neos/neos-ui": "^3",
-"neos/neos-ui-compiled": "^3",
-```
-
-For developers this means: **All development happens in `2.x` branch and then getting upmered to `master`**
+That means:
+* All bugfixes go to the lowest maintained branch
+* All new features go only to master
+* New minor and major releases are made in sync with Neos/Flow. Bugfix releases may be available independantly
 
 ## Browser support
 
@@ -46,7 +38,7 @@ The new UI is [already included](https://github.com/neos/neos-base-distribution/
 
 2. Run the following command:
 ```
-composer require neos/neos-ui neos/neos-ui-compiled
+composer require neos/neos-ui
 ```
 
 3. Now you are all set up and you can login to the new interface as usual via `/neos` route.
@@ -54,7 +46,7 @@ composer require neos/neos-ui neos/neos-ui-compiled
 ### Updating
 
 ```
-composer update neos/neos-ui neos/neos-ui-compiled
+composer update neos/neos-ui
 ```
 
 ### Installing dev-master
@@ -64,14 +56,37 @@ However, if you want to stay on bleeding-edge, or want to help out developing, y
 need the `dev-master` release. You can install the master release using:
 
 ```
-composer require neos/neos-ui:dev-master neos/neos-ui-compiled:dev-master
+composer require neos/neos-ui:dev-master
 ```
 
 ## Contributing
 
-In order to start contributing, follow the following steps:
+Please follow the respective guides for contributing on OSX and on Linux.
 
-1) Ensure you have the `2.x` or `dev-master` version installed (see above).
+### on Windows
+
+1) Ensure you have the relevant version installed (see above).
+
+2) Please install Docker for Windows.
+
+3) Run `docker-compose up`.
+
+4) Inside `Configuration/Settings.yaml`, set the following property for disabling the pre-compiled files:
+
+```
+Neos:
+  Neos:
+    Ui:
+      frontendDevelopmentMode: true
+```
+
+6) Get an overview about the codebase. We've recorded [an introduction on YouTube](https://www.youtube.com/watch?v=RYBUS5Nxxxk) which gets you acquainted with the basics. Additionally, please get in touch with us on [Slack](http://slack.neos.io) in the channel #project-ui-rewrite. We're eager to help you get started!
+
+### on OSX / Linux
+
+In order to start contributing on OSX / Linux, follow the following steps:
+
+1) Ensure you have the relevant version installed (see above).
 
 2) We require [Chrome](https://www.google.com/chrome/browser/desktop/index.html) as well as the `yarn`(https://yarnpkg.com/en/) command and GNU Make(https://www.gnu.org/software/make/) to be installed on your system.
 
@@ -94,18 +109,21 @@ make setup
 
 6) Get an overview about the codebase. We've recorded [an introduction on YouTube](https://www.youtube.com/watch?v=RYBUS5Nxxxk) which gets you acquainted with the basics. Additionally, please get in touch with us on [Slack](http://slack.neos.io) in the channel #project-ui-rewrite. We're eager to help you get started!
 
+#### Guideline for PR and commit messages
+
+Please see [our guideline](https://neos.readthedocs.io/en/latest/Contribute/Documentation/BeginnersGuide.html#guideline-commit-messages)
+on how to write meaningful descriptions for your contributions.
+
 #### Doing upmerges
 
-1) Develop only in the `2.x` branch, unless this feature is only compatible with Neos 4.x, then in `master`
-
-2) To do the upmerge do the following commands
+To do the upmerge run the following commands
 
 ```
-git checkout master && git fetch && git reset --hard origin/master && git merge --no-ff --no-commit origin/2.x --strategy-option=ours
+git checkout 5.0 && git fetch && git reset --hard origin/5.0 && git merge --no-ff --no-commit origin/4.0 --strategy-option=ours
+# review and `git commit`
+git checkout master && git fetch && git reset --hard origin/master && git merge --no-ff --no-commit origin/5.0 --strategy-option=ours
+# review and `git commit`
 ```
-Review the changes and commit the changes with the following commit message:
-
-`MERGE: Merge branch '2.x' into master`
 
 #### Development commands
 | Command         | Description                    |
@@ -140,9 +158,6 @@ module.exports = {
 };
 ```
 
-#### Code style
-Our code style is based upon `xo`, with one big difference - We use 4 spaces instead of tabs, to align our code style a bit with the PSR-2 standard for our PHP codebase. To lint the code, execute `make lint` in your shell.
-
 #### Writing unit tests
 The unit tests are executed with [jest](https://facebook.github.io/jest/).
 To run the unit tests, execute `make test` in your shell.
@@ -153,7 +168,7 @@ Use `it.only(() => {})` and `describe.only(() => {})` if you want to run a speci
 
 #### Integration tests
 
-To setup end-to-end tests locally you have got to do the same things described in [CircleCI workflow](https://github.com/neos/neos-ui/blob/2.x/.circleci/config.yml), namely take the [test disribution](https://github.com/neos/neos-ui/blob/2.x/Tests/IntegrationTests/TestDistribution/composer.json) and `composer install` in it, put the right branch into Neos.Neos.Ui folder and run webserver and mysql server with the same config as described in the test distribution's [Settings.yaml](https://github.com/neos/neos-ui/blob/2.x/Tests/IntegrationTests/TestDistribution/Configuration/Settings.yaml) (or adjust it).
+To setup end-to-end tests locally you have got to do the same things described in [CircleCI workflow](https://github.com/neos/neos-ui/blob/master/.circleci/config.yml), namely take the [test disribution](https://github.com/neos/neos-ui/blob/master/Tests/IntegrationTests/TestDistribution/composer.json) and `composer install` in it, put the right branch into Neos.Neos.Ui folder and run webserver and mysql server with the same config as described in the test distribution's [Settings.yaml](https://github.com/neos/neos-ui/blob/master/Tests/IntegrationTests/TestDistribution/Configuration/Settings.yaml) (or adjust it).
 
 #### Releasing
 

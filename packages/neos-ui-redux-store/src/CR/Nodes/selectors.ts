@@ -4,6 +4,7 @@ import {GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
 import {parentNodeContextPath} from './helpers';
 import {NodeContextPath, NodeMap, Node, NodeTypeName, ClipboardMode, NodeTypesRegistry} from '@neos-project/neos-ts-interfaces';
 
+export const inlineValidationErrorsSelector = (state: GlobalState) => $get(['cr', 'nodes', 'inlineValidationErrors'], state);
 export const nodesByContextPathSelector = (state: GlobalState) => $get(['cr', 'nodes', 'byContextPath'], state);
 export const siteNodeContextPathSelector = (state: GlobalState) => $get(['cr', 'nodes', 'siteNode'], state);
 export const documentNodeContextPathSelector = (state: GlobalState) => $get(['cr', 'nodes', 'documentNode'], state);

@@ -18,9 +18,10 @@ class IconButtonComponent extends PureComponent {
         i18nRegistry: PropTypes.object,
         tooltip: PropTypes.string
     };
+
     render() {
-        const finalProps = omit(this.props, ['formattingRule', 'inlineEditorOptions', 'i18nRegistry', 'tooltip', 'isActive']);
-        return (<IconButton {...finalProps} isActive={Boolean(this.props.isActive)} title={this.props.i18nRegistry.translate(this.props.tooltip)}/>);
+        const finalProps = omit(this.props, ['executeCommand', 'formattingRule', 'formattingUnderCursor', 'inlineEditorOptions', 'i18nRegistry', 'tooltip', 'isActive']);
+        return (<IconButton {...finalProps} isActive={Boolean(this.props.isActive)} title={this.props.i18nRegistry.translate(this.props.tooltip)} />);
     }
 }
 
@@ -45,8 +46,9 @@ export default ckEditorRegistry => {
                 component: Button // the React component being used for rendering
                 isVisible: (editorOptions, formattingUnderCursor) => true // A function that decides is the button should be visible or not
                 isActive: (formattingUnderCursor, editorOptions) => true // A function that decides is the button should be active or not
-                callbackPropName: 'onClick' // Name of the callback prop of the Component which is
-                                            fired when the component's value changes.
+                callbackPropName: 'onClick' // Name of the callback prop of the Component which is fired when the component's value changes
+                executeCommand: (command, argument, reFocusEditor = true) => void // An "executeCommand" from the current CKE5 instance
+                formattingUnderCursor: {formattingRule: value} // Formatting state under the cursor
 
                 // all other properties are directly passed on to the component.
             }
@@ -388,12 +390,12 @@ export default ckEditorRegistry => {
                 type: 'checkBox'
             },
             {
-                commandName: 'insertTableColumnBefore',
-                label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__insertTableColumnBefore'
+                commandName: 'insertTableColumnLeft',
+                label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__insertTableColumnLeft'
             },
             {
-                commandName: 'insertTableColumnAfter',
-                label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__insertTableColumnAfter'
+                commandName: 'insertTableColumnRight',
+                label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__insertTableColumnRight'
             },
             {
                 commandName: 'removeTableColumn',

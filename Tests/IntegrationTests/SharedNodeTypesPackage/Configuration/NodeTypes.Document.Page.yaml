@@ -1,0 +1,67 @@
+'Neos.TestNodeTypes:Document.Page':
+  superTypes:
+    'Neos.Neos:Document': true
+  ui:
+    label: Page
+    icon: icon-file-o
+    position: 100
+  childNodes:
+    main:
+      type: 'Neos.Neos:ContentCollection'
+  properties:
+    image:
+      type: Neos\Media\Domain\Model\ImageInterface
+      ui:
+        label: 'Image'
+        reloadIfChanged: true
+        inspector:
+          group: 'document'
+          editorOptions:
+            features:
+              crop: true
+            crop:
+              aspectRatio:
+                locked:
+                  width: 1
+                  height: 1
+    rte:
+      type: string
+      ui:
+        label: 'Toggle the editor'
+        reloadIfChanged: true
+        inspector:
+          group: 'document'
+          editor: 'Neos.Neos/Inspector/Editors/RichTextEditor'
+          editorOptions:
+            autoparagraph: true
+            linking:
+              anchor: true
+              title: true
+              relNofollow: true
+              targetBlank: true
+            formatting:
+              strong: true
+              em: true
+              u: true
+              sub: true
+              sup: true
+              del: true
+              p: true
+              h1: true
+              h2: true
+              h3: true
+              h4: true
+              h5: true
+              h6: true
+              pre: true
+              underline: true
+              strikethrough: true
+              removeFormat: true
+              left: true
+              right: true
+              center: true
+              justify: true
+              table: true
+              ol: true
+              ul: true
+              a: true

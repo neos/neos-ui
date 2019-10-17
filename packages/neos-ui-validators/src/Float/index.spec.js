@@ -32,6 +32,18 @@ test('1 should not be a valid float', () => {
     expect(floatValidator(1)).not.toBe(null);
 });
 
+test('1a should not be a valid float', () => {
+    expect(floatValidator('1a')).not.toBe(null);
+});
+
+test('1.a should not be a valid float', () => {
+    expect(floatValidator('1.a')).not.toBe(null);
+});
+
+test('1.2a should not be a valid float', () => {
+    expect(floatValidator('1.2a')).not.toBe(null);
+});
+
 test('emptyish should pass', () => {
     expect(floatValidator(null)).toBe(null);
     expect(floatValidator(undefined)).toBe(null);

@@ -130,7 +130,8 @@ class NodeTypeGroupPanel extends PureComponent {
             });
 
         // Take `collapsed: true` group setting into account
-        const isOpen = $get('collapsed', group) ? toggledGroups.includes(name) : !toggledGroups.includes(name);
+        // force open state if a filterSearchTerm is set
+        const isOpen = filterSearchTerm.length > 0 ? true : $get('collapsed', group) ? toggledGroups.includes(name) : !toggledGroups.includes(name);
 
         return (
             <ToggablePanel
@@ -141,7 +142,13 @@ class NodeTypeGroupPanel extends PureComponent {
                     <I18n className={style.groupTitle} fallback={label} id={label}/>
                 </ToggablePanel.Header>
                 <ToggablePanel.Contents className={style.groupContents}>
-                    {filteredNodeTypes.map((nodeType, key) => <NodeTypeItem nodeType={nodeType} key={key} onSelect={onSelect} onHelpMessage={onHelpMessage} groupName={group.name} />)}
+                    {filteredNodeTypes.length > 0 ? (
+                        filteredNodeTypes.map((nodeType, key) => <NodeTypeItem nodeType={nodeType} key={key} onSelect={onSelect} onHelpMessage={onHelpMessage} groupName={group.name} />)
+                    ) : (
+                        <div className={style.noMatchesFound}>
+                            <Icon icon="ban" padded="right"/>{i18nRegistry.translate('noMatchesFound')}.
+                        </div>
+                    )}
                     {showHelpMessage ? this.renderHelpMessage() : null}
                 </ToggablePanel.Contents>
             </ToggablePanel>

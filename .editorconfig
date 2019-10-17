@@ -9,7 +9,7 @@ indent_size = 4
 [*.{yml,yaml,json}]
 indent_size = 2
 
-[*.{md}]
+[*.md]
 indent_size = 2
 trim_trailing_whitespace = false
 

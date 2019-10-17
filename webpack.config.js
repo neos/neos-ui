@@ -11,8 +11,7 @@ module.exports = merge(
                 './packages/neos-ui/src/index.js'
             ],
             HostOnlyStyles: [
-                './packages/neos-ui/src/styleHostOnly.css',
-                './packages/neos-ui/src/Containers/EditModePanel/Panel/slick-styles.vanilla-css'
+                './packages/neos-ui/src/styleHostOnly.css'
             ],
             Guest: [
                 './polyfills.js',
@@ -31,6 +30,9 @@ module.exports = merge(
                 path.resolve(__dirname, './packages/neos-ui/node_modules'),
                 path.resolve(__dirname, './node_modules')
             ]
+        },
+        watchOptions: {
+            ignored: /node_modules/
         }
     }
 );

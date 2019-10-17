@@ -1,0 +1,23 @@
+'Neos.TestNodeTypes:Content.Text':
+  superTypes:
+    'Neos.Neos:Content': true
+  ui:
+    label: Text
+    icon: icon-file-text
+    position: 200
+    inlineEditable: true
+  properties:
+    text:
+      type: string
+      ui:
+        inlineEditable: true
+        inline:
+          editorOptions:
+            placeholder: '<p>Enter text here...</p>'
+            formatting:
+              h1: true
+              h2: true
+              h3: true
+              h4: true
+              h5: true
+              a: true

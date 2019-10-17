@@ -2,7 +2,7 @@ import {$get} from 'plow-js';
 
 import {getGuestFrameWindow} from '@neos-project/neos-ui-guest-frame/src/dom';
 
-export default ({propertyDomNode, propertyName, contextPath, editorOptions, globalRegistry, userPreferences, persistChange}) => {
+export default ({propertyDomNode, propertyName, editorOptions, globalRegistry, userPreferences, onChange}) => {
     const formattingRulesRegistry = globalRegistry.get('ckEditor').get('formattingRules');
     const pluginsRegistry = globalRegistry.get('ckEditor').get('plugins');
     const i18nRegistry = globalRegistry.get('i18n');
@@ -39,15 +39,5 @@ export default ({propertyDomNode, propertyName, contextPath, editorOptions, glob
             placeholder ? {neosPlaceholder: placeholder} : {}
         ));
 
-    getGuestFrameWindow().NeosCKEditorApi.createEditor(propertyDomNode, ckEditorConfiguration, propertyName, contents => {
-        persistChange({
-            type: 'Neos.Neos.Ui:Property',
-            subject: contextPath,
-            payload: {
-                propertyName,
-                value: contents,
-                isInline: true
-            }
-        });
-    });
+    getGuestFrameWindow().NeosCKEditorApi.createEditor(propertyDomNode, ckEditorConfiguration, propertyName, onChange);
 };

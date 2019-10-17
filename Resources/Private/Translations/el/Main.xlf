@@ -143,10 +143,10 @@
       <trans-unit id="ckeditor__toolbar__setTableColumnHeader" xml:space="preserve">
 				<source>Header column</source>
 			<target xml:lang="el" state="needs-translation">Header column</target></trans-unit>
-      <trans-unit id="ckeditor__toolbar__insertTableColumnBefore" xml:space="preserve">
+      <trans-unit id="ckeditor__toolbar__insertTableColumnLeft" xml:space="preserve">
 				<source>Insert column before</source>
 			<target xml:lang="el" state="needs-translation">Insert column before</target></trans-unit>
-      <trans-unit id="ckeditor__toolbar__insertTableColumnAfter" xml:space="preserve">
+      <trans-unit id="ckeditor__toolbar__insertTableColumnRight" xml:space="preserve">
 				<source>Insert column after</source>
 			<target xml:lang="el" state="needs-translation">Insert column after</target></trans-unit>
       <trans-unit id="ckeditor__toolbar__removeTableColumn" xml:space="preserve">

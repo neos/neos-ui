@@ -1,0 +1,14 @@
+{
+    "name": "neos/test-nodetypes",
+    "description": "Some dummy nodetypes",
+    "type": "neos-package",
+    "require": {
+        "neos/neos": "*",
+        "neos/neos-ui": "*"
+    },
+    "extra": {
+        "neos": {
+            "package-key": "Neos.TestNodeTypes"
+        }
+    }
+}

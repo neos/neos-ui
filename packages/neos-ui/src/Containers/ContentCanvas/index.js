@@ -15,7 +15,6 @@ import style from './style.css';
     isFringeLeft: $get('ui.leftSideBar.isHidden'),
     isFringeRight: $get('ui.rightSideBar.isHidden'),
     isFullScreen: $get('ui.fullScreen.isFullScreen'),
-    isEditModePanelHidden: $get('ui.editModePanel.isHidden'),
     backgroundColor: $get('ui.contentCanvas.backgroundColor'),
     src: $get('ui.contentCanvas.src'),
     currentEditPreviewMode: selectors.UI.EditPreviewMode.currentEditPreviewMode
@@ -33,7 +32,6 @@ export default class ContentCanvas extends PureComponent {
     static propTypes = {
         isFringeLeft: PropTypes.bool.isRequired,
         isFringeRight: PropTypes.bool.isRequired,
-        isEditModePanelHidden: PropTypes.bool.isRequired,
         isFullScreen: PropTypes.bool.isRequired,
         backgroundColor: PropTypes.string,
         src: PropTypes.string,
@@ -70,7 +68,6 @@ export default class ContentCanvas extends PureComponent {
             isFringeLeft,
             isFringeRight,
             isFullScreen,
-            isEditModePanelHidden,
             src,
             currentEditPreviewMode,
             editPreviewModes,
@@ -82,7 +79,6 @@ export default class ContentCanvas extends PureComponent {
             [style.contentCanvas]: true,
             [style['contentCanvas--isFringeLeft']]: isFringeLeft,
             [style['contentCanvas--isFringeRight']]: isFringeRight,
-            [style['contentCanvas--isMovedDown']]: !isEditModePanelHidden,
             [style['contentCanvas--isFullScreen']]: isFullScreen,
             [style['contentCanvas--isHidden']]: !isVisible
         });

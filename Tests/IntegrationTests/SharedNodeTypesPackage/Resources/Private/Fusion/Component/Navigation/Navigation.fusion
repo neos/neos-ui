@@ -1,0 +1,13 @@
+prototype(Neos.TestNodeTypes:Navigation) < prototype(Neos.Fusion:Collection) {
+    @process.wrap = afx`<ul class="test-nav">{value}</ul>`
+    collection = ${q(site).children('[instanceof Neos.Neos:Document]').get()}
+    itemName = 'node'
+    itemRenderer = Neos.Fusion:Tag {
+        @process.wrap = afx`<li>{value}</li>`
+        tagName = 'a'
+        attributes.href = Neos.Neos:NodeUri {
+            node = ${node}
+        }
+        content = ${node.properties.title}
+    }
+}

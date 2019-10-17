@@ -87,8 +87,6 @@ export default class LeftSideBar extends PureComponent {
                     {!isHidden && LeftSideBarTop.map((Item, key) => <Item key={key} isExpanded={!isHiddenContentTree}/>)}
                 </div>
 
-                <hr className={style.hr}/>
-
                 <div className={bottomClassNames}>
                     <ContentTreeToolbar/>
                     {!isHidden && !isHiddenContentTree && LeftSideBarBottom.map((Item, key) => <Item key={key}/>)}

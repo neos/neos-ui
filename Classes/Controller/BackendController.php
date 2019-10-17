@@ -14,6 +14,7 @@ namespace Neos\Neos\Ui\Controller;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Domain\Service\ContextFactoryInterface;
 use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Http\Component\SetHeaderComponent;
 use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\Flow\Mvc\Exception\StopActionException;
 use Neos\Flow\Mvc\Exception\UnsupportedRequestTypeException;
@@ -21,7 +22,6 @@ use Neos\Flow\Mvc\Routing\Exception\MissingActionNameException;
 use Neos\Flow\Mvc\View\ViewInterface;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Flow\ResourceManagement\ResourceManager;
-use Neos\Flow\Session\Exception\SessionNotStartedException;
 use Neos\Flow\Session\SessionInterface;
 use Neos\Fusion\View\FusionView;
 use Neos\Neos\Controller\Backend\MenuHelper;
@@ -161,8 +161,10 @@ class BackendController extends ActionController
      */
     public function redirectToAction(NodeInterface $node)
     {
-        $this->response->getHeaders()->setCacheControlDirective('no-cache');
-        $this->response->getHeaders()->setCacheControlDirective('no-store');
+        $this->response->setComponentParameter(SetHeaderComponent::class, 'Cache-Control', [
+            'no-cache',
+            'no-store'
+        ]);
         $this->redirect('show', 'Frontend\Node', 'Neos.Neos', ['node' => $node]);
     }
 

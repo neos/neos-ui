@@ -8,6 +8,7 @@ import {neos} from '@neos-project/neos-ui-decorators';
 import NodeToolbar from './NodeToolbar/index';
 
 import style from './style.css';
+import InlineValidationErrors from './InlineValidationErrors/index';
 
 @neos(globalRegistry => ({
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
@@ -39,10 +40,6 @@ export default class InlineUI extends PureComponent {
         const focusedNodeContextPath = focused.contextPath;
         const {nodeTypesRegistry, focusedNode, shouldScrollIntoView, requestScrollIntoView, destructiveOperationsAreDisabled, clipboardMode, clipboardNodeContextPath} = this.props;
         const isDocument = nodeTypesRegistry.hasRole($get('nodeType', focusedNode), 'document');
-        // Don't render toolbar for the document nodes
-        if (isDocument) {
-            return null;
-        }
         const isCut = focusedNodeContextPath === clipboardNodeContextPath && clipboardMode === 'Move';
         const isCopied = focusedNodeContextPath === clipboardNodeContextPath && clipboardMode === 'Copy';
         const canBeDeleted = $get('policy.canRemove', this.props.focusedNode) || false;
@@ -51,7 +48,7 @@ export default class InlineUI extends PureComponent {
 
         return (
             <div className={style.inlineUi} data-__neos__inline-ui="TRUE">
-                <NodeToolbar
+                {!isDocument && <NodeToolbar
                     shouldScrollIntoView={shouldScrollIntoView}
                     requestScrollIntoView={requestScrollIntoView}
                     destructiveOperationsAreDisabled={destructiveOperationsAreDisabled}
@@ -61,7 +58,8 @@ export default class InlineUI extends PureComponent {
                     canBeEdited={canBeEdited}
                     visibilityCanBeToggled={visibilityCanBeToggled}
                     {...focused}
-                    />
+                    />}
+                <InlineValidationErrors />
             </div>
         );
     }

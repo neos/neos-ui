@@ -1,0 +1,29 @@
+'Neos.TestNodeTypes:Content.Headline':
+  superTypes:
+    'Neos.Neos:Content': true
+  ui:
+    label: Headline
+    icon: icon-header
+    position: 200
+    inlineEditable: true
+  properties:
+    title:
+      type: string
+      defaultValue: '<h1>Enter headline here</h1>'
+      ui:
+        inlineEditable: true
+        inline:
+          editorOptions:
+            placeholder: '<h2>Enter headline here...</h2>'
+            formatting:
+              h1: true
+              h2: true
+              h3: true
+              h4: true
+              h5: true
+              a: true
+      validation:
+        'Neos.Neos/Validation/NotEmptyValidator': []
+        'Neos.Neos/Validation/StringLengthValidator':
+          minimum: 1
+          maximum: 255

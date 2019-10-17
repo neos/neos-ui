@@ -38,6 +38,7 @@
 .drawer__menuItemGroupBtn,
 .drawer__menuItemBtn {
     display: flex;
+    align-items: center;
     width: 100%;
     padding: 0;
     text-align: left;
@@ -52,8 +53,10 @@
 .drawer__menuItemGroupBtn {
     font-weight: 700;
 }
+.drawer__bottom {
+    margin-top: auto;
+}
 .drawer__version {
     color: var(--colors-ContrastBright);
     padding: var(--spacing-Full);
-    margin-top: auto;
 }

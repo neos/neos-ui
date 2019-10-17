@@ -18,7 +18,6 @@ import style from './style.css';
     currentlyEditedPropertyName: $get('ui.contentCanvas.currentlyEditedPropertyName'),
     isFringedLeft: $get('ui.leftSideBar.isHidden'),
     isFringedRight: $get('ui.rightSideBar.isHidden'),
-    isEditModePanelHidden: $get('ui.editModePanel.isHidden'),
     isFullScreen: $get('ui.fullScreen.isFullScreen'),
     hasFocusedContentNode: selectors.CR.Nodes.hasFocusedContentNode,
     focusedNodeTypeName: selectors.CR.Nodes.focusedNodeTypeSelector
@@ -33,7 +32,6 @@ export default class SecondaryToolbar extends PureComponent {
         currentlyEditedPropertyName: PropTypes.string,
         isFringedLeft: PropTypes.bool.isRequired,
         isFringedRight: PropTypes.bool.isRequired,
-        isEditModePanelHidden: PropTypes.bool.isRequired,
         isFullScreen: PropTypes.bool.isRequired,
         hasFocusedContentNode: PropTypes.bool.isRequired
     };
@@ -65,14 +63,12 @@ export default class SecondaryToolbar extends PureComponent {
             containerRegistry,
             isFringedLeft,
             isFringedRight,
-            isEditModePanelHidden,
             isFullScreen
         } = this.props;
         const classNames = mergeClassNames({
             [style.secondaryToolbar]: true,
             [style['secondaryToolbar--isFringeLeft']]: isFringedLeft,
             [style['secondaryToolbar--isFringeRight']]: isFringedRight,
-            [style['secondaryToolbar--isMovedDown']]: !isEditModePanelHidden,
             [style['secondaryToolbar--fullScreen']]: isFullScreen
         });
 

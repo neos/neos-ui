@@ -28,10 +28,16 @@ class ConfigurationRenderingService
     protected $eelEvaluator;
 
     /**
+     * @Flow\InjectConfiguration(package="Neos.Fusion", path="defaultContext")
+     * @var array
+     */
+    protected $fusionDefaultEelContext;
+
+    /**
      * @Flow\InjectConfiguration(path="configurationDefaultEelContext")
      * @var array
      */
-    protected $defaultContext;
+    protected $additionalEelDefaultContext;
 
     /**
      * @param array $configuration
@@ -58,7 +64,12 @@ class ConfigurationRenderingService
             if (is_array($value)) {
                 $this->computeConfigurationInternally($value, $context);
             } elseif (is_string($value) && substr($value, 0, 2) === '${' && substr($value, -1) === '}') {
-                $value = Utility::evaluateEelExpression($value, $this->eelEvaluator, $context, $this->defaultContext);
+                $value = Utility::evaluateEelExpression(
+                    $value,
+                    $this->eelEvaluator,
+                    $context,
+                    array_merge($this->fusionDefaultEelContext, $this->additionalEelDefaultContext)
+                );
             }
         }
     }

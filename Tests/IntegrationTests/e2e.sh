@@ -9,19 +9,23 @@ fi
 
 cd ../../..
 
-rm -rf DummyTestPackage
-mv DistributionPackages/Neos.TestSite DummyTestPackage
+rm -rf DummyDistributionPackages || true
+mv DistributionPackages DummyDistributionPackages
+mkdir DistributionPackages
 
 for fixture in Packages/Application/Neos.Neos.Ui/Tests/IntegrationTests/Fixtures/*/; do
     echo "$fixture"
 
+    ln -s "../Packages/Application/Neos.Neos.Ui/Tests/IntegrationTests/SharedNodeTypesPackage" DistributionPackages/Neos.TestNodeTypes
     ln -s "../${fixture}SitePackage" DistributionPackages/Neos.TestSite
 
     # TODO: optimize this
+    ./flow flow:cache:flush
     #./flow flow:cache:flushone Neos_Neos_Fusion
     #./flow flow:cache:flushone Neos_Fusion_Content
-    ./flow flow:cache:flush
-    ./flow site:prune
+    if ./flow site:list | grep -q 'Node name'; then
+        ./flow site:prune '*'
+    fi
     ./flow site:import --package-key=Neos.TestSite
     ./flow resource:publish
 
@@ -33,4 +37,5 @@ for fixture in Packages/Application/Neos.Neos.Ui/Tests/IntegrationTests/Fixtures
 
 done
 
-mv DummyTestPackage DistributionPackages/Neos.TestSite
+rm -rf DistributionPackages
+mv DummyDistributionPackages DistributionPackages

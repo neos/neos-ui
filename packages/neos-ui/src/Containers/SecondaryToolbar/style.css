@@ -1,6 +1,6 @@
 .secondaryToolbar {
     display: flex;
-    position: absolute;
+    position: fixed;
     top: 41px;
     left: 0;
     padding: 0 var(--size-SidebarWidth);
@@ -11,9 +11,6 @@
     border-bottom: 1px solid var(--colors-ContrastDark);
     transform: translateY(0);
     transition: var(--transition-Fast) ease-in-out;
-}
-.secondaryToolbar--isMovedDown {
-    transform: translateY(110px); /* height of EditModePanel - 41px added */
 }
 .secondaryToolbar--isFringeLeft {
     padding-left: 46px;

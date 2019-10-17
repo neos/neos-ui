@@ -68,8 +68,6 @@ Neos:
 
           'UI.Drawer.toggle': 't d'
 
-          'UI.EditModePanel.toggle': 't e'
-
           'UI.InsertionModeModal.cancel': 'c i'
           'UI.InsertionModeModal.apply': 'a i'
 
@@ -102,13 +100,7 @@ Neos:
         content: 'Neos.Neos:Content'
         contentCollection: 'Neos.Neos:ContentCollection'
       configurationDefaultEelContext:
-        String: Neos\Eel\Helper\StringHelper
-        Array: Neos\Eel\Helper\ArrayHelper
-        Date: Neos\Eel\Helper\DateHelper
-        Configuration: Neos\Eel\Helper\ConfigurationHelper
-        Math: Neos\Eel\Helper\MathHelper
-        Json: Neos\Eel\Helper\JsonHelper
-        I18n: Neos\Flow\I18n\EelHelper\TranslationHelper
+        Neos.Ui.Api: Neos\Neos\Ui\Fusion\Helper\ApiHelper
         Neos.Ui.Workspace: Neos\Neos\Ui\Fusion\Helper\WorkspaceHelper
         Neos.Ui.NodeInfo: Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper
         Neos.Ui.ContentDimensions: Neos\Neos\Ui\Fusion\Helper\ContentDimensionsHelper
@@ -121,7 +113,7 @@ Neos:
           previewUrl: '${Neos.Ui.NodeInfo.createRedirectToNode(controllerContext, q(documentNode).context({workspaceName: documentNode.context.workspace.baseWorkspace.name}).get(0))}'
           contentDimensions:
             active: '${documentNode.context.dimensions}'
-            allowedPresets: '${Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions)}'
+            allowedPresets: '${Neos.Ui.Api.emptyArrayToObject(Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions))}'
           documentNodeSerialization: '${Neos.Ui.NodeInfo.renderNodeWithPropertiesAndChildrenInformation(documentNode, controllerContext)}'
           url: '${Neos.Ui.NodeInfo.uri(documentNode, controllerContext)}'
       initialState:
@@ -139,7 +131,7 @@ Neos:
           contentDimensions:
             byName: '${Neos.Ui.ContentDimensions.contentDimensionsByName()}'
             active: '${documentNode.context.dimensions}'
-            allowedPresets: '${Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions)}'
+            allowedPresets: '${Neos.Ui.Api.emptyArrayToObject(Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions))}'
           workspaces:
             personalWorkspace: '${Neos.Ui.Workspace.getPersonalWorkspace()}'
         ui:
@@ -150,8 +142,6 @@ Neos:
           editPreviewMode: '${q(user).property("preferences.preferences")["contentEditing.editPreviewMode"] || Configuration.setting(''Neos.Neos.userInterface.defaultEditPreviewMode'')}'
           fullScreen:
             isFullScreen: false
-          editModePanel:
-            isHidden: true
           leftSideBar:
             isHidden: false
             contentTree:

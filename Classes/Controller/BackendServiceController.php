@@ -15,6 +15,8 @@ use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Domain\Repository\WorkspaceRepository;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Mvc\ActionRequest;
+use Neos\Flow\Mvc\ActionResponse;
 use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\Flow\Mvc\RequestInterface;
 use Neos\Flow\Mvc\ResponseInterface;
@@ -128,7 +130,7 @@ class BackendServiceController extends ActionController
      * @param ResponseInterface $response
      * @return void
      */
-    public function initializeController(RequestInterface $request, ResponseInterface $response)
+    protected function initializeController(ActionRequest $request, ActionResponse $response)
     {
         parent::initializeController($request, $response);
         $this->feedbackCollection->setControllerContext($this->getControllerContext());
@@ -228,12 +230,15 @@ class BackendServiceController extends ActionController
                     $updateNodeInfo = new UpdateNodeInfo();
                     $updateNodeInfo->setNode($node);
                     $updateNodeInfo->recursive();
-
-                    $updateParentNodeInfo = new UpdateNodeInfo();
-                    $updateParentNodeInfo->setNode($node->getParent());
-
                     $this->feedbackCollection->add($updateNodeInfo);
-                    $this->feedbackCollection->add($updateParentNodeInfo);
+
+                    // handle parent node, if needed
+                    $parentNode = $node->getParent();
+                    if ($parentNode instanceof NodeInterface) {
+                        $updateParentNodeInfo = new UpdateNodeInfo();
+                        $updateParentNodeInfo->setNode($parentNode);
+                        $this->feedbackCollection->add($updateParentNodeInfo);
+                    }
 
                     // Reload document for content node changes
                     // (as we can't RenderContentOutOfBand from here, we don't know dom addresses)

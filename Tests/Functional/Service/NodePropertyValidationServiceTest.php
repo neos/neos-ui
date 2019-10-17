@@ -13,71 +13,71 @@ namespace Neos\Neos\Ui\Tests\Functional\Service;
  * source code.
  */
 
-use Neos\Flow\Log\SystemLoggerInterface;
 use Neos\Flow\Tests\FunctionalTestCase;
 use Neos\Flow\Validation\Validator\NotEmptyValidator;
 use Neos\Neos\Ui\Service\NodePropertyValidationService;
+use PHPUnit\Framework\Assert;
+use Psr\Log\LoggerInterface;
 
 class NodePropertyValidationServiceTest extends FunctionalTestCase
 {
-
     /**
      * @var NodePropertyValidationService
      */
     protected $nodePropertyValidationService;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
         $nodePropertyValidatorServiceProxy = $this->buildAccessibleProxy(NodePropertyValidationService::class);
         $this->nodePropertyValidationService = $this->objectManager->get($nodePropertyValidatorServiceProxy);
 
-        $logger = $this->objectManager->get(SystemLoggerInterface::class);
+        $logger = $this->objectManager->get(LoggerInterface::class);
         $this->inject($this->nodePropertyValidationService, 'logger', $logger);
     }
 
     /**
      * @test
      */
-    public function resolveValidator()
+    public function resolveValidator(): void
     {
         $validator = $this->nodePropertyValidationService->_call('resolveValidator', 'Neos.Neos/Validation/NotEmptyValidator', []);
-        $this->assertInstanceOf(NotEmptyValidator::class, $validator);
+        Assert::assertInstanceOf(NotEmptyValidator::class, $validator);
     }
 
     /**
      * @test
      */
-    public function resolveCustomValidatorReturnsNull()
+    public function resolveCustomValidatorReturnsNull(): void
     {
         $validator = $this->nodePropertyValidationService->_call('resolveValidator', 'My.Own/Validation/NotEmptyValidator', []);
-        $this->assertNull($validator);
+        Assert::assertNull($validator);
     }
 
     /**
      * @test
      */
-    public function validate()
+    public function validate(): void
     {
         $result = $this->nodePropertyValidationService->validate(
             'test',
             'Neos.Neos/Validation/StringLengthValidator',
             ['minimum' => 1, 'maximum' => 2]);
 
-        $this->assertFalse($result);
+        Assert::assertFalse($result);
     }
 
     /**
      * @test
      */
-    public function ifNoBackendValidatorCanBeFoundValidationReturnsTrue()
+    public function ifNoBackendValidatorCanBeFoundValidationReturnsTrue(): void
     {
         $result = $this->nodePropertyValidationService->validate(
             'test',
             'My.Own/Validation/StringLengthValidator',
             ['minimum' => 1, 'maximum' => 255]);
 
-        $this->assertTrue($result);
+        Assert::assertTrue($result);
     }
 }

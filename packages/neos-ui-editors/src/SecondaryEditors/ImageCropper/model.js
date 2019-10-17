@@ -1,4 +1,5 @@
-import {values, merge, memoize} from 'ramda';
+import {values, merge} from 'ramda';
+import memoize from 'lodash.memoize';
 import {Maybe, Some, None} from 'monet';
 import {$get} from 'plow-js';
 

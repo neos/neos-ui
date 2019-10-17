@@ -51,17 +51,17 @@
 .ck.ck-icon *{
     fill:currentColor
 }
-.ck .ck-widget.ck-widget_selectable{
+.ck .ck-widget.ck-widget_with-selection-handler{
     position:relative
 }
-.ck .ck-widget.ck-widget_selectable .ck-widget__selection-handler{
+.ck .ck-widget.ck-widget_with-selection-handler .ck-widget__selection-handler{
     visibility:hidden;
     position:absolute
 }
-.ck .ck-widget.ck-widget_selectable .ck-widget__selection-handler .ck-icon{
+.ck .ck-widget.ck-widget_with-selection-handler .ck-widget__selection-handler .ck-icon{
     display:block
 }
-.ck .ck-widget.ck-widget_selectable.ck-widget_selected .ck-widget__selection-handler,.ck .ck-widget.ck-widget_selectable:hover .ck-widget__selection-handler{
+.ck .ck-widget.ck-widget_with-selection-handler .ck-widget__selection-handler,.ck .ck-widget.ck-widget_with-selection-handler:hover .ck-widget__selection-handler{
     visibility:visible
 }
 :root{
@@ -97,7 +97,7 @@
     box-shadow:var(--ck-inner-shadow),0 0;
     background-color:var(--ck-color-widget-editable-focus-background)
 }
-.ck .ck-widget.ck-widget_selectable .ck-widget__selection-handler{
+.ck .ck-widget.ck-widget_with-selection-handler .ck-widget__selection-handler{
     padding:4px;
     box-sizing:border-box;
     background-color:transparent;
@@ -107,26 +107,26 @@
     transform:translateY(-100%);
     left:calc(0px - var(--ck-widget-outline-thickness))
 }
-.ck .ck-widget.ck-widget_selectable .ck-widget__selection-handler:hover .ck-icon .ck-icon__selected-indicator{
+.ck .ck-widget.ck-widget_with-selection-handler .ck-widget__selection-handler:hover .ck-icon .ck-icon__selected-indicator{
     opacity:1
 }
-.ck .ck-widget.ck-widget_selectable .ck-widget__selection-handler .ck-icon{
+.ck .ck-widget.ck-widget_with-selection-handler .ck-widget__selection-handler .ck-icon{
     width:var(--ck-widget-handler-icon-size);
     height:var(--ck-widget-handler-icon-size);
     color:var(--ck-color-widget-drag-handler-icon-color)
 }
-.ck .ck-widget.ck-widget_selectable .ck-widget__selection-handler .ck-icon .ck-icon__selected-indicator{
+.ck .ck-widget.ck-widget_with-selection-handler .ck-widget__selection-handler .ck-icon .ck-icon__selected-indicator{
     opacity:0;
     transition:opacity .3s var(--ck-widget-handler-animation-curve)
 }
-.ck .ck-widget.ck-widget_selectable.ck-widget_selected .ck-widget__selection-handler,.ck .ck-widget.ck-widget_selectable.ck-widget_selected:hover .ck-widget__selection-handler{
+.ck .ck-widget.ck-widget_with-selection-handler.ck-widget_selected .ck-widget__selection-handler,.ck .ck-widget.ck-widget_with-selection-handler.ck-widget_selected:hover .ck-widget__selection-handler{
     opacity:1;
     background-color:var(--ck-color-focus-border)
 }
-.ck .ck-widget.ck-widget_selectable.ck-widget_selected .ck-widget__selection-handler .ck-icon .ck-icon__selected-indicator,.ck .ck-widget.ck-widget_selectable.ck-widget_selected:hover .ck-widget__selection-handler .ck-icon .ck-icon__selected-indicator{
+.ck .ck-widget.ck-widget_with-selection-handler.ck-widget_selected .ck-widget__selection-handler .ck-icon .ck-icon__selected-indicator,.ck .ck-widget.ck-widget_with-selection-handler.ck-widget_selected:hover .ck-widget__selection-handler .ck-icon .ck-icon__selected-indicator{
     opacity:1
 }
-.ck .ck-widget.ck-widget_selectable:hover .ck-widget__selection-handler{
+.ck .ck-widget.ck-widget_with-selection-handler:hover .ck-widget__selection-handler{
     opacity:1;
     background-color:var(--ck-color-widget-hover-border)
 }

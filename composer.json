@@ -6,8 +6,7 @@
     "GPL-3.0-or-later"
   ],
   "require": {
-    "neos/neos": "^5.0 || dev-master",
-    "neos/neos-ui-compiled": "self.version"
+    "neos/neos": "^5.0 || dev-master"
   },
   "autoload": {
     "psr-4": {

@@ -57,6 +57,7 @@ export default class InlineUI extends PureComponent {
                     canBeDeleted={canBeDeleted}
                     canBeEdited={canBeEdited}
                     visibilityCanBeToggled={visibilityCanBeToggled}
+                    contextPath={focusedNodeContextPath}
                     {...focused}
                     />}
                 <InlineValidationErrors />

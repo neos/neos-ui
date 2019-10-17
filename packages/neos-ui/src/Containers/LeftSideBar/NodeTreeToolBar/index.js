@@ -220,6 +220,30 @@ const withNodeTypesRegistry = neos(globalRegistry => ({
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
 }));
 
+const hasNestedNodes = focusedNodesContextPaths => {
+    return focusedNodesContextPaths.every(contextPathA => {
+        const path = contextPathA.split('@')[0];
+        // TODO: adjust this for the new CR when this is merged: https://github.com/neos/neos-ui/pull/2178
+        return focusedNodesContextPaths.every(contextPathB => !(contextPathB.indexOf(path) === 0 && contextPathA != contextPathB));
+    });
+};
+
+const removeAllowed = (focusedNodesContextPaths, state) => focusedNodesContextPaths.every(contextPath => {
+    const getNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(contextPath);
+    const focusedNode = getNodeByContextPathSelector(state);
+    return $get('policy.canRemove', focusedNode);
+});
+const visibilityToggleAllowed = (focusedNodesContextPaths, state) => focusedNodesContextPaths.every(contextPath => {
+    const getNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(contextPath);
+    const focusedNode = getNodeByContextPathSelector(state);
+    return !$contains('_hidden', 'policy.disallowedProperties', focusedNode);
+});
+const editingAllowed = (focusedNodesContextPaths, state) => focusedNodesContextPaths.every(contextPath => {
+    const getNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(contextPath);
+    const focusedNode = getNodeByContextPathSelector(state);
+    return !$contains('_hidden', 'policy.disallowedProperties', focusedNode);
+});
+
 export const PageTreeToolbar = withNodeTypesRegistry(connect(
     (state, {nodeTypesRegistry}) => {
         const canBePastedSelector = selectors.CR.Nodes.makeCanBePastedSelector(nodeTypesRegistry);
@@ -235,9 +259,13 @@ export const PageTreeToolbar = withNodeTypesRegistry(connect(
                 subject: clipboardNodeContextPath,
                 reference: focusedNodeContextPath
             });
-            const canBeDeleted = $get('policy.canRemove', focusedNode) || false;
-            const canBeEdited = $get('policy.canEdit', focusedNode) || false;
-            const visibilityCanBeToggled = !$contains('_hidden', 'policy.disallowedProperties', focusedNode);
+
+            const selectionHasNestedNodes = hasNestedNodes(focusedNodesContextPaths);
+
+            const canBeDeleted = (removeAllowed(focusedNodesContextPaths, state) && !selectionHasNestedNodes) || false;
+            const visibilityCanBeToggled = visibilityToggleAllowed(focusedNodesContextPaths, state);
+            const canBeEdited = editingAllowed(focusedNodesContextPaths, state);
+
             const clipboardMode = $get('cr.nodes.clipboardMode', state);
             const isCut = focusedNodeContextPath === clipboardNodeContextPath && clipboardMode === 'Move';
             const isCopied = focusedNodeContextPath === clipboardNodeContextPath && clipboardMode === 'Copy';
@@ -293,15 +321,20 @@ export const ContentTreeToolbar = withNodeTypesRegistry(connect(
                 subject: clipboardNodeContextPath,
                 reference: focusedNodeContextPath
             });
-            const canBeDeleted = $get('policy.canRemove', focusedNode) || false;
-            const canBeEdited = $get('policy.canEdit', focusedNode) || false;
-            const visibilityCanBeToggled = !$contains('_hidden', 'policy.disallowedProperties', focusedNode);
+
+            const selectionHasNestedNodes = hasNestedNodes(focusedNodesContextPaths);
+
+            const canBeDeleted = (removeAllowed(focusedNodesContextPaths, state) && !selectionHasNestedNodes) || false;
+            const visibilityCanBeToggled = visibilityToggleAllowed(focusedNodesContextPaths, state);
+            const canBeEdited = editingAllowed(focusedNodesContextPaths, state);
+
             const clipboardMode = $get('cr.nodes.clipboardMode', state);
             const isCut = focusedNodeContextPath === clipboardNodeContextPath && clipboardMode === 'Move';
             const isCopied = focusedNodeContextPath === clipboardNodeContextPath && clipboardMode === 'Copy';
             const isLoading = selectors.UI.ContentTree.getIsLoading(state);
             const isHidden = $get('properties._hidden', focusedNode);
-            const destructiveOperationsAreDisabled = selectors.CR.Nodes.destructiveOperationsAreDisabledForTreeSelector(state);
+            const destructiveOperationsAreDisabled = selectors.CR.Nodes.destructiveOperationsAreDisabledForContentTreeSelector(state);
+
             const isAllowedToAddChildOrSiblingNodes = isAllowedToAddChildOrSiblingNodesSelector(state, {
                 reference: focusedNodeContextPath
             });

@@ -380,14 +380,14 @@ export const destructiveOperationsAreDisabledSelector = createSelector(
     }
 );
 
-export const destructiveOperationsAreDisabledForTreeSelector = createSelector(
+export const destructiveOperationsAreDisabledForContentTreeSelector = createSelector(
     [
         siteNodeContextPathSelector,
         focusedNodePathsSelector,
         nodesByContextPathSelector
     ],
     (siteNodeContextPath, focusedNodesContextPaths, nodesByContextPath) => {
-        return [...focusedNodesContextPaths].map(contextPath => {
+        return focusedNodesContextPaths.map(contextPath => {
             const node = nodesByContextPath[contextPath];
             return node && node.isAutoCreated || siteNodeContextPath === contextPath;
         }).filter(Boolean).length > 0;

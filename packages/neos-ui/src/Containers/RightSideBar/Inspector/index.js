@@ -36,6 +36,8 @@ import style from './style.css';
 
         return {
             focusedNode: selectors.CR.Nodes.focusedSelector(state),
+            focusedContentNodesContextPaths: selectors.CR.Nodes.focusedNodePathsSelector(state),
+            focusedDocumentNodesContextPaths: selectors.UI.PageTree.getAllFocused(state),
             isApplyDisabled: isApplyDisabledSelector(state),
             transientValues: selectors.UI.Inspector.transientValues(state),
             isDiscardDisabled: selectors.UI.Inspector.isDiscardDisabledSelector(state),
@@ -208,7 +210,7 @@ export default class Inspector extends PureComponent {
     }
 
     renderFallback() {
-        return (<div className={style.loader}><div><Icon icon="spinner" spin={true} size="lg" /></div></div>);
+        return (<div className={style.centeredInspector}><div><Icon icon="spinner" spin={true} size="lg" /></div></div>);
     }
 
     handlePanelToggle = path => {
@@ -220,6 +222,8 @@ export default class Inspector extends PureComponent {
     render() {
         const {
             focusedNode,
+            focusedContentNodesContextPaths,
+            focusedDocumentNodesContextPaths,
             commit,
             isApplyDisabled,
             isDiscardDisabled,
@@ -227,6 +231,13 @@ export default class Inspector extends PureComponent {
             shouldShowSecondaryInspector,
             i18nRegistry
         } = this.props;
+        // TODO i18n
+        if (focusedContentNodesContextPaths.length > 1) {
+            return (<div title="Select a single document in order to be able to edit its properties" className={style.centeredInspector}><div>{focusedContentNodesContextPaths.length} content elements selected</div></div>);
+        }
+        if (focusedDocumentNodesContextPaths.length > 1) {
+            return (<div title="Select a single content element in order to be able to edit its properties" className={style.centeredInspector}><div>{focusedDocumentNodesContextPaths.length} documents selected</div></div>);
+        }
 
         const augmentedCommit = (propertyId, value, hooks) => {
             commit(propertyId, value, hooks, focusedNode);

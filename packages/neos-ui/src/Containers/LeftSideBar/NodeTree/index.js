@@ -94,8 +94,11 @@ export default class NodeTree extends PureComponent {
 
     handleDrop = (targetNode, position) => {
         const {currentlyDraggedNodes} = this.state;
-        const {moveNodes} = this.props;
+        const {moveNodes, focus} = this.props;
         moveNodes(currentlyDraggedNodes, $get('contextPath', targetNode), position);
+        // We need to refocus the tree, so all focus would be reset, because its context paths have changed while moving
+        // Could be removed with the new CR
+        focus($get('contextPath', targetNode));
 
         this.setState({
             currentlyDraggedNodes: []

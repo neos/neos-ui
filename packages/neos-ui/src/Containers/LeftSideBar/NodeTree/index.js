@@ -14,6 +14,15 @@ import {PageTreeNode, ContentTreeNode} from './Node/index';
 
 import style from './style.css';
 
+// TODO extract to selector
+const hasNestedNodes = focusedNodesContextPaths => {
+    return !focusedNodesContextPaths.every(contextPathA => {
+        const path = contextPathA.split('@')[0];
+        // TODO: adjust this for the new CR when this is merged: https://github.com/neos/neos-ui/pull/2178
+        return focusedNodesContextPaths.every(contextPathB => !(contextPathB.indexOf(path) === 0 && contextPathA !== contextPathB));
+    });
+};
+
 export default class NodeTree extends PureComponent {
     static propTypes = {
         ChildRenderer: PropTypes.func,
@@ -27,11 +36,11 @@ export default class NodeTree extends PureComponent {
         requestScrollIntoView: PropTypes.func,
         setActiveContentCanvasSrc: PropTypes.func,
         setActiveContentCanvasContextPath: PropTypes.func,
-        moveNode: PropTypes.func
+        moveNodes: PropTypes.func
     };
 
     state = {
-        currentlyDraggedNode: null
+        currentlyDraggedNodes: []
     };
 
     handleToggle = contextPath => {
@@ -77,24 +86,24 @@ export default class NodeTree extends PureComponent {
         }
     }
 
-    handleDrag = node => {
+    handleDrag = () => {
         this.setState({
-            currentlyDraggedNode: node
+            currentlyDraggedNodes: this.props.focusedNodesContextPaths
         });
     }
 
     handleDrop = (targetNode, position) => {
-        const {currentlyDraggedNode} = this.state;
-        const {moveNode} = this.props;
-        moveNode($get('contextPath', currentlyDraggedNode), $get('contextPath', targetNode), position);
+        const {currentlyDraggedNodes} = this.state;
+        const {moveNodes} = this.props;
+        moveNodes(currentlyDraggedNodes, $get('contextPath', targetNode), position);
 
         this.setState({
-            currentlyDraggedNode: null
+            currentlyDraggedNodes: []
         });
     }
 
     render() {
-        const {rootNode, ChildRenderer} = this.props;
+        const {rootNode, ChildRenderer, focusedNodesContextPaths} = this.props;
         if (!rootNode) {
             return (
                 <div className={style.loader}>
@@ -119,7 +128,8 @@ export default class NodeTree extends PureComponent {
                     onNodeFocus={this.handleFocus}
                     onNodeDrag={this.handleDrag}
                     onNodeDrop={this.handleDrop}
-                    currentlyDraggedNode={this.state.currentlyDraggedNode}
+                    currentlyDraggedNodes={this.state.currentlyDraggedNodes}
+                    dndDisabled={hasNestedNodes(focusedNodesContextPaths)}
                     />
             </Tree>
         );
@@ -128,6 +138,7 @@ export default class NodeTree extends PureComponent {
 
 export const PageTree = connect(state => ({
     rootNode: selectors.CR.Nodes.siteNodeSelector(state),
+    focusedNodesContextPaths: selectors.UI.PageTree.getAllFocused(state),
     ChildRenderer: PageTreeNode,
     allowOpeningNodesInNewWindow: true,
     contentCanvasSrc: $get('ui.contentCanvas.src', state)
@@ -137,17 +148,18 @@ export const PageTree = connect(state => ({
     reload: actions.UI.ContentCanvas.reload,
     setActiveContentCanvasSrc: actions.UI.ContentCanvas.setSrc,
     setActiveContentCanvasContextPath: actions.CR.Nodes.setDocumentNode,
-    moveNode: actions.CR.Nodes.move,
+    moveNodes: actions.CR.Nodes.moveMultiple,
     requestScrollIntoView: null
 })(NodeTree);
 
 export const ContentTree = connect(state => ({
     rootNode: selectors.CR.Nodes.documentNodeSelector(state),
+    focusedNodesContextPaths: selectors.CR.Nodes.focusedNodePathsSelector(state),
     ChildRenderer: ContentTreeNode,
     allowOpeningNodesInNewWindow: false
 }), {
     toggle: actions.UI.ContentTree.toggle,
     focus: actions.CR.Nodes.focus,
-    moveNode: actions.CR.Nodes.move,
+    moveNodes: actions.CR.Nodes.moveMultiple,
     requestScrollIntoView: actions.UI.ContentCanvas.requestScrollIntoView
 })(NodeTree);

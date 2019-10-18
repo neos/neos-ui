@@ -77,6 +77,7 @@ export enum actionTypes {
     CUT = '@neos/neos-ui/CR/Nodes/CUT',
     CUT_MULTIPLE = '@neos/neos-ui/CR/Nodes/CUT_MULTIPLE',
     MOVE = '@neos/neos-ui/CR/Nodes/MOVE',
+    MOVE_MULTIPLE = '@neos/neos-ui/CR/Nodes/MOVE_MULTIPLE',
     PASTE = '@neos/neos-ui/CR/Nodes/PASTE',
     COMMIT_PASTE = '@neos/neos-ui/CR/Nodes/COMMIT_PASTE',
     HIDE = '@neos/neos-ui/CR/Nodes/HIDE',
@@ -252,6 +253,12 @@ const move = (
     position: InsertPosition
 ) => createAction(actionTypes.MOVE, {nodeToBeMoved, targetNode, position});
 
+const moveMultiple = (
+    nodesToBeMoved: NodeContextPath[],
+    targetNode: NodeContextPath,
+    position: InsertPosition
+) => createAction(actionTypes.MOVE_MULTIPLE, {nodesToBeMoved, targetNode, position});
+
 /**
  * Paste the contents of the node clipboard
  *
@@ -316,6 +323,7 @@ export const actions = {
     cut,
     cutMultiple,
     move,
+    moveMultiple,
     paste,
     commitPaste,
     hide,
@@ -325,6 +333,55 @@ export const actions = {
     updateUri,
     setInlineValidationErrors
 };
+
+const moveNodeInState = (
+    sourceNodeContextPath: string,
+    targetNodeContextPath: string,
+    position: string,
+    draft: State
+) => {
+    let baseNodeContextPath;
+    if (position === 'into') {
+        baseNodeContextPath = targetNodeContextPath;
+    } else {
+        baseNodeContextPath = parentNodeContextPath(targetNodeContextPath);
+        if (baseNodeContextPath === null) {
+            throw new Error(`Target node "{targetNodeContextPath}" doesn't have a parent, yet you are trying to move a node next to it`);
+        }
+    }
+
+    const sourceNodeParentContextPath = parentNodeContextPath(sourceNodeContextPath);
+    if (sourceNodeParentContextPath === null) {
+        throw new Error(`The source node "{sourceNodeParentContextPath}" doesn't have a parent, you can't move it`);
+    }
+    const baseNode = getNodeOrThrow(draft.byContextPath, baseNodeContextPath);
+    const sourceNodeParent = getNodeOrThrow(draft.byContextPath, sourceNodeParentContextPath);
+
+    const originalSourceChildren = sourceNodeParent.children;
+    const sourceIndex = originalSourceChildren.findIndex(child => child.contextPath === sourceNodeContextPath);
+    const childRepresentationOfSourceNode = originalSourceChildren[sourceIndex];
+
+    const processedChildren = baseNode.children;
+
+    if (sourceNodeParentContextPath === baseNodeContextPath) {
+        // If moving into the same parent, delete source node from it
+        processedChildren.splice(sourceIndex, 1);
+    } else {
+        // Else delete the source node from its parent
+        originalSourceChildren.splice(sourceIndex, 1);
+        sourceNodeParent.children = originalSourceChildren;
+    }
+
+    // Add source node to the children of the base node, at the right position
+    if (position === 'into') {
+        processedChildren.push(childRepresentationOfSourceNode);
+    } else {
+        const targetIndex = processedChildren.findIndex(child => child.contextPath === targetNodeContextPath);
+        const insertIndex = position === 'before' ? targetIndex : targetIndex + 1;
+        processedChildren.splice(insertIndex, 0, childRepresentationOfSourceNode);
+    }
+    baseNode.children = processedChildren;
+}
 
 //
 // Export the reducer
@@ -356,48 +413,14 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
         }
         case actionTypes.MOVE: {
             const {nodeToBeMoved: sourceNodeContextPath, targetNode: targetNodeContextPath, position} = action.payload;
-
-            let baseNodeContextPath;
-            if (position === 'into') {
-                baseNodeContextPath = targetNodeContextPath;
-            } else {
-                baseNodeContextPath = parentNodeContextPath(targetNodeContextPath);
-                if (baseNodeContextPath === null) {
-                    throw new Error(`Target node "{targetNodeContextPath}" doesn't have a parent, yet you are trying to move a node next to it`);
-                }
-            }
-
-            const sourceNodeParentContextPath = parentNodeContextPath(sourceNodeContextPath);
-            if (sourceNodeParentContextPath === null) {
-                throw new Error(`The source node "{sourceNodeParentContextPath}" doesn't have a parent, you can't move it`);
-            }
-            const baseNode = getNodeOrThrow(draft.byContextPath, baseNodeContextPath);
-            const sourceNodeParent = getNodeOrThrow(draft.byContextPath, sourceNodeParentContextPath);
-
-            const originalSourceChildren = sourceNodeParent.children;
-            const sourceIndex = originalSourceChildren.findIndex(child => child.contextPath === sourceNodeContextPath);
-            const childRepresentationOfSourceNode = originalSourceChildren[sourceIndex];
-
-            const processedChildren = baseNode.children;
-
-            if (sourceNodeParentContextPath === baseNodeContextPath) {
-                // If moving into the same parent, delete source node from it
-                processedChildren.splice(sourceIndex, 1);
-            } else {
-                // Else delete the source node from its parent
-                originalSourceChildren.splice(sourceIndex, 1);
-                sourceNodeParent.children = originalSourceChildren;
-            }
-
-            // Add source node to the children of the base node, at the right position
-            if (position === 'into') {
-                processedChildren.push(childRepresentationOfSourceNode);
-            } else {
-                const targetIndex = processedChildren.findIndex(child => child.contextPath === targetNodeContextPath);
-                const insertIndex = position === 'before' ? targetIndex : targetIndex + 1;
-                processedChildren.splice(insertIndex, 0, childRepresentationOfSourceNode);
-            }
-            baseNode.children = processedChildren;
+            moveNodeInState(sourceNodeContextPath, targetNodeContextPath, position, draft);
+            break;
+        }
+        case actionTypes.MOVE_MULTIPLE: {
+            const {nodesToBeMoved, targetNode: targetNodeContextPath, position} = action.payload;
+            nodesToBeMoved.forEach(sourceNodeContextPath => {
+                moveNodeInState(sourceNodeContextPath, targetNodeContextPath, position, draft);
+            });
             break;
         }
         case actionTypes.MERGE: {

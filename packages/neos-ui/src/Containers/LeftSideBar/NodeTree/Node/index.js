@@ -52,7 +52,7 @@ export default class Node extends PureComponent {
         node: PropTypes.object,
         nodeDndType: PropTypes.string.isRequired,
         nodeTypeRole: PropTypes.string,
-        currentlyDraggedNode: PropTypes.object,
+        currentlyDraggedNodes: PropTypes.array,
         hasChildren: PropTypes.bool,
         isLastChild: PropTypes.bool,
         childNodes: PropTypes.array,
@@ -129,10 +129,10 @@ export default class Node extends PureComponent {
     }
 
     accepts = mode => {
-        const {node, currentlyDraggedNode, canBeInsertedAlongside, canBeInsertedInto} = this.props;
+        const {node, currentlyDraggedNodes, canBeInsertedAlongside, canBeInsertedInto} = this.props;
         const canBeInserted = mode === 'into' ? canBeInsertedInto : canBeInsertedAlongside;
 
-        return canBeInserted && (getContextPath(currentlyDraggedNode) !== getContextPath(node));
+        return canBeInserted && !currentlyDraggedNodes.includes(getContextPath(node));
     }
 
     handleNodeDrag = () => {
@@ -258,6 +258,7 @@ export default class Node extends PureComponent {
             nodeDndType,
             nodeTypeRole,
             childNodes,
+            dndDisabled,
             hasChildren,
             isLastChild,
             level,
@@ -266,7 +267,7 @@ export default class Node extends PureComponent {
             onNodeFocus,
             onNodeDrag,
             onNodeDrop,
-            currentlyDraggedNode,
+            currentlyDraggedNodes,
             isContentTreeNode
         } = this.props;
 
@@ -307,7 +308,7 @@ export default class Node extends PureComponent {
                     onToggle={this.handleNodeToggle}
                     onClick={this.handleNodeClick}
                     dragAndDropContext={this.getDragAndDropContext()}
-                    dragForbidden={$get('isAutoCreated', node)}
+                    dragForbidden={$get('isAutoCreated', node) || dndDisabled}
                     title={labelTitle}
                     />
                 {this.isCollapsed() ? null : (
@@ -324,9 +325,10 @@ export default class Node extends PureComponent {
                                 onNodeFocus={onNodeFocus}
                                 onNodeDrag={onNodeDrag}
                                 onNodeDrop={onNodeDrop}
-                                currentlyDraggedNode={currentlyDraggedNode}
+                                currentlyDraggedNodes={currentlyDraggedNodes}
                                 isLastChild={index + 1 === childNodesCount}
                                 level={level + 1}
+                                dndDisabled={dndDisabled}
                                 />
                         )}
                     </Tree.Node.Contents>
@@ -364,29 +366,33 @@ export const PageTreeNode = withNodeTypeRegistryAndI18nRegistry(connect(
         const canBeMovedIntoSelector = selectors.CR.Nodes.makeCanBeMovedIntoSelector(nodeTypesRegistry);
         const isDocumentNodeDirtySelector = selectors.CR.Workspaces.makeIsDocumentNodeDirtySelector();
 
-        return (state, {node, currentlyDraggedNode}) => ({
-            isContentTreeNode: false,
-            rootNode: selectors.CR.Nodes.siteNodeSelector(state),
-            loadingDepth: neos.configuration.nodeTree.loadingDepth,
-            childNodes: childrenOfSelector(state, getContextPath(node)),
-            hasChildren: hasChildrenSelector(state, getContextPath(node)),
-            isActive: selectors.CR.Nodes.documentNodeContextPathSelector(state) === $get('contextPath', node),
-            isFocused: selectors.UI.PageTree.getAllFocused(state).includes($get('contextPath', node)),
-            toggledNodeContextPaths: selectors.UI.PageTree.getToggled(state),
-            hiddenContextPaths: selectors.UI.PageTree.getHidden(state),
-            intermediateContextPaths: selectors.UI.PageTree.getIntermediate(state),
-            loadingNodeContextPaths: selectors.UI.PageTree.getLoading(state),
-            errorNodeContextPaths: selectors.UI.PageTree.getErrors(state),
-            isNodeDirty: isDocumentNodeDirtySelector(state, $get('contextPath', node)),
-            canBeInsertedAlongside: canBeMovedAlongsideSelector(state, {
-                subject: getContextPath(currentlyDraggedNode),
+        return (state, {node, currentlyDraggedNodes}) => {
+            const canBeInsertedAlongside = currentlyDraggedNodes.every(draggedNodeContextPath => canBeMovedAlongsideSelector(state, {
+                subject: draggedNodeContextPath,
                 reference: getContextPath(node)
-            }),
-            canBeInsertedInto: canBeMovedIntoSelector(state, {
-                subject: getContextPath(currentlyDraggedNode),
+            }));
+            const canBeInsertedInto = currentlyDraggedNodes.every(draggedNodeContextPath => canBeMovedIntoSelector(state, {
+                subject: draggedNodeContextPath,
                 reference: getContextPath(node)
-            })
-        });
+            }));
+            return ({
+                isContentTreeNode: false,
+                rootNode: selectors.CR.Nodes.siteNodeSelector(state),
+                loadingDepth: neos.configuration.nodeTree.loadingDepth,
+                childNodes: childrenOfSelector(state, getContextPath(node)),
+                hasChildren: hasChildrenSelector(state, getContextPath(node)),
+                isActive: selectors.CR.Nodes.documentNodeContextPathSelector(state) === $get('contextPath', node),
+                isFocused: selectors.UI.PageTree.getAllFocused(state).includes($get('contextPath', node)),
+                toggledNodeContextPaths: selectors.UI.PageTree.getToggled(state),
+                hiddenContextPaths: selectors.UI.PageTree.getHidden(state),
+                intermediateContextPaths: selectors.UI.PageTree.getIntermediate(state),
+                loadingNodeContextPaths: selectors.UI.PageTree.getLoading(state),
+                errorNodeContextPaths: selectors.UI.PageTree.getErrors(state),
+                isNodeDirty: isDocumentNodeDirtySelector(state, $get('contextPath', node)),
+                canBeInsertedAlongside,
+                canBeInsertedInto
+            });
+        };
     }
 )(Node));
 
@@ -403,24 +409,28 @@ export const ContentTreeNode = withNodeTypeRegistryAndI18nRegistry(connect(
         const canBeMovedIntoSelector = selectors.CR.Nodes.makeCanBeMovedIntoSelector(nodeTypesRegistry);
         const isContentNodeDirtySelector = selectors.CR.Workspaces.makeIsContentNodeDirtySelector();
 
-        return (state, {node, currentlyDraggedNode}) => ({
-            isContentTreeNode: true,
-            rootNode: selectors.CR.Nodes.documentNodeSelector(state),
-            loadingDepth: neos.configuration.structureTree.loadingDepth,
-            childNodes: childrenOfSelector(state, getContextPath(node)),
-            hasChildren: hasChildrenSelector(state, getContextPath(node)),
-            isActive: selectors.CR.Nodes.documentNodeContextPathSelector(state) === $get('contextPath', node),
-            isFocused: selectors.CR.Nodes.focusedNodePathsSelector(state).includes($get('contextPath', node)),
-            toggledNodeContextPaths: selectors.UI.ContentTree.getToggled(state),
-            isNodeDirty: isContentNodeDirtySelector(state, $get('contextPath', node)),
-            canBeInsertedAlongside: canBeMovedAlongsideSelector(state, {
-                subject: getContextPath(currentlyDraggedNode),
+        return (state, {node, currentlyDraggedNodes}) => {
+            const canBeInsertedAlongside = currentlyDraggedNodes.every(draggedNodeContextPath => canBeMovedAlongsideSelector(state, {
+                subject: draggedNodeContextPath,
                 reference: getContextPath(node)
-            }),
-            canBeInsertedInto: canBeMovedIntoSelector(state, {
-                subject: getContextPath(currentlyDraggedNode),
+            }));
+            const canBeInsertedInto = currentlyDraggedNodes.every(draggedNodeContextPath => canBeMovedIntoSelector(state, {
+                subject: draggedNodeContextPath,
                 reference: getContextPath(node)
-            })
-        });
+            }));
+            return ({
+                isContentTreeNode: true,
+                rootNode: selectors.CR.Nodes.documentNodeSelector(state),
+                loadingDepth: neos.configuration.structureTree.loadingDepth,
+                childNodes: childrenOfSelector(state, getContextPath(node)),
+                hasChildren: hasChildrenSelector(state, getContextPath(node)),
+                isActive: selectors.CR.Nodes.documentNodeContextPathSelector(state) === $get('contextPath', node),
+                isFocused: selectors.CR.Nodes.focusedNodePathsSelector(state).includes($get('contextPath', node)),
+                toggledNodeContextPaths: selectors.UI.ContentTree.getToggled(state),
+                isNodeDirty: isContentNodeDirtySelector(state, $get('contextPath', node)),
+                canBeInsertedAlongside,
+                canBeInsertedInto
+            });
+        };
     }
 )(Node));

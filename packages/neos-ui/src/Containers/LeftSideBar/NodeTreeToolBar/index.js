@@ -221,6 +221,7 @@ const withNodeTypesRegistry = neos(globalRegistry => ({
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
 }));
 
+// TODO extract to selector
 const hasNestedNodes = focusedNodesContextPaths => {
     return !focusedNodesContextPaths.every(contextPathA => {
         const path = contextPathA.split('@')[0];

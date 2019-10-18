@@ -18,6 +18,15 @@ import moment from 'moment';
 
 const getContextPath = $get('contextPath');
 
+// TODO extract to selector
+const hasNestedNodes = focusedNodesContextPaths => {
+    return !focusedNodesContextPaths.every(contextPathA => {
+        const path = contextPathA.split('@')[0];
+        // TODO: adjust this for the new CR when this is merged: https://github.com/neos/neos-ui/pull/2178
+        return focusedNodesContextPaths.every(contextPathB => !(contextPathB.indexOf(path) === 0 && contextPathA !== contextPathB));
+    });
+};
+
 //
 // Finds the first parent element that has a scrollbar
 //
@@ -258,7 +267,6 @@ export default class Node extends PureComponent {
             nodeDndType,
             nodeTypeRole,
             childNodes,
-            dndDisabled,
             hasChildren,
             isLastChild,
             level,
@@ -268,7 +276,8 @@ export default class Node extends PureComponent {
             onNodeDrag,
             onNodeDrop,
             currentlyDraggedNodes,
-            isContentTreeNode
+            isContentTreeNode,
+            focusedNodesContextPaths
         } = this.props;
 
         if (this.isHidden()) {
@@ -282,6 +291,9 @@ export default class Node extends PureComponent {
         const labelIdentifier = (isContentTreeNode ? 'content-' : '') + 'treeitem-' + hashSum($get('contextPath', node)) + '-label';
 
         const labelTitle = decodeLabel($get('label', node)) + ' (' + this.getNodeTypeLabel() + ')';
+
+        // Autocreated or we have nested nodes and the node that we are dragging belongs to the selection
+        const dragForbidden = node.isAutoCreated || (hasNestedNodes(focusedNodesContextPaths) && focusedNodesContextPaths.includes(node.contextPath));
 
         return (
             <Tree.Node aria-expanded={this.isCollapsed() ? 'false' : 'true'} aria-labelledby={labelIdentifier}>
@@ -308,7 +320,7 @@ export default class Node extends PureComponent {
                     onToggle={this.handleNodeToggle}
                     onClick={this.handleNodeClick}
                     dragAndDropContext={this.getDragAndDropContext()}
-                    dragForbidden={$get('isAutoCreated', node) || dndDisabled}
+                    dragForbidden={dragForbidden}
                     title={labelTitle}
                     />
                 {this.isCollapsed() ? null : (
@@ -328,7 +340,6 @@ export default class Node extends PureComponent {
                                 currentlyDraggedNodes={currentlyDraggedNodes}
                                 isLastChild={index + 1 === childNodesCount}
                                 level={level + 1}
-                                dndDisabled={dndDisabled}
                                 />
                         )}
                     </Tree.Node.Contents>
@@ -377,6 +388,7 @@ export const PageTreeNode = withNodeTypeRegistryAndI18nRegistry(connect(
             }));
             return ({
                 isContentTreeNode: false,
+                focusedNodesContextPaths: selectors.UI.PageTree.getAllFocused(state),
                 rootNode: selectors.CR.Nodes.siteNodeSelector(state),
                 loadingDepth: neos.configuration.nodeTree.loadingDepth,
                 childNodes: childrenOfSelector(state, getContextPath(node)),
@@ -420,6 +432,7 @@ export const ContentTreeNode = withNodeTypeRegistryAndI18nRegistry(connect(
             }));
             return ({
                 isContentTreeNode: true,
+                focusedNodesContextPaths: selectors.UI.PageTree.getAllFocused(state),
                 rootNode: selectors.CR.Nodes.documentNodeSelector(state),
                 loadingDepth: neos.configuration.structureTree.loadingDepth,
                 childNodes: childrenOfSelector(state, getContextPath(node)),

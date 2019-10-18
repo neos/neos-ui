@@ -14,15 +14,6 @@ import {PageTreeNode, ContentTreeNode} from './Node/index';
 
 import style from './style.css';
 
-// TODO extract to selector
-const hasNestedNodes = focusedNodesContextPaths => {
-    return !focusedNodesContextPaths.every(contextPathA => {
-        const path = contextPathA.split('@')[0];
-        // TODO: adjust this for the new CR when this is merged: https://github.com/neos/neos-ui/pull/2178
-        return focusedNodesContextPaths.every(contextPathB => !(contextPathB.indexOf(path) === 0 && contextPathA !== contextPathB));
-    });
-};
-
 export default class NodeTree extends PureComponent {
     static propTypes = {
         ChildRenderer: PropTypes.func,
@@ -86,9 +77,12 @@ export default class NodeTree extends PureComponent {
         }
     }
 
-    handleDrag = () => {
+    handleDrag = node => {
         this.setState({
-            currentlyDraggedNodes: this.props.focusedNodesContextPaths
+            currentlyDraggedNodes:
+                this.props.focusedNodesContextPaths.includes(node.contextPath) ?
+                    this.props.focusedNodesContextPaths :
+                    [node.contextPath] // moving a node outside of focused nodes
         });
     }
 
@@ -132,7 +126,6 @@ export default class NodeTree extends PureComponent {
                     onNodeDrag={this.handleDrag}
                     onNodeDrop={this.handleDrop}
                     currentlyDraggedNodes={this.state.currentlyDraggedNodes}
-                    dndDisabled={hasNestedNodes(focusedNodesContextPaths)}
                     />
             </Tree>
         );

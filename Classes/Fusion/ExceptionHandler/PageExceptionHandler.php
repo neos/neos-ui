@@ -96,6 +96,10 @@ class PageExceptionHandler extends AbstractRenderingExceptionHandler
         $fluidView->setFormat('html');
         $fluidView->setTemplatePathAndFilename('resource://Neos.Neos.Ui/Private/Templates/Error/ErrorMessage.html');
 
+        $guestNotificationScript = new StandaloneView();
+        $guestNotificationScript->setTemplatePathAndFilename('resource://Neos.Neos.Ui/Private/Templates/Backend/GuestNotificationScript.html');
+        $fluidView->assign('guestNotificationScript', $guestNotificationScript->render());
+
         return $fluidView;
     }
 }

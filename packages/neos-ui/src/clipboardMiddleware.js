@@ -13,6 +13,8 @@ const clipboardMiddleware = ({getState}) => {
     const clipboardActionsPatterns = [
         '@neos/neos-ui/CR/Nodes/COPY',
         '@neos/neos-ui/CR/Nodes/CUT',
+        '@neos/neos-ui/CR/Nodes/COPY_MULTIPLE',
+        '@neos/neos-ui/CR/Nodes/CUT_MULTIPLE',
         '@neos/neos-ui/CR/Nodes/COMMIT_PASTE'
     ];
 
@@ -24,16 +26,17 @@ const clipboardMiddleware = ({getState}) => {
         if (serverActionMatched) {
             clearTimeout(timer);
             timer = setTimeout(() => {
-                const {copyNode, cutNode, clearClipboard} = backend.get().endpoints;
+                const {copyNodes, cutNodes, clearClipboard} = backend.get().endpoints;
                 const state = getState();
+                const contextPaths = $get('cr.nodes.clipboard', state);
                 if (action.type === '@neos/neos-ui/CR/Nodes/COMMIT_PASTE') {
                     if (action.payload === 'Move') {
                         clearClipboard();
                     }
                 } else if ($get('cr.nodes.clipboardMode', state) === 'Copy') {
-                    copyNode($get('cr.nodes.clipboard', state));
+                    copyNodes(contextPaths);
                 } else if ($get('cr.nodes.clipboardMode', state) === 'Move') {
-                    cutNode($get('cr.nodes.clipboard', state));
+                    cutNodes(contextPaths);
                 }
                 timer = null;
             }, debounceLocalStorageTimeout);

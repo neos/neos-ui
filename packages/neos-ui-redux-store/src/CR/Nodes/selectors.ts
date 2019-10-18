@@ -221,11 +221,13 @@ export const focusedGrandParentSelector = createSelector(
     }
 );
 
+export const clipboardNodesContextPathsSelector = (state: GlobalState) => $get(['cr', 'nodes', 'clipboard'], state);
+
 export const clipboardNodeContextPathSelector = createSelector(
     [
-        (state: GlobalState) => $get(['cr', 'nodes', 'clipboard'], state)
+        clipboardNodesContextPathsSelector
     ],
-    clipboardNodeContextPath => clipboardNodeContextPath
+    clipboardNodesContextPaths => Boolean(console.warn('This selector is deprecated, use "clipboardNodesContextPathsSelector" instead')) || (clipboardNodesContextPaths && clipboardNodesContextPaths[0])
 );
 
 export const clipboardIsEmptySelector = createSelector(

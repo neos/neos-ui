@@ -117,11 +117,11 @@ backend = Neos.Fusion:Template {
                 changeBaseWorkspace = Neos.Fusion:UriBuilder {
                     action = 'changeBaseWorkspace'
                 }
-                copyNode = Neos.Fusion:UriBuilder {
-                    action = 'copyNode'
+                copyNodes = Neos.Fusion:UriBuilder {
+                    action = 'copyNodes'
                 }
-                cutNode = Neos.Fusion:UriBuilder {
-                    action = 'cutNode'
+                cutNodes = Neos.Fusion:UriBuilder {
+                    action = 'cutNodes'
                 }
                 clearClipboard = Neos.Fusion:UriBuilder {
                     action = 'clearClipboard'

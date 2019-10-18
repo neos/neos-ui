@@ -28,7 +28,7 @@ export interface State extends Readonly<{
         contextPaths: NodeContextPath[];
     },
     toBeRemoved: NodeContextPath[];
-    clipboard: NodeContextPath | null;
+    clipboard: NodeContextPath[];
     clipboardMode: ClipboardMode | null;
     inlineValidationErrors: InlineValidationErrors
 }> {}
@@ -42,7 +42,7 @@ export const defaultState: State = {
         fusionPath: null
     },
     toBeRemoved: [],
-    clipboard: null,
+    clipboard: [],
     clipboardMode: null,
     inlineValidationErrors: {}
 };
@@ -73,7 +73,9 @@ export enum actionTypes {
     SET_STATE = '@neos/neos-ui/CR/Nodes/SET_STATE',
     RELOAD_STATE = '@neos/neos-ui/CR/Nodes/RELOAD_STATE',
     COPY = '@neos/neos-ui/CR/Nodes/COPY',
+    COPY_MULTIPLE = '@neos/neos-ui/CR/Nodes/COPY_MULTIPLE',
     CUT = '@neos/neos-ui/CR/Nodes/CUT',
+    CUT_MULTIPLE = '@neos/neos-ui/CR/Nodes/CUT_MULTIPLE',
     MOVE = '@neos/neos-ui/CR/Nodes/MOVE',
     PASTE = '@neos/neos-ui/CR/Nodes/PASTE',
     COMMIT_PASTE = '@neos/neos-ui/CR/Nodes/COMMIT_PASTE',
@@ -226,12 +228,16 @@ const adoptDataToHost = <T>(object: T): T => JSON.parse(JSON.stringify(object));
  */
 const copy = (contextPath: NodeContextPath) => createAction(actionTypes.COPY, contextPath);
 
+const copyMultiple = (contextPaths: NodeContextPath[]) => createAction(actionTypes.COPY_MULTIPLE, contextPaths);
+
 /**
  * Mark a node for cut on paste
  *
  * @param {String} contextPath The context path of the node to be cut
  */
 const cut = (contextPath: NodeContextPath) => createAction(actionTypes.CUT, contextPath);
+
+const cutMultiple = (contextPaths: NodeContextPath[]) => createAction(actionTypes.CUT_MULTIPLE, contextPaths);
 
 /**
  * Move a node
@@ -306,7 +312,9 @@ export const actions = {
     setState,
     reloadState,
     copy,
+    copyMultiple,
     cut,
+    cutMultiple,
     move,
     paste,
     commitPaste,
@@ -483,18 +491,28 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
             break;
         }
         case actionTypes.COPY: {
+            draft.clipboard = [action.payload];
+            draft.clipboardMode = ClipboardMode.COPY;
+            break;
+        }
+        case actionTypes.COPY_MULTIPLE: {
             draft.clipboard = action.payload;
             draft.clipboardMode = ClipboardMode.COPY;
             break;
         }
         case actionTypes.CUT: {
+            draft.clipboard = [action.payload];
+            draft.clipboardMode = ClipboardMode.MOVE;
+            break;
+        }
+        case actionTypes.CUT_MULTIPLE: {
             draft.clipboard = action.payload;
             draft.clipboardMode = ClipboardMode.MOVE;
             break;
         }
         case actionTypes.COMMIT_PASTE: {
             if (action.payload === ClipboardMode.MOVE) {
-                draft.clipboard = null;
+                draft.clipboard = [];
                 draft.clipboardMode = null;
             }
             break;

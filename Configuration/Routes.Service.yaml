@@ -31,19 +31,19 @@
   httpMethods: ['POST']
 
 -
-  name: 'Copy node to clipboard'
-  uriPattern: 'copy-node'
+  name: 'Copy nodes to clipboard'
+  uriPattern: 'copy-nodes'
   defaults:
     '@controller': 'BackendService'
-    '@action': 'copyNode'
+    '@action': 'copyNodes'
   httpMethods: ['POST']
 
 -
-  name: 'Cut node to clipboard'
-  uriPattern: 'cut-node'
+  name: 'Cut nodes to clipboard'
+  uriPattern: 'cut-nodes'
   defaults:
     '@controller': 'BackendService'
-    '@action': 'cutNode'
+    '@action': 'cutNodes'
   httpMethods: ['POST']
 
 -

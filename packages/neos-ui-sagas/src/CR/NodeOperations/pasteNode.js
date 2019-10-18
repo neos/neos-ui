@@ -12,12 +12,19 @@ export default function * pasteNode({globalRegistry}) {
     const canBeInsertedIntoSelector = selectors.CR.Nodes.makeCanBeCopiedIntoSelector(nodeTypesRegistry);
 
     yield takeEvery(actionTypes.CR.Nodes.PASTE, function * waitForPaste(action) {
-        const subject = yield select($get('cr.nodes.clipboard'));
+        const subject = yield select(selectors.CR.Nodes.clipboardNodesContextPathsSelector);
         const clipboardMode = yield select($get('cr.nodes.clipboardMode'));
 
         const {contextPath: reference, fusionPath} = action.payload;
-        const canBeInsertedAlongside = yield select(canBeInsertedAlongsideSelector, {subject, reference});
-        const canBeInsertedInto = yield select(canBeInsertedIntoSelector, {subject, reference});
+        const state = yield select();
+        const canBeInsertedAlongside = subject.every(contextPath => {
+            const result = canBeInsertedAlongsideSelector(state, {subject: contextPath, reference});
+            return result;
+        });
+        const canBeInsertedInto = subject.every(contextPath => {
+            const result = canBeInsertedIntoSelector(state, {subject: contextPath, reference});
+            return result;
+        });
 
         const mode = yield call(
             determineInsertMode,
@@ -30,11 +37,12 @@ export default function * pasteNode({globalRegistry}) {
 
         if (mode) {
             yield put(actions.CR.Nodes.commitPaste(clipboardMode));
-            yield put(actions.Changes.persistChanges([{
+            const changes = subject.map(contextPath => ({
                 type: calculateChangeTypeFromMode(mode, clipboardMode),
-                subject,
+                subject: contextPath,
                 payload: calculateDomAddressesFromMode(mode, reference, fusionPath)
-            }]));
+            }));
+            yield put(actions.Changes.persistChanges(changes));
         }
     });
 }

@@ -126,7 +126,7 @@ Neos:
             byContextPath: '${Neos.Ui.NodeInfo.defaultNodesForBackend(site, documentNode, controllerContext)}'
             siteNode: '${q(site).property(''_contextPath'')}'
             documentNode: '${q(documentNode).property(''_contextPath'')}'
-            clipboard: '${clipboardNode || null}'
+            clipboard: '${clipboardNodes || []}'
             clipboardMode: '${clipboardMode || null}'
           contentDimensions:
             byName: '${Neos.Ui.ContentDimensions.contentDimensionsByName()}'
@@ -156,7 +156,7 @@ Neos:
           pageTree:
             isLoading: false
             hasError: false
-            focused: '${q(documentNode).property(''_contextPath'')}'
+            focused: '${[q(documentNode).property(''_contextPath'')]}'
             active: '${q(documentNode).property(''_contextPath'')}'
           remote:
             isSaving: false

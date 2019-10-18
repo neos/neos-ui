@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {$get, $contains} from 'plow-js';
 
+import {isEqualSet} from '@neos-project/utils-helpers';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 
@@ -41,8 +42,8 @@ export default class NodeTreeToolBar extends PureComponent {
         treeType: PropTypes.string.isRequired,
 
         addNode: PropTypes.func.isRequired,
-        copyNode: PropTypes.func.isRequired,
-        cutNode: PropTypes.func.isRequired,
+        copyNodes: PropTypes.func.isRequired,
+        cutNodes: PropTypes.func.isRequired,
         deleteNodes: PropTypes.func.isRequired,
         hideNode: PropTypes.func.isRequired,
         showNode: PropTypes.func.isRequired,
@@ -62,31 +63,31 @@ export default class NodeTreeToolBar extends PureComponent {
     }
 
     handleHideNode = () => {
-        const {hideMultipleNodes, canBeEdited, visibilityCanBeToggled, focusedNodesContextPaths} = this.props;
+        const {hideNodes, canBeEdited, visibilityCanBeToggled, focusedNodesContextPaths} = this.props;
         if (canBeEdited && visibilityCanBeToggled) {
-            hideMultipleNodes(focusedNodesContextPaths);
+            hideNodes(focusedNodesContextPaths);
         }
     }
 
     handleShowNode = () => {
-        const {showMultipleNodes, canBeEdited, visibilityCanBeToggled, focusedNodesContextPaths} = this.props;
+        const {showNodes, canBeEdited, visibilityCanBeToggled, focusedNodesContextPaths} = this.props;
 
         if (canBeEdited && visibilityCanBeToggled) {
-            showMultipleNodes(focusedNodesContextPaths);
+            showNodes(focusedNodesContextPaths);
         }
     }
 
-    handleCopyNode = contextPath => {
-        const {copyNode} = this.props;
+    handleCopyNodes = () => {
+        const {copyNodes, focusedNodesContextPaths} = this.props;
 
-        copyNode(contextPath);
+        copyNodes(focusedNodesContextPaths);
     }
 
-    handleCutNode = contextPath => {
-        const {cutNode, canBeEdited} = this.props;
+    handleCutNodes = () => {
+        const {cutNodes, canBeEdited, focusedNodesContextPaths} = this.props;
 
         if (canBeEdited) {
-            cutNode(contextPath);
+            cutNodes(focusedNodesContextPaths);
         }
     }
 
@@ -171,7 +172,7 @@ export default class NodeTreeToolBar extends PureComponent {
                             i18nRegistry={i18nRegistry}
                             className={style.toolBar__btnGroup__btn}
                             focusedNodeContextPath={focusedNodeContextPath}
-                            onClick={this.handleCopyNode}
+                            onClick={this.handleCopyNodes}
                             isActive={isCopied}
                             disabled={destructiveOperationsAreDisabled || !canBeEdited}
                             id={`neos-${treeType}-CopySelectedNode`}
@@ -182,7 +183,7 @@ export default class NodeTreeToolBar extends PureComponent {
                             focusedNodeContextPath={focusedNodeContextPath}
                             isActive={isCut}
                             disabled={destructiveOperationsAreDisabled || !canBeEdited}
-                            onClick={this.handleCutNode}
+                            onClick={this.handleCutNodes}
                             id={`neos-${treeType}-CutSelectedNode`}
                             />
                         <PasteClipBoardNode
@@ -221,10 +222,10 @@ const withNodeTypesRegistry = neos(globalRegistry => ({
 }));
 
 const hasNestedNodes = focusedNodesContextPaths => {
-    return focusedNodesContextPaths.every(contextPathA => {
+    return !focusedNodesContextPaths.every(contextPathA => {
         const path = contextPathA.split('@')[0];
         // TODO: adjust this for the new CR when this is merged: https://github.com/neos/neos-ui/pull/2178
-        return focusedNodesContextPaths.every(contextPathB => !(contextPathB.indexOf(path) === 0 && contextPathA != contextPathB));
+        return focusedNodesContextPaths.every(contextPathB => !(contextPathB.indexOf(path) === 0 && contextPathA !== contextPathB));
     });
 };
 
@@ -244,129 +245,91 @@ const editingAllowed = (focusedNodesContextPaths, state) => focusedNodesContextP
     return !$contains('_hidden', 'policy.disallowedProperties', focusedNode);
 });
 
-export const PageTreeToolbar = withNodeTypesRegistry(connect(
-    (state, {nodeTypesRegistry}) => {
-        const canBePastedSelector = selectors.CR.Nodes.makeCanBePastedSelector(nodeTypesRegistry);
-        const isAllowedToAddChildOrSiblingNodesSelector = selectors.CR.Nodes.makeIsAllowedToAddChildOrSiblingNodes(nodeTypesRegistry);
+const makeMapStateToProps = isDocument => (state, {nodeTypesRegistry}) => {
+    const canBePastedSelector = selectors.CR.Nodes.makeCanBePastedSelector(nodeTypesRegistry);
+    const isAllowedToAddChildOrSiblingNodesSelector = selectors.CR.Nodes.makeIsAllowedToAddChildOrSiblingNodes(nodeTypesRegistry);
 
-        return state => {
-            const focusedNodeContextPath = selectors.UI.PageTree.getFocused(state);
-            const focusedNodesContextPaths = selectors.UI.PageTree.getAllFocused(state);
-            const getNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(focusedNodeContextPath);
-            const focusedNode = getNodeByContextPathSelector(state);
-            const clipboardNodeContextPath = selectors.CR.Nodes.clipboardNodeContextPathSelector(state);
-            const canBePasted = canBePastedSelector(state, {
+    return state => {
+        const focusedNodeContextPath = isDocument ? selectors.UI.PageTree.getFocused(state) : selectors.CR.Nodes.focusedNodePathSelector(state);
+        const focusedNodesContextPaths = isDocument ? selectors.UI.PageTree.getAllFocused(state) : selectors.CR.Nodes.focusedNodePathsSelector(state);
+
+        const getNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(focusedNodeContextPath);
+        const focusedNode = getNodeByContextPathSelector(state);
+        const clipboardNodesContextPaths = selectors.CR.Nodes.clipboardNodesContextPathsSelector(state);
+        const canBePasted = clipboardNodesContextPaths.every(clipboardNodeContextPath => {
+            return canBePastedSelector(state, {
                 subject: clipboardNodeContextPath,
                 reference: focusedNodeContextPath
             });
+        });
 
-            const selectionHasNestedNodes = hasNestedNodes(focusedNodesContextPaths);
+        const selectionHasNestedNodes = hasNestedNodes(focusedNodesContextPaths);
 
-            const canBeDeleted = (removeAllowed(focusedNodesContextPaths, state) && !selectionHasNestedNodes) || false;
-            const visibilityCanBeToggled = visibilityToggleAllowed(focusedNodesContextPaths, state);
-            const canBeEdited = editingAllowed(focusedNodesContextPaths, state);
+        const canBeDeleted = (removeAllowed(focusedNodesContextPaths, state) && !selectionHasNestedNodes) || false;
+        const visibilityCanBeToggled = visibilityToggleAllowed(focusedNodesContextPaths, state);
+        const canBeEdited = editingAllowed(focusedNodesContextPaths, state);
 
-            const clipboardMode = $get('cr.nodes.clipboardMode', state);
-            const isCut = focusedNodeContextPath === clipboardNodeContextPath && clipboardMode === 'Move';
-            const isCopied = focusedNodeContextPath === clipboardNodeContextPath && clipboardMode === 'Copy';
-            const isLoading = selectors.UI.PageTree.getIsLoading(state);
-            const isHidden = $get('properties._hidden', focusedNode);
-            const destructiveOperationsAreDisabled = selectors.UI.PageTree.destructiveOperationsAreDisabledForPageTreeSelector(state)
-            const isAllowedToAddChildOrSiblingNodes = isAllowedToAddChildOrSiblingNodesSelector(state, {
-                reference: focusedNodeContextPath
-            });
+        const clipboardMode = $get('cr.nodes.clipboardMode', state);
+        const allFocusedNodesAreInClipboard = isEqualSet(focusedNodesContextPaths, clipboardNodesContextPaths);
+        const isCut = allFocusedNodesAreInClipboard && clipboardMode === 'Move';
+        const isCopied = allFocusedNodesAreInClipboard && clipboardMode === 'Copy';
 
-            return {
-                focusedNodeContextPath,
-                focusedNodesContextPaths,
-                canBePasted,
-                canBeDeleted,
-                canBeEdited,
-                visibilityCanBeToggled,
-                isLoading,
-                isHidden,
-                destructiveOperationsAreDisabled,
-                isAllowedToAddChildOrSiblingNodes,
-                isCut,
-                isCopied,
-                treeType: 'PageTree'
-            };
+        const isHidden = $get('properties._hidden', focusedNode);
+
+        const isAllowedToAddChildOrSiblingNodes = isAllowedToAddChildOrSiblingNodesSelector(state, {
+            reference: focusedNodeContextPath
+        });
+
+        const destructiveOperationsAreDisabled = (
+            isDocument ?
+            selectors.UI.PageTree.destructiveOperationsAreDisabledForPageTreeSelector(state) :
+            selectors.CR.Nodes.destructiveOperationsAreDisabledForContentTreeSelector(state)
+        ) || selectionHasNestedNodes;
+        const isLoading = isDocument ? selectors.UI.PageTree.getIsLoading(state) : selectors.UI.ContentTree.getIsLoading(state);
+
+        return {
+            focusedNodeContextPath,
+            focusedNodesContextPaths,
+            canBePasted,
+            canBeDeleted,
+            canBeEdited,
+            visibilityCanBeToggled,
+            isLoading,
+            isHidden,
+            destructiveOperationsAreDisabled,
+            isAllowedToAddChildOrSiblingNodes,
+            isCut,
+            isCopied,
+            treeType: isDocument ? 'PageTree' : 'ContentTree'
         };
-    }, {
+    };
+}
+
+export const PageTreeToolbar = withNodeTypesRegistry(connect(
+    makeMapStateToProps(true), {
         addNode: actions.CR.Nodes.commenceCreation,
-        copyNode: actions.CR.Nodes.copy,
-        cutNode: actions.CR.Nodes.cut,
+        copyNodes: actions.CR.Nodes.copyMultiple,
+        cutNodes: actions.CR.Nodes.cutMultiple,
         deleteNodes: actions.CR.Nodes.commenceRemovalMultiple,
         hideNode: actions.CR.Nodes.hide,
-        hideMultipleNodes: actions.CR.Nodes.hideMultiple,
+        hideNodes: actions.CR.Nodes.hideMultiple,
         showNode: actions.CR.Nodes.show,
-        showMultipleNodes: actions.CR.Nodes.showMultiple,
+        showNodes: actions.CR.Nodes.showMultiple,
         pasteNode: actions.CR.Nodes.paste,
         reloadTree: actions.CR.Nodes.reloadState
     }
 )(NodeTreeToolBar));
 
 export const ContentTreeToolbar = withNodeTypesRegistry(connect(
-    (state, {nodeTypesRegistry}) => {
-        const canBePastedSelector = selectors.CR.Nodes.makeCanBePastedSelector(nodeTypesRegistry);
-        const isAllowedToAddChildOrSiblingNodesSelector = selectors.CR.Nodes.makeIsAllowedToAddChildOrSiblingNodes(nodeTypesRegistry);
-
-        return state => {
-            const focusedNodeContextPath = selectors.CR.Nodes.focusedNodePathSelector(state);
-            const focusedNodesContextPaths = selectors.CR.Nodes.focusedNodePathsSelector(state);
-            const getNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(focusedNodeContextPath);
-            const focusedNode = getNodeByContextPathSelector(state);
-            const clipboardNodeContextPath = selectors.CR.Nodes.clipboardNodeContextPathSelector(state);
-            const canBePasted = canBePastedSelector(state, {
-                subject: clipboardNodeContextPath,
-                reference: focusedNodeContextPath
-            });
-
-            const selectionHasNestedNodes = hasNestedNodes(focusedNodesContextPaths);
-
-            const canBeDeleted = (removeAllowed(focusedNodesContextPaths, state) && !selectionHasNestedNodes) || false;
-            const visibilityCanBeToggled = visibilityToggleAllowed(focusedNodesContextPaths, state);
-            const canBeEdited = editingAllowed(focusedNodesContextPaths, state);
-
-            const clipboardMode = $get('cr.nodes.clipboardMode', state);
-            const isCut = focusedNodeContextPath === clipboardNodeContextPath && clipboardMode === 'Move';
-            const isCopied = focusedNodeContextPath === clipboardNodeContextPath && clipboardMode === 'Copy';
-            const isLoading = selectors.UI.ContentTree.getIsLoading(state);
-            const isHidden = $get('properties._hidden', focusedNode);
-            const destructiveOperationsAreDisabled = selectors.CR.Nodes.destructiveOperationsAreDisabledForContentTreeSelector(state);
-
-            const isAllowedToAddChildOrSiblingNodes = isAllowedToAddChildOrSiblingNodesSelector(state, {
-                reference: focusedNodeContextPath
-            });
-            const isHiddenContentTree = $get('ui.leftSideBar.contentTree.isHidden', state);
-
-            return {
-                focusedNodeContextPath,
-                focusedNodesContextPaths,
-                displayToggleContentTreeButton: true,
-                canBePasted,
-                canBeDeleted,
-                canBeEdited,
-                visibilityCanBeToggled,
-                isLoading,
-                isHidden,
-                destructiveOperationsAreDisabled,
-                isAllowedToAddChildOrSiblingNodes,
-                isCut,
-                isCopied,
-                isHiddenContentTree,
-                treeType: 'ContentTree'
-            };
-        };
-    }, {
+    makeMapStateToProps(false), {
         addNode: actions.CR.Nodes.commenceCreation,
-        copyNode: actions.CR.Nodes.copy,
-        cutNode: actions.CR.Nodes.cut,
+        copyNodes: actions.CR.Nodes.copyMultiple,
+        cutNodes: actions.CR.Nodes.cutMultiple,
         deleteNodes: actions.CR.Nodes.commenceRemovalMultiple,
         hideNode: actions.CR.Nodes.hide,
-        hideMultipleNodes: actions.CR.Nodes.hideMultiple,
+        hideNodes: actions.CR.Nodes.hideMultiple,
         showNode: actions.CR.Nodes.show,
-        showMultipleNodes: actions.CR.Nodes.showMultiple,
+        showNodes: actions.CR.Nodes.showMultiple,
         pasteNode: actions.CR.Nodes.paste,
         reloadTree: actions.UI.ContentTree.reloadTree,
         toggleContentTree: actions.UI.LeftSideBar.toggleContentTree

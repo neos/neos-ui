@@ -451,14 +451,43 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
             draft.focused.fusionPath = fusionPath;
             if (selectionMode === SelectionModeTypes.SINGLE_SELECT) {
                 draft.focused.contextPaths = [contextPath]
-            } else {
-                const contextPaths = new Set(draft.focused.contextPaths);
-                if (contextPaths.has(contextPath)) {
-                    contextPaths.delete(contextPath)
-                } else {
-                    contextPaths.add(contextPath)
+            } else if (selectionMode === SelectionModeTypes.RANGE_SELECT) {
+                const focusedNodesContextPaths = draft.focused.contextPaths;
+                const lastSelectedNodeContextPath = focusedNodesContextPaths[focusedNodesContextPaths.length - 1];
+                const maybeParentNodeContextPath = parentNodeContextPath(lastSelectedNodeContextPath);
+                if (maybeParentNodeContextPath) {
+                    const focusedNodesContextPaths = new Set(draft.focused.contextPaths);
+                    const parentNode = getNodeOrThrow(draft.byContextPath, maybeParentNodeContextPath);
+                    const tempSelection: string[] = [];
+                    let startSelectionFlag = false;
+                    // if both start and end nodes are within children, then we can do range select
+                    const startAndEndOfSelectionAreOnOneLevel = parentNode.children.some(child => {
+                        if (child.contextPath === lastSelectedNodeContextPath || child.contextPath === contextPath) {
+                            if (startSelectionFlag) { // if matches for the second time it means that both start and end of selection were found
+                                tempSelection.push(child.contextPath); // also push the last node
+                                return true;
+                            } else {
+                                startSelectionFlag = true;
+                            }
+                        }
+                        if (startSelectionFlag) {
+                            tempSelection.push(child.contextPath);
+                        }
+                        return false;
+                    });
+                    if (startAndEndOfSelectionAreOnOneLevel) {
+                        tempSelection.forEach(contextPath => focusedNodesContextPaths.add(contextPath));
+                        draft.focused.contextPaths = [...focusedNodesContextPaths];
+                    }
                 }
-                draft.focused.contextPaths = [...contextPaths]
+            } else {
+                const focusedNodesContextPaths = new Set(draft.focused.contextPaths);
+                if (focusedNodesContextPaths.has(contextPath)) {
+                    focusedNodesContextPaths.delete(contextPath)
+                } else {
+                    focusedNodesContextPaths.add(contextPath)
+                }
+                draft.focused.contextPaths = [...focusedNodesContextPaths]
             }
             break;
         }

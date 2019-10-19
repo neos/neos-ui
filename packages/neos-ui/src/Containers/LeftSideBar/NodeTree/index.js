@@ -40,24 +40,25 @@ export default class NodeTree extends PureComponent {
         toggle(contextPath);
     }
 
-    handleFocus = (contextPath, metaKeyPressed, altKeyPressed) => {
+    handleFocus = (contextPath, metaKeyPressed, altKeyPressed, shiftKeyPressed) => {
         const {focus} = this.props;
 
         if (altKeyPressed) {
             return;
         }
+        const selectionMode = shiftKeyPressed ? SelectionModeTypes.RANGE_SELECT : (metaKeyPressed ? SelectionModeTypes.MULTIPLE_SELECT : SelectionModeTypes.SINGLE_SELECT);
 
-        focus(contextPath, undefined, metaKeyPressed ? SelectionModeTypes.MULTIPLE_SELECT : SelectionModeTypes.SINGLE_SELECT);
+        focus(contextPath, undefined, selectionMode);
     }
 
-    handleClick = (src, contextPath, metaKeyPressed, altKeyPressed) => {
+    handleClick = (src, contextPath, metaKeyPressed, altKeyPressed, shiftKeyPressed) => {
         const {setActiveContentCanvasSrc, setActiveContentCanvasContextPath, requestScrollIntoView, reload, contentCanvasSrc} = this.props;
         if (altKeyPressed) {
             window.open(window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port : '') + window.location.pathname + '?node=' + contextPath);
             return;
         }
 
-        if (metaKeyPressed) {
+        if (metaKeyPressed || shiftKeyPressed) {
             return;
         }
 
@@ -100,7 +101,7 @@ export default class NodeTree extends PureComponent {
     }
 
     render() {
-        const {rootNode, ChildRenderer, focusedNodesContextPaths} = this.props;
+        const {rootNode, ChildRenderer} = this.props;
         if (!rootNode) {
             return (
                 <div className={style.loader}>

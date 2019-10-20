@@ -93,6 +93,10 @@ export default class Inspector extends PureComponent {
         }
     }
 
+    componentDidUpdate() {
+        this.preprocessViewConfigurationDebounced();
+    }
+
     componentWillUnmount() {
         // Abort any debounced calls
         this.preprocessViewConfigurationDebounced.cancel();
@@ -241,7 +245,6 @@ export default class Inspector extends PureComponent {
             return this.renderFallback();
         }
 
-        this.preprocessViewConfigurationDebounced();
         const {viewConfiguration} = this;
 
         if (!$get('tabs', viewConfiguration)) {

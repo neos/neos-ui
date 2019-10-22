@@ -181,7 +181,7 @@ class BackendController extends ActionController
     {
         $this->response->getHeaders()->setCacheControlDirective('no-cache');
         $this->response->getHeaders()->setCacheControlDirective('no-store');
-        $this->redirect('show', 'Frontend\Node', 'Neos.Neos', ['node' => $node]);
+        $this->redirect('show', 'Frontend\Node', 'Neos.Neos', ['node' => $node, 'showInvisible' => true]);
     }
 
     /**

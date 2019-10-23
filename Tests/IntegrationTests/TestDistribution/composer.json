@@ -1,6 +1,6 @@
 {
     "name": "neos/test-distribution",
-    "description": "Neos test distribution",
+    "description": "Neos test distribution. Change this number if you need to break CircleCI's cache: 3",
     "config": {
         "vendor-dir": "Packages/Libraries",
         "bin-dir": "bin"

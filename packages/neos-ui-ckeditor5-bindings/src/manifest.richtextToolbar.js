@@ -159,7 +159,7 @@ export default ckEditorRegistry => {
         }],
         label: 'Paragraph',
         isVisible: $get('formatting.p'),
-        isActive: formattingUnderCursor => $get('heading', formattingUnderCursor) === false
+        isActive: formattingUnderCursor => !$get('heading', formattingUnderCursor)
     });
 
     // H1

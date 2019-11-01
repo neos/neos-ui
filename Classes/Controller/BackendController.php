@@ -171,7 +171,10 @@ class BackendController extends ActionController
      */
     protected function initializeRedirectToAction()
     {
-        $this->arguments->getArgument('node')->getPropertyMappingConfiguration()->setTypeConverterOption(NodeConverter::class, NodeConverter::INVISIBLE_CONTENT_SHOWN, true);
+        // use this constant only if available (became available with patch level releases in Neos 4.0 and up)
+        if (defined(NodeConverter::class . '::INVISIBLE_CONTENT_SHOWN')) {
+            $this->arguments->getArgument('node')->getPropertyMappingConfiguration()->setTypeConverterOption(NodeConverter::class, NodeConverter::INVISIBLE_CONTENT_SHOWN, true);
+        }
     }
 
     /**

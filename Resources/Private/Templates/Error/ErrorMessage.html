@@ -4,8 +4,9 @@
     <meta charset="utf-8">
     <title>Neos Error</title>
     <link rel="stylesheet" href="{f:uri.resource(path: 'Styles/Error.css', package: 'Neos.Neos')}"/>
+    {guestNotificationScript -> f:format.raw()}
 </head>
 <body class="neos">
-    <div class="neos-error-screen">{message -> f:format.raw()}</div>
+    <div id="neos-new-backend-container" class="neos-error-screen">{message -> f:format.raw()}</div>
 </body>
 </html>

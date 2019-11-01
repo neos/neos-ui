@@ -10,14 +10,18 @@ fixture`Inspector`
 
 test('Can edit the page title via inspector', async t => {
     const InspectorTitleProperty = Selector('#__neos__editor__property---title');
+    const InspectorUriPathSegmentProperty = Selector('#__neos__editor__property---uriPathSegment');
     await Page.waitForIframeLoading(t);
 
     subSection('Rename home page via inspector');
     await t
         .expect(InspectorTitleProperty.value).eql('Home')
+        .expect(InspectorUriPathSegmentProperty.value).eql('home')
         .click(InspectorTitleProperty)
-        .typeText(InspectorTitleProperty, '-1')
-        .expect(InspectorTitleProperty.value).eql('Home-1')
+        .typeText(InspectorTitleProperty, '-привет!')
+        .expect(InspectorTitleProperty.value).eql('Home-привет!')
+        .expect(InspectorUriPathSegmentProperty.value).eql('home-privet')
+        .click(Selector('#neos-UriPathSegmentEditor-sync'))
         .click(Selector('#neos-Inspector-Discard'))
         .expect(InspectorTitleProperty.value).eql('Home')
         .typeText(InspectorTitleProperty, '-1')

@@ -72,6 +72,7 @@ export default class UriPathSegment extends PureComponent {
                 </div>
                 <div style={{flexGrow: 0}}>
                     <IconButton
+                        id="neos-UriPathSegmentEditor-sync"
                         size="regular"
                         icon="sync"
                         onClick={() => commit(slug)}

@@ -10,6 +10,13 @@
             editor: 'Neos.Neos/Inspector/Editors/TextFieldEditor'
           validation:
             'Neos.Neos/Validation/NotEmptyValidator': []
+  properties:
+    uriPathSegment:
+      ui:
+        inspector:
+          editor: "Neos.Neos/Inspector/Editors/UriPathSegmentEditor"
+          editorOptions:
+            title: "ClientEval:node.properties.title"
   options:
     nodeCreationHandlers:
       documentTitle:

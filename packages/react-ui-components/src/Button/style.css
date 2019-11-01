@@ -43,6 +43,10 @@
 .btn--lighter i {
     background-color: var(--colors-ContrastDark);
 }
+.btn--neutral,
+.btn--neutral i {
+    background-color: var(--colors-ContrastNeutral);
+}
 .btn--transparent {
     background: 0;
 }

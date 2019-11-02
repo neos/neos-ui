@@ -73,17 +73,25 @@ export default class Inspector extends PureComponent {
 
     state = {
         secondaryInspectorComponent: null,
-        toggledPanels: {}
+        toggledPanels: {},
+        viewConfiguration: null,
+        originalViewConfiguration: null
     };
 
     constructor(props) {
         super(props);
-        this.cloneViewConfiguration(props);
+        if (props.focusedNode) {
+            this.state.viewConfiguration = props.nodeTypesRegistry.getInspectorViewConfigurationFor($get('nodeType', props.focusedNode));
+            this.state.originalViewConfiguration = {...this.state.viewConfiguration};
+        }
     }
 
     componentWillReceiveProps(newProps) {
         if (newProps.focusedNode !== this.props.focusedNode) {
-            this.cloneViewConfiguration(newProps);
+            this.setState(prevState => ({
+                viewConfiguration: newProps.nodeTypesRegistry.getInspectorViewConfigurationFor($get('nodeType', newProps.focusedNode)),
+                originalViewConfiguration: {...prevState.viewConfiguration}
+            }));
         }
         if (!newProps.shouldShowSecondaryInspector) {
             this.setState({
@@ -103,25 +111,15 @@ export default class Inspector extends PureComponent {
     }
 
     //
-    // Fetch viewConfiguration and clone it once the focusedNode changes
-    //
-    cloneViewConfiguration = props => {
-        if (props.focusedNode) {
-            this.viewConfiguration = props.nodeTypesRegistry.getInspectorViewConfigurationFor($get('nodeType', props.focusedNode));
-            this.originalViewConfiguration = this.viewConfiguration;
-        }
-    };
-
-    //
     // Update viewConfiguration, while keeping originalViewConfiguration to read original property values from it
     //
     preprocessViewConfiguration = (context = {}, path = []) => {
-        const currentLevel = path.length === 0 ? this.viewConfiguration : $get(path, this.viewConfiguration);
+        const currentLevel = path.length === 0 ? this.state.viewConfiguration : $get(path, this.state.viewConfiguration);
         Object.keys(currentLevel).forEach(propertyName => {
             const propertyValue = currentLevel[propertyName];
             const newPath = path.slice();
             newPath.push(propertyName);
-            const originalPropertyValue = $get(newPath, this.originalViewConfiguration);
+            const originalPropertyValue = $get(newPath, this.state.originalViewConfiguration);
 
             if (propertyValue !== null && typeof propertyValue === 'object') {
                 this.preprocessViewConfiguration(context, newPath);
@@ -129,10 +127,11 @@ export default class Inspector extends PureComponent {
                 const {node} = context; // eslint-disable-line
                 const evaluatedValue = eval(originalPropertyValue.replace('ClientEval:', '')); // eslint-disable-line
                 if (evaluatedValue !== propertyValue) {
-                    this.configurationIsProcessed = true;
-                    this.viewConfiguration = produce(this.viewConfiguration, draft => {
-                        setIn(draft, newPath, evaluatedValue);
-                    });
+                    this.setState(prevState => ({
+                        viewConfiguration: produce(prevState.viewConfiguration, draft => {
+                            setIn(draft, newPath, evaluatedValue);
+                        })
+                    }));
                 }
             }
         });
@@ -149,12 +148,7 @@ export default class Inspector extends PureComponent {
             });
         }
 
-        // Eval the view configuration and re-render if the configuration has changed
-        this.configurationIsProcessed = false;
         this.preprocessViewConfiguration({node: nodeForContext});
-        if (this.configurationIsProcessed) {
-            this.forceUpdate();
-        }
     }, 250, {leading: true});
 
     handleCloseSecondaryInspector = () => {
@@ -245,9 +239,7 @@ export default class Inspector extends PureComponent {
             return this.renderFallback();
         }
 
-        const {viewConfiguration} = this;
-
-        if (!$get('tabs', viewConfiguration)) {
+        if (!$get('tabs', this.state.viewConfiguration)) {
             return this.renderFallback();
         }
 
@@ -267,7 +259,7 @@ export default class Inspector extends PureComponent {
                         tabs__content: style.tabsContent // eslint-disable-line camelcase
                     }}
                     >
-                    {$get('tabs', viewConfiguration)
+                    {$get('tabs', this.state.viewConfiguration)
                         //
                         // Only display tabs, that have groups and these groups have properties
                         //

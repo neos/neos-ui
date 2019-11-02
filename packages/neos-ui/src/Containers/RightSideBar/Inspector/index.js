@@ -91,7 +91,9 @@ export default class Inspector extends PureComponent {
             this.setState(prevState => ({
                 viewConfiguration: newProps.nodeTypesRegistry.getInspectorViewConfigurationFor($get('nodeType', newProps.focusedNode)),
                 originalViewConfiguration: {...prevState.viewConfiguration}
-            }));
+            },
+            () => this.preprocessViewConfigurationDebounced()
+            ));
         }
         if (!newProps.shouldShowSecondaryInspector) {
             this.setState({

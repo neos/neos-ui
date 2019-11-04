@@ -120,12 +120,14 @@ export default class Inspector extends PureComponent {
     // Update viewConfiguration, while keeping originalViewConfiguration to read original property values from it
     //
     preprocessViewConfiguration = (context = {}, path = []) => {
-        const currentLevel = path.length === 0 ? this.state.viewConfiguration : $get(path, this.state.viewConfiguration);
+        const viewConfiguration = {...this.state.viewConfiguration};
+        const originalViewConfiguration = {...this.state.originalViewConfiguration};
+        const currentLevel = path.length === 0 ? viewConfiguration : $get(path, viewConfiguration);
         Object.keys(currentLevel).forEach(propertyName => {
             const propertyValue = currentLevel[propertyName];
             const newPath = path.slice();
             newPath.push(propertyName);
-            const originalPropertyValue = $get(newPath, this.state.originalViewConfiguration);
+            const originalPropertyValue = $get(newPath, originalViewConfiguration);
 
             if (propertyValue !== null && typeof propertyValue === 'object') {
                 this.preprocessViewConfiguration(context, newPath);
@@ -133,11 +135,11 @@ export default class Inspector extends PureComponent {
                 const {node} = context; // eslint-disable-line
                 const evaluatedValue = eval(originalPropertyValue.replace('ClientEval:', '')); // eslint-disable-line
                 if (evaluatedValue !== propertyValue) {
-                    this.setState(prevState => ({
-                        viewConfiguration: produce(prevState.viewConfiguration, draft => {
+                    this.setState({
+                        viewConfiguration: produce(viewConfiguration, draft => {
                             setIn(draft, newPath, evaluatedValue);
                         })
-                    }));
+                    });
                 }
             }
         });

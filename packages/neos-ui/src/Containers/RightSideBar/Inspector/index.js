@@ -101,7 +101,7 @@ export default class Inspector extends PureComponent {
         }
     }
 
-    componentDidMount() {
+    componentWillMount() {
         this.preprocessViewConfigurationDebounced();
     }
 

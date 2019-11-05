@@ -80,9 +80,20 @@ export default class Inspector extends PureComponent {
 
     constructor(props) {
         super(props);
+
         if (props.focusedNode) {
-            this.state.viewConfiguration = props.nodeTypesRegistry.getInspectorViewConfigurationFor($get('nodeType', props.focusedNode));
-            this.state.originalViewConfiguration = {...this.state.viewConfiguration};
+            const originalViewConfiguration = props.nodeTypesRegistry.getInspectorViewConfigurationFor($get('nodeType', props.focusedNode));
+            const nodeForContext = this.generateNodeForContext(
+                props.focusedNode,
+                props.transientValues
+            );
+
+            const processedViewConfiguration = this.preprocessViewConfiguration(
+                {node: nodeForContext}, [], {...originalViewConfiguration}, {...originalViewConfiguration}
+            );
+
+            this.state.viewConfiguration = processedViewConfiguration || {...originalViewConfiguration};
+            this.state.originalViewConfiguration = {...originalViewConfiguration};
         }
     }
 
@@ -101,10 +112,6 @@ export default class Inspector extends PureComponent {
         }
     }
 
-    componentWillMount() {
-        this.preprocessViewConfigurationDebounced();
-    }
-
     componentDidUpdate() {
         this.preprocessViewConfigurationDebounced();
     }
@@ -115,12 +122,11 @@ export default class Inspector extends PureComponent {
     }
 
     //
-    // Update viewConfiguration, while keeping originalViewConfiguration to read original property values from it
+    // Return updated viewConfiguration, while keeping originalViewConfiguration to read original property values from it
     //
-    preprocessViewConfiguration = (context = {}, path = []) => {
-        const viewConfiguration = {...this.state.viewConfiguration};
-        const originalViewConfiguration = {...this.state.originalViewConfiguration};
+    preprocessViewConfiguration = (context = {}, path = [], viewConfiguration, originalViewConfiguration) => {
         const currentLevel = path.length === 0 ? viewConfiguration : $get(path, viewConfiguration);
+
         Object.keys(currentLevel).forEach(propertyName => {
             const propertyValue = currentLevel[propertyName];
             const newPath = path.slice();
@@ -128,34 +134,51 @@ export default class Inspector extends PureComponent {
             const originalPropertyValue = $get(newPath, originalViewConfiguration);
 
             if (propertyValue !== null && typeof propertyValue === 'object') {
-                this.preprocessViewConfiguration(context, newPath);
+                viewConfiguration = this.preprocessViewConfiguration(context, newPath, viewConfiguration, originalViewConfiguration);
             } else if (typeof originalPropertyValue === 'string' && originalPropertyValue.indexOf('ClientEval:') === 0) {
                 const {node} = context; // eslint-disable-line
                 const evaluatedValue = eval(originalPropertyValue.replace('ClientEval:', '')); // eslint-disable-line
                 if (evaluatedValue !== propertyValue) {
-                    this.setState({
-                        viewConfiguration: produce(viewConfiguration, draft => {
-                            setIn(draft, newPath, evaluatedValue);
-                        })
+                    viewConfiguration = produce(viewConfiguration, draft => {
+                        setIn(draft, newPath, evaluatedValue);
                     });
                 }
             }
         });
+
+        return viewConfiguration;
     };
 
     preprocessViewConfigurationDebounced = debounce(() => {
-        // Calculate node property values for context
-        const {focusedNode, transientValues} = this.props;
-        let nodeForContext = focusedNode;
+        const nodeForContext = this.generateNodeForContext(
+            this.props.focusedNode,
+            this.props.transientValues
+        );
+
+        const processedViewConfiguration = this.preprocessViewConfiguration(
+            {node: nodeForContext},
+            [],
+            {...this.state.viewConfiguration},
+            {...this.state.originalViewConfiguration}
+        );
+
+        if (JSON.stringify(processedViewConfiguration) !== JSON.stringify(this.state.viewConfiguration)) {
+            this.setState({
+                viewConfiguration: processedViewConfiguration
+            });
+        }
+    }, 250, {leading: true});
+
+    generateNodeForContext(focusedNode, transientValues) {
         if (transientValues) {
-            nodeForContext = produce(nodeForContext, draft => {
+            return produce(focusedNode, draft => {
                 const mappedTransientValues = mapObjIndexed(item => $get('value', item), transientValues);
                 draft.properties = Object.assign({}, draft.properties, mappedTransientValues);
             });
         }
 
-        this.preprocessViewConfiguration({node: nodeForContext});
-    }, 250, {leading: true});
+        return focusedNode;
+    }
 
     handleCloseSecondaryInspector = () => {
         this.props.closeSecondaryInspector();

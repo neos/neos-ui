@@ -78,6 +78,8 @@ export default class Inspector extends PureComponent {
         originalViewConfiguration: null
     };
 
+    configurationIsProcessed = false;
+
     constructor(props) {
         super(props);
 
@@ -139,6 +141,7 @@ export default class Inspector extends PureComponent {
                 const {node} = context; // eslint-disable-line
                 const evaluatedValue = eval(originalPropertyValue.replace('ClientEval:', '')); // eslint-disable-line
                 if (evaluatedValue !== propertyValue) {
+                    this.configurationIsProcessed = true;
                     viewConfiguration = produce(viewConfiguration, draft => {
                         setIn(draft, newPath, evaluatedValue);
                     });
@@ -155,6 +158,7 @@ export default class Inspector extends PureComponent {
             this.props.transientValues
         );
 
+        this.configurationIsProcessed = false;
         const processedViewConfiguration = this.preprocessViewConfiguration(
             {node: nodeForContext},
             [],
@@ -162,7 +166,7 @@ export default class Inspector extends PureComponent {
             {...this.state.originalViewConfiguration}
         );
 
-        if (JSON.stringify(processedViewConfiguration) !== JSON.stringify(this.state.viewConfiguration)) {
+        if (this.configurationIsProcessed === true) {
             this.setState({
                 viewConfiguration: processedViewConfiguration
             });

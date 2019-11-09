@@ -18,8 +18,8 @@ const config = {
     },
     zIndex: {
         secondaryToolbar: ['linkIconButtonFlyout'],
-        flashMessageContainer: '5',
-        loadingIndicatorContainer: '2',
+        flashMessageContainer: '6',
+        loadingIndicatorContainer: '5',
         secondaryInspector: ['context', 'iframe', 'close'],
         secondaryInspectorElevated: ['context', 'dropdownContents'],
         dialog: ['context'],

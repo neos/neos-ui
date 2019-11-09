@@ -258,6 +258,9 @@
 			<trans-unit id="Shortcut__CR.Nodes.unfocus" xml:space="preserve">
 				<source>Unfocus Node</source>
 			</trans-unit>
+			<trans-unit id="syncUriPathSegment" xml:space="preserve">
+				<source>Syncronize with the title property</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

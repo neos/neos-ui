@@ -165,8 +165,10 @@ export default class Inspector extends PureComponent {
     }
 
     handleApply = () => {
-        this.props.apply();
-        this.closeSecondaryInspectorIfNeeded();
+        if (!this.props.isApplyDisabled) {
+            this.props.apply();
+            this.closeSecondaryInspectorIfNeeded();
+        }
     }
 
     handleEscape = () => {

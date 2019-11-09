@@ -262,6 +262,9 @@
       <trans-unit id="Shortcut__CR.Nodes.unfocus" xml:space="preserve" approved="yes">
 				<source>Unfocus Node</source>
 			<target xml:lang="de">Fokus vom Node entfernen</target></trans-unit>
+      <trans-unit id="syncUriPathSegment" xml:space="preserve" approved="yes">
+				<source>Unfocus Node</source>
+			<target xml:lang="de">Synchronisieren mit dem Titel</target></trans-unit>
     </body>
   </file>
 </xliff>

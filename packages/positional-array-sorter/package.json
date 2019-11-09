@@ -5,7 +5,7 @@
   "main": "./dist/positionalArraySorter.js",
   "license": "GNU GPLv3",
   "scripts": {
-    "prebuild": "yarn clean && yarn tsc --declaration",
+    "prebuild": "yarn tsc --declaration",
     "test": "yarn jest -w 2 --coverage",
     "test:watch": "yarn jest --watch",
     "build": "yarn tsc --build",

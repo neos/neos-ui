@@ -58,6 +58,20 @@ storiesOf('Button', module)
                         <span>{text('Label', 'Button Lighter')}</span>
                     </Button>
                     <Button
+                        style="neutral"
+                        hoverStyle="clean"
+                        onClick={action('onClick')}
+                        onMouseEnter={action('onMouseEnter')}
+                        onMouseLeave={action('onMouseLeave')}
+                        onMouseDown={action('onMouseDown')}
+                        onMouseUp={action('onMouseUp')}
+                        isActive={boolean('Active', false)}
+                        disabled={boolean('Disabled', false)}
+                        size={select('Size', validSizes, 'regular')}
+                    >
+                        <span>{text('Label', 'Button Neutral')}</span>
+                    </Button>
+                    <Button
                         style="transparent"
                         hoverStyle="clean"
                         onClick={action('onClick')}
@@ -118,6 +132,21 @@ storiesOf('Button', module)
                         size={select('Size', validSizes, 'regular')}
                     >
                         <span>{text('Label', 'Button Lighter')}</span>
+                    </Button>
+                    <Button
+                        style="neutral"
+                        hoverStyle="clean"
+                        onClick={action('onClick')}
+                        isPressed
+                        onMouseEnter={action('onMouseEnter')}
+                        onMouseLeave={action('onMouseLeave')}
+                        onMouseDown={action('onMouseDown')}
+                        onMouseUp={action('onMouseUp')}
+                        isActive={boolean('Active', false)}
+                        disabled={boolean('Disabled', false)}
+                        size={select('Size', validSizes, 'regular')}
+                    >
+                        <span>{text('Label', 'Button Neutral')}</span>
                     </Button>
                     <Button
                         style="transparent"
@@ -183,6 +212,21 @@ storiesOf('Button', module)
                         <span>{text('Label', 'Button Lighter')}</span>
                     </Button>
                     <Button
+                        style="neutral"
+                        hoverStyle="brand"
+                        onClick={action('onClick')}
+                        isPressed
+                        onMouseEnter={action('onMouseEnter')}
+                        onMouseLeave={action('onMouseLeave')}
+                        onMouseDown={action('onMouseDown')}
+                        onMouseUp={action('onMouseUp')}
+                        isActive={boolean('Active', false)}
+                        disabled={boolean('Disabled', false)}
+                        size={select('Size', validSizes, 'regular')}
+                    >
+                        <span>{text('Label', 'Button Neutral')}</span>
+                    </Button>
+                    <Button
                         style="transparent"
                         hoverStyle="brand"
                         onClick={action('onClick')}
@@ -244,6 +288,21 @@ storiesOf('Button', module)
                         size={select('Size', validSizes, 'regular')}
                     >
                         <span>{text('Label', 'Button Lighter')}</span>
+                    </Button>
+                    <Button
+                        style="neutral"
+                        hoverStyle="darken"
+                        onClick={action('onClick')}
+                        isPressed
+                        onMouseEnter={action('onMouseEnter')}
+                        onMouseLeave={action('onMouseLeave')}
+                        onMouseDown={action('onMouseDown')}
+                        onMouseUp={action('onMouseUp')}
+                        isActive={boolean('Active', false)}
+                        disabled={boolean('Disabled', false)}
+                        size={select('Size', validSizes, 'regular')}
+                    >
+                        <span>{text('Label', 'Button Neutral')}</span>
                     </Button>
                     <Button
                         style="transparent"

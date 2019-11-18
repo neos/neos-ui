@@ -3,9 +3,8 @@
     "description": "A dummy site package that will be replaced by fixtures during tests",
     "type": "neos-site",
     "require": {
-        "neos/neos": "*",
         "neos/neos-ui": "*",
-        "neos/neos-ui-compiled": "*"
+        "neos/fusion-afx": "*"
     },
     "extra": {
         "neos": {

@@ -3,8 +3,8 @@
     "description": "Some dummy nodetypes",
     "type": "neos-package",
     "require": {
-        "neos/neos": "*",
-        "neos/neos-ui": "*"
+        "neos/neos-ui": "*",
+        "neos/fusion-afx": "*"
     },
     "extra": {
         "neos": {

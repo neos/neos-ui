@@ -157,7 +157,6 @@
 .ck-content .table table td,.ck-content .table table th{
     min-width:2em;
     padding:.4em;
-    text-align:center;
     border-color:#d9d9d9
 }
 .ck-content .table table th{

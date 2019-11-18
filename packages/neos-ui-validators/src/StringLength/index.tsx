@@ -6,10 +6,12 @@ import logger from '@neos-project/utils-logger';
  * Checks if the given value is a valid string (or can be cast to a string
  * if an object is given) and its length is between minimum and maximum
  * specified in the validation options.
+ * If ignoreHtml is true, HTML tags won't be counted: "Some <b>bold</b> text": 14 characters (not 21)
  */
 interface StringLengthOptions {
     minimum: number | string;
     maximum: number | string;
+    ignoreHtml: boolean;
 }
 const StringLength = (value: any, validatorOptions: StringLengthOptions) => {
     if (value === undefined || value === null || value === '') {
@@ -28,7 +30,12 @@ const StringLength = (value: any, validatorOptions: StringLengthOptions) => {
         return 'The minimum StringLength can not be less than zero';
     }
 
-    const stringLength = (value !== undefined && value !== null && value.toString) ? value.toString().length : 0;
+    let castedValue = value.toString ? value.toString() : '';
+    if (validatorOptions.ignoreHtml) {
+        const document = new DOMParser().parseFromString(castedValue, 'text/html');
+        castedValue = document.body.textContent ? document.body.textContent : castedValue;
+    }
+    const stringLength = castedValue.length;
     if (stringLength < minimum || stringLength > maximum) {
         if (minimum > 0 && maximum < 10000) {
             return <I18n id="content.inspector.validators.stringLength.outOfBounds" params={{minimum, maximum}}/>;

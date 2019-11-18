@@ -32,8 +32,8 @@ const StringLength = (value: any, validatorOptions: StringLengthOptions) => {
 
     let castedValue = value.toString ? value.toString() : '';
     if (validatorOptions.ignoreHtml) {
-        const doc = new DOMParser().parseFromString(castedValue, 'text/html');
-        castedValue = doc.body.textContent ? doc.body.textContent : castedValue;
+        const documentNode = new DOMParser().parseFromString(castedValue, 'text/html');
+        castedValue = documentNode.body.textContent ? documentNode.body.textContent : castedValue;
     }
     const stringLength = castedValue.length;
     if (stringLength < minimum || stringLength > maximum) {

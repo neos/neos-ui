@@ -1,5 +1,4 @@
-import {map, values, mapObjIndexed} from 'ramda';
-import merge from 'lodash.merge';
+import {merge, mapValues} from 'lodash';
 import {$get} from 'plow-js';
 import {SynchronousRegistry} from '@neos-project/neos-ui-extensibility';
 import positionalArraySorter from '@neos-project/positional-array-sorter';
@@ -190,66 +189,59 @@ export default class NodeTypesRegistry extends SynchronousRegistry<NodeType> {
             return this._inspectorViewConfigurationCache[nodeTypeName];
         }
 
-        const withId = <S>(state: {[propName: string]: S}): {[propName: string]: S & {id: string}} => mapObjIndexed((subject, id) => Object.assign({}, subject, {id}), state);
+        const withId = <S>(state: {[propName: string]: S}): {[propName: string]: S & {id: string}} => mapValues(state, (subject, id) => Object.assign({}, subject, {id}));
 
-        const _tabs = values(withId($get(['ui', 'inspector', 'tabs'], nodeType) || {}));
+        const _tabs = Object.values(withId($get(['ui', 'inspector', 'tabs'], nodeType) || {}));
         const tabs = positionalArraySorter(_tabs, 'position', 'id');
 
-        const _groups = values(withId($get(['ui', 'inspector', 'groups'], nodeType) || {}));
+        const _groups = Object.values(withId($get(['ui', 'inspector', 'groups'], nodeType) || {}));
         const groups = positionalArraySorter(_groups, 'position', 'id');
 
-        const _views = values(withId($get(['ui', 'inspector', 'views'], nodeType) || {}));
+        const _views = Object.values(withId($get(['ui', 'inspector', 'views'], nodeType) || {}));
         const views = positionalArraySorter(_views, 'position', 'id');
 
-        const _properties = values(withId($get(['properties'], nodeType) || {}));
+        const _properties = Object.values(withId($get(['properties'], nodeType) || {}));
         const properties = positionalArraySorter(_properties, 'position', 'id');
 
         const viewConfiguration = {
-            tabs: map(
-                tab => ({
-                    ...tab,
-                    groups: map(
-                        group => ({
-                            ...group,
-                            items: positionalArraySorter([
-                                ...map(
-                                    property => ({
-                                        type: 'editor',
-                                        id: $get(['id'], property),
-                                        label: $get(['ui', 'label'], property),
-                                        editor: $get(['ui', 'inspector', 'editor'], property),
-                                        editorOptions: $get(['ui', 'inspector', 'editorOptions'], property),
-                                        position: $get(['ui', 'inspector', 'position'], property),
-                                        hidden: $get(['ui', 'inspector', 'hidden'], property),
-                                        helpMessage: $get(['ui', 'help', 'message'], property),
-                                        helpThumbnail: $get(['ui', 'help', 'thumbnail'], property)
-                                    }),
-                                    properties.filter(p => $get(['ui', 'inspector', 'group'], p) === group.id)
-                                ),
-                                ...map(
-                                    property => ({
-                                        type: 'view',
-                                        id: $get(['id'], property),
-                                        label: $get(['label'], property),
-                                        view: $get(['view'], property),
-                                        viewOptions: $get(['viewOptions'], property),
-                                        position: $get(['position'], property),
-                                        helpMessage: $get(['helpMessage'], property)
-                                    }),
-                                    views.filter(v => $get(['group'], v) === group.id)
-                                )
-                            ], 'position', 'id')
-                        }),
-                        groups.filter(g => {
-                            const isMatch = g.tab === tab.id;
-                            const isDefaultTab = !g.tab && tab.id === 'default';
+            tabs: tabs.map(tab => ({
+                ...tab,
+                groups: groups.filter(g => {
+                    const isMatch = g.tab === tab.id;
+                    const isDefaultTab = !g.tab && tab.id === 'default';
 
-                            return isMatch || isDefaultTab;
-                        })
-                    )
-                }),
-                tabs
-            )
+                    return isMatch || isDefaultTab;
+                }).map(group => ({
+                        ...group,
+                        items: positionalArraySorter([
+                            ...properties.filter(p => $get(['ui', 'inspector', 'group'], p) === group.id)
+                                .map(property => ({
+                                    type: 'editor',
+                                    id: $get(['id'], property),
+                                    label: $get(['ui', 'label'], property),
+                                    editor: $get(['ui', 'inspector', 'editor'], property),
+                                    editorOptions: $get(['ui', 'inspector', 'editorOptions'], property),
+                                    position: $get(['ui', 'inspector', 'position'], property),
+                                    hidden: $get(['ui', 'inspector', 'hidden'], property),
+                                    helpMessage: $get(['ui', 'help', 'message'], property),
+                                    helpThumbnail: $get(['ui', 'help', 'thumbnail'], property)
+                                })
+                            ),
+                            ...views.filter(v => $get(['group'], v) === group.id)
+                                .map(property => ({
+                                    type: 'view',
+                                    id: $get(['id'], property),
+                                    label: $get(['label'], property),
+                                    view: $get(['view'], property),
+                                    viewOptions: $get(['viewOptions'], property),
+                                    position: $get(['position'], property),
+                                    helpMessage: $get(['helpMessage'], property)
+                                })
+                            )
+                        ], 'position', 'id')
+                    })
+                )
+            }))
         };
 
         this._inspectorViewConfigurationCache[nodeTypeName] = viewConfiguration;

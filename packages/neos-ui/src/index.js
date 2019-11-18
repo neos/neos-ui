@@ -21,8 +21,8 @@ import Root from './Containers/Root';
 import apiExposureMap from './apiExposureMap';
 import DelegatingReducer from './DelegatingReducer';
 
-const devToolsArePresent = typeof window === 'object' && typeof window.devToolsExtension !== 'undefined';
-const devToolsStoreEnhancer = () => devToolsArePresent ? window.devToolsExtension() : f => f;
+const devToolsArePresent = typeof window === 'object' && typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined';
+const devToolsStoreEnhancer = () => devToolsArePresent ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f;
 const sagaMiddleWare = createSagaMiddleware();
 
 const delegatingReducer = new DelegatingReducer();

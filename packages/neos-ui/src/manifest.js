@@ -3,8 +3,6 @@ import {$get} from 'plow-js';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 
-import {parentNodeContextPath} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/helpers';
-
 import manifest from '@neos-project/neos-ui-extensibility';
 import {SynchronousRegistry, SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
 
@@ -268,7 +266,8 @@ manifest('main', {}, globalRegistry => {
             let redirectUri = null;
             // Determine closest parent that is not being removed
             while (!redirectUri) {
-                redirectContextPath = parentNodeContextPath(redirectContextPath);
+                redirectContextPath = getPathInNode(state, redirectContextPath, 'parent');
+
                 // This is an extreme case when even the top node does not exist in the given dimension
                 // TODO: still find a nicer way to break out of this situation
                 if (redirectContextPath === false) {

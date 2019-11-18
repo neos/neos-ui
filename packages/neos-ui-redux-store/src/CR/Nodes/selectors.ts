@@ -1,7 +1,6 @@
 import {$get} from 'plow-js';
 import {createSelector, defaultMemoize} from 'reselect';
 import {GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
-import {parentNodeContextPath} from './helpers';
 import {NodeContextPath, NodeMap, Node, NodeTypeName, ClipboardMode, NodeTypesRegistry} from '@neos-project/neos-ts-interfaces';
 
 export const inlineValidationErrorsSelector = (state: GlobalState) => $get(['cr', 'nodes', 'inlineValidationErrors'], state);
@@ -316,12 +315,12 @@ export const makeCanBeMovedIntoSelector = (nodeTypesRegistry: NodeTypesRegistry)
 export const makeCanBeMovedAlongsideSelector = (nodeTypesRegistry: NodeTypesRegistry) => createSelector(
     [
         makeCanBeCopiedAlongsideSelector(nodeTypesRegistry),
-        (_, {subject, reference}) => {
+        (state: GlobalState, {subject, reference}) => {
             if (reference === null) {
                 return false;
             }
             const subjectPath = subject && subject.split('@')[0];
-            const referenceParent = parentNodeContextPath(reference);
+            const referenceParent = getPathInNode(state, reference, 'parent') as string;
             if (referenceParent === null) {
                 return false;
             }
@@ -381,12 +380,14 @@ export const focusedNodeParentLineSelector = createSelector(
         let currentNode = focusedNode;
 
         while (currentNode) {
-            const parent = parentNodeContextPath(currentNode.contextPath);
-            if (parent !== null) {
+            const parent = currentNode.parent;
+            if (parent) {
                 currentNode = nodesByContextPath[parent] || null;
                 if (currentNode) {
                     result.push(currentNode);
                 }
+            } else {
+                break;
             }
         }
 

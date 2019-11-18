@@ -91,11 +91,15 @@ function * nodeCreationWorkflow(context, step = STEP_SELECT_NODETYPE, workflowDa
             if (nodeTypesRegistry.hasRole(nodeType, 'document')) {
                 yield put(actions.UI.ContentCanvas.startLoading());
             }
+
+            const referenceNodeSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(referenceNodeContextPath);
+            const referenceNode = yield select(referenceNodeSelector);
+
             return yield put(actions.Changes.persistChanges([{
                 type: calculateChangeTypeFromMode(mode, 'Create'),
                 subject: referenceNodeContextPath,
                 payload: {
-                    ...calculateDomAddressesFromMode(mode, referenceNodeContextPath, referenceNodeFusionPath),
+                    ...calculateDomAddressesFromMode(mode, referenceNode, referenceNodeFusionPath),
                     nodeType,
                     data
                 }

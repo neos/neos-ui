@@ -23,11 +23,11 @@ export const calculateChangeTypeFromMode = (mode, prefix) => {
     }
 };
 
-export const calculateDomAddressesFromMode = (mode, contextPath, fusionPath) => {
+export const calculateDomAddressesFromMode = (mode, contextNode, fusionPath) => {
     switch (mode) {
         case 'before':
         case 'after': {
-            const element = findNodeInGuestFrame(contextPath, fusionPath);
+            const element = findNodeInGuestFrame(contextNode.contextPath, fusionPath);
             const parentElement = element ? closestNodeInGuestFrame(element.parentNode) : null;
 
             return {
@@ -39,7 +39,7 @@ export const calculateDomAddressesFromMode = (mode, contextPath, fusionPath) => 
                     contextPath: parentElement.getAttribute('data-__neos-node-contextpath'),
                     fusionPath: parentElement.getAttribute('data-__neos-fusion-path')
                 } : {
-                    contextPath: parentNodeContextPath(contextPath),
+                    contextPath: contextNode.parent,
                     fusionPath: null
                 }
             };

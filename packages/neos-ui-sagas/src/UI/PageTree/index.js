@@ -5,6 +5,7 @@ import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store
 import backend from '@neos-project/neos-ui-backend-connector';
 
 import {parentNodeContextPath, isNodeCollapsed} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/helpers';
+import { getPathInNode } from '@neos-project/neos-ui-redux-store/src/CR/Nodes/selectors';
 
 export function * watchToggle({globalRegistry}) {
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');

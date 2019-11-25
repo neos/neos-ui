@@ -21,6 +21,11 @@
 .dropDown__btnIcon {
     margin-right: .5em;
 }
+.dropDown__currentEditMode {
+    @media(max-width: 1024px) {
+        display: none;
+    }
+}
 
 .dropDown__contents {
     position: relative;

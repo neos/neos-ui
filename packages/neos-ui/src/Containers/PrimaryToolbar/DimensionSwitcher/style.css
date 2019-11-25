@@ -33,8 +33,10 @@
     margin-top: var(--spacing-Half);
 }
 
-.selectPreset {
-    margin-right: var(--spacing-Full);
+@media only screen and (max-width:1024px) {
+    .selectPresetLabel {
+        display:none;
+    }
 }
 
 .dimmed {

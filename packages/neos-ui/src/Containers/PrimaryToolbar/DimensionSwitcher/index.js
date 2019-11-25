@@ -21,7 +21,7 @@ const SelectedPreset = props => {
     return (
         <span key={dimensionName} className={style.selectPreset}>
             <Icon className={style.dropDown__btnIcon} icon={icon} title={dimensionLabel}/>
-            {presetLabel}
+            <span className={style.selectPresetLabel}>{presetLabel}</span>
         </span>
     );
 };

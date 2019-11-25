@@ -56,7 +56,7 @@ However, if you want to stay on bleeding-edge, or want to help out developing, y
 need the `dev-master` release. You can install the master release using:
 
 ```
-composer require neos/neos-ui:dev-master
+composer require neos/neos-ui-compiled:dev-master neos/neos-ui:dev-master
 ```
 
 ## Contributing

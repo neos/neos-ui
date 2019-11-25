@@ -2,7 +2,7 @@
 [![CircleCI](https://circleci.com/gh/neos/neos-ui.svg?style=svg)](https://circleci.com/gh/neos/neos-ui) [![Dependency Status](https://david-dm.org/neos/neos-ui.svg)](https://david-dm.org/neos/neos-ui) [![devDependency Status](https://david-dm.org/neos/neos-ui/dev-status.svg)](https://david-dm.org/neos/neos-ui#info=devDependencies&view=table)
 [![Slack](http://slack.neos.io/badge.svg)](http://slack.neos.io) [![Forum](https://img.shields.io/badge/forum-Discourse-39c6ff.svg)](https://discuss.neos.io/) [![Twitter](https://img.shields.io/twitter/follow/neoscms.svg?style=social)](https://twitter.com/NeosCMS)
 
-> The next generation Neos CMS interface written in ReactJS and a tonn of other fun technology.
+> The next generation Neos CMS interface written in ReactJS and a ton of other fun technology.
 
 ## Versioning
 

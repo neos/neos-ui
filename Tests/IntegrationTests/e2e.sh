@@ -34,6 +34,7 @@ for fixture in Packages/Application/Neos.Neos.Ui/Tests/IntegrationTests/Fixtures
             --selector-timeout=10000 --assertion-timeout=30000
     cd ../../..
     rm -f DistributionPackages/Neos.TestSite
+    rm -f DistributionPackages/Neos.TestNodeTypes
 
 done
 

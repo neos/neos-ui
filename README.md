@@ -170,6 +170,8 @@ Use `it.only(() => {})` and `describe.only(() => {})` if you want to run a speci
 
 To setup end-to-end tests locally you have got to do the same things described in [CircleCI workflow](https://github.com/neos/neos-ui/blob/master/.circleci/config.yml), namely take the [test disribution](https://github.com/neos/neos-ui/blob/master/Tests/IntegrationTests/TestDistribution/composer.json) and `composer install` in it, put the right branch into Neos.Neos.Ui folder and run webserver and mysql server with the same config as described in the test distribution's [Settings.yaml](https://github.com/neos/neos-ui/blob/master/Tests/IntegrationTests/TestDistribution/Configuration/Settings.yaml) (or adjust it).
 
+For executing the end to end tests on a Mac with catalina or higher you need to permit screen recording. Open 'System Preferences > Security & Privacy > Privacy > Screen Recording' and check 'TestCafe Browser Tools' in the application list.
+
 #### Releasing
 
 You only need to trigger the jenkins release with the version you want to release.

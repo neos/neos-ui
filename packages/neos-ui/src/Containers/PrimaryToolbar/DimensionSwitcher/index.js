@@ -257,7 +257,7 @@ export default class DimensionSwitcher extends PureComponent {
                         );
                     })}
                 </DropDown.Header>
-                <DropDown.Contents>
+                <DropDown.Contents className={style.dropDown__contents}>
                     {contentDimensionsObjectKeys.map(dimensionName => {
                         const dimensionConfiguration = contentDimensionsObject[dimensionName];
                         const icon = $get('icon', dimensionConfiguration) && $get('icon', dimensionConfiguration);

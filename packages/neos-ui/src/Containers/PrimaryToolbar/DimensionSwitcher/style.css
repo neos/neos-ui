@@ -1,12 +1,22 @@
 .dropDown {
     max-width: 296px;
-    border-left: 1px solid var(--colors-ContrastDark);
+    width: auto;
 }
 .dropDown__header {
     background-color: transparent;
 }
+.dropDown__contents {
+    width: fit-content;
+    padding: 0 2px 2px 2px !important;
+    background-color: var(--colors-ContrastDarker) !important;
+    box-shadow: 0 5px 5px rgba(0, 0, 0, .2);
+}
 .dropDown__btnIcon {
     margin-right: .5em;
+}
+.dimensionCategory {
+    background-color: var(--colors-ContrastDarkest);
+    padding: 0 1rem 1rem 1rem;
 }
 
 .cancelButton {
@@ -14,8 +24,8 @@
 }
 
 .dimensionLabel {
-    margin-top: var(--spacing-Half);
-    margin-bottom: var(--spacing-Quarter);
+    padding-top: var(--spacing-Half);
+    padding-bottom: var(--spacing-Quarter);
 }
 
 .buttonGroup {

@@ -59,8 +59,8 @@ manifest('main.containers', {}, globalRegistry => {
     containerRegistry.set('PrimaryToolbar', PrimaryToolbar);
     containerRegistry.set('PrimaryToolbar/Left/MenuToggler', MenuToggler);
     containerRegistry.set('PrimaryToolbar/Left/Brand', Brand);
-    containerRegistry.set('PrimaryToolbar/Right/DimensionSwitcher', DimensionSwitcher);
     containerRegistry.set('PrimaryToolbar/Right/EditPreviewDropDown', EditPreviewDropDown);
+    containerRegistry.set('PrimaryToolbar/Right/DimensionSwitcher', DimensionSwitcher);
     containerRegistry.set('PrimaryToolbar/Right/UserDropDown', UserDropDown);
     containerRegistry.set('PrimaryToolbar/Right/PublishDropDown', PublishDropDown);
 

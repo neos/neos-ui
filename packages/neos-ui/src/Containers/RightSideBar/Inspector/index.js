@@ -9,6 +9,7 @@ import Bar from '@neos-project/react-ui-components/src/Bar/';
 import Button from '@neos-project/react-ui-components/src/Button/';
 import Tabs from '@neos-project/react-ui-components/src/Tabs/';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
+import Badge from '@neos-project/react-ui-components/src/Badge/';
 import debounce from 'lodash.debounce';
 import setIn from 'lodash.set';
 
@@ -294,6 +295,7 @@ export default class Inspector extends PureComponent {
                                     icon={$get('icon', tab)}
                                     groups={$get('groups', tab)}
                                     notifications={notifications}
+                                    title={Boolean(notifications) && <Badge className={style.tabs__notificationBadge} label={String(notifications)}/>}
                                     toggledPanels={$get($get('id', tab), this.state.toggledPanels)}
                                     tooltip={i18nRegistry.translate($get('label', tab))}
                                     renderSecondaryInspector={this.renderSecondaryInspector}

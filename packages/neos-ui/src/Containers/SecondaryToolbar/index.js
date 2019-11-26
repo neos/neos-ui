@@ -37,8 +37,7 @@ export default class SecondaryToolbar extends PureComponent {
     };
 
     getToolbarComponent() {
-        const {containerRegistry, currentlyEditedPropertyName, hasFocusedContentNode, nodeTypesRegistry, inlineEditorRegistry, focusedNodeTypeName} = this.props;
-        const DimensionSwitcher = containerRegistry.get('SecondaryToolbar/DimensionSwitcher');
+        const {currentlyEditedPropertyName, hasFocusedContentNode, nodeTypesRegistry, inlineEditorRegistry, focusedNodeTypeName} = this.props;
 
         // Focused node is not yet in state, we need to wait a bit
         if (!focusedNodeTypeName) {
@@ -46,7 +45,7 @@ export default class SecondaryToolbar extends PureComponent {
         }
 
         if (!hasFocusedContentNode && !currentlyEditedPropertyName) {
-            return DimensionSwitcher;
+            return null;
         }
 
         const editorIdentifier = nodeTypesRegistry.getInlineEditorIdentifierForProperty(
@@ -55,7 +54,7 @@ export default class SecondaryToolbar extends PureComponent {
         );
         const {ToolbarComponent} = inlineEditorRegistry.get(editorIdentifier);
 
-        return ToolbarComponent || DimensionSwitcher;
+        return ToolbarComponent || null;
     }
 
     render() {
@@ -77,7 +76,7 @@ export default class SecondaryToolbar extends PureComponent {
 
         return (
             <div className={classNames}>
-                <Toolbar/>
+                { Toolbar === null ? null : <Toolbar/> }
 
                 <div className={style.secondaryToolbar__rightHandedActions}>
                     {SecondaryToolbarRight.map((Item, key) => <Item key={key}/>)}

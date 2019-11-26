@@ -60,7 +60,7 @@ export default class EditPreviewModeDropDown extends PureComponent {
                 <DropDown className={style.dropDown}>
                     <DropDown.Header className={style.dropDown__btn}>
                         <Icon className={style.dropDown__btnIcon} icon={currentEditMode.isEditingMode ? 'pencil' : 'eye'}/>
-                        <span className={style.dropDown__userName}><I18n id={currentEditMode.title}/></span>
+                        <span className={style.dropDown__currentEditMode}><I18n id={currentEditMode.title}/></span>
                     </DropDown.Header>
                     <DropDown.Contents className={style.dropDown__contents}>
                         <div className={style.dropDown__groupHeader}>

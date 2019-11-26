@@ -22,7 +22,7 @@
     margin-right: .5em;
 }
 .dropDown__userName {
-    @media(max-width: 768px) {
+    @media(max-width: 1024px) {
         display: none;
     }
 }

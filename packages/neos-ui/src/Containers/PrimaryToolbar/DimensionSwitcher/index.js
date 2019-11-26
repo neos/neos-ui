@@ -21,7 +21,7 @@ const SelectedPreset = props => {
     return (
         <span key={dimensionName} className={style.selectPreset}>
             <Icon className={style.dropDown__btnIcon} icon={icon} title={dimensionLabel}/>
-            {presetLabel}
+            <span className={style.selectPresetLabel}>{presetLabel}</span>
         </span>
     );
 };
@@ -234,14 +234,16 @@ export default class DimensionSwitcher extends PureComponent {
 
         return contentDimensionsObjectKeys.length ? (
             <DropDown.Stateless
-                style="darker"
+                style="darkest"
                 padded={true}
                 className={style.dropDown}
                 isOpen={this.state.isOpen}
                 onToggle={this.handleToggle}
                 onClose={this.handleClose}
                 >
-                <DropDown.Header>
+                <DropDown.Header
+                    className={style.dropDown__header}
+                >
                     {contentDimensionsObjectKeys.map(dimensionName => {
                         const dimensionConfiguration = contentDimensionsObject[dimensionName];
                         const icon = $get('icon', dimensionConfiguration) && $get('icon', dimensionConfiguration);
@@ -255,7 +257,7 @@ export default class DimensionSwitcher extends PureComponent {
                         );
                     })}
                 </DropDown.Header>
-                <DropDown.Contents>
+                <DropDown.Contents className={style.dropDown__contents}>
                     {contentDimensionsObjectKeys.map(dimensionName => {
                         const dimensionConfiguration = contentDimensionsObject[dimensionName];
                         const icon = $get('icon', dimensionConfiguration) && $get('icon', dimensionConfiguration);

@@ -287,6 +287,19 @@ export default class Inspector extends PureComponent {
                                         Object.keys(validationErrors).includes(item.id) ? notifications + 1 : notifications
                                     ), 0);
                                 }, 0) : 0;
+                            const tabLabel = i18nRegistry.translate($get('label', tab));
+                            const notificationTooltipLabelPieces = i18nRegistry.translate(
+                                'UI.RightSideBar.tabs.validationErrorTooltip',
+                                '',
+                                {
+                                    tabName: tabLabel,
+                                    amountOfErrors: notifications
+                                },
+                                'Neos.Neos.Ui'
+                            );
+                            // @todo remove that when substitutePlaceholders of I18nRegistry returns strings
+                            const notificationTooltipLabel = Array.isArray(notificationTooltipLabelPieces) ?
+                                notificationTooltipLabelPieces.join('') : notificationTooltipLabelPieces;
 
                             return (
                                 <TabPanel
@@ -297,7 +310,7 @@ export default class Inspector extends PureComponent {
                                     notifications={notifications}
                                     title={Boolean(notifications) && <Badge className={style.tabs__notificationBadge} label={String(notifications)}/>}
                                     toggledPanels={$get($get('id', tab), this.state.toggledPanels)}
-                                    tooltip={i18nRegistry.translate($get('label', tab))}
+                                    tooltip={notifications ? notificationTooltipLabel : tabLabel}
                                     renderSecondaryInspector={this.renderSecondaryInspector}
                                     node={focusedNode}
                                     commit={augmentedCommit}

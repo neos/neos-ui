@@ -205,6 +205,10 @@
       <trans-unit id="Shortcut__UI.RightSideBar.toggle" xml:space="preserve" approved="yes">
 				<source>Toggle inspector</source>
 			<target xml:lang="de">Inspector auf- / zuklappen</target></trans-unit>
+    <trans-unit id="UI.RightSideBar.tabs.validationErrorTooltip" xml:space="preserve">
+        <source>{tabName} - amount of properties with validation issues: {amountOfErrors}</source>
+        <target xml:lang="de">{tabName} - Anzahl der Eigenschaften mit Validierungsproblemen: {amountOfErrors}</target></trans-unit>
+    </trans-unit>
       <trans-unit id="Shortcut__UI.FullScreen.toggle" xml:space="preserve" approved="yes">
 				<source>Toggle full screen</source>
 			<target xml:lang="de">Vollbildmodus umschalten</target></trans-unit>

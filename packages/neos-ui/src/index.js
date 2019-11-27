@@ -163,9 +163,8 @@ function * application() {
             } else {
                 message = 'Unknown error from unexpected HTML response. Check the logs for details.';
             }
-        }
-        // Check if the message is a JSON string
-        else if (message.trim()[0] === '{') {
+        } else if (message.trim()[0] === '{') {
+            // Check if the message is a JSON string
             try {
                 const jsonMessage = JSON.parse(message);
                 if (jsonMessage.error && jsonMessage.error.message) {

@@ -165,7 +165,7 @@ function * application() {
             }
         }
         // Check if the message is a JSON string
-        else if (message.indexOf('{') >= 0) {
+        else if (message.trim()[0] === '{') {
             try {
                 const jsonMessage = JSON.parse(message);
                 if (jsonMessage.error && jsonMessage.error.message) {

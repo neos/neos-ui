@@ -152,6 +152,29 @@ function * application() {
     });
 
     fetchWithErrorHandling.registerGeneralErrorHandler((message = 'unknown error') => {
+        // Check if the message is a Flow exception response
+        if (message.indexOf('Flow-Debug-Exception-Header') >= 0) {
+            const htmlContainer = document.createElement('div');
+            htmlContainer.innerHTML = message;
+            const exceptionHeader = htmlContainer.querySelector('.Flow-Debug-Exception-Header');
+            if (exceptionHeader && exceptionHeader.textContent) {
+                const exceptionSubject = exceptionHeader.querySelector('.ExceptionSubject');
+                message = exceptionSubject.textContent + ' - Check the logs for details';
+            } else {
+                message = 'Unknown error from unexpected HTML response. Check the logs for details.';
+            }
+        } else if (message.trim()[0] === '{') {
+            // Check if the message is a JSON string
+            try {
+                const jsonMessage = JSON.parse(message);
+                if (jsonMessage.error && jsonMessage.error.message) {
+                    message = jsonMessage.error.message + ' - Reference code "' + jsonMessage.error.referenceCode + '"';
+                } else {
+                    message = 'Unknown error from unexpected JSON response. Check the logs for details.';
+                }
+            } catch (e) {}
+        }
+
         store.dispatch(actions.UI.FlashMessages.add('fetch error', message, 'error'));
     });
 

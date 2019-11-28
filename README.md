@@ -2,7 +2,7 @@
 [![CircleCI](https://circleci.com/gh/neos/neos-ui.svg?style=svg)](https://circleci.com/gh/neos/neos-ui) [![Dependency Status](https://david-dm.org/neos/neos-ui.svg)](https://david-dm.org/neos/neos-ui) [![devDependency Status](https://david-dm.org/neos/neos-ui/dev-status.svg)](https://david-dm.org/neos/neos-ui#info=devDependencies&view=table)
 [![Slack](http://slack.neos.io/badge.svg)](http://slack.neos.io) [![Forum](https://img.shields.io/badge/forum-Discourse-39c6ff.svg)](https://discuss.neos.io/) [![Twitter](https://img.shields.io/twitter/follow/neoscms.svg?style=social)](https://twitter.com/NeosCMS)
 
-> The next generation Neos CMS interface written in ReactJS and a tonn of other fun technology.
+> The next generation Neos CMS interface written in ReactJS and a ton of other fun technology.
 
 ## Versioning
 
@@ -56,7 +56,7 @@ However, if you want to stay on bleeding-edge, or want to help out developing, y
 need the `dev-master` release. You can install the master release using:
 
 ```
-composer require neos/neos-ui:dev-master
+composer require neos/neos-ui-compiled:dev-master neos/neos-ui:dev-master
 ```
 
 ## Contributing
@@ -169,6 +169,8 @@ Use `it.only(() => {})` and `describe.only(() => {})` if you want to run a speci
 #### Integration tests
 
 To setup end-to-end tests locally you have got to do the same things described in [CircleCI workflow](https://github.com/neos/neos-ui/blob/master/.circleci/config.yml), namely take the [test disribution](https://github.com/neos/neos-ui/blob/master/Tests/IntegrationTests/TestDistribution/composer.json) and `composer install` in it, put the right branch into Neos.Neos.Ui folder and run webserver and mysql server with the same config as described in the test distribution's [Settings.yaml](https://github.com/neos/neos-ui/blob/master/Tests/IntegrationTests/TestDistribution/Configuration/Settings.yaml) (or adjust it).
+
+For executing the end to end tests on a Mac with catalina or higher you need to permit screen recording. Open 'System Preferences > Security & Privacy > Privacy > Screen Recording' and check 'TestCafe Browser Tools' in the application list.
 
 #### Releasing
 

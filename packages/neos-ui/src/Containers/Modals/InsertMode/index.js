@@ -2,7 +2,6 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
-import {compose} from 'ramda';
 
 import {neos} from '@neos-project/neos-ui-decorators';
 
@@ -76,7 +75,7 @@ export default class InsertModeModal extends PureComponent {
         const node = getNodeByContextPath(contextPath);
         const getLabel = $get('label');
         const getNodeType = $get('nodeType');
-        const getNodeTypeLabel = compose(getLabel, nodeTypesRegistry.get.bind(nodeTypesRegistry), getNodeType);
+        const getNodeTypeLabel = (...args) => getLabel(nodeTypesRegistry.get.bind(nodeTypesRegistry)(getNodeType(...args)));
 
         return (
             <span key={getNodeTypeLabel(node) + getLabel(node)}>

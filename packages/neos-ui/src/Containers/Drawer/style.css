@@ -53,8 +53,10 @@
 .drawer__menuItemGroupBtn {
     font-weight: 700;
 }
+.drawer__bottom {
+    margin-top: auto;
+}
 .drawer__version {
     color: var(--colors-ContrastBright);
     padding: var(--spacing-Full);
-    margin-top: auto;
 }

@@ -8,7 +8,6 @@ const App = ({globalRegistry, menu}) => {
 
     const Modals = containerRegistry.get('Modals');
     const PrimaryToolbar = containerRegistry.get('PrimaryToolbar');
-    const EditModePanel = containerRegistry.get('EditModePanel');
     const SecondaryToolbar = containerRegistry.get('SecondaryToolbar');
     const Drawer = containerRegistry.get('Drawer');
     const LeftSideBar = containerRegistry.get('LeftSideBar');
@@ -28,7 +27,6 @@ const App = ({globalRegistry, menu}) => {
             <PrimaryToolbar/>
             <ContentCanvas/>
             <SecondaryToolbar/>
-            <EditModePanel/>
             <Drawer menuData={menu}/>
             <LeftSideBar/>
             <RightSideBar/>

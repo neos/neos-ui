@@ -122,7 +122,7 @@ lint-js:
 
 
 lint-editorconfig:
-	$(editorconfigChecker)
+	$(editorconfigChecker) -config .ecrc.json
 
 ################################################################################
 # Releasing

@@ -18,7 +18,6 @@ import style from './style.css';
     currentlyEditedPropertyName: $get('ui.contentCanvas.currentlyEditedPropertyName'),
     isFringedLeft: $get('ui.leftSideBar.isHidden'),
     isFringedRight: $get('ui.rightSideBar.isHidden'),
-    isEditModePanelHidden: $get('ui.editModePanel.isHidden'),
     isFullScreen: $get('ui.fullScreen.isFullScreen'),
     hasFocusedContentNode: selectors.CR.Nodes.hasFocusedContentNode,
     focusedNodeTypeName: selectors.CR.Nodes.focusedNodeTypeSelector
@@ -33,14 +32,12 @@ export default class SecondaryToolbar extends PureComponent {
         currentlyEditedPropertyName: PropTypes.string,
         isFringedLeft: PropTypes.bool.isRequired,
         isFringedRight: PropTypes.bool.isRequired,
-        isEditModePanelHidden: PropTypes.bool.isRequired,
         isFullScreen: PropTypes.bool.isRequired,
         hasFocusedContentNode: PropTypes.bool.isRequired
     };
 
     getToolbarComponent() {
-        const {containerRegistry, currentlyEditedPropertyName, hasFocusedContentNode, nodeTypesRegistry, inlineEditorRegistry, focusedNodeTypeName} = this.props;
-        const DimensionSwitcher = containerRegistry.get('SecondaryToolbar/DimensionSwitcher');
+        const {currentlyEditedPropertyName, hasFocusedContentNode, nodeTypesRegistry, inlineEditorRegistry, focusedNodeTypeName} = this.props;
 
         // Focused node is not yet in state, we need to wait a bit
         if (!focusedNodeTypeName) {
@@ -48,7 +45,7 @@ export default class SecondaryToolbar extends PureComponent {
         }
 
         if (!hasFocusedContentNode && !currentlyEditedPropertyName) {
-            return DimensionSwitcher;
+            return null;
         }
 
         const editorIdentifier = nodeTypesRegistry.getInlineEditorIdentifierForProperty(
@@ -57,7 +54,7 @@ export default class SecondaryToolbar extends PureComponent {
         );
         const {ToolbarComponent} = inlineEditorRegistry.get(editorIdentifier);
 
-        return ToolbarComponent || DimensionSwitcher;
+        return ToolbarComponent || null;
     }
 
     render() {
@@ -65,14 +62,12 @@ export default class SecondaryToolbar extends PureComponent {
             containerRegistry,
             isFringedLeft,
             isFringedRight,
-            isEditModePanelHidden,
             isFullScreen
         } = this.props;
         const classNames = mergeClassNames({
             [style.secondaryToolbar]: true,
             [style['secondaryToolbar--isFringeLeft']]: isFringedLeft,
             [style['secondaryToolbar--isFringeRight']]: isFringedRight,
-            [style['secondaryToolbar--isMovedDown']]: !isEditModePanelHidden,
             [style['secondaryToolbar--fullScreen']]: isFullScreen
         });
 
@@ -81,7 +76,7 @@ export default class SecondaryToolbar extends PureComponent {
 
         return (
             <div className={classNames}>
-                <Toolbar/>
+                { Toolbar === null ? null : <Toolbar/> }
 
                 <div className={style.secondaryToolbar__rightHandedActions}>
                     {SecondaryToolbarRight.map((Item, key) => <Item key={key}/>)}

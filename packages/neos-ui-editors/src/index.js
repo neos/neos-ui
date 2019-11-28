@@ -12,14 +12,17 @@ import {
     References,
     NodeType,
     CodeMirror,
+    CKEditor,
     MasterPlugin,
     AssetEditor,
     PluginViews,
-    PluginView
+    PluginView,
+    UriPathSegment
 } from './Editors/index';
 
 import {
     CodeMirrorWrap,
+    CKEditorWrap,
     ImageCropper,
     MediaDetailsScreen,
     MediaSelectionScreen
@@ -47,12 +50,15 @@ export {
     References,
     NodeType,
     CodeMirror,
+    CKEditor,
     MasterPlugin,
     AssetEditor,
     PluginViews,
     PluginView,
+    UriPathSegment,
 
     CodeMirrorWrap,
+    CKEditorWrap,
     ImageCropper,
     MediaDetailsScreen,
     MediaSelectionScreen,
@@ -78,12 +84,15 @@ export default {
     References,
     NodeType,
     CodeMirror,
+    CKEditor,
     MasterPlugin,
     AssetEditor,
     PluginViews,
     PluginView,
+    UriPathSegment,
 
     CodeMirrorWrap,
+    CKEditorWrap,
     ImageCropper,
     MediaDetailsScreen,
     MediaSelectionScreen,

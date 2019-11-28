@@ -1,0 +1,76 @@
+.wrapper {
+    display: inline-block;
+    position: relative;
+    vertical-align: top;
+}
+.dropDown {
+    position: static;
+    display: block;
+}
+.dropDown__btn {
+    position: relative;
+    height: var(--spacing-GoldenUnit);
+    border: 0;
+    background-color: var(--colors-ContrastDarker);
+    text-align: right;
+
+    &:hover {
+        color: var(--colors-PrimaryBlue);
+    }
+}
+.dropDown__btnIcon {
+    margin-right: .5em;
+}
+.dropDown__currentEditMode {
+    @media(max-width: 1024px) {
+        display: none;
+    }
+}
+
+.dropDown__contents {
+    position: relative;
+    min-width: 160px;
+    padding: 2px !important;
+    margin-top: -2px;
+    background: var(--colors-ContrastDarker);
+    box-shadow: 0 5px 5px rgba(0, 0, 0, .2);
+
+    @media(max-width: 768px) {
+        position: absolute;
+        min-width: 240px;
+        top: 40px;
+        left: 0;
+        margin-top: 0;
+    }
+}
+.dropDown__item {
+    height: var(--spacing-GoldenUnit);
+    border-top: 1px solid var(--colors-ContrastDarker);
+    background: var(--colors-ContrastDarkest);
+
+    &:hover {
+        background: var(--colors-PrimaryBlue);
+    }
+
+    > a,
+    button {
+        display: block;
+        width: 100%;
+        border: 0;
+        padding: 0 var(--spacing-Full);
+        background: 0;
+        color: #FFF;
+        cursor: pointer;
+        text-decoration: none;
+        line-height: var(--spacing-GoldenUnit);
+        text-align: left;
+    }
+}
+
+.dropDown__groupHeader {
+    color: #FFF;
+    padding: var(--spacing-Half) var(--spacing-Full);
+}
+.dropDown__itemIcon {
+    margin-right: .5em;
+}

@@ -1,5 +1,5 @@
 import produce from 'immer';
-import {mergeDeepRight} from 'ramda';
+import {defaultsDeep} from 'lodash';
 import {action as createAction, ActionType} from 'typesafe-actions';
 import {actionTypes as system, InitAction} from '@neos-project/neos-ui-redux-store/src/System';
 
@@ -7,6 +7,14 @@ import * as selectors from './selectors';
 import {parentNodeContextPath, getNodeOrThrow} from './helpers';
 
 import {FusionPath, NodeContextPath, InsertPosition, NodeMap, ClipboardMode, NodeTypeName} from '@neos-project/neos-ts-interfaces';
+
+interface InlineValidationErrors {
+    [itemProp: string]: any;
+}
+
+interface ErrorsMap {
+    [itemProp: string]: any;
+}
 
 //
 // Export the subreducer state shape interface
@@ -22,6 +30,7 @@ export interface State extends Readonly<{
     toBeRemoved: NodeContextPath | null;
     clipboard: NodeContextPath | null;
     clipboardMode: ClipboardMode | null;
+    inlineValidationErrors: InlineValidationErrors
 }> {}
 
 export const defaultState: State = {
@@ -34,7 +43,8 @@ export const defaultState: State = {
     },
     toBeRemoved: null,
     clipboard: null,
-    clipboardMode: null
+    clipboardMode: null,
+    inlineValidationErrors: {}
 };
 
 // An object describing a node property change
@@ -68,7 +78,8 @@ export enum actionTypes {
     COMMIT_PASTE = '@neos/neos-ui/CR/Nodes/COMMIT_PASTE',
     HIDE = '@neos/neos-ui/CR/Nodes/HIDE',
     SHOW = '@neos/neos-ui/CR/Nodes/SHOW',
-    UPDATE_URI = '@neos/neos-ui/CR/Nodes/UPDATE_URI'
+    UPDATE_URI = '@neos/neos-ui/CR/Nodes/UPDATE_URI',
+    SET_INLINE_VALIDATION_ERRORS = '@neos/neos-ui/CR/Nodes/SET_INLINE_VALIDATION_ERRORS'
 }
 
 export type Action = ActionType<typeof actions>;
@@ -151,6 +162,11 @@ const remove = (contextPath: NodeContextPath) => createAction(actionTypes.REMOVE
  * Set the document node and optionally site node
  */
 const setDocumentNode = (documentNode: NodeContextPath, siteNode?: NodeContextPath) => createAction(actionTypes.SET_DOCUMENT_NODE, {documentNode, siteNode});
+
+/**
+ * Set inline validation errors for property
+ */
+const setInlineValidationErrors = (node: NodeContextPath, propertyName: string, errors: ErrorsMap | null) => createAction(actionTypes.SET_INLINE_VALIDATION_ERRORS, {node, propertyName, errors});
 
 /**
  * Set CR state on page load or after dimensions or workspaces switch
@@ -286,7 +302,8 @@ export const actions = {
     commitPaste,
     hide,
     show,
-    updateUri
+    updateUri,
+    setInlineValidationErrors
 };
 
 //
@@ -373,7 +390,7 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
                 if (!newNode) {
                     throw new Error('This error should never be thrown, it\'s a way to fool TypeScript');
                 }
-                const mergedNode = mergeDeepRight(draft.byContextPath[contextPath], newNode);
+                const mergedNode = defaultsDeep({}, draft.byContextPath[contextPath], newNode);
                 // Force overwrite of children
                 if (newNode.children !== undefined) {
                     mergedNode.children = newNode.children;
@@ -435,7 +452,7 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
             draft.focused.contextPath = null;
             draft.focused.fusionPath = null;
             if (nodes) {
-                draft.byContextPath = merge ? mergeDeepRight(draft.byContextPath, nodes) : nodes;
+                draft.byContextPath = merge ? defaultsDeep({}, draft.byContextPath, nodes) : nodes;
             }
             break;
         }
@@ -487,6 +504,15 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
                     node.uri = newNodeUri;
                 }
             });
+            break;
+        }
+        case actionTypes.SET_INLINE_VALIDATION_ERRORS: {
+            const {node, propertyName, errors} = action.payload;
+            if (errors) {
+                draft.inlineValidationErrors[`${node} ${propertyName}`] = errors;
+            } else {
+                delete draft.inlineValidationErrors[`${node} ${propertyName}`];
+            }
             break;
         }
     }

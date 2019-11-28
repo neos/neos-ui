@@ -1,7 +1,7 @@
 <!--
 Thanks for your contribution, we appreciate it!
 
-ATTENTION: ALL NEW PRs SHOULD TARGET 2.x BRANCH (unless they are not compatible with Neos 3.3)
+ATTENTION: ALL NEW FEATURE PRs SHOULD TARGET THE MASTER BRANCH (bugfixes go to the least maintained branch)
 -->
 
 
@@ -14,4 +14,3 @@ ATTENTION: ALL NEW PRs SHOULD TARGET 2.x BRANCH (unless they are not compatible 
 <!--
 If possible, a screenshot or a gif comparing the new and old behavior would be great.
 -->
-

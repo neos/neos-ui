@@ -21,8 +21,8 @@ import Root from './Containers/Root';
 import apiExposureMap from './apiExposureMap';
 import DelegatingReducer from './DelegatingReducer';
 
-const devToolsArePresent = typeof window === 'object' && typeof window.devToolsExtension !== 'undefined';
-const devToolsStoreEnhancer = () => devToolsArePresent ? window.devToolsExtension() : f => f;
+const devToolsArePresent = typeof window === 'object' && typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined';
+const devToolsStoreEnhancer = () => devToolsArePresent ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f;
 const sagaMiddleWare = createSagaMiddleware();
 
 const delegatingReducer = new DelegatingReducer();
@@ -152,6 +152,29 @@ function * application() {
     });
 
     fetchWithErrorHandling.registerGeneralErrorHandler((message = 'unknown error') => {
+        // Check if the message is a Flow exception response
+        if (message.indexOf('Flow-Debug-Exception-Header') >= 0) {
+            const htmlContainer = document.createElement('div');
+            htmlContainer.innerHTML = message;
+            const exceptionHeader = htmlContainer.querySelector('.Flow-Debug-Exception-Header');
+            if (exceptionHeader && exceptionHeader.textContent) {
+                const exceptionSubject = exceptionHeader.querySelector('.ExceptionSubject');
+                message = exceptionSubject.textContent + ' - Check the logs for details';
+            } else {
+                message = 'Unknown error from unexpected HTML response. Check the logs for details.';
+            }
+        } else if (message.trim()[0] === '{') {
+            // Check if the message is a JSON string
+            try {
+                const jsonMessage = JSON.parse(message);
+                if (jsonMessage.error && jsonMessage.error.message) {
+                    message = jsonMessage.error.message + ' - Reference code "' + jsonMessage.error.referenceCode + '"';
+                } else {
+                    message = 'Unknown error from unexpected JSON response. Check the logs for details.';
+                }
+            } catch (e) {}
+        }
+
         store.dispatch(actions.UI.FlashMessages.add('fetch error', message, 'error'));
     });
 

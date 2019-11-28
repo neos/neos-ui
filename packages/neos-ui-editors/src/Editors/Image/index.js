@@ -227,6 +227,12 @@ export default class ImageEditor extends Component {
         });
     }
 
+    isCroppable = () => {
+        const {image} = this.state;
+        const mediaType = $get('mediaType', image);
+        return this.isFeatureEnabled('crop') && image && !mediaType.includes('svg');
+    }
+
     render() {
         const {isAssetLoading, image} = this.state;
         const {className} = this.props;
@@ -236,12 +242,13 @@ export default class ImageEditor extends Component {
         const classNames = mergeClassNames({
             [style.imageEditor]: true
         });
+
         return (<div className={classNames}>
             <PreviewScreen className={className} propertyName={this.props.identifier} ref={this.setPreviewScreenRef} image={this.getUsedImage()} isLoading={isAssetLoading} afterUpload={this.afterUpload} onFileDialogCancel={this.handleFileDialogCancel} onClick={this.handleThumbnailClicked} isUploadEnabled={this.isFeatureEnabled('upload')} disabled={disabled} accept={accept}/>
             <Controls onChooseFromMedia={this.handleChooseFromMedia} onChooseFromLocalFileSystem={this.handleChooseFile} isUploadEnabled={this.isFeatureEnabled('upload')} isMediaBrowserEnabled={this.isFeatureEnabled('mediaBrowser')} onRemove={image ?
                     this.handleRemoveFile :
-                    null} onCrop={image ?
-                    this.isFeatureEnabled('crop') && this.handleOpenImageCropper :
+                    null} onCrop={this.isCroppable() ?
+                    this.handleOpenImageCropper :
                     null} disabled={disabled}/> {
                 this.isFeatureEnabled('resize') && <ResizeControls onChange={this.handleResize} resizeAdjustment={$get(RESIZE_IMAGE_ADJUSTMENT, image)} imageDimensions={{
                     width: $get('originalDimensions.width', image),

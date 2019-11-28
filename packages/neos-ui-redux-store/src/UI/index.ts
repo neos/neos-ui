@@ -1,11 +1,9 @@
-import {keys} from 'ramda';
 import {combineReducers} from 'redux';
 
 import * as FlashMessages from '@neos-project/neos-ui-redux-store/src/UI/FlashMessages';
 import * as FullScreen from '@neos-project/neos-ui-redux-store/src/UI/FullScreen';
 import * as KeyboardShortcutModal from '@neos-project/neos-ui-redux-store/src/UI/KeyboardShortcutModal';
 import * as LeftSideBar from '@neos-project/neos-ui-redux-store/src/UI/LeftSideBar';
-import * as EditModePanel from '@neos-project/neos-ui-redux-store/src/UI/EditModePanel';
 import * as EditPreviewMode from '@neos-project/neos-ui-redux-store/src/UI/EditPreviewMode';
 import * as Drawer from '@neos-project/neos-ui-redux-store/src/UI/Drawer';
 import * as Remote from '@neos-project/neos-ui-redux-store/src/UI/Remote';
@@ -26,7 +24,6 @@ const all = {
     FullScreen,
     KeyboardShortcutModal,
     LeftSideBar,
-    EditModePanel,
     EditPreviewMode,
     Drawer,
     Remote,
@@ -43,6 +40,10 @@ const all = {
     ContentTree
 };
 
+function typedKeys<T>(o: T) : Array<keyof T> {
+    return Object.keys(o) as Array<keyof T>;
+}
+
 //
 // Export the reducer state shape interface
 //
@@ -51,7 +52,6 @@ export interface State {
     fullScreen: FullScreen.State;
     keyboardShortcutModal: KeyboardShortcutModal.State;
     leftSideBar: LeftSideBar.State;
-    editModePanel: EditModePanel.State;
     editPreviewMode: EditPreviewMode.State;
     drawer: Drawer.State;
     remote: Remote.State;
@@ -70,12 +70,12 @@ export interface State {
 //
 // Export the actionTypes
 //
-export const actionTypes = keys(all).reduce((acc, cur) => ({...acc, [cur]: all[cur].actionTypes}), {});
+export const actionTypes = typedKeys(all).reduce((acc, cur) => ({...acc, [cur]: all[cur].actionTypes}), {});
 
 //
 // Export the actions
 //
-export const actions = keys(all).reduce((acc, cur) => ({...acc, [cur]: all[cur].actions}), {});
+export const actions = typedKeys(all).reduce((acc, cur) => ({...acc, [cur]: all[cur].actions}), {});
 
 
 //
@@ -86,7 +86,6 @@ export const reducer = combineReducers({
     fullScreen: FullScreen.reducer,
     keyboardShortcutModal: KeyboardShortcutModal.reducer,
     leftSideBar: LeftSideBar.reducer,
-    editModePanel: EditModePanel.reducer,
     editPreviewMode: EditPreviewMode.reducer,
     drawer: Drawer.reducer,
     remote: Remote.reducer,
@@ -105,4 +104,4 @@ export const reducer = combineReducers({
 //
 // Export the selectors
 //
-export const selectors = keys(all).reduce((acc, cur) => ({...acc, [cur]: all[cur].selectors}), {});
+export const selectors = typedKeys(all).reduce((acc, cur) => ({...acc, [cur]: all[cur].selectors}), {});

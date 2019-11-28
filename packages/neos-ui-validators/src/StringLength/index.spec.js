@@ -89,3 +89,31 @@ test('should return an error message if maximum < minimum', () => {
 
     expect(stringLengthValidator('123456', validatorOptions)).toBe('The maximum is less than the minimum.');
 });
+
+test('"abc <br />" should return an error message for max: 5 and not ignore the html', () => {
+    const validatorOptions = {
+        maximum: 5,
+        ignoreHtml: false
+    };
+
+    expect(stringLengthValidator('abc <br />', validatorOptions)).not.toBe(null);
+});
+
+test('"abc <br />" should be valid for max: 5 and ignore the html', () => {
+    const validatorOptions = {
+        maximum: 5,
+        ignoreHtml: true
+    };
+
+    expect(stringLengthValidator('abc <br />', validatorOptions)).toBe(null);
+});
+
+test('"abc <br />" should be valid for min:5 and max: 10 and ignore the html', () => {
+    const validatorOptions = {
+        minimum: 5,
+        maximum: 10,
+        ignoreHtml: true
+    };
+
+    expect(stringLengthValidator('abcd <br />', validatorOptions)).toBe(null);
+});

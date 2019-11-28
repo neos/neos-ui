@@ -18,8 +18,8 @@ const config = {
     },
     zIndex: {
         secondaryToolbar: ['linkIconButtonFlyout'],
-        flashMessageContainer: '5',
-        loadingIndicatorContainer: '2',
+        flashMessageContainer: '6',
+        loadingIndicatorContainer: '5',
         secondaryInspector: ['context', 'iframe', 'close'],
         secondaryInspectorElevated: ['context', 'dropdownContents'],
         dialog: ['context'],
@@ -36,7 +36,7 @@ const config = {
         sideBar: ['dropTargetBefore', 'dropTargetAfter'],
         wrapperDropdown: ['context'],
         unappliedChangesOverlay: ['context'],
-        nodeToolBar: '2147483647'
+        nodeToolBar: '2147483646'
     },
     fontSize: {
         base: '14px',

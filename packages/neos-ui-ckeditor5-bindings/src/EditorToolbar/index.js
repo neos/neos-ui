@@ -1,15 +1,15 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import mergeClassNames from 'classnames';
 import {$transform} from 'plow-js';
 
 import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors} from '@neos-project/neos-ui-redux-store';
 import {executeCommand} from './../ckEditorApi';
 
-import style from './index.css';
-import {renderToolbarComponents} from './Helpers/index';
+import EditorToolbar from './EditorToolbar';
+
+export {EditorToolbar};
 
 @connect($transform({
     focusedNodeType: selectors.CR.Nodes.focusedNodeTypeSelector,
@@ -17,10 +17,9 @@ import {renderToolbarComponents} from './Helpers/index';
     formattingUnderCursor: selectors.UI.ContentCanvas.formattingUnderCursor
 }))
 @neos(globalRegistry => ({
-    toolbarRegistry: globalRegistry.get('ckEditor5').get('richtextToolbar'),
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
 }))
-export default class EditorToolbar extends PureComponent {
+export default class InlineEditorToolbar extends PureComponent {
     static propTypes = {
         focusedNodeType: PropTypes.string,
         currentlyEditedPropertyName: PropTypes.string,
@@ -30,15 +29,8 @@ export default class EditorToolbar extends PureComponent {
             PropTypes.object,
             PropTypes.string
         ])),
-
-        toolbarRegistry: PropTypes.object.isRequired,
         nodeTypesRegistry: PropTypes.object.isRequired
     };
-
-    componentWillMount() {
-        const {toolbarRegistry} = this.props;
-        this.renderToolbarComponents = renderToolbarComponents(toolbarRegistry);
-    }
 
     render() {
         const {
@@ -47,24 +39,15 @@ export default class EditorToolbar extends PureComponent {
             formattingUnderCursor,
             nodeTypesRegistry
         } = this.props;
-        const inlineEditorOptions = nodeTypesRegistry
+        const editorOptions = nodeTypesRegistry
             .getInlineEditorOptionsForProperty(focusedNodeType, currentlyEditedPropertyName);
 
-        const classNames = mergeClassNames({
-            [style.toolBar]: true
-        });
-        const renderedToolbarComponents = this.renderToolbarComponents(
-            executeCommand,
-            inlineEditorOptions,
-            formattingUnderCursor
-        );
-
         return (
-            <div className={classNames}>
-                <div className={style.toolBar__btnGroup}>
-                    {renderedToolbarComponents}
-                </div>
-            </div>
+            <EditorToolbar
+                executeCommand={executeCommand}
+                editorOptions={editorOptions}
+                formattingUnderCursor={formattingUnderCursor}
+            />
         );
     }
 }

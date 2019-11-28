@@ -1,6 +1,6 @@
 import produce from 'immer';
 import {$get} from 'plow-js';
-import {mapObjIndexed} from 'ramda';
+import {mapValues} from 'lodash';
 import {createSelector} from 'reselect';
 import {action as createAction, ActionType} from 'typesafe-actions';
 import {actionTypes as system, InitAction, GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
@@ -163,14 +163,14 @@ const activePresetsSelector = createSelector([
 ], (active, byName) => {
     // TODO We might want to use the selected preset values (pass from host frame or content canvas) instead of individual dimension values
     if (active !== null) {
-        return mapObjIndexed((dimensionValues, name) => {
+        return mapValues(active, (dimensionValues, name) => {
             const dimensionConfiguration = byName[name];
             const presets = dimensionConfiguration.presets;
             const activePreset = Object.keys(presets).find(dimensionName => isEqual(presets[dimensionName].values, dimensionValues));
             const presetName = activePreset || dimensionConfiguration.defaultPreset;
             const finalActivePreset = presets[presetName];
             return Object.assign({}, finalActivePreset, {name: presetName});
-        }, active);
+        });
     }
     return {};
 });

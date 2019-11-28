@@ -2,24 +2,17 @@
 [![CircleCI](https://circleci.com/gh/neos/neos-ui.svg?style=svg)](https://circleci.com/gh/neos/neos-ui) [![Dependency Status](https://david-dm.org/neos/neos-ui.svg)](https://david-dm.org/neos/neos-ui) [![devDependency Status](https://david-dm.org/neos/neos-ui/dev-status.svg)](https://david-dm.org/neos/neos-ui#info=devDependencies&view=table)
 [![Slack](http://slack.neos.io/badge.svg)](http://slack.neos.io) [![Forum](https://img.shields.io/badge/forum-Discourse-39c6ff.svg)](https://discuss.neos.io/) [![Twitter](https://img.shields.io/twitter/follow/neoscms.svg?style=social)](https://twitter.com/NeosCMS)
 
-> The next generation Neos CMS interface written in ReactJS and a tonn of other fun technology.
+> The next generation Neos CMS interface written in ReactJS and a ton of other fun technology.
 
 ## Versioning
 
-Since Neos 5.0 (scheduled August 2019) this repository will become obsolete and `neos-ui` will be versioned and releases together with with the rest of Neos core packages.
+This repository follows the same versioning scheme as Neos itself, with the only exception that the 4.0 branch works with all Neos 4.x releases.
+Release roadmap is [available here](https://www.neos.io/features/release-process.html)
 
-Until then, the following version conventions are in place:
-- 2.x versions are Neos 3.3 compatible (released from the `2.x` branch)
-- 3.x branch is Neos 4.x compatible (released from `master`)
-- We follow semver, but do not make bugfix releases for previous minor branches
-
-For users this means: **You will not get bugfixes for previous minor releases, so use a more relaxed version constraint like these:**
-
-```
-"neos/neos-ui": "^3",
-```
-
-For developers this means: **All development happens in `2.x` branch and then getting upmered to `master`**
+That means:
+* All bugfixes go to the lowest maintained branch
+* All new features go only to master
+* New minor and major releases are made in sync with Neos/Flow. Bugfix releases may be available independantly
 
 ## Browser support
 
@@ -63,7 +56,7 @@ However, if you want to stay on bleeding-edge, or want to help out developing, y
 need the `dev-master` release. You can install the master release using:
 
 ```
-composer require neos/neos-ui:dev-master
+composer require neos/neos-ui-compiled:dev-master neos/neos-ui:dev-master
 ```
 
 ## Contributing
@@ -72,7 +65,7 @@ Please follow the respective guides for contributing on OSX and on Linux.
 
 ### on Windows
 
-1) Ensure you have the `2.x` or `dev-master` version installed (see above).
+1) Ensure you have the relevant version installed (see above).
 
 2) Please install Docker for Windows.
 
@@ -93,7 +86,7 @@ Neos:
 
 In order to start contributing on OSX / Linux, follow the following steps:
 
-1) Ensure you have the `2.x` or `dev-master` version installed (see above).
+1) Ensure you have the relevant version installed (see above).
 
 2) We require [Chrome](https://www.google.com/chrome/browser/desktop/index.html) as well as the `yarn`(https://yarnpkg.com/en/) command and GNU Make(https://www.gnu.org/software/make/) to be installed on your system.
 
@@ -123,16 +116,14 @@ on how to write meaningful descriptions for your contributions.
 
 #### Doing upmerges
 
-1) Develop only in the `2.x` branch, unless this feature is only compatible with Neos 4.x, then in `master`
-
-2) To do the upmerge do the following commands
+To do the upmerge run the following commands
 
 ```
-git checkout master && git fetch && git reset --hard origin/master && git merge --no-ff --no-commit origin/2.x --strategy-option=ours
+git checkout 5.0 && git fetch && git reset --hard origin/5.0 && git merge --no-ff --no-commit origin/4.0 --strategy-option=ours
+# review and `git commit`
+git checkout master && git fetch && git reset --hard origin/master && git merge --no-ff --no-commit origin/5.0 --strategy-option=ours
+# review and `git commit`
 ```
-Review the changes and commit the changes with the following commit message:
-
-`MERGE: Merge branch '2.x' into master`
 
 #### Development commands
 | Command         | Description                    |
@@ -167,9 +158,6 @@ module.exports = {
 };
 ```
 
-#### Code style
-Our code style is based upon `xo`, with one big difference - We use 4 spaces instead of tabs, to align our code style a bit with the PSR-2 standard for our PHP codebase. To lint the code, execute `make lint` in your shell.
-
 #### Writing unit tests
 The unit tests are executed with [jest](https://facebook.github.io/jest/).
 To run the unit tests, execute `make test` in your shell.
@@ -180,7 +168,9 @@ Use `it.only(() => {})` and `describe.only(() => {})` if you want to run a speci
 
 #### Integration tests
 
-To setup end-to-end tests locally you have got to do the same things described in [CircleCI workflow](https://github.com/neos/neos-ui/blob/2.x/.circleci/config.yml), namely take the [test disribution](https://github.com/neos/neos-ui/blob/2.x/Tests/IntegrationTests/TestDistribution/composer.json) and `composer install` in it, put the right branch into Neos.Neos.Ui folder and run webserver and mysql server with the same config as described in the test distribution's [Settings.yaml](https://github.com/neos/neos-ui/blob/2.x/Tests/IntegrationTests/TestDistribution/Configuration/Settings.yaml) (or adjust it).
+To setup end-to-end tests locally you have got to do the same things described in [CircleCI workflow](https://github.com/neos/neos-ui/blob/master/.circleci/config.yml), namely take the [test disribution](https://github.com/neos/neos-ui/blob/master/Tests/IntegrationTests/TestDistribution/composer.json) and `composer install` in it, put the right branch into Neos.Neos.Ui folder and run webserver and mysql server with the same config as described in the test distribution's [Settings.yaml](https://github.com/neos/neos-ui/blob/master/Tests/IntegrationTests/TestDistribution/Configuration/Settings.yaml) (or adjust it).
+
+For executing the end to end tests on a Mac with catalina or higher you need to permit screen recording. Open 'System Preferences > Security & Privacy > Privacy > Screen Recording' and check 'TestCafe Browser Tools' in the application list.
 
 #### Releasing
 

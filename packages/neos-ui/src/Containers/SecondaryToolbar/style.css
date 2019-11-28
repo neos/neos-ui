@@ -12,9 +12,6 @@
     transform: translateY(0);
     transition: var(--transition-Fast) ease-in-out;
 }
-.secondaryToolbar--isMovedDown {
-    transform: translateY(110px); /* height of EditModePanel - 41px added */
-}
 .secondaryToolbar--isFringeLeft {
     padding-left: 46px;
 }

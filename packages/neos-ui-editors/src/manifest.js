@@ -64,6 +64,11 @@ manifest('inspectorEditors', {}, globalRegistry => {
         hasOwnLabel: true
     });
 
+    editorsRegistry.set('Neos.Neos/Inspector/Editors/RichTextEditor', {
+        component: Editors.CKEditor,
+        hasOwnLabel: true
+    });
+
     editorsRegistry.set('Neos.Neos/Inspector/Editors/AssetEditor', {
         component: Editors.AssetEditor
     });
@@ -81,12 +86,20 @@ manifest('inspectorEditors', {}, globalRegistry => {
         component: Editors.PluginView
     });
 
+    editorsRegistry.set('Neos.Neos/Inspector/Editors/UriPathSegmentEditor', {
+        component: Editors.UriPathSegment
+    });
+
     //
     // Secondary inspector editors
     //
 
     secondaryEditorsRegistry.set('Neos.Neos/Inspector/Secondary/Editors/CodeMirrorWrap', {
         component: Editors.CodeMirrorWrap
+    });
+
+    secondaryEditorsRegistry.set('Neos.Neos/Inspector/Secondary/Editors/CKEditorWrap', {
+        component: Editors.CKEditorWrap
     });
 
     secondaryEditorsRegistry.set('Neos.Neos/Inspector/Secondary/Editors/ImageCropper', {

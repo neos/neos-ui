@@ -1,20 +1,13 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {$get, $transform} from 'plow-js';
+import {$get} from 'plow-js';
 import LinkInput from '@neos-project/neos-ui-editors/src/Library/LinkInput';
 
 import {IconButton} from '@neos-project/react-ui-components';
 import {neos} from '@neos-project/neos-ui-decorators';
-import {executeCommand} from './../ckEditorApi';
-
-import {selectors} from '@neos-project/neos-ui-redux-store';
 
 import style from './LinkButton.css';
 
-@connect($transform({
-    formattingUnderCursor: selectors.UI.ContentCanvas.formattingUnderCursor
-}))
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')
 }))
@@ -27,6 +20,7 @@ export default class LinkButton extends PureComponent {
             PropTypes.object
         ])),
         inlineEditorOptions: PropTypes.object,
+        executeCommand: PropTypes.func.isRequired,
         i18nRegistry: PropTypes.object.isRequired
     };
 
@@ -45,10 +39,10 @@ export default class LinkButton extends PureComponent {
         if (this.isOpen()) {
             if ($get('link', this.props.formattingUnderCursor) !== undefined) {
                 // We need to remove all attirbutes before unsetting the link
-                executeCommand('linkTitle', false, false);
-                executeCommand('linkRelNofollow', false, false);
-                executeCommand('linkTargetBlank', false, false);
-                executeCommand('unlink');
+                this.props.executeCommand('linkTitle', false, false);
+                this.props.executeCommand('linkRelNofollow', false, false);
+                this.props.executeCommand('linkTargetBlank', false, false);
+                this.props.executeCommand('unlink');
             }
             this.setState({isOpen: false});
         } else {
@@ -58,22 +52,22 @@ export default class LinkButton extends PureComponent {
 
     handleLinkChange = value => {
         if (value === '') {
-            executeCommand('unlink');
+            this.props.executeCommand('unlink');
         } else {
-            executeCommand('link', value, false);
+            this.props.executeCommand('link', value, false);
         }
     }
 
     handleLinkTitleChange = value => {
-        executeCommand('linkTitle', value, false);
+        this.props.executeCommand('linkTitle', value, false);
     }
 
     handleLinkTargetChange = () => {
-        executeCommand('linkTargetBlank', undefined, false);
+        this.props.executeCommand('linkTargetBlank', undefined, false);
     }
 
     handleLinkRelChange = () => {
-        executeCommand('linkRelNofollow', undefined, false);
+        this.props.executeCommand('linkRelNofollow', undefined, false);
     }
 
     render() {
@@ -86,7 +80,7 @@ export default class LinkButton extends PureComponent {
                     isActive={this.isOpen()}
                     icon={this.getLinkValue() ? 'unlink' : 'link'}
                     onClick={this.handleLinkButtonClick}
-                    />
+                />
                 {this.isOpen() ? (
                     <div className={style.linkButton__flyout}>
                         <LinkInput
@@ -100,7 +94,7 @@ export default class LinkButton extends PureComponent {
                             onLinkRelChange={this.handleLinkRelChange}
                             onLinkTargetChange={this.handleLinkTargetChange}
                             setFocus={true}
-                            />
+                        />
                     </div>
                 ) : null}
             </div>

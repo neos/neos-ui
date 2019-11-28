@@ -1,0 +1,17 @@
+.wrap {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.toolBar__wrap {
+    display: flex;
+}
+
+.editor {
+    background-color: white;
+    color: black;
+    flex-grow: 1;
+    outline: 0;
+    padding: 15px;
+}

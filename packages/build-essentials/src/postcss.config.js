@@ -3,9 +3,7 @@ const styleVars = styles.generateCssVarsObject(styles.config);
 
 module.exports = {
     plugins: [
-        require('autoprefixer')({
-            browsers: ['last 2 versions']
-        }),
+        require('autoprefixer'),
         require('postcss-css-variables')({
             variables: Object.assign(styleVars)
         }),

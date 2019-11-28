@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {produce} from 'immer';
-import {mapObjIndexed} from 'ramda';
+import {mapValues} from 'lodash';
 import {connect} from 'react-redux';
 import {$get, $contains, $set} from 'plow-js';
 import I18n from '@neos-project/neos-ui-i18n';
@@ -140,7 +140,7 @@ export default class Inspector extends PureComponent {
         let nodeForContext = focusedNode;
         if (transientValues) {
             nodeForContext = produce(nodeForContext, draft => {
-                const mappedTransientValues = mapObjIndexed(item => $get('value', item), transientValues);
+                const mappedTransientValues = mapValues(transientValues, item => $get('value', item));
                 draft.properties = Object.assign({}, draft.properties, mappedTransientValues);
             });
         }
@@ -163,8 +163,10 @@ export default class Inspector extends PureComponent {
     }
 
     handleApply = () => {
-        this.props.apply();
-        this.closeSecondaryInspectorIfNeeded();
+        if (!this.props.isApplyDisabled) {
+            this.props.apply();
+            this.closeSecondaryInspectorIfNeeded();
+        }
     }
 
     handleEscape = () => {

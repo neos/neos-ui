@@ -15,6 +15,7 @@ import {
 } from './dom';
 
 import style from './style.css';
+import {SelectionModeTypes} from '@neos-project/neos-ts-interfaces';
 
 //
 // Get all parent elements of the event target.
@@ -162,6 +163,10 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     }
 
     yield takeEvery(actionTypes.CR.Nodes.FOCUS, function * (action) {
+        // Don't focus node in contentcanvas when multiselecting
+        if (action.payload.selectionMode !== SelectionModeTypes.SINGLE_SELECT) {
+            return;
+        }
         const oldNode = findInGuestFrame(`.${style['markActiveNodeAsFocused--focusedNode']}`);
 
         if (oldNode) {

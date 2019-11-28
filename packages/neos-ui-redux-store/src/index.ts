@@ -1,4 +1,4 @@
-import {combineReducers} from 'redux';
+import {combineReducers} from '@neos-project/neos-ui-redux-store/src/combineReducers';
 
 import * as Changes from '@neos-project/neos-ui-redux-store/src/Changes';
 import * as CR from '@neos-project/neos-ui-redux-store/src/CR';
@@ -32,7 +32,7 @@ export const reducer = combineReducers({
     ui: UI.reducer,
     user: User.reducer,
     // NOTE: The plugins reducer is UNPLANNED EXTENSIBILITY, do not modify unless you know what you are doing!
-    plugins: (state) => state || {}
+    plugins: (state: System.GlobalState) => state || {}
 });
 
 //

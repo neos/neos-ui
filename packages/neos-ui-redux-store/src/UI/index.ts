@@ -1,4 +1,4 @@
-import {combineReducers} from 'redux';
+import {combineReducers} from '@neos-project/neos-ui-redux-store/src/combineReducers';
 
 import * as FlashMessages from '@neos-project/neos-ui-redux-store/src/UI/FlashMessages';
 import * as FullScreen from '@neos-project/neos-ui-redux-store/src/UI/FullScreen';

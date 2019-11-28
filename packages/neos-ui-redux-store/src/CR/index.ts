@@ -1,4 +1,4 @@
-import {combineReducers} from 'redux';
+import {combineReducers} from '@neos-project/neos-ui-redux-store/src/combineReducers';
 
 
 import * as ContentDimensions from '@neos-project/neos-ui-redux-store/src/CR/ContentDimensions';

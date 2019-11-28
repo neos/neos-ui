@@ -4,7 +4,7 @@ import {action as createAction, ActionType} from 'typesafe-actions';
 import {actionTypes as system, InitAction} from '@neos-project/neos-ui-redux-store/src/System';
 
 import * as selectors from './selectors';
-import {parentNodeContextPath, getNodeOrThrow} from './helpers';
+import {parentNodeContextPath, getNodeOrThrow, calculateNewFocusedNodes} from './helpers';
 
 import {FusionPath, NodeContextPath, InsertPosition, NodeMap, ClipboardMode, SelectionModeTypes, NodeTypeName} from '@neos-project/neos-ts-interfaces';
 
@@ -381,7 +381,7 @@ const moveNodeInState = (
         processedChildren.splice(insertIndex, 0, childRepresentationOfSourceNode);
     }
     baseNode.children = processedChildren;
-}
+};
 
 //
 // Export the reducer
@@ -449,45 +449,9 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
         case actionTypes.FOCUS: {
             const {contextPath, fusionPath, selectionMode} = action.payload;
             draft.focused.fusionPath = fusionPath;
-            if (selectionMode === SelectionModeTypes.SINGLE_SELECT) {
-                draft.focused.contextPaths = [contextPath]
-            } else if (selectionMode === SelectionModeTypes.RANGE_SELECT) {
-                const focusedNodesContextPaths = draft.focused.contextPaths;
-                const lastSelectedNodeContextPath = focusedNodesContextPaths[focusedNodesContextPaths.length - 1];
-                const maybeParentNodeContextPath = parentNodeContextPath(lastSelectedNodeContextPath);
-                if (maybeParentNodeContextPath) {
-                    const focusedNodesContextPaths = new Set(draft.focused.contextPaths);
-                    const parentNode = getNodeOrThrow(draft.byContextPath, maybeParentNodeContextPath);
-                    const tempSelection: string[] = [];
-                    let startSelectionFlag = false;
-                    // if both start and end nodes are within children, then we can do range select
-                    const startAndEndOfSelectionAreOnOneLevel = parentNode.children.some(child => {
-                        if (child.contextPath === lastSelectedNodeContextPath || child.contextPath === contextPath) {
-                            if (startSelectionFlag) { // if matches for the second time it means that both start and end of selection were found
-                                tempSelection.push(child.contextPath); // also push the last node
-                                return true;
-                            } else {
-                                startSelectionFlag = true;
-                            }
-                        }
-                        if (startSelectionFlag) {
-                            tempSelection.push(child.contextPath);
-                        }
-                        return false;
-                    });
-                    if (startAndEndOfSelectionAreOnOneLevel) {
-                        tempSelection.forEach(contextPath => focusedNodesContextPaths.add(contextPath));
-                        draft.focused.contextPaths = [...focusedNodesContextPaths];
-                    }
-                }
-            } else {
-                const focusedNodesContextPaths = new Set(draft.focused.contextPaths);
-                if (focusedNodesContextPaths.has(contextPath)) {
-                    focusedNodesContextPaths.delete(contextPath)
-                } else {
-                    focusedNodesContextPaths.add(contextPath)
-                }
-                draft.focused.contextPaths = [...focusedNodesContextPaths]
+            const newFocusedNodes = calculateNewFocusedNodes(selectionMode, contextPath, draft.focused.contextPaths, draft.byContextPath);
+            if (newFocusedNodes) {
+                draft.focused.contextPaths = newFocusedNodes;
             }
             break;
         }

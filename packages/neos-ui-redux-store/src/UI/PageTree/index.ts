@@ -1,10 +1,11 @@
 import produce from 'immer';
 import {action as createAction, ActionType} from 'typesafe-actions';
 
-import {actionTypes as system, InitAction} from '@neos-project/neos-ui-redux-store/src/System';
+import {actionTypes as system, InitAction, GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
 import {NodeContextPath, SelectionModeTypes} from '@neos-project/neos-ts-interfaces';
 
 import * as selectors from './selectors';
+import {calculateNewFocusedNodes} from '../../CR/Nodes/helpers';
 
 export interface State extends Readonly<{
     focused: NodeContextPath[];
@@ -75,25 +76,18 @@ export type Action = ActionType<typeof actions>;
 //
 // Export the reducer
 //
-export const reducer = (state: State = defaultState, action: InitAction | Action) => produce(state, draft => {
+export const reducer = (state: State = defaultState, action: InitAction | Action, globalState: GlobalState) => produce(state, draft => {
     switch (action.type) {
         case system.INIT: {
-            const contextPath = action.payload.cr.nodes.documentNode || action.payload.cr.nodes.siteNode
+            const contextPath = action.payload.cr.nodes.documentNode || action.payload.cr.nodes.siteNode;
             draft.focused = contextPath ? [contextPath] : [];
             break;
         }
         case actionTypes.FOCUS: {
             const {contextPath, selectionMode} = action.payload;
-            if (selectionMode === SelectionModeTypes.SINGLE_SELECT) {
-                draft.focused = [contextPath]
-            } else {
-                const contextPaths = new Set(draft.focused);
-                if (contextPaths.has(contextPath)) {
-                    contextPaths.delete(contextPath)
-                } else {
-                    contextPaths.add(contextPath)
-                }
-                draft.focused = [...contextPaths]
+            const newFocusedNodes = calculateNewFocusedNodes(selectionMode, contextPath, draft.focused, globalState.cr.nodes.byContextPath);
+            if (newFocusedNodes) {
+                draft.focused = newFocusedNodes;
             }
             break;
         }

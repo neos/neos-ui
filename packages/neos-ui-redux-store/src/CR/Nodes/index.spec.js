@@ -61,10 +61,10 @@ test(`The reducer should create a valid initial state`, () => {
         siteNode: 'siteNode',
         documentNode: 'documentNode',
         focused: {
-            contextPath: null,
+            contextPaths: [],
             fusionPath: null
         },
-        toBeRemoved: null,
+        toBeRemoved: [],
         clipboard: null,
         clipboardMode: null,
         inlineValidationErrors: {}

@@ -1,4 +1,5 @@
 import {actionTypes, actions, reducer} from './index';
+import {FusionPath, NodeContextPath, InsertPosition, NodeMap, ClipboardMode, SelectionModeTypes, NodeTypeName} from '@neos-project/neos-ts-interfaces';
 
 import {actionTypes as system} from '../../System/index';
 
@@ -43,9 +44,25 @@ test(`The reducer should return a plain JS object as the initial state.`, () => 
 });
 
 test(`The "focus" action should set the focused node context path.`, () => {
-    const nextState = reducer(undefined, actions.focus('someOtherContextPath'));
-
-    expect(nextState.isFocused).toBe('someOtherContextPath');
+    const globalState = {
+        ui: {
+            focused: [],
+            toggled: [],
+            hidden: [],
+            intermediate: [],
+            loading: [],
+            errors: []
+        },
+        cr: {
+            nodes: {
+                siteNode: 'siteNode',
+                documentNode: 'documentNode',
+                byContextPath: []
+            }
+        }
+    }
+    const nextState = reducer(globalState.ui, actions.focus('someOtherContextPath', undefined, SelectionModeTypes.SINGLE_SELECT), globalState);
+    expect(nextState.focused).toEqual(['someOtherContextPath']);
 });
 
 test(`The "invalidate" action should remove the given node from toggled state`, () => {

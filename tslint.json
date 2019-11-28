@@ -5,7 +5,7 @@
     "member-ordering": false,
     "ordered-imports": false,
     "object-literal-sort-keys": false,
-    "no-console": true,
+    "no-console": [true, "log"],
     "no-debugger": true,
     "no-parameter-reassignment": true,
     "no-var-keyword": true,

@@ -179,7 +179,7 @@ export class Header extends PureComponent {
             [theme['header__data--deniesDrop']]: isOver && !canDrop
         });
 
-        return connectDragSource(
+        return (
             <div>
                 <div className={theme.header}>
                     <NodeDropTarget
@@ -189,7 +189,7 @@ export class Header extends PureComponent {
                         nodeDndType={nodeDndType}
                         mode="before"
                         />
-                    {connectDropTarget(
+                    {connectDropTarget(connectDragSource(
                         <div
                             role="button"
                             className={dataClassNames}
@@ -215,7 +215,7 @@ export class Header extends PureComponent {
                                 </span>
                             </div>
                         </div>
-                    )}
+                    ))}
                     {isLastChild && (
                         <NodeDropTarget
                             id={id}

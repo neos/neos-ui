@@ -12,20 +12,13 @@ import {selectors} from '@neos-project/neos-ui-redux-store';
 import {isNodeCollapsed} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/helpers';
 import {neos} from '@neos-project/neos-ui-decorators';
 
+import {hasNestedNodes} from '@neos-project/neos-ui/src/Containers/LeftSideBar/NodeTree/helpers'
+
 import animate from 'amator';
 import hashSum from 'hash-sum';
 import moment from 'moment';
 
 const getContextPath = $get('contextPath');
-
-// TODO extract to selector
-const hasNestedNodes = focusedNodesContextPaths => {
-    return !focusedNodesContextPaths.every(contextPathA => {
-        const path = contextPathA.split('@')[0];
-        // TODO: adjust this for the new CR when this is merged: https://github.com/neos/neos-ui/pull/2178
-        return focusedNodesContextPaths.every(contextPathB => !(contextPathB.indexOf(path) === 0 && contextPathA !== contextPathB));
-    });
-};
 
 //
 // Finds the first parent element that has a scrollbar

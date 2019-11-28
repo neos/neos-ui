@@ -6,6 +6,7 @@ import {$get, $contains} from 'plow-js';
 import {isEqualSet} from '@neos-project/utils-helpers';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors, actions} from '@neos-project/neos-ui-redux-store';
+import {hasNestedNodes} from '@neos-project/neos-ui/src/Containers/LeftSideBar/NodeTree/helpers'
 
 import {
     AddNode,
@@ -220,15 +221,6 @@ export default class NodeTreeToolBar extends PureComponent {
 const withNodeTypesRegistry = neos(globalRegistry => ({
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
 }));
-
-// TODO extract to selector
-const hasNestedNodes = focusedNodesContextPaths => {
-    return !focusedNodesContextPaths.every(contextPathA => {
-        const path = contextPathA.split('@')[0];
-        // TODO: adjust this for the new CR when this is merged: https://github.com/neos/neos-ui/pull/2178
-        return focusedNodesContextPaths.every(contextPathB => !(contextPathB.indexOf(path) === 0 && contextPathA !== contextPathB));
-    });
-};
 
 const removeAllowed = (focusedNodesContextPaths, state) => focusedNodesContextPaths.every(contextPath => {
     const getNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(contextPath);

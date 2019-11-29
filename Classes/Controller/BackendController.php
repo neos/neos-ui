@@ -184,7 +184,7 @@ class BackendController extends ActionController
     {
         $this->response->getHeaders()->setCacheControlDirective('no-cache');
         $this->response->getHeaders()->setCacheControlDirective('no-store');
-        if ($node->isHidden()) {
+        if ($node->isHidden() && $node->getContext()->getWorkspace()->isPublicWorkspace()) {
             $this->redirect('show', 'Frontend\Node', 'Neos.Neos', ['node' => $node, 'showInvisible' => true]);
         } else {
             $this->redirect('show', 'Frontend\Node', 'Neos.Neos', ['node' => $node]);

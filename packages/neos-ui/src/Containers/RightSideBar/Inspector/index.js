@@ -91,7 +91,7 @@ export default class Inspector extends PureComponent {
             );
 
             const processedViewConfiguration = this.preprocessViewConfiguration(
-                {node: nodeForContext}, [], {...originalViewConfiguration}, {...originalViewConfiguration}
+                {node: nodeForContext}, [], originalViewConfiguration, originalViewConfiguration
             );
 
             this.state.viewConfiguration = processedViewConfiguration || {...originalViewConfiguration};
@@ -128,7 +128,6 @@ export default class Inspector extends PureComponent {
     //
     preprocessViewConfiguration = (context = {}, path = [], viewConfiguration, originalViewConfiguration) => {
         const currentLevel = path.length === 0 ? viewConfiguration : $get(path, viewConfiguration);
-
         Object.keys(currentLevel).forEach(propertyName => {
             const propertyValue = currentLevel[propertyName];
             const newPath = path.slice();

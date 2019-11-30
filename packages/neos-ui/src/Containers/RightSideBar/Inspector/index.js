@@ -222,6 +222,19 @@ export default class Inspector extends PureComponent {
         this.setState({toggledPanels: newState});
     };
 
+    getAmountOfValidationErrors = (tab, validationErrors) => {
+        let errors = 0;
+        tab.groups.forEach(group => {
+            group.items.forEach(item => {
+                if (Object.keys(validationErrors).includes(item.id)) {
+                    errors += 1;
+                }
+            });
+        });
+
+        return errors;
+    };
+
     render() {
         const {
             focusedNode,
@@ -282,11 +295,7 @@ export default class Inspector extends PureComponent {
                         //
                         .map(tab => {
                             const notifications = validationErrors ?
-                                tab.groups.reduce((notifications, group) => {
-                                    return group.items.reduce((notifications, item) => (
-                                        Object.keys(validationErrors).includes(item.id) ? notifications + 1 : notifications
-                                    ), 0);
-                                }, 0) : 0;
+                                this.getAmountOfValidationErrors(tab, validationErrors) : 0;
                             const tabLabel = i18nRegistry.translate($get('label', tab));
                             const notificationTooltipLabelPieces = i18nRegistry.translate(
                                 'UI.RightSideBar.tabs.validationErrorTooltip',

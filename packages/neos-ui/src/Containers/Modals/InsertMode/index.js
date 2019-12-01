@@ -30,6 +30,7 @@ import style from './style.css';
 })
 
 @neos(globalRegistry => ({
+    i18nRegistry: globalRegistry.get('i18n'),
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
 }))
 export default class InsertModeModal extends PureComponent {
@@ -41,6 +42,7 @@ export default class InsertModeModal extends PureComponent {
         cancel: PropTypes.func.isRequired,
         apply: PropTypes.func.isRequired,
         nodeTypesRegistry: PropTypes.object.isRequired,
+        i18nRegistry: PropTypes.object.isRequired,
         getNodeByContextPath: PropTypes.func.isRequired,
         subjectContextPaths: PropTypes.array,
         referenceContextPath: PropTypes.string
@@ -66,10 +68,9 @@ export default class InsertModeModal extends PureComponent {
     }
 
     renderNodeLabel(contextPaths) {
-        const {getNodeByContextPath, nodeTypesRegistry} = this.props;
+        const {getNodeByContextPath, nodeTypesRegistry, i18nRegistry} = this.props;
         if (contextPaths.length > 1) {
-            // TODO i18n
-            return `${contextPaths.length} nodes`;
+            return `${contextPaths.length} ${i18nRegistry.translate('nodes', 'nodes', {}, 'Neos.Neos.Ui', 'Main')}`;
         }
         const contextPath = contextPaths[0];
         const node = getNodeByContextPath(contextPath);

@@ -233,12 +233,24 @@ export default class Inspector extends PureComponent {
             shouldShowSecondaryInspector,
             i18nRegistry
         } = this.props;
-        // TODO i18n
         if (focusedContentNodesContextPaths.length > 1) {
-            return (<div title="Select a single document in order to be able to edit its properties" className={style.centeredInspector}><div>{focusedContentNodesContextPaths.length} content elements selected</div></div>);
+            return (
+                <div
+                    title={i18nRegistry.translate('inspectorMutlipleContentNodesSelectedTooltip', 'Select a single document in order to be able to edit its properties', {}, 'Neos.Neos.Ui', 'Main')}
+                    className={style.centeredInspector}
+                    >
+                    <div>{focusedContentNodesContextPaths.length} {i18nRegistry.translate('contentElementsSelected', 'content elements selected', {}, 'Neos.Neos.Ui', 'Main')}</div>
+                </div>
+            );
         }
         if (focusedDocumentNodesContextPaths.length > 1) {
-            return (<div title="Select a single content element in order to be able to edit its properties" className={style.centeredInspector}><div>{focusedDocumentNodesContextPaths.length} documents selected</div></div>);
+            return (
+                <div
+                    title={i18nRegistry.translate('inspectorMutlipleDocumentNodesSelectedTooltip', 'Select a single content element in order to be able to edit its properties', {}, 'Neos.Neos.Ui', 'Main')}
+                    className={style.centeredInspector}
+                    >
+                    <div>{focusedDocumentNodesContextPaths.length} {i18nRegistry.translate('documentsSelected', 'documents selected', {}, 'Neos.Neos.Ui', 'Main')}</div>
+                </div>);
         }
 
         const augmentedCommit = (propertyId, value, hooks) => {

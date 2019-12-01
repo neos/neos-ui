@@ -1,5 +1,5 @@
 import {actionTypes, actions, reducer} from './index';
-import {FusionPath, NodeContextPath, InsertPosition, NodeMap, ClipboardMode, SelectionModeTypes, NodeTypeName} from '@neos-project/neos-ts-interfaces';
+import {SelectionModeTypes} from '@neos-project/neos-ts-interfaces';
 
 import {actionTypes as system} from '../../System/index';
 
@@ -60,7 +60,7 @@ test(`The "focus" action should set the focused node context path.`, () => {
                 byContextPath: []
             }
         }
-    }
+    };
     const nextState = reducer(globalState.ui, actions.focus('someOtherContextPath', undefined, SelectionModeTypes.SINGLE_SELECT), globalState);
     expect(nextState.focused).toEqual(['someOtherContextPath']);
 });

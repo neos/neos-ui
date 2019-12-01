@@ -293,7 +293,8 @@ const makeMapStateToProps = isDocument => (state, {nodeTypesRegistry}) => {
             isAllowedToAddChildOrSiblingNodes,
             isCut,
             isCopied,
-            treeType: isDocument ? 'PageTree' : 'ContentTree'
+            treeType: isDocument ? 'PageTree' : 'ContentTree',
+            displayToggleContentTreeButton: !isDocument
         };
     };
 };

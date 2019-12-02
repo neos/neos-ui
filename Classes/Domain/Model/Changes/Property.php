@@ -235,7 +235,36 @@ class Property extends AbstractChange
                     $reloadContentOutOfBand->setNodeDomAddress($this->getNodeDomAddress());
                     $this->feedbackCollection->add($reloadContentOutOfBand);
                 } else {
-                    $this->reloadDocument($node);
+                    // To prevent a full document reload we try to find a ContentCollection in the list of parents
+                    // which would allows us to reload its children. Then we request a reload on the child that is
+                    // a parent of our modified node.
+                    $closestCollectionChildNode = $node;
+                    while (!($closestCollectionChildNode->getParent()->getNodeType()->isOfType('Neos.Neos:ContentCollection') || $closestCollectionChildNode->getParent()->getNodeType()->isOfType('Neos.Neos:Document'))) {
+                        $closestCollectionChildNode = $closestCollectionChildNode->getParent();
+                    }
+                    if ($closestCollectionChildNode && $closestCollectionChildNode->getParent() && $closestCollectionChildNode->getParent()->getNodeType()->isOfType('Neos.Neos:ContentCollection')) {
+                        $fusionContextNodeType = $closestCollectionChildNode->getNodeType();
+
+                        // Traverse to the fusion path that matches the closest node we can reload
+                        $closestCollectionChildNodeFusionPath = explode('/', $this->getNodeDomAddress()->getFusionPath());
+                        for ($i = count($closestCollectionChildNodeFusionPath) - 1; $i >= 0; $i--) {
+                            if (strpos($closestCollectionChildNodeFusionPath[$i], $fusionContextNodeType->getName()) === false) {
+                                array_pop($closestCollectionChildNodeFusionPath);
+                            } else {
+                                break;
+                            }
+                        }
+
+                        $reloadContentOutOfBand = new ReloadContentOutOfBand();
+                        $reloadContentOutOfBand->setNode($closestCollectionChildNode);
+                        $parentNodeDomAddress = new RenderedNodeDomAddress();
+                        $parentNodeDomAddress->setContextPath($closestCollectionChildNode->getContextPath());
+                        $parentNodeDomAddress->setFusionPath(join('/', $closestCollectionChildNodeFusionPath));
+                        $reloadContentOutOfBand->setNodeDomAddress($parentNodeDomAddress);
+                        $this->feedbackCollection->add($reloadContentOutOfBand);
+                    } else {
+                        $this->reloadDocument($node);
+                    }
                 }
             }
 

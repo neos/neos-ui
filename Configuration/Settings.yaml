@@ -146,6 +146,8 @@ Neos:
             isHidden: false
             contentTree:
               isHidden: true
+            searchBar:
+              searchToggled: true
           rightSideBar:
             isHidden: false
           addNodeModal:

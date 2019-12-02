@@ -1,3 +1,6 @@
+.toggle {
+    cursor: pointer;
+}
 .toggleBtn {
     background: var(--colors-ContrastDarkest);
     width: 46px;

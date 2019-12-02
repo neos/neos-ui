@@ -27,11 +27,10 @@ export default class ToggleContentTree extends PureComponent {
         const {id, isPanelOpen, i18nRegistry} = this.props;
 
         return (
-            <div className={style.toggle}>
+            <div className={style.toggle} onClick={this.handleClick}>
                 <IconButton
                     id={id}
                     className={style.toggleBtn}
-                    onClick={this.handleClick}
                     icon={isPanelOpen ? 'chevron-circle-down' : 'chevron-circle-up'}
                     hoverStyle="clean"
                     aria-label={i18nRegistry.translate('Neos.Neos:Main:toggleContentTree', 'Toggle content tree')}

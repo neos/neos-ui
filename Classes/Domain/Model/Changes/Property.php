@@ -245,12 +245,12 @@ class Property extends AbstractChange
                         $closestCollectionChildNode = $closestCollectionChildNode->getParent();
                     }
                     if ($closestCollectionChildNode && $closestCollectionChildNode->getParent() && $closestCollectionChildNode->getParent()->getNodeType()->isOfType('Neos.Neos:ContentCollection')) {
-                        $fusionContextNodeType = $closestCollectionChildNode->getNodeType();
+                        $fusionContextNodeTypeTag = '<' . $closestCollectionChildNode->getNodeType() . '>';
 
-                        // Traverse to the fusion path that matches the closest node we can reload
+                        // Traverse to the fusion path that matches the tag of the closest node we can reload
                         $closestCollectionChildNodeFusionPath = explode('/', $this->getNodeDomAddress()->getFusionPath());
                         for ($i = count($closestCollectionChildNodeFusionPath) - 1; $i >= 0; $i--) {
-                            if (strpos($closestCollectionChildNodeFusionPath[$i], $fusionContextNodeType->getName()) === false) {
+                            if (strpos($closestCollectionChildNodeFusionPath[$i], $fusionContextNodeTypeTag) === false) {
                                 array_pop($closestCollectionChildNodeFusionPath);
                             } else {
                                 break;

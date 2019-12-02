@@ -84,3 +84,14 @@ test('Pagetree search field state is stored', async t => {
         .expect(nodeTreeSearchInput.exists)
         .ok();
 });
+
+test('Pagetree search field toggles on hotkey', async t => {
+    subSection('Search is initially hidden and we open it with "t s"');
+    const nodeTreeSearchInput = ReactSelector('NodeTreeSearchInput');
+
+    await t
+        .pressKey('t')
+        .pressKey('s')
+        .expect(nodeTreeSearchInput.exists)
+        .ok();
+});

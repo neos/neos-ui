@@ -38,6 +38,8 @@ import style from './style.css';
 
         return {
             focusedNode: selectors.CR.Nodes.focusedSelector(state),
+            focusedContentNodesContextPaths: selectors.CR.Nodes.focusedNodePathsSelector(state),
+            focusedDocumentNodesContextPaths: selectors.UI.PageTree.getAllFocused(state),
             validationErrors: validationErrorsSelector(state),
             isApplyDisabled: isApplyDisabledSelector(state),
             transientValues: selectors.UI.Inspector.transientValues(state),
@@ -213,7 +215,7 @@ export default class Inspector extends PureComponent {
     }
 
     renderFallback() {
-        return (<div className={style.loader}><div><Icon icon="spinner" spin={true} size="lg" /></div></div>);
+        return (<div className={style.centeredInspector}><div><Icon icon="spinner" spin={true} size="lg" /></div></div>);
     }
 
     handlePanelToggle = path => {
@@ -238,6 +240,8 @@ export default class Inspector extends PureComponent {
     render() {
         const {
             focusedNode,
+            focusedContentNodesContextPaths,
+            focusedDocumentNodesContextPaths,
             commit,
             validationErrors,
             isApplyDisabled,
@@ -246,6 +250,25 @@ export default class Inspector extends PureComponent {
             shouldShowSecondaryInspector,
             i18nRegistry
         } = this.props;
+        if (focusedContentNodesContextPaths.length > 1) {
+            return (
+                <div
+                    title={i18nRegistry.translate('inspectorMutlipleContentNodesSelectedTooltip', 'Select a single document in order to be able to edit its properties', {}, 'Neos.Neos.Ui', 'Main')}
+                    className={style.centeredInspector}
+                    >
+                    <div>{focusedContentNodesContextPaths.length} {i18nRegistry.translate('contentElementsSelected', 'content elements selected', {}, 'Neos.Neos.Ui', 'Main')}</div>
+                </div>
+            );
+        }
+        if (focusedDocumentNodesContextPaths.length > 1) {
+            return (
+                <div
+                    title={i18nRegistry.translate('inspectorMutlipleDocumentNodesSelectedTooltip', 'Select a single content element in order to be able to edit its properties', {}, 'Neos.Neos.Ui', 'Main')}
+                    className={style.centeredInspector}
+                    >
+                    <div>{focusedDocumentNodesContextPaths.length} {i18nRegistry.translate('documentsSelected', 'documents selected', {}, 'Neos.Neos.Ui', 'Main')}</div>
+                </div>);
+        }
 
         const augmentedCommit = (propertyId, value, hooks) => {
             commit(propertyId, value, hooks, focusedNode);

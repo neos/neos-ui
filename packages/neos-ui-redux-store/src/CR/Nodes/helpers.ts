@@ -1,4 +1,4 @@
-import {isNode, Node, NodeMap, NodeContextPath} from '@neos-project/neos-ts-interfaces';
+import {isNode, Node, NodeMap, NodeContextPath, SelectionModeTypes} from '@neos-project/neos-ts-interfaces';
 
 //
 // Helper function to determine allowed node types
@@ -53,4 +53,47 @@ export const getNodeOrThrow = (nodeMap: NodeMap, contextPath: NodeContextPath) =
         throw new Error(`Node with context path ${contextPath} is not in state`);
     }
     return node;
+};
+
+export const calculateNewFocusedNodes = (selectionMode: SelectionModeTypes, contextPath: NodeContextPath, focusedNodesContextPaths: NodeContextPath[], nodesByContextPath: NodeMap): NodeContextPath[] | null => {
+    if (selectionMode === SelectionModeTypes.SINGLE_SELECT) {
+        return [contextPath];
+    } else if (selectionMode === SelectionModeTypes.RANGE_SELECT) {
+        const lastSelectedNodeContextPath = focusedNodesContextPaths[focusedNodesContextPaths.length - 1];
+        const maybeParentNodeContextPath = parentNodeContextPath(lastSelectedNodeContextPath);
+        if (maybeParentNodeContextPath) {
+            const parentNode = getNodeOrThrow(nodesByContextPath, maybeParentNodeContextPath);
+            const tempSelection: string[] = [];
+            let startSelectionFlag = false;
+            // if both start and end nodes are within children, then we can do range select
+            const startAndEndOfSelectionAreOnOneLevel = parentNode.children.some(child => {
+                if (child.contextPath === lastSelectedNodeContextPath || child.contextPath === contextPath) {
+                    if (startSelectionFlag) { // if matches for the second time it means that both start and end of selection were found
+                        tempSelection.push(child.contextPath); // also push the last node
+                        return true;
+                    } else {
+                        startSelectionFlag = true;
+                    }
+                }
+                if (startSelectionFlag) {
+                    tempSelection.push(child.contextPath);
+                }
+                return false;
+            });
+            if (startAndEndOfSelectionAreOnOneLevel) {
+                const focusedNodesContextPathsSet = new Set(focusedNodesContextPaths);
+                tempSelection.forEach(contextPath => focusedNodesContextPathsSet.add(contextPath));
+                return [...focusedNodesContextPathsSet] as string[];
+            }
+        }
+    } else {
+        const focusedNodesContextPathsSet = new Set(focusedNodesContextPaths);
+        if (focusedNodesContextPathsSet.has(contextPath)) {
+            focusedNodesContextPathsSet.delete(contextPath);
+        } else {
+            focusedNodesContextPathsSet.add(contextPath);
+        }
+        return [...focusedNodesContextPathsSet];
+    }
+    return null;
 };

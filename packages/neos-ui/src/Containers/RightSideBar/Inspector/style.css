@@ -60,7 +60,7 @@
         width: var(--size-SidebarWidth);
     }
 }
-.loader {
+.centeredInspector {
     display: flex;
     align-items: center;
     justify-content: center;

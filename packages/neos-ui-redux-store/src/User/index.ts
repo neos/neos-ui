@@ -1,4 +1,4 @@
-import {combineReducers} from 'redux';
+import {combineReducers} from '@neos-project/neos-ui-redux-store/src/combineReducers';
 
 import * as Settings from '@neos-project/neos-ui-redux-store/src/User/Settings';
 import * as Preferences from '@neos-project/neos-ui-redux-store/src/User/Preferences';

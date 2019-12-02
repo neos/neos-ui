@@ -95,6 +95,12 @@ export enum InsertPosition {
     AFTER = 'after'
 }
 
+export enum SelectionModeTypes {
+    SINGLE_SELECT = 'SINGLE_SELECT',
+    MULTIPLE_SELECT = 'MULTIPLE_SELECT',
+    RANGE_SELECT = 'RANGE_SELECT'
+}
+
 export interface ValidatorConfiguration {
     [propName: string]: any;
 }

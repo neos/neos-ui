@@ -18,7 +18,7 @@ import style from './style.css';
 
 @connect($transform({
     isOpen: $get('ui.insertionModeModal.isOpen'),
-    subjectContextPath: $get('ui.insertionModeModal.subjectContextPath'),
+    subjectContextPaths: $get('ui.insertionModeModal.subjectContextPaths'),
     referenceContextPath: $get('ui.insertionModeModal.referenceContextPath'),
     enableAlongsideModes: $get('ui.insertionModeModal.enableAlongsideModes'),
     enableIntoMode: $get('ui.insertionModeModal.enableIntoMode'),
@@ -30,6 +30,7 @@ import style from './style.css';
 })
 
 @neos(globalRegistry => ({
+    i18nRegistry: globalRegistry.get('i18n'),
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
 }))
 export default class InsertModeModal extends PureComponent {
@@ -41,8 +42,9 @@ export default class InsertModeModal extends PureComponent {
         cancel: PropTypes.func.isRequired,
         apply: PropTypes.func.isRequired,
         nodeTypesRegistry: PropTypes.object.isRequired,
+        i18nRegistry: PropTypes.object.isRequired,
         getNodeByContextPath: PropTypes.func.isRequired,
-        subjectContextPath: PropTypes.string,
+        subjectContextPaths: PropTypes.array,
         referenceContextPath: PropTypes.string
     };
 
@@ -65,8 +67,12 @@ export default class InsertModeModal extends PureComponent {
         apply(mode);
     }
 
-    renderNodeLabel(contextPath) {
-        const {getNodeByContextPath, nodeTypesRegistry} = this.props;
+    renderNodeLabel(contextPaths) {
+        const {getNodeByContextPath, nodeTypesRegistry, i18nRegistry} = this.props;
+        if (contextPaths.length > 1) {
+            return `${contextPaths.length} ${i18nRegistry.translate('nodes', 'nodes', {}, 'Neos.Neos.Ui', 'Main')}`;
+        }
+        const contextPath = contextPaths[0];
         const node = getNodeByContextPath(contextPath);
         const getLabel = $get('label');
         const getNodeType = $get('nodeType');
@@ -81,7 +87,7 @@ export default class InsertModeModal extends PureComponent {
     }
 
     renderTitle() {
-        const {subjectContextPath, referenceContextPath, operationType} = this.props;
+        const {subjectContextPaths, referenceContextPath, operationType} = this.props;
 
         return (
             <div>
@@ -92,8 +98,8 @@ export default class InsertModeModal extends PureComponent {
                             key="copy"
                             id="Neos.Neos:Main:copy__from__to--title"
                             params={{
-                                source: this.renderNodeLabel(subjectContextPath),
-                                target: this.renderNodeLabel(referenceContextPath)
+                                source: this.renderNodeLabel(subjectContextPaths),
+                                target: this.renderNodeLabel([referenceContextPath])
                             }}
                             />
                     }
@@ -102,8 +108,8 @@ export default class InsertModeModal extends PureComponent {
                             key="move"
                             id="Neos.Neos:Main:move__from__to--title"
                             params={{
-                                source: this.renderNodeLabel(subjectContextPath),
-                                target: this.renderNodeLabel(referenceContextPath)
+                                source: this.renderNodeLabel(subjectContextPaths),
+                                target: this.renderNodeLabel([referenceContextPath])
                             }}
                             />
                     }
@@ -112,8 +118,8 @@ export default class InsertModeModal extends PureComponent {
                             key="move"
                             id="Neos.Neos:Main:move__from__to--title"
                             params={{
-                                source: this.renderNodeLabel(subjectContextPath),
-                                target: this.renderNodeLabel(referenceContextPath)
+                                source: this.renderNodeLabel(subjectContextPaths),
+                                target: this.renderNodeLabel([referenceContextPath])
                             }}
                             />
                     }
@@ -152,7 +158,7 @@ export default class InsertModeModal extends PureComponent {
     render() {
         const {
             isOpen,
-            subjectContextPath,
+            subjectContextPaths,
             referenceContextPath,
             enableAlongsideModes,
             enableIntoMode
@@ -175,8 +181,8 @@ export default class InsertModeModal extends PureComponent {
                         <I18n
                             id="Neos.Neos:Main:copy__from__to--description"
                             params={{
-                                source: this.renderNodeLabel(subjectContextPath),
-                                target: this.renderNodeLabel(referenceContextPath)
+                                source: this.renderNodeLabel(subjectContextPaths),
+                                target: this.renderNodeLabel([referenceContextPath])
                             }}
                             />
                     </p>

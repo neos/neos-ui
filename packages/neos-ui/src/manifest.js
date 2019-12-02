@@ -254,7 +254,8 @@ manifest('main', {}, globalRegistry => {
     //
     serverFeedbackHandlers.set('Neos.Neos.Ui:RemoveNode/Main', ({contextPath, parentContextPath}, {store}) => {
         const state = store.getState();
-        if ($get('cr.nodes.focused.contextPath', state) === contextPath) {
+        const focusedNodeContextPath = selectors.CR.Nodes.focusedNodePathSelector(state);
+        if (focusedNodeContextPath === contextPath) {
             store.dispatch(actions.CR.Nodes.unFocus());
         }
 

@@ -22,6 +22,7 @@ use Neos\Flow\Mvc\RequestInterface;
 use Neos\Flow\Mvc\ResponseInterface;
 use Neos\Flow\Mvc\View\JsonView;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
+use Neos\Flow\Property\PropertyMapper;
 use Neos\Neos\Domain\Service\ContentContextFactory;
 use Neos\Neos\Domain\Service\ContentDimensionPresetSourceInterface;
 use Neos\Neos\Service\PublishingService;
@@ -115,6 +116,12 @@ class BackendServiceController extends ActionController
      * @var NodeClipboard
      */
     protected $clipboard;
+
+    /**
+     * @Flow\Inject
+     * @var PropertyMapper
+     */
+    protected $propertyMapper;
 
     /**
      * @Flow\Inject
@@ -348,12 +355,16 @@ class BackendServiceController extends ActionController
     /**
      * Persists the clipboard node on copy
      *
-     * @param NodeInterface $node
+     * @param array $nodes
      * @return void
      */
-    public function copyNodeAction(NodeInterface $node)
+    public function copyNodesAction(array $nodes)
     {
-        $this->clipboard->copyNode($node);
+        // TODO @christianm want's to have a property mapper for this
+        $nodes = array_map(function ($node) {
+            return $this->propertyMapper->convert($node, NodeInterface::class);
+        }, $nodes);
+        $this->clipboard->copyNodes($nodes);
     }
 
     /**
@@ -369,12 +380,16 @@ class BackendServiceController extends ActionController
     /**
      * Persists the clipboard node on cut
      *
-     * @param NodeInterface $node
+     * @param array $nodes
      * @return void
      */
-    public function cutNodeAction(NodeInterface $node)
+    public function cutNodesAction(array $nodes)
     {
-        $this->clipboard->cutNode($node);
+        // TODO @christianm want's to have a property mapper for this
+        $nodes = array_map(function ($node) {
+            return $this->propertyMapper->convert($node, NodeInterface::class);
+        }, $nodes);
+        $this->clipboard->cutNodes($nodes);
     }
 
     public function getWorkspaceInfoAction()

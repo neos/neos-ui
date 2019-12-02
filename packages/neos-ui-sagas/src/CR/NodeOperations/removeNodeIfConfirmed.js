@@ -4,7 +4,7 @@ import {$get} from 'plow-js';
 import {actions, actionTypes} from '@neos-project/neos-ui-redux-store';
 
 export default function * removeNodeIfConfirmed() {
-    yield takeLatest(actionTypes.CR.Nodes.COMMENCE_REMOVAL, function * waitForConfirmation() {
+    yield takeLatest([actionTypes.CR.Nodes.COMMENCE_REMOVAL, actionTypes.CR.Nodes.COMMENCE_REMOVAL_MULTIPLE], function * waitForConfirmation() {
         const state = yield select();
         const waitForNextAction = yield race([
             take(actionTypes.CR.Nodes.REMOVAL_ABORTED),
@@ -17,12 +17,13 @@ export default function * removeNodeIfConfirmed() {
         }
 
         if (nextAction.type === actionTypes.CR.Nodes.REMOVAL_CONFIRMED) {
-            const nodeToBeRemovedContextPath = $get('cr.nodes.toBeRemoved', state);
-
-            yield put(actions.Changes.persistChanges([{
+            const nodesToBeRemovedContextPath = $get('cr.nodes.toBeRemoved', state);
+            const changes = nodesToBeRemovedContextPath.map(nodeToBeRemovedContextPath => ({
                 type: 'Neos.Neos.Ui:RemoveNode',
                 subject: nodeToBeRemovedContextPath
-            }]));
+            }));
+
+            yield put(actions.Changes.persistChanges(changes));
         }
     });
 }

@@ -27,7 +27,7 @@ class NodeClipboard
     /**
      * @var string
      */
-    protected $nodeContextPath = '';
+    protected $nodeContextPaths = [];
 
     /**
      * @var string one of the NodeClipboard::MODE_*  constants
@@ -37,26 +37,30 @@ class NodeClipboard
     /**
      * Save copied node to clipboard.
      *
-     * @param NodeInterface $node
+     * @param NodeInterface[] $nodes
      * @return void
      * @Flow\Session(autoStart=true)
      */
-    public function copyNode(NodeInterface $node)
+    public function copyNodes(array $nodes)
     {
-        $this->nodeContextPath = $node->getContextPath();
+        $this->nodeContextPaths = array_map(function ($node) {
+            return $node->getContextPath();
+        }, $nodes);
         $this->mode = self::MODE_COPY;
     }
 
     /**
-     * Save cut node to clipboard.
+     * Save cut nodes to clipboard.
      *
-     * @param NodeInterface $node
+     * @param NodeInterface[] $nodes
      * @return void
      * @Flow\Session(autoStart=true)
      */
-    public function cutNode(NodeInterface $node)
+    public function cutNodes(array $nodes)
     {
-        $this->nodeContextPath = $node->getContextPath();
+        $this->nodeContextPaths = array_map(function ($node) {
+            return $node->getContextPath();
+        }, $nodes);
         $this->mode = self::MODE_MOVE;
     }
 
@@ -68,18 +72,18 @@ class NodeClipboard
      */
     public function clear()
     {
-        $this->nodeContextPath = '';
+        $this->nodeContextPaths = [];
         $this->mode = '';
     }
 
     /**
      * Get clipboard node.
      *
-     * @return string $nodeContextPath
+     * @return array $nodeContextPath
      */
-    public function getNodeContextPath()
+    public function getNodeContextPaths()
     {
-        return $this->nodeContextPath ? $this->nodeContextPath : '';
+        return $this->nodeContextPaths ? $this->nodeContextPaths : [];
     }
 
     /**

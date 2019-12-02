@@ -4,7 +4,7 @@ import * as selectors from './selectors';
 
 test(`transientValues should return the transient inspector values for the currently focused node`, () => {
     const state = $all(
-        $set('cr.nodes.focused.contextPath', 'dummyContextPath'),
+        $set('cr.nodes.focused.contextPaths', ['dummyContextPath']),
         $set('ui.inspector.valuesByNodePath.dummyContextPath', {some: 'transientValue'}),
         {}
     );
@@ -16,7 +16,7 @@ test(`transientValues should return the transient inspector values for the curre
 
 test(`Inspector is dirty when transient values are set`, () => {
     const state = $all(
-        $set('cr.nodes.focused.contextPath', 'dummyContextPath'),
+        $set('cr.nodes.focused.contextPaths', ['dummyContextPath']),
         $set('ui.inspector.valuesByNodePath.dummyContextPath', {some: 'transientValue'}),
         {}
     );
@@ -26,7 +26,7 @@ test(`Inspector is dirty when transient values are set`, () => {
 
 test(`Inspector is not dirty when no transient values are set`, () => {
     const state = $all(
-        $set('cr.nodes.focused.contextPath', 'dummyContextPath'),
+        $set('cr.nodes.focused.contextPaths', ['dummyContextPath']),
         $set('ui.inspector.valuesByNodePath.dummyContextPath', {}),
         {}
     );
@@ -42,7 +42,7 @@ test(`Inspector is not dirty when no transient values are set`, () => {
 
 test(`Inspector is not dirty when no transient values have been dropped`, () => {
     const state = $all(
-        $set('cr.nodes.focused.contextPath', 'dummyContextPath'),
+        $set('cr.nodes.focused.contextPaths', ['dummyContextPath']),
         $set('ui.inspector.valuesByNodePath.dummyContextPath', {some: 'transientValue'}),
         {}
     );
@@ -64,7 +64,7 @@ test(`validationErrorsSelector should return null, when there's no validator con
     const validationErrorsSelector = selectors.makeValidationErrorsSelector(nodeTypesRegistry, validatorRegistry);
     const state = $all(
         $set('ui.inspector.valuesByNodePath', {}),
-        $set('cr.nodes.focused.contextPath', 'dummyContextPath'),
+        $set('cr.nodes.focused.contextPaths', ['dummyContextPath']),
         $set('cr.nodes.byContextPath.dummyContextPath.properties', {
             title: 'Foo'
         }),
@@ -85,7 +85,7 @@ test(`validationErrorsSelector should read the nodeType configuration for the cu
     const validationErrorsSelector = selectors.makeValidationErrorsSelector(nodeTypesRegistry, validatorRegistry);
     const state = $all(
         $set('ui.inspector.valuesByNodePath', {}),
-        $set('cr.nodes.focused.contextPath', 'dummyContextPath'),
+        $set('cr.nodes.focused.contextPaths', ['dummyContextPath']),
         $set('cr.nodes.byContextPath.dummyContextPath.nodeType', 'DummyNodeType'),
         {}
     );
@@ -110,7 +110,7 @@ test(`validationErrorsSelector should return validationErrors, when there are in
     const validationErrorsSelector = selectors.makeValidationErrorsSelector(nodeTypesRegistry, validatorRegistry);
     const state = $all(
         $set('ui.inspector.valuesByNodePath', {}),
-        $set('cr.nodes.focused.contextPath', 'dummyContextPath'),
+        $set('cr.nodes.focused.contextPaths', ['dummyContextPath']),
         $set('cr.nodes.byContextPath.dummyContextPath.properties', {
             title: '',
             label: ''

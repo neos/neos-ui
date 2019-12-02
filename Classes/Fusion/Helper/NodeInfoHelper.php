@@ -186,8 +186,8 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         }
 
         try {
-            $nodeInfo['uri'] = $this->createRedirectToNode($controllerContext, $node);
-        } catch (\Neos\Flow\Mvc\Routing\Exception\MissingActionNameException $exception) {
+            $nodeInfo['uri'] = $this->uri($node, $controllerContext);
+        } catch (\Neos\Neos\Exception $exception) {
             // Unless there is a serious problem with routes there shouldn't be an exception ever.
             $nodeInfo['uri'] = '';
         }

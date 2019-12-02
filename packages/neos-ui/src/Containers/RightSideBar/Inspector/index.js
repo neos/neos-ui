@@ -9,6 +9,7 @@ import Bar from '@neos-project/react-ui-components/src/Bar/';
 import Button from '@neos-project/react-ui-components/src/Button/';
 import Tabs from '@neos-project/react-ui-components/src/Tabs/';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
+import Badge from '@neos-project/react-ui-components/src/Badge/';
 import debounce from 'lodash.debounce';
 import setIn from 'lodash.set';
 
@@ -26,6 +27,7 @@ import style from './style.css';
     i18nRegistry: globalRegistry.get('i18n')
 }))
 @connect((state, {nodeTypesRegistry, validatorRegistry}) => {
+    const validationErrorsSelector = selectors.UI.Inspector.makeValidationErrorsSelector(nodeTypesRegistry, validatorRegistry);
     const isApplyDisabledSelector = selectors.UI.Inspector.makeIsApplyDisabledSelector(nodeTypesRegistry, validatorRegistry);
 
     return state => {
@@ -36,6 +38,7 @@ import style from './style.css';
 
         return {
             focusedNode: selectors.CR.Nodes.focusedSelector(state),
+            validationErrors: validationErrorsSelector(state),
             isApplyDisabled: isApplyDisabledSelector(state),
             transientValues: selectors.UI.Inspector.transientValues(state),
             isDiscardDisabled: selectors.UI.Inspector.isDiscardDisabledSelector(state),
@@ -219,10 +222,24 @@ export default class Inspector extends PureComponent {
         this.setState({toggledPanels: newState});
     };
 
+    getAmountOfValidationErrors = (tab, validationErrors) => {
+        let errors = 0;
+        tab.groups.forEach(group => {
+            group.items.forEach(item => {
+                if (Object.keys(validationErrors).includes(item.id)) {
+                    errors += 1;
+                }
+            });
+        });
+
+        return errors;
+    };
+
     render() {
         const {
             focusedNode,
             commit,
+            validationErrors,
             isApplyDisabled,
             isDiscardDisabled,
             shouldShowUnappliedChangesOverlay,
@@ -277,14 +294,32 @@ export default class Inspector extends PureComponent {
                         // Render each tab as a TabPanel
                         //
                         .map(tab => {
+                            const notifications = validationErrors ?
+                                this.getAmountOfValidationErrors(tab, validationErrors) : 0;
+                            const tabLabel = i18nRegistry.translate($get('label', tab));
+                            const notificationTooltipLabelPieces = i18nRegistry.translate(
+                                'UI.RightSideBar.tabs.validationErrorTooltip',
+                                '',
+                                {
+                                    tabName: tabLabel,
+                                    amountOfErrors: notifications
+                                },
+                                'Neos.Neos.Ui'
+                            );
+                            // @todo remove that when substitutePlaceholders of I18nRegistry returns strings
+                            const notificationTooltipLabel = Array.isArray(notificationTooltipLabelPieces) ?
+                                notificationTooltipLabelPieces.join('') : notificationTooltipLabelPieces;
+
                             return (
                                 <TabPanel
                                     key={$get('id', tab)}
                                     id={$get('id', tab)}
                                     icon={$get('icon', tab)}
                                     groups={$get('groups', tab)}
+                                    notifications={notifications}
+                                    title={Boolean(notifications) && <Badge className={style.tabs__notificationBadge} label={String(notifications)}/>}
                                     toggledPanels={$get($get('id', tab), this.state.toggledPanels)}
-                                    tooltip={i18nRegistry.translate($get('label', tab))}
+                                    tooltip={notifications ? notificationTooltipLabel : tabLabel}
                                     renderSecondaryInspector={this.renderSecondaryInspector}
                                     node={focusedNode}
                                     commit={augmentedCommit}

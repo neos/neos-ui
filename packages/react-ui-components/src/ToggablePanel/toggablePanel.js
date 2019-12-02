@@ -219,7 +219,7 @@ export class Header extends PureComponent {
         });
 
         return (
-            <div aria-expanded={isPanelOpen} {...rest}>
+            <div aria-expanded={isPanelOpen} onClick={onPanelToggle} {...rest}>
                 <HeadlineComponent
                     className={finalClassName}
                     type="h2"
@@ -230,7 +230,6 @@ export class Header extends PureComponent {
                     className={theme.panel__toggleBtn}
                     hoverStyle="clean"
                     icon={isPanelOpen ? openedIcon : closedIcon}
-                    onClick={onPanelToggle}
                     id={toggleButtonId}
                     />
             </div>

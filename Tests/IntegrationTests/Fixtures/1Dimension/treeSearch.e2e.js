@@ -16,12 +16,10 @@ test('PageTree search and filter', async t => {
     const searchmePage = 'Searchme page';
     const searchmeShortcut = 'Searchme shortcut';
 
-    const nodeTreeSearchToggler = ReactSelector('NodeTreeSearchBar IconButton');
     const nodeTreeSearchInput = ReactSelector('NodeTreeSearchInput');
     const nodeTreeFilter = ReactSelector('NodeTreeFilter');
     const shortcutFilter = ReactSelector('NodeTreeFilter').find('li').withText('Shortcut');
     await t
-        .click(nodeTreeSearchToggler)
         .typeText(nodeTreeSearchInput, seachTerm)
         .expect(Page.treeNode.withText(seachTerm).count).eql(2, 'Two "Searchme" nodes should be found, one shortcut and one normal page')
         .expect(Page.treeNode.withText(notSearchedPage).exists).notOk('Other unsearched page should be hidden ');

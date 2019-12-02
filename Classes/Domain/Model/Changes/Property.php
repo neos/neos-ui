@@ -239,7 +239,9 @@ class Property extends AbstractChange
                     // which would allows us to reload its children. Then we request a reload on the child that is
                     // a parent of our modified node.
                     $closestCollectionChildNode = $node;
-                    while (!($closestCollectionChildNode->getParent()->getNodeType()->isOfType('Neos.Neos:ContentCollection') || $closestCollectionChildNode->getParent()->getNodeType()->isOfType('Neos.Neos:Document'))) {
+                    while ($closestCollectionChildNode->getParent()
+                        && !($closestCollectionChildNode->getParent()->getNodeType()->isOfType('Neos.Neos:ContentCollection')
+                            || $closestCollectionChildNode->getParent()->getNodeType()->isOfType('Neos.Neos:Document'))) {
                         $closestCollectionChildNode = $closestCollectionChildNode->getParent();
                     }
                     if ($closestCollectionChildNode && $closestCollectionChildNode->getParent() && $closestCollectionChildNode->getParent()->getNodeType()->isOfType('Neos.Neos:ContentCollection')) {

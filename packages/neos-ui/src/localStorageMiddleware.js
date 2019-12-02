@@ -12,6 +12,7 @@ const localStorageMiddleware = ({getState}) => {
     const persistentActionsPatterns = [
         '@neos/neos-ui/UI/LeftSideBar/TOGGLE',
         '@neos/neos-ui/UI/LeftSideBar/TOGGLE_CONTENT_TREE',
+        '@neos/neos-ui/UI/LeftSideBar/TOGGLE_SEARCH_BAR',
         '@neos/neos-ui/UI/RightSidebar/TOGGLE',
         '@neos/neos-ui/UI/Drawer/TOGGLE_MENU_GROUP'
     ];
@@ -37,6 +38,9 @@ const localStorageMiddleware = ({getState}) => {
                             isHidden: $get('ui.leftSideBar.isHidden', state),
                             contentTree: {
                                 isHidden: $get('ui.leftSideBar.contentTree.isHidden', state)
+                            },
+                            searchBar: {
+                                isHidden: $get('ui.leftSideBar.searchBar.isHidden', state)
                             }
                         },
                         rightSideBar: {

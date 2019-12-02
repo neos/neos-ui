@@ -8,6 +8,9 @@ export interface State extends Readonly<{
     isHidden: boolean;
     contentTree: {
         isHidden: boolean;
+    },
+    searchBar:  {
+        isHidden: boolean;
     };
 }> {}
 
@@ -15,6 +18,9 @@ export const defaultState: State = {
     isHidden: false,
     contentTree: {
         isHidden: false
+    },
+    searchBar: {
+        isHidden: true
     }
 };
 
@@ -25,7 +31,8 @@ export const defaultState: State = {
 //
 export enum actionTypes {
     TOGGLE = '@neos/neos-ui/UI/LeftSideBar/TOGGLE',
-    TOGGLE_CONTENT_TREE = '@neos/neos-ui/UI/LeftSideBar/TOGGLE_CONTENT_TREE'
+    TOGGLE_CONTENT_TREE = '@neos/neos-ui/UI/LeftSideBar/TOGGLE_CONTENT_TREE',
+    TOGGLE_SEARCH_BAR = '@neos/neos-ui/UI/LeftSideBar/TOGGLE_SEARCH_BAR'
 }
 
 /**
@@ -33,13 +40,15 @@ export enum actionTypes {
  */
 const toggle = () => createAction(actionTypes.TOGGLE);
 const toggleContentTree = () => createAction(actionTypes.TOGGLE_CONTENT_TREE);
+const toggleSearchBar = () => createAction(actionTypes.TOGGLE_SEARCH_BAR);
 
 //
 // Export the actions
 //
 export const actions = {
     toggle,
-    toggleContentTree
+    toggleContentTree,
+    toggleSearchBar
 };
 
 export type Action = ActionType<typeof actions>;
@@ -52,6 +61,7 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
         case system.INIT: {
             draft.isHidden = $get(['payload', 'ui', 'leftSideBar', 'isHidden'], action) || false;
             draft.contentTree.isHidden = $get(['payload', 'ui', 'leftSideBar', 'contentTree', 'isHidden'], action) || false;
+            draft.searchBar.isHidden = $get(['payload', 'ui', 'leftSideBar', 'searchBar', 'isHidden'], action) || true;
             break;
         }
         case actionTypes.TOGGLE: {
@@ -60,6 +70,10 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
         }
         case actionTypes.TOGGLE_CONTENT_TREE: {
             draft.contentTree.isHidden = !draft.contentTree.isHidden;
+            break;
+        }
+        case actionTypes.TOGGLE_SEARCH_BAR: {
+            draft.searchBar.isHidden = !draft.searchBar.isHidden;
             break;
         }
     }

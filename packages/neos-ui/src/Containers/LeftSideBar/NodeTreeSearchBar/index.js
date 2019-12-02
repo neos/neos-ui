@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import debounce from 'lodash.debounce';
-import {$get} from 'plow-js';
+import {$transform, $get} from 'plow-js';
 import mergeClassNames from 'classnames';
 
 import {neos} from '@neos-project/neos-ui-decorators';
@@ -19,15 +19,22 @@ const searchDelay = 300;
     i18nRegistry: globalRegistry.get('i18n')
 }))
 
+@connect($transform({
+    isHiddenSearchBar: $get('ui.leftSideBar.searchBar.isHidden')
+}), {
+    toggleSearchBar: actions.UI.LeftSideBar.toggleSearchBar
+})
+
 class NodeTreeSearchBar extends PureComponent {
     static propTypes = {
         i18nRegistry: PropTypes.object.isRequired,
         rootNode: PropTypes.object,
-        commenceSearch: PropTypes.func.isRequired
+        commenceSearch: PropTypes.func.isRequired,
+        isHiddenSearchBar: PropTypes.bool.isRequired,
+        toggleSearchBar: PropTypes.func.isRequired
     }
 
     state = {
-        searchToggled: false,
         searchFocused: false,
         searchValue: '',
         filterNodeType: null
@@ -72,19 +79,18 @@ class NodeTreeSearchBar extends PureComponent {
     }
 
     handleSearchToggle = () => {
-        this.setState({
-            searchToggled: !this.state.searchToggled
-        });
+        const {toggleSearchBar} = this.props;
+        toggleSearchBar();
     }
 
     render() {
-        const {i18nRegistry} = this.props;
-        const {searchToggled, searchValue, searchFocused, filterNodeType} = this.state;
+        const {i18nRegistry, isHiddenSearchBar} = this.props;
+        const {searchValue, searchFocused, filterNodeType} = this.state;
         const searchLabel = i18nRegistry.translate('search', 'Search', {}, 'Neos.Neos', 'Main');
 
         const searchToggleClassName = mergeClassNames({
             [style.searchToggleButton]: true,
-            [style['searchToggleButton--active']]: searchToggled
+            [style['searchToggleButton--active']]: !isHiddenSearchBar
         });
 
         return (
@@ -94,7 +100,7 @@ class NodeTreeSearchBar extends PureComponent {
                     icon="ellipsis-v"
                     onClick={this.handleSearchToggle}
                     />
-                {searchToggled && (
+                {!isHiddenSearchBar && (
                     <div className={style.searchBar}>
                         <NodeTreeSearchInput
                             label={searchLabel}

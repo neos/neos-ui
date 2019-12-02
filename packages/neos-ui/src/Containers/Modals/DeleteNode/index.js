@@ -21,6 +21,7 @@ import style from './style.css';
     abort: actions.CR.Nodes.abortRemoval
 })
 @neos(globalRegistry => ({
+    i18nRegistry: globalRegistry.get('i18n'),
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
 }))
 export default class DeleteNodeModal extends PureComponent {
@@ -70,7 +71,13 @@ export default class DeleteNodeModal extends PureComponent {
             <div>
                 <Icon icon="exclamation-triangle"/>
                 <span className={style.modalTitle}>
-                    Delete {nodesToBeDeletedContextPaths.length} nodes
+                    <I18n
+                        id="Neos.Neos.Ui:Main:deleteXNodes"
+                        params={{
+                            amount: nodesToBeDeletedContextPaths.length
+                        }}
+                        fallback="Delete multiple nodes"
+                        />
                 </span>
             </div>
         );
@@ -106,7 +113,7 @@ export default class DeleteNodeModal extends PureComponent {
     }
 
     render() {
-        const {nodesToBeDeletedContextPaths, getNodeByContextPath} = this.props;
+        const {nodesToBeDeletedContextPaths, getNodeByContextPath, i18nRegistry} = this.props;
         let node = null;
         if (nodesToBeDeletedContextPaths.length === 1) {
             const singleNodeToBeDeletedContextPath = nodesToBeDeletedContextPaths[0];
@@ -128,7 +135,7 @@ export default class DeleteNodeModal extends PureComponent {
                 >
                 <div className={style.modalContents}>
                     <I18n id="Neos.Neos:Main:content.navigate.deleteNodeDialog.header"/>
-                    &nbsp; {nodesToBeDeletedContextPaths.length > 1 ? `${nodesToBeDeletedContextPaths.length} nodes` : `"${$get('label', node)}"`}?
+                    &nbsp; {nodesToBeDeletedContextPaths.length > 1 ? `${nodesToBeDeletedContextPaths.length} ${i18nRegistry.translate('nodes', 'nodes', {}, 'Neos.Neos.Ui', 'Main')}` : `"${$get('label', node)}"`}?
                 </div>
             </Dialog>
         );

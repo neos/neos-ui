@@ -10,7 +10,7 @@ export interface State extends Readonly<{
         isHidden: boolean;
     },
     searchBar:  {
-        searchToggled: boolean;
+        isVisible: boolean;
     };
 }> {}
 
@@ -20,7 +20,7 @@ export const defaultState: State = {
         isHidden: false
     },
     searchBar: {
-        searchToggled: false
+        isVisible: false
     }
 };
 
@@ -61,7 +61,7 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
         case system.INIT: {
             draft.isHidden = $get(['payload', 'ui', 'leftSideBar', 'isHidden'], action) || false;
             draft.contentTree.isHidden = $get(['payload', 'ui', 'leftSideBar', 'contentTree', 'isHidden'], action) || false;
-            draft.searchBar.searchToggled = $get(['payload', 'ui', 'leftSideBar', 'searchBar', 'searchToggled'], action) || false;
+            draft.searchBar.isVisible = $get(['payload', 'ui', 'leftSideBar', 'searchBar', 'isVisible'], action) || false;
             break;
         }
         case actionTypes.TOGGLE: {
@@ -73,7 +73,7 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
             break;
         }
         case actionTypes.TOGGLE_SEARCH_BAR: {
-            draft.searchBar.searchToggled = !draft.searchBar.searchToggled;
+            draft.searchBar.isVisible = !draft.searchBar.isVisible;
             break;
         }
     }

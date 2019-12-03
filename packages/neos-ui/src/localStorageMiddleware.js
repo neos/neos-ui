@@ -40,7 +40,7 @@ const localStorageMiddleware = ({getState}) => {
                                 isHidden: $get('ui.leftSideBar.contentTree.isHidden', state)
                             },
                             searchBar: {
-                                searchToggled: $get('ui.leftSideBar.searchBar.searchToggled', state)
+                                isVisible: $get('ui.leftSideBar.searchBar.isVisible', state)
                             }
                         },
                         rightSideBar: {

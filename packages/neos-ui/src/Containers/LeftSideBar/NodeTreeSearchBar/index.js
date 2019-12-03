@@ -20,7 +20,7 @@ const searchDelay = 300;
 }))
 
 @connect($transform({
-    searchToggled: $get('ui.leftSideBar.searchBar.searchToggled')
+    isSearchBarVisible: $get('ui.leftSideBar.searchBar.isVisible')
 }), {
     toggleSearchBar: actions.UI.LeftSideBar.toggleSearchBar
 })
@@ -30,7 +30,7 @@ class NodeTreeSearchBar extends PureComponent {
         i18nRegistry: PropTypes.object.isRequired,
         rootNode: PropTypes.object,
         commenceSearch: PropTypes.func.isRequired,
-        searchToggled: PropTypes.bool.isRequired,
+        isSearchBarVisible: PropTypes.bool.isRequired,
         toggleSearchBar: PropTypes.func.isRequired
     }
 
@@ -84,13 +84,13 @@ class NodeTreeSearchBar extends PureComponent {
     }
 
     render() {
-        const {i18nRegistry, searchToggled} = this.props;
+        const {i18nRegistry, isSearchBarVisible} = this.props;
         const {searchValue, searchFocused, filterNodeType} = this.state;
         const searchLabel = i18nRegistry.translate('search', 'Search', {}, 'Neos.Neos', 'Main');
 
         const searchToggleClassName = mergeClassNames({
             [style.searchToggleButton]: true,
-            [style['searchToggleButton--active']]: searchToggled
+            [style['searchToggleButton--active']]: isSearchBarVisible
         });
 
         return (
@@ -100,7 +100,7 @@ class NodeTreeSearchBar extends PureComponent {
                     icon="ellipsis-v"
                     onClick={this.handleSearchToggle}
                     />
-                {searchToggled && (
+                {isSearchBarVisible && (
                     <div className={style.searchBar}>
                         <NodeTreeSearchInput
                             label={searchLabel}

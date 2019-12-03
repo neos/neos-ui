@@ -139,9 +139,7 @@ export default class Inspector extends PureComponent {
             } else if (typeof originalPropertyValue === 'string' && originalPropertyValue.indexOf('ClientEval:') === 0) {
                 const {node} = context; // eslint-disable-line
                 try {
-                    const evaluatedValue = eval(
-                        originalPropertyValue.replace('ClientEval:', '')
-                    ); // eslint-disable-line
+                    const evaluatedValue = eval(originalPropertyValue.replace('ClientEval:', '')); // eslint-disable-line
                     if (evaluatedValue !== propertyValue) {
                         this.configurationIsProcessed = true;
                         viewConfiguration = produce(
@@ -152,7 +150,7 @@ export default class Inspector extends PureComponent {
                         );
                     }
                 } catch (e) {
-                    console.warn('An error occurred while trying to evaluate "' + originalPropertyValue + '"\n' , e);
+                    console.warn('An error occurred while trying to evaluate "' + originalPropertyValue + '"\n', e);
                 }
             }
         });

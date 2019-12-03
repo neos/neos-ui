@@ -94,8 +94,8 @@ export default class Inspector extends PureComponent {
                 {node: nodeForContext}, [], originalViewConfiguration, originalViewConfiguration
             );
 
-            this.state.viewConfiguration = processedViewConfiguration || {...originalViewConfiguration};
-            this.state.originalViewConfiguration = {...originalViewConfiguration};
+            this.state.viewConfiguration = processedViewConfiguration || originalViewConfiguration;
+            this.state.originalViewConfiguration = originalViewConfiguration;
         }
     }
 
@@ -161,8 +161,8 @@ export default class Inspector extends PureComponent {
         const processedViewConfiguration = this.preprocessViewConfiguration(
             {node: nodeForContext},
             [],
-            {...this.state.viewConfiguration},
-            {...this.state.originalViewConfiguration}
+            this.state.viewConfiguration,
+            this.state.originalViewConfiguration
         );
 
         if (this.configurationIsProcessed === true) {

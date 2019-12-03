@@ -31,6 +31,11 @@ manifest('main.hotkeys', {}, (globalRegistry, {frontendConfiguration}) => {
             action: actions.UI.LeftSideBar.toggleContentTree
         });
 
+        hotkeyRegistry.set('UI.LeftSideBar.toggleSearchBar', {
+            description: 'Toggle search bar',
+            action: actions.UI.LeftSideBar.toggleSearchBar
+        });
+
         hotkeyRegistry.set('UI.AddNodeModal.close', {
             description: 'Close Add-Node-Modal',
             action: actions.UI.AddNodeModal.close

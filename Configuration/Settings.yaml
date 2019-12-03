@@ -63,6 +63,7 @@ Neos:
           'UI.FullScreen.toggle': 't f'
           'UI.LeftSideBar.toggle': 't l'
           'UI.LeftSideBar.toggleContentTree': 't c'
+          'UI.LeftSideBar.toggleSearchBar': 't s'
 
           'UI.AddNodeModal.close': 'c m'
 
@@ -146,6 +147,8 @@ Neos:
             isHidden: false
             contentTree:
               isHidden: true
+            searchBar:
+              isVisible: false
           rightSideBar:
             isHidden: false
           addNodeModal:

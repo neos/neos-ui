@@ -56,7 +56,7 @@ const substitutePlaceholders = function (textWithPlaceholders, parameters) {
 
     result.push(textWithPlaceholders.substr(offset));
 
-    return result;
+    return result.join('');
 };
 
 export default class I18nRegistry extends SynchronousRegistry {

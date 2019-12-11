@@ -11,6 +11,7 @@ import {SynchronousRegistry, SynchronousMetaRegistry} from '@neos-project/neos-u
 import {
     getGuestFrameDocument,
     findNodeInGuestFrame,
+    closestNodeInGuestFrame,
     findAllOccurrencesOfNodeInGuestFrame,
     createEmptyContentCollectionPlaceholderIfMissing,
     findAllChildNodes,
@@ -346,7 +347,16 @@ manifest('main', {}, globalRegistry => {
 
             case 'into':
             default:
-                parentElement.appendChild(contentElement);
+                // Check if an insertion anchor is defined and use this one for appending the childnode
+                let insertionParent = parentElement;
+                let insertionAnchors = parentElement.querySelectorAll('[data-__neos-insertion-anchor]');
+                for (let anchorElement of insertionAnchors) {
+                    if (closestNodeInGuestFrame(anchorElement) === parentElement) {
+                        insertionParent = anchorElement;
+                        break;
+                    }
+                }
+                insertionParent.appendChild(contentElement);
                 break;
         }
 

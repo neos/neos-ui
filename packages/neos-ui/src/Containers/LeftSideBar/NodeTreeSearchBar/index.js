@@ -42,14 +42,14 @@ class NodeTreeSearchBar extends PureComponent {
     handleSearchChange = query => {
         const {rootNode} = this.props;
         const contextPath = $get('contextPath', rootNode);
-        this.debouncedCommenceSearch(contextPath, {query, filterNodeType: this.state.filterNodeType});
+        this.debouncedCommenceSearch(contextPath, {query: query.trim(), filterNodeType: this.state.filterNodeType});
         this.setState({searchValue: query});
     }
 
     handleFilterChange = filterNodeType => {
         const {rootNode, commenceSearch} = this.props;
         const contextPath = $get('contextPath', rootNode);
-        commenceSearch(contextPath, {query: this.state.searchValue, filterNodeType});
+        commenceSearch(contextPath, {query: this.state.searchValue.trim(), filterNodeType});
         this.setState({filterNodeType});
     }
 

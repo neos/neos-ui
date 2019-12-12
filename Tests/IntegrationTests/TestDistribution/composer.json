@@ -6,7 +6,7 @@
         "bin-dir": "bin"
     },
     "require": {
-        "neos/neos": "dev-master",
+      "neos/neos": "dev-master",
         "neos/flow": "dev-master",
         "neos/eel": "dev-master",
         "neos/fluid-adaptor": "dev-master",

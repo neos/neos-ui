@@ -186,7 +186,7 @@ export default class Inspector extends PureComponent {
 
     generateNodeForContext(focusedNode, transientValues) {
         if (transientValues) {
-            nodeForContext = produce(nodeForContext, draft => {
+            return produce(focusedNode, draft => {
                 const mappedTransientValues = mapValues(transientValues, item => $get('value', item));
                 draft.properties = Object.assign({}, draft.properties, mappedTransientValues);
             });

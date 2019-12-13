@@ -272,7 +272,7 @@ export default (routes: Routes) => {
         .then(result => {
             const assetProxyTable = document.createElement('table');
             assetProxyTable.innerHTML = result;
-            const assetProxies = Array.from(assetProxyTable.querySelectorAll('.asset')) as HTMLElement[];
+            const assetProxies = Array.from(assetProxyTable.querySelectorAll('.asset-proxy')) as HTMLElement[];
 
 
             const mappedAssetProxies = assetProxies.map((assetProxy: HTMLElement) => {

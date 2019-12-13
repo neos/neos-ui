@@ -183,6 +183,10 @@ manifest('main.dataloaders', {}, globalRegistry => {
                 return this._lru().get(cacheKey);
             }
 
+            // Note, this SHOULD be assetProxyDetail, but with the
+            // current  way using this dataloader, that wouldn't work
+            // as the resolves always happen on imported assets.
+            // FIXME: We should investigate this and fix the behavior(s)
             const assetDetailApi = backend.get().endpoints.assetDetail;
             const result = assetDetailApi(localAssetIdentifier);
             const resultPromise = Promise.all([result]);

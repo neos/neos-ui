@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-ckeditor-bindings",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "description": "Prepare CKEditor for the Neos CMS UI",
   "private": true,
   "main": "./src/manifest.js",
@@ -14,19 +14,19 @@
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "5.0.1",
-    "@neos-project/build-essentials": "5.0.1",
-    "@neos-project/jest-preset-neos-ui": "5.0.1"
+    "@neos-project/babel-preset-neos-ui": "5.0.2",
+    "@neos-project/build-essentials": "5.0.2",
+    "@neos-project/jest-preset-neos-ui": "5.0.2"
   },
   "dependencies": {
-    "@neos-project/neos-ui-backend-connector": "5.0.1",
-    "@neos-project/neos-ui-decorators": "5.0.1",
-    "@neos-project/neos-ui-extensibility": "5.0.1",
-    "@neos-project/neos-ui-guest-frame": "5.0.1",
-    "@neos-project/neos-ui-i18n": "5.0.1",
-    "@neos-project/neos-ui-redux-store": "5.0.1",
-    "@neos-project/react-ui-components": "5.0.1",
-    "@neos-project/utils-helpers": "5.0.1"
+    "@neos-project/neos-ui-backend-connector": "5.0.2",
+    "@neos-project/neos-ui-decorators": "5.0.2",
+    "@neos-project/neos-ui-extensibility": "5.0.2",
+    "@neos-project/neos-ui-guest-frame": "5.0.2",
+    "@neos-project/neos-ui-i18n": "5.0.2",
+    "@neos-project/neos-ui-redux-store": "5.0.2",
+    "@neos-project/react-ui-components": "5.0.2",
+    "@neos-project/utils-helpers": "5.0.2"
   },
   "license": "GNU GPLv3",
   "jest": {

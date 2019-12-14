@@ -5,6 +5,7 @@
         "vendor-dir": "Packages/Libraries",
         "bin-dir": "bin"
     },
+    "minimum-stability": "dev",
     "require": {
       "neos/neos-ui": "5.1.x-dev",
       "neos/fusion-afx": "*",

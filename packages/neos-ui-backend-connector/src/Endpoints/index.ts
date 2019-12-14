@@ -1,4 +1,4 @@
-import {urlWithParams, searchParams, getElementInnerText, getElementAttributeValue} from './Helpers';
+import {urlWithParams, searchParams, getElementInnerText, getElementAttributeValue, getContextString} from './Helpers';
 
 import fetchWithErrorHandling from '../FetchWithErrorHandling/index';
 import {Change, NodeContextPath, WorkspaceName, DimensionCombination, DimensionPresetCombination, DimensionName} from '@neos-project/neos-ts-interfaces';
@@ -478,7 +478,7 @@ export default (routes: Routes) => {
                 }
 
                 // Hackish way to get context string from uri
-                const contextString = nodeFrontendUri.split('@')[1].split('.')[0];
+                const contextString = getContextString(nodeFrontendUri);
                 // TODO: Temporary hack due to missing contextPath in the API response
                 const nodeContextPath = `${nodePath.innerHTML}@${contextString}`;
 

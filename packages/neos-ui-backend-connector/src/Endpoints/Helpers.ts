@@ -26,6 +26,12 @@ export const searchParams = (params = {}) => {
     return searchParams;
 };
 
+export const getContextString = (uri: string) => {
+    const decodedUri = unescape(uri);
+    const uriParts = decodedUri.split('@');
+    return uriParts ? uriParts[1].split('.')[0] : '';
+};
+
 /**
  * Serializes an object to PHP-compatible URL serialization, with support for nested objects and arrays.
  *

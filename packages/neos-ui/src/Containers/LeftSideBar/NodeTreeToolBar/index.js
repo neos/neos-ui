@@ -272,6 +272,7 @@ const makeMapStateToProps = isDocument => (state, {nodeTypesRegistry}) => {
         const isAllowedToAddChildOrSiblingNodes = isAllowedToAddChildOrSiblingNodesSelector(state, {
             reference: focusedNodeContextPath
         });
+        const isHiddenContentTree = $get('ui.leftSideBar.contentTree.isHidden', state);
 
         const destructiveOperationsAreDisabled = (
             isDocument ?
@@ -293,6 +294,7 @@ const makeMapStateToProps = isDocument => (state, {nodeTypesRegistry}) => {
             isAllowedToAddChildOrSiblingNodes,
             isCut,
             isCopied,
+            isHiddenContentTree,
             treeType: isDocument ? 'PageTree' : 'ContentTree',
             displayToggleContentTreeButton: !isDocument
         };

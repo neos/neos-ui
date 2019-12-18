@@ -2,6 +2,16 @@
 
 set -xe
 
+# Override the git branch by a manual value
+if [ -n "$GIT_BRANCH_MANUAL" ]; then
+    GIT_BRANCH="$GIT_BRANCH_MANUAL"
+fi
+
+# Override the git tag by a manual value
+if [ -n "$GIT_TAG_MANUAL" ]; then
+    GIT_TAG="$GIT_TAG_MANUAL"
+fi
+
 if [ -z "$GIT_BRANCH" ]; then echo "\$GIT_BRANCH not set"; exit 1; fi
 
 # go to root directory of Neos.Neos.Ui

@@ -19,10 +19,14 @@ export const getIntermediate = (state: GlobalState) => $get(['ui', 'pageTree', '
 export const destructiveOperationsAreDisabledForPageTreeSelector = createSelector(
     [
         siteNodeContextPathSelector,
-        getAllFocused
+        getAllFocused,
+        nodesByContextPathSelector
     ],
-    (siteNodeContextPath, focusedNodesContextPaths) => {
-        return [...focusedNodesContextPaths].map(contextPath => siteNodeContextPath === contextPath).filter(Boolean).length > 0;
+    (siteNodeContextPath, focusedNodesContextPaths, nodesByContextPath) => {
+        return [...focusedNodesContextPaths].map(contextPath => {
+            const node = nodesByContextPath[contextPath];
+            return node && node.isAutoCreated || siteNodeContextPath === contextPath;
+        }).filter(Boolean).length > 0;
     }
 );
 

@@ -27,7 +27,7 @@
      <properties>
       <title __type="string">Home</title>
       <uriPathSegment __type="string">home</uriPathSegment>
-      <image __type="object" __identifier="50cd4a3e-1cc3-4bbb-b2ab-919abb4011f1" __classname="Neos\Media\Domain\Model\ImageVariant" __encoding="json">{&quot;__identity&quot;:&quot;50cd4a3e-1cc3-4bbb-b2ab-919abb4011f1&quot;,&quot;__type&quot;:&quot;Neos\\Media\\Domain\\Model\\ImageVariant&quot;,&quot;originalAsset&quot;:{&quot;__identity&quot;:&quot;ee3d239e-48b0-4f99-90be-054301b91792&quot;,&quot;__type&quot;:&quot;Neos\\Media\\Domain\\Model\\Image&quot;,&quot;title&quot;:&quot;&quot;,&quot;resource&quot;:{&quot;filename&quot;:&quot;neos_primary.png&quot;,&quot;collectionName&quot;:&quot;persistent&quot;,&quot;relativePublicationPath&quot;:&quot;&quot;,&quot;mediaType&quot;:&quot;image\/png&quot;,&quot;sha1&quot;:&quot;aac28f51e5ca842e2646e88e7d242ac3c27e1f25&quot;,&quot;hash&quot;:&quot;aac28f51e5ca842e2646e88e7d242ac3c27e1f25&quot;,&quot;__identity&quot;:&quot;71abb35f-f167-4677-a3f5-386785e9d874&quot;}},&quot;adjustments&quot;:[{&quot;height&quot;:126,&quot;position&quot;:10,&quot;width&quot;:126,&quot;x&quot;:328,&quot;y&quot;:0,&quot;__identity&quot;:&quot;d39c6f64-b4e4-4851-aa6a-be27d46bba11&quot;,&quot;__type&quot;:&quot;Neos\\Media\\Domain\\Model\\Adjustment\\CropImageAdjustment&quot;}]}</image>
+      <image __type="object" __identifier="50cd4a3e-1cc3-4bbb-b2ab-919abb4011f1" __classname="Neos\Media\Domain\Model\ImageVariant" __encoding="json">{&quot;__identity&quot;:&quot;50cd4a3e-1cc3-4bbb-b2ab-919abb4011f1&quot;,&quot;__type&quot;:&quot;Neos\\Media\\Domain\\Model\\ImageVariant&quot;,&quot;originalAsset&quot;:{&quot;__identity&quot;:&quot;ee3d239e-48b0-4f99-90be-054301b91792&quot;,&quot;__type&quot;:&quot;Neos\\Media\\Domain\\Model\\Image&quot;,&quot;title&quot;:&quot;&quot;,&quot;copyrightNotice&quot;:&quot;&quot;,&quot;caption&quot;:&quot;&quot;,&quot;resource&quot;:{&quot;filename&quot;:&quot;neos_primary.png&quot;,&quot;collectionName&quot;:&quot;persistent&quot;,&quot;relativePublicationPath&quot;:&quot;&quot;,&quot;mediaType&quot;:&quot;image\/png&quot;,&quot;sha1&quot;:&quot;aac28f51e5ca842e2646e88e7d242ac3c27e1f25&quot;,&quot;hash&quot;:&quot;aac28f51e5ca842e2646e88e7d242ac3c27e1f25&quot;,&quot;__identity&quot;:&quot;71abb35f-f167-4677-a3f5-386785e9d874&quot;}},&quot;adjustments&quot;:[{&quot;aspectRatio&quot;:null,&quot;height&quot;:126,&quot;position&quot;:10,&quot;width&quot;:126,&quot;x&quot;:328,&quot;y&quot;:0,&quot;__identity&quot;:&quot;206ccf9b-ddd8-4021-951b-c7df0adf893a&quot;,&quot;__type&quot;:&quot;Neos\\Media\\Domain\\Model\\Adjustment\\CropImageAdjustment&quot;}]}</image>
      </properties>
     </variant>
     <variant sortingIndex="100" workspace="live" nodeType="Neos.TestNodeTypes:Document.Page" version="3" removed="" hidden="" hiddenInIndex="">
@@ -41,7 +41,7 @@
      <properties>
       <title __type="string">Home</title>
       <uriPathSegment __type="string">home</uriPathSegment>
-      <image __type="object" __identifier="50cd4a3e-1cc3-4bbb-b2ab-919abb4011f1" __classname="Neos\Media\Domain\Model\ImageVariant" __encoding="json">{&quot;__identity&quot;:&quot;50cd4a3e-1cc3-4bbb-b2ab-919abb4011f1&quot;,&quot;__type&quot;:&quot;Neos\\Media\\Domain\\Model\\ImageVariant&quot;,&quot;originalAsset&quot;:{&quot;__identity&quot;:&quot;ee3d239e-48b0-4f99-90be-054301b91792&quot;,&quot;__type&quot;:&quot;Neos\\Media\\Domain\\Model\\Image&quot;,&quot;title&quot;:&quot;&quot;,&quot;resource&quot;:{&quot;filename&quot;:&quot;neos_primary.png&quot;,&quot;collectionName&quot;:&quot;persistent&quot;,&quot;relativePublicationPath&quot;:&quot;&quot;,&quot;mediaType&quot;:&quot;image\/png&quot;,&quot;sha1&quot;:&quot;aac28f51e5ca842e2646e88e7d242ac3c27e1f25&quot;,&quot;hash&quot;:&quot;aac28f51e5ca842e2646e88e7d242ac3c27e1f25&quot;,&quot;__identity&quot;:&quot;71abb35f-f167-4677-a3f5-386785e9d874&quot;}},&quot;adjustments&quot;:[{&quot;height&quot;:126,&quot;position&quot;:10,&quot;width&quot;:126,&quot;x&quot;:328,&quot;y&quot;:0,&quot;__identity&quot;:&quot;d39c6f64-b4e4-4851-aa6a-be27d46bba11&quot;,&quot;__type&quot;:&quot;Neos\\Media\\Domain\\Model\\Adjustment\\CropImageAdjustment&quot;}]}</image>
+      <image __type="object" __identifier="50cd4a3e-1cc3-4bbb-b2ab-919abb4011f1" __classname="Neos\Media\Domain\Model\ImageVariant" __encoding="json">{&quot;__identity&quot;:&quot;50cd4a3e-1cc3-4bbb-b2ab-919abb4011f1&quot;,&quot;__type&quot;:&quot;Neos\\Media\\Domain\\Model\\ImageVariant&quot;,&quot;originalAsset&quot;:{&quot;__identity&quot;:&quot;ee3d239e-48b0-4f99-90be-054301b91792&quot;,&quot;__type&quot;:&quot;Neos\\Media\\Domain\\Model\\Image&quot;,&quot;title&quot;:&quot;&quot;,&quot;copyrightNotice&quot;:&quot;&quot;,&quot;caption&quot;:&quot;&quot;,&quot;resource&quot;:{&quot;filename&quot;:&quot;neos_primary.png&quot;,&quot;collectionName&quot;:&quot;persistent&quot;,&quot;relativePublicationPath&quot;:&quot;&quot;,&quot;mediaType&quot;:&quot;image\/png&quot;,&quot;sha1&quot;:&quot;aac28f51e5ca842e2646e88e7d242ac3c27e1f25&quot;,&quot;hash&quot;:&quot;aac28f51e5ca842e2646e88e7d242ac3c27e1f25&quot;,&quot;__identity&quot;:&quot;71abb35f-f167-4677-a3f5-386785e9d874&quot;}},&quot;adjustments&quot;:[{&quot;aspectRatio&quot;:null,&quot;height&quot;:126,&quot;position&quot;:10,&quot;width&quot;:126,&quot;x&quot;:328,&quot;y&quot;:0,&quot;__identity&quot;:&quot;206ccf9b-ddd8-4021-951b-c7df0adf893a&quot;,&quot;__type&quot;:&quot;Neos\\Media\\Domain\\Model\\Adjustment\\CropImageAdjustment&quot;}]}</image>
      </properties>
     </variant>
     <variant sortingIndex="100" workspace="live" nodeType="Neos.TestNodeTypes:Document.Page" version="3" removed="" hidden="" hiddenInIndex="">
@@ -129,22 +129,22 @@
      </variant>
      <variant sortingIndex="100" workspace="live" nodeType="Neos.Neos:ContentCollection" version="2" removed="" hidden="" hiddenInIndex="">
       <dimensions>
-       <language>da</language>
-      </dimensions>
-      <accessRoles __type="array"/>
-      <creationDateTime __type="object" __classname="DateTime">2019-03-19T16:18:09+00:00</creationDateTime>
-      <lastModificationDateTime __type="object" __classname="DateTime">2019-03-19T16:18:14+00:00</lastModificationDateTime>
-      <lastPublicationDateTime __type="object" __classname="DateTime">2019-03-19T16:18:14+00:00</lastPublicationDateTime>
-      <properties/>
-     </variant>
-     <variant sortingIndex="100" workspace="live" nodeType="Neos.Neos:ContentCollection" version="2" removed="" hidden="" hiddenInIndex="">
-      <dimensions>
        <language>nl</language>
       </dimensions>
       <accessRoles __type="array"/>
       <creationDateTime __type="object" __classname="DateTime">2019-03-19T16:18:55+00:00</creationDateTime>
       <lastModificationDateTime __type="object" __classname="DateTime">2019-03-19T16:19:13+00:00</lastModificationDateTime>
       <lastPublicationDateTime __type="object" __classname="DateTime">2019-03-19T16:19:12+00:00</lastPublicationDateTime>
+      <properties/>
+     </variant>
+     <variant sortingIndex="100" workspace="live" nodeType="Neos.Neos:ContentCollection" version="2" removed="" hidden="" hiddenInIndex="">
+      <dimensions>
+       <language>da</language>
+      </dimensions>
+      <accessRoles __type="array"/>
+      <creationDateTime __type="object" __classname="DateTime">2019-03-19T16:18:09+00:00</creationDateTime>
+      <lastModificationDateTime __type="object" __classname="DateTime">2019-03-19T16:18:14+00:00</lastModificationDateTime>
+      <lastPublicationDateTime __type="object" __classname="DateTime">2019-03-19T16:18:14+00:00</lastPublicationDateTime>
       <properties/>
      </variant>
      <variant sortingIndex="100" workspace="live" nodeType="Neos.Neos:ContentCollection" version="2" removed="" hidden="" hiddenInIndex="">
@@ -411,6 +411,141 @@
         <creationDateTime __type="object" __classname="DateTime">2019-03-21T14:19:55+00:00</creationDateTime>
         <lastModificationDateTime __type="object" __classname="DateTime">2019-03-21T14:20:31+00:00</lastModificationDateTime>
         <lastPublicationDateTime __type="object" __classname="DateTime">2019-03-21T14:20:30+00:00</lastPublicationDateTime>
+        <properties/>
+       </variant>
+      </node>
+     </node>
+    </node>
+    <node identifier="4fbd958a-3b24-4001-8342-5ceaf0750ffb" nodeName="node-knm2pltb5454z">
+     <variant sortingIndex="650" workspace="live" nodeType="Neos.TestNodeTypes:Document.Page" version="3" removed="" hidden="" hiddenInIndex="">
+      <dimensions>
+       <language>en_US</language>
+      </dimensions>
+      <accessRoles __type="array"/>
+      <creationDateTime __type="object" __classname="DateTime">2019-12-20T16:53:37+00:00</creationDateTime>
+      <lastModificationDateTime __type="object" __classname="DateTime">2019-12-20T17:01:04+00:00</lastModificationDateTime>
+      <lastPublicationDateTime __type="object" __classname="DateTime">2019-12-20T17:01:03+00:00</lastPublicationDateTime>
+      <properties>
+       <uriPathSegment __type="string">tree-multiselect</uriPathSegment>
+       <title __type="string">Tree multiselect</title>
+      </properties>
+     </variant>
+     <node identifier="74263f87-2e7c-c916-c122-6a6cf4704f22" nodeName="main">
+      <variant sortingIndex="100" workspace="live" nodeType="Neos.Neos:ContentCollection" version="2" removed="" hidden="" hiddenInIndex="">
+       <dimensions>
+        <language>en_US</language>
+       </dimensions>
+       <accessRoles __type="array"/>
+       <creationDateTime __type="object" __classname="DateTime">2019-12-20T16:53:37+00:00</creationDateTime>
+       <lastModificationDateTime __type="object" __classname="DateTime">2019-12-20T17:01:04+00:00</lastModificationDateTime>
+       <lastPublicationDateTime __type="object" __classname="DateTime">2019-12-20T17:01:03+00:00</lastPublicationDateTime>
+       <properties/>
+      </variant>
+     </node>
+     <node identifier="1efe592f-2e2f-4737-b212-bbb42626e848" nodeName="node-18qsaeidy6765">
+      <variant sortingIndex="200" workspace="live" nodeType="Neos.TestNodeTypes:Document.Page" version="3" removed="" hidden="" hiddenInIndex="">
+       <dimensions>
+        <language>en_US</language>
+       </dimensions>
+       <accessRoles __type="array"/>
+       <creationDateTime __type="object" __classname="DateTime">2019-12-20T16:53:49+00:00</creationDateTime>
+       <lastModificationDateTime __type="object" __classname="DateTime">2019-12-20T17:12:15+00:00</lastModificationDateTime>
+       <lastPublicationDateTime __type="object" __classname="DateTime">2019-12-20T17:12:14+00:00</lastPublicationDateTime>
+       <properties>
+        <uriPathSegment __type="string">a</uriPathSegment>
+        <title __type="string">MultiA</title>
+       </properties>
+      </variant>
+      <node identifier="41dbc005-0327-8a86-0f98-8531112577b8" nodeName="main">
+       <variant sortingIndex="100" workspace="live" nodeType="Neos.Neos:ContentCollection" version="2" removed="" hidden="" hiddenInIndex="">
+        <dimensions>
+         <language>en_US</language>
+        </dimensions>
+        <accessRoles __type="array"/>
+        <creationDateTime __type="object" __classname="DateTime">2019-12-20T16:53:49+00:00</creationDateTime>
+        <lastModificationDateTime __type="object" __classname="DateTime">2019-12-20T17:01:04+00:00</lastModificationDateTime>
+        <lastPublicationDateTime __type="object" __classname="DateTime">2019-12-20T17:01:03+00:00</lastPublicationDateTime>
+        <properties/>
+       </variant>
+      </node>
+     </node>
+     <node identifier="5b0d6ac0-40ab-47e8-b79e-39de6c0700df" nodeName="node-e8tw6sparbtp3">
+      <variant sortingIndex="250" workspace="live" nodeType="Neos.TestNodeTypes:Document.Page" version="4" removed="" hidden="" hiddenInIndex="">
+       <dimensions>
+        <language>en_US</language>
+       </dimensions>
+       <accessRoles __type="array"/>
+       <creationDateTime __type="object" __classname="DateTime">2019-12-20T16:54:00+00:00</creationDateTime>
+       <lastModificationDateTime __type="object" __classname="DateTime">2019-12-20T17:12:15+00:00</lastModificationDateTime>
+       <lastPublicationDateTime __type="object" __classname="DateTime">2019-12-20T17:12:14+00:00</lastPublicationDateTime>
+       <properties>
+        <uriPathSegment __type="string">b</uriPathSegment>
+        <title __type="string">MultiB</title>
+       </properties>
+      </variant>
+      <node identifier="2969680f-75ff-13b6-efbd-f5a01fbb73e5" nodeName="main">
+       <variant sortingIndex="100" workspace="live" nodeType="Neos.Neos:ContentCollection" version="2" removed="" hidden="" hiddenInIndex="">
+        <dimensions>
+         <language>en_US</language>
+        </dimensions>
+        <accessRoles __type="array"/>
+        <creationDateTime __type="object" __classname="DateTime">2019-12-20T16:54:00+00:00</creationDateTime>
+        <lastModificationDateTime __type="object" __classname="DateTime">2019-12-20T17:01:04+00:00</lastModificationDateTime>
+        <lastPublicationDateTime __type="object" __classname="DateTime">2019-12-20T17:01:03+00:00</lastPublicationDateTime>
+        <properties/>
+       </variant>
+      </node>
+     </node>
+     <node identifier="84eb0340-ba34-4fdb-98b1-da503f967121" nodeName="node-oml0cxaompt29">
+      <variant sortingIndex="300" workspace="live" nodeType="Neos.TestNodeTypes:Document.Page" version="4" removed="" hidden="" hiddenInIndex="">
+       <dimensions>
+        <language>en_US</language>
+       </dimensions>
+       <accessRoles __type="array"/>
+       <creationDateTime __type="object" __classname="DateTime">2019-12-20T16:54:08+00:00</creationDateTime>
+       <lastModificationDateTime __type="object" __classname="DateTime">2019-12-20T17:12:15+00:00</lastModificationDateTime>
+       <lastPublicationDateTime __type="object" __classname="DateTime">2019-12-20T17:12:14+00:00</lastPublicationDateTime>
+       <properties>
+        <uriPathSegment __type="string">c</uriPathSegment>
+        <title __type="string">MultiC</title>
+       </properties>
+      </variant>
+      <node identifier="2ff43bf3-a953-d69d-0103-3ce80568e642" nodeName="main">
+       <variant sortingIndex="100" workspace="live" nodeType="Neos.Neos:ContentCollection" version="2" removed="" hidden="" hiddenInIndex="">
+        <dimensions>
+         <language>en_US</language>
+        </dimensions>
+        <accessRoles __type="array"/>
+        <creationDateTime __type="object" __classname="DateTime">2019-12-20T16:54:08+00:00</creationDateTime>
+        <lastModificationDateTime __type="object" __classname="DateTime">2019-12-20T17:01:04+00:00</lastModificationDateTime>
+        <lastPublicationDateTime __type="object" __classname="DateTime">2019-12-20T17:01:03+00:00</lastPublicationDateTime>
+        <properties/>
+       </variant>
+      </node>
+     </node>
+     <node identifier="f6bf1a78-9e2b-45ba-887c-9b7e43890a44" nodeName="node-szu9u5yzpleck">
+      <variant sortingIndex="350" workspace="live" nodeType="Neos.TestNodeTypes:Document.Page" version="4" removed="" hidden="" hiddenInIndex="">
+       <dimensions>
+        <language>en_US</language>
+       </dimensions>
+       <accessRoles __type="array"/>
+       <creationDateTime __type="object" __classname="DateTime">2019-12-20T16:54:21+00:00</creationDateTime>
+       <lastModificationDateTime __type="object" __classname="DateTime">2019-12-20T17:12:15+00:00</lastModificationDateTime>
+       <lastPublicationDateTime __type="object" __classname="DateTime">2019-12-20T17:12:14+00:00</lastPublicationDateTime>
+       <properties>
+        <uriPathSegment __type="string">d</uriPathSegment>
+        <title __type="string">MultiD</title>
+       </properties>
+      </variant>
+      <node identifier="f59c6680-06a4-4bc5-e563-9605bd4add99" nodeName="main">
+       <variant sortingIndex="100" workspace="live" nodeType="Neos.Neos:ContentCollection" version="2" removed="" hidden="" hiddenInIndex="">
+        <dimensions>
+         <language>en_US</language>
+        </dimensions>
+        <accessRoles __type="array"/>
+        <creationDateTime __type="object" __classname="DateTime">2019-12-20T16:54:21+00:00</creationDateTime>
+        <lastModificationDateTime __type="object" __classname="DateTime">2019-12-20T17:01:04+00:00</lastModificationDateTime>
+        <lastPublicationDateTime __type="object" __classname="DateTime">2019-12-20T17:01:03+00:00</lastPublicationDateTime>
         <properties/>
        </variant>
       </node>

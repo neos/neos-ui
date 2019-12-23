@@ -131,6 +131,7 @@ export default class InsertModeModal extends PureComponent {
     renderCancel() {
         return (
             <Button
+                id="neos-InsertModeModal-cancel"
                 key="cancel"
                 style="lighter"
                 hoverStyle="brand"
@@ -144,6 +145,7 @@ export default class InsertModeModal extends PureComponent {
     renderApply() {
         return (
             <Button
+                id="neos-InsertModeModal-apply"
                 key="apply"
                 style="lighter"
                 hoverStyle="brand"

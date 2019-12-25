@@ -4829,15 +4829,6 @@ dnd-core@^10.0.2:
     "@react-dnd/invariant" "^2.0.0"
     redux "^4.0.4"
 
-dnd-core@^4.0.5:
-  version "4.0.5"
-  resolved "https://registry.yarnpkg.com/dnd-core/-/dnd-core-4.0.5.tgz#3b83d138d0d5e265c73ec978dec5e1ed441dc665"
-  dependencies:
-    asap "^2.0.6"
-    invariant "^2.2.4"
-    lodash "^4.17.10"
-    redux "^4.0.0"
-
 dnd-core@^7.0.2:
   version "7.0.2"
   resolved "https://registry.yarnpkg.com/dnd-core/-/dnd-core-7.0.2.tgz#6c080eb57243fa0372fd083b3db242d9eb525010"
@@ -11191,19 +11182,19 @@ react-dev-utils@^0.5.0:
     sockjs-client "1.0.1"
     strip-ansi "3.0.1"
 
-react-dnd-html5-backend@^10.0:
+react-dnd-html5-backend@^10.0.0:
   version "10.0.2"
   resolved "https://registry.yarnpkg.com/react-dnd-html5-backend/-/react-dnd-html5-backend-10.0.2.tgz#15cb9d2b923f43576a136df854e288cb5969784c"
   integrity sha512-ny17gUdInZ6PIGXdzfwPhoztRdNVVvjoJMdG80hkDBamJBeUPuNF2Wv4D3uoQJLjXssX1+i9PhBqc7EpogClwQ==
   dependencies:
     dnd-core "^10.0.2"
 
-react-dnd-test-backend@^5.0.1:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/react-dnd-test-backend/-/react-dnd-test-backend-5.0.1.tgz#00197950e61e765ef9a44bd171e9cac8516a73d7"
+react-dnd-test-backend@^10.0.0:
+  version "10.0.2"
+  resolved "https://registry.yarnpkg.com/react-dnd-test-backend/-/react-dnd-test-backend-10.0.2.tgz#4f21b3bbf188ff5000dee1949e4053cb6e38080d"
+  integrity sha512-cYTvE+JEIY24SeytWM4xQobsEforuW2TjhZ1DOQmlEwL1rr5kIuuWAmsYM30Mtv5G1oyNYqzxhAZ6+w3y1IX5g==
   dependencies:
-    dnd-core "^4.0.5"
-    lodash "^4.17.10"
+    dnd-core "^10.0.2"
 
 react-dnd-test-backend@^7.0.2:
   version "7.0.2"
@@ -11212,7 +11203,7 @@ react-dnd-test-backend@^7.0.2:
     dnd-core "^7.0.2"
     lodash "^4.17.11"
 
-react-dnd@^10.0:
+react-dnd@^10.0.0:
   version "10.0.2"
   resolved "https://registry.yarnpkg.com/react-dnd/-/react-dnd-10.0.2.tgz#a6ad8eb3d9f2c573031f7ce05012e5c767a0b1fc"
   integrity sha512-SC2Ymvntynhoqtf5zaFhZscm9xenCoMofilxPdlwUlaelAzmbl9fw82C4ZJ//+lNm3kWAKXjGDZg2/aWjKEAtg==

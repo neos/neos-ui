@@ -37,7 +37,7 @@ export default class ToggablePanel extends PureComponent {
         isOpen: true
     };
 
-    componentWillReceiveProps(newProps) {
+    UNSAFE_componentWillReceiveProps(newProps) {
         const {isOpen} = newProps;
         const isStateLess = Boolean(newProps.onPanelToggle);
 

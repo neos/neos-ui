@@ -74,7 +74,7 @@ export default class Frame extends PureComponent<FrameProps> {
         window.document.dispatchEvent(hostEvent);
     }
 
-    public componentWillUpdate(): void {
+    public UNSAFE_componentWillUpdate(): void {
         this.removeClickListener();
     }
 
@@ -105,7 +105,7 @@ export default class Frame extends PureComponent<FrameProps> {
         }
     }
 
-    public componentWillMount(): void {
+    public UNSAFE_componentWillMount(): void {
         document.addEventListener('Neos.Neos.Ui.ContentReady', () => {
             if (this.ref && this.ref.contentDocument && this.ref.contentWindow) {
                 const doc = this.ref.contentDocument;

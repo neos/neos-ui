@@ -72,11 +72,11 @@ export default class InsertModeSelector extends PureComponent {
         }
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.selectPreferredInitialModeIfModeIsEmpty(this.props);
     }
 
-    componentWillReceiveProps(props) {
+    UNSAFE_componentWillReceiveProps(props) {
         this.selectPreferredInitialModeIfModeIsEmpty(props);
     }
 

@@ -50,7 +50,7 @@ export default class Tabs extends PureComponent<TabsProps> {
 
     public static defaultProps = tabsDefaultProps;
 
-    public componentWillReceiveProps(newProps: TabsProps): void {
+    public UNSAFE_componentWillReceiveProps(newProps: TabsProps): void {
         const newactiveTab = newProps.activeTab;
         const {activeTab} = this.state;
 

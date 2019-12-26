@@ -104,7 +104,7 @@ export default class Inspector extends PureComponent {
         }
     }
 
-    componentWillReceiveProps(newProps) {
+    UNSAFE_componentWillReceiveProps(newProps) {
         if (newProps.focusedNode !== this.props.focusedNode) {
             this.setState({
                 viewConfiguration: newProps.nodeTypesRegistry.getInspectorViewConfigurationFor($get('nodeType', newProps.focusedNode)),

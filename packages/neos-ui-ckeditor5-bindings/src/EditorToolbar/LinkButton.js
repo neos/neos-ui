@@ -28,7 +28,7 @@ export default class LinkButton extends PureComponent {
         isOpen: false
     };
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         // if new selection doesn't have a link, close the link dialog
         if (!$get('link', nextProps.formattingUnderCursor)) {
             this.setState({isOpen: false});

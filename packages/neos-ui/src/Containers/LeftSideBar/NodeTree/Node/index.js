@@ -90,7 +90,7 @@ export default class Node extends PureComponent {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         // If focused node changed
         if (this.props.isFocused !== nextProps.isFocused) {
             // And it is the current node

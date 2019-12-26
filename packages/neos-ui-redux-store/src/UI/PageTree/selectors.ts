@@ -42,7 +42,7 @@ export const getUncollapsed = createSelector(
         (state: GlobalState) => $get(['ui', 'pageTree', 'toggled'], state),
         nodesByContextPathSelector,
         siteNodeSelector,
-        (_: GlobalState, {loadingDepth = 0}) => loadingDepth
+        (_: GlobalState, {loadingDepth = 0}: any) => loadingDepth
     ],
     (toggleTreeNodeContextPaths, nodesByContextPath, siteNode, loadingDepth) => Object.keys(nodesByContextPath || {}).filter(contextPath => {
         const node = nodesByContextPath && nodesByContextPath[contextPath];

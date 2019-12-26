@@ -86,7 +86,7 @@ class Icon extends PureComponent<IconProps> {
             }
         );
 
-        return <FontAwesomeIcon icon={icon ? this.getIconProp(icon) : 'question'} aria-label={label} className={classNames} {...rest} />;
+        return <FontAwesomeIcon icon={icon ? this.getIconProp(icon) as any : 'question'} aria-label={label} className={classNames} {...rest} />;
     }
 
     private readonly getIconProp = (icon: string): IconProp => {

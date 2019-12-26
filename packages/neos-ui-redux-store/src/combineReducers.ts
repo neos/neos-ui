@@ -33,7 +33,7 @@ export function combineReducers<T extends Reducers>(reducers: T): ReducerReturnV
             const reducer = reducers[prop];
             const previousStateForKey = state[prop];
             const nextStateForKey = reducer(previousStateForKey, action, globalState || state);
-            nextState[prop] = nextStateForKey;
+            (nextState as any)[prop] = nextStateForKey;
             hasChanged = hasChanged || nextStateForKey !== previousStateForKey;
         }
         return hasChanged ? nextState : state;

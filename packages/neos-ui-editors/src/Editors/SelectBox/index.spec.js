@@ -3,7 +3,7 @@ import {mount} from 'enzyme';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 import TestBackend from 'react-dnd-test-backend';
-import {DragDropContextProvider} from 'react-dnd';
+import {DndProvider as DragDropContextProvider} from 'react-dnd';
 import SelectBoxEditor from './index.js';
 import {WrapWithMockGlobalRegistry, MockDataSourceDataLoader} from '../../_lib/testUtils';
 

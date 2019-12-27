@@ -27,6 +27,7 @@ exports[`<Header/> should render correctly. 1`] = `
 <div
   aria-expanded={false}
   onClick={[MockFunction]}
+  role="button"
 >
   <Component
     className="panelHeadlineClassName"

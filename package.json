@@ -4,7 +4,7 @@
   "private": true,
   "resolutions": {
     "moment": "^2.20.1",
-    "d3-array": "^2.3.3",
+    "d3-array": "2.3.3",
     "vfile-message": "^2.0.2"
   },
   "devDependencies": {

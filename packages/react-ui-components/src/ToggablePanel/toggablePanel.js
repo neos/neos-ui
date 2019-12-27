@@ -219,7 +219,7 @@ export class Header extends PureComponent {
         });
 
         return (
-            <div aria-expanded={isPanelOpen} onClick={onPanelToggle} {...rest}>
+            <div role="button" aria-expanded={isPanelOpen} onClick={onPanelToggle} {...rest}>
                 <HeadlineComponent
                     className={finalClassName}
                     type="h2"

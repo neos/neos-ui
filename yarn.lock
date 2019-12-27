@@ -590,10 +590,10 @@
   dependencies:
     lodash.upperfirst "^4.3.0"
 
-"@neos-project/eslint-config-neos@^2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@neos-project/eslint-config-neos/-/eslint-config-neos-2.2.0.tgz#d0ce9ecce72fc096fd88550e5b23d0aab48c75c0"
-  integrity sha512-8Nz/Xsw2vkSIMKItIfeyWO9exWNv/37RrSUqCdMniJE+geb6komPFZ9sjK30EFWUSwnZFsRVYy2CFFKafO+55w==
+"@neos-project/eslint-config-neos@^2.3.0":
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@neos-project/eslint-config-neos/-/eslint-config-neos-2.3.0.tgz#07e885ca766fddce6933831b169d5626d906232a"
+  integrity sha512-I08syUWQmjkmY/QeYImLF4JyHdgR1X2TFreghaZnGYQBtUOSaNoo5KmG1iMKPO2d91Mq3/cmCHjhGxmcn+hV4A==
   dependencies:
     eslint-config-xo-react "^0.17.0"
     eslint-config-xo-space "^0.20.0"

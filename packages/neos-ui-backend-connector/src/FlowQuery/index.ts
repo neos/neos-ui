@@ -45,7 +45,7 @@ export const createNodeEnvelope = (node: NodeEnvelope | NodeContextPath) => {
     return {$node: contextPath};
 };
 
-export const resolveChain = (chain: Array<unknown>, routes: Routes) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+export const resolveChain = (chain: unknown[], routes: Routes) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
     url: routes.ui.service.flowQuery,
 
     method: 'POST',

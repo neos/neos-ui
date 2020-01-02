@@ -137,20 +137,19 @@ export default class NodeToolbar extends PureComponent {
             return null;
         }
 
-        const {top, right} = getAbsolutePositionOfElementInGuestFrame(nodeElement);
+        const {top, width, rightAsMeasuredFromRightDocumentBorder} = getAbsolutePositionOfElementInGuestFrame(nodeElement);
 
         // TODO: hardcoded dimensions
         const TOOLBAR_WIDTH = 200;
         const TOOLBAR_HEIGHT = 50;
 
-        const rect = nodeElement.getBoundingClientRect();
         const toolbarPosition = {
             top: top - TOOLBAR_HEIGHT
         };
-        if (rect.right < TOOLBAR_WIDTH) {
+        if (width < TOOLBAR_WIDTH) {
             toolbarPosition.left = 0;
         } else {
-            toolbarPosition.right = right;
+            toolbarPosition.right = rightAsMeasuredFromRightDocumentBorder + 'px';
         }
 
         const {isSticky} = this.state;

@@ -334,7 +334,7 @@ backend = Neos.Fusion:Template {
             documentNode = ${documentNode}
             site = ${site}
             user = ${user}
-            clipboardNode = ${clipboardNode}
+            clipboardNodes = ${clipboardNodes}
             clipboardMode = ${clipboardMode}
         }
 

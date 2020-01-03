@@ -78,12 +78,7 @@ export default class InsertModeModal extends PureComponent {
         const getNodeType = $get('nodeType');
         const getNodeTypeLabel = (...args) => getLabel(nodeTypesRegistry.get.bind(nodeTypesRegistry)(getNodeType(...args)));
 
-        return (
-            <span key={getNodeTypeLabel(node) + getLabel(node)}>
-                <I18n id={getNodeTypeLabel(node)}/>
-                &nbsp;"{getLabel(node)}"
-            </span>
-        );
+        return `${i18nRegistry.translate(getNodeTypeLabel(node))} ${getLabel(node)}`;
     }
 
     renderTitle() {
@@ -131,6 +126,7 @@ export default class InsertModeModal extends PureComponent {
     renderCancel() {
         return (
             <Button
+                id="neos-InsertModeModal-cancel"
                 key="cancel"
                 style="lighter"
                 hoverStyle="brand"
@@ -144,6 +140,7 @@ export default class InsertModeModal extends PureComponent {
     renderApply() {
         return (
             <Button
+                id="neos-InsertModeModal-apply"
                 key="apply"
                 style="lighter"
                 hoverStyle="brand"

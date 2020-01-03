@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/build-essentials",
-  "version": "5.1.0",
+  "version": "5.1.1",
   "description": "Dependencies for building @neos-project packages",
   "main": "./src",
   "bin": {
@@ -17,7 +17,7 @@
     "lint": "eslint src"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "5.1.0"
+    "@neos-project/babel-preset-neos-ui": "5.1.1"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-dev-utils": "^12.0.1",

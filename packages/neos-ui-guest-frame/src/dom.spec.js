@@ -1,4 +1,4 @@
-import { clampElementToDocumentDimensions } from './dom';
+import {clampElementToDocumentDimensions} from './dom';
 
 const documentDimensions = {
     top: 0,
@@ -8,7 +8,7 @@ const documentDimensions = {
     left: 0,
     width: 5,
     right: 5
-}
+};
 
 test(`no clamping because element is fully in document `, () => {
     /**
@@ -28,7 +28,6 @@ test(`no clamping because element is fully in document `, () => {
         width: 2,
         right: 3
     };
-
 
     const actual = clampElementToDocumentDimensions(elementDimensions, documentDimensions);
     expect(actual).toEqual({

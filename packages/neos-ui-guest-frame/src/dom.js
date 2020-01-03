@@ -201,19 +201,21 @@ export const getGuestFrameScrollOffsetY = () => {
     return iframeWindow.scrollY || iframeWindow.pageYOffset || iframeDocument.body.scrollTop;
 };
 
-//
-// Get the absolute position of an element in the guest frame, clamped to
-// width and height of the guest frame (i.e. so that it is fully visible).
-//
-export const getAbsolutePositionOfElementInGuestFrame = element => {
-    if (element && element.getBoundingClientRect) {
-        const relativeDocumentDimensions = getGuestFrameDocument().documentElement.getBoundingClientRect();
-        const relativeElementDimensions = element.getBoundingClientRect();
-
-        return clampElementToDocumentDimensions(relativeElementDimensions, relativeDocumentDimensions);
+/**
+ * returns the clamped N, and the amount how much N has been clamped.
+ */
+const clampNumber = (n, min, max) => {
+    if (max < min) {
+        max = min;
     }
 
-    return {top: 0, left: 0, width: 0, height: 0};
+    if (n < min) {
+        return [min, min - n];
+    }
+    if (n > max) {
+        return [max, n - max];
+    }
+    return [n, 0];
 };
 
 // We export this function only for testing.
@@ -226,11 +228,11 @@ export const clampElementToDocumentDimensions = (elementDimensions, documentDime
 
     // Reduce width optionally by the "withShrinkAmount" (if "left" is partially outside the document);
     // then the width can be maximally as big as "remaining" width of the document (when subtracting the left value)
-    const [width,] = clampNumber(elementDimensions.width - widthShrinkAmount, 0, documentWidth - left);
+    const [width] = clampNumber(elementDimensions.width - widthShrinkAmount, 0, documentWidth - left);
 
     // Height works the same as width.
     const [top, heightShrinkAmount] = clampNumber(elementDimensions.top - documentDimensions.top, 0, documentHeight);
-    const [height,] = clampNumber(elementDimensions.height - heightShrinkAmount, 0, documentHeight - top);
+    const [height] = clampNumber(elementDimensions.height - heightShrinkAmount, 0, documentHeight - top);
 
     return {
         top,
@@ -250,24 +252,22 @@ export const clampElementToDocumentDimensions = (elementDimensions, documentDime
         rightAsMeasuredFromRightDocumentBorder: documentWidth - (left + width)
 
     };
-}
+};
 
-/**
- * returns the clamped N, and the amount how much N has been clamped.
- */
-const clampNumber = (n, min, max) => {
-    if (max < min) {
-        max = min;
+//
+// Get the absolute position of an element in the guest frame, clamped to
+// width and height of the guest frame (i.e. so that it is fully visible).
+//
+export const getAbsolutePositionOfElementInGuestFrame = element => {
+    if (element && element.getBoundingClientRect) {
+        const relativeDocumentDimensions = getGuestFrameDocument().documentElement.getBoundingClientRect();
+        const relativeElementDimensions = element.getBoundingClientRect();
+
+        return clampElementToDocumentDimensions(relativeElementDimensions, relativeDocumentDimensions);
     }
 
-    if (n < min) {
-        return [min, min - n];
-    }
-    if (n > max) {
-        return [max, n - max]
-    }
-    return [n, 0];
-}
+    return {top: 0, left: 0, width: 0, height: 0};
+};
 
 //
 // Checks whether the given element is visible to the user

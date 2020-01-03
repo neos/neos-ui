@@ -14,6 +14,13 @@ That means:
 * All new features go only to master
 * New minor and major releases are made in sync with Neos/Flow. Bugfix releases may be available independantly
 
+### Currently maintained versions
+
+* NeosCMS version 4.x: branch 4.0
+* NeosCMS version 5.0: branch 5.0
+* NeosCMS version 5.1: branch 5.1
+* latest development happens in master
+
 ## Browser support
 
 The new interface supports all evergreen (i.e. self-updating) browsers, including: **Chrome, Firefox, Safari, Edge, Opera and other webkit-based browsers**.

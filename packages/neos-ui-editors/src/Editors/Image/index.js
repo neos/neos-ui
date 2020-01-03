@@ -75,7 +75,7 @@ export default class ImageEditor extends Component {
         this._isMounted = false;
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         const {loadImageMetadata} = backend.get().endpoints;
 
         if (!nextProps.value || !nextProps.value.__identity) {

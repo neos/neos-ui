@@ -85,10 +85,6 @@ export default class PreviewScreen extends PureComponent {
     }
 
     setAssetUploadReference = ref => {
-        if (ref === null) {
-            this.assetUpload = null;
-            return;
-        }
-        this.assetUpload = ref.getWrappedInstance();
+        this.assetUpload = ref;
     }
 }

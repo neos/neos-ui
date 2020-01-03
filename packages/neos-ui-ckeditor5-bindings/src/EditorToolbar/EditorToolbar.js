@@ -23,7 +23,7 @@ export default class EditorToolbar extends PureComponent {
         executeCommand: PropTypes.func.isRequired
     };
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const {toolbarRegistry} = this.props;
         this.renderToolbarComponents = renderToolbarComponents(toolbarRegistry);
     }

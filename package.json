@@ -89,7 +89,7 @@
     "tslint-react": "^3.6.0",
     "typescript": "^3.7.4",
     "watch": "^1.0.2",
-    "webpack": "^4.29.3",
+    "webpack": "^4.41.5",
     "webpack-livereload-plugin": "^2.2.0",
     "webpack-merge": "^4.2.1"
   },
@@ -182,7 +182,7 @@
     "typesafe-actions": "^4.4.2",
     "url-loader": "^1.0.1",
     "uuid": "^3.2.1",
-    "webpack-cli": "^3.2.3",
+    "webpack-cli": "^3.3.10",
     "whatwg-fetch": "^3.0.0"
   },
   "workspaces": [

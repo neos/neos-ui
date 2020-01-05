@@ -89,7 +89,7 @@
     "tslint-react": "^3.6.0",
     "typescript": "^3.7.4",
     "watch": "^1.0.2",
-    "webpack": "^4.29.3",
+    "webpack": "^4.41.5",
     "webpack-livereload-plugin": "^2.2.0",
     "webpack-merge": "^4.2.1"
   },

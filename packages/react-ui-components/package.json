@@ -29,7 +29,7 @@
     "webpack-merge": "^4.2.2"
   },
   "peerDependencies": {
-    "@friendsofreactjs/react-css-themr": "^3.3.2",
+    "@friendsofreactjs/react-css-themr": "^4.1.0",
     "classnames": "^2.2.3",
     "lodash.debounce": "^4.0.8",
     "lodash.escaperegexp": "^4.1.2",

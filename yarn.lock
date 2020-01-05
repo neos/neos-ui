@@ -556,10 +556,10 @@
   dependencies:
     prop-types "^15.5.10"
 
-"@friendsofreactjs/react-css-themr@^3.3.2":
-  version "3.5.7"
-  resolved "https://registry.yarnpkg.com/@friendsofreactjs/react-css-themr/-/react-css-themr-3.5.7.tgz#890de1b6e046d24b6d45fc35a3423391d2cc24c3"
-  integrity sha512-k90Qsfjx+g0kWzEj2+U5fWwiKjBBzz6GUkk8L03n5bDYr37jz4Rli5MXlZojWE6KCdPsbpXebloZoeHhNye7Hg==
+"@friendsofreactjs/react-css-themr@^4.1.0":
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/@friendsofreactjs/react-css-themr/-/react-css-themr-4.1.0.tgz#94c7d902282f7691d821c60521d66ae0e071313e"
+  integrity sha512-X3jddw6aMVB9FxRLLNhtzVM8lWquIi5YQ+Qs1cQu5DpFWAIWj5fc0FvAh8VNLQHv133K57mX3UGA7igzN/t05g==
   dependencies:
     hoist-non-react-statics "^3.3.0"
     invariant "^2.2.4"

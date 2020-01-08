@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/positional-array-sorter",
-  "version": "5.0.2",
+  "version": "5.0.3",
   "description": "Flexible array sorter that sorts an array according to a 'position' meta data.",
   "main": "./dist/positionalArraySorter.js",
   "license": "GNU GPLv3",
@@ -15,8 +15,8 @@
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@neos-project/build-essentials": "5.0.2",
-    "@neos-project/jest-preset-neos-ui": "5.0.2",
+    "@neos-project/build-essentials": "5.0.3",
+    "@neos-project/jest-preset-neos-ui": "5.0.3",
     "typescript": "3.2.2"
   },
   "jest": {

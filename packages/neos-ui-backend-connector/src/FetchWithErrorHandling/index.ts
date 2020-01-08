@@ -95,7 +95,10 @@ class FetchWithErrorHandling {
                 if (response.ok) {
                     // CASE: all good; no errors!
                     resolve(response);
-                } else if (response.status === 401) {
+                } else if (
+                    response.status === 401 ||
+                    response.headers.get('X-Authentication-Required')
+                ) {
                     // CASE: Unauthorized!
                     // - all following requests have to fail; thus we enqueue them.
                     // - we enqueue our current request; so that it is re-run after successful re-login.

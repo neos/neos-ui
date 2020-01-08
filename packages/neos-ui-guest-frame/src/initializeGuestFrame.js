@@ -43,13 +43,14 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     const inlineEditorRegistry = globalRegistry.get('inlineEditors');
     const guestFrameWindow = getGuestFrameWindow();
     const documentInformation = Object.assign({}, guestFrameWindow['@Neos.Neos.Ui:DocumentInformation']);
+    const authenticationTimeout = yield select(selectors.System.authenticationTimeout);
 
     // The user may have navigated by clicking an inline link - that's why we need to update the contentCanvas URL to be in sync with the shown content.
-    // We need to set the src to the actual src of the iframe, and not retrive it from documentInformation, as it may differ, e.g. contain additional arguments.
+    // We need to set the src to the actual src of the iframe, and not retrieve it from documentInformation, as it may differ, e.g. contain additional arguments.
     yield put(actions.UI.ContentCanvas.setSrc(guestFrameWindow.document.location.href));
 
-    // If we have no document information, guest frame intialziation ends here
-    if (Object.entries(documentInformation).length === 0) {
+    // If we have no document information, guest frame initialziation ends here
+    if (Object.entries(documentInformation).length === 0 || authenticationTimeout === true) {
         return;
     }
 

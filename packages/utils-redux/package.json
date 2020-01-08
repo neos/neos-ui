@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/utils-redux",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "description": "Neos CMS UI Redux Helper utilitites",
   "private": true,
   "main": "./src/index.ts",
@@ -14,9 +14,9 @@
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "4.0.2",
-    "@neos-project/build-essentials": "4.0.2",
-    "@neos-project/jest-preset-neos-ui": "4.0.2"
+    "@neos-project/babel-preset-neos-ui": "4.0.3",
+    "@neos-project/build-essentials": "4.0.3",
+    "@neos-project/jest-preset-neos-ui": "4.0.3"
   },
   "license": "GNU GPLv3",
   "jest": {

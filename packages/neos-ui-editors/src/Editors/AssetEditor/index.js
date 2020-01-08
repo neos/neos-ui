@@ -153,9 +153,9 @@ export default class AssetEditor extends PureComponent {
             });
         } else {
             const value = values;
-            const valuePromise = (value.indexOf('/') === -1) ? Promise.resolve(value) : assetProxyImport(value);
+            const valuePromise = (typeof value === 'object' || value instanceof Object || value.indexOf('/') === -1) ? Promise.resolve(value) : assetProxyImport(value);
             valuePromise.then(value => {
-                this.props.commit(value.map(this.getIdentity));
+                this.props.commit(this.getIdentity(value));
                 this.setState({isLoading: false});
             });
         }

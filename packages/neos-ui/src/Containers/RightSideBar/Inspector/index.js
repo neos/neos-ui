@@ -267,6 +267,11 @@ export default class Inspector extends PureComponent {
             i18nRegistry
         } = this.props;
 
+        if (!$get(['policy', 'canEdit'], focusedNode)) {
+            // We cannot edit the current node, so we disable the inspector.
+            return (<div></div>);
+        }
+
         const augmentedCommit = (propertyId, value, hooks) => {
             commit(propertyId, value, hooks, focusedNode);
         };

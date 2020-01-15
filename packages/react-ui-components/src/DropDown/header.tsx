@@ -4,7 +4,7 @@ import mergeClassNames from 'classnames';
 import {PickDefaultProps} from '../../types';
 import {makeFocusNode} from './../_lib/focusNode';
 import Icon from '../Icon';
-import {IconProps} from '@neos-project/react-ui-components/src/Icon/icon';
+import {IconProps} from '../Icon/icon';
 
 interface ShallowDropDownHeaderTheme {
     readonly 'dropDown__btn': string;

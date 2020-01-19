@@ -87,6 +87,12 @@ export default class NodeTree extends PureComponent {
         });
     }
 
+    handeEndDrag = () => {
+        this.setState({
+            currentlyDraggedNodes: []
+        });
+    }
+
     handleDrop = (targetNode, position) => {
         const {currentlyDraggedNodes} = this.state;
         const {moveNodes, focus} = this.props;
@@ -101,7 +107,7 @@ export default class NodeTree extends PureComponent {
     }
 
     render() {
-        const {rootNode, ChildRenderer} = this.props;
+        const {rootNode, ChildRenderer, getNodeByContextPath} = this.props;
         if (!rootNode) {
             return (
                 <div className={style.loader}>
@@ -114,8 +120,15 @@ export default class NodeTree extends PureComponent {
             [style.pageTree]: true
         });
 
+        const currentlyDraggedNodes = this.state.currentlyDraggedNodes.map(contextPath => getNodeByContextPath(contextPath));
+
         return (
             <Tree className={classNames}>
+                <Tree.DragLayer
+                    nodeDndType={dndTypes.NODE}
+                    ChildRenderer={ChildRenderer}
+                    currentlyDraggedNodes={currentlyDraggedNodes}
+                />
                 <ChildRenderer
                     ChildRenderer={ChildRenderer}
                     nodeDndType={dndTypes.NODE}
@@ -126,8 +139,9 @@ export default class NodeTree extends PureComponent {
                     onNodeFocus={this.handleFocus}
                     onNodeDrag={this.handleDrag}
                     onNodeDrop={this.handleDrop}
+                    onNodeEndDrag={this.handeEndDrag}
                     currentlyDraggedNodes={this.state.currentlyDraggedNodes}
-                    />
+                />
             </Tree>
         );
     }
@@ -136,6 +150,7 @@ export default class NodeTree extends PureComponent {
 export const PageTree = connect(state => ({
     rootNode: selectors.CR.Nodes.siteNodeSelector(state),
     focusedNodesContextPaths: selectors.UI.PageTree.getAllFocused(state),
+    getNodeByContextPath: selectors.CR.Nodes.nodeByContextPath(state),
     ChildRenderer: PageTreeNode,
     allowOpeningNodesInNewWindow: true,
     contentCanvasSrc: $get('ui.contentCanvas.src', state)
@@ -152,6 +167,7 @@ export const PageTree = connect(state => ({
 export const ContentTree = connect(state => ({
     rootNode: selectors.CR.Nodes.documentNodeSelector(state),
     focusedNodesContextPaths: selectors.CR.Nodes.focusedNodePathsSelector(state),
+    getNodeByContextPath: selectors.CR.Nodes.nodeByContextPath(state),
     ChildRenderer: ContentTreeNode,
     allowOpeningNodesInNewWindow: false
 }), {

@@ -78,6 +78,7 @@ export default class Node extends PureComponent {
         onNodeClick: PropTypes.func,
         onNodeFocus: PropTypes.func,
         onNodeDrag: PropTypes.func,
+        onNodeEndDrag: PropTypes.func,
         onNodeDrop: PropTypes.func
     };
 
@@ -141,6 +142,12 @@ export default class Node extends PureComponent {
         const {node, onNodeDrag} = this.props;
 
         onNodeDrag(node);
+    }
+
+    handleNodeEndDrag = () => {
+        const {node, onNodeEndDrag} = this.props;
+
+        onNodeEndDrag(node);
     }
 
     handleNodeDrop = position => {
@@ -248,6 +255,7 @@ export default class Node extends PureComponent {
     getDragAndDropContext() {
         return {
             onDrag: this.handleNodeDrag,
+            onEndDrag: this.handleNodeEndDrag,
             onDrop: this.handleNodeDrop,
             accepts: this.accepts
         };
@@ -267,6 +275,7 @@ export default class Node extends PureComponent {
             onNodeClick,
             onNodeFocus,
             onNodeDrag,
+            onNodeEndDrag,
             onNodeDrop,
             currentlyDraggedNodes,
             isContentTreeNode,
@@ -304,6 +313,7 @@ export default class Node extends PureComponent {
                     isDirty={this.props.isNodeDirty}
                     isHidden={$get('properties._hidden', node)}
                     isHiddenInIndex={$get('properties._hiddenInIndex', node) || this.isIntermediate()}
+                    isDragging={currentlyDraggedNodes.includes(node.contextPath)}
                     hasError={this.hasError()}
                     label={decodeLabel($get('label', node))}
                     icon={this.getIcon()}
@@ -329,6 +339,7 @@ export default class Node extends PureComponent {
                                 onNodeClick={onNodeClick}
                                 onNodeFocus={onNodeFocus}
                                 onNodeDrag={onNodeDrag}
+                                onNodeEndDrag={onNodeEndDrag}
                                 onNodeDrop={onNodeDrop}
                                 currentlyDraggedNodes={currentlyDraggedNodes}
                                 isLastChild={index + 1 === childNodesCount}

@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {DragSource, DropTarget} from 'react-dnd';
+import {getEmptyImage} from 'react-dnd-html5-backend';
 import omit from 'lodash.omit';
 import mergeClassNames from 'classnames';
 
@@ -45,7 +46,7 @@ class NodeDropTarget extends PureComponent {
     };
 
     render() {
-        const {connectDropTarget, isOver, canDrop, mode, theme} = this.props;
+        const {connectDropTarget, isOver, canDrop, mode, theme, level} = this.props;
         const classNames = mergeClassNames({
             [theme.dropTarget]: true,
             [theme['dropTarget--before']]: mode === 'before',
@@ -53,11 +54,14 @@ class NodeDropTarget extends PureComponent {
         });
         const classNamesInner = mergeClassNames({
             [theme.dropTarget__inner]: true,
-            [theme['dropTarget__inner--acceptsDrop']]: isOver && canDrop
+            [theme['dropTarget__inner--acceptsDrop']]: isOver && canDrop,
+            [theme['dropTarget__inner--deniesDrop']]: isOver && !canDrop
         });
         return connectDropTarget(
             <div className={classNames}>
-                <div className={classNamesInner}/>
+                <div className={classNamesInner} style={{marginLeft: (level * 18) - 4}}>
+                    <svg xmlns="http://www.w3.org/2000/svg" height="12" viewBox="0 0 868 334.517"><path d="M840.344 129.526l-704.456.166 73.5-68.086a26.751 26.751 0 000-37.857l-16.1-15.962a27.117 27.117 0 00-38.024-.02L7.844 148.845a26.694 26.694 0 000 37.8l146.412 140.1a27.142 27.142 0 0038.024 0l16.1-15.962a26.278 26.278 0 007.848-18.832 25.493 25.493 0 00-7.848-18.479l-73.664-67.67h705.996c14.828 0 27.288-12.661 27.288-27.344v-22.575c0-14.682-12.828-26.357-27.656-26.357z" /></svg>
+                </div>
             </div>
         );
     }
@@ -70,12 +74,15 @@ class NodeDropTarget extends PureComponent {
             contextPath: props.id
         };
     },
+    endDrag(props) {
+        props.dragAndDropContext.onEndDrag && props.dragAndDropContext.onEndDrag();
+    },
     canDrag({dragForbidden}) {
         return !dragForbidden;
     }
-}, (connect, monitor) => ({
+}, (connect) => ({
     connectDragSource: connect.dragSource(),
-    isDragging: monitor.isDragging()
+    connectDragPreview: connect.dragPreview()
 }))
 @DropTarget(({nodeDndType}) => nodeDndType, spec, collect)
 export class Header extends PureComponent {
@@ -101,6 +108,7 @@ export class Header extends PureComponent {
         dragAndDropContext: PropTypes.shape({
             accepts: PropTypes.func.isRequired,
             onDrag: PropTypes.func.isRequired,
+            onEndDrag: PropTypes.func.isRequired,
             onDrop: PropTypes.func.isRequired
         }),
         connectDragSource: PropTypes.func.isRequired,
@@ -135,6 +143,12 @@ export class Header extends PureComponent {
         IconComponent: PropTypes.any.isRequired
     };
 
+    componentDidMount() {
+        this.props.connectDragPreview(getEmptyImage(), {
+            captureDraggingState: true
+        });
+    }
+
     render() {
         const {
             id,
@@ -163,6 +177,7 @@ export class Header extends PureComponent {
             isOver,
             isDragging,
             canDrop,
+            connectDragPreview,
             ...restProps
         } = this.props;
         const rest = omit(restProps, ['onToggle', 'isCollapsed', 'hasError', 'isDragging', 'dragForbidden']);
@@ -188,6 +203,7 @@ export class Header extends PureComponent {
                         dragAndDropContext={dragAndDropContext}
                         nodeDndType={nodeDndType}
                         mode="before"
+                        level={level}
                         />
                     {connectDropTarget(connectDragSource(
                         <div
@@ -223,6 +239,7 @@ export class Header extends PureComponent {
                             dragAndDropContext={dragAndDropContext}
                             nodeDndType={nodeDndType}
                             mode="after"
+                            level={level}
                             />
                     )}
                     {hasChildren || isLoading ? this.renderCollapseControl() : null}

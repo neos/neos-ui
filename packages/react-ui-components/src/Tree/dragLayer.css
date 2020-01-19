@@ -11,7 +11,7 @@
 .dragWrapper {
     display: inline-block;
     position: relative;
-    opacity: 0.7;
+    opacity: .7;
     left: 0;
 }
 

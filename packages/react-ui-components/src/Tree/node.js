@@ -69,18 +69,22 @@ class NodeDropTarget extends PureComponent {
 
 @DragSource(({nodeDndType}) => nodeDndType, {
     beginDrag(props) {
-        props.dragAndDropContext.onDrag();
+        if (props.dragAndDropContext.onDrag) {
+            props.dragAndDropContext.onDrag();
+        }
         return {
             contextPath: props.id
         };
     },
     endDrag(props) {
-        props.dragAndDropContext.onEndDrag && props.dragAndDropContext.onEndDrag();
+        if (props.dragAndDropContext.onEndDrag) {
+            props.dragAndDropContext.onEndDrag();
+        }
     },
     canDrag({dragForbidden}) {
         return !dragForbidden;
     }
-}, (connect) => ({
+}, connect => ({
     connectDragSource: connect.dragSource(),
     connectDragPreview: connect.dragPreview()
 }))

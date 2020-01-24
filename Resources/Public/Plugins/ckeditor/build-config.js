@@ -38,7 +38,6 @@ var CKBUILDER_CONFIG = {
 		'.jshintignore',
 		'.jshintrc',
 		'.mailmap',
-		'.travis.yml',
 		'bender-err.log',
 		'bender-out.log',
 		'bender.ci.js',

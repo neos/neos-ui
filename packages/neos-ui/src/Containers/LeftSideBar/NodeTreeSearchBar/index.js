@@ -126,4 +126,6 @@ export const PageTreeSearchbar = connect(state => ({
     rootNode: selectors.CR.Nodes.siteNodeSelector(state)
 }), {
     commenceSearch: actions.UI.PageTree.commenceSearch
+}, (stateProps, dispatchProps, ownProps) => {
+    return Object.assign({}, stateProps, dispatchProps, ownProps);
 })(NodeTreeSearchBar);

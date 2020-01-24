@@ -110,7 +110,7 @@
     "@fortawesome/react-fontawesome": "^0.1.8",
     "@friendsofreactjs/react-css-themr": "^4.1.0",
     "@neos-project/brand": "^1.1.0",
-    "@sindresorhus/slugify": "^0.9.1",
+    "@sindresorhus/slugify": "^0.10.0",
     "amator": "^1.0.1",
     "classnames": "^2.2.3",
     "codemirror": "^5.24.0",

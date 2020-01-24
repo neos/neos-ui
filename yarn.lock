@@ -687,12 +687,12 @@
   resolved "https://registry.yarnpkg.com/@redux-saga/types/-/types-1.1.0.tgz#0e81ce56b4883b4b2a3001ebe1ab298b84237204"
   integrity sha512-afmTuJrylUU/0OtqzaRkbyYFFNgCF73Bvel/sw90pvGrWIZ+vyoIJqA6eMSoA6+nb443kTmulmBtC9NerXboNg==
 
-"@sindresorhus/slugify@^0.9.1":
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/@sindresorhus/slugify/-/slugify-0.9.1.tgz#892ad24d70b442c0a14fe519cb4019d59bc5069f"
-  integrity sha512-b6heYM9dzZD13t2GOiEQTDE0qX+I1GyOotMwKh9VQqzuNiVdPVT8dM43fe9HNb/3ul+Qwd5oKSEDrDIfhq3bnQ==
+"@sindresorhus/slugify@^0.10.0":
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/@sindresorhus/slugify/-/slugify-0.10.0.tgz#8878609a6a468a110690abbfb65171769cd9a8d4"
+  integrity sha512-R/3PVAS0rIbrH/qJRb4ma/5pG3oyQKW1Ws4bsc/Fscfb6HWeB0CNWD3bnPAiWi5PYLnl33TcsXCKXNOPwBpyaw==
   dependencies:
-    escape-string-regexp "^1.0.5"
+    escape-string-regexp "^2.0.0"
     lodash.deburr "^4.1.0"
 
 "@storybook/addon-actions@^3.2.16":
@@ -5928,6 +5928,11 @@ escape-string-regexp@1.0.5, escape-string-regexp@^1.0.2, escape-string-regexp@^1
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
   integrity sha1-G2HAViGQqN/2rjuyzwIAyhMLhtQ=
+
+escape-string-regexp@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-2.0.0.tgz#a30304e99daa32e23b2fd20f51babd07cffca344"
+  integrity sha512-UpzcLCXolUWcNu5HtVMHYdXJjArjsF9C0aNnquZYY4uW/Vu0miy5YoWvbV345HauVvcAUnpRuhMMcqTcGOY2+w==
 
 escodegen@^1.11.0, escodegen@^1.9.0, escodegen@^1.9.1:
   version "1.12.0"

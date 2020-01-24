@@ -147,6 +147,8 @@ export const PageTree = connect(state => ({
     setActiveContentCanvasContextPath: actions.CR.Nodes.setDocumentNode,
     moveNodes: actions.CR.Nodes.moveMultiple,
     requestScrollIntoView: null
+}, (stateProps, dispatchProps, ownProps) => {
+    return Object.assign({}, stateProps, dispatchProps, ownProps);
 })(NodeTree);
 
 export const ContentTree = connect(state => ({
@@ -159,4 +161,6 @@ export const ContentTree = connect(state => ({
     focus: actions.CR.Nodes.focus,
     moveNodes: actions.CR.Nodes.moveMultiple,
     requestScrollIntoView: actions.UI.ContentCanvas.requestScrollIntoView
+}, (stateProps, dispatchProps, ownProps) => {
+    return Object.assign({}, stateProps, dispatchProps, ownProps);
 })(NodeTree);

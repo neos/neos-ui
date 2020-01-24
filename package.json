@@ -75,7 +75,7 @@
     "source-map-loader": "^0.2.4",
     "string-replace-loader": "^2.1.1",
     "style-loader": "^0.23.1",
-    "stylelint": "^12.0.1",
+    "stylelint": "^13.0.0",
     "testcafe": "^1.7.0",
     "testcafe-browser-provider-saucelabs": "^1.8.0",
     "testcafe-react-selectors": "^3.3.0",

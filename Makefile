@@ -77,8 +77,15 @@ setup: check-requirements install build
 build-subpackages:
 	$(lerna) run build --concurrency 1
 
+# we build the react UI components ready for standalone usage;
+# so that they can be published on NPM properly.
+build-react-ui-components-standalone:
+	cd packages/react-ui-components && yarn run build-standalone-esm
+
+
 build:
 	make build-subpackages
+	make build-react-ui-components-standalone
 	NEOS_BUILD_ROOT=$(shell pwd) $(webpack) --progress --colors
 
 build-watch:

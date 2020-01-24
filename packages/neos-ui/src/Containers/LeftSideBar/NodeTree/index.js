@@ -14,6 +14,13 @@ import {PageTreeNode, ContentTreeNode} from './Node/index';
 
 import style from './style.css';
 
+const ConnectedDragLayer = connect((state, {currentlyDraggedNodes}) => {
+    const getNodeByContextPath = selectors.CR.Nodes.nodeByContextPath(state);
+    return {
+        currentlyDraggedNodes: currentlyDraggedNodes ? currentlyDraggedNodes.map(contextPath => getNodeByContextPath(contextPath)) : []
+    };
+})(Tree.DragLayer);
+
 export default class NodeTree extends PureComponent {
     static propTypes = {
         ChildRenderer: PropTypes.func,
@@ -120,14 +127,12 @@ export default class NodeTree extends PureComponent {
             [style.pageTree]: true
         });
 
-        const currentlyDraggedNodes = this.state.currentlyDraggedNodes.map(contextPath => getNodeByContextPath(contextPath));
-
         return (
             <Tree className={classNames}>
-                <Tree.DragLayer
+                <ConnectedDragLayer
                     nodeDndType={dndTypes.NODE}
                     ChildRenderer={ChildRenderer}
-                    currentlyDraggedNodes={currentlyDraggedNodes}
+                    currentlyDraggedNodes={this.state.currentlyDraggedNodes}
                 />
                 <ChildRenderer
                     ChildRenderer={ChildRenderer}
@@ -150,7 +155,6 @@ export default class NodeTree extends PureComponent {
 export const PageTree = connect(state => ({
     rootNode: selectors.CR.Nodes.siteNodeSelector(state),
     focusedNodesContextPaths: selectors.UI.PageTree.getAllFocused(state),
-    getNodeByContextPath: selectors.CR.Nodes.nodeByContextPath(state),
     ChildRenderer: PageTreeNode,
     allowOpeningNodesInNewWindow: true,
     contentCanvasSrc: $get('ui.contentCanvas.src', state)
@@ -167,7 +171,6 @@ export const PageTree = connect(state => ({
 export const ContentTree = connect(state => ({
     rootNode: selectors.CR.Nodes.documentNodeSelector(state),
     focusedNodesContextPaths: selectors.CR.Nodes.focusedNodePathsSelector(state),
-    getNodeByContextPath: selectors.CR.Nodes.nodeByContextPath(state),
     ChildRenderer: ContentTreeNode,
     allowOpeningNodesInNewWindow: false
 }), {

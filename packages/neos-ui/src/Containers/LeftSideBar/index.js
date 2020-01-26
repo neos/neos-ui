@@ -77,7 +77,7 @@ export default class LeftSideBar extends PureComponent {
                 className={classNames}
                 aria-hidden={isHidden ? 'true' : 'false'}
                 >
-                <div className={style.leftSideBar__header} onClick={this.handleToggle}>
+                <div role="button" className={style.leftSideBar__header} onClick={this.handleToggle}>
                     {toggle}
                     {i18nRegistry.translate('Neos.Neos:Main:documentTree', 'Document Tree')}
                 </div>

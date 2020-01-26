@@ -114,7 +114,7 @@ export default class NodeTree extends PureComponent {
     }
 
     render() {
-        const {rootNode, ChildRenderer, getNodeByContextPath} = this.props;
+        const {rootNode, ChildRenderer} = this.props;
         if (!rootNode) {
             return (
                 <div className={style.loader}>

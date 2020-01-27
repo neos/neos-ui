@@ -114,6 +114,7 @@
     left: 0;
     right: 0;
     padding-left: 15px;
+    height: 2px;
 }
 .dropTarget--before {
     top: -5px;
@@ -122,14 +123,20 @@
     padding-bottom: 4px;
 }
 .dropTarget--after {
-    bottom: 0;
+    bottom: 1px;
     z-index: var(--zIndex-SideBar-DropTargetAfter);
     padding-top: 6px;
     padding-bottom: 0;
 }
 .dropTarget__inner {
-    height: 2px;
+    visibility: hidden;
+    margin-top: -8px;
+    height: 0;
 }
 .dropTarget__inner--acceptsDrop {
-    background-color: var(--colors-PrimaryBlue);
+    z-index: 100000;
+    visibility: visible;
+}
+.dropTarget__inner svg {
+    fill: var(--colors-PrimaryBlue);
 }

@@ -14,6 +14,13 @@ import {PageTreeNode, ContentTreeNode} from './Node/index';
 
 import style from './style.css';
 
+const ConnectedDragLayer = connect((state, {currentlyDraggedNodes}) => {
+    const getNodeByContextPath = selectors.CR.Nodes.nodeByContextPath(state);
+    return {
+        currentlyDraggedNodes: currentlyDraggedNodes ? currentlyDraggedNodes.map(contextPath => getNodeByContextPath(contextPath)) : []
+    };
+})(Tree.DragLayer);
+
 export default class NodeTree extends PureComponent {
     static propTypes = {
         ChildRenderer: PropTypes.func,
@@ -87,6 +94,12 @@ export default class NodeTree extends PureComponent {
         });
     }
 
+    handeEndDrag = () => {
+        this.setState({
+            currentlyDraggedNodes: []
+        });
+    }
+
     handleDrop = (targetNode, position) => {
         const {currentlyDraggedNodes} = this.state;
         const {moveNodes, focus} = this.props;
@@ -116,6 +129,11 @@ export default class NodeTree extends PureComponent {
 
         return (
             <Tree className={classNames}>
+                <ConnectedDragLayer
+                    nodeDndType={dndTypes.NODE}
+                    ChildRenderer={ChildRenderer}
+                    currentlyDraggedNodes={this.state.currentlyDraggedNodes}
+                />
                 <ChildRenderer
                     ChildRenderer={ChildRenderer}
                     nodeDndType={dndTypes.NODE}
@@ -126,8 +144,9 @@ export default class NodeTree extends PureComponent {
                     onNodeFocus={this.handleFocus}
                     onNodeDrag={this.handleDrag}
                     onNodeDrop={this.handleDrop}
+                    onNodeEndDrag={this.handeEndDrag}
                     currentlyDraggedNodes={this.state.currentlyDraggedNodes}
-                    />
+                />
             </Tree>
         );
     }

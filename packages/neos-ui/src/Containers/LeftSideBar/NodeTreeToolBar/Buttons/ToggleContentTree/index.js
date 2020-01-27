@@ -27,7 +27,7 @@ export default class ToggleContentTree extends PureComponent {
         const {id, isPanelOpen, i18nRegistry} = this.props;
 
         return (
-            <div className={style.toggle} onClick={this.handleClick}>
+            <div role="button" className={style.toggle} onClick={this.handleClick}>
                 <IconButton
                     id={id}
                     className={style.toggleBtn}

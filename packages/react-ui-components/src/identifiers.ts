@@ -45,4 +45,5 @@ export default {
     treeNode: '@neos-project/react-ui-components/treeNode',
     treeNodeContents: '@neos-project/react-ui-components/treeNodeContents',
     treeNodeHeader: '@neos-project/react-ui-components/treeNodeHeader',
+    treeDragLayer: '@neos-project/react-ui-components/treeDragLayer',
 };

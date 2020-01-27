@@ -11,6 +11,7 @@ import {SynchronousRegistry, SynchronousMetaRegistry} from '@neos-project/neos-u
 import {
     getGuestFrameDocument,
     findNodeInGuestFrame,
+    closestNodeInGuestFrame,
     findAllOccurrencesOfNodeInGuestFrame,
     createEmptyContentCollectionPlaceholderIfMissing,
     findAllChildNodes,
@@ -334,6 +335,19 @@ manifest('main', {}, globalRegistry => {
         }
 
         const fusionPath = contentElement.dataset.__neosFusionPath;
+        // Check if an insertion anchor is defined and use this one for appending the childnode
+        const findInsertionParentByAnchor = () => {
+            let insertionParent = parentElement;
+            const insertionAnchors = parentElement.querySelectorAll('[data-__neos-insertion-anchor]');
+            for (const anchorElement of insertionAnchors) {
+                if (closestNodeInGuestFrame(anchorElement) === parentElement) {
+                    insertionParent = anchorElement;
+                    break;
+                }
+            }
+            return insertionParent;
+        };
+        const insertionParent = findInsertionParentByAnchor();
 
         switch (mode) {
             case 'before':
@@ -346,7 +360,7 @@ manifest('main', {}, globalRegistry => {
 
             case 'into':
             default:
-                parentElement.appendChild(contentElement);
+                insertionParent.appendChild(contentElement);
                 break;
         }
 

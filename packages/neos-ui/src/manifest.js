@@ -340,7 +340,7 @@ manifest('main', {}, globalRegistry => {
             let insertionParent = parentElement;
             const insertionAnchors = parentElement.querySelectorAll('[data-__neos-insertion-anchor]');
             for (const anchorElement of insertionAnchors) {
-                if (closestNodeInGuestFrame(anchorElement) === parentElement) {
+                if (closestNodeInGuestFrame(anchorElement).dataset.__neosNodeContextpath === parentElement.dataset.__neosNodeContextpath) {
                     insertionParent = anchorElement;
                     break;
                 }

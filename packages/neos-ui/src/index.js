@@ -173,6 +173,11 @@ function * application() {
                     message = 'Unknown error from unexpected JSON response. Check the logs for details.';
                 }
             } catch (e) {}
+        } else if (message.indexOf('Internal Server Error') >= 0) {
+            const htmlContainer = document.createElement('div');
+            htmlContainer.innerHTML = message;
+            const exception = htmlContainer.querySelector('body');
+            message = exception.textContent;
         }
 
         store.dispatch(actions.UI.FlashMessages.add('fetch error', message, 'error'));

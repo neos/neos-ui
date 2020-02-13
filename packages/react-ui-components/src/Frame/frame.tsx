@@ -13,10 +13,12 @@ export interface FrameProps extends React.IframeHTMLAttributes<HTMLIFrameElement
 
 interface FrameState {
     readonly transitioning: boolean;
+    readonly location: string;
 }
 
 const initialState: FrameState = {
-    transitioning: false
+    transitioning: false,
+    location: '',
 };
 export default class Frame extends PureComponent<FrameProps> {
     // tslint:disable-next-line:readonly-keyword
@@ -86,7 +88,7 @@ export default class Frame extends PureComponent<FrameProps> {
     // We do not use react's magic to change to a different URL in the iFrame, but do it
     // explicitely (in order to avoid reloads if we are already on the correct page)
     private updateIframeUrlIfNecessary(): void {
-        if (!this.ref) {
+        if (!this.ref || this.props.src === this.state.location) {
             return;
         }
 
@@ -94,7 +96,8 @@ export default class Frame extends PureComponent<FrameProps> {
             const win = this.ref.contentWindow; // eslint-disable-line react/no-find-dom-node
             if (win && win.location.href !== this.props.src) {
                 this.setState({
-                    transitioning: true
+                    transitioning: true,
+                    location: this.props.src,
                 });
                 win.location.replace(this.props.src);
             }

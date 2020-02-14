@@ -1,15 +1,5 @@
 import {findNodeInGuestFrame, closestNodeInGuestFrame} from '@neos-project/neos-ui-guest-frame/src/dom';
 
-export const parentNodeContextPath = contextPath => {
-    if (typeof contextPath !== 'string') {
-        return null;
-    }
-
-    const [path, context] = contextPath.split('@');
-
-    return `${path.substr(0, path.lastIndexOf('/'))}@${context}`;
-};
-
 export const calculateChangeTypeFromMode = (mode, prefix) => {
     switch (mode) {
         case 'before':

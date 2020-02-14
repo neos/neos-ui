@@ -266,7 +266,7 @@ manifest('main', {}, globalRegistry => {
             let redirectUri = null;
             // Determine closest parent that is not being removed
             while (!redirectUri) {
-                redirectContextPath = getPathInNode(state, redirectContextPath, 'parent');
+                redirectContextPath = selectors.CR.Nodes.getPathInNode(state, redirectContextPath, 'parent');
 
                 // This is an extreme case when even the top node does not exist in the given dimension
                 // TODO: still find a nicer way to break out of this situation

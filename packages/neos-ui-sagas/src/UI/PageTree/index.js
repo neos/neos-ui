@@ -97,7 +97,7 @@ export function * watchCurrentDocument({configuration}) {
         let hasLoadedNodes = false;
         while (parentContextPath !== siteNodeContextPath) {
             const getParentNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(parentContextPath);
-            let parentNode = yield select(getParentNodeByContextPathSelector);
+            const parentNode = yield select(getParentNodeByContextPathSelector);
 
             parentContextPath = parentNode.parent;
             const getNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(parentContextPath);

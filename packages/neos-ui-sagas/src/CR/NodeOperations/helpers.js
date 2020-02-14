@@ -22,7 +22,7 @@ export const calculateDomAddressesFromMode = (mode, contextNode, fusionPath) => 
 
             return {
                 siblingDomAddress: {
-                    contextPath,
+                    contextPath: contextNode.contextPath,
                     fusionPath
                 },
                 parentDomAddress: parentElement ? {
@@ -36,12 +36,12 @@ export const calculateDomAddressesFromMode = (mode, contextNode, fusionPath) => 
         }
 
         default: {
-            const element = findNodeInGuestFrame(contextPath, fusionPath);
+            const element = findNodeInGuestFrame(contextNode.contextPath, fusionPath);
 
             return {
-                parentContextPath: contextPath,
+                parentContextPath: contextNode.contextPath,
                 parentDomAddress: {
-                    contextPath: element ? element.getAttribute('data-__neos-node-contextpath') : contextPath,
+                    contextPath: element ? element.getAttribute('data-__neos-node-contextpath') : contextNode.contextPath,
                     fusionPath: element ? element.getAttribute('data-__neos-fusion-path') : fusionPath
                 }
             };

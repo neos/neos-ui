@@ -1,6 +1,6 @@
-import {takeEvery, put} from 'redux-saga/effects';
+import {takeEvery, put, select} from 'redux-saga/effects';
 
-import {actions, actionTypes} from '@neos-project/neos-ui-redux-store';
+import {actions, actionTypes, selectors} from '@neos-project/neos-ui-redux-store';
 
 import {calculateChangeTypeFromMode, calculateDomAddressesFromMode} from './helpers';
 

@@ -40,8 +40,8 @@ export function * watchNodeFocus({configuration}) {
 
         const documentNode = yield select(selectors.CR.Nodes.documentNodeSelector);
         const {loadingDepth} = configuration.structureTree;
-        while (parentContextPath !== documentNodeContextPath) {
 
+        while (parentContextPath !== documentNodeContextPath) {
             const parentContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(parentContextPath);
             const parentNode = yield select(parentContextPathSelector);
 

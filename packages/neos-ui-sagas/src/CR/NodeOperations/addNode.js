@@ -1,7 +1,7 @@
-import {takeLatest, take, put, race, call} from 'redux-saga/effects';
+import {takeLatest, take, put, race, call, select} from 'redux-saga/effects';
 import {$get} from 'plow-js';
 
-import {actions, actionTypes} from '@neos-project/neos-ui-redux-store';
+import {actions, actionTypes, selectors} from '@neos-project/neos-ui-redux-store';
 
 import {calculateChangeTypeFromMode, calculateDomAddressesFromMode} from './helpers';
 

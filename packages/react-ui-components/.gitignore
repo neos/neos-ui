@@ -7,3 +7,7 @@ coverage
 .idea
 lcov.info
 .idea
+
+# the following files are just for standalone usage
+lib-esm/
+.postcssrc

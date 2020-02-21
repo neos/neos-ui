@@ -1,10 +1,12 @@
 {
   "name": "@neos-project/react-ui-components",
-  "version": "5.1.1",
+  "version": "5.1.2",
   "description": "The UI components which power the Neos backend application.",
+  "module": "./lib-esm/index",
   "main": "./src/index",
   "scripts": {
     "build": "exit 0",
+    "build-standalone-esm": "rm -Rf .postcssrc lib-esm && tsc --build tsconfig.esm.json && tsc --build tsconfig.esmtypes.json && rsync --prune-empty-dirs  -r --include='*/' --include='*.css' --include='*.svg' --exclude='*' src/ lib-esm -v && node scripts/generate-standalone-postcssrc.js",
     "build:watch": "exit 0",
     "test": "yarn jest -w 2 --coverage",
     "test:watch": "yarn jest --watch",
@@ -17,10 +19,10 @@
     "start": "cross-env STORY=true start-storybook -p 9001"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "5.1.1",
-    "@neos-project/build-essentials": "5.1.1",
-    "@neos-project/debug-reason-for-rendering": "5.1.1",
-    "@neos-project/jest-preset-neos-ui": "5.1.1",
+    "@neos-project/babel-preset-neos-ui": "5.1.2",
+    "@neos-project/build-essentials": "5.1.2",
+    "@neos-project/debug-reason-for-rendering": "5.1.2",
+    "@neos-project/jest-preset-neos-ui": "5.1.2",
     "@storybook/addon-info": "^3.2.16",
     "@storybook/addon-knobs": "3.2.16",
     "@storybook/react": "3.2.16",

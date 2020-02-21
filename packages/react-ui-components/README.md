@@ -87,6 +87,12 @@ yarn watch:build
 
 Please folllow these commit guidlines. [commit-analyzer](https://github.com/Inkdpixels/commit-analyzer)
 
+#### Building for standalone usage outside of Neos
+
+we build a `lib-esm/` folder to be consumed by e.g. webpack.
+
+This is done by `yarn run build-standalone-esm`.
+
 
 ## License
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR

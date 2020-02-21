@@ -57,7 +57,7 @@ export const defaultProps: PickDefaultProps<DropDownWrapperProps, 'isOpen' | 'st
     style: 'default'
 };
 
-interface DropDownWrapperState {
+export interface DropDownWrapperState {
     readonly isOpen: boolean;
 }
 

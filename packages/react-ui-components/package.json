@@ -2,9 +2,11 @@
   "name": "@neos-project/react-ui-components",
   "version": "5.0.3",
   "description": "The UI components which power the Neos backend application.",
+  "module": "./lib-esm/index",
   "main": "./src/index",
   "scripts": {
     "build": "exit 0",
+    "build-standalone-esm": "rm -Rf .postcssrc lib-esm && tsc --build tsconfig.esm.json && tsc --build tsconfig.esmtypes.json && rsync --prune-empty-dirs  -r --include='*/' --include='*.css' --include='*.svg' --exclude='*' src/ lib-esm -v && node scripts/generate-standalone-postcssrc.js",
     "build:watch": "exit 0",
     "test": "yarn jest -w 2 --coverage",
     "test:watch": "yarn jest --watch",

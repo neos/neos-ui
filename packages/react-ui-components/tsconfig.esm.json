@@ -1,0 +1,17 @@
+{
+  "exclude": [
+    "scripts/",
+    "**/*.spec.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.js",
+    "**/*.story.js"
+  ],
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "lib-esm",
+    "module": "esnext",
+    "target": "es6",
+    "moduleResolution": "node",
+    "allowJs": true
+  }
+}

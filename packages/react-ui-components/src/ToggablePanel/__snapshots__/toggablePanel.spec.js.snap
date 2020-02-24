@@ -26,6 +26,8 @@ exports[`<Contents/> should render correctly. 1`] = `
 exports[`<Header/> should render correctly. 1`] = `
 <div
   aria-expanded={false}
+  onClick={[MockFunction]}
+  role="button"
 >
   <Component
     className="panelHeadlineClassName"
@@ -37,7 +39,6 @@ exports[`<Header/> should render correctly. 1`] = `
     className="panelToggleBtnClassName"
     hoverStyle="clean"
     icon="closed-icon-prop"
-    onClick={[MockFunction]}
   />
 </div>
 `;

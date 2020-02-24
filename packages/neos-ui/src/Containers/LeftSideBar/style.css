@@ -69,6 +69,7 @@
     }
 }
 .leftSideBar__header {
+    cursor: pointer;
     height: 41px;
     padding-left: 55px;
     line-height: 40px;

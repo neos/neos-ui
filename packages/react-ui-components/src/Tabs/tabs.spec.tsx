@@ -23,7 +23,7 @@ describe('<Tabs/>', () => {
             'tabNavigation__item--isActive': 'activeTabsNavigationItemClassName',
             'tabNavigation__itemBtn': 'baseTabsNavigationItemBtnClassName',
             'tabNavigation__itemBtnIcon': 'baseTabsNavigationItemBtnIconClassName',
-            'tabNavigation__itemBtnIcon--hasLabel': 'baseTabsNavigationItemBtnIconWithLabelClassName'
+            'tabNavigation__itemBtnIcon--hasLabel': 'baseTabsNavigationItemBtnIconWithLabelClassName',
         },
         children: [<div key={'foo'}>'Foo children'</div>]
     };

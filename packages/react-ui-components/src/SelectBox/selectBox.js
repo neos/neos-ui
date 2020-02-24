@@ -349,7 +349,7 @@ export default class SelectBox extends PureComponent {
     /**
      * Keyboard handling
      */
-    componentWillReceiveProps({keydown}) {
+    UNSAFE_componentWillReceiveProps({keydown}) {
         this.handleKeyDown(keydown.event);
     }
 

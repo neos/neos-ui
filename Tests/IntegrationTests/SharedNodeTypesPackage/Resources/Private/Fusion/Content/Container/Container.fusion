@@ -1,0 +1,12 @@
+prototype(Neos.TestNodeTypes:Content.Container) < prototype(Neos.Neos:ContentComponent) {
+    renderer = afx`
+        <div class="test-container">
+            <div class="test-container__outer-wrap">
+                <Neos.Neos:ContentCollection
+                    attributes.class="test-container__inner-wrap"
+                    attributes.data-__neos-insertion-anchor
+                />
+            </div>
+        </div>
+    `
+}

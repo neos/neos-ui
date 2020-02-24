@@ -1,7 +1,8 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {Provider} from 'react-redux';
-import {withDragDropContext} from '@neos-project/neos-ui-decorators';
+import {DndProvider} from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 import style from './style.css';
 
 import Neos from './Neos/index';
@@ -16,13 +17,15 @@ class Root extends PureComponent {
         return (
             <div className={style.applicationWrapper}>
                 <Provider store={store}>
-                    <Neos
-                        globalRegistry={globalRegistry}
-                        configuration={configuration}
-                        routes={routes}
-                        >
-                        <App globalRegistry={globalRegistry} menu={menu}/>
-                    </Neos>
+                    <DndProvider backend={HTML5Backend}>
+                        <Neos
+                            globalRegistry={globalRegistry}
+                            configuration={configuration}
+                            routes={routes}
+                            >
+                            <App globalRegistry={globalRegistry} menu={menu}/>
+                        </Neos>
+                    </DndProvider>
                 </Provider>
             </div>
         );
@@ -37,4 +40,4 @@ Root.propTypes = {
     routes: PropTypes.object.isRequired
 };
 
-export default withDragDropContext(Root);
+export default Root;

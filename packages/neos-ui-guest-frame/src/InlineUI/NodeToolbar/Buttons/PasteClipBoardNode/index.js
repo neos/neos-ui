@@ -14,11 +14,13 @@ import {selectors, actions} from '@neos-project/neos-ui-redux-store';
     const canBePastedSelector = selectors.CR.Nodes.makeCanBePastedSelector(nodeTypesRegistry);
 
     return (state, {contextPath}) => {
-        const clipboardNodeContextPath = selectors.CR.Nodes.clipboardNodeContextPathSelector(state);
-        const canBePasted = canBePastedSelector(state, {
-            subject: clipboardNodeContextPath,
-            reference: contextPath
-        });
+        const clipboardNodesContextPaths = selectors.CR.Nodes.clipboardNodesContextPathsSelector(state);
+        const canBePasted = (clipboardNodesContextPaths.every(clipboardNodeContextPath => {
+            return canBePastedSelector(state, {
+                subject: clipboardNodeContextPath,
+                reference: contextPath
+            });
+        }));
 
         return {canBePasted};
     };

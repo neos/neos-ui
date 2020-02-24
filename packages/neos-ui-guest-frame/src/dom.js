@@ -201,25 +201,72 @@ export const getGuestFrameScrollOffsetY = () => {
     return iframeWindow.scrollY || iframeWindow.pageYOffset || iframeDocument.body.scrollTop;
 };
 
+/**
+ * returns the clamped N, and the amount how much N has been clamped.
+ */
+const clampNumber = (n, min, max) => {
+    if (max < min) {
+        max = min;
+    }
+
+    if (n < min) {
+        return [min, min - n];
+    }
+    if (n > max) {
+        return [max, n - max];
+    }
+    return [n, 0];
+};
+
+// We export this function only for testing.
+export const clampElementToDocumentDimensions = (elementDimensions, documentDimensions) => {
+    const documentWidth = documentDimensions.width;
+    const documentHeight = documentDimensions.height;
+
+    // If the "left" coordinate is outside the document, clamp it to the document width.
+    const [left, widthShrinkAmount] = clampNumber(elementDimensions.left - documentDimensions.left, 0, documentWidth);
+
+    // Reduce width optionally by the "withShrinkAmount" (if "left" is partially outside the document);
+    // then the width can be maximally as big as "remaining" width of the document (when subtracting the left value)
+    const [width] = clampNumber(elementDimensions.width - widthShrinkAmount, 0, documentWidth - left);
+
+    // Height works the same as width.
+    const [top, heightShrinkAmount] = clampNumber(elementDimensions.top - documentDimensions.top, 0, documentHeight);
+    const [height] = clampNumber(elementDimensions.height - heightShrinkAmount, 0, documentHeight - top);
+
+    return {
+        top,
+        left,
+        width,
+        height,
+        // The "right" and Bottom" values are calculated; and are at most documentWidth or documentHeight.
+        right: left + width,
+        bottom: top + height,
+
+        // the coordinates above are all measured from top-left corner of the document;
+        // that means you cannot use it inside a "right" css property for instance (which
+        // is measured from the right border instead).
+        //
+        // Because we need exactly this, we add an additional measurement; to be used
+        // in CSS "right" alignments.
+        rightAsMeasuredFromRightDocumentBorder: documentWidth - (left + width)
+
+    };
+};
+
 //
-// Get the absolute position of an element in the guest frame
+// Get the absolute position of an element in the guest frame, clamped to
+// width and height of the guest frame (i.e. so that it is fully visible).
 //
 export const getAbsolutePositionOfElementInGuestFrame = element => {
     if (element && element.getBoundingClientRect) {
         const relativeDocumentDimensions = getGuestFrameDocument().documentElement.getBoundingClientRect();
         const relativeElementDimensions = element.getBoundingClientRect();
 
-        return {
-            top: relativeElementDimensions.top - relativeDocumentDimensions.top,
-            left: relativeElementDimensions.left - relativeDocumentDimensions.left,
-            bottom: relativeDocumentDimensions.bottom - relativeElementDimensions.bottom,
-            right: relativeDocumentDimensions.right - relativeElementDimensions.right,
-            width: relativeElementDimensions.width,
-            height: relativeElementDimensions.height
-        };
+        return clampElementToDocumentDimensions(relativeElementDimensions, relativeDocumentDimensions);
     }
 
-    return {top: 0, left: 0, bottom: 0, right: 0};
+    return {top: 0, left: 0, width: 0, height: 0};
 };
 
 //

@@ -1,7 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$get} from 'plow-js';
 
 import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
@@ -15,7 +14,7 @@ import {neos} from '@neos-project/neos-ui-decorators';
     const isAllowedToAddChildOrSiblingNodesSelector = selectors.CR.Nodes.makeIsAllowedToAddChildOrSiblingNodes(nodeTypesRegistry);
 
     return state => {
-        const focusedNodeContextPath = $get('cr.nodes.focused.contextPath', state);
+        const focusedNodeContextPath = selectors.CR.Nodes.focusedNodePathSelector(state);
         const isAllowedToAddChildOrSiblingNodes = isAllowedToAddChildOrSiblingNodesSelector(state, {
             reference: focusedNodeContextPath
         });

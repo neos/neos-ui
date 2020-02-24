@@ -87,7 +87,7 @@ export default class SelectNodeType extends PureComponent {
         showHelpMessageFor: ''
     };
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (this.props.allowedSiblingNodeTypes !== nextProps.allowedSiblingNodeTypes ||
             this.props.allowedChildNodeTypes !== nextProps.allowedChildNodeTypes) {
             this.setState({

@@ -3,11 +3,8 @@ let _innerReducer = null;
 export default class DelegatingReducer {
     reducer() {
         return (state, action) => {
-            if (action.type === '@@INIT' || action.type === '@@redux/INIT') {
-                return state;
-            }
             if (!_innerReducer) {
-                throw new Error('NO inner reducer supplied so far, but received action ' + action.type);
+                return state;
             }
             return _innerReducer(state, action);
         };

@@ -47,3 +47,51 @@ test('PageTree search and filter', async t => {
         .click(clearFilter)
         .expect(Page.treeNode.withText(notSearchedPage).exists).ok('Other unsearched page should shown again');
 });
+
+test('Pagetree search field can be toggled', async t => {
+    subSection('Search is initially hidden and can be opened');
+    const nodeTreeSearchToggler = ReactSelector('NodeTreeSearchBar IconButton');
+    const nodeTreeSearchInput = ReactSelector('NodeTreeSearchInput');
+
+    await t
+        .click(nodeTreeSearchToggler)
+        .expect(nodeTreeSearchInput.exists)
+        .ok();
+
+    subSection('Close the search input again');
+    await t
+        .click(nodeTreeSearchToggler)
+        .expect(nodeTreeSearchInput.exists)
+        .notOk();
+});
+
+test('Pagetree search field state is stored', async t => {
+    subSection('Search is initially hidden and we open it');
+    const nodeTreeSearchToggler = ReactSelector('NodeTreeSearchBar IconButton');
+    const nodeTreeSearchInput = ReactSelector('NodeTreeSearchInput');
+
+    await t
+        .click(nodeTreeSearchToggler)
+        .expect(nodeTreeSearchInput.exists)
+        .ok();
+
+    subSection('We reload the page');
+    await t.eval(() => location.reload(true));
+    await t.wait(5000);
+
+    subSection('We expect to have a visible search field');
+    await t
+        .expect(nodeTreeSearchInput.exists)
+        .ok();
+});
+
+test('Pagetree search field toggles on hotkey', async t => {
+    subSection('Search is initially hidden and we open it with "t s"');
+    const nodeTreeSearchInput = ReactSelector('NodeTreeSearchInput');
+
+    await t
+        .pressKey('t')
+        .pressKey('s')
+        .expect(nodeTreeSearchInput.exists)
+        .ok();
+});

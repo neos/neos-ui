@@ -1,9 +1,9 @@
 import {IconName, IconPrefix, IconProp} from '@fortawesome/fontawesome-svg-core';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {FontAwesomeIcon, Props} from '@fortawesome/react-fontawesome';
 import mergeClassNames from 'classnames';
 import React, {PureComponent} from 'react';
 
-import {PickDefaultProps} from '../../types';
+import {PickDefaultProps, Omit} from '../../types';
 import mapper from './mapper';
 
 type IconPadding = 'none' | 'left' | 'right';
@@ -22,7 +22,7 @@ interface IconTheme {
     readonly 'icon--color-primaryBlue': string;
 }
 
-export interface IconProps {
+export interface IconProps extends Omit<Props, 'icon'> {
     /**
      * We use the react component FortAwesome provides to render icons.
      * we will pass down all props to the component via {...rest} to expose it's api
@@ -86,7 +86,7 @@ class Icon extends PureComponent<IconProps> {
             }
         );
 
-        return <FontAwesomeIcon icon={icon ? this.getIconProp(icon) : 'question'} aria-label={label} className={classNames} {...rest} />;
+        return <FontAwesomeIcon icon={icon ? this.getIconProp(icon) as any : 'question'} aria-label={label} className={classNames} {...rest} />;
     }
 
     private readonly getIconProp = (icon: string): IconProp => {

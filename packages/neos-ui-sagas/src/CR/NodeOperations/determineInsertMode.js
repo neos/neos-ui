@@ -2,13 +2,13 @@ import {take, put, race} from 'redux-saga/effects';
 
 import {actions, actionTypes} from '@neos-project/neos-ui-redux-store';
 
-export default function * determineInsertMode(subjectContextPath, referenceContextPath, canBeInsertedAlongside, canBeInsertedInto, operation) { // eslint-disable-line max-params
+export default function * determineInsertMode(subjectContextPaths, referenceContextPath, canBeInsertedAlongside, canBeInsertedInto, operation) { // eslint-disable-line max-params
     if (canBeInsertedInto && !canBeInsertedAlongside) {
         return 'into';
     }
 
     yield put(actions.UI.InsertionModeModal.open(
-        subjectContextPath,
+        subjectContextPaths,
         referenceContextPath,
         canBeInsertedAlongside,
         canBeInsertedInto,

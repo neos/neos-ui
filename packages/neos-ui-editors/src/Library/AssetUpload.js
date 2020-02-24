@@ -12,7 +12,7 @@ import {selectors} from '@neos-project/neos-ui-redux-store';
 @connect($transform({
     siteNodePath: $get('cr.nodes.siteNode'),
     focusedNodePath: selectors.CR.Nodes.focusedNodePathSelector
-}), null, null, {withRef: true})
+}), null, null, {forwardRef: true})
 export default class AssetUpload extends PureComponent {
     static defaultProps = {
         propertyName: ''

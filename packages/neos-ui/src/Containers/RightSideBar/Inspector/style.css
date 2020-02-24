@@ -28,6 +28,15 @@
     border-left: 1px solid var(--colors-ContrastDark);
     background: var(--colors-ContrastDarker);
 }
+.tabs__notificationBadge {
+    position: absolute;
+    right: 1px;
+    top: 1px;
+    z-index: 1;
+    background-color: var(--colors-Error);
+    color: var(--colors-ContrastBrightest);
+    transform: scale(.75);
+}
 .tabsContent > div {
     height: 100%;
 }
@@ -51,7 +60,7 @@
         width: var(--size-SidebarWidth);
     }
 }
-.loader {
+.centeredInspector {
     display: flex;
     align-items: center;
     justify-content: center;

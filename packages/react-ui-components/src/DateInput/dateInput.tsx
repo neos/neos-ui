@@ -11,7 +11,7 @@ import Button from '../Button';
 import Icon from '../Icon';
 
 
-interface DateInputProps {
+export interface DateInputProps {
     /**
      * The Date instance which represents the selected value.
      */

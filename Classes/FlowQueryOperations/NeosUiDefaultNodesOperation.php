@@ -74,7 +74,7 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
         /** @var TraversableNodeInterface $documentNode */
         list($siteNode, $documentNode) = $flowQuery->getContext();
         /** @var TraversableNodeInterface $toggledNodes */
-        list($baseNodeType, $loadingDepth, $toggledNodes, $clipboardNodeContextPath) = $arguments;
+        list($baseNodeType, $loadingDepth, $toggledNodes, $clipboardNodesContextPaths) = $arguments;
 
         // Collect all parents of documentNode up to siteNode
         $parents = [];
@@ -109,7 +109,7 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
             $nodes[(string)$documentNode->getNodeAggregateIdentifier()] = $documentNode;
         }
 
-        if ($clipboardNodeContextPath) {
+        foreach ($clipboardNodesContextPaths as $clipboardNodeContextPath) {
             $clipboardNode = $this->propertyMapper->convert($clipboardNodeContextPath, NodeInterface::class);
             if ($clipboardNode && !in_array($clipboardNode, $nodes)) {
                 $nodes[] = $clipboardNode;

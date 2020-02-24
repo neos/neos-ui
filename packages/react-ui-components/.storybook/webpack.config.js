@@ -53,9 +53,10 @@ module.exports = (storybookBaseConfig, configType) => {
                     }, {
                         loader: 'css-loader',
                         options: {
-                            modules: true,
+                            modules: {
+                                localIdentName: '[name]__[local]___[hash:base64:5]'
+                            },
                             importLoaders: 1,
-                            localIdentName: '[name]__[local]___[hash:base64:5]'
                         }
                     }, {
                         loader: 'postcss-loader',

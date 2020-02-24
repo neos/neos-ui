@@ -8,6 +8,7 @@ import cancelIdleCallback from './cancelIdleCallback';
 import getVersion from './getVersion';
 import isEmail from './isEmail';
 import {isUri} from './isUri';
+import isEqualSet from './isEqualSet';
 
 export {
     delay,
@@ -17,6 +18,7 @@ export {
     isThenable,
     isUri,
     isEmail,
+    isEqualSet,
     stripTags,
     stripTagsEncoded,
     cancelIdleCallback,

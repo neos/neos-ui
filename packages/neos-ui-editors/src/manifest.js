@@ -86,6 +86,10 @@ manifest('inspectorEditors', {}, globalRegistry => {
         component: Editors.PluginView
     });
 
+    editorsRegistry.set('Neos.Neos/Inspector/Editors/UriPathSegmentEditor', {
+        component: Editors.UriPathSegment
+    });
+
     //
     // Secondary inspector editors
     //

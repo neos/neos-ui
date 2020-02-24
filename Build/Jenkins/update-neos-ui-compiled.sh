@@ -2,6 +2,11 @@
 
 set -xe
 
+# Override the git branch by a manual value
+if [ -n "$GIT_BRANCH_MANUAL" ]; then
+    GIT_BRANCH="$GIT_BRANCH_MANUAL"
+fi
+
 if [ -z "$GIT_BRANCH" ]; then echo "\$GIT_BRANCH not set"; exit 1; fi
 
 # go to root directory of Neos.Neos.Ui
@@ -16,6 +21,11 @@ fi
 
 GIT_SHA1=`git rev-parse HEAD`
 GIT_TAG=`git describe --exact-match HEAD 2>/dev/null || true`
+
+# Override the git tag by a manual value
+if [ -n "$GIT_TAG_MANUAL" ]; then
+    GIT_TAG="$GIT_TAG_MANUAL"
+fi
 
 make install
 make build-production
@@ -37,7 +47,7 @@ cd tmp_compiled_pkg
 git add Resources/Public/
 git commit -m "Compile Neos UI - $GIT_SHA1" || true
 
-if [[ "$GIT_BRANCH" == "origin/master" || "$GIT_BRANCH" == "origin/4.0"  || "$GIT_BRANCH" == "origin/5.0" ]]; then
+if [[ "$GIT_BRANCH" == "origin/master" || "$GIT_BRANCH" == "origin/4.0"  || "$GIT_BRANCH" == "origin/5.0" || "$GIT_BRANCH" == "origin/5.1" || "$GIT_BRANCH" == "origin/2.x" ]]; then
     echo "Git branch $GIT_BRANCH found, pushing to this branch."
     git push origin HEAD:${GIT_BRANCH#*/}
 fi

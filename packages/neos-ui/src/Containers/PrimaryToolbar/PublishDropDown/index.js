@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import React, {Fragment, PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
@@ -214,7 +215,9 @@ export default class PublishDropDown extends PureComponent {
                         </li>)}
                         <li className={autoPublishWrapperClassNames}>
                             <Label htmlFor="neos-PublishDropDown-AutoPublish">
-                                <CheckBox
+                                <
+// @ts-ignore
+                                CheckBox
                                     id="neos-PublishDropDown-AutoPublish"
                                     onChange={toggleAutoPublishing}
                                     isChecked={isAutoPublishingEnabled}

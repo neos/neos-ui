@@ -1,0 +1,8 @@
+'Neos.TestNodeTypes:Content.Container':
+  superTypes:
+    'Neos.Neos:Content': true
+    'Neos.Neos:ContentCollection': true
+  ui:
+    label: Container
+    icon: icon-folder
+

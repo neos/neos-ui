@@ -30,6 +30,7 @@ use Neos\Neos\Domain\Repository\DomainRepository;
 use Neos\Neos\Domain\Repository\SiteRepository;
 use Neos\Neos\Domain\Service\ContentContext;
 use Neos\Neos\Service\BackendRedirectionService;
+use Neos\Neos\Service\LinkingService;
 use Neos\Neos\Service\UserService;
 use Neos\Neos\TypeConverter\NodeConverter;
 use Neos\Neos\Ui\Domain\Service\StyleAndJavascriptInclusionService;
@@ -115,6 +116,12 @@ class BackendController extends ActionController
     protected $clipboard;
 
     /**
+     * @Flow\Inject
+     * @var LinkingService
+     */
+    protected $linkingService;
+
+    /**
      * Initializes the view before invoking an action method.
      *
      * @param ViewInterface $view The view to be initialized
@@ -153,7 +160,7 @@ class BackendController extends ActionController
         $this->view->assign('user', $user);
         $this->view->assign('documentNode', $node);
         $this->view->assign('site', $siteNode);
-        $this->view->assign('clipboardNode', $this->clipboard->getNodeContextPath());
+        $this->view->assign('clipboardNodes', $this->clipboard->getNodeContextPaths());
         $this->view->assign('clipboardMode', $this->clipboard->getMode());
         $this->view->assign('headScripts', $this->styleAndJavascriptInclusionService->getHeadScripts());
         $this->view->assign('headStylesheets', $this->styleAndJavascriptInclusionService->getHeadStylesheets());
@@ -187,7 +194,7 @@ class BackendController extends ActionController
             'no-cache',
             'no-store'
         ]);
-        $this->redirect('show', 'Frontend\Node', 'Neos.Neos', ['node' => $node]);
+        $this->redirectToUri($this->linkingService->createNodeUri($this->controllerContext, $node));
     }
 
     /**

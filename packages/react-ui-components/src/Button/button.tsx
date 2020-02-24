@@ -4,7 +4,7 @@ import React from 'react';
 import {Omit, PickDefaultProps} from '../../types';
 import {makeFocusNode} from '../_lib/focusNode';
 
-export type ButtonStyle = 'clean' | 'brand' | 'lighter' | 'transparent' | 'success' | 'warn' | 'error';
+export type ButtonStyle = 'clean' | 'brand' | 'lighter' | 'neutral' | 'transparent' | 'success' | 'warn' | 'error';
 export type ButtonHoverStyle = 'clean' | 'brand' | 'darken' | 'success' | 'warn' | 'error';
 export type ButtonSize = 'small' | 'regular';
 

@@ -35,8 +35,9 @@ export function * watchSelectPreset() {
                 continue;
             }
 
-            const {nodeFrontendUri} = informationAboutNodeInTargetDimension;
+            const {nodeContextPath, nodeFrontendUri} = informationAboutNodeInTargetDimension;
             yield put(actions.UI.ContentCanvas.setSrc(nodeFrontendUri));
+            yield put(actions.UI.PageTree.focus(nodeContextPath));
         }
     });
 }

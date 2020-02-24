@@ -97,7 +97,7 @@ export default class ImageCropper extends PureComponent {
         imageCopyNode.style.maxHeight = height;
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         const {cropConfiguration} = this.state;
 
         this.setState({

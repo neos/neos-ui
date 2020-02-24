@@ -86,7 +86,7 @@ export const defaultProps: DefaultProps = {
     modeIcon: 'long-arrow-right',
 };
 
-interface IconButtonDropDownState {
+export interface IconButtonDropDownState {
     readonly isOpen: boolean;
 }
 

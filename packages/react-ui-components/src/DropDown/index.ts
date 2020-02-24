@@ -1,11 +1,11 @@
 import {themr} from '@friendsofreactjs/react-css-themr';
 
-import identifiers from '@neos-project/react-ui-components/src/identifiers';
+import identifiers from '../identifiers';
 import ContextDropDownWrapper, {
     StatelessDropDownWrapper,
     ContextDropDownHeader,
     ContextDropDownContents
-} from '@neos-project/react-ui-components/src/DropDown/wrapper';
+} from './wrapper';
 
 import style from './style.css';
 

@@ -46,7 +46,7 @@ export default class MultiSelectBox_ListPreviewSortable extends PureComponent {
         this.DraggableListPreviewElement = makeDraggableListPreviewElement(props.ListPreviewElement);
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (this.props.values !== nextProps.values) {
             this.setState({
                 draggableValues: ensureIsArray(nextProps.values)

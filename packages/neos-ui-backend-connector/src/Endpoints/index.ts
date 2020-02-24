@@ -1,4 +1,4 @@
-import {urlWithParams, searchParams, getElementInnerText, getElementAttributeValue} from './Helpers';
+import {urlWithParams, searchParams, getElementInnerText, getElementAttributeValue, getContextString} from './Helpers';
 
 import fetchWithErrorHandling from '../FetchWithErrorHandling/index';
 import {Change, NodeContextPath, WorkspaceName, DimensionCombination, DimensionPresetCombination, DimensionName} from '@neos-project/neos-ts-interfaces';
@@ -10,8 +10,8 @@ export interface Routes {
             publish: string;
             discard: string;
             changeBaseWorkspace: string;
-            copyNode: string;
-            cutNode: string;
+            copyNodes: string;
+            cutNodes: string;
             clearClipboard: string;
             loadTree: string;
             flowQuery: string;
@@ -107,8 +107,8 @@ export default (routes: Routes) => {
     })).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
-    const copyNode = (node: NodeContextPath) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
-        url: routes.ui.service.copyNode,
+    const copyNodes = (nodes: NodeContextPath[]) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+        url: routes.ui.service.copyNodes,
 
         method: 'POST',
         credentials: 'include',
@@ -117,13 +117,13 @@ export default (routes: Routes) => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            node
+            nodes
         })
     })).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
-    const cutNode = (node: NodeContextPath) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
-        url: routes.ui.service.cutNode,
+    const cutNodes = (nodes: NodeContextPath[]) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+        url: routes.ui.service.cutNodes,
 
         method: 'POST',
         credentials: 'include',
@@ -132,7 +132,7 @@ export default (routes: Routes) => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            node
+            nodes
         })
     })).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
@@ -272,7 +272,7 @@ export default (routes: Routes) => {
         .then(result => {
             const assetProxyTable = document.createElement('table');
             assetProxyTable.innerHTML = result;
-            const assetProxies = Array.from(assetProxyTable.querySelectorAll('.asset')) as HTMLElement[];
+            const assetProxies = Array.from(assetProxyTable.querySelectorAll('.asset-proxy')) as HTMLElement[];
 
 
             const mappedAssetProxies = assetProxies.map((assetProxy: HTMLElement) => {
@@ -478,7 +478,7 @@ export default (routes: Routes) => {
                 }
 
                 // Hackish way to get context string from uri
-                const contextString = nodeFrontendUri.split('@')[1].split('.')[0];
+                const contextString = getContextString(nodeFrontendUri);
                 // TODO: Temporary hack due to missing contextPath in the API response
                 const nodeContextPath = `${nodePath.innerHTML}@${contextString}`;
 
@@ -610,8 +610,8 @@ export default (routes: Routes) => {
         publish,
         discard,
         changeBaseWorkspace,
-        copyNode,
-        cutNode,
+        copyNodes,
+        cutNodes,
         clearClipboard,
         createImageVariant,
         loadMasterPlugins,

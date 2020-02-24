@@ -205,6 +205,16 @@
       <trans-unit id="Shortcut__UI.RightSideBar.toggle" xml:space="preserve" approved="yes">
 				<source>Toggle inspector</source>
 			<target xml:lang="de">Inspector auf- / zuklappen</target></trans-unit>
+		<group id="UI.RightSideBar.tabs.validationErrorTooltip" restype="x-gettext-plurals">
+			<trans-unit id="UI.RightSideBar.tabs.validationErrorTooltip[0]" xml:space="preserve">
+				<source>{tabName} – {amountOfErrors} validation issue</source>
+				<target xml:lang="de">{tabName} – {amountOfErrors} Validierungsfehler</target>
+			</trans-unit>
+			<trans-unit id="UI.RightSideBar.tabs.validationErrorTooltip[1]" xml:space="preserve">
+				<source>{tabName} – {amountOfErrors} validation issues</source>
+				<target xml:lang="de">{tabName} – {amountOfErrors} Validierungsfehler</target>
+			</trans-unit>
+		</group>
       <trans-unit id="Shortcut__UI.FullScreen.toggle" xml:space="preserve" approved="yes">
 				<source>Toggle full screen</source>
 			<target xml:lang="de">Vollbildmodus umschalten</target></trans-unit>
@@ -262,6 +272,9 @@
       <trans-unit id="Shortcut__CR.Nodes.unfocus" xml:space="preserve" approved="yes">
 				<source>Unfocus Node</source>
 			<target xml:lang="de">Fokus vom Node entfernen</target></trans-unit>
+      <trans-unit id="syncUriPathSegment" xml:space="preserve" approved="yes">
+				<source>Unfocus Node</source>
+			<target xml:lang="de">Synchronisieren mit dem Titel</target></trans-unit>
     </body>
   </file>
 </xliff>

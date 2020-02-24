@@ -10,7 +10,7 @@ import {NodeContextPath} from '@neos-project/neos-ts-interfaces';
 
 export interface State extends Readonly<{
     isOpen: boolean;
-    subjectContextPath: NodeContextPath | null;
+    subjectContextPaths: NodeContextPath[];
     referenceContextPath: NodeContextPath | null;
     enableAlongsideModes: boolean;
     enableIntoMode: boolean;
@@ -19,7 +19,7 @@ export interface State extends Readonly<{
 
 export const defaultState: State = {
     isOpen: false,
-    subjectContextPath: null,
+    subjectContextPaths: [],
     referenceContextPath: null,
     enableAlongsideModes: false,
     enableIntoMode: false,
@@ -36,13 +36,13 @@ export enum actionTypes {
 }
 
 const open = (
-    subjectContextPath: NodeContextPath,
+    subjectContextPaths: NodeContextPath[],
     referenceContextPath: NodeContextPath,
     enableAlongsideModes: boolean,
     enableIntoMode: boolean,
     operationType: string
 ) => createAction(actionTypes.OPEN, {
-    subjectContextPath,
+    subjectContextPaths,
     referenceContextPath,
     enableAlongsideModes,
     enableIntoMode,
@@ -69,7 +69,7 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
     switch (action.type) {
         case actionTypes.OPEN: {
             draft.isOpen = true;
-            draft.subjectContextPath = action.payload.subjectContextPath;
+            draft.subjectContextPaths = action.payload.subjectContextPaths;
             draft.referenceContextPath = action.payload.referenceContextPath;
             draft.enableAlongsideModes = action.payload.enableAlongsideModes;
             draft.enableIntoMode = action.payload.enableIntoMode;
@@ -78,7 +78,7 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
         }
         case actionTypes.CANCEL: {
             draft.isOpen = false;
-            draft.subjectContextPath = null;
+            draft.subjectContextPaths = [];
             draft.referenceContextPath = null;
             draft.enableAlongsideModes = false;
             draft.enableIntoMode = false;
@@ -86,7 +86,7 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
         }
         case actionTypes.APPLY: {
             draft.isOpen = false;
-            draft.subjectContextPath = null;
+            draft.subjectContextPaths = [];
             draft.referenceContextPath = null;
             draft.enableAlongsideModes = false;
             draft.enableIntoMode = false;

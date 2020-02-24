@@ -8,7 +8,7 @@ import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
 import style from './style.css';
 import backend from '@neos-project/neos-ui-backend-connector';
 import {$get, $transform} from 'plow-js';
-import {mapObjIndexed} from 'ramda';
+import {mapValues} from 'lodash';
 import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 import I18n from '@neos-project/neos-ui-i18n';
 import sortBy from 'lodash.sortby';
@@ -21,7 +21,7 @@ const SelectedPreset = props => {
     return (
         <span key={dimensionName} className={style.selectPreset}>
             <Icon className={style.dropDown__btnIcon} icon={icon} title={dimensionLabel}/>
-            {presetLabel}
+            <span className={style.selectPresetLabel}>{presetLabel}</span>
         </span>
     );
 };
@@ -58,7 +58,8 @@ class DimensionSelector extends PureComponent {
     render() {
         const {icon, dimensionLabel, presets, dimensionName, activePreset, onSelect, isLoading, i18nRegistry} = this.props;
 
-        const presetOptions = mapObjIndexed(
+        const presetOptions = mapValues(
+            presets,
             (presetConfiguration, presetName) => {
                 return $transform(
                     {
@@ -68,8 +69,7 @@ class DimensionSelector extends PureComponent {
                     },
                     presetConfiguration
                 );
-            },
-            presets
+            }
         );
 
         const sortedPresetOptions = sortBy(presetOptions, ['label']);
@@ -145,9 +145,9 @@ export default class DimensionSwitcher extends PureComponent {
     // Merge active presets comming from redux with local transientPresets state (i.e. presents selected, but not yet applied)
     //
     getEffectivePresets = transientPresets => {
-        const activePresets = mapObjIndexed(
-            dimensionPreset => dimensionPreset.name,
-            this.props.activePresets
+        const activePresets = mapValues(
+            this.props.activePresets,
+            dimensionPreset => dimensionPreset.name
         );
         return Object.assign(
             {},
@@ -234,14 +234,16 @@ export default class DimensionSwitcher extends PureComponent {
 
         return contentDimensionsObjectKeys.length ? (
             <DropDown.Stateless
-                style="darker"
+                style="darkest"
                 padded={true}
                 className={style.dropDown}
                 isOpen={this.state.isOpen}
                 onToggle={this.handleToggle}
                 onClose={this.handleClose}
                 >
-                <DropDown.Header>
+                <DropDown.Header
+                    className={style.dropDown__header}
+                >
                     {contentDimensionsObjectKeys.map(dimensionName => {
                         const dimensionConfiguration = contentDimensionsObject[dimensionName];
                         const icon = $get('icon', dimensionConfiguration) && $get('icon', dimensionConfiguration);
@@ -255,7 +257,7 @@ export default class DimensionSwitcher extends PureComponent {
                         );
                     })}
                 </DropDown.Header>
-                <DropDown.Contents>
+                <DropDown.Contents className={style.dropDown__contents}>
                     {contentDimensionsObjectKeys.map(dimensionName => {
                         const dimensionConfiguration = contentDimensionsObject[dimensionName];
                         const icon = $get('icon', dimensionConfiguration) && $get('icon', dimensionConfiguration);
@@ -299,11 +301,12 @@ export default class DimensionSwitcher extends PureComponent {
         const {contentDimensions, allowedPresets, i18nRegistry} = this.props;
         const dimensionConfiguration = $get(dimensionName, contentDimensions);
 
-        return mapObjIndexed((presetConfiguration, presetName) => {
-            return Object.assign({}, presetConfiguration, {
-                label: i18nRegistry.translate(presetConfiguration.label),
-                disallowed: !(allowedPresets[dimensionName] && allowedPresets[dimensionName].includes(presetName))
+        return mapValues(dimensionConfiguration.presets,
+            (presetConfiguration, presetName) => {
+                return Object.assign({}, presetConfiguration, {
+                    label: i18nRegistry.translate(presetConfiguration.label),
+                    disallowed: !(allowedPresets[dimensionName] && allowedPresets[dimensionName].includes(presetName))
+                });
             });
-        }, dimensionConfiguration.presets);
     }
 }

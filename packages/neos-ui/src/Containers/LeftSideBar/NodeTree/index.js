@@ -7,11 +7,19 @@ import mergeClassNames from 'classnames';
 import {Tree, Icon} from '@neos-project/react-ui-components';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
+import {SelectionModeTypes} from '@neos-project/neos-ts-interfaces';
 import {dndTypes} from '@neos-project/neos-ui-constants';
 
 import {PageTreeNode, ContentTreeNode} from './Node/index';
 
 import style from './style.css';
+
+const ConnectedDragLayer = connect((state, {currentlyDraggedNodes}) => {
+    const getNodeByContextPath = selectors.CR.Nodes.nodeByContextPath(state);
+    return {
+        currentlyDraggedNodes: currentlyDraggedNodes ? currentlyDraggedNodes.map(contextPath => getNodeByContextPath(contextPath)) : []
+    };
+})(Tree.DragLayer);
 
 export default class NodeTree extends PureComponent {
     static propTypes = {
@@ -26,11 +34,11 @@ export default class NodeTree extends PureComponent {
         requestScrollIntoView: PropTypes.func,
         setActiveContentCanvasSrc: PropTypes.func,
         setActiveContentCanvasContextPath: PropTypes.func,
-        moveNode: PropTypes.func
+        moveNodes: PropTypes.func
     };
 
     state = {
-        currentlyDraggedNode: null
+        currentlyDraggedNodes: []
     };
 
     handleToggle = contextPath => {
@@ -39,20 +47,25 @@ export default class NodeTree extends PureComponent {
         toggle(contextPath);
     }
 
-    handleFocus = (contextPath, openInNewWindow) => {
-        const {focus, allowOpeningNodesInNewWindow} = this.props;
-        if (openInNewWindow && allowOpeningNodesInNewWindow) {
-            // We do not need to change focus if we open the clicked node in the new window.
+    handleFocus = (contextPath, metaKeyPressed, altKeyPressed, shiftKeyPressed) => {
+        const {focus} = this.props;
+
+        if (altKeyPressed) {
+            return;
+        }
+        const selectionMode = shiftKeyPressed ? SelectionModeTypes.RANGE_SELECT : (metaKeyPressed ? SelectionModeTypes.MULTIPLE_SELECT : SelectionModeTypes.SINGLE_SELECT);
+
+        focus(contextPath, undefined, selectionMode);
+    }
+
+    handleClick = (src, contextPath, metaKeyPressed, altKeyPressed, shiftKeyPressed) => {
+        const {setActiveContentCanvasSrc, setActiveContentCanvasContextPath, requestScrollIntoView, reload, contentCanvasSrc} = this.props;
+        if (altKeyPressed) {
+            window.open(window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port : '') + window.location.pathname + '?node=' + contextPath);
             return;
         }
 
-        focus(contextPath);
-    }
-
-    handleClick = (src, contextPath, openInNewWindow) => {
-        const {setActiveContentCanvasSrc, setActiveContentCanvasContextPath, requestScrollIntoView, allowOpeningNodesInNewWindow, reload, contentCanvasSrc} = this.props;
-        if (openInNewWindow && allowOpeningNodesInNewWindow) {
-            window.open(window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port : '') + window.location.pathname + '?node=' + contextPath);
+        if (metaKeyPressed || shiftKeyPressed) {
             return;
         }
 
@@ -74,17 +87,29 @@ export default class NodeTree extends PureComponent {
 
     handleDrag = node => {
         this.setState({
-            currentlyDraggedNode: node
+            currentlyDraggedNodes:
+                this.props.focusedNodesContextPaths.includes(node.contextPath) ?
+                    this.props.focusedNodesContextPaths :
+                    [node.contextPath] // moving a node outside of focused nodes
+        });
+    }
+
+    handeEndDrag = () => {
+        this.setState({
+            currentlyDraggedNodes: []
         });
     }
 
     handleDrop = (targetNode, position) => {
-        const {currentlyDraggedNode} = this.state;
-        const {moveNode} = this.props;
-        moveNode($get('contextPath', currentlyDraggedNode), $get('contextPath', targetNode), position);
+        const {currentlyDraggedNodes} = this.state;
+        const {moveNodes, focus} = this.props;
+        moveNodes(currentlyDraggedNodes, $get('contextPath', targetNode), position);
+        // We need to refocus the tree, so all focus would be reset, because its context paths have changed while moving
+        // Could be removed with the new CR
+        focus($get('contextPath', targetNode));
 
         this.setState({
-            currentlyDraggedNode: null
+            currentlyDraggedNodes: []
         });
     }
 
@@ -104,6 +129,11 @@ export default class NodeTree extends PureComponent {
 
         return (
             <Tree className={classNames}>
+                <ConnectedDragLayer
+                    nodeDndType={dndTypes.NODE}
+                    ChildRenderer={ChildRenderer}
+                    currentlyDraggedNodes={this.state.currentlyDraggedNodes}
+                />
                 <ChildRenderer
                     ChildRenderer={ChildRenderer}
                     nodeDndType={dndTypes.NODE}
@@ -114,8 +144,9 @@ export default class NodeTree extends PureComponent {
                     onNodeFocus={this.handleFocus}
                     onNodeDrag={this.handleDrag}
                     onNodeDrop={this.handleDrop}
-                    currentlyDraggedNode={this.state.currentlyDraggedNode}
-                    />
+                    onNodeEndDrag={this.handeEndDrag}
+                    currentlyDraggedNodes={this.state.currentlyDraggedNodes}
+                />
             </Tree>
         );
     }
@@ -123,6 +154,7 @@ export default class NodeTree extends PureComponent {
 
 export const PageTree = connect(state => ({
     rootNode: selectors.CR.Nodes.siteNodeSelector(state),
+    focusedNodesContextPaths: selectors.UI.PageTree.getAllFocused(state),
     ChildRenderer: PageTreeNode,
     allowOpeningNodesInNewWindow: true,
     contentCanvasSrc: $get('ui.contentCanvas.src', state)
@@ -132,17 +164,22 @@ export const PageTree = connect(state => ({
     reload: actions.UI.ContentCanvas.reload,
     setActiveContentCanvasSrc: actions.UI.ContentCanvas.setSrc,
     setActiveContentCanvasContextPath: actions.CR.Nodes.setDocumentNode,
-    moveNode: actions.CR.Nodes.move,
+    moveNodes: actions.CR.Nodes.moveMultiple,
     requestScrollIntoView: null
+}, (stateProps, dispatchProps, ownProps) => {
+    return Object.assign({}, stateProps, dispatchProps, ownProps);
 })(NodeTree);
 
 export const ContentTree = connect(state => ({
     rootNode: selectors.CR.Nodes.documentNodeSelector(state),
+    focusedNodesContextPaths: selectors.CR.Nodes.focusedNodePathsSelector(state),
     ChildRenderer: ContentTreeNode,
     allowOpeningNodesInNewWindow: false
 }), {
     toggle: actions.UI.ContentTree.toggle,
     focus: actions.CR.Nodes.focus,
-    moveNode: actions.CR.Nodes.move,
+    moveNodes: actions.CR.Nodes.moveMultiple,
     requestScrollIntoView: actions.UI.ContentCanvas.requestScrollIntoView
+}, (stateProps, dispatchProps, ownProps) => {
+    return Object.assign({}, stateProps, dispatchProps, ownProps);
 })(NodeTree);

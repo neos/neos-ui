@@ -63,6 +63,7 @@ Neos:
           'UI.FullScreen.toggle': 't f'
           'UI.LeftSideBar.toggle': 't l'
           'UI.LeftSideBar.toggleContentTree': 't c'
+          'UI.LeftSideBar.toggleSearchBar': 't s'
 
           'UI.AddNodeModal.close': 'c m'
 
@@ -126,7 +127,7 @@ Neos:
             byContextPath: '${Neos.Ui.NodeInfo.defaultNodesForBackend(site, documentNode, controllerContext)}'
             siteNode: '${q(site).property(''_contextPath'')}'
             documentNode: '${q(documentNode).property(''_contextPath'')}'
-            clipboard: '${clipboardNode || null}'
+            clipboard: '${clipboardNodes || []}'
             clipboardMode: '${clipboardMode || null}'
           contentDimensions:
             byName: '${Neos.Ui.ContentDimensions.contentDimensionsByName()}'
@@ -146,6 +147,8 @@ Neos:
             isHidden: false
             contentTree:
               isHidden: true
+            searchBar:
+              isVisible: false
           rightSideBar:
             isHidden: false
           addNodeModal:
@@ -156,7 +159,7 @@ Neos:
           pageTree:
             isLoading: false
             hasError: false
-            focused: '${q(documentNode).property(''_contextPath'')}'
+            focused: '${[q(documentNode).property(''_contextPath'')]}'
             active: '${q(documentNode).property(''_contextPath'')}'
           remote:
             isSaving: false

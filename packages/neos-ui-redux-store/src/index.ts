@@ -1,5 +1,4 @@
-import {keys} from 'ramda';
-import {combineReducers} from 'redux';
+import {combineReducers} from '@neos-project/neos-ui-redux-store/src/combineReducers';
 
 import * as Changes from '@neos-project/neos-ui-redux-store/src/Changes';
 import * as CR from '@neos-project/neos-ui-redux-store/src/CR';
@@ -10,15 +9,19 @@ import * as ServerFeedback from '@neos-project/neos-ui-redux-store/src/ServerFee
 
 const all = {Changes, CR, System, UI, User, ServerFeedback};
 
+function typedKeys<T>(o: T) : Array<keyof T> {
+    return Object.keys(o) as Array<keyof T>;
+}
+
 //
 // Export the actionTypes
 //
-export const actionTypes = keys(all).reduce((acc, cur) => ({...acc, [cur]: all[cur].actionTypes}), {});
+export const actionTypes = typedKeys(all).reduce((acc, cur) => ({...acc, [cur]: all[cur].actionTypes}), {});
 
 //
 // Export the actions
 //
-export const actions = keys(all).reduce((acc, cur) => ({...acc, [cur]: all[cur].actions}), {});
+export const actions = typedKeys(all).reduce((acc, cur) => ({...acc, [cur]: all[cur].actions}), {});
 
 //
 // Export the reducer
@@ -29,10 +32,10 @@ export const reducer = combineReducers({
     ui: UI.reducer,
     user: User.reducer,
     // NOTE: The plugins reducer is UNPLANNED EXTENSIBILITY, do not modify unless you know what you are doing!
-    plugins: (state) => state || {}
+    plugins: (state: System.GlobalState) => state || {}
 });
 
 //
 // Export the selectors
 //
-export const selectors = keys(all).reduce((acc, cur) => ({...acc, [cur]: all[cur].selectors}), {});
+export const selectors = typedKeys(all).reduce((acc, cur) => ({...acc, [cur]: all[cur].selectors}), {});

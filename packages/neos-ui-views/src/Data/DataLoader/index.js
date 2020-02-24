@@ -7,6 +7,7 @@ import Widget from '../../Widget/index';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 import I18n from '@neos-project/neos-ui-i18n';
 import style from './style.css';
+import isEqual from 'lodash.isequal';
 
 /*
  * This HOC is responsible for fetching data for Data views and wraping
@@ -47,7 +48,8 @@ export default () => WrappedComponent => {
         }
 
         componentDidUpdate(prevProps) {
-            if (prevProps.focusedNodeContextPath !== this.props.focusedNodeContextPath) {
+            if (prevProps.focusedNodeContextPath !== this.props.focusedNodeContextPath ||
+                !isEqual(prevProps.options.arguments, this.props.options.arguments)) {
                 this.fetchData();
             }
         }

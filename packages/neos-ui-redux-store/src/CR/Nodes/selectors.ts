@@ -7,9 +7,17 @@ export const inlineValidationErrorsSelector = (state: GlobalState) => $get(['cr'
 export const nodesByContextPathSelector = (state: GlobalState) => $get(['cr', 'nodes', 'byContextPath'], state);
 export const siteNodeContextPathSelector = (state: GlobalState) => $get(['cr', 'nodes', 'siteNode'], state);
 export const documentNodeContextPathSelector = (state: GlobalState) => $get(['cr', 'nodes', 'documentNode'], state);
-// This is internal, as in most cases you want `focusedNodePathSelector`, which is able to fallback to documentNode, when no node is focused
-const _focusedNodeContextPathSelector = (state: GlobalState) => $get(['cr', 'nodes', 'focused', 'contextPath'], state);
+export const focusedNodePathsSelector = (state: GlobalState) => $get(['cr', 'nodes', 'focused', 'contextPaths'], state);
 
+// This is internal, as in most cases you want `focusedNodePathSelector`, which is able to fallback to documentNode, when no node is focused
+export const _focusedNodeContextPathSelector = createSelector(
+    [
+        focusedNodePathsSelector,
+    ],
+    (focusedNodePaths) => {
+        return focusedNodePaths && focusedNodePaths[0] ? focusedNodePaths[0] : null;
+    }
+);
 export const isDocumentNodeSelectedSelector = createSelector(
     [
         _focusedNodeContextPathSelector,
@@ -210,11 +218,13 @@ export const focusedGrandParentSelector = createSelector(
     }
 );
 
+export const clipboardNodesContextPathsSelector = (state: GlobalState) => $get(['cr', 'nodes', 'clipboard'], state);
+
 export const clipboardNodeContextPathSelector = createSelector(
     [
-        (state: GlobalState) => $get(['cr', 'nodes', 'clipboard'], state)
+        clipboardNodesContextPathsSelector
     ],
-    clipboardNodeContextPath => clipboardNodeContextPath
+    clipboardNodesContextPaths => Boolean(console.warn('This selector is deprecated, use "clipboardNodesContextPathsSelector" instead')) || (clipboardNodesContextPaths && clipboardNodesContextPaths[0])
 );
 
 export const clipboardIsEmptySelector = createSelector(
@@ -367,6 +377,20 @@ export const destructiveOperationsAreDisabledSelector = createSelector(
             focusedNode.isAutoCreated ||
             siteNodeContextPath === focusedNodeContextPath
         );
+    }
+);
+
+export const destructiveOperationsAreDisabledForContentTreeSelector = createSelector(
+    [
+        siteNodeContextPathSelector,
+        focusedNodePathsSelector,
+        nodesByContextPathSelector
+    ],
+    (siteNodeContextPath, focusedNodesContextPaths, nodesByContextPath) => {
+        return focusedNodesContextPaths.map(contextPath => {
+            const node = nodesByContextPath[contextPath];
+            return node && node.isAutoCreated || siteNodeContextPath === contextPath;
+        }).filter(Boolean).length > 0;
     }
 );
 

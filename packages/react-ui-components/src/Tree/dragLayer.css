@@ -1,0 +1,39 @@
+.layer {
+    position: fixed;
+    pointer-events: none;
+    z-index: 2147483646;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.dragWrapper {
+    display: inline-block;
+    position: relative;
+    opacity: .7;
+    left: 0;
+}
+
+.count {
+    z-index: 2147483646;
+    position: absolute;
+    top: -10px;
+    left: 5px;
+    width: 20px;
+    height: 20px;
+    color: var(--colors-ContrastBrightest);
+    background-color: var(--colors-Error);
+    border-radius: 50%;
+    padding: 1px;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.node {
+    position: absolute;
+    width: 280px;
+    background-color: var(--colors-ContrastNeutral);
+    border: 1px solid var(--colors-ContrastDark);
+}

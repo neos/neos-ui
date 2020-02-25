@@ -42,7 +42,7 @@ export default function * pasteNode({globalRegistry}) {
             yield put(actions.CR.Nodes.commitPaste(clipboardMode));
             const changes = subject.map(contextPath => ({
                 type: calculateChangeTypeFromMode(mode, clipboardMode),
-                contextPath,
+                subject: contextPath,
                 payload: calculateDomAddressesFromMode(mode, referenceNode, fusionPath)
             }));
             yield put(actions.Changes.persistChanges(changes));

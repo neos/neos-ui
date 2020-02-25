@@ -2,6 +2,9 @@
   "name": "@neos-project/build-essentials",
   "version": "4.0.4",
   "description": "Dependencies for building @neos-project packages",
+  "repository": "neos/neos-ui",
+  "bugs": "https://github.com/neos/neos-ui/issues",
+  "homepage": "https://github.com/neos/neos-ui/blob/master/README.md",
   "main": "./src",
   "bin": {
     "check-dependencies": "./node_modules/.bin/check-dependencies",

@@ -2,6 +2,9 @@
   "name": "@neos-project/react-ui-components",
   "version": "4.0.4",
   "description": "The UI components which power the Neos backend application.",
+  "repository": "neos/neos-ui",
+  "bugs": "https://github.com/neos/neos-ui/issues",
+  "homepage": "https://github.com/neos/neos-ui/blob/master/packages/react-ui-components/README.md",
   "module": "./lib-esm/index",
   "main": "./src/index",
   "scripts": {

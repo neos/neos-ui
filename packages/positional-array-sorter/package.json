@@ -2,6 +2,9 @@
   "name": "@neos-project/positional-array-sorter",
   "version": "4.0.4",
   "description": "Flexible array sorter that sorts an array according to a 'position' meta data.",
+  "repository": "neos/neos-ui",
+  "bugs": "https://github.com/neos/neos-ui/issues",
+  "homepage": "https://github.com/neos/neos-ui/blob/master/packages/positional-array-sorter/README.md",
   "main": "./dist/positionalArraySorter.js",
   "license": "GNU GPLv3",
   "scripts": {

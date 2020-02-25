@@ -271,18 +271,7 @@ manifest('main', {}, globalRegistry => {
             // because the parent's parent node might have ALSO been removed in the same request.
             //
             // Instead, we need to check ALL the RemoveNode feedbacks from the current change request; and traverse the parent hierarchy there.
-            // This is done in the below helper function.
-            function getParentContextPathFromFeedbacks(contextPath) {
-                const possibleRemoveNodeFeedback = allFeedbacksFromThisRequest
-                    .filter(feedback => feedback.type === 'Neos.Neos.Ui:RemoveNode')
-                    .find(feedback => feedback.payload.contextPath === contextPath);
-
-                if (possibleRemoveNodeFeedback) {
-                    return possibleRemoveNodeFeedback.payload.parentContextPath;
-                } else {
-                    return undefined;
-                }
-            }
+            // This is done in the helper function getParentContextPathFromFeedbacks().
 
             let redirectContextPath = contextPath;
             let redirectUri = null;
@@ -317,6 +306,19 @@ manifest('main', {}, globalRegistry => {
                     element: el
                 });
             });
+        }
+
+        // Inline Helper Function
+        function getParentContextPathFromFeedbacks(contextPath) {
+            const possibleRemoveNodeFeedback = allFeedbacksFromThisRequest
+                .filter(feedback => feedback.type === 'Neos.Neos.Ui:RemoveNode')
+                .find(feedback => feedback.payload.contextPath === contextPath);
+
+            if (possibleRemoveNodeFeedback) {
+                return possibleRemoveNodeFeedback.payload.parentContextPath;
+            }
+
+            return undefined;
         }
     });
 

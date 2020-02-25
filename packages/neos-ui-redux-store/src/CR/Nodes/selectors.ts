@@ -331,7 +331,7 @@ export const makeCanBeMovedAlongsideSelector = (nodeTypesRegistry: NodeTypesRegi
             }
             const subjectPath = subject && subject.split('@')[0];
             const referenceParent = getPathInNode(state, reference, 'parent') as string;
-            if (referenceParent === null) {
+            if (!referenceParent) {
                 return false;
             }
             return subjectPath ? referenceParent.indexOf(subjectPath) === 0 : false;

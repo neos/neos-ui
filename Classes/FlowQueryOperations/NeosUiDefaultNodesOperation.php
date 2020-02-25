@@ -13,6 +13,7 @@ namespace Neos\Neos\Ui\FlowQueryOperations;
 
 use Neos\ContentRepository\Domain\NodeType\NodeTypeConstraintFactory;
 use Neos\ContentRepository\Domain\Projection\Content\TraversableNodeInterface;
+use Neos\ContentRepository\Exception\NodeException;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Property\PropertyMapper;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
@@ -78,7 +79,12 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
 
         // Collect all parents of documentNode up to siteNode
         $parents = [];
-        $currentNode = $documentNode->findParentNode();
+        $currentNode = null;
+        try {
+            $currentNode = $documentNode->findParentNode();
+        } catch (NodeException $ignored) {
+            // parent does not exist
+        }
         if ($currentNode) {
             $parentNodeIsUnderneathSiteNode = strpos((string)$currentNode->findNodePath(), (string)$siteNode->findNodePath()) === 0;
             while ((string)$currentNode->getNodeAggregateIdentifier() !== (string)$siteNode->getNodeAggregateIdentifier() && $parentNodeIsUnderneathSiteNode) {

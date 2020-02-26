@@ -15,6 +15,10 @@ use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Domain\Repository\WorkspaceRepository;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Flow\Annotations as Flow;
+use Neos\Flow\I18n\Exception\InvalidLocaleIdentifierException;
+use Neos\Flow\I18n\Locale;
+use Neos\Flow\I18n\Service;
+use Neos\Flow\I18n\Translator;
 use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\Flow\Mvc\RequestInterface;
 use Neos\Flow\Mvc\ResponseInterface;
@@ -116,9 +120,21 @@ class BackendServiceController extends ActionController
 
     /**
      * @Flow\Inject
+     * @var Service
+     */
+    protected $localizationService;
+
+    /**
+     * @Flow\Inject
      * @var ContentDimensionPresetSourceInterface
      */
     protected $contentDimensionsPresetSource;
+
+    /**
+     * @Flow\Inject
+     * @var Translator
+     */
+    protected $translator;
 
     /**
      * Set the controller context on the feedback collection after the controller
@@ -132,6 +148,12 @@ class BackendServiceController extends ActionController
     {
         parent::initializeController($request, $response);
         $this->feedbackCollection->setControllerContext($this->getControllerContext());
+
+        try {
+            $this->localizationService->getConfiguration()->setCurrentLocale(new Locale($this->userService->getInterfaceLanguage()));
+        } catch (InvalidLocaleIdentifierException $e) {
+            // Do nothing, stay in the default locale
+        }
     }
 
     /**
@@ -164,7 +186,7 @@ class BackendServiceController extends ActionController
             $changes->apply();
 
             $success = new Info();
-            $success->setMessage(sprintf('%d change(s) successfully applied.', $count));
+            $success->setMessage($this->translator->translateById('changesApplied', [$count], $count, null, 'Main', 'Neos.Neos.Ui'));
 
             $this->feedbackCollection->add($success);
             $this->persistenceManager->persistAll();
@@ -195,8 +217,10 @@ class BackendServiceController extends ActionController
                 $this->publishingService->publishNode($node, $targetWorkspace);
             }
 
+            $count = count($nodeContextPaths);
+
             $success = new Success();
-            $success->setMessage(sprintf('Published %d change(s) to %s.', count($nodeContextPaths), $targetWorkspaceName));
+            $success->setMessage($this->translator->translateById('changesPublished', [$count, $targetWorkspace->getTitle()], $count, null, 'Main', 'Neos.Neos.Ui'));
 
             $this->updateWorkspaceInfo($nodeContextPaths[0]);
             $this->feedbackCollection->add($success);
@@ -254,8 +278,10 @@ class BackendServiceController extends ActionController
                 $this->publishingService->discardNode($node);
             }
 
+            $count = count($nodeContextPaths);
+
             $success = new Success();
-            $success->setMessage(sprintf('Discarded %d node(s).', count($nodeContextPaths)));
+            $success->setMessage($this->translator->translateById('changesDiscarded', [$count], $count, null, 'Main', 'Neos.Neos.Ui'));
 
             $this->updateWorkspaceInfo($nodeContextPaths[0]);
             $this->feedbackCollection->add($success);

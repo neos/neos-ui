@@ -258,6 +258,30 @@
 			<trans-unit id="Shortcut__CR.Nodes.unfocus" xml:space="preserve">
 				<source>Unfocus Node</source>
 			</trans-unit>
+            <group id="changesApplied" restype="x-gettext-plurals">
+                <trans-unit id="changesApplied[0]" xml:space="preserve">
+                    <source>{0} change successfully applied.</source>
+                </trans-unit>
+                <trans-unit id="changesApplied[1]" xml:space="preserve">
+                    <source>{0} changes successfully applied.</source>
+                </trans-unit>
+            </group>
+            <group id="changesPublished" restype="x-gettext-plurals">
+                <trans-unit id="changesPublished[0]" xml:space="preserve">
+                    <source>Published {0} change to "{1}".</source>
+                </trans-unit>
+                <trans-unit id="changesPublished[1]" xml:space="preserve">
+                    <source>Published {0} changes to "{1}".</source>
+                </trans-unit>
+            </group>
+            <group id="changesDiscarded" restype="x-gettext-plurals">
+                <trans-unit id="changesDiscarded[0]" xml:space="preserve">
+                    <source>Discarded {0} change.</source>
+                </trans-unit>
+                <trans-unit id="changesDiscarded[1]" xml:space="preserve">
+                    <source>Discarded {0} changes.</source>
+                </trans-unit>
+            </group>
 		</body>
 	</file>
 </xliff>

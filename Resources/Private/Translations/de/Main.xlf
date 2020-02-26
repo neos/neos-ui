@@ -262,6 +262,36 @@
       <trans-unit id="Shortcut__CR.Nodes.unfocus" xml:space="preserve" approved="yes">
 				<source>Unfocus Node</source>
 			<target xml:lang="de">Fokus vom Node entfernen</target></trans-unit>
+        <group id="changesApplied" restype="x-gettext-plurals">
+            <trans-unit id="changesApplied[0]" xml:space="preserve">
+                <source>{0} change successfully applied.</source>
+                <target>{0} Änderung erfolgreich angewendet.</target>
+            </trans-unit>
+            <trans-unit id="changesApplied[1]" xml:space="preserve">
+                <source>{0} changes successfully applied.</source>
+                <target>{0} Änderungen erfolgreich angewendet.</target>
+            </trans-unit>
+        </group>
+        <group id="changesPublished" restype="x-gettext-plurals">
+            <trans-unit id="changesPublished[0]" xml:space="preserve">
+                <source>Published {0} change to "{1}".</source>
+                <target>{0} Änderung nach "{1}" veröffentlicht.</target>
+            </trans-unit>
+            <trans-unit id="changesPublished[1]" xml:space="preserve">
+                <source>Published {0} changes to "{1}".</source>
+                <target>{0} Änderungen nach "{1}" veröffentlicht.</target>
+            </trans-unit>
+        </group>
+        <group id="changesDiscarded" restype="x-gettext-plurals">
+            <trans-unit id="changesDiscarded[0]" xml:space="preserve">
+                <source>Discarded {0} change.</source>
+                <target>{0} Änderung verworfen.</target>
+            </trans-unit>
+            <trans-unit id="changesDiscarded[1]" xml:space="preserve">
+                <source>Discarded {0} changes.</source>
+                <target>{0} Änderungen verworfen.</target>
+            </trans-unit>
+        </group>
     </body>
   </file>
 </xliff>

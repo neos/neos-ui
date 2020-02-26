@@ -15,6 +15,9 @@ use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Domain\Repository\WorkspaceRepository;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Flow\Annotations as Flow;
+use Neos\Flow\I18n\Exception\InvalidLocaleIdentifierException;
+use Neos\Flow\I18n\Locale;
+use Neos\Flow\I18n\Service;
 use Neos\Flow\I18n\Translator;
 use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\Flow\Mvc\RequestInterface;
@@ -117,6 +120,12 @@ class BackendServiceController extends ActionController
 
     /**
      * @Flow\Inject
+     * @var Service
+     */
+    protected $localizationService;
+
+    /**
+     * @Flow\Inject
      * @var ContentDimensionPresetSourceInterface
      */
     protected $contentDimensionsPresetSource;
@@ -139,6 +148,12 @@ class BackendServiceController extends ActionController
     {
         parent::initializeController($request, $response);
         $this->feedbackCollection->setControllerContext($this->getControllerContext());
+
+        try {
+            $this->localizationService->getConfiguration()->setCurrentLocale(new Locale($this->userService->getInterfaceLanguage()));
+        } catch (InvalidLocaleIdentifierException $e) {
+            // Do nothing, stay in the default locale
+        }
     }
 
     /**

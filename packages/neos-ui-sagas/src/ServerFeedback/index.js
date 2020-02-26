@@ -13,7 +13,7 @@ export function * watchServerFeedback({store, globalRegistry}) {
             const feedbackHandlers = serverFeedbackHandlers.getChildren(feedback.type);
             feedbackHandlers.forEach(feedbackHandler => {
                 if (feedbackHandler) {
-                    feedbackHandler(feedback.payload, {store, globalRegistry});
+                    feedbackHandler(feedback.payload, {store, globalRegistry, allFeedbacksFromThisRequest: feedbacks});
                 } else {
                     console.warn(`No Feedback Handlers defined for ${feedback.type}.`);
                 }

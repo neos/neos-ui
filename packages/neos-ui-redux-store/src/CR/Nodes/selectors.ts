@@ -1,7 +1,6 @@
 import {$get} from 'plow-js';
 import {createSelector, defaultMemoize} from 'reselect';
 import {GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
-import {parentNodeContextPath} from './helpers';
 import {NodeContextPath, NodeMap, Node, NodeTypeName, ClipboardMode, NodeTypesRegistry} from '@neos-project/neos-ts-interfaces';
 
 export const inlineValidationErrorsSelector = (state: GlobalState) => $get(['cr', 'nodes', 'inlineValidationErrors'], state);
@@ -138,19 +137,17 @@ export const byContextPathSelector = defaultMemoize(
 );
 
 export const parentNodeSelector = (state: GlobalState) => (baseNode: Node) => {
-    const parent = parentNodeContextPath(baseNode.contextPath);
-    if (parent !== null) {
-        return byContextPathSelector(parent)(state);
+    if (baseNode.parent !== null) {
+        return byContextPathSelector(baseNode.parent)(state);
     }
     return null;
 };
 
 export const grandParentNodeSelector = (state: GlobalState) => (baseNode: Node) => {
-    const parent = parentNodeContextPath(baseNode.contextPath);
-    if (parent !== null) {
-        const grandParent = parentNodeContextPath(parent);
-        if (grandParent !== null) {
-            byContextPathSelector(grandParent)(state);
+    if (baseNode.parent !== null) {
+        const parentNode = byContextPathSelector(baseNode.parent)(state);
+        if (parentNode && parentNode.parent) {
+            return byContextPathSelector(parentNode.parent)(state);
         }
     }
     return null;
@@ -244,13 +241,13 @@ export const getPathInNode = (state: GlobalState, contextPath: NodeContextPath, 
     return $get(propertyPath, node);
 };
 
-export const makeGetAllowedChildNodeTypesSelector = (nodeTypesRegistry: NodeTypesRegistry, elevator: (id: string) => string | null = id => id) => createSelector(
+export const makeGetAllowedChildNodeTypesSelector = (nodeTypesRegistry: NodeTypesRegistry, elevator: (id: string, state: GlobalState) => string | null = id => id) => createSelector(
     [
         (state: GlobalState, {reference}: {reference: NodeContextPath | null, role: string}) => {
             if (reference === null) {
                 return null;
             }
-            const elevatedReference = elevator(reference);
+            const elevatedReference = elevator(reference, state);
             if (elevatedReference) {
                 return $get(['cr', 'nodes', 'byContextPath', elevatedReference], state) || null;
             }
@@ -260,9 +257,9 @@ export const makeGetAllowedChildNodeTypesSelector = (nodeTypesRegistry: NodeType
             if (reference === null) {
                 return null;
             }
-            const parentReference = parentNodeContextPath(reference);
+            const parentReference = getPathInNode(state, reference, 'parent');
             if (parentReference !== null) {
-                const elevatedReferenceParent = elevator(parentReference);
+                const elevatedReferenceParent = elevator(parentReference, state);
                 if (elevatedReferenceParent !== null) {
                     return $get(['cr', 'nodes', 'byContextPath', elevatedReferenceParent], state) || null;
                 }
@@ -286,7 +283,8 @@ export const makeGetAllowedChildNodeTypesSelector = (nodeTypesRegistry: NodeType
 );
 
 export const makeGetAllowedSiblingNodeTypesSelector = (nodeTypesRegistry: NodeTypesRegistry) =>
-    makeGetAllowedChildNodeTypesSelector(nodeTypesRegistry, parentNodeContextPath);
+    makeGetAllowedChildNodeTypesSelector(nodeTypesRegistry, (nodeContextPath, state) => getPathInNode(state, nodeContextPath, 'parent'));
+
 
 export const makeIsAllowedToAddChildOrSiblingNodes = (nodeTypesRegistry: NodeTypesRegistry) => createSelector(
     [
@@ -327,13 +325,13 @@ export const makeCanBeMovedIntoSelector = (nodeTypesRegistry: NodeTypesRegistry)
 export const makeCanBeMovedAlongsideSelector = (nodeTypesRegistry: NodeTypesRegistry) => createSelector(
     [
         makeCanBeCopiedAlongsideSelector(nodeTypesRegistry),
-        (_, {subject, reference}) => {
+        (state: GlobalState, {subject, reference}) => {
             if (reference === null) {
                 return false;
             }
             const subjectPath = subject && subject.split('@')[0];
-            const referenceParent = parentNodeContextPath(reference);
-            if (referenceParent === null) {
+            const referenceParent = getPathInNode(state, reference, 'parent') as string;
+            if (!referenceParent) {
                 return false;
             }
             return subjectPath ? referenceParent.indexOf(subjectPath) === 0 : false;
@@ -406,12 +404,14 @@ export const focusedNodeParentLineSelector = createSelector(
         let currentNode = focusedNode;
 
         while (currentNode) {
-            const parent = parentNodeContextPath(currentNode.contextPath);
-            if (parent !== null) {
+            const parent = currentNode.parent;
+            if (parent) {
                 currentNode = nodesByContextPath[parent] || null;
                 if (currentNode) {
                     result.push(currentNode);
                 }
+            } else {
+                break;
             }
         }
 

@@ -2,7 +2,7 @@ import {takeLatest, put, select} from 'redux-saga/effects';
 import {$get, $contains} from 'plow-js';
 
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
-import {parentNodeContextPath, isNodeCollapsed} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/helpers';
+import {isNodeCollapsed} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/helpers';
 
 import backend from '@neos-project/neos-ui-backend-connector';
 
@@ -40,8 +40,12 @@ export function * watchNodeFocus({configuration}) {
 
         const documentNode = yield select(selectors.CR.Nodes.documentNodeSelector);
         const {loadingDepth} = configuration.structureTree;
+
         while (parentContextPath !== documentNodeContextPath) {
-            parentContextPath = parentNodeContextPath(parentContextPath);
+            const parentContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(parentContextPath);
+            const parentNode = yield select(parentContextPathSelector);
+
+            parentContextPath = parentNode.parent;
             if (!parentContextPath) {
                 // In case our focused node is not on the current document, documentNodeContextPath
                 // can never be an anchestor of contextPath. In this case, we traverse the path until
@@ -51,7 +55,7 @@ export function * watchNodeFocus({configuration}) {
             const getNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(parentContextPath);
             const node = yield select(getNodeByContextPathSelector);
             const isToggled = yield select($contains(parentContextPath, 'ui.contentTree.toggled'));
-            const isCollapsed = isNodeCollapsed(node, isToggled, documentNode, loadingDepth);
+            const isCollapsed = (node ? isNodeCollapsed(node, isToggled, documentNode, loadingDepth) : false);
 
             if (!node || isCollapsed) {
                 yield put(actions.UI.ContentTree.toggle(parentContextPath));

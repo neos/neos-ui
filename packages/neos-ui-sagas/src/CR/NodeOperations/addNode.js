@@ -1,7 +1,7 @@
-import {takeLatest, take, put, race, call} from 'redux-saga/effects';
+import {takeLatest, take, put, race, call, select} from 'redux-saga/effects';
 import {$get} from 'plow-js';
 
-import {actions, actionTypes} from '@neos-project/neos-ui-redux-store';
+import {actions, actionTypes, selectors} from '@neos-project/neos-ui-redux-store';
 
 import {calculateChangeTypeFromMode, calculateDomAddressesFromMode} from './helpers';
 
@@ -91,11 +91,15 @@ function * nodeCreationWorkflow(context, step = STEP_SELECT_NODETYPE, workflowDa
             if (nodeTypesRegistry.hasRole(nodeType, 'document')) {
                 yield put(actions.UI.ContentCanvas.startLoading());
             }
+
+            const referenceNodeSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(referenceNodeContextPath);
+            const referenceNode = yield select(referenceNodeSelector);
+
             return yield put(actions.Changes.persistChanges([{
                 type: calculateChangeTypeFromMode(mode, 'Create'),
                 subject: referenceNodeContextPath,
                 payload: {
-                    ...calculateDomAddressesFromMode(mode, referenceNodeContextPath, referenceNodeFusionPath),
+                    ...calculateDomAddressesFromMode(mode, referenceNode, referenceNodeFusionPath),
                     nodeType,
                     data
                 }

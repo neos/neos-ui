@@ -22,24 +22,6 @@ export const getAllowedNodeTypesTakingAutoCreatedIntoAccount = (baseNode: Node, 
 };
 
 //
-// Helper function to get parent contextPath from current contextPath
-//
-export const parentNodeContextPath = (contextPath: NodeContextPath) => {
-    if (typeof contextPath !== 'string') {
-        console.error('`contextPath` must be a string!'); // tslint:disable-line
-        return null;
-    }
-    const [path, context] = contextPath.split('@');
-
-    if (path.length === 0) {
-        // We are at top level; so there is no parent anymore!
-        return null;
-    }
-
-    return `${path.substr(0, path.lastIndexOf('/'))}@${context}`;
-};
-
-//
 // Helper function to check if the node is collapsed
 //
 export const isNodeCollapsed = (node: Node, isToggled: boolean, rootNode: Node, loadingDepth: number) => {
@@ -60,9 +42,9 @@ export const calculateNewFocusedNodes = (selectionMode: SelectionModeTypes, cont
         return [contextPath];
     } else if (selectionMode === SelectionModeTypes.RANGE_SELECT) {
         const lastSelectedNodeContextPath = focusedNodesContextPaths[focusedNodesContextPaths.length - 1];
-        const maybeParentNodeContextPath = parentNodeContextPath(lastSelectedNodeContextPath);
-        if (maybeParentNodeContextPath) {
-            const parentNode = getNodeOrThrow(nodesByContextPath, maybeParentNodeContextPath);
+        const lastSelectedNode = nodesByContextPath[lastSelectedNodeContextPath];
+        if (lastSelectedNode && lastSelectedNode.parent) {
+            const parentNode = getNodeOrThrow(nodesByContextPath, lastSelectedNode.parent);
             const tempSelection: string[] = [];
             let startSelectionFlag = false;
             // if both start and end nodes are within children, then we can do range select

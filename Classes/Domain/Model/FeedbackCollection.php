@@ -75,4 +75,9 @@ class FeedbackCollection implements \JsonSerializable
             'feedbacks' => $feedbacks
         ];
     }
+
+    public function reset()
+    {
+        $this->feedbacks = [];
+    }
 }

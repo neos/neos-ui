@@ -1,15 +1,5 @@
 import {findNodeInGuestFrame, closestNodeInGuestFrame} from '@neos-project/neos-ui-guest-frame/src/dom';
 
-export const parentNodeContextPath = contextPath => {
-    if (typeof contextPath !== 'string') {
-        return null;
-    }
-
-    const [path, context] = contextPath.split('@');
-
-    return `${path.substr(0, path.lastIndexOf('/'))}@${context}`;
-};
-
 export const calculateChangeTypeFromMode = (mode, prefix) => {
     switch (mode) {
         case 'before':
@@ -23,35 +13,35 @@ export const calculateChangeTypeFromMode = (mode, prefix) => {
     }
 };
 
-export const calculateDomAddressesFromMode = (mode, contextPath, fusionPath) => {
+export const calculateDomAddressesFromMode = (mode, contextNode, fusionPath) => {
     switch (mode) {
         case 'before':
         case 'after': {
-            const element = findNodeInGuestFrame(contextPath, fusionPath);
+            const element = findNodeInGuestFrame(contextNode.contextPath, fusionPath);
             const parentElement = element ? closestNodeInGuestFrame(element.parentNode) : null;
 
             return {
                 siblingDomAddress: {
-                    contextPath,
+                    contextPath: contextNode.contextPath,
                     fusionPath
                 },
                 parentDomAddress: parentElement ? {
                     contextPath: parentElement.getAttribute('data-__neos-node-contextpath'),
                     fusionPath: parentElement.getAttribute('data-__neos-fusion-path')
                 } : {
-                    contextPath: parentNodeContextPath(contextPath),
+                    contextPath: contextNode.parent,
                     fusionPath: null
                 }
             };
         }
 
         default: {
-            const element = findNodeInGuestFrame(contextPath, fusionPath);
+            const element = findNodeInGuestFrame(contextNode.contextPath, fusionPath);
 
             return {
-                parentContextPath: contextPath,
+                parentContextPath: contextNode.contextPath,
                 parentDomAddress: {
-                    contextPath: element ? element.getAttribute('data-__neos-node-contextpath') : contextPath,
+                    contextPath: element ? element.getAttribute('data-__neos-node-contextpath') : contextNode.contextPath,
                     fusionPath: element ? element.getAttribute('data-__neos-fusion-path') : fusionPath
                 }
             };

@@ -4,7 +4,7 @@ import {action as createAction, ActionType} from 'typesafe-actions';
 import {actionTypes as system, InitAction} from '@neos-project/neos-ui-redux-store/src/System';
 
 import * as selectors from './selectors';
-import {parentNodeContextPath, getNodeOrThrow, calculateNewFocusedNodes} from './helpers';
+import {calculateNewFocusedNodes, getNodeOrThrow} from './helpers';
 
 import {FusionPath, NodeContextPath, InsertPosition, NodeMap, ClipboardMode, SelectionModeTypes, NodeTypeName} from '@neos-project/neos-ts-interfaces';
 
@@ -340,22 +340,16 @@ const moveNodeInState = (
     position: string,
     draft: State
 ) => {
-    let baseNodeContextPath;
+    const sourceNode = getNodeOrThrow(draft.byContextPath, sourceNodeContextPath);
+    const targetNode = getNodeOrThrow(draft.byContextPath, targetNodeContextPath);
+    let baseNode;
     if (position === 'into') {
-        baseNodeContextPath = targetNodeContextPath;
+        baseNode = targetNode;
     } else {
-        baseNodeContextPath = parentNodeContextPath(targetNodeContextPath);
-        if (baseNodeContextPath === null) {
-            throw new Error(`Target node "{targetNodeContextPath}" doesn't have a parent, yet you are trying to move a node next to it`);
-        }
+        baseNode = getNodeOrThrow(draft.byContextPath, targetNode.parent);
     }
 
-    const sourceNodeParentContextPath = parentNodeContextPath(sourceNodeContextPath);
-    if (sourceNodeParentContextPath === null) {
-        throw new Error(`The source node "{sourceNodeParentContextPath}" doesn't have a parent, you can't move it`);
-    }
-    const baseNode = getNodeOrThrow(draft.byContextPath, baseNodeContextPath);
-    const sourceNodeParent = getNodeOrThrow(draft.byContextPath, sourceNodeParentContextPath);
+    const sourceNodeParent = getNodeOrThrow(draft.byContextPath, sourceNode.parent);
 
     const originalSourceChildren = sourceNodeParent.children;
     const sourceIndex = originalSourceChildren.findIndex(child => child.contextPath === sourceNodeContextPath);
@@ -363,7 +357,7 @@ const moveNodeInState = (
 
     const processedChildren = baseNode.children;
 
-    if (sourceNodeParentContextPath === baseNodeContextPath) {
+    if (sourceNodeParent === baseNode) {
         // If moving into the same parent, delete source node from it
         processedChildren.splice(sourceIndex, 1);
     } else {

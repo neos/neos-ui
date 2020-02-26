@@ -3,8 +3,6 @@ import {$get} from 'plow-js';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 
-import {parentNodeContextPath} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/helpers';
-
 import manifest from '@neos-project/neos-ui-extensibility';
 import {SynchronousRegistry, SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
 
@@ -253,7 +251,7 @@ manifest('main', {}, globalRegistry => {
     //
     // When the server has removed a node, remove it as well from the store amd the dom
     //
-    serverFeedbackHandlers.set('Neos.Neos.Ui:RemoveNode/Main', ({contextPath, parentContextPath}, {store}) => {
+    serverFeedbackHandlers.set('Neos.Neos.Ui:RemoveNode/Main', ({contextPath, parentContextPath}, {store, allFeedbacksFromThisRequest}) => {
         const state = store.getState();
         const focusedNodeContextPath = selectors.CR.Nodes.focusedNodePathSelector(state);
         if (focusedNodeContextPath === contextPath) {
@@ -264,16 +262,26 @@ manifest('main', {}, globalRegistry => {
             store.dispatch(actions.UI.PageTree.focus(parentContextPath));
         }
 
-        // If we are removing current document node...
+        // If we are removing current document node ...
         if ($get('cr.nodes.documentNode', state) === contextPath) {
+            // ... then, we need to determine the closest parent which is not removed, so that we can
+            // redirect to this node in the UI.
+            //
+            // Finding the closest existing parent node is not so easy: We cannot access the Redux store to find parent node paths (e.g.  via selectors.CR.Nodes.getPathInNode(state, redirectContextPath, 'parent')),
+            // because the parent's parent node might have ALSO been removed in the same request.
+            //
+            // Instead, we need to check ALL the RemoveNode feedbacks from the current change request; and traverse the parent hierarchy there.
+            // This is done in the helper function getParentContextPathFromFeedbacks().
+
             let redirectContextPath = contextPath;
             let redirectUri = null;
             // Determine closest parent that is not being removed
             while (!redirectUri) {
-                redirectContextPath = parentNodeContextPath(redirectContextPath);
+                redirectContextPath = getParentContextPathFromFeedbacks(redirectContextPath);
+
                 // This is an extreme case when even the top node does not exist in the given dimension
                 // TODO: still find a nicer way to break out of this situation
-                if (redirectContextPath === false) {
+                if (!redirectContextPath) {
                     window.location = '/neos';
                     break;
                 }
@@ -298,6 +306,19 @@ manifest('main', {}, globalRegistry => {
                     element: el
                 });
             });
+        }
+
+        // Inline Helper Function
+        function getParentContextPathFromFeedbacks(contextPath) {
+            const possibleRemoveNodeFeedback = allFeedbacksFromThisRequest
+                .filter(feedback => feedback.type === 'Neos.Neos.Ui:RemoveNode')
+                .find(feedback => feedback.payload.contextPath === contextPath);
+
+            if (possibleRemoveNodeFeedback) {
+                return possibleRemoveNodeFeedback.payload.parentContextPath;
+            }
+
+            return undefined;
         }
     });
 

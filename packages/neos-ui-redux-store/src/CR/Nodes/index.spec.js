@@ -114,6 +114,7 @@ test(`The "move" action should move things right.`, () => {
                 ]
             },
             'abc/abc@user-admin;language=en_US': {
+                parent: 'abc@user-admin;language=en_US',
                 contextPath: 'abc/abc@user-admin;language=en_US',
                 children: [
                     {
@@ -122,10 +123,12 @@ test(`The "move" action should move things right.`, () => {
                 ]
             },
             'abc/abc2@user-admin;language=en_US': {
+                parent: 'abc@user-admin;language=en_US',
                 contextPath: 'abc/abc@user-admin;language=en_US',
                 children: []
             },
             'abc/abc/abc@user-admin;language=en_US': {
+                parent: 'abc/abc@user-admin;language=en_US',
                 contextPath: 'abc/abc/abc@user-admin;language=en_US',
                 children: []
             }
@@ -145,19 +148,26 @@ test(`The "move" action should move things right.`, () => {
                         contextPath: 'abc/abc2@user-admin;language=en_US'
                     },
                     {
+                        // NOTE: the context path below is "wrong" (because its's the pre-move state), but this gets updated when the server roundtrip is completed.
+                        // we just move the node client-side for immediate user feedback
                         contextPath: 'abc/abc/abc@user-admin;language=en_US'
                     }
                 ]
             },
             'abc/abc@user-admin;language=en_US': {
+                parent: 'abc@user-admin;language=en_US',
                 contextPath: 'abc/abc@user-admin;language=en_US',
                 children: []
             },
             'abc/abc2@user-admin;language=en_US': {
+                parent: 'abc@user-admin;language=en_US',
                 contextPath: 'abc/abc@user-admin;language=en_US',
                 children: []
             },
             'abc/abc/abc@user-admin;language=en_US': {
+                // NOTE: the parent path below is "wrong" (because its's the pre-move state), but this gets updated when the server roundtrip is completed.
+                // we just move the node client-side for immediate user feedback
+                parent: 'abc/abc@user-admin;language=en_US',
                 contextPath: 'abc/abc/abc@user-admin;language=en_US',
                 children: []
             }

@@ -11,6 +11,9 @@ namespace Neos\Neos\Ui\FlowQueryOperations;
  * source code.
  */
 
+use Neos\ContentRepository\Domain\NodeType\NodeTypeConstraintFactory;
+use Neos\ContentRepository\Domain\Projection\Content\TraversableNodeInterface;
+use Neos\ContentRepository\Exception\NodeException;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Property\PropertyMapper;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
@@ -43,6 +46,12 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
     protected $propertyMapper;
 
     /**
+     * @Flow\Inject
+     * @var NodeTypeConstraintFactory
+     */
+    protected $nodeTypeConstraintFactory;
+
+    /**
      * {@inheritdoc}
      *
      * @param array (or array-like object) $context onto which this operation should be applied
@@ -50,7 +59,7 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
      */
     public function canEvaluate($context)
     {
-        return isset($context[0]) && ($context[0] instanceof NodeInterface);
+        return isset($context[0]) && ($context[0] instanceof TraversableNodeInterface);
     }
 
     /**
@@ -62,38 +71,48 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
      */
     public function evaluate(FlowQuery $flowQuery, array $arguments)
     {
+        /** @var TraversableNodeInterface $siteNode */
+        /** @var TraversableNodeInterface $documentNode */
         list($siteNode, $documentNode) = $flowQuery->getContext();
+        /** @var TraversableNodeInterface $toggledNodes */
         list($baseNodeType, $loadingDepth, $toggledNodes, $clipboardNodesContextPaths) = $arguments;
 
         // Collect all parents of documentNode up to siteNode
         $parents = [];
-        $currentNode = $documentNode->getParent();
+        $currentNode = null;
+        try {
+            $currentNode = $documentNode->findParentNode();
+        } catch (NodeException $ignored) {
+            // parent does not exist
+        }
         if ($currentNode) {
-            $parentNodeIsUnderneathSiteNode = strpos($currentNode->getPath(), $siteNode->getPath()) === 0;
-            while ($currentNode !== $siteNode && $parentNodeIsUnderneathSiteNode) {
-                $parents[] = $currentNode->getContextPath();
-                $currentNode = $currentNode->getParent();
+            $parentNodeIsUnderneathSiteNode = strpos((string)$currentNode->findNodePath(), (string)$siteNode->findNodePath()) === 0;
+            while ((string)$currentNode->getNodeAggregateIdentifier() !== (string)$siteNode->getNodeAggregateIdentifier() && $parentNodeIsUnderneathSiteNode) {
+                $parents[] = (string)$currentNode->getNodeAggregateIdentifier();
+                $currentNode = $currentNode->findParentNode();
             }
         }
 
-        $nodes = [$siteNode];
-        $gatherNodesRecursively = function (&$nodes, $baseNode, $level = 0) use (&$gatherNodesRecursively, $baseNodeType, $loadingDepth, $toggledNodes, $parents) {
+        $nodes = [
+            ((string)$siteNode->getNodeAggregateIdentifier()) => $siteNode
+        ];
+        $gatherNodesRecursively = function (&$nodes, TraversableNodeInterface $baseNode, $level = 0) use (&$gatherNodesRecursively, $baseNodeType, $loadingDepth, $toggledNodes, $parents) {
             if (
                 $level < $loadingDepth || // load all nodes within loadingDepth
                 $loadingDepth === 0 || // unlimited loadingDepth
-                in_array($baseNode->getContextPath(), $toggledNodes) || // load toggled nodes
-                in_array($baseNode->getContextPath(), $parents) // load children of all parents of documentNode
+                in_array((string)$baseNode->getNodeAggregateIdentifier(), $toggledNodes) || // load toggled nodes
+                in_array((string)$baseNode->getNodeAggregateIdentifier(), $parents) // load children of all parents of documentNode
             ) {
-                foreach ($baseNode->getChildNodes($baseNodeType) as $childNode) {
-                    $nodes[] = $childNode;
+                foreach ($baseNode->findChildNodes($this->nodeTypeConstraintFactory->parseFilterString($baseNodeType)) as $childNode) {
+                    $nodes[(string)$childNode->getNodeAggregateIdentifier()] = $childNode;
                     $gatherNodesRecursively($nodes, $childNode, $level + 1);
                 }
             }
         };
         $gatherNodesRecursively($nodes, $siteNode);
 
-        if (!in_array($documentNode, $nodes)) {
-            $nodes[] = $documentNode;
+        if (!isset($nodes[(string)$documentNode->getNodeAggregateIdentifier()])) {
+            $nodes[(string)$documentNode->getNodeAggregateIdentifier()] = $documentNode;
         }
 
         foreach ($clipboardNodesContextPaths as $clipboardNodeContextPath) {

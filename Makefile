@@ -76,6 +76,7 @@ setup: check-requirements install build
 # TODO: figure out how to pass a parameter to other targets to reduce redundancy
 build-subpackages:
 	$(lerna) run build --concurrency 1
+	make build-react-ui-components-standalone
 
 # we build the react UI components ready for standalone usage;
 # so that they can be published on NPM properly.
@@ -85,7 +86,6 @@ build-react-ui-components-standalone:
 
 build:
 	make build-subpackages
-	make build-react-ui-components-standalone
 	NEOS_BUILD_ROOT=$(shell pwd) $(webpack) --progress --colors
 
 build-watch:

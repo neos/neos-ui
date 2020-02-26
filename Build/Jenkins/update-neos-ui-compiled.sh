@@ -2,6 +2,8 @@
 
 set -xe
 
+export NODE_OPTIONS='--max_old_space_size=8192'
+
 if [ -z "$GIT_BRANCH" ]; then echo "\$GIT_BRANCH not set"; exit 1; fi
 
 # go to root directory of Neos.Neos.Ui

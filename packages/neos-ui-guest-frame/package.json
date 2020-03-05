@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-guest-frame",
-  "version": "5.1.3",
+  "version": "5.1.4",
   "description": "Guest frame initialization bindings",
   "private": true,
   "main": "./src/manifest.js",
@@ -14,13 +14,13 @@
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "5.1.3",
-    "@neos-project/build-essentials": "5.1.3",
-    "@neos-project/jest-preset-neos-ui": "5.1.3"
+    "@neos-project/babel-preset-neos-ui": "5.1.4",
+    "@neos-project/build-essentials": "5.1.4",
+    "@neos-project/jest-preset-neos-ui": "5.1.4"
   },
   "dependencies": {
-    "@neos-project/neos-ui-extensibility": "5.1.3",
-    "@neos-project/utils-helpers": "5.1.3"
+    "@neos-project/neos-ui-extensibility": "5.1.4",
+    "@neos-project/utils-helpers": "5.1.4"
   },
   "license": "GNU GPLv3",
   "jest": {

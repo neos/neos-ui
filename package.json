@@ -59,7 +59,7 @@
     "json-loader": "^0.5.7",
     "lerna": "^2.5.1",
     "mini-css-extract-plugin": "^0.5.0",
-    "npm-cli-login": "^0.0.10",
+    "npm-cli-login": "~0.1.1",
     "null-loader": "^0.1.1",
     "postcss-css-variables": "^0.11.0",
     "postcss-hexrgba": "^1.0.1",

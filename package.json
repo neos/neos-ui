@@ -5,6 +5,9 @@
   "resolutions": {
     "moment": "^2.20.1"
   },
+  "engines" : {
+    "node" : "~12"
+  },
   "devDependencies": {
     "@neos-project/brand": "^1.1.0",
     "@neos-project/build-essentials": "*",

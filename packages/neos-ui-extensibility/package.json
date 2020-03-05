@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-extensibility",
-  "version": "4.0.4",
+  "version": "4.0.5",
   "description": "Extensibility mechanisms for the Neos CMS UI",
   "main": "./dist/index.js",
   "scripts": {
@@ -14,13 +14,13 @@
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "4.0.4",
-    "@neos-project/jest-preset-neos-ui": "4.0.4",
+    "@neos-project/babel-preset-neos-ui": "4.0.5",
+    "@neos-project/jest-preset-neos-ui": "4.0.5",
     "typescript": "3.2.2"
   },
   "dependencies": {
-    "@neos-project/build-essentials": "4.0.4",
-    "@neos-project/positional-array-sorter": "4.0.4",
+    "@neos-project/build-essentials": "4.0.5",
+    "@neos-project/positional-array-sorter": "4.0.5",
     "babel-core": "^6.13.2",
     "babel-eslint": "^7.1.1",
     "babel-loader": "^7.1.2",

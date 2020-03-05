@@ -1,6 +1,6 @@
 {
     "name": "@neos-project/neos-ts-interfaces",
-    "version": "4.0.4",
+    "version": "4.0.5",
     "description": "Neos domain-related TypeScript interfaces",
     "private": true,
     "main": "src/index.ts",
@@ -13,9 +13,9 @@
         "jest": "NODE_ENV=test jest"
     },
     "devDependencies": {
-        "@neos-project/babel-preset-neos-ui": "4.0.4",
-        "@neos-project/build-essentials": "4.0.4",
-        "@neos-project/jest-preset-neos-ui": "4.0.4"
+        "@neos-project/babel-preset-neos-ui": "4.0.5",
+        "@neos-project/build-essentials": "4.0.5",
+        "@neos-project/jest-preset-neos-ui": "4.0.5"
     },
     "license": "GNU GPLv3",
     "jest": {

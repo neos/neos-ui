@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-extensibility",
-  "version": "5.1.3",
+  "version": "5.1.4",
   "description": "Extensibility mechanisms for the Neos CMS UI",
   "main": "./dist/index.js",
   "scripts": {
@@ -14,8 +14,8 @@
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "5.1.3",
-    "@neos-project/jest-preset-neos-ui": "5.1.3",
+    "@neos-project/babel-preset-neos-ui": "5.1.4",
+    "@neos-project/jest-preset-neos-ui": "5.1.4",
     "typescript": "3.2.2"
   },
   "dependencies": {

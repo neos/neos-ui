@@ -15,11 +15,13 @@ use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Domain\Repository\WorkspaceRepository;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Flow\Annotations as Flow;
+use Neos\Flow\I18n\Exception\InvalidLocaleIdentifierException;
+use Neos\Flow\I18n\Locale;
+use Neos\Flow\I18n\Service;
+use Neos\Flow\I18n\Translator;
 use Neos\Flow\Mvc\ActionRequest;
 use Neos\Flow\Mvc\ActionResponse;
 use Neos\Flow\Mvc\Controller\ActionController;
-use Neos\Flow\Mvc\RequestInterface;
-use Neos\Flow\Mvc\ResponseInterface;
 use Neos\Flow\Mvc\View\JsonView;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Flow\Property\PropertyMapper;
@@ -119,6 +121,12 @@ class BackendServiceController extends ActionController
 
     /**
      * @Flow\Inject
+     * @var Service
+     */
+    protected $localizationService;
+
+    /**
+     * @Flow\Inject
      * @var PropertyMapper
      */
     protected $propertyMapper;
@@ -139,8 +147,8 @@ class BackendServiceController extends ActionController
      * Set the controller context on the feedback collection after the controller
      * has been initialized
      *
-     * @param RequestInterface $request
-     * @param ResponseInterface $response
+     * @param ActionRequest $request
+     * @param ActionResponse $response
      * @return void
      */
     protected function initializeController(ActionRequest $request, ActionResponse $response)

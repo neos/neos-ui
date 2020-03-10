@@ -174,9 +174,9 @@ For executing the end to end tests on a Mac with catalina or higher you need to 
 
 ##### Debugging integration tests
 
-* View the recording via saucelabs. You can find the url in the beginning of the test output.
-* Observe exceptions and logs in build artifacts.
-* You can trigger a SSH enabled build via the circle ci interface and then login.
+* View the recording via Sauce Labs. You can find the url in the beginning of the test output.
+* Observe Flow exceptions and logs in build artifacts.
+* You can trigger a SSH enabled build via the CircleCI interface and then login.
 
 #### Releasing
 

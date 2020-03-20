@@ -100,8 +100,7 @@ export default class SelectNodeType extends PureComponent {
     };
 
     UNSAFE_componentWillReceiveProps(nextProps) {
-        if (this.props.allowedSiblingNodeTypes !== nextProps.allowedSiblingNodeTypes ||
-            this.props.allowedChildNodeTypes !== nextProps.allowedChildNodeTypes) {
+        if (allowedSiblingsOrChildrenChanged(this.props, nextProps)) {
             this.setState({
                 insertMode: calculateInitialMode(
                     nextProps.allowedSiblingNodeTypes,

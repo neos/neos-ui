@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Neos\Neos\Ui\Controller;
 
 /*
@@ -35,6 +37,7 @@ use Neos\Neos\Service\UserService;
 use Neos\Neos\TypeConverter\NodeConverter;
 use Neos\Neos\Ui\Domain\Service\StyleAndJavascriptInclusionService;
 use Neos\Neos\Ui\Service\NodeClipboard;
+use Neos\Neos\Ui\View\BackendFusionView;
 
 class BackendController extends ActionController
 {
@@ -42,7 +45,7 @@ class BackendController extends ActionController
     /**
      * @var string
      */
-    protected $defaultViewObjectName = 'Neos\Neos\Ui\View\BackendFusionView';
+    protected $defaultViewObjectName = BackendFusionView::class;
 
     /**
      * @var FusionView
@@ -142,8 +145,9 @@ class BackendController extends ActionController
      * @throws UnsupportedRequestTypeException
      * @throws MissingActionNameException
      * @throws \ReflectionException
+     * @throws \Neos\Flow\Http\Exception
      */
-    public function indexAction(NodeInterface $node = null)
+    public function indexAction(NodeInterface $node = null): void
     {
         $user = $this->userService->getBackendUser();
 
@@ -186,9 +190,16 @@ class BackendController extends ActionController
 
     /**
      * @param NodeInterface $node
+     * @throws MissingActionNameException
      * @throws StopActionException
+     * @throws UnsupportedRequestTypeException
+     * @throws \Neos\Flow\Http\Exception
+     * @throws \Neos\Flow\Persistence\Exception\IllegalObjectTypeException
+     * @throws \Neos\Flow\Property\Exception
+     * @throws \Neos\Flow\Security\Exception
+     * @throws \Neos\Neos\Exception
      */
-    public function redirectToAction(NodeInterface $node)
+    public function redirectToAction(NodeInterface $node): void
     {
         $this->response->setComponentParameter(SetHeaderComponent::class, 'Cache-Control', [
             'no-cache',
@@ -200,7 +211,7 @@ class BackendController extends ActionController
     /**
      * @return NodeInterface|null
      */
-    protected function getSiteNodeForLoggedInUser()
+    protected function getSiteNodeForLoggedInUser(): ?NodeInterface
     {
         $user = $this->userService->getBackendUser();
         if ($user === null) {
@@ -217,7 +228,7 @@ class BackendController extends ActionController
      * @return NodeInterface|null
      * @throws \ReflectionException
      */
-    protected function findNodeToEdit()
+    protected function findNodeToEdit(): ?NodeInterface
     {
         $siteNode = $this->getSiteNodeForLoggedInUser();
         $reflectionMethod = new \ReflectionMethod($this->backendRedirectionService, 'getLastVisitedNode');
@@ -237,7 +248,7 @@ class BackendController extends ActionController
      * @param string $workspaceName
      * @return ContentContext
      */
-    protected function createContext($workspaceName)
+    protected function createContext(string $workspaceName): ?ContentContext
     {
         $contextProperties = [
             'workspaceName' => $workspaceName,

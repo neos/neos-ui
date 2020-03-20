@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Neos\Neos\Ui\Controller;
 
 /*
@@ -11,6 +13,7 @@ namespace Neos\Neos\Ui\Controller;
  * source code.
  */
 
+use Exception;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Domain\Repository\WorkspaceRepository;
 use Neos\Eel\FlowQuery\FlowQuery;
@@ -22,7 +25,10 @@ use Neos\Flow\I18n\Translator;
 use Neos\Flow\Mvc\ActionRequest;
 use Neos\Flow\Mvc\ActionResponse;
 use Neos\Flow\Mvc\Controller\ActionController;
+use Neos\Flow\Mvc\Exception\NoSuchArgumentException;
+use Neos\Flow\Mvc\Exception\UnsupportedRequestTypeException;
 use Neos\Flow\Mvc\View\JsonView;
+use Neos\Flow\Persistence\Exception\IllegalObjectTypeException;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Flow\Property\PropertyMapper;
 use Neos\Neos\Domain\Service\ContentContextFactory;
@@ -150,6 +156,7 @@ class BackendServiceController extends ActionController
      * @param ActionRequest $request
      * @param ActionResponse $response
      * @return void
+     * @throws UnsupportedRequestTypeException
      */
     protected function initializeController(ActionRequest $request, ActionResponse $response)
     {
@@ -168,8 +175,9 @@ class BackendServiceController extends ActionController
      *
      * @param string $documentNodeContextPath
      * @return void
+     * @throws IllegalObjectTypeException
      */
-    protected function updateWorkspaceInfo(string $documentNodeContextPath)
+    protected function updateWorkspaceInfo(string $documentNodeContextPath): void
     {
         $updateWorkspaceInfo = new UpdateWorkspaceInfo();
         $documentNode = $this->nodeService->getNodeFromContextPath($documentNodeContextPath, null, null, true);
@@ -186,7 +194,7 @@ class BackendServiceController extends ActionController
      * @param ChangeCollection $changes
      * @return void
      */
-    public function changeAction(ChangeCollection $changes)
+    public function changeAction(ChangeCollection $changes): void
     {
         try {
             $count = $changes->count();
@@ -197,7 +205,7 @@ class BackendServiceController extends ActionController
 
             $this->feedbackCollection->add($success);
             $this->persistenceManager->persistAll();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $error = new Error();
             $error->setMessage($e->getMessage());
 
@@ -214,7 +222,7 @@ class BackendServiceController extends ActionController
      * @param string $targetWorkspaceName
      * @return void
      */
-    public function publishAction(array $nodeContextPaths, string $targetWorkspaceName)
+    public function publishAction(array $nodeContextPaths, string $targetWorkspaceName): void
     {
         try {
             $targetWorkspace = $this->workspaceRepository->findOneByName($targetWorkspaceName);
@@ -233,7 +241,7 @@ class BackendServiceController extends ActionController
             $this->feedbackCollection->add($success);
 
             $this->persistenceManager->persistAll();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $error = new Error();
             $error->setMessage($e->getMessage());
 
@@ -249,7 +257,7 @@ class BackendServiceController extends ActionController
      * @param array $nodeContextPaths
      * @return void
      */
-    public function discardAction(array $nodeContextPaths)
+    public function discardAction(array $nodeContextPaths): void
     {
         try {
             foreach ($nodeContextPaths as $contextPath) {
@@ -294,7 +302,7 @@ class BackendServiceController extends ActionController
             $this->feedbackCollection->add($success);
 
             $this->persistenceManager->persistAll();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $error = new Error();
             $error->setMessage($e->getMessage());
 
@@ -310,9 +318,9 @@ class BackendServiceController extends ActionController
      * @param string $targetWorkspaceName ,
      * @param NodeInterface $documentNode
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
-    public function changeBaseWorkspaceAction(string $targetWorkspaceName, NodeInterface $documentNode)
+    public function changeBaseWorkspaceAction(string $targetWorkspaceName, NodeInterface $documentNode): void
     {
         try {
             $targetWorkspace = $this->workspaceRepository->findOneByName($targetWorkspaceName);
@@ -320,7 +328,7 @@ class BackendServiceController extends ActionController
 
             if (count($this->workspaceService->getPublishableNodeInfo($userWorkspace)) > 0) {
                 // TODO: proper error dialog
-                throw new \Exception('Your personal workspace currently contains unpublished changes. In order to switch to a different target workspace you need to either publish or discard pending changes first.');
+                throw new Exception('Your personal workspace currently contains unpublished changes. In order to switch to a different target workspace you need to either publish or discard pending changes first.', 1582800654);
             }
 
             $userWorkspace->setBaseWorkspace($targetWorkspace);
@@ -349,7 +357,7 @@ class BackendServiceController extends ActionController
                 } else {
                     $redirectNode = $redirectNode->getParent();
                     if (!$redirectNode) {
-                        throw new \Exception(sprintf('Wasn\'t able to locate any valid node in rootline of node %s in the workspace %s.', $documentNode->getContextPath(), $targetWorkspaceName), 1458814469);
+                        throw new Exception(sprintf('Wasn\'t able to locate any valid node in rootline of node %s in the workspace %s.', $documentNode->getContextPath(), $targetWorkspaceName), 1458814469);
                     }
                 }
             }
@@ -366,7 +374,7 @@ class BackendServiceController extends ActionController
             }
 
             $this->persistenceManager->persistAll();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $error = new Error();
             $error->setMessage($e->getMessage());
 
@@ -382,7 +390,7 @@ class BackendServiceController extends ActionController
      * @param array $nodes
      * @return void
      */
-    public function copyNodesAction(array $nodes)
+    public function copyNodesAction(array $nodes): void
     {
         // TODO @christianm want's to have a property mapper for this
         $nodes = array_map(function ($node) {
@@ -396,7 +404,7 @@ class BackendServiceController extends ActionController
      *
      * @return void
      */
-    public function clearClipboardAction()
+    public function clearClipboardAction(): void
     {
         $this->clipboard->clear();
     }
@@ -407,7 +415,7 @@ class BackendServiceController extends ActionController
      * @param array $nodes
      * @return void
      */
-    public function cutNodesAction(array $nodes)
+    public function cutNodesAction(array $nodes): void
     {
         // TODO @christianm want's to have a property mapper for this
         $nodes = array_map(function ($node) {
@@ -416,14 +424,14 @@ class BackendServiceController extends ActionController
         $this->clipboard->cutNodes($nodes);
     }
 
-    public function getWorkspaceInfoAction()
+    public function getWorkspaceInfoAction(): void
     {
         $workspaceHelper = new WorkspaceHelper();
         $personalWorkspaceInfo = $workspaceHelper->getPersonalWorkspace();
         $this->view->assign('value', $personalWorkspaceInfo);
     }
 
-    public function initializeLoadTreeAction()
+    public function initializeLoadTreeAction(): void
     {
         $this->arguments['nodeTreeArguments']->getPropertyMappingConfiguration()->allowAllProperties();
     }
@@ -435,16 +443,16 @@ class BackendServiceController extends ActionController
      * @param boolean $includeRoot
      * @return void
      */
-    public function loadTreeAction(NodeTreeBuilder $nodeTreeArguments, $includeRoot = false)
+    public function loadTreeAction(NodeTreeBuilder $nodeTreeArguments, $includeRoot = false): void
     {
         $nodeTreeArguments->setControllerContext($this->controllerContext);
         $this->view->assign('value', $nodeTreeArguments->build($includeRoot));
     }
 
     /**
-     * @throws \Neos\Flow\Mvc\Exception\NoSuchArgumentException
+     * @throws NoSuchArgumentException
      */
-    public function initializeGetAdditionalNodeMetadataAction()
+    public function initializeGetAdditionalNodeMetadataAction(): void
     {
         $this->arguments->getArgument('nodes')->getPropertyMappingConfiguration()->allowAllProperties();
     }
@@ -454,7 +462,7 @@ class BackendServiceController extends ActionController
      *
      * @param array<NodeInterface> $nodes
      */
-    public function getAdditionalNodeMetadataAction(array $nodes)
+    public function getAdditionalNodeMetadataAction(array $nodes): void
     {
         $result = [];
         /** @var NodeInterface $node */
@@ -478,7 +486,7 @@ class BackendServiceController extends ActionController
      * @param NodeInterface $node
      * @return array
      */
-    protected function getCurrentDimensionPresetIdentifiersForNode($node)
+    protected function getCurrentDimensionPresetIdentifiersForNode($node): array
     {
         $targetPresets = $this->contentDimensionsPresetSource->findPresetsByTargetValues($node->getDimensions());
         $presetCombo = [];
@@ -494,8 +502,9 @@ class BackendServiceController extends ActionController
      *
      * @param array $chain
      * @return string
+     * @throws \Neos\Eel\Exception
      */
-    public function flowQueryAction(array $chain)
+    public function flowQueryAction(array $chain): string
     {
         $createContext = array_shift($chain);
         $finisher = array_pop($chain);
@@ -516,13 +525,13 @@ class BackendServiceController extends ActionController
         switch ($finisher['type']) {
             case 'get':
                 $result = $nodeInfoHelper->renderNodes($flowQuery->get(), $this->getControllerContext());
-            break;
+                break;
             case 'getForTree':
                 $result = $nodeInfoHelper->renderNodes($flowQuery->get(), $this->getControllerContext(), true);
-            break;
+                break;
             case 'getForTreeWithParents':
                 $result = $nodeInfoHelper->renderNodesWithParents($flowQuery->get(), $this->getControllerContext());
-            break;
+                break;
         }
 
         return json_encode($result);

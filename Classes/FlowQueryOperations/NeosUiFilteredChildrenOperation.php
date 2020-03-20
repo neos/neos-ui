@@ -11,7 +11,9 @@ namespace Neos\Neos\Ui\FlowQueryOperations;
  * source code.
  */
 
-use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\Flow\Annotations as Flow;
+use Neos\ContentRepository\Domain\NodeType\NodeTypeConstraintFactory;
+use Neos\ContentRepository\Domain\Projection\Content\TraversableNodeInterface;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Eel\FlowQuery\Operations\AbstractOperation;
 
@@ -37,6 +39,12 @@ class NeosUiFilteredChildrenOperation extends AbstractOperation
     protected static $priority = 100;
 
     /**
+     * @Flow\Inject
+     * @var NodeTypeConstraintFactory
+     */
+    protected $nodeTypeConstraintFactory;
+
+    /**
      * {@inheritdoc}
      *
      * @param array (or array-like object) $context onto which this operation should be applied
@@ -44,7 +52,7 @@ class NeosUiFilteredChildrenOperation extends AbstractOperation
      */
     public function canEvaluate($context)
     {
-        return isset($context[0]) && ($context[0] instanceof NodeInterface);
+        return isset($context[0]) && ($context[0] instanceof TraversableNodeInterface);
     }
 
     /**
@@ -57,17 +65,17 @@ class NeosUiFilteredChildrenOperation extends AbstractOperation
     public function evaluate(FlowQuery $flowQuery, array $arguments)
     {
         $output = [];
-        $outputNodePaths = [];
+        $outputNodeIdentifiers = [];
 
         $filter = isset($arguments[0]) ? $arguments[0] : null;
 
-        /** @var NodeInterface $contextNode */
+        /** @var TraversableNodeInterface $contextNode */
         foreach ($flowQuery->getContext() as $contextNode) {
-            /** @var NodeInterface $childNode */
-            foreach ($contextNode->getChildNodes($filter) as $childNode) {
-                if (!isset($outputNodePaths[$childNode->getPath()])) {
+            /** @var TraversableNodeInterface $childNode */
+            foreach ($contextNode->findChildNodes($this->nodeTypeConstraintFactory->parseFilterString($filter)) as $childNode) {
+                if (!isset($outputNodeIdentifiers[(string)$childNode->getNodeAggregateIdentifier()])) {
                     $output[] = $childNode;
-                    $outputNodePaths[$childNode->getPath()] = true;
+                    $outputNodeIdentifiers[(string)$childNode->getNodeAggregateIdentifier()] = true;
                 }
             }
         }

@@ -7,8 +7,8 @@
     "d3-scale/d3-array": "2.3.3",
     "vfile-message": "^2.0.2"
   },
-  "engines" : {
-    "node" : "~12"
+  "engines": {
+    "node": "~12"
   },
   "devDependencies": {
     "@neos-project/brand": "^1.1.0",
@@ -106,11 +106,11 @@
     "@ckeditor/ckeditor5-list": "^16.0.0",
     "@ckeditor/ckeditor5-paragraph": "^16.0.0",
     "@ckeditor/ckeditor5-table": "^16.0.0",
-    "@fortawesome/fontawesome-svg-core": "^1.2.26",
-    "@fortawesome/free-brands-svg-icons": "^5.12.0",
-    "@fortawesome/free-regular-svg-icons": "^5.12.0",
-    "@fortawesome/free-solid-svg-icons": "^5.12.0",
-    "@fortawesome/react-fontawesome": "^0.1.8",
+    "@fortawesome/fontawesome-svg-core": "^1.2.27",
+    "@fortawesome/free-brands-svg-icons": "^5.12.1",
+    "@fortawesome/free-regular-svg-icons": "^5.12.1",
+    "@fortawesome/free-solid-svg-icons": "^5.12.1",
+    "@fortawesome/react-fontawesome": "^0.1.9",
     "@friendsofreactjs/react-css-themr": "^4.1.0",
     "@neos-project/brand": "^1.1.0",
     "@sindresorhus/slugify": "^0.10.0",

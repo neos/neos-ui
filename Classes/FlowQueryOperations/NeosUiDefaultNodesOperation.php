@@ -74,7 +74,7 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
         /** @var TraversableNodeInterface $siteNode */
         /** @var TraversableNodeInterface $documentNode */
         list($siteNode, $documentNode) = $flowQuery->getContext();
-        /** @var TraversableNodeInterface $toggledNodes */
+        /** @var string[] $toggledNodes */
         list($baseNodeType, $loadingDepth, $toggledNodes, $clipboardNodesContextPaths) = $arguments;
 
         // Collect all parents of documentNode up to siteNode
@@ -100,7 +100,7 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
             if (
                 $level < $loadingDepth || // load all nodes within loadingDepth
                 $loadingDepth === 0 || // unlimited loadingDepth
-                in_array((string)$baseNode->getNodeAggregateIdentifier(), $toggledNodes) || // load toggled nodes
+                in_array($baseNode->getContextPath(), $toggledNodes) || // load toggled nodes
                 in_array((string)$baseNode->getNodeAggregateIdentifier(), $parents) // load children of all parents of documentNode
             ) {
                 foreach ($baseNode->findChildNodes($this->nodeTypeConstraintFactory->parseFilterString($baseNodeType)) as $childNode) {

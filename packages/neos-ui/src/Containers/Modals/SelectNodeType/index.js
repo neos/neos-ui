@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {$get} from 'plow-js';
+import isEqual from 'lodash.isequal';
 
 import {neos} from '@neos-project/neos-ui-decorators';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
@@ -32,6 +33,17 @@ const calculateInitialMode = (allowedSiblingNodeTypes, allowedChildNodeTypes, pr
 
     return '';
 };
+
+const allowedSiblingsOrChildrenChanged = (previousProps, nextProps) => (
+    !isEqual(
+        previousProps.allowedSiblingNodeTypes.map(i => i.label).sort(),
+        nextProps.allowedSiblingNodeTypes.map(i => i.label).sort()
+    ) ||
+    !isEqual(
+        previousProps.allowedChildNodeTypes.map(i => i.label).sort(),
+        nextProps.allowedChildNodeTypes.map(i => i.label).sort()
+    )
+);
 
 @neos(globalRegistry => ({
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')

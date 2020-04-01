@@ -1,3 +1,0 @@
-prototype(Neos.Fusion:GlobalCacheIdentifiers) {
-    uiVersion = 'new'
-}

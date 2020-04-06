@@ -103,9 +103,13 @@ export default ({isMulti}) => WrappedComponent => {
         }
 
         getDataLoaderOptions() {
-            const contextForNodeLinking = this.props.options.startingPoint ?
+            const startingPoint = this.props.options.startingPoint;
+            const contextForNodeLinking = startingPoint ?
                 Object.assign({}, this.props.contextForNodeLinking, {
-                    contextNode: this.props.options.startingPoint
+                    contextNode:
+                          startingPoint.indexOf('ClientEval:') === 0
+                              ? eval(startingPoint.replace('ClientEval:', '')) // eslint-disable-line
+                              : startingPoint
                 }) :
                 this.props.contextForNodeLinking;
 

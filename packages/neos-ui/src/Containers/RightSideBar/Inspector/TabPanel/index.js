@@ -19,10 +19,14 @@ export default class TabPanel extends PureComponent {
         handleInspectorApply: PropTypes.func
     };
 
-    isPropertyEnabled = ({id}) => {
-        const {node} = this.props;
+    isPropertyEnabled = item => {
+        const {focusedNode} = this.props;
 
-        return !$contains(id, 'policy.disallowedProperties', node);
+        if (item.type !== 'editor') {
+            return true;
+        }
+
+        return $get(['policy', 'canEdit'], focusedNode) && !$contains(item.id, 'policy.disallowedProperties', focusedNode);
     };
 
     render() {

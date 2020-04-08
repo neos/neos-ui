@@ -216,10 +216,14 @@ export default class Inspector extends PureComponent {
         }
     }
 
-    isPropertyEnabled = ({id}) => {
+    isPropertyEnabled = item => {
         const {focusedNode} = this.props;
 
-        return !$contains(id, 'policy.disallowedProperties', focusedNode);
+        if (item.type !== 'editor') {
+            return true;
+        }
+
+        return $get(['policy', 'canEdit'], focusedNode) && !$contains(item.id, 'policy.disallowedProperties', focusedNode);
     };
 
     /**
@@ -266,11 +270,6 @@ export default class Inspector extends PureComponent {
             shouldShowSecondaryInspector,
             i18nRegistry
         } = this.props;
-
-        if (!$get(['policy', 'canEdit'], focusedNode)) {
-            // We cannot edit the current node, so we disable the inspector.
-            return (<div></div>);
-        }
 
         const augmentedCommit = (propertyId, value, hooks) => {
             commit(propertyId, value, hooks, focusedNode);

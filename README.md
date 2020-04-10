@@ -179,6 +179,12 @@ To setup end-to-end tests locally you have got to do the same things described i
 
 For executing the end to end tests on a Mac with catalina or higher you need to permit screen recording. Open 'System Preferences > Security & Privacy > Privacy > Screen Recording' and check 'TestCafe Browser Tools' in the application list.
 
+##### Debugging integration tests
+
+* View the recording via Sauce Labs. You can find the url in the beginning of the test output.
+* Observe Flow exceptions and logs in build artifacts.
+* You can trigger a SSH enabled build via the CircleCI interface and then login.
+
 #### Releasing
 
 You only need to trigger the jenkins release with the version you want to release.

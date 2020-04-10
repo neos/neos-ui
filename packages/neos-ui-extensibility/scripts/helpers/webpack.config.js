@@ -45,6 +45,7 @@ module.exports = function (neosPackageJson) {
             ]
         },
         resolve: { // override config!
+            extensions: ['.ts', '.tsx', '.js'],
             alias: {
                 'react': '@neos-project/neos-ui-extensibility/src/shims/vendor/react/index',
                 'react-dom': '@neos-project/neos-ui-extensibility/src/shims/vendor/react-dom/index',

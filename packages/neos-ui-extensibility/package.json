@@ -2,6 +2,9 @@
   "name": "@neos-project/neos-ui-extensibility",
   "version": "5.0.5",
   "description": "Extensibility mechanisms for the Neos CMS UI",
+  "repository": "neos/neos-ui",
+  "bugs": "https://github.com/neos/neos-ui/issues",
+  "homepage": "https://github.com/neos/neos-ui/blob/master/README.md",
   "main": "./dist/index.js",
   "scripts": {
     "prebuild": "yarn clean && yarn tsc --declaration",

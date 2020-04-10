@@ -1,5 +1,8 @@
 {
   "description": "Root package + shared dev dependencies for @neos-project packages, managed by lernaJS",
+  "repository": "neos/neos-ui",
+  "bugs": "https://github.com/neos/neos-ui/issues",
+  "homepage": "https://github.com/neos/neos-ui/blob/master/README.md",
   "license": "GNU GPLv3",
   "private": true,
   "resolutions": {

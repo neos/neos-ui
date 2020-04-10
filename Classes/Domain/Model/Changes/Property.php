@@ -216,7 +216,7 @@ class Property extends AbstractChange
             if ($propertyName === '_nodeType') {
                 $nodeType = $this->nodeTypeManager->getNodeType($value);
                 $node = $this->changeNodeType($node, $nodeType);
-            } elseif ($propertyName{0} === '_') {
+            } elseif ($propertyName[0] === '_') {
                 ObjectAccess::setProperty($node, substr($propertyName, 1), $value);
             } else {
                 $node->setProperty($propertyName, $value);

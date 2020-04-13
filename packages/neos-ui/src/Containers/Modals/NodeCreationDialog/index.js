@@ -183,7 +183,8 @@ export default class NodeCreationDialog extends PureComponent {
                             //
                             const validationErrorsForElement = isDirty ? $get(elementName, validationErrors) : [];
                             const element = configuration.elements[elementName];
-                            const options = $set('autoFocus', index === 0, $get('ui.editorOptions', element) || {});
+                            const editorOptions = $set('autoFocus', index === 0, $get('ui.editorOptions', element) || {});
+                            const options = Object.assign({}, editorOptions);
                             return (
                                 <div key={elementName} className={style.editor}>
                                     <EditorEnvelope

@@ -437,14 +437,14 @@ export default (routes: Routes) => {
                 if (!nodeType) {
                     throw new Error('.node-type not found in result');
                 }
-                const uri = uriElement.innerText.trim();
                 return {
                     dataType: 'Neos.ContentRepository:Node',
                     loaderUri: 'node://' + nodeIdentifier.innerText,
                     label: nodeLabel.innerText,
                     identifier: nodeIdentifier.innerText,
                     nodeType: nodeType.innerText,
-                    uri
+                    uri: uriElement.getAttribute('href'),
+                    breadcrumb: uriElement.innerText.trim()
                 };
             });
         })

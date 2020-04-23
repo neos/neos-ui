@@ -237,11 +237,6 @@ export default (routes: Routes) => {
     }).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
-    const extractFileEndingFromUri = (uri: string) => {
-        const parts = uri.split('.');
-        return parts.length ? '.' + parts[parts.length - 1] : '';
-    };
-
     const assetProxyImport = (identifier: string) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
         url: `${routes.core.service.assetProxies}/${identifier.substr(0, identifier.indexOf('/'))}/${identifier.substr(identifier.indexOf('/') + 1)}`,
         method: 'POST',
@@ -449,8 +444,7 @@ export default (routes: Routes) => {
                     label: nodeLabel.innerText,
                     identifier: nodeIdentifier.innerText,
                     nodeType: nodeType.innerText,
-                    uri,
-                    uriInLiveWorkspace: uri.split('@')[0] + extractFileEndingFromUri(uri)
+                    uri
                 };
             });
         })

@@ -14,7 +14,9 @@
     "build:watch": "yarn tsc --build --watch",
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src",
-    "jest": "NODE_ENV=test jest"
+    "jest": "NODE_ENV=test jest",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "devDependencies": {
     "@neos-project/babel-preset-neos-ui": "5.1.4",
@@ -40,12 +42,14 @@
     "mini-css-extract-plugin": "^0.5.0",
     "postcss-loader": "^3.0.0",
     "react-dev-utils": "^0.5.0",
-    "style-loader": "^0.23.1"
+    "style-loader": "^0.23.1",
+    "snyk": "^1.316.1"
   },
   "bin": {
     "neos-react-scripts": "./bin/neos-react-scripts.js"
   },
   "jest": {
     "preset": "@neos-project/jest-preset-neos-ui"
-  }
+  },
+  "snyk": true
 }

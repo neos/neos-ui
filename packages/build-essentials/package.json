@@ -17,7 +17,9 @@
     "stylelint": "./node_modules/.bin/stylelint"
   },
   "scripts": {
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "devDependencies": {
     "@neos-project/babel-preset-neos-ui": "5.1.4"
@@ -52,7 +54,9 @@
     "url-loader": "^3.0.0",
     "watch": "^1.0.2",
     "webpack": "^4.41.5",
-    "webpack-livereload-plugin": "^2.2.0"
+    "webpack-livereload-plugin": "^2.2.0",
+    "snyk": "^1.316.1"
   },
-  "license": "GNU GPLv3"
+  "license": "GNU GPLv3",
+  "snyk": true
 }

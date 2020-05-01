@@ -11,7 +11,9 @@
     "build:watch": "exit 0",
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src",
-    "jest": "NODE_ENV=test jest"
+    "jest": "NODE_ENV=test jest",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "devDependencies": {
     "@neos-project/babel-preset-neos-ui": "5.1.4",
@@ -20,10 +22,12 @@
   },
   "dependencies": {
     "@neos-project/neos-ui-extensibility": "5.1.4",
-    "@neos-project/utils-redux": "5.1.4"
+    "@neos-project/utils-redux": "5.1.4",
+    "snyk": "^1.316.1"
   },
   "license": "GNU GPLv3",
   "jest": {
     "preset": "@neos-project/jest-preset-neos-ui"
-  }
+  },
+  "snyk": true
 }

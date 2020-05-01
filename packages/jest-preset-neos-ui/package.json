@@ -12,7 +12,13 @@
     "babel-core": "^6.26.3",
     "babel-jest": "^23.4.2",
     "jest": "^23.5.0",
-    "raf": "^3.4.0"
+    "raf": "^3.4.0",
+    "snyk": "^1.316.1"
   },
-  "license": "GNU GPLv3"
+  "license": "GNU GPLv3",
+  "scripts": {
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
+  },
+  "snyk": true
 }

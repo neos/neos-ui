@@ -155,6 +155,16 @@ export default class NodeCreationDialog extends PureComponent {
         );
     }
 
+    editorNeedsAdditionalSpace(elementConfiguration) {
+        const editorPaths = [
+            'Neos.Neos/Inspector/Editors/ReferenceEditor',
+            'Neos.Neos/Inspector/Editors/ReferencesEditor',
+            'Neos.Neos/Inspector/Editors/SelectBoxEditor'
+        ];
+
+        return editorPaths.includes(elementConfiguration.ui.editor);
+    }
+
     render() {
         const {isOpen, configuration} = this.props;
 
@@ -163,6 +173,7 @@ export default class NodeCreationDialog extends PureComponent {
         }
 
         const {validationErrors, isDirty} = this.state;
+        const elements = Object.keys(configuration.elements).filter(elementName => Boolean(configuration.elements[elementName]));
 
         return (
             <Dialog
@@ -175,33 +186,36 @@ export default class NodeCreationDialog extends PureComponent {
                 id="neos-NodeCreationDialog"
                 >
                 <div id="neos-NodeCreationDialog-Body" className={style.body}>
-                    {Object.keys(configuration.elements)
-                        .filter(elementName => Boolean(configuration.elements[elementName]))
-                        .map((elementName, index) => {
-                            //
-                            // Only display errors after user input (isDirty)
-                            //
-                            const validationErrorsForElement = isDirty ? $get(elementName, validationErrors) : [];
-                            const element = configuration.elements[elementName];
-                            const editorOptions = $set('autoFocus', index === 0, $get('ui.editorOptions', element) || {});
-                            const options = Object.assign({}, editorOptions);
-                            return (
-                                <div key={elementName} className={style.editor}>
-                                    <EditorEnvelope
-                                        identifier={elementName}
-                                        label={$get('ui.label', element)}
-                                        editor={$get('ui.editor', element)}
-                                        options={options}
-                                        commit={this.handleDialogEditorValueChange(elementName)}
-                                        validationErrors={validationErrorsForElement}
-                                        value={this.state.values[elementName] || ''}
-                                        onKeyPress={this.handleKeyPress}
-                                        onEnterKey={this.handleApply}
-                                        />
-                                </div>
-                            );
-                        })
-                    }
+                    {elements.map((elementName, index) => {
+                        //
+                        // Only display errors after user input (isDirty)
+                        //
+                        const validationErrorsForElement = isDirty ? $get(elementName, validationErrors) : [];
+                        const element = configuration.elements[elementName];
+                        const editorOptions = $set('autoFocus', index === 0, $get('ui.editorOptions', element) || {});
+                        const options = Object.assign({}, editorOptions);
+                        const classNames = [style.editor];
+
+                        if (index + 1 === elements.length && this.editorNeedsAdditionalSpace(element)) {
+                            classNames.push(style['editor--additional-spacing']);
+                        }
+
+                        return (
+                            <div key={elementName} className={classNames.join(' ')}>
+                                <EditorEnvelope
+                                    identifier={elementName}
+                                    label={$get('ui.label', element)}
+                                    editor={$get('ui.editor', element)}
+                                    options={options}
+                                    commit={this.handleDialogEditorValueChange(elementName)}
+                                    validationErrors={validationErrorsForElement}
+                                    value={this.state.values[elementName] || ''}
+                                    onKeyPress={this.handleKeyPress}
+                                    onEnterKey={this.handleApply}
+                                    />
+                            </div>
+                        );
+                    })}
                 </div>
             </Dialog>
         );

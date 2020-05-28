@@ -119,7 +119,7 @@
     "@sindresorhus/slugify": "^0.10.0",
     "amator": "^1.0.1",
     "classnames": "^2.2.3",
-    "codemirror": "^5.24.0",
+    "codemirror": "^5.54.0",
     "core-js": "^2.6",
     "custom-event-polyfill": "^1.0.6",
     "d3-scale": "^3.0.0",

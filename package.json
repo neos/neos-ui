@@ -183,7 +183,7 @@
     "redux-saga": "^0.15.0",
     "regenerator": "^0.8.46",
     "reselect": "^3.0.1",
-    "terser-webpack-plugin": "^2.3.1",
+    "terser-webpack-plugin": "^2.3.6",
     "typesafe-actions": "^5.1.0",
     "url-loader": "^3.0.0",
     "uuid": "^3.2.1",

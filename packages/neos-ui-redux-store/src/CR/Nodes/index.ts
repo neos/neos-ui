@@ -433,7 +433,7 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
                 if (!newNode) {
                     throw new Error('This error should never be thrown, it\'s a way to fool TypeScript');
                 }
-                const mergedNode = defaultsDeep({}, draft.byContextPath[contextPath], newNode);
+                const mergedNode = defaultsDeep(newNode, draft.byContextPath[contextPath], {});
                 // Force overwrite of children
                 if (newNode.children !== undefined) {
                     mergedNode.children = newNode.children;
@@ -502,7 +502,7 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
             draft.focused.fusionPath = null;
             draft.focused.contextPaths = [];
             if (nodes) {
-                draft.byContextPath = merge ? defaultsDeep({}, draft.byContextPath, nodes) : nodes;
+                draft.byContextPath = merge ? defaultsDeep(nodes, draft.byContextPath, {}) : nodes;
             }
             break;
         }

@@ -22,9 +22,7 @@ export function * watchPublish() {
                 yield put(actions.ServerFeedback.handleServerFeedback(feedback));
 
                 const documentNode = yield select(selectors.CR.Nodes.documentNodeSelector);
-                const documentUri = decodeURIComponent($get('uri', documentNode));
-                const documentUriFragment = documentUri.split('@')[0];
-                const previewUrl = documentUriFragment + '@' + targetWorkspaceName;
+                const previewUrl = decodeURIComponent($get('uri', documentNode));
 
                 yield put(actions.UI.ContentCanvas.setPreviewUrl(previewUrl));
             } catch (error) {

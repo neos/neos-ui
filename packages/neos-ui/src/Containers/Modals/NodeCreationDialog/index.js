@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {$get, $set} from 'plow-js';
 import memoize from 'lodash.memoize';
+import isEqual from 'lodash.isequal';
 
 import {neos} from '@neos-project/neos-ui-decorators';
 import {actions} from '@neos-project/neos-ui-redux-store';
@@ -43,7 +44,7 @@ export default class NodeCreationDialog extends PureComponent {
 
     defaultState = {
         values: {},
-        validationErrors: false,
+        validationErrors: null,
         isDirty: false
     };
 
@@ -51,6 +52,25 @@ export default class NodeCreationDialog extends PureComponent {
 
     resetState() {
         this.setState(this.defaultState);
+    }
+
+    static getDerivedStateFromProps(props, currentState) {
+        const {configuration} = props;
+        if (configuration && !isEqual(Object.keys(currentState.values), Object.keys(configuration.elements))) {
+            const values = Object.keys(configuration.elements).reduce((carry, elementName) => {
+                if (configuration.elements[elementName].defaultValue !== undefined) {
+                    carry[elementName] = configuration.elements[elementName].defaultValue;
+                }
+                return carry;
+            }, {});
+
+            return {
+                ...currentState,
+                isDirty: true,
+                values
+            };
+        }
+        return null;
     }
 
     handleDialogEditorValueChange = memoize(elementName => value => {

@@ -126,9 +126,13 @@ on how to write meaningful descriptions for your contributions.
 To do the upmerge run the following commands
 
 ```
+git checkout 5.0 && git fetch && git reset --hard origin/5.0 && git merge --no-ff --no-commit origin/4.0 --strategy-option=ours
+# review and `git commit`
 git checkout 5.1 && git fetch && git reset --hard origin/5.1 && git merge --no-ff --no-commit origin/5.0 --strategy-option=ours
 # review and `git commit`
-git checkout master && git fetch && git reset --hard origin/master && git merge --no-ff --no-commit origin/5.1 --strategy-option=ours
+git checkout 5.2 && git fetch && git reset --hard origin/5.2 && git merge --no-ff --no-commit origin/5.1 --strategy-option=ours
+# review and `git commit`
+git checkout master && git fetch && git reset --hard origin/master && git merge --no-ff --no-commit origin/5.0 --strategy-option=ours
 # review and `git commit`
 ```
 

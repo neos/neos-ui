@@ -19,6 +19,7 @@ That means:
 * NeosCMS version 4.x: branch 4.0
 * NeosCMS version 5.0: branch 5.0
 * NeosCMS version 5.1: branch 5.1
+* NeosCMS version 5.2: branch 5.2
 * latest development happens in master
 
 ## Browser support

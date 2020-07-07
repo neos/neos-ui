@@ -27,6 +27,8 @@ if [ -n "$GIT_TAG_MANUAL" ]; then
     GIT_TAG="$GIT_TAG_MANUAL"
 fi
 
+export NODE_OPTIONS="--max-old-space-size=4096"
+
 make install
 make build-production
 

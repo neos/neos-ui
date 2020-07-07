@@ -52,11 +52,16 @@ export interface TextInputProps extends Omit<React.InputHTMLAttributes<HTMLInput
 
 class TextInput extends PureComponent<TextInputProps> {
     // tslint:disable-next-line:readonly-keyword
-    private ref?: HTMLInputElement;
+    private ref?: React.RefObject<HTMLInputElement>;
+
+    constructor(props: any) {
+        super(props);
+        this.ref = React.createRef();
+    }
 
     public readonly componentDidMount = (): void => {
-        if (this.ref && this.props.setFocus) {
-            this.ref.focus();
+        if (this.ref && this.ref.current && (this.props.setFocus || this.props.autoFocus)) {
+            this.ref.current.focus();
         }
     }
 
@@ -96,10 +101,6 @@ class TextInput extends PureComponent<TextInputProps> {
             }
         );
 
-        const inputRef = (element: HTMLInputElement) => {
-            this.ref = element;
-        };
-
         return (
             <div className={containerClassName}>
                 <input
@@ -113,7 +114,7 @@ class TextInput extends PureComponent<TextInputProps> {
                     disabled={disabled}
                     onChange={this.handleValueChange}
                     onKeyPress={this.handleKeyPress}
-                    ref={inputRef}
+                    ref={this.ref}
                     />
                 </div>
         );

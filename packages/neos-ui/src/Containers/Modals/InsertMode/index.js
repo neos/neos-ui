@@ -2,7 +2,6 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
-import {compose} from 'ramda';
 
 import {neos} from '@neos-project/neos-ui-decorators';
 
@@ -31,8 +30,10 @@ import style from './style.css';
 })
 
 @neos(globalRegistry => ({
-    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
+    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),
+    i18nRegistry: globalRegistry.get('i18n')
 }))
+
 export default class InsertModeModal extends PureComponent {
     static propTypes = {
         isOpen: PropTypes.bool.isRequired,
@@ -42,6 +43,7 @@ export default class InsertModeModal extends PureComponent {
         cancel: PropTypes.func.isRequired,
         apply: PropTypes.func.isRequired,
         nodeTypesRegistry: PropTypes.object.isRequired,
+        i18nRegistry: PropTypes.object.isRequired,
         getNodeByContextPath: PropTypes.func.isRequired,
         subjectContextPath: PropTypes.string,
         referenceContextPath: PropTypes.string
@@ -67,18 +69,11 @@ export default class InsertModeModal extends PureComponent {
     }
 
     renderNodeLabel(contextPath) {
-        const {getNodeByContextPath, nodeTypesRegistry} = this.props;
+        const {getNodeByContextPath, nodeTypesRegistry, i18nRegistry} = this.props;
         const node = getNodeByContextPath(contextPath);
-        const getLabel = $get('label');
-        const getNodeType = $get('nodeType');
-        const getNodeTypeLabel = compose(getLabel, nodeTypesRegistry.get.bind(nodeTypesRegistry), getNodeType);
-
-        return (
-            <span key={getNodeTypeLabel(node) + getLabel(node)}>
-                <I18n id={getNodeTypeLabel(node)}/>
-                &nbsp;"{getLabel(node)}"
-            </span>
-        );
+        const nodeType = $get('nodeType', node);
+        const nodeTypeLabel = $get('ui.label', nodeTypesRegistry.get(nodeType)) || 'Neos.Neos:Main:node';
+        return i18nRegistry.translate(nodeTypeLabel, nodeType) + ' "' + $get('label', node) + '"';
     }
 
     renderTitle() {

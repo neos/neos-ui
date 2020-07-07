@@ -10,6 +10,7 @@ describe('<Dialog/>', () => {
         actions: ['Foo 1', 'Foo 2'],
         children: 'Foo children',
         isOpen: true,
+        autoFocus: true,
         onRequestClose: () => null,
         style: 'wide',
         type: 'error',

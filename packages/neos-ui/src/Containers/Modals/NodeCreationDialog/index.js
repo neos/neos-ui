@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {$get, $set} from 'plow-js';
 import memoize from 'lodash.memoize';
+import isEqual from 'lodash.isequal';
 
 import {neos} from '@neos-project/neos-ui-decorators';
 import {actions} from '@neos-project/neos-ui-redux-store';
@@ -43,7 +44,7 @@ export default class NodeCreationDialog extends PureComponent {
 
     defaultState = {
         values: {},
-        validationErrors: false,
+        validationErrors: null,
         isDirty: false
     };
 
@@ -51,6 +52,25 @@ export default class NodeCreationDialog extends PureComponent {
 
     resetState() {
         this.setState(this.defaultState);
+    }
+
+    static getDerivedStateFromProps(props, currentState) {
+        const {configuration} = props;
+        if (configuration && !isEqual(Object.keys(currentState.values), Object.keys(configuration.elements))) {
+            const values = Object.keys(configuration.elements).reduce((carry, elementName) => {
+                if (configuration.elements[elementName].defaultValue !== undefined) {
+                    carry[elementName] = configuration.elements[elementName].defaultValue;
+                }
+                return carry;
+            }, {});
+
+            return {
+                ...currentState,
+                isDirty: true,
+                values
+            };
+        }
+        return null;
     }
 
     handleDialogEditorValueChange = memoize(elementName => value => {
@@ -183,7 +203,8 @@ export default class NodeCreationDialog extends PureComponent {
                             //
                             const validationErrorsForElement = isDirty ? $get(elementName, validationErrors) : [];
                             const element = configuration.elements[elementName];
-                            const options = $set('autoFocus', index === 0, $get('ui.editorOptions', element) || {});
+                            const editorOptions = $set('autoFocus', index === 0, $get('ui.editorOptions', element) || {});
+                            const options = Object.assign({}, editorOptions);
                             return (
                                 <div key={elementName} className={style.editor}>
                                     <EditorEnvelope

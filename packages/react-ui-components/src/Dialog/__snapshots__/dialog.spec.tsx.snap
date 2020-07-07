@@ -42,6 +42,7 @@ exports[`<Dialog/> Portal should render correctly. 1`] = `
 >
   <Portal>
     <section
+      autoFocus={true}
       className="dialogClassName wideClassName errorClassName"
       role="dialog"
       tabIndex={0}
@@ -53,6 +54,7 @@ exports[`<Dialog/> Portal should render correctly. 1`] = `
             "Foo 2",
           ]
         }
+        autoFocus={true}
         isOpen={true}
         onRequestClose={[Function]}
         style="wide"

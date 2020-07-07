@@ -59,6 +59,11 @@ export interface DialogProps {
     readonly actions: ReadonlyArray<ReactNode>;
 
     /**
+     * This prop controls the focus state of the Dialog.
+     */
+    readonly autoFocus: boolean;
+
+    /**
      * An optional `className` to attach to the wrapper.
      */
     readonly className?: string;
@@ -129,8 +134,8 @@ export class DialogWithoutEscape extends PureComponent<DialogProps> {
 
     public readonly componentDidMount = (): void => {
         document.addEventListener('keydown', (event : KeyboardEvent) => this.handleKeyPress(event));
-
-        if (this.ref) {
+        const {autoFocus} = this.props;
+        if (this.ref && autoFocus) {
             this.ref.focus();
         }
     }

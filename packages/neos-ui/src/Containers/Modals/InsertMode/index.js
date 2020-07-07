@@ -33,6 +33,7 @@ import style from './style.css';
     i18nRegistry: globalRegistry.get('i18n'),
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
 }))
+
 export default class InsertModeModal extends PureComponent {
     static propTypes = {
         isOpen: PropTypes.bool.isRequired,

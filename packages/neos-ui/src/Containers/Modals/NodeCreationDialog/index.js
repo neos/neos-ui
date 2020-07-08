@@ -56,9 +56,11 @@ export default class NodeCreationDialog extends PureComponent {
 
     static getDerivedStateFromProps(props, currentState) {
         const {configuration} = props;
-        if (configuration && !isEqual(Object.keys(currentState.values), Object.keys(configuration.elements))) {
-            const values = Object.keys(configuration.elements).reduce((carry, elementName) => {
-                if (configuration.elements[elementName].defaultValue !== undefined) {
+        if (configuration && !isEqual(Object.keys(currentState.values).sort(), Object.keys(configuration.elements).sort())) {
+            const defaultValues = Object.keys(configuration.elements).reduce((carry, elementName) => {
+                if (configuration.elements[elementName].defaultValue === undefined) {
+                    carry[elementName] = null;
+                } else {
                     carry[elementName] = configuration.elements[elementName].defaultValue;
                 }
                 return carry;

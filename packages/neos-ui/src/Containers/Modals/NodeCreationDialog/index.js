@@ -65,9 +65,12 @@ export default class NodeCreationDialog extends PureComponent {
             }, {});
 
             return {
-                ...currentState,
-                isDirty: true,
-                values
+                values: {
+                    ...defaultValues,
+                    ...currentState.values
+                },
+                validationErrors: currentState.validationErrors,
+                isDirty: true
             };
         }
         return null;

@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-i18n",
-  "version": "4.0.7",
+  "version": "4.0.8",
   "description": "I18n utilities and components for Neos CMS UI.",
   "private": true,
   "main": "./src/index.tsx",
@@ -14,14 +14,14 @@
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "4.0.7",
-    "@neos-project/build-essentials": "4.0.7",
-    "@neos-project/jest-preset-neos-ui": "4.0.7"
+    "@neos-project/babel-preset-neos-ui": "4.0.8",
+    "@neos-project/build-essentials": "4.0.8",
+    "@neos-project/jest-preset-neos-ui": "4.0.8"
   },
   "dependencies": {
-    "@neos-project/neos-ui-decorators": "4.0.7",
-    "@neos-project/neos-ui-extensibility": "4.0.7",
-    "@neos-project/utils-logger": "4.0.7"
+    "@neos-project/neos-ui-decorators": "4.0.8",
+    "@neos-project/neos-ui-extensibility": "4.0.8",
+    "@neos-project/utils-logger": "4.0.8"
   },
   "license": "GNU GPLv3",
   "jest": {

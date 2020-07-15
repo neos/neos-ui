@@ -257,8 +257,9 @@ export default (routes: Routes) => {
             return getElementInnerText(assetProxy, '.local-asset-identifier');
         });
 
-    const assetProxySearch = (searchTerm = '', assetSourceIdentifier = '', options: {assetsToExclude: string[]} = {assetsToExclude: []}) => fetchWithErrorHandling.withCsrfToken(() => ({
-        url: urlWithParams(routes.core.service.assetProxies, {searchTerm, assetSourceIdentifier}),
+    const assetProxySearch = (searchTerm = '', options: {assetsToExclude: string[], constraints: any} = {assetsToExclude: [], constraints: {}}) => fetchWithErrorHandling.withCsrfToken(() => ({
+
+        url: urlWithParams(routes.core.service.assetProxies, {searchTerm, constraints: options.constraints || {}}),
 
         method: 'GET',
         credentials: 'include'

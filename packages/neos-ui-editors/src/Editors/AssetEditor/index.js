@@ -106,7 +106,7 @@ export default class AssetEditor extends PureComponent {
     handleSearchTermChange = searchTerm => {
         if (searchTerm) {
             this.setState({isLoading: true, searchOptions: []});
-            this.props.assetLookupDataLoader.search({assetsToExclude: this.getValues()}, searchTerm)
+            this.props.assetLookupDataLoader.search({assetsToExclude: this.getValues(), constraints: this.props.options.constraints || {}}, searchTerm)
                 .then(searchOptions => {
                     this.setState({
                         isLoading: false,
@@ -162,11 +162,11 @@ export default class AssetEditor extends PureComponent {
     }
 
     handleChooseFromMedia = () => {
-        const {secondaryEditorsRegistry} = this.props;
+        const {secondaryEditorsRegistry, options} = this.props;
         const {component: MediaSelectionScreen} = secondaryEditorsRegistry.get('Neos.Neos/Inspector/Secondary/Editors/MediaSelectionScreen');
 
         this.props.renderSecondaryInspector('IMAGE_SELECT_MEDIA', () =>
-            <MediaSelectionScreen onComplete={this.handleMediaSelected}/>
+            <MediaSelectionScreen constraints={options.constraints || {}} onComplete={this.handleMediaSelected}/>
         );
     }
 
@@ -199,7 +199,8 @@ export default class AssetEditor extends PureComponent {
     }
 
     renderAssetSelectorAndUpload() {
-        const accept = $get('options.accept', this.props);
+        const mediaTypeConstraint = $get('options.constraints.mediaTypes', this.props);
+        const accept = $get('options.accept', this.props) || (mediaTypeConstraint && mediaTypeConstraint.join(','));
         const multiple = $get('options.multiple', this.props);
         const {className, imagesOnly, value} = this.props;
 

@@ -10,15 +10,14 @@ class MediaSelectionScreen extends PureComponent {
     static propTypes = {
         onComplete: PropTypes.func.isRequired,
         neos: PropTypes.object.isRequired,
-        type: PropTypes.oneOf(['assets', 'images']).isRequired
-    };
-
-    static defaultProps = {
-        type: 'assets'
+        constraints: PropTypes.shape({
+            assetSources: PropTypes.arrayOf(PropTypes.string),
+            mediaTypes: PropTypes.arrayOf(PropTypes.string)
+        })
     };
 
     render() {
-        const {onComplete, neos, type} = this.props;
+        const {onComplete, neos, constraints} = this.props;
         window.NeosMediaBrowserCallbacks = {
             assetChosen: assetIdentifier => {
                 onComplete(assetIdentifier);
@@ -26,10 +25,24 @@ class MediaSelectionScreen extends PureComponent {
         };
 
         const mediaBrowserUri = $get('routes.core.modules.mediaBrowser', neos);
-
         return (
-            <iframe name="neos-media-selection-screen" src={`${mediaBrowserUri}/${type}.html`} className={style.iframe}/>
+            <iframe name="neos-media-selection-screen" src={`${mediaBrowserUri}/assets/index.html?${this.encodeAsQueryString({constraints: constraints})}`} className={style.iframe}/>
         );
+    }
+
+    encodeAsQueryString = (obj, prefix) => {
+        let str = [], p;
+        for (p in obj) {
+            if (!obj.hasOwnProperty(p)) {
+                continue;
+            }
+            const k = prefix ? prefix + '[' + p + ']' : p, v = obj[p];
+            if (v === null) {
+                continue;
+            }
+            str.push((typeof v === 'object') ? this.encodeAsQueryString(v, k) : encodeURIComponent(k) + '=' + encodeURIComponent(v));
+        }
+        return str.join('&');
     }
 }
 

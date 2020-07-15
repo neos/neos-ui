@@ -210,10 +210,14 @@ export default class ImageEditor extends Component {
     }
 
     handleChooseFromMedia = () => {
-        const {secondaryEditorsRegistry} = this.props;
+        console.log('options (r)', this.props.options)
+        const {secondaryEditorsRegistry, options} = this.props;
         const {component: MediaSelectionScreen} = secondaryEditorsRegistry.get('Neos.Neos/Inspector/Secondary/Editors/MediaSelectionScreen');
 
-        this.props.renderSecondaryInspector('IMAGE_SELECT_MEDIA', () => <MediaSelectionScreen type="images" onComplete={this.handleMediaSelected}/>);
+        // set media type constraint to "image/*" if it is not explicitly specified via options.constraints.mediaTypes
+        const constraints = {...options.constraints, mediaTypes: (options.constraints && options.constraints.mediaTypes) || ['image/*'] }
+
+        this.props.renderSecondaryInspector('IMAGE_SELECT_MEDIA', () => <MediaSelectionScreen constraints={constraints || {}} onComplete={this.handleMediaSelected}/>);
     }
 
     handleOpenImageCropper = () => {
@@ -237,7 +241,8 @@ export default class ImageEditor extends Component {
         const {isAssetLoading, image} = this.state;
         const {className} = this.props;
         const disabled = $get('options.disabled', this.props);
-        const accept = $get('options.accept', this.props);
+        const mediaTypeConstraint = $get('options.constraints.mediaTypes', this.props);
+        const accept = $get('options.accept', this.props) || mediaTypeConstraint && mediaTypeConstraint.join(',');
 
         const classNames = mergeClassNames({
             [style.imageEditor]: true

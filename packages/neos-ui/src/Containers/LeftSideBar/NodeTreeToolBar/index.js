@@ -108,7 +108,7 @@ export default class NodeTreeToolBar extends PureComponent {
     handleReloadTree = () => {
         const {reloadTree} = this.props;
 
-        reloadTree();
+        reloadTree({merge: true});
     }
 
     handleToggleContentTree = () => {

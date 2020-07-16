@@ -216,7 +216,7 @@ export default class ImageEditor extends Component {
         // set media type constraint to "image/*" if it is not explicitly specified via options.constraints.mediaTypes
         const constraints = {...options.constraints, mediaTypes: (options.constraints && options.constraints.mediaTypes) || ['image/*']};
 
-        this.props.renderSecondaryInspector('IMAGE_SELECT_MEDIA', () => <MediaSelectionScreen constraints={constraints || {}} onComplete={this.handleMediaSelected}/>);
+        this.props.renderSecondaryInspector('IMAGE_SELECT_MEDIA', () => <MediaSelectionScreen type="images" constraints={constraints || {}} onComplete={this.handleMediaSelected}/>);
     }
 
     handleOpenImageCropper = () => {

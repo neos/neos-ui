@@ -257,13 +257,17 @@ export default (routes: Routes) => {
             return getElementInnerText(assetProxy, '.local-asset-identifier');
         });
 
-    const assetProxySearch = (searchTerm = '', options: {assetsToExclude: string[], constraints: any} = {assetsToExclude: [], constraints: {}}) => fetchWithErrorHandling.withCsrfToken(() => ({
-
-        url: urlWithParams(routes.core.service.assetProxies, {searchTerm, constraints: options.constraints || {}}),
-
-        method: 'GET',
-        credentials: 'include'
-    }))
+    const assetProxySearch = (searchTerm: string, assetSourceIdentifier: string, options: {assetsToExclude: string[], constraints: any} = {assetsToExclude: [], constraints: {}}) => fetchWithErrorHandling.withCsrfToken(() => {
+        const constraints = options.constraints || {};
+        if (assetSourceIdentifier && !constraints.assetSources) {
+            constraints.assetSources = [assetSourceIdentifier];
+        }
+        return {
+            url: urlWithParams(routes.core.service.assetProxies, {searchTerm, constraints}),
+            method: 'GET',
+            credentials: 'include'
+        };
+    })
         .then(result => result.text())
         .then(result => {
             const assetProxyTable = document.createElement('table');

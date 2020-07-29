@@ -1,4 +1,5 @@
-import {urlWithParams, searchParams, getElementInnerText, getElementAttributeValue, getContextString} from './Helpers';
+import {getElementInnerText, getElementAttributeValue, getContextString} from './Helpers';
+import {urlWithParams, encodeAsQueryString} from '@neos-project/utils-helpers/src/urlWithParams';
 
 import fetchWithErrorHandling from '../FetchWithErrorHandling/index';
 import {Change, NodeContextPath, WorkspaceName, DimensionCombination, DimensionPresetCombination, DimensionName} from '@neos-project/neos-ts-interfaces';
@@ -522,7 +523,7 @@ export default (routes: Routes) => {
 
         method: 'POST',
         credentials: 'include',
-        body: searchParams({
+        body: encodeAsQueryString({
             identifier,
             dimensions: targetDimensions,
             sourceDimensions,

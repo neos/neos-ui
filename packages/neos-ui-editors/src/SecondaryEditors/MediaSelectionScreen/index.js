@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {$get} from 'plow-js';
+import {urlWithParams} from '@neos-project/utils-helpers/src/urlWithParams';
 
 import style from './style.css';
 
@@ -31,25 +32,8 @@ class MediaSelectionScreen extends PureComponent {
         }
         const mediaBrowserUri = $get('routes.core.modules.mediaBrowser', neos);
         return (
-            <iframe name="neos-media-selection-screen" src={`${mediaBrowserUri}/assets/index.html?${this.encodeAsQueryString({constraints})}`} className={style.iframe}/>
+            <iframe name="neos-media-selection-screen" src={urlWithParams(mediaBrowserUri + '/assets/index.html', {constraints})} className={style.iframe}/>
         );
-    }
-
-    encodeAsQueryString = (obj, prefix) => {
-        const str = [];
-        let p;
-        for (p in obj) {
-            if (!Object.prototype.hasOwnProperty.call(obj, p)) {
-                continue;
-            }
-            const k = prefix ? prefix + '[' + p + ']' : p;
-            const v = obj[p];
-            if (v === null) {
-                continue;
-            }
-            str.push((typeof v === 'object') ? this.encodeAsQueryString(v, k) : encodeURIComponent(k) + '=' + encodeURIComponent(v));
-        }
-        return str.join('&');
     }
 }
 

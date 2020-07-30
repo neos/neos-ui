@@ -1,4 +1,5 @@
-import {urlWithParams, searchParams, getElementInnerText, getElementAttributeValue, getContextString} from './Helpers';
+import {getElementInnerText, getElementAttributeValue, getContextString} from './Helpers';
+import {urlWithParams, encodeAsQueryString} from '@neos-project/utils-helpers/src/urlWithParams';
 
 import fetchWithErrorHandling from '../FetchWithErrorHandling/index';
 import {Change, NodeContextPath, WorkspaceName, DimensionCombination, DimensionPresetCombination, DimensionName} from '@neos-project/neos-ts-interfaces';
@@ -59,7 +60,7 @@ export default (routes: Routes) => {
             changes
         })
     })).then(response => fetchWithErrorHandling.parseJson(response))
-        .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const publish = (nodeContextPaths: NodeContextPath[], targetWorkspaceName: WorkspaceName) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
         url: routes.ui.service.publish,
@@ -74,7 +75,7 @@ export default (routes: Routes) => {
             targetWorkspaceName
         })
     })).then(response => fetchWithErrorHandling.parseJson(response))
-        .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const discard = (nodeContextPaths: NodeContextPath[]) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
         url: routes.ui.service.discard,
@@ -89,7 +90,7 @@ export default (routes: Routes) => {
             nodeContextPaths
         })
     })).then(response => fetchWithErrorHandling.parseJson(response))
-        .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const changeBaseWorkspace = (targetWorkspaceName: WorkspaceName, documentNode: NodeContextPath) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
         url: routes.ui.service.changeBaseWorkspace,
@@ -105,7 +106,7 @@ export default (routes: Routes) => {
             documentNode
         })
     })).then(response => fetchWithErrorHandling.parseJson(response))
-        .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const copyNodes = (nodes: NodeContextPath[]) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
         url: routes.ui.service.copyNodes,
@@ -120,7 +121,7 @@ export default (routes: Routes) => {
             nodes
         })
     })).then(response => fetchWithErrorHandling.parseJson(response))
-        .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const cutNodes = (nodes: NodeContextPath[]) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
         url: routes.ui.service.cutNodes,
@@ -135,7 +136,7 @@ export default (routes: Routes) => {
             nodes
         })
     })).then(response => fetchWithErrorHandling.parseJson(response))
-        .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const clearClipboard = () => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
         url: routes.ui.service.clearClipboard,
@@ -147,7 +148,7 @@ export default (routes: Routes) => {
             'Content-Type': 'application/json'
         }
     })).then(response => fetchWithErrorHandling.parseJson(response))
-        .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const loadImageMetadata = (imageVariantUuid: string) => fetchWithErrorHandling.withCsrfToken(() => ({
         url: `${routes.core.content.imageWithMetadata}?image=${imageVariantUuid}`,
@@ -158,7 +159,7 @@ export default (routes: Routes) => {
             'Content-Type': 'application/json'
         }
     })).then(response => fetchWithErrorHandling.parseJson(response))
-        .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     /**
      * asset[adjustments][Neos\Media\Domain\Model\Adjustment\CropImageAdjustment][height]:85
@@ -184,7 +185,7 @@ export default (routes: Routes) => {
             }
         })
     })).then(response => fetchWithErrorHandling.parseJson(response))
-        .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const loadMasterPlugins = (workspaceName: WorkspaceName, dimensions: DimensionCombination) => fetchWithErrorHandling.withCsrfToken(() => ({
         url: urlWithParams(routes.core.content.loadMasterPlugins, {workspaceName, dimensions}),
@@ -194,7 +195,7 @@ export default (routes: Routes) => {
             'Content-Type': 'application/json'
         }
     })).then(response => fetchWithErrorHandling.parseJson(response))
-        .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const loadPluginViews = (identifier: string, workspaceName: WorkspaceName, dimensions: DimensionCombination) => fetchWithErrorHandling.withCsrfToken(() => ({
         url: urlWithParams(routes.core.content.loadPluginViews, {identifier, workspaceName, dimensions}),
@@ -204,7 +205,7 @@ export default (routes: Routes) => {
             'Content-Type': 'application/json'
         }
     })).then(response => fetchWithErrorHandling.parseJson(response))
-        .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const contentDimensions = (dimensionName: DimensionName, chosenDimensionPresets: DimensionPresetCombination) => fetchWithErrorHandling.withCsrfToken(() => ({
         url: urlWithParams(`${routes.core.service.contentDimensions}/${dimensionName}.json`, {chosenDimensionPresets}),
@@ -214,7 +215,7 @@ export default (routes: Routes) => {
             'Content-Type': 'application/json'
         }
     })).then(response => fetchWithErrorHandling.parseJson(response))
-        .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const uploadAsset = (file: File, propertyName: string, node: NodeContextPath, siteNodeName: string, metadata = 'Image') => fetchWithErrorHandling.withCsrfToken(csrfToken => {
         const data = new FormData();
@@ -235,7 +236,7 @@ export default (routes: Routes) => {
             body: data
         };
     }).then(response => fetchWithErrorHandling.parseJson(response))
-        .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const assetProxyImport = (identifier: string) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
         url: `${routes.core.service.assetProxies}/${identifier.substr(0, identifier.indexOf('/'))}/${identifier.substr(identifier.indexOf('/') + 1)}`,
@@ -516,13 +517,13 @@ export default (routes: Routes) => {
 
     const adoptNodeToOtherDimension = (
         {identifier, targetDimensions, sourceDimensions, workspaceName, copyContent = false}:
-            {identifier: string, targetDimensions: DimensionCombination, sourceDimensions: DimensionCombination, workspaceName: WorkspaceName, copyContent: boolean}
+        {identifier: string, targetDimensions: DimensionCombination, sourceDimensions: DimensionCombination, workspaceName: WorkspaceName, copyContent: boolean}
     ) => parseGetSingleNodeResult(fetchWithErrorHandling.withCsrfToken(csrfToken => ({
         url: routes.core.service.nodes,
 
         method: 'POST',
         credentials: 'include',
-        body: searchParams({
+        body: encodeAsQueryString({
             identifier,
             dimensions: targetDimensions,
             sourceDimensions,
@@ -568,7 +569,7 @@ export default (routes: Routes) => {
             }
         };
     }).then(response => fetchWithErrorHandling.parseJson(response))
-        .catch(reason => console.warn('Something went wrong with requesting additional node metadata:', reason)); // tslint:disable-line no-console
+    .catch(reason => console.warn('Something went wrong with requesting additional node metadata:', reason)); // tslint:disable-line no-console
 
     const dataSource = (dataSourceIdentifier: string, dataSourceUri: string, params = {}) => fetchWithErrorHandling.withCsrfToken(() => ({
         url: urlWithParams(dataSourceUri || `${routes.core.service.dataSource}/${dataSourceIdentifier}`, params),
@@ -576,14 +577,14 @@ export default (routes: Routes) => {
         method: 'GET',
         credentials: 'include'
     })).then(response => fetchWithErrorHandling.parseJson(response))
-        .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const getJsonResource = (resourceUri: string) => fetchWithErrorHandling.withCsrfToken(() => ({
         url: resourceUri,
         method: 'GET',
         credentials: 'include'
     })).then(response => fetchWithErrorHandling.parseJson(response))
-        .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const tryLogin = (username: string, password: string) => {
         const data = new URLSearchParams();
@@ -595,12 +596,12 @@ export default (routes: Routes) => {
             body: data,
             credentials: 'same-origin'
         })
-            // Parse the JSON if possible ...
-            .then(response => fetchWithErrorHandling.parseJson(response))
-            // ... and if the JSON cannot be parsed, convert this to "false".
-            .then(result => result, () => false)
-            // Return the new CSRF Protection token
-            .then(result => result && result.csrfToken);
+        // Parse the JSON if possible ...
+        .then(response => fetchWithErrorHandling.parseJson(response))
+        // ... and if the JSON cannot be parsed, convert this to "false".
+        .then(result => result, () => false)
+        // Return the new CSRF Protection token
+        .then(result => result && result.csrfToken);
     };
 
     return {

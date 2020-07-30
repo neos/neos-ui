@@ -202,7 +202,7 @@ manifest('main.dataloaders', {}, globalRegistry => {
             ).then(results => [].concat(...results));
         },
 
-        search(options = {assetsToExclude: []}, searchTerm) {
+        search(options = {assetsToExclude: [], constraints: {}}, searchTerm) {
             if (!searchTerm) {
                 return Promise.resolve([]);
             }

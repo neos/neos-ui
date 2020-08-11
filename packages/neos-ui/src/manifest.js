@@ -250,6 +250,13 @@ manifest('main', {}, globalRegistry => {
     });
 
     //
+    // When the server has updated node path, apply it to the store
+    //
+    serverFeedbackHandlers.set('Neos.Neos.Ui:UpdateNodePath/Main', (feedbackPayload, {store}) => {
+        store.dispatch(actions.CR.Nodes.updatePath(feedbackPayload.oldContextPath, feedbackPayload.newContextPath));
+    });
+
+    //
     // When the server has removed a node, remove it as well from the store amd the dom
     //
     serverFeedbackHandlers.set('Neos.Neos.Ui:RemoveNode/Main', ({contextPath, parentContextPath}, {store}) => {

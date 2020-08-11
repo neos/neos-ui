@@ -18,6 +18,7 @@ use Neos\Neos\Ui\Domain\Model\AbstractChange;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RenderContentOutOfBand;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodePath;
 use Neos\Neos\Ui\Domain\Model\RenderedNodeDomAddress;
 
 /**
@@ -131,14 +132,8 @@ abstract class AbstractStructuralChange extends AbstractChange
     {
         $this->persistenceManager->persistAll();
 
-        $updateNodeInfo = new UpdateNodeInfo();
-        $updateNodeInfo->setNode($node);
-        $updateNodeInfo->recursive();
-
         $updateParentNodeInfo = new UpdateNodeInfo();
         $updateParentNodeInfo->setNode($node->getParent());
-
-        $this->feedbackCollection->add($updateNodeInfo);
         $this->feedbackCollection->add($updateParentNodeInfo);
 
         $this->updateWorkspaceInfo();

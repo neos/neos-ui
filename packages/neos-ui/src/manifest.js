@@ -297,6 +297,20 @@ manifest('main', {}, globalRegistry => {
             store.dispatch(actions.UI.ContentCanvas.setSrc($get(['cr', 'nodes', 'byContextPath', newContextPath, 'uri'], newState)));
             store.dispatch(actions.CR.Nodes.setDocumentNode(newContextPath));
         }
+
+        // Remove the node from the old position in the dom
+        if ($get('cr.nodes.documentNode', state) !== oldContextPath) {
+            findAllOccurrencesOfNodeInGuestFrame(oldContextPath).forEach(el => {
+                const closestContentCollection = el.closest('.neos-contentcollection');
+                el.remove();
+
+                createEmptyContentCollectionPlaceholderIfMissing(closestContentCollection);
+
+                dispatchCustomEvent('Neos.NodeRemoved', 'Node was removed.', {
+                    element: el
+                });
+            });
+        }
     });
 
     //

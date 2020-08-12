@@ -446,6 +446,8 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
             // This action will only be called by the old CR therefore we can expect the '@' sign
             const [oldPath] = oldContextPath.split('@');
             const [newPath] = newContextPath.split('@');
+            const encodedOldPath = encodeURIComponent(oldPath);
+            const encodedNewPath = encodeURIComponent(newPath);
 
             // Update the context path for stored descendant of the moved node including the node itself
             Object.keys(draft.byContextPath).forEach(contextPath => {
@@ -462,6 +464,11 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
 
                 const updatedContextPath = contextPath.replace(oldPath, newPath);
                 node.contextPath = updatedContextPath;
+
+                // Update also the preview uri for document nodes stored in the node data
+                if (node.uri) {
+                    node.uri = node.uri.replace(encodedOldPath, encodedNewPath);
+                }
 
                 node.children.forEach(child => {
                     child.contextPath = child.contextPath.replace(oldPath, newPath);

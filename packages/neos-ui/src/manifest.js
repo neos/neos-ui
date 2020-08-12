@@ -252,8 +252,51 @@ manifest('main', {}, globalRegistry => {
     //
     // When the server has updated node path, apply it to the store
     //
-    serverFeedbackHandlers.set('Neos.Neos.Ui:UpdateNodePath/Main', (feedbackPayload, {store}) => {
-        store.dispatch(actions.CR.Nodes.updatePath(feedbackPayload.oldContextPath, feedbackPayload.newContextPath));
+    serverFeedbackHandlers.set('Neos.Neos.Ui:UpdateNodePath/Main', ({oldContextPath, newContextPath}, {store}) => {
+        let currentDocumentNodeMoved = false;
+        const parentContextPath = parentNodeContextPath(oldContextPath);
+
+        const state = store.getState();
+        if ($get('cr.nodes.focused.contextPath', state) === oldContextPath) {
+            store.dispatch(actions.CR.Nodes.unFocus());
+        }
+
+        if ($get('ui.pageTree.isFocused', state) === oldContextPath) {
+            store.dispatch(actions.UI.PageTree.focus(parentContextPath));
+        }
+
+        // If we are moving the current document node or one of its parents...
+        const [oldPath] = oldContextPath.split('@');
+        const currentDocumentNodePath = $get('cr.nodes.documentNode', state);
+        if (currentDocumentNodePath && (currentDocumentNodePath === oldContextPath || currentDocumentNodePath.split('@')[0].startsWith(oldPath + '/'))) {
+            currentDocumentNodeMoved = true;
+            let redirectContextPath = oldContextPath;
+            let redirectUri = null;
+            // Determine closest parent that is not being moved
+            while (!redirectUri) {
+                redirectContextPath = parentNodeContextPath(redirectContextPath);
+                // This is an extreme case when even the top node does not exist in the given dimension
+                // TODO: still find a nicer way to break out of this situation
+                if (redirectContextPath === false) {
+                    window.location = '/neos';
+                    break;
+                }
+                redirectUri = $get(['cr', 'nodes', 'byContextPath', redirectContextPath, 'uri'], state);
+            }
+
+            // Temporarily set the document node to the moved nodes parent before updating its path
+            store.dispatch(actions.CR.Nodes.setDocumentNode(redirectContextPath));
+        }
+
+        store.dispatch(actions.CR.Nodes.updatePath(oldContextPath, newContextPath));
+
+        // If we moved the current node we have to read the preview uri again and then redirect the content frame
+        // and also update the selected document node
+        if (currentDocumentNodeMoved) {
+            const newState = store.getState();
+            store.dispatch(actions.UI.ContentCanvas.setSrc($get(['cr', 'nodes', 'byContextPath', newContextPath, 'uri'], newState)));
+            store.dispatch(actions.CR.Nodes.setDocumentNode(newContextPath));
+        }
     });
 
     //

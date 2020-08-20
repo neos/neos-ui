@@ -78,6 +78,7 @@ export enum actionTypes {
     COMMIT_PASTE = '@neos/neos-ui/CR/Nodes/COMMIT_PASTE',
     HIDE = '@neos/neos-ui/CR/Nodes/HIDE',
     SHOW = '@neos/neos-ui/CR/Nodes/SHOW',
+    UPDATE_PATH = '@neos/neos-ui/CR/Nodes/UPDATE_PATH',
     UPDATE_URI = '@neos/neos-ui/CR/Nodes/UPDATE_URI',
     SET_INLINE_VALIDATION_ERRORS = '@neos/neos-ui/CR/Nodes/SET_INLINE_VALIDATION_ERRORS'
 }
@@ -278,6 +279,15 @@ const show = (contextPath: NodeContextPath) => createAction(actionTypes.SHOW, co
  */
 const updateUri = (oldUriFragment: string, newUriFragment: string) => createAction(actionTypes.UPDATE_URI, {oldUriFragment, newUriFragment});
 
+/**
+ * Update context path of all affected nodes after a node has been moved
+ * Must update the node itself and all of its descendants
+ *
+ * @param {String} oldContextPath
+ * @param {String} newContextPath
+ */
+const updatePath = (oldContextPath: string, newContextPath: string) => createAction(actionTypes.UPDATE_PATH, {oldContextPath, newContextPath});
+
 //
 // Export the actions
 //
@@ -302,6 +312,7 @@ export const actions = {
     commitPaste,
     hide,
     show,
+    updatePath,
     updateUri,
     setInlineValidationErrors
 };
@@ -428,6 +439,43 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
         }
         case actionTypes.REMOVE: {
             delete draft.byContextPath[action.payload];
+            break;
+        }
+        case actionTypes.UPDATE_PATH: {
+            const {oldContextPath, newContextPath} = action.payload;
+            // This action will only be called by the old CR therefore we can expect the '@' sign
+            const [oldPath] = oldContextPath.split('@');
+            const [newPath] = newContextPath.split('@');
+            const encodedOldPath = encodeURIComponent(oldPath);
+            const encodedNewPath = encodeURIComponent(newPath);
+
+            // Update the context path for stored descendant of the moved node including the node itself
+            Object.keys(draft.byContextPath).forEach(contextPath => {
+                // Skip nodes that don't match the old path exactly or a descendant path
+                if (!contextPath.startsWith(oldPath + '/')
+                    && contextPath.split('@')[0] !== oldPath) {
+                    return;
+                }
+
+                const node = draft.byContextPath[contextPath];
+                if (!node) {
+                    return;
+                }
+
+                const updatedContextPath = contextPath.replace(oldPath, newPath);
+                node.contextPath = updatedContextPath;
+
+                // Update also the preview uri for document nodes stored in the node data
+                if (node.uri) {
+                    node.uri = node.uri.replace(encodedOldPath, encodedNewPath);
+                }
+
+                node.children.forEach(child => {
+                    child.contextPath = child.contextPath.replace(oldPath, newPath);
+                });
+
+                delete Object.assign(draft.byContextPath, {[updatedContextPath]: node })[contextPath];
+            });
             break;
         }
         case actionTypes.SET_DOCUMENT_NODE: {

@@ -166,7 +166,7 @@ repository root.
 
 An example file would look like this:
 
-```typoscript
+```javascript
 module.exports = {
     protocol: 'http',
     port: '123',

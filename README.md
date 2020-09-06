@@ -46,6 +46,7 @@ The new UI is [already included](https://github.com/neos/neos-base-distribution/
 1. You need to have Neos CMS 3.3 or newer up & running.
 
 2. Run the following command:
+
 ```
 composer require neos/neos-ui
 ```
@@ -82,7 +83,7 @@ Please follow the respective guides for contributing on OSX and on Linux.
 
 4) Inside `Configuration/Settings.yaml`, set the following property for disabling the pre-compiled files:
 
-```
+```yaml
 Neos:
   Neos:
     Ui:
@@ -103,7 +104,7 @@ In order to start contributing on OSX / Linux, follow the following steps:
 
 4) Inside `Configuration/Settings.yaml`, set the following property for disabling the pre-compiled files:
 
-```
+```yaml
 Neos:
   Neos:
     Ui:
@@ -165,7 +166,7 @@ repository root.
 
 An example file would look like this:
 
-```
+```javascript
 module.exports = {
     protocol: 'http',
     port: '123',

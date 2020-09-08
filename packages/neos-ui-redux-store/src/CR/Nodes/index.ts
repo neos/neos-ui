@@ -84,6 +84,7 @@ export enum actionTypes {
     HIDE_MULTIPLE = '@neos/neos-ui/CR/Nodes/HIDE_MULTIPLE',
     SHOW = '@neos/neos-ui/CR/Nodes/SHOW',
     SHOW_MULTIPLE = '@neos/neos-ui/CR/Nodes/SHOW_MULTIPLE',
+    UPDATE_PATH = '@neos/neos-ui/CR/Nodes/UPDATE_PATH',
     UPDATE_URI = '@neos/neos-ui/CR/Nodes/UPDATE_URI',
     SET_INLINE_VALIDATION_ERRORS = '@neos/neos-ui/CR/Nodes/SET_INLINE_VALIDATION_ERRORS'
 }
@@ -339,6 +340,7 @@ export const actions = {
     hideMultiple,
     show,
     showMultiple,
+    updatePath,
     updateUri,
     setInlineValidationErrors
 };

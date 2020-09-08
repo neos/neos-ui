@@ -14,6 +14,7 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Domain\Service as ContentRepository;
 use Neos\Flow\Annotations as Flow;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 
 abstract class AbstractCopy extends AbstractStructuralChange
 {
@@ -22,6 +23,21 @@ abstract class AbstractCopy extends AbstractStructuralChange
      * @var ContentRepository\NodeServiceInterface
      */
     protected $contentRepositoryNodeService;
+
+    /**
+     * Perform finish tasks - needs to be called from inheriting class on `apply`
+     *
+     * @param NodeInterface $node
+     * @return void
+     */
+    protected function finish(NodeInterface $node): void
+    {
+        $updateNodeInfo = new UpdateNodeInfo();
+        $updateNodeInfo->setNode($node);
+        $updateNodeInfo->recursive();
+        $this->feedbackCollection->add($updateNodeInfo);
+        parent::finish($node);
+    }
 
     /**
      * Generate a unique node name for the copied node

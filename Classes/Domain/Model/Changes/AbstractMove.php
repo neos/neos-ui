@@ -16,6 +16,7 @@ use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Domain\Service as ContentRepository;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
 use Neos\Flow\Annotations as Flow;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodePath;
 
 abstract class AbstractMove extends AbstractStructuralChange
 {
@@ -33,10 +34,12 @@ abstract class AbstractMove extends AbstractStructuralChange
      */
     protected function finish(NodeInterface $node)
     {
-        $removeNode = new RemoveNode();
-        $removeNode->setNode($node);
-
-        $this->feedbackCollection->add($removeNode);
+        if ($node->getContextPath() !== $this->getSubject()->getContextPath()) {
+            $updateNodePath = new UpdateNodePath();
+            $updateNodePath->setOldContextPath($node->getContextPath());
+            $updateNodePath->setNewContextPath($this->getSubject()->getContextPath());
+            $this->feedbackCollection->add($updateNodePath);
+        }
 
         // $this->getSubject() is the moved node at the NEW location!
         parent::finish($this->getSubject());

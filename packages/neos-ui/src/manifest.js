@@ -253,7 +253,9 @@ manifest('main', {}, globalRegistry => {
     //
     serverFeedbackHandlers.set('Neos.Neos.Ui:UpdateNodePath/Main', ({oldContextPath, newContextPath}, {store}) => {
         let currentDocumentNodeMoved = false;
-        const parentContextPath = parentNodeContextPath(oldContextPath);
+        const getParentNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(oldContextPath);
+        let parentNode = select(getParentNodeByContextPathSelector);
+        const parentContextPath = parentNode.parent;
 
         const state = store.getState();
         if ($get('cr.nodes.focused.contextPath', state) === oldContextPath) {

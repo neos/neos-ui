@@ -16,6 +16,7 @@ use Neos\ContentRepository\Domain\Model\NodeType;
 use Neos\ContentRepository\Domain\Service\NodeServiceInterface;
 use Neos\ContentRepository\Domain\Service\NodeTypeManager;
 use Neos\Flow\Annotations as Flow;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 use Neos\Neos\Ui\Exception\InvalidNodeCreationHandlerException;
 use Neos\Neos\Ui\NodeCreationHandler\NodeCreationHandlerInterface;
 
@@ -53,6 +54,21 @@ abstract class AbstractCreate extends AbstractStructuralChange
      * @var NodeServiceInterface
      */
     protected $nodeService;
+
+    /**
+     * Perform finish tasks - needs to be called from inheriting class on `apply`
+     *
+     * @param NodeInterface $node
+     * @return void
+     */
+    protected function finish(NodeInterface $node): void
+    {
+        $updateNodeInfo = new UpdateNodeInfo();
+        $updateNodeInfo->setNode($node);
+        $updateNodeInfo->recursive();
+        $this->feedbackCollection->add($updateNodeInfo);
+        parent::finish($node);
+    }
 
     /**
      * Set the node type

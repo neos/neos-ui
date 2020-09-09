@@ -12,7 +12,7 @@ export default class NodeOption extends PureComponent {
     static propTypes = {
         option: PropTypes.shape({
             label: PropTypes.string,
-            uriInLiveWorkspace: PropTypes.string,
+            breadcrumb: PropTypes.string,
             nodeType: PropTypes.string,
             loaderUri: PropTypes.string
         }),
@@ -22,14 +22,14 @@ export default class NodeOption extends PureComponent {
 
     render() {
         const {option, nodeTypesRegistry} = this.props;
-        const {label, uriInLiveWorkspace, nodeType} = option;
+        const {label, breadcrumb, nodeType} = option;
         const nodeTypeDefinition = nodeTypesRegistry.getNodeType(nodeType);
         const icon = $get('ui.icon', nodeTypeDefinition);
         return (
             <SelectBox_Option_MultiLineWithThumbnail
                 {...this.props}
                 label={label}
-                secondaryLabel={uriInLiveWorkspace}
+                secondaryLabel={breadcrumb}
                 icon={icon}
                 />
         );

@@ -3,6 +3,8 @@ import {$get} from 'plow-js';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 
+import {parentNodeContextPath} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/helpers';
+
 import manifest from '@neos-project/neos-ui-extensibility';
 import {SynchronousRegistry, SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
 
@@ -253,9 +255,7 @@ manifest('main', {}, globalRegistry => {
     //
     serverFeedbackHandlers.set('Neos.Neos.Ui:UpdateNodePath/Main', ({oldContextPath, newContextPath}, {store}) => {
         let currentDocumentNodeMoved = false;
-        const getParentNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(oldContextPath);
-        let parentNode = select(getParentNodeByContextPathSelector);
-        const parentContextPath = parentNode.parent;
+        const parentContextPath = parentNodeContextPath(oldContextPath);
 
         const state = store.getState();
         if ($get('cr.nodes.focused.contextPath', state) === oldContextPath) {

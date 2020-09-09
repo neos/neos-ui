@@ -3,6 +3,8 @@ import {$get} from 'plow-js';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 
+import {parentNodeContextPath} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/helpers';
+
 import manifest from '@neos-project/neos-ui-extensibility';
 import {SynchronousRegistry, SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
 

@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/positional-array-sorter",
-  "version": "4.0.9",
+  "version": "4.0.10",
   "description": "Flexible array sorter that sorts an array according to a 'position' meta data.",
   "repository": "neos/neos-ui",
   "bugs": "https://github.com/neos/neos-ui/issues",
@@ -18,8 +18,8 @@
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@neos-project/build-essentials": "4.0.9",
-    "@neos-project/jest-preset-neos-ui": "4.0.9",
+    "@neos-project/build-essentials": "4.0.10",
+    "@neos-project/jest-preset-neos-ui": "4.0.10",
     "typescript": "3.2.2"
   },
   "jest": {

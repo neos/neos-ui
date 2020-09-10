@@ -78,7 +78,7 @@ export const makeHasChildrenSelector = (allowedNodeTypes: NodeTypeName[]) => cre
         (state: GlobalState, contextPath: NodeContextPath) => $get(['cr', 'nodes', 'byContextPath', contextPath], state)
     ],
     node => (node && node.children || []).some(
-        childNodeEnvelope => allowedNodeTypes.includes(childNodeEnvelope.nodeType)
+        childNodeEnvelope => childNodeEnvelope ? allowedNodeTypes.includes(childNodeEnvelope.nodeType) : false
     )
 );
 
@@ -88,17 +88,21 @@ export const makeChildrenOfSelector = (allowedNodeTypes: NodeTypeName[]) => crea
         nodesByContextPathSelector
     ],
     (node, nodesByContextPath: NodeMap) => (node && node.children || [])
-    .filter(
-        childNodeEnvelope => {
-            const nodeType = childNodeEnvelope.nodeType;
-            return allowedNodeTypes.includes(nodeType) || nodeType === 'Neos.Neos:FallbackNode';
-        }
-    )
-    .map(
-        childNodeEnvelope => {
-            return nodesByContextPath[childNodeEnvelope.contextPath];
-        }
-    )
+        .filter(
+            childNodeEnvelope => {
+                return childNodeEnvelope !== null || childNodeEnvelope !== undefined;
+            }
+        )
+        .filter(
+            childNodeEnvelope => {
+                const nodeType = childNodeEnvelope ? childNodeEnvelope.nodeType : '';
+                return allowedNodeTypes.includes(nodeType) || nodeType === 'Neos.Neos:FallbackNode';
+            }
+        ).map(
+            childNodeEnvelope => {
+                return nodesByContextPath[childNodeEnvelope.contextPath];
+            }
+        )
 );
 
 export const siteNodeSelector = createSelector(

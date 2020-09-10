@@ -398,6 +398,15 @@ manifest('main', {}, globalRegistry => {
         }
 
         const fusionPath = contentElement.dataset.__neosFusionPath;
+        const existingElement = findNodeInGuestFrame(
+            contextPath,
+            fusionPath
+        );
+
+        // Remove duplicate node in case of move action on the same level
+        if (existingElement) {
+            existingElement.remove();
+        }
 
         switch (mode) {
             case 'before':

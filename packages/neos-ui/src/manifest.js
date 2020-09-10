@@ -436,6 +436,16 @@ manifest('main', {}, globalRegistry => {
         };
         const insertionParent = findInsertionParentByAnchor();
 
+        const existingElement = findNodeInGuestFrame(
+            contextPath,
+            fusionPath
+        );
+
+        // Remove duplicate node in case of move action on the same level
+        if (existingElement) {
+            existingElement.remove();
+        }
+
         switch (mode) {
             case 'before':
                 siblingElement.parentNode.insertBefore(contentElement, siblingElement);

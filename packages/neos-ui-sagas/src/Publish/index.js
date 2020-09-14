@@ -20,11 +20,6 @@ export function * watchPublish() {
                 const feedback = yield call(publish, nodeContextPaths, targetWorkspaceName);
                 yield put(actions.UI.Remote.finishPublishing());
                 yield put(actions.ServerFeedback.handleServerFeedback(feedback));
-
-                const documentNode = yield select(selectors.CR.Nodes.documentNodeSelector);
-                const previewUrl = decodeURIComponent($get('uri', documentNode));
-
-                yield put(actions.UI.ContentCanvas.setPreviewUrl(previewUrl));
             } catch (error) {
                 console.error('Failed to publish', error);
             }

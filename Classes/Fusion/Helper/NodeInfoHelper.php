@@ -13,6 +13,8 @@ namespace Neos\Neos\Ui\Fusion\Helper;
 
 use Neos\ContentRepository\Domain\Model\Node;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Domain\Service\ContextFactoryInterface;
+use Neos\ContentRepository\Domain\Utility\NodePaths;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
@@ -64,6 +66,12 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
      * @var NodePropertyConverterService
      */
     protected $nodePropertyConverterService;
+
+    /**
+     * @Flow\Inject
+     * @var ContextFactoryInterface
+     */
+    protected $contextFactory;
 
     /**
      * @Flow\InjectConfiguration(path="userInterface.navigateComponent.nodeTree.presets.default.baseNodeType", package="Neos.Neos")
@@ -352,26 +360,39 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     }
 
     /**
+     * Creates a URL that will redirect to the given $node in live context, or returns an empty string if that doesn't exist or is inaccessible
+     *
      * @param ControllerContext $controllerContext
-     * @param NodeInterface $node
+     * @param NodeInterface|null $node
      * @return string
-     * @throws \Neos\Flow\Mvc\Routing\Exception\MissingActionNameException
      */
     public function createRedirectToNode(ControllerContext $controllerContext, NodeInterface $node = null)
     {
         if ($node === null) {
             return '';
         }
-
-        $basicRedirectUrl = $controllerContext->getUriBuilder()
+        if (!$node->getContext()->getWorkspace(false)->isPublicWorkspace()) {
+            $baseWorkspace = $node->getContext()->getWorkspace(false)->getBaseWorkspace();
+            $baseWorkspaceContextProperties = [
+                'workspaceName' => $baseWorkspace !== null ? $baseWorkspace->getName() : 'live',
+                'invisibleContentShown' => false,
+                'removedContentShown' => false,
+                'inaccessibleContentShown' => false,
+            ];
+            $baseWorkspaceContext = $this->contextFactory->create(array_merge($node->getContext()->getProperties(), $baseWorkspaceContextProperties));
+            $node = $baseWorkspaceContext->getNodeByIdentifier($node->getIdentifier());
+            if ($node === null) {
+                return '';
+            }
+        }
+        if ($node->isHidden() || !$node->getNodeType()->isAggregate()) {
+            return '';
+        }
+        return $controllerContext->getUriBuilder()
             ->reset()
             ->setCreateAbsoluteUri(true)
             ->setFormat('html')
-            ->uriFor('redirectTo', [], 'Backend', 'Neos.Neos.Ui');
-
-        $basicRedirectUrl .= '?' . http_build_query(['node' => $node->getContextPath()]);
-
-        return $basicRedirectUrl;
+            ->uriFor('redirectTo', ['node' => $node], 'Backend', 'Neos.Neos.Ui');
     }
 
     /**

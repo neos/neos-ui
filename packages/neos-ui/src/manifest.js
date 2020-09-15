@@ -222,7 +222,11 @@ manifest('main', {}, globalRegistry => {
     // When the server advices to update the nodes preview URL, dispatch the action to do so
     //
     serverFeedbackHandlers.set('Neos.Neos.Ui:UpdateNodePreviewUrl/Main', (feedbackPayload, {store}) => {
-        store.dispatch(actions.UI.ContentCanvas.setPreviewUrl(feedbackPayload.newPreviewUrl));
+        const state = store.getState();
+        const currentDocumentNodePath = $get('cr.nodes.documentNode', state);
+        if (feedbackPayload.contextPath === currentDocumentNodePath) {
+            store.dispatch(actions.UI.ContentCanvas.setPreviewUrl(feedbackPayload.newPreviewUrl));
+        }
     });
 
     //

@@ -360,7 +360,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     }
 
     /**
-     * Creates a URL that will redirect to the given $node in live context, or returns an empty string if that doesn't exist or is inaccessible
+     * Creates a URL that will redirect to the given $node in live or base workspace, or returns an empty string if that doesn't exist or is inaccessible
      *
      * @param ControllerContext $controllerContext
      * @param NodeInterface|null $node
@@ -371,28 +371,24 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         if ($node === null) {
             return '';
         }
-        if (!$node->getContext()->getWorkspace(false)->isPublicWorkspace()) {
-            $baseWorkspace = $node->getContext()->getWorkspace(false)->getBaseWorkspace();
-            $baseWorkspaceContextProperties = [
-                'workspaceName' => $baseWorkspace !== null ? $baseWorkspace->getName() : 'live',
-                'invisibleContentShown' => false,
-                'removedContentShown' => false,
-                'inaccessibleContentShown' => false,
-            ];
-            $baseWorkspaceContext = $this->contextFactory->create(array_merge($node->getContext()->getProperties(), $baseWorkspaceContextProperties));
-            $node = $baseWorkspaceContext->getNodeByIdentifier($node->getIdentifier());
-            if ($node === null) {
-                return '';
-            }
-        }
-        if ($node->isHidden() || !$node->getNodeType()->isAggregate()) {
+        // we always want to redirect to the node in the base workspace.
+        $baseWorkspace = $node->getContext()->getWorkspace(false)->getBaseWorkspace();
+        $baseWorkspaceContextProperties = [
+            'workspaceName' => $baseWorkspace !== null ? $baseWorkspace->getName() : 'live',
+            'invisibleContentShown' => false,
+            'removedContentShown' => false,
+            'inaccessibleContentShown' => false,
+        ];
+        $baseWorkspaceContext = $this->contextFactory->create(array_merge($node->getContext()->getProperties(), $baseWorkspaceContextProperties));
+        $nodeInBaseWorkspace = $baseWorkspaceContext->getNodeByIdentifier($node->getIdentifier());
+        if ($nodeInBaseWorkspace === null || $nodeInBaseWorkspace->isHidden() || !$nodeInBaseWorkspace->getNodeType()->isAggregate()) {
             return '';
         }
         return $controllerContext->getUriBuilder()
             ->reset()
             ->setCreateAbsoluteUri(true)
             ->setFormat('html')
-            ->uriFor('redirectTo', ['node' => $node], 'Backend', 'Neos.Neos.Ui');
+            ->uriFor('redirectTo', ['node' => $nodeInBaseWorkspace], 'Backend', 'Neos.Neos.Ui');
     }
 
     /**

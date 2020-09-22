@@ -119,7 +119,7 @@ class NodePolicyService
         $nodeNodeType = $node->getNodeType();
 
         $superTypes = [];
-        $generateSuperTypes = function(array $nodeTypes, &$superTypes) use (&$generateSuperTypes) {
+        $generateSuperTypes = function (array $nodeTypes, &$superTypes) use (&$generateSuperTypes) {
             foreach ($nodeTypes as $nodeType) {
                 $superTypes[$nodeType->getName()] = $nodeType;
                 $generateSuperTypes($nodeType->getDeclaredSuperTypes(), $superTypes);
@@ -131,7 +131,7 @@ class NodePolicyService
         try {
             $parentNode = $node->findParentNode();
             $parentNodeType = $parentNode->getNodeType();
-        }catch(NodeException $exception){
+        } catch (NodeException $exception) {
             // no parentNode found
         }
 
@@ -150,16 +150,15 @@ class NodePolicyService
                 if ($parentNodeType && $parentNodeType->allowsGrandchildNodeType($nodeName, $nodeType)) {
                     return true;
                 }
-            }
-            else if ($nodeNodeType->allowsChildNodeType($nodeType)) {
+            } elseif ($nodeNodeType->allowsChildNodeType($nodeType)) {
                 return true;
             }
             // check if the nodeType is a supertype
-            else if (isset($superTypes[$nodeType->getName()])) {
+            elseif (isset($superTypes[$nodeType->getName()])) {
                 return true;
             }
             // check if the nodeType is the same as that of the current $node's nodeType
-            else if ($nodeType->getName() == $nodeNodeType->getName()) {
+            elseif ($nodeType->getName() == $nodeNodeType->getName()) {
                 return true;
             }
 

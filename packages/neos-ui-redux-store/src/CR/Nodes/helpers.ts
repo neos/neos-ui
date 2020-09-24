@@ -62,7 +62,7 @@ export const mergeChildren = (node?: Node, newNode?: Node) => {
     } = {};
 
     // First merge children arrays
-    const mergedChildren = [...(node?.children || []), ...(newNode?.children || [])];
+    const mergedChildren = [...(node ? node.children : []), ...(newNode ? newNode.children : [])];
     // Than return unique children
     return mergedChildren.filter((node) => {
         const exists = existingNodes[node.contextPath];

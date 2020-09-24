@@ -7,7 +7,16 @@ import {actions, actionTypes} from '@neos-project/neos-ui-redux-store';
 export default function * watchReloadState({configuration}) {
     yield takeLatest(actionTypes.CR.Nodes.RELOAD_STATE, function * reloadState(action) {
         const {q} = backend.get();
+
         const currentSiteNodeContextPath = yield select($get('cr.nodes.siteNode'));
+        const query = yield select($get('ui.pageTree.query'));
+        const filterNodeType = yield select($get('ui.pageTree.filterNodeType'));
+        // If either search of filtering presets are set, we should re-commence the search instead of default nodes reload
+        if (query || filterNodeType) {
+            yield put(actions.UI.PageTree.commenceSearch(currentSiteNodeContextPath, {query, filterNodeType}));
+            return;
+        }
+
         const clipboardNodeContextPath = yield select($get('cr.nodes.clipboard'));
         const toggledNodes = yield select($get('ui.pageTree.toggled'));
         const siteNodeContextPath = $get('payload.siteNodeContextPath', action) || currentSiteNodeContextPath;

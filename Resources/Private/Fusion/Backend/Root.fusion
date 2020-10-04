@@ -11,7 +11,7 @@ backend = Neos.Fusion:Template {
     headStylesheets = ${headStylesheets}
     splashScreenPartial = ${splashScreenPartial}
 
-    headIcons = Neos.Fusion:Array {
+    headIcons = Neos.Fusion:Join {
         appleTouchIcon = Neos.Fusion:Tag {
             tagName = 'link'
             attributes {
@@ -56,17 +56,17 @@ backend = Neos.Fusion:Template {
         }
     }
 
-    configuration = Neos.Fusion:RawArray {
+    configuration = Neos.Fusion:DataStructure {
         nodeTree = ${Configuration.setting('Neos.Neos.userInterface.navigateComponent.nodeTree')}
         structureTree = ${Configuration.setting('Neos.Neos.userInterface.navigateComponent.structureTree')}
         allowedTargetWorkspaces = ${Neos.Ui.Workspace.getAllowedTargetWorkspaces()}
-        endpoints = Neos.Fusion:RawArray {
+        endpoints = Neos.Fusion:DataStructure {
             nodeTypeSchema = Neos.Fusion:UriBuilder {
                 package = 'Neos.Neos'
                 controller = 'Backend\\Schema'
                 action = 'nodeTypeSchema'
                 absolute = true
-                arguments = Neos.Fusion:RawArray {
+                arguments = Neos.Fusion:DataStructure {
                     # TODO: dirty hack to not have to re-implement neos:backend.configurationCacheVersion VH
                     version = Neos.Fusion:Template {
                         templatePath = 'resource://Neos.Neos.Ui/Private/Templates/Backend/ConfigurationVersion.html'
@@ -79,7 +79,7 @@ backend = Neos.Fusion:Template {
                 controller = 'Backend\\Backend'
                 action = 'xliffAsJson'
                 absolute = true
-                arguments = Neos.Fusion:RawArray {
+                arguments = Neos.Fusion:DataStructure {
                     locale = ${interfaceLanguage}
 
                     # TODO: dirty hack to not have to re-implement neos:backend.configurationCacheVersion VH
@@ -93,13 +93,13 @@ backend = Neos.Fusion:Template {
         @process.json = ${Json.stringify(value)}
     }
 
-    routes = Neos.Fusion:RawArray {
+    routes = Neos.Fusion:DataStructure {
         prototype(Neos.Fusion:UriBuilder) {
             absolute = true
         }
 
-        ui = Neos.Fusion:RawArray {
-            service = Neos.Fusion:RawArray {
+        ui = Neos.Fusion:DataStructure {
+            service = Neos.Fusion:DataStructure {
                 prototype(Neos.Fusion:UriBuilder) {
                     package = 'Neos.Neos.Ui'
                     controller = 'BackendService'
@@ -140,12 +140,12 @@ backend = Neos.Fusion:Template {
                 }
             }
         }
-        core = Neos.Fusion:RawArray {
+        core = Neos.Fusion:DataStructure {
             prototype(Neos.Fusion:UriBuilder) {
                 package = 'Neos.Neos'
             }
 
-            content = Neos.Fusion:RawArray {
+            content = Neos.Fusion:DataStructure {
                 prototype(Neos.Fusion:UriBuilder) {
                     controller = 'Backend\\Content'
                 }
@@ -166,7 +166,7 @@ backend = Neos.Fusion:Template {
                     action = 'uploadAsset'
                 }
             }
-            service = Neos.Fusion:RawArray {
+            service = Neos.Fusion:DataStructure {
                 assetProxies = Neos.Fusion:UriBuilder {
                     controller = 'Service\\AssetProxies'
                     action = 'index'
@@ -197,7 +197,7 @@ backend = Neos.Fusion:Template {
                     action = 'index'
                 }
             }
-            modules = Neos.Fusion:RawArray {
+            modules = Neos.Fusion:DataStructure {
                 prototype(Neos.Fusion:UriBuilder) {
                     controller = 'Backend\\Module'
                 }
@@ -240,15 +240,15 @@ backend = Neos.Fusion:Template {
         @process.json = ${Json.stringify(value)}
     }
 
-    nodeTypes = Neos.Fusion:RawArray {
+    nodeTypes = Neos.Fusion:DataStructure {
         roles = ${Configuration.setting('Neos.Neos.Ui.nodeTypeRoles')}
         groups = ${Neos.Ui.PositionalArraySorter.sort(Configuration.setting('Neos.Neos.nodeTypes.groups'))}
 
         @process.json = ${Json.stringify(value)}
     }
 
-    menu = Neos.Fusion:RawArray {
-        content = Neos.Fusion:RawArray {
+    menu = Neos.Fusion:DataStructure {
+        content = Neos.Fusion:DataStructure {
             label = 'Neos.Neos:Main:content'
             icon = 'file'
             uri = Neos.Neos:NodeUri {
@@ -259,7 +259,7 @@ backend = Neos.Fusion:Template {
             children = Neos.Neos.Ui:ArrayCollection {
                 collection = ${sitesForMenu}
                 itemName = 'currentSiteInMenu'
-                itemRenderer = Neos.Fusion:RawArray {
+                itemRenderer = Neos.Fusion:DataStructure {
                     icon = 'globe'
                     label = ${currentSiteInMenu.name}
                     uri = ${currentSiteInMenu.uri}
@@ -277,7 +277,7 @@ backend = Neos.Fusion:Template {
             itemKey = 'moduleName'
 
             itemKeyRenderer = ${moduleName}
-            itemRenderer = Neos.Fusion:RawArray {
+            itemRenderer = Neos.Fusion:DataStructure {
                 label = ${module.label}
                 icon = ${module.icon}
                 uri = Neos.Fusion:UriBuilder {
@@ -296,7 +296,7 @@ backend = Neos.Fusion:Template {
                     itemName = 'submodule'
                     itemKey = 'submoduleName'
 
-                    itemRenderer = Neos.Fusion:RawArray {
+                    itemRenderer = Neos.Fusion:DataStructure {
                         icon = ${submodule.icon}
                         label = ${submodule.label}
                         uri = Neos.Fusion:UriBuilder {

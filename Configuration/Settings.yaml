@@ -213,8 +213,6 @@ Neos:
           position: 'before Neos.Neos'
   Fusion:
     defaultContext:
-      Neos.Ui.Sites: Neos\Neos\Ui\Fusion\Helper\SitesHelper
-      Neos.Ui.Modules: Neos\Neos\Ui\Fusion\Helper\ModulesHelper
       Neos.Ui.Workspace: Neos\Neos\Ui\Fusion\Helper\WorkspaceHelper
       Neos.Ui.StaticResources: Neos\Neos\Ui\Fusion\Helper\StaticResourcesHelper
       Neos.Ui.PositionalArraySorter: Neos\Neos\Ui\Fusion\Helper\PositionalArraySorterHelper

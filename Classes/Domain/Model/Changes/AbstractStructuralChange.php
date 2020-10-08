@@ -51,6 +51,33 @@ abstract class AbstractStructuralChange extends AbstractChange
     protected $cachedSiblingNode = null;
 
     /**
+     * Used when creating nodes within non-default tree preset
+     *
+     * @var string|null
+     */
+    protected $baseNodeType = null;
+
+    /**
+     * Set the baseNodeType
+     *
+     * @param string $baseNodeType
+     */
+    public function setBaseNodeType($baseNodeType)
+    {
+        $this->baseNodeType = $baseNodeType;
+    }
+
+    /**
+     * Get the baseNodeType
+     *
+     * @return string|null
+     */
+    public function getBaseNodeType()
+    {
+        return $this->baseNodeType;
+    }
+
+    /**
      * Get the insertion mode (before|after|into) that is represented by this change
      *
      * @return string
@@ -133,6 +160,7 @@ abstract class AbstractStructuralChange extends AbstractChange
 
         $updateParentNodeInfo = new UpdateNodeInfo();
         $updateParentNodeInfo->setNode($node->getParent());
+        $updateParentNodeInfo->setBaseNodeType($this->baseNodeType);
         $this->feedbackCollection->add($updateParentNodeInfo);
 
         $this->updateWorkspaceInfo();

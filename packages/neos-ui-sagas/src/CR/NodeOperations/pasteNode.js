@@ -29,11 +29,16 @@ export default function * pasteNode({globalRegistry}) {
         );
 
         if (mode) {
+            const baseNodeType = yield select($get('ui.pageTree.filterNodeType'));
+
             yield put(actions.CR.Nodes.commitPaste(clipboardMode));
             yield put(actions.Changes.persistChanges([{
                 type: calculateChangeTypeFromMode(mode, clipboardMode),
                 subject,
-                payload: calculateDomAddressesFromMode(mode, reference, fusionPath)
+                payload: {
+                    ...calculateDomAddressesFromMode(mode, reference, fusionPath),
+                    baseNodeType
+                }
             }]));
         }
     });

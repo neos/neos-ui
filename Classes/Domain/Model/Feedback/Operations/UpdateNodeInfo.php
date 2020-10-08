@@ -33,6 +33,28 @@ class UpdateNodeInfo extends AbstractFeedback
 
     protected $isRecursive = false;
 
+    protected $baseNodeType = null;
+
+    /**
+     * Set the baseNodeType
+     *
+     * @param string $baseNodeType
+     */
+    public function setBaseNodeType($baseNodeType)
+    {
+        $this->baseNodeType = $baseNodeType;
+    }
+
+    /**
+     * Get the baseNodeType
+     *
+     * @return string|null
+     */
+    public function getBaseNodeType()
+    {
+        return $this->baseNodeType;
+    }
+
     /**
      * Set the node
      *
@@ -122,7 +144,7 @@ class UpdateNodeInfo extends AbstractFeedback
     public function serializeNodeRecursively(NodeInterface $node, ControllerContext $controllerContext)
     {
         $result = [
-            $node->getContextPath() => $this->nodeInfoHelper->renderNodeWithPropertiesAndChildrenInformation($node, $controllerContext)
+            $node->getContextPath() => $this->nodeInfoHelper->renderNodeWithPropertiesAndChildrenInformation($node, $controllerContext, $this->baseNodeType)
         ];
 
         if ($this->isRecursive === true) {

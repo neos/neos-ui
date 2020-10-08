@@ -246,7 +246,7 @@ backend = Neos.Fusion:Template {
         @process.json = ${Json.stringify(value)}
     }
 
-    menu = Neos.Neos.Ui:Component.Menu
+    menu = Neos.Neos.Ui:Component.ModuleMenu
 
     initialState = Neos.Neos.Ui:RenderConfiguration {
         path = 'initialState'

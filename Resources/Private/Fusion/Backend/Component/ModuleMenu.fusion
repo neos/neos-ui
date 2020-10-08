@@ -1,10 +1,11 @@
-prototype(Neos.Neos.Ui:Component.Menu) < prototype(Neos.Fusion:Map) {
+prototype(Neos.Neos.Ui:Component.ModuleMenu) < prototype(Neos.Fusion:Map) {
     items = ${modulesForMenu}
     itemName = 'module'
     itemKey = 'moduleName'
 
     keyRenderer = ${moduleName}
     itemRenderer = Neos.Fusion:DataStructure {
+        @if.moduleNotHidden = ${module.hideInMenu != true}
         label = ${module.label}
         icon = ${module.icon}
         uri = ${module.uri}
@@ -40,17 +41,20 @@ prototype(Neos.Neos.Ui:Component.Menu) < prototype(Neos.Fusion:Map) {
 
                     keyRenderer = ${iteration.index}
                     itemRenderer = Neos.Fusion:DataStructure {
+                        @if.moduleNotHidden = ${submodule.hideInMenu != true}
                         icon = ${submodule.icon}
                         label = ${submodule.label}
                         uri = ${submodule.uri}
                         isActive = true
                         target = 'Window'
                     }
+
+                    @process.filterHiddenSubmodules = ${Array.filter(value, (x, index) => x != null)}
                 }
             }
         }
     }
 
-
+    @process.filterHiddenModules = ${Array.filter(value, (x, index) => x != null)}
     @process.json = ${Json.stringify(value)}
 }

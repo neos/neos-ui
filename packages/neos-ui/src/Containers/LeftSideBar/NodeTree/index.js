@@ -19,8 +19,6 @@ export default class NodeTree extends PureComponent {
         rootNode: PropTypes.object,
         allowOpeningNodesInNewWindow: PropTypes.bool,
         nodeTypeRole: PropTypes.string,
-        contentCanvasSrc: PropTypes.string,
-        reload: PropTypes.func,
         toggle: PropTypes.func,
         focus: PropTypes.func,
         requestScrollIntoView: PropTypes.func,
@@ -50,7 +48,7 @@ export default class NodeTree extends PureComponent {
     }
 
     handleClick = (src, contextPath, openInNewWindow) => {
-        const {setActiveContentCanvasSrc, setActiveContentCanvasContextPath, requestScrollIntoView, allowOpeningNodesInNewWindow, reload, contentCanvasSrc} = this.props;
+        const {setActiveContentCanvasSrc, setActiveContentCanvasContextPath, requestScrollIntoView, allowOpeningNodesInNewWindow} = this.props;
         if (openInNewWindow && allowOpeningNodesInNewWindow) {
             window.open(window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port : '') + window.location.pathname + '?node=' + contextPath);
             return;
@@ -65,10 +63,6 @@ export default class NodeTree extends PureComponent {
         }
         if (setActiveContentCanvasContextPath) {
             setActiveContentCanvasContextPath(contextPath);
-        }
-        // Trigger reload if clicking on the current document node
-        if (reload && contentCanvasSrc === src) {
-            reload();
         }
     }
 
@@ -124,12 +118,10 @@ export default class NodeTree extends PureComponent {
 export const PageTree = connect(state => ({
     rootNode: selectors.CR.Nodes.siteNodeSelector(state),
     ChildRenderer: PageTreeNode,
-    allowOpeningNodesInNewWindow: true,
-    contentCanvasSrc: $get('ui.contentCanvas.src', state)
+    allowOpeningNodesInNewWindow: true
 }), {
     toggle: actions.UI.PageTree.toggle,
     focus: actions.UI.PageTree.focus,
-    reload: actions.UI.ContentCanvas.reload,
     setActiveContentCanvasSrc: actions.UI.ContentCanvas.setSrc,
     setActiveContentCanvasContextPath: actions.CR.Nodes.setDocumentNode,
     moveNode: actions.CR.Nodes.move,

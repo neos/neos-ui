@@ -8,7 +8,7 @@ import Tree from '@neos-project/react-ui-components/src/Tree/';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 import {stripTags, decodeHtml} from '@neos-project/utils-helpers';
 
-import {selectors} from '@neos-project/neos-ui-redux-store';
+import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {isNodeCollapsed} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/helpers';
 import {neos} from '@neos-project/neos-ui-decorators';
 
@@ -341,10 +341,14 @@ export default class Node extends PureComponent {
     }
 
     handleNodeClick = e => {
-        const {node, onNodeFocus, onNodeClick} = this.props;
+        const {node, onNodeFocus, onNodeClick, isFocused, reload} = this.props;
         const openInNewWindow = e.metaKey || e.shiftKey || e.ctrlKey;
         onNodeFocus($get('contextPath', node), openInNewWindow);
-        onNodeClick($get('uri', node), $get('contextPath', node), openInNewWindow);
+
+        // Trigger reload if clicking on the current document node
+        if (isFocused && reload) {
+            reload();
+        }
     }
 }
 
@@ -377,6 +381,7 @@ export const PageTreeNode = withNodeTypeRegistryAndI18nRegistry(connect(
             loadingNodeContextPaths: selectors.UI.PageTree.getLoading(state),
             errorNodeContextPaths: selectors.UI.PageTree.getErrors(state),
             isNodeDirty: isDocumentNodeDirtySelector(state, $get('contextPath', node)),
+            filterNodeType: $get('ui.pageTree.filterNodeType', state),
             canBeInsertedAlongside: canBeMovedAlongsideSelector(state, {
                 subject: getContextPath(currentlyDraggedNode),
                 reference: getContextPath(node)
@@ -386,6 +391,9 @@ export const PageTreeNode = withNodeTypeRegistryAndI18nRegistry(connect(
                 reference: getContextPath(node)
             })
         });
+    },
+    {
+        reload: actions.UI.ContentCanvas.reload,
     }
 )(Node));
 

@@ -402,7 +402,7 @@ export const PageTreeNode = withNodeTypeRegistryAndI18nRegistry(connect(
         });
     },
     {
-        reload: actions.UI.ContentCanvas.reload,
+        reload: actions.UI.ContentCanvas.reload
     }
 )(Node));
 

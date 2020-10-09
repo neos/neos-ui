@@ -178,15 +178,15 @@ export default class ContentCanvas extends PureComponent {
                 // Append presetBaseNodeType param to all internal links
                 const internalLinks = iframe.contentWindow.document.querySelectorAll('a[href*="@user-"]');
                 internalLinks.forEach(link => {
-                    link.addEventListener('click', e => {
+                    link.addEventListener('click', () => {
                         if (this.props.baseNodeType) {
                             link.setAttribute(
                                 'href',
                                 urlAppendParams(link.href, {presetBaseNodeType: this.props.baseNodeType})
                             );
                         }
-                    })
-                })
+                    });
+                });
 
                 this.setState({
                     isVisible: true,

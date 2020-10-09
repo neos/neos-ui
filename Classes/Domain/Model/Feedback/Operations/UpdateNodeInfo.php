@@ -40,7 +40,7 @@ class UpdateNodeInfo extends AbstractFeedback
      *
      * @param string $baseNodeType
      */
-    public function setBaseNodeType($baseNodeType)
+    public function setBaseNodeType(string $baseNodeType): void
     {
         $this->baseNodeType = $baseNodeType;
     }
@@ -50,7 +50,7 @@ class UpdateNodeInfo extends AbstractFeedback
      *
      * @return string|null
      */
-    public function getBaseNodeType()
+    public function getBaseNodeType(): ?string
     {
         return $this->baseNodeType;
     }

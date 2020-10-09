@@ -62,7 +62,7 @@ abstract class AbstractStructuralChange extends AbstractChange
      *
      * @param string $baseNodeType
      */
-    public function setBaseNodeType($baseNodeType)
+    public function setBaseNodeType(string $baseNodeType): void
     {
         $this->baseNodeType = $baseNodeType;
     }
@@ -72,7 +72,7 @@ abstract class AbstractStructuralChange extends AbstractChange
      *
      * @return string|null
      */
-    public function getBaseNodeType()
+    public function getBaseNodeType(): ?string
     {
         return $this->baseNodeType;
     }

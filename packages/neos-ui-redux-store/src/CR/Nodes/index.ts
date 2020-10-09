@@ -4,7 +4,7 @@ import {action as createAction, ActionType} from 'typesafe-actions';
 import {actionTypes as system, InitAction} from '@neos-project/neos-ui-redux-store/src/System';
 
 import * as selectors from './selectors';
-import {parentNodeContextPath, getNodeOrThrow, mergeChildren} from './helpers';
+import {parentNodeContextPath, getNodeOrThrow} from './helpers';
 
 import {FusionPath, NodeContextPath, InsertPosition, NodeMap, ClipboardMode, NodeTypeName} from '@neos-project/neos-ts-interfaces';
 
@@ -402,8 +402,9 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
                     throw new Error('This error should never be thrown, it\'s a way to fool TypeScript');
                 }
                 const mergedNode = mergeDeepRight(draft.byContextPath[contextPath], newNode);
+                // Force overwrite of children
                 if (newNode.children !== undefined) {
-                    mergedNode.children = mergeChildren(draft.byContextPath[contextPath], newNode);
+                    mergedNode.children = newNode.children;
                 }
                 // Force overwrite of matchesCurrentDimensions
                 if (newNode.matchesCurrentDimensions !== undefined) {

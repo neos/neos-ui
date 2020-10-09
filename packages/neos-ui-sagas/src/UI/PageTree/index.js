@@ -197,7 +197,7 @@ export function * watchSearch({configuration}) {
                         if (isCollapsed) {
                             toggledContextPaths.push(contextPath);
                         }
-    
+
                         if (!node.matched) {
                             intermediateContextPaths.push(contextPath);
                         }

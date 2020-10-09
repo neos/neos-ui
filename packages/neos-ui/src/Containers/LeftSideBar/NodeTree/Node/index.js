@@ -352,10 +352,10 @@ export default class Node extends PureComponent {
         }
 
         // Append presetBaseNodeType param to src
-        const srcWithBaseNodeType = urlWithParams(
+        const srcWithBaseNodeType = this.props.filterNodeType ? urlWithParams(
             $get('uri', node),
             {presetBaseNodeType: this.props.filterNodeType}
-        );
+        ) : $get('uri', node);
 
         onNodeClick(srcWithBaseNodeType, $get('contextPath', node), openInNewWindow);
     }

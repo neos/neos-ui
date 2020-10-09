@@ -497,6 +497,11 @@ export default (routes: Routes) => {
                     numberOfNodesMissingOnRootline
                 };
             }
+
+            if (result.status === 403) {
+                throw new Error('You are not authorized to perform this action.');
+            }
+
             throw new Error('Unexpected return code when trying to get the node data');
         });
     };

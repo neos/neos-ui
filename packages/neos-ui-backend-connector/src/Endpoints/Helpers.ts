@@ -60,7 +60,7 @@ export const urlAppendParams = (urlString: string, params: {[key: string]: strin
     });
     url.search = searchParams.toString();
     return url.toString();
-}
+};
 
 /**
  *

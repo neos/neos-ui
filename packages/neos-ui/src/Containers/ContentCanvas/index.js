@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
 
-import {urlWithParams} from '@neos-project/neos-ui-backend-connector/src/Endpoints/Helpers';
+import {urlAppendParams} from '@neos-project/neos-ui-backend-connector/src/Endpoints/Helpers';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 
@@ -182,7 +182,7 @@ export default class ContentCanvas extends PureComponent {
                         if (this.props.baseNodeType) {
                             link.setAttribute(
                                 'href',
-                                urlWithParams(link.href, {presetBaseNodeType: this.props.baseNodeType})
+                                urlAppendParams(link.href, {presetBaseNodeType: this.props.baseNodeType})
                             );
                         }
                     })

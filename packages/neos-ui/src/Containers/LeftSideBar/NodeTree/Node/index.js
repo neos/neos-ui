@@ -15,6 +15,7 @@ import {neos} from '@neos-project/neos-ui-decorators';
 import animate from 'amator';
 import hashSum from 'hash-sum';
 import moment from 'moment';
+import {urlWithParams} from '@neos-project/neos-ui-backend-connector/src/Endpoints/Helpers';
 
 const getContextPath = $get('contextPath');
 
@@ -349,6 +350,14 @@ export default class Node extends PureComponent {
         if (isFocused && reload) {
             reload();
         }
+
+        // Append presetBaseNodeType param to src
+        const srcWithBaseNodeType = urlWithParams(
+            $get('uri', node),
+            {presetBaseNodeType: this.props.filterNodeType}
+        );
+
+        onNodeClick(srcWithBaseNodeType, $get('contextPath', node), openInNewWindow);
     }
 }
 

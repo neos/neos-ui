@@ -143,7 +143,7 @@ const commenceRemovalMultiple = (contextPaths: NodeContextPath[]) => createActio
  * @param {String} preferredMode (optional) The default mode to use in the nodetype selection dialog. Currently not used withing the system but may be useful for extensibility.
  * @param {String} nodeType (optional) If set, then the select nodetype step would be skipped completely. Currently not used withing the system but may be useful for extensibility.
  */
-const commenceCreation = (referenceNodeContextPath: NodeContextPath, referenceNodeFusionPath: FusionPath, preferredMode: InsertPosition = InsertPosition.AFTER, nodeType: NodeTypeName | null = null) => createAction(actionTypes.COMMENCE_CREATION, {
+const commenceCreation = (referenceNodeContextPath: NodeContextPath, referenceNodeFusionPath: FusionPath, preferredMode: InsertPosition = InsertPosition.INTO, nodeType: NodeTypeName | null = null) => createAction(actionTypes.COMMENCE_CREATION, {
     referenceNodeContextPath,
     referenceNodeFusionPath,
     preferredMode,

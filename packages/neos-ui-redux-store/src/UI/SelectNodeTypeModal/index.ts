@@ -4,7 +4,7 @@ import {action as createAction, ActionType} from 'typesafe-actions';
 import {InitAction} from '@neos-project/neos-ui-redux-store/src/System';
 import {NodeContextPath, InsertPosition, NodeTypeName} from '@neos-project/neos-ts-interfaces';
 
-const PREFERRED_MODE_DEFAULT = InsertPosition.INTO;
+const PREFERRED_MODE_DEFAULT = InsertPosition.AFTER;
 
 export interface State extends Readonly<{
     isOpen: boolean;

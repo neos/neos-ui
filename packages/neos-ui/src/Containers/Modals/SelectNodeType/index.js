@@ -23,12 +23,12 @@ const calculateInitialMode = (allowedSiblingNodeTypes, allowedChildNodeTypes, pr
     ) {
         return preferredMode;
     }
+    if (allowedSiblingNodeTypes.length) {
+        return 'after';
+    }
 
     if (allowedChildNodeTypes.length) {
         return 'into';
-    }
-    if (allowedSiblingNodeTypes.length) {
-        return 'after';
     }
 
     return '';

@@ -7,6 +7,7 @@ import {isEqualSet} from '@neos-project/utils-helpers';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 import {hasNestedNodes} from '@neos-project/neos-ui/src/Containers/LeftSideBar/NodeTree/helpers';
+import {InsertPosition} from '@neos-project/neos-ts-interfaces';
 
 import {
     AddNode,
@@ -58,9 +59,9 @@ export default class NodeTreeToolBar extends PureComponent {
     };
 
     handleAddNode = contextPath => {
-        const {addNode} = this.props;
+        const {addNode, treeType} = this.props;
 
-        addNode(contextPath);
+        addNode(contextPath, undefined, treeType === 'PageTree' ? InsertPosition.AFTER : InsertPosition.INTO);
     }
 
     handleHideNode = () => {

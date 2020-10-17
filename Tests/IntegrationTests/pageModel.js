@@ -32,11 +32,13 @@ export class DimensionSwitcher {
 
     static dimensionSwitcherFirstDimensionSelector = ReactSelector('DimensionSwitcher SelectBox');
 
+    static dimensionSwitcherFirstDimensionSelectorWithShallowDropDownContents = ReactSelector('DimensionSwitcher SelectBox ShallowDropDownContents');
+
     static async switchLanguageDimension(name) {
         await t
             .click(this.dimensionSwitcher)
             .click(this.dimensionSwitcherFirstDimensionSelector)
-            .click(this.dimensionSwitcherFirstDimensionSelector.find('li').withText(name));
+            .click(this.dimensionSwitcherFirstDimensionSelectorWithShallowDropDownContents.find('li').withText(name));
     }
 }
 

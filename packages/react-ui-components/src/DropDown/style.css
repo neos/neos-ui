@@ -54,7 +54,8 @@
     box-shadow: 0 5px 5px rgba(0, 0, 0, .2);
 }
 .dropDown__contents--scrollable {
-    max-height: 80vh;
+    position: fixed;
+    top: auto;
     overflow-y: auto;
 }
 .dropDown__contents--isOpen {

@@ -632,6 +632,48 @@
       </node>
      </node>
     </node>
+    <node identifier="f25d1518-60c2-4842-b2b0-bbd449697e77" nodeName="node-xel5da127kla5">
+     <variant sortingIndex="600" workspace="live" nodeType="Neos.TestNodeTypes:Document.Page" version="3" removed="" hidden="" hiddenInIndex="">
+      <dimensions>
+       <language>en_US</language>
+      </dimensions>
+      <accessRoles __type="array"/>
+      <creationDateTime __type="object" __classname="DateTime">2019-03-21T17:56:22+00:00</creationDateTime>
+      <lastModificationDateTime __type="object" __classname="DateTime">2019-03-21T17:57:31+00:00</lastModificationDateTime>
+      <lastPublicationDateTime __type="object" __classname="DateTime">2019-03-21T17:57:30+00:00</lastPublicationDateTime>
+      <properties>
+       <uriPathSegment __type="string">select-boxes</uriPathSegment>
+       <title __type="string">Select Boxes</title>
+      </properties>
+     </variant>
+     <node identifier="1fd64db3-c35f-4604-ad25-de0ef6d2bb32" nodeName="main">
+      <variant sortingIndex="100" workspace="live" nodeType="Neos.Neos:ContentCollection" version="2" removed="" hidden="" hiddenInIndex="">
+       <dimensions>
+        <language>en_US</language>
+       </dimensions>
+       <accessRoles __type="array"/>
+       <creationDateTime __type="object" __classname="DateTime">2019-03-21T17:56:22+00:00</creationDateTime>
+       <lastModificationDateTime __type="object" __classname="DateTime">2019-03-21T17:57:31+00:00</lastModificationDateTime>
+       <lastPublicationDateTime __type="object" __classname="DateTime">2019-03-21T17:57:30+00:00</lastPublicationDateTime>
+       <properties/>
+      </variant>
+     </node>
+     <node identifier="3938292e-bf62-472a-a701-baf6e9ff395f" nodeName="node-hg78tr7bvmmn4r">
+      <variant sortingIndex="200" workspace="live" nodeType="Neos.TestNodeTypes:Document.SelectBoxTestPage.OpensAboveInInspector" version="2" removed="" hidden="" hiddenInIndex="">
+       <dimensions>
+        <language>en_US</language>
+       </dimensions>
+       <accessRoles __type="array"/>
+       <creationDateTime __type="object" __classname="DateTime">2019-03-21T17:56:50+00:00</creationDateTime>
+       <lastModificationDateTime __type="object" __classname="DateTime">2019-03-21T17:57:31+00:00</lastModificationDateTime>
+       <lastPublicationDateTime __type="object" __classname="DateTime">2019-03-21T17:57:30+00:00</lastPublicationDateTime>
+       <properties>
+        <uriPathSegment __type="string">select-box-opens-above-in-inspector</uriPathSegment>
+        <title __type="string">SelectBox opens above in Inspector</title>
+       </properties>
+      </variant>
+     </node>
+    </node>
    </node>
   </nodes>
  </site>

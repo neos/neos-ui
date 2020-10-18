@@ -1,0 +1,118 @@
+'Neos.TestNodeTypes:Document.SelectBoxTestPage.OpensAboveInInspector':
+  superTypes:
+    'Neos.Neos:Document': true
+
+  ui:
+    group: selectBoxes
+    icon: file
+    label: 'SelectBox opens above in Inspector'
+    inspector:
+      groups:
+        test:
+          label: Test
+  properties:
+    TextField:
+      type: string
+      ui:
+        label: 'TextField #0'
+        inspector:
+          group: test
+    TextField1:
+      type: string
+      ui:
+        label: 'TextField #1'
+        inspector:
+          group: test
+    TextField2:
+      type: string
+      ui:
+        label: 'TextField #2'
+        inspector:
+          group: test
+    TextField3:
+      type: string
+      ui:
+        label: 'TextField #3'
+        inspector:
+          group: test
+    TextField4:
+      type: string
+      ui:
+        label: 'TextField #4'
+        inspector:
+          group: test
+    TextField5:
+      type: string
+      ui:
+        label: 'TextField #5'
+        inspector:
+          group: test
+    TextField6:
+      type: string
+      ui:
+        label: 'TextField #6'
+        inspector:
+          group: test
+    TextField7:
+      type: string
+      ui:
+        label: 'TextField #7'
+        inspector:
+          group: test
+    TextField8:
+      type: string
+      ui:
+        label: 'TextField #8'
+        inspector:
+          group: test
+    selectBox:
+      type: string
+      ui:
+        label: 'SelectBox'
+        inspector:
+          group: test
+          editor: 'Neos.Neos/Inspector/Editors/SelectBoxEditor'
+          editorOptions:
+            values:
+              option:
+                label: 'Too many options... #0'
+              option1:
+                label: 'Too many options... #1'
+              option2:
+                label: 'Too many options... #2'
+              option3:
+                label: 'Too many options... #3'
+              option4:
+                label: 'Too many options... #4'
+              option5:
+                label: 'Too many options... #5'
+              option6:
+                label: 'Too many options... #6'
+              option7:
+                label: 'Too many options... #7'
+              option8:
+                label: 'Too many options... #8'
+              option9:
+                label: 'Too many options... #9'
+              option10:
+                label: 'Too many options... #10'
+              option11:
+                label: 'Too many options... #11'
+              option12:
+                label: 'Too many options... #12'
+              option13:
+                label: 'Too many options... #13'
+              option14:
+                label: 'Too many options... #14'
+              option15:
+                label: 'Too many options... #15'
+              option16:
+                label: 'Too many options... #16'
+              option17:
+                label: 'Too many options... #17'
+              option18:
+                label: 'Too many options... #18'
+              option19:
+                label: 'Too many options... #19'
+              option20:
+                label: 'Too many options... #20'

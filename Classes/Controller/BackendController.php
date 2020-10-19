@@ -178,13 +178,14 @@ class BackendController extends ActionController
 
     /**
      * @param NodeInterface $node
+     * @param string $presetBaseNodeType
      * @throws StopActionException
      */
-    public function redirectToAction(NodeInterface $node)
+    public function redirectToAction(NodeInterface $node, string $presetBaseNodeType = null)
     {
         $this->response->getHeaders()->setCacheControlDirective('no-cache');
         $this->response->getHeaders()->setCacheControlDirective('no-store');
-        $this->redirect('show', 'Frontend\Node', 'Neos.Neos', ['node' => $node]);
+        $this->redirect('show', 'Frontend\Node', 'Neos.Neos', ['node' => $node, 'presetBaseNodeType' => $presetBaseNodeType]);
     }
 
     /**

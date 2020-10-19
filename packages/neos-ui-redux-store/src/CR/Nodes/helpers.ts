@@ -54,19 +54,3 @@ export const getNodeOrThrow = (nodeMap: NodeMap, contextPath: NodeContextPath) =
     }
     return node;
 };
-
-// We have to merge children and not just override them, as there still may be children from different node tree preset, and we shouldn't overwrite
-export const mergeChildren = (node?: Node, newNode?: Node) => {
-    const existingNodes: {
-        [key: string]: boolean
-    } = {};
-
-    // First merge children arrays
-    const mergedChildren = [...(node ? node.children : []), ...(newNode ? newNode.children : [])];
-    // Than return unique children
-    return mergedChildren.filter((node) => {
-        const exists = existingNodes[node.contextPath];
-        existingNodes[node.contextPath] = true;
-        return !exists;
-    });
-};

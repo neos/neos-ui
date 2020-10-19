@@ -7,6 +7,7 @@
 }
 .dropDown__contents {
     width: fit-content;
+    min-width: 100%;
     padding: 0 2px 2px 2px !important;
     background-color: var(--colors-ContrastDarker) !important;
     box-shadow: 0 5px 5px rgba(0, 0, 0, .2);
@@ -16,7 +17,11 @@
 }
 .dimensionCategory {
     background-color: var(--colors-ContrastDarkest);
-    padding: 0 1rem 1rem 1rem;
+    padding: var(--spacing-Full);
+}
+
+.dimensionCategory + .dimensionCategory {
+    padding-top: 0;
 }
 
 .cancelButton {
@@ -29,10 +34,13 @@
 }
 
 .buttonGroup {
-    text-align: right;
-    margin-top: var(--spacing-Half);
+    display: flex;
+    padding: var(--spacing-Half);
 }
 
+.buttonGroup button {
+    flex: 1 0 auto;
+}
 @media only screen and (max-width: 1024px) {
     .selectPresetLabel {
         display: none;
@@ -41,4 +49,8 @@
 
 .dimmed {
     filter: opacity(50%);
+}
+
+.selectPreset + .selectPreset {
+    margin-left: var(--spacing-Half);
 }

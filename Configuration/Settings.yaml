@@ -111,12 +111,11 @@ Neos:
         metaData:
           documentNode: '${q(documentNode).property("_contextPath")}'
           siteNode: '${q(site).property(''_contextPath'')}'
-          previewUrl: '${Neos.Ui.NodeInfo.createRedirectToNode(controllerContext, q(documentNode).context({workspaceName: documentNode.context.workspace.baseWorkspace.name}).get(0))}'
+          previewUrl: '${Neos.Ui.NodeInfo.createRedirectToNode(controllerContext, documentNode)}'
           contentDimensions:
             active: '${documentNode.context.dimensions}'
             allowedPresets: '${Neos.Ui.Api.emptyArrayToObject(Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions))}'
           documentNodeSerialization: '${Neos.Ui.NodeInfo.renderNodeWithPropertiesAndChildrenInformation(documentNode, controllerContext)}'
-          url: '${Neos.Ui.NodeInfo.uri(documentNode, controllerContext)}'
       initialState:
         changes:
           pending: {  }

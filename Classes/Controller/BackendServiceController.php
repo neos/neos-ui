@@ -45,6 +45,7 @@ use Neos\Neos\Ui\Domain\Model\Feedback\Operations\Redirect;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodePreviewUrl;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
 use Neos\Neos\Ui\Domain\Model\FeedbackCollection;
 use Neos\Neos\Ui\Service\NodeClipboard;
@@ -230,6 +231,12 @@ class BackendServiceController extends ActionController
             foreach ($nodeContextPaths as $contextPath) {
                 $node = $this->nodeService->getNodeFromContextPath($contextPath, null, null, true);
                 $this->publishingService->publishNode($node, $targetWorkspace);
+
+                if ($node->getNodeType()->isAggregate()) {
+                    $updateNodePreviewUrl = new UpdateNodePreviewUrl();
+                    $updateNodePreviewUrl->setNode($node);
+                    $this->feedbackCollection->add($updateNodePreviewUrl);
+                }
             }
 
             $count = count($nodeContextPaths);

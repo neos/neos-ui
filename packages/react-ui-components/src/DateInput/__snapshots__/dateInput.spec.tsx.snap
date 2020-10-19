@@ -48,12 +48,8 @@ exports[`<DateInput/> should render correctly. 1`] = `
       />
     </button>
   </div>
-  <Collapse
-    fixedHeight={-1}
+  <UnmountClosed
     isOpened={false}
-    keepCollapsedContent={false}
-    onHeightReady={[Function]}
-    style={Object {}}
   >
     <button
       className="selectTodayBtnClassName"
@@ -106,7 +102,7 @@ exports[`<DateInput/> should render correctly. 1`] = `
     >
       applyLabel
     </ThemedButton>
-  </Collapse>
+  </UnmountClosed>
 </div>
 `;
 
@@ -158,12 +154,8 @@ exports[`<DateInput/> should set "utc" on DatePickerComponent if "dateOnly" prop
       />
     </button>
   </div>
-  <Collapse
-    fixedHeight={-1}
+  <UnmountClosed
     isOpened={false}
-    keepCollapsedContent={false}
-    onHeightReady={[Function]}
-    style={Object {}}
   >
     <button
       className="selectTodayBtnClassName"
@@ -216,6 +208,6 @@ exports[`<DateInput/> should set "utc" on DatePickerComponent if "dateOnly" prop
     >
       applyLabel
     </ThemedButton>
-  </Collapse>
+  </UnmountClosed>
 </div>
 `;

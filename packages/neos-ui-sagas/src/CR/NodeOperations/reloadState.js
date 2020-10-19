@@ -7,6 +7,7 @@ import {selectors, actions, actionTypes} from '@neos-project/neos-ui-redux-store
 export default function * watchReloadState({configuration}) {
     yield takeLatest(actionTypes.CR.Nodes.RELOAD_STATE, function * reloadState(action) {
         const {q} = backend.get();
+
         const currentSiteNodeContextPath = yield select($get('cr.nodes.siteNode'));
         const clipboardNodesContextPaths = yield select(selectors.CR.Nodes.clipboardNodesContextPathsSelector);
         const toggledNodes = yield select($get('ui.pageTree.toggled'));

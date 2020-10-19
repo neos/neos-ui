@@ -1,14 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Contents/> should render correctly. 1`] = `
-<UnmountClosed
+<Collapse
+  fixedHeight={-1}
   isOpened={false}
+  keepCollapsedContent={false}
+  onHeightReady={[Function]}
   springConfig={
     Object {
       "damping": 30,
       "stiffness": 300,
     }
   }
+  style={Object {}}
 >
   <div
     aria-hidden="true"
@@ -16,7 +20,7 @@ exports[`<Contents/> should render correctly. 1`] = `
   >
     Foo children
   </div>
-</UnmountClosed>
+</Collapse>
 `;
 
 exports[`<Header/> should render correctly. 1`] = `

@@ -348,12 +348,24 @@ export default class Node extends PureComponent {
     }
 
     handleNodeClick = e => {
-        const {node, onNodeFocus, onNodeClick} = this.props;
+        const {node, onNodeFocus, onNodeClick, isFocused, reload} = this.props;
         const metaKeyPressed = e.metaKey || e.ctrlKey;
         const shiftKeyPressed = e.shiftKey;
         const altKeyPressed = e.altKey;
+
+        // Trigger reload if clicking on the current document node
+        if (isFocused && reload) {
+            reload();
+        }
+
+        // Append presetBaseNodeType param to src
+        const srcWithBaseNodeType = this.props.filterNodeType ? urlAppendParams(
+            $get('uri', node),
+            {presetBaseNodeType: this.props.filterNodeType}
+        ) : $get('uri', node);
+
         onNodeFocus(node.contextPath, metaKeyPressed, altKeyPressed, shiftKeyPressed);
-        onNodeClick($get('uri', node), node.contextPath, metaKeyPressed, altKeyPressed, shiftKeyPressed);
+        onNodeClick(srcWithBaseNodeType, node.contextPath, metaKeyPressed, altKeyPressed, shiftKeyPressed);
     }
 }
 
@@ -396,10 +408,14 @@ export const PageTreeNode = withNodeTypeRegistryAndI18nRegistry(connect(
                 loadingNodeContextPaths: selectors.UI.PageTree.getLoading(state),
                 errorNodeContextPaths: selectors.UI.PageTree.getErrors(state),
                 isNodeDirty: isDocumentNodeDirtySelector(state, node.contextPath),
+                filterNodeType: $get('ui.pageTree.filterNodeType', state),
                 canBeInsertedAlongside,
                 canBeInsertedInto
             });
         };
+    },
+    {
+        reload: actions.UI.ContentCanvas.reload
     }
 )(Node));
 

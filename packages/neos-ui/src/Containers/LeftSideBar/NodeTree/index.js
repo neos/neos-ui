@@ -50,7 +50,7 @@ export default class NodeTree extends PureComponent {
     }
 
     handleClick = (src, contextPath, metaKeyPressed, altKeyPressed, shiftKeyPressed) => {
-        const {setActiveContentCanvasSrc, setActiveContentCanvasContextPath, requestScrollIntoView, reload, contentCanvasSrc} = this.props;
+        const {setActiveContentCanvasSrc, setActiveContentCanvasContextPath, requestScrollIntoView} = this.props;
         if (altKeyPressed) {
             window.open(window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port : '') + window.location.pathname + '?node=' + contextPath);
             return;

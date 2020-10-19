@@ -195,7 +195,7 @@ class BackendController extends ActionController
             'no-cache',
             'no-store'
         ]);
-        $this->redirectToUri($this->linkingService->createNodeUri($this->controllerContext, $node));
+        $this->redirectToUri($this->linkingService->createNodeUri($this->controllerContext, $node, null, null, false, ['presetBaseNodeType' => $presetBaseNodeType]));
     }
 
     /**

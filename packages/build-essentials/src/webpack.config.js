@@ -33,7 +33,13 @@ const webpackConfig = {
                 test: /\.js$/,
                 exclude: /node_modules\/(?!@ckeditor)(?!@neos-project).*$/,
                 use: [{
-                    loader: 'babel-loader'
+                    loader: 'babel-loader',
+                    options: {
+                        babelrc: true,
+                        presets: [
+                            require.resolve('@neos-project/babel-preset-neos-ui')
+                        ]
+                      }
                 }]
             },
             {

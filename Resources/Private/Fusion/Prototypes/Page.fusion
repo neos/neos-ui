@@ -109,3 +109,7 @@ prototype(Neos.Neos:Page) {
 
     @exceptionHandler = 'Neos\\Neos\\Ui\\Fusion\\ExceptionHandler\\PageExceptionHandler'
 }
+
+prototype(Neos.Fusion:GlobalCacheIdentifiers) {
+    presetBaseNodeType = ${request.arguments.presetBaseNodeType}
+}

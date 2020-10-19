@@ -45,7 +45,7 @@
     "moment": "^2.14.1",
     "prop-types": "^15.5.10",
     "react": "^16.0.0",
-    "react-collapse": "^2.4.1",
+    "react-collapse": "^5.0.1",
     "react-datetime": "^2.8.10",
     "react-dnd": "^7.0.2",
     "react-dnd-html5-backend": "^7.0.2",

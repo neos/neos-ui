@@ -77,7 +77,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
      * @Flow\InjectConfiguration(path="userInterface.navigateComponent.nodeTree.presets.default.baseNodeType", package="Neos.Neos")
      * @var string
      */
-    protected $baseNodeType;
+    protected $defaultBaseNodeType;
 
     /**
      * @Flow\InjectConfiguration(path="userInterface.navigateComponent.nodeTree.loadingDepth", package="Neos.Neos")
@@ -137,9 +137,12 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
         if ($controllerContext !== null) {
             $nodeInfo = array_merge($nodeInfo, $this->getUriInformation($node, $controllerContext));
+            if ($controllerContext->getRequest()->hasArgument('presetBaseNodeType')) {
+                $presetBaseNodeType = $controllerContext->getRequest()->getArgument('presetBaseNodeType');
+            }
         }
 
-        $baseNodeType = $nodeTypeFilterOverride ? $nodeTypeFilterOverride : $this->baseNodeType;
+        $baseNodeType = $nodeTypeFilterOverride ? $nodeTypeFilterOverride : (isset($presetBaseNodeType) ? $presetBaseNodeType : $this->defaultBaseNodeType);
         $nodeTypeFilter = $this->buildNodeTypeFilterString($this->nodeTypeStringsToList($baseNodeType), $this->nodeTypeStringsToList($this->ignoredNodeTypeRole));
 
         $nodeInfo['children'] = $this->renderChildrenInformation($node, $nodeTypeFilter);
@@ -169,9 +172,12 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
         if ($controllerContext !== null) {
             $nodeInfo = array_merge($nodeInfo, $this->getUriInformation($node, $controllerContext));
+            if ($controllerContext->getRequest()->hasArgument('presetBaseNodeType')) {
+                $presetBaseNodeType = $controllerContext->getRequest()->getArgument('presetBaseNodeType');
+            }
         }
 
-        $baseNodeType = $nodeTypeFilterOverride ? $nodeTypeFilterOverride : $this->baseNodeType;
+        $baseNodeType = $nodeTypeFilterOverride ? $nodeTypeFilterOverride : (isset($presetBaseNodeType) ? $presetBaseNodeType : $this->defaultBaseNodeType);
         $nodeInfo['children'] = $this->renderChildrenInformation($node, $baseNodeType);
 
         $this->userLocaleService->switchToUILocale(true);

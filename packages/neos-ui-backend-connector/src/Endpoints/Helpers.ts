@@ -52,6 +52,23 @@ export const urlWithParams = (urlString: string, params = {}) => {
 };
 
 /**
+ * Append params to url without overriding existing params
+ *
+ * @param urlString
+ * @param params
+ * @return string
+ */
+export const urlAppendParams = (urlString: string, params: {[key: string]: string} = {}) => {
+    const url = new URL(urlString);
+    const searchParams = new URLSearchParams(url.search);
+    Object.keys(params).forEach(paramKey => {
+        searchParams.set(paramKey, params[paramKey]);
+    });
+    url.search = searchParams.toString();
+    return url.toString();
+};
+
+/**
  *
  * @param rootElement
  * @param selector

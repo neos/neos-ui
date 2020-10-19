@@ -65,6 +65,7 @@ abstract class AbstractCreate extends AbstractStructuralChange
     {
         $updateNodeInfo = new UpdateNodeInfo();
         $updateNodeInfo->setNode($node);
+        $updateNodeInfo->setBaseNodeType($this->baseNodeType);
         $updateNodeInfo->recursive();
         $this->feedbackCollection->add($updateNodeInfo);
         parent::finish($node);

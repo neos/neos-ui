@@ -36,6 +36,8 @@ export default function * pasteNode({globalRegistry}) {
         );
 
         if (mode) {
+            const baseNodeType = yield select($get('ui.pageTree.filterNodeType'));
+
             yield put(actions.CR.Nodes.commitPaste(clipboardMode));
             const changes = subject.map(contextPath => ({
                 type: calculateChangeTypeFromMode(mode, clipboardMode),

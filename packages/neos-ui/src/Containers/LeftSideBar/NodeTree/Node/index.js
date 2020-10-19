@@ -8,7 +8,7 @@ import Tree from '@neos-project/react-ui-components/src/Tree/';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 import {stripTags, decodeHtml} from '@neos-project/utils-helpers';
 
-import {selectors} from '@neos-project/neos-ui-redux-store';
+import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {isNodeCollapsed} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/helpers';
 import {neos} from '@neos-project/neos-ui-decorators';
 
@@ -17,6 +17,7 @@ import {hasNestedNodes} from '@neos-project/neos-ui/src/Containers/LeftSideBar/N
 import animate from 'amator';
 import hashSum from 'hash-sum';
 import moment from 'moment';
+import {urlAppendParams} from '@neos-project/neos-ui-backend-connector/src/Endpoints/Helpers';
 
 const getContextPath = $get('contextPath');
 

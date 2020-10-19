@@ -53,6 +53,7 @@ class MoveBefore extends AbstractMove
 
             $updateParentNodeInfo = new UpdateNodeInfo();
             $updateParentNodeInfo->setNode($parent);
+            $updateParentNodeInfo->setBaseNodeType($this->baseNodeType);
 
             $this->feedbackCollection->add($updateParentNodeInfo);
 

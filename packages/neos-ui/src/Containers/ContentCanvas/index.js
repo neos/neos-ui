@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
 
+import {urlAppendParams} from '@neos-project/neos-ui-backend-connector/src/Endpoints/Helpers';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 
@@ -17,6 +18,7 @@ import style from './style.css';
     isFullScreen: $get('ui.fullScreen.isFullScreen'),
     backgroundColor: $get('ui.contentCanvas.backgroundColor'),
     src: $get('ui.contentCanvas.src'),
+    baseNodeType: $get('ui.pageTree.filterNodeType'),
     currentEditPreviewMode: selectors.UI.EditPreviewMode.currentEditPreviewMode
 }), {
     startLoading: actions.UI.ContentCanvas.startLoading,
@@ -40,6 +42,7 @@ export default class ContentCanvas extends PureComponent {
         requestRegainControl: PropTypes.func.isRequired,
         requestLogin: PropTypes.func.isRequired,
         currentEditPreviewMode: PropTypes.string.isRequired,
+        baseNodeType: PropTypes.string,
 
         editPreviewModes: PropTypes.object.isRequired,
         guestFrameRegistry: PropTypes.object.isRequired
@@ -167,6 +170,19 @@ export default class ContentCanvas extends PureComponent {
                     requestLogin();
                     return;
                 }
+
+                // Append presetBaseNodeType param to all internal links
+                const internalLinks = iframe.contentWindow.document.querySelectorAll('a[href*="@user-"]');
+                internalLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        if (this.props.baseNodeType) {
+                            link.setAttribute(
+                                'href',
+                                urlAppendParams(link.href, {presetBaseNodeType: this.props.baseNodeType})
+                            );
+                        }
+                    });
+                });
 
                 this.setState({
                     isVisible: true,

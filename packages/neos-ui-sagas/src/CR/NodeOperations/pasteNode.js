@@ -38,12 +38,16 @@ export default function * pasteNode({globalRegistry}) {
         if (mode) {
             const referenceNodeSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(reference);
             const referenceNode = yield select(referenceNodeSelector);
+            const baseNodeType = yield select($get('ui.pageTree.filterNodeType'));
 
             yield put(actions.CR.Nodes.commitPaste(clipboardMode));
             const changes = subject.map(contextPath => ({
                 type: calculateChangeTypeFromMode(mode, clipboardMode),
                 subject: contextPath,
-                payload: calculateDomAddressesFromMode(mode, referenceNode, fusionPath)
+                payload: {
+                    ...calculateDomAddressesFromMode(mode, referenceNode, fusionPath),
+                    baseNodeType
+                }
             }));
             yield put(actions.Changes.persistChanges(changes));
         }

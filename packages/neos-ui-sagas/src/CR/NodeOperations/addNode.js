@@ -94,6 +94,7 @@ function * nodeCreationWorkflow(context, step = STEP_SELECT_NODETYPE, workflowDa
 
             const referenceNodeSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(referenceNodeContextPath);
             const referenceNode = yield select(referenceNodeSelector);
+            const baseNodeType = yield select($get('ui.pageTree.filterNodeType'));
 
             return yield put(actions.Changes.persistChanges([{
                 type: calculateChangeTypeFromMode(mode, 'Create'),

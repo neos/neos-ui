@@ -286,34 +286,7 @@ export default class NodeTypesRegistry extends SynchronousRegistry<NodeType> {
 
         const inlineEditorOptions = $get(['properties', propertyName, 'ui', 'inline', 'editorOptions'], nodeType) || {};
 
-        // OLD variant of configuration
-        const legacyConfiguration = $get(['properties', propertyName, 'ui', 'aloha'], nodeType) || {};
-
-        const initValue: {[propName: string]: any} = {};
-        legacyConfiguration.formatting = [].concat(
-            ...['format', 'link', 'list', 'table', 'alignment']
-                .map(configurationKey => (legacyConfiguration && legacyConfiguration[configurationKey]) || [])
-        ).reduce((acc, item) => {
-            acc[item] = true;
-            return acc;
-        }, initValue);
-
-        const mergedConfig = merge(defautlInlineEditorOptions, legacyConfiguration, inlineEditorOptions);
-
-        if ($get(['formatting', 'b'], mergedConfig)) {
-            mergedConfig.formatting.strong = true;
-        }
-        if ($get(['formatting', 'i'], mergedConfig)) {
-            mergedConfig.formatting.em = true;
-        }
-        if ($get(['formatting', 'u'], mergedConfig)) {
-            mergedConfig.formatting.underline = true;
-        }
-        if ($get(['formatting', 'del'], mergedConfig)) {
-            mergedConfig.formatting.strikethrough = true;
-        }
-
-        return mergedConfig;
+        return merge(defautlInlineEditorOptions, inlineEditorOptions);
     }
 
     public isInlineEditable(nodeTypeName: NodeTypeName): boolean {

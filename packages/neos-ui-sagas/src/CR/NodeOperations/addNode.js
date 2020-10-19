@@ -101,7 +101,8 @@ function * nodeCreationWorkflow(context, step = STEP_SELECT_NODETYPE, workflowDa
                 payload: {
                     ...calculateDomAddressesFromMode(mode, referenceNode, referenceNodeFusionPath),
                     nodeType,
-                    data
+                    data,
+                    baseNodeType
                 }
             }]));
         }

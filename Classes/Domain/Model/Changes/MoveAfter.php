@@ -52,6 +52,9 @@ class MoveAfter extends AbstractMove
 
             $updateParentNodeInfo = new UpdateNodeInfo();
             $updateParentNodeInfo->setNode($parent);
+            if ($this->baseNodeType) {
+                $updateParentNodeInfo->setBaseNodeType($this->baseNodeType);
+            }
 
             $this->feedbackCollection->add($updateParentNodeInfo);
 

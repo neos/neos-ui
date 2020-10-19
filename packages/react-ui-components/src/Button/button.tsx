@@ -46,11 +46,6 @@ export interface ButtonProps extends HTMLButtonElementAttributesExceptStyle {
     readonly disabled?: boolean;
 
     /**
-     * DEPRECATED, will be removed in the future
-     */
-    readonly isDisabled?: boolean;
-
-    /**
      * This prop controls the visual active state of the `Button`.
      */
     readonly isActive?: boolean;
@@ -117,10 +112,7 @@ class Button extends React.PureComponent<ButtonProps> {
     public static readonly defaultProps = defaultProps;
 
     private getDisabled(): boolean {
-        if (this.props.isDisabled !== undefined) {
-            console.error('`isDisabled` prop on Button component is DEPRECATED, use `disabled instead`'); // tslint:disable-line no-console
-        }
-        return Boolean(this.props.disabled || this.props.isDisabled);
+        return Boolean(this.props.disabled);
     }
 
     public render(): JSX.Element {

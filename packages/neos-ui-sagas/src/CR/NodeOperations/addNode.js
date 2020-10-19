@@ -1,4 +1,4 @@
-import {takeLatest, take, put, race, call} from 'redux-saga/effects';
+import {takeLatest, take, put, race, call, select} from 'redux-saga/effects';
 import {$get} from 'plow-js';
 
 import {actions, actionTypes} from '@neos-project/neos-ui-redux-store';
@@ -91,13 +91,15 @@ function * nodeCreationWorkflow(context, step = STEP_SELECT_NODETYPE, workflowDa
             if (nodeTypesRegistry.hasRole(nodeType, 'document')) {
                 yield put(actions.UI.ContentCanvas.startLoading());
             }
+            const baseNodeType = yield select($get('ui.pageTree.filterNodeType'));
             return yield put(actions.Changes.persistChanges([{
                 type: calculateChangeTypeFromMode(mode, 'Create'),
                 subject: referenceNodeContextPath,
                 payload: {
                     ...calculateDomAddressesFromMode(mode, referenceNodeContextPath, referenceNodeFusionPath),
                     nodeType,
-                    data
+                    data,
+                    baseNodeType
                 }
             }]));
         }

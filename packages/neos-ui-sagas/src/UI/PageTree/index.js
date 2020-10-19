@@ -192,13 +192,15 @@ export function * watchSearch({configuration}) {
                 if (node.intermediate) {
                     // We reset all toggled state before search, so we can assume "isToggled == false" here
                     const isToggled = false;
-                    const isCollapsed = isNodeCollapsed(node, isToggled, siteNode, loadingDepth);
-                    if (isCollapsed) {
-                        toggledContextPaths.push(contextPath);
-                    }
+                    if (node && siteNode) {
+                        const isCollapsed = isNodeCollapsed(node, isToggled, siteNode, loadingDepth);
+                        if (isCollapsed) {
+                            toggledContextPaths.push(contextPath);
+                        }
 
-                    if (!node.matched) {
-                        intermediateContextPaths.push(contextPath);
+                        if (!node.matched) {
+                            intermediateContextPaths.push(contextPath);
+                        }
                     }
                 }
             });

@@ -13,6 +13,8 @@ export interface State extends Readonly<{
     intermediate: NodeContextPath[];
     loading: NodeContextPath[];
     errors: NodeContextPath[];
+    query: string;
+    filterNodeType: string;
 }> {}
 
 export const defaultState: State = {
@@ -21,7 +23,9 @@ export const defaultState: State = {
     hidden: [],
     intermediate: [],
     loading: [],
-    errors: []
+    errors: [],
+    query: '',
+    filterNodeType: ''
 };
 
 //
@@ -116,6 +120,12 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
             draft.hidden = action.payload.hiddenContextPaths;
             draft.toggled = action.payload.toggledContextPaths;
             draft.intermediate = action.payload.intermediateContextPaths;
+            break;
+        }
+        case actionTypes.COMMENCE_SEARCH: {
+            // Store search arguments, to be used during tree reload
+            draft.query = action.payload.query;
+            draft.filterNodeType = action.payload.filterNodeType;
             break;
         }
     }

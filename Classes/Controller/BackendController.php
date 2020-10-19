@@ -179,9 +179,10 @@ class BackendController extends ActionController
 
     /**
      * @param NodeInterface $node
+     * @param string $presetBaseNodeType
      * @throws StopActionException
      */
-    public function redirectToAction(NodeInterface $node)
+    public function redirectToAction(NodeInterface $node, string $presetBaseNodeType = null)
     {
         $this->response->setComponentParameter(SetHeaderComponent::class, 'Cache-Control', [
             'no-cache',

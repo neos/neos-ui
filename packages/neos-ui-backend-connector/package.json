@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-backend-connector",
-  "version": "5.2.5",
+  "version": "5.2.6",
   "description": "Endoints and fetch cals to the Neos CMS backend",
   "private": true,
   "main": "./src/index.ts",
@@ -14,13 +14,13 @@
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "5.2.5",
-    "@neos-project/build-essentials": "5.2.5",
-    "@neos-project/jest-preset-neos-ui": "5.2.5"
+    "@neos-project/babel-preset-neos-ui": "5.2.6",
+    "@neos-project/build-essentials": "5.2.6",
+    "@neos-project/jest-preset-neos-ui": "5.2.6"
   },
   "dependencies": {
-    "@neos-project/neos-ui-extensibility": "5.2.5",
-    "@neos-project/utils-redux": "5.2.5"
+    "@neos-project/neos-ui-extensibility": "5.2.6",
+    "@neos-project/utils-redux": "5.2.6"
   },
   "license": "GNU GPLv3",
   "jest": {

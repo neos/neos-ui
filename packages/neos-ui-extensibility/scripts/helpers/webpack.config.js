@@ -11,14 +11,7 @@ module.exports = function (neosPackageJson) {
                     loaderConfig.use[0].options = {
                         babelrc: false,
                         presets: [
-                            require.resolve('@babel/preset-env'),
-                            require.resolve('@babel/preset-react')
-                        ],
-                        plugins: [
-                            require.resolve('@babel/plugin-proposal-decorators'),
-                            require.resolve('@babel/plugin-proposal-class-properties'),
-                            require.resolve('@babel/plugin-syntax-jsx'),
-                            require.resolve('@babel/plugin-proposal-object-rest-spread')
+                            require.resolve('@neos-project/babel-preset-neos-ui'),
                         ]
                     };
                 }

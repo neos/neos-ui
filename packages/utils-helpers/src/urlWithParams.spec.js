@@ -74,3 +74,14 @@ test(`should convert params to strings`, () => {
     expect(urlWithParams(url, params)).toEqual('http://www.domain.com?string=123&number=123&array%5B0%5D=1&array%5B1%5D=2&array%5B2%5D=3&true=true&false=false');
 });
 
+test(`should append params to existing query`, () => {
+    const url = 'http://www.domain.com?some=existing&query=string';
+    const params = {
+        string: '123',
+        number: 123,
+        array: [1, 2, 3],
+        true: true,
+        false: false
+    };
+    expect(urlWithParams(url, params)).toEqual('http://www.domain.com?some=existing&query=string&string=123&number=123&array%5B0%5D=1&array%5B1%5D=2&array%5B2%5D=3&true=true&false=false');
+});

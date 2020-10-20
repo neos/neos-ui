@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/utils-logger",
-  "version": "5.3.1",
+  "version": "5.3.2",
   "description": "Logger implementation for Neos CMS UI.",
   "private": true,
   "main": "./src/index.ts",
@@ -14,9 +14,9 @@
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "5.3.1",
-    "@neos-project/build-essentials": "5.3.1",
-    "@neos-project/jest-preset-neos-ui": "5.3.1"
+    "@neos-project/babel-preset-neos-ui": "5.3.2",
+    "@neos-project/build-essentials": "5.3.2",
+    "@neos-project/jest-preset-neos-ui": "5.3.2"
   },
   "license": "GNU GPLv3",
   "jest": {

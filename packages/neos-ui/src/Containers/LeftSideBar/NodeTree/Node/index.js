@@ -17,7 +17,7 @@ import {hasNestedNodes} from '@neos-project/neos-ui/src/Containers/LeftSideBar/N
 import animate from 'amator';
 import hashSum from 'hash-sum';
 import moment from 'moment';
-import {urlAppendParams} from '@neos-project/neos-ui-backend-connector/src/Endpoints/Helpers';
+import {urlWithParams} from '@neos-project/utils-helpers/src/urlWithParams';
 
 const getContextPath = $get('contextPath');
 
@@ -370,7 +370,7 @@ export default class Node extends PureComponent {
         }
 
         // Append presetBaseNodeType param to src
-        const srcWithBaseNodeType = this.props.filterNodeType ? urlAppendParams(
+        const srcWithBaseNodeType = this.props.filterNodeType ? urlWithParams(
             $get('uri', node),
             {presetBaseNodeType: this.props.filterNodeType}
         ) : $get('uri', node);

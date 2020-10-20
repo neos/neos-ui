@@ -39,7 +39,7 @@ const webpackConfig = {
                         presets: [
                             require.resolve('@neos-project/babel-preset-neos-ui')
                         ]
-                      }
+                    }
                 }]
             },
             {

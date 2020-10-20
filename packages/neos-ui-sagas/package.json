@@ -1,6 +1,6 @@
 {
     "name": "@neos-project/neos-ui-sagas",
-    "version": "4.0.11",
+    "version": "4.0.12",
     "description": "Redux Sagas implementation for the Neos CMS UI",
     "private": true,
     "main": "src/index.js",
@@ -14,14 +14,14 @@
         "jest": "NODE_ENV=test jest"
     },
     "devDependencies": {
-        "@neos-project/babel-preset-neos-ui": "4.0.11",
-        "@neos-project/build-essentials": "4.0.11",
-        "@neos-project/jest-preset-neos-ui": "4.0.11"
+        "@neos-project/babel-preset-neos-ui": "4.0.12",
+        "@neos-project/build-essentials": "4.0.12",
+        "@neos-project/jest-preset-neos-ui": "4.0.12"
     },
     "dependencies": {
-        "@neos-project/neos-ui-extensibility": "4.0.11",
-        "@neos-project/neos-ui-validators": "4.0.11",
-        "@neos-project/utils-redux": "4.0.11"
+        "@neos-project/neos-ui-extensibility": "4.0.12",
+        "@neos-project/neos-ui-validators": "4.0.12",
+        "@neos-project/utils-redux": "4.0.12"
     },
     "license": "GNU GPLv3",
     "jest": {

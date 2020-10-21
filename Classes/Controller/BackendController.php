@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Neos\Ui\Controller;
 
 /*
@@ -189,13 +190,14 @@ class BackendController extends ActionController
      * @param string $presetBaseNodeType
      * @throws StopActionException
      */
-    public function redirectToAction(NodeInterface $node, string $presetBaseNodeType = null)
+    public function redirectToAction(NodeInterface $node, string $presetBaseNodeType = '')
     {
         $this->response->setComponentParameter(SetHeaderComponent::class, 'Cache-Control', [
             'no-cache',
             'no-store'
         ]);
-        $this->redirectToUri($this->linkingService->createNodeUri($this->controllerContext, $node, null, null, false, ['presetBaseNodeType' => $presetBaseNodeType]));
+        $arguments = !empty($presetBaseNodeType) ? ['presetBaseNodeType' => $presetBaseNodeType] : [];
+        $this->redirectToUri($this->linkingService->createNodeUri($this->controllerContext, $node, null, null, false, $arguments));
     }
 
     /**

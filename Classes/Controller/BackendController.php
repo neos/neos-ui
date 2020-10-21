@@ -190,6 +190,7 @@ class BackendController extends ActionController
 
     /**
      * @param NodeInterface $node
+     * @param string $presetBaseNodeType
      * @throws MissingActionNameException
      * @throws StopActionException
      * @throws UnsupportedRequestTypeException
@@ -199,7 +200,7 @@ class BackendController extends ActionController
      * @throws \Neos\Flow\Security\Exception
      * @throws \Neos\Neos\Exception
      */
-    public function redirectToAction(NodeInterface $node): void
+    public function redirectToAction(NodeInterface $node, string $presetBaseNodeType = null): void
     {
         $this->response->setComponentParameter(SetHeaderComponent::class, 'Cache-Control', [
             'no-cache',

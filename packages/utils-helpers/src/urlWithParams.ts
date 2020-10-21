@@ -3,7 +3,11 @@
 //
 export function urlWithParams(urlString: string, params: any = {}): string {
     const queryString = encodeAsQueryString(params);
-    return urlString + (queryString === '' ? '' : '?' + queryString);
+    if (queryString === '') {
+        return urlString;
+    }
+    const url = new URL(urlString);
+    return urlString + (url.search === '' ? '?' : '&') + queryString;
 }
 
 export const encodeAsQueryString = (obj: any, prefix: string = ''): string => {

@@ -112,7 +112,9 @@ class NodeService
         $workspace = $context->getWorkspace(false);
         if (!$workspace) {
             return new Error(
-                sprintf('Could not convert the given source to Node object because the workspace "%s" as specified in the context node path does not exist.', $workspaceName), 1451392329);
+                sprintf('Could not convert the given source to Node object because the workspace "%s" as specified in the context node path does not exist.', $workspaceName),
+                1451392329
+            );
         }
 
         return $context->getNode($nodePath);

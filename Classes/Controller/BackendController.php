@@ -188,7 +188,7 @@ class BackendController extends ActionController
             'no-cache',
             'no-store'
         ]);
-        $this->redirect('show', 'Frontend\Node', 'Neos.Neos', ['node' => $node]);
+        $this->redirect('show', 'Frontend\Node', 'Neos.Neos', ['node' => $node, 'presetBaseNodeType' => $presetBaseNodeType]);
     }
 
     /**

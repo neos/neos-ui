@@ -136,17 +136,17 @@ class NodePolicyService
         }
 
         // check if the node is auto-created
-        $isAutCreated   = false;
+        $isAutoCreated   = false;
         if ($parentNodeType && array_key_exists((string)$node->getNodeName(), $parentNodeType->getAutoCreatedChildNodes())) {
-            $isAutCreated = true;
+            $isAutoCreated = true;
         }
 
         // filter the set of configured nodeTypes
         $nodeName = (string)$node->getNodeName();
 
-        $constraintAndSuperTypeFilter = function ($nodeType) use ($nodeName, $nodeNodeType, $superTypes, $isAutCreated, $parentNodeType) {
+        $constraintAndSuperTypeFilter = function ($nodeType) use ($nodeName, $nodeNodeType, $superTypes, $isAutoCreated, $parentNodeType) {
             // check if the nodeType is mentioned in the constraints
-            if ($isAutCreated) {
+            if ($isAutoCreated) {
                 if ($parentNodeType && $parentNodeType->allowsGrandchildNodeType($nodeName, $nodeType)) {
                     return true;
                 }
@@ -166,7 +166,7 @@ class NodePolicyService
             return false;
         };
 
-        $nodeTypes = array_filter($this->nodeTypeManager->getNodeTypes(), $constraintAndSuperTypeFilter);
+        $filteredNodeTypes = array_filter($this->nodeTypeManager->getNodeTypes(), $constraintAndSuperTypeFilter);
 
         // filter the remaining nodeTypes via policy check
         $filter = function ($nodeType) use ($node) {
@@ -176,7 +176,7 @@ class NodePolicyService
             );
         };
 
-        $disallowedNodeTypeObjects = array_filter($nodeTypes, $filter);
+        $disallowedNodeTypeObjects = array_filter($filteredNodeTypes, $filter);
 
         $mapper = function ($nodeType) {
             return $nodeType->getName();

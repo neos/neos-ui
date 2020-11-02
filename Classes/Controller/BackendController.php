@@ -170,6 +170,7 @@ class BackendController extends ActionController
         $this->view->assign('headStylesheets', $this->styleAndJavascriptInclusionService->getHeadStylesheets());
         $this->view->assign('splashScreenPartial', $this->settings['splashScreen']['partial']);
         $this->view->assign('sitesForMenu', $this->menuHelper->buildSiteList($this->getControllerContext()));
+        $this->view->assign('modulesForMenu', $this->menuHelper->buildModuleList($this->getControllerContext()));
 
         $this->view->assign('interfaceLanguage', $this->userService->getInterfaceLanguage());
     }
@@ -180,7 +181,7 @@ class BackendController extends ActionController
      * @return void
      * @throws NoSuchArgumentException
      */
-    protected function initializeRedirectToAction()
+    protected function initializeRedirectToAction(): void
     {
         // use this constant only if available (became available with patch level releases in Neos 4.0 and up)
         if (defined(NodeConverter::class . '::INVISIBLE_CONTENT_SHOWN')) {

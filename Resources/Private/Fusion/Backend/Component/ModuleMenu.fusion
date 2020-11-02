@@ -1,0 +1,60 @@
+prototype(Neos.Neos.Ui:Component.ModuleMenu) < prototype(Neos.Fusion:Map) {
+    items = ${modulesForMenu}
+    itemName = 'module'
+    itemKey = 'moduleName'
+
+    keyRenderer = ${moduleName}
+    itemRenderer = Neos.Fusion:DataStructure {
+        @if.moduleNotHidden = ${module.hideInMenu != true}
+        label = ${module.label}
+        icon = ${module.icon}
+        uri = ${module.uri}
+        target = 'Window'
+
+        children = Neos.Fusion:Case {
+            sites {
+                condition = ${module.module == 'content'}
+                renderer = Neos.Fusion:Map {
+                    items = ${sitesForMenu}
+                    itemName = 'currentSiteInMenu'
+                    iterationName = 'iteration'
+
+                    keyRenderer = ${iteration.index}
+                    itemRenderer = Neos.Fusion:DataStructure {
+                        icon = 'globe'
+                        label = ${currentSiteInMenu.name}
+                        uri = ${currentSiteInMenu.uri}
+                        target = 'Window'
+                        isActive = ${currentSiteInMenu.active}
+                        skipI18n = ${true}
+                    }
+                }
+            }
+
+            submodules {
+                condition = ${true}
+                renderer = Neos.Fusion:Map {
+                    items = ${module.submodules}
+                    itemName = 'submodule'
+                    itemKey = 'submoduleName'
+                    iterationName = 'iteration'
+
+                    keyRenderer = ${iteration.index}
+                    itemRenderer = Neos.Fusion:DataStructure {
+                        @if.moduleNotHidden = ${submodule.hideInMenu != true}
+                        icon = ${submodule.icon}
+                        label = ${submodule.label}
+                        uri = ${submodule.uri}
+                        isActive = true
+                        target = 'Window'
+                    }
+
+                    @process.filterHiddenSubmodules = ${Array.filter(value, (x, index) => x != null)}
+                }
+            }
+        }
+    }
+
+    @process.filterHiddenModules = ${Array.filter(value, (x, index) => x != null)}
+    @process.json = ${Json.stringify(value)}
+}

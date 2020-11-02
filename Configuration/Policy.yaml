@@ -15,6 +15,11 @@ privilegeTargets:
     'Neos.Neos.Ui:Backend.ServiceAccess':
       matcher: 'method(Neos\Neos\Ui\Controller\BackendServiceController->.*())'
 
+  'Neos\Neos\Security\Authorization\Privilege\ModulePrivilege':
+
+    'Neos.Neos.Ui:Backend.Module.Content':
+      matcher: 'content'
+
 roles:
 
     'Neos.Flow:Everybody':
@@ -26,8 +31,13 @@ roles:
     'Neos.Neos:AbstractEditor':
       privileges:
         -
+          privilegeTarget: 'Neos.Neos.Ui:Backend.Module.Content'
+          permission: GRANT
+
+        -
           privilegeTarget: 'Neos.Neos.Ui:Backend.GeneralAccess'
           permission: GRANT
+
         -
           privilegeTarget: 'Neos.Neos.Ui:Backend.ServiceAccess'
           permission: GRANT

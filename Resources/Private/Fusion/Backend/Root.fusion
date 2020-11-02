@@ -1,8 +1,7 @@
 include: resource://Neos.Fusion/Private/Fusion/Root.fusion
 include: resource://Neos.Neos/Private/Fusion/Prototypes/NodeUri.fusion
 include: resource://Neos.Neos.Ui/Private/Fusion/Prototypes/RenderConfiguration.fusion
-include: resource://Neos.Neos.Ui/Private/Fusion/Prototypes/ArrayCollection.fusion
-include: resource://Neos.Neos.Ui/Private/Fusion/Prototypes/AppendAllToCollection.fusion
+include: resource://Neos.Neos.Ui/Private/Fusion/Backend/Component/*
 
 backend = Neos.Fusion:Template {
     templatePath = 'resource://Neos.Neos.Ui/Private/Templates/Backend/Index.html'
@@ -247,86 +246,7 @@ backend = Neos.Fusion:Template {
         @process.json = ${Json.stringify(value)}
     }
 
-    menu = Neos.Fusion:DataStructure {
-        content = Neos.Fusion:DataStructure {
-            label = 'Neos.Neos:Main:content'
-            icon = 'file'
-            uri = Neos.Neos:NodeUri {
-                node = ${site}
-            }
-            target = 'ContentCanvas'
-
-            children = Neos.Neos.Ui:ArrayCollection {
-                collection = ${sitesForMenu}
-                itemName = 'currentSiteInMenu'
-                itemRenderer = Neos.Fusion:DataStructure {
-                    icon = 'globe'
-                    label = ${currentSiteInMenu.name}
-                    uri = ${currentSiteInMenu.uri}
-                    target = 'Window'
-                    isActive = ${currentSiteInMenu.active}
-                    skipI18n = ${true}
-                }
-            }
-        }
-
-        @process.modules = Neos.Neos.Ui:AppendAllToCollection {
-            appendTo = ${value}
-            collection = ${Configuration.setting('Neos.Neos.modules')}
-            itemName = 'module'
-            itemKey = 'moduleName'
-
-            itemKeyRenderer = ${moduleName}
-            itemRenderer = Neos.Fusion:DataStructure {
-                label = ${module.label}
-                icon = ${module.icon}
-                uri = Neos.Fusion:UriBuilder {
-                    package = 'Neos.Neos'
-                    controller = 'Backend\\Module'
-                    action = 'index'
-                    absolute = true
-                    arguments {
-                        module = ${moduleName}
-                    }
-                }
-                target = 'Window'
-
-                children = Neos.Neos.Ui:ArrayCollection {
-                    collection = ${module.submodules}
-                    itemName = 'submodule'
-                    itemKey = 'submoduleName'
-
-                    itemRenderer = Neos.Fusion:DataStructure {
-                        icon = ${submodule.icon}
-                        label = ${submodule.label}
-                        uri = Neos.Fusion:UriBuilder {
-                            package = 'Neos.Neos'
-                            controller = 'Backend\\Module'
-                            action = 'index'
-                            absolute = true
-                            arguments {
-                                module = ${moduleName + '/' + submoduleName}
-                            }
-                        }
-                        isActive = true
-                        target = 'Window'
-
-                        @if {
-                            isNotHiddenInMenu = ${!submodule.hideInMenu}
-                            isAvailable = ${Neos.Ui.Modules.isAvailable(moduleName + '/' + submoduleName)}
-                        }
-                    }
-                }
-
-                @if {
-                    isNotHiddenInMenu = ${!module.hideInMenu}
-                    isAvailable = ${Neos.Ui.Modules.isAvailable(moduleName)}
-                }
-            }
-        }
-
-        @process.json = ${Json.stringify(value)}
-    }
+    menu = Neos.Neos.Ui:Component.ModuleMenu
 
     initialState = Neos.Neos.Ui:RenderConfiguration {
         path = 'initialState'

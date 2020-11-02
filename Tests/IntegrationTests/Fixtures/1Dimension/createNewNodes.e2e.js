@@ -6,6 +6,7 @@ import {Page} from './../../pageModel';
 /* global fixture:true */
 
 const changeRequestLogger = RequestLogger(request => request.url.endsWith('/neos/ui-services/change') && request.method === 'post' && request.isAjax);
+const contentIframeSelector = Selector('[name="neos-content-main"]', { timeout: 2000 });
 
 fixture`Create new nodes`
     .beforeEach(beforeEach)
@@ -13,8 +14,9 @@ fixture`Create new nodes`
     .requestHooks(changeRequestLogger);
 
 test('Create an Image node from ContentTree', async t => {
-    await t.switchToIframe('[name="neos-content-main"]');
-    const initialImageCount = await Selector('.test-image img[src]').count;
+
+    await t.switchToIframe(contentIframeSelector);
+    const initialImageCount = await Selector('.test-image[src]').count;
     await t.switchToMainWindow();
 
     subSection('Create Image node');
@@ -22,7 +24,7 @@ test('Create an Image node from ContentTree', async t => {
         .click(Selector('#neos-ContentTree-ToggleContentTree'))
         .click(Page.treeNode.withText('Content Collection (main)'))
         .click(Selector('#neos-ContentTree-AddNode'))
-        .click(ReactSelector('NodeTypeItem').find('button>span>span').withText('Image'));
+        .click(ReactSelector('NodeTypeItem').find('button>span>span').withText('Image_Test'));
     await Page.waitForIframeLoading(t);
 
     subSection('Select image from media library');
@@ -34,7 +36,7 @@ test('Create an Image node from ContentTree', async t => {
     await t.switchToMainWindow();
     await t.click(Selector('#neos-Inspector-Apply'));
 
-    await t.switchToIframe('[name="neos-content-main"]');
+    await t.switchToIframe(contentIframeSelector);
     const finalImageCount = await Selector('.test-image[src]').count;
     await t.expect(initialImageCount + 1).eql(finalImageCount, 'Final image count is one more than initial');
 });
@@ -47,15 +49,15 @@ test('Can create a new page', async t => {
         .expect(SelectNodeTypeModal.getReact(({props}) => props.isOpen)).eql(false)
         .click(Selector('#neos-PageTree-AddNode'))
         .expect(SelectNodeTypeModal.getReact(({props}) => props.isOpen)).eql(true)
-        .click(ReactSelector('NodeTypeItem'))
+        .click(ReactSelector('NodeTypeItem').find('button>span>span').withText('Page_Test'))
         .click(Selector('#neos-NodeCreationDialog-Back'))
-        .click(ReactSelector('NodeTypeItem'))
+        .click(ReactSelector('NodeTypeItem').find('button>span>span').withText('Page_Test'))
         .typeText(Selector('#neos-NodeCreationDialog-Body input'), newPageTitle)
         .click(Selector('#neos-NodeCreationDialog-CreateNew'))
         .expect(ReactSelector('NodeCreationDialog').getReact(({props}) => props.isOpen)).eql(false);
     await Page.waitForIframeLoading(t);
     await t
-        .switchToIframe('[name="neos-content-main"]')
+        .switchToIframe(contentIframeSelector)
         .expect(Selector('li').withText(newPageTitle).exists).ok()
         .switchToMainWindow();
 });
@@ -65,19 +67,19 @@ test('Can create content node from inside InlineUI', async t => {
     subSection('Create a headline node');
     await Page.waitForIframeLoading(t);
     await t
-        .switchToIframe('[name="neos-content-main"]')
+        .switchToIframe(contentIframeSelector)
         .click(Selector('.neos-contentcollection'))
         .click(Selector('#neos-InlineToolbar-AddNode'))
         .switchToMainWindow()
         .click(Selector('button#into'))
         // TODO: this selector will only work with English translation.
         // Change to `withProps` when implemented: https://github.com/DevExpress/testcafe-react-selectors/issues/14
-        .click(ReactSelector('NodeTypeItem').find('button>span>span').withText('Headline'));
+        .click(ReactSelector('NodeTypeItem').find('button>span>span').withText('Headline_Test'));
 
     subSection('Type something inside of it');
     await Page.waitForIframeLoading(t);
     await t
-        .switchToIframe('[name="neos-content-main"]')
+        .switchToIframe(contentIframeSelector)
         .typeText(Selector('.test-headline h1'), headlineTitle)
         .expect(Selector('.neos-contentcollection').withText(headlineTitle).exists).ok('Typed headline text exists');
 
@@ -95,7 +97,7 @@ test('Can create content node from inside InlineUI', async t => {
     await t
         .expect(changeRequestLogger.count(() => true)).eql(0, 'No requests were fired with invalid state');
     await t
-        .switchToIframe('[name="neos-content-main"]')
+        .switchToIframe(contentIframeSelector)
         .typeText(Selector('.test-headline h1'), 'Some text')
         .wait(600);
     await t.expect(changeRequestLogger.count(() => true)).eql(1, 'Request fired when field became valid');
@@ -108,7 +110,7 @@ test('Can create content node from inside InlineUI', async t => {
         .click(ReactSelector('EditorToolbar LinkButton'))
         .typeText(ReactSelector('EditorToolbar LinkButton TextInput'), linkTargetPage)
         .click(ReactSelector('EditorToolbar NodeOption'))
-        .switchToIframe('[name="neos-content-main"]')
+        .switchToIframe(contentIframeSelector)
         .expect(Selector('.test-headline h1 a').withAttribute('href').exists).ok('Newly inserted link exists')
         .switchToMainWindow();
 });

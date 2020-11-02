@@ -2,7 +2,7 @@
   superTypes:
     'Neos.Neos:Content': true
   ui:
-    label: Headline
+    label: Headline_Test
     icon: icon-header
     position: 200
     inlineEditable: true

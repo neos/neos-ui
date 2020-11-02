@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Neos\Ui\Domain\Service;
 
 /*
@@ -189,16 +190,26 @@ class NodeTreeBuilder
 
             if ($childNode->getNodeType()->isOfType('Neos.Neos:Document')) {
                 $result[$childNode->getName()]['href'] = $this->linkingService->createNodeUri(
-                    /* $controllerContext */ $this->controllerContext,
-                    /* $node */ $childNode,
-                    /* $baseNode */ null,
-                    /* $format */ null,
-                    /* $absolute */ true,
-                    /* $arguments */ [],
-                    /* $section */ '',
-                    /* $addQueryString */ false,
-                    /* $argumentsToBeExcludedFromQueryString */ [],
-                    /* $resolveShortcuts */ false
+                    /* $controllerContext */
+                    $this->controllerContext,
+                    /* $node */
+                    $childNode,
+                    /* $baseNode */
+                    null,
+                    /* $format */
+                    null,
+                    /* $absolute */
+                    true,
+                    /* $arguments */
+                    [],
+                    /* $section */
+                    '',
+                    /* $addQueryString */
+                    false,
+                    /* $argumentsToBeExcludedFromQueryString */
+                    [],
+                    /* $resolveShortcuts */
+                    false
                 );
             }
         }

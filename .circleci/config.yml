@@ -50,6 +50,7 @@ jobs:
       - checkout
       - restore_cache: *restore_yarn_package_cache
 
+      - run: node --version
       - run: curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
       - run: chmod +x ~/.nvm/nvm.sh
       - run: ~/.nvm/nvm.sh install && ~/.nvm/nvm.sh use

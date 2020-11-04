@@ -30,6 +30,7 @@ test('Move multiple nodes via toolbar', async t => {
             const reduxState = props.store.getState();
             return reduxState.cr.nodes.documentNode;
         })).eql('/sites/neos-test-site/node-knm2pltb5454z/node-18qsaeidy6765/node-e8tw6sparbtp3@user-admin;language=en_US', 'Node B\'s context path changed');
+    await t.click(Page.treeNode.withExactText('Home'))
 });
 
 test('Move multiple nodes via DND, CMD-click', async t => {
@@ -46,6 +47,7 @@ test('Move multiple nodes via DND, CMD-click', async t => {
             const reduxState = props.store.getState();
             return reduxState.cr.nodes.documentNode;
         })).eql('/sites/neos-test-site/node-knm2pltb5454z/node-18qsaeidy6765/node-e8tw6sparbtp3@user-admin;language=en_US', 'Node B\'s context path changed');
+    await t.click(Page.treeNode.withExactText('Home'))
 });
 
 test('Move multiple nodes via DND, SHIFT-click', async t => {
@@ -62,4 +64,5 @@ test('Move multiple nodes via DND, SHIFT-click', async t => {
             const reduxState = props.store.getState();
             return reduxState.cr.nodes.documentNode;
         })).eql('/sites/neos-test-site/node-knm2pltb5454z/node-18qsaeidy6765/node-oml0cxaompt29@user-admin;language=en_US', 'Node C\'s context path changed');
+    await t.click(Page.treeNode.withExactText('Home'))
 });

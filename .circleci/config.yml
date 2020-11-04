@@ -43,13 +43,15 @@ aliases:
 jobs:
   checkout:
     docker:
-      - image: circleci/ruby:2-node-browsers
+      - image: circleci/ruby@sha256:b018ec2a8f0bbf06880735d2801402bad316c465edb60663be83ac8f1086b805
+
     environment:
       FLOW_CONTEXT: Production
     steps:
       - checkout
       - restore_cache: *restore_yarn_package_cache
 
+      - run: node --version
       - run: curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
       - run: chmod +x ~/.nvm/nvm.sh
       - run: ~/.nvm/nvm.sh install && ~/.nvm/nvm.sh use
@@ -62,7 +64,8 @@ jobs:
   codestyle:
     working_directory: *workspace_root
     docker:
-      - image: circleci/ruby:2-node-browsers
+      - image: circleci/ruby@sha256:b018ec2a8f0bbf06880735d2801402bad316c465edb60663be83ac8f1086b805
+
     steps:
       - attach_workspace: *attach_workspace
       - run: make lint
@@ -70,7 +73,8 @@ jobs:
   unittests:
     working_directory: *workspace_root
     docker:
-      - image: circleci/ruby:2-node-browsers
+      - image: circleci/ruby@sha256:b018ec2a8f0bbf06880735d2801402bad316c465edb60663be83ac8f1086b805
+
     steps:
       - attach_workspace: *attach_workspace
       - run: make test

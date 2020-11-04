@@ -3,6 +3,6 @@
     'Neos.Neos:Content': true
     'Neos.Neos:ContentCollection': true
   ui:
-    label: Container
+    label: Container_Test
     icon: icon-folder
 

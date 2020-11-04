@@ -2,7 +2,7 @@
   superTypes:
     'Neos.Neos:Content': true
   ui:
-    label: Text
+    label: Text_Test
     icon: icon-file-text
     position: 200
     inlineEditable: true

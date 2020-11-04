@@ -2,7 +2,7 @@
   superTypes:
     'Neos.Neos:Content': true
   ui:
-    label: Image
+    label: Image_Test
     icon: icon-picture
     position: 300
     inspector:

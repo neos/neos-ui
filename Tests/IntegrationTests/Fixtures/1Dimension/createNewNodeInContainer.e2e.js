@@ -17,7 +17,7 @@ test('Create a text node in a new container element at the correct position', as
         .click(Selector('#neos-ContentTree-ToggleContentTree'))
         .click(Page.treeNode.withText('Content Collection (main)'))
         .click(Selector('#neos-ContentTree-AddNode'))
-        .click(ReactSelector('NodeTypeItem').find('button>span>span').withText('Container'));
+        .click(ReactSelector('NodeTypeItem').find('button>span>span').withText('Container_Test'));
     await Page.waitForIframeLoading(t);
 
     subSection('Create text node in container');
@@ -25,7 +25,7 @@ test('Create a text node in a new container element at the correct position', as
         .click(Page.treeNode.withText('Container'))
         .click(Selector('#neos-ContentTree-AddNode'))
         .click(Selector('#into'))
-        .click(ReactSelector('NodeTypeItem').find('button>span>span').withText('Text'));
+        .click(ReactSelector('NodeTypeItem').find('button>span>span').withText('Text_Test'));
     await Page.waitForIframeLoading(t);
 
     await t.switchToIframe('[name="neos-content-main"]');

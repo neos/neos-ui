@@ -59,6 +59,21 @@ const substitutePlaceholders = function (textWithPlaceholders, parameters) {
     return result.join('');
 };
 
+const getPluralForm = (translation, quantity = 0) => {
+    const translationHasPlurals = translation instanceof Object;
+
+    // no defined quantity or less than one returns singular
+    if (translationHasPlurals && (!quantity || quantity <= 1)) {
+        return translation[0];
+    }
+
+    if (translationHasPlurals && quantity > 1) {
+        return translation[1] ? translation[1] : translation[0];
+    }
+
+    return translation;
+};
+
 export default class I18nRegistry extends SynchronousRegistry {
     _translations = {};
 
@@ -66,15 +81,16 @@ export default class I18nRegistry extends SynchronousRegistry {
         this._translations = translations;
     }
 
-    translate(idOrig, fallbackOrig, params = {}, packageKeyOrig = 'Neos.Neos', sourceNameOrig = 'Main') {
+    translate(idOrig, fallbackOrig, params = {}, packageKeyOrig = 'Neos.Neos', sourceNameOrig = 'Main', quantity = 0) {
         const fallback = fallbackOrig || idOrig;
         const [packageKey, sourceName, id] = getTranslationAddress(idOrig, packageKeyOrig, sourceNameOrig);
-        const translation = [packageKey, sourceName, id]
+        let translation = [packageKey, sourceName, id]
         // Replace all dots with underscores
             .map(s => s ? s.replace(/\./g, '_') : '')
             // Traverse through translations and find us a fitting one
             .reduce((prev, cur) => (prev ? prev[cur] || '' : ''), this._translations);
 
+        translation = getPluralForm(translation, quantity);
         if (translation && translation.length) {
             if (Object.keys(params).length) {
                 return substitutePlaceholders(translation, params);

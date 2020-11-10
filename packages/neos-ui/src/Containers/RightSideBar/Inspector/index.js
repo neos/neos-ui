@@ -365,7 +365,9 @@ export default class Inspector extends PureComponent {
                                     tabName: tabLabel,
                                     amountOfErrors: notifications
                                 },
-                                'Neos.Neos.Ui'
+                                'Neos.Neos.Ui',
+                                'Main',
+                                notifications
                             );
                             // @todo remove that when substitutePlaceholders of I18nRegistry returns strings
                             const notificationTooltipLabel = Array.isArray(notificationTooltipLabelPieces) ?

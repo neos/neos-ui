@@ -93,7 +93,7 @@ class Redirect extends AbstractFeedback
     public function serializePayload(ControllerContext $controllerContext)
     {
         $node = $this->getNode();
-        $redirectUri = $this->linkingService->createNodeUri($controllerContext, $node, null, null, true, [], '', false, [], false);
+        $redirectUri = $this->linkingService->createNodeUri($controllerContext, $node, null, null, true, [], '', false, []);
 
         return [
             'redirectUri' => $redirectUri,

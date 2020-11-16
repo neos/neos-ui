@@ -207,9 +207,7 @@ class NodeTreeBuilder
                     /* $addQueryString */
                     false,
                     /* $argumentsToBeExcludedFromQueryString */
-                    [],
-                    /* $resolveShortcuts */
-                    false
+                    []
                 );
             }
         }

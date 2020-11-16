@@ -413,7 +413,10 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         }
 
         // Create an absolute URI without resolving shortcuts
-        return $this->linkingService->createNodeUri($controllerContext, $node, null, null, true, [], '', false, [], false);
+        $uri = urldecode($this->linkingService->createNodeUri($controllerContext, $node, null, null, true));
+        // @todo remove this hack when the uri is again without the [__identity] part.
+        $uri = str_replace('node[__identity]=', 'node=', $uri);
+        return $uri;
     }
 
     /**

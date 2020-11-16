@@ -413,7 +413,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         }
 
         // Create an absolute URI
-        return $this->linkingService->createNodeUri($controllerContext, $node, null, null, true, [], '', false, []);
+        return $this->linkingService->createNodeUri($controllerContext, $node, null, null, true);
     }
 
     /**

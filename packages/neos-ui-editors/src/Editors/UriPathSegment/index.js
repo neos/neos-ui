@@ -75,7 +75,7 @@ export default class UriPathSegment extends PureComponent {
                         id="neos-UriPathSegmentEditor-sync"
                         size="regular"
                         icon="sync"
-                        disabled={finalOptions.disabled}
+                        disabled={finalOptions.disabled || finalOptions.readonly}
                         onClick={() => commit(slug)}
                         className={style.syncButton}
                         style="neutral"

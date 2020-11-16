@@ -2,6 +2,7 @@ import {$get, $contains} from 'plow-js';
 
 import {actions} from '@neos-project/neos-ui-redux-store';
 import {validateElement} from '@neos-project/neos-ui-validators';
+import {stripTags} from '@neos-project/utils-helpers';
 
 import {getGuestFrameWindow, closestContextPathInGuestFrame} from './dom';
 
@@ -67,7 +68,8 @@ export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry,
                         actions.Changes.persistChanges([change])
                     ),
                     onChange: value => {
-                        const validationResult = validateElement(value, $get(['properties', propertyName], nodeType), globalRegistry.get('validators'));
+                        const purgedValue = stripTags(value);
+                        const validationResult = validateElement(purgedValue, $get(['properties', propertyName], nodeType), globalRegistry.get('validators'));
                         // Update inline validation errors
                         store.dispatch(
                             actions.CR.Nodes.setInlineValidationErrors(contextPath, propertyName, validationResult)

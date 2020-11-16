@@ -107,7 +107,7 @@ class ReloadDocument extends AbstractFeedback
         }
         if ($documentNode = $this->nodeService->getClosestDocument($this->node)) {
             return [
-                'uri' => $this->linkingService->createNodeUri($controllerContext, $documentNode, null, null, true, [], '', false, [])
+                'uri' => $this->linkingService->createNodeUri($controllerContext, $documentNode, null, null, true)
             ];
         }
 

@@ -12,6 +12,24 @@ const defaultOptions = {
     maxlength: null,
     readonly: false
 };
+
+const SynchronizeButton = (title, slug, commit) => {
+    return (
+        <div style={{flexGrow: 0}}>
+            <IconButton
+                id="neos-UriPathSegmentEditor-sync"
+                size="regular"
+                icon="sync"
+                onClick={() => commit(slug)}
+                className={style.syncButton}
+                style="neutral"
+                hoverStyle="clean"
+                title={title}
+            />
+        </div>
+    );
+};
+
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')
 }))
@@ -54,6 +72,9 @@ export default class UriPathSegment extends PureComponent {
         const titleValue = options && options.title ? options.title : '';
         const slug = slugify(titleValue);
 
+        const syncButtonTitle = i18nRegistry.translate('Neos.Neos.Ui:Main:syncUriPathSegment');
+        const showSyncButton = !(finalOptions.readonly || finalOptions.disabled);
+
         return (
             <div style={{display: 'flex'}} className={className}>
                 <div style={{flexGrow: 1}}>
@@ -70,21 +91,7 @@ export default class UriPathSegment extends PureComponent {
                         readOnly={finalOptions.readonly}
                     />
                 </div>
-                <div style={{flexGrow: 0}}>
-                    <IconButton
-                        id="neos-UriPathSegmentEditor-sync"
-                        size="regular"
-                        icon="sync"
-                        disabled={finalOptions.disabled || finalOptions.readonly}
-                        onClick={() => commit(slug)}
-                        className={style.syncButton}
-                        style="neutral"
-                        hoverStyle="clean"
-                        title={i18nRegistry.translate(
-                            'Neos.Neos.Ui:Main:syncUriPathSegment'
-                        )}
-                    />
-                </div>
+                {showSyncButton ? SynchronizeButton(syncButtonTitle, slug, commit) : null}
             </div>
         );
     }

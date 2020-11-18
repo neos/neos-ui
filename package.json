@@ -188,9 +188,15 @@
     "url-loader": "^3.0.0",
     "uuid": "^3.2.1",
     "webpack-cli": "^4.2.0",
-    "whatwg-fetch": "^3.0.0"
+    "whatwg-fetch": "^3.0.0",
+    "snyk": "^1.428.0"
   },
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "scripts": {
+    "snyk-protect": "snyk protect",
+    "prepare": "yarn run snyk-protect"
+  },
+  "snyk": true
 }

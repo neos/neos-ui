@@ -19,6 +19,13 @@ if [ -z "$path_to_yarn" ] ; then
     npm install -g yarn
 fi
 
+
+path_to_nvm=$(which nvm)
+if [ -z "$path_to_nvm" ] ; then
+    echo "installing nvm:"
+    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
+fi
+
 GIT_SHA1=`git rev-parse HEAD`
 GIT_TAG=`git describe --exact-match HEAD 2>/dev/null || true`
 
@@ -29,6 +36,7 @@ fi
 
 export NODE_OPTIONS="--max-old-space-size=4096"
 
+nvm install && nvm use
 make install
 make build-production
 

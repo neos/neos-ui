@@ -199,17 +199,7 @@ class NodeTreeBuilder
                     /* $format */
                     null,
                     /* $absolute */
-                    true,
-                    /* $arguments */
-                    [],
-                    /* $section */
-                    '',
-                    /* $addQueryString */
-                    false,
-                    /* $argumentsToBeExcludedFromQueryString */
-                    [],
-                    /* $resolveShortcuts */
-                    false
+                    true
                 );
             }
         }

@@ -55,10 +55,10 @@ check-requirements:
 	@which yarn &>/dev/null || \
 		(echo yarn is not installed: https://github.com/yarnpkg/yarn && false)
 
-install:
+install: ## Install dependencies
 	yarn install
 
-setup: check-requirements install build
+setup: check-requirements install build ## Run a clean setup
 	@echo Please remember to set frontendDevelopmentMode \
 		to true in your Settings.yaml.
 	@echo
@@ -80,23 +80,23 @@ build-subpackages:
 
 # we build the react UI components ready for standalone usage;
 # so that they can be published on NPM properly.
-build-react-ui-components-standalone:
+build-react-ui-components-standalone: ## Build the react UI components ready for standalone usage.
 	cd packages/react-ui-components && yarn run build-standalone-esm
 
 
-build:
+build: ## Runs the development build.
 	make build-subpackages
 	NEOS_BUILD_ROOT=$(shell pwd) $(webpack) --progress --color
 
-build-watch:
+build-watch: ## Watches the source files for changes and runs a build in case.
 	NEOS_BUILD_ROOT=$(shell pwd) $(webpack) --progress --color --watch
 
-build-watch-poll:
+build-watch-poll: ## Watches (and polls) the source files on a file share.
 	NEOS_BUILD_ROOT=$(shell pwd) $(webpack) \
 		--progress --color --watch-poll --watch
 
 # clean anything before building for production just to be sure
-build-production:
+build-production: ## Runs the production build.
 	make build-subpackages
 	$(cross-env) NODE_ENV=production NEOS_BUILD_ROOT=$(shell pwd) \
 		$(webpack) --color
@@ -107,28 +107,28 @@ build-production:
 ################################################################################
 
 
-storybook:
+storybook: ## Starts the storybook server on port 9001.
 	@mkdir -p ./packages/react-ui-components/node_modules/@neos-project/ && \
 		ln -s ../../../build-essentials/src \
 		./packages/react-ui-components/node_modules/@neos-project/build-essentials
 	$(lerna) run --scope @neos-project/react-ui-components start
 
-test:
+test: ## Executes the unit test on all source files.
 	$(lerna) run test --concurrency 1
 
-test-e2e-saucelabs:
+test-e2e-saucelabs: ## Executes integration tests on saucelabs.
 	bash Tests/IntegrationTests/e2e.sh saucelabs:chrome
 
-test-e2e:
+test-e2e: ## Executes integration tests locally.
 	bash Tests/IntegrationTests/e2e.sh chrome
 
-lint: lint-js lint-editorconfig
+lint: lint-js lint-editorconfig ## Executes make lint-js and make lint-editorconfig.
 
-lint-js:
+lint-js: ## Runs lint test in all subpackages via lerna.
 	$(lerna) run lint --concurrency 1
 
 
-lint-editorconfig:
+lint-editorconfig: ## Tests if all files respect the .editorconfig.
 	$(editorconfigChecker) -config .ecrc.json
 
 ################################################################################
@@ -159,5 +159,16 @@ publish-npm: called-with-version
 ################################################################################
 
 
-clean:
+clean: ## Cleans dependency folders
 	rm -Rf node_modules; rm -rf packages/*/node_modules
+
+
+################################################################################
+# help command as default
+################################################################################
+help:
+	@echo CLI command list of neos-ui:
+	@echo ""
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+
+.DEFAULT_GOAL := help

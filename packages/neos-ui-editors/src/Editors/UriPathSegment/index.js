@@ -12,6 +12,7 @@ const defaultOptions = {
     maxlength: null,
     readonly: false
 };
+
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')
 }))
@@ -53,6 +54,9 @@ export default class UriPathSegment extends PureComponent {
 
         const titleValue = options && options.title ? options.title : '';
         const slug = slugify(titleValue);
+        const showSyncButton = !(
+            finalOptions.readonly || finalOptions.disabled
+        );
 
         return (
             <div style={{display: 'flex'}} className={className}>
@@ -70,20 +74,22 @@ export default class UriPathSegment extends PureComponent {
                         readOnly={finalOptions.readonly}
                     />
                 </div>
-                <div style={{flexGrow: 0}}>
-                    <IconButton
-                        id="neos-UriPathSegmentEditor-sync"
-                        size="regular"
-                        icon="sync"
-                        onClick={() => commit(slug)}
-                        className={style.syncButton}
-                        style="neutral"
-                        hoverStyle="clean"
-                        title={i18nRegistry.translate(
-                            'Neos.Neos.Ui:Main:syncUriPathSegment'
-                        )}
-                    />
-                </div>
+                {showSyncButton ? (
+                    <div style={{flexGrow: 0}}>
+                        <IconButton
+                            id="neos-UriPathSegmentEditor-sync"
+                            size="regular"
+                            icon="sync"
+                            onClick={() => commit(slug)}
+                            className={style.syncButton}
+                            style="neutral"
+                            hoverStyle="clean"
+                            title={i18nRegistry.translate(
+                                'Neos.Neos.Ui:Main:syncUriPathSegment'
+                            )}
+                        />
+                    </div>
+                ) : null}
             </div>
         );
     }

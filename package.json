@@ -182,7 +182,7 @@
     "typesafe-actions": "^4.4.2",
     "url-loader": "^1.0.1",
     "uuid": "^3.2.1",
-    "webpack-cli": "^3.2.3",
+    "webpack-cli": "^4.2.0",
     "whatwg-fetch": "^3.0.0"
   },
   "workspaces": [

@@ -19,12 +19,10 @@ if [ -z "$path_to_yarn" ] ; then
     npm install -g yarn
 fi
 
-
-path_to_nvm=$(which nvm)
-if [ -z "$path_to_nvm" ] ; then
-    echo "installing nvm:"
-    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
-fi
+# this script only installs nvm when it is not available
+echo "installing nvm:"
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
+chmod u+x $NVM_DIR/nvm.sh
 
 GIT_SHA1=`git rev-parse HEAD`
 GIT_TAG=`git describe --exact-match HEAD 2>/dev/null || true`

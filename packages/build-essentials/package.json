@@ -40,7 +40,7 @@
     "postcss-loader": "^3.0.0",
     "postcss-nested": "^4.2.1",
     "rimraf": "^2.5.4",
-    "stylelint": "^13.0.0",
+    "stylelint": "^13.7.2",
     "terser-webpack-plugin": "^2.3.1",
     "ts-jest": "^23.10.5",
     "ts-loader": "^6.0.0",

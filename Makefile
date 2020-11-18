@@ -86,20 +86,20 @@ build-react-ui-components-standalone:
 
 build:
 	make build-subpackages
-	NEOS_BUILD_ROOT=$(shell pwd) $(webpack) --progress --colors
+	NEOS_BUILD_ROOT=$(shell pwd) $(webpack) --progress --color
 
 build-watch:
-	NEOS_BUILD_ROOT=$(shell pwd) $(webpack) --progress --colors --watch
+	NEOS_BUILD_ROOT=$(shell pwd) $(webpack) --progress --color --watch
 
 build-watch-poll:
 	NEOS_BUILD_ROOT=$(shell pwd) $(webpack) \
-		--progress --colors --watch-poll --watch
+		--progress --color --watch-poll --watch
 
 # clean anything before building for production just to be sure
 build-production:
 	make build-subpackages
 	$(cross-env) NODE_ENV=production NEOS_BUILD_ROOT=$(shell pwd) \
-		$(webpack) --colors
+		$(webpack) --color
 
 
 ################################################################################

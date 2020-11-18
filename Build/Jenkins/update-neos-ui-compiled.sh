@@ -27,9 +27,13 @@ if [ -n "$GIT_TAG_MANUAL" ]; then
     GIT_TAG="$GIT_TAG_MANUAL"
 fi
 
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
 export NODE_OPTIONS="--max-old-space-size=4096"
 
-nvm use
+nvm install && nvm use
 make install
 make build-production
 

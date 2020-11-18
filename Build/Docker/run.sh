@@ -17,4 +17,4 @@ echo "  Neos:"
 echo "    Ui:"
 echo "      frontendDevelopmentMode: true"
 
-NEOS_BUILD_ROOT=$(pwd) node_modules/.bin/webpack --progress --colors --watch-poll --watch
+NEOS_BUILD_ROOT=$(pwd) node_modules/.bin/webpack --progress --color --watch-poll --watch

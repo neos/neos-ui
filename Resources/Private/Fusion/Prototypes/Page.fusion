@@ -83,7 +83,7 @@ prototype(Neos.Neos:Page) {
     neosBackendContainer.@if.oldBackend = ${false}
 
     newNeosBackendWrappingElement = '<div id="neos-new-backend-container"></div>'
-    newNeosBackendWrappingElement.@position = 'after neosBackendContainer'
+    newNeosBackendWrappingElement.@position = 'before closingBodyTag'
     newNeosBackendWrappingElement.@if.inBackend = ${documentNode.context.inBackend}
 
     //

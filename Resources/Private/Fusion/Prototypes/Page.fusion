@@ -3,23 +3,10 @@
 // augments the website itself
 //
 prototype(Neos.Neos:Page) {
-
-    //
-    // Disable all html attributes printed for the Neos backend
-    //
-    htmlTag.attributes {
-        version.@if.oldBackend = ${false}
-        xmlns.@if.oldBackend = ${false}
-        xmlns:typo3.@if.oldBackend = ${false}
-        xmlns:xsd.@if.oldBackend = ${false}
-    }
-
     //
     // Disable rendering of the Neos backend
     //
     head {
-        neosBackendHeader.@if.oldBackend = ${false}
-        neosBackendEndpoints.@if.oldBackend = ${false}
 
         javascriptBackendInformation = Neos.Neos.Ui:RenderConfiguration {
             path = 'documentNodeInformation'
@@ -72,24 +59,9 @@ prototype(Neos.Neos:Page) {
         }
     }
 
-    //
-    // Do not print document meta data
-    //
-    neosBackendDocumentNodeData.@if.oldBackend = ${false}
-
-    //
-    // Do not render the Neos backend container
-    //
-    neosBackendContainer.@if.oldBackend = ${false}
-
-    newNeosBackendWrappingElement = '<div id="neos-backend-container"></div>'
-    newNeosBackendWrappingElement.@position = 'before closingBodyTag'
-    newNeosBackendWrappingElement.@if.inBackend = ${documentNode.context.inBackend}
-
-    //
-    // Do not render the Neos backend footer
-    //
-    neosBackendFooter.@if.oldBackend = ${false}
+    neosBackendContainer = '<div id="neos-backend-container"></div>'
+    neosBackendContainer.@position = 'before closingBodyTag'
+    neosBackendContainer.@if.inBackend = ${documentNode.context.inBackend}
 
     neosBackendNotification = Neos.Fusion:Template {
         @position = 'before closingBodyTag'

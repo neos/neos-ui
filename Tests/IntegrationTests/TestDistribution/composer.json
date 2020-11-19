@@ -4,7 +4,8 @@
     "description": "Neos test distribution. Change this number if you need to break CircleCI's cache: 14",
     "config": {
         "vendor-dir": "Packages/Libraries",
-        "bin-dir": "bin"
+        "bin-dir": "bin",
+        "htaccess-protect": "false"
     },
     "minimum-stability": "dev",
     "require": {

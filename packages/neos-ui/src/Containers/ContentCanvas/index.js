@@ -126,7 +126,7 @@ export default class ContentCanvas extends PureComponent {
                         name="neos-content-main"
                         className={style.contentCanvas__contents}
                         style={canvasContentStyle}
-                        mountTarget="#neos-new-backend-container"
+                        mountTarget="#neos-backend-container"
                         contentDidUpdate={this.onFrameChange}
                         onLoad={this.handleFrameAccess}
                         onUnload={this.handelLoadStart}

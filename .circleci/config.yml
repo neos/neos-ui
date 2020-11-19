@@ -25,7 +25,7 @@ aliases:
   - &save_composer_cache
     key: composer-cache-v2-{{ checksum "Tests/IntegrationTests/TestDistribution/composer.json" }}
     paths:
-      - /composer/cache-dir
+      - /home/circleci/composer/cache-dir
 
   - &restore_composer_cache
     keys:
@@ -79,7 +79,7 @@ jobs:
   build_flow_app:
     working_directory: *workspace_root
     environment:
-      COMPOSER_CACHE_DIR: /composer/cache-dir
+      COMPOSER_CACHE_DIR: /home/circleci/composer/cache-dir
     docker:
       - image: cimg/php:7.4.12-node
     steps:

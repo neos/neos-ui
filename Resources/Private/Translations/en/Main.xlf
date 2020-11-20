@@ -84,24 +84,6 @@
             <trans-unit id="ckeditor__toolbar__link__formatAsEmail" xml:space="preserve">
                 <source>Format as email?</source>
             </trans-unit>
-            <trans-unit id="" xml:space="preserve">
-                <source></source>
-            </trans-unit>
-            <trans-unit id="" xml:space="preserve">
-                <source></source>
-            </trans-unit>
-            <trans-unit id="" xml:space="preserve">
-                <source></source>
-            </trans-unit>
-            <trans-unit id="" xml:space="preserve">
-                <source></source>
-            </trans-unit>
-            <trans-unit id="" xml:space="preserve">
-                <source></source>
-            </trans-unit>
-            <trans-unit id="" xml:space="preserve">
-                <source></source>
-            </trans-unit>
             <trans-unit id="ckeditor__toolbar__ordered-list" xml:space="preserve">
                 <source>Ordered list</source>
             </trans-unit>

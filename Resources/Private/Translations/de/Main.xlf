@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file original="" product-name="Neos.Neos.Ui" source-language="en" datatype="plaintext" target-language="de">
         <body>
             <trans-unit id="copy__from__to--title" xml:space="preserve" approved="yes">
@@ -127,24 +127,6 @@
             <trans-unit id="ckeditor__toolbar__link__formatAsEmail" xml:space="preserve" approved="yes">
                 <source>Format as email?</source>
                 <target xml:lang="de">Formatieren als E-Mail?</target>
-            </trans-unit>
-            <trans-unit id="" xml:space="preserve">
-                <source/>
-            </trans-unit>
-            <trans-unit id="" xml:space="preserve">
-                <source/>
-            </trans-unit>
-            <trans-unit id="" xml:space="preserve">
-                <source/>
-            </trans-unit>
-            <trans-unit id="" xml:space="preserve">
-                <source/>
-            </trans-unit>
-            <trans-unit id="" xml:space="preserve">
-                <source/>
-            </trans-unit>
-            <trans-unit id="" xml:space="preserve">
-                <source/>
             </trans-unit>
             <trans-unit id="ckeditor__toolbar__ordered-list" xml:space="preserve">
                 <source>Ordered list</source>

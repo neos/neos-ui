@@ -19,16 +19,14 @@ exports[`<TextArea/> should render correctly. 1`] = `
       }
     }
   >
-    <TextareaAutosize
+    <ForwardRef(TextareaAutosize)
       aria-disabled="false"
       aria-multiline="true"
       className="textAreaClassName"
       minRows={2}
       onChange={[Function]}
       onClick={[Function]}
-      onHeightChange={[Function]}
       role="textbox"
-      useCacheForDOMMeasurements={false}
     >
       <textarea
         aria-disabled="false"
@@ -37,13 +35,8 @@ exports[`<TextArea/> should render correctly. 1`] = `
         onChange={[Function]}
         onClick={[Function]}
         role="textbox"
-        style={
-          Object {
-            "height": 0,
-          }
-        }
       />
-    </TextareaAutosize>
+    </ForwardRef(TextareaAutosize)>
   </TextArea>
 </clickOutside(TextArea)>
 `;

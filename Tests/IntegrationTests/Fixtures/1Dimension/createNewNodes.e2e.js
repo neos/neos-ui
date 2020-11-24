@@ -133,7 +133,7 @@ test('Can create content node from inside InlineUI', async t => {
         .switchToMainWindow()
         .click(ReactSelector('EditorToolbar LinkButton'))
         .typeText(ReactSelector('EditorToolbar LinkButton TextInput'), linkTargetPage)
-        .click(ReactSelector('EditorToolbar NodeOption'))
+        .click(ReactSelector('EditorToolbar ShallowDropDownContents NodeOption'))
         .switchToIframe(contentIframeSelector)
         .expect(Selector('.test-headline h1 a').withAttribute('href').exists).ok('Newly inserted link exists')
         .switchToMainWindow();

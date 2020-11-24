@@ -6,6 +6,7 @@ import ShallowDropDownContents, {ShallowDropDownContentsProps} from './contents'
 
 describe('<ShallowDropDownContents/>', () => {
     const props: ShallowDropDownContentsProps = {
+        ...ShallowDropDownContents.defaultProps,
         children: 'Foo children',
         isOpen: false,
         closeDropDown: jest.fn(),
@@ -13,7 +14,8 @@ describe('<ShallowDropDownContents/>', () => {
             'dropDown__contents': 'baseDropDownContentsClassName',
             'dropDown__contents--isOpen': 'openDropDownContentsClassName',
             'dropDown__contents--scrollable': 'scrollDropDownContentsClassName'
-        }
+        },
+        wrapperRef: React.createRef(),
     };
 
     it('should not render when having no children.', () => {

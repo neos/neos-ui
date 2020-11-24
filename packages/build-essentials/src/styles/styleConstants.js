@@ -29,7 +29,7 @@ const config = {
         primaryToolbar: '4',
         checkboxInput: ['context'],
         dropdownContents: ['context'],
-        selectBoxContents: '3',
+        selectBoxContents: '4',
         notInlineEditableOverlay: ['context'],
         calendarFakeInputMirror: ['context'],
         rdtPicker: ['context'],

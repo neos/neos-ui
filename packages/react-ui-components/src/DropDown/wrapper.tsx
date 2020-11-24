@@ -69,6 +69,7 @@ export interface StatelessDropDownWrapperWithoutClickOutsideBehaviorProps extend
 export interface ChildContext {
     toggleDropDown: (event: MouseEvent) => void;
     closeDropDown: (event: MouseEvent) => void;
+    wrapperRef: React.RefObject<HTMLDivElement>;
 }
 
 class StatelessDropDownWrapperWithoutClickOutsideBehavior extends PureComponent<StatelessDropDownWrapperWithoutClickOutsideBehaviorProps> {
@@ -77,11 +78,15 @@ class StatelessDropDownWrapperWithoutClickOutsideBehavior extends PureComponent<
     public static readonly childContextTypes = {
         toggleDropDown: PropTypes.func.isRequired,
         closeDropDown: PropTypes.func.isRequired,
+        wrapperRef: PropTypes.object.isRequired
     };
+
+    public readonly ref: React.RefObject<HTMLDivElement> = React.createRef();
 
     public readonly getChildContext = (): ChildContext => ({
         toggleDropDown: this.handleToggle,
         closeDropDown: this.handleClose,
+        wrapperRef: this.ref
     })
 
     public readonly handleClickOutside = () => {
@@ -105,7 +110,7 @@ class StatelessDropDownWrapperWithoutClickOutsideBehavior extends PureComponent<
         );
 
         return (
-            <div {...rest} className={finalClassName}>
+            <div ref={this.ref} {...rest} className={finalClassName}>
                 {React.Children.map(
                     children,
                     // @ts-ignore
@@ -168,6 +173,7 @@ export default DropDownWrapper;
 
 export interface ContextDropDownProps extends DropDownWrapperProps {
     isDropdownOpen?: boolean;
+    wrapperRef?: React.RefObject<HTMLElement>;
 }
 
 export class ContextDropDownHeader extends PureComponent<ContextDropDownProps> {
@@ -184,12 +190,13 @@ export class ContextDropDownHeader extends PureComponent<ContextDropDownProps> {
 
 export class ContextDropDownContents extends PureComponent<ContextDropDownProps> {
     public static readonly contextTypes = {
-        closeDropDown: PropTypes.func.isRequired
+        closeDropDown: PropTypes.func.isRequired,
+        wrapperRef: PropTypes.object.isRequired
     };
 
     public render(): JSX.Element {
-        const {isDropdownOpen, ...rest} = this.props;
+        const {isDropdownOpen, wrapperRef, ...rest} = this.props;
 
-        return <ShallowDropDownContents isOpen={isDropdownOpen} {...rest} {...this.context}/>;
+        return <ShallowDropDownContents isOpen={isDropdownOpen} {...rest} {...this.context} wrapperRef={wrapperRef || this.context.wrapperRef}/>;
     }
 }

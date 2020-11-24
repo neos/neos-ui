@@ -1,0 +1,4 @@
+prototype(Neos.TestNodeTypes:Document.SelectBoxTestPage.OpensAboveInInspector)>
+prototype(Neos.TestNodeTypes:Document.SelectBoxTestPage.OpensAboveInInspector) < prototype(Neos.Neos:Page) {
+    body = 'NO CONTENT'
+}

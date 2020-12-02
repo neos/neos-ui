@@ -27,14 +27,3 @@
     'ServiceSubRoutes':
       package: 'Neos.Neos.Ui'
       suffix:  'Service'
-
-##
-# Deprecated fallback for users used to that URI
--
-  name: 'Backend Login New UI Route'
-  uriPattern: 'neos!'
-  defaults:
-    '@package':    'Neos.Neos.Ui'
-    '@controller': 'Backend'
-    '@action':     'index'
-    '@format':     'html'

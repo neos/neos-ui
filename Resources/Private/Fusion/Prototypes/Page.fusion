@@ -47,7 +47,7 @@ prototype(Neos.Neos:Page) {
         }
 
         guestFrameApplication = Neos.Fusion:Template {
-            @position = 'after javascriptDocumentInformation'
+            @position = 'after javascriptBackendInformation'
 
             templatePath = 'resource://Neos.Neos.Ui/Private/Templates/Backend/Guest.html'
             compiledResourcePackage = ${Neos.Ui.StaticResources.compiledResourcePackage()}

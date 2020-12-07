@@ -12,25 +12,25 @@ aliases:
       - yarn-cache-v1-{{ checksum "yarn.lock" }}
 
   - &store_app_cache
-    key: full-app-cache-v2-{{ checksum "Tests/IntegrationTests/TestDistribution/composer.json" }}-{{ checksum "Tests/IntegrationTests/TestDistribution/Configuration/Settings.yaml" }}
+    key: full-app-cache-v2-{{ arch }}-{{ checksum "Tests/IntegrationTests/TestDistribution/composer.json" }}-{{ checksum "Tests/IntegrationTests/TestDistribution/Configuration/Settings.yaml" }}
     paths:
       - /home/circleci/app
 
   - &restore_app_cache
     keys:
-      - full-app-cache-v2-{{ checksum "Tests/IntegrationTests/TestDistribution/composer.json" }}-{{ checksum "Tests/IntegrationTests/TestDistribution/Configuration/Settings.yaml" }}
-      - full-app-cache-v2-{{ checksum "Tests/IntegrationTests/TestDistribution/composer.json" }}-
-      - full-app-cache-v2-
+      - full-app-cache-v2-{{ arch }}-{{ checksum "Tests/IntegrationTests/TestDistribution/composer.json" }}-{{ checksum "Tests/IntegrationTests/TestDistribution/Configuration/Settings.yaml" }}
+      - full-app-cache-v2-{{ arch }}-{{ checksum "Tests/IntegrationTests/TestDistribution/composer.json" }}-
+      - full-app-cache-v2-{{ arch }}-
 
   - &save_composer_cache
-    key: composer-cache-v2-{{ checksum "Tests/IntegrationTests/TestDistribution/composer.json" }}
+    key: composer-cache-v2-{{ arch }}-{{ checksum "Tests/IntegrationTests/TestDistribution/composer.json" }}
     paths:
       - /home/circleci/composer/cache-dir
 
   - &restore_composer_cache
     keys:
-      - composer-cache-v2-{{ checksum "Tests/IntegrationTests/TestDistribution/composer.json" }}
-      - composer-cache-v2-
+      - composer-cache-v2-{{ arch }}-{{ checksum "Tests/IntegrationTests/TestDistribution/composer.json" }}
+      - composer-cache-v2-{{ arch }}-
 
   - &attach_workspace
     at: *workspace_root

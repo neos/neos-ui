@@ -84,6 +84,7 @@ jobs:
       - image: cimg/php:7.4.12-node
     steps:
       - attach_workspace: *attach_workspace
+      - chmod -R 777 /home/circleci
       - restore_cache: *restore_composer_cache
 
       - run: mkdir -p /home/circleci/app/Configuration

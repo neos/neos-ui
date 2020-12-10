@@ -29,6 +29,10 @@ if [ -z "$path_to_yarn" ] ; then
     npm install -g yarn
 fi
 
+# switch node version
+nvm install
+nvm use
+
 # install dependencies and login to npm
 make install
 NPM_EMAIL=hello@neos.io ./node_modules/.bin/npm-cli-login

@@ -29,6 +29,9 @@ if [ -z "$path_to_yarn" ] ; then
     npm install -g yarn
 fi
 
+# Load bashrc to have nvm available
+source ~/.bashrc
+
 # switch node version
 nvm install
 nvm use

@@ -140,8 +140,8 @@ export default class LinkInput extends PureComponent {
             this.setState({
                 isLoading: false,
                 searchOptions: [{
-                    label: this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__formatAsHttp', 'Format as http link?'),
-                    loaderUri: `http://${searchTerm}`
+                    label: this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__formatAsHttp', 'Format as https link?'),
+                    loaderUri: `https://${searchTerm}`
                 }]
             });
         } else if (isEmail(searchTerm)) {

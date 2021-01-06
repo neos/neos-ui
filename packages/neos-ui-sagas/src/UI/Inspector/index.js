@@ -5,6 +5,8 @@ import {findNodeInGuestFrame} from '@neos-project/neos-ui-guest-frame/src/dom';
 
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
 
+import {applySaveHooksForTransientValue} from '../../Changes/saveHooks';
+
 const getFocusedNode = selectors.CR.Nodes.focusedSelector;
 const getTransientInspectorValues = state => {
     const values = $get(['ui', 'inspector', 'valuesByNodePath'], state);
@@ -94,6 +96,7 @@ function * flushInspector(inspectorRegistry) {
     //
     // Accumulate changes to be persisted
     //
+    const saveHooksRegistry = inspectorRegistry.get('saveHooks');
     const changes = [];
 
     for (const propertyName of Object.keys(transientInspectorValuesForFocusedNodes)) {
@@ -101,23 +104,7 @@ function * flushInspector(inspectorRegistry) {
 
         //
         // Try to run all hooks on the transient value
-        const initialValue = Promise.resolve(transientValue.value);
-        const value = yield transientValue.hooks ?
-            Object.keys(transientValue.hooks).reduce(
-                (valueAsPromise, hookIdentifier) => {
-                    const hookFn = inspectorRegistry.get('saveHooks').get(hookIdentifier);
-
-                    return valueAsPromise.then(value => {
-                        try {
-                            return hookFn(value, transientValue.hooks[hookIdentifier]);
-                        } catch (e) {
-                            console.error(`There was an error executing ${hookIdentifier}`, e);
-                            throw e;
-                        }
-                    });
-                },
-                initialValue
-            ) : initialValue;
+        const value = yield * applySaveHooksForTransientValue(transientValue, saveHooksRegistry);
 
         //
         // Build a property change object

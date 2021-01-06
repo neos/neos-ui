@@ -112,3 +112,40 @@ test('Can create content node from inside InlineUI', async t => {
         .expect(Selector('.test-headline h1 a').withAttribute('href').exists).ok('Newly inserted link exists')
         .switchToMainWindow();
 });
+
+test('Supports secondary inspector view for element editors', async t => {
+    const SelectNodeTypeModal = ReactSelector('SelectNodeType');
+    await t
+        .expect(SelectNodeTypeModal.exists).ok()
+        .expect(SelectNodeTypeModal.getReact(({props}) => props.isOpen)).eql(false)
+        .click(Selector('#neos-PageTree-AddNode'))
+        .expect(SelectNodeTypeModal.getReact(({props}) => props.isOpen)).eql(true)
+        .click(ReactSelector('NodeTypeItem').find('button>span>span').withText('PageWithImage_Test'))
+        .typeText(Selector('#neos-NodeCreationDialog-Body input'), 'TestPage with Image');
+
+    const imageEditor = await ReactSelector('NodeCreationDialog ImageEditor').withProps('id', '__neos__editor__property---image');
+    await t
+        .click(imageEditor.findReact('IconButton').withProps('icon', 'camera'))
+        .switchToIframe(Selector('[name="neos-media-selection-screen"]', {timeout: 2000}))
+        .click(Selector('.neos-thumbnail'));
+
+    await t.switchToMainWindow();
+
+    await t
+        .click(imageEditor.findReact('IconButton').withProps('icon', 'crop'));
+    const initialLeftOffset = await imageEditor.find('img').getStyleProperty('left');
+
+    await t
+        .drag(ReactSelector('ReactCrop'), 50, 50, {offsetX: 5, offsetY: 5})
+        .expect(imageEditor.find('img').getStyleProperty('left')).notEql(initialLeftOffset, 'The preview image in the creation dialog should reflect the cropping results');
+
+    const leftOffsetAfterCrop = await imageEditor.find('img').getStyleProperty('left');
+
+    await t
+        .click(Selector('#neos-NodeCreationDialog-CreateNew'))
+        .expect(ReactSelector('NodeCreationDialog').getReact(({props}) => props.isOpen)).eql(false);
+    await Page.waitForIframeLoading(t);
+
+    const inspectorImageEditor = await ReactSelector('InspectorEditorEnvelope').withProps('id', 'image');
+    await t.expect(inspectorImageEditor.find('img').getStyleProperty('left')).eql(leftOffsetAfterCrop, 'The preview image in the inspector should reflect the same cropping results set in the creation dialog');
+});

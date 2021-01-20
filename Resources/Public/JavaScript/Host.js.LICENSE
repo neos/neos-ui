@@ -131,16 +131,16 @@ object-assign
  * https://monet.github.io/monet.js/
  */
 
-/*! decimal.js-light v2.5.0 https://github.com/MikeMcl/decimal.js-light/LICENCE */
-
-/*! https://mths.be/he v1.2.0 by @mathias | MIT license */
-
 /*!
  * Determine if an object is a Buffer
  *
  * @author   Feross Aboukhadijeh <https://feross.org>
  * @license  MIT
  */
+
+/*! decimal.js-light v2.5.0 https://github.com/MikeMcl/decimal.js-light/LICENCE */
+
+/*! https://mths.be/he v1.2.0 by @mathias | MIT license */
 
 /**
    * @license Copyright (c) 2003-2019, CKSource - Frederico Knabben. All rights reserved.

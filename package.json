@@ -130,7 +130,7 @@
     "hashlru": "^2.3.0",
     "he": "^1.1.1",
     "hoist-non-react-statics": "^3.3.1",
-    "immer": "^2.1.4",
+    "immer": "^8.0.1",
     "lodash.assign": "^4.2.0",
     "lodash.debounce": "^4.0.8",
     "lodash.defaultsdeep": "^4.6.1",

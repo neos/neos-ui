@@ -37,21 +37,9 @@ use Neos\Neos\Service\UserService;
 use Neos\Neos\TypeConverter\NodeConverter;
 use Neos\Neos\Ui\Domain\Service\StyleAndJavascriptInclusionService;
 use Neos\Neos\Ui\Service\NodeClipboard;
-use Neos\Neos\Ui\View\BackendFusionView;
 
 class BackendController extends ActionController
 {
-
-    /**
-     * @var string
-     */
-    protected $defaultViewObjectName = BackendFusionView::class;
-
-    /**
-     * @var FusionView
-     */
-    protected $view;
-
     /**
      * @Flow\Inject
      * @var UserService

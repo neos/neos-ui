@@ -49,12 +49,12 @@ prototype(Neos.Neos.Ui:Component.ModuleMenu) < prototype(Neos.Fusion:Map) {
                         target = 'Window'
                     }
 
-                    @process.filterHiddenSubmodules = ${Array.filter(value, (x, index) => x != null)}
+                    @process.filterHiddenSubmodules = ${Array.values(Array.filter(value, (x, index) => x != null))}
                 }
             }
         }
     }
 
-    @process.filterHiddenModules = ${Array.filter(value, (x, index) => x != null)}
+    @process.filterHiddenModules = ${Array.values(Array.filter(value, (x, index) => x != null))}
     @process.json = ${Json.stringify(value)}
 }

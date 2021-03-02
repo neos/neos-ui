@@ -5,7 +5,7 @@ import CloseOnEscape from 'react-close-on-escape';
 import {Portal} from 'react-portal';
 
 type DialogType = 'success' | 'warn' | 'error';
-type DialogStyle = 'wide' | 'narrow';
+type DialogStyle = 'wide' | 'jumbo' | 'narrow';
 
 interface DialogTheme {
     readonly 'dialog': string;
@@ -16,6 +16,7 @@ interface DialogTheme {
     readonly 'dialog__closeBtn': string;
     readonly 'dialog__actions': string;
     readonly 'dialog--wide': string;
+    readonly 'dialog--jumbo': string;
     readonly 'dialog--narrow': string;
     readonly 'dialog--success': string;
     readonly 'dialog--warn': string;
@@ -179,6 +180,7 @@ class DialogWithEscape extends PureComponent<DialogProps> {
             theme.dialog,
             {
                 [theme['dialog--wide']]: style === 'wide',
+                [theme['dialog--jumbo']]: style === 'jumbo',
                 [theme['dialog--narrow']]: style === 'narrow',
             },
             {

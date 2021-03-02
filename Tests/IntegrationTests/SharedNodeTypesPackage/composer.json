@@ -10,5 +10,10 @@
         "neos": {
             "package-key": "Neos.TestNodeTypes"
         }
+    },
+    "autoload": {
+      "psr-4": {
+        "Neos\\TestNodeTypes\\": "Classes"
+      }
     }
 }

@@ -33,6 +33,7 @@ export default class EditorEnvelope extends PureComponent {
         label: PropTypes.string.isRequired,
         options: PropTypes.object,
         value: PropTypes.any,
+        hooks: PropTypes.object,
         renderSecondaryInspector: PropTypes.func,
         editor: PropTypes.string.isRequired,
         editorRegistry: PropTypes.object.isRequired,

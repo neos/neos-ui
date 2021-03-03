@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {$get, $set} from 'plow-js';
 import memoize from 'lodash.memoize';
-import isEqual from 'lodash.isequal';
+import cx from 'classnames';
 
 import {neos} from '@neos-project/neos-ui-decorators';
 import {actions} from '@neos-project/neos-ui-redux-store';
@@ -42,99 +42,144 @@ export default class NodeCreationDialog extends PureComponent {
         apply: PropTypes.func.isRequired
     };
 
-    defaultState = {
-        values: {},
+    static defaultState = {
+        transient: {},
         validationErrors: null,
-        isDirty: false
+        isDirty: false,
+        secondaryInspectorName: '',
+        secondaryInspectorComponent: null
     };
 
-    state = this.defaultState;
+    state = NodeCreationDialog.getDerivedStateFromProps(
+        this.props,
+        NodeCreationDialog.defaultState
+    );
 
-    resetState() {
-        this.setState(this.defaultState);
-    }
-
-    static getDerivedStateFromProps(props, currentState) {
-        const {configuration} = props;
-        if (configuration && !isEqual(Object.keys(currentState.values).sort(), Object.keys(configuration.elements).sort())) {
-            const defaultValues = Object.keys(configuration.elements).reduce((carry, elementName) => {
-                if (configuration.elements[elementName].defaultValue === undefined) {
-                    carry[elementName] = null;
-                } else {
-                    carry[elementName] = configuration.elements[elementName].defaultValue;
-                }
-                return carry;
-            }, {});
-
-            return {
-                values: {
-                    ...defaultValues,
-                    ...currentState.values
-                },
-                validationErrors: currentState.validationErrors,
-                isDirty: true
-            };
+    static getDerivedStateFromProps(props, state) {
+        if (!props.isOpen) {
+            return NodeCreationDialog.defaultState;
         }
-        return null;
+
+        if (state.isDirty) {
+            return state;
+        }
+
+        const transientDefaultValues = NodeCreationDialog.getTransientDefaultValuesFromConfiguration(
+            props.configuration
+        );
+
+        return {
+            ...state,
+            transient: {
+                ...transientDefaultValues,
+                ...state.transient
+            }
+        };
     }
 
-    handleDialogEditorValueChange = memoize(elementName => value => {
-        const {values} = this.state;
-        const newValues = Object.assign({}, values, {[elementName]: value});
-        this.validateElements(newValues);
+    static getTransientDefaultValuesFromConfiguration = configuration => {
+        if (configuration) {
+            return Object.keys(configuration.elements).reduce(
+                (transientDefaultValues, elementName) => {
+                    if (configuration.elements[elementName].defaultValue === undefined) {
+                        transientDefaultValues[elementName] = {value: null};
+                    } else {
+                        transientDefaultValues[elementName] = {
+                            value: configuration.elements[elementName].defaultValue
+                        };
+                    }
+                    return transientDefaultValues;
+                },
+                {}
+            );
+        }
+
+        return {};
+    }
+
+    handleDialogEditorValueChange = memoize(elementName => (value, hooks) => {
+        const transient = $set(elementName, {value, hooks}, this.state.transient);
+        const validationErrors = this.getValidationErrorsForTransientValues(transient);
+
+        this.setState({
+            transient,
+            isDirty: true,
+            validationErrors
+        });
     })
 
-    validateElements = newValues => {
+    getValidationErrorsForTransientValues = transientValues => {
         const {validatorRegistry, configuration} = this.props;
-        const validationErrors = validate(newValues, configuration.elements, validatorRegistry);
-        this.setState({values: newValues, isDirty: true, validationErrors});
-        return validationErrors;
+        const values = this.getValuesMapFromTransientValues(transientValues);
+
+        return validate(values, configuration.elements, validatorRegistry);
     }
 
-    defineDefaultValueForElementName = elementName => {
-        const {values} = this.state;
-        if (!(elementName in values)) {
-            const defaultValues = Object.assign(values, {[elementName]: ''});
-            this.setState({values: defaultValues});
-        }
-    }
-
-    replenishValuesWithDefaults = () => {
-        // Fill up the values that has not been edited at the moment
-        Object.keys(this.props.configuration.elements).forEach(elementName => {
-            this.defineDefaultValueForElementName(elementName);
-        });
+    getValuesMapFromTransientValues = transientValues => {
+        return Object.keys(transientValues).reduce(
+            (valuesMap, elementName) => {
+                valuesMap[elementName] = transientValues[elementName].value;
+                return valuesMap;
+            },
+            {}
+        );
     }
 
     handleCancel = () => {
         const {cancel} = this.props;
-
         cancel();
-        this.resetState();
     }
 
     handleBack = () => {
         const {back} = this.props;
-
         back();
-        this.resetState();
     }
 
     handleApply = () => {
-        this.replenishValuesWithDefaults();
-        const {apply} = this.props;
-        const validationErrors = this.validateElements(this.state.values);
-        const {isDirty, values} = this.state;
-        if (!validationErrors && isDirty) {
-            apply(values);
-            this.resetState();
+        const {transient} = this.state;
+        const validationErrors = this.getValidationErrorsForTransientValues(transient);
+
+        if (validationErrors) {
+            this.setState({validationErrors});
+        } else {
+            const {apply} = this.props;
+            apply(transient);
+            this.setState(NodeCreationDialog.defaultState);
         }
     }
 
     handleKeyPress = event => {
-        const {validationErrors, isDirty} = this.state;
-        if (!validationErrors && isDirty && event.key === 'Enter') {
+        if (event.key === 'Enter') {
             this.handleApply();
+        }
+    }
+
+    handleSecondaryInspectorDismissal = () => this.setState({
+        secondaryInspectorName: '',
+        secondaryInspectorComponent: null
+    });
+
+    /**
+     * API function called by nested Editors, to render a secondary inspector.
+     *
+     * @param string secondaryInspectorName toggle the secondary inspector if the name is the same as before.
+     * @param function secondaryInspectorComponentFactory this function, when called without arguments, must return the React component to be rendered.
+     */
+    renderSecondaryInspector = (secondaryInspectorName, secondaryInspectorComponentFactory) => {
+        if (this.state.secondaryInspectorName === secondaryInspectorName) {
+            // We toggle the secondary inspector if it is rendered a second time; so that's why we hide it here.
+            // @TODO: this.handleCloseSecondaryInspector();
+        } else {
+            let secondaryInspectorComponent = null;
+            if (secondaryInspectorComponentFactory) {
+                // Hint: we directly resolve the factory function here, to ensure the object is not re-created on every render but stays the same for its whole lifetime.
+                secondaryInspectorComponent = secondaryInspectorComponentFactory();
+            }
+
+            this.setState({
+                secondaryInspectorName,
+                secondaryInspectorComponent
+            });
         }
     }
 
@@ -180,14 +225,55 @@ export default class NodeCreationDialog extends PureComponent {
         );
     }
 
+    renderElement(elementName, isFirst) {
+        const {configuration} = this.props;
+        const {validationErrors, isDirty} = this.state;
+        const validationErrorsForElement = isDirty ? $get(elementName, validationErrors) : [];
+        const element = configuration.elements[elementName];
+        const options = $set('autoFocus', isFirst, Object.assign({}, $get('ui.editorOptions', element)));
+
+        return (
+            <div key={elementName} className={style.editor}>
+                <EditorEnvelope
+                    identifier={elementName}
+                    label={$get('ui.label', element)}
+                    editor={$get('ui.editor', element)}
+                    options={options}
+                    commit={this.handleDialogEditorValueChange(elementName)}
+                    validationErrors={validationErrorsForElement}
+                    value={this.state.transient[elementName].value || ''}
+                    hooks={this.state.transient[elementName].hooks}
+                    onKeyPress={this.handleKeyPress}
+                    onEnterKey={this.handleApply}
+                    renderSecondaryInspector={this.renderSecondaryInspector}
+                />
+            </div>
+        );
+    }
+
+    renderAllElements() {
+        const {configuration} = this.props;
+
+        return Object.keys(configuration.elements).reduce(
+            (result, elementName, index) => {
+                if (configuration.elements[elementName]) {
+                    result.push(
+                        this.renderElement(elementName, index === 0)
+                    );
+                }
+
+                return result;
+            },
+            []
+        );
+    }
+
     render() {
-        const {isOpen, configuration} = this.props;
+        const {isOpen} = this.props;
 
         if (!isOpen) {
             return null;
         }
-
-        const {validationErrors, isDirty} = this.state;
 
         return (
             <Dialog
@@ -196,37 +282,32 @@ export default class NodeCreationDialog extends PureComponent {
                 onRequestClose={this.handleCancel}
                 type="success"
                 isOpen
-                style="wide"
+                style={this.state.secondaryInspectorComponent ? 'jumbo' : 'wide'}
                 id="neos-NodeCreationDialog"
                 >
-                <div id="neos-NodeCreationDialog-Body" className={style.body}>
-                    {Object.keys(configuration.elements)
-                        .filter(elementName => Boolean(configuration.elements[elementName]))
-                        .map((elementName, index) => {
-                            //
-                            // Only display errors after user input (isDirty)
-                            //
-                            const validationErrorsForElement = isDirty ? $get(elementName, validationErrors) : [];
-                            const element = configuration.elements[elementName];
-                            const editorOptions = $set('autoFocus', index === 0, $get('ui.editorOptions', element) || {});
-                            const options = Object.assign({}, editorOptions);
-                            return (
-                                <div key={elementName} className={style.editor}>
-                                    <EditorEnvelope
-                                        identifier={elementName}
-                                        label={$get('ui.label', element)}
-                                        editor={$get('ui.editor', element)}
-                                        options={options}
-                                        commit={this.handleDialogEditorValueChange(elementName)}
-                                        validationErrors={validationErrorsForElement}
-                                        value={this.state.values[elementName] || ''}
-                                        onKeyPress={this.handleKeyPress}
-                                        onEnterKey={this.handleApply}
-                                        />
-                                </div>
-                            );
-                        })
-                    }
+                <div
+                    id="neos-NodeCreationDialog-Body"
+                    className={cx({
+                        [style.body]: true,
+                        [style.expanded]: Boolean(this.state.secondaryInspectorComponent)
+                    })}
+                    >
+                    <div className={style.secondaryColumn}>
+                        <div className={style.secondaryColumn__contentWrapper}>
+                            <Button
+                                style="clean"
+                                className={style.close}
+                                onClick={this.handleSecondaryInspectorDismissal}
+                            >
+                                <Icon icon="chevron-left" />
+                            </Button>
+
+                            {this.state.secondaryInspectorComponent}
+                        </div>
+                    </div>
+                    <div className={style.primaryColumn}>
+                        {this.renderAllElements()}
+                    </div>
                 </div>
             </Dialog>
         );

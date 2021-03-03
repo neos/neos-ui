@@ -20,6 +20,7 @@ for fixture in Packages/Application/Neos.Neos.Ui/Tests/IntegrationTests/Fixtures
     ln -s "../${fixture}SitePackage" DistributionPackages/Neos.TestSite
 
     # TODO: optimize this
+    ./flow flow:package:rescan
     ./flow flow:cache:flush
     #./flow flow:cache:flushone Neos_Neos_Fusion
     #./flow flow:cache:flushone Neos_Fusion_Content

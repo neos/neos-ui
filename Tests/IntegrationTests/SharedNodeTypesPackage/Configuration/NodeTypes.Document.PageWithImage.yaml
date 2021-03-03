@@ -1,0 +1,72 @@
+'Neos.TestNodeTypes:Document.PageWithImage':
+  superTypes:
+    'Neos.Neos:Document': true
+  options:
+    nodeCreationHandlers:
+      image:
+        nodeCreationHandler: 'Neos\TestNodeTypes\NodeCreationHandler\ImagePropertyNodeCreationHandler'
+  ui:
+    label: PageWithImage_Test
+    icon: icon-file-o
+    position: 100
+    creationDialog:
+      elements:
+        image:
+          type: Neos\Media\Domain\Model\ImageInterface
+          ui:
+            label: Image
+            editor: Neos.Neos/Inspector/Editors/ImageEditor
+            editorOptions:
+              fileUploadLabel: Neos.Neos:Main:choose
+              maximumFileSize:
+              features:
+                crop: true
+                upload: true
+                mediaBrowser: true
+                resize: false
+              crop:
+                aspectRatio:
+                  options:
+                    square:
+                      width: 1
+                      height: 1
+                      label: Square
+                    fourFive:
+                      width: 4
+                      height: 5
+                    fiveSeven:
+                      width: 5
+                      height: 7
+                    twoThree:
+                      width: 2
+                      height: 3
+                    fourThree:
+                      width: 4
+                      height: 3
+                    sixteenNine:
+                      width: 16
+                      height: 9
+                  enableOriginal: true
+                  allowCustom: true
+                  locked:
+                    width: 1
+                    height: 1
+  childNodes:
+    main:
+      type: 'Neos.Neos:ContentCollection'
+  properties:
+    image:
+      type: Neos\Media\Domain\Model\ImageInterface
+      ui:
+        label: 'Image'
+        reloadIfChanged: true
+        inspector:
+          group: 'document'
+          editorOptions:
+            features:
+              crop: true
+            crop:
+              aspectRatio:
+                locked:
+                  width: 1
+                  height: 1

@@ -3,6 +3,8 @@ import {$get} from 'plow-js';
 
 import {actions, actionTypes, selectors} from '@neos-project/neos-ui-redux-store';
 
+import {applySaveHooksForTransientValuesMap} from '../../Changes/saveHooks';
+
 import {calculateChangeTypeFromMode, calculateDomAddressesFromMode} from './helpers';
 
 const STEP_SELECT_NODETYPE = Symbol('STEP_SELECT_NODETYPE');
@@ -12,6 +14,7 @@ const STEP_FINISH = Symbol('STEP_FINISH');
 function * nodeCreationWorkflow(context, step = STEP_SELECT_NODETYPE, workflowData = {}) {
     const {
         nodeTypesRegistry,
+        saveHooksRegistry,
         referenceNodeContextPath,
         referenceNodeFusionPath,
         preferredMode,
@@ -80,14 +83,14 @@ function * nodeCreationWorkflow(context, step = STEP_SELECT_NODETYPE, workflowDa
                 if (nextAction.type === actionTypes.UI.NodeCreationDialog.APPLY) {
                     return yield call(nodeCreationWorkflow, context, STEP_FINISH, {
                         ...workflowData,
-                        data: nextAction.payload
+                        transientValues: nextAction.payload
                     });
                 }
             }
             return yield call(nodeCreationWorkflow, context, STEP_FINISH, workflowData);
         }
         case STEP_FINISH: {
-            const {mode, nodeType, data} = workflowData;
+            const {mode, nodeType, transientValues} = workflowData;
             if (nodeTypesRegistry.hasRole(nodeType, 'document')) {
                 yield put(actions.UI.ContentCanvas.startLoading());
             }
@@ -95,6 +98,7 @@ function * nodeCreationWorkflow(context, step = STEP_SELECT_NODETYPE, workflowDa
             const referenceNodeSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(referenceNodeContextPath);
             const referenceNode = yield select(referenceNodeSelector);
             const baseNodeType = yield select($get('ui.pageTree.filterNodeType'));
+            const data = yield * applySaveHooksForTransientValuesMap(transientValues, saveHooksRegistry);
 
             return yield put(actions.Changes.persistChanges([{
                 type: calculateChangeTypeFromMode(mode, 'Create'),
@@ -112,10 +116,13 @@ function * nodeCreationWorkflow(context, step = STEP_SELECT_NODETYPE, workflowDa
 }
 export default function * addNode({globalRegistry}) {
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
+    const saveHooksRegistry = globalRegistry.get('inspector').get('saveHooks');
+
     yield takeLatest(actionTypes.CR.Nodes.COMMENCE_CREATION, function * (action) {
         const {referenceNodeContextPath, referenceNodeFusionPath, preferredMode, nodeType} = action.payload;
         const context = {
             nodeTypesRegistry,
+            saveHooksRegistry,
             referenceNodeContextPath,
             referenceNodeFusionPath,
             preferredMode,

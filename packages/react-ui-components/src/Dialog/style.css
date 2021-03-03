@@ -34,9 +34,20 @@
     width: calc(100vw - var(--spacing-GoldenUnit) * 2);
     max-width: calc(var(--spacing-GoldenUnit) * 16);
     border: 2px solid var(--colors-ContrastDark);
+    transition: var(--transition-Default) ease max-width;
 
     .dialog--wide & {
         max-width: calc(var(--spacing-GoldenUnit) * 24);
+
+        @media(max-width: 576px) {
+            max-width: 100vw;
+            width: 100vw;
+        }
+    }
+
+    .dialog--jumbo & {
+        max-width: calc(var(--spacing-GoldenUnit) * 36);
+        width: 90vw;
 
         @media(max-width: 576px) {
             max-width: 100vw;

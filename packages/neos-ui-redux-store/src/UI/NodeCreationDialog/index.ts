@@ -25,10 +25,24 @@ export enum actionTypes {
     APPLY = '@neos/neos-ui/UI/NodeCreationDialog/APPLY'
 }
 
+type Value = any;
+type SaveHookIdentifier = string;
+type SaveHookOptions = any;
+type SaveHooksMap = {
+    [saveHookIdentifier in SaveHookIdentifier]: SaveHookOptions
+};
+interface TransientValue {
+    value: Value;
+    hooks?: SaveHooksMap;
+}
+interface TransientValuesMap {
+    [elementName: string]: TransientValue;
+}
+
 const open = (label: string, configuration: {}) => createAction(actionTypes.OPEN, {label, configuration});
 const back = () => createAction(actionTypes.BACK);
 const cancel = () => createAction(actionTypes.CANCEL);
-const apply = (data: {}) => createAction(actionTypes.APPLY, data);
+const apply = (transientValues: TransientValuesMap) => createAction(actionTypes.APPLY, transientValues);
 
 //
 // Export the actions

@@ -62,6 +62,7 @@ exports[`<Dialog/> Portal should render correctly. 1`] = `
           Object {
             "dialog": "dialogClassName",
             "dialog--error": "errorClassName",
+            "dialog--jumbo": "jumboClassName",
             "dialog--narrow": "narrowClassName",
             "dialog--success": "successClassName",
             "dialog--warn": "warnClassName",

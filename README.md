@@ -197,6 +197,18 @@ For executing the end to end tests on a Mac with catalina or higher you need to 
 * Observe Flow exceptions and logs in build artifacts.
 * You can trigger a SSH enabled build via the CircleCI interface and then login.
 
+###### Just the end to end tests fail
+
+It can happen that end to end tests fail caused by cached sources. So if you change PHP code for instance and don't adjust the composer.json it can happen that your new code change is not used because it is not part of the cache. In this case we need to flush the CircleCI caches manualy.
+
+We have introduced an environment variable called CACHE_VERSION. We need to change the variable to to new timestamp for instance to invalidate the caches.
+
+1. go to https://app.circleci.com/settings/project/github/neos/neos-ui and login
+2. open the project settings and choose `Environment Variables`
+3. Delete the `CACHE_VERSION` and create a new one with the value of the current timestamp
+
+Retrigger the build and it should work.
+
 #### Releasing
 
 You only need to trigger the jenkins release with the version you want to release.

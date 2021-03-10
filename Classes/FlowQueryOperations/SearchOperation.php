@@ -18,7 +18,7 @@ use Neos\ContentRepository\Domain\Service\NodeTypeManager;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Eel\FlowQuery\Operations\AbstractOperation;
 use Neos\Flow\Annotations as Flow;
-use Neos\Neos\Domain\Service\NodeSearchService;
+use Neos\Neos\Domain\Service\NodeSearchServiceInterface;
 
 /**
  */
@@ -26,7 +26,7 @@ class SearchOperation extends AbstractOperation
 {
     /**
      * @Flow\Inject
-     * @var NodeSearchService
+     * @var NodeSearchServiceInterface
      */
     protected $nodeSearchService;
 

@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-extensibility",
-  "version": "5.1.12",
+  "version": "5.1.13",
   "description": "Extensibility mechanisms for the Neos CMS UI",
   "repository": "neos/neos-ui",
   "bugs": "https://github.com/neos/neos-ui/issues",
@@ -17,13 +17,13 @@
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "5.1.12",
-    "@neos-project/jest-preset-neos-ui": "5.1.12",
+    "@neos-project/babel-preset-neos-ui": "5.1.13",
+    "@neos-project/jest-preset-neos-ui": "5.1.13",
     "typescript": "3.2.2"
   },
   "dependencies": {
-    "@neos-project/build-essentials": "5.1.12",
-    "@neos-project/positional-array-sorter": "5.1.12",
+    "@neos-project/build-essentials": "5.1.13",
+    "@neos-project/positional-array-sorter": "5.1.13",
     "babel-core": "^6.13.2",
     "babel-eslint": "^7.1.1",
     "babel-loader": "^7.1.2",

@@ -48,7 +48,7 @@ class ChangeCollectionConverter extends AbstractTypeConverter
     protected $priority = 1;
 
     /**
-     * @Flow\Inject
+     * @Flow\Inject(lazy=false)
      * @var PersistenceManagerInterface
      */
     protected $persistenceManager;

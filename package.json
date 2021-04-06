@@ -102,7 +102,7 @@
     "@ckeditor/ckeditor5-alignment": "^16.0.0",
     "@ckeditor/ckeditor5-basic-styles": "^16.0.0",
     "@ckeditor/ckeditor5-editor-decoupled": "^16.0.0",
-    "@ckeditor/ckeditor5-engine": "^16.0.0",
+    "@ckeditor/ckeditor5-engine": "^27.0.0",
     "@ckeditor/ckeditor5-essentials": "^16.0.0",
     "@ckeditor/ckeditor5-heading": "^16.0.0",
     "@ckeditor/ckeditor5-link": "^16.0.0",

@@ -80,7 +80,7 @@ class RenderedNodeDomAddress implements \JsonSerializable
      *
      * @return string
      */
-    public function getFusionPathForContentRendering()
+    public function getFusionPathForContentRendering(): string
     {
         $fusionPathForContentRendering = $this->getFusionPath();
         $fusionPathForContentRendering = preg_replace(

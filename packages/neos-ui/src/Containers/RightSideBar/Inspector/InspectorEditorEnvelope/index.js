@@ -38,6 +38,16 @@ export default class InspectorEditorEnvelope extends PureComponent {
         commit: PropTypes.func.isRequired
     };
 
+    get options() {
+        // This makes sure that auto-created child nodes cannot be hidden
+        // via the insprector (see: #2282)
+        if ($get('isAutoCreated', this.props.node) === true && this.props.id === '_hidden') {
+            return {...this.props.options, disabled: true};
+        }
+
+        return this.props.options;
+    }
+
     commit = (value, hooks = null) => {
         const {transientValueRaw, id, commit} = this.props;
 
@@ -63,6 +73,7 @@ export default class InspectorEditorEnvelope extends PureComponent {
             <div className={style.wrap}>
                 <EditorEnvelope
                     {...otherProps}
+                    options={this.options}
                     highlight={transientValue && transientValue.value !== sourceValue}
                     identifier={id}
                     value={transientValue ? transientValue.value : sourceValue}

@@ -7,7 +7,7 @@ import {SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/src/r
 import initializeRichtextToolbarRegistry from './manifest.richtextToolbar';
 import initializeConfigRegistry from './manifest.config';
 
-manifest('@neos-project/neos-ui-ckeditor5-bindings', {}, globalRegistry => {
+manifest('@neos-project/neos-ui-ckeditor5-bindings', {}, (globalRegistry, {store}) => {
     const ckEditorRegistry = globalRegistry.set(
         'ckEditor5',
         new SynchronousMetaRegistry(`
@@ -31,7 +31,7 @@ manifest('@neos-project/neos-ui-ckeditor5-bindings', {}, globalRegistry => {
             toolbarItems: richtextToolbarRegistry.getAllAsList(),
             configRegistry
         }),
-        createInlineEditor: createEditor,
+        createInlineEditor: createEditor(store),
         ToolbarComponent: InlineEditorToolbar
     });
 });

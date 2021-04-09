@@ -461,18 +461,19 @@ export default ckEditorRegistry => {
         ]
     });
 
-    // /**
-    //  * Remove formatting
-    //  */
-    // richtextToolbar.set('removeFormat', {
-    //     formattingRule: 'removeFormat',
-    //     component: IconButtonComponent,
-    //     callbackPropName: 'onClick',
+    /**
+     * Remove formatting
+     */
+    richtextToolbar.set('removeFormat', {
+        commandName: 'removeFormat',
+        component: IconButtonComponent,
+        callbackPropName: 'onClick',
 
-    //     icon: 'eraser',
-    //     hoverStyle: 'brand',
-    //     tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__remove-format'
-    // });
+        icon: 'eraser',
+        hoverStyle: 'brand',
+        tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__remove-format',
+        isVisible: $get('formatting.removeFormat')
+    });
 
     return richtextToolbar;
 };

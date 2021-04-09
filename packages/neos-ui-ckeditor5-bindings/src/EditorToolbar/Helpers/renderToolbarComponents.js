@@ -19,7 +19,10 @@ export default richtextToolbarRegistry => {
 
     return (executeCommand, inlineEditorOptions, formattingUnderCursor) => {
         return toolbarComponents
-            .filter(isTopLevelToolbarComponent && isToolbarItemVisible(inlineEditorOptions, formattingUnderCursor))
+            .filter(componentDefinition =>
+                isTopLevelToolbarComponent(componentDefinition)
+                && isToolbarItemVisible(inlineEditorOptions, formattingUnderCursor)(componentDefinition)
+            )
             .map((componentDefinition, index) => {
                 const {component, commandName, commandArgs = [], callbackPropName, ...props} = componentDefinition;
                 if (!component) {

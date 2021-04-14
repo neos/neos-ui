@@ -20,6 +20,7 @@ import List from '@ckeditor/ckeditor5-list/src/list';
 import Alignment from '@ckeditor/ckeditor5-alignment/src/alignment';
 import Table from '@ckeditor/ckeditor5-table/src/table';
 import InsideTable from './plugins/insideTable';
+import RemoveFormat from '@ckeditor/ckeditor5-remove-format/src/removeformat';
 
 const addPlugin = (Plugin, isEnabled) => (ckEditorConfiguration, options) => {
     // we duplicate editorOptions here so it would be possible to write smth like `$get('formatting.sup')`
@@ -108,6 +109,7 @@ export default ckEditorRegistry => {
     config.set('linkTitle', addPlugin(LinkTitle, $get('formatting.a')));
     config.set('table', addPlugin(Table, i => $get('formatting.table', i)));
     config.set('insideTable', addPlugin(InsideTable, i => $get('formatting.table', i)));
+    config.set('removeFormat', addPlugin(RemoveFormat, $get('formatting.removeFormat')));
     config.set('list', addPlugin(List, $or(
         $get('formatting.ul'),
         $get('formatting.ol')

@@ -161,7 +161,7 @@ class ReloadContentOutOfBand extends AbstractFeedback
         $fusionView->setControllerContext($controllerContext);
 
         $fusionView->assign('value', $this->getNode());
-        $fusionView->setFusionPath($nodeDomAddress->getFusionPath());
+        $fusionView->setFusionPath($nodeDomAddress->getFusionPathForContentRendering());
 
         return $fusionView->render();
     }

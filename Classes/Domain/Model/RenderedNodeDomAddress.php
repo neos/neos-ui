@@ -73,6 +73,26 @@ class RenderedNodeDomAddress implements \JsonSerializable
     }
 
     /**
+     * Get the fusion path that should be used for rendering the addressed
+     * content. For most contents that would be the closest `Neos.Neos:ContentCase`
+     * within the path rather than the actual prototype that was used to
+     * render the content.
+     *
+     * @return string
+     */
+    public function getFusionPathForContentRendering(): string
+    {
+        $fusionPathForContentRendering = $this->getFusionPath();
+        $fusionPathForContentRendering = preg_replace(
+            '/(\/itemRenderer<Neos\.Neos:ContentCase>)\/default<Neos\.Fusion:Matcher>\/element(<[^>]+>)$/',
+            '$1',
+            $fusionPathForContentRendering
+        );
+
+        return $fusionPathForContentRendering;
+    }
+
+    /**
      * Serialize to json
      *
      * @return array

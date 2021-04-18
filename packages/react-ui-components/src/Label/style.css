@@ -4,11 +4,15 @@
     -webkit-font-smoothing: antialiased;
     font-size: var(--fontSize-Base);
     cursor: pointer;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    max-width: 288px;
     padding: 0;
     margin-bottom: 4px;
     user-select: none;
+
+    &,
+    span {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        max-width: 100%;
+    }
 }

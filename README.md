@@ -6,7 +6,7 @@
 
 ## Versioning
 
-This repository follows the same versioning scheme as Neos itself, with the only exception that the 4.0 branch works with all Neos 4.x releases.
+This repository follows the same versioning scheme as Neos itself.
 Release roadmap is [available here](https://www.neos.io/features/release-process.html)
 
 That means:
@@ -16,12 +16,9 @@ That means:
 
 ### Currently maintained versions
 
-* NeosCMS version 4.x: branch 4.0
-* NeosCMS version 5.0: branch 5.0
-* NeosCMS version 5.1: branch 5.1
-* NeosCMS version 5.2: branch 5.2
 * NeosCMS version 5.3: branch 5.3
 * NeosCMS version 7.0: branch 7.0
+* NeosCMS version 7.1: branch 7.1
 * latest development happens in master
 
 ## Browser support
@@ -130,17 +127,11 @@ on how to write meaningful descriptions for your contributions.
 To do the upmerge run the following commands
 
 ```
-git checkout 5.0 && git fetch && git reset --hard origin/5.0 && git merge --no-ff --no-commit origin/4.0
-# review and `git commit`
-git checkout 5.1 && git fetch && git reset --hard origin/5.1 && git merge --no-ff --no-commit origin/5.0
-# review and `git commit`
-git checkout 5.2 && git fetch && git reset --hard origin/5.2 && git merge --no-ff --no-commit origin/5.1
-# review and `git commit`
-git checkout 5.3 && git fetch && git reset --hard origin/5.3 && git merge --no-ff --no-commit origin/5.2
-# review and `git commit`
 git checkout 7.0 && git fetch && git reset --hard origin/7.0 && git merge --no-ff --no-commit origin/5.3
 # review and `git commit`
-git checkout master && git fetch && git reset --hard origin/master && git merge --no-ff --no-commit origin/7.0
+git checkout 7.1 && git fetch && git reset --hard origin/7.1 && git merge --no-ff --no-commit origin/7.0
+# review and `git commit`
+git checkout master && git fetch && git reset --hard origin/master && git merge --no-ff --no-commit origin/7.1
 # review and `git commit`
 ```
 

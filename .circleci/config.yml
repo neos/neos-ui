@@ -137,7 +137,7 @@ jobs:
     environment:
       FLOW_CONTEXT: Production
     docker:
-      - image: quay.io/yeebase/ci-build:7.2
+      - image: cimg/php:7.4.12-node
       - image: circleci/mariadb:10.2
         environment:
           MYSQL_DATABASE: neos

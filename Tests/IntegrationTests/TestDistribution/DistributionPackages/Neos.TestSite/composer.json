@@ -3,7 +3,7 @@
     "description": "A dummy site package that will be replaced by fixtures during tests",
     "type": "neos-site",
     "require": {
-        "neos/neos": "dev-master",
+        "neos/neos": "~7.1.0 || dev-master",
         "neos/neos-ui": "*",
         "neos/fusion-afx": "*"
     },

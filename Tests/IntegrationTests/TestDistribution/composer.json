@@ -12,6 +12,11 @@
       "neos/test-site": "@dev",
       "neos/test-nodetypes": "@dev"
     },
+    "require-dev": {
+      "neos/buildessentials": "@dev",
+      "mikey179/vfsstream": "^1.6",
+      "phpunit/phpunit": "^8.1"
+    },
     "repositories": {
         "distribution": {
             "type": "path",

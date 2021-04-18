@@ -228,6 +228,12 @@ export default class Inspector extends PureComponent {
             return true;
         }
 
+        if ($get('isAutoCreated', focusedNode) === true && item.id === '_hidden') {
+            // This accounts for the fact that auto-created child nodes cannot
+            // be hidden via the insprector (see: #2282)
+            return false;
+        }
+
         return $get(['policy', 'canEdit'], focusedNode) && !$contains(item.id, 'policy.disallowedProperties', focusedNode);
     };
 

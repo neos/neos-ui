@@ -149,7 +149,7 @@ test('Supports secondary inspector view for element editors', async t => {
         .click(ReactSelector('NodeTypeItem').find('button>span>span').withText('PageWithImage_Test'))
         .typeText(Selector('#neos-NodeCreationDialog-Body input'), 'TestPage with Image');
 
-    const imageEditor = await ReactSelector('NodeCreationDialog ImageEditor').withProps('id', '__neos__editor__property---image');
+    const imageEditor = await ReactSelector('NodeCreationDialog ImageEditor').withProps('id', '__neos__editor__property---image--creation-dialog');
     await t
         .click(imageEditor.findReact('IconButton').withProps('icon', 'camera'))
         .switchToIframe(Selector('[name="neos-media-selection-screen"]', {timeout: 2000}))

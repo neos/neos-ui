@@ -36,7 +36,7 @@ test('SelectBox opens above in creation dialog if there\'s not enough space belo
         .eql('block');
 
     subSection('SelectBox contents disappear when SelectBox is scrolled out of sight.');
-    await t.hover(Selector('#neos-NodeCreationDialog [for="__neos__editor__property---title"]'));
+    await t.hover(Selector('#neos-NodeCreationDialog [for="__neos__editor__property---title--creation-dialog"]'));
 
     await t
         .expect(await ReactSelector('NodeCreationDialog SelectBox ShallowDropDownContents').getStyleProperty('display'))

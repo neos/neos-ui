@@ -235,9 +235,11 @@ export default class NodeCreationDialog extends PureComponent {
         return (
             <div key={elementName} className={style.editor}>
                 <EditorEnvelope
-                    identifier={elementName}
+                    identifier={`${elementName}--creation-dialog`}
                     label={$get('ui.label', element)}
                     editor={$get('ui.editor', element)}
+                    helpMessage={$get('ui.help.message', element) || ''}
+                    helpThumbnail={$get('ui.help.thumbnail', element) || ''}
                     options={options}
                     commit={this.handleDialogEditorValueChange(elementName)}
                     validationErrors={validationErrorsForElement}

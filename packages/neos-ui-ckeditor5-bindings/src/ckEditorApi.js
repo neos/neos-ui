@@ -1,5 +1,6 @@
 import debounce from 'lodash.debounce';
 import DecoupledEditor from '@ckeditor/ckeditor5-editor-decoupled/src/decouplededitor';
+import {actions} from '@neos-project/neos-ui-redux-store';
 
 // We remove opening and closing span tags that are produced by the inlineMode plugin
 const cleanupContentBeforeCommit = content => {
@@ -47,7 +48,7 @@ export const bootstrap = _editorConfig => {
     editorConfig = _editorConfig;
 };
 
-export const createEditor = options => {
+export const createEditor = store => options => {
     const {propertyDomNode, propertyName, editorOptions, globalRegistry, userPreferences, onChange} = options;
     const ckEditorConfig = editorConfig.configRegistry.getCkeditorConfig({
         editorOptions,
@@ -64,6 +65,11 @@ export const createEditor = options => {
                     currentEditor = editor;
                     editorConfig.setCurrentlyEditedPropertyName(propertyName);
                 }
+            });
+
+            editor.keystrokes.set('Ctrl+K', (_, cancel) => {
+                store.dispatch(actions.UI.ContentCanvas.toggleLinkEditor());
+                cancel();
             });
 
             // We attach all options for this editor to the editor DOM node, so it would be easier to access them from CKE plugins

@@ -7,4 +7,6 @@ export const currentlyEditedPropertyName = (state: GlobalState) => $get(['ui', '
 
 export const formattingUnderCursor = (state: GlobalState) => $get(['ui', 'contentCanvas', 'formattingUnderCursor'], state);
 
+export const isLinkEditorOpen = (state: GlobalState) => $get(['ui', 'contentCanvas', 'isLinkEditorOpen'], state);
+
 export const selectors = {};

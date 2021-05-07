@@ -7,6 +7,8 @@
 #
 set -e
 
+cd Packages/Application/Neos.Neos.Ui
+
 yarn install
 node_modules/.bin/lerna run build --concurrency 1
 
@@ -17,4 +19,4 @@ echo "  Neos:"
 echo "    Ui:"
 echo "      frontendDevelopmentMode: true"
 
-NEOS_BUILD_ROOT=$(pwd) node_modules/.bin/webpack --progress --color --watch-poll --watch
+NEOS_BUILD_ROOT=$(pwd) node_modules/.bin/webpack --progress --color --watch

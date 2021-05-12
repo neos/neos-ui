@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/build-essentials",
-  "version": "7.0.2",
+  "version": "7.0.3",
   "description": "Dependencies for building @neos-project packages",
   "repository": "neos/neos-ui",
   "bugs": "https://github.com/neos/neos-ui/issues",
@@ -20,7 +20,7 @@
     "lint": "eslint src"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "7.0.2"
+    "@neos-project/babel-preset-neos-ui": "7.0.3"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-dev-utils": "^12.0.1",

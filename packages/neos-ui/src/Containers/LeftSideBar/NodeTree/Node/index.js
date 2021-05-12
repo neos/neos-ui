@@ -136,7 +136,7 @@ export default class Node extends PureComponent {
         const {node, currentlyDraggedNodes, canBeInsertedAlongside, canBeInsertedInto} = this.props;
         const canBeInserted = mode === 'into' ? canBeInsertedInto : canBeInsertedAlongside;
 
-        return canBeInserted && !currentlyDraggedNodes.includes(getContextPath(node));
+        return currentlyDraggedNodes.length > 0 && canBeInserted && !currentlyDraggedNodes.includes(getContextPath(node));
     }
 
     handleNodeDrag = () => {

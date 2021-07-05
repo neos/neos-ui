@@ -13,6 +13,6 @@ include: ./Application.fusion
 #
 # Neos UI (Content Module) entry point
 #
-backend = Neos.Neos.Ui:Application {
+Neos.Neos.Ui.BackendController.index = Neos.Neos.Ui:Application {
     title = 'Neos CMS'
 }

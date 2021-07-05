@@ -120,12 +120,6 @@ class BackendController extends ActionController
      */
     protected $splashScreenPartial;
 
-    public function initializeView(ViewInterface $view)
-    {
-        /** @var FusionView $view */
-        $view->setFusionPath('backend');
-    }
-
     /**
      * Displays the backend interface
      *

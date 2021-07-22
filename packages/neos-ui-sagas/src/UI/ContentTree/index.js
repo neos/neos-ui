@@ -1,4 +1,4 @@
-import {takeLatest, put, select} from 'redux-saga/effects';
+import {takeLatest, put, select, takeEvery} from 'redux-saga/effects';
 import {$get, $contains} from 'plow-js';
 
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
@@ -59,6 +59,72 @@ export function * watchNodeFocus({configuration}) {
 
             if (!node || isCollapsed) {
                 yield put(actions.UI.ContentTree.toggle(parentContextPath));
+            }
+        }
+    });
+}
+
+export function * watchToggle({globalRegistry}) {
+    const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
+    yield takeLatest(actionTypes.UI.ContentTree.TOGGLE, function * toggleTreeNode(action) {
+        const state = yield select();
+        const contextPath = action.payload;
+
+        const childrenAreFullyLoaded = $get(['cr', 'nodes', 'byContextPath', contextPath, 'children'], state)
+        .filter(childEnvelope => nodeTypesRegistry.hasRole(childEnvelope.nodeType, 'content') || nodeTypesRegistry.hasRole(childEnvelope.nodeType, 'contentCollection'))
+        .every(
+            childEnvelope => Boolean($get(['cr', 'nodes', 'byContextPath', $get('contextPath', childEnvelope)], state))
+        );
+
+        if (!childrenAreFullyLoaded) {
+            yield put(actions.UI.ContentTree.requestChildren(contextPath));
+        }
+    });
+}
+
+export function * watchRequestChildrenForContextPath({globalRegistry}) {
+    yield takeEvery(actionTypes.UI.ContentTree.REQUEST_CHILDREN, function * requestChildrenForContextPath(action) {
+        // TODO: Call yield put(actions.UI.ContentTree.requestChildren(contextPath));
+        const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
+        const {contextPath, opts} = action.payload;
+        const {activate} = opts;
+        const {q} = backend.get();
+        let parentNodes;
+        let childNodes;
+        yield put(actions.UI.ContentTree.setAsLoading(contextPath));
+
+        try {
+            const query = q(contextPath);
+
+            parentNodes = yield query.getForTree();
+
+            const nodeTypeFilter = `${nodeTypesRegistry.getRole('contentCollection')},${nodeTypesRegistry.getRole('content')}`;
+            childNodes = yield query.neosUiFilteredChildren(nodeTypeFilter).getForTree();
+        } catch (err) {
+            yield put(actions.UI.ContentTree.invalidate(contextPath));
+            yield put(actions.UI.FlashMessages.add('loadChildNodesError', err.message, 'error'));
+        }
+
+        yield put(actions.UI.ContentTree.setAsLoaded(contextPath));
+
+        if (childNodes && parentNodes) {
+            const nodes = parentNodes.concat(childNodes).reduce((nodeMap, node) => {
+                nodeMap[$get('contextPath', node)] = node;
+                return nodeMap;
+            }, {});
+
+            // The nodes loaded from the server for the tree representation are NOT the full
+            // nodes with all properties; but merely contain as little properties as needed
+            // for the tree.
+            // In order to not OVERRIDE the properties we already know, we need to merge
+            // the data which the nodes already in the system; and not override them completely.
+            yield put(actions.CR.Nodes.merge(nodes));
+
+            //
+            // ToDo: Set the ContentCanvas src / contextPath
+            //
+            if (activate) {
+                yield put(actions.UI.ContentTree.focus(contextPath));
             }
         }
     });

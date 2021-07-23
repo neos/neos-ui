@@ -87,7 +87,6 @@ export function * watchRequestChildrenForContextPath({globalRegistry}) {
         // TODO: Call yield put(actions.UI.ContentTree.requestChildren(contextPath));
         const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
         const {contextPath, opts} = action.payload;
-        const {activate} = opts;
         const {q} = backend.get();
         let parentNodes;
         let childNodes;
@@ -99,7 +98,7 @@ export function * watchRequestChildrenForContextPath({globalRegistry}) {
             parentNodes = yield query.getForTree();
 
             const nodeTypeFilter = `${nodeTypesRegistry.getRole('contentCollection')},${nodeTypesRegistry.getRole('content')}`;
-            childNodes = yield query.neosUiFilteredChildren(nodeTypeFilter).getForTree();
+            childNodes = yield query.neosUiFilteredChildren(nodeTypeFilter).get();
         } catch (err) {
             yield put(actions.UI.ContentTree.invalidate(contextPath));
             yield put(actions.UI.FlashMessages.add('loadChildNodesError', err.message, 'error'));
@@ -112,20 +111,7 @@ export function * watchRequestChildrenForContextPath({globalRegistry}) {
                 nodeMap[$get('contextPath', node)] = node;
                 return nodeMap;
             }, {});
-
-            // The nodes loaded from the server for the tree representation are NOT the full
-            // nodes with all properties; but merely contain as little properties as needed
-            // for the tree.
-            // In order to not OVERRIDE the properties we already know, we need to merge
-            // the data which the nodes already in the system; and not override them completely.
             yield put(actions.CR.Nodes.merge(nodes));
-
-            //
-            // ToDo: Set the ContentCanvas src / contextPath
-            //
-            if (activate) {
-                yield put(actions.UI.ContentTree.focus(contextPath));
-            }
         }
     });
 }

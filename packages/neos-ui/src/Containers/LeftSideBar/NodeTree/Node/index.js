@@ -462,6 +462,8 @@ export const ContentTreeNode = withNodeTypeRegistryAndI18nRegistry(connect(
                 isActive: selectors.CR.Nodes.documentNodeContextPathSelector(state) === node.contextPath,
                 isFocused: selectors.CR.Nodes.focusedNodePathsSelector(state).includes(node.contextPath),
                 toggledNodeContextPaths: selectors.UI.ContentTree.getToggled(state),
+                loadingNodeContextPaths: selectors.UI.ContentTree.getLoading(state),
+                errorNodeContextPaths: selectors.UI.ContentTree.getErrors(state),
                 isNodeDirty: isContentNodeDirtySelector(state, node.contextPath),
                 canBeInsertedAlongside,
                 canBeInsertedInto

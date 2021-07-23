@@ -86,7 +86,7 @@ export function * watchRequestChildrenForContextPath({globalRegistry}) {
     yield takeEvery(actionTypes.UI.ContentTree.REQUEST_CHILDREN, function * requestChildrenForContextPath(action) {
         // TODO: Call yield put(actions.UI.ContentTree.requestChildren(contextPath));
         const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
-        const {contextPath, opts} = action.payload;
+        const {contextPath} = action.payload;
         const {q} = backend.get();
         let parentNodes;
         let childNodes;
@@ -112,6 +112,47 @@ export function * watchRequestChildrenForContextPath({globalRegistry}) {
                 return nodeMap;
             }, {});
             yield put(actions.CR.Nodes.merge(nodes));
+        }
+    });
+}
+
+export function * watchCurrentDocument({globalRegistry, configuration}) {
+    const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
+    const {q} = backend.get();
+
+    yield takeLatest(actionTypes.CR.Nodes.SET_DOCUMENT_NODE, function * loadContentForDocument(action) {
+        const contextPath = action.payload.documentNode;
+        const siteNode = yield select(selectors.CR.Nodes.siteNodeSelector);
+
+        // siteNode may be null for a short time when navigating to a page in a different dimension, before the new state is loaded
+        if (!siteNode) {
+            return;
+        }
+
+        const state = yield select();
+        const childrenAreFullyLoaded = $get(['cr', 'nodes', 'byContextPath', contextPath, 'children'], state)
+        .filter(childEnvelope => nodeTypesRegistry.hasRole(childEnvelope.nodeType, 'content') || nodeTypesRegistry.hasRole(childEnvelope.nodeType, 'contentCollection'))
+        .every(
+            childEnvelope => Boolean($get(['cr', 'nodes', 'byContextPath', $get('contextPath', childEnvelope)], state))
+        );
+
+        if (!childrenAreFullyLoaded) {
+            yield put(actions.UI.ContentTree.setAsLoading(contextPath));
+
+            const nodeTypeFilter = `${nodeTypesRegistry.getRole('contentCollection')},${nodeTypesRegistry.getRole('content')}`;
+            const nodes = yield q([contextPath, contextPath]).neosUiDefaultNodes(
+                nodeTypeFilter,
+                configuration.structureTree.loadingDepth,
+                [],
+                []
+            ).get();
+            const nodeMap = nodes.reduce((nodeMap, node) => {
+                nodeMap[$get('contextPath', node)] = node;
+                return nodeMap;
+            }, {});
+
+            yield put(actions.CR.Nodes.merge(nodeMap));
+            yield put(actions.UI.ContentTree.setAsLoaded(contextPath));
         }
     });
 }

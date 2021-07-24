@@ -33,25 +33,28 @@ export default class Drawer extends PureComponent {
 
         containerRegistry: PropTypes.object.isRequired,
 
-        menuData: PropTypes.objectOf(
-            PropTypes.shape({
-                icon: PropTypes.string,
-                label: PropTypes.string.isRequired,
-                uri: PropTypes.string.isRequired,
-                target: PropTypes.string,
+        menuData: PropTypes.oneOfType([
+            PropTypes.objectOf(
+                PropTypes.shape({
+                    icon: PropTypes.string,
+                    label: PropTypes.string.isRequired,
+                    uri: PropTypes.string.isRequired,
+                    target: PropTypes.string,
 
-                children: PropTypes.arrayOf(
-                    PropTypes.shape({
-                        icon: PropTypes.string,
-                        label: PropTypes.string.isRequired,
-                        uri: PropTypes.string,
-                        target: PropTypes.string,
-                        isActive: PropTypes.bool.isReqired,
-                        skipI18n: PropTypes.bool.isReqired
-                    })
-                )
-            })
-        ).isRequired
+                    children: PropTypes.arrayOf(
+                        PropTypes.shape({
+                            icon: PropTypes.string,
+                            label: PropTypes.string.isRequired,
+                            uri: PropTypes.string,
+                            target: PropTypes.string,
+                            isActive: PropTypes.bool.isReqired,
+                            skipI18n: PropTypes.bool.isReqired
+                        })
+                    )
+                })
+            ),
+            PropTypes.array
+        ]).isRequired
     };
 
     state = {

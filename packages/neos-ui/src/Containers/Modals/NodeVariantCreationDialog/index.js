@@ -31,7 +31,7 @@ export default class NodeVariantCreationDialog extends PureComponent {
     static propTypes = {
         isOpen: PropTypes.bool.isRequired,
         numberOfParentNodesToBeCreated: PropTypes.number,
-        contentDimensions: PropTypes.object.isRequired,
+        contentDimensions: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
         activePresets: PropTypes.object.isRequired,
         documentNode: PropTypes.object.isRequired,
 

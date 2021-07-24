@@ -158,7 +158,7 @@ test('Supports secondary inspector view for element editors', async t => {
     await t.switchToMainWindow();
 
     await t
-        .click(imageEditor.findReact('IconButton').withProps('icon', 'crop'));
+        .click(imageEditor.find('button[title="Crop"]'));
     const initialLeftOffset = await imageEditor.find('img').getStyleProperty('left');
 
     await t

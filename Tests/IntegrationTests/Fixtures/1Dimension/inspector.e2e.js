@@ -25,6 +25,7 @@ test("Can edit the page title via inspector", async t => {
         .typeText(InspectorTitleProperty, "-привет!")
         .expect(InspectorTitleProperty.value)
         .eql("Home-привет!")
+        .wait(200)
         .click(Selector("#neos-UriPathSegmentEditor-sync"))
         .expect(InspectorUriPathSegmentProperty.value)
         .eql("home-privet")

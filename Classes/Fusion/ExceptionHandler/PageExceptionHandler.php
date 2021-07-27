@@ -11,6 +11,7 @@ namespace Neos\Neos\Ui\Fusion\ExceptionHandler;
  * source code.
  */
 
+use GuzzleHttp\Psr7\Message;
 use function GuzzleHttp\Psr7\str;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Exception;
@@ -85,7 +86,7 @@ class PageExceptionHandler extends AbstractRenderingExceptionHandler
             ->withBody($this->contentFactory->createStream($bodyContent))
             ->withHeader('Cache-Control', 'no-store');
 
-        return str($response);
+        return Message::toString($response);
     }
 
     /**

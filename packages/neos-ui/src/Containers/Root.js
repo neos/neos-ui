@@ -36,7 +36,7 @@ Root.propTypes = {
     store: PropTypes.object.isRequired,
     globalRegistry: PropTypes.object.isRequired,
     configuration: PropTypes.object.isRequired,
-    menu: PropTypes.object.isRequired,
+    menu: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
     routes: PropTypes.object.isRequired
 };
 

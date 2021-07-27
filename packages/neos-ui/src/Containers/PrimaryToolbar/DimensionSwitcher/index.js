@@ -120,7 +120,7 @@ class DimensionSelector extends PureComponent {
 }))
 export default class DimensionSwitcher extends PureComponent {
     static propTypes = {
-        contentDimensions: PropTypes.object.isRequired,
+        contentDimensions: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
         activePresets: PropTypes.object.isRequired,
         allowedPresets: PropTypes.object.isRequired,
         selectPreset: PropTypes.func.isRequired,

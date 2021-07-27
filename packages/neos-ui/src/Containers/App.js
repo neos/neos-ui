@@ -35,7 +35,7 @@ const App = ({globalRegistry, menu}) => {
 };
 App.propTypes = {
     globalRegistry: PropTypes.object.isRequired,
-    menu: PropTypes.object.isRequired
+    menu: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired
 };
 
 export default App;

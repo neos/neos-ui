@@ -7,6 +7,7 @@ import MultiSelectBox from '@neos-project/react-ui-components/src/MultiSelectBox
 import {selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {shouldDisplaySearchBox, searchOptions, processSelectBoxOptions} from './SelectBoxHelpers';
+import PreviewOption from '../../Library/PreviewOption';
 
 const getDataLoaderOptionsForProps = props => ({
     contextNodePath: props.focusedNodePath,
@@ -49,6 +50,7 @@ export default class DataSourceBasedSelectBoxEditor extends PureComponent {
                 PropTypes.shape({
                     label: PropTypes.string,
                     icon: PropTypes.string,
+                    preview: PropTypes.string,
 
                     // TODO
                     group: PropTypes.string
@@ -116,6 +118,7 @@ export default class DataSourceBasedSelectBoxEditor extends PureComponent {
                 values={value || []}
                 onValuesChange={commit}
                 loadingLabel={loadingLabel}
+                ListPreviewElement={PreviewOption}
                 displayLoadingIndicator={this.state.isLoading}
                 placeholder={placeholder}
                 allowEmpty={options.allowEmpty}
@@ -136,6 +139,7 @@ export default class DataSourceBasedSelectBoxEditor extends PureComponent {
             value={value}
             onValueChange={commit}
             loadingLabel={loadingLabel}
+            ListPreviewElement={PreviewOption}
             displayLoadingIndicator={this.state.isLoading}
             placeholder={placeholder}
             allowEmpty={options.allowEmpty}

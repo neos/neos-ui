@@ -15,8 +15,23 @@ const optionValues = {
         label: 'barLabel'
     }
 };
+
+const optionValuesWithPreview = {
+    foo: {
+        label: 'fooLabel',
+        preview: 'foo.png'
+    },
+    bar: {
+        label: 'barLabel',
+        preview: 'bar.png'
+    }
+};
+
 const dropdownElementLabels = component =>
-    component.find('SelectBox_ListPreview').find('SelectBox_Option_SingleLine').map(node => node.text());
+    component.find('SelectBox_ListPreview').find('ListPreviewElement').map(node => node.text());
+
+const dropdownElementPreviews = component =>
+    component.find('SelectBox_ListPreview').find('ListPreviewElement').find('img').map(node => node.prop('src'));
 
 const dropdownHeader = component =>
     component.find('ShallowDropDownHeader');
@@ -141,6 +156,27 @@ test(`SelectBox > single, dataSource, preselected value`, () => {
         component.update();
         expect(dropdownHeader(component).text()).toBe('barLabel');
         expect(dropdownElementLabels(component)).toEqual(expectedDropdownElementLabels);
+    });
+});
+
+test(`SelectBox > single, dataSource, preview`, () => {
+    MockDataSourceDataLoader.reset();
+    const component = mount(
+        <DragDropContextProvider backend={TestBackend}>
+            <WrapWithMockGlobalRegistry>
+                <Provider store={store}>
+                    <SelectBoxEditor commit={commit} options={{dataSourceIdentifier: 'ds1'}}/>
+                </Provider>
+            </WrapWithMockGlobalRegistry>
+        </DragDropContextProvider>
+    );
+
+    dropdownHeader(component).simulate('click');
+
+    return MockDataSourceDataLoader.resolveCurrentPromise(optionValuesWithPreview).then(() => {
+        const expectedDropdownElementPreviews = ['foo.png', 'bar.png'];
+        component.update();
+        expect(dropdownElementPreviews(component)).toEqual(expectedDropdownElementPreviews);
     });
 });
 

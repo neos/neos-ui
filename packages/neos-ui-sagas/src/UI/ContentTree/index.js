@@ -45,13 +45,14 @@ export function * watchNodeFocus({configuration}) {
             const parentContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(parentContextPath);
             const parentNode = yield select(parentContextPathSelector);
 
-            parentContextPath = parentNode.parent;
-            if (!parentContextPath) {
+            if (!parentNode || !parentNode.parent) {
                 // In case our focused node is not on the current document, documentNodeContextPath
-                // can never be an anchestor of contextPath. In this case, we traverse the path until
+                // can never be an ancestor of contextPath. In this case, we traverse the path until
                 // we reached the top level, where we need to abort the loop to avoid infinite spinning.
                 break;
             }
+            parentContextPath = parentNode.parent;
+
             const getNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(parentContextPath);
             const node = yield select(getNodeByContextPathSelector);
             const isToggled = yield select($contains(parentContextPath, 'ui.contentTree.toggled'));
@@ -70,7 +71,13 @@ export function * watchToggle({globalRegistry}) {
         const state = yield select();
         const contextPath = action.payload;
 
-        const childrenAreFullyLoaded = $get(['cr', 'nodes', 'byContextPath', contextPath, 'children'], state)
+        const children = $get(['cr', 'nodes', 'byContextPath', contextPath, 'children'], state);
+
+        if (!children) {
+            return;
+        }
+
+        const childrenAreFullyLoaded = children
         .filter(childEnvelope => nodeTypesRegistry.hasRole(childEnvelope.nodeType, 'content') || nodeTypesRegistry.hasRole(childEnvelope.nodeType, 'contentCollection'))
         .every(
             childEnvelope => Boolean($get(['cr', 'nodes', 'byContextPath', $get('contextPath', childEnvelope)], state))

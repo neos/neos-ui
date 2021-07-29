@@ -202,7 +202,7 @@ export default class AssetEditor extends PureComponent {
         const mediaTypeConstraint = $get('options.constraints.mediaTypes', this.props);
         const accept = $get('options.accept', this.props) || (mediaTypeConstraint && mediaTypeConstraint.join(','));
         const multiple = $get('options.multiple', this.props);
-        const {className, imagesOnly, value} = this.props;
+        const {className, imagesOnly, value, identifier} = this.props;
 
         if (!this.isFeatureEnabled('upload')) {
             return this.renderAssetSelect();
@@ -218,6 +218,7 @@ export default class AssetEditor extends PureComponent {
                 isLoading={false}
                 imagesOnly={imagesOnly}
                 accept={accept}
+                propertyName={identifier}
             >
                 {this.renderAssetSelect()}
             </AssetUpload>

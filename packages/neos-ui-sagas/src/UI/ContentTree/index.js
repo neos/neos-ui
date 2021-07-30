@@ -77,11 +77,16 @@ export function * watchToggle({globalRegistry}) {
             return;
         }
 
-        const childrenAreFullyLoaded = children
-        .filter(childEnvelope => nodeTypesRegistry.hasRole(childEnvelope.nodeType, 'content') || nodeTypesRegistry.hasRole(childEnvelope.nodeType, 'contentCollection'))
-        .every(
-            childEnvelope => Boolean($get(['cr', 'nodes', 'byContextPath', $get('contextPath', childEnvelope)], state))
-        );
+        const checkIfChildrenAreFullyLoadedRecursively = contextPath => {
+            return $get(['cr', 'nodes', 'byContextPath', contextPath, 'children'], state)
+            .filter(childEnvelope => nodeTypesRegistry.hasRole(childEnvelope.nodeType, 'content') || nodeTypesRegistry.hasRole(childEnvelope.nodeType, 'contentCollection'))
+            .every(
+                childEnvelope =>
+                    $get(['cr', 'nodes', 'byContextPath', $get('contextPath', childEnvelope)], state)
+                    && checkIfChildrenAreFullyLoadedRecursively($get('contextPath', childEnvelope))
+            );
+        }
+        const childrenAreFullyLoaded = checkIfChildrenAreFullyLoadedRecursively(contextPath);
 
         if (!childrenAreFullyLoaded) {
             yield put(actions.UI.ContentTree.requestChildren(contextPath));

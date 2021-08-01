@@ -99,6 +99,11 @@ export function * watchCurrentDocument({configuration}) {
             const getParentNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(parentContextPath);
             const parentNode = yield select(getParentNodeByContextPathSelector);
 
+            // It's possible we're not allowed to access the parent node due to a NodeTreePrivilege
+            if (!parentNode) {
+                return;
+            }
+
             parentContextPath = parentNode.parent;
             const getNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(parentContextPath);
             let node = yield select(getNodeByContextPathSelector);

@@ -29,7 +29,9 @@
     "@neos-project/neos-ui-i18n": "5.3.8",
     "@neos-project/neos-ui-inspector": "5.3.8",
     "@neos-project/neos-ui-redux-store": "5.3.8",
-    "@neos-project/react-ui-components": "5.3.8"
+    "@neos-project/react-ui-components": "5.3.8",
+    "@neos-project/utils-helpers": "5.3.8",
+    "lodash.memoize": "^4.1.2"
   },
   "license": "GNU GPLv3",
   "jest": {

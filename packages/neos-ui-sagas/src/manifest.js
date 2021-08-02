@@ -62,6 +62,9 @@ manifest('main.sagas', {}, globalRegistry => {
 
     sagasRegistry.set('neos-ui/UI/ContentTree/watchNodeFocus', {saga: uiContentTree.watchNodeFocus});
     sagasRegistry.set('neos-ui/UI/ContentTree/watchReloadTree', {saga: uiContentTree.watchReloadTree});
+    sagasRegistry.set('neos-ui/UI/ContentTree/watchToggle', {saga: uiContentTree.watchToggle});
+    sagasRegistry.set('neos-ui/UI/ContentTree/watchRequestChildrenForContextPath', {saga: uiContentTree.watchRequestChildrenForContextPath});
+    sagasRegistry.set('neos-ui/UI/ContentTree/watchCurrentDocument', {saga: uiContentTree.watchCurrentDocument});
 
     sagasRegistry.set('neos-ui/UI/EditPreviewMode/watchEditPreviewModesChanged', {saga: uiEditPreviewMode.watchEditPreviewModesChanged});
 

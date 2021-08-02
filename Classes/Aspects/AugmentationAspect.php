@@ -64,12 +64,6 @@ class AugmentationAspect
     protected $session;
 
     /**
-     * @Flow\InjectConfiguration(package="Neos.Neos.Ui", path="nodeTypeRoles")
-     * @var array
-     */
-    protected $nodeTypeRoles;
-
-    /**
      * Current controller context, will be set by advices
      *
      * This is a workaround to have the controller context available
@@ -79,20 +73,6 @@ class AugmentationAspect
      * @var \Neos\Flow\Mvc\Controller\ControllerContext
      */
     protected $controllerContext = null;
-
-    /**
-     * All editable nodes rendered in the document
-     *
-     * @var array
-     */
-    protected $renderedNodes = [];
-
-    /**
-     * String containing `<script>` tags for non rendered nodes
-     *
-     * @var string
-     */
-    protected $nonRenderedContentNodeMetadata;
 
     /**
      * @Flow\Before("method(Neos\Neos\Fusion\ContentElementWrappingImplementation->evaluate())")
@@ -146,8 +126,6 @@ class AugmentationAspect
         $attributes = $joinPoint->isMethodArgument('additionalAttributes') ? $joinPoint->getMethodArgument('additionalAttributes') : [];
         $attributes['data-__neos-node-contextpath'] = $node->getContextPath();
         $attributes['data-__neos-fusion-path'] = $fusionPath;
-
-        $this->renderedNodes[] = $node->getIdentifier();
 
         $this->userLocaleService->switchToUILocale();
 
@@ -203,82 +181,5 @@ class AugmentationAspect
         $contentContext = $node->getContext();
 
         return ($contentContext->isInBackend() === true && ($renderCurrentDocumentMetadata === true || $this->nodeAuthorizationService->isGrantedToEditNode($node) === true));
-    }
-
-    /**
-     * Concatenate strings containing `<script>` tags for all child nodes not rendered
-     * within the current document node. This way we can show e.g. content collections
-     * within the structure tree which are not actually rendered.
-     *
-     * @param NodeInterface $documentNode
-     * @return void
-     * @throws IllegalObjectTypeException
-     */
-    protected function appendNonRenderedContentNodeMetadata(NodeInterface $documentNode)
-    {
-        if ($documentNode->getContext()->getWorkspace()->isPublicWorkspace()) {
-            return;
-        }
-
-        foreach ($documentNode->getChildNodes($this->buildFilterForNonRenderedContent()) as $node) {
-            if (in_array($node->getIdentifier(), $this->renderedNodes) === false) {
-                $serializedNode = json_encode($this->nodeInfoHelper->renderNodeWithPropertiesAndChildrenInformation($node, $this->controllerContext));
-                $this->nonRenderedContentNodeMetadata .= "<script>(function(){(this['@Neos.Neos.Ui:Nodes'] = this['@Neos.Neos.Ui:Nodes'] || {})['{$node->getContextPath()}'] = {$serializedNode}})()</script>";
-            }
-
-            if ($node->hasChildNodes() === true) {
-                $this->appendNonRenderedContentNodeMetadata($node);
-            }
-        }
-    }
-
-    /**
-     * Clear rendered nodes helper array to prevent possible side effects.
-     */
-    protected function clearRenderedNodesArray()
-    {
-        $this->renderedNodes = [];
-    }
-
-    /**
-     * Clear non rendered content node metadata to prevent possible side effects.
-     */
-    protected function clearNonRenderedContentNodeMetadata()
-    {
-        $this->nonRenderedContentNodeMetadata = '';
-    }
-
-    /**
-     * @param NodeInterface $documentNode
-     * @return string
-     * @throws IllegalObjectTypeException
-     */
-    public function getNonRenderedContentNodeMetadata(NodeInterface $documentNode)
-    {
-        $this->userLocaleService->switchToUILocale();
-
-        $this->appendNonRenderedContentNodeMetadata($documentNode);
-        $nonRenderedContentNodeMetadata = $this->nonRenderedContentNodeMetadata;
-        $this->clearNonRenderedContentNodeMetadata();
-        $this->clearRenderedNodesArray();
-
-        $this->userLocaleService->switchToUILocale(true);
-
-        return $nonRenderedContentNodeMetadata;
-    }
-
-    /**
-     * @return string
-     */
-    protected function buildFilterForNonRenderedContent()
-    {
-        $documentNodeTypes = explode(',', $this->nodeTypeRoles['document']);
-        $ignoredNodeTypes = explode(',', $this->nodeTypeRoles['ignored']);
-
-        $allFilteredNodeTypes = array_merge($documentNodeTypes, $ignoredNodeTypes);
-        $negatedNodeTypes = array_map(function ($nodeTypeName) {
-            return '!' . trim($nodeTypeName);
-        }, $allFilteredNodeTypes);
-        return implode(',', $negatedNodeTypes);
     }
 }

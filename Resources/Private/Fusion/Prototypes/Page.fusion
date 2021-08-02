@@ -69,16 +69,6 @@ prototype(Neos.Neos:Page) {
         @if.inBackend = ${documentNode.context.inBackend}
     }
 
-    //
-    // Output `<script>` tags for all non rendered node children
-    //
-    neosUiNonRenderedNodeMetadata = Neos.Neos.Ui:RenderNonRenderedNodeMetadata {
-        @position = 'before neosBackendNotification'
-        @class = 'Neos\\Neos\\Ui\\Fusion\\RenderNonRenderedNodeMetadataImplementation'
-        @if.inBackend = ${documentNode.context.inBackend}
-        node = ${node}
-    }
-
     @exceptionHandler = 'Neos\\Neos\\Ui\\Fusion\\ExceptionHandler\\PageExceptionHandler'
 }
 

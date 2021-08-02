@@ -82,10 +82,10 @@ export function * watchToggle({globalRegistry}) {
             .filter(childEnvelope => nodeTypesRegistry.hasRole(childEnvelope.nodeType, 'content') || nodeTypesRegistry.hasRole(childEnvelope.nodeType, 'contentCollection'))
             .every(
                 childEnvelope =>
-                    $get(['cr', 'nodes', 'byContextPath', $get('contextPath', childEnvelope)], state)
-                    && checkIfChildrenAreFullyLoadedRecursively($get('contextPath', childEnvelope))
+                    $get(['cr', 'nodes', 'byContextPath', $get('contextPath', childEnvelope)], state) &&
+                    checkIfChildrenAreFullyLoadedRecursively($get('contextPath', childEnvelope))
             );
-        }
+        };
         const childrenAreFullyLoaded = checkIfChildrenAreFullyLoadedRecursively(contextPath);
 
         if (!childrenAreFullyLoaded) {

@@ -7,7 +7,7 @@ import NodeOption from '../../Library/NodeOption';
 import {dndTypes} from '@neos-project/neos-ui-constants';
 import {neos} from '@neos-project/neos-ui-decorators';
 
-import {sanitizeOptions} from '../Reference/sanitizeOptions';
+import {sanitizeOptions} from '../../Library';
 
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')

@@ -7,6 +7,8 @@ import NodeOption from '../../Library/NodeOption';
 import {dndTypes} from '@neos-project/neos-ui-constants';
 import {neos} from '@neos-project/neos-ui-decorators';
 
+import {sanitizeOptions} from '../../Library';
+
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')
 }))
@@ -46,13 +48,13 @@ export default class ReferencesEditor extends PureComponent {
             threshold={threshold}
             noMatchesFoundLabel={i18nRegistry.translate('Neos.Neos:Main:noMatchesFound')}
             searchBoxLeftToTypeLabel={i18nRegistry.translate('Neos.Neos:Main:searchBoxLeftToType')}
-            options={options}
+            options={sanitizeOptions(options)}
             values={value}
             onValuesChange={this.handleValueChange}
             displayLoadingIndicator={displayLoadingIndicator}
             showDropDownToggle={false}
             allowEmpty={true}
-            searchOptions={searchOptions}
+            searchOptions={sanitizeOptions(searchOptions)}
             onSearchTermChange={onSearchTermChange}
             onCreateNew={onCreateNew}
             disabled={disabled}

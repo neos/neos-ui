@@ -5,6 +5,7 @@ import dataLoader from './referenceDataLoader';
 import createNew from './createNew';
 import NodeOption from '../../Library/NodeOption';
 import {neos} from '@neos-project/neos-ui-decorators';
+import {sanitizeOptions} from '../../Library';
 
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')
@@ -44,7 +45,7 @@ export default class ReferenceEditor extends PureComponent {
             searchBoxLeftToTypeLabel={i18nRegistry.translate('Neos.Neos:Main:searchBoxLeftToType')}
             placeholder={i18nRegistry.translate(this.props.placeholder)}
             threshold={threshold}
-            options={options}
+            options={sanitizeOptions(options)}
             value={value}
             onValueChange={this.handleValueChange}
             loadingLabel={i18nRegistry.translate('Neos.Neos:Main:loading')}

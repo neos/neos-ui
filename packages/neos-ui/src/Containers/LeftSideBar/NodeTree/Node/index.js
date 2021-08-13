@@ -14,7 +14,6 @@ import {neos} from '@neos-project/neos-ui-decorators';
 
 import {hasNestedNodes} from '@neos-project/neos-ui/src/Containers/LeftSideBar/NodeTree/helpers';
 
-import animate from 'amator';
 import hashSum from 'hash-sum';
 import moment from 'moment';
 import {urlWithParams} from '@neos-project/utils-helpers/src/urlWithParams';
@@ -118,12 +117,7 @@ export default class Node extends PureComponent {
                 const scrollingElementPosition = scrollingElement.getBoundingClientRect();
                 const nodeIsNotInView = nodeTopPosition < scrollingElementPosition.top + offset || nodeTopPosition > scrollingElementPosition.bottom - offset;
                 if (nodeIsNotInView) {
-                    const scrollTop = nodeTopPosition - scrollingElement.firstElementChild.getBoundingClientRect().top - offset;
-                    animate({scrollTop: scrollingElement.scrollTop}, {scrollTop}, {
-                        step: ({scrollTop}) => {
-                            scrollingElement.scrollTop = scrollTop;
-                        }
-                    });
+                    scrollingElement.scrollIntoView({behavior: 'smooth', block: 'nearest', inline: 'nearest'});
                 }
                 this.setState({
                     shouldScrollIntoView: false

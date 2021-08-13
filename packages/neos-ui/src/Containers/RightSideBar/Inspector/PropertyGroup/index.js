@@ -16,6 +16,7 @@ export default class PropertyGroup extends PureComponent {
     static propTypes = {
         label: PropTypes.string.isRequired,
         icon: PropTypes.string,
+        items: PropTypes.array,
         collapsed: PropTypes.bool,
         properties: PropTypes.object,
         views: PropTypes.object,
@@ -31,13 +32,14 @@ export default class PropertyGroup extends PureComponent {
         collapsed: false
     };
 
-    render() {
-        const {items, label, icon, collapsed, handlePanelToggle, handleInspectorApply, renderSecondaryInspector, node, commit} = this.props;
+    renderPropertyGroup = items => {
+        const {label, icon, collapsed, handlePanelToggle, handleInspectorApply, renderSecondaryInspector, node, commit} = this.props;
+
         const headerTheme = {
             panel__headline: style.propertyGroupLabel // eslint-disable-line camelcase
         };
 
-        const propertyGroup = items => (
+        return (
             <ToggablePanel onPanelToggle={handlePanelToggle} isOpen={!collapsed} className={sidebarStyle.rightSideBar__section}>
                 <ToggablePanel.Header theme={headerTheme}>
                     {icon && <div className={style.iconWrapper}><Icon icon={icon}/></div>} <I18n id={label}/>
@@ -48,9 +50,6 @@ export default class PropertyGroup extends PureComponent {
                         const itemType = $get('type', item);
                         const label = $get('label', item) || '';
 
-                        if ($get('hidden', item)) {
-                            return null;
-                        }
                         if (itemType === 'editor') {
                             return (
                                 <InspectorEditorEnvelope
@@ -65,7 +64,7 @@ export default class PropertyGroup extends PureComponent {
                                     onEnterKey={handleInspectorApply}
                                     helpMessage={$get('helpMessage', item)}
                                     helpThumbnail={$get('helpThumbnail', item)}
-                                    />);
+                                />);
                         }
                         if (itemType === 'view') {
                             return (
@@ -78,15 +77,20 @@ export default class PropertyGroup extends PureComponent {
                                     renderSecondaryInspector={renderSecondaryInspector}
                                     node={node}
                                     commit={commit}
-                                    />);
+                                />);
                         }
                         return null;
                     })}
                 </ToggablePanel.Contents>
             </ToggablePanel>
         );
-        const fallback = () => (<div>...</div>);
+    }
 
-        return Maybe.fromNull(items).map(propertyGroup).orSome(fallback());
+    render() {
+        const {items} = this.props;
+
+        const visibleItems = items ? items.filter(item => !$get('hidden', item)) : [];
+
+        return Maybe.fromEmpty(visibleItems).map(this.renderPropertyGroup).orSome(null);
     }
 }

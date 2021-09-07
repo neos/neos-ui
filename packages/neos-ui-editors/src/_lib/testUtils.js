@@ -38,6 +38,7 @@ export const MockDataSourceDataLoader = {
         return this._currentPromise;
     }
 };
+globalRegistry.set('inspector', new SynchronousRegistry());
 globalRegistry.set('dataLoaders', new SynchronousRegistry());
 globalRegistry.get('dataLoaders').set('DataSources', MockDataSourceDataLoader);
 

@@ -8,7 +8,7 @@ import TextInput from '@neos-project/react-ui-components/src/TextInput/';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 import AspectRatioDropDown from './AspectRatioDropDown/index';
-import CropConfiguration, {LockedAspectRatioStrategy} from './model.js';
+import CropConfiguration, {CustomAspectRatioOption, LockedAspectRatioStrategy} from './model.js';
 import style from './style.css';
 
 /* eslint-disable no-unused-vars */
@@ -139,6 +139,7 @@ export default class ImageCropper extends PureComponent {
     render() {
         const {cropConfiguration} = this.state;
         const aspectRatioLocked = cropConfiguration.aspectRatioStrategy instanceof LockedAspectRatioStrategy;
+        const allowCustomRatios = cropConfiguration.aspectRatioOptions.some(option => option instanceof CustomAspectRatioOption);
         const {sourceImage, onComplete, i18nRegistry} = this.props;
         const src = sourceImage.previewUri || '/_Resources/Static/Packages/Neos.Neos/Images/dummy-image.svg';
 
@@ -175,6 +176,7 @@ export default class ImageCropper extends PureComponent {
                     {!aspectRatioLocked && <div className={style.dimensions}>
                         {cropConfiguration.aspectRatioDimensions.map((props, index) => (
                             <AspectRatioItem
+                                isLocked={!allowCustomRatios}
                                 {...props}
                                 onFlipAspectRatio={this.handleFlipAspectRatio}
                                 onChange={this.handleSetCustomAspectRatioDimensions}

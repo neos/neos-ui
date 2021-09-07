@@ -33,7 +33,7 @@ export default class Drawer extends PureComponent {
 
         containerRegistry: PropTypes.object.isRequired,
 
-        menuData: PropTypes.objectOf(
+        menuData: PropTypes.arrayOf(
             PropTypes.shape({
                 icon: PropTypes.string,
                 label: PropTypes.string.isRequired,

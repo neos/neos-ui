@@ -228,7 +228,7 @@ export default class Inspector extends PureComponent {
             return true;
         }
 
-        if ($get('isAutoCreated', focusedNode) === true && item.id === '_hidden') {
+        if ($get('hidden', item) || ($get('isAutoCreated', focusedNode) === true && item.id === '_hidden')) {
             // This accounts for the fact that auto-created child nodes cannot
             // be hidden via the insprector (see: #2282)
             return false;
@@ -352,10 +352,9 @@ export default class Inspector extends PureComponent {
                         //
                         // Only display tabs, that have groups and these groups have properties
                         //
-                        .filter(t => $get('groups', t) && $get('groups', t).length > 0 && $get('groups', t).reduce((acc, group) => (
-                            acc ||
-                            $get('items', group).filter(this.isPropertyEnabled).length > 0
-                        ), false))
+                        .filter(tab => $get('groups', tab) && $get('groups', tab).some(group => (
+                            $get('items', group).some(this.isPropertyEnabled)
+                        )))
 
                         //
                         // Render each tab as a TabPanel

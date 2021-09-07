@@ -10,6 +10,7 @@ import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors} from '@neos-project/neos-ui-redux-store';
 import {isUri, isEmail} from '@neos-project/utils-helpers';
 
+import {sanitizeOptions, sanitizeOption} from './sanitizeOptions';
 import style from './LinkInput.css';
 
 // TODO: extract this isInternalLink logic into a registry, possibly defining a schema and a custom data loader
@@ -228,7 +229,7 @@ export default class LinkInput extends PureComponent {
         return (
             <Fragment>
                 <SelectBox
-                    options={this.state.searchOptions}
+                    options={sanitizeOptions(this.state.searchOptions)}
                     optionValueField="loaderUri"
                     value={''}
                     plainInputMode={isUri(this.state.searchTerm)}
@@ -259,14 +260,14 @@ export default class LinkInput extends PureComponent {
     renderLinkOption = () => {
         // if options then it's an asset or node, otherwise a plain link
         if (this.state.options[0]) {
-            return <LinkOption option={this.state.options[0]} />;
+            return <LinkOption option={sanitizeOption(this.state.options[0])} />;
         }
         return (
-            <LinkOption option={{
+            <LinkOption option={sanitizeOption({
                 icon: this.props.linkValue.startsWith('mailto:') ? 'at' : 'external-link-alt',
                 label: this.props.linkValue,
                 loaderUri: this.props.linkValue
-            }} />
+            })} />
         );
     }
 

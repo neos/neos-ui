@@ -26,36 +26,42 @@ export default class TabPanel extends PureComponent {
             return true;
         }
 
+        if ($get('hidden', item)) {
+            return false;
+        }
+
         return $get(['policy', 'canEdit'], node) && !$contains(item.id, 'policy.disallowedProperties', node);
     };
 
-    render() {
-        const {handlePanelToggle, handleInspectorApply, toggledPanels, groups, renderSecondaryInspector, node, commit} = this.props;
-
-        if (!groups) {
-            return (<div>...</div>);
-        }
+    renderTabPanel = groups => {
+        const {handlePanelToggle, handleInspectorApply, toggledPanels, renderSecondaryInspector, node, commit} = this.props;
 
         return (
             <Tabs.Panel theme={{panel: style.inspectorTabPanel}}>
-                {
-                    groups.filter(g => ($get('items', g) && $get('items', g).filter(this.isPropertyEnabled).length)).map(group => (
-                        <PropertyGroup
-                            handlePanelToggle={() => handlePanelToggle([$get('id', group)])}
-                            handleInspectorApply={handleInspectorApply}
-                            key={$get('id', group)}
-                            label={$get('label', group)}
-                            icon={$get('icon', group)}
-                            // Overlay default collapsed state over current state
-                            collapsed={Boolean($get($get('id', group), toggledPanels)) !== Boolean($get('collapsed', group))}
-                            items={$get('items', group).filter(this.isPropertyEnabled)}
-                            renderSecondaryInspector={renderSecondaryInspector}
-                            node={node}
-                            commit={commit}
-                            />
-                    ))
-                }
+                {groups.map(group => (
+                    <PropertyGroup
+                        handlePanelToggle={() => handlePanelToggle([$get('id', group)])}
+                        handleInspectorApply={handleInspectorApply}
+                        key={$get('id', group)}
+                        label={$get('label', group)}
+                        icon={$get('icon', group)}
+                        // Overlay default collapsed state over current state
+                        collapsed={Boolean($get($get('id', group), toggledPanels)) !== Boolean($get('collapsed', group))}
+                        items={$get('items', group).filter(this.isPropertyEnabled)}
+                        renderSecondaryInspector={renderSecondaryInspector}
+                        node={node}
+                        commit={commit}
+                    />
+                ))}
             </Tabs.Panel>
         );
+    }
+
+    render() {
+        const {groups} = this.props;
+
+        const visibleGroups = groups ? groups.filter(group => $get('items', group) && $get('items', group).some(this.isPropertyEnabled)) : [];
+
+        return this.renderTabPanel(visibleGroups);
     }
 }

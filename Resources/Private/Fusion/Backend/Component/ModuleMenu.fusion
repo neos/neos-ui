@@ -39,17 +39,20 @@ prototype(Neos.Neos.Ui:Component.ModuleMenu) < prototype(Neos.Fusion:Map) {
                     itemKey = 'submoduleName'
                     iterationName = 'iteration'
 
-                    keyRenderer = ${iteration.index}
+                    keyRenderer = ${submoduleName}
                     itemRenderer = Neos.Fusion:DataStructure {
                         @if.moduleNotHidden = ${submodule.hideInMenu != true}
                         icon = ${submodule.icon}
                         label = ${submodule.label}
                         uri = ${submodule.uri}
+                        position = ${submodule.position}
                         isActive = true
                         target = 'Window'
                     }
 
-                    @process.filterHiddenSubmodules = ${Array.values(Array.filter(value, (x, index) => x != null))}
+                    @process.filterHiddenSubmodules = ${Array.filter(value, (x, index) => x != null)}
+                    @process.sort = ${Array.slice(Neos.Ui.PositionalArraySorter.sort(value), 0)}
+                    @process.values = ${Array.values(value)}
                 }
             }
         }

@@ -55,7 +55,7 @@ jobs:
       - run: curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
       - run: chmod +x ~/.nvm/nvm.sh
       - run: ~/.nvm/nvm.sh install && ~/.nvm/nvm.sh use
-      - run: sudo apt-get update && sudo apt-get install -y rsync
+      - run: sudo apt-get update --allow-releaseinfo-change && sudo apt-get install -y rsync
       - run: make install && make build-production
 
       - save_cache: *store_yarn_package_cache

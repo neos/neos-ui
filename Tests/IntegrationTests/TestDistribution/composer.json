@@ -12,6 +12,9 @@
       "neos/test-site": "@dev",
       "neos/test-nodetypes": "@dev"
     },
+    "require-dev": {
+      "phpunit/phpunit": "^8.1"
+    },
     "repositories": {
         "distribution": {
             "type": "path",

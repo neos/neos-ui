@@ -19,6 +19,7 @@ That means:
 * NeosCMS version 5.3: branch 5.3
 * NeosCMS version 7.0: branch 7.0
 * NeosCMS version 7.1: branch 7.1
+* NeosCMS version 7.2: branch 7.2
 * latest development happens in master
 
 ## Browser support
@@ -130,6 +131,8 @@ To do the upmerge run the following commands
 git checkout 7.0 && git fetch && git reset --hard origin/7.0 && git merge --no-ff --no-commit origin/5.3
 # review and `git commit`
 git checkout 7.1 && git fetch && git reset --hard origin/7.1 && git merge --no-ff --no-commit origin/7.0
+# review and `git commit`
+git checkout 7.2 && git fetch && git reset --hard origin/7.2 && git merge --no-ff --no-commit origin/7.1
 # review and `git commit`
 git checkout master && git fetch && git reset --hard origin/master && git merge --no-ff --no-commit origin/7.1
 # review and `git commit`

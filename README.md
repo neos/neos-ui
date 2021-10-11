@@ -134,7 +134,7 @@ git checkout 7.1 && git fetch && git reset --hard origin/7.1 && git merge --no-f
 # review and `git commit`
 git checkout 7.2 && git fetch && git reset --hard origin/7.2 && git merge --no-ff --no-commit origin/7.1
 # review and `git commit`
-git checkout master && git fetch && git reset --hard origin/master && git merge --no-ff --no-commit origin/7.1
+git checkout master && git fetch && git reset --hard origin/master && git merge --no-ff --no-commit origin/7.2
 # review and `git commit`
 ```
 

@@ -40,6 +40,12 @@ export default class InlineUI extends PureComponent {
     render() {
         const {focused} = this.props;
         const {nodeTypesRegistry, focusedNode, focusedNodesContextPaths, clipboardNodesContextPaths, shouldScrollIntoView, requestScrollIntoView, destructiveOperationsAreDisabled, clipboardMode} = this.props;
+
+        // If there's no focused node, we won't render the Inline UI
+        if (!focusedNode) {
+            return null;
+        }
+
         const focusedNodeContextPath = focusedNode ? focusedNode.contextPath : null;
         const isDocument = nodeTypesRegistry.hasRole($get('nodeType', focusedNode), 'document');
         const allFocusedNodesAreInClipboard = isEqualSet(focusedNodesContextPaths, clipboardNodesContextPaths);

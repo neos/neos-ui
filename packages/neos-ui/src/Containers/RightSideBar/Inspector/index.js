@@ -164,6 +164,18 @@ export default class Inspector extends PureComponent {
     };
 
     preprocessViewConfigurationDebounced = debounce(() => {
+        const {viewConfiguration, originalViewConfiguration} = this.state;
+
+        // View Configuration may be null, if there's no focused node
+        if (!viewConfiguration) {
+            return;
+        }
+
+        // Original View Configuration may be null, if there's no focused node
+        if (!originalViewConfiguration) {
+            return;
+        }
+
         const nodeForContext = this.generateNodeForContext(
             this.props.focusedNode,
             this.props.transientValues
@@ -173,8 +185,8 @@ export default class Inspector extends PureComponent {
         const processedViewConfiguration = this.preprocessViewConfiguration(
             {node: nodeForContext},
             [],
-            this.state.viewConfiguration,
-            this.state.originalViewConfiguration
+            viewConfiguration,
+            originalViewConfiguration
         );
 
         if (this.configurationIsProcessed === true) {
@@ -228,7 +240,7 @@ export default class Inspector extends PureComponent {
             return true;
         }
 
-        if ($get('isAutoCreated', focusedNode) === true && item.id === '_hidden') {
+        if ($get('hidden', item) || ($get('isAutoCreated', focusedNode) === true && item.id === '_hidden')) {
             // This accounts for the fact that auto-created child nodes cannot
             // be hidden via the insprector (see: #2282)
             return false;
@@ -352,10 +364,9 @@ export default class Inspector extends PureComponent {
                         //
                         // Only display tabs, that have groups and these groups have properties
                         //
-                        .filter(t => $get('groups', t) && $get('groups', t).length > 0 && $get('groups', t).reduce((acc, group) => (
-                            acc ||
-                            $get('items', group).filter(this.isPropertyEnabled).length > 0
-                        ), false))
+                        .filter(tab => $get('groups', tab) && $get('groups', tab).some(group => (
+                            $get('items', group).some(this.isPropertyEnabled)
+                        )))
 
                         //
                         // Render each tab as a TabPanel

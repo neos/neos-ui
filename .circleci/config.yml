@@ -30,7 +30,6 @@ aliases:
   - &restore_composer_cache
     keys:
       - composer-cache-v{{ .Environment.CACHE_VERSION }}-{{ checksum "Tests/IntegrationTests/TestDistribution/composer.json" }}
-      - composer-cache-v{{ .Environment.CACHE_VERSION }}-
 
   - &attach_workspace
     at: *workspace_root

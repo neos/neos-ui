@@ -12,7 +12,6 @@ namespace Neos\Neos\Ui\Fusion\ExceptionHandler;
  */
 
 use GuzzleHttp\Psr7\Message;
-use function GuzzleHttp\Psr7\str;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Exception;
 use Neos\Flow\Mvc\View\ViewInterface;

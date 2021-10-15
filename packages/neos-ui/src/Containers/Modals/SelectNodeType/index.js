@@ -118,6 +118,7 @@ export default class SelectNodeType extends PureComponent {
         this.setState({
             filterSearchTerm: ''
         });
+        this.handleCloseHelpMessage();
         cancel();
     }
 

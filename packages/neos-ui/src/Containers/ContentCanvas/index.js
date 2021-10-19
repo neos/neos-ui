@@ -19,7 +19,9 @@ import style from './style.css';
     backgroundColor: $get('ui.contentCanvas.backgroundColor'),
     src: $get('ui.contentCanvas.src'),
     baseNodeType: $get('ui.pageTree.filterNodeType'),
-    currentEditPreviewMode: selectors.UI.EditPreviewMode.currentEditPreviewMode
+    currentEditPreviewMode: selectors.UI.EditPreviewMode.currentEditPreviewMode,
+    isDiscarding: $get('ui.remote.isDiscarding'),
+    isLoading: $get('ui.contentCanvas.isLoading')
 }), {
     startLoading: actions.UI.ContentCanvas.startLoading,
     stopLoading: actions.UI.ContentCanvas.stopLoading,
@@ -71,6 +73,8 @@ export default class ContentCanvas extends PureComponent {
             isFringeLeft,
             isFringeRight,
             isFullScreen,
+            isDiscarding,
+            isLoading,
             src,
             currentEditPreviewMode,
             editPreviewModes,
@@ -83,6 +87,7 @@ export default class ContentCanvas extends PureComponent {
             [style['contentCanvas--isFringeLeft']]: isFringeLeft,
             [style['contentCanvas--isFringeRight']]: isFringeRight,
             [style['contentCanvas--isFullScreen']]: isFullScreen,
+            [style['contentCanvas--isTemporaryDisabled']]: isDiscarding || isLoading,
             [style['contentCanvas--isHidden']]: !isVisible
         });
         const InlineUI = guestFrameRegistry.get('InlineUIComponent');

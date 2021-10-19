@@ -122,6 +122,9 @@ test-e2e-saucelabs: ## Executes integration tests on saucelabs.
 test-e2e: ## Executes integration tests locally.
 	bash Tests/IntegrationTests/e2e.sh chrome
 
+test-e2e-docker: ## Executes integration tests locally in a docker-compose setup.
+	@bash Tests/IntegrationTests/e2e-docker.sh $(or $(browser),chromium)
+
 lint: lint-js lint-editorconfig ## Executes make lint-js and make lint-editorconfig.
 
 lint-js: ## Runs lint test in all subpackages via lerna.

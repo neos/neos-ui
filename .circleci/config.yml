@@ -1,4 +1,4 @@
-version: 2.0
+version: 2.1
 
 aliases:
   - &workspace_root ~/neos-ui-workspace
@@ -38,6 +38,40 @@ aliases:
     root: .
     paths:
       - .
+
+executors:
+  e2e-docker:
+    environment:
+      FLOW_CONTEXT: Production
+    docker:
+      - image: quay.io/yeebase/ci-build:7.4
+      - image: circleci/mariadb:10.2
+        environment:
+          MYSQL_DATABASE: neos
+          MYSQL_ROOT_PASSWORD: not_a_real_password
+
+
+commands:
+  prepare-acceptance-tests:
+    steps:
+      - attach_workspace: *attach_workspace
+      - restore_cache: *restore_app_cache
+
+      - run: rm -rf /home/circleci/app/Packages/Application/Neos.Neos.Ui
+      - run: cd /home/circleci/app/Packages/Application && mv ~/neos-ui-workspace Neos.Neos.Ui
+      - run: |
+          cd /home/circleci/app/
+          ./flow flow:cache:flush
+          ./flow flow:cache:warmup
+          ./flow doctrine:migrate
+          ./flow user:create --username=admin --password=password --first-name=John --last-name=Doe --roles=Administrator
+      - run:
+          name: Start flow server
+          command: /home/circleci/app/flow server:run --port 8081
+          background: true
+
+      - run: curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
+      - run: chmod +x ~/.nvm/nvm.sh
 
 jobs:
   checkout:
@@ -95,44 +129,49 @@ jobs:
       - save_cache: *save_composer_cache
       - save_cache: *store_app_cache
 
-  e2e:
-    parallelism: 2
-    environment:
-      FLOW_CONTEXT: Production
-    docker:
-      - image: quay.io/yeebase/ci-build:7.4
-      - image: circleci/mariadb:10.2
-        environment:
-          MYSQL_DATABASE: neos
-          MYSQL_ROOT_PASSWORD: not_a_real_password
+
+  e2e-chrome:
+    executor: e2e-docker
     working_directory: *workspace_root
     steps:
-      - attach_workspace: *attach_workspace
-      - restore_cache: *restore_app_cache
-
-      - run: rm -rf /home/circleci/app/Packages/Application/Neos.Neos.Ui
-      - run: cd /home/circleci/app/Packages/Application && mv ~/neos-ui-workspace Neos.Neos.Ui
-      - run: |
-          cd /home/circleci/app/
-          ./flow flow:cache:flush
-          ./flow flow:cache:warmup
-          ./flow doctrine:migrate
-          ./flow user:create --username=admin --password=password --first-name=John --last-name=Doe --roles=Administrator
-      - run:
-          name: Start flow server
-          command: /home/circleci/app/flow server:run --port 8081
-          background: true
-
-      - run: curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
-      - run: chmod +x ~/.nvm/nvm.sh
+      - prepare-acceptance-tests
       - run: |
           export NVM_DIR="$HOME/.nvm"
           [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
           cd /home/circleci/app/Packages/Application/Neos.Neos.Ui
           nvm install
           nvm use
-          make test-e2e-saucelabs browser=safari
           make test-e2e-saucelabs
+      - store_artifacts:
+          path: /home/circleci/app/Data/Logs
+
+  e2e-safari:
+    executor: e2e-docker
+    working_directory: *workspace_root
+    steps:
+      - prepare-acceptance-tests
+      - run: |
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+          cd /home/circleci/app/Packages/Application/Neos.Neos.Ui
+          nvm install
+          nvm use
+          make test-e2e-saucelabs browser="safari"
+      - store_artifacts:
+          path: /home/circleci/app/Data/Logs
+
+  e2e-edge:
+    executor: e2e-docker
+    working_directory: *workspace_root
+    steps:
+      - prepare-acceptance-tests
+      - run: |
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+          cd /home/circleci/app/Packages/Application/Neos.Neos.Ui
+          nvm install
+          nvm use
+          make test-e2e-saucelabs browser="edge"
       - store_artifacts:
           path: /home/circleci/app/Data/Logs
 
@@ -177,7 +216,13 @@ workflows:
       - unittests:
           requires:
             - checkout
-      - e2e:
+      - e2e-safari:
+          requires:
+            - build_flow_app
+      - e2e-chrome:
+          requires:
+            - build_flow_app
+      - e2e-edge:
           requires:
             - build_flow_app
       - php-unittests:

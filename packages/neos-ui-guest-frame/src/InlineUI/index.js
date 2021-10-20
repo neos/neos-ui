@@ -40,14 +40,20 @@ export default class InlineUI extends PureComponent {
     render() {
         const {focused} = this.props;
         const {nodeTypesRegistry, focusedNode, focusedNodesContextPaths, clipboardNodesContextPaths, shouldScrollIntoView, requestScrollIntoView, destructiveOperationsAreDisabled, clipboardMode} = this.props;
-        const focusedNodeContextPath = focusedNode.contextPath;
+
+        // If there's no focused node, we won't render the Inline UI
+        if (!focusedNode) {
+            return null;
+        }
+
+        const focusedNodeContextPath = focusedNode ? focusedNode.contextPath : null;
         const isDocument = nodeTypesRegistry.hasRole($get('nodeType', focusedNode), 'document');
         const allFocusedNodesAreInClipboard = isEqualSet(focusedNodesContextPaths, clipboardNodesContextPaths);
         const isCut = allFocusedNodesAreInClipboard && clipboardMode === 'Move';
         const isCopied = allFocusedNodesAreInClipboard && clipboardMode === 'Copy';
-        const canBeDeleted = $get('policy.canRemove', this.props.focusedNode) || false;
-        const canBeEdited = $get('policy.canEdit', this.props.focusedNode) || false;
-        const visibilityCanBeToggled = !$contains('_hidden', 'policy.disallowedProperties', this.props.focusedNode);
+        const canBeDeleted = $get('policy.canRemove', focusedNode) || false;
+        const canBeEdited = $get('policy.canEdit', focusedNode) || false;
+        const visibilityCanBeToggled = !$contains('_hidden', 'policy.disallowedProperties', focusedNode);
 
         return (
             <div className={style.inlineUi} data-__neos__inline-ui="TRUE">

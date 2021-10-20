@@ -36,7 +36,25 @@ Root.propTypes = {
     store: PropTypes.object.isRequired,
     globalRegistry: PropTypes.object.isRequired,
     configuration: PropTypes.object.isRequired,
-    menu: PropTypes.object.isRequired,
+    menu: PropTypes.arrayOf(
+        PropTypes.shape({
+            icon: PropTypes.string,
+            label: PropTypes.string.isRequired,
+            uri: PropTypes.string.isRequired,
+            target: PropTypes.string,
+
+            children: PropTypes.arrayOf(
+                PropTypes.shape({
+                    icon: PropTypes.string,
+                    label: PropTypes.string.isRequired,
+                    uri: PropTypes.string,
+                    target: PropTypes.string,
+                    isActive: PropTypes.bool.isReqired,
+                    skipI18n: PropTypes.bool.isReqired
+                })
+            )
+        })
+    ).isRequired,
     routes: PropTypes.object.isRequired
 };
 

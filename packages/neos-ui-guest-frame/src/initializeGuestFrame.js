@@ -54,6 +54,12 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
         return;
     }
 
+    // If we don't have access to the document due to a NodeTreePrivilege, the serialized document
+    // information is going to be null. In that case, we stop initializing the guest frame.
+    if (documentInformation.metaData.documentNodeSerialization === null) {
+        return;
+    }
+
     const nodes = Object.assign({}, guestFrameWindow['@Neos.Neos.Ui:Nodes'], {
         [documentInformation.metaData.documentNode]: documentInformation.metaData.documentNodeSerialization
     });

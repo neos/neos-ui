@@ -179,7 +179,7 @@ Neos:
             otherName: '${q(user).property(''name.otherName'')}'
             fullName: '${q(user).property(''name.fullName'')}'
           preferences:
-            interfaceLanguage: '${q(user).property(''preferences.interfaceLanguage'')}'
+            interfaceLanguage: '${q(user).property(''preferences.interfaceLanguage'') || Configuration.setting(''Neos.Neos.userInterface.defaultLanguage'')}'
           settings:
             isAutoPublishingEnabled: false
             targetWorkspace: 'live'

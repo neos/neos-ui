@@ -32,6 +32,21 @@
         background-color: white;
     }
 }
+
+.contentCanvas--isTemporaryDisabled {
+    &::before {
+        position: absolute;
+        display: flex;
+        content: ' ';
+        width: inherit;
+        height: inherit;
+        background: var(--colors-ContrastDarkest);
+        z-index: var(--zIndex-Dialog-Context);
+        opacity: .1;
+        transition: var(--transition-Fast)  ease opacity;
+        cursor: wait;
+    }
+}
 .contentCanvas__itemWrapper {
     width: 100%;
     height: 100%;

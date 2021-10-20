@@ -1,0 +1,22 @@
+version: "3.4"
+services:
+
+  php:
+    image: thecodingmachine/php:7.4-v4-cli
+    command: tail -f /dev/null
+    ports:
+      - 8081:8081
+    volumes:
+      - composer_cache:/home/circleci/.composer/cache
+    environment:
+      # Enable GD
+      PHP_EXTENSION_GD: 1
+
+  db:
+    image: circleci/mariadb:10.2
+    environment:
+      MYSQL_DATABASE: neos
+      MYSQL_ROOT_PASSWORD: not_a_real_password
+
+volumes:
+  composer_cache:

@@ -191,7 +191,7 @@ class BackendController extends ActionController
      */
     public function redirectToAction(NodeInterface $node, string $presetBaseNodeType = null): void
     {
-        $this->response->setComponentParameter(SetHeaderComponent::class, 'Cache-Control', [
+        $this->response->setHttpHeader('Cache-Control', [
             'no-cache',
             'no-store'
         ]);

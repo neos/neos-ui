@@ -55,10 +55,12 @@ export default class CodeMirror extends PureComponent {
 
     handleOpenCodeEditor = () => {
         const {secondaryEditorsRegistry} = this.props;
+        const highlightingModeFromOptions = $get('options.highlightingMode', this.props);
+        const highlightingMode = highlightingModeFromOptions ? highlightingModeFromOptions : this.props.highlightingMode;
         const {component: CodeMirrorWrap} = secondaryEditorsRegistry.get('Neos.Neos/Inspector/Secondary/Editors/CodeMirrorWrap');
 
         this.props.renderSecondaryInspector('CODEMIRROR_EDIT', () =>
-            <CodeMirrorWrap onChange={this.handleChange} value={this.props.value} highlightingMode={this.props.highlightingMode}/>
+            <CodeMirrorWrap onChange={this.handleChange} value={this.props.value} highlightingMode={highlightingMode}/>
         );
     }
 }

@@ -171,7 +171,7 @@ jobs:
           cd /home/circleci/app/Packages/Application/Neos.Neos.Ui
           nvm install
           nvm use
-          make test-e2e-saucelabs browser="edge"
+          make test-e2e-saucelabs browser="microsoftedge"
       - store_artifacts:
           path: /home/circleci/app/Data/Logs
 

@@ -164,6 +164,18 @@ export default class Inspector extends PureComponent {
     };
 
     preprocessViewConfigurationDebounced = debounce(() => {
+        const {viewConfiguration, originalViewConfiguration} = this.state;
+
+        // View Configuration may be null, if there's no focused node
+        if (!viewConfiguration) {
+            return;
+        }
+
+        // Original View Configuration may be null, if there's no focused node
+        if (!originalViewConfiguration) {
+            return;
+        }
+
         const nodeForContext = this.generateNodeForContext(
             this.props.focusedNode,
             this.props.transientValues
@@ -173,8 +185,8 @@ export default class Inspector extends PureComponent {
         const processedViewConfiguration = this.preprocessViewConfiguration(
             {node: nodeForContext},
             [],
-            this.state.viewConfiguration,
-            this.state.originalViewConfiguration
+            viewConfiguration,
+            originalViewConfiguration
         );
 
         if (this.configurationIsProcessed === true) {

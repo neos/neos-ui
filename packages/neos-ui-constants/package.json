@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-constants",
-  "version": "7.1.2",
+  "version": "7.1.3",
   "description": "Container package to store Neos CMS UI constants",
   "private": true,
   "main": "./src/index.js",
@@ -14,9 +14,9 @@
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "7.1.2",
-    "@neos-project/build-essentials": "7.1.2",
-    "@neos-project/jest-preset-neos-ui": "7.1.2"
+    "@neos-project/babel-preset-neos-ui": "7.1.3",
+    "@neos-project/build-essentials": "7.1.3",
+    "@neos-project/jest-preset-neos-ui": "7.1.3"
   },
   "license": "GNU GPLv3",
   "jest": {

@@ -249,12 +249,15 @@ const makeMapStateToProps = isDocument => (state, {nodeTypesRegistry}) => {
         const getNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(focusedNodeContextPath);
         const focusedNode = getNodeByContextPathSelector(state);
         const clipboardNodesContextPaths = selectors.CR.Nodes.clipboardNodesContextPathsSelector(state);
-        const canBePasted = clipboardNodesContextPaths.every(clipboardNodeContextPath => {
-            return canBePastedSelector(state, {
-                subject: clipboardNodeContextPath,
-                reference: focusedNodeContextPath
+        let canBePasted = false;
+        if (clipboardNodesContextPaths && clipboardNodesContextPaths.length) {
+            canBePasted = clipboardNodesContextPaths.every(clipboardNodeContextPath => {
+                return canBePastedSelector(state, {
+                    subject: clipboardNodeContextPath,
+                    reference: focusedNodeContextPath
+                });
             });
-        });
+        }
 
         const selectionHasNestedNodes = hasNestedNodes(focusedNodesContextPaths);
 

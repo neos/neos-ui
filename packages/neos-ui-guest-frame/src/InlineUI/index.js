@@ -46,14 +46,14 @@ export default class InlineUI extends PureComponent {
             return null;
         }
 
-        const focusedNodeContextPath = focusedNode ? focusedNode.contextPath : null;
+        const focusedNodeContextPath = focusedNode.contextPath;
         const isDocument = nodeTypesRegistry.hasRole($get('nodeType', focusedNode), 'document');
         const allFocusedNodesAreInClipboard = isEqualSet(focusedNodesContextPaths, clipboardNodesContextPaths);
         const isCut = allFocusedNodesAreInClipboard && clipboardMode === 'Move';
         const isCopied = allFocusedNodesAreInClipboard && clipboardMode === 'Copy';
-        const canBeDeleted = $get('policy.canRemove', focusedNode) || false;
-        const canBeEdited = $get('policy.canEdit', focusedNode) || false;
-        const visibilityCanBeToggled = !$contains('_hidden', 'policy.disallowedProperties', focusedNode);
+        const canBeDeleted = $get('policy.canRemove', this.props.focusedNode) || false;
+        const canBeEdited = $get('policy.canEdit', this.props.focusedNode) || false;
+        const visibilityCanBeToggled = !$contains('_hidden', 'policy.disallowedProperties', this.props.focusedNode);
 
         return (
             <div className={style.inlineUi} data-__neos__inline-ui="TRUE">

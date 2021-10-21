@@ -187,7 +187,7 @@ clean:
 # help command as default
 ################################################################################
 
-# define indention for desciptions
+# define indention for descriptions
 TARGET_MAX_CHAR_NUM=40
 
 ## Show help

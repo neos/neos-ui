@@ -46,6 +46,12 @@ editorconfigChecker = ./node_modules/.bin/editorconfig-checker
 webpack = ./node_modules/.bin/webpack
 crossenv = ./node_modules/.bin/crossenv
 
+# Define colors
+GREEN  := $(shell tput -Txterm setaf 2)
+YELLOW := $(shell tput -Txterm setaf 3)
+WHITE  := $(shell tput -Txterm setaf 7)
+RESET  := $(shell tput -Txterm sgr0)
+
 ################################################################################
 # Setup
 ################################################################################
@@ -80,23 +86,28 @@ build-subpackages:
 
 # we build the react UI components ready for standalone usage;
 # so that they can be published on NPM properly.
-build-react-ui-components-standalone: ## Build the react UI components ready for standalone usage.
+
+## Build the react UI components ready for standalone usage.
+build-react-ui-components-standalone:
 	cd packages/react-ui-components && yarn run build-standalone-esm
 
-
-build: ## Runs the development build.
+## Runs the development build.
+build:
 	make build-subpackages
 	NEOS_BUILD_ROOT=$(shell pwd) $(webpack) --progress --color
 
-build-watch: ## Watches the source files for changes and runs a build in case.
+## Watches the source files for changes and runs a build in case.
+build-watch:
 	NEOS_BUILD_ROOT=$(shell pwd) $(webpack) --progress --color --watch
 
-build-watch-poll: ## Watches (and polls) the source files on a file share.
+## Watches (and polls) the source files on a file share.
+build-watch-poll:
 	NEOS_BUILD_ROOT=$(shell pwd) $(webpack) \
 		--progress --color --watch-poll --watch
 
 # clean anything before building for production just to be sure
-build-production: ## Runs the production build.
+## Runs the production build.
+build-production:
 	make build-subpackages
 	$(cross-env) NODE_ENV=production NEOS_BUILD_ROOT=$(shell pwd) \
 		$(webpack) --color
@@ -106,32 +117,38 @@ build-production: ## Runs the production build.
 # Code Quality
 ################################################################################
 
-
-storybook: ## Starts the storybook server on port 9001.
+## Starts the storybook server on port 9001.
+storybook:
 	@mkdir -p ./packages/react-ui-components/node_modules/@neos-project/ && \
 		ln -s ../../../build-essentials/src \
 		./packages/react-ui-components/node_modules/@neos-project/build-essentials
 	$(lerna) run --scope @neos-project/react-ui-components start
 
-test: ## Executes the unit test on all source files.
+## Executes the unit test on all source files.
+test:
 	$(lerna) run test --concurrency 1
 
-test-e2e-saucelabs: ## Executes integration tests on saucelabs.
+## Executes integration tests on saucelabs.
+test-e2e-saucelabs:
 	bash Tests/IntegrationTests/e2e.sh saucelabs:chrome
 
-test-e2e: ## Executes integration tests locally.
+## Executes integration tests locally.
+test-e2e:
 	bash Tests/IntegrationTests/e2e.sh chrome
 
-test-e2e-docker: ## Executes integration tests locally in a docker-compose setup.
+## Executes integration tests locally in a docker-compose setup.
+test-e2e-docker:
 	@bash Tests/IntegrationTests/e2e-docker.sh $(or $(browser),chromium)
 
-lint: lint-js lint-editorconfig ## Executes make lint-js and make lint-editorconfig.
+## Executes make lint-js and make lint-editorconfig.
+lint: lint-js lint-editorconfig
 
-lint-js: ## Runs lint test in all subpackages via lerna.
+## Runs lint test in all subpackages via lerna.
+lint-js:
 	$(lerna) run lint --concurrency 1
 
-
-lint-editorconfig: ## Tests if all files respect the .editorconfig.
+## Tests if all files respect the .editorconfig.
+lint-editorconfig:
 	$(editorconfigChecker) -config .ecrc.json
 
 ################################################################################
@@ -161,17 +178,36 @@ publish-npm: called-with-version
 # Misc
 ################################################################################
 
-
-clean: ## Cleans dependency folders
+## Cleans dependency folders
+clean:
 	rm -Rf node_modules; rm -rf packages/*/node_modules
 
 
 ################################################################################
 # help command as default
 ################################################################################
+
+# define indention for desciptions
+TARGET_MAX_CHAR_NUM=40
+
+## Show help
 help:
-	@echo CLI command list of neos-ui:
-	@echo ""
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+	@echo ''
+	@echo '${GREEN}CLI command list of neos-ui:${RESET}'
+	@echo ''
+	@echo 'Usage:'
+	@echo '  ${YELLOW}make${RESET} ${GREEN}<target>${RESET}'
+	@echo ''
+	@echo 'Targets:'
+	@awk '/^[a-zA-Z\-\_0-9]+:/ { \
+		helpMessage = match(lastLine, /^## (.*)/); \
+		if (helpMessage) { \
+			helpCommand = substr($$1, 0, index($$1, ":")-1); \
+			helpMessage = substr(lastLine, RSTART + 3, RLENGTH); \
+			printf "  ${YELLOW}%-$(TARGET_MAX_CHAR_NUM)s${RESET} ${GREEN}%s${RESET}\n", helpCommand, helpMessage; \
+		} \
+	} \
+	{ lastLine = $$0 }' $(MAKEFILE_LIST)
+	@echo ''
 
 .DEFAULT_GOAL := help

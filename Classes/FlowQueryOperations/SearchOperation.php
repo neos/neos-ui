@@ -97,7 +97,7 @@ class SearchOperation extends AbstractOperation
         } else {
             $matchedNodes = [];
             // Yep, an internal API. But that's what we used in the old UI.
-            $nodeDataRecords = $this->nodeDataRepository->findByParentAndNodeTypeRecursively($contextNode->getPath(), implode(',', $nodeTypes), $context->getWorkspace(), $context->getDimensions());
+            $nodeDataRecords = $this->nodeDataRepository->findByParentAndNodeTypeRecursively($contextNode->getPath(), implode(',', $nodeTypes), $context->getWorkspace(), $context->getDimensions(), null);
             foreach ($nodeDataRecords as $nodeData) {
                 $matchedNode = $this->nodeFactory->createFromNodeData($nodeData, $context);
                 if ($matchedNode !== null) {

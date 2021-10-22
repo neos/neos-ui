@@ -84,14 +84,16 @@ test('Discarding: delete a document node and then discard deletion', async t => 
     subSection('Delete that page');
     await t
         .click(Selector('#neos-PageTree-DeleteSelectedNode'))
-        .click(Selector('#neos-DeleteNodeModal-Confirm'))
-        .expect(Page.treeNode.withText(pageTitleToDelete).exists).notOk('Deleted node gone from the tree')
+        .click(Selector('#neos-DeleteNodeModal-Confirm'));
+    await Page.waitForIframeLoading(t);
+    await t
+        .expect(ReactSelector('Node').withProps('isNodeRemoved', true).find('span').withText(pageTitleToDelete).exists).ok('Deleted node marked as removed in the tree')
         .expect(Selector('.neos-message-header').withText('Page Not Found').exists).notOk('Make sure we don\'t end up on 404 page');
 
     subSection('Discard page deletion');
     await PublishDropDown.discardAll(t);
     await t
-        .expect(Page.treeNode.withText(pageTitleToDelete).exists).ok('Deleted node reappeared in the tree');
+        .expect(ReactSelector('Node').withProps('isNodeRemoved', false).find('span').withText(pageTitleToDelete).exists).ok('Deleted node unmarked as removed in the tree')
 });
 
 test('Discarding: create a content node and then discard it', async t => {
@@ -137,20 +139,17 @@ test('Discarding: delete a content node and then discard deletion', async t => {
         .click(Selector('#neos-ContentTree-ToggleContentTree'))
         .click(Page.treeNode.withText(headlineToDelete))
         .click(Selector('#neos-ContentTree-DeleteSelectedNode'))
-        .click(Selector('#neos-DeleteNodeModal-Confirm'));
-    await Page.waitForIframeLoading(t);
-    await t
-        .expect(Page.treeNode.withText(headlineToDelete).exists).notOk('Deleted node gone from the tree')
+        .click(Selector('#neos-DeleteNodeModal-Confirm'))
+        .expect(ReactSelector('Node').withProps('isNodeRemoved', true).find('span').withText(headlineToDelete).exists).ok('Deleted node marked as removed in the tree')
         .switchToIframe('[name="neos-content-main"]')
         .expect(Selector('.neos-inline-editable').withText(headlineToDelete).exists).notOk('New headline gone from the page')
         .switchToMainWindow();
 
     subSection('Discard page deletion');
     await PublishDropDown.discardAll(t);
-    await t
-        .expect(Page.treeNode.withText(headlineToDelete).exists).ok('Deleted node reappeared in the tree');
     await Page.waitForIframeLoading(t);
     await t
+        .expect(ReactSelector('Node').withProps('isNodeRemoved', false).find('span').withText(headlineToDelete).exists).ok('Deleted node unmarked as removed in the tree')
         .switchToIframe('[name="neos-content-main"]')
         .expect(Selector('.neos-inline-editable').withText(headlineToDelete).exists).ok('New headline reappeared on the page')
         .switchToMainWindow();

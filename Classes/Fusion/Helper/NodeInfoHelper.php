@@ -23,6 +23,7 @@ use Neos\Neos\Domain\Service\ContentContext;
 use Neos\Neos\Service\LinkingService;
 use Neos\Neos\Service\Mapping\NodePropertyConverterService;
 use Neos\Neos\TypeConverter\EntityToIdentityConverter;
+use Neos\Neos\Ui\ContentRepository\Service\NodeService;
 use Neos\Neos\Ui\Domain\Service\UserLocaleService;
 use Neos\Neos\Ui\Service\NodePolicyService;
 
@@ -36,6 +37,12 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
      * @var NodePolicyService
      */
     protected $nodePolicyService;
+
+    /**
+     * @Flow\Inject
+     * @var NodeService
+     */
+    protected $nodeService;
 
     /**
      * @Flow\Inject
@@ -133,6 +140,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             '_hiddenInIndex' => $node->isHiddenInIndex(),
             '_hiddenBeforeDateTime' => $node->getHiddenBeforeDateTime() instanceof \DateTimeInterface ? $node->getHiddenBeforeDateTime()->format(\DateTime::W3C) : '',
             '_hiddenAfterDateTime' => $node->getHiddenAfterDateTime() instanceof \DateTimeInterface ? $node->getHiddenAfterDateTime()->format(\DateTime::W3C) : '',
+            '_removed' => $node->isRemoved(),
         ];
 
         if ($controllerContext !== null) {
@@ -241,6 +249,9 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
      */
     protected function renderChildrenInformation(NodeInterface $node, string $nodeTypeFilterString): array
     {
+        // rebuild node to change context to include removed nodes
+        $node = $this->nodeService->getNodeFromContextPath($node->getContextPath(), null, null, true);
+
         $documentChildNodes = $node->getChildNodes($nodeTypeFilterString);
         // child nodes for content tree, must not include those nodes filtered out by `baseNodeType`
         $contentChildNodes = $node->getChildNodes($this->buildContentChildNodeFilterString());

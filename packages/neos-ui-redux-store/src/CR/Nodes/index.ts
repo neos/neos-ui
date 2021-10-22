@@ -4,7 +4,7 @@ import {action as createAction, ActionType} from 'typesafe-actions';
 import {actionTypes as system, InitAction} from '@neos-project/neos-ui-redux-store/src/System';
 
 import * as selectors from './selectors';
-import {calculateNewFocusedNodes, getNodeOrThrow} from './helpers';
+import {calculateNewFocusedNodes, getNode, getNodeOrThrow} from './helpers';
 
 import {FusionPath, NodeContextPath, InsertPosition, NodeMap, ClipboardMode, SelectionModeTypes, NodeTypeName} from '@neos-project/neos-ts-interfaces';
 
@@ -69,6 +69,7 @@ export enum actionTypes {
     REMOVAL_ABORTED = '@neos/neos-ui/CR/Nodes/REMOVAL_ABORTED',
     REMOVAL_CONFIRMED = '@neos/neos-ui/CR/Nodes/REMOVAL_CONFIRMED',
     REMOVE = '@neos/neos-ui/CR/Nodes/REMOVE',
+    REMOVE_FROM_TREE = '@neos/neos-ui/CR/Nodes/REMOVE_FROM_TREE',
     SET_DOCUMENT_NODE = '@neos/neos-ui/CR/Nodes/SET_DOCUMENT_NODE',
     SET_STATE = '@neos/neos-ui/CR/Nodes/SET_STATE',
     RELOAD_STATE = '@neos/neos-ui/CR/Nodes/RELOAD_STATE',
@@ -166,6 +167,13 @@ const confirmRemoval = () => createAction(actionTypes.REMOVAL_CONFIRMED);
  * @param {String} contextPath The context path of the node to be removed
  */
 const remove = (contextPath: NodeContextPath) => createAction(actionTypes.REMOVE, contextPath);
+
+/**
+ * Remove the node from tree that was marked for removal
+ *
+ * @param {String} contextPath The context path of the node to be removed from tree
+ */
+const removeFromTree = (contextPath: NodeContextPath) => createAction(actionTypes.REMOVE_FROM_TREE, contextPath);
 
 /**
  * Set the document node and optionally site node
@@ -325,6 +333,7 @@ export const actions = {
     abortRemoval,
     confirmRemoval,
     remove,
+    removeFromTree,
     setDocumentNode,
     setState,
     reloadState,
@@ -482,6 +491,13 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
             break;
         }
         case actionTypes.REMOVE: {
+            const node = getNode(draft.byContextPath, action.payload);
+            if (node) {
+                node.properties._removed = true;
+            }
+            break;
+        }
+        case actionTypes.REMOVE_FROM_TREE: {
             delete draft.byContextPath[action.payload];
             break;
         }

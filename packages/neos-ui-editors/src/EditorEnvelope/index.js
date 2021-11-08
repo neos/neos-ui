@@ -19,7 +19,7 @@ import {Icon} from '@neos-project/react-ui-components';
 }))
 export default class EditorEnvelope extends PureComponent {
     state = {
-        showHelpmessage: false
+        showHelpMessage: false
     };
 
     static defaultProps = {
@@ -113,10 +113,10 @@ export default class EditorEnvelope extends PureComponent {
         );
     }
 
-    toggleHelmpessage = event => {
+    toggleHelpMessage = event => {
         event.preventDefault();
         this.setState({
-            showHelpmessage: !this.state.showHelpmessage
+            showHelpMessage: !this.state.showHelpMessage
         });
     };
 
@@ -128,7 +128,7 @@ export default class EditorEnvelope extends PureComponent {
         return thumbnail;
     }
 
-    renderHelpmessage() {
+    renderHelpMessage() {
         const {i18nRegistry, helpMessage, helpThumbnail, label} = this.props;
 
         const translatedHelpMessage = i18nRegistry.translate(helpMessage);
@@ -145,7 +145,7 @@ export default class EditorEnvelope extends PureComponent {
     renderHelpIcon = () => {
         if (this.props.helpMessage || this.props.helpThumbnail) {
             return (
-                <span role="button" onClick={this.toggleHelmpessage} className={style.envelope__tooltipButton}>
+                <span role="button" onClick={this.toggleHelpMessage} className={style.envelope__tooltipButton}>
                     <Icon icon="question-circle" />
                 </span>
             );
@@ -170,7 +170,7 @@ export default class EditorEnvelope extends PureComponent {
                     {this.renderLabel()}
                 </span>
                 {this.renderEditorComponent()}
-                {this.state.showHelpmessage ? this.renderHelpmessage() : ''}
+                {this.state.showHelpMessage ? this.renderHelpMessage() : ''}
                 {this.isInvalid() && <Tooltip renderInline asError><ul>{validationErrors.map((error, index) => <li key={index}>{error}</li>)}</ul></Tooltip>}
             </Fragment>
         );

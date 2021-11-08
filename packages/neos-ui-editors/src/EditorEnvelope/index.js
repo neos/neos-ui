@@ -113,7 +113,8 @@ export default class EditorEnvelope extends PureComponent {
         );
     }
 
-    toggleHelmpessage = () => {
+    toggleHelmpessage = event => {
+        event.preventDefault();
         this.setState({
             showHelpmessage: !this.state.showHelpmessage
         });

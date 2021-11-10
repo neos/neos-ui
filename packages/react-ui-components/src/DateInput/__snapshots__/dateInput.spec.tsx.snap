@@ -17,6 +17,7 @@ exports[`<DateInput/> should render correctly. 1`] = `
         icon="far calendar-alt"
         mapThemrProps={[Function]}
         padded="none"
+        size="sm"
       />
     </button>
     <div
@@ -45,6 +46,7 @@ exports[`<DateInput/> should render correctly. 1`] = `
         icon="times"
         mapThemrProps={[Function]}
         padded="none"
+        size="sm"
       />
     </button>
   </div>
@@ -123,6 +125,7 @@ exports[`<DateInput/> should set "utc" on DatePickerComponent if "dateOnly" prop
         icon="far calendar-alt"
         mapThemrProps={[Function]}
         padded="none"
+        size="sm"
       />
     </button>
     <div
@@ -151,6 +154,7 @@ exports[`<DateInput/> should set "utc" on DatePickerComponent if "dateOnly" prop
         icon="times"
         mapThemrProps={[Function]}
         padded="none"
+        size="sm"
       />
     </button>
   </div>

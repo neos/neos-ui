@@ -2,27 +2,23 @@
 
 exports[`<Icon/> should render correctly. 1`] = `
 <FontAwesomeIcon
-  border={false}
-  className="iconClassName fooIconClassName"
-  fixedWidth={false}
-  flip={null}
-  icon={
-    Array [
-      "fas",
-      "fooIconClassName",
-    ]
+  color="default"
+  icon="fooIconClassName"
+  padded="none"
+  size="sm"
+  theme={
+    Object {
+      "icon": "iconClassName",
+      "icon--big": "bigClassName",
+      "icon--color-error": "color-errorClassName",
+      "icon--color-primaryBlue": "color-primaryBlueClassName",
+      "icon--color-warn": "color-warnClassName",
+      "icon--paddedLeft": "paddedLeftClassName",
+      "icon--paddedRight": "paddedRightClassName",
+      "icon--small": "smallClassName",
+      "icon--spin": "spinClassName",
+      "icon--tiny": "tinyClassName",
+    }
   }
-  inverse={false}
-  listItem={false}
-  mask={null}
-  pull={null}
-  pulse={false}
-  rotation={null}
-  size={null}
-  spin={false}
-  swapOpacity={false}
-  symbol={false}
-  title=""
-  transform={null}
 />
 `;

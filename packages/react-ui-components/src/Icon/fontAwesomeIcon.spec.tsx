@@ -2,9 +2,10 @@ import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
 import React from 'react';
 
-import Icon, {defaultProps, IconProps} from './icon';
+import {defaultProps, IconProps} from './icon';
+import FontAwesomeIcon from './fontAwesomeIcon';
 
-describe('<Icon/>', () => {
+describe('<FontAwesomeIcon/>', () => {
     const props: IconProps = {
         ...defaultProps,
         icon: 'fooIconClassName',
@@ -23,15 +24,25 @@ describe('<Icon/>', () => {
     };
 
     it('should render correctly.', () => {
-        const wrapper = shallow(<Icon {...props}/>);
+        const wrapper = shallow(<FontAwesomeIcon {...props}/>);
 
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
     it('should allow the propagation of "className" with the "className" prop.', () => {
-        const wrapper = shallow(<Icon {...props} className="fooClassName"/>);
+        const wrapper = shallow(<FontAwesomeIcon {...props} className="fooClassName"/>);
 
         expect(wrapper.prop('className')).toContain('fooClassName');
+    });
+
+    it('should call the "fontAwesome.getClassName" api method and render the returned className.', () => {
+        const wrapper = shallow(<FontAwesomeIcon {...props}/>);
+        expect(wrapper.hasClass('fooIconClassName')).toBeTruthy();
+    });
+
+    it('should allow the propagation of custom "icon" with the "icon" prop.', () => {
+        const wrapper = shallow(<FontAwesomeIcon {...props} icon="bazIconClassName"/>);
+        expect(wrapper.hasClass('bazIconClassName')).toBeTruthy();
     });
 });
 

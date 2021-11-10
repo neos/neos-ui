@@ -42,7 +42,7 @@ aliases:
 jobs:
   checkout:
     docker:
-      - image: circleci/ruby:2-node-browsers
+      - image: cimg/node:14.18-browsers
     environment:
       FLOW_CONTEXT: Production
     steps:
@@ -62,7 +62,7 @@ jobs:
   codestyle:
     working_directory: *workspace_root
     docker:
-      - image: circleci/ruby:2-node-browsers
+      - image: cimg/node:14.18-browsers
     steps:
       - attach_workspace: *attach_workspace
       - run: make lint
@@ -70,7 +70,7 @@ jobs:
   unittests:
     working_directory: *workspace_root
     docker:
-      - image: circleci/ruby:2-node-browsers
+      - image: cimg/node:14.18-browsers
     steps:
       - attach_workspace: *attach_workspace
       - run: make test

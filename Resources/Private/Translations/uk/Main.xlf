@@ -116,12 +116,6 @@
       <trans-unit id="" xml:space="preserve">
                 <source/>
       </trans-unit>
-      <trans-unit id="" xml:space="preserve">
-                <source/>
-      </trans-unit>
-      <trans-unit id="" xml:space="preserve">
-                <source/>
-      </trans-unit>
       <trans-unit id="ckeditor__toolbar__ordered-list" xml:space="preserve">
                 <source>Ordered list</source>
         <target xml:lang="uk" state="needs-translation">Ordered list</target>
@@ -152,7 +146,7 @@
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__tableColumn" xml:space="preserve">
                 <source>Column</source>
-        <target xml:lang="uk" state="needs-translation">Column</target>
+        <target xml:lang="uk" state="translated">Стовпець</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__tableRow" xml:space="preserve">
                 <source>Row</source>

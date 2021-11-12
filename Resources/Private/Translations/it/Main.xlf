@@ -4,15 +4,15 @@
     <body>
       <trans-unit id="copy__from__to--title" xml:space="preserve">
                 <source>Copy {source} to {target}</source>
-        <target xml:lang="it" state="needs-translation">Copy {source} to {target}</target>
+        <target xml:lang="it" state="translated">Copia {source} a {target}</target>
       </trans-unit>
       <trans-unit id="move__from__to--title" xml:space="preserve">
                 <source>Move {source} to {target}</source>
-        <target xml:lang="it" state="needs-translation">Move {source} to {target}</target>
+        <target xml:lang="it" state="translated">Muovi {source} a {target}</target>
       </trans-unit>
       <trans-unit id="copy__from__to--description" xml:space="preserve">
                 <source>Please select the position at which you want {source} inserted relative to {target}.</source>
-        <target xml:lang="it" state="needs-translation">Please select the position at which you want {source} inserted relative to {target}.</target>
+        <target xml:lang="it" state="translated">Si prega di selezionare la posizione a cui vuoi che {source} sia inserita relativamente a {target}.</target>
       </trans-unit>
       <trans-unit id="insert" xml:space="preserve">
                 <source>Insert</source>
@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="imageCropper__aspect-ratio-placeholder" xml:space="preserve">
                 <source>Choose an Aspect Ratio</source>
-        <target xml:lang="it" state="needs-translation">Choose an Aspect Ratio</target>
+        <target xml:lang="it" state="translated">Scegli un Rapporto Aspetto</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__bold" xml:space="preserve">
                 <source>Bold</source>
@@ -52,7 +52,7 @@
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link" xml:space="preserve">
                 <source>Link</source>
-        <target xml:lang="it" state="needs-translation">Link</target>
+        <target xml:lang="it" state="translated">Collegamento</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__unlink" xml:space="preserve">
                 <source>Unlink</source>
@@ -113,12 +113,6 @@
       <trans-unit id="" xml:space="preserve">
                 <source/>
       </trans-unit>
-      <trans-unit id="" xml:space="preserve">
-                <source/>
-      </trans-unit>
-      <trans-unit id="" xml:space="preserve">
-                <source/>
-      </trans-unit>
       <trans-unit id="ckeditor__toolbar__ordered-list" xml:space="preserve">
                 <source>Ordered list</source>
         <target xml:lang="it" state="translated">Elenco ordinato</target>
@@ -149,7 +143,7 @@
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__tableColumn" xml:space="preserve">
                 <source>Column</source>
-        <target xml:lang="it" state="needs-translation">Column</target>
+        <target xml:lang="it" state="translated">Colonna</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__tableRow" xml:space="preserve">
                 <source>Row</source>

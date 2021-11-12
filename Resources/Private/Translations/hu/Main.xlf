@@ -4,55 +4,55 @@
     <body>
       <trans-unit id="copy__from__to--title" xml:space="preserve">
                 <source>Copy {source} to {target}</source>
-        <target xml:lang="hu" state="needs-translation">Copy {source} to {target}</target>
+        <target xml:lang="hu" state="translated">Másolás {source} {target}</target>
       </trans-unit>
       <trans-unit id="move__from__to--title" xml:space="preserve">
                 <source>Move {source} to {target}</source>
-        <target xml:lang="hu" state="needs-translation">Move {source} to {target}</target>
+        <target xml:lang="hu" state="translated">Mozgatás {source} {target}</target>
       </trans-unit>
       <trans-unit id="copy__from__to--description" xml:space="preserve">
                 <source>Please select the position at which you want {source} inserted relative to {target}.</source>
-        <target xml:lang="hu" state="needs-translation">Please select the position at which you want {source} inserted relative to {target}.</target>
+        <target xml:lang="hu" state="translated">Válassza ki azt a pozíciót, ahová {source} értékét kívánja beilleszteni {target}.</target>
       </trans-unit>
       <trans-unit id="insert" xml:space="preserve">
                 <source>Insert</source>
-        <target xml:lang="hu" state="needs-translation">Insert</target>
+        <target xml:lang="hu" state="translated">Beszúrás</target>
       </trans-unit>
       <trans-unit id="insertMode" xml:space="preserve">
                 <source>Insert mode</source>
-        <target xml:lang="hu" state="needs-translation">Insert mode</target>
+        <target xml:lang="hu" state="translated">Beszúrás mód</target>
       </trans-unit>
       <trans-unit id="imageCropper__aspect-ratio-placeholder" xml:space="preserve">
                 <source>Choose an Aspect Ratio</source>
-        <target xml:lang="hu" state="needs-translation">Choose an Aspect Ratio</target>
+        <target xml:lang="hu" state="translated">Képarány</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__bold" xml:space="preserve">
                 <source>Bold</source>
-        <target xml:lang="hu" state="needs-translation">Bold</target>
+        <target xml:lang="hu" state="translated">Vastag betűtípus</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__italic" xml:space="preserve">
                 <source>Italic</source>
-        <target xml:lang="hu" state="needs-translation">Italic</target>
+        <target xml:lang="hu" state="translated">Dőlt betűtípus</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__underline" xml:space="preserve">
                 <source>Underline</source>
-        <target xml:lang="hu" state="needs-translation">Underline</target>
+        <target xml:lang="hu" state="translated">Aláhúzott</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__subscript" xml:space="preserve">
                 <source>Subscript</source>
-        <target xml:lang="hu" state="needs-translation">Subscript</target>
+        <target xml:lang="hu" state="translated">Alsó index</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__superscript" xml:space="preserve">
                 <source>Superscript</source>
-        <target xml:lang="hu" state="needs-translation">Superscript</target>
+        <target xml:lang="hu" state="translated">Felső index</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__strikethrough" xml:space="preserve">
                 <source>Strikethrough</source>
-        <target xml:lang="hu" state="needs-translation">Strikethrough</target>
+        <target xml:lang="hu" state="translated">Áthúzás</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link" xml:space="preserve">
                 <source>Link</source>
-        <target xml:lang="hu" state="needs-translation">Link</target>
+        <target xml:lang="hu" state="translated">Hivatkozás</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__unlink" xml:space="preserve">
                 <source>Unlink</source>
@@ -113,43 +113,37 @@
       <trans-unit id="" xml:space="preserve">
                 <source/>
       </trans-unit>
-      <trans-unit id="" xml:space="preserve">
-                <source/>
-      </trans-unit>
-      <trans-unit id="" xml:space="preserve">
-                <source/>
-      </trans-unit>
       <trans-unit id="ckeditor__toolbar__ordered-list" xml:space="preserve">
                 <source>Ordered list</source>
-        <target xml:lang="hu" state="needs-translation">Ordered list</target>
+        <target xml:lang="hu" state="translated">Sorkizárt</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__unordered-list" xml:space="preserve">
                 <source>Unordered list</source>
-        <target xml:lang="hu" state="needs-translation">Unordered list</target>
+        <target xml:lang="hu" state="translated">Szétszort</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__align-left" xml:space="preserve">
                 <source>Align left</source>
-        <target xml:lang="hu" state="needs-translation">Align left</target>
+        <target xml:lang="hu" state="translated">Balra igazítás</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__align-right" xml:space="preserve">
                 <source>Align right</source>
-        <target xml:lang="hu" state="needs-translation">Align right</target>
+        <target xml:lang="hu" state="translated">Jobbra igazítás</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__align-center" xml:space="preserve">
                 <source>Align center</source>
-        <target xml:lang="hu" state="needs-translation">Align center</target>
+        <target xml:lang="hu" state="translated">Középre igazítás</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__align-justify" xml:space="preserve">
                 <source>Align justify</source>
-        <target xml:lang="hu" state="needs-translation">Align justify</target>
+        <target xml:lang="hu" state="translated">Sorkizárt</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__table" xml:space="preserve">
                 <source>Table</source>
-        <target xml:lang="hu" state="needs-translation">Table</target>
+        <target xml:lang="hu" state="translated">Asztal</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__tableColumn" xml:space="preserve">
                 <source>Column</source>
-        <target xml:lang="hu" state="needs-translation">Column</target>
+        <target xml:lang="hu" state="translated">Oszlop</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__tableRow" xml:space="preserve">
                 <source>Row</source>
@@ -161,15 +155,15 @@
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__remove-format" xml:space="preserve">
                 <source>Remove format</source>
-        <target xml:lang="hu" state="needs-translation">Remove format</target>
+        <target xml:lang="hu" state="translated">Formázás eltávolítása</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__outdent" xml:space="preserve">
                 <source>Outdent</source>
-        <target xml:lang="hu" state="needs-translation">Outdent</target>
+        <target xml:lang="hu" state="translated">Befejezés</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__indent" xml:space="preserve">
                 <source>Indent</source>
-        <target xml:lang="hu" state="needs-translation">Indent</target>
+        <target xml:lang="hu" state="translated">Bekezdés</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__setTableColumnHeader" xml:space="preserve">
                 <source>Header column</source>
@@ -233,11 +227,11 @@
       </trans-unit>
       <trans-unit id="noMatchesFound" xml:space="preserve">
                 <source>No matches found</source>
-        <target xml:lang="hu" state="needs-translation">No matches found</target>
+        <target xml:lang="hu" state="translated">Nincs egyezés</target>
       </trans-unit>
       <trans-unit id="searchBoxLeftToType" xml:space="preserve">
                 <source>Please enter ###CHARACTERS### more character</source>
-        <target xml:lang="hu" state="needs-translation">Please enter ###CHARACTERS### more character</target>
+        <target xml:lang="hu" state="translated">Kérjük adjon meg ###CHARACTERS### több karaktert</target>
       </trans-unit>
       <trans-unit id="Shortcut__Introduction" xml:space="preserve">
                 <source>

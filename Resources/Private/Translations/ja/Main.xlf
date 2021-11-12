@@ -52,7 +52,7 @@
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link" xml:space="preserve">
                 <source>Link</source>
-        <target xml:lang="ja" state="needs-translation">Link</target>
+        <target xml:lang="ja" state="translated">リンク</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__unlink" xml:space="preserve">
                 <source>Unlink</source>
@@ -109,12 +109,6 @@
       <trans-unit id="ckeditor__toolbar__link__formatAsEmail" xml:space="preserve">
                 <source>Format as email?</source>
         <target xml:lang="ja" state="needs-translation">Format as email?</target>
-      </trans-unit>
-      <trans-unit id="" xml:space="preserve">
-                <source/>
-      </trans-unit>
-      <trans-unit id="" xml:space="preserve">
-                <source/>
       </trans-unit>
       <trans-unit id="" xml:space="preserve">
                 <source/>

@@ -116,12 +116,6 @@
       <trans-unit id="" xml:space="preserve">
                 <source/>
       </trans-unit>
-      <trans-unit id="" xml:space="preserve">
-                <source/>
-      </trans-unit>
-      <trans-unit id="" xml:space="preserve">
-                <source/>
-      </trans-unit>
       <trans-unit id="ckeditor__toolbar__ordered-list" xml:space="preserve">
                 <source>Ordered list</source>
         <target xml:lang="id" state="translated">Daftar pesanan</target>

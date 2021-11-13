@@ -1,7 +1,9 @@
 .checkbox {
     composes: reset from './../reset.css';
     position: relative;
-    display: inline-block;
+    display: block;
+    width: 20px;
+    height: 20px;
     margin-right: 8px;
     vertical-align: middle;
 }

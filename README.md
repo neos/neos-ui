@@ -20,6 +20,7 @@ That means:
 * NeosCMS version 7.0: branch 7.0
 * NeosCMS version 7.1: branch 7.1
 * NeosCMS version 7.2: branch 7.2
+* NeosCMS version 7.3: branch 7.3
 * latest development happens in master
 
 ## Browser support
@@ -134,7 +135,9 @@ git checkout 7.1 && git fetch && git reset --hard origin/7.1 && git merge --no-f
 # review and `git commit`
 git checkout 7.2 && git fetch && git reset --hard origin/7.2 && git merge --no-ff --no-commit origin/7.1
 # review and `git commit`
-git checkout master && git fetch && git reset --hard origin/master && git merge --no-ff --no-commit origin/7.2
+git checkout 7.3 && git fetch && git reset --hard origin/7.3 && git merge --no-ff --no-commit origin/7.2
+# review and `git commit`
+git checkout master && git fetch && git reset --hard origin/master && git merge --no-ff --no-commit origin/7.3
 # review and `git commit`
 ```
 

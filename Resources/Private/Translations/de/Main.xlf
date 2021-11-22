@@ -450,6 +450,10 @@
                 <source>Unfocus Node</source>
         <target xml:lang="de">Synchronisieren mit dem Titel</target>
       </trans-unit>
+      <trans-unit id="documentsSelected" xml:space="preserve">
+                <source>documents selected</source>
+        <target>ausgewählte Dokumente</target>
+      </trans-unit>
       <trans-unit id="deleteXNodes" xml:space="preserve">
                 <source>Delete {amount} nodes</source>
         <target>{amount} Knoten löschen</target>
@@ -461,10 +465,6 @@
       <trans-unit id="contentElementsSelected" xml:space="preserve">
                 <source>content elements selected</source>
         <target>ausgewählte Inhaltselemente</target>
-      </trans-unit>
-      <trans-unit id="documentsSelected" xml:space="preserve">
-                <source>documents selected</source>
-        <target>ausgewählte Dokumente</target>
       </trans-unit>
       <trans-unit id="inspectorMutlipleDocumentNodesSelectedTooltip" xml:space="preserve">
                 <source>Select a single content element in order to be able to edit its properties</source>

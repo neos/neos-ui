@@ -10,7 +10,7 @@ import style from './style.css';
 })
 class RangeEditor extends PureComponent {
     static propTypes = {
-        value: PropTypes.string,
+        value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         commit: PropTypes.func.isRequired,
         i18nRegistry: PropTypes.object.isRequired,
         options: PropTypes.shape({
@@ -92,7 +92,7 @@ class RangeEditor extends PureComponent {
                             title={this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:rangeEditorCurrentValue')}
                             type="text"
                             onKeyPress={this.onKeyPress}
-                            onInput={this.handleChange}
+                            onChange={this.handleChange}
                             value={value}
                             style={ {width: `${options.max.toString().length}ch`} }
                             disabled={options.disabled}

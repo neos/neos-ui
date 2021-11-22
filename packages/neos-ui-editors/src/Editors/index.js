@@ -5,6 +5,7 @@ import DateTime from './DateTime/index';
 import Image from './Image/index';
 import SelectBox from './SelectBox/index';
 import Link from './Link/index';
+import Range from './Range/index';
 import Reference from './Reference/index';
 import References from './References/index';
 import NodeType from './NodeType/index';
@@ -24,6 +25,7 @@ export {
     Image,
     SelectBox,
     Link,
+    Range,
     Reference,
     References,
     NodeType,

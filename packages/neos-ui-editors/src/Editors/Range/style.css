@@ -1,0 +1,60 @@
+.rangeEditor input[type='range'] {
+  appearance: none;
+  background: #323232;
+  cursor: pointer;
+  height: 25px;
+  outline: none;
+  width: 100%;
+}
+
+.rangeEditor input[type='range']::-webkit-slider-thumb {
+  appearance: none;
+  background: #00adee;
+  border-radius: 5px;
+  box-shadow: 0 0 0 #000, 0 0 0 #0d0d0d;
+  cursor: pointer;
+  height: 20px;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+  width: 20px;
+}
+
+.rangeEditor input[type='range']::-moz-range-thumb {
+  appearance: none;
+  background: #00adee;
+  border-radius: 5px;
+  box-shadow: 0 0 0 #000, 0 0 0 #0d0d0d;
+  cursor: pointer;
+  height: 25px;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+  width: 25px;
+}
+
+.rangeEditorValue {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.rangeEditorValue > span:first-child,
+.rangeEditorValue > span:last-child {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.rangeEditorValue input {
+  appearance: none;
+  background: #323232;
+  border: 0;
+  color: #fff;
+  display: inline-block;
+  padding: 0 0.3rem;
+  text-align: right;
+  box-sizing: content-box;
+}
+
+.rangeEditorValue input:focus {
+  outline: 1px solid #00adee;
+}

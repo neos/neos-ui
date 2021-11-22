@@ -15,6 +15,7 @@ exports[`<ShallowDropDownHeader/> should render correctly. 1`] = `
     icon="chevron-down"
     mapThemrProps={[Function]}
     padded="none"
+    size="sm"
   />
 </div>
 `;

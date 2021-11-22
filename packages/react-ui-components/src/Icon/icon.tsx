@@ -1,15 +1,15 @@
-import {IconName, IconPrefix, IconProp} from '@fortawesome/fontawesome-svg-core';
-import {FontAwesomeIcon, Props} from '@fortawesome/react-fontawesome';
-import mergeClassNames from 'classnames';
 import React, {PureComponent} from 'react';
 
+import {FontAwesomeIconProps} from '@fortawesome/react-fontawesome';
 import {PickDefaultProps, Omit} from '../../types';
-import mapper from './mapper';
+import FontAwesomeIcon from './fontAwesomeIcon';
+import ResourceIcon, {ResourceIconProps} from './resourceIcon';
 
+type IconSize = 'xs' | 'sm' | 'lg';
 type IconPadding = 'none' | 'left' | 'right';
 type IconColor = 'default' | 'warn' | 'error' | 'primaryBlue';
 
-interface IconTheme {
+export interface IconTheme {
     readonly icon: string;
     readonly 'icon--big': string;
     readonly 'icon--small': string;
@@ -22,7 +22,7 @@ interface IconTheme {
     readonly 'icon--color-primaryBlue': string;
 }
 
-export interface IconProps extends Omit<Props, 'icon'> {
+export interface IconProps extends Omit<FontAwesomeIconProps, 'icon'> {
     /**
      * We use the react component FortAwesome provides to render icons.
      * we will pass down all props to the component via {...rest} to expose it's api
@@ -30,7 +30,8 @@ export interface IconProps extends Omit<Props, 'icon'> {
      */
 
     /**
-     * The ID of the icon to render.
+     * The identifier of the icon to render.
+     * Can be a font-awesome icon identifier or a asset resource.
      */
     readonly icon?: string;
 
@@ -55,50 +56,34 @@ export interface IconProps extends Omit<Props, 'icon'> {
     readonly color?: IconColor;
 
     /**
+     *  Adjust the size of the icon
+     */
+    readonly size?: IconSize;
+
+    /**
      *  An optional css theme to be injected.
      */
     readonly theme?: IconTheme;
 }
 
-type DefaultProps = PickDefaultProps<IconProps, 'color' | 'padded'>;
+type DefaultProps = PickDefaultProps<IconProps, 'color' | 'padded' | 'size'>;
 
 export const defaultProps: DefaultProps = {
     color: 'default',
-    padded: 'none'
+    padded: 'none',
+    size: 'sm'
 };
 
 class Icon extends PureComponent<IconProps> {
     public static readonly defaultProps = defaultProps;
 
     public render(): JSX.Element | null {
-        const {padded, theme, label, icon, className, color, ...rest} = this.props;
-        const iconClassName = icon;
-        const classNames = mergeClassNames(
-            theme!.icon,
-            iconClassName,
-            className,
-            {
-                [theme!['icon--paddedLeft']]: padded === 'left',
-                [theme!['icon--paddedRight']]: padded === 'right',
-                [theme!['icon--color-warn']]: color === 'warn',
-                [theme!['icon--color-error']]: color === 'error',
-                [theme!['icon--color-primaryBlue']]: color === 'primaryBlue',
-            }
-        );
+        const {icon} = this.props;
 
-        return <FontAwesomeIcon icon={icon ? this.getIconProp(icon) as any : 'question'} aria-label={label} className={classNames} {...rest} />;
-    }
-
-    private readonly getIconProp = (icon: string): IconProp => {
-        const mappedIcon = mapper(icon);
-        const iconArray = mappedIcon.split(' ');
-        if (iconArray.length > 1) {
-            const prefix = iconArray[0];
-            const processedIcon = iconArray[1].startsWith('fa-') ? iconArray[1].substr(3) : iconArray[1];
-            return [prefix as IconPrefix, processedIcon as IconName];
+        if (icon && icon.substr(0, 11) === 'resource://') {
+            return <ResourceIcon {...this.props as ResourceIconProps} />;
         } else {
-            const prefix: IconPrefix = 'fas';
-            return [prefix, mappedIcon as IconName];
+            return <FontAwesomeIcon {...this.props} />;
         }
     }
 }

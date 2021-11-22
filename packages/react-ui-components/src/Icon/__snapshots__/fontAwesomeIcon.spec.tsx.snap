@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FontAwesomeIcon/> should render correctly. 1`] = `
+<FontAwesomeIcon
+  border={false}
+  className="iconClassName fooIconClassName"
+  fixedWidth={false}
+  flip={null}
+  icon={
+    Array [
+      "fas",
+      "fooIconClassName",
+    ]
+  }
+  inverse={false}
+  listItem={false}
+  mask={null}
+  pull={null}
+  pulse={false}
+  rotation={null}
+  size="sm"
+  spin={false}
+  swapOpacity={false}
+  symbol={false}
+  title=""
+  transform={null}
+/>
+`;

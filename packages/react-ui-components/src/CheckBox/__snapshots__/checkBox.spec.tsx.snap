@@ -18,6 +18,7 @@ exports[`<CheckBox/> should render correctly. 1`] = `
     icon="check"
     mapThemrProps={[Function]}
     padded="none"
+    size="sm"
   />
   <div
     className="inputMirrorClassName"

@@ -20,6 +20,7 @@ exports[`<IconButton/> should render correctly. 1`] = `
     icon="fooIconName"
     mapThemrProps={[Function]}
     padded="none"
+    size="sm"
   />
 </ThemedButton>
 `;

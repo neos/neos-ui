@@ -25,3 +25,27 @@
 .icon--color-primaryBlue {
     color: var(--colors-PrimaryBlue);
 }
+
+.icon--big {
+    svg {
+        height: 1.33em;
+    }
+}
+
+.icon--small {
+    svg {
+        height: 1em;
+    }
+}
+
+.icon--tiny {
+    svg {
+        height: .75em;
+    }
+}
+
+.icon--resource {
+    display: inline-grid;
+    width: 100%;
+    justify-content: center;
+}

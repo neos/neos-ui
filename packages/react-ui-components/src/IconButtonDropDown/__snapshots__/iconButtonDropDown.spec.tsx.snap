@@ -30,6 +30,7 @@ exports[`<IconButtonDropDown/> should render correctly. 1`] = `
       icon="fooModeIcon"
       mapThemrProps={[Function]}
       padded="none"
+      size="sm"
     />
     <ThemedIcon
       className="baseBtnIconClassName"
@@ -38,6 +39,7 @@ exports[`<IconButtonDropDown/> should render correctly. 1`] = `
       icon="barGeneralIcon"
       mapThemrProps={[Function]}
       padded="none"
+      size="sm"
     />
   </ThemedButton>
   <div

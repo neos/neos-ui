@@ -1,11 +1,13 @@
-import React, { PureComponent } from 'react';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import { neos } from '@neos-project/neos-ui-decorators';
+import {neos} from '@neos-project/neos-ui-decorators';
 import style from './style.css';
 
-@neos((globalRegistry) => ({
-    i18nRegistry: globalRegistry.get("i18n"),
-}))
+@neos(globalRegistry => {
+    return {
+        i18nRegistry: globalRegistry.get('i18n')
+    };
+})
 class RangeEditor extends PureComponent {
     static propTypes = {
         value: PropTypes.string,
@@ -18,8 +20,8 @@ class RangeEditor extends PureComponent {
             unit: PropTypes.string,
             minLabel: PropTypes.string,
             maxLabel: PropTypes.string,
-            disabled: PropTypes.bool,
-        }),
+            disabled: PropTypes.bool
+        })
     };
 
     static defaultProps = {
@@ -30,44 +32,44 @@ class RangeEditor extends PureComponent {
             unit: '',
             minLabel: null,
             maxLabel: null,
-            disabled: false,
-        },
+            disabled: false
+        }
     };
 
     state = {
-        value: 0,
+        value: 0
     };
 
     componentDidMount() {
-        this.setState({ value: this.props.value });
+        this.setState({value: this.props.value});
     }
 
-    handleChange = (event) => {
-        const { options } = this.props;
-        const { target } = event;
+    handleChange = event => {
+        const {options} = this.props;
+        const {target} = event;
 
-        let value = parseInt(target.value);
+        let value = parseInt(target.value, 10);
         if (isNaN(value)) {
             return;
         }
 
         value = Math.min(options.max, Math.max(options.min, value));
 
-        this.setState({ value });
+        this.setState({value});
         this.props.commit(value);
 
         this.forceUpdate();
     };
 
-    onKeyPress = (event) => {
+    onKeyPress = event => {
         if (isNaN(event.key)) {
             event.preventDefault();
         }
     };
 
     render() {
-        const { options } = this.props;
-        const { value } = this.state;
+        const {options} = this.props;
+        const {value} = this.state;
 
         return (
             <div className={style.rangeEditor}>
@@ -92,7 +94,7 @@ class RangeEditor extends PureComponent {
                             onKeyPress={this.onKeyPress}
                             onInput={this.handleChange}
                             value={value}
-                            style={{ width: `${options.max.toString().length}ch` }}
+                            style={ {width: `${options.max.toString().length}ch`} }
                             disabled={options.disabled}
                         />
                         {options.unit}

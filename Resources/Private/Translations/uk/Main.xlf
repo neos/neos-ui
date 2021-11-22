@@ -116,6 +116,12 @@
       <trans-unit id="" xml:space="preserve">
                 <source/>
       </trans-unit>
+      <trans-unit id="" xml:space="preserve">
+                <source/>
+      </trans-unit>
+      <trans-unit id="" xml:space="preserve">
+                <source/>
+      </trans-unit>
       <trans-unit id="ckeditor__toolbar__ordered-list" xml:space="preserve">
                 <source>Ordered list</source>
         <target xml:lang="uk" state="needs-translation">Ordered list</target>

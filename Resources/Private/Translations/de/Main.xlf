@@ -470,6 +470,18 @@
                 <source>Select a single content element in order to be able to edit its properties</source>
         <target>Wählen Sie ein einzelnes Inhaltselement aus, um dessen Eigenschaften zu bearbeiten</target>
       </trans-unit>
+      <trans-unit id="rangeEditorMinimum" xml:space="preserve">
+        <source>Minimum</source>
+        <taget>Minimum</taget>
+      </trans-unit>
+        <trans-unit id="rangeEditorMaximum" xml:space="preserve">
+        <source>Maximum</source>
+        <target>Maximum</target>
+      </trans-unit>
+        <trans-unit id="rangeEditorCurrentValue" xml:space="preserve">
+        <source>Current value</source>
+        <target>Aktueller Wert</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

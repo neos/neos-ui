@@ -293,6 +293,15 @@
             <trans-unit id="deleteXNodes" xml:space="preserve">
                 <source>Delete {amount} nodes</source>
             </trans-unit>
+            <trans-unit id="rangeEditorMinimum" xml:space="preserve">
+                <source>Minimum</source>
+            </trans-unit>
+            <trans-unit id="rangeEditorMaximum" xml:space="preserve">
+                <source>Maximum</source>
+            </trans-unit>
+            <trans-unit id="rangeEditorCurrentValue" xml:space="preserve">
+                <source>Current value</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>

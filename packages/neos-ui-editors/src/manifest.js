@@ -47,6 +47,10 @@ manifest('inspectorEditors', {}, globalRegistry => {
         component: Editors.Link
     });
 
+    editorsRegistry.set('Neos.Neos/Inspector/Editors/RangeEditor', {
+        component: Editors.Range
+    });
+
     editorsRegistry.set('Neos.Neos/Inspector/Editors/ReferenceEditor', {
         component: Editors.Reference
     });

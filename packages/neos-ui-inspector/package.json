@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-inspector",
-  "version": "7.1.4",
+  "version": "7.1.5",
   "description": "Components for integrating views and editors into the Neos CMS UI inspector.",
   "private": true,
   "main": "./src/index.js",
@@ -14,9 +14,9 @@
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "7.1.4",
-    "@neos-project/build-essentials": "7.1.4",
-    "@neos-project/jest-preset-neos-ui": "7.1.4"
+    "@neos-project/babel-preset-neos-ui": "7.1.5",
+    "@neos-project/build-essentials": "7.1.5",
+    "@neos-project/jest-preset-neos-ui": "7.1.5"
   },
   "license": "GNU GPLv3",
   "jest": {

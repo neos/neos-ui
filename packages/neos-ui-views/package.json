@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-views",
-  "version": "7.1.4",
+  "version": "7.1.5",
   "description": "Neos CMS UI Views for use in the inspector.",
   "main": "./src/index.js",
   "private": true,
@@ -12,18 +12,18 @@
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "7.1.4",
-    "@neos-project/build-essentials": "7.1.4",
-    "@neos-project/debug-reason-for-rendering": "7.1.4",
-    "@neos-project/jest-preset-neos-ui": "7.1.4"
+    "@neos-project/babel-preset-neos-ui": "7.1.5",
+    "@neos-project/build-essentials": "7.1.5",
+    "@neos-project/debug-reason-for-rendering": "7.1.5",
+    "@neos-project/jest-preset-neos-ui": "7.1.5"
   },
   "dependencies": {
     "@neos-project/brand": "^1.1.0",
-    "@neos-project/neos-ui-extensibility": "7.1.4",
-    "@neos-project/neos-ui-i18n": "7.1.4",
-    "@neos-project/neos-ui-inspector": "7.1.4",
-    "@neos-project/neos-ui-redux-store": "7.1.4",
-    "@neos-project/react-ui-components": "7.1.4"
+    "@neos-project/neos-ui-extensibility": "7.1.5",
+    "@neos-project/neos-ui-i18n": "7.1.5",
+    "@neos-project/neos-ui-inspector": "7.1.5",
+    "@neos-project/neos-ui-redux-store": "7.1.5",
+    "@neos-project/react-ui-components": "7.1.5"
   },
   "license": "GNU GPLv3",
   "jest": {

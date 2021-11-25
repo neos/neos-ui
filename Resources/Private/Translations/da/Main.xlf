@@ -59,27 +59,27 @@
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__unlink" xml:space="preserve">
                 <source>Unlink</source>
-        <target xml:lang="da" state="needs-translation">Unlink</target>
+        <target xml:lang="da" state="translated">fjerne linket</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__hideOptions" xml:space="preserve">
                 <source>Hide link options</source>
-        <target xml:lang="da" state="needs-translation">Hide link options</target>
+        <target xml:lang="da" state="translated">Skjul linkmuligheder</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__showOptions" xml:space="preserve">
                 <source>Link options</source>
-        <target xml:lang="da" state="needs-translation">Link options</target>
+        <target xml:lang="da" state="translated">Linkmuligheder</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__noFollow" xml:space="preserve">
                 <source>No follow</source>
-        <target xml:lang="da" state="needs-translation">No follow</target>
+        <target xml:lang="da" state="translated">Ingen følger</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__targetBlank" xml:space="preserve">
                 <source>Open in new window</source>
-        <target xml:lang="da" state="needs-translation">Open in new window</target>
+        <target xml:lang="da" state="translated">Åbn i nyt vindue</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__titlePlaceholder" xml:space="preserve">
                 <source>Enter link title</source>
-        <target xml:lang="da" state="needs-translation">Enter link title</target>
+        <target xml:lang="da" state="translated">Indtast linkets titel</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__title" xml:space="preserve" approved="yes">
                 <source>Title</source>
@@ -87,31 +87,31 @@
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__anchorPlaceholder" xml:space="preserve">
                 <source>Enter anchor name</source>
-        <target xml:lang="da" state="needs-translation">Enter anchor name</target>
+        <target xml:lang="da" state="translated">Indtast ankernavn</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__anchor" xml:space="preserve">
                 <source>Link to anchor</source>
-        <target xml:lang="da" state="needs-translation">Link to anchor</target>
+        <target xml:lang="da" state="translated">Link til anker</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__edit" xml:space="preserve">
                 <source>Edit link</source>
-        <target xml:lang="da" state="needs-translation">Edit link</target>
+        <target xml:lang="da" state="translated">Rediger link</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__apply" xml:space="preserve">
                 <source>Apply link</source>
-        <target xml:lang="da" state="needs-translation">Apply link</target>
+        <target xml:lang="da" state="translated">Anvend link</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__placeholder" xml:space="preserve">
                 <source>Paste a link, or search</source>
-        <target xml:lang="da" state="needs-translation">Paste a link, or search</target>
+        <target xml:lang="da" state="translated">Indsæt et link, eller søg</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__formatAsHttp" xml:space="preserve">
                 <source>Format as http link?</source>
-        <target xml:lang="da" state="needs-translation">Format as http link?</target>
+        <target xml:lang="da" state="translated">Formatere som http-link?</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__formatAsEmail" xml:space="preserve">
                 <source>Format as email?</source>
-        <target xml:lang="da" state="needs-translation">Format as email?</target>
+        <target xml:lang="da" state="translated">Formatere som e-mail?</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__ordered-list" xml:space="preserve">
                 <source>Ordered list</source>
@@ -147,11 +147,11 @@
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__tableRow" xml:space="preserve">
                 <source>Row</source>
-        <target xml:lang="da" state="needs-translation">Row</target>
+        <target xml:lang="da" state="translated">Række</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__tableMergeCells" xml:space="preserve">
                 <source>Merge cells</source>
-        <target xml:lang="da" state="needs-translation">Merge cells</target>
+        <target xml:lang="da" state="translated">Flet celler</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__remove-format" xml:space="preserve">
                 <source>Remove format</source>

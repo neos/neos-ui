@@ -16,14 +16,17 @@ changelog:
       labels:
         - Semver-Minor
         - feature
+        - Feature
     - title: TASK
       labels:
         - Semver-Minor
         - task
+        - Task
     - title: BUGFIX
       labels:
         - Semver-Minor
         - bugfix
+        - Bug
     - title: Other Changes
       labels:
         - "*"

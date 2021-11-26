@@ -15,15 +15,15 @@ changelog:
     - title: FEATURE
       labels:
         - Semver-Minor
-        - FEATURE
+        - feature
     - title: TASK
       labels:
         - Semver-Minor
-        - TASK
+        - task
     - title: BUGFIX
       labels:
         - Semver-Minor
-        - BUGFIX
+        - bugfix
     - title: Other Changes
       labels:
         - "*"

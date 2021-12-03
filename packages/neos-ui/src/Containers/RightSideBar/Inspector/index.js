@@ -35,11 +35,14 @@ import style from './style.css';
         const shouldPromptToHandleUnappliedChanges = selectors.UI.Inspector.shouldPromptToHandleUnappliedChanges(state);
         const shouldShowUnappliedChangesOverlay = isDirty && !shouldPromptToHandleUnappliedChanges;
         const shouldShowSecondaryInspector = selectors.UI.Inspector.shouldShowSecondaryInspector(state);
+        const focusedNode = selectors.CR.Nodes.focusedSelector(state);
+        const parentNode = selectors.CR.Nodes.nodeByContextPath(state)(focusedNode.parent)
 
         return {
-            focusedNode: selectors.CR.Nodes.focusedSelector(state),
+            focusedNode: focusedNode,
             focusedContentNodesContextPaths: selectors.CR.Nodes.focusedNodePathsSelector(state),
             focusedDocumentNodesContextPaths: selectors.UI.PageTree.getAllFocused(state),
+            parentNode: parentNode,
             validationErrors: validationErrorsSelector(state),
             isApplyDisabled: isApplyDisabledSelector(state),
             transientValues: selectors.UI.Inspector.transientValues(state),
@@ -96,7 +99,7 @@ export default class Inspector extends PureComponent {
             );
 
             const processedViewConfiguration = this.preprocessViewConfiguration(
-                {node: nodeForContext}, [], originalViewConfiguration, originalViewConfiguration
+                {node: nodeForContext, parentNode: this.props.parentNode}, [], originalViewConfiguration, originalViewConfiguration
             );
 
             this.state.viewConfiguration = processedViewConfiguration || originalViewConfiguration;
@@ -142,7 +145,7 @@ export default class Inspector extends PureComponent {
             if (propertyValue !== null && typeof propertyValue === 'object') {
                 viewConfiguration = this.preprocessViewConfiguration(context, newPath, viewConfiguration, originalViewConfiguration);
             } else if (typeof originalPropertyValue === 'string' && originalPropertyValue.indexOf('ClientEval:') === 0) {
-                const {node} = context; // eslint-disable-line
+                const {node, parentNode} = context; // eslint-disable-line
                 try {
                     const evaluatedValue = eval(originalPropertyValue.replace('ClientEval:', '')); // eslint-disable-line
                     if (evaluatedValue !== propertyValue) {
@@ -183,7 +186,7 @@ export default class Inspector extends PureComponent {
 
         this.configurationIsProcessed = false;
         const processedViewConfiguration = this.preprocessViewConfiguration(
-            {node: nodeForContext},
+            {node: nodeForContext, parentNode: this.props.parentNode},
             [],
             viewConfiguration,
             originalViewConfiguration

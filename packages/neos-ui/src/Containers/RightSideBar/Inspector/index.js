@@ -36,13 +36,13 @@ import style from './style.css';
         const shouldShowUnappliedChangesOverlay = isDirty && !shouldPromptToHandleUnappliedChanges;
         const shouldShowSecondaryInspector = selectors.UI.Inspector.shouldShowSecondaryInspector(state);
         const focusedNode = selectors.CR.Nodes.focusedSelector(state);
-        const parentNode = selectors.CR.Nodes.nodeByContextPath(state)(focusedNode.parent)
+        const parentNode = selectors.CR.Nodes.nodeByContextPath(state)(focusedNode.parent);
 
         return {
-            focusedNode: focusedNode,
+            focusedNode,
             focusedContentNodesContextPaths: selectors.CR.Nodes.focusedNodePathsSelector(state),
             focusedDocumentNodesContextPaths: selectors.UI.PageTree.getAllFocused(state),
-            parentNode: parentNode,
+            parentNode,
             validationErrors: validationErrorsSelector(state),
             isApplyDisabled: isApplyDisabledSelector(state),
             transientValues: selectors.UI.Inspector.transientValues(state),

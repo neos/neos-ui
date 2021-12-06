@@ -136,7 +136,7 @@ export default class EditorEnvelope extends PureComponent {
 
         return (
             <Tooltip renderInline className={style.envelope__helpmessage}>
-                {helpMessage ? <ReactMarkdown source={translatedHelpMessage} /> : ''}
+                {helpMessage ? <ReactMarkdown source={translatedHelpMessage} linkTarget="_blank" /> : ''}
                 {helpThumbnail ? <img alt={label} src={helpThumbnailSrc} className={style.envelope__helpThumbnail} /> : ''}
             </Tooltip>
         );

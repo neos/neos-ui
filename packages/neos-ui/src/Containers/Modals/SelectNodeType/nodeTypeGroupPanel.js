@@ -98,7 +98,7 @@ class NodeTypeGroupPanel extends PureComponent {
                         <I18n id={label} fallback={label}/>
                     </span>
                     {thumbnail ? <img alt={label} src={thumbnail} className={style.helpThumbnail} /> : ''}
-                    <ReactMarkdown source={message} />
+                    <ReactMarkdown source={message} linkTarget="_blank" />
                 </div>
 
                 <IconButton className={style.helpMessage__closeButton} icon="times" onClick={onCloseHelpMessage} />

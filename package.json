@@ -131,6 +131,7 @@
     "he": "^1.1.1",
     "hoist-non-react-statics": "^3.3.1",
     "immer": "^2.1.4",
+    "isemail": "^3.2.0",
     "lodash.assign": "^4.2.0",
     "lodash.debounce": "^4.0.8",
     "lodash.defaultsdeep": "^4.6.1",

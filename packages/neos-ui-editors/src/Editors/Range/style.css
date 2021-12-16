@@ -5,6 +5,7 @@
     height: 25px;
     outline: none;
     width: 100%;
+    border-radius: 2px;
 }
 
 .rangeEditor input[type='range']::-webkit-slider-thumb {

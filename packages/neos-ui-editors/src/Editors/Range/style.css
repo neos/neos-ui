@@ -1,6 +1,6 @@
 .rangeEditor input[type='range'] {
     appearance: none;
-    background: var(--colors-contrastNeutral);
+    background: var(--colors-ContrastNeutral);
     cursor: pointer;
     height: 25px;
     outline: none;
@@ -22,7 +22,7 @@
 
 .rangeEditor input[type='range']::-webkit-slider-thumb:hover,
 .rangeEditor input[type='range']::-webkit-slider-thumb:focus {
-    background: var(--colors-primaryBlueHover);
+    background: var(--colors-PrimaryBlueHover);
 }
 
 .rangeEditor input[type='range']::-moz-range-thumb {
@@ -39,7 +39,7 @@
 
 .rangeEditor input[type='range']::-moz-range-thumb:hover,
 .rangeEditor input[type='range']::-moz-range-thumb:focus {
-    background: var(--colors-primaryBlueHover);
+    background: var(--colors-PrimaryBlueHover);
 }
 
 .rangeEditorValue {
@@ -57,7 +57,7 @@
 
 .rangeEditorValue input {
     appearance: none;
-    background: var(--colors-contrastNeutral);
+    background: var(--colors-ContrastNeutral);
     border: 0;
     color: #fff;
     display: inline-block;
@@ -80,11 +80,9 @@
 }
 
 .rangeEditorDisabled input[type='range']::-webkit-slider-thumb {
-    cursor: not-allowed;
-    background: var(--colors-contrastBright);
+    background: var(--colors-ContrastBright);
 }
 
 .rangeEditorDisabled input[type='range']::-moz-range-thumb {
-    cursor: not-allowed;
-    background: var(--colors-contrastBright);
+    background: var(--colors-ContrastBright);
 }

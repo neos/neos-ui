@@ -53,6 +53,7 @@
     padding: 0 .3rem;
     text-align: right;
     box-sizing: content-box;
+    margin-right: var(--spacing-Quarter);
 }
 
 .rangeEditorValue input:focus {

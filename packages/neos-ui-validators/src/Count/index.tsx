@@ -26,7 +26,7 @@ const Count = (value: any, validatorOptions: CountOptions) => {
         return 'The maximum is less than the minimum.';
     }
 
-    if (typeof value !== 'object') {
+    if (typeof value !== 'object' || value === null) {
         return <I18n id="content.inspector.validators.countValidator.notCountable"/>;
     }
 

@@ -15,7 +15,6 @@
     cursor: pointer;
     height: 20px;
     opacity: .7;
-    transition: opacity .2s;
     width: 20px;
 }
 
@@ -27,7 +26,6 @@
     cursor: pointer;
     height: 25px;
     opacity: .7;
-    transition: opacity .2s;
     width: 25px;
 }
 

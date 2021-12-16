@@ -36,7 +36,7 @@ const NumberRange = (value: any, validatorOptions: NumberRangeOptions) => {
         return <I18n id="content.inspector.validators.numberRangeValidator.validNumberExpected"/>;
     }
     if (number < minimum || number > maximum) {
-        const label = validatorOptions.validationErrorMessage ?? 'content.inspector.validators.numberRangeValidator.numberShouldBeInRange';
+        const label = validatorOptions?.validationErrorMessage ?? 'content.inspector.validators.numberRangeValidator.numberShouldBeInRange';
         return <I18n id={label} params={{minimum, maximum}}/>;
     }
     return null;

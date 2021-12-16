@@ -16,7 +16,7 @@ const Label = (value: any, validatorOptions: LabelOptions) => {
     if (value === undefined || value === null || value.length === 0 || value.match(regularExpression) !== null) {
         return null;
     }
-    const label = validatorOptions.validationErrorMessage ?? 'content.inspector.validators.labelValidator.invalidLabel';
+    const label = validatorOptions?.validationErrorMessage ?? 'content.inspector.validators.labelValidator.invalidLabel';
     return <I18n id={label}/>;
 };
 

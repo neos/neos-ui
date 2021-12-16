@@ -38,7 +38,7 @@ const Count = (value: any, validatorOptions: CountOptions) => {
     }
 
     if (length < minimum || length > maximum) {
-        const label = validatorOptions.validationErrorMessage ?? 'content.inspector.validators.countValidator.countBetween';
+        const label = validatorOptions?.validationErrorMessage ?? 'content.inspector.validators.countValidator.countBetween';
         return <I18n id={label}/>;
     }
 

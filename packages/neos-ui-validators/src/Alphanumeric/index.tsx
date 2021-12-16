@@ -16,7 +16,7 @@ const Alphanumeric = (value: any, validatorOptions: AlphanumericOptions) => {
     if (value === undefined || value === null || value.length === 0 || value.match(regularExpression) !== null) {
         return null;
     }
-    const label = validatorOptions.validationErrorMessage ?? 'content.inspector.validators.alphanumericValidator';
+    const label = validatorOptions?.validationErrorMessage ?? 'content.inspector.validators.alphanumericValidator';
     return <I18n id={label}/>;
 };
 

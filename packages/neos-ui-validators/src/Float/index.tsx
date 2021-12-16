@@ -9,7 +9,7 @@ interface FloatOptions {
 const Float = (value: any, validatorOptions: FloatOptions) => {
     const number = parseFloat(value);
     if (value !== null && value !== undefined && value.length !== 0 && ((isNaN(number) || value.toString().match(/^[-+]?[0-9]*\.[0-9]+([eE][-+]?[0-9]+)?$/) === null))) {
-        const label = validatorOptions.validationErrorMessage ?? 'content.inspector.validators.floatValidator.validFloatExpected';
+        const label = validatorOptions?.validationErrorMessage ?? 'content.inspector.validators.floatValidator.validFloatExpected';
         return <I18n id={label}/>;
     }
     return null;

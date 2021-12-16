@@ -9,7 +9,7 @@ interface StringOptions {
 }
 const String = (value: any, validatorOptions: StringOptions) => {
     if (value !== undefined && value !== null && typeof value !== 'string') {
-        const label = validatorOptions.validationErrorMessage ?? 'content.inspector.validators.stringValidator.stringIsExpected';
+        const label = validatorOptions?.validationErrorMessage ?? 'content.inspector.validators.stringValidator.stringIsExpected';
         return <I18n id={label}/>;
     }
     return null;

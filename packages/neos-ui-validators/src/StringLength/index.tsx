@@ -39,7 +39,7 @@ const StringLength = (value: any, validatorOptions: StringLengthOptions) => {
     const stringLength = castedValue.length;
     if (stringLength < minimum || stringLength > maximum) {
         if (minimum > 0 && maximum < 10000) {
-            const label = validatorOptions.validationErrorMessage ?? 'content.inspector.validators.stringLength.outOfBounds';
+            const label = validatorOptions?.validationErrorMessage ?? 'content.inspector.validators.stringLength.outOfBounds';
             return <I18n id={label} params={{minimum, maximum}}/>;
         }
         if (minimum > 0) {

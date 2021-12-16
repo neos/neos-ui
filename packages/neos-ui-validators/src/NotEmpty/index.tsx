@@ -4,9 +4,13 @@ import I18n from '@neos-project/neos-ui-i18n';
 /**
  * Checks if a given value is not empty
  */
-const NotEmpty = (value: any) => {
+interface NotEmptyOptions {
+    validationErrorMessage?: string;
+}
+const NotEmpty = (value: any, validatorOptions: NotEmptyOptions) => {
     if (value === undefined || value === null || value === '' || value.length === 0) {
-        return <I18n id="content.inspector.validators.notEmptyValidator.isEmpty" fallback="The value can not be empty"/>;
+        const label = validatorOptions.validationErrorMessage ?? 'content.inspector.validators.notEmptyValidator.isEmpty';
+        return <I18n id={label}/>;
     }
     return null;
 };

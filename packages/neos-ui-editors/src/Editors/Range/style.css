@@ -17,6 +17,7 @@
     height: 20px;
     opacity: .7;
     width: 20px;
+    border: none;
 }
 
 .rangeEditor input[type='range']::-moz-range-thumb {
@@ -28,6 +29,7 @@
     height: 25px;
     opacity: .7;
     width: 25px;
+    border: none;
 }
 
 .rangeEditorValue {

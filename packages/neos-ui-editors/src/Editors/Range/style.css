@@ -70,3 +70,21 @@
 .rangeEditorValue input:focus {
     outline: 1px solid var(--colors-PrimaryBlue);
 }
+
+.rangeEditorDisabled {
+    opacity: .65;
+}
+
+.rangeEditorDisabled input[disabled] {
+    cursor: not-allowed;
+}
+
+.rangeEditorDisabled input[type='range']::-webkit-slider-thumb {
+    cursor: not-allowed;
+    background: var(--colors-contrastBright);
+}
+
+.rangeEditorDisabled input[type='range']::-moz-range-thumb {
+    cursor: not-allowed;
+    background: var(--colors-contrastBright);
+}

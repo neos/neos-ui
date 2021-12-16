@@ -290,7 +290,7 @@ export default class Node extends PureComponent {
         const labelTitle = decodeLabel($get('label', node)) + ' (' + this.getNodeTypeLabel() + ')';
 
         // Autocreated or we have nested nodes and the node that we are dragging belongs to the selection
-        const dragForbidden = node.isAutoCreated || (hasNestedNodes(focusedNodesContextPaths) && focusedNodesContextPaths.includes(node.contextPath));
+        const dragForbidden = (node.isAutoCreated && !$get('policy.canEdit', node)) || (hasNestedNodes(focusedNodesContextPaths) && focusedNodesContextPaths.includes(node.contextPath));
 
         return (
             <Tree.Node aria-expanded={this.isCollapsed() ? 'false' : 'true'} aria-labelledby={labelIdentifier}>

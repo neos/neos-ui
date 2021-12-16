@@ -64,16 +64,16 @@ export default class NodeTreeToolBar extends PureComponent {
     }
 
     handleHideNode = () => {
-        const {hideNodes, canBeEdited, visibilityCanBeToggled, focusedNodesContextPaths} = this.props;
-        if (canBeEdited && visibilityCanBeToggled) {
+        const {hideNodes, visibilityCanBeToggled, focusedNodesContextPaths} = this.props;
+        if (visibilityCanBeToggled) {
             hideNodes(focusedNodesContextPaths);
         }
     }
 
     handleShowNode = () => {
-        const {showNodes, canBeEdited, visibilityCanBeToggled, focusedNodesContextPaths} = this.props;
+        const {showNodes, visibilityCanBeToggled, focusedNodesContextPaths} = this.props;
 
-        if (canBeEdited && visibilityCanBeToggled) {
+        if (visibilityCanBeToggled) {
             showNodes(focusedNodesContextPaths);
         }
     }
@@ -164,7 +164,7 @@ export default class NodeTreeToolBar extends PureComponent {
                             i18nRegistry={i18nRegistry}
                             className={style.toolBar__btnGroup__btn}
                             focusedNodeContextPath={focusedNodeContextPath}
-                            disabled={destructiveOperationsAreDisabled || !canBeEdited || !visibilityCanBeToggled}
+                            disabled={destructiveOperationsAreDisabled || !visibilityCanBeToggled}
                             isHidden={isHidden}
                             onClick={isHidden ? this.handleShowNode : this.handleHideNode}
                             id={`neos-${treeType}-HideSelectedNode`}

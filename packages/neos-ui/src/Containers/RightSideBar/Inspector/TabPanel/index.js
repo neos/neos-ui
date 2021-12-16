@@ -30,7 +30,7 @@ export default class TabPanel extends PureComponent {
             return false;
         }
 
-        return $get(['policy', 'canEdit'], node) && !$contains(item.id, 'policy.disallowedProperties', node);
+        return $get(['policy', 'canEdit'], node) && !$contains($get('id', item), 'policy.disallowedProperties', node);
     };
 
     renderTabPanel = groups => {

@@ -9,7 +9,6 @@ const isNil = (value: any) => value === null || value === undefined;
  * Source: http://fightingforalostcause.net/misc/2006/compare-email-regex.php
  */
 interface EmailAddressOptions {
-    regularExpression: string;
     validationErrorMessage?: string;
 }
 const EmailAddress = (value: any, validatorOptions: EmailAddressOptions) => {

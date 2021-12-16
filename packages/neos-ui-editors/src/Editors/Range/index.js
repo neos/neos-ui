@@ -72,7 +72,7 @@ class RangeEditor extends PureComponent {
         const {value} = this.state;
 
         return (
-            <div className={style.rangeEditor + (options.disabled ? ' ' + style.rangeEditorDisabled : '' )}>
+            <div className={style.rangeEditor + (options.disabled ? ' ' + style.rangeEditorDisabled : '')}>
                 <input
                     type="range"
                     min={options.min}

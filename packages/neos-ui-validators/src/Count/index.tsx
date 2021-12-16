@@ -10,6 +10,7 @@ import logger from '@neos-project/utils-logger';
 interface CountOptions {
     minimum: number | string;
     maximum: number | string;
+    validationErrorMessage?: string;
 }
 const Count = (value: any, validatorOptions: CountOptions) => {
     const minimum = Math.max(
@@ -37,7 +38,8 @@ const Count = (value: any, validatorOptions: CountOptions) => {
     }
 
     if (length < minimum || length > maximum) {
-        return <I18n id="content.inspector.validators.countValidator.countBetween" params={{minimum, maximum}}/>;
+        const label = validatorOptions.validationErrorMessage ?? 'content.inspector.validators.countValidator.countBetween';
+        return <I18n id={label}/>;
     }
 
     return null;

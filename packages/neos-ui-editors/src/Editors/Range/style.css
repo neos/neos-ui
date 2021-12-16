@@ -20,6 +20,11 @@
     border: none;
 }
 
+.rangeEditor input[type='range']::-webkit-slider-thumb:hover,
+.rangeEditor input[type='range']::-webkit-slider-thumb:focus {
+    background: var(--colors-primaryBlueHover);
+}
+
 .rangeEditor input[type='range']::-moz-range-thumb {
     appearance: none;
     background: var(--colors-PrimaryBlue);
@@ -30,6 +35,11 @@
     opacity: .7;
     width: 25px;
     border: none;
+}
+
+.rangeEditor input[type='range']::-moz-range-thumb:hover,
+.rangeEditor input[type='range']::-moz-range-thumb:focus {
+    background: var(--colors-primaryBlueHover);
 }
 
 .rangeEditorValue {

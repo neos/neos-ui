@@ -1,6 +1,6 @@
 .rangeEditor input[type='range'] {
     appearance: none;
-    background: #323232;
+    background: var(--colors-contrastNeutral);
     cursor: pointer;
     height: 25px;
     outline: none;
@@ -10,7 +10,7 @@
 
 .rangeEditor input[type='range']::-webkit-slider-thumb {
     appearance: none;
-    background: #00adee;
+    background: var(--colors-PrimaryBlue);
     border-radius: 5px;
     box-shadow: 0 0 0 #000, 0 0 0 #0d0d0d;
     cursor: pointer;
@@ -22,7 +22,7 @@
 
 .rangeEditor input[type='range']::-moz-range-thumb {
     appearance: none;
-    background: #00adee;
+    background: var(--colors-PrimaryBlue);
     border-radius: 5px;
     box-shadow: 0 0 0 #000, 0 0 0 #0d0d0d;
     cursor: pointer;
@@ -47,7 +47,7 @@
 
 .rangeEditorValue input {
     appearance: none;
-    background: #323232;
+    background: var(--colors-contrastNeutral);
     border: 0;
     color: #fff;
     display: inline-block;
@@ -58,5 +58,5 @@
 }
 
 .rangeEditorValue input:focus {
-    outline: 1px solid #00adee;
+    outline: 1px solid var(--colors-PrimaryBlue);
 }

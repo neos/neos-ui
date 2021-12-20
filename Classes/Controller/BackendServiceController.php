@@ -16,6 +16,7 @@ namespace Neos\Neos\Ui\Controller;
 use Exception;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Domain\Repository\WorkspaceRepository;
+use Neos\ContentRepository\Domain\Service\NodePublishIntegrityCheckService;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\I18n\Exception\InvalidLocaleIdentifierException;
@@ -151,6 +152,12 @@ class BackendServiceController extends ActionController
     protected $translator;
 
     /**
+     * @Flow\Inject
+     * @var NodePublishIntegrityCheckService
+     */
+    protected $nodePublishIntegrityCheckService;
+
+    /**
      * Set the controller context on the feedback collection after the controller
      * has been initialized
      *
@@ -228,6 +235,21 @@ class BackendServiceController extends ActionController
         try {
             $targetWorkspace = $this->workspaceRepository->findOneByName($targetWorkspaceName);
 
+            // run integrity check for node publish
+            $nodesToPublish = [];
+            foreach ($nodeContextPaths as $contextPath) {
+                $node = $this->nodeService->getNodeFromContextPath($contextPath, null, null, true);
+                $nodesToPublish[] = $node;
+
+                $nodeType = $node->getNodeType();
+                if ($nodeType->isOfType('Neos.Neos:Document') || $nodeType->hasConfiguration('childNodes')) {
+                    $nodesToPublish = $this->publishingService->collectAllContentChildNodes($node, $nodesToPublish);
+                }
+            }
+            // this will throw an exception if any integrity violations are detected
+            $this->nodePublishIntegrityCheckService->ensureIntegrityForPublishingOfNodes($nodesToPublish, $targetWorkspace);
+
+            // continue with publish
             foreach ($nodeContextPaths as $contextPath) {
                 $node = $this->nodeService->getNodeFromContextPath($contextPath, null, null, true);
                 $this->publishingService->publishNode($node, $targetWorkspace);

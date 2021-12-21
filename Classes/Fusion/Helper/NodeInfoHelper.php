@@ -220,7 +220,8 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         $parent = $node->getParent();
         $isAutoCreated = $node->isAutoCreated();
         $parentOptions = $parent ? $parent->getNodeType()->getOptions() : [];
-
+        $hasAllowHideAutoCreatedOption = isset($parentOptions['allowHideAutoCreatedChildNodes']) && $parentOptions['allowHideAutoCreatedChildNodes'] === true;
+        $policyForbidsHiding = in_array('_hidden', $this->nodePolicyService->getDisallowedProperties($node));
         return [
             'contextPath' => $node->getContextPath(),
             'name' => $node->getName(),
@@ -228,7 +229,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             'nodeType' => $node->getNodeType()->getName(),
             'label' => $node->getLabel(),
             'isAutoCreated' => $isAutoCreated,
-            'disableChangeVisibility' => $isAutoCreated && !(isset($parentOptions['allowHideAutoCreatedChildren']) && $parentOptions['allowHideAutoCreatedChildren'] === true),
+            'disableChangeVisibility' => $policyForbidsHiding || ($isAutoCreated && !$hasAllowHideAutoCreatedOption),
             'depth' => $node->getDepth(),
             'children' => [],
             // In some rare cases the parent node cannot be resolved properly

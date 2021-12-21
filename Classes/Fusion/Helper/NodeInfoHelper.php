@@ -217,17 +217,22 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
      */
     protected function getBasicNodeInformation(NodeInterface $node): array
     {
+        $parent = $node->getParent();
+        $isAutoCreated = $node->isAutoCreated();
+        $parentOptions = $parent ? $parent->getNodeType()->getOptions() : [];
+
         return [
             'contextPath' => $node->getContextPath(),
             'name' => $node->getName(),
             'identifier' => $node->getIdentifier(),
             'nodeType' => $node->getNodeType()->getName(),
             'label' => $node->getLabel(),
-            'isAutoCreated' => $node->isAutoCreated(),
+            'isAutoCreated' => $isAutoCreated,
+            'disableChangeVisibility' => $isAutoCreated && !(isset($parentOptions['allowHideAutoCreatedChildren']) && $parentOptions['allowHideAutoCreatedChildren'] === true),
             'depth' => $node->getDepth(),
             'children' => [],
             // In some rare cases the parent node cannot be resolved properly
-            'parent' => ($node->getParent() ? $node->getParent()->getContextPath() : null),
+            'parent' => ($parent ? $parent->getContextPath() : null),
             'matchesCurrentDimensions' => ($node instanceof Node && $node->dimensionsAreMatchingTargetDimensionValues())
         ];
     }

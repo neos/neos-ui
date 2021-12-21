@@ -63,6 +63,7 @@ export interface Node {
     nodeType: NodeTypeName;
     label: string;
     isAutoCreated: boolean;
+    disableChangeVisibility: boolean;
     depth: number;
     children: NodeChildren;
     matchesCurrentDimensions: boolean;

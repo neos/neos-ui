@@ -245,9 +245,9 @@ export default class Inspector extends PureComponent {
             return true;
         }
 
-        if ($get('hidden', item) || ($get('isAutoCreated', focusedNode) === true && item.id === '_hidden')) {
+        if ($get('hidden', item) || ($get('disableChangeVisibility', focusedNode) === true && item.id === '_hidden')) {
             // This accounts for the fact that auto-created child nodes cannot
-            // be hidden via the insprector (see: #2282)
+            // be hidden via the insprector (see: #2282) if not explicitly allowed
             return false;
         }
 

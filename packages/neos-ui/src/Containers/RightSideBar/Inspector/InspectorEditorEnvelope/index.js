@@ -43,7 +43,7 @@ export default class InspectorEditorEnvelope extends PureComponent {
     get options() {
         // This makes sure that auto-created child nodes cannot be hidden
         // via the insprector (see: #2282)
-        if (this.props.isWorkspaceReadOnly || ($get('isAutoCreated', this.props.node) === true && this.props.id === '_hidden')) {
+        if (this.props.isWorkspaceReadOnly || ($get('disableChangeVisibility', this.props.node) === true && this.props.id === '_hidden')) {
             return {...this.props.options, disabled: true};
         }
 

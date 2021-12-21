@@ -65,7 +65,7 @@ export default class InlineUI extends PureComponent {
         const isCopied = allFocusedNodesAreInClipboard && clipboardMode === 'Copy';
         const canBeDeleted = $get('policy.canRemove', this.props.focusedNode) || false;
         const canBeEdited = $get('policy.canEdit', this.props.focusedNode) || false;
-        const visibilityCanBeToggled = !$contains('_hidden', 'policy.disallowedProperties', this.props.focusedNode);
+        const visibilityCanBeToggled = !$contains('_hidden', 'policy.disallowedProperties', this.props.focusedNode) && !$get('disableChangeVisibility', this.props.focusedNode);
 
         return (
             <div className={style.inlineUi} data-__neos__inline-ui="TRUE">

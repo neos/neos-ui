@@ -189,7 +189,6 @@ export default class NodeTreeToolBar extends PureComponent {
                             focusedNodeContextPath={focusedNodeContextPath}
                             disabled={
                                 isWorkspaceReadOnly ||
-                                destructiveOperationsAreDisabled ||
                                 !canBeEdited ||
                                 !visibilityCanBeToggled
                             }
@@ -269,7 +268,7 @@ const removeAllowed = (focusedNodesContextPaths, state) => focusedNodesContextPa
 const visibilityToggleAllowed = (focusedNodesContextPaths, state) => focusedNodesContextPaths.every(contextPath => {
     const getNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(contextPath);
     const focusedNode = getNodeByContextPathSelector(state);
-    return !$contains('_hidden', 'policy.disallowedProperties', focusedNode);
+    return !$contains('_hidden', 'policy.disallowedProperties', focusedNode) && !$get('disableChangeVisibility', focusedNode);
 });
 const editingAllowed = (focusedNodesContextPaths, state) => focusedNodesContextPaths.every(contextPath => {
     const getNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(contextPath);

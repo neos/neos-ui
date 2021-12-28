@@ -36,6 +36,10 @@
     margin-top: -2px;
 }
 
+.selectBox__contents--empty {
+    padding: 0 !important;
+}
+
 .selectBox__item {
     border-top: 1px solid var(--colors-ContrastDarker);
     background: var(--colors-ContrastDarkest);

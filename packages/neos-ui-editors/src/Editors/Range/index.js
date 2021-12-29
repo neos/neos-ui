@@ -68,7 +68,7 @@ class RangeEditor extends PureComponent {
     };
 
     render() {
-        const options = Object.assign({}, this.constructor.defaultProps.options, this.props.options);
+        const options = {...this.constructor.defaultProps.options, ...this.props.options};
         const {value} = this.state;
 
         return (

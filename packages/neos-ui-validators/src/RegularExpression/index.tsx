@@ -6,6 +6,7 @@ import I18n from '@neos-project/neos-ui-i18n';
  */
 interface RegularExpressionOptions {
     regularExpression: string;
+    validationErrorMessage?: string;
 }
 const RegularExpression = (value: any, validatorOptions: RegularExpressionOptions) => {
     // NOTE: we do not need to localize the two strings here; as they are purely integrator issues which an end user
@@ -23,7 +24,8 @@ const RegularExpression = (value: any, validatorOptions: RegularExpressionOption
         return null;
     }
     const pattern = regularExpression.toString();
-    return <I18n id="content.inspector.validators.regularExpressionValidator.patternDoesNotMatch" params={{pattern}}/>;
+    const label = validatorOptions?.validationErrorMessage ?? 'content.inspector.validators.regularExpressionValidator.patternDoesNotMatch';
+    return <I18n id={label} params={{pattern}}/>;
 };
 
 export default RegularExpression;

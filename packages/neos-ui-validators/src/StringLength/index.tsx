@@ -12,6 +12,7 @@ interface StringLengthOptions {
     minimum: number | string;
     maximum: number | string;
     ignoreHtml: boolean;
+    validationErrorMessage?: string;
 }
 const StringLength = (value: any, validatorOptions: StringLengthOptions) => {
     if (value === undefined || value === null || value === '') {
@@ -38,7 +39,8 @@ const StringLength = (value: any, validatorOptions: StringLengthOptions) => {
     const stringLength = castedValue.length;
     if (stringLength < minimum || stringLength > maximum) {
         if (minimum > 0 && maximum < 10000) {
-            return <I18n id="content.inspector.validators.stringLength.outOfBounds" params={{minimum, maximum}}/>;
+            const label = validatorOptions?.validationErrorMessage ?? 'content.inspector.validators.stringLength.outOfBounds';
+            return <I18n id={label} params={{minimum, maximum}}/>;
         }
         if (minimum > 0) {
             return <I18n id="content.inspector.validators.stringLength.smallerThanMinimum" params={{minimum}}/>;

@@ -10,6 +10,7 @@ import logger from '@neos-project/utils-logger';
 interface NumberRangeOptions {
     minimum: number | string;
     maximum: number | string;
+    validationErrorMessage?: string;
 }
 const NumberRange = (value: any, validatorOptions: NumberRangeOptions) => {
     if (value === undefined || value === null || value === '') {
@@ -35,7 +36,8 @@ const NumberRange = (value: any, validatorOptions: NumberRangeOptions) => {
         return <I18n id="content.inspector.validators.numberRangeValidator.validNumberExpected"/>;
     }
     if (number < minimum || number > maximum) {
-        return <I18n id="content.inspector.validators.numberRangeValidator.numberShouldBeInRange" params={{minimum, maximum}}/>;
+        const label = validatorOptions?.validationErrorMessage ?? 'content.inspector.validators.numberRangeValidator.numberShouldBeInRange';
+        return <I18n id={label} params={{minimum, maximum}}/>;
     }
     return null;
 };

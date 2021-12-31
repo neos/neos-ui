@@ -45,7 +45,8 @@ import style from './style.css';
             transientValues: selectors.UI.Inspector.transientValues(state),
             isDiscardDisabled: selectors.UI.Inspector.isDiscardDisabledSelector(state),
             shouldShowUnappliedChangesOverlay,
-            shouldShowSecondaryInspector
+            shouldShowSecondaryInspector,
+            isWorkspaceReadOnly: selectors.CR.Workspaces.isWorkspaceReadOnlySelector(state)
         };
     };
 }, {
@@ -67,6 +68,7 @@ export default class Inspector extends PureComponent {
         shouldShowUnappliedChangesOverlay: PropTypes.bool,
         shouldShowSecondaryInspector: PropTypes.bool,
         transientValues: PropTypes.object,
+        isWorkspaceReadOnly: PropTypes.bool,
 
         apply: PropTypes.func.isRequired,
         discard: PropTypes.func.isRequired,
@@ -217,7 +219,7 @@ export default class Inspector extends PureComponent {
     }
 
     handleApply = () => {
-        if (!this.props.isApplyDisabled) {
+        if (!this.props.isApplyDisabled && !this.props.isWorkspaceReadOnly) {
             this.props.apply();
             this.closeSecondaryInspectorIfNeeded();
         }
@@ -307,7 +309,8 @@ export default class Inspector extends PureComponent {
             isDiscardDisabled,
             shouldShowUnappliedChangesOverlay,
             shouldShowSecondaryInspector,
-            i18nRegistry
+            i18nRegistry,
+            isWorkspaceReadOnly
         } = this.props;
         if (focusedContentNodesContextPaths.length > 1) {
             return (
@@ -413,7 +416,7 @@ export default class Inspector extends PureComponent {
                     <Button id="neos-Inspector-Discard" style="lighter" disabled={isDiscardDisabled} onClick={this.handleDiscard} className={`${style.button} ${style.discardButton}`}>
                         <I18n id="Neos.Neos:Main:discard" fallback="discard"/>
                     </Button>
-                    <Button id="neos-Inspector-Apply" style="lighter" disabled={isApplyDisabled} onClick={this.handleApply} className={`${style.button} ${style.publishButton}`}>
+                    <Button id="neos-Inspector-Apply" style="lighter" disabled={isApplyDisabled || isWorkspaceReadOnly} onClick={this.handleApply} className={`${style.button} ${style.publishButton}`}>
                         <I18n id="Neos.Neos:Main:apply" fallback="apply"/>
                     </Button>
                 </Bar>

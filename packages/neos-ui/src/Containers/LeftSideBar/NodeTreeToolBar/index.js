@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$get, $contains} from 'plow-js';
+import {$transform, $get, $contains} from 'plow-js';
 
 import {isEqualSet} from '@neos-project/utils-helpers';
 import {neos} from '@neos-project/neos-ui-decorators';
@@ -20,6 +20,11 @@ import {
 } from './Buttons/index';
 import style from './style.css';
 
+@connect(
+    $transform({
+        isWorkspaceReadOnly: selectors.CR.Workspaces.isWorkspaceReadOnlySelector
+    })
+)
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')
 }))
@@ -41,6 +46,7 @@ export default class NodeTreeToolBar extends PureComponent {
         isAllowedToAddChildOrSiblingNodes: PropTypes.bool.isRequired,
         isHiddenContentTree: PropTypes.bool,
         treeType: PropTypes.string.isRequired,
+        isWorkspaceReadOnly: PropTypes.bool,
 
         addNode: PropTypes.func.isRequired,
         copyNodes: PropTypes.func.isRequired,
@@ -51,7 +57,7 @@ export default class NodeTreeToolBar extends PureComponent {
         pasteNode: PropTypes.func.isRequired,
         reloadTree: PropTypes.func.isRequired,
         toggleContentTree: PropTypes.func
-    }
+    };
 
     static defaultProps = {
         isHidden: false
@@ -61,28 +67,38 @@ export default class NodeTreeToolBar extends PureComponent {
         const {addNode} = this.props;
 
         addNode(contextPath);
-    }
+    };
 
     handleHideNode = () => {
-        const {hideNodes, canBeEdited, visibilityCanBeToggled, focusedNodesContextPaths} = this.props;
+        const {
+            hideNodes,
+            canBeEdited,
+            visibilityCanBeToggled,
+            focusedNodesContextPaths
+        } = this.props;
         if (canBeEdited && visibilityCanBeToggled) {
             hideNodes(focusedNodesContextPaths);
         }
-    }
+    };
 
     handleShowNode = () => {
-        const {showNodes, canBeEdited, visibilityCanBeToggled, focusedNodesContextPaths} = this.props;
+        const {
+            showNodes,
+            canBeEdited,
+            visibilityCanBeToggled,
+            focusedNodesContextPaths
+        } = this.props;
 
         if (canBeEdited && visibilityCanBeToggled) {
             showNodes(focusedNodesContextPaths);
         }
-    }
+    };
 
     handleCopyNodes = () => {
         const {copyNodes, focusedNodesContextPaths} = this.props;
 
         copyNodes(focusedNodesContextPaths);
-    }
+    };
 
     handleCutNodes = () => {
         const {cutNodes, canBeEdited, focusedNodesContextPaths} = this.props;
@@ -90,33 +106,38 @@ export default class NodeTreeToolBar extends PureComponent {
         if (canBeEdited) {
             cutNodes(focusedNodesContextPaths);
         }
-    }
+    };
 
     handlePasteNode = contextPath => {
         const {pasteNode} = this.props;
 
         pasteNode(contextPath);
-    }
+    };
 
     handleDeleteNodes = () => {
-        const {deleteNodes, canBeDeleted, canBeEdited, focusedNodesContextPaths} = this.props;
+        const {
+            deleteNodes,
+            canBeDeleted,
+            canBeEdited,
+            focusedNodesContextPaths
+        } = this.props;
 
         if (canBeDeleted && canBeEdited) {
             deleteNodes(focusedNodesContextPaths);
         }
-    }
+    };
 
     handleReloadTree = () => {
         const {reloadTree} = this.props;
 
         reloadTree({merge: true});
-    }
+    };
 
     handleToggleContentTree = () => {
         const {toggleContentTree} = this.props;
 
         toggleContentTree();
-    }
+    };
 
     render() {
         const {
@@ -134,7 +155,8 @@ export default class NodeTreeToolBar extends PureComponent {
             isAllowedToAddChildOrSiblingNodes,
             i18nRegistry,
             isHiddenContentTree,
-            treeType
+            treeType,
+            isWorkspaceReadOnly
         } = this.props;
 
         return (
@@ -156,53 +178,73 @@ export default class NodeTreeToolBar extends PureComponent {
                             i18nRegistry={i18nRegistry}
                             className={style.toolBar__btnGroup__btn}
                             focusedNodeContextPath={focusedNodeContextPath}
-                            disabled={!isAllowedToAddChildOrSiblingNodes}
+                            disabled={isWorkspaceReadOnly || !isAllowedToAddChildOrSiblingNodes}
                             onClick={this.handleAddNode}
                             id={`neos-${treeType}-AddNode`}
-                            />
+                        />
                         <HideSelectedNode
                             i18nRegistry={i18nRegistry}
                             className={style.toolBar__btnGroup__btn}
                             focusedNodeContextPath={focusedNodeContextPath}
-                            disabled={destructiveOperationsAreDisabled || !canBeEdited || !visibilityCanBeToggled}
+                            disabled={
+                                isWorkspaceReadOnly ||
+                                destructiveOperationsAreDisabled ||
+                                !canBeEdited ||
+                                !visibilityCanBeToggled
+                            }
                             isHidden={isHidden}
-                            onClick={isHidden ? this.handleShowNode : this.handleHideNode}
+                            onClick={
+                                isHidden ? this.handleShowNode : this.handleHideNode
+                            }
                             id={`neos-${treeType}-HideSelectedNode`}
-                            />
+                        />
                         <CopySelectedNode
                             i18nRegistry={i18nRegistry}
                             className={style.toolBar__btnGroup__btn}
                             focusedNodeContextPath={focusedNodeContextPath}
                             onClick={this.handleCopyNodes}
                             isActive={isCopied}
-                            disabled={destructiveOperationsAreDisabled || !canBeEdited}
+                            disabled={
+                                isWorkspaceReadOnly ||
+                                destructiveOperationsAreDisabled ||
+                                !canBeEdited
+                            }
                             id={`neos-${treeType}-CopySelectedNode`}
-                            />
+                        />
                         <CutSelectedNode
                             i18nRegistry={i18nRegistry}
                             className={style.toolBar__btnGroup__btn}
                             focusedNodeContextPath={focusedNodeContextPath}
                             isActive={isCut}
-                            disabled={destructiveOperationsAreDisabled || !canBeEdited}
+                            disabled={
+                                isWorkspaceReadOnly ||
+                                destructiveOperationsAreDisabled ||
+                                !canBeEdited
+                            }
                             onClick={this.handleCutNodes}
                             id={`neos-${treeType}-CutSelectedNode`}
-                            />
+                        />
                         <PasteClipBoardNode
                             i18nRegistry={i18nRegistry}
                             className={style.toolBar__btnGroup__btn}
                             focusedNodeContextPath={focusedNodeContextPath}
-                            disabled={!canBePasted}
+                            disabled={isWorkspaceReadOnly || !canBePasted}
                             onClick={this.handlePasteNode}
                             id={`neos-${treeType}-PasteClipBoardNode`}
-                            />
+                        />
                         <DeleteSelectedNode
                             i18nRegistry={i18nRegistry}
                             className={style.toolBar__btnGroup__btn}
                             focusedNodeContextPath={focusedNodeContextPath}
-                            disabled={destructiveOperationsAreDisabled || !canBeDeleted || !canBeEdited}
+                            disabled={
+                                isWorkspaceReadOnly ||
+                                destructiveOperationsAreDisabled ||
+                                !canBeDeleted ||
+                                !canBeEdited
+                            }
                             onClick={this.handleDeleteNodes}
                             id={`neos-${treeType}-DeleteSelectedNode`}
-                            />
+                        />
                         <RefreshPageTree
                             i18nRegistry={i18nRegistry}
                             className={style.toolBar__btnGroup__btn}
@@ -210,7 +252,7 @@ export default class NodeTreeToolBar extends PureComponent {
                             isLoading={isLoading}
                             onClick={this.handleReloadTree}
                             id={`neos-${treeType}-RefreshPageTree`}
-                            />
+                        />
                     </div>
                 </div>
             </div>

@@ -220,7 +220,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         $parent = $node->getParent();
         $isAutoCreated = $node->isTethered();
         $parentConfiguration = $parent ? $parent->getNodeType()->getFullConfiguration() : [];
-        $isHidableAutoCreatedChild = (bool)$parentConfiguration['childNodes'][$node->getName()]['hideable'] ?? false;
+        $isHidableAutoCreatedChild = (bool)$parentConfiguration['childNodes'][(string)$node->getNodeName()]['hideable'] ?? false;
         $policyForbidsHiding = in_array('_hidden', $this->nodePolicyService->getDisallowedProperties($node));
         return [
             'contextPath' => $node->getContextPath(),

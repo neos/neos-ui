@@ -77,10 +77,7 @@ class CheckBox extends PureComponent<CheckBoxProps> {
                     onChange={this.handleChange}
                     disabled={disabled}
                     />
-                <Icon
-                    className={theme.checkbox__icon}
-                    icon="check"
-                    />
+                {isChecked ? <Icon className={theme.checkbox__icon} icon="check"/> : null}
                 <div className={mirrorClassNames}/>
             </div>
         );

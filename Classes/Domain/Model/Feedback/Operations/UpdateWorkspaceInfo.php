@@ -17,6 +17,7 @@ use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
+use Neos\Neos\Domain\Service\UserService as DomainUserService;
 
 class UpdateWorkspaceInfo extends AbstractFeedback
 {
@@ -30,6 +31,12 @@ class UpdateWorkspaceInfo extends AbstractFeedback
      * @var WorkspaceService
      */
     protected $workspaceService;
+
+    /**
+     * @Flow\Inject
+     * @var DomainUserService
+     */
+    protected $domainUserService;
 
     /**
      * Set the workspace
@@ -94,12 +101,13 @@ class UpdateWorkspaceInfo extends AbstractFeedback
      */
     public function serializePayload(ControllerContext $controllerContext)
     {
+        $workspace = $this->getWorkspace();
+        $baseWorkspace = $workspace->getBaseWorkspace();
         return [
-            'name' => $this->getWorkspace()->getName(),
-            'publishableNodes' => $this->workspaceService->getPublishableNodeInfo(
-                $this->getWorkspace()
-            ),
-            'baseWorkspace' => $this->getWorkspace()->getBaseWorkspace()->getName()
+            'name' => $workspace->getName(),
+            'publishableNodes' => $this->workspaceService->getPublishableNodeInfo($workspace),
+            'baseWorkspace' => $baseWorkspace->getName(),
+            'readOnly' => !$this->domainUserService->currentUserCanPublishToWorkspace($baseWorkspace)
         ];
     }
 }

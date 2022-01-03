@@ -1,5 +1,5 @@
 import produce from 'immer';
-
+import assignIn from 'lodash.assignin';
 import {action as createAction, ActionType} from 'typesafe-actions';
 import {NodeContextPath} from '@neos-project/neos-ts-interfaces';
 
@@ -97,7 +97,7 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
             break;
         }
         case actionTypes.UPDATE: {
-            draft.personalWorkspace = action.payload;
+            draft.personalWorkspace = assignIn(draft.personalWorkspace, action.payload);
             break;
         }
         case actionTypes.COMMENCE_DISCARD: {

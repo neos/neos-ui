@@ -34,7 +34,8 @@ export default class NodeToolbar extends PureComponent {
         // Unsets the flag
         requestScrollIntoView: PropTypes.func.isRequired,
         i18nRegistry: PropTypes.object.isRequired,
-        guestFrameRegistry: PropTypes.object.isRequired
+        guestFrameRegistry: PropTypes.object.isRequired,
+        visible: PropTypes.bool
     };
 
     state = {
@@ -110,7 +111,8 @@ export default class NodeToolbar extends PureComponent {
             canBeEdited,
             visibilityCanBeToggled,
             i18nRegistry,
-            guestFrameRegistry
+            guestFrameRegistry,
+            visible
         } = this.props;
 
         if (!contextPath) {
@@ -132,8 +134,9 @@ export default class NodeToolbar extends PureComponent {
 
         const nodeElement = findNodeInGuestFrame(contextPath, fusionPath);
 
-        // Check if nodeElement exists before accessing its props
-        if (!nodeElement) {
+        // Check if nodeElement exists before accessing its props or if the node toolbar
+        // should be invisible e.g. when the workspace is in read only mode
+        if (!nodeElement || !visible) {
             return null;
         }
 

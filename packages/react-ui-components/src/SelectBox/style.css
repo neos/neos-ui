@@ -32,8 +32,11 @@
     min-width: 160px;
     box-shadow: 0 5px 5px rgba(#000, .2);
     z-index: var(--zIndex-SelectBoxContents);
-    padding: 2px !important;
     margin-top: -2px;
+}
+
+.selectBox__contents--hasItems {
+    padding: 2px !important;
 }
 
 .selectBox__item {

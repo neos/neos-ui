@@ -33,7 +33,6 @@ fi
 
 # install dependencies and login to npm
 make install
-#NPM_EMAIL=hello@neos.io ./node_modules/.bin/npm-cli-login
 
 # acutal release process
 

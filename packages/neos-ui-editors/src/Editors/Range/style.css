@@ -1,34 +1,45 @@
 .rangeEditor input[type='range'] {
     appearance: none;
-    background: #323232;
+    background: var(--colors-ContrastNeutral);
     cursor: pointer;
     height: 25px;
     outline: none;
     width: 100%;
+    border-radius: 2px;
 }
 
 .rangeEditor input[type='range']::-webkit-slider-thumb {
     appearance: none;
-    background: #00adee;
+    background: var(--colors-PrimaryBlue);
     border-radius: 5px;
     box-shadow: 0 0 0 #000, 0 0 0 #0d0d0d;
     cursor: pointer;
     height: 20px;
     opacity: .7;
-    transition: opacity .2s;
     width: 20px;
+    border: none;
+}
+
+.rangeEditor input[type='range']::-webkit-slider-thumb:hover,
+.rangeEditor input[type='range']::-webkit-slider-thumb:focus {
+    background: var(--colors-PrimaryBlueHover);
 }
 
 .rangeEditor input[type='range']::-moz-range-thumb {
     appearance: none;
-    background: #00adee;
+    background: var(--colors-PrimaryBlue);
     border-radius: 5px;
     box-shadow: 0 0 0 #000, 0 0 0 #0d0d0d;
     cursor: pointer;
     height: 25px;
     opacity: .7;
-    transition: opacity .2s;
     width: 25px;
+    border: none;
+}
+
+.rangeEditor input[type='range']::-moz-range-thumb:hover,
+.rangeEditor input[type='range']::-moz-range-thumb:focus {
+    background: var(--colors-PrimaryBlueHover);
 }
 
 .rangeEditorValue {
@@ -46,15 +57,34 @@
 
 .rangeEditorValue input {
     appearance: none;
-    background: #323232;
+    background: var(--colors-ContrastNeutral);
     border: 0;
     color: #fff;
     display: inline-block;
     padding: 0 .3rem;
     text-align: right;
     box-sizing: content-box;
+    margin-right: var(--spacing-Quarter);
 }
 
 .rangeEditorValue input:focus {
-    outline: 1px solid #00adee;
+    outline: 1px solid var(--colors-PrimaryBlue);
+}
+
+.rangeEditorDisabled {
+    opacity: .65;
+}
+
+.rangeEditorDisabled input[disabled] {
+    cursor: not-allowed;
+}
+
+.rangeEditorDisabled input[type='range']::-webkit-slider-thumb {
+    pointer-events: none;
+    background: var(--colors-ContrastBright);
+}
+
+.rangeEditorDisabled input[type='range']::-moz-range-thumb {
+    pointer-events: none;
+    background: var(--colors-ContrastBright);
 }

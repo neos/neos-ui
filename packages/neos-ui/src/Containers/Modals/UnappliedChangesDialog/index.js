@@ -23,7 +23,8 @@ import style from './style.css';
         shouldAppear: selectors.UI.Inspector.shouldPromptToHandleUnappliedChanges(state),
         isApplyDisabled: isApplyDisabledSelector(state),
         isDiscardDisabled: selectors.UI.Inspector.isDiscardDisabledSelector(state),
-        focusedNodeContextPath: selectors.CR.Nodes.focusedNodePathSelector(state)
+        focusedNodeContextPath: selectors.CR.Nodes.focusedNodePathSelector(state),
+        isWorkspaceReadOnly: selectors.CR.Workspaces.isWorkspaceReadOnlySelector(state)
     };
 }, {
     resume: actions.UI.Inspector.resume,
@@ -35,6 +36,7 @@ export default class UnappliedChangesDialog extends PureComponent {
         shouldAppear: PropTypes.bool.isRequired,
         isApplyDisabled: PropTypes.bool.isRequired,
         isDiscardDisabled: PropTypes.bool.isRequired,
+        isWorkspaceReadOnly: PropTypes.bool,
 
         resume: PropTypes.func.isRequired,
         discard: PropTypes.func.isRequired,
@@ -109,7 +111,7 @@ export default class UnappliedChangesDialog extends PureComponent {
     }
 
     renderApply() {
-        const {isApplyDisabled} = this.props;
+        const {isApplyDisabled, isWorkspaceReadOnly} = this.props;
 
         return (
             <Button
@@ -117,7 +119,7 @@ export default class UnappliedChangesDialog extends PureComponent {
                 key="apply"
                 style="success"
                 hoverStyle="success"
-                disabled={isApplyDisabled}
+                disabled={isApplyDisabled || isWorkspaceReadOnly}
                 onClick={this.handleApply}
                 className={`${style.button} ${style.publishButton}`}
                 >

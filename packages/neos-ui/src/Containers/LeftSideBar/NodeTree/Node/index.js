@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {$get} from 'plow-js';
+import {$transform, $get} from 'plow-js';
 import {connect} from 'react-redux';
 
 import flowright from 'lodash.flowright';
@@ -41,6 +41,11 @@ const decodeLabel = flowright(
     getOrDefault('')
 );
 
+@connect(
+    $transform({
+        isWorkspaceReadOnly: selectors.CR.Workspaces.isWorkspaceReadOnlySelector
+    })
+)
 export default class Node extends PureComponent {
     state = {
         shouldScrollIntoView: false
@@ -69,6 +74,7 @@ export default class Node extends PureComponent {
         canBeInsertedAlongside: PropTypes.bool,
         canBeInsertedInto: PropTypes.bool,
         isNodeDirty: PropTypes.bool.isRequired,
+        isWorkspaceReadOnly: PropTypes.bool,
 
         nodeTypesRegistry: PropTypes.object.isRequired,
         i18nRegistry: PropTypes.object.isRequired,
@@ -274,7 +280,8 @@ export default class Node extends PureComponent {
             onNodeDrop,
             currentlyDraggedNodes,
             isContentTreeNode,
-            focusedNodesContextPaths
+            focusedNodesContextPaths,
+            isWorkspaceReadOnly
         } = this.props;
 
         if (this.isHidden()) {
@@ -290,7 +297,8 @@ export default class Node extends PureComponent {
         const labelTitle = decodeLabel($get('label', node)) + ' (' + this.getNodeTypeLabel() + ')';
 
         // Autocreated or we have nested nodes and the node that we are dragging belongs to the selection
-        const dragForbidden = node.isAutoCreated || (hasNestedNodes(focusedNodesContextPaths) && focusedNodesContextPaths.includes(node.contextPath));
+        // For read only workspaces we also forbid drag and drop
+        const dragForbidden = isWorkspaceReadOnly || node.isAutoCreated || (hasNestedNodes(focusedNodesContextPaths) && focusedNodesContextPaths.includes(node.contextPath));
 
         return (
             <Tree.Node aria-expanded={this.isCollapsed() ? 'false' : 'true'} aria-labelledby={labelIdentifier}>

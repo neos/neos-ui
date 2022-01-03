@@ -21,7 +21,8 @@ import {isEqualSet} from '@neos-project/utils-helpers';
     shouldScrollIntoView: selectors.UI.ContentCanvas.shouldScrollIntoView,
     destructiveOperationsAreDisabled: selectors.CR.Nodes.destructiveOperationsAreDisabledSelector,
     clipboardMode: $get('cr.nodes.clipboardMode'),
-    clipboardNodesContextPaths: selectors.CR.Nodes.clipboardNodesContextPathsSelector
+    clipboardNodesContextPaths: selectors.CR.Nodes.clipboardNodesContextPathsSelector,
+    isWorkspaceReadOnly: selectors.CR.Workspaces.isWorkspaceReadOnlySelector
 }), {
     requestScrollIntoView: actions.UI.ContentCanvas.requestScrollIntoView
 })
@@ -34,12 +35,23 @@ export default class InlineUI extends PureComponent {
         requestScrollIntoView: PropTypes.func.isRequired,
         shouldScrollIntoView: PropTypes.bool.isRequired,
         clipboardMode: PropTypes.string,
-        clipboardNodesContextPaths: PropTypes.array
+        clipboardNodesContextPaths: PropTypes.array,
+        isWorkspaceReadOnly: PropTypes.bool
     };
 
     render() {
         const {focused} = this.props;
-        const {nodeTypesRegistry, focusedNode, focusedNodesContextPaths, clipboardNodesContextPaths, shouldScrollIntoView, requestScrollIntoView, destructiveOperationsAreDisabled, clipboardMode} = this.props;
+        const {
+            nodeTypesRegistry,
+            focusedNode,
+            focusedNodesContextPaths,
+            clipboardNodesContextPaths,
+            shouldScrollIntoView,
+            requestScrollIntoView,
+            destructiveOperationsAreDisabled,
+            clipboardMode,
+            isWorkspaceReadOnly
+        } = this.props;
 
         // If there's no focused node, we won't render the Inline UI
         if (!focusedNode) {
@@ -67,6 +79,7 @@ export default class InlineUI extends PureComponent {
                     canBeEdited={canBeEdited}
                     visibilityCanBeToggled={visibilityCanBeToggled}
                     contextPath={focusedNodeContextPath}
+                    visible={!isWorkspaceReadOnly}
                     {...focused}
                     />}
                 <InlineValidationErrors />

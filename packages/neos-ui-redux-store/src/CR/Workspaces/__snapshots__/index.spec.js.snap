@@ -11,6 +11,7 @@ Object {
 exports[`UPDATE should set personal workspace data to given data 1`] = `
 Object {
   "personalWorkspace": Object {
+    "initial": "workspace-data",
     "totally": "different-workspace-data",
   },
 }

@@ -7,12 +7,14 @@
 #
 # VERSION          the version that is "to be released"
 # BRANCH           the branch that is worked on
+# NPM_TOKEN        the npm auth token
 
 # break on all failures
 set -xe
 
 if [ -z "$VERSION" ]; then echo "\$VERSION not set"; exit 1; fi
 if [ -z "$BRANCH" ]; then echo "\$BRANCH not set"; exit 1; fi
+if [ -z "$NPM_TOKEN" ]; then echo "\$NPM_TOKEN not set"; exit 1; fi
 
 
 # go to root directory of Neos.Neos.Ui
@@ -38,7 +40,6 @@ nvm use
 
 # install dependencies and login to npm
 make install
-NPM_EMAIL=hello@neos.io ./node_modules/.bin/npm-cli-login
 
 # acutal release process
 
@@ -51,7 +52,7 @@ make test
 
 # publishing
 VERSION=$VERSION make bump-version
-VERSION=$VERSION make publish-npm
+VERSION=$VERSION NPM_TOKEN=$NPM_TOKEN make publish-npm
 
 # add changes to git and push
 git add .

@@ -205,13 +205,17 @@ export default class SelectBox extends PureComponent {
 
         const searchTermLeftToType = displaySearchBox ? threshold - searchTerm.length : 0;
         const noMatchesFound = searchTermLeftToType > 0 || displayLoadingIndicator ? false : !options.length;
+        const dropDownContentsClassName = mergeClassNames({
+            [theme.selectBox__contents]: true,
+            [theme['selectBox__contents--hasItems']]: !noMatchesFound
+        });
 
         return (
             <DropDown.Stateless className={theme.selectBox} isOpen={isExpanded} onToggle={this.handleToggleExpanded} onClose={this.handleClose}>
                 <DropDown.Header className={headerClassName} shouldKeepFocusState={false} showDropDownToggle={showDropDownToggle && Boolean(options.length)}>
                     {this.renderHeader()}
                 </DropDown.Header>
-                <DropDown.Contents className={theme.selectBox__contents} scrollable={true}>
+                <DropDown.Contents className={dropDownContentsClassName} scrollable={true}>
                     {!plainInputMode && <ul className={theme.selectBox__list}>
                         <SelectBox_ListPreview
                             {...this.props}

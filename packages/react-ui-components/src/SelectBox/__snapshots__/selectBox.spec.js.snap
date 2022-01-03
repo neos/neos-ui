@@ -40,7 +40,7 @@ exports[`<SelectBox/> should render correctly. 1`] = `
     />
   </Component>
   <Component
-    className="undefined"
+    className=""
     scrollable={true}
   >
     <ul>

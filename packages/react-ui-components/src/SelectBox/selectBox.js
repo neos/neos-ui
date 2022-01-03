@@ -207,7 +207,7 @@ export default class SelectBox extends PureComponent {
         const noMatchesFound = searchTermLeftToType > 0 || displayLoadingIndicator ? false : !options.length;
         const dropDownContentsClassName = mergeClassNames({
             [theme.selectBox__contents]: true,
-            [theme['selectBox__contents--empty']]: noMatchesFound
+            [theme['selectBox__contents--hasItems']]: !noMatchesFound
         });
 
         return (

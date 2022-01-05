@@ -178,7 +178,7 @@ Neos:
           settings:
             isAutoPublishingEnabled: false
             targetWorkspace: 'live'
-            hideReadOnlyWorkspaces: true
+            hideReadOnlyWorkspaces: false
       changes:
         types:
           'Neos.Neos.Ui:Property': Neos\Neos\Ui\Domain\Model\Changes\Property

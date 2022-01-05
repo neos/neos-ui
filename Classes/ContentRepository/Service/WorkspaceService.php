@@ -61,6 +61,12 @@ class WorkspaceService
     protected $hideReadOnlyWorkspaces;
 
     /**
+     * @Flow\InjectConfiguration(path="initialState.user.settings.targetWorkspace", package="Neos.Neos.Ui")
+     * @var boolean
+     */
+    protected $initialUserTargetWorkspace;
+
+    /**
      * Get all publishable node context paths for a workspace
      *
      * @param Workspace $workspace
@@ -155,8 +161,16 @@ class WorkspaceService
     /**
      * @return bool
      */
-    public function shouldHideReadOnlyWorkspaces()
+    public function shouldHideReadOnlyWorkspaces(): bool
     {
         return $this->hideReadOnlyWorkspaces;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInitialUserTargetWorkspace(): string
+    {
+        return $this->initialUserTargetWorkspace;
     }
 }

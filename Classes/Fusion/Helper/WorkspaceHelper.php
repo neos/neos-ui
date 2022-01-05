@@ -91,7 +91,7 @@ class WorkspaceHelper implements ProtectedContextAwareInterface
         }
 
         // Live as fallback
-        return $this->workspaceService->getWorkspaceByName('live');
+        return $this->workspaceService->getWorkspaceByName($this->workspaceService->getInitialUserTargetWorkspace());
     }
 
     public function getAllowedTargetWorkspaces()

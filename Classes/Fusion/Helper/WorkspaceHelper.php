@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Neos\Ui\Fusion\Helper;
 
 /*
@@ -51,13 +52,46 @@ class WorkspaceHelper implements ProtectedContextAwareInterface
     {
         $personalWorkspace = $this->userService->getPersonalWorkspace();
         $baseWorkspace = $personalWorkspace->getBaseWorkspace();
+        $readOnly = !$this->domainUserService->currentUserCanPublishToWorkspace($baseWorkspace);
+
+        if ($readOnly === true && $this->workspaceService->shouldHideReadOnlyWorkspaces()) {
+            // Skip read only workspaces
+            $baseWorkspace = $this->getFirstWriteableTargetWorkspace();
+            $this->workspaceService->setBaseWorkspace($baseWorkspace);
+            $readOnly = !$this->domainUserService->currentUserCanPublishToWorkspace($baseWorkspace);
+        }
 
         return [
             'name' => $personalWorkspace->getName(),
             'publishableNodes' => $this->getPublishableNodeInfo($personalWorkspace),
             'baseWorkspace' => $baseWorkspace->getName(),
-            'readOnly' => !$this->domainUserService->currentUserCanPublishToWorkspace($baseWorkspace)
+            'readOnly' => $readOnly
         ];
+    }
+
+    /**
+     * Returns the first writable workspace for the current user. If we find no writeable workspace
+     * we use the configured targetWorkspace as fallback. This is mostly live.
+     *
+     * @return Workspace|null
+     */
+    public function getFirstWriteableTargetWorkspace(): ?Workspace
+    {
+        $allowedTargetWorkspaces = $this->getAllowedTargetWorkspaces();
+        foreach ($allowedTargetWorkspaces as $allowedTargetWorkspace) {
+            $readOnly = $allowedTargetWorkspace['readonly'];
+            if ($readOnly === true) {
+                continue;
+            }
+
+            $writeableTargetWorkspace = $this->workspaceService->getWorkspaceByName($allowedTargetWorkspace['name']);
+            if ($writeableTargetWorkspace) {
+                return $writeableTargetWorkspace;
+            }
+        }
+
+        // Live as fallback
+        return $this->workspaceService->getWorkspaceByName('live');
     }
 
     public function getAllowedTargetWorkspaces()

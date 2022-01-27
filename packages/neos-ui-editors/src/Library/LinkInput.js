@@ -6,6 +6,7 @@ import {$get, $transform} from 'plow-js';
 import {IconButton, SelectBox, Icon} from '@neos-project/react-ui-components';
 import LinkOption from '@neos-project/neos-ui-editors/src/Library/LinkOption';
 import {neos} from '@neos-project/neos-ui-decorators';
+import backend from '@neos-project/neos-ui-backend-connector';
 
 import {selectors} from '@neos-project/neos-ui-redux-store';
 import {isUri, isEmail} from '@neos-project/utils-helpers';
@@ -16,6 +17,7 @@ import style from './LinkInput.css';
 // TODO: extract this isInternalLink logic into a registry, possibly defining a schema and a custom data loader
 const isUriOrInternalLink = link => Boolean(isUri(link) || link.indexOf('node://') === 0 || link.indexOf('asset://') === 0);
 const isInternalLink = link => Boolean(link.indexOf('node://') === 0 || link.indexOf('asset://') === 0);
+const isAssetProxy = link => Boolean(link.indexOf('assetProxy://') === 0);
 const looksLikeExternalLink = link => {
     if (typeof link !== 'string') {
         return false;
@@ -31,6 +33,7 @@ const looksLikeExternalLink = link => {
 
 @neos(globalRegistry => ({
     linkLookupDataLoader: globalRegistry.get('dataLoaders').get('LinkLookup'),
+    assetLookupDataLoader: globalRegistry.get('dataLoaders').get('AssetLookup'),
     i18nRegistry: globalRegistry.get('i18n'),
     containerRegistry: globalRegistry.get('containers')
 }))
@@ -62,6 +65,11 @@ export default class LinkInput extends PureComponent {
 
         linkLookupDataLoader: PropTypes.shape({
             resolveValue: PropTypes.func.isRequired,
+            search: PropTypes.func.isRequired
+        }).isRequired,
+        assetLookupDataLoader: PropTypes.shape({
+            resolveValue: PropTypes.func.isRequired,
+            resolveValues: PropTypes.func.isRequired,
             search: PropTypes.func.isRequired
         }).isRequired,
 
@@ -137,6 +145,7 @@ export default class LinkInput extends PureComponent {
 
     handleSearchTermChange = searchTerm => {
         this.setState({searchTerm});
+
         if (looksLikeExternalLink(searchTerm)) {
             this.setState({
                 isLoading: false,
@@ -184,10 +193,40 @@ export default class LinkInput extends PureComponent {
         }
     }
 
+    getIdentity(value) {
+        // Information coming from metadata
+        if (value && value.__identity) {
+            return value.__identity;
+        }
+        // Information coming from upload endpoint
+        if (value && value.assetUuid) {
+            return value.assetUuid;
+        }
+        return value;
+    }
+
     handleValueChange = value => {
         this.props.onLinkChange(value || '');
 
-        if (isInternalLink(value)) {
+        if (isAssetProxy(value)) {
+            const {assetProxyImport} = backend.get().endpoints;
+            const proxyIdentifier = value.replace('assetProxy://', '');
+            this.setState({isLoading: true});
+            const valuePromise = (proxyIdentifier.indexOf('/') === -1) ? Promise.resolve(proxyIdentifier) : assetProxyImport(proxyIdentifier);
+
+            valuePromise.then(value => {
+                const assetProxyIdentifier = this.getIdentity(value);
+                this.props.assetLookupDataLoader.resolveValue(this.state.options, assetProxyIdentifier)
+                    .then(options => {
+                        const assetUri = options.map((item) => item.loaderUri);
+                        this.props.onLinkChange(assetUri || '');
+                        this.setState({
+                            isLoading: false,
+                            isEditMode: false
+                        });
+                    });
+            });
+        } else if (isInternalLink(value)) {
             const options = this.state.searchOptions.reduce((current, option) =>
                 (option.loaderUri === value) ? [Object.assign({}, option)] : current
                 , []);

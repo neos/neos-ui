@@ -212,7 +212,7 @@ manifest('main.dataloaders', {}, globalRegistry => {
             if (!('constraints' in options)) {
                 options.constraints = {};
             }
-            const cacheKey = makeCacheKey("search", { options, searchTerm });
+            const cacheKey = makeCacheKey('search', {options, searchTerm});
 
             if (this._lru().has(cacheKey)) {
                 return this._lru().get(cacheKey);
@@ -416,7 +416,7 @@ manifest('main.dataloaders', {}, globalRegistry => {
 
         search(options, searchTerm) {
             return Promise.all(this.dataLoaders().map(dataLoaderInfo => {
-                return options[dataLoaderInfo.prefix] === false ? [] : dataLoaderInfo.dataLoader.search(options, searchTerm)
+                return options[dataLoaderInfo.prefix] === false ? [] : dataLoaderInfo.dataLoader.search(options, searchTerm);
             }
             )).then(values => {
                 return values.reduce((runningValues, singleDataLoaderValues) =>

@@ -218,7 +218,7 @@ export default class LinkInput extends PureComponent {
                 const assetProxyIdentifier = this.getIdentity(value);
                 this.props.assetLookupDataLoader.resolveValue(this.state.options, assetProxyIdentifier)
                     .then(options => {
-                        const assetUri = options.map((item) => item.loaderUri);
+                        const assetUri = options.map(item => item.loaderUri);
                         this.props.onLinkChange(assetUri || '');
                         this.setState({
                             isLoading: false,

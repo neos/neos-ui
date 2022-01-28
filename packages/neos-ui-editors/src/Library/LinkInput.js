@@ -205,27 +205,44 @@ export default class LinkInput extends PureComponent {
         return value;
     }
 
+    getProxyIdentifier(value) {
+        if (!isAssetProxy(value)) {
+            return value;
+        }
+
+        // Return identifier with asset source prefix except the local neos source
+        const proxyIdentifier = value.replace('assetProxy://', '');
+        return proxyIdentifier.replace('neos/', '');
+    }
+
     handleValueChange = value => {
         this.props.onLinkChange(value || '');
 
         if (isAssetProxy(value)) {
             const {assetProxyImport} = backend.get().endpoints;
-            const proxyIdentifier = value.replace('assetProxy://', '');
+            const proxyIdentifier = this.getProxyIdentifier(value);
             this.setState({isLoading: true});
-            const valuePromise = (proxyIdentifier.indexOf('/') === -1) ? Promise.resolve(proxyIdentifier) : assetProxyImport(proxyIdentifier);
-
-            valuePromise.then(value => {
-                const assetProxyIdentifier = this.getIdentity(value);
-                this.props.assetLookupDataLoader.resolveValue(this.state.options, assetProxyIdentifier)
-                    .then(options => {
-                        const assetUri = options.map(item => item.loaderUri);
-                        this.props.onLinkChange(assetUri || '');
-                        this.setState({
-                            isLoading: false,
-                            isEditMode: false
+            if (proxyIdentifier.indexOf('/') === -1) {
+                this.props.onLinkChange(`asset://${proxyIdentifier}` || '');
+                this.setState({
+                    isLoading: false,
+                    isEditMode: false
+                });
+            } else {
+                const valuePromise = assetProxyImport(proxyIdentifier);
+                valuePromise.then(value => {
+                    const assetProxyIdentifier = this.getIdentity(value);
+                    this.props.assetLookupDataLoader.resolveValue(this.state.options, assetProxyIdentifier)
+                        .then(options => {
+                            const assetUri = options && options[0] ? $get('0.loaderUri', options) : '';
+                            this.props.onLinkChange(assetUri || '');
+                            this.setState({
+                                isLoading: false,
+                                isEditMode: false
+                            });
                         });
-                    });
-            });
+                });
+            }
         } else if (isInternalLink(value)) {
             const options = this.state.searchOptions.reduce((current, option) =>
                 (option.loaderUri === value) ? [Object.assign({}, option)] : current

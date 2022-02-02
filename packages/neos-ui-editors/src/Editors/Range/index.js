@@ -60,7 +60,7 @@ class RangeEditor extends PureComponent {
 
     render() {
         const options = {...this.constructor.defaultProps.options, ...this.props.options};
-        const { value } = this.props;
+        const {value} = this.props;
 
         return (
             <div className={style.rangeEditor + (options.disabled ? ' ' + style.rangeEditorDisabled : '')}>

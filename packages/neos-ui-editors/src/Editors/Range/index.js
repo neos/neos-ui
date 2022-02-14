@@ -36,14 +36,6 @@ class RangeEditor extends PureComponent {
         }
     };
 
-    state = {
-        value: 0
-    };
-
-    componentDidMount() {
-        this.setState({value: this.props.value});
-    }
-
     handleChange = event => {
         const {options} = this.props;
         const {target} = event;
@@ -55,7 +47,6 @@ class RangeEditor extends PureComponent {
 
         value = Math.min(options.max, Math.max(options.min, value));
 
-        this.setState({value});
         this.props.commit(value);
 
         this.forceUpdate();
@@ -69,7 +60,7 @@ class RangeEditor extends PureComponent {
 
     render() {
         const options = {...this.constructor.defaultProps.options, ...this.props.options};
-        const {value} = this.state;
+        const {value} = this.props;
 
         return (
             <div className={style.rangeEditor + (options.disabled ? ' ' + style.rangeEditorDisabled : '')}>

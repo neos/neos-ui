@@ -101,6 +101,7 @@ export default class LinkInput extends PureComponent {
             asset: $get('assets', options),
             node: $get('nodes', options),
             startingPoint: $get('startingPoint', options),
+            constraints: $get('constraints', options),
             contextForNodeLinking
         };
     }

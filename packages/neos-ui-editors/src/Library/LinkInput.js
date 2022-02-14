@@ -174,9 +174,13 @@ export default class LinkInput extends PureComponent {
             this.props.linkLookupDataLoader.search(this.getDataLoaderOptions(), searchTerm)
                 .then(searchOptions => {
                     if (searchTermWhenLookupWasTriggered === this.state.searchTerm) {
+                        const groupedSearchOption = searchOptions.map(searchOption => {
+                            searchOption.group = 'assetSourceLabel' in searchOption ? searchOption.assetSourceLabel : this.props.i18nRegistry.translate('Neos.Neos:Main:document');
+                            return searchOption;
+                        });
                         this.setState({
                             isLoading: false,
-                            searchOptions
+                            searchOptions: groupedSearchOption
                         });
                     }
                 });

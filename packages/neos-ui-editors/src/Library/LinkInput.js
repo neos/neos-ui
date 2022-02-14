@@ -8,7 +8,7 @@ import LinkOption from '@neos-project/neos-ui-editors/src/Library/LinkOption';
 import {neos} from '@neos-project/neos-ui-decorators';
 import backend from '@neos-project/neos-ui-backend-connector';
 
-import {selectors} from '@neos-project/neos-ui-redux-store';
+import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 import {isUri, isEmail} from '@neos-project/utils-helpers';
 
 import {sanitizeOptions, sanitizeOption} from './sanitizeOptions';
@@ -39,7 +39,10 @@ const looksLikeExternalLink = link => {
 }))
 @connect($transform({
     contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking
-}))
+}), {
+    lockPublishing: actions.UI.Remote.lockPublishing,
+    unlockPublishing: actions.UI.Remote.unlockPublishing
+})
 export default class LinkInput extends PureComponent {
     static propTypes = {
         i18nRegistry: PropTypes.object,
@@ -227,12 +230,14 @@ export default class LinkInput extends PureComponent {
             const {assetProxyImport} = backend.get().endpoints;
             const proxyIdentifier = this.getProxyIdentifier(value);
             this.setState({isLoading: true});
+            this.props.lockPublishing();
             if (proxyIdentifier.indexOf('/') === -1) {
                 this.props.onLinkChange(`asset://${proxyIdentifier}` || '');
                 this.setState({
                     isLoading: false,
                     isEditMode: false
                 });
+                this.props.unlockPublishing();
             } else {
                 const valuePromise = assetProxyImport(proxyIdentifier);
                 valuePromise.then(value => {
@@ -245,6 +250,7 @@ export default class LinkInput extends PureComponent {
                                 isLoading: false,
                                 isEditMode: false
                             });
+                            this.props.unlockPublishing();
                         });
                 });
             }

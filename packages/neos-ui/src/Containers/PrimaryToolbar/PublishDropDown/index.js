@@ -117,6 +117,13 @@ export default class PublishDropDown extends PureComponent {
         });
         const publishableNodesInDocumentCount = publishableNodesInDocument ? publishableNodesInDocument.length : 0;
         const publishableNodesCount = publishableNodes ? publishableNodes.length : 0;
+
+        // check if the basework space is also part of the allowed workspaces
+        const allowedBaseWorkspace = (baseWorkspace in allowedWorkspaces);
+        const firstAllowedWorkspace = Object.values(allowedWorkspaces)[0];
+        if (!allowedBaseWorkspace && 'name' in firstAllowedWorkspace) {
+            changeBaseWorkspaceAction(firstAllowedWorkspace.name);
+        }
         return (
             <div id="neos-PublishDropDown" className={style.wrapper}>
                 <AbstractButton

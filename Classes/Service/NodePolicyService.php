@@ -115,58 +115,7 @@ class NodePolicyService
             return $disallowedNodeTypes;
         }
 
-        // determine the set of configured node supertypes
-        $nodeNodeType = $node->getNodeType();
-
-        $superTypes = [];
-        $generateSuperTypes = function (array $nodeTypes, &$superTypes) use (&$generateSuperTypes) {
-            foreach ($nodeTypes as $nodeType) {
-                $superTypes[$nodeType->getName()] = $nodeType;
-                $generateSuperTypes($nodeType->getDeclaredSuperTypes(), $superTypes);
-            }
-        };
-        $generateSuperTypes($nodeNodeType->getDeclaredSuperTypes(), $superTypes);
-
-        $parentNodeType = null;
-        try {
-            $parentNode = $node->findParentNode();
-            $parentNodeType = $parentNode->getNodeType();
-        } catch (NodeException $exception) {
-            // no parentNode found
-        }
-
-        // check if the node is auto-created
-        $isAutoCreated   = false;
-        if ($parentNodeType && array_key_exists((string)$node->getNodeName(), $parentNodeType->getAutoCreatedChildNodes())) {
-            $isAutoCreated = true;
-        }
-
-        // filter the set of configured nodeTypes
-        $nodeName = (string)$node->getNodeName();
-
-        $constraintAndSuperTypeFilter = function ($nodeType) use ($nodeName, $nodeNodeType, $superTypes, $isAutoCreated, $parentNodeType) {
-            // check if the nodeType is mentioned in the constraints
-            if ($isAutoCreated) {
-                if ($parentNodeType && $parentNodeType->allowsGrandchildNodeType($nodeName, $nodeType)) {
-                    return true;
-                }
-            } elseif ($nodeNodeType->allowsChildNodeType($nodeType)) {
-                return true;
-            }
-            // check if the nodeType is a supertype
-            elseif (isset($superTypes[$nodeType->getName()])) {
-                return true;
-            }
-            // check if the nodeType is the same as that of the current $node's nodeType
-            elseif ($nodeType->getName() == $nodeNodeType->getName()) {
-                return true;
-            }
-
-            // ignore other nodeType
-            return false;
-        };
-
-        $filteredNodeTypes = array_filter($this->nodeTypeManager->getNodeTypes(), $constraintAndSuperTypeFilter);
+        $filteredNodeTypes = $this->getNodeRelatedNodeTypes($node);
 
         // filter the remaining nodeTypes via policy check
         $filter = function ($nodeType) use ($node) {
@@ -183,6 +132,73 @@ class NodePolicyService
         };
 
         return array_values(array_map($mapper, $disallowedNodeTypeObjects));
+    }
+
+    /**
+     * For a given node $node this method returns the set of nodeTypes
+     * - if $node is auto-created and the nodeType is allowed as a grandchild by constraints nodeType definition
+     * - of allowed child nodeType's
+     * - of superType's
+     * - of the nodeType of $node itself
+     * @param NodeInterface $node
+     * @return array
+     */
+    protected function getNodeRelatedNodeTypes(NodeInterface $node): array
+    {
+        // determine the set of configured node supertypes
+        $nodeNodeType = $node->getNodeType();
+
+        $superTypes = [];
+        $generateSuperTypes = static function (array $nodeTypes, &$superTypes) use (&$generateSuperTypes) {
+            foreach ($nodeTypes as $nodeType) {
+                $superTypes[$nodeType->getName()] = $nodeType;
+                $generateSuperTypes($nodeType->getDeclaredSuperTypes(), $superTypes);
+            }
+        };
+        $generateSuperTypes($nodeNodeType->getDeclaredSuperTypes(), $superTypes);
+
+        $parentNodeType = null;
+        // check for root node to avoid an exception for parentNodeType and improve performance in this case
+        if ($node->isRoot() !== true) {
+            $parentNode = $node->findParentNode();
+            $parentNodeType = $parentNode->getNodeType();
+        }
+
+        // check if the node is auto-created
+        $isAutoCreated   = false;
+        if ($parentNodeType &&
+            array_key_exists((string)$node->getNodeName(), $parentNodeType->getAutoCreatedChildNodes())) {
+            $isAutoCreated = true;
+        }
+
+        // filter the set of configured nodeTypes
+        $nodeName = (string)$node->getNodeName();
+
+        $constraintAndSuperTypeFilter = static function ($nodeType) use (
+            $nodeName,
+            $nodeNodeType,
+            $superTypes,
+            $isAutoCreated,
+            $parentNodeType
+        ) {
+            // check if the nodeType is mentioned in the constraints
+            if ($isAutoCreated) {
+                if ($parentNodeType && $parentNodeType->allowsGrandchildNodeType($nodeName, $nodeType)) {
+                    return true;
+                }
+            } elseif ($nodeNodeType->allowsChildNodeType($nodeType)) {
+                return true;
+            } elseif (isset($superTypes[$nodeType->getName()])) {  // check if the nodeType is a supertype
+                return true;
+            } elseif ($nodeType->getName() === $nodeNodeType->getName()) {
+                return true;
+            }
+
+            // ignore other nodeType
+            return false;
+        };
+
+        return array_filter($this->nodeTypeManager->getNodeTypes(), $constraintAndSuperTypeFilter);
     }
 
     /**

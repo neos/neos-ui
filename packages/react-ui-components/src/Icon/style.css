@@ -34,7 +34,8 @@
 
 .icon--small {
     svg {
-        height: 1em;
+        max-height: 1em;
+        max-width: 100%;
     }
 }
 

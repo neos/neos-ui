@@ -20,6 +20,7 @@ describe('<FontAwesomeIcon/>', () => {
             'icon--small': 'smallClassName',
             'icon--spin': 'spinClassName',
             'icon--tiny': 'tinyClassName',
+            'icon--huge': 'hugeClassName'
         }
     };
 

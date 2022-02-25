@@ -31,8 +31,10 @@ class NodeTypeItem extends PureComponent {
 
     render() {
         const {ui, name} = this.props.nodeType;
-        const icon = $get('icon', ui);
         const label = $get('label', ui);
+        const useLargeIcon = ('largeIcon' in ui);
+        const icon = $get(useLargeIcon ? 'largeIcon' : 'icon', ui);
+        const size = useLargeIcon ? '2x' : 'lg';
         const helpMessage = $get('help.message', ui);
         const {onHelpMessage, groupName} = this.props;
 
@@ -47,7 +49,7 @@ class NodeTypeItem extends PureComponent {
                 >
                     <span>
                         <span className={style.nodeType__iconWrapper}>
-                            {icon && <Icon icon={icon} size="lg" className={style.nodeType__icon} />}
+                            {icon && <Icon icon={icon} size={size} className={style.nodeType__icon} />}
                         </span>
                         <I18n id={label} fallback={label}/>
                     </span>

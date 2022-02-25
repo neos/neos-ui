@@ -14,6 +14,7 @@ exports[`<Icon/> should render correctly. 1`] = `
       "icon--color-primaryBlue": "color-primaryBlueClassName",
       "icon--color-warn": "color-warnClassName",
       "icon--huge": "hugeClassName",
+      "icon--large": "largeClassName",
       "icon--paddedLeft": "paddedLeftClassName",
       "icon--paddedRight": "paddedRightClassName",
       "icon--small": "smallClassName",

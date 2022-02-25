@@ -29,12 +29,29 @@ class NodeTypeItem extends PureComponent {
         groupName: PropTypes.string.isRequired
     };
 
+    /**
+     * This method returns the size if the rendered icon.
+     * We can render the option icon or largeIcon. The size for icon is always "lg".
+     *
+     * If we have a largeIcon option set and no separte largeIconSize option the icon size will be 2x.
+     * We allow only the sizes 'xs', 'sm', 'lg', '2x' and '3x'.
+     *
+     * @returns {string}
+     */
+    getIconSize() {
+        const isNil = value => value === null || value === undefined;
+        const {largeIconSize, largeIcon} = $get('nodeType.ui', this.props);
+        const allowedSizes = ['xs', 'sm', 'lg', '2x', '3x'];
+        const size = !isNil(largeIconSize) && allowedSizes.includes(largeIconSize) ? largeIconSize : '2x';
+        return isNil(largeIcon) ? 'lg' : size;
+    }
+
     render() {
         const {ui, name} = this.props.nodeType;
         const label = $get('label', ui);
         const useLargeIcon = ('largeIcon' in ui);
         const icon = $get(useLargeIcon ? 'largeIcon' : 'icon', ui);
-        const size = useLargeIcon ? '2x' : 'lg';
+        const size = this.getIconSize();
         const helpMessage = $get('help.message', ui);
         const {onHelpMessage, groupName} = this.props;
 

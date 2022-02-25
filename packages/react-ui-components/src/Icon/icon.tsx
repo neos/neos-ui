@@ -5,13 +5,14 @@ import {PickDefaultProps, Omit} from '../../types';
 import FontAwesomeIcon from './fontAwesomeIcon';
 import ResourceIcon, {ResourceIconProps} from './resourceIcon';
 
-type IconSize = 'xs' | 'sm' | 'lg' | '2x';
+type IconSize = 'xs' | 'sm' | 'lg' | '2x' | '3x';
 type IconPadding = 'none' | 'left' | 'right';
 type IconColor = 'default' | 'warn' | 'error' | 'primaryBlue';
 
 export interface IconTheme {
     readonly icon: string;
     readonly 'icon--huge': string;
+    readonly 'icon--large': string;
     readonly 'icon--big': string;
     readonly 'icon--small': string;
     readonly 'icon--tiny': string;

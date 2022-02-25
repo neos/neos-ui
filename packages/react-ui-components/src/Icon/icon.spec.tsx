@@ -19,6 +19,7 @@ describe('<Icon/>', () => {
             'icon--small': 'smallClassName',
             'icon--spin': 'spinClassName',
             'icon--tiny': 'tinyClassName',
+            'icon--large': 'largeClassName',
             'icon--huge': 'hugeClassName'
         }
     };

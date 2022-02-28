@@ -48,11 +48,7 @@ export default class SecondaryToolbar extends PureComponent {
             return null;
         }
 
-        const editorIdentifier = nodeTypesRegistry.getInlineEditorIdentifierForProperty(
-            focusedNodeTypeName,
-            currentlyEditedPropertyName
-        );
-        const {ToolbarComponent} = inlineEditorRegistry.get(editorIdentifier);
+        const {ToolbarComponent} = inlineEditorRegistry.get('ckeditor5');
 
         return ToolbarComponent || null;
     }

@@ -53,8 +53,6 @@ export default class NodeTypesRegistry extends SynchronousRegistry<NodeType> {
 
     private _roles: RolesMap = {};
 
-    private _defaultInlineEditor = 'ckeditor5';
-
     private _inspectorViewConfigurationCache: {[propName: string]: any} = {};
 
     public setConstraints (constraints: ConstraintsMap): void {
@@ -75,10 +73,6 @@ export default class NodeTypesRegistry extends SynchronousRegistry<NodeType> {
 
     public getRole(roleName: string): string | null {
         return this._roles[roleName] || null;
-    }
-
-    public getDefaultInlineEditor(): string {
-        return this._defaultInlineEditor;
     }
 
     public hasRole(nodeTypeName: string, roleName: string): boolean {
@@ -241,17 +235,6 @@ export default class NodeTypesRegistry extends SynchronousRegistry<NodeType> {
         this._inspectorViewConfigurationCache[nodeTypeName] = viewConfiguration;
 
         return viewConfiguration;
-    }
-
-    public getInlineEditorIdentifierForProperty(nodeTypeName: NodeTypeName, propertyName: string): string | null {
-        const nodeType = this.get(nodeTypeName);
-
-        if (!nodeType) {
-            console.error('Nodetype not found', nodeTypeName); // tslint:disable-line no-console
-            return null;
-        }
-
-        return $get(['properties', propertyName, 'ui', 'inline', 'editor'], nodeType) || this._defaultInlineEditor;
     }
 
     /**

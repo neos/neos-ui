@@ -6,8 +6,9 @@ import {$get, $transform} from 'plow-js';
 import {IconButton, SelectBox, Icon} from '@neos-project/react-ui-components';
 import LinkOption from '@neos-project/neos-ui-editors/src/Library/LinkOption';
 import {neos} from '@neos-project/neos-ui-decorators';
+import backend from '@neos-project/neos-ui-backend-connector';
 
-import {selectors} from '@neos-project/neos-ui-redux-store';
+import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 import {isUri, isEmail} from '@neos-project/utils-helpers';
 
 import {sanitizeOptions, sanitizeOption} from './sanitizeOptions';
@@ -16,6 +17,7 @@ import style from './LinkInput.css';
 // TODO: extract this isInternalLink logic into a registry, possibly defining a schema and a custom data loader
 const isUriOrInternalLink = link => Boolean(isUri(link) || link.indexOf('node://') === 0 || link.indexOf('asset://') === 0);
 const isInternalLink = link => Boolean(link.indexOf('node://') === 0 || link.indexOf('asset://') === 0);
+const isAssetProxy = link => Boolean(link.indexOf('assetProxy://') === 0);
 const looksLikeExternalLink = link => {
     if (typeof link !== 'string') {
         return false;
@@ -31,12 +33,16 @@ const looksLikeExternalLink = link => {
 
 @neos(globalRegistry => ({
     linkLookupDataLoader: globalRegistry.get('dataLoaders').get('LinkLookup'),
+    assetLookupDataLoader: globalRegistry.get('dataLoaders').get('AssetLookup'),
     i18nRegistry: globalRegistry.get('i18n'),
     containerRegistry: globalRegistry.get('containers')
 }))
 @connect($transform({
     contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking
-}))
+}), {
+    lockPublishing: actions.UI.Remote.lockPublishing,
+    unlockPublishing: actions.UI.Remote.unlockPublishing
+})
 export default class LinkInput extends PureComponent {
     static propTypes = {
         i18nRegistry: PropTypes.object,
@@ -62,6 +68,11 @@ export default class LinkInput extends PureComponent {
 
         linkLookupDataLoader: PropTypes.shape({
             resolveValue: PropTypes.func.isRequired,
+            search: PropTypes.func.isRequired
+        }).isRequired,
+        assetLookupDataLoader: PropTypes.shape({
+            resolveValue: PropTypes.func.isRequired,
+            resolveValues: PropTypes.func.isRequired,
             search: PropTypes.func.isRequired
         }).isRequired,
 
@@ -93,6 +104,7 @@ export default class LinkInput extends PureComponent {
             asset: $get('assets', options),
             node: $get('nodes', options),
             startingPoint: $get('startingPoint', options),
+            constraints: $get('constraints', options),
             contextForNodeLinking
         };
     }
@@ -137,6 +149,7 @@ export default class LinkInput extends PureComponent {
 
     handleSearchTermChange = searchTerm => {
         this.setState({searchTerm});
+
         if (looksLikeExternalLink(searchTerm)) {
             this.setState({
                 isLoading: false,
@@ -165,9 +178,13 @@ export default class LinkInput extends PureComponent {
             this.props.linkLookupDataLoader.search(this.getDataLoaderOptions(), searchTerm)
                 .then(searchOptions => {
                     if (searchTermWhenLookupWasTriggered === this.state.searchTerm) {
+                        const groupedSearchOption = searchOptions.map(searchOption => {
+                            searchOption.group = 'assetSourceLabel' in searchOption ? searchOption.assetSourceLabel : this.props.i18nRegistry.translate('Neos.Neos:Main:document');
+                            return searchOption;
+                        });
                         this.setState({
                             isLoading: false,
-                            searchOptions
+                            searchOptions: groupedSearchOption
                         });
                     }
                 });
@@ -184,10 +201,60 @@ export default class LinkInput extends PureComponent {
         }
     }
 
+    getIdentity(value) {
+        // Information coming from metadata
+        if (value && value.__identity) {
+            return value.__identity;
+        }
+        // Information coming from upload endpoint
+        if (value && value.assetUuid) {
+            return value.assetUuid;
+        }
+        return value;
+    }
+
+    getProxyIdentifier(value) {
+        if (!isAssetProxy(value)) {
+            return value;
+        }
+
+        // Return identifier with asset source prefix except the local neos source
+        const proxyIdentifier = value.replace('assetProxy://', '');
+        return proxyIdentifier.replace('neos/', '');
+    }
+
     handleValueChange = value => {
         this.props.onLinkChange(value || '');
 
-        if (isInternalLink(value)) {
+        if (isAssetProxy(value)) {
+            const {assetProxyImport} = backend.get().endpoints;
+            const proxyIdentifier = this.getProxyIdentifier(value);
+            this.setState({isLoading: true});
+            this.props.lockPublishing();
+            if (proxyIdentifier.indexOf('/') === -1) {
+                this.props.onLinkChange(`asset://${proxyIdentifier}` || '');
+                this.setState({
+                    isLoading: false,
+                    isEditMode: false
+                });
+                this.props.unlockPublishing();
+            } else {
+                const valuePromise = assetProxyImport(proxyIdentifier);
+                valuePromise.then(value => {
+                    const assetProxyIdentifier = this.getIdentity(value);
+                    this.props.assetLookupDataLoader.resolveValue(this.state.options, assetProxyIdentifier)
+                        .then(options => {
+                            const assetUri = options && options[0] ? $get('0.loaderUri', options) : '';
+                            this.props.onLinkChange(assetUri || '');
+                            this.setState({
+                                isLoading: false,
+                                isEditMode: false
+                            });
+                            this.props.unlockPublishing();
+                        });
+                });
+            }
+        } else if (isInternalLink(value)) {
             const options = this.state.searchOptions.reduce((current, option) =>
                 (option.loaderUri === value) ? [Object.assign({}, option)] : current
                 , []);

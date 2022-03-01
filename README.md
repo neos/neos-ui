@@ -27,8 +27,6 @@ That means:
 
 The new interface supports all evergreen (i.e. self-updating) browsers, including: **Chrome, Firefox, Safari, Edge, Opera and other webkit-based browsers**.
 
-In order to get **IE11** to work, please switch to CKEditor 4, as CKEditor 5 doesn't support it. But doing so is highly discouraged, so where possibly encourage your editors to use modern browsers.
-
 If you discover bugs in any of the supported browsers, please [report them](https://github.com/neos/neos-ui/issues/new)!
 
 ## Features

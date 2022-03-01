@@ -40,7 +40,7 @@
     "mini-css-extract-plugin": "^0.5.0",
     "postcss-loader": "^3.0.0",
     "react-dev-utils": "^0.5.0",
-    "style-loader": "^0.23.1"
+    "style-loader": "^2.0.0"
   },
   "bin": {
     "neos-react-scripts": "./bin/neos-react-scripts.js"

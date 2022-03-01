@@ -22,6 +22,8 @@ export const defaultState: State = {
 export enum actionTypes {
     START_SAVING = '@neos/neos-ui/UI/Remote/START_SAVING',
     FINISH_SAVING = '@neos/neos-ui/UI/Remote/FINISH_SAVING',
+    LOCK_PUBLISHING = '@neos/neos-ui/UI/Remote/LOCK_PUBLISHING',
+    UNLOCK_PUBLISHING = '@neos/neos-ui/UI/Remote/UNLOCK_PUBLISHING',
     START_PUBLISHING = '@neos/neos-ui/UI/Remote/START_PUBLISHING',
     FINISH_PUBLISHING = '@neos/neos-ui/UI/Remote/FINISH_PUBLISHING',
     START_DISCARDING = '@neos/neos-ui/UI/Remote/START_DISCARDING',
@@ -60,6 +62,16 @@ const startDiscarding = () => createAction(actionTypes.START_DISCARDING);
 const finishDiscarding = () => createAction(actionTypes.FINISH_DISCARDING);
 
 /**
+ * Marks that an publishing process has been locked.
+ */
+const lockPublishing = () => createAction(actionTypes.LOCK_PUBLISHING);
+
+/**
+ * Marks that an publishing process has been unlocked.
+ */
+const unlockPublishing = () => createAction(actionTypes.UNLOCK_PUBLISHING);
+
+/**
  * Should be called once the server informs the client that a node has been created.
  */
 const documentNodeCreated = (contextPath: NodeContextPath) => createAction(actionTypes.DOCUMENT_NODE_CREATED, {contextPath});
@@ -70,6 +82,8 @@ const documentNodeCreated = (contextPath: NodeContextPath) => createAction(actio
 export const actions = {
     startSaving,
     finishSaving,
+    lockPublishing,
+    unlockPublishing,
     startPublishing,
     finishPublishing,
     startDiscarding,
@@ -89,6 +103,14 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
             break;
         }
         case actionTypes.FINISH_SAVING: {
+            draft.isSaving = false;
+            break;
+        }
+        case actionTypes.LOCK_PUBLISHING: {
+            draft.isSaving = true;
+            break;
+        }
+        case actionTypes.UNLOCK_PUBLISHING: {
             draft.isSaving = false;
             break;
         }

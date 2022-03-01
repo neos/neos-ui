@@ -291,7 +291,7 @@ export default (routes: Routes) => {
                     assetProxyIdentifier
                 };
             });
-            return mappedAssetProxies.filter((assetProxy: {identifier?: string}) => assetProxy.identifier && options.assetsToExclude.indexOf(assetProxy.identifier) === -1);
+            return mappedAssetProxies.filter((assetProxy: {identifier?: string}) => assetProxy.identifier && options?.assetsToExclude?.indexOf(assetProxy.identifier) === -1);
         });
 
     const assetProxyDetail = (assetSourceIdentifier: string, assetProxyIdentifier: string) => fetchWithErrorHandling.withCsrfToken(() => ({

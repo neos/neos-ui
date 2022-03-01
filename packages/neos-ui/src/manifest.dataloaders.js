@@ -206,6 +206,12 @@ manifest('main.dataloaders', {}, globalRegistry => {
             if (!searchTerm) {
                 return Promise.resolve([]);
             }
+            if (!('assetsToExclude' in options)) {
+                options.assetsToExclude = [];
+            }
+            if (!('constraints' in options)) {
+                options.constraints = {};
+            }
             const cacheKey = makeCacheKey('search', {options, searchTerm});
 
             if (this._lru().has(cacheKey)) {
@@ -388,7 +394,7 @@ manifest('main.dataloaders', {}, globalRegistry => {
         dataLoaders() {
             return [
                 {prefix: 'node', dataLoader: dataLoadersRegistry.get('NodeLookup')},
-                {prefix: 'asset', dataLoader: dataLoadersRegistry.get('NeosAssetLookup')}
+                {prefix: 'asset', dataLoader: dataLoadersRegistry.get('AssetLookup')}
             ];
         },
 
@@ -409,8 +415,9 @@ manifest('main.dataloaders', {}, globalRegistry => {
         },
 
         search(options, searchTerm) {
-            return Promise.all(this.dataLoaders().map(dataLoaderInfo =>
-                options[dataLoaderInfo.prefix] === false ? [] : dataLoaderInfo.dataLoader.search(options, searchTerm)
+            return Promise.all(this.dataLoaders().map(dataLoaderInfo => {
+                return options[dataLoaderInfo.prefix] === false ? [] : dataLoaderInfo.dataLoader.search(options, searchTerm);
+            }
             )).then(values => {
                 return values.reduce((runningValues, singleDataLoaderValues) =>
                     runningValues.concat(singleDataLoaderValues)

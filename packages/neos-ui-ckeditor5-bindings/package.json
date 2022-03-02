@@ -20,7 +20,7 @@
     "@ckeditor/ckeditor5-list": "^12.0.2",
     "@ckeditor/ckeditor5-paragraph": "^11.0.2",
     "@ckeditor/ckeditor5-remove-format": "^10.0.0",
-    "@ckeditor/ckeditor5-table": "^13.0.0",
+    "@ckeditor/ckeditor5-table": "^32.0.0",
     "@ckeditor/ckeditor5-widget": "^11.0.2",
     "@neos-project/neos-ui-backend-connector": "5.3.14",
     "@neos-project/neos-ui-decorators": "5.3.14",

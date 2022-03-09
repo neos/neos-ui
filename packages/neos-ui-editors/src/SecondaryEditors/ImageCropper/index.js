@@ -14,6 +14,7 @@ import style from './style.css';
 /* eslint-disable no-unused-vars */
 import ReactCropStyles from './react_crop.vanilla-css';
 /* eslint-enable no-unused-vars */
+import {$get} from "plow-js";
 
 class AspectRatioItem extends PureComponent {
     static propTypes = {
@@ -136,11 +137,40 @@ export default class ImageCropper extends PureComponent {
         });
     }
 
+    handleCropComplete = (cropArea, cropAreaAbsolute) => {
+        const {onComplete, sourceImage, options} = this.props;
+        const {cropConfiguration} = this.state;
+        const currentAspectRatioStrategy = cropConfiguration.aspectRatioStrategy;
+        const pixelSnapping =  $get('crop.aspectRatio.pixelSnapping', options);
+
+        if (pixelSnapping && currentAspectRatioStrategy && currentAspectRatioStrategy.width && currentAspectRatioStrategy.height) {
+
+            const imageWidth = $get('image.originalDimensions.width', sourceImage);
+            const imageHeight = $get('image.originalDimensions.height', sourceImage);
+
+            // normalize aspect ratio values by dividing by gcd
+            const calculateGcdRecursive = (a,b) => !b ? a : calculateGcdRecursive(b,a%b);
+            const aspectRatioGcd = calculateGcdRecursive(currentAspectRatioStrategy.width, currentAspectRatioStrategy.height);
+            const normalizedAspectRatioWidth = currentAspectRatioStrategy.width / aspectRatioGcd;
+            const normalizedAspectRatioHeight = currentAspectRatioStrategy.height / aspectRatioGcd;
+
+            // pixel perfect calculations
+            const naturalCropWidth =  Math.round(imageWidth * (cropArea.width / 100) / normalizedAspectRatioWidth ) * normalizedAspectRatioWidth;
+            const naturalCropHeight = naturalCropWidth / normalizedAspectRatioWidth * normalizedAspectRatioHeight;
+
+            // modify cropArea with pixel snapping values
+            cropArea.width = (naturalCropWidth / imageWidth) * 100;
+            cropArea.height = (naturalCropHeight / imageHeight) * 100;
+        }
+
+        onComplete(cropArea, cropAreaAbsolute);
+    }
+
     render() {
         const {cropConfiguration} = this.state;
         const aspectRatioLocked = cropConfiguration.aspectRatioStrategy instanceof LockedAspectRatioStrategy;
         const allowCustomRatios = cropConfiguration.aspectRatioOptions.some(option => option instanceof CustomAspectRatioOption);
-        const {sourceImage, onComplete, i18nRegistry} = this.props;
+        const {sourceImage, i18nRegistry} = this.props;
         const src = sourceImage.previewUri || '/_Resources/Static/Packages/Neos.Neos/Images/dummy-image.svg';
 
         const toolbarRef = el => {
@@ -189,9 +219,9 @@ export default class ImageCropper extends PureComponent {
                 <ReactCrop
                     src={src}
                     crop={cropConfiguration.cropInformation}
-                    onComplete={onComplete}
-                    onAspectRatioChange={onComplete}
-                    onImageLoaded={onComplete}
+                    onComplete={this.handleCropComplete}
+                    onAspectRatioChange={this.handleCropComplete}
+                    onImageLoaded={this.handleCropComplete}
                     />
             </div>
         );

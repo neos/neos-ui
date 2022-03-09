@@ -130,7 +130,7 @@
     "hashlru": "^2.3.0",
     "he": "^1.1.1",
     "hoist-non-react-statics": "^3.3.1",
-    "immer": "^2.1.4",
+    "immer": "^9.0.0",
     "isemail": "^3.2.0",
     "lodash.assign": "^4.2.0",
     "lodash.assignin": "^4.2.0",

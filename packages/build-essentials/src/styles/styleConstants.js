@@ -1,4 +1,4 @@
-const upperFirst = value => `${value.charAt(0).toUpperCase()}${value.slice(1)}`
+const upperFirst = value => `${value.charAt(0).toUpperCase()}${value.slice(1)}`;
 
 // Global CSS variables for Neos.Ui
 const config = {

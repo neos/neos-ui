@@ -14,11 +14,11 @@ module.exports = merge(
                 './packages/neos-ui/src/styleHostOnly.css'
             ],
             Guest: [
-                './polyfills.js',
+                // './polyfills.js',
                 './packages/neos-ui-ckeditor-bindings/src/index.js'
             ],
             Vendor: [
-                './polyfills.js',
+                // './polyfills.js',
                 'react',
                 'react-redux',
                 'plow-js'

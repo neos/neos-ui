@@ -14,7 +14,7 @@ import style from './style.css';
 /* eslint-disable no-unused-vars */
 import ReactCropStyles from './react_crop.vanilla-css';
 /* eslint-enable no-unused-vars */
-import {$get} from "plow-js";
+import {$get} from 'plow-js';
 
 class AspectRatioItem extends PureComponent {
     static propTypes = {
@@ -141,21 +141,20 @@ export default class ImageCropper extends PureComponent {
         const {onComplete, sourceImage, options} = this.props;
         const {cropConfiguration} = this.state;
         const currentAspectRatioStrategy = cropConfiguration.aspectRatioStrategy;
-        const pixelSnapping =  $get('crop.aspectRatio.pixelSnapping', options);
+        const pixelSnapping = $get('crop.aspectRatio.pixelSnapping', options);
 
         if (pixelSnapping && currentAspectRatioStrategy && currentAspectRatioStrategy.width && currentAspectRatioStrategy.height) {
-
             const imageWidth = $get('image.originalDimensions.width', sourceImage);
             const imageHeight = $get('image.originalDimensions.height', sourceImage);
 
             // normalize aspect ratio values by dividing by gcd
-            const calculateGcdRecursive = (a,b) => !b ? a : calculateGcdRecursive(b,a%b);
+            const calculateGcdRecursive = (a, b) => b ? calculateGcdRecursive(b, a % b) : a;
             const aspectRatioGcd = calculateGcdRecursive(currentAspectRatioStrategy.width, currentAspectRatioStrategy.height);
             const normalizedAspectRatioWidth = currentAspectRatioStrategy.width / aspectRatioGcd;
             const normalizedAspectRatioHeight = currentAspectRatioStrategy.height / aspectRatioGcd;
 
             // pixel perfect calculations
-            const naturalCropWidth =  Math.round(imageWidth * (cropArea.width / 100) / normalizedAspectRatioWidth ) * normalizedAspectRatioWidth;
+            const naturalCropWidth = Math.round(imageWidth * (cropArea.width / 100) / normalizedAspectRatioWidth) * normalizedAspectRatioWidth;
             const naturalCropHeight = naturalCropWidth / normalizedAspectRatioWidth * normalizedAspectRatioHeight;
 
             // modify cropArea with pixel snapping values

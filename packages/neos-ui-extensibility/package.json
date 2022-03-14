@@ -17,6 +17,7 @@
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
+    "@babel/plugin-syntax-jsx": "^7.0.0",
     "@neos-project/babel-preset-neos-ui": "7.3.2",
     "@neos-project/jest-preset-neos-ui": "7.3.2",
     "typescript": "3.2.2"

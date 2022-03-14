@@ -27,7 +27,7 @@
     "@babel/plugin-proposal-throw-expressions": "^7.0.0",
     "@babel/plugin-syntax-dynamic-import": "^7.0.0",
     "@babel/plugin-syntax-import-meta": "^7.0.0",
-    "@babel/plugin-syntax-jsx": "^7.12.1",
+    "@babel/plugin-syntax-jsx": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
     "babel-plugin-webpack-alias": "^2.1.2"

@@ -33,6 +33,7 @@
     "@babel/plugin-proposal-throw-expressions": "^7.0.0",
     "@babel/plugin-syntax-dynamic-import": "^7.0.0",
     "@babel/plugin-syntax-import-meta": "^7.0.0",
+    "@babel/plugin-syntax-jsx": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
     "@neos-project/brand": "^1.1.0",
@@ -113,7 +114,6 @@
     "webpack-merge": "^4.2.1"
   },
   "dependencies": {
-    "@babel/plugin-syntax-jsx": "^7.12.1",
     "@ckeditor/ckeditor5-alignment": "^16.0.0",
     "@ckeditor/ckeditor5-basic-styles": "^16.0.0",
     "@ckeditor/ckeditor5-editor-decoupled": "^16.0.0",

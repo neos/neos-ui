@@ -1,4 +1,4 @@
 {
-    "presets": ["@babel/preset-react"],
-    "plugins": ["@babel/plugin-proposal-decorators", "@babel/plugin-syntax-jsx", ["transform-object-rest-spread", { "useBuiltIns": true }] ]
+    "presets": ["@babel/preset-react", "@babel/preset-env"],
+    "plugins": ["plugin-proposal-decorators", "@babel/plugin-proposal-decorators", "@babel/plugin-syntax-jsx", "@babel/plugin-proposal-object-rest-spread" ]
 }

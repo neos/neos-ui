@@ -16,8 +16,9 @@ module.exports = function (neosPackageJson) {
                         ],
                         plugins: [
                             require.resolve('@babel/plugin-proposal-decorators'),
+                            require.resolve('@babel/plugin-proposal-class-properties'),
                             require.resolve('@babel/plugin-syntax-jsx'),
-                            require.resolve('babel-plugin-transform-object-rest-spread')
+                            require.resolve('@babel/plugin-proposal-object-rest-spread')
                         ]
                     };
                 }

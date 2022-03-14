@@ -11,7 +11,6 @@ import Tabs from '@neos-project/react-ui-components/src/Tabs/';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 import Badge from '@neos-project/react-ui-components/src/Badge/';
 import debounce from 'lodash.debounce';
-import setIn from 'lodash.set';
 
 import {SecondaryInspector} from '@neos-project/neos-ui-inspector';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
@@ -152,7 +151,7 @@ export default class Inspector extends PureComponent {
                         viewConfiguration = produce(
                             viewConfiguration,
                             draft => {
-                                setIn(draft, newPath, evaluatedValue);
+                                return $set(newPath, evaluatedValue, draft);
                             }
                         );
                     }

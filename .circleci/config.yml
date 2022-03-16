@@ -81,7 +81,7 @@ jobs:
     environment:
       COMPOSER_CACHE_DIR: /home/circleci/composer/cache-dir
     docker:
-      - image: cimg/php:8.0.16-node
+      - image: cimg/php:8.0-node
     steps:
       - attach_workspace: *attach_workspace
       - run: chmod -R 777 /home/circleci
@@ -98,7 +98,7 @@ jobs:
     environment:
       FLOW_CONTEXT: Production
     docker:
-      - image: cimg/php:8.0.16-node
+      - image: cimg/php:8.0-node
       - image: circleci/mariadb:10.2
         environment:
           MYSQL_DATABASE: neos
@@ -137,7 +137,7 @@ jobs:
     environment:
       FLOW_CONTEXT: Production
     docker:
-      - image: cimg/php:8.0.16-node
+      - image: cimg/php:8.0-node
       - image: circleci/mariadb:10.2
         environment:
           MYSQL_DATABASE: neos

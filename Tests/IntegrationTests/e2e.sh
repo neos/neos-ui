@@ -20,7 +20,7 @@ for fixture in Packages/Application/Neos.Neos.Ui/Tests/IntegrationTests/Fixtures
     ln -s "../${fixture}SitePackage" DistributionPackages/Neos.TestSite
 
     # TODO: optimize this
-    ./flow flow:package:rescan
+    composer update
     ./flow flow:cache:flush --force
     if ./flow site:list | grep -q 'Node name'; then
         ./flow site:prune '*'

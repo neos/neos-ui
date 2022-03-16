@@ -115,7 +115,7 @@
     "@fortawesome/react-fontawesome": "^0.1.9",
     "@friendsofreactjs/react-css-themr": "^4.1.0",
     "@neos-project/brand": "^1.1.0",
-    "@sindresorhus/slugify": "^1.1.0",
+    "@sindresorhus/slugify": "^2.1.0",
     "@types/lodash.assignin": "^4.2.6",
     "amator": "^1.0.1",
     "classnames": "^2.2.3",

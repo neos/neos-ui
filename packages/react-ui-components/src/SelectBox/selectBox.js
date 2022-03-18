@@ -259,6 +259,7 @@ export default class SelectBox extends PureComponent {
         if (
             displaySearchBox && (
                 isNil(value) ||
+                value === '' ||
                 this.state.isExpanded ||
                 plainInputMode
             )

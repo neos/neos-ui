@@ -9,7 +9,7 @@ import getVersion from './getVersion';
 import isEmail from './isEmail';
 import {isUri} from './isUri';
 import isEqualSet from './isEqualSet';
-import isEmpty from './isEmpty';
+import isOptionSet from './isOptionSet';
 
 export {
     delay,
@@ -19,7 +19,7 @@ export {
     isThenable,
     isUri,
     isEmail,
-    isEmpty,
+    isOptionSet,
     isEqualSet,
     stripTags,
     stripTagsEncoded,

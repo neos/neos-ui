@@ -1,7 +1,7 @@
 //
 // Checks if the given item is empty
 //
-export default function isEmpty(item: any): boolean {
+export default function isOptionSet(item: any): boolean {
     if (item == null) {
         return true;
     }

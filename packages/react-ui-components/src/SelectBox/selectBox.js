@@ -5,7 +5,7 @@ import {$get} from 'plow-js';
 import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine';
 import mergeClassNames from 'classnames';
 import isEqual from 'lodash.isequal';
-import isEmpty from '../../../utils-helpers/src/isEmpty';
+import isNil from '../../../utils-helpers/src/isNil';
 
 // TODO: document component usage && check code in detail
 export default class SelectBox extends PureComponent {
@@ -258,7 +258,8 @@ export default class SelectBox extends PureComponent {
 
         if (
             displaySearchBox && (
-                isEmpty(value) ||
+                isNil(value) ||
+                value === '' ||
                 this.state.isExpanded ||
                 plainInputMode
             )

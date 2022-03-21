@@ -18,7 +18,7 @@
     "@neos-project/build-essentials": "*",
     "@neos-project/eslint-config-neos": "^2.3.0",
     "@types/classnames": "^2.2.9",
-    "@types/debug": "^0.0.31",
+    "@types/debug": "^4.1.7",
     "@types/enzyme": "^3.1.14",
     "@types/he": "^1.1.0",
     "@types/hoist-non-react-statics": "^3.3.1",

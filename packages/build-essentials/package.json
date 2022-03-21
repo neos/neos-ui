@@ -20,7 +20,7 @@
     "lint": "eslint src"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "5.3.14"
+    "@neos-project/babel-preset-neos-ui": "5.3.15"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-dev-utils": "^12.0.1",

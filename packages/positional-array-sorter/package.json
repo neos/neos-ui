@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@neos-project/build-essentials": "5.3.15",
-    "@neos-project/jest-preset-neos-ui": "5.3.14",
+    "@neos-project/jest-preset-neos-ui": "5.3.15",
     "typescript": "3.2.2"
   },
   "jest": {

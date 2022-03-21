@@ -22,10 +22,10 @@
     "start": "cross-env STORY=true start-storybook -p 9001"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "5.3.14",
+    "@neos-project/babel-preset-neos-ui": "5.3.15",
     "@neos-project/build-essentials": "5.3.15",
     "@neos-project/debug-reason-for-rendering": "5.3.15",
-    "@neos-project/jest-preset-neos-ui": "5.3.14",
+    "@neos-project/jest-preset-neos-ui": "5.3.15",
     "@storybook/addon-info": "^3.2.16",
     "@storybook/addon-knobs": "3.2.16",
     "@storybook/react": "3.2.16",

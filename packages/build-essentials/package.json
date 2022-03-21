@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/build-essentials",
-  "version": "5.3.14",
+  "version": "5.3.15",
   "description": "Dependencies for building @neos-project packages",
   "repository": "neos/neos-ui",
   "bugs": "https://github.com/neos/neos-ui/issues",

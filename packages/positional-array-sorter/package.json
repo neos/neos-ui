@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@neos-project/build-essentials": "7.0.10",
-    "@neos-project/jest-preset-neos-ui": "7.0.9",
+    "@neos-project/jest-preset-neos-ui": "7.0.10",
     "typescript": "3.2.2"
   },
   "jest": {

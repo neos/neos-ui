@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-extensibility",
-  "version": "7.0.9",
+  "version": "7.0.10",
   "description": "Extensibility mechanisms for the Neos CMS UI",
   "repository": "neos/neos-ui",
   "bugs": "https://github.com/neos/neos-ui/issues",

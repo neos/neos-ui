@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/react-ui-components",
-  "version": "7.0.9",
+  "version": "7.0.10",
   "description": "The UI components which power the Neos backend application.",
   "repository": "neos/neos-ui",
   "bugs": "https://github.com/neos/neos-ui/issues",
@@ -23,8 +23,8 @@
   },
   "devDependencies": {
     "@neos-project/babel-preset-neos-ui": "7.0.9",
-    "@neos-project/build-essentials": "7.0.9",
-    "@neos-project/debug-reason-for-rendering": "7.0.9",
+    "@neos-project/build-essentials": "7.0.10",
+    "@neos-project/debug-reason-for-rendering": "7.0.10",
     "@neos-project/jest-preset-neos-ui": "7.0.9",
     "@storybook/addon-info": "^3.2.16",
     "@storybook/addon-knobs": "3.2.16",

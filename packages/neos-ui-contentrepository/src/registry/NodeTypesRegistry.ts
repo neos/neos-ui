@@ -53,7 +53,7 @@ export default class NodeTypesRegistry extends SynchronousRegistry<NodeType> {
 
     private _roles: RolesMap = {};
 
-    private _defaultInlineEditor = 'ckeditor';
+    private _defaultInlineEditor = 'ckeditor5';
 
     private _inspectorViewConfigurationCache: {[propName: string]: any} = {};
 
@@ -75,12 +75,6 @@ export default class NodeTypesRegistry extends SynchronousRegistry<NodeType> {
 
     public getRole(roleName: string): string | null {
         return this._roles[roleName] || null;
-    }
-
-    public setDefaultInlineEditor(defaultInlineEditor: string): void {
-        if (defaultInlineEditor) {
-            this._defaultInlineEditor = defaultInlineEditor;
-        }
     }
 
     public getDefaultInlineEditor(): string {

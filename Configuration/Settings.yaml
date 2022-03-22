@@ -94,8 +94,6 @@ Neos:
 
           'CR.Nodes.unfocus': 'u n'
 
-        defaultInlineEditor: 'ckeditor5'
-
       #################################
       # INTERNAL CONFIG (no API)
       #################################

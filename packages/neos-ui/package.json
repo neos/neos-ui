@@ -23,7 +23,6 @@
   "dependencies": {
     "@neos-project/brand": "^1.1.0",
     "@neos-project/neos-ui-backend-connector": "7.3.3",
-    "@neos-project/neos-ui-ckeditor-bindings": "7.3.3",
     "@neos-project/neos-ui-ckeditor5-bindings": "7.3.3",
     "@neos-project/neos-ui-constants": "7.3.3",
     "@neos-project/neos-ui-containers": "7.3.3",

@@ -21,7 +21,7 @@
     "redux-saga-test-plan": "^3.6.0"
   },
   "dependencies": {
-    "@neos-project/brand": "^1.1.0",
+    "@neos-project/brand": "^1.3.0",
     "@neos-project/neos-ui-backend-connector": "7.3.3",
     "@neos-project/neos-ui-ckeditor-bindings": "7.3.3",
     "@neos-project/neos-ui-ckeditor5-bindings": "7.3.3",

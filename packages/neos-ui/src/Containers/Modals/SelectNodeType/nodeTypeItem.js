@@ -40,17 +40,17 @@ class NodeTypeItem extends PureComponent {
      * @returns {string}
      */
     getIconSize() {
-        const {previewIconSize, preview} = $get('nodeType.ui', this.props);
+        const {previewIconSize, previewIcon} = $get('nodeType.ui', this.props);
         const allowedSizes = ['xs', 'sm', 'lg', '2x', '3x'];
         const size = !isNil(previewIconSize) && allowedSizes.includes(previewIconSize) ? previewIconSize : '2x';
-        return isNil(preview) ? 'lg' : size;
+        return isNil(previewIcon) ? 'lg' : size;
     }
 
     render() {
         const {ui, name} = this.props.nodeType;
         const label = $get('label', ui);
-        const usePreviewIcon = ('preview' in ui);
-        const icon = $get(usePreviewIcon ? 'preview' : 'icon', ui);
+        const usePreviewIcon = ('previewIcon' in ui);
+        const icon = $get(usePreviewIcon ? 'previewIcon' : 'icon', ui);
         const size = this.getIconSize();
         const helpMessage = $get('help.message', ui);
         const {onHelpMessage, groupName} = this.props;

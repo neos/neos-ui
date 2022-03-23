@@ -26,6 +26,18 @@
     color: var(--colors-PrimaryBlue);
 }
 
+.icon--huge {
+    svg {
+        height: 3em;
+    }
+}
+
+.icon--large {
+    svg {
+        height: 2em;
+    }
+}
+
 .icon--big {
     svg {
         height: 1.33em;

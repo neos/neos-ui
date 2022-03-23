@@ -8,6 +8,7 @@ import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 import Button from '@neos-project/react-ui-components/src/Button/';
 import {actions} from '@neos-project/neos-ui-redux-store';
 import I18n from '@neos-project/neos-ui-i18n';
+import {isNil} from '@neos-project/utils-helpers';
 
 import style from './style.css';
 
@@ -29,10 +30,28 @@ class NodeTypeItem extends PureComponent {
         groupName: PropTypes.string.isRequired
     };
 
+    /**
+     * This method returns the size if the rendered icon.
+     * We can render the option icon or preview icon. The size for icon is always "lg".
+     *
+     * If we have a preview icon option set and no separte previewIconSize option the icon size will be 2x.
+     * We allow only the sizes 'xs', 'sm', 'lg', '2x' and '3x'.
+     *
+     * @returns {string}
+     */
+    getIconSize() {
+        const {previewIconSize, previewIcon} = $get('nodeType.ui', this.props);
+        const allowedSizes = ['xs', 'sm', 'lg', '2x', '3x'];
+        const size = !isNil(previewIconSize) && allowedSizes.includes(previewIconSize) ? previewIconSize : '2x';
+        return isNil(previewIcon) ? 'lg' : size;
+    }
+
     render() {
         const {ui, name} = this.props.nodeType;
-        const icon = $get('icon', ui);
         const label = $get('label', ui);
+        const usePreviewIcon = ('previewIcon' in ui);
+        const icon = $get(usePreviewIcon ? 'previewIcon' : 'icon', ui);
+        const size = this.getIconSize();
         const helpMessage = $get('help.message', ui);
         const {onHelpMessage, groupName} = this.props;
 
@@ -47,7 +66,7 @@ class NodeTypeItem extends PureComponent {
                 >
                     <span>
                         <span className={style.nodeType__iconWrapper}>
-                            {icon && <Icon icon={icon} size="lg" className={style.nodeType__icon} />}
+                            {icon && <Icon icon={icon} size={size} className={style.nodeType__icon} />}
                         </span>
                         <I18n id={label} fallback={label}/>
                     </span>

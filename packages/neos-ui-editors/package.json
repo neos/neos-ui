@@ -21,7 +21,6 @@
     "react-dnd-test-backend": "^7.0.2"
   },
   "dependencies": {
-    "@neos-project/neos-ui-ckeditor-bindings": "7.3.3",
     "@neos-project/neos-ui-ckeditor5-bindings": "7.3.3",
     "@neos-project/neos-ui-constants": "7.3.3",
     "@neos-project/neos-ui-decorators": "7.3.3",

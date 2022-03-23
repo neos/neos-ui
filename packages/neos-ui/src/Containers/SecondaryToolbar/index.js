@@ -11,8 +11,7 @@ import style from './style.css';
 
 @neos(globalRegistry => ({
     inlineEditorRegistry: globalRegistry.get('inlineEditors'),
-    containerRegistry: globalRegistry.get('containers'),
-    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
+    containerRegistry: globalRegistry.get('containers')
 }))
 @connect($transform({
     currentlyEditedPropertyName: $get('ui.contentCanvas.currentlyEditedPropertyName'),
@@ -25,7 +24,6 @@ import style from './style.css';
 export default class SecondaryToolbar extends PureComponent {
     static propTypes = {
         containerRegistry: PropTypes.object.isRequired,
-        nodeTypesRegistry: PropTypes.object.isRequired,
         inlineEditorRegistry: PropTypes.object.isRequired,
 
         focusedNodeTypeName: PropTypes.string,
@@ -37,7 +35,7 @@ export default class SecondaryToolbar extends PureComponent {
     };
 
     getToolbarComponent() {
-        const {currentlyEditedPropertyName, hasFocusedContentNode, nodeTypesRegistry, inlineEditorRegistry, focusedNodeTypeName} = this.props;
+        const {currentlyEditedPropertyName, hasFocusedContentNode, inlineEditorRegistry, focusedNodeTypeName} = this.props;
 
         // Focused node is not yet in state, we need to wait a bit
         if (!focusedNodeTypeName) {
@@ -48,11 +46,7 @@ export default class SecondaryToolbar extends PureComponent {
             return null;
         }
 
-        const editorIdentifier = nodeTypesRegistry.getInlineEditorIdentifierForProperty(
-            focusedNodeTypeName,
-            currentlyEditedPropertyName
-        );
-        const {ToolbarComponent} = inlineEditorRegistry.get(editorIdentifier);
+        const {ToolbarComponent} = inlineEditorRegistry.get('ckeditor5');
 
         return ToolbarComponent || null;
     }

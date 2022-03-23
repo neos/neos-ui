@@ -8,6 +8,7 @@ import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 import Button from '@neos-project/react-ui-components/src/Button/';
 import {actions} from '@neos-project/neos-ui-redux-store';
 import I18n from '@neos-project/neos-ui-i18n';
+import {isNil} from '@neos-project/utils-helpers';
 
 import style from './style.css';
 
@@ -39,7 +40,6 @@ class NodeTypeItem extends PureComponent {
      * @returns {string}
      */
     getIconSize() {
-        const isNil = value => value === null || value === undefined;
         const {previewIconSize, preview} = $get('nodeType.ui', this.props);
         const allowedSizes = ['xs', 'sm', 'lg', '2x', '3x'];
         const size = !isNil(previewIconSize) && allowedSizes.includes(previewIconSize) ? previewIconSize : '2x';

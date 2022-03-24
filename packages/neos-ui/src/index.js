@@ -88,7 +88,7 @@ function * application() {
     //
     store.dispatch(actions.System.boot());
 
-    const {getJsonResource} = backend.get().endpoints;
+    const {getJsonResource, impersonateStatus} = backend.get().endpoints;
 
     const groupsAndRoles = yield system.getNodeTypes;
 
@@ -134,6 +134,11 @@ function * application() {
     const persistedState = localStorage.getItem('persistedState') ? JSON.parse(localStorage.getItem('persistedState')) : {};
     const mergedState = merge({}, serverState, persistedState);
     yield put(actions.System.init(mergedState));
+
+    const impersonateState = yield impersonateStatus();
+    if (impersonateState) {
+        yield put(actions.User.Impersonate.fetchStatus(impersonateState));
+    }
 
     //
     // Just make sure that everybody does their initialization homework

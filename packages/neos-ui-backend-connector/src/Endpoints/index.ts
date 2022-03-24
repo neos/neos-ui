@@ -35,6 +35,8 @@ export interface Routes {
             userPreferences: string;
             dataSource: string;
             contentDimensions: string;
+            impersonateStatus: string;
+            impersonateRestore: string;
         };
         modules: {
             workspaces: string;
@@ -609,6 +611,29 @@ export default (routes: Routes) => {
         .then(result => result && result.csrfToken);
     };
 
+    const impersonateStatus = () => fetchWithErrorHandling.withCsrfToken(() => ({
+        url: routes.core.service.impersonateStatus,
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })).then(response => fetchWithErrorHandling.parseJson(response));
+
+    const impersonateRestore = () => fetchWithErrorHandling.withCsrfToken(csrfToken => {
+        const data = new URLSearchParams();
+        data.set('__csrfToken', csrfToken);
+
+        return {
+            url: routes.core.service.impersonateRestore,
+            method: 'POST',
+            credentials: 'include',
+            body: data
+        };
+    })
+    .then(response => fetchWithErrorHandling.parseJson(response))
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+
     return {
         loadImageMetadata,
         change,
@@ -636,6 +661,8 @@ export default (routes: Routes) => {
         getWorkspaceInfo,
         getAdditionalNodeMetadata,
         tryLogin,
-        contentDimensions
+        contentDimensions,
+        impersonateStatus,
+        impersonateRestore
     };
 };

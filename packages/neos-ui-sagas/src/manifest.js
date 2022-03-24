@@ -14,7 +14,8 @@ import {
     uiEditPreviewMode,
     uiInspector,
     uiPageTree,
-    uiHotkeys
+    uiHotkeys,
+    impersonate
 } from './index';
 
 manifest('main.sagas', {}, globalRegistry => {
@@ -77,4 +78,6 @@ manifest('main.sagas', {}, globalRegistry => {
     sagasRegistry.set('neos-ui/UI/PageTree/watchToggle', {saga: uiPageTree.watchToggle});
 
     sagasRegistry.set('neos-ui/UI/Hotkeys/handleHotkeys', {saga: uiHotkeys.handleHotkeys});
+
+    sagasRegistry.set('neos-ui/UI/Impersonate/impersonateRestore', {saga: impersonate.impersonateRestore});
 });

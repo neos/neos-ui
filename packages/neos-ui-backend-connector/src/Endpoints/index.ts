@@ -1,4 +1,5 @@
 import {getElementInnerText, getElementAttributeValue, getContextString} from './Helpers';
+import {isNil} from '@neos-project/utils-helpers';
 import {urlWithParams, encodeAsQueryString} from '@neos-project/utils-helpers/src/urlWithParams';
 
 import fetchWithErrorHandling from '../FetchWithErrorHandling/index';
@@ -612,20 +613,22 @@ export default (routes: Routes) => {
     };
 
     const impersonateStatus = () => fetchWithErrorHandling.withCsrfToken(() => ({
-        url: routes.core.service.impersonateStatus,
+        url: isNil(routes.core.service.impersonateStatus) ? '' : routes.core.service.impersonateStatus,
         method: 'GET',
         credentials: 'include',
         headers: {
             'Content-Type': 'application/json'
         }
-    })).then(response => fetchWithErrorHandling.parseJson(response));
+    }))
+    .then(response => fetchWithErrorHandling.parseJson(response))
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const impersonateRestore = () => fetchWithErrorHandling.withCsrfToken(csrfToken => {
         const data = new URLSearchParams();
         data.set('__csrfToken', csrfToken);
 
         return {
-            url: routes.core.service.impersonateRestore,
+            url: isNil(routes.core.service.impersonateRestore) ? '' : routes.core.service.impersonateRestore,
             method: 'POST',
             credentials: 'include',
             body: data

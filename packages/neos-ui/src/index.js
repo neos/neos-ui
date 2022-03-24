@@ -135,9 +135,13 @@ function * application() {
     const mergedState = merge({}, serverState, persistedState);
     yield put(actions.System.init(mergedState));
 
-    const impersonateState = yield impersonateStatus();
-    if (impersonateState) {
-        yield put(actions.User.Impersonate.fetchStatus(impersonateState));
+    try {
+        const impersonateState = yield impersonateStatus();
+        if (impersonateState) {
+            yield put(actions.User.Impersonate.fetchStatus(impersonateState));
+        }
+    } catch (error) {
+        store.dispatch(actions.UI.FlashMessages.add('impersonateStatusError', error.message, 'error'));
     }
 
     //

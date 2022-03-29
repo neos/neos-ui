@@ -8,7 +8,7 @@
     },
     "minimum-stability": "dev",
     "require": {
-      "neos/neos-ui": "dev-master",
+      "neos/neos-ui": "~8.0.0",
       "neos/fusion-afx": "*",
       "neos/test-site": "@dev",
       "neos/test-nodetypes": "@dev"

@@ -12,7 +12,7 @@ import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {isNodeCollapsed} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/helpers';
 import {neos} from '@neos-project/neos-ui-decorators';
 
-import {hasNestedNodes} from '@neos-project/neos-ui/src/Containers/LeftSideBar/NodeTree/helpers';
+import {hasNestedNodes} from './../../../../Containers/LeftSideBar/NodeTree/helpers';
 
 import hashSum from 'hash-sum';
 import moment from 'moment';

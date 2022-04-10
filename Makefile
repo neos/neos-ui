@@ -58,11 +58,11 @@ RESET  := $(shell tput -Txterm sgr0)
 
 
 check-requirements:
-	@which yarn &>/dev/null || \
-		(echo yarn is not installed: https://github.com/yarnpkg/yarn && false)
+	@which pnpm &>/dev/null || \
+		(echo pnpm is not installed: https://pnpm.io (npm install -g pnpm) && false)
 
 install: ## Install dependencies
-	yarn install
+	pnpm install --filter . --frozen-lockfile
 
 setup: check-requirements install build ## Run a clean setup
 	@echo Please remember to set frontendDevelopmentMode \
@@ -81,7 +81,7 @@ setup: check-requirements install build ## Run a clean setup
 
 # TODO: figure out how to pass a parameter to other targets to reduce redundancy
 build-subpackages:
-	$(lerna) run build --concurrency 1
+	pnpm run build --filter .
 	make build-react-ui-components-standalone
 
 # we build the react UI components ready for standalone usage;
@@ -89,7 +89,7 @@ build-subpackages:
 
 ## Build the react UI components ready for standalone usage.
 build-react-ui-components-standalone:
-	cd packages/react-ui-components && yarn run build-standalone-esm
+	pnpm run build-standalone-esm --filter ./packages/react-ui-components
 
 ## Runs the development build.
 build:

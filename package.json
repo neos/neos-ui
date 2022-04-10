@@ -7,8 +7,9 @@
   "private": true,
   "resolutions": {
     "moment": "^2.20.1",
-    "d3-scale/d3-array": "2.3.3",
-    "vfile-message": "^2.0.2"
+    "d3-scale>d3-array": "2.3.3",
+    "vfile-message": "^2.0.2",
+    "@types/node": "^14.6.2"
   },
   "engines": {
     "node": "~14"

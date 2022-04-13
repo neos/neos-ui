@@ -20,6 +20,7 @@ for fixture in Packages/Application/Neos.Neos.Ui/Tests/IntegrationTests/Fixtures
     ln -s "../${fixture}SitePackage" DistributionPackages/Neos.TestSite
 
     # TODO: optimize this
+    composer update
     ./flow flow:cache:flush --force
     ./flow flow:package:rescan
     ./flow flow:cache:flush --force

@@ -26,7 +26,6 @@
         "pretty": true,
         "removeComments": true,
         "sourceMap": true,
-        "downlevelIteration": true,
-        "preserveSymlinks": true
+        "downlevelIteration": true
     }
 }

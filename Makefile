@@ -88,7 +88,7 @@ build-subpackages:
 
 ## Build the react UI components ready for standalone usage.
 build-react-ui-components-standalone:
-	cd packages/react-ui-components && yarn run build-standalone-esm
+	yarn workspace @neos-project/react-ui-components build-standalone-esm
 
 ## Runs the development build.
 build:

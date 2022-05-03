@@ -1,7 +1,7 @@
 import {merge, mapValues} from 'lodash';
 import {$get} from 'plow-js';
-import {SynchronousRegistry} from '@neos-project/neos-ui-extensibility';
-import positionalArraySorter from '@neos-project/positional-array-sorter';
+import {SynchronousRegistry} from '@neos-project/neos-ui-extensibility/src';
+import positionalArraySorter from '@neos-project/positional-array-sorter/src/positionalArraySorter';
 import {NodeTypeName, NodeType} from '@neos-project/neos-ts-interfaces';
 
 interface Constraint {

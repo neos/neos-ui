@@ -2,12 +2,11 @@
     "compilerOptions": {
         "allowSyntheticDefaultImports": true, // no errors with commonjs modules interop
         "esModuleInterop": true,
+        "moduleResolution": "node",
         "declaration": false, // don't emit declarations
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "forceConsistentCasingInFileNames": true,
-        "importHelpers": true, // importing helper functions from tslib
-        "noEmitHelpers": true, // disable emitting inline helper functions
         "jsx": "react", // process JSX
         "lib": [
             "dom",

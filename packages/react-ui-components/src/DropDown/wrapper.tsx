@@ -182,9 +182,7 @@ export class ContextDropDownHeader extends PureComponent<ContextDropDownProps> {
     };
 
     public render(): JSX.Element {
-        const {isDropdownOpen, ...rest} = this.props;
-
-        return <ShallowDropDownHeader isOpen={isDropdownOpen} {...rest} {...this.context}/>;
+        return <ShallowDropDownHeader {...this.props} {...this.context}/>;
     }
 }
 
@@ -195,8 +193,8 @@ export class ContextDropDownContents extends PureComponent<ContextDropDownProps>
     };
 
     public render(): JSX.Element {
-        const {isDropdownOpen, wrapperRef, ...rest} = this.props;
+        const {wrapperRef} = this.props;
 
-        return <ShallowDropDownContents isOpen={isDropdownOpen} {...rest} {...this.context} wrapperRef={wrapperRef || this.context.wrapperRef}/>;
+        return <ShallowDropDownContents {...this.props} {...this.context} wrapperRef={wrapperRef || this.context.wrapperRef}/>;
     }
 }

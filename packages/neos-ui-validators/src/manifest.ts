@@ -13,7 +13,7 @@ import StringLength from '@neos-project/neos-ui-validators/src/StringLength';
 import Text from '@neos-project/neos-ui-validators/src/Text';
 import Uuid from '@neos-project/neos-ui-validators/src/Uuid';
 
-import manifest from '@neos-project/neos-ui-extensibility';
+import manifest from '@neos-project/neos-ui-extensibility/src';
 import {GlobalRegistry} from '@neos-project/neos-ts-interfaces';
 
 manifest('validators', {}, (globalRegistry: GlobalRegistry) => {

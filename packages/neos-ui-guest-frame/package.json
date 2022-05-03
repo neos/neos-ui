@@ -14,13 +14,13 @@
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "8.0.0",
-    "@neos-project/build-essentials": "8.0.0",
-    "@neos-project/jest-preset-neos-ui": "8.0.0"
+    "@neos-project/babel-preset-neos-ui": "workspace:*",
+    "@neos-project/build-essentials": "workspace:*",
+    "@neos-project/jest-preset-neos-ui": "workspace:*"
   },
   "dependencies": {
-    "@neos-project/neos-ui-extensibility": "8.0.0",
-    "@neos-project/utils-helpers": "8.0.0"
+    "@neos-project/neos-ui-extensibility": "workspace:*",
+    "@neos-project/utils-helpers": "workspace:*"
   },
   "license": "GNU GPLv3",
   "jest": {

@@ -18,8 +18,8 @@
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@neos-project/build-essentials": "8.0.0",
-    "@neos-project/jest-preset-neos-ui": "8.0.0",
+    "@neos-project/build-essentials": "workspace:*",
+    "@neos-project/jest-preset-neos-ui": "workspace:*",
     "typescript": "3.2.2"
   },
   "jest": {

@@ -7,8 +7,6 @@
     "scripts": {
         "test": "yarn jest -w 2 --coverage",
         "test:watch": "yarn jest --watch",
-        "build": "exit 0",
-        "build:watch": "exit 0",
         "lint": "eslint src",
         "jest": "NODE_ENV=test jest"
     },

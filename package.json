@@ -1,5 +1,5 @@
 {
-  "description": "Root package + shared dev dependencies for @neos-project packages, managed by lernaJS",
+  "description": "Root package + shared dev dependencies for @neos-project packages, managed by yarn",
   "repository": "neos/neos-ui",
   "bugs": "https://github.com/neos/neos-ui/issues",
   "homepage": "https://github.com/neos/neos-ui/blob/master/README.md",
@@ -63,7 +63,6 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^23.6.0",
     "json-loader": "^0.5.7",
-    "lerna": "^4.0.0",
     "mini-css-extract-plugin": "^0.5.0",
     "null-loader": "^0.1.1",
     "postcss-css-variables": "^0.14.0",
@@ -90,7 +89,7 @@
     "tslint": "^5.20.1",
     "tslint-config-prettier": "^1.15.0",
     "tslint-react": "^3.6.0",
-    "typescript": "^3.7.4",
+    "typescript": "^4.6.4",
     "watch": "^1.0.2",
     "webpack": "^4.41.5",
     "webpack-livereload-plugin": "^2.2.0",

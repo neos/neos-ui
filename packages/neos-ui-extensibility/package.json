@@ -17,9 +17,9 @@
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "8.0.0",
-    "@neos-project/jest-preset-neos-ui": "8.0.0",
-    "typescript": "^4.6.4"
+    "@neos-project/babel-preset-neos-ui": "workspace:*",
+    "@neos-project/jest-preset-neos-ui": "workspace:*",
+    "typescript": "3.2.2"
   },
   "dependencies": {
     "@neos-project/build-essentials": "5.2.5",

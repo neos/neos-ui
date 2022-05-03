@@ -3,7 +3,7 @@ import {$get} from 'plow-js';
 import {mapValues} from 'lodash';
 import {createSelector} from 'reselect';
 import {action as createAction, ActionType} from 'typesafe-actions';
-import {actionTypes as system, InitAction, GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
+import {actionTypes as system, InitAction, GlobalState} from '../../System';
 import isEqual from 'lodash.isequal';
 import {DimensionInformation, DimensionCombination, DimensionPresetName, DimensionPresetCombination} from '@neos-project/neos-ts-interfaces';
 

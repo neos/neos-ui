@@ -62,7 +62,7 @@ check-requirements:
 		(echo pnpm is not installed: https://pnpm.io (npm install -g pnpm) && false)
 
 install: ## Install dependencies
-	pnpm install --filter . --frozen-lockfile
+	pnpm install --frozen-lockfile
 
 setup: check-requirements install build ## Run a clean setup
 	@echo Please remember to set frontendDevelopmentMode \
@@ -81,7 +81,7 @@ setup: check-requirements install build ## Run a clean setup
 
 # TODO: figure out how to pass a parameter to other targets to reduce redundancy
 build-subpackages:
-	pnpm run build --filter .
+	pnpm run -r build
 	make build-react-ui-components-standalone
 
 # we build the react UI components ready for standalone usage;
@@ -89,7 +89,7 @@ build-subpackages:
 
 ## Build the react UI components ready for standalone usage.
 build-react-ui-components-standalone:
-	pnpm run build-standalone-esm --filter ./packages/react-ui-components
+	pnpm run -r build-standalone-esm
 
 ## Runs the development build.
 build:

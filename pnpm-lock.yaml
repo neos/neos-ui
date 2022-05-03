@@ -1,4 +1,4 @@
-lockfileVersion: 5.3
+lockfileVersion: 5.4
 
 overrides:
   moment: ^2.20.1
@@ -197,7 +197,7 @@ importers:
       '@fortawesome/free-brands-svg-icons': 5.15.3
       '@fortawesome/free-regular-svg-icons': 5.15.3
       '@fortawesome/free-solid-svg-icons': 5.15.3
-      '@fortawesome/react-fontawesome': 0.1.14_eaf243a177afb0fc9d51292c2efee587
+      '@fortawesome/react-fontawesome': 0.1.14_5lzehilxv6ypzhkrfewc57xfq4
       '@friendsofreactjs/react-css-themr': 4.1.0_react@16.13.1
       '@neos-project/brand': 1.3.0
       '@sindresorhus/slugify': 2.1.0
@@ -244,33 +244,33 @@ importers:
       prop-types: 15.7.2
       raf: 3.4.1
       react: 16.13.1
-      react-close-on-escape: 3.0.0_prop-types@15.7.2+react@16.13.1
-      react-codemirror2: 7.2.1_codemirror@5.65.2+react@16.13.1
+      react-close-on-escape: 3.0.0_ydh6x54hr2ucleptjfgjlyuzmm
+      react-codemirror2: 7.2.1_vyq6sds4zdan6ie2zbb2mhdktm
       react-collapse: 5.0.1_react@16.13.1
-      react-datetime: 2.16.3_8163dde90d88e02f48b04383611abbfe
-      react-dnd: 10.0.2_react-dom@16.13.1+react@16.13.1
+      react-datetime: 2.16.3_qfr532inrdqc6sfqiobwcgv37y
+      react-dnd: 10.0.2_5owmthsvj5ictknaj3ev736ofq
       react-dnd-html5-backend: 10.0.2
       react-dom: 16.13.1_react@16.13.1
       react-dropzone: 3.13.4_react@16.13.1
       react-height: 3.0.1_react@16.13.1
-      react-image-crop: 2.1.1_prop-types@15.7.2+react@16.13.1
-      react-keydown: 1.9.12_react-dom@16.13.1+react@16.13.1
-      react-markdown: 5.0.2_02d893cb8c41b19aac4a498638d902a7
-      react-measure: 1.4.7_react-dom@16.13.1+react@16.13.1
+      react-image-crop: 2.1.1_ydh6x54hr2ucleptjfgjlyuzmm
+      react-keydown: 1.9.12_5owmthsvj5ictknaj3ev736ofq
+      react-markdown: 5.0.2_almjhs4migyzvlckjgddrwicu4
+      react-measure: 1.4.7_5owmthsvj5ictknaj3ev736ofq
       react-motion: 0.5.2_react@16.13.1
       react-portal: 4.2.0_react@16.13.1
-      react-redux: 7.1.3_49f644e2f7de4182503f8b93abece808
-      react-svg: 11.2.5_react-dom@16.13.1+react@16.13.1
+      react-redux: 7.1.3_jh3ejyxx3zayeub7roj2x3hiba
+      react-svg: 11.2.5_5owmthsvj5ictknaj3ev736ofq
       react-test-renderer: 16.12.0_react@16.13.1
-      react-textarea-autosize: 8.3.0_02d893cb8c41b19aac4a498638d902a7
-      recharts: 1.8.5_react-dom@16.13.1+react@16.13.1
+      react-textarea-autosize: 8.3.0_almjhs4migyzvlckjgddrwicu4
+      recharts: 1.8.5_5owmthsvj5ictknaj3ev736ofq
       redux: 4.0.5
       redux-actions: 0.12.0
       redux-saga: 0.15.6
       reselect: 3.0.1
       terser-webpack-plugin: 3.0.6_webpack@4.41.5
       typesafe-actions: 5.1.0
-      url-loader: 3.0.0_file-loader@5.0.2+webpack@4.41.5
+      url-loader: 3.0.0_vhm6up2vp54brdo5z2ipn7l34i
       uuid: 3.3.3
       webpack-cli: 4.9.2_webpack@4.41.5
       whatwg-fetch: 3.6.2
@@ -305,7 +305,7 @@ importers:
       babel-core: 6.26.3
       babel-eslint: 10.0.3_eslint@5.16.0
       babel-jest: 23.6.0_babel-core@6.26.3
-      babel-loader: 7.1.5_babel-core@6.26.3+webpack@4.41.5
+      babel-loader: 7.1.5_oeqlablxyquv3hq3nettmrndti
       babel-plugin-transform-decorators-legacy: 1.3.5
       babel-plugin-transform-object-rest-spread: 6.26.0
       babel-plugin-webpack-alias: 2.1.2
@@ -319,7 +319,7 @@ importers:
       css-loader: 3.4.1_webpack@4.41.5
       editorconfig-checker: 4.0.2
       enzyme: 3.11.0
-      enzyme-adapter-react-16: 1.15.2_df2dc313d8031f8c2dbd009d86ca7fc7
+      enzyme-adapter-react-16: 1.15.2_34w4ge6yampyyln5acoynst7y4
       eslint: 5.16.0
       identity-obj-proxy: 3.0.0
       jest: 23.6.0
@@ -350,7 +350,7 @@ importers:
       tslib: 1.11.1
       tslint: 5.20.1_typescript@3.7.4
       tslint-config-prettier: 1.18.0
-      tslint-react: 3.6.0_tslint@5.20.1+typescript@3.7.4
+      tslint-react: 3.6.0_phuhihgfe47bykjdo5dem4dkjm
       typescript: 3.7.4
       watch: 1.0.2
       webpack: 4.41.5
@@ -380,7 +380,7 @@ importers:
   packages/build-essentials:
     specifiers:
       '@ckeditor/ckeditor5-dev-utils': ^12.0.1
-      '@neos-project/babel-preset-neos-ui': 8.0.0
+      '@neos-project/babel-preset-neos-ui': workspace:*
       babel-core: ^6.26.3
       babel-eslint: ^7.1.1
       babel-loader: ^7.1.2
@@ -413,7 +413,7 @@ importers:
       '@ckeditor/ckeditor5-dev-utils': 12.0.5
       babel-core: 6.26.3
       babel-eslint: 7.2.3
-      babel-loader: 7.1.5_babel-core@6.26.3+webpack@4.41.5
+      babel-loader: 7.1.5_oeqlablxyquv3hq3nettmrndti
       check-dependencies: 1.1.0
       cpx: 1.5.0
       cross-env: 6.0.3
@@ -428,14 +428,14 @@ importers:
       rimraf: 2.7.1
       stylelint: 13.9.0
       terser-webpack-plugin: 2.3.1_webpack@4.41.5
-      ts-jest: 23.10.5_jest@23.6.0
+      ts-jest: 23.10.5
       ts-loader: 6.2.1_typescript@3.7.4
       tslib: 1.11.1
       tslint: 5.20.1_typescript@3.7.4
       tslint-config-prettier: 1.18.0
-      tslint-react: 3.6.0_tslint@5.20.1+typescript@3.7.4
+      tslint-react: 3.6.0_phuhihgfe47bykjdo5dem4dkjm
       typescript: 3.7.4
-      url-loader: 3.0.0_file-loader@5.0.2+webpack@4.41.5
+      url-loader: 3.0.0_webpack@4.41.5
       watch: 1.0.2
       webpack: 4.41.5
       webpack-livereload-plugin: 2.2.0
@@ -444,7 +444,7 @@ importers:
 
   packages/debug-reason-for-rendering:
     specifiers:
-      '@neos-project/babel-preset-neos-ui': 8.0.0
+      '@neos-project/babel-preset-neos-ui': workspace:*
     devDependencies:
       '@neos-project/babel-preset-neos-ui': link:../babel-preset-neos-ui
 
@@ -462,9 +462,9 @@ importers:
 
   packages/neos-ts-interfaces:
     specifiers:
-      '@neos-project/babel-preset-neos-ui': 8.0.0
-      '@neos-project/build-essentials': 8.0.0
-      '@neos-project/jest-preset-neos-ui': 8.0.0
+      '@neos-project/babel-preset-neos-ui': workspace:*
+      '@neos-project/build-essentials': workspace:*
+      '@neos-project/jest-preset-neos-ui': workspace:*
     devDependencies:
       '@neos-project/babel-preset-neos-ui': link:../babel-preset-neos-ui
       '@neos-project/build-essentials': link:../build-essentials
@@ -472,33 +472,33 @@ importers:
 
   packages/neos-ui:
     specifiers:
-      '@neos-project/babel-preset-neos-ui': 8.0.0
+      '@neos-project/babel-preset-neos-ui': workspace:*
       '@neos-project/brand': ^1.3.0
-      '@neos-project/build-essentials': 8.0.0
-      '@neos-project/debug-reason-for-rendering': 8.0.0
-      '@neos-project/jest-preset-neos-ui': 8.0.0
-      '@neos-project/neos-ts-interfaces': 8.0.0
-      '@neos-project/neos-ui-backend-connector': 8.0.0
-      '@neos-project/neos-ui-ckeditor5-bindings': 8.0.0
-      '@neos-project/neos-ui-constants': 8.0.0
-      '@neos-project/neos-ui-containers': 8.0.0
-      '@neos-project/neos-ui-contentrepository': 8.0.0
-      '@neos-project/neos-ui-decorators': 8.0.0
-      '@neos-project/neos-ui-editors': 8.0.0
-      '@neos-project/neos-ui-extensibility': 8.0.0
-      '@neos-project/neos-ui-guest-frame': 8.0.0
-      '@neos-project/neos-ui-i18n': 8.0.0
-      '@neos-project/neos-ui-inspector': 8.0.0
-      '@neos-project/neos-ui-redux-store': 8.0.0
-      '@neos-project/neos-ui-sagas': 8.0.0
-      '@neos-project/neos-ui-validators': 8.0.0
-      '@neos-project/neos-ui-views': 8.0.0
-      '@neos-project/positional-array-sorter': 8.0.0
-      '@neos-project/react-proptypes': 8.0.0
-      '@neos-project/react-ui-components': 8.0.0
-      '@neos-project/utils-helpers': 8.0.0
-      '@neos-project/utils-logger': 8.0.0
-      '@neos-project/utils-redux': 8.0.0
+      '@neos-project/build-essentials': workspace:*
+      '@neos-project/debug-reason-for-rendering': workspace:*
+      '@neos-project/jest-preset-neos-ui': workspace:*
+      '@neos-project/neos-ts-interfaces': workspace:*
+      '@neos-project/neos-ui-backend-connector': workspace:*
+      '@neos-project/neos-ui-ckeditor5-bindings': workspace:*
+      '@neos-project/neos-ui-constants': workspace:*
+      '@neos-project/neos-ui-containers': workspace:*
+      '@neos-project/neos-ui-contentrepository': workspace:*
+      '@neos-project/neos-ui-decorators': workspace:*
+      '@neos-project/neos-ui-editors': workspace:*
+      '@neos-project/neos-ui-extensibility': workspace:*
+      '@neos-project/neos-ui-guest-frame': workspace:*
+      '@neos-project/neos-ui-i18n': workspace:*
+      '@neos-project/neos-ui-inspector': workspace:*
+      '@neos-project/neos-ui-redux-store': workspace:*
+      '@neos-project/neos-ui-sagas': workspace:*
+      '@neos-project/neos-ui-validators': workspace:*
+      '@neos-project/neos-ui-views': workspace:*
+      '@neos-project/positional-array-sorter': workspace:*
+      '@neos-project/react-proptypes': workspace:*
+      '@neos-project/react-ui-components': workspace:*
+      '@neos-project/utils-helpers': workspace:*
+      '@neos-project/utils-logger': workspace:*
+      '@neos-project/utils-redux': workspace:*
       redux-saga-test-plan: ^3.6.0
     dependencies:
       '@neos-project/brand': 1.3.0
@@ -529,16 +529,16 @@ importers:
       '@neos-project/build-essentials': link:../build-essentials
       '@neos-project/debug-reason-for-rendering': link:../debug-reason-for-rendering
       '@neos-project/jest-preset-neos-ui': link:../jest-preset-neos-ui
-      redux-saga-test-plan: 3.7.0_redux-saga@0.15.6
+      redux-saga-test-plan: 3.7.0
 
   packages/neos-ui-backend-connector:
     specifiers:
-      '@neos-project/babel-preset-neos-ui': 8.0.0
-      '@neos-project/build-essentials': 8.0.0
-      '@neos-project/jest-preset-neos-ui': 8.0.0
-      '@neos-project/neos-ts-interfaces': 8.0.0
-      '@neos-project/neos-ui-extensibility': 8.0.0
-      '@neos-project/utils-redux': 8.0.0
+      '@neos-project/babel-preset-neos-ui': workspace:*
+      '@neos-project/build-essentials': workspace:*
+      '@neos-project/jest-preset-neos-ui': workspace:*
+      '@neos-project/neos-ts-interfaces': workspace:*
+      '@neos-project/neos-ui-extensibility': workspace:*
+      '@neos-project/utils-redux': workspace:*
     dependencies:
       '@neos-project/neos-ts-interfaces': link:../neos-ts-interfaces
       '@neos-project/neos-ui-extensibility': link:../neos-ui-extensibility
@@ -562,17 +562,17 @@ importers:
       '@ckeditor/ckeditor5-remove-format': ^10.0.0
       '@ckeditor/ckeditor5-table': ^13.0.0
       '@ckeditor/ckeditor5-widget': ^11.0.2
-      '@neos-project/babel-preset-neos-ui': 8.0.0
-      '@neos-project/build-essentials': 8.0.0
-      '@neos-project/jest-preset-neos-ui': 8.0.0
-      '@neos-project/neos-ui-backend-connector': 8.0.0
-      '@neos-project/neos-ui-decorators': 8.0.0
-      '@neos-project/neos-ui-extensibility': 8.0.0
-      '@neos-project/neos-ui-guest-frame': 8.0.0
-      '@neos-project/neos-ui-i18n': 8.0.0
-      '@neos-project/neos-ui-redux-store': 8.0.0
-      '@neos-project/react-ui-components': 8.0.0
-      '@neos-project/utils-helpers': 8.0.0
+      '@neos-project/babel-preset-neos-ui': workspace:*
+      '@neos-project/build-essentials': workspace:*
+      '@neos-project/jest-preset-neos-ui': workspace:*
+      '@neos-project/neos-ui-backend-connector': workspace:*
+      '@neos-project/neos-ui-decorators': workspace:*
+      '@neos-project/neos-ui-extensibility': workspace:*
+      '@neos-project/neos-ui-guest-frame': workspace:*
+      '@neos-project/neos-ui-i18n': workspace:*
+      '@neos-project/neos-ui-redux-store': workspace:*
+      '@neos-project/react-ui-components': workspace:*
+      '@neos-project/utils-helpers': workspace:*
       raw-loader: ^0.5
     dependencies:
       '@ckeditor/ckeditor5-alignment': 11.2.0
@@ -584,7 +584,7 @@ importers:
       '@ckeditor/ckeditor5-link': 11.1.2
       '@ckeditor/ckeditor5-list': 12.1.0
       '@ckeditor/ckeditor5-paragraph': 11.0.5
-      '@ckeditor/ckeditor5-remove-format': 10.0.4_eslint@5.16.0
+      '@ckeditor/ckeditor5-remove-format': 10.0.4
       '@ckeditor/ckeditor5-table': 13.0.2
       '@ckeditor/ckeditor5-widget': 11.1.0
       '@neos-project/neos-ui-backend-connector': link:../neos-ui-backend-connector
@@ -603,9 +603,9 @@ importers:
 
   packages/neos-ui-constants:
     specifiers:
-      '@neos-project/babel-preset-neos-ui': 8.0.0
-      '@neos-project/build-essentials': 8.0.0
-      '@neos-project/jest-preset-neos-ui': 8.0.0
+      '@neos-project/babel-preset-neos-ui': workspace:*
+      '@neos-project/build-essentials': workspace:*
+      '@neos-project/jest-preset-neos-ui': workspace:*
     devDependencies:
       '@neos-project/babel-preset-neos-ui': link:../babel-preset-neos-ui
       '@neos-project/build-essentials': link:../build-essentials
@@ -613,13 +613,13 @@ importers:
 
   packages/neos-ui-containers:
     specifiers:
-      '@neos-project/babel-preset-neos-ui': 8.0.0
-      '@neos-project/build-essentials': 8.0.0
-      '@neos-project/jest-preset-neos-ui': 8.0.0
-      '@neos-project/neos-ui-decorators': 8.0.0
-      '@neos-project/neos-ui-extensibility': 8.0.0
-      '@neos-project/react-ui-components': 8.0.0
-      '@neos-project/utils-logger': 8.0.0
+      '@neos-project/babel-preset-neos-ui': workspace:*
+      '@neos-project/build-essentials': workspace:*
+      '@neos-project/jest-preset-neos-ui': workspace:*
+      '@neos-project/neos-ui-decorators': workspace:*
+      '@neos-project/neos-ui-extensibility': workspace:*
+      '@neos-project/react-ui-components': workspace:*
+      '@neos-project/utils-logger': workspace:*
     dependencies:
       '@neos-project/neos-ui-decorators': link:../neos-ui-decorators
       '@neos-project/neos-ui-extensibility': link:../neos-ui-extensibility
@@ -632,11 +632,11 @@ importers:
 
   packages/neos-ui-contentrepository:
     specifiers:
-      '@neos-project/babel-preset-neos-ui': 8.0.0
-      '@neos-project/build-essentials': 8.0.0
-      '@neos-project/jest-preset-neos-ui': 8.0.0
-      '@neos-project/neos-ts-interfaces': 8.0.0
-      '@neos-project/neos-ui-extensibility': 8.0.0
+      '@neos-project/babel-preset-neos-ui': workspace:*
+      '@neos-project/build-essentials': workspace:*
+      '@neos-project/jest-preset-neos-ui': workspace:*
+      '@neos-project/neos-ts-interfaces': workspace:*
+      '@neos-project/neos-ui-extensibility': workspace:*
     dependencies:
       '@neos-project/neos-ts-interfaces': link:../neos-ts-interfaces
       '@neos-project/neos-ui-extensibility': link:../neos-ui-extensibility
@@ -647,10 +647,10 @@ importers:
 
   packages/neos-ui-decorators:
     specifiers:
-      '@neos-project/babel-preset-neos-ui': 8.0.0
-      '@neos-project/build-essentials': 8.0.0
-      '@neos-project/jest-preset-neos-ui': 8.0.0
-      '@neos-project/neos-ts-interfaces': 8.0.0
+      '@neos-project/babel-preset-neos-ui': workspace:*
+      '@neos-project/build-essentials': workspace:*
+      '@neos-project/jest-preset-neos-ui': workspace:*
+      '@neos-project/neos-ts-interfaces': workspace:*
       reselect: ^3.0.1
     dependencies:
       '@neos-project/neos-ts-interfaces': link:../neos-ts-interfaces
@@ -662,18 +662,18 @@ importers:
 
   packages/neos-ui-editors:
     specifiers:
-      '@neos-project/babel-preset-neos-ui': 8.0.0
-      '@neos-project/build-essentials': 8.0.0
-      '@neos-project/debug-reason-for-rendering': 8.0.0
-      '@neos-project/jest-preset-neos-ui': 8.0.0
-      '@neos-project/neos-ui-ckeditor5-bindings': 8.0.0
-      '@neos-project/neos-ui-constants': 8.0.0
-      '@neos-project/neos-ui-decorators': 8.0.0
-      '@neos-project/neos-ui-extensibility': 8.0.0
-      '@neos-project/neos-ui-i18n': 8.0.0
-      '@neos-project/neos-ui-inspector': 8.0.0
-      '@neos-project/neos-ui-redux-store': 8.0.0
-      '@neos-project/react-ui-components': 8.0.0
+      '@neos-project/babel-preset-neos-ui': workspace:*
+      '@neos-project/build-essentials': workspace:*
+      '@neos-project/debug-reason-for-rendering': workspace:*
+      '@neos-project/jest-preset-neos-ui': workspace:*
+      '@neos-project/neos-ui-ckeditor5-bindings': workspace:*
+      '@neos-project/neos-ui-constants': workspace:*
+      '@neos-project/neos-ui-decorators': workspace:*
+      '@neos-project/neos-ui-extensibility': workspace:*
+      '@neos-project/neos-ui-i18n': workspace:*
+      '@neos-project/neos-ui-inspector': workspace:*
+      '@neos-project/neos-ui-redux-store': workspace:*
+      '@neos-project/react-ui-components': workspace:*
       react-dnd-test-backend: ^7.0.2
     dependencies:
       '@neos-project/neos-ui-ckeditor5-bindings': link:../neos-ui-ckeditor5-bindings
@@ -693,9 +693,9 @@ importers:
 
   packages/neos-ui-extensibility:
     specifiers:
-      '@neos-project/babel-preset-neos-ui': 8.0.0
+      '@neos-project/babel-preset-neos-ui': workspace:*
       '@neos-project/build-essentials': 5.2.5
-      '@neos-project/jest-preset-neos-ui': 8.0.0
+      '@neos-project/jest-preset-neos-ui': workspace:*
       '@neos-project/positional-array-sorter': 5.2.5
       babel-core: ^6.26.3
       babel-eslint: ^7.1.1
@@ -716,11 +716,11 @@ importers:
       style-loader: ^2.0.0
       typescript: 3.2.2
     dependencies:
-      '@neos-project/build-essentials': 5.2.5_file-loader@5.0.2+jest@23.6.0
+      '@neos-project/build-essentials': 5.2.5_file-loader@5.0.2
       '@neos-project/positional-array-sorter': 5.2.5
       babel-core: 6.26.3
       babel-eslint: 7.2.3
-      babel-loader: 7.1.5_babel-core@6.26.3+webpack@4.41.5
+      babel-loader: 7.1.5_babel-core@6.26.3
       babel-plugin-transform-decorators-legacy: 1.3.5
       babel-plugin-transform-object-rest-spread: 6.26.0
       babel-plugin-webpack-alias: 2.1.2
@@ -728,13 +728,13 @@ importers:
       babel-preset-react: 6.24.1
       babel-preset-stage-0: 6.24.1
       chalk: 1.1.3
-      css-loader: 3.4.1_webpack@4.41.5
-      file-loader: 5.0.2_webpack@4.41.5
+      css-loader: 3.4.1
+      file-loader: 5.0.2
       json-loader: 0.5.7
-      mini-css-extract-plugin: 0.5.0_webpack@4.41.5
+      mini-css-extract-plugin: 0.5.0
       postcss-loader: 3.0.0
       react-dev-utils: 7.0.5
-      style-loader: 2.0.0_webpack@4.41.5
+      style-loader: 2.0.0
     devDependencies:
       '@neos-project/babel-preset-neos-ui': link:../babel-preset-neos-ui
       '@neos-project/jest-preset-neos-ui': link:../jest-preset-neos-ui
@@ -742,11 +742,11 @@ importers:
 
   packages/neos-ui-guest-frame:
     specifiers:
-      '@neos-project/babel-preset-neos-ui': 8.0.0
-      '@neos-project/build-essentials': 8.0.0
-      '@neos-project/jest-preset-neos-ui': 8.0.0
-      '@neos-project/neos-ui-extensibility': 8.0.0
-      '@neos-project/utils-helpers': 8.0.0
+      '@neos-project/babel-preset-neos-ui': workspace:*
+      '@neos-project/build-essentials': workspace:*
+      '@neos-project/jest-preset-neos-ui': workspace:*
+      '@neos-project/neos-ui-extensibility': workspace:*
+      '@neos-project/utils-helpers': workspace:*
     dependencies:
       '@neos-project/neos-ui-extensibility': link:../neos-ui-extensibility
       '@neos-project/utils-helpers': link:../utils-helpers
@@ -757,13 +757,13 @@ importers:
 
   packages/neos-ui-i18n:
     specifiers:
-      '@neos-project/babel-preset-neos-ui': 8.0.0
-      '@neos-project/build-essentials': 8.0.0
-      '@neos-project/jest-preset-neos-ui': 8.0.0
-      '@neos-project/neos-ts-interfaces': 8.0.0
-      '@neos-project/neos-ui-decorators': 8.0.0
-      '@neos-project/neos-ui-extensibility': 8.0.0
-      '@neos-project/utils-logger': 8.0.0
+      '@neos-project/babel-preset-neos-ui': workspace:*
+      '@neos-project/build-essentials': workspace:*
+      '@neos-project/jest-preset-neos-ui': workspace:*
+      '@neos-project/neos-ts-interfaces': workspace:*
+      '@neos-project/neos-ui-decorators': workspace:*
+      '@neos-project/neos-ui-extensibility': workspace:*
+      '@neos-project/utils-logger': workspace:*
     dependencies:
       '@neos-project/neos-ts-interfaces': link:../neos-ts-interfaces
       '@neos-project/neos-ui-decorators': link:../neos-ui-decorators
@@ -776,9 +776,9 @@ importers:
 
   packages/neos-ui-inspector:
     specifiers:
-      '@neos-project/babel-preset-neos-ui': 8.0.0
-      '@neos-project/build-essentials': 8.0.0
-      '@neos-project/jest-preset-neos-ui': 8.0.0
+      '@neos-project/babel-preset-neos-ui': workspace:*
+      '@neos-project/build-essentials': workspace:*
+      '@neos-project/jest-preset-neos-ui': workspace:*
     devDependencies:
       '@neos-project/babel-preset-neos-ui': link:../babel-preset-neos-ui
       '@neos-project/build-essentials': link:../build-essentials
@@ -786,13 +786,13 @@ importers:
 
   packages/neos-ui-redux-store:
     specifiers:
-      '@neos-project/babel-preset-neos-ui': 8.0.0
-      '@neos-project/build-essentials': 8.0.0
-      '@neos-project/jest-preset-neos-ui': 8.0.0
-      '@neos-project/neos-ts-interfaces': 8.0.0
-      '@neos-project/neos-ui-extensibility': 8.0.0
-      '@neos-project/neos-ui-validators': 8.0.0
-      '@neos-project/utils-redux': 8.0.0
+      '@neos-project/babel-preset-neos-ui': workspace:*
+      '@neos-project/build-essentials': workspace:*
+      '@neos-project/jest-preset-neos-ui': workspace:*
+      '@neos-project/neos-ts-interfaces': workspace:*
+      '@neos-project/neos-ui-extensibility': workspace:*
+      '@neos-project/neos-ui-validators': workspace:*
+      '@neos-project/utils-redux': workspace:*
     dependencies:
       '@neos-project/neos-ts-interfaces': link:../neos-ts-interfaces
       '@neos-project/neos-ui-extensibility': link:../neos-ui-extensibility
@@ -805,12 +805,12 @@ importers:
 
   packages/neos-ui-sagas:
     specifiers:
-      '@neos-project/babel-preset-neos-ui': 8.0.0
-      '@neos-project/build-essentials': 8.0.0
-      '@neos-project/jest-preset-neos-ui': 8.0.0
-      '@neos-project/neos-ui-extensibility': 8.0.0
-      '@neos-project/neos-ui-validators': 8.0.0
-      '@neos-project/utils-redux': 8.0.0
+      '@neos-project/babel-preset-neos-ui': workspace:*
+      '@neos-project/build-essentials': workspace:*
+      '@neos-project/jest-preset-neos-ui': workspace:*
+      '@neos-project/neos-ui-extensibility': workspace:*
+      '@neos-project/neos-ui-validators': workspace:*
+      '@neos-project/utils-redux': workspace:*
     dependencies:
       '@neos-project/neos-ui-extensibility': link:../neos-ui-extensibility
       '@neos-project/neos-ui-validators': link:../neos-ui-validators
@@ -822,13 +822,13 @@ importers:
 
   packages/neos-ui-validators:
     specifiers:
-      '@neos-project/babel-preset-neos-ui': 8.0.0
-      '@neos-project/build-essentials': 8.0.0
-      '@neos-project/jest-preset-neos-ui': 8.0.0
-      '@neos-project/neos-ts-interfaces': 8.0.0
-      '@neos-project/neos-ui-extensibility': 8.0.0
-      '@neos-project/neos-ui-i18n': 8.0.0
-      '@neos-project/utils-logger': 8.0.0
+      '@neos-project/babel-preset-neos-ui': workspace:*
+      '@neos-project/build-essentials': workspace:*
+      '@neos-project/jest-preset-neos-ui': workspace:*
+      '@neos-project/neos-ts-interfaces': workspace:*
+      '@neos-project/neos-ui-extensibility': workspace:*
+      '@neos-project/neos-ui-i18n': workspace:*
+      '@neos-project/utils-logger': workspace:*
     dependencies:
       '@neos-project/build-essentials': link:../build-essentials
       '@neos-project/neos-ts-interfaces': link:../neos-ts-interfaces
@@ -841,16 +841,16 @@ importers:
 
   packages/neos-ui-views:
     specifiers:
-      '@neos-project/babel-preset-neos-ui': 8.0.0
+      '@neos-project/babel-preset-neos-ui': workspace:*
       '@neos-project/brand': ^1.3.0
-      '@neos-project/build-essentials': 8.0.0
-      '@neos-project/debug-reason-for-rendering': 8.0.0
-      '@neos-project/jest-preset-neos-ui': 8.0.0
-      '@neos-project/neos-ui-extensibility': 8.0.0
-      '@neos-project/neos-ui-i18n': 8.0.0
-      '@neos-project/neos-ui-inspector': 8.0.0
-      '@neos-project/neos-ui-redux-store': 8.0.0
-      '@neos-project/react-ui-components': 8.0.0
+      '@neos-project/build-essentials': workspace:*
+      '@neos-project/debug-reason-for-rendering': workspace:*
+      '@neos-project/jest-preset-neos-ui': workspace:*
+      '@neos-project/neos-ui-extensibility': workspace:*
+      '@neos-project/neos-ui-i18n': workspace:*
+      '@neos-project/neos-ui-inspector': workspace:*
+      '@neos-project/neos-ui-redux-store': workspace:*
+      '@neos-project/react-ui-components': workspace:*
     dependencies:
       '@neos-project/brand': 1.3.0
       '@neos-project/neos-ui-extensibility': link:../neos-ui-extensibility
@@ -866,8 +866,8 @@ importers:
 
   packages/positional-array-sorter:
     specifiers:
-      '@neos-project/build-essentials': 8.0.0
-      '@neos-project/jest-preset-neos-ui': 8.0.0
+      '@neos-project/build-essentials': workspace:*
+      '@neos-project/jest-preset-neos-ui': workspace:*
       typescript: 3.2.2
     devDependencies:
       '@neos-project/build-essentials': link:../build-essentials
@@ -876,9 +876,9 @@ importers:
 
   packages/react-proptypes:
     specifiers:
-      '@neos-project/babel-preset-neos-ui': 8.0.0
-      '@neos-project/build-essentials': 8.0.0
-      '@neos-project/jest-preset-neos-ui': 8.0.0
+      '@neos-project/babel-preset-neos-ui': workspace:*
+      '@neos-project/build-essentials': workspace:*
+      '@neos-project/jest-preset-neos-ui': workspace:*
     devDependencies:
       '@neos-project/babel-preset-neos-ui': link:../babel-preset-neos-ui
       '@neos-project/build-essentials': link:../build-essentials
@@ -886,10 +886,10 @@ importers:
 
   packages/react-ui-components:
     specifiers:
-      '@neos-project/babel-preset-neos-ui': 8.0.0
-      '@neos-project/build-essentials': 8.0.0
-      '@neos-project/debug-reason-for-rendering': 8.0.0
-      '@neos-project/jest-preset-neos-ui': 8.0.0
+      '@neos-project/babel-preset-neos-ui': workspace:*
+      '@neos-project/build-essentials': workspace:*
+      '@neos-project/debug-reason-for-rendering': workspace:*
+      '@neos-project/jest-preset-neos-ui': workspace:*
       '@storybook/addon-info': ^3.2.16
       '@storybook/addon-knobs': 3.2.16
       '@storybook/react': 3.2.16
@@ -901,10 +901,10 @@ importers:
       '@neos-project/build-essentials': link:../build-essentials
       '@neos-project/debug-reason-for-rendering': link:../debug-reason-for-rendering
       '@neos-project/jest-preset-neos-ui': link:../jest-preset-neos-ui
-      '@storybook/addon-info': 3.4.12_react-dom@16.13.1+react@16.13.1
-      '@storybook/addon-knobs': 3.2.16_react-dom@16.13.1+react@16.13.1
-      '@storybook/react': 3.2.16_react-dom@16.13.1+react@16.13.1
-      enzyme-to-json: 3.4.3_enzyme@3.11.0
+      '@storybook/addon-info': 3.4.12
+      '@storybook/addon-knobs': 3.2.16
+      '@storybook/react': 3.2.16
+      enzyme-to-json: 3.4.3
       normalize.css: 5.0.0
       webpack-merge: 4.2.2
 
@@ -920,9 +920,9 @@ importers:
 
   packages/utils-logger:
     specifiers:
-      '@neos-project/babel-preset-neos-ui': 8.0.0
-      '@neos-project/build-essentials': 8.0.0
-      '@neos-project/jest-preset-neos-ui': 8.0.0
+      '@neos-project/babel-preset-neos-ui': workspace:*
+      '@neos-project/build-essentials': workspace:*
+      '@neos-project/jest-preset-neos-ui': workspace:*
     devDependencies:
       '@neos-project/babel-preset-neos-ui': link:../babel-preset-neos-ui
       '@neos-project/build-essentials': link:../build-essentials
@@ -930,9 +930,9 @@ importers:
 
   packages/utils-redux:
     specifiers:
-      '@neos-project/babel-preset-neos-ui': 8.0.0
-      '@neos-project/build-essentials': 8.0.0
-      '@neos-project/jest-preset-neos-ui': 8.0.0
+      '@neos-project/babel-preset-neos-ui': workspace:*
+      '@neos-project/build-essentials': workspace:*
+      '@neos-project/jest-preset-neos-ui': workspace:*
     devDependencies:
       '@neos-project/babel-preset-neos-ui': link:../babel-preset-neos-ui
       '@neos-project/build-essentials': link:../build-essentials
@@ -2472,14 +2472,14 @@ packages:
       '@ckeditor/ckeditor5-utils': 16.0.0
     dev: false
 
-  /@ckeditor/ckeditor5-remove-format/10.0.4_eslint@5.16.0:
+  /@ckeditor/ckeditor5-remove-format/10.0.4:
     resolution: {integrity: sha512-J+9iQywTosKXj90VOOFrE3ERzBkFBwSQykvDTe4TBRZaGhIimxmsNzsTvRpfUdsQhOx2ovF0Y0bNOffIPFfO9g==}
     engines: {node: '>=8.0.0', npm: '>=5.7.1'}
     dependencies:
       '@ckeditor/ckeditor5-core': 12.3.0
       '@ckeditor/ckeditor5-ui': 14.0.0
       '@ckeditor/ckeditor5-utils': 14.0.0
-      eslint-plugin-ckeditor5-rules: 0.0.2_eslint@5.16.0
+      eslint-plugin-ckeditor5-rules: 0.0.2
     transitivePeerDependencies:
       - eslint
     dev: false
@@ -2655,7 +2655,7 @@ packages:
       '@fortawesome/fontawesome-common-types': 0.2.35
     dev: false
 
-  /@fortawesome/react-fontawesome/0.1.14_eaf243a177afb0fc9d51292c2efee587:
+  /@fortawesome/react-fontawesome/0.1.14_5lzehilxv6ypzhkrfewc57xfq4:
     resolution: {integrity: sha512-4wqNb0gRLVaBm/h+lGe8UfPPivcbuJ6ecI4hIgW0LjI7kzpYB9FkN0L9apbVzg+lsBdcTf0AlBtODjcSX5mmKA==}
     peerDependencies:
       '@fortawesome/fontawesome-svg-core': ^1.2.32
@@ -2685,12 +2685,10 @@ packages:
     engines: {node: '>=6.9.0'}
     dev: true
 
-  /@icons/material/0.2.4_react@16.13.1:
+  /@icons/material/0.2.4:
     resolution: {integrity: sha512-QPcGmICAPbGLGb6F/yNf/KzKqvFx8z5qx3D1yFqVAjoFmXK35EgyW+cJ57Te3CNsmzblwtzakLGFqHPqrfb4Tw==}
     peerDependencies:
       react: '*'
-    dependencies:
-      react: 16.13.1
     dev: true
 
   /@jridgewell/resolve-uri/3.0.5:
@@ -3411,14 +3409,14 @@ packages:
     resolution: {integrity: sha512-MwWcZSUI89X+uX39df3pa3aHPD3ZAD04QEVOoMgqtf3HdqH3A+P/kLKV6ZW9CNpuYxVHtoYHoQEVn9ZGceO41g==}
     dev: false
 
-  /@neos-project/build-essentials/5.2.5_file-loader@5.0.2+jest@23.6.0:
+  /@neos-project/build-essentials/5.2.5_file-loader@5.0.2:
     resolution: {integrity: sha512-22QQddNGtaJ8aJJfRWc9CLKLxN4N732Ub5++dtixR2yBmiMJFwZ8BB5VQLsfbDVmCI/EGPVJtUb5aQt50ol8Iw==}
     hasBin: true
     dependencies:
       '@ckeditor/ckeditor5-dev-utils': 12.0.5
       babel-core: 6.26.3
       babel-eslint: 7.2.3
-      babel-loader: 7.1.5_babel-core@6.26.3+webpack@4.41.5
+      babel-loader: 7.1.5_oeqlablxyquv3hq3nettmrndti
       check-dependencies: 1.1.0
       cpx: 1.5.0
       cross-env: 6.0.3
@@ -3434,14 +3432,14 @@ packages:
       rimraf: 2.7.1
       stylelint: 13.9.0
       terser-webpack-plugin: 2.3.1_webpack@4.41.5
-      ts-jest: 23.10.5_jest@23.6.0
+      ts-jest: 23.10.5
       ts-loader: 6.2.1_typescript@3.7.4
       tslib: 1.11.1
       tslint: 5.20.1_typescript@3.7.4
       tslint-config-prettier: 1.18.0
-      tslint-react: 3.6.0_tslint@5.20.1+typescript@3.7.4
+      tslint-react: 3.6.0_phuhihgfe47bykjdo5dem4dkjm
       typescript: 3.7.4
-      url-loader: 3.0.0_file-loader@5.0.2+webpack@4.41.5
+      url-loader: 3.0.0_vhm6up2vp54brdo5z2ipn7l34i
       watch: 1.0.2
       webpack: 4.41.5
       webpack-livereload-plugin: 2.2.0
@@ -3457,7 +3455,7 @@ packages:
       eslint: ^5.3.0
     dependencies:
       eslint: 5.16.0
-      eslint-config-xo-react: 0.17.0_b829c531a5baa7b559ef831355b050d4
+      eslint-config-xo-react: 0.17.0_xau4kmnfxkt3kwppqmjvlmcq2q
       eslint-config-xo-space: 0.20.0_eslint@5.16.0
       eslint-plugin-babel: 5.3.0_eslint@5.16.0
       eslint-plugin-import: 2.19.1_eslint@5.16.0
@@ -3729,7 +3727,7 @@ packages:
       lodash.deburr: 4.1.0
     dev: false
 
-  /@storybook/addon-actions/3.4.12_032622992520d3ef744a20613c56b88c:
+  /@storybook/addon-actions/3.4.12_@storybook+addons@3.4.12:
     resolution: {integrity: sha512-+AiK2RijB3HsnzijvT3pv1/758zAumDQF1XZBt4shZ/CG6cpZSyxD+EmO2pbiA6Zo0vSuLSrKV8RPqVG0lXZuQ==}
     peerDependencies:
       '@storybook/addons': ^3.3.0
@@ -3737,7 +3735,7 @@ packages:
       react-dom: '*'
     dependencies:
       '@storybook/addons': 3.4.12
-      '@storybook/components': 3.4.12_react-dom@16.13.1+react@16.13.1
+      '@storybook/components': 3.4.12
       babel-runtime: 6.26.0
       deep-equal: 1.1.1
       glamor: 2.20.40
@@ -3745,20 +3743,18 @@ packages:
       global: 4.4.0
       make-error: 1.3.5
       prop-types: 15.7.2
-      react: 16.13.1
-      react-dom: 16.13.1_react@16.13.1
-      react-inspector: 2.3.1_react@16.13.1
+      react-inspector: 2.3.1
       uuid: 3.3.3
     dev: true
 
-  /@storybook/addon-info/3.4.12_react-dom@16.13.1+react@16.13.1:
+  /@storybook/addon-info/3.4.12:
     resolution: {integrity: sha512-Rr+VLcof5BMw6qYpUkowlSJ7PRfEBIU38aeMIJY1ZJvXoqSNZMGIhvpbmetQ0VvhmrOuMNLckzITc8i5PaLtBQ==}
     peerDependencies:
       react: '*'
       react-dom: '*'
     dependencies:
       '@storybook/client-logger': 3.4.12
-      '@storybook/components': 3.4.12_react-dom@16.13.1+react@16.13.1
+      '@storybook/components': 3.4.12
       babel-runtime: 6.26.0
       glamor: 2.20.40
       glamorous: 4.13.1_glamor@2.20.40
@@ -3766,13 +3762,11 @@ packages:
       marksy: 6.1.0
       nested-object-assign: 1.0.3
       prop-types: 15.7.2
-      react: 16.13.1
       react-addons-create-fragment: 15.6.2
-      react-dom: 16.13.1_react@16.13.1
       util-deprecate: 1.0.2
     dev: true
 
-  /@storybook/addon-knobs/3.2.16_react-dom@16.13.1+react@16.13.1:
+  /@storybook/addon-knobs/3.2.16:
     resolution: {integrity: sha512-m0y2B0tRE4W4H/dUdqFW5sPf3UQAxATKEwPHJ2CBQ6wmsR7tzPQC6Igig6hYBr4mwFtpZRwEh96aCtB/+VZ/JA==}
     deprecated: deprecating @storybook/addon-knobs in favor of @storybook/addon-controls
     peerDependencies:
@@ -3787,15 +3781,13 @@ packages:
       lodash.debounce: 4.0.8
       moment: 2.24.0
       prop-types: 15.7.2
-      react: 16.13.1
-      react-color: 2.17.3_react@16.13.1
-      react-datetime: 2.16.3_8163dde90d88e02f48b04383611abbfe
-      react-dom: 16.13.1_react@16.13.1
-      react-textarea-autosize: 5.2.1_react@16.13.1
+      react-color: 2.17.3
+      react-datetime: 2.16.3_moment@2.24.0
+      react-textarea-autosize: 5.2.1
       util-deprecate: 1.0.2
     dev: true
 
-  /@storybook/addon-links/3.4.12_032622992520d3ef744a20613c56b88c:
+  /@storybook/addon-links/3.4.12_@storybook+addons@3.4.12:
     resolution: {integrity: sha512-emkqfFJllQH/nnvqnFFUhG/oIaaEDKYPLesSLhzIPf2byexUoXFpZX5VhLR0nal8I34Ok0p/fL/62q8IdigZNQ==}
     peerDependencies:
       '@storybook/addons': ^3.3.0
@@ -3803,12 +3795,10 @@ packages:
       react-dom: '*'
     dependencies:
       '@storybook/addons': 3.4.12
-      '@storybook/components': 3.4.12_react-dom@16.13.1+react@16.13.1
+      '@storybook/components': 3.4.12
       babel-runtime: 6.26.0
       global: 4.4.0
       prop-types: 15.7.2
-      react: 16.13.1
-      react-dom: 16.13.1_react@16.13.1
     dev: true
 
   /@storybook/addons/3.4.12:
@@ -3831,7 +3821,7 @@ packages:
     resolution: {integrity: sha512-5nr3eSOYKUnWB6tlQ0c3GTfEoeD7+gVsFEQw5zgo131gElVuRkdBqI3kGT4us7MmspKkmCcyYjAm94Dn7YNRhA==}
     dev: true
 
-  /@storybook/components/3.4.12_react-dom@16.13.1+react@16.13.1:
+  /@storybook/components/3.4.12:
     resolution: {integrity: sha512-1wgsFOlpmziP7K0ilo/O3piyGm+iVzzFc2RIVXDCMamPVTx19MJNGaBefcSezw8mO5p0XrU/nEhxOiKIJw4UUw==}
     peerDependencies:
       react: '*'
@@ -3840,15 +3830,13 @@ packages:
       glamor: 2.20.40
       glamorous: 4.13.1_glamor@2.20.40
       prop-types: 15.7.2
-      react: 16.13.1
-      react-dom: 16.13.1_react@16.13.1
     dev: true
 
-  /@storybook/mantra-core/1.7.2_react@16.13.1:
+  /@storybook/mantra-core/1.7.2:
     resolution: {integrity: sha512-GD4OYJ8GsayVhIg306sfgcKDk9j8YfuSKIAWvdB/g7IDlw0pDgueONALVEEE2XWJtCwcsUyDtCYzXFgCBWLEjA==}
     dependencies:
-      '@storybook/react-komposer': 2.0.5_react@16.13.1
-      '@storybook/react-simple-di': 1.3.0_react@16.13.1
+      '@storybook/react-komposer': 2.0.5
+      '@storybook/react-simple-di': 1.3.0
       babel-runtime: 6.26.0
     transitivePeerDependencies:
       - react
@@ -3862,21 +3850,20 @@ packages:
       immutable: 3.8.2
     dev: true
 
-  /@storybook/react-komposer/2.0.5_react@16.13.1:
+  /@storybook/react-komposer/2.0.5:
     resolution: {integrity: sha512-zX5UITgAh37tmD0MWnUFR29S5YM8URMHc/9iwczX/P1f3tM4nPn8VAzxG/UWQecg1xZVphmqkZoux+SDrtTZOQ==}
     engines: {npm: '>=3.0.0'}
     peerDependencies:
       react: ^0.14.7 || ^15.0.0 || ^16.0.0
     dependencies:
-      '@storybook/react-stubber': 1.0.1_react@16.13.1
+      '@storybook/react-stubber': 1.0.1
       babel-runtime: 6.26.0
       hoist-non-react-statics: 1.2.0
       lodash: 4.17.21
-      react: 16.13.1
       shallowequal: 1.1.0
     dev: true
 
-  /@storybook/react-simple-di/1.3.0_react@16.13.1:
+  /@storybook/react-simple-di/1.3.0:
     resolution: {integrity: sha512-RH6gPQaYMs/VzQX2dgbZU8DQMKFXVOv1ruohHjjNPys4q+YdqMFMDe5jOP1AUE3j9g01x0eW7bVjRawSpl++Ew==}
     peerDependencies:
       react: ^0.14.0 || ^15.0.0 || ^16.0.0
@@ -3885,35 +3872,33 @@ packages:
       create-react-class: 15.6.3
       hoist-non-react-statics: 1.2.0
       prop-types: 15.7.2
-      react: 16.13.1
     dev: true
 
-  /@storybook/react-stubber/1.0.1_react@16.13.1:
+  /@storybook/react-stubber/1.0.1:
     resolution: {integrity: sha512-k+CHH+vA8bQfCmzBTtJsPkITFgD+C/w19KuByZ9WeEvNUFtnDaCqfP+Vp3/OR+3IAfAXYYOWolqPLxNPcEqEjw==}
     engines: {npm: '>=3.0.0'}
     peerDependencies:
       react: ^0.14.7 || ^15.0.0 || ^16.0.0
     dependencies:
       babel-runtime: 6.26.0
-      react: 16.13.1
     dev: true
 
-  /@storybook/react/3.2.16_react-dom@16.13.1+react@16.13.1:
+  /@storybook/react/3.2.16:
     resolution: {integrity: sha512-gMS+KrI5u0OTnHYhyLkMLknCQRCyDL3QULXKCYtkUcZ6l2MKvOVSMwwG1VUPWssWtLBvN4Fdx9A+9BxDWLZhpw==}
     hasBin: true
     peerDependencies:
       react: '>=15.0.0 || ^16.0.0'
       react-dom: '>=15.0.0 || ^16.0.0'
     dependencies:
-      '@storybook/addon-actions': 3.4.12_032622992520d3ef744a20613c56b88c
-      '@storybook/addon-links': 3.4.12_032622992520d3ef744a20613c56b88c
+      '@storybook/addon-actions': 3.4.12_@storybook+addons@3.4.12
+      '@storybook/addon-links': 3.4.12_@storybook+addons@3.4.12
       '@storybook/addons': 3.4.12
       '@storybook/channel-postmessage': 3.4.12
-      '@storybook/ui': 3.4.12_react-dom@16.13.1+react@16.13.1
+      '@storybook/ui': 3.4.12
       airbnb-js-shims: 1.7.1
       autoprefixer: 7.2.6
       babel-core: 6.26.3
-      babel-loader: 7.1.5_babel-core@6.26.3+webpack@3.12.0
+      babel-loader: 7.1.5_2hgfokdkj77s4ggpb5r5wgtzcy
       babel-plugin-react-docgen: 1.9.0
       babel-plugin-transform-regenerator: 6.26.0
       babel-plugin-transform-runtime: 6.23.0
@@ -3945,8 +3930,6 @@ packages:
       postcss-loader: 2.1.6
       prop-types: 15.7.2
       qs: 6.10.3
-      react: 16.13.1
-      react-dom: 16.13.1_react@16.13.1
       redux: 3.7.2
       request: 2.88.2
       serve-favicon: 2.5.0
@@ -3960,16 +3943,16 @@ packages:
       webpack-hot-middleware: 2.25.0
     dev: true
 
-  /@storybook/ui/3.4.12_react-dom@16.13.1+react@16.13.1:
+  /@storybook/ui/3.4.12:
     resolution: {integrity: sha512-I95bIe6AJZi/9tn9K37aepy4+FpDsAmAdsF6LiIYsN3yc3FFELEykiJRv52y/+QRiaOUqOAdOOTuBI63wLqyaQ==}
     peerDependencies:
       react: '*'
       react-dom: '*'
     dependencies:
-      '@storybook/components': 3.4.12_react-dom@16.13.1+react@16.13.1
-      '@storybook/mantra-core': 1.7.2_react@16.13.1
+      '@storybook/components': 3.4.12
+      '@storybook/mantra-core': 1.7.2
       '@storybook/podda': 1.2.3
-      '@storybook/react-komposer': 2.0.5_react@16.13.1
+      '@storybook/react-komposer': 2.0.5
       babel-runtime: 6.26.0
       deep-equal: 1.1.1
       events: 2.1.0
@@ -3982,16 +3965,14 @@ packages:
       lodash.throttle: 4.1.1
       prop-types: 15.7.2
       qs: 6.10.3
-      react: 16.13.1
-      react-dom: 16.13.1_react@16.13.1
-      react-fuzzy: 0.5.2_react@16.13.1
-      react-icons: 2.2.7_eb0d650be231ffd0ace4a30b38162117
-      react-modal: 3.11.1_react-dom@16.13.1+react@16.13.1
-      react-split-pane: 0.1.89_react-dom@16.13.1+react@16.13.1
-      react-treebeard: 2.1.0_react-dom@16.13.1+react@16.13.1
+      react-fuzzy: 0.5.2
+      react-icons: 2.2.7_prop-types@15.7.2
+      react-modal: 3.11.1
+      react-split-pane: 0.1.89
+      react-treebeard: 2.1.0
     dev: true
 
-  /@stylelint/postcss-css-in-js/0.37.2_4fe96148bf77e6cee792ae366c9083f9:
+  /@stylelint/postcss-css-in-js/0.37.2_j7uwcsf7o7tm5z4svy3gzeed7e:
     resolution: {integrity: sha512-nEhsFoJurt8oUmieT8qy4nk81WRHmJynmVwn/Vts08PL9fhgIsMhk1GId5yAN643OzqEEb5S/6At2TZW7pqPDA==}
     peerDependencies:
       postcss: '>=7.0.0'
@@ -4003,7 +3984,7 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /@stylelint/postcss-markdown/0.36.2_4fe96148bf77e6cee792ae366c9083f9:
+  /@stylelint/postcss-markdown/0.36.2_j7uwcsf7o7tm5z4svy3gzeed7e:
     resolution: {integrity: sha512-2kGbqUVJUGE8dM+bMzXG/PYUWKkjLIkRLWNh39OaADkiabDRdw8ATFCgbMz5xdIcvwspPAluSL7uY+ZiTWdWmQ==}
     deprecated: 'Use the original unforked package instead: postcss-markdown'
     peerDependencies:
@@ -4374,7 +4355,7 @@ packages:
       '@webassemblyjs/wast-parser': 1.8.5
       '@xtuc/long': 4.2.2
 
-  /@webpack-cli/configtest/1.1.1_webpack-cli@4.9.2+webpack@4.41.5:
+  /@webpack-cli/configtest/1.1.1_larvua667xfqf25rp3gzutm4tm:
     resolution: {integrity: sha512-1FBc1f9G4P/AxMqIgfZgeOTuRnwZMten8E7zap5zgpPInnCrP8D4Q81+4CWIch8i/Nf7nXjP0v6CjjbHOrXhKg==}
     peerDependencies:
       webpack: 4.x.x || 5.x.x
@@ -5274,7 +5255,7 @@ packages:
       babel-plugin-istanbul: 4.1.6
       babel-preset-jest: 23.2.0
 
-  /babel-loader/7.1.5_babel-core@6.26.3+webpack@3.12.0:
+  /babel-loader/7.1.5_2hgfokdkj77s4ggpb5r5wgtzcy:
     resolution: {integrity: sha512-iCHfbieL5d1LfOQeeVJEUyD9rTwBcP/fcEbRCfempxTDuqrKpu0AZjLAQHEQa3Yqyj9ORKe2iHfoj4rHLf7xpw==}
     engines: {node: '>=4'}
     peerDependencies:
@@ -5288,7 +5269,20 @@ packages:
       webpack: 3.12.0
     dev: true
 
-  /babel-loader/7.1.5_babel-core@6.26.3+webpack@4.41.5:
+  /babel-loader/7.1.5_babel-core@6.26.3:
+    resolution: {integrity: sha512-iCHfbieL5d1LfOQeeVJEUyD9rTwBcP/fcEbRCfempxTDuqrKpu0AZjLAQHEQa3Yqyj9ORKe2iHfoj4rHLf7xpw==}
+    engines: {node: '>=4'}
+    peerDependencies:
+      babel-core: '6'
+      webpack: 2 || 3 || 4
+    dependencies:
+      babel-core: 6.26.3
+      find-cache-dir: 1.0.0
+      loader-utils: 1.2.3
+      mkdirp: 0.5.5
+    dev: false
+
+  /babel-loader/7.1.5_oeqlablxyquv3hq3nettmrndti:
     resolution: {integrity: sha512-iCHfbieL5d1LfOQeeVJEUyD9rTwBcP/fcEbRCfempxTDuqrKpu0AZjLAQHEQa3Yqyj9ORKe2iHfoj4rHLf7xpw==}
     engines: {node: '>=4'}
     peerDependencies:
@@ -7469,6 +7463,26 @@ packages:
       source-list-map: 2.0.1
     dev: true
 
+  /css-loader/3.4.1:
+    resolution: {integrity: sha512-+ybmv7sVxxNEenQhkifQDvny/1iNQM7YooJbSfVUdQQvisyg1aKIqgGjCjoFSyVLJMp17z9rfZFQaR5HGHcMbw==}
+    engines: {node: '>= 8.9.0'}
+    peerDependencies:
+      webpack: ^4.0.0 || ^5.0.0
+    dependencies:
+      camelcase: 5.3.1
+      cssesc: 3.0.0
+      icss-utils: 4.1.1
+      loader-utils: 1.2.3
+      normalize-path: 3.0.0
+      postcss: 7.0.35
+      postcss-modules-extract-imports: 2.0.0
+      postcss-modules-local-by-default: 3.0.2
+      postcss-modules-scope: 2.1.1
+      postcss-modules-values: 3.0.0
+      postcss-value-parser: 4.1.0
+      schema-utils: 2.7.0
+    dev: false
+
   /css-loader/3.4.1_webpack@4.41.5:
     resolution: {integrity: sha512-+ybmv7sVxxNEenQhkifQDvny/1iNQM7YooJbSfVUdQQvisyg1aKIqgGjCjoFSyVLJMp17z9rfZFQaR5HGHcMbw==}
     engines: {node: '>= 8.9.0'}
@@ -8387,7 +8401,7 @@ packages:
     engines: {node: '>=4'}
     hasBin: true
 
-  /enzyme-adapter-react-16/1.15.2_df2dc313d8031f8c2dbd009d86ca7fc7:
+  /enzyme-adapter-react-16/1.15.2_34w4ge6yampyyln5acoynst7y4:
     resolution: {integrity: sha512-SkvDrb8xU3lSxID8Qic9rB8pvevDbLybxPK6D/vW7PrT0s2Cl/zJYuXvsd1EBTz0q4o3iqG3FJhpYz3nUNpM2Q==}
     peerDependencies:
       enzyme: ^3.0.0
@@ -8429,13 +8443,12 @@ packages:
       object-is: 1.0.2
     dev: true
 
-  /enzyme-to-json/3.4.3_enzyme@3.11.0:
+  /enzyme-to-json/3.4.3:
     resolution: {integrity: sha512-jqNEZlHqLdz7OTpXSzzghArSS3vigj67IU/fWkPyl1c0TCj9P5s6Ze0kRkYZWNEoCqCR79xlQbigYlMx5erh8A==}
     engines: {node: '>=4.0.0'}
     peerDependencies:
       enzyme: ^3.4.0
     dependencies:
-      enzyme: 3.11.0
       lodash: 4.17.21
     dev: true
 
@@ -8628,7 +8641,7 @@ packages:
       estraverse: 4.3.0
     dev: true
 
-  /eslint-config-xo-react/0.17.0_b829c531a5baa7b559ef831355b050d4:
+  /eslint-config-xo-react/0.17.0_xau4kmnfxkt3kwppqmjvlmcq2q:
     resolution: {integrity: sha512-ML/RiB4xih5fch0m4o9JnIZS6++pksyAde/zNkM1p8FTw71RpKbx9lpLzYUFbg+0QgepHN/rUeUxRAnNIOwblA==}
     engines: {node: '>=6'}
     peerDependencies:
@@ -8683,12 +8696,10 @@ packages:
       eslint-rule-composer: 0.3.0
     dev: true
 
-  /eslint-plugin-ckeditor5-rules/0.0.2_eslint@5.16.0:
+  /eslint-plugin-ckeditor5-rules/0.0.2:
     resolution: {integrity: sha512-bV8w34pQcn1IyfdW1IEgfKuc1/hkTYpLo1DglRp1v4a2ph03PkMjN7vZ6FDrmu5ImVDJsd9022j5waA//MeyKg==}
     peerDependencies:
       eslint: '>=3.0.0'
-    dependencies:
-      eslint: 5.16.0
     dev: false
 
   /eslint-plugin-eslint-plugin/2.1.0_eslint@5.16.0:
@@ -9252,6 +9263,16 @@ packages:
       schema-utils: 0.4.7
       webpack: 3.12.0
     dev: true
+
+  /file-loader/5.0.2:
+    resolution: {integrity: sha512-QMiQ+WBkGLejKe81HU8SZ9PovsU/5uaLo0JdTCEXOYv7i7jfAjHZi1tcwp9tSASJPOmmHZtbdCervFmXMH/Dcg==}
+    engines: {node: '>= 10.13.0'}
+    peerDependencies:
+      webpack: ^4.0.0 || ^5.0.0
+    dependencies:
+      loader-utils: 1.2.3
+      schema-utils: 2.7.0
+    dev: false
 
   /file-loader/5.0.2_webpack@4.41.5:
     resolution: {integrity: sha512-QMiQ+WBkGLejKe81HU8SZ9PovsU/5uaLo0JdTCEXOYv7i7jfAjHZi1tcwp9tSASJPOmmHZtbdCervFmXMH/Dcg==}
@@ -10560,7 +10581,7 @@ packages:
     resolution: {integrity: sha512-wPVv/y/QQ/Uiirj/vh3oP+1Ww+AWehmi1g5fFWGPF6IpCBCDVrhgHRMvrLfdYcwDh3QJbGXDW4JAuzxElLSqKA==}
     engines: {node: '>=4'}
 
-  /io-ts-types/0.5.16_82e7bb51b6a457d65c56a54e12fe7568:
+  /io-ts-types/0.5.16_qlt3wunwurl5mxcwuvhbf7tvna:
     resolution: {integrity: sha512-h9noYVfY9rlbmKI902SJdnV/06jgiT2chxG6lYDxaYNp88HscPi+SBCtmcU+m0E7WT5QSwt7sIMj93+qu0FEwQ==}
     peerDependencies:
       fp-ts: ^2.0.0
@@ -10571,7 +10592,7 @@ packages:
       fp-ts: 2.11.8
       io-ts: 2.2.16_fp-ts@2.11.8
       monocle-ts: 2.3.12_fp-ts@2.11.8
-      newtype-ts: 0.3.5_fp-ts@2.11.8+monocle-ts@2.3.12
+      newtype-ts: 0.3.5_ejidgzjhgz4cb5s3zyh5s2rnpy
     dev: true
 
   /io-ts/2.2.16_fp-ts@2.11.8:
@@ -12455,6 +12476,17 @@ packages:
     resolution: {integrity: sha512-I9jwMn07Sy/IwOj3zVkVik2JTvgpaykDZEigL6Rx6N9LbMywwUSMtxET+7lVoDLLd3O3IXwJwvuuns8UB/HeAg==}
     engines: {node: '>=4'}
 
+  /mini-css-extract-plugin/0.5.0:
+    resolution: {integrity: sha512-IuaLjruM0vMKhUUT51fQdQzBYTX49dLj8w68ALEAe2A4iYNpIC4eMac67mt3NzycvjOlf07/kYxJDc0RTl1Wqw==}
+    engines: {node: '>= 6.9.0 <7.0.0 || >= 8.9.0'}
+    peerDependencies:
+      webpack: ^4.4.0
+    dependencies:
+      loader-utils: 1.2.3
+      schema-utils: 1.0.0
+      webpack-sources: 1.4.3
+    dev: false
+
   /mini-css-extract-plugin/0.5.0_webpack@4.41.5:
     resolution: {integrity: sha512-IuaLjruM0vMKhUUT51fQdQzBYTX49dLj8w68ALEAe2A4iYNpIC4eMac67mt3NzycvjOlf07/kYxJDc0RTl1Wqw==}
     engines: {node: '>= 6.9.0 <7.0.0 || >= 8.9.0'}
@@ -12743,7 +12775,7 @@ packages:
     resolution: {integrity: sha512-kgq1CuvLyUcbcIuTiCA93cQ2IJFSlRwXcN+hLcb2qLJwC2qrePHGZZa7IipyWqaWF6tQjdax2pQnVxdq19Zzwg==}
     dev: true
 
-  /newtype-ts/0.3.5_fp-ts@2.11.8+monocle-ts@2.3.12:
+  /newtype-ts/0.3.5_ejidgzjhgz4cb5s3zyh5s2rnpy:
     resolution: {integrity: sha512-v83UEQMlVR75yf1OUdoSFssjitxzjZlqBAjiGQ4WJaML8Jdc68LJ+BaSAXUmKY4bNzp7hygkKLYTsDi14PxI2g==}
     peerDependencies:
       fp-ts: ^2.0.0
@@ -13888,7 +13920,7 @@ packages:
       postcss: 7.0.35
     dev: true
 
-  /postcss-html/0.36.0_4fe96148bf77e6cee792ae366c9083f9:
+  /postcss-html/0.36.0_j7uwcsf7o7tm5z4svy3gzeed7e:
     resolution: {integrity: sha512-HeiOxGcuwID0AFsNAL0ox3mW6MHH5cstWN1Z3Y+n6H+g12ih7LHdYxWwEA/QmrebctLjo79xz9ouK3MroHwOJw==}
     peerDependencies:
       postcss: '>=5.0.0'
@@ -14675,7 +14707,7 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /radium/0.19.6_react@16.13.1:
+  /radium/0.19.6:
     resolution: {integrity: sha512-IABYntqCwYelUUIwA52maSCgJbqtJjHKIoD21wgpw3dGhIUbJ5chDShDGdaFiEzdF03hN9jfQqlmn0bF4YhfrQ==}
     peerDependencies:
       react: ^15.3.0 || ^16.0.0
@@ -14684,7 +14716,6 @@ packages:
       exenv: 1.2.2
       inline-style-prefixer: 2.0.5
       prop-types: 15.7.2
-      react: 16.13.1
     dev: true
 
   /raf/3.4.1:
@@ -14760,7 +14791,7 @@ packages:
       object-assign: 4.1.1
     dev: true
 
-  /react-close-on-escape/3.0.0_prop-types@15.7.2+react@16.13.1:
+  /react-close-on-escape/3.0.0_ydh6x54hr2ucleptjfgjlyuzmm:
     resolution: {integrity: sha512-cpOkGa/FPOYbvXw1HmNNCQLTKlXEPkfA0MXBat9ui7bGRnqNNQUGTQg6fadW1F/MYGnsGrHjex77DfkqNYHjUw==}
     peerDependencies:
       prop-types: '>=15.5.0'
@@ -14770,7 +14801,7 @@ packages:
       react: 16.13.1
     dev: false
 
-  /react-codemirror2/7.2.1_codemirror@5.65.2+react@16.13.1:
+  /react-codemirror2/7.2.1_vyq6sds4zdan6ie2zbb2mhdktm:
     resolution: {integrity: sha512-t7YFmz1AXdlImgHXA9Ja0T6AWuopilub24jRaQdPVbzUJVNKIYuy3uCFZYa7CE5S3UW6SrSa5nAqVQvtzRF9gw==}
     peerDependencies:
       codemirror: 5.x
@@ -14788,10 +14819,10 @@ packages:
       react: 16.13.1
     dev: false
 
-  /react-color/2.17.3_react@16.13.1:
+  /react-color/2.17.3:
     resolution: {integrity: sha512-1dtO8LqAVotPIChlmo6kLtFS1FP89ll8/OiA8EcFRDR+ntcK+0ukJgByuIQHRtzvigf26dV5HklnxDIvhON9VQ==}
     dependencies:
-      '@icons/material': 0.2.4_react@16.13.1
+      '@icons/material': 0.2.4
       lodash: 4.17.21
       material-colors: 1.2.6
       prop-types: 15.7.2
@@ -14801,7 +14832,21 @@ packages:
       - react
     dev: true
 
-  /react-datetime/2.16.3_8163dde90d88e02f48b04383611abbfe:
+  /react-datetime/2.16.3_moment@2.24.0:
+    resolution: {integrity: sha512-amWfb5iGEiyqjLmqCLlPpu2oN415jK8wX1qoTq7qn6EYiU7qQgbNHglww014PT4O/3G5eo/3kbJu/M/IxxTyGw==}
+    peerDependencies:
+      moment: '>=2.16.0'
+      react: '>=0.13'
+      react-dom: '>=0.13'
+    dependencies:
+      create-react-class: 15.6.3
+      moment: 2.24.0
+      object-assign: 3.0.0
+      prop-types: 15.7.2
+      react-onclickoutside: 6.9.0
+    dev: true
+
+  /react-datetime/2.16.3_qfr532inrdqc6sfqiobwcgv37y:
     resolution: {integrity: sha512-amWfb5iGEiyqjLmqCLlPpu2oN415jK8wX1qoTq7qn6EYiU7qQgbNHglww014PT4O/3G5eo/3kbJu/M/IxxTyGw==}
     peerDependencies:
       moment: '>=2.16.0'
@@ -14814,7 +14859,8 @@ packages:
       prop-types: 15.7.2
       react: 16.13.1
       react-dom: 16.13.1_react@16.13.1
-      react-onclickoutside: 6.9.0_react-dom@16.13.1+react@16.13.1
+      react-onclickoutside: 6.9.0_5owmthsvj5ictknaj3ev736ofq
+    dev: false
 
   /react-dev-utils/7.0.5:
     resolution: {integrity: sha512-zJnqqb0x6gd63E3xoz5pXAxBPNaW75Hyz7GgQp0qPhMroBCRQtRvG67AoTZZY1z4yCYVJQZAfQJFdnea0Ujbug==}
@@ -14864,7 +14910,7 @@ packages:
       dnd-core: 7.7.0
     dev: true
 
-  /react-dnd/10.0.2_react-dom@16.13.1+react@16.13.1:
+  /react-dnd/10.0.2_5owmthsvj5ictknaj3ev736ofq:
     resolution: {integrity: sha512-SC2Ymvntynhoqtf5zaFhZscm9xenCoMofilxPdlwUlaelAzmbl9fw82C4ZJ//+lNm3kWAKXjGDZg2/aWjKEAtg==}
     peerDependencies:
       react: '>= 16.8'
@@ -14918,7 +14964,7 @@ packages:
     resolution: {integrity: sha512-X1Y+0jR47ImDVr54Ab6V9eGk0Hnu7fVWGeHQSOXHf/C2pF9c6uy3gef8QUeuUiWlNb0i08InPSE5a/KJzNzw1Q==}
     dev: false
 
-  /react-fuzzy/0.5.2_react@16.13.1:
+  /react-fuzzy/0.5.2:
     resolution: {integrity: sha512-qIZZxaCheb/HhcBi5fABbiCFg85+K5r1TCps1D4uaL0LAMMD/1zm/x1/kNR130Tx7nnY9V7mbFyY0DquPYeLAw==}
     peerDependencies:
       react: ^0.14.7 || ^15.0.0 || ^16.0.0
@@ -14927,7 +14973,6 @@ packages:
       classnames: 2.2.6
       fuse.js: 3.4.6
       prop-types: 15.7.2
-      react: 16.13.1
     dev: true
 
   /react-height/3.0.1_react@16.13.1:
@@ -14945,7 +14990,7 @@ packages:
       html-element-attributes: 1.3.1
     dev: true
 
-  /react-icon-base/2.1.0_eb0d650be231ffd0ace4a30b38162117:
+  /react-icon-base/2.1.0_prop-types@15.7.2:
     resolution: {integrity: sha1-oZbjP98eeqof2jrvu2i9rZ6Cp50=}
     peerDependencies:
       prop-types: '*'
@@ -14953,24 +14998,20 @@ packages:
       react-dom: '*'
     dependencies:
       prop-types: 15.7.2
-      react: 16.13.1
-      react-dom: 16.13.1_react@16.13.1
     dev: true
 
-  /react-icons/2.2.7_eb0d650be231ffd0ace4a30b38162117:
+  /react-icons/2.2.7_prop-types@15.7.2:
     resolution: {integrity: sha512-0n4lcGqzJFcIQLoQytLdJCE0DKSA9dkwEZRYoGrIDJZFvIT6Hbajx5mv9geqhqFiNjUgtxg8kPyDfjlhymbGFg==}
     peerDependencies:
       react: ^0.14.0 || ^15.0.0 || ^16.0.0
       react-dom: ^0.14.0 || ^15.0.0 || ^16.0.0
     dependencies:
-      react: 16.13.1
-      react-dom: 16.13.1_react@16.13.1
-      react-icon-base: 2.1.0_eb0d650be231ffd0ace4a30b38162117
+      react-icon-base: 2.1.0_prop-types@15.7.2
     transitivePeerDependencies:
       - prop-types
     dev: true
 
-  /react-image-crop/2.1.1_prop-types@15.7.2+react@16.13.1:
+  /react-image-crop/2.1.1_ydh6x54hr2ucleptjfgjlyuzmm:
     resolution: {integrity: sha512-WBBo6RnSyfno3d7ZEfHY0f04CTF81BrzGNYHz3U3WHkwKE8enetQcfd9K76ZODNrOdIxQDZtL1a/ojFTZH4l1g==}
     peerDependencies:
       prop-types: ^15.5.8 || ^16
@@ -14980,7 +15021,7 @@ packages:
       react: 16.13.1
     dev: false
 
-  /react-inspector/2.3.1_react@16.13.1:
+  /react-inspector/2.3.1:
     resolution: {integrity: sha512-tUUK7t3KWgZEIUktOYko5Ic/oYwvjEvQUFAGC1UeMeDaQ5za2yZFtItJa2RTwBJB//NxPr000WQK6sEbqC6y0Q==}
     peerDependencies:
       react: ^0.14.0 || ^15.0.0 || ^16.0.0
@@ -14988,13 +15029,12 @@ packages:
       babel-runtime: 6.26.0
       is-dom: 1.1.0
       prop-types: 15.7.2
-      react: 16.13.1
     dev: true
 
   /react-is/16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
 
-  /react-keydown/1.9.12_react-dom@16.13.1+react@16.13.1:
+  /react-keydown/1.9.12_5owmthsvj5ictknaj3ev736ofq:
     resolution: {integrity: sha512-KnQdVCTlPeJJ5FcnaqT4LJFHFUWbr/P+KnUtKA3xOc2JuJy738LyNM8jdnkWNkexHWEXt/021ufR5l9e3fzUCQ==}
     peerDependencies:
       react: '>= 0.14.0'
@@ -15008,7 +15048,7 @@ packages:
   /react-lifecycles-compat/3.0.4:
     resolution: {integrity: sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==}
 
-  /react-markdown/5.0.2_02d893cb8c41b19aac4a498638d902a7:
+  /react-markdown/5.0.2_almjhs4migyzvlckjgddrwicu4:
     resolution: {integrity: sha512-kmkB4JbV7LqkDAjvaKRKtodB3n3Id76/DalaDun1U8FuLB0SenPfvH+jAQ5Pcpo54cACRQc1LB1yXmuuuIVecw==}
     peerDependencies:
       '@types/react': ^15.0.0 || ^16.0.0
@@ -15030,7 +15070,7 @@ packages:
       - supports-color
     dev: false
 
-  /react-measure/1.4.7_react-dom@16.13.1+react@16.13.1:
+  /react-measure/1.4.7_5owmthsvj5ictknaj3ev736ofq:
     resolution: {integrity: sha1-odLKDc/vBJeLesJjp2XctqCTb9s=}
     peerDependencies:
       react: '>0.13.0'
@@ -15043,7 +15083,7 @@ packages:
       resize-observer-polyfill: 1.5.1
     dev: false
 
-  /react-modal/3.11.1_react-dom@16.13.1+react@16.13.1:
+  /react-modal/3.11.1:
     resolution: {integrity: sha512-8uN744Yq0X2lbfSLxsEEc2UV3RjSRb4yDVxRQ1aGzPo86QjNOwhQSukDb8U8kR+636TRTvfMren10fgOjAy9eA==}
     peerDependencies:
       react: ^0.14.0 || ^15.0.0 || ^16
@@ -15051,8 +15091,6 @@ packages:
     dependencies:
       exenv: 1.2.2
       prop-types: 15.7.2
-      react: 16.13.1
-      react-dom: 16.13.1_react@16.13.1
       react-lifecycles-compat: 3.0.4
       warning: 4.0.3
     dev: true
@@ -15068,7 +15106,14 @@ packages:
       react: 16.13.1
     dev: false
 
-  /react-onclickoutside/6.9.0_react-dom@16.13.1+react@16.13.1:
+  /react-onclickoutside/6.9.0:
+    resolution: {integrity: sha512-8ltIY3bC7oGhj2nPAvWOGi+xGFybPNhJM0V1H8hY/whNcXgmDeaeoCMPPd8VatrpTsUWjb/vGzrmu6SrXVty3A==}
+    peerDependencies:
+      react: ^15.5.x || ^16.x
+      react-dom: ^15.5.x || ^16.x
+    dev: true
+
+  /react-onclickoutside/6.9.0_5owmthsvj5ictknaj3ev736ofq:
     resolution: {integrity: sha512-8ltIY3bC7oGhj2nPAvWOGi+xGFybPNhJM0V1H8hY/whNcXgmDeaeoCMPPd8VatrpTsUWjb/vGzrmu6SrXVty3A==}
     peerDependencies:
       react: ^15.5.x || ^16.x
@@ -15076,6 +15121,7 @@ packages:
     dependencies:
       react: 16.13.1
       react-dom: 16.13.1_react@16.13.1
+    dev: false
 
   /react-portal/4.2.0_react@16.13.1:
     resolution: {integrity: sha512-Zf+vGQ/VEAb5XAy+muKEn48yhdCNYPZaB1BWg1xc8sAZWD8pXTgPtQT4ihBdmWzsfCq8p8/kqf0GWydSBqc+Eg==}
@@ -15086,7 +15132,7 @@ packages:
       react: 16.13.1
     dev: false
 
-  /react-redux/7.1.3_49f644e2f7de4182503f8b93abece808:
+  /react-redux/7.1.3_jh3ejyxx3zayeub7roj2x3hiba:
     resolution: {integrity: sha512-uI1wca+ECG9RoVkWQFF4jDMqmaw0/qnvaSvOoL/GA4dNxf6LoV8sUAcNDvE5NWKs4hFpn0t6wswNQnY3f7HT3w==}
     peerDependencies:
       react: ^16.8.3
@@ -15122,7 +15168,7 @@ packages:
       resize-observer-polyfill: 1.5.1
     dev: false
 
-  /react-smooth/1.0.5_react-dom@16.13.1+react@16.13.1:
+  /react-smooth/1.0.5_5owmthsvj5ictknaj3ev736ofq:
     resolution: {integrity: sha512-eW057HT0lFgCKh8ilr0y2JaH2YbNcuEdFpxyg7Gf/qDKk9hqGMyXryZJ8iMGJEuKH0+wxS0ccSsBBB3W8yCn8w==}
     peerDependencies:
       react: ^15.0.0 || ^16.0.0
@@ -15133,18 +15179,16 @@ packages:
       raf: 3.4.1
       react: 16.13.1
       react-dom: 16.13.1_react@16.13.1
-      react-transition-group: 2.9.0_react-dom@16.13.1+react@16.13.1
+      react-transition-group: 2.9.0_5owmthsvj5ictknaj3ev736ofq
     dev: false
 
-  /react-split-pane/0.1.89_react-dom@16.13.1+react@16.13.1:
+  /react-split-pane/0.1.89:
     resolution: {integrity: sha512-bGEiOevi6nBE1evEJOsZjd5A7plLboFAU4+HGASWWVm94XUg7QdsuPInGOB+5Ym4RtY3TZCpmUvLe6qQmrZUOg==}
     peerDependencies:
       react: ^16.0.0-0
       react-dom: ^16.0.0-0
     dependencies:
       prop-types: 15.7.2
-      react: 16.13.1
-      react-dom: 16.13.1_react@16.13.1
       react-lifecycles-compat: 3.0.4
       react-style-proptype: 3.2.2
     dev: true
@@ -15155,7 +15199,7 @@ packages:
       prop-types: 15.7.2
     dev: true
 
-  /react-svg/11.2.5_react-dom@16.13.1+react@16.13.1:
+  /react-svg/11.2.5_5owmthsvj5ictknaj3ev736ofq:
     resolution: {integrity: sha512-uUMhRVdU//5qktiTSO2W6nQeHRLwYA1FsWANQFB5O33UgT2uT0V5wVapu46+wz1mx6wt1j53+1aA8QuNn4lJ6A==}
     peerDependencies:
       react: ^15.5.4 || ^16.0.0 || ^17.0.0
@@ -15179,16 +15223,15 @@ packages:
       react-is: 16.13.1
       scheduler: 0.18.0
 
-  /react-textarea-autosize/5.2.1_react@16.13.1:
+  /react-textarea-autosize/5.2.1:
     resolution: {integrity: sha512-bx6z2I35aapr71ggw2yZIA4qhmqeTa4ZVsSaTeFvtf9kfcZppDBh2PbMt8lvbdmzEk7qbSFhAxR9vxEVm6oiMg==}
     peerDependencies:
       react: '>=0.14.0 <17.0.0'
     dependencies:
       prop-types: 15.7.2
-      react: 16.13.1
     dev: true
 
-  /react-textarea-autosize/8.3.0_02d893cb8c41b19aac4a498638d902a7:
+  /react-textarea-autosize/8.3.0_almjhs4migyzvlckjgddrwicu4:
     resolution: {integrity: sha512-3GLWFAan2pbwBeoeNDoqGmSbrShORtgWfaWX0RJDivsUrpShh01saRM5RU/i4Zmf+whpBVEY5cA90Eq8Ub1N3w==}
     engines: {node: '>=10'}
     peerDependencies:
@@ -15197,12 +15240,24 @@ packages:
       '@babel/runtime': 7.17.2
       react: 16.13.1
       use-composed-ref: 1.1.0_react@16.13.1
-      use-latest: 1.2.0_02d893cb8c41b19aac4a498638d902a7
+      use-latest: 1.2.0_almjhs4migyzvlckjgddrwicu4
     transitivePeerDependencies:
       - '@types/react'
     dev: false
 
-  /react-transition-group/2.9.0_react-dom@16.13.1+react@16.13.1:
+  /react-transition-group/2.9.0:
+    resolution: {integrity: sha512-+HzNTCHpeQyl4MJ/bdE0u6XRMe9+XG/+aL4mCxVN4DnPBQ0/5bfHWPDuOZUzYdMj94daZaZdCCc1Dzt9R/xSSg==}
+    peerDependencies:
+      react: '>=15.0.0'
+      react-dom: '>=15.0.0'
+    dependencies:
+      dom-helpers: 3.4.0
+      loose-envify: 1.4.0
+      prop-types: 15.7.2
+      react-lifecycles-compat: 3.0.4
+    dev: true
+
+  /react-transition-group/2.9.0_5owmthsvj5ictknaj3ev736ofq:
     resolution: {integrity: sha512-+HzNTCHpeQyl4MJ/bdE0u6XRMe9+XG/+aL4mCxVN4DnPBQ0/5bfHWPDuOZUzYdMj94daZaZdCCc1Dzt9R/xSSg==}
     peerDependencies:
       react: '>=15.0.0'
@@ -15214,8 +15269,9 @@ packages:
       react: 16.13.1
       react-dom: 16.13.1_react@16.13.1
       react-lifecycles-compat: 3.0.4
+    dev: false
 
-  /react-treebeard/2.1.0_react-dom@16.13.1+react@16.13.1:
+  /react-treebeard/2.1.0:
     resolution: {integrity: sha512-unoy8IJL1NR5jgTtK+CqOCZKZylh/Tlid0oYajW9bLZCbFelxzmCsF8Y2hyS6pvHqM4W501oOm5O/jvg3VZCrg==}
     peerDependencies:
       react: ^15.5.4 || ^16.0.0
@@ -15224,11 +15280,9 @@ packages:
       babel-runtime: 6.26.0
       deep-equal: 1.1.1
       prop-types: 15.7.2
-      radium: 0.19.6_react@16.13.1
-      react: 16.13.1
-      react-dom: 16.13.1_react@16.13.1
+      radium: 0.19.6
       shallowequal: 0.2.2
-      velocity-react: 1.4.3_react-dom@16.13.1+react@16.13.1
+      velocity-react: 1.4.3
     dev: true
 
   /react/16.13.1:
@@ -15438,7 +15492,7 @@ packages:
       decimal.js-light: 2.5.0
     dev: false
 
-  /recharts/1.8.5_react-dom@16.13.1+react@16.13.1:
+  /recharts/1.8.5_5owmthsvj5ictknaj3ev736ofq:
     resolution: {integrity: sha512-tM9mprJbXVEBxjM7zHsIy6Cc41oO/pVYqyAsOHLxlJrbNBuLs0PHB3iys2M+RqCF0//k8nJtZF6X6swSkWY3tg==}
     peerDependencies:
       react: ^15.0.0 || ^16.0.0
@@ -15454,7 +15508,7 @@ packages:
       react: 16.13.1
       react-dom: 16.13.1_react@16.13.1
       react-resize-detector: 2.3.0_react@16.13.1
-      react-smooth: 1.0.5_react-dom@16.13.1+react@16.13.1
+      react-smooth: 1.0.5_5owmthsvj5ictknaj3ev736ofq
       recharts-scale: 0.4.3
       reduce-css-calc: 1.3.0
     dev: false
@@ -15508,6 +15562,19 @@ packages:
       lodash: 4.17.21
       reduce-reducers: 0.1.5
     dev: false
+
+  /redux-saga-test-plan/3.7.0:
+    resolution: {integrity: sha512-et9kCnME01kjoKXFfSk4FkozgOPPvllt9TlpL6A7ZYIS/WgoEFMLXk/UYww8KWXbmk5Qo2IF6xCc/IS1KmvP6A==}
+    peerDependencies:
+      redux-saga: '>= 0.15.0 < 0.17.0'
+    dependencies:
+      core-js: 2.6.11
+      fsm-iterator: 1.1.0
+      lodash.isequal: 4.5.0
+      lodash.ismatch: 4.4.0
+      object-assign: 4.1.1
+      util-inspect: 0.1.8
+    dev: true
 
   /redux-saga-test-plan/3.7.0_redux-saga@0.15.6:
     resolution: {integrity: sha512-et9kCnME01kjoKXFfSk4FkozgOPPvllt9TlpL6A7ZYIS/WgoEFMLXk/UYww8KWXbmk5Qo2IF6xCc/IS1KmvP6A==}
@@ -16810,6 +16877,16 @@ packages:
       schema-utils: 0.3.0
     dev: true
 
+  /style-loader/2.0.0:
+    resolution: {integrity: sha512-Z0gYUJmzZ6ZdRUqpg1r8GsaFKypE+3xAzuFeMuoHgjc9KZv3wMyCRjQIWEbhoFSq7+7yoHXySDJyyWQaPajeiQ==}
+    engines: {node: '>= 10.13.0'}
+    peerDependencies:
+      webpack: ^4.0.0 || ^5.0.0
+    dependencies:
+      loader-utils: 2.0.2
+      schema-utils: 3.1.1
+    dev: false
+
   /style-loader/2.0.0_webpack@4.41.5:
     resolution: {integrity: sha512-Z0gYUJmzZ6ZdRUqpg1r8GsaFKypE+3xAzuFeMuoHgjc9KZv3wMyCRjQIWEbhoFSq7+7yoHXySDJyyWQaPajeiQ==}
     engines: {node: '>= 10.13.0'}
@@ -16819,6 +16896,7 @@ packages:
       loader-utils: 2.0.2
       schema-utils: 3.1.1
       webpack: 4.41.5
+    dev: true
 
   /style-search/0.1.0:
     resolution: {integrity: sha1-eVjHk+R+MuB9K1yv5cC/jhLneQI=}
@@ -16837,8 +16915,8 @@ packages:
     engines: {node: '>=10.13.0'}
     hasBin: true
     dependencies:
-      '@stylelint/postcss-css-in-js': 0.37.2_4fe96148bf77e6cee792ae366c9083f9
-      '@stylelint/postcss-markdown': 0.36.2_4fe96148bf77e6cee792ae366c9083f9
+      '@stylelint/postcss-css-in-js': 0.37.2_j7uwcsf7o7tm5z4svy3gzeed7e
+      '@stylelint/postcss-markdown': 0.36.2_j7uwcsf7o7tm5z4svy3gzeed7e
       autoprefixer: 9.8.6
       balanced-match: 1.0.0
       chalk: 4.1.0
@@ -16864,7 +16942,7 @@ packages:
       micromatch: 4.0.4
       normalize-selector: 0.2.0
       postcss: 7.0.35
-      postcss-html: 0.36.0_4fe96148bf77e6cee792ae366c9083f9
+      postcss-html: 0.36.0_j7uwcsf7o7tm5z4svy3gzeed7e
       postcss-less: 3.1.4
       postcss-media-query-parser: 0.2.3
       postcss-resolve-nested-selector: 0.1.1
@@ -17283,11 +17361,11 @@ packages:
       es6-promise: 4.2.8
       fp-ts: 2.11.8
       io-ts: 2.2.16_fp-ts@2.11.8
-      io-ts-types: 0.5.16_82e7bb51b6a457d65c56a54e12fe7568
+      io-ts-types: 0.5.16_qlt3wunwurl5mxcwuvhbf7tvna
       isomorphic-fetch: 3.0.0
       jsonwebtoken: 8.5.1
       monocle-ts: 2.3.12_fp-ts@2.11.8
-      newtype-ts: 0.3.5_fp-ts@2.11.8+monocle-ts@2.3.12
+      newtype-ts: 0.3.5_ejidgzjhgz4cb5s3zyh5s2rnpy
       semver: 5.7.1
       uuid: 3.3.3
     transitivePeerDependencies:
@@ -17627,6 +17705,24 @@ packages:
     resolution: {integrity: sha512-3IVX4nI6B5cc31/GFFE+i8ey/N2eA0CZDbo6n0yrz0zDX8ZJ8djmU1p+XRz7G3is0F3bB3pu2pAroFdAWQKU3w==}
     dev: false
 
+  /ts-jest/23.10.5:
+    resolution: {integrity: sha512-MRCs9qnGoyKgFc8adDEntAOP64fWK1vZKnOYU1o2HxaqjdJvGqmkLCPCnVq1/If4zkUmEjKPnCiUisTrlX2p2A==}
+    engines: {node: '>= 6'}
+    hasBin: true
+    peerDependencies:
+      jest: '>=22 <24'
+    dependencies:
+      bs-logger: 0.2.6
+      buffer-from: 1.1.1
+      fast-json-stable-stringify: 2.1.0
+      json5: 2.1.3
+      make-error: 1.3.5
+      mkdirp: 0.5.5
+      resolve: 1.22.0
+      semver: 5.7.1
+      yargs-parser: 10.1.0
+    dev: false
+
   /ts-jest/23.10.5_jest@23.6.0:
     resolution: {integrity: sha512-MRCs9qnGoyKgFc8adDEntAOP64fWK1vZKnOYU1o2HxaqjdJvGqmkLCPCnVq1/If4zkUmEjKPnCiUisTrlX2p2A==}
     engines: {node: '>= 6'}
@@ -17644,6 +17740,7 @@ packages:
       resolve: 1.22.0
       semver: 5.7.1
       yargs-parser: 10.1.0
+    dev: true
 
   /ts-loader/5.4.5_typescript@3.7.4:
     resolution: {integrity: sha512-XYsjfnRQCBum9AMRZpk2rTYSVpdZBpZK+kDh0TeT3kxmQNBDVIeUjdPjY5RZry4eIAb8XHc4gYSUiUWPYvzSRw==}
@@ -17685,7 +17782,7 @@ packages:
     engines: {node: '>=4.0.0'}
     hasBin: true
 
-  /tslint-react/3.6.0_tslint@5.20.1+typescript@3.7.4:
+  /tslint-react/3.6.0_phuhihgfe47bykjdo5dem4dkjm:
     resolution: {integrity: sha512-AIv1QcsSnj7e9pFir6cJ6vIncTqxfqeFF3Lzh8SuuBljueYzEAtByuB6zMaD27BL0xhMEqsZ9s5eHuCONydjBw==}
     peerDependencies:
       tslint: ^5.1.0
@@ -18033,7 +18130,7 @@ packages:
       schema-utils: 0.3.0
     dev: true
 
-  /url-loader/3.0.0_file-loader@5.0.2+webpack@4.41.5:
+  /url-loader/3.0.0_vhm6up2vp54brdo5z2ipn7l34i:
     resolution: {integrity: sha512-a84JJbIA5xTFTWyjjcPdnsu+41o/SNE8SpXMdUvXs6Q+LuhCD9E2+0VCiuDWqgo3GGXVlFHzArDmBpj9PgWn4A==}
     engines: {node: '>= 10.13.0'}
     peerDependencies:
@@ -18044,6 +18141,22 @@ packages:
         optional: true
     dependencies:
       file-loader: 5.0.2_webpack@4.41.5
+      loader-utils: 1.2.3
+      mime: 2.4.4
+      schema-utils: 2.7.0
+      webpack: 4.41.5
+    dev: false
+
+  /url-loader/3.0.0_webpack@4.41.5:
+    resolution: {integrity: sha512-a84JJbIA5xTFTWyjjcPdnsu+41o/SNE8SpXMdUvXs6Q+LuhCD9E2+0VCiuDWqgo3GGXVlFHzArDmBpj9PgWn4A==}
+    engines: {node: '>= 10.13.0'}
+    peerDependencies:
+      file-loader: '*'
+      webpack: ^4.0.0 || ^5.0.0
+    peerDependenciesMeta:
+      file-loader:
+        optional: true
+    dependencies:
       loader-utils: 1.2.3
       mime: 2.4.4
       schema-utils: 2.7.0
@@ -18072,7 +18185,7 @@ packages:
       ts-essentials: 2.0.12
     dev: false
 
-  /use-isomorphic-layout-effect/1.1.0_02d893cb8c41b19aac4a498638d902a7:
+  /use-isomorphic-layout-effect/1.1.0_almjhs4migyzvlckjgddrwicu4:
     resolution: {integrity: sha512-kady5Z1O1qx5RitodCCKbpJSVEtECXYcnBnb5Q48Bz5V6gBmTu85ZcGdVwVFs8+DaOurNb/L5VdGHoQRMknghw==}
     peerDependencies:
       '@types/react': '*'
@@ -18085,7 +18198,7 @@ packages:
       react: 16.13.1
     dev: false
 
-  /use-latest/1.2.0_02d893cb8c41b19aac4a498638d902a7:
+  /use-latest/1.2.0_almjhs4migyzvlckjgddrwicu4:
     resolution: {integrity: sha512-d2TEuG6nSLKQLAfW3By8mKr8HurOlTkul0sOpxbClIv4SQ4iOd7BYr7VIzdbktUCnv7dua/60xzd8igMU6jmyw==}
     peerDependencies:
       '@types/react': '*'
@@ -18096,7 +18209,7 @@ packages:
     dependencies:
       '@types/react': 16.9.34
       react: 16.13.1
-      use-isomorphic-layout-effect: 1.1.0_02d893cb8c41b19aac4a498638d902a7
+      use-isomorphic-layout-effect: 1.1.0_almjhs4migyzvlckjgddrwicu4
     dev: false
 
   /use/3.1.1:
@@ -18194,7 +18307,7 @@ packages:
     resolution: {integrity: sha512-m6EXlCAMetKztO1ppBhGU1/1MR3IiEevO6ESq6rcrSQ3Q77xYSW13jkfXW88o4xMrkXJhy/U7j4wFR/twMB0Eg==}
     dev: true
 
-  /velocity-react/1.4.3_react-dom@16.13.1+react@16.13.1:
+  /velocity-react/1.4.3:
     resolution: {integrity: sha512-zvefGm85A88S3KdF9/dz5vqyFLAiwKYlXGYkHH2EbXl+CZUD1OT0a0aS1tkX/WXWTa/FUYqjBaAzAEFYuSobBQ==}
     peerDependencies:
       react: ^15.3.0 || ^16.0.0
@@ -18202,9 +18315,7 @@ packages:
     dependencies:
       lodash: 4.17.21
       prop-types: 15.7.2
-      react: 16.13.1
-      react-dom: 16.13.1_react@16.13.1
-      react-transition-group: 2.9.0_react-dom@16.13.1+react@16.13.1
+      react-transition-group: 2.9.0
       velocity-animate: 1.5.2
     dev: true
 
@@ -18343,7 +18454,7 @@ packages:
         optional: true
     dependencies:
       '@discoveryjs/json-ext': 0.5.7
-      '@webpack-cli/configtest': 1.1.1_webpack-cli@4.9.2+webpack@4.41.5
+      '@webpack-cli/configtest': 1.1.1_larvua667xfqf25rp3gzutm4tm
       '@webpack-cli/info': 1.4.1_webpack-cli@4.9.2
       '@webpack-cli/serve': 1.6.1_webpack-cli@4.9.2
       colorette: 2.0.16

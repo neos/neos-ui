@@ -7,28 +7,26 @@
   "scripts": {
     "test": "pnpm run jest -w 2 --coverage",
     "test:watch": "pnpm run jest --watch",
-    "build": "exit 0",
-    "build:watch": "exit 0",
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src && stylelint 'src/**/*.css'",
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "8.0.0",
-    "@neos-project/build-essentials": "8.0.0",
-    "@neos-project/debug-reason-for-rendering": "8.0.0",
-    "@neos-project/jest-preset-neos-ui": "8.0.0",
+    "@neos-project/babel-preset-neos-ui": "workspace:*",
+    "@neos-project/build-essentials": "workspace:*",
+    "@neos-project/debug-reason-for-rendering": "workspace:*",
+    "@neos-project/jest-preset-neos-ui": "workspace:*",
     "react-dnd-test-backend": "^7.0.2"
   },
   "dependencies": {
-    "@neos-project/neos-ui-ckeditor5-bindings": "8.0.0",
-    "@neos-project/neos-ui-constants": "8.0.0",
-    "@neos-project/neos-ui-decorators": "8.0.0",
-    "@neos-project/neos-ui-extensibility": "8.0.0",
-    "@neos-project/neos-ui-i18n": "8.0.0",
-    "@neos-project/neos-ui-inspector": "8.0.0",
-    "@neos-project/neos-ui-redux-store": "8.0.0",
-    "@neos-project/react-ui-components": "8.0.0"
+    "@neos-project/neos-ui-ckeditor5-bindings": "workspace:*",
+    "@neos-project/neos-ui-constants": "workspace:*",
+    "@neos-project/neos-ui-decorators": "workspace:*",
+    "@neos-project/neos-ui-extensibility": "workspace:*",
+    "@neos-project/neos-ui-i18n": "workspace:*",
+    "@neos-project/neos-ui-inspector": "workspace:*",
+    "@neos-project/neos-ui-redux-store": "workspace:*",
+    "@neos-project/react-ui-components": "workspace:*"
   },
   "license": "GNU GPLv3",
   "jest": {

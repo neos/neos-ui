@@ -1,7 +1,7 @@
 import produce from 'immer';
 import {defaultsDeep} from 'lodash';
 import {action as createAction, ActionType} from 'typesafe-actions';
-import {actionTypes as system, InitAction} from '@neos-project/neos-ui-redux-store/src/System';
+import {actionTypes as system, InitAction} from '../../System';
 
 import * as selectors from './selectors';
 import {calculateNewFocusedNodes, getNodeOrThrow} from './helpers';

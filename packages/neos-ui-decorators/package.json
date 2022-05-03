@@ -22,7 +22,8 @@
   },
   "dependencies": {
     "reselect": "^3.0.1",
-    "@neos-project/neos-ts-interfaces": "workspace:*"
+    "@neos-project/neos-ts-interfaces": "workspace:*",
+    "@neos-project/utils-helpers": "workspace:*"
   },
   "license": "GNU GPLv3",
   "jest": {

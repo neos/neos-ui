@@ -7,7 +7,7 @@
   "private": true,
   "resolutions": {
     "moment": "^2.20.1",
-    "d3-scale/d3-array": "2.3.3",
+    "d3-scale/d3-array": "2.10.0",
     "vfile-message": "^2.0.2"
   },
   "engines": {
@@ -192,5 +192,6 @@
   },
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "version": "0.0.0"
 }

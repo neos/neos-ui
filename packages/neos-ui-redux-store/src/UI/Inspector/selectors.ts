@@ -1,8 +1,8 @@
 import {createSelector, defaultMemoize} from 'reselect';
 import {$get} from 'plow-js';
 import validate from '@neos-project/neos-ui-validators';
-import {selectors as nodes} from '@neos-project/neos-ui-redux-store/src/CR/Nodes';
-import {GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
+import {selectors as nodes} from '../../CR/Nodes';
+import {GlobalState} from '../../System';
 import {NodeTypesRegistry, ValidatorRegistry} from '@neos-project/neos-ts-interfaces';
 
 /**

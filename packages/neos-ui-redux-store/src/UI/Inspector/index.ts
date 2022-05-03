@@ -2,10 +2,10 @@ import produce from 'immer';
 import {action as createAction, ActionType} from 'typesafe-actions';
 import {$get} from 'plow-js';
 
-import {InitAction} from '@neos-project/neos-ui-redux-store/src/System';
+import {InitAction} from '../../System';
 import {Node, NodeContextPath} from '@neos-project/neos-ts-interfaces';
 
-import * as selectors from '@neos-project/neos-ui-redux-store/src/UI/Inspector/selectors';
+import * as selectors from '../../UI/Inspector/selectors';
 export interface State extends Readonly<{
     shouldPromptToHandleUnappliedChanges: boolean;
     secondaryInspectorIsOpen: boolean;

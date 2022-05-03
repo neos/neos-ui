@@ -1,7 +1,7 @@
 import {$get} from 'plow-js';
 import {createSelector} from 'reselect';
-import {documentNodeContextPathSelector} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/selectors';
-import {GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
+import {documentNodeContextPathSelector} from '../Nodes/selectors';
+import {GlobalState} from '../../System';
 import {NodeContextPath} from '@neos-project/neos-ts-interfaces';
 
 

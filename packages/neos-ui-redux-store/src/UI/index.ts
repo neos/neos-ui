@@ -1,23 +1,23 @@
-import {combineReducers} from '@neos-project/neos-ui-redux-store/src/combineReducers';
+import {combineReducers} from '../combineReducers';
 
-import * as FlashMessages from '@neos-project/neos-ui-redux-store/src/UI/FlashMessages';
-import * as FullScreen from '@neos-project/neos-ui-redux-store/src/UI/FullScreen';
-import * as KeyboardShortcutModal from '@neos-project/neos-ui-redux-store/src/UI/KeyboardShortcutModal';
-import * as LeftSideBar from '@neos-project/neos-ui-redux-store/src/UI/LeftSideBar';
-import * as EditPreviewMode from '@neos-project/neos-ui-redux-store/src/UI/EditPreviewMode';
-import * as Drawer from '@neos-project/neos-ui-redux-store/src/UI/Drawer';
-import * as Remote from '@neos-project/neos-ui-redux-store/src/UI/Remote';
-import * as NodeLinking from '@neos-project/neos-ui-redux-store/src/UI/NodeLinking';
-import * as RightSideBar from '@neos-project/neos-ui-redux-store/src/UI/RightSideBar';
-import * as AddNodeModal from '@neos-project/neos-ui-redux-store/src/UI/AddNodeModal';
-import * as PageTree from '@neos-project/neos-ui-redux-store/src/UI/PageTree';
-import * as ContentCanvas from '@neos-project/neos-ui-redux-store/src/UI/ContentCanvas';
-import * as Inspector from '@neos-project/neos-ui-redux-store/src/UI/Inspector';
-import * as InsertionModeModal from '@neos-project/neos-ui-redux-store/src/UI/InsertionModeModal';
-import * as SelectNodeTypeModal from '@neos-project/neos-ui-redux-store/src/UI/SelectNodeTypeModal';
-import * as NodeCreationDialog from '@neos-project/neos-ui-redux-store/src/UI/NodeCreationDialog';
-import * as NodeVariantCreationDialog from '@neos-project/neos-ui-redux-store/src/UI/NodeVariantCreationDialog';
-import * as ContentTree from '@neos-project/neos-ui-redux-store/src/UI/ContentTree';
+import * as FlashMessages from './FlashMessages';
+import * as FullScreen from './FullScreen';
+import * as KeyboardShortcutModal from './KeyboardShortcutModal';
+import * as LeftSideBar from './LeftSideBar';
+import * as EditPreviewMode from './EditPreviewMode';
+import * as Drawer from './Drawer';
+import * as Remote from './Remote';
+import * as NodeLinking from './NodeLinking';
+import * as RightSideBar from './RightSideBar';
+import * as AddNodeModal from './AddNodeModal';
+import * as PageTree from './PageTree';
+import * as ContentCanvas from './ContentCanvas';
+import * as Inspector from './Inspector';
+import * as InsertionModeModal from './InsertionModeModal';
+import * as SelectNodeTypeModal from './SelectNodeTypeModal';
+import * as NodeCreationDialog from './NodeCreationDialog';
+import * as NodeVariantCreationDialog from './NodeVariantCreationDialog';
+import * as ContentTree from './ContentTree';
 
 const all = {
     FlashMessages,

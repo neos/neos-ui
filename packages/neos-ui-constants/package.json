@@ -7,8 +7,6 @@
   "scripts": {
     "test": "pnpm run jest -w 2 --coverage --passWithNoTests",
     "test:watch": "pnpm run jest --watch",
-    "build": "exit 0",
-    "build:watch": "exit 0",
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src",
     "jest": "NODE_ENV=test jest"

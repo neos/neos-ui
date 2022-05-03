@@ -7,11 +7,10 @@
   "homepage": "https://github.com/neos/neos-ui/blob/master/README.md",
   "main": "./dist/index.js",
   "scripts": {
-    "prebuild": "pnpm tsc --declaration",
     "test": "pnpm run jest -w 2 --coverage",
     "test:watch": "pnpm run jest --watch",
-    "build": "pnpm tsc --build",
-    "build:watch": "pnpm tsc --build --watch",
+    "build": "pnpm tsc --declaration",
+    "build:watch": "pnpm tsc --watch",
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src",
     "jest": "NODE_ENV=test jest"

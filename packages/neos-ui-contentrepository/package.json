@@ -17,6 +17,7 @@
     "@neos-project/jest-preset-neos-ui": "workspace:*"
   },
   "dependencies": {
+    "@neos-project/positional-array-sorter": "workspace:*",
     "@neos-project/neos-ui-extensibility": "workspace:*",
     "@neos-project/neos-ts-interfaces": "workspace:*"
   },

@@ -12,9 +12,9 @@
     "cross-env": "./node_modules/.bin/cross-env",
     "eslint": "./node_modules/.bin/eslint",
     "rimraf": "./node_modules/.bin/rimraf",
+    "stylelint": "./node_modules/.bin/stylelint",
     "watch": "./node_modules/.bin/watch",
-    "webpack": "./node_modules/.bin/webpack",
-    "stylelint": "./node_modules/.bin/stylelint"
+    "webpack": "./node_modules/.bin/webpack"
   },
   "scripts": {
     "lint": "eslint src"

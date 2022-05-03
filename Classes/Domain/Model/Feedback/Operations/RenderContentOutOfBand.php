@@ -19,7 +19,7 @@ use Neos\Fusion\Exception as FusionException;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 use Neos\Neos\Ui\Domain\Model\RenderedNodeDomAddress;
-use Neos\Neos\View\FusionView as FusionView;
+use Neos\Neos\View\FusionView;
 use Neos\Neos\Fusion\Helper\CachingHelper;
 
 class RenderContentOutOfBand extends AbstractFeedback
@@ -209,9 +209,7 @@ class RenderContentOutOfBand extends AbstractFeedback
     protected function renderContent(ControllerContext $controllerContext)
     {
         $cacheTags = $this->cachingHelper->nodeTag($this->getNode()->getParent());
-        foreach ($cacheTags as $tag) {
-            $this->contentCache->flushByTag($tag);
-        }
+        $this->contentCache->flushByTags($cacheTags);
 
         $parentDomAddress = $this->getParentDomAddress();
 

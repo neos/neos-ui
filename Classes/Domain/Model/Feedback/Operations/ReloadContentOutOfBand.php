@@ -151,9 +151,7 @@ class ReloadContentOutOfBand extends AbstractFeedback
     protected function renderContent(ControllerContext $controllerContext)
     {
         $cacheTags = $this->cachingHelper->nodeTag($this->getNode());
-        foreach ($cacheTags as $tag) {
-            $this->contentCache->flushByTag($tag);
-        }
+        $this->contentCache->flushByTags($cacheTags);
 
         $nodeDomAddress = $this->getNodeDomAddress();
 

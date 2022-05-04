@@ -18,9 +18,15 @@
   },
   "dependencies": {
     "@neos-project/neos-ts-interfaces": "workspace:*",
-    "@neos-project/neos-ui-extensibility": "workspace:*",
     "@neos-project/neos-ui-validators": "workspace:*",
-    "@neos-project/utils-redux": "workspace:*"
+    "immer": "^9.0.0",
+    "lodash.assignin": "^4.2.0",
+    "lodash.defaultsdeep": "^4.6.1",
+    "lodash.isequal": "^4.5.0",
+    "lodash.mapvalues": "^4.6.0",
+    "plow-js": "^2.2.0",
+    "reselect": "^3.0.1",
+    "typesafe-actions": "^5.1.0"
   },
   "license": "GNU GPLv3",
   "jest": {

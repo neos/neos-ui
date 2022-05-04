@@ -41,7 +41,8 @@
     "@neos-project/react-ui-components": "workspace:*",
     "@neos-project/utils-helpers": "workspace:*",
     "@neos-project/utils-logger": "workspace:*",
-    "@neos-project/utils-redux": "workspace:*"
+    "@neos-project/utils-redux": "workspace:*",
+    "normalize.css": "^8.0.0"
   },
   "license": "GNU GPLv3",
   "jest": {

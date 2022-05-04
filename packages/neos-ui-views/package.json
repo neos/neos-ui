@@ -11,19 +11,30 @@
     "lint": "eslint src && stylelint 'src/**/*.css'",
     "jest": "NODE_ENV=test jest"
   },
+  "dependencies": {
+    "@neos-project/brand": "^1.3.0",
+    "@neos-project/neos-ui-decorators": "workspace:*",
+    "@neos-project/neos-ui-extensibility": "workspace:*",
+    "@neos-project/neos-ui-i18n": "workspace:*",
+    "@neos-project/neos-ui-redux-store": "workspace:*",
+    "@neos-project/react-ui-components": "workspace:*",
+    "d3-scale": "^4.0.2",
+    "d3-time": "^1.0.8",
+    "lodash.isequal": "^4.5.0",
+    "moment": "^2.20.1",
+    "plow-js": "^2.2.0",
+    "recharts": "^1.0.0-alpha.6"
+  },
   "devDependencies": {
     "@neos-project/babel-preset-neos-ui": "workspace:*",
     "@neos-project/build-essentials": "workspace:*",
     "@neos-project/debug-reason-for-rendering": "workspace:*",
     "@neos-project/jest-preset-neos-ui": "workspace:*"
   },
-  "dependencies": {
-    "@neos-project/brand": "^1.3.0",
-    "@neos-project/neos-ui-extensibility": "workspace:*",
-    "@neos-project/neos-ui-i18n": "workspace:*",
-    "@neos-project/neos-ui-inspector": "workspace:*",
-    "@neos-project/neos-ui-redux-store": "workspace:*",
-    "@neos-project/react-ui-components": "workspace:*"
+  "peerDependencies": {
+    "prop-types": "^15.5.10",
+    "react": "^16.12.0",
+    "react-redux": "^7.1.3"
   },
   "license": "GNU GPLv3",
   "jest": {

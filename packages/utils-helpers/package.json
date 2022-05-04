@@ -11,6 +11,9 @@
     "lint": "eslint src",
     "jest": "NODE_ENV=test jest"
   },
+  "dependencies": {
+    "he": "^1.1.1"
+  },
   "devDependencies": {
     "@neos-project/babel-preset-neos-ui": "8.0.0",
     "@neos-project/build-essentials": "8.0.0",

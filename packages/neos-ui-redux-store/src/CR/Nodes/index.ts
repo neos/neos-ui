@@ -1,5 +1,5 @@
 import produce from 'immer';
-import {defaultsDeep} from 'lodash';
+import defaultsDeep from 'lodash.defaultsdeep';
 import {action as createAction, ActionType} from 'typesafe-actions';
 import {actionTypes as system, InitAction} from '../../System';
 

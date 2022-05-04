@@ -11,6 +11,9 @@
     "lint": "eslint src",
     "jest": "NODE_ENV=test jest"
   },
+  "dependencies": {
+    "debug": "^4.1.1"
+  },
   "devDependencies": {
     "@neos-project/babel-preset-neos-ui": "workspace:*",
     "@neos-project/build-essentials": "workspace:*",

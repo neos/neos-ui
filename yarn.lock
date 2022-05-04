@@ -2451,6 +2451,9 @@ __metadata:
     "@neos-project/neos-ui-decorators": "workspace:*"
     "@neos-project/neos-ui-extensibility": "workspace:*"
     "@neos-project/utils-logger": "workspace:*"
+    enzyme: ^3.8.0
+  peerDependencies:
+    react: ^16.12.0
   languageName: unknown
   linkType: soft
 
@@ -2461,6 +2464,15 @@ __metadata:
     "@neos-project/babel-preset-neos-ui": "workspace:*"
     "@neos-project/build-essentials": "workspace:*"
     "@neos-project/jest-preset-neos-ui": "workspace:*"
+    "@neos-project/neos-ui-redux-store": "workspace:*"
+    "@neos-project/react-ui-components": "workspace:*"
+    classnames: ^2.2.3
+    plow-js: ^2.2.0
+    react-portal: ^4.2.0
+  peerDependencies:
+    prop-types: ^15.5.10
+    react: ^16.12.0
+    react-redux: ^7.1.3
   languageName: unknown
   linkType: soft
 
@@ -2472,9 +2484,15 @@ __metadata:
     "@neos-project/build-essentials": "workspace:*"
     "@neos-project/jest-preset-neos-ui": "workspace:*"
     "@neos-project/neos-ts-interfaces": "workspace:*"
-    "@neos-project/neos-ui-extensibility": "workspace:*"
     "@neos-project/neos-ui-validators": "workspace:*"
-    "@neos-project/utils-redux": "workspace:*"
+    immer: ^9.0.0
+    lodash.assignin: ^4.2.0
+    lodash.defaultsdeep: ^4.6.1
+    lodash.isequal: ^4.5.0
+    lodash.mapvalues: ^4.6.0
+    plow-js: ^2.2.0
+    reselect: ^3.0.1
+    typesafe-actions: ^5.1.0
   languageName: unknown
   linkType: soft
 
@@ -2485,9 +2503,15 @@ __metadata:
     "@neos-project/babel-preset-neos-ui": "workspace:*"
     "@neos-project/build-essentials": "workspace:*"
     "@neos-project/jest-preset-neos-ui": "workspace:*"
+    "@neos-project/neos-ui-backend-connector": "workspace:*"
     "@neos-project/neos-ui-extensibility": "workspace:*"
-    "@neos-project/neos-ui-validators": "workspace:*"
-    "@neos-project/utils-redux": "workspace:*"
+    "@neos-project/neos-ui-guest-frame": "workspace:*"
+    "@neos-project/neos-ui-redux-store": "workspace:*"
+    lodash.escaperegexp: ^4.1.2
+    mousetrap: ^1.6.3
+    plow-js: ^2.2.0
+    redux-saga: ^0.15.0
+    redux-saga-test-plan: ^3.6.0
   languageName: unknown
   linkType: soft
 
@@ -2502,6 +2526,10 @@ __metadata:
     "@neos-project/neos-ui-extensibility": "workspace:*"
     "@neos-project/neos-ui-i18n": "workspace:*"
     "@neos-project/utils-logger": "workspace:*"
+    isemail: ^3.2.0
+    plow-js: ^2.2.0
+  peerDependencies:
+    react: ^16.12.0
   languageName: unknown
   linkType: soft
 
@@ -2514,11 +2542,21 @@ __metadata:
     "@neos-project/build-essentials": "workspace:*"
     "@neos-project/debug-reason-for-rendering": "workspace:*"
     "@neos-project/jest-preset-neos-ui": "workspace:*"
+    "@neos-project/neos-ui-decorators": "workspace:*"
     "@neos-project/neos-ui-extensibility": "workspace:*"
     "@neos-project/neos-ui-i18n": "workspace:*"
-    "@neos-project/neos-ui-inspector": "workspace:*"
     "@neos-project/neos-ui-redux-store": "workspace:*"
     "@neos-project/react-ui-components": "workspace:*"
+    d3-scale: ^4.0.2
+    d3-time: ^1.0.8
+    lodash.isequal: ^4.5.0
+    moment: ^2.20.1
+    plow-js: ^2.2.0
+    recharts: ^1.0.0-alpha.6
+  peerDependencies:
+    prop-types: ^15.5.10
+    react: ^16.12.0
+    react-redux: ^7.1.3
   languageName: unknown
   linkType: soft
 
@@ -2553,6 +2591,7 @@ __metadata:
     "@neos-project/utils-helpers": "workspace:*"
     "@neos-project/utils-logger": "workspace:*"
     "@neos-project/utils-redux": "workspace:*"
+    normalize.css: ^8.0.0
     redux-saga-test-plan: ^3.6.0
   languageName: unknown
   linkType: soft
@@ -2563,7 +2602,6 @@ __metadata:
   dependencies:
     "@neos-project/build-essentials": "workspace:*"
     "@neos-project/jest-preset-neos-ui": "workspace:*"
-    tslib: ^2.4.0
     typescript: ^4.6.4
   languageName: unknown
   linkType: soft
@@ -2575,6 +2613,8 @@ __metadata:
     "@neos-project/babel-preset-neos-ui": "workspace:*"
     "@neos-project/build-essentials": "workspace:*"
     "@neos-project/jest-preset-neos-ui": "workspace:*"
+  peerDependencies:
+    prop-types: ^15.5.10
   languageName: unknown
   linkType: soft
 
@@ -2582,15 +2622,29 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@neos-project/react-ui-components@workspace:packages/react-ui-components"
   dependencies:
+    "@fortawesome/fontawesome-svg-core": ^1.2.35
+    "@fortawesome/free-brands-svg-icons": ^5.15.3
+    "@fortawesome/free-regular-svg-icons": ^5.15.3
+    "@fortawesome/free-solid-svg-icons": ^5.15.3
+    "@fortawesome/react-fontawesome": ^0.1.14
     "@neos-project/babel-preset-neos-ui": "workspace:*"
     "@neos-project/build-essentials": "workspace:*"
     "@neos-project/debug-reason-for-rendering": "workspace:*"
+    "@neos-project/eslint-config-neos": ^2.3.0
     "@neos-project/jest-preset-neos-ui": "workspace:*"
     "@storybook/addon-info": ^3.2.16
     "@storybook/addon-knobs": 3.2.16
     "@storybook/react": 3.2.16
+    babel-eslint: ^10.0.3
+    core-js: ^2.6
+    enzyme: ^3.8.0
     enzyme-to-json: ^3.1.3
-    normalize.css: ^5.0.0
+    hoist-non-react-statics: ^3.3.1
+    lodash.omit: ^4.5.0
+    plow-js: ^2.2.0
+    raf: ^3.4.1
+    react-close-on-escape: ^3.0.0
+    react-keydown: ^1.9.4
     tslint: ^5.20.1
     typescript: ^4.6.0
     webpack-merge: ^4.2.2
@@ -2626,6 +2680,7 @@ __metadata:
     "@neos-project/babel-preset-neos-ui": 8.0.0
     "@neos-project/build-essentials": 8.0.0
     "@neos-project/jest-preset-neos-ui": 8.0.0
+    he: ^1.1.1
   languageName: unknown
   linkType: soft
 
@@ -2636,6 +2691,7 @@ __metadata:
     "@neos-project/babel-preset-neos-ui": "workspace:*"
     "@neos-project/build-essentials": "workspace:*"
     "@neos-project/jest-preset-neos-ui": "workspace:*"
+    debug: ^4.1.1
   languageName: unknown
   linkType: soft
 
@@ -3331,6 +3387,15 @@ __metadata:
   dependencies:
     "@types/lodash": "*"
   checksum: 62ec56f14b3077f7174497856e9b277db811943cd11b1d67d2a8e51a1803bd49319e8aaf62e745c696af972354a575dbb8a85d3aecf4ae774caf062dc31ac46e
+  languageName: node
+  linkType: hard
+
+"@types/lodash.omit@npm:^4.5.7":
+  version: 4.5.7
+  resolution: "@types/lodash.omit@npm:4.5.7"
+  dependencies:
+    "@types/lodash": "*"
+  checksum: e30600de518e648f4e9590d9238506ceab561726ec2fe56b4ff29b17aa1e47cbf9188be259b7d606dfb2040998c778533ccc0c58f065cca44ab5a6dbc8b6e518
   languageName: node
   linkType: hard
 
@@ -16105,13 +16170,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"normalize.css@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "normalize.css@npm:5.0.0"
-  checksum: 47d045b5e2ccc67879bac85850013a62d508e55b4200343e54bb71404dd341eb08710c108e62f74353c305b7f230dffc2f1dbbd5f2b5a16ede819e2c651ab454
-  languageName: node
-  linkType: hard
-
 "normalize.css@npm:^8.0.0":
   version: 8.0.1
   resolution: "normalize.css@npm:8.0.1"
@@ -20185,15 +20243,9 @@ __metadata:
     "@ckeditor/ckeditor5-list": ^16.0.0
     "@ckeditor/ckeditor5-paragraph": ^16.0.0
     "@ckeditor/ckeditor5-table": ^16.0.0
-    "@fortawesome/fontawesome-svg-core": ^1.2.35
-    "@fortawesome/free-brands-svg-icons": ^5.15.3
-    "@fortawesome/free-regular-svg-icons": ^5.15.3
-    "@fortawesome/free-solid-svg-icons": ^5.15.3
-    "@fortawesome/react-fontawesome": ^0.1.14
     "@friendsofreactjs/react-css-themr": ^4.1.0
     "@neos-project/brand": ^1.3.0
     "@neos-project/build-essentials": "*"
-    "@neos-project/eslint-config-neos": ^2.3.0
     "@sindresorhus/slugify": ^2.1.0
     "@types/classnames": ^2.2.9
     "@types/debug": ^4.1.7
@@ -20207,6 +20259,7 @@ __metadata:
     "@types/lodash.isobject": ^3.0.4
     "@types/lodash.isstring": ^4.0.4
     "@types/lodash.merge": ^4.6.6
+    "@types/lodash.omit": ^4.5.7
     "@types/moment": ^2.13.0
     "@types/prop-types": ^15.7.3
     "@types/react": ^16.9.17
@@ -20223,7 +20276,6 @@ __metadata:
     amator: ^1.0.1
     babel-cli: ^6.26.0
     babel-core: ^6.26.3
-    babel-eslint: ^10.0.3
     babel-jest: ^23.6.0
     babel-loader: ^7.1.4
     babel-plugin-transform-decorators-legacy: ^1.3.5
@@ -20234,66 +20286,45 @@ __metadata:
     babel-preset-stage-0: ^6.24.1
     browser-env: ^3.2.4
     check-dependencies: ^1.0.1
-    classnames: ^2.2.3
     codemirror: ^5.58.2
     core-js: ^2.6
     cpx: ^1.3.1
     cross-env: ^6.0.3
     css-loader: ^3.4.1
     custom-event-polyfill: ^1.0.6
-    d3-scale: ^4.0.2
-    d3-time: ^1.0.8
-    debug: ^4.1.1
     editorconfig-checker: ^4.0.2
-    enzyme: ^3.8.0
     enzyme-adapter-react-16: ^1.7.1
     eslint: ^5.3.0
     file-loader: ^5.0.2
     hash-sum: ^2.0.0
     hashlru: ^2.3.0
-    he: ^1.1.1
-    hoist-non-react-statics: ^3.3.1
     identity-obj-proxy: ^3.0.0
-    immer: ^9.0.0
-    isemail: ^3.2.0
     jest: ^23.6.0
     json-loader: ^0.5.7
     lodash.assign: ^4.2.0
-    lodash.assignin: ^4.2.0
     lodash.debounce: ^4.0.8
-    lodash.defaultsdeep: ^4.6.1
     lodash.defer: ^4.1.0
-    lodash.escaperegexp: ^4.1.2
     lodash.flowright: ^3.5.0
-    lodash.isequal: ^4.5.0
     lodash.isfunction: ^3.0.8
     lodash.isobject: ^3.0.2
     lodash.isstring: ^4.0.1
-    lodash.mapvalues: ^4.6.0
     lodash.memoize: ^4.1.2
     lodash.merge: ^4.6.0
-    lodash.omit: ^4.5.0
     lodash.pick: ^4.4.0
     lodash.sortby: ^4.7.0
     lodash.throttle: ^4.1.1
     lodash.unescape: 4.0.1
     mini-css-extract-plugin: ^0.5.0
-    moment: ^2.20.1
     monet: ^0.9.2
-    mousetrap: ^1.6.3
-    normalize.css: ^8.0.0
     null-loader: ^0.1.1
-    plow-js: ^2.2.0
     postcss-css-variables: ^0.14.0
     postcss-hexrgba: ^2.0.0
     postcss-import: ^12.0.1
     postcss-loader: ^3.0.0
     postcss-nested: ^4.2.1
     prop-types: ^15.5.10
-    raf: ^3.4.1
     raw-loader: ^0.5
     react: ^16.12.0
-    react-close-on-escape: ^3.0.0
     react-codemirror2: ^7.2.1
     react-collapse: ^5.0.1
     react-datetime: ^2.8.10
@@ -20304,22 +20335,16 @@ __metadata:
     react-dropzone: ^3.13.2
     react-height: ^3.0.0
     react-image-crop: ^2.0.5
-    react-keydown: ^1.9.4
     react-markdown: ^5.0.0
     react-measure: ^1.4.7
     react-motion: ^0.5.0
-    react-portal: ^4.2.0
     react-redux: ^7.1.3
     react-svg: ^11.1.2
     react-test-renderer: ^16.12.0
     react-textarea-autosize: ^8.3.0
-    recharts: ^1.0.0-alpha.6
     redux: ^4.0.5
     redux-actions: ^0.12.0
-    redux-saga: ^0.15.0
-    redux-saga-test-plan: ^3.6.0
     regenerator-runtime: ^0.13.2
-    reselect: ^3.0.1
     rimraf: ^2.5.4
     source-map-loader: ^0.2.4
     string-replace-loader: ^2.1.1
@@ -20336,7 +20361,6 @@ __metadata:
     tslint: ^5.20.1
     tslint-config-prettier: ^1.15.0
     tslint-react: ^3.6.0
-    typesafe-actions: ^5.1.0
     typescript: ^4.6.4
     url-loader: ^3.0.0
     uuid: ^3.2.1

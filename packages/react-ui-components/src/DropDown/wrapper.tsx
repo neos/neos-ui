@@ -1,6 +1,6 @@
 // tslint:disable:max-classes-per-file
 import React, {PureComponent, ReactNode} from 'react';
-import {omit} from 'lodash';
+import omit from 'lodash.omit';
 import mergeClassNames from 'classnames';
 import enhanceWithClickOutside from '../enhanceWithClickOutside/index';
 

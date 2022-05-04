@@ -16,6 +16,9 @@
     "@neos-project/build-essentials": "workspace:*",
     "@neos-project/jest-preset-neos-ui": "workspace:*"
   },
+  "peerDependencies": {
+    "prop-types": "^15.5.10"
+  },
   "license": "GNU GPLv3",
   "jest": {
     "preset": "@neos-project/jest-preset-neos-ui"

@@ -1,6 +1,6 @@
 import produce from 'immer';
 import {$get} from 'plow-js';
-import {mapValues} from 'lodash';
+import mapValues from 'lodash.mapvalues';
 import {createSelector} from 'reselect';
 import {action as createAction, ActionType} from 'typesafe-actions';
 import {actionTypes as system, InitAction, GlobalState} from '../../System';

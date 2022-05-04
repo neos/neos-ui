@@ -56,7 +56,6 @@
     "lodash.escaperegexp": "^4.1.2",
     "lodash.isequal": "^4.5.0",
     "lodash.isfunction": "^3.0.8",
-    "lodash.omit": "^4.3.0",
     "lodash.throttle": "^4.0.8",
     "moment": "^2.14.1",
     "prop-types": "^15.5.10",

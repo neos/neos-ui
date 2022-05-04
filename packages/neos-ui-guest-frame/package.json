@@ -14,11 +14,28 @@
   "devDependencies": {
     "@neos-project/babel-preset-neos-ui": "workspace:*",
     "@neos-project/build-essentials": "workspace:*",
-    "@neos-project/jest-preset-neos-ui": "workspace:*"
+    "@neos-project/jest-preset-neos-ui": "workspace:*",
+    "@neos-project/neos-ts-interfaces": "workspace:*",
+    "@neos-project/neos-ui-decorators": "workspace:*",
+    "@neos-project/neos-ui-guest-frame": "workspace:*",
+    "@neos-project/neos-ui-redux-store": "workspace:*",
+    "@neos-project/neos-ui-validators": "workspace:*",
+    "@neos-project/react-ui-components": "workspace:*"
   },
   "dependencies": {
     "@neos-project/neos-ui-extensibility": "workspace:*",
-    "@neos-project/utils-helpers": "workspace:*"
+    "@neos-project/utils-helpers": "workspace:*",
+    "amator": "^1.0.1",
+    "classnames": "^2.2.3",
+    "lodash.debounce": "^4.0.8",
+    "lodash.throttle": "^4.1.1",
+    "plow-js": "^2.2.0",
+    "redux-saga": "^0.15.0"
+  },
+  "peerDependencies": {
+    "prop-types": "^15.5.10",
+    "react": "^16.12.0",
+    "react-redux": "^7.1.3"
   },
   "license": "GNU GPLv3",
   "jest": {

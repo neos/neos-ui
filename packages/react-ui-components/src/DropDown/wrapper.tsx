@@ -28,7 +28,7 @@ export interface DropDownWrapperProps {
     /**
      * This prop controls the initial visual opened state of the `DropDown`.
      */
-    readonly isOpen: boolean;
+    readonly isOpen?: boolean;
 
     /**
      * This callback gets called when the opened state toggles
@@ -148,7 +148,7 @@ export class DropDownWrapper extends PureComponent<DropDownWrapperProps, DropDow
     constructor(props: DropDownWrapperProps) {
         super(props);
         this.state = {
-            isOpen: props.isOpen
+            isOpen: props.isOpen != undefined ? props.isOpen : defaultProps.isOpen
         };
     }
 
@@ -182,7 +182,9 @@ export class ContextDropDownHeader extends PureComponent<ContextDropDownProps> {
     };
 
     public render(): JSX.Element {
-        return <ShallowDropDownHeader {...this.props} {...this.context}/>;
+        const {isDropdownOpen, ...rest} = this.props;
+
+        return <ShallowDropDownHeader isOpen={isDropdownOpen} {...rest} {...this.context}/>;
     }
 }
 
@@ -193,8 +195,8 @@ export class ContextDropDownContents extends PureComponent<ContextDropDownProps>
     };
 
     public render(): JSX.Element {
-        const {wrapperRef} = this.props;
+        const {isDropdownOpen, wrapperRef, ...rest} = this.props;
 
-        return <ShallowDropDownContents {...this.props} {...this.context} wrapperRef={wrapperRef || this.context.wrapperRef}/>;
+        return <ShallowDropDownContents isOpen={isDropdownOpen} {...rest} {...this.context} wrapperRef={wrapperRef || this.context.wrapperRef}/>;
     }
 }

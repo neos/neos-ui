@@ -21,8 +21,8 @@
     "react": "^16.0.0"
   },
   "dependencies": {
-    "reselect": "^3.0.1",
-    "@neos-project/neos-ts-interfaces": "workspace:*"
+    "@neos-project/neos-ts-interfaces": "workspace:*",
+    "reselect": "^3.0.1"
   },
   "license": "GNU GPLv3",
   "jest": {

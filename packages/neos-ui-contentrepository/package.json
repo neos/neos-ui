@@ -17,9 +17,9 @@
     "@neos-project/jest-preset-neos-ui": "workspace:*"
   },
   "dependencies": {
-    "@neos-project/positional-array-sorter": "workspace:*",
+    "@neos-project/neos-ts-interfaces": "workspace:*",
     "@neos-project/neos-ui-extensibility": "workspace:*",
-    "@neos-project/neos-ts-interfaces": "workspace:*"
+    "@neos-project/positional-array-sorter": "workspace:*"
   },
   "license": "GNU GPLv3",
   "jest": {

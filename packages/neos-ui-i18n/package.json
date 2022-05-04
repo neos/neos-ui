@@ -17,10 +17,10 @@
     "@neos-project/jest-preset-neos-ui": "workspace:*"
   },
   "dependencies": {
+    "@neos-project/neos-ts-interfaces": "workspace:*",
     "@neos-project/neos-ui-decorators": "workspace:*",
     "@neos-project/neos-ui-extensibility": "workspace:*",
-    "@neos-project/utils-logger": "workspace:*",
-    "@neos-project/neos-ts-interfaces": "workspace:*"
+    "@neos-project/utils-logger": "workspace:*"
   },
   "license": "GNU GPLv3",
   "jest": {

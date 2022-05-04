@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@neos-project/brand": "^1.3.0",
+    "@neos-project/neos-ts-interfaces": "workspace:*",
     "@neos-project/neos-ui-backend-connector": "workspace:*",
     "@neos-project/neos-ui-ckeditor5-bindings": "workspace:*",
     "@neos-project/neos-ui-constants": "workspace:*",
@@ -40,8 +41,7 @@
     "@neos-project/react-ui-components": "workspace:*",
     "@neos-project/utils-helpers": "workspace:*",
     "@neos-project/utils-logger": "workspace:*",
-    "@neos-project/utils-redux": "workspace:*",
-    "@neos-project/neos-ts-interfaces": "workspace:*"
+    "@neos-project/utils-redux": "workspace:*"
   },
   "license": "GNU GPLv3",
   "jest": {

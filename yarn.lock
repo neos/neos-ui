@@ -2359,6 +2359,9 @@ __metadata:
     "@neos-project/neos-ts-interfaces": "workspace:*"
     "@neos-project/neos-ui-extensibility": "workspace:*"
     "@neos-project/positional-array-sorter": "workspace:*"
+    lodash.mapvalues: ^4.6.0
+    lodash.merge: ^4.6.0
+    plow-js: ^2.2.0
   languageName: unknown
   linkType: soft
 
@@ -20354,7 +20357,6 @@ __metadata:
     lodash.isfunction: ^3.0.8
     lodash.isobject: ^3.0.2
     lodash.isstring: ^4.0.1
-    lodash.merge: ^4.6.0
     lodash.pick: ^4.4.0
     lodash.sortby: ^4.7.0
     mini-css-extract-plugin: ^0.5.0

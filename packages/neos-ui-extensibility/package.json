@@ -21,8 +21,8 @@
     "typescript": "^4.6.4"
   },
   "dependencies": {
-    "@neos-project/build-essentials": "5.2.5",
-    "@neos-project/positional-array-sorter": "5.2.5",
+    "@neos-project/build-essentials": "workspace:*",
+    "@neos-project/positional-array-sorter": "workspace:*",
     "babel-core": "^6.26.3",
     "babel-eslint": "^7.1.1",
     "babel-loader": "^7.1.2",

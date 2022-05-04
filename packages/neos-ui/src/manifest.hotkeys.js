@@ -1,5 +1,5 @@
 import manifest from '@neos-project/neos-ui-extensibility';
-import {HotkeyRegistry} from '@neos-project/neos-ui/src/Registry';
+import {HotkeyRegistry} from './Registry';
 import {actions} from '@neos-project/neos-ui-redux-store';
 
 manifest('main.hotkeys', {}, (globalRegistry, {frontendConfiguration}) => {

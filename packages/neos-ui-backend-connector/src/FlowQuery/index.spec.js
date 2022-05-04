@@ -128,7 +128,7 @@ test(`
 
 test(`"api.flowQuery > resolveChain" utility should make a fetch call.`, () => {
     // @TODO: We need to clean up this side effect :(
-    global.fetch = jest.fn(() => Promise.resolve({ ok: true, json: () => Promise.resolve({}) }));
+    global.fetch = jest.fn(() => Promise.resolve({ok: true, json: () => Promise.resolve({})}));
     fetchWithErrorHandling.setCsrfToken('asdf');
     const result = resolveChain({}, {ui: {service: {flowQuery: 'https://hello.world'}}});
     global.fetch = undefined;

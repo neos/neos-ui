@@ -148,7 +148,7 @@ export class DropDownWrapper extends PureComponent<DropDownWrapperProps, DropDow
     constructor(props: DropDownWrapperProps) {
         super(props);
         this.state = {
-            isOpen: props.isOpen != undefined ? props.isOpen : defaultProps.isOpen
+            isOpen: props.isOpen !== undefined ? props.isOpen : defaultProps.isOpen
         };
     }
 

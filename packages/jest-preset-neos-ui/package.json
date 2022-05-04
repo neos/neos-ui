@@ -5,8 +5,8 @@
   "main": "jest-preset.json",
   "private": true,
   "bin": {
-    "babel-jest": "./node_modules/babel-jest/build/index.js",
-    "jest": "./node_modules/.bin/jest"
+    "babel-jest": "../../node_modules/babel-jest/build/index.js",
+    "jest": "../../node_modules/.bin/jest"
   },
   "dependencies": {
     "babel-core": "^6.26.3",

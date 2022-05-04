@@ -2222,6 +2222,7 @@ __metadata:
     cpx: ../../node_modules/.bin/cpx
     cross-env: ../../node_modules/.bin/cross-env
     eslint: ../../node_modules/.bin/eslint
+    jest: ../../node_modules/.bin/jest
     rimraf: ../../node_modules/.bin/rimraf
     stylelint: ../../node_modules/.bin/stylelint
     watch: ../../node_modules/.bin/watch
@@ -2264,8 +2265,8 @@ __metadata:
     jest: ^23.5.0
     raf: ^3.4.0
   bin:
-    babel-jest: ./node_modules/babel-jest/build/index.js
-    jest: ./node_modules/.bin/jest
+    babel-jest: ../../node_modules/babel-jest/build/index.js
+    jest: ../../node_modules/.bin/jest
   languageName: unknown
   linkType: soft
 

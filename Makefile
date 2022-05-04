@@ -80,7 +80,7 @@ setup: check-requirements install build ## Run a clean setup
 
 # TODO: figure out how to pass a parameter to other targets to reduce redundancy
 build-subpackages:
-	yarn workspaces foreach run build
+	yarn workspaces foreach --topological-dev run build
 	make build-react-ui-components-standalone
 
 # we build the react UI components ready for standalone usage;

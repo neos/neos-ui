@@ -3354,6 +3354,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/lodash.defaultsdeep@npm:^4.6.7":
+  version: 4.6.7
+  resolution: "@types/lodash.defaultsdeep@npm:4.6.7"
+  dependencies:
+    "@types/lodash": "*"
+  checksum: 74e8cdab19e564e5ed4059900da64b5733207292c6496429dfb865dcef0708c948e41b8b4803ef04a460469755d9d1ecf6386f143f2a57681d44a747344fa8ce
+  languageName: node
+  linkType: hard
+
 "@types/lodash.isequal@npm:^4.5.5":
   version: 4.5.5
   resolution: "@types/lodash.isequal@npm:4.5.5"
@@ -3378,6 +3387,15 @@ __metadata:
   dependencies:
     "@types/lodash": "*"
   checksum: ac171e3e3cac9aa0a2b4a80817699188604d48d9ecb3e665b52718db9cbf1a543f87974e9e6d786e5f3e361c0f2bf768255ff81cc83a5b83fda44ed5e513774c
+  languageName: node
+  linkType: hard
+
+"@types/lodash.mapvalues@npm:^4.6.7":
+  version: 4.6.7
+  resolution: "@types/lodash.mapvalues@npm:4.6.7"
+  dependencies:
+    "@types/lodash": "*"
+  checksum: f28db2c0629ddff44f42ee545c35a6079ab7619d14e41eea6963a014da535346b13595391787570267b9c20457a2cc5f6d2c390e87e40f12a7618e4b7b5d6682
   languageName: node
   linkType: hard
 
@@ -20255,9 +20273,11 @@ __metadata:
     "@types/jest": ^23.3.10
     "@types/lodash": ^4.14.149
     "@types/lodash.assignin": ^4.2.6
+    "@types/lodash.defaultsdeep": ^4.6.7
     "@types/lodash.isequal": ^4.5.5
     "@types/lodash.isobject": ^3.0.4
     "@types/lodash.isstring": ^4.0.4
+    "@types/lodash.mapvalues": ^4.6.7
     "@types/lodash.merge": ^4.6.6
     "@types/lodash.omit": ^4.5.7
     "@types/moment": ^2.13.0

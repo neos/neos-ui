@@ -41,7 +41,7 @@ aliases:
 jobs:
   checkout:
     docker:
-      - image: cimg/node:14.18-browsers
+      - image: cimg/node:16.14-browsers
     environment:
       FLOW_CONTEXT: Production
     steps:
@@ -61,7 +61,7 @@ jobs:
   codestyle:
     working_directory: *workspace_root
     docker:
-      - image: cimg/node:14.18-browsers
+      - image: cimg/node:16.14-browsers
     steps:
       - attach_workspace: *attach_workspace
       - run: make lint
@@ -69,7 +69,7 @@ jobs:
   unittests:
     working_directory: *workspace_root
     docker:
-      - image: cimg/node:14.18-browsers
+      - image: cimg/node:16.14-browsers
     steps:
       - attach_workspace: *attach_workspace
       - run: make test
@@ -79,7 +79,7 @@ jobs:
     environment:
       COMPOSER_CACHE_DIR: /home/circleci/composer/cache-dir
     docker:
-      - image: cimg/php:7.4.12-node
+      - image: cimg/php:8.1.5-node
     steps:
       - attach_workspace: *attach_workspace
       - run: chmod -R 777 /home/circleci
@@ -96,7 +96,7 @@ jobs:
     environment:
       FLOW_CONTEXT: Production
     docker:
-      - image: cimg/php:7.4.12-node
+      - image: cimg/php:8.1.5-node
       - image: circleci/mariadb:10.2
         environment:
           MYSQL_DATABASE: neos
@@ -135,7 +135,7 @@ jobs:
     environment:
       FLOW_CONTEXT: Production
     docker:
-      - image: cimg/php:7.4.12-node
+      - image: cimg/php:8.1.5-node
       - image: circleci/mariadb:10.2
         environment:
           MYSQL_DATABASE: neos

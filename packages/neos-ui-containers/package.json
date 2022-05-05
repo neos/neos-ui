@@ -17,9 +17,13 @@
   },
   "dependencies": {
     "@neos-project/neos-ui-decorators": "workspace:*",
-    "@neos-project/neos-ui-extensibility": "workspace:*",
+    "@neos-project/neos-ui-i18n": "workspace:*",
     "@neos-project/react-ui-components": "workspace:*",
     "@neos-project/utils-logger": "workspace:*"
+  },
+  "peerDependencies": {
+    "prop-types": "^15.5.10",
+    "react": "^16.0.0"
   },
   "license": "GNU GPLv3",
   "jest": {

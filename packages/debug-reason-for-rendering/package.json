@@ -11,6 +11,6 @@
     "@neos-project/babel-preset-neos-ui": "workspace:*"
   },
   "peerDependencies": {
-    "react": "^16.0.0"
+    "react": "^16.12.0"
   }
 }

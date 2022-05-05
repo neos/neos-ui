@@ -2190,7 +2190,6 @@ __metadata:
     "@ckeditor/ckeditor5-dev-utils": ^12.0.1
     "@neos-project/babel-preset-neos-ui": "workspace:*"
     babel-core: ^6.26.3
-    babel-eslint: ^7.1.1
     babel-loader: ^7.1.2
     check-dependencies: ^1.0.1
     cpx: ^1.3.1
@@ -4871,7 +4870,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-code-frame@npm:^6.22.0, babel-code-frame@npm:^6.26.0":
+"babel-code-frame@npm:^6.26.0":
   version: 6.26.0
   resolution: "babel-code-frame@npm:6.26.0"
   dependencies:
@@ -4922,18 +4921,6 @@ __metadata:
   peerDependencies:
     eslint: ">= 4.12.1"
   checksum: d3bf355c20d1a2f0667ace6c43263eecb0d09342a833129c67cc9f554a5dbc335bd6a73cbd3001ee6074570ca2184366ddff6c58afccf8fd55e249c02ff54288
-  languageName: node
-  linkType: hard
-
-"babel-eslint@npm:^7.1.1":
-  version: 7.2.3
-  resolution: "babel-eslint@npm:7.2.3"
-  dependencies:
-    babel-code-frame: ^6.22.0
-    babel-traverse: ^6.23.1
-    babel-types: ^6.23.0
-    babylon: ^6.17.0
-  checksum: b66fdebe24b553f8667e037d9bc7ad8ae4934d3beee1a8e488c033ca0e582816c0da4bb1405adbf549c6ff07069040e63572585a9333d470e5953d88e5a6bc22
   languageName: node
   linkType: hard
 
@@ -6344,7 +6331,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-traverse@npm:^6.0.0, babel-traverse@npm:^6.18.0, babel-traverse@npm:^6.23.1, babel-traverse@npm:^6.24.1, babel-traverse@npm:^6.26.0":
+"babel-traverse@npm:^6.0.0, babel-traverse@npm:^6.18.0, babel-traverse@npm:^6.24.1, babel-traverse@npm:^6.26.0":
   version: 6.26.0
   resolution: "babel-traverse@npm:6.26.0"
   dependencies:
@@ -6361,7 +6348,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-types@npm:^6.0.0, babel-types@npm:^6.14.0, babel-types@npm:^6.18.0, babel-types@npm:^6.19.0, babel-types@npm:^6.23.0, babel-types@npm:^6.24.1, babel-types@npm:^6.26.0":
+"babel-types@npm:^6.0.0, babel-types@npm:^6.14.0, babel-types@npm:^6.18.0, babel-types@npm:^6.19.0, babel-types@npm:^6.24.1, babel-types@npm:^6.26.0":
   version: 6.26.0
   resolution: "babel-types@npm:6.26.0"
   dependencies:
@@ -6373,7 +6360,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babylon@npm:^6.17.0, babylon@npm:^6.18.0":
+"babylon@npm:^6.18.0":
   version: 6.18.0
   resolution: "babylon@npm:6.18.0"
   bin:

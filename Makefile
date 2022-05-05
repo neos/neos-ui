@@ -127,6 +127,10 @@ storybook:
 test:
 	yarn workspaces foreach run test
 
+## run test in parallel if your machine can handle it
+test--parallel:
+	yarn workspaces foreach --parallel run test
+
 ## Executes integration tests on saucelabs.
 test-e2e-saucelabs:
 	bash Tests/IntegrationTests/e2e.sh saucelabs:chrome
@@ -145,6 +149,10 @@ lint: lint-js lint-editorconfig
 ## Runs lint test in all subpackages via lerna.
 lint-js:
 	yarn workspaces foreach run lint
+
+## run lint-js in parallel if your machine can handle it
+lint--parallel:
+	yarn workspaces foreach --parallel run lint
 
 ## Tests if all files respect the .editorconfig.
 lint-editorconfig:

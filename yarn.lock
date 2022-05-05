@@ -2061,9 +2061,8 @@ __metadata:
     "@neos-project/build-essentials": "workspace:*"
     "@neos-project/jest-preset-neos-ui": "workspace:*"
     "@neos-project/neos-ts-interfaces": "workspace:*"
-    "@neos-project/neos-ui-extensibility": "workspace:*"
     "@neos-project/utils-helpers": "workspace:*"
-    "@neos-project/utils-redux": "workspace:*"
+    plow-js: ^2.2.0
   languageName: unknown
   linkType: soft
 

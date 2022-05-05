@@ -28,7 +28,6 @@ use Neos\EventSourcedNeosAdjustments\Ui\Fusion\Helper\NodeInfoHelper;
 use Neos\EventSourcedNeosAdjustments\Ui\Service\NodeClipboard;
 use Neos\EventSourcedNeosAdjustments\Ui\Service\PublishingService;
 use Neos\EventSourcedNeosAdjustments\Ui\Domain\Model\ChangeCollection;
-use Neos\EventSourcedNeosAdjustments\Ui\TypeConverter\ChangeCollectionConverter;
 use Neos\Flow\Mvc\ActionRequest;
 use Neos\Flow\Mvc\ActionResponse;
 use Neos\Flow\Mvc\View\JsonView;
@@ -50,6 +49,7 @@ use Neos\Neos\Ui\Domain\Model\Feedback\Messages\Success;
 use Neos\Neos\Ui\Domain\Service\NodeTreeBuilder;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Neos\Ui\Service\NodePolicyService;
+use Neos\Neos\Ui\TypeConverter\ChangeCollectionConverter;
 
 class BackendServiceController extends ActionController
 {

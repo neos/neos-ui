@@ -11,26 +11,17 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
  * source code.
  */
 
-use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Projection\Content\NodeInterface;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
-use Neos\Neos\Service\LinkingService;
 use Neos\Neos\Ui\ContentRepository\Service\NodeService;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
+use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 
 class ReloadDocument extends AbstractFeedback
 {
-    /**
-     * @var NodeInterface
-     */
-    protected $node;
-
-    /**
-     * @Flow\Inject
-     * @var LinkingService
-     */
-    protected $linkingService;
+    protected ?NodeInterface $node;
 
     /**
      * @Flow\Inject
@@ -38,56 +29,32 @@ class ReloadDocument extends AbstractFeedback
      */
     protected $nodeService;
 
-    /**
-     * Get the type identifier
-     *
-     * @return string
-     */
-    public function getType()
+    public function getType(): string
     {
         return 'Neos.Neos.Ui:ReloadDocument';
     }
 
-    /**
-     * Set the node
-     *
-     * @param NodeInterface $node
-     * @return void
-     */
-    public function setNode(NodeInterface $node)
+    public function setNode(NodeInterface $node): void
     {
         $this->node = $node;
     }
 
-    /**
-     * Get the node
-     *
-     * @return NodeInterface
-     */
-    public function getNode()
+    public function getNode(): ?NodeInterface
     {
         return $this->node;
     }
 
-    /**
-     * Get the description
-     *
-     * @return string
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return sprintf('Reload of current document required.');
     }
 
     /**
      * Checks whether this feedback is similar to another
-     *
-     * @param FeedbackInterface $feedback
-     * @return boolean
      */
     public function isSimilarTo(FeedbackInterface $feedback)
     {
-        if (!$feedback instanceof ReloadDocument) {
+        if (!$feedback instanceof \Neos\EventSourcedNeosAdjustments\Ui\Domain\Model\Feedback\Operations\ReloadDocument) {
             return false;
         }
 
@@ -97,17 +64,18 @@ class ReloadDocument extends AbstractFeedback
     /**
      * Serialize the payload for this feedback
      *
-     * @param ControllerContext $controllerContext
-     * @return mixed
+     * @return array<string,string>
      */
-    public function serializePayload(ControllerContext $controllerContext)
+    public function serializePayload(ControllerContext $controllerContext): array
     {
         if (!$this->node) {
             return [];
         }
+        $nodeInfoHelper = new NodeInfoHelper();
+
         if ($documentNode = $this->nodeService->getClosestDocument($this->node)) {
             return [
-                'uri' => $this->linkingService->createNodeUri($controllerContext, $documentNode, null, null, true)
+                'uri' => $nodeInfoHelper->previewUri($documentNode, $controllerContext)
             ];
         }
 

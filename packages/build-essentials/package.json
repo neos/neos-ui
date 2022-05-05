@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@ckeditor/ckeditor5-dev-utils": "^12.0.1",
+    "autoprefixer": "^9.8.6",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.2",
     "check-dependencies": "^1.0.1",

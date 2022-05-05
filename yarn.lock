@@ -1963,6 +1963,7 @@ __metadata:
   dependencies:
     "@ckeditor/ckeditor5-dev-utils": ^12.0.1
     "@neos-project/babel-preset-neos-ui": "workspace:*"
+    autoprefixer: ^9.8.6
     babel-core: ^6.26.3
     babel-loader: ^7.1.2
     check-dependencies: ^1.0.1
@@ -2036,10 +2037,13 @@ __metadata:
     browser-env: ^3.2.4
     core-js: ^2.6
     enzyme-adapter-react-16: ^1.7.1
+    identity-obj-proxy: ^3.0.0
     raf: ^3.4.0
     regenerator-runtime: ^0.13.2
   peerDependencies:
+    babel-jest: ^23.6.0
     enzyme: ^3.8.0
+    ts-jest: ^23.10.5
   bin:
     babel-jest: ../../node_modules/babel-jest/build/index.js
     jest: ../../node_modules/.bin/jest
@@ -11579,9 +11583,9 @@ __metadata:
   linkType: hard
 
 "harmony-reflect@npm:^1.4.6":
-  version: 1.6.1
-  resolution: "harmony-reflect@npm:1.6.1"
-  checksum: 4cb91f86d262650d62c3ac713a2284ef0784a5c8be347188f97747db68d0e6d9801f09a3f12bacec59d5ec9d010cba64b8acb4c2c4827e172ef2ab215cdfef9d
+  version: 1.6.2
+  resolution: "harmony-reflect@npm:1.6.2"
+  checksum: 2e5bae414cd2bfae5476147f9935dc69ee9b9a413206994dcb94c5b3208d4555da3d4313aff6fd14bd9991c1e3ef69cdda5c8fac1eb1d7afc064925839339b8c
   languageName: node
   linkType: hard
 
@@ -20122,7 +20126,6 @@ __metadata:
     editorconfig-checker: ^4.0.2
     eslint: ^5.3.0
     file-loader: ^5.0.2
-    identity-obj-proxy: ^3.0.0
     jest: ^23.6.0
     json-loader: ^0.5.7
     lodash.assign: ^4.2.0

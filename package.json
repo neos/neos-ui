@@ -58,7 +58,6 @@
     "css-loader": "^3.4.1",
     "editorconfig-checker": "^4.0.2",
     "eslint": "^5.3.0",
-    "identity-obj-proxy": "^3.0.0",
     "jest": "^23.6.0",
     "json-loader": "^0.5.7",
     "mini-css-extract-plugin": "^0.5.0",

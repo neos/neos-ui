@@ -11,18 +11,15 @@ namespace Neos\Neos\Ui\FlowQueryOperations;
  * source code.
  */
 
-use Neos\ContentRepository\Domain\NodeType\NodeTypeConstraintFactory;
-use Neos\ContentRepository\Domain\Projection\Content\TraversableNodeInterface;
-use Neos\ContentRepository\Exception\NodeException;
-use Neos\Flow\Annotations as Flow;
-use Neos\Flow\Property\PropertyMapper;
-use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\SharedModel\NodeType\NodeTypeConstraintFactory;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Eel\FlowQuery\Operations\AbstractOperation;
+use Neos\ContentRepository\NodeAccess\NodeAccessorManager;
+use Neos\ContentRepository\SharedModel\NodeAddressFactory;
+use Neos\ContentRepository\SharedModel\VisibilityConstraints;
+use Neos\ContentRepository\Projection\Content\NodeInterface;
+use Neos\Flow\Annotations as Flow;
 
-/**
- * Fetches all nodes needed for the given state of the UI
- */
 class NeosUiDefaultNodesOperation extends AbstractOperation
 {
     /**
@@ -37,13 +34,20 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
      *
      * @var integer
      */
-    protected static $priority = 100;
+    protected static $priority = 110;
 
     /**
      * @Flow\Inject
-     * @var PropertyMapper
+     * @var NodeAccessorManager
      */
-    protected $propertyMapper;
+    protected $nodeAccessorManager;
+
+    /**
+     * @Flow\Inject
+     * @var NodeAddressFactory
+     */
+    protected $nodeAddressFactory;
+
 
     /**
      * @Flow\Inject
@@ -54,56 +58,82 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
     /**
      * {@inheritdoc}
      *
-     * @param array (or array-like object) $context onto which this operation should be applied
+     * @param array<int,mixed> $context (or array-like object) onto which this operation should be applied
      * @return boolean TRUE if the operation can be applied onto the $context, FALSE otherwise
      */
     public function canEvaluate($context)
     {
-        return isset($context[0]) && ($context[0] instanceof TraversableNodeInterface);
+        return isset($context[0]) && ($context[0] instanceof NodeInterface);
     }
 
     /**
      * {@inheritdoc}
      *
-     * @param FlowQuery $flowQuery the FlowQuery object
-     * @param array $arguments the arguments for this operation
+     * @param FlowQuery<int,mixed> $flowQuery the FlowQuery object
+     * @param array<int,mixed> $arguments the arguments for this operation
      * @return void
      */
     public function evaluate(FlowQuery $flowQuery, array $arguments)
     {
-        /** @var TraversableNodeInterface $siteNode */
-        /** @var TraversableNodeInterface $documentNode */
-        list($siteNode, $documentNode) = $flowQuery->getContext();
-        /** @var string[] $toggledNodes */
+        /** @var array<int,mixed> $context */
+        $context = $flowQuery->getContext();
+        /** @var NodeInterface $siteNode */
+        /** @var NodeInterface $documentNode */
+        list($siteNode, $documentNode) = $context;
+        /** @var string[] $toggledNodes Node Addresses */
         list($baseNodeType, $loadingDepth, $toggledNodes, $clipboardNodesContextPaths) = $arguments;
+
+        $baseNodeTypeConstraints = $this->nodeTypeConstraintFactory->parseFilterString($baseNodeType);
+
+        $nodeAccessor = $this->nodeAccessorManager->accessorFor(
+            $documentNode->getContentStreamIdentifier(),
+            $documentNode->getDimensionSpacePoint(),
+            VisibilityConstraints::withoutRestrictions()
+        );
 
         // Collect all parents of documentNode up to siteNode
         $parents = [];
-        $currentNode = null;
-        try {
-            $currentNode = $documentNode->findParentNode();
-        } catch (NodeException $ignored) {
-            // parent does not exist
-        }
+        $currentNode = $nodeAccessor->findParentNode($documentNode);
         if ($currentNode) {
-            $parentNodeIsUnderneathSiteNode = strpos((string)$currentNode->findNodePath(), (string)$siteNode->findNodePath()) === 0;
-            while ((string)$currentNode->getNodeAggregateIdentifier() !== (string)$siteNode->getNodeAggregateIdentifier() && $parentNodeIsUnderneathSiteNode) {
-                $parents[] = (string)$currentNode->getNodeAggregateIdentifier();
-                $currentNode = $currentNode->findParentNode();
+            $currentNodePath = $nodeAccessor->findNodePath($currentNode);
+            $siteNodePath = $nodeAccessor->findNodePath($siteNode);
+            $parentNodeIsUnderneathSiteNode = str_starts_with((string)$currentNodePath, (string)$siteNodePath);
+            while ($currentNode instanceof NodeInterface
+                && !$currentNode->getNodeAggregateIdentifier()->equals($siteNode->getNodeAggregateIdentifier())
+                && $parentNodeIsUnderneathSiteNode
+            ) {
+                $parents[] = $currentNode->getNodeAggregateIdentifier()->jsonSerialize();
+                $currentNode = $nodeAccessor->findParentNode($currentNode);
             }
         }
 
         $nodes = [
             ((string)$siteNode->getNodeAggregateIdentifier()) => $siteNode
         ];
-        $gatherNodesRecursively = function (&$nodes, TraversableNodeInterface $baseNode, $level = 0) use (&$gatherNodesRecursively, $baseNodeType, $loadingDepth, $toggledNodes, $parents) {
-            if (
-                $level < $loadingDepth || // load all nodes within loadingDepth
+
+        $gatherNodesRecursively = function (
+            &$nodes,
+            NodeInterface
+            $baseNode,
+            $level = 0
+        ) use (
+            &$gatherNodesRecursively,
+            $baseNodeTypeConstraints,
+            $loadingDepth,
+            $toggledNodes,
+            $parents,
+            $nodeAccessor
+        ) {
+            $baseNodeAddress = $this->nodeAddressFactory->createFromNode($baseNode);
+
+            if ($level < $loadingDepth || // load all nodes within loadingDepth
                 $loadingDepth === 0 || // unlimited loadingDepth
-                in_array($baseNode->getContextPath(), $toggledNodes) || // load toggled nodes
-                in_array((string)$baseNode->getNodeAggregateIdentifier(), $parents) // load children of all parents of documentNode
+                // load toggled nodes
+                in_array($baseNodeAddress->serializeForUri(), $toggledNodes) ||
+                // load children of all parents of documentNode
+                in_array((string)$baseNode->getNodeAggregateIdentifier(), $parents)
             ) {
-                foreach ($baseNode->findChildNodes($this->nodeTypeConstraintFactory->parseFilterString($baseNodeType)) as $childNode) {
+                foreach ($nodeAccessor->findChildNodes($baseNode, $baseNodeTypeConstraints) as $childNode) {
                     $nodes[(string)$childNode->getNodeAggregateIdentifier()] = $childNode;
                     $gatherNodesRecursively($nodes, $childNode, $level + 1);
                 }
@@ -116,12 +146,47 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
         }
 
         foreach ($clipboardNodesContextPaths as $clipboardNodeContextPath) {
-            $clipboardNode = $this->propertyMapper->convert($clipboardNodeContextPath, NodeInterface::class);
-            if ($clipboardNode && !in_array($clipboardNode, $nodes)) {
-                $nodes[] = $clipboardNode;
+            $clipboardNodeAddress = $this->nodeAddressFactory->createFromUriString($clipboardNodeContextPath);
+            $clipboardNode = $this->nodeAccessorManager->accessorFor(
+                $clipboardNodeAddress->contentStreamIdentifier,
+                $clipboardNodeAddress->dimensionSpacePoint,
+                VisibilityConstraints::withoutRestrictions()
+            )->findByIdentifier($clipboardNodeAddress->nodeAggregateIdentifier);
+            if ($clipboardNode && !array_key_exists((string)$clipboardNode->getNodeAggregateIdentifier(), $nodes)) {
+                $nodes[(string)$clipboardNode->getNodeAggregateIdentifier()] = $clipboardNode;
             }
         }
 
+        /* TODO: we might use the Subtree as this may be more efficient
+         - but the logic above mirrors the old behavior better.
+        if ($loadingDepth === 0) {
+            throw new \RuntimeException('TODO: Loading Depth 0 not supported');
+        }
+        $subtree = $nodeAccessor->findSubtrees([$siteNode], $loadingDepth, $nodeTypeConstraints);
+        $subtree = $subtree->getChildren()[0];
+        $this->flattenSubtreeToNodeList($nodeAccessor, $subtree, $nodes);*/
+
         $flowQuery->setContext($nodes);
     }
+
+    /**
+     * @param array<string,NodeInterface> &$nodes
+     */
+    /*
+    private function flattenSubtreeToNodeList(
+        NodeAccessorInterface $nodeAccessor,
+        SubtreeInterface $subtree,
+        array &$nodes
+    ): void {
+        $currentNode = $subtree->getNode();
+        if (is_null($currentNode)) {
+            return;
+        }
+
+        $nodes[(string)$currentNode->getNodeAggregateIdentifier()] = $currentNode;
+
+        foreach ($subtree->getChildren() as $childSubtree) {
+            $this->flattenSubtreeToNodeList($nodeAccessor, $childSubtree, $nodes);
+        }
+    }*/
 }

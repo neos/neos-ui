@@ -11,9 +11,10 @@ namespace Neos\Neos\Ui\FlowQueryOperations;
  * source code.
  */
 
+use Neos\ContentRepository\NodeAccess\NodeAccessorManager;
+use Neos\ContentRepository\Projection\Content\NodeInterface;
 use Neos\Flow\Annotations as Flow;
-use Neos\ContentRepository\Domain\NodeType\NodeTypeConstraintFactory;
-use Neos\ContentRepository\Domain\Projection\Content\TraversableNodeInterface;
+use Neos\ContentRepository\SharedModel\NodeType\NodeTypeConstraintFactory;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Eel\FlowQuery\Operations\AbstractOperation;
 
@@ -36,7 +37,13 @@ class NeosUiFilteredChildrenOperation extends AbstractOperation
      *
      * @var integer
      */
-    protected static $priority = 100;
+    protected static $priority = 500;
+
+    /**
+     * @Flow\Inject
+     * @var NodeAccessorManager
+     */
+    protected $nodeAccessorManager;
 
     /**
      * @Flow\Inject
@@ -47,19 +54,19 @@ class NeosUiFilteredChildrenOperation extends AbstractOperation
     /**
      * {@inheritdoc}
      *
-     * @param array (or array-like object) $context onto which this operation should be applied
+     * @param array<int,mixed> $context (or array-like object) onto which this operation should be applied
      * @return boolean TRUE if the operation can be applied onto the $context, FALSE otherwise
      */
     public function canEvaluate($context)
     {
-        return isset($context[0]) && ($context[0] instanceof TraversableNodeInterface);
+        return isset($context[0]) && ($context[0] instanceof NodeInterface);
     }
 
     /**
      * {@inheritdoc}
      *
-     * @param FlowQuery $flowQuery the FlowQuery object
-     * @param array $arguments the arguments for this operation
+     * @param FlowQuery<int,mixed> $flowQuery the FlowQuery object
+     * @param array<int,mixed> $arguments the arguments for this operation
      * @return void
      */
     public function evaluate(FlowQuery $flowQuery, array $arguments)
@@ -69,10 +76,19 @@ class NeosUiFilteredChildrenOperation extends AbstractOperation
 
         $filter = isset($arguments[0]) ? $arguments[0] : null;
 
-        /** @var TraversableNodeInterface $contextNode */
+        /** @var NodeInterface $contextNode */
         foreach ($flowQuery->getContext() as $contextNode) {
-            /** @var TraversableNodeInterface $childNode */
-            foreach ($contextNode->findChildNodes($this->nodeTypeConstraintFactory->parseFilterString($filter)) as $childNode) {
+            $nodeAccessor = $this->nodeAccessorManager->accessorFor(
+                $contextNode->getContentStreamIdentifier(),
+                $contextNode->getDimensionSpacePoint(),
+                $contextNode->getVisibilityConstraints()
+            );
+
+            /** @var NodeInterface $childNode */
+            foreach ($nodeAccessor->findChildNodes(
+                $contextNode,
+                $this->nodeTypeConstraintFactory->parseFilterString($filter)
+            ) as $childNode) {
                 if (!isset($outputNodeIdentifiers[(string)$childNode->getNodeAggregateIdentifier()])) {
                     $output[] = $childNode;
                     $outputNodeIdentifiers[(string)$childNode->getNodeAggregateIdentifier()] = true;
@@ -82,3 +98,4 @@ class NeosUiFilteredChildrenOperation extends AbstractOperation
         $flowQuery->setContext($output);
     }
 }
+

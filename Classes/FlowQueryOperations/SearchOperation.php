@@ -11,43 +11,21 @@ namespace Neos\Neos\Ui\FlowQueryOperations;
  * source code.
  */
 
-use Neos\ContentRepository\Domain\Factory\NodeFactory;
-use Neos\ContentRepository\Domain\Model\NodeInterface;
-use Neos\ContentRepository\Domain\Repository\NodeDataRepository;
-use Neos\ContentRepository\Domain\Service\NodeTypeManager;
+use Neos\ContentRepository\SharedModel\NodeType\NodeTypeConstraintFactory;
+use Neos\ContentRepository\Projection\Content\SearchTerm;
+use Neos\Flow\Annotations as Flow;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Eel\FlowQuery\Operations\AbstractOperation;
-use Neos\Flow\Annotations as Flow;
-use Neos\Neos\Domain\Service\NodeSearchServiceInterface;
+use Neos\ContentRepository\NodeAccess\NodeAccessorManager;
+use Neos\ContentRepository\Projection\Content\NodeInterface;
 
 /**
+ * Custom search operation using the Content Graph fulltext search
+ *
+ * Original implementation: \Neos\Neos\Ui\FlowQueryOperations\SearchOperation
  */
 class SearchOperation extends AbstractOperation
 {
-    /**
-     * @Flow\Inject
-     * @var NodeSearchServiceInterface
-     */
-    protected $nodeSearchService;
-
-    /**
-     * @Flow\Inject
-     * @var NodeTypeManager
-     */
-    protected $nodeTypeManager;
-
-    /**
-     * @Flow\Inject
-     * @var NodeDataRepository
-     */
-    protected $nodeDataRepository;
-
-    /**
-     * @Flow\Inject
-     * @var NodeFactory
-     */
-    protected $nodeFactory;
-
     /**
      * {@inheritdoc}
      *
@@ -63,49 +41,52 @@ class SearchOperation extends AbstractOperation
     protected static $priority = 100;
 
     /**
+     * @Flow\Inject
+     * @var NodeAccessorManager
+     */
+    protected $nodeAccessorManager;
+
+    /**
+     * @Flow\Inject
+     * @var NodeTypeConstraintFactory
+     */
+    protected $nodeTypeConstraintFactory;
+
+    /**
      * {@inheritdoc}
      *
-     * @param array (or array-like object) $context onto which this operation should be applied
-     * @return boolean TRUE if the operation can be applied onto the $context, FALSE otherwise
+     * We can only handle ContentRepository Nodes.
+     *
+     * @param mixed $context
+     * @return boolean
      */
     public function canEvaluate($context)
     {
-        return isset($context[0]) && ($context[0] instanceof NodeInterface);
+        return (isset($context[0]) && ($context[0] instanceof NodeInterface));
     }
 
     /**
      * {@inheritdoc}
      *
-     * @param FlowQuery $flowQuery the FlowQuery object
-     * @param array $arguments the arguments for this operation
-     * @return void
+     * @param FlowQuery<int,mixed> $flowQuery the FlowQuery object
+     * @param array<int,mixed> $arguments the arguments for this operation
      */
-    public function evaluate(FlowQuery $flowQuery, array $arguments)
+    public function evaluate(FlowQuery $flowQuery, array $arguments): void
     {
-        $term = isset($arguments[0]) ? $arguments[0] : null;
-        $filterNodeTypeName = isset($arguments[1]) ? $arguments[1] : null;
-
-        $nodeTypes = strlen($filterNodeTypeName) > 0 ? [$filterNodeTypeName] : array_keys($this->nodeTypeManager->getSubNodeTypes('Neos.Neos:Document', false));
-
+        /** @var array<int,mixed> $context */
+        $context = $flowQuery->getContext();
         /** @var NodeInterface $contextNode */
-        $contextNode = $flowQuery->getContext()[0];
-
-        $context = $contextNode->getContext();
-
-        if ($term) {
-            $matchedNodes = $this->nodeSearchService->findByProperties($term, $nodeTypes, $context, $contextNode);
-        } else {
-            $matchedNodes = [];
-            // Yep, an internal API. But that's what we used in the old UI.
-            $nodeDataRecords = $this->nodeDataRepository->findByParentAndNodeTypeRecursively($contextNode->getPath(), implode(',', $nodeTypes), $context->getWorkspace(), $context->getDimensions());
-            foreach ($nodeDataRecords as $nodeData) {
-                $matchedNode = $this->nodeFactory->createFromNodeData($nodeData, $context);
-                if ($matchedNode !== null) {
-                    $matchedNodes[$matchedNode->getPath()] = $matchedNode;
-                }
-            }
-        }
-
-        $flowQuery->setContext($matchedNodes);
+        $contextNode = $context[0];
+        $nodeAccessor = $this->nodeAccessorManager->accessorFor(
+            $contextNode->getContentStreamIdentifier(),
+            $contextNode->getDimensionSpacePoint(),
+            $contextNode->getVisibilityConstraints()
+        );
+        $nodes = $nodeAccessor->findDescendants(
+            [$contextNode],
+            $this->nodeTypeConstraintFactory->parseFilterString($arguments[1] ?? ''),
+            SearchTerm::fulltext($arguments[0] ?? '')
+        );
+        $flowQuery->setContext(iterator_to_array($nodes));
     }
 }

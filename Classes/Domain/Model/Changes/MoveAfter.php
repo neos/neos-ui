@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 /*
@@ -11,23 +12,40 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
-use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
+use Neos\EventSourcedNeosAdjustments\Ui\Domain\Model\Feedback\Operations\RemoveNode;
+use Neos\Flow\Annotations as Flow;
+use Neos\EventSourcedContentRepository\Domain\Context\NodeAggregate\Command\MoveNodeAggregate;
+use Neos\ContentRepository\Feature\NodeAggregateCommandHandler;
+use Neos\ContentRepository\Feature\NodeMove\Command\RelationDistributionStrategy;
+use Neos\EventSourcedNeosAdjustments\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 
-class MoveAfter extends AbstractMove
+class MoveAfter extends AbstractStructuralChange
 {
     /**
-     * "Subject" is the to-be-moved node; the "sibling" node is the node after which the "Subject" should be copied.
-     *
-     * @return boolean
+     * @Flow\Inject
+     * @var NodeAggregateCommandHandler
      */
-    public function canApply()
-    {
-        $nodeType = $this->getSubject()->getNodeType();
+    protected $nodeAggregateCommandHandler;
 
-        return $this->getSiblingNode()->getParent()->isNodeTypeAllowedAsChildNode($nodeType);
+    /**
+     * "Subject" is the to-be-moved node; the "sibling" node is the node after which the "Subject" should be copied.
+     */
+    public function canApply(): bool
+    {
+        if (is_null($this->subject)) {
+            return false;
+        }
+        $sibling = $this->getSiblingNode();
+        if (is_null($sibling)) {
+            return false;
+        }
+        $parent = $this->findParentNode($sibling);
+        $nodeType = $this->subject->getNodeType();
+
+        return !is_null($parent) && $this->isNodeTypeAllowedAsChildNode($parent, $nodeType);
     }
 
-    public function getMode()
+    public function getMode(): string
     {
         return 'after';
     }
@@ -37,28 +55,61 @@ class MoveAfter extends AbstractMove
      *
      * @return void
      */
-    public function apply()
+    public function apply(): void
     {
-        if ($this->canApply()) {
-            $before = self::cloneNodeWithNodeData($this->getSubject());
-            $parent = $before->getParent();
-
-            if ($this->nodeNameAvailableBelowNode($this->getSiblingNode()->getParent(), $this->getSubject())) {
-                $this->getSubject()->moveAfter($this->getSiblingNode());
-            } else {
-                $nodeName = $this->generateUniqueNodeName($this->getSiblingNode()->getParent());
-                $this->getSubject()->moveAfter($this->getSiblingNode(), $nodeName);
+        $precedingSibling = $this->getSiblingNode();
+        $parentNodeOfPreviousSibling = $precedingSibling ? $this->findParentNode($precedingSibling) : null;
+        // "subject" is the to-be-moved node
+        $subject = $this->subject;
+        $parentNode = $this->subject ? $this->findParentNode($this->subject) : null;
+        if ($this->canApply()
+            && !is_null($subject)
+            && !is_null($precedingSibling)
+            && !is_null($parentNodeOfPreviousSibling)
+            && !is_null($parentNode)
+        ) {
+            $succeedingSibling = null;
+            try {
+                $succeedingSibling = $this->findChildNodes($parentNodeOfPreviousSibling)->next($precedingSibling);
+            } catch (\InvalidArgumentException $e) {
+                // do nothing; $succeedingSibling is null.
             }
+
+            $hasEqualParentNode = $parentNode->getNodeAggregateIdentifier()
+                ->equals($parentNodeOfPreviousSibling->getNodeAggregateIdentifier());
+
+            $command = new MoveNodeAggregate(
+                $subject->getContentStreamIdentifier(),
+                $subject->getDimensionSpacePoint(),
+                $subject->getNodeAggregateIdentifier(),
+                $hasEqualParentNode ? null : $parentNodeOfPreviousSibling->getNodeAggregateIdentifier(),
+                $precedingSibling->getNodeAggregateIdentifier(),
+                $succeedingSibling?->getNodeAggregateIdentifier(),
+                RelationDistributionStrategy::STRATEGY_GATHER_ALL,
+                $this->getInitiatingUserIdentifier()
+            );
+
+            // we render content directly as response of this operation, so we need to flush the caches
+            $doFlushContentCache = $this->contentCacheFlusher->scheduleFlushNodeAggregate(
+                $subject->getContentStreamIdentifier(),
+                $subject->getNodeAggregateIdentifier()
+            );
+            $this->nodeAggregateCommandHandler->handleMoveNodeAggregate($command)
+                ->blockUntilProjectionsAreUpToDate();
+            $doFlushContentCache();
+            $this->contentCacheFlusher->flushNodeAggregate(
+                $parentNodeOfPreviousSibling->getContentStreamIdentifier(),
+                $parentNodeOfPreviousSibling->getNodeAggregateIdentifier()
+            );
 
             $updateParentNodeInfo = new UpdateNodeInfo();
-            $updateParentNodeInfo->setNode($parent);
-            if ($this->baseNodeType) {
-                $updateParentNodeInfo->setBaseNodeType($this->baseNodeType);
-            }
-
+            $updateParentNodeInfo->setNode($parentNodeOfPreviousSibling);
             $this->feedbackCollection->add($updateParentNodeInfo);
 
-            $this->finish($before);
+            $removeNode = new RemoveNode($subject, $parentNodeOfPreviousSibling);
+            $this->feedbackCollection->add($removeNode);
+
+            $this->finish($subject);
         }
     }
 }

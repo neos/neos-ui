@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 /*
@@ -11,44 +12,41 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
+
 class CreateBefore extends AbstractCreate
 {
     /**
      * Get the insertion mode (before|after|into) that is represented by this change
-     *
-     * @return string
      */
-    public function getMode()
+    public function getMode(): string
     {
         return 'before';
     }
 
     /**
      * Check if the new node's node type is allowed in the requested position
-     *
-     * @return boolean
      */
-    public function canApply()
+    public function canApply(): bool
     {
-        $parent = $this->getSubject()->getParent();
+        if (is_null($this->subject)) {
+            return false;
+        }
+        $parent = $this->findParentNode($this->subject);
         $nodeType = $this->getNodeType();
 
-        return $parent->isNodeTypeAllowedAsChildNode($nodeType);
+        return !is_null($parent) && !is_null($nodeType)
+            && $this->isNodeTypeAllowedAsChildNode($parent, $nodeType);
     }
 
     /**
      * Create a new node after the subject
-     *
-     * @return void
      */
-    public function apply()
+    public function apply(): void
     {
-        if ($this->canApply()) {
-            $subject = $this->getSubject();
-            $parent = $subject->getParent();
-            $node = $this->createNode($parent);
-
-            $node->moveBefore($subject);
+        $parent = $this->subject ? $this->findParentNode($this->subject) : null;
+        $subject = $this->subject;
+        if ($this->canApply() && !is_null($subject) && !is_null($parent)) {
+            $this->createNode($parent, $subject->getNodeAggregateIdentifier());
             $this->updateWorkspaceInfo();
         }
     }

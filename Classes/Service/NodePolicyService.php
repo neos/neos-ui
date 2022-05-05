@@ -11,8 +11,9 @@ namespace Neos\Neos\Ui\Service;
  * source code.
  */
 
-use Neos\ContentRepository\Domain\Service\NodeTypeManager;
-use Neos\ContentRepository\Exception\NodeException;
+use Neos\ContentRepository\SharedModel\NodeType\NodeType;
+use Neos\ContentRepository\Projection\Content\NodeInterface;
+use Neos\ContentRepository\SharedModel\NodeType\NodeTypeManager;
 use Neos\ContentRepository\Security\Authorization\Privilege\Node\CreateNodePrivilege;
 use Neos\ContentRepository\Security\Authorization\Privilege\Node\CreateNodePrivilegeSubject;
 use Neos\ContentRepository\Security\Authorization\Privilege\Node\EditNodePrivilege;
@@ -21,7 +22,6 @@ use Neos\ContentRepository\Security\Authorization\Privilege\Node\NodePrivilegeSu
 use Neos\ContentRepository\Security\Authorization\Privilege\Node\PropertyAwareNodePrivilegeSubject;
 use Neos\ContentRepository\Security\Authorization\Privilege\Node\RemoveNodePrivilege;
 use Neos\Flow\Annotations as Flow;
-use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\Security\Authorization\Privilege\PrivilegeInterface;
 use Neos\Flow\Security\Authorization\PrivilegeManagerInterface;
@@ -54,17 +54,20 @@ class NodePolicyService
 
     /**
      * @param ObjectManagerInterface $objectManager
-     * @return array the key is a Privilege class name; the value is "true" if privileges are configured for this class name.
+     * @return array<string,bool> the key is a Privilege class name;
+     *         the value is "true" if privileges are configured for this class name.
      * @Flow\CompileStatic
      */
     public static function getUsedPrivilegeClassNames(ObjectManagerInterface $objectManager): array
     {
+        /** @var PolicyService $policyService */
         $policyService = $objectManager->get(PolicyService::class);
         $usedPrivilegeClassNames = [];
         foreach ($policyService->getPrivilegeTargets() as $privilegeTarget) {
             $usedPrivilegeClassNames[$privilegeTarget->getPrivilegeClassName()] = true;
-            foreach (class_parents($privilegeTarget->getPrivilegeClassName()) as $parentPrivilege) {
-                if (is_a($parentPrivilege, PrivilegeInterface::class, true)) {
+            foreach (class_parents($privilegeTarget->getPrivilegeClassName()) ?: [] as $parentPrivilege) {
+                if (is_a($parentPrivilege, PrivilegeInterface::class)) {
+                    /** @var string $parentPrivilege */
                     $usedPrivilegeClassNames[$parentPrivilege] = true;
                 }
             }
@@ -74,8 +77,7 @@ class NodePolicyService
     }
 
     /**
-     * @param NodeInterface $node
-     * @return array
+     * @return array<string,mixed>
      */
     public function getNodePolicyInformation(NodeInterface $node): array
     {
@@ -105,7 +107,7 @@ class NodePolicyService
 
     /**
      * @param NodeInterface $node
-     * @return array
+     * @return array<int,NodeType>
      */
     public function getDisallowedNodeTypes(NodeInterface $node): array
     {
@@ -115,9 +117,6 @@ class NodePolicyService
             return $disallowedNodeTypes;
         }
 
-        $filteredNodeTypes = $this->getNodeRelatedNodeTypes($node);
-
-        // filter the remaining nodeTypes via policy check
         $filter = function ($nodeType) use ($node) {
             return !$this->privilegeManager->isGranted(
                 CreateNodePrivilege::class,
@@ -125,80 +124,13 @@ class NodePolicyService
             );
         };
 
-        $disallowedNodeTypeObjects = array_filter($filteredNodeTypes, $filter);
+        $disallowedNodeTypeObjects = array_filter($this->nodeTypeManager->getNodeTypes(), $filter);
 
         $mapper = function ($nodeType) {
             return $nodeType->getName();
         };
 
-        return array_values(array_map($mapper, $disallowedNodeTypeObjects));
-    }
-
-    /**
-     * For a given node $node this method returns the set of nodeTypes
-     * - if $node is auto-created and the nodeType is allowed as a grandchild by constraints nodeType definition
-     * - of allowed child nodeType's
-     * - of superType's
-     * - of the nodeType of $node itself
-     * @param NodeInterface $node
-     * @return array
-     */
-    protected function getNodeRelatedNodeTypes(NodeInterface $node): array
-    {
-        // determine the set of configured node supertypes
-        $nodeNodeType = $node->getNodeType();
-
-        $superTypes = [];
-        $generateSuperTypes = static function (array $nodeTypes, &$superTypes) use (&$generateSuperTypes) {
-            foreach ($nodeTypes as $nodeType) {
-                $superTypes[$nodeType->getName()] = $nodeType;
-                $generateSuperTypes($nodeType->getDeclaredSuperTypes(), $superTypes);
-            }
-        };
-        $generateSuperTypes($nodeNodeType->getDeclaredSuperTypes(), $superTypes);
-
-        $parentNodeType = null;
-        // check for root node to avoid an exception for parentNodeType and improve performance in this case
-        if ($node->isRoot() !== true) {
-            $parentNode = $node->findParentNode();
-            $parentNodeType = $parentNode->getNodeType();
-        }
-
-        // check if the node is auto-created
-        $isAutoCreated   = false;
-        if ($parentNodeType &&
-            array_key_exists((string)$node->getNodeName(), $parentNodeType->getAutoCreatedChildNodes())) {
-            $isAutoCreated = true;
-        }
-
-        // filter the set of configured nodeTypes
-        $nodeName = (string)$node->getNodeName();
-
-        $constraintAndSuperTypeFilter = static function ($nodeType) use (
-            $nodeName,
-            $nodeNodeType,
-            $superTypes,
-            $isAutoCreated,
-            $parentNodeType
-        ) {
-            // check if the nodeType is mentioned in the constraints
-            if ($isAutoCreated) {
-                if ($parentNodeType && $parentNodeType->allowsGrandchildNodeType($nodeName, $nodeType)) {
-                    return true;
-                }
-            } elseif ($nodeNodeType->allowsChildNodeType($nodeType)) {
-                return true;
-            } elseif (isset($superTypes[$nodeType->getName()])) {  // check if the nodeType is a supertype
-                return true;
-            } elseif ($nodeType->getName() === $nodeNodeType->getName()) {
-                return true;
-            }
-
-            // ignore other nodeType
-            return false;
-        };
-
-        return array_filter($this->nodeTypeManager->getNodeTypes(), $constraintAndSuperTypeFilter);
+        return array_map($mapper, $disallowedNodeTypeObjects);
     }
 
     /**
@@ -209,7 +141,10 @@ class NodePolicyService
     {
         $canRemove = true;
         if (isset(self::getUsedPrivilegeClassNames($this->objectManager)[RemoveNodePrivilege::class])) {
-            $canRemove = $this->privilegeManager->isGranted(RemoveNodePrivilege::class, new NodePrivilegeSubject($node));
+            $canRemove = $this->privilegeManager->isGranted(
+                RemoveNodePrivilege::class,
+                new NodePrivilegeSubject($node)
+            );
         }
 
         return $canRemove;
@@ -231,7 +166,7 @@ class NodePolicyService
 
     /**
      * @param NodeInterface $node
-     * @return array
+     * @return array<int,string>
      */
     public function getDisallowedProperties(NodeInterface $node): array
     {

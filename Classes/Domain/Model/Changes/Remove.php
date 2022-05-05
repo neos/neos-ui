@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 /*
@@ -11,9 +12,19 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
-use Neos\Neos\Ui\Domain\Model\AbstractChange;
-use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
-use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
+use Neos\ContentRepository\DimensionSpace\DimensionSpace\Exception\DimensionSpacePointNotFound;
+use Neos\ContentRepository\NodeAccess\NodeAccessorManager;
+use Neos\ContentRepository\Feature\Common\Exception\ContentStreamDoesNotExistYet;
+use Neos\ContentRepository\Feature\NodeRemoval\Command\RemoveNodeAggregate;
+use Neos\ContentRepository\Feature\Common\Exception\NodeAggregatesTypeIsAmbiguous;
+use Neos\ContentRepository\Feature\NodeAggregateCommandHandler;
+use Neos\ContentRepository\Feature\NodeDisabling\Command\NodeVariantSelectionStrategy;
+use Neos\ContentRepository\Projection\Content\NodeInterface;
+use Neos\EventSourcedNeosAdjustments\FusionCaching\ContentCacheFlusher;
+use Neos\Flow\Annotations as Flow;
+use Neos\EventSourcedNeosAdjustments\Ui\Domain\Model\AbstractChange;
+use Neos\EventSourcedNeosAdjustments\Ui\Domain\Model\Feedback\Operations\RemoveNode;
+use Neos\EventSourcedNeosAdjustments\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 
 /**
  * Removes a node
@@ -21,35 +32,78 @@ use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 class Remove extends AbstractChange
 {
     /**
+     * @Flow\Inject
+     * @var NodeAggregateCommandHandler
+     */
+    protected $nodeAggregateCommandHandler;
+
+    /**
+     * @Flow\Inject
+     * @var ContentCacheFlusher
+     */
+    protected $contentCacheFlusher;
+
+    /**
      * Checks whether this change can be applied to the subject
      *
      * @return boolean
      */
-    public function canApply()
+    public function canApply(): bool
     {
-        return true;
+        return !is_null($this->subject);
     }
 
     /**
      * Applies this change
      *
-     * @return void
+     * @throws NodeAggregatesTypeIsAmbiguous
+     * @throws ContentStreamDoesNotExistYet
+     * @throws DimensionSpacePointNotFound
+     * @throws \Neos\ContentRepository\Exception\NodeException
      */
-    public function apply()
+    public function apply(): void
     {
-        if ($this->canApply()) {
-            $node = $this->getSubject();
-            $node->remove();
+        $subject = $this->subject;
+        if ($this->canApply() && !is_null($subject)) {
+            $parentNode = $this->findParentNode($subject);
+            if (is_null($parentNode)) {
+                throw new \InvalidArgumentException(
+                    'Cannot apply Remove without a parent on node ' . $subject->getNodeAggregateIdentifier(),
+                    1645560717
+                );
+            }
 
+            // we have to remember what parts of the content cache to flush before we actually delete the node;
+            // otherwise we cannot find the parent nodes anymore.
+            $doFlushContentCache = $this->contentCacheFlusher->scheduleFlushNodeAggregate(
+                $subject->getContentStreamIdentifier(),
+                $subject->getNodeAggregateIdentifier()
+            );
+
+            // we have to schedule an the update workspace info before we actually delete the node;
+            // otherwise we cannot find the parent nodes anymore.
             $this->updateWorkspaceInfo();
 
-            $removeNode = new RemoveNode();
-            $removeNode->setNode($node);
+            $closestDocumentParentNode = $this->findClosestDocumentNode($subject);
+            $command = new RemoveNodeAggregate(
+                $subject->getContentStreamIdentifier(),
+                $subject->getNodeAggregateIdentifier(),
+                $subject->getDimensionSpacePoint(),
+                NodeVariantSelectionStrategy::STRATEGY_ALL_SPECIALIZATIONS,
+                $this->getInitiatingUserIdentifier(),
+                $closestDocumentParentNode?->getNodeAggregateIdentifier()
+            );
 
+            $this->nodeAggregateCommandHandler->handleRemoveNodeAggregate(
+                $command
+            )->blockUntilProjectionsAreUpToDate();
+            $doFlushContentCache();
+
+            $removeNode = new RemoveNode($subject, $parentNode);
             $this->feedbackCollection->add($removeNode);
 
             $updateParentNodeInfo = new UpdateNodeInfo();
-            $updateParentNodeInfo->setNode($node->getParent());
+            $updateParentNodeInfo->setNode($parentNode);
 
             $this->feedbackCollection->add($updateParentNodeInfo);
         }

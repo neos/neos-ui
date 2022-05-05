@@ -11,17 +11,12 @@ namespace Neos\Neos\Ui\ContentRepository\Service;
  * source code.
  */
 
-use Neos\ContentRepository\Domain\Model\NodeInterface;
-use Neos\ContentRepository\Domain\Model\Workspace;
-use Neos\ContentRepository\Domain\Service\ContextFactoryInterface;
-use Neos\ContentRepository\Domain\Utility\NodePaths;
-use Neos\Eel\FlowQuery\FlowQuery;
-use Neos\Error\Messages\Error;
+
+use Neos\ContentRepository\NodeAccess\NodeAccessorManager;
+use Neos\ContentRepository\SharedModel\NodeAddressFactory;
+use Neos\ContentRepository\SharedModel\VisibilityConstraints;
+use Neos\ContentRepository\Projection\Content\NodeInterface;
 use Neos\Flow\Annotations as Flow;
-use Neos\Neos\Domain\Model\Domain;
-use Neos\Neos\Domain\Model\Site;
-use Neos\Neos\Domain\Repository\DomainRepository;
-use Neos\Neos\Domain\Repository\SiteRepository;
 
 /**
  * @Flow\Scope("singleton")
@@ -30,37 +25,39 @@ class NodeService
 {
     /**
      * @Flow\Inject
-     * @var ContextFactoryInterface
+     * @var NodeAddressFactory
      */
-    protected $contextFactory;
+    protected $nodeAddressFactory;
 
     /**
      * @Flow\Inject
-     * @var SiteRepository
+     * @var NodeAccessorManager
      */
-    protected $siteRepository;
-
-    /**
-     * @Flow\Inject
-     * @var DomainRepository
-     */
-    protected $domainRepository;
+    protected $nodeAccessorManager;
 
     /**
      * Helper method to retrieve the closest document for a node
-     *
-     * @param NodeInterface $node
-     * @return NodeInterface
      */
-    public function getClosestDocument(NodeInterface $node)
+    public function getClosestDocument(NodeInterface $node): ?NodeInterface
     {
         if ($node->getNodeType()->isOfType('Neos.Neos:Document')) {
             return $node;
         }
 
-        $flowQuery = new FlowQuery([$node]);
+        $nodeAccessor = $this->nodeAccessorManager->accessorFor(
+            $node->getContentStreamIdentifier(),
+            $node->getDimensionSpacePoint(),
+            $node->getVisibilityConstraints()
+        );
 
-        return $flowQuery->closest('[instanceof Neos.Neos:Document]')->get(0);
+        while ($node instanceof NodeInterface) {
+            if ($node->getNodeType()->isOfType('Neos.Neos:Document')) {
+                return $node;
+            }
+            $node = $nodeAccessor->findParentNode($node);
+        }
+
+        return null;
     }
 
     /**
@@ -69,95 +66,23 @@ class NodeService
      * @param  NodeInterface $node The node to check
      * @return boolean             A boolean which indicates if the given node is a document node.
      */
-    public function isDocument(NodeInterface $node)
+    public function isDocument(NodeInterface $node): bool
     {
         return ($this->getClosestDocument($node) === $node);
     }
 
     /**
      * Converts a given context path to a node object
-     *
-     * @param string $contextPath
-     * @return NodeInterface|Error
      */
-    public function getNodeFromContextPath($contextPath, Site $site = null, Domain $domain = null, $includeAll = false)
+    public function getNodeFromContextPath(string $contextPath): ?NodeInterface
     {
-        $nodePathAndContext = NodePaths::explodeContextPath($contextPath);
-        $nodePath = $nodePathAndContext['nodePath'];
-        $workspaceName = $nodePathAndContext['workspaceName'];
-        $dimensions = $nodePathAndContext['dimensions'];
+        $nodeAddress = $this->nodeAddressFactory->createFromUriString($contextPath);
 
-        $contextProperties = $this->prepareContextProperties($workspaceName, $dimensions);
-
-        if ($site === null) {
-            list(, , $siteNodeName) = explode('/', $nodePath);
-            $site = $this->siteRepository->findOneByNodeName($siteNodeName);
-        }
-
-        if ($domain === null) {
-            $domain = $this->domainRepository->findOneBySite($site);
-        }
-
-        $contextProperties['currentSite'] = $site;
-        $contextProperties['currentDomain'] = $domain;
-        if ($includeAll === true) {
-            $contextProperties['invisibleContentShown'] = true;
-            $contextProperties['removedContentShown'] = true;
-        }
-
-        $context = $this->contextFactory->create(
-            $contextProperties
+        $nodeAccessor = $this->nodeAccessorManager->accessorFor(
+            $nodeAddress->contentStreamIdentifier,
+            $nodeAddress->dimensionSpacePoint,
+            VisibilityConstraints::withoutRestrictions()
         );
-
-        $workspace = $context->getWorkspace(false);
-        if (!$workspace) {
-            return new Error(
-                sprintf('Could not convert the given source to Node object because the workspace "%s" as specified in the context node path does not exist.', $workspaceName),
-                1451392329
-            );
-        }
-
-        return $context->getNode($nodePath);
-    }
-
-    /**
-     * Checks if the given node exists in the given workspace
-     *
-     * @param NodeInterface $node
-     * @param Workspace $workspace
-     * @return boolean
-     */
-    public function nodeExistsInWorkspace(NodeInterface $node, Workspace $workspace)
-    {
-        $context = ['workspaceName' => $workspace->getName()];
-        $flowQuery = new FlowQuery([$node]);
-
-        return $flowQuery->context($context)->count() > 0;
-    }
-
-    /**
-     * Prepares the context properties for the nodes based on the given workspace and dimensions
-     *
-     * @param string $workspaceName
-     * @param array $dimensions
-     * @return array
-     */
-    protected function prepareContextProperties($workspaceName, array $dimensions = null)
-    {
-        $contextProperties = [
-            'workspaceName' => $workspaceName,
-            'invisibleContentShown' => false,
-            'removedContentShown' => false
-        ];
-
-        if ($workspaceName !== 'live') {
-            $contextProperties['invisibleContentShown'] = true;
-        }
-
-        if ($dimensions !== null) {
-            $contextProperties['dimensions'] = $dimensions;
-        }
-
-        return $contextProperties;
+        return $nodeAccessor->findByIdentifier($nodeAddress->nodeAggregateIdentifier);
     }
 }

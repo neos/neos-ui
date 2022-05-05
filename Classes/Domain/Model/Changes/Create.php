@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 /*
@@ -13,48 +14,38 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 class Create extends AbstractCreate
 {
-
-    /**
-     * @param string $parentContextPath
-     */
-    public function setParentContextPath($parentContextPath)
+    public function setParentContextPath(string $parentContextPath): void
     {
         // this method needs to exist; otherwise the TypeConverter breaks.
     }
 
     /**
      * Get the insertion mode (before|after|into) that is represented by this change
-     *
-     * @return string
      */
-    public function getMode()
+    public function getMode(): string
     {
         return 'into';
     }
 
     /**
      * Check if the new node's node type is allowed in the requested position
-     *
-     * @return boolean
      */
-    public function canApply()
+    public function canApply(): bool
     {
         $subject = $this->getSubject();
         $nodeType = $this->getNodeType();
 
-        return $subject->isNodeTypeAllowedAsChildNode($nodeType);
+        return $subject && $nodeType && $this->isNodeTypeAllowedAsChildNode($subject, $nodeType);
     }
 
     /**
      * Create a new node beneath the subject
-     *
-     * @return void
      */
-    public function apply()
+    public function apply(): void
     {
-        if ($this->canApply()) {
-            $subject = $this->getSubject();
-            $this->createNode($subject);
+        $parentNode = $this->getSubject();
+        if ($parentNode && $this->canApply()) {
+            $this->createNode($parentNode, null);
             $this->updateWorkspaceInfo();
         }
     }

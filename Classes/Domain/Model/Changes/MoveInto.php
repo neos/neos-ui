@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 /*
@@ -11,93 +12,117 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
-use Neos\ContentRepository\Domain\Model\NodeInterface;
-use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
+use Neos\ContentRepository\NodeAccess\NodeAccessorManager;
+use Neos\ContentRepository\Feature\NodeAggregateCommandHandler;
+use Neos\ContentRepository\SharedModel\VisibilityConstraints;
+use Neos\ContentRepository\Projection\Content\NodeInterface;
+use Neos\EventSourcedNeosAdjustments\Ui\Domain\Model\Feedback\Operations\RemoveNode;
+use Neos\EventSourcedNeosAdjustments\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
+use Neos\Flow\Annotations as Flow;
+use Neos\EventSourcedContentRepository\Domain\Context\NodeAggregate\Command\MoveNodeAggregate;
+use Neos\ContentRepository\Feature\NodeMove\Command\RelationDistributionStrategy;
 
-class MoveInto extends AbstractMove
+class MoveInto extends AbstractStructuralChange
 {
-
     /**
-     * @var string
+     * @Flow\Inject
+     * @var NodeAggregateCommandHandler
      */
-    protected $parentContextPath;
+    protected $nodeAggregateCommandHandler;
 
-    /**
-     * @var NodeInterface
-     */
-    protected $cachedParentNode;
+    protected ?string $parentContextPath;
 
-    /**
-     * @param string $parentContextPath
-     */
-    public function setParentContextPath($parentContextPath)
+    public function setParentContextPath(string $parentContextPath): void
     {
         $this->parentContextPath = $parentContextPath;
     }
 
+    public function getParentNode(): ?NodeInterface
+    {
+        if ($this->parentContextPath === null) {
+            return null;
+        }
+
+        return $this->nodeService->getNodeFromContextPath(
+            $this->parentContextPath
+        );
+    }
+
+
     /**
      * Get the insertion mode (before|after|into) that is represented by this change
-     *
-     * @return string
      */
-    public function getMode()
+    public function getMode(): string
     {
         return 'into';
     }
 
     /**
-     * @return NodeInterface
+     * Checks whether this change can be applied to the subject
      */
-    public function getParentNode()
+    public function canApply(): bool
     {
-        if ($this->cachedParentNode === null) {
-            $this->cachedParentNode = $this->nodeService->getNodeFromContextPath(
-                $this->parentContextPath
-            );
+        if (is_null($this->subject)) {
+            return false;
         }
+        $parent = $this->getParentNode();
+        $nodeType = $this->subject->getNodeType();
 
-        return $this->cachedParentNode;
-    }
-
-    /**
-     * "Subject" is the to-be-copied node; the "parent" node is the new parent
-     *
-     * @return boolean
-     */
-    public function canApply()
-    {
-        $nodeType = $this->getSubject()->getNodeType();
-
-        return $this->getParentNode()->isNodeTypeAllowedAsChildNode($nodeType);
+        return $parent && $this->isNodeTypeAllowedAsChildNode($parent, $nodeType);
     }
 
     /**
      * Applies this change
-     *
-     * @return void
      */
-    public function apply()
+    public function apply(): void
     {
-        if ($this->canApply()) {
-            $before = self::cloneNodeWithNodeData($this->getSubject());
-            $parent = $before->getParent();
+        // "parentNode" is the node where the $subject should be moved INTO
+        $parentNode = $this->getParentNode();
+        // "subject" is the to-be-moved node
+        $subject = $this->subject;
+        if ($this->canApply() && $parentNode && $subject) {
+            $nodeAccessor = $this->nodeAccessorManager->accessorFor(
+                $subject->getContentStreamIdentifier(),
+                $subject->getDimensionSpacePoint(),
+                VisibilityConstraints::withoutRestrictions()
+            );
+            $otherParent = $nodeAccessor->findParentNode($subject);
+            $hasEqualParentNode = $otherParent && $otherParent->getNodeAggregateIdentifier()
+                    ->equals($parentNode->getNodeAggregateIdentifier());
 
-            if ($this->nodeNameAvailableBelowNode($this->getParentNode(), $this->getSubject())) {
-                $this->getSubject()->moveInto($this->getParentNode());
-            } else {
-                $nodeName = $this->generateUniqueNodeName($this->getParentNode());
-                $this->getSubject()->moveInto($this->getParentNode(), $nodeName);
+            // we render content directly as response of this operation, so we need to flush the caches
+            $doFlushContentCache = $this->contentCacheFlusher->scheduleFlushNodeAggregate(
+                $subject->getContentStreamIdentifier(),
+                $subject->getNodeAggregateIdentifier()
+            );
+            $this->nodeAggregateCommandHandler->handleMoveNodeAggregate(
+                new MoveNodeAggregate(
+                    $subject->getContentStreamIdentifier(),
+                    $subject->getDimensionSpacePoint(),
+                    $subject->getNodeAggregateIdentifier(),
+                    $hasEqualParentNode ? null : $parentNode->getNodeAggregateIdentifier(),
+                    null,
+                    null,
+                    RelationDistributionStrategy::STRATEGY_GATHER_ALL,
+                    $this->getInitiatingUserIdentifier()
+                )
+            )->blockUntilProjectionsAreUpToDate();
+            $doFlushContentCache();
+            if (!$hasEqualParentNode) {
+                $this->contentCacheFlusher->flushNodeAggregate(
+                    $parentNode->getContentStreamIdentifier(),
+                    $parentNode->getNodeAggregateIdentifier()
+                );
             }
 
             $updateParentNodeInfo = new UpdateNodeInfo();
-            $updateParentNodeInfo->setNode($parent);
-            if ($this->baseNodeType) {
-                $updateParentNodeInfo->setBaseNodeType($this->baseNodeType);
-            }
-
+            $updateParentNodeInfo->setNode($parentNode);
             $this->feedbackCollection->add($updateParentNodeInfo);
 
-            $this->finish($before);
+            $removeNode = new RemoveNode($subject, $parentNode);
+            $this->feedbackCollection->add($removeNode);
+
+            $this->finish($subject);
         }
     }
 }

@@ -12,38 +12,37 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
-use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\SharedModel\Node\OriginDimensionSpacePoint;
+use Neos\ContentRepository\Projection\Content\NodeInterface;
+use Neos\Flow\Annotations as Flow;
+use Neos\ContentRepository\SharedModel\Node\NodeName;
+use Neos\ContentRepository\Feature\NodeDuplication\Command\CopyNodesRecursively;
+use Neos\ContentRepository\Feature\NodeDuplication\NodeDuplicationCommandHandler;
+use Neos\ContentRepository\SharedModel\User\UserIdentifier;
 
-class CopyInto extends AbstractCopy
+class CopyInto extends AbstractStructuralChange
 {
-
     /**
-     * @var string
+     * @Flow\Inject
+     * @var NodeDuplicationCommandHandler
      */
-    protected $parentContextPath;
+    protected $nodeDuplicationCommandHandler;
 
-    /**
-     * @var NodeInterface
-     */
-    protected $cachedParentNode;
+    protected ?string $parentContextPath;
 
-    /**
-     * @param string $parentContextPath
-     */
-    public function setParentContextPath($parentContextPath)
+    protected ?NodeInterface $cachedParentNode;
+
+    public function setParentContextPath(string $parentContextPath): void
     {
         $this->parentContextPath = $parentContextPath;
     }
 
-    /**
-     * @return NodeInterface
-     */
-    public function getParentNode()
+    public function getParentNode(): ?NodeInterface
     {
         if ($this->cachedParentNode === null) {
-            $this->cachedParentNode = $this->nodeService->getNodeFromContextPath(
-                $this->parentContextPath
-            );
+            $this->cachedParentNode = $this->parentContextPath
+                ? $this->nodeService->getNodeFromContextPath($this->parentContextPath)
+                : null;
         }
 
         return $this->cachedParentNode;
@@ -51,32 +50,62 @@ class CopyInto extends AbstractCopy
 
     /**
      * "Subject" is the to-be-copied node; the "parent" node is the new parent
-     *
-     * @return boolean
      */
-    public function canApply()
+    public function canApply(): bool
     {
-        $nodeType = $this->getSubject()->getNodeType();
+        $parentNode = $this->getParentNode();
 
-        return $this->getParentNode()->isNodeTypeAllowedAsChildNode($nodeType);
+        return $this->subject
+            && $parentNode
+            && $this->isNodeTypeAllowedAsChildNode($parentNode, $this->subject->getNodeType());
     }
 
-    public function getMode()
+    public function getMode(): string
     {
         return 'into';
     }
 
     /**
      * Applies this change
-     *
-     * @return void
      */
-    public function apply()
+    public function apply(): void
     {
-        if ($this->canApply()) {
-            $nodeName = $this->generateUniqueNodeName($this->getParentNode());
-            $node = $this->getSubject()->copyInto($this->getParentNode(), $nodeName);
-            $this->finish($node);
+        $subject = $this->getSubject();
+        $parentNode = $this->getParentNode();
+        if ($parentNode && $subject && $this->canApply()) {
+            $targetNodeName = NodeName::fromString(uniqid('node-'));
+            $command = CopyNodesRecursively::create(
+                $this->contentGraph->getSubgraphByIdentifier(
+                    $subject->getContentStreamIdentifier(),
+                    $subject->getDimensionSpacePoint(),
+                    $subject->getVisibilityConstraints()
+                ),
+                $subject,
+                OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->getDimensionSpacePoint()),
+                UserIdentifier::forSystemUser(), // TODO
+                $parentNode->getNodeAggregateIdentifier(),
+                null,
+                $targetNodeName
+            );
+
+            $this->nodeDuplicationCommandHandler->handleCopyNodesRecursively($command)
+                ->blockUntilProjectionsAreUpToDate();
+
+            /** @var NodeInterface $newlyCreatedNode */
+            $newlyCreatedNode = $this->nodeAccessorFor($parentNode)->findChildNodeConnectedThroughEdgeName(
+                $parentNode,
+                $targetNodeName
+            );
+            // we render content directly as response of this operation,
+            // so we need to flush the caches at the copy target
+            $this->contentCacheFlusher->flushNodeAggregate(
+                $newlyCreatedNode->getContentStreamIdentifier(),
+                $newlyCreatedNode->getNodeAggregateIdentifier()
+            );
+            $this->finish($newlyCreatedNode);
+            // NOTE: we need to run "finish" before "addNodeCreatedFeedback"
+            // to ensure the new node already exists when the last feedback is processed
+            $this->addNodeCreatedFeedback($newlyCreatedNode);
         }
     }
 }

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 /*
@@ -11,23 +12,40 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
-use Neos\ContentRepository\Domain\Model\NodeInterface;
-use Neos\ContentRepository\Domain\Model\NodeType;
-use Neos\ContentRepository\Domain\Service\NodeServiceInterface;
-use Neos\ContentRepository\Domain\Service\NodeTypeManager;
+use Neos\ContentRepository\SharedModel\NodeType\NodeType;
+use Neos\ContentRepository\SharedModel\NodeType\NodeTypeManager;
+use Neos\ContentRepository\SharedModel\Node\NodeAggregateIdentifier;
+use Neos\ContentRepository\SharedModel\Node\NodeName;
+use Neos\ContentRepository\SharedModel\NodeType\NodeTypeName;
+use Neos\ContentRepository\Exception\NodeException;
+use Neos\ContentRepository\Feature\NodeCreation\Command\CreateNodeAggregateWithNode;
+use Neos\ContentRepository\Feature\Common\Exception\NodeNameIsAlreadyOccupied;
+use Neos\ContentRepository\Feature\NodeAggregateCommandHandler;
+use Neos\ContentRepository\SharedModel\Node\OriginDimensionSpacePoint;
+use Neos\ContentRepository\Projection\Content\NodeInterface;
+use Neos\ContentRepository\Infrastructure\Property\PropertyConverter;
+use Neos\EventSourcedNeosAdjustments\Ui\NodeCreationHandler\NodeCreationHandlerInterface;
 use Neos\Flow\Annotations as Flow;
-use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 use Neos\Neos\Ui\Exception\InvalidNodeCreationHandlerException;
-use Neos\Neos\Ui\NodeCreationHandler\NodeCreationHandlerInterface;
 
 abstract class AbstractCreate extends AbstractStructuralChange
 {
     /**
-     * The type of the node that will be created
-     *
-     * @var NodeType
+     * @Flow\Inject
+     * @var NodeAggregateCommandHandler
      */
-    protected $nodeType;
+    protected $nodeAggregateCommandHandler;
+
+    /**
+     * @Flow\Inject
+     * @var PropertyConverter
+     */
+    protected $propertyConverter;
+
+    /**
+     * The type of the node that will be created
+     */
+    protected ?NodeType $nodeType;
 
     /**
      * @var NodeTypeManager
@@ -38,165 +56,133 @@ abstract class AbstractCreate extends AbstractStructuralChange
     /**
      * Incoming data from creationDialog
      *
-     * @var array
+     * @var array<int|string,mixed>
      */
-    protected $data = [];
+    protected array $data = [];
 
     /**
      * An (optional) name that will be used for the new node path
-     *
-     * @var string|null
      */
-    protected $name = null;
+    protected ?string $name = null;
 
     /**
-     * @Flow\Inject
-     * @var NodeServiceInterface
-     */
-    protected $nodeService;
-
-    /**
-     * Perform finish tasks - needs to be called from inheriting class on `apply`
-     *
-     * @param NodeInterface $node
-     * @return void
-     */
-    protected function finish(NodeInterface $node): void
-    {
-        $updateNodeInfo = new UpdateNodeInfo();
-        $updateNodeInfo->setNode($node);
-        $updateNodeInfo->setBaseNodeType($this->baseNodeType);
-        $updateNodeInfo->recursive();
-        $this->feedbackCollection->add($updateNodeInfo);
-        parent::finish($node);
-    }
-
-    /**
-     * Set the node type
-     *
      * @param string $nodeType
      */
-    public function setNodeType($nodeType)
+    public function setNodeType($nodeType): void
     {
         if (is_string($nodeType)) {
             $nodeType = $this->nodeTypeManager->getNodeType($nodeType);
         }
 
-        if (!$nodeType instanceof NodeType) {
-            throw new \InvalidArgumentException('nodeType needs to be of type string or NodeType', 1452100970);
-        }
-
         $this->nodeType = $nodeType;
     }
 
-    /**
-     * Get the node type
-     *
-     * @return NodeType
-     */
-    public function getNodeType()
+    public function getNodeType(): ?NodeType
     {
         return $this->nodeType;
     }
 
     /**
-     * Set the data
-     *
-     * @param array $data
+     * @param array<int|string,mixed> $data
      */
-    public function setData(array $data)
+    public function setData(array $data): void
     {
         $this->data = $data;
     }
 
     /**
-     * Get the data
-     *
-     * @return array
+     * @return array<int|string,mixed>
      */
-    public function getData()
+    public function getData(): array
     {
         return $this->data;
     }
 
-    /**
-     * Set the name
-     *
-     * @param string $name
-     */
-    public function setName($name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * Get the name
-     *
-     * @return string|null
-     */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
-     * Creates a new node beneath $parent
-     *
-     * @param  NodeInterface $parent
+     * @param NodeInterface $parentNode
+     * @param NodeAggregateIdentifier|null $succeedingSiblingNodeAggregateIdentifier
      * @return NodeInterface
+     * @throws InvalidNodeCreationHandlerException|NodeNameIsAlreadyOccupied|NodeException
      */
-    protected function createNode(NodeInterface $parent)
-    {
+    protected function createNode(
+        NodeInterface $parentNode,
+        NodeAggregateIdentifier $succeedingSiblingNodeAggregateIdentifier = null
+    ): NodeInterface {
         $nodeType = $this->getNodeType();
-        $name = $this->getName() ?: $this->nodeService->generateUniqueNodeName($parent->getPath());
-
-        $node = $parent->createNode($name, $nodeType);
-
-        $this->applyNodeCreationHandlers($node);
-
-        $this->finish($node);
-        // NOTE: we need to run "finish" before "addNodeCreatedFeedback" to ensure the new node already exists when the last feedback is processed
-        $this->addNodeCreatedFeedback($node);
-
-        return $node;
-    }
-
-    /**
-     * Apply nodeCreationHandlers
-     *
-     * @param NodeInterface $node
-     * @throws InvalidNodeCreationHandlerException
-     * @return void
-     */
-    protected function applyNodeCreationHandlers(NodeInterface $node)
-    {
-        $data = $this->getData() ?: [];
-        $nodeType = $node->getNodeType();
-        if (isset($nodeType->getOptions()['nodeCreationHandlers'])) {
-            $nodeCreationHandlers = $nodeType->getOptions()['nodeCreationHandlers'];
-            if (is_array($nodeCreationHandlers)) {
-                foreach ($nodeCreationHandlers as $nodeCreationHandlerConfiguration) {
-                    $nodeCreationHandler = new $nodeCreationHandlerConfiguration['nodeCreationHandler']();
-                    if (!$nodeCreationHandler instanceof NodeCreationHandlerInterface) {
-                        throw new InvalidNodeCreationHandlerException(sprintf('Expected NodeCreationHandlerInterface but got "%s"', get_class($nodeCreationHandler)), 1364759956);
-                    }
-                    $nodeCreationHandler->handle($node, $data);
-                }
-            }
+        if (is_null($nodeType)) {
+            throw new \RuntimeException('Cannot run createNode without a set node type.', 1645577794);
         }
+        // TODO: the $name=... line should be as expressed below
+        // $name = $this->getName() ?: $this->nodeService->generateUniqueNodeName($parent->findParentNode());
+        $nodeName = NodeName::fromString($this->getName() ?: uniqid('node-', false));
 
-        $this->emitNodeCreationHandlersApplied($node);
+        $nodeAggregateIdentifier = NodeAggregateIdentifier::create(); // generate a new NodeAggregateIdentifier
+        $nodeTypeName = NodeTypeName::fromString($nodeType->getName());
+
+        $command = new CreateNodeAggregateWithNode(
+            $parentNode->getContentStreamIdentifier(),
+            $nodeAggregateIdentifier,
+            $nodeTypeName,
+            OriginDimensionSpacePoint::fromDimensionSpacePoint($parentNode->getDimensionSpacePoint()),
+            $this->getInitiatingUserIdentifier(),
+            $parentNode->getNodeAggregateIdentifier(),
+            $succeedingSiblingNodeAggregateIdentifier,
+            $nodeName
+        );
+        $command = $this->applyNodeCreationHandlers($command, $nodeTypeName);
+
+        $this->nodeAggregateCommandHandler->handleCreateNodeAggregateWithNode($command)
+            ->blockUntilProjectionsAreUpToDate();
+        $this->contentCacheFlusher->flushNodeAggregate(
+            $parentNode->getContentStreamIdentifier(),
+            $parentNode->getNodeAggregateIdentifier()
+        );
+
+        /** @var NodeInterface $newlyCreatedNode */
+        $newlyCreatedNode = $this->nodeAccessorFor($parentNode)
+            ->findChildNodeConnectedThroughEdgeName($parentNode, $nodeName);
+
+        $this->finish($newlyCreatedNode);
+        // NOTE: we need to run "finish" before "addNodeCreatedFeedback"
+        // to ensure the new node already exists when the last feedback is processed
+        $this->addNodeCreatedFeedback($newlyCreatedNode);
+        return $newlyCreatedNode;
     }
 
     /**
-     * Signals, that all changes by node creation handlers are applied
-     *
-     * @Flow\Signal
-     *
-     * @param NodeInterface $node The node, the node creation handlers are applied to
-     * @return void
+     * @throws InvalidNodeCreationHandlerException
      */
-    public function emitNodeCreationHandlersApplied(NodeInterface $node)
-    {
+    protected function applyNodeCreationHandlers(
+        CreateNodeAggregateWithNode $command,
+        NodeTypeName $nodeTypeName
+    ): CreateNodeAggregateWithNode {
+        $data = $this->getData() ?: [];
+        $nodeType = $this->nodeTypeManager->getNodeType($nodeTypeName->getValue());
+        if (!isset($nodeType->getOptions()['nodeCreationHandlers'])
+            || !is_array($nodeType->getOptions()['nodeCreationHandlers'])) {
+            return $command;
+        }
+        foreach ($nodeType->getOptions()['nodeCreationHandlers'] as $nodeCreationHandlerConfiguration) {
+            $nodeCreationHandler = new $nodeCreationHandlerConfiguration['nodeCreationHandler']();
+            if (!$nodeCreationHandler instanceof NodeCreationHandlerInterface) {
+                throw new InvalidNodeCreationHandlerException(sprintf(
+                    'Expected %s but got "%s"',
+                    NodeCreationHandlerInterface::class,
+                    get_class($nodeCreationHandler)
+                ), 1364759956);
+            }
+            $command = $nodeCreationHandler->handle($command, $data);
+        }
+        return $command;
     }
 }

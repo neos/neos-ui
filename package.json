@@ -35,12 +35,6 @@
     "webpack-cli": "^4.9.2",
     "webpack-merge": "^4.2.1"
   },
-  "dependencies": {
-    "core-js": "^2.6",
-    "custom-event-polyfill": "^1.0.6",
-    "regenerator-runtime": "^0.13.2",
-    "whatwg-fetch": "^3.0.0"
-  },
   "workspaces": [
     "packages/*"
   ],

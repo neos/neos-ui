@@ -10,10 +10,7 @@
   },
   "dependencies": {
     "browser-env": "^3.2.4",
-    "core-js": "^2.6",
     "enzyme-adapter-react-16": "^1.7.1",
-    "identity-obj-proxy": "^3.0.0",
-    "raf": "^3.4.0",
     "regenerator-runtime": "^0.13.2"
   },
   "peerDependencies": {

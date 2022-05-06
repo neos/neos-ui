@@ -13,18 +13,16 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  */
 
 use Neos\ContentRepository\DimensionSpace\DimensionSpace\Exception\DimensionSpacePointNotFound;
-use Neos\ContentRepository\NodeAccess\NodeAccessorManager;
 use Neos\ContentRepository\Feature\Common\Exception\ContentStreamDoesNotExistYet;
 use Neos\ContentRepository\Feature\NodeRemoval\Command\RemoveNodeAggregate;
 use Neos\ContentRepository\Feature\Common\Exception\NodeAggregatesTypeIsAmbiguous;
 use Neos\ContentRepository\Feature\NodeAggregateCommandHandler;
 use Neos\ContentRepository\Feature\NodeDisabling\Command\NodeVariantSelectionStrategy;
-use Neos\ContentRepository\Projection\Content\NodeInterface;
-use Neos\EventSourcedNeosAdjustments\FusionCaching\ContentCacheFlusher;
 use Neos\Flow\Annotations as Flow;
 use Neos\EventSourcedNeosAdjustments\Ui\Domain\Model\AbstractChange;
 use Neos\EventSourcedNeosAdjustments\Ui\Domain\Model\Feedback\Operations\RemoveNode;
-use Neos\EventSourcedNeosAdjustments\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
+use Neos\Neos\Fusion\Cache\ContentCacheFlusher;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 
 /**
  * Removes a node

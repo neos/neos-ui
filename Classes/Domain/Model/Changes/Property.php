@@ -32,13 +32,13 @@ use Neos\ContentRepository\Feature\NodeDisabling\Command\NodeVariantSelectionStr
 use Neos\ContentRepository\Feature\Common\PropertyValuesToWrite;
 use Neos\ContentRepository\SharedModel\VisibilityConstraints;
 use Neos\ContentRepository\SharedModel\Node\PropertyName;
-use Neos\EventSourcedNeosAdjustments\FusionCaching\ContentCacheFlusher;
 use Neos\EventSourcedNeosAdjustments\Ui\Domain\Model\AbstractChange;
 use Neos\EventSourcedNeosAdjustments\Ui\Domain\Model\Feedback\Operations\ReloadContentOutOfBand;
-use Neos\EventSourcedNeosAdjustments\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 use Neos\EventSourcedNeosAdjustments\Ui\Service\NodePropertyConversionService;
 use Neos\Flow\Annotations as Flow;
 use Neos\ContentRepository\SharedModel\NodeType\NodeTypeManager;
+use Neos\Neos\Fusion\Cache\ContentCacheFlusher;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 use Neos\Neos\Ui\Domain\Model\RenderedNodeDomAddress;
 
 /**

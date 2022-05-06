@@ -19,15 +19,15 @@ use Neos\ContentRepository\SharedModel\VisibilityConstraints;
 use Neos\ContentRepository\Projection\Content\ContentGraphInterface;
 use Neos\ContentRepository\Projection\Content\NodeInterface;
 use Neos\ContentRepository\Projection\Content\Nodes;
-use Neos\EventSourcedNeosAdjustments\FusionCaching\ContentCacheFlusher;
 use Neos\EventSourcedNeosAdjustments\Ui\Domain\Model\AbstractChange;
-use Neos\EventSourcedNeosAdjustments\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
 use Neos\EventSourcedNeosAdjustments\Ui\Domain\Model\Feedback\Operations\RenderContentOutOfBand;
-use Neos\EventSourcedNeosAdjustments\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
-use Neos\EventSourcedNeosAdjustments\Ui\Fusion\Helper\NodeInfoHelper;
 use Neos\Flow\Annotations as Flow;
+use Neos\Neos\Fusion\Cache\ContentCacheFlusher;
 use Neos\Neos\Ui\ContentRepository\Service\NodeService;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 use Neos\Neos\Ui\Domain\Model\RenderedNodeDomAddress;
+use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 
 /**
  * A change that performs structural actions like moving or creating nodes

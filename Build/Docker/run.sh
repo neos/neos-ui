@@ -10,7 +10,7 @@ set -e
 cd Packages/Application/Neos.Neos.Ui
 
 yarn
-yarn workspaces run build
+yarn workspaces foreach run build
 
 echo "Please remember to set frontendDevelopmentMode to true in your Settings.yaml."
 echo ""

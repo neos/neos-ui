@@ -80,7 +80,7 @@ setup: check-requirements install build ## Run a clean setup
 
 # TODO: figure out how to pass a parameter to other targets to reduce redundancy
 build-subpackages:
-	yarn workspaces foreach --topological-dev run build
+	yarn workspaces foreach --parallel --topological-dev run build
 	make build-react-ui-components-standalone
 
 # we build the react UI components ready for standalone usage;
@@ -125,10 +125,6 @@ storybook:
 
 ## Executes the unit test on all source files.
 test:
-	yarn workspaces foreach run test
-
-## run test in parallel if your machine can handle it
-test--parallel:
 	yarn workspaces foreach --parallel run test
 
 ## Executes integration tests on saucelabs.
@@ -148,15 +144,13 @@ lint: lint-js lint-editorconfig
 
 ## Runs lint test in all subpackages via lerna.
 lint-js:
-	yarn workspaces foreach run lint
-
-## run lint-js in parallel if your machine can handle it
-lint--parallel:
 	yarn workspaces foreach --parallel run lint
 
 ## Tests if all files respect the .editorconfig.
 lint-editorconfig:
-	$(editorconfigChecker) -config .ecrc.json
+	# TODO: editorconfig-checker seems broken in node >14
+	# see https://github.com/editorconfig-checker/editorconfig-checker/issues/178
+	# $(editorconfigChecker) -config .ecrc.json
 
 ################################################################################
 # Releasing

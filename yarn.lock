@@ -1908,6 +1908,7 @@ __metadata:
   dependencies:
     browser-env: ^3.2.4
     enzyme-adapter-react-16: ^1.7.1
+    identity-obj-proxy: ^3.0.0
     regenerator-runtime: ^0.13.2
   peerDependencies:
     babel-jest: ^23.6.0
@@ -10773,6 +10774,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"harmony-reflect@npm:^1.4.6":
+  version: 1.6.2
+  resolution: "harmony-reflect@npm:1.6.2"
+  checksum: 2e5bae414cd2bfae5476147f9935dc69ee9b9a413206994dcb94c5b3208d4555da3d4313aff6fd14bd9991c1e3ef69cdda5c8fac1eb1d7afc064925839339b8c
+  languageName: node
+  linkType: hard
+
 "has-ansi@npm:^2.0.0":
   version: 2.0.0
   resolution: "has-ansi@npm:2.0.0"
@@ -11283,6 +11291,15 @@ __metadata:
   dependencies:
     postcss: ^7.0.14
   checksum: a4ca2c6b82cb3eb879d635bd4028d74bca174edc49ee48ef5f01988489747d340a389d5a0ac6f6887a5c24ab8fc4386c781daab32a7ade5344a2edff66207635
+  languageName: node
+  linkType: hard
+
+"identity-obj-proxy@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "identity-obj-proxy@npm:3.0.0"
+  dependencies:
+    harmony-reflect: ^1.4.6
+  checksum: 97559f8ea2aeaa1a880d279d8c49550dce01148321e00a2102cda5ddf9ce622fa1d7f3efc7bed63458af78889de888fdaebaf31c816312298bb3fdd0ef8aaf2c
   languageName: node
   linkType: hard
 

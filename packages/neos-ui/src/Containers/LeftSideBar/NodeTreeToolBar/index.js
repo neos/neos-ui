@@ -277,7 +277,7 @@ const visibilityToggleAllowed = (focusedNodesContextPaths, state) => focusedNode
 const editingAllowed = (focusedNodesContextPaths, state) => focusedNodesContextPaths.every(contextPath => {
     const getNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(contextPath);
     const focusedNode = getNodeByContextPathSelector(state);
-    return !$contains('_hidden', 'policy.disallowedProperties', focusedNode);
+    return $get('policy.canEdit', focusedNode);
 });
 
 const makeMapStateToProps = isDocument => (state, {nodeTypesRegistry}) => {

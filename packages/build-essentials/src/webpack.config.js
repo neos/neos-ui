@@ -39,9 +39,7 @@ const webpackConfig = {
             {
                 test: /\.js$/,
                 include: [
-                    /node_modules\/debug/,
-                    /node_modules\/d3-scale/,
-                    /node_modules\/d3-array/
+                    /node_modules\/debug/
                 ],
                 use: [{
                     loader: 'babel-loader'

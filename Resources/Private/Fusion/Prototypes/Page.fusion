@@ -36,7 +36,7 @@ prototype(Neos.Neos:Page) {
                 mode = 'cached'
                 entryIdentifier {
                     jsBackendInfo = 'javascriptBackendInformation'
-                    documentNode = ${documentNode}
+                    documentNode = ${Neos.Caching.entryIdentifierForNode(documentNode)}
                     inBackend = ${documentNode.context.inBackend}
                 }
                 entryTags {

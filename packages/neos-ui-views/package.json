@@ -22,7 +22,7 @@
     "d3-time": "^1.0.8",
     "lodash.isequal": "^4.5.0",
     "moment": "^2.20.1",
-    "plow-js": "^2.2.0",
+    "plow-js": "3.0.0-canary2",
     "recharts": "^1.0.0-alpha.6"
   },
   "devDependencies": {

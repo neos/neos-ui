@@ -38,7 +38,7 @@
     "lodash.unescape": "4.0.1",
     "moment": "^2.20.1",
     "monet": "^0.9.2",
-    "plow-js": "^2.2.0",
+    "plow-js": "3.0.0-canary2",
     "react-codemirror2": "^7.2.1",
     "react-dnd": "^10.0.0",
     "react-dropzone": "^3.13.2",

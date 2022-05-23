@@ -16,7 +16,7 @@
     "@neos-project/neos-ui-i18n": "workspace:*",
     "@neos-project/utils-logger": "workspace:*",
     "isemail": "^3.2.0",
-    "plow-js": "^2.2.0"
+    "plow-js": "3.0.0-canary2"
   },
   "devDependencies": {
     "@neos-project/babel-preset-neos-ui": "workspace:*",

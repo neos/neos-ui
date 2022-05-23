@@ -35,7 +35,7 @@
     "lodash.omit": "^4.5.0",
     "lodash.throttle": "^4.0.8",
     "moment": "^2.14.1",
-    "plow-js": "^2.2.0",
+    "plow-js": "3.0.0-canary2",
     "react-close-on-escape": "^3.0.0",
     "react-collapse": "^5.0.1",
     "react-datetime": "^2.8.10",

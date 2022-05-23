@@ -15,7 +15,7 @@
     "@neos-project/neos-ui-redux-store": "workspace:*",
     "@neos-project/react-ui-components": "workspace:*",
     "classnames": "^2.2.3",
-    "plow-js": "^2.2.0",
+    "plow-js": "3.0.0-canary2",
     "react-portal": "^4.2.0"
   },
   "devDependencies": {

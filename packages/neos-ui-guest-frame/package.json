@@ -29,7 +29,7 @@
     "classnames": "^2.2.3",
     "lodash.debounce": "^4.0.8",
     "lodash.throttle": "^4.1.1",
-    "plow-js": "^2.2.0",
+    "plow-js": "3.0.0-canary2",
     "redux-saga": "^0.15.0"
   },
   "peerDependencies": {

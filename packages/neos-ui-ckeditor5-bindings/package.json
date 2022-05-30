@@ -16,7 +16,7 @@
     "@ckeditor/ckeditor5-essentials": "^11.0.2",
     "@ckeditor/ckeditor5-heading": "^11.0.2",
     "@ckeditor/ckeditor5-highlight": "^11.0.2",
-    "@ckeditor/ckeditor5-link": "^11.0.2",
+    "@ckeditor/ckeditor5-link": "^34.1.0",
     "@ckeditor/ckeditor5-list": "^12.0.2",
     "@ckeditor/ckeditor5-paragraph": "^11.0.2",
     "@ckeditor/ckeditor5-remove-format": "^10.0.0",

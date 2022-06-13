@@ -16,7 +16,7 @@
     cursor: not-allowed;
 }
 .listPreviewElement--isHighlighted {
-    background: var(--colors-PrimaryBlue);
+    background-color: var(--colors-PrimaryBlue) !important;
 }
 
 .listPreviewElement--isHighlighted > span {

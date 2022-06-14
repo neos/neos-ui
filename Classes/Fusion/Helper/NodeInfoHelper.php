@@ -453,7 +453,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         return (string)NodeUriBuilder::fromRequest($controllerContext->getRequest())->previewUriFor($nodeAddress);
     }
 
-    public function redirectUri(NodeInterface $node, ControllerContext $controllerContext): string
+    public function createRedirectToNode(NodeInterface $node, ControllerContext $controllerContext): string
     {
         $nodeAddress = $this->nodeAddressFactory->createFromNode($node);
         return $controllerContext->getUriBuilder()

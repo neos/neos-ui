@@ -113,12 +113,12 @@ Neos:
         Neos.Ui.PositionalArraySorter: Neos\Neos\Ui\Fusion\Helper\PositionalArraySorterHelper
       documentNodeInformation:
         metaData:
-          documentNode: '${q(documentNode).property("_contextPath")}'
-          siteNode: '${q(site).property(''_contextPath'')}'
+          documentNode: '${Neos.Ui.NodeInfo.serializedNodeAddress(documentNode)}'
+          siteNode: '${Neos.Ui.NodeInfo.serializedNodeAddress(site)}'
           previewUrl: '${Neos.Ui.NodeInfo.createRedirectToNode(controllerContext, documentNode)}'
           contentDimensions:
-            active: '${documentNode.context.dimensions}'
-            allowedPresets: '${Neos.Ui.Api.emptyArrayToObject(Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions))}'
+            active: '${documentNode.dimensionSpacePoint.toLegacyDimensionArray()}'
+            allowedPresets: '${Neos.Ui.Api.emptyArrayToObject(Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.dimensionSpacePoint))}'
           documentNodeSerialization: '${Neos.Ui.NodeInfo.renderNodeWithPropertiesAndChildrenInformation(documentNode, controllerContext)}'
       initialState:
         changes:
@@ -128,14 +128,14 @@ Neos:
         cr:
           nodes:
             byContextPath: '${Neos.Ui.NodeInfo.defaultNodesForBackend(site, documentNode, controllerContext)}'
-            siteNode: '${q(site).property(''_contextPath'')}'
-            documentNode: '${q(documentNode).property(''_contextPath'')}'
+            siteNode: '${Neos.Ui.NodeInfo.serializedNodeAddress(site)'
+            documentNode: '${Neos.Ui.NodeInfo.serializedNodeAddress(documentNode)'
             clipboard: '${clipboardNodes || []}'
             clipboardMode: '${clipboardMode || null}'
           contentDimensions:
             byName: '${Neos.Ui.ContentDimensions.contentDimensionsByName()}'
-            active: '${documentNode.context.dimensions}'
-            allowedPresets: '${Neos.Ui.Api.emptyArrayToObject(Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions))}'
+            active: '${documentNode.dimensionSpacePoint.toLegacyDimensionArray()}'
+            allowedPresets: '${Neos.Ui.Api.emptyArrayToObject(Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.dimensionSpacePoint))}'
           workspaces:
             personalWorkspace: '${Neos.Ui.Workspace.getPersonalWorkspace()}'
         ui:

@@ -16,7 +16,7 @@ use Neos\ContentRepository\Projection\Content\ContentSubgraphInterface;
 use Neos\ContentRepository\Projection\Workspace\Workspace;
 use Neos\ContentRepository\Projection\Workspace\WorkspaceFinder;
 use Neos\ContentRepository\SharedModel\Workspace\WorkspaceName;
-use Neos\EventSourcedNeosAdjustments\Domain\Context\Workspace\WorkspaceName as NeosWorkspaceName;
+use Neos\Neos\Domain\Model\WorkspaceName as NeosWorkspaceName;
 use Neos\Flow\Security\Context;
 use Neos\Neos\Domain\Service\UserService as DomainUserService;
 use Neos\Flow\Annotations as Flow;

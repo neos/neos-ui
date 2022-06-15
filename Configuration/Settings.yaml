@@ -128,8 +128,8 @@ Neos:
         cr:
           nodes:
             byContextPath: '${Neos.Ui.NodeInfo.defaultNodesForBackend(site, documentNode, controllerContext)}'
-            siteNode: '${Neos.Ui.NodeInfo.serializedNodeAddress(site)'
-            documentNode: '${Neos.Ui.NodeInfo.serializedNodeAddress(documentNode)'
+            siteNode: '${Neos.Ui.NodeInfo.serializedNodeAddress(site)}'
+            documentNode: '${Neos.Ui.NodeInfo.serializedNodeAddress(documentNode)}'
             clipboard: '${clipboardNodes || []}'
             clipboardMode: '${clipboardMode || null}'
           contentDimensions:

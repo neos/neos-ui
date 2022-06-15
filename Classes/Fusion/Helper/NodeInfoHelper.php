@@ -442,8 +442,11 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         ];
     }
 
-    public function uri(NodeAddress $nodeAddress, ControllerContext $controllerContext): string
+    public function uri(NodeInterface|NodeAddress $nodeAddress, ControllerContext $controllerContext): string
     {
+        if ($nodeAddress instanceof NodeInterface) {
+            $nodeAddress = $this->nodeAddressFactory->createFromNode($nodeAddress);
+        }
         return (string)NodeUriBuilder::fromRequest($controllerContext->getRequest())->uriFor($nodeAddress);
     }
 

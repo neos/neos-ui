@@ -20,7 +20,7 @@ prototype(Neos.Neos:Page) {
             @process.json = ${Json.stringify(value)}
             @process.wrapInJsObject = ${'<script>window[\'@Neos.Neos.Ui:DocumentInformation\']=' + value + '</script>'}
             @if {
-                inBackend = ${documentNode.context.inBackend}
+                inBackend = ${Neos.Ui.NodeInfo.inBackend(documentNode)}
             }
 
             // We need to ensure the JS backend information is always up to date, especially
@@ -37,7 +37,7 @@ prototype(Neos.Neos:Page) {
                 entryIdentifier {
                     jsBackendInfo = 'javascriptBackendInformation'
                     documentNode = ${Neos.Caching.entryIdentifierForNode(documentNode)}
-                    inBackend = ${documentNode.context.inBackend}
+                    inBackend = ${Neos.Ui.NodeInfo.inBackend(documentNode)}
                 }
                 entryTags {
                     1 = ${Neos.Caching.nodeTag(documentNode)}
@@ -54,19 +54,19 @@ prototype(Neos.Neos:Page) {
 
             sectionName = 'guestFrameApplication'
             @if {
-                inBackend = ${documentNode.context.inBackend}
+                inBackend = ${Neos.Ui.NodeInfo.inBackend(documentNode)}
             }
         }
     }
 
     neosBackendContainer = '<div id="neos-backend-container"></div>'
     neosBackendContainer.@position = 'before closingBodyTag'
-    neosBackendContainer.@if.inBackend = ${documentNode.context.inBackend}
+    neosBackendContainer.@if.inBackend = ${Neos.Ui.NodeInfo.inBackend(documentNode)}
 
     neosBackendNotification = Neos.Fusion:Template {
         @position = 'before closingBodyTag'
         templatePath = 'resource://Neos.Neos.Ui/Private/Templates/Backend/GuestNotificationScript.html'
-        @if.inBackend = ${documentNode.context.inBackend}
+        @if.inBackend = ${Neos.Ui.NodeInfo.inBackend(documentNode)}
     }
 
     @exceptionHandler = 'Neos\\Neos\\Ui\\Fusion\\ExceptionHandler\\PageExceptionHandler'

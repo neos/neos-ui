@@ -9,7 +9,8 @@ prototype(Neos.Neos:Page) {
             }
 
             @if {
-                inBackend = ${documentNode.context.inBackend}
+                # TODO: inBackend helper should be moved OUT of Neos.Ui, as it is public API
+                inBackend = ${Neos.Ui.NodeInfo.inBackend(documentNode)}
                 isShortcut = ${q(node).is('[instanceof Neos.Neos:Shortcut]')}
             }
         }

@@ -92,7 +92,7 @@ class UpdateNodePreviewUrl extends AbstractFeedback
             $contextPath = '';
         } else {
             $nodeInfoHelper = new NodeInfoHelper();
-            $newPreviewUrl = $nodeInfoHelper->createRedirectToNode($controllerContext, $this->node);
+            $newPreviewUrl = $nodeInfoHelper->createRedirectToNode($this->node, $controllerContext);
             $contextPath = $this->node->getContextPath();
         }
         return [

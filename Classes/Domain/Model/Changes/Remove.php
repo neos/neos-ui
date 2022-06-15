@@ -19,9 +19,9 @@ use Neos\ContentRepository\Feature\Common\Exception\NodeAggregatesTypeIsAmbiguou
 use Neos\ContentRepository\Feature\NodeAggregateCommandHandler;
 use Neos\ContentRepository\Feature\NodeDisabling\Command\NodeVariantSelectionStrategy;
 use Neos\Flow\Annotations as Flow;
-use Neos\EventSourcedNeosAdjustments\Ui\Domain\Model\AbstractChange;
-use Neos\EventSourcedNeosAdjustments\Ui\Domain\Model\Feedback\Operations\RemoveNode;
 use Neos\Neos\Fusion\Cache\ContentCacheFlusher;
+use Neos\Neos\Ui\Domain\Model\AbstractChange;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 
 /**

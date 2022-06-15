@@ -24,9 +24,6 @@ use Neos\ContentRepository\SharedModel\User\UserIdentifier;
 use Neos\ContentRepository\SharedModel\NodeAddress;
 use Neos\ContentRepository\SharedModel\NodeAddressFactory;
 use Neos\Neos\Domain\Model\WorkspaceName as NeosWorkspaceName;
-use Neos\EventSourcedNeosAdjustments\Ui\Service\NodeClipboard;
-use Neos\EventSourcedNeosAdjustments\Ui\Service\PublishingService;
-use Neos\EventSourcedNeosAdjustments\Ui\Domain\Model\ChangeCollection;
 use Neos\Flow\Mvc\ActionRequest;
 use Neos\Flow\Mvc\ActionResponse;
 use Neos\Flow\Mvc\View\JsonView;
@@ -35,6 +32,7 @@ use Neos\Flow\Security\Context;
 use Neos\Neos\Domain\Model\User;
 use Neos\Neos\Ui\ContentRepository\Service\NodeService;
 use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService;
+use Neos\Neos\Ui\Domain\Model\ChangeCollection;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
 use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 use Neos\Neos\Ui\Fusion\Helper\WorkspaceHelper;
@@ -48,7 +46,9 @@ use Neos\Neos\Ui\Domain\Model\Feedback\Messages\Info;
 use Neos\Neos\Ui\Domain\Model\Feedback\Messages\Success;
 use Neos\Neos\Ui\Domain\Service\NodeTreeBuilder;
 use Neos\Eel\FlowQuery\FlowQuery;
+use Neos\Neos\Ui\Service\NodeClipboard;
 use Neos\Neos\Ui\Service\NodePolicyService;
+use Neos\Neos\Ui\Service\PublishingService;
 use Neos\Neos\Ui\TypeConverter\ChangeCollectionConverter;
 
 class BackendServiceController extends ActionController

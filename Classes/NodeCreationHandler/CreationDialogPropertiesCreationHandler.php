@@ -11,17 +11,17 @@ namespace Neos\Neos\Ui\NodeCreationHandler;
  * source code.
  */
 
-use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\SharedModel\NodeType\NodeTypeManager;
+use Neos\ContentRepository\Feature\NodeCreation\Command\CreateNodeAggregateWithNode;
 use Neos\Flow\Annotations as Flow;
-use Neos\Flow\Property\Exception as PropertyException;
 use Neos\Flow\Property\PropertyMapper;
 use Neos\Flow\Property\TypeConverter\PersistentObjectConverter;
-use Neos\Flow\Security\Exception as SecurityException;
-use Neos\Utility\ObjectAccess;
 use Neos\Utility\TypeHandling;
 
 /**
- * A Node Creation Handler that takes the incoming data from the Creation Dialog and sets the corresponding node property
+ * Generic creation dialog node creation handler that iterates
+ * properties that are configured to appear in the Creation Dialog (via "ui.showInCreationDialog" setting)
+ * and sets the initial property values accordingly
  */
 class CreationDialogPropertiesCreationHandler implements NodeCreationHandlerInterface
 {
@@ -32,19 +32,27 @@ class CreationDialogPropertiesCreationHandler implements NodeCreationHandlerInte
     protected $propertyMapper;
 
     /**
-     * @param NodeInterface $node The newly created node
-     * @param array $data incoming data from the creationDialog
-     * @return void
-     * @throws PropertyException | SecurityException
+     * @Flow\Inject
+     * @var NodeTypeManager
      */
-    public function handle(NodeInterface $node, array $data): void
+    protected $nodeTypeManager;
+
+    /**
+     * @param array<string|int,mixed> $data
+     */
+    public function handle(CreateNodeAggregateWithNode $command, array $data): CreateNodeAggregateWithNode
     {
         $propertyMappingConfiguration = $this->propertyMapper->buildPropertyMappingConfiguration();
         $propertyMappingConfiguration->forProperty('*')->allowAllProperties();
         $propertyMappingConfiguration->setTypeConverterOption(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_OVERRIDE_TARGET_TYPE_ALLOWED, true);
 
-        foreach ($node->getNodeType()->getConfiguration('properties') as $propertyName => $propertyConfiguration) {
-            if (!isset($propertyConfiguration['ui']['showInCreationDialog']) || $propertyConfiguration['ui']['showInCreationDialog'] !== true) {
+        $nodeType = $this->nodeTypeManager->getNodeType($command->nodeTypeName->getValue());
+        $propertyValues = $command->initialPropertyValues;
+        foreach ($nodeType->getConfiguration('properties') as $propertyName => $propertyConfiguration) {
+            if (
+                !isset($propertyConfiguration['ui']['showInCreationDialog'])
+                || $propertyConfiguration['ui']['showInCreationDialog'] !== true
+            ) {
                 continue;
             }
             $propertyType = TypeHandling::normalizeType($propertyConfiguration['type'] ?? 'string');
@@ -52,17 +60,15 @@ class CreationDialogPropertiesCreationHandler implements NodeCreationHandlerInte
                 continue;
             }
             $propertyValue = $data[$propertyName];
-            if ($propertyValue === '' && !TypeHandling::isSimpleType($propertyType)) {
-                continue;
-            }
             if ($propertyType !== 'references' && $propertyType !== 'reference' && $propertyType !== TypeHandling::getTypeForValue($propertyValue)) {
                 $propertyValue = $this->propertyMapper->convert($propertyValue, $propertyType, $propertyMappingConfiguration);
             }
-            if (strncmp($propertyName, '_', 1) === 0) {
-                ObjectAccess::setProperty($node, substr($propertyName, 1), $propertyValue);
-            } else {
-                $node->setProperty($propertyName, $propertyValue);
-            }
+
+            $propertyValues = $propertyValues->withValue($propertyName, $propertyValue);
+
         }
+
+        return $command->withInitialPropertyValues($propertyValues);
     }
 }
+

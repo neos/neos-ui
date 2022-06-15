@@ -11,35 +11,32 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
  * source code.
  */
 
-use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\Flow\Annotations as Flow;
+use Neos\ContentRepository\SharedModel\NodeAddressFactory;
+use Neos\ContentRepository\Projection\Content\NodeInterface;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 
 class RemoveNode extends AbstractFeedback
 {
-    /**
-     * @var NodeInterface
-     */
-    protected $node;
+    protected NodeInterface $node;
+
+    protected NodeInterface $parentNode;
 
     /**
-     * Set the node
-     *
-     * @param NodeInterface $node
-     * @return void
+     * @Flow\Inject
+     * @var NodeAddressFactory
      */
-    public function setNode(NodeInterface $node)
+    protected $nodeAddressFactory;
+
+    public function __construct(NodeInterface $node, NodeInterface $parentNode)
     {
         $this->node = $node;
+        $this->parentNode = $parentNode;
     }
 
-    /**
-     * Get the node
-     *
-     * @return NodeInterface
-     */
-    public function getNode()
+    public function getNode(): NodeInterface
     {
         return $this->node;
     }
@@ -59,7 +56,7 @@ class RemoveNode extends AbstractFeedback
      *
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return sprintf('Node "%s" has been removed.', $this->getNode()->getLabel());
     }
@@ -76,7 +73,9 @@ class RemoveNode extends AbstractFeedback
             return false;
         }
 
-        return $this->getNode()->getContextPath() === $feedback->getNode()->getContextPath();
+        return $this->getNode()->getNodeAggregateIdentifier()->equals(
+            $feedback->getNode()->getNodeAggregateIdentifier()
+        );
     }
 
     /**
@@ -88,8 +87,9 @@ class RemoveNode extends AbstractFeedback
     public function serializePayload(ControllerContext $controllerContext)
     {
         return [
-            'contextPath' => $this->getNode()->getContextPath(),
-            'parentContextPath' => $this->getNode()->getParent()->getContextPath()
+            'contextPath' => $this->nodeAddressFactory->createFromNode($this->node)->serializeForUri(),
+            'parentContextPath' => $this->nodeAddressFactory->createFromNode($this->parentNode)->serializeForUri()
         ];
     }
 }
+

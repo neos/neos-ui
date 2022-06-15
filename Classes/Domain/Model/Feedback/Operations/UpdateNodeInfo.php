@@ -90,7 +90,7 @@ class UpdateNodeInfo extends AbstractFeedback
      */
     public function isSimilarTo(FeedbackInterface $feedback): bool
     {
-        if (!$feedback instanceof \Neos\EventSourcedNeosAdjustments\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo) {
+        if (!$feedback instanceof UpdateNodeInfo) {
             return false;
         }
         $feedbackNode = $feedback->getNode();

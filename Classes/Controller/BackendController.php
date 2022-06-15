@@ -22,7 +22,6 @@ use Neos\ContentRepository\SharedModel\VisibilityConstraints;
 use Neos\ContentRepository\Projection\Content\ContentGraphInterface;
 use Neos\ContentRepository\Projection\Workspace\WorkspaceFinder;
 use Neos\Neos\Domain\Model\WorkspaceName as NeosWorkspaceName;
-use Neos\EventSourcedNeosAdjustments\Ui\Service\NodeClipboard;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\Flow\ResourceManagement\ResourceManager;
@@ -37,6 +36,7 @@ use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Fusion\View\FusionView;
 use Neos\Flow\Mvc\View\ViewInterface;
 use Neos\Neos\Ui\Domain\Service\StyleAndJavascriptInclusionService;
+use Neos\Neos\Ui\Service\NodeClipboard;
 
 class BackendController extends ActionController
 {

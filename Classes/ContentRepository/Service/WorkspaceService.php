@@ -21,11 +21,10 @@ use Neos\ContentRepository\Projection\Changes\ChangeFinder;
 use Neos\ContentRepository\Projection\Content\NodeInterface;
 use Neos\ContentRepository\Projection\Workspace\WorkspaceFinder;
 use Neos\ContentRepository\SharedModel\Workspace\WorkspaceName;
-use Neos\EventSourcedNeosAdjustments\Ui\Domain\Model\Changes\Remove;
-use Neos\EventSourcedNeosAdjustments\Ui\Service\PublishingService;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Service\UserService;
 use Neos\Neos\Domain\Service\UserService as DomainUserService;
+use Neos\Neos\Ui\Service\PublishingService;
 
 /**
  * @Flow\Scope("singleton")

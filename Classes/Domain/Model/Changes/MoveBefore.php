@@ -13,10 +13,11 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  */
 
 use Neos\ContentRepository\Feature\NodeAggregateCommandHandler;
-use Neos\EventSourcedNeosAdjustments\Ui\Domain\Model\Feedback\Operations\RemoveNode;
+use Neos\ContentRepository\Feature\NodeMove\Command\MoveNodeAggregate;
 use Neos\Flow\Annotations as Flow;
-use Neos\EventSourcedContentRepository\Domain\Context\NodeAggregate\Command\MoveNodeAggregate;
 use Neos\ContentRepository\Feature\NodeMove\Command\RelationDistributionStrategy;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 
 class MoveBefore extends AbstractStructuralChange
 {
@@ -98,8 +99,7 @@ class MoveBefore extends AbstractStructuralChange
                 $succeedingSiblingParent->getNodeAggregateIdentifier()
             );
 
-            $updateParentNodeInfo
-                = new \Neos\EventSourcedNeosAdjustments\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo();
+            $updateParentNodeInfo = new UpdateNodeInfo();
             $updateParentNodeInfo->setNode($succeedingSiblingParent);
 
             $this->feedbackCollection->add($updateParentNodeInfo);

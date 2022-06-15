@@ -54,7 +54,7 @@ class ReloadDocument extends AbstractFeedback
      */
     public function isSimilarTo(FeedbackInterface $feedback)
     {
-        if (!$feedback instanceof \Neos\EventSourcedNeosAdjustments\Ui\Domain\Model\Feedback\Operations\ReloadDocument) {
+        if (!$feedback instanceof ReloadDocument) {
             return false;
         }
 

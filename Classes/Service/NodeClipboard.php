@@ -11,8 +11,8 @@ namespace Neos\Neos\Ui\Service;
  * source code.
  */
 
+use Neos\ContentRepository\SharedModel\NodeAddress;
 use Neos\Flow\Annotations as Flow;
-use Neos\ContentRepository\Domain\Model\NodeInterface;
 
 /**
  * This is a container for clipboard state that needs to be persisted server side
@@ -21,77 +21,74 @@ use Neos\ContentRepository\Domain\Model\NodeInterface;
  */
 class NodeClipboard
 {
-    const MODE_COPY = 'Copy';
-    const MODE_MOVE = 'Move';
+    public const MODE_COPY = 'Copy';
+    public const MODE_MOVE = 'Move';
 
     /**
-     * @var string
+     * @var array<int,string>
      */
-    protected $nodeContextPaths = [];
+    protected array $serializedNodeAddresses = [];
 
     /**
-     * @var string one of the NodeClipboard::MODE_*  constants
+     * one of the NodeClipboard::MODE_*  constants
      */
-    protected $mode = '';
+    protected string $mode = '';
 
     /**
      * Save copied node to clipboard.
      *
-     * @param NodeInterface[] $nodes
-     * @return void
+     * @param array<int,NodeAddress> $nodeAddresses
+     * @throws \Neos\ContentRepository\SharedModel\NodeAddressCannotBeSerializedException
      * @Flow\Session(autoStart=true)
      */
-    public function copyNodes(array $nodes)
+    public function copyNodes(array $nodeAddresses): void
     {
-        $this->nodeContextPaths = array_map(function ($node) {
-            return $node->getContextPath();
-        }, $nodes);
+        $this->serializedNodeAddresses = array_map(
+            fn (NodeAddress $nodeAddress) => $nodeAddress->serializeForUri(),
+            $nodeAddresses
+        );
         $this->mode = self::MODE_COPY;
     }
 
     /**
-     * Save cut nodes to clipboard.
+     * Save cut node to clipboard.
      *
-     * @param NodeInterface[] $nodes
-     * @return void
+     * @param array<int,NodeAddress> $nodeAddresses
+     * @throws \Neos\ContentRepository\SharedModel\NodeAddressCannotBeSerializedException
      * @Flow\Session(autoStart=true)
      */
-    public function cutNodes(array $nodes)
+    public function cutNodes(array $nodeAddresses): void
     {
-        $this->nodeContextPaths = array_map(function ($node) {
-            return $node->getContextPath();
-        }, $nodes);
+        $this->serializedNodeAddresses = array_map(
+            fn (NodeAddress $nodeAddress) => $nodeAddress->serializeForUri(),
+            $nodeAddresses
+        );
         $this->mode = self::MODE_MOVE;
     }
 
     /**
      * Reset clipboard.
      *
-     * @return void
      * @Flow\Session(autoStart=true)
      */
-    public function clear()
+    public function clear(): void
     {
-        $this->nodeContextPaths = [];
+        $this->serializedNodeAddresses = [];
         $this->mode = '';
     }
 
     /**
-     * Get clipboard node.
-     *
-     * @return array $nodeContextPath
+     * @return array<int,string>
      */
-    public function getNodeContextPaths()
+    public function getSerializedNodeAddresses(): array
     {
-        return $this->nodeContextPaths ? $this->nodeContextPaths : [];
+        return $this->serializedNodeAddresses;
     }
 
     /**
      * Get clipboard mode.
-     *
-     * @return string $mode
      */
-    public function getMode()
+    public function getMode(): string
     {
         return $this->mode;
     }

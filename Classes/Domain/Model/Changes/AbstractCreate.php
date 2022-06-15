@@ -24,9 +24,9 @@ use Neos\ContentRepository\Feature\NodeAggregateCommandHandler;
 use Neos\ContentRepository\SharedModel\Node\OriginDimensionSpacePoint;
 use Neos\ContentRepository\Projection\Content\NodeInterface;
 use Neos\ContentRepository\Infrastructure\Property\PropertyConverter;
-use Neos\EventSourcedNeosAdjustments\Ui\NodeCreationHandler\NodeCreationHandlerInterface;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Ui\Exception\InvalidNodeCreationHandlerException;
+use Neos\Neos\Ui\NodeCreationHandler\NodeCreationHandlerInterface;
 
 abstract class AbstractCreate extends AbstractStructuralChange
 {

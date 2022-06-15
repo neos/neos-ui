@@ -83,7 +83,8 @@ abstract class AbstractCreate extends AbstractStructuralChange
     }
 
     /**
-     * @param array<int|string,mixed> $data
+     * @phpstan-param array<int|string,mixed> $data
+     * @param array $data
      */
     public function setData(array $data): void
     {

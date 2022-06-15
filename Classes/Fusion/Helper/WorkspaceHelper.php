@@ -86,6 +86,11 @@ class WorkspaceHelper implements ProtectedContextAwareInterface
         return $this->workspaceService->getPublishableNodeInfo($workspaceName);
     }
 
+    public function getAllowedTargetWorkspaces()
+    {
+        return $this->workspaceService->getAllowedTargetWorkspaces();
+    }
+
     /**
      * @return array<string,mixed>
      */

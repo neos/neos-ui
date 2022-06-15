@@ -11,6 +11,7 @@ namespace Neos\Neos\Ui\ContentRepository\Service;
  * source code.
  */
 
+use Neos\ContentRepository\Projection\Workspace\Workspace;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\ContentRepository\NodeAccess\NodeAccessorManager;
 use Neos\ContentRepository\SharedModel\NodeAddress;
@@ -23,7 +24,6 @@ use Neos\ContentRepository\SharedModel\Workspace\WorkspaceName;
 use Neos\EventSourcedNeosAdjustments\Ui\Domain\Model\Changes\Remove;
 use Neos\EventSourcedNeosAdjustments\Ui\Service\PublishingService;
 use Neos\Flow\Annotations as Flow;
-use Neos\ContentRepository\Domain\Model\Workspace;
 use Neos\Neos\Service\UserService;
 use Neos\Neos\Domain\Service\UserService as DomainUserService;
 
@@ -150,7 +150,7 @@ class WorkspaceService
         foreach ($this->workspaceFinder->findAll() as $workspace) {
             // FIXME: This check should be implemented through a specialized Workspace Privilege or something similar
             // Skip workspace not owned by current user
-            if ($workspace->getOwner() !== null && $workspace->getOwner() !== $user) {
+            if ($workspace->getWorkspaceOwner() !== null && $workspace->getWorkspaceOwner() !== $user) {
                 continue;
             }
             // Skip own personal workspace
@@ -164,12 +164,12 @@ class WorkspaceService
             }
 
             $workspaceArray = [
-                'name' => $workspace->getName(),
-                'title' => $workspace->getTitle(),
-                'description' => $workspace->getDescription(),
+                'name' => $workspace->getWorkspaceName()->jsonSerialize(),
+                'title' => $workspace->getWorkspaceTitle()->jsonSerialize(),
+                'description' => $workspace->getWorkspaceDescription()->jsonSerialize(),
                 'readonly' => !$this->domainUserService->currentUserCanPublishToWorkspace($workspace)
             ];
-            $workspacesArray[$workspace->getName()] = $workspaceArray;
+            $workspacesArray[$workspace->getWorkspaceName()->jsonSerialize()] = $workspaceArray;
         }
 
         return $workspacesArray;

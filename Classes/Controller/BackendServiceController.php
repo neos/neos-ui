@@ -556,9 +556,9 @@ class BackendServiceController extends ActionController
         $nodeInfoHelper = new NodeInfoHelper();
         $type = $finisher['type'] ?? null;
         $result = match ($type) {
-            'get' => $nodeInfoHelper->renderNodes($flowQuery->getContext(), $this->getControllerContext()),
+            'get' => $nodeInfoHelper->renderNodes($flowQuery->get(), $this->getControllerContext()),
             'getForTree' => $nodeInfoHelper->renderNodes(
-                $flowQuery->getContext(),
+                $flowQuery->get(),
                 $this->getControllerContext(),
                 true
             ),

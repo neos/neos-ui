@@ -42,7 +42,7 @@ export default class EditPreviewModeDropDown extends PureComponent {
             i18nRegistry
         } = this.props;
 
-        const currentEditMode = editPreviewModes[editPreviewMode];
+        const currentEditMode = editPreviewModes[editPreviewMode] || editPreviewModes[Object.keys(editPreviewModes)[0]];
 
         const editPreviewModesList = Object.keys(editPreviewModes).map(key => {
             const element = editPreviewModes[key];

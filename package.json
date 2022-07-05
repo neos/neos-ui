@@ -107,7 +107,7 @@
     "@ckeditor/ckeditor5-link": "^16.0.0",
     "@ckeditor/ckeditor5-list": "^16.0.0",
     "@ckeditor/ckeditor5-paragraph": "^16.0.0",
-    "@ckeditor/ckeditor5-table": "^16.0.0",
+    "@ckeditor/ckeditor5-table": "^34.2.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.27",
     "@fortawesome/free-brands-svg-icons": "^5.12.1",
     "@fortawesome/free-regular-svg-icons": "^5.12.1",

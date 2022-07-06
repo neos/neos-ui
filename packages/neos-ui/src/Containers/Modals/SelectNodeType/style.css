@@ -51,6 +51,9 @@
     border-radius: 2px;
     position: relative;
 }
+.nodeType__item--focused {
+    background: var(--colors-PrimaryBlue);
+}
 .nodeType__helpIcon {
     display: block;
     position: absolute;

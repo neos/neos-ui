@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {$get} from 'plow-js';
 import isEqual from 'lodash.isequal';
+import escaperegexp from 'lodash.escaperegexp';
 
 import {neos} from '@neos-project/neos-ui-decorators';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
@@ -46,6 +47,7 @@ const allowedSiblingsOrChildrenChanged = (previousProps, nextProps) => (
 );
 
 @neos(globalRegistry => ({
+    i18nRegistry: globalRegistry.get('i18n'),
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
 }))
 @connect((state, {nodeTypesRegistry}) => {
@@ -85,11 +87,15 @@ export default class SelectNodeType extends PureComponent {
         allowedSiblingNodeTypes: PropTypes.array,
         allowedChildNodeTypes: PropTypes.array,
         cancel: PropTypes.func.isRequired,
-        apply: PropTypes.func.isRequired
+        apply: PropTypes.func.isRequired,
+        i18nRegistry: PropTypes.object.isRequired
     };
 
     state = {
         filterSearchTerm: '',
+        filteredNodeTypesFlat: [],
+        filteredNodeTypesGrouped: [],
+        focusedNodeType: null,
         insertMode: calculateInitialMode(
             this.props.allowedSiblingNodeTypes,
             this.props.allowedChildNodeTypes,
@@ -182,10 +188,95 @@ export default class SelectNodeType extends PureComponent {
         );
     }
 
-    handleNodeTypeFilterChange = filterSearchTerm => this.setState({filterSearchTerm});
+    updateFilteredNodes() {
+        const {i18nRegistry} = this.props;
+        const {filterSearchTerm} = this.state;
+
+        const allowedNodeTypes = this.getAllowedNodeTypesByCurrentInsertMode();
+
+        let filteredNodeTypesFlat = [];
+        let filteredNodeTypesGrouped = [];
+        allowedNodeTypes.map((value) => {
+            const filteredNodeTypes = (value.nodeTypes || [])
+                .filter(nodeType => {
+                    if (! filterSearchTerm || filterSearchTerm === '') {
+                        return true;
+                    }
+                    const label = i18nRegistry.translate(nodeType.label, nodeType.label);
+                    if (label.toLowerCase().search(escaperegexp(filterSearchTerm.toLowerCase())) !== -1) {
+                        return true;
+                    }
+                    return false;
+                });
+
+            if (filteredNodeTypes.length > 0) {
+                filteredNodeTypesFlat.push(...filteredNodeTypes);
+                filteredNodeTypesGrouped.push(value);
+            }
+        });
+
+        const focusedNodeType = (filterSearchTerm !== '' && filteredNodeTypesFlat.length > 0) ? filteredNodeTypesFlat[0].name : null;
+
+        this.setState({
+            filteredNodeTypesFlat: filteredNodeTypesFlat,
+            filteredNodeTypesGrouped: filteredNodeTypesGrouped,
+            focusedNodeType: focusedNodeType
+        });
+    }
+
+    handleNodeTypeFilterChange = filterSearchTerm => {
+        this.setState({filterSearchTerm});
+    };
+
+    handleEnterKey = () => {
+        const {apply} = this.props;
+        const {insertMode, focusedNodeType} = this.state;
+
+        if (focusedNodeType) {
+            apply(insertMode, focusedNodeType);
+
+            this.setState({
+                filterSearchTerm: ''
+            });
+            this.handleCloseHelpMessage();
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.state.filterSearchTerm !== prevState.filterSearchTerm) {
+            this.updateFilteredNodes();
+        }
+        if (this.state.insertMode !== prevState.insertMode) {
+            this.updateFilteredNodes();
+        }
+    }
+
+    handleKeyDown = (event) => {
+        if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+            event.preventDefault();
+
+            const {filteredNodeTypesFlat, focusedNodeType} = this.state;
+            const index = filteredNodeTypesFlat.findIndex((element) => element.name === focusedNodeType);
+
+            if (event.key === 'ArrowUp') {
+                if (index - 1 >= 0) {
+                    this.setState({
+                        focusedNodeType: filteredNodeTypesFlat[index - 1].name
+                    });
+                }
+            }
+            if (event.key === 'ArrowDown') {
+                if (index + 1 <= filteredNodeTypesFlat.length) {
+                    this.setState({
+                        focusedNodeType: filteredNodeTypesFlat[index + 1].name
+                    });
+                }
+            }
+        }
+    }
 
     render() {
-        const {insertMode, filterSearchTerm} = this.state;
+        const {insertMode, filterSearchTerm, filteredNodeTypesFlat, filteredNodeTypesGrouped, focusedNodeType} = this.state;
         const {isOpen, allowedSiblingNodeTypes, allowedChildNodeTypes} = this.props;
 
         if (!isOpen) {
@@ -201,7 +292,7 @@ export default class SelectNodeType extends PureComponent {
                 style="wide"
                 id="neos-SelectNodeTypeDialog"
                 >
-                <div className={style.nodeTypeDialogHeader} key="nodeTypeDialogHeader">
+                <div onKeyDown={this.handleKeyDown} className={style.nodeTypeDialogHeader} key="nodeTypeDialogHeader">
                     <InsertModeSelector
                         mode={insertMode}
                         onSelect={this.handleModeChange}
@@ -211,13 +302,15 @@ export default class SelectNodeType extends PureComponent {
                     <NodeTypeFilter
                         filterSearchTerm={filterSearchTerm}
                         onChange={this.handleNodeTypeFilterChange}
+                        onEnterKey={this.handleEnterKey}
                         />
                 </div>
-                {this.getAllowedNodeTypesByCurrentInsertMode().map((group, key) => (
+                {filteredNodeTypesGrouped.map((group, key) => (
                     <div key={key}>
                         <NodeTypeGroupPanel
                             group={group}
-                            filterSearchTerm={this.state.filterSearchTerm}
+                            focusedNodeType={focusedNodeType}
+                            filterSearchTerm={filterSearchTerm}
                             onSelect={this.handleApply}
                             showHelpMessageFor ={this.state.showHelpMessageFor}
                             activeHelpMessageGroupPanel ={this.state.activeHelpMessageGroupPanel}

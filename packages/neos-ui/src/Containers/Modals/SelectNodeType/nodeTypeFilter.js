@@ -6,7 +6,7 @@ import Icon from '@neos-project/react-ui-components/src/Icon/';
 import {neos} from '@neos-project/neos-ui-decorators';
 import style from './style.css';
 
-const NodeTypeFilter = ({onChange, filterSearchTerm, i18nRegistry}) => {
+const NodeTypeFilter = ({onChange, onEnterKey, filterSearchTerm, i18nRegistry}) => {
     const handleResetFilter = () => {
         onChange('');
     };
@@ -14,6 +14,10 @@ const NodeTypeFilter = ({onChange, filterSearchTerm, i18nRegistry}) => {
     const handleValueChange = filterSearchTerm => {
         onChange(filterSearchTerm);
     };
+
+    const handleEnterKey = () => {
+        onEnterKey();
+    }
 
     const label = i18nRegistry.translate('filter', 'Filter', {}, 'Neos.Neos', 'Main');
 
@@ -28,6 +32,8 @@ const NodeTypeFilter = ({onChange, filterSearchTerm, i18nRegistry}) => {
             <TextInput
                 value={filterSearchTerm}
                 onChange={handleValueChange}
+                onEnterKey={handleEnterKey}
+                setFocus={true}
                 placeholder={label}
                 />
         </div>
@@ -36,6 +42,7 @@ const NodeTypeFilter = ({onChange, filterSearchTerm, i18nRegistry}) => {
 
 NodeTypeFilter.propTypes = {
     onChange: PropTypes.func.isRequired,
+    onEnterKey: PropTypes.func.isRequired,
     filterSearchTerm: PropTypes.string,
     i18nRegistry: PropTypes.object.isRequired
 };

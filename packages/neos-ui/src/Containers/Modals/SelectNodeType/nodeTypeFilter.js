@@ -17,7 +17,7 @@ const NodeTypeFilter = ({onChange, onEnterKey, filterSearchTerm, i18nRegistry}) 
 
     const handleEnterKey = () => {
         onEnterKey();
-    }
+    };
 
     const label = i18nRegistry.translate('filter', 'Filter', {}, 'Neos.Neos', 'Main');
 

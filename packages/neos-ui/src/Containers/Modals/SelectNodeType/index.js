@@ -194,12 +194,12 @@ export default class SelectNodeType extends PureComponent {
 
         const allowedNodeTypes = this.getAllowedNodeTypesByCurrentInsertMode();
 
-        let filteredNodeTypesFlat = [];
-        let filteredNodeTypesGrouped = [];
-        allowedNodeTypes.map((value) => {
+        const filteredNodeTypesFlat = [];
+        const filteredNodeTypesGrouped = [];
+        allowedNodeTypes.map(value => {
             const filteredNodeTypes = (value.nodeTypes || [])
                 .filter(nodeType => {
-                    if (! filterSearchTerm || filterSearchTerm === '') {
+                    if (!filterSearchTerm || filterSearchTerm === '') {
                         return true;
                     }
                     const label = i18nRegistry.translate(nodeType.label, nodeType.label);
@@ -213,14 +213,16 @@ export default class SelectNodeType extends PureComponent {
                 filteredNodeTypesFlat.push(...filteredNodeTypes);
                 filteredNodeTypesGrouped.push(value);
             }
+
+            return true;
         });
 
         const focusedNodeType = (filterSearchTerm !== '' && filteredNodeTypesFlat.length > 0) ? filteredNodeTypesFlat[0].name : null;
 
         this.setState({
-            filteredNodeTypesFlat: filteredNodeTypesFlat,
-            filteredNodeTypesGrouped: filteredNodeTypesGrouped,
-            focusedNodeType: focusedNodeType
+            filteredNodeTypesFlat,
+            filteredNodeTypesGrouped,
+            focusedNodeType
         });
     }
 
@@ -242,7 +244,7 @@ export default class SelectNodeType extends PureComponent {
         }
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
+    componentDidUpdate(prevProps, prevState) {
         if (this.state.filterSearchTerm !== prevState.filterSearchTerm) {
             this.updateFilteredNodes();
         }
@@ -251,12 +253,12 @@ export default class SelectNodeType extends PureComponent {
         }
     }
 
-    handleKeyDown = (event) => {
+    handleKeyDown = event => {
         if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
             event.preventDefault();
 
             const {filteredNodeTypesFlat, focusedNodeType} = this.state;
-            const index = filteredNodeTypesFlat.findIndex((element) => element.name === focusedNodeType);
+            const index = filteredNodeTypesFlat.findIndex(element => element.name === focusedNodeType);
 
             if (event.key === 'ArrowUp') {
                 if (index - 1 >= 0) {
@@ -276,7 +278,7 @@ export default class SelectNodeType extends PureComponent {
     }
 
     render() {
-        const {insertMode, filterSearchTerm, filteredNodeTypesFlat, filteredNodeTypesGrouped, focusedNodeType} = this.state;
+        const {insertMode, filterSearchTerm, filteredNodeTypesGrouped, focusedNodeType} = this.state;
         const {isOpen, allowedSiblingNodeTypes, allowedChildNodeTypes} = this.props;
 
         if (!isOpen) {
@@ -292,7 +294,7 @@ export default class SelectNodeType extends PureComponent {
                 style="wide"
                 id="neos-SelectNodeTypeDialog"
                 >
-                <div onKeyDown={this.handleKeyDown} className={style.nodeTypeDialogHeader} key="nodeTypeDialogHeader">
+                <div onKeyDown={this.handleKeyDown} role="searchbox" className={style.nodeTypeDialogHeader} key="nodeTypeDialogHeader">
                     <InsertModeSelector
                         mode={insertMode}
                         onSelect={this.handleModeChange}

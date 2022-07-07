@@ -23,13 +23,19 @@ const NodeTypeFilter = ({onChange, onEnterKey, filterSearchTerm, i18nRegistry}) 
 
     return (
         <div className={style.nodeTypeDialogHeader__filter}>
-            {filterSearchTerm ? (
-                <IconButton icon="times" onClick={handleResetFilter}/>
-            ) : (
-                <Icon icon="filter" padded="right"/>
-            ) }
+            <div className={style.nodeTypeDialogHeader__filterIconSearch}>
+                <Icon icon="search" size="md"/>
+            </div>
+
+            {filterSearchTerm && (
+                <div className={style.nodeTypeDialogHeader__filterIconReset}>
+                    <IconButton icon="times" style="brand" onClick={handleResetFilter}/>
+                </div>
+            )}
 
             <TextInput
+                className={style.nodeTypeDialogHeader__filterInput}
+                containerClassName={style.nodeTypeDialogHeader__filterInputContainer}
                 value={filterSearchTerm}
                 onChange={handleValueChange}
                 onEnterKey={handleEnterKey}

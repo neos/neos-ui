@@ -295,16 +295,16 @@ export default class SelectNodeType extends PureComponent {
                 id="neos-SelectNodeTypeDialog"
                 >
                 <div onKeyDown={this.handleKeyDown} role="searchbox" className={style.nodeTypeDialogHeader} key="nodeTypeDialogHeader">
+                    <NodeTypeFilter
+                        filterSearchTerm={filterSearchTerm}
+                        onChange={this.handleNodeTypeFilterChange}
+                        onEnterKey={this.handleEnterKey}
+                        />
                     <InsertModeSelector
                         mode={insertMode}
                         onSelect={this.handleModeChange}
                         enableAlongsideModes={Boolean(allowedSiblingNodeTypes.length)}
                         enableIntoMode={Boolean(allowedChildNodeTypes.length)}
-                        />
-                    <NodeTypeFilter
-                        filterSearchTerm={filterSearchTerm}
-                        onChange={this.handleNodeTypeFilterChange}
-                        onEnterKey={this.handleEnterKey}
                         />
                 </div>
                 {filteredNodeTypesGrouped.map((group, key) => (

@@ -1,4 +1,9 @@
-.markHoveredNodeAsHovered {
+:global(.neos-inline-editable:focus) {
+    outline: none;
+}
+
+.markHoveredNodeAsHovered,
+.markHoveredNodeAsHovered:focus {
     outline-offset: 10px;
     outline: 2px solid rgba(#000, .2);
 }
@@ -12,7 +17,8 @@
     outline: 2px solid var(--colors-ContrastBrighter);
 }
 
-.markActiveNodeAsFocused--focusedNode {
+.markActiveNodeAsFocused--focusedNode,
+.markActiveNodeAsFocused--focusedNode:focus {
     outline-offset: 10px;
     outline: 2px solid var(--colors-PrimaryBlue);
 }
@@ -22,12 +28,13 @@
     outline-color: var(--colors-Warn);
 }
 
-:global(.neos-inline-editable:focus) {
-    outline: none;
+:global([data-neos-inline-editor-is-initialized]:hover) {
+    outline-offset: 10px;
+    outline: 2px dashed rgba(#000, .2);
 }
 
-:global([data-neos-inline-editor-is-initialized]:hover) {
-    outline-offset: 5px;
+:global([data-neos-inline-editor-is-initialized]:focus) {
+    outline-offset: 10px;
     outline: 2px dashed var(--colors-PrimaryBlue);
 }
 

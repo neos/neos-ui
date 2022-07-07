@@ -68,12 +68,11 @@ export default class AddNode extends PureComponent {
         if (preferredMode === 'before' || preferredMode === 'after') {
             return isAllowedToAddSiblingNodes;
         }
-        else if (preferredMode === 'into') {
+        if (preferredMode === 'into') {
             return isAllowedToAddChildNodes;
         }
-        else {
-            return isAllowedToAddChildOrSiblingNodes;
-        }
+
+        return isAllowedToAddChildOrSiblingNodes;
     }
 
     render() {

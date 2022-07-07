@@ -6,7 +6,6 @@ import makeInitializeGuestFrame from './initializeGuestFrame';
 import InlineUI from './InlineUI';
 
 import {
-    AddNode,
     CopySelectedNode,
     CutSelectedNode,
     DeleteSelectedNode,

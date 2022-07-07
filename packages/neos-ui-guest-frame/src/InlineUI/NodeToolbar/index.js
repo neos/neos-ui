@@ -167,17 +167,17 @@ export default class NodeToolbar extends PureComponent {
 
         const addNodeBeforePosition = {
             top: top - TOOLBAR_HEIGHT,
-            left: left
+            left
         };
 
         const addNodeIntoPosition = {
-            top: top,
-            left: left
+            top,
+            left
         };
 
         const addNodeAfterPosition = {
             top: top + height + 10,
-            left: left
+            left
         };
 
         // The data attribute data-ignore_click_outside is used to disable the enhanceWithClickOutside

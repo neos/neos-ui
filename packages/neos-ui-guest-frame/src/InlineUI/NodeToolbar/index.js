@@ -11,6 +11,8 @@ import {
     getGuestFrameWindow
 } from '@neos-project/neos-ui-guest-frame/src/dom';
 
+import AddNode from './Buttons/AddNode/index';
+
 import {neos} from '@neos-project/neos-ui-decorators';
 import style from './style.css';
 
@@ -140,7 +142,7 @@ export default class NodeToolbar extends PureComponent {
             return null;
         }
 
-        const {top, width, rightAsMeasuredFromRightDocumentBorder} = getAbsolutePositionOfElementInGuestFrame(nodeElement);
+        const {top, left, width, height, rightAsMeasuredFromRightDocumentBorder} = getAbsolutePositionOfElementInGuestFrame(nodeElement);
 
         // TODO: hardcoded dimensions
         const TOOLBAR_WIDTH = 200;
@@ -163,14 +165,40 @@ export default class NodeToolbar extends PureComponent {
 
         const NodeToolbarButtons = guestFrameRegistry.getChildren('NodeToolbar/Buttons');
 
+        const addNodeBeforePosition = {
+            top: top - TOOLBAR_HEIGHT,
+            left: left
+        };
+
+        const addNodeIntoPosition = {
+            top: top,
+            left: left
+        };
+
+        const addNodeAfterPosition = {
+            top: top + height + 10,
+            left: left
+        };
+
         // The data attribute data-ignore_click_outside is used to disable the enhanceWithClickOutside
         // handling. For the special case that the outOfBandRender returns an empty rendered content
         // we need to disable the enhanceWithClickOutside handling to prevent hick ups in the event
         // registration after guest frame reload.
         return (
-            <div className={classNames} data-ignore_click_outside="true" style={toolbarPosition}>
-                <div className={style.toolBar__btnGroup}>
-                    {NodeToolbarButtons.map((Item, key) => <Item key={key} {...props} />)}
+            <div>
+                <div className={style.addNodeBefore} style={addNodeBeforePosition}>
+                    <AddNode {...props} preferredMode="before" />
+                </div>
+                <div className={classNames} data-ignore_click_outside="true" style={toolbarPosition}>
+                    <div className={style.toolBar__btnGroup}>
+                        {NodeToolbarButtons.map((Item, key) => <Item key={key} {...props} />)}
+                    </div>
+                </div>
+                <div className={style.addNodeInto} style={addNodeIntoPosition}>
+                    <AddNode {...props} preferredMode="into" />
+                </div>
+                <div className={style.addNodeAfter} style={addNodeAfterPosition}>
+                    <AddNode {...props} preferredMode="after" />
                 </div>
             </div>
         );

@@ -2133,9 +2133,9 @@
     "@types/lodash" "*"
 
 "@types/lodash.isobject@^3.0.4":
-  version "3.0.6"
-  resolved "https://registry.yarnpkg.com/@types/lodash.isobject/-/lodash.isobject-3.0.6.tgz#6e19937a4d16eb6284255fe46118df8009a4b5c1"
-  integrity sha512-2lwGbaIXMR5hjO56nCvI7W6bmY3Y3uJvbHWqO9MtOE1StyhZ1VtLINQ0MLC87rrB3zHHp+u4DHeal70rx1kvjw==
+  version "3.0.7"
+  resolved "https://registry.yarnpkg.com/@types/lodash.isobject/-/lodash.isobject-3.0.7.tgz#8a37beea56512f0ae86f8d48ea01e2ea9b79c185"
+  integrity sha512-nuC74gk3hEmpY4Jq5xIfQc9uoWg2ozVIqS7OwS9xPncFr+d6ULBDpBBOcSaJKm2euKANHBeRGNEaHMAddIzSfA==
   dependencies:
     "@types/lodash" "*"
 

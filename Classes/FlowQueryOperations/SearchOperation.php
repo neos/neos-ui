@@ -12,12 +12,12 @@ namespace Neos\Neos\Ui\FlowQueryOperations;
  */
 
 use Neos\ContentRepository\SharedModel\NodeType\NodeTypeConstraintFactory;
-use Neos\ContentRepository\Projection\Content\SearchTerm;
+use Neos\ContentRepository\Projection\ContentGraph\SearchTerm;
 use Neos\Flow\Annotations as Flow;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Eel\FlowQuery\Operations\AbstractOperation;
 use Neos\ContentRepository\NodeAccess\NodeAccessorManager;
-use Neos\ContentRepository\Projection\Content\NodeInterface;
+use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
 
 /**
  * Custom search operation using the Content Graph fulltext search

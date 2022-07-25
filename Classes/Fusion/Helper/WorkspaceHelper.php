@@ -12,7 +12,7 @@ namespace Neos\Neos\Ui\Fusion\Helper;
  */
 
 use Neos\Eel\ProtectedContextAwareInterface;
-use Neos\ContentRepository\Projection\Content\ContentSubgraphInterface;
+use Neos\ContentRepository\Projection\ContentGraph\ContentSubgraphInterface;
 use Neos\ContentRepository\Projection\Workspace\Workspace;
 use Neos\ContentRepository\Projection\Workspace\WorkspaceFinder;
 use Neos\ContentRepository\SharedModel\Workspace\WorkspaceName;

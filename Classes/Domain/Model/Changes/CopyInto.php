@@ -13,7 +13,7 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  */
 
 use Neos\ContentRepository\SharedModel\Node\OriginDimensionSpacePoint;
-use Neos\ContentRepository\Projection\Content\NodeInterface;
+use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
 use Neos\Flow\Annotations as Flow;
 use Neos\ContentRepository\SharedModel\Node\NodeName;
 use Neos\ContentRepository\Feature\NodeDuplication\Command\CopyNodesRecursively;

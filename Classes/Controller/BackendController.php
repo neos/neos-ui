@@ -180,6 +180,7 @@ class BackendController extends ActionController
             $this->redirectToUri($this->uriBuilder->uriFor('index', [], 'Login', 'Neos.Neos'));
         }
 
+        // TODO: CR
         $nodeAccessor = $this->nodeAccessorManager->accessorFor(
             $workspace->getCurrentContentStreamIdentifier(),
             $this->findDefaultDimensionSpacePoint(),

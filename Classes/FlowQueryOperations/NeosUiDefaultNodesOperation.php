@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Neos\Ui\FlowQueryOperations;
 
 /*
@@ -12,6 +13,7 @@ namespace Neos\Neos\Ui\FlowQueryOperations;
  */
 
 use Neos\ContentRepository\SharedModel\NodeType\NodeTypeConstraintFactory;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Eel\FlowQuery\Operations\AbstractOperation;
 use Neos\ContentRepository\NodeAccess\NodeAccessorManager;
@@ -44,10 +46,9 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
 
     /**
      * @Flow\Inject
-     * @var NodeAddressFactory
+     * @var ContentRepositoryRegistry
      */
-    protected $nodeAddressFactory;
-
+    protected $contentRepositoryRegistry;
 
     /**
      * @Flow\Inject
@@ -86,9 +87,7 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
         $baseNodeTypeConstraints = $this->nodeTypeConstraintFactory->parseFilterString($baseNodeType);
 
         $nodeAccessor = $this->nodeAccessorManager->accessorFor(
-            $documentNode->getContentStreamIdentifier(),
-            $documentNode->getDimensionSpacePoint(),
-            VisibilityConstraints::withoutRestrictions()
+            $documentNode->getSubgraphIdentity()
         );
 
         // Collect all parents of documentNode up to siteNode
@@ -113,8 +112,7 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
 
         $gatherNodesRecursively = function (
             &$nodes,
-            NodeInterface
-            $baseNode,
+            NodeInterface $baseNode,
             $level = 0
         ) use (
             &$gatherNodesRecursively,
@@ -124,7 +122,8 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
             $parents,
             $nodeAccessor
         ) {
-            $baseNodeAddress = $this->nodeAddressFactory->createFromNode($baseNode);
+            $contentRepository = $this->contentRepositoryRegistry->get($baseNode->getSubgraphIdentity()->contentRepositoryIdentifier);
+            $baseNodeAddress = NodeAddressFactory::create($contentRepository)->createFromNode($baseNode);
 
             if ($level < $loadingDepth || // load all nodes within loadingDepth
                 $loadingDepth === 0 || // unlimited loadingDepth
@@ -145,8 +144,10 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
             $nodes[(string)$documentNode->getNodeAggregateIdentifier()] = $documentNode;
         }
 
+        $contentRepository = $this->contentRepositoryRegistry->get($documentNode->getSubgraphIdentity()->contentRepositoryIdentifier);
         foreach ($clipboardNodesContextPaths as $clipboardNodeContextPath) {
-            $clipboardNodeAddress = $this->nodeAddressFactory->createFromUriString($clipboardNodeContextPath);
+            // TODO: does not work across multiple CRs yet.
+            $clipboardNodeAddress = NodeAddressFactory::create($contentRepository)->createFromUriString($clipboardNodeContextPath);
             $clipboardNode = $this->nodeAccessorManager->accessorFor(
                 $clipboardNodeAddress->contentStreamIdentifier,
                 $clipboardNodeAddress->dimensionSpacePoint,

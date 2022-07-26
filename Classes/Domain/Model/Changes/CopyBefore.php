@@ -69,12 +69,12 @@ class CopyBefore extends AbstractStructuralChange
             $targetNodeName = NodeName::fromString(uniqid('node-'));
             $command = CopyNodesRecursively::create(
                 $this->contentGraph->getSubgraphByIdentifier(
-                    $subject->getContentStreamIdentifier(),
-                    $subject->getDimensionSpacePoint(),
-                    $subject->getVisibilityConstraints()
+                    $subject->getSubgraphIdentity()->contentStreamIdentifier,
+                    $subject->getSubgraphIdentity()->dimensionSpacePoint,
+                    $subject->getSubgraphIdentity()->visibilityConstraints
                 ),
                 $subject,
-                OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->getDimensionSpacePoint()),
+                OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->getSubgraphIdentity()->dimensionSpacePoint),
                 UserIdentifier::forSystemUser(), // TODO
                 $parentNodeOfSucceedingSibling->getNodeAggregateIdentifier(),
                 $succeedingSibling->getNodeAggregateIdentifier(),
@@ -93,7 +93,7 @@ class CopyBefore extends AbstractStructuralChange
             // we render content directly as response of this operation,
             // so we need to flush the caches at the copy target
             $this->contentCacheFlusher->flushNodeAggregate(
-                $newlyCreatedNode->getContentStreamIdentifier(),
+                $newlyCreatedNode->getSubgraphIdentity()->contentStreamIdentifier,
                 $newlyCreatedNode->getNodeAggregateIdentifier()
             );
             $this->finish($newlyCreatedNode);

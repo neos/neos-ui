@@ -80,8 +80,8 @@ class MoveAfter extends AbstractStructuralChange
                 ->equals($parentNodeOfPreviousSibling->getNodeAggregateIdentifier());
 
             $command = new MoveNodeAggregate(
-                $subject->getContentStreamIdentifier(),
-                $subject->getDimensionSpacePoint(),
+                $subject->getSubgraphIdentity()->contentStreamIdentifier,
+                $subject->getSubgraphIdentity()->dimensionSpacePoint,
                 $subject->getNodeAggregateIdentifier(),
                 $hasEqualParentNode ? null : $parentNodeOfPreviousSibling->getNodeAggregateIdentifier(),
                 $precedingSibling->getNodeAggregateIdentifier(),
@@ -92,14 +92,14 @@ class MoveAfter extends AbstractStructuralChange
 
             // we render content directly as response of this operation, so we need to flush the caches
             $doFlushContentCache = $this->contentCacheFlusher->scheduleFlushNodeAggregate(
-                $subject->getContentStreamIdentifier(),
+                $subject->getSubgraphIdentity()->contentStreamIdentifier,
                 $subject->getNodeAggregateIdentifier()
             );
             $this->nodeAggregateCommandHandler->handleMoveNodeAggregate($command)
                 ->blockUntilProjectionsAreUpToDate();
             $doFlushContentCache();
             $this->contentCacheFlusher->flushNodeAggregate(
-                $parentNodeOfPreviousSibling->getContentStreamIdentifier(),
+                $parentNodeOfPreviousSibling->getSubgraphIdentity()->contentStreamIdentifier,
                 $parentNodeOfPreviousSibling->getNodeAggregateIdentifier()
             );
 

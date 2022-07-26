@@ -76,7 +76,7 @@ abstract class AbstractChange implements ChangeInterface
             $documentNode = $this->findClosestDocumentNode($this->subject);
             if (!is_null($documentNode)) {
                 $workspace = $this->workspaceFinder->findOneByCurrentContentStreamIdentifier(
-                    $documentNode->getContentStreamIdentifier()
+                    $documentNode->getSubgraphIdentity()->contentStreamIdentifier
                 );
                 if (!is_null($workspace)) {
                     $updateWorkspaceInfo = new UpdateWorkspaceInfo($workspace->getWorkspaceName());
@@ -101,9 +101,7 @@ abstract class AbstractChange implements ChangeInterface
     protected function findParentNode(NodeInterface $node): ?NodeInterface
     {
         return $this->nodeAccessorManager->accessorFor(
-            $node->getContentStreamIdentifier(),
-            $node->getDimensionSpacePoint(),
-            $node->getVisibilityConstraints()
+            $node->getSubgraphIdentity()
         )->findParentNode($node);
     }
 

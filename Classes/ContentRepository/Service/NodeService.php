@@ -45,9 +45,7 @@ class NodeService
         }
 
         $nodeAccessor = $this->nodeAccessorManager->accessorFor(
-            $node->getContentStreamIdentifier(),
-            $node->getDimensionSpacePoint(),
-            $node->getVisibilityConstraints()
+            $node->getSubgraphIdentity()
         );
 
         while ($node instanceof NodeInterface) {

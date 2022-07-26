@@ -79,9 +79,7 @@ class NeosUiFilteredChildrenOperation extends AbstractOperation
         /** @var NodeInterface $contextNode */
         foreach ($flowQuery->getContext() as $contextNode) {
             $nodeAccessor = $this->nodeAccessorManager->accessorFor(
-                $contextNode->getContentStreamIdentifier(),
-                $contextNode->getDimensionSpacePoint(),
-                $contextNode->getVisibilityConstraints()
+                $contextNode->getSubgraphIdentity()
             );
 
             /** @var NodeInterface $childNode */

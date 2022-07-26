@@ -12,6 +12,7 @@ namespace Neos\Neos\Ui\ContentRepository\Service;
  */
 
 use Neos\ContentRepository\Projection\Workspace\Workspace;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\ContentRepository\NodeAccess\NodeAccessorManager;
 use Neos\ContentRepository\SharedModel\NodeAddress;
@@ -51,12 +52,6 @@ class WorkspaceService
 
     /**
      * @Flow\Inject
-     * @var PublishingService
-     */
-    protected $publishingService;
-
-    /**
-     * @Flow\Inject
      * @var UserService
      */
     protected $userService;
@@ -69,9 +64,9 @@ class WorkspaceService
 
     /**
      * @Flow\Inject
-     * @var NodeAddressFactory
+     * @var ContentRepositoryRegistry
      */
-    protected $nodeAddressFactory;
+    protected $contentRepositoryRegistry;
 
     /**
      * Get all publishable node context paths for a workspace
@@ -120,9 +115,11 @@ class WorkspaceService
                 if ($node instanceof NodeInterface) {
                     $documentNode = $this->getClosestDocumentNode($node);
                     if ($documentNode instanceof NodeInterface) {
+                        $contentRepository = $this->contentRepositoryRegistry->get($documentNode->getSubgraphIdentity()->contentRepositoryIdentifier);
+                        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
                         $unpublishedNodes[] = [
-                            'contextPath' => $this->nodeAddressFactory->createFromNode($node)->serializeForUri(),
-                            'documentContextPath' => $this->nodeAddressFactory->createFromNode($documentNode)
+                            'contextPath' => $nodeAddressFactory->createFromNode($node)->serializeForUri(),
+                            'documentContextPath' => $nodeAddressFactory->createFromNode($documentNode)
                                 ->serializeForUri()
                         ];
                     }
@@ -189,9 +186,7 @@ class WorkspaceService
     private function getClosestDocumentNode(NodeInterface $node): ?NodeInterface
     {
         $nodeAccessor = $this->nodeAccessorManager->accessorFor(
-            $node->getContentStreamIdentifier(),
-            $node->getDimensionSpacePoint(),
-            $node->getVisibilityConstraints()
+            $node->getSubgraphIdentity()
         );
 
         while ($node instanceof NodeInterface) {

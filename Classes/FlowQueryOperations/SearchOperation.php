@@ -78,9 +78,7 @@ class SearchOperation extends AbstractOperation
         /** @var NodeInterface $contextNode */
         $contextNode = $context[0];
         $nodeAccessor = $this->nodeAccessorManager->accessorFor(
-            $contextNode->getContentStreamIdentifier(),
-            $contextNode->getDimensionSpacePoint(),
-            $contextNode->getVisibilityConstraints()
+            $contextNode->getSubgraphIdentity()
         );
         $nodes = $nodeAccessor->findDescendants(
             [$contextNode],

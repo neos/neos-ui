@@ -11,6 +11,7 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
  * source code.
  */
 
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\ContentRepository\SharedModel\NodeAddressFactory;
 use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
@@ -28,9 +29,9 @@ class NodeCreated extends AbstractFeedback
 
     /**
      * @Flow\Inject
-     * @var NodeAddressFactory
+     * @var ContentRepositoryRegistry
      */
-    protected $nodeAddressFactory;
+    protected $contentRepositoryRegistry;
 
     /**
      * Set the node
@@ -77,8 +78,7 @@ class NodeCreated extends AbstractFeedback
         }
 
         return (
-            $this->getNode()->getContentStreamIdentifier()->equals($feedback->getNode()->getContentStreamIdentifier()) &&
-            $this->getNode()->getDimensionSpacePoint()->equals($feedback->getNode()->getDimensionSpacePoint()) &&
+            $this->getNode()->getSubgraphIdentity()->equals($feedback->getNode()->getSubgraphIdentity()) &&
             $this->getNode()->getNodeAggregateIdentifier()->equals($feedback->getNode()->getNodeAggregateIdentifier())
         );
     }
@@ -92,9 +92,10 @@ class NodeCreated extends AbstractFeedback
     public function serializePayload(ControllerContext $controllerContext)
     {
         $node = $this->getNode();
-
+        $contentRepository = $this->contentRepositoryRegistry->get($node->getSubgraphIdentity()->contentRepositoryIdentifier);
+        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
         return [
-            'contextPath' => $this->nodeAddressFactory->createFromNode($node)->serializeForUri(),
+            'contextPath' => $nodeAddressFactory->createFromNode($node)->serializeForUri(),
             'identifier' => (string)$node->getNodeAggregateIdentifier(),
             'isDocument' => $node->getNodeType()->isOfType(NodeTypeNameFactory::NAME_DOCUMENT)
         ];

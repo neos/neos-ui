@@ -15,6 +15,7 @@ use Neos\ContentRepository\NodeAccess\NodeAccessorManager;
 use Neos\ContentRepository\SharedModel\NodeAddressFactory;
 use Neos\ContentRepository\SharedModel\VisibilityConstraints;
 use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Fusion\Core\Cache\ContentCache;
@@ -56,9 +57,9 @@ class RenderContentOutOfBand extends AbstractFeedback
 
     /**
      * @Flow\Inject
-     * @var NodeAddressFactory
+     * @var ContentRepositoryRegistry
      */
-    protected $nodeAddressFactory;
+    protected $contentRepositoryRegistry;
 
     /**
      * @Flow\Inject
@@ -139,8 +140,7 @@ class RenderContentOutOfBand extends AbstractFeedback
         }
 
         return (
-            $this->node->getContentStreamIdentifier()->equals($feedbackNode->getContentStreamIdentifier()) &&
-            $this->node->getDimensionSpacePoint()->equals($feedbackNode->getDimensionSpacePoint()) &&
+            $this->node->getSubgraphIdentity()->equals($feedbackNode->getSubgraphIdentity()) &&
             $this->node->getNodeAggregateIdentifier()->equals($feedbackNode->getNodeAggregateIdentifier())
             // @todo what's this? && $this->getReferenceData() == $feedback->getReferenceData()
         );
@@ -153,15 +153,18 @@ class RenderContentOutOfBand extends AbstractFeedback
      */
     public function serializePayload(ControllerContext $controllerContext): array
     {
-        return !is_null($this->node)
-            ? [
-                'contextPath' => $this->nodeAddressFactory->createFromNode($this->node)->serializeForUri(),
+        if (!is_null($this->node)) {
+            $contentRepository = $this->contentRepositoryRegistry->get($this->node->getSubgraphIdentity()->contentRepositoryIdentifier);
+            $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
+            return [
+                'contextPath' => $nodeAddressFactory->createFromNode($this->node)->serializeForUri(),
                 'parentDomAddress' => $this->getParentDomAddress(),
                 'siblingDomAddress' => $this->getSiblingDomAddress(),
                 'mode' => $this->getMode(),
                 'renderedContent' => $this->renderContent($controllerContext)
-            ]
-            : [];
+            ];
+        }
+        return [];
     }
 
     /**
@@ -173,9 +176,7 @@ class RenderContentOutOfBand extends AbstractFeedback
             return '';
         }
         $nodeAccessor = $this->nodeAccessorManager->accessorFor(
-            $this->node->getContentStreamIdentifier(),
-            $this->node->getDimensionSpacePoint(),
-            VisibilityConstraints::withoutRestrictions()
+            $this->node->getSubgraphIdentity()
         );
         $parentNode = $nodeAccessor->findParentNode($this->node);
         if ($parentNode) {

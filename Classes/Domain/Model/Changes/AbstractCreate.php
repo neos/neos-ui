@@ -131,10 +131,10 @@ abstract class AbstractCreate extends AbstractStructuralChange
         $nodeTypeName = NodeTypeName::fromString($nodeType->getName());
 
         $command = new CreateNodeAggregateWithNode(
-            $parentNode->getContentStreamIdentifier(),
+            $parentNode->getSubgraphIdentity()->contentStreamIdentifier,
             $nodeAggregateIdentifier,
             $nodeTypeName,
-            OriginDimensionSpacePoint::fromDimensionSpacePoint($parentNode->getDimensionSpacePoint()),
+            OriginDimensionSpacePoint::fromDimensionSpacePoint($parentNode->getSubgraphIdentity()->dimensionSpacePoint),
             $this->getInitiatingUserIdentifier(),
             $parentNode->getNodeAggregateIdentifier(),
             $succeedingSiblingNodeAggregateIdentifier,
@@ -142,10 +142,10 @@ abstract class AbstractCreate extends AbstractStructuralChange
         );
         $command = $this->applyNodeCreationHandlers($command, $nodeTypeName);
 
-        $this->nodeAggregateCommandHandler->handleCreateNodeAggregateWithNode($command)
-            ->blockUntilProjectionsAreUpToDate();
+        $contentRepository = $this->contentRepositoryRegistry->get($parentNode->getIdentity()->contentRepositoryIdentifier);
+        $contentRepository->handle($command)->block();
         $this->contentCacheFlusher->flushNodeAggregate(
-            $parentNode->getContentStreamIdentifier(),
+            $parentNode->getSubgraphIdentity()->contentStreamIdentifier,
             $parentNode->getNodeAggregateIdentifier()
         );
 

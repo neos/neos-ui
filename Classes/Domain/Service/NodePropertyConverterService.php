@@ -116,8 +116,8 @@ class NodePropertyConverterService
     {
         if ($propertyName === '_hidden') {
             return $this->nodeHiddenStateFinder->findHiddenState(
-                $node->getContentStreamIdentifier(),
-                $node->getDimensionSpacePoint(),
+                $node->getSubgraphIdentity()->contentStreamIdentifier,
+                $node->getSubgraphIdentity()->dimensionSpacePoint,
                 $node->getNodeAggregateIdentifier()
             )->isHidden();
         }
@@ -130,9 +130,7 @@ class NodePropertyConverterService
         // because we need to use another API for querying these references.
         if ($propertyType === 'reference') {
             $nodeAccessor = $this->nodeAccessorManager->accessorFor(
-                $node->getContentStreamIdentifier(),
-                $node->getDimensionSpacePoint(),
-                VisibilityConstraints::withoutRestrictions()
+                $node->getSubgraphIdentity()
             );
             $referenceIdentifiers = $this->toNodeIdentifierStrings(
                 $nodeAccessor->findReferencedNodes($node, PropertyName::fromString($propertyName))
@@ -144,9 +142,7 @@ class NodePropertyConverterService
             }
         } elseif ($propertyType === 'references') {
             $nodeAccessor = $this->nodeAccessorManager->accessorFor(
-                $node->getContentStreamIdentifier(),
-                $node->getDimensionSpacePoint(),
-                VisibilityConstraints::withoutRestrictions()
+                $node->getSubgraphIdentity()
             );
             $references = $nodeAccessor->findReferencedNodes($node, PropertyName::fromString($propertyName));
 

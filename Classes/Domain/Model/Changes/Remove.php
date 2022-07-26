@@ -74,7 +74,7 @@ class Remove extends AbstractChange
             // we have to remember what parts of the content cache to flush before we actually delete the node;
             // otherwise we cannot find the parent nodes anymore.
             $doFlushContentCache = $this->contentCacheFlusher->scheduleFlushNodeAggregate(
-                $subject->getContentStreamIdentifier(),
+                $subject->getSubgraphIdentity()->contentStreamIdentifier,
                 $subject->getNodeAggregateIdentifier()
             );
 
@@ -84,9 +84,9 @@ class Remove extends AbstractChange
 
             $closestDocumentParentNode = $this->findClosestDocumentNode($subject);
             $command = new RemoveNodeAggregate(
-                $subject->getContentStreamIdentifier(),
+                $subject->getSubgraphIdentity()->contentStreamIdentifier,
                 $subject->getNodeAggregateIdentifier(),
-                $subject->getDimensionSpacePoint(),
+                $subject->getSubgraphIdentity()->dimensionSpacePoint,
                 NodeVariantSelectionStrategy::STRATEGY_ALL_SPECIALIZATIONS,
                 $this->getInitiatingUserIdentifier(),
                 $closestDocumentParentNode?->getNodeAggregateIdentifier()

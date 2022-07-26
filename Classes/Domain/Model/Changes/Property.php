@@ -193,7 +193,7 @@ class Property extends AbstractChange
 
                 $commandResult = $this->nodeAggregateCommandHandler->handleSetNodeReferences(
                     new SetNodeReferences(
-                        $subject->getContentStreamIdentifier(),
+                        $subject->getSubgraphIdentity()->contentStreamIdentifier,
                         $subject->getNodeAggregateIdentifier(),
                         $subject->getOriginDimensionSpacePoint(),
                         NodeAggregateIdentifiers::fromArray($destinationNodeAggregateIdentifiers),
@@ -212,7 +212,7 @@ class Property extends AbstractChange
                 if ($propertyName[0] !== '_' || $propertyName === '_hiddenInIndex') {
                     $commandResult = $this->nodeAggregateCommandHandler->handleSetNodeProperties(
                         new SetNodeProperties(
-                            $subject->getContentStreamIdentifier(),
+                            $subject->getSubgraphIdentity()->contentStreamIdentifier,
                             $subject->getNodeAggregateIdentifier(),
                             $subject->getOriginDimensionSpacePoint(),
                             PropertyValuesToWrite::fromArray(
@@ -228,7 +228,7 @@ class Property extends AbstractChange
                     if ($propertyName === '_nodeType') {
                         $commandResult = $this->nodeAggregateCommandHandler->handleChangeNodeAggregateType(
                             $command = new ChangeNodeAggregateType(
-                                $subject->getContentStreamIdentifier(),
+                                $subject->getSubgraphIdentity()->contentStreamIdentifier,
                                 $subject->getNodeAggregateIdentifier(),
                                 NodeTypeName::fromString($value),
                                 NodeAggregateTypeChangeChildConstraintConflictResolutionStrategy::STRATEGY_DELETE,
@@ -239,7 +239,7 @@ class Property extends AbstractChange
                         if ($value === true) {
                             $commandResult = $this->nodeAggregateCommandHandler->handleDisableNodeAggregate(
                                 new DisableNodeAggregate(
-                                    $subject->getContentStreamIdentifier(),
+                                    $subject->getSubgraphIdentity()->contentStreamIdentifier,
                                     $subject->getNodeAggregateIdentifier(),
                                     $subject->getOriginDimensionSpacePoint()->toDimensionSpacePoint(),
                                     NodeVariantSelectionStrategy::STRATEGY_ALL_SPECIALIZATIONS,
@@ -250,7 +250,7 @@ class Property extends AbstractChange
                             // unhide
                             $commandResult = $this->nodeAggregateCommandHandler->handleEnableNodeAggregate(
                                 new EnableNodeAggregate(
-                                    $subject->getContentStreamIdentifier(),
+                                    $subject->getSubgraphIdentity()->contentStreamIdentifier,
                                     $subject->getNodeAggregateIdentifier(),
                                     $subject->getOriginDimensionSpacePoint()->toDimensionSpacePoint(),
                                     NodeVariantSelectionStrategy::STRATEGY_ALL_SPECIALIZATIONS,
@@ -270,9 +270,7 @@ class Property extends AbstractChange
             // because it may have been modified by the commands above.
             // Thus, we need to re-fetch it (as a workaround; until we do not need this anymore)
             $nodeAccessor = $this->nodeAccessorManager->accessorFor(
-                $subject->getContentStreamIdentifier(),
-                $subject->getDimensionSpacePoint(),
-                VisibilityConstraints::withoutRestrictions()
+                $subject->getSubgraphIdentity()
             );
             $originalNodeAggregateIdentifier = $subject->getNodeAggregateIdentifier();
             $node = $nodeAccessor->findByIdentifier($subject->getNodeAggregateIdentifier());
@@ -293,7 +291,7 @@ class Property extends AbstractChange
                     && $parentNode->getNodeType()->isOfType('Neos.Neos:ContentCollection')) {
                     // we render content directly as response of this operation, so we need to flush the caches
                     $this->contentCacheFlusher->flushNodeAggregate(
-                        $node->getContentStreamIdentifier(),
+                        $node->getSubgraphIdentity()->contentStreamIdentifier,
                         $node->getNodeAggregateIdentifier()
                     );
                     $reloadContentOutOfBand = new ReloadContentOutOfBand();
@@ -303,7 +301,7 @@ class Property extends AbstractChange
                 } else {
                     // we render content directly as response of this operation, so we need to flush the caches
                     $this->contentCacheFlusher->flushNodeAggregate(
-                        $node->getContentStreamIdentifier(),
+                        $node->getSubgraphIdentity()->contentStreamIdentifier,
                         $node->getNodeAggregateIdentifier()
                     );
                     $this->reloadDocument($node);
@@ -315,7 +313,7 @@ class Property extends AbstractChange
                 && $node->getNodeType()->getConfiguration($reloadPageIfChangedConfigurationPath)) {
                 // we render content directly as response of this operation, so we need to flush the caches
                 $this->contentCacheFlusher->flushNodeAggregate(
-                    $node->getContentStreamIdentifier(),
+                    $node->getSubgraphIdentity()->contentStreamIdentifier,
                     $node->getNodeAggregateIdentifier()
                 );
                 $this->reloadDocument($node);

@@ -15,15 +15,16 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
 use Neos\ContentRepository\NodeAccess\NodeAccessor\NodeAccessorInterface;
 use Neos\ContentRepository\SharedModel\NodeType\NodeType;
 use Neos\ContentRepository\SharedModel\NodeAddressFactory;
-use Neos\ContentRepository\SharedModel\VisibilityConstraints;
 use Neos\ContentRepository\Projection\ContentGraph\ContentGraphInterface;
 use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
 use Neos\ContentRepository\Projection\ContentGraph\Nodes;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Fusion\Cache\ContentCacheFlusher;
 use Neos\Neos\Ui\ContentRepository\Service\NodeService;
 use Neos\Neos\Ui\Domain\Model\AbstractChange;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RenderContentOutOfBand;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 use Neos\Neos\Ui\Domain\Model\RenderedNodeDomAddress;
 use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
@@ -57,9 +58,9 @@ abstract class AbstractStructuralChange extends AbstractChange
 
     /**
      * @Flow\Inject
-     * @var NodeAddressFactory
+     * @var ContentRepositoryRegistry
      */
-    protected $nodeAddressFactory;
+    protected $contentRepositoryRegistry;
 
     /**
      * @Flow\Inject
@@ -146,9 +147,7 @@ abstract class AbstractStructuralChange extends AbstractChange
         $this->feedbackCollection->add($updateNodeInfo);
 
         $nodeAccessor = $this->nodeAccessorManager->accessorFor(
-            $node->getContentStreamIdentifier(),
-            $node->getDimensionSpacePoint(),
-            VisibilityConstraints::withoutRestrictions()
+            $node->getSubgraphIdentity()
         );
         $parentNode = $nodeAccessor->findParentNode($node);
         if ($parentNode) {
@@ -167,13 +166,15 @@ abstract class AbstractStructuralChange extends AbstractChange
             // we can ONLY render out of band if:
             // 1) the parent of our new (or copied or moved) node is a ContentCollection;
             // so we can directly update an element of this content collection
+
+            $contentRepository = $this->contentRepositoryRegistry->get($parentNode->getSubgraphIdentity()->contentRepositoryIdentifier);
             if ($parentNode && $parentNode->getNodeType()->isOfType('Neos.Neos:ContentCollection') &&
                 // 2) the parent DOM address (i.e. the closest RENDERED node in DOM is actually the ContentCollection;
                 // and no other node in between
                 $this->getParentDomAddress() &&
                 $this->getParentDomAddress()->getFusionPath() &&
                 $this->getParentDomAddress()->getContextPath() ===
-                    $this->nodeAddressFactory->createFromNode($parentNode)->serializeForUri()
+                    NodeAddressFactory::create($contentRepository)->createFromNode($parentNode)->serializeForUri()
             ) {
                 $renderContentOutOfBand = new RenderContentOutOfBand();
                 $renderContentOutOfBand->setNode($node);
@@ -191,12 +192,11 @@ abstract class AbstractStructuralChange extends AbstractChange
         }
     }
 
+    // TODO REMOVE
     protected function nodeAccessorFor(NodeInterface $node): NodeAccessorInterface
     {
         return $this->nodeAccessorManager->accessorFor(
-            $node->getContentStreamIdentifier(),
-            $node->getDimensionSpacePoint(),
-            $node->getVisibilityConstraints()
+            $node->getSubgraphIdentity()
         );
     }
 
@@ -208,9 +208,7 @@ abstract class AbstractStructuralChange extends AbstractChange
     protected function isNodeTypeAllowedAsChildNode(NodeInterface $node, NodeType $nodeType): bool
     {
         $nodeAccessor = $this->nodeAccessorManager->accessorFor(
-            $node->getContentStreamIdentifier(),
-            $node->getDimensionSpacePoint(),
-            VisibilityConstraints::withoutRestrictions()
+            $node->getSubgraphIdentity()
         );
         if (NodeInfoHelper::isAutoCreated($node, $nodeAccessor)) {
             $parentNode = $nodeAccessor->findParentNode($node);

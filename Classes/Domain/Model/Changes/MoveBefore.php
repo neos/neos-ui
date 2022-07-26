@@ -76,13 +76,13 @@ class MoveBefore extends AbstractStructuralChange
 
             // we render content directly as response of this operation, so we need to flush the caches
             $doFlushContentCache = $this->contentCacheFlusher->scheduleFlushNodeAggregate(
-                $subject->getContentStreamIdentifier(),
+                $subject->getSubgraphIdentity()->contentStreamIdentifier,
                 $subject->getNodeAggregateIdentifier()
             );
             $this->nodeAggregateCommandHandler->handleMoveNodeAggregate(
                 new MoveNodeAggregate(
-                    $subject->getContentStreamIdentifier(),
-                    $subject->getDimensionSpacePoint(),
+                    $subject->getSubgraphIdentity()->contentStreamIdentifier,
+                    $subject->getSubgraphIdentity()->dimensionSpacePoint,
                     $subject->getNodeAggregateIdentifier(),
                     $hasEqualParentNode
                         ? null
@@ -95,7 +95,7 @@ class MoveBefore extends AbstractStructuralChange
             )->blockUntilProjectionsAreUpToDate();
             $doFlushContentCache();
             $this->contentCacheFlusher->flushNodeAggregate(
-                $succeedingSiblingParent->getContentStreamIdentifier(),
+                $succeedingSiblingParent->getSubgraphIdentity()->contentStreamIdentifier,
                 $succeedingSiblingParent->getNodeAggregateIdentifier()
             );
 

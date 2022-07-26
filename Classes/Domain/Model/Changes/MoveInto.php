@@ -82,9 +82,7 @@ class MoveInto extends AbstractStructuralChange
         $subject = $this->subject;
         if ($this->canApply() && $parentNode && $subject) {
             $nodeAccessor = $this->nodeAccessorManager->accessorFor(
-                $subject->getContentStreamIdentifier(),
-                $subject->getDimensionSpacePoint(),
-                VisibilityConstraints::withoutRestrictions()
+                $subject->getSubgraphIdentity()
             );
             $otherParent = $nodeAccessor->findParentNode($subject);
             $hasEqualParentNode = $otherParent && $otherParent->getNodeAggregateIdentifier()
@@ -92,13 +90,13 @@ class MoveInto extends AbstractStructuralChange
 
             // we render content directly as response of this operation, so we need to flush the caches
             $doFlushContentCache = $this->contentCacheFlusher->scheduleFlushNodeAggregate(
-                $subject->getContentStreamIdentifier(),
+                $subject->getSubgraphIdentity()->contentStreamIdentifier,
                 $subject->getNodeAggregateIdentifier()
             );
             $this->nodeAggregateCommandHandler->handleMoveNodeAggregate(
                 new MoveNodeAggregate(
-                    $subject->getContentStreamIdentifier(),
-                    $subject->getDimensionSpacePoint(),
+                    $subject->getSubgraphIdentity()->contentStreamIdentifier,
+                    $subject->getSubgraphIdentity()->dimensionSpacePoint,
                     $subject->getNodeAggregateIdentifier(),
                     $hasEqualParentNode ? null : $parentNode->getNodeAggregateIdentifier(),
                     null,
@@ -110,7 +108,7 @@ class MoveInto extends AbstractStructuralChange
             $doFlushContentCache();
             if (!$hasEqualParentNode) {
                 $this->contentCacheFlusher->flushNodeAggregate(
-                    $parentNode->getContentStreamIdentifier(),
+                    $parentNode->getSubgraphIdentity()->contentStreamIdentifier,
                     $parentNode->getNodeAggregateIdentifier()
                 );
             }

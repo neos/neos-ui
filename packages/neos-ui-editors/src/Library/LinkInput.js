@@ -234,7 +234,7 @@ export default class LinkInput extends PureComponent {
             const valuePromise = (proxyIdentifier.indexOf('/') === -1) ? Promise.resolve(proxyIdentifier) : assetProxyImport(proxyIdentifier);
             valuePromise.then(value => {
                 const assetProxyIdentifier = this.getIdentity(value);
-                this.props.onLinkChange(`asset://${assetProxyIdentifier}` || ''));
+                this.props.onLinkChange(`asset://${assetProxyIdentifier}` || '');
                 this.setState({
                     isLoading: false,
                     isEditMode: false

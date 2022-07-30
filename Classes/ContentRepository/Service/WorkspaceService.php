@@ -150,7 +150,7 @@ class WorkspaceService
                 continue;
             }
             // Skip own personal workspace
-            if ($workspace === $this->userService->getPersonalWorkspace()) {
+            if ($workspace->getWorkspaceName()->name === $this->userService->getPersonalWorkspaceName()) {
                 continue;
             }
 
@@ -169,18 +169,6 @@ class WorkspaceService
         }
 
         return $workspacesArray;
-    }
-
-    /**
-     * Sets base workspace of current user workspace
-     *
-     * @param Workspace $workspace
-     * @return void
-     */
-    public function setBaseWorkspace(Workspace $workspace)
-    {
-        $userWorkspace = $this->userService->getPersonalWorkspace();
-        $userWorkspace->setBaseWorkspace($workspace);
     }
 
     private function getClosestDocumentNode(NodeInterface $node): ?NodeInterface

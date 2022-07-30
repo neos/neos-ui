@@ -11,7 +11,7 @@ namespace Neos\Neos\Ui\FlowQueryOperations;
  * source code.
  */
 
-use Neos\ContentRepository\SharedModel\NodeType\NodeTypeConstraintFactory;
+use Neos\ContentRepository\SharedModel\NodeType\NodeTypeConstraintParser;
 use Neos\ContentRepository\Projection\ContentGraph\SearchTerm;
 use Neos\Flow\Annotations as Flow;
 use Neos\Eel\FlowQuery\FlowQuery;
@@ -48,7 +48,7 @@ class SearchOperation extends AbstractOperation
 
     /**
      * @Flow\Inject
-     * @var NodeTypeConstraintFactory
+     * @var NodeTypeConstraintParser
      */
     protected $nodeTypeConstraintFactory;
 

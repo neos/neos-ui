@@ -14,7 +14,7 @@ namespace Neos\Neos\Ui\FlowQueryOperations;
 use Neos\ContentRepository\NodeAccess\NodeAccessorManager;
 use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
 use Neos\Flow\Annotations as Flow;
-use Neos\ContentRepository\SharedModel\NodeType\NodeTypeConstraintFactory;
+use Neos\ContentRepository\SharedModel\NodeType\NodeTypeConstraintParser;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Eel\FlowQuery\Operations\AbstractOperation;
 
@@ -47,7 +47,7 @@ class NeosUiFilteredChildrenOperation extends AbstractOperation
 
     /**
      * @Flow\Inject
-     * @var NodeTypeConstraintFactory
+     * @var NodeTypeConstraintParser
      */
     protected $nodeTypeConstraintFactory;
 

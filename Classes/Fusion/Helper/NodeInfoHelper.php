@@ -12,7 +12,7 @@ namespace Neos\Neos\Ui\Fusion\Helper;
  */
 
 use Neos\ContentRepository\NodeAccess\NodeAccessor\NodeAccessorInterface;
-use Neos\ContentRepository\SharedModel\NodeType\NodeTypeConstraintFactory;
+use Neos\ContentRepository\SharedModel\NodeType\NodeTypeConstraintParser;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\ContentRepository\NodeAccess\NodeAccessorManager;
@@ -62,7 +62,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
     /**
      * @Flow\Inject
-     * @var NodeTypeConstraintFactory
+     * @var NodeTypeConstraintParser
      */
     protected $nodeTypeConstraintFactory;
 

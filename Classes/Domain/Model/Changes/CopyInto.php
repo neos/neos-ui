@@ -22,12 +22,6 @@ use Neos\ContentRepository\SharedModel\User\UserIdentifier;
 
 class CopyInto extends AbstractStructuralChange
 {
-    /**
-     * @Flow\Inject
-     * @var NodeDuplicationCommandHandler
-     */
-    protected $nodeDuplicationCommandHandler;
-
     protected ?string $parentContextPath;
 
     protected ?NodeInterface $cachedParentNode;
@@ -88,8 +82,8 @@ class CopyInto extends AbstractStructuralChange
                 $targetNodeName
             );
 
-            $this->nodeDuplicationCommandHandler->handleCopyNodesRecursively($command)
-                ->blockUntilProjectionsAreUpToDate();
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->getSubgraphIdentity()->contentRepositoryIdentifier);
+            $contentRepository->handle($command)->block();
 
             /** @var NodeInterface $newlyCreatedNode */
             $newlyCreatedNode = $this->nodeAccessorFor($parentNode)->findChildNodeConnectedThroughEdgeName(
@@ -99,6 +93,7 @@ class CopyInto extends AbstractStructuralChange
             // we render content directly as response of this operation,
             // so we need to flush the caches at the copy target
             $this->contentCacheFlusher->flushNodeAggregate(
+                $newlyCreatedNode->getSubgraphIdentity()->contentRepositoryIdentifier,
                 $newlyCreatedNode->getSubgraphIdentity()->contentStreamIdentifier,
                 $newlyCreatedNode->getNodeAggregateIdentifier()
             );

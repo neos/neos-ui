@@ -23,12 +23,6 @@ use Neos\ContentRepository\Feature\NodeDuplication\NodeDuplicationCommandHandler
 class CopyAfter extends AbstractStructuralChange
 {
     /**
-     * @Flow\Inject
-     * @var NodeDuplicationCommandHandler
-     */
-    protected $nodeDuplicationCommandHandler;
-
-    /**
      * "Subject" is the to-be-copied node; the "sibling" node is the node after which the "Subject" should be copied.
      *
      * @return boolean
@@ -86,8 +80,8 @@ class CopyAfter extends AbstractStructuralChange
                 $targetNodeName
             );
 
-            $this->nodeDuplicationCommandHandler->handleCopyNodesRecursively($command)
-                ->blockUntilProjectionsAreUpToDate();
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->getSubgraphIdentity()->contentRepositoryIdentifier);
+            $contentRepository->handle($command)->block();
 
             /** @var NodeInterface $newlyCreatedNode */
             $newlyCreatedNode = $this->nodeAccessorFor($parentNodeOfPreviousSibling)
@@ -98,6 +92,7 @@ class CopyAfter extends AbstractStructuralChange
             // we render content directly as response of this operation,
             // so we need to flush the caches at the copy target
             $this->contentCacheFlusher->flushNodeAggregate(
+                $newlyCreatedNode->getSubgraphIdentity()->contentRepositoryIdentifier,
                 $newlyCreatedNode->getSubgraphIdentity()->contentStreamIdentifier,
                 $newlyCreatedNode->getNodeAggregateIdentifier()
             );

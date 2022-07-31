@@ -16,7 +16,6 @@ use Neos\ContentRepository\DimensionSpace\DimensionSpace\Exception\DimensionSpac
 use Neos\ContentRepository\Feature\Common\Exception\ContentStreamDoesNotExistYet;
 use Neos\ContentRepository\Feature\NodeRemoval\Command\RemoveNodeAggregate;
 use Neos\ContentRepository\Feature\Common\Exception\NodeAggregatesTypeIsAmbiguous;
-use Neos\ContentRepository\Feature\NodeAggregateCommandHandler;
 use Neos\ContentRepository\Feature\NodeDisabling\Command\NodeVariantSelectionStrategy;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Fusion\Cache\ContentCacheFlusher;
@@ -29,12 +28,6 @@ use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
  */
 class Remove extends AbstractChange
 {
-    /**
-     * @Flow\Inject
-     * @var NodeAggregateCommandHandler
-     */
-    protected $nodeAggregateCommandHandler;
-
     /**
      * @Flow\Inject
      * @var ContentCacheFlusher
@@ -74,6 +67,7 @@ class Remove extends AbstractChange
             // we have to remember what parts of the content cache to flush before we actually delete the node;
             // otherwise we cannot find the parent nodes anymore.
             $doFlushContentCache = $this->contentCacheFlusher->scheduleFlushNodeAggregate(
+                $subject->getSubgraphIdentity()->contentRepositoryIdentifier,
                 $subject->getSubgraphIdentity()->contentStreamIdentifier,
                 $subject->getNodeAggregateIdentifier()
             );
@@ -92,9 +86,8 @@ class Remove extends AbstractChange
                 $closestDocumentParentNode?->getNodeAggregateIdentifier()
             );
 
-            $this->nodeAggregateCommandHandler->handleRemoveNodeAggregate(
-                $command
-            )->blockUntilProjectionsAreUpToDate();
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->getSubgraphIdentity()->contentRepositoryIdentifier);
+            $contentRepository->handle($command)->block();
             $doFlushContentCache();
 
             $removeNode = new RemoveNode($subject, $parentNode);

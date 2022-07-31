@@ -23,12 +23,6 @@ use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 class MoveAfter extends AbstractStructuralChange
 {
     /**
-     * @Flow\Inject
-     * @var NodeAggregateCommandHandler
-     */
-    protected $nodeAggregateCommandHandler;
-
-    /**
      * "Subject" is the to-be-moved node; the "sibling" node is the node after which the "Subject" should be copied.
      */
     public function canApply(): bool
@@ -92,13 +86,17 @@ class MoveAfter extends AbstractStructuralChange
 
             // we render content directly as response of this operation, so we need to flush the caches
             $doFlushContentCache = $this->contentCacheFlusher->scheduleFlushNodeAggregate(
+                $subject->getSubgraphIdentity()->contentRepositoryIdentifier,
                 $subject->getSubgraphIdentity()->contentStreamIdentifier,
                 $subject->getNodeAggregateIdentifier()
             );
-            $this->nodeAggregateCommandHandler->handleMoveNodeAggregate($command)
-                ->blockUntilProjectionsAreUpToDate();
+
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->getSubgraphIdentity()->contentRepositoryIdentifier);
+            $contentRepository->handle($command)->block();
+
             $doFlushContentCache();
             $this->contentCacheFlusher->flushNodeAggregate(
+                $parentNodeOfPreviousSibling->getSubgraphIdentity()->contentRepositoryIdentifier,
                 $parentNodeOfPreviousSibling->getSubgraphIdentity()->contentStreamIdentifier,
                 $parentNodeOfPreviousSibling->getNodeAggregateIdentifier()
             );

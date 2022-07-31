@@ -142,9 +142,10 @@ abstract class AbstractCreate extends AbstractStructuralChange
         );
         $command = $this->applyNodeCreationHandlers($command, $nodeTypeName);
 
-        $contentRepository = $this->contentRepositoryRegistry->get($parentNode->getIdentity()->contentRepositoryIdentifier);
+        $contentRepository = $this->contentRepositoryRegistry->get($parentNode->getSubgraphIdentity()->contentRepositoryIdentifier);
         $contentRepository->handle($command)->block();
         $this->contentCacheFlusher->flushNodeAggregate(
+            $parentNode->getSubgraphIdentity()->contentRepositoryIdentifier,
             $parentNode->getSubgraphIdentity()->contentStreamIdentifier,
             $parentNode->getNodeAggregateIdentifier()
         );

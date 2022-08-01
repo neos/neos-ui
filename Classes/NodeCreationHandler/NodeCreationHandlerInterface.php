@@ -11,6 +11,7 @@ namespace Neos\Neos\Ui\NodeCreationHandler;
  * source code.
  */
 
+use Neos\ContentRepository\ContentRepository;
 use Neos\ContentRepository\Feature\NodeCreation\Command\CreateNodeAggregateWithNode;
 
 /**
@@ -26,5 +27,5 @@ interface NodeCreationHandlerInterface
      * @param array<string|int,mixed> $data incoming data from the creationDialog
      * @return CreateNodeAggregateWithNode the original command or a new creation command with altered properties
      */
-    public function handle(CreateNodeAggregateWithNode $command, array $data): CreateNodeAggregateWithNode;
+    public function handle(CreateNodeAggregateWithNode $command, array $data, ContentRepository $contentRepository): CreateNodeAggregateWithNode;
 }

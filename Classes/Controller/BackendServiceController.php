@@ -14,15 +14,15 @@ namespace Neos\Neos\Ui\Controller;
  */
 
 use Neos\ContentRepository\NodeAccess\NodeAccessorManager;
+use Neos\ContentRepository\Projection\ContentGraph\ContentSubgraphIdentity;
 use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
+use Neos\ContentRepository\SharedModel\NodeAddressFactory;
 use Neos\ContentRepository\SharedModel\VisibilityConstraints;
 use Neos\ContentRepository\Feature\WorkspaceDiscarding\Command\DiscardIndividualNodesFromWorkspace;
 use Neos\ContentRepository\Feature\WorkspacePublication\Command\PublishIndividualNodesFromWorkspace;
-use Neos\ContentRepository\Feature\WorkspaceCommandHandler;
-use Neos\ContentRepository\Projection\Workspace\WorkspaceFinder;
 use Neos\ContentRepository\SharedModel\User\UserIdentifier;
 use Neos\ContentRepository\SharedModel\NodeAddress;
-use Neos\ContentRepository\SharedModel\NodeAddressFactory;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Neos\Domain\Model\WorkspaceName as NeosWorkspaceName;
 use Neos\Flow\Mvc\ActionRequest;
 use Neos\Flow\Mvc\ActionResponse;
@@ -90,12 +90,6 @@ class BackendServiceController extends ActionController
 
     /**
      * @Flow\Inject
-     * @var WorkspaceFinder
-     */
-    protected $workspaceFinder;
-
-    /**
-     * @Flow\Inject
      * @var WorkspaceService
      */
     protected $workspaceService;
@@ -111,18 +105,6 @@ class BackendServiceController extends ActionController
      * @var NodePolicyService
      */
     protected $nodePolicyService;
-
-    /**
-     * @Flow\Inject
-     * @var NodeAddressFactory
-     */
-    protected $nodeAddressFactory;
-
-    /**
-     * @Flow\Inject
-     * @var WorkspaceCommandHandler
-     */
-    protected $workspaceCommandHandler;
 
     /**
      * @Flow\Inject
@@ -147,6 +129,12 @@ class BackendServiceController extends ActionController
      * @var Context
      */
     protected $securityContext;
+
+    /**
+     * @Flow\Inject
+     * @var ContentRepositoryRegistry
+     */
+    protected $contentRepositoryRegistry;
 
     /**
      * Set the controller context on the feedback collection after the controller
@@ -192,15 +180,18 @@ class BackendServiceController extends ActionController
      */
     public function publishAllAction(): void
     {
+        $contentRepositoryIdentifier = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryIdentifier;
+        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryIdentifier);
+
         $currentAccount = $this->securityContext->getAccount();
         $workspaceName = NeosWorkspaceName::fromAccountIdentifier($currentAccount->getAccountIdentifier())
             ->toContentRepositoryWorkspaceName();
-        $this->publishingService->publishWorkspace($workspaceName);
+        $this->publishingService->publishWorkspace($contentRepository, $workspaceName);
 
         $success = new Success();
         $success->setMessage(sprintf('Published.'));
 
-        $updateWorkspaceInfo = new UpdateWorkspaceInfo($workspaceName);
+        $updateWorkspaceInfo = new UpdateWorkspaceInfo($contentRepositoryIdentifier, $workspaceName);
         $this->feedbackCollection->add($success);
         $this->feedbackCollection->add($updateWorkspaceInfo);
         $this->view->assign('value', $this->feedbackCollection);
@@ -214,21 +205,26 @@ class BackendServiceController extends ActionController
     /** @phpstan-ignore-next-line */
     public function publishAction(array $nodeContextPaths, string $targetWorkspaceName): void
     {
+        $contentRepositoryIdentifier = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryIdentifier;
+        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryIdentifier);
+        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
+
         try {
             $currentAccount = $this->securityContext->getAccount();
             $workspaceName = NeosWorkspaceName::fromAccountIdentifier($currentAccount->getAccountIdentifier())
                 ->toContentRepositoryWorkspaceName();
             $nodeAddresses = [];
+
             foreach ($nodeContextPaths as $contextPath) {
-                $nodeAddresses[] = $this->nodeAddressFactory->createFromUriString($contextPath);
+                $nodeAddresses[] = $nodeAddressFactory->createFromUriString($contextPath);
             }
-            $this->workspaceCommandHandler->handlePublishIndividualNodesFromWorkspace(
+            $contentRepository->handle(
                 PublishIndividualNodesFromWorkspace::create(
                     $workspaceName,
                     $nodeAddresses,
                     $this->getCurrentUserIdentifier()
                 )
-            )->blockUntilProjectionsAreUpToDate();
+            )->block();
 
             $success = new Success();
             $success->setMessage(sprintf(
@@ -237,7 +233,7 @@ class BackendServiceController extends ActionController
                 $targetWorkspaceName
             ));
 
-            $updateWorkspaceInfo = new UpdateWorkspaceInfo($workspaceName);
+            $updateWorkspaceInfo = new UpdateWorkspaceInfo($contentRepositoryIdentifier, $workspaceName);
             $this->feedbackCollection->add($success);
             $this->feedbackCollection->add($updateWorkspaceInfo);
         } catch (\Exception $e) {
@@ -258,6 +254,10 @@ class BackendServiceController extends ActionController
     /** @phpstan-ignore-next-line */
     public function discardAction(array $nodeContextPaths): void
     {
+        $contentRepositoryIdentifier = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryIdentifier;
+        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryIdentifier);
+        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
+
         try {
             $currentAccount = $this->securityContext->getAccount();
             $workspaceName = NeosWorkspaceName::fromAccountIdentifier($currentAccount->getAccountIdentifier())
@@ -265,20 +265,20 @@ class BackendServiceController extends ActionController
 
             $nodeAddresses = [];
             foreach ($nodeContextPaths as $contextPath) {
-                $nodeAddresses[] = $this->nodeAddressFactory->createFromUriString($contextPath);
+                $nodeAddresses[] = $nodeAddressFactory->createFromUriString($contextPath);
             }
-            $this->workspaceCommandHandler->handleDiscardIndividualNodesFromWorkspace(
+            $contentRepository->handle(
                 DiscardIndividualNodesFromWorkspace::create(
                     $workspaceName,
                     $nodeAddresses,
                     $this->getCurrentUserIdentifier()
                 )
-            )->blockUntilProjectionsAreUpToDate();
+            )->block();
 
             $success = new Success();
             $success->setMessage(sprintf('Discarded %d node(s).', count($nodeContextPaths)));
 
-            $updateWorkspaceInfo = new UpdateWorkspaceInfo($workspaceName);
+            $updateWorkspaceInfo = new UpdateWorkspaceInfo($contentRepositoryIdentifier, $workspaceName);
             $this->feedbackCollection->add($success);
             $this->feedbackCollection->add($updateWorkspaceInfo);
         } catch (\Exception $e) {
@@ -469,13 +469,20 @@ class BackendServiceController extends ActionController
     /** @phpstan-ignore-next-line */
     public function getAdditionalNodeMetadataAction(array $nodes): void
     {
+        $contentRepositoryIdentifier = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryIdentifier;
+        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryIdentifier);
+        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
+
         $result = [];
         foreach ($nodes as $nodeAddressString) {
-            $nodeAddress = $this->nodeAddressFactory->createFromUriString($nodeAddressString);
+            $nodeAddress = $nodeAddressFactory->createFromUriString($nodeAddressString);
             $nodeAccessor = $this->nodeAccessorManager->accessorFor(
-                $nodeAddress->contentStreamIdentifier,
-                $nodeAddress->dimensionSpacePoint,
-                VisibilityConstraints::withoutRestrictions()
+                new ContentSubgraphIdentity(
+                    $contentRepositoryIdentifier,
+                    $nodeAddress->contentStreamIdentifier,
+                    $nodeAddress->dimensionSpacePoint,
+                    VisibilityConstraints::withoutRestrictions()
+                )
             );
             $node = $nodeAccessor->findByIdentifier($nodeAddress->nodeAggregateIdentifier);
 
@@ -514,13 +521,18 @@ class BackendServiceController extends ActionController
      */
     public function getPolicyInformationAction(array $nodes): void
     {
+        $contentRepositoryIdentifier = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryIdentifier;
+
         $result = [];
         foreach ($nodes as $nodeAddress) {
             $nodeAccessor = $this->nodeAccessorManager
                 ->accessorFor(
-                    $nodeAddress->contentStreamIdentifier,
-                    $nodeAddress->dimensionSpacePoint,
-                    VisibilityConstraints::withoutRestrictions()
+                    new ContentSubgraphIdentity(
+                        $contentRepositoryIdentifier,
+                        $nodeAddress->contentStreamIdentifier,
+                        $nodeAddress->dimensionSpacePoint,
+                        VisibilityConstraints::withoutRestrictions()
+                    )
                 );
             $node = $nodeAccessor->findByIdentifier($nodeAddress->nodeAggregateIdentifier);
             if (!is_null($node)) {

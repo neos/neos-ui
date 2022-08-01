@@ -11,6 +11,7 @@ namespace Neos\Neos\Ui\NodeCreationHandler;
  * source code.
  */
 
+use Neos\ContentRepository\ContentRepository;
 use Neos\Flow\Annotations as Flow;
 use Behat\Transliterator\Transliterator;
 use Neos\ContentRepository\DimensionSpace\Dimension\ContentDimensionIdentifier;
@@ -34,12 +35,6 @@ class DocumentTitleNodeCreationHandler implements NodeCreationHandlerInterface
 {
     /**
      * @Flow\Inject
-     * @var NodeTypeManager
-     */
-    protected $nodeTypeManager;
-
-    /**
-     * @Flow\Inject
      * @var TransliterationService
      */
     protected $transliterationService;
@@ -47,10 +42,10 @@ class DocumentTitleNodeCreationHandler implements NodeCreationHandlerInterface
     /**
      * @param array<string|int,mixed> $data
      */
-    public function handle(CreateNodeAggregateWithNode $command, array $data): CreateNodeAggregateWithNode
+    public function handle(CreateNodeAggregateWithNode $command, array $data, ContentRepository $contentRepository): CreateNodeAggregateWithNode
     {
         if (
-            !$this->nodeTypeManager->getNodeType($command->nodeTypeName->getValue())
+            !$contentRepository->getNodeTypeManager()->getNodeType($command->nodeTypeName->getValue())
                 ->isOfType('Neos.Neos:Document')
         ) {
             return $command;

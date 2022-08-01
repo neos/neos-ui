@@ -32,10 +32,11 @@ class CreateBefore extends AbstractCreate
             return false;
         }
         $parent = $this->findParentNode($this->subject);
-        $nodeType = $this->getNodeType();
+        $nodeTypeName = $this->getNodeTypeName();
+        $contentRepository = $this->contentRepositoryRegistry->get($parent->getSubgraphIdentity()->contentRepositoryIdentifier);
+        $nodeType = $contentRepository->getNodeTypeManager()->getNodeType($nodeTypeName->getValue());
 
-        return !is_null($parent) && !is_null($nodeType)
-            && $this->isNodeTypeAllowedAsChildNode($parent, $nodeType);
+        return $this->isNodeTypeAllowedAsChildNode($parent, $nodeType);
     }
 
     /**

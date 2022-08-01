@@ -14,11 +14,13 @@ declare(strict_types=1);
 
 namespace Neos\Neos\Ui\Service;
 
+use Neos\ContentRepository\ContentRepository;
 use Neos\ContentRepository\Feature\WorkspacePublication\Command\PublishWorkspace;
 use Neos\ContentRepository\Feature\WorkspaceRebase\Command\RebaseWorkspace;
 use Neos\ContentRepository\Feature\WorkspaceCommandHandler;
 use Neos\ContentRepository\SharedModel\User\UserIdentifier;
 use Neos\ContentRepository\SharedModel\Workspace\WorkspaceName;
+use Neos\ContentRepositoryRegistry\ValueObject\ContentRepositoryIdentifier;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\Domain\Model\User;
@@ -44,13 +46,7 @@ class PublishingService
      */
     protected $userService;
 
-    /**
-     * @Flow\Inject
-     * @var WorkspaceCommandHandler
-     */
-    protected $workspaceCommandHandler;
-
-    public function publishWorkspace(WorkspaceName $workspaceName): void
+    public function publishWorkspace(ContentRepository $contentRepository, WorkspaceName $workspaceName): void
     {
         /** @var User $backendUser */
         $backendUser = $this->userService->getBackendUser();
@@ -59,18 +55,18 @@ class PublishingService
         );
 
         // TODO: only rebase if necessary!
-        $this->workspaceCommandHandler->handleRebaseWorkspace(
+        $contentRepository->handle(
             RebaseWorkspace::create(
                 $workspaceName,
                 $userIdentifier
             )
-        )->blockUntilProjectionsAreUpToDate();
+        )->block();
 
-        $this->workspaceCommandHandler->handlePublishWorkspace(
+        $contentRepository->handle(
             new PublishWorkspace(
                 $workspaceName,
                 $userIdentifier
             )
-        );
+        )->block();
     }
 }

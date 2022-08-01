@@ -57,6 +57,7 @@ class CopyAfter extends AbstractStructuralChange
             ? $this->findParentNode($previousSibling)
             : null;
         $subject = $this->subject;
+
         if ($this->canApply() && $subject && !is_null($previousSibling) && !is_null($parentNodeOfPreviousSibling)) {
             $succeedingSibling = null;
             try {
@@ -66,8 +67,10 @@ class CopyAfter extends AbstractStructuralChange
             }
 
             $targetNodeName = NodeName::fromString(uniqid('node-'));
+
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->getSubgraphIdentity()->contentRepositoryIdentifier);
             $command = CopyNodesRecursively::create(
-                $this->contentGraph->getSubgraphByIdentifier(
+                $contentRepository->getContentGraph()->getSubgraphByIdentifier(
                     $subject->getSubgraphIdentity()->contentStreamIdentifier,
                     $subject->getSubgraphIdentity()->dimensionSpacePoint,
                     VisibilityConstraints::withoutRestrictions()
@@ -79,9 +82,8 @@ class CopyAfter extends AbstractStructuralChange
                 $succeedingSibling?->getNodeAggregateIdentifier(),
                 $targetNodeName
             );
-
-            $contentRepository = $this->contentRepositoryRegistry->get($subject->getSubgraphIdentity()->contentRepositoryIdentifier);
             $contentRepository->handle($command)->block();
+
 
             /** @var NodeInterface $newlyCreatedNode */
             $newlyCreatedNode = $this->nodeAccessorFor($parentNodeOfPreviousSibling)

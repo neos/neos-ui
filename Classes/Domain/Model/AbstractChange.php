@@ -36,12 +36,6 @@ abstract class AbstractChange implements ChangeInterface
 
     /**
      * @Flow\Inject
-     * @var WorkspaceFinder
-     */
-    protected $workspaceFinder;
-
-    /**
-     * @Flow\Inject
      * @var UserService
      */
     protected $userService;
@@ -82,11 +76,12 @@ abstract class AbstractChange implements ChangeInterface
         if (!is_null($this->subject)) {
             $documentNode = $this->findClosestDocumentNode($this->subject);
             if (!is_null($documentNode)) {
-                $workspace = $this->workspaceFinder->findOneByCurrentContentStreamIdentifier(
+                $contentRepository = $this->contentRepositoryRegistry->get($this->subject->getSubgraphIdentity()->contentRepositoryIdentifier);
+                $workspace = $contentRepository->getWorkspaceFinder()->findOneByCurrentContentStreamIdentifier(
                     $documentNode->getSubgraphIdentity()->contentStreamIdentifier
                 );
                 if (!is_null($workspace)) {
-                    $updateWorkspaceInfo = new UpdateWorkspaceInfo($workspace->getWorkspaceName());
+                    $updateWorkspaceInfo = new UpdateWorkspaceInfo($documentNode->getSubgraphIdentity()->contentRepositoryIdentifier, $workspace->getWorkspaceName());
                     $this->feedbackCollection->add($updateWorkspaceInfo);
                 }
             }

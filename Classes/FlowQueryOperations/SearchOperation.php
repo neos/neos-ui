@@ -13,6 +13,7 @@ namespace Neos\Neos\Ui\FlowQueryOperations;
 
 use Neos\ContentRepository\SharedModel\NodeType\NodeTypeConstraintParser;
 use Neos\ContentRepository\Projection\ContentGraph\SearchTerm;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Eel\FlowQuery\Operations\AbstractOperation;
@@ -48,9 +49,9 @@ class SearchOperation extends AbstractOperation
 
     /**
      * @Flow\Inject
-     * @var NodeTypeConstraintParser
+     * @var ContentRepositoryRegistry
      */
-    protected $nodeTypeConstraintFactory;
+    protected $contentRepositoryRegistry;
 
     /**
      * {@inheritdoc}
@@ -80,9 +81,12 @@ class SearchOperation extends AbstractOperation
         $nodeAccessor = $this->nodeAccessorManager->accessorFor(
             $contextNode->getSubgraphIdentity()
         );
+
+        $contentRepository = $this->contentRepositoryRegistry->get($contextNode->getSubgraphIdentity()->contentRepositoryIdentifier);
+        $nodeTypeConstraintParser = NodeTypeConstraintParser::create($contentRepository);
         $nodes = $nodeAccessor->findDescendants(
             [$contextNode],
-            $this->nodeTypeConstraintFactory->parseFilterString($arguments[1] ?? ''),
+            $nodeTypeConstraintParser->parseFilterString($arguments[1] ?? ''),
             SearchTerm::fulltext($arguments[0] ?? '')
         );
         $flowQuery->setContext(iterator_to_array($nodes));

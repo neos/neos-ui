@@ -13,6 +13,7 @@ namespace Neos\Neos\Ui\FlowQueryOperations;
 
 use Neos\ContentRepository\NodeAccess\NodeAccessorManager;
 use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\ContentRepository\SharedModel\NodeType\NodeTypeConstraintParser;
 use Neos\Eel\FlowQuery\FlowQuery;
@@ -47,9 +48,9 @@ class NeosUiFilteredChildrenOperation extends AbstractOperation
 
     /**
      * @Flow\Inject
-     * @var NodeTypeConstraintParser
+     * @var ContentRepositoryRegistry
      */
-    protected $nodeTypeConstraintFactory;
+    protected $contentRepositoryRegistry;
 
     /**
      * {@inheritdoc}
@@ -82,10 +83,12 @@ class NeosUiFilteredChildrenOperation extends AbstractOperation
                 $contextNode->getSubgraphIdentity()
             );
 
+            $contentRepository = $this->contentRepositoryRegistry->get($contextNode->getSubgraphIdentity()->contentRepositoryIdentifier);
+            $nodeTypeConstraintParser = NodeTypeConstraintParser::create($contentRepository);
             /** @var NodeInterface $childNode */
             foreach ($nodeAccessor->findChildNodes(
                 $contextNode,
-                $this->nodeTypeConstraintFactory->parseFilterString($filter)
+                $nodeTypeConstraintParser->parseFilterString($filter)
             ) as $childNode) {
                 if (!isset($outputNodeIdentifiers[(string)$childNode->getNodeAggregateIdentifier()])) {
                     $output[] = $childNode;

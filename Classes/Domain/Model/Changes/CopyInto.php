@@ -14,10 +14,8 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 use Neos\ContentRepository\SharedModel\Node\OriginDimensionSpacePoint;
 use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
-use Neos\Flow\Annotations as Flow;
 use Neos\ContentRepository\SharedModel\Node\NodeName;
 use Neos\ContentRepository\Feature\NodeDuplication\Command\CopyNodesRecursively;
-use Neos\ContentRepository\Feature\NodeDuplication\NodeDuplicationCommandHandler;
 use Neos\ContentRepository\SharedModel\User\UserIdentifier;
 
 class CopyInto extends AbstractStructuralChange
@@ -68,8 +66,10 @@ class CopyInto extends AbstractStructuralChange
         $parentNode = $this->getParentNode();
         if ($parentNode && $subject && $this->canApply()) {
             $targetNodeName = NodeName::fromString(uniqid('node-'));
+
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->getSubgraphIdentity()->contentRepositoryIdentifier);
             $command = CopyNodesRecursively::create(
-                $this->contentGraph->getSubgraphByIdentifier(
+                $contentRepository->getContentGraph()->getSubgraphByIdentifier(
                     $subject->getSubgraphIdentity()->contentStreamIdentifier,
                     $subject->getSubgraphIdentity()->dimensionSpacePoint,
                     $subject->getSubgraphIdentity()->visibilityConstraints
@@ -81,8 +81,6 @@ class CopyInto extends AbstractStructuralChange
                 null,
                 $targetNodeName
             );
-
-            $contentRepository = $this->contentRepositoryRegistry->get($subject->getSubgraphIdentity()->contentRepositoryIdentifier);
             $contentRepository->handle($command)->block();
 
             /** @var NodeInterface $newlyCreatedNode */

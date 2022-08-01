@@ -61,8 +61,10 @@ class CopyBefore extends AbstractStructuralChange
             && !is_null($parentNodeOfSucceedingSibling)
         ) {
             $targetNodeName = NodeName::fromString(uniqid('node-'));
+
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->getSubgraphIdentity()->contentRepositoryIdentifier);
             $command = CopyNodesRecursively::create(
-                $this->contentGraph->getSubgraphByIdentifier(
+                $contentRepository->getContentGraph()->getSubgraphByIdentifier(
                     $subject->getSubgraphIdentity()->contentStreamIdentifier,
                     $subject->getSubgraphIdentity()->dimensionSpacePoint,
                     $subject->getSubgraphIdentity()->visibilityConstraints
@@ -74,8 +76,6 @@ class CopyBefore extends AbstractStructuralChange
                 $succeedingSibling->getNodeAggregateIdentifier(),
                 $targetNodeName
             );
-
-            $contentRepository = $this->contentRepositoryRegistry->get($subject->getSubgraphIdentity()->contentRepositoryIdentifier);
             $contentRepository->handle($command)->block();
 
             /** @var NodeInterface $newlyCreatedNode */

@@ -12,46 +12,24 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
-use Neos\ContentRepository\SharedModel\NodeType\NodeType;
-use Neos\ContentRepository\SharedModel\NodeType\NodeTypeManager;
+use Neos\ContentRepository\ContentRepository;
 use Neos\ContentRepository\SharedModel\Node\NodeAggregateIdentifier;
 use Neos\ContentRepository\SharedModel\Node\NodeName;
 use Neos\ContentRepository\SharedModel\NodeType\NodeTypeName;
-use Neos\ContentRepository\Exception\NodeException;
 use Neos\ContentRepository\Feature\NodeCreation\Command\CreateNodeAggregateWithNode;
 use Neos\ContentRepository\Feature\Common\Exception\NodeNameIsAlreadyOccupied;
-use Neos\ContentRepository\Feature\NodeAggregateCommandHandler;
 use Neos\ContentRepository\SharedModel\Node\OriginDimensionSpacePoint;
 use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
-use Neos\ContentRepository\Infrastructure\Property\PropertyConverter;
-use Neos\Flow\Annotations as Flow;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Neos\Ui\Exception\InvalidNodeCreationHandlerException;
 use Neos\Neos\Ui\NodeCreationHandler\NodeCreationHandlerInterface;
 
 abstract class AbstractCreate extends AbstractStructuralChange
 {
     /**
-     * @Flow\Inject
-     * @var NodeAggregateCommandHandler
-     */
-    protected $nodeAggregateCommandHandler;
-
-    /**
-     * @Flow\Inject
-     * @var PropertyConverter
-     */
-    protected $propertyConverter;
-
-    /**
      * The type of the node that will be created
      */
-    protected ?NodeType $nodeType;
-
-    /**
-     * @var NodeTypeManager
-     * @Flow\Inject
-     */
-    protected $nodeTypeManager;
+    protected ?NodeTypeName $nodeTypeName;
 
     /**
      * Incoming data from creationDialog
@@ -66,20 +44,16 @@ abstract class AbstractCreate extends AbstractStructuralChange
     protected ?string $name = null;
 
     /**
-     * @param string $nodeType
+     * @param string $nodeTypeName
      */
-    public function setNodeType($nodeType): void
+    public function setNodeType(string $nodeTypeName): void
     {
-        if (is_string($nodeType)) {
-            $nodeType = $this->nodeTypeManager->getNodeType($nodeType);
-        }
-
-        $this->nodeType = $nodeType;
+        $this->nodeTypeName = NodeTypeName::fromString($nodeTypeName);
     }
 
-    public function getNodeType(): ?NodeType
+    public function getNodeTypeName(): ?NodeTypeName
     {
-        return $this->nodeType;
+        return $this->nodeTypeName;
     }
 
     /**
@@ -119,8 +93,8 @@ abstract class AbstractCreate extends AbstractStructuralChange
         NodeInterface $parentNode,
         NodeAggregateIdentifier $succeedingSiblingNodeAggregateIdentifier = null
     ): NodeInterface {
-        $nodeType = $this->getNodeType();
-        if (is_null($nodeType)) {
+        $nodeTypeName = $this->getNodeTypeName();
+        if (is_null($nodeTypeName)) {
             throw new \RuntimeException('Cannot run createNode without a set node type.', 1645577794);
         }
         // TODO: the $name=... line should be as expressed below
@@ -128,7 +102,6 @@ abstract class AbstractCreate extends AbstractStructuralChange
         $nodeName = NodeName::fromString($this->getName() ?: uniqid('node-', false));
 
         $nodeAggregateIdentifier = NodeAggregateIdentifier::create(); // generate a new NodeAggregateIdentifier
-        $nodeTypeName = NodeTypeName::fromString($nodeType->getName());
 
         $command = new CreateNodeAggregateWithNode(
             $parentNode->getSubgraphIdentity()->contentStreamIdentifier,
@@ -140,9 +113,10 @@ abstract class AbstractCreate extends AbstractStructuralChange
             $succeedingSiblingNodeAggregateIdentifier,
             $nodeName
         );
-        $command = $this->applyNodeCreationHandlers($command, $nodeTypeName);
-
         $contentRepository = $this->contentRepositoryRegistry->get($parentNode->getSubgraphIdentity()->contentRepositoryIdentifier);
+
+        $command = $this->applyNodeCreationHandlers($command, $nodeTypeName, $contentRepository);
+
         $contentRepository->handle($command)->block();
         $this->contentCacheFlusher->flushNodeAggregate(
             $parentNode->getSubgraphIdentity()->contentRepositoryIdentifier,
@@ -166,10 +140,11 @@ abstract class AbstractCreate extends AbstractStructuralChange
      */
     protected function applyNodeCreationHandlers(
         CreateNodeAggregateWithNode $command,
-        NodeTypeName $nodeTypeName
+        NodeTypeName $nodeTypeName,
+        ContentRepository $contentRepository
     ): CreateNodeAggregateWithNode {
         $data = $this->getData() ?: [];
-        $nodeType = $this->nodeTypeManager->getNodeType($nodeTypeName->getValue());
+        $nodeType = $contentRepository->getNodeTypeManager()->getNodeType($nodeTypeName->getValue());
         if (!isset($nodeType->getOptions()['nodeCreationHandlers'])
             || !is_array($nodeType->getOptions()['nodeCreationHandlers'])) {
             return $command;
@@ -183,7 +158,7 @@ abstract class AbstractCreate extends AbstractStructuralChange
                     get_class($nodeCreationHandler)
                 ), 1364759956);
             }
-            $command = $nodeCreationHandler->handle($command, $data);
+            $command = $nodeCreationHandler->handle($command, $data, $contentRepository);
         }
         return $command;
     }

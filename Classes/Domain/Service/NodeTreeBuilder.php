@@ -12,7 +12,8 @@ namespace Neos\Neos\Ui\Domain\Service;
  * source code.
  */
 
-use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
+use Neos\ContentRepositoryRegistry\ValueObject\ContentRepositoryIdentifier;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Neos\Service\LinkingService;
@@ -20,19 +21,9 @@ use Neos\Neos\Ui\ContentRepository\Service\NodeService;
 
 class NodeTreeBuilder
 {
-    /**
-     * The site node
-     *
-     * @var NodeInterface
-     */
-    protected $root;
 
-    /**
-     * The currently active node in the tree
-     *
-     * @var NodeInterface
-     */
-    protected $active;
+    private string $rootContextPath;
+    private string $activeContextPath;
 
     /**
      * An (optional) node type filter
@@ -80,7 +71,7 @@ class NodeTreeBuilder
      */
     public function setRoot($rootContextPath)
     {
-        $this->root = $this->nodeService->getNodeFromContextPath($rootContextPath);
+        $this->rootContextPath = $rootContextPath;
     }
 
     /**
@@ -88,7 +79,7 @@ class NodeTreeBuilder
      *
      * @return NodeInterface
      */
-    public function getRoot()
+    private function getRoot()
     {
         if (!$this->root) {
             $this->root = $this->active->getContext()->getCurrentSiteNode();
@@ -105,7 +96,7 @@ class NodeTreeBuilder
      */
     public function setActive($activeContextPath)
     {
-        $this->active = $this->nodeService->getNodeFromContextPath($activeContextPath);
+        $this->activeContextPath = $activeContextPath;
     }
 
     /**
@@ -159,7 +150,7 @@ class NodeTreeBuilder
      * @param null $depth
      * @return array
      */
-    public function build($includeRoot = false, $root = null, $depth = null)
+    public function build(ContentRepositoryIdentifier $contentRepositoryIdentifier, $includeRoot = false, $root = null, $depth = null)
     {
         $root = $root === null ? $this->getRoot() : $root;
         $depth = $depth === null ? $this->depth : $depth;

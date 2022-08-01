@@ -15,10 +15,12 @@ declare(strict_types=1);
 namespace Neos\Neos\Ui\Domain\Service;
 
 use Neos\ContentRepository\NodeAccess\NodeAccessorManager;
+use Neos\ContentRepository\Projection\NodeHiddenState\NodeHiddenStateProjection;
 use Neos\ContentRepository\SharedModel\VisibilityConstraints;
 use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
 use Neos\ContentRepository\Projection\NodeHiddenState\NodeHiddenStateFinder;
 use Neos\ContentRepository\SharedModel\Node\PropertyName;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Log\ThrowableStorageInterface;
 use Neos\Flow\Log\Utility\LogEnvironment;
@@ -85,9 +87,9 @@ class NodePropertyConverterService
 
     /**
      * @Flow\Inject
-     * @var NodeHiddenStateFinder
+     * @var ContentRepositoryRegistry
      */
-    protected $nodeHiddenStateFinder;
+    protected $contentRepositoryRegistry;
 
     /**
      * @param LoggerInterface $logger
@@ -115,15 +117,14 @@ class NodePropertyConverterService
     public function getProperty(NodeInterface $node, $propertyName)
     {
         if ($propertyName === '_hidden') {
-            return $this->nodeHiddenStateFinder->findHiddenState(
+            $contentRepository = $this->contentRepositoryRegistry->get($node->getSubgraphIdentity()->contentRepositoryIdentifier);
+            $nodeHiddenStateFinder = $contentRepository->projectionState(NodeHiddenStateProjection::class);
+            return $nodeHiddenStateFinder->findHiddenState(
                 $node->getSubgraphIdentity()->contentStreamIdentifier,
                 $node->getSubgraphIdentity()->dimensionSpacePoint,
                 $node->getNodeAggregateIdentifier()
             )->isHidden();
         }
-        // WORKAROUND: $nodeType->getPropertyType() is missing the "initialize" call,
-        // so we need to trigger another method beforehand.
-        $node->getNodeType()->getFullConfiguration();
         $propertyType = $node->getNodeType()->getPropertyType($propertyName);
 
         // We handle "reference" and "references" differently than other properties;

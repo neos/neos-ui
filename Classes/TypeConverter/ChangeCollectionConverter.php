@@ -11,6 +11,7 @@ namespace Neos\Neos\Ui\TypeConverter;
  * source code.
  */
 
+use Neos\ContentRepositoryRegistry\ValueObject\ContentRepositoryIdentifier;
 use Neos\Error\Messages\Error;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
@@ -30,7 +31,7 @@ use Neos\Utility\ObjectAccess;
  *
  * @Flow\Scope("singleton")
  */
-class ChangeCollectionConverter extends AbstractTypeConverter
+class ChangeCollectionConverter
 {
     /**
      * @var array<int,string>
@@ -102,23 +103,17 @@ class ChangeCollectionConverter extends AbstractTypeConverter
      *               or could not be converted for other reasons
      * @throws \Exception
      */
-    public function convertFrom(
-        $source,
-        $targetType,
-        array $subProperties = [],
-        PropertyMappingConfigurationInterface $configuration = null
-    ): ChangeCollection|Error {
+    public function convert(
+        array $source,
+        ContentRepositoryIdentifier $contentRepositoryIdentifier
+    ): ChangeCollection {
         if (!is_array($source)) {
-            return new Error(sprintf('Cannot convert %s to ChangeCollection.', gettype($source)));
+            throw new \RuntimeException(sprintf('Cannot convert %s to ChangeCollection.', gettype($source)));
         }
 
         $changeCollection = new ChangeCollection();
         foreach ($source as $changeData) {
-            $convertedData = $this->convertChangeData($changeData);
-
-            if ($convertedData instanceof Error) {
-                return $convertedData;
-            }
+            $convertedData = $this->convertChangeData($changeData, $contentRepositoryIdentifier);
 
             $changeCollection->add($convertedData);
         }
@@ -131,34 +126,31 @@ class ChangeCollectionConverter extends AbstractTypeConverter
      *
      * @param array<string,mixed> $changeData
      */
-    protected function convertChangeData(array $changeData): ChangeInterface|Error
+    protected function convertChangeData(array $changeData, ContentRepositoryIdentifier $contentRepositoryIdentifier): ChangeInterface
     {
         $type = $changeData['type'];
 
         if (!isset($this->typeMap[$type])) {
-            return new Error(sprintf('Could not convert change type %s, it is unknown to the system', $type));
+            throw new \RuntimeException(sprintf('Could not convert change type %s, it is unknown to the system', $type));
         }
 
         $changeClass = $this->typeMap[$type];
         /** @var ChangeInterface $changeClassInstance */
         $changeClassInstance = $this->objectManager->get($changeClass);
 
+
+
         $subjectContextPath = $changeData['subject'];
-        $subject = $this->nodeService->getNodeFromContextPath($subjectContextPath);
+        $subject = $this->nodeService->getNodeFromContextPath($subjectContextPath, $contentRepositoryIdentifier);
         if (is_null($subject)) {
-            return new Error('Could not find node for subject "' . $subjectContextPath . '"', 1645657340);
+            throw new \RuntimeException('Could not find node for subject "' . $subjectContextPath . '"', 1645657340);
         }
 
         $changeClassInstance->setSubject($subject);
 
         if (isset($changeData['reference']) && method_exists($changeClassInstance, 'setReference')) {
             $referenceContextPath = $changeData['reference'];
-            $reference = $this->nodeService->getNodeFromContextPath($referenceContextPath);
-
-            if ($reference instanceof Error) {
-                return $reference;
-            }
-
+            $reference = $this->nodeService->getNodeFromContextPath($referenceContextPath, $contentRepositoryIdentifier);
             $changeClassInstance->setReference($reference);
         }
 

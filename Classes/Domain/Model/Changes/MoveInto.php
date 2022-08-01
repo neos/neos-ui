@@ -39,7 +39,8 @@ class MoveInto extends AbstractStructuralChange
         }
 
         return $this->nodeService->getNodeFromContextPath(
-            $this->parentContextPath
+            $this->parentContextPath,
+            $this->getSubject()->getSubgraphIdentity()->contentRepositoryIdentifier
         );
     }
 

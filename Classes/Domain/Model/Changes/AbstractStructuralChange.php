@@ -126,7 +126,8 @@ abstract class AbstractStructuralChange extends AbstractChange
 
         if ($this->cachedSiblingNode === null) {
             $this->cachedSiblingNode = $this->nodeService->getNodeFromContextPath(
-                $this->siblingDomAddress->getContextPath()
+                $this->siblingDomAddress->getContextPath(),
+                $this->getSubject()->getSubgraphIdentity()->contentRepositoryIdentifier
             );
         }
 

@@ -30,6 +30,7 @@ use Neos\Flow\Mvc\View\JsonView;
 use Neos\Flow\Property\PropertyMapper;
 use Neos\Flow\Security\Context;
 use Neos\Neos\Domain\Model\User;
+use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;
 use Neos\Neos\Ui\ContentRepository\Service\NodeService;
 use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService;
 use Neos\Neos\Ui\Domain\Model\ChangeCollection;
@@ -163,8 +164,10 @@ class BackendServiceController extends ActionController
     /** @phpstan-ignore-next-line */
     public function changeAction(array $changes): void
     {
+        $contentRepositoryIdentifier = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryIdentifier;
+
         /** @param array<int,array<string,mixed>> $changes */
-        $changes = $this->changeCollectionConverter->convertFrom($changes, ChangeCollection::class);
+        $changes = $this->changeCollectionConverter->convert($changes, $contentRepositoryIdentifier);
         /** @var ChangeCollection $changes */
         try {
             $count = $changes->count();
@@ -445,8 +448,10 @@ class BackendServiceController extends ActionController
      */
     public function loadTreeAction(NodeTreeBuilder $nodeTreeArguments, bool $includeRoot = false): void
     {
+        $contentRepositoryIdentifier = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryIdentifier;
+
         $nodeTreeArguments->setControllerContext($this->controllerContext);
-        $this->view->assign('value', $nodeTreeArguments->build($includeRoot));
+        $this->view->assign('value', $nodeTreeArguments->build($contentRepositoryIdentifier, $includeRoot));
     }
 
     /**
@@ -536,15 +541,15 @@ class BackendServiceController extends ActionController
     /** @phpstan-ignore-next-line */
     public function flowQueryAction(array $chain): string
     {
+        $contentRepositoryIdentifier = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryIdentifier;
+
         $createContext = array_shift($chain);
         $finisher = array_pop($chain);
 
         /** @var array<int,mixed> $payload */
         $payload = $createContext['payload'] ?? [];
         $flowQuery = new FlowQuery(array_map(
-            function ($envelope) {
-                return $this->nodeService->getNodeFromContextPath($envelope['$node']);
-            },
+            fn ($envelope) => $this->nodeService->getNodeFromContextPath($envelope['$node'], $contentRepositoryIdentifier),
             $payload
         ));
 

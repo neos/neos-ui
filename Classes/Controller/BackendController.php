@@ -12,15 +12,13 @@ namespace Neos\Neos\Ui\Controller;
  * source code.
  */
 
-use Neos\ContentRepository\DimensionSpace\Dimension\ContentDimensionSourceInterface;
 use Neos\ContentRepository\DimensionSpace\DimensionSpace\DimensionSpacePoint;
-use Neos\ContentRepository\SharedModel\Node\NodeName;
+use Neos\ContentRepository\Projection\ContentGraph\ContentSubgraphIdentity;
 use Neos\ContentRepository\SharedModel\NodeType\NodeTypeName;
 use Neos\ContentRepository\NodeAccess\NodeAccessorManager;
 use Neos\ContentRepository\SharedModel\NodeAddressFactory;
 use Neos\ContentRepository\SharedModel\VisibilityConstraints;
-use Neos\ContentRepository\Projection\ContentGraph\ContentGraphInterface;
-use Neos\ContentRepository\Projection\Workspace\WorkspaceFinder;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Neos\Domain\Model\WorkspaceName as NeosWorkspaceName;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ActionController;
@@ -30,6 +28,7 @@ use Neos\Flow\Session\SessionInterface;
 use Neos\Neos\Controller\Backend\MenuHelper;
 use Neos\Neos\Domain\Repository\DomainRepository;
 use Neos\Neos\Domain\Repository\SiteRepository;
+use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;
 use Neos\Neos\Service\BackendRedirectionService;
 use Neos\Neos\Service\UserService;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
@@ -101,27 +100,15 @@ class BackendController extends ActionController
 
     /**
      * @Flow\Inject
-     * @var NodeAddressFactory
+     * @var ContentRepositoryRegistry
      */
-    protected $nodeAddressFactory;
+    protected $contentRepositoryRegistry;
 
     /**
      * @Flow\Inject
      * @var Context
      */
     protected $securityContext;
-
-    /**
-     * @Flow\Inject
-     * @var ContentGraphInterface
-     */
-    protected $contentGraph;
-
-    /**
-     * @Flow\Inject
-     * @var WorkspaceFinder
-     */
-    protected $workspaceFinder;
 
     /**
      * @Flow\Inject
@@ -134,12 +121,6 @@ class BackendController extends ActionController
      * @var NodeClipboard
      */
     protected $clipboard;
-
-    /**
-     * @Flow\Inject
-     * @var ContentDimensionSourceInterface
-     */
-    protected $contentDimensionSource;
 
     /**
      * @Flow\InjectConfiguration(package="Neos.Neos.Ui", path="splashScreen.partial")
@@ -161,7 +142,10 @@ class BackendController extends ActionController
      */
     public function indexAction(string $node = null)
     {
-        $nodeAddress = $node !== null ? $this->nodeAddressFactory->createFromUriString($node) : null;
+        $contentRepositoryIdentifier = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryIdentifier;
+        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryIdentifier);
+
+        $nodeAddress = $node !== null ? NodeAddressFactory::create($contentRepository)->createFromUriString($node) : null;
         unset($node);
         $this->session->start();
         $this->session->putData('__neosLegacyUiEnabled__', false);
@@ -172,7 +156,7 @@ class BackendController extends ActionController
         }
 
         $currentAccount = $this->securityContext->getAccount();
-        $workspace = $this->workspaceFinder->findOneByName(
+        $workspace = $contentRepository->getWorkspaceFinder()->findOneByName(
             NeosWorkspaceName::fromAccountIdentifier($currentAccount->getAccountIdentifier())
                 ->toContentRepositoryWorkspaceName()
         );
@@ -180,23 +164,25 @@ class BackendController extends ActionController
             $this->redirectToUri($this->uriBuilder->uriFor('index', [], 'Login', 'Neos.Neos'));
         }
 
-        // TODO: CR
         $nodeAccessor = $this->nodeAccessorManager->accessorFor(
-            $workspace->getCurrentContentStreamIdentifier(),
-            $this->findDefaultDimensionSpacePoint(),
-            VisibilityConstraints::withoutRestrictions()
+            new ContentSubgraphIdentity(
+                $contentRepositoryIdentifier,
+                $workspace->getCurrentContentStreamIdentifier(),
+                $nodeAddress ? $nodeAddress->dimensionSpacePoint : $this->findDefaultDimensionSpacePoint(),
+                VisibilityConstraints::withoutRestrictions()
+            )
         );
 
         // we assume that the ROOT node is always stored in the CR as "physical" node; so it is safe
         // to call the contentGraph here directly.
-        $rootNodeAggregate = $this->contentGraph->findRootNodeAggregateByType(
+        $rootNodeAggregate = $contentRepository->getContentGraph()->findRootNodeAggregateByType(
             $workspace->getCurrentContentStreamIdentifier(),
             NodeTypeName::fromString('Neos.Neos:Sites')
         );
         $rootNode = $rootNodeAggregate->getNodeByCoveredDimensionSpacePoint($this->findDefaultDimensionSpacePoint());
         $siteNode = $nodeAccessor->findChildNodeConnectedThroughEdgeName(
             $rootNode,
-            NodeName::fromString($this->siteRepository->findDefault()->getNodeName())
+            $this->siteRepository->findDefault()->getNodeName()->toNodeName()
         );
 
         if (!$nodeAddress) {
@@ -216,6 +202,7 @@ class BackendController extends ActionController
         $this->view->assign('splashScreenPartial', $this->splashScreenPartial);
         $this->view->assign('sitesForMenu', $this->menuHelper->buildSiteList($this->getControllerContext()));
         $this->view->assign('modulesForMenu', $this->menuHelper->buildModuleList($this->getControllerContext()));
+        $this->view->assign('contentRepositoryIdentifier', $contentRepositoryIdentifier);
 
         $this->view->assignMultiple([
             'subgraph' => $nodeAccessor
@@ -229,7 +216,10 @@ class BackendController extends ActionController
      */
     public function redirectToAction(string $node): void
     {
-        $nodeAddress = $this->nodeAddressFactory->createFromUriString($node);
+        $contentRepositoryIdentifier = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryIdentifier;
+        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryIdentifier);
+
+        $nodeAddress = NodeAddressFactory::create($contentRepository)->createFromUriString($node);
         $this->response->setHttpHeader('Cache-Control', [
             'no-cache',
             'no-store'
@@ -237,7 +227,7 @@ class BackendController extends ActionController
         $this->redirect('show', 'Frontend\Node', 'Neos.Neos', ['node' => $nodeAddress]);
     }
 
-    protected function findDefaultDimensionSpacePoint(): DimensionSpacePoint
+    protected function findDefaultDimensionSpacePoint(): DimensionSpacePoint // TODO FIX ME!!!
     {
         $coordinates = [];
         foreach ($this->contentDimensionSource->getContentDimensionsOrderedByPriority() as $dimension) {

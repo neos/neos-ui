@@ -32,17 +32,6 @@ use Neos\Neos\Ui\Service\PublishingService;
  */
 class WorkspaceService
 {
-    /**
-     * @Flow\Inject
-     * @var WorkspaceFinder
-     */
-    protected $workspaceFinder;
-
-    /**
-     * @Flow\Inject
-     * @var ChangeFinder
-     */
-    protected $changeFinder;
 
     /**
      * @Flow\Inject

@@ -83,7 +83,7 @@ class SearchOperation extends AbstractOperation
         );
 
         $contentRepository = $this->contentRepositoryRegistry->get($contextNode->getSubgraphIdentity()->contentRepositoryIdentifier);
-        $nodeTypeConstraintParser = NodeTypeConstraintParser::create($contentRepository);
+        $nodeTypeConstraintParser = NodeTypeConstraintParser::create($contentRepository->getNodeTypeManager());
         $nodes = $nodeAccessor->findDescendants(
             [$contextNode],
             $nodeTypeConstraintParser->parseFilterString($arguments[1] ?? ''),

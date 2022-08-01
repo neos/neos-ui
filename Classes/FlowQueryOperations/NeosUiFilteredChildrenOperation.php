@@ -84,7 +84,7 @@ class NeosUiFilteredChildrenOperation extends AbstractOperation
             );
 
             $contentRepository = $this->contentRepositoryRegistry->get($contextNode->getSubgraphIdentity()->contentRepositoryIdentifier);
-            $nodeTypeConstraintParser = NodeTypeConstraintParser::create($contentRepository);
+            $nodeTypeConstraintParser = NodeTypeConstraintParser::create($contentRepository->getNodeTypeManager());
             /** @var NodeInterface $childNode */
             foreach ($nodeAccessor->findChildNodes(
                 $contextNode,

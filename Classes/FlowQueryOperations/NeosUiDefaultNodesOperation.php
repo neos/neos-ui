@@ -80,7 +80,7 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
         list($baseNodeType, $loadingDepth, $toggledNodes, $clipboardNodesContextPaths) = $arguments;
 
         $contentRepository = $this->contentRepositoryRegistry->get($documentNode->getSubgraphIdentity()->contentRepositoryIdentifier);
-        $nodeTypeConstraintParser = NodeTypeConstraintParser::create($contentRepository);
+        $nodeTypeConstraintParser = NodeTypeConstraintParser::create($contentRepository->getNodeTypeManager());
 
         $baseNodeTypeConstraints = $nodeTypeConstraintParser->parseFilterString($baseNodeType);
 

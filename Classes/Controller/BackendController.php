@@ -142,8 +142,8 @@ class BackendController extends ActionController
      */
     public function indexAction(string $node = null)
     {
-        $contentRepositoryIdentifier = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryIdentifier;
-        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryIdentifier);
+        $siteDetectionResult = SiteDetectionResult::fromRequest($this->request->getHttpRequest());
+        $contentRepository = $this->contentRepositoryRegistry->get($siteDetectionResult->contentRepositoryIdentifier);
 
         $nodeAddress = $node !== null ? NodeAddressFactory::create($contentRepository)->createFromUriString($node) : null;
         unset($node);
@@ -166,7 +166,7 @@ class BackendController extends ActionController
 
         $nodeAccessor = $this->nodeAccessorManager->accessorFor(
             new ContentSubgraphIdentity(
-                $contentRepositoryIdentifier,
+                $siteDetectionResult->contentRepositoryIdentifier,
                 $workspace->getCurrentContentStreamIdentifier(),
                 $nodeAddress ? $nodeAddress->dimensionSpacePoint : $this->findDefaultDimensionSpacePoint(),
                 VisibilityConstraints::withoutRestrictions()
@@ -202,7 +202,7 @@ class BackendController extends ActionController
         $this->view->assign('splashScreenPartial', $this->splashScreenPartial);
         $this->view->assign('sitesForMenu', $this->menuHelper->buildSiteList($this->getControllerContext()));
         $this->view->assign('modulesForMenu', $this->menuHelper->buildModuleList($this->getControllerContext()));
-        $this->view->assign('contentRepositoryIdentifier', $contentRepositoryIdentifier);
+        $this->view->assign('contentRepositoryIdentifier', $siteDetectionResult->contentRepositoryIdentifier);
 
         $this->view->assignMultiple([
             'subgraph' => $nodeAccessor
@@ -216,8 +216,9 @@ class BackendController extends ActionController
      */
     public function redirectToAction(string $node): void
     {
-        $contentRepositoryIdentifier = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryIdentifier;
-        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryIdentifier);
+        $siteDetectionResult = SiteDetectionResult::fromRequest($this->request->getHttpRequest());
+
+        $contentRepository = $this->contentRepositoryRegistry->get($siteDetectionResult->contentRepositoryIdentifier);
 
         $nodeAddress = NodeAddressFactory::create($contentRepository)->createFromUriString($node);
         $this->response->setHttpHeader('Cache-Control', [
@@ -229,6 +230,7 @@ class BackendController extends ActionController
 
     protected function findDefaultDimensionSpacePoint(): DimensionSpacePoint // TODO FIX ME!!!
     {
+        // TODO: FusionExceptionViewInternals impl.
         $coordinates = [];
         foreach ($this->contentDimensionSource->getContentDimensionsOrderedByPriority() as $dimension) {
             $coordinates[(string)$dimension->identifier] = (string)$dimension->defaultValue;

@@ -12,16 +12,15 @@ namespace Neos\Neos\Ui\Fusion\Helper;
  */
 
 use Neos\ContentRepository\NodeAccess\NodeAccessor\NodeAccessorInterface;
+use Neos\ContentRepository\Projection\NodeHiddenState\NodeHiddenStateProjection;
 use Neos\ContentRepository\SharedModel\NodeType\NodeTypeConstraintParser;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\ContentRepository\NodeAccess\NodeAccessorManager;
 use Neos\ContentRepository\SharedModel\NodeAddress;
 use Neos\ContentRepository\SharedModel\NodeAddressFactory;
-use Neos\ContentRepository\SharedModel\VisibilityConstraints;
 use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
 use Neos\ContentRepository\Projection\ContentGraph\Nodes;
-use Neos\ContentRepository\Projection\NodeHiddenState\NodeHiddenStateFinder;
 use Neos\Neos\FrontendRouting\NodeUriBuilder;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
@@ -62,12 +61,6 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
     /**
      * @Flow\Inject
-     * @var NodeTypeConstraintParser
-     */
-    protected $nodeTypeConstraintFactory;
-
-    /**
-     * @Flow\Inject
      * @var EntityToIdentityConverter
      */
     protected $entityToIdentityConverter;
@@ -83,12 +76,6 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
      * @var NodePropertyConverterService
      */
     protected $nodePropertyConverterService;
-
-    /**
-     * @Flow\Inject
-     * @var NodeHiddenStateFinder
-     */
-    protected $nodeHiddenStateFinder;
 
     /**
      * @Flow\InjectConfiguration(path="userInterface.navigateComponent.nodeTree.presets.default.baseNodeType", package="Neos.Neos")
@@ -146,6 +133,9 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         ControllerContext $controllerContext = null,
         string $nodeTypeFilterOverride = null
     ): ?array {
+        $contentRepository = $this->contentRepositoryRegistry->get($node->getSubgraphIdentity()->contentRepositoryIdentifier);
+        $nodeHiddenStateFinder = $contentRepository->projectionState(NodeHiddenStateProjection::class);
+
         /** @todo implement custom node policy service
         if (!$this->nodePolicyService->isNodeTreePrivilegeGranted($node)) {
         return null;
@@ -156,7 +146,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         $nodeInfo['properties'] = [
             // if we are only rendering the tree state,
             // ensure _isHidden is sent to hidden nodes are correctly shown in the tree.
-            '_hidden' => $this->nodeHiddenStateFinder->findHiddenState(
+            '_hidden' => $nodeHiddenStateFinder->findHiddenState(
                 $node->getSubgraphIdentity()->contentStreamIdentifier,
                 $node->getSubgraphIdentity()->dimensionSpacePoint,
                 $node->getNodeAggregateIdentifier()
@@ -282,18 +272,20 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
      */
     protected function renderChildrenInformation(NodeInterface $node, string $nodeTypeFilterString): array
     {
+        $contentRepository = $this->contentRepositoryRegistry->get($node->getSubgraphIdentity()->contentRepositoryIdentifier);
+        $nodeTypeConstraintParser = NodeTypeConstraintParser::create($contentRepository->getNodeTypeManager());
         $nodeAccessor = $this->nodeAccessorManager->accessorFor(
             $node->getSubgraphIdentity()
         );
 
         $documentChildNodes = $nodeAccessor->findChildNodes(
             $node,
-            $this->nodeTypeConstraintFactory->parseFilterString($nodeTypeFilterString)
+            $nodeTypeConstraintParser->parseFilterString($nodeTypeFilterString)
         );
         // child nodes for content tree, must not include those nodes filtered out by `baseNodeType`
         $contentChildNodes = $nodeAccessor->findChildNodes(
             $node,
-            $this->nodeTypeConstraintFactory->parseFilterString(
+            $nodeTypeConstraintParser->parseFilterString(
                 $this->buildContentChildNodeFilterString()
             )
         );
@@ -523,11 +515,14 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
     private function getChildNodes(NodeInterface $node, string $nodeTypeFilterString): Nodes
     {
+        $contentRepository = $this->contentRepositoryRegistry->get($node->getSubgraphIdentity()->contentRepositoryIdentifier);
+        $nodeTypeConstraintParser = NodeTypeConstraintParser::create($contentRepository->getNodeTypeManager());
+
         return $this->nodeAccessorManager->accessorFor(
             $node->getSubgraphIdentity()
         )->findChildNodes(
             $node,
-            $this->nodeTypeConstraintFactory->parseFilterString($nodeTypeFilterString)
+            $nodeTypeConstraintParser->parseFilterString($nodeTypeFilterString)
         );
     }
 

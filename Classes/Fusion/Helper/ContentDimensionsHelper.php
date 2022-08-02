@@ -14,6 +14,8 @@ namespace Neos\Neos\Ui\Fusion\Helper;
 use Neos\ContentRepository\DimensionSpace\Dimension\ContentDimensionIdentifier;
 use Neos\ContentRepository\DimensionSpace\Dimension\ContentDimensionSourceInterface;
 use Neos\ContentRepository\DimensionSpace\DimensionSpace\DimensionSpacePoint;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
+use Neos\ContentRepositoryRegistry\ValueObject\ContentRepositoryIdentifier;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
 
@@ -21,16 +23,19 @@ class ContentDimensionsHelper implements ProtectedContextAwareInterface
 {
     /**
      * @Flow\Inject
-     * @var ContentDimensionSourceInterface
+     * @var ContentRepositoryRegistry
      */
-    protected $contentDimensionSource;
+    protected $contentRepositoryRegistry;
 
     /**
      * @return array<string,array<string,mixed>> Dimensions indexed by name with presets indexed by name
      */
-    public function contentDimensionsByName(): array
+    public function contentDimensionsByName(ContentRepositoryIdentifier $contentRepositoryIdentifier): array
     {
-        $dimensions = $this->contentDimensionSource->getContentDimensionsOrderedByPriority();
+        $contentDimensionHelperInternals = $this->contentRepositoryRegistry->getService($contentRepositoryIdentifier, new ContentDimensionsHelperInternalsFactory());
+        $contentDimensionSource = $contentDimensionHelperInternals->contentDimensionSource;
+
+        $dimensions = $contentDimensionSource->getContentDimensionsOrderedByPriority();
 
         $result = [];
         foreach ($dimensions as $dimension) {
@@ -60,12 +65,15 @@ class ContentDimensionsHelper implements ProtectedContextAwareInterface
      * @return array<string,array<int,string>> Allowed preset names for the given dimension combination
      *                                         indexed by dimension name
      */
-    public function allowedPresetsByName(DimensionSpacePoint $dimensions): array
+    public function allowedPresetsByName(DimensionSpacePoint $dimensions, ContentRepositoryIdentifier $contentRepositoryIdentifier): array
     {
+        $contentDimensionHelperInternals = $this->contentRepositoryRegistry->getService($contentRepositoryIdentifier, new ContentDimensionsHelperInternalsFactory());
+        $contentDimensionSource = $contentDimensionHelperInternals->contentDimensionSource;
+
         // TODO: re-implement this here; currently EVERYTHING is allowed!!
         $allowedPresets = [];
         foreach ($dimensions->coordinates as $dimensionName => $dimensionValue) {
-            $dimension = $this->contentDimensionSource->getDimension(new ContentDimensionIdentifier($dimensionName));
+            $dimension = $contentDimensionSource->getDimension(new ContentDimensionIdentifier($dimensionName));
             if (!is_null($dimension)) {
                 $value = $dimension->getValue($dimensionValue);
                 if ($value !== null) {

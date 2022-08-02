@@ -118,7 +118,7 @@ Neos:
           previewUrl: '${Neos.Ui.NodeInfo.createRedirectToNode(documentNode, controllerContext)}'
           contentDimensions:
             active: '${documentNode.dimensionSpacePoint.toLegacyDimensionArray()}'
-            allowedPresets: '${Neos.Ui.Api.emptyArrayToObject(Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.dimensionSpacePoint))}'
+            allowedPresets: '${Neos.Ui.Api.emptyArrayToObject(Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.dimensionSpacePoint, documentNode.subgraphIdentity.contentRepositoryIdentifier))}'
           documentNodeSerialization: '${Neos.Ui.NodeInfo.renderNodeWithPropertiesAndChildrenInformation(documentNode, controllerContext)}'
       initialState:
         changes:
@@ -133,9 +133,9 @@ Neos:
             clipboard: '${clipboardNodes || []}'
             clipboardMode: '${clipboardMode || null}'
           contentDimensions:
-            byName: '${Neos.Ui.ContentDimensions.contentDimensionsByName()}'
+            byName: '${Neos.Ui.ContentDimensions.contentDimensionsByName(contentRepositoryIdentifier)}'
             active: '${documentNode.dimensionSpacePoint.toLegacyDimensionArray()}'
-            allowedPresets: '${Neos.Ui.Api.emptyArrayToObject(Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.dimensionSpacePoint))}'
+            allowedPresets: '${Neos.Ui.Api.emptyArrayToObject(Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.dimensionSpacePoint, contentRepositoryIdentifier))}'
           workspaces:
             personalWorkspace: '${Neos.Ui.Workspace.getPersonalWorkspace(contentRepositoryIdentifier)}'
         ui:

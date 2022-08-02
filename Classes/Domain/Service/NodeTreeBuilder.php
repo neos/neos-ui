@@ -13,7 +13,7 @@ namespace Neos\Neos\Ui\Domain\Service;
  */
 
 use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
-use Neos\ContentRepositoryRegistry\ValueObject\ContentRepositoryIdentifier;
+use Neos\ContentRepository\Factory\ContentRepositoryIdentifier;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Neos\Service\LinkingService;

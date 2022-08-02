@@ -14,7 +14,7 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
 use Neos\ContentRepository\Projection\Workspace\Workspace;
 use Neos\ContentRepository\SharedModel\Workspace\WorkspaceName;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
-use Neos\ContentRepositoryRegistry\ValueObject\ContentRepositoryIdentifier;
+use Neos\ContentRepository\Factory\ContentRepositoryIdentifier;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;

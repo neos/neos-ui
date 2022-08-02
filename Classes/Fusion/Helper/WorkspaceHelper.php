@@ -12,7 +12,7 @@ namespace Neos\Neos\Ui\Fusion\Helper;
  */
 
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
-use Neos\ContentRepositoryRegistry\ValueObject\ContentRepositoryIdentifier;
+use Neos\ContentRepository\Factory\ContentRepositoryIdentifier;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\ContentRepository\SharedModel\Workspace\WorkspaceName;
 use Neos\Neos\Domain\Model\WorkspaceName as NeosWorkspaceName;

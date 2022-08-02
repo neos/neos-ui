@@ -22,7 +22,7 @@ use Neos\ContentRepository\SharedModel\NodeAddressFactory;
 use Neos\ContentRepository\SharedModel\VisibilityConstraints;
 use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
 use Neos\ContentRepository\SharedModel\Workspace\WorkspaceName;
-use Neos\ContentRepositoryRegistry\ValueObject\ContentRepositoryIdentifier;
+use Neos\ContentRepository\Factory\ContentRepositoryIdentifier;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Service\UserService;
 use Neos\Neos\Domain\Service\UserService as DomainUserService;

@@ -71,12 +71,6 @@ class Property extends AbstractChange
      */
     protected bool $isInline = false;
 
-    /**
-     * @Flow\Inject
-     * @var ContentCacheFlusher
-     */
-    protected $contentCacheFlusher;
-
     public function setPropertyName(string $propertyName): void
     {
         $this->propertyName = $propertyName;
@@ -277,23 +271,11 @@ class Property extends AbstractChange
                 if ($this->getNodeDomAddress() && $this->getNodeDomAddress()->getFusionPath()
                     && $parentNode
                     && $parentNode->getNodeType()->isOfType('Neos.Neos:ContentCollection')) {
-                    // we render content directly as response of this operation, so we need to flush the caches
-                    $this->contentCacheFlusher->flushNodeAggregate(
-                        $node->getSubgraphIdentity()->contentRepositoryIdentifier,
-                        $node->getSubgraphIdentity()->contentStreamIdentifier,
-                        $node->getNodeAggregateIdentifier()
-                    );
                     $reloadContentOutOfBand = new ReloadContentOutOfBand();
                     $reloadContentOutOfBand->setNode($node);
                     $reloadContentOutOfBand->setNodeDomAddress($this->getNodeDomAddress());
                     $this->feedbackCollection->add($reloadContentOutOfBand);
                 } else {
-                    // we render content directly as response of this operation, so we need to flush the caches
-                    $this->contentCacheFlusher->flushNodeAggregate(
-                        $node->getSubgraphIdentity()->contentRepositoryIdentifier,
-                        $node->getSubgraphIdentity()->contentStreamIdentifier,
-                        $node->getNodeAggregateIdentifier()
-                    );
                     $this->reloadDocument($node);
                 }
             }
@@ -301,12 +283,6 @@ class Property extends AbstractChange
             $reloadPageIfChangedConfigurationPath = sprintf('properties.%s.ui.reloadPageIfChanged', $propertyName);
             if (!$this->getIsInline()
                 && $node->getNodeType()->getConfiguration($reloadPageIfChangedConfigurationPath)) {
-                // we render content directly as response of this operation, so we need to flush the caches
-                $this->contentCacheFlusher->flushNodeAggregate(
-                    $node->getSubgraphIdentity()->contentRepositoryIdentifier,
-                    $node->getSubgraphIdentity()->contentStreamIdentifier,
-                    $node->getNodeAggregateIdentifier()
-                );
                 $this->reloadDocument($node);
             }
 

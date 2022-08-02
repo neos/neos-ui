@@ -118,12 +118,6 @@ abstract class AbstractCreate extends AbstractStructuralChange
         $command = $this->applyNodeCreationHandlers($command, $nodeTypeName, $contentRepository);
 
         $contentRepository->handle($command)->block();
-        $this->contentCacheFlusher->flushNodeAggregate(
-            $parentNode->getSubgraphIdentity()->contentRepositoryIdentifier,
-            $parentNode->getSubgraphIdentity()->contentStreamIdentifier,
-            $parentNode->getNodeAggregateIdentifier()
-        );
-
         /** @var NodeInterface $newlyCreatedNode */
         $newlyCreatedNode = $this->nodeAccessorFor($parentNode)
             ->findChildNodeConnectedThroughEdgeName($parentNode, $nodeName);

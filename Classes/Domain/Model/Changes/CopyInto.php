@@ -88,13 +88,6 @@ class CopyInto extends AbstractStructuralChange
                 $parentNode,
                 $targetNodeName
             );
-            // we render content directly as response of this operation,
-            // so we need to flush the caches at the copy target
-            $this->contentCacheFlusher->flushNodeAggregate(
-                $newlyCreatedNode->getSubgraphIdentity()->contentRepositoryIdentifier,
-                $newlyCreatedNode->getSubgraphIdentity()->contentStreamIdentifier,
-                $newlyCreatedNode->getNodeAggregateIdentifier()
-            );
             $this->finish($newlyCreatedNode);
             // NOTE: we need to run "finish" before "addNodeCreatedFeedback"
             // to ensure the new node already exists when the last feedback is processed

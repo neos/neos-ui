@@ -67,12 +67,6 @@ class MoveBefore extends AbstractStructuralChange
             $hasEqualParentNode = $parentNode->getNodeAggregateIdentifier()
                 ->equals($succeedingSiblingParent->getNodeAggregateIdentifier());
 
-            // we render content directly as response of this operation, so we need to flush the caches
-            $doFlushContentCache = $this->contentCacheFlusher->scheduleFlushNodeAggregate(
-                $subject->getSubgraphIdentity()->contentRepositoryIdentifier,
-                $subject->getSubgraphIdentity()->contentStreamIdentifier,
-                $subject->getNodeAggregateIdentifier()
-            );
             $contentRepository = $this->contentRepositoryRegistry->get($subject->getSubgraphIdentity()->contentRepositoryIdentifier);
 
             $contentRepository->handle(
@@ -89,12 +83,6 @@ class MoveBefore extends AbstractStructuralChange
                     $this->getInitiatingUserIdentifier()
                 )
             )->block();
-            $doFlushContentCache();
-            $this->contentCacheFlusher->flushNodeAggregate(
-                $succeedingSiblingParent->getSubgraphIdentity()->contentRepositoryIdentifier,
-                $succeedingSiblingParent->getSubgraphIdentity()->contentStreamIdentifier,
-                $succeedingSiblingParent->getNodeAggregateIdentifier()
-            );
 
             $updateParentNodeInfo = new UpdateNodeInfo();
             $updateParentNodeInfo->setNode($succeedingSiblingParent);

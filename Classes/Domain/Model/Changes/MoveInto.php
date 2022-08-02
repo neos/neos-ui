@@ -80,12 +80,6 @@ class MoveInto extends AbstractStructuralChange
             $hasEqualParentNode = $otherParent && $otherParent->getNodeAggregateIdentifier()
                     ->equals($parentNode->getNodeAggregateIdentifier());
 
-            // we render content directly as response of this operation, so we need to flush the caches
-            $doFlushContentCache = $this->contentCacheFlusher->scheduleFlushNodeAggregate(
-                $subject->getSubgraphIdentity()->contentRepositoryIdentifier,
-                $subject->getSubgraphIdentity()->contentStreamIdentifier,
-                $subject->getNodeAggregateIdentifier()
-            );
             $contentRepository = $this->contentRepositoryRegistry->get($subject->getSubgraphIdentity()->contentRepositoryIdentifier);
             $contentRepository->handle(
                 new MoveNodeAggregate(
@@ -99,14 +93,6 @@ class MoveInto extends AbstractStructuralChange
                     $this->getInitiatingUserIdentifier()
                 )
             )->block();
-            $doFlushContentCache();
-            if (!$hasEqualParentNode) {
-                $this->contentCacheFlusher->flushNodeAggregate(
-                    $parentNode->getSubgraphIdentity()->contentRepositoryIdentifier,
-                    $parentNode->getSubgraphIdentity()->contentStreamIdentifier,
-                    $parentNode->getNodeAggregateIdentifier()
-                );
-            }
 
             $updateParentNodeInfo = new UpdateNodeInfo();
             $updateParentNodeInfo->setNode($parentNode);

@@ -82,22 +82,8 @@ class MoveAfter extends AbstractStructuralChange
                 $this->getInitiatingUserIdentifier()
             );
 
-            // we render content directly as response of this operation, so we need to flush the caches
-            $doFlushContentCache = $this->contentCacheFlusher->scheduleFlushNodeAggregate(
-                $subject->getSubgraphIdentity()->contentRepositoryIdentifier,
-                $subject->getSubgraphIdentity()->contentStreamIdentifier,
-                $subject->getNodeAggregateIdentifier()
-            );
-
             $contentRepository = $this->contentRepositoryRegistry->get($subject->getSubgraphIdentity()->contentRepositoryIdentifier);
             $contentRepository->handle($command)->block();
-
-            $doFlushContentCache();
-            $this->contentCacheFlusher->flushNodeAggregate(
-                $parentNodeOfPreviousSibling->getSubgraphIdentity()->contentRepositoryIdentifier,
-                $parentNodeOfPreviousSibling->getSubgraphIdentity()->contentStreamIdentifier,
-                $parentNodeOfPreviousSibling->getNodeAggregateIdentifier()
-            );
 
             $updateParentNodeInfo = new UpdateNodeInfo();
             $updateParentNodeInfo->setNode($parentNodeOfPreviousSibling);

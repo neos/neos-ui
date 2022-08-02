@@ -19,7 +19,6 @@ use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
 use Neos\ContentRepository\Projection\ContentGraph\Nodes;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
-use Neos\Neos\Fusion\Cache\ContentCacheFlusher;
 use Neos\Neos\Ui\ContentRepository\Service\NodeService;
 use Neos\Neos\Ui\Domain\Model\AbstractChange;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
@@ -48,12 +47,6 @@ abstract class AbstractStructuralChange extends AbstractChange
      * @var NodeService
      */
     protected $nodeService;
-
-    /**
-     * @Flow\Inject
-     * @var ContentCacheFlusher
-     */
-    protected $contentCacheFlusher;
 
     /**
      * @Flow\Inject

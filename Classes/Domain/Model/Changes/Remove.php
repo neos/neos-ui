@@ -64,14 +64,6 @@ class Remove extends AbstractChange
                 );
             }
 
-            // we have to remember what parts of the content cache to flush before we actually delete the node;
-            // otherwise we cannot find the parent nodes anymore.
-            $doFlushContentCache = $this->contentCacheFlusher->scheduleFlushNodeAggregate(
-                $subject->getSubgraphIdentity()->contentRepositoryIdentifier,
-                $subject->getSubgraphIdentity()->contentStreamIdentifier,
-                $subject->getNodeAggregateIdentifier()
-            );
-
             // we have to schedule an the update workspace info before we actually delete the node;
             // otherwise we cannot find the parent nodes anymore.
             $this->updateWorkspaceInfo();
@@ -88,7 +80,6 @@ class Remove extends AbstractChange
 
             $contentRepository = $this->contentRepositoryRegistry->get($subject->getSubgraphIdentity()->contentRepositoryIdentifier);
             $contentRepository->handle($command)->block();
-            $doFlushContentCache();
 
             $removeNode = new RemoveNode($subject, $parentNode);
             $this->feedbackCollection->add($removeNode);

@@ -123,7 +123,8 @@ class UpdateWorkspaceInfo extends AbstractFeedback
         return $workspace ? [
             'name' => (string)$this->workspaceName,
             'publishableNodes' => $this->workspaceService->getPublishableNodeInfo(
-                $this->workspaceName
+                $this->workspaceName,
+                $this->contentRepositoryIdentifier
             ),
             'baseWorkspace' => (string)$workspace->getBaseWorkspaceName()
         ] : [];

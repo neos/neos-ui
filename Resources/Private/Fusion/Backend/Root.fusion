@@ -58,7 +58,7 @@ backend = Neos.Fusion:Template {
     configuration = Neos.Fusion:DataStructure {
         nodeTree = ${Configuration.setting('Neos.Neos.userInterface.navigateComponent.nodeTree')}
         structureTree = ${Configuration.setting('Neos.Neos.userInterface.navigateComponent.structureTree')}
-        allowedTargetWorkspaces = ${Neos.Ui.Workspace.getAllowedTargetWorkspaces()}
+        allowedTargetWorkspaces = ${Neos.Ui.Workspace.getAllowedTargetWorkspaces(contentRepositoryIdentifier)}
         endpoints = Neos.Fusion:DataStructure {
             nodeTypeSchema = Neos.Fusion:UriBuilder {
                 package = 'Neos.Neos'
@@ -263,6 +263,7 @@ backend = Neos.Fusion:Template {
     initialState = Neos.Neos.Ui:RenderConfiguration {
         path = 'initialState'
         context {
+            contentRepositoryIdentifier = ${contentRepositoryIdentifier}
             documentNode = ${documentNode}
             site = ${site}
             user = ${user}

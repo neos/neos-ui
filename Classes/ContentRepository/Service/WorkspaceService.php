@@ -11,21 +11,21 @@ namespace Neos\Neos\Ui\ContentRepository\Service;
  * source code.
  */
 
+use Neos\ContentRepository\ContentRepository;
+use Neos\ContentRepository\Projection\Changes\ChangeProjection;
+use Neos\ContentRepository\Projection\ContentGraph\ContentSubgraphIdentity;
 use Neos\ContentRepository\Projection\Workspace\Workspace;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
-use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\ContentRepository\NodeAccess\NodeAccessorManager;
 use Neos\ContentRepository\SharedModel\NodeAddress;
 use Neos\ContentRepository\SharedModel\NodeAddressFactory;
 use Neos\ContentRepository\SharedModel\VisibilityConstraints;
-use Neos\ContentRepository\Projection\Changes\ChangeFinder;
 use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
-use Neos\ContentRepository\Projection\Workspace\WorkspaceFinder;
 use Neos\ContentRepository\SharedModel\Workspace\WorkspaceName;
+use Neos\ContentRepositoryRegistry\ValueObject\ContentRepositoryIdentifier;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Service\UserService;
 use Neos\Neos\Domain\Service\UserService as DomainUserService;
-use Neos\Neos\Ui\Service\PublishingService;
 
 /**
  * @Flow\Scope("singleton")
@@ -62,13 +62,15 @@ class WorkspaceService
      *
      * @return array<int,array<string,string>>
      */
-    public function getPublishableNodeInfo(WorkspaceName $workspaceName): array
+    public function getPublishableNodeInfo(WorkspaceName $workspaceName, ContentRepositoryIdentifier $contentRepositoryIdentifier): array
     {
-        $workspace = $this->workspaceFinder->findOneByName($workspaceName);
+        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryIdentifier);
+        $workspace = $contentRepository->getWorkspaceFinder()->findOneByName($workspaceName);
         if (is_null($workspace) || $workspace->getBaseWorkspaceName() === null) {
             return [];
         }
-        $changes = $this->changeFinder->findByContentStreamIdentifier($workspace->getCurrentContentStreamIdentifier());
+        $changeFinder = $contentRepository->projectionState(ChangeProjection::class);
+        $changes = $changeFinder->findByContentStreamIdentifier($workspace->getCurrentContentStreamIdentifier());
         $unpublishedNodes = [];
         foreach ($changes as $change) {
             if ($change->removalAttachmentPoint) {
@@ -95,9 +97,12 @@ class WorkspaceService
                 ];
             } else {
                 $nodeAccessor = $this->nodeAccessorManager->accessorFor(
-                    $workspace->getCurrentContentStreamIdentifier(),
-                    $change->originDimensionSpacePoint->toDimensionSpacePoint(),
-                    VisibilityConstraints::withoutRestrictions()
+                    new ContentSubgraphIdentity(
+                        $contentRepositoryIdentifier,
+                        $workspace->getCurrentContentStreamIdentifier(),
+                        $change->originDimensionSpacePoint->toDimensionSpacePoint(),
+                        VisibilityConstraints::withoutRestrictions()
+                    )
                 );
                 $node = $nodeAccessor->findByIdentifier($change->nodeAggregateIdentifier);
 
@@ -126,13 +131,13 @@ class WorkspaceService
      *
      * @return array<string,array<string,mixed>>
      */
-    public function getAllowedTargetWorkspaces(): array
+    public function getAllowedTargetWorkspaces(ContentRepository $contentRepository): array
     {
         $user = $this->domainUserService->getCurrentUser();
 
         $workspacesArray = [];
         /** @var Workspace $workspace */
-        foreach ($this->workspaceFinder->findAll() as $workspace) {
+        foreach ($contentRepository->getWorkspaceFinder()->findAll() as $workspace) {
             // FIXME: This check should be implemented through a specialized Workspace Privilege or something similar
             // Skip workspace not owned by current user
             if ($workspace->getWorkspaceOwner() !== null && $workspace->getWorkspaceOwner() !== $user) {

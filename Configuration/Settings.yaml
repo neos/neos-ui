@@ -137,7 +137,7 @@ Neos:
             active: '${documentNode.dimensionSpacePoint.toLegacyDimensionArray()}'
             allowedPresets: '${Neos.Ui.Api.emptyArrayToObject(Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.dimensionSpacePoint))}'
           workspaces:
-            personalWorkspace: '${Neos.Ui.Workspace.getPersonalWorkspace()}'
+            personalWorkspace: '${Neos.Ui.Workspace.getPersonalWorkspace(contentRepositoryIdentifier)}'
         ui:
           contentCanvas:
             src: '${Neos.Ui.NodeInfo.uri(documentNode, controllerContext)}'

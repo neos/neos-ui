@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import unescape from 'lodash.unescape';
 import slugify from '@sindresorhus/slugify';
+import defaultReplacements from '@sindresorhus/slugify/overridable-replacements';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {TextInput, IconButton} from '@neos-project/react-ui-components';
 import style from './style.css';
@@ -10,7 +11,11 @@ const defaultOptions = {
     autoFocus: false,
     disabled: false,
     maxlength: null,
-    readonly: false
+    readonly: false,
+    // some defaults may be sensible, but there might be more coming
+    // https://github.com/sindresorhus/slugify/issues/7
+    replaceCharacters: defaultReplacements
+        .map(([from]) => [from, ''])
 };
 
 @neos(globalRegistry => ({
@@ -52,8 +57,17 @@ export default class UriPathSegment extends PureComponent {
             i18nRegistry.translate(unescape(options.placeholder));
         const finalOptions = Object.assign({}, defaultOptions, options);
 
+        const customReplacements = (finalOptions &&
+            'replaceCharacters' in finalOptions &&
+            typeof finalOptions.replaceCharacters === 'object'
+        ) ?
+            Object.entries(finalOptions.replaceCharacters)
+                .map(([from, to]) => [from, i18nRegistry.translate(unescape(to))]) :
+            undefined;
+        const finalReplacements = [...defaultOptions.replaceCharacters, ...customReplacements];
+
         const titleValue = options && options.title ? options.title : '';
-        const slug = slugify(titleValue);
+        const slug = slugify(titleValue, {customReplacements: finalReplacements});
         const showSyncButton = !(
             finalOptions.readonly || finalOptions.disabled
         );

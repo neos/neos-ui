@@ -11,6 +11,7 @@ namespace Neos\Neos\Ui\Fusion\Helper;
  * source code.
  */
 
+use Neos\ContentRepository\DimensionSpace\Dimension\ContentDimension;
 use Neos\ContentRepository\DimensionSpace\Dimension\ContentDimensionIdentifier;
 use Neos\ContentRepository\DimensionSpace\Dimension\ContentDimensionSourceInterface;
 use Neos\ContentRepository\DimensionSpace\DimensionSpace\DimensionSpacePoint;
@@ -33,6 +34,7 @@ class ContentDimensionsHelper implements ProtectedContextAwareInterface
     public function contentDimensionsByName(ContentRepositoryIdentifier $contentRepositoryIdentifier): array
     {
         $contentDimensionHelperInternals = $this->contentRepositoryRegistry->getService($contentRepositoryIdentifier, new ContentDimensionsHelperInternalsFactory());
+        assert($contentDimensionHelperInternals instanceof ContentDimensionsHelperInternals);
         $contentDimensionSource = $contentDimensionHelperInternals->contentDimensionSource;
 
         $dimensions = $contentDimensionSource->getContentDimensionsOrderedByPriority();
@@ -43,8 +45,8 @@ class ContentDimensionsHelper implements ProtectedContextAwareInterface
                 'label' => $dimension->getConfigurationValue('label'),
                 'icon' => $dimension->getConfigurationValue('icon'),
 
-                'default' => $dimension->defaultValue->value,
-                'defaultPreset' => $dimension->defaultValue->value,
+                # TODO 'default' => $dimension->defaultValue->value,
+                # TODO 'defaultPreset' => $dimension->defaultValue->value,
                 'presets' => []
             ];
 

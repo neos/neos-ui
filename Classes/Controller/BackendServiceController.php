@@ -13,6 +13,8 @@ namespace Neos\Neos\Ui\Controller;
  * source code.
  */
 
+use Neos\ContentRepository\Feature\Common\NodeIdentifiersToPublishOrDiscard;
+use Neos\ContentRepository\Feature\Common\NodeIdentifierToPublishOrDiscard;
 use Neos\ContentRepository\NodeAccess\NodeAccessorManager;
 use Neos\ContentRepository\Projection\ContentGraph\ContentSubgraphIdentity;
 use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
@@ -213,15 +215,20 @@ class BackendServiceController extends ActionController
             $currentAccount = $this->securityContext->getAccount();
             $workspaceName = NeosWorkspaceName::fromAccountIdentifier($currentAccount->getAccountIdentifier())
                 ->toContentRepositoryWorkspaceName();
-            $nodeAddresses = [];
 
+            $nodeIdentifiersToPublish = [];
             foreach ($nodeContextPaths as $contextPath) {
-                $nodeAddresses[] = $nodeAddressFactory->createFromUriString($contextPath);
+                $nodeAddress = $nodeAddressFactory->createFromUriString($contextPath);
+                $nodeIdentifiersToPublish[] = new NodeIdentifierToPublishOrDiscard(
+                    $nodeAddress->contentStreamIdentifier,
+                    $nodeAddress->nodeAggregateIdentifier,
+                    $nodeAddress->dimensionSpacePoint
+                );
             }
             $contentRepository->handle(
                 PublishIndividualNodesFromWorkspace::create(
                     $workspaceName,
-                    $nodeAddresses,
+                    NodeIdentifiersToPublishOrDiscard::create(...$nodeIdentifiersToPublish),
                     $this->getCurrentUserIdentifier()
                 )
             )->block();
@@ -263,14 +270,19 @@ class BackendServiceController extends ActionController
             $workspaceName = NeosWorkspaceName::fromAccountIdentifier($currentAccount->getAccountIdentifier())
                 ->toContentRepositoryWorkspaceName();
 
-            $nodeAddresses = [];
+            $nodeIdentifiersToDiscard = [];
             foreach ($nodeContextPaths as $contextPath) {
-                $nodeAddresses[] = $nodeAddressFactory->createFromUriString($contextPath);
+                $nodeAddress = $nodeAddressFactory->createFromUriString($contextPath);
+                $nodeIdentifiersToDiscard[] = new NodeIdentifierToPublishOrDiscard(
+                    $nodeAddress->contentStreamIdentifier,
+                    $nodeAddress->nodeAggregateIdentifier,
+                    $nodeAddress->dimensionSpacePoint
+                );
             }
             $contentRepository->handle(
                 DiscardIndividualNodesFromWorkspace::create(
                     $workspaceName,
-                    $nodeAddresses,
+                    NodeIdentifiersToPublishOrDiscard::create(...$nodeIdentifiersToDiscard),
                     $this->getCurrentUserIdentifier()
                 )
             )->block();

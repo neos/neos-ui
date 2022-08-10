@@ -405,13 +405,14 @@ class BackendServiceController extends ActionController
     /** @phpstan-ignore-next-line */
     public function copyNodesAction(array $nodes): void
     {
-        // TODO @christianm want's to have a property mapper for this
+        $contentRepositoryIdentifier = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryIdentifier;
+        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryIdentifier);
+        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
+
         /** @var array<int,NodeAddress> $nodeAddresses */
-        $nodeAddresses = array_map(function (string $serializedNodeAddress): NodeAddress {
-            /** @var NodeAddress $nodeAddress */
-            $nodeAddress = $this->propertyMapper->convert($serializedNodeAddress, NodeAddress::class);
-            return $nodeAddress;
-        }, $nodes);
+        $nodeAddresses = array_map(fn (string $serializedNodeAddress) =>
+            $nodeAddressFactory->createFromUriString($serializedNodeAddress),
+        $nodes);
         $this->clipboard->copyNodes($nodeAddresses);
     }
 

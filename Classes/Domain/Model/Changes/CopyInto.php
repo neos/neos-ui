@@ -31,7 +31,7 @@ class CopyInto extends AbstractStructuralChange
 
     public function getParentNode(): ?NodeInterface
     {
-        if ($this->cachedParentNode === null) {
+        if (!isset($this->cachedParentNode)) {
             $this->cachedParentNode = $this->parentContextPath
                 ? $this->nodeService->getNodeFromContextPath($this->parentContextPath, $this->getSubject()->getSubgraphIdentity()->contentRepositoryIdentifier)
                 : null;

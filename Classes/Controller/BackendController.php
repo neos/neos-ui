@@ -164,11 +164,17 @@ class BackendController extends ActionController
             $this->redirectToUri($this->uriBuilder->uriFor('index', [], 'Login', 'Neos.Neos'));
         }
 
+        $backendControllerInternals = $this->contentRepositoryRegistry->getService(
+            $siteDetectionResult->contentRepositoryIdentifier,
+            new BackendControllerInternalsFactory()
+        );
+        $defaultDimensionSpacePoint = $backendControllerInternals->getDefaultDimensionSpacePoint();
+
         $nodeAccessor = $this->nodeAccessorManager->accessorFor(
             new ContentSubgraphIdentity(
                 $siteDetectionResult->contentRepositoryIdentifier,
                 $workspace->getCurrentContentStreamIdentifier(),
-                $nodeAddress ? $nodeAddress->dimensionSpacePoint : $this->findDefaultDimensionSpacePoint(),
+                $nodeAddress ? $nodeAddress->dimensionSpacePoint : $defaultDimensionSpacePoint,
                 VisibilityConstraints::withoutRestrictions()
             )
         );
@@ -179,7 +185,7 @@ class BackendController extends ActionController
             $workspace->getCurrentContentStreamIdentifier(),
             NodeTypeName::fromString('Neos.Neos:Sites')
         );
-        $rootNode = $rootNodeAggregate->getNodeByCoveredDimensionSpacePoint($this->findDefaultDimensionSpacePoint());
+        $rootNode = $rootNodeAggregate->getNodeByCoveredDimensionSpacePoint($defaultDimensionSpacePoint);
         $siteNode = $nodeAccessor->findChildNodeConnectedThroughEdgeName(
             $rootNode,
             $this->siteRepository->findDefault()->getNodeName()->toNodeName()
@@ -226,16 +232,5 @@ class BackendController extends ActionController
             'no-store'
         ]);
         $this->redirect('show', 'Frontend\Node', 'Neos.Neos', ['node' => $nodeAddress]);
-    }
-
-    protected function findDefaultDimensionSpacePoint(): DimensionSpacePoint // TODO FIX ME!!!
-    {
-        // TODO: FusionExceptionViewInternals impl.
-        $coordinates = [];
-        foreach ($this->contentDimensionSource->getContentDimensionsOrderedByPriority() as $dimension) {
-            $coordinates[(string)$dimension->identifier] = (string)$dimension->defaultValue;
-        }
-
-        return DimensionSpacePoint::fromArray($coordinates);
     }
 }

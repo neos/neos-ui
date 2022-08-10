@@ -437,10 +437,15 @@ class BackendServiceController extends ActionController
     /** @phpstan-ignore-next-line */
     public function cutNodesAction(array $nodes): void
     {
-        // TODO @christianm wants to have a property mapper for this
-        $nodeAddresses = array_map(function (string $serializedNodeAddress): NodeAddress {
-            return $this->propertyMapper->convert($serializedNodeAddress, NodeAddress::class);
-        }, $nodes);
+        $contentRepositoryIdentifier = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryIdentifier;
+        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryIdentifier);
+        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
+
+        /** @var array<int,NodeAddress> $nodeAddresses */
+        $nodeAddresses = array_map(fn (string $serializedNodeAddress) =>
+            $nodeAddressFactory->createFromUriString($serializedNodeAddress),
+        $nodes);
+
         $this->clipboard->cutNodes($nodeAddresses);
     }
 

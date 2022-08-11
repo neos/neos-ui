@@ -14,10 +14,9 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 use Neos\ContentRepository\DimensionSpace\DimensionSpace\Exception\DimensionSpacePointNotFound;
 use Neos\ContentRepository\Feature\Common\Exception\ContentStreamDoesNotExistYet;
+use Neos\ContentRepository\Feature\Common\NodeVariantSelectionStrategy;
 use Neos\ContentRepository\Feature\NodeRemoval\Command\RemoveNodeAggregate;
 use Neos\ContentRepository\Feature\Common\Exception\NodeAggregatesTypeIsAmbiguous;
-use Neos\ContentRepository\Feature\NodeAggregateCommandHandler;
-use Neos\ContentRepository\Feature\NodeDisabling\Command\NodeVariantSelectionStrategy;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Fusion\Cache\ContentCacheFlusher;
 use Neos\Neos\Ui\Domain\Model\AbstractChange;
@@ -29,12 +28,6 @@ use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
  */
 class Remove extends AbstractChange
 {
-    /**
-     * @Flow\Inject
-     * @var NodeAggregateCommandHandler
-     */
-    protected $nodeAggregateCommandHandler;
-
     /**
      * @Flow\Inject
      * @var ContentCacheFlusher
@@ -71,31 +64,22 @@ class Remove extends AbstractChange
                 );
             }
 
-            // we have to remember what parts of the content cache to flush before we actually delete the node;
-            // otherwise we cannot find the parent nodes anymore.
-            $doFlushContentCache = $this->contentCacheFlusher->scheduleFlushNodeAggregate(
-                $subject->getContentStreamIdentifier(),
-                $subject->getNodeAggregateIdentifier()
-            );
-
             // we have to schedule an the update workspace info before we actually delete the node;
             // otherwise we cannot find the parent nodes anymore.
             $this->updateWorkspaceInfo();
 
             $closestDocumentParentNode = $this->findClosestDocumentNode($subject);
             $command = new RemoveNodeAggregate(
-                $subject->getContentStreamIdentifier(),
+                $subject->getSubgraphIdentity()->contentStreamIdentifier,
                 $subject->getNodeAggregateIdentifier(),
-                $subject->getDimensionSpacePoint(),
+                $subject->getSubgraphIdentity()->dimensionSpacePoint,
                 NodeVariantSelectionStrategy::STRATEGY_ALL_SPECIALIZATIONS,
                 $this->getInitiatingUserIdentifier(),
                 $closestDocumentParentNode?->getNodeAggregateIdentifier()
             );
 
-            $this->nodeAggregateCommandHandler->handleRemoveNodeAggregate(
-                $command
-            )->blockUntilProjectionsAreUpToDate();
-            $doFlushContentCache();
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->getSubgraphIdentity()->contentRepositoryIdentifier);
+            $contentRepository->handle($command)->block();
 
             $removeNode = new RemoveNode($subject, $parentNode);
             $this->feedbackCollection->add($removeNode);

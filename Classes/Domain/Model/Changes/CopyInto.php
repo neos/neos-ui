@@ -13,21 +13,13 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  */
 
 use Neos\ContentRepository\SharedModel\Node\OriginDimensionSpacePoint;
-use Neos\ContentRepository\Projection\Content\NodeInterface;
-use Neos\Flow\Annotations as Flow;
+use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
 use Neos\ContentRepository\SharedModel\Node\NodeName;
 use Neos\ContentRepository\Feature\NodeDuplication\Command\CopyNodesRecursively;
-use Neos\ContentRepository\Feature\NodeDuplication\NodeDuplicationCommandHandler;
 use Neos\ContentRepository\SharedModel\User\UserIdentifier;
 
 class CopyInto extends AbstractStructuralChange
 {
-    /**
-     * @Flow\Inject
-     * @var NodeDuplicationCommandHandler
-     */
-    protected $nodeDuplicationCommandHandler;
-
     protected ?string $parentContextPath;
 
     protected ?NodeInterface $cachedParentNode;
@@ -39,9 +31,9 @@ class CopyInto extends AbstractStructuralChange
 
     public function getParentNode(): ?NodeInterface
     {
-        if ($this->cachedParentNode === null) {
+        if (!isset($this->cachedParentNode)) {
             $this->cachedParentNode = $this->parentContextPath
-                ? $this->nodeService->getNodeFromContextPath($this->parentContextPath)
+                ? $this->nodeService->getNodeFromContextPath($this->parentContextPath, $this->getSubject()->getSubgraphIdentity()->contentRepositoryIdentifier)
                 : null;
         }
 
@@ -74,33 +66,27 @@ class CopyInto extends AbstractStructuralChange
         $parentNode = $this->getParentNode();
         if ($parentNode && $subject && $this->canApply()) {
             $targetNodeName = NodeName::fromString(uniqid('node-'));
+
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->getSubgraphIdentity()->contentRepositoryIdentifier);
             $command = CopyNodesRecursively::create(
-                $this->contentGraph->getSubgraphByIdentifier(
-                    $subject->getContentStreamIdentifier(),
-                    $subject->getDimensionSpacePoint(),
-                    $subject->getVisibilityConstraints()
+                $contentRepository->getContentGraph()->getSubgraphByIdentifier(
+                    $subject->getSubgraphIdentity()->contentStreamIdentifier,
+                    $subject->getSubgraphIdentity()->dimensionSpacePoint,
+                    $subject->getSubgraphIdentity()->visibilityConstraints
                 ),
                 $subject,
-                OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->getDimensionSpacePoint()),
+                OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->getSubgraphIdentity()->dimensionSpacePoint),
                 UserIdentifier::forSystemUser(), // TODO
                 $parentNode->getNodeAggregateIdentifier(),
                 null,
                 $targetNodeName
             );
-
-            $this->nodeDuplicationCommandHandler->handleCopyNodesRecursively($command)
-                ->blockUntilProjectionsAreUpToDate();
+            $contentRepository->handle($command)->block();
 
             /** @var NodeInterface $newlyCreatedNode */
             $newlyCreatedNode = $this->nodeAccessorFor($parentNode)->findChildNodeConnectedThroughEdgeName(
                 $parentNode,
                 $targetNodeName
-            );
-            // we render content directly as response of this operation,
-            // so we need to flush the caches at the copy target
-            $this->contentCacheFlusher->flushNodeAggregate(
-                $newlyCreatedNode->getContentStreamIdentifier(),
-                $newlyCreatedNode->getNodeAggregateIdentifier()
             );
             $this->finish($newlyCreatedNode);
             // NOTE: we need to run "finish" before "addNodeCreatedFeedback"

@@ -14,7 +14,8 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
 use Neos\ContentRepository\NodeAccess\NodeAccessorManager;
 use Neos\ContentRepository\SharedModel\NodeAddressFactory;
 use Neos\ContentRepository\SharedModel\VisibilityConstraints;
-use Neos\ContentRepository\Projection\Content\NodeInterface;
+use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Fusion\Core\Cache\ContentCache;
@@ -46,9 +47,9 @@ class ReloadContentOutOfBand extends AbstractFeedback
 
     /**
      * @Flow\Inject
-     * @var NodeAddressFactory
+     * @var ContentRepositoryRegistry
      */
-    protected $nodeAddressFactory;
+    protected $contentRepositoryRegistry;
 
     /**
      * @Flow\Inject
@@ -99,8 +100,7 @@ class ReloadContentOutOfBand extends AbstractFeedback
         return (
             $this->node instanceof NodeInterface &&
             $feedbackNode instanceof NodeInterface &&
-            $this->node->getContentStreamIdentifier()->equals($feedbackNode->getContentStreamIdentifier()) &&
-            $this->node->getDimensionSpacePoint()->equals($feedbackNode->getDimensionSpacePoint()) &&
+            $this->node->getSubgraphIdentity()->equals($feedbackNode->getSubgraphIdentity()) &&
             $this->node->getNodeAggregateIdentifier()->equals(
                 $feedbackNode->getNodeAggregateIdentifier()
             ) &&
@@ -115,13 +115,16 @@ class ReloadContentOutOfBand extends AbstractFeedback
      */
     public function serializePayload(ControllerContext $controllerContext): array
     {
-        return !is_null($this->node) && !is_null($this->nodeDomAddress)
-            ? [
-                'contextPath' => $this->nodeAddressFactory->createFromNode($this->node)->serializeForUri(),
+        if (!is_null($this->node) && !is_null($this->nodeDomAddress)) {
+            $contentRepository = $this->contentRepositoryRegistry->get($this->node->getSubgraphIdentity()->contentRepositoryIdentifier);
+            $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
+            return [
+                'contextPath' => $nodeAddressFactory->createFromNode($this->node)->serializeForUri(),
                 'nodeDomAddress' => $this->nodeDomAddress,
                 'renderedContent' => $this->renderContent($controllerContext)
-            ]
-            : [];
+            ];
+        }
+        return [];
     }
 
     /**
@@ -163,4 +166,3 @@ class ReloadContentOutOfBand extends AbstractFeedback
         }
     }
 }
-

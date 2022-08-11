@@ -51,4 +51,3 @@ class ChangeCollection
         return count($this->changes);
     }
 }
-

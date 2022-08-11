@@ -12,9 +12,10 @@ namespace Neos\Neos\Ui\Domain\Model;
  */
 
 use Neos\ContentRepository\NodeAccess\NodeAccessorManager;
-use Neos\ContentRepository\Projection\Content\NodeInterface;
+use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
 use Neos\ContentRepository\Projection\Workspace\WorkspaceFinder;
 use Neos\ContentRepository\SharedModel\User\UserIdentifier;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\Domain\Model\User;
@@ -35,12 +36,6 @@ abstract class AbstractChange implements ChangeInterface
 
     /**
      * @Flow\Inject
-     * @var WorkspaceFinder
-     */
-    protected $workspaceFinder;
-
-    /**
-     * @Flow\Inject
      * @var UserService
      */
     protected $userService;
@@ -56,6 +51,12 @@ abstract class AbstractChange implements ChangeInterface
      * @var NodeAccessorManager
      */
     protected $nodeAccessorManager;
+
+    /**
+     * @Flow\Inject
+     * @var ContentRepositoryRegistry
+     */
+    protected $contentRepositoryRegistry;
 
     public function setSubject(NodeInterface $subject): void
     {
@@ -75,11 +76,12 @@ abstract class AbstractChange implements ChangeInterface
         if (!is_null($this->subject)) {
             $documentNode = $this->findClosestDocumentNode($this->subject);
             if (!is_null($documentNode)) {
-                $workspace = $this->workspaceFinder->findOneByCurrentContentStreamIdentifier(
-                    $documentNode->getContentStreamIdentifier()
+                $contentRepository = $this->contentRepositoryRegistry->get($this->subject->getSubgraphIdentity()->contentRepositoryIdentifier);
+                $workspace = $contentRepository->getWorkspaceFinder()->findOneByCurrentContentStreamIdentifier(
+                    $documentNode->getSubgraphIdentity()->contentStreamIdentifier
                 );
                 if (!is_null($workspace)) {
-                    $updateWorkspaceInfo = new UpdateWorkspaceInfo($workspace->getWorkspaceName());
+                    $updateWorkspaceInfo = new UpdateWorkspaceInfo($documentNode->getSubgraphIdentity()->contentRepositoryIdentifier, $workspace->getWorkspaceName());
                     $this->feedbackCollection->add($updateWorkspaceInfo);
                 }
             }
@@ -101,9 +103,7 @@ abstract class AbstractChange implements ChangeInterface
     protected function findParentNode(NodeInterface $node): ?NodeInterface
     {
         return $this->nodeAccessorManager->accessorFor(
-            $node->getContentStreamIdentifier(),
-            $node->getDimensionSpacePoint(),
-            $node->getVisibilityConstraints()
+            $node->getSubgraphIdentity()
         )->findParentNode($node);
     }
 

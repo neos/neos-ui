@@ -14,20 +14,12 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 use InvalidArgumentException;
 use Neos\ContentRepository\Feature\NodeMove\Command\MoveNodeAggregate;
-use Neos\Flow\Annotations as Flow;
-use Neos\ContentRepository\Feature\NodeAggregateCommandHandler;
 use Neos\ContentRepository\Feature\NodeMove\Command\RelationDistributionStrategy;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 
 class MoveAfter extends AbstractStructuralChange
 {
-    /**
-     * @Flow\Inject
-     * @var NodeAggregateCommandHandler
-     */
-    protected $nodeAggregateCommandHandler;
-
     /**
      * "Subject" is the to-be-moved node; the "sibling" node is the node after which the "Subject" should be copied.
      */
@@ -80,8 +72,8 @@ class MoveAfter extends AbstractStructuralChange
                 ->equals($parentNodeOfPreviousSibling->getNodeAggregateIdentifier());
 
             $command = new MoveNodeAggregate(
-                $subject->getContentStreamIdentifier(),
-                $subject->getDimensionSpacePoint(),
+                $subject->getSubgraphIdentity()->contentStreamIdentifier,
+                $subject->getSubgraphIdentity()->dimensionSpacePoint,
                 $subject->getNodeAggregateIdentifier(),
                 $hasEqualParentNode ? null : $parentNodeOfPreviousSibling->getNodeAggregateIdentifier(),
                 $precedingSibling->getNodeAggregateIdentifier(),
@@ -90,18 +82,8 @@ class MoveAfter extends AbstractStructuralChange
                 $this->getInitiatingUserIdentifier()
             );
 
-            // we render content directly as response of this operation, so we need to flush the caches
-            $doFlushContentCache = $this->contentCacheFlusher->scheduleFlushNodeAggregate(
-                $subject->getContentStreamIdentifier(),
-                $subject->getNodeAggregateIdentifier()
-            );
-            $this->nodeAggregateCommandHandler->handleMoveNodeAggregate($command)
-                ->blockUntilProjectionsAreUpToDate();
-            $doFlushContentCache();
-            $this->contentCacheFlusher->flushNodeAggregate(
-                $parentNodeOfPreviousSibling->getContentStreamIdentifier(),
-                $parentNodeOfPreviousSibling->getNodeAggregateIdentifier()
-            );
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->getSubgraphIdentity()->contentRepositoryIdentifier);
+            $contentRepository->handle($command)->block();
 
             $updateParentNodeInfo = new UpdateNodeInfo();
             $updateParentNodeInfo->setNode($parentNodeOfPreviousSibling);

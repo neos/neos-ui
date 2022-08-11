@@ -31,9 +31,11 @@ class CreateAfter extends AbstractCreate
             return false;
         }
         $parent = $this->findParentNode($this->subject);
-        $nodeType = $this->getNodeType();
+        $nodeTypeName = $this->getNodeTypeName();
+        $contentRepository = $this->contentRepositoryRegistry->get($parent->getSubgraphIdentity()->contentRepositoryIdentifier);
+        $nodeType = $contentRepository->getNodeTypeManager()->getNodeType($nodeTypeName->getValue());
 
-        return $parent && $nodeType && $this->isNodeTypeAllowedAsChildNode($parent, $nodeType);
+        return $this->isNodeTypeAllowedAsChildNode($parent, $nodeType);
     }
 
     /**

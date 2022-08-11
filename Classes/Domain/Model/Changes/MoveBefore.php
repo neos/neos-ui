@@ -14,19 +14,12 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 use Neos\ContentRepository\Feature\NodeAggregateCommandHandler;
 use Neos\ContentRepository\Feature\NodeMove\Command\MoveNodeAggregate;
-use Neos\Flow\Annotations as Flow;
 use Neos\ContentRepository\Feature\NodeMove\Command\RelationDistributionStrategy;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 
 class MoveBefore extends AbstractStructuralChange
 {
-    /**
-     * @Flow\Inject
-     * @var NodeAggregateCommandHandler
-     */
-    protected $nodeAggregateCommandHandler;
-
     /**
      * "Subject" is the to-be-moved node; the "sibling" node is the node after which the "Subject" should be copied.
      */
@@ -74,15 +67,12 @@ class MoveBefore extends AbstractStructuralChange
             $hasEqualParentNode = $parentNode->getNodeAggregateIdentifier()
                 ->equals($succeedingSiblingParent->getNodeAggregateIdentifier());
 
-            // we render content directly as response of this operation, so we need to flush the caches
-            $doFlushContentCache = $this->contentCacheFlusher->scheduleFlushNodeAggregate(
-                $subject->getContentStreamIdentifier(),
-                $subject->getNodeAggregateIdentifier()
-            );
-            $this->nodeAggregateCommandHandler->handleMoveNodeAggregate(
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->getSubgraphIdentity()->contentRepositoryIdentifier);
+
+            $contentRepository->handle(
                 new MoveNodeAggregate(
-                    $subject->getContentStreamIdentifier(),
-                    $subject->getDimensionSpacePoint(),
+                    $subject->getSubgraphIdentity()->contentStreamIdentifier,
+                    $subject->getSubgraphIdentity()->dimensionSpacePoint,
                     $subject->getNodeAggregateIdentifier(),
                     $hasEqualParentNode
                         ? null
@@ -92,12 +82,7 @@ class MoveBefore extends AbstractStructuralChange
                     RelationDistributionStrategy::STRATEGY_GATHER_ALL,
                     $this->getInitiatingUserIdentifier()
                 )
-            )->blockUntilProjectionsAreUpToDate();
-            $doFlushContentCache();
-            $this->contentCacheFlusher->flushNodeAggregate(
-                $succeedingSiblingParent->getContentStreamIdentifier(),
-                $succeedingSiblingParent->getNodeAggregateIdentifier()
-            );
+            )->block();
 
             $updateParentNodeInfo = new UpdateNodeInfo();
             $updateParentNodeInfo->setNode($succeedingSiblingParent);

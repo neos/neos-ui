@@ -14,7 +14,7 @@ namespace Neos\Neos\Ui\Domain\Model;
  */
 
 
-use Neos\ContentRepository\Projection\Content\NodeInterface;
+use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
 
 /**
  * An interface to describe a change

@@ -14,7 +14,8 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
 use Neos\ContentRepository\NodeAccess\NodeAccessorManager;
 use Neos\ContentRepository\SharedModel\NodeAddressFactory;
 use Neos\ContentRepository\SharedModel\VisibilityConstraints;
-use Neos\ContentRepository\Projection\Content\NodeInterface;
+use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
@@ -33,9 +34,9 @@ class UpdateNodeInfo extends AbstractFeedback
 
     /**
      * @Flow\Inject
-     * @var NodeAddressFactory
+     * @var ContentRepositoryRegistry
      */
-    protected $nodeAddressFactory;
+    protected $contentRepositoryRegistry;
 
     /**
      * @Flow\Inject
@@ -96,8 +97,8 @@ class UpdateNodeInfo extends AbstractFeedback
         $feedbackNode = $feedback->getNode();
 
         return $this->node && $feedbackNode && $this->node->getNodeAggregateIdentifier()->equals(
-                $feedbackNode->getNodeAggregateIdentifier()
-            );
+            $feedbackNode->getNodeAggregateIdentifier()
+        );
     }
 
     /**
@@ -121,8 +122,11 @@ class UpdateNodeInfo extends AbstractFeedback
      */
     public function serializeNodeRecursively(NodeInterface $node, ControllerContext $controllerContext): array
     {
+        $contentRepository = $this->contentRepositoryRegistry->get($node->getSubgraphIdentity()->contentRepositoryIdentifier);
+        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
+
         $result = [
-            $this->nodeAddressFactory->createFromNode($node)->serializeForUri()
+            $nodeAddressFactory->createFromNode($node)->serializeForUri()
             => $this->nodeInfoHelper->renderNodeWithPropertiesAndChildrenInformation(
                 $node,
                 $controllerContext
@@ -131,9 +135,7 @@ class UpdateNodeInfo extends AbstractFeedback
 
         if ($this->isRecursive === true) {
             $nodeAccessor = $this->nodeAccessorManager->accessorFor(
-                $node->getContentStreamIdentifier(),
-                $node->getDimensionSpacePoint(),
-                VisibilityConstraints::withoutRestrictions()
+                $node->getSubgraphIdentity()
             );
             foreach ($nodeAccessor->findChildNodes($node) as $childNode) {
                 $result = array_merge($result, $this->serializeNodeRecursively($childNode, $controllerContext));

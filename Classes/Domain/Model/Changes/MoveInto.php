@@ -13,23 +13,13 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  */
 
 use Neos\ContentRepository\Feature\NodeMove\Command\MoveNodeAggregate;
-use Neos\ContentRepository\NodeAccess\NodeAccessorManager;
-use Neos\ContentRepository\Feature\NodeAggregateCommandHandler;
-use Neos\ContentRepository\SharedModel\VisibilityConstraints;
-use Neos\ContentRepository\Projection\Content\NodeInterface;
-use Neos\Flow\Annotations as Flow;
+use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
 use Neos\ContentRepository\Feature\NodeMove\Command\RelationDistributionStrategy;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 
 class MoveInto extends AbstractStructuralChange
 {
-    /**
-     * @Flow\Inject
-     * @var NodeAggregateCommandHandler
-     */
-    protected $nodeAggregateCommandHandler;
-
     protected ?string $parentContextPath;
 
     public function setParentContextPath(string $parentContextPath): void
@@ -44,7 +34,8 @@ class MoveInto extends AbstractStructuralChange
         }
 
         return $this->nodeService->getNodeFromContextPath(
-            $this->parentContextPath
+            $this->parentContextPath,
+            $this->getSubject()->getSubgraphIdentity()->contentRepositoryIdentifier
         );
     }
 
@@ -82,23 +73,17 @@ class MoveInto extends AbstractStructuralChange
         $subject = $this->subject;
         if ($this->canApply() && $parentNode && $subject) {
             $nodeAccessor = $this->nodeAccessorManager->accessorFor(
-                $subject->getContentStreamIdentifier(),
-                $subject->getDimensionSpacePoint(),
-                VisibilityConstraints::withoutRestrictions()
+                $subject->getSubgraphIdentity()
             );
             $otherParent = $nodeAccessor->findParentNode($subject);
             $hasEqualParentNode = $otherParent && $otherParent->getNodeAggregateIdentifier()
                     ->equals($parentNode->getNodeAggregateIdentifier());
 
-            // we render content directly as response of this operation, so we need to flush the caches
-            $doFlushContentCache = $this->contentCacheFlusher->scheduleFlushNodeAggregate(
-                $subject->getContentStreamIdentifier(),
-                $subject->getNodeAggregateIdentifier()
-            );
-            $this->nodeAggregateCommandHandler->handleMoveNodeAggregate(
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->getSubgraphIdentity()->contentRepositoryIdentifier);
+            $contentRepository->handle(
                 new MoveNodeAggregate(
-                    $subject->getContentStreamIdentifier(),
-                    $subject->getDimensionSpacePoint(),
+                    $subject->getSubgraphIdentity()->contentStreamIdentifier,
+                    $subject->getSubgraphIdentity()->dimensionSpacePoint,
                     $subject->getNodeAggregateIdentifier(),
                     $hasEqualParentNode ? null : $parentNode->getNodeAggregateIdentifier(),
                     null,
@@ -106,14 +91,7 @@ class MoveInto extends AbstractStructuralChange
                     RelationDistributionStrategy::STRATEGY_GATHER_ALL,
                     $this->getInitiatingUserIdentifier()
                 )
-            )->blockUntilProjectionsAreUpToDate();
-            $doFlushContentCache();
-            if (!$hasEqualParentNode) {
-                $this->contentCacheFlusher->flushNodeAggregate(
-                    $parentNode->getContentStreamIdentifier(),
-                    $parentNode->getNodeAggregateIdentifier()
-                );
-            }
+            )->block();
 
             $updateParentNodeInfo = new UpdateNodeInfo();
             $updateParentNodeInfo->setNode($parentNode);

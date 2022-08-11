@@ -11,6 +11,7 @@ namespace Neos\Neos\Ui\NodeCreationHandler;
  * source code.
  */
 
+use Neos\ContentRepository\ContentRepository;
 use Neos\ContentRepository\SharedModel\NodeType\NodeTypeManager;
 use Neos\ContentRepository\Feature\Common\NodeTypeNotFoundException;
 use Neos\ContentRepository\Feature\NodeCreation\Command\CreateNodeAggregateWithNode;
@@ -28,12 +29,6 @@ class ContentTitleNodeCreationHandler implements NodeCreationHandlerInterface
 {
     /**
      * @Flow\Inject
-     * @var NodeTypeManager
-     */
-    protected $nodeTypeManager;
-
-    /**
-     * @Flow\Inject
      * @var TransliterationService
      */
     protected $transliterationService;
@@ -44,10 +39,10 @@ class ContentTitleNodeCreationHandler implements NodeCreationHandlerInterface
      * @param array<string|int,mixed> $data incoming data from the creationDialog
      * @throws NodeTypeNotFoundException
      */
-    public function handle(CreateNodeAggregateWithNode $command, array $data): CreateNodeAggregateWithNode
+    public function handle(CreateNodeAggregateWithNode $command, array $data, ContentRepository $contentRepository): CreateNodeAggregateWithNode
     {
         if (
-            !$this->nodeTypeManager->getNodeType($command->nodeTypeName->getValue())
+            !$contentRepository->getNodeTypeManager()->getNodeType($command->nodeTypeName->getValue())
                 ->isOfType('Neos.Neos:Content')
         ) {
             return $command;

@@ -11,6 +11,7 @@ namespace Neos\Neos\Ui\NodeCreationHandler;
  * source code.
  */
 
+use Neos\ContentRepository\ContentRepository;
 use Neos\ContentRepository\SharedModel\NodeType\NodeTypeManager;
 use Neos\ContentRepository\Feature\NodeCreation\Command\CreateNodeAggregateWithNode;
 use Neos\Flow\Annotations as Flow;
@@ -32,21 +33,15 @@ class CreationDialogPropertiesCreationHandler implements NodeCreationHandlerInte
     protected $propertyMapper;
 
     /**
-     * @Flow\Inject
-     * @var NodeTypeManager
-     */
-    protected $nodeTypeManager;
-
-    /**
      * @param array<string|int,mixed> $data
      */
-    public function handle(CreateNodeAggregateWithNode $command, array $data): CreateNodeAggregateWithNode
+    public function handle(CreateNodeAggregateWithNode $command, array $data, ContentRepository $contentRepository): CreateNodeAggregateWithNode
     {
         $propertyMappingConfiguration = $this->propertyMapper->buildPropertyMappingConfiguration();
         $propertyMappingConfiguration->forProperty('*')->allowAllProperties();
         $propertyMappingConfiguration->setTypeConverterOption(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_OVERRIDE_TARGET_TYPE_ALLOWED, true);
 
-        $nodeType = $this->nodeTypeManager->getNodeType($command->nodeTypeName->getValue());
+        $nodeType = $contentRepository->getNodeTypeManager()->getNodeType($command->nodeTypeName->getValue());
         $propertyValues = $command->initialPropertyValues;
         foreach ($nodeType->getConfiguration('properties') as $propertyName => $propertyConfiguration) {
             if (
@@ -65,10 +60,8 @@ class CreationDialogPropertiesCreationHandler implements NodeCreationHandlerInte
             }
 
             $propertyValues = $propertyValues->withValue($propertyName, $propertyValue);
-
         }
 
         return $command->withInitialPropertyValues($propertyValues);
     }
 }
-

@@ -12,8 +12,9 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
  */
 
 use Neos\ContentRepository\Projection\Workspace\Workspace;
-use Neos\ContentRepository\Projection\Workspace\WorkspaceFinder;
 use Neos\ContentRepository\SharedModel\Workspace\WorkspaceName;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
+use Neos\ContentRepository\Factory\ContentRepositoryIdentifier;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
@@ -32,17 +33,19 @@ class UpdateWorkspaceInfo extends AbstractFeedback
 
     /**
      * @Flow\Inject
-     * @var WorkspaceFinder
+     * @var ContentRepositoryRegistry
      */
-    protected $workspaceFinder;
+    protected $contentRepositoryRegistry;
 
     /**
      * UpdateWorkspaceInfo constructor.
      *
      * @param WorkspaceName $workspaceName
      */
-    public function __construct(WorkspaceName $workspaceName = null)
-    {
+    public function __construct(
+        private readonly ContentRepositoryIdentifier $contentRepositoryIdentifier,
+        WorkspaceName $workspaceName = null
+    ) {
         $this->workspaceName = $workspaceName;
     }
 
@@ -109,14 +112,18 @@ class UpdateWorkspaceInfo extends AbstractFeedback
      */
     public function serializePayload(ControllerContext $controllerContext)
     {
-        $workspace = $this->workspaceName
-            ? $this->workspaceFinder->findOneByName($this->workspaceName)
-            : null;
+        if (!$this->workspaceName) {
+            return null;
+        }
 
-        return $workspace && $this->workspaceName ? [
+        $contentRepository = $this->contentRepositoryRegistry->get($this->contentRepositoryIdentifier);
+        $workspace = $contentRepository->getWorkspaceFinder()->findOneByName($this->workspaceName);
+
+        return $workspace ? [
             'name' => (string)$this->workspaceName,
             'publishableNodes' => $this->workspaceService->getPublishableNodeInfo(
-                $this->workspaceName
+                $this->workspaceName,
+                $this->contentRepositoryIdentifier
             ),
             'baseWorkspace' => (string)$workspace->getBaseWorkspaceName()
         ] : [];

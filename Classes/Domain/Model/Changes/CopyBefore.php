@@ -14,7 +14,7 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 use Neos\ContentRepository\SharedModel\Node\NodeName;
 use Neos\ContentRepository\SharedModel\Node\OriginDimensionSpacePoint;
-use Neos\ContentRepository\Projection\Content\NodeInterface;
+use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
 use Neos\Flow\Annotations as Flow;
 use Neos\ContentRepository\Feature\NodeDuplication\Command\CopyNodesRecursively;
 use Neos\ContentRepository\Feature\NodeDuplication\NodeDuplicationCommandHandler;
@@ -22,12 +22,6 @@ use Neos\ContentRepository\SharedModel\User\UserIdentifier;
 
 class CopyBefore extends AbstractStructuralChange
 {
-    /**
-     * @Flow\Inject
-     * @var NodeDuplicationCommandHandler
-     */
-    protected $nodeDuplicationCommandHandler;
-
     /**
      * "Subject" is the to-be-copied node; the "sibling" node is the node after which the "Subject" should be copied.
      */
@@ -67,22 +61,22 @@ class CopyBefore extends AbstractStructuralChange
             && !is_null($parentNodeOfSucceedingSibling)
         ) {
             $targetNodeName = NodeName::fromString(uniqid('node-'));
+
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->getSubgraphIdentity()->contentRepositoryIdentifier);
             $command = CopyNodesRecursively::create(
-                $this->contentGraph->getSubgraphByIdentifier(
-                    $subject->getContentStreamIdentifier(),
-                    $subject->getDimensionSpacePoint(),
-                    $subject->getVisibilityConstraints()
+                $contentRepository->getContentGraph()->getSubgraphByIdentifier(
+                    $subject->getSubgraphIdentity()->contentStreamIdentifier,
+                    $subject->getSubgraphIdentity()->dimensionSpacePoint,
+                    $subject->getSubgraphIdentity()->visibilityConstraints
                 ),
                 $subject,
-                OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->getDimensionSpacePoint()),
+                OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->getSubgraphIdentity()->dimensionSpacePoint),
                 UserIdentifier::forSystemUser(), // TODO
                 $parentNodeOfSucceedingSibling->getNodeAggregateIdentifier(),
                 $succeedingSibling->getNodeAggregateIdentifier(),
                 $targetNodeName
             );
-
-            $this->nodeDuplicationCommandHandler->handleCopyNodesRecursively($command)
-                ->blockUntilProjectionsAreUpToDate();
+            $contentRepository->handle($command)->block();
 
             /** @var NodeInterface $newlyCreatedNode */
             $newlyCreatedNode = $this->nodeAccessorFor($parentNodeOfSucceedingSibling)
@@ -90,12 +84,6 @@ class CopyBefore extends AbstractStructuralChange
                     $parentNodeOfSucceedingSibling,
                     $targetNodeName
                 );
-            // we render content directly as response of this operation,
-            // so we need to flush the caches at the copy target
-            $this->contentCacheFlusher->flushNodeAggregate(
-                $newlyCreatedNode->getContentStreamIdentifier(),
-                $newlyCreatedNode->getNodeAggregateIdentifier()
-            );
             $this->finish($newlyCreatedNode);
             // NOTE: we need to run "finish" before "addNodeCreatedFeedback"
             // to ensure the new node already exists when the last feedback is processed

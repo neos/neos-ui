@@ -11,13 +11,14 @@ namespace Neos\Neos\Ui\FlowQueryOperations;
  * source code.
  */
 
-use Neos\ContentRepository\SharedModel\NodeType\NodeTypeConstraintFactory;
-use Neos\ContentRepository\Projection\Content\SearchTerm;
+use Neos\ContentRepository\SharedModel\NodeType\NodeTypeConstraintParser;
+use Neos\ContentRepository\Projection\ContentGraph\SearchTerm;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Eel\FlowQuery\Operations\AbstractOperation;
 use Neos\ContentRepository\NodeAccess\NodeAccessorManager;
-use Neos\ContentRepository\Projection\Content\NodeInterface;
+use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
 
 /**
  * Custom search operation using the Content Graph fulltext search
@@ -48,9 +49,9 @@ class SearchOperation extends AbstractOperation
 
     /**
      * @Flow\Inject
-     * @var NodeTypeConstraintFactory
+     * @var ContentRepositoryRegistry
      */
-    protected $nodeTypeConstraintFactory;
+    protected $contentRepositoryRegistry;
 
     /**
      * {@inheritdoc}
@@ -78,13 +79,14 @@ class SearchOperation extends AbstractOperation
         /** @var NodeInterface $contextNode */
         $contextNode = $context[0];
         $nodeAccessor = $this->nodeAccessorManager->accessorFor(
-            $contextNode->getContentStreamIdentifier(),
-            $contextNode->getDimensionSpacePoint(),
-            $contextNode->getVisibilityConstraints()
+            $contextNode->getSubgraphIdentity()
         );
+
+        $contentRepository = $this->contentRepositoryRegistry->get($contextNode->getSubgraphIdentity()->contentRepositoryIdentifier);
+        $nodeTypeConstraintParser = NodeTypeConstraintParser::create($contentRepository->getNodeTypeManager());
         $nodes = $nodeAccessor->findDescendants(
             [$contextNode],
-            $this->nodeTypeConstraintFactory->parseFilterString($arguments[1] ?? ''),
+            $nodeTypeConstraintParser->parseFilterString($arguments[1] ?? ''),
             SearchTerm::fulltext($arguments[0] ?? '')
         );
         $flowQuery->setContext(iterator_to_array($nodes));

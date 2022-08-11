@@ -33,9 +33,11 @@ class Create extends AbstractCreate
     public function canApply(): bool
     {
         $subject = $this->getSubject();
-        $nodeType = $this->getNodeType();
+        $nodeTypeName = $this->getNodeTypeName();
+        $contentRepository = $this->contentRepositoryRegistry->get($subject->getSubgraphIdentity()->contentRepositoryIdentifier);
+        $nodeType = $contentRepository->getNodeTypeManager()->getNodeType($nodeTypeName->getValue());
 
-        return $subject && $nodeType && $this->isNodeTypeAllowedAsChildNode($subject, $nodeType);
+        return $this->isNodeTypeAllowedAsChildNode($subject, $nodeType);
     }
 
     /**

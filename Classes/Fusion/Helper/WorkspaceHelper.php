@@ -11,10 +11,9 @@ namespace Neos\Neos\Ui\Fusion\Helper;
  * source code.
  */
 
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
+use Neos\ContentRepository\Factory\ContentRepositoryIdentifier;
 use Neos\Eel\ProtectedContextAwareInterface;
-use Neos\ContentRepository\Projection\Content\ContentSubgraphInterface;
-use Neos\ContentRepository\Projection\Workspace\Workspace;
-use Neos\ContentRepository\Projection\Workspace\WorkspaceFinder;
 use Neos\ContentRepository\SharedModel\Workspace\WorkspaceName;
 use Neos\Neos\Domain\Model\WorkspaceName as NeosWorkspaceName;
 use Neos\Flow\Security\Context;
@@ -29,9 +28,9 @@ class WorkspaceHelper implements ProtectedContextAwareInterface
 {
     /**
      * @Flow\Inject
-     * @var WorkspaceFinder
+     * @var ContentRepositoryRegistry
      */
-    protected $workspaceFinder;
+    protected $contentRepositoryRegistry;
 
     /**
      * @Flow\Inject
@@ -51,61 +50,28 @@ class WorkspaceHelper implements ProtectedContextAwareInterface
      */
     protected $securityContext;
 
-
-    /**
-     * @param ContentSubgraphInterface $contentSubgraph
-     * @return array|Workspace[]
-     */
-    public function getWorkspaceChain(?ContentSubgraphInterface $contentSubgraph): array
+    public function getAllowedTargetWorkspaces(ContentRepositoryIdentifier $contentRepositoryIdentifier)
     {
-        if ($contentSubgraph === null) {
-            return [];
-        }
-
-        /** @var Workspace $currentWorkspace */
-        $currentWorkspace = $this->workspaceFinder->findOneByCurrentContentStreamIdentifier(
-            $contentSubgraph->getContentStreamIdentifier()
-        );
-        $workspaceChain = [];
-        // TODO: Maybe write CTE here
-        while ($currentWorkspace instanceof Workspace) {
-            $workspaceChain[(string)$currentWorkspace->getWorkspaceName()] = $currentWorkspace;
-            $currentWorkspace = $currentWorkspace->getBaseWorkspaceName()
-                ? $this->workspaceFinder->findOneByName($currentWorkspace->getBaseWorkspaceName())
-                : null;
-        }
-
-        return $workspaceChain;
-    }
-
-    /**
-     * @return array<int,array<string,string>>
-     */
-    public function getPublishableNodeInfo(WorkspaceName $workspaceName): array
-    {
-        return $this->workspaceService->getPublishableNodeInfo($workspaceName);
-    }
-
-    public function getAllowedTargetWorkspaces()
-    {
-        return $this->workspaceService->getAllowedTargetWorkspaces();
+        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryIdentifier);
+        return $this->workspaceService->getAllowedTargetWorkspaces($contentRepository);
     }
 
     /**
      * @return array<string,mixed>
      */
-    public function getPersonalWorkspace(): array
+    public function getPersonalWorkspace(ContentRepositoryIdentifier $contentRepositoryIdentifier): array
     {
+        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryIdentifier);
         $currentAccount = $this->securityContext->getAccount();
         $personalWorkspaceName = NeosWorkspaceName::fromAccountIdentifier(
             $currentAccount->getAccountIdentifier()
         )->toContentRepositoryWorkspaceName();
-        $personalWorkspace = $this->workspaceFinder->findOneByName($personalWorkspaceName);
+        $personalWorkspace = $contentRepository->getWorkspaceFinder()->findOneByName($personalWorkspaceName);
 
         return !is_null($personalWorkspace)
             ? [
                 'name' => $personalWorkspace->getWorkspaceName(),
-                'publishableNodes' => $this->getPublishableNodeInfo($personalWorkspaceName),
+                'publishableNodes' => $this->workspaceService->getPublishableNodeInfo($personalWorkspaceName, $contentRepositoryIdentifier),
                 'baseWorkspace' => $personalWorkspace->getBaseWorkspaceName(),
                 // TODO: FIX readonly flag!
                 //'readOnly' => !$this->domainUserService->currentUserCanPublishToWorkspace($baseWorkspace)

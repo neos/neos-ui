@@ -11,49 +11,33 @@ namespace Neos\Neos\Ui\ContentRepository\Service;
  * source code.
  */
 
+use Neos\ContentRepository\ContentRepository;
+use Neos\ContentRepository\Projection\ContentGraph\ContentSubgraphIdentity;
 use Neos\ContentRepository\Projection\Workspace\Workspace;
-use Neos\Eel\FlowQuery\FlowQuery;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\ContentRepository\NodeAccess\NodeAccessorManager;
 use Neos\ContentRepository\SharedModel\NodeAddress;
 use Neos\ContentRepository\SharedModel\NodeAddressFactory;
 use Neos\ContentRepository\SharedModel\VisibilityConstraints;
-use Neos\ContentRepository\Projection\Changes\ChangeFinder;
-use Neos\ContentRepository\Projection\Content\NodeInterface;
-use Neos\ContentRepository\Projection\Workspace\WorkspaceFinder;
+use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
 use Neos\ContentRepository\SharedModel\Workspace\WorkspaceName;
+use Neos\ContentRepository\Factory\ContentRepositoryIdentifier;
 use Neos\Flow\Annotations as Flow;
+use Neos\Neos\PendingChangesProjection\ChangeProjection;
 use Neos\Neos\Service\UserService;
 use Neos\Neos\Domain\Service\UserService as DomainUserService;
-use Neos\Neos\Ui\Service\PublishingService;
 
 /**
  * @Flow\Scope("singleton")
  */
 class WorkspaceService
 {
-    /**
-     * @Flow\Inject
-     * @var WorkspaceFinder
-     */
-    protected $workspaceFinder;
-
-    /**
-     * @Flow\Inject
-     * @var ChangeFinder
-     */
-    protected $changeFinder;
 
     /**
      * @Flow\Inject
      * @var NodeAccessorManager
      */
     protected $nodeAccessorManager;
-
-    /**
-     * @Flow\Inject
-     * @var PublishingService
-     */
-    protected $publishingService;
 
     /**
      * @Flow\Inject
@@ -69,22 +53,24 @@ class WorkspaceService
 
     /**
      * @Flow\Inject
-     * @var NodeAddressFactory
+     * @var ContentRepositoryRegistry
      */
-    protected $nodeAddressFactory;
+    protected $contentRepositoryRegistry;
 
     /**
      * Get all publishable node context paths for a workspace
      *
      * @return array<int,array<string,string>>
      */
-    public function getPublishableNodeInfo(WorkspaceName $workspaceName): array
+    public function getPublishableNodeInfo(WorkspaceName $workspaceName, ContentRepositoryIdentifier $contentRepositoryIdentifier): array
     {
-        $workspace = $this->workspaceFinder->findOneByName($workspaceName);
+        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryIdentifier);
+        $workspace = $contentRepository->getWorkspaceFinder()->findOneByName($workspaceName);
         if (is_null($workspace) || $workspace->getBaseWorkspaceName() === null) {
             return [];
         }
-        $changes = $this->changeFinder->findByContentStreamIdentifier($workspace->getCurrentContentStreamIdentifier());
+        $changeFinder = $contentRepository->projectionState(ChangeProjection::class);
+        $changes = $changeFinder->findByContentStreamIdentifier($workspace->getCurrentContentStreamIdentifier());
         $unpublishedNodes = [];
         foreach ($changes as $change) {
             if ($change->removalAttachmentPoint) {
@@ -111,18 +97,23 @@ class WorkspaceService
                 ];
             } else {
                 $nodeAccessor = $this->nodeAccessorManager->accessorFor(
-                    $workspace->getCurrentContentStreamIdentifier(),
-                    $change->originDimensionSpacePoint->toDimensionSpacePoint(),
-                    VisibilityConstraints::withoutRestrictions()
+                    new ContentSubgraphIdentity(
+                        $contentRepositoryIdentifier,
+                        $workspace->getCurrentContentStreamIdentifier(),
+                        $change->originDimensionSpacePoint->toDimensionSpacePoint(),
+                        VisibilityConstraints::withoutRestrictions()
+                    )
                 );
                 $node = $nodeAccessor->findByIdentifier($change->nodeAggregateIdentifier);
 
                 if ($node instanceof NodeInterface) {
                     $documentNode = $this->getClosestDocumentNode($node);
                     if ($documentNode instanceof NodeInterface) {
+                        $contentRepository = $this->contentRepositoryRegistry->get($documentNode->getSubgraphIdentity()->contentRepositoryIdentifier);
+                        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
                         $unpublishedNodes[] = [
-                            'contextPath' => $this->nodeAddressFactory->createFromNode($node)->serializeForUri(),
-                            'documentContextPath' => $this->nodeAddressFactory->createFromNode($documentNode)
+                            'contextPath' => $nodeAddressFactory->createFromNode($node)->serializeForUri(),
+                            'documentContextPath' => $nodeAddressFactory->createFromNode($documentNode)
                                 ->serializeForUri()
                         ];
                     }
@@ -140,20 +131,20 @@ class WorkspaceService
      *
      * @return array<string,array<string,mixed>>
      */
-    public function getAllowedTargetWorkspaces(): array
+    public function getAllowedTargetWorkspaces(ContentRepository $contentRepository): array
     {
         $user = $this->domainUserService->getCurrentUser();
 
         $workspacesArray = [];
         /** @var Workspace $workspace */
-        foreach ($this->workspaceFinder->findAll() as $workspace) {
+        foreach ($contentRepository->getWorkspaceFinder()->findAll() as $workspace) {
             // FIXME: This check should be implemented through a specialized Workspace Privilege or something similar
             // Skip workspace not owned by current user
             if ($workspace->getWorkspaceOwner() !== null && $workspace->getWorkspaceOwner() !== $user) {
                 continue;
             }
             // Skip own personal workspace
-            if ($workspace === $this->userService->getPersonalWorkspace()) {
+            if ($workspace->getWorkspaceName()->name === $this->userService->getPersonalWorkspaceName()) {
                 continue;
             }
 
@@ -174,24 +165,10 @@ class WorkspaceService
         return $workspacesArray;
     }
 
-    /**
-     * Sets base workspace of current user workspace
-     *
-     * @param Workspace $workspace
-     * @return void
-     */
-    public function setBaseWorkspace(Workspace $workspace)
-    {
-        $userWorkspace = $this->userService->getPersonalWorkspace();
-        $userWorkspace->setBaseWorkspace($workspace);
-    }
-
     private function getClosestDocumentNode(NodeInterface $node): ?NodeInterface
     {
         $nodeAccessor = $this->nodeAccessorManager->accessorFor(
-            $node->getContentStreamIdentifier(),
-            $node->getDimensionSpacePoint(),
-            $node->getVisibilityConstraints()
+            $node->getSubgraphIdentity()
         );
 
         while ($node instanceof NodeInterface) {

@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Neos\Ui\FlowQueryOperations;
 
 /*
@@ -11,13 +12,15 @@ namespace Neos\Neos\Ui\FlowQueryOperations;
  * source code.
  */
 
-use Neos\ContentRepository\SharedModel\NodeType\NodeTypeConstraintFactory;
+use Neos\ContentRepository\Projection\ContentGraph\ContentSubgraphIdentity;
+use Neos\ContentRepository\SharedModel\NodeType\NodeTypeConstraintParser;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Eel\FlowQuery\Operations\AbstractOperation;
 use Neos\ContentRepository\NodeAccess\NodeAccessorManager;
 use Neos\ContentRepository\SharedModel\NodeAddressFactory;
 use Neos\ContentRepository\SharedModel\VisibilityConstraints;
-use Neos\ContentRepository\Projection\Content\NodeInterface;
+use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
 use Neos\Flow\Annotations as Flow;
 
 class NeosUiDefaultNodesOperation extends AbstractOperation
@@ -44,16 +47,9 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
 
     /**
      * @Flow\Inject
-     * @var NodeAddressFactory
+     * @var ContentRepositoryRegistry
      */
-    protected $nodeAddressFactory;
-
-
-    /**
-     * @Flow\Inject
-     * @var NodeTypeConstraintFactory
-     */
-    protected $nodeTypeConstraintFactory;
+    protected $contentRepositoryRegistry;
 
     /**
      * {@inheritdoc}
@@ -83,12 +79,13 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
         /** @var string[] $toggledNodes Node Addresses */
         list($baseNodeType, $loadingDepth, $toggledNodes, $clipboardNodesContextPaths) = $arguments;
 
-        $baseNodeTypeConstraints = $this->nodeTypeConstraintFactory->parseFilterString($baseNodeType);
+        $contentRepository = $this->contentRepositoryRegistry->get($documentNode->getSubgraphIdentity()->contentRepositoryIdentifier);
+        $nodeTypeConstraintParser = NodeTypeConstraintParser::create($contentRepository->getNodeTypeManager());
+
+        $baseNodeTypeConstraints = $nodeTypeConstraintParser->parseFilterString($baseNodeType);
 
         $nodeAccessor = $this->nodeAccessorManager->accessorFor(
-            $documentNode->getContentStreamIdentifier(),
-            $documentNode->getDimensionSpacePoint(),
-            VisibilityConstraints::withoutRestrictions()
+            $documentNode->getSubgraphIdentity()
         );
 
         // Collect all parents of documentNode up to siteNode
@@ -113,8 +110,7 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
 
         $gatherNodesRecursively = function (
             &$nodes,
-            NodeInterface
-            $baseNode,
+            NodeInterface $baseNode,
             $level = 0
         ) use (
             &$gatherNodesRecursively,
@@ -124,7 +120,8 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
             $parents,
             $nodeAccessor
         ) {
-            $baseNodeAddress = $this->nodeAddressFactory->createFromNode($baseNode);
+            $contentRepository = $this->contentRepositoryRegistry->get($baseNode->getSubgraphIdentity()->contentRepositoryIdentifier);
+            $baseNodeAddress = NodeAddressFactory::create($contentRepository)->createFromNode($baseNode);
 
             if ($level < $loadingDepth || // load all nodes within loadingDepth
                 $loadingDepth === 0 || // unlimited loadingDepth
@@ -145,12 +142,17 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
             $nodes[(string)$documentNode->getNodeAggregateIdentifier()] = $documentNode;
         }
 
+        $contentRepository = $this->contentRepositoryRegistry->get($documentNode->getSubgraphIdentity()->contentRepositoryIdentifier);
         foreach ($clipboardNodesContextPaths as $clipboardNodeContextPath) {
-            $clipboardNodeAddress = $this->nodeAddressFactory->createFromUriString($clipboardNodeContextPath);
+            // TODO: does not work across multiple CRs yet.
+            $clipboardNodeAddress = NodeAddressFactory::create($contentRepository)->createFromUriString($clipboardNodeContextPath);
             $clipboardNode = $this->nodeAccessorManager->accessorFor(
-                $clipboardNodeAddress->contentStreamIdentifier,
-                $clipboardNodeAddress->dimensionSpacePoint,
-                VisibilityConstraints::withoutRestrictions()
+                new ContentSubgraphIdentity(
+                    $siteNode->getSubgraphIdentity()->contentRepositoryIdentifier,
+                    $clipboardNodeAddress->contentStreamIdentifier,
+                    $clipboardNodeAddress->dimensionSpacePoint,
+                    VisibilityConstraints::withoutRestrictions()
+                )
             )->findByIdentifier($clipboardNodeAddress->nodeAggregateIdentifier);
             if ($clipboardNode && !array_key_exists((string)$clipboardNode->getNodeAggregateIdentifier(), $nodes)) {
                 $nodes[(string)$clipboardNode->getNodeAggregateIdentifier()] = $clipboardNode;

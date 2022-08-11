@@ -20,7 +20,6 @@ use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 
 class MoveInto extends AbstractStructuralChange
 {
-
     protected ?string $parentContextPath;
 
     public function setParentContextPath(string $parentContextPath): void

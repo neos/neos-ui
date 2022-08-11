@@ -21,7 +21,6 @@ use Neos\Neos\Ui\ContentRepository\Service\NodeService;
 
 class NodeTreeBuilder
 {
-
     private string $rootContextPath;
     private string $activeContextPath;
 

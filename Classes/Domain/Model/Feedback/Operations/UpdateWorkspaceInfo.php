@@ -45,8 +45,7 @@ class UpdateWorkspaceInfo extends AbstractFeedback
     public function __construct(
         private readonly ContentRepositoryIdentifier $contentRepositoryIdentifier,
         WorkspaceName $workspaceName = null
-    )
-    {
+    ) {
         $this->workspaceName = $workspaceName;
     }
 

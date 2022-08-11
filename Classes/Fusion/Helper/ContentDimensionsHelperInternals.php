@@ -20,7 +20,6 @@ use Neos\ContentRepository\Factory\ContentRepositoryServiceInterface;
  */
 class ContentDimensionsHelperInternals implements ContentRepositoryServiceInterface
 {
-
     public function __construct(
         public readonly ContentDimensionSourceInterface $contentDimensionSource
     ) {

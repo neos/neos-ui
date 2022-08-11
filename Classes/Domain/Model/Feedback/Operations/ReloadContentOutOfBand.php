@@ -166,4 +166,3 @@ class ReloadContentOutOfBand extends AbstractFeedback
         }
     }
 }
-

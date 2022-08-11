@@ -410,9 +410,11 @@ class BackendServiceController extends ActionController
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
 
         /** @var array<int,NodeAddress> $nodeAddresses */
-        $nodeAddresses = array_map(fn (string $serializedNodeAddress) =>
+        $nodeAddresses = array_map(
+            fn (string $serializedNodeAddress) =>
             $nodeAddressFactory->createFromUriString($serializedNodeAddress),
-        $nodes);
+            $nodes
+        );
         $this->clipboard->copyNodes($nodeAddresses);
     }
 
@@ -442,9 +444,11 @@ class BackendServiceController extends ActionController
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
 
         /** @var array<int,NodeAddress> $nodeAddresses */
-        $nodeAddresses = array_map(fn (string $serializedNodeAddress) =>
+        $nodeAddresses = array_map(
+            fn (string $serializedNodeAddress) =>
             $nodeAddressFactory->createFromUriString($serializedNodeAddress),
-        $nodes);
+            $nodes
+        );
 
         $this->clipboard->cutNodes($nodeAddresses);
     }

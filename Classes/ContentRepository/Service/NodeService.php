@@ -78,7 +78,8 @@ class NodeService
     public function getNodeFromContextPath(string $contextPath, ContentRepositoryIdentifier $contentRepositoryIdentifier): ?NodeInterface
     {
         $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryIdentifier);
-        $nodeAddress = NodeAddressFactory::create($contentRepository)->createFromUriString($contextPath);;
+        $nodeAddress = NodeAddressFactory::create($contentRepository)->createFromUriString($contextPath);
+        ;
 
         $nodeAccessor = $this->nodeAccessorManager->accessorFor(
             new ContentSubgraphIdentity(

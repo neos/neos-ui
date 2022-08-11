@@ -99,4 +99,3 @@ class NeosUiFilteredChildrenOperation extends AbstractOperation
         $flowQuery->setContext($output);
     }
 }
-

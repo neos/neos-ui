@@ -60,10 +60,8 @@ class CreationDialogPropertiesCreationHandler implements NodeCreationHandlerInte
             }
 
             $propertyValues = $propertyValues->withValue($propertyName, $propertyValue);
-
         }
 
         return $command->withInitialPropertyValues($propertyValues);
     }
 }
-

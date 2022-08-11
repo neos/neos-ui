@@ -214,4 +214,3 @@ class RenderContentOutOfBand extends AbstractFeedback
         }
     }
 }
-

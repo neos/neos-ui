@@ -97,8 +97,8 @@ class UpdateNodeInfo extends AbstractFeedback
         $feedbackNode = $feedback->getNode();
 
         return $this->node && $feedbackNode && $this->node->getNodeAggregateIdentifier()->equals(
-                $feedbackNode->getNodeAggregateIdentifier()
-            );
+            $feedbackNode->getNodeAggregateIdentifier()
+        );
     }
 
     /**

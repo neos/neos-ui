@@ -280,12 +280,13 @@ export default (routes: Routes) => {
                 const assetSourceIdentifier = getElementInnerText(assetProxy, '.asset-source-identifier');
                 const assetSourceLabel = getElementInnerText(assetProxy, '.asset-source-label');
                 const assetProxyIdentifier = getElementInnerText(assetProxy, '.asset-proxy-identifier');
+                const identifier = getElementInnerText(assetProxy, '.local-asset-identifier') || (assetSourceIdentifier + '/' + assetProxyIdentifier);
                 return {
                     dataType: 'Neos.Media:Asset',
-                    loaderUri: 'assetProxy://' + assetSourceIdentifier + '/' + assetProxyIdentifier,
+                    loaderUri: 'assetProxy://' + identifier,
                     label: getElementInnerText(assetProxy, '.asset-proxy-label'),
                     preview: getElementAttributeValue(assetProxy, '[rel=thumbnail]', 'href'),
-                    identifier: getElementInnerText(assetProxy, '.local-asset-identifier') || (assetSourceIdentifier + '/' + assetProxyIdentifier),
+                    identifier,
                     assetSourceIdentifier,
                     assetSourceLabel,
                     assetProxyIdentifier

@@ -14,7 +14,7 @@ namespace Neos\Neos\Ui\Domain\Model;
  */
 
 
-use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
+use Neos\ContentRepository\Projection\ContentGraph\Node;
 
 /**
  * An interface to describe a change
@@ -24,12 +24,12 @@ interface ChangeInterface
     /**
      * Set the subject
      */
-    public function setSubject(NodeInterface $subject): void;
+    public function setSubject(Node $subject): void;
 
     /**
      * Get the subject
      */
-    public function getSubject(): ?NodeInterface;
+    public function getSubject(): ?Node;
 
     /**
      * Checks whether this change can be applied to the subject

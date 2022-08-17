@@ -12,12 +12,9 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
+use Neos\ContentRepository\Feature\NodeDuplication\Command\CopyNodesRecursively;
 use Neos\ContentRepository\SharedModel\Node\NodeName;
 use Neos\ContentRepository\SharedModel\Node\OriginDimensionSpacePoint;
-use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
-use Neos\Flow\Annotations as Flow;
-use Neos\ContentRepository\Feature\NodeDuplication\Command\CopyNodesRecursively;
-use Neos\ContentRepository\Feature\NodeDuplication\NodeDuplicationCommandHandler;
 use Neos\ContentRepository\SharedModel\User\UserIdentifier;
 
 class CopyBefore extends AbstractStructuralChange
@@ -62,26 +59,25 @@ class CopyBefore extends AbstractStructuralChange
         ) {
             $targetNodeName = NodeName::fromString(uniqid('node-'));
 
-            $contentRepository = $this->contentRepositoryRegistry->get($subject->getSubgraphIdentity()->contentRepositoryIdentifier);
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryIdentifier);
             $command = CopyNodesRecursively::create(
-                $contentRepository->getContentGraph()->getSubgraphByIdentifier(
-                    $subject->getSubgraphIdentity()->contentStreamIdentifier,
-                    $subject->getSubgraphIdentity()->dimensionSpacePoint,
-                    $subject->getSubgraphIdentity()->visibilityConstraints
+                $contentRepository->getContentGraph()->getSubgraph(
+                    $subject->subgraphIdentity->contentStreamIdentifier,
+                    $subject->subgraphIdentity->dimensionSpacePoint,
+                    $subject->subgraphIdentity->visibilityConstraints
                 ),
                 $subject,
-                OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->getSubgraphIdentity()->dimensionSpacePoint),
+                OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->subgraphIdentity->dimensionSpacePoint),
                 UserIdentifier::forSystemUser(), // TODO
-                $parentNodeOfSucceedingSibling->getNodeAggregateIdentifier(),
-                $succeedingSibling->getNodeAggregateIdentifier(),
+                $parentNodeOfSucceedingSibling->nodeAggregateIdentifier,
+                $succeedingSibling->nodeAggregateIdentifier,
                 $targetNodeName
             );
             $contentRepository->handle($command)->block();
 
-            /** @var NodeInterface $newlyCreatedNode */
-            $newlyCreatedNode = $this->nodeAccessorFor($parentNodeOfSucceedingSibling)
+            $newlyCreatedNode = $this->contentRepositoryRegistry->subgraphForNode($parentNodeOfSucceedingSibling)
                 ->findChildNodeConnectedThroughEdgeName(
-                    $parentNodeOfSucceedingSibling,
+                    $parentNodeOfSucceedingSibling->nodeAggregateIdentifier,
                     $targetNodeName
                 );
             $this->finish($newlyCreatedNode);

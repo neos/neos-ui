@@ -11,8 +11,8 @@ namespace Neos\Neos\Ui\Service;
  * source code.
  */
 
+use Neos\ContentRepository\Projection\ContentGraph\Node;
 use Neos\ContentRepository\SharedModel\NodeType\NodeType;
-use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
 use Neos\ContentRepository\Security\Authorization\Privilege\Node\CreateNodePrivilege;
 use Neos\ContentRepository\Security\Authorization\Privilege\Node\CreateNodePrivilegeSubject;
 use Neos\ContentRepository\Security\Authorization\Privilege\Node\EditNodePrivilege;
@@ -79,7 +79,7 @@ class NodePolicyService
     /**
      * @return array<string,mixed>
      */
-    public function getNodePolicyInformation(NodeInterface $node): array
+    public function getNodePolicyInformation(Node $node): array
     {
         return [
             'disallowedNodeTypes' => $this->getDisallowedNodeTypes($node),
@@ -90,10 +90,10 @@ class NodePolicyService
     }
 
     /**
-     * @param NodeInterface $node
+     * @param Node $node
      * @return bool
      */
-    public function isNodeTreePrivilegeGranted(NodeInterface $node): bool
+    public function isNodeTreePrivilegeGranted(Node $node): bool
     {
         if (!isset(self::getUsedPrivilegeClassNames($this->objectManager)[NodeTreePrivilege::class])) {
             return true;
@@ -106,10 +106,10 @@ class NodePolicyService
     }
 
     /**
-     * @param NodeInterface $node
+     * @param Node $node
      * @return array<int,NodeType>
      */
-    public function getDisallowedNodeTypes(NodeInterface $node): array
+    public function getDisallowedNodeTypes(Node $node): array
     {
         $disallowedNodeTypes = [];
 
@@ -135,10 +135,10 @@ class NodePolicyService
     }
 
     /**
-     * @param NodeInterface $node
+     * @param Node $node
      * @return bool
      */
-    public function canRemoveNode(NodeInterface $node): bool
+    public function canRemoveNode(Node $node): bool
     {
         $canRemove = true;
         if (isset(self::getUsedPrivilegeClassNames($this->objectManager)[RemoveNodePrivilege::class])) {
@@ -152,10 +152,10 @@ class NodePolicyService
     }
 
     /**
-     * @param NodeInterface $node
+     * @param Node $node
      * @return bool
      */
-    public function canEditNode(NodeInterface $node): bool
+    public function canEditNode(Node $node): bool
     {
         $canEdit = true;
         if (isset(self::getUsedPrivilegeClassNames($this->objectManager)[EditNodePrivilege::class])) {
@@ -166,10 +166,10 @@ class NodePolicyService
     }
 
     /**
-     * @param NodeInterface $node
+     * @param Node $node
      * @return array<int,string>
      */
-    public function getDisallowedProperties(NodeInterface $node): array
+    public function getDisallowedProperties(Node $node): array
     {
         $disallowedProperties = [];
 

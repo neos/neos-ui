@@ -15,7 +15,7 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
 use Neos\ContentRepository\SharedModel\Node\NodeName;
 use Neos\ContentRepository\SharedModel\Node\OriginDimensionSpacePoint;
 use Neos\ContentRepository\SharedModel\VisibilityConstraints;
-use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
+use Neos\ContentRepository\Projection\ContentGraph\Node;
 use Neos\Flow\Annotations as Flow;
 use Neos\ContentRepository\Feature\NodeDuplication\Command\CopyNodesRecursively;
 use Neos\ContentRepository\Feature\NodeDuplication\NodeDuplicationCommandHandler;
@@ -36,7 +36,7 @@ class CopyAfter extends AbstractStructuralChange
         if (is_null($siblingNode)) {
             return false;
         }
-        $nodeType = $this->subject->getNodeType();
+        $nodeType = $this->subject->nodeType;
         $parentNode = $this->findParentNode($siblingNode);
         return !is_null($parentNode)
             && $this->isNodeTypeAllowedAsChildNode($parentNode, $nodeType);
@@ -68,27 +68,25 @@ class CopyAfter extends AbstractStructuralChange
 
             $targetNodeName = NodeName::fromString(uniqid('node-'));
 
-            $contentRepository = $this->contentRepositoryRegistry->get($subject->getSubgraphIdentity()->contentRepositoryIdentifier);
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryIdentifier);
             $command = CopyNodesRecursively::create(
-                $contentRepository->getContentGraph()->getSubgraphByIdentifier(
-                    $subject->getSubgraphIdentity()->contentStreamIdentifier,
-                    $subject->getSubgraphIdentity()->dimensionSpacePoint,
+                $contentRepository->getContentGraph()->getSubgraph(
+                    $subject->subgraphIdentity->contentStreamIdentifier,
+                    $subject->subgraphIdentity->dimensionSpacePoint,
                     VisibilityConstraints::withoutRestrictions()
                 ),
                 $subject,
-                OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->getSubgraphIdentity()->dimensionSpacePoint),
+                OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->subgraphIdentity->dimensionSpacePoint),
                 $this->getInitiatingUserIdentifier(),
-                $parentNodeOfPreviousSibling->getNodeAggregateIdentifier(),
-                $succeedingSibling?->getNodeAggregateIdentifier(),
+                $parentNodeOfPreviousSibling->nodeAggregateIdentifier,
+                $succeedingSibling?->nodeAggregateIdentifier,
                 $targetNodeName
             );
             $contentRepository->handle($command)->block();
 
-
-            /** @var NodeInterface $newlyCreatedNode */
-            $newlyCreatedNode = $this->nodeAccessorFor($parentNodeOfPreviousSibling)
+            $newlyCreatedNode = $this->contentRepositoryRegistry->subgraphForNode($parentNodeOfPreviousSibling)
                 ->findChildNodeConnectedThroughEdgeName(
-                    $parentNodeOfPreviousSibling,
+                    $parentNodeOfPreviousSibling->nodeAggregateIdentifier,
                     $targetNodeName
                 );
             $this->finish($newlyCreatedNode);

@@ -170,13 +170,10 @@ class BackendController extends ActionController
         );
         $defaultDimensionSpacePoint = $backendControllerInternals->getDefaultDimensionSpacePoint();
 
-        $nodeAccessor = $this->nodeAccessorManager->accessorFor(
-            new ContentSubgraphIdentity(
-                $siteDetectionResult->contentRepositoryIdentifier,
-                $workspace->getCurrentContentStreamIdentifier(),
-                $nodeAddress ? $nodeAddress->dimensionSpacePoint : $defaultDimensionSpacePoint,
-                VisibilityConstraints::withoutRestrictions()
-            )
+        $subgraph = $contentRepository->getContentGraph()->getSubgraph(
+            $workspace->getCurrentContentStreamIdentifier(),
+            $nodeAddress ? $nodeAddress->dimensionSpacePoint : $defaultDimensionSpacePoint,
+            VisibilityConstraints::withoutRestrictions()
         );
 
         // we assume that the ROOT node is always stored in the CR as "physical" node; so it is safe
@@ -186,8 +183,9 @@ class BackendController extends ActionController
             NodeTypeName::fromString('Neos.Neos:Sites')
         );
         $rootNode = $rootNodeAggregate->getNodeByCoveredDimensionSpacePoint($defaultDimensionSpacePoint);
-        $siteNode = $nodeAccessor->findChildNodeConnectedThroughEdgeName(
-            $rootNode,
+
+        $siteNode = $subgraph->findChildNodeConnectedThroughEdgeName(
+            $rootNode->nodeAggregateIdentifier,
             $this->siteRepository->findDefault()->getNodeName()->toNodeName()
         );
 
@@ -195,7 +193,7 @@ class BackendController extends ActionController
             // TODO: fix resolving node address from session?
             $node = $siteNode;
         } else {
-            $node = $nodeAccessor->findByIdentifier($nodeAddress->nodeAggregateIdentifier);
+            $node = $subgraph->findNodeByNodeAggregateIdentifier($nodeAddress->nodeAggregateIdentifier);
         }
 
         $this->view->assign('user', $user);
@@ -211,7 +209,7 @@ class BackendController extends ActionController
         $this->view->assign('contentRepositoryIdentifier', $siteDetectionResult->contentRepositoryIdentifier);
 
         $this->view->assignMultiple([
-            'subgraph' => $nodeAccessor
+            'subgraph' => $subgraph
         ]);
 
         $this->view->assign('interfaceLanguage', $this->userService->getInterfaceLanguage());

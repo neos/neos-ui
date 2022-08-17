@@ -11,10 +11,8 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
  * source code.
  */
 
-use Neos\ContentRepository\NodeAccess\NodeAccessorManager;
+use Neos\ContentRepository\Projection\ContentGraph\Node;
 use Neos\ContentRepository\SharedModel\NodeAddressFactory;
-use Neos\ContentRepository\SharedModel\VisibilityConstraints;
-use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
@@ -29,7 +27,7 @@ use Psr\Http\Message\ResponseInterface;
 
 class RenderContentOutOfBand extends AbstractFeedback
 {
-    protected ?NodeInterface $node = null;
+    protected ?Node $node = null;
 
     /**
      * The node dom address for the parent node of the created node
@@ -61,18 +59,12 @@ class RenderContentOutOfBand extends AbstractFeedback
      */
     protected $contentRepositoryRegistry;
 
-    /**
-     * @Flow\Inject
-     * @var NodeAccessorManager
-     */
-    protected $nodeAccessorManager;
-
-    public function setNode(NodeInterface $node): void
+    public function setNode(Node $node): void
     {
         $this->node = $node;
     }
 
-    public function getNode(): ?NodeInterface
+    public function getNode(): ?Node
     {
         return $this->node;
     }
@@ -175,12 +167,10 @@ class RenderContentOutOfBand extends AbstractFeedback
         if (is_null($this->node)) {
             return '';
         }
-        $nodeAccessor = $this->nodeAccessorManager->accessorFor(
-            $this->node->getSubgraphIdentity()
-        );
-        $parentNode = $nodeAccessor->findParentNode($this->node);
+        $subgraph = $this->contentRepositoryRegistry->subgraphForNode($this->node);
+        $parentNode = $subgraph->findParentNode($this->node->nodeAggregateIdentifier);
         if ($parentNode) {
-            $cacheTags = $this->cachingHelper->nodeTag($this->getNode()->getParent());
+            $cacheTags = $this->cachingHelper->nodeTag($parentNode);
             foreach ($cacheTags as $tag) {
                 $this->contentCache->flushByTag($tag);
             }

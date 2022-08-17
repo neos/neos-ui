@@ -13,6 +13,7 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  */
 
 use Neos\ContentRepository\Feature\NodeMove\Command\MoveNodeAggregate;
+use Neos\ContentRepository\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
 use Neos\ContentRepository\Feature\NodeMove\Command\RelationDistributionStrategy;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
@@ -27,7 +28,7 @@ class MoveInto extends AbstractStructuralChange
         $this->parentContextPath = $parentContextPath;
     }
 
-    public function getParentNode(): ?NodeInterface
+    public function getParentNode(): ?Node
     {
         if ($this->parentContextPath === null) {
             return null;
@@ -72,10 +73,9 @@ class MoveInto extends AbstractStructuralChange
         // "subject" is the to-be-moved node
         $subject = $this->subject;
         if ($this->canApply() && $parentNode && $subject) {
-            $nodeAccessor = $this->nodeAccessorManager->accessorFor(
-                $subject->getSubgraphIdentity()
-            );
-            $otherParent = $nodeAccessor->findParentNode($subject);
+            $otherParent = $this->contentRepositoryRegistry->subgraphForNode($subject)
+                ->findParentNode($subject->nodeAggregateIdentifier);
+
             $hasEqualParentNode = $otherParent && $otherParent->getNodeAggregateIdentifier()
                     ->equals($parentNode->getNodeAggregateIdentifier());
 

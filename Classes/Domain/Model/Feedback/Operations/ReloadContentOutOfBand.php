@@ -14,7 +14,7 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
 use Neos\ContentRepository\NodeAccess\NodeAccessorManager;
 use Neos\ContentRepository\SharedModel\NodeAddressFactory;
 use Neos\ContentRepository\SharedModel\VisibilityConstraints;
-use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
+use Neos\ContentRepository\Projection\ContentGraph\Node;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
@@ -29,7 +29,7 @@ use Psr\Http\Message\ResponseInterface;
 
 class ReloadContentOutOfBand extends AbstractFeedback
 {
-    protected ?NodeInterface $node;
+    protected ?Node $node;
 
     protected ?RenderedNodeDomAddress $nodeDomAddress;
 
@@ -57,12 +57,12 @@ class ReloadContentOutOfBand extends AbstractFeedback
      */
     protected $nodeAccessorManager;
 
-    public function setNode(NodeInterface $node): void
+    public function setNode(Node $node): void
     {
         $this->node = $node;
     }
 
-    public function getNode(): ?NodeInterface
+    public function getNode(): ?Node
     {
         return $this->node;
     }
@@ -98,8 +98,8 @@ class ReloadContentOutOfBand extends AbstractFeedback
 
         $feedbackNode = $feedback->getNode();
         return (
-            $this->node instanceof NodeInterface &&
-            $feedbackNode instanceof NodeInterface &&
+            $this->node instanceof Node &&
+            $feedbackNode instanceof Node &&
             $this->node->getSubgraphIdentity()->equals($feedbackNode->getSubgraphIdentity()) &&
             $this->node->getNodeAggregateIdentifier()->equals(
                 $feedbackNode->getNodeAggregateIdentifier()

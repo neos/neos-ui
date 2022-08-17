@@ -498,15 +498,12 @@ class BackendServiceController extends ActionController
         $result = [];
         foreach ($nodes as $nodeAddressString) {
             $nodeAddress = $nodeAddressFactory->createFromUriString($nodeAddressString);
-            $nodeAccessor = $this->nodeAccessorManager->accessorFor(
-                new ContentSubgraphIdentity(
-                    $contentRepositoryIdentifier,
-                    $nodeAddress->contentStreamIdentifier,
-                    $nodeAddress->dimensionSpacePoint,
-                    VisibilityConstraints::withoutRestrictions()
-                )
+            $subgraph = $contentRepository->getContentGraph()->getSubgraph(
+                $nodeAddress->contentStreamIdentifier,
+                $nodeAddress->dimensionSpacePoint,
+                VisibilityConstraints::withoutRestrictions()
             );
-            $node = $nodeAccessor->findByIdentifier($nodeAddress->nodeAggregateIdentifier);
+            $node = $subgraph->findNodeByNodeAggregateIdentifier($nodeAddress->nodeAggregateIdentifier);
 
             // TODO finish implementation
             /*$otherNodeVariants = array_values(array_filter(array_map(function ($node) {
@@ -544,19 +541,16 @@ class BackendServiceController extends ActionController
     public function getPolicyInformationAction(array $nodes): void
     {
         $contentRepositoryIdentifier = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryIdentifier;
+        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryIdentifier);
 
         $result = [];
         foreach ($nodes as $nodeAddress) {
-            $nodeAccessor = $this->nodeAccessorManager
-                ->accessorFor(
-                    new ContentSubgraphIdentity(
-                        $contentRepositoryIdentifier,
-                        $nodeAddress->contentStreamIdentifier,
-                        $nodeAddress->dimensionSpacePoint,
-                        VisibilityConstraints::withoutRestrictions()
-                    )
-                );
-            $node = $nodeAccessor->findByIdentifier($nodeAddress->nodeAggregateIdentifier);
+            $subgraph = $contentRepository->getContentGraph()->getSubgraph(
+                $nodeAddress->contentStreamIdentifier,
+                $nodeAddress->dimensionSpacePoint,
+                VisibilityConstraints::withoutRestrictions()
+            );
+            $node = $subgraph->findNodeByNodeAggregateIdentifier($nodeAddress->nodeAggregateIdentifier);
             if (!is_null($node)) {
                 $result[$nodeAddress->serializeForUri()] = [
                     'policy' => $this->nodePolicyService->getNodePolicyInformation($node)

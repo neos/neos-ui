@@ -15,9 +15,6 @@ namespace Neos\Neos\Ui\Controller;
 
 use Neos\ContentRepository\Feature\Common\NodeIdentifiersToPublishOrDiscard;
 use Neos\ContentRepository\Feature\Common\NodeIdentifierToPublishOrDiscard;
-use Neos\ContentRepository\NodeAccess\NodeAccessorManager;
-use Neos\ContentRepository\Projection\ContentGraph\ContentSubgraphIdentity;
-use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
 use Neos\ContentRepository\SharedModel\NodeAddressFactory;
 use Neos\ContentRepository\SharedModel\VisibilityConstraints;
 use Neos\ContentRepository\Feature\WorkspaceDiscarding\Command\DiscardIndividualNodesFromWorkspace;
@@ -307,11 +304,11 @@ class BackendServiceController extends ActionController
      * Change base workspace of current user workspace
      *
      * @param string $targetWorkspaceName ,
-     * @param NodeInterface $documentNode
+     * @param Node $documentNode
      * @return void
      * @throws \Exception
      */
-    public function changeBaseWorkspaceAction(string $targetWorkspaceName, NodeInterface $documentNode)
+    public function changeBaseWorkspaceAction(string $targetWorkspaceName, Node $documentNode)
     {
         try {
             throw new \BadMethodCallException('changeBaseWorkspaceAction is not yet implemented', 1645607154);
@@ -358,7 +355,7 @@ class BackendServiceController extends ActionController
                     break;
                 } else {
                     $redirectNode = $redirectNode->getParent();
-                    // get parent always returns NodeInterface
+                    // get parent always returns Node
                     if (!$redirectNode) {
                         throw new \Exception(sprintf(
                             'Wasn\'t able to locate any valid node in rootline of node %s in the workspace %s.',
@@ -520,12 +517,6 @@ class BackendServiceController extends ActionController
 
         $this->view->assign('value', $result);
     }
-
-    /**
-     * @Flow\Inject
-     * @var NodeAccessorManager
-     */
-    protected $nodeAccessorManager;
 
     /**
      * @throws \Neos\Flow\Mvc\Exception\NoSuchArgumentException

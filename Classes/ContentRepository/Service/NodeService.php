@@ -13,7 +13,6 @@ namespace Neos\Neos\Ui\ContentRepository\Service;
 
 
 use Neos\ContentRepository\Factory\ContentRepositoryIdentifier;
-use Neos\ContentRepository\Projection\ContentGraph\ContentSubgraphIdentity;
 use Neos\ContentRepository\Projection\ContentGraph\Node;
 use Neos\ContentRepository\SharedModel\NodeAddressFactory;
 use Neos\ContentRepository\SharedModel\VisibilityConstraints;
@@ -36,14 +35,14 @@ class NodeService
      */
     public function getClosestDocument(Node $node): ?Node
     {
-        if ($node->getNodeType()->isOfType('Neos.Neos:Document')) {
+        if ($node->nodeType->isOfType('Neos.Neos:Document')) {
             return $node;
         }
 
         $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
 
         while ($node instanceof Node) {
-            if ($node->getNodeType()->isOfType('Neos.Neos:Document')) {
+            if ($node->nodeType->isOfType('Neos.Neos:Document')) {
                 return $node;
             }
             $node = $subgraph->findParentNode($node->nodeAggregateIdentifier);

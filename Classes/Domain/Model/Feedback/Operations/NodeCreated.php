@@ -14,7 +14,7 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\ContentRepository\SharedModel\NodeAddressFactory;
-use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
+use Neos\ContentRepository\Projection\ContentGraph\Node;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Neos\Domain\Service\NodeTypeNameFactory;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
@@ -23,7 +23,7 @@ use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 class NodeCreated extends AbstractFeedback
 {
     /**
-     * @var NodeInterface
+     * @var Node
      */
     protected $node;
 
@@ -36,7 +36,7 @@ class NodeCreated extends AbstractFeedback
     /**
      * Set the node
      */
-    public function setNode(NodeInterface $node): void
+    public function setNode(Node $node): void
     {
         $this->node = $node;
     }
@@ -44,7 +44,7 @@ class NodeCreated extends AbstractFeedback
     /**
      * Get the node
      */
-    public function getNode(): NodeInterface
+    public function getNode(): Node
     {
         return $this->node;
     }
@@ -62,7 +62,7 @@ class NodeCreated extends AbstractFeedback
      */
     public function getDescription(): string
     {
-        return sprintf('Document Node "%s" created.', (string)$this->getNode()->getNodeAggregateIdentifier());
+        return sprintf('Document Node "%s" created.', (string)$this->getNode()->nodeAggregateIdentifier);
     }
 
     /**
@@ -78,8 +78,8 @@ class NodeCreated extends AbstractFeedback
         }
 
         return (
-            $this->getNode()->getSubgraphIdentity()->equals($feedback->getNode()->getSubgraphIdentity()) &&
-            $this->getNode()->getNodeAggregateIdentifier()->equals($feedback->getNode()->getNodeAggregateIdentifier())
+            $this->getNode()->subgraphIdentity->equals($feedback->getNode()->subgraphIdentity) &&
+            $this->getNode()->nodeAggregateIdentifier->equals($feedback->getNode()->nodeAggregateIdentifier)
         );
     }
 
@@ -92,12 +92,12 @@ class NodeCreated extends AbstractFeedback
     public function serializePayload(ControllerContext $controllerContext)
     {
         $node = $this->getNode();
-        $contentRepository = $this->contentRepositoryRegistry->get($node->getSubgraphIdentity()->contentRepositoryIdentifier);
+        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryIdentifier);
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
         return [
             'contextPath' => $nodeAddressFactory->createFromNode($node)->serializeForUri(),
-            'identifier' => (string)$node->getNodeAggregateIdentifier(),
-            'isDocument' => $node->getNodeType()->isOfType(NodeTypeNameFactory::NAME_DOCUMENT)
+            'identifier' => (string)$node->nodeAggregateIdentifier,
+            'isDocument' => $node->nodeType->isOfType(NodeTypeNameFactory::NAME_DOCUMENT)
         ];
     }
 }

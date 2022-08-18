@@ -83,7 +83,7 @@ abstract class AbstractChange implements ChangeInterface
     final protected function findClosestDocumentNode(Node $node): ?Node
     {
         while ($node instanceof Node) {
-            if ($node->getNodeType()->isOfType('Neos.Neos:Document')) {
+            if ($node->nodeType->isOfType('Neos.Neos:Document')) {
                 return $node;
             }
             $node = $this->findParentNode($node);

@@ -184,7 +184,7 @@ class NodePolicyService
             );
         };
 
-        $disallowedProperties = array_filter(array_keys($node->getNodeType()->getProperties()), $filter);
+        $disallowedProperties = array_filter(array_keys($node->nodeType->getProperties()), $filter);
         return $disallowedProperties;
     }
 }

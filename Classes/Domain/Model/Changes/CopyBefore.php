@@ -32,7 +32,7 @@ class CopyBefore extends AbstractStructuralChange
             return false;
         }
         $parentNode = $this->findParentNode($siblingNode);
-        $nodeType = $this->subject->getNodeType();
+        $nodeType = $this->subject->nodeType;
 
         return !is_null($parentNode) && $this->isNodeTypeAllowedAsChildNode($parentNode, $nodeType);
     }

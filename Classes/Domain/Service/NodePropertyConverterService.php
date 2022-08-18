@@ -188,7 +188,7 @@ class NodePropertyConverterService
     public function getPropertiesArray(Node $node)
     {
         $properties = [];
-        foreach ($node->getNodeType()->getProperties() as $propertyName => $propertyConfiguration) {
+        foreach ($node->nodeType->getProperties() as $propertyName => $propertyConfiguration) {
             if ($propertyName[0] === '_' && $propertyName[1] === '_') {
                 // skip fully-private properties
                 continue;

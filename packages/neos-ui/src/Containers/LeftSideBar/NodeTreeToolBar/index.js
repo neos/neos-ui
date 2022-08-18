@@ -302,7 +302,7 @@ const makeMapStateToProps = isDocument => (state, {nodeTypesRegistry}) => {
             });
         }
 
-        const selectionHasNestedNodes = hasNestedNodes(focusedNodesContextPaths);
+        const selectionHasNestedNodes = hasNestedNodes(focusedNodesContextPaths, state);
 
         const canBeDeleted = (removeAllowed(focusedNodesContextPaths, state) && !selectionHasNestedNodes) || false;
         const visibilityCanBeToggled = visibilityToggleAllowed(focusedNodesContextPaths, state);

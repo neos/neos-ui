@@ -32,7 +32,7 @@ class CreateAfter extends AbstractCreate
         }
         $parent = $this->findParentNode($this->subject);
         $nodeTypeName = $this->getNodeTypeName();
-        $contentRepository = $this->contentRepositoryRegistry->get($parent->getSubgraphIdentity()->contentRepositoryIdentifier);
+        $contentRepository = $this->contentRepositoryRegistry->get($parent->subgraphIdentity->contentRepositoryIdentifier);
         $nodeType = $contentRepository->getNodeTypeManager()->getNodeType($nodeTypeName->getValue());
 
         return $this->isNodeTypeAllowedAsChildNode($parent, $nodeType);
@@ -53,7 +53,7 @@ class CreateAfter extends AbstractCreate
                 // do nothing; $succeedingSibling is null.
             }
 
-            $this->createNode($parentNode, $succeedingSibling?->getNodeAggregateIdentifier());
+            $this->createNode($parentNode, $succeedingSibling?->nodeAggregateIdentifier);
 
             $this->updateWorkspaceInfo();
         }

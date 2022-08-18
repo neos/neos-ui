@@ -11,14 +11,13 @@ namespace Neos\Neos\Ui\FlowQueryOperations;
  * source code.
  */
 
-use Neos\ContentRepository\SharedModel\NodeType\NodeTypeConstraintParser;
+use Neos\ContentRepository\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Projection\ContentGraph\SearchTerm;
+use Neos\ContentRepository\SharedModel\NodeType\NodeTypeConstraintParser;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
-use Neos\Flow\Annotations as Flow;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Eel\FlowQuery\Operations\AbstractOperation;
-use Neos\ContentRepository\NodeAccess\NodeAccessorManager;
-use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
+use Neos\Flow\Annotations as Flow;
 
 /**
  * Custom search operation using the Content Graph fulltext search
@@ -43,12 +42,6 @@ class SearchOperation extends AbstractOperation
 
     /**
      * @Flow\Inject
-     * @var NodeAccessorManager
-     */
-    protected $nodeAccessorManager;
-
-    /**
-     * @Flow\Inject
      * @var ContentRepositoryRegistry
      */
     protected $contentRepositoryRegistry;
@@ -63,7 +56,7 @@ class SearchOperation extends AbstractOperation
      */
     public function canEvaluate($context)
     {
-        return (isset($context[0]) && ($context[0] instanceof NodeInterface));
+        return (isset($context[0]) && ($context[0] instanceof Node));
     }
 
     /**
@@ -76,16 +69,14 @@ class SearchOperation extends AbstractOperation
     {
         /** @var array<int,mixed> $context */
         $context = $flowQuery->getContext();
-        /** @var NodeInterface $contextNode */
+        /** @var Node $contextNode */
         $contextNode = $context[0];
-        $nodeAccessor = $this->nodeAccessorManager->accessorFor(
-            $contextNode->getSubgraphIdentity()
-        );
+        $subgraph = $this->contentRepositoryRegistry->subgraphForNode($contextNode);
 
-        $contentRepository = $this->contentRepositoryRegistry->get($contextNode->getSubgraphIdentity()->contentRepositoryIdentifier);
+        $contentRepository = $this->contentRepositoryRegistry->get($contextNode->subgraphIdentity->contentRepositoryIdentifier);
         $nodeTypeConstraintParser = NodeTypeConstraintParser::create($contentRepository->getNodeTypeManager());
-        $nodes = $nodeAccessor->findDescendants(
-            [$contextNode],
+        $nodes = $subgraph->findDescendants(
+            [$contextNode->nodeAggregateIdentifier],
             $nodeTypeConstraintParser->parseFilterString($arguments[1] ?? ''),
             SearchTerm::fulltext($arguments[0] ?? '')
         );

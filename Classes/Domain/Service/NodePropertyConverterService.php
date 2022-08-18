@@ -14,12 +14,10 @@ declare(strict_types=1);
 
 namespace Neos\Neos\Ui\Domain\Service;
 
-use Neos\ContentRepository\NodeAccess\NodeAccessorManager;
+use Neos\ContentRepository\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Projection\NodeHiddenState\NodeHiddenStateProjection;
-use Neos\ContentRepository\SharedModel\VisibilityConstraints;
-use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
-use Neos\ContentRepository\Projection\NodeHiddenState\NodeHiddenStateFinder;
 use Neos\ContentRepository\SharedModel\Node\PropertyName;
+use Neos\ContentRepository\SharedModel\NodeType\NodeType;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Log\ThrowableStorageInterface;
@@ -32,7 +30,6 @@ use Neos\Flow\Property\PropertyMappingConfigurationInterface;
 use Neos\Flow\Property\TypeConverterInterface;
 use Neos\Utility\ObjectAccess;
 use Neos\Utility\TypeHandling;
-use Neos\ContentRepository\SharedModel\NodeType\NodeType;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -62,12 +59,6 @@ class NodePropertyConverterService
      * @var PropertyMapper
      */
     protected $propertyMapper;
-
-    /**
-     * @Flow\Inject
-     * @var NodeAccessorManager
-     */
-    protected $nodeAccessorManager;
 
     /**
      * @Flow\Transient
@@ -110,31 +101,29 @@ class NodePropertyConverterService
     /**
      * Get a single property reduced to a simple type (no objects) representation
      *
-     * @param NodeInterface $node
+     * @param Node $node
      * @param string $propertyName
      * @return mixed
      */
-    public function getProperty(NodeInterface $node, $propertyName)
+    public function getProperty(Node $node, $propertyName)
     {
         if ($propertyName === '_hidden') {
-            $contentRepository = $this->contentRepositoryRegistry->get($node->getSubgraphIdentity()->contentRepositoryIdentifier);
+            $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryIdentifier);
             $nodeHiddenStateFinder = $contentRepository->projectionState(NodeHiddenStateProjection::class);
             return $nodeHiddenStateFinder->findHiddenState(
-                $node->getSubgraphIdentity()->contentStreamIdentifier,
-                $node->getSubgraphIdentity()->dimensionSpacePoint,
-                $node->getNodeAggregateIdentifier()
+                $node->subgraphIdentity->contentStreamIdentifier,
+                $node->subgraphIdentity->dimensionSpacePoint,
+                $node->nodeAggregateIdentifier
             )->isHidden();
         }
-        $propertyType = $node->getNodeType()->getPropertyType($propertyName);
+        $propertyType = $node->nodeType->getPropertyType($propertyName);
 
         // We handle "reference" and "references" differently than other properties;
         // because we need to use another API for querying these references.
         if ($propertyType === 'reference') {
-            $nodeAccessor = $this->nodeAccessorManager->accessorFor(
-                $node->getSubgraphIdentity()
-            );
+            $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
             $referenceIdentifiers = $this->toNodeIdentifierStrings(
-                $nodeAccessor->findReferencedNodes($node, PropertyName::fromString($propertyName))
+                $subgraph->findReferencedNodes($node->nodeAggregateIdentifier, PropertyName::fromString($propertyName))
             );
             if (count($referenceIdentifiers) === 0) {
                 return null;
@@ -142,10 +131,8 @@ class NodePropertyConverterService
                 return reset($referenceIdentifiers);
             }
         } elseif ($propertyType === 'references') {
-            $nodeAccessor = $this->nodeAccessorManager->accessorFor(
-                $node->getSubgraphIdentity()
-            );
-            $references = $nodeAccessor->findReferencedNodes($node, PropertyName::fromString($propertyName));
+            $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
+            $references = $subgraph->findReferencedNodes($node->nodeAggregateIdentifier, PropertyName::fromString($propertyName));
 
             return $this->toNodeIdentifierStrings($references);
         // Here, the normal property access logic starts.
@@ -164,7 +151,7 @@ class NodePropertyConverterService
         }
 
         if ($convertedValue === null) {
-            $convertedValue = $this->getDefaultValueForProperty($node->getNodeType(), $propertyName);
+            $convertedValue = $this->getDefaultValueForProperty($node->nodeType, $propertyName);
             if ($convertedValue !== null) {
                 try {
                     $convertedValue = $this->convertValue($convertedValue, $propertyType);
@@ -180,7 +167,7 @@ class NodePropertyConverterService
     }
 
     /**
-     * @param iterable<int,NodeInterface> $nodes
+     * @param iterable<int,Node> $nodes
      * @return array<int,string>
      */
     private function toNodeIdentifierStrings(iterable $nodes): array
@@ -195,13 +182,13 @@ class NodePropertyConverterService
     /**
      * Get all properties reduced to simple type (no objects) representations in an array
      *
-     * @param NodeInterface $node
+     * @param Node $node
      * @return array<string,mixed>
      */
-    public function getPropertiesArray(NodeInterface $node)
+    public function getPropertiesArray(Node $node)
     {
         $properties = [];
-        foreach ($node->getNodeType()->getProperties() as $propertyName => $propertyConfiguration) {
+        foreach ($node->nodeType->getProperties() as $propertyName => $propertyConfiguration) {
             if ($propertyName[0] === '_' && $propertyName[1] === '_') {
                 // skip fully-private properties
                 continue;
@@ -296,7 +283,7 @@ class NodePropertyConverterService
                 'elementType' => null,
                 'type' => $dataType
             ];
-            // Special handling for "reference(s)", should be deprecated and normlized to array<NodeInterface>
+            // Special handling for "reference(s)", should be deprecated and normlized to array<Node>
             if ($dataType !== 'references' && $dataType !== 'reference') {
                 $parsedType = TypeHandling::parseType($dataType);
             }

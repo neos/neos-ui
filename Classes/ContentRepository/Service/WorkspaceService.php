@@ -12,32 +12,25 @@ namespace Neos\Neos\Ui\ContentRepository\Service;
  */
 
 use Neos\ContentRepository\ContentRepository;
+use Neos\ContentRepository\Factory\ContentRepositoryIdentifier;
 use Neos\ContentRepository\Projection\ContentGraph\ContentSubgraphIdentity;
+use Neos\ContentRepository\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Projection\Workspace\Workspace;
-use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
-use Neos\ContentRepository\NodeAccess\NodeAccessorManager;
 use Neos\ContentRepository\SharedModel\NodeAddress;
 use Neos\ContentRepository\SharedModel\NodeAddressFactory;
 use Neos\ContentRepository\SharedModel\VisibilityConstraints;
-use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
 use Neos\ContentRepository\SharedModel\Workspace\WorkspaceName;
-use Neos\ContentRepository\Factory\ContentRepositoryIdentifier;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
+use Neos\Neos\Domain\Service\UserService as DomainUserService;
 use Neos\Neos\PendingChangesProjection\ChangeProjection;
 use Neos\Neos\Service\UserService;
-use Neos\Neos\Domain\Service\UserService as DomainUserService;
 
 /**
  * @Flow\Scope("singleton")
  */
 class WorkspaceService
 {
-
-    /**
-     * @Flow\Inject
-     * @var NodeAccessorManager
-     */
-    protected $nodeAccessorManager;
 
     /**
      * @Flow\Inject
@@ -96,20 +89,17 @@ class WorkspaceService
                     'documentContextPath' => $documentNodeAddress->serializeForUri()
                 ];
             } else {
-                $nodeAccessor = $this->nodeAccessorManager->accessorFor(
-                    new ContentSubgraphIdentity(
-                        $contentRepositoryIdentifier,
-                        $workspace->getCurrentContentStreamIdentifier(),
-                        $change->originDimensionSpacePoint->toDimensionSpacePoint(),
-                        VisibilityConstraints::withoutRestrictions()
-                    )
+                $subgraph = $contentRepository->getContentGraph()->getSubgraph(
+                    $workspace->getCurrentContentStreamIdentifier(),
+                    $change->originDimensionSpacePoint->toDimensionSpacePoint(),
+                    VisibilityConstraints::withoutRestrictions()
                 );
-                $node = $nodeAccessor->findByIdentifier($change->nodeAggregateIdentifier);
+                $node = $subgraph->findNodeByNodeAggregateIdentifier($change->nodeAggregateIdentifier);
 
-                if ($node instanceof NodeInterface) {
+                if ($node instanceof Node) {
                     $documentNode = $this->getClosestDocumentNode($node);
-                    if ($documentNode instanceof NodeInterface) {
-                        $contentRepository = $this->contentRepositoryRegistry->get($documentNode->getSubgraphIdentity()->contentRepositoryIdentifier);
+                    if ($documentNode instanceof Node) {
+                        $contentRepository = $this->contentRepositoryRegistry->get($documentNode->subgraphIdentity->contentRepositoryIdentifier);
                         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
                         $unpublishedNodes[] = [
                             'contextPath' => $nodeAddressFactory->createFromNode($node)->serializeForUri(),
@@ -165,17 +155,15 @@ class WorkspaceService
         return $workspacesArray;
     }
 
-    private function getClosestDocumentNode(NodeInterface $node): ?NodeInterface
+    private function getClosestDocumentNode(Node $node): ?Node
     {
-        $nodeAccessor = $this->nodeAccessorManager->accessorFor(
-            $node->getSubgraphIdentity()
-        );
+        $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
 
-        while ($node instanceof NodeInterface) {
-            if ($node->getNodeType()->isOfType('Neos.Neos:Document')) {
+        while ($node instanceof Node) {
+            if ($node->nodeType->isOfType('Neos.Neos:Document')) {
                 return $node;
             }
-            $node = $nodeAccessor->findParentNode($node);
+            $node = $subgraph->findParentNode($node->nodeAggregateIdentifier);
         }
 
         return null;

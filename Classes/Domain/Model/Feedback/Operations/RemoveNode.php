@@ -14,16 +14,16 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\ContentRepository\SharedModel\NodeAddressFactory;
-use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
+use Neos\ContentRepository\Projection\ContentGraph\Node;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 
 class RemoveNode extends AbstractFeedback
 {
-    protected NodeInterface $node;
+    protected Node $node;
 
-    protected NodeInterface $parentNode;
+    protected Node $parentNode;
 
     /**
      * @Flow\Inject
@@ -31,13 +31,13 @@ class RemoveNode extends AbstractFeedback
      */
     protected $contentRepositoryRegistry;
 
-    public function __construct(NodeInterface $node, NodeInterface $parentNode)
+    public function __construct(Node $node, Node $parentNode)
     {
         $this->node = $node;
         $this->parentNode = $parentNode;
     }
 
-    public function getNode(): NodeInterface
+    public function getNode(): Node
     {
         return $this->node;
     }
@@ -74,8 +74,8 @@ class RemoveNode extends AbstractFeedback
             return false;
         }
 
-        return $this->getNode()->getNodeAggregateIdentifier()->equals(
-            $feedback->getNode()->getNodeAggregateIdentifier()
+        return $this->getNode()->nodeAggregateIdentifier->equals(
+            $feedback->getNode()->nodeAggregateIdentifier
         );
     }
 
@@ -87,7 +87,7 @@ class RemoveNode extends AbstractFeedback
      */
     public function serializePayload(ControllerContext $controllerContext)
     {
-        $contentRepository = $this->contentRepositoryRegistry->get($this->node->getSubgraphIdentity()->contentRepositoryIdentifier);
+        $contentRepository = $this->contentRepositoryRegistry->get($this->node->subgraphIdentity->contentRepositoryIdentifier);
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
         return [
             'contextPath' => $nodeAddressFactory->createFromNode($this->node)->serializeForUri(),

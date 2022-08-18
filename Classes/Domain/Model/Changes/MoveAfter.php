@@ -33,7 +33,7 @@ class MoveAfter extends AbstractStructuralChange
             return false;
         }
         $parent = $this->findParentNode($sibling);
-        $nodeType = $this->subject->getNodeType();
+        $nodeType = $this->subject->nodeType;
 
         return !is_null($parent) && $this->isNodeTypeAllowedAsChildNode($parent, $nodeType);
     }
@@ -68,21 +68,21 @@ class MoveAfter extends AbstractStructuralChange
                 // do nothing; $succeedingSibling is null.
             }
 
-            $hasEqualParentNode = $parentNode->getNodeAggregateIdentifier()
-                ->equals($parentNodeOfPreviousSibling->getNodeAggregateIdentifier());
+            $hasEqualParentNode = $parentNode->nodeAggregateIdentifier
+                ->equals($parentNodeOfPreviousSibling->nodeAggregateIdentifier);
 
             $command = new MoveNodeAggregate(
-                $subject->getSubgraphIdentity()->contentStreamIdentifier,
-                $subject->getSubgraphIdentity()->dimensionSpacePoint,
-                $subject->getNodeAggregateIdentifier(),
-                $hasEqualParentNode ? null : $parentNodeOfPreviousSibling->getNodeAggregateIdentifier(),
-                $precedingSibling->getNodeAggregateIdentifier(),
-                $succeedingSibling?->getNodeAggregateIdentifier(),
+                $subject->subgraphIdentity->contentStreamIdentifier,
+                $subject->subgraphIdentity->dimensionSpacePoint,
+                $subject->nodeAggregateIdentifier,
+                $hasEqualParentNode ? null : $parentNodeOfPreviousSibling->nodeAggregateIdentifier,
+                $precedingSibling->nodeAggregateIdentifier,
+                $succeedingSibling?->nodeAggregateIdentifier,
                 RelationDistributionStrategy::STRATEGY_GATHER_ALL,
                 $this->getInitiatingUserIdentifier()
             );
 
-            $contentRepository = $this->contentRepositoryRegistry->get($subject->getSubgraphIdentity()->contentRepositoryIdentifier);
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryIdentifier);
             $contentRepository->handle($command)->block();
 
             $updateParentNodeInfo = new UpdateNodeInfo();

@@ -11,10 +11,8 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
  * source code.
  */
 
-use Neos\ContentRepository\NodeAccess\NodeAccessorManager;
 use Neos\ContentRepository\SharedModel\NodeAddressFactory;
-use Neos\ContentRepository\SharedModel\VisibilityConstraints;
-use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
+use Neos\ContentRepository\Projection\ContentGraph\Node;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
@@ -29,7 +27,7 @@ use Psr\Http\Message\ResponseInterface;
 
 class ReloadContentOutOfBand extends AbstractFeedback
 {
-    protected ?NodeInterface $node;
+    protected ?Node $node;
 
     protected ?RenderedNodeDomAddress $nodeDomAddress;
 
@@ -51,18 +49,12 @@ class ReloadContentOutOfBand extends AbstractFeedback
      */
     protected $contentRepositoryRegistry;
 
-    /**
-     * @Flow\Inject
-     * @var NodeAccessorManager
-     */
-    protected $nodeAccessorManager;
-
-    public function setNode(NodeInterface $node): void
+    public function setNode(Node $node): void
     {
         $this->node = $node;
     }
 
-    public function getNode(): ?NodeInterface
+    public function getNode(): ?Node
     {
         return $this->node;
     }
@@ -84,7 +76,7 @@ class ReloadContentOutOfBand extends AbstractFeedback
 
     public function getDescription(): string
     {
-        return sprintf('Rendering of node "%s" required.', $this->node?->getNodeAggregateIdentifier() ?: '');
+        return sprintf('Rendering of node "%s" required.', $this->node?->nodeAggregateIdentifier ?: '');
     }
 
     /**
@@ -98,11 +90,11 @@ class ReloadContentOutOfBand extends AbstractFeedback
 
         $feedbackNode = $feedback->getNode();
         return (
-            $this->node instanceof NodeInterface &&
-            $feedbackNode instanceof NodeInterface &&
-            $this->node->getSubgraphIdentity()->equals($feedbackNode->getSubgraphIdentity()) &&
-            $this->node->getNodeAggregateIdentifier()->equals(
-                $feedbackNode->getNodeAggregateIdentifier()
+            $this->node instanceof Node &&
+            $feedbackNode instanceof Node &&
+            $this->node->subgraphIdentity->equals($feedbackNode->subgraphIdentity) &&
+            $this->node->nodeAggregateIdentifier->equals(
+                $feedbackNode->nodeAggregateIdentifier
             ) &&
             $this->getNodeDomAddress() == $feedback->getNodeDomAddress()
         );
@@ -116,7 +108,7 @@ class ReloadContentOutOfBand extends AbstractFeedback
     public function serializePayload(ControllerContext $controllerContext): array
     {
         if (!is_null($this->node) && !is_null($this->nodeDomAddress)) {
-            $contentRepository = $this->contentRepositoryRegistry->get($this->node->getSubgraphIdentity()->contentRepositoryIdentifier);
+            $contentRepository = $this->contentRepositoryRegistry->get($this->node->subgraphIdentity->contentRepositoryIdentifier);
             $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
             return [
                 'contextPath' => $nodeAddressFactory->createFromNode($this->node)->serializeForUri(),

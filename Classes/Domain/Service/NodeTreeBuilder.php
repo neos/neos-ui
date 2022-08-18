@@ -12,7 +12,7 @@ namespace Neos\Neos\Ui\Domain\Service;
  * source code.
  */
 
-use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
+use Neos\ContentRepository\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Factory\ContentRepositoryIdentifier;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
@@ -76,7 +76,7 @@ class NodeTreeBuilder
     /**
      * Get the root node
      *
-     * @return NodeInterface
+     * @return Node
      */
     private function getRoot()
     {
@@ -156,7 +156,7 @@ class NodeTreeBuilder
 
         $result = [];
 
-        /** @var NodeInterface $childNode */
+        /** @var Node $childNode */
         foreach ($root->getChildNodes($this->nodeTypeFilter) as $childNode) {
             $hasChildNodes = $childNode->hasChildNodes($this->nodeTypeFilter);
             $shouldLoadChildNodes = $hasChildNodes && ($depth > 1 || $this->isInRootLine($this->active, $childNode));
@@ -214,7 +214,7 @@ class NodeTreeBuilder
         return $result;
     }
 
-    protected function isInRootLine(NodeInterface $haystack = null, NodeInterface $needle)
+    protected function isInRootLine(Node $haystack = null, Node $needle)
     {
         if ($haystack === null) {
             return false;

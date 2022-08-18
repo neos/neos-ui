@@ -33,7 +33,7 @@ class MoveBefore extends AbstractStructuralChange
             return false;
         }
         $parent = $this->findParentNode($siblingNode);
-        $nodeType = $this->subject->getNodeType();
+        $nodeType = $this->subject->nodeType;
 
         return $parent && $this->isNodeTypeAllowedAsChildNode($parent, $nodeType);
     }
@@ -64,21 +64,21 @@ class MoveBefore extends AbstractStructuralChange
                 // do nothing; $precedingSibling is null.
             }
 
-            $hasEqualParentNode = $parentNode->getNodeAggregateIdentifier()
-                ->equals($succeedingSiblingParent->getNodeAggregateIdentifier());
+            $hasEqualParentNode = $parentNode->nodeAggregateIdentifier
+                ->equals($succeedingSiblingParent->nodeAggregateIdentifier);
 
-            $contentRepository = $this->contentRepositoryRegistry->get($subject->getSubgraphIdentity()->contentRepositoryIdentifier);
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryIdentifier);
 
             $contentRepository->handle(
                 new MoveNodeAggregate(
-                    $subject->getSubgraphIdentity()->contentStreamIdentifier,
-                    $subject->getSubgraphIdentity()->dimensionSpacePoint,
-                    $subject->getNodeAggregateIdentifier(),
+                    $subject->subgraphIdentity->contentStreamIdentifier,
+                    $subject->subgraphIdentity->dimensionSpacePoint,
+                    $subject->nodeAggregateIdentifier,
                     $hasEqualParentNode
                         ? null
-                        : $succeedingSiblingParent->getNodeAggregateIdentifier(),
-                    $precedingSibling?->getNodeAggregateIdentifier(),
-                    $succeedingSibling->getNodeAggregateIdentifier(),
+                        : $succeedingSiblingParent->nodeAggregateIdentifier,
+                    $precedingSibling?->nodeAggregateIdentifier,
+                    $succeedingSibling->nodeAggregateIdentifier,
                     RelationDistributionStrategy::STRATEGY_GATHER_ALL,
                     $this->getInitiatingUserIdentifier()
                 )

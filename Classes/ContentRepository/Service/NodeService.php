@@ -12,13 +12,11 @@ namespace Neos\Neos\Ui\ContentRepository\Service;
  */
 
 
-use Neos\ContentRepository\NodeAccess\NodeAccessorManager;
-use Neos\ContentRepository\Projection\ContentGraph\ContentSubgraphIdentity;
+use Neos\ContentRepository\Factory\ContentRepositoryIdentifier;
+use Neos\ContentRepository\Projection\ContentGraph\Node;
 use Neos\ContentRepository\SharedModel\NodeAddressFactory;
 use Neos\ContentRepository\SharedModel\VisibilityConstraints;
-use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
-use Neos\ContentRepository\Factory\ContentRepositoryIdentifier;
 use Neos\Flow\Annotations as Flow;
 
 /**
@@ -33,29 +31,21 @@ class NodeService
     protected $contentRepositoryRegistry;
 
     /**
-     * @Flow\Inject
-     * @var NodeAccessorManager
-     */
-    protected $nodeAccessorManager;
-
-    /**
      * Helper method to retrieve the closest document for a node
      */
-    public function getClosestDocument(NodeInterface $node): ?NodeInterface
+    public function getClosestDocument(Node $node): ?Node
     {
-        if ($node->getNodeType()->isOfType('Neos.Neos:Document')) {
+        if ($node->nodeType->isOfType('Neos.Neos:Document')) {
             return $node;
         }
 
-        $nodeAccessor = $this->nodeAccessorManager->accessorFor(
-            $node->getSubgraphIdentity()
-        );
+        $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
 
-        while ($node instanceof NodeInterface) {
-            if ($node->getNodeType()->isOfType('Neos.Neos:Document')) {
+        while ($node instanceof Node) {
+            if ($node->nodeType->isOfType('Neos.Neos:Document')) {
                 return $node;
             }
-            $node = $nodeAccessor->findParentNode($node);
+            $node = $subgraph->findParentNode($node->nodeAggregateIdentifier);
         }
 
         return null;
@@ -64,10 +54,10 @@ class NodeService
     /**
      * Helper method to check if a given node is a document node.
      *
-     * @param  NodeInterface $node The node to check
+     * @param  Node $node The node to check
      * @return boolean             A boolean which indicates if the given node is a document node.
      */
-    public function isDocument(NodeInterface $node): bool
+    public function isDocument(Node $node): bool
     {
         return ($this->getClosestDocument($node) === $node);
     }
@@ -75,20 +65,16 @@ class NodeService
     /**
      * Converts a given context path to a node object
      */
-    public function getNodeFromContextPath(string $contextPath, ContentRepositoryIdentifier $contentRepositoryIdentifier): ?NodeInterface
+    public function getNodeFromContextPath(string $contextPath, ContentRepositoryIdentifier $contentRepositoryIdentifier): ?Node
     {
         $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryIdentifier);
         $nodeAddress = NodeAddressFactory::create($contentRepository)->createFromUriString($contextPath);
-        ;
 
-        $nodeAccessor = $this->nodeAccessorManager->accessorFor(
-            new ContentSubgraphIdentity(
-                $contentRepositoryIdentifier,
-                $nodeAddress->contentStreamIdentifier,
-                $nodeAddress->dimensionSpacePoint,
-                VisibilityConstraints::withoutRestrictions()
-            )
+        $subgraph = $contentRepository->getContentGraph()->getSubgraph(
+            $nodeAddress->contentStreamIdentifier,
+            $nodeAddress->dimensionSpacePoint,
+            VisibilityConstraints::withoutRestrictions()
         );
-        return $nodeAccessor->findByIdentifier($nodeAddress->nodeAggregateIdentifier);
+        return $subgraph->findNodeByNodeAggregateIdentifier($nodeAddress->nodeAggregateIdentifier);
     }
 }

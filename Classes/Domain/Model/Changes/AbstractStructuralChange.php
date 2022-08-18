@@ -12,10 +12,9 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
-use Neos\ContentRepository\NodeAccess\NodeAccessor\NodeAccessorInterface;
+use Neos\ContentRepository\Projection\ContentGraph\Node;
 use Neos\ContentRepository\SharedModel\NodeType\NodeType;
 use Neos\ContentRepository\SharedModel\NodeAddressFactory;
-use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
 use Neos\ContentRepository\Projection\ContentGraph\Nodes;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
@@ -54,7 +53,7 @@ abstract class AbstractStructuralChange extends AbstractChange
      */
     protected $contentRepositoryRegistry;
 
-    protected ?NodeInterface $cachedSiblingNode = null;
+    protected ?Node $cachedSiblingNode = null;
 
     /**
      * Used when creating nodes within non-default tree preset
@@ -104,7 +103,7 @@ abstract class AbstractStructuralChange extends AbstractChange
     /**
      * Get the sibling node
      */
-    public function getSiblingNode(): ?NodeInterface
+    public function getSiblingNode(): ?Node
     {
         if ($this->siblingDomAddress === null) {
             return null;
@@ -113,7 +112,7 @@ abstract class AbstractStructuralChange extends AbstractChange
         if ($this->cachedSiblingNode === null) {
             $this->cachedSiblingNode = $this->nodeService->getNodeFromContextPath(
                 $this->siblingDomAddress->getContextPath(),
-                $this->getSubject()->getSubgraphIdentity()->contentRepositoryIdentifier
+                $this->getSubject()->subgraphIdentity->contentRepositoryIdentifier
             );
         }
 
@@ -123,20 +122,18 @@ abstract class AbstractStructuralChange extends AbstractChange
     /**
      * Perform finish tasks - needs to be called from inheriting class on `apply`
      *
-     * @param NodeInterface $node
+     * @param Node $node
      * @return void
      */
-    protected function finish(NodeInterface $node)
+    protected function finish(Node $node)
     {
         $updateNodeInfo = new UpdateNodeInfo();
         $updateNodeInfo->setNode($node);
         $updateNodeInfo->recursive();
         $this->feedbackCollection->add($updateNodeInfo);
 
-        $nodeAccessor = $this->nodeAccessorManager->accessorFor(
-            $node->getSubgraphIdentity()
-        );
-        $parentNode = $nodeAccessor->findParentNode($node);
+        $parentNode = $this->contentRepositoryRegistry->subgraphForNode($node)
+            ->findParentNode($node->nodeAggregateIdentifier);
         if ($parentNode) {
             $updateParentNodeInfo = new UpdateNodeInfo();
             $updateParentNodeInfo->setNode($parentNode);
@@ -148,14 +145,14 @@ abstract class AbstractStructuralChange extends AbstractChange
 
         $this->updateWorkspaceInfo();
 
-        if ($node->getNodeType()->isOfType('Neos.Neos:Content')
+        if ($node->nodeType->isOfType('Neos.Neos:Content')
             && ($this->getParentDomAddress() || $this->getSiblingDomAddress())) {
             // we can ONLY render out of band if:
             // 1) the parent of our new (or copied or moved) node is a ContentCollection;
             // so we can directly update an element of this content collection
 
-            $contentRepository = $this->contentRepositoryRegistry->get($parentNode->getSubgraphIdentity()->contentRepositoryIdentifier);
-            if ($parentNode && $parentNode->getNodeType()->isOfType('Neos.Neos:ContentCollection') &&
+            $contentRepository = $this->contentRepositoryRegistry->get($parentNode->subgraphIdentity->contentRepositoryIdentifier);
+            if ($parentNode && $parentNode->nodeType->isOfType('Neos.Neos:ContentCollection') &&
                 // 2) the parent DOM address (i.e. the closest RENDERED node in DOM is actually the ContentCollection;
                 // and no other node in between
                 $this->getParentDomAddress() &&
@@ -179,32 +176,24 @@ abstract class AbstractStructuralChange extends AbstractChange
         }
     }
 
-    // TODO REMOVE
-    protected function nodeAccessorFor(NodeInterface $node): NodeAccessorInterface
+    protected function findChildNodes(Node $node): Nodes
     {
-        return $this->nodeAccessorManager->accessorFor(
-            $node->getSubgraphIdentity()
-        );
+        // TODO REMOVE
+        return $this->contentRepositoryRegistry->subgraphForNode($node)
+            ->findChildNodes($node->nodeAggregateIdentifier);
     }
 
-    protected function findChildNodes(NodeInterface $node): Nodes
+    protected function isNodeTypeAllowedAsChildNode(Node $node, NodeType $nodeType): bool
     {
-        return $this->nodeAccessorFor($node)->findChildNodes($node);
-    }
-
-    protected function isNodeTypeAllowedAsChildNode(NodeInterface $node, NodeType $nodeType): bool
-    {
-        $nodeAccessor = $this->nodeAccessorManager->accessorFor(
-            $node->getSubgraphIdentity()
-        );
-        if (NodeInfoHelper::isAutoCreated($node, $nodeAccessor)) {
-            $parentNode = $nodeAccessor->findParentNode($node);
-            return !$parentNode || $parentNode->getNodeType()->allowsGrandchildNodeType(
-                (string)$node->getNodeName(),
+        $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
+        if (NodeInfoHelper::isAutoCreated($node, $subgraph)) {
+            $parentNode = $subgraph->findParentNode($node->nodeAggregateIdentifier);
+            return !$parentNode || $parentNode->nodeType->allowsGrandchildNodeType(
+                (string)$node->nodeName,
                 $nodeType
             );
         } else {
-            return $node->getNodeType()->allowsChildNodeType($nodeType);
+            return $node->nodeType->allowsChildNodeType($nodeType);
         }
     }
 }

@@ -15,9 +15,6 @@ namespace Neos\Neos\Ui\Controller;
 
 use Neos\ContentRepository\Feature\Common\NodeIdentifiersToPublishOrDiscard;
 use Neos\ContentRepository\Feature\Common\NodeIdentifierToPublishOrDiscard;
-use Neos\ContentRepository\NodeAccess\NodeAccessorManager;
-use Neos\ContentRepository\Projection\ContentGraph\ContentSubgraphIdentity;
-use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
 use Neos\ContentRepository\SharedModel\NodeAddressFactory;
 use Neos\ContentRepository\SharedModel\VisibilityConstraints;
 use Neos\ContentRepository\Feature\WorkspaceDiscarding\Command\DiscardIndividualNodesFromWorkspace;
@@ -307,11 +304,11 @@ class BackendServiceController extends ActionController
      * Change base workspace of current user workspace
      *
      * @param string $targetWorkspaceName ,
-     * @param NodeInterface $documentNode
+     * @param Node $documentNode
      * @return void
      * @throws \Exception
      */
-    public function changeBaseWorkspaceAction(string $targetWorkspaceName, NodeInterface $documentNode)
+    public function changeBaseWorkspaceAction(string $targetWorkspaceName, Node $documentNode)
     {
         try {
             throw new \BadMethodCallException('changeBaseWorkspaceAction is not yet implemented', 1645607154);
@@ -358,7 +355,7 @@ class BackendServiceController extends ActionController
                     break;
                 } else {
                     $redirectNode = $redirectNode->getParent();
-                    // get parent always returns NodeInterface
+                    // get parent always returns Node
                     if (!$redirectNode) {
                         throw new \Exception(sprintf(
                             'Wasn\'t able to locate any valid node in rootline of node %s in the workspace %s.',
@@ -498,15 +495,12 @@ class BackendServiceController extends ActionController
         $result = [];
         foreach ($nodes as $nodeAddressString) {
             $nodeAddress = $nodeAddressFactory->createFromUriString($nodeAddressString);
-            $nodeAccessor = $this->nodeAccessorManager->accessorFor(
-                new ContentSubgraphIdentity(
-                    $contentRepositoryIdentifier,
-                    $nodeAddress->contentStreamIdentifier,
-                    $nodeAddress->dimensionSpacePoint,
-                    VisibilityConstraints::withoutRestrictions()
-                )
+            $subgraph = $contentRepository->getContentGraph()->getSubgraph(
+                $nodeAddress->contentStreamIdentifier,
+                $nodeAddress->dimensionSpacePoint,
+                VisibilityConstraints::withoutRestrictions()
             );
-            $node = $nodeAccessor->findByIdentifier($nodeAddress->nodeAggregateIdentifier);
+            $node = $subgraph->findNodeByNodeAggregateIdentifier($nodeAddress->nodeAggregateIdentifier);
 
             // TODO finish implementation
             /*$otherNodeVariants = array_values(array_filter(array_map(function ($node) {
@@ -525,12 +519,6 @@ class BackendServiceController extends ActionController
     }
 
     /**
-     * @Flow\Inject
-     * @var NodeAccessorManager
-     */
-    protected $nodeAccessorManager;
-
-    /**
      * @throws \Neos\Flow\Mvc\Exception\NoSuchArgumentException
      */
     public function initializeGetPolicyInformationAction(): void
@@ -544,19 +532,16 @@ class BackendServiceController extends ActionController
     public function getPolicyInformationAction(array $nodes): void
     {
         $contentRepositoryIdentifier = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryIdentifier;
+        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryIdentifier);
 
         $result = [];
         foreach ($nodes as $nodeAddress) {
-            $nodeAccessor = $this->nodeAccessorManager
-                ->accessorFor(
-                    new ContentSubgraphIdentity(
-                        $contentRepositoryIdentifier,
-                        $nodeAddress->contentStreamIdentifier,
-                        $nodeAddress->dimensionSpacePoint,
-                        VisibilityConstraints::withoutRestrictions()
-                    )
-                );
-            $node = $nodeAccessor->findByIdentifier($nodeAddress->nodeAggregateIdentifier);
+            $subgraph = $contentRepository->getContentGraph()->getSubgraph(
+                $nodeAddress->contentStreamIdentifier,
+                $nodeAddress->dimensionSpacePoint,
+                VisibilityConstraints::withoutRestrictions()
+            );
+            $node = $subgraph->findNodeByNodeAggregateIdentifier($nodeAddress->nodeAggregateIdentifier);
             if (!is_null($node)) {
                 $result[$nodeAddress->serializeForUri()] = [
                     'policy' => $this->nodePolicyService->getNodePolicyInformation($node)

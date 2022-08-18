@@ -11,9 +11,7 @@ namespace Neos\Neos\Ui\Domain\Model;
  * source code.
  */
 
-use Neos\ContentRepository\NodeAccess\NodeAccessorManager;
-use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
-use Neos\ContentRepository\Projection\Workspace\WorkspaceFinder;
+use Neos\ContentRepository\Projection\ContentGraph\Node;
 use Neos\ContentRepository\SharedModel\User\UserIdentifier;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
@@ -26,7 +24,7 @@ use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
 
 abstract class AbstractChange implements ChangeInterface
 {
-    protected ?NodeInterface $subject;
+    protected ?Node $subject;
 
     /**
      * @Flow\Inject
@@ -48,22 +46,16 @@ abstract class AbstractChange implements ChangeInterface
 
     /**
      * @Flow\Inject
-     * @var NodeAccessorManager
-     */
-    protected $nodeAccessorManager;
-
-    /**
-     * @Flow\Inject
      * @var ContentRepositoryRegistry
      */
     protected $contentRepositoryRegistry;
 
-    public function setSubject(NodeInterface $subject): void
+    public function setSubject(Node $subject): void
     {
         $this->subject = $subject;
     }
 
-    public function getSubject(): ?NodeInterface
+    public function getSubject(): ?Node
     {
         return $this->subject;
     }
@@ -76,22 +68,22 @@ abstract class AbstractChange implements ChangeInterface
         if (!is_null($this->subject)) {
             $documentNode = $this->findClosestDocumentNode($this->subject);
             if (!is_null($documentNode)) {
-                $contentRepository = $this->contentRepositoryRegistry->get($this->subject->getSubgraphIdentity()->contentRepositoryIdentifier);
+                $contentRepository = $this->contentRepositoryRegistry->get($this->subject->subgraphIdentity->contentRepositoryIdentifier);
                 $workspace = $contentRepository->getWorkspaceFinder()->findOneByCurrentContentStreamIdentifier(
-                    $documentNode->getSubgraphIdentity()->contentStreamIdentifier
+                    $documentNode->subgraphIdentity->contentStreamIdentifier
                 );
                 if (!is_null($workspace)) {
-                    $updateWorkspaceInfo = new UpdateWorkspaceInfo($documentNode->getSubgraphIdentity()->contentRepositoryIdentifier, $workspace->getWorkspaceName());
+                    $updateWorkspaceInfo = new UpdateWorkspaceInfo($documentNode->subgraphIdentity->contentRepositoryIdentifier, $workspace->getWorkspaceName());
                     $this->feedbackCollection->add($updateWorkspaceInfo);
                 }
             }
         }
     }
 
-    final protected function findClosestDocumentNode(NodeInterface $node): ?NodeInterface
+    final protected function findClosestDocumentNode(Node $node): ?Node
     {
-        while ($node instanceof NodeInterface) {
-            if ($node->getNodeType()->isOfType('Neos.Neos:Document')) {
+        while ($node instanceof Node) {
+            if ($node->nodeType->isOfType('Neos.Neos:Document')) {
                 return $node;
             }
             $node = $this->findParentNode($node);
@@ -100,11 +92,10 @@ abstract class AbstractChange implements ChangeInterface
         return null;
     }
 
-    protected function findParentNode(NodeInterface $node): ?NodeInterface
+    protected function findParentNode(Node $node): ?Node
     {
-        return $this->nodeAccessorManager->accessorFor(
-            $node->getSubgraphIdentity()
-        )->findParentNode($node);
+        return $this->contentRepositoryRegistry->subgraphForNode($node)
+            ->findParentNode($node->nodeAggregateIdentifier);
     }
 
     /**
@@ -112,7 +103,7 @@ abstract class AbstractChange implements ChangeInterface
      *
      * This method will be triggered if [nodeType].properties.[propertyName].ui.reloadIfChanged is TRUE.
      */
-    protected function reloadDocument(NodeInterface $node = null): void
+    protected function reloadDocument(Node $node = null): void
     {
         $reloadDocument = new ReloadDocument();
         if ($node) {
@@ -125,7 +116,7 @@ abstract class AbstractChange implements ChangeInterface
     /**
      * Inform the client that a node has been created, the client decides if and which tree should react to this change.
      */
-    protected function addNodeCreatedFeedback(NodeInterface $subject = null): void
+    protected function addNodeCreatedFeedback(Node $subject = null): void
     {
         $node = $subject ?: $this->getSubject();
         if ($node) {

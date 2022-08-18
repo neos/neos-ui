@@ -12,8 +12,8 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
+use Neos\ContentRepository\Projection\ContentGraph\Node;
 use Neos\ContentRepository\SharedModel\Node\OriginDimensionSpacePoint;
-use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
 use Neos\ContentRepository\SharedModel\Node\NodeName;
 use Neos\ContentRepository\Feature\NodeDuplication\Command\CopyNodesRecursively;
 use Neos\ContentRepository\SharedModel\User\UserIdentifier;
@@ -22,18 +22,18 @@ class CopyInto extends AbstractStructuralChange
 {
     protected ?string $parentContextPath;
 
-    protected ?NodeInterface $cachedParentNode;
+    protected ?Node $cachedParentNode;
 
     public function setParentContextPath(string $parentContextPath): void
     {
         $this->parentContextPath = $parentContextPath;
     }
 
-    public function getParentNode(): ?NodeInterface
+    public function getParentNode(): ?Node
     {
         if (!isset($this->cachedParentNode)) {
             $this->cachedParentNode = $this->parentContextPath
-                ? $this->nodeService->getNodeFromContextPath($this->parentContextPath, $this->getSubject()->getSubgraphIdentity()->contentRepositoryIdentifier)
+                ? $this->nodeService->getNodeFromContextPath($this->parentContextPath, $this->getSubject()->subgraphIdentity->contentRepositoryIdentifier)
                 : null;
         }
 
@@ -49,7 +49,7 @@ class CopyInto extends AbstractStructuralChange
 
         return $this->subject
             && $parentNode
-            && $this->isNodeTypeAllowedAsChildNode($parentNode, $this->subject->getNodeType());
+            && $this->isNodeTypeAllowedAsChildNode($parentNode, $this->subject->nodeType);
     }
 
     public function getMode(): string
@@ -67,27 +67,27 @@ class CopyInto extends AbstractStructuralChange
         if ($parentNode && $subject && $this->canApply()) {
             $targetNodeName = NodeName::fromString(uniqid('node-'));
 
-            $contentRepository = $this->contentRepositoryRegistry->get($subject->getSubgraphIdentity()->contentRepositoryIdentifier);
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryIdentifier);
             $command = CopyNodesRecursively::create(
-                $contentRepository->getContentGraph()->getSubgraphByIdentifier(
-                    $subject->getSubgraphIdentity()->contentStreamIdentifier,
-                    $subject->getSubgraphIdentity()->dimensionSpacePoint,
-                    $subject->getSubgraphIdentity()->visibilityConstraints
+                $contentRepository->getContentGraph()->getSubgraph(
+                    $subject->subgraphIdentity->contentStreamIdentifier,
+                    $subject->subgraphIdentity->dimensionSpacePoint,
+                    $subject->subgraphIdentity->visibilityConstraints
                 ),
                 $subject,
-                OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->getSubgraphIdentity()->dimensionSpacePoint),
+                OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->subgraphIdentity->dimensionSpacePoint),
                 UserIdentifier::forSystemUser(), // TODO
-                $parentNode->getNodeAggregateIdentifier(),
+                $parentNode->nodeAggregateIdentifier,
                 null,
                 $targetNodeName
             );
             $contentRepository->handle($command)->block();
 
-            /** @var NodeInterface $newlyCreatedNode */
-            $newlyCreatedNode = $this->nodeAccessorFor($parentNode)->findChildNodeConnectedThroughEdgeName(
-                $parentNode,
-                $targetNodeName
-            );
+            $newlyCreatedNode = $this->contentRepositoryRegistry->subgraphForNode($parentNode)
+                ->findChildNodeConnectedThroughEdgeName(
+                    $parentNode->nodeAggregateIdentifier,
+                    $targetNodeName
+                );
             $this->finish($newlyCreatedNode);
             // NOTE: we need to run "finish" before "addNodeCreatedFeedback"
             // to ensure the new node already exists when the last feedback is processed

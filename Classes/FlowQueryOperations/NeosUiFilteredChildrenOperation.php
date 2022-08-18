@@ -11,13 +11,12 @@ namespace Neos\Neos\Ui\FlowQueryOperations;
  * source code.
  */
 
-use Neos\ContentRepository\NodeAccess\NodeAccessorManager;
-use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
-use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
-use Neos\Flow\Annotations as Flow;
+use Neos\ContentRepository\Projection\ContentGraph\Node;
 use Neos\ContentRepository\SharedModel\NodeType\NodeTypeConstraintParser;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Eel\FlowQuery\Operations\AbstractOperation;
+use Neos\Flow\Annotations as Flow;
 
 /**
  * "children" operation working on ContentRepository nodes. It iterates over all
@@ -42,12 +41,6 @@ class NeosUiFilteredChildrenOperation extends AbstractOperation
 
     /**
      * @Flow\Inject
-     * @var NodeAccessorManager
-     */
-    protected $nodeAccessorManager;
-
-    /**
-     * @Flow\Inject
      * @var ContentRepositoryRegistry
      */
     protected $contentRepositoryRegistry;
@@ -60,7 +53,7 @@ class NeosUiFilteredChildrenOperation extends AbstractOperation
      */
     public function canEvaluate($context)
     {
-        return isset($context[0]) && ($context[0] instanceof NodeInterface);
+        return isset($context[0]) && ($context[0] instanceof Node);
     }
 
     /**
@@ -77,22 +70,19 @@ class NeosUiFilteredChildrenOperation extends AbstractOperation
 
         $filter = isset($arguments[0]) ? $arguments[0] : null;
 
-        /** @var NodeInterface $contextNode */
+        /** @var Node $contextNode */
         foreach ($flowQuery->getContext() as $contextNode) {
-            $nodeAccessor = $this->nodeAccessorManager->accessorFor(
-                $contextNode->getSubgraphIdentity()
-            );
+            $subgraph = $this->contentRepositoryRegistry->subgraphForNode($contextNode);
 
-            $contentRepository = $this->contentRepositoryRegistry->get($contextNode->getSubgraphIdentity()->contentRepositoryIdentifier);
+            $contentRepository = $this->contentRepositoryRegistry->get($contextNode->subgraphIdentity->contentRepositoryIdentifier);
             $nodeTypeConstraintParser = NodeTypeConstraintParser::create($contentRepository->getNodeTypeManager());
-            /** @var NodeInterface $childNode */
-            foreach ($nodeAccessor->findChildNodes(
-                $contextNode,
+            foreach ($subgraph->findChildNodes(
+                $contextNode->nodeAggregateIdentifier,
                 $nodeTypeConstraintParser->parseFilterString($filter)
             ) as $childNode) {
-                if (!isset($outputNodeIdentifiers[(string)$childNode->getNodeAggregateIdentifier()])) {
+                if (!isset($outputNodeIdentifiers[(string)$childNode->nodeAggregateIdentifier])) {
                     $output[] = $childNode;
-                    $outputNodeIdentifiers[(string)$childNode->getNodeAggregateIdentifier()] = true;
+                    $outputNodeIdentifiers[(string)$childNode->nodeAggregateIdentifier] = true;
                 }
             }
         }

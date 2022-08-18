@@ -13,6 +13,7 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  */
 
 use Neos\ContentRepository\ContentRepository;
+use Neos\ContentRepository\Projection\ContentGraph\Node;
 use Neos\ContentRepository\SharedModel\Node\NodeAggregateIdentifier;
 use Neos\ContentRepository\SharedModel\Node\NodeName;
 use Neos\ContentRepository\SharedModel\NodeType\NodeTypeName;
@@ -84,15 +85,15 @@ abstract class AbstractCreate extends AbstractStructuralChange
     }
 
     /**
-     * @param NodeInterface $parentNode
+     * @param Node $parentNode
      * @param NodeAggregateIdentifier|null $succeedingSiblingNodeAggregateIdentifier
-     * @return NodeInterface
+     * @return Node
      * @throws InvalidNodeCreationHandlerException|NodeNameIsAlreadyOccupied|NodeException
      */
     protected function createNode(
-        NodeInterface $parentNode,
+        Node $parentNode,
         NodeAggregateIdentifier $succeedingSiblingNodeAggregateIdentifier = null
-    ): NodeInterface {
+    ): Node {
         $nodeTypeName = $this->getNodeTypeName();
         if (is_null($nodeTypeName)) {
             throw new \RuntimeException('Cannot run createNode without a set node type.', 1645577794);
@@ -104,23 +105,23 @@ abstract class AbstractCreate extends AbstractStructuralChange
         $nodeAggregateIdentifier = NodeAggregateIdentifier::create(); // generate a new NodeAggregateIdentifier
 
         $command = new CreateNodeAggregateWithNode(
-            $parentNode->getSubgraphIdentity()->contentStreamIdentifier,
+            $parentNode->subgraphIdentity->contentStreamIdentifier,
             $nodeAggregateIdentifier,
             $nodeTypeName,
-            OriginDimensionSpacePoint::fromDimensionSpacePoint($parentNode->getSubgraphIdentity()->dimensionSpacePoint),
+            OriginDimensionSpacePoint::fromDimensionSpacePoint($parentNode->subgraphIdentity->dimensionSpacePoint),
             $this->getInitiatingUserIdentifier(),
-            $parentNode->getNodeAggregateIdentifier(),
+            $parentNode->nodeAggregateIdentifier,
             $succeedingSiblingNodeAggregateIdentifier,
             $nodeName
         );
-        $contentRepository = $this->contentRepositoryRegistry->get($parentNode->getSubgraphIdentity()->contentRepositoryIdentifier);
+        $contentRepository = $this->contentRepositoryRegistry->get($parentNode->subgraphIdentity->contentRepositoryIdentifier);
 
         $command = $this->applyNodeCreationHandlers($command, $nodeTypeName, $contentRepository);
 
         $contentRepository->handle($command)->block();
-        /** @var NodeInterface $newlyCreatedNode */
-        $newlyCreatedNode = $this->nodeAccessorFor($parentNode)
-            ->findChildNodeConnectedThroughEdgeName($parentNode, $nodeName);
+        /** @var Node $newlyCreatedNode */
+        $newlyCreatedNode = $this->contentRepositoryRegistry->subgraphForNode($parentNode)
+            ->findChildNodeConnectedThroughEdgeName($parentNode->nodeAggregateIdentifier, $nodeName);
 
         $this->finish($newlyCreatedNode);
         // NOTE: we need to run "finish" before "addNodeCreatedFeedback"

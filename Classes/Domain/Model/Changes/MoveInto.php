@@ -13,7 +13,7 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  */
 
 use Neos\ContentRepository\Feature\NodeMove\Command\MoveNodeAggregate;
-use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
+use Neos\ContentRepository\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Feature\NodeMove\Command\RelationDistributionStrategy;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
@@ -27,7 +27,7 @@ class MoveInto extends AbstractStructuralChange
         $this->parentContextPath = $parentContextPath;
     }
 
-    public function getParentNode(): ?NodeInterface
+    public function getParentNode(): ?Node
     {
         if ($this->parentContextPath === null) {
             return null;
@@ -35,7 +35,7 @@ class MoveInto extends AbstractStructuralChange
 
         return $this->nodeService->getNodeFromContextPath(
             $this->parentContextPath,
-            $this->getSubject()->getSubgraphIdentity()->contentRepositoryIdentifier
+            $this->getSubject()->subgraphIdentity->contentRepositoryIdentifier
         );
     }
 
@@ -57,7 +57,7 @@ class MoveInto extends AbstractStructuralChange
             return false;
         }
         $parent = $this->getParentNode();
-        $nodeType = $this->subject->getNodeType();
+        $nodeType = $this->subject->nodeType;
 
         return $parent && $this->isNodeTypeAllowedAsChildNode($parent, $nodeType);
     }
@@ -72,20 +72,19 @@ class MoveInto extends AbstractStructuralChange
         // "subject" is the to-be-moved node
         $subject = $this->subject;
         if ($this->canApply() && $parentNode && $subject) {
-            $nodeAccessor = $this->nodeAccessorManager->accessorFor(
-                $subject->getSubgraphIdentity()
-            );
-            $otherParent = $nodeAccessor->findParentNode($subject);
-            $hasEqualParentNode = $otherParent && $otherParent->getNodeAggregateIdentifier()
-                    ->equals($parentNode->getNodeAggregateIdentifier());
+            $otherParent = $this->contentRepositoryRegistry->subgraphForNode($subject)
+                ->findParentNode($subject->nodeAggregateIdentifier);
 
-            $contentRepository = $this->contentRepositoryRegistry->get($subject->getSubgraphIdentity()->contentRepositoryIdentifier);
+            $hasEqualParentNode = $otherParent && $otherParent->nodeAggregateIdentifier
+                    ->equals($parentNode->nodeAggregateIdentifier);
+
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryIdentifier);
             $contentRepository->handle(
                 new MoveNodeAggregate(
-                    $subject->getSubgraphIdentity()->contentStreamIdentifier,
-                    $subject->getSubgraphIdentity()->dimensionSpacePoint,
-                    $subject->getNodeAggregateIdentifier(),
-                    $hasEqualParentNode ? null : $parentNode->getNodeAggregateIdentifier(),
+                    $subject->subgraphIdentity->contentStreamIdentifier,
+                    $subject->subgraphIdentity->dimensionSpacePoint,
+                    $subject->nodeAggregateIdentifier,
+                    $hasEqualParentNode ? null : $parentNode->nodeAggregateIdentifier,
                     null,
                     null,
                     RelationDistributionStrategy::STRATEGY_GATHER_ALL,

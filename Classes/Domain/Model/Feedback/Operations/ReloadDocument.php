@@ -11,7 +11,7 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
  * source code.
  */
 
-use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
+use Neos\ContentRepository\Projection\ContentGraph\Node;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Neos\Ui\ContentRepository\Service\NodeService;
@@ -21,7 +21,7 @@ use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 
 class ReloadDocument extends AbstractFeedback
 {
-    protected ?NodeInterface $node;
+    protected ?Node $node;
 
     /**
      * @Flow\Inject
@@ -34,12 +34,12 @@ class ReloadDocument extends AbstractFeedback
         return 'Neos.Neos.Ui:ReloadDocument';
     }
 
-    public function setNode(NodeInterface $node): void
+    public function setNode(Node $node): void
     {
         $this->node = $node;
     }
 
-    public function getNode(): ?NodeInterface
+    public function getNode(): ?Node
     {
         return $this->node;
     }

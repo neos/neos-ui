@@ -34,7 +34,7 @@ class Create extends AbstractCreate
     {
         $subject = $this->getSubject();
         $nodeTypeName = $this->getNodeTypeName();
-        $contentRepository = $this->contentRepositoryRegistry->get($subject->getSubgraphIdentity()->contentRepositoryIdentifier);
+        $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryIdentifier);
         $nodeType = $contentRepository->getNodeTypeManager()->getNodeType($nodeTypeName->getValue());
 
         return $this->isNodeTypeAllowedAsChildNode($subject, $nodeType);

@@ -59,7 +59,7 @@ class Remove extends AbstractChange
             $parentNode = $this->findParentNode($subject);
             if (is_null($parentNode)) {
                 throw new \InvalidArgumentException(
-                    'Cannot apply Remove without a parent on node ' . $subject->getNodeAggregateIdentifier(),
+                    'Cannot apply Remove without a parent on node ' . $subject->nodeAggregateIdentifier,
                     1645560717
                 );
             }
@@ -70,15 +70,15 @@ class Remove extends AbstractChange
 
             $closestDocumentParentNode = $this->findClosestDocumentNode($subject);
             $command = new RemoveNodeAggregate(
-                $subject->getSubgraphIdentity()->contentStreamIdentifier,
-                $subject->getNodeAggregateIdentifier(),
-                $subject->getSubgraphIdentity()->dimensionSpacePoint,
+                $subject->subgraphIdentity->contentStreamIdentifier,
+                $subject->nodeAggregateIdentifier,
+                $subject->subgraphIdentity->dimensionSpacePoint,
                 NodeVariantSelectionStrategy::STRATEGY_ALL_SPECIALIZATIONS,
                 $this->getInitiatingUserIdentifier(),
-                $closestDocumentParentNode?->getNodeAggregateIdentifier()
+                $closestDocumentParentNode?->nodeAggregateIdentifier
             );
 
-            $contentRepository = $this->contentRepositoryRegistry->get($subject->getSubgraphIdentity()->contentRepositoryIdentifier);
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryIdentifier);
             $contentRepository->handle($command)->block();
 
             $removeNode = new RemoveNode($subject, $parentNode);

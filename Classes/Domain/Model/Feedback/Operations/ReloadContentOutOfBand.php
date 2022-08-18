@@ -76,7 +76,7 @@ class ReloadContentOutOfBand extends AbstractFeedback
 
     public function getDescription(): string
     {
-        return sprintf('Rendering of node "%s" required.', $this->node?->getNodeAggregateIdentifier() ?: '');
+        return sprintf('Rendering of node "%s" required.', $this->node?->nodeAggregateIdentifier ?: '');
     }
 
     /**
@@ -92,9 +92,9 @@ class ReloadContentOutOfBand extends AbstractFeedback
         return (
             $this->node instanceof Node &&
             $feedbackNode instanceof Node &&
-            $this->node->getSubgraphIdentity()->equals($feedbackNode->getSubgraphIdentity()) &&
-            $this->node->getNodeAggregateIdentifier()->equals(
-                $feedbackNode->getNodeAggregateIdentifier()
+            $this->node->subgraphIdentity->equals($feedbackNode->subgraphIdentity) &&
+            $this->node->nodeAggregateIdentifier->equals(
+                $feedbackNode->nodeAggregateIdentifier
             ) &&
             $this->getNodeDomAddress() == $feedback->getNodeDomAddress()
         );
@@ -108,7 +108,7 @@ class ReloadContentOutOfBand extends AbstractFeedback
     public function serializePayload(ControllerContext $controllerContext): array
     {
         if (!is_null($this->node) && !is_null($this->nodeDomAddress)) {
-            $contentRepository = $this->contentRepositoryRegistry->get($this->node->getSubgraphIdentity()->contentRepositoryIdentifier);
+            $contentRepository = $this->contentRepositoryRegistry->get($this->node->subgraphIdentity->contentRepositoryIdentifier);
             $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
             return [
                 'contextPath' => $nodeAddressFactory->createFromNode($this->node)->serializeForUri(),

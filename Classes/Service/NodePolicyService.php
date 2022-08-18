@@ -124,7 +124,7 @@ class NodePolicyService
             );
         };
 
-        $contentRepository = $this->contentRepositoryRegistry->get($node->getSubgraphIdentity()->contentRepositoryIdentifier);
+        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryIdentifier);
         $disallowedNodeTypeObjects = array_filter($contentRepository->getNodeTypeManager()->getNodeTypes(), $filter);
 
         $mapper = function ($nodeType) {

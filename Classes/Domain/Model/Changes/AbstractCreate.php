@@ -87,7 +87,7 @@ abstract class AbstractCreate extends AbstractStructuralChange
     /**
      * @param Node $parentNode
      * @param NodeAggregateIdentifier|null $succeedingSiblingNodeAggregateIdentifier
-     * @return NodeInterface
+     * @return Node
      * @throws InvalidNodeCreationHandlerException|NodeNameIsAlreadyOccupied|NodeException
      */
     protected function createNode(
@@ -105,16 +105,16 @@ abstract class AbstractCreate extends AbstractStructuralChange
         $nodeAggregateIdentifier = NodeAggregateIdentifier::create(); // generate a new NodeAggregateIdentifier
 
         $command = new CreateNodeAggregateWithNode(
-            $parentNode->getSubgraphIdentity()->contentStreamIdentifier,
+            $parentNode->subgraphIdentity->contentStreamIdentifier,
             $nodeAggregateIdentifier,
             $nodeTypeName,
-            OriginDimensionSpacePoint::fromDimensionSpacePoint($parentNode->getSubgraphIdentity()->dimensionSpacePoint),
+            OriginDimensionSpacePoint::fromDimensionSpacePoint($parentNode->subgraphIdentity->dimensionSpacePoint),
             $this->getInitiatingUserIdentifier(),
-            $parentNode->getNodeAggregateIdentifier(),
+            $parentNode->nodeAggregateIdentifier,
             $succeedingSiblingNodeAggregateIdentifier,
             $nodeName
         );
-        $contentRepository = $this->contentRepositoryRegistry->get($parentNode->getSubgraphIdentity()->contentRepositoryIdentifier);
+        $contentRepository = $this->contentRepositoryRegistry->get($parentNode->subgraphIdentity->contentRepositoryIdentifier);
 
         $command = $this->applyNodeCreationHandlers($command, $nodeTypeName, $contentRepository);
 

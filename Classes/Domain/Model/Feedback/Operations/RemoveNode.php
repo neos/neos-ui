@@ -74,8 +74,8 @@ class RemoveNode extends AbstractFeedback
             return false;
         }
 
-        return $this->getNode()->getNodeAggregateIdentifier()->equals(
-            $feedback->getNode()->getNodeAggregateIdentifier()
+        return $this->getNode()->nodeAggregateIdentifier->equals(
+            $feedback->getNode()->nodeAggregateIdentifier
         );
     }
 
@@ -87,7 +87,7 @@ class RemoveNode extends AbstractFeedback
      */
     public function serializePayload(ControllerContext $controllerContext)
     {
-        $contentRepository = $this->contentRepositoryRegistry->get($this->node->getSubgraphIdentity()->contentRepositoryIdentifier);
+        $contentRepository = $this->contentRepositoryRegistry->get($this->node->subgraphIdentity->contentRepositoryIdentifier);
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
         return [
             'contextPath' => $nodeAddressFactory->createFromNode($this->node)->serializeForUri(),

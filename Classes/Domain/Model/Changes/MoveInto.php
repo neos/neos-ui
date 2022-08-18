@@ -14,7 +14,6 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 use Neos\ContentRepository\Feature\NodeMove\Command\MoveNodeAggregate;
 use Neos\ContentRepository\Projection\ContentGraph\Node;
-use Neos\ContentRepository\Projection\ContentGraph\NodeInterface;
 use Neos\ContentRepository\Feature\NodeMove\Command\RelationDistributionStrategy;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
@@ -36,7 +35,7 @@ class MoveInto extends AbstractStructuralChange
 
         return $this->nodeService->getNodeFromContextPath(
             $this->parentContextPath,
-            $this->getSubject()->getSubgraphIdentity()->contentRepositoryIdentifier
+            $this->getSubject()->subgraphIdentity->contentRepositoryIdentifier
         );
     }
 

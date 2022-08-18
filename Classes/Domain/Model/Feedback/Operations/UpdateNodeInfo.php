@@ -75,7 +75,7 @@ class UpdateNodeInfo extends AbstractFeedback
 
     public function getDescription(): string
     {
-        return sprintf('Updated info for node "%s" is available.', $this->node?->getNodeAggregateIdentifier());
+        return sprintf('Updated info for node "%s" is available.', $this->node?->nodeAggregateIdentifier);
     }
 
     /**
@@ -88,8 +88,8 @@ class UpdateNodeInfo extends AbstractFeedback
         }
         $feedbackNode = $feedback->getNode();
 
-        return $this->node && $feedbackNode && $this->node->getNodeAggregateIdentifier()->equals(
-            $feedbackNode->getNodeAggregateIdentifier()
+        return $this->node && $feedbackNode && $this->node->nodeAggregateIdentifier->equals(
+            $feedbackNode->nodeAggregateIdentifier
         );
     }
 
@@ -114,7 +114,7 @@ class UpdateNodeInfo extends AbstractFeedback
      */
     public function serializeNodeRecursively(Node $node, ControllerContext $controllerContext): array
     {
-        $contentRepository = $this->contentRepositoryRegistry->get($node->getSubgraphIdentity()->contentRepositoryIdentifier);
+        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryIdentifier);
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
 
         $result = [

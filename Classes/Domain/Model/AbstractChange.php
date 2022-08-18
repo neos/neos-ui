@@ -68,12 +68,12 @@ abstract class AbstractChange implements ChangeInterface
         if (!is_null($this->subject)) {
             $documentNode = $this->findClosestDocumentNode($this->subject);
             if (!is_null($documentNode)) {
-                $contentRepository = $this->contentRepositoryRegistry->get($this->subject->getSubgraphIdentity()->contentRepositoryIdentifier);
+                $contentRepository = $this->contentRepositoryRegistry->get($this->subject->subgraphIdentity->contentRepositoryIdentifier);
                 $workspace = $contentRepository->getWorkspaceFinder()->findOneByCurrentContentStreamIdentifier(
-                    $documentNode->getSubgraphIdentity()->contentStreamIdentifier
+                    $documentNode->subgraphIdentity->contentStreamIdentifier
                 );
                 if (!is_null($workspace)) {
-                    $updateWorkspaceInfo = new UpdateWorkspaceInfo($documentNode->getSubgraphIdentity()->contentRepositoryIdentifier, $workspace->getWorkspaceName());
+                    $updateWorkspaceInfo = new UpdateWorkspaceInfo($documentNode->subgraphIdentity->contentRepositoryIdentifier, $workspace->getWorkspaceName());
                     $this->feedbackCollection->add($updateWorkspaceInfo);
                 }
             }

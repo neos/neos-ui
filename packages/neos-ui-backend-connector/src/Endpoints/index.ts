@@ -1,4 +1,4 @@
-import {getElementInnerText, getElementAttributeValue, getContextString} from './Helpers';
+import {getElementInnerText, getElementAttributeValue} from './Helpers';
 import {isNil} from '@neos-project/utils-helpers';
 import {urlWithParams, encodeAsQueryString} from '@neos-project/utils-helpers/src/urlWithParams';
 
@@ -475,15 +475,10 @@ export default (routes: Routes) => {
                     throw new Error('.node-frontend-uri does not contain a valid href attribut');
                 }
 
-                const nodePath = d.querySelector('.node-path');
-                if (!nodePath) {
-                    throw new Error('.node-path is not found in the result');
+                const nodeContextPath = d.querySelector('.node-context-path');
+                if (!nodeContextPath) {
+                    throw new Error('.node-context-path is not found in the result');
                 }
-
-                // Hackish way to get context string from uri
-                const contextString = getContextString(nodeFrontendUri);
-                // TODO: Temporary hack due to missing contextPath in the API response
-                const nodeContextPath = `${nodePath.innerHTML}@${contextString}`;
 
                 return {
                     nodeFound: true,

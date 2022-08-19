@@ -452,8 +452,9 @@ class BackendServiceController extends ActionController
 
     public function getWorkspaceInfoAction(): void
     {
+        $contentRepositoryIdentifier = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryIdentifier;
         $workspaceHelper = new WorkspaceHelper();
-        $personalWorkspaceInfo = $workspaceHelper->getPersonalWorkspace();
+        $personalWorkspaceInfo = $workspaceHelper->getPersonalWorkspace($contentRepositoryIdentifier);
         $this->view->assign('value', $personalWorkspaceInfo);
     }
 

@@ -12,8 +12,6 @@ import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {isNodeCollapsed} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/helpers';
 import {neos} from '@neos-project/neos-ui-decorators';
 
-import {hasNestedNodes} from '@neos-project/neos-ui/src/Containers/LeftSideBar/NodeTree/helpers';
-
 import hashSum from 'hash-sum';
 import moment from 'moment';
 import {urlWithParams} from '@neos-project/utils-helpers/src/urlWithParams';
@@ -74,6 +72,8 @@ export default class Node extends PureComponent {
         canBeInsertedAlongside: PropTypes.bool,
         canBeInsertedInto: PropTypes.bool,
         isNodeDirty: PropTypes.bool.isRequired,
+
+        areFocusedNodesNestedInEachOther: PropTypes.bool,
         isWorkspaceReadOnly: PropTypes.bool,
 
         nodeTypesRegistry: PropTypes.object.isRequired,
@@ -281,6 +281,7 @@ export default class Node extends PureComponent {
             currentlyDraggedNodes,
             isContentTreeNode,
             focusedNodesContextPaths,
+            areFocusedNodesNestedInEachOther,
             isWorkspaceReadOnly
         } = this.props;
 
@@ -298,7 +299,7 @@ export default class Node extends PureComponent {
 
         // Autocreated or we have nested nodes and the node that we are dragging belongs to the selection
         // For read only workspaces we also forbid drag and drop
-        const dragForbidden = isWorkspaceReadOnly || node.isAutoCreated || (hasNestedNodes(focusedNodesContextPaths) && focusedNodesContextPaths.includes(node.contextPath));
+        const dragForbidden = isWorkspaceReadOnly || node.isAutoCreated || (areFocusedNodesNestedInEachOther && focusedNodesContextPaths.includes(node.contextPath));
 
         return (
             <Tree.Node aria-expanded={this.isCollapsed() ? 'false' : 'true'} aria-labelledby={labelIdentifier}>
@@ -409,6 +410,7 @@ export const PageTreeNode = withNodeTypeRegistryAndI18nRegistry(connect(
             return ({
                 isContentTreeNode: false,
                 focusedNodesContextPaths: selectors.UI.PageTree.getAllFocused(state),
+                areFocusedNodesNestedInEachOther: selectors.UI.PageTree.areFocusedNodesNestedInEachOther(state),
                 rootNode: selectors.CR.Nodes.siteNodeSelector(state),
                 loadingDepth: neos.configuration.nodeTree.loadingDepth,
                 childNodes: childrenOfSelector(state, getContextPath(node)),
@@ -457,6 +459,7 @@ export const ContentTreeNode = withNodeTypeRegistryAndI18nRegistry(connect(
             return ({
                 isContentTreeNode: true,
                 focusedNodesContextPaths: selectors.UI.PageTree.getAllFocused(state),
+                areFocusedNodesNestedInEachOther: selectors.UI.PageTree.areFocusedNodesNestedInEachOther(state),
                 rootNode: selectors.CR.Nodes.documentNodeSelector(state),
                 loadingDepth: neos.configuration.structureTree.loadingDepth,
                 childNodes: childrenOfSelector(state, getContextPath(node)),

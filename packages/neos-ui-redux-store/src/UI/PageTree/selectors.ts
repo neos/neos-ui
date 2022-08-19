@@ -4,8 +4,32 @@ import {createSelector} from 'reselect';
 
 import {siteNodeContextPathSelector, siteNodeSelector, nodesByContextPathSelector} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/selectors';
 import {isNodeCollapsed} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/helpers';
+import {NodeContextPath, NodeMap} from '@neos-project/neos-ts-interfaces';
+
+// contextPath for Neos >= 9.0 is a NodeAddress without hierarchy infos; so we need to traverse the "parent" links.
+function rootlineForNode(contextPath: NodeContextPath, nodesByContextPath: NodeMap): string[] {
+    const node = nodesByContextPath[contextPath];
+    if (node && node.parent) {
+        return [...rootlineForNode(node.parent, nodesByContextPath), node.identifier];
+    }
+    return [];
+}
 
 export const getAllFocused = (state: GlobalState) => $get(['ui', 'pageTree', 'focused'], state);
+export const areFocusedNodesNestedInEachOther = createSelector(
+    [
+        getAllFocused,
+        nodesByContextPathSelector
+    ],
+    (focusedNodesContextPaths, nodesByContextPath) => {
+        const rootlinesOfFocusedNodes = focusedNodesContextPaths.map((contextPath: NodeContextPath) => rootlineForNode(contextPath, nodesByContextPath).join('/'));
+
+        return !rootlinesOfFocusedNodes.every((pathA: string) => {
+            return rootlinesOfFocusedNodes.every((pathB: string) => !(pathB.indexOf(pathA) === 0 && pathA !== pathB));
+        });
+    }
+);
+
 export const getFocused = (state: GlobalState) => {
     const focused = getAllFocused(state);
     return focused && focused[0] ? focused[0] : null;

@@ -6,7 +6,6 @@ import {$transform, $get, $contains} from 'plow-js';
 import {isEqualSet} from '@neos-project/utils-helpers';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors, actions} from '@neos-project/neos-ui-redux-store';
-import {hasNestedNodes} from '@neos-project/neos-ui/src/Containers/LeftSideBar/NodeTree/helpers';
 import {InsertPosition} from '@neos-project/neos-ts-interfaces';
 
 import {
@@ -302,9 +301,9 @@ const makeMapStateToProps = isDocument => (state, {nodeTypesRegistry}) => {
             });
         }
 
-        const selectionHasNestedNodes = hasNestedNodes(focusedNodesContextPaths, state);
+        const areFocusedNodesNestedInEachOther = selectors.UI.PageTree.areFocusedNodesNestedInEachOther(state);
 
-        const canBeDeleted = (removeAllowed(focusedNodesContextPaths, state) && !selectionHasNestedNodes) || false;
+        const canBeDeleted = (removeAllowed(focusedNodesContextPaths, state) && !areFocusedNodesNestedInEachOther) || false;
         const visibilityCanBeToggled = visibilityToggleAllowed(focusedNodesContextPaths, state);
         const canBeEdited = editingAllowed(focusedNodesContextPaths, state);
 
@@ -324,7 +323,7 @@ const makeMapStateToProps = isDocument => (state, {nodeTypesRegistry}) => {
             isDocument ?
             selectors.UI.PageTree.destructiveOperationsAreDisabledForPageTreeSelector(state) :
             selectors.CR.Nodes.destructiveOperationsAreDisabledForContentTreeSelector(state)
-        ) || selectionHasNestedNodes;
+        ) || areFocusedNodesNestedInEachOther;
         const isLoading = isDocument ? selectors.UI.PageTree.getIsLoading(state) : selectors.UI.ContentTree.getIsLoading(state);
 
         return {

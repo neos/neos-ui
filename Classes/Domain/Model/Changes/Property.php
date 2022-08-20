@@ -24,7 +24,9 @@ use Neos\ContentRepository\Feature\NodeModification\Command\SetNodeProperties;
 use Neos\ContentRepository\Feature\NodeReferencing\Command\SetNodeReferences;
 use Neos\ContentRepository\Feature\NodeTypeChange\Command\ChangeNodeAggregateType;
 use Neos\ContentRepository\Feature\NodeTypeChange\Command\NodeAggregateTypeChangeChildConstraintConflictResolutionStrategy;
+use Neos\ContentRepository\Feature\NodeVariation\Command\CreateNodeVariant;
 use Neos\ContentRepository\SharedModel\Node\NodeAggregateIdentifiers;
+use Neos\ContentRepository\SharedModel\Node\OriginDimensionSpacePoint;
 use Neos\ContentRepository\SharedModel\Node\PropertyName;
 use Neos\ContentRepository\SharedModel\NodeType\NodeTypeName;
 use Neos\Flow\Annotations as Flow;
@@ -187,11 +189,25 @@ class Property extends AbstractChange
 
                 // TODO: Make changing the node type a separated, specific/defined change operation.
                 if ($propertyName[0] !== '_' || $propertyName === '_hiddenInIndex') {
+                    $originDimensionSpacePoint = $subject->originDimensionSpacePoint;
+                    if (!$subject->subgraphIdentity->dimensionSpacePoint->equals($originDimensionSpacePoint)) {
+                        $originDimensionSpacePoint = OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->subgraphIdentity->dimensionSpacePoint);
+                        // if origin dimension space point != current DSP -> translate transparently (matching old behavior)
+                        $contentRepository->handle(
+                            new CreateNodeVariant(
+                                $subject->subgraphIdentity->contentStreamIdentifier,
+                                $subject->nodeAggregateIdentifier,
+                                $subject->originDimensionSpacePoint,
+                                $originDimensionSpacePoint,
+                                $this->getInitiatingUserIdentifier()
+                            )
+                        )->block();
+                    }
                     $commandResult = $contentRepository->handle(
                         new SetNodeProperties(
                             $subject->subgraphIdentity->contentStreamIdentifier,
                             $subject->nodeAggregateIdentifier,
-                            $subject->originDimensionSpacePoint,
+                            $originDimensionSpacePoint,
                             PropertyValuesToWrite::fromArray(
                                 [
                                     $propertyName => $value

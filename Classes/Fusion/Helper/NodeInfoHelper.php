@@ -18,6 +18,7 @@ use Neos\ContentRepository\Projection\NodeHiddenState\NodeHiddenStateProjection;
 use Neos\ContentRepository\SharedModel\NodeAddress;
 use Neos\ContentRepository\SharedModel\NodeAddressFactory;
 use Neos\ContentRepository\SharedModel\NodeType\NodeTypeConstraintParser;
+use Neos\ContentRepository\SharedModel\NodeType\NodeTypeConstraints;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
@@ -264,17 +265,16 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     protected function renderChildrenInformation(Node $node, string $nodeTypeFilterString): array
     {
         $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryIdentifier);
-        $nodeTypeConstraintParser = NodeTypeConstraintParser::create($contentRepository->getNodeTypeManager());
         $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
 
         $documentChildNodes = $subgraph->findChildNodes(
             $node->nodeAggregateIdentifier,
-            $nodeTypeConstraintParser->parseFilterString($nodeTypeFilterString)
+            NodeTypeConstraints::fromFilterString($nodeTypeFilterString)
         );
         // child nodes for content tree, must not include those nodes filtered out by `baseNodeType`
         $contentChildNodes = $subgraph->findChildNodes(
             $node->nodeAggregateIdentifier,
-            $nodeTypeConstraintParser->parseFilterString(
+            NodeTypeConstraints::fromFilterString(
                 $this->buildContentChildNodeFilterString()
             )
         );
@@ -503,12 +503,11 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     private function getChildNodes(Node $node, string $nodeTypeFilterString): Nodes
     {
         $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryIdentifier);
-        $nodeTypeConstraintParser = NodeTypeConstraintParser::create($contentRepository->getNodeTypeManager());
 
         return $this->contentRepositoryRegistry->subgraphForNode($node)
             ->findChildNodes(
                 $node->nodeAggregateIdentifier,
-                $nodeTypeConstraintParser->parseFilterString($nodeTypeFilterString)
+                NodeTypeConstraints::fromFilterString($nodeTypeFilterString)
             );
     }
 

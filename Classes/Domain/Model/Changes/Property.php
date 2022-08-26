@@ -220,7 +220,7 @@ class Property extends AbstractChange
                     // property starts with "_"
                     if ($propertyName === '_nodeType') {
                         $commandResult = $contentRepository->handle(
-                            $command = new ChangeNodeAggregateType(
+                            new ChangeNodeAggregateType(
                                 $subject->subgraphIdentity->contentStreamIdentifier,
                                 $subject->nodeAggregateIdentifier,
                                 NodeTypeName::fromString($value),

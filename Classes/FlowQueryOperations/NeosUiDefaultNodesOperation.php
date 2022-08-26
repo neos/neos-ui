@@ -14,6 +14,7 @@ namespace Neos\Neos\Ui\FlowQueryOperations;
 
 use Neos\ContentRepository\Projection\ContentGraph\Node;
 use Neos\ContentRepository\SharedModel\NodeType\NodeTypeConstraintParser;
+use Neos\ContentRepository\SharedModel\NodeType\NodeTypeConstraints;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Eel\FlowQuery\Operations\AbstractOperation;
@@ -71,10 +72,9 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
         list($baseNodeType, $loadingDepth, $toggledNodes, $clipboardNodesContextPaths) = $arguments;
 
         $contentRepository = $this->contentRepositoryRegistry->get($documentNode->subgraphIdentity->contentRepositoryIdentifier);
-        $nodeTypeConstraintParser = NodeTypeConstraintParser::create($contentRepository->getNodeTypeManager());
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
 
-        $baseNodeTypeConstraints = $nodeTypeConstraintParser->parseFilterString($baseNodeType);
+        $baseNodeTypeConstraints = NodeTypeConstraints::fromFilterString($baseNodeType);
 
         $subgraph = $this->contentRepositoryRegistry->subgraphForNode($documentNode);
 

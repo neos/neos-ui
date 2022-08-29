@@ -11,10 +11,10 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
  * source code.
  */
 
-use Neos\ContentRepository\Projection\Workspace\Workspace;
-use Neos\ContentRepository\SharedModel\Workspace\WorkspaceName;
+use Neos\ContentRepository\Core\Projection\Workspace\Workspace;
+use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
-use Neos\ContentRepository\Factory\ContentRepositoryIdentifier;
+use Neos\ContentRepository\Core\Factory\ContentRepositoryIdentifier;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
@@ -58,7 +58,7 @@ class UpdateWorkspaceInfo extends AbstractFeedback
      */
     public function setWorkspace(Workspace $workspace)
     {
-        $this->workspaceName = WorkspaceName::fromString($workspace->getWorkspaceName());
+        $this->workspaceName = $workspace->workspaceName;
     }
 
     /**
@@ -125,7 +125,7 @@ class UpdateWorkspaceInfo extends AbstractFeedback
                 $this->workspaceName,
                 $this->contentRepositoryIdentifier
             ),
-            'baseWorkspace' => (string)$workspace->getBaseWorkspaceName()
+            'baseWorkspace' => (string)$workspace->baseWorkspaceName
         ] : [];
     }
 }

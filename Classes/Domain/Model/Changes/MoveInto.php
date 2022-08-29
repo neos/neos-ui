@@ -12,9 +12,9 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
-use Neos\ContentRepository\Feature\NodeMove\Command\MoveNodeAggregate;
-use Neos\ContentRepository\Projection\ContentGraph\Node;
-use Neos\ContentRepository\Feature\NodeMove\Command\RelationDistributionStrategy;
+use Neos\ContentRepository\Core\Feature\NodeMove\Command\MoveNodeAggregate;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
+use Neos\ContentRepository\Core\Feature\NodeMove\Command\RelationDistributionStrategy;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 

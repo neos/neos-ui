@@ -11,8 +11,8 @@ namespace Neos\Neos\Ui\Domain\Model;
  * source code.
  */
 
-use Neos\ContentRepository\Projection\ContentGraph\Node;
-use Neos\ContentRepository\SharedModel\User\UserIdentifier;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
+use Neos\ContentRepository\Core\SharedModel\User\UserIdentifier;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
@@ -73,7 +73,8 @@ abstract class AbstractChange implements ChangeInterface
                     $documentNode->subgraphIdentity->contentStreamIdentifier
                 );
                 if (!is_null($workspace)) {
-                    $updateWorkspaceInfo = new UpdateWorkspaceInfo($documentNode->subgraphIdentity->contentRepositoryIdentifier, $workspace->getWorkspaceName());
+                    $updateWorkspaceInfo = new UpdateWorkspaceInfo
+                    ($documentNode->subgraphIdentity->contentRepositoryIdentifier, $workspace->workspaceName);
                     $this->feedbackCollection->add($updateWorkspaceInfo);
                 }
             }

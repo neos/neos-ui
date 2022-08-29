@@ -11,7 +11,7 @@ namespace Neos\Neos\Ui\TypeConverter;
  * source code.
  */
 
-use Neos\ContentRepository\Factory\ContentRepositoryIdentifier;
+use Neos\ContentRepository\Core\Factory\ContentRepositoryIdentifier;
 use Neos\Error\Messages\Error;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;

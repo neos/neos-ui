@@ -11,8 +11,8 @@ namespace Neos\Neos\Ui\Service;
  * source code.
  */
 
-use Neos\ContentRepository\Projection\ContentGraph\Node;
-use Neos\ContentRepository\SharedModel\NodeType\NodeType;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
+use Neos\ContentRepository\Core\SharedModel\NodeType\NodeType;
 use Neos\ContentRepository\Security\Authorization\Privilege\Node\CreateNodePrivilege;
 use Neos\ContentRepository\Security\Authorization\Privilege\Node\CreateNodePrivilegeSubject;
 use Neos\ContentRepository\Security\Authorization\Privilege\Node\EditNodePrivilege;

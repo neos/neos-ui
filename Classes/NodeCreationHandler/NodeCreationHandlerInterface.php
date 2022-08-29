@@ -11,8 +11,8 @@ namespace Neos\Neos\Ui\NodeCreationHandler;
  * source code.
  */
 
-use Neos\ContentRepository\ContentRepository;
-use Neos\ContentRepository\Feature\NodeCreation\Command\CreateNodeAggregateWithNode;
+use Neos\ContentRepository\Core\ContentRepository;
+use Neos\ContentRepository\Core\Feature\NodeCreation\Command\CreateNodeAggregateWithNode;
 
 /**
  * Contract for Node Creation handler that allow to hook into the process just before a node is being added

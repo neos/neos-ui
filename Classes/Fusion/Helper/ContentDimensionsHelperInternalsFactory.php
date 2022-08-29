@@ -12,9 +12,9 @@ namespace Neos\Neos\Ui\Fusion\Helper;
  * source code.
  */
 
-use Neos\ContentRepository\Factory\ContentRepositoryServiceFactoryDependencies;
-use Neos\ContentRepository\Factory\ContentRepositoryServiceFactoryInterface;
-use Neos\ContentRepository\Factory\ContentRepositoryServiceInterface;
+use Neos\ContentRepository\Core\Factory\ContentRepositoryServiceFactoryDependencies;
+use Neos\ContentRepository\Core\Factory\ContentRepositoryServiceFactoryInterface;
+use Neos\ContentRepository\Core\Factory\ContentRepositoryServiceInterface;
 
 /**
  * @deprecated ugly - we want to get rid of this by adding dimension infos in the Subgraph

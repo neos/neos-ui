@@ -11,15 +11,15 @@ namespace Neos\Neos\Ui\ContentRepository\Service;
  * source code.
  */
 
-use Neos\ContentRepository\ContentRepository;
-use Neos\ContentRepository\Factory\ContentRepositoryIdentifier;
-use Neos\ContentRepository\Projection\ContentGraph\ContentSubgraphIdentity;
-use Neos\ContentRepository\Projection\ContentGraph\Node;
-use Neos\ContentRepository\Projection\Workspace\Workspace;
-use Neos\ContentRepository\SharedModel\NodeAddress;
-use Neos\ContentRepository\SharedModel\NodeAddressFactory;
-use Neos\ContentRepository\SharedModel\VisibilityConstraints;
-use Neos\ContentRepository\SharedModel\Workspace\WorkspaceName;
+use Neos\ContentRepository\Core\ContentRepository;
+use Neos\ContentRepository\Core\Factory\ContentRepositoryIdentifier;
+use Neos\ContentRepository\Core\Projection\ContentGraph\ContentSubgraphIdentity;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
+use Neos\ContentRepository\Core\Projection\Workspace\Workspace;
+use Neos\ContentRepository\Core\SharedModel\NodeAddress;
+use Neos\ContentRepository\Core\SharedModel\NodeAddressFactory;
+use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
+use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Domain\Service\UserService as DomainUserService;
@@ -59,11 +59,11 @@ class WorkspaceService
     {
         $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryIdentifier);
         $workspace = $contentRepository->getWorkspaceFinder()->findOneByName($workspaceName);
-        if (is_null($workspace) || $workspace->getBaseWorkspaceName() === null) {
+        if (is_null($workspace) || $workspace->baseWorkspaceName === null) {
             return [];
         }
         $changeFinder = $contentRepository->projectionState(ChangeProjection::class);
-        $changes = $changeFinder->findByContentStreamIdentifier($workspace->getCurrentContentStreamIdentifier());
+        $changes = $changeFinder->findByContentStreamIdentifier($workspace->currentContentStreamIdentifier);
         $unpublishedNodes = [];
         foreach ($changes as $change) {
             if ($change->removalAttachmentPoint) {
@@ -90,7 +90,7 @@ class WorkspaceService
                 ];
             } else {
                 $subgraph = $contentRepository->getContentGraph()->getSubgraph(
-                    $workspace->getCurrentContentStreamIdentifier(),
+                    $workspace->currentContentStreamIdentifier,
                     $change->originDimensionSpacePoint->toDimensionSpacePoint(),
                     VisibilityConstraints::withoutRestrictions()
                 );
@@ -130,11 +130,11 @@ class WorkspaceService
         foreach ($contentRepository->getWorkspaceFinder()->findAll() as $workspace) {
             // FIXME: This check should be implemented through a specialized Workspace Privilege or something similar
             // Skip workspace not owned by current user
-            if ($workspace->getWorkspaceOwner() !== null && $workspace->getWorkspaceOwner() !== $user) {
+            if ($workspace->workspaceOwner !== null && $workspace->workspaceOwner !== $user) {
                 continue;
             }
             // Skip own personal workspace
-            if ($workspace->getWorkspaceName()->name === $this->userService->getPersonalWorkspaceName()) {
+            if ($workspace->workspaceName->name === $this->userService->getPersonalWorkspaceName()) {
                 continue;
             }
 
@@ -144,12 +144,12 @@ class WorkspaceService
             }
 
             $workspaceArray = [
-                'name' => $workspace->getWorkspaceName()->jsonSerialize(),
-                'title' => $workspace->getWorkspaceTitle()->jsonSerialize(),
-                'description' => $workspace->getWorkspaceDescription()->jsonSerialize(),
+                'name' => $workspace->workspaceName->jsonSerialize(),
+                'title' => $workspace->workspaceTitle->jsonSerialize(),
+                'description' => $workspace->workspaceDescription->jsonSerialize(),
                 'readonly' => !$this->domainUserService->currentUserCanPublishToWorkspace($workspace)
             ];
-            $workspacesArray[$workspace->getWorkspaceName()->jsonSerialize()] = $workspaceArray;
+            $workspacesArray[$workspace->workspaceName->jsonSerialize()] = $workspaceArray;
         }
 
         return $workspacesArray;

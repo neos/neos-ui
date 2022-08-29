@@ -11,7 +11,7 @@ namespace Neos\Neos\Ui\Service;
  * source code.
  */
 
-use Neos\ContentRepository\SharedModel\NodeAddress;
+use Neos\ContentRepository\Core\SharedModel\NodeAddress;
 use Neos\Flow\Annotations as Flow;
 
 /**
@@ -38,7 +38,6 @@ class NodeClipboard
      * Save copied node to clipboard.
      *
      * @param array<int,NodeAddress> $nodeAddresses
-     * @throws \Neos\ContentRepository\SharedModel\NodeAddressCannotBeSerializedException
      * @Flow\Session(autoStart=true)
      */
     public function copyNodes(array $nodeAddresses): void
@@ -54,7 +53,6 @@ class NodeClipboard
      * Save cut node to clipboard.
      *
      * @param array<int,NodeAddress> $nodeAddresses
-     * @throws \Neos\ContentRepository\SharedModel\NodeAddressCannotBeSerializedException
      * @Flow\Session(autoStart=true)
      */
     public function cutNodes(array $nodeAddresses): void

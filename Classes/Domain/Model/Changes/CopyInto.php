@@ -12,11 +12,11 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
-use Neos\ContentRepository\Projection\ContentGraph\Node;
-use Neos\ContentRepository\SharedModel\Node\OriginDimensionSpacePoint;
-use Neos\ContentRepository\SharedModel\Node\NodeName;
-use Neos\ContentRepository\Feature\NodeDuplication\Command\CopyNodesRecursively;
-use Neos\ContentRepository\SharedModel\User\UserIdentifier;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
+use Neos\ContentRepository\Core\SharedModel\Node\OriginDimensionSpacePoint;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeName;
+use Neos\ContentRepository\Core\Feature\NodeDuplication\Command\CopyNodesRecursively;
+use Neos\ContentRepository\Core\SharedModel\User\UserIdentifier;
 
 class CopyInto extends AbstractStructuralChange
 {
@@ -68,7 +68,7 @@ class CopyInto extends AbstractStructuralChange
             $targetNodeName = NodeName::fromString(uniqid('node-'));
 
             $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryIdentifier);
-            $command = CopyNodesRecursively::create(
+            $command = CopyNodesRecursively::createFromSubgraphAndStartNode(
                 $contentRepository->getContentGraph()->getSubgraph(
                     $subject->subgraphIdentity->contentStreamIdentifier,
                     $subject->subgraphIdentity->dimensionSpacePoint,

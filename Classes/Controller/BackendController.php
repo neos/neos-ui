@@ -12,9 +12,9 @@ namespace Neos\Neos\Ui\Controller;
  * source code.
  */
 
-use Neos\ContentRepository\SharedModel\NodeType\NodeTypeName;
-use Neos\ContentRepository\SharedModel\NodeAddressFactory;
-use Neos\ContentRepository\SharedModel\VisibilityConstraints;
+use Neos\ContentRepository\Core\SharedModel\NodeType\NodeTypeName;
+use Neos\ContentRepository\Core\SharedModel\NodeAddressFactory;
+use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Neos\Domain\Model\WorkspaceName as NeosWorkspaceName;
 use Neos\Flow\Annotations as Flow;
@@ -162,7 +162,7 @@ class BackendController extends ActionController
         $defaultDimensionSpacePoint = $backendControllerInternals->getDefaultDimensionSpacePoint();
 
         $subgraph = $contentRepository->getContentGraph()->getSubgraph(
-            $workspace->getCurrentContentStreamIdentifier(),
+            $workspace->currentContentStreamIdentifier,
             $nodeAddress ? $nodeAddress->dimensionSpacePoint : $defaultDimensionSpacePoint,
             VisibilityConstraints::withoutRestrictions()
         );
@@ -170,7 +170,7 @@ class BackendController extends ActionController
         // we assume that the ROOT node is always stored in the CR as "physical" node; so it is safe
         // to call the contentGraph here directly.
         $rootNodeAggregate = $contentRepository->getContentGraph()->findRootNodeAggregateByType(
-            $workspace->getCurrentContentStreamIdentifier(),
+            $workspace->currentContentStreamIdentifier,
             NodeTypeName::fromString('Neos.Neos:Sites')
         );
         $rootNode = $rootNodeAggregate->getNodeByCoveredDimensionSpacePoint($defaultDimensionSpacePoint);

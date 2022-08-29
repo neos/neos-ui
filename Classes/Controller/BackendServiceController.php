@@ -13,14 +13,14 @@ namespace Neos\Neos\Ui\Controller;
  * source code.
  */
 
-use Neos\ContentRepository\Feature\Common\NodeIdentifiersToPublishOrDiscard;
-use Neos\ContentRepository\Feature\Common\NodeIdentifierToPublishOrDiscard;
-use Neos\ContentRepository\SharedModel\NodeAddressFactory;
-use Neos\ContentRepository\SharedModel\VisibilityConstraints;
-use Neos\ContentRepository\Feature\WorkspaceDiscarding\Command\DiscardIndividualNodesFromWorkspace;
-use Neos\ContentRepository\Feature\WorkspacePublication\Command\PublishIndividualNodesFromWorkspace;
-use Neos\ContentRepository\SharedModel\User\UserIdentifier;
-use Neos\ContentRepository\SharedModel\NodeAddress;
+use Neos\ContentRepository\Core\Feature\Common\NodeIdentifiersToPublishOrDiscard;
+use Neos\ContentRepository\Core\Feature\Common\NodeIdentifierToPublishOrDiscard;
+use Neos\ContentRepository\Core\SharedModel\NodeAddressFactory;
+use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
+use Neos\ContentRepository\Core\Feature\WorkspaceDiscarding\Command\DiscardIndividualNodesFromWorkspace;
+use Neos\ContentRepository\Core\Feature\WorkspacePublication\Command\PublishIndividualNodesFromWorkspace;
+use Neos\ContentRepository\Core\SharedModel\User\UserIdentifier;
+use Neos\ContentRepository\Core\SharedModel\NodeAddress;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Neos\Domain\Model\WorkspaceName as NeosWorkspaceName;
 use Neos\Flow\Mvc\ActionRequest;
@@ -395,7 +395,6 @@ class BackendServiceController extends ActionController
      *
      * @param array $nodes
      * @return void
-     * @throws \Neos\ContentRepository\SharedModel\NodeAddressCannotBeSerializedException
      * @throws \Neos\Flow\Property\Exception
      * @throws \Neos\Flow\Security\Exception
      */
@@ -429,7 +428,6 @@ class BackendServiceController extends ActionController
      * Persists the clipboard node on cut
      *
      * @param array $nodes
-     * @throws \Neos\ContentRepository\SharedModel\NodeAddressCannotBeSerializedException
      * @throws \Neos\Flow\Property\Exception
      * @throws \Neos\Flow\Security\Exception
      */

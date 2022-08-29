@@ -12,8 +12,8 @@ namespace Neos\Neos\Ui\Fusion\Helper;
  * source code.
  */
 
-use Neos\ContentRepository\DimensionSpace\Dimension\ContentDimensionSourceInterface;
-use Neos\ContentRepository\Factory\ContentRepositoryServiceInterface;
+use Neos\ContentRepository\Core\Dimension\ContentDimensionSourceInterface;
+use Neos\ContentRepository\Core\Factory\ContentRepositoryServiceInterface;
 
 /**
  * @deprecated ugly - we want to get rid of this by adding dimension infos in the Subgraph

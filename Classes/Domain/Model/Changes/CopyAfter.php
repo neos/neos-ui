@@ -12,13 +12,13 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
-use Neos\ContentRepository\SharedModel\Node\NodeName;
-use Neos\ContentRepository\SharedModel\Node\OriginDimensionSpacePoint;
-use Neos\ContentRepository\SharedModel\VisibilityConstraints;
-use Neos\ContentRepository\Projection\ContentGraph\Node;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeName;
+use Neos\ContentRepository\Core\SharedModel\Node\OriginDimensionSpacePoint;
+use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\Flow\Annotations as Flow;
-use Neos\ContentRepository\Feature\NodeDuplication\Command\CopyNodesRecursively;
-use Neos\ContentRepository\Feature\NodeDuplication\NodeDuplicationCommandHandler;
+use Neos\ContentRepository\Core\Feature\NodeDuplication\Command\CopyNodesRecursively;
+use Neos\ContentRepository\Core\Feature\NodeDuplication\NodeDuplicationCommandHandler;
 
 class CopyAfter extends AbstractStructuralChange
 {
@@ -69,7 +69,7 @@ class CopyAfter extends AbstractStructuralChange
             $targetNodeName = NodeName::fromString(uniqid('node-'));
 
             $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryIdentifier);
-            $command = CopyNodesRecursively::create(
+            $command = CopyNodesRecursively::createFromSubgraphAndStartNode(
                 $contentRepository->getContentGraph()->getSubgraph(
                     $subject->subgraphIdentity->contentStreamIdentifier,
                     $subject->subgraphIdentity->dimensionSpacePoint,

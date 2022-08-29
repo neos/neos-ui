@@ -14,10 +14,11 @@ declare(strict_types=1);
 
 namespace Neos\Neos\Ui\Domain\Service;
 
-use Neos\ContentRepository\Projection\ContentGraph\Node;
-use Neos\ContentRepository\Projection\NodeHiddenState\NodeHiddenStateProjection;
-use Neos\ContentRepository\SharedModel\Node\PropertyName;
-use Neos\ContentRepository\SharedModel\NodeType\NodeType;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
+use Neos\ContentRepository\Core\Projection\NodeHiddenState\NodeHiddenStateFinder;
+use Neos\ContentRepository\Core\Projection\NodeHiddenState\NodeHiddenStateProjection;
+use Neos\ContentRepository\Core\SharedModel\Node\PropertyName;
+use Neos\ContentRepository\Core\SharedModel\NodeType\NodeType;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Log\ThrowableStorageInterface;
@@ -110,11 +111,13 @@ class NodePropertyConverterService
         if ($propertyName === '_hidden') {
             $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryIdentifier);
             $nodeHiddenStateFinder = $contentRepository->projectionState(NodeHiddenStateProjection::class);
+            /* @var NodeHiddenStateFinder $nodeHiddenStateFinder */
+
             return $nodeHiddenStateFinder->findHiddenState(
                 $node->subgraphIdentity->contentStreamIdentifier,
                 $node->subgraphIdentity->dimensionSpacePoint,
                 $node->nodeAggregateIdentifier
-            )->isHidden();
+            )->isHidden;
         }
         $propertyType = $node->nodeType->getPropertyType($propertyName);
 

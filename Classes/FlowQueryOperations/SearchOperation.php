@@ -11,10 +11,10 @@ namespace Neos\Neos\Ui\FlowQueryOperations;
  * source code.
  */
 
-use Neos\ContentRepository\Projection\ContentGraph\Node;
-use Neos\ContentRepository\Projection\ContentGraph\SearchTerm;
-use Neos\ContentRepository\SharedModel\NodeType\NodeTypeConstraintParser;
-use Neos\ContentRepository\SharedModel\NodeType\NodeTypeConstraints;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
+use Neos\ContentRepository\Core\Projection\ContentGraph\SearchTerm;
+use Neos\ContentRepository\Core\SharedModel\NodeType\NodeTypeConstraintParser;
+use Neos\ContentRepository\Core\SharedModel\NodeType\NodeTypeConstraints;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Eel\FlowQuery\Operations\AbstractOperation;

@@ -14,9 +14,9 @@ declare(strict_types=1);
 
 namespace Neos\Neos\Ui\Controller;
 
-use Neos\ContentRepository\DimensionSpace\DimensionSpace\DimensionSpacePoint;
-use Neos\ContentRepository\DimensionSpace\DimensionSpace\InterDimensionalVariationGraph;
-use Neos\ContentRepository\Factory\ContentRepositoryServiceInterface;
+use Neos\ContentRepository\Core\DimensionSpace\DimensionSpacePoint;
+use Neos\ContentRepository\Core\DimensionSpace\InterDimensionalVariationGraph;
+use Neos\ContentRepository\Core\Factory\ContentRepositoryServiceInterface;
 
 /**
  * @deprecated really un-nice :D

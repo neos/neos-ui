@@ -14,13 +14,13 @@ declare(strict_types=1);
 
 namespace Neos\Neos\Ui\Service;
 
-use Neos\ContentRepository\ContentRepository;
-use Neos\ContentRepository\Feature\WorkspacePublication\Command\PublishWorkspace;
-use Neos\ContentRepository\Feature\WorkspaceRebase\Command\RebaseWorkspace;
-use Neos\ContentRepository\Feature\WorkspaceCommandHandler;
-use Neos\ContentRepository\SharedModel\User\UserIdentifier;
-use Neos\ContentRepository\SharedModel\Workspace\WorkspaceName;
-use Neos\ContentRepository\Factory\ContentRepositoryIdentifier;
+use Neos\ContentRepository\Core\ContentRepository;
+use Neos\ContentRepository\Core\Feature\WorkspacePublication\Command\PublishWorkspace;
+use Neos\ContentRepository\Core\Feature\WorkspaceRebase\Command\RebaseWorkspace;
+use Neos\ContentRepository\Core\Feature\WorkspaceCommandHandler;
+use Neos\ContentRepository\Core\SharedModel\User\UserIdentifier;
+use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
+use Neos\ContentRepository\Core\Factory\ContentRepositoryIdentifier;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\Domain\Model\User;

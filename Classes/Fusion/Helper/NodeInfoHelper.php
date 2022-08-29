@@ -11,14 +11,16 @@ namespace Neos\Neos\Ui\Fusion\Helper;
  * source code.
  */
 
-use Neos\ContentRepository\Projection\ContentGraph\ContentSubgraphInterface;
-use Neos\ContentRepository\Projection\ContentGraph\Node;
-use Neos\ContentRepository\Projection\ContentGraph\Nodes;
-use Neos\ContentRepository\Projection\NodeHiddenState\NodeHiddenStateProjection;
-use Neos\ContentRepository\SharedModel\NodeAddress;
-use Neos\ContentRepository\SharedModel\NodeAddressFactory;
-use Neos\ContentRepository\SharedModel\NodeType\NodeTypeConstraintParser;
-use Neos\ContentRepository\SharedModel\NodeType\NodeTypeConstraints;
+use Neos\ContentRepository\Core\Projection\ContentGraph\ContentSubgraphInterface;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Nodes;
+use Neos\ContentRepository\Core\Projection\NodeHiddenState\NodeHiddenState;
+use Neos\ContentRepository\Core\Projection\NodeHiddenState\NodeHiddenStateFinder;
+use Neos\ContentRepository\Core\Projection\NodeHiddenState\NodeHiddenStateProjection;
+use Neos\ContentRepository\Core\SharedModel\NodeAddress;
+use Neos\ContentRepository\Core\SharedModel\NodeAddressFactory;
+use Neos\ContentRepository\Core\SharedModel\NodeType\NodeTypeConstraintParser;
+use Neos\ContentRepository\Core\SharedModel\NodeType\NodeTypeConstraints;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
@@ -129,6 +131,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     ): ?array {
         $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryIdentifier);
         $nodeHiddenStateFinder = $contentRepository->projectionState(NodeHiddenStateProjection::class);
+        /* @var NodeHiddenStateFinder $nodeHiddenStateFinder */
 
         /** @todo implement custom node policy service
         if (!$this->nodePolicyService->isNodeTreePrivilegeGranted($node)) {
@@ -144,7 +147,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
                 $node->subgraphIdentity->contentStreamIdentifier,
                 $node->subgraphIdentity->dimensionSpacePoint,
                 $node->nodeAggregateIdentifier
-            )->isHidden(),
+            )->isHidden,
             '_hiddenInIndex' => $node->getProperty('_hiddenInIndex'),
             //'_hiddenBeforeDateTime' => $node->getHiddenBeforeDateTime() instanceof \DateTimeInterface,
             //'_hiddenAfterDateTime' => $node->getHiddenAfterDateTime() instanceof \DateTimeInterface,
@@ -260,7 +263,6 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
      * @param Node $node
      * @param string $nodeTypeFilterString
      * @return array<int,array<string,string>>
-     * @throws \Neos\ContentRepository\SharedModel\NodeAddressCannotBeSerializedException
      */
     protected function renderChildrenInformation(Node $node, string $nodeTypeFilterString): array
     {

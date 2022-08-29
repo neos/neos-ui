@@ -12,9 +12,9 @@ namespace Neos\Neos\Ui\Fusion\Helper;
  */
 
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
-use Neos\ContentRepository\Factory\ContentRepositoryIdentifier;
+use Neos\ContentRepository\Core\Factory\ContentRepositoryIdentifier;
 use Neos\Eel\ProtectedContextAwareInterface;
-use Neos\ContentRepository\SharedModel\Workspace\WorkspaceName;
+use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
 use Neos\Neos\Domain\Model\WorkspaceName as NeosWorkspaceName;
 use Neos\Flow\Security\Context;
 use Neos\Neos\Domain\Service\UserService as DomainUserService;
@@ -70,9 +70,9 @@ class WorkspaceHelper implements ProtectedContextAwareInterface
 
         return !is_null($personalWorkspace)
             ? [
-                'name' => $personalWorkspace->getWorkspaceName(),
+                'name' => $personalWorkspace->workspaceName,
                 'publishableNodes' => $this->workspaceService->getPublishableNodeInfo($personalWorkspaceName, $contentRepositoryIdentifier),
-                'baseWorkspace' => $personalWorkspace->getBaseWorkspaceName(),
+                'baseWorkspace' => $personalWorkspace->baseWorkspaceName,
                 // TODO: FIX readonly flag!
                 //'readOnly' => !$this->domainUserService->currentUserCanPublishToWorkspace($baseWorkspace)
                 'readOnly' => false

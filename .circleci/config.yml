@@ -135,7 +135,7 @@ jobs:
     environment:
       FLOW_CONTEXT: Production
     docker:
-      - image: cimg/php:7.4.12-node
+      - image: cimg/php:8.0.22-node
       - image: cimg/mariadb:10.6
         environment:
           MYSQL_DATABASE: neos

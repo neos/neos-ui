@@ -28,6 +28,7 @@ use Neos\ContentRepository\Core\Feature\NodeVariation\Command\CreateNodeVariant;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateIdentifiers;
 use Neos\ContentRepository\Core\DimensionSpace\OriginDimensionSpacePoint;
 use Neos\ContentRepository\Core\SharedModel\Node\PropertyName;
+use Neos\ContentRepository\Core\SharedModel\Node\ReferenceName;
 use Neos\ContentRepository\Core\SharedModel\NodeType\NodeTypeName;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Ui\Domain\Model\AbstractChange;
@@ -175,7 +176,7 @@ class Property extends AbstractChange
                         $subject->subgraphIdentity->contentStreamIdentifier,
                         $subject->nodeAggregateIdentifier,
                         $subject->originDimensionSpacePoint,
-                        PropertyName::fromString($propertyName),
+                        ReferenceName::fromString($propertyName),
                         NodeReferencesToWrite::fromNodeAggregateIdentifiers(NodeAggregateIdentifiers::fromArray($destinationNodeAggregateIdentifiers)),
                         $this->getInitiatingUserIdentifier()
                     )

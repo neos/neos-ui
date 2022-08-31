@@ -74,7 +74,11 @@ jobs:
       - image: cimg/node:16.14-browsers
     steps:
       - attach_workspace: *attach_workspace
-      - run: make test
+      - run:
+          name: Build
+          no_output_timeout: 30m
+          command: |
+            make test
 
   build_flow_app:
     working_directory: *workspace_root

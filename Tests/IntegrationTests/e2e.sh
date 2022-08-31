@@ -32,8 +32,7 @@ mkdir DistributionPackages
     ./flow resource:publish
 
     cd Packages/Application/Neos.Neos.Ui
-    yarn run testcafe "$1" "../../../${fixture}*.e2e.js" \
-            --selector-timeout=10000 --assertion-timeout=30000
+    yarn run testcafe "$1" "../../../Packages/Application/Neos.Neos.Ui/Tests/IntegrationTests/Fixtures/1Dimension/*.e2e.js" --selector-timeout=10000 --assertion-timeout=30000
     cd ../../..
     rm -f DistributionPackages/Neos.TestSite
 

@@ -9,7 +9,7 @@
   "license": "GNU GPLv3",
   "scripts": {
     "prebuild": "yarn tsc --declaration",
-    "test": "yarn jest -w 2 --coverage",
+    "test": "yarn jest -w 2 --coverage --forceExit --forceExit",
     "test:watch": "yarn jest --watch",
     "build": "yarn tsc --build",
     "build:watch": "yarn tsc --build --watch",

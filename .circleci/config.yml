@@ -99,7 +99,7 @@ jobs:
       FLOW_CONTEXT: Production
     docker:
       - image: cimg/php:8.0-node
-      - image: circleci/mariadb:10.2
+      - image: cimg/mariadb:10.6
         environment:
           MYSQL_DATABASE: neos
           MYSQL_ROOT_PASSWORD: not_a_real_password
@@ -138,7 +138,7 @@ jobs:
       FLOW_CONTEXT: Production
     docker:
       - image: cimg/php:8.0-node
-      - image: circleci/mariadb:10.2
+      - image: cimg/mariadb:10.6
         environment:
           MYSQL_DATABASE: neos
           MYSQL_ROOT_PASSWORD: not_a_real_password

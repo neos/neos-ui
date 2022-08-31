@@ -107,12 +107,7 @@ export default class TimeSeriesView extends PureComponent {
     getXTicks = data => {
         const domain = [new Date(data[0].time), new Date(data[data.length - 1].time)];
         const scale = scaleTime().domain(domain);
-
-        const selectedInterval = $get('chart.selectedInterval', this.props.options);
-        // In case of quarter, draw tick every 3 months
-        const tickEveryX = (selectedInterval === 'quarters' || selectedInterval === 'Q') ? 3 : 1;
-        const ticks = scale.ticks(this.getTimeLabeler(), tickEveryX);
-
+        const ticks = scale.ticks(this.getTimeLabeler());
         return ticks.map(entry => Number(entry));
     };
 

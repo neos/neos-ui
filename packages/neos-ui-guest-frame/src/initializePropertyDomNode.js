@@ -22,7 +22,7 @@ export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry,
     );
 
     if (isInlineEditable) {
-        const editorIdentifier = nodeTypesRegistry.getInlineEditorIdentifierForProperty(nodeTypeName, propertyName);
+        const editorIdentifier = 'ckeditor5';
         const editorOptions = nodeTypesRegistry.getInlineEditorOptionsForProperty(nodeTypeName, propertyName);
         const {bootstrap, createInlineEditor} = inlineEditorRegistry.get(editorIdentifier);
 

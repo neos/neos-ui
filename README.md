@@ -21,13 +21,12 @@ That means:
 * NeosCMS version 7.1: branch 7.1
 * NeosCMS version 7.2: branch 7.2
 * NeosCMS version 7.3: branch 7.3
+* NeosCMS version 8.0: branch 8.0
 * latest development happens in master
 
 ## Browser support
 
 The new interface supports all evergreen (i.e. self-updating) browsers, including: **Chrome, Firefox, Safari, Edge, Opera and other webkit-based browsers**.
-
-In order to get **IE11** to work, please switch to CKEditor 4, as CKEditor 5 doesn't support it. But doing so is highly discouraged, so where possibly encourage your editors to use modern browsers.
 
 If you discover bugs in any of the supported browsers, please [report them](https://github.com/neos/neos-ui/issues/new)!
 
@@ -137,7 +136,9 @@ git checkout 7.2 && git fetch && git reset --hard origin/7.2 && git merge --no-f
 # review and `git commit`
 git checkout 7.3 && git fetch && git reset --hard origin/7.3 && git merge --no-ff --no-commit origin/7.2
 # review and `git commit`
-git checkout master && git fetch && git reset --hard origin/master && git merge --no-ff --no-commit origin/7.3
+git checkout 8.0 && git fetch && git reset --hard origin/8.0 && git merge --no-ff --no-commit origin/7.3
+# review and `git commit`
+git checkout master && git fetch && git reset --hard origin/master && git merge --no-ff --no-commit origin/8.0
 # review and `git commit`
 ```
 

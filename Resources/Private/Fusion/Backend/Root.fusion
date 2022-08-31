@@ -195,6 +195,18 @@ backend = Neos.Fusion:Template {
                     controller = 'Service\\ContentDimensions'
                     action = 'index'
                 }
+                impersonateStatus = Neos.Fusion:UriBuilder {
+                    package = 'Neos.Neos'
+                    controller = 'Backend\\Impersonate'
+                    action = 'status'
+                    format = 'json'
+                }
+                impersonateRestore = Neos.Fusion:UriBuilder {
+                    package = 'Neos.Neos'
+                    controller = 'Backend\\Impersonate'
+                    action = 'restoreWithResponse'
+                    format = 'json'
+                }
             }
             modules = Neos.Fusion:DataStructure {
                 prototype(Neos.Fusion:UriBuilder) {

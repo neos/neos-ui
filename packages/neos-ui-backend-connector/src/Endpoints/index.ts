@@ -1,4 +1,5 @@
 import {getElementInnerText, getElementAttributeValue, getContextString} from './Helpers';
+import {isNil} from '@neos-project/utils-helpers';
 import {urlWithParams, encodeAsQueryString} from '@neos-project/utils-helpers/src/urlWithParams';
 
 import fetchWithErrorHandling from '../FetchWithErrorHandling/index';
@@ -35,6 +36,8 @@ export interface Routes {
             userPreferences: string;
             dataSource: string;
             contentDimensions: string;
+            impersonateStatus: string;
+            impersonateRestore: string;
         };
         modules: {
             workspaces: string;
@@ -280,12 +283,13 @@ export default (routes: Routes) => {
                 const assetSourceIdentifier = getElementInnerText(assetProxy, '.asset-source-identifier');
                 const assetSourceLabel = getElementInnerText(assetProxy, '.asset-source-label');
                 const assetProxyIdentifier = getElementInnerText(assetProxy, '.asset-proxy-identifier');
+                const identifier = getElementInnerText(assetProxy, '.local-asset-identifier') || (assetSourceIdentifier + '/' + assetProxyIdentifier);
                 return {
                     dataType: 'Neos.Media:Asset',
-                    loaderUri: 'assetProxy://' + assetSourceIdentifier + '/' + assetProxyIdentifier,
+                    loaderUri: 'assetProxy://' + identifier,
                     label: getElementInnerText(assetProxy, '.asset-proxy-label'),
                     preview: getElementAttributeValue(assetProxy, '[rel=thumbnail]', 'href'),
-                    identifier: getElementInnerText(assetProxy, '.local-asset-identifier') || (assetSourceIdentifier + '/' + assetProxyIdentifier),
+                    identifier,
                     assetSourceIdentifier,
                     assetSourceLabel,
                     assetProxyIdentifier
@@ -609,6 +613,31 @@ export default (routes: Routes) => {
         .then(result => result && result.csrfToken);
     };
 
+    const impersonateStatus = () => fetchWithErrorHandling.withCsrfToken(() => ({
+        url: isNil(routes.core.service.impersonateStatus) ? '' : routes.core.service.impersonateStatus,
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }))
+    .then(response => fetchWithErrorHandling.parseJson(response))
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+
+    const impersonateRestore = () => fetchWithErrorHandling.withCsrfToken(csrfToken => {
+        const data = new URLSearchParams();
+        data.set('__csrfToken', csrfToken);
+
+        return {
+            url: isNil(routes.core.service.impersonateRestore) ? '' : routes.core.service.impersonateRestore,
+            method: 'POST',
+            credentials: 'include',
+            body: data
+        };
+    })
+    .then(response => fetchWithErrorHandling.parseJson(response))
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+
     return {
         loadImageMetadata,
         change,
@@ -636,6 +665,8 @@ export default (routes: Routes) => {
         getWorkspaceInfo,
         getAdditionalNodeMetadata,
         tryLogin,
-        contentDimensions
+        contentDimensions,
+        impersonateStatus,
+        impersonateRestore
     };
 };

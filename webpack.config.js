@@ -14,8 +14,7 @@ module.exports = merge(
                 './packages/neos-ui/src/styleHostOnly.css'
             ],
             Guest: [
-                './polyfills.js',
-                './packages/neos-ui-ckeditor-bindings/src/index.js'
+                './polyfills.js'
             ],
             Vendor: [
                 './polyfills.js',

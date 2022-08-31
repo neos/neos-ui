@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-extensibility",
-  "version": "7.3.2",
+  "version": "8.0.1",
   "description": "Extensibility mechanisms for the Neos CMS UI",
   "repository": "neos/neos-ui",
   "bugs": "https://github.com/neos/neos-ui/issues",
@@ -17,8 +17,8 @@
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "7.3.2",
-    "@neos-project/jest-preset-neos-ui": "7.3.2",
+    "@neos-project/babel-preset-neos-ui": "8.0.1",
+    "@neos-project/jest-preset-neos-ui": "8.0.1",
     "typescript": "3.2.2"
   },
   "dependencies": {
@@ -39,7 +39,7 @@
     "json-loader": "^0.5.7",
     "mini-css-extract-plugin": "^0.5.0",
     "postcss-loader": "^3.0.0",
-    "react-dev-utils": "^0.5.0",
+    "react-dev-utils": "^7.0.0",
     "style-loader": "^2.0.0"
   },
   "bin": {

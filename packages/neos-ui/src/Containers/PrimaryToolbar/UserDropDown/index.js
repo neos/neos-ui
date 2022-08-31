@@ -5,25 +5,26 @@ import {$transform, $get} from 'plow-js';
 import {neos} from '@neos-project/neos-ui-decorators';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 import DropDown from '@neos-project/react-ui-components/src/DropDown/';
+import RestoreButtonItem from './RestoreButtonItem';
 
 import I18n from '@neos-project/neos-ui-i18n';
 
 import style from './style.css';
-
 @connect($transform({
-    userName: $get('user.name.fullName')
+    userName: $get('user.name.fullName'),
+    impersonateStatus: $get('user.impersonate.status')
 }))
 @neos()
 export default class UserDropDown extends PureComponent {
     static propTypes = {
-        userName: PropTypes.string.isRequired
+        userName: PropTypes.string.isRequired,
+        impersonateStatus: PropTypes.bool.isRequired
     };
 
     render() {
         const logoutUri = $get('routes.core.logout', this.props.neos);
         const userSettingsUri = $get('routes.core.modules.userSettings', this.props.neos);
         const {csrfToken} = document.getElementById('appContainer').dataset;
-
         return (
             <div className={style.wrapper}>
                 <DropDown className={style.dropDown}>
@@ -47,6 +48,9 @@ export default class UserDropDown extends PureComponent {
                                 <I18n id="userSettings.label" sourceName="Modules" packageKey="Neos.Neos" fallback="User Settings"/>
                             </a>
                         </li>
+                        {this.props.impersonateStatus === true ? (
+                            <RestoreButtonItem />
+                        ) : null}
                     </DropDown.Contents>
                 </DropDown>
             </div>

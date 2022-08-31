@@ -13,7 +13,7 @@ namespace Neos\Neos\Ui\Controller;
  */
 
 use Neos\ContentRepository\Core\SharedModel\NodeType\NodeTypeName;
-use Neos\ContentRepository\Core\SharedModel\NodeAddressFactory;
+use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Neos\Domain\Model\WorkspaceName as NeosWorkspaceName;

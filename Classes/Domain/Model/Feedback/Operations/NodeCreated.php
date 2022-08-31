@@ -13,7 +13,7 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
 
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
-use Neos\ContentRepository\Core\SharedModel\NodeAddressFactory;
+use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Neos\Domain\Service\NodeTypeNameFactory;

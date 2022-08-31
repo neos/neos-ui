@@ -11,7 +11,7 @@ namespace Neos\Neos\Ui\Service;
  * source code.
  */
 
-use Neos\ContentRepository\Core\SharedModel\NodeAddress;
+use Neos\Neos\FrontendRouting\NodeAddress;
 use Neos\Flow\Annotations as Flow;
 
 /**
@@ -52,7 +52,7 @@ class NodeClipboard
     /**
      * Save cut node to clipboard.
      *
-     * @param array<int,NodeAddress> $nodeAddresses
+     * @param array<int,\Neos\Neos\FrontendRouting\NodeAddress> $nodeAddresses
      * @Flow\Session(autoStart=true)
      */
     public function cutNodes(array $nodeAddresses): void

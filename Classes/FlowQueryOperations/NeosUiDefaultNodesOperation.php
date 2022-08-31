@@ -18,7 +18,7 @@ use Neos\ContentRepository\Core\SharedModel\NodeType\NodeTypeConstraints;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Eel\FlowQuery\Operations\AbstractOperation;
-use Neos\ContentRepository\Core\SharedModel\NodeAddressFactory;
+use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Flow\Annotations as Flow;
 
 class NeosUiDefaultNodesOperation extends AbstractOperation

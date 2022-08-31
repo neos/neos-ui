@@ -13,14 +13,14 @@ namespace Neos\Neos\Ui\Controller;
  * source code.
  */
 
-use Neos\ContentRepository\Core\Feature\Common\NodeIdentifiersToPublishOrDiscard;
-use Neos\ContentRepository\Core\Feature\Common\NodeIdentifierToPublishOrDiscard;
-use Neos\ContentRepository\Core\SharedModel\NodeAddressFactory;
+use Neos\ContentRepository\Core\Feature\WorkspacePublication\Dto\NodeIdentifiersToPublishOrDiscard;
+use Neos\ContentRepository\Core\Feature\WorkspacePublication\Dto\NodeIdentifierToPublishOrDiscard;
+use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
-use Neos\ContentRepository\Core\Feature\WorkspaceDiscarding\Command\DiscardIndividualNodesFromWorkspace;
+use Neos\ContentRepository\Core\Feature\WorkspacePublication\Command\DiscardIndividualNodesFromWorkspace;
 use Neos\ContentRepository\Core\Feature\WorkspacePublication\Command\PublishIndividualNodesFromWorkspace;
 use Neos\ContentRepository\Core\SharedModel\User\UserIdentifier;
-use Neos\ContentRepository\Core\SharedModel\NodeAddress;
+use Neos\Neos\FrontendRouting\NodeAddress;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Neos\Domain\Model\WorkspaceName as NeosWorkspaceName;
 use Neos\Flow\Mvc\ActionRequest;
@@ -438,7 +438,7 @@ class BackendServiceController extends ActionController
         $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryIdentifier);
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
 
-        /** @var array<int,NodeAddress> $nodeAddresses */
+        /** @var array<int,\Neos\Neos\FrontendRouting\NodeAddress> $nodeAddresses */
         $nodeAddresses = array_map(
             fn (string $serializedNodeAddress) =>
             $nodeAddressFactory->createFromUriString($serializedNodeAddress),

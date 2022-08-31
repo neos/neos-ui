@@ -16,14 +16,17 @@ That means:
 
 ### Currently maintained versions
 
-* NeosCMS version 5.3: branch 5.3
-* NeosCMS version 7.0: branch 7.0
-* NeosCMS version 7.1: branch 7.1
-* NeosCMS version 7.2: branch 7.2
 * NeosCMS version 7.3: branch 7.3
 * NeosCMS version 8.0: branch 8.0
 * NeosCMS version 8.1: branch 8.1
 * latest development happens in master
+
+#### Releases with just security updates
+
+* NeosCMS version 5.3: branch 5.3
+* NeosCMS version 7.0: branch 7.0
+* NeosCMS version 7.1: branch 7.1
+* NeosCMS version 7.2: branch 7.2
 
 ## Browser support
 

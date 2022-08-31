@@ -5,7 +5,7 @@
   "main": "Resources/Public/JavaScript/Host.js",
   "private": true,
   "scripts": {
-    "test": "yarn jest -w 2 --coverage --forceExit --forceExit",
+    "test": "yarn jest -w 2 --coverage",
     "test:watch": "yarn jest --watch",
     "build": "exit 0",
     "build:watch": "exit 0",

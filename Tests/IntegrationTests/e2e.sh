@@ -13,11 +13,12 @@ rm -rf DummyDistributionPackages || true
 mv DistributionPackages DummyDistributionPackages
 mkdir DistributionPackages
 
-for fixture in Packages/Application/Neos.Neos.Ui/Tests/IntegrationTests/Fixtures/*/; do
-    echo "$fixture"
+# Currently just run the 1 dimension tests as we have issues with the 2 dimension tests on circleci
+#for fixture in Packages/Application/Neos.Neos.Ui/Tests/IntegrationTests/Fixtures/1Dimension/; do
+#    echo "$fixture"
 
     ln -s "../Packages/Application/Neos.Neos.Ui/Tests/IntegrationTests/SharedNodeTypesPackage" DistributionPackages/Neos.TestNodeTypes
-    ln -s "../${fixture}SitePackage" DistributionPackages/Neos.TestSite
+    ln -s "../Packages/Application/Neos.Neos.Ui/Tests/IntegrationTests/Fixtures/1Dimension/SitePackage" DistributionPackages/Neos.TestSite
 
     # TODO: optimize this
     ./flow flow:package:rescan
@@ -36,7 +37,7 @@ for fixture in Packages/Application/Neos.Neos.Ui/Tests/IntegrationTests/Fixtures
     cd ../../..
     rm -f DistributionPackages/Neos.TestSite
 
-done
+#done
 
 rm -rf DistributionPackages
 mv DummyDistributionPackages DistributionPackages

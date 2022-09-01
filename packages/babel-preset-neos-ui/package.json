@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/babel-preset-neos-ui",
-  "version": "7.2.7",
+  "version": "7.2.8",
   "description": "The babel preset for all packags of the neos-ui mono-repo.",
   "main": "./src/index.js",
   "private": true,

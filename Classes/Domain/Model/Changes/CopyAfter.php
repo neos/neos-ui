@@ -68,25 +68,25 @@ class CopyAfter extends AbstractStructuralChange
 
             $targetNodeName = NodeName::fromString(uniqid('node-'));
 
-            $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryIdentifier);
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
             $command = CopyNodesRecursively::createFromSubgraphAndStartNode(
                 $contentRepository->getContentGraph()->getSubgraph(
-                    $subject->subgraphIdentity->contentStreamIdentifier,
+                    $subject->subgraphIdentity->contentStreamId,
                     $subject->subgraphIdentity->dimensionSpacePoint,
                     VisibilityConstraints::withoutRestrictions()
                 ),
                 $subject,
                 OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->subgraphIdentity->dimensionSpacePoint),
                 $this->getInitiatingUserIdentifier(),
-                $parentNodeOfPreviousSibling->nodeAggregateIdentifier,
-                $succeedingSibling?->nodeAggregateIdentifier,
+                $parentNodeOfPreviousSibling->nodeAggregateId,
+                $succeedingSibling?->nodeAggregateId,
                 $targetNodeName
             );
             $contentRepository->handle($command)->block();
 
             $newlyCreatedNode = $this->contentRepositoryRegistry->subgraphForNode($parentNodeOfPreviousSibling)
                 ->findChildNodeConnectedThroughEdgeName(
-                    $parentNodeOfPreviousSibling->nodeAggregateIdentifier,
+                    $parentNodeOfPreviousSibling->nodeAggregateId,
                     $targetNodeName
                 );
             $this->finish($newlyCreatedNode);

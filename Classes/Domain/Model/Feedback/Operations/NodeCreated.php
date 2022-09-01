@@ -62,7 +62,7 @@ class NodeCreated extends AbstractFeedback
      */
     public function getDescription(): string
     {
-        return sprintf('Document Node "%s" created.', (string)$this->getNode()->nodeAggregateIdentifier);
+        return sprintf('Document Node "%s" created.', (string)$this->getNode()->nodeAggregateId);
     }
 
     /**
@@ -79,7 +79,7 @@ class NodeCreated extends AbstractFeedback
 
         return (
             $this->getNode()->subgraphIdentity->equals($feedback->getNode()->subgraphIdentity) &&
-            $this->getNode()->nodeAggregateIdentifier->equals($feedback->getNode()->nodeAggregateIdentifier)
+            $this->getNode()->nodeAggregateId->equals($feedback->getNode()->nodeAggregateId)
         );
     }
 
@@ -92,11 +92,11 @@ class NodeCreated extends AbstractFeedback
     public function serializePayload(ControllerContext $controllerContext)
     {
         $node = $this->getNode();
-        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryIdentifier);
+        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
         return [
             'contextPath' => $nodeAddressFactory->createFromNode($node)->serializeForUri(),
-            'identifier' => (string)$node->nodeAggregateIdentifier,
+            'identifier' => (string)$node->nodeAggregateId,
             'isDocument' => $node->nodeType->isOfType(NodeTypeNameFactory::NAME_DOCUMENT)
         ];
     }

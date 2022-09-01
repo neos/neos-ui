@@ -64,21 +64,21 @@ class MoveBefore extends AbstractStructuralChange
                 // do nothing; $precedingSibling is null.
             }
 
-            $hasEqualParentNode = $parentNode->nodeAggregateIdentifier
-                ->equals($succeedingSiblingParent->nodeAggregateIdentifier);
+            $hasEqualParentNode = $parentNode->nodeAggregateId
+                ->equals($succeedingSiblingParent->nodeAggregateId);
 
-            $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryIdentifier);
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
 
             $contentRepository->handle(
                 new MoveNodeAggregate(
-                    $subject->subgraphIdentity->contentStreamIdentifier,
+                    $subject->subgraphIdentity->contentStreamId,
                     $subject->subgraphIdentity->dimensionSpacePoint,
-                    $subject->nodeAggregateIdentifier,
+                    $subject->nodeAggregateId,
                     $hasEqualParentNode
                         ? null
-                        : $succeedingSiblingParent->nodeAggregateIdentifier,
-                    $precedingSibling?->nodeAggregateIdentifier,
-                    $succeedingSibling->nodeAggregateIdentifier,
+                        : $succeedingSiblingParent->nodeAggregateId,
+                    $precedingSibling?->nodeAggregateId,
+                    $succeedingSibling->nodeAggregateId,
                     RelationDistributionStrategy::STRATEGY_GATHER_ALL,
                     $this->getInitiatingUserIdentifier()
                 )

@@ -129,7 +129,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         ControllerContext $controllerContext = null,
         string $nodeTypeFilterOverride = null
     ): ?array {
-        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryIdentifier);
+        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
         $nodeHiddenStateFinder = $contentRepository->projectionState(NodeHiddenStateProjection::class);
         /* @var NodeHiddenStateFinder $nodeHiddenStateFinder */
 
@@ -144,9 +144,9 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             // if we are only rendering the tree state,
             // ensure _isHidden is sent to hidden nodes are correctly shown in the tree.
             '_hidden' => $nodeHiddenStateFinder->findHiddenState(
-                $node->subgraphIdentity->contentStreamIdentifier,
+                $node->subgraphIdentity->contentStreamId,
                 $node->subgraphIdentity->dimensionSpacePoint,
-                $node->nodeAggregateIdentifier
+                $node->nodeAggregateId
             )->isHidden,
             '_hiddenInIndex' => $node->getProperty('_hiddenInIndex'),
             //'_hiddenBeforeDateTime' => $node->getHiddenBeforeDateTime() instanceof \DateTimeInterface,
@@ -226,20 +226,20 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     protected function getBasicNodeInformation(Node $node): array
     {
         $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
-        $parentNode = $subgraph->findParentNode($node->nodeAggregateIdentifier);
+        $parentNode = $subgraph->findParentNode($node->nodeAggregateId);
 
-        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryIdentifier);
+        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
 
         return [
             'contextPath' => $nodeAddressFactory->createFromNode($node)->serializeForUri(),
             'name' => $node->nodeName?->jsonSerialize(),
-            'identifier' => $node->nodeAggregateIdentifier->jsonSerialize(),
+            'identifier' => $node->nodeAggregateId->jsonSerialize(),
             'nodeType' => $node->nodeType->getName(),
             'label' => $node->getLabel(),
             'isAutoCreated' => self::isAutoCreated($node, $subgraph),
             // TODO: depth is expensive to calculate; maybe let's get rid of this?
-            'depth' => $subgraph->findNodePath($node->nodeAggregateIdentifier)->getDepth(),
+            'depth' => $subgraph->findNodePath($node->nodeAggregateId)->getDepth(),
             'children' => [],
             'parent' => $parentNode ? $nodeAddressFactory->createFromNode($parentNode)->serializeForUri() : null,
             'matchesCurrentDimensions' => $node->subgraphIdentity->dimensionSpacePoint->equals($node->originDimensionSpacePoint)
@@ -248,7 +248,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
     public static function isAutoCreated(Node $node, ContentSubgraphInterface $subgraph): bool
     {
-        $parent = $subgraph->findParentNode($node->nodeAggregateIdentifier);
+        $parent = $subgraph->findParentNode($node->nodeAggregateId);
         if ($parent) {
             if (array_key_exists((string)$node->nodeName, $parent->nodeType->getAutoCreatedChildNodes())) {
                 return true;
@@ -266,16 +266,16 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
      */
     protected function renderChildrenInformation(Node $node, string $nodeTypeFilterString): array
     {
-        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryIdentifier);
+        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
         $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
 
         $documentChildNodes = $subgraph->findChildNodes(
-            $node->nodeAggregateIdentifier,
+            $node->nodeAggregateId,
             NodeTypeConstraints::fromFilterString($nodeTypeFilterString)
         );
         // child nodes for content tree, must not include those nodes filtered out by `baseNodeType`
         $contentChildNodes = $subgraph->findChildNodes(
-            $node->nodeAggregateIdentifier,
+            $node->nodeAggregateId,
             NodeTypeConstraints::fromFilterString(
                 $this->buildContentChildNodeFilterString()
             )
@@ -284,7 +284,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
         $infos = [];
         foreach ($childNodes as $childNode) {
-            $contentRepository = $this->contentRepositoryRegistry->get($childNode->subgraphIdentity->contentRepositoryIdentifier);
+            $contentRepository = $this->contentRepositoryRegistry->get($childNode->subgraphIdentity->contentRepositoryId);
             $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
             $infos[] = [
                 'contextPath' => $nodeAddressFactory->createFromNode($childNode)->serializeForUri(),
@@ -327,7 +327,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         foreach ($nodes as $node) {
             $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
 
-            $nodePath = $subgraph->findNodePath($node->nodeAggregateIdentifier);
+            $nodePath = $subgraph->findNodePath($node->nodeAggregateId);
             if (array_key_exists($nodePath->jsonSerialize(), $renderedNodes)) {
                 $renderedNodes[(string)$nodePath]['matched'] = true;
             } elseif ($renderedNode = $this->renderNodeWithMinimalPropertiesAndChildrenInformation(
@@ -341,14 +341,14 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
                 continue;
             }
 
-            $parentNode = $subgraph->findParentNode($node->nodeAggregateIdentifier);
+            $parentNode = $subgraph->findParentNode($node->nodeAggregateId);
             if ($parentNode === null) {
                 // There are a multitude of reasons why a node might not have a parent
                 // and we should ignore these gracefully.
                 continue;
             }
 
-            $parentNodePath = $subgraph->findNodePath($parentNode->nodeAggregateIdentifier);
+            $parentNodePath = $subgraph->findNodePath($parentNode->nodeAggregateId);
             while ($parentNode->nodeType->isOfType($baseNodeTypeOverride)) {
                 if (array_key_exists((string)$parentNodePath, $renderedNodes)) {
                     $renderedNodes[(string)$parentNodePath]['intermediate'] = true;
@@ -363,7 +363,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
                         $renderedNodes[(string)$parentNodePath] = $renderedParentNode;
                     }
                 }
-                $parentNode = $subgraph->findParentNode($parentNode->nodeAggregateIdentifier);
+                $parentNode = $subgraph->findParentNode($parentNode->nodeAggregateId);
                 if ($parentNode === null) {
                     // There are a multitude of reasons why a node might not have a parent
                     // and we should ignore these gracefully.
@@ -396,7 +396,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             return array_merge($nodes, $this->renderNodeAndChildContent($node, $controllerContext));
         };
 
-        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryIdentifier);
+        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
 
         return array_reduce(
@@ -419,7 +419,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         ControllerContext $controllerContext
     ): array {
         // does not support multiple CRs here yet
-        $contentRepository = $this->contentRepositoryRegistry->get($site->subgraphIdentity->contentRepositoryIdentifier);
+        $contentRepository = $this->contentRepositoryRegistry->get($site->subgraphIdentity->contentRepositoryId);
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
 
         return [
@@ -433,7 +433,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     public function uri(Node|NodeAddress $nodeAddress, ControllerContext $controllerContext): string
     {
         if ($nodeAddress instanceof Node) {
-            $contentRepository = $this->contentRepositoryRegistry->get($nodeAddress->subgraphIdentity->contentRepositoryIdentifier);
+            $contentRepository = $this->contentRepositoryRegistry->get($nodeAddress->subgraphIdentity->contentRepositoryId);
             $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
             $nodeAddress = $nodeAddressFactory->createFromNode($nodeAddress);
         }
@@ -442,7 +442,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
     public function previewUri(Node $node, ControllerContext $controllerContext): string
     {
-        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryIdentifier);
+        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
         $nodeAddress = $nodeAddressFactory->createFromNode($node);
         return (string)NodeUriBuilder::fromRequest($controllerContext->getRequest())->previewUriFor($nodeAddress);
@@ -450,7 +450,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
     public function createRedirectToNode(Node $node, ControllerContext $controllerContext): string
     {
-        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryIdentifier);
+        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
         $nodeAddress = $nodeAddressFactory->createFromNode($node);
         return $controllerContext->getUriBuilder()
@@ -504,32 +504,32 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
     private function getChildNodes(Node $node, string $nodeTypeFilterString): Nodes
     {
-        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryIdentifier);
+        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
 
         return $this->contentRepositoryRegistry->subgraphForNode($node)
             ->findChildNodes(
-                $node->nodeAggregateIdentifier,
+                $node->nodeAggregateId,
                 NodeTypeConstraints::fromFilterString($nodeTypeFilterString)
             );
     }
 
     public function nodeAddress(Node $node): NodeAddress
     {
-        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryIdentifier);
+        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
         return $nodeAddressFactory->createFromNode($node);
     }
 
     public function serializedNodeAddress(Node $node): string
     {
-        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryIdentifier);
+        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
         return $nodeAddressFactory->createFromNode($node)->serializeForUri();
     }
 
     public function inBackend(Node $node): bool
     {
-        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryIdentifier);
+        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
         return !$nodeAddressFactory->createFromNode($node)->isInLiveWorkspace();
     }

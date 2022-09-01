@@ -112,7 +112,7 @@ class RenderContentOutOfBand extends AbstractFeedback
 
     public function getDescription(): string
     {
-        return sprintf('Rendering of node "%s" required.', $this->node?->nodeAggregateIdentifier);
+        return sprintf('Rendering of node "%s" required.', $this->node?->nodeAggregateId);
     }
 
     /**
@@ -133,7 +133,7 @@ class RenderContentOutOfBand extends AbstractFeedback
 
         return (
             $this->node->subgraphIdentity->equals($feedbackNode->subgraphIdentity) &&
-            $this->node->nodeAggregateIdentifier->equals($feedbackNode->nodeAggregateIdentifier)
+            $this->node->nodeAggregateId->equals($feedbackNode->nodeAggregateId)
             // @todo what's this? && $this->getReferenceData() == $feedback->getReferenceData()
         );
     }
@@ -146,7 +146,7 @@ class RenderContentOutOfBand extends AbstractFeedback
     public function serializePayload(ControllerContext $controllerContext): array
     {
         if (!is_null($this->node)) {
-            $contentRepository = $this->contentRepositoryRegistry->get($this->node->subgraphIdentity->contentRepositoryIdentifier);
+            $contentRepository = $this->contentRepositoryRegistry->get($this->node->subgraphIdentity->contentRepositoryId);
             $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
             return [
                 'contextPath' => $nodeAddressFactory->createFromNode($this->node)->serializeForUri(),
@@ -168,7 +168,7 @@ class RenderContentOutOfBand extends AbstractFeedback
             return '';
         }
         $subgraph = $this->contentRepositoryRegistry->subgraphForNode($this->node);
-        $parentNode = $subgraph->findParentNode($this->node->nodeAggregateIdentifier);
+        $parentNode = $subgraph->findParentNode($this->node->nodeAggregateId);
         if ($parentNode) {
             $cacheTags = $this->cachingHelper->nodeTag($parentNode);
             foreach ($cacheTags as $tag) {

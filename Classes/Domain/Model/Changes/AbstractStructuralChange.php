@@ -112,7 +112,7 @@ abstract class AbstractStructuralChange extends AbstractChange
         if ($this->cachedSiblingNode === null) {
             $this->cachedSiblingNode = $this->nodeService->getNodeFromContextPath(
                 $this->siblingDomAddress->getContextPath(),
-                $this->getSubject()->subgraphIdentity->contentRepositoryIdentifier
+                $this->getSubject()->subgraphIdentity->contentRepositoryId
             );
         }
 
@@ -133,7 +133,7 @@ abstract class AbstractStructuralChange extends AbstractChange
         $this->feedbackCollection->add($updateNodeInfo);
 
         $parentNode = $this->contentRepositoryRegistry->subgraphForNode($node)
-            ->findParentNode($node->nodeAggregateIdentifier);
+            ->findParentNode($node->nodeAggregateId);
         if ($parentNode) {
             $updateParentNodeInfo = new UpdateNodeInfo();
             $updateParentNodeInfo->setNode($parentNode);
@@ -151,7 +151,7 @@ abstract class AbstractStructuralChange extends AbstractChange
             // 1) the parent of our new (or copied or moved) node is a ContentCollection;
             // so we can directly update an element of this content collection
 
-            $contentRepository = $this->contentRepositoryRegistry->get($parentNode->subgraphIdentity->contentRepositoryIdentifier);
+            $contentRepository = $this->contentRepositoryRegistry->get($parentNode->subgraphIdentity->contentRepositoryId);
             if ($parentNode && $parentNode->nodeType->isOfType('Neos.Neos:ContentCollection') &&
                 // 2) the parent DOM address (i.e. the closest RENDERED node in DOM is actually the ContentCollection;
                 // and no other node in between
@@ -180,14 +180,14 @@ abstract class AbstractStructuralChange extends AbstractChange
     {
         // TODO REMOVE
         return $this->contentRepositoryRegistry->subgraphForNode($node)
-            ->findChildNodes($node->nodeAggregateIdentifier);
+            ->findChildNodes($node->nodeAggregateId);
     }
 
     protected function isNodeTypeAllowedAsChildNode(Node $node, NodeType $nodeType): bool
     {
         $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
         if (NodeInfoHelper::isAutoCreated($node, $subgraph)) {
-            $parentNode = $subgraph->findParentNode($node->nodeAggregateIdentifier);
+            $parentNode = $subgraph->findParentNode($node->nodeAggregateId);
             return !$parentNode || $parentNode->nodeType->allowsGrandchildNodeType(
                 (string)$node->nodeName,
                 $nodeType

@@ -12,7 +12,7 @@ namespace Neos\Neos\Ui\Fusion\Helper;
  */
 
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
-use Neos\ContentRepository\Core\Factory\ContentRepositoryIdentifier;
+use Neos\ContentRepository\Core\Factory\ContentRepositoryId;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
 use Neos\Neos\Domain\Model\WorkspaceName as NeosWorkspaceName;
@@ -50,7 +50,7 @@ class WorkspaceHelper implements ProtectedContextAwareInterface
      */
     protected $securityContext;
 
-    public function getAllowedTargetWorkspaces(ContentRepositoryIdentifier $contentRepositoryIdentifier)
+    public function getAllowedTargetWorkspaces(ContentRepositoryId $contentRepositoryIdentifier)
     {
         $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryIdentifier);
         return $this->workspaceService->getAllowedTargetWorkspaces($contentRepository);
@@ -59,7 +59,7 @@ class WorkspaceHelper implements ProtectedContextAwareInterface
     /**
      * @return array<string,mixed>
      */
-    public function getPersonalWorkspace(ContentRepositoryIdentifier $contentRepositoryIdentifier): array
+    public function getPersonalWorkspace(ContentRepositoryId $contentRepositoryIdentifier): array
     {
         $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryIdentifier);
         $currentAccount = $this->securityContext->getAccount();

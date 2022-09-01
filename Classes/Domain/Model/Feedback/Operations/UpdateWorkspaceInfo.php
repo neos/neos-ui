@@ -14,7 +14,7 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
 use Neos\ContentRepository\Core\Projection\Workspace\Workspace;
 use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
-use Neos\ContentRepository\Core\Factory\ContentRepositoryIdentifier;
+use Neos\ContentRepository\Core\Factory\ContentRepositoryId;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
@@ -43,7 +43,7 @@ class UpdateWorkspaceInfo extends AbstractFeedback
      * @param WorkspaceName $workspaceName
      */
     public function __construct(
-        private readonly ContentRepositoryIdentifier $contentRepositoryIdentifier,
+        private readonly ContentRepositoryId $contentRepositoryIdentifier,
         WorkspaceName $workspaceName = null
     ) {
         $this->workspaceName = $workspaceName;

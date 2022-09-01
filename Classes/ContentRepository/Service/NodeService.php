@@ -12,7 +12,7 @@ namespace Neos\Neos\Ui\ContentRepository\Service;
  */
 
 
-use Neos\ContentRepository\Core\Factory\ContentRepositoryIdentifier;
+use Neos\ContentRepository\Core\Factory\ContentRepositoryId;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
@@ -45,7 +45,7 @@ class NodeService
             if ($node->nodeType->isOfType('Neos.Neos:Document')) {
                 return $node;
             }
-            $node = $subgraph->findParentNode($node->nodeAggregateIdentifier);
+            $node = $subgraph->findParentNode($node->nodeAggregateId);
         }
 
         return null;
@@ -65,16 +65,16 @@ class NodeService
     /**
      * Converts a given context path to a node object
      */
-    public function getNodeFromContextPath(string $contextPath, ContentRepositoryIdentifier $contentRepositoryIdentifier): ?Node
+    public function getNodeFromContextPath(string $contextPath, ContentRepositoryId $contentRepositoryIdentifier): ?Node
     {
         $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryIdentifier);
         $nodeAddress = NodeAddressFactory::create($contentRepository)->createFromUriString($contextPath);
 
         $subgraph = $contentRepository->getContentGraph()->getSubgraph(
-            $nodeAddress->contentStreamIdentifier,
+            $nodeAddress->contentStreamId,
             $nodeAddress->dimensionSpacePoint,
             VisibilityConstraints::withoutRestrictions()
         );
-        return $subgraph->findNodeByNodeAggregateIdentifier($nodeAddress->nodeAggregateIdentifier);
+        return $subgraph->findNodeByNodeAggregateId($nodeAddress->nodeAggregateId);
     }
 }

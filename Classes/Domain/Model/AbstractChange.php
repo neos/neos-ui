@@ -12,7 +12,7 @@ namespace Neos\Neos\Ui\Domain\Model;
  */
 
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
-use Neos\ContentRepository\Core\SharedModel\User\UserIdentifier;
+use Neos\ContentRepository\Core\SharedModel\User\UserId;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
@@ -68,13 +68,13 @@ abstract class AbstractChange implements ChangeInterface
         if (!is_null($this->subject)) {
             $documentNode = $this->findClosestDocumentNode($this->subject);
             if (!is_null($documentNode)) {
-                $contentRepository = $this->contentRepositoryRegistry->get($this->subject->subgraphIdentity->contentRepositoryIdentifier);
-                $workspace = $contentRepository->getWorkspaceFinder()->findOneByCurrentContentStreamIdentifier(
-                    $documentNode->subgraphIdentity->contentStreamIdentifier
+                $contentRepository = $this->contentRepositoryRegistry->get($this->subject->subgraphIdentity->contentRepositoryId);
+                $workspace = $contentRepository->getWorkspaceFinder()->findOneByCurrentContentStreamId(
+                    $documentNode->subgraphIdentity->contentStreamId
                 );
                 if (!is_null($workspace)) {
                     $updateWorkspaceInfo = new UpdateWorkspaceInfo
-                    ($documentNode->subgraphIdentity->contentRepositoryIdentifier, $workspace->workspaceName);
+                    ($documentNode->subgraphIdentity->contentRepositoryId, $workspace->workspaceName);
                     $this->feedbackCollection->add($updateWorkspaceInfo);
                 }
             }
@@ -96,7 +96,7 @@ abstract class AbstractChange implements ChangeInterface
     protected function findParentNode(Node $node): ?Node
     {
         return $this->contentRepositoryRegistry->subgraphForNode($node)
-            ->findParentNode($node->nodeAggregateIdentifier);
+            ->findParentNode($node->nodeAggregateId);
     }
 
     /**
@@ -127,11 +127,11 @@ abstract class AbstractChange implements ChangeInterface
         }
     }
 
-    final protected function getInitiatingUserIdentifier(): UserIdentifier
+    final protected function getInitiatingUserIdentifier(): UserId
     {
         /** @var User $user */
         $user = $this->userService->getBackendUser();
 
-        return UserIdentifier::fromString($this->persistenceManager->getIdentifierByObject($user));
+        return UserId::fromString($this->persistenceManager->getIdentifierByObject($user));
     }
 }

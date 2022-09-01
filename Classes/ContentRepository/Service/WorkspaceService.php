@@ -12,7 +12,7 @@ namespace Neos\Neos\Ui\ContentRepository\Service;
  */
 
 use Neos\ContentRepository\Core\ContentRepository;
-use Neos\ContentRepository\Core\Factory\ContentRepositoryIdentifier;
+use Neos\ContentRepository\Core\Factory\ContentRepositoryId;
 use Neos\ContentRepository\Core\Projection\ContentGraph\ContentSubgraphIdentity;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\Projection\Workspace\Workspace;
@@ -55,7 +55,7 @@ class WorkspaceService
      *
      * @return array<int,array<string,string>>
      */
-    public function getPublishableNodeInfo(WorkspaceName $workspaceName, ContentRepositoryIdentifier $contentRepositoryIdentifier): array
+    public function getPublishableNodeInfo(WorkspaceName $workspaceName, ContentRepositoryId $contentRepositoryIdentifier): array
     {
         $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryIdentifier);
         $workspace = $contentRepository->getWorkspaceFinder()->findOneByName($workspaceName);
@@ -63,7 +63,7 @@ class WorkspaceService
             return [];
         }
         $changeFinder = $contentRepository->projectionState(ChangeProjection::class);
-        $changes = $changeFinder->findByContentStreamIdentifier($workspace->currentContentStreamIdentifier);
+        $changes = $changeFinder->findByContentStreamIdentifier($workspace->currentContentStreamId);
         $unpublishedNodes = [];
         foreach ($changes as $change) {
             if ($change->removalAttachmentPoint) {
@@ -90,16 +90,16 @@ class WorkspaceService
                 ];
             } else {
                 $subgraph = $contentRepository->getContentGraph()->getSubgraph(
-                    $workspace->currentContentStreamIdentifier,
+                    $workspace->currentContentStreamId,
                     $change->originDimensionSpacePoint->toDimensionSpacePoint(),
                     VisibilityConstraints::withoutRestrictions()
                 );
-                $node = $subgraph->findNodeByNodeAggregateIdentifier($change->nodeAggregateIdentifier);
+                $node = $subgraph->findNodeByNodeAggregateId($change->nodeAggregateIdentifier);
 
                 if ($node instanceof Node) {
                     $documentNode = $this->getClosestDocumentNode($node);
                     if ($documentNode instanceof Node) {
-                        $contentRepository = $this->contentRepositoryRegistry->get($documentNode->subgraphIdentity->contentRepositoryIdentifier);
+                        $contentRepository = $this->contentRepositoryRegistry->get($documentNode->subgraphIdentity->contentRepositoryId);
                         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
                         $unpublishedNodes[] = [
                             'contextPath' => $nodeAddressFactory->createFromNode($node)->serializeForUri(),
@@ -163,7 +163,7 @@ class WorkspaceService
             if ($node->nodeType->isOfType('Neos.Neos:Document')) {
                 return $node;
             }
-            $node = $subgraph->findParentNode($node->nodeAggregateIdentifier);
+            $node = $subgraph->findParentNode($node->nodeAggregateId);
         }
 
         return null;

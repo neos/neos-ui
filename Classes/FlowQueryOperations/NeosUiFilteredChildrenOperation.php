@@ -75,14 +75,14 @@ class NeosUiFilteredChildrenOperation extends AbstractOperation
         foreach ($flowQuery->getContext() as $contextNode) {
             $subgraph = $this->contentRepositoryRegistry->subgraphForNode($contextNode);
 
-            $contentRepository = $this->contentRepositoryRegistry->get($contextNode->subgraphIdentity->contentRepositoryIdentifier);
+            $contentRepository = $this->contentRepositoryRegistry->get($contextNode->subgraphIdentity->contentRepositoryId);
             foreach ($subgraph->findChildNodes(
-                $contextNode->nodeAggregateIdentifier,
+                $contextNode->nodeAggregateId,
                 NodeTypeConstraints::fromFilterString($filter)
             ) as $childNode) {
-                if (!isset($outputNodeIdentifiers[(string)$childNode->nodeAggregateIdentifier])) {
+                if (!isset($outputNodeIdentifiers[(string)$childNode->nodeAggregateId])) {
                     $output[] = $childNode;
-                    $outputNodeIdentifiers[(string)$childNode->nodeAggregateIdentifier] = true;
+                    $outputNodeIdentifiers[(string)$childNode->nodeAggregateId] = true;
                 }
             }
         }

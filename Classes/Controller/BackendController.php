@@ -134,7 +134,7 @@ class BackendController extends ActionController
     public function indexAction(string $node = null)
     {
         $siteDetectionResult = SiteDetectionResult::fromRequest($this->request->getHttpRequest());
-        $contentRepository = $this->contentRepositoryRegistry->get($siteDetectionResult->contentRepositoryIdentifier);
+        $contentRepository = $this->contentRepositoryRegistry->get($siteDetectionResult->contentRepositoryId);
 
         $nodeAddress = $node !== null ? NodeAddressFactory::create($contentRepository)->createFromUriString($node) : null;
         unset($node);
@@ -156,13 +156,13 @@ class BackendController extends ActionController
         }
 
         $backendControllerInternals = $this->contentRepositoryRegistry->getService(
-            $siteDetectionResult->contentRepositoryIdentifier,
+            $siteDetectionResult->contentRepositoryId,
             new BackendControllerInternalsFactory()
         );
         $defaultDimensionSpacePoint = $backendControllerInternals->getDefaultDimensionSpacePoint();
 
         $subgraph = $contentRepository->getContentGraph()->getSubgraph(
-            $workspace->currentContentStreamIdentifier,
+            $workspace->currentContentStreamId,
             $nodeAddress ? $nodeAddress->dimensionSpacePoint : $defaultDimensionSpacePoint,
             VisibilityConstraints::withoutRestrictions()
         );
@@ -170,13 +170,13 @@ class BackendController extends ActionController
         // we assume that the ROOT node is always stored in the CR as "physical" node; so it is safe
         // to call the contentGraph here directly.
         $rootNodeAggregate = $contentRepository->getContentGraph()->findRootNodeAggregateByType(
-            $workspace->currentContentStreamIdentifier,
+            $workspace->currentContentStreamId,
             NodeTypeName::fromString('Neos.Neos:Sites')
         );
         $rootNode = $rootNodeAggregate->getNodeByCoveredDimensionSpacePoint($defaultDimensionSpacePoint);
 
         $siteNode = $subgraph->findChildNodeConnectedThroughEdgeName(
-            $rootNode->nodeAggregateIdentifier,
+            $rootNode->nodeAggregateId,
             $this->siteRepository->findDefault()->getNodeName()->toNodeName()
         );
 
@@ -184,7 +184,7 @@ class BackendController extends ActionController
             // TODO: fix resolving node address from session?
             $node = $siteNode;
         } else {
-            $node = $subgraph->findNodeByNodeAggregateIdentifier($nodeAddress->nodeAggregateIdentifier);
+            $node = $subgraph->findNodeByNodeAggregateId($nodeAddress->nodeAggregateId);
         }
 
         $this->view->assign('user', $user);
@@ -197,7 +197,7 @@ class BackendController extends ActionController
         $this->view->assign('splashScreenPartial', $this->splashScreenPartial);
         $this->view->assign('sitesForMenu', $this->menuHelper->buildSiteList($this->getControllerContext()));
         $this->view->assign('modulesForMenu', $this->menuHelper->buildModuleList($this->getControllerContext()));
-        $this->view->assign('contentRepositoryIdentifier', $siteDetectionResult->contentRepositoryIdentifier);
+        $this->view->assign('contentRepositoryIdentifier', $siteDetectionResult->contentRepositoryId);
 
         $this->view->assignMultiple([
             'subgraph' => $subgraph
@@ -213,7 +213,7 @@ class BackendController extends ActionController
     {
         $siteDetectionResult = SiteDetectionResult::fromRequest($this->request->getHttpRequest());
 
-        $contentRepository = $this->contentRepositoryRegistry->get($siteDetectionResult->contentRepositoryIdentifier);
+        $contentRepository = $this->contentRepositoryRegistry->get($siteDetectionResult->contentRepositoryId);
 
         $nodeAddress = NodeAddressFactory::create($contentRepository)->createFromUriString($node);
         $this->response->setHttpHeader('Cache-Control', [

@@ -13,13 +13,13 @@ namespace Neos\Neos\Ui\Controller;
  * source code.
  */
 
-use Neos\ContentRepository\Core\Feature\WorkspacePublication\Dto\NodeIdentifiersToPublishOrDiscard;
-use Neos\ContentRepository\Core\Feature\WorkspacePublication\Dto\NodeIdentifierToPublishOrDiscard;
+use Neos\ContentRepository\Core\Feature\WorkspacePublication\Dto\NodeIdsToPublishOrDiscard;
+use Neos\ContentRepository\Core\Feature\WorkspacePublication\Dto\NodeIdToPublishOrDiscard;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
 use Neos\ContentRepository\Core\Feature\WorkspacePublication\Command\DiscardIndividualNodesFromWorkspace;
 use Neos\ContentRepository\Core\Feature\WorkspacePublication\Command\PublishIndividualNodesFromWorkspace;
-use Neos\ContentRepository\Core\SharedModel\User\UserIdentifier;
+use Neos\ContentRepository\Core\SharedModel\User\UserId;
 use Neos\Neos\FrontendRouting\NodeAddress;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Neos\Domain\Model\WorkspaceName as NeosWorkspaceName;
@@ -151,7 +151,7 @@ class BackendServiceController extends ActionController
     /** @phpstan-ignore-next-line */
     public function changeAction(array $changes): void
     {
-        $contentRepositoryIdentifier = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryIdentifier;
+        $contentRepositoryIdentifier = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
 
         /** @param array<int,array<string,mixed>> $changes */
         $changes = $this->changeCollectionConverter->convert($changes, $contentRepositoryIdentifier);
@@ -179,7 +179,7 @@ class BackendServiceController extends ActionController
      */
     public function publishAllAction(): void
     {
-        $contentRepositoryIdentifier = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryIdentifier;
+        $contentRepositoryIdentifier = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
         $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryIdentifier);
 
         $currentAccount = $this->securityContext->getAccount();
@@ -204,7 +204,7 @@ class BackendServiceController extends ActionController
     /** @phpstan-ignore-next-line */
     public function publishAction(array $nodeContextPaths, string $targetWorkspaceName): void
     {
-        $contentRepositoryIdentifier = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryIdentifier;
+        $contentRepositoryIdentifier = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
         $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryIdentifier);
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
 
@@ -216,16 +216,16 @@ class BackendServiceController extends ActionController
             $nodeIdentifiersToPublish = [];
             foreach ($nodeContextPaths as $contextPath) {
                 $nodeAddress = $nodeAddressFactory->createFromUriString($contextPath);
-                $nodeIdentifiersToPublish[] = new NodeIdentifierToPublishOrDiscard(
-                    $nodeAddress->contentStreamIdentifier,
-                    $nodeAddress->nodeAggregateIdentifier,
+                $nodeIdentifiersToPublish[] = new NodeIdToPublishOrDiscard(
+                    $nodeAddress->contentStreamId,
+                    $nodeAddress->nodeAggregateId,
                     $nodeAddress->dimensionSpacePoint
                 );
             }
             $contentRepository->handle(
                 PublishIndividualNodesFromWorkspace::create(
                     $workspaceName,
-                    NodeIdentifiersToPublishOrDiscard::create(...$nodeIdentifiersToPublish),
+                    NodeIdsToPublishOrDiscard::create(...$nodeIdentifiersToPublish),
                     $this->getCurrentUserIdentifier()
                 )
             )->block();
@@ -258,7 +258,7 @@ class BackendServiceController extends ActionController
     /** @phpstan-ignore-next-line */
     public function discardAction(array $nodeContextPaths): void
     {
-        $contentRepositoryIdentifier = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryIdentifier;
+        $contentRepositoryIdentifier = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
         $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryIdentifier);
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
 
@@ -270,16 +270,16 @@ class BackendServiceController extends ActionController
             $nodeIdentifiersToDiscard = [];
             foreach ($nodeContextPaths as $contextPath) {
                 $nodeAddress = $nodeAddressFactory->createFromUriString($contextPath);
-                $nodeIdentifiersToDiscard[] = new NodeIdentifierToPublishOrDiscard(
-                    $nodeAddress->contentStreamIdentifier,
-                    $nodeAddress->nodeAggregateIdentifier,
+                $nodeIdentifiersToDiscard[] = new NodeIdToPublishOrDiscard(
+                    $nodeAddress->contentStreamId,
+                    $nodeAddress->nodeAggregateId,
                     $nodeAddress->dimensionSpacePoint
                 );
             }
             $contentRepository->handle(
                 DiscardIndividualNodesFromWorkspace::create(
                     $workspaceName,
-                    NodeIdentifiersToPublishOrDiscard::create(...$nodeIdentifiersToDiscard),
+                    NodeIdsToPublishOrDiscard::create(...$nodeIdentifiersToDiscard),
                     $this->getCurrentUserIdentifier()
                 )
             )->block();
@@ -401,7 +401,7 @@ class BackendServiceController extends ActionController
     /** @phpstan-ignore-next-line */
     public function copyNodesAction(array $nodes): void
     {
-        $contentRepositoryIdentifier = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryIdentifier;
+        $contentRepositoryIdentifier = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
         $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryIdentifier);
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
 
@@ -434,7 +434,7 @@ class BackendServiceController extends ActionController
     /** @phpstan-ignore-next-line */
     public function cutNodesAction(array $nodes): void
     {
-        $contentRepositoryIdentifier = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryIdentifier;
+        $contentRepositoryIdentifier = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
         $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryIdentifier);
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
 
@@ -450,7 +450,7 @@ class BackendServiceController extends ActionController
 
     public function getWorkspaceInfoAction(): void
     {
-        $contentRepositoryIdentifier = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryIdentifier;
+        $contentRepositoryIdentifier = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
         $workspaceHelper = new WorkspaceHelper();
         $personalWorkspaceInfo = $workspaceHelper->getPersonalWorkspace($contentRepositoryIdentifier);
         $this->view->assign('value', $personalWorkspaceInfo);
@@ -466,7 +466,7 @@ class BackendServiceController extends ActionController
      */
     public function loadTreeAction(NodeTreeBuilder $nodeTreeArguments, bool $includeRoot = false): void
     {
-        $contentRepositoryIdentifier = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryIdentifier;
+        $contentRepositoryIdentifier = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
 
         $nodeTreeArguments->setControllerContext($this->controllerContext);
         $this->view->assign('value', $nodeTreeArguments->build($contentRepositoryIdentifier, $includeRoot));
@@ -487,7 +487,7 @@ class BackendServiceController extends ActionController
     /** @phpstan-ignore-next-line */
     public function getAdditionalNodeMetadataAction(array $nodes): void
     {
-        $contentRepositoryIdentifier = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryIdentifier;
+        $contentRepositoryIdentifier = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
         $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryIdentifier);
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
 
@@ -495,11 +495,11 @@ class BackendServiceController extends ActionController
         foreach ($nodes as $nodeAddressString) {
             $nodeAddress = $nodeAddressFactory->createFromUriString($nodeAddressString);
             $subgraph = $contentRepository->getContentGraph()->getSubgraph(
-                $nodeAddress->contentStreamIdentifier,
+                $nodeAddress->contentStreamId,
                 $nodeAddress->dimensionSpacePoint,
                 VisibilityConstraints::withoutRestrictions()
             );
-            $node = $subgraph->findNodeByNodeAggregateIdentifier($nodeAddress->nodeAggregateIdentifier);
+            $node = $subgraph->findNodeByNodeAggregateId($nodeAddress->nodeAggregateId);
 
             // TODO finish implementation
             /*$otherNodeVariants = array_values(array_filter(array_map(function ($node) {
@@ -530,7 +530,7 @@ class BackendServiceController extends ActionController
      */
     public function getPolicyInformationAction(array $nodes): void
     {
-        $contentRepositoryIdentifier = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryIdentifier;
+        $contentRepositoryIdentifier = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
         $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryIdentifier);
 
         $result = [];
@@ -540,7 +540,7 @@ class BackendServiceController extends ActionController
                 $nodeAddress->dimensionSpacePoint,
                 VisibilityConstraints::withoutRestrictions()
             );
-            $node = $subgraph->findNodeByNodeAggregateIdentifier($nodeAddress->nodeAggregateIdentifier);
+            $node = $subgraph->findNodeByNodeAggregateId($nodeAddress->nodeAggregateIdentifier);
             if (!is_null($node)) {
                 $result[$nodeAddress->serializeForUri()] = [
                     'policy' => $this->nodePolicyService->getNodePolicyInformation($node)
@@ -559,7 +559,7 @@ class BackendServiceController extends ActionController
     /** @phpstan-ignore-next-line */
     public function flowQueryAction(array $chain): string
     {
-        $contentRepositoryIdentifier = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryIdentifier;
+        $contentRepositoryIdentifier = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
 
         $createContext = array_shift($chain);
         $finisher = array_pop($chain);
@@ -595,11 +595,11 @@ class BackendServiceController extends ActionController
         return json_encode($result, JSON_THROW_ON_ERROR);
     }
 
-    protected function getCurrentUserIdentifier(): UserIdentifier
+    protected function getCurrentUserIdentifier(): UserId
     {
         /** @var User $backendUser */
         $backendUser = $this->userService->getBackendUser();
-        return UserIdentifier::fromString(
+        return UserId::fromString(
             $this->persistenceManager->getIdentifierByObject($backendUser)
         );
     }

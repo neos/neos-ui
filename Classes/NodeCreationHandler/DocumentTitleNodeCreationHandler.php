@@ -14,7 +14,7 @@ namespace Neos\Neos\Ui\NodeCreationHandler;
 use Neos\ContentRepository\Core\ContentRepository;
 use Neos\Flow\Annotations as Flow;
 use Behat\Transliterator\Transliterator;
-use Neos\ContentRepository\Core\Dimension\ContentDimensionIdentifier;
+use Neos\ContentRepository\Core\Dimension\ContentDimensionId;
 use Neos\ContentRepository\Core\DimensionSpace\DimensionSpacePoint;
 use Neos\ContentRepository\Core\Feature\NodeCreation\Command\CreateNodeAggregateWithNode;
 use Neos\ContentRepository\Core\NodeType\NodeTypeManager;
@@ -81,7 +81,7 @@ class DocumentTitleNodeCreationHandler implements NodeCreationHandlerInterface
 
     private function transliterateText(DimensionSpacePoint $dimensionSpacePoint, string $text): string
     {
-        $languageDimensionValue = $dimensionSpacePoint->getCoordinate(new ContentDimensionIdentifier('language'));
+        $languageDimensionValue = $dimensionSpacePoint->getCoordinate(new ContentDimensionId('language'));
         if ($languageDimensionValue !== null) {
             try {
                 $language = (new Locale($languageDimensionValue))->getLanguage();

@@ -13,7 +13,7 @@ namespace Neos\Neos\Ui\Domain\Service;
  */
 
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
-use Neos\ContentRepository\Core\Factory\ContentRepositoryIdentifier;
+use Neos\ContentRepository\Core\Factory\ContentRepositoryId;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Neos\Service\LinkingService;
@@ -149,7 +149,7 @@ class NodeTreeBuilder
      * @param null $depth
      * @return array
      */
-    public function build(ContentRepositoryIdentifier $contentRepositoryIdentifier, $includeRoot = false, $root = null, $depth = null)
+    public function build(ContentRepositoryId $contentRepositoryIdentifier, $includeRoot = false, $root = null, $depth = null)
     {
         $root = $root === null ? $this->getRoot() : $root;
         $depth = $depth === null ? $this->depth : $depth;

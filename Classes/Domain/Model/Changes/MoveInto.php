@@ -35,7 +35,7 @@ class MoveInto extends AbstractStructuralChange
 
         return $this->nodeService->getNodeFromContextPath(
             $this->parentContextPath,
-            $this->getSubject()->subgraphIdentity->contentRepositoryIdentifier
+            $this->getSubject()->subgraphIdentity->contentRepositoryId
         );
     }
 
@@ -73,18 +73,18 @@ class MoveInto extends AbstractStructuralChange
         $subject = $this->subject;
         if ($this->canApply() && $parentNode && $subject) {
             $otherParent = $this->contentRepositoryRegistry->subgraphForNode($subject)
-                ->findParentNode($subject->nodeAggregateIdentifier);
+                ->findParentNode($subject->nodeAggregateId);
 
-            $hasEqualParentNode = $otherParent && $otherParent->nodeAggregateIdentifier
-                    ->equals($parentNode->nodeAggregateIdentifier);
+            $hasEqualParentNode = $otherParent && $otherParent->nodeAggregateId
+                    ->equals($parentNode->nodeAggregateId);
 
-            $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryIdentifier);
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
             $contentRepository->handle(
                 new MoveNodeAggregate(
-                    $subject->subgraphIdentity->contentStreamIdentifier,
+                    $subject->subgraphIdentity->contentStreamId,
                     $subject->subgraphIdentity->dimensionSpacePoint,
-                    $subject->nodeAggregateIdentifier,
-                    $hasEqualParentNode ? null : $parentNode->nodeAggregateIdentifier,
+                    $subject->nodeAggregateId,
+                    $hasEqualParentNode ? null : $parentNode->nodeAggregateId,
                     null,
                     null,
                     RelationDistributionStrategy::STRATEGY_GATHER_ALL,

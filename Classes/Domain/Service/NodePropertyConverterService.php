@@ -109,14 +109,14 @@ class NodePropertyConverterService
     public function getProperty(Node $node, $propertyName)
     {
         if ($propertyName === '_hidden') {
-            $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryIdentifier);
+            $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
             $nodeHiddenStateFinder = $contentRepository->projectionState(NodeHiddenStateProjection::class);
             /* @var NodeHiddenStateFinder $nodeHiddenStateFinder */
 
             return $nodeHiddenStateFinder->findHiddenState(
-                $node->subgraphIdentity->contentStreamIdentifier,
+                $node->subgraphIdentity->contentStreamId,
                 $node->subgraphIdentity->dimensionSpacePoint,
-                $node->nodeAggregateIdentifier
+                $node->nodeAggregateId
             )->isHidden;
         }
         $propertyType = $node->nodeType->getPropertyType($propertyName);
@@ -126,7 +126,7 @@ class NodePropertyConverterService
         if ($propertyType === 'reference') {
             $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
             $referenceIdentifiers = $this->toNodeIdentifierStrings(
-                $subgraph->findReferencedNodes($node->nodeAggregateIdentifier, PropertyName::fromString($propertyName))
+                $subgraph->findReferencedNodes($node->nodeAggregateId, PropertyName::fromString($propertyName))
             );
             if (count($referenceIdentifiers) === 0) {
                 return null;
@@ -135,7 +135,7 @@ class NodePropertyConverterService
             }
         } elseif ($propertyType === 'references') {
             $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
-            $references = $subgraph->findReferencedNodes($node->nodeAggregateIdentifier, PropertyName::fromString($propertyName));
+            $references = $subgraph->findReferencedNodes($node->nodeAggregateId, PropertyName::fromString($propertyName));
 
             return $this->toNodeIdentifierStrings($references);
         // Here, the normal property access logic starts.

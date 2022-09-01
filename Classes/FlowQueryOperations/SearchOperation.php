@@ -74,9 +74,9 @@ class SearchOperation extends AbstractOperation
         $contextNode = $context[0];
         $subgraph = $this->contentRepositoryRegistry->subgraphForNode($contextNode);
 
-        $contentRepository = $this->contentRepositoryRegistry->get($contextNode->subgraphIdentity->contentRepositoryIdentifier);
+        $contentRepository = $this->contentRepositoryRegistry->get($contextNode->subgraphIdentity->contentRepositoryId);
         $nodes = $subgraph->findDescendants(
-            [$contextNode->nodeAggregateIdentifier],
+            [$contextNode->nodeAggregateId],
             NodeTypeConstraints::fromFilterString($arguments[1] ?? ''),
             SearchTerm::fulltext($arguments[0] ?? '')
         );

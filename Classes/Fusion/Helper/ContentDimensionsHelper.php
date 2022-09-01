@@ -12,11 +12,11 @@ namespace Neos\Neos\Ui\Fusion\Helper;
  */
 
 use Neos\ContentRepository\Core\Dimension\ContentDimension;
-use Neos\ContentRepository\Core\Dimension\ContentDimensionIdentifier;
+use Neos\ContentRepository\Core\Dimension\ContentDimensionId;
 use Neos\ContentRepository\Core\Dimension\ContentDimensionSourceInterface;
 use Neos\ContentRepository\Core\DimensionSpace\DimensionSpacePoint;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
-use Neos\ContentRepository\Core\Factory\ContentRepositoryIdentifier;
+use Neos\ContentRepository\Core\Factory\ContentRepositoryId;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
 
@@ -31,7 +31,7 @@ class ContentDimensionsHelper implements ProtectedContextAwareInterface
     /**
      * @return array<string,array<string,mixed>> Dimensions indexed by name with presets indexed by name
      */
-    public function contentDimensionsByName(ContentRepositoryIdentifier $contentRepositoryIdentifier): array
+    public function contentDimensionsByName(ContentRepositoryId $contentRepositoryIdentifier): array
     {
         $contentDimensionHelperInternals = $this->contentRepositoryRegistry->getService($contentRepositoryIdentifier, new ContentDimensionsHelperInternalsFactory());
         assert($contentDimensionHelperInternals instanceof ContentDimensionsHelperInternals);
@@ -67,7 +67,7 @@ class ContentDimensionsHelper implements ProtectedContextAwareInterface
      * @return array<string,array<int,string>> Allowed preset names for the given dimension combination
      *                                         indexed by dimension name
      */
-    public function allowedPresetsByName(DimensionSpacePoint $dimensions, ContentRepositoryIdentifier $contentRepositoryIdentifier): array
+    public function allowedPresetsByName(DimensionSpacePoint $dimensions, ContentRepositoryId $contentRepositoryIdentifier): array
     {
         $contentDimensionHelperInternals = $this->contentRepositoryRegistry->getService($contentRepositoryIdentifier, new ContentDimensionsHelperInternalsFactory());
         $contentDimensionSource = $contentDimensionHelperInternals->contentDimensionSource;
@@ -75,7 +75,7 @@ class ContentDimensionsHelper implements ProtectedContextAwareInterface
         // TODO: re-implement this here; currently EVERYTHING is allowed!!
         $allowedPresets = [];
         foreach ($dimensions->coordinates as $dimensionName => $dimensionValue) {
-            $dimension = $contentDimensionSource->getDimension(new ContentDimensionIdentifier($dimensionName));
+            $dimension = $contentDimensionSource->getDimension(new ContentDimensionId($dimensionName));
             if (!is_null($dimension)) {
                 $value = $dimension->getValue($dimensionValue);
                 if ($value !== null) {

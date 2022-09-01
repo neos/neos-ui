@@ -75,7 +75,7 @@ class UpdateNodeInfo extends AbstractFeedback
 
     public function getDescription(): string
     {
-        return sprintf('Updated info for node "%s" is available.', $this->node?->nodeAggregateIdentifier);
+        return sprintf('Updated info for node "%s" is available.', $this->node?->nodeAggregateId);
     }
 
     /**
@@ -88,8 +88,8 @@ class UpdateNodeInfo extends AbstractFeedback
         }
         $feedbackNode = $feedback->getNode();
 
-        return $this->node && $feedbackNode && $this->node->nodeAggregateIdentifier->equals(
-            $feedbackNode->nodeAggregateIdentifier
+        return $this->node && $feedbackNode && $this->node->nodeAggregateId->equals(
+            $feedbackNode->nodeAggregateId
         );
     }
 
@@ -114,7 +114,7 @@ class UpdateNodeInfo extends AbstractFeedback
      */
     public function serializeNodeRecursively(Node $node, ControllerContext $controllerContext): array
     {
-        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryIdentifier);
+        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
 
         $result = [
@@ -127,7 +127,7 @@ class UpdateNodeInfo extends AbstractFeedback
 
         if ($this->isRecursive === true) {
             $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
-            foreach ($subgraph->findChildNodes($node->nodeAggregateIdentifier) as $childNode) {
+            foreach ($subgraph->findChildNodes($node->nodeAggregateId) as $childNode) {
                 $result = array_merge($result, $this->serializeNodeRecursively($childNode, $controllerContext));
             }
         }

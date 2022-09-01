@@ -16,7 +16,7 @@ use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\DimensionSpace\OriginDimensionSpacePoint;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeName;
 use Neos\ContentRepository\Core\Feature\NodeDuplication\Command\CopyNodesRecursively;
-use Neos\ContentRepository\Core\SharedModel\User\UserIdentifier;
+use Neos\ContentRepository\Core\SharedModel\User\UserId;
 
 class CopyInto extends AbstractStructuralChange
 {
@@ -33,7 +33,7 @@ class CopyInto extends AbstractStructuralChange
     {
         if (!isset($this->cachedParentNode)) {
             $this->cachedParentNode = $this->parentContextPath
-                ? $this->nodeService->getNodeFromContextPath($this->parentContextPath, $this->getSubject()->subgraphIdentity->contentRepositoryIdentifier)
+                ? $this->nodeService->getNodeFromContextPath($this->parentContextPath, $this->getSubject()->subgraphIdentity->contentRepositoryId)
                 : null;
         }
 
@@ -67,17 +67,17 @@ class CopyInto extends AbstractStructuralChange
         if ($parentNode && $subject && $this->canApply()) {
             $targetNodeName = NodeName::fromString(uniqid('node-'));
 
-            $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryIdentifier);
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
             $command = CopyNodesRecursively::createFromSubgraphAndStartNode(
                 $contentRepository->getContentGraph()->getSubgraph(
-                    $subject->subgraphIdentity->contentStreamIdentifier,
+                    $subject->subgraphIdentity->contentStreamId,
                     $subject->subgraphIdentity->dimensionSpacePoint,
                     $subject->subgraphIdentity->visibilityConstraints
                 ),
                 $subject,
                 OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->subgraphIdentity->dimensionSpacePoint),
-                UserIdentifier::forSystemUser(), // TODO
-                $parentNode->nodeAggregateIdentifier,
+                UserId::forSystemUser(), // TODO
+                $parentNode->nodeAggregateId,
                 null,
                 $targetNodeName
             );
@@ -85,7 +85,7 @@ class CopyInto extends AbstractStructuralChange
 
             $newlyCreatedNode = $this->contentRepositoryRegistry->subgraphForNode($parentNode)
                 ->findChildNodeConnectedThroughEdgeName(
-                    $parentNode->nodeAggregateIdentifier,
+                    $parentNode->nodeAggregateId,
                     $targetNodeName
                 );
             $this->finish($newlyCreatedNode);

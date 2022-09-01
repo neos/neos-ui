@@ -11,7 +11,7 @@ namespace Neos\Neos\Ui\TypeConverter;
  * source code.
  */
 
-use Neos\ContentRepository\Core\Factory\ContentRepositoryIdentifier;
+use Neos\ContentRepository\Core\Factory\ContentRepositoryId;
 use Neos\Error\Messages\Error;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
@@ -105,7 +105,7 @@ class ChangeCollectionConverter
      */
     public function convert(
         array $source,
-        ContentRepositoryIdentifier $contentRepositoryIdentifier
+        ContentRepositoryId $contentRepositoryIdentifier
     ): ChangeCollection {
         if (!is_array($source)) {
             throw new \RuntimeException(sprintf('Cannot convert %s to ChangeCollection.', gettype($source)));
@@ -126,7 +126,7 @@ class ChangeCollectionConverter
      *
      * @param array<string,mixed> $changeData
      */
-    protected function convertChangeData(array $changeData, ContentRepositoryIdentifier $contentRepositoryIdentifier): ChangeInterface
+    protected function convertChangeData(array $changeData, ContentRepositoryId $contentRepositoryIdentifier): ChangeInterface
     {
         $type = $changeData['type'];
 

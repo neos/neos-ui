@@ -68,21 +68,21 @@ class MoveAfter extends AbstractStructuralChange
                 // do nothing; $succeedingSibling is null.
             }
 
-            $hasEqualParentNode = $parentNode->nodeAggregateIdentifier
-                ->equals($parentNodeOfPreviousSibling->nodeAggregateIdentifier);
+            $hasEqualParentNode = $parentNode->nodeAggregateId
+                ->equals($parentNodeOfPreviousSibling->nodeAggregateId);
 
             $command = new MoveNodeAggregate(
-                $subject->subgraphIdentity->contentStreamIdentifier,
+                $subject->subgraphIdentity->contentStreamId,
                 $subject->subgraphIdentity->dimensionSpacePoint,
-                $subject->nodeAggregateIdentifier,
-                $hasEqualParentNode ? null : $parentNodeOfPreviousSibling->nodeAggregateIdentifier,
-                $precedingSibling->nodeAggregateIdentifier,
-                $succeedingSibling?->nodeAggregateIdentifier,
+                $subject->nodeAggregateId,
+                $hasEqualParentNode ? null : $parentNodeOfPreviousSibling->nodeAggregateId,
+                $precedingSibling->nodeAggregateId,
+                $succeedingSibling?->nodeAggregateId,
                 RelationDistributionStrategy::STRATEGY_GATHER_ALL,
                 $this->getInitiatingUserIdentifier()
             );
 
-            $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryIdentifier);
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
             $contentRepository->handle($command)->block();
 
             $updateParentNodeInfo = new UpdateNodeInfo();

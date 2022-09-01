@@ -15,7 +15,7 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
 use Neos\ContentRepository\Core\Feature\NodeDuplication\Command\CopyNodesRecursively;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeName;
 use Neos\ContentRepository\Core\DimensionSpace\OriginDimensionSpacePoint;
-use Neos\ContentRepository\Core\SharedModel\User\UserIdentifier;
+use Neos\ContentRepository\Core\SharedModel\User\UserId;
 
 class CopyBefore extends AbstractStructuralChange
 {
@@ -59,25 +59,25 @@ class CopyBefore extends AbstractStructuralChange
         ) {
             $targetNodeName = NodeName::fromString(uniqid('node-'));
 
-            $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryIdentifier);
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
             $command = CopyNodesRecursively::createFromSubgraphAndStartNode(
                 $contentRepository->getContentGraph()->getSubgraph(
-                    $subject->subgraphIdentity->contentStreamIdentifier,
+                    $subject->subgraphIdentity->contentStreamId,
                     $subject->subgraphIdentity->dimensionSpacePoint,
                     $subject->subgraphIdentity->visibilityConstraints
                 ),
                 $subject,
                 OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->subgraphIdentity->dimensionSpacePoint),
-                UserIdentifier::forSystemUser(), // TODO
-                $parentNodeOfSucceedingSibling->nodeAggregateIdentifier,
-                $succeedingSibling->nodeAggregateIdentifier,
+                UserId::forSystemUser(), // TODO
+                $parentNodeOfSucceedingSibling->nodeAggregateId,
+                $succeedingSibling->nodeAggregateId,
                 $targetNodeName
             );
             $contentRepository->handle($command)->block();
 
             $newlyCreatedNode = $this->contentRepositoryRegistry->subgraphForNode($parentNodeOfSucceedingSibling)
                 ->findChildNodeConnectedThroughEdgeName(
-                    $parentNodeOfSucceedingSibling->nodeAggregateIdentifier,
+                    $parentNodeOfSucceedingSibling->nodeAggregateId,
                     $targetNodeName
                 );
             $this->finish($newlyCreatedNode);

@@ -1,5 +1,3 @@
-import 'isomorphic-fetch';
-
 type MakeFetchRequest = (csrf: string) => RequestInit & {url?: string};
 
 interface RequestQueueItem {

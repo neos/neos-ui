@@ -130,8 +130,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         string $nodeTypeFilterOverride = null
     ): ?array {
         $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
-        $nodeHiddenStateFinder = $contentRepository->projectionState(NodeHiddenStateProjection::class);
-        /* @var NodeHiddenStateFinder $nodeHiddenStateFinder */
+        $nodeHiddenStateFinder = $contentRepository->projectionState(NodeHiddenStateFinder::class);
 
         /** @todo implement custom node policy service
         if (!$this->nodePolicyService->isNodeTreePrivilegeGranted($node)) {

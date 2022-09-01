@@ -110,8 +110,7 @@ class NodePropertyConverterService
     {
         if ($propertyName === '_hidden') {
             $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
-            $nodeHiddenStateFinder = $contentRepository->projectionState(NodeHiddenStateProjection::class);
-            /* @var NodeHiddenStateFinder $nodeHiddenStateFinder */
+            $nodeHiddenStateFinder = $contentRepository->projectionState(NodeHiddenStateFinder::class);
 
             return $nodeHiddenStateFinder->findHiddenState(
                 $node->subgraphIdentity->contentStreamId,

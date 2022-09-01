@@ -23,6 +23,7 @@ use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Domain\Service\UserService as DomainUserService;
+use Neos\Neos\PendingChangesProjection\ChangeFinder;
 use Neos\Neos\PendingChangesProjection\ChangeProjection;
 use Neos\Neos\Service\UserService;
 
@@ -62,7 +63,7 @@ class WorkspaceService
         if (is_null($workspace) || $workspace->baseWorkspaceName === null) {
             return [];
         }
-        $changeFinder = $contentRepository->projectionState(ChangeProjection::class);
+        $changeFinder = $contentRepository->projectionState(ChangeFinder::class);
         $changes = $changeFinder->findByContentStreamIdentifier($workspace->currentContentStreamId);
         $unpublishedNodes = [];
         foreach ($changes as $change) {

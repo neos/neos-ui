@@ -43,7 +43,7 @@ class UpdateWorkspaceInfo extends AbstractFeedback
      * @param WorkspaceName $workspaceName
      */
     public function __construct(
-        private readonly ContentRepositoryId $contentRepositoryIdentifier,
+        private readonly ContentRepositoryId $contentRepositoryId,
         WorkspaceName $workspaceName = null
     ) {
         $this->workspaceName = $workspaceName;
@@ -116,14 +116,14 @@ class UpdateWorkspaceInfo extends AbstractFeedback
             return null;
         }
 
-        $contentRepository = $this->contentRepositoryRegistry->get($this->contentRepositoryIdentifier);
+        $contentRepository = $this->contentRepositoryRegistry->get($this->contentRepositoryId);
         $workspace = $contentRepository->getWorkspaceFinder()->findOneByName($this->workspaceName);
 
         return $workspace ? [
             'name' => (string)$this->workspaceName,
             'publishableNodes' => $this->workspaceService->getPublishableNodeInfo(
                 $this->workspaceName,
-                $this->contentRepositoryIdentifier
+                $this->contentRepositoryId
             ),
             'baseWorkspace' => (string)$workspace->baseWorkspaceName
         ] : [];

@@ -117,8 +117,8 @@ Neos:
           siteNode: '${Neos.Ui.NodeInfo.serializedNodeAddress(site)}'
           previewUrl: '${Neos.Ui.NodeInfo.createRedirectToNode(documentNode, controllerContext)}'
           contentDimensions:
-            active: '${documentNode.subgraphIdentity.dimensionSpacePoint.toLegacyDimensionArray()}'
-            allowedPresets: '${Neos.Ui.Api.emptyArrayToObject(Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.subgraphIdentity.dimensionSpacePoint, documentNode.subgraphIdentity.contentRepositoryIdentifier))}'
+            active: '${Neos.Ui.ContentDimensions.dimensionSpacePointArray(documentNode.subgraphIdentity.dimensionSpacePoint)}'
+            allowedPresets: '${Neos.Ui.Api.emptyArrayToObject(Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.subgraphIdentity.dimensionSpacePoint, documentNode.subgraphIdentity.contentRepositoryId))}'
           documentNodeSerialization: '${Neos.Ui.NodeInfo.renderNodeWithPropertiesAndChildrenInformation(documentNode, controllerContext)}'
       initialState:
         changes:
@@ -133,11 +133,11 @@ Neos:
             clipboard: '${clipboardNodes || []}'
             clipboardMode: '${clipboardMode || null}'
           contentDimensions:
-            byName: '${Neos.Ui.ContentDimensions.contentDimensionsByName(contentRepositoryIdentifier)}'
-            active: '${documentNode.subgraphIdentity.dimensionSpacePoint.toLegacyDimensionArray()}'
-            allowedPresets: '${Neos.Ui.Api.emptyArrayToObject(Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.subgraphIdentity.dimensionSpacePoint, contentRepositoryIdentifier))}'
+            byName: '${Neos.Ui.ContentDimensions.contentDimensionsByName(contentRepositoryId)}'
+            active: '${Neos.Ui.ContentDimensions.dimensionSpacePointArray(documentNode.subgraphIdentity.dimensionSpacePoint)}'
+            allowedPresets: '${Neos.Ui.Api.emptyArrayToObject(Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.subgraphIdentity.dimensionSpacePoint, contentRepositoryId))}'
           workspaces:
-            personalWorkspace: '${Neos.Ui.Workspace.getPersonalWorkspace(contentRepositoryIdentifier)}'
+            personalWorkspace: '${Neos.Ui.Workspace.getPersonalWorkspace(contentRepositoryId)}'
         ui:
           contentCanvas:
             src: '${Neos.Ui.NodeInfo.uri(documentNode, controllerContext)}'

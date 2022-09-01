@@ -73,8 +73,7 @@ abstract class AbstractChange implements ChangeInterface
                     $documentNode->subgraphIdentity->contentStreamId
                 );
                 if (!is_null($workspace)) {
-                    $updateWorkspaceInfo = new UpdateWorkspaceInfo
-                    ($documentNode->subgraphIdentity->contentRepositoryId, $workspace->workspaceName);
+                    $updateWorkspaceInfo = new UpdateWorkspaceInfo($documentNode->subgraphIdentity->contentRepositoryId, $workspace->workspaceName);
                     $this->feedbackCollection->add($updateWorkspaceInfo);
                 }
             }

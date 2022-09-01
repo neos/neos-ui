@@ -197,7 +197,7 @@ class BackendController extends ActionController
         $this->view->assign('splashScreenPartial', $this->splashScreenPartial);
         $this->view->assign('sitesForMenu', $this->menuHelper->buildSiteList($this->getControllerContext()));
         $this->view->assign('modulesForMenu', $this->menuHelper->buildModuleList($this->getControllerContext()));
-        $this->view->assign('contentRepositoryIdentifier', $siteDetectionResult->contentRepositoryId);
+        $this->view->assign('contentRepositoryId', $siteDetectionResult->contentRepositoryId);
 
         $this->view->assignMultiple([
             'subgraph' => $subgraph

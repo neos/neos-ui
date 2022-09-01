@@ -2119,9 +2119,9 @@
     "@types/node" "*"
 
 "@types/lodash.assignin@^4.2.6":
-  version "4.2.6"
-  resolved "https://registry.yarnpkg.com/@types/lodash.assignin/-/lodash.assignin-4.2.6.tgz#fe94b7bbad78f97897a028e8f4e8945c03d84a6f"
-  integrity sha512-kO9C2Oq0X8yehLu0o689SwR+wy+m4IQZg2TxRBXNkmpd0WY/GYEV+tTqrWRu2jt69eDOaVMJxna6QnDQ/g1TSg==
+  version "4.2.7"
+  resolved "https://registry.yarnpkg.com/@types/lodash.assignin/-/lodash.assignin-4.2.7.tgz#cd864a35025e94e68a04d287833ca4bc777814ea"
+  integrity sha512-XvENIWy921M29eEFAZy7jcjN05l/O8pdXPW00/aUMlWD3q6FhWAhERnKuFyNTHeamqZWff7YUtxXoSGKdAehig==
   dependencies:
     "@types/lodash" "*"
 

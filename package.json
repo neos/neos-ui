@@ -11,7 +11,7 @@
     "vfile-message": "^2.0.2"
   },
   "engines": {
-    "node": "~14"
+    "node": "~16"
   },
   "devDependencies": {
     "@neos-project/build-essentials": "*",
@@ -131,6 +131,7 @@
     "hoist-non-react-statics": "^3.3.1",
     "immer": "^9.0.0",
     "isemail": "^3.2.0",
+    "isomorphic-fetch": "^3.0.0",
     "lodash.assign": "^4.2.0",
     "lodash.assignin": "^4.2.0",
     "lodash.debounce": "^4.0.8",

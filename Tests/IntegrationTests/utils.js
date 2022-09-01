@@ -21,6 +21,10 @@ export async function checkPropTypes() {
     if (error[0] && error[0].search('Warning: Unsafe legacy lifecycles') >= 0) {
         delete error[0];
     }
+    // Quick fix to be able to use node 16 with testcafe @see https://github.com/DevExpress/testcafe/issues/7097
+    if (error[0] && error[0].search('hammerhead.js:15:1506') >= 0) {
+        delete error[0];
+    }
     if (error[0]) {
         console.log('These console errors were the cause of the failed test:', error);
     }

@@ -43,7 +43,7 @@ aliases:
 jobs:
   checkout:
     docker:
-      - image: cimg/node:14.18-browsers
+      - image: cimg/node:16.17-browsers
     environment:
       FLOW_CONTEXT: Production
     steps:
@@ -63,7 +63,7 @@ jobs:
   codestyle:
     working_directory: *workspace_root
     docker:
-      - image: cimg/node:14.18-browsers
+      - image: cimg/node:16.17-browsers
     steps:
       - attach_workspace: *attach_workspace
       - run: make lint
@@ -71,10 +71,14 @@ jobs:
   unittests:
     working_directory: *workspace_root
     docker:
-      - image: cimg/node:14.18-browsers
+      - image: cimg/node:16.17-browsers
     steps:
       - attach_workspace: *attach_workspace
-      - run: make test
+      - run:
+          name: Build
+          no_output_timeout: 30m
+          command: |
+            make test
 
   build_flow_app:
     working_directory: *workspace_root

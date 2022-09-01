@@ -14,6 +14,7 @@ namespace Neos\Neos\Ui\Fusion\Helper;
 use Neos\ContentRepository\Core\Dimension\ContentDimension;
 use Neos\ContentRepository\Core\Dimension\ContentDimensionId;
 use Neos\ContentRepository\Core\Dimension\ContentDimensionSourceInterface;
+use Neos\ContentRepository\Core\DimensionSpace\AbstractDimensionSpacePoint;
 use Neos\ContentRepository\Core\DimensionSpace\DimensionSpacePoint;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\ContentRepository\Core\Factory\ContentRepositoryId;
@@ -31,9 +32,9 @@ class ContentDimensionsHelper implements ProtectedContextAwareInterface
     /**
      * @return array<string,array<string,mixed>> Dimensions indexed by name with presets indexed by name
      */
-    public function contentDimensionsByName(ContentRepositoryId $contentRepositoryIdentifier): array
+    public function contentDimensionsByName(ContentRepositoryId $contentRepositoryId): array
     {
-        $contentDimensionHelperInternals = $this->contentRepositoryRegistry->getService($contentRepositoryIdentifier, new ContentDimensionsHelperInternalsFactory());
+        $contentDimensionHelperInternals = $this->contentRepositoryRegistry->getService($contentRepositoryId, new ContentDimensionsHelperInternalsFactory());
         assert($contentDimensionHelperInternals instanceof ContentDimensionsHelperInternals);
         $contentDimensionSource = $contentDimensionHelperInternals->contentDimensionSource;
 
@@ -41,7 +42,7 @@ class ContentDimensionsHelper implements ProtectedContextAwareInterface
 
         $result = [];
         foreach ($dimensions as $dimension) {
-            $result[(string)$dimension->identifier] = [
+            $result[(string)$dimension->id] = [
                 'label' => $dimension->getConfigurationValue('label'),
                 'icon' => $dimension->getConfigurationValue('icon'),
 
@@ -52,7 +53,7 @@ class ContentDimensionsHelper implements ProtectedContextAwareInterface
 
             foreach ($dimension->values as $value) {
                 // TODO: make certain values hidable
-                $result[(string)$dimension->identifier]['presets'][$value->value] = [
+                $result[(string)$dimension->id]['presets'][$value->value] = [
                     // TODO: name, uriSegment!
                     'values' => [$value->value],
                     'label' => $value->getConfigurationValue('label')
@@ -67,9 +68,9 @@ class ContentDimensionsHelper implements ProtectedContextAwareInterface
      * @return array<string,array<int,string>> Allowed preset names for the given dimension combination
      *                                         indexed by dimension name
      */
-    public function allowedPresetsByName(DimensionSpacePoint $dimensions, ContentRepositoryId $contentRepositoryIdentifier): array
+    public function allowedPresetsByName(DimensionSpacePoint $dimensions, ContentRepositoryId $contentRepositoryId): array
     {
-        $contentDimensionHelperInternals = $this->contentRepositoryRegistry->getService($contentRepositoryIdentifier, new ContentDimensionsHelperInternalsFactory());
+        $contentDimensionHelperInternals = $this->contentRepositoryRegistry->getService($contentRepositoryId, new ContentDimensionsHelperInternalsFactory());
         $contentDimensionSource = $contentDimensionHelperInternals->contentDimensionSource;
 
         // TODO: re-implement this here; currently EVERYTHING is allowed!!
@@ -85,6 +86,11 @@ class ContentDimensionsHelper implements ProtectedContextAwareInterface
         }
 
         return $allowedPresets;
+    }
+
+    public function dimensionSpacePointArray(AbstractDimensionSpacePoint $dimensionSpacePoint): array
+    {
+        return $dimensionSpacePoint->toLegacyDimensionArray();
     }
 
     /**

@@ -65,9 +65,9 @@ class NodeService
     /**
      * Converts a given context path to a node object
      */
-    public function getNodeFromContextPath(string $contextPath, ContentRepositoryId $contentRepositoryIdentifier): ?Node
+    public function getNodeFromContextPath(string $contextPath, ContentRepositoryId $contentRepositoryId): ?Node
     {
-        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryIdentifier);
+        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
         $nodeAddress = NodeAddressFactory::create($contentRepository)->createFromUriString($contextPath);
 
         $subgraph = $contentRepository->getContentGraph()->getSubgraph(

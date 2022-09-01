@@ -149,7 +149,7 @@ class NodeTreeBuilder
      * @param null $depth
      * @return array
      */
-    public function build(ContentRepositoryId $contentRepositoryIdentifier, $includeRoot = false, $root = null, $depth = null)
+    public function build(ContentRepositoryId $contentRepositoryId, $includeRoot = false, $root = null, $depth = null)
     {
         $root = $root === null ? $this->getRoot() : $root;
         $depth = $depth === null ? $this->depth : $depth;

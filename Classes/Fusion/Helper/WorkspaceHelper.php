@@ -50,18 +50,18 @@ class WorkspaceHelper implements ProtectedContextAwareInterface
      */
     protected $securityContext;
 
-    public function getAllowedTargetWorkspaces(ContentRepositoryId $contentRepositoryIdentifier)
+    public function getAllowedTargetWorkspaces(ContentRepositoryId $contentRepositoryId)
     {
-        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryIdentifier);
+        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
         return $this->workspaceService->getAllowedTargetWorkspaces($contentRepository);
     }
 
     /**
      * @return array<string,mixed>
      */
-    public function getPersonalWorkspace(ContentRepositoryId $contentRepositoryIdentifier): array
+    public function getPersonalWorkspace(ContentRepositoryId $contentRepositoryId): array
     {
-        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryIdentifier);
+        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
         $currentAccount = $this->securityContext->getAccount();
         $personalWorkspaceName = NeosWorkspaceName::fromAccountIdentifier(
             $currentAccount->getAccountIdentifier()
@@ -71,7 +71,7 @@ class WorkspaceHelper implements ProtectedContextAwareInterface
         return !is_null($personalWorkspace)
             ? [
                 'name' => $personalWorkspace->workspaceName,
-                'publishableNodes' => $this->workspaceService->getPublishableNodeInfo($personalWorkspaceName, $contentRepositoryIdentifier),
+                'publishableNodes' => $this->workspaceService->getPublishableNodeInfo($personalWorkspaceName, $contentRepositoryId),
                 'baseWorkspace' => $personalWorkspace->baseWorkspaceName,
                 // TODO: FIX readonly flag!
                 //'readOnly' => !$this->domainUserService->currentUserCanPublishToWorkspace($baseWorkspace)

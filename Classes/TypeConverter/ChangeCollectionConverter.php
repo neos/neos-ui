@@ -105,7 +105,7 @@ class ChangeCollectionConverter
      */
     public function convert(
         array $source,
-        ContentRepositoryId $contentRepositoryIdentifier
+        ContentRepositoryId $contentRepositoryId
     ): ChangeCollection {
         if (!is_array($source)) {
             throw new \RuntimeException(sprintf('Cannot convert %s to ChangeCollection.', gettype($source)));
@@ -113,7 +113,7 @@ class ChangeCollectionConverter
 
         $changeCollection = new ChangeCollection();
         foreach ($source as $changeData) {
-            $convertedData = $this->convertChangeData($changeData, $contentRepositoryIdentifier);
+            $convertedData = $this->convertChangeData($changeData, $contentRepositoryId);
 
             $changeCollection->add($convertedData);
         }
@@ -126,7 +126,7 @@ class ChangeCollectionConverter
      *
      * @param array<string,mixed> $changeData
      */
-    protected function convertChangeData(array $changeData, ContentRepositoryId $contentRepositoryIdentifier): ChangeInterface
+    protected function convertChangeData(array $changeData, ContentRepositoryId $contentRepositoryId): ChangeInterface
     {
         $type = $changeData['type'];
 
@@ -141,7 +141,7 @@ class ChangeCollectionConverter
 
 
         $subjectContextPath = $changeData['subject'];
-        $subject = $this->nodeService->getNodeFromContextPath($subjectContextPath, $contentRepositoryIdentifier);
+        $subject = $this->nodeService->getNodeFromContextPath($subjectContextPath, $contentRepositoryId);
         if (is_null($subject)) {
             throw new \RuntimeException('Could not find node for subject "' . $subjectContextPath . '"', 1645657340);
         }
@@ -150,7 +150,7 @@ class ChangeCollectionConverter
 
         if (isset($changeData['reference']) && method_exists($changeClassInstance, 'setReference')) {
             $referenceContextPath = $changeData['reference'];
-            $reference = $this->nodeService->getNodeFromContextPath($referenceContextPath, $contentRepositoryIdentifier);
+            $reference = $this->nodeService->getNodeFromContextPath($referenceContextPath, $contentRepositoryId);
             $changeClassInstance->setReference($reference);
         }
 

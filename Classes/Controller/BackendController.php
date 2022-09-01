@@ -184,7 +184,7 @@ class BackendController extends ActionController
             // TODO: fix resolving node address from session?
             $node = $siteNode;
         } else {
-            $node = $subgraph->findNodeByNodeAggregateId($nodeAddress->nodeAggregateId);
+            $node = $subgraph->findNodeById($nodeAddress->nodeAggregateId);
         }
 
         $this->view->assign('user', $user);

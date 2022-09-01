@@ -12,6 +12,7 @@ namespace Neos\Neos\Ui\FlowQueryOperations;
  * source code.
  */
 
+use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindChildNodesFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\NodeType\NodeTypeConstraintParser;
 use Neos\ContentRepository\Core\Projection\ContentGraph\NodeTypeConstraints;
@@ -121,7 +122,10 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
                 // load children of all parents of documentNode
                 in_array((string)$baseNode->nodeAggregateId, $parents)
             ) {
-                foreach ($subgraph->findChildNodes($baseNode->nodeAggregateId, $baseNodeTypeConstraints) as $childNode) {
+                foreach ($subgraph->findChildNodes(
+                    $baseNode->nodeAggregateId,
+                    FindChildNodesFilter::nodeTypeConstraints($baseNodeTypeConstraints)
+                ) as $childNode) {
                     $nodes[(string)$childNode->nodeAggregateId] = $childNode;
                     $gatherNodesRecursively($nodes, $childNode, $level + 1);
                 }
@@ -136,7 +140,7 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
         foreach ($clipboardNodesContextPaths as $clipboardNodeContextPath) {
             // TODO: does not work across multiple CRs yet.
             $clipboardNodeAddress = $nodeAddressFactory->createFromUriString($clipboardNodeContextPath);
-            $clipboardNode = $subgraph->findNodeByNodeAggregateId($clipboardNodeAddress->nodeAggregateId);
+            $clipboardNode = $subgraph->findNodeById($clipboardNodeAddress->nodeAggregateId);
             if ($clipboardNode && !array_key_exists((string)$clipboardNode->nodeAggregateId, $nodes)) {
                 $nodes[(string)$clipboardNode->nodeAggregateId] = $clipboardNode;
             }

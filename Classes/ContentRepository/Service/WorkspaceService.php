@@ -95,7 +95,7 @@ class WorkspaceService
                     $change->originDimensionSpacePoint->toDimensionSpacePoint(),
                     VisibilityConstraints::withoutRestrictions()
                 );
-                $node = $subgraph->findNodeByNodeAggregateId($change->nodeAggregateIdentifier);
+                $node = $subgraph->findNodeById($change->nodeAggregateIdentifier);
 
                 if ($node instanceof Node) {
                     $documentNode = $this->getClosestDocumentNode($node);

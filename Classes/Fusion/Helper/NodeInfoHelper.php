@@ -12,6 +12,7 @@ namespace Neos\Neos\Ui\Fusion\Helper;
  */
 
 use Neos\ContentRepository\Core\Projection\ContentGraph\ContentSubgraphInterface;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindChildNodesFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Nodes;
 use Neos\ContentRepository\Core\Projection\NodeHiddenState\NodeHiddenState;
@@ -270,12 +271,12 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
         $documentChildNodes = $subgraph->findChildNodes(
             $node->nodeAggregateId,
-            NodeTypeConstraints::fromFilterString($nodeTypeFilterString)
+            FindChildNodesFilter::nodeTypeConstraints($nodeTypeFilterString)
         );
         // child nodes for content tree, must not include those nodes filtered out by `baseNodeType`
         $contentChildNodes = $subgraph->findChildNodes(
             $node->nodeAggregateId,
-            NodeTypeConstraints::fromFilterString(
+            FindChildNodesFilter::nodeTypeConstraints(
                 $this->buildContentChildNodeFilterString()
             )
         );
@@ -508,7 +509,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         return $this->contentRepositoryRegistry->subgraphForNode($node)
             ->findChildNodes(
                 $node->nodeAggregateId,
-                NodeTypeConstraints::fromFilterString($nodeTypeFilterString)
+                FindChildNodesFilter::nodeTypeConstraints($nodeTypeFilterString)
             );
     }
 

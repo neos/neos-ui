@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Neos\Neos\Ui\Domain\Service;
 
+use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindReferencedNodesFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\Projection\NodeHiddenState\NodeHiddenStateFinder;
 use Neos\ContentRepository\Core\Projection\NodeHiddenState\NodeHiddenStateProjection;
@@ -125,7 +126,10 @@ class NodePropertyConverterService
         if ($propertyType === 'reference') {
             $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
             $referenceIdentifiers = $this->toNodeIdentifierStrings(
-                $subgraph->findReferencedNodes($node->nodeAggregateId, PropertyName::fromString($propertyName))
+                $subgraph->findReferencedNodes(
+                    $node->nodeAggregateId,
+                    FindReferencedNodesFilter::referenceName($propertyName)
+                )
             );
             if (count($referenceIdentifiers) === 0) {
                 return null;
@@ -134,7 +138,10 @@ class NodePropertyConverterService
             }
         } elseif ($propertyType === 'references') {
             $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
-            $references = $subgraph->findReferencedNodes($node->nodeAggregateId, PropertyName::fromString($propertyName));
+            $references = $subgraph->findReferencedNodes(
+                $node->nodeAggregateId,
+                FindReferencedNodesFilter::referenceName($propertyName)
+            );
 
             return $this->toNodeIdentifierStrings($references);
         // Here, the normal property access logic starts.

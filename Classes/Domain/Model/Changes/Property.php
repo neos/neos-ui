@@ -265,7 +265,7 @@ class Property extends AbstractChange
             // Thus, we need to re-fetch it (as a workaround; until we do not need this anymore)
             $subgraph = $this->contentRepositoryRegistry->subgraphForNode($subject);
             $originalNodeAggregateIdentifier = $subject->nodeAggregateId;
-            $node = $subgraph->findNodeByNodeAggregateId($originalNodeAggregateIdentifier);
+            $node = $subgraph->findNodeById($originalNodeAggregateIdentifier);
             if (is_null($node)) {
                 throw new \InvalidArgumentException(
                     'Cannot apply Property on missing node ' . $originalNodeAggregateIdentifier,

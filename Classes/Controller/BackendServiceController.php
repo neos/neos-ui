@@ -499,7 +499,7 @@ class BackendServiceController extends ActionController
                 $nodeAddress->dimensionSpacePoint,
                 VisibilityConstraints::withoutRestrictions()
             );
-            $node = $subgraph->findNodeByNodeAggregateId($nodeAddress->nodeAggregateId);
+            $node = $subgraph->findNodeById($nodeAddress->nodeAggregateId);
 
             // TODO finish implementation
             /*$otherNodeVariants = array_values(array_filter(array_map(function ($node) {
@@ -540,7 +540,7 @@ class BackendServiceController extends ActionController
                 $nodeAddress->dimensionSpacePoint,
                 VisibilityConstraints::withoutRestrictions()
             );
-            $node = $subgraph->findNodeByNodeAggregateId($nodeAddress->nodeAggregateIdentifier);
+            $node = $subgraph->findNodeById($nodeAddress->nodeAggregateIdentifier);
             if (!is_null($node)) {
                 $result[$nodeAddress->serializeForUri()] = [
                     'policy' => $this->nodePolicyService->getNodePolicyInformation($node)

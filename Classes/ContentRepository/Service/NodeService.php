@@ -75,6 +75,6 @@ class NodeService
             $nodeAddress->dimensionSpacePoint,
             VisibilityConstraints::withoutRestrictions()
         );
-        return $subgraph->findNodeByNodeAggregateId($nodeAddress->nodeAggregateId);
+        return $subgraph->findNodeById($nodeAddress->nodeAggregateId);
     }
 }

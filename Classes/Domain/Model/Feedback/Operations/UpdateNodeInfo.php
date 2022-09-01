@@ -11,6 +11,7 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
  * source code.
  */
 
+use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindChildNodesFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
@@ -127,7 +128,7 @@ class UpdateNodeInfo extends AbstractFeedback
 
         if ($this->isRecursive === true) {
             $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
-            foreach ($subgraph->findChildNodes($node->nodeAggregateId) as $childNode) {
+            foreach ($subgraph->findChildNodes($node->nodeAggregateId, FindChildNodesFilter::all()) as $childNode) {
                 $result = array_merge($result, $this->serializeNodeRecursively($childNode, $controllerContext));
             }
         }

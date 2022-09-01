@@ -12,6 +12,7 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
+use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindChildNodesFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\NodeType\NodeType;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
@@ -180,7 +181,7 @@ abstract class AbstractStructuralChange extends AbstractChange
     {
         // TODO REMOVE
         return $this->contentRepositoryRegistry->subgraphForNode($node)
-            ->findChildNodes($node->nodeAggregateId);
+            ->findChildNodes($node->nodeAggregateId, FindChildNodesFilter::all());
     }
 
     protected function isNodeTypeAllowedAsChildNode(Node $node, NodeType $nodeType): bool

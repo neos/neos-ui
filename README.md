@@ -16,13 +16,17 @@ That means:
 
 ### Currently maintained versions
 
+* NeosCMS version 7.3: branch 7.3
+* NeosCMS version 8.0: branch 8.0
+* NeosCMS version 8.1: branch 8.1
+* latest development happens in master
+
+#### Releases with just security updates
+
 * NeosCMS version 5.3: branch 5.3
 * NeosCMS version 7.0: branch 7.0
 * NeosCMS version 7.1: branch 7.1
 * NeosCMS version 7.2: branch 7.2
-* NeosCMS version 7.3: branch 7.3
-* NeosCMS version 8.0: branch 8.0
-* latest development happens in master
 
 ## Browser support
 
@@ -138,7 +142,9 @@ git checkout 7.3 && git fetch && git reset --hard origin/7.3 && git merge --no-f
 # review and `git commit`
 git checkout 8.0 && git fetch && git reset --hard origin/8.0 && git merge --no-ff --no-commit origin/7.3
 # review and `git commit`
-git checkout master && git fetch && git reset --hard origin/master && git merge --no-ff --no-commit origin/8.0
+git checkout 8.1 && git fetch && git reset --hard origin/8.1 && git merge --no-ff --no-commit origin/8.0
+# review and `git commit`
+git checkout master && git fetch && git reset --hard origin/master && git merge --no-ff --no-commit origin/8.1
 # review and `git commit`
 ```
 

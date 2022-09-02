@@ -218,9 +218,8 @@ export default class LinkInput extends PureComponent {
             return value;
         }
 
-        // Return identifier with asset source prefix except the local neos source
-        const proxyIdentifier = value.replace('assetProxy://', '');
-        return proxyIdentifier.replace('neos/', '');
+        // Strip loader uri prefix
+        return value.replace('assetProxy://', '');
     }
 
     handleValueChange = value => {
@@ -231,29 +230,17 @@ export default class LinkInput extends PureComponent {
             const proxyIdentifier = this.getProxyIdentifier(value);
             this.setState({isLoading: true});
             this.props.lockPublishing();
-            if (proxyIdentifier.indexOf('/') === -1) {
-                this.props.onLinkChange(`asset://${proxyIdentifier}` || '');
+
+            const valuePromise = (proxyIdentifier.indexOf('/') === -1) ? Promise.resolve(proxyIdentifier) : assetProxyImport(proxyIdentifier);
+            valuePromise.then(value => {
+                const assetProxyIdentifier = this.getIdentity(value);
+                this.props.onLinkChange(`asset://${assetProxyIdentifier}` || '');
                 this.setState({
                     isLoading: false,
                     isEditMode: false
                 });
                 this.props.unlockPublishing();
-            } else {
-                const valuePromise = assetProxyImport(proxyIdentifier);
-                valuePromise.then(value => {
-                    const assetProxyIdentifier = this.getIdentity(value);
-                    this.props.assetLookupDataLoader.resolveValue(this.state.options, assetProxyIdentifier)
-                        .then(options => {
-                            const assetUri = options && options[0] ? $get('0.loaderUri', options) : '';
-                            this.props.onLinkChange(assetUri || '');
-                            this.setState({
-                                isLoading: false,
-                                isEditMode: false
-                            });
-                            this.props.unlockPublishing();
-                        });
-                });
-            }
+            });
         } else if (isInternalLink(value)) {
             const options = this.state.searchOptions.reduce((current, option) =>
                 (option.loaderUri === value) ? [Object.assign({}, option)] : current

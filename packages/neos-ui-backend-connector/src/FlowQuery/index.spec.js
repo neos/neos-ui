@@ -5,6 +5,7 @@ import factory, {
     isNodeEnvelope,
     resolveChain
 } from './index';
+import 'isomorphic-fetch';
 import fetchWithErrorHandling from '../FetchWithErrorHandling';
 
 test(`

@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-backend-connector",
-  "version": "8.0.0",
+  "version": "8.1.0",
   "description": "Endoints and fetch cals to the Neos CMS backend",
   "private": true,
   "main": "./src/index.ts",

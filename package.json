@@ -43,5 +43,8 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "dependencies": {
+    "testcafe-browser-provider-saucelabs": "^1.9.0"
+  }
 }

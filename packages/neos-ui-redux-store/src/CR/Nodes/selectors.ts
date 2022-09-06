@@ -1,6 +1,6 @@
 import {$get} from 'plow-js';
 import {createSelector, defaultMemoize} from 'reselect';
-import {GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
+import {GlobalState} from '../../System';
 import {NodeContextPath, NodeMap, Node, NodeTypeName, ClipboardMode, NodeTypesRegistry} from '@neos-project/neos-ts-interfaces';
 
 export const inlineValidationErrorsSelector = (state: GlobalState) => $get(['cr', 'nodes', 'inlineValidationErrors'], state);

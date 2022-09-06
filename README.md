@@ -149,15 +149,15 @@ git checkout master && git fetch && git reset --hard origin/master && git merge 
 ```
 
 #### Development commands
-| Command         | Description                    |
-| --------------- | ------------------------------ |
+| Command         | Description                   |
+| --------------- | ----------------------------- |
 | `make clean` | delete all node_modules in every subdirectory. |
 | `make build` |  Runs the development build. |
 | `make build-watch` | Watches the source files for changes and runs a build in case. |
 | `make build-watch-poll` | Watches (and polls) the source files on a file share. Should preferably be used when working an a VM for example. |
 | `make storybook` | Starts the storybook server on port 9001. |
 | `make lint`  | Executes `make lint-js` and `make lint-editorconfig`. |
-| `make lint-js`  | Runs test in all subpackages via lerna. |
+| `make lint-js`  | Runs test in all subpackages. |
 | `make lint-editorconfig`  | Tests if all files respect the `.editorconfig`. |
 | `make test`  | Executes the test on all source files. |
 | `make test-e2e`  | Executes integration tests. |

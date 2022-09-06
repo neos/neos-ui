@@ -1,9 +1,9 @@
-import {combineReducers} from '@neos-project/neos-ui-redux-store/src/combineReducers';
+import {combineReducers} from '../combineReducers';
 
 
-import * as ContentDimensions from '@neos-project/neos-ui-redux-store/src/CR/ContentDimensions';
-import * as Nodes from '@neos-project/neos-ui-redux-store/src/CR/Nodes';
-import * as Workspaces from '@neos-project/neos-ui-redux-store/src/CR/Workspaces';
+import * as ContentDimensions from './ContentDimensions';
+import * as Nodes from './Nodes';
+import * as Workspaces from './Workspaces';
 
 const all = {ContentDimensions, Nodes, Workspaces};
 

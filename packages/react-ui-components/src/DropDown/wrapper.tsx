@@ -1,6 +1,6 @@
 // tslint:disable:max-classes-per-file
 import React, {PureComponent, ReactNode} from 'react';
-import {omit} from 'lodash';
+import omit from 'lodash.omit';
 import mergeClassNames from 'classnames';
 import enhanceWithClickOutside from '../enhanceWithClickOutside/index';
 
@@ -28,7 +28,7 @@ export interface DropDownWrapperProps {
     /**
      * This prop controls the initial visual opened state of the `DropDown`.
      */
-    readonly isOpen: boolean;
+    readonly isOpen?: boolean;
 
     /**
      * This callback gets called when the opened state toggles
@@ -148,7 +148,7 @@ export class DropDownWrapper extends PureComponent<DropDownWrapperProps, DropDow
     constructor(props: DropDownWrapperProps) {
         super(props);
         this.state = {
-            isOpen: props.isOpen
+            isOpen: props.isOpen !== undefined ? props.isOpen : defaultProps.isOpen
         };
     }
 

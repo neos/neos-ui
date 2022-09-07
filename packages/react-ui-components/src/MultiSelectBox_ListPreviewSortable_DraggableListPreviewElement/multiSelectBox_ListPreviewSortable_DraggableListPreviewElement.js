@@ -61,8 +61,7 @@ const spec = {
 export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement extends PureComponent {
     static propTypes = {
         // For explanations of the PropTypes, see MultiSelectBox.js
-        option: PropTypes.shape({
-        }),
+        option: PropTypes.shape({}),
         values: PropTypes.arrayOf(PropTypes.string),
 
         // Drag&Drop specific propTypes
@@ -119,6 +118,14 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
 
         const handleRemoveItem = () => onRemoveItem(index);
 
+        const handleClick = (src) => {
+            const {setActiveContentCanvasSrc} = this.props;
+
+            if (setActiveContentCanvasSrc) {
+                setActiveContentCanvasSrc(src)
+            }
+        }
+
         return connectDragSource(connectDropTarget(
             <li style={{opacity}} ref={refName}>
                 <div className={finalClassNames}>
@@ -127,22 +134,25 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
                             icon={'grip-lines-vertical'}
                             className={theme.selectedOption__moveButton}
                             hoverStyle={'clean'}
-                            />
+                        />
                     )}
-                    <div className={theme.selectedOptions__innerPreview}>
+                    <div className={theme.selectedOptions__innerPreview} onClick={() => {
+                        handleClick(option.uri)
+                    }}>
                         <InnerListPreviewElement
                             {...this.props}
                             isHighlighted={false}
                             option={option}
-                            />
+                        />
                     </div>
                     <IconButton
                         icon={'close'}
                         onClick={handleRemoveItem}
                         className={theme.selectedOption__removeButton}
-                        />
+                    />
                 </div>
             </li>
         ));
     }
 }
+gu

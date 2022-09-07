@@ -148,7 +148,8 @@ class MultiSelectBox extends PureComponent {
         SelectBox: PropTypes.any.isRequired,
         IconComponent: PropTypes.any.isRequired,
         IconButtonComponent: PropTypes.any.isRequired,
-        MultiSelectBox_ListPreviewSortable: PropTypes.any.isRequired
+        MultiSelectBox_ListPreviewSortable: PropTypes.any.isRequired,
+        setActiveContentCanvasSrc: PropTypes.func,
     }
 
     static defaultProps = {
@@ -210,7 +211,7 @@ class MultiSelectBox extends PureComponent {
                         {...omit(this.props, ['theme'])}
                         optionValueAccessor={optionValueAccessor}
                         disabled={disabled}
-                        />
+                    />
                 </ul>
                 <SelectBox
                     {...omit(this.props, ['theme', 'className'])}
@@ -218,7 +219,7 @@ class MultiSelectBox extends PureComponent {
                     value=""
                     onValueChange={this.handleNewValueSelected}
                     disabled={disabled}
-                    />
+                />
             </div>
         );
     }

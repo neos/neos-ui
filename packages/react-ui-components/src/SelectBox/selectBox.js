@@ -213,21 +213,19 @@ export default class SelectBox extends PureComponent {
             [theme['selectBox__contents--hasItems']]: !noMatchesFound
         });
 
-        const handleClick = (src) => {
+        const handleClick = src => {
             const {setActiveContentCanvasSrc} = this.props;
 
             if (setActiveContentCanvasSrc) {
-                setActiveContentCanvasSrc(src)
+                setActiveContentCanvasSrc(src);
             }
-        }
-
+        };
 
         return (
             <DropDown.Stateless className={theme.selectBox} isOpen={isExpanded} onToggle={this.handleToggleExpanded}
                                 onClose={this.handleClose}>
                 <DropDown.Header className={headerClassName} shouldKeepFocusState={false} onHeaderClick={() => {
-                    if (options[0].breadcrumb)
-                        handleClick(options[0].uri)
+                    handleClick(options[0].uri);
                 }} showDropDownToggle={showDropDownToggle && Boolean(options.length)}>
                     {this.renderHeader()}
                 </DropDown.Header>

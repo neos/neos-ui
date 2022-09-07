@@ -149,7 +149,7 @@ class MultiSelectBox extends PureComponent {
         IconComponent: PropTypes.any.isRequired,
         IconButtonComponent: PropTypes.any.isRequired,
         MultiSelectBox_ListPreviewSortable: PropTypes.any.isRequired,
-        setActiveContentCanvasSrc: PropTypes.func,
+        setActiveContentCanvasSrc: PropTypes.func
     }
 
     static defaultProps = {

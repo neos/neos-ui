@@ -118,13 +118,13 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
 
         const handleRemoveItem = () => onRemoveItem(index);
 
-        const handleClick = (src) => {
+        const handleClick = src => {
             const {setActiveContentCanvasSrc} = this.props;
 
             if (setActiveContentCanvasSrc) {
-                setActiveContentCanvasSrc(src)
+                setActiveContentCanvasSrc(src);
             }
-        }
+        };
 
         return connectDragSource(connectDropTarget(
             <li style={{opacity}} ref={refName}>
@@ -137,7 +137,7 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
                         />
                     )}
                     <div className={theme.selectedOptions__innerPreview} onClick={() => {
-                        handleClick(option.uri)
+                        handleClick(option.uri);
                     }}>
                         <InnerListPreviewElement
                             {...this.props}
@@ -155,4 +155,3 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
         ));
     }
 }
-gu

@@ -157,7 +157,9 @@ export default class SelectBox extends PureComponent {
         DropDown: PropTypes.any.isRequired,
         SelectBox_Header: PropTypes.any.isRequired,
         SelectBox_HeaderWithSearchInput: PropTypes.any.isRequired,
-        SelectBox_ListPreview: PropTypes.any.isRequired
+        SelectBox_ListPreview: PropTypes.any.isRequired,
+
+        setActiveContentCanvasSrc: PropTypes.func
     };
 
     state = {
@@ -211,9 +213,22 @@ export default class SelectBox extends PureComponent {
             [theme['selectBox__contents--hasItems']]: !noMatchesFound
         });
 
+        const handleClick = (src) => {
+            const {setActiveContentCanvasSrc} = this.props;
+
+            if (setActiveContentCanvasSrc) {
+                setActiveContentCanvasSrc(src)
+            }
+        }
+
+
         return (
-            <DropDown.Stateless className={theme.selectBox} isOpen={isExpanded} onToggle={this.handleToggleExpanded} onClose={this.handleClose}>
-                <DropDown.Header className={headerClassName} shouldKeepFocusState={false} showDropDownToggle={showDropDownToggle && Boolean(options.length)}>
+            <DropDown.Stateless className={theme.selectBox} isOpen={isExpanded} onToggle={this.handleToggleExpanded}
+                                onClose={this.handleClose}>
+                <DropDown.Header className={headerClassName} shouldKeepFocusState={false} onHeaderClick={() => {
+                    if (options[0].breadcrumb)
+                        handleClick(options[0].uri)
+                }} showDropDownToggle={showDropDownToggle && Boolean(options.length)}>
                     {this.renderHeader()}
                 </DropDown.Header>
                 <DropDown.Contents className={dropDownContentsClassName} scrollable={true}>
@@ -230,7 +245,7 @@ export default class SelectBox extends PureComponent {
                             searchTermLeftToType={searchTermLeftToType}
                             noMatchesFound={noMatchesFound}
                             searchTerm={searchTerm}
-                            />
+                        />
                     </ul>}
                 </DropDown.Contents>
             </DropDown.Stateless>
@@ -271,7 +286,7 @@ export default class SelectBox extends PureComponent {
                     onSearchTermChange={this.handleSearchTermChange}
                     searchTerm={searchTerm}
                     onKeyDown={this.handleKeyDown}
-                    />
+                />
             );
         }
 
@@ -283,7 +298,7 @@ export default class SelectBox extends PureComponent {
                 option={selectedOption}
                 showResetButton={showResetButton}
                 onReset={this.handleDeleteClick}
-                />
+            />
         );
     }
 

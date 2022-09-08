@@ -136,7 +136,7 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
                             hoverStyle={'clean'}
                         />
                     )}
-                    <div className={theme.selectedOptions__innerPreview} role="referenced document" onClick={() => {
+                    <div className={theme.selectedOptions__innerPreview} role="button" onClick={() => {
                         handleClick(option.uri);
                     }}>
                         <InnerListPreviewElement

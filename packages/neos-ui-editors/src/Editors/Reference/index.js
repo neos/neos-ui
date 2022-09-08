@@ -6,9 +6,9 @@ import createNew from './createNew';
 import NodeOption from '../../Library/NodeOption';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {sanitizeOptions} from '../../Library';
-import {connect} from "react-redux";
-import {$transform} from "plow-js";
-import {actions} from "@neos-project/neos-ui-redux-store";
+import {connect} from 'react-redux';
+import {$transform} from 'plow-js';
+import {actions} from '@neos-project/neos-ui-redux-store';
 
 @connect($transform({}), {
     setActiveContentCanvasSrc: actions.UI.ContentCanvas.setSrc

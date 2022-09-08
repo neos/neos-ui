@@ -223,7 +223,7 @@ export default class SelectBox extends PureComponent {
 
         return (
             <DropDown.Stateless className={theme.selectBox} isOpen={isExpanded} onToggle={this.handleToggleExpanded}
-                                onClose={this.handleClose}>
+                onClose={this.handleClose}>
                 <DropDown.Header className={headerClassName} shouldKeepFocusState={false} onHeaderClick={() => {
                     handleClick(options[0].uri);
                 }} showDropDownToggle={showDropDownToggle && Boolean(options.length)}>

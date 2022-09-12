@@ -8,6 +8,7 @@ exports[`<SelectBox/> should render correctly. 1`] = `
 >
   <Component
     className=""
+    onHeaderClick={[Function]}
     shouldKeepFocusState={false}
     showDropDownToggle={false}
   >

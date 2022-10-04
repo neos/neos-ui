@@ -16,6 +16,7 @@ class SelectBox_Option_MultiLineWithThumbnail extends PureComponent {
 
         theme: PropTypes.shape({
             multiLineWithThumbnail__item: PropTypes.string.isRequired,
+            'multiLineWithThumbnail__item--multiLine': PropTypes.string.isRequired,
             multiLineWithThumbnail__secondaryLabel: PropTypes.string.isRequired,
             multiLineWithThumbnail__tertiaryLabel: PropTypes.string.isRequired,
             multiLineWithThumbnail__image: PropTypes.string.isRequired
@@ -36,6 +37,7 @@ class SelectBox_Option_MultiLineWithThumbnail extends PureComponent {
 
         const finalClassNames = mergeClassNames({
             [theme.multiLineWithThumbnail__item]: true,
+            [theme['multiLineWithThumbnail__item--multiLine']]: secondaryLabel || tertiaryLabel,
             [className]: className
         });
 

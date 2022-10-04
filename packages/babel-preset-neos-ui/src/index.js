@@ -1,4 +1,6 @@
 module.exports = {
-    presets: ['react', 'es2015', 'stage-0'],
-    plugins: ['transform-decorators-legacy', 'transform-object-rest-spread']
+    'presets': ['@babel/preset-react', '@babel/preset-env', '@babel/preset-stage-0'],
+    'plugins': [
+        ['@babel/plugin-proposal-decorators', {'legacy': true}]
+    ]
 };

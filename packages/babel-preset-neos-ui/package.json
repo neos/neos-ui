@@ -4,18 +4,12 @@
   "description": "The babel preset for all packages of the neos-ui mono-repo.",
   "main": "./src/index.js",
   "private": true,
-  "bin": {
-    "babel": "./node_modules/.bin/babel"
-  },
   "dependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
-    "babel-plugin-transform-decorators-legacy": "^1.3.5",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-plugin-webpack-alias": "^2.1.2",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-0": "^6.24.1"
+    "@babel/core": "^7.19.3",
+    "@babel/plugin-proposal-decorators": "^7",
+    "@babel/preset-env": "^7",
+    "@babel/preset-react": "^7",
+    "babel-plugin-webpack-alias": "^2.1.2"
   },
   "license": "GNU GPLv3"
 }

@@ -50,7 +50,7 @@ const webpackConfig = {
                 test: /\.tsx?$/,
                 exclude: /node_modules/,
                 use: [{
-                    loader: 'ts-loader'
+                    loader: require.resolve('ts-loader')
                 }]
             },
             {
@@ -58,7 +58,7 @@ const webpackConfig = {
                 test: /\.json$/,
                 exclude: /node_modules\/(?!@neos-project).*$/,
                 use: [{
-                    loader: 'json-loader'
+                    loader: require.resolve('json-loader')
                 }]
             },
             {
@@ -91,10 +91,10 @@ const webpackConfig = {
                         }
                     },
                     {
-                        loader: 'css-loader'
+                        loader: require.resolve('css-loader')
                     },
                     {
-                        loader: 'string-replace-loader',
+                        loader: require.resolve('string-replace-loader'),
                         options: {
                             search: 'svg-inline--fa',
                             replace: 'neos-svg-inline--fa',
@@ -117,7 +117,7 @@ const webpackConfig = {
                         }
                     },
                     {
-                        loader: 'css-loader',
+                        loader: require.resolve('css-loader'),
                         options: {
                             modules: {
                                 localIdentName: '[name]__[local]___[hash:base64:5]'
@@ -126,7 +126,7 @@ const webpackConfig = {
                         }
                     },
                     {
-                        loader: 'postcss-loader',
+                        loader: require.resolve('postcss-loader'),
                         options: {
                             config: {
                                 path: path.join(__dirname, 'postcss.config.js')
@@ -145,7 +145,7 @@ const webpackConfig = {
                         }
                     },
                     {
-                        loader: 'css-loader'
+                        loader: require.resolve('css-loader')
                     }
                 ]
             }

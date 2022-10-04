@@ -1,1 +1,4 @@
-16
+16.16
+
+// pin to 16.16 because 16.17 breaks `yarn install` for us.
+// see https://github.com/yarnpkg/berry/issues/4778

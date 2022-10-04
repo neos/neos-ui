@@ -12,11 +12,9 @@ import buttonTheme from './style.css';
 
 @connect(
     $transform({
-        originUser: $get('user.impersonate.origin'),
-        user: $get('user.impersonate.user')
+        originUser: $get('user.impersonate.origin')
     }),
     {
-        addFlashMessage: actions.UI.FlashMessages.add,
         impersonateRestore: actions.User.Impersonate.restore
     }
 )
@@ -26,8 +24,6 @@ import buttonTheme from './style.css';
 export default class RestoreButtonItem extends React.PureComponent {
     static propTypes = {
         originUser: PropTypes.object,
-        user: PropTypes.object,
-        addFlashMessage: PropTypes.func.isRequired,
         impersonateRestore: PropTypes.func.isRequired,
         i18nRegistry: PropTypes.object.isRequired
     };

@@ -25,6 +25,7 @@
     "@fortawesome/free-regular-svg-icons": "^5.15.3",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@fortawesome/react-fontawesome": "^0.1.14",
+    "@friendsofreactjs/react-css-themr": "^4.1.0",
     "classnames": "^2.2.3",
     "hoist-non-react-statics": "^3.3.1",
     "lodash.assign": "^4.2.0",
@@ -69,7 +70,7 @@
     "@types/lodash.merge": "^4.6.6",
     "@types/lodash.omit": "^4.5.7",
     "@types/prop-types": "^15.7.3",
-    "@types/react": "^16.9.17",
+    "@types/react": "^16",
     "@types/react-close-on-escape": "^3.0.0",
     "@types/react-dom": "^16.9.4",
     "@types/react-fontawesome": "^1.6.4",
@@ -82,7 +83,6 @@
     "webpack-merge": "^4.2.2"
   },
   "peerDependencies": {
-    "@friendsofreactjs/react-css-themr": "^4.1.0",
     "prop-types": "^15.5.10",
     "react": "^16.12.0",
     "react-dom": "^16.0.0"

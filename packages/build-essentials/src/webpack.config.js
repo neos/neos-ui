@@ -4,6 +4,7 @@ const fs = require('fs');
 const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
+const PnpWebpackPlugin = require(`pnp-webpack-plugin`);
 const env = require('./environment');
 //
 // Prevent from failing, when NEOS_BUILD_ROOT env variable isn't set
@@ -172,7 +173,15 @@ const webpackConfig = {
         modules: [
             path.resolve(rootPath, './node_modules')
         ],
-        extensions: ['.ts', '.tsx', '.js']
+        extensions: ['.ts', '.tsx', '.js'],
+        plugins: [
+            PnpWebpackPlugin
+        ]
+    },
+    resolveLoader: {
+        plugins: [
+            PnpWebpackPlugin.moduleLoader(module)
+        ]
     },
 
     output: {

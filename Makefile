@@ -41,9 +41,9 @@
 
 # Add lerna alias as there are currently some MacOS problems
 # and putting it into the $PATH is simply not enough
-editorconfigChecker = ./node_modules/.bin/editorconfig-checker
-webpack = ./node_modules/.bin/webpack
-crossenv = ./node_modules/.bin/crossenv
+editorconfigChecker = yarn editorconfig-checker
+webpack = yarn webpack
+crossenv = yarn crossenv
 
 # Define colors
 GREEN  := $(shell tput -Txterm setaf 2)

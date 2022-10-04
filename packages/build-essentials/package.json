@@ -21,7 +21,8 @@
     "lint": "eslint src"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "workspace:*"
+    "@neos-project/babel-preset-neos-ui": "workspace:*",
+    "pnp-webpack-plugin": "^1.7.0"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-dev-utils": "^12.0.1",

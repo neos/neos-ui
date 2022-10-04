@@ -12,6 +12,7 @@ import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials';
 import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold';
 import Italic from '@ckeditor/ckeditor5-basic-styles/src/italic';
+import ItalicWithEm from './plugins/italicWithEm';
 import Underline from '@ckeditor/ckeditor5-basic-styles/src/underline';
 import Strikethrough from '@ckeditor/ckeditor5-basic-styles/src/strikethrough';
 import Heading from '@ckeditor/ckeditor5-heading/src/heading';
@@ -128,6 +129,10 @@ export default ckEditorRegistry => {
         $get('formatting.h5'),
         $get('formatting.h6')
     )));
+
+    // Custom Plugin that automatically converts <i> to <em> for italics
+    // @fixes https://github.com/neos/neos-ui/issues/2906
+    config.set('italicWithEm', addPlugin(ItalicWithEm, $get('formatting.em')));
 
     //
     // @see https://docs.ckeditor.com/ckeditor5/latest/features/headings.html#configuring-heading-levels

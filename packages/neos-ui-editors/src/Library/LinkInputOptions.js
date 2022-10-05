@@ -61,7 +61,7 @@ const LinkInputOptions = ({
             <div className={style.linkInput__optionsPanelDouble}>
                 {$get('targetBlank', linkingOptions) && (
                     <div className={style.linkInput__optionsPanelItem}>
-                        <label>
+                        <label className={style.linkInput__optionsPanelCheckbox}>
                             <CheckBox
                                 onChange={onLinkTargetChange}
                                 isChecked={linkTargetBlankValue || false}
@@ -70,7 +70,7 @@ const LinkInputOptions = ({
                     </div>)}
                 {$get('relNofollow', linkingOptions) && (
                     <div className={style.linkInput__optionsPanelItem}>
-                        <label>
+                        <label className={style.linkInput__optionsPanelCheckbox}>
                             <CheckBox
                                 onChange={onLinkRelChange}
                                 isChecked={linkRelNofollowValue || false}
@@ -80,7 +80,7 @@ const LinkInputOptions = ({
             </div>
             {$get('download', linkingOptions) && (
                 <div className={style.linkInput__optionsPanelItem}>
-                    <label>
+                    <label className={style.linkInput__optionsPanelCheckbox}>
                         <CheckBox
                             onChange={onLinkDownloadChange}
                             isChecked={linkDownloadValue || false}

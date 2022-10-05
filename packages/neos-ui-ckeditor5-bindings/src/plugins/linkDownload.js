@@ -15,7 +15,7 @@ export default class LinkDownload extends Plugin {
             view: {
                 name: 'a',
                 attributes: {
-                    download: 'download'
+                    download: ''
                 },
                 // the priority has got to be the same as here so the elements would get merged:
                 // https://github.com/ckeditor/ckeditor5-link/blob/20e96361014fd13bfb93620f5eb5f528e6b1fe6d/src/utils.js#L33

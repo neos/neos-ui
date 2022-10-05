@@ -97,6 +97,7 @@ export default class LinkButton extends PureComponent {
                             onLinkTitleChange={this.handleLinkTitleChange}
                             onLinkRelChange={this.handleLinkRelChange}
                             onLinkTargetChange={this.handleLinkTargetChange}
+                            onLinkDownloadChange={this.handleLinkDownloadChange}
                             setFocus={true}
                         />
                     </div>

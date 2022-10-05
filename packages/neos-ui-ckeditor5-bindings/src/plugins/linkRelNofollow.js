@@ -23,5 +23,6 @@ export default class RelNofollow extends Plugin {
             }
         });
         editor.commands.add(REL_NOFOLLOW, new LinkAttributeCommand(this.editor, REL_NOFOLLOW));
+        console.log('sdffsdd');
     }
 }

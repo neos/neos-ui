@@ -77,6 +77,10 @@
                 <source>Open in new window</source>
         <target xml:lang="de" state="translated">Öffne Fenster in neuem Tab</target>
       </trans-unit>
+      <trans-unit id="ckeditor__toolbar__link__download" xml:space="preserve" approved="no">
+                <source>is download</source>
+        <target xml:lang="de" state="translated">Ist Download</target>
+      </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__titlePlaceholder" xml:space="preserve" approved="no">
                 <source>Enter link title</source>
         <target xml:lang="de" state="translated">Link Titel eingeben</target>

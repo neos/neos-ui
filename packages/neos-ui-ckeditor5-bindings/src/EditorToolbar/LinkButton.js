@@ -36,10 +36,11 @@ export default class LinkButton extends PureComponent {
     handleLinkButtonClick = () => {
         if (this.props.isOpen) {
             if ($get('link', this.props.formattingUnderCursor) !== undefined) {
-                // We need to remove all attirbutes before unsetting the link
+                // We need to remove all attributes before unsetting the link
                 this.props.executeCommand('linkTitle', false, false);
                 this.props.executeCommand('linkRelNofollow', false, false);
                 this.props.executeCommand('linkTargetBlank', false, false);
+                this.props.executeCommand('linkDownload', false, false);
                 this.props.executeCommand('unlink');
             }
             this.props.toggle(false);
@@ -68,6 +69,10 @@ export default class LinkButton extends PureComponent {
         this.props.executeCommand('linkRelNofollow', undefined, false);
     }
 
+    handleLinkDownloadChange = () => {
+        this.props.executeCommand('linkDownload', undefined, false);
+    }
+
     render() {
         const {i18nRegistry, inlineEditorOptions, isOpen} = this.props;
 
@@ -87,6 +92,7 @@ export default class LinkButton extends PureComponent {
                             linkTitleValue={this.getLinkTitleValue()}
                             linkRelNofollowValue={this.getLinkRelValue()}
                             linkTargetBlankValue={this.getLinkTargetValue()}
+                            linkDownloadValue={this.getLinkDownloadValue()}
                             onLinkChange={this.handleLinkChange}
                             onLinkTitleChange={this.handleLinkTitleChange}
                             onLinkRelChange={this.handleLinkRelChange}
@@ -113,5 +119,9 @@ export default class LinkButton extends PureComponent {
 
     getLinkTargetValue() {
         return $get('linkTargetBlank', this.props.formattingUnderCursor) || false;
+    }
+
+    getLinkDownloadValue() {
+        return $get('linkDownload', this.props.formattingUnderCursor) || false;
     }
 }

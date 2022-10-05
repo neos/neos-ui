@@ -77,16 +77,16 @@ const LinkInputOptions = ({
                             /> {i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__noFollow', 'No follow')}
                         </label>
                     </div>)}
-                {$get('download', linkingOptions) && (
-                    <div className={style.linkInput__optionsPanelItem}>
-                        <label>
-                            <CheckBox
-                                onChange={onLinkDownloadChange}
-                                isChecked={linkDownloadValue || false}
-                            /> {i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__download', 'is download')}
-                        </label>
-                    </div>)}
             </div>
+            {$get('download', linkingOptions) && (
+                <div className={style.linkInput__optionsPanelItem}>
+                    <label>
+                        <CheckBox
+                            onChange={onLinkDownloadChange}
+                            isChecked={linkDownloadValue || false}
+                        /> {i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__download', 'is download')}
+                    </label>
+                </div>)}
         </Fragment>
     );
 };

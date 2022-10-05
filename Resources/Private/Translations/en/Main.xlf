@@ -57,7 +57,7 @@
                 <source>Open in new window</source>
             </trans-unit>
             <trans-unit id="ckeditor__toolbar__link__download" xml:space="preserve">
-                <source>Is download</source>
+                <source>Downloadable</source>
             </trans-unit>
             <trans-unit id="ckeditor__toolbar__link__titlePlaceholder" xml:space="preserve">
                 <source>Enter link title</source>

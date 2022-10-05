@@ -59,10 +59,6 @@
         }
     }
 
-    > label {
-        margin-bottom: 0;
-    }
-
     > a,
     > label,
     > button {
@@ -80,6 +76,12 @@
         > input {
             margin-right: .5em;
         }
+    }
+
+    > label {
+        margin-bottom: 0;
+        display: flex;
+        align-items: center;
     }
 
     .badge {

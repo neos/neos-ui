@@ -7,6 +7,7 @@ import Sub from './plugins/sub';
 import Sup from './plugins/sup';
 import LinkTargetBlank from './plugins/linkTargetBlank';
 import LinkRelNofollow from './plugins/linkRelNofollow';
+import LinkDownload from './plugins/linkDownload';
 import LinkTitle from './plugins/linkTitle';
 import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials';
 import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
@@ -106,6 +107,7 @@ export default ckEditorRegistry => {
     config.set('link', addPlugin(Link, $get('formatting.a')));
     config.set('linkTargetBlank', addPlugin(LinkTargetBlank, $get('formatting.a')));
     config.set('linkRelNofollow', addPlugin(LinkRelNofollow, $get('formatting.a')));
+    config.set('linkDownload', addPlugin(LinkDownload, $get('formatting.a')));
     config.set('linkTitle', addPlugin(LinkTitle, $get('formatting.a')));
     config.set('table', addPlugin(Table, i => $get('formatting.table', i)));
     config.set('insideTable', addPlugin(InsideTable, i => $get('formatting.table', i)));

@@ -5,7 +5,7 @@ const DOWNLOAD = 'linkDownload';
 
 export default class LinkDownload extends Plugin {
     static get pluginName() {
-        return 'LinkTargetBlank';
+        return 'LinkDownload';
     }
     init() {
         const editor = this.editor;

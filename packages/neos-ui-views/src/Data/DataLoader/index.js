@@ -13,14 +13,16 @@ import isEqual from 'lodash.isequal';
  * This HOC is responsible for fetching data for Data views and wraping
  * them into Widget presentational component.
  */
-@connect(state => ({
+const reduxConnector = connect(state => ({
     focusedNodeContextPath: selectors.CR.Nodes.focusedNodePathSelector(state),
     getNodeByContextPath: selectors.CR.Nodes.nodeByContextPath(state)
-}))
-@neos(globalRegistry => ({
+}));
+
+const neosContextConnector = neos(globalRegistry => ({
     dataSourcesDataLoader: globalRegistry.get('dataLoaders').get('DataSources')
-}))
-export default () => WrappedComponent => {
+}));
+
+export default reduxConnector(neosContextConnector(() => WrappedComponent => {
     return class DataLoader extends PureComponent {
         static propTypes = {
             focusedNodeContextPath: PropTypes.string,
@@ -106,4 +108,4 @@ export default () => WrappedComponent => {
             );
         }
     };
-};
+}));

@@ -10,15 +10,19 @@ import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 
 import style from './LinkButton.css';
 
-@connect($transform({
-    isOpen: selectors.UI.ContentCanvas.isLinkEditorOpen
-}), {
-    toggle: actions.UI.ContentCanvas.toggleLinkEditor
-})
-@neos(globalRegistry => ({
+const connector = connect(
+    $transform({
+        isOpen: selectors.UI.ContentCanvas.isLinkEditorOpen
+    }), {
+        toggle: actions.UI.ContentCanvas.toggleLinkEditor
+    }
+);
+
+const applyNeosContext = neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')
-}))
-export default class LinkButton extends PureComponent {
+}));
+
+class LinkButton extends PureComponent {
     static propTypes = {
         formattingUnderCursor: PropTypes.objectOf(PropTypes.oneOfType([
             PropTypes.number,
@@ -115,3 +119,5 @@ export default class LinkButton extends PureComponent {
         return $get('linkTargetBlank', this.props.formattingUnderCursor) || false;
     }
 }
+
+export default connector(applyNeosContext(LinkButton));

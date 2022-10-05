@@ -31,19 +31,21 @@ const looksLikeExternalLink = link => {
     return false;
 };
 
-@neos(globalRegistry => ({
+const neosContextConnector = neos(globalRegistry => ({
     linkLookupDataLoader: globalRegistry.get('dataLoaders').get('LinkLookup'),
     assetLookupDataLoader: globalRegistry.get('dataLoaders').get('AssetLookup'),
     i18nRegistry: globalRegistry.get('i18n'),
     containerRegistry: globalRegistry.get('containers')
-}))
-@connect($transform({
+}));
+
+const reduxConnector = connect($transform({
     contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking
 }), {
     lockPublishing: actions.UI.Remote.lockPublishing,
     unlockPublishing: actions.UI.Remote.unlockPublishing
-})
-export default class LinkInput extends PureComponent {
+});
+
+class LinkInput extends PureComponent {
     static propTypes = {
         i18nRegistry: PropTypes.object,
         containerRegistry: PropTypes.object,
@@ -390,3 +392,5 @@ export default class LinkInput extends PureComponent {
         );
     }
 }
+
+export default reduxConnector(neosContextConnector(LinkInput));

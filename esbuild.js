@@ -15,18 +15,25 @@ require('esbuild').build({
         '.js': 'tsx',
         '.svg': 'dataurl',
 
-        '.ttf': "file"
+        '.ttf': 'file',
     },
     plugins: [
         {
             name: 'neos-ui-build',
-            // HOTFIX: Some packages require "path" (require('path'))
-            //         We mock this module here return the content of `mockPath.js`.
             setup: ({onResolve, onLoad}) => {
+                // HOTFIX: Some packages require "path" (require('path'))
+                //         We mock this module here return the content of `mockPath.js`.
                 onResolve({filter: /^path$/}, () => ({
                     path: require('path').join(__dirname, 'mockPath.js'),
                 }))
 
+                // exclude CKEditor styles
+                onLoad({filter: /node_modules\/@ckeditor\/.*\.css$/}, () => ({
+                    contents: '',
+                    loader: 'css'
+                }))
+
+                // prefix Fontawesome with "neos-" to prevent clashes with customer Fontawesome
                 onLoad({filter: /@fortawesome\/fontawesome-svg-core\/styles\.css$/}, async ({path}) => {
                     const contents = (await require('fs/promises').readFile(path)).toString();
 
@@ -40,10 +47,9 @@ require('esbuild').build({
             },
         },
         stylePlugin({
-            cssModulesMatch: '.css',
+            cssModulesMatch: /\.css/,
             postcssConfigFile: require('path').join(__dirname, 'packages/build-essentials/src/postcss.config.js')
         }),
-        
     ],
     define: {
         // put process env NODE_ENV into global scope as some packages need it (nodeJS)

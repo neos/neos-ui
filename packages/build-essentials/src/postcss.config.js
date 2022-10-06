@@ -1,8 +1,8 @@
 module.exports = {
     plugins: [
-        require('postcss-import')(),
         require('postcss-nested')(),
+        require('postcss-import')(),
         require('postcss-hexrgba')(),
-        require('autoprefixer'),
+        require('autoprefixer')(),
     ]
 };

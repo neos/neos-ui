@@ -21,11 +21,11 @@
     white-space: nowrap;
     line-height: var(--neos-spacing-GoldenUnit);
     background: var(--neos-colors-ContrastNeutral);
+}
 
-    &:focus{
+.dropDown__btn:focus{
         outline: 1px solid var(--neos-colors-PrimaryBlue);
     }
-}
 .dropDown__btn--withChevron {
     padding-right: var(--neos-spacing-GoldenUnit);
 }
@@ -61,26 +61,22 @@
 .dropDown__contents--isOpen {
     display: block;
 }
-.dropDown--darker {
-    > .dropDown__btn--open {
-        background-color: var(--neos-colors-ContrastDarker);
-    }
-
-    > .dropDown__contents {
-        background-color: var(--neos-colors-ContrastDarker);
-    }
+.dropDown--darker > .dropDown__btn--open {
+    background-color: var(--neos-colors-ContrastDarker);
 }
-.dropDown--darkest {
-    > .dropDown__btn--open {
-        background-color: var(--neos-colors-ContrastDarkest);
-    }
 
-    > .dropDown__contents {
-        background-color: var(--neos-colors-ContrastDarkest);
-    }
+.dropDown--darker > .dropDown__contents {
+    background-color: var(--neos-colors-ContrastDarker);
 }
-.dropDown--padded {
-    > .dropDown__contents {
-        padding: var(--neos-spacing-Full);
-    }
+
+.dropDown--darkest > .dropDown__btn--open {
+    background-color: var(--neos-colors-ContrastDarkest);
+}
+
+.dropDown--darkest > .dropDown__contents {
+    background-color: var(--neos-colors-ContrastDarkest);
+}
+
+.dropDown--padded > .dropDown__contents {
+    padding: var(--neos-spacing-Full);
 }

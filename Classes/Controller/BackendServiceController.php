@@ -499,7 +499,9 @@ class BackendServiceController extends ActionController
         $presetCombo = [];
         foreach ($targetPresets as $dimensionName => $presetConfig) {
             $fullPresetConfig = $this->contentDimensionsPresetSource->findPresetByDimensionValues($dimensionName, $presetConfig['values']);
-            $presetCombo[$dimensionName] = $fullPresetConfig['identifier'];
+            if ($fullPresetConfig !== null) {
+                $presetCombo[$dimensionName] = $fullPresetConfig['identifier'];
+            }
         }
         return $presetCombo;
     }

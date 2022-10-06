@@ -3,13 +3,13 @@ const stylePlugin = require('esbuild-style-plugin');
 
 require('esbuild').build({
     entryPoints: ['./packages/neos-ui/src/index.js'],
-    outfile: 'output.js',
+    outdir: './Resources/Public/',
     sourcemap: !env.isProduction,
     color: true,
     bundle: true,
     loader: {
         '.js': 'tsx',
-        '.svg': 'file',
+        '.svg': 'file'
     },
     plugins: [
         stylePlugin({

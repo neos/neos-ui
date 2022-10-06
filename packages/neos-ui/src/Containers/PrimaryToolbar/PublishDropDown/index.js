@@ -214,15 +214,18 @@ export default class PublishDropDown extends PureComponent {
                             </a>
                         </li>)}
                         <li className={autoPublishWrapperClassNames}>
-                            <Label htmlFor="neos-PublishDropDown-AutoPublish">
+                            <Label htmlFor="neos-PublishDropDown-AutoPublish" className={style.dropdownOptionCheckbox}>
                                 <
 // @ts-ignore
                                 CheckBox
                                     id="neos-PublishDropDown-AutoPublish"
                                     onChange={toggleAutoPublishing}
                                     isChecked={isAutoPublishingEnabled}
+                                    className={style.dropdownOptionCheckbox__input}
                                     />
-                                <I18n id="Neos.Neos:Main:autoPublish" fallback="Auto-Publish"/>
+                                <span className={style.dropdownOptionCheckbox__label}>
+                                    <I18n id="Neos.Neos:Main:autoPublish" fallback="Auto-Publish"/>
+                                </span>
                             </Label>
                         </li>
                         <li className={style.dropDown__item}>

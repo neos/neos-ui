@@ -46,6 +46,31 @@
     margin-right: 5px;
 }
 
+.dropdownOptionCheckbox {
+    position: relative;
+    min-height: 40px;
+}
+
+.dropdownOptionCheckbox__input {
+    width: 100%;
+    padding-top: 10px;
+}
+
+.dropdownOptionCheckbox__input > input {
+    width: 100%;
+}
+
+.dropdownOptionCheckbox__input > svg {
+    left: 10px;
+    top: 20px;
+}
+
+.dropdownOptionCheckbox__label {
+    position: absolute;
+    top: 0;
+    left: 45px;
+}
+
 .dropDown__item {
     position: relative;
     border-top: 1px solid var(--colors-ContrastDarker);
@@ -60,9 +85,13 @@
     }
 
     > a,
-    > label,
     > button {
         display: block;
+    }
+
+    > a,
+    > label,
+    > button {
         width: 100%;
         border: 0;
         padding: 0 var(--spacing-Full);
@@ -80,7 +109,6 @@
 
     > label {
         margin-bottom: 0;
-        display: flex;
         align-items: center;
     }
 

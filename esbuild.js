@@ -9,7 +9,7 @@ require('esbuild').build({
     bundle: true,
     loader: {
         '.js': 'tsx',
-        '.svg': 'text'
+        '.svg': 'dataurl'
     },
     plugins: [
         stylePlugin({

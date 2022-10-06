@@ -62,7 +62,7 @@ composer require neos/neos-ui
 composer update neos/neos-ui
 ```
 
-### Installing lattest development
+### Installing latest development
 
 For trying out the new UI, we recommend you to run the regularily released beta releases.
 However, if you want to stay on bleeding-edge, or want to help out developing, you'll

@@ -1,5 +1,7 @@
+@import "../reset.css";
+
 .checkbox {
-    composes: reset from './../reset.css';
+    @mixin reset;
     position: relative;
     display: block;
     width: 20px;
@@ -8,7 +10,7 @@
     vertical-align: middle;
 }
 .checkbox__input {
-    composes: reset from './../reset.css';
+    @mixin reset;
     position: absolute;
     top: 50%;
     left: 0;
@@ -27,7 +29,7 @@
     opacity: 0;
 }
 .checkbox__inputMirror {
-    composes: reset from './../reset.css';
+    @mixin reset;
     display: inline-block;
     width: 20px;
     height: 20px;

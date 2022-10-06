@@ -48,7 +48,17 @@ require('esbuild').build({
         },
         stylePlugin({
             cssModulesMatch: /\.css/,
-            postcssConfigFile: require('path').join(__dirname, 'packages/build-essentials/src/postcss.config.js')
+            extract: true,
+            // postcssConfigFile: require('path').join(__dirname, 'packages/build-essentials/src/postcss.config.js')
+            postcss: {
+                plugins: [
+                    require('postcss-import')(),
+                    require('postcss-mixins'),
+                    require('postcss-nested')(),
+                    require('postcss-hexrgba')(),
+                    require('autoprefixer')(),
+                ]
+            }
         }),
     ],
     define: {

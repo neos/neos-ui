@@ -1,5 +1,7 @@
+@import "../reset.css";
+
 .icon {
-    composes: reset from './../reset.css';
+    @mixin reset;
     display: inline-block;
     font: normal normal normal FontAwesome;
     font-size: 14px/1;

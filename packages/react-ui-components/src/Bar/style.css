@@ -1,5 +1,7 @@
+@import './../reset.css';
+
 .bar {
-    composes: reset from './../reset.css';
+    @mixin reset;
     position: fixed;
     left: 0;
     z-index: var(--neos-zIndex-CheckboxInput-Context);

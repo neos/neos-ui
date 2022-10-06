@@ -23,6 +23,7 @@
     "esbuild-style-plugin": "^1.6.0",
     "eslint": "^5.3.0",
     "jest": "^23.6.0",
+    "postcss-mixins": "^9.0.4",
     "rimraf": "^2.5.4",
     "stylelint": "^13.7.2",
     "testcafe": "^1.7.0",

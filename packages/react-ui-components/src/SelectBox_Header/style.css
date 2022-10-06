@@ -1,3 +1,4 @@
+@import "../reset.css";
 
 .selectBoxHeader {
     display: flex;
@@ -10,7 +11,7 @@
 }
 
 .selectBoxHeader__icon {
-    composes: reset from './../reset.css';
+    @mixin reset;
     line-height: var(--neos-spacing-GoldenUnit);
     height: 100%;
 }

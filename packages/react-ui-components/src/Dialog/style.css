@@ -1,3 +1,5 @@
+@import "../reset.css";
+
 @keyframes slideDialogContents {
     from {
         opacity: 0;
@@ -6,7 +8,7 @@
 }
 
 .dialog {
-    composes: reset from './../reset.css';
+    @mixin reset;
     position: fixed;
     top: 0;
     left: 0;
@@ -16,7 +18,7 @@
     background: rgba(#000, .8);
 }
 .dialog__contentsPosition {
-    composes: reset from './../reset.css';
+    @mixin reset;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -29,7 +31,7 @@
     animation: slideDialogContents .3s ease-in-out;
 }
 .dialog__contents {
-    composes: reset from './../reset.css';
+    @mixin reset;
     position: relative;
     width: calc(100vw - var(--neos-spacing-GoldenUnit) * 2);
     max-width: calc(var(--neos-spacing-GoldenUnit) * 16);
@@ -70,7 +72,7 @@
     }
 }
 .dialog__title {
-    composes: reset from './../reset.css';
+    @mixin reset;
     font-size: 20px;
     line-height: 1.2;
     padding: var(--neos-spacing-Full);
@@ -85,19 +87,19 @@
     }
 }
 .dialog__actions {
-    composes: reset from './../reset.css';
+    @mixin reset;
     text-align: right;
     margin-top: var(--neos-spacing-Full);
 }
 .dialog__closeBtn {
-    composes: reset from './../reset.css';
+    @mixin reset;
     position: absolute;
     top: 0;
     right: 0;
     background: var(--neos-colors-ContrastDark);
 }
 .dialog__backDrop {
-    composes: reset from './../reset.css';
+    @mixin reset;
     position: absolute;
     height: 100%;
     width: 100%;

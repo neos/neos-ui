@@ -1,15 +1,17 @@
+@import "../reset.css";
+
 .wrapper {
-    composes: reset from './../reset.css';
+    @mixin reset;
     position: relative;
     display: inline-block;
 }
 .wrapper__btn {
-    composes: reset from './../reset.css';
+    @mixin reset;
     position: relative;
     width: var(--neos-spacing-GoldenUnit);
 }
 .wrapper__btnModeIcon {
-    composes: reset from './../reset.css';
+    @mixin reset;
     position: absolute;
     right: 4px;
     bottom: 4px;
@@ -23,7 +25,7 @@
     color: var(--neos-colors-PrimaryBlue);
 }
 .wrapper__dropDown {
-    composes: reset from './../reset.css';
+    @mixin reset;
     position: absolute;
     top: 100%;
     left: 0;
@@ -37,7 +39,7 @@
     display: block;
 }
 .wrapper__dropDownItem {
-    composes: reset from './../reset.css';
+    @mixin reset;
     position: relative;
     display: block;
     width: calc(var(--neos-spacing-GoldenUnit) - 2px);

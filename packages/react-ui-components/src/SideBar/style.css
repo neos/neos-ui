@@ -1,5 +1,7 @@
+@import "../reset.css";
+
 .sideBar {
-    composes: reset from './../reset.css';
+    @mixin reset;
     position: fixed;
     width: var(--neos-size-SidebarWidth);
     height: 100%;

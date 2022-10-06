@@ -10266,6 +10266,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fast-glob@npm:^3.2.11":
+  version: 3.2.12
+  resolution: "fast-glob@npm:3.2.12"
+  dependencies:
+    "@nodelib/fs.stat": ^2.0.2
+    "@nodelib/fs.walk": ^1.2.3
+    glob-parent: ^5.1.2
+    merge2: ^1.3.0
+    micromatch: ^4.0.4
+  checksum: 0b1990f6ce831c7e28c4d505edcdaad8e27e88ab9fa65eedadb730438cfc7cde4910d6c975d6b7b8dc8a73da4773702ebcfcd6e3518e73938bb1383badfe01c2
+  languageName: node
+  linkType: hard
+
 "fast-json-stable-stringify@npm:2.x, fast-json-stable-stringify@npm:^2.0.0":
   version: 2.1.0
   resolution: "fast-json-stable-stringify@npm:2.1.0"
@@ -16807,6 +16820,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"postcss-js@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "postcss-js@npm:4.0.0"
+  dependencies:
+    camelcase-css: ^2.0.1
+  peerDependencies:
+    postcss: ^8.3.3
+  checksum: 14be8a58670b4c5d037d40f179240a4f736d53530db727e2635638fa296bc4bff18149ca860928398aace422e55d07c9f5729eeccd395340944985199cdc82a5
+  languageName: node
+  linkType: hard
+
 "postcss-less@npm:^3.1.4":
   version: 3.1.4
   resolution: "postcss-less@npm:3.1.4"
@@ -17026,6 +17050,20 @@ __metadata:
     postcss-simple-vars: ^5.0.2
     sugarss: ^2.0.0
   checksum: afaf5516c87ccbdd5b1e5d69141756580e7fdd6b9a0d13e4c0a99183eba1301837ca045aa82fbbba00f493ac30c3a0499049e16630c8e6436f5ee22884f47b48
+  languageName: node
+  linkType: hard
+
+"postcss-mixins@npm:^9.0.4":
+  version: 9.0.4
+  resolution: "postcss-mixins@npm:9.0.4"
+  dependencies:
+    fast-glob: ^3.2.11
+    postcss-js: ^4.0.0
+    postcss-simple-vars: ^7.0.0
+    sugarss: ^4.0.1
+  peerDependencies:
+    postcss: ^8.2.14
+  checksum: 71b850cf5ebf55f92668ce6b927f0859f4aec199c8425a660562c25d757cc13be86a0dec8f32a5757094356d8b49e724a109b3f2b97118e79958b11bbcd5d0e0
   languageName: node
   linkType: hard
 
@@ -17481,6 +17519,15 @@ __metadata:
   dependencies:
     postcss: ^7.0.14
   checksum: 6d9e72bd9646b4080393f1819e47158df72bbdcbfa9d3a949c247ee8756a3f3d72a36f18a9033f2d67723a05f914f921e22fadcf821556c3598a65d7752e12e6
+  languageName: node
+  linkType: hard
+
+"postcss-simple-vars@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "postcss-simple-vars@npm:7.0.0"
+  peerDependencies:
+    postcss: ^8.2.1
+  checksum: 1be1ded772afbd7c957eaeb26572a47cad639dee304322137499a4f96f605462d685f0f7280b4f8e5beba462937b62f60ce4c964b82be54e702fc503804a08a9
   languageName: node
   linkType: hard
 
@@ -19551,6 +19598,7 @@ __metadata:
     esbuild-style-plugin: ^1.6.0
     eslint: ^5.3.0
     jest: ^23.6.0
+    postcss-mixins: ^9.0.4
     rimraf: ^2.5.4
     stylelint: ^13.7.2
     testcafe: ^1.7.0
@@ -20898,6 +20946,15 @@ __metadata:
   dependencies:
     postcss: ^7.0.2
   checksum: 777abf31671b67aafc5bb6dbca0853070ff9c129b7a52e90cfbe1a24ff069765e53b03767f85407386edf01c26fe2c2861aae2841f9a391751df891694137839
+  languageName: node
+  linkType: hard
+
+"sugarss@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "sugarss@npm:4.0.1"
+  peerDependencies:
+    postcss: ^8.3.3
+  checksum: 9dd4c89fd00d885e415f74759e02f477b2cc5ab833935124e23ed26e07adbb9319afa3cb15d050aa65f4c8d78a0ca87b03efbf96eb12ba333469cbdb6ddb0f7d
   languageName: node
   linkType: hard
 

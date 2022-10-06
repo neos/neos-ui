@@ -1,5 +1,7 @@
+@import "../reset.css";
+
 .textInput {
-    composes: reset from './../reset.css';
+    @mixin reset;
     /* TODO: should eventually be moved to reset.css, but there maybe be plenty of side-effects */
     font-size: 14px;
     width: 100%;

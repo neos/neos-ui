@@ -1,11 +1,13 @@
+@import "../reset.css";
+
 .header {
-    composes: reset from './../reset.css';
+    @mixin reset;
     margin: 0;
     position: relative;
     line-height: 20px;
 }
 .header__chevron {
-    composes: reset from './../reset.css';
+    @mixin reset;
     position: absolute;
     top: 0;
     left: 0;
@@ -46,7 +48,7 @@
 }
 
 .header__data {
-    composes: reset from './../reset.css';
+    @mixin reset;
     position: relative;
     display: inline-block;
     min-width: 100%;
@@ -97,7 +99,7 @@
     vertical-align: middle;
 }
 .header__label {
-    composes: reset from './../reset.css';
+    @mixin reset;
     margin-left: 2em;
 
     .header__data--isActive & {
@@ -106,7 +108,7 @@
 }
 
 .contents {
-    composes: reset from './../reset.css';
+    @mixin reset;
 }
 
 .dropTarget {

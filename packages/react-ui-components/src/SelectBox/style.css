@@ -1,17 +1,29 @@
+@import "../reset.css";
 
 .selectBox__list {
     padding: 0;
 }
 
 .selectBox {
-    composes: reset from './../reset.css', dropDown from './../DropDown/style.css';
+    @mixin reset;
+    width: 100%;
     position: relative;
     display: inline-block;
     line-height: 0;
 }
 
 .selectBox__btn {
-    composes: reset from './../reset.css', dropDown__btn from './../DropDown/style.css';
+    @mixin reset;
+    width: 100%;
+    text-align: left;
+    color: white;
+    cursor: pointer;
+    font-size: var(--neos-fontSize-Base);
+    padding: 0 var(--neos-spacing-Full);
+    border-radius: 2px;
+    overflow: hidden;
+    white-space: nowrap;
+    background: var(--neos-colors-ContrastNeutral);
     position: relative;
     display: inline-block;
     text-overflow: clip;

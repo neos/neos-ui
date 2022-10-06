@@ -1,10 +1,12 @@
+@import "../reset.css";
+
 .panel {
-    composes: reset from './../reset.css';
+    @mixin reset;
     position: relative;
 }
 
 .panel__headline {
-    composes: reset from './../reset.css';
+    @mixin reset;
     cursor: pointer;
     height: var(--neos-spacing-GoldenUnit);
     margin: 0;
@@ -19,13 +21,13 @@
 }
 
 .panel__toggleBtn {
-    composes: reset from './../reset.css';
+    @mixin reset;
     position: absolute;
     top: 0;
     right: 0;
 }
 .panel__contents {
-    composes: reset from './../reset.css';
+    @mixin reset;
     padding: 0 var(--neos-spacing-Full);
     transition: var(--neos-transition-Default) ease padding;
 

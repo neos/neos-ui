@@ -1,5 +1,7 @@
+@import "../reset.css";
+
 .badge {
-    composes: reset from './../reset.css';
+    @mixin reset;
     display: inline-block;
     padding: 2px 4px;
     font-size: 12px;

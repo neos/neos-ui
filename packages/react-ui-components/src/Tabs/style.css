@@ -1,16 +1,18 @@
+@import "../reset.css";
+
 .tabs {
-    composes: reset from './../reset.css';
+    @mixin reset;
     height: 100%;
 }
 
 .tabs__content {
-    composes: reset from './../reset.css';
+    @mixin reset;
     height: calc(100% - 141px);
     overflow-y: auto;
 }
 
 .tabNavigation {
-    composes: reset from './../reset.css';
+    @mixin reset;
     display: block;
     margin: 0;
     padding: 0;
@@ -28,7 +30,7 @@
     }
 }
 .tabNavigation__item {
-    composes: reset from './../reset.css';
+    @mixin reset;
     position: relative;
     float: left;
     border-top: 1px solid var(--neos-colors-ContrastDark);
@@ -58,7 +60,7 @@
     }
 }
 .tabNavigation__itemBtn {
-    composes: reset from './../reset.css';
+    @mixin reset;
     display: inline-block;
     height: var(--neos-spacing-GoldenUnit);
     padding: 0 var(--neos-spacing-Full);
@@ -83,6 +85,6 @@
 }
 
 .panel {
-    composes: reset from './../reset.css';
+    @mixin reset;
     overflow-y: auto;
 }

@@ -1,5 +1,7 @@
+@import "../reset.css";
+
 .selectedOptions {
-    composes: reset from './../reset.css';
+    @mixin reset;
 
     position: relative;
     width: 100%;

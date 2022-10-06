@@ -1,5 +1,7 @@
+@import "../reset.css";
+
 .listPreviewElement {
-    composes: reset from './../reset.css';
+    @mixin reset;
     cursor: pointer;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -24,7 +26,7 @@
 }
 
 .listPreviewElement__icon {
-    composes: reset from './../reset.css';
+    @mixin reset;
     margin-right: .5em;
 }
 

@@ -1,5 +1,7 @@
+@import "../reset.css";
+
 .textArea {
-    composes: reset from './../reset.css';
+    @mixin reset;
     width: 100%;
     height: 40px;
     padding: 10px 14px;

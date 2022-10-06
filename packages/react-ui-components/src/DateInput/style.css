@@ -1,3 +1,5 @@
+@import "../reset.css";
+
 .calendarInputWrapper {
     display: table;
     width: 100%;
@@ -11,7 +13,7 @@
 }
 .closeCalendarIconBtn,
 .calendarIconBtn {
-    composes: reset from './../reset.css';
+    @mixin reset;
     position: relative;
     display: table-cell;
     vertical-align: top;
@@ -44,7 +46,7 @@
 }
 
 .calendarFakeInputWrapper {
-    composes: reset from './../reset.css';
+    @mixin reset;
     display: table-cell;
     position: relative;
     width: 100%;
@@ -59,7 +61,7 @@
     cursor: pointer;
 }
 .calendarFakeInput {
-    composes: reset from './../reset.css';
+    @mixin reset;
     display: inline-block;
     vertical-align: top;
     width: 100%;
@@ -102,7 +104,7 @@
     font-size: var(--neos-fontSize-Base);
 }
 .wrapper {
-    composes: reset from './../reset.css';
+    @mixin reset;
 
     input[type='text'] {
         display: none;

@@ -1,5 +1,7 @@
+@import '../reset.css';
+
 .iconButton {
-    composes: reset from './../reset.css';
+    @mixin reset;
     vertical-align: top;
     width: var(--neos-spacing-GoldenUnit);
     padding-left: 0;

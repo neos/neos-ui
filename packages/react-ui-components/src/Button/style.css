@@ -1,5 +1,7 @@
+@import "../reset.css";
+
 .btn {
-    composes: reset from './../reset.css';
+    @mixin reset;
     position: relative;
     display: inline-block;
     height: var(--neos-spacing-GoldenUnit);

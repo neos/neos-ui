@@ -1,38 +1,7 @@
-.reset {
+@define-mixin reset {
     font-family: 'Noto Sans', sans-serif;
     font-weight: normal;
     color: #FFF;
     margin: 0;
     padding: 0;
 }
-
-
-    /* some browsers set a font-size or margin in their user stylesheets */
-.reset input,
-.reset textarea,
-.reset select,
-.reset button {
-    font-size: var(--neos-fontSize-Base);
-    margin: 0;
-}
-.reset ul {
-    padding: 0;
-}
-
-/* webkit adds some weird spacing otherwise */
-.reset li {
-    display: block;
-}
-.reset input::-webkit-search-cancel-button {
-    display: none;
-}
-/* webkit adds white box around search box */
-.reset input {
-    appearance: none;
-}
-
-.reset,
-.reset:before,
-.reset:after {
-     box-sizing: border-box;
- }

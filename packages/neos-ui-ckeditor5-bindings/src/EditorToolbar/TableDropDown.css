@@ -3,14 +3,14 @@
 }
 .button {
     width: 100%;
-    border-top: 1px solid var(--colors-ContrastDarker);
+    border-top: 1px solid var(--neos-colors-ContrastDarker);
     text-align: left;
 }
 .checkBox {
     display: flex;
-    height: var(--spacing-GoldenUnit);
-    border-top: 1px solid var(--colors-ContrastDarker);
-    padding-top: var(--spacing-Half);
-    padding-left: var(--spacing-Full);
+    height: var(--neos-spacing-GoldenUnit);
+    border-top: 1px solid var(--neos-colors-ContrastDarker);
+    padding-top: var(--neos-spacing-Half);
+    padding-left: var(--neos-spacing-Full);
     cursor: pointer;
 }

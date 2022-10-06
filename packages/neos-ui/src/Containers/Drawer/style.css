@@ -4,17 +4,17 @@
     flex-flow: column;
     flex-shrink: 0;
     justify-content: flex-start;
-    top: calc(var(--spacing-GoldenUnit) + 1px);
+    top: calc(var(--neos-spacing-GoldenUnit) + 1px);
     left: 0;
-    z-index: var(--zIndex-Drawer-Context);
-    height: calc(100% - calc(var(--spacing-GoldenUnit) + 1px));
-    width: var(--size-SidebarWidth);
-    background: var(--colors-ContrastDarker);
-    transition: var(--transition-Default) ease transform;
+    z-index: var(--neos-zIndex-Drawer-Context);
+    height: calc(100% - calc(var(--neos-spacing-GoldenUnit) + 1px));
+    width: var(--neos-size-SidebarWidth);
+    background: var(--neos-colors-ContrastDarker);
+    transition: var(--neos-transition-Default) ease transform;
     overflow: scroll;
 }
 .drawer--isHidden {
-    transform: translateX(-var(--size-SidebarWidth));
+    transform: translateX(calc(var(--neos-size-SidebarWidth) * -1));
 }
 
 .drawer__menuItemGroupsWrapper {
@@ -22,13 +22,13 @@
     flex-shrink: 0;
     flex-direction: column;
     overflow-y: auto;
-    padding-bottom: calc(var(--spacing-GoldenUnit) + 1px);
+    padding-bottom: calc(var(--neos-spacing-GoldenUnit) + 1px);
 }
 
 .drawer__menuItem {
     display: flex;
     flex-direction: column;
-    border-top: 1px solid var(--colors-ContrastDark);
+    border-top: 1px solid var(--neos-colors-ContrastDark);
     cursor: pointer;
 
     &:first-child {
@@ -57,6 +57,6 @@
     margin-top: auto;
 }
 .drawer__version {
-    color: var(--colors-ContrastBright);
-    padding: var(--spacing-Full);
+    color: var(--neos-colors-ContrastBright);
+    padding: var(--neos-spacing-Full);
 }

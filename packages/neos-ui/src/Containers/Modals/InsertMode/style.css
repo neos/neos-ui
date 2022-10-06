@@ -1,9 +1,9 @@
 .modalTitle {
-    margin-left: var(--spacing-Full);
+    margin-left: var(--neos-spacing-Full);
 }
 .modalContents {
-    padding: var(--spacing-Full);
+    padding: var(--neos-spacing-Full);
 }
 .applyBtn {
-    background: var(--colors-Success) !important;
+    background: var(--neos-colors-Success) !important;
 }

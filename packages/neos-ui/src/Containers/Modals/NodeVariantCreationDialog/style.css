@@ -1,12 +1,12 @@
 .body {
-    padding: var(--spacing-Full);
+    padding: var(--neos-spacing-Full);
 }
 
 .editor {
-    margin-bottom: var(--spacing-Full);
+    margin-bottom: var(--neos-spacing-Full);
 }
 
 .modalContents {
-    padding: 0 var(--spacing-Full) var(--spacing-Full) var(--spacing-Full);
-    color: var(--colors-ContrastBrighter);
+    padding: 0 var(--neos-spacing-Full) var(--neos-spacing-Full) var(--neos-spacing-Full);
+    color: var(--neos-colors-ContrastBrighter);
 }

@@ -3,7 +3,7 @@
     position: relative;
     vertical-align: top;
     padding-right: 47px;
-    height: var(--spacing-GoldenUnit);
+    height: var(--neos-spacing-GoldenUnit);
 }
 
 .publishBtn {
@@ -19,7 +19,7 @@
 }
 .dropDown__contents {
     padding: 2px !important;
-    background: var(--colors-Success);
+    background: var(--neos-colors-Success);
 }
 .dropDown__btn {
     position: absolute;
@@ -27,12 +27,12 @@
     top: 0;
     display: inline-block;
     width: auto;
-    height: var(--spacing-GoldenUnit);
-    padding: 0 30px 0 var(--spacing-Full);
+    height: var(--neos-spacing-GoldenUnit);
+    padding: 0 30px 0 var(--neos-spacing-Full);
     border: 0;
     border-radius: 0;
-    line-height: var(--spacing-GoldenUnit);
-    background: var(--colors-Success);
+    line-height: var(--neos-spacing-GoldenUnit);
+    background: var(--neos-colors-Success);
     text-align: center;
     vertical-align: top;
     cursor: pointer;
@@ -48,14 +48,14 @@
 
 .dropDown__item {
     position: relative;
-    border-top: 1px solid var(--colors-ContrastDarker);
-    background: var(--colors-ContrastDarkest);
+    border-top: 1px solid var(--neos-colors-ContrastDarker);
+    background: var(--neos-colors-ContrastDarkest);
 
     &:hover {
-        background: var(--colors-PrimaryBlue);
+        background: var(--neos-colors-PrimaryBlue);
 
         .badge {
-            color: var(--colors-PrimaryBlue);
+            color: var(--neos-colors-PrimaryBlue);
         }
     }
 
@@ -65,11 +65,11 @@
         display: block;
         width: 100%;
         border: 0;
-        padding: 0 var(--spacing-Full);
+        padding: 0 var(--neos-spacing-Full);
         background: 0;
         color: #FFF;
         text-decoration: none;
-        line-height: var(--spacing-GoldenUnit);
+        line-height: var(--neos-spacing-GoldenUnit);
         text-align: left;
 
         > svg,
@@ -93,7 +93,7 @@
     }
 }
 .dropDown__item--noHover:hover {
-    background: var(--colors-ContrastDarker);
+    background: var(--neos-colors-ContrastDarker);
 }
 .dropDown__item--disabled {
     opacity: .5;
@@ -104,19 +104,19 @@
     }
 }
 .dropDown__item--canPublish {
-    background: var(--colors-Warn);
+    background: var(--neos-colors-Warn);
 
     &:hover {
-        background: var(--colors-WarnHover);
+        background: var(--neos-colors-WarnHover);
     }
 
     + .dropDown__contents {
-        background: var(--colors-Warn);
+        background: var(--neos-colors-Warn);
     }
 }
 .dropDown__item--isPublishing,
 .dropDown__item--isSaving {
-    background: var(--colors-Warn);
+    background: var(--neos-colors-Warn);
     opacity: .5;
 }
 .dropDown__item--isDiscarding {
@@ -125,5 +125,5 @@
 
 
 .badge {
-    margin-left: var(--spacing-Half);
+    margin-left: var(--neos-spacing-Half);
 }

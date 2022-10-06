@@ -8,7 +8,7 @@
 
 .tooltip--inline {
     position: relative !important;
-    margin-bottom: var(--spacing-Half);
+    margin-bottom: var(--neos-spacing-Half);
 }
 
 .tooltip--arrow {
@@ -17,24 +17,24 @@
     left: 50%;
     width: 0;
     height: 0;
-    margin-left: -var(--spacing-Half);
-    border-left: var(--spacing-Half) solid transparent;
-    border-right: var(--spacing-Half) solid transparent;
-    border-bottom: var(--spacing-Half) solid var(--colors-ContrastDarkest);
+    margin-left: calc(var(--neos-spacing-Half) * -1);
+    border-left: var(--neos-spacing-Half) solid transparent;
+    border-right: var(--neos-spacing-Half) solid transparent;
+    border-bottom: var(--neos-spacing-Half) solid var(--neos-colors-ContrastDarkest);
 }
 
 .tooltip--asError .tooltip--arrow {
-    border-bottom: var(--spacing-Half) solid var(--colors-Error);
+    border-bottom: var(--neos-spacing-Half) solid var(--neos-colors-Error);
 }
 
 .tooltip--inner {
     position: relative;
-    padding: var(--spacing-Half);
-    background: var(--colors-ContrastDarkest);
+    padding: var(--neos-spacing-Half);
+    background: var(--neos-colors-ContrastDarkest);
     color: white;
     box-shadow: 0px 0px 10px rgba(125, 125, 125, .2);
 }
 
 .tooltip--asError .tooltip--inner {
-    background: var(--colors-Error);
+    background: var(--neos-colors-Error);
 }

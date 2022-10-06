@@ -15,15 +15,15 @@
 }
 
 .icon--color-warn {
-    color: var(--colors-Warn);
+    color: var(--neos-colors-Warn);
 }
 
 .icon--color-error {
-    color: var(--colors-Error);
+    color: var(--neos-colors-Error);
 }
 
 .icon--color-primaryBlue {
-    color: var(--colors-PrimaryBlue);
+    color: var(--neos-colors-PrimaryBlue);
 }
 
 .icon--huge {

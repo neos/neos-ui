@@ -12,7 +12,7 @@
     position: absolute;
     top: 50%;
     left: 0;
-    z-index: var(--zIndex-CheckboxInput-Context);
+    z-index: var(--neos-zIndex-CheckboxInput-Context);
     transform: translateY(-50%);
     width: 20px;
     height: 20px;
@@ -33,12 +33,12 @@
     height: 20px;
     border-radius: 2px;
     vertical-align: top;
-    background: var(--colors-ContrastDark);
+    background: var(--neos-colors-ContrastDark);
     font-size: 20px;
     font-weight: bold;
 }
 .checkbox__inputMirror--active {
-    background: var(--colors-PrimaryBlue);
+    background: var(--neos-colors-PrimaryBlue);
 }
 .checkbox__checked {
     .checkbox__icon {

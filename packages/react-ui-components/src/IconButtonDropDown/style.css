@@ -6,31 +6,31 @@
 .wrapper__btn {
     composes: reset from './../reset.css';
     position: relative;
-    width: var(--spacing-GoldenUnit);
+    width: var(--neos-spacing-GoldenUnit);
 }
 .wrapper__btnModeIcon {
     composes: reset from './../reset.css';
     position: absolute;
     right: 4px;
     bottom: 4px;
-    color: var(--colors-PrimaryBlue);
+    color: var(--neos-colors-PrimaryBlue);
 
     [disabled] > & {
         opacity: 0;
     }
 }
 .wrapper:hover .wrapper__btnIcon {
-    color: var(--colors-PrimaryBlue);
+    color: var(--neos-colors-PrimaryBlue);
 }
 .wrapper__dropDown {
     composes: reset from './../reset.css';
     position: absolute;
     top: 100%;
     left: 0;
-    z-index: var(--zIndex-WrapperDropdown-Context);
+    z-index: var(--neos-zIndex-WrapperDropdown-Context);
     display: none;
-    background: var(--colors-ContrastDarker);
-    border: 1px solid var(--colors-ContrastDark);
+    background: var(--neos-colors-ContrastDarker);
+    border: 1px solid var(--neos-colors-ContrastDark);
     border-top: 0;
 }
 .wrapper__dropDown--isOpen {
@@ -40,15 +40,15 @@
     composes: reset from './../reset.css';
     position: relative;
     display: block;
-    width: calc(var(--spacing-GoldenUnit) - 2px);
-    height: calc(var(--spacing-GoldenUnit) - 2px);
+    width: calc(var(--neos-spacing-GoldenUnit) - 2px);
+    height: calc(var(--neos-spacing-GoldenUnit) - 2px);
     text-align: center;
     vertical-align: middle;
     cursor: pointer;
 
     &:hover,
     &:hover > * {
-        color: var(--colors-PrimaryBlue);
+        color: var(--neos-colors-PrimaryBlue);
     }
 
     > * {

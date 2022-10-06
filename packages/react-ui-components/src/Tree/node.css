@@ -12,14 +12,14 @@
     height: 100%;
     width: 18px;
 
-    color: var(--colors-ContrastBrighter);
+    color: var(--neos-colors-ContrastBrighter);
     line-height: 20px;
     text-align: center;
 
     cursor: pointer;
 
     &:hover {
-        color: var(--colors-PrimaryBlue);
+        color: var(--neos-colors-PrimaryBlue);
     }
 }
 .header__chevron--isCollapsed > svg {
@@ -31,7 +31,7 @@
 
 .header__chevron--isLoading,
 .header__chevron--isLoading:hover {
-    color: var(--colors-ContrastBrighter) !important;
+    color: var(--neos-colors-ContrastBrighter) !important;
 }
 
 .header__chevron--isLoading > svg {
@@ -69,11 +69,11 @@
     opacity: .2;
 }
 .header__data--isDirty {
-    border-left: 2px solid var(--colors-Warn);
+    border-left: 2px solid var(--neos-colors-Warn);
 }
 
 .header__data--isFocused {
-    background: var(--colors-ContrastNeutral);
+    background: var(--neos-colors-ContrastNeutral);
 
     &.header__data--isHiddenInIndex,
     &.header__data--isHidden {
@@ -81,7 +81,7 @@
     }
 }
 .header__data--acceptsDrop {
-    background-color: var(--colors-PrimaryBlue);
+    background-color: var(--neos-colors-PrimaryBlue);
 }
 .header__data--acceptsDrop *,
 .header__data--deniesDrop * {
@@ -101,7 +101,7 @@
     margin-left: 2em;
 
     .header__data--isActive & {
-        color: var(--colors-PrimaryBlue);
+        color: var(--neos-colors-PrimaryBlue);
     }
 }
 
@@ -118,13 +118,13 @@
 }
 .dropTarget--before {
     top: -5px;
-    z-index: var(--zIndex-SideBar-DropTargetBefore);
+    z-index: var(--neos-zIndex-SideBar-DropTargetBefore);
     padding-top: 4px;
     padding-bottom: 4px;
 }
 .dropTarget--after {
     bottom: 1px;
-    z-index: var(--zIndex-SideBar-DropTargetAfter);
+    z-index: var(--neos-zIndex-SideBar-DropTargetAfter);
     padding-top: 6px;
     padding-bottom: 0;
 }
@@ -138,5 +138,5 @@
     visibility: visible;
 }
 .dropTarget__inner svg {
-    fill: var(--colors-PrimaryBlue);
+    fill: var(--neos-colors-PrimaryBlue);
 }

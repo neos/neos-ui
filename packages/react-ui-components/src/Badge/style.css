@@ -5,7 +5,7 @@
     font-size: 12px;
     line-height: 14px;
     font-weight: bold;
-    color: var(--colors-Warn);
+    color: var(--neos-colors-Warn);
     white-space: nowrap;
     background-color: white;
     border-radius: 3px;

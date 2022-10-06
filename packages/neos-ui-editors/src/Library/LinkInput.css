@@ -22,53 +22,53 @@
 }
 
 .linkInput__optionsPanel {
-    padding-top: var(--spacing-Full);
+    padding-top: var(--neos-spacing-Full);
     display: flex;
     flex-wrap: wrap;
 }
 
 .linkInput__optionsPanelItem {
     flex-basis: 50%;
-    padding: var(--spacing-Half);
+    padding: var(--neos-spacing-Half);
 }
 
 .linkInput__optionsPanelLabel {
-    margin-bottom: var(--spacing-Quarter);
+    margin-bottom: var(--neos-spacing-Quarter);
 }
 
 .linkInput__innerButton {
     height: auto;
-    background: var(--colors-ContrastNeutral);
+    background: var(--neos-colors-ContrastNeutral);
     border-top-right-radius: 2px;
     border-bottom-right-radius: 2px;
 }
 
 .linkInput__loaderWrapper {
     padding: 4px 16px;
-    height: var(--spacing-GoldenUnit);
-    line-height: var(--spacing-GoldenUnit);
-    background: var(--colors-ContrastNeutral);
+    height: var(--neos-spacing-GoldenUnit);
+    line-height: var(--neos-spacing-GoldenUnit);
+    background: var(--neos-colors-ContrastNeutral);
 }
 
 .linkInput__loader {
-    margin: var(--spacing-Quarter);
+    margin: var(--neos-spacing-Quarter);
 }
 
 .linkInput__item {
-    padding: var(--spacing-Half);
+    padding: var(--neos-spacing-Half);
     box-sizing: content-box;
-    height: calc(var(--spacing-GoldenUnit) * 1.5);
+    height: calc(var(--neos-spacing-GoldenUnit) * 1.5);
     line-height: 20px;
 }
 
 .linkInput__link {
-    color: var(--colors-ContrastBright);
+    color: var(--neos-colors-ContrastBright);
     display: block;
     font-size: 12px;
 }
 
 .linkInput__image {
-    height: calc(var(--spacing-GoldenUnit) * 1.5);
+    height: calc(var(--neos-spacing-GoldenUnit) * 1.5);
     width: auto;
     float: right;
 }

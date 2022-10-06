@@ -3,23 +3,23 @@
     /* TODO: should eventually be moved to reset.css, but there maybe be plenty of side-effects */
     font-size: 14px;
     width: 100%;
-    height: var(--spacing-GoldenUnit);
+    height: var(--neos-spacing-GoldenUnit);
     padding: 0 14px;
     border: 0;
     border-radius: 2px;
-    background: var(--colors-ContrastNeutral);
+    background: var(--neos-colors-ContrastNeutral);
     color: white;
 
     &:focus {
         outline: 0;
-        background: var(--colors-ContrastBrightest);
-        color: var(--colors-ContrastDarkest);
+        background: var(--neos-colors-ContrastBrightest);
+        color: var(--neos-colors-ContrastDarkest);
     }
 }
 .textInput::-webkit-input-placeholder {
     font-family: 'Noto Sans', sans-serif;
     font-weight: normal;
-    color: var(--colors-ContrastBright);
+    color: var(--neos-colors-ContrastBright);
 }
 
 .textInput--disabled {

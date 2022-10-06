@@ -16,11 +16,11 @@
     display: inline-block;
     text-overflow: clip;
     height: auto;
-    min-height: var(--spacing-GoldenUnit);
-    line-height: var(--spacing-GoldenUnit);
+    min-height: var(--neos-spacing-GoldenUnit);
+    line-height: var(--neos-spacing-GoldenUnit);
     padding-left: 0;
     border: 0;
-    background: var(--colors-ContrastNeutral);
+    background: var(--neos-colors-ContrastNeutral);
     min-width: 160px;
 }
 
@@ -31,7 +31,7 @@
 .selectBox__contents {
     min-width: 160px;
     box-shadow: 0 5px 5px rgba(#000, .2);
-    z-index: var(--zIndex-SelectBoxContents);
+    z-index: var(--neos-zIndex-SelectBoxContents);
     margin-top: -2px;
 }
 
@@ -40,8 +40,8 @@
 }
 
 .selectBox__item {
-    border-top: 1px solid var(--colors-ContrastDarker);
-    background: var(--colors-ContrastDarkest);
+    border-top: 1px solid var(--neos-colors-ContrastDarker);
+    background: var(--neos-colors-ContrastDarkest);
 
     div {
         padding: 5px 14px;
@@ -49,9 +49,9 @@
 }
 
 .selectBox__groupHeader {
-    background-color: var(--colors-ContrastDarker);
+    background-color: var(--neos-colors-ContrastDarker);
     font-weight: bold;
-    padding-left: var(--spacing-Full);
+    padding-left: var(--neos-spacing-Full);
     line-height: 30px;
     text-transform: uppercase;
 }

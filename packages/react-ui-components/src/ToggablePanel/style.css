@@ -6,12 +6,12 @@
 .panel__headline {
     composes: reset from './../reset.css';
     cursor: pointer;
-    height: var(--spacing-GoldenUnit);
+    height: var(--neos-spacing-GoldenUnit);
     margin: 0;
-    padding: 0 var(--spacing-Full);
-    line-height: var(--spacing-GoldenUnit);
+    padding: 0 var(--neos-spacing-Full);
+    line-height: var(--neos-spacing-GoldenUnit);
     font-weight: bold;
-    font-size: var(--fontSize-Base);
+    font-size: var(--neos-fontSize-Base);
 }
 
 .panel__headline--noPadding {
@@ -26,8 +26,8 @@
 }
 .panel__contents {
     composes: reset from './../reset.css';
-    padding: 0 var(--spacing-Full);
-    transition: var(--transition-Default) ease padding;
+    padding: 0 var(--neos-spacing-Full);
+    transition: var(--neos-transition-Default) ease padding;
 
     .panel--isOpen & {
         padding-top: 5px;

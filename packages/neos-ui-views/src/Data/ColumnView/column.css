@@ -7,6 +7,6 @@
 }
 
 .column__label {
-    color: var(--colors-ContrastBrighter);
+    color: var(--neos-colors-ContrastBrighter);
     text-align: right;
 }

@@ -12,8 +12,7 @@
 .reset textarea,
 .reset select,
 .reset button {
-    /* font-size: var(--fontSize-Base); */
-    font-size: 14px;
+    font-size: var(--neos-fontSize-Base);
     margin: 0;
 }
 .reset ul {

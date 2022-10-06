@@ -1,10 +1,10 @@
 .searchBar {
     display: flex;
-    width: calc(var(--spacing-GoldenUnit) * 4);
+    width: calc(var(--neos-spacing-GoldenUnit) * 4);
 }
 
 .searchBar__clearButton {
-    background: var(--colors-ContrastNeutral);
+    background: var(--neos-colors-ContrastNeutral);
 }
 
 .searchBar__clearButton--focused {
@@ -12,5 +12,5 @@
 }
 
 .searchBar__clearButton--focused > i {
-    color: var(--colors-ContrastNeutral);
+    color: var(--neos-colors-ContrastNeutral);
 }

@@ -9,17 +9,17 @@
 .addEmptyContentCollectionOverlay {
     height: 20px;
     width: 100%;
-    outline: 2px solid var(--colors-ContrastBrighter);
+    outline: 2px solid var(--neos-colors-ContrastBrighter);
 }
 
 .markActiveNodeAsFocused--focusedNode {
     outline-offset: 10px;
-    outline: 2px solid var(--colors-PrimaryBlue);
+    outline: 2px solid var(--neos-colors-PrimaryBlue);
 }
 
 :global(.neos-contentelement-shine-through:hover).markHoveredNodeAsHovered,
 :global(.neos-contentelement-shine-through).markActiveNodeAsFocused--focusedNode {
-    outline-color: var(--colors-Warn);
+    outline-color: var(--neos-colors-Warn);
 }
 
 :global(.neos-inline-editable:focus) {
@@ -28,7 +28,7 @@
 
 :global([data-neos-inline-editor-is-initialized]:hover) {
     outline-offset: 5px;
-    outline: 2px dashed var(--colors-PrimaryBlue);
+    outline: 2px dashed var(--neos-colors-PrimaryBlue);
 }
 
 .notInlineEditableOverlay {
@@ -37,7 +37,7 @@
     left: 0;
     bottom: 0;
     right: 0;
-    z-index: var(--zIndex-NotInlineEditableOverlay-Context);
+    z-index: var(--neos-zIndex-NotInlineEditableOverlay-Context);
     background-size: 100%;
     background-image: linear-gradient(to bottom, rgba(50, 50, 50, .1), rgba(50, 50, 50, .2), rgba(50, 50, 50, .1));
 }
@@ -56,5 +56,5 @@
     height: 8px;
 }
 :global body::-webkit-scrollbar-track {
-    background-color: var(--colors-ContrastDarkest) !important;
+    background-color: var(--neos-colors-ContrastDarkest) !important;
 }

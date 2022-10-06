@@ -1,6 +1,6 @@
 .rangeEditor input[type='range'] {
     appearance: none;
-    background: var(--colors-ContrastNeutral);
+    background: var(--neos-colors-ContrastNeutral);
     cursor: pointer;
     height: 25px;
     outline: none;
@@ -10,7 +10,7 @@
 
 .rangeEditor input[type='range']::-webkit-slider-thumb {
     appearance: none;
-    background: var(--colors-PrimaryBlue);
+    background: var(--neos-colors-PrimaryBlue);
     border-radius: 5px;
     box-shadow: 0 0 0 #000, 0 0 0 #0d0d0d;
     cursor: pointer;
@@ -22,12 +22,12 @@
 
 .rangeEditor input[type='range']::-webkit-slider-thumb:hover,
 .rangeEditor input[type='range']::-webkit-slider-thumb:focus {
-    background: var(--colors-PrimaryBlueHover);
+    background: var(--neos-colors-PrimaryBlueHover);
 }
 
 .rangeEditor input[type='range']::-moz-range-thumb {
     appearance: none;
-    background: var(--colors-PrimaryBlue);
+    background: var(--neos-colors-PrimaryBlue);
     border-radius: 5px;
     box-shadow: 0 0 0 #000, 0 0 0 #0d0d0d;
     cursor: pointer;
@@ -39,7 +39,7 @@
 
 .rangeEditor input[type='range']::-moz-range-thumb:hover,
 .rangeEditor input[type='range']::-moz-range-thumb:focus {
-    background: var(--colors-PrimaryBlueHover);
+    background: var(--neos-colors-PrimaryBlueHover);
 }
 
 .rangeEditorValue {
@@ -57,18 +57,18 @@
 
 .rangeEditorValue input {
     appearance: none;
-    background: var(--colors-ContrastNeutral);
+    background: var(--neos-colors-ContrastNeutral);
     border: 0;
     color: #fff;
     display: inline-block;
     padding: 0 .3rem;
     text-align: right;
     box-sizing: content-box;
-    margin-right: var(--spacing-Quarter);
+    margin-right: var(--neos-spacing-Quarter);
 }
 
 .rangeEditorValue input:focus {
-    outline: 1px solid var(--colors-PrimaryBlue);
+    outline: 1px solid var(--neos-colors-PrimaryBlue);
 }
 
 .rangeEditorDisabled {
@@ -81,10 +81,10 @@
 
 .rangeEditorDisabled input[type='range']::-webkit-slider-thumb {
     pointer-events: none;
-    background: var(--colors-ContrastBright);
+    background: var(--neos-colors-ContrastBright);
 }
 
 .rangeEditorDisabled input[type='range']::-moz-range-thumb {
     pointer-events: none;
-    background: var(--colors-ContrastBright);
+    background: var(--neos-colors-ContrastBright);
 }

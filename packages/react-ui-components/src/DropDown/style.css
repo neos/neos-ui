@@ -8,26 +8,26 @@
     composes: reset from './../reset.css';
     display: block;
     width: 100%;
-    height: var(--spacing-GoldenUnit);
+    height: var(--neos-spacing-GoldenUnit);
     text-align: left;
     color: white;
     cursor: pointer;
-    font-size: var(--fontSize-Base);
-    padding: 0 var(--spacing-Full);
+    font-size: var(--neos-fontSize-Base);
+    padding: 0 var(--neos-spacing-Full);
     border: 0;
     border-radius: 2px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    line-height: var(--spacing-GoldenUnit);
-    background: var(--colors-ContrastNeutral);
+    line-height: var(--neos-spacing-GoldenUnit);
+    background: var(--neos-colors-ContrastNeutral);
 
     &:focus{
-        outline: 1px solid var(--colors-PrimaryBlue);
+        outline: 1px solid var(--neos-colors-PrimaryBlue);
     }
 }
 .dropDown__btn--withChevron {
-    padding-right: var(--spacing-GoldenUnit);
+    padding-right: var(--neos-spacing-GoldenUnit);
 }
 .dropDown__btnLabel {
     composes: reset from './../reset.css';
@@ -45,12 +45,12 @@
     position: absolute;
     top: 100%;
     left: 0;
-    z-index: var(--zIndex-DropdownContents-Context);
+    z-index: var(--neos-zIndex-DropdownContents-Context);
     display: none;
     width: 100%;
     margin: 0;
     list-style: none;
-    background: var(--colors-ContrastNeutral);
+    background: var(--neos-colors-ContrastNeutral);
     box-shadow: 0 5px 5px rgba(0, 0, 0, .2);
 }
 .dropDown__contents--scrollable {
@@ -63,24 +63,24 @@
 }
 .dropDown--darker {
     > .dropDown__btn--open {
-        background-color: var(--colors-ContrastDarker);
+        background-color: var(--neos-colors-ContrastDarker);
     }
 
     > .dropDown__contents {
-        background-color: var(--colors-ContrastDarker);
+        background-color: var(--neos-colors-ContrastDarker);
     }
 }
 .dropDown--darkest {
     > .dropDown__btn--open {
-        background-color: var(--colors-ContrastDarkest);
+        background-color: var(--neos-colors-ContrastDarkest);
     }
 
     > .dropDown__contents {
-        background-color: var(--colors-ContrastDarkest);
+        background-color: var(--neos-colors-ContrastDarkest);
     }
 }
 .dropDown--padded {
     > .dropDown__contents {
-        padding: var(--spacing-Full);
+        padding: var(--neos-spacing-Full);
     }
 }

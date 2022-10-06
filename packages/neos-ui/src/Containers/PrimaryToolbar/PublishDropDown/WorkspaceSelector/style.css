@@ -2,7 +2,7 @@
     border-radius: 0;
 }
 .notAllowed {
-    padding: 12px var(--spacing-Full);
+    padding: 12px var(--neos-spacing-Full);
     cursor: not-allowed;
     opacity: .5;
 }

@@ -11,20 +11,20 @@
 
 .selectBoxHeader__icon {
     composes: reset from './../reset.css';
-    line-height: var(--spacing-GoldenUnit);
+    line-height: var(--neos-spacing-GoldenUnit);
     height: 100%;
 }
 
 .selectBoxHeader__label {
-    padding: 0 var(--spacing-Full);
+    padding: 0 var(--neos-spacing-Full);
 }
 
 .selectBoxHeader__wrapperIconWrapper {
-    padding: 0 var(--spacing-Full);
+    padding: 0 var(--neos-spacing-Full);
 }
 
 .selectBoxHeader__wrapperPlaceholderIconWrapper {
-    padding: 0 var(--spacing-Half) 0 0;
+    padding: 0 var(--neos-spacing-Half) 0 0;
 }
 
 .selectBoxHeader--disabled {

@@ -2,11 +2,11 @@
     overflow-y: auto;
     /* Node Tree is expected to be rendered inside a display: flex container - and it will take up all remaining space */
     flex: 1 0 0px;
-    transition: var(--transition-Slow) ease height, overflow-y var(--transition-Slow);
-    background: var(--colors-ContrastDarker);
-    border-bottom: 1px solid var(--colors-ContrastDark);
-    border-right: 1px solid var(--colors-ContrastDark);
+    transition: var(--neos-transition-Slow) ease height, overflow-y var(--neos-transition-Slow);
+    background: var(--neos-colors-ContrastDarker);
+    border-bottom: 1px solid var(--neos-colors-ContrastDark);
+    border-right: 1px solid var(--neos-colors-ContrastDark);
 }
 .loader {
-    margin: var(--spacing-Quarter);
+    margin: var(--neos-spacing-Quarter);
 }

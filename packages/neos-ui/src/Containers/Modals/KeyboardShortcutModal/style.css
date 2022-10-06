@@ -1,5 +1,5 @@
 .keyboardShortcutIntroText {
-    padding: var(--spacing-Half) var(--spacing-Full);
+    padding: var(--neos-spacing-Half) var(--neos-spacing-Full);
 }
 
 .keyboardShortcutList {
@@ -12,10 +12,10 @@
 .keyboardShortcut {
     flex: 0 1 auto;
     width: calc(100% / 2);
-    border-bottom: 1px solid var(--colors-ContrastDark);
-    border-right: 1px solid var(--colors-ContrastDark);
-    padding: var(--spacing-Half) var(--spacing-Full);
-    font-size: var(--fontSize-Base);
+    border-bottom: 1px solid var(--neos-colors-ContrastDark);
+    border-right: 1px solid var(--neos-colors-ContrastDark);
+    padding: var(--neos-spacing-Half) var(--neos-spacing-Full);
+    font-size: var(--neos-fontSize-Base);
 
     display: flex;
     vertical-align: center;
@@ -24,10 +24,10 @@
 }
 
 .keyboardShortcut__keys {
-    background-color: var(--colors-ContrastNeutral);
+    background-color: var(--neos-colors-ContrastNeutral);
     font-weight: bold;
-    padding: var(--spacing-Half);
+    padding: var(--neos-spacing-Half);
     text-align: center;
     width: 60px;
-    margin-left: var(--spacing-Full);
+    margin-left: var(--neos-spacing-Full);
 }

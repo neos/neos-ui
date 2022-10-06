@@ -1,11 +1,11 @@
 .toolBar {
     position: absolute;
-    background: var(--colors-ContrastDarker);
-    z-index: var(--zIndex-NodeToolBar);
+    background: var(--neos-colors-ContrastDarker);
+    z-index: var(--neos-zIndex-NodeToolBar);
     margin: -2px 5px 0 5px;
-    border: 2px solid var(--colors-PrimaryBlue);
+    border: 2px solid var(--neos-colors-PrimaryBlue);
     border-bottom: 0;
-    transition: var(--transition-Fast) margin;
+    transition: var(--neos-transition-Fast) margin;
 }
 .toolBar__btnGroup {
     &:before,
@@ -21,7 +21,7 @@
     float: left;
 
     &:hover {
-        background-color: var(--colors-PrimaryBlue);
+        background-color: var(--neos-colors-PrimaryBlue);
     }
 
     svg {
@@ -37,7 +37,7 @@
     position: fixed;
     top: 0!important;
     margin-top: 5px;
-    border-bottom: 2px solid var(--colors-PrimaryBlue);
+    border-bottom: 2px solid var(--neos-colors-PrimaryBlue);
 }
 
 .toolBar--isBlurred {

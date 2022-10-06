@@ -3,11 +3,11 @@
     width: 100%;
 }
 .calendarInputWrapper--highlight {
-    outline: 2px solid var(--colors-Success);
+    outline: 2px solid var(--neos-colors-Success);
 }
 .calendarInputWrapper--invalid {
-    outline: 2px solid var(--colors-Error) !important;
-    color: var(--colors-Error) !important;
+    outline: 2px solid var(--neos-colors-Error) !important;
+    color: var(--neos-colors-Error) !important;
 }
 .closeCalendarIconBtn,
 .calendarIconBtn {
@@ -19,7 +19,7 @@
     height: 40px;
     min-width: 41px;
     border: none;
-    background: var(--colors-ContrastNeutral);
+    background: var(--neos-colors-ContrastNeutral);
     text-align: center;
     font-size: 14px;
     cursor: pointer;
@@ -34,13 +34,13 @@
 }
 .closeCalendarIconBtn:hover,
 .calendarIconBtn:hover {
-    background: var(--colors-PrimaryBlue);
+    background: var(--neos-colors-PrimaryBlue);
 }
 .closeCalendarIconBtn {
-    border-left: 1px solid var(--colors-ContrastDarker);
+    border-left: 1px solid var(--neos-colors-ContrastDarker);
 }
 .calendarIconBtn {
-    border-right: 1px solid var(--colors-ContrastDarker);
+    border-right: 1px solid var(--neos-colors-ContrastDarker);
 }
 
 .calendarFakeInputWrapper {
@@ -55,7 +55,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: var(--zIndex-CalendarFakeInputMirror-Context);
+    z-index: var(--neos-zIndex-CalendarFakeInputMirror-Context);
     cursor: pointer;
 }
 .calendarFakeInput {
@@ -64,8 +64,8 @@
     vertical-align: top;
     width: 100%;
     height: 40px;
-    border: 2px solid var(--colors-ContrastNeutral);
-    background: var(--colors-ContrastNeutral);
+    border: 2px solid var(--neos-colors-ContrastNeutral);
+    background: var(--neos-colors-ContrastNeutral);
     font-size: 14px;
     padding: 0 14px;
     margin: 0;
@@ -81,15 +81,15 @@
     height: 40px;
     line-height: 40px;
     text-align: center;
-    border: 1px solid var(--colors-ContrastNeutral);
+    border: 1px solid var(--neos-colors-ContrastNeutral);
     border-top: 0;
-    font-size: var(--fontSize-Base);
+    font-size: var(--neos-fontSize-Base);
     cursor: pointer;
-    background: var(--colors-ContrastDarkest);
-    color: var(--colors-ContrastBrightest);
+    background: var(--neos-colors-ContrastDarkest);
+    color: var(--neos-colors-ContrastBrightest);
 
     &:hover {
-        background: var(--colors-PrimaryBlue) !important;
+        background: var(--neos-colors-PrimaryBlue) !important;
     }
 }
 .applyBtn {
@@ -97,9 +97,9 @@
     height: 40px;
     line-height: 40px;
     text-align: center;
-    border: 1px solid var(--colors-ContrastNeutral);
+    border: 1px solid var(--neos-colors-ContrastNeutral);
     border-top: 0;
-    font-size: var(--fontSize-Base);
+    font-size: var(--neos-fontSize-Base);
 }
 .wrapper {
     composes: reset from './../reset.css';
@@ -130,10 +130,10 @@
             width: 250px;
             padding: 4px;
             margin-top: 1px;
-            z-index: var(--zIndex-RdtPicker-Context);
+            z-index: var(--neos-zIndex-RdtPicker-Context);
             background: #fff;
             box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
-            border: 1px solid var(--colors-ContrastNeutral);
+            border: 1px solid var(--neos-colors-ContrastNeutral);
         }
         .rdtOpen .rdtPicker {
             display: block;
@@ -210,7 +210,7 @@
             cursor: not-allowed;
         }
         .rdtPicker th {
-            border-bottom: 1px solid var(--colors-ContrastNeutral);
+            border-bottom: 1px solid var(--neos-colors-ContrastNeutral);
         }
         .rdtPicker .dow {
             width: 14.2857%;
@@ -246,7 +246,7 @@
         }
 
         .rdtPicker tfoot {
-            border-top: 1px solid var(--colors-ContrastNeutral);
+            border-top: 1px solid var(--neos-colors-ContrastNeutral);
         }
 
         .rdtPicker button {
@@ -304,7 +304,7 @@
             user-select: none;
         }
         .rdtCounter .rdtBtn:hover {
-            color: var(--colors-PrimaryBlue);
+            color: var(--neos-colors-PrimaryBlue);
         }
         .rdtCounter .rdtCount {
             height: 20%;
@@ -335,9 +335,9 @@
         .rdtPicker {
             position: relative;
             width: calc(100% - 4px);
-            background: var(--colors-ContrastDarkest);
+            background: var(--neos-colors-ContrastDarkest);
             padding: 0;
-            border: 1px solid var(--colors-ContrastNeutral);
+            border: 1px solid var(--neos-colors-ContrastNeutral);
             border-top: 0;
             margin: 0;
             box-shadow: none;
@@ -351,21 +351,21 @@
                 height: 40px;
                 line-height: 40px;
                 font-weight: normal;
-                font-size: var(--fontSize-Base);
+                font-size: var(--neos-fontSize-Base);
                 border: 0;
-                border-left: 1px solid var(--colors-ContrastNeutral);
-                border-right: 1px solid var(--colors-ContrastNeutral);
-                border-bottom: 1px solid var(--colors-ContrastNeutral);
+                border-left: 1px solid var(--neos-colors-ContrastNeutral);
+                border-right: 1px solid var(--neos-colors-ContrastNeutral);
+                border-bottom: 1px solid var(--neos-colors-ContrastNeutral);
 
                 &.rdtPrev:hover,
                 &.rdtNext:hover,
                 &.rdtSwitch:hover {
-                    background: var(--colors-PrimaryBlue) !important;
+                    background: var(--neos-colors-PrimaryBlue) !important;
                 }
 
                 &.dow {
                     width: 40px;
-                    background: var(--colors-ContrastNeutral);
+                    background: var(--neos-colors-ContrastNeutral);
                     text-align: center;
                 }
             }
@@ -377,12 +377,12 @@
             width: 40px;
             height: 40px;
             line-height: 40px;
-            border: 1px solid var(--colors-ContrastNeutral);
+            border: 1px solid var(--neos-colors-ContrastNeutral);
         }
         td.rdtDay:hover,
         td.rdtMonth:hover,
         td.rdtTimeToggle:hover {
-            background: var(--colors-PrimaryBlue) !important;
+            background: var(--neos-colors-PrimaryBlue) !important;
         }
 
         td.rdtDay.rdtOld,
@@ -391,11 +391,11 @@
         }
 
         td.rdtToday:before {
-            border-bottom-color: var(--colors-PrimaryBlue) !important;
+            border-bottom-color: var(--neos-colors-PrimaryBlue) !important;
         }
         td.rdtActive {
-            background: var(--colors-PrimaryBlue) !important;
-            color: var(--colors-ContrastBrightest);
+            background: var(--neos-colors-PrimaryBlue) !important;
+            color: var(--neos-colors-ContrastBrightest);
 
             &:before {
                 display: none !important;

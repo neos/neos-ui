@@ -7,16 +7,16 @@
     font-size: 14px;
 
     /* subtract the size of padding */
-    line-height: calc(var(--spacing-GoldenUnit) - 10px);
-    padding: 5px var(--spacing-Full);
+    line-height: calc(var(--neos-spacing-GoldenUnit) - 10px);
+    padding: 5px var(--neos-spacing-Full);
 }
 
 .listPreviewElement--isDisabled {
-    color: var(--colors-ContrastBright);
+    color: var(--neos-colors-ContrastBright);
     cursor: not-allowed;
 }
 .listPreviewElement--isHighlighted {
-    background-color: var(--colors-PrimaryBlue) !important;
+    background-color: var(--neos-colors-PrimaryBlue) !important;
 }
 
 .listPreviewElement--isHighlighted > span {

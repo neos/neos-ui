@@ -2,9 +2,9 @@
     display: flex;
     flex-direction: column;
     flex-basis: 100%;
-    background: var(--colors-ContrastDarkest);
+    background: var(--neos-colors-ContrastDarkest);
     padding-top: 41px;
-    transition: var(--transition-Default) ease transform;
+    transition: var(--neos-transition-Default) ease transform;
     will-change: transform;
 
     &:before,
@@ -22,7 +22,7 @@
 }
 
 .leftSideBar--isHidden {
-    transform: translateX(-var(--size-SidebarWidth));
+    transform: translateX(calc(var(--neos-size-SidebarWidth) * -1));
 
     @media(max-width: 576px) {
         transform: translateX(-576px);
@@ -34,20 +34,20 @@
     display: flex;
     flex-direction: column;
     min-height: 40px;
-    margin-right: var(--spacing-Quarter);
+    margin-right: var(--neos-spacing-Quarter);
 }
 
 .leftSideBar__bottom {
     flex: 0 0 50%;
-    transition: flex-basis var(--transition-Default), height var(--transition-Default), overflow-y var(--transition-Default);
+    transition: flex-basis var(--neos-transition-Default), height var(--neos-transition-Default), overflow-y var(--neos-transition-Default);
     display: flex;
     flex-direction: column;
     min-height: 40px;
-    margin-right: var(--spacing-Quarter);
+    margin-right: var(--neos-spacing-Quarter);
 }
 
 .leftSideBar__bottom--isCollapsed {
-    flex: 0 0 var(--spacing-GoldenUnit);
+    flex: 0 0 var(--neos-spacing-GoldenUnit);
     overflow-y: hidden;
 }
 .leftSideBar__toggleBtn {
@@ -56,12 +56,12 @@
     left: 0;
     top: 41px;
     border: none;
-    background: var(--colors-ContrastDarkest);
-    transition: var(--transition-Default)  ease transform;
+    background: var(--neos-colors-ContrastDarkest);
+    transition: var(--neos-transition-Default)  ease transform;
     will-change: transform;
 
     .leftSideBar--isHidden & {
-        transform: translateX(var(--size-SidebarWidth));
+        transform: translateX(var(--neos-size-SidebarWidth));
 
         @media(max-width: 576px) {
             transform: translateX(576px);
@@ -74,5 +74,5 @@
     padding-left: 55px;
     line-height: 40px;
     font-weight: bold;
-    background: var(--colors-ContrastDarkest);
+    background: var(--neos-colors-ContrastDarkest);
 }

@@ -1,6 +1,6 @@
 .multiLineWithThumbnail__item {
     box-sizing: content-box;
-    background-color: var(--colors-ContrastDarkest);
+    background: var(--neos-colors-ContrastDarkest);
 }
 
 .multiLineWithThumbnail__item--multiLine {
@@ -8,7 +8,7 @@
 }
 
 .multiLineWithThumbnail__secondaryLabel {
-    color: var(--colors-ContrastBright);
+    color: var(--neos-colors-ContrastBright);
     display: block;
     font-size: 12px;
     text-overflow: ellipsis;
@@ -16,7 +16,7 @@
 }
 
 .multiLineWithThumbnail__tertiaryLabel {
-    color: var(--colors-ContrastBright);
+    color: var(--neos-colors-ContrastBright);
     display: block;
     font-size: 12px;
     text-overflow: ellipsis;
@@ -24,8 +24,8 @@
 }
 
 .multiLineWithThumbnail__image {
-    width: calc(1.33 * (var(--spacing-GoldenUnit) + var(--spacing-Full)));
-    height: calc(var(--spacing-GoldenUnit) + var(--spacing-Full));
+    width: calc(1.33 * (var(--neos-spacing-GoldenUnit) + var(--neos-spacing-Full)));
+    height: calc(var(--neos-spacing-GoldenUnit) + var(--neos-spacing-Full));
     object-fit: contain;
     background-color: #fff;
     background-size: 10px 10px;
@@ -34,9 +34,9 @@
     margin-right: .75em;
     display: inline-block;
     vertical-align: middle;
-    margin-left: -var(--spacing-Full);
-    margin-top: -var(--spacing-Half);
-    margin-bottom: -var(--spacing-Half);
+    margin-left: calc(var(--neos-spacing-Full) * -1);
+    margin-top: calc(var(--neos-spacing-Half) * -1);
+    margin-bottom: calc(var(--neos-spacing-Half) * -1);
 }
 
 .multiLineWithThumbnail__item:hover .multiLineWithThumbnail__secondaryLabel,

@@ -1,10 +1,10 @@
 .btn {
     display: inline-block;
-    padding: 0 var(--spacing-Full);
-    height: var(--spacing-GoldenUnit);
-    line-height: var(--spacing-GoldenUnit);
+    padding: 0 var(--neos-spacing-Full);
+    height: var(--neos-spacing-GoldenUnit);
+    line-height: var(--neos-spacing-GoldenUnit);
     border: 0;
-    background: var(--colors-Success);
+    background: var(--neos-colors-Success);
     text-align: center;
     vertical-align: top;
     color: white;
@@ -19,9 +19,9 @@
     }
 }
 .btn--highlighted {
-    background: var(--colors-Warn);
+    background: var(--neos-colors-Warn);
 
     &:hover {
-        background: var(--colors-WarnHover);
+        background: var(--neos-colors-WarnHover);
     }
 }

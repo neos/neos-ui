@@ -2,8 +2,8 @@
     display: flex;
     width: 100%;
     position: relative;
-    background: var(--colors-ContrastDarkest);
-    border-bottom: 1px solid var(--colors-ContrastDarker);
+    background: var(--neos-colors-ContrastDarkest);
+    border-bottom: 1px solid var(--neos-colors-ContrastDarker);
     border-radius: 2px;
 
     &:hover {
@@ -21,7 +21,7 @@
     cursor: move;
 }
 .selectedOptions__innerPreview {
-    border-right: 1px solid var(--colors-ContrastDarker);
+    border-right: 1px solid var(--neos-colors-ContrastDarker);
     overflow: hidden;
     width: 100%;
 
@@ -31,7 +31,7 @@
 }
 .selectedOption__removeButton {
     height: auto;
-    background: var(--colors-ContrastNeutral);
+    background: var(--neos-colors-ContrastNeutral);
     border-top-right-radius: 2px;
     border-bottom-right-radius: 2px;
 }
@@ -40,22 +40,22 @@
     height: auto;
     width: 20px;
     min-width: 20px;
-    color: var(--colors-ContrastDark);
+    color: var(--neos-colors-ContrastDark);
     border-top-left-radius: 2px;
     border-bottom-left-radius: 2px;
-    border-right: 1px solid var(--colors-ContrastDarker);
+    border-right: 1px solid var(--neos-colors-ContrastDarker);
 
     svg {
-        color: var(--colors-ContrastDark);
+        color: var(--neos-colors-ContrastDark);
     }
 
     &:hover,
     &:focus {
-        background: var(--colors-ContrastDark);
-        color: var(--colors-ContrastBright) !important;
+        background: var(--neos-colors-ContrastDark);
+        color: var(--neos-colors-ContrastBright) !important;
 
         svg {
-            color: var(--colors-ContrastBright) !important;
+            color: var(--neos-colors-ContrastBright) !important;
         }
     }
 }

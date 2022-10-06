@@ -1,12 +1,12 @@
 .modalTitle {
-    margin-left: var(--spacing-Full);
+    margin-left: var(--neos-spacing-Full);
 }
 .modalContents {
-    padding: var(--spacing-Full);
+    padding: var(--neos-spacing-Full);
 }
 .discardButton {
     margin-left: 0;
 }
 .buttonIcon {
-    margin-right: var(--spacing-Half);
+    margin-right: var(--neos-spacing-Half);
 }

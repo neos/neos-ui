@@ -2,11 +2,11 @@
     composes: reset from './../reset.css';
     position: fixed;
     left: 0;
-    z-index: var(--zIndex-CheckboxInput-Context);
+    z-index: var(--neos-zIndex-CheckboxInput-Context);
     width: 100%;
-    background-color: var(--colors-ContrastDarker);
+    background-color: var(--neos-colors-ContrastDarker);
     height: 41px;
-    border-bottom: 1px solid var(--colors-ContrastDark);
+    border-bottom: 1px solid var(--neos-colors-ContrastDark);
 }
 .bar--top {
     top: 0;

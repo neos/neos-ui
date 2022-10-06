@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {produce} from 'immer';
-import {mapValues} from 'lodash';
+import mapValues from 'lodash.mapvalues';
 import {connect} from 'react-redux';
 import {$get, $contains, $set} from 'plow-js';
 import I18n from '@neos-project/neos-ui-i18n';

@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {$get, $transform} from 'plow-js';
 
 import {IconButton, SelectBox, Icon} from '@neos-project/react-ui-components';
-import LinkOption from '@neos-project/neos-ui-editors/src/Library/LinkOption';
+import LinkOption from './LinkOption';
 import {neos} from '@neos-project/neos-ui-decorators';
 import backend from '@neos-project/neos-ui-backend-connector';
 

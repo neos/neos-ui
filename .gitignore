@@ -33,11 +33,20 @@ Resources/Public/Styles/**/*.css
 !Resources/Public/Styles/ReactCrop.css
 Resources/Public/Styles/**/*.map
 Resources/Public/Styles/Font*
-lerna-debug.log
-npm-debug.log
 
 #
 # editors / IDEs
 #
 .vscode/
 .idea/
+
+#
+# Package Manager
+#
+.yarn/*
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

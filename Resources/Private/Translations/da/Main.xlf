@@ -53,9 +53,9 @@
                 <source>Strikethrough</source>
         <target xml:lang="da" state="translated">Gennemstreget</target>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__link" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__link" xml:space="preserve" approved="no">
                 <source>Link</source>
-        <target xml:lang="da">Link</target>
+        <target xml:lang="da" state="translated">Link</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__unlink" xml:space="preserve">
                 <source>Unlink</source>
@@ -81,9 +81,9 @@
                 <source>Enter link title</source>
         <target xml:lang="da" state="translated">Indtast linkets titel</target>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__link__title" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__link__title" xml:space="preserve" approved="no">
                 <source>Title</source>
-        <target xml:lang="da">Titel</target>
+        <target xml:lang="da" state="translated">Titel</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__anchorPlaceholder" xml:space="preserve">
                 <source>Enter anchor name</source>
@@ -141,9 +141,9 @@
                 <source>Table</source>
         <target xml:lang="da" state="translated">Tabel</target>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__tableColumn" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__tableColumn" xml:space="preserve" approved="no">
                 <source>Column</source>
-        <target xml:lang="da">Kolonne</target>
+        <target xml:lang="da" state="translated">Kolonne</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__tableRow" xml:space="preserve">
                 <source>Row</source>
@@ -221,9 +221,9 @@
                 <source>Split cell horizontally</source>
         <target xml:lang="da" state="needs-translation">Split cell horizontally</target>
       </trans-unit>
-      <trans-unit id="createNew" xml:space="preserve" approved="yes">
+      <trans-unit id="createNew" xml:space="preserve" approved="no">
                 <source>Create new</source>
-        <target xml:lang="da">Opret ny</target>
+        <target xml:lang="da" state="translated">Opret ny</target>
       </trans-unit>
       <trans-unit id="noMatchesFound" xml:space="preserve">
                 <source>No matches found</source>
@@ -245,18 +245,18 @@
                     They will not get triggered when you are focusing an input field.
                 </target>
       </trans-unit>
-      <trans-unit id="Shortcut__UI.RightSideBar.toggle" xml:space="preserve" approved="yes">
+      <trans-unit id="Shortcut__UI.RightSideBar.toggle" xml:space="preserve" approved="no">
                 <source>Toggle inspector</source>
-        <target xml:lang="da">Skjul/vis inspektør</target>
+        <target xml:lang="da" state="translated">Skjul/vis inspektør</target>
       </trans-unit>
       <group id="UI.RightSideBar.tabs.validationErrorTooltip" restype="x-gettext-plurals">
         <trans-unit id="UI.RightSideBar.tabs.validationErrorTooltip[0]" xml:space="preserve">
                     <source>{tabName} – {amountOfErrors} validation issue</source>
-                    <target xml:lang="de">{tabName} – {amountOfErrors} valideringsfejl</target>
+                    <target xml:lang="de" state="translated">{tabName} – {amountOfErrors} valideringsfejl</target>
                 </trans-unit>
         <trans-unit id="UI.RightSideBar.tabs.validationErrorTooltip[1]" xml:space="preserve">
                     <source>{tabName} – {amountOfErrors} validation issues</source>
-                    <target xml:lang="de">{tabName} – {amountOfErrors} valideringsfejl</target>
+                    <target xml:lang="de" state="translated">{tabName} – {amountOfErrors} valideringsfejl</target>
                 </trans-unit>
       </group>
       <trans-unit id="Shortcut__UI.FullScreen.toggle" xml:space="preserve">
@@ -365,6 +365,36 @@
                     <target xml:lang="da" state="needs-translation">Discarded {0} changes.</target>
                 </trans-unit>
       </group>
+      <trans-unit id="syncUriPathSegment" xml:space="preserve">
+                <source>Syncronize with the title property</source>
+      </trans-unit>
+      <trans-unit id="inspectorMutlipleDocumentNodesSelectedTooltip" xml:space="preserve">
+                <source>Select a single content element in order to be able to edit its properties</source>
+      </trans-unit>
+      <trans-unit id="rangeEditorMinimum" xml:space="preserve">
+                <source>Minimum</source>
+      </trans-unit>
+      <trans-unit id="rangeEditorMaximum" xml:space="preserve">
+                <source>Maximum</source>
+      </trans-unit>
+      <trans-unit id="rangeEditorCurrentValue" xml:space="preserve">
+                <source>Current value</source>
+      </trans-unit>
+      <trans-unit id="inspectorMutlipleContentNodesSelectedTooltip" xml:space="preserve">
+                <source>Select a single document in order to be able to edit its properties</source>
+      </trans-unit>
+      <trans-unit id="contentElementsSelected" xml:space="preserve">
+                <source>content elements selected</source>
+      </trans-unit>
+      <trans-unit id="documentsSelected" xml:space="preserve">
+                <source>documents selected</source>
+      </trans-unit>
+      <trans-unit id="deleteXNodes" xml:space="preserve">
+                <source>Delete {amount} nodes</source>
+      </trans-unit>
+      <trans-unit id="nodes" xml:space="preserve">
+                <source>nodes</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

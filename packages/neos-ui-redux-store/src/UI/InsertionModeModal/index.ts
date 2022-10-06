@@ -1,7 +1,7 @@
 import produce from 'immer';
 import {action as createAction, ActionType} from 'typesafe-actions';
 
-import {InitAction} from '@neos-project/neos-ui-redux-store/src/System';
+import {InitAction} from '../../System';
 import {NodeContextPath} from '@neos-project/neos-ts-interfaces';
 
 // For some reason this doesn't work:

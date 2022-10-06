@@ -103,7 +103,7 @@ export default class Tabs extends PureComponent<TabsProps> {
         );
     }
 
-    public handleTabNavItemClick = (id: string | number) => {
+    private handleTabNavItemClick = (id: string | number) => {
         this.setState({activeTab: id});
     }
 

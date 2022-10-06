@@ -14,6 +14,11 @@
       "Neos\\Neos\\Ui\\": "Classes"
     }
   },
+  "archive": {
+    "exclude": [
+      ".yarn"
+    ]
+  },
   "extra": {
     "applied-flow-migrations": [
       "TYPO3.FLOW3-201201261636",

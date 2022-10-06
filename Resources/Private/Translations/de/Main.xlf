@@ -2,9 +2,9 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
   <file original="" product-name="Neos.Neos.Ui" source-language="en" datatype="plaintext" target-language="de">
     <body>
-      <trans-unit id="copy__from__to--title" xml:space="preserve" approved="yes">
+      <trans-unit id="copy__from__to--title" xml:space="preserve" approved="no">
                 <source>Copy {source} to {target}</source>
-        <target xml:lang="de">{source} zu {target} kopieren</target>
+        <target xml:lang="de" state="translated">{source} zu {target} kopieren</target>
       </trans-unit>
       <trans-unit id="move__from__to--title" xml:space="preserve">
                 <source>Move {source} to {target}</source>
@@ -42,95 +42,95 @@
                 <source>Subscript</source>
         <target xml:lang="de" state="translated">Tiefgestellt</target>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__superscript" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__superscript" xml:space="preserve" approved="no">
                 <source>Superscript</source>
-        <target xml:lang="de">Hochgestellt</target>
+        <target xml:lang="de" state="translated">Hochgestellt</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__strikethrough" xml:space="preserve">
                 <source>Strikethrough</source>
         <target xml:lang="de" state="translated">Durchgestrichen</target>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__link" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__link" xml:space="preserve" approved="no">
                 <source>Link</source>
-        <target xml:lang="de">Link</target>
+        <target xml:lang="de" state="translated">Link</target>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__unlink" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__unlink" xml:space="preserve" approved="no">
                 <source>Unlink</source>
-        <target xml:lang="de">Verknüpfung aufheben</target>
+        <target xml:lang="de" state="translated">Verknüpfung aufheben</target>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__link__hideOptions" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__link__hideOptions" xml:space="preserve" approved="no">
                 <source>Hide link options</source>
-        <target xml:lang="de">Optionen ausblenden</target>
+        <target xml:lang="de" state="translated">Optionen ausblenden</target>
         <alt-trans>
                     <target xml:lang="de">Blende mögliche Verbindungen aus</target>
                 </alt-trans>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__link__showOptions" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__link__showOptions" xml:space="preserve" approved="no">
                 <source>Link options</source>
-        <target xml:lang="de">Verbindungsoptionen</target>
+        <target xml:lang="de" state="translated">Verbindungsoptionen</target>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__link__noFollow" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__link__noFollow" xml:space="preserve" approved="no">
                 <source>No follow</source>
-        <target xml:lang="de">nicht folgen</target>
+        <target xml:lang="de" state="translated">nicht folgen</target>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__link__targetBlank" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__link__targetBlank" xml:space="preserve" approved="no">
                 <source>Open in new window</source>
-        <target xml:lang="de">Öffne Fenster in neuem Tab</target>
+        <target xml:lang="de" state="translated">Öffne Fenster in neuem Tab</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__download" xml:space="preserve" approved="no">
                 <source>Downloadable</source>
             <target xml:lang="de" state="translated">Ist Download</target>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__link__titlePlaceholder" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__link__titlePlaceholder" xml:space="preserve" approved="no">
                 <source>Enter link title</source>
-        <target xml:lang="de">Link Titel eingeben</target>
+        <target xml:lang="de" state="translated">Link Titel eingeben</target>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__link__title" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__link__title" xml:space="preserve" approved="no">
                 <source>Title</source>
-        <target xml:lang="de">Titel</target>
+        <target xml:lang="de" state="translated">Titel</target>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__link__anchorPlaceholder" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__link__anchorPlaceholder" xml:space="preserve" approved="no">
                 <source>Enter anchor name</source>
-        <target xml:lang="de">Gebe Anker Name ein</target>
+        <target xml:lang="de" state="translated">Gebe Anker Name ein</target>
         <alt-trans>
                     <target xml:lang="de">Gebe Anchor Name ein</target>
                 </alt-trans>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__link__anchor" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__link__anchor" xml:space="preserve" approved="no">
                 <source>Link to anchor</source>
-        <target xml:lang="de">Link zum Anker</target>
+        <target xml:lang="de" state="translated">Link zum Anker</target>
         <alt-trans>
                     <target xml:lang="de">Verbinde zum Anker</target>
                 </alt-trans>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__link__edit" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__link__edit" xml:space="preserve" approved="no">
                 <source>Edit link</source>
-        <target xml:lang="de">Link bearbeiten</target>
+        <target xml:lang="de" state="translated">Link bearbeiten</target>
         <alt-trans>
                     <target xml:lang="de">Bearbeite Link</target>
                 </alt-trans>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__link__apply" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__link__apply" xml:space="preserve" approved="no">
                 <source>Apply link</source>
-        <target xml:lang="de">Link anwenden</target>
+        <target xml:lang="de" state="translated">Link anwenden</target>
         <alt-trans>
                     <target xml:lang="de">Link ausführen</target>
                 </alt-trans>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__link__placeholder" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__link__placeholder" xml:space="preserve" approved="no">
                 <source>Paste a link, or search</source>
-        <target xml:lang="de">Link einfügen oder Eingabe zur Suche</target>
+        <target xml:lang="de" state="translated">Link einfügen oder Eingabe zur Suche</target>
         <alt-trans>
                     <target xml:lang="de">kopiere einen Link oder suche einen</target>
                 </alt-trans>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__link__formatAsHttp" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__link__formatAsHttp" xml:space="preserve" approved="no">
                 <source>Format as http link?</source>
-        <target xml:lang="de">Formatieren als http Link?</target>
+        <target xml:lang="de" state="translated">Formatieren als http Link?</target>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__link__formatAsEmail" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__link__formatAsEmail" xml:space="preserve" approved="no">
                 <source>Format as email?</source>
-        <target xml:lang="de">Formatieren als E-Mail?</target>
+        <target xml:lang="de" state="translated">Formatieren als E-Mail?</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__ordered-list" xml:space="preserve">
                 <source>Ordered list</source>
@@ -147,33 +147,33 @@
                     <target xml:lang="de">Links ausrichten</target>
                 </alt-trans>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__align-right" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__align-right" xml:space="preserve" approved="no">
                 <source>Align right</source>
-        <target xml:lang="de">Rechtsbündig</target>
+        <target xml:lang="de" state="translated">Rechtsbündig</target>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__align-center" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__align-center" xml:space="preserve" approved="no">
                 <source>Align center</source>
-        <target xml:lang="de">Zentriert</target>
+        <target xml:lang="de" state="translated">Zentriert</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__align-justify" xml:space="preserve">
                 <source>Align justify</source>
         <target xml:lang="de" state="translated">Blocksatz</target>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__table" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__table" xml:space="preserve" approved="no">
                 <source>Table</source>
-        <target xml:lang="de">Tabelle</target>
+        <target xml:lang="de" state="translated">Tabelle</target>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__tableColumn" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__tableColumn" xml:space="preserve" approved="no">
                 <source>Column</source>
-        <target xml:lang="de">Spalte</target>
+        <target xml:lang="de" state="translated">Spalte</target>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__tableRow" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__tableRow" xml:space="preserve" approved="no">
                 <source>Row</source>
-        <target xml:lang="de">Zeile</target>
+        <target xml:lang="de" state="translated">Zeile</target>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__tableMergeCells" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__tableMergeCells" xml:space="preserve" approved="no">
                 <source>Merge cells</source>
-        <target xml:lang="de">Zellen verbinden</target>
+        <target xml:lang="de" state="translated">Zellen verbinden</target>
         <alt-trans>
                     <target xml:lang="de">Verbinde Zellen</target>
                 </alt-trans>
@@ -190,9 +190,9 @@
                 <source>Indent</source>
         <target xml:lang="de" state="translated">Einzug vergrößern</target>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__setTableColumnHeader" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__setTableColumnHeader" xml:space="preserve" approved="no">
                 <source>Header column</source>
-        <target xml:lang="de">Kopfspalte</target>
+        <target xml:lang="de" state="translated">Kopfspalte</target>
         <alt-trans>
                     <target xml:lang="de">Kopfzeile Spalte</target>
                 </alt-trans>
@@ -200,94 +200,94 @@
                     <target xml:lang="de">Kopfzeile</target>
                 </alt-trans>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__insertTableColumnLeft" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__insertTableColumnLeft" xml:space="preserve" approved="no">
                 <source>Insert column before</source>
-        <target xml:lang="de">Spalte links einfügen</target>
+        <target xml:lang="de" state="translated">Spalte links einfügen</target>
         <alt-trans>
                     <target xml:lang="de">füge als erst eine Spalte ein</target>
                 </alt-trans>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__insertTableColumnRight" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__insertTableColumnRight" xml:space="preserve" approved="no">
                 <source>Insert column after</source>
-        <target xml:lang="de">Spalte rechts einfügen</target>
+        <target xml:lang="de" state="translated">Spalte rechts einfügen</target>
         <alt-trans>
                     <target xml:lang="de">füge Spalte danach ein</target>
                 </alt-trans>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__removeTableColumn" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__removeTableColumn" xml:space="preserve" approved="no">
                 <source>Delete column</source>
-        <target xml:lang="de">Spalte löschen</target>
+        <target xml:lang="de" state="translated">Spalte löschen</target>
         <alt-trans>
                     <target xml:lang="de">Lösche Spalte</target>
                 </alt-trans>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__setTableRowHeader" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__setTableRowHeader" xml:space="preserve" approved="no">
                 <source>Header row</source>
-        <target xml:lang="de">Kopfzeile</target>
+        <target xml:lang="de" state="translated">Kopfzeile</target>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__insertTableRowBelow" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__insertTableRowBelow" xml:space="preserve" approved="no">
                 <source>Insert row below</source>
-        <target xml:lang="de">Zeile darunter einfügen</target>
+        <target xml:lang="de" state="translated">Zeile darunter einfügen</target>
         <alt-trans>
                     <target xml:lang="de">füge Zeile unten ein</target>
                 </alt-trans>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__insertTableRowAbove" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__insertTableRowAbove" xml:space="preserve" approved="no">
                 <source>Insert row above</source>
-        <target xml:lang="de">Zeile darüber einfügen</target>
+        <target xml:lang="de" state="translated">Zeile darüber einfügen</target>
         <alt-trans>
                     <target xml:lang="de">Zeile oben einfügen</target>
                 </alt-trans>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__removeTableRow" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__removeTableRow" xml:space="preserve" approved="no">
                 <source>Delete row</source>
-        <target xml:lang="de">Zeile entfernen</target>
+        <target xml:lang="de" state="translated">Zeile entfernen</target>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__mergeTableCellUp" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__mergeTableCellUp" xml:space="preserve" approved="no">
                 <source>Merge cell up</source>
-        <target xml:lang="de">Verbinde mit Zelle darüber</target>
+        <target xml:lang="de" state="translated">Verbinde mit Zelle darüber</target>
         <alt-trans>
                     <target xml:lang="de">Verbinde Zellen</target>
                 </alt-trans>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__mergeTableCellRight" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__mergeTableCellRight" xml:space="preserve" approved="no">
                 <source>Merge cell right</source>
-        <target xml:lang="de">Verbinde mit Zelle rechts</target>
+        <target xml:lang="de" state="translated">Verbinde mit Zelle rechts</target>
         <alt-trans>
                     <target xml:lang="de">Verbinde Zeilen rechts</target>
                 </alt-trans>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__mergeTableCellDown" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__mergeTableCellDown" xml:space="preserve" approved="no">
                 <source>Merge cell down</source>
-        <target xml:lang="de">Verbinde mit Zelle darunter</target>
+        <target xml:lang="de" state="translated">Verbinde mit Zelle darunter</target>
         <alt-trans>
                     <target xml:lang="de">Verbinde Zeilen nach unten</target>
                 </alt-trans>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__mergeTableCellLeft" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__mergeTableCellLeft" xml:space="preserve" approved="no">
                 <source>Merge cell left</source>
-        <target xml:lang="de">Verbinde mit Zelle links</target>
+        <target xml:lang="de" state="translated">Verbinde mit Zelle links</target>
         <alt-trans>
                     <target xml:lang="de">Verbinde Zeilen nach links</target>
                 </alt-trans>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__splitTableCellVertically" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__splitTableCellVertically" xml:space="preserve" approved="no">
                 <source>Split cell vertically</source>
-        <target xml:lang="de">Trenne Zelle vertikal</target>
+        <target xml:lang="de" state="translated">Trenne Zelle vertikal</target>
         <alt-trans>
                     <target xml:lang="de">Trenne Zellen vertikal</target>
                 </alt-trans>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__splitTableCellHorizontally" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__splitTableCellHorizontally" xml:space="preserve" approved="no">
                 <source>Split cell horizontally</source>
-        <target xml:lang="de">Trenne Zelle horizontal</target>
+        <target xml:lang="de" state="translated">Trenne Zelle horizontal</target>
         <alt-trans>
                     <target xml:lang="de">Trenn Zellen horizontal</target>
                 </alt-trans>
       </trans-unit>
-      <trans-unit id="createNew" xml:space="preserve" approved="yes">
+      <trans-unit id="createNew" xml:space="preserve" approved="no">
                 <source>Create new</source>
-        <target xml:lang="de">Neu erstellen</target>
+        <target xml:lang="de" state="translated">Neu erstellen</target>
         <alt-trans>
                     <target xml:lang="de">Neues Element erstellen</target>
                 </alt-trans>
@@ -300,179 +300,191 @@
                 <source>Please enter ###CHARACTERS### more character</source>
         <target xml:lang="de" state="translated">Bitte geben Sie ###CHARACTERS### mehr Zeichen ein</target>
       </trans-unit>
-      <trans-unit id="Shortcut__Introduction" xml:space="preserve" approved="yes">
+      <trans-unit id="Shortcut__Introduction" xml:space="preserve" approved="no">
                 <source>
                     These are Keyboard-Shortcuts we are providing.
                     You have to press the keys on the right after each other.
                     They will not get triggered when you are focusing an input field.
                 </source>
-        <target xml:lang="de">
+        <target xml:lang="de" state="translated">
                     Dies sind die Tastaturkürzel, die wir anbieten.
                     Drücken sie die Tasten der rechten Seite nacheinander.
                     Befinden sie sich in einem Eingabefeld, werden diese nicht ausgelöst.
                 </target>
       </trans-unit>
-      <trans-unit id="Shortcut__UI.RightSideBar.toggle" xml:space="preserve" approved="yes">
+      <trans-unit id="Shortcut__UI.RightSideBar.toggle" xml:space="preserve" approved="no">
                 <source>Toggle inspector</source>
-        <target xml:lang="de">Inspector auf- / zuklappen</target>
+        <target xml:lang="de" state="translated">Inspector auf- / zuklappen</target>
       </trans-unit>
       <group id="UI.RightSideBar.tabs.validationErrorTooltip" restype="x-gettext-plurals">
         <trans-unit id="UI.RightSideBar.tabs.validationErrorTooltip[0]" xml:space="preserve">
                     <source>{tabName} – {amountOfErrors} validation issue</source>
-                    <target xml:lang="de">{tabName} – {amountOfErrors} Validierungsfehler</target>
+                    <target xml:lang="de" state="translated">{tabName} – {amountOfErrors} Validierungsfehler</target>
                 </trans-unit>
         <trans-unit id="UI.RightSideBar.tabs.validationErrorTooltip[1]" xml:space="preserve">
                     <source>{tabName} – {amountOfErrors} validation issues</source>
-                    <target xml:lang="de">{tabName} – {amountOfErrors} Validierungsfehler</target>
+                    <target xml:lang="de" state="translated">{tabName} – {amountOfErrors} Validierungsfehler</target>
                 </trans-unit>
       </group>
-      <trans-unit id="Shortcut__UI.FullScreen.toggle" xml:space="preserve" approved="yes">
+      <trans-unit id="Shortcut__UI.FullScreen.toggle" xml:space="preserve" approved="no">
                 <source>Toggle full screen</source>
-        <target xml:lang="de">Vollbildmodus umschalten</target>
+        <target xml:lang="de" state="translated">Vollbildmodus umschalten</target>
       </trans-unit>
-      <trans-unit id="Shortcut__UI.LeftSideBar.toggle" xml:space="preserve" approved="yes">
+      <trans-unit id="Shortcut__UI.LeftSideBar.toggle" xml:space="preserve" approved="no">
                 <source>Toggle left sidebar</source>
-        <target xml:lang="de">Linke Seitenleiste ein-/ausblenden</target>
+        <target xml:lang="de" state="translated">Linke Seitenleiste ein-/ausblenden</target>
         <alt-trans>
                     <target xml:lang="de">Linke Seitenleiste ein/aus</target>
                 </alt-trans>
       </trans-unit>
-      <trans-unit id="Shortcut__UI.LeftSideBar.toggleContentTree" xml:space="preserve" approved="yes">
+      <trans-unit id="Shortcut__UI.LeftSideBar.toggleContentTree" xml:space="preserve" approved="no">
                 <source>Toggle contenttree</source>
-        <target xml:lang="de">Inhaltsbaum ein-/ausblenden</target>
+        <target xml:lang="de" state="translated">Inhaltsbaum ein-/ausblenden</target>
         <alt-trans>
                     <target xml:lang="de">Inhaltsbaum ein/aus</target>
                 </alt-trans>
       </trans-unit>
-      <trans-unit id="Shortcut__UI.AddNodeModal.close" xml:space="preserve" approved="yes">
+      <trans-unit id="Shortcut__UI.AddNodeModal.close" xml:space="preserve" approved="no">
                 <source>Close Add-Node-Modal</source>
-        <target xml:lang="de">Neue Seite Modal schliessen</target>
+        <target xml:lang="de" state="translated">Neue Seite Modal schliessen</target>
       </trans-unit>
-      <trans-unit id="Shortcut__UI.Drawer.toggle" xml:space="preserve" approved="yes">
+      <trans-unit id="Shortcut__UI.Drawer.toggle" xml:space="preserve" approved="no">
                 <source>Toggle Drawer</source>
-        <target xml:lang="de">Leiste ein-/ausblenden</target>
+        <target xml:lang="de" state="translated">Leiste ein-/ausblenden</target>
         <alt-trans>
                     <target xml:lang="de">Leiste ein/aus</target>
                 </alt-trans>
       </trans-unit>
-      <trans-unit id="Shortcut__UI.EditModePanel.toggle" xml:space="preserve" approved="yes">
+      <trans-unit id="Shortcut__UI.EditModePanel.toggle" xml:space="preserve" approved="no">
                 <source>Toggle EditModePanel</source>
-        <target xml:lang="de">Bearbeiten/Vorschau Panel ein-/ausblenden</target>
+        <target xml:lang="de" state="translated">Bearbeiten/Vorschau Panel ein-/ausblenden</target>
         <alt-trans>
                     <target xml:lang="de">Bearbeiten/Vorschau Panel ein/aus</target>
                 </alt-trans>
       </trans-unit>
-      <trans-unit id="Shortcut__UI.InsertionModeModal.cancel" xml:space="preserve" approved="yes">
+      <trans-unit id="Shortcut__UI.InsertionModeModal.cancel" xml:space="preserve" approved="no">
                 <source>Cancel InsertionModeModal</source>
-        <target xml:lang="de">InsertionModeModal abbrechen</target>
+        <target xml:lang="de" state="translated">InsertionModeModal abbrechen</target>
         <alt-trans>
                     <target xml:lang="de">Breche InsertionModeModal ab</target>
                 </alt-trans>
       </trans-unit>
-      <trans-unit id="Shortcut__UI.InsertionModeModal.apply" xml:space="preserve" approved="yes">
+      <trans-unit id="Shortcut__UI.InsertionModeModal.apply" xml:space="preserve" approved="no">
                 <source>Apply InsertionModeModal</source>
-        <target xml:lang="de">InsertionModeModal anwenden</target>
+        <target xml:lang="de" state="translated">InsertionModeModal anwenden</target>
         <alt-trans>
                     <target xml:lang="de">Wende InsertionModeModal an</target>
                 </alt-trans>
       </trans-unit>
-      <trans-unit id="Shortcut__UI.ContentCanvas.reload" xml:space="preserve" approved="yes">
+      <trans-unit id="Shortcut__UI.ContentCanvas.reload" xml:space="preserve" approved="no">
                 <source>Reload ContentCanvas</source>
-        <target xml:lang="de">Inhaltsbereich neu laden</target>
+        <target xml:lang="de" state="translated">Inhaltsbereich neu laden</target>
       </trans-unit>
-      <trans-unit id="Shortcut__UI.Inspector.discard" xml:space="preserve" approved="yes">
+      <trans-unit id="Shortcut__UI.Inspector.discard" xml:space="preserve" approved="no">
                 <source>Discard Inspector</source>
-        <target xml:lang="de">Inspektoreingaben verwerfen</target>
+        <target xml:lang="de" state="translated">Inspektoreingaben verwerfen</target>
       </trans-unit>
-      <trans-unit id="Shortcut__UI.Inspector.escape" xml:space="preserve" approved="yes">
+      <trans-unit id="Shortcut__UI.Inspector.escape" xml:space="preserve" approved="no">
                 <source>Escape Inspector</source>
-        <target xml:lang="de">Inspektor verlassen</target>
+        <target xml:lang="de" state="translated">Inspektor verlassen</target>
       </trans-unit>
-      <trans-unit id="Shortcut__UI.Inspector.resume" xml:space="preserve" approved="yes">
+      <trans-unit id="Shortcut__UI.Inspector.resume" xml:space="preserve" approved="no">
                 <source>Resume Inspector</source>
-        <target xml:lang="de">Bearbeitung fortsetzen im Inspektor</target>
+        <target xml:lang="de" state="translated">Bearbeitung fortsetzen im Inspektor</target>
       </trans-unit>
-      <trans-unit id="Shortcut__UI.NodeCreationDialog.back" xml:space="preserve" approved="yes">
+      <trans-unit id="Shortcut__UI.NodeCreationDialog.back" xml:space="preserve" approved="no">
                 <source>NodeCreationDialog Back</source>
-        <target xml:lang="de">Neue Seite erstellen Dialog zurück</target>
+        <target xml:lang="de" state="translated">Neue Seite erstellen Dialog zurück</target>
       </trans-unit>
-      <trans-unit id="Shortcut__UI.NodeCreationDialog.cancel" xml:space="preserve" approved="yes">
+      <trans-unit id="Shortcut__UI.NodeCreationDialog.cancel" xml:space="preserve" approved="no">
                 <source>NodeCreationDialog Cancel</source>
-        <target xml:lang="de">Neue Seite erstellen Dialog abbrechen</target>
+        <target xml:lang="de" state="translated">Neue Seite erstellen Dialog abbrechen</target>
       </trans-unit>
-      <trans-unit id="Shortcut__UI.NodeCreationDialog.apply" xml:space="preserve" approved="yes">
+      <trans-unit id="Shortcut__UI.NodeCreationDialog.apply" xml:space="preserve" approved="no">
                 <source>NodeCreationDialog Apply</source>
-        <target xml:lang="de">Neue Seite erstellen Dialog übernehmen</target>
+        <target xml:lang="de" state="translated">Neue Seite erstellen Dialog übernehmen</target>
       </trans-unit>
-      <trans-unit id="Shortcut__UI.NodeVariantCreationDialog.cancel" xml:space="preserve" approved="yes">
+      <trans-unit id="Shortcut__UI.NodeVariantCreationDialog.cancel" xml:space="preserve" approved="no">
                 <source>NodeVariantCreationDialog Cancel</source>
-        <target xml:lang="de">Neue Seite erstellen Dialog abbrechen</target>
+        <target xml:lang="de" state="translated">Neue Seite erstellen Dialog abbrechen</target>
       </trans-unit>
-      <trans-unit id="Shortcut__UI.NodeVariantCreationDialog.createEmpty" xml:space="preserve" approved="yes">
+      <trans-unit id="Shortcut__UI.NodeVariantCreationDialog.createEmpty" xml:space="preserve" approved="no">
                 <source>NodeVariantCreationDialog Create Empty</source>
-        <target xml:lang="de">Neue Seite erstellen Dialog leere Seite erstellen</target>
+        <target xml:lang="de" state="translated">Neue Seite erstellen Dialog leere Seite erstellen</target>
       </trans-unit>
-      <trans-unit id="Shortcut__UI.NodeVariantCreationDialog.createAndCopy" xml:space="preserve" approved="yes">
+      <trans-unit id="Shortcut__UI.NodeVariantCreationDialog.createAndCopy" xml:space="preserve" approved="no">
                 <source>NodeVariantCreationDialog Create and Copy</source>
-        <target xml:lang="de">Neue Seite erstellen Dialog neue Seite von Kopie erstellen</target>
+        <target xml:lang="de" state="translated">Neue Seite erstellen Dialog neue Seite von Kopie erstellen</target>
       </trans-unit>
-      <trans-unit id="Shortcut__CR.Nodes.unfocus" xml:space="preserve" approved="yes">
+      <trans-unit id="Shortcut__CR.Nodes.unfocus" xml:space="preserve" approved="no">
                 <source>Unfocus Node</source>
-        <target xml:lang="de">Fokus vom Node entfernen</target>
+        <target xml:lang="de" state="translated">Fokus vom Node entfernen</target>
       </trans-unit>
       <group id="changesApplied" restype="x-gettext-plurals">
         <trans-unit id="changesApplied[0]" xml:space="preserve">
                     <source>{0} change successfully applied.</source>
-                    <target>{0} Änderung erfolgreich angewendet.</target>
+                    <target state="translated">{0} Änderung erfolgreich angewendet.</target>
                 </trans-unit>
         <trans-unit id="changesApplied[1]" xml:space="preserve">
                     <source>{0} changes successfully applied.</source>
-                    <target>{0} Änderungen erfolgreich angewendet.</target>
+                    <target state="translated">{0} Änderungen erfolgreich angewendet.</target>
                 </trans-unit>
       </group>
       <group id="changesPublished" restype="x-gettext-plurals">
         <trans-unit id="changesPublished[0]" xml:space="preserve">
                     <source>Published {0} change to "{1}".</source>
-                    <target>{0} Änderung nach "{1}" veröffentlicht.</target>
+                    <target state="translated">{0} Änderung nach "{1}" veröffentlicht.</target>
                 </trans-unit>
         <trans-unit id="changesPublished[1]" xml:space="preserve">
                     <source>Published {0} changes to "{1}".</source>
-                    <target>{0} Änderungen nach "{1}" veröffentlicht.</target>
+                    <target state="translated">{0} Änderungen nach "{1}" veröffentlicht.</target>
                 </trans-unit>
       </group>
       <group id="changesDiscarded" restype="x-gettext-plurals">
         <trans-unit id="changesDiscarded[0]" xml:space="preserve">
                     <source>Discarded {0} change.</source>
-                    <target>{0} Änderung verworfen.</target>
+                    <target state="translated">{0} Änderung verworfen.</target>
                 </trans-unit>
         <trans-unit id="changesDiscarded[1]" xml:space="preserve">
                     <source>Discarded {0} changes.</source>
-                    <target>{0} Änderungen verworfen.</target>
+                    <target state="translated">{0} Änderungen verworfen.</target>
                 </trans-unit>
       </group>
-      <trans-unit id="syncUriPathSegment" xml:space="preserve" approved="yes">
-                <source>Unfocus Node</source>
-        <target xml:lang="de">Synchronisieren mit dem Titel</target>
+      <trans-unit id="syncUriPathSegment" xml:space="preserve" approved="no">
+                <source>Syncronize with the title property</source>
+        <target xml:lang="de" state="translated">Synchronisieren mit dem Titel</target>
       </trans-unit>
       <trans-unit id="documentsSelected" xml:space="preserve">
                 <source>documents selected</source>
-        <target>ausgewählte Dokumente</target>
+        <target state="translated">ausgewählte Dokumente</target>
       </trans-unit>
       <trans-unit id="deleteXNodes" xml:space="preserve">
                 <source>Delete {amount} nodes</source>
-        <target>{amount} Knoten löschen</target>
+        <target state="translated">{amount} Knoten löschen</target>
       </trans-unit>
       <trans-unit id="inspectorMutlipleContentNodesSelectedTooltip" xml:space="preserve">
                 <source>Select a single document in order to be able to edit its properties</source>
-        <target>Wählen Sie ein einzelnes Dokument aus, um dessen Eigenschaften zu bearbeiten</target>
+        <target state="translated">Wählen Sie ein einzelnes Dokument aus, um dessen Eigenschaften zu bearbeiten</target>
       </trans-unit>
       <trans-unit id="contentElementsSelected" xml:space="preserve">
                 <source>content elements selected</source>
-        <target>ausgewählte Inhaltselemente</target>
+        <target state="translated">ausgewählte Inhaltselemente</target>
       </trans-unit>
       <trans-unit id="inspectorMutlipleDocumentNodesSelectedTooltip" xml:space="preserve">
                 <source>Select a single content element in order to be able to edit its properties</source>
-        <target>Wählen Sie ein einzelnes Inhaltselement aus, um dessen Eigenschaften zu bearbeiten</target>
+        <target state="translated">Wählen Sie ein einzelnes Inhaltselement aus, um dessen Eigenschaften zu bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="nodes" xml:space="preserve">
+                <source>nodes</source>
+      </trans-unit>
+      <trans-unit id="rangeEditorMinimum" xml:space="preserve">
+                <source>Minimum</source>
+      </trans-unit>
+      <trans-unit id="rangeEditorMaximum" xml:space="preserve">
+                <source>Maximum</source>
+      </trans-unit>
+      <trans-unit id="rangeEditorCurrentValue" xml:space="preserve">
+                <source>Current value</source>
       </trans-unit>
     </body>
   </file>

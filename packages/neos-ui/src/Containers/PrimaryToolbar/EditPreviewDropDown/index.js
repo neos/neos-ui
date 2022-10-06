@@ -35,6 +35,16 @@ export default class EditPreviewModeDropDown extends PureComponent {
         setEditPreviewMode(mode);
     });
 
+    componentDidMount() {
+        const {editPreviewMode, editPreviewModes, setEditPreviewMode} = this.props;
+
+        // Switch edit preview mode to the first one if the current one is not available
+        if (!editPreviewModes[editPreviewMode]) {
+            const fallbackEditPreviewMode = Object.values(editPreviewModes)[0];
+            setEditPreviewMode(fallbackEditPreviewMode.id);
+        }
+    }
+
     render() {
         const {
             editPreviewMode,
@@ -42,7 +52,7 @@ export default class EditPreviewModeDropDown extends PureComponent {
             i18nRegistry
         } = this.props;
 
-        const currentEditMode = editPreviewModes[editPreviewMode];
+        const currentEditMode = editPreviewModes[editPreviewMode] || Object.values(editPreviewModes)[0];
 
         const editPreviewModesList = Object.keys(editPreviewModes).map(key => {
             const element = editPreviewModes[key];

@@ -1,6 +1,6 @@
 import {produce} from 'immer';
 import {action as createAction, ActionType} from 'typesafe-actions';
-import {InitAction} from '@neos-project/neos-ui-redux-store/src/System';
+import {InitAction} from '../../System';
 import { WritableDraft } from 'immer/dist/internal';
 
 export interface ImpersonateAccount extends WritableDraft<{

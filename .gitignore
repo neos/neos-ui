@@ -39,6 +39,7 @@ Resources/Public/Styles/Font*
 #
 .vscode/
 .idea/
+*.iml
 
 #
 # Package Manager

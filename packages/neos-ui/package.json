@@ -20,7 +20,7 @@
     "enzyme": "^3.8.0"
   },
   "dependencies": {
-    "@ckeditor/ckeditor5-highlight": "16.0.0",
+    "@ckeditor/ckeditor5-highlight": "35.2.0",
     "@friendsofreactjs/react-css-themr": "^4.1.0",
     "@neos-project/neos-ts-interfaces": "workspace:*",
     "@neos-project/neos-ui-backend-connector": "workspace:*",

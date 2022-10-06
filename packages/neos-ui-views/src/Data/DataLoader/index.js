@@ -22,8 +22,8 @@ const neosContextConnector = neos(globalRegistry => ({
     dataSourcesDataLoader: globalRegistry.get('dataLoaders').get('DataSources')
 }));
 
-export default reduxConnector(neosContextConnector(() => WrappedComponent => {
-    return class DataLoader extends PureComponent {
+export default () => WrappedComponent => {
+     class DataLoader extends PureComponent {
         static propTypes = {
             focusedNodeContextPath: PropTypes.string,
             getNodeByContextPath: PropTypes.func.isRequired,
@@ -107,5 +107,7 @@ export default reduxConnector(neosContextConnector(() => WrappedComponent => {
                 </Widget>
             );
         }
-    };
-}));
+    }
+
+     return reduxConnector(neosContextConnector(DataLoader))
+};

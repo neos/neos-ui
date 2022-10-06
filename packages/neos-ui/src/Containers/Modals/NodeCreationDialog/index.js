@@ -17,6 +17,14 @@ import EditorEnvelope from '@neos-project/neos-ui-editors/src/EditorEnvelope/ind
 
 import style from './style.css';
 
+const defaultState = {
+    transient: {},
+    validationErrors: null,
+    isDirty: false,
+    secondaryInspectorName: '',
+    secondaryInspectorComponent: null
+}
+
 @neos(globalRegistry => ({
     validatorRegistry: globalRegistry.get('validators')
 }))
@@ -50,14 +58,35 @@ export default class NodeCreationDialog extends PureComponent {
         secondaryInspectorComponent: null
     };
 
-    state = NodeCreationDialog.getDerivedStateFromProps(
-        this.props,
-        NodeCreationDialog.defaultState
-    );
+    constructor(props) {
+        super(props);
+
+        this.state = ((props, state) => {
+            if (!props.isOpen) {
+                return defaultState
+            }
+
+            if (state.isDirty) {
+                return state;
+            }
+
+            const transientDefaultValues = NodeCreationDialog.getTransientDefaultValuesFromConfiguration(
+                props.configuration
+            );
+
+            return {
+                ...state,
+                transient: {
+                    ...transientDefaultValues,
+                    ...state.transient
+                }
+            };
+        })(props, defaultState)
+    }
 
     static getDerivedStateFromProps(props, state) {
         if (!props.isOpen) {
-            return NodeCreationDialog.defaultState;
+            return defaultState;
         }
 
         if (state.isDirty) {
@@ -144,7 +173,7 @@ export default class NodeCreationDialog extends PureComponent {
         } else {
             const {apply} = this.props;
             apply(transient);
-            this.setState(NodeCreationDialog.defaultState);
+            this.setState(defaultState);
         }
     }
 

@@ -38,20 +38,20 @@ Neos:
       resources:
 
         javascript:
-          'Neos.Neos.UI:Vendor':
-            resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/index.js"}'
-            position: 'start 1000'
-          #'Neos.Neos.UI:Host':
-          #  resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/JavaScript/Host.js"}'
-          #  position: 'start 900'
+          # 'Neos.Neos.UI:Vendor':
+          #   resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/JavaScript/Vendor.js"}'
+          #   position: 'start 1000'
+          'Neos.Neos.UI:Host':
+           resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/Host.js"}'
+           position: 'start 900'
 
         stylesheets:
           'Neos.Neos.UI:Host':
-            resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/index.css"}'
+            resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/Host.css"}'
             position: 'start 1000'
-          #'Neos.Neos.UI:HostOnlyStyles':
-          #  resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/Styles/HostOnlyStyles.css"}'
-          #  position: 'start 900'
+          'Neos.Neos.UI:HostOnlyStyles':
+           resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/HostOnlyStyles.css"}'
+           position: 'start 900'
 
       contentCanvas:
         backgroundColor: '#ffffff'

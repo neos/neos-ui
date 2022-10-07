@@ -42,9 +42,7 @@
 # Add lerna alias as there are currently some MacOS problems
 # and putting it into the $PATH is simply not enough
 editorconfigChecker = ./node_modules/.bin/editorconfig-checker
-webpack = ./node_modules/.bin/webpack
 crossenv = ./node_modules/.bin/crossenv
-
 # Define colors
 GREEN  := $(shell tput -Txterm setaf 2)
 YELLOW := $(shell tput -Txterm setaf 3)
@@ -93,23 +91,22 @@ build-react-ui-components-standalone:
 ## Runs the development build.
 build:
 	make build-subpackages
-	NEOS_BUILD_ROOT=$(shell pwd) $(webpack) --progress --color
+	NEOS_BUILD_ROOT=$(shell pwd) node esbuild.js
 
 ## Watches the source files for changes and runs a build in case.
 build-watch:
-	NEOS_BUILD_ROOT=$(shell pwd) $(webpack) --progress --color --watch
+	NEOS_BUILD_ROOT=$(shell pwd) node esbuild.js
 
 ## Watches (and polls) the source files on a file share.
 build-watch-poll:
-	NEOS_BUILD_ROOT=$(shell pwd) $(webpack) \
-		--progress --color --watch-poll --watch
+	echo "not implemented in esbuild, yet! PR Welcome!"
 
 # clean anything before building for production just to be sure
 ## Runs the production build.
 build-production:
 	make build-subpackages
 	$(cross-env) NODE_ENV=production NEOS_BUILD_ROOT=$(shell pwd) \
-		$(webpack) --color
+		node esbuild.js
 
 
 ################################################################################

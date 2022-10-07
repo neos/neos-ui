@@ -27,10 +27,14 @@ require('esbuild').build({
                     path: require('path').join(__dirname, 'mockPath.js'),
                 }))
 
-                // exclude CKEditor styles
-                onLoad({filter: /node_modules\/@ckeditor\/.*\.css$/}, () => ({
-                    contents: '',
-                    loader: 'css'
+                onLoad({filter: /node_modules\/@ckeditor\/.*\.svg$/}, async ({path}) => ({
+                    contents: (await require('fs/promises').readFile(path)).toString(),
+                    loader: 'text'
+                }))
+
+                onLoad({filter: /node_modules\/@ckeditor\/.*\.svg$/}, async ({path}) => ({
+                    contents: (await require('fs/promises').readFile(path)).toString(),
+                    loader: 'text'
                 }))
 
                 // prefix Fontawesome with "neos-" to prevent clashes with customer Fontawesome

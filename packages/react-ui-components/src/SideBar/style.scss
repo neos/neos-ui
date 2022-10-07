@@ -1,0 +1,15 @@
+@import "../reset";
+
+.sideBar {
+    @include reset;
+    position: fixed;
+    width: var(--neos-size-SidebarWidth);
+    height: 100%;
+    background: var(--neos-colors-ContrastDarker);
+}
+.sideBar--left {
+    left: 0;
+}
+.sideBar--right {
+    right: 0;
+}

@@ -1,0 +1,10 @@
+@import "../reset";
+
+.heading {
+    @include reset;
+    font-size: var(--neos-fontSize-Base);
+    text-rendering: optimizelegibility;
+}
+.heading--h1 {
+    font-size: 16px;
+}

@@ -1,0 +1,90 @@
+@import "../reset";
+
+.tabs {
+    @include reset;
+    height: 100%;
+}
+
+.tabs__content {
+    @include reset;
+    height: calc(100% - 141px);
+    overflow-y: auto;
+}
+
+.tabNavigation {
+    @include reset;
+    display: block;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background: var(--neos-colors-ContrastDarkest);
+    border-bottom: 1px solid var(--neos-colors-ContrastDark);
+
+    &:before,
+    &:after {
+        content: '';
+        display: table;
+    }
+    &:after {
+        clear: both;
+    }
+}
+.tabNavigation__item {
+    @include reset;
+    position: relative;
+    float: left;
+    border-top: 1px solid var(--neos-colors-ContrastDark);
+    border-right: 1px solid var(--neos-colors-ContrastDark);
+    color: var(--neos-colors-ContrastBrightest);
+}
+.tabNavigation__item--isActive {
+    background-color: var(--neos-colors-ContrastDarker);
+    cursor: default;
+    border-bottom: 1px solid var(--neos-colors-ContrastDarker);
+    margin-bottom: -1px;
+
+    &:after {
+        display: block;
+        content: ' ';
+        position: absolute;
+        top: -1px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        width: 100%;
+        background: var(--neos-colors-PrimaryBlue);
+    }
+
+    > .tabNavigation__itemBtn {
+        color: var(--neos-colors-PrimaryBlue);
+    }
+}
+.tabNavigation__itemBtn {
+    @include reset;
+    display: inline-block;
+    height: var(--neos-spacing-GoldenUnit);
+    padding: 0 var(--neos-spacing-Full);
+    line-height: var(--neos-spacing-GoldenUnit);
+    cursor: pointer;
+    border: 0;
+    background: 0;
+
+    &:hover {
+        color: var(--neos-colors-PrimaryBlue);
+    }
+
+    &:focus {
+        outline: 0;
+    }
+}
+.tabNavigation__itemBtnIcon {
+    color: currentColor;
+}
+.tabNavigation__itemBtnIcon--hasLabel {
+    margin-right: var(--neos-spacing-Half);
+}
+
+.panel {
+    @include reset;
+    overflow-y: auto;
+}

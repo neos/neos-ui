@@ -25,6 +25,7 @@
     "jest": "^23.6.0",
     "postcss-mixins": "^9.0.4",
     "rimraf": "^2.5.4",
+    "sass": "^1.55.0",
     "stylelint": "^13.7.2",
     "testcafe": "^1.7.0",
     "testcafe-browser-provider-saucelabs": "^1.9.0",

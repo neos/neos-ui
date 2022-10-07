@@ -47,20 +47,18 @@ require('esbuild').build({
             },
         },
         stylePlugin({
-            cssModulesMatch: /\.css/,
-            extract: true,
-            // postcssConfigFile: require('path').join(__dirname, 'packages/build-essentials/src/postcss.config.js')
+            cssModulesMatch: /\.s?css/,
             postcss: {
                 plugins: [
-                    require('postcss-import')(),
-                    require('postcss-mixins'),
-                    require('postcss-nested')(),
-                    require('postcss-hexrgba')(),
-                    require('autoprefixer')(),
+                    require('postcss-import'),
+                    require('postcss-nested'),
+                    require('postcss-hexrgba'),
+                    require('autoprefixer'),
                 ]
             }
         }),
     ],
+    logLevel: 'error',
     define: {
         // put process env NODE_ENV into global scope as some packages need it (nodeJS)
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),

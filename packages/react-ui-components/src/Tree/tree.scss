@@ -1,0 +1,11 @@
+@import "../reset";
+
+.treeWrapper {
+    @include reset;
+
+    padding: 5px 0;
+
+    &:focus {
+        outline: 0;
+    }
+}

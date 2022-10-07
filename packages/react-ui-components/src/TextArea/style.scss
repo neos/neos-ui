@@ -1,0 +1,33 @@
+@import "../reset";
+
+.textArea {
+    @include reset;
+    width: 100%;
+    height: 40px;
+    padding: 10px 14px;
+    border: 0;
+    border-radius: 2px;
+    background: var(--neos-colors-ContrastNeutral);
+    resize: vertical;
+    transition: .3s height;
+
+    &:focus {
+        outline: 0;
+        background: var(--neos-colors-ContrastBrightest);
+        color: var(--neos-colors-ContrastDarkest);
+    }
+}
+.textArea::-webkit-input-placeholder {
+    font-family: 'Noto Sans', sans-serif;
+    color: var(--neos-colors-ContrastBright);
+}
+.textArea--invalid {
+    outline: 2px solid var(--neos-colors-Error) !important;
+}
+.textArea--highlight {
+    outline: 2px solid var(--neos-colors-Success);
+}
+.textArea--disabled {
+    opacity: .65;
+    cursor: not-allowed;
+}

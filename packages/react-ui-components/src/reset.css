@@ -1,7 +1,0 @@
-@define-mixin reset {
-    font-family: 'Noto Sans', sans-serif;
-    font-weight: normal;
-    color: #FFF;
-    margin: 0;
-    padding: 0;
-}

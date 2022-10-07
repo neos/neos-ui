@@ -23,7 +23,7 @@ const defaultState = {
     isDirty: false,
     secondaryInspectorName: '',
     secondaryInspectorComponent: null
-}
+};
 
 @neos(globalRegistry => ({
     validatorRegistry: globalRegistry.get('validators')
@@ -63,7 +63,7 @@ export default class NodeCreationDialog extends PureComponent {
 
         this.state = ((props, state) => {
             if (!props.isOpen) {
-                return defaultState
+                return defaultState;
             }
 
             if (state.isDirty) {
@@ -81,7 +81,7 @@ export default class NodeCreationDialog extends PureComponent {
                     ...state.transient
                 }
             };
-        })(props, defaultState)
+        })(props, defaultState);
     }
 
     static getDerivedStateFromProps(props, state) {

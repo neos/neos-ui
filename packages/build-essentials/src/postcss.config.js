@@ -1,11 +1,14 @@
+const styles = require('./styles/styleConstants');
+const styleVars = styles.generateCssVarsObject(styles.config);
 
-// TODO: remove
 module.exports = {
     plugins: [
-        require('postcss-nested')(),
-        require('postcss-extend')(),
+        require('autoprefixer'),
+        require('postcss-css-variables')({
+            variables: Object.assign(styleVars)
+        }),
         require('postcss-import')(),
-        require('postcss-hexrgba')(),
-        require('autoprefixer')(),
+        require('postcss-nested')(),
+        require('postcss-hexrgba')()
     ]
 };

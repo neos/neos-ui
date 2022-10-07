@@ -51,28 +51,28 @@
 .ck.ck-icon *{
     fill:currentColor
 }
-.ck .ck-widget.ck-widget_with-selection-handler{
+.ck .ck-widget.ck-widget_with-selection-handle{
     position:relative
 }
-.ck .ck-widget.ck-widget_with-selection-handler .ck-widget__selection-handler{
+.ck .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle{
     visibility:hidden;
     position:absolute
 }
-.ck .ck-widget.ck-widget_with-selection-handler .ck-widget__selection-handler .ck-icon{
+.ck .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle .ck-icon{
     display:block
 }
-.ck .ck-widget.ck-widget_with-selection-handler .ck-widget__selection-handler,.ck .ck-widget.ck-widget_with-selection-handler:hover .ck-widget__selection-handler{
+.ck .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle,.ck .ck-widget.ck-widget_with-selection-handle:hover .ck-widget__selection-handle{
     visibility:visible
 }
 :root{
     --ck-widget-outline-thickness:3px;
-    --ck-widget-handler-icon-size:16px;
-    --ck-widget-handler-animation-duration:200ms;
-    --ck-widget-handler-animation-curve:ease;
+    --ck-widget-handle-icon-size:16px;
+    --ck-widget-handle-animation-duration:200ms;
+    --ck-widget-handle-animation-curve:ease;
     --ck-color-widget-blurred-border:#dedede;
     --ck-color-widget-hover-border:#ffc83d;
     --ck-color-widget-editable-focus-background:var(--ck-color-base-background);
-    --ck-color-widget-drag-handler-icon-color:var(--ck-color-base-background);
+    --ck-color-widget-drag-handle-icon-color:var(--ck-color-base-background);
 }
 .ck .ck-widget{
     margin:var(--ck-spacing-standard) 0;
@@ -80,7 +80,7 @@
     outline-width:var(--ck-widget-outline-thickness);
     outline-style:solid;
     outline-color:transparent;
-    transition:outline-color var(--ck-widget-handler-animation-duration) var(--ck-widget-handler-animation-curve)
+    transition:outline-color var(--ck-widget-handle-animation-duration) var(--ck-widget-handle-animation-curve)
 }
 .ck .ck-widget.ck-widget_selected,.ck .ck-widget.ck-widget_selected:hover{
     outline:var(--ck-widget-outline-thickness) solid var(--ck-color-focus-border)
@@ -97,43 +97,43 @@
     box-shadow:var(--ck-inner-shadow),0 0;
     background-color:var(--ck-color-widget-editable-focus-background)
 }
-.ck .ck-widget.ck-widget_with-selection-handler .ck-widget__selection-handler{
+.ck .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle{
     padding:4px;
     box-sizing:border-box;
     background-color:transparent;
     opacity:0;
-    transition:background-color var(--ck-widget-handler-animation-duration) var(--ck-widget-handler-animation-curve),visibility var(--ck-widget-handler-animation-duration) var(--ck-widget-handler-animation-curve),opacity var(--ck-widget-handler-animation-duration) var(--ck-widget-handler-animation-curve);
+    transition:background-color var(--ck-widget-handle-animation-duration) var(--ck-widget-handle-animation-curve),visibility var(--ck-widget-handle-animation-duration) var(--ck-widget-handle-animation-curve),opacity var(--ck-widget-handle-animation-duration) var(--ck-widget-handle-animation-curve);
     border-radius:var(--ck-border-radius) var(--ck-border-radius) 0 0;
     transform:translateY(-100%);
     left:calc(0px - var(--ck-widget-outline-thickness))
 }
-.ck .ck-widget.ck-widget_with-selection-handler .ck-widget__selection-handler:hover .ck-icon .ck-icon__selected-indicator{
+.ck .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle:hover .ck-icon .ck-icon__selected-indicator{
     opacity:1
 }
-.ck .ck-widget.ck-widget_with-selection-handler .ck-widget__selection-handler .ck-icon{
-    width:var(--ck-widget-handler-icon-size);
-    height:var(--ck-widget-handler-icon-size);
-    color:var(--ck-color-widget-drag-handler-icon-color)
+.ck .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle .ck-icon{
+    width:var(--ck-widget-handle-icon-size);
+    height:var(--ck-widget-handle-icon-size);
+    color:var(--ck-color-widget-drag-handle-icon-color)
 }
-.ck .ck-widget.ck-widget_with-selection-handler .ck-widget__selection-handler .ck-icon .ck-icon__selected-indicator{
+.ck .ck-widget.ck-widget_with-selection-handle .ck-widget__selection-handle .ck-icon .ck-icon__selected-indicator{
     opacity:0;
-    transition:opacity .3s var(--ck-widget-handler-animation-curve)
+    transition:opacity .3s var(--ck-widget-handle-animation-curve)
 }
-.ck .ck-widget.ck-widget_with-selection-handler.ck-widget_selected .ck-widget__selection-handler,.ck .ck-widget.ck-widget_with-selection-handler.ck-widget_selected:hover .ck-widget__selection-handler{
+.ck .ck-widget.ck-widget_with-selection-handle.ck-widget_selected .ck-widget__selection-handle,.ck .ck-widget.ck-widget_with-selection-handle.ck-widget_selected:hover .ck-widget__selection-handle{
     opacity:1;
     background-color:var(--ck-color-focus-border)
 }
-.ck .ck-widget.ck-widget_with-selection-handler.ck-widget_selected .ck-widget__selection-handler .ck-icon .ck-icon__selected-indicator,.ck .ck-widget.ck-widget_with-selection-handler.ck-widget_selected:hover .ck-widget__selection-handler .ck-icon .ck-icon__selected-indicator{
+.ck .ck-widget.ck-widget_with-selection-handle.ck-widget_selected .ck-widget__selection-handle .ck-icon .ck-icon__selected-indicator,.ck .ck-widget.ck-widget_with-selection-handle.ck-widget_selected:hover .ck-widget__selection-handle .ck-icon .ck-icon__selected-indicator{
     opacity:1
 }
-.ck .ck-widget.ck-widget_with-selection-handler:hover .ck-widget__selection-handler{
+.ck .ck-widget.ck-widget_with-selection-handle:hover .ck-widget__selection-handle{
     opacity:1;
     background-color:var(--ck-color-widget-hover-border)
 }
 .ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected,.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected:hover{
     outline-color:var(--ck-color-widget-blurred-border)
 }
-.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected .ck-widget__selection-handler,.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected .ck-widget__selection-handler:hover,.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected:hover .ck-widget__selection-handler,.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected:hover .ck-widget__selection-handler:hover{
+.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected .ck-widget__selection-handle,.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected .ck-widget__selection-handle:hover,.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected:hover .ck-widget__selection-handle,.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected:hover .ck-widget__selection-handle:hover{
     background:var(--ck-color-widget-blurred-border)
 }
 :root{

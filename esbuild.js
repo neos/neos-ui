@@ -8,9 +8,10 @@ require('esbuild').build({
     },
     outdir: './Resources/Public',
     sourcemap: !env.isProduction,
+    minify: env.isProduction,
+    logLevel: env.isProduction ? 'error' : undefined,
     color: true,
     bundle: true,
-    // minify: true,
     loader: {
         '.js': 'tsx',
         '.svg': 'dataurl',
@@ -67,7 +68,6 @@ require('esbuild').build({
             }
         }),
     ],
-    logLevel: 'error',
     define: {
         // put process env NODE_ENV into global scope as some packages need it (nodeJS)
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),

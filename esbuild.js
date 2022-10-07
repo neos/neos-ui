@@ -14,7 +14,7 @@ require('esbuild').build({
     loader: {
         '.js': 'tsx',
         '.svg': 'dataurl',
-
+        '.vanilla-css': 'css',
         '.ttf': 'file',
     },
     plugins: [

@@ -95,7 +95,7 @@ build:
 
 ## Watches the source files for changes and runs a build in case.
 build-watch:
-	NEOS_BUILD_ROOT=$(shell pwd) node esbuild.js
+	echo "not implemented in esbuild, yet! PR Welcome!"
 
 ## Watches (and polls) the source files on a file share.
 build-watch-poll:

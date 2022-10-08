@@ -25,6 +25,47 @@ const defaultState = {
     secondaryInspectorComponent: null
 };
 
+const getDerivedStateFromProps = (props, state) => {
+    if (!props.isOpen) {
+        return defaultState;
+    }
+
+    if (state.isDirty) {
+        return state;
+    }
+
+    const transientDefaultValues = getTransientDefaultValuesFromConfiguration(
+        props.configuration
+    );
+
+    return {
+        ...state,
+        transient: {
+            ...transientDefaultValues,
+            ...state.transient
+        }
+    };
+}
+
+const getTransientDefaultValuesFromConfiguration = (configuration) => {
+    if (configuration) {
+        return Object.keys(configuration.elements).reduce(
+            (transientDefaultValues, elementName) => {
+                if (configuration.elements[elementName].defaultValue === undefined) {
+                    transientDefaultValues[elementName] = {value: null};
+                } else {
+                    transientDefaultValues[elementName] = {
+                        value: configuration.elements[elementName].defaultValue
+                    };
+                }
+                return transientDefaultValues;
+            },
+            {}
+        );
+    }
+    return {};
+}
+
 @neos(globalRegistry => ({
     validatorRegistry: globalRegistry.get('validators')
 }))
@@ -60,70 +101,11 @@ export default class NodeCreationDialog extends PureComponent {
 
     constructor(props) {
         super(props);
-
-        this.state = ((props, state) => {
-            if (!props.isOpen) {
-                return defaultState;
-            }
-
-            if (state.isDirty) {
-                return state;
-            }
-
-            const transientDefaultValues = NodeCreationDialog.getTransientDefaultValuesFromConfiguration(
-                props.configuration
-            );
-
-            return {
-                ...state,
-                transient: {
-                    ...transientDefaultValues,
-                    ...state.transient
-                }
-            };
-        })(props, defaultState);
+        this.state = getDerivedStateFromProps(props, defaultState);
     }
 
     static getDerivedStateFromProps(props, state) {
-        if (!props.isOpen) {
-            return defaultState;
-        }
-
-        if (state.isDirty) {
-            return state;
-        }
-
-        const transientDefaultValues = NodeCreationDialog.getTransientDefaultValuesFromConfiguration(
-            props.configuration
-        );
-
-        return {
-            ...state,
-            transient: {
-                ...transientDefaultValues,
-                ...state.transient
-            }
-        };
-    }
-
-    static getTransientDefaultValuesFromConfiguration = configuration => {
-        if (configuration) {
-            return Object.keys(configuration.elements).reduce(
-                (transientDefaultValues, elementName) => {
-                    if (configuration.elements[elementName].defaultValue === undefined) {
-                        transientDefaultValues[elementName] = {value: null};
-                    } else {
-                        transientDefaultValues[elementName] = {
-                            value: configuration.elements[elementName].defaultValue
-                        };
-                    }
-                    return transientDefaultValues;
-                },
-                {}
-            );
-        }
-
-        return {};
+        return getDerivedStateFromProps(props, state);
     }
 
     handleDialogEditorValueChange = memoize(elementName => (value, hooks) => {

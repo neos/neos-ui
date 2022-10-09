@@ -1,5 +1,6 @@
 const env = require('@neos-project/build-essentials/src/environment');
 const stylePlugin = require('esbuild-style-plugin');
+const {sep} = require("path")
 
 require('esbuild').build({
     entryPoints: {
@@ -21,7 +22,7 @@ require('esbuild').build({
     plugins: [
         {
             name: 'neos-ui-build',
-            setup: ({onResolve, onLoad}) => {
+            setup: ({onResolve, onLoad, resolve}) => {
                 // HOTFIX: Some packages require "path" (require('path'))
                 //         We mock this module here return the content of `mockPath.js`.
                 onResolve({filter: /^path$/}, () => ({
@@ -29,11 +30,23 @@ require('esbuild').build({
                 }))
 
                 // exclude CKEditor styles
-                onLoad({filter: /node_modules\/@ckeditor\/.*\.css$/}, () => ({
-                    contents: '',
-                    loader: 'css'
-                }))
+                // the filter must match the import statement - and as one usually uses relative paths we cannot look for `@ckeditor` here
+                // the most correct way would be to look for all `/\.css/` - but this draws performance as we would intercept each css file
+                // so we use the the longest/most expressive regex that tries to match all ckeditor includes
+                // and luckely all includes look like `../theme/link.css` so we use the theme prefix `/theme\/[^.]+\.css$/`
+                // @todo i cant measure any time differences ... so using .css
+                onResolve({filter: /\.css$/, namespace: "file"}, ({path, ...options}) => {
+                    if (!options.importer.includes(`${sep}@ckeditor${sep}`)) {
+                        return resolve(path, {...options, namespace: "noRecurse"})
+                    }
+                    return {
+                        external: true, 
+                        sideEffects: false
+                    }
+                })
 
+                // load ckeditor icons as plain text and not via `.svg: dataurl`
+                // (currently neccessary for the table select handle icon)
                 onLoad({filter: /node_modules\/@ckeditor\/.*\.svg$/}, async ({path}) => ({
                     contents: (await require('fs/promises').readFile(path)).toString(),
                     loader: 'text'
@@ -57,7 +70,7 @@ require('esbuild').build({
             // but exclude those files that are in the dir
             // - @ckeditor
             // - @fortawesome/fontawesome-svg-core
-            cssModulesMatch: /^((?!\/@ckeditor|\/@fortawesome\/fontawesome-svg-core).)*\.s?css$/,
+            cssModulesMatch: /^((?!\/@ckeditor|\/@fortawesome\/fontawesome-svg-core)).*\.s?css$/,
             postcss: {
                 plugins: [
                     require('postcss-import'),

@@ -4,6 +4,10 @@
 }
 .dropDown__header {
     background-color: transparent;
+
+    &:hover {
+        color: var(--colors-PrimaryBlue);
+    }
 }
 .dropDown__contents {
     width: fit-content;

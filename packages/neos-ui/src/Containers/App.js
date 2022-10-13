@@ -1,9 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import {$get, $transform} from 'plow-js';
+import mergeClassNames from 'classnames';
+import style from './style.css';
 
 import FlashMessages from './FlashMessages/index';
 
-const App = ({globalRegistry, menu}) => {
+const App = ({globalRegistry, menu, isFullScreen, leftSidebarIsHidden, rightSidebarIsHidden}) => {
     const containerRegistry = globalRegistry.get('containers');
 
     const Modals = containerRegistry.get('Modals');
@@ -15,18 +19,22 @@ const App = ({globalRegistry, menu}) => {
     const RightSideBar = containerRegistry.get('RightSideBar');
     const LoadingIndicator = containerRegistry.get('SecondaryToolbar/LoadingIndicator');
 
-    // HINT: the SecondaryToolbar must be *BELOW* the
-    // ContentCanvas; to ensure the SecondaryToolbar is rendered
-    // afterwards and can overlay the ContentCanvas
+    const classNames = mergeClassNames({
+        [style.app]: true,
+        [style['app--isFullScreen']]: isFullScreen,
+        [style['app--leftSidebarIsHidden']]: leftSidebarIsHidden,
+        [style['app--rightSidebarIsHidden']]: rightSidebarIsHidden
+    });
+
     return (
-        <div>
+        <div className={classNames} id="neos-application">
             <div id="dialog"/>
             <Modals/>
             <FlashMessages/>
             <LoadingIndicator/>
             <PrimaryToolbar/>
-            <ContentCanvas/>
             <SecondaryToolbar/>
+            <ContentCanvas/>
             <Drawer menuData={menu}/>
             <LeftSideBar/>
             <RightSideBar/>
@@ -48,12 +56,19 @@ App.propTypes = {
                     label: PropTypes.string.isRequired,
                     uri: PropTypes.string,
                     target: PropTypes.string,
-                    isActive: PropTypes.bool.isReqired,
-                    skipI18n: PropTypes.bool.isReqired
+                    isActive: PropTypes.bool.isRequired,
+                    skipI18n: PropTypes.bool.isRequired
                 })
             )
         })
-    ).isRequired
+    ).isRequired,
+    isFullScreen: PropTypes.bool.isRequired,
+    leftSidebarIsHidden: PropTypes.bool.isRequired,
+    rightSidebarIsHidden: PropTypes.bool.isRequired
 };
 
-export default App;
+export default connect($transform({
+    isFullScreen: $get('ui.fullScreen.isFullScreen'),
+    leftSidebarIsHidden: $get('ui.leftSideBar.isHidden'),
+    rightSidebarIsHidden: $get('ui.rightSideBar.isHidden')
+}))(App);

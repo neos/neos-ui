@@ -72,25 +72,27 @@ export default class LeftSideBar extends PureComponent {
         );
 
         return (
-            <SideBar
-                position="left"
-                className={classNames}
-                aria-hidden={isHidden ? 'true' : 'false'}
-                >
+            <React.Fragment>
                 <div role="button" className={style.leftSideBar__header} onClick={this.handleToggle}>
                     {toggle}
                     {i18nRegistry.translate('Neos.Neos:Main:documentTree', 'Document Tree')}
                 </div>
+                <SideBar
+                    position="left"
+                    className={classNames}
+                    aria-hidden={isHidden ? 'true' : 'false'}
+                    >
 
-                <div className={style.leftSideBar__top}>
-                    {!isHidden && LeftSideBarTop.map((Item, key) => <Item key={key} isExpanded={!isHiddenContentTree}/>)}
-                </div>
+                    <div className={style.leftSideBar__top}>
+                        {!isHidden && LeftSideBarTop.map((Item, key) => <Item key={key} isExpanded={!isHiddenContentTree}/>)}
+                    </div>
 
-                <div className={bottomClassNames}>
-                    <ContentTreeToolbar/>
-                    {!isHidden && !isHiddenContentTree && LeftSideBarBottom.map((Item, key) => <Item key={key}/>)}
-                </div>
-            </SideBar>
+                    <div className={bottomClassNames}>
+                        <ContentTreeToolbar/>
+                        {!isHidden && !isHiddenContentTree && LeftSideBarBottom.map((Item, key) => <Item key={key}/>)}
+                    </div>
+                </SideBar>
+            </React.Fragment>
         );
     }
 }

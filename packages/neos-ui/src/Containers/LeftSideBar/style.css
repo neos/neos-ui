@@ -1,32 +1,33 @@
 .leftSideBar {
+    grid-area: leftSidebar;
     display: flex;
     flex-direction: column;
     flex-basis: 100%;
     background: var(--colors-ContrastDarkest);
-    padding-top: 41px;
-    transition: var(--transition-Default) ease transform;
-    will-change: transform;
-
-    &:before,
-    &:after {
-        content: '';
-        display: table;
-    }
-    &:after {
-        clear: both;
-    }
-
-    @media(max-width: 576px) {
-        width: 100%;
-    }
+    width: 100%;
+    right: unset;
+    position: relative;
 }
 
 .leftSideBar--isHidden {
-    transform: translateX(-var(--size-SidebarWidth));
+    display: none;
+}
 
-    @media(max-width: 576px) {
-        transform: translateX(-576px);
-    }
+.leftSideBar__header {
+    display: flex;
+    gap: 5px;
+    cursor: pointer;
+    height: 41px;
+    line-height: 40px;
+    font-weight: bold;
+    background: var(--colors-ContrastDarkest);
+    grid-area: leftSideBarHeader;
+}
+
+.leftSideBar__toggleBtn {
+    width: 46px;
+    border: none;
+    background: var(--colors-ContrastDarkest);
 }
 
 .leftSideBar__top {
@@ -49,30 +50,4 @@
 .leftSideBar__bottom--isCollapsed {
     flex: 0 0 var(--spacing-GoldenUnit);
     overflow-y: hidden;
-}
-.leftSideBar__toggleBtn {
-    width: 46px;
-    position: absolute!important;
-    left: 0;
-    top: 41px;
-    border: none;
-    background: var(--colors-ContrastDarkest);
-    transition: var(--transition-Default)  ease transform;
-    will-change: transform;
-
-    .leftSideBar--isHidden & {
-        transform: translateX(var(--size-SidebarWidth));
-
-        @media(max-width: 576px) {
-            transform: translateX(576px);
-        }
-    }
-}
-.leftSideBar__header {
-    cursor: pointer;
-    height: 41px;
-    padding-left: 55px;
-    line-height: 40px;
-    font-weight: bold;
-    background: var(--colors-ContrastDarkest);
 }

@@ -3,9 +3,6 @@
 }
 
 .app {
-    --neos-left-sidebar-width: 320px;
-    --neos-right-sidebar-width: 320px;
-
     height: 100%;
     display: grid;
     grid-template-areas:
@@ -13,16 +10,16 @@
         "leftSideBarHeader secondaryToolbar rightSidebar"
         "leftSidebar content rightSidebar";
     grid-template-rows: 41px 41px 1fr;
-    grid-template-columns: var(--neos-left-sidebar-width) 1fr var(--neos-right-sidebar-width);
+    grid-template-columns: min-content 1fr min-content;
 }
 
 /* FIXME: This would be much easier to implement with actual css-variables (which we cannot use yet due to the postcss conversion) */
 .app--leftSidebarIsHidden {
-    grid-template-columns: 0 1fr 320px;
+    grid-template-columns: 0 1fr min-content;
 }
 
 .app--rightSidebarIsHidden {
-    grid-template-columns: 320px 1fr 0;
+    grid-template-columns: min-content 1fr 0;
 }
 
 .app--leftSidebarIsHidden.app--rightSidebarIsHidden {

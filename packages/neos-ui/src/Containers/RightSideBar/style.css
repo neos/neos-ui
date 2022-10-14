@@ -1,6 +1,7 @@
 .rightSideBar {
     grid-area: rightSidebar;
-    width: 100%;
+    min-width: 320px;
+    max-width: 50vw;
     padding-bottom: 41px;
     right: unset;
     position: relative;

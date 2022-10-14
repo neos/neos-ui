@@ -21,6 +21,11 @@
     top: 0;
     border: none;
     background: var(--colors-ContrastDarkest);
+
+    /* FIXME: Hide toggle btn in fullscreen mode */
+    .rightSideBar--isHidden & {
+        right: 100%;
+    }
 }
 
 .rightSideBar__components {

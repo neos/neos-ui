@@ -50,6 +50,11 @@ export default class LeftSideBar extends PureComponent {
             [style['leftSideBar--isHidden']]: isHidden || isFullScreen
         });
 
+        const topClassNames = mergeClassNames({
+            [style.leftSideBar__top]: true,
+            [style['leftSideBar__top--isFullHeight']]: isHiddenContentTree
+        });
+
         const bottomClassNames = mergeClassNames({
             [style.leftSideBar__bottom]: true,
             [style['leftSideBar__bottom--isCollapsed']]: isHiddenContentTree
@@ -83,7 +88,7 @@ export default class LeftSideBar extends PureComponent {
                     aria-hidden={isHidden ? 'true' : 'false'}
                     >
 
-                    <div className={style.leftSideBar__top}>
+                    <div className={topClassNames}>
                         {!isHidden && LeftSideBarTop.map((Item, key) => <Item key={key} isExpanded={!isHiddenContentTree}/>)}
                     </div>
 

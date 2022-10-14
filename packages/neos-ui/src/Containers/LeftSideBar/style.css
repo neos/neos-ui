@@ -34,15 +34,22 @@
 }
 
 .leftSideBar__top {
-    flex-basis: 100%;
+    flex: 0 1 auto;
     display: flex;
     flex-direction: column;
-    min-height: 40px;
+    /* Leave space for the toolbar and the resize icon */
+    min-height: calc(40px + 40px);
+    height: 50%;
     margin-right: var(--spacing-Quarter);
+    resize: vertical;
+    overflow-y: auto;
+}
+.leftSideBar__top--isFullHeight {
+    flex: 1;
 }
 
 .leftSideBar__bottom {
-    flex: 0 0 50%;
+    flex: 1;
     transition: flex-basis var(--transition-Default), height var(--transition-Default), overflow-y var(--transition-Default);
     display: flex;
     flex-direction: column;

@@ -1,8 +1,10 @@
 import React, {PureComponent} from 'react';
+import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import unescape from 'lodash.unescape';
-import slugify from '@sindresorhus/slugify';
+import backend from '@neos-project/neos-ui-backend-connector';
 import {neos} from '@neos-project/neos-ui-decorators';
+import {selectors} from '@neos-project/neos-ui-redux-store';
 import {TextInput, IconButton} from '@neos-project/react-ui-components';
 import style from './style.css';
 
@@ -13,6 +15,9 @@ const defaultOptions = {
     readonly: false
 };
 
+@connect(state => ({
+    nodeContextPath: selectors.CR.Nodes.focusedNodePathSelector(state)
+}))
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')
 }))
@@ -25,6 +30,7 @@ export default class UriPathSegment extends PureComponent {
         onKeyPress: PropTypes.func,
         onEnterKey: PropTypes.func,
         id: PropTypes.string,
+        nodeContextPath: PropTypes.string,
 
         i18nRegistry: PropTypes.object.isRequired
     };
@@ -32,6 +38,20 @@ export default class UriPathSegment extends PureComponent {
     static defaultProps = {
         options: {}
     };
+
+    generatePathSegment = () => {
+        const {
+            commit,
+            options,
+            nodeContextPath
+        } = this.props;
+        const titleValue = options && options.title ? options.title : '';
+
+        const {generateUriPathSegment} = backend.get().endpoints;
+
+        generateUriPathSegment(nodeContextPath, titleValue)
+            .then(slug => commit(slug));
+    }
 
     render() {
         const {
@@ -52,8 +72,6 @@ export default class UriPathSegment extends PureComponent {
             i18nRegistry.translate(unescape(options.placeholder));
         const finalOptions = Object.assign({}, defaultOptions, options);
 
-        const titleValue = options && options.title ? options.title : '';
-        const slug = slugify(titleValue);
         const showSyncButton = !(
             finalOptions.readonly || finalOptions.disabled
         );
@@ -80,7 +98,7 @@ export default class UriPathSegment extends PureComponent {
                             id="neos-UriPathSegmentEditor-sync"
                             size="regular"
                             icon="sync"
-                            onClick={() => commit(slug)}
+                            onClick={this.generatePathSegment}
                             className={style.syncButton}
                             style="neutral"
                             hoverStyle="clean"

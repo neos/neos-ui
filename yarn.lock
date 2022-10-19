@@ -2231,7 +2231,7 @@ __metadata:
     "@neos-project/neos-ui-extensibility": "workspace:*"
     "@neos-project/neos-ui-i18n": "workspace:*"
     "@neos-project/utils-logger": "workspace:*"
-    isemail: ^3.2.0
+    isemail: 3.2.0
     plow-js: ^2.2.0
   peerDependencies:
     react: ^16.12.0
@@ -6374,7 +6374,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"buffer@npm:^5.1.0, buffer@npm:^5.5.0":
+"buffer@npm:^5.0.0, buffer@npm:^5.1.0, buffer@npm:^5.5.0":
   version: 5.7.1
   resolution: "buffer@npm:5.7.1"
   dependencies:
@@ -12912,12 +12912,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"isemail@npm:^3.2.0":
+"isemail@npm:3.2.0":
   version: 3.2.0
   resolution: "isemail@npm:3.2.0"
   dependencies:
     punycode: 2.x.x
   checksum: 77adfbe8d6b3f9970c37516e008fd1c2e33be186f4cd09b31daf37a9fa8f82adc0dd8ce4bd12818f0c0e63018f9ec0c22490793d704ed635770c98a9d48b21c4
+  languageName: node
+  linkType: hard
+
+"isemail@patch:isemail@npm:3.2.0#./patches/isemail-npm-3.2.0-browserified.patch::locator=root-workspace-0b6124%40workspace%3A.":
+  version: 3.2.0
+  resolution: "isemail@patch:isemail@npm%3A3.2.0#./patches/isemail-npm-3.2.0-browserified.patch::version=3.2.0&hash=03d1df&locator=root-workspace-0b6124%40workspace%3A."
+  dependencies:
+    punycode: 2.x.x
+  checksum: c8998b9188848fb3ef8398acd6468124b1f90214478a99f20c658510828a103ddb1548b86922afc0b64e5cb42e4497279e9b2a86a493d55b279ebd93b12597da
   languageName: node
   linkType: hard
 

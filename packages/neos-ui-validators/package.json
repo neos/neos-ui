@@ -15,7 +15,7 @@
     "@neos-project/neos-ui-extensibility": "workspace:*",
     "@neos-project/neos-ui-i18n": "workspace:*",
     "@neos-project/utils-logger": "workspace:*",
-    "isemail": "^3.2.0",
+    "isemail": "3.2.0",
     "plow-js": "^2.2.0"
   },
   "devDependencies": {

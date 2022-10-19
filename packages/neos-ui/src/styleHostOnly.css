@@ -35,7 +35,7 @@ body {
     font-size: 14px;
     line-height: 20px;
     font-weight: normal;
-    color: var(--neos-colors-ContrastBrightest);
+    color: var(--colors-ContrastBrightest);
     margin: 0;
     padding: 0;
     overflow: hidden;

@@ -2,7 +2,7 @@
     width: 100%;
     overflow-x: hidden;
     text-overflow: ellipsis;
-    padding: 0 var(--neos-spacing-GoldenUnit) 0 var(--neos-spacing-Full);
+    padding: 0 var(--spacing-GoldenUnit) 0 var(--spacing-Full);
 }
 
 .iconWrapper {

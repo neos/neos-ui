@@ -1,5 +1,5 @@
 .tableCreationGrid {
-    background-color: var(--neos-colors-ContrastDarker);
+    background-color: var(--colors-ContrastDarker);
     padding: 10px;
 }
 .tableCreationGrid__row {
@@ -9,12 +9,12 @@
     width: 10px;
     height: 9px;
     margin: 1px;
-    border: 1px solid var(--neos-colors-ContrastBrightest);
+    border: 1px solid var(--colors-ContrastBrightest);
     border-radius: 1px;
     cursor: pointer;
 }
 .tableCreationGrid__cell--active {
-    background-color: var(--neos-colors-PrimaryBlue);
+    background-color: var(--colors-PrimaryBlue);
 }
 .tableCreationGrid__display {
     text-align: center;

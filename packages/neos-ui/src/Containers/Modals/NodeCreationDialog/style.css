@@ -5,20 +5,20 @@
 .primaryColumn {
     overflow-y: auto;
     width: 100%;
-    transition: var(--neos-transition-Default) ease width;
-    padding: var(--neos-spacing-Full);
+    transition: var(--transition-Default) ease width;
+    padding: var(--spacing-Full);
     flex-grow: 0;
     flex-shrink: 0;
 
     .expanded & {
-        width: calc(var(--neos-size-SidebarWidth) + 2 * var(--neos-spacing-Full));
+        width: calc(var(--size-SidebarWidth) + 2 * var(--spacing-Full));
     }
 }
 .secondaryColumn {
     width: 0;
     opacity: 0;
-    transition: var(--neos-transition-Default) ease width,
-        var(--neos-transition-Default) ease opacity;
+    transition: var(--transition-Default) ease width,
+        var(--transition-Default) ease opacity;
 
     .expanded & {
         width: 100%;
@@ -28,9 +28,9 @@
 .secondaryColumn__contentWrapper {
     position: relative;
     height: 100%;
-    padding: var(--neos-spacing-Full);
-    margin-left: var(--neos-spacing-Full);
-    width: calc(100% - var(--neos-spacing-Full));
+    padding: var(--spacing-Full);
+    margin-left: var(--spacing-Full);
+    width: calc(100% - var(--spacing-Full));
     overflow: hidden;
     box-shadow: inset 0 0 2px #000;
     background-color: rgba(0, 0, 0, .1);
@@ -42,8 +42,8 @@
     z-index: 1;
 }
 .editor {
-    margin-bottom: var(--neos-spacing-Full);
+    margin-bottom: var(--spacing-Full);
 }
 .buttonIcon {
-    margin-right: var(--neos-spacing-Half);
+    margin-right: var(--spacing-Half);
 }

@@ -3,10 +3,10 @@
     float: left;
     height: 100%;
     width: 100%;
-    padding: 82px var(--neos-size-SidebarWidth) 0;
-    transition: var(--neos-transition-Default)  ease padding;
+    padding: 82px var(--size-SidebarWidth) 0;
+    transition: var(--transition-Default)  ease padding;
     will-change: padding;
-    background-color: var(--neos-colors-ContrastDarker);
+    background-color: var(--colors-ContrastDarker);
 
     &::after {
         content: '';
@@ -21,7 +21,7 @@
     padding-right: 0;
 }
 .contentCanvas--isFullScreen {
-    padding: var(--neos-spacing-GoldenUnit) 0 0 0;
+    padding: var(--spacing-GoldenUnit) 0 0 0;
 }
 .contentCanvas--isHidden {
     &::after {
@@ -38,7 +38,7 @@
     position: relative;
     margin-left: auto;
     margin-right: auto;
-    transition: var(--neos-transition-Default)  ease width, var(--neos-transition-Default)  ease height;
+    transition: var(--transition-Default)  ease width, var(--transition-Default)  ease height;
 }
 .contentCanvas__contents {
     position: absolute;

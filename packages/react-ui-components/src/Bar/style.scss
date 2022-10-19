@@ -4,11 +4,11 @@
     @include reset;
     position: fixed;
     left: 0;
-    z-index: var(--neos-zIndex-CheckboxInput-Context);
+    z-index: var(--zIndex-CheckboxInput-Context);
     width: 100%;
-    background-color: var(--neos-colors-ContrastDarker);
+    background-color: var(--colors-ContrastDarker);
     height: 41px;
-    border-bottom: 1px solid var(--neos-colors-ContrastDark);
+    border-bottom: 1px solid var(--colors-ContrastDark);
 }
 .bar--top {
     top: 0;

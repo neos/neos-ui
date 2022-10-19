@@ -2,8 +2,8 @@
     width: 100%;
 }
 .column {
-    padding-right: var(--neos-spacing-Half);
+    padding-right: var(--spacing-Half);
 }
 .icon {
-    padding-right: var(--neos-spacing-Quarter);
+    padding-right: var(--spacing-Quarter);
 }

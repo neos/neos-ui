@@ -8,12 +8,12 @@
 .panel__headline {
     @include reset;
     cursor: pointer;
-    height: var(--neos-spacing-GoldenUnit);
+    height: var(--spacing-GoldenUnit);
     margin: 0;
-    padding: 0 var(--neos-spacing-Full);
-    line-height: var(--neos-spacing-GoldenUnit);
+    padding: 0 var(--spacing-Full);
+    line-height: var(--spacing-GoldenUnit);
     font-weight: bold;
-    font-size: var(--neos-fontSize-Base);
+    font-size: var(--fontSize-Base);
 }
 
 .panel__headline--noPadding {
@@ -28,8 +28,8 @@
 }
 .panel__contents {
     @include reset;
-    padding: 0 var(--neos-spacing-Full);
-    transition: var(--neos-transition-Default) ease padding;
+    padding: 0 var(--spacing-Full);
+    transition: var(--transition-Default) ease padding;
 
     .panel--isOpen & {
         padding-top: 5px;

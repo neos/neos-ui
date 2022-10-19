@@ -2,30 +2,30 @@
     display: flex;
 }
 .resizeControls__label {
-    margin-top: var(--neos-spacing-Full);
-    margin-bottom: var(--neos-spacing-Quarter);
+    margin-top: var(--spacing-Full);
+    margin-bottom: var(--spacing-Quarter);
 }
 .resizeControls__before {
-    height: var(--neos-spacing-GoldenUnit);
-    width: var(--neos-spacing-GoldenUnit);
-    border-right: 1px solid var(--neos-colors-ContrastDarker);
+    height: var(--spacing-GoldenUnit);
+    width: var(--spacing-GoldenUnit);
+    border-right: 1px solid var(--colors-ContrastDarker);
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--neos-colors-ContrastNeutral);
+    background: var(--colors-ContrastNeutral);
 }
 
 .resizeControls__main {
     flex-grow: 1;
 }
 .resizeControls__after {
-    height: var(--neos-spacing-GoldenUnit);
-    width: var(--neos-spacing-GoldenUnit);
-    background: var(--neos-colors-ContrastNeutral);
-    border-left: 1px solid var(--neos-colors-ContrastDarker);
+    height: var(--spacing-GoldenUnit);
+    width: var(--spacing-GoldenUnit);
+    background: var(--colors-ContrastNeutral);
+    border-left: 1px solid var(--colors-ContrastDarker);
     text-align: center;
 
-    line-height: var(--neos-spacing-GoldenUnit);
+    line-height: var(--spacing-GoldenUnit);
 }
 
 .resizeControls__checkbox {

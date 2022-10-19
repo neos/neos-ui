@@ -1,8 +1,8 @@
 .modalContents {
-    padding: var(--neos-spacing-Full);
+    padding: var(--spacing-Full);
 }
 .inputFieldWrapper {
-    margin-bottom: var(--neos-spacing-Half);
+    margin-bottom: var(--spacing-Half);
 }
 .loginButton {
     width: 100%;

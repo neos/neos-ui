@@ -8,31 +8,31 @@
 .wrapper__btn {
     @include reset;
     position: relative;
-    width: var(--neos-spacing-GoldenUnit);
+    width: var(--spacing-GoldenUnit);
 }
 .wrapper__btnModeIcon {
     @include reset;
     position: absolute;
     right: 4px;
     bottom: 4px;
-    color: var(--neos-colors-PrimaryBlue);
+    color: var(--colors-PrimaryBlue);
 
     [disabled] > & {
         opacity: 0;
     }
 }
 .wrapper:hover .wrapper__btnIcon {
-    color: var(--neos-colors-PrimaryBlue);
+    color: var(--colors-PrimaryBlue);
 }
 .wrapper__dropDown {
     @include reset;
     position: absolute;
     top: 100%;
     left: 0;
-    z-index: var(--neos-zIndex-WrapperDropdown-Context);
+    z-index: var(--zIndex-WrapperDropdown-Context);
     display: none;
-    background: var(--neos-colors-ContrastDarker);
-    border: 1px solid var(--neos-colors-ContrastDark);
+    background: var(--colors-ContrastDarker);
+    border: 1px solid var(--colors-ContrastDark);
     border-top: 0;
 }
 .wrapper__dropDown--isOpen {
@@ -42,15 +42,15 @@
     @include reset;
     position: relative;
     display: block;
-    width: calc(var(--neos-spacing-GoldenUnit) - 2px);
-    height: calc(var(--neos-spacing-GoldenUnit) - 2px);
+    width: calc(var(--spacing-GoldenUnit) - 2px);
+    height: calc(var(--spacing-GoldenUnit) - 2px);
     text-align: center;
     vertical-align: middle;
     cursor: pointer;
 
     &:hover,
     &:hover > * {
-        color: var(--neos-colors-PrimaryBlue);
+        color: var(--colors-PrimaryBlue);
     }
 
     > * {

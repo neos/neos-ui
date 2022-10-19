@@ -2,6 +2,9 @@ const env = require('@neos-project/build-essentials/src/environment');
 const stylePlugin = require('esbuild-style-plugin');
 const {sep} = require("path")
 
+const cssVariables = require('@neos-project/build-essentials/src/styles/styleConstants');
+const cssVariablesObject = cssVariables.generateCssVarsObject(cssVariables.config);
+
 require('esbuild').build({
     entryPoints: {
         'Host': './packages/neos-ui/src/index.js',
@@ -84,6 +87,9 @@ require('esbuild').build({
                 plugins: [
                     require('postcss-import'),
                     require('postcss-nested'),
+                    require('postcss-css-variables')({
+                        variables: cssVariablesObject
+                    }),
                     require('postcss-hexrgba'),
                     require('autoprefixer'),
                 ]

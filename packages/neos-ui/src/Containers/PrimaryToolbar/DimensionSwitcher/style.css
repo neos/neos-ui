@@ -9,15 +9,15 @@
     width: fit-content;
     min-width: 100%;
     padding: 0 2px 2px 2px !important;
-    background-color: var(--neos-colors-ContrastDarker) !important;
+    background-color: var(--colors-ContrastDarker) !important;
     box-shadow: 0 5px 5px rgba(0, 0, 0, .2);
 }
 .dropDown__btnIcon {
     margin-right: .5em;
 }
 .dimensionCategory {
-    background-color: var(--neos-colors-ContrastDarkest);
-    padding: var(--neos-spacing-Full);
+    background-color: var(--colors-ContrastDarkest);
+    padding: var(--spacing-Full);
 }
 
 .dimensionCategory + .dimensionCategory {
@@ -25,17 +25,17 @@
 }
 
 .cancelButton {
-    margin-right: var(--neos-spacing-Quarter) !important;
+    margin-right: var(--spacing-Quarter) !important;
 }
 
 .dimensionLabel {
-    padding-top: var(--neos-spacing-Half);
-    padding-bottom: var(--neos-spacing-Quarter);
+    padding-top: var(--spacing-Half);
+    padding-bottom: var(--spacing-Quarter);
 }
 
 .buttonGroup {
     display: flex;
-    padding: var(--neos-spacing-Half);
+    padding: var(--spacing-Half);
 }
 
 .buttonGroup button {
@@ -52,5 +52,5 @@
 }
 
 .selectPreset + .selectPreset {
-    margin-left: var(--neos-spacing-Half);
+    margin-left: var(--spacing-Half);
 }

@@ -2,7 +2,7 @@
     cursor: pointer;
 }
 .toggleBtn {
-    background: var(--neos-colors-ContrastDarkest);
+    background: var(--colors-ContrastDarkest);
     width: 46px;
 }
 .toggleLabel {

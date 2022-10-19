@@ -3,7 +3,7 @@
 .iconButton {
     @include reset;
     vertical-align: top;
-    width: var(--neos-spacing-GoldenUnit);
+    width: var(--spacing-GoldenUnit);
     padding-left: 0;
     padding-right: 0;
 }

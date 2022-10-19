@@ -1,12 +1,12 @@
 .searchInput {
     input {
         /* magic number, sorry */
-        padding-left: var(--neos-spacing-GoldenUnit);
+        padding-left: var(--spacing-GoldenUnit);
         border-radius: 0;
 
         &:focus {
-            background: var(--neos-colors-ContrastDark);
-            color: var(--neos-colors-ContrastBrightest);
+            background: var(--colors-ContrastDark);
+            color: var(--colors-ContrastBrightest);
         }
     }
 }
@@ -21,19 +21,19 @@
 
 .placeholderIcon {
     position: absolute;
-    left: var(--neos-spacing-Full);
-    height: var(--neos-spacing-GoldenUnit);
+    left: var(--spacing-Full);
+    height: var(--spacing-GoldenUnit);
 }
 
 .wrapper {
     display: flex;
-    border-right: 1px solid var(--neos-colors-ContrastDark);
+    border-right: 1px solid var(--colors-ContrastDark);
     position: relative;
-    width: calc((var(--neos-size-SidebarWidth) / 2) - var(--neos-spacing-Quarter));
+    width: calc((var(--size-SidebarWidth) / 2) - var(--spacing-Quarter));
 }
 
 .wrapper--focused {
     .clearButton {
-        background: var(--neos-colors-ContrastDark);
+        background: var(--colors-ContrastDark);
     }
 }

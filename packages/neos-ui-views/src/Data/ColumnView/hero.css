@@ -1,6 +1,6 @@
 .hero {
     line-height: 54px;
-    margin-bottom: var(--neos-spacing-Full);
+    margin-bottom: var(--spacing-Full);
     display: flex;
 }
 
@@ -10,8 +10,8 @@
 }
 
 .hero__label {
-    color: var(--neos-colors-ContrastBrighter);
-    margin-left: var(--neos-spacing-Half);
+    color: var(--colors-ContrastBrighter);
+    margin-left: var(--spacing-Half);
     flex-grow: 1;
     text-align: right;
 }

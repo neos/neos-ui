@@ -2,10 +2,10 @@
     width: 100%;
     overflow-x: hidden;
     text-overflow: ellipsis;
-    padding: 0 var(--neos-spacing-GoldenUnit) 0 var(--neos-spacing-Full);
-    height: var(--neos-spacing-GoldenUnit);
+    padding: 0 var(--spacing-GoldenUnit) 0 var(--spacing-Full);
+    height: var(--spacing-GoldenUnit);
     margin: 0;
-    line-height: var(--neos-spacing-GoldenUnit);
+    line-height: var(--spacing-GoldenUnit);
     font-weight: bold;
     font-size: 14px;
 
@@ -16,7 +16,7 @@
 }
 
 .content {
-    padding: 0 var(--neos-spacing-Full) var(--neos-spacing-Full);
+    padding: 0 var(--spacing-Full) var(--spacing-Full);
 }
 
 .iconWrapper {

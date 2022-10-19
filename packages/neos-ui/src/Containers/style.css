@@ -23,10 +23,10 @@
 :global #appContainer ::-webkit-scrollbar-thumb,
 :global #appContainer ~ * ::-webkit-scrollbar-thumb,
 :global body::-webkit-scrollbar-thumb {
-    background-color: var(--neos-colors-ContrastBright);
+    background-color: var(--colors-ContrastBright);
 }
 :global #appContainer ::-webkit-scrollbar-corner,
 :global #appContainer ~ * ::-webkit-scrollbar-corner,
 :global body::-webkit-scrollbar-corner {
-    background-color: var(--neos-colors-ContrastDark);
+    background-color: var(--colors-ContrastDark);
 }

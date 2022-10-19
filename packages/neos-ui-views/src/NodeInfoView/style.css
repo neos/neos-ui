@@ -4,7 +4,7 @@
     list-style: none;
 
     &__item {
-        background-color: var(--neos-colors-ContrastDarkest);
+        background-color: var(--colors-ContrastDarkest);
         padding: 8px 12px;
         margin-bottom: 1px;
         line-height: 20px;
@@ -28,6 +28,6 @@
 
     &__content {
         font-size: 13px;
-        color: var(--neos-colors-ContrastBright);
+        color: var(--colors-ContrastBright);
     }
 }

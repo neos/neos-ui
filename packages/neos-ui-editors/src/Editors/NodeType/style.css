@@ -5,6 +5,6 @@
     line-height: 40px;
     padding: 0 1em;
     border: 0;
-    background: var(--neos-colors-ContrastNeutral);
+    background: var(--colors-ContrastNeutral);
     width: 100%;
 }

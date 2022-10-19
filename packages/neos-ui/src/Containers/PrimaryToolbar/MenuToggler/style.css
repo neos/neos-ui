@@ -5,14 +5,14 @@
 }
 
 .menuToggler--isActive {
-    color: var(--neos-colors-ContrastBrightest);
+    color: var(--colors-ContrastBrightest);
 
     .menuToggler__icon {
-        color: var(--neos-colors-PrimaryBlue);
+        color: var(--colors-PrimaryBlue);
 
         &:hover,
         &:focus {
-            color: var(--neos-colors-PrimaryBlue);
+            color: var(--colors-PrimaryBlue);
         }
     }
 }
@@ -48,6 +48,6 @@
 
     &:hover {
         text-decoration: none;
-        color: var(--neos-colors-PrimaryBlue);
+        color: var(--colors-PrimaryBlue);
     }
 }

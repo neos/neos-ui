@@ -1,25 +1,25 @@
 .pluginViewContainer {
     width: 100%;
     list-style: none;
-    background: var(--neos-colors-ContrastNeutral);
+    background: var(--colors-ContrastNeutral);
     margin: 0;
     padding: 0;
 }
 
 .pluginViewContainer__listItem {
-    font-size: var(--neos-fontSize-Small);
-    line-height: var(--neos-spacing-Full);
-    margin-bottom: var(--neos-spacing-Half);
-    padding: var(--neos-spacing-Full);
+    font-size: var(--fontSize-Small);
+    line-height: var(--spacing-Full);
+    margin-bottom: var(--spacing-Half);
+    padding: var(--spacing-Full);
 }
 
 .pluginViewContainer__listItem b {
-    margin-right: calc(var(--neos-spacing-Half) / 2);
+    margin-right: calc(var(--spacing-Half) / 2);
 }
 
 .pluginViewContainer__listItem a {
-    font-size: var(--neos-fontSize-Small);
-    color: var(--neos-colors-PrimaryBlue);
+    font-size: var(--fontSize-Small);
+    color: var(--colors-PrimaryBlue);
     text-decoration: none;
-    margin-left: calc(var(--neos-spacing-Half) / 2);
+    margin-left: calc(var(--spacing-Half) / 2);
 }

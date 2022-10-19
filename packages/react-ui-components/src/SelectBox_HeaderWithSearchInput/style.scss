@@ -2,7 +2,7 @@
 
 .selectBoxHeaderWithSearchInput {
     display: flex;
-    padding-left: var(--neos-spacing-Full);
+    padding-left: var(--spacing-Full);
 }
 
 .selectBoxHeaderWithSearchInput__inputContainer {
@@ -23,5 +23,5 @@
 
 .selectBoxHeaderWithSearchInput__icon {
     @include reset;
-    height: var(--neos-spacing-GoldenUnit);
+    height: var(--spacing-GoldenUnit);
 }

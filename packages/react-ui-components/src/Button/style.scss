@@ -4,20 +4,20 @@
     @include reset;
     position: relative;
     display: inline-block;
-    height: var(--neos-spacing-GoldenUnit);
-    min-width: var(--neos-spacing-GoldenUnit);
-    padding: 0 var(--neos-spacing-Full);
+    height: var(--spacing-GoldenUnit);
+    min-width: var(--spacing-GoldenUnit);
+    padding: 0 var(--spacing-Full);
     border: 0;
     -webkit-font-smoothing: antialiased;
     vertical-align: middle;
     width: auto;
-    color: var(--neos-colors-ContrastBrightest);
+    color: var(--colors-ContrastBrightest);
     cursor: pointer;
-    background-color: var(--neos-colors-ContrastNeutral);
-    font-size: var(--neos-fontSize-Base);
+    background-color: var(--colors-ContrastNeutral);
+    font-size: var(--fontSize-Base);
 
     &:focus {
-        outline: 1px solid var(--neos-colors-PrimaryBlue);
+        outline: 1px solid var(--colors-PrimaryBlue);
     }
 
     &[disabled] {
@@ -28,7 +28,7 @@
         &.btn--isPressed,
         &:hover i,
         i {
-            color: var(--neos-colors-ContrastBrightest);
+            color: var(--colors-ContrastBrightest);
         }
     }
 }
@@ -39,44 +39,44 @@
 }
 
 .btn--clean {
-    background-color: var(--neos-colors-ContrastDarker);
+    background-color: var(--colors-ContrastDarker);
 }
 .btn--lighter,
 .btn--lighter i {
-    background-color: var(--neos-colors-ContrastDark);
+    background-color: var(--colors-ContrastDark);
 }
 .btn--neutral,
 .btn--neutral i {
-    background-color: var(--neos-colors-ContrastNeutral);
+    background-color: var(--colors-ContrastNeutral);
 }
 .btn--transparent {
     background: 0;
 }
 .btn--brand,
 .btn--brand i {
-    background-color: var(--neos-colors-PrimaryBlue);
+    background-color: var(--colors-PrimaryBlue);
     color: white !important;
 }
 .btn--success,
 .btn--success i {
-    background-color: var(--neos-colors-Success);
+    background-color: var(--colors-Success);
     color: white !important;
 }
 .btn--warn,
 .btn--warn i {
-    background-color: var(--neos-colors-Warn);
+    background-color: var(--colors-Warn);
 }
 .btn--error,
 .btn--error i {
-    background-color: var(--neos-colors-Error);
+    background-color: var(--colors-Error);
     color: white !important;
 }
 
 .btn--brandActive {
-    background-color: var(--neos-colors-PrimaryBlue);
+    background-color: var(--colors-PrimaryBlue);
 
     svg {
-        color: var(--neos-colors-ContrastBrightest);
+        color: var(--colors-ContrastBrightest);
     }
 }
 
@@ -84,16 +84,16 @@
 .btn--brandHover:hover:enabled i,
 .btn--brandHover.btn--isPressed,
 .btn--brandHover.btn--isPressed i {
-    background-color: var(--neos-colors-PrimaryBlue);
+    background-color: var(--colors-PrimaryBlue);
 }
 .btn--cleanHover.btn--isPressed,
 .btn--cleanHover.btn--isPressed i,
 .btn--cleanHover:hover:enabled,
 .btn--cleanHover:hover:enabled i {
-    color: var(--neos-colors-PrimaryBlue);
+    color: var(--colors-PrimaryBlue);
 
     svg {
-        color: var(--neos-colors-PrimaryBlue);
+        color: var(--colors-PrimaryBlue);
     }
 }
 .btn--darkenHover.btn--isPressed,
@@ -106,17 +106,17 @@
 .btn--successHover.btn--isPressed i,
 .btn--successHover:hover:enabled,
 .btn--successHover:hover:enabled i {
-    background-color: var(--neos-colors-SuccessHover);
+    background-color: var(--colors-SuccessHover);
 }
 .btn--warnHover.btn--isPressed,
 .btn--warnHover.btn--isPressed i,
 .btn--warnHover:hover:enabled,
 .btn--warnHover:hover:enabled i {
-    background-color: var(--neos-colors-WarnHover);
+    background-color: var(--colors-WarnHover);
 }
 .btn--errorHover:hover:enabled,
 .btn--errorHover:hover:enabled i,
 .btn--errorHover.btn--isPressed,
 .btn--errorHover.btn--isPressed i {
-    background-color: var(--neos-colors-ErrorHover);
+    background-color: var(--colors-ErrorHover);
 }

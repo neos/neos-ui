@@ -1,7 +1,7 @@
 .linkButton__flyout {
-    background-color: var(--neos-colors-ContrastDarker);
+    background-color: var(--colors-ContrastDarker);
     position: fixed;
-    z-index: var(--neos-zIndex-SecondaryToolbar-LinkIconButtonFlyout);
+    z-index: var(--zIndex-SecondaryToolbar-LinkIconButtonFlyout);
     width: 460px;
-    border: var(--neos-spacing-Half) solid var(--neos-colors-ContrastDarker);
+    border: var(--spacing-Half) solid var(--colors-ContrastDarker);
 }

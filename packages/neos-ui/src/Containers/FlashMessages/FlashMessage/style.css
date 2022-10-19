@@ -11,15 +11,15 @@
 }
 
 .flashMessage--success {
-    background-color: var(--neos-colors-Success);
+    background-color: var(--colors-Success);
 }
 
 .flashMessage--error {
-    background-color: var(--neos-colors-Error);
+    background-color: var(--colors-Error);
 }
 
 .flashMessage--info {
-    background-color: var(--neos-colors-PrimaryBlue);
+    background-color: var(--colors-PrimaryBlue);
 }
 
 .flashMessage__icon {
@@ -27,11 +27,11 @@
     left: 0;
     top: 0;
     height: 100%;
-    line-height: var(--neos-spacing-GoldenUnit);
-    width: var(--neos-spacing-GoldenUnit) !important;
+    line-height: var(--spacing-GoldenUnit);
+    width: var(--spacing-GoldenUnit) !important;
     text-align: center;
     font-size: 16px;
-    padding: 0 calc((var(--neos-spacing-GoldenUnit) - 1em)/2);
+    padding: 0 calc((var(--spacing-GoldenUnit) - 1em)/2);
     margin: 0;
     vertical-align: text-top;
     border-right: 1px solid rgba(#FFF, .3);

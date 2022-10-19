@@ -1,9 +1,9 @@
 .toolBar {
-    border-top: 1px solid var(--neos-colors-ContrastDark);
-    border-bottom: 1px solid var(--neos-colors-ContrastDark);
-    border-right: 1px solid var(--neos-colors-ContrastDark);
-    flex: 0 0 var(--neos-spacing-GoldenUnit);
-    background: var(--neos-colors-ContrastDarker);
+    border-top: 1px solid var(--colors-ContrastDark);
+    border-bottom: 1px solid var(--colors-ContrastDark);
+    border-right: 1px solid var(--colors-ContrastDark);
+    flex: 0 0 var(--spacing-GoldenUnit);
+    background: var(--colors-ContrastDarker);
 }
 .toolBar__btnGroup {
     &:before,
@@ -17,5 +17,5 @@
 }
 .toolBar__btnGroup__btn {
     float: left;
-    width: var(--neos-spacing-GoldenUnit);
+    width: var(--spacing-GoldenUnit);
 }

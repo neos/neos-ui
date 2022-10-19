@@ -2,7 +2,7 @@
 
 .heading {
     @include reset;
-    font-size: var(--neos-fontSize-Base);
+    font-size: var(--fontSize-Base);
     text-rendering: optimizelegibility;
 }
 .heading--h1 {

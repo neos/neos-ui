@@ -17,7 +17,7 @@
     height: 40px;
     line-height: 40px;
     border: 0;
-    background: var(--neos-colors-ContrastNeutral);
+    background: var(--colors-ContrastNeutral);
     min-width: 160px;
     padding-right: 80px;
 }
@@ -33,17 +33,17 @@
 .dropDown__contents {
     min-width: 160px;
     box-shadow: 0 5px 10px rgba(#000, .2);
-    z-index: var(--neos-zIndex-SecondaryInspectorElevated-DropdownContents);
+    z-index: var(--zIndex-SecondaryInspectorElevated-DropdownContents);
 }
 .dropDown__item {
     height: 40px;
     line-height: 40px;
-    background: var(--neos-colors-ContrastNeutral);
-    border-top: 1px solid var(--neos-colors-ContrastDarker);
+    background: var(--colors-ContrastNeutral);
+    border-top: 1px solid var(--colors-ContrastDarker);
     cursor: pointer;
 
     &:hover {
-        background: var(--neos-colors-PrimaryBlue);
+        background: var(--colors-PrimaryBlue);
     }
 
     > a,
@@ -51,7 +51,7 @@
         display: block;
         width: 100%;
         border: 0;
-        padding: 0 var(--neos-spacing-Full);
+        padding: 0 var(--spacing-Full);
         background: 0;
         color: #FFF;
         cursor: pointer;

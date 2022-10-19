@@ -1,9 +1,9 @@
 .modalTitle {
-    margin-left: var(--neos-spacing-Full);
+    margin-left: var(--spacing-Full);
 }
 .modalContents {
-    padding: var(--neos-spacing-Full);
+    padding: var(--spacing-Full);
 }
 .buttonIcon {
-    margin-right: var(--neos-spacing-Half);
+    margin-right: var(--spacing-Half);
 }

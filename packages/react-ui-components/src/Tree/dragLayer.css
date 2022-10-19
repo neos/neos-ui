@@ -22,8 +22,8 @@
     left: 5px;
     width: 20px;
     height: 20px;
-    color: var(--neos-colors-ContrastBrightest);
-    background-color: var(--neos-colors-Error);
+    color: var(--colors-ContrastBrightest);
+    background-color: var(--colors-Error);
     border-radius: 50%;
     padding: 1px;
     font-size: 12px;
@@ -34,6 +34,6 @@
 .node {
     position: absolute;
     width: 280px;
-    background-color: var(--neos-colors-ContrastNeutral);
-    border: 1px solid var(--neos-colors-ContrastDark);
+    background-color: var(--colors-ContrastNeutral);
+    border: 1px solid var(--colors-ContrastDark);
 }

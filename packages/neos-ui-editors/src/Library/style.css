@@ -3,24 +3,24 @@
 }
 
 .dropzone--isActive {
-    background-color: var(--neos-colors-Success);
+    background-color: var(--colors-Success);
 }
 
 .dropzone--isRejecting {
-    background-color: var(--neos-colors-Warn);
+    background-color: var(--colors-Warn);
 }
 
 .thumbnail {
     position: relative;
-    border: 1px dashed var(--neos-colors-ContrastNeutral);
-    margin-bottom: calc(var(--neos-spacing-Full) - var(--neos-spacing-Quarter));
+    border: 1px dashed var(--colors-ContrastNeutral);
+    margin-bottom: calc(var(--spacing-Full) - var(--spacing-Quarter));
     height: 216px;
     overflow: hidden;
     cursor: pointer;
     /* TODO: border-color: #fff; on hover */
 }
 .thumbnail--highlight {
-    outline: 2px solid var(--neos-colors-Success);
+    outline: 2px solid var(--colors-Success);
 }
 .thumbnail__loader {
     position: absolute;

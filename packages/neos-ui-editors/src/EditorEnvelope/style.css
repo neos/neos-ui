@@ -5,31 +5,31 @@
 }
 
 .envelope__tooltipButton {
-    padding-left: var(--neos-spacing-Half);
+    padding-left: var(--spacing-Half);
 }
 
 .envelope__helpmessage {
     position: absolute;
-    z-index: var(--neos-zIndex-NodeToolBar);
+    z-index: var(--zIndex-NodeToolBar);
     max-width: 100%;
 }
 
 .envelope__helpmessage a {
-    color: var(--neos-colors-PrimaryBlue);
+    color: var(--colors-PrimaryBlue);
 }
 
 .envelope__helpmessage a:hover,
 .envelope__helpmessage a:focus {
-    color: var(--neos-colors-PrimaryBlueHover);
+    color: var(--colors-PrimaryBlueHover);
 }
 
 .envelope--invalid {
-    box-shadow: 0 0 0 2px var(--neos-colors-Error);
+    box-shadow: 0 0 0 2px var(--colors-Error);
     border-radius: 2px;
 }
 
 .envelope--highlight {
-    box-shadow: 0 0 0 2px var(--neos-colors-Warn);
+    box-shadow: 0 0 0 2px var(--colors-Warn);
     border-radius: 2px;
 }
 

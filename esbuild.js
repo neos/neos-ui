@@ -23,12 +23,6 @@ require('esbuild').build({
         {
             name: 'neos-ui-build',
             setup: ({onResolve, onLoad, resolve}) => {
-                // HOTFIX: Some packages require "path" (require('path'))
-                //         We mock this module here return the content of `mockPath.js`.
-                onResolve({filter: /^path$/}, () => ({
-                    path: require('path').join(__dirname, 'mockPath.js'),
-                }))
-
                 // exclude CKEditor styles
                 // the filter must match the import statement - and as one usually uses relative paths we cannot look for `@ckeditor` here
                 // the most correct way would be to look for all `/\.css/` - but this draws performance as we would intercept each css file

@@ -43,7 +43,7 @@
     "react-dnd": "^10.0.0",
     "react-dropzone": "^3.13.2",
     "react-image-crop": "^2.0.5",
-    "react-markdown": "^5.0.0"
+    "react-markdown": "^8.0.0"
   },
   "peerDependencies": {
     "prop-types": "^15.5.10",

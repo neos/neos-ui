@@ -84,7 +84,9 @@ require('esbuild').build({
     define: {
         // put process env NODE_ENV into global scope as some packages need it (nodeJS)
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-        // put 'global' as empty object into glonal scope as some packages need it (nodeJS)
-        'global': '{}'
+        // put 'global' as alias for window as react-codemirror2 needs it
+        // react-dnd depends on window/global - so we cannot mock it to be global: "{}" 
+        // https://github.com/neos/neos-ui/pull/3200#issuecomment-1273199231
+        'global': 'window'
     },
 })

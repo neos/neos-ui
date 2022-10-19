@@ -146,9 +146,9 @@ export default class Inspector extends PureComponent {
             if (propertyValue !== null && typeof propertyValue === 'object') {
                 viewConfiguration = this.preprocessViewConfiguration(context, newPath, viewConfiguration, originalViewConfiguration);
             } else if (typeof originalPropertyValue === 'string' && originalPropertyValue.indexOf('ClientEval:') === 0) {
-                const {node, parentNode} = context; // eslint-disable-line
+                const {node, parentNode} = context;
                 try {
-                    const evaluatedValue = eval(originalPropertyValue.replace('ClientEval:', '')); // eslint-disable-line
+                    const evaluatedValue = new Function("node,parentNode", 'return ' + originalPropertyValue.replace('ClientEval:', ''))(node, parentNode);
                     if (evaluatedValue !== propertyValue) {
                         this.configurationIsProcessed = true;
                         viewConfiguration = produce(

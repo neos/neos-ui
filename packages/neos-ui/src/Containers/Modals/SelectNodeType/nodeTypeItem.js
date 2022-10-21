@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
 
+import {neos} from '@neos-project/neos-ui-decorators';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 import Button from '@neos-project/react-ui-components/src/Button/';
@@ -12,6 +13,9 @@ import {isNil} from '@neos-project/utils-helpers';
 
 import style from './style.css';
 
+@neos(globalRegistry => ({
+    i18nRegistry: globalRegistry.get('i18n')
+}))
 @connect($transform({
     mode: $get('ui.addNodeModal.mode')
 }), {
@@ -27,7 +31,8 @@ class NodeTypeItem extends PureComponent {
             name: PropTypes.string.isRequired,
             ui: PropTypes.object
         }).isRequired,
-        groupName: PropTypes.string.isRequired
+        groupName: PropTypes.string.isRequired,
+        i18nRegistry: PropTypes.object
     };
 
     /**
@@ -52,8 +57,8 @@ class NodeTypeItem extends PureComponent {
         const usePreviewIcon = ('previewIcon' in ui);
         const icon = $get(usePreviewIcon ? 'previewIcon' : 'icon', ui);
         const size = this.getIconSize();
-        const helpMessage = $get('help.message', ui);
-        const {onHelpMessage, groupName} = this.props;
+        const {onHelpMessage, groupName, i18nRegistry} = this.props;
+        const helpMessage = i18nRegistry.translate($get('help.message', ui));
 
         return (
             <div className={style.nodeType}>

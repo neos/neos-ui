@@ -97,6 +97,7 @@ class DimensionSelector extends PureComponent {
                     searchBoxLeftToTypeLabel={i18nRegistry.translate('Neos.Neos:Main:searchBoxLeftToType')}
                     threshold={0}
                     ListPreviewElement={DimensionSelectorOption}
+                    className={style.dimensionSwitcherDropDown}
                 />
             </li>
         );

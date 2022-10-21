@@ -25,6 +25,10 @@
     &:focus{
         outline: 1px solid var(--colors-PrimaryBlue);
     }
+
+    svg{
+        pointer-events: none;
+    }
 }
 .dropDown__btn--withChevron {
     padding-right: var(--spacing-GoldenUnit);

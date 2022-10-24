@@ -15,6 +15,10 @@ const defaultOptions = {
     readonly: false
 };
 
+const busySyncIconProps = {
+    spin: true
+};
+
 @connect(state => ({
     nodeContextPath: selectors.CR.Nodes.focusedNodePathSelector(state)
 }))
@@ -39,7 +43,11 @@ export default class UriPathSegment extends PureComponent {
         options: {}
     };
 
-    generatePathSegment = () => {
+    state = {
+        isBusy: false
+    };
+
+    generatePathSegment = async () => {
         const {
             commit,
             options,
@@ -49,8 +57,13 @@ export default class UriPathSegment extends PureComponent {
 
         const {generateUriPathSegment} = backend.get().endpoints;
 
-        generateUriPathSegment(nodeContextPath, titleValue)
-            .then(slug => commit(slug));
+        this.setState({isBusy: true});
+        try {
+            const slug = await generateUriPathSegment(nodeContextPath, titleValue);
+            commit(slug);
+        } finally {
+            this.setState({isBusy: false});
+        }
     }
 
     render() {
@@ -87,7 +100,7 @@ export default class UriPathSegment extends PureComponent {
                         placeholder={placeholder}
                         onKeyPress={onKeyPress}
                         onEnterKey={onEnterKey}
-                        disabled={finalOptions.disabled}
+                        disabled={finalOptions.disabled || this.state.isBusy}
                         maxLength={finalOptions.maxlength}
                         readOnly={finalOptions.readonly}
                     />
@@ -98,8 +111,10 @@ export default class UriPathSegment extends PureComponent {
                             id="neos-UriPathSegmentEditor-sync"
                             size="regular"
                             icon="sync"
+                            iconProps={this.state.isBusy ? busySyncIconProps : undefined}
                             onClick={this.generatePathSegment}
                             className={style.syncButton}
+                            disabled={this.state.isBusy}
                             style="neutral"
                             hoverStyle="clean"
                             title={i18nRegistry.translate(

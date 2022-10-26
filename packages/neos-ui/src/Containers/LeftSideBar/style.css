@@ -46,6 +46,7 @@
 }
 .leftSideBar__top--isFullHeight {
     flex: 1;
+    resize: none;
 }
 
 .leftSideBar__bottom {

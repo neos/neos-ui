@@ -9,7 +9,8 @@
     right: unset;
     position: relative;
     resize: horizontal;
-    overflow: auto;
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 
 .leftSideBar--isHidden {

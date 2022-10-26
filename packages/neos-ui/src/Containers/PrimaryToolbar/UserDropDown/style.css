@@ -6,6 +6,7 @@
 .dropDown {
     position: static;
     display: block;
+    overflow-x: auto
 }
 .dropDown__btn {
     position: relative;
@@ -29,6 +30,7 @@
 .dropDown__contents {
     position: absolute;
     min-width: 160px;
+    width: max-content;
     right: 0px;
     left: auto;
     padding: 2px !important;

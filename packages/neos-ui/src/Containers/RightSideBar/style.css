@@ -5,7 +5,7 @@
     padding-bottom: 41px;
     right: unset;
     position: relative;
-    background-color: transparent;
+    background-color: var(--colors-ContrastDarkest);
 }
 .rightSideBar--isHidden {
     width: 0;

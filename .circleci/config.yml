@@ -83,7 +83,7 @@ jobs:
     environment:
       COMPOSER_CACHE_DIR: /composer/cache-dir
     docker:
-      - image: quay.io/yeebase/ci-build:7.4
+      - image: cimg/php:7.4.32-node
     steps:
       - attach_workspace: *attach_workspace
       - restore_cache: *restore_composer_cache
@@ -99,7 +99,7 @@ jobs:
     environment:
       FLOW_CONTEXT: Production
     docker:
-      - image: quay.io/yeebase/ci-build:7.4
+      - image: cimg/php:7.4.32-node
       - image: circleci/mariadb:10.2
         environment:
           MYSQL_DATABASE: neos
@@ -138,7 +138,7 @@ jobs:
     environment:
       FLOW_CONTEXT: Production
     docker:
-      - image: quay.io/yeebase/ci-build:7.4
+      - image: cimg/php:7.4.32-node
       - image: circleci/mariadb:10.2
         environment:
           MYSQL_DATABASE: neos

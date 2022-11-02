@@ -59,6 +59,11 @@ export default class SelectBox extends PureComponent {
          */
         onValueChange: PropTypes.func.isRequired,
 
+        /**
+         * This prop gets access to the onClick function for reference editor. It changes the url.
+         */
+        onReferenceClick: PropTypes.func,
+
         // ------------------------------
         // Visual customization of the Select Box
         // ------------------------------
@@ -157,9 +162,7 @@ export default class SelectBox extends PureComponent {
         DropDown: PropTypes.any.isRequired,
         SelectBox_Header: PropTypes.any.isRequired,
         SelectBox_HeaderWithSearchInput: PropTypes.any.isRequired,
-        SelectBox_ListPreview: PropTypes.any.isRequired,
-
-        setActiveContentCanvasSrc: PropTypes.func
+        SelectBox_ListPreview: PropTypes.any.isRequired
     };
 
     state = {
@@ -189,9 +192,10 @@ export default class SelectBox extends PureComponent {
             disabled,
             className,
             DropDown,
-            SelectBox_ListPreview
+            SelectBox_ListPreview,
+            onReferenceClick
         } = this.props;
-
+        // console.log(this.props)
         const searchTerm = this.getSearchTerm();
 
         const {focusedValue} = this.state;
@@ -213,20 +217,14 @@ export default class SelectBox extends PureComponent {
             [theme['selectBox__contents--hasItems']]: !noMatchesFound
         });
 
-        const handleClick = src => {
-            const {setActiveContentCanvasSrc} = this.props;
-
-            if (setActiveContentCanvasSrc) {
-                setActiveContentCanvasSrc(src);
-            }
-        };
-
         return (
-            <DropDown.Stateless className={theme.selectBox} isOpen={isExpanded} onToggle={this.handleToggleExpanded}
-                onClose={this.handleClose}>
-                <DropDown.Header className={headerClassName} shouldKeepFocusState={false} onHeaderClick={() => {
-                    handleClick(options[0].uri);
-                }} showDropDownToggle={showDropDownToggle && Boolean(options.length)}>
+            <DropDown.Stateless className={theme.selectBox} isOpen={isExpanded} onToggle={this.handleToggleExpanded} onClose={this.handleClose}>
+                <DropDown.Header
+                    className={headerClassName}
+                    shouldKeepFocusState={false}
+                    showDropDownToggle={showDropDownToggle && Boolean(options.length)}
+                    onReferenceClick={onReferenceClick} referenceURL={options[0] && options[0].uri ? options[0].uri : undefined }
+                >
                     {this.renderHeader()}
                 </DropDown.Header>
                 <DropDown.Contents className={dropDownContentsClassName} scrollable={true}>
@@ -243,7 +241,7 @@ export default class SelectBox extends PureComponent {
                             searchTermLeftToType={searchTermLeftToType}
                             noMatchesFound={noMatchesFound}
                             searchTerm={searchTerm}
-                        />
+                            />
                     </ul>}
                 </DropDown.Contents>
             </DropDown.Stateless>
@@ -284,7 +282,7 @@ export default class SelectBox extends PureComponent {
                     onSearchTermChange={this.handleSearchTermChange}
                     searchTerm={searchTerm}
                     onKeyDown={this.handleKeyDown}
-                />
+                    />
             );
         }
 
@@ -296,7 +294,7 @@ export default class SelectBox extends PureComponent {
                 option={selectedOption}
                 showResetButton={showResetButton}
                 onReset={this.handleDeleteClick}
-            />
+                />
         );
     }
 

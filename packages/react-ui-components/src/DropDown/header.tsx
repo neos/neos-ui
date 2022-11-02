@@ -57,6 +57,15 @@ export interface ShallowDropDownHeaderProps {
     readonly toggleDropDown: () => void;
 
     /**
+     * This prop gets access to the onClick function for reference editor. It changes the url.
+     */
+    readonly onReferenceClick?: (args: string) => void;
+
+    /**
+     * This prop gets uri of refrenced document.
+     */
+    readonly referenceURL?: string;
+    /**
      * A object wich will be spreaded on the icon component
      */
     readonly iconRest?: Partial<IconProps>;
@@ -102,7 +111,8 @@ class ShallowDropDownHeader extends PureComponent<ShallowDropDownHeaderProps> {
             iconIsOpen,
             iconIsClosed,
             iconRest,
-            disabled
+            disabled,
+            referenceURL
         } = this.props;
         const iconName = isOpen ? iconIsOpen : iconIsClosed;
         const finalClassName = mergeClassNames(
@@ -113,10 +123,18 @@ class ShallowDropDownHeader extends PureComponent<ShallowDropDownHeaderProps> {
             }
         );
 
+        const handleClick = (src: string) => {
+            const {onReferenceClick} = this.props;
+
+            if (onReferenceClick) {
+                onReferenceClick(src);
+            }
+        };
+
         return (
             <div
                 role="button"
-                onClick={disabled ? undefined : toggleDropDown}
+                onClick={referenceURL ? () => handleClick(referenceURL) : disabled ? undefined : toggleDropDown}
                 ref={this.handleReferenceHandler}
                 className={finalClassName}
                 aria-haspopup="true"

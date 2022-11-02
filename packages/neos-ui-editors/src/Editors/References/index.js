@@ -6,16 +6,15 @@ import dataLoader from '../Reference/referenceDataLoader';
 import NodeOption from '../../Library/NodeOption';
 import {dndTypes} from '@neos-project/neos-ui-constants';
 import {neos} from '@neos-project/neos-ui-decorators';
-
-import {sanitizeOptions} from '../../Library';
 import {connect} from 'react-redux';
 import {$transform} from 'plow-js';
 import {actions} from '@neos-project/neos-ui-redux-store';
 
+import {sanitizeOptions} from '../../Library';
+
 @connect($transform({}), {
     setActiveContentCanvasSrc: actions.UI.ContentCanvas.setSrc
 })
-
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')
 }))
@@ -34,28 +33,23 @@ export default class ReferencesEditor extends PureComponent {
         commit: PropTypes.func.isRequired,
         i18nRegistry: PropTypes.object.isRequired,
         disabled: PropTypes.bool,
-        setActiveContentCanvasSrc: PropTypes.func
+        setActiveContentCanvasSrc: PropTypes.func.isRequired
     };
 
     handleValueChange = value => {
         this.props.commit(value);
     }
 
+    handleClick = src => {
+        const {setActiveContentCanvasSrc} = this.props;
+
+        if (setActiveContentCanvasSrc) {
+            setActiveContentCanvasSrc(src);
+        }
+    }
+
     render() {
-        const {
-            className,
-            i18nRegistry,
-            threshold,
-            placeholder,
-            options,
-            value,
-            displayLoadingIndicator,
-            searchOptions,
-            onSearchTermChange,
-            onCreateNew,
-            disabled,
-            setActiveContentCanvasSrc
-        } = this.props;
+        const {className, i18nRegistry, threshold, placeholder, options, value, displayLoadingIndicator, searchOptions, onSearchTermChange, onCreateNew, disabled} = this.props;
 
         return (<MultiSelectBox
             className={className}
@@ -72,6 +66,7 @@ export default class ReferencesEditor extends PureComponent {
             options={sanitizeOptions(options)}
             values={value}
             onValuesChange={this.handleValueChange}
+            onReferenceClick={this.handleClick}
             displayLoadingIndicator={displayLoadingIndicator}
             showDropDownToggle={false}
             allowEmpty={true}
@@ -79,7 +74,6 @@ export default class ReferencesEditor extends PureComponent {
             onSearchTermChange={onSearchTermChange}
             onCreateNew={onCreateNew}
             disabled={disabled}
-            setActiveContentCanvasSrc={setActiveContentCanvasSrc}
-        />);
+            />);
     }
 }

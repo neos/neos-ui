@@ -61,7 +61,8 @@ const spec = {
 export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement extends PureComponent {
     static propTypes = {
         // For explanations of the PropTypes, see MultiSelectBox.js
-        option: PropTypes.shape({}),
+        option: PropTypes.shape({
+        }),
         values: PropTypes.arrayOf(PropTypes.string),
 
         // Drag&Drop specific propTypes
@@ -119,10 +120,10 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
         const handleRemoveItem = () => onRemoveItem(index);
 
         const handleClick = src => {
-            const {setActiveContentCanvasSrc} = this.props;
+            const {onReferenceClick} = this.props;
 
-            if (setActiveContentCanvasSrc) {
-                setActiveContentCanvasSrc(src);
+            if (onReferenceClick) {
+                onReferenceClick(src);
             }
         };
 
@@ -134,22 +135,24 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
                             icon={'grip-lines-vertical'}
                             className={theme.selectedOption__moveButton}
                             hoverStyle={'clean'}
-                        />
+                            />
                     )}
-                    <div className={theme.selectedOptions__innerPreview} role="button" onClick={() => {
-                        handleClick(option.uri);
-                    }}>
+                    <div
+                        className={theme.selectedOptions__innerPreview}
+                        onClick={option.uri ? () => handleClick(option.uri) : undefined }
+                        role = "button"
+                    >
                         <InnerListPreviewElement
                             {...this.props}
                             isHighlighted={false}
                             option={option}
-                        />
+                            />
                     </div>
                     <IconButton
                         icon={'close'}
                         onClick={handleRemoveItem}
                         className={theme.selectedOption__removeButton}
-                    />
+                        />
                 </div>
             </li>
         ));

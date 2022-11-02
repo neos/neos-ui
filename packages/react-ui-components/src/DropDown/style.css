@@ -63,7 +63,8 @@
     overflow-y: auto;
 }
 .dropDown__contents--isOpen {
-    display: block;
+    display: flex;
+    flex-direction: column;
 }
 .dropDown--darker {
     > .dropDown__btn--open {

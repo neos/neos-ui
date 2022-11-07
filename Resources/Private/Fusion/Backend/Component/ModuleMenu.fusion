@@ -26,7 +26,7 @@ prototype(Neos.Neos.Ui:Component.ModuleMenu) < prototype(Neos.Fusion:Map) {
                         uri = ${currentSiteInMenu.uri}
                         target = 'Window'
                         isActive = ${currentSiteInMenu.active}
-                        skipI18n = ${true}
+                        skipI18n = true
                     }
                 }
             }
@@ -48,6 +48,7 @@ prototype(Neos.Neos.Ui:Component.ModuleMenu) < prototype(Neos.Fusion:Map) {
                         position = ${submodule.position}
                         isActive = true
                         target = 'Window'
+                        skipI18n = false
                     }
 
                     @process.filterHiddenSubmodules = ${Array.filter(value, (x, index) => x != null)}

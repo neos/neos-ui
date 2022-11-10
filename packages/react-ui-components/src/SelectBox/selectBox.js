@@ -195,7 +195,7 @@ export default class SelectBox extends PureComponent {
             SelectBox_ListPreview,
             onReferenceClick
         } = this.props;
-        // console.log(this.props)
+
         const searchTerm = this.getSearchTerm();
 
         const {focusedValue} = this.state;

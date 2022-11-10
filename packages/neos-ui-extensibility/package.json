@@ -22,7 +22,7 @@
     "typescript": "^4.6.4"
   },
   "dependencies": {
-    "@neos-project/positional-array-sorter": "workspace:*",
+    "@neos-project/positional-array-sorter": "^8.1.2",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-plugin-transform-object-rest-spread": "^6.20.1",
     "babel-preset-es2015": "^6.13.2",

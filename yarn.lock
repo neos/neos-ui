@@ -62,6 +62,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/eslint-parser@npm:^7.19.1":
+  version: 7.19.1
+  resolution: "@babel/eslint-parser@npm:7.19.1"
+  dependencies:
+    "@nicolo-ribaudo/eslint-scope-5-internals": 5.1.1-v1
+    eslint-visitor-keys: ^2.1.0
+    semver: ^6.3.0
+  peerDependencies:
+    "@babel/core": ">=7.11.0"
+    eslint: ^7.5.0 || ^8.0.0
+  checksum: 6d5360f62f25ed097250657deb1bc4c4f51a5f5f2fe456e98cda13727753fdf7a11a109b4cfa03ef0dd6ced3beaeb703b76193c1141e29434d1f91f1bac0517d
+  languageName: node
+  linkType: hard
+
 "@babel/generator@npm:^7.17.3":
   version: 7.17.3
   resolution: "@babel/generator@npm:7.17.3"
@@ -349,7 +363,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/parser@npm:^7.0.0, @babel/parser@npm:^7.1.3, @babel/parser@npm:^7.16.7, @babel/parser@npm:^7.17.3":
+"@babel/parser@npm:^7.1.3, @babel/parser@npm:^7.16.7, @babel/parser@npm:^7.17.3":
   version: 7.17.3
   resolution: "@babel/parser@npm:7.17.3"
   bin:
@@ -1396,7 +1410,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/traverse@npm:^7.0.0, @babel/traverse@npm:^7.13.0, @babel/traverse@npm:^7.16.7, @babel/traverse@npm:^7.16.8, @babel/traverse@npm:^7.17.0, @babel/traverse@npm:^7.17.3":
+"@babel/traverse@npm:^7.13.0, @babel/traverse@npm:^7.16.7, @babel/traverse@npm:^7.16.8, @babel/traverse@npm:^7.17.0, @babel/traverse@npm:^7.17.3":
   version: 7.17.3
   resolution: "@babel/traverse@npm:7.17.3"
   dependencies:
@@ -1414,7 +1428,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/types@npm:^7.0.0, @babel/types@npm:^7.16.0, @babel/types@npm:^7.16.7, @babel/types@npm:^7.16.8, @babel/types@npm:^7.17.0, @babel/types@npm:^7.4.4, @babel/types@npm:^7.8.3":
+"@babel/types@npm:^7.16.0, @babel/types@npm:^7.16.7, @babel/types@npm:^7.16.8, @babel/types@npm:^7.17.0, @babel/types@npm:^7.4.4, @babel/types@npm:^7.8.3":
   version: 7.17.10
   resolution: "@babel/types@npm:7.17.10"
   dependencies:
@@ -1812,7 +1826,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@neos-project/babel-preset-neos-ui@8.1.0, @neos-project/babel-preset-neos-ui@workspace:*, @neos-project/babel-preset-neos-ui@workspace:packages/babel-preset-neos-ui":
+"@neos-project/babel-preset-neos-ui@workspace:*, @neos-project/babel-preset-neos-ui@workspace:packages/babel-preset-neos-ui":
   version: 0.0.0-use.local
   resolution: "@neos-project/babel-preset-neos-ui@workspace:packages/babel-preset-neos-ui"
   dependencies:
@@ -1836,7 +1850,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@neos-project/build-essentials@*, @neos-project/build-essentials@8.1.0, @neos-project/build-essentials@workspace:*, @neos-project/build-essentials@workspace:packages/build-essentials":
+"@neos-project/build-essentials@*, @neos-project/build-essentials@workspace:*, @neos-project/build-essentials@workspace:packages/build-essentials":
   version: 0.0.0-use.local
   resolution: "@neos-project/build-essentials@workspace:packages/build-essentials"
   dependencies:
@@ -1916,7 +1930,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@neos-project/jest-preset-neos-ui@8.1.0, @neos-project/jest-preset-neos-ui@workspace:*, @neos-project/jest-preset-neos-ui@workspace:packages/jest-preset-neos-ui":
+"@neos-project/jest-preset-neos-ui@workspace:*, @neos-project/jest-preset-neos-ui@workspace:packages/jest-preset-neos-ui":
   version: 0.0.0-use.local
   resolution: "@neos-project/jest-preset-neos-ui@workspace:packages/jest-preset-neos-ui"
   dependencies:
@@ -2099,7 +2113,7 @@ __metadata:
     "@neos-project/babel-preset-neos-ui": "workspace:*"
     "@neos-project/build-essentials": "workspace:*"
     "@neos-project/jest-preset-neos-ui": "workspace:*"
-    "@neos-project/positional-array-sorter": "workspace:*"
+    "@neos-project/positional-array-sorter": ^8.1.2
     babel-plugin-transform-decorators-legacy: ^1.3.4
     babel-plugin-transform-object-rest-spread: ^6.20.1
     babel-preset-es2015: ^6.13.2
@@ -2326,6 +2340,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@neos-project/positional-array-sorter@npm:^8.1.2":
+  version: 8.1.2
+  resolution: "@neos-project/positional-array-sorter@npm:8.1.2"
+  checksum: e5eb7b2fd7afb78f86aa8a559b62fdc87d2f0fb76489b18629ebcb5607ef64b90303e44acc1bffdb2534a12d210812967c0fdb562db252d2b3667daffe3c398f
+  languageName: node
+  linkType: hard
+
 "@neos-project/positional-array-sorter@workspace:*, @neos-project/positional-array-sorter@workspace:packages/positional-array-sorter":
   version: 0.0.0-use.local
   resolution: "@neos-project/positional-array-sorter@workspace:packages/positional-array-sorter"
@@ -2352,6 +2373,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@neos-project/react-ui-components@workspace:packages/react-ui-components"
   dependencies:
+    "@babel/eslint-parser": ^7.19.1
     "@fortawesome/fontawesome-svg-core": ^1.2.35
     "@fortawesome/free-brands-svg-icons": ^5.15.3
     "@fortawesome/free-regular-svg-icons": ^5.15.3
@@ -2382,7 +2404,6 @@ __metadata:
     "@types/react-dom": ^16.9.4
     "@types/react-fontawesome": ^1.6.4
     "@types/react-portal": ^4.0.1
-    babel-eslint: ^10.0.3
     classnames: ^2.2.3
     enzyme: ^3.8.0
     enzyme-to-json: ^3.1.3
@@ -2422,9 +2443,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@neos-project/utils-helpers@workspace:packages/utils-helpers"
   dependencies:
-    "@neos-project/babel-preset-neos-ui": 8.1.0
-    "@neos-project/build-essentials": 8.1.0
-    "@neos-project/jest-preset-neos-ui": 8.1.0
+    "@neos-project/babel-preset-neos-ui": "workspace:*"
+    "@neos-project/build-essentials": "workspace:*"
+    "@neos-project/jest-preset-neos-ui": "workspace:*"
     he: ^1.1.1
   languageName: unknown
   linkType: soft
@@ -2449,6 +2470,15 @@ __metadata:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
   languageName: unknown
   linkType: soft
+
+"@nicolo-ribaudo/eslint-scope-5-internals@npm:5.1.1-v1":
+  version: 5.1.1-v1
+  resolution: "@nicolo-ribaudo/eslint-scope-5-internals@npm:5.1.1-v1"
+  dependencies:
+    eslint-scope: 5.1.1
+  checksum: f2e3b2d6a6e2d9f163ca22105910c9f850dc4897af0aea3ef0a5886b63d8e1ba6505b71c99cb78a3bba24a09557d601eb21c8dede3f3213753fcfef364eb0e57
+  languageName: node
+  linkType: hard
 
 "@nodelib/fs.scandir@npm:2.1.3":
   version: 2.1.3
@@ -4386,22 +4416,6 @@ __metadata:
     slash: ^1.0.0
     source-map: ^0.5.7
   checksum: 3d6a37e5c69ea7f7d66c2a261cbd7219197f2f938700e6ebbabb6d84a03f2bf86691ffa066866dcb49ba6c4bd702d347c9e0e147660847d709705cf43c964752
-  languageName: node
-  linkType: hard
-
-"babel-eslint@npm:^10.0.3":
-  version: 10.0.3
-  resolution: "babel-eslint@npm:10.0.3"
-  dependencies:
-    "@babel/code-frame": ^7.0.0
-    "@babel/parser": ^7.0.0
-    "@babel/traverse": ^7.0.0
-    "@babel/types": ^7.0.0
-    eslint-visitor-keys: ^1.0.0
-    resolve: ^1.12.0
-  peerDependencies:
-    eslint: ">= 4.12.1"
-  checksum: d3bf355c20d1a2f0667ace6c43263eecb0d09342a833129c67cc9f554a5dbc335bd6a73cbd3001ee6074570ca2184366ddff6c58afccf8fd55e249c02ff54288
   languageName: node
   linkType: hard
 
@@ -9693,6 +9707,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eslint-scope@npm:5.1.1":
+  version: 5.1.1
+  resolution: "eslint-scope@npm:5.1.1"
+  dependencies:
+    esrecurse: ^4.3.0
+    estraverse: ^4.1.1
+  checksum: 47e4b6a3f0cc29c7feedee6c67b225a2da7e155802c6ea13bbef4ac6b9e10c66cd2dcb987867ef176292bf4e64eccc680a49e35e9e9c669f4a02bac17e86abdb
+  languageName: node
+  linkType: hard
+
 "eslint-scope@npm:^4.0.3":
   version: 4.0.3
   resolution: "eslint-scope@npm:4.0.3"
@@ -9716,6 +9740,13 @@ __metadata:
   version: 1.1.0
   resolution: "eslint-visitor-keys@npm:1.1.0"
   checksum: 1cb561606330e66cba28b59a46c76acdc316eae183705d2e81823b12d13e5c239069e9926787146bfaeb5e300306c472d6cf0881ef36d6d13a3513e696e23f46
+  languageName: node
+  linkType: hard
+
+"eslint-visitor-keys@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "eslint-visitor-keys@npm:2.1.0"
+  checksum: e3081d7dd2611a35f0388bbdc2f5da60b3a3c5b8b6e928daffff7391146b434d691577aa95064c8b7faad0b8a680266bcda0a42439c18c717b80e6718d7e267d
   languageName: node
   linkType: hard
 
@@ -9823,10 +9854,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"esrecurse@npm:^4.3.0":
+  version: 4.3.0
+  resolution: "esrecurse@npm:4.3.0"
+  dependencies:
+    estraverse: ^5.2.0
+  checksum: ebc17b1a33c51cef46fdc28b958994b1dc43cd2e86237515cbc3b4e5d2be6a811b2315d0a1a4d9d340b6d2308b15322f5c8291059521cc5f4802f65e7ec32837
+  languageName: node
+  linkType: hard
+
 "estraverse@npm:^4.0.0, estraverse@npm:^4.1.0, estraverse@npm:^4.1.1, estraverse@npm:^4.2.0":
   version: 4.3.0
   resolution: "estraverse@npm:4.3.0"
   checksum: a6299491f9940bb246124a8d44b7b7a413a8336f5436f9837aaa9330209bd9ee8af7e91a654a3545aee9c54b3308e78ee360cef1d777d37cfef77d2fa33b5827
+  languageName: node
+  linkType: hard
+
+"estraverse@npm:^5.2.0":
+  version: 5.3.0
+  resolution: "estraverse@npm:5.3.0"
+  checksum: 072780882dc8416ad144f8fe199628d2b3e7bbc9989d9ed43795d2c90309a2047e6bc5979d7e2322a341163d22cfad9e21f4110597fe487519697389497e4e2b
   languageName: node
   linkType: hard
 
@@ -19783,8 +19830,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
+    "@babel/eslint-parser": ^7.19.1
     "@neos-project/build-essentials": "*"
-    babel-eslint: ^10.0.3
     check-dependencies: ^1.0.1
     cpx: ^1.3.1
     cross-env: ^6.0.3

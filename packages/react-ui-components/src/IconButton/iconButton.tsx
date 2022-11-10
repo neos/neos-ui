@@ -19,6 +19,11 @@ export interface IconButtonProps extends HTMLButtonElementAttributesExceptStyle 
     readonly icon: string | IconName;
 
     /**
+     * Additional props passed to the icon
+     */
+    readonly iconProps?: React.ComponentProps<typeof Icon>;
+
+    /**
      * An optional `className` to attach to the wrapper.
      */
     readonly className?: string;
@@ -59,6 +64,7 @@ class IconButton extends PureComponent<IconButtonProps> {
             className,
             theme,
             icon,
+            iconProps,
             size,
             disabled,
             ...rest
@@ -75,7 +81,7 @@ class IconButton extends PureComponent<IconButtonProps> {
 
         return (
             <Button {...rest} size={size} className={finalClassName} disabled={disabled}>
-                <Icon icon={icon}/>
+                <Icon icon={icon} {...iconProps}/>
             </Button>
         );
     }

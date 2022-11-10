@@ -29,7 +29,6 @@
     "@neos-project/neos-ui-redux-store": "workspace:*",
     "@neos-project/react-ui-components": "workspace:*",
     "@neos-project/utils-helpers": "workspace:*",
-    "@sindresorhus/slugify": "^2.1.0",
     "classnames": "^2.2.3",
     "codemirror": "^5.58.2",
     "lodash.debounce": "^4.0.8",

@@ -28,6 +28,11 @@
 .dropDown__btn:focus{
         outline: 1px solid var(--colors-PrimaryBlue);
     }
+
+    svg{
+        pointer-events: none;
+    }
+}
 .dropDown__btn--withChevron {
     padding-right: var(--spacing-GoldenUnit);
 }
@@ -61,7 +66,8 @@
     overflow-y: auto;
 }
 .dropDown__contents--isOpen {
-    display: block;
+    display: flex;
+    flex-direction: column;
 }
 .dropDown--darker > .dropDown__btn--open {
     background-color: var(--colors-ContrastDarker);

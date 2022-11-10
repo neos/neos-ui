@@ -77,6 +77,10 @@
                 <source>Open in new window</source>
         <target xml:lang="de" state="translated">Öffne Fenster in neuem Tab</target>
       </trans-unit>
+      <trans-unit id="ckeditor__toolbar__link__download" xml:space="preserve" approved="no">
+                <source>Downloadable</source>
+        <target xml:lang="de" state="translated">Ist Download</target>
+      </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__titlePlaceholder" xml:space="preserve" approved="no">
                 <source>Enter link title</source>
         <target xml:lang="de" state="translated">Link Titel eingeben</target>
@@ -456,7 +460,7 @@
       </trans-unit>
       <trans-unit id="deleteXNodes" xml:space="preserve">
                 <source>Delete {amount} nodes</source>
-        <target state="translated">{amount} Knoten löschen</target>
+        <target state="translated">{amount} Nodes löschen</target>
       </trans-unit>
       <trans-unit id="inspectorMutlipleContentNodesSelectedTooltip" xml:space="preserve">
                 <source>Select a single document in order to be able to edit its properties</source>

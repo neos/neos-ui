@@ -2068,7 +2068,6 @@ __metadata:
     "@neos-project/neos-ui-redux-store": "workspace:*"
     "@neos-project/react-ui-components": "workspace:*"
     "@neos-project/utils-helpers": "workspace:*"
-    "@sindresorhus/slugify": ^2.1.0
     classnames: ^2.2.3
     codemirror: ^5.58.2
     enzyme: ^3.8.0
@@ -2530,26 +2529,6 @@ __metadata:
   version: 4.6.0
   resolution: "@sindresorhus/is@npm:4.6.0"
   checksum: 83839f13da2c29d55c97abc3bc2c55b250d33a0447554997a85c539e058e57b8da092da396e252b11ec24a0279a0bed1f537fa26302209327060643e327f81d2
-  languageName: node
-  linkType: hard
-
-"@sindresorhus/slugify@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "@sindresorhus/slugify@npm:2.1.0"
-  dependencies:
-    "@sindresorhus/transliterate": ^1.0.0
-    escape-string-regexp: ^5.0.0
-  checksum: b2411b597ef7c74f42848a8960c614eaac7b24c8c329f9f150ba62e4a9b8ac438aaa65577ae999fdf42d2e72549eab1d3376ebe12681a7172a437a2c87bed618
-  languageName: node
-  linkType: hard
-
-"@sindresorhus/transliterate@npm:^1.0.0":
-  version: 1.5.0
-  resolution: "@sindresorhus/transliterate@npm:1.5.0"
-  dependencies:
-    escape-string-regexp: ^5.0.0
-    lodash.deburr: ^4.1.0
-  checksum: 7a52b464215c71936368f191fdcbdc3e532964d41c1eef986d11e8f688bcf509735d765ee5068617b0f6d856779063399ddc3d6befb7c0d13d8ed640e72bf14f
   languageName: node
   linkType: hard
 
@@ -9536,13 +9515,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"escape-string-regexp@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "escape-string-regexp@npm:5.0.0"
-  checksum: 20daabe197f3cb198ec28546deebcf24b3dbb1a5a269184381b3116d12f0532e06007f4bc8da25669d6a7f8efb68db0758df4cd981f57bc5b57f521a3e12c59e
-  languageName: node
-  linkType: hard
-
 "escodegen@npm:^1.11.0, escodegen@npm:^1.9.0, escodegen@npm:^1.9.1":
   version: 1.14.3
   resolution: "escodegen@npm:1.14.3"
@@ -14104,13 +14076,6 @@ __metadata:
   version: 4.0.8
   resolution: "lodash.debounce@npm:4.0.8"
   checksum: a3f527d22c548f43ae31c861ada88b2637eb48ac6aa3eb56e82d44917971b8aa96fbb37aa60efea674dc4ee8c42074f90f7b1f772e9db375435f6c83a19b3bc6
-  languageName: node
-  linkType: hard
-
-"lodash.deburr@npm:^4.1.0":
-  version: 4.1.0
-  resolution: "lodash.deburr@npm:4.1.0"
-  checksum: 6e2012315c20a4d8ed4f1884ed4b8e6b0093c6355a87bfd95ecf25a5243c8c88d747d67375d52cb87ebc99d090935ed8dc3814c8e661e3275a6dbe02b68efc99
   languageName: node
   linkType: hard
 

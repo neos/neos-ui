@@ -127,15 +127,25 @@ export default class ImageEditor extends Component {
 
         const imageWidth = $get('originalDimensions.width', image);
         const imageHeight = $get('originalDimensions.height', image);
-        const cropAdjustments = {
+        const currentCropAdjustments = $get(CROP_IMAGE_ADJUSTMENT, image);
+        const nextCropAdjustments = {
             x: Math.round(cropArea.x / 100 * imageWidth),
             y: Math.round(cropArea.y / 100 * imageHeight),
             width: Math.round(cropArea.width / 100 * imageWidth),
             height: Math.round(cropArea.height / 100 * imageHeight)
         };
-        const nextimage = $set(CROP_IMAGE_ADJUSTMENT, cropAdjustments, image);
+        const cropAdjustmentsHaveChanged = !currentCropAdjustments ||
+            currentCropAdjustments.x !== nextCropAdjustments.x ||
+            currentCropAdjustments.y !== nextCropAdjustments.y ||
+            currentCropAdjustments.width !== nextCropAdjustments.width ||
+            currentCropAdjustments.height !== nextCropAdjustments.height;
 
-        commit(value, {'Neos.UI:Hook.BeforeSave.CreateImageVariant': nextimage});
+        if (cropAdjustmentsHaveChanged) {
+            const nextimage = $set(CROP_IMAGE_ADJUSTMENT, nextCropAdjustments, image);
+
+            commit(value, {'Neos.UI:Hook.BeforeSave.CreateImageVariant': nextimage});
+        }
+
         this.setState({isImageCropperOpen: false});
     }
 

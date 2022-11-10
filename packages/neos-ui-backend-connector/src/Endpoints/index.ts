@@ -17,6 +17,7 @@ export interface Routes {
             clearClipboard: string;
             loadTree: string;
             flowQuery: string;
+            generateUriPathSegment: string;
             getWorkspaceInfo: string;
             getAdditionalNodeMetadata: string;
         };
@@ -638,6 +639,23 @@ export default (routes: Routes) => {
     .then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
+    const generateUriPathSegment = (nodeContextPath: string, text: string) =>
+        fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+            url: routes.ui.service.generateUriPathSegment,
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'X-Flow-Csrftoken': csrfToken,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                contextNode: nodeContextPath,
+                text,
+            })
+        }))
+            .then(response => fetchWithErrorHandling.parseJson(response))
+            .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+
     return {
         loadImageMetadata,
         change,
@@ -662,6 +680,7 @@ export default (routes: Routes) => {
         setUserPreferences,
         dataSource,
         getJsonResource,
+        generateUriPathSegment,
         getWorkspaceInfo,
         getAdditionalNodeMetadata,
         tryLogin,

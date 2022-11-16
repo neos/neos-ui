@@ -24,7 +24,7 @@ const NodeTypeFilter = ({onChange, onEnterKey, filterSearchTerm, i18nRegistry}) 
     return (
         <div className={style.nodeTypeDialogHeader__filter}>
             <div className={style.nodeTypeDialogHeader__filterIconSearch}>
-                <Icon icon="search" size="md"/>
+                <Icon icon="search" size="1x"/>
             </div>
 
             {filterSearchTerm && (

@@ -16,6 +16,14 @@ import ReactCropStyles from './react_crop.vanilla-css';
 /* eslint-enable no-unused-vars */
 import {$get} from 'plow-js';
 
+/**
+ * Calculates the greatest common divisor for given numbers a, b
+ * @param a Number A
+ * @param b Number B
+ * @returns {*}
+ */
+const calculateGcdRecursive = (a, b) => b ? calculateGcdRecursive(b, a % b) : a;
+
 class AspectRatioItem extends PureComponent {
     static propTypes = {
         key: PropTypes.any,
@@ -148,7 +156,6 @@ export default class ImageCropper extends PureComponent {
             const imageHeight = $get('image.originalDimensions.height', sourceImage);
 
             // normalize aspect ratio values by dividing by gcd
-            const calculateGcdRecursive = (a, b) => b ? calculateGcdRecursive(b, a % b) : a;
             const aspectRatioGcd = calculateGcdRecursive(currentAspectRatioStrategy.width, currentAspectRatioStrategy.height);
             const normalizedAspectRatioWidth = currentAspectRatioStrategy.width / aspectRatioGcd;
             const normalizedAspectRatioHeight = currentAspectRatioStrategy.height / aspectRatioGcd;

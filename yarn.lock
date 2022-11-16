@@ -1805,7 +1805,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@neos-project/babel-preset-neos-ui@8.1.0, @neos-project/babel-preset-neos-ui@workspace:*, @neos-project/babel-preset-neos-ui@workspace:packages/babel-preset-neos-ui":
+"@neos-project/babel-preset-neos-ui@workspace:*, @neos-project/babel-preset-neos-ui@workspace:packages/babel-preset-neos-ui":
   version: 0.0.0-use.local
   resolution: "@neos-project/babel-preset-neos-ui@workspace:packages/babel-preset-neos-ui"
   dependencies:
@@ -1829,7 +1829,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@neos-project/build-essentials@*, @neos-project/build-essentials@8.1.0, @neos-project/build-essentials@workspace:*, @neos-project/build-essentials@workspace:packages/build-essentials":
+"@neos-project/build-essentials@*, @neos-project/build-essentials@workspace:*, @neos-project/build-essentials@workspace:packages/build-essentials":
   version: 0.0.0-use.local
   resolution: "@neos-project/build-essentials@workspace:packages/build-essentials"
   dependencies:
@@ -1909,7 +1909,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@neos-project/jest-preset-neos-ui@8.1.0, @neos-project/jest-preset-neos-ui@workspace:*, @neos-project/jest-preset-neos-ui@workspace:packages/jest-preset-neos-ui":
+"@neos-project/jest-preset-neos-ui@workspace:*, @neos-project/jest-preset-neos-ui@workspace:packages/jest-preset-neos-ui":
   version: 0.0.0-use.local
   resolution: "@neos-project/jest-preset-neos-ui@workspace:packages/jest-preset-neos-ui"
   dependencies:
@@ -2415,9 +2415,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@neos-project/utils-helpers@workspace:packages/utils-helpers"
   dependencies:
-    "@neos-project/babel-preset-neos-ui": 8.1.0
-    "@neos-project/build-essentials": 8.1.0
-    "@neos-project/jest-preset-neos-ui": 8.1.0
+    "@neos-project/babel-preset-neos-ui": "workspace:*"
+    "@neos-project/build-essentials": "workspace:*"
+    "@neos-project/jest-preset-neos-ui": "workspace:*"
     he: ^1.1.1
   languageName: unknown
   linkType: soft

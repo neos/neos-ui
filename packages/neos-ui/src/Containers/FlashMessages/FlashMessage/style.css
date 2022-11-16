@@ -8,6 +8,10 @@
     overflow: hidden;
     box-sizing: border-box;
     box-shadow: 0 0 14px rgba(#000, .15);
+
+    &:last-child {
+        margin-bottom: 0px;
+    }
 }
 
 .flashMessage--success {

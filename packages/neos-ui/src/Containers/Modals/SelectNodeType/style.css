@@ -84,10 +84,19 @@
     border-radius: 2px;
     margin: 1px;
     position: relative;
+    overflow-y: auto;
 }
 
 .helpMessage a {
     color: var(--colors-PrimaryBlue);
+}
+
+.helpMessage ul {
+    padding-left: 40px;
+}
+
+.helpMessage ul li {
+    display: list-item;
 }
 
 .helpMessage a:hover,

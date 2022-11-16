@@ -1,27 +1,30 @@
 {
   "name": "@neos-project/neos-ui-i18n",
-  "version": "7.3.2",
+  "version": "8.1.0",
   "description": "I18n utilities and components for Neos CMS UI.",
   "private": true,
   "main": "./src/index.tsx",
   "scripts": {
     "test": "yarn jest -w 2 --coverage",
     "test:watch": "yarn jest --watch",
-    "build": "exit 0",
-    "build:watch": "exit 0",
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src",
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "7.3.2",
-    "@neos-project/build-essentials": "7.3.2",
-    "@neos-project/jest-preset-neos-ui": "7.3.2"
+    "@neos-project/babel-preset-neos-ui": "workspace:*",
+    "@neos-project/build-essentials": "workspace:*",
+    "@neos-project/jest-preset-neos-ui": "workspace:*",
+    "enzyme": "^3.8.0"
   },
   "dependencies": {
-    "@neos-project/neos-ui-decorators": "7.3.2",
-    "@neos-project/neos-ui-extensibility": "7.3.2",
-    "@neos-project/utils-logger": "7.3.2"
+    "@neos-project/neos-ts-interfaces": "workspace:*",
+    "@neos-project/neos-ui-decorators": "workspace:*",
+    "@neos-project/neos-ui-extensibility": "workspace:*",
+    "@neos-project/utils-logger": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "^16.12.0"
   },
   "license": "GNU GPLv3",
   "jest": {

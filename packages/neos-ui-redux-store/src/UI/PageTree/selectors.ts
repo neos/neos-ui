@@ -1,9 +1,9 @@
 import {$get} from 'plow-js';
-import {GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
+import {GlobalState} from '../../System';
 import {createSelector} from 'reselect';
 
-import {siteNodeContextPathSelector, siteNodeSelector, nodesByContextPathSelector} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/selectors';
-import {isNodeCollapsed} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/helpers';
+import {siteNodeContextPathSelector, siteNodeSelector, nodesByContextPathSelector} from '../../CR/Nodes/selectors';
+import {isNodeCollapsed} from '../../CR/Nodes/helpers';
 
 export const getAllFocused = (state: GlobalState) => $get(['ui', 'pageTree', 'focused'], state);
 export const getFocused = (state: GlobalState) => {

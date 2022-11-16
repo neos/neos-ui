@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-interface InnerComponent extends React.Component {
+interface InnerComponent<P> extends React.Component<P> {
     readonly handleClickOutside?: (e: MouseEvent | TouchEvent) => void;
 }
 
@@ -16,7 +16,7 @@ const isTargetExcludedForClickOutside : (el: any) => boolean = el => {
 
 const enhanceWithClickOutside = <P extends {}>(Component: React.ComponentClass<P>): React.ComponentClass<P> => {
     class EnhancedComponent extends React.Component<P> {
-        private wrappedInstanceRef = React.createRef<InnerComponent>();
+        private wrappedInstanceRef = React.createRef<InnerComponent<P>>();
 
         public componentDidMount(): void {
             document.addEventListener('click', this.handleClickOutside, true);

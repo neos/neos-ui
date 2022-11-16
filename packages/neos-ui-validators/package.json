@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-validators",
-  "version": "7.3.2",
+  "version": "8.1.0",
   "description": "Validators for Neos CMS UI.",
   "private": true,
   "main": "./src/index.ts",
@@ -11,15 +11,21 @@
     "clean": "rimraf ./lib ./dist",
     "jest": "NODE_ENV=test jest"
   },
-  "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "7.3.2",
-    "@neos-project/jest-preset-neos-ui": "7.3.2"
-  },
   "dependencies": {
-    "@neos-project/build-essentials": "7.3.2",
-    "@neos-project/neos-ui-extensibility": "7.3.2",
-    "@neos-project/neos-ui-i18n": "7.3.2",
-    "@neos-project/utils-logger": "7.3.2"
+    "@neos-project/neos-ui-extensibility": "workspace:*",
+    "@neos-project/neos-ui-i18n": "workspace:*",
+    "@neos-project/utils-logger": "workspace:*",
+    "isemail": "^3.2.0",
+    "plow-js": "^2.2.0"
+  },
+  "devDependencies": {
+    "@neos-project/babel-preset-neos-ui": "workspace:*",
+    "@neos-project/build-essentials": "workspace:*",
+    "@neos-project/jest-preset-neos-ui": "workspace:*",
+    "@neos-project/neos-ts-interfaces": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "^16.12.0"
   },
   "license": "GNU GPLv3",
   "jest": {

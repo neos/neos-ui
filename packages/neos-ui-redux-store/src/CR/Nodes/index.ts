@@ -1,7 +1,7 @@
 import produce from 'immer';
-import {defaultsDeep} from 'lodash';
+import defaultsDeep from 'lodash.defaultsdeep';
 import {action as createAction, ActionType} from 'typesafe-actions';
-import {actionTypes as system, InitAction} from '@neos-project/neos-ui-redux-store/src/System';
+import {actionTypes as system, InitAction} from '../../System';
 
 import * as selectors from './selectors';
 import {calculateNewFocusedNodes, getNodeOrThrow} from './helpers';
@@ -411,20 +411,20 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
         case actionTypes.CHANGE_PROPERTY: {
             const {propertyChanges} = action.payload;
             propertyChanges.forEach(propertyChange => {
-                const node = getNodeOrThrow(draft.byContextPath, propertyChange.subject);
+                const node = getNodeOrThrow(draft.byContextPath as NodeMap, propertyChange.subject);
                 node.properties[propertyChange.propertyName] = propertyChange.value;
             });
             break;
         }
         case actionTypes.MOVE: {
             const {nodeToBeMoved: sourceNodeContextPath, targetNode: targetNodeContextPath, position} = action.payload;
-            moveNodeInState(sourceNodeContextPath, targetNodeContextPath, position, draft);
+            moveNodeInState(sourceNodeContextPath, targetNodeContextPath, position, draft as State);
             break;
         }
         case actionTypes.MOVE_MULTIPLE: {
             const {nodesToBeMoved, targetNode: targetNodeContextPath, position} = action.payload;
             nodesToBeMoved.forEach(sourceNodeContextPath => {
-                moveNodeInState(sourceNodeContextPath, targetNodeContextPath, position, draft);
+                moveNodeInState(sourceNodeContextPath, targetNodeContextPath, position, draft as State);
             });
             break;
         }
@@ -454,7 +454,7 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
         case actionTypes.FOCUS: {
             const {contextPath, fusionPath, selectionMode} = action.payload;
             draft.focused.fusionPath = fusionPath;
-            const newFocusedNodes = calculateNewFocusedNodes(selectionMode, contextPath, draft.focused.contextPaths, draft.byContextPath);
+            const newFocusedNodes = calculateNewFocusedNodes(selectionMode, contextPath, draft.focused.contextPaths, draft.byContextPath as NodeMap);
             if (newFocusedNodes) {
                 draft.focused.contextPaths = newFocusedNodes;
             }
@@ -576,27 +576,27 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
             break;
         }
         case actionTypes.HIDE: {
-            const node = getNodeOrThrow(draft.byContextPath, action.payload);
+            const node = getNodeOrThrow(draft.byContextPath as NodeMap, action.payload);
             node.properties._hidden = true;
             break;
         }
         case actionTypes.HIDE_MULTIPLE: {
             const contextPaths = action.payload;
             contextPaths.forEach(contextPath => {
-                const node = getNodeOrThrow(draft.byContextPath, contextPath);
+                const node = getNodeOrThrow(draft.byContextPath as NodeMap, contextPath);
                 node.properties._hidden = true;
             });
             break;
         }
         case actionTypes.SHOW: {
-            const node = getNodeOrThrow(draft.byContextPath, action.payload);
+            const node = getNodeOrThrow(draft.byContextPath as NodeMap, action.payload);
             node.properties._hidden = false;
             break;
         }
         case actionTypes.SHOW_MULTIPLE: {
             const contextPaths = action.payload;
             contextPaths.forEach(contextPath => {
-                const node = getNodeOrThrow(draft.byContextPath, contextPath);
+                const node = getNodeOrThrow(draft.byContextPath as NodeMap, contextPath);
                 node.properties._hidden = false;
             });
             break;

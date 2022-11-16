@@ -16,7 +16,6 @@ namespace Neos\Neos\Ui\Controller;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Domain\Service\ContextFactoryInterface;
 use Neos\Flow\Annotations as Flow;
-use Neos\Flow\Http\Component\SetHeaderComponent;
 use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\Flow\Mvc\Exception\NoSuchArgumentException;
 use Neos\Flow\Mvc\Exception\StopActionException;
@@ -26,7 +25,6 @@ use Neos\Flow\Mvc\View\ViewInterface;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Flow\ResourceManagement\ResourceManager;
 use Neos\Flow\Session\SessionInterface;
-use Neos\Fusion\View\FusionView;
 use Neos\Neos\Controller\Backend\MenuHelper;
 use Neos\Neos\Domain\Repository\DomainRepository;
 use Neos\Neos\Domain\Repository\SiteRepository;
@@ -127,7 +125,7 @@ class BackendController extends ActionController
      * Displays the backend interface
      *
      * @Flow\IgnoreValidation("$node")
-     * @param NodeInterface $node The node that will be displayed on the first tab
+     * @param NodeInterface|null $node The node that will be displayed on the first tab
      * @return void
      * @throws StopActionException
      * @throws UnsupportedRequestTypeException
@@ -209,9 +207,7 @@ class BackendController extends ActionController
         }
 
         $workspaceName = $this->userService->getPersonalWorkspaceName();
-        $contentContext = $this->createContext($workspaceName);
-
-        return $contentContext->getCurrentSiteNode();
+        return $this->createContext($workspaceName)->getCurrentSiteNode();
     }
 
     /**

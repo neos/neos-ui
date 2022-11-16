@@ -41,7 +41,6 @@
 
 # Add lerna alias as there are currently some MacOS problems
 # and putting it into the $PATH is simply not enough
-lerna = ./node_modules/.bin/lerna
 editorconfigChecker = ./node_modules/.bin/editorconfig-checker
 webpack = ./node_modules/.bin/webpack
 crossenv = ./node_modules/.bin/crossenv
@@ -81,7 +80,7 @@ setup: check-requirements install build ## Run a clean setup
 
 # TODO: figure out how to pass a parameter to other targets to reduce redundancy
 build-subpackages:
-	$(lerna) run build --concurrency 1
+	yarn workspaces foreach --parallel --topological-dev run build
 	make build-react-ui-components-standalone
 
 # we build the react UI components ready for standalone usage;
@@ -89,7 +88,7 @@ build-subpackages:
 
 ## Build the react UI components ready for standalone usage.
 build-react-ui-components-standalone:
-	cd packages/react-ui-components && yarn run build-standalone-esm
+	yarn workspace @neos-project/react-ui-components build-standalone-esm
 
 ## Runs the development build.
 build:
@@ -122,11 +121,11 @@ storybook:
 	@mkdir -p ./packages/react-ui-components/node_modules/@neos-project/ && \
 		ln -s ../../../build-essentials/src \
 		./packages/react-ui-components/node_modules/@neos-project/build-essentials
-	$(lerna) run --scope @neos-project/react-ui-components start
+	yarn workspace @neos-project/react-ui-components start
 
 ## Executes the unit test on all source files.
 test:
-	$(lerna) run test --concurrency 1
+	yarn workspaces foreach --parallel run test
 
 ## Executes integration tests on saucelabs.
 test-e2e-saucelabs:
@@ -145,11 +144,13 @@ lint: lint-js lint-editorconfig
 
 ## Runs lint test in all subpackages via lerna.
 lint-js:
-	$(lerna) run lint --concurrency 1
+	yarn workspaces foreach --parallel run lint
 
 ## Tests if all files respect the .editorconfig.
 lint-editorconfig:
-	$(editorconfigChecker) -config .ecrc.json
+	# TODO: editorconfig-checker seems broken in node >14
+	# see https://github.com/editorconfig-checker/editorconfig-checker/issues/178
+	# $(editorconfigChecker) -config .ecrc.json
 
 ################################################################################
 # Releasing
@@ -165,13 +166,13 @@ ifeq ($(VERSION),)
 endif
 
 bump-version: called-with-version
-	$(lerna) publish \
+	yarn workspaces foreach run publish \
 		--skip-git --exact --repo-version=$(VERSION) \
 		--yes --force-publish --skip-npm
 	./Build/createVersionFile.sh
 
 publish-npm: called-with-version
-	$(lerna) publish --skip-git --exact --repo-version=$(VERSION) \
+	yarn workspaces foreach run publish --skip-git --exact --repo-version=$(VERSION) \
 		--yes --force-publish
 
 ################################################################################

@@ -1,11 +1,11 @@
-import {combineReducers} from '@neos-project/neos-ui-redux-store/src/combineReducers';
+import {combineReducers} from './combineReducers';
 
-import * as Changes from '@neos-project/neos-ui-redux-store/src/Changes';
-import * as CR from '@neos-project/neos-ui-redux-store/src/CR';
-import * as System from '@neos-project/neos-ui-redux-store/src/System';
-import * as UI from '@neos-project/neos-ui-redux-store/src/UI';
-import * as User from '@neos-project/neos-ui-redux-store/src/User';
-import * as ServerFeedback from '@neos-project/neos-ui-redux-store/src/ServerFeedback';
+import * as Changes from './Changes';
+import * as CR from './CR';
+import * as System from './System';
+import * as UI from './UI';
+import * as User from './User';
+import * as ServerFeedback from './ServerFeedback';
 
 const all = {Changes, CR, System, UI, User, ServerFeedback};
 

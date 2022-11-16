@@ -4,11 +4,14 @@
     "description": "Neos test distribution. Change this number if you need to break CircleCI's cache: 14",
     "config": {
         "vendor-dir": "Packages/Libraries",
-        "bin-dir": "bin"
+        "bin-dir": "bin",
+        "allow-plugins": {
+          "neos/composer-plugin": true
+        }
     },
     "minimum-stability": "dev",
     "require": {
-      "neos/neos-ui": "dev-master",
+      "neos/neos-ui": "8.2.x-dev",
       "neos/fusion-afx": "*",
       "neos/test-site": "@dev",
       "neos/test-nodetypes": "@dev"

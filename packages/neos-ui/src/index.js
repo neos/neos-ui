@@ -43,7 +43,6 @@ require('@neos-project/neos-ui-contentrepository');
 require('@neos-project/neos-ui-editors');
 require('@neos-project/neos-ui-views/src/manifest');
 require('@neos-project/neos-ui-guest-frame');
-require('@neos-project/neos-ui-ckeditor-bindings');
 require('@neos-project/neos-ui-ckeditor5-bindings');
 require('@neos-project/neos-ui-validators/src/manifest');
 require('@neos-project/neos-ui-i18n/src/manifest');
@@ -89,7 +88,7 @@ function * application() {
     //
     store.dispatch(actions.System.boot());
 
-    const {getJsonResource} = backend.get().endpoints;
+    const {getJsonResource, impersonateStatus} = backend.get().endpoints;
 
     const groupsAndRoles = yield system.getNodeTypes;
 
@@ -112,7 +111,6 @@ function * application() {
     nodeTypesRegistry.setInheritanceMap(nodeTypesSchema.inheritanceMap);
     nodeTypesRegistry.setGroups(groupsAndRoles.groups);
     nodeTypesRegistry.setRoles(groupsAndRoles.roles);
-    nodeTypesRegistry.setDefaultInlineEditor($get('defaultInlineEditor', frontendConfiguration));
 
     //
     // Load translations
@@ -136,6 +134,15 @@ function * application() {
     const persistedState = localStorage.getItem('persistedState') ? JSON.parse(localStorage.getItem('persistedState')) : {};
     const mergedState = merge({}, serverState, persistedState);
     yield put(actions.System.init(mergedState));
+
+    try {
+        const impersonateState = yield impersonateStatus();
+        if (impersonateState) {
+            yield put(actions.User.Impersonate.fetchStatus(impersonateState));
+        }
+    } catch (error) {
+        store.dispatch(actions.UI.FlashMessages.add('impersonateStatusError', error.message, 'error'));
+    }
 
     //
     // Just make sure that everybody does their initialization homework

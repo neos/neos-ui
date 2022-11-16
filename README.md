@@ -11,23 +11,26 @@ Release roadmap is [available here](https://www.neos.io/features/release-process
 
 That means:
 * All bugfixes go to the lowest maintained branch
-* All new features go only to master
+* All new features go only to the 8.2 branch
 * New minor and major releases are made in sync with Neos/Flow. Bugfix releases may be available independantly
 
 ### Currently maintained versions
+
+* NeosCMS version 7.3: branch 7.3
+* NeosCMS version 8.0: branch 8.0
+* NeosCMS version 8.1: branch 8.1
+* latest development happens currently in the 8.2 branch
+
+#### Releases with just security updates
 
 * NeosCMS version 5.3: branch 5.3
 * NeosCMS version 7.0: branch 7.0
 * NeosCMS version 7.1: branch 7.1
 * NeosCMS version 7.2: branch 7.2
-* NeosCMS version 7.3: branch 7.3
-* latest development happens in master
 
 ## Browser support
 
 The new interface supports all evergreen (i.e. self-updating) browsers, including: **Chrome, Firefox, Safari, Edge, Opera and other webkit-based browsers**.
-
-In order to get **IE11** to work, please switch to CKEditor 4, as CKEditor 5 doesn't support it. But doing so is highly discouraged, so where possibly encourage your editors to use modern browsers.
 
 If you discover bugs in any of the supported browsers, please [report them](https://github.com/neos/neos-ui/issues/new)!
 
@@ -59,14 +62,14 @@ composer require neos/neos-ui
 composer update neos/neos-ui
 ```
 
-### Installing dev-master
+### Installing latest development
 
 For trying out the new UI, we recommend you to run the regularily released beta releases.
 However, if you want to stay on bleeding-edge, or want to help out developing, you'll
-need the `dev-master` release. You can install the master release using:
+need the `8.2.x-dev` release. You can install the latest release using:
 
 ```
-composer require neos/neos-ui-compiled:dev-master neos/neos-ui:dev-master
+composer require neos/neos-ui-compiled:8.2.x-dev neos/neos-ui:8.2.x-dev
 ```
 
 ## Contributing
@@ -137,20 +140,24 @@ git checkout 7.2 && git fetch && git reset --hard origin/7.2 && git merge --no-f
 # review and `git commit`
 git checkout 7.3 && git fetch && git reset --hard origin/7.3 && git merge --no-ff --no-commit origin/7.2
 # review and `git commit`
-git checkout master && git fetch && git reset --hard origin/master && git merge --no-ff --no-commit origin/7.3
+git checkout 8.0 && git fetch && git reset --hard origin/8.0 && git merge --no-ff --no-commit origin/7.3
+# review and `git commit`
+git checkout 8.1 && git fetch && git reset --hard origin/8.1 && git merge --no-ff --no-commit origin/8.0
+# review and `git commit`
+git checkout 8.2 && git fetch && git reset --hard origin/8.2 && git merge --no-ff --no-commit origin/8.1
 # review and `git commit`
 ```
 
 #### Development commands
-| Command         | Description                    |
-| --------------- | ------------------------------ |
+| Command         | Description                   |
+| --------------- | ----------------------------- |
 | `make clean` | delete all node_modules in every subdirectory. |
 | `make build` |  Runs the development build. |
 | `make build-watch` | Watches the source files for changes and runs a build in case. |
 | `make build-watch-poll` | Watches (and polls) the source files on a file share. Should preferably be used when working an a VM for example. |
 | `make storybook` | Starts the storybook server on port 9001. |
 | `make lint`  | Executes `make lint-js` and `make lint-editorconfig`. |
-| `make lint-js`  | Runs test in all subpackages via lerna. |
+| `make lint-js`  | Runs test in all subpackages. |
 | `make lint-editorconfig`  | Tests if all files respect the `.editorconfig`. |
 | `make test`  | Executes the test on all source files. |
 | `make test-e2e`  | Executes integration tests. |
@@ -184,7 +191,7 @@ Use `it.only(() => {})` and `describe.only(() => {})` if you want to run a speci
 
 #### Integration tests
 
-To setup end-to-end tests locally you have got to do the same things described in [CircleCI workflow](https://github.com/neos/neos-ui/blob/master/.circleci/config.yml), namely take the [test disribution](https://github.com/neos/neos-ui/blob/master/Tests/IntegrationTests/TestDistribution/composer.json) and `composer install` in it, put the right branch into Neos.Neos.Ui folder and run webserver and mysql server with the same config as described in the test distribution's [Settings.yaml](https://github.com/neos/neos-ui/blob/master/Tests/IntegrationTests/TestDistribution/Configuration/Settings.yaml) (or adjust it).
+To setup end-to-end tests locally you have got to do the same things described in [CircleCI workflow](https://github.com/neos/neos-ui/blob/8.2/.circleci/config.yml), namely take the [test disribution](https://github.com/neos/neos-ui/blob/8.2/Tests/IntegrationTests/TestDistribution/composer.json) and `composer install` in it, put the right branch into Neos.Neos.Ui folder and run webserver and mysql server with the same config as described in the test distribution's [Settings.yaml](https://github.com/neos/neos-ui/blob/8.2/Tests/IntegrationTests/TestDistribution/Configuration/Settings.yaml) (or adjust it).
 
 For executing the end to end tests on a Mac with catalina or higher you need to permit screen recording. Open 'System Preferences > Security & Privacy > Privacy > Screen Recording' and check 'TestCafe Browser Tools' in the application list.
 

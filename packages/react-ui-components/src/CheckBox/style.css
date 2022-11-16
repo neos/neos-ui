@@ -32,7 +32,7 @@
     width: 20px;
     height: 20px;
     border-radius: 2px;
-    vertical-align: text-bottom;
+    vertical-align: top;
     background: var(--colors-ContrastDark);
     font-size: 20px;
     font-weight: bold;

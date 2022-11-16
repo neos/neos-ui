@@ -1,30 +1,34 @@
 {
-    "name": "@neos-project/neos-ui-sagas",
-    "version": "7.3.2",
-    "description": "Redux Sagas implementation for the Neos CMS UI",
-    "private": true,
-    "main": "src/index.js",
-    "scripts": {
-        "test": "yarn jest -w 2 --coverage",
-        "test:watch": "yarn jest --watch",
-        "build": "exit 0",
-        "build:watch": "exit 0",
-        "clean": "rimraf ./lib ./dist",
-        "lint": "eslint src",
-        "jest": "NODE_ENV=test jest"
-    },
-    "devDependencies": {
-        "@neos-project/babel-preset-neos-ui": "7.3.2",
-        "@neos-project/build-essentials": "7.3.2",
-        "@neos-project/jest-preset-neos-ui": "7.3.2"
-    },
-    "dependencies": {
-        "@neos-project/neos-ui-extensibility": "7.3.2",
-        "@neos-project/neos-ui-validators": "7.3.2",
-        "@neos-project/utils-redux": "7.3.2"
-    },
-    "license": "GNU GPLv3",
-    "jest": {
-        "preset": "@neos-project/jest-preset-neos-ui"
-    }
+  "name": "@neos-project/neos-ui-sagas",
+  "version": "8.1.0",
+  "description": "Redux Sagas implementation for the Neos CMS UI",
+  "private": true,
+  "main": "src/index.js",
+  "scripts": {
+    "test": "yarn jest -w 2 --coverage",
+    "test:watch": "yarn jest --watch",
+    "clean": "rimraf ./lib ./dist",
+    "lint": "eslint src",
+    "jest": "NODE_ENV=test jest"
+  },
+  "devDependencies": {
+    "@neos-project/babel-preset-neos-ui": "workspace:*",
+    "@neos-project/build-essentials": "workspace:*",
+    "@neos-project/jest-preset-neos-ui": "workspace:*",
+    "redux-saga-test-plan": "^3.6.0"
+  },
+  "dependencies": {
+    "@neos-project/neos-ui-backend-connector": "workspace:*",
+    "@neos-project/neos-ui-extensibility": "workspace:*",
+    "@neos-project/neos-ui-guest-frame": "workspace:*",
+    "@neos-project/neos-ui-redux-store": "workspace:*",
+    "lodash.escaperegexp": "^4.1.2",
+    "mousetrap": "^1.6.3",
+    "plow-js": "^2.2.0",
+    "redux-saga": "^0.15.0"
+  },
+  "license": "GNU GPLv3",
+  "jest": {
+    "preset": "@neos-project/jest-preset-neos-ui"
+  }
 }

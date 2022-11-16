@@ -1,10 +1,11 @@
-import {combineReducers} from '@neos-project/neos-ui-redux-store/src/combineReducers';
+import {combineReducers} from '../combineReducers';
 
-import * as Settings from '@neos-project/neos-ui-redux-store/src/User/Settings';
-import * as Preferences from '@neos-project/neos-ui-redux-store/src/User/Preferences';
-import * as Name from '@neos-project/neos-ui-redux-store/src/User/Name';
+import * as Settings from './Settings';
+import * as Preferences from './Preferences';
+import * as Name from './Name';
+import * as Impersonate from './Impersonate';
 
-const all = {Settings, Preferences, Name};
+const all = {Settings, Preferences, Name, Impersonate};
 
 //
 // Export the subreducer state shape interface
@@ -13,6 +14,7 @@ export interface State {
     settings: Settings.State;
     preferences: Preferences.State;
     name: Name.State;
+    impersonate: Impersonate.State;
 }
 
 function typedKeys<T>(o: T) : Array<keyof T> {
@@ -35,7 +37,8 @@ export const actions = typedKeys(all).reduce((acc, cur) => ({...acc, [cur]: all[
 export const reducer = combineReducers({
     settings: Settings.reducer,
     preferences: Preferences.reducer,
-    name: Name.reducer
+    name: Name.reducer,
+    impersonate: Impersonate.reducer
 } as any);
 
 //

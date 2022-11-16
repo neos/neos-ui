@@ -5,6 +5,7 @@ import factory, {
     isNodeEnvelope,
     resolveChain
 } from './index';
+import 'isomorphic-fetch';
 import fetchWithErrorHandling from '../FetchWithErrorHandling';
 
 test(`
@@ -127,8 +128,11 @@ test(`
 });
 
 test(`"api.flowQuery > resolveChain" utility should make a fetch call.`, () => {
+    // @TODO: We need to clean up this side effect :(
+    global.fetch = jest.fn(() => Promise.resolve({ok: true, json: () => Promise.resolve({})}));
     fetchWithErrorHandling.setCsrfToken('asdf');
     const result = resolveChain({}, {ui: {service: {flowQuery: 'https://hello.world'}}});
+    global.fetch = undefined;
 
     expect(result.then).not.toBe(undefined);
     expect(typeof (result.then)).toBe('function');

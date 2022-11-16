@@ -32,6 +32,10 @@
     padding: var(--spacing-Half);
 }
 
+.linkInput__optionsPanelCheckbox {
+    display: flex;
+}
+
 .linkInput__optionsPanelLabel {
     margin-bottom: var(--spacing-Quarter);
 }

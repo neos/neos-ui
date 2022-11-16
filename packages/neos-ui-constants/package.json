@@ -1,22 +1,20 @@
 {
   "name": "@neos-project/neos-ui-constants",
-  "version": "7.3.2",
+  "version": "8.1.0",
   "description": "Container package to store Neos CMS UI constants",
   "private": true,
   "main": "./src/index.js",
   "scripts": {
     "test": "yarn jest -w 2 --coverage --passWithNoTests",
     "test:watch": "yarn jest --watch",
-    "build": "exit 0",
-    "build:watch": "exit 0",
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src",
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "7.3.2",
-    "@neos-project/build-essentials": "7.3.2",
-    "@neos-project/jest-preset-neos-ui": "7.3.2"
+    "@neos-project/babel-preset-neos-ui": "workspace:*",
+    "@neos-project/build-essentials": "workspace:*",
+    "@neos-project/jest-preset-neos-ui": "workspace:*"
   },
   "license": "GNU GPLv3",
   "jest": {

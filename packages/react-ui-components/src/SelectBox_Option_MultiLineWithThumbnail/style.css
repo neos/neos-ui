@@ -1,7 +1,10 @@
 .multiLineWithThumbnail__item {
     box-sizing: content-box;
+    background-color: var(--colors-ContrastDarkest);
+}
+
+.multiLineWithThumbnail__item--multiLine {
     line-height: 20px;
-    background: var(--colors-ContrastDarkest);
 }
 
 .multiLineWithThumbnail__secondaryLabel {

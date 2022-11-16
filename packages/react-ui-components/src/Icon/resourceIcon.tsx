@@ -34,6 +34,8 @@ class ResourceIcon extends PureComponent<ResourceIconProps> {
                 [theme!['icon--color-warn']]: color === 'warn',
                 [theme!['icon--color-error']]: color === 'error',
                 [theme!['icon--color-primaryBlue']]: color === 'primaryBlue',
+                [theme!['icon--huge']]: size === '3x',
+                [theme!['icon--large']]: size === '2x',
                 [theme!['icon--big']]: size === 'lg',
                 [theme!['icon--small']]: size === 'sm',
                 [theme!['icon--tiny']]: size === 'xs'

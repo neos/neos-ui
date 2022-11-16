@@ -1,7 +1,8 @@
-import {merge, mapValues} from 'lodash';
+import merge from 'lodash.merge';
+import mapValues from 'lodash.mapvalues';
 import {$get} from 'plow-js';
-import {SynchronousRegistry} from '@neos-project/neos-ui-extensibility';
-import positionalArraySorter from '@neos-project/positional-array-sorter';
+import {SynchronousRegistry} from '@neos-project/neos-ui-extensibility/src';
+import positionalArraySorter from '@neos-project/positional-array-sorter/src/positionalArraySorter';
 import {NodeTypeName, NodeType} from '@neos-project/neos-ts-interfaces';
 
 interface Constraint {
@@ -53,8 +54,6 @@ export default class NodeTypesRegistry extends SynchronousRegistry<NodeType> {
 
     private _roles: RolesMap = {};
 
-    private _defaultInlineEditor = 'ckeditor';
-
     private _inspectorViewConfigurationCache: {[propName: string]: any} = {};
 
     public setConstraints (constraints: ConstraintsMap): void {
@@ -75,16 +74,6 @@ export default class NodeTypesRegistry extends SynchronousRegistry<NodeType> {
 
     public getRole(roleName: string): string | null {
         return this._roles[roleName] || null;
-    }
-
-    public setDefaultInlineEditor(defaultInlineEditor: string): void {
-        if (defaultInlineEditor) {
-            this._defaultInlineEditor = defaultInlineEditor;
-        }
-    }
-
-    public getDefaultInlineEditor(): string {
-        return this._defaultInlineEditor;
     }
 
     public hasRole(nodeTypeName: string, roleName: string): boolean {
@@ -247,17 +236,6 @@ export default class NodeTypesRegistry extends SynchronousRegistry<NodeType> {
         this._inspectorViewConfigurationCache[nodeTypeName] = viewConfiguration;
 
         return viewConfiguration;
-    }
-
-    public getInlineEditorIdentifierForProperty(nodeTypeName: NodeTypeName, propertyName: string): string | null {
-        const nodeType = this.get(nodeTypeName);
-
-        if (!nodeType) {
-            console.error('Nodetype not found', nodeTypeName); // tslint:disable-line no-console
-            return null;
-        }
-
-        return $get(['properties', propertyName, 'ui', 'inline', 'editor'], nodeType) || this._defaultInlineEditor;
     }
 
     /**

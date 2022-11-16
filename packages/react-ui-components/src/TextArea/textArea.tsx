@@ -78,6 +78,7 @@ export class TextArea extends PureComponent<TextAreaProps> {
             minRows,
             expandedRows,
             value,
+            style,
             ...restProps
         } = this.props;
         const classNames = mergeClassNames(
@@ -101,6 +102,8 @@ export class TextArea extends PureComponent<TextAreaProps> {
                 onClick={this.handleOnClick}
                 minRows={this.state.isFocused ? expandedRows : minRows}
                 value={value}
+                // @ts-ignore -- WHY: type mismatch even though it shouldn't
+                style={style}
             />
         );
     }

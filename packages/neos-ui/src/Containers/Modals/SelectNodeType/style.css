@@ -51,6 +51,9 @@
     border-radius: 2px;
     position: relative;
 }
+.nodeType__item--focused {
+    background: var(--colors-PrimaryBlue);
+}
 .nodeType__helpIcon {
     display: block;
     position: absolute;
@@ -145,10 +148,36 @@
     padding-right: var(--spacing-Full);
     padding-bottom: var(--spacing-Full);
 }
-
 .nodeTypeDialogHeader__filter {
+    position: relative;
     display: flex;
+    flex: 1;
     align-items: center;
+    margin-right: var(--spacing-Full);
+}
+.nodeTypeDialogHeader__filterInput {
+    padding-left: var(--spacing-GoldenUnit);
+
+    &:focus {
+        background: var(--colors-ContrastDark);
+        color: var(--colors-ContrastBrightest);
+    }
+}
+.nodeTypeDialogHeader__filterInputContainer {
+    width: 100%;
+}
+.nodeTypeDialogHeader__filterIconSearch {
+    position: absolute;
+    top: 10px;
+    left: var(--spacing-Full);
+    width: var(--spacing-Full);
+}
+.nodeTypeDialogHeader__filterIconReset {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: var(--spacing-GoldenUnit);
 }
 
 .nodeTypeFilter__label {

@@ -5,10 +5,9 @@
 .app {
     height: 100%;
     display: grid;
-    grid-template-areas:
-        "primaryToolbar primaryToolbar primaryToolbar"
-        "leftSideBarHeader secondaryToolbar rightSidebar"
-        "leftSidebar content rightSidebar";
+    grid-template-areas: 'primaryToolbar primaryToolbar primaryToolbar'
+        'leftSideBarHeader secondaryToolbar rightSidebar'
+        'leftSidebar content rightSidebar';
     grid-template-rows: 41px 41px 1fr;
     grid-template-columns: min-content 1fr min-content;
 }

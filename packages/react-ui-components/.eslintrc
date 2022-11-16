@@ -1,3 +1,4 @@
 {
-    "extends": "@neos-project/eslint-config-neos"
+    "extends": "@neos-project/eslint-config-neos",
+    "ignorePatterns": ["**/*.spec.ts", "**/*.spec.js"]
 }

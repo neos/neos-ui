@@ -81,7 +81,7 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     const editPreviewModes = globalRegistry.get('frontendConfiguration').get('editPreviewModes');
     const isWorkspaceReadOnly = selectors.CR.Workspaces.isWorkspaceReadOnlySelector(state);
     const currentEditMode = editPreviewModes[editPreviewMode];
-    if (!currentEditMode.isEditingMode || isWorkspaceReadOnly) {
+    if (!currentEditMode || !currentEditMode.isEditingMode || isWorkspaceReadOnly) {
         return;
     }
 

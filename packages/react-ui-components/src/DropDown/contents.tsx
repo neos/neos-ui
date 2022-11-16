@@ -59,7 +59,7 @@ export interface ShallowDropDownContentsProps {
     /**
      * The contents to be rendered within the contents wrapper.
      */
-    readonly children: ReactNode;
+    readonly children?: ReactNode;
 
     /**
      * Limit height and add scrollbar.

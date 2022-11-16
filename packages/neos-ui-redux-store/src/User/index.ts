@@ -1,9 +1,9 @@
-import {combineReducers} from '@neos-project/neos-ui-redux-store/src/combineReducers';
+import {combineReducers} from '../combineReducers';
 
-import * as Settings from '@neos-project/neos-ui-redux-store/src/User/Settings';
-import * as Preferences from '@neos-project/neos-ui-redux-store/src/User/Preferences';
-import * as Name from '@neos-project/neos-ui-redux-store/src/User/Name';
-import * as Impersonate from '@neos-project/neos-ui-redux-store/src/User/Impersonate';
+import * as Settings from './Settings';
+import * as Preferences from './Preferences';
+import * as Name from './Name';
+import * as Impersonate from './Impersonate';
 
 const all = {Settings, Preferences, Name, Impersonate};
 

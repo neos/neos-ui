@@ -24,6 +24,7 @@
         "pretty": true,
         "removeComments": true,
         "sourceMap": true,
+        "incremental": true,
 
         "target": "ES6",
         "baseUrl": "./",

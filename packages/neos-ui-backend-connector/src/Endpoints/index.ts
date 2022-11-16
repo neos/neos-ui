@@ -17,6 +17,7 @@ export interface Routes {
             clearClipboard: string;
             loadTree: string;
             flowQuery: string;
+            generateUriPathSegment: string;
             getWorkspaceInfo: string;
             getAdditionalNodeMetadata: string;
         };
@@ -283,12 +284,13 @@ export default (routes: Routes) => {
                 const assetSourceIdentifier = getElementInnerText(assetProxy, '.asset-source-identifier');
                 const assetSourceLabel = getElementInnerText(assetProxy, '.asset-source-label');
                 const assetProxyIdentifier = getElementInnerText(assetProxy, '.asset-proxy-identifier');
+                const identifier = getElementInnerText(assetProxy, '.local-asset-identifier') || (assetSourceIdentifier + '/' + assetProxyIdentifier);
                 return {
                     dataType: 'Neos.Media:Asset',
-                    loaderUri: 'assetProxy://' + assetSourceIdentifier + '/' + assetProxyIdentifier,
+                    loaderUri: 'assetProxy://' + identifier,
                     label: getElementInnerText(assetProxy, '.asset-proxy-label'),
                     preview: getElementAttributeValue(assetProxy, '[rel=thumbnail]', 'href'),
-                    identifier: getElementInnerText(assetProxy, '.local-asset-identifier') || (assetSourceIdentifier + '/' + assetProxyIdentifier),
+                    identifier,
                     assetSourceIdentifier,
                     assetSourceLabel,
                     assetProxyIdentifier
@@ -637,6 +639,23 @@ export default (routes: Routes) => {
     .then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
+    const generateUriPathSegment = (nodeContextPath: string, text: string) =>
+        fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+            url: routes.ui.service.generateUriPathSegment,
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'X-Flow-Csrftoken': csrfToken,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                contextNode: nodeContextPath,
+                text,
+            })
+        }))
+            .then(response => fetchWithErrorHandling.parseJson(response))
+            .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+
     return {
         loadImageMetadata,
         change,
@@ -661,6 +680,7 @@ export default (routes: Routes) => {
         setUserPreferences,
         dataSource,
         getJsonResource,
+        generateUriPathSegment,
         getWorkspaceInfo,
         getAdditionalNodeMetadata,
         tryLogin,

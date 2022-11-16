@@ -41,7 +41,7 @@ prototype(Neos.Neos:Page) {
                 }
                 entryTags {
                     1 = ${Neos.Caching.nodeTag(documentNode)}
-                    2 = ${Neos.Caching.descendantOfTag(documentNode)}
+                    2 = ${documentNode.context.inBackend ? Neos.Caching.descendantOfTag(documentNode) : null}
                 }
             }
         }

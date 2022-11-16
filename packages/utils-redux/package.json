@@ -1,22 +1,20 @@
 {
   "name": "@neos-project/utils-redux",
-  "version": "8.0.0",
+  "version": "8.1.0",
   "description": "Neos CMS UI Redux Helper utilitites",
   "private": true,
   "main": "./src/index.ts",
   "scripts": {
     "test": "yarn jest -w 2 --coverage",
     "test:watch": "yarn jest --watch",
-    "build": "exit 0",
-    "build:watch": "exit 0",
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src",
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "8.0.0",
-    "@neos-project/build-essentials": "8.0.0",
-    "@neos-project/jest-preset-neos-ui": "8.0.0"
+    "@neos-project/babel-preset-neos-ui": "workspace:*",
+    "@neos-project/build-essentials": "workspace:*",
+    "@neos-project/jest-preset-neos-ui": "workspace:*"
   },
   "license": "GNU GPLv3",
   "jest": {

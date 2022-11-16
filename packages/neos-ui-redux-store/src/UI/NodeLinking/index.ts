@@ -1,7 +1,7 @@
 import {createSelector} from 'reselect';
-import {personalWorkspaceNameSelector} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces/selectors';
-import {siteNodeContextPathSelector} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/selectors';
-import {selectors as CDSelectors} from '@neos-project/neos-ui-redux-store/src/CR/ContentDimensions/index';
+import {personalWorkspaceNameSelector} from '../../CR/Workspaces/selectors';
+import {siteNodeContextPathSelector} from '../../CR/Nodes/selectors';
+import {selectors as CDSelectors} from '../../CR/ContentDimensions/index';
 
 //
 // Export the action types

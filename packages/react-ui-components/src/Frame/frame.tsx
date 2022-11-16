@@ -1,4 +1,4 @@
-import {omit} from 'lodash';
+import omit from 'lodash.omit';
 import React, {PureComponent, ReactNode, SyntheticEvent} from 'react';
 import ReactDOM from 'react-dom';
 

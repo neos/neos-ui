@@ -1,4 +1,4 @@
-import neos, {NeosContext, NeosInjectedProps} from '@neos-project/neos-ui-decorators/src/neos';
+import neos, {NeosContext, NeosInjectedProps} from './neos';
 
 export {
     neos,

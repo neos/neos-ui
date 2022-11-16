@@ -268,7 +268,7 @@ export default class SelectNodeType extends PureComponent {
                 }
             }
             if (event.key === 'ArrowDown') {
-                if (index + 1 <= filteredNodeTypesFlat.length) {
+                if (index + 1 <= filteredNodeTypesFlat.length - 1) {
                     this.setState({
                         focusedNodeType: filteredNodeTypesFlat[index + 1].name
                     });

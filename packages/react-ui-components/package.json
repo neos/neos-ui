@@ -53,7 +53,7 @@
     "@neos-project/babel-preset-neos-ui": "workspace:*",
     "@neos-project/build-essentials": "workspace:*",
     "@neos-project/debug-reason-for-rendering": "workspace:*",
-    "@neos-project/eslint-config-neos": "^2.3.0",
+    "@neos-project/eslint-config-neos": "^2.5.0",
     "@neos-project/jest-preset-neos-ui": "workspace:*",
     "@storybook/addon-info": "^3.2.16",
     "@storybook/addon-knobs": "3.2.16",

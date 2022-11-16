@@ -80,7 +80,7 @@ export default class LeftSideBar extends PureComponent {
             <React.Fragment>
                 <div role="button" className={style.leftSideBar__header} onClick={this.handleToggle}>
                     {toggle}
-                    {i18nRegistry.translate('Neos.Neos:Main:documentTree', 'Document Tree')}
+                    {!isHidden && !isFullScreen && i18nRegistry.translate('Neos.Neos:Main:documentTree', 'Document Tree')}
                 </div>
                 <SideBar
                     position="left"

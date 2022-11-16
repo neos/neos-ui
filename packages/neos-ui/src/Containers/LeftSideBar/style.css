@@ -52,7 +52,6 @@
 
 .leftSideBar__bottom {
     flex: 1;
-    transition: flex-basis var(--transition-Default), height var(--transition-Default), overflow-y var(--transition-Default);
     display: flex;
     flex-direction: column;
     min-height: 40px;

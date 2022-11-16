@@ -1,6 +1,8 @@
 .secondaryToolbar {
     grid-area: secondaryToolbar;
     display: flex;
+    justify-content: space-between;
+    gap: 1rem;
     position: relative;
     top: unset;
     left: unset;

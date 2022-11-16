@@ -43,6 +43,6 @@ export default class TextAreaEditor extends PureComponent {
             placeholder={placeholder}
             minRows={finalOptions.minRows}
             expandedRows={finalOptions.expandedRows}
-            />);
+        />);
     }
 }

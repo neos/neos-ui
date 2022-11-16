@@ -25,6 +25,25 @@ const defaultState = {
     secondaryInspectorComponent: null
 };
 
+const getTransientDefaultValuesFromConfiguration = configuration => {
+    if (configuration) {
+        return Object.keys(configuration.elements).reduce(
+            (transientDefaultValues, elementName) => {
+                if (configuration.elements[elementName].defaultValue === undefined) {
+                    transientDefaultValues[elementName] = {value: null};
+                } else {
+                    transientDefaultValues[elementName] = {
+                        value: configuration.elements[elementName].defaultValue
+                    };
+                }
+                return transientDefaultValues;
+            },
+            {}
+        );
+    }
+    return {};
+}
+
 const getDerivedStateFromProps = (props, state) => {
     if (!props.isOpen) {
         return defaultState;
@@ -45,25 +64,6 @@ const getDerivedStateFromProps = (props, state) => {
             ...state.transient
         }
     };
-}
-
-const getTransientDefaultValuesFromConfiguration = (configuration) => {
-    if (configuration) {
-        return Object.keys(configuration.elements).reduce(
-            (transientDefaultValues, elementName) => {
-                if (configuration.elements[elementName].defaultValue === undefined) {
-                    transientDefaultValues[elementName] = {value: null};
-                } else {
-                    transientDefaultValues[elementName] = {
-                        value: configuration.elements[elementName].defaultValue
-                    };
-                }
-                return transientDefaultValues;
-            },
-            {}
-        );
-    }
-    return {};
 }
 
 @neos(globalRegistry => ({

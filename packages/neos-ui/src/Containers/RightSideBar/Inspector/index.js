@@ -148,7 +148,8 @@ export default class Inspector extends PureComponent {
             } else if (typeof originalPropertyValue === 'string' && originalPropertyValue.indexOf('ClientEval:') === 0) {
                 const {node, parentNode} = context;
                 try {
-                    const evaluatedValue = new Function("node,parentNode", 'return ' + originalPropertyValue.replace('ClientEval:', ''))(node, parentNode);
+                    // eslint-disable-next-line no-new-func
+                    const evaluatedValue = new Function('node,parentNode', 'return ' + originalPropertyValue.replace('ClientEval:', ''))(node, parentNode);
                     if (evaluatedValue !== propertyValue) {
                         this.configurationIsProcessed = true;
                         viewConfiguration = produce(
@@ -331,7 +332,8 @@ export default class Inspector extends PureComponent {
                     className={style.centeredInspector}
                     >
                     <div>{focusedDocumentNodesContextPaths.length} {i18nRegistry.translate('documentsSelected', 'documents selected', {}, 'Neos.Neos.Ui', 'Main')}</div>
-                </div>);
+                </div>
+            );
         }
 
         const augmentedCommit = (propertyId, value, hooks) => {
@@ -412,7 +414,7 @@ export default class Inspector extends PureComponent {
                                         this.handlePanelToggle([$get('id', tab), ...path]);
                                     }}
                                     handleInspectorApply={this.handleApply}
-                                    />);
+                            />);
                         })
                     }
                 </Tabs>

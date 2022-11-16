@@ -34,7 +34,8 @@ const substitutePlaceholders = function (textWithPlaceholders, parameters) {
         const placeholderElements = contentBetweenBrackets.replace(' ', '').split(',');
 
         const valueIndex = placeholderElements[0];
-        if (typeof parameters[valueIndex] === undefined) {
+        const value = parameters[valueIndex];
+        if (typeof value === 'undefined') {
             logger.error('Placeholder "' + valueIndex + '" was not provided, make sure you provide values for every placeholder.');
             break;
         }
@@ -81,6 +82,7 @@ export default class I18nRegistry extends SynchronousRegistry {
         this._translations = translations;
     }
 
+    // eslint-disable-next-line max-params
     translate(idOrig, fallbackOrig, params = {}, packageKeyOrig = 'Neos.Neos', sourceNameOrig = 'Main', quantity = 0) {
         const fallback = fallbackOrig || idOrig;
         const [packageKey, sourceName, id] = getTranslationAddress(idOrig, packageKeyOrig, sourceNameOrig);

@@ -217,7 +217,15 @@ export default class SelectNodeType extends PureComponent {
             return true;
         });
 
-        const focusedNodeType = (filterSearchTerm !== '' && filteredNodeTypesFlat.length > 0) ? filteredNodeTypesFlat[0].name : null;
+        const getFocusedNodeTypeName = () => {
+            const [firstNodeTypeItem] = filteredNodeTypesFlat;
+            if (filterSearchTerm !== '' && firstNodeTypeItem && Object.keys(firstNodeTypeItem).includes('name')) {
+                return firstNodeTypeItem.name;
+            }
+
+            return null;
+        };
+        const focusedNodeType = getFocusedNodeTypeName();
 
         this.setState({
             filteredNodeTypesFlat,

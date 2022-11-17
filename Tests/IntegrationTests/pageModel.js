@@ -45,7 +45,7 @@ export class DimensionSwitcher {
 export class PublishDropDown {
     static publishDropdown = ReactSelector('PublishDropDown ContextDropDownHeader');
 
-    static publishDropdownDiscardAll = ReactSelector('PublishDropDown ShallowDropDownContents').find('button').withText('Discard all');
+    static publishDropdownDiscardAll = Selector('#neos-PublishDropDown-DiscardAll');
 
     static async discardAll() {
         await t

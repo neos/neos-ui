@@ -18,9 +18,9 @@ echo "##########################################################################
 dc down
 dc up -d
 dc exec -T php bash <<-'BASH'
-    rm -rf /home/circleci/project/*
+    rm -rf /usr/src/app/*
 BASH
-docker cp $(pwd)/Tests/IntegrationTests/. $(dc ps -q php):/home/circleci/project
+docker cp $(pwd)/Tests/IntegrationTests/. $(dc ps -q php):/usr/src/app
 sleep 2
 
 echo ""
@@ -28,7 +28,8 @@ echo "##########################################################################
 echo "# Install dependencies...                                                   #"
 echo "#############################################################################"
 dc exec -T php bash <<-'BASH'
-    sudo chown -R circleci:circleci /home/circleci
+    cd /usr/src/app
+    sudo chown -R docker:docker .
     cd TestDistribution
     composer install
 BASH
@@ -37,7 +38,7 @@ echo ""
 echo "#############################################################################"
 echo "# Initialize Neos...                                                        #"
 echo "#############################################################################"
-docker cp $(pwd)/. $(dc ps -q php):/home/circleci/project/TestDistribution/Packages/Application/neos-ui
+docker cp $(pwd)/. $(dc ps -q php):/usr/src/app/TestDistribution/Packages/Application/neos-ui
 dc exec -T php bash <<-'BASH'
     cd TestDistribution
     rm -rf Packages/Application/Neos.Neos.Ui

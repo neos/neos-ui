@@ -2,7 +2,7 @@ version: "3.4"
 services:
 
   php:
-    image: cimg/php:8.0-node
+    image: thecodingmachine/php:8.0-v4-cli-node16
     command: tail -f /dev/null
     ports:
       - 8081:8081
@@ -13,7 +13,7 @@ services:
       PHP_EXTENSION_GD: 1
 
   db:
-    image: cimg/mariadb:10.6
+    image: arm64v8/mysql:8
     environment:
       MYSQL_DATABASE: neos
       MYSQL_ROOT_PASSWORD: not_a_real_password

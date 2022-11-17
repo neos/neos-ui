@@ -18,9 +18,9 @@ echo "##########################################################################
 dc down
 dc up -d
 dc exec -T php bash <<-'BASH'
-    rm -rf /usr/src/app/*
+    rm -rf /home/circleci/project/*
 BASH
-docker cp $(pwd)/Tests/IntegrationTests/. $(dc ps -q php):/usr/src/app
+docker cp $(pwd)/Tests/IntegrationTests/. $(dc ps -q php):/home/circleci/project
 sleep 2
 
 echo ""
@@ -28,6 +28,7 @@ echo "##########################################################################
 echo "# Install dependencies...                                                   #"
 echo "#############################################################################"
 dc exec -T php bash <<-'BASH'
+    sudo chown -R circleci:circleci /home/circleci
     cd TestDistribution
     composer install
 BASH
@@ -36,7 +37,7 @@ echo ""
 echo "#############################################################################"
 echo "# Initialize Neos...                                                        #"
 echo "#############################################################################"
-docker cp $(pwd)/. $(dc ps -q php):/usr/src/app/TestDistribution/Packages/Application/neos-ui
+docker cp $(pwd)/. $(dc ps -q php):/home/circleci/project/TestDistribution/Packages/Application/neos-ui
 dc exec -T php bash <<-'BASH'
     cd TestDistribution
     rm -rf Packages/Application/Neos.Neos.Ui
@@ -77,13 +78,17 @@ for fixture in $(pwd)/Tests/IntegrationTests/Fixtures/*/; do
 
         # TODO: optimize this
         cd TestDistribution
-        ./flow flow:package:rescan > /dev/null
-        ./flow flow:cache:flush > /dev/null
+        composer reinstall neos/test-nodetypes
+        composer reinstall neos/test-site
+        ./flow flow:cache:flush --force
+        ./flow flow:cache:warmup
+        ./flow configuration:show --path Neos.ContentRepository.contentDimensions
+
         if ./flow site:list | grep -q 'Node name'; then
-            ./flow site:prune '*' > /dev/null
+            ./flow site:prune '*'
         fi
         ./flow site:import --package-key=Neos.TestSite
-        ./flow resource:publish > /dev/null
+        ./flow resource:publish
 BASH
 
     yarn run testcafe "$1" "${fixture}*.e2e.js" \

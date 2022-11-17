@@ -134,7 +134,7 @@ test-e2e:
 
 ## Executes integration tests locally in a docker-compose setup.
 test-e2e-docker:
-	@bash Tests/IntegrationTests/e2e-docker.sh $(or $(browser),chromium)
+	@bash Tests/IntegrationTests/e2e-docker.sh $(or $(browser),chrome)
 
 ## Executes make lint-js and make lint-editorconfig.
 lint: lint-js lint-editorconfig

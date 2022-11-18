@@ -21,7 +21,7 @@ test('Can crop an image', async t => {
         .click(imageEditor.findReact('IconButton').withProps('icon', 'crop'));
     const initialTopOffset = await imageEditor.find('img').getStyleProperty('top');
     await t
-        .drag(ReactSelector('ReactCrop'), 50, 50, {offsetX: 5, offsetY: 5})
+        .drag(Selector('.ReactCrop'), 50, 50, {offsetX: 5, offsetY: 5})
         .expect(imageEditor.find('img').getStyleProperty('top')).notEql(initialTopOffset, 'The preview image should reflect the cropping results')
         .click(Selector('#neos-Inspector-Apply'));
     await Page.waitForIframeLoading(t);

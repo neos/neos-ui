@@ -5,6 +5,7 @@ import {ReactSelector} from 'testcafe-react-selectors';
 // We define all methods as static here so it would be possible to use these classes without `new`
 //
 export class Page {
+    // FIXME: The ReactSelector for `Node` didn't work here anymore since TestCafe was updated but should be used instead
     static treeNode = Selector('[data-neos-integrational-test="tree__item__nodeHeader__itemLabel"]');
 
     static async goToPage(pageTitle) {
@@ -43,7 +44,7 @@ export class DimensionSwitcher {
 }
 
 export class PublishDropDown {
-    static publishDropdown = ReactSelector('PublishDropDown ContextDropDownHeader');
+    static publishDropdown = Selector('#neos-PublishDropDown-Toggle > [role="button"]');
 
     static publishDropdownDiscardAll = Selector('#neos-PublishDropDown-DiscardAll');
 

@@ -5,7 +5,7 @@
   "coveragePathIgnorePatterns": [
     "\\.((story|spec).(js|tsx?))$"
   ],
-  "transformIgnorePatterns": ["node_modules/(?!@neos-project)"],
+  "transformIgnorePatterns": ["node_modules\\/(?!@neos-project)"],
   "unmockedModulePathPatterns": [
     "sinon"
   ],
@@ -18,11 +18,16 @@
     "**/src/**/?(*.)spec.{js,ts,tsx}"
   ],
   "transform": {
-    "^.+\\.js$": "babel-jest",
-    "^.+\\.tsx?$": "ts-jest"
+    "^.+\\.(tsx?|js)$": ["esbuild-jest",{
+        "loaders": {
+          ".js": "tsx",
+          ".spec.js": "tsx"
+        }
+      }
+    ]
   },
   "moduleNameMapper": {
-    "\\.(css|svg)$": "identity-obj-proxy"
+    "\\.(css|scss|svg)$": "identity-obj-proxy"
   },
   "moduleFileExtensions": [
     "ts",

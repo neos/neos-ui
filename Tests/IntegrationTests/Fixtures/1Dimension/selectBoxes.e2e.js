@@ -17,7 +17,7 @@ test('SelectBox opens below and breaks out of the creation dialog if there\'s en
 
     subSection('SelectBox contents open below the SelectBox.');
     await t
-        .expect(await ReactSelector('NodeCreationDialog SelectBox ShallowDropDownContents').getBoundingClientRectProperty('top'))
+        .expect(await Selector('[aria-label="dropdown"]').getBoundingClientRectProperty('top'))
         .gt(await ReactSelector('NodeCreationDialog SelectBox').getBoundingClientRectProperty('top'));
 });
 
@@ -29,17 +29,17 @@ test('SelectBox opens above in creation dialog if there\'s not enough space belo
 
     subSection('SelectBox contents open above if the SelectBox is just above the screen bottom.');
     await t
-        .expect(await ReactSelector('NodeCreationDialog SelectBox ShallowDropDownContents').getBoundingClientRectProperty('top'))
+        .expect(await Selector('[aria-label="dropdown"]').getBoundingClientRectProperty('top'))
         .lt(await ReactSelector('NodeCreationDialog SelectBox').getBoundingClientRectProperty('top'));
     await t
-        .expect(await ReactSelector('NodeCreationDialog SelectBox ShallowDropDownContents').getStyleProperty('display'))
+        .expect(await Selector('[aria-label="dropdown"]').getStyleProperty('display'))
         .eql('flex');
 
     subSection('SelectBox contents disappear when SelectBox is scrolled out of sight.');
     await t.hover(Selector('#neos-NodeCreationDialog [for="__neos__editor__property---title--creation-dialog"]'));
 
     await t
-        .expect(await ReactSelector('NodeCreationDialog SelectBox ShallowDropDownContents').getStyleProperty('display'))
+        .expect(await Selector('[aria-label="dropdown"]').getStyleProperty('display'))
         .eql('none');
 });
 
@@ -50,14 +50,14 @@ test('SelectBox opens above in inspector if there\'s not enough space below.', a
 
     subSection('SelectBox contents open above if the SelectBox is just above the screen bottom.');
     await t
-        .expect(await ReactSelector('Inspector Panel SelectBox ShallowDropDownContents').getBoundingClientRectProperty('top'))
+        .expect(await Selector('[aria-label="dropdown"]').getBoundingClientRectProperty('top'))
         .lt(await ReactSelector('Inspector Panel SelectBox').getBoundingClientRectProperty('top'));
-
 
     subSection('When the inspector tab panel is scrolled just enough, so that there\'s enough space, SelectBox contents jump below the SelectBox.');
     await t.hover(Selector('[for="__neos__editor__property---uriPathSegment"]'));
 
     await t
-        .expect(await ReactSelector('Inspector Panel SelectBox ShallowDropDownContents').getBoundingClientRectProperty('top'))
+        // FIXME: This was before `ReactSelector('Inspector Panel SelectBox ShallowDropDownContents')` but that doesn't work anymore.
+        .expect(await Selector('[aria-label="dropdown"]').getBoundingClientRectProperty('top'))
         .gt(await ReactSelector('Inspector Panel SelectBox').getBoundingClientRectProperty('top'));
 });

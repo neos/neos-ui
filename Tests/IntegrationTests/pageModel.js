@@ -33,7 +33,7 @@ export class DimensionSwitcher {
 
     static dimensionSwitcherFirstDimensionSelector = ReactSelector('DimensionSwitcher SelectBox');
 
-    static dimensionSwitcherFirstDimensionSelectorWithShallowDropDownContents = ReactSelector('DimensionSwitcher SelectBox ShallowDropDownContents');
+    static dimensionSwitcherFirstDimensionSelectorWithShallowDropDownContents = Selector('[aria-label="dropdown"]');
 
     static async switchLanguageDimension(name) {
         await t

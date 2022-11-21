@@ -9,7 +9,7 @@ module.exports = (path, options) => {
             return {
                 ...pkg,
                 // Alter the value of `main` before resolving the package
-                main: pkg.module || pkg.main,
+                main: pkg.main || pkg.module,
             };
         },
     });

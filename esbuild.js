@@ -16,6 +16,7 @@ require('esbuild').build({
     logLevel: env.isProduction ? 'error' : undefined,
     color: true,
     bundle: true,
+    keepNames: true,
     loader: {
         '.js': 'tsx',
         '.svg': 'dataurl',

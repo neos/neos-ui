@@ -13,6 +13,7 @@ const InspectorTitleProperty = Selector(
 const InspectorUriPathSegmentProperty = Selector(
     '#__neos__editor__property---uriPathSegment'
 );
+const activeTabMenuItem = ReactSelector('TabMenuItem').withProps('isActive', true);
 
 test('Remove homepage title to get one error', async t => {
     await Page.waitForIframeLoading(t);
@@ -24,9 +25,9 @@ test('Remove homepage title to get one error', async t => {
         .expect(InspectorTitleProperty.value).eql('');
 
     subSection('Check error badge for one error');
-    const activeTabMenuItem = ReactSelector('TabMenuItem').withProps('isActive', true);
+    const badge = await activeTabMenuItem.findReact('Badge');
     await t
-        .expect(await activeTabMenuItem.findReact('Badge').getReact(({props}) => props.label))
+        .expect(await badge.getReact(({props}) => props.label))
         .eql('1', 'The badge shows one validation error in Props');
 });
 
@@ -39,9 +40,9 @@ test('Remove homepage title and URI segment to get two errors', async t => {
         .pressKey('backspace');
 
     subSection('Check error badge for two errors');
-    const activeTabMenuItem = ReactSelector('TabMenuItem').withProps('isActive', true);
+    const badge = await activeTabMenuItem.findReact('Badge');
     await t
-        .expect(await activeTabMenuItem.findReact('Badge').getReact(({props}) => props.label))
+        .expect(await badge.getReact(({props}) => props.label))
         .eql('2', 'The badge shows two validation errors in Props');
 });
 
@@ -53,15 +54,16 @@ test('Remove homepage title to get one error and resolve error by new title', as
         .expect(InspectorTitleProperty.value).eql('');
 
     subSection('Check error badge for one error');
-    const activeTabMenuItem = ReactSelector('TabMenuItem').withProps('isActive', true);
+    let badge = await activeTabMenuItem.findReact('Badge');
     await t
-        .expect(await activeTabMenuItem.findReact('Badge').getReact(({props}) => props.label))
+        .expect(await badge.getReact(({props}) => props.label))
         .eql('1', 'The badge shows one validation error in Props');
 
     subSection('Enter new title Home');
     await t
         .typeText(InspectorTitleProperty, 'Home', {replace: true});
+    badge = await activeTabMenuItem.findReact('Badge');
     await t
-        .expect(await activeTabMenuItem.findReact('Badge').getReact(({props}) => props.label))
+        .expect(await badge.getReact(({props}) => props.label))
         .eql(null, 'The badge is not existing');
 });

@@ -19,7 +19,7 @@ test('PageTree search and filter', async t => {
     const nodeTreeSearchToggler = ReactSelector('NodeTreeSearchBar IconButton');
     const nodeTreeSearchInput = ReactSelector('NodeTreeSearchInput');
     const nodeTreeFilter = ReactSelector('NodeTreeFilter');
-    const shortcutFilter = ReactSelector('NodeTreeFilter').findReact('ThemedContextDropDownContents').find('li').withText('Shortcut');
+    const shortcutFilter = ReactSelector('NodeTreeFilter ShallowDropDownContents').find('li').withText('Shortcut');
     await t
         .click(nodeTreeSearchToggler)
         .typeText(nodeTreeSearchInput, seachTerm)

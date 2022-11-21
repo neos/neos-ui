@@ -134,7 +134,7 @@ export default class PublishDropDown extends PureComponent {
                     {publishableNodesInDocumentCount > 0 && <Badge className={style.badge} label={String(publishableNodesInDocumentCount)}/>}
                 </AbstractButton>
 
-                <DropDown className={style.dropDown} id="neos-PublishDropDown-Toggle">
+                <DropDown className={style.dropDown}>
                     {isPublishing || isSaving || isDiscarding ? (
                         <DropDown.Header
                             iconIsOpen={'spinner'}

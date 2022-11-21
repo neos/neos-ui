@@ -133,7 +133,7 @@ test('Can create content node from inside InlineUI', async t => {
         .switchToMainWindow()
         .click(ReactSelector('EditorToolbar LinkButton'))
         .typeText(ReactSelector('EditorToolbar LinkButton TextInput'), linkTargetPage)
-        .click(Selector('[role="listbox"] [role="option"]').withText(linkTargetPage))
+        .click(ReactSelector('EditorToolbar ShallowDropDownContents NodeOption'))
         .switchToIframe(contentIframeSelector)
         .expect(Selector('.test-headline h1 a').withAttribute('href').exists).ok('Newly inserted link exists')
         .switchToMainWindow();
@@ -162,7 +162,7 @@ test('Supports secondary inspector view for element editors', async t => {
     const initialLeftOffset = await imageEditor.find('img').getStyleProperty('left');
 
     await t
-        .drag(Selector('.ReactCrop'), 50, 50, {offsetX: 5, offsetY: 5})
+        .drag(ReactSelector('ReactCrop'), 50, 50, {offsetX: 5, offsetY: 5})
         .expect(imageEditor.find('img').getStyleProperty('left')).notEql(initialLeftOffset, 'The preview image in the creation dialog should reflect the cropping results');
 
     const leftOffsetAfterCrop = await imageEditor.find('img').getStyleProperty('left');

@@ -17,7 +17,7 @@ test('Discarding: create multiple nodes nested within each other and then discar
     subSection('Create a document node');
     await t
         .click(Selector('#neos-PageTree-AddNode'))
-        .click(Selector('#neos-SelectNodeTypeDialog').find('#into'))
+        .click(ReactSelector('InsertModeSelector').find('#into'))
         .click(ReactSelector('NodeTypeItem'))
         .typeText(Selector('#neos-NodeCreationDialog-Body input'), pageTitleToCreate)
         .click(Selector('#neos-NodeCreationDialog-CreateNew'));
@@ -26,7 +26,7 @@ test('Discarding: create multiple nodes nested within each other and then discar
     subSection('Create another node inside it');
     await t
         .click(Selector('#neos-PageTree-AddNode'))
-        .click(Selector('#neos-SelectNodeTypeDialog').find('#into'))
+        .click(ReactSelector('InsertModeSelector').find('#into'))
         .click(ReactSelector('NodeTypeItem'))
         .typeText(Selector('#neos-NodeCreationDialog-Body input'), pageTitleToCreate)
         .click(Selector('#neos-NodeCreationDialog-CreateNew'));

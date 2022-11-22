@@ -77,6 +77,7 @@ setup: check-requirements install build ## Run a clean setup
 
 
 # TODO: figure out how to pass a parameter to other targets to reduce redundancy
+# Builds the subpackages for standalone use.
 build-subpackages:
 	yarn workspaces foreach --parallel --topological-dev run build
 	make build-react-ui-components-standalone
@@ -90,7 +91,6 @@ build-react-ui-components-standalone:
 
 ## Runs the development build.
 build:
-	make build-subpackages
 	NEOS_BUILD_ROOT=$(shell pwd) node esbuild.js
 
 ## Watches the source files for changes and runs a build in case.
@@ -102,11 +102,11 @@ build-watch-poll:
 	echo "not implemented in esbuild, yet! PR Welcome!"
 
 # clean anything before building for production just to be sure
-## Runs the production build.
+## Runs the production build. And also builds the subpackages for standalone use.
 build-production:
-	make build-subpackages
 	$(cross-env) NODE_ENV=production NEOS_BUILD_ROOT=$(shell pwd) \
 		node esbuild.js
+	make build-subpackages
 
 build-e2e-testing:
 	$(cross-env) NODE_ENV=production NEOS_BUILD_ROOT=$(shell pwd) \

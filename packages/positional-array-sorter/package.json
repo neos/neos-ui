@@ -13,7 +13,7 @@
     "build": "yarn tsc --declaration",
     "build:watch": "yarn tsc --watch",
     "clean": "rimraf ./lib ./dist",
-    "lint": "eslint src",
+    "lint": "eslint src/**/*.{js,jsx,ts,tsx}",
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {

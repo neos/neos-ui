@@ -6,7 +6,7 @@
   "main": "./src/index.js",
   "scripts": {
     "clean": "rimraf ./lib ./dist",
-    "lint": "eslint src"
+    "lint": "eslint src/**/*.{js,jsx,ts,tsx}"
   },
   "devDependencies": {
     "@neos-project/babel-preset-neos-ui": "workspace:*",

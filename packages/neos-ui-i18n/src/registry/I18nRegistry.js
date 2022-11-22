@@ -81,6 +81,7 @@ export default class I18nRegistry extends SynchronousRegistry {
         this._translations = translations;
     }
 
+    // eslint-disable-next-line max-params
     translate(idOrig, fallbackOrig, params = {}, packageKeyOrig = 'Neos.Neos', sourceNameOrig = 'Main', quantity = 0) {
         const fallback = fallbackOrig || idOrig;
         const [packageKey, sourceName, id] = getTranslationAddress(idOrig, packageKeyOrig, sourceNameOrig);

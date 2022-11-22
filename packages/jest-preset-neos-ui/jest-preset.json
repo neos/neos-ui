@@ -1,5 +1,4 @@
 {
-  "collectCoverage": true,
   "collectCoverageFrom": [
     "src/**/*.{js,ts,tsx}"
   ],

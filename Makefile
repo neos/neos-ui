@@ -122,6 +122,9 @@ storybook:
 
 ## Executes the unit test on all source files.
 test:
+	yarn workspaces foreach run test
+
+test-parallel:
 	yarn workspaces foreach --parallel run test
 
 ## Executes integration tests on saucelabs.

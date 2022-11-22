@@ -4,7 +4,7 @@
   "description": "Neos CMS UI written in ReactJS and a ton of other fun technology.",
   "private": true,
   "scripts": {
-    "test": "yarn jest -w 2 --coverage",
+    "test": "yarn jest",
     "test:watch": "yarn jest --watch",
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src && stylelint 'src/**/*.css'",

@@ -7,7 +7,7 @@
   "homepage": "https://github.com/neos/neos-ui/blob/master/README.md",
   "main": "./dist/index.js",
   "scripts": {
-    "test": "yarn jest -w 2 --coverage",
+    "test": "yarn jest",
     "test:watch": "yarn jest --watch",
     "build": "yarn tsc --declaration",
     "build:watch": "yarn tsc --watch",

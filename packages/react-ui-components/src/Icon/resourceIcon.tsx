@@ -2,7 +2,8 @@ import mergeClassNames from 'classnames';
 import React, {PureComponent} from 'react';
 import { ReactSVG } from 'react-svg';
 
-import {IconProps, IconTheme, defaultProps} from './icon';
+import {defaultProps} from './iconDefaultProps';
+import {IconProps, IconTheme} from './icon';
 import {Omit} from '../../types';
 
 interface ResourceIconTheme extends IconTheme {

@@ -15,9 +15,7 @@
     "regenerator-runtime": "^0.13.2"
   },
   "peerDependencies": {
-    "babel-jest": "^23.6.0",
-    "enzyme": "^3.8.0",
-    "ts-jest": "^23.10.5"
+    "enzyme": "^3.8.0"
   },
   "license": "GNU GPLv3"
 }

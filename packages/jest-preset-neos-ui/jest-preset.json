@@ -6,24 +6,25 @@
   "coveragePathIgnorePatterns": [
     "\\.((story|spec).(js|tsx?))$"
   ],
-  "transformIgnorePatterns": ["node_modules/(?!@neos-project)"],
+  "//": "The following packages are using wrong js and esbuild would warn us. As we have a lot of esm dependencies, we cant select them by hand.",
+  "transformIgnorePatterns": ["/(asn1|webidl-conversions)/"],
   "unmockedModulePathPatterns": [
     "sinon"
   ],
   "setupFiles": [
-    "../../node_modules/@neos-project/jest-preset-neos-ui/src/setupBrowserEnv.js",
-    "../../node_modules/@neos-project/jest-preset-neos-ui/src/enzymeConfiguration.js"
+    "<rootDir>/../jest-preset-neos-ui/src/setupBrowserEnv.js",
+    "<rootDir>/../jest-preset-neos-ui/src/enzymeConfiguration.js"
   ],
   "testEnvironment": "node",
   "testMatch": [
     "**/src/**/?(*.)spec.{js,ts,tsx}"
   ],
   "transform": {
-    "^.+\\.js$": "babel-jest",
-    "^.+\\.tsx?$": "ts-jest"
+    "^.+\\.(tsx?|js)$": "<rootDir>/../jest-preset-neos-ui/src/esbuildTransformer.js"
   },
+  "resolver": "<rootDir>/../jest-preset-neos-ui/src/moduleFieldResolver.js",
   "moduleNameMapper": {
-    "\\.(css|svg)$": "identity-obj-proxy"
+    "\\.(css|scss|svg)$": "identity-obj-proxy"
   },
   "moduleFileExtensions": [
     "ts",

@@ -8,7 +8,8 @@ import {FontAwesomeIcon as FontAwesomeIconOriginComponent} from '@fortawesome/re
 import mergeClassNames from 'classnames';
 import React, {PureComponent} from 'react';
 
-import {IconProps, defaultProps} from './icon';
+import {defaultProps} from './iconDefaultProps';
+import {IconProps} from './icon';
 import mapper from './mapper';
 
 // tslint:disable:no-object-mutation

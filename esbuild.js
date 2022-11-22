@@ -5,6 +5,12 @@ const {sep} = require("path")
 const cssVariables = require('@neos-project/build-essentials/src/styles/styleConstants');
 const cssVariablesObject = cssVariables.generateCssVarsObject(cssVariables.config);
 
+const forE2ETesting = process.argv.includes('--e2e-testing');
+
+if (forE2ETesting) {
+    console.log('Building for E2E testing');
+}
+
 require('esbuild').build({
     entryPoints: {
         'Host': './packages/neos-ui/src/index.js',
@@ -16,7 +22,7 @@ require('esbuild').build({
     logLevel: env.isProduction ? 'error' : undefined,
     color: true,
     bundle: true,
-    keepNames: true,
+    keepNames: forE2ETesting, // for react magic selectors
     loader: {
         '.js': 'tsx',
         '.svg': 'dataurl',

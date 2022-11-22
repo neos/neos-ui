@@ -108,6 +108,9 @@ build-production:
 	$(cross-env) NODE_ENV=production NEOS_BUILD_ROOT=$(shell pwd) \
 		node esbuild.js
 
+build-e2e-testing:
+	$(cross-env) NODE_ENV=production NEOS_BUILD_ROOT=$(shell pwd) \
+		node esbuild.js --e2e-testing
 
 ################################################################################
 # Code Quality

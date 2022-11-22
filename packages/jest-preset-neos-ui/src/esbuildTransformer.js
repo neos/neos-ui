@@ -6,6 +6,7 @@
 const { extname } = require("path");
 const { createHash } = require("crypto");
 const { transformSync } = require("esbuild");
+const { readFileSync } = require("fs");
 
 /** @param {String} path */
 function isTarget(path) {
@@ -17,6 +18,12 @@ function isTarget(path) {
     );
 }
 
+// for cache invalidation if you change this file ;)
+// you can clear the jest cache also by running `yarn jest --clearCache`
+const thisFileRaw = readFileSync(__filename)
+
+const tsconfigRaw = readFileSync("../tsconfig.json", "utf8");
+
 const createTransformer = () => {
     /** @type {import("esbuild").TransformOptions} */
     const options = {
@@ -24,13 +31,16 @@ const createTransformer = () => {
         target: "node16",
         sourcemap: true,
         keepNames: true,
+        // make sure to use the same tsconfig as the project to for example add the "use strict" flag
+        tsconfigRaw,
     };
 
     return {
         canInstrument: true,
-        // you can clear the cache also by running `yarn jest --clearCache`
         getCacheKey(fileData, filePath) {
             return createHash("md5")
+                .update(thisFileRaw)
+                .update('\0', 'utf8')
                 .update(fileData)
                 .update("\0", "utf8")
                 .update(filePath)

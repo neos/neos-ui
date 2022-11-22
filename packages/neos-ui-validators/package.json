@@ -5,7 +5,7 @@
   "private": true,
   "main": "./src/index.ts",
   "scripts": {
-    "test": "yarn jest -w 2 --coverage",
+    "test": "yarn jest",
     "test:watch": "yarn jest --watch",
     "lint": "eslint src",
     "clean": "rimraf ./lib ./dist",

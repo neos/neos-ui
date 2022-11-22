@@ -1,4 +1,4 @@
-import {IconProps} from "./icon"
+import {IconProps} from './icon';
 import {PickDefaultProps} from '../../types';
 
 type DefaultProps = PickDefaultProps<IconProps, 'color' | 'padded' | 'size'>;

@@ -5,7 +5,7 @@
   "main": "src/manifest.js",
   "private": true,
   "scripts": {
-    "test": "yarn jest",
+    "test": "yarn jest -w 2 --coverage",
     "test:watch": "yarn jest --watch",
     "clean": "rimraf ./lib ./dist",
     "lint": "eslint src && stylelint 'src/**/*.css'",

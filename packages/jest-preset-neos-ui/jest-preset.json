@@ -1,6 +1,4 @@
 {
-  "collectCoverage": true,
-  "maxWorkers": 2,
   "collectCoverageFrom": [
     "src/**/*.{js,ts,tsx}"
   ],

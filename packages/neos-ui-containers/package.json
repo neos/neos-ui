@@ -5,7 +5,7 @@
   "private": true,
   "main": "./src/index.js",
   "scripts": {
-    "test": "yarn jest",
+    "test": "yarn jest -w 2 --coverage",
     "test:watch": "yarn jest --watch",
     "lint": "eslint src",
     "jest": "NODE_ENV=test jest"

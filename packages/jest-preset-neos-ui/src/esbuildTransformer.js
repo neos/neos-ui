@@ -30,6 +30,7 @@ const createTransformer = () => {
         format: "cjs",
         target: "node16",
         sourcemap: true,
+        // this way react snapshots are working
         keepNames: true,
         // make sure to use the same tsconfig as the project to for example add the "use strict" flag
         tsconfigRaw,
@@ -77,6 +78,7 @@ const createTransformer = () => {
 
             return {
                 code: result.code,
+                // @todo source map doesnt really work in jest errors...
                 map: result.map,
             };
         },

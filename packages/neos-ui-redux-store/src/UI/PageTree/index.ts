@@ -46,7 +46,7 @@ export enum actionTypes {
 const focus = (contextPath: NodeContextPath, _: undefined, selectionMode: SelectionModeTypes = SelectionModeTypes.SINGLE_SELECT) => createAction(actionTypes.FOCUS, {contextPath, selectionMode});
 const toggle = (contextPath: NodeContextPath) => createAction(actionTypes.TOGGLE, {contextPath});
 const invalidate = (contextPath: NodeContextPath) => createAction(actionTypes.INVALIDATE, {contextPath});
-const requestChildren = (contextPath: NodeContextPath, {unCollapse = true, activate = false} = {}) =>  createAction(actionTypes.REQUEST_CHILDREN, {contextPath, opts: {unCollapse, activate}});
+const requestChildren = (contextPath: NodeContextPath, {unCollapse = true, activate = false} = {}) => createAction(actionTypes.REQUEST_CHILDREN, {contextPath, opts: {unCollapse, activate}});
 const setAsLoading = (contextPath: NodeContextPath) => createAction(actionTypes.SET_AS_LOADING, {contextPath});
 const setAsLoaded = (contextPath: NodeContextPath) => createAction(actionTypes.SET_AS_LOADED, {contextPath});
 interface CommenceSearchOptions extends Readonly<{
@@ -96,7 +96,7 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
             break;
         }
         case actionTypes.TOGGLE: {
-            const contextPath = action.payload.contextPath;
+            const {contextPath} = action.payload;
             if (draft.toggled.includes(contextPath)) {
                 draft.toggled = draft.toggled.filter(i => i !== contextPath);
             } else {
@@ -105,20 +105,20 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
             break;
         }
         case actionTypes.INVALIDATE: {
-            const contextPath = action.payload.contextPath;
+            const {contextPath} = action.payload;
             draft.toggled = draft.toggled.filter(i => i !== contextPath);
             draft.loading = draft.loading.filter(i => i !== contextPath);
             draft.errors.push(contextPath);
             break;
         }
         case actionTypes.SET_AS_LOADING: {
-            const contextPath = action.payload.contextPath;
+            const {contextPath} = action.payload;
             draft.errors = draft.errors.filter(i => i !== contextPath);
             draft.loading.push(contextPath);
             break;
         }
         case actionTypes.SET_AS_LOADED: {
-            const contextPath = action.payload.contextPath;
+            const {contextPath} = action.payload;
             draft.loading = draft.loading.filter(i => i !== contextPath);
             break;
         }

@@ -77,7 +77,6 @@ export const actionTypes = typedKeys(all).reduce((acc, cur) => ({...acc, [cur]: 
 //
 export const actions = typedKeys(all).reduce((acc, cur) => ({...acc, [cur]: all[cur].actions}), {});
 
-
 //
 // Export the reducer
 //

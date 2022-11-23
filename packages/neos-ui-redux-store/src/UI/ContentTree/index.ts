@@ -37,7 +37,7 @@ const toggle = (contextPath: NodeContextPath) => createAction(actionTypes.TOGGLE
 const startLoading = () => createAction(actionTypes.START_LOADING);
 const stopLoading = () => createAction(actionTypes.STOP_LOADING);
 const reloadTree = () => createAction(actionTypes.RELOAD_TREE);
-const requestChildren = (contextPath: NodeContextPath, {unCollapse = true, activate = false} = {}) =>  createAction(actionTypes.REQUEST_CHILDREN, {contextPath, opts: {unCollapse, activate}});
+const requestChildren = (contextPath: NodeContextPath, {unCollapse = true, activate = false} = {}) => createAction(actionTypes.REQUEST_CHILDREN, {contextPath, opts: {unCollapse, activate}});
 const setAsLoading = (contextPath: NodeContextPath) => createAction(actionTypes.SET_AS_LOADING, {contextPath});
 const setAsLoaded = (contextPath: NodeContextPath) => createAction(actionTypes.SET_AS_LOADED, {contextPath});
 
@@ -79,13 +79,13 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
             break;
         }
         case actionTypes.SET_AS_LOADING: {
-            const contextPath = action.payload.contextPath;
+            const {contextPath} = action.payload;
             draft.errors = draft.errors.filter(i => i !== contextPath);
             draft.loading.push(contextPath);
             break;
         }
         case actionTypes.SET_AS_LOADED: {
-            const contextPath = action.payload.contextPath;
+            const {contextPath} = action.payload;
             draft.loading = draft.loading.filter(i => i !== contextPath);
             break;
         }

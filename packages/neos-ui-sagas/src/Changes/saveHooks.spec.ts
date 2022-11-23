@@ -9,7 +9,7 @@ test('applySaveHooksForTransientValue does nothing if a given transient value ha
 
     const process = applySaveHooksForTransientValue(transientValue, saveHooksRegistry);
 
-    const { value, done } = process.next();
+    const {value, done} = process.next();
 
     expect(done).toBe(true);
     expect(value).toBe(1);
@@ -38,14 +38,14 @@ test('applySaveHooksForTransientValue applies registered save hooks to a given t
     process.next();
 
     expect(saveHooksRegistry.get).toBeCalledWith('AddNumber');
-    expect(addNumberHook).toBeCalledWith(1, { number: 2 });
+    expect(addNumberHook).toBeCalledWith(1, {number: 2});
 
     process.next(3);
 
     expect(saveHooksRegistry.get).toBeCalledWith('SubtractNumber');
-    expect(subtractNumberHook).toBeCalledWith(3, { number: 1 });
+    expect(subtractNumberHook).toBeCalledWith(3, {number: 1});
 
-    const { value, done } = process.next(2);
+    const {value, done} = process.next(2);
 
     expect(done).toBe(true);
     expect(value).toBe(2);
@@ -80,7 +80,9 @@ test('applySaveHooksForTransientValue will throw an error if a specified saveHoo
         }
     };
     const saveHooksRegistry = {
-        get: jest.fn(() => () => { throw new Error(); })
+        get: jest.fn(() => () => {
+            throw new Error();
+        })
     };
 
     const process = applySaveHooksForTransientValue(transientValue, saveHooksRegistry);
@@ -120,14 +122,14 @@ test('applySaveHooksForTransientValuesMap applies registered save hooks to multi
     process.next();
 
     expect(saveHooksRegistry.get).toBeCalledWith('Multiply');
-    expect(multiplyHook).toBeCalledWith(100, { by: 10 });
+    expect(multiplyHook).toBeCalledWith(100, {by: 10});
 
     process.next(1000);
 
     expect(saveHooksRegistry.get).toBeCalledWith('Multiply');
-    expect(multiplyHook).toBeCalledWith(100, { by: 5 });
+    expect(multiplyHook).toBeCalledWith(100, {by: 5});
 
-    const { value, done } = process.next(500);
+    const {value, done} = process.next(500);
 
     expect(done).toBe(true);
     expect(value).toEqual({

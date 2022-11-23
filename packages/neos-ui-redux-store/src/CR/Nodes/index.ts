@@ -496,8 +496,8 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
             // Update the context path for stored descendant of the moved node including the node itself
             Object.keys(draft.byContextPath).forEach(contextPath => {
                 // Skip nodes that don't match the old path exactly or a descendant path
-                if (!contextPath.startsWith(oldPath + '/')
-                    && contextPath.split('@')[0] !== oldPath) {
+                if (!contextPath.startsWith(oldPath + '/') &&
+                    contextPath.split('@')[0] !== oldPath) {
                     return;
                 }
 
@@ -518,7 +518,7 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
                     child.contextPath = child.contextPath.replace(oldPath, newPath);
                 });
 
-                delete Object.assign(draft.byContextPath, {[updatedContextPath]: node })[contextPath];
+                delete Object.assign(draft.byContextPath, {[updatedContextPath]: node})[contextPath];
             });
             break;
         }

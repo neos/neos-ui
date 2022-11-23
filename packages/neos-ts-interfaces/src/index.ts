@@ -13,7 +13,6 @@ export interface DimensionCombination {
     [propName: string]: DimensionValues;
 }
 
-
 export interface DimensionPresetCombination {
     [propName: string]: DimensionPresetName;
 }

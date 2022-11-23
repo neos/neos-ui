@@ -23,7 +23,7 @@ export function * applySaveHooksForTransientValue(
     transientValue: TransientValue,
     saveHooksRegistry: SaveHooksRegistry
 ): Generator<Promise<any>, Value, Value> {
-    let value: Value = transientValue.value;
+    let {value} = transientValue;
 
     if (transientValue.hooks) {
         for (const [saveHookIdentifier, saveHookOptions] of Object.entries(transientValue.hooks)) {
@@ -56,7 +56,7 @@ export function * applySaveHooksForTransientValuesMap(
 
     if (transientValues) {
         for (const [elementName, transientValue] of Object.entries(transientValues)) {
-            result[elementName] = yield* applySaveHooksForTransientValue(
+            result[elementName] = yield * applySaveHooksForTransientValue(
                 transientValue,
                 saveHooksRegistry
             );

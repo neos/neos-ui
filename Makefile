@@ -39,7 +39,7 @@
 ################################################################################
 
 
-# Add lerna alias as there are currently some MacOS problems
+# Add alias as there are currently some MacOS problems
 # and putting it into the $PATH is simply not enough
 editorconfigChecker = ./node_modules/.bin/editorconfig-checker
 crossenv = ./node_modules/.bin/crossenv
@@ -145,8 +145,13 @@ test-e2e-docker:
 ## Executes make lint-js and make lint-editorconfig.
 lint: lint-js lint-editorconfig
 
-## Runs lint test in all subpackages via lerna.
+lint-parallel: lint-js-parallel lint-editorconfig
+
+## Runs lint test in all subpackages
 lint-js:
+	yarn workspaces foreach run lint
+
+lint-js-parallel:
 	yarn workspaces foreach --parallel run lint
 
 ## Tests if all files respect the .editorconfig.

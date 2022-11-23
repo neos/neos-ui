@@ -11,7 +11,6 @@ export const defaultState: State = {
     isOpen: false
 };
 
-
 //
 // Export the action types
 //

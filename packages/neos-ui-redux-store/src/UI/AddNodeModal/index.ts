@@ -33,7 +33,7 @@ export enum actionTypes {
  * @param {Object} fusionPath (optional) fusion path of the rendered node relative to which the new node ought to be
  *                            positioned.
  */
-const open = (contextPath: NodeContextPath, fusionPath: FusionPath = '') =>  createAction(actionTypes.OPEN, {contextPath, fusionPath});
+const open = (contextPath: NodeContextPath, fusionPath: FusionPath = '') => createAction(actionTypes.OPEN, {contextPath, fusionPath});
 
 /**
  * Closes the add node modal.

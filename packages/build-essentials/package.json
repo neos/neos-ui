@@ -18,7 +18,7 @@
     "webpack": "../../node_modules/.bin/webpack"
   },
   "scripts": {
-    "lint": "eslint src"
+    "lint": "eslint src/**/*.{js,jsx,ts,tsx}"
   },
   "devDependencies": {
     "@neos-project/babel-preset-neos-ui": "workspace:*"

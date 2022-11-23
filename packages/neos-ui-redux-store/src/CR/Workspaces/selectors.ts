@@ -4,8 +4,6 @@ import {documentNodeContextPathSelector} from '../Nodes/selectors';
 import {GlobalState} from '../../System';
 import {NodeContextPath} from '@neos-project/neos-ts-interfaces';
 
-
-
 export const personalWorkspaceNameSelector = (state: GlobalState) => $get(['cr', 'workspaces', 'personalWorkspace', 'name'], state);
 
 export const baseWorkspaceSelector = (state: GlobalState) => $get(['cr', 'workspaces', 'personalWorkspace', 'baseWorkspace'], state);

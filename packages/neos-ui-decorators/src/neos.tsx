@@ -21,7 +21,6 @@ export const NeosContext = React.createContext<NeosContextInterface | null>(null
 // configuration
 export default <OwnProps extends {}, InjectedProps extends {}> (mapRegistriesToProps: (globalRegistry: GlobalRegistry) => any) => (WrappedComponent: React.ComponentType<OwnProps & InjectedProps>) => {
     const Decorator = class NeosDecorator extends React.PureComponent<OwnProps> {
-
         public static readonly Original = WrappedComponent;
 
         public static readonly contextType = NeosContext;

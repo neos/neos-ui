@@ -11,7 +11,7 @@ import AspectRatioDropDown from './AspectRatioDropDown/index';
 import CropConfiguration, {CustomAspectRatioOption, LockedAspectRatioStrategy} from './model.js';
 import style from './style.css';
 
-/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import ReactCropStyles from './react_crop.vanilla-css';
 /* eslint-enable no-unused-vars */
 import {$get} from 'plow-js';

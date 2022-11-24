@@ -84,8 +84,7 @@ require('esbuild').build({
                     require('postcss-nested'),
                     require('postcss-css-variables')({
                         variables: cssVariablesObject
-                    }),
-                    require('autoprefixer')
+                    })
                 ]
             }
         })

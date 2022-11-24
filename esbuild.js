@@ -81,7 +81,6 @@ require('esbuild').build({
             cssModulesMatch: /^(?!@ckeditor\/|@fortawesome\/fontawesome-svg-core\/).*\.s?css$/,
             postcss: {
                 plugins: [
-                    require('postcss-import'),
                     require('postcss-nested'),
                     require('postcss-css-variables')({
                         variables: cssVariablesObject

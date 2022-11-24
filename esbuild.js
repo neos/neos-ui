@@ -27,7 +27,7 @@ require('esbuild').build({
         '.js': 'tsx',
         '.svg': 'dataurl',
         '.vanilla-css': 'css',
-        '.ttf': 'file',
+        '.woff2': 'file'
     },
     plugins: [
         {

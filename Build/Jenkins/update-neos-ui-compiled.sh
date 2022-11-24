@@ -44,12 +44,9 @@ git checkout "$GIT_BRANCH"
 cd ..
 
 
-mkdir -p tmp_compiled_pkg/Resources/Public/JavaScript
-mkdir -p tmp_compiled_pkg/Resources/Public/Styles
+mkdir -p tmp_compiled_pkg/Resources/Public/Build
 
-cp -Rf Resources/Public/Build/*.js* tmp_compiled_pkg/Resources/Public/JavaScript
-cp -Rf Resources/Public/Build/*.css* tmp_compiled_pkg/Resources/Public/Styles
-cp -Rf Resources/Public/Build/*.woff2 tmp_compiled_pkg/Resources/Public/Styles
+cp -Rf Resources/Public/Build/* tmp_compiled_pkg/Resources/Public/Build
 
 cd tmp_compiled_pkg
 git add Resources/Public/

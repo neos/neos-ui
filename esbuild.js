@@ -86,7 +86,6 @@ require('esbuild').build({
                     require('postcss-css-variables')({
                         variables: cssVariablesObject
                     }),
-                    require('postcss-hexrgba'),
                     require('autoprefixer')
                 ]
             }

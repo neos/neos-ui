@@ -15,7 +15,7 @@
     z-index: var(--zIndex-Dialog-Context);
     width: 100vw;
     height: 100vh;
-    background: rgba(#000, .8);
+    background: rgba(0, 0, 0, .8);
 }
 .dialog__contentsPosition {
     @include reset;

@@ -18,7 +18,7 @@ require('esbuild').build({
         'HostOnlyStyles': './packages/neos-ui/src/styleHostOnly.css'
     },
     outdir: join(env.rootPath, './Resources/Public/Build'),
-    sourcemap: !env.isProduction,
+    sourcemap: true,
     minify: env.isProduction,
     logLevel: 'info',
     color: true,

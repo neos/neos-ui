@@ -1,29 +1,29 @@
 @import 'normalize.css';
 
 @font-face {
-    font-family: "Noto Sans";
-    src: local("Noto Sans Regular"), local("NotoSans-Regular"), url("notosans-fontface/fonts/NotoSans-Regular.woff2") format("woff2");
+    font-family: 'Noto Sans';
+    src: local('Noto Sans Regular'), local('NotoSans-Regular'), url('notosans-fontface/fonts/NotoSans-Regular.woff2') format('woff2');
     font-weight: 400;
     font-style: normal;
 }
 
 @font-face {
-    font-family: "Noto Sans";
-    src: local("Noto Sans Italic"), local("NotoSans-Italic"), url("notosans-fontface/fonts/NotoSans-Italic.woff2") format("woff2");
+    font-family: 'Noto Sans';
+    src: local('Noto Sans Italic'), local('NotoSans-Italic'), url('notosans-fontface/fonts/NotoSans-Italic.woff2') format('woff2');
     font-weight: 400;
     font-style: italic;
 }
 
 @font-face {
-    font-family: "Noto Sans";
-    src: local("Noto Sans Bold"), local("NotoSans-Bold"), url("notosans-fontface/fonts/NotoSans-Bold.woff2") format("woff2");
+    font-family: 'Noto Sans';
+    src: local('Noto Sans Bold'), local('NotoSans-Bold'), url('notosans-fontface/fonts/NotoSans-Bold.woff2') format('woff2');
     font-weight: 700;
     font-style: normal;
 }
 
 @font-face {
-    font-family: "Noto Sans";
-    src: local("Noto Sans BoldItalic"), local("NotoSans-BoldItalic"), url("notosans-fontface/fonts/NotoSans-BoldItalic.woff2") format("woff2");
+    font-family: 'Noto Sans';
+    src: local('Noto Sans BoldItalic'), local('NotoSans-BoldItalic'), url('notosans-fontface/fonts/NotoSans-BoldItalic.woff2') format('woff2');
     font-weight: 700;
     font-style: italic;
 }

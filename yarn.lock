@@ -3584,7 +3584,6 @@ __metadata:
     terser-webpack-plugin: ^2.3.1
     ts-jest: ^23.10.5
     ts-loader: ^6.0.0
-    tslib: ^2.4.0
     tslint: ^5.11.0
     tslint-config-prettier: ^1.15.0
     tslint-react: ^3.6.0
@@ -25255,7 +25254,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.1.0, tslib@npm:^2.4.0":
+"tslib@npm:^2.1.0":
   version: 2.4.0
   resolution: "tslib@npm:2.4.0"
   checksum: 8c4aa6a3c5a754bf76aefc38026134180c053b7bd2f81338cb5e5ebf96fefa0f417bff221592bf801077f5bf990562f6264fecbc42cd3309b33872cb6fc3b113

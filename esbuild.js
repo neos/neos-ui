@@ -1,6 +1,6 @@
 const env = require('@neos-project/build-essentials/src/environment');
 const stylePlugin = require('esbuild-style-plugin');
-const {sep} = require("path")
+const {sep} = require('path')
 
 const cssVariables = require('@neos-project/build-essentials/src/styles/styleConstants');
 const cssVariablesObject = cssVariables.generateCssVarsObject(cssVariables.config);
@@ -39,12 +39,12 @@ require('esbuild').build({
                 // so we use the the longest/most expressive regex that tries to match all ckeditor includes
                 // and luckely all includes look like `../theme/link.css` so we use the theme prefix `/theme\/[^.]+\.css$/`
                 // @todo i cant measure any time differences ... so using .css
-                onResolve({filter: /\.css$/, namespace: "file"}, ({path, ...options}) => {
+                onResolve({filter: /\.css$/, namespace: 'file'}, ({path, ...options}) => {
                     if (!options.importer.includes(`${sep}@ckeditor${sep}`)) {
-                        return resolve(path, {...options, namespace: "noRecurse"})
+                        return resolve(path, {...options, namespace: 'noRecurse'})
                     }
                     return {
-                        external: true, 
+                        external: true,
                         sideEffects: false
                     }
                 })
@@ -60,11 +60,11 @@ require('esbuild').build({
                 onLoad({filter: /@fortawesome\/fontawesome-svg-core\/styles\.css$/}, async ({path}) => {
                     const contents = (await require('fs/promises').readFile(path)).toString();
 
-                    const replacedStyle = contents.replace(/svg-inline--fa/g, "neos-svg-inline--fa");
+                    const replacedStyle = contents.replace(/svg-inline--fa/g, 'neos-svg-inline--fa');
 
                     return {
                         contents: replacedStyle,
-                        loader: "css"
+                        loader: 'css'
                     }
                 })
 
@@ -76,13 +76,13 @@ require('esbuild').build({
                 // @todo use fork or dont use this abstraction at all ;)
                 onLoad({filter: /\/react-codemirror2\/index.js$/}, async ({path}) => {
                     const contents = (await require('fs/promises').readFile(path)).toString();
-                    const replacedGlobal = contents.replace("global['PREVENT_CODEMIRROR_RENDER'] === true", "false");
+                    const replacedGlobal = contents.replace('global[\'PREVENT_CODEMIRROR_RENDER\'] === true', 'false');
                     return {
                         contents: replacedGlobal,
-                        loader: "js"
+                        loader: 'js'
                     }
                 })
-            },
+            }
         },
         stylePlugin({
             // process all .css and .scss files
@@ -98,14 +98,14 @@ require('esbuild').build({
                         variables: cssVariablesObject
                     }),
                     require('postcss-hexrgba'),
-                    require('autoprefixer'),
+                    require('autoprefixer')
                 ]
             }
-        }),
+        })
     ],
     define: {
-        // handover the NODE_ENV to the to be bundled javascript 
+        // handover the NODE_ENV to the to be bundled javascript
         // used fx. in `react-dom/profiling.js` to check if we use minfied and treeshaked code in production
-        'process.env.NODE_ENV': JSON.stringify(env.isProduction ? 'production' : undefined),
-    },
+        'process.env.NODE_ENV': JSON.stringify(env.isProduction ? 'production' : undefined)
+    }
 })

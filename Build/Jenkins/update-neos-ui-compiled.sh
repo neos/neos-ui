@@ -34,7 +34,7 @@ export NVM_DIR="$HOME/.nvm"
 export NODE_OPTIONS="--max-old-space-size=4096"
 
 nvm install && nvm use
-make install
+make clean && make setup
 make build-production
 
 rm -Rf tmp_compiled_pkg
@@ -47,8 +47,9 @@ cd ..
 mkdir -p tmp_compiled_pkg/Resources/Public/JavaScript
 mkdir -p tmp_compiled_pkg/Resources/Public/Styles
 
-cp -Rf Resources/Public/JavaScript/* tmp_compiled_pkg/Resources/Public/JavaScript
-cp -Rf Resources/Public/Styles/* tmp_compiled_pkg/Resources/Public/Styles
+cp -Rf Resources/Public/Build/*.js* tmp_compiled_pkg/Resources/Public/JavaScript
+cp -Rf Resources/Public/Build/*.css* tmp_compiled_pkg/Resources/Public/Styles
+cp -Rf Resources/Public/Build/*.woff2 tmp_compiled_pkg/Resources/Public/Styles
 
 cd tmp_compiled_pkg
 git add Resources/Public/

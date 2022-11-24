@@ -5,9 +5,10 @@ const {sep} = require('path')
 const cssVariables = require('@neos-project/build-essentials/src/styles/styleConstants');
 const cssVariablesObject = cssVariables.generateCssVarsObject(cssVariables.config);
 
-const forE2ETesting = process.argv.includes('--e2e-testing');
+const isE2ETesting = process.argv.includes('--e2e-testing');
+const isWatch = process.argv.includes('--watch');
 
-if (forE2ETesting) {
+if (isE2ETesting) {
     console.log('Building for E2E testing');
 }
 
@@ -19,10 +20,11 @@ require('esbuild').build({
     outdir: './Resources/Public',
     sourcemap: !env.isProduction,
     minify: env.isProduction,
-    logLevel: env.isProduction ? 'error' : undefined,
+    logLevel: 'info',
     color: true,
     bundle: true,
-    keepNames: forE2ETesting, // for react magic selectors
+    keepNames: isE2ETesting, // for react magic selectors,
+    watch: isWatch,
     loader: {
         '.js': 'tsx',
         '.svg': 'dataurl',

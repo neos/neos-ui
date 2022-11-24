@@ -1,0 +1,46 @@
+@import "../reset";
+
+.panel {
+    @include reset;
+    position: relative;
+}
+
+.panel__headline {
+    @include reset;
+    cursor: pointer;
+    height: var(--spacing-GoldenUnit);
+    margin: 0;
+    padding: 0 var(--spacing-Full);
+    line-height: var(--spacing-GoldenUnit);
+    font-weight: bold;
+    font-size: var(--fontSize-Base);
+}
+
+.panel__headline--noPadding {
+    padding: 0;
+}
+
+.panel__toggleBtn {
+    @include reset;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.panel__contents {
+    @include reset;
+    padding: 0 var(--spacing-Full);
+    transition: var(--transition-Default) ease padding;
+
+    .panel--isOpen & {
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    .panel--condensed.panel--isOpen & {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+}
+
+.panel__contents--noPadding {
+    padding: 0;
+}

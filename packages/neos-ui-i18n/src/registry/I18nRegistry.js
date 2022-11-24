@@ -34,7 +34,8 @@ const substitutePlaceholders = function (textWithPlaceholders, parameters) {
         const placeholderElements = contentBetweenBrackets.replace(' ', '').split(',');
 
         const valueIndex = placeholderElements[0];
-        if (typeof parameters[valueIndex] === undefined) {
+        const value = parameters[valueIndex];
+        if (typeof value === 'undefined') {
             logger.error('Placeholder "' + valueIndex + '" was not provided, make sure you provide values for every placeholder.');
             break;
         }

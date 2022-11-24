@@ -1,0 +1,38 @@
+@import "../reset";
+
+.listPreviewElement {
+    @include reset;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 14px;
+
+    /* subtract the size of padding */
+    line-height: calc(var(--spacing-GoldenUnit) - 10px);
+    padding: 5px var(--spacing-Full);
+}
+
+.listPreviewElement--isDisabled {
+    color: var(--colors-ContrastBright);
+    cursor: not-allowed;
+}
+.listPreviewElement--isHighlighted {
+    background-color: var(--colors-PrimaryBlue) !important;
+}
+
+.listPreviewElement--isHighlighted > span {
+    color: #fff;
+}
+
+.listPreviewElement__icon {
+    @include reset;
+    margin-right: .5em;
+}
+
+.listPreviewElement__iconWrapper {
+    padding: 0 !important;
+    width: 2em;
+    display: inline-block;
+    text-align: center;
+}

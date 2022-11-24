@@ -38,20 +38,17 @@ Neos:
       resources:
 
         javascript:
-          'Neos.Neos.UI:Vendor':
-            resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/JavaScript/Vendor.js"}'
-            position: 'start 1000'
           'Neos.Neos.UI:Host':
-            resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/JavaScript/Host.js"}'
-            position: 'start 900'
+           resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/Build/Host.js"}'
+           position: 'start 900'
 
         stylesheets:
           'Neos.Neos.UI:Host':
-            resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/Styles/Host.css"}'
+            resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/Build/Host.css"}'
             position: 'start 1000'
           'Neos.Neos.UI:HostOnlyStyles':
-            resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/Styles/HostOnlyStyles.css"}'
-            position: 'start 900'
+           resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/Build/HostOnlyStyles.css"}'
+           position: 'start 900'
 
       contentCanvas:
         backgroundColor: '#ffffff'

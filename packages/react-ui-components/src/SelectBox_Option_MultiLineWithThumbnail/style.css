@@ -1,6 +1,6 @@
 .multiLineWithThumbnail__item {
     box-sizing: content-box;
-    background-color: var(--colors-ContrastDarkest);
+    background: var(--colors-ContrastDarkest);
 }
 
 .multiLineWithThumbnail__item--multiLine {
@@ -34,9 +34,9 @@
     margin-right: .75em;
     display: inline-block;
     vertical-align: middle;
-    margin-left: -var(--spacing-Full);
-    margin-top: -var(--spacing-Half);
-    margin-bottom: -var(--spacing-Half);
+    margin-left: calc(var(--spacing-Full) * -1);
+    margin-top: calc(var(--spacing-Half) * -1);
+    margin-bottom: calc(var(--spacing-Half) * -1);
 }
 
 .multiLineWithThumbnail__item:hover .multiLineWithThumbnail__secondaryLabel,

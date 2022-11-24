@@ -1,0 +1,90 @@
+@import "../reset";
+
+.dropDown {
+    @include reset;
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+.dropDown__btn {
+    @include reset;
+    display: block;
+    width: 100%;
+    height: var(--spacing-GoldenUnit);
+    text-align: left;
+    color: white;
+    cursor: pointer;
+    font-size: var(--fontSize-Base);
+    padding: 0 var(--spacing-Full);
+    border: 0;
+    border-radius: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: var(--spacing-GoldenUnit);
+    background: var(--colors-ContrastNeutral);
+}
+
+.dropDown__btn:focus{
+    outline: 1px solid var(--colors-PrimaryBlue);
+}
+
+.dropDown__btn svg{
+    pointer-events: none;
+}
+
+.dropDown__btn--withChevron {
+    padding-right: var(--spacing-GoldenUnit);
+}
+.dropDown__btnLabel {
+    @include reset;
+    margin-right: .5em;
+}
+.dropDown__chevron {
+    @include reset;
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.dropDown__contents {
+    @include reset;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: var(--zIndex-DropdownContents-Context);
+    display: none;
+    width: 100%;
+    margin: 0;
+    list-style: none;
+    background: var(--colors-ContrastNeutral);
+    box-shadow: 0 5px 5px rgba(0, 0, 0, .2);
+}
+.dropDown__contents--scrollable {
+    position: fixed;
+    top: auto;
+    overflow-y: auto;
+}
+.dropDown__contents--isOpen {
+    display: flex;
+    flex-direction: column;
+}
+.dropDown--darker > .dropDown__btn--open {
+    background-color: var(--colors-ContrastDarker);
+}
+
+.dropDown--darker > .dropDown__contents {
+    background-color: var(--colors-ContrastDarker);
+}
+
+.dropDown--darkest > .dropDown__btn--open {
+    background-color: var(--colors-ContrastDarkest);
+}
+
+.dropDown--darkest > .dropDown__contents {
+    background-color: var(--colors-ContrastDarkest);
+}
+
+.dropDown--padded > .dropDown__contents {
+    padding: var(--spacing-Full);
+}

@@ -2,17 +2,14 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {UnControlled as CodeMirror} from 'react-codemirror2';
 
-// TODO: Find way to dynamically load any mode?
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import XmlMode from 'codemirror/mode/xml/xml';
-import HtmlMixedMode from 'codemirror/mode/htmlmixed/htmlmixed';
-import JavascriptMode from 'codemirror/mode/javascript/javascript';
-import HandlebarsMode from 'codemirror/mode/handlebars/handlebars';
-import MarkdownMode from 'codemirror/mode/markdown/markdown';
-import YamlMode from 'codemirror/mode/yaml/yaml';
-import Styles from './codemirror.vanilla-css';
-import ThemeStyles from './codemirror-twilight.vanilla-css';
-/* eslint-enable @typescript-eslint/no-unused-vars */
+import 'codemirror/mode/xml/xml';
+import 'codemirror/mode/htmlmixed/htmlmixed';
+import 'codemirror/mode/javascript/javascript';
+import 'codemirror/mode/handlebars/handlebars';
+import 'codemirror/mode/markdown/markdown';
+import 'codemirror/mode/yaml/yaml';
+import './codemirror.vanilla-css';
+import './codemirror-twilight.vanilla-css';
 
 export default class CodeMirrorWrap extends PureComponent {
     static propTypes = {

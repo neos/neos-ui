@@ -129,7 +129,7 @@ export default class DataSourceBasedSelectBoxEditor extends PureComponent {
                 searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:searchBoxLeftToType')}
                 threshold={options.threshold}
                 disabled={options.disabled}
-                />);
+            />);
         }
 
         // multiple = FALSE
@@ -149,7 +149,7 @@ export default class DataSourceBasedSelectBoxEditor extends PureComponent {
             searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:searchBoxLeftToType')}
             threshold={options.threshold}
             disabled={options.disabled}
-            />);
+        />);
     }
 
     handleSearchTermChange = searchTerm => {

@@ -49,6 +49,6 @@ export default class TextField extends PureComponent {
             disabled={finalOptions.disabled}
             maxLength={finalOptions.maxlength}
             readOnly={finalOptions.readonly}
-            />);
+        />);
     }
 }

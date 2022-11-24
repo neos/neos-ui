@@ -1,0 +1,67 @@
+@import "../reset";
+
+.icon {
+    @include reset;
+    display: inline-block;
+    font: normal normal normal FontAwesome;
+    font-size: 14px/1;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.icon--paddedLeft {
+    margin-left: .75em;
+}
+.icon--paddedRight {
+    margin-right: .75em;
+}
+
+.icon--color-warn {
+    color: var(--colors-Warn);
+}
+
+.icon--color-error {
+    color: var(--colors-Error);
+}
+
+.icon--color-primaryBlue {
+    color: var(--colors-PrimaryBlue);
+}
+
+.icon--huge {
+    svg {
+        height: 3em;
+    }
+}
+
+.icon--large {
+    svg {
+        height: 2em;
+    }
+}
+
+.icon--big {
+    svg {
+        height: 1.33em;
+    }
+}
+
+.icon--small {
+    svg {
+        height: 1em;
+        max-height: 1em;
+        max-width: 100%;
+    }
+}
+
+.icon--tiny {
+    svg {
+        height: .75em;
+    }
+}
+
+.icon--resource {
+    display: inline-grid;
+    width: 100%;
+    justify-content: center;
+}

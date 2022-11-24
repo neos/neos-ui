@@ -5,14 +5,14 @@
   "repository": "neos/neos-ui",
   "bugs": "https://github.com/neos/neos-ui/issues",
   "homepage": "https://github.com/neos/neos-ui/blob/master/README.md",
-  "main": "./dist/index.js",
+  "module": "./src/index.ts",
   "scripts": {
     "test": "yarn jest -w 2 --coverage",
     "test:watch": "yarn jest --watch",
     "build": "yarn tsc --declaration",
     "build:watch": "yarn tsc --watch",
     "clean": "rimraf ./lib ./dist",
-    "lint": "eslint src/**/*.{js,jsx,ts,tsx}",
+    "lint": "yarn tsc --noemit && eslint src/**/*.{js,jsx,ts,tsx}",
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
@@ -22,7 +22,7 @@
     "typescript": "^4.6.4"
   },
   "dependencies": {
-    "@neos-project/positional-array-sorter": "workspace:*",
+    "@neos-project/positional-array-sorter": "^8.1.2",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-plugin-transform-object-rest-spread": "^6.20.1",
     "babel-preset-es2015": "^6.13.2",

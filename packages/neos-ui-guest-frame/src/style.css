@@ -47,10 +47,6 @@
     border: 1px solid gray;
 }
 
-:global(.ck-widget__selection-handle .ck-icon) {
-    display: none;
-}
-
 :global body::-webkit-scrollbar {
     width: 8px;
     height: 8px;

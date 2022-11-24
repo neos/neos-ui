@@ -1,0 +1,14 @@
+@import "../reset";
+
+.badge {
+    @include reset;
+    display: inline-block;
+    padding: 2px 4px;
+    font-size: 12px;
+    line-height: 14px;
+    font-weight: bold;
+    color: var(--colors-Warn);
+    white-space: nowrap;
+    background-color: white;
+    border-radius: 3px;
+}

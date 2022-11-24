@@ -14,7 +14,7 @@
     overflow: scroll;
 }
 .drawer--isHidden {
-    transform: translateX(-var(--size-SidebarWidth));
+    transform: translateX(calc(var(--size-SidebarWidth) * -1));
 }
 
 .drawer__menuItemGroupsWrapper {

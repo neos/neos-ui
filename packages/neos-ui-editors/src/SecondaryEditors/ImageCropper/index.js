@@ -6,15 +6,13 @@ import Icon from '@neos-project/react-ui-components/src/Icon/';
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 import TextInput from '@neos-project/react-ui-components/src/TextInput/';
 import {neos} from '@neos-project/neos-ui-decorators';
+import {$get} from 'plow-js';
 
 import AspectRatioDropDown from './AspectRatioDropDown/index';
 import CropConfiguration, {CustomAspectRatioOption, LockedAspectRatioStrategy} from './model.js';
 import style from './style.css';
 
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import ReactCropStyles from './react_crop.vanilla-css';
-/* eslint-enable no-unused-vars */
-import {$get} from 'plow-js';
+import './react_crop.vanilla-css';
 
 /**
  * Calculates the greatest common divisor for given numbers a, b

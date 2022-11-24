@@ -2,7 +2,7 @@
 import {themr} from '@friendsofreactjs/react-css-themr';
 import keydown from 'react-keydown';
 import identifiers from '../identifiers';
-import style from './style.css';
+import style from './style.scss';
 import {keys} from './config';
 import SelectBox from './selectBox';
 

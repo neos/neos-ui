@@ -6,12 +6,13 @@
   "main": "./src/index.js",
   "scripts": {
     "clean": "rimraf ./lib ./dist",
-    "lint": "eslint src/**/*.{js,jsx,ts,tsx}"
+    "lint": "yarn tsc --noemit && eslint src/**/*.{js,jsx,ts,tsx}"
   },
   "devDependencies": {
     "@neos-project/babel-preset-neos-ui": "workspace:*",
     "@neos-project/build-essentials": "workspace:*",
-    "@neos-project/jest-preset-neos-ui": "workspace:*"
+    "@neos-project/jest-preset-neos-ui": "workspace:*",
+    "typescript": "^4.6.4"
   },
   "license": "GNU GPLv3"
 }

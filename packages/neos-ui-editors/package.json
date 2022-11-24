@@ -17,7 +17,8 @@
     "@neos-project/debug-reason-for-rendering": "workspace:*",
     "@neos-project/jest-preset-neos-ui": "workspace:*",
     "enzyme": "^3.8.0",
-    "react-dnd-test-backend": "^7.0.2"
+    "react-dnd-test-backend": "^7.0.2",
+    "typescript": "^4.6.4"
   },
   "dependencies": {
     "@neos-project/neos-ui-backend-connector": "workspace:*",
@@ -38,11 +39,11 @@
     "moment": "^2.20.1",
     "monet": "^0.9.2",
     "plow-js": "^2.2.0",
-    "react-codemirror2": "^7.2.1",
+    "react-codemirror2": "7.2.1",
     "react-dnd": "^10.0.0",
     "react-dropzone": "^3.13.2",
     "react-image-crop": "^2.0.5",
-    "react-markdown": "^5.0.0"
+    "react-markdown": "^8.0.0"
   },
   "peerDependencies": {
     "prop-types": "^15.5.10",

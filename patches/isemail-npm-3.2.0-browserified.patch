@@ -1,0 +1,37 @@
+
+fixes https://github.com/neos/neos-ui/pull/3200#issuecomment-1284419262
+in combination with introducing the dependency "buffer" via .yarnrc.yml 
+
+diff --git a/lib/index.js b/lib/index.js
+index 4f3d4cc33d13e68476dbe9ff0021081458af3291..087e62527d80e4e0f76773cc35a3c10b39b0a236 100644
+--- a/lib/index.js
++++ b/lib/index.js
+@@ -3,7 +3,8 @@
+ // Load modules
+ 
+ const Punycode = require('punycode');
+-const Util = require('util');
++
++const Buffer = require('buffer/').Buffer
+ 
+ // Declare internals
+ 
+@@ -213,16 +214,9 @@ internals.isIterable = Array.isArray;
+ if (typeof Symbol !== 'undefined') {
+     internals.isIterable = (value) => Array.isArray(value) || (!!value && typeof value === 'object' && typeof value[Symbol.iterator] === 'function');
+ }
+-/* $lab:coverage:on$ */
+-
+ 
+-// Node 10 introduced isSet and isMap, which are useful for cross-context type
+-// checking.
+-// $lab:coverage:off$
+-internals._isSet = (value) => value instanceof Set;
+-internals._isMap = (value) => value instanceof Map;
+-internals.isSet = Util.types && Util.types.isSet || internals._isSet;
+-internals.isMap = Util.types && Util.types.isMap || internals._isMap;
++internals.isSet = (value) => value instanceof Set;
++internals.isMap = (value) => value instanceof Map;
+ // $lab:coverage:on$
+ 
+ 

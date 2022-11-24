@@ -74,7 +74,7 @@ export default class SimpleSelectBoxEditor extends PureComponent {
                 searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:searchBoxLeftToType')}
                 threshold={options.threshold}
                 disabled={options.disabled}
-                />);
+            />);
         }
 
         // Multiple == FALSE
@@ -91,7 +91,7 @@ export default class SimpleSelectBoxEditor extends PureComponent {
             searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:searchBoxLeftToType')}
             threshold={options.threshold}
             disabled={options.disabled}
-            />);
+        />);
     }
 
     handleSearchTermChange = searchTerm => {

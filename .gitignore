@@ -27,16 +27,8 @@ packages/*/yarn.lock
 #
 # Compiled assets.
 #
-Resources/Public/JavaScript/**/*.js
-Resources/Public/JavaScript/**/*.map
-Resources/Public/Styles/**/*.css
-!Resources/Public/Styles/ReactCrop.css
-Resources/Public/Styles/**/*.map
-Resources/Public/Styles/Font*
-Resources/Public/*.css
-Resources/Public/*.js
-Resources/Public/*.ttf
-Resources/Public/*.map
+Resources/Public/Build/*
+!Resources/Public/Build/.gitkeep
 
 #
 # editors / IDEs

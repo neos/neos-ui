@@ -1,6 +1,6 @@
 const env = require('@neos-project/build-essentials/src/environment');
 const stylePlugin = require('esbuild-style-plugin');
-const {sep} = require('path')
+const {sep, join} = require('path')
 
 const cssVariables = require('@neos-project/build-essentials/src/styles/styleConstants');
 const cssVariablesObject = cssVariables.generateCssVarsObject(cssVariables.config);
@@ -17,7 +17,7 @@ require('esbuild').build({
         'Host': './packages/neos-ui/src/index.js',
         'HostOnlyStyles': './packages/neos-ui/src/styleHostOnly.css'
     },
-    outdir: './Resources/Public',
+    outdir: join(env.rootPath, './Resources/Public/Build'),
     sourcemap: !env.isProduction,
     minify: env.isProduction,
     logLevel: 'info',
@@ -25,6 +25,7 @@ require('esbuild').build({
     bundle: true,
     keepNames: isE2ETesting, // for react magic selectors,
     watch: isWatch,
+    legalComments: "linked",
     loader: {
         '.js': 'tsx',
         '.svg': 'dataurl',

@@ -1,4 +1,0 @@
-{
-    "root": true,
-    "extends": "@neos-project/eslint-config-neos"
-}

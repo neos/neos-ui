@@ -181,7 +181,6 @@ export class Header extends PureComponent {
             isOver,
             isDragging,
             canDrop,
-            connectDragPreview,
             ...restProps
         } = this.props;
         const rest = omit(restProps, ['onToggle', 'isCollapsed', 'hasError', 'isDragging', 'dragForbidden']);

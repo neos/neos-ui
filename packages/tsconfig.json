@@ -26,6 +26,7 @@
         "removeComments": true,
         "sourceMap": true,
         "downlevelIteration": true,
-        "incremental": true
+        "incremental": true,
+        "skipLibCheck": true
     }
 }

@@ -21,7 +21,8 @@
     "lint": "eslint src/**/*.{js,jsx,ts,tsx}"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "workspace:*"
+    "@neos-project/babel-preset-neos-ui": "workspace:*",
+    "typescript": "^4.6.4"
   },
   "dependencies": {
     "@babel/core": "^7.0.0",

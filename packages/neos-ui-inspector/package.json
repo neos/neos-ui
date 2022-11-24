@@ -8,7 +8,7 @@
     "test": "yarn jest -w 2 --coverage",
     "test:watch": "yarn jest --watch",
     "clean": "rimraf ./lib ./dist",
-    "lint": "eslint src/**/*.{js,jsx,ts,tsx}",
+    "lint": "yarn tsc --noemit && eslint src/**/*.{js,jsx,ts,tsx}",
     "jest": "NODE_ENV=test jest"
   },
   "dependencies": {
@@ -21,7 +21,8 @@
   "devDependencies": {
     "@neos-project/babel-preset-neos-ui": "workspace:*",
     "@neos-project/build-essentials": "workspace:*",
-    "@neos-project/jest-preset-neos-ui": "workspace:*"
+    "@neos-project/jest-preset-neos-ui": "workspace:*",
+    "typescript": "^4.6.4"
   },
   "peerDependencies": {
     "prop-types": "^15.5.10",

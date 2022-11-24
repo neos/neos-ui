@@ -55,3 +55,4 @@ Resources/Public/*.map
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+/packages/tsconfig.tsbuildinfo

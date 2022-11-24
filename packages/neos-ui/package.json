@@ -16,7 +16,8 @@
     "@neos-project/debug-reason-for-rendering": "workspace:*",
     "@neos-project/jest-preset-neos-ui": "workspace:*",
     "@neos-project/utils-logger": "workspace:*",
-    "enzyme": "^3.8.0"
+    "enzyme": "^3.8.0",
+    "typescript": "^4.6.4"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-highlight": "16.0.0",

@@ -69,21 +69,6 @@ require('esbuild').build({
                         loader: 'css'
                     }
                 })
-
-                // HOTFIX fixes the "global is undefined" when using react-codemirror2
-                // we dont declare `global = window` as we want to control everything and notice it, when something is odd
-                // this bug has been fixed and merged since to the source code of react-codemirror2,
-                // but the maintainers said that they won't release it, because they are not using the project anymore.
-                // see https://github.com/scniro/react-codemirror2/pull/260#issuecomment-1023202972
-                // @todo use fork or dont use this abstraction at all ;)
-                onLoad({filter: /\/react-codemirror2\/index.js$/}, async ({path}) => {
-                    const contents = (await require('fs/promises').readFile(path)).toString();
-                    const replacedGlobal = contents.replace('global[\'PREVENT_CODEMIRROR_RENDER\'] === true', 'false');
-                    return {
-                        contents: replacedGlobal,
-                        loader: 'js'
-                    }
-                })
             }
         },
         stylePlugin({
@@ -106,6 +91,8 @@ require('esbuild').build({
         })
     ],
     define: {
+        // we dont declare `global = window` as we want to control everything and notice it, when something is odd
+
         // handover the NODE_ENV to the to be bundled javascript
         // used fx. in `react-dom/profiling.js` to check if we use minfied and treeshaked code in production
         'process.env.NODE_ENV': JSON.stringify(env.isProduction ? 'production' : undefined)

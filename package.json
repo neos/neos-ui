@@ -8,7 +8,8 @@
   "resolutions": {
     "moment": "^2.20.1",
     "vfile-message": "^2.0.2",
-    "isemail@3.2.0": "patch:isemail@npm:3.2.0#./patches/isemail-npm-3.2.0-browserified.patch"
+    "isemail@3.2.0": "patch:isemail@npm:3.2.0#./patches/isemail-npm-3.2.0-browserified.patch",
+    "react-codemirror2@7.2.1": "patch:react-codemirror2@npm:7.2.1#./patches/react-codemirror2-npm-7.2.1-browserified.patch"
   },
   "engines": {
     "node": "~16"

@@ -21,6 +21,7 @@ require('esbuild').build({
     sourcemap: true,
     minify: env.isProduction,
     logLevel: 'info',
+    target: 'es2020',
     color: true,
     bundle: true,
     keepNames: isE2ETesting, // for react magic selectors,

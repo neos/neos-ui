@@ -2,7 +2,7 @@
 [![CircleCI](https://circleci.com/gh/neos/neos-ui.svg?style=svg)](https://circleci.com/gh/neos/neos-ui) [![Known Vulnerabilities](https://snyk.io/test/github/neos/neos-ui/badge.svg?targetFile=package.json)](https://snyk.io/test/github/neos/neos-ui?targetFile=package.json)
 [![Slack](http://slack.neos.io/badge.svg)](http://slack.neos.io) [![Forum](https://img.shields.io/badge/forum-Discourse-39c6ff.svg)](https://discuss.neos.io/) [![Twitter](https://img.shields.io/twitter/follow/neoscms.svg?style=social)](https://twitter.com/NeosCMS)
 
-> The next generation Neos CMS interface written in ReactJS and a ton of other fun technology.
+> The Neos CMS interface written in ReactJS and a ton of other fun technology.
 
 ## Versioning
 
@@ -36,25 +36,15 @@ If you discover bugs in any of the supported browsers, please [report them](http
 
 ## Features
 
-* Better editing experience for responsive websites.
-* Faster load times for the backend.
-* No reload constraint for the correct stylesheets on multi-site systems.
-* Updated Font-Awesome to v5.0 (old icon names are migrated on the fly).
-
+* Blazingly fast Yarn 3 + ESbuild stack
+* https://www.neos.io/features/editing-content.html
+* https://www.neos.io/features/inline-editing-true-wysiwyg.html
 
 ## Installation and usage
 
-The new UI is [already included](https://github.com/neos/neos-base-distribution/blob/3.3/composer.json#L24) in the base Neos distribution. If you don't have it installed yet, follow these steps:
+The UI is [already included](https://github.com/neos/neos-base-distribution/blob/3.3/composer.json#L24) in the base Neos distribution.
+And on Packagist available via: `neos/neos-ui`
 
-1. You need to have Neos CMS 3.3 or newer up & running.
-
-2. Run the following command:
-
-```
-composer require neos/neos-ui
-```
-
-3. Now you are all set up and you can login to the new interface as usual via `/neos` route.
 
 ### Updating
 
@@ -154,32 +144,11 @@ git checkout 8.2 && git fetch && git reset --hard origin/8.2 && git merge --no-f
 | `make clean` | delete all node_modules in every subdirectory. |
 | `make build` |  Runs the development build. |
 | `make build-watch` | Watches the source files for changes and runs a build in case. |
-| `make build-watch-poll` | Watches (and polls) the source files on a file share. Should preferably be used when working an a VM for example. |
-| `make storybook` | Starts the storybook server on port 9001. |
 | `make lint`  | Executes `make lint-js` and `make lint-editorconfig`. |
 | `make lint-js`  | Runs test in all subpackages. |
 | `make lint-editorconfig`  | Tests if all files respect the `.editorconfig`. |
 | `make test`  | Executes the test on all source files. |
 | `make test-e2e`  | Executes integration tests. |
-
-##### Custom webpack live reload options
-
-If you are developing inside a virtual machine and you are running the
-watch command on your local system it is may be needed for you to adjust
-the live reload optons.
-
-This can be done by putting an `.webpack.livereload.local.js` inside the
-repository root.
-
-An example file would look like this:
-
-```javascript
-module.exports = {
-    protocol: 'http',
-    port: '123',
-    hostname: 'localhost'
-};
-```
 
 #### Writing unit tests
 The unit tests are executed with [jest](https://facebook.github.io/jest/).

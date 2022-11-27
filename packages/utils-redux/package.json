@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/utils-redux",
-  "version": "8.1.0",
+  "version": "8.1.2",
   "description": "Neos CMS UI Redux Helper utilitites",
   "private": true,
   "main": "./src/index.ts",

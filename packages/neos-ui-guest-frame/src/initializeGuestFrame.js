@@ -69,14 +69,19 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     // Remove the inline scripts after initialization
     Array.prototype.forEach.call(guestFrameWindow.document.querySelectorAll('script[data-neos-nodedata]'), element => element.parentElement.removeChild(element));
 
-    yield put(actions.CR.Nodes.setDocumentNode(documentInformation.metaData.documentNode, documentInformation.metaData.siteNode));
+    const state = store.getState();
+
+    // Set the current document node to the one that is rendered in the guest frame which might be different from the one that is currently selected in the page tree
+    const currentDocumentNodeContextPath = yield select($get('cr.nodes.documentNode'));
+    if (currentDocumentNodeContextPath !== documentInformation.metaData.documentNode) {
+        yield put(actions.CR.Nodes.setDocumentNode(documentInformation.metaData.documentNode, documentInformation.metaData.siteNode));
+    }
     yield put(actions.UI.ContentCanvas.setPreviewUrl(documentInformation.metaData.previewUrl));
     yield put(actions.CR.ContentDimensions.setActive(documentInformation.metaData.contentDimensions.active));
     // The user may have navigated by clicking an inline link - that's why we need to update the contentCanvas URL to be in sync with the shown content.
-    // We need to set the src to the actual src of the iframe, and not retrive it from documentInformation, as it may differ, e.g. contain additional arguments.
+    // We need to set the src to the actual src of the iframe, and not retrieve it from documentInformation, as it may differ, e.g. contain additional arguments.
     yield put(actions.UI.ContentCanvas.setSrc(guestFrameWindow.document.location.href));
 
-    const state = store.getState();
     const editPreviewMode = $get(['ui', 'editPreviewMode'], state);
     const editPreviewModes = globalRegistry.get('frontendConfiguration').get('editPreviewModes');
     const isWorkspaceReadOnly = selectors.CR.Workspaces.isWorkspaceReadOnlySelector(state);

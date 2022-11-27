@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui",
-  "version": "8.1.0",
+  "version": "8.1.2",
   "description": "Neos CMS UI written in ReactJS and a ton of other fun technology.",
   "private": true,
   "scripts": {

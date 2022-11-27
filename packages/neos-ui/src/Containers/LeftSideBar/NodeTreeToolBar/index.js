@@ -205,11 +205,7 @@ export default class NodeTreeToolBar extends PureComponent {
                             focusedNodeContextPath={focusedNodeContextPath}
                             onClick={this.handleCopyNodes}
                             isActive={isCopied}
-                            disabled={
-                                isWorkspaceReadOnly ||
-                                destructiveOperationsAreDisabled ||
-                                !canBeEdited
-                            }
+                            disabled={isWorkspaceReadOnly}
                             id={`neos-${treeType}-CopySelectedNode`}
                         />
                         <CutSelectedNode

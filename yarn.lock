@@ -4057,14 +4057,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@neos-project/positional-array-sorter@npm:^8.1.2":
-  version: 8.1.2
-  resolution: "@neos-project/positional-array-sorter@npm:8.1.2"
-  checksum: e5eb7b2fd7afb78f86aa8a559b62fdc87d2f0fb76489b18629ebcb5607ef64b90303e44acc1bffdb2534a12d210812967c0fdb562db252d2b3667daffe3c398f
-  languageName: node
-  linkType: hard
-
-"@neos-project/positional-array-sorter@workspace:*, @neos-project/positional-array-sorter@workspace:packages/positional-array-sorter":
+"@neos-project/positional-array-sorter@^8.1.2, @neos-project/positional-array-sorter@workspace:*, @neos-project/positional-array-sorter@workspace:packages/positional-array-sorter":
   version: 0.0.0-use.local
   resolution: "@neos-project/positional-array-sorter@workspace:packages/positional-array-sorter"
   dependencies:

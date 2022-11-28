@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-decorators",
-  "version": "8.0.5",
+  "version": "8.0.6",
   "description": "Decorators for Neos CMS UI.",
   "private": true,
   "main": "./src/index.ts",
@@ -14,9 +14,9 @@
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "8.0.5",
-    "@neos-project/build-essentials": "8.0.5",
-    "@neos-project/jest-preset-neos-ui": "8.0.5"
+    "@neos-project/babel-preset-neos-ui": "8.0.6",
+    "@neos-project/build-essentials": "8.0.6",
+    "@neos-project/jest-preset-neos-ui": "8.0.6"
   },
   "peerDependencies": {
     "prop-types": "^15.5.10",

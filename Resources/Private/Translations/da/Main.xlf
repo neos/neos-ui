@@ -387,7 +387,7 @@
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__style__h5" xml:space="preserve">
                 <source>Headline 5</source>
-        <target state="translated">Overskrift 6</target>
+        <target state="translated">Overskrift 5</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__style__h6" xml:space="preserve">
                 <source>Headline 6</source>

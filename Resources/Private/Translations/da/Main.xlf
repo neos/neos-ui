@@ -365,6 +365,38 @@
                     <target xml:lang="da" state="needs-translation">Discarded {0} changes.</target>
                 </trans-unit>
       </group>
+      <trans-unit id="ckeditor__toolbar__style__p" xml:space="preserve">
+                <source>Paragraph</source>
+        <target state="translated">Afsnit</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__h3" xml:space="preserve">
+                <source>Headline 3</source>
+        <target state="translated">Overskrift 3</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__h4" xml:space="preserve">
+                <source>Headline 4</source>
+        <target state="translated">Overskrift 4</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__h1" xml:space="preserve">
+                <source>Headline 1</source>
+        <target state="translated">Overskrift 1</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__h2" xml:space="preserve">
+                <source>Headline 2</source>
+        <target state="translated">Overskrift 2</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__h5" xml:space="preserve">
+                <source>Headline 5</source>
+        <target state="translated">Overskrift 6</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__h6" xml:space="preserve">
+                <source>Headline 6</source>
+        <target state="translated">Overskrift 6</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__pre" xml:space="preserve">
+                <source>Preformatted</source>
+        <target state="translated">Forformateret</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

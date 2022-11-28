@@ -1,4 +1,4 @@
-@import "../reset";
+@import '../reset';
 
 .selectBox__list {
     padding: 0;
@@ -32,7 +32,6 @@
     line-height: var(--spacing-GoldenUnit);
     padding-left: 0;
     border: 0;
-    background: var(--colors-ContrastNeutral);
     min-width: 160px;
 }
 
@@ -42,7 +41,7 @@
 
 .selectBox__contents {
     min-width: 160px;
-    box-shadow: 0 5px 5px rgba(#000, .2);
+    box-shadow: 0 5px 5px rgba(0, 0, 0, .2);
     z-index: var(--zIndex-SelectBoxContents);
     margin-top: -2px;
 }

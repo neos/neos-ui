@@ -81,22 +81,15 @@ require('esbuild').build({
             cssModulesMatch: /^(?!@ckeditor\/|@fortawesome\/fontawesome-svg-core\/).*\.s?css$/,
             postcss: {
                 plugins: [
-                    require('postcss-import'),
                     require('postcss-nested'),
                     require('postcss-css-variables')({
                         variables: cssVariablesObject
-                    }),
-                    require('postcss-hexrgba'),
-                    require('autoprefixer')
+                    })
                 ]
             }
         })
     ],
     define: {
         // we dont declare `global = window` as we want to control everything and notice it, when something is odd
-
-        // handover the NODE_ENV to the to be bundled javascript
-        // used fx. in `react-dom/profiling.js` to check if we use minfied and treeshaked code in production
-        'process.env.NODE_ENV': JSON.stringify(env.isProduction ? 'production' : undefined)
     }
 })

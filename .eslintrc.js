@@ -4,6 +4,7 @@ module.exports = {
         '@neos-project/eslint-config-neos',
         'plugin:@typescript-eslint/eslint-recommended'
     ],
+    parser: '@typescript-eslint/parser',
     globals: {
         expect: true,
         sinon: false
@@ -14,9 +15,6 @@ module.exports = {
     plugins: [
         '@typescript-eslint'
     ],
-    parserOptions: {
-        requireConfigFile: false
-    },
     rules: {
         // Fix for incorrect unused var detection
         'no-unused-vars': 'off',
@@ -29,13 +27,4 @@ module.exports = {
         'no-negated-condition': 'off',
         'complexity': 'off'
     },
-    overrides: [
-        {
-            files: [
-                '**/*.ts',
-                '**/*.tsx'
-            ],
-            parser: '@typescript-eslint/parser'
-        }
-    ]
 }

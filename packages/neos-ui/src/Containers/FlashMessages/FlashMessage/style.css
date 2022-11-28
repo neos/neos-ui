@@ -7,7 +7,7 @@
     word-wrap: break-word;
     overflow: hidden;
     box-sizing: border-box;
-    box-shadow: 0 0 14px rgba(#000, .15);
+    box-shadow: 0 0 14px rgba(0, 0, 0, .15);
 
     &:last-child {
         margin-bottom: 0px;
@@ -38,7 +38,7 @@
     padding: 0 calc((var(--spacing-GoldenUnit) - 1em)/2);
     margin: 0;
     vertical-align: text-top;
-    border-right: 1px solid rgba(#FFF, .3);
+    border-right: 1px solid rgba(255, 255, 255, .3);
 }
 
 .flashMessage__heading {

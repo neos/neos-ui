@@ -181,10 +181,9 @@ export class Header extends PureComponent {
             isOver,
             isDragging,
             canDrop,
-            connectDragPreview,
             ...restProps
         } = this.props;
-        const rest = omit(restProps, ['onToggle', 'isCollapsed', 'hasError', 'isDragging', 'dragForbidden']);
+        const rest = omit(restProps, ['onToggle', 'isCollapsed', 'hasError', 'isDragging', 'dragForbidden', 'connectDragPreview']);
         const dataClassNames = mergeClassNames({
             [theme.header__data]: true,
             [theme['header__data--isActive']]: isActive,

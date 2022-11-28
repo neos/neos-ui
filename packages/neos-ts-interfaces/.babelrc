@@ -1,5 +1,0 @@
-{
-    "presets": [
-        "@neos-project/babel-preset-neos-ui"
-    ]
-}

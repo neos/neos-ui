@@ -259,11 +259,13 @@ export default function createScrollingComponent(WrappedComponent) {
         render() {
             const {
                 // not passing down these props
+                /* eslint-disable @typescript-eslint/no-unused-vars */
                 strengthMultiplier,
                 verticalStrength,
                 horizontalStrength,
                 onScrollChange,
                 dragDropManager,
+                /* eslint-enable @typescript-eslint/no-unused-vars */
 
                 ...props
             } = this.props;

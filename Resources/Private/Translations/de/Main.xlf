@@ -470,6 +470,50 @@
                 <source>Select a single content element in order to be able to edit its properties</source>
         <target>Wählen Sie ein einzelnes Inhaltselement aus, um dessen Eigenschaften zu bearbeiten</target>
       </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__h2" xml:space="preserve">
+                <source>Headline 2</source>
+        <target state="translated">Überschrift 2</target>
+      </trans-unit>
+      <trans-unit id="rangeEditorMaximum" xml:space="preserve">
+                <source>Maximum</source>
+        <target state="translated">Maximum</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__h3" xml:space="preserve">
+                <source>Headline 3</source>
+        <target state="translated">Überschrift 3</target>
+      </trans-unit>
+      <trans-unit id="rangeEditorMinimum" xml:space="preserve">
+                <source>Minimum</source>
+        <target state="translated">Minimum</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__p" xml:space="preserve">
+                <source>Paragraph</source>
+        <target state="translated">Absatz</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__h1" xml:space="preserve">
+                <source>Headline 1</source>
+        <target state="translated">Überschrift 1</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__h4" xml:space="preserve">
+                <source>Headline 4</source>
+        <target state="translated">Überschrift 4</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__h5" xml:space="preserve">
+                <source>Headline 5</source>
+        <target state="translated">Überschrift 5</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__h6" xml:space="preserve">
+                <source>Headline 6</source>
+        <target state="translated">Überschrift 6</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__pre" xml:space="preserve">
+                <source>Preformatted</source>
+        <target state="translated">Vorformatiert</target>
+      </trans-unit>
+      <trans-unit id="rangeEditorCurrentValue" xml:space="preserve">
+                <source>Current value</source>
+        <target state="translated">Aktueller Wert</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

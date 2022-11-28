@@ -4,6 +4,7 @@
   "bugs": "https://github.com/neos/neos-ui/issues",
   "homepage": "https://github.com/neos/neos-ui/blob/master/README.md",
   "license": "GNU GPLv3",
+  "version": "8.1.2",
   "private": true,
   "resolutions": {
     "moment": "^2.20.1",

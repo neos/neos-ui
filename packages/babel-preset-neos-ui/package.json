@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/babel-preset-neos-ui",
-  "version": "8.1.4",
+  "version": "8.2.0-beta2",
   "description": "The babel preset for all packages of the neos-ui mono-repo.",
   "main": "./src/index.js",
   "private": true,
@@ -33,5 +33,6 @@
     "@babel/preset-react": "^7.0.0",
     "babel-plugin-webpack-alias": "^2.1.2"
   },
-  "license": "GNU GPLv3"
+  "license": "GNU GPLv3",
+  "stableVersion": "8.1.4"
 }

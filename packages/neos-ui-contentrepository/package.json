@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-contentrepository",
-  "version": "8.1.4",
+  "version": "8.2.0-beta2",
   "description": "Bindings for the Neos ContentRepository",
   "private": true,
   "main": "./src/manifest.js",
@@ -31,5 +31,6 @@
     "setupFiles": [
       "../jest-preset-neos-ui/src/setupNeosUiHostEnv.js"
     ]
-  }
+  },
+  "stableVersion": "8.1.4"
 }

@@ -178,8 +178,7 @@ bump-version: called-with-version
 	./Build/createVersionFile.sh
 
 publish-npm: called-with-version
-	yarn workspaces foreach run publish --skip-git --exact --repo-version=$(VERSION) \
-		--yes --force-publish
+	yarn workspaces foreach run release
 
 ################################################################################
 # Misc

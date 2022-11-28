@@ -8,7 +8,7 @@
   "main": "./src/index.js",
   "license": "MIT",
   "scripts": {
-    "publish": "yarn npm publish --access public"
+    "release": "npm publish --access public"
   },
   "devDependencies": {
     "@neos-project/babel-preset-neos-ui": "workspace:*"

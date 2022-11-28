@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/react-ui-components",
-  "version": "8.1.2",
+  "version": "8.1.4",
   "description": "The UI components which power the Neos backend application.",
   "repository": "neos/neos-ui",
   "bugs": "https://github.com/neos/neos-ui/issues",

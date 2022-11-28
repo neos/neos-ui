@@ -3822,7 +3822,7 @@ __metadata:
     "@neos-project/babel-preset-neos-ui": "workspace:*"
     "@neos-project/build-essentials": "workspace:*"
     "@neos-project/jest-preset-neos-ui": "workspace:*"
-    "@neos-project/positional-array-sorter": ^8.1.2
+    "@neos-project/positional-array-sorter": ^8.1.4
     babel-plugin-transform-decorators-legacy: ^1.3.4
     babel-plugin-transform-object-rest-spread: ^6.20.1
     babel-preset-es2015: ^6.13.2
@@ -4057,10 +4057,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@neos-project/positional-array-sorter@npm:^8.1.2":
-  version: 8.1.2
-  resolution: "@neos-project/positional-array-sorter@npm:8.1.2"
-  checksum: e5eb7b2fd7afb78f86aa8a559b62fdc87d2f0fb76489b18629ebcb5607ef64b90303e44acc1bffdb2534a12d210812967c0fdb562db252d2b3667daffe3c398f
+"@neos-project/positional-array-sorter@npm:^8.1.4":
+  version: 8.1.4
+  resolution: "@neos-project/positional-array-sorter@npm:8.1.4"
+  checksum: ce0648805b9f8c5b230b59d56a61774f296186a542079e285c2936d0bce97cfc429e00e8195d2bc00aa7aa17af56db6b0ae635fe4aa079a65473835c31a22c10
   languageName: node
   linkType: hard
 

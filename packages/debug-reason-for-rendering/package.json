@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/debug-reason-for-rendering",
-  "version": "8.1.2",
+  "version": "8.1.4",
   "description": "React Performance Optimization Utility - Why does a component re-render?",
   "repository": "neos/neos-ui",
   "bugs": "https://github.com/neos/neos-ui/issues",

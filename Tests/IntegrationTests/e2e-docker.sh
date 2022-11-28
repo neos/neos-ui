@@ -28,6 +28,8 @@ echo "##########################################################################
 echo "# Install dependencies...                                                   #"
 echo "#############################################################################"
 dc exec -T php bash <<-'BASH'
+    cd /usr/src/app
+    sudo chown -R docker:docker .
     cd TestDistribution
     composer install
 BASH
@@ -77,8 +79,11 @@ for fixture in $(pwd)/Tests/IntegrationTests/Fixtures/*/; do
 
         # TODO: optimize this
         cd TestDistribution
+        composer reinstall neos/test-nodetypes
+        composer reinstall neos/test-site
         ./flow flow:package:rescan > /dev/null
         ./flow flow:cache:flush > /dev/null
+
         if ./flow site:list | grep -q 'Node name'; then
             ./flow site:prune '*' > /dev/null
         fi

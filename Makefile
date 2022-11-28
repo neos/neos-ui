@@ -169,14 +169,12 @@ called-with-version:
 ifeq ($(VERSION),)
 	@echo No version information given.
 	@echo Please run this command like this:
-	@echo VERSION=1.0.0 make release
+	@echo VERSION=1.0.0 make bump-version
 	@false
 endif
 
 bump-version: called-with-version
-	yarn workspaces foreach run publish \
-		--skip-git --exact --repo-version=$(VERSION) \
-		--yes --force-publish --skip-npm
+	./Build/bumpVersion.sh
 	./Build/createVersionFile.sh
 
 publish-npm: called-with-version

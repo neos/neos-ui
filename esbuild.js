@@ -55,13 +55,13 @@ require('esbuild').build({
 
                 // load ckeditor icons as plain text and not via `.svg: dataurl`
                 // (currently neccessary for the table select handle icon)
-                onLoad({filter: /node_modules\/@ckeditor\/.*\.svg$/}, async ({path}) => ({
+                onLoad({filter: /\/@ckeditor\/.*\.svg$/}, async ({path}) => ({
                     contents: (await require('fs/promises').readFile(path)).toString(),
                     loader: 'text'
                 }))
 
                 // prefix Fontawesome with "neos-" to prevent clashes with customer Fontawesome
-                onLoad({filter: /@fortawesome\/fontawesome-svg-core\/styles\.css$/}, async ({path}) => {
+                onLoad({filter: /\/@fortawesome\/fontawesome-svg-core\/styles\.css$/}, async ({path}) => {
                     const contents = (await require('fs/promises').readFile(path)).toString();
 
                     const replacedStyle = contents.replace(/svg-inline--fa/g, 'neos-svg-inline--fa');

@@ -32,7 +32,7 @@ export default <OwnProps extends {}, InjectedProps extends {}> (mapRegistriesToP
                 <NeosContext.Consumer>
                     {context => {
                         if (!context) {
-                            console.error('Context missing! Are you using `unstable_renderSubtreeIntoContainer` by any chance?', this.props); // tslint:disable-line
+                            console.error('NeosContext missing/empty!', this.props); // tslint:disable-line
                             return null;
                         }
                         const registriesToPropsMap = mapRegistriesToProps ? mapRegistriesToProps(context.globalRegistry) : {};

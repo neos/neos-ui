@@ -3823,6 +3823,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@neos-project/neos-ui-editors@workspace:packages/neos-ui-editors"
   dependencies:
+    "@ckeditor/ckeditor5-editor-decoupled": ^16.0.0
     "@neos-project/babel-preset-neos-ui": "workspace:*"
     "@neos-project/build-essentials": "workspace:*"
     "@neos-project/debug-reason-for-rendering": "workspace:*"
@@ -4043,7 +4044,21 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@neos-project/neos-ui@workspace:packages/neos-ui"
   dependencies:
+    "@ckeditor/ckeditor5-alignment": ^16.0.0
+    "@ckeditor/ckeditor5-basic-styles": ^16.0.0
+    "@ckeditor/ckeditor5-core": ^16.0.0
+    "@ckeditor/ckeditor5-editor-decoupled": ^16.0.0
+    "@ckeditor/ckeditor5-engine": ^16.0.0
+    "@ckeditor/ckeditor5-essentials": ^16.0.0
+    "@ckeditor/ckeditor5-heading": ^16.0.0
     "@ckeditor/ckeditor5-highlight": 16.0.0
+    "@ckeditor/ckeditor5-link": ^16.0.0
+    "@ckeditor/ckeditor5-list": ^16.0.0
+    "@ckeditor/ckeditor5-paragraph": ^16.0.0
+    "@ckeditor/ckeditor5-remove-format": ^16.0.0
+    "@ckeditor/ckeditor5-table": ^16.0.0
+    "@ckeditor/ckeditor5-utils": ^16.0.0
+    "@ckeditor/ckeditor5-widget": ^16.0.0
     "@friendsofreactjs/react-css-themr": ^4.1.0
     "@neos-project/babel-preset-neos-ui": "workspace:*"
     "@neos-project/build-essentials": "workspace:*"
@@ -4143,6 +4158,7 @@ __metadata:
     "@fortawesome/free-regular-svg-icons": ^5.15.3
     "@fortawesome/free-solid-svg-icons": ^5.15.3
     "@fortawesome/react-fontawesome": ^0.1.14
+    "@friendsofreactjs/react-css-themr": ^4.1.0
     "@neos-project/babel-preset-neos-ui": "workspace:*"
     "@neos-project/build-essentials": "workspace:*"
     "@neos-project/debug-reason-for-rendering": "workspace:*"
@@ -4181,11 +4197,13 @@ __metadata:
     lodash.throttle: ^4.0.8
     moment: ^2.14.1
     plow-js: ^2.2.0
+    raf: ^3.4.1
     react-close-on-escape: ^3.0.0
     react-collapse: ^5.0.1
     react-datetime: ^2.8.10
     react-dnd: ^10.0.0
     react-dnd-html5-backend: ^10.0.0
+    react-dom: ^16.12.0
     react-height: ^3.0.0
     react-keydown: ^1.9.4
     react-motion: ^0.5.0
@@ -4196,10 +4214,8 @@ __metadata:
     typescript: ^4.6.0
     webpack-merge: ^4.2.2
   peerDependencies:
-    "@friendsofreactjs/react-css-themr": ^4.1.0
     prop-types: ^15.5.10
     react: ^16.12.0
-    react-dom: ^16.0.0
   languageName: unknown
   linkType: soft
 
@@ -22925,6 +22941,8 @@ __metadata:
     eslint: ^8.27.0
     eslint-plugin-jest: ^27.1.5
     jest: ^27.0.0
+    postcss-css-variables: ^0.14.0
+    postcss-nested: ^4.2.1
     rimraf: ^2.5.4
     sass: ^1.55.0
     stylelint: ^13.7.2

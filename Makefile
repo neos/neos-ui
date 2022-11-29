@@ -91,11 +91,11 @@ build-react-ui-components-standalone:
 
 ## Runs the development build.
 build:
-	NEOS_BUILD_ROOT=$(shell pwd) node esbuild.js
+	NEOS_BUILD_ROOT=$(shell pwd) yarn node esbuild.js
 
 ## Watches the source files for changes and runs a build in case.
 build-watch:
-	NEOS_BUILD_ROOT=$(shell pwd) node esbuild.js --watch
+	NEOS_BUILD_ROOT=$(shell pwd) yarn node esbuild.js --watch
 
 ## Watches (and polls) the source files on a file share.
 build-watch-poll:
@@ -105,7 +105,7 @@ build-watch-poll:
 ## Runs the production build. And also builds the subpackages for standalone use.
 build-production:
 	$(cross-env) NODE_ENV=production NEOS_BUILD_ROOT=$(shell pwd) \
-		node esbuild.js
+		yarn node esbuild.js
 	make build-subpackages
 
 build-e2e-testing:

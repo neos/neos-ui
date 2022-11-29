@@ -21,6 +21,7 @@
     "typescript": "^4.6.4"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-editor-decoupled": "^16.0.0",
     "@neos-project/neos-ui-backend-connector": "workspace:*",
     "@neos-project/neos-ui-ckeditor5-bindings": "workspace:*",
     "@neos-project/neos-ui-constants": "workspace:*",

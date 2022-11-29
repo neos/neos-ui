@@ -178,7 +178,7 @@ bump-version: called-with-version
 	./Build/createVersionFile.sh
 
 publish-npm: called-with-version
-	yarn workspaces foreach run release
+	yarn workspaces foreach --no-private npm publish --access public
 
 ################################################################################
 # Misc

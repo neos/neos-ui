@@ -7,9 +7,6 @@
   "homepage": "https://github.com/neos/neos-ui/blob/master/packages/debug-reason-for-rendering/README.md",
   "main": "./src/index.js",
   "license": "MIT",
-  "scripts": {
-    "release": "npm publish --access public"
-  },
   "devDependencies": {
     "@neos-project/babel-preset-neos-ui": "workspace:*"
   },

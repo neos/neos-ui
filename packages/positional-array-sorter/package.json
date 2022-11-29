@@ -14,8 +14,7 @@
     "build:watch": "yarn tsc --watch",
     "clean": "rimraf ./lib ./dist",
     "lint": "yarn tsc --noemit && eslint src/**/*.{js,jsx,ts,tsx}",
-    "jest": "NODE_ENV=test jest",
-    "release": "npm publish --access public"
+    "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
     "@neos-project/build-essentials": "workspace:*",

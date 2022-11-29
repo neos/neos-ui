@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-views",
-  "version": "8.2.0-beta7",
+  "version": "8.2.0-beta8",
   "description": "Neos CMS UI Views for use in the inspector.",
   "main": "./src/index.js",
   "private": true,

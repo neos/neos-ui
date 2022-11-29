@@ -5,6 +5,7 @@
 /.circleci export-ignore
 /.github export-ignore
 /.yarn export-ignore
+/.pnp.* export-ignore
 /Build export-ignore
 /Tests export-ignore
 /packages export-ignore

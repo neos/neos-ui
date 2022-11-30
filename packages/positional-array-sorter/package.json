@@ -5,7 +5,7 @@
   "repository": "neos/neos-ui",
   "bugs": "https://github.com/neos/neos-ui/issues",
   "homepage": "https://github.com/neos/neos-ui/blob/master/packages/positional-array-sorter/README.md",
-  "module": "./src/positionalArraySorter.js",
+  "module": "./src/positionalArraySorter.ts",
   "license": "GNU GPLv3",
   "scripts": {
     "test": "yarn jest -w 2 --coverage",

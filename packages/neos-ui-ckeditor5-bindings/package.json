@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-ckeditor5-bindings",
-  "version": "8.2.0-beta8",
+  "version": "8.2.1",
   "description": "Prepare CKEditor5 for the Neos CMS UI",
   "private": true,
   "main": "./src/manifest.js",
@@ -38,6 +38,5 @@
     "react": "^16.12.0",
     "react-redux": "^7.1.3"
   },
-  "license": "GNU GPLv3",
-  "stableVersion": "8.1.4"
+  "license": "GNU GPLv3"
 }

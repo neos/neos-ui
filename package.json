@@ -4,7 +4,7 @@
   "bugs": "https://github.com/neos/neos-ui/issues",
   "homepage": "https://github.com/neos/neos-ui/blob/master/README.md",
   "license": "GNU GPLv3",
-  "version": "8.2.0-beta8",
+  "version": "8.2.1",
   "private": true,
   "resolutions": {
     "moment": "^2.20.1",
@@ -43,6 +43,5 @@
   "workspaces": [
     "packages/*"
   ],
-  "packageManager": "yarn@3.2.0",
-  "stableVersion": "8.1.4"
+  "packageManager": "yarn@3.2.0"
 }

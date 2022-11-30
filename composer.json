@@ -6,7 +6,7 @@
     "GPL-3.0-or-later"
   ],
   "require": {
-    "neos/neos": "^8.1.0 || dev-master",
+    "neos/neos": "^8.2.0",
     "neos/neos-ui-compiled": "self.version"
   },
   "autoload": {

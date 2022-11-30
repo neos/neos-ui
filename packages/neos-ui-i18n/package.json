@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-i18n",
-  "version": "8.2.0-beta8",
+  "version": "8.2.1",
   "description": "I18n utilities and components for Neos CMS UI.",
   "private": true,
   "main": "./src/index.tsx",
@@ -30,6 +30,5 @@
   "license": "GNU GPLv3",
   "jest": {
     "preset": "@neos-project/jest-preset-neos-ui"
-  },
-  "stableVersion": "8.1.4"
+  }
 }

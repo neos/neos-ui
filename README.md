@@ -11,7 +11,7 @@ Release roadmap is [available here](https://www.neos.io/features/release-process
 
 That means:
 * All bugfixes go to the lowest maintained branch
-* All new features go only to the 8.2 branch
+* All new features go only to the 8.3 branch
 * New minor and major releases are made in sync with Neos/Flow. Bugfix releases may be available independantly
 
 ### Currently maintained versions
@@ -19,7 +19,8 @@ That means:
 * NeosCMS version 7.3: branch 7.3
 * NeosCMS version 8.0: branch 8.0
 * NeosCMS version 8.1: branch 8.1
-* latest development happens currently in the 8.2 branch
+* NeosCMS version 8.2: branch 8.2
+* latest development happens currently in the 8.3 branch
 
 #### Releases with just security updates
 
@@ -56,10 +57,10 @@ composer update neos/neos-ui
 
 For trying out the new UI, we recommend you to run the regularily released beta releases.
 However, if you want to stay on bleeding-edge, or want to help out developing, you'll
-need the `8.2.x-dev` release. You can install the latest release using:
+need the `8.3.x-dev` release. You can install the latest release using:
 
 ```
-composer require neos/neos-ui-compiled:8.2.x-dev neos/neos-ui:8.2.x-dev
+composer require neos/neos-ui-compiled:8.3.x-dev neos/neos-ui:8.3.x-dev
 ```
 
 ## Contributing
@@ -136,6 +137,8 @@ git checkout 8.1 && git fetch && git reset --hard origin/8.1 && git merge --no-f
 # review and `git commit`
 git checkout 8.2 && git fetch && git reset --hard origin/8.2 && git merge --no-ff --no-commit origin/8.1
 # review and `git commit`
+git checkout 8.3 && git fetch && git reset --hard origin/8.3 && git merge --no-ff --no-commit origin/8.2
+# review and `git commit`
 ```
 
 #### Development commands
@@ -160,7 +163,7 @@ Use `it.only(() => {})` and `describe.only(() => {})` if you want to run a speci
 
 #### Integration tests
 
-To setup end-to-end tests locally you have got to do the same things described in [CircleCI workflow](https://github.com/neos/neos-ui/blob/8.2/.circleci/config.yml), namely take the [test disribution](https://github.com/neos/neos-ui/blob/8.2/Tests/IntegrationTests/TestDistribution/composer.json) and `composer install` in it, put the right branch into Neos.Neos.Ui folder and run webserver and mysql server with the same config as described in the test distribution's [Settings.yaml](https://github.com/neos/neos-ui/blob/8.2/Tests/IntegrationTests/TestDistribution/Configuration/Settings.yaml) (or adjust it).
+To setup end-to-end tests locally you have got to do the same things described in [CircleCI workflow](https://github.com/neos/neos-ui/blob/8.3/.circleci/config.yml), namely take the [test disribution](https://github.com/neos/neos-ui/blob/8.3/Tests/IntegrationTests/TestDistribution/composer.json) and `composer install` in it, put the right branch into Neos.Neos.Ui folder and run webserver and mysql server with the same config as described in the test distribution's [Settings.yaml](https://github.com/neos/neos-ui/blob/8.3/Tests/IntegrationTests/TestDistribution/Configuration/Settings.yaml) (or adjust it).
 
 For executing the end to end tests on a Mac with catalina or higher you need to permit screen recording. Open 'System Preferences > Security & Privacy > Privacy > Screen Recording' and check 'TestCafe Browser Tools' in the application list.
 

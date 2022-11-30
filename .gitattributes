@@ -1,5 +1,6 @@
 /.yarn/releases/** binary
 /.yarn/plugins/** binary
+/.pnp.cjs binary
 
 # Ignore dev related folders in archives
 /.circleci export-ignore

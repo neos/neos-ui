@@ -43,7 +43,8 @@ aliases:
 jobs:
   checkout:
     docker:
-      - image: cimg/node:16.17-browsers
+      # 16.17 seems to have an issue with yarn pnp https://github.com/cypress-io/cypress/issues/23393
+      - image: cimg/node:16.16-browsers
     environment:
       FLOW_CONTEXT: Production
     steps:

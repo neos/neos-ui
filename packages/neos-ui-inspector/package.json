@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-inspector",
-  "version": "8.2.0-beta8",
+  "version": "8.2.0",
   "description": "Components for integrating views and editors into the Neos CMS UI inspector.",
   "private": true,
   "main": "./src/index.js",
@@ -32,6 +32,5 @@
   "license": "GNU GPLv3",
   "jest": {
     "preset": "@neos-project/jest-preset-neos-ui"
-  },
-  "stableVersion": "8.1.4"
+  }
 }

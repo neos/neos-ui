@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-views",
-  "version": "8.2.0-beta8",
+  "version": "8.2.0",
   "description": "Neos CMS UI Views for use in the inspector.",
   "main": "./src/index.js",
   "private": true,
@@ -39,6 +39,5 @@
   "license": "GNU GPLv3",
   "jest": {
     "preset": "@neos-project/jest-preset-neos-ui"
-  },
-  "stableVersion": "8.1.4"
+  }
 }

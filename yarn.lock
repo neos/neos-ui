@@ -3551,53 +3551,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@neos-project/build-essentials@npm:*":
-  version: 8.1.4
-  resolution: "@neos-project/build-essentials@npm:8.1.4"
-  dependencies:
-    "@ckeditor/ckeditor5-dev-utils": ^12.0.1
-    babel-core: ^6.26.3
-    babel-eslint: ^7.1.1
-    babel-loader: ^7.1.2
-    check-dependencies: ^1.0.1
-    cpx: ^1.3.1
-    cross-env: ^6.0.3
-    css-loader: ^3.4.1
-    eslint: ^5.3.0
-    mini-css-extract-plugin: ^0.5.0
-    postcss-css-variables: ^0.14.0
-    postcss-hexrgba: ^1.0.1
-    postcss-import: ^12.0.1
-    postcss-loader: ^3.0.0
-    postcss-nested: ^4.2.1
-    rimraf: ^2.5.4
-    stylelint: ^13.7.2
-    terser-webpack-plugin: ^2.3.1
-    ts-jest: ^23.10.5
-    ts-loader: ^6.0.0
-    tslib: ^1.9.3
-    tslint: ^5.11.0
-    tslint-config-prettier: ^1.15.0
-    tslint-react: ^3.6.0
-    typescript: ^3.2.2
-    url-loader: ^3.0.0
-    watch: ^1.0.2
-    webpack: ^4.41.5
-    webpack-livereload-plugin: ^2.2.0
-  bin:
-    check-dependencies: node_modules/.bin/check-dependencies
-    cpx: node_modules/.bin/cpx
-    cross-env: node_modules/.bin/cross-env
-    eslint: node_modules/.bin/eslint
-    rimraf: node_modules/.bin/rimraf
-    stylelint: node_modules/.bin/stylelint
-    watch: node_modules/.bin/watch
-    webpack: node_modules/.bin/webpack
-  checksum: b6ff67c63c18b2a8655c8ae3039cdd78c89a3ff4c3dc07eeabd544790bde73c72c2371aa7cf8c317e31d9c058d52ebcf310ede79dbd85b29bc24173adf1e21ce
-  languageName: node
-  linkType: hard
-
-"@neos-project/build-essentials@workspace:*, @neos-project/build-essentials@workspace:packages/build-essentials":
+"@neos-project/build-essentials@*, @neos-project/build-essentials@workspace:*, @neos-project/build-essentials@workspace:packages/build-essentials":
   version: 0.0.0-use.local
   resolution: "@neos-project/build-essentials@workspace:packages/build-essentials"
   dependencies:
@@ -4103,14 +4057,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@neos-project/positional-array-sorter@npm:^8.1.4":
-  version: 8.1.4
-  resolution: "@neos-project/positional-array-sorter@npm:8.1.4"
-  checksum: ce0648805b9f8c5b230b59d56a61774f296186a542079e285c2936d0bce97cfc429e00e8195d2bc00aa7aa17af56db6b0ae635fe4aa079a65473835c31a22c10
-  languageName: node
-  linkType: hard
-
-"@neos-project/positional-array-sorter@workspace:*, @neos-project/positional-array-sorter@workspace:packages/positional-array-sorter":
+"@neos-project/positional-array-sorter@^8.1.4, @neos-project/positional-array-sorter@workspace:*, @neos-project/positional-array-sorter@workspace:packages/positional-array-sorter":
   version: 0.0.0-use.local
   resolution: "@neos-project/positional-array-sorter@workspace:packages/positional-array-sorter"
   dependencies:
@@ -6601,7 +6548,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-code-frame@npm:^6.22.0, babel-code-frame@npm:^6.26.0":
+"babel-code-frame@npm:^6.26.0":
   version: 6.26.0
   resolution: "babel-code-frame@npm:6.26.0"
   dependencies:
@@ -6612,7 +6559,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-core@npm:^6.26.0, babel-core@npm:^6.26.3":
+"babel-core@npm:^6.26.0":
   version: 6.26.3
   resolution: "babel-core@npm:6.26.3"
   dependencies:
@@ -6645,18 +6592,6 @@ __metadata:
   peerDependencies:
     "@babel/core": ^7.0.0-0
   checksum: 2a1cb879019dffb08d17bec36e13c3a6d74c94773f41c1fd8b14de13f149cc34b705b0a1e07b42fcf35917b49d78db6ff0c5c3b00b202a5235013d517b5c6bbb
-  languageName: node
-  linkType: hard
-
-"babel-eslint@npm:^7.1.1":
-  version: 7.2.3
-  resolution: "babel-eslint@npm:7.2.3"
-  dependencies:
-    babel-code-frame: ^6.22.0
-    babel-traverse: ^6.23.1
-    babel-types: ^6.23.0
-    babylon: ^6.17.0
-  checksum: b66fdebe24b553f8667e037d9bc7ad8ae4934d3beee1a8e488c033ca0e582816c0da4bb1405adbf549c6ff07069040e63572585a9333d470e5953d88e5a6bc22
   languageName: node
   linkType: hard
 
@@ -8128,7 +8063,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-traverse@npm:^6.23.1, babel-traverse@npm:^6.24.1, babel-traverse@npm:^6.26.0":
+"babel-traverse@npm:^6.24.1, babel-traverse@npm:^6.26.0":
   version: 6.26.0
   resolution: "babel-traverse@npm:6.26.0"
   dependencies:
@@ -8145,7 +8080,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-types@npm:^6.14.0, babel-types@npm:^6.19.0, babel-types@npm:^6.23.0, babel-types@npm:^6.24.1, babel-types@npm:^6.26.0":
+"babel-types@npm:^6.14.0, babel-types@npm:^6.19.0, babel-types@npm:^6.24.1, babel-types@npm:^6.26.0":
   version: 6.26.0
   resolution: "babel-types@npm:6.26.0"
   dependencies:
@@ -8157,7 +8092,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babylon@npm:^6.17.0, babylon@npm:^6.18.0":
+"babylon@npm:^6.18.0":
   version: 6.18.0
   resolution: "babylon@npm:6.18.0"
   bin:
@@ -25348,13 +25283,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^1.9.3":
-  version: 1.14.1
-  resolution: "tslib@npm:1.14.1"
-  checksum: dbe628ef87f66691d5d2959b3e41b9ca0045c3ee3c7c7b906cc1e328b39f199bb1ad9e671c39025bd56122ac57dfbf7385a94843b1cc07c60a4db74795829acd
-  languageName: node
-  linkType: hard
-
 "tslib@npm:^2.1.0":
   version: 2.4.0
   resolution: "tslib@npm:2.4.0"
@@ -25570,16 +25498,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^3.2.2":
-  version: 3.9.10
-  resolution: "typescript@npm:3.9.10"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 46c842e2cd4797b88b66ef06c9c41dd21da48b95787072ccf39d5f2aa3124361bc4c966aa1c7f709fae0509614d76751455b5231b12dbb72eb97a31369e1ff92
-  languageName: node
-  linkType: hard
-
 "typescript@npm:^4.6.0, typescript@npm:^4.6.4":
   version: 4.6.4
   resolution: "typescript@npm:4.6.4"
@@ -25597,16 +25515,6 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 96d3030cb01143570567cb4f3a616b10df65f658f0e74e853e77a089a6a954e35c800be7db8b9bfe9a1ae05d9c2897e281359f65e4caa1caf266368e1c4febd3
-  languageName: node
-  linkType: hard
-
-"typescript@patch:typescript@^3.2.2#~builtin<compat/typescript>":
-  version: 3.9.10
-  resolution: "typescript@patch:typescript@npm%3A3.9.10#~builtin<compat/typescript>::version=3.9.10&hash=bda367"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: dc7141ab555b23a8650a6787f98845fc11692063d02b75ff49433091b3af2fe3d773650dea18389d7c21f47d620fb3b110ea363dab4ab039417a6ccbbaf96fc2
   languageName: node
   linkType: hard
 

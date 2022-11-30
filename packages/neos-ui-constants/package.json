@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-constants",
-  "version": "8.2.0-beta8",
+  "version": "8.2.0",
   "description": "Container package to store Neos CMS UI constants",
   "private": true,
   "main": "./src/index.js",
@@ -14,6 +14,5 @@
     "@neos-project/jest-preset-neos-ui": "workspace:*",
     "typescript": "^4.6.4"
   },
-  "license": "GNU GPLv3",
-  "stableVersion": "8.1.4"
+  "license": "GNU GPLv3"
 }

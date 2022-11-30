@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/build-essentials",
-  "version": "8.2.0-beta8",
+  "version": "8.2.0",
   "description": "Dependencies for building @neos-project packages",
   "repository": "neos/neos-ui",
   "bugs": "https://github.com/neos/neos-ui/issues",
@@ -62,6 +62,5 @@
     "webpack": "^4.41.5",
     "webpack-livereload-plugin": "^2.2.0"
   },
-  "license": "GNU GPLv3",
-  "stableVersion": "8.1.4"
+  "license": "GNU GPLv3"
 }

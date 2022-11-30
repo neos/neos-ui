@@ -3822,7 +3822,7 @@ __metadata:
     "@neos-project/babel-preset-neos-ui": "workspace:*"
     "@neos-project/build-essentials": "workspace:*"
     "@neos-project/jest-preset-neos-ui": "workspace:*"
-    "@neos-project/positional-array-sorter": ^8.1.4
+    "@neos-project/positional-array-sorter": 8.1.4
     babel-plugin-transform-decorators-legacy: ^1.3.4
     babel-plugin-transform-object-rest-spread: ^6.20.1
     babel-preset-es2015: ^6.13.2
@@ -4057,7 +4057,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@neos-project/positional-array-sorter@^8.1.4, @neos-project/positional-array-sorter@workspace:*, @neos-project/positional-array-sorter@workspace:packages/positional-array-sorter":
+"@neos-project/positional-array-sorter@npm:8.1.4":
+  version: 8.1.4
+  resolution: "@neos-project/positional-array-sorter@npm:8.1.4"
+  checksum: ce0648805b9f8c5b230b59d56a61774f296186a542079e285c2936d0bce97cfc429e00e8195d2bc00aa7aa17af56db6b0ae635fe4aa079a65473835c31a22c10
+  languageName: node
+  linkType: hard
+
+"@neos-project/positional-array-sorter@workspace:*, @neos-project/positional-array-sorter@workspace:packages/positional-array-sorter":
   version: 0.0.0-use.local
   resolution: "@neos-project/positional-array-sorter@workspace:packages/positional-array-sorter"
   dependencies:

@@ -47,8 +47,7 @@
     span {
         display: inline-flex;
         height: inherit;
-        width: -moz-available;
-        width: -webkit-fill-available;
+        width: inherit;
         align-items: center;
     }
 }

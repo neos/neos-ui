@@ -6,7 +6,7 @@
     justify-content: flex-start;
     top: calc(var(--spacing-GoldenUnit) + 1px);
     left: 0;
-    z-index: var(--zIndex-Drawer-Context);
+    z-index: var(--zIndex-Drawer);
     height: calc(100% - calc(var(--spacing-GoldenUnit) + 1px));
     width: var(--size-SidebarWidth);
     background: var(--colors-ContrastDarker);
@@ -43,11 +43,22 @@
     padding: 0;
     text-align: left;
     font-size: 15px;
+
+    span {
+        display: inline-flex;
+        height: inherit;
+        width: -moz-available;
+        width: -webkit-fill-available;
+        align-items: center;
+    }
 }
 /* Set an explicit width for the icons so that the chars are starting */
 /* on the same place for every MenuItem */
+.drawer__menuItem__header {
+    padding-right: calc(var(--spacing-GoldenUnit) - var(--spacing-Full));
+}
 .drawer__menuItemGroupBtn svg,
-.drawer__menuItemBtn svg{
+.drawer__menuItemBtn svg {
     width: 2em !important;
 }
 .drawer__menuItemGroupBtn {

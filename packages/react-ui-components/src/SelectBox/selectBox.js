@@ -59,11 +59,6 @@ export default class SelectBox extends PureComponent {
          */
         onValueChange: PropTypes.func.isRequired,
 
-        /**
-         * This prop gets access to the onClick function for reference editor. It changes the url.
-         */
-        onReferenceClick: PropTypes.func,
-
         // ------------------------------
         // Visual customization of the Select Box
         // ------------------------------
@@ -192,8 +187,7 @@ export default class SelectBox extends PureComponent {
             disabled,
             className,
             DropDown,
-            SelectBox_ListPreview,
-            onReferenceClick
+            SelectBox_ListPreview
         } = this.props;
 
         const searchTerm = this.getSearchTerm();
@@ -219,12 +213,7 @@ export default class SelectBox extends PureComponent {
 
         return (
             <DropDown.Stateless className={theme.selectBox} isOpen={isExpanded} onToggle={this.handleToggleExpanded} onClose={this.handleClose}>
-                <DropDown.Header
-                    className={headerClassName}
-                    shouldKeepFocusState={false}
-                    showDropDownToggle={showDropDownToggle && Boolean(options.length)}
-                    onReferenceClick={onReferenceClick} referenceURL={options[0] && options[0].uri ? options[0].uri : undefined }
-                >
+                <DropDown.Header className={headerClassName} shouldKeepFocusState={false} showDropDownToggle={showDropDownToggle && Boolean(options.length)}>
                     {this.renderHeader()}
                 </DropDown.Header>
                 <DropDown.Contents className={dropDownContentsClassName} scrollable={true}>

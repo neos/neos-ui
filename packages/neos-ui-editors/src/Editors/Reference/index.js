@@ -40,16 +40,8 @@ export default class ReferenceEditor extends PureComponent {
         this.props.commit(value);
     }
 
-    handleClick = src => {
-        const {setActiveContentCanvasSrc} = this.props;
-
-        if (setActiveContentCanvasSrc) {
-            setActiveContentCanvasSrc(src);
-        }
-    }
-
     render() {
-        const {className, value, i18nRegistry, threshold, options, displayLoadingIndicator, onSearchTermChange, onCreateNew, disabled} = this.props;
+        const {className, value, i18nRegistry, threshold, options, displayLoadingIndicator, onSearchTermChange, onCreateNew, disabled, setActiveContentCanvasSrc} = this.props;
 
         return (<SelectBox
             className={className}
@@ -64,7 +56,7 @@ export default class ReferenceEditor extends PureComponent {
             options={sanitizeOptions(options)}
             value={value}
             onValueChange={this.handleValueChange}
-            onReferenceClick={this.handleClick}
+            onReferenceClick={() => value && setActiveContentCanvasSrc(options[0].uri)}
             loadingLabel={i18nRegistry.translate('Neos.Neos:Main:loading')}
             displayLoadingIndicator={displayLoadingIndicator}
             showDropDownToggle={false}

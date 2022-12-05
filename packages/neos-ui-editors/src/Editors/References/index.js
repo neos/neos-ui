@@ -66,7 +66,7 @@ export default class ReferencesEditor extends PureComponent {
             options={sanitizeOptions(options)}
             values={value}
             onValuesChange={this.handleValueChange}
-            onReferenceClick={this.handleClick}
+            onItemClick={this.handleClick}
             displayLoadingIndicator={displayLoadingIndicator}
             showDropDownToggle={false}
             allowEmpty={true}

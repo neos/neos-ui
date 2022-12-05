@@ -120,10 +120,10 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
         const handleRemoveItem = () => onRemoveItem(index);
 
         const handleClick = src => {
-            const {onReferenceClick} = this.props;
+            const {onItemClick} = this.props;
 
-            if (onReferenceClick) {
-                onReferenceClick(src);
+            if (onItemClick) {
+                onItemClick(src);
             }
         };
 

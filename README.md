@@ -2,7 +2,7 @@
 [![CircleCI](https://circleci.com/gh/neos/neos-ui.svg?style=svg)](https://circleci.com/gh/neos/neos-ui) [![Known Vulnerabilities](https://snyk.io/test/github/neos/neos-ui/badge.svg?targetFile=package.json)](https://snyk.io/test/github/neos/neos-ui?targetFile=package.json)
 [![Slack](http://slack.neos.io/badge.svg)](http://slack.neos.io) [![Forum](https://img.shields.io/badge/forum-Discourse-39c6ff.svg)](https://discuss.neos.io/) [![Twitter](https://img.shields.io/twitter/follow/neoscms.svg?style=social)](https://twitter.com/NeosCMS)
 
-> The next generation Neos CMS interface written in ReactJS and a ton of other fun technology.
+> The Neos CMS interface written in ReactJS and a ton of other fun technology.
 
 ## Versioning
 
@@ -11,7 +11,7 @@ Release roadmap is [available here](https://www.neos.io/features/release-process
 
 That means:
 * All bugfixes go to the lowest maintained branch
-* All new features go only to master
+* All new features go only to the 8.3 branch
 * New minor and major releases are made in sync with Neos/Flow. Bugfix releases may be available independantly
 
 ### Currently maintained versions
@@ -19,7 +19,8 @@ That means:
 * NeosCMS version 7.3: branch 7.3
 * NeosCMS version 8.0: branch 8.0
 * NeosCMS version 8.1: branch 8.1
-* latest development happens in master
+* NeosCMS version 8.2: branch 8.2
+* latest development happens currently in the 8.3 branch
 
 #### Releases with just security updates
 
@@ -36,25 +37,15 @@ If you discover bugs in any of the supported browsers, please [report them](http
 
 ## Features
 
-* Better editing experience for responsive websites.
-* Faster load times for the backend.
-* No reload constraint for the correct stylesheets on multi-site systems.
-* Updated Font-Awesome to v5.0 (old icon names are migrated on the fly).
-
+* Blazingly fast Yarn 3 + ESbuild stack
+* https://www.neos.io/features/editing-content.html
+* https://www.neos.io/features/inline-editing-true-wysiwyg.html
 
 ## Installation and usage
 
-The new UI is [already included](https://github.com/neos/neos-base-distribution/blob/3.3/composer.json#L24) in the base Neos distribution. If you don't have it installed yet, follow these steps:
+The UI is [already included](https://github.com/neos/neos-base-distribution/blob/3.3/composer.json#L24) in the base Neos distribution.
+And on Packagist available via: `neos/neos-ui`
 
-1. You need to have Neos CMS 3.3 or newer up & running.
-
-2. Run the following command:
-
-```
-composer require neos/neos-ui
-```
-
-3. Now you are all set up and you can login to the new interface as usual via `/neos` route.
 
 ### Updating
 
@@ -62,14 +53,14 @@ composer require neos/neos-ui
 composer update neos/neos-ui
 ```
 
-### Installing dev-master
+### Installing latest development
 
 For trying out the new UI, we recommend you to run the regularily released beta releases.
 However, if you want to stay on bleeding-edge, or want to help out developing, you'll
-need the `dev-master` release. You can install the master release using:
+need the `8.3.x-dev` release. You can install the latest release using:
 
 ```
-composer require neos/neos-ui-compiled:dev-master neos/neos-ui:dev-master
+composer require neos/neos-ui-compiled:8.3.x-dev neos/neos-ui:8.3.x-dev
 ```
 
 ## Contributing
@@ -144,7 +135,9 @@ git checkout 8.0 && git fetch && git reset --hard origin/8.0 && git merge --no-f
 # review and `git commit`
 git checkout 8.1 && git fetch && git reset --hard origin/8.1 && git merge --no-ff --no-commit origin/8.0
 # review and `git commit`
-git checkout master && git fetch && git reset --hard origin/master && git merge --no-ff --no-commit origin/8.1
+git checkout 8.2 && git fetch && git reset --hard origin/8.2 && git merge --no-ff --no-commit origin/8.1
+# review and `git commit`
+git checkout 8.3 && git fetch && git reset --hard origin/8.3 && git merge --no-ff --no-commit origin/8.2
 # review and `git commit`
 ```
 
@@ -154,32 +147,11 @@ git checkout master && git fetch && git reset --hard origin/master && git merge 
 | `make clean` | delete all node_modules in every subdirectory. |
 | `make build` |  Runs the development build. |
 | `make build-watch` | Watches the source files for changes and runs a build in case. |
-| `make build-watch-poll` | Watches (and polls) the source files on a file share. Should preferably be used when working an a VM for example. |
-| `make storybook` | Starts the storybook server on port 9001. |
 | `make lint`  | Executes `make lint-js` and `make lint-editorconfig`. |
 | `make lint-js`  | Runs test in all subpackages. |
 | `make lint-editorconfig`  | Tests if all files respect the `.editorconfig`. |
 | `make test`  | Executes the test on all source files. |
 | `make test-e2e`  | Executes integration tests. |
-
-##### Custom webpack live reload options
-
-If you are developing inside a virtual machine and you are running the
-watch command on your local system it is may be needed for you to adjust
-the live reload optons.
-
-This can be done by putting an `.webpack.livereload.local.js` inside the
-repository root.
-
-An example file would look like this:
-
-```javascript
-module.exports = {
-    protocol: 'http',
-    port: '123',
-    hostname: 'localhost'
-};
-```
 
 #### Writing unit tests
 The unit tests are executed with [jest](https://facebook.github.io/jest/).
@@ -191,7 +163,7 @@ Use `it.only(() => {})` and `describe.only(() => {})` if you want to run a speci
 
 #### Integration tests
 
-To setup end-to-end tests locally you have got to do the same things described in [CircleCI workflow](https://github.com/neos/neos-ui/blob/master/.circleci/config.yml), namely take the [test disribution](https://github.com/neos/neos-ui/blob/master/Tests/IntegrationTests/TestDistribution/composer.json) and `composer install` in it, put the right branch into Neos.Neos.Ui folder and run webserver and mysql server with the same config as described in the test distribution's [Settings.yaml](https://github.com/neos/neos-ui/blob/master/Tests/IntegrationTests/TestDistribution/Configuration/Settings.yaml) (or adjust it).
+To setup end-to-end tests locally you have got to do the same things described in [CircleCI workflow](https://github.com/neos/neos-ui/blob/8.3/.circleci/config.yml), namely take the [test disribution](https://github.com/neos/neos-ui/blob/8.3/Tests/IntegrationTests/TestDistribution/composer.json) and `composer install` in it, put the right branch into Neos.Neos.Ui folder and run webserver and mysql server with the same config as described in the test distribution's [Settings.yaml](https://github.com/neos/neos-ui/blob/8.3/Tests/IntegrationTests/TestDistribution/Configuration/Settings.yaml) (or adjust it).
 
 For executing the end to end tests on a Mac with catalina or higher you need to permit screen recording. Open 'System Preferences > Security & Privacy > Privacy > Screen Recording' and check 'TestCafe Browser Tools' in the application list.
 

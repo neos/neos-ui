@@ -1,8 +1,0 @@
-.heading {
-    composes: reset from './../reset.css';
-    font-size: var(--fontSize-Base);
-    text-rendering: optimizelegibility;
-}
-.heading--h1 {
-    font-size: 16px;
-}

@@ -322,6 +322,60 @@
                 <source>Unfocus Node</source>
         <target xml:lang="vi" state="needs-translation">Unfocus Node</target>
       </trans-unit>
+      <trans-unit id="UI.RightSideBar.tabs.validationErrorTooltip[0]" xml:space="preserve">
+                    <source>{tabName} – {amountOfErrors} validation issue</source>
+      </trans-unit>
+      <trans-unit id="UI.RightSideBar.tabs.validationErrorTooltip[1]" xml:space="preserve">
+                    <source>{tabName} – {amountOfErrors} validation issues</source>
+      </trans-unit>
+      <trans-unit id="changesApplied[0]" xml:space="preserve">
+                    <source>{0} change successfully applied.</source>
+      </trans-unit>
+      <trans-unit id="changesApplied[1]" xml:space="preserve">
+                    <source>{0} changes successfully applied.</source>
+      </trans-unit>
+      <trans-unit id="changesPublished[0]" xml:space="preserve">
+                    <source>Published {0} change to "{1}".</source>
+      </trans-unit>
+      <trans-unit id="changesPublished[1]" xml:space="preserve">
+                    <source>Published {0} changes to "{1}".</source>
+      </trans-unit>
+      <trans-unit id="changesDiscarded[0]" xml:space="preserve">
+                    <source>Discarded {0} change.</source>
+      </trans-unit>
+      <trans-unit id="changesDiscarded[1]" xml:space="preserve">
+                    <source>Discarded {0} changes.</source>
+      </trans-unit>
+      <trans-unit id="syncUriPathSegment" xml:space="preserve">
+                <source>Syncronize with the title property</source>
+      </trans-unit>
+      <trans-unit id="nodes" xml:space="preserve">
+                <source>nodes</source>
+      </trans-unit>
+      <trans-unit id="contentElementsSelected" xml:space="preserve">
+                <source>content elements selected</source>
+      </trans-unit>
+      <trans-unit id="documentsSelected" xml:space="preserve">
+                <source>documents selected</source>
+      </trans-unit>
+      <trans-unit id="inspectorMutlipleContentNodesSelectedTooltip" xml:space="preserve">
+                <source>Select a single document in order to be able to edit its properties</source>
+      </trans-unit>
+      <trans-unit id="inspectorMutlipleDocumentNodesSelectedTooltip" xml:space="preserve">
+                <source>Select a single content element in order to be able to edit its properties</source>
+      </trans-unit>
+      <trans-unit id="deleteXNodes" xml:space="preserve">
+                <source>Delete {amount} nodes</source>
+      </trans-unit>
+      <trans-unit id="rangeEditorMinimum" xml:space="preserve">
+                <source>Minimum</source>
+      </trans-unit>
+      <trans-unit id="rangeEditorMaximum" xml:space="preserve">
+                <source>Maximum</source>
+      </trans-unit>
+      <trans-unit id="rangeEditorCurrentValue" xml:space="preserve">
+                <source>Current value</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

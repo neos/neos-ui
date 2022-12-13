@@ -157,7 +157,7 @@ export default ckEditorRegistry => {
         commandArgs: [{
             value: 'paragraph'
         }],
-        label: 'Paragraph',
+        label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__style__p',
         isVisible: $get('formatting.p'),
         isActive: formattingUnderCursor => !$get('heading', formattingUnderCursor)
     });
@@ -168,7 +168,7 @@ export default ckEditorRegistry => {
         commandArgs: [{
             value: 'heading1'
         }],
-        label: 'Headline 1',
+        label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__style__h1',
         isVisible: $get('formatting.h1'),
         isActive: formattingUnderCursor => $get('heading', formattingUnderCursor) === 'heading1'
     });
@@ -179,7 +179,7 @@ export default ckEditorRegistry => {
         commandArgs: [{
             value: 'heading2'
         }],
-        label: 'Headline 2',
+        label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__style__h2',
         isVisible: $get('formatting.h2'),
         isActive: formattingUnderCursor => $get('heading', formattingUnderCursor) === 'heading2'
     });
@@ -190,7 +190,7 @@ export default ckEditorRegistry => {
         commandArgs: [{
             value: 'heading3'
         }],
-        label: 'Headline 3',
+        label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__style__h3',
         isVisible: $get('formatting.h3'),
         isActive: formattingUnderCursor => $get('heading', formattingUnderCursor) === 'heading3'
     });
@@ -201,7 +201,7 @@ export default ckEditorRegistry => {
         commandArgs: [{
             value: 'heading4'
         }],
-        label: 'Headline 4',
+        label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__style__h4',
         isVisible: $get('formatting.h4'),
         isActive: formattingUnderCursor => $get('heading', formattingUnderCursor) === 'heading4'
     });
@@ -212,7 +212,7 @@ export default ckEditorRegistry => {
         commandArgs: [{
             value: 'heading5'
         }],
-        label: 'Headline 5',
+        label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__style__h5',
         isVisible: $get('formatting.h5'),
         isActive: formattingUnderCursor => $get('heading', formattingUnderCursor) === 'heading5'
     });
@@ -223,7 +223,7 @@ export default ckEditorRegistry => {
         commandArgs: [{
             value: 'heading6'
         }],
-        label: 'Headline 6',
+        label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__style__h6',
         isVisible: $get('formatting.h6'),
         isActive: formattingUnderCursor => $get('heading', formattingUnderCursor) === 'heading6'
     });
@@ -234,7 +234,7 @@ export default ckEditorRegistry => {
         commandArgs: [{
             value: 'pre'
         }],
-        label: 'Preformatted',
+        label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__style__pre',
         isVisible: $get('formatting.pre'),
         isActive: formattingUnderCursor => $get('heading', formattingUnderCursor) === 'pre'
     });

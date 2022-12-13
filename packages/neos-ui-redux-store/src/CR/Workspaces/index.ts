@@ -68,7 +68,7 @@ const abortDiscard = () => createAction(actionTypes.DISCARD_ABORTED);
 /**
  * Confirm the ongoing discard
  */
-const confirmDiscard = () =>  createAction(actionTypes.DISCARD_CONFIRMED);
+const confirmDiscard = () => createAction(actionTypes.DISCARD_CONFIRMED);
 
 /**
  * Change base workspace

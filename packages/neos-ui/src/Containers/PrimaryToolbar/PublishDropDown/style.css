@@ -46,6 +46,35 @@
     margin-right: 5px;
 }
 
+/**
+PLEASE NOTE: this absolute positioning is a fix, because react checkboxes inside a react select component are buggy,
+for further information see https://github.com/neos/neos-ui/pull/3211
+ */
+.dropdownOptionCheckbox__label {
+    position: absolute;
+    top: 0;
+    left: 45px;
+}
+
+.dropdownOptionCheckbox {
+    position: relative;
+    min-height: 40px;
+}
+
+.dropdownOptionCheckbox__input {
+    width: 100%;
+    padding-top: 10px;
+}
+
+.dropdownOptionCheckbox__input > input {
+    width: 100%;
+}
+
+.dropdownOptionCheckbox__input > svg {
+    left: 10px;
+    top: 20px;
+}
+
 .dropDown__item {
     position: relative;
     border-top: 1px solid var(--colors-ContrastDarker);
@@ -59,14 +88,14 @@
         }
     }
 
-    > label {
-        margin-bottom: 0;
+    > a,
+    > button {
+        display: block;
     }
 
     > a,
     > label,
     > button {
-        display: block;
         width: 100%;
         border: 0;
         padding: 0 var(--spacing-Full);
@@ -80,6 +109,11 @@
         > input {
             margin-right: .5em;
         }
+    }
+
+    > label {
+        margin-bottom: 0;
+        align-items: center;
     }
 
     .badge {

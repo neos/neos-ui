@@ -48,10 +48,11 @@ export function * watchSelectPreset() {
 export function * watchSetActive() {
     let previousActiveDimensions = yield select(selectors.CR.ContentDimensions.active);
     yield takeEvery(actionTypes.CR.ContentDimensions.SET_ACTIVE, function * () {
-        const activeDimensions = yield select(selectors.CR.ContentDimensions.active);
+        const activeDimensions = (yield select(selectors.CR.ContentDimensions.active));
         if (previousActiveDimensions && JSON.stringify(activeDimensions) !== JSON.stringify(previousActiveDimensions)) {
             yield put(actions.CR.Nodes.reloadState({merge: true}));
         }
+        // eslint-disable-next-line require-atomic-updates
         previousActiveDimensions = activeDimensions;
     });
 }

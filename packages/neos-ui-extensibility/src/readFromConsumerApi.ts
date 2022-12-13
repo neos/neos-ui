@@ -4,6 +4,6 @@ export default function readFromConsumerApi(key: string): (...args: any[]) => an
             return (window as any)['@Neos:HostPluginAPI'][`@${key}`](...args);
         }
 
-        throw new Error("You are trying to read from a consumer api that hasn't been initialized yet!");
+        throw new Error('You are trying to read from a consumer api that hasn\'t been initialized yet!');
     };
 }

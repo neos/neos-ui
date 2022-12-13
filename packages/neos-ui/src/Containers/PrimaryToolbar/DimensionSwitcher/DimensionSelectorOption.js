@@ -16,6 +16,7 @@ export default class DimensionSelectorOption extends PureComponent {
         const {option} = this.props;
 
         return (
+            // eslint-disable-next-line camelcase
             <SelectBox_Option_SingleLine
                 {...this.props}
                 className={option.disallowed ? style.dimmed : ''}

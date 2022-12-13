@@ -49,8 +49,8 @@ Root.propTypes = {
                     label: PropTypes.string.isRequired,
                     uri: PropTypes.string,
                     target: PropTypes.string,
-                    isActive: PropTypes.bool.isReqired,
-                    skipI18n: PropTypes.bool.isReqired
+                    isActive: PropTypes.bool.isRequired,
+                    skipI18n: PropTypes.bool.isRequired
                 })
             )
         })

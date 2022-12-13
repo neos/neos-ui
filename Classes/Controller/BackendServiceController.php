@@ -53,6 +53,7 @@ use Neos\Neos\Ui\Service\NodePolicyService;
 use Neos\Neos\Ui\Domain\Service\NodeTreeBuilder;
 use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 use Neos\Neos\Ui\Fusion\Helper\WorkspaceHelper;
+use Neos\Neos\Utility\NodeUriPathSegmentGenerator;
 
 class BackendServiceController extends ActionController
 {
@@ -149,6 +150,12 @@ class BackendServiceController extends ActionController
      * @var Translator
      */
     protected $translator;
+
+    /**
+     * @Flow\Inject
+     * @var NodeUriPathSegmentGenerator
+     */
+    protected $nodeUriPathSegmentGenerator;
 
     /**
      * Set the controller context on the feedback collection after the controller
@@ -499,7 +506,9 @@ class BackendServiceController extends ActionController
         $presetCombo = [];
         foreach ($targetPresets as $dimensionName => $presetConfig) {
             $fullPresetConfig = $this->contentDimensionsPresetSource->findPresetByDimensionValues($dimensionName, $presetConfig['values']);
-            $presetCombo[$dimensionName] = $fullPresetConfig['identifier'];
+            if ($fullPresetConfig !== null) {
+                $presetCombo[$dimensionName] = $fullPresetConfig['identifier'];
+            }
         }
         return $presetCombo;
     }
@@ -542,5 +551,16 @@ class BackendServiceController extends ActionController
         }
 
         return json_encode($result);
+    }
+
+    /**
+     * Generates a new uri path segment for the given node and title
+     *
+     * @throws \Neos\Neos\Exception
+     */
+    public function generateUriPathSegmentAction(NodeInterface $contextNode, string $text): void
+    {
+        $slug = $this->nodeUriPathSegmentGenerator->generateUriPathSegment($contextNode, $text);
+        $this->view->assign('value', $slug);
     }
 }

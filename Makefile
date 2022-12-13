@@ -39,12 +39,10 @@
 ################################################################################
 
 
-# Add lerna alias as there are currently some MacOS problems
+# Add alias as there are currently some MacOS problems
 # and putting it into the $PATH is simply not enough
 editorconfigChecker = ./node_modules/.bin/editorconfig-checker
-webpack = ./node_modules/.bin/webpack
 crossenv = ./node_modules/.bin/crossenv
-
 # Define colors
 GREEN  := $(shell tput -Txterm setaf 2)
 YELLOW := $(shell tput -Txterm setaf 3)
@@ -79,6 +77,7 @@ setup: check-requirements install build ## Run a clean setup
 
 
 # TODO: figure out how to pass a parameter to other targets to reduce redundancy
+# Builds the subpackages for standalone use.
 build-subpackages:
 	yarn workspaces foreach --parallel --topological-dev run build
 	make build-react-ui-components-standalone
@@ -92,25 +91,26 @@ build-react-ui-components-standalone:
 
 ## Runs the development build.
 build:
-	make build-subpackages
-	NEOS_BUILD_ROOT=$(shell pwd) $(webpack) --progress --color
+	NEOS_BUILD_ROOT=$(shell pwd) node esbuild.js
 
 ## Watches the source files for changes and runs a build in case.
 build-watch:
-	NEOS_BUILD_ROOT=$(shell pwd) $(webpack) --progress --color --watch
+	NEOS_BUILD_ROOT=$(shell pwd) node esbuild.js --watch
 
 ## Watches (and polls) the source files on a file share.
 build-watch-poll:
-	NEOS_BUILD_ROOT=$(shell pwd) $(webpack) \
-		--progress --color --watch-poll --watch
+	echo "not implemented in esbuild, yet! PR Welcome!"
 
 # clean anything before building for production just to be sure
-## Runs the production build.
+## Runs the production build. And also builds the subpackages for standalone use.
 build-production:
-	make build-subpackages
 	$(cross-env) NODE_ENV=production NEOS_BUILD_ROOT=$(shell pwd) \
-		$(webpack) --color
+		node esbuild.js
+	make build-subpackages
 
+build-e2e-testing:
+	$(cross-env) NODE_ENV=production NEOS_BUILD_ROOT=$(shell pwd) \
+		node esbuild.js --e2e-testing
 
 ################################################################################
 # Code Quality
@@ -125,6 +125,9 @@ storybook:
 
 ## Executes the unit test on all source files.
 test:
+	yarn workspaces foreach run test
+
+test-parallel:
 	yarn workspaces foreach --parallel run test
 
 ## Executes integration tests on saucelabs.
@@ -137,13 +140,18 @@ test-e2e:
 
 ## Executes integration tests locally in a docker-compose setup.
 test-e2e-docker:
-	@bash Tests/IntegrationTests/e2e-docker.sh $(or $(browser),chromium)
+	@bash Tests/IntegrationTests/e2e-docker.sh $(or $(browser),chrome)
 
 ## Executes make lint-js and make lint-editorconfig.
 lint: lint-js lint-editorconfig
 
-## Runs lint test in all subpackages via lerna.
+lint-parallel: lint-js-parallel lint-editorconfig
+
+## Runs lint test in all subpackages
 lint-js:
+	yarn workspaces foreach run lint
+
+lint-js-parallel:
 	yarn workspaces foreach --parallel run lint
 
 ## Tests if all files respect the .editorconfig.
@@ -161,19 +169,16 @@ called-with-version:
 ifeq ($(VERSION),)
 	@echo No version information given.
 	@echo Please run this command like this:
-	@echo VERSION=1.0.0 make release
+	@echo VERSION=1.0.0 make bump-version
 	@false
 endif
 
 bump-version: called-with-version
-	yarn workspaces foreach run publish \
-		--skip-git --exact --repo-version=$(VERSION) \
-		--yes --force-publish --skip-npm
+	./Build/bumpVersion.sh
 	./Build/createVersionFile.sh
 
 publish-npm: called-with-version
-	yarn workspaces foreach run publish --skip-git --exact --repo-version=$(VERSION) \
-		--yes --force-publish
+	yarn workspaces foreach --no-private npm publish --access public
 
 ################################################################################
 # Misc

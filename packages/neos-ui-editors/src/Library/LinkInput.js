@@ -65,6 +65,7 @@ export default class LinkInput extends PureComponent {
         onLinkRelChange: PropTypes.func,
         onLinkTargetChange: PropTypes.func,
         onLinkTitleChange: PropTypes.func,
+        onLinkDownloadChange: PropTypes.func,
 
         linkLookupDataLoader: PropTypes.shape({
             resolveValue: PropTypes.func.isRequired,

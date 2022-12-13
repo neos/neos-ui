@@ -1,0 +1,18 @@
+
+fixes https://github.com/scniro/react-codemirror2/pull/260#issuecomment-1023202972
+this bug has been fixed and merged to the source code of react-codemirror2,
+but the maintainers said that they won't release it, because they are not using the project anymore.
+
+diff --git a/index.js b/index.js
+index d109de477e2b4afa44836ac8da63e75542743919..823a6b014ad15b895dcaf69f88b81f6c575320bd 100644
+--- a/index.js
++++ b/index.js
+@@ -63,7 +63,7 @@ exports.UnControlled = exports.Controlled = void 0;
+ 
+ var React = require('react');
+ 
+-var SERVER_RENDERED = typeof navigator === 'undefined' || global['PREVENT_CODEMIRROR_RENDER'] === true;
++var SERVER_RENDERED = false;
+ var cm;
+ 
+ if (!SERVER_RENDERED) {

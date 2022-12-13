@@ -1,28 +1,10 @@
 .contentCanvas {
-    position: relative;
-    float: left;
+    grid-area: content;
     height: 100%;
     width: 100%;
-    padding: 82px var(--size-SidebarWidth) 0;
-    transition: var(--transition-Default)  ease padding;
-    will-change: padding;
     background-color: var(--colors-ContrastDarker);
-
-    &::after {
-        content: '';
-        position: absolute;
-    }
 }
 
-.contentCanvas--isFringeLeft {
-    padding-left: 0;
-}
-.contentCanvas--isFringeRight {
-    padding-right: 0;
-}
-.contentCanvas--isFullScreen {
-    padding: var(--spacing-GoldenUnit) 0 0 0;
-}
 .contentCanvas--isHidden {
     &::after {
         top: 0;

@@ -22,7 +22,6 @@ export const defaultState: State = {
     valuesByNodePath: {}
 };
 
-
 //
 // Export the action types
 //

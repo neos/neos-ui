@@ -69,5 +69,5 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
 
 export const selectors = {
     isOpen: (state: GlobalState) => $get(['ui', 'nodeVariantCreationDialog', 'isOpen'], state),
-    numberOfParentNodesToBeCreated: (state: GlobalState) => $get(['ui', 'nodeVariantCreationDialog', 'numberOfParentNodesToBeCreated'], state),
+    numberOfParentNodesToBeCreated: (state: GlobalState) => $get(['ui', 'nodeVariantCreationDialog', 'numberOfParentNodesToBeCreated'], state)
 };

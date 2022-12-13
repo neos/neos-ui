@@ -1,50 +1,41 @@
 .rightSideBar {
-    padding-top: 41px;
+    grid-area: rightSidebar;
+    min-width: 320px;
+    max-width: 50vw;
     padding-bottom: 41px;
-    transition: var(--transition-Default)  ease transform;
-    background: var(--colors-ContrastDarkest);
-
-    &:before,
-    &:after {
-        content: '';
-        display: table;
-    }
-    &:after {
-        clear: both;
-    }
-
-    @media(max-width: 576px) {
-        width: 100%;
-    }
+    right: unset;
+    position: relative;
+    background-color: var(--colors-ContrastDarkest);
 }
 .rightSideBar--isHidden {
-    transform: translateX(var(--size-SidebarWidth));
-
-    @media(max-width: 576px) {
-        transform: translateX(576px);
-    }
+    width: 0;
 }
+.rightSideBar--isHidden > div {
+    display: none;
+}
+
 .rightSideBar__toggleBtn {
     width: 46px;
     position: absolute!important;
     right: 0;
-    top: 41px;
+    top: 0;
     border: none;
     background: var(--colors-ContrastDarkest);
-    transition: var(--transition-Default)  ease transform;
-    will-change: transform;
 
     .rightSideBar--isHidden & {
-        transform: translateX(-var(--size-SidebarWidth));
-
-        @media(max-width: 576px) {
-            transform: translateX(-576px);
-        }
+        right: 100%;
     }
 }
+
+.rightSideBar__components {
+    background: var(--colors-ContrastDarkest);
+    height: 100%;
+}
+
 .rightSideBar__section {
     border-bottom: 1px solid var(--colors-ContrastDark);
 }
+
 .rightSideBar__header {
     background: var(--colors-ContrastDarkest);
     margin-left: var(--spacing-Quarter);

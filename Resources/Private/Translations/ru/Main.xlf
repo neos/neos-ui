@@ -1,357 +1,393 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-    <file original="" product-name="Neos.Neos.Ui" source-language="en" datatype="plaintext" target-language="ru">
-        <body>
-            <trans-unit id="copy__from__to--title" xml:space="preserve" approved="yes">
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file original="" product-name="Neos.Neos.Ui" source-language="en" datatype="plaintext" target-language="ru">
+    <body>
+      <trans-unit id="copy__from__to--title" xml:space="preserve" approved="no">
                 <source>Copy {source} to {target}</source>
-                <target xml:lang="ru">Скопировать {source} в {target}</target>
-            </trans-unit>
-            <trans-unit id="move__from__to--title" xml:space="preserve" approved="yes">
+        <target xml:lang="ru" state="translated">Скопировать {source} в {target}</target>
+      </trans-unit>
+      <trans-unit id="move__from__to--title" xml:space="preserve" approved="no">
                 <source>Move {source} to {target}</source>
-                <target xml:lang="ru">Переместить {source} на {target}</target>
-            </trans-unit>
-            <trans-unit id="copy__from__to--description" xml:space="preserve" approved="yes">
+        <target xml:lang="ru" state="translated">Переместить {source} на {target}</target>
+      </trans-unit>
+      <trans-unit id="copy__from__to--description" xml:space="preserve" approved="no">
                 <source>Please select the position at which you want {source} inserted relative to {target}.</source>
-                <target xml:lang="ru">Пожалуйста, выберите позицию вставки {source} относительно к {target}.</target>
-            </trans-unit>
-            <trans-unit id="insert" xml:space="preserve" approved="yes">
+        <target xml:lang="ru" state="translated">Пожалуйста, выберите позицию вставки {source} относительно к {target}.</target>
+      </trans-unit>
+      <trans-unit id="insert" xml:space="preserve" approved="no">
                 <source>Insert</source>
-                <target xml:lang="ru">Вставить</target>
-            </trans-unit>
-            <trans-unit id="insertMode" xml:space="preserve" approved="yes">
+        <target xml:lang="ru" state="translated">Вставить</target>
+      </trans-unit>
+      <trans-unit id="insertMode" xml:space="preserve" approved="no">
                 <source>Insert mode</source>
-                <target xml:lang="ru">Режим вставки</target>
-            </trans-unit>
-            <trans-unit id="imageCropper__aspect-ratio-placeholder" xml:space="preserve" approved="yes">
+        <target xml:lang="ru" state="translated">Режим вставки</target>
+      </trans-unit>
+      <trans-unit id="imageCropper__aspect-ratio-placeholder" xml:space="preserve" approved="no">
                 <source>Choose an Aspect Ratio</source>
-                <target xml:lang="ru">Выберите соотношение сторон</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__bold" xml:space="preserve" approved="yes">
+        <target xml:lang="ru" state="translated">Выберите соотношение сторон</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__bold" xml:space="preserve" approved="no">
                 <source>Bold</source>
-                <target xml:lang="ru">Жирный</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__italic" xml:space="preserve" approved="yes">
+        <target xml:lang="ru" state="translated">Жирный</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__italic" xml:space="preserve" approved="no">
                 <source>Italic</source>
-                <target xml:lang="ru">Курсив</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__underline" xml:space="preserve" approved="yes">
+        <target xml:lang="ru" state="translated">Курсив</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__underline" xml:space="preserve" approved="no">
                 <source>Underline</source>
-                <target xml:lang="ru">Подчёркнутый</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__subscript" xml:space="preserve" approved="yes">
+        <target xml:lang="ru" state="translated">Подчёркнутый</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__subscript" xml:space="preserve" approved="no">
                 <source>Subscript</source>
-                <target xml:lang="ru">Подстрочный</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__superscript" xml:space="preserve" approved="yes">
+        <target xml:lang="ru" state="translated">Подстрочный</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__superscript" xml:space="preserve" approved="no">
                 <source>Superscript</source>
-                <target xml:lang="ru">Верхний индекс</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__strikethrough" xml:space="preserve" approved="yes">
+        <target xml:lang="ru" state="translated">Верхний индекс</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__strikethrough" xml:space="preserve" approved="no">
                 <source>Strikethrough</source>
-                <target xml:lang="ru">Зачеркнутый</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__link" xml:space="preserve" approved="yes">
+        <target xml:lang="ru" state="translated">Зачеркнутый</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__link" xml:space="preserve" approved="no">
                 <source>Link</source>
-                <target xml:lang="ru">Ссылка</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__unlink" xml:space="preserve">
+        <target xml:lang="ru" state="translated">Ссылка</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__unlink" xml:space="preserve">
                 <source>Unlink</source>
-                <target xml:lang="ru" state="needs-translation">Unlink</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__link__hideOptions" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">Unlink</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__link__hideOptions" xml:space="preserve">
                 <source>Hide link options</source>
-                <target xml:lang="ru" state="needs-translation">Hide link options</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__link__showOptions" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">Hide link options</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__link__showOptions" xml:space="preserve">
                 <source>Link options</source>
-                <target xml:lang="ru" state="needs-translation">Link options</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__link__noFollow" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">Link options</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__link__noFollow" xml:space="preserve">
                 <source>No follow</source>
-                <target xml:lang="ru" state="needs-translation">No follow</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__link__targetBlank" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">No follow</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__link__targetBlank" xml:space="preserve">
                 <source>Open in new window</source>
-                <target xml:lang="ru" state="needs-translation">Open in new window</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__link__titlePlaceholder" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">Open in new window</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__link__titlePlaceholder" xml:space="preserve">
                 <source>Enter link title</source>
-                <target xml:lang="ru" state="needs-translation">Enter link title</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__link__title" xml:space="preserve" approved="yes">
+        <target xml:lang="ru" state="needs-translation">Enter link title</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__link__title" xml:space="preserve" approved="no">
                 <source>Title</source>
-                <target xml:lang="ru">Название</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__link__anchorPlaceholder" xml:space="preserve">
+        <target xml:lang="ru" state="translated">Название</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__link__anchorPlaceholder" xml:space="preserve">
                 <source>Enter anchor name</source>
-                <target xml:lang="ru" state="needs-translation">Enter anchor name</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__link__anchor" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">Enter anchor name</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__link__anchor" xml:space="preserve">
                 <source>Link to anchor</source>
-                <target xml:lang="ru" state="needs-translation">Link to anchor</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__link__edit" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">Link to anchor</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__link__edit" xml:space="preserve">
                 <source>Edit link</source>
-                <target xml:lang="ru" state="needs-translation">Edit link</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__link__apply" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">Edit link</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__link__apply" xml:space="preserve">
                 <source>Apply link</source>
-                <target xml:lang="ru" state="needs-translation">Apply link</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__link__placeholder" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">Apply link</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__link__placeholder" xml:space="preserve">
                 <source>Paste a link, or search</source>
-                <target xml:lang="ru" state="needs-translation">Paste a link, or search</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__link__formatAsHttp" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">Paste a link, or search</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__link__formatAsHttp" xml:space="preserve">
                 <source>Format as http link?</source>
-                <target xml:lang="ru" state="needs-translation">Format as http link?</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__link__formatAsEmail" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">Format as http link?</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__link__formatAsEmail" xml:space="preserve">
                 <source>Format as email?</source>
-                <target xml:lang="ru" state="needs-translation">Format as email?</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__ordered-list" xml:space="preserve" approved="yes">
+        <target xml:lang="ru" state="needs-translation">Format as email?</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__ordered-list" xml:space="preserve" approved="no">
                 <source>Ordered list</source>
-                <target xml:lang="ru">Нумерованный список</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__unordered-list" xml:space="preserve" approved="yes">
+        <target xml:lang="ru" state="translated">Нумерованный список</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__unordered-list" xml:space="preserve" approved="no">
                 <source>Unordered list</source>
-                <target xml:lang="ru">Ненумерованный список</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__align-left" xml:space="preserve" approved="yes">
+        <target xml:lang="ru" state="translated">Ненумерованный список</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__align-left" xml:space="preserve" approved="no">
                 <source>Align left</source>
-                <target xml:lang="ru">По левому краю</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__align-right" xml:space="preserve" approved="yes">
+        <target xml:lang="ru" state="translated">По левому краю</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__align-right" xml:space="preserve" approved="no">
                 <source>Align right</source>
-                <target xml:lang="ru">По правому краю</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__align-center" xml:space="preserve" approved="yes">
+        <target xml:lang="ru" state="translated">По правому краю</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__align-center" xml:space="preserve" approved="no">
                 <source>Align center</source>
-                <target xml:lang="ru">По центру</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__align-justify" xml:space="preserve" approved="yes">
+        <target xml:lang="ru" state="translated">По центру</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__align-justify" xml:space="preserve" approved="no">
                 <source>Align justify</source>
-                <target xml:lang="ru">По всей ширине</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__table" xml:space="preserve" approved="yes">
+        <target xml:lang="ru" state="translated">По всей ширине</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__table" xml:space="preserve" approved="no">
                 <source>Table</source>
-                <target xml:lang="ru">Таблица</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__tableColumn" xml:space="preserve" approved="yes">
+        <target xml:lang="ru" state="translated">Таблица</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__tableColumn" xml:space="preserve" approved="no">
                 <source>Column</source>
-                <target xml:lang="ru">Столбец</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__tableRow" xml:space="preserve">
+        <target xml:lang="ru" state="translated">Столбец</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__tableRow" xml:space="preserve">
                 <source>Row</source>
-                <target xml:lang="ru" state="needs-translation">Row</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__tableMergeCells" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">Row</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__tableMergeCells" xml:space="preserve">
                 <source>Merge cells</source>
-                <target xml:lang="ru" state="needs-translation">Merge cells</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__remove-format" xml:space="preserve" approved="yes">
+        <target xml:lang="ru" state="needs-translation">Merge cells</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__remove-format" xml:space="preserve" approved="no">
                 <source>Remove format</source>
-                <target xml:lang="ru">Удалить форматирование</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__outdent" xml:space="preserve" approved="yes">
+        <target xml:lang="ru" state="translated">Удалить форматирование</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__outdent" xml:space="preserve" approved="no">
                 <source>Outdent</source>
-                <target xml:lang="ru">Уменьшить выступ</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__indent" xml:space="preserve" approved="yes">
+        <target xml:lang="ru" state="translated">Уменьшить выступ</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__indent" xml:space="preserve" approved="no">
                 <source>Indent</source>
-                <target xml:lang="ru">Увеличить выступ</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__setTableColumnHeader" xml:space="preserve">
+        <target xml:lang="ru" state="translated">Увеличить выступ</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__setTableColumnHeader" xml:space="preserve">
                 <source>Header column</source>
-                <target xml:lang="ru" state="needs-translation">Header column</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__insertTableColumnLeft" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">Header column</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__insertTableColumnLeft" xml:space="preserve">
                 <source>Insert column before</source>
-                <target xml:lang="ru" state="needs-translation">Insert column before</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__insertTableColumnRight" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">Insert column before</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__insertTableColumnRight" xml:space="preserve">
                 <source>Insert column after</source>
-                <target xml:lang="ru" state="needs-translation">Insert column after</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__removeTableColumn" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">Insert column after</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__removeTableColumn" xml:space="preserve">
                 <source>Delete column</source>
-                <target xml:lang="ru" state="needs-translation">Delete column</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__setTableRowHeader" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">Delete column</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__setTableRowHeader" xml:space="preserve">
                 <source>Header row</source>
-                <target xml:lang="ru" state="needs-translation">Header row</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__insertTableRowBelow" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">Header row</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__insertTableRowBelow" xml:space="preserve">
                 <source>Insert row below</source>
-                <target xml:lang="ru" state="needs-translation">Insert row below</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__insertTableRowAbove" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">Insert row below</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__insertTableRowAbove" xml:space="preserve">
                 <source>Insert row above</source>
-                <target xml:lang="ru" state="needs-translation">Insert row above</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__removeTableRow" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">Insert row above</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__removeTableRow" xml:space="preserve">
                 <source>Delete row</source>
-                <target xml:lang="ru" state="needs-translation">Delete row</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__mergeTableCellUp" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">Delete row</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__mergeTableCellUp" xml:space="preserve">
                 <source>Merge cell up</source>
-                <target xml:lang="ru" state="needs-translation">Merge cell up</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__mergeTableCellRight" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">Merge cell up</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__mergeTableCellRight" xml:space="preserve">
                 <source>Merge cell right</source>
-                <target xml:lang="ru" state="needs-translation">Merge cell right</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__mergeTableCellDown" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">Merge cell right</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__mergeTableCellDown" xml:space="preserve">
                 <source>Merge cell down</source>
-                <target xml:lang="ru" state="needs-translation">Merge cell down</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__mergeTableCellLeft" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">Merge cell down</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__mergeTableCellLeft" xml:space="preserve">
                 <source>Merge cell left</source>
-                <target xml:lang="ru" state="needs-translation">Merge cell left</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__splitTableCellVertically" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">Merge cell left</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__splitTableCellVertically" xml:space="preserve">
                 <source>Split cell vertically</source>
-                <target xml:lang="ru" state="needs-translation">Split cell vertically</target>
-            </trans-unit>
-            <trans-unit id="ckeditor__toolbar__splitTableCellHorizontally" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">Split cell vertically</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__splitTableCellHorizontally" xml:space="preserve">
                 <source>Split cell horizontally</source>
-                <target xml:lang="ru" state="needs-translation">Split cell horizontally</target>
-            </trans-unit>
-            <trans-unit id="createNew" xml:space="preserve" approved="yes">
+        <target xml:lang="ru" state="needs-translation">Split cell horizontally</target>
+      </trans-unit>
+      <trans-unit id="createNew" xml:space="preserve" approved="no">
                 <source>Create new</source>
-                <target xml:lang="ru">Создать новый</target>
-            </trans-unit>
-            <trans-unit id="noMatchesFound" xml:space="preserve" approved="yes">
+        <target xml:lang="ru" state="translated">Создать новый</target>
+      </trans-unit>
+      <trans-unit id="noMatchesFound" xml:space="preserve" approved="no">
                 <source>No matches found</source>
-                <target xml:lang="ru">Совпадений не найдено</target>
-            </trans-unit>
-            <trans-unit id="searchBoxLeftToType" xml:space="preserve" approved="yes">
+        <target xml:lang="ru" state="translated">Совпадений не найдено</target>
+      </trans-unit>
+      <trans-unit id="searchBoxLeftToType" xml:space="preserve" approved="no">
                 <source>Please enter ###CHARACTERS### more character</source>
-                <target xml:lang="ru">Пожалуйста, введите больше символов ## #CHARACTERS###</target>
-            </trans-unit>
-            <trans-unit id="Shortcut__Introduction" xml:space="preserve">
+        <target xml:lang="ru" state="translated">Пожалуйста, введите больше символов ## #CHARACTERS###</target>
+      </trans-unit>
+      <trans-unit id="Shortcut__Introduction" xml:space="preserve">
                 <source>
                     These are Keyboard-Shortcuts we are providing.
                     You have to press the keys on the right after each other.
                     They will not get triggered when you are focusing an input field.
                 </source>
-                <target xml:lang="ru" state="needs-translation">
+        <target xml:lang="ru" state="needs-translation">
                     These are Keyboard-Shortcuts we are providing.
                     You have to press the keys on the right after each other.
                     They will not get triggered when you are focusing an input field.
                 </target>
-            </trans-unit>
-            <trans-unit id="Shortcut__UI.RightSideBar.toggle" xml:space="preserve" approved="yes">
+      </trans-unit>
+      <trans-unit id="Shortcut__UI.RightSideBar.toggle" xml:space="preserve" approved="no">
                 <source>Toggle inspector</source>
-                <target xml:lang="ru">Переключить инспектор</target>
-            </trans-unit>
-            <trans-unit id="Shortcut__UI.FullScreen.toggle" xml:space="preserve">
+        <target xml:lang="ru" state="translated">Переключить инспектор</target>
+      </trans-unit>
+      <trans-unit id="Shortcut__UI.FullScreen.toggle" xml:space="preserve">
                 <source>Toggle full screen</source>
-                <target xml:lang="ru" state="needs-translation">Toggle full screen</target>
-            </trans-unit>
-            <trans-unit id="Shortcut__UI.LeftSideBar.toggle" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">Toggle full screen</target>
+      </trans-unit>
+      <trans-unit id="Shortcut__UI.LeftSideBar.toggle" xml:space="preserve">
                 <source>Toggle left sidebar</source>
-                <target xml:lang="ru" state="needs-translation">Toggle left sidebar</target>
-            </trans-unit>
-            <trans-unit id="Shortcut__UI.LeftSideBar.toggleContentTree" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">Toggle left sidebar</target>
+      </trans-unit>
+      <trans-unit id="Shortcut__UI.LeftSideBar.toggleContentTree" xml:space="preserve">
                 <source>Toggle contenttree</source>
-                <target xml:lang="ru" state="needs-translation">Toggle contenttree</target>
-            </trans-unit>
-            <trans-unit id="Shortcut__UI.AddNodeModal.close" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">Toggle contenttree</target>
+      </trans-unit>
+      <trans-unit id="Shortcut__UI.AddNodeModal.close" xml:space="preserve">
                 <source>Close Add-Node-Modal</source>
-                <target xml:lang="ru" state="needs-translation">Close Add-Node-Modal</target>
-            </trans-unit>
-            <trans-unit id="Shortcut__UI.Drawer.toggle" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">Close Add-Node-Modal</target>
+      </trans-unit>
+      <trans-unit id="Shortcut__UI.Drawer.toggle" xml:space="preserve">
                 <source>Toggle Drawer</source>
-                <target xml:lang="ru" state="needs-translation">Toggle Drawer</target>
-            </trans-unit>
-            <trans-unit id="Shortcut__UI.EditModePanel.toggle" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">Toggle Drawer</target>
+      </trans-unit>
+      <trans-unit id="Shortcut__UI.EditModePanel.toggle" xml:space="preserve">
                 <source>Toggle EditModePanel</source>
-                <target xml:lang="ru" state="needs-translation">Toggle EditModePanel</target>
-            </trans-unit>
-            <trans-unit id="Shortcut__UI.InsertionModeModal.cancel" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">Toggle EditModePanel</target>
+      </trans-unit>
+      <trans-unit id="Shortcut__UI.InsertionModeModal.cancel" xml:space="preserve">
                 <source>Cancel InsertionModeModal</source>
-                <target xml:lang="ru" state="needs-translation">Cancel InsertionModeModal</target>
-            </trans-unit>
-            <trans-unit id="Shortcut__UI.InsertionModeModal.apply" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">Cancel InsertionModeModal</target>
+      </trans-unit>
+      <trans-unit id="Shortcut__UI.InsertionModeModal.apply" xml:space="preserve">
                 <source>Apply InsertionModeModal</source>
-                <target xml:lang="ru" state="needs-translation">Apply InsertionModeModal</target>
-            </trans-unit>
-            <trans-unit id="Shortcut__UI.ContentCanvas.reload" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">Apply InsertionModeModal</target>
+      </trans-unit>
+      <trans-unit id="Shortcut__UI.ContentCanvas.reload" xml:space="preserve">
                 <source>Reload ContentCanvas</source>
-                <target xml:lang="ru" state="needs-translation">Reload ContentCanvas</target>
-            </trans-unit>
-            <trans-unit id="Shortcut__UI.Inspector.discard" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">Reload ContentCanvas</target>
+      </trans-unit>
+      <trans-unit id="Shortcut__UI.Inspector.discard" xml:space="preserve">
                 <source>Discard Inspector</source>
-                <target xml:lang="ru" state="needs-translation">Discard Inspector</target>
-            </trans-unit>
-            <trans-unit id="Shortcut__UI.Inspector.escape" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">Discard Inspector</target>
+      </trans-unit>
+      <trans-unit id="Shortcut__UI.Inspector.escape" xml:space="preserve">
                 <source>Escape Inspector</source>
-                <target xml:lang="ru" state="needs-translation">Escape Inspector</target>
-            </trans-unit>
-            <trans-unit id="Shortcut__UI.Inspector.resume" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">Escape Inspector</target>
+      </trans-unit>
+      <trans-unit id="Shortcut__UI.Inspector.resume" xml:space="preserve">
                 <source>Resume Inspector</source>
-                <target xml:lang="ru" state="needs-translation">Resume Inspector</target>
-            </trans-unit>
-            <trans-unit id="Shortcut__UI.NodeCreationDialog.back" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">Resume Inspector</target>
+      </trans-unit>
+      <trans-unit id="Shortcut__UI.NodeCreationDialog.back" xml:space="preserve">
                 <source>NodeCreationDialog Back</source>
-                <target xml:lang="ru" state="needs-translation">NodeCreationDialog Back</target>
-            </trans-unit>
-            <trans-unit id="Shortcut__UI.NodeCreationDialog.cancel" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">NodeCreationDialog Back</target>
+      </trans-unit>
+      <trans-unit id="Shortcut__UI.NodeCreationDialog.cancel" xml:space="preserve">
                 <source>NodeCreationDialog Cancel</source>
-                <target xml:lang="ru" state="needs-translation">NodeCreationDialog Cancel</target>
-            </trans-unit>
-            <trans-unit id="Shortcut__UI.NodeCreationDialog.apply" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">NodeCreationDialog Cancel</target>
+      </trans-unit>
+      <trans-unit id="Shortcut__UI.NodeCreationDialog.apply" xml:space="preserve">
                 <source>NodeCreationDialog Apply</source>
-                <target xml:lang="ru" state="needs-translation">NodeCreationDialog Apply</target>
-            </trans-unit>
-            <trans-unit id="Shortcut__UI.NodeVariantCreationDialog.cancel" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">NodeCreationDialog Apply</target>
+      </trans-unit>
+      <trans-unit id="Shortcut__UI.NodeVariantCreationDialog.cancel" xml:space="preserve">
                 <source>NodeVariantCreationDialog Cancel</source>
-                <target xml:lang="ru" state="needs-translation">NodeVariantCreationDialog Cancel</target>
-            </trans-unit>
-            <trans-unit id="Shortcut__UI.NodeVariantCreationDialog.createEmpty" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">NodeVariantCreationDialog Cancel</target>
+      </trans-unit>
+      <trans-unit id="Shortcut__UI.NodeVariantCreationDialog.createEmpty" xml:space="preserve">
                 <source>NodeVariantCreationDialog Create Empty</source>
-                <target xml:lang="ru" state="needs-translation">NodeVariantCreationDialog Create Empty</target>
-            </trans-unit>
-            <trans-unit id="Shortcut__UI.NodeVariantCreationDialog.createAndCopy" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">NodeVariantCreationDialog Create Empty</target>
+      </trans-unit>
+      <trans-unit id="Shortcut__UI.NodeVariantCreationDialog.createAndCopy" xml:space="preserve">
                 <source>NodeVariantCreationDialog Create and Copy</source>
-                <target xml:lang="ru" state="needs-translation">NodeVariantCreationDialog Create and Copy</target>
-            </trans-unit>
-            <trans-unit id="Shortcut__CR.Nodes.unfocus" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">NodeVariantCreationDialog Create and Copy</target>
+      </trans-unit>
+      <trans-unit id="Shortcut__CR.Nodes.unfocus" xml:space="preserve">
                 <source>Unfocus Node</source>
-                <target xml:lang="ru" state="needs-translation">Unfocus Node</target>
-            </trans-unit>
-            <group id="changesApplied" restype="x-gettext-plurals">
-                <trans-unit id="changesApplied[0]" xml:space="preserve">
+        <target xml:lang="ru" state="needs-translation">Unfocus Node</target>
+      </trans-unit>
+      <group id="changesApplied" restype="x-gettext-plurals">
+        <trans-unit id="changesApplied[0]" xml:space="preserve">
                     <source>{0} change successfully applied.</source>
                     <target xml:lang="ru" state="needs-translation">{0} change successfully applied.</target>
                 </trans-unit>
-                <trans-unit id="changesApplied[1]" xml:space="preserve">
+        <trans-unit id="changesApplied[1]" xml:space="preserve">
                     <source>{0} changes successfully applied.</source>
                     <target xml:lang="ru" state="needs-translation">{0} changes successfully applied.</target>
                 </trans-unit>
-            </group>
-            <group id="changesPublished" restype="x-gettext-plurals">
-                <trans-unit id="changesPublished[0]" xml:space="preserve">
+      </group>
+      <group id="changesPublished" restype="x-gettext-plurals">
+        <trans-unit id="changesPublished[0]" xml:space="preserve">
                     <source>Published {0} change to "{1}".</source>
                     <target xml:lang="ru" state="needs-translation">Published {0} change to "{1}".</target>
                 </trans-unit>
-                <trans-unit id="changesPublished[1]" xml:space="preserve">
+        <trans-unit id="changesPublished[1]" xml:space="preserve">
                     <source>Published {0} changes to "{1}".</source>
                     <target xml:lang="ru" state="needs-translation">Published {0} changes to "{1}".</target>
                 </trans-unit>
-            </group>
-            <group id="changesDiscarded" restype="x-gettext-plurals">
-                <trans-unit id="changesDiscarded[0]" xml:space="preserve">
+      </group>
+      <group id="changesDiscarded" restype="x-gettext-plurals">
+        <trans-unit id="changesDiscarded[0]" xml:space="preserve">
                     <source>Discarded {0} change.</source>
                     <target xml:lang="ru" state="needs-translation">Discarded {0} change.</target>
                 </trans-unit>
-                <trans-unit id="changesDiscarded[1]" xml:space="preserve">
+        <trans-unit id="changesDiscarded[1]" xml:space="preserve">
                     <source>Discarded {0} changes.</source>
                     <target xml:lang="ru" state="needs-translation">Discarded {0} changes.</target>
                 </trans-unit>
-            </group>
-        </body>
-    </file>
+      </group>
+      <trans-unit id="UI.RightSideBar.tabs.validationErrorTooltip[0]" xml:space="preserve">
+                    <source>{tabName} – {amountOfErrors} validation issue</source>
+      </trans-unit>
+      <trans-unit id="UI.RightSideBar.tabs.validationErrorTooltip[1]" xml:space="preserve">
+                    <source>{tabName} – {amountOfErrors} validation issues</source>
+      </trans-unit>
+      <trans-unit id="syncUriPathSegment" xml:space="preserve">
+                <source>Syncronize with the title property</source>
+      </trans-unit>
+      <trans-unit id="nodes" xml:space="preserve">
+                <source>nodes</source>
+      </trans-unit>
+      <trans-unit id="contentElementsSelected" xml:space="preserve">
+                <source>content elements selected</source>
+      </trans-unit>
+      <trans-unit id="documentsSelected" xml:space="preserve">
+                <source>documents selected</source>
+      </trans-unit>
+      <trans-unit id="inspectorMutlipleContentNodesSelectedTooltip" xml:space="preserve">
+                <source>Select a single document in order to be able to edit its properties</source>
+      </trans-unit>
+      <trans-unit id="rangeEditorMinimum" xml:space="preserve">
+                <source>Minimum</source>
+      </trans-unit>
+      <trans-unit id="rangeEditorMaximum" xml:space="preserve">
+                <source>Maximum</source>
+      </trans-unit>
+      <trans-unit id="rangeEditorCurrentValue" xml:space="preserve">
+                <source>Current value</source>
+      </trans-unit>
+      <trans-unit id="deleteXNodes" xml:space="preserve">
+                <source>Delete {amount} nodes</source>
+      </trans-unit>
+      <trans-unit id="inspectorMutlipleDocumentNodesSelectedTooltip" xml:space="preserve">
+                <source>Select a single content element in order to be able to edit its properties</source>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>

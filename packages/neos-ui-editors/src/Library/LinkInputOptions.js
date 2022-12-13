@@ -15,7 +15,9 @@ const LinkInputOptions = ({
     onLinkTargetChange,
     linkTargetBlankValue,
     onLinkRelChange,
-    linkRelNofollowValue
+    linkRelNofollowValue,
+    onLinkDownloadChange,
+    linkDownloadValue
 }) => {
     const anchorValue = typeof linkValue === 'string' ? linkValue.split('#')[1] : '';
     const baseValue = typeof linkValue === 'string' ? linkValue.split('#')[0] : '';
@@ -59,7 +61,7 @@ const LinkInputOptions = ({
             <div className={style.linkInput__optionsPanelDouble}>
                 {$get('targetBlank', linkingOptions) && (
                     <div className={style.linkInput__optionsPanelItem}>
-                        <label>
+                        <label className={style.linkInput__optionsPanelCheckbox}>
                             <CheckBox
                                 onChange={onLinkTargetChange}
                                 isChecked={linkTargetBlankValue || false}
@@ -68,7 +70,7 @@ const LinkInputOptions = ({
                     </div>)}
                 {$get('relNofollow', linkingOptions) && (
                     <div className={style.linkInput__optionsPanelItem}>
-                        <label>
+                        <label className={style.linkInput__optionsPanelCheckbox}>
                             <CheckBox
                                 onChange={onLinkRelChange}
                                 isChecked={linkRelNofollowValue || false}
@@ -76,6 +78,15 @@ const LinkInputOptions = ({
                         </label>
                     </div>)}
             </div>
+            {$get('download', linkingOptions) && (
+                <div className={style.linkInput__optionsPanelItem}>
+                    <label className={style.linkInput__optionsPanelCheckbox}>
+                        <CheckBox
+                            onChange={onLinkDownloadChange}
+                            isChecked={linkDownloadValue || false}
+                        /> {i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__download', 'is download')}
+                    </label>
+                </div>)}
         </Fragment>
     );
 };

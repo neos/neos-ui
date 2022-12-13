@@ -12,11 +12,10 @@ import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 import style from './style.css';
-import {urlAppendParams} from "@neos-project/neos-ui-backend-connector/src/Endpoints/Helpers";
 
 @connect($transform({
     nodesToBeDeletedContextPaths: $get('cr.nodes.toBeRemoved'),
-    getNodeByContextPath: selectors.CR.Nodes.nodeByContextPath,
+    getNodeByContextPath: selectors.CR.Nodes.nodeByContextPath
 }), {
     confirm: actions.CR.Nodes.confirmRemoval,
     abort: actions.CR.Nodes.abortRemoval
@@ -120,7 +119,7 @@ export default class DeleteNodeModal extends PureComponent {
             return null;
         }
         let node = null;
-        let warnings = [];
+        const warnings = [];
 
         nodesToBeDeletedContextPaths.forEach(nodeToBeDeleted => {
             node = getNodeByContextPath(nodeToBeDeleted);
@@ -142,7 +141,7 @@ export default class DeleteNodeModal extends PureComponent {
                         &nbsp; {nodesToBeDeletedContextPaths.length > 1 ? `${nodesToBeDeletedContextPaths.length} ${i18nRegistry.translate('nodes', 'nodes', {}, 'Neos.Neos.Ui', 'Main')}` : `"${$get('label', node)}"`}?
                     </p>
                     {warnings.length > 0 ? <hr /> : ''}
-                    {warnings.map((warning, index) => <p key={index}>{warning}</p>)}
+                    {warnings.map((warning, index) => <p key={index}><I18n id={warning}/></p>)}
                 </div>
             </Dialog>
         );

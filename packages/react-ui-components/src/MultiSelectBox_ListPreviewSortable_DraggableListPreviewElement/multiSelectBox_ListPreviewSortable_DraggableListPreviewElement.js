@@ -139,7 +139,7 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
                     )}
                     <div
                         className={theme.selectedOptions__innerPreview}
-                        onClick={option.uri ? () => handleClick(option.uri) : undefined }
+                        onClick={handleClick(option.uri)}
                         role = "button"
                     >
                         <InnerListPreviewElement

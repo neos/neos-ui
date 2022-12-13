@@ -12,10 +12,11 @@ import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 import style from './style.css';
+import {urlAppendParams} from "@neos-project/neos-ui-backend-connector/src/Endpoints/Helpers";
 
 @connect($transform({
     nodesToBeDeletedContextPaths: $get('cr.nodes.toBeRemoved'),
-    getNodeByContextPath: selectors.CR.Nodes.nodeByContextPath
+    getNodeByContextPath: selectors.CR.Nodes.nodeByContextPath,
 }), {
     confirm: actions.CR.Nodes.confirmRemoval,
     abort: actions.CR.Nodes.abortRemoval
@@ -113,16 +114,18 @@ export default class DeleteNodeModal extends PureComponent {
     }
 
     render() {
-        const {nodesToBeDeletedContextPaths, getNodeByContextPath, i18nRegistry} = this.props;
-        let node = null;
-        if (nodesToBeDeletedContextPaths.length === 1) {
-            const singleNodeToBeDeletedContextPath = nodesToBeDeletedContextPaths[0];
-            node = getNodeByContextPath(singleNodeToBeDeletedContextPath);
-        }
+        const {nodesToBeDeletedContextPaths, getNodeByContextPath, i18nRegistry, nodeTypesRegistry} = this.props;
 
         if (nodesToBeDeletedContextPaths.length === 0) {
             return null;
         }
+        let node = null;
+        let warnings = [];
+
+        nodesToBeDeletedContextPaths.forEach(nodeToBeDeleted => {
+            node = getNodeByContextPath(nodeToBeDeleted);
+            warnings.push($get('ui.deleteConfirmation', nodeTypesRegistry.get(node.nodeType)));
+        });
 
         return (
             <Dialog
@@ -134,8 +137,12 @@ export default class DeleteNodeModal extends PureComponent {
                 id="neos-DeleteNodeDialog"
                 >
                 <div className={style.modalContents}>
-                    <I18n id="Neos.Neos:Main:content.navigate.deleteNodeDialog.header"/>
-                    &nbsp; {nodesToBeDeletedContextPaths.length > 1 ? `${nodesToBeDeletedContextPaths.length} ${i18nRegistry.translate('nodes', 'nodes', {}, 'Neos.Neos.Ui', 'Main')}` : `"${$get('label', node)}"`}?
+                    <p>
+                        <I18n id="Neos.Neos:Main:content.navigate.deleteNodeDialog.header"/>
+                        &nbsp; {nodesToBeDeletedContextPaths.length > 1 ? `${nodesToBeDeletedContextPaths.length} ${i18nRegistry.translate('nodes', 'nodes', {}, 'Neos.Neos.Ui', 'Main')}` : `"${$get('label', node)}"`}?
+                    </p>
+                    {warnings.length > 0 ? <hr /> : ''}
+                    {warnings.map((warning, index) => <p key={index}>{warning}</p>)}
                 </div>
             </Dialog>
         );

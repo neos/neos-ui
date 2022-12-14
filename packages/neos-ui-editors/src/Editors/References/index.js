@@ -40,11 +40,11 @@ export default class ReferencesEditor extends PureComponent {
         this.props.commit(value);
     }
 
-    handleClick = src => {
+    handleClick = option => {
         const {setActiveContentCanvasSrc} = this.props;
 
-        if (setActiveContentCanvasSrc) {
-            setActiveContentCanvasSrc(src);
+        if (setActiveContentCanvasSrc && option && option.uri) {
+            setActiveContentCanvasSrc(option.uir);
         }
     }
 

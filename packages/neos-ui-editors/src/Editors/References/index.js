@@ -44,7 +44,7 @@ export default class ReferencesEditor extends PureComponent {
         const {setActiveContentCanvasSrc} = this.props;
 
         if (setActiveContentCanvasSrc && option && option.uri) {
-            setActiveContentCanvasSrc(option.uir);
+            setActiveContentCanvasSrc(option.uri);
         }
     }
 

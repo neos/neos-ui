@@ -30,6 +30,7 @@ echo "##########################################################################
 dc exec -T php bash <<-'BASH'
     cd /usr/src/app
     sudo chown -R docker:docker .
+    sudo chown -R docker:docker /home/circleci/
     cd TestDistribution
     composer install
 BASH

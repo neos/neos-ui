@@ -13,6 +13,80 @@ fixture`Create new nodes`
     .afterEach(() => checkPropTypes())
     .requestHooks(changeRequestLogger);
 
+test('Check ClientEval for dependencies between properties of NodeTypes', async t => {
+    // Regression Test
+    // TODO: test for Neos Inspector (working case) -> move this into inspector test file
+    subSection('Create node with interdependent properties')
+    await t
+        .click(Selector('#neos-ContentTree-ToggleContentTree'))
+        .click(Page.treeNode.withText('Content Collection (main)'))
+        .click(Selector('#neos-ContentTree-AddNode'))
+        .click(ReactSelector('NodeTypeItem').find('button>span>span').withText('NodeWithDependingProperties_Test'))
+
+    await Page.waitForIframeLoading(t);
+
+    const propertyDependedOnSelectBoxSelector = ReactSelector('SelectBoxEditor')
+        .withProps('identifier', 'propertyDependedOn')
+        .findReact('SelectBox')
+
+    const propertyDependedOnSelectBox = await propertyDependedOnSelectBoxSelector.getReact()
+
+    const dependingPropertySelectBoxSelector = ReactSelector('SelectBoxEditor')
+        .withProps('identifier', 'dependingProperty')
+        .findReact('SelectBox')
+
+    const dependingPropertySelectBox = await dependingPropertySelectBoxSelector.getReact()
+
+    await t
+        .expect(propertyDependedOnSelectBox.props.value).eql('odd')
+        .expect(propertyDependedOnSelectBox.props.options).eql([
+            {'label': 'odd', value: 'odd'},
+            {'label': 'even', value: 'even'}
+        ])
+
+    await t
+        .expect(dependingPropertySelectBox.props.value).eql(null)
+        .expect(dependingPropertySelectBox.props.options).eql([
+            {label: 'label_1', value: 1},
+            {label: 'label_3', value: 3},
+            {label: 'label_5', value: 5},
+            {label: 'label_7', value: 7},
+            {label: 'label_9', value: 9}
+        ])
+
+    await t.click(propertyDependedOnSelectBoxSelector)
+    await t.click(propertyDependedOnSelectBoxSelector
+        .findReact('ListPreviewElement')
+        .withProps({
+            option: {value: 'even'}
+        }, {exactObjectMatch: false}))
+
+    const newPropertyDependedOnSelectBox = await propertyDependedOnSelectBoxSelector.getReact()
+    const newDependingPropertySelectBox = await dependingPropertySelectBoxSelector.getReact()
+
+    await t
+        .expect(newPropertyDependedOnSelectBox.props.value).eql('even')
+
+    await t
+        .expect(newDependingPropertySelectBox.props.options).eql([
+            {label: 'label_2', value: 2},
+            {label: 'label_4', value: 4},
+            {label: 'label_6', value: 6},
+            {label: 'label_8', value: 8},
+            {label: 'label_10', value: 10}
+        ])
+
+    await t.click(dependingPropertySelectBoxSelector)
+    await t.click(Selector('span').withText('label_2'))
+
+    await t.click(Selector('#neos-Inspector-Apply'))
+    await Page.waitForIframeLoading(t)
+
+    await t.switchToIframe(contentIframeSelector)
+    await t.expect(Selector('p').withText('propertyDependedOn: even').exists).ok('Property depended on is "even"')
+    await t.expect(Selector('p').withText('dependingProperty: 2').exists).ok('Depending property is "2"')
+})
+
 test('Check the nodetype help in create dialog', async t => {
     subSection('Open create dialog node');
     await Page.waitForIframeLoading(t);
@@ -29,7 +103,7 @@ test('Check the nodetype help in create dialog', async t => {
         .expect(ReactSelector('ReactMarkdown').find('strong').withText('test').exists).ok('Bold test from Markdown has been rendered');
 });
 
-test('Check that nodetype withou help has no help button', async t => {
+test('Check that nodetype without help has no help button', async t => {
     await t
         .switchToIframe(contentIframeSelector)
         .click(Selector('.neos-contentcollection'))

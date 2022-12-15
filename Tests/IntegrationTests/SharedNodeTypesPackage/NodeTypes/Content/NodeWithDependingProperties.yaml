@@ -1,0 +1,44 @@
+'Neos.TestNodeTypes:Content.NodeWithDependingProperties':
+  superTypes:
+    'Neos.Neos:Content': true
+  ui:
+    label: 'NodeWithDependingProperties_Test'
+    icon: icon-file
+    position: 200
+    inspector:
+      groups:
+        properties:
+          label: 'properties'
+  properties:
+    propertyDependedOn:
+      type: string
+      defaultValue: 'odd'
+      ui:
+        # showInCreationDialog: true
+        label: 'Property Depended On'
+        reloadIfChanged: true
+        inspector:
+          group: 'properties'
+          editor: 'Neos.Neos/Inspector/Editors/SelectBoxEditor'
+          editorOptions:
+            values:
+              odd:
+                label: 'odd'
+              even:
+                label: 'even'
+      validation:
+        'Neos.Neos/Validation/NotEmptyValidator': []
+    dependingProperty:
+      type: integer
+      ui:
+        # showInCreationDialog: true
+        label: 'Depending Property'
+        reloadIfChanged: true
+        inspector:
+          group: 'properties'
+          editor: 'Neos.Neos/Inspector/Editors/SelectBoxEditor'
+          editorOptions:
+            dataSourceIdentifier: 'node-with-depending-properties-data-source'
+            dataSourceAdditionalData:
+              evenOrOdd: 'ClientEval:node.properties.propertyDependedOn'
+            dataSourceDisableCaching: true

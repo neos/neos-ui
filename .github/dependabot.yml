@@ -1,6 +1,16 @@
 version: 2
 updates:
 
+  # Maintain dependencies for npm
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    target-branch: "7.3"
+    open-pull-requests-limit: 0
+    labels:
+      - "security"
+
   # Maintain dependencies for Composer
   - package-ecosystem: "composer"
     directory: "/"

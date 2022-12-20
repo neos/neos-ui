@@ -221,7 +221,7 @@ export default class ImageEditor extends Component {
         if (AssetUploadScreen) {
             // set media type constraint to "image/*" if it is not explicitly specified via options.constraints.mediaTypes
             const constraints = {...options.constraints, mediaTypes: (options.constraints && options.constraints.mediaTypes) || ['image/*']};
-            this.props.renderSecondaryInspector('IMAGE_UPLOAD_MEDIA', () => <MediaUploadScreen type="images" constraints={constraints} onComplete={this.afterUpload}/>);
+            this.props.renderSecondaryInspector('IMAGE_UPLOAD_MEDIA', () => <AssetUploadScreen type="images" constraints={constraints} onComplete={this.afterUpload}/>);
         } else {
             this.previewScreen.chooseFromLocalFileSystem();
             this.setState({isAssetLoading: true});

@@ -215,8 +215,17 @@ export default class ImageEditor extends Component {
     }
 
     handleChooseFile = () => {
-        this.previewScreen.chooseFromLocalFileSystem();
-        this.setState({isAssetLoading: true});
+        const {secondaryEditorsRegistry, options} = this.props;
+        const {component: MediaUploadScreen} = secondaryEditorsRegistry.get('Neos.Neos/Inspector/Secondary/Editors/MediaUploadScreen');
+
+        if (MediaUploadScreen) {
+            // set media type constraint to "image/*" if it is not explicitly specified via options.constraints.mediaTypes
+            const constraints = {...options.constraints, mediaTypes: (options.constraints && options.constraints.mediaTypes) || ['image/*']};
+            this.props.renderSecondaryInspector('IMAGE_UPLOAD_MEDIA', () => <MediaUploadScreen type="images" constraints={constraints || {}} onComplete={this.afterUpload}/>);
+        } else {
+            this.previewScreen.chooseFromLocalFileSystem();
+            this.setState({isAssetLoading: true});
+        }
     }
 
     handleChooseFromMedia = () => {

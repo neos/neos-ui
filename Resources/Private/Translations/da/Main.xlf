@@ -4,11 +4,11 @@
     <body>
       <trans-unit id="copy__from__to--title" xml:space="preserve">
                 <source>Copy {source} to {target}</source>
-        <target xml:lang="da" state="translated">Kopier {source) til {target}</target>
+        <target xml:lang="da" state="translated">Kopier {source} til {target}</target>
       </trans-unit>
       <trans-unit id="move__from__to--title" xml:space="preserve">
                 <source>Move {source} to {target}</source>
-        <target xml:lang="da" state="translated">Flyt {source) til {target}</target>
+        <target xml:lang="da" state="translated">Flyt {source} til {target}</target>
       </trans-unit>
       <trans-unit id="copy__from__to--description" xml:space="preserve">
                 <source>Please select the position at which you want {source} inserted relative to {target}.</source>
@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="imageCropper__aspect-ratio-placeholder" xml:space="preserve">
                 <source>Choose an Aspect Ratio</source>
-        <target xml:lang="da" state="translated">Vælg et billedeformat</target>
+        <target xml:lang="da" state="translated">Vælg et billedformat</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__bold" xml:space="preserve">
                 <source>Bold</source>

@@ -23,7 +23,8 @@ test('Check ClientEval for dependencies between properties of NodeTypes', async 
         .click(Selector('#neos-ContentTree-AddNode'))
         .click(ReactSelector('NodeTypeItem').find('button>span>span').withText('NodeWithDependingProperties_Test'))
 
-    await Page.waitForIframeLoading(t);
+    await Page.waitForIframeLoading(t)
+    await t.wait(2000) // maybe we should wait for the loading state to finish instead of fixed number of seconds
 
     const propertyDependedOnSelectBoxSelector = ReactSelector('SelectBoxEditor')
         .withProps('identifier', 'propertyDependedOn')
@@ -55,11 +56,9 @@ test('Check ClientEval for dependencies between properties of NodeTypes', async 
         ])
 
     await t.click(propertyDependedOnSelectBoxSelector)
-    await t.click(propertyDependedOnSelectBoxSelector
-        .findReact('ListPreviewElement')
-        .withProps({
-            option: {value: 'even'}
-        }, {exactObjectMatch: false}))
+    await t
+        .click(Selector('span').withText('even'))
+        .wait(2000) // maybe we should wait for the loading state to finish instead of fixed number of seconds
 
     const newPropertyDependedOnSelectBox = await propertyDependedOnSelectBoxSelector.getReact()
     const newDependingPropertySelectBox = await dependingPropertySelectBoxSelector.getReact()

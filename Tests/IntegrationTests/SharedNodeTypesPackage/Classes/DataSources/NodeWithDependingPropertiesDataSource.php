@@ -9,7 +9,7 @@ class NodeWithDependingPropertiesDataSource extends AbstractDataSource
     /**
      * @var string
      */
-    static protected $identifier = 'node-with-depending-properties-data-source';
+    protected static $identifier = 'node-with-depending-properties-data-source';
 
     /**
      * @param NodeInterface $node The node that is currently edited (optional)
@@ -23,7 +23,7 @@ class NodeWithDependingPropertiesDataSource extends AbstractDataSource
         $evenOrOdd = $arguments['evenOrOdd'];
 
         $filteredOptions = array_filter($options, function ($option) use ($evenOrOdd) {
-            return match($evenOrOdd) {
+            return match ($evenOrOdd) {
                 'even' => $option % 2 === 0,
                 default => $option % 2 === 1,
             };

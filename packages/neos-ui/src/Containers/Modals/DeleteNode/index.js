@@ -123,7 +123,11 @@ export default class DeleteNodeModal extends PureComponent {
 
         nodesToBeDeletedContextPaths.forEach(nodeToBeDeleted => {
             node = getNodeByContextPath(nodeToBeDeleted);
-            warnings.push($get('ui.deleteConfirmation', nodeTypesRegistry.get(node.nodeType)));
+            warnings.push({
+                'deleteMessage': $get('ui.deleteConfirmation.message', nodeTypesRegistry.get(node.nodeType)),
+                'nodeType': $get('ui.label', nodeTypesRegistry.get(node.nodeType)),
+                'nodeLabel': $get('label', node)
+            });
         });
 
         return (
@@ -141,7 +145,12 @@ export default class DeleteNodeModal extends PureComponent {
                         &nbsp; {nodesToBeDeletedContextPaths.length > 1 ? `${nodesToBeDeletedContextPaths.length} ${i18nRegistry.translate('nodes', 'nodes', {}, 'Neos.Neos.Ui', 'Main')}` : `"${$get('label', node)}"`}?
                     </p>
                     {warnings.length > 0 ? <hr /> : ''}
-                    {warnings.map((warning, index) => <p key={index}><I18n id={warning}/></p>)}
+                    {warnings.map((warning, index) => <p key={index}>
+                        <I18n id={warning.nodeType} fallback="Node"/>
+                        <i> "{warning.nodeLabel.substring(0, 100).substring(0, warning.nodeLabel.substring(0, 100).lastIndexOf(' ')) + '...'}"</i>
+                        <span> : </span>
+                        <I18n id={warning.deleteMessage}/></p>
+                    )}
                 </div>
             </Dialog>
         );

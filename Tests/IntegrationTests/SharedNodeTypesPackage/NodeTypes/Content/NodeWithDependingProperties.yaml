@@ -14,7 +14,7 @@
       type: string
       defaultValue: 'odd'
       ui:
-        # showInCreationDialog: true
+        showInCreationDialog: true
         label: 'Property Depended On'
         reloadIfChanged: true
         inspector:
@@ -31,7 +31,7 @@
     dependingProperty:
       type: integer
       ui:
-        # showInCreationDialog: true
+        showInCreationDialog: true
         label: 'Depending Property'
         reloadIfChanged: true
         inspector:

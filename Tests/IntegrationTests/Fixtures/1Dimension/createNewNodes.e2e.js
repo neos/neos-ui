@@ -23,6 +23,12 @@ test('Check ClientEval for dependencies between properties of NodeTypes', async 
         .click(Selector('#neos-ContentTree-AddNode'))
         .click(ReactSelector('NodeTypeItem').find('button>span>span').withText('NodeWithDependingProperties_Test'))
 
+    // WHY: Some NodeTypes trigger a Node Creation Dialog
+    const isCreationDialogOpen = await Selector('#neos-NodeCreationDialog-CreateNew').exists;
+    if (isCreationDialogOpen) {
+        await t.click(Selector('#neos-NodeCreationDialog-CreateNew'))
+    }
+
     await Page.waitForIframeLoading(t)
     await t.wait(2000) // maybe we should wait for the loading state to finish instead of fixed number of seconds
 
@@ -58,7 +64,7 @@ test('Check ClientEval for dependencies between properties of NodeTypes', async 
     await t.click(propertyDependedOnSelectBoxSelector)
     await t
         .click(Selector('span').withText('even'))
-        .wait(2000) // maybe we should wait for the loading state to finish instead of fixed number of seconds
+        .wait(2000) // TODO: maybe we should wait for the loading state to finish instead of fixed number of seconds
 
     const newPropertyDependedOnSelectBox = await propertyDependedOnSelectBoxSelector.getReact()
     const newDependingPropertySelectBox = await dependingPropertySelectBoxSelector.getReact()

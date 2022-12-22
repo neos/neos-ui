@@ -13,10 +13,73 @@ fixture`Create new nodes`
     .afterEach(() => checkPropTypes())
     .requestHooks(changeRequestLogger);
 
-test('Check ClientEval for dependencies between properties of NodeTypes', async t => {
+test('Check ClientEval for dependencies between properties of NodeTypes in Creation Dialog', async t => {
     // Regression Test
-    // TODO: test for Neos Inspector (working case) -> move this into inspector test file
-    subSection('Create node with interdependent properties')
+
+    // create node with NodeType labeled: NodeWithDependingProperties_Test
+    await t
+        .click(Selector('#neos-ContentTree-ToggleContentTree'))
+        .click(Page.treeNode.withText('Content Collection (main)'))
+        .click(Selector('#neos-ContentTree-AddNode'))
+        .click(ReactSelector('NodeTypeItem').find('button>span>span').withText('NodeWithDependingProperties_Test'))
+
+    // in Node Creation Dialog
+    const propertyDependedOnSelectBoxSelector = ReactSelector('SelectBoxEditor')
+        .withProps('identifier', 'propertyDependedOn--creation-dialog')
+        .findReact('SelectBox')
+
+    const propertyDependedOnSelectBox = await propertyDependedOnSelectBoxSelector.getReact()
+
+    const dependingPropertySelectBoxSelector = ReactSelector('SelectBoxEditor')
+        .withProps('identifier', 'dependingProperty--creation-dialog')
+        .findReact('SelectBox')
+
+    const dependingPropertySelectBox = await dependingPropertySelectBoxSelector.getReact()
+
+    await t
+        .expect(propertyDependedOnSelectBox.props.value).eql('odd')
+        .expect(propertyDependedOnSelectBox.props.options).eql([
+            {'label': 'odd', value: 'odd'},
+            {'label': 'even', value: 'even'}
+        ])
+
+    // TODO: difference here vs Inspector is that Inspector has null where CreationDialog
+    // has empty string as default value
+    await t
+        .expect(dependingPropertySelectBox.props.value).eql('')
+        .expect(dependingPropertySelectBox.props.options).eql([
+            {label: 'label_1', value: 1},
+            {label: 'label_3', value: 3},
+            {label: 'label_5', value: 5},
+            {label: 'label_7', value: 7},
+            {label: 'label_9', value: 9}
+        ])
+
+    await t.click(propertyDependedOnSelectBoxSelector)
+    await t
+        .click(Selector('span').withText('even'))
+        // TODO: maybe we should wait for the loading state to finish instead of fixed number of seconds
+        .wait(2000)
+
+    // TODO: check if this is necessary (getReact again)
+    const newPropertyDependedOnSelectBox = await propertyDependedOnSelectBoxSelector.getReact()
+    const newDependingPropertySelectBox = await dependingPropertySelectBoxSelector.getReact()
+
+    await t
+        .expect(newPropertyDependedOnSelectBox.props.value).eql('even')
+
+    await t
+        .expect(newDependingPropertySelectBox.props.options).eql([
+            {label: 'label_2', value: 2},
+            {label: 'label_4', value: 4},
+            {label: 'label_6', value: 6},
+            {label: 'label_8', value: 8},
+            {label: 'label_10', value: 10}
+        ])
+})
+
+// TODO: test for Neos Inspector (working case) -> move this into inspector test file
+test('Check ClientEval for dependencies between properties of NodeTypes in Inspector', async t => {
     await t
         .click(Selector('#neos-ContentTree-ToggleContentTree'))
         .click(Page.treeNode.withText('Content Collection (main)'))
@@ -80,16 +143,6 @@ test('Check ClientEval for dependencies between properties of NodeTypes', async 
             {label: 'label_8', value: 8},
             {label: 'label_10', value: 10}
         ])
-
-    await t.click(dependingPropertySelectBoxSelector)
-    await t.click(Selector('span').withText('label_2'))
-
-    await t.click(Selector('#neos-Inspector-Apply'))
-    await Page.waitForIframeLoading(t)
-
-    await t.switchToIframe(contentIframeSelector)
-    await t.expect(Selector('p').withText('propertyDependedOn: even').exists).ok('Property depended on is "even"')
-    await t.expect(Selector('p').withText('dependingProperty: 2').exists).ok('Depending property is "2"')
 })
 
 test('Check the nodetype help in create dialog', async t => {

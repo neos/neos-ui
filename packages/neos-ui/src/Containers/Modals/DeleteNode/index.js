@@ -123,10 +123,12 @@ export default class DeleteNodeModal extends PureComponent {
 
         nodesToBeDeletedContextPaths.forEach(nodeToBeDeleted => {
             node = getNodeByContextPath(nodeToBeDeleted);
+            const nodeLabel = $get('label', node);
             warnings.push({
                 'deleteMessage': $get('ui.deleteConfirmation.message', nodeTypesRegistry.get(node.nodeType)),
                 'nodeType': $get('ui.label', nodeTypesRegistry.get(node.nodeType)),
-                'nodeLabel': $get('label', node)
+                'nodeLabelTruncated': nodeLabel.substring(0, 30).substring(0, nodeLabel.substring(0, 30).lastIndexOf(' ')),
+                'nodeLabel': nodeLabel
             });
         });
 
@@ -147,7 +149,7 @@ export default class DeleteNodeModal extends PureComponent {
                     {warnings.length > 0 ? <hr /> : ''}
                     {warnings.map((warning, index) => <p key={index}>
                         <I18n id={warning.nodeType} fallback="Node"/>
-                        <i> "{warning.nodeLabel.substring(0, 100).substring(0, warning.nodeLabel.substring(0, 100).lastIndexOf(' ')) + '...'}"</i>
+                        <i> "{warning.nodeLabelTruncated + (warning.nodeLabelTruncated < warning.nodeLabel ? '...' : '')}"</i>
                         <span> : </span>
                         <I18n id={warning.deleteMessage}/></p>
                     )}

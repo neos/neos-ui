@@ -1,5 +1,4 @@
 import {takeEvery, put, select, call} from 'redux-saga/effects';
-import {$get} from 'plow-js';
 
 import {selectors, actions, actionTypes} from '@neos-project/neos-ui-redux-store';
 
@@ -13,7 +12,9 @@ export default function * pasteNode({globalRegistry}) {
 
     yield takeEvery(actionTypes.CR.Nodes.PASTE, function * waitForPaste(action) {
         const subject = yield select(selectors.CR.Nodes.clipboardNodesContextPathsSelector);
-        const clipboardMode = yield select($get('cr.nodes.clipboardMode'));
+        const clipboardMode = yield select(
+            state => state?.cr?.nodes?.clipboardMode
+        );
 
         const {contextPath: reference, fusionPath} = action.payload;
         const state = yield select();
@@ -38,7 +39,9 @@ export default function * pasteNode({globalRegistry}) {
         if (mode) {
             const referenceNodeSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(reference);
             const referenceNode = yield select(referenceNodeSelector);
-            const baseNodeType = yield select($get('ui.pageTree.filterNodeType'));
+            const baseNodeType = yield select(
+                state => state?.ui?.pageTree?.filterNodeType
+            );
 
             yield put(actions.CR.Nodes.commitPaste(clipboardMode));
             const changes = subject.map(contextPath => ({

@@ -1,5 +1,4 @@
 import {takeLatest, take, put, race, call, select} from 'redux-saga/effects';
-import {$get} from 'plow-js';
 
 import {actions, actionTypes, selectors} from '@neos-project/neos-ui-redux-store';
 
@@ -54,8 +53,8 @@ function * nodeCreationWorkflow(context, step = STEP_SELECT_NODETYPE, workflowDa
         }
         case STEP_NODE_CREATION_DIALOG: {
             const nodeType = nodeTypesRegistry.get(workflowData.nodeType);
-            const label = $get('label', nodeType);
-            const configuration = $get('ui.creationDialog', nodeType);
+            const label = nodeType?.label;
+            const configuration = nodeType?.ui?.creationDialog;
             if (configuration) {
                 //
                 // This node type has a creationDialog configuration,
@@ -97,7 +96,9 @@ function * nodeCreationWorkflow(context, step = STEP_SELECT_NODETYPE, workflowDa
 
             const referenceNodeSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(referenceNodeContextPath);
             const referenceNode = yield select(referenceNodeSelector);
-            const baseNodeType = yield select($get('ui.pageTree.filterNodeType'));
+            const baseNodeType = yield select(
+                state => state?.ui?.pageTree?.filterNodeType
+            );
             const data = yield * applySaveHooksForTransientValuesMap(transientValues, saveHooksRegistry);
 
             return yield put(actions.Changes.persistChanges([{

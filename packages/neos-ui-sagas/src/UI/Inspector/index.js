@@ -1,5 +1,4 @@
 import {take, race, put, call, select} from 'redux-saga/effects';
-import {$get} from 'plow-js';
 import escapeRegExp from 'lodash.escaperegexp';
 import {findNodeInGuestFrame} from '@neos-project/neos-ui-guest-frame/src/dom';
 
@@ -9,7 +8,7 @@ import {applySaveHooksForTransientValue} from '../../Changes/saveHooks';
 
 const getFocusedNode = selectors.CR.Nodes.focusedSelector;
 const getTransientInspectorValues = state => {
-    const values = $get(['ui', 'inspector', 'valuesByNodePath'], state);
+    const values = state?.ui?.inspector?.valuesByNodePath;
 
     return values;
 };
@@ -85,13 +84,13 @@ export function * inspectorSaga({globalRegistry}) {
 function * flushInspector(inspectorRegistry) {
     const state = yield select();
     const focusedNode = getFocusedNode(state);
-    let focusedNodeFusionPath = $get('cr.nodes.focused.fusionPath', state);
+    let focusedNodeFusionPath = state?.cr?.nodes?.focused?.fusionPath;
     if (!focusedNodeFusionPath) {
-        const focusedDomNode = findNodeInGuestFrame($get('contextPath', focusedNode));
+        const focusedDomNode = findNodeInGuestFrame(focusedNode?.contextPath);
         focusedNodeFusionPath = focusedDomNode && focusedDomNode.getAttribute('data-__neos-fusion-path');
     }
     const transientInspectorValues = getTransientInspectorValues(state);
-    const transientInspectorValuesForFocusedNodes = $get([$get('contextPath', focusedNode)], transientInspectorValues);
+    const transientInspectorValuesForFocusedNodes = transientInspectorValues?.[focusedNode?.contextPath];
 
     //
     // Accumulate changes to be persisted
@@ -111,12 +110,12 @@ function * flushInspector(inspectorRegistry) {
         //
         const change = {
             type: 'Neos.Neos.Ui:Property',
-            subject: $get('contextPath', focusedNode),
+            subject: focusedNode?.contextPath,
             payload: {
                 propertyName,
                 value,
                 nodeDomAddress: {
-                    contextPath: $get('contextPath', focusedNode),
+                    contextPath: focusedNode?.contextPath,
                     fusionPath: focusedNodeFusionPath
                 }
             }
@@ -131,10 +130,10 @@ function * flushInspector(inspectorRegistry) {
         // Update uris of all nodes in state if uriPathSegment has been changed
         //
         if (propertyName === 'uriPathSegment') {
-            const oldValue = $get('properties.uriPathSegment', focusedNode);
+            const oldValue = focusedNode?.properties?.uriPathSegment;
             const newValue = transientValue.value;
             if (oldValue !== newValue) {
-                const oldUri = $get('uri', focusedNode);
+                const oldUri = focusedNode?.uri;
                 const oldUriFragment = oldUri.split('@')[0];
                 const newUriFragment = oldUriFragment.replace(new RegExp(escapeRegExp(oldValue) + '$'), newValue);
                 yield put(actions.CR.Nodes.updateUri(oldUriFragment, newUriFragment));

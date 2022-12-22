@@ -1,5 +1,4 @@
 import {takeEvery, put, call, select} from 'redux-saga/effects';
-import {$get} from 'plow-js';
 
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
 import backend from '@neos-project/neos-ui-backend-connector';
@@ -16,12 +15,12 @@ function * persistChanges(changes) {
         yield put(actions.ServerFeedback.handleServerFeedback(feedback));
 
         const state = yield select();
-        const isAutoPublishingEnabled = $get('user.settings.isAutoPublishingEnabled', state);
+        const isAutoPublishingEnabled = state?.user?.settings?.isAutoPublishingEnabled ?? false;
 
         if (isAutoPublishingEnabled) {
             const baseWorkspace = baseWorkspaceSelector(state);
             const publishableNodesInDocument = publishableNodesInDocumentSelector(state);
-            yield put(actions.CR.Workspaces.publish(publishableNodesInDocument.map($get('contextPath')), baseWorkspace));
+            yield put(actions.CR.Workspaces.publish(publishableNodesInDocument.map(node => node?.contextPath), baseWorkspace));
         }
     } catch (error) {
         console.error('Failed to persist changes', error);
@@ -54,7 +53,7 @@ export function * watchPersist() {
         // If there's already a pending request, don't start the new one;
         // the data will be stored in `changes` closure and when the current request finishes saving
         // it will be re-triggered by FINISH_SAVING
-        if (changes.length > 0 && !$get('ui.remote.isSaving', state)) {
+        if (changes.length > 0 && !state?.ui?.remote?.isSaving) {
             // we need to clear out the changes array before yield, so the best I could think of is this
             const clonedChanges = changes.slice(0);
             changes = [];

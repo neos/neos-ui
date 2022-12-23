@@ -3702,7 +3702,6 @@ __metadata:
     classnames: ^2.2.3
     lodash.debounce: ^4.0.8
     lodash.omit: ^4.5.0
-    plow-js: ^2.2.0
   peerDependencies:
     prop-types: ^15.5.10
     react: ^16.12.0

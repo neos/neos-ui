@@ -1,7 +1,6 @@
 import {DropDown, CheckBox, Button} from '@neos-project/react-ui-components';
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {$get} from 'plow-js';
 
 import {neos} from '@neos-project/neos-ui-decorators';
 import ckeIcons from './icons';
@@ -54,7 +53,7 @@ export default class TableDropDownButton extends PureComponent {
                             className={style.checkBox}
                             onClick={() => this.handleClick(item.commandName)}
                         >
-                            <CheckBox isChecked={$get(item.commandName, this.props.formattingUnderCursor)} />
+                            <CheckBox isChecked={this.props.formattingUnderCursor?.[item.commandName]} />
                             {this.props.i18nRegistry.translate(item.label)}
                         </label>
                     ) : <Button

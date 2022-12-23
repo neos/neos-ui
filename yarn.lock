@@ -3670,7 +3670,6 @@ __metadata:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
     "@neos-project/neos-ts-interfaces": "workspace:*"
     "@neos-project/utils-helpers": "workspace:*"
-    plow-js: ^2.2.0
     typescript: ^4.6.4
   languageName: unknown
   linkType: soft

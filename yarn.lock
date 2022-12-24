@@ -3855,7 +3855,6 @@ __metadata:
     classnames: ^2.2.3
     lodash.debounce: ^4.0.8
     lodash.throttle: ^4.1.1
-    plow-js: ^2.2.0
     redux-saga: ^0.15.0
     typescript: ^4.6.4
   peerDependencies:

@@ -1,5 +1,3 @@
-import {$get, $count} from 'plow-js';
-
 import {
     getGuestFrameDocument,
     createEmptyContentCollectionPlaceholderIfMissing,
@@ -12,10 +10,10 @@ import style from './style.css';
 
 export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry, nodes}) => contentDomNode => {
     const contextPath = contentDomNode.getAttribute('data-__neos-node-contextpath');
-    const isHidden = $get([contextPath, 'properties', '_hidden'], nodes);
-    const hasChildren = Boolean($count([contextPath, 'children'], nodes));
-    const isInlineEditable = nodeTypesRegistry.isInlineEditable($get([contextPath, 'nodeType'], nodes));
-    const matchesCurrentDimensions = !$get([contextPath, 'matchesCurrentDimensions'], nodes);
+    const isHidden = nodes?.[contextPath]?.properties?._hidden;
+    const hasChildren = Boolean(nodes?.[contextPath]?.children);
+    const isInlineEditable = nodeTypesRegistry.isInlineEditable(nodes?.[contextPath]?.nodeType);
+    const matchesCurrentDimensions = !nodes?.[contextPath]?.matchesCurrentDimensions;
 
     if (isHidden) {
         contentDomNode.classList.add(style.markHiddenNodeAsHidden);

@@ -1,6 +1,5 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {$transform} from 'plow-js';
 import {connect} from 'react-redux';
 import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
 import MultiSelectBox from '@neos-project/react-ui-components/src/MultiSelectBox/';
@@ -21,8 +20,8 @@ const getDataLoaderOptionsForProps = props => ({
     i18nRegistry: globalRegistry.get('i18n'),
     dataSourcesDataLoader: globalRegistry.get('dataLoaders').get('DataSources')
 }))
-@connect($transform({
-    focusedNodePath: selectors.CR.Nodes.focusedNodePathSelector
+@connect(state => ({
+    focusedNodePath: selectors.CR.Nodes.focusedNodePathSelector(state)
 }))
 export default class DataSourceBasedSelectBoxEditor extends PureComponent {
     static propTypes = {

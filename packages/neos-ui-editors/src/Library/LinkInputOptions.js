@@ -1,5 +1,4 @@
 import React, {Fragment} from 'react';
-import {$get} from 'plow-js';
 
 import {TextInput, CheckBox} from '@neos-project/react-ui-components';
 
@@ -23,7 +22,7 @@ const LinkInputOptions = ({
     const baseValue = typeof linkValue === 'string' ? linkValue.split('#')[0] : '';
     return (
         <Fragment>
-            {$get('anchor', linkingOptions) && (
+            {linkingOptions?.anchor && (
                 <div className={style.linkInput__optionsPanelItem}>
                     <label className={style.linkInput__optionsPanelLabel} htmlFor="__neos__linkEditor--anchor">
                         {i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__anchor', 'Link to anchor')}
@@ -40,7 +39,7 @@ const LinkInputOptions = ({
                     </div>
                 </div>
             )}
-            {$get('title', linkingOptions) && (
+            {linkingOptions?.title && (
                 <div className={style.linkInput__optionsPanelItem}>
                     <label className={style.linkInput__optionsPanelLabel} htmlFor="__neos__linkEditor--title">
                         {i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__title', 'Title')}
@@ -59,7 +58,7 @@ const LinkInputOptions = ({
             )}
 
             <div className={style.linkInput__optionsPanelDouble}>
-                {$get('targetBlank', linkingOptions) && (
+                {linkingOptions?.targetBlank && (
                     <div className={style.linkInput__optionsPanelItem}>
                         <label className={style.linkInput__optionsPanelCheckbox}>
                             <CheckBox
@@ -68,7 +67,7 @@ const LinkInputOptions = ({
                             /> {i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__targetBlank', 'Open in new window')}
                         </label>
                     </div>)}
-                {$get('relNofollow', linkingOptions) && (
+                {linkingOptions?.relNofollow && (
                     <div className={style.linkInput__optionsPanelItem}>
                         <label className={style.linkInput__optionsPanelCheckbox}>
                             <CheckBox
@@ -78,7 +77,7 @@ const LinkInputOptions = ({
                         </label>
                     </div>)}
             </div>
-            {$get('download', linkingOptions) && (
+            {linkingOptions?.download && (
                 <div className={style.linkInput__optionsPanelItem}>
                     <label className={style.linkInput__optionsPanelCheckbox}>
                         <CheckBox

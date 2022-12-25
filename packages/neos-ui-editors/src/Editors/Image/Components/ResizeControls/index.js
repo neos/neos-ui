@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {$get} from 'plow-js';
 
 import TextInput from '@neos-project/react-ui-components/src/TextInput/';
 import CheckBox from '@neos-project/react-ui-components/src/CheckBox/';
@@ -24,14 +23,14 @@ const toggleResizeAdjustment = props => () => {
     if (props.resizeAdjustment) {
         props.onChange(null);
     } else {
-        props.onChange(buildResizeAdjustment($get('width', props.imageDimensions), $get('height', props.imageDimensions)));
+        props.onChange(buildResizeAdjustment(props.imageDimensions?.width, props.imageDimensions?.height));
     }
 };
 
 const onChangeValue = (props, heightOrWidth) => changedValue => {
     let height = 0;
     let width = 0;
-    const aspectRatio = $get('height', props.imageDimensions) / $get('width', props.imageDimensions);
+    const aspectRatio = props.imageDimensions?.height / props.imageDimensions?.width;
 
     if (heightOrWidth === 'height') {
         height = changedValue;
@@ -67,7 +66,7 @@ const ResizeControls = props => {
                             pattern="\d*"
                             step="1"
                             min="0"
-                            value={$get('width', props.resizeAdjustment) || $get('width', props.imageDimensions) || 0}
+                            value={props.resizeAdjustment?.width || props.imageDimensions?.width || 0}
                             onChange={onChangeValue(props, 'width')}
                             disabled={props.disabled}
                             />
@@ -92,7 +91,7 @@ const ResizeControls = props => {
                             pattern="\d*"
                             step="1"
                             min="0"
-                            value={$get('height', props.resizeAdjustment) || $get('height', props.imageDimensions) || 0}
+                            value={props.resizeAdjustment?.height || props.imageDimensions?.height || 0}
                             onChange={onChangeValue(props, 'height')}
                             disabled={props.disabled}
                             />

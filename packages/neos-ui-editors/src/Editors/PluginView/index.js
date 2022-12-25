@@ -5,7 +5,6 @@ import backend from '@neos-project/neos-ui-backend-connector';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {connect} from 'react-redux';
 import {selectors} from '@neos-project/neos-ui-redux-store';
-import {$transform, $get} from 'plow-js';
 
 @neos(globalRegistry => {
     return {
@@ -13,11 +12,11 @@ import {$transform, $get} from 'plow-js';
     };
 })
 
-@connect($transform({
-    activeContentDimensions: selectors.CR.ContentDimensions.active,
-    personalWorkspace: selectors.CR.Workspaces.personalWorkspaceNameSelector,
-    focusedNode: selectors.CR.Nodes.focusedSelector,
-    transientValues: selectors.UI.Inspector.transientValues
+@connect(state => ({
+    activeContentDimensions: selectors.CR.ContentDimensions.active(state),
+    personalWorkspace: selectors.CR.Workspaces.personalWorkspaceNameSelector(state),
+    focusedNode: selectors.CR.Nodes.focusedSelector(state),
+    transientValues: selectors.UI.Inspector.transientValues(state)
 }))
 
 class PluginViewEditor extends React.PureComponent {
@@ -62,7 +61,7 @@ class PluginViewEditor extends React.PureComponent {
     }
 
     UNSAFE_componentWillReceiveProps(nextProps) {
-        if ($get('plugin.value', nextProps.transientValues) !== $get('plugin.value', this.props.transientValues)) {
+        if (nextProps.transientValues?.plugin?.value !== this.props.transientValues?.plugin?.value) {
             this.loadOptions(nextProps);
         }
     }
@@ -75,10 +74,10 @@ class PluginViewEditor extends React.PureComponent {
 
         const {loadPluginViews} = backend.get().endpoints;
 
-        const pluginNodeProperties = $get('properties', focusedNode);
+        const pluginNodeProperties = focusedNode?.properties;
 
         if (pluginNodeProperties.plugin) {
-            const pluginNodeIdentifier = $get('plugin.value', transientValues) === undefined ? $get('plugin', pluginNodeProperties) : $get('plugin.value', transientValues);
+            const pluginNodeIdentifier = transientValues?.plugin?.value === undefined ? pluginNodeProperties?.plugin : transientValues?.plugin?.value;
             this.setState({isLoading: true});
             loadPluginViews(pluginNodeIdentifier, personalWorkspace, activeContentDimensions)
                 .then(views => {
@@ -96,7 +95,7 @@ class PluginViewEditor extends React.PureComponent {
 
     render() {
         const {options, isLoading} = this.state;
-        const disabled = $get('options.disabled', this.props);
+        const disabled = this.props?.options?.disabled;
 
         return (
             <SelectBox

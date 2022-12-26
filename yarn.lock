@@ -3892,7 +3892,6 @@ __metadata:
     "@neos-project/neos-ui-redux-store": "workspace:*"
     "@neos-project/react-ui-components": "workspace:*"
     classnames: ^2.2.3
-    plow-js: ^2.2.0
     react-portal: ^4.2.0
     typescript: ^4.6.4
   peerDependencies:

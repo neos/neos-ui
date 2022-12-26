@@ -1,20 +1,19 @@
-import {$get} from 'plow-js';
 import {GlobalState} from '../../System';
 import {createSelector} from 'reselect';
 
 import {siteNodeContextPathSelector, siteNodeSelector, nodesByContextPathSelector} from '../../CR/Nodes/selectors';
 import {isNodeCollapsed} from '../../CR/Nodes/helpers';
 
-export const getAllFocused = (state: GlobalState) => $get(['ui', 'pageTree', 'focused'], state);
+export const getAllFocused = (state: GlobalState) => state?.ui?.pageTree?.focused;
 export const getFocused = (state: GlobalState) => {
     const focused = getAllFocused(state);
     return focused && focused[0] ? focused[0] : null;
 };
-export const getToggled = (state: GlobalState) => $get(['ui', 'pageTree', 'toggled'], state);
-export const getLoading = (state: GlobalState) => $get(['ui', 'pageTree', 'loading'], state);
-export const getErrors = (state: GlobalState) => $get(['ui', 'pageTree', 'errors'], state);
-export const getHidden = (state: GlobalState) => $get(['ui', 'pageTree', 'hidden'], state);
-export const getIntermediate = (state: GlobalState) => $get(['ui', 'pageTree', 'intermediate'], state);
+export const getToggled = (state: GlobalState) => state?.ui?.pageTree?.toggled;
+export const getLoading = (state: GlobalState) => state?.ui?.pageTree?.loading;
+export const getErrors = (state: GlobalState) => state?.ui?.pageTree?.errors;
+export const getHidden = (state: GlobalState) => state?.ui?.pageTree?.hidden;
+export const getIntermediate = (state: GlobalState) => state?.ui?.pageTree?.intermediate;
 
 export const destructiveOperationsAreDisabledForPageTreeSelector = createSelector(
     [
@@ -39,7 +38,7 @@ export const getIsLoading = createSelector(
 
 export const getUncollapsed = createSelector(
     [
-        (state: GlobalState) => $get(['ui', 'pageTree', 'toggled'], state),
+        (state: GlobalState) => state?.ui?.pageTree?.toggled,
         nodesByContextPathSelector,
         siteNodeSelector,
         (_: GlobalState, {loadingDepth = 0}: any) => loadingDepth

@@ -1,5 +1,3 @@
-import {$set} from 'plow-js';
-
 import {actionTypes, actions, reducer, selectors} from './index';
 import {actionTypes as system} from '../../System/index';
 
@@ -36,7 +34,15 @@ test(`The reducer should create a valid initial state`, () => {
     const state = {};
     const nextState = reducer(state, {
         type: system.INIT,
-        payload: $set('cr.workspaces.personalWorkspace', {initial: 'workspace-data'}, {})
+        payload: {
+            cr: {
+                workspaces: {
+                    personalWorkspace: {
+                        initial: 'workspace-data'
+                    }
+                }
+            }
+        }
     });
 
     expect(nextState).toMatchSnapshot();
@@ -45,7 +51,15 @@ test(`The reducer should create a valid initial state`, () => {
 test(`UPDATE should set personal workspace data to given data`, () => {
     const state = reducer({}, {
         type: system.INIT,
-        payload: $set('cr.workspaces.personalWorkspace', {initial: 'workspace-data'}, {})
+        payload: {
+            cr: {
+                workspaces: {
+                    personalWorkspace: {
+                        initial: 'workspace-data'
+                    }
+                }
+            }
+        }
     });
     const action = actions.update({totally: 'different-workspace-data'});
     const nextState = reducer(state, action);

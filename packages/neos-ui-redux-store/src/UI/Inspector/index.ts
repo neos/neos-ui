@@ -1,6 +1,5 @@
 import produce from 'immer';
 import {action as createAction, ActionType} from 'typesafe-actions';
-import {$get} from 'plow-js';
 
 import {InitAction} from '../../System';
 import {Node, NodeContextPath} from '@neos-project/neos-ts-interfaces';
@@ -90,7 +89,7 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
         case actionTypes.COMMIT: {
             const {focusedNode, propertyId, value, hooks} = action.payload;
             const focusedNodePath = focusedNode.contextPath;
-            const currentPropertyValue = $get(['properties', propertyId], focusedNode);
+            const currentPropertyValue = focusedNode?.properties?.[propertyId];
             const transientValueDiffers = (value !== null) && (value !== currentPropertyValue);
             if (typeof draft.valuesByNodePath[focusedNodePath] !== 'object') {
                 draft.valuesByNodePath[focusedNodePath] = {};

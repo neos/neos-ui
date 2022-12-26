@@ -63,7 +63,8 @@ const allowedSiblingsOrChildrenChanged = (previousProps, nextProps) => (
                 allowedChildNodeTypes: []
             };
         }
-        const referenceNodeType = selectors.CR.Nodes.getPathInNode(state, reference, 'nodeType');
+        const referenceNode = selectors.CR.Nodes.byContextPathSelector(reference)(state);
+        const referenceNodeType = referenceNode?.nodeType;
         const role = nodeTypesRegistry.hasRole(referenceNodeType, 'document') ? 'document' : 'content';
         const allowedSiblingNodeTypes = nodeTypesRegistry.getGroupedNodeTypeList(getAllowedSiblingNodeTypesSelector(state, {reference, role}));
         const allowedChildNodeTypes = nodeTypesRegistry.getGroupedNodeTypeList(getAllowedChildNodeTypesSelector(state, {reference, role}));

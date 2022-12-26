@@ -1,13 +1,12 @@
-import {$get} from 'plow-js';
 import {createSelector, defaultMemoize} from 'reselect';
 import {GlobalState} from '../../System';
 import {NodeContextPath, NodeMap, Node, NodeTypeName, ClipboardMode, NodeTypesRegistry} from '@neos-project/neos-ts-interfaces';
 
-export const inlineValidationErrorsSelector = (state: GlobalState) => $get(['cr', 'nodes', 'inlineValidationErrors'], state);
-export const nodesByContextPathSelector = (state: GlobalState) => $get(['cr', 'nodes', 'byContextPath'], state);
-export const siteNodeContextPathSelector = (state: GlobalState) => $get(['cr', 'nodes', 'siteNode'], state);
-export const documentNodeContextPathSelector = (state: GlobalState) => $get(['cr', 'nodes', 'documentNode'], state);
-export const focusedNodePathsSelector = (state: GlobalState) => $get(['cr', 'nodes', 'focused', 'contextPaths'], state);
+export const inlineValidationErrorsSelector = (state: GlobalState) => state?.cr?.nodes?.inlineValidationErrors;
+export const nodesByContextPathSelector = (state: GlobalState) => state?.cr?.nodes?.byContextPath;
+export const siteNodeContextPathSelector = (state: GlobalState) => state?.cr?.nodes?.siteNode;
+export const documentNodeContextPathSelector = (state: GlobalState) => state?.cr?.nodes?.documentNode;
+export const focusedNodePathsSelector = (state: GlobalState) => state?.cr?.nodes?.focused?.contextPaths;
 
 // This is internal, as in most cases you want `focusedNodePathSelector`, which is able to fallback to documentNode, when no node is focused
 export const _focusedNodeContextPathSelector = createSelector(
@@ -39,7 +38,7 @@ export const hasFocusedContentNode = createSelector(
 );
 
 export const nodeByContextPath = (state: GlobalState) => (contextPath: NodeContextPath) =>
-    $get(['cr', 'nodes', 'byContextPath', contextPath], state);
+    state?.cr?.nodes?.byContextPath?.[contextPath];
 
 export const makeGetDocumentNodes = (nodeTypesRegistry: NodeTypesRegistry) => createSelector(
     [
@@ -68,14 +67,14 @@ export const makeGetDocumentNodes = (nodeTypesRegistry: NodeTypesRegistry) => cr
 
 export const makeGetNodeByContextPathSelector = (contextPath: NodeContextPath) => createSelector(
     [
-        (state: GlobalState) => $get(['cr', 'nodes', 'byContextPath', contextPath], state)
+        (state: GlobalState) => state?.cr?.nodes?.byContextPath?.[contextPath]
     ],
     node => node
 );
 
 export const makeHasChildrenSelector = (allowedNodeTypes: NodeTypeName[]) => createSelector(
     [
-        (state: GlobalState, contextPath: NodeContextPath) => $get(['cr', 'nodes', 'byContextPath', contextPath], state)
+        (state: GlobalState, contextPath: NodeContextPath) => state?.cr?.nodes?.byContextPath?.[contextPath]
     ],
     node => (node && node.children || []).some(
         childNodeEnvelope => childNodeEnvelope ? allowedNodeTypes.includes(childNodeEnvelope.nodeType) : false
@@ -84,7 +83,7 @@ export const makeHasChildrenSelector = (allowedNodeTypes: NodeTypeName[]) => cre
 
 export const makeChildrenOfSelector = (allowedNodeTypes: NodeTypeName[]) => createSelector(
     [
-        (state: GlobalState, contextPath: NodeContextPath) => $get(['cr', 'nodes', 'byContextPath', contextPath], state),
+        (state: GlobalState, contextPath: NodeContextPath) => state?.cr?.nodes?.byContextPath?.[contextPath],
         nodesByContextPathSelector
     ],
     (node, nodesByContextPath: NodeMap) => (node && node.children || [])
@@ -222,7 +221,7 @@ export const focusedGrandParentSelector = createSelector(
     }
 );
 
-export const clipboardNodesContextPathsSelector = (state: GlobalState) => $get(['cr', 'nodes', 'clipboard'], state);
+export const clipboardNodesContextPathsSelector = (state: GlobalState) => state?.cr?.nodes?.clipboard;
 
 export const clipboardNodeContextPathSelector = createSelector(
     [
@@ -238,11 +237,61 @@ export const clipboardIsEmptySelector = createSelector(
     clipboardNodePath => Boolean(clipboardNodePath)
 );
 
-// TODO: deprecate
+/**
+ * @TODO: Remove getPathInNode in version 10
+ * @deprecated getPathInNode will be removed in version 10. In the meantime
+ *             please consider retrieving the node at `contextPath` via
+ *             `selectors.CR.Nodes.byContextPathSelector` and accessing the
+ *             property at `propertyPath` manually.
+ */
 export const getPathInNode = (state: GlobalState, contextPath: NodeContextPath, propertyPath: any) => {
-    const node = $get(['cr', 'nodes', 'byContextPath', contextPath], state);
+    console.warn(
+        'Neos UI Deprecation Warning: `selectors.CR.Nodes.getPathInNode` is' +
+            ' deprecated and will be removed in version 10. In the meantime' +
+            ' please consider retrieving the node at `contextPath` via' +
+            ' `selectors.CR.Nodes.byContextPathSelector` and accessing the' +
+            ' property at `propertyPath` manually.',
+        {contextPath, propertyPath}
+    );
 
-    return $get(propertyPath, node);
+    const node = state?.cr?.nodes?.byContextPath?.[contextPath];
+
+    let resolvedPropertyPath: Array<string | number>;
+    switch (true) {
+        case Array.isArray(propertyPath):
+            resolvedPropertyPath = propertyPath as Array<string | number>;
+            break;
+        case typeof propertyPath === 'number':
+            resolvedPropertyPath = [propertyPath as number];
+            break;
+        case typeof propertyPath === 'string':
+            resolvedPropertyPath = (propertyPath as string)
+                .split('.')
+                .map(part => {
+                    const partAsInteger = parseInt(part, 10);
+
+                    if (
+                        !isNaN(partAsInteger) &&
+                        String(partAsInteger) === part
+                    ) {
+                        return partAsInteger;
+                    }
+
+                    return part;
+                });
+            break;
+        default:
+            // As per plow-js:
+            // > This function returns the path, if it is neither
+            // > an array nor a string nor a number
+            //
+            // @see: https://codeberg.org/wbehncke/plow-js/src/commit/d82eb78234f2c47158d6541f98282e3464a240ac/src/projections/atoms/get/index.js#L9-L15
+            return propertyPath;
+    }
+
+    return resolvedPropertyPath.reduce((subject, part) => {
+        return subject && (subject as any)[part];
+    }, node);
 };
 
 export const makeGetAllowedChildNodeTypesSelector = (nodeTypesRegistry: NodeTypesRegistry, elevator: (id: string, state: GlobalState) => string | null = id => id) => createSelector(
@@ -253,7 +302,7 @@ export const makeGetAllowedChildNodeTypesSelector = (nodeTypesRegistry: NodeType
             }
             const elevatedReference = elevator(reference, state);
             if (elevatedReference) {
-                return $get(['cr', 'nodes', 'byContextPath', elevatedReference], state) || null;
+                return state?.cr?.nodes?.byContextPath[elevatedReference] || null;
             }
             return null;
         },
@@ -261,11 +310,12 @@ export const makeGetAllowedChildNodeTypesSelector = (nodeTypesRegistry: NodeType
             if (reference === null) {
                 return null;
             }
-            const parentReference = getPathInNode(state, reference, 'parent');
+            const parentReference =
+                state?.cr?.nodes?.byContextPath[reference]?.parent ?? null;
             if (parentReference !== null) {
                 const elevatedReferenceParent = elevator(parentReference, state);
                 if (elevatedReferenceParent !== null) {
-                    return $get(['cr', 'nodes', 'byContextPath', elevatedReferenceParent], state) || null;
+                    return state?.cr?.nodes?.byContextPath?.[elevatedReferenceParent] || null;
                 }
             }
             return null;
@@ -287,7 +337,7 @@ export const makeGetAllowedChildNodeTypesSelector = (nodeTypesRegistry: NodeType
 );
 
 export const makeGetAllowedSiblingNodeTypesSelector = (nodeTypesRegistry: NodeTypesRegistry) =>
-    makeGetAllowedChildNodeTypesSelector(nodeTypesRegistry, (nodeContextPath, state) => getPathInNode(state, nodeContextPath, 'parent'));
+    makeGetAllowedChildNodeTypesSelector(nodeTypesRegistry, (nodeContextPath, state) => state?.cr?.nodes?.byContextPath[nodeContextPath]?.parent ?? null);
 
 export const makeIsAllowedToAddChildOrSiblingNodes = (nodeTypesRegistry: NodeTypesRegistry) => createSelector(
     [
@@ -300,7 +350,7 @@ export const makeIsAllowedToAddChildOrSiblingNodes = (nodeTypesRegistry: NodeTyp
 
 export const makeCanBeCopiedAlongsideSelector = (nodeTypesRegistry: NodeTypesRegistry) => createSelector(
     [
-        (state: GlobalState, {subject}: {subject: NodeContextPath | null}) => subject ? $get(['cr', 'nodes', 'byContextPath', subject], state) : false,
+        (state: GlobalState, {subject}: {subject: NodeContextPath | null}) => subject ? state?.cr?.nodes?.byContextPath?.[subject] : false,
         makeGetAllowedSiblingNodeTypesSelector(nodeTypesRegistry)
     ],
     (subjectNode, allowedNodeTypes) => subjectNode ? allowedNodeTypes.includes(subjectNode.nodeType) : false
@@ -308,7 +358,7 @@ export const makeCanBeCopiedAlongsideSelector = (nodeTypesRegistry: NodeTypesReg
 
 export const makeCanBeCopiedIntoSelector = (nodeTypesRegistry: NodeTypesRegistry) => createSelector(
     [
-        (state: GlobalState, {subject}: {subject: NodeContextPath | null}) => subject ? $get(['cr', 'nodes', 'byContextPath', subject], state) : false,
+        (state: GlobalState, {subject}: {subject: NodeContextPath | null}) => subject ? state?.cr?.nodes?.byContextPath?.[subject] : false,
         makeGetAllowedChildNodeTypesSelector(nodeTypesRegistry)
     ],
     (subjectNode, allowedNodeTypes) => subjectNode ? allowedNodeTypes.includes(subjectNode.nodeType) : false
@@ -333,7 +383,8 @@ export const makeCanBeMovedAlongsideSelector = (nodeTypesRegistry: NodeTypesRegi
                 return false;
             }
             const subjectPath = subject && subject.split('@')[0];
-            const referenceParent = getPathInNode(state, reference, 'parent') as string;
+            const referenceParent =
+                state?.cr?.nodes?.byContextPath[reference]?.parent ?? null;
             if (!referenceParent) {
                 return false;
             }
@@ -363,7 +414,7 @@ export const makeCanBePastedSelector = (nodeTypesRegistry: NodeTypesRegistry) =>
     [
         makeCanBeMovedSelector(nodeTypesRegistry),
         makeCanBeCopiedSelector(nodeTypesRegistry),
-        (state: GlobalState) => $get(['cr', 'nodes', 'clipboardMode'], state)
+        (state: GlobalState) => state?.cr?.nodes?.clipboardMode
     ],
     (canBeMoved, canBeCopied, mode) => mode === ClipboardMode.COPY ? canBeCopied : canBeMoved
 );

@@ -344,7 +344,7 @@ manifest('main', {}, globalRegistry => {
             // ... then, we need to determine the closest parent which is not removed, so that we can
             // redirect to this node in the UI.
             //
-            // Finding the closest existing parent node is not so easy: We cannot access the Redux store to find parent node paths (e.g.  via selectors.CR.Nodes.getPathInNode(state, redirectContextPath, 'parent')),
+            // Finding the closest existing parent node is not so easy: We cannot access the Redux store to find parent node paths,
             // because the parent's parent node might have ALSO been removed in the same request.
             //
             // Instead, we need to check ALL the RemoveNode feedbacks from the current change request; and traverse the parent hierarchy there.

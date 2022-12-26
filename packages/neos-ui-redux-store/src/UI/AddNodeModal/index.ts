@@ -1,6 +1,5 @@
 import produce from 'immer';
 import {action as createAction, ActionType} from 'typesafe-actions';
-import {$get} from 'plow-js';
 
 import {actionTypes as system, InitAction} from '../../System';
 import {NodeContextPath, FusionPath} from '@neos-project/neos-ts-interfaces';
@@ -70,7 +69,7 @@ export enum errorMessages {
 export const reducer = (state: State = defaultState, action: InitAction | Action) => produce(state, draft => {
     switch (action.type) {
         case system.INIT: {
-            draft.toggledGroups = $get(['payload', 'ui', 'addNodeModal', 'toggledGroups'], action) || [];
+            draft.toggledGroups = action?.payload?.ui?.addNodeModal?.toggledGroups || [];
             break;
         }
         case actionTypes.OPEN: {

@@ -1,7 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$get} from 'plow-js';
 import mergeClassNames from 'classnames';
 
 import {Tree, Icon} from '@neos-project/react-ui-components';
@@ -97,10 +96,10 @@ export default class NodeTree extends PureComponent {
     handleDrop = (targetNode, position) => {
         const {currentlyDraggedNodes} = this.state;
         const {moveNodes, focus} = this.props;
-        moveNodes(currentlyDraggedNodes, $get('contextPath', targetNode), position);
+        moveNodes(currentlyDraggedNodes, targetNode?.contextPath, position);
         // We need to refocus the tree, so all focus would be reset, because its context paths have changed while moving
         // Could be removed with the new CR
-        focus($get('contextPath', targetNode));
+        focus(targetNode?.contextPath);
 
         this.setState({
             currentlyDraggedNodes: []

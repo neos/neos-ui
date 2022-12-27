@@ -52,7 +52,6 @@ module.exports = function (neosPackageJson) {
                 'react-dnd': '@neos-project/neos-ui-extensibility/src/shims/vendor/react-dnd/index',
                 'react-dnd-html5-backend': '@neos-project/neos-ui-extensibility/src/shims/vendor/react-dnd-html5-backend/index',
                 'prop-types': '@neos-project/neos-ui-extensibility/src/shims/vendor/prop-types/index',
-                'plow-js': '@neos-project/neos-ui-extensibility/src/shims/vendor/plow-js/index',
                 'classnames': '@neos-project/neos-ui-extensibility/src/shims/vendor/classnames/index',
                 'react-redux': '@neos-project/neos-ui-extensibility/src/shims/vendor/react-redux/index',
                 'redux-actions': '@neos-project/neos-ui-extensibility/src/shims/vendor/redux-actions/index',

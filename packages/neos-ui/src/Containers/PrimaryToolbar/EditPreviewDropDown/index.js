@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$transform} from 'plow-js';
+
 import {neos} from '@neos-project/neos-ui-decorators';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 import DropDown from '@neos-project/react-ui-components/src/DropDown/';
@@ -13,8 +13,8 @@ import {actions, selectors} from '@neos-project/neos-ui-redux-store/src';
 import memoize from 'lodash.memoize';
 import Button from '@neos-project/react-ui-components/src/Button';
 
-@connect($transform({
-    editPreviewMode: selectors.UI.EditPreviewMode.currentEditPreviewMode
+@connect(state => ({
+    editPreviewMode: selectors.UI.EditPreviewMode.currentEditPreviewMode(state)
 }), {
     setEditPreviewMode: actions.UI.EditPreviewMode.set
 })

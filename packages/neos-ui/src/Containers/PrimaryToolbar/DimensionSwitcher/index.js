@@ -7,7 +7,6 @@ import DropDown from '@neos-project/react-ui-components/src/DropDown/';
 import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
 import style from './style.css';
 import backend from '@neos-project/neos-ui-backend-connector';
-import {$get, $transform} from 'plow-js';
 import mapValues from 'lodash.mapvalues';
 import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 import I18n from '@neos-project/neos-ui-i18n';
@@ -61,14 +60,11 @@ class DimensionSelector extends PureComponent {
         const presetOptions = mapValues(
             presets,
             (presetConfiguration, presetName) => {
-                return $transform(
-                    {
-                        label: $get('label'),
-                        value: presetName,
-                        disallowed: $get('disallowed')
-                    },
-                    presetConfiguration
-                );
+                return {
+                    label: presetConfiguration?.label,
+                    value: presetName,
+                    disallowed: presetConfiguration?.disallowed
+                };
             }
         );
 
@@ -108,10 +104,10 @@ class DimensionSelector extends PureComponent {
     }
 }
 
-@connect($transform({
-    contentDimensions: selectors.CR.ContentDimensions.byName,
-    allowedPresets: selectors.CR.ContentDimensions.allowedPresets,
-    activePresets: selectors.CR.ContentDimensions.activePresets
+@connect(state => ({
+    contentDimensions: selectors.CR.ContentDimensions.byName(state),
+    allowedPresets: selectors.CR.ContentDimensions.allowedPresets(state),
+    activePresets: selectors.CR.ContentDimensions.activePresets(state)
 }), {
     selectPreset: actions.CR.ContentDimensions.selectPreset,
     setAllowed: actions.CR.ContentDimensions.setAllowed
@@ -181,7 +177,7 @@ export default class DimensionSwitcher extends PureComponent {
                     contentDimensions(dimensionName, effectivePresets).then(
                         dimensionConfig => {
                             const allowedPresets = Object.keys(
-                                $get([dimensionName, 'presets'], dimensionConfig)
+                                dimensionConfig?.[dimensionName]?.presets
                             );
                             this.props.setAllowed(dimensionName, allowedPresets);
 
@@ -203,7 +199,7 @@ export default class DimensionSwitcher extends PureComponent {
                             if (!this.props.allowedPresets[selectedDimensionName].includes(presetName)) {
                                 contentDimensions(selectedDimensionName, this.getEffectivePresets(transientPresets)).then(
                                     dimensionConfig => {
-                                        const allowedPresets = Object.keys($get([selectedDimensionName, 'presets'], dimensionConfig));
+                                        const allowedPresets = Object.keys(dimensionConfig?.[selectedDimensionName]?.presets);
                                         this.props.setAllowed(selectedDimensionName, allowedPresets);
                                     }
                                 );
@@ -247,13 +243,13 @@ export default class DimensionSwitcher extends PureComponent {
                 >
                     {contentDimensionsObjectKeys.map(dimensionName => {
                         const dimensionConfiguration = contentDimensionsObject[dimensionName];
-                        const icon = $get('icon', dimensionConfiguration) && $get('icon', dimensionConfiguration);
+                        const icon = dimensionConfiguration?.icon && dimensionConfiguration?.icon;
                         return (<SelectedPreset
                             key={dimensionName}
                             dimensionName={dimensionName}
                             icon={icon}
-                            dimensionLabel={i18nRegistry.translate($get('label', dimensionConfiguration))}
-                            presetLabel={i18nRegistry.translate($get([dimensionName, 'label'], activePresets))}
+                            dimensionLabel={i18nRegistry.translate(dimensionConfiguration?.label)}
+                            presetLabel={i18nRegistry.translate(activePresets?.[dimensionName]?.label)}
                             />
                         );
                     })}
@@ -261,7 +257,7 @@ export default class DimensionSwitcher extends PureComponent {
                 <DropDown.Contents className={style.dropDown__contents}>
                     {contentDimensionsObjectKeys.map(dimensionName => {
                         const dimensionConfiguration = contentDimensionsObject[dimensionName];
-                        const icon = $get('icon', dimensionConfiguration) && $get('icon', dimensionConfiguration);
+                        const icon = dimensionConfiguration?.icon && dimensionConfiguration?.icon;
                         // First look for active preset in transient state, else take it from activePresets prop
                         const activePreset = this.getEffectivePresets(this.state.transientPresets)[dimensionName];
                         return (<DimensionSelector
@@ -269,7 +265,7 @@ export default class DimensionSwitcher extends PureComponent {
                             key={dimensionName}
                             dimensionName={dimensionName}
                             icon={icon}
-                            dimensionLabel={$get('label', dimensionConfiguration)}
+                            dimensionLabel={dimensionConfiguration?.label}
                             presets={this.presetsForDimension(dimensionName)}
                             activePreset={activePreset}
                             onSelect={this.handleSelectPreset}
@@ -300,7 +296,7 @@ export default class DimensionSwitcher extends PureComponent {
 
     presetsForDimension(dimensionName) {
         const {contentDimensions, allowedPresets, i18nRegistry} = this.props;
-        const dimensionConfiguration = $get(dimensionName, contentDimensions);
+        const dimensionConfiguration = contentDimensions?.[dimensionName];
 
         return mapValues(dimensionConfiguration.presets,
             (presetConfiguration, presetName) => {

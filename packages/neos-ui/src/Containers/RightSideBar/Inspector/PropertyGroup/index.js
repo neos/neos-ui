@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {Maybe} from 'monet';
-import {$get} from 'plow-js';
+
 import ToggablePanel from '@neos-project/react-ui-components/src/ToggablePanel/';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 
@@ -46,34 +46,34 @@ export default class PropertyGroup extends PureComponent {
                 </ToggablePanel.Header>
                 <ToggablePanel.Contents>
                     {items.map(item => {
-                        const itemId = $get('id', item);
-                        const itemType = $get('type', item);
-                        const label = $get('label', item) || '';
+                        const itemId = item?.id;
+                        const itemType = item?.type;
+                        const label = item?.label || '';
 
                         if (itemType === 'editor') {
                             return (
                                 <InspectorEditorEnvelope
-                                    key={$get('contextPath', node) + itemId}
+                                    key={node?.contextPath + itemId}
                                     id={itemId}
                                     label={label}
-                                    editor={$get('editor', item)}
-                                    options={$get('editorOptions', item) && $get('editorOptions', item)}
+                                    editor={item?.editor}
+                                    options={item?.editorOptions}
                                     renderSecondaryInspector={renderSecondaryInspector}
                                     node={node}
                                     commit={commit}
                                     onEnterKey={handleInspectorApply}
-                                    helpMessage={$get('helpMessage', item)}
-                                    helpThumbnail={$get('helpThumbnail', item)}
+                                    helpMessage={item?.helpMessage}
+                                    helpThumbnail={item?.helpThumbnail}
                                 />);
                         }
                         if (itemType === 'view') {
                             return (
                                 <InspectorViewEnvelope
-                                    key={$get('contextPath', node) + itemId}
+                                    key={node?.contextPath + itemId}
                                     id={itemId}
-                                    label={$get('label', item)}
-                                    view={$get('view', item)}
-                                    options={$get('viewOptions', item)}
+                                    label={item?.label}
+                                    view={item?.view}
+                                    options={item?.viewOptions}
                                     renderSecondaryInspector={renderSecondaryInspector}
                                     node={node}
                                     commit={commit}
@@ -89,7 +89,7 @@ export default class PropertyGroup extends PureComponent {
     render() {
         const {items} = this.props;
 
-        const visibleItems = items ? items.filter(item => !$get('hidden', item)) : [];
+        const visibleItems = items ? items.filter(item => !item?.hidden) : [];
 
         return Maybe.fromEmpty(visibleItems).map(this.renderPropertyGroup).orSome(null);
     }

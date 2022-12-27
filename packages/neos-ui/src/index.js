@@ -4,7 +4,6 @@ import {createStore, applyMiddleware, compose} from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import {put, select, all} from 'redux-saga/effects';
 import merge from 'lodash.merge';
-import {$get} from 'plow-js';
 
 import {actions} from '@neos-project/neos-ui-redux-store';
 import {createConsumerApi} from '@neos-project/neos-ui-extensibility';
@@ -206,8 +205,12 @@ function * application() {
         appContainer
     );
 
-    const siteNodeContextPath = yield select($get('cr.nodes.siteNode'));
-    const documentNodeContextPath = yield select($get('cr.nodes.documentNode'));
+    const siteNodeContextPath = yield select(
+        state => state?.cr?.nodes?.siteNode
+    );
+    const documentNodeContextPath = yield select(
+        state => state?.cr?.nodes?.documentNode
+    );
     yield put(actions.CR.Nodes.reloadState({
         siteNodeContextPath,
         documentNodeContextPath,

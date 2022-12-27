@@ -1,5 +1,3 @@
-import {$get} from 'plow-js';
-
 //
 // Local storage middleware.
 //
@@ -32,19 +30,19 @@ const localStorageMiddleware = ({getState}) => {
                 const persistentStateSubset = {
                     ui: {
                         drawer: {
-                            collapsedMenuGroups: $get('ui.drawer.collapsedMenuGroups', state)
+                            collapsedMenuGroups: state?.ui?.drawer?.collapsedMenuGroups
                         },
                         leftSideBar: {
-                            isHidden: $get('ui.leftSideBar.isHidden', state),
+                            isHidden: state?.ui?.leftSideBar?.isHidden,
                             contentTree: {
-                                isHidden: $get('ui.leftSideBar.contentTree.isHidden', state)
+                                isHidden: state?.ui?.leftSideBar?.contentTree?.isHidden
                             },
                             searchBar: {
-                                isVisible: $get('ui.leftSideBar.searchBar.isVisible', state)
+                                isVisible: state?.ui?.leftSideBar?.searchBar?.isVisible
                             }
                         },
                         rightSideBar: {
-                            isHidden: $get('ui.rightSideBar.isHidden', state)
+                            isHidden: state?.ui?.rightSideBar?.isHidden
                         }
                     }
                 };

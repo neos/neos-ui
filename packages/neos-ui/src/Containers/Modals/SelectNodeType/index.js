@@ -1,7 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$get} from 'plow-js';
 import isEqual from 'lodash.isequal';
 import escaperegexp from 'lodash.escaperegexp';
 
@@ -55,7 +54,7 @@ const allowedSiblingsOrChildrenChanged = (previousProps, nextProps) => (
     const getAllowedChildNodeTypesSelector = selectors.CR.Nodes.makeGetAllowedChildNodeTypesSelector(nodeTypesRegistry);
 
     return state => {
-        const reference = $get('ui.selectNodeTypeModal.referenceNodeContextPath', state);
+        const reference = state?.ui?.selectNodeTypeModal?.referenceNodeContextPath;
         if (!reference) {
             return {
                 isOpen: false,
@@ -70,8 +69,8 @@ const allowedSiblingsOrChildrenChanged = (previousProps, nextProps) => (
         const allowedChildNodeTypes = nodeTypesRegistry.getGroupedNodeTypeList(getAllowedChildNodeTypesSelector(state, {reference, role}));
 
         return {
-            isOpen: $get('ui.selectNodeTypeModal.isOpen', state),
-            preferredMode: $get('ui.selectNodeTypeModal.preferredMode', state),
+            isOpen: state?.ui?.selectNodeTypeModal?.isOpen,
+            preferredMode: state?.ui?.selectNodeTypeModal?.preferredMode,
             allowedSiblingNodeTypes,
             allowedChildNodeTypes
         };

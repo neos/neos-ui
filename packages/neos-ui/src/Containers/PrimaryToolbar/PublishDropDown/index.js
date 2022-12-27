@@ -3,7 +3,6 @@ import React, {Fragment, PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
-import {$transform, $get} from 'plow-js';
 
 import Badge from '@neos-project/react-ui-components/src/Badge/';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
@@ -21,16 +20,16 @@ import AbstractButton from './AbstractButton/index';
 import WorkspaceSelector from './WorkspaceSelector/index';
 import style from './style.css';
 
-@connect($transform({
-    isSaving: $get('ui.remote.isSaving'),
-    isPublishing: $get('ui.remote.isPublishing'),
-    isDiscarding: $get('ui.remote.isDiscarding'),
-    publishableNodes: publishableNodesSelector,
-    publishableNodesInDocument: publishableNodesInDocumentSelector,
-    personalWorkspaceName: personalWorkspaceNameSelector,
-    baseWorkspace: baseWorkspaceSelector,
-    isWorkspaceReadOnly: isWorkspaceReadOnlySelector,
-    isAutoPublishingEnabled: $get('user.settings.isAutoPublishingEnabled')
+@connect(state => ({
+    isSaving: state?.ui?.remote?.isSaving,
+    isPublishing: state?.ui?.remote?.isPublishing,
+    isDiscarding: state?.ui?.remote?.isDiscarding,
+    publishableNodes: publishableNodesSelector(state),
+    publishableNodesInDocument: publishableNodesInDocumentSelector(state),
+    personalWorkspaceName: personalWorkspaceNameSelector(state),
+    baseWorkspace: baseWorkspaceSelector(state),
+    isWorkspaceReadOnly: isWorkspaceReadOnlySelector(state),
+    isAutoPublishingEnabled: state?.user?.settings?.isAutoPublishingEnabled
 }), {
     toggleAutoPublishing: actions.User.Settings.toggleAutoPublishing,
     changeBaseWorkspaceAction: actions.CR.Workspaces.changeBaseWorkspace,
@@ -64,25 +63,25 @@ export default class PublishDropDown extends PureComponent {
     handlePublishClick = () => {
         const {publishableNodesInDocument, publishAction, baseWorkspace} = this.props;
 
-        publishAction(publishableNodesInDocument.map($get('contextPath')), baseWorkspace);
+        publishAction(publishableNodesInDocument.map(node => node?.contextPath), baseWorkspace);
     }
 
     handlePublishAllClick = () => {
         const {publishableNodes, publishAction, baseWorkspace} = this.props;
 
-        publishAction(publishableNodes.map($get('contextPath')), baseWorkspace);
+        publishAction(publishableNodes.map(node => node?.contextPath), baseWorkspace);
     }
 
     handleDiscardClick = () => {
         const {publishableNodesInDocument, discardAction} = this.props;
 
-        discardAction(publishableNodesInDocument.map($get('contextPath')));
+        discardAction(publishableNodesInDocument.map(node => node?.contextPath));
     }
 
     handleDiscardAllClick = () => {
         const {publishableNodes, discardAction} = this.props;
 
-        discardAction(publishableNodes.map($get('contextPath')));
+        discardAction(publishableNodes.map(node => node?.contextPath));
     }
 
     render() {
@@ -101,9 +100,9 @@ export default class PublishDropDown extends PureComponent {
             neos
         } = this.props;
 
-        const workspaceModuleUri = $get('routes.core.modules.workspaces', neos);
-        const allowedWorkspaces = $get('configuration.allowedTargetWorkspaces', neos);
-        const baseWorkspaceTitle = $get([baseWorkspace, 'title'], allowedWorkspaces);
+        const workspaceModuleUri = neos?.routes?.core?.modules?.workspaces;
+        const allowedWorkspaces = neos?.configuration?.allowedTargetWorkspaces;
+        const baseWorkspaceTitle = allowedWorkspaces?.[baseWorkspace]?.title;
         const canPublishLocally = !isSaving && !isPublishing && !isDiscarding && publishableNodesInDocument && (publishableNodesInDocument.length > 0);
         const canPublishGlobally = !isSaving && !isPublishing && !isDiscarding && publishableNodes && (publishableNodes.length > 0);
         const changingWorkspaceAllowed = !canPublishGlobally;

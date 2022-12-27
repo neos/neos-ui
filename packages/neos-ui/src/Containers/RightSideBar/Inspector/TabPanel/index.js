@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {$get, $contains} from 'plow-js';
+
 import Tabs from '@neos-project/react-ui-components/src/Tabs/';
 
 import PropertyGroup from '../PropertyGroup/index';
@@ -26,11 +26,11 @@ export default class TabPanel extends PureComponent {
             return true;
         }
 
-        if ($get('hidden', item)) {
+        if (item?.hidden) {
             return false;
         }
 
-        return $get(['policy', 'canEdit'], node) && !$contains(item.id, 'policy.disallowedProperties', node);
+        return node?.policy?.canEdit && !node?.policy?.disallowedProperties?.includes(item.id);
     };
 
     renderTabPanel = groups => {
@@ -40,14 +40,14 @@ export default class TabPanel extends PureComponent {
             <Tabs.Panel theme={{panel: style.inspectorTabPanel}}>
                 {groups.map(group => (
                     <PropertyGroup
-                        handlePanelToggle={() => handlePanelToggle([$get('id', group)])}
+                        handlePanelToggle={() => handlePanelToggle([group?.id])}
                         handleInspectorApply={handleInspectorApply}
-                        key={$get('id', group)}
-                        label={$get('label', group)}
-                        icon={$get('icon', group)}
+                        key={group?.id}
+                        label={group?.label}
+                        icon={group?.icon}
                         // Overlay default collapsed state over current state
-                        collapsed={Boolean($get($get('id', group), toggledPanels)) !== Boolean($get('collapsed', group))}
-                        items={$get('items', group).filter(this.isPropertyEnabled)}
+                        collapsed={Boolean(toggledPanels?.[group?.id]) !== Boolean(group?.collapsed)}
+                        items={group?.items?.filter(this.isPropertyEnabled) ?? []}
                         renderSecondaryInspector={renderSecondaryInspector}
                         node={node}
                         commit={commit}
@@ -60,7 +60,7 @@ export default class TabPanel extends PureComponent {
     render() {
         const {groups} = this.props;
 
-        const visibleGroups = groups ? groups.filter(group => $get('items', group) && $get('items', group).some(this.isPropertyEnabled)) : [];
+        const visibleGroups = groups ? groups.filter(group => group?.items?.some(this.isPropertyEnabled)) : [];
 
         return this.renderTabPanel(visibleGroups);
     }

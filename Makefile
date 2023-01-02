@@ -178,7 +178,7 @@ bump-version: called-with-version
 	./Build/createVersionFile.sh
 
 adjust-extensibility:
-	./Build/adjust-extensibility-package.sh
+	./Build/adjust-extensibility-package.sh $(target-path)
 
 
 publish-npm: called-with-version

@@ -3974,9 +3974,9 @@ __metadata:
     "@neos-project/react-ui-components": "workspace:*"
     d3-scale: ^4.0.2
     d3-time: ^1.0.8
+    lodash.get: ^4.4.2
     lodash.isequal: ^4.5.0
     moment: ^2.20.1
-    plow-js: ^2.2.0
     recharts: ^1.0.0-alpha.6
   peerDependencies:
     prop-types: ^15.5.10
@@ -14582,7 +14582,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"immutable@npm:^3.7.6, immutable@npm:^3.8.1":
+"immutable@npm:^3.8.1":
   version: 3.8.2
   resolution: "immutable@npm:3.8.2"
   checksum: 41909b386950ff84ca3cfca77c74cfc87d225a914e98e6c57996fa81a328da61a7c32216d6d5abad40f54747ffdc5c4b02b102e6ad1a504c1752efde8041f964
@@ -17019,6 +17019,13 @@ __metadata:
   version: 3.5.0
   resolution: "lodash.flowright@npm:3.5.0"
   checksum: d7924839f81bbd8a7ce5890689214e6c6e9809388ae0cc553fc1cc44c0d32abe84ce2c425a490db4d3f93f7a80099d9d7905aadc08eba2f43ba0c38073a570a1
+  languageName: node
+  linkType: hard
+
+"lodash.get@npm:^4.4.2":
+  version: 4.4.2
+  resolution: "lodash.get@npm:4.4.2"
+  checksum: e403047ddb03181c9d0e92df9556570e2b67e0f0a930fcbbbd779370972368f5568e914f913e93f3b08f6d492abc71e14d4e9b7a18916c31fa04bd2306efe545
   languageName: node
   linkType: hard
 
@@ -19698,18 +19705,6 @@ __metadata:
   dependencies:
     find-up: ^3.0.0
   checksum: 5bac346b7c7c903613c057ae3ab722f320716199d753f4a7d053d38f2b5955460f3e6ab73b4762c62fd3e947f58e04f1343e92089e7bb6091c90877406fcd8c8
-  languageName: node
-  linkType: hard
-
-"plow-js@npm:^2.2.0":
-  version: 2.2.0
-  resolution: "plow-js@npm:2.2.0"
-  dependencies:
-    immutable: ^3.7.6
-  dependenciesMeta:
-    immutable:
-      optional: true
-  checksum: d09f1dcf03c4db680b3827100448f02470b895aa39b324023732f7f10d2c14521112e37cdfad960d970e326c692e1a449ad76679f8bef63307d8288bc8548e1d
   languageName: node
   linkType: hard
 

@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$get} from 'plow-js';
+
 import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors} from '@neos-project/neos-ui-redux-store';
 import style from './style.css';
@@ -27,15 +27,15 @@ export default class NodeInfoView extends PureComponent {
 
         const node = getNodeByContextPath(focusedNodeContextPath);
         const properties = {
-            identifier: $get('identifier', node),
-            created: $get('properties._creationDateTime', node),
-            lastModification: $get('properties._lastModificationDateTime', node),
-            lastPublication: $get('properties._lastPublicationDateTime', node),
-            path: $get('properties._path', node),
-            name: $get('properties._name', node) ? $get('properties._name', node) : '/'
+            identifier: node?.identifier,
+            created: node?.properties?._creationDateTime,
+            lastModification: node?.properties?._lastModificationDateTime,
+            lastPublication: node?.properties?._lastPublicationDateTime,
+            path: node?.properties?._path,
+            name: node?.properties?._name ? node?.properties?._name : '/'
         };
 
-        const nodeType = $get('nodeType', node);
+        const nodeType = node?.nodeType;
 
         return (
             <ul className={style.nodeInfoView}>

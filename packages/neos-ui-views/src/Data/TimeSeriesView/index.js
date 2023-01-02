@@ -4,7 +4,7 @@ import moment from 'moment';
 import {LineChart, Line, XAxis, YAxis, CartesianGrid} from 'recharts';
 import {scaleTime, scaleLinear} from 'd3-scale';
 import {timeSecond, timeDay, timeWeek, timeMonth, timeYear} from 'd3-time';
-import {$get} from 'plow-js';
+import get from 'lodash.get';
 import brand from '@neos-project/brand';
 import dataLoader from '../DataLoader/index';
 
@@ -30,15 +30,15 @@ export default class TimeSeriesView extends PureComponent {
         if (!data) {
             return [];
         }
-        const collection = $get(collectionPath, data);
+        const collection = get(data, collectionPath);
         return collection.map(row => ({
-            value: parseInt($get(series.valueData, row), 10),
-            time: moment($get(series.timeData, row)).valueOf()
+            value: parseInt(get(row, series.valueData), 10),
+            time: moment(get(row, series.timeData)).valueOf()
         }));
     };
 
     formatDate = tickItem => {
-        switch ($get('chart.selectedInterval', this.props.options)) {
+        switch (this.props.options?.chart?.selectedInterval) {
             case 'years':
             case 'Y':
                 return moment(tickItem).format('\'YY');
@@ -80,7 +80,7 @@ export default class TimeSeriesView extends PureComponent {
     }
 
     getTimeLabeler = () => {
-        switch ($get('chart.selectedInterval', this.props.options)) {
+        switch (this.props.options?.chart?.selectedInterval) {
             case 'years':
             case 'Y':
                 return timeYear;
@@ -112,7 +112,7 @@ export default class TimeSeriesView extends PureComponent {
     };
 
     getYTicks = data => {
-        const yMin = $get('chart.yAxisFromZero', this.props.options) ? 0 : Math.min(...data.map(item => item.value));
+        const yMin = this.props.options?.chart?.yAxisFromZero ? 0 : Math.min(...data.map(item => item.value));
         const yMax = Math.max(...data.map(item => item.value));
         const domain = [yMin, yMax];
         const scale = scaleLinear().domain(domain);
@@ -162,7 +162,7 @@ export default class TimeSeriesView extends PureComponent {
                 <YAxis
                     tickCount={yTicks.length}
                     ticks={yTicks}
-                    domain={$get('chart.yAxisFromZero', this.props.options) ? [0, 'dataMax'] : ['dataMin', 'dataMax']}
+                    domain={this.props.options?.chart?.yAxisFromZero ? [0, 'dataMax'] : ['dataMin', 'dataMax']}
                     width={yLabelWidth}
                     stroke="#ffffff"
                     fontSize="11px"
@@ -170,7 +170,7 @@ export default class TimeSeriesView extends PureComponent {
                     tickLine={false}
                     padding={{
                         top: 10,
-                        bottom: $get('chart.yAxisFromZero', this.props.options) ? 0 : 10
+                        bottom: this.props.options?.chart?.yAxisFromZero ? 0 : 10
                     }}
                     />
                 <CartesianGrid

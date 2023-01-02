@@ -4,7 +4,14 @@
 package_json="packages/neos-ui-extensibility/package.json"
 
 # Set the new value for the "module" field
-new_module_value="./dist/index.js"
+if [ $# -eq 0 ]; then
+  # Print an error message if no argument was provided
+  echo "Error: No value provided for 'module path'"
+  exit 1
+else
+  # Set the new value for the "module" field
+  new_module_value=$1
+fi
 
 # Check if jq is installed
 if ! command -v jq > /dev/null; then

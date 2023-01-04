@@ -140,7 +140,7 @@ export default class NodeCreationDialog extends PureComponent {
         const validationErrors = this.getValidationErrorsForTransientValues(transient);
 
         if (validationErrors) {
-            this.setState({validationErrors});
+            this.setState({validationErrors, isDirty: true});
         } else {
             const {apply} = this.props;
             apply(transient);

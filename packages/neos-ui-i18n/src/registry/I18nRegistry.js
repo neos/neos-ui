@@ -94,7 +94,7 @@ export default class I18nRegistry extends SynchronousRegistry {
                 regex.lastIndex++;
             }
 
-            m.forEach((match) => {
+            m.forEach(match => {
                 translation = translation.replace(match, this.translateOne(match, fallbackOrig, params, packageKeyOrig, sourceNameOrig, quantity))
             });
         }

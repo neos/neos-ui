@@ -6,6 +6,20 @@ interface RequestQueueItem {
     reject: (reason?: any) => void;
 }
 
+const isAuthenticationRequiredAsPerResponse = (response: Response) => {
+    if (response.status === 401) {
+        // The response says explicitly that the request is unauthorized
+        return true;
+    }
+
+    if (response.redirected) {
+        // The request has been redirected to the login page
+        return response.url.endsWith('login');
+    }
+
+    return false;
+};
+
 class FetchWithErrorHandling {
     /**
      * The current CSRF token being used.
@@ -92,10 +106,7 @@ class FetchWithErrorHandling {
         // return only after the successful relogin.
         return new Promise((resolve, reject) =>
             fetch(url, fetchOptions).then(response => {
-                if (response.ok) {
-                    // CASE: all good; no errors!
-                    resolve(response);
-                } else if (response.status === 401) {
+                if (isAuthenticationRequiredAsPerResponse(response)) {
                     // CASE: Unauthorized!
                     // - all following requests have to fail; thus we enqueue them.
                     // - we enqueue our current request; so that it is re-run after successful re-login.
@@ -107,12 +118,17 @@ class FetchWithErrorHandling {
                     if (this._authenticationErrorHandlerFn) {
                         this._authenticationErrorHandlerFn();
                     }
-                } else if (response.status >= 500) { // 50x error
-                    response.text().then(text => {
+                } else if (response.ok) {
+                    // CASE: all good; no errors!
+                    resolve(response);
+                } else if (response.status >= 500) {
+                    // 50x error
+                    response.text().then((text) => {
                         // Rejected promise is caught later
                         reject(text);
                     });
-                } else { // Other cases like 404, not necessarily an error
+                } else {
+                    // Other cases like 404, not necessarily an error
                     resolve(response);
                 }
             }, reason => {

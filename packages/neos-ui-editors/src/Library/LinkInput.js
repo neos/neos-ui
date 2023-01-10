@@ -190,6 +190,12 @@ export default class LinkInput extends PureComponent {
                     }
                 });
         } else {
+            if (this.state.searchTerm) {
+                // The search term has been emptied. To avoid confusion, the emptied
+                // search term gets immediately applied.
+                this.props.onLinkChange(searchTerm);
+            }
+
             this.setState({
                 isLoading: false
             });
@@ -263,7 +269,7 @@ export default class LinkInput extends PureComponent {
     handleManualSetLink = () => {
         this.props.onLinkChange(this.state.searchTerm);
         this.setState({
-            isEditMode: false
+            isEditMode: !this.state.searchTerm
         });
     }
 

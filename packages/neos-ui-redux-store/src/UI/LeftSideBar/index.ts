@@ -9,7 +9,7 @@ export interface State extends Readonly<{
     contentTree: {
         isHidden: boolean;
     },
-    searchBar:  {
+    searchBar: {
         isVisible: boolean;
     };
 }> {}
@@ -23,8 +23,6 @@ export const defaultState: State = {
         isVisible: false
     }
 };
-
-
 
 //
 // Export the action types

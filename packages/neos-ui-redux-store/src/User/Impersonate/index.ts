@@ -1,7 +1,7 @@
 import {produce} from 'immer';
 import {action as createAction, ActionType} from 'typesafe-actions';
 import {InitAction} from '../../System';
-import { WritableDraft } from 'immer/dist/internal';
+import {WritableDraft} from 'immer/dist/internal';
 
 export interface ImpersonateAccount extends WritableDraft<{
     accountIdentifier: string;
@@ -18,7 +18,6 @@ export const defaultState: State = {
     status: false
 };
 
-
 //
 // Export the action types
 //
@@ -34,7 +33,7 @@ export enum actionTypes {
 export const actions = {
     init: () => createAction(actionTypes.INIT),
     fetchStatus: (data: State) => createAction(actionTypes.FETCH_STATUS, data),
-    restore: () => createAction(actionTypes.RESTORE),
+    restore: () => createAction(actionTypes.RESTORE)
 };
 
 //

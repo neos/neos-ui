@@ -34,7 +34,7 @@ export NVM_DIR="$HOME/.nvm"
 export NODE_OPTIONS="--max-old-space-size=4096"
 
 nvm install && nvm use
-make install
+make clean && make setup
 make build-production
 
 rm -Rf tmp_compiled_pkg
@@ -44,17 +44,15 @@ git checkout "$GIT_BRANCH"
 cd ..
 
 
-mkdir -p tmp_compiled_pkg/Resources/Public/JavaScript
-mkdir -p tmp_compiled_pkg/Resources/Public/Styles
+mkdir -p tmp_compiled_pkg/Resources/Public/Build
 
-cp -Rf Resources/Public/JavaScript/* tmp_compiled_pkg/Resources/Public/JavaScript
-cp -Rf Resources/Public/Styles/* tmp_compiled_pkg/Resources/Public/Styles
+cp -Rf Resources/Public/Build/* tmp_compiled_pkg/Resources/Public/Build
 
 cd tmp_compiled_pkg
 git add Resources/Public/
 git commit -m "Compile Neos UI - $GIT_SHA1" || true
 
-if [[ "$GIT_BRANCH" == "origin/5.3" || "$GIT_BRANCH" == "origin/7.0"  || "$GIT_BRANCH" == "origin/7.1" || "$GIT_BRANCH" == "origin/7.2" || "$GIT_BRANCH" == "origin/7.3" || "$GIT_BRANCH" == "origin/8.0" || "$GIT_BRANCH" == "origin/8.1"  || "$GIT_BRANCH" == "origin/8.2" ]]; then
+if [[ "$GIT_BRANCH" == "origin/5.3" || "$GIT_BRANCH" == "origin/7.0"  || "$GIT_BRANCH" == "origin/7.1" || "$GIT_BRANCH" == "origin/7.2" || "$GIT_BRANCH" == "origin/7.3" || "$GIT_BRANCH" == "origin/8.0" || "$GIT_BRANCH" == "origin/8.1"  || "$GIT_BRANCH" == "origin/8.2"  || "$GIT_BRANCH" == "origin/8.3" ]]; then
     echo "Git branch $GIT_BRANCH found, pushing to this branch."
     git push origin HEAD:${GIT_BRANCH#*/}
 fi

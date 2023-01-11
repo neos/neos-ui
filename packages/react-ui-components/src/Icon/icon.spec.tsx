@@ -1,8 +1,8 @@
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
 import React from 'react';
-
-import Icon, {defaultProps, IconProps} from './icon';
+import {defaultProps} from './iconDefaultProps';
+import Icon, {IconProps} from './icon';
 
 describe('<Icon/>', () => {
     const props: IconProps = {

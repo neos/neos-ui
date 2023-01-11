@@ -2,7 +2,6 @@ import {action as createAction, ActionType} from 'typesafe-actions';
 
 // import {handleActions} from '@neos-project/utils-redux';
 
-
 //
 // Export the action types
 //

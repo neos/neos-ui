@@ -12,9 +12,9 @@ export const focusedNodePathsSelector = (state: GlobalState) => $get(['cr', 'nod
 // This is internal, as in most cases you want `focusedNodePathSelector`, which is able to fallback to documentNode, when no node is focused
 export const _focusedNodeContextPathSelector = createSelector(
     [
-        focusedNodePathsSelector,
+        focusedNodePathsSelector
     ],
-    (focusedNodePaths) => {
+    focusedNodePaths => {
         return focusedNodePaths && focusedNodePaths[0] ? focusedNodePaths[0] : null;
     }
 );
@@ -289,7 +289,6 @@ export const makeGetAllowedChildNodeTypesSelector = (nodeTypesRegistry: NodeType
 export const makeGetAllowedSiblingNodeTypesSelector = (nodeTypesRegistry: NodeTypesRegistry) =>
     makeGetAllowedChildNodeTypesSelector(nodeTypesRegistry, (nodeContextPath, state) => getPathInNode(state, nodeContextPath, 'parent'));
 
-
 export const makeIsAllowedToAddChildOrSiblingNodes = (nodeTypesRegistry: NodeTypesRegistry) => createSelector(
     [
         makeGetAllowedChildNodeTypesSelector(nodeTypesRegistry),
@@ -408,7 +407,7 @@ export const focusedNodeParentLineSelector = createSelector(
         let currentNode = focusedNode;
 
         while (currentNode) {
-            const parent = currentNode.parent;
+            const {parent} = currentNode;
             if (parent) {
                 currentNode = nodesByContextPath[parent] || null;
                 if (currentNode) {

@@ -17,6 +17,55 @@ import EditorEnvelope from '@neos-project/neos-ui-editors/src/EditorEnvelope/ind
 
 import style from './style.css';
 
+const defaultState = {
+    transient: {},
+    validationErrors: null,
+    isDirty: false,
+    secondaryInspectorName: '',
+    secondaryInspectorComponent: null
+};
+
+const getTransientDefaultValuesFromConfiguration = configuration => {
+    if (configuration) {
+        return Object.keys(configuration.elements).reduce(
+            (transientDefaultValues, elementName) => {
+                if (configuration.elements[elementName].defaultValue === undefined) {
+                    transientDefaultValues[elementName] = {value: null};
+                } else {
+                    transientDefaultValues[elementName] = {
+                        value: configuration.elements[elementName].defaultValue
+                    };
+                }
+                return transientDefaultValues;
+            },
+            {}
+        );
+    }
+    return {};
+}
+
+const getDerivedStateFromProps = (props, state) => {
+    if (!props.isOpen) {
+        return defaultState;
+    }
+
+    if (state.isDirty) {
+        return state;
+    }
+
+    const transientDefaultValues = getTransientDefaultValuesFromConfiguration(
+        props.configuration
+    );
+
+    return {
+        ...state,
+        transient: {
+            ...transientDefaultValues,
+            ...state.transient
+        }
+    };
+}
+
 @neos(globalRegistry => ({
     validatorRegistry: globalRegistry.get('validators')
 }))
@@ -50,51 +99,13 @@ export default class NodeCreationDialog extends PureComponent {
         secondaryInspectorComponent: null
     };
 
-    state = NodeCreationDialog.getDerivedStateFromProps(
-        this.props,
-        NodeCreationDialog.defaultState
-    );
-
-    static getDerivedStateFromProps(props, state) {
-        if (!props.isOpen) {
-            return NodeCreationDialog.defaultState;
-        }
-
-        if (state.isDirty) {
-            return state;
-        }
-
-        const transientDefaultValues = NodeCreationDialog.getTransientDefaultValuesFromConfiguration(
-            props.configuration
-        );
-
-        return {
-            ...state,
-            transient: {
-                ...transientDefaultValues,
-                ...state.transient
-            }
-        };
+    constructor(props) {
+        super(props);
+        this.state = getDerivedStateFromProps(props, defaultState);
     }
 
-    static getTransientDefaultValuesFromConfiguration = configuration => {
-        if (configuration) {
-            return Object.keys(configuration.elements).reduce(
-                (transientDefaultValues, elementName) => {
-                    if (configuration.elements[elementName].defaultValue === undefined) {
-                        transientDefaultValues[elementName] = {value: null};
-                    } else {
-                        transientDefaultValues[elementName] = {
-                            value: configuration.elements[elementName].defaultValue
-                        };
-                    }
-                    return transientDefaultValues;
-                },
-                {}
-            );
-        }
-
-        return {};
+    static getDerivedStateFromProps(props, state) {
+        return getDerivedStateFromProps(props, state);
     }
 
     handleDialogEditorValueChange = memoize(elementName => (value, hooks) => {
@@ -144,7 +155,7 @@ export default class NodeCreationDialog extends PureComponent {
         } else {
             const {apply} = this.props;
             apply(transient);
-            this.setState(NodeCreationDialog.defaultState);
+            this.setState(defaultState);
         }
     }
 

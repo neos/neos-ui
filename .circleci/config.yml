@@ -55,7 +55,7 @@ jobs:
       - run: chmod +x ~/.nvm/nvm.sh
       - run: ~/.nvm/nvm.sh install && ~/.nvm/nvm.sh use
       - run: sudo apt-get update --allow-releaseinfo-change && sudo apt-get install -y rsync
-      - run: make install && make build-production
+      - run: make install && make build-e2e-testing
 
       - save_cache: *store_yarn_package_cache
       - persist_to_workspace: *persist_to_workspace

@@ -17,7 +17,7 @@
     left: 50%;
     width: 0;
     height: 0;
-    margin-left: -var(--spacing-Half);
+    margin-left: calc(var(--spacing-Half) * -1);
     border-left: var(--spacing-Half) solid transparent;
     border-right: var(--spacing-Half) solid transparent;
     border-bottom: var(--spacing-Half) solid var(--colors-ContrastDarkest);

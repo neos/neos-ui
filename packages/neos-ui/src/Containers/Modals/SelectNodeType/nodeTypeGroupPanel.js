@@ -31,6 +31,7 @@ class NodeTypeGroupPanel extends PureComponent {
         toggleNodeTypeGroup: PropTypes.func.isRequired,
         toggledGroups: PropTypes.array.isRequired,
         filterSearchTerm: PropTypes.string,
+        focusedNodeType: PropTypes.string,
 
         group: PropTypes.shape({
             name: PropTypes.string.isRequired,
@@ -98,7 +99,7 @@ class NodeTypeGroupPanel extends PureComponent {
                         <I18n id={label} fallback={label}/>
                     </span>
                     {thumbnail ? <img alt={label} src={thumbnail} className={style.helpThumbnail} /> : ''}
-                    <ReactMarkdown source={message} linkTarget="_blank" />
+                    <ReactMarkdown children={message} linkTarget="_blank" />
                 </div>
 
                 <IconButton className={style.helpMessage__closeButton} icon="times" onClick={onCloseHelpMessage} />
@@ -109,6 +110,7 @@ class NodeTypeGroupPanel extends PureComponent {
     render() {
         const {
             group,
+            focusedNodeType,
             toggledGroups,
             onSelect,
             filterSearchTerm,
@@ -142,13 +144,7 @@ class NodeTypeGroupPanel extends PureComponent {
                     <I18n className={style.groupTitle} fallback={label} id={label}/>
                 </ToggablePanel.Header>
                 <ToggablePanel.Contents className={style.groupContents}>
-                    {filteredNodeTypes.length > 0 ? (
-                        filteredNodeTypes.map((nodeType, key) => <NodeTypeItem nodeType={nodeType} key={key} onSelect={onSelect} onHelpMessage={onHelpMessage} groupName={group.name} />)
-                    ) : (
-                        <div className={style.noMatchesFound}>
-                            <Icon icon="ban" padded="right"/>{i18nRegistry.translate('noMatchesFound')}.
-                        </div>
-                    )}
+                    {filteredNodeTypes.map((nodeType, key) => <NodeTypeItem nodeType={nodeType} focused={focusedNodeType === nodeType.name} key={key} onSelect={onSelect} onHelpMessage={onHelpMessage} groupName={group.name} />)}
                     {showHelpMessage ? this.renderHelpMessage() : null}
                 </ToggablePanel.Contents>
             </ToggablePanel>

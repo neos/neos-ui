@@ -1,6 +1,10 @@
 .primaryToolbar {
     display: flex;
-
+    grid-area: primaryToolbar;
+    position: relative;
+    left: unset;
+    top: unset;
+    height: unset;
     z-index: var(--zIndex-PrimaryToolbar);
 }
 .primaryToolbar--isHidden {

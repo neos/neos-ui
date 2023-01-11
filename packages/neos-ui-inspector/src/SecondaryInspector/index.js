@@ -28,6 +28,7 @@ export default class SecondaryInspector extends PureComponent {
     static propTypes = {
         isFringeLeft: PropTypes.bool.isRequired,
         isFringeRight: PropTypes.bool.isRequired,
+        isFullScreen: PropTypes.bool.isRequired,
         unappliedChangesOverlayIsVisible: PropTypes.bool.isRequired,
 
         // Interaction related propTypes.
@@ -41,17 +42,20 @@ export default class SecondaryInspector extends PureComponent {
             children,
             isFringeLeft,
             isFringeRight,
+            isFullScreen,
             unappliedChangesOverlayIsVisible
         } = this.props;
         const finalClassName = mergeClassNames({
             [style.secondaryInspector]: true,
-            [style['secondaryInspector--isFringeLeft']]: isFringeLeft,
-            [style['secondaryInspector--isFringeRight']]: isFringeRight,
+            [style['secondaryInspector--isFringeLeft']]: !isFullScreen && isFringeLeft,
+            [style['secondaryInspector--isFringeRight']]: !isFullScreen && isFringeRight,
             [style['secondaryInspector--isElevated']]: unappliedChangesOverlayIsVisible
         });
 
+        const appNode = document.getElementById('neos-application');
+
         return (
-            <Portal>
+            <Portal node={appNode}>
                 <div className={finalClassName}>
                     <Button
                         style="clean"

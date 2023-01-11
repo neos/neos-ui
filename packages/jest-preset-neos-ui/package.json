@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/jest-preset-neos-ui",
-  "version": "8.1.0",
+  "version": "8.2.1",
   "description": "The jest preset for all packages of the neos-ui mono-repo.",
   "main": "jest-preset.json",
   "private": true,
@@ -15,9 +15,7 @@
     "regenerator-runtime": "^0.13.2"
   },
   "peerDependencies": {
-    "babel-jest": "^23.6.0",
-    "enzyme": "^3.8.0",
-    "ts-jest": "^23.10.5"
+    "enzyme": "^3.8.0"
   },
   "license": "GNU GPLv3"
 }

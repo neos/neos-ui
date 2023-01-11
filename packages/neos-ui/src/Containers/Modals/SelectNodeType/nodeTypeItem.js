@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
+import mergeClassNames from 'classnames';
 
 import {neos} from '@neos-project/neos-ui-decorators';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
@@ -24,6 +25,7 @@ import style from './style.css';
 })
 class NodeTypeItem extends PureComponent {
     static propTypes = {
+        focused: PropTypes.bool,
         onSelect: PropTypes.func.isRequired,
         onHelpMessage: PropTypes.func.isRequired,
 
@@ -57,7 +59,7 @@ class NodeTypeItem extends PureComponent {
         const usePreviewIcon = ('previewIcon' in ui);
         const icon = $get(usePreviewIcon ? 'previewIcon' : 'icon', ui);
         const size = this.getIconSize();
-        const {onHelpMessage, groupName, i18nRegistry} = this.props;
+        const {onHelpMessage, groupName, i18nRegistry, focused} = this.props;
         const helpMessage = i18nRegistry.translate($get('help.message', ui));
 
         return (
@@ -65,7 +67,10 @@ class NodeTypeItem extends PureComponent {
                 <Button
                     hoverStyle="brand"
                     style="clean"
-                    className={style.nodeType__item}
+                    className={mergeClassNames({
+                        [style.nodeType__item]: true,
+                        [style['nodeType__item--focused']]: focused
+                    })}
                     onClick={this.handleNodeTypeClick}
                     title={helpMessage ? helpMessage : ''}
                 >

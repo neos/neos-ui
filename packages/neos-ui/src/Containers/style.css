@@ -1,9 +1,33 @@
 .applicationWrapper {
     height: 100vh;
+}
 
-    > div {
-        height: 100%;
-    }
+.app {
+    height: 100%;
+    display: grid;
+    grid-template-areas: 'primaryToolbar primaryToolbar primaryToolbar'
+        'leftSideBarHeader secondaryToolbar rightSidebar'
+        'leftSidebar content rightSidebar';
+    grid-template-rows: 41px 41px 1fr;
+    grid-template-columns: min-content 1fr min-content;
+}
+
+/* FIXME: This would be much easier to implement with actual css-variables (which we cannot use yet due to the postcss conversion) */
+.app--leftSidebarIsHidden {
+    grid-template-columns: 0 1fr min-content;
+}
+
+.app--rightSidebarIsHidden {
+    grid-template-columns: min-content 1fr 0;
+}
+
+.app--leftSidebarIsHidden.app--rightSidebarIsHidden {
+    grid-template-columns: 0 1fr 0;
+}
+
+.app--isFullScreen {
+    grid-template-rows: 0 41px 1fr;
+    grid-template-columns: 0 1fr 0;
 }
 
 /* stylelint-disable selector-max-id */

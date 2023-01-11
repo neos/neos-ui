@@ -59,16 +59,14 @@ const positionalArraySorter = <T extends Value[]>(subject: T, position: string |
                 startKeys[weight] = [];
             }
             startKeys[weight].push(key);
-        }
-        else if (position.startsWith('end')) {
+        } else if (position.startsWith('end')) {
             const weightMatch = position.match(/end\s+(\d+)/);
             const weight = weightMatch && weightMatch[1] ? Number(weightMatch[1]) : 0;
             if (!endKeys[weight]) {
                 endKeys[weight] = [];
             }
             endKeys[weight].push(key);
-        }
-        else if (position.startsWith('before')) {
+        } else if (position.startsWith('before')) {
             const match = position.match(/before\s+(\S+)(\s+(\d+))?/);
             if (!match) {
                 invalid = true;
@@ -83,8 +81,7 @@ const positionalArraySorter = <T extends Value[]>(subject: T, position: string |
                 }
                 beforeKeys[reference][weight].push(key);
             }
-        }
-        else if (position.startsWith('after')) {
+        } else if (position.startsWith('after')) {
             const match = position.match(/after\s+(\S+)(\s+(\d+))?/);
             if (!match) {
                 invalid = true;
@@ -99,8 +96,7 @@ const positionalArraySorter = <T extends Value[]>(subject: T, position: string |
                 }
                 afterKeys[reference][weight].push(key);
             }
-        }
-        else {
+        } else {
             invalid = true;
         }
         if (invalid) {

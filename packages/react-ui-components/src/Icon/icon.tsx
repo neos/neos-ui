@@ -1,9 +1,10 @@
 import React, {PureComponent} from 'react';
 
 import {FontAwesomeIconProps} from '@fortawesome/react-fontawesome';
-import {PickDefaultProps, Omit} from '../../types';
+import {Omit} from '../../types';
 import FontAwesomeIcon from './fontAwesomeIcon';
 import ResourceIcon, {ResourceIconProps} from './resourceIcon';
+import {defaultProps} from './iconDefaultProps';
 
 type IconSize = 'xs' | 'sm' | 'lg' | '2x' | '3x';
 type IconPadding = 'none' | 'left' | 'right';
@@ -68,13 +69,7 @@ export interface IconProps extends Omit<FontAwesomeIconProps, 'icon'> {
     readonly theme?: IconTheme;
 }
 
-type DefaultProps = PickDefaultProps<IconProps, 'color' | 'padded' | 'size'>;
-
-export const defaultProps: DefaultProps = {
-    color: 'default',
-    padded: 'none',
-    size: 'sm'
-};
+export {defaultProps};
 
 class Icon extends PureComponent<IconProps> {
     public static readonly defaultProps = defaultProps;

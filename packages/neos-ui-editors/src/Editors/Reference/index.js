@@ -64,6 +64,6 @@ export default class ReferenceEditor extends PureComponent {
             onSearchTermChange={onSearchTermChange}
             onCreateNew={onCreateNew}
             disabled={disabled}
-            />);
+        />);
     }
 }

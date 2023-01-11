@@ -107,7 +107,8 @@ export default ({isMulti}) => WrappedComponent => {
             const contextForNodeLinking = startingPoint ?
                 Object.assign({}, this.props.contextForNodeLinking, {
                     contextNode: startingPoint.indexOf('ClientEval:') === 0 ?
-                        eval(startingPoint.replace('ClientEval:', '')) : // eslint-disable-line
+                        // eslint-disable-next-line no-new-func
+                        new Function('return ' + startingPoint.replace('ClientEval:', ''))() :
                         startingPoint
                 }) :
                 this.props.contextForNodeLinking;

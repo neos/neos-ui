@@ -279,7 +279,6 @@ export default (routes: Routes) => {
             assetProxyTable.innerHTML = result;
             const assetProxies = Array.from(assetProxyTable.querySelectorAll('.asset-proxy')) as HTMLElement[];
 
-
             const mappedAssetProxies = assetProxies.map((assetProxy: HTMLElement) => {
                 const assetSourceIdentifier = getElementInnerText(assetProxy, '.asset-source-identifier');
                 const assetSourceLabel = getElementInnerText(assetProxy, '.asset-source-label');
@@ -650,7 +649,7 @@ export default (routes: Routes) => {
             },
             body: JSON.stringify({
                 contextNode: nodeContextPath,
-                text,
+                text
             })
         }))
             .then(response => fetchWithErrorHandling.parseJson(response))

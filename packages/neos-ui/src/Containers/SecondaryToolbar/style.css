@@ -1,27 +1,22 @@
 .secondaryToolbar {
+    grid-area: secondaryToolbar;
     display: flex;
-    position: fixed;
-    top: 41px;
-    left: 0;
-    padding: 0 var(--size-SidebarWidth);
+    justify-content: space-between;
+    gap: 1rem;
+    position: relative;
+    top: unset;
+    left: unset;
     width: 100%;
     height: 41px;
     background: var(--colors-ContrastDarkest);
     will-change: padding;
     border-bottom: 1px solid var(--colors-ContrastDark);
-    transform: translateY(0);
-    transition: var(--transition-Fast) ease-in-out;
 }
 .secondaryToolbar--isFringeLeft {
     padding-left: 46px;
 }
 .secondaryToolbar--isFringeRight {
     padding-right: 46px;
-}
-.secondaryToolbar--fullScreen {
-    top: 0;
-    padding: 0 0;
-    transform: translateY(0);
 }
 .secondaryToolbar__rightHandedActions {
     margin-left: auto;

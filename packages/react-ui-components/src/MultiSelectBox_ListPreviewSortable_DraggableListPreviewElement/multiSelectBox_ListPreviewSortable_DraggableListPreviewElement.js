@@ -89,6 +89,14 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
         IconButton: PropTypes.any.isRequired
     }
 
+    handleClick = () => {
+        const {onItemClick, option} = this.props;
+
+        if (onItemClick) {
+            onItemClick(option);
+        }
+    }
+
     render() {
         const {
             option,
@@ -119,14 +127,6 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
 
         const handleRemoveItem = () => onRemoveItem(index);
 
-        const handleClick = option => {
-            const {onItemClick} = this.props;
-
-            if (onItemClick) {
-                onItemClick(option);
-            }
-        };
-
         return connectDragSource(connectDropTarget(
             <li style={{opacity}} ref={refName}>
                 <div className={finalClassNames}>
@@ -139,8 +139,8 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
                     )}
                     <div
                         className={theme.selectedOptions__innerPreview}
-                        onClick={handleClick(option)}
-                        role = "button"
+                        onClick={this.handleClick}
+                        role="button"
                     >
                         <InnerListPreviewElement
                             {...this.props}

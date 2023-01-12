@@ -186,7 +186,7 @@ test(`
         'Neos_Neos': { // eslint-disable-line quote-props
             'Main': { // eslint-disable-line quote-props
                 'someLabel': 'The First Translation', // eslint-disable-line quote-props
-                'anotherLabel': 'The Second Translation', // eslint-disable-line quote-props
+                'anotherLabel': 'The Second Translation' // eslint-disable-line quote-props
             }
         }
     };

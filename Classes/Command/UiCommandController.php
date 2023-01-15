@@ -71,4 +71,13 @@ final class UiCommandController extends CommandController
             file_put_contents($fileName, $tsHeaderComment->render() . $file->render());
         }
     }
+
+    /**
+     * @param string $message
+     * @return void
+     */
+    public function sendAlertCommand(string $message): void
+    {
+        $this->uiApi->notifyEverybody(new AlertNotification($message));
+    }
 }

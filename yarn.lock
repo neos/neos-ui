@@ -3634,6 +3634,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@neos-project/framework-schema@workspace:*, @neos-project/framework-schema@workspace:packages/framework/schema":
+  version: 0.0.0-use.local
+  resolution: "@neos-project/framework-schema@workspace:packages/framework/schema"
+  dependencies:
+    "@neos-project/build-essentials": "workspace:*"
+    "@neos-project/neos-ui-backend-connector": "workspace:*"
+    typescript: ^4.6.4
+  languageName: unknown
+  linkType: soft
+
 "@neos-project/jest-preset-neos-ui@workspace:*, @neos-project/jest-preset-neos-ui@workspace:packages/jest-preset-neos-ui":
   version: 0.0.0-use.local
   resolution: "@neos-project/jest-preset-neos-ui@workspace:packages/jest-preset-neos-ui"

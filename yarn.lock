@@ -3634,6 +3634,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@neos-project/framework-api@workspace:*, @neos-project/framework-api@workspace:packages/framework/api":
+  version: 0.0.0-use.local
+  resolution: "@neos-project/framework-api@workspace:packages/framework/api"
+  dependencies:
+    "@neos-project/build-essentials": "workspace:*"
+    "@neos-project/framework-schema": "workspace:*"
+    "@neos-project/neos-ui-backend-connector": "workspace:*"
+    typescript: ^4.6.4
+  languageName: unknown
+  linkType: soft
+
 "@neos-project/framework-observable@workspace:*, @neos-project/framework-observable@workspace:packages/framework/observable":
   version: 0.0.0-use.local
   resolution: "@neos-project/framework-observable@workspace:packages/framework/observable"
@@ -3688,6 +3699,18 @@ __metadata:
     "@neos-project/babel-preset-neos-ui": "workspace:*"
     "@neos-project/build-essentials": "workspace:*"
     "@neos-project/jest-preset-neos-ui": "workspace:*"
+    typescript: ^4.6.4
+  languageName: unknown
+  linkType: soft
+
+"@neos-project/neos-ui-api@workspace:*, @neos-project/neos-ui-api@workspace:packages/neos-ui-api":
+  version: 0.0.0-use.local
+  resolution: "@neos-project/neos-ui-api@workspace:packages/neos-ui-api"
+  dependencies:
+    "@neos-project/build-essentials": "workspace:*"
+    "@neos-project/framework-api": "workspace:*"
+    "@neos-project/framework-schema": "workspace:*"
+    "@neos-project/neos-ui-backend-connector": "workspace:*"
     typescript: ^4.6.4
   languageName: unknown
   linkType: soft

@@ -1,0 +1,24 @@
+{
+  "name": "@neos-project/framework-api",
+  "version": "8.2.1",
+  "description": "API helper functions for the Neos UI",
+  "private": true,
+  "main": "./src/index.ts",
+  "scripts": {
+    "clean": "rimraf ./lib ./dist",
+    "lint": "yarn tsc --noemit && eslint src/**/*.{js,jsx,ts,tsx}",
+    "test": "NODE_ENV=test jest"
+  },
+  "devDependencies": {
+    "@neos-project/build-essentials": "workspace:*",
+    "@neos-project/framework-schema": "workspace:*",
+    "typescript": "^4.6.4"
+  },
+  "dependencies": {
+    "@neos-project/neos-ui-backend-connector": "workspace:*"
+  },
+  "license": "GNU GPLv3",
+  "jest": {
+    "preset": "@neos-project/jest-preset-neos-ui"
+  }
+}

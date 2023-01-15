@@ -1,0 +1,20 @@
+{
+  "name": "@neos-project/framework-react-hooks",
+  "version": "8.2.1",
+  "description": "Common React Hooks for the Neos UI",
+  "private": true,
+  "main": "./src/index.ts",
+  "scripts": {
+    "clean": "rimraf ./lib ./dist",
+    "lint": "yarn tsc --noemit && eslint src/**/*.{js,jsx,ts,tsx}"
+  },
+  "devDependencies": {
+    "@neos-project/build-essentials": "workspace:*",
+    "typescript": "^4.6.4"
+  },
+  "dependencies": {
+    "@neos-project/framework-observable": "workspace:*",
+    "react": "^16.12.0"
+  },
+  "license": "GNU GPLv3"
+}

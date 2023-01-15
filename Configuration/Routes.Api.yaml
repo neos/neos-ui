@@ -1,0 +1,23 @@
+-
+  name: 'Command'
+  uriPattern: 'command'
+  defaults:
+    '@controller': 'Api'
+    '@action': 'command'
+  httpMethods: ['POST']
+
+-
+  name: 'Query'
+  uriPattern: 'query'
+  defaults:
+    '@controller': 'Api'
+    '@action': 'query'
+  httpMethods: ['GET']
+
+-
+  name: 'Inbox'
+  uriPattern: 'inbox'
+  defaults:
+    '@controller': 'Api'
+    '@action': 'inbox'
+  httpMethods: ['GET']

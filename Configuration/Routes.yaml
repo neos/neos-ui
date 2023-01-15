@@ -27,3 +27,18 @@
     'ServiceSubRoutes':
       package: 'Neos.Neos.Ui'
       suffix:  'Service'
+
+##
+# API
+
+-
+  name:  'API'
+  uriPattern: 'neos/ui-api/<ApiSubRoutes>'
+  defaults:
+    '@package':    'Neos.Neos.Ui'
+    '@action':     'index'
+    '@format':     'html'
+  subRoutes:
+    'ApiSubRoutes':
+      package: 'Neos.Neos.Ui'
+      suffix:  'Api'

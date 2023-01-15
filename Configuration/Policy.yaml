@@ -13,7 +13,7 @@ privilegeTargets:
       matcher: 'method(Neos\Neos\Ui\Controller\BackendController->.*())'
 
     'Neos.Neos.Ui:Backend.ServiceAccess':
-      matcher: 'method(Neos\Neos\Ui\Controller\BackendServiceController->.*())'
+      matcher: 'method(Neos\Neos\Ui\Controller\BackendServiceController->.*()) || method(Neos\Neos\Ui\Controller\ApiController->.*())'
 
   'Neos\Neos\Security\Authorization\Privilege\ModulePrivilege':
 

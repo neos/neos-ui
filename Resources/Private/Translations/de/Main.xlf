@@ -521,6 +521,10 @@
                 <source>Preformatted</source>
         <target state="translated">Vorformatiert</target>
       </trans-unit>
+        <trans-unit id="ckeditor__toolbar__style__blockquote" xml:space="preserve">
+                <source>Blockquote</source>
+                <target state="translated">Block-Zitat</target>
+            </trans-unit>
       <trans-unit id="rangeEditorMaximum" xml:space="preserve">
                 <source>Maximum</source>
         <target state="translated">Maximum</target>

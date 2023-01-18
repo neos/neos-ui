@@ -2,6 +2,7 @@ import produce from 'immer';
 import {defaultsDeep} from 'lodash';
 import {action as createAction, ActionType} from 'typesafe-actions';
 import {actionTypes as system, InitAction} from '@neos-project/neos-ui-redux-store/src/System';
+import {actionTypes as editPreviewMode, Action as EditPreviewModeAction} from '@neos-project/neos-ui-redux-store/src/UI/EditPreviewMode';
 
 import * as selectors from './selectors';
 import {calculateNewFocusedNodes, getNodeOrThrow} from './helpers';
@@ -391,7 +392,7 @@ const moveNodeInState = (
 //
 // Export the reducer
 //
-export const reducer = (state: State = defaultState, action: InitAction | Action) => produce(state, draft => {
+export const reducer = (state: State = defaultState, action: InitAction | EditPreviewModeAction | Action) => produce(state, draft => {
     switch (action.type) {
         case system.INIT: {
             draft.byContextPath = action.payload.cr.nodes.byContextPath;
@@ -399,6 +400,10 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
             draft.siteNode = action.payload.cr.nodes.siteNode;
             draft.clipboard = action.payload.cr.nodes.clipboard;
             draft.clipboardMode = action.payload.cr.nodes.clipboardMode;
+            break;
+        }
+        case editPreviewMode.SET: {
+            draft.focused.fusionPath = null;
             break;
         }
         case actionTypes.ADD: {

@@ -25,12 +25,21 @@ import style from './style.css';
     const isOpen = $get('ui.nodeCreationDialog.isOpen', state);
     const label = $get('ui.nodeCreationDialog.label', state);
     const configuration = $get('ui.nodeCreationDialog.configuration', state);
+<<<<<<< HEAD
     const parentNodeContextPath = $get('ui.nodeCreationDialog.parentNodeContextPath', state);
     const nodeType = $get('ui.nodeCreationDialog.nodeType', state);
 
     const parentNode = selectors.CR.Nodes.makeGetNodeByContextPathSelector(parentNodeContextPath)(state);
 
     return {isOpen, label, configuration, parentNode, nodeType
+=======
+    const parentNodeContextPath = $get('ui.nodeCreationDialog.parentNodeContextPath', state)
+    const nodeType = $get('ui.nodeCreationDialog.nodeType', state);
+
+    const parentNode = selectors.CR.Nodes.makeGetNodeByContextPathSelector(parentNodeContextPath)(state)
+
+    return {isOpen, label, configuration, parentNode, nodeType};
+>>>>>>> 50889b041 (TASK: get parent node)
 }, {
     cancel: actions.UI.NodeCreationDialog.cancel,
     back: actions.UI.NodeCreationDialog.back,
@@ -259,8 +268,8 @@ export default class NodeCreationDialog extends PureComponent {
     }
 
     renderAllElements() {
-        const transientValues = this.getValuesMapFromTransientValues(this.state.transient);
-        const {parentNode} = this.props;
+        const transientValues = this.getValuesMapFromTransientValues(this.state.transient)
+        const {parentNode} = this.props
 
         /**
          * Transient Node used in CreationDialog for ClientEval.

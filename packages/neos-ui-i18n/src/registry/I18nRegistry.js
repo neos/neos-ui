@@ -86,18 +86,10 @@ export default class I18nRegistry extends SynchronousRegistry {
     translate(idOrig, fallbackOrig, params = {}, packageKeyOrig = 'Neos.Neos', sourceNameOrig = 'Main', quantity = 0) {
         let translation = idOrig;
 
-        const regex = /([a-zA-Z0-9.]+:[a-zA-Z0-9.]+:[a-zA-Z0-9.]+)/g;
-        let m;
-
-        while ((m = regex.exec(idOrig)) !== null) {
-            if (m.index === regex.lastIndex) {
-                regex.lastIndex++;
-            }
-
-            m.forEach(match => {
-                translation = translation.replace(match, this.translateOne(match, fallbackOrig, params, packageKeyOrig, sourceNameOrig, quantity))
-            });
-        }
+        translation = translation.replace(
+            /([a-z\d.]+:[a-z\d.]+:[a-z\d.]+)/gi,
+            match => this.translateOne(match, match, params, packageKeyOrig, sourceNameOrig, quantity)
+        );
 
         if (translation !== idOrig) {
             return translation;

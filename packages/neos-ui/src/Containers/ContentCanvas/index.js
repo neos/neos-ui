@@ -87,6 +87,10 @@ export default class ContentCanvas extends PureComponent {
         });
         const InlineUI = guestFrameRegistry.get('InlineUIComponent');
         const currentEditPreviewModeConfiguration = editPreviewModes[currentEditPreviewMode] || editPreviewModes[Object.keys(editPreviewModes)[0]];
+        const shouldShowInlineUi =
+            typeof currentEditPreviewModeConfiguration === 'object' &&
+            currentEditPreviewModeConfiguration.isEditingMode &&
+            Boolean(InlineUI);
 
         const width = $get('width', currentEditPreviewModeConfiguration);
         const height = $get('height', currentEditPreviewModeConfiguration);
@@ -133,7 +137,7 @@ export default class ContentCanvas extends PureComponent {
                         role="region"
                         aria-live="assertive"
                         >
-                        {InlineUI && <InlineUI/>}
+                        {shouldShowInlineUi && <InlineUI/>}
                     </Frame>)}
                 </div>
             </div>

@@ -23,7 +23,7 @@
     "@neos-project/positional-array-sorter": "workspace:*",
     "lodash.mapvalues": "^4.6.0",
     "lodash.merge": "^4.6.0",
-    "plow-js": "^2.2.0"
+    "plow-js": "3.0.0"
   },
   "license": "GNU GPLv3",
   "jest": {

@@ -201,6 +201,10 @@ Neos:
                 pattern: ControllerObjectName
                 patternOptions:
                   controllerObjectNamePattern: 'Neos\Neos\Ui\Controller\.*'
+              'Neos.Neos.Ui:ApplicationControllers':
+                pattern: ControllerObjectName
+                patternOptions:
+                  controllerObjectNamePattern: 'Neos\Neos\Ui\Application\Controller\.*'
     mvc:
       routes:
         'Neos.Neos.Ui':

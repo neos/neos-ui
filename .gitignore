@@ -23,6 +23,9 @@ Build/Selenium/Settings.yaml
 #
 node_modules/
 packages/*/yarn.lock
+Packages/
+composer.lock
+vendor/
 
 #
 # Compiled assets.

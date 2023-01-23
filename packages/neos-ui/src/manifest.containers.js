@@ -38,7 +38,7 @@ import {PageTreeSearchbar} from './Containers/LeftSideBar/NodeTreeSearchBar/inde
 import ContentCanvas from './Containers/ContentCanvas/index';
 
 import RightSideBar from './Containers/RightSideBar/index';
-import Inspector from './Containers/RightSideBar/Inspector/index';
+import {Inspector} from './Containers/RightSideBar/Inspector/index';
 
 manifest('main.containers', {}, globalRegistry => {
     const containerRegistry = globalRegistry.get('containers');

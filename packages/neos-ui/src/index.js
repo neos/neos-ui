@@ -14,12 +14,16 @@ import {delay} from '@neos-project/utils-helpers';
 import backend from '@neos-project/neos-ui-backend-connector';
 import {handleActions} from '@neos-project/utils-redux';
 
+import {startPolling} from '@neos-project/framework-api';
+import {AlertNotification, PropertiesWereUpdatedNotification} from '@neos-project/neos-ui-api';
+
 import * as system from './System';
 import localStorageMiddleware from './localStorageMiddleware';
 import clipboardMiddleware from './clipboardMiddleware';
 import Root from './Containers/Root';
 import apiExposureMap from './apiExposureMap';
 import DelegatingReducer from './DelegatingReducer';
+import { makeReloadAllOccurrencesOfNodeInGuestFrame } from "./Service";
 
 const devToolsArePresent = typeof window === 'object' && typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined';
 const devToolsStoreEnhancer = () => devToolsArePresent ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f;
@@ -213,6 +217,25 @@ function * application() {
         documentNodeContextPath,
         merge: true
     }));
+
+    startPolling(10000);
+
+    AlertNotification.subscribe({
+        next: ({ message }) => alert(message),
+    });
+
+    const reloadAllOccurrencesOfNodeInGuestFrame = makeReloadAllOccurrencesOfNodeInGuestFrame({
+        globalRegistry,
+        store
+    });
+
+    PropertiesWereUpdatedNotification.subscribe({
+        next: async ({ nodeContextPath, reloadRequired }) => {
+            if (reloadRequired) {
+                await reloadAllOccurrencesOfNodeInGuestFrame(nodeContextPath);
+            }
+        }
+    });
 }
 
 sagaMiddleWare.run(application);

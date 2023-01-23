@@ -1,4 +1,6 @@
 .inspector {
+    display: flex;
+    flex-direction: column;
     height: 100%;
     width: 100%;
     overflow: hidden;
@@ -24,6 +26,9 @@
     }
 }
 .tabs {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 101px); /* Accounting for <SelectedElement/> */
     margin-left: var(--spacing-Quarter);
     border-left: 1px solid var(--colors-ContrastDark);
     background: var(--colors-ContrastDarker);

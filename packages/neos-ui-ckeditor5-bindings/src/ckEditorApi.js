@@ -64,6 +64,7 @@ export const createEditor = store => options => {
                 if (event.source.isFocused) {
                     currentEditor = editor;
                     editorConfig.setCurrentlyEditedPropertyName(propertyName);
+                    handleUserInteractionCallback();
                 }
             });
 

@@ -1,4 +1,6 @@
 .tableCreationGrid {
+    position: absolute;
+    z-index: 1;
     background-color: var(--colors-ContrastDarker);
     padding: 10px;
 }

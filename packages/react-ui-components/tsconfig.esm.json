@@ -1,6 +1,7 @@
 {
   "exclude": [
     "scripts/",
+    "coverage/",
     "**/*.spec.tsx",
     "**/*.spec.ts",
     "**/*.spec.js",
@@ -8,6 +9,7 @@
   ],
   "extends": "../tsconfig.json",
   "compilerOptions": {
+    "rootDir": "src",
     "outDir": "lib-esm",
     "module": "esnext",
     "target": "es6",

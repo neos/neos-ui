@@ -19,6 +19,7 @@
     opacity: 0;
     transition: var(--transition-Default) ease width,
         var(--transition-Default) ease opacity;
+    overflow: hidden;
 
     .expanded & {
         width: 100%;

@@ -12,12 +12,33 @@ module.exports = function (neosPackageJson) {
                         babelrc: false,
                         presets: [
                             require.resolve('babel-preset-react'),
-                            require.resolve('babel-preset-es2015'),
                             require.resolve('babel-preset-stage-0')
                         ],
                         plugins: [
                             require.resolve('babel-plugin-transform-decorators-legacy'),
-                            require.resolve('babel-plugin-transform-object-rest-spread')
+                            require.resolve('babel-plugin-transform-object-rest-spread'),
+                            // The following plugins are copied from the es2015 preset, but without the class transform
+                            // which is not compatible with our Neos UI build since 8.2
+                            require.resolve('babel-plugin-transform-es2015-template-literals'),
+                            require.resolve('babel-plugin-transform-es2015-literals'),
+                            require.resolve('babel-plugin-transform-es2015-function-name'),
+                            require.resolve('babel-plugin-transform-es2015-arrow-functions'),
+                            require.resolve('babel-plugin-transform-es2015-block-scoped-functions'),
+                            require.resolve('babel-plugin-transform-es2015-object-super'),
+                            require.resolve('babel-plugin-transform-es2015-shorthand-properties'),
+                            require.resolve('babel-plugin-transform-es2015-duplicate-keys'),
+                            require.resolve('babel-plugin-transform-es2015-computed-properties'),
+                            require.resolve('babel-plugin-transform-es2015-for-of'),
+                            require.resolve('babel-plugin-transform-es2015-sticky-regex'),
+                            require.resolve('babel-plugin-transform-es2015-unicode-regex'),
+                            require.resolve('babel-plugin-check-es2015-constants'),
+                            require.resolve('babel-plugin-transform-es2015-spread'),
+                            require.resolve('babel-plugin-transform-es2015-parameters'),
+                            require.resolve('babel-plugin-transform-es2015-destructuring'),
+                            require.resolve('babel-plugin-transform-es2015-block-scoping'),
+                            require.resolve('babel-plugin-transform-es2015-typeof-symbol'),
+                            require.resolve('babel-plugin-transform-es2015-modules-commonjs'),
+                            [require.resolve('babel-plugin-transform-regenerator'), {async: false, asyncGenerators: false}]
                         ]
                     };
                 }

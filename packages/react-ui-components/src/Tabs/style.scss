@@ -7,7 +7,6 @@
 
 .tabs__content {
     @include reset;
-    height: calc(100% - 141px);
     overflow-y: auto;
 }
 

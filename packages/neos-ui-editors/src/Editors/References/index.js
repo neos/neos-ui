@@ -7,12 +7,15 @@ import NodeOption from '../../Library/NodeOption';
 import {dndTypes} from '@neos-project/neos-ui-constants';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {connect} from 'react-redux';
-import {$transform} from 'plow-js';
+import {$transform, $get} from 'plow-js';
 import {actions} from '@neos-project/neos-ui-redux-store';
 
 import {sanitizeOptions} from '../../Library';
 
-@connect($transform({}), {
+@connect($transform({
+    creationDialogIsOpen: $get('ui.nodeCreationDialog.isOpen'),
+    changesInInspector: $get('ui.inspector.valuesByNodePath')
+}), {
     setActiveContentCanvasSrc: actions.UI.ContentCanvas.setSrc
 })
 @neos(globalRegistry => ({
@@ -33,6 +36,8 @@ export default class ReferencesEditor extends PureComponent {
         commit: PropTypes.func.isRequired,
         i18nRegistry: PropTypes.object.isRequired,
         disabled: PropTypes.bool,
+        creationDialogIsOpen: PropTypes.bool,
+        changesInInspector: PropTypes.object,
         setActiveContentCanvasSrc: PropTypes.func.isRequired
     };
 
@@ -41,9 +46,9 @@ export default class ReferencesEditor extends PureComponent {
     }
 
     handleClick = option => {
-        const {setActiveContentCanvasSrc} = this.props;
+        const {creationDialogIsOpen, changesInInspector, setActiveContentCanvasSrc} = this.props;
 
-        if (setActiveContentCanvasSrc && option && option.uri) {
+        if (setActiveContentCanvasSrc && option && option.uri && !creationDialogIsOpen && !Object.keys(changesInInspector).length) {
             setActiveContentCanvasSrc(option.uri);
         }
     }

@@ -6,12 +6,15 @@ import createNew from './createNew';
 import NodeOption from '../../Library/NodeOption';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {connect} from 'react-redux';
-import {$transform} from 'plow-js';
+import {$transform, $get} from 'plow-js';
 import {actions} from '@neos-project/neos-ui-redux-store';
 
 import {sanitizeOptions} from '../../Library';
 
-@connect($transform({}), {
+@connect($transform({
+    creationDialogIsOpen: $get('ui.nodeCreationDialog.isOpen'),
+    changesInInspector: $get('ui.inspector.valuesByNodePath')
+}), {
     setActiveContentCanvasSrc: actions.UI.ContentCanvas.setSrc
 })
 @neos(globalRegistry => ({
@@ -33,6 +36,8 @@ export default class ReferenceEditor extends PureComponent {
         commit: PropTypes.func.isRequired,
         i18nRegistry: PropTypes.object.isRequired,
         disabled: PropTypes.bool,
+        creationDialogIsOpen: PropTypes.bool,
+        changesInInspector: PropTypes.object,
         setActiveContentCanvasSrc: PropTypes.func.isRequired
     };
 
@@ -40,8 +45,16 @@ export default class ReferenceEditor extends PureComponent {
         this.props.commit(value);
     }
 
+    handleClick = value => {
+        const {creationDialogIsOpen, changesInInspector, setActiveContentCanvasSrc} = this.props;
+
+        if (setActiveContentCanvasSrc && value && !creationDialogIsOpen && !Object.keys(changesInInspector).length) {
+            setActiveContentCanvasSrc(value);
+        }
+    }
+
     render() {
-        const {className, value, i18nRegistry, threshold, options, displayLoadingIndicator, onSearchTermChange, onCreateNew, disabled, setActiveContentCanvasSrc} = this.props;
+        const {className, value, i18nRegistry, threshold, options, displayLoadingIndicator, onSearchTermChange, onCreateNew, disabled} = this.props;
 
         return (<SelectBox
             className={className}
@@ -56,7 +69,7 @@ export default class ReferenceEditor extends PureComponent {
             options={sanitizeOptions(options)}
             value={value}
             onValueChange={this.handleValueChange}
-            onReferenceClick={() => value && setActiveContentCanvasSrc(options[0].uri)}
+            onClick={() => this.handleClick(options[0].uri)}
             loadingLabel={i18nRegistry.translate('Neos.Neos:Main:loading')}
             displayLoadingIndicator={displayLoadingIndicator}
             showDropDownToggle={false}

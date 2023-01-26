@@ -76,6 +76,7 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
         onMoveSelectedValue: PropTypes.func.isRequired,
         onSelectedValueWasMoved: PropTypes.func.isRequired,
         onRemoveItem: PropTypes.func.isRequired,
+        onItemClick: PropTypes.func,
         index: PropTypes.number.isRequired,
 
         // Dependency Injection & Theme
@@ -139,8 +140,8 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
                     )}
                     <div
                         className={theme.selectedOptions__innerPreview}
-                        onClick={this.handleClick}
-                        role="button"
+                        onClick={this.props.onItemClick ? this.handleClick : null}
+                        role={this.props.onItemClick ? "button" : null}
                     >
                         <InnerListPreviewElement
                             {...this.props}

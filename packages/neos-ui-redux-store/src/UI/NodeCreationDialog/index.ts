@@ -69,8 +69,8 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
             draft.isOpen = true;
             draft.label = action.payload.label;
             draft.configuration = action.payload.configuration;
-            draft.parentNodeContextPath = action.payload.parentNodeContextPath
-            draft.nodeType = action.payload.nodeType
+            draft.parentNodeContextPath = action.payload.parentNodeContextPath;
+            draft.nodeType = action.payload.nodeType;
             break;
         }
         case actionTypes.BACK: {

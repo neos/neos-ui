@@ -141,7 +141,7 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
                     <div
                         className={theme.selectedOptions__innerPreview}
                         onClick={this.props.onItemClick ? this.handleClick : null}
-                        role={this.props.onItemClick ? "button" : null}
+                        role={this.props.onItemClick ? 'button' : null}
                     >
                         <InnerListPreviewElement
                             {...this.props}

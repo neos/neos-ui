@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {$get, $set} from 'plow-js';
 import memoize from 'lodash.memoize';
 import cx from 'classnames';
+import {produce} from 'immer';
 
 import {neos} from '@neos-project/neos-ui-decorators';
 import {actions} from '@neos-project/neos-ui-redux-store';
@@ -19,22 +20,26 @@ import style from './style.css';
 
 const defaultState = {
     transient: {},
+    viewConfiguration: {},
+    node: {properties: {}},
     validationErrors: null,
     isDirty: false,
     secondaryInspectorName: '',
     secondaryInspectorComponent: null
 };
 
-const getTransientDefaultValuesFromConfiguration = configuration => {
+const getTransientDefaultValuesFromConfiguration = (configuration, state) => {
     if (configuration) {
         return Object.keys(configuration.elements).reduce(
             (transientDefaultValues, elementName) => {
                 if (configuration.elements[elementName].defaultValue === undefined) {
                     transientDefaultValues[elementName] = {value: null};
+                    state.node.properties[elementName] = '';
                 } else {
                     transientDefaultValues[elementName] = {
                         value: configuration.elements[elementName].defaultValue
                     };
+                    state.node.properties[elementName] = configuration.elements[elementName].defaultValue;
                 }
                 return transientDefaultValues;
             },
@@ -54,7 +59,8 @@ const getDerivedStateFromProps = (props, state) => {
     }
 
     const transientDefaultValues = getTransientDefaultValuesFromConfiguration(
-        props.configuration
+        props.configuration,
+        state
     );
 
     return {
@@ -65,6 +71,40 @@ const getDerivedStateFromProps = (props, state) => {
         }
     };
 }
+
+const preprocessViewConfiguration = (state, path = [], viewConfiguration, originalViewConfiguration) => {
+    const currentLevel = path.length === 0 ? viewConfiguration : $get(path, viewConfiguration);
+    Object.keys(currentLevel).forEach(propertyName => {
+        const propertyValue = currentLevel[propertyName];
+        const newPath = path.slice();
+        newPath.push(propertyName);
+        const originalPropertyValue = $get(newPath, originalViewConfiguration);
+
+        if (propertyValue !== null && typeof propertyValue === 'object') {
+            viewConfiguration = preprocessViewConfiguration(state, newPath, viewConfiguration, originalViewConfiguration);
+        } else if (typeof originalPropertyValue === 'string' && originalPropertyValue.indexOf('ClientEval:') === 0) {
+            const {node, transient} = state; // eslint-disable-line
+            try {
+                // eslint-disable-next-line no-new-func
+                const evaluatedValue = new Function('node', 'return ' + originalPropertyValue.replace('ClientEval:', ''))(node);
+                if (evaluatedValue !== propertyValue) {
+                    viewConfiguration = produce(
+                        viewConfiguration,
+                        draft => {
+                            return $set(newPath, evaluatedValue, draft);
+                        }
+                    );
+                    // if (viewConfiguration.elements[newPath[1]].ui.hidden) {
+                    //     transient[newPath[1]].value = '';
+                    // }
+                }
+            } catch (e) {
+                console.warn('An error occurred while trying to evaluate "' + originalPropertyValue + '"\n', e);
+            }
+        }
+    });
+    return viewConfiguration;
+};
 
 @neos(globalRegistry => ({
     validatorRegistry: globalRegistry.get('validators')
@@ -111,9 +151,11 @@ export default class NodeCreationDialog extends PureComponent {
     handleDialogEditorValueChange = memoize(elementName => (value, hooks) => {
         const transient = $set(elementName, {value, hooks}, this.state.transient);
         const validationErrors = this.getValidationErrorsForTransientValues(transient);
+        const node = $set(`properties.${elementName}`, value, this.state.node);
 
         this.setState({
             transient,
+            node,
             isDirty: true,
             validationErrors
         });
@@ -151,7 +193,7 @@ export default class NodeCreationDialog extends PureComponent {
         const validationErrors = this.getValidationErrorsForTransientValues(transient);
 
         if (validationErrors) {
-            this.setState({validationErrors});
+            this.setState({validationErrors, isDirty: true});
         } else {
             const {apply} = this.props;
             apply(transient);
@@ -237,10 +279,10 @@ export default class NodeCreationDialog extends PureComponent {
     }
 
     renderElement(elementName, isFirst) {
-        const {configuration} = this.props;
+        const {viewConfiguration} = this.state;
         const {validationErrors, isDirty} = this.state;
         const validationErrorsForElement = isDirty ? $get(elementName, validationErrors) : [];
-        const element = configuration.elements[elementName];
+        const element = viewConfiguration.elements[elementName];
         const options = $set('autoFocus', isFirst, Object.assign({}, $get('ui.editorOptions', element)));
 
         return (
@@ -265,11 +307,11 @@ export default class NodeCreationDialog extends PureComponent {
     }
 
     renderAllElements() {
-        const {configuration} = this.props;
+        const {viewConfiguration} = this.state;
 
-        return Object.keys(configuration.elements).reduce(
+        return Object.keys(viewConfiguration.elements).reduce(
             (result, elementName, index) => {
-                if (configuration.elements[elementName]) {
+                if (viewConfiguration.elements[elementName] && !viewConfiguration.elements[elementName].ui.hidden) {
                     result.push(
                         this.renderElement(elementName, index === 0)
                     );
@@ -287,6 +329,13 @@ export default class NodeCreationDialog extends PureComponent {
         if (!isOpen) {
             return null;
         }
+
+        this.state.viewConfiguration = preprocessViewConfiguration(
+            this.state,
+            [],
+            this.props.configuration,
+            this.props.configuration
+        );
 
         return (
             <Dialog

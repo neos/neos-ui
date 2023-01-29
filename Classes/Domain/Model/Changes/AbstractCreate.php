@@ -108,7 +108,6 @@ abstract class AbstractCreate extends AbstractStructuralChange
             $nodeAggregateIdentifier,
             $nodeTypeName,
             OriginDimensionSpacePoint::fromDimensionSpacePoint($parentNode->subgraphIdentity->dimensionSpacePoint),
-            $this->getInitiatingUserIdentifier(),
             $parentNode->nodeAggregateId,
             $succeedingSiblingNodeAggregateIdentifier,
             $nodeName

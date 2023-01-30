@@ -109,7 +109,8 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
             values,
             onRemoveItem,
             index,
-            IconButton
+            IconButton,
+            onItemClick
         } = this.props;
 
         // TODO Loading State: const {icon, label} = option || {label: `[Loading ${value}]`};
@@ -138,10 +139,11 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
                             hoverStyle={'clean'}
                             />
                     )}
+                    {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
                     <div
                         className={theme.selectedOptions__innerPreview}
-                        onClick={this.props.onItemClick ? this.handleClick : null}
-                        role={this.props.onItemClick ? 'button' : null}
+                        onClick={onItemClick ? this.handleClick : null}
+                        role={onItemClick ? 'button' : null}
                     >
                         <InnerListPreviewElement
                             {...this.props}

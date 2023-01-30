@@ -48,7 +48,7 @@ export default class ReferenceEditor extends PureComponent {
     handleClick = value => {
         const {creationDialogIsOpen, changesInInspector, setActiveContentCanvasSrc} = this.props;
 
-        if (setActiveContentCanvasSrc && value && !creationDialogIsOpen && !Object.keys(changesInInspector).length) {
+        if (value && setActiveContentCanvasSrc && !creationDialogIsOpen && !Object.keys(changesInInspector).length) {
             setActiveContentCanvasSrc(value);
         }
     }
@@ -69,7 +69,7 @@ export default class ReferenceEditor extends PureComponent {
             options={sanitizeOptions(options)}
             value={value}
             onValueChange={this.handleValueChange}
-            onClick={() => this.handleClick(options[0].uri)}
+            onHeaderClick={() => this.handleClick(options[0].uri)}
             loadingLabel={i18nRegistry.translate('Neos.Neos:Main:loading')}
             displayLoadingIndicator={displayLoadingIndicator}
             showDropDownToggle={false}

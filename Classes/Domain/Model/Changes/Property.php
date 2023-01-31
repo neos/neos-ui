@@ -13,23 +13,22 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  */
 
 use Neos\ContentRepository\Core\DimensionSpace\Exception\DimensionSpacePointNotFound;
-use Neos\ContentRepository\Core\SharedModel\Exception\ContentStreamDoesNotExistYet;
-use Neos\ContentRepository\Core\SharedModel\Exception\NodeAggregatesTypeIsAmbiguous;
-use Neos\ContentRepository\Core\Feature\NodeReferencing\Dto\NodeReferencesToWrite;
-use Neos\ContentRepository\Core\SharedModel\Node\NodeVariantSelectionStrategy;
-use Neos\ContentRepository\Core\Feature\NodeModification\Dto\PropertyValuesToWrite;
+use Neos\ContentRepository\Core\DimensionSpace\OriginDimensionSpacePoint;
 use Neos\ContentRepository\Core\Feature\NodeDisabling\Command\DisableNodeAggregate;
 use Neos\ContentRepository\Core\Feature\NodeDisabling\Command\EnableNodeAggregate;
 use Neos\ContentRepository\Core\Feature\NodeModification\Command\SetNodeProperties;
+use Neos\ContentRepository\Core\Feature\NodeModification\Dto\PropertyValuesToWrite;
 use Neos\ContentRepository\Core\Feature\NodeReferencing\Command\SetNodeReferences;
+use Neos\ContentRepository\Core\Feature\NodeReferencing\Dto\NodeReferencesToWrite;
 use Neos\ContentRepository\Core\Feature\NodeTypeChange\Command\ChangeNodeAggregateType;
 use Neos\ContentRepository\Core\Feature\NodeTypeChange\Dto\NodeAggregateTypeChangeChildConstraintConflictResolutionStrategy;
 use Neos\ContentRepository\Core\Feature\NodeVariation\Command\CreateNodeVariant;
-use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateIds;
-use Neos\ContentRepository\Core\DimensionSpace\OriginDimensionSpacePoint;
-use Neos\ContentRepository\Core\SharedModel\Node\PropertyName;
-use Neos\ContentRepository\Core\SharedModel\Node\ReferenceName;
 use Neos\ContentRepository\Core\NodeType\NodeTypeName;
+use Neos\ContentRepository\Core\SharedModel\Exception\ContentStreamDoesNotExistYet;
+use Neos\ContentRepository\Core\SharedModel\Exception\NodeAggregatesTypeIsAmbiguous;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateIds;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeVariantSelectionStrategy;
+use Neos\ContentRepository\Core\SharedModel\Node\ReferenceName;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Ui\Domain\Model\AbstractChange;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadContentOutOfBand;
@@ -149,7 +148,6 @@ class Property extends AbstractChange
             $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
 
             $propertyType = $subject->nodeType->getPropertyType($propertyName);
-            $userIdentifier = $this->getInitiatingUserIdentifier();
 
             // Use extra commands for reference handling
             if ($propertyType === 'reference' || $propertyType === 'references') {
@@ -177,8 +175,7 @@ class Property extends AbstractChange
                         $subject->nodeAggregateId,
                         $subject->originDimensionSpacePoint,
                         ReferenceName::fromString($propertyName),
-                        NodeReferencesToWrite::fromNodeAggregateIds(NodeAggregateIds::fromArray($destinationNodeAggregateIdentifiers)),
-                        $this->getInitiatingUserIdentifier()
+                        NodeReferencesToWrite::fromNodeAggregateIds(NodeAggregateIds::fromArray($destinationNodeAggregateIdentifiers))
                     )
                 );
             } else {
@@ -199,8 +196,7 @@ class Property extends AbstractChange
                                 $subject->subgraphIdentity->contentStreamId,
                                 $subject->nodeAggregateId,
                                 $subject->originDimensionSpacePoint,
-                                $originDimensionSpacePoint,
-                                $this->getInitiatingUserIdentifier()
+                                $originDimensionSpacePoint
                             )
                         )->block();
                     }
@@ -213,8 +209,7 @@ class Property extends AbstractChange
                                 [
                                     $propertyName => $value
                                 ]
-                            ),
-                            $this->getInitiatingUserIdentifier()
+                            )
                         )
                     );
                 } else {
@@ -225,8 +220,7 @@ class Property extends AbstractChange
                                 $subject->subgraphIdentity->contentStreamId,
                                 $subject->nodeAggregateId,
                                 NodeTypeName::fromString($value),
-                                NodeAggregateTypeChangeChildConstraintConflictResolutionStrategy::STRATEGY_DELETE,
-                                $userIdentifier
+                                NodeAggregateTypeChangeChildConstraintConflictResolutionStrategy::STRATEGY_DELETE
                             )
                         );
                     } elseif ($propertyName === '_hidden') {
@@ -236,8 +230,7 @@ class Property extends AbstractChange
                                     $subject->subgraphIdentity->contentStreamId,
                                     $subject->nodeAggregateId,
                                     $subject->originDimensionSpacePoint->toDimensionSpacePoint(),
-                                    NodeVariantSelectionStrategy::STRATEGY_ALL_SPECIALIZATIONS,
-                                    $userIdentifier
+                                    NodeVariantSelectionStrategy::STRATEGY_ALL_SPECIALIZATIONS
                                 )
                             );
                         } else {
@@ -247,8 +240,7 @@ class Property extends AbstractChange
                                     $subject->subgraphIdentity->contentStreamId,
                                     $subject->nodeAggregateId,
                                     $subject->originDimensionSpacePoint->toDimensionSpacePoint(),
-                                    NodeVariantSelectionStrategy::STRATEGY_ALL_SPECIALIZATIONS,
-                                    $userIdentifier
+                                    NodeVariantSelectionStrategy::STRATEGY_ALL_SPECIALIZATIONS
                                 )
                             );
                         }

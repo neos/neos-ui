@@ -12,13 +12,10 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
-use Neos\ContentRepository\Core\SharedModel\Node\NodeName;
 use Neos\ContentRepository\Core\DimensionSpace\OriginDimensionSpacePoint;
-use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
-use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
-use Neos\Flow\Annotations as Flow;
 use Neos\ContentRepository\Core\Feature\NodeDuplication\Command\CopyNodesRecursively;
-use Neos\ContentRepository\Core\Feature\NodeDuplication\NodeDuplicationCommandHandler;
+use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeName;
 
 class CopyAfter extends AbstractStructuralChange
 {
@@ -77,7 +74,6 @@ class CopyAfter extends AbstractStructuralChange
                 ),
                 $subject,
                 OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->subgraphIdentity->dimensionSpacePoint),
-                $this->getInitiatingUserIdentifier(),
                 $parentNodeOfPreviousSibling->nodeAggregateId,
                 $succeedingSibling?->nodeAggregateId,
                 $targetNodeName

@@ -71,6 +71,7 @@ const getDerivedStateFromProps = (props, state) => {
         }
     };
 }
+console.log('hi11');
 
 const preprocessViewConfiguration = (state, path = [], viewConfiguration, originalViewConfiguration) => {
     const currentLevel = path.length === 0 ? viewConfiguration : $get(path, viewConfiguration);
@@ -83,7 +84,7 @@ const preprocessViewConfiguration = (state, path = [], viewConfiguration, origin
         if (propertyValue !== null && typeof propertyValue === 'object') {
             viewConfiguration = preprocessViewConfiguration(state, newPath, viewConfiguration, originalViewConfiguration);
         } else if (typeof originalPropertyValue === 'string' && originalPropertyValue.indexOf('ClientEval:') === 0) {
-            const {node, transient} = state; // eslint-disable-line
+            const {node} = state;
             try {
                 // eslint-disable-next-line no-new-func
                 const evaluatedValue = new Function('node', 'return ' + originalPropertyValue.replace('ClientEval:', ''))(node);
@@ -94,9 +95,6 @@ const preprocessViewConfiguration = (state, path = [], viewConfiguration, origin
                             return $set(newPath, evaluatedValue, draft);
                         }
                     );
-                    // if (viewConfiguration.elements[newPath[1]].ui.hidden) {
-                    //     transient[newPath[1]].value = '';
-                    // }
                 }
             } catch (e) {
                 console.warn('An error occurred while trying to evaluate "' + originalPropertyValue + '"\n', e);

@@ -47,10 +47,7 @@ class MultiSelectBox extends PureComponent {
         onValuesChange: PropTypes.func.isRequired,
 
         /**
-         * This prop gets called when an option was selected,
-         * the inspector is not in dirty status and
-         * the NodeCreationDialog is not open.
-         * It handles the linking of the references editor.
+         * This prop gets called when one of the selected items gets clicked.
          */
         onItemClick: PropTypes.func,
 

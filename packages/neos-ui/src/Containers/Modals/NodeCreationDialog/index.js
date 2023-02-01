@@ -71,7 +71,6 @@ const getDerivedStateFromProps = (props, state) => {
         }
     };
 }
-console.log('hi11');
 
 const preprocessViewConfiguration = (state, path = [], viewConfiguration, originalViewConfiguration) => {
     const currentLevel = path.length === 0 ? viewConfiguration : $get(path, viewConfiguration);

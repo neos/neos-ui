@@ -78,8 +78,7 @@ class MoveAfter extends AbstractStructuralChange
                 $hasEqualParentNode ? null : $parentNodeOfPreviousSibling->nodeAggregateId,
                 $precedingSibling->nodeAggregateId,
                 $succeedingSibling?->nodeAggregateId,
-                RelationDistributionStrategy::STRATEGY_GATHER_ALL,
-                $this->getInitiatingUserIdentifier()
+                RelationDistributionStrategy::STRATEGY_GATHER_ALL
             );
 
             $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);

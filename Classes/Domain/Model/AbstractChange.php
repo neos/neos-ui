@@ -125,12 +125,4 @@ abstract class AbstractChange implements ChangeInterface
             $this->feedbackCollection->add($nodeCreated);
         }
     }
-
-    final protected function getInitiatingUserIdentifier(): UserId
-    {
-        /** @var User $user */
-        $user = $this->userService->getBackendUser();
-
-        return UserId::fromString($this->persistenceManager->getIdentifierByObject($user));
-    }
 }

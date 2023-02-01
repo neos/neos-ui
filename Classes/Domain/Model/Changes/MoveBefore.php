@@ -12,7 +12,6 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
-use Neos\ContentRepository\Core\Feature\NodeAggregateCommandHandler;
 use Neos\ContentRepository\Core\Feature\NodeMove\Command\MoveNodeAggregate;
 use Neos\ContentRepository\Core\Feature\NodeMove\Dto\RelationDistributionStrategy;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
@@ -79,8 +78,7 @@ class MoveBefore extends AbstractStructuralChange
                         : $succeedingSiblingParent->nodeAggregateId,
                     $precedingSibling?->nodeAggregateId,
                     $succeedingSibling->nodeAggregateId,
-                    RelationDistributionStrategy::STRATEGY_GATHER_ALL,
-                    $this->getInitiatingUserIdentifier()
+                    RelationDistributionStrategy::STRATEGY_GATHER_ALL
                 )
             )->block();
 

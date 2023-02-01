@@ -64,7 +64,7 @@ class Remove extends AbstractChange
                 );
             }
 
-            // we have to schedule an the update workspace info before we actually delete the node;
+            // we have to schedule and the update workspace info before we actually delete the node;
             // otherwise we cannot find the parent nodes anymore.
             $this->updateWorkspaceInfo();
 
@@ -74,7 +74,6 @@ class Remove extends AbstractChange
                 $subject->nodeAggregateId,
                 $subject->subgraphIdentity->dimensionSpacePoint,
                 NodeVariantSelectionStrategy::STRATEGY_ALL_SPECIALIZATIONS,
-                $this->getInitiatingUserIdentifier(),
                 $closestDocumentParentNode?->nodeAggregateId
             );
 

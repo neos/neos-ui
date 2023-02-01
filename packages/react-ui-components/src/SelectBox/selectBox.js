@@ -60,10 +60,7 @@ export default class SelectBox extends PureComponent {
         onValueChange: PropTypes.func.isRequired,
 
         /**
-         * This prop gets called when an option was selected,
-         * the inspector is not in dirty status and
-         * the NodeCreationDialog is not open.
-         * It handles the linking of the reference editor.
+         * This prop gets called when the select box header element gets clicked.
          */
         onHeaderClick: PropTypes.func,
 

@@ -46,6 +46,11 @@ class MultiSelectBox extends PureComponent {
          */
         onValuesChange: PropTypes.func.isRequired,
 
+        /**
+         * This prop gets called when one of the selected items gets clicked.
+         */
+        onItemClick: PropTypes.func,
+
         // ------------------------------
         // Visual customization of the MultiSelect Box
         // ------------------------------

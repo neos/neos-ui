@@ -59,6 +59,11 @@ export default class SelectBox extends PureComponent {
          */
         onValueChange: PropTypes.func.isRequired,
 
+        /**
+         * This prop gets called when the select box header element gets clicked.
+         */
+        onHeaderClick: PropTypes.func,
+
         // ------------------------------
         // Visual customization of the Select Box
         // ------------------------------
@@ -248,7 +253,8 @@ export default class SelectBox extends PureComponent {
             disabled,
 
             SelectBox_HeaderWithSearchInput,
-            SelectBox_Header
+            SelectBox_Header,
+            onHeaderClick
         } = this.props;
         const searchTerm = this.getSearchTerm();
         const optionValueAccessor = this.getOptionValueAccessor();
@@ -283,6 +289,7 @@ export default class SelectBox extends PureComponent {
                 option={selectedOption}
                 showResetButton={showResetButton}
                 onReset={this.handleDeleteClick}
+                onClick={onHeaderClick}
                 />
         );
     }

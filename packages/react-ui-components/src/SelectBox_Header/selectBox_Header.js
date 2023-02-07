@@ -19,6 +19,7 @@ class SelectBox_Header extends PureComponent {
         placeholderIcon: PropTypes.string,
         showResetButton: PropTypes.bool.isRequired,
         onReset: PropTypes.func,
+        onClick: PropTypes.func,
         displayLoadingIndicator: PropTypes.bool,
         disabled: PropTypes.bool,
 

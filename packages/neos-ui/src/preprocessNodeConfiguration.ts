@@ -1,5 +1,5 @@
+import produce from 'immer';
 import {Node, NodeChild} from '@neos-project/neos-ts-interfaces';
-import produce from "immer";
 
 type ViewConfiguration = Record<string, any>;
 

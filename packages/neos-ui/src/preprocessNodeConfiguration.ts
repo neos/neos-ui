@@ -1,4 +1,5 @@
 import {Node, NodeChild} from '@neos-project/neos-ts-interfaces';
+import produce from "immer";
 
 type ViewConfiguration = Record<string, any>;
 
@@ -10,10 +11,12 @@ export default function preprocessNodeConfiguration(
         const propertyValue = currentConfiguration[propertyName];
 
         if (propertyValue !== null && typeof propertyValue === 'object') {
-            return {
-                ...currentConfiguration,
-                [propertyName]: preprocessNodeConfiguration(context, propertyValue)
-            };
+            return produce(
+                currentConfiguration,
+                draft => {
+                    draft[propertyName] = preprocessNodeConfiguration(context, propertyValue);
+                }
+            );
         }
 
         if (typeof propertyValue === 'string' && propertyValue.startsWith('ClientEval:')) {

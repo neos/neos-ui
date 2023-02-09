@@ -167,4 +167,23 @@ describe(`preprocessing NodeConfiguration`, () => {
 
         expect(processedConfiguration).toEqual(expectedConfig);
     });
+
+    test(`creation dialog configuration with Array`, () => {
+        const givenConfig = {
+            tabs: [
+                {name: 'tab1'},
+                {name: 'tab2'}
+            ]
+        }
+        const expectedConfig = {
+            tabs: [
+                {name: 'tab1'},
+                {name: 'tab2'}
+            ]
+        }
+
+        const processedConfiguration = preprocessNodeConfiguration(context, givenConfig);
+
+        expect(processedConfiguration).toEqual(expectedConfig);
+    });
 })

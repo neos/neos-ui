@@ -101,7 +101,7 @@ export default class Inspector extends PureComponent {
             );
 
             const processedViewConfiguration = preprocessNodeConfiguration(
-                {node: nodeForContext, parentNode: this.props.parentNode}, [], originalViewConfiguration, originalViewConfiguration
+                {node: nodeForContext, parentNode: this.props.parentNode}, originalViewConfiguration
             );
 
             this.state.viewConfiguration = processedViewConfiguration || originalViewConfiguration;

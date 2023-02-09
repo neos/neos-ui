@@ -1,46 +1,37 @@
-import {$get, $set} from 'plow-js';
-import {produce} from 'immer';
 import {Node, NodeChild} from '@neos-project/neos-ts-interfaces';
 
-type Context = {
-    node: NodeChild
-    parentNode: Node
-}
-
-type ViewConfiguration = Record<string, any>
+type ViewConfiguration = Record<string, any>;
 
 export default function preprocessNodeConfiguration(
-    context: Context,
-    path: Array<string>,
-    viewConfiguration: ViewConfiguration,
-    originalViewConfiguration: ViewConfiguration
-) {
-    const currentLevel = path.length === 0 ? viewConfiguration : $get(path, viewConfiguration);
-    Object.keys(currentLevel).forEach(propertyName => {
-        const propertyValue = currentLevel[propertyName];
-        const newPath = [...path, propertyName];
-        const originalPropertyValue = $get(newPath, originalViewConfiguration);
+    context: { node: NodeChild, parentNode: Node },
+    configuration: ViewConfiguration,
+): ViewConfiguration {
+    return Object.keys(configuration).reduce((currentConfiguration, propertyName) => {
+        const propertyValue = currentConfiguration[propertyName];
 
         if (propertyValue !== null && typeof propertyValue === 'object') {
-            viewConfiguration = preprocessNodeConfiguration(context, newPath, viewConfiguration, originalViewConfiguration);
-        } else if (typeof originalPropertyValue === 'string' && originalPropertyValue.indexOf('ClientEval:') === 0) {
+            return {
+                ...currentConfiguration,
+                [propertyName]: preprocessNodeConfiguration(context, propertyValue)
+            };
+        }
+
+        if (typeof propertyValue === 'string' && propertyValue.startsWith('ClientEval:')) {
             const {node, parentNode} = context;
             try {
                 // eslint-disable-next-line no-new-func
-                const evaluatedValue = new Function('node,parentNode', 'return ' + originalPropertyValue.replace('ClientEval:', ''))(node, parentNode);
-                if (evaluatedValue !== propertyValue) {
-                    viewConfiguration = produce(
-                        viewConfiguration,
-                        draft => {
-                            return $set(newPath, evaluatedValue, draft);
-                        }
-                    );
-                }
+                const evaluateFn = new Function('node,parentNode', 'return ' + propertyValue.replace('ClientEval:', ''));
+
+                return {
+                    ...currentConfiguration,
+                    [propertyName]: evaluateFn(node, parentNode)
+                };
             } catch (e) {
-                console.warn('An error occurred while trying to evaluate "' + originalPropertyValue + '"\n', e);
+                console.warn('An error occurred while trying to evaluate "' + propertyValue + '"\n', e);
             }
         }
-    });
 
-    return viewConfiguration;
+        // return the propertyValue when nothing needs to be done or something went wrong during ClientEval
+        return currentConfiguration;
+    }, configuration);
 }

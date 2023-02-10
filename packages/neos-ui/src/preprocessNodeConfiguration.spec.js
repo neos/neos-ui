@@ -172,13 +172,13 @@ describe(`preprocessing NodeConfiguration`, () => {
         const givenConfig = {
             tabs: [
                 {name: 'tab1'},
-                {name: 'tab2'}
+                {name: 'ClientEval:node.properties.property'}
             ]
         }
         const expectedConfig = {
             tabs: [
                 {name: 'tab1'},
-                {name: 'tab2'}
+                {name: 1}
             ]
         }
 

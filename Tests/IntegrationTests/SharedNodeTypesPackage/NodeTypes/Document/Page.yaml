@@ -54,6 +54,7 @@
               h5: true
               h6: true
               pre: true
+              blockquote: true
               underline: true
               strikethrough: true
               removeFormat: true

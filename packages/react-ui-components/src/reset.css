@@ -1,0 +1,41 @@
+/*
+ * since we dont support cascade layers yet, we use :where to lower the specifity and let the actual css override it
+ * postcss nested will not run over this file for reasons so we write it the og way ;)
+ */
+
+:where(.reset) {
+    font-family: 'Noto Sans', sans-serif;
+    font-weight: normal;
+    color: #FFF;
+    margin: 0;
+    padding: 0;
+}
+
+:where(.reset),
+:where(.reset):before
+:where(.reset):after {
+    box-sizing: border-box;
+}
+
+/* some browsers set a font-size or margin in their user stylesheets */
+:where(.reset) input,
+:where(.reset) textarea,
+:where(.reset) select,
+:where(.reset) button {
+    font-size: var(--fontSize-Base);
+    margin: 0;
+}
+:where(.reset) ul {
+    padding: 0;
+}
+/* webkit adds some weird spacing otherwise */
+:where(.reset) li {
+    display: block;
+}
+:where(.reset) input::-webkit-search-cancel-button {
+    display: none;
+}
+/* webkit adds white box around search box */
+:where(.reset) input {
+    appearance: none;
+}

@@ -7,7 +7,7 @@ import ContextDropDownWrapper, {
     ContextDropDownContents
 } from './wrapper';
 
-import style from './style.scss';
+import style from './style.css';
 
 const DropDown = themr(identifiers.dropDown, style)(ContextDropDownWrapper);
 const StatelessDropDown = themr(identifiers.dropDown, style)(StatelessDropDownWrapper);

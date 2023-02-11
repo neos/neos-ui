@@ -1,7 +1,7 @@
 /* eslint-disable camelcase, react/jsx-pascal-case */
 import {themr} from '@friendsofreactjs/react-css-themr';
 import identifiers from '../identifiers';
-import style from './style.scss';
+import style from './style.css';
 
 import SelectBox_Header from './selectBox_Header';
 

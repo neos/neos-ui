@@ -1,17 +1,15 @@
-@import '../reset';
-
 .tabs {
-    @include reset;
+    composes: reset from "../reset.css";
     height: 100%;
 }
 
 .tabs__content {
-    @include reset;
+    composes: reset from "../reset.css";
     overflow-y: auto;
 }
 
 .tabNavigation {
-    @include reset;
+    composes: reset from "../reset.css";
     display: block;
     margin: 0;
     padding: 0;
@@ -29,7 +27,7 @@
     }
 }
 .tabNavigation__item {
-    @include reset;
+    composes: reset from "../reset.css";
     position: relative;
     float: left;
     border-top: 1px solid var(--colors-ContrastDark);
@@ -59,7 +57,7 @@
     }
 }
 .tabNavigation__itemBtn {
-    @include reset;
+    composes: reset from "../reset.css";
     display: inline-block;
     height: var(--spacing-GoldenUnit);
     padding: 0 var(--spacing-Full);
@@ -84,6 +82,6 @@
 }
 
 .panel {
-    @include reset;
+    composes: reset from "../reset.css";
     overflow-y: auto;
 }

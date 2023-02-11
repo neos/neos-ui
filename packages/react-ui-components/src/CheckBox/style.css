@@ -1,7 +1,5 @@
-@import '../reset';
-
 .checkbox {
-    @include reset;
+    composes: reset from "../reset.css";
     position: relative;
     display: block;
     width: 20px;
@@ -10,7 +8,7 @@
     vertical-align: middle;
 }
 .checkbox__input {
-    @include reset;
+    composes: reset from "../reset.css";
     position: absolute;
     top: 50%;
     left: 0;
@@ -29,7 +27,7 @@
     opacity: 0;
 }
 .checkbox__inputMirror {
-    @include reset;
+    composes: reset from "../reset.css";
     display: inline-block;
     width: 20px;
     height: 20px;

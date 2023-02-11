@@ -1,7 +1,5 @@
-@import '../reset';
-
 .iconButton {
-    @include reset;
+    composes: reset from "../reset.css";
     vertical-align: top;
     width: var(--spacing-GoldenUnit);
     padding-left: 0;

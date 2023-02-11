@@ -1,5 +1,3 @@
-@import '../reset';
-
 .selectBoxHeaderWithSearchInput {
     display: flex;
     padding-left: var(--spacing-Full);
@@ -22,6 +20,6 @@
 }
 
 .selectBoxHeaderWithSearchInput__icon {
-    @include reset;
+    composes: reset from "../reset.css";
     height: var(--spacing-GoldenUnit);
 }

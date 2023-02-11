@@ -1,7 +1,5 @@
-@import '../reset';
-
 .badge {
-    @include reset;
+    composes: reset from "../reset.css";
     display: inline-block;
     padding: 2px 4px;
     font-size: 12px;

@@ -1,17 +1,15 @@
-@import '../reset';
-
 .wrapper {
-    @include reset;
+    composes: reset from "../reset.css";
     position: relative;
     display: inline-block;
 }
 .wrapper__btn {
-    @include reset;
+    composes: reset from "../reset.css";
     position: relative;
     width: var(--spacing-GoldenUnit);
 }
 .wrapper__btnModeIcon {
-    @include reset;
+    composes: reset from "../reset.css";
     position: absolute;
     right: 4px;
     bottom: 4px;
@@ -25,7 +23,7 @@
     color: var(--colors-PrimaryBlue);
 }
 .wrapper__dropDown {
-    @include reset;
+    composes: reset from "../reset.css";
     position: absolute;
     top: 100%;
     left: 0;
@@ -39,7 +37,7 @@
     display: block;
 }
 .wrapper__dropDownItem {
-    @include reset;
+    composes: reset from "../reset.css";
     position: relative;
     display: block;
     width: calc(var(--spacing-GoldenUnit) - 2px);

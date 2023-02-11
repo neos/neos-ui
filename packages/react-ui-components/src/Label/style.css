@@ -1,7 +1,5 @@
-@import '../reset';
-
 .label {
-    @include reset;
+    composes: reset from "../reset.css";
     display: block;
     -webkit-font-smoothing: antialiased;
     font-size: var(--fontSize-Base);

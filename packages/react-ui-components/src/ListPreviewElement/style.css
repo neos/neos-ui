@@ -1,7 +1,5 @@
-@import '../reset';
-
 .listPreviewElement {
-    @include reset;
+    composes: reset from "../reset.css";
     cursor: pointer;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -26,7 +24,7 @@
 }
 
 .listPreviewElement__icon {
-    @include reset;
+    composes: reset from "../reset.css";
     margin-right: .5em;
 }
 

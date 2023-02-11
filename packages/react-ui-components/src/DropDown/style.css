@@ -1,13 +1,11 @@
-@import '../reset';
-
 .dropDown {
-    @include reset;
+    composes: reset from "../reset.css";
     position: relative;
     display: inline-block;
     width: 100%;
 }
 .dropDown__btn {
-    @include reset;
+    composes: reset from "../reset.css";
     display: block;
     width: 100%;
     height: var(--spacing-GoldenUnit);
@@ -41,18 +39,18 @@
     padding-right: var(--spacing-GoldenUnit);
 }
 .dropDown__btnLabel {
-    @include reset;
+    composes: reset from "../reset.css";
     margin-right: .5em;
 }
 .dropDown__chevron {
-    @include reset;
+    composes: reset from "../reset.css";
     position: absolute;
     right: 16px;
     top: 50%;
     transform: translateY(-50%);
 }
 .dropDown__contents {
-    @include reset;
+    composes: reset from "../reset.css";
     position: absolute;
     top: 100%;
     left: 0;

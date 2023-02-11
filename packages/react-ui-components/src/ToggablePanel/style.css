@@ -1,12 +1,10 @@
-@import '../reset';
-
 .panel {
-    @include reset;
+    composes: reset from "../reset.css";
     position: relative;
 }
 
 .panel__headline {
-    @include reset;
+    composes: reset from "../reset.css";
     cursor: pointer;
     height: var(--spacing-GoldenUnit);
     margin: 0;
@@ -21,13 +19,13 @@
 }
 
 .panel__toggleBtn {
-    @include reset;
+    composes: reset from "../reset.css";
     position: absolute;
     top: 0;
     right: 0;
 }
 .panel__contents {
-    @include reset;
+    composes: reset from "../reset.css";
     padding: 0 var(--spacing-Full);
     transition: var(--transition-Default) ease padding;
 

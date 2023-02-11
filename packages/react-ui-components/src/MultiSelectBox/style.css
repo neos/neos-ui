@@ -1,7 +1,5 @@
-@import '../reset';
-
 .selectedOptions {
-    @include reset;
+    composes: reset from "../reset.css";
 
     position: relative;
     width: 100%;

@@ -1,5 +1,3 @@
-@import '../reset';
-
 @keyframes slideDialogContents {
     from {
         opacity: 0;
@@ -8,7 +6,7 @@
 }
 
 .dialog {
-    @include reset;
+    composes: reset from "../reset.css";
     position: fixed;
     top: 0;
     left: 0;
@@ -18,7 +16,7 @@
     background: rgba(0, 0, 0, .8);
 }
 .dialog__contentsPosition {
-    @include reset;
+    composes: reset from "../reset.css";
     position: absolute;
     top: 20vh;
     left: 50%;
@@ -31,7 +29,7 @@
     animation: slideDialogContents .3s ease-in-out;
 }
 .dialog__contents {
-    @include reset;
+    composes: reset from "../reset.css";
     position: relative;
     width: calc(100vw - var(--spacing-GoldenUnit) * 2);
     max-width: calc(var(--spacing-GoldenUnit) * 16);
@@ -72,7 +70,7 @@
     }
 }
 .dialog__title {
-    @include reset;
+    composes: reset from "../reset.css";
     font-size: 20px;
     line-height: 1.2;
     padding: var(--spacing-Full);
@@ -87,19 +85,19 @@
     }
 }
 .dialog__actions {
-    @include reset;
+    composes: reset from "../reset.css";
     text-align: right;
     margin-top: var(--spacing-Full);
 }
 .dialog__closeBtn {
-    @include reset;
+    composes: reset from "../reset.css";
     position: absolute;
     top: 0;
     right: 0;
     background: var(--colors-ContrastDark);
 }
 .dialog__backDrop {
-    @include reset;
+    composes: reset from "../reset.css";
     position: absolute;
     height: 100%;
     width: 100%;

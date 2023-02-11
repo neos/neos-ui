@@ -1,7 +1,5 @@
-@import '../reset';
-
 .btn {
-    @include reset;
+    composes: reset from "../reset.css";
     position: relative;
     display: inline-block;
     height: var(--spacing-GoldenUnit);

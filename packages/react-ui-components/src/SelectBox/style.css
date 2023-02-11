@@ -1,11 +1,9 @@
-@import '../reset';
-
 .selectBox__list {
     padding: 0;
 }
 
 .selectBox {
-    @include reset;
+    composes: reset from "../reset.css";
     width: 100%;
     position: relative;
     display: inline-block;
@@ -13,7 +11,7 @@
 }
 
 .selectBox__btn {
-    @include reset;
+    composes: reset from "../reset.css";
     width: 100%;
     text-align: left;
     color: white;

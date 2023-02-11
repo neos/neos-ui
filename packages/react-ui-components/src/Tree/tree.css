@@ -1,7 +1,5 @@
-@import '../reset';
-
 .treeWrapper {
-    @include reset;
+    composes: reset from "../reset.css";
 
     padding: 5px 0;
 

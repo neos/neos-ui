@@ -1,5 +1,3 @@
-@import '../reset';
-
 .calendarInputWrapper {
     display: table;
     width: 100%;
@@ -13,7 +11,7 @@
 }
 .closeCalendarIconBtn,
 .calendarIconBtn {
-    @include reset;
+    composes: reset from "../reset.css";
     position: relative;
     display: table-cell;
     vertical-align: top;
@@ -46,7 +44,7 @@
 }
 
 .calendarFakeInputWrapper {
-    @include reset;
+    composes: reset from "../reset.css";
     display: table-cell;
     position: relative;
     width: 100%;
@@ -61,7 +59,7 @@
     cursor: pointer;
 }
 .calendarFakeInput {
-    @include reset;
+    composes: reset from "../reset.css";
     display: inline-block;
     vertical-align: top;
     width: 100%;
@@ -104,7 +102,7 @@
     font-size: var(--fontSize-Base);
 }
 .wrapper {
-    @include reset;
+    composes: reset from "../reset.css";
 
     input[type='text'] {
         display: none;

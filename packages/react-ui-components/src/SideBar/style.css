@@ -1,7 +1,5 @@
-@import '../reset';
-
 .sideBar {
-    @include reset;
+    composes: reset from "../reset.css";
     position: fixed;
     width: var(--size-SidebarWidth);
     height: 100%;

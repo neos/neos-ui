@@ -1,7 +1,5 @@
-@import '../reset';
-
 .heading {
-    @include reset;
+    composes: reset from "../reset.css";
     font-size: var(--fontSize-Base);
     text-rendering: optimizelegibility;
 }

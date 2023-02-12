@@ -27,25 +27,25 @@
 }
 
 .icon--huge {
-    svg {
+    & svg {
         height: 3em;
     }
 }
 
 .icon--large {
-    svg {
+    & svg {
         height: 2em;
     }
 }
 
 .icon--big {
-    svg {
+    & svg {
         height: 1.33em;
     }
 }
 
 .icon--small {
-    svg {
+    & svg {
         height: 1em;
         max-height: 1em;
         max-width: 100%;
@@ -53,7 +53,7 @@
 }
 
 .icon--tiny {
-    svg {
+    & svg {
         height: .75em;
     }
 }

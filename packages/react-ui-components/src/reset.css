@@ -12,7 +12,7 @@
 }
 
 :where(.reset),
-:where(.reset):before
+:where(.reset):before,
 :where(.reset):after {
     box-sizing: border-box;
 }

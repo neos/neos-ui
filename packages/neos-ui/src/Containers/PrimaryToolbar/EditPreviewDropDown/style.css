@@ -53,7 +53,7 @@
     }
 
     > a,
-    button {
+    & button {
         display: block;
         width: 100%;
         border: 0;

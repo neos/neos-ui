@@ -52,7 +52,7 @@
     border-top: 1px solid var(--colors-ContrastDarker);
     background: var(--colors-ContrastDarkest);
 
-    div {
+    & div {
         padding: 5px 14px;
     }
 }

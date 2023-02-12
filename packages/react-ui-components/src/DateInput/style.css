@@ -104,7 +104,7 @@
 .wrapper {
     composes: reset from "../reset.css";
 
-    input[type='text'] {
+    & input[type='text'] {
         display: none;
     }
 
@@ -263,14 +263,14 @@
             height: 100%;
         }
 
-        td.rdtMonth,
-        td.rdtYear {
+        & td.rdtMonth,
+        & td.rdtYear {
             height: 50px;
             width: 25%;
             cursor: pointer;
         }
-        td.rdtMonth:hover,
-        td.rdtYear:hover {
+        & td.rdtMonth:hover,
+        & td.rdtYear:hover {
             background: #eee;
         }
 
@@ -342,11 +342,11 @@
             margin: 0;
             box-shadow: none;
 
-            table {
+            & table {
                 border-collapse: collapse;
             }
 
-            th {
+            & th {
                 width: 37px;
                 height: 40px;
                 line-height: 40px;
@@ -371,29 +371,29 @@
             }
         }
 
-        td.rdtDay,
-        td.rdtMonth,
-        td.rdtTimeToggle {
+        & td.rdtDay,
+        & td.rdtMonth,
+        & td.rdtTimeToggle {
             width: 40px;
             height: 40px;
             line-height: 40px;
             border: 1px solid var(--colors-ContrastNeutral);
         }
-        td.rdtDay:hover,
-        td.rdtMonth:hover,
-        td.rdtTimeToggle:hover {
+        & td.rdtDay:hover,
+        & td.rdtMonth:hover,
+        & td.rdtTimeToggle:hover {
             background: var(--colors-PrimaryBlue) !important;
         }
 
-        td.rdtDay.rdtOld,
-        td.rdtDay.rdtNew {
+        & td.rdtDay.rdtOld,
+        & td.rdtDay.rdtNew {
             color: #5b5b5b;
         }
 
-        td.rdtToday:before {
+        & td.rdtToday:before {
             border-bottom-color: var(--colors-PrimaryBlue) !important;
         }
-        td.rdtActive {
+        & td.rdtActive {
             background: var(--colors-PrimaryBlue) !important;
             color: var(--colors-ContrastBrightest);
 

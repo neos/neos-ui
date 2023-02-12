@@ -12,6 +12,28 @@
     grid-template-columns: min-content 1fr min-content;
 }
 
+.primaryToolbar {
+    grid-area: primaryToolbar;
+}
+.leftSideBarHeader {
+    grid-area: leftSideBarHeader;
+}
+.secondaryToolbar {
+    grid-area: secondaryToolbar;
+}
+.rightSidebar {
+    grid-area: rightSidebar;
+}
+.leftSidebar {
+    grid-area: leftSidebar;
+}
+.content {
+    grid-area: content;
+}
+.rightSidebar {
+    grid-area: rightSidebar;
+}
+
 /* FIXME: This would be much easier to implement with actual css-variables (which we cannot use yet due to the postcss conversion) */
 .app--leftSidebarIsHidden {
     grid-template-columns: 0 1fr min-content;

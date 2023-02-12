@@ -1,5 +1,5 @@
 .secondaryToolbar {
-    grid-area: secondaryToolbar;
+    composes: secondaryToolbar from "../style.css";
     display: flex;
     justify-content: space-between;
     gap: 1rem;

@@ -1,6 +1,6 @@
 .primaryToolbar {
     display: flex;
-    grid-area: primaryToolbar;
+    composes: primaryToolbar from "../style.css";
     position: relative;
     left: unset;
     top: unset;

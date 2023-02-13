@@ -1,5 +1,5 @@
 const getVersion = () => {
-    return 'v8.2.4';
+    return 'v8.2.5-beta1';
 };
 
 export default getVersion;

@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-guest-frame",
-  "version": "8.2.3",
+  "version": "8.2.4",
   "description": "Guest frame initialization bindings",
   "private": true,
   "main": "./src/manifest.js",

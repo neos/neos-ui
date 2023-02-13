@@ -48,6 +48,7 @@ export default class ReferenceEditor extends PureComponent {
             options={sanitizeOptions(options)}
             value={value}
             onValueChange={this.handleValueChange}
+            onHeaderClick={() => { /* prevent toggling of select box dropdown */ }}
             loadingLabel={i18nRegistry.translate('Neos.Neos:Main:loading')}
             displayLoadingIndicator={displayLoadingIndicator}
             showDropDownToggle={false}

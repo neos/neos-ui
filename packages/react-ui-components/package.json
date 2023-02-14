@@ -26,6 +26,7 @@
     "@neos-project/build-essentials": "8.0.9",
     "@neos-project/debug-reason-for-rendering": "8.0.9",
     "@neos-project/jest-preset-neos-ui": "8.0.9",
+    "@neos-project/utils-helpers": "8.0.9",
     "@storybook/addon-info": "^3.2.16",
     "@storybook/addon-knobs": "3.2.16",
     "@storybook/react": "3.2.16",

@@ -22,11 +22,15 @@ function *walkSync(dir) {
     }
 }
 
+/**
+ * we select all ts,js files that are not tests
+ * this logic should always align to the include and exclude patterns in `tsconfig.esmtypes.json`
+ */
 const files = [...walkSync(nodePath.join(__dirname, "src"))].filter((file) => {
-    if (/(\.spec\.tsx|\.spec\.ts|\.spec\.js|\.story\.js|\.d\.ts)$/.test(file)) {
+    if (/(\.spec\.tsx?|\.spec\.jsx?|\.story\.jsx?|\.d\.ts)$/.test(file)) {
         return false;
     }
-    if (/(\.tsx|\.ts|\.jsx|\.js)$/.test(file)) {
+    if (/(\.tsx?|\.jsx?)$/.test(file)) {
         return true;
     }
     return false;

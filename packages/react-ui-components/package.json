@@ -55,6 +55,7 @@
     "@neos-project/debug-reason-for-rendering": "workspace:*",
     "@neos-project/eslint-config-neos": "^2.6.1",
     "@neos-project/jest-preset-neos-ui": "workspace:*",
+    "@neos-project/utils-helpers": "workspace:*",
     "@storybook/addon-info": "^3.2.16",
     "@storybook/addon-knobs": "3.2.16",
     "@storybook/react": "3.2.16",

@@ -1,5 +1,6 @@
 const { transform } = require('lightningcss');
 const { readFileSync } = require("fs");
+const { join } = require("path")
 
 /** @type {Record<string, import('lightningcss').TokenOrValue>} */
 const cssVariables = {}
@@ -7,7 +8,7 @@ const cssVariables = {}
 // we extract all custom variable declarations so we can use the css syntax
 // to declare the variables and dont need to write them in lightningcss AST ourselves
 transform({
-    code: readFileSync("./cssVariables.css"),
+    code: readFileSync(join(__dirname, "cssVariables.css")),
     visitor: {
         Declaration: ({property, value}) => {
             if (property !== "custom") {

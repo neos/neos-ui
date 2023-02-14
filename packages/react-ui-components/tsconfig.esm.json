@@ -1,11 +1,12 @@
 {
   "exclude": [
-    "scripts/",
-    "coverage/",
     "**/*.spec.tsx",
     "**/*.spec.ts",
     "**/*.spec.js",
     "**/*.story.js"
+  ],
+  "include": [
+    "src"
   ],
   "extends": "../tsconfig.json",
   "compilerOptions": {

@@ -1,3 +1,5 @@
+/** Global CSS variables for Neos.Ui */
+
 /** they are compiled into the source code via our buildstack */
 :root {
     --spacing-GoldenUnit: 40px;

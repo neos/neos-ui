@@ -1,6 +1,7 @@
 const upperFirst = value => `${value.charAt(0).toUpperCase()}${value.slice(1)}`;
 
-// Global CSS variables for Neos.Ui
+// !!! LEGACY
+// you can configure the cssVariables in `/cssVariables.css`
 const config = {
     spacing: {
         goldenUnit: '40px',

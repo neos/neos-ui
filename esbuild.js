@@ -1,9 +1,7 @@
 const env = require('@neos-project/build-essentials/src/environment');
-const stylePlugin = require('esbuild-style-plugin');
+const {esbuildComposesFromCssModules} = require('@mhsdesign/esbuild-composes-from-css-modules');
 const {sep, join} = require('path')
-
-const cssVariables = require('@neos-project/build-essentials/src/styles/styleConstants');
-const cssVariablesObject = cssVariables.generateCssVarsObject(cssVariables.config);
+const {compileWithCssVariables} = require('./cssVariables')
 
 const isE2ETesting = process.argv.includes('--e2e-testing');
 const isWatch = process.argv.includes('--watch');
@@ -73,21 +71,16 @@ require('esbuild').build({
                 })
             }
         },
-        stylePlugin({
-            // process all .css and .scss files
-            // but exclude those files that start with
-            // - @ckeditor/
-            // - @fortawesome/fontawesome-svg-core/
-            cssModulesMatch: /^(?!@ckeditor\/|@fortawesome\/fontawesome-svg-core\/).*\.s?css$/,
-            postcss: {
-                plugins: [
-                    require('postcss-nested'),
-                    require('postcss-css-variables')({
-                        variables: cssVariablesObject
-                    })
-                ]
+        esbuildComposesFromCssModules(
+            {
+                includeFilter: /\.css$/,
+                excludeFilter: /@ckeditor\/|@fortawesome\/fontawesome-svg-core\/|styleHostOnly\.css|normalize\.css/,
+                visitor: compileWithCssVariables(),
+                targets: {
+                    chrome: 80 // aligns somewhat to es2020
+                }
             }
-        })
+        )
     ],
     define: {
         // we dont declare `global = window` as we want to control everything and notice it, when something is odd

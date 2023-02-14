@@ -36,6 +36,15 @@ class SelectBox_Header extends PureComponent {
         ListPreviewElement: PropTypes.any.isRequired
     }
 
+    handleListPreviewElementClick = e => {
+        const {onClick} = this.props;
+
+        if (onClick) {
+            e.stopPropagation();
+            onClick();
+        }
+    }
+
     resetButton = () => {
         const {showResetButton} = this.props;
         if (showResetButton) {
@@ -82,6 +91,7 @@ class SelectBox_Header extends PureComponent {
                             label={label}
                             icon={icon}
                             disabled={disabled}
+                            onClick={this.handleListPreviewElementClick}
                             /> : (
                                 <div className={theme.selectBoxHeader__label}>
                                     {icon &&

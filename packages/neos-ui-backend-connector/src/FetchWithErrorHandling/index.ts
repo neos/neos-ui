@@ -123,7 +123,7 @@ class FetchWithErrorHandling {
                     resolve(response);
                 } else if (response.status >= 500) {
                     // 50x error
-                    response.text().then((text) => {
+                    response.text().then(text => {
                         // Rejected promise is caught later
                         reject(text);
                     });

@@ -121,10 +121,8 @@ export default class SelectNodeType extends PureComponent {
 
     handleCancel = () => {
         const {cancel} = this.props;
-        this.setState({
-            filterSearchTerm: ''
-        });
-        this.handleCloseHelpMessage();
+
+        this.handleClose();
         cancel();
     }
 
@@ -132,8 +130,20 @@ export default class SelectNodeType extends PureComponent {
         const {apply} = this.props;
         const {insertMode} = this.state;
 
+        this.handleClose();
         apply(insertMode, nodeType);
     };
+
+    handleClose = () => {
+        this.handleClearFilterSearchTerm();
+        this.handleCloseHelpMessage();
+    }
+
+    handleClearFilterSearchTerm = () => {
+        this.setState({
+            filterSearchTerm: ''
+        });
+    }
 
     handleCloseHelpMessage = () => {
         this.setState({

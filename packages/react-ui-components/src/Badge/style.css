@@ -1,5 +1,5 @@
 .badge {
-    composes: reset from "../reset.css";
+    composes: reset from "../reset.module.css";
     display: inline-block;
     padding: 2px 4px;
     font-size: 12px;

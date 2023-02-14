@@ -1,10 +1,10 @@
 .panel {
-    composes: reset from "../reset.css";
+    composes: reset from "../reset.module.css";
     position: relative;
 }
 
 .panel__headline {
-    composes: reset from "../reset.css";
+    composes: reset from "../reset.module.css";
     cursor: pointer;
     height: var(--spacing-GoldenUnit);
     margin: 0;
@@ -19,13 +19,13 @@
 }
 
 .panel__toggleBtn {
-    composes: reset from "../reset.css";
+    composes: reset from "../reset.module.css";
     position: absolute;
     top: 0;
     right: 0;
 }
 .panel__contents {
-    composes: reset from "../reset.css";
+    composes: reset from "../reset.module.css";
     padding: 0 var(--spacing-Full);
     transition: var(--transition-Default) ease padding;
 

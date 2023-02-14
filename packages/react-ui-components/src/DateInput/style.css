@@ -11,7 +11,7 @@
 }
 .closeCalendarIconBtn,
 .calendarIconBtn {
-    composes: reset from "../reset.css";
+    composes: reset from "../reset.module.css";
     position: relative;
     display: table-cell;
     vertical-align: top;
@@ -44,7 +44,7 @@
 }
 
 .calendarFakeInputWrapper {
-    composes: reset from "../reset.css";
+    composes: reset from "../reset.module.css";
     display: table-cell;
     position: relative;
     width: 100%;
@@ -59,7 +59,7 @@
     cursor: pointer;
 }
 .calendarFakeInput {
-    composes: reset from "../reset.css";
+    composes: reset from "../reset.module.css";
     display: inline-block;
     vertical-align: top;
     width: 100%;
@@ -102,7 +102,7 @@
     font-size: var(--fontSize-Base);
 }
 .wrapper {
-    composes: reset from "../reset.css";
+    composes: reset from "../reset.module.css";
 
     & input[type='text'] {
         display: none;

@@ -5,7 +5,7 @@
   "repository": "neos/neos-ui",
   "bugs": "https://github.com/neos/neos-ui/issues",
   "homepage": "https://github.com/neos/neos-ui/blob/master/packages/debug-reason-for-rendering/README.md",
-  "main": "./src/index.js",
+  "module": "./src/index.js",
   "license": "MIT",
   "devDependencies": {
     "@neos-project/babel-preset-neos-ui": "workspace:*"

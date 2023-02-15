@@ -140,9 +140,6 @@ test-e2e:
 test-e2e-docker:
 	@bash Tests/IntegrationTests/e2e-docker.sh $(or $(browser),chromium)
 
-e2e-start-system-under-test:
-	bash Tests/IntegrationTests/start-system-under-test-docker.sh
-
 ## Executes make lint-js and make lint-editorconfig.
 lint: lint-js lint-editorconfig
 

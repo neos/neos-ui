@@ -188,13 +188,6 @@ To setup end-to-end tests locally you have got to do the same things described i
 
 For executing the end to end tests on a Mac with catalina or higher you need to permit screen recording. Open 'System Preferences > Security & Privacy > Privacy > Screen Recording' and check 'TestCafe Browser Tools' in the application list.
 
-#### Local Development with e2e-tests & docker
-To speed up the e2e-test workflow/feedback loop you can start the system under test in a docker setup and run the tests against that:
-* `make e2e-start-system-under-test` (starts a docker setup with the system under test)
-* `yarn run testcafe <browser> <testFile> <optional flags>`
-  * for example, this runs all tests in a _specific test file_ that match the name 'ClientEval' with some options the CI also uses:
-  `yarn run testcafe chrome Tests/IntegrationTests/Fixtures/1Dimension/createNewNodes.e2e.js --selector-timeout=10000 --assertion-timeout=30000 --debug-on-fail -T "ClientEval"`
-
 ##### Debugging integration tests
 
 * View the recording via Sauce Labs. You can find the url in the beginning of the test output.

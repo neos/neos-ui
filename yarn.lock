@@ -3697,7 +3697,6 @@ __metadata:
   dependencies:
     "@ckeditor/ckeditor5-dev-utils": ^12.0.1
     "@neos-project/babel-preset-neos-ui": "workspace:*"
-    autoprefixer: ^9.8.6
     babel-core: ^6.26.3
     babel-loader: ^7.1.2
     check-dependencies: ^1.0.1
@@ -3709,8 +3708,6 @@ __metadata:
     json-loader: ^0.5.7
     mini-css-extract-plugin: ^0.5.0
     null-loader: ^0.1.1
-    postcss-css-variables: ^0.14.0
-    postcss-hexrgba: ^1.0.1
     postcss-import: ^12.0.1
     postcss-loader: ^3.0.0
     postcss-nested: ^4.2.1
@@ -11883,7 +11880,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"escape-string-regexp@npm:1.0.5, escape-string-regexp@npm:^1.0.2, escape-string-regexp@npm:^1.0.3, escape-string-regexp@npm:^1.0.5":
+"escape-string-regexp@npm:1.0.5, escape-string-regexp@npm:^1.0.2, escape-string-regexp@npm:^1.0.5":
   version: 1.0.5
   resolution: "escape-string-regexp@npm:1.0.5"
   checksum: 6092fda75c63b110c706b6a9bfde8a612ad595b628f0bd2147eea1d3406723020810e591effc7db1da91d80a71a737a313567c5abb3813e8d9c71f4aa595b410
@@ -12673,7 +12670,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"extend@npm:^3.0.0, extend@npm:^3.0.1, extend@npm:~3.0.2":
+"extend@npm:^3.0.0, extend@npm:~3.0.2":
   version: 3.0.2
   resolution: "extend@npm:3.0.2"
   checksum: a50a8309ca65ea5d426382ff09f33586527882cf532931cb08ca786ea3146c0553310bda688710ff61d7668eba9f96b923fe1420cdf56a2c3eaf30fcab87b515
@@ -19841,18 +19838,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-css-variables@npm:^0.14.0":
-  version: 0.14.0
-  resolution: "postcss-css-variables@npm:0.14.0"
-  dependencies:
-    balanced-match: ^1.0.0
-    escape-string-regexp: ^1.0.3
-    extend: ^3.0.1
-    postcss: ^6.0.8
-  checksum: 0a5b46f1e5eed75ebec12c40fe0462f31dfb1444099d052159ae869c79e2d5d163ff1979932b49484049296d3cad1703b436f029a07c48e924c9f900b7317b02
-  languageName: node
-  linkType: hard
-
 "postcss-discard-comments@npm:^2.0.4":
   version: 2.0.4
   resolution: "postcss-discard-comments@npm:2.0.4"
@@ -19950,15 +19935,6 @@ __metadata:
   dependencies:
     postcss: ^6.0.1
   checksum: 0d521e7c0ffb7493966fd0c59828cc1925c4ab2ba0db781eeb4e51dd4839390d69239ee7023a172f931ace236e5601bbeb70bcf9a54d458ef9c027a63d8d9a9c
-  languageName: node
-  linkType: hard
-
-"postcss-hexrgba@npm:^1.0.1":
-  version: 1.0.2
-  resolution: "postcss-hexrgba@npm:1.0.2"
-  dependencies:
-    postcss: ^6.0.7
-  checksum: e115447525a91414af0b9026decc61803563df40bba6d55f4569ab92f52f40020bc1393ef9ee0fdacf1c0922dfbe4574453afb107f45f13a4a04c5e78eef0447
   languageName: node
   linkType: hard
 
@@ -20693,7 +20669,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^6.0.0, postcss@npm:^6.0.1, postcss@npm:^6.0.17, postcss@npm:^6.0.7, postcss@npm:^6.0.8":
+"postcss@npm:^6.0.0, postcss@npm:^6.0.1, postcss@npm:^6.0.17":
   version: 6.0.23
   resolution: "postcss@npm:6.0.23"
   dependencies:

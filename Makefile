@@ -132,7 +132,7 @@ test-parallel:
 
 ## Executes integration tests on saucelabs.
 test-e2e-saucelabs:
-	bash Tests/IntegrationTests/e2e.sh saucelabs:chrome
+	bash Tests/IntegrationTests/e2e.sh "saucelabs:chrome:Windows 10"
 
 ## Executes integration tests locally.
 test-e2e:

@@ -56,21 +56,21 @@ require('esbuild').build({
     },
     write: false, // we dont write directly see `.then()` below
     plugins: [
-        // {
-        //     name: "check-for-incorrect-build",
-        //     setup: ({onResolve, resolve}) => {
-        //         onResolve({ filter: /.*/, namespace: "file" }, async ({ path, ...options }) => {
-        //             const result = await resolve(path, { ...options, namespace: "noRecurse"})
-        //             if (result.path.includes(__dirname)) {
-        //                 return result;
-        //             }
-        //             if (result.external === false) {
-        //                 console.warn("File doesnt belong to the currently bundled package, yet is not marked as dependeny:", result.path)
-        //             }
-        //             return result;
-        //           })
-        //     }
-        // },
+        {
+            name: "check-for-incorrect-build",
+            setup: ({onResolve, resolve}) => {
+                onResolve({ filter: /.*/, namespace: "file" }, async ({ path, ...options }) => {
+                    const result = await resolve(path, { ...options, namespace: "noRecurse"})
+                    if (result.path.includes(__dirname) || result.path.startsWith("css-modules://")) {
+                        return result;
+                    }
+                    if (result.external === false) {
+                        throw new Error(`File ${result.path} doesnt belong to the currently bundled package, yet is not listed as dependeny.`, )
+                    }
+                    return result;
+                  })
+            }
+        },
         cssModules(
             {
                 includeFilter: /\.css$/,

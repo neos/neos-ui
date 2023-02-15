@@ -3,7 +3,7 @@
 set -e
 
 function dc() {
-    docker-compose -f ./Tests/IntegrationTests/docker-compose.yaml $@
+    docker-compose -f ./Tests/IntegrationTests/docker-compose.system-under-test.yaml $@
 }
 
 echo "#############################################################################"
@@ -33,11 +33,12 @@ echo ""
 echo "#############################################################################"
 echo "# Initialize Neos...                                                        #"
 echo "#############################################################################"
-docker cp "$(pwd)"/. "$(dc ps -q php)":/usr/src/app/TestDistribution/Packages/Application/neos-ui
 dc exec -T php bash <<-'BASH'
     cd TestDistribution
-    rm -rf Packages/Application/Neos.Neos.Ui
-    mv Packages/Application/neos-ui Packages/Application/Neos.Neos.Ui
+    # replace installed Neos Ui with local dev via sym link to mounted volume
+    # WHY: We want changes of dev to appear in system under test without rebuilding the whole system
+    # rm -rf Packages/Application/Neos.Neos.Ui
+    ln -sf /usr/src/neos-ui/ /usr/src/app/TestDistribution/Packages/Application/Neos.Neos.Ui
     sed -i 's/host: 127.0.0.1/host: db/g' Configuration/Settings.yaml
     ./flow flow:cache:flush
     ./flow flow:cache:warmup

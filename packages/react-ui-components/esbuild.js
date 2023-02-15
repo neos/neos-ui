@@ -1,4 +1,3 @@
-const {esbuildComposesFromCssModules} = require('@mhsdesign/esbuild-composes-from-css-modules');
 const {compileWithCssVariables} = require('../../cssVariables')
 
 const nodePath = require("path")
@@ -6,6 +5,7 @@ const { readdirSync } = require("fs")
 const { writeFile, mkdir } = require("fs/promises")
 
 const packageJson = require("./package.json");
+const { cssModules } = require('../../cssModules');
 
 /**
  * @param {String} dir
@@ -71,12 +71,15 @@ require('esbuild').build({
         //           })
         //     }
         // },
-        esbuildComposesFromCssModules(
+        cssModules(
             {
                 includeFilter: /\.css$/,
                 visitor: compileWithCssVariables(),
                 targets: {
-                    chrome: 80
+                    chrome: 80 // aligns somewhat to es2020
+                },
+                drafts: {
+                    nesting: true
                 }
             }
         )

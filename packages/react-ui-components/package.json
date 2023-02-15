@@ -49,7 +49,6 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.19.1",
-    "@mhsdesign/esbuild-composes-from-css-modules": "~0.1.0",
     "@neos-project/babel-preset-neos-ui": "workspace:*",
     "@neos-project/debug-reason-for-rendering": "workspace:*",
     "@neos-project/eslint-config-neos": "^2.6.1",

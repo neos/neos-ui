@@ -3634,17 +3634,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mhsdesign/esbuild-composes-from-css-modules@npm:~0.1.0":
-  version: 0.1.0
-  resolution: "@mhsdesign/esbuild-composes-from-css-modules@npm:0.1.0"
-  dependencies:
-    lightningcss: ^1.18.0
-  peerDependencies:
-    esbuild: ~0.16.0 || ~0.17.0
-  checksum: 6ef010505a35e409bc11936f231c6ba284384996e694da2f0351bc9bb6b981f29844244d9762a455d3fa78c39c6a9f14bd617ba96f74961fedba8882a91bd624
-  languageName: node
-  linkType: hard
-
 "@miherlosev/esm@npm:3.2.26":
   version: 3.2.26
   resolution: "@miherlosev/esm@npm:3.2.26"
@@ -4247,7 +4236,6 @@ __metadata:
     "@fortawesome/free-regular-svg-icons": ^5.15.3
     "@fortawesome/free-solid-svg-icons": ^5.15.3
     "@fortawesome/react-fontawesome": ^0.1.14
-    "@mhsdesign/esbuild-composes-from-css-modules": ~0.1.0
     "@neos-project/babel-preset-neos-ui": "workspace:*"
     "@neos-project/debug-reason-for-rendering": "workspace:*"
     "@neos-project/eslint-config-neos": ^2.6.1
@@ -22794,7 +22782,6 @@ __metadata:
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
     "@babel/eslint-parser": ^7.19.1
-    "@mhsdesign/esbuild-composes-from-css-modules": ~0.1.0
     "@typescript-eslint/eslint-plugin": ^5.44.0
     "@typescript-eslint/parser": ^5.44.0
     check-dependencies: ^1.0.1

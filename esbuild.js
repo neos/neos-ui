@@ -1,7 +1,7 @@
 const env = require('@neos-project/build-essentials/src/environment');
-const {esbuildComposesFromCssModules} = require('@mhsdesign/esbuild-composes-from-css-modules');
 const {sep, join} = require('path')
-const {compileWithCssVariables} = require('./cssVariables')
+const {compileWithCssVariables} = require('./cssVariables');
+const {cssModules} = require('./cssModules');
 
 const isE2ETesting = process.argv.includes('--e2e-testing');
 const isWatch = process.argv.includes('--watch');
@@ -71,13 +71,16 @@ require('esbuild').build({
                 })
             }
         },
-        esbuildComposesFromCssModules(
+        cssModules(
             {
                 includeFilter: /\.css$/,
                 excludeFilter: /@ckeditor\/|@fortawesome\/fontawesome-svg-core\/|styleHostOnly\.css|normalize\.css/,
                 visitor: compileWithCssVariables(),
                 targets: {
                     chrome: 80 // aligns somewhat to es2020
+                },
+                drafts: {
+                    nesting: true
                 }
             }
         )

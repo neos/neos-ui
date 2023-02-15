@@ -1,6 +1,6 @@
 .primaryToolbar {
     display: flex;
-    composes: primaryToolbar from "../style.css";
+    composes: primaryToolbar from '../style.css';
     position: relative;
     left: unset;
     top: unset;

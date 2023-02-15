@@ -23,7 +23,7 @@
   },
   "resolver": "<rootDir>/../jest-preset-neos-ui/src/moduleFieldResolver.js",
   "moduleNameMapper": {
-    "\\.(css|scss|svg)$": "identity-obj-proxy"
+    "\\.(css|svg)$": "identity-obj-proxy"
   },
   "moduleFileExtensions": [
     "ts",

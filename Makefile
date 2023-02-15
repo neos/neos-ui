@@ -91,26 +91,20 @@ build-react-ui-components-standalone:
 
 ## Runs the development build.
 build:
-	NEOS_BUILD_ROOT=$(shell pwd) node esbuild.js
+	node esbuild.js
 
 ## Watches the source files for changes and runs a build in case.
 build-watch:
-	NEOS_BUILD_ROOT=$(shell pwd) node esbuild.js --watch
-
-## Watches (and polls) the source files on a file share.
-build-watch-poll:
-	echo "not implemented in esbuild, yet! PR Welcome!"
+	node esbuild.js --watch
 
 # clean anything before building for production just to be sure
 ## Runs the production build. And also builds the subpackages for standalone use.
 build-production:
-	$(cross-env) NODE_ENV=production NEOS_BUILD_ROOT=$(shell pwd) \
-		node esbuild.js
+	$(cross-env) NODE_ENV=production node esbuild.js
 	make build-subpackages
 
 build-e2e-testing:
-	$(cross-env) NODE_ENV=production NEOS_BUILD_ROOT=$(shell pwd) \
-		node esbuild.js --e2e-testing
+	$(cross-env) NODE_ENV=production node esbuild.js --e2e-testing
 
 ################################################################################
 # Code Quality
@@ -190,7 +184,7 @@ publish-npm: called-with-version
 
 ## Cleans dependency folders
 clean:
-	rm -Rf node_modules; rm -rf packages/*/node_modules
+	rm -rf node_modules; rm -rf packages/*/node_modules
 
 
 ################################################################################

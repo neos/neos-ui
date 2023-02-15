@@ -1,8 +1,8 @@
-const env = require('@neos-project/build-essentials/src/environment');
 const {sep, join} = require('path')
 const {compileWithCssVariables} = require('./cssVariables');
 const {cssModules} = require('./cssModules');
 
+const isProduction = process.env.NODE_ENV === 'production' || process.argv.includes('--production');
 const isE2ETesting = process.argv.includes('--e2e-testing');
 const isWatch = process.argv.includes('--watch');
 
@@ -15,9 +15,9 @@ require('esbuild').build({
         'Host': './packages/neos-ui/src/index.js',
         'HostOnlyStyles': './packages/neos-ui/src/styleHostOnly.css'
     },
-    outdir: join(env.rootPath, './Resources/Public/Build'),
+    outdir: './Resources/Public/Build',
     sourcemap: true,
-    minify: env.isProduction,
+    minify: isProduction,
     logLevel: 'info',
     target: 'es2020',
     color: true,

@@ -41,8 +41,6 @@ const cssModules = (options) => {
                 if (options.excludeFilter && options.excludeFilter.test(path)) {
                     return;
                 }
-     
-                // @todo cache it...
 
                 const rawCssBuffer = await fs.readFile(path)
 
@@ -70,32 +68,47 @@ const cssModules = (options) => {
                     { code: finalcode, resolveDir: dirname(path) }
                 )
 
-                let jsHead = "";
+                const quote = JSON.stringify;
 
-                let jsBody = `import "${id}" \nexport default {`;
-                
-                let dependencyCount = 0;
+                const escape = (string) => JSON.stringify(string).slice(1, -1)
+
+                let contents = "";
+
+                /** @type {Map<string, string>} */
+                const dependencies = new Map()
+
+                /** @param {String} path */
+                const importDependeny = (path) => {
+                    if (dependencies.has(path)) {
+                        return dependencies.get(path)
+                    }
+                    const dependenciesName = `dependency_${dependencies.size}`
+                    // prepend dependeny to to the contents
+                    contents = `import ${dependenciesName} from ${quote(path)}\n` + contents;
+                    dependencies.set(path, dependenciesName)
+                    return dependenciesName;
+                }
+
+                contents += `import ${quote(id)}\n`;
+                contents += `export default {`;
 
                 for (const [cssClassReadableName, cssClassExport] of Object.entries(exports)) {
 
-                    let compiledCssClasses = `"${cssClassExport.name}`
+                    let compiledCssClasses = `"${escape(cssClassExport.name)}`
 
                     if (cssClassExport.composes) {
                         for (const composition of cssClassExport.composes) {
                             switch (composition.type) {
                                 case "local":
-                                    compiledCssClasses += " " + composition.name
+                                    compiledCssClasses += " " + escape(composition.name)
                                     break;
                             
                                 case "global":
-                                    compiledCssClasses += " " + composition.name
+                                    compiledCssClasses += " " + escape(composition.name)
                                     break;
 
                                 case "dependency":
-                                    jsHead += `import dependency_${dependencyCount} from ${JSON.stringify(composition.specifier)}\n`
-                                    compiledCssClasses += ` " + dependency_${dependencyCount}["${composition.name}"] + "`
-                                    
-                                    dependencyCount ++
+                                    compiledCssClasses += ` " + ${importDependeny(composition.specifier)}[${quote(composition.name)}] + "`
                                     break;
                             }
                         }
@@ -103,13 +116,13 @@ const cssModules = (options) => {
 
                     compiledCssClasses += `"`
 
-                    jsBody += `"${cssClassReadableName}":${compiledCssClasses},`
+                    contents += `${quote(cssClassReadableName)}:${compiledCssClasses},`
                 }
 
-                jsBody += "}"
+                contents += "}"
 
                 return {
-                    contents: jsHead + jsBody,
+                    contents,
                     loader: "js",
                 }
             })

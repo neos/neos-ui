@@ -1,6 +1,7 @@
-const {sep, join} = require('path')
+const {sep} = require('path')
 const {compileWithCssVariables} = require('./cssVariables');
 const {cssModules} = require('./cssModules');
+const esbuild = require('esbuild');
 
 const isProduction = process.env.NODE_ENV === 'production' || process.argv.includes('--production');
 const isE2ETesting = process.argv.includes('--e2e-testing');
@@ -10,7 +11,8 @@ if (isE2ETesting) {
     console.log('Building for E2E testing');
 }
 
-require('esbuild').build({
+/** @type {import("esbuild").BuildOptions} */
+const options = {
     entryPoints: {
         'Host': './packages/neos-ui/src/index.js',
         'HostOnlyStyles': './packages/neos-ui/src/styleHostOnly.css'
@@ -23,7 +25,6 @@ require('esbuild').build({
     color: true,
     bundle: true,
     keepNames: isE2ETesting, // for react magic selectors,
-    watch: isWatch,
     legalComments: "linked",
     loader: {
         '.js': 'tsx',
@@ -88,4 +89,10 @@ require('esbuild').build({
     define: {
         // we dont declare `global = window` as we want to control everything and notice it, when something is odd
     }
-})
+}
+
+if (isWatch) {
+    esbuild.context(options).then((ctx) => ctx.watch())
+} else {
+    esbuild.build(options)
+}

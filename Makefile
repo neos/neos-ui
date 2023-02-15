@@ -177,10 +177,6 @@ bump-version: called-with-version
 	./Build/bumpVersion.sh
 	./Build/createVersionFile.sh
 
-adjust-extensibility:
-	./Build/adjust-extensibility-package.sh
-
-
 publish-npm: called-with-version
 	yarn workspaces foreach --no-private npm publish --access public
 

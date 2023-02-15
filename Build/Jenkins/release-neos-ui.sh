@@ -45,7 +45,6 @@ make install
 
 # build
 make build-production
-make adjust-extensibility
 
 # code quality
 make lint

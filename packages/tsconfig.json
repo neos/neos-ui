@@ -2,7 +2,7 @@
     "compilerOptions": {
         "allowSyntheticDefaultImports": true, // no errors with commonjs modules interop
         "esModuleInterop": true,
-        "moduleResolution": "node",
+        "target": "ES2020",
         "declaration": false, // don't emit declarations
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,

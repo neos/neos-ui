@@ -3,7 +3,7 @@
 }
 
 .selectBox {
-    composes: reset from "../reset.module.css";
+    composes: reset from '../reset.module.css';
     width: 100%;
     position: relative;
     display: inline-block;
@@ -11,7 +11,7 @@
 }
 
 .selectBox__btn {
-    composes: reset from "../reset.module.css";
+    composes: reset from '../reset.module.css';
     width: 100%;
     text-align: left;
     color: white;

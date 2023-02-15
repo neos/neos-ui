@@ -1,5 +1,5 @@
 .selectedOptions {
-    composes: reset from "../reset.module.css";
+    composes: reset from '../reset.module.css';
 
     position: relative;
     width: 100%;

@@ -1,5 +1,5 @@
 .bar {
-    composes: reset from "../reset.module.css";
+    composes: reset from '../reset.module.css';
     position: fixed;
     left: 0;
     z-index: var(--zIndex-CheckboxInput-Context);

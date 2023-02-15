@@ -1,5 +1,5 @@
 .btn {
-    composes: reset from "../reset.module.css";
+    composes: reset from '../reset.module.css';
     position: relative;
     display: inline-block;
     height: var(--spacing-GoldenUnit);

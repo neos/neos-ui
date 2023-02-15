@@ -1,5 +1,5 @@
 .textInput {
-    composes: reset from "../reset.module.css";
+    composes: reset from '../reset.module.css';
     /* TODO: should eventually be moved to reset.module.css, but there maybe be plenty of side-effects */
     font-size: 14px;
     width: 100%;

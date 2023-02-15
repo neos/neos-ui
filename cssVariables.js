@@ -14,7 +14,19 @@ transform({
             if (property !== "custom") {
                 throw new Error("Only variable declarations expected.")
             }
-            cssVariables[value.name] = value.value
+            cssVariables[value.name] = [...value.value, {
+                // we a append a single space to the tokenList so that when the value is insertet
+                // it wont collide with further parameters like in this case:
+                // padding: 0 var(--spacing-GoldenUnit) 0 var(--spacing-Full);
+                // otherwise we would get:
+                // padding: 0 40px0 16px
+                //               |__________ here must be a space
+                type: "token",
+                value: {
+                    type: "delim",
+                    value: " "
+                }
+            }]
         }
     }
 })

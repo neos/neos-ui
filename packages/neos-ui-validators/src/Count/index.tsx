@@ -33,13 +33,9 @@ const Count = (value: any, validatorOptions: CountOptions) => {
 
     const {length} = Object.keys(value);
 
-    if (length === 0) {
-        return null;
-    }
-
     if (length < minimum || length > maximum) {
         const label = validatorOptions?.validationErrorMessage ?? 'content.inspector.validators.countValidator.countBetween';
-        return <I18n id={label}/>;
+        return <I18n id={label} params={{minimum, maximum}}/>;
     }
 
     return null;

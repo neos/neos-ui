@@ -3,7 +3,7 @@
   "version": "8.2.6",
   "description": "Prepare CKEditor5 for the Neos CMS UI",
   "private": true,
-  "module": "./src/manifest.js",
+  "main": "./src/manifest.js",
   "devDependencies": {
     "@neos-project/babel-preset-neos-ui": "workspace:*"
   },

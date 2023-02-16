@@ -31,14 +31,27 @@ BASH
 
 echo ""
 echo "#############################################################################"
-echo "# Initialize Neos...                                                        #"
+echo "# Create sym links to mounted Docker volumes...                             #"
 echo "#############################################################################"
+echo ""
 dc exec -T php bash <<-'BASH'
-    cd TestDistribution
     # replace installed Neos Ui with local dev via sym link to mounted volume
     # WHY: We want changes of dev to appear in system under test without rebuilding the whole system
     rm -rf Packages/Application/Neos.Neos.Ui
     ln -s /usr/src/neos-ui/ /usr/src/app/TestDistribution/Packages/Application/Neos.Neos.Ui
+
+    # enable changes of the Neos.TestNodeTypes outside of the container to appear in the container via sym link to mounted volume
+    rm -rf /usr/src/app/TestDistribution/DistributionPackages/Neos.TestNodeTypes
+    rm -rf /usr/src/app/TestDistribution/Packages/Application/Neos.TestNodeTypes
+    ln -s /usr/src/neos-ui/Tests/IntegrationTests/SharedNodeTypesPackage/ /usr/src/app/TestDistribution/Packages/Application/Neos.TestNodeTypes
+BASH
+
+echo "#############################################################################"
+echo "# Initialize Neos...                                                        #"
+echo "#############################################################################"
+dc exec -T php bash <<-'BASH'
+    cd TestDistribution
+
     sed -i 's/host: 127.0.0.1/host: db/g' Configuration/Settings.yaml
     ./flow flow:cache:flush
     ./flow flow:cache:warmup
@@ -58,15 +71,11 @@ BASH
 dc exec -T php bash <<-BASH
     mkdir -p ./TestDistribution/DistributionPackages
 
-    rm -rf ./TestDistribution/DistributionPackages/Neos.TestNodeTypes
-    ln -s "../../SharedNodeTypesPackage" ./TestDistribution/DistributionPackages/Neos.TestNodeTypes
-
     rm -rf ./TestDistribution/DistributionPackages/Neos.TestSite
     ln -s "../../Fixtures/1Dimension/SitePackage" ./TestDistribution/DistributionPackages/Neos.TestSite
 
     # TODO: optimize this
     cd TestDistribution
-    composer reinstall neos/test-nodetypes
     composer reinstall neos/test-site
     ./flow flow:cache:flush --force
     ./flow flow:cache:warmup

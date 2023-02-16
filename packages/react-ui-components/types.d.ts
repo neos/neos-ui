@@ -12,7 +12,7 @@
  * There is a proposal for the variadic generics notation: https://github.com/Microsoft/TypeScript/issues/5453
  *
  * Usage:
- *   type DefaultProps = PickDefaultProps<Props, 'key1' | 'key2' | 'keyX'>
+ *   type DefaultProps = PickDefaultProps<Props, 'key1' | 'key2' | 'keyX'>
  *   const defaultProps: DefaultProps = {
  *     key1: ...,
  *     key2: ...,
@@ -22,7 +22,6 @@
 export type PickDefaultProps<Props, defaultPropsKeys extends keyof Props> = Readonly<Required<{
     [P in defaultPropsKeys]: Props[P]
 }>>;
-
 
 export type Diff<T, U> = T extends U ? never : T;
 

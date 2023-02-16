@@ -73,6 +73,7 @@
     "@types/prop-types": "^15.7.3",
     "@types/react": "^16.9.17",
     "@types/react-close-on-escape": "^3.0.0",
+    "@types/react-collapse": "^5.0.1",
     "@types/react-dom": "^16.9.4",
     "@types/react-fontawesome": "^1.6.4",
     "@types/react-portal": "^4.0.1",

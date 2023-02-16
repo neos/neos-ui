@@ -1,10 +1,9 @@
 import {themr} from '@friendsofreactjs/react-css-themr';
 import identifiers from '../identifiers';
 import style from './style.scss';
-import ToggablePanel, {
-    Header,
-    Contents
-} from './toggablePanel';
+import ToggablePanel from './toggablePanel';
+import Header from './toggablePanelHeader';
+import Contents from './toggablePanelContents';
 
 const ThemedToggablePanel = themr(identifiers.toggablePanel, style)(ToggablePanel);
 const ThemedToggablePanelHeader = themr(identifiers.toggablePanelHeader, style)(Header);

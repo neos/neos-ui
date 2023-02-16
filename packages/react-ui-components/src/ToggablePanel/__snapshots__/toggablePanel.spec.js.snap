@@ -1,12 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Contents/> should render correctly. 1`] = `
-<UnmountClosed
+<Collapse
+  checkTimeout={50}
   isOpened={false}
   springConfig={
     Object {
       "damping": 30,
       "stiffness": 300,
+    }
+  }
+  theme={
+    Object {
+      "collapse": "ReactCollapse--collapse",
+      "content": "ReactCollapse--content",
     }
   }
 >
@@ -16,7 +23,7 @@ exports[`<Contents/> should render correctly. 1`] = `
   >
     Foo children
   </div>
-</UnmountClosed>
+</Collapse>
 `;
 
 exports[`<Header/> should render correctly. 1`] = `

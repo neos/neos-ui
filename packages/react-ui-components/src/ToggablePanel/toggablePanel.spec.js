@@ -2,11 +2,10 @@ import React from 'react';
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
 import {createStubComponent} from './../_lib/testUtils';
-import ToggablePanel, {
-    StatelessToggablePanel,
-    Header,
-    Contents
-} from './toggablePanel';
+import ToggablePanel from './toggablePanel';
+import Header from './toggablePanelHeader';
+import Contents from './toggablePanelContents';
+import StatelessToggablePanel from './statelessToggablePanel';
 
 describe('<ToggablePanel/>', () => {
     let props;

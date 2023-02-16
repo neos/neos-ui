@@ -4,16 +4,16 @@ import React from 'react';
 
 import Button from '../Button';
 import Icon from '../Icon';
-import IconButton, {defaultProps, IconButtonProps} from './iconButton';
+import IconButton, {IconButtonProps} from './iconButton';
 
 describe('<IconButton/>', () => {
     const props: IconButtonProps = {
-        ...defaultProps,
+        ...IconButton.defaultProps,
         className: 'fooClassName',
         icon: 'fooIconName',
         theme: {
             'iconButton': 'iconButtonClassName',
-            'iconButton--disabled': 'disabledClassName',
+            'iconButton--disabled': 'disabledClassName'
         }
     };
 

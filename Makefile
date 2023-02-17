@@ -176,7 +176,6 @@ endif
 bump-version: called-with-version
 	yarn workspaces foreach version $(VERSION) --deferred
 	yarn version apply --all
-	./Build/createVersionFile.sh
 
 publish-npm: called-with-version
 	yarn workspaces foreach --no-private npm publish --access public

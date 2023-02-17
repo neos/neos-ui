@@ -5,6 +5,8 @@ const {sep, join} = require('path')
 const cssVariables = require('@neos-project/build-essentials/src/styles/styleConstants');
 const cssVariablesObject = cssVariables.generateCssVarsObject(cssVariables.config);
 
+const { version } = require('./package.json')
+
 const isE2ETesting = process.argv.includes('--e2e-testing');
 const isWatch = process.argv.includes('--watch');
 
@@ -91,5 +93,6 @@ require('esbuild').build({
     ],
     define: {
         // we dont declare `global = window` as we want to control everything and notice it, when something is odd
+        NEOS_UI_VERSION: JSON.stringify(env.isProduction ? `v${version}` : `v${version}-dev`)
     }
 })

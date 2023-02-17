@@ -2,6 +2,7 @@ const {sep} = require('path')
 const {compileWithCssVariables} = require('./cssVariables');
 const {cssModules} = require('./cssModules');
 const esbuild = require('esbuild');
+const { version } = require('./package.json')
 
 const isProduction = process.env.NODE_ENV === 'production' || process.argv.includes('--production');
 const isE2ETesting = process.argv.includes('--e2e-testing');
@@ -88,6 +89,7 @@ const options = {
     ],
     define: {
         // we dont declare `global = window` as we want to control everything and notice it, when something is odd
+        NEOS_UI_VERSION: JSON.stringify(isProduction ? `v${version}` : `v${version}-dev`)
     }
 }
 

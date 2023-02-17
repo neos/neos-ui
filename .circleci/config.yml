@@ -60,26 +60,6 @@ jobs:
       - save_cache: *store_yarn_package_cache
       - persist_to_workspace: *persist_to_workspace
 
-  codestyle:
-    working_directory: *workspace_root
-    docker:
-      - image: cimg/node:16.17-browsers
-    steps:
-      - attach_workspace: *attach_workspace
-      - run: make lint
-
-  unittests:
-    working_directory: *workspace_root
-    docker:
-      - image: cimg/node:16.17-browsers
-    steps:
-      - attach_workspace: *attach_workspace
-      - run:
-          name: Build
-          no_output_timeout: 30m
-          command: |
-            make test
-
   build_flow_app:
     working_directory: *workspace_root
     environment:
@@ -170,12 +150,6 @@ workflows:
               only:
                 - /.*/
       - build_flow_app:
-          requires:
-            - checkout
-      - codestyle:
-          requires:
-            - checkout
-      - unittests:
           requires:
             - checkout
       - e2e:

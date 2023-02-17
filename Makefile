@@ -174,12 +174,8 @@ ifeq ($(VERSION),)
 endif
 
 bump-version: called-with-version
-	./Build/bumpVersion.sh
-	./Build/createVersionFile.sh
-
-adjust-extensibility:
-	./Build/adjust-extensibility-package.sh $(target-path)
-
+	yarn workspaces foreach version $(VERSION) --deferred
+	yarn version apply --all
 
 publish-npm: called-with-version
 	yarn workspaces foreach --no-private npm publish --access public
@@ -209,7 +205,7 @@ help:
 	@echo '  ${YELLOW}make${RESET} ${GREEN}<target>${RESET}'
 	@echo ''
 	@echo 'Targets:'
-	@awk '/^[a-zA-Z\-\_0-9]+:/ { \
+	@awk '/^[a-zA-Z0-9_-]+:/ { \
 		helpMessage = match(lastLine, /^## (.*)/); \
 		if (helpMessage) { \
 			helpCommand = substr($$1, 0, index($$1, ":")-1); \

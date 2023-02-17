@@ -45,7 +45,6 @@ make install
 
 # build
 make build-production
-make adjust-extensibility target-path="./dist/index.js"
 
 # code quality
 make lint
@@ -54,9 +53,6 @@ make test
 # publishing
 VERSION=$VERSION make bump-version
 VERSION=$VERSION NPM_TOKEN=$NPM_TOKEN make publish-npm
-
-# Change extensibility module target path back to src
-make adjust-extensibility target-path="./src/index.ts"
 
 # add changes to git and push
 git add .

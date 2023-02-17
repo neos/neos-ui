@@ -3551,7 +3551,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@neos-project/build-essentials@*, @neos-project/build-essentials@workspace:*, @neos-project/build-essentials@workspace:packages/build-essentials":
+"@neos-project/build-essentials@workspace:*, @neos-project/build-essentials@workspace:packages/build-essentials":
   version: 0.0.0-use.local
   resolution: "@neos-project/build-essentials@workspace:packages/build-essentials"
   dependencies:
@@ -3821,7 +3821,7 @@ __metadata:
     "@neos-project/babel-preset-neos-ui": "workspace:*"
     "@neos-project/build-essentials": "workspace:*"
     "@neos-project/jest-preset-neos-ui": "workspace:*"
-    "@neos-project/positional-array-sorter": 8.1.4
+    "@neos-project/positional-array-sorter": "workspace:*"
     babel-plugin-transform-decorators-legacy: ^1.3.4
     babel-plugin-transform-object-rest-spread: ^6.20.1
     babel-preset-es2015: ^6.13.2
@@ -4055,13 +4055,6 @@ __metadata:
     uuid: ^3.3.2
   languageName: unknown
   linkType: soft
-
-"@neos-project/positional-array-sorter@npm:8.1.4":
-  version: 8.1.4
-  resolution: "@neos-project/positional-array-sorter@npm:8.1.4"
-  checksum: ce0648805b9f8c5b230b59d56a61774f296186a542079e285c2936d0bce97cfc429e00e8195d2bc00aa7aa17af56db6b0ae635fe4aa079a65473835c31a22c10
-  languageName: node
-  linkType: hard
 
 "@neos-project/positional-array-sorter@workspace:*, @neos-project/positional-array-sorter@workspace:packages/positional-array-sorter":
   version: 0.0.0-use.local
@@ -22846,7 +22839,7 @@ __metadata:
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
     "@babel/eslint-parser": ^7.19.1
-    "@neos-project/build-essentials": "*"
+    "@neos-project/build-essentials": "workspace:*"
     "@typescript-eslint/eslint-plugin": ^5.44.0
     "@typescript-eslint/parser": ^5.44.0
     check-dependencies: ^1.0.1

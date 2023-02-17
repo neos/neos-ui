@@ -1,6 +1,11 @@
 name: Build and test
 
-on: push
+on:
+  workflow_dispatch:
+  push:
+    branches: [ '[0-9]+.[0-9]' ]
+  pull_request:
+    branches: [ '[0-9]+.[0-9]' ]
 
 jobs:
   codestyle:

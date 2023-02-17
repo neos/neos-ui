@@ -3551,7 +3551,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@neos-project/build-essentials@*, @neos-project/build-essentials@workspace:*, @neos-project/build-essentials@workspace:packages/build-essentials":
+"@neos-project/build-essentials@workspace:*, @neos-project/build-essentials@workspace:packages/build-essentials":
   version: 0.0.0-use.local
   resolution: "@neos-project/build-essentials@workspace:packages/build-essentials"
   dependencies:
@@ -22839,7 +22839,7 @@ __metadata:
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
     "@babel/eslint-parser": ^7.19.1
-    "@neos-project/build-essentials": "*"
+    "@neos-project/build-essentials": "workspace:*"
     "@typescript-eslint/eslint-plugin": ^5.44.0
     "@typescript-eslint/parser": ^5.44.0
     check-dependencies: ^1.0.1

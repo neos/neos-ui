@@ -17,7 +17,7 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.19.1",
-    "@neos-project/build-essentials": "*",
+    "@neos-project/build-essentials": "workspace:*",
     "@typescript-eslint/eslint-plugin": "^5.44.0",
     "@typescript-eslint/parser": "^5.44.0",
     "check-dependencies": "^1.0.1",

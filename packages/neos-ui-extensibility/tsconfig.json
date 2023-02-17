@@ -1,6 +1,13 @@
 {
+    "exclude": [
+        "**/*.spec.*"
+    ],
+    "include": [
+        "src"
+    ],
     "extends": "./../tsconfig.json",
     "compilerOptions": {
-        "outDir": "dist"
+        "outDir": "dist",
+        "allowJs": true
     }
 }

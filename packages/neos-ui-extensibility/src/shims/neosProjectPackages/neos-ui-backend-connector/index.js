@@ -1,4 +1,4 @@
-import readFromConsumerApi from '../../../../dist/readFromConsumerApi';
+import readFromConsumerApi from '../../../readFromConsumerApi';
 
 export default readFromConsumerApi('NeosProjectPackages')().NeosUiBackendConnectorDefault;
 

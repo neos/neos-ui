@@ -354,13 +354,13 @@
             border-right: 1px solid var(--colors-ContrastNeutral);
             border-bottom: 1px solid var(--colors-ContrastNeutral);
 
-            :global(.rdtPrev:hover),
-            :global(.rdtNext:hover),
-            :global(.rdtSwitch:hover) {
+            &:global(.rdtPrev:hover),
+            &:global(.rdtNext:hover),
+            &:global(.rdtSwitch:hover) {
                 background: var(--colors-PrimaryBlue) !important;
             }
 
-            :global(.dow) {
+            &:global(.dow) {
                 width: 40px;
                 background: var(--colors-ContrastNeutral);
                 text-align: center;

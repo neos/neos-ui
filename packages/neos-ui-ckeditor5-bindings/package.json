@@ -4,9 +4,6 @@
   "description": "Prepare CKEditor5 for the Neos CMS UI",
   "private": true,
   "main": "./src/manifest.js",
-  "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "workspace:*"
-  },
   "dependencies": {
     "@ckeditor/ckeditor5-alignment": "^16.0.0",
     "@ckeditor/ckeditor5-basic-styles": "^16.0.0",

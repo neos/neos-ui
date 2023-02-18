@@ -9,7 +9,6 @@
     "lint": "yarn tsc --noemit && eslint src/**/*.{js,jsx,ts,tsx}"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "workspace:*",
     "@neos-project/jest-preset-neos-ui": "workspace:*",
     "@neos-project/neos-ui-build": "workspace:*",
     "typescript": "^4.6.4"

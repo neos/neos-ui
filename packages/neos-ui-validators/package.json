@@ -19,7 +19,6 @@
     "plow-js": "3.0.0"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "workspace:*",
     "@neos-project/jest-preset-neos-ui": "workspace:*",
     "@neos-project/neos-ts-interfaces": "workspace:*",
     "@neos-project/neos-ui-build": "workspace:*",

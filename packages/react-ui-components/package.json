@@ -50,8 +50,6 @@
     "react-textarea-autosize": "^8.3.0"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.19.1",
-    "@neos-project/babel-preset-neos-ui": "workspace:*",
     "@neos-project/debug-reason-for-rendering": "workspace:*",
     "@neos-project/eslint-config-neos": "^2.6.1",
     "@neos-project/jest-preset-neos-ui": "workspace:*",

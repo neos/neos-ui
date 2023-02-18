@@ -26,7 +26,6 @@
     "recharts": "^1.0.0-alpha.6"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "workspace:*",
     "@neos-project/debug-reason-for-rendering": "workspace:*",
     "@neos-project/jest-preset-neos-ui": "workspace:*",
     "@neos-project/neos-ui-build": "workspace:*"

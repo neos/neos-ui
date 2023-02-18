@@ -4,7 +4,7 @@ const {cssModules} = require('./cssModules');
 const esbuild = require('esbuild');
 const { version } = require('./package.json')
 
-const isProduction = process.env.NODE_ENV === 'production' || process.argv.includes('--production');
+const isProduction = process.argv.includes('--production');
 const isE2ETesting = process.argv.includes('--e2e-testing');
 const isWatch = process.argv.includes('--watch');
 

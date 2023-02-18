@@ -100,11 +100,11 @@ build-watch:
 # clean anything before building for production just to be sure
 ## Runs the production build. And also builds the subpackages for standalone use.
 build-production:
-	$(cross-env) NODE_ENV=production node esbuild.js
+	node esbuild.js --production
 	make build-subpackages
 
 build-e2e-testing:
-	$(cross-env) NODE_ENV=production node esbuild.js --e2e-testing
+	node esbuild.js --production --e2e-testing
 
 ################################################################################
 # Code Quality

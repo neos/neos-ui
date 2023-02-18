@@ -1,19 +1,20 @@
 {
-  "exclude": [
-    "scripts/",
-    "coverage/",
-    "**/*.spec.tsx",
-    "**/*.spec.ts",
-    "**/*.spec.js",
-    "**/*.story.js"
+  "include": [
+    "src"
   ],
-  "extends": "../tsconfig.json",
+  "exclude": [
+    "**/*.spec.*",
+    "**/*.story.*"
+  ],
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "lib-esm",
     "module": "esnext",
     "target": "es6",
     "moduleResolution": "node",
-    "allowJs": true
+    "allowJs": true,
+    // will fail on rebuild currently
+    "incremental": false
   }
 }

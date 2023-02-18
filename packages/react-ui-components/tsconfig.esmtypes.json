@@ -1,19 +1,18 @@
 {
-  "exclude": [
-    "scripts/",
-    "**/*.spec.tsx",
-    "**/*.spec.ts",
-    "**/*.spec.js",
-    "**/*.story.js"
+  "include": [
+    "src"
   ],
-  "extends": "../tsconfig.json",
+  "exclude": [
+    "**/*.spec.*",
+    "**/*.story.*"
+  ],
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "declaration": true,
     "emitDeclarationOnly": true,
     "outDir": "lib-esm",
-    "module": "esnext",
-    "target": "esnext",
-    "moduleResolution": "node",
-    "allowJs": false
+    "allowJs": false,
+    // will fail on rebuild currently
+    "incremental": false
   }
 }

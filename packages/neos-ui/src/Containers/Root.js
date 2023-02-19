@@ -12,8 +12,7 @@ import {far} from '@fortawesome/free-regular-svg-icons';
 import {fas} from '@fortawesome/free-solid-svg-icons';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 
-// Insert the supporting CSS into the <head> of the HTML document?
-config.autoAddCss = false;
+config.autoAddCss = false; // Dont insert the supporting CSS into the <head> of the HTML document
 config.familyPrefix = 'neos-fa';
 config.replacementClass = 'neos-svg-inline--fa';
 

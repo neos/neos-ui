@@ -4,6 +4,13 @@ import toJson from 'enzyme-to-json';
 import Tabs, {TabMenuItem, TabsProps, tabsDefaultProps} from './tabs';
 import {PanelProps} from './panel';
 
+// todo find a better way to make font-awesome work ;)
+import {library} from '@fortawesome/fontawesome-svg-core';
+import {fab} from '@fortawesome/free-brands-svg-icons';
+import {far} from '@fortawesome/free-regular-svg-icons';
+import {fas} from '@fortawesome/free-solid-svg-icons';
+library.add(fab, fas, far);
+
 describe('<Tabs/>', () => {
     const panelProps: PanelProps = {
         children: [<div key={'foo'}>'Foo children'</div>],

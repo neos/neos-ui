@@ -12,6 +12,7 @@ const { dirname } = require("path");
  * @param {import("lightningcss").TransformOptions["visitor"]} options.visitor
  * @param {import("lightningcss").TransformOptions["targets"]} options.targets
  * @param {import("lightningcss").TransformOptions["drafts"]} options.drafts
+ * @param {import("lightningcss").CSSModulesConfig["pattern"]} options.cssModulesPattern
  * @return {import("esbuild").Plugin}
  */
 const cssModules = (options) => {
@@ -48,7 +49,9 @@ const cssModules = (options) => {
                     filename: path,
                     code: rawCssBuffer,
                     analyzeDependencies: false,
-                    cssModules: true,
+                    cssModules: {
+                        pattern: options.cssModulesPattern ?? `[hash]_[local]`
+                    },
                     sourceMap: true,
                     targets: options.targets,
                     drafts: options.drafts,

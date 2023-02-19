@@ -11,10 +11,10 @@
     "types": "./types/index.d.ts",
     "exports": {
       ".": {
-          "import": "./dist/index.js",
-          "types": "./types/index.d.ts"
+        "import": "./dist/index.js",
+        "types": "./types/index.d.ts"
       },
-      "./unstyled":  {
+      "./unstyled": {
         "import": "./dist/unstyled.js",
         "types": "./types/unstyled.d.ts"
       }

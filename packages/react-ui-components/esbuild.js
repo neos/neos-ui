@@ -53,7 +53,8 @@ require('esbuild').build({
                 },
                 drafts: {
                     nesting: true
-                }
+                },
+                cssModulesPattern: `neos-[hash]_[local]`
             }
         )
     ]

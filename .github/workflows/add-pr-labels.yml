@@ -1,0 +1,31 @@
+name: Add Labels to Pull Request
+
+on:
+  pull_request:
+    types: [opened, reopened]
+
+jobs:
+  add-labels:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add target branch label
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          labels: ${{ github.event.pull_request.base.ref }}
+      - name: Add feature label
+        if: startsWith(github.event.pull_request.title, 'FEATURE:')
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          labels: 'feature'
+      - name: Add bugfix label
+        if: startsWith(github.event.pull_request.title, 'BUGFIX:')
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          labels: 'bugfix'
+      - name: Add task label
+        if: startsWith(github.event.pull_request.title, 'TASK:')
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          labels: 'task'
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

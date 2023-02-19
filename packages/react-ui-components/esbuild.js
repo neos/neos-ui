@@ -1,45 +1,18 @@
 const {compileWithCssVariables} = require('../../cssVariables')
 
 const nodePath = require("path")
-const { readdirSync } = require("fs")
 const { writeFile, mkdir } = require("fs/promises")
 
 const packageJson = require("./package.json");
 const { cssModules } = require('../../cssModules');
 
-/**
- * @param {String} dir
- * @returns {Generator<String>}
- */
-function *walkSync(dir) {
-    const files = readdirSync(dir, { withFileTypes: true });
-    for (const file of files) {
-        if (file.isDirectory()) {
-            yield* walkSync(nodePath.join(dir, file.name));
-        } else {
-            yield nodePath.join(dir, file.name);
-        }
-    }
-}
-
-/**
- * we select all ts,js files that are not tests
- * this logic should always align to the include and exclude patterns in `tsconfig.esmtypes.json`
- */
-const files = [...walkSync(nodePath.join(__dirname, "src"))].filter((file) => {
-    if (/(\.spec\.tsx?|\.spec\.jsx?|\.story\.jsx?|\.d\.ts)$/.test(file)) {
-        return false;
-    }
-    if (/(\.tsx?|\.jsx?)$/.test(file)) {
-        return true;
-    }
-    return false;
-})
-
 require('esbuild').build({
-    entryPoints: files,
+    entryPoints: [
+        "src/index.ts",
+        "src/unstyled.ts"
+    ],
     external: Object.keys({...packageJson.dependencies, ...packageJson.peerDependencies}),
-    outdir: "lib-esm",
+    outdir: "dist",
     sourcemap: "linked",
     logLevel: 'info',
     target: 'es2020',

@@ -7,11 +7,26 @@
   "homepage": "https://github.com/neos/neos-ui/blob/master/packages/react-ui-components/README.md",
   "main": "./src/index",
   "publishConfig": {
-    "main": "./lib-esm/index.js"
+    "main": "./dist/index.js",
+    "types": "./types/index.d.ts",
+    "exports": {
+      ".": {
+          "import": "./dist/index.js",
+          "types": "./types/index.d.ts"
+      },
+      "./unstyled":  {
+        "import": "./dist/unstyled.js",
+        "types": "./types/unstyled.d.ts"
+      }
+    }
   },
+  "files": [
+    "dist",
+    "types"
+  ],
   "sideEffects": false,
   "scripts": {
-    "build-standalone-esm": "rm -rf lib-esm && tsc --build tsconfig.esmtypes.json && node esbuild.js",
+    "build": "rm -rf dist types && tsc && node esbuild.js",
     "test": "yarn jest -w 2 --coverage",
     "test:watch": "yarn jest --watch",
     "lint": "eslint src/**/*.{js,jsx} && stylelint src/**/*.css && tslint -t codeFrame -p ../tsconfig.json -c ../../tslint.json",

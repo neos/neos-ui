@@ -1,99 +1,37 @@
 /* eslint-disable camelcase, react/jsx-pascal-case */
-import enhanceWithClickOutside from './enhanceWithClickOutside';
-import Badge from './Badge';
-import Bar from './Bar';
-import Button from './Button';
-import ButtonGroup from './ButtonGroup';
-import CheckBox from './CheckBox';
-import DateInput from './DateInput';
-import Dialog from './Dialog';
-import DropDown from './DropDown';
-import Frame from './Frame';
-import Headline from './Headline';
-import Icon from './Icon';
-import IconButton from './IconButton';
-import IconButtonDropDown from './IconButtonDropDown';
-import Label from './Label';
+export {default as enhanceWithClickOutside} from './enhanceWithClickOutside';
+export {default as Badge} from './Badge';
+export {default as Bar} from './Bar';
+export {default as Button} from './Button';
+export {default as ButtonGroup} from './ButtonGroup';
+export {default as CheckBox} from './CheckBox';
+export {default as DateInput} from './DateInput';
+export {default as Dialog} from './Dialog';
+export {default as DropDown} from './DropDown';
+export {default as Frame} from './Frame';
+export {default as Headline} from './Headline';
+export {default as Icon} from './Icon';
+export {default as IconButton} from './IconButton';
+export {default as IconButtonDropDown} from './IconButtonDropDown';
+export {default as Label} from './Label';
 // @ts-expect-error
-import Logo from './Logo';
+export {default as Logo} from './Logo';
 // @ts-expect-error
-import SelectBox from './SelectBox';
-import SideBar from './SideBar';
-import Tabs from './Tabs';
-import TextArea from './TextArea';
-import TextInput from './TextInput';
+export {default as SelectBox} from './SelectBox';
+export {default as SideBar} from './SideBar';
+export {default as Tabs} from './Tabs';
+export {default as TextArea} from './TextArea';
+export {default as TextInput} from './TextInput';
 // @ts-expect-error
-import ToggablePanel from './ToggablePanel';
-import Tooltip from './Tooltip';
+export {default as ToggablePanel} from './ToggablePanel';
+export {default as Tooltip} from './Tooltip';
 // @ts-expect-error
-import Tree from './Tree';
+export {default as Tree} from './Tree';
 // @ts-expect-error
-import MultiSelectBox from './MultiSelectBox';
+export {default as MultiSelectBox} from './MultiSelectBox';
 // @ts-expect-error
-import MultiSelectBox_ListPreviewSortable from './MultiSelectBox_ListPreviewSortable';
+export {default as MultiSelectBox_ListPreviewSortable} from './MultiSelectBox_ListPreviewSortable';
 // @ts-expect-error
-import SelectBox_Option_SingleLine from './SelectBox_Option_SingleLine';
+export {default as SelectBox_Option_SingleLine} from './SelectBox_Option_SingleLine';
 // @ts-expect-error
-import SelectBox_Option_MultiLineWithThumbnail from './SelectBox_Option_MultiLineWithThumbnail';
-
-export {
-    enhanceWithClickOutside,
-    Badge,
-    Bar,
-    Button,
-    ButtonGroup,
-    CheckBox,
-    DateInput,
-    Dialog,
-    DropDown,
-    Frame,
-    Headline,
-    Icon,
-    IconButton,
-    IconButtonDropDown,
-    Label,
-    Logo,
-    SelectBox,
-    SideBar,
-    Tabs,
-    TextArea,
-    TextInput,
-    ToggablePanel,
-    Tooltip,
-    Tree,
-    MultiSelectBox,
-    MultiSelectBox_ListPreviewSortable,
-    SelectBox_Option_SingleLine,
-    SelectBox_Option_MultiLineWithThumbnail
-};
-
-export default {
-    enhanceWithClickOutside,
-    Badge,
-    Bar,
-    Button,
-    ButtonGroup,
-    CheckBox,
-    DateInput,
-    Dialog,
-    DropDown,
-    Frame,
-    Headline,
-    Icon,
-    IconButton,
-    IconButtonDropDown,
-    Label,
-    Logo,
-    SelectBox,
-    SideBar,
-    Tabs,
-    TextArea,
-    TextInput,
-    ToggablePanel,
-    Tooltip,
-    Tree,
-    MultiSelectBox,
-    MultiSelectBox_ListPreviewSortable,
-    SelectBox_Option_SingleLine,
-    SelectBox_Option_MultiLineWithThumbnail
-};
+export {default as SelectBox_Option_MultiLineWithThumbnail} from './SelectBox_Option_MultiLineWithThumbnail';

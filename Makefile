@@ -75,19 +75,9 @@ setup: check-requirements install build ## Run a clean setup
 # Builds
 ################################################################################
 
-
-# TODO: figure out how to pass a parameter to other targets to reduce redundancy
 # Builds the subpackages for standalone use.
 build-subpackages:
-	yarn workspaces foreach --parallel --topological-dev run build
-	make build-react-ui-components-standalone
-
-# we build the react UI components ready for standalone usage;
-# so that they can be published on NPM properly.
-
-## Build the react UI components ready for standalone usage.
-build-react-ui-components-standalone:
-	yarn workspace @neos-project/react-ui-components build-standalone-esm
+	yarn workspaces foreach --parallel run build
 
 ## Runs the development build.
 build:

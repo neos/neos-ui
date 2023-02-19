@@ -18,17 +18,17 @@ jobs:
         if: startsWith(github.event.pull_request.title, 'FEATURE:')
         uses: actions-ecosystem/action-add-labels@v1
         with:
-          labels: 'feature'
+          labels: 'Feature'
       - name: Add bugfix label
         if: startsWith(github.event.pull_request.title, 'BUGFIX:')
         uses: actions-ecosystem/action-add-labels@v1
         with:
-          labels: 'bugfix'
+          labels: 'Bug'
       - name: Add task label
         if: startsWith(github.event.pull_request.title, 'TASK:')
         uses: actions-ecosystem/action-add-labels@v1
         with:
-          labels: 'task'
+          labels: 'Task'
       - name: Add target branch label
         uses: actions-ecosystem/action-add-labels@v1
         with:

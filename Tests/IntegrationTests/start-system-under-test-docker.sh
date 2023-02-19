@@ -2,8 +2,24 @@
 
 set -e
 
+ARCH=$(uname -m)
+if [ "$ARCH" = "arm64" ]; then
+  export DB_IMAGE=arm64v8/mysql:8
+elif [ "$ARCH" = "x86_64" ]; then
+  export DB_IMAGE=mysql:8
+else
+  echo "Unknown architecture"
+  exit 1
+fi
+
 function dc() {
-    docker-compose -f ./Tests/IntegrationTests/docker-compose.system-under-test.yaml $@
+    if [ -n "$(docker compose version)" ]; then
+        # use the docker composer plugin
+        docker compose -f ./Tests/IntegrationTests/docker-compose.system-under-test.yaml $@
+    else
+        # legacy docker compose standalone
+        docker-compose -f ./Tests/IntegrationTests/docker-compose.system-under-test.yaml $@
+    fi
 }
 
 echo "#############################################################################"

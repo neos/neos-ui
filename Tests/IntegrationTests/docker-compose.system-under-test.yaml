@@ -16,7 +16,7 @@ services:
       COMPOSER_CACHE_DIR: /home/circleci/.composer/cache
 
   db:
-    image: arm64v8/mysql:8
+    image: ${DB_IMAGE}
     environment:
       MYSQL_DATABASE: neos
       MYSQL_ROOT_PASSWORD: not_a_real_password

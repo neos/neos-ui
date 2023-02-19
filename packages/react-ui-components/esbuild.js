@@ -27,23 +27,9 @@ require('esbuild').build({
         '.svg': 'dataurl',
         '.css': 'copy'
     },
+    metafile: true,
     write: false, // we dont write directly see `.then()` below
     plugins: [
-        {
-            name: "check-for-incorrect-build",
-            setup: ({onResolve, resolve}) => {
-                onResolve({ filter: /.*/, namespace: "file" }, async ({ path, ...options }) => {
-                    const result = await resolve(path, { ...options, namespace: "noRecurse"})
-                    if (result.path.includes(__dirname) || result.path.startsWith("css-modules://")) {
-                        return result;
-                    }
-                    if (result.external === false) {
-                        throw new Error(`File ${result.path} doesnt belong to the currently bundled package, yet is not listed as dependeny.`, )
-                    }
-                    return result;
-                  })
-            }
-        },
         cssModules(
             {
                 includeFilter: /\.css$/,
@@ -61,6 +47,14 @@ require('esbuild').build({
 }).then((result) => {
     if (result.errors.length) {
         return;
+    }
+
+    // check for incorrect build or if we have accidentally bundled dependencies what we dont want at all ;)
+    for (const path of Object.keys(result.metafile.inputs)) {
+        if (path.startsWith("src/") || path.startsWith("css-modules:")) {
+            continue;
+        }
+        throw new Error(`File ${path} doesnt belong to the currently bundled package, yet is not listed as dependeny.`)
     }
 
     // we regex replace unused chunk imports in the js files,

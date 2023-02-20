@@ -169,7 +169,9 @@ For executing the end to end tests on a Mac with catalina or higher you need to 
 
 #### Local Development with e2e-tests & docker
 To speed up the e2e-test workflow/feedback loop you can start the system under test in a docker setup and run the tests against that:
-* `make e2e-start-system-under-test` (starts a docker setup with the system under test)
+* `make start-neos-dev-instance` (starts a docker setup with the system under test)
+* The neos dev instance is available at `localhost:8081`
+* To enter the container run `docker compose -f Tests/IntegrationTests/docker-compose.neos-dev-instance.yaml exec php bash`
 * `yarn run testcafe <browser> <testFile> <optional flags>`
   * for example, this runs all tests in chrome:
   `yarn run testcafe chrome Tests/IntegrationTests/Fixtures`

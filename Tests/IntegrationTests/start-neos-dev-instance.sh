@@ -2,24 +2,9 @@
 
 set -e
 
-ARCH=$(uname -m)
-if [ "$ARCH" = "arm64" ]; then
-  export DB_IMAGE=arm64v8/mysql:8
-elif [ "$ARCH" = "x86_64" ]; then
-  export DB_IMAGE=mysql:8
-else
-  echo "Unknown architecture"
-  exit 1
-fi
-
 function dc() {
-    if [ -n "$(docker compose version)" ]; then
-        # use the docker composer plugin
-        docker compose -f ./Tests/IntegrationTests/docker-compose.system-under-test.yaml $@
-    else
-        # legacy docker compose standalone
-        docker-compose -f ./Tests/IntegrationTests/docker-compose.system-under-test.yaml $@
-    fi
+    # use the docker composer plugin
+    docker compose -f ./Tests/IntegrationTests/docker-compose.neos-dev-instance.yaml $@
 }
 
 echo "#############################################################################"
@@ -43,23 +28,6 @@ dc exec -T php bash <<-'BASH'
     sudo chown -R docker:docker /home/circleci/
     cd TestDistribution
     composer install
-BASH
-
-echo ""
-echo "#############################################################################"
-echo "# Create sym links to mounted Docker volumes...                             #"
-echo "#############################################################################"
-echo ""
-dc exec -T php bash <<-'BASH'
-    # replace installed Neos Ui with local dev via sym link to mounted volume
-    # WHY: We want changes of dev to appear in system under test without rebuilding the whole system
-    rm -rf Packages/Application/Neos.Neos.Ui
-    ln -s /usr/src/neos-ui/ /usr/src/app/TestDistribution/Packages/Application/Neos.Neos.Ui
-
-    # enable changes of the Neos.TestNodeTypes outside of the container to appear in the container via sym link to mounted volume
-    rm -rf /usr/src/app/TestDistribution/DistributionPackages/Neos.TestNodeTypes
-    rm -rf /usr/src/app/TestDistribution/Packages/Application/Neos.TestNodeTypes
-    ln -s /usr/src/neos-ui/Tests/IntegrationTests/SharedNodeTypesPackage/ /usr/src/app/TestDistribution/Packages/Application/Neos.TestNodeTypes
 BASH
 
 echo "#############################################################################"
@@ -102,4 +70,20 @@ dc exec -T php bash <<-BASH
     fi
     ./flow site:import --package-key=Neos.TestSite
     ./flow resource:publish
+BASH
+
+echo ""
+echo "#############################################################################"
+echo "# Create sym links to mounted Docker volumes...                             #"
+echo "#############################################################################"
+echo ""
+dc exec -T php bash <<-'BASH'
+    # replace installed Neos Ui with local dev via sym link to mounted volume
+    # WHY: We want changes of dev to appear in system under test without rebuilding the whole system
+    rm -rf /usr/src/app/TestDistribution/Packages/Application/Neos.Neos.Ui
+    ln -s /usr/src/neos-ui /usr/src/app/TestDistribution/Packages/Application/Neos.Neos.Ui
+
+    # enable changes of the Neos.TestNodeTypes outside of the container to appear in the container via sym link to mounted volume
+    rm -rf /usr/src/app/TestDistribution/Packages/Application/Neos.TestNodeTypes
+    ln -s /usr/src/neos-ui/Tests/IntegrationTests/SharedNodeTypesPackage/ /usr/src/app/TestDistribution/Packages/Application/Neos.TestNodeTypes
 BASH

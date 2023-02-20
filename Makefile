@@ -142,8 +142,8 @@ test-e2e:
 test-e2e-docker:
 	@bash Tests/IntegrationTests/e2e-docker.sh $(or $(browser),chrome)
 
-e2e-start-system-under-test:
-	bash Tests/IntegrationTests/start-system-under-test-docker.sh
+start-neos-dev-instance:
+	bash Tests/IntegrationTests/start-neos-dev-instance.sh
 
 ## Executes make lint-js and make lint-editorconfig.
 lint: lint-js lint-editorconfig

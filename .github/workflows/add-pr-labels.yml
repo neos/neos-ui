@@ -10,10 +10,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Remove all labels
-        uses: rogerluan/label-remover@v1.0.1
+      - name: Maybe remove base branch label
+        if: github.event.action == 'edited' && github.event.changes.base.ref.from != ''
+        uses: actions-ecosystem/action-remove-labels@v1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          labels: ${{ github.event.changes.base.ref.from }}
       - name: Add feature label
         if: startsWith(github.event.pull_request.title, 'FEATURE:')
         uses: actions-ecosystem/action-add-labels@v1

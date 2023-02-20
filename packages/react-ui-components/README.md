@@ -12,87 +12,67 @@ This package requires some peerDependencies which you need to install after inst
 yarn add @neos-project/react-ui-components
 ```
 
-## Usage (general)
-To reduce the bundled size of applications, we enforce singular import statements of components.
-You can import components by pointing to the `lib/` folder, f.e.
+## Usage (general with styling)
+
+You can simply import the components:
+
 ```js
-import Button from '@neos-project/react-ui-components/src/Button/';
+import { Button } from '@neos-project/react-ui-components';
 ```
 
-## Usage WITH CSS modules
-Within the `index.js` file of each component, CSS gets imported and injected as a `theme` prop.
-Your build-tool (f.e. webpack) may can handle this, but we require some additional PostCSS-plugins to be configured.
-In case you don't want this, scroll down to the section below, otherwise go on! :-)
+Since version 8.3 you dont even need to have a css modules plugin for bundling installed.
+Its already compiled for you to bare ES2020 Javascript and CSS. So just roll with a simple $bundler script ;)
 
-An example webpack setup can be found in `.storybook/webpack.config.js`. You can see that we require at least a
-CSS modules compliant loader for `*.css` files, as well as the `postcss-css-variables`, `postcss-nested` and `postcss-hexrgba`
-PostCSS-plugins to be properly configured.
+## Usage within in a Neos.Ui plugin?
 
-In case you have problems with your webpack setup, please attach it within the issue you may want to create.
+you dont actually need to require this pluging when building a pure Neos.Ui Plugin like you dont need react installed aswell. Your plugin will import `@neos-project/react-ui-components` from the "`window` export" of the Neos.Ui Host.
 
-## Usage WITHOUT CSS modules
+You still might want to install this package to have typescript autocompletion and typesafety ;)
+
+## Advanced Usage: Without styling
+
 You can also use the components without any styles provided by this package, but bear in mind that each component
 requires a `theme` prop with the `classNames` you need to provide.
 
-In case you want to use the components purely, adjust the import statement to point to the react component only e.g.
+In case you want to use the components purely, adjust the import statement to point to the `unstyled` export:
 ```js
-import Button from '@neos-project/react-ui-components/src/Button/button.js';
+import { Button } from '@neos-project/react-ui-components/unstyled';
 ```
 
-## Theming
-All components can be themed using the [react-css-themr](https://github.com/javivelasco/react-css-themr) package,
+## Advanced Usage: Theming
+All styled components can be themed using the [react-css-themr](https://github.com/javivelasco/react-css-themr) package,
 visit their docs for more information about how this approach works. Our identifiers can be imported e.g.
 ```js
-import identifiers from '@neos-project/react-ui-components/src/identifiers';
+import identifiers from '@neos-project/react-ui-components/identifiers';
 ```
+
+... todo implement above
+
+## Todo Explain Icon Usage ...
+
 
 ## Contributing
-#### Requirements
-* yarn
 
-#### Setup
-Clone this repository, execute `yarn` in the root directory of the project.
-After the installation succeeded, execute `yarn start` to start the
-[development server of the styleguide](http://localhost:9001).
+### Setup
 
+Proceed with the instruction from here: [Neos.Neos.Ui](https://github.com/neos/neos-ui)
 
-#### Setup for developing inside the Neos.Neos.Ui Package
+### Add the Development version of `@neos-project/react-ui-components`
 
-[Neos.Neos.Ui](https://github.com/neos/neos-ui)
+Inside your [Neos.Neos.Ui](https://github.com/neos/neos-ui) development Setup navigate to the `@neos-project/react-ui-components` package and build and pack it:
 
-Make a symbolic link inside your Neos installation to your cloned sources od this package. The following example assumes that both installations are in the same folder.
-
-```
-cd YourNeosUiInstanz/Packages/Application/Neos.Neos.Ui/node_modules/@neos-project
-rm -rf react-ui-components
-ln -s ./../../../../../../react-ui-components/ .
+```sh
+yarn workspace @neos-project/react-ui-components build
+yarn workspace @neos-project/react-ui-components pack
 ```
 
+then you will receive a `package.tgz` which holds essentially the same contents that would have been published to npm.
 
-run the watcher inside the react-ui-components
+you can add it for testing to your other project by simply going to your project and adding the `package.tgz`
 
+```sh
+yarn add path/to/the/package.tgz
 ```
-yarn watch:build
-```
-
-
-run the watcher inside the Neos.Neos.Ui Package
-
-```
-cd YourNeosUiInstanz/Packages/Application/Neos.Neos.Ui
-yarn watch:build
-```
-
-#### Commit Guidelines
-
-Please folllow these commit guidlines. [commit-analyzer](https://github.com/Inkdpixels/commit-analyzer)
-
-#### Building for standalone usage outside of Neos
-
-we build a `lib-esm/` folder to be consumed by e.g. webpack.
-
-This is done by `yarn run build-standalone-esm`.
-
 
 ## License
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR

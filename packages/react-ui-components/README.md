@@ -23,9 +23,35 @@ import { Button } from '@neos-project/react-ui-components';
 Since version 8.3 you dont even need to have a css modules plugin for bundling installed.
 Its already compiled for you to bare ES2020 Javascript and CSS. So just roll with a simple $bundler script ;)
 
+## Usage with Icons
+
+Icons require you to import and configure fontawesome properly.
+And example config could look like this: 
+
+```js
+import { Icon } from '@neos-project/react-ui-components';
+
+import { config, library } from '@fortawesome/fontawesome-svg-core';
+// here we import all the solid icons (which is bad wor bundle size, but might be necessary)
+import { fas } from '@fortawesome/free-solid-svg-icons';
+// but you can also only include a certain icon youd like
+import { faNeos } from '@fortawesome/free-brands-svg-icons/faNeos';
+import '@fortawesome/fontawesome-svg-core/styles.css';
+
+config.autoAddCss = false; // Dont insert the supporting CSS into the <head> of the HTML document
+library.add(
+    fas,
+    faNeos,
+)
+
+export const Component = () => (
+    <Icon icon="neos" />
+)
+```
+
 ## Usage within in a Neos.Ui plugin?
 
-you dont actually need to require this pluging when building a pure Neos.Ui Plugin like you dont need react installed aswell. Your plugin will import `@neos-project/react-ui-components` from the "`window` export" of the Neos.Ui Host.
+You dont actually need to require this pluging when building a pure Neos.Ui Plugin like you dont need react installed aswell. Your plugin will import `@neos-project/react-ui-components` from the "`window` export" of the Neos.Ui Host.
 
 You still might want to install this package to have typescript autocompletion and typesafety ;)
 
@@ -45,11 +71,6 @@ visit their docs for more information about how this approach works. Our identif
 ```js
 import identifiers from '@neos-project/react-ui-components/identifiers';
 ```
-
-... todo implement above
-
-## Todo Explain Icon Usage ...
-
 
 ## Contributing
 

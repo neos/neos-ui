@@ -14,6 +14,10 @@
         "import": "./dist/index.js",
         "types": "./types/index.d.ts"
       },
+      "./identifiers": {
+        "import": "./dist/identifiers.js",
+        "types": "./types/identifiers.d.ts"
+      },
       "./unstyled": {
         "import": "./dist/unstyled.js",
         "types": "./types/unstyled.d.ts"
@@ -33,7 +37,8 @@
     "clean": "rm -rf dist types",
     "jest": "NODE_ENV=test jest",
     "jest:updateSnapshots": "NODE_ENV=test jest -u",
-    "start": "cross-env STORY=true start-storybook -p 9001"
+    "start": "cross-env STORY=true start-storybook -p 9001",
+    "example": "cd example && yarn esbuild test.jsx --outdir=dist --bundle --sourcemap=linked"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.35",

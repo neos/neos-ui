@@ -128,7 +128,7 @@ export default class DeleteNodeModal extends PureComponent {
                 'deleteMessage': $get('ui.deleteConfirmation.message', nodeTypesRegistry.get(node.nodeType)),
                 'nodeType': $get('ui.label', nodeTypesRegistry.get(node.nodeType)),
                 'nodeLabelTruncated': nodeLabel.substring(0, 30).substring(0, nodeLabel.substring(0, 30).lastIndexOf(' ')),
-                'nodeLabel': nodeLabel
+                nodeLabel
             });
         });
 

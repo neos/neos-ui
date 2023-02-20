@@ -22,7 +22,7 @@ function isTarget(path) {
 // you can clear the jest cache also by running `yarn jest --clearCache`
 const thisFileRaw = readFileSync(__filename)
 
-const tsconfigRaw = readFileSync("../tsconfig.json", "utf8");
+const tsconfigRaw = readFileSync("../../tsconfig.json", "utf8");
 
 const createTransformer = () => {
     /** @type {import("esbuild").TransformOptions} */
@@ -62,12 +62,6 @@ const createTransformer = () => {
                 loader: extension === "js" ? "tsx" : extension,
                 ...options,
             });
-
-
-            if (result.code.includes("ichBinDasIcon")) {
-              console.log({path});
-                console.log(result.code);
-            }
 
             if (result.warnings.length) {
                 result.warnings.forEach((m) => {

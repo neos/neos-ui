@@ -29,7 +29,8 @@
     "build": "rm -rf dist types && tsc && node esbuild.js",
     "test": "yarn jest -w 2 --coverage",
     "test:watch": "yarn jest --watch",
-    "lint": "eslint src/**/*.{js,jsx} && stylelint src/**/*.css && tslint -t codeFrame -p ../tsconfig.json -c ../../tslint.json",
+    "lint": "eslint src/**/*.{js,jsx} && stylelint src/**/*.css && tslint -t codeFrame -p ../../tsconfig.json -c ../../tslint.json",
+    "clean": "rm -rf dist types",
     "jest": "NODE_ENV=test jest",
     "jest:updateSnapshots": "NODE_ENV=test jest -u",
     "start": "cross-env STORY=true start-storybook -p 9001"

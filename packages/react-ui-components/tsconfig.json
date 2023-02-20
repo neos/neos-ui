@@ -6,7 +6,7 @@
     "**/*.spec.*",
     "**/*.story.*"
   ],
-  "extends": "../tsconfig.json",
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "declaration": true,
     "emitDeclarationOnly": true,

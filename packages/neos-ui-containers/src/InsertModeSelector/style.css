@@ -20,4 +20,9 @@
         border-top-right-radius: 2px;
         border-bottom-right-radius: 2px;
     }
+    button.intoButton{
+        margin-left: 8px;
+    }
 }
+
+

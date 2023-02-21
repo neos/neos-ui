@@ -38,13 +38,20 @@
     "jest": "NODE_ENV=test jest",
     "jest:updateSnapshots": "NODE_ENV=test jest -u",
     "start": "cross-env STORY=true start-storybook -p 9001",
-    "example": "cd example && yarn esbuild test.jsx --outdir=dist --bundle --sourcemap=linked"
+    "example": "cd example && yarn esbuild test.jsx --outdir=dist --bundle --sourcemap=linked --loader:.woff2=file"
   },
-  "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.35",
+  "peerDependencies": {
     "@fortawesome/free-brands-svg-icons": "^5.15.3",
     "@fortawesome/free-regular-svg-icons": "^5.15.3",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
+    "@friendsofreactjs/react-css-themr": "^4.1.0",
+    "notosans-fontface": "^1.3.0",
+    "prop-types": "^15.5.10",
+    "react": "^16.12.0",
+    "react-dom": "^16.0.0"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/react-fontawesome": "^0.1.14",
     "classnames": "^2.2.3",
     "hoist-non-react-statics": "^3.3.1",
@@ -105,12 +112,6 @@
     "stylelint": "^13.7.2",
     "tslint": "^5.20.1",
     "typescript": "^4.6.0"
-  },
-  "peerDependencies": {
-    "@friendsofreactjs/react-css-themr": "^4.1.0",
-    "prop-types": "^15.5.10",
-    "react": "^16.12.0",
-    "react-dom": "^16.0.0"
   },
   "license": "GNU GPLv3",
   "jest": {

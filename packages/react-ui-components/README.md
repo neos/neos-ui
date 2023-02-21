@@ -23,10 +23,15 @@ import { Button } from '@neos-project/react-ui-components';
 Since version 8.3 you dont even need to have a css modules plugin for bundling installed.
 The lib is already compiled for you to bare ES2020 Javascript and CSS. So just roll with any simple $bundler ;)
 
-## Usage of `<Icon/>`
+### Font specialties
+
+You should also install `notosans-fontface` from our peerDependencies and import the `Noto Sans` Font as the components rely on it. See [example](example).
+
+
+### `<Icon/>` specialties
 
 Icons require you to import and configure Font Awesome properly.
-And example config could look like this: 
+An example config could look like this: (See [example](example))
 
 ```js
 import { Icon } from '@neos-project/react-ui-components';
@@ -47,6 +52,15 @@ library.add(
 export const Component = () => (
     <Icon icon="neos" />
 )
+```
+
+### Example
+
+See the [example](example) folder for a minimal setup.
+You can build it with a super simple esbuild command or use the alias:
+
+```sh
+yarn workspace @neos-project/react-ui-components example --minify
 ```
 
 ## Usage within in a Neos.Ui plugin?

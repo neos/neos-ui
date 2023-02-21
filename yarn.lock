@@ -4134,6 +4134,10 @@ __metadata:
   resolution: "@neos-project/neos-ui@workspace:packages/neos-ui"
   dependencies:
     "@ckeditor/ckeditor5-highlight": 16.0.0
+    "@fortawesome/fontawesome-svg-core": ^1.2.35
+    "@fortawesome/free-brands-svg-icons": ^5.15.3
+    "@fortawesome/free-regular-svg-icons": ^5.15.3
+    "@fortawesome/free-solid-svg-icons": ^5.15.3
     "@friendsofreactjs/react-css-themr": ^4.1.0
     "@neos-project/babel-preset-neos-ui": "workspace:*"
     "@neos-project/build-essentials": "workspace:*"
@@ -4222,9 +4226,6 @@ __metadata:
   dependencies:
     "@babel/eslint-parser": ^7.19.1
     "@fortawesome/fontawesome-svg-core": ^1.2.35
-    "@fortawesome/free-brands-svg-icons": ^5.15.3
-    "@fortawesome/free-regular-svg-icons": ^5.15.3
-    "@fortawesome/free-solid-svg-icons": ^5.15.3
     "@fortawesome/react-fontawesome": ^0.1.14
     "@neos-project/babel-preset-neos-ui": "workspace:*"
     "@neos-project/debug-reason-for-rendering": "workspace:*"
@@ -4283,7 +4284,11 @@ __metadata:
     tslint: ^5.20.1
     typescript: ^4.6.0
   peerDependencies:
+    "@fortawesome/free-brands-svg-icons": ^5.15.3
+    "@fortawesome/free-regular-svg-icons": ^5.15.3
+    "@fortawesome/free-solid-svg-icons": ^5.15.3
     "@friendsofreactjs/react-css-themr": ^4.1.0
+    notosans-fontface: ^1.3.0
     prop-types: ^15.5.10
     react: ^16.12.0
     react-dom: ^16.0.0

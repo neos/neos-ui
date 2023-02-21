@@ -1,7 +1,7 @@
 const { transform } = require('lightningcss');
 const { createHash } = require('crypto');
 const fs = require("fs/promises");
-const { dirname } = require("path");
+const { dirname, join } = require("path");
 
 /**
  * A generic cssModules plugin for esbuild based on lightningcss
@@ -55,7 +55,9 @@ const cssModules = (options) => {
                     sourceMap: true,
                     targets: options.targets,
                     drafts: options.drafts,
-                    visitor: options.visitor
+                    visitor: options.visitor,
+                    // this way the correct relative path for the source map will be generated ;)
+                    projectRoot: join(initialOptions.absWorkingDir || process.cwd(), initialOptions.outdir)
                 });
 
                 if (!exports) {
@@ -64,7 +66,7 @@ const cssModules = (options) => {
 
                 const id = "css-modules:\/\/" + createHash("sha256").update(path).digest('base64url') + '.css'
 
-                const finalcode = code.toString("utf8") + `/*# sourceMappingURL=data:text/plain;base64,${map.toString("base64")} */`;
+                const finalcode = code.toString("utf8") + `/*# sourceMappingURL=data:application/json;base64,${map.toString("base64")} */`;
 
                 transpiledCssModulesMap.set(
                     id,

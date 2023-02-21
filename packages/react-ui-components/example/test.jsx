@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "react-dom";
-import { IconButton, Icon, Button, Headline, Label, ToggablePanel } from "../dist/index"
+import { IconButton, Icon, Button, Headline, Logo,  ToggablePanel } from "../dist/index"
 
 import './font.css'; // The components 
 
@@ -22,19 +22,19 @@ const App = () => (
         gap: "2rem",
         width: "100px"
     }}>
+        <Logo />
         <Headline type="h1">Hello</Headline>
-        <Label>Hi</Label>
-        <ToggablePanel isOpen={true}>
+        <ToggablePanel>
             <ToggablePanel.Header>
                 Header
             </ToggablePanel.Header>
             <ToggablePanel.Contents>
-                Contents
+                Marc Henry war hier ^^
             </ToggablePanel.Contents>
         </ToggablePanel>
         <IconButton icon="neos" />
         <Icon icon="swimming-pool" />
-        <Button>Hello Welt</Button>
+        <Button>Hallo Welt</Button>
     </div>
 )
 

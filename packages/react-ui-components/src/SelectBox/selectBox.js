@@ -5,7 +5,6 @@ import {$get} from 'plow-js';
 import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine';
 import mergeClassNames from 'classnames';
 import isEqual from 'lodash.isequal';
-import isNil from '../../../utils-helpers/src/isNil';
 
 // TODO: document component usage && check code in detail
 export default class SelectBox extends PureComponent {
@@ -58,6 +57,11 @@ export default class SelectBox extends PureComponent {
          * This prop gets called when an option was selected. It returns the new value.
          */
         onValueChange: PropTypes.func.isRequired,
+
+        /**
+         * This prop gets called when the select box header element gets clicked.
+         */
+        onHeaderClick: PropTypes.func,
 
         // ------------------------------
         // Visual customization of the Select Box
@@ -248,7 +252,8 @@ export default class SelectBox extends PureComponent {
             disabled,
 
             SelectBox_HeaderWithSearchInput,
-            SelectBox_Header
+            SelectBox_Header,
+            onHeaderClick
         } = this.props;
         const searchTerm = this.getSearchTerm();
         const optionValueAccessor = this.getOptionValueAccessor();
@@ -258,7 +263,9 @@ export default class SelectBox extends PureComponent {
 
         if (
             displaySearchBox && (
-                isNil(value) ||
+                // check for null or undefined
+                /* eslint-disable no-eq-null, eqeqeq */
+                value == null ||
                 value === '' ||
                 this.state.isExpanded ||
                 plainInputMode
@@ -283,6 +290,7 @@ export default class SelectBox extends PureComponent {
                 option={selectedOption}
                 showResetButton={showResetButton}
                 onReset={this.handleDeleteClick}
+                onClick={onHeaderClick}
                 />
         );
     }

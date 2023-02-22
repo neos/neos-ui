@@ -1,13 +1,13 @@
 {
   "name": "@neos-project/neos-ui",
-  "version": "8.2.1",
+  "version": "8.2.6",
   "description": "Neos CMS UI written in ReactJS and a ton of other fun technology.",
   "private": true,
   "scripts": {
     "test": "yarn jest -w 2 --coverage",
     "test:watch": "yarn jest --watch",
     "clean": "rimraf ./lib ./dist",
-    "lint": "eslint src/**/*.{js,jsx,ts,tsx} && stylelint src/**/*.{css,scss}",
+    "lint": "eslint src/**/*.{js,jsx,ts,tsx} && stylelint src/**/*.css",
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
@@ -21,6 +21,10 @@
   },
   "dependencies": {
     "@ckeditor/ckeditor5-highlight": "16.0.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.35",
+    "@fortawesome/free-brands-svg-icons": "^5.15.3",
+    "@fortawesome/free-regular-svg-icons": "^5.15.3",
+    "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@friendsofreactjs/react-css-themr": "^4.1.0",
     "@neos-project/neos-ts-interfaces": "workspace:*",
     "@neos-project/neos-ui-backend-connector": "workspace:*",
@@ -57,7 +61,7 @@
     "monet": "^0.9.2",
     "normalize.css": "^8.0.0",
     "notosans-fontface": "^1.3.0",
-    "plow-js": "^2.2.0",
+    "plow-js": "3.0.0",
     "prop-types": "^15.5.10",
     "react": "^16.12.0",
     "react-dnd": "^10.0.0",

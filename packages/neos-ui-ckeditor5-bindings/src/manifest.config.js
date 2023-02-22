@@ -150,7 +150,8 @@ export default ckEditorRegistry => {
                 {model: 'heading4', view: 'h4'},
                 {model: 'heading5', view: 'h5'},
                 {model: 'heading6', view: 'h6'},
-                {model: 'pre', view: 'pre'}
+                {model: 'pre', view: 'pre'},
+                {model: 'blockquote', view: 'blockquote'}
             ]}
     }));
 

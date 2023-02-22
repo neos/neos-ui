@@ -1,0 +1,9 @@
+.selectedOptions {
+    composes: reset from '../reset.module.css';
+
+    position: relative;
+    width: 100%;
+    list-style: none;
+    padding-left: 0;
+
+}

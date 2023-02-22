@@ -44,6 +44,9 @@
             <trans-unit id="ckeditor__toolbar__style__pre" xml:space="preserve">
                 <source>Preformatted</source>
             </trans-unit>
+            <trans-unit id="ckeditor__toolbar__style__blockquote" xml:space="preserve">
+                <source>Blockquote</source>
+            </trans-unit>
             <trans-unit id="ckeditor__toolbar__bold" xml:space="preserve">
                 <source>Bold</source>
             </trans-unit>

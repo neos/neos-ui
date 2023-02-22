@@ -239,6 +239,17 @@ export default ckEditorRegistry => {
         isActive: formattingUnderCursor => $get('heading', formattingUnderCursor) === 'pre'
     });
 
+    // Blockquote
+    richtextToolbar.set('style/blockquote', {
+        commandName: 'heading',
+        commandArgs: [{
+            value: 'blockquote'
+        }],
+        label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__style__blockquote',
+        isVisible: $get('formatting.blockquote'),
+        isActive: formattingUnderCursor => $get('heading', formattingUnderCursor) === 'blockquote'
+    });
+
     // // Example of custom headline
     // // Don't forget about updating the config registry with relevant config
     // // @see https://docs.ckeditor.com/ckeditor5/latest/features/headings.html

@@ -1,7 +1,6 @@
 import React, {PureComponent, ChangeEvent} from 'react';
 import mergeClassNames from 'classnames';
 import omit from 'lodash.omit';
-import {Omit} from '../../types';
 
 interface TextInputTheme {
     readonly textInput: string;

@@ -1,7 +1,6 @@
 import React, {PureComponent} from 'react';
 
 import {FontAwesomeIconProps} from '@fortawesome/react-fontawesome';
-import {Omit} from '../../types';
 import FontAwesomeIcon from './fontAwesomeIcon';
 import ResourceIcon, {ResourceIconProps} from './resourceIcon';
 import {defaultProps} from './iconDefaultProps';

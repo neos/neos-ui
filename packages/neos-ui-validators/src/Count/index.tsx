@@ -33,13 +33,15 @@ const Count = (value: any, validatorOptions: CountOptions) => {
 
     const {length} = Object.keys(value);
 
+    // This means if the _minimum_ is > 0 then there is no error shown as long as the field is empty (length === 0)
+    // WHY: We want to use the NotEmptyValidator for validating required fields.
     if (length === 0) {
         return null;
     }
 
     if (length < minimum || length > maximum) {
         const label = validatorOptions?.validationErrorMessage ?? 'content.inspector.validators.countValidator.countBetween';
-        return <I18n id={label}/>;
+        return <I18n id={label} params={{minimum, maximum}}/>;
     }
 
     return null;

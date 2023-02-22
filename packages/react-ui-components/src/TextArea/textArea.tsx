@@ -3,7 +3,7 @@ import mergeClassNames from 'classnames';
 import TextareaAutosize from 'react-textarea-autosize';
 import enhanceWithClickOutside from '../enhanceWithClickOutside/index';
 
-import {Omit, PickDefaultProps} from '../../types';
+import {PickDefaultProps} from '../utils-typescript';
 
 export interface TextAreaProps extends Omit<React.InputHTMLAttributes<HTMLTextAreaElement>, 'onChange'> {
     /**

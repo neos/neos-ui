@@ -75,42 +75,26 @@ setup: check-requirements install build ## Run a clean setup
 # Builds
 ################################################################################
 
-
-# TODO: figure out how to pass a parameter to other targets to reduce redundancy
 # Builds the subpackages for standalone use.
 build-subpackages:
-	yarn workspaces foreach --parallel --topological-dev run build
-	make build-react-ui-components-standalone
-
-# we build the react UI components ready for standalone usage;
-# so that they can be published on NPM properly.
-
-## Build the react UI components ready for standalone usage.
-build-react-ui-components-standalone:
-	yarn workspace @neos-project/react-ui-components build-standalone-esm
+	yarn workspaces foreach --parallel run build
 
 ## Runs the development build.
 build:
-	NEOS_BUILD_ROOT=$(shell pwd) node esbuild.js
+	node esbuild.js
 
 ## Watches the source files for changes and runs a build in case.
 build-watch:
-	NEOS_BUILD_ROOT=$(shell pwd) node esbuild.js --watch
-
-## Watches (and polls) the source files on a file share.
-build-watch-poll:
-	echo "not implemented in esbuild, yet! PR Welcome!"
+	node esbuild.js --watch
 
 # clean anything before building for production just to be sure
 ## Runs the production build. And also builds the subpackages for standalone use.
 build-production:
-	$(cross-env) NODE_ENV=production NEOS_BUILD_ROOT=$(shell pwd) \
-		node esbuild.js
+	$(cross-env) NODE_ENV=production node esbuild.js
 	make build-subpackages
 
 build-e2e-testing:
-	$(cross-env) NODE_ENV=production NEOS_BUILD_ROOT=$(shell pwd) \
-		node esbuild.js --e2e-testing
+	$(cross-env) NODE_ENV=production node esbuild.js --e2e-testing
 
 ################################################################################
 # Code Quality
@@ -132,7 +116,7 @@ test-parallel:
 
 ## Executes integration tests on saucelabs.
 test-e2e-saucelabs:
-	bash Tests/IntegrationTests/e2e.sh saucelabs:chrome
+	bash Tests/IntegrationTests/e2e.sh "saucelabs:chrome:Windows 10"
 
 ## Executes integration tests locally.
 test-e2e:
@@ -141,6 +125,9 @@ test-e2e:
 ## Executes integration tests locally in a docker-compose setup.
 test-e2e-docker:
 	@bash Tests/IntegrationTests/e2e-docker.sh $(or $(browser),chrome)
+
+start-neos-dev-instance:
+	bash Tests/IntegrationTests/start-neos-dev-instance.sh
 
 ## Executes make lint-js and make lint-editorconfig.
 lint: lint-js lint-editorconfig
@@ -174,8 +161,8 @@ ifeq ($(VERSION),)
 endif
 
 bump-version: called-with-version
-	./Build/bumpVersion.sh
-	./Build/createVersionFile.sh
+	yarn workspaces foreach version $(VERSION) --deferred
+	yarn version apply --all
 
 publish-npm: called-with-version
 	yarn workspaces foreach --no-private npm publish --access public
@@ -186,7 +173,7 @@ publish-npm: called-with-version
 
 ## Cleans dependency folders
 clean:
-	rm -Rf node_modules; rm -rf packages/*/node_modules
+	rm -rf node_modules; rm -rf packages/*/node_modules
 
 
 ################################################################################
@@ -205,7 +192,7 @@ help:
 	@echo '  ${YELLOW}make${RESET} ${GREEN}<target>${RESET}'
 	@echo ''
 	@echo 'Targets:'
-	@awk '/^[a-zA-Z\-\_0-9]+:/ { \
+	@awk '/^[a-zA-Z0-9_-]+:/ { \
 		helpMessage = match(lastLine, /^## (.*)/); \
 		if (helpMessage) { \
 			helpCommand = substr($$1, 0, index($$1, ":")-1); \

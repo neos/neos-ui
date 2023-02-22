@@ -4,7 +4,6 @@ import { ReactSVG } from 'react-svg';
 
 import {defaultProps} from './iconDefaultProps';
 import {IconProps, IconTheme} from './icon';
-import {Omit} from '../../types';
 
 interface ResourceIconTheme extends IconTheme {
     readonly 'icon--resource': string;

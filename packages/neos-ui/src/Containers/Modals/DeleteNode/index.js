@@ -55,7 +55,7 @@ export default class DeleteNodeModal extends PureComponent {
             const nodeType = $get('nodeType', node);
             const nodeTypeLabel = $get('ui.label', nodeTypesRegistry.get(nodeType)) || 'Neos.Neos:Main:node';
             return (
-                <div>
+                <div className={style.modalTitleContainer}>
                     <Icon icon="exclamation-triangle"/>
                     <span className={style.modalTitle}>
                         <I18n id="Neos.Neos:Main:delete" fallback="Delete"/>

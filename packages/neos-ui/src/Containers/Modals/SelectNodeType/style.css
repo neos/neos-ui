@@ -7,7 +7,7 @@
     padding: 1px;
 
     &:hover {
-        button {
+        & button {
             background-color: var(--colors-PrimaryBlue);
         }
     }
@@ -191,7 +191,7 @@
     border-radius: 2px;
     color: var(--colors-ContrastBright);
 
-    svg {
+    & svg {
         color: var(--colors-ContrastBright);
     }
 }

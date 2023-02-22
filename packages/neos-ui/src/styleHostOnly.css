@@ -32,13 +32,14 @@
     box-sizing: border-box;
 }
 
+/* our css variables currently dont work for non .module.css files */
 body {
     font-family: 'Noto Sans', sans-serif;
     -webkit-font-smoothing: antialiased;
     font-size: 14px;
     line-height: 20px;
     font-weight: normal;
-    color: var(--colors-ContrastBrightest);
+    color: #fff;
     margin: 0;
     padding: 0;
     overflow: hidden;

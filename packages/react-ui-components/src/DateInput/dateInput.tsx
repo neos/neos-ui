@@ -6,7 +6,7 @@ import mergeClassNames from 'classnames';
 import Collapse from 'react-collapse';
 import DatePicker, {TimeConstraints} from 'react-datetime';
 
-import {PickDefaultProps} from '../../types';
+import {PickDefaultProps} from '../utils-typescript';
 import Button from '../Button';
 import Icon from '../Icon';
 

@@ -1,5 +1,5 @@
 .secondaryToolbar {
-    composes: secondaryToolbar from '../style.css';
+    composes: secondaryToolbar from '../style.module.css';
     display: flex;
     justify-content: space-between;
     gap: 1rem;

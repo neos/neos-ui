@@ -1,5 +1,5 @@
 .rightSideBar {
-    composes: rightSidebar from '../style.css';
+    composes: rightSidebar from '../style.module.css';
     min-width: 320px;
     max-width: 50vw;
     padding-bottom: 41px;

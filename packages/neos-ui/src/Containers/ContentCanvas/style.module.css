@@ -1,5 +1,5 @@
 .contentCanvas {
-    composes: content from '../style.css';
+    composes: content from '../style.module.css';
     height: 100%;
     width: 100%;
     background-color: var(--colors-ContrastDarker);

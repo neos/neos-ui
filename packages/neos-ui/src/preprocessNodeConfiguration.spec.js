@@ -63,8 +63,8 @@ describe(`preprocessing NodeConfiguration`, () => {
                     }
                 }
             }
-        }
-        const expectedConfig = JSON.parse(JSON.stringify(givenConfig))
+        };
+        const expectedConfig = JSON.parse(JSON.stringify(givenConfig));
         const processedConfiguration = preprocessNodeConfiguration(context, givenConfig);
 
         expect(processedConfiguration).toEqual(expectedConfig);
@@ -116,7 +116,7 @@ describe(`preprocessing NodeConfiguration`, () => {
                     }
                 }
             }
-        }
+        };
         const expectedConfig = {
             elements: {
                 property: {
@@ -162,7 +162,7 @@ describe(`preprocessing NodeConfiguration`, () => {
                     }
                 }
             }
-        }
+        };
         const processedConfiguration = preprocessNodeConfiguration(context, givenConfig);
 
         expect(processedConfiguration).toEqual(expectedConfig);
@@ -174,16 +174,16 @@ describe(`preprocessing NodeConfiguration`, () => {
                 {name: 'tab1'},
                 {name: 'ClientEval:node.properties.property'}
             ]
-        }
+        };
         const expectedConfig = {
             tabs: [
                 {name: 'tab1'},
                 {name: 1}
             ]
-        }
+        };
 
         const processedConfiguration = preprocessNodeConfiguration(context, givenConfig);
 
         expect(processedConfiguration).toEqual(expectedConfig);
     });
-})
+});

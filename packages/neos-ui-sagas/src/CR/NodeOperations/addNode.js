@@ -55,11 +55,11 @@ function * nodeCreationWorkflow(context, step = STEP_SELECT_NODETYPE, workflowDa
         case STEP_NODE_CREATION_DIALOG: {
             const nodeType = nodeTypesRegistry.get(workflowData.nodeType);
             const referenceNodeSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(referenceNodeContextPath);
-            const referencedNode = yield select(referenceNodeSelector)
+            const referencedNode = yield select(referenceNodeSelector);
 
             const parentNodeContextPath = workflowData.mode === 'into' ?
                 referenceNodeContextPath :
-                referencedNode.parent
+                referencedNode.parent;
 
             const label = $get('label', nodeType);
             const configuration = $get('ui.creationDialog', nodeType);

@@ -1,11 +1,11 @@
 {
-    "exclude": [
-        "**/*.spec.*"
-    ],
     "include": [
         "src"
     ],
-    "extends": "./../tsconfig.json",
+    "exclude": [
+        "**/*.spec.*"
+    ],
+    "extends": "../../tsconfig.json",
     "compilerOptions": {
         "outDir": "dist",
         "allowJs": true

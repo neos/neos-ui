@@ -1,6 +1,5 @@
 import mergeClassNames from 'classnames';
 import React, {PureComponent} from 'react';
-import {Omit} from '../../types';
 import Icon from './../Icon';
 
 interface CheckBoxTheme {

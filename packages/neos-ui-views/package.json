@@ -23,7 +23,7 @@
     "lodash.isequal": "^4.5.0",
     "moment": "^2.20.1",
     "plow-js": "3.0.0",
-    "recharts": "^1.0.0-alpha.6"
+    "recharts": "^2.4.1"
   },
   "devDependencies": {
     "@neos-project/debug-reason-for-rendering": "workspace:*",

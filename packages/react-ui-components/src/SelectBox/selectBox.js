@@ -263,6 +263,7 @@ export default class SelectBox extends PureComponent {
 
         if (
             displaySearchBox && (
+                // check for null or undefined
                 /* eslint-disable no-eq-null, eqeqeq */
                 value == null ||
                 value === '' ||

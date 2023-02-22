@@ -4,7 +4,7 @@ import omit from 'lodash.omit';
 import mergeClassNames from 'classnames';
 import enhanceWithClickOutside from '../enhanceWithClickOutside/index';
 
-import { PickDefaultProps } from '../../types';
+import { PickDefaultProps } from '../utils-typescript';
 import ShallowDropDownHeader from './header';
 import ShallowDropDownContents from './contents';
 import PropTypes from 'prop-types';

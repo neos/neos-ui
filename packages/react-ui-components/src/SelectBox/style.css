@@ -3,25 +3,14 @@
 }
 
 .selectBox {
-    composes: reset from '../reset.module.css';
-    width: 100%;
+    composes: reset from  '../reset.module.css', dropDown from './../DropDown/style.css';
     position: relative;
     display: inline-block;
     line-height: 0;
 }
 
 .selectBox__btn {
-    composes: reset from '../reset.module.css';
-    width: 100%;
-    text-align: left;
-    color: white;
-    cursor: pointer;
-    font-size: var(--fontSize-Base);
-    padding: 0 var(--spacing-Full);
-    border-radius: 2px;
-    overflow: hidden;
-    white-space: nowrap;
-    background: var(--colors-ContrastNeutral);
+    composes: reset from '../reset.module.css', dropDown__btn from './../DropDown/style.css';
     position: relative;
     display: inline-block;
     text-overflow: clip;

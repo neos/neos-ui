@@ -5,6 +5,13 @@ import {defaultProps} from './iconDefaultProps';
 import {IconProps} from './icon';
 import FontAwesomeIcon from './fontAwesomeIcon';
 
+// todo find a better way to make font-awesome work ;)
+import {library} from '@fortawesome/fontawesome-svg-core';
+import {fab} from '@fortawesome/free-brands-svg-icons';
+import {far} from '@fortawesome/free-regular-svg-icons';
+import {fas} from '@fortawesome/free-solid-svg-icons';
+library.add(fab, fas, far);
+
 describe('<FontAwesomeIcon/>', () => {
     const props: IconProps = {
         ...defaultProps,

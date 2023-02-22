@@ -7,6 +7,7 @@ const { version } = require('./package.json')
 const isProduction = process.argv.includes('--production');
 const isE2ETesting = process.argv.includes('--e2e-testing');
 const isWatch = process.argv.includes('--watch');
+const isAnalyze = process.argv.includes('--analyze');
 
 if (isE2ETesting) {
     console.log('Building for E2E testing');
@@ -26,6 +27,7 @@ const options = {
     color: true,
     bundle: true,
     keepNames: isE2ETesting, // for react magic selectors,
+    metafile: isAnalyze,
     legalComments: "linked",
     loader: {
         '.js': 'tsx',
@@ -96,5 +98,10 @@ const options = {
 if (isWatch) {
     esbuild.context(options).then((ctx) => ctx.watch())
 } else {
-    esbuild.build(options)
+    esbuild.build(options).then(result => {
+        if (isAnalyze) {
+            require("fs").writeFileSync('meta.json', JSON.stringify(result.metafile))
+            console.log("\nUpload './meta.json' to https://esbuild.github.io/analyze/ to analyze the bundle.")
+        }
+    })
 }

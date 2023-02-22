@@ -1,11 +1,12 @@
-const {compileWithCssVariables} = require('../../cssVariables')
+const { compileWithCssVariables } = require('../../cssVariables')
 
 const nodePath = require("path")
-const { readdirSync } = require("fs")
 const { writeFile, mkdir } = require("fs/promises")
 
-const packageJson = require("./package.json");
 const { cssModules } = require('../../cssModules');
+const { build } = require('esbuild');
+
+const { readdirSync } = require("fs")
 
 /**
  * @param {String} dir
@@ -23,85 +24,111 @@ function *walkSync(dir) {
 }
 
 /**
- * we select all ts,js files that are not tests
- * this logic should always align to the include and exclude patterns in `tsconfig.esmtypes.json`
+ * please dont remove this check!
+ * when building the dist we rely that our source code uses no file extensions when referencing relative js sources
+ * it ensures our dist build still works eventhough we export `.js` instead of `.ts` (currently there is no import rewrite)
+ * this check acts as a safe guard to test against malformed imports
+ * in case you want to import a library with specified extension, just exclude the path from the check below, as this is ok ;)
+ * 
+ * @param {string} importPath
  */
-const files = [...walkSync(nodePath.join(__dirname, "src"))].filter((file) => {
-    if (/(\.spec\.tsx?|\.spec\.jsx?|\.story\.jsx?|\.d\.ts)$/.test(file)) {
-        return false;
+function assertImportPathsSpecifiedWithoutExtension(importPath) {
+    if (importPath.match(/\.(jsx?|tsx?)$/)) {
+        throw new Error(`NeosBuildCheck: Import ${importPath} probably malformed as it ends with a javascript extension.`)
     }
-    if (/(\.tsx?|\.jsx?)$/.test(file)) {
-        return true;
-    }
-    return false;
-})
+}
 
-require('esbuild').build({
-    entryPoints: files,
-    external: Object.keys({...packageJson.dependencies, ...packageJson.peerDependencies}),
-    outdir: "lib-esm",
-    sourcemap: "linked",
-    logLevel: 'info',
-    target: 'es2020',
-    assetNames: './_css/[hash]',
-    chunkNames: './_chunk/[hash]',
-    color: true,
-    bundle: true,
-    splitting: true,
-    format: "esm",
-    loader: {
-        '.js': 'tsx',
-        '.svg': 'dataurl',
-        '.css': 'copy'
-    },
-    write: false, // we dont write directly see `.then()` below
-    plugins: [
-        {
-            name: "check-for-incorrect-build",
-            setup: ({onResolve, resolve}) => {
-                onResolve({ filter: /.*/, namespace: "file" }, async ({ path, ...options }) => {
-                    const result = await resolve(path, { ...options, namespace: "noRecurse"})
-                    if (result.path.includes(__dirname) || result.path.startsWith("css-modules://")) {
-                        return result;
-                    }
-                    if (result.external === false) {
-                        throw new Error(`File ${result.path} doesnt belong to the currently bundled package, yet is not listed as dependeny.`, )
-                    }
-                    return result;
-                  })
-            }
-        },
-        cssModules(
-            {
-                includeFilter: /\.css$/,
-                visitor: compileWithCssVariables(),
-                targets: {
-                    chrome: 80 // aligns somewhat to es2020
-                },
-                drafts: {
-                    nesting: true
-                }
-            }
-        )
-    ]
-}).then((result) => {
-    if (result.errors.length) {
-        return;
-    }
+async function main() {
 
-    // we regex replace unused chunk imports in the js files,
-    // this fixes the suboptimal output
-    // see issue https://github.com/evanw/esbuild/issues/2922
-
-    const unusedImportsRegex = /^import ".*_chunk\/[^;]+;$/gm;
-    result.outputFiles.forEach(async (file) => {
-        await mkdir(nodePath.dirname(file.path), { recursive: true})
-
-        if (file.path.endsWith(".js") && !file.path.endsWith(".map.js")) {
-            const replacedUnusedImports = file.text.replace(unusedImportsRegex, "");
-            writeFile(file.path, replacedUnusedImports, { encoding: "utf8" })
-        } else {
-            writeFile(file.path, file.contents)
+    /**
+     * we select all ts,js files that are not tests
+     * this logic should always align to the include and exclude patterns in `tsconfig.esmtypes.json`
+     */
+    const entryPoints = [...walkSync(nodePath.join(__dirname, "src"))].filter((file) => {
+        if (/(\.spec\.[^/]+|\.story\.jsx?|\.d\.ts)$/.test(file)) {
+            return false;
         }
+        if (/(\.tsx?|\.jsx?)$/.test(file)) {
+            return true;
+        }
+        return false;
     })
-})
+
+    console.time("Build")
+
+    const buildResultsPromise = entryPoints.map((entryPoint) => build({
+        entryPoints: [entryPoint],
+        outbase: "src",
+        outdir: "dist",
+        sourcemap: "linked",
+        bundle: true,
+        logLevel: 'silent',
+        target: 'es2020',
+        assetNames: './_css/[hash]',
+        color: true,
+        format: "esm",
+        write: false,
+        metafile: true,
+        loader: {
+            '.js': 'tsx',
+            '.svg': 'dataurl',
+            '.css': 'copy'
+        },
+        plugins: [
+            {
+                name: "bundel-only-ressources-for-each-entry",
+                setup: ({onResolve}) => {
+                    onResolve({filter: /.*/}, ({path}) => {
+                        if (path.endsWith(".css") || path.endsWith(".svg")) {
+                            return;
+                        }
+
+                        if (path === entryPoint) {
+                            return;
+                        }
+
+                        return {
+                            external: true
+                        }
+                    })
+                }    
+            },
+            cssModules(
+                {
+                    includeFilter: /\.css$/,
+                    visitor: compileWithCssVariables(),
+                    targets: {
+                        chrome: 80 // aligns somewhat to es2020
+                    },
+                    drafts: {
+                        nesting: true
+                    },
+                    cssModulesPattern: `neos-[hash]_[local]`
+                }
+            )
+        ]
+    }))
+
+    const buildResults = await Promise.all(buildResultsPromise)
+    const writtenFiles = new Set();
+    for (const buildResult of buildResults) {
+
+        for (const inputImport of Object.values(buildResult.metafile.inputs).flatMap(input => input.imports)) {
+            assertImportPathsSpecifiedWithoutExtension(inputImport.path)
+        }
+
+        for (const file of buildResult.outputFiles) {
+            if (writtenFiles.has(file.path)) {
+                continue;
+            }
+            writtenFiles.add(file.path);
+            await mkdir(nodePath.dirname(file.path), { recursive: true })
+            writeFile(file.path, file.contents);
+        }
+    }
+
+    console.timeEnd("Build")
+    console.log(`Wrote ${writtenFiles.size} files.`);
+}
+
+main();

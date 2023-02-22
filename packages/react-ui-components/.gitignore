@@ -3,5 +3,5 @@ dist
 coverage
 .idea
 
-# the following files are just for standalone usage
-lib-esm/
+dist/
+types/

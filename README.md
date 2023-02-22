@@ -167,6 +167,20 @@ To setup end-to-end tests locally you have got to do the same things described i
 
 For executing the end to end tests on a Mac with catalina or higher you need to permit screen recording. Open 'System Preferences > Security & Privacy > Privacy > Screen Recording' and check 'TestCafe Browser Tools' in the application list.
 
+#### Local Development with e2e-tests & docker
+To speed up the e2e-test workflow/feedback loop you can start the system under test in a docker setup and run the tests against that:
+* `make start-neos-dev-instance` (starts a docker setup with the system under test)
+* The neos dev instance is available at `localhost:8081`
+* To enter the container run `docker compose -f Tests/IntegrationTests/docker-compose.neos-dev-instance.yaml exec php bash`
+* `yarn run testcafe <browser> <testFile> <optional flags>`
+  * for example, this runs all tests in chrome:
+  `yarn run testcafe chrome Tests/IntegrationTests/Fixtures`
+  * some helpful optional flags are
+    * `-T 'sidebars'` - grep tests by pattern and only execute those
+    * `--selector-timeout=10000` - if you work on async pieces of the UI then this might help to prevent race conditions 
+    * `--assertion-timeout=30000` - see above
+    * `--debug-on-fail` - you can debug the state of the app at the moment an assertion failed
+
 ##### Debugging integration tests
 
 * View the recording via Sauce Labs. You can find the url in the beginning of the test output.

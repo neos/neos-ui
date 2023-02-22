@@ -1,31 +1,14 @@
-import * as browser from './Browser/index';
-import * as changes from './Changes/index';
-import * as crContentDimensions from './CR/ContentDimensions/index';
-import * as crNodeOperations from './CR/NodeOperations/index';
-import * as crPolicies from './CR/Policies/index';
-import * as publish from './Publish/index';
-import * as serverFeedback from './ServerFeedback/index';
-import * as uiContentCanvas from './UI/ContentCanvas/index';
-import * as uiContentTree from './UI/ContentTree/index';
-import * as uiEditPreviewMode from './UI/EditPreviewMode/index';
-import * as uiInspector from './UI/Inspector/index';
-import * as uiPageTree from './UI/PageTree/index';
-import * as uiHotkeys from './UI/Hotkeys/index';
-import * as impersonate from './UI/Impersonate/index';
-
-module.exports = {
-    browser,
-    changes,
-    crContentDimensions,
-    crNodeOperations,
-    crPolicies,
-    publish,
-    serverFeedback,
-    uiContentCanvas,
-    uiContentTree,
-    uiEditPreviewMode,
-    uiInspector,
-    uiPageTree,
-    uiHotkeys,
-    impersonate
-};
+export * as browser from './Browser/index';
+export * as changes from './Changes/index';
+export * as crContentDimensions from './CR/ContentDimensions/index';
+export * as crNodeOperations from './CR/NodeOperations/index';
+export * as crPolicies from './CR/Policies/index';
+export * as publish from './Publish/index';
+export * as serverFeedback from './ServerFeedback/index';
+export * as uiContentCanvas from './UI/ContentCanvas/index';
+export * as uiContentTree from './UI/ContentTree/index';
+export * as uiEditPreviewMode from './UI/EditPreviewMode/index';
+export * as uiInspector from './UI/Inspector/index';
+export * as uiPageTree from './UI/PageTree/index';
+export * as uiHotkeys from './UI/Hotkeys/index';
+export * as impersonate from './UI/Impersonate/index';

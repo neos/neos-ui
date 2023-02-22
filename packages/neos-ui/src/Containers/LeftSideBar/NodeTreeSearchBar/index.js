@@ -11,7 +11,7 @@ import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {IconButton} from '@neos-project/react-ui-components';
 import NodeTreeSearchInput from './NodeTreeSearchInput/index';
 import NodeTreeFilter from './NodeTreeFilter/index';
-import style from './style.css';
+import style from './style.module.css';
 
 const searchDelay = 300;
 

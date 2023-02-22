@@ -15,7 +15,7 @@ import I18n from '@neos-project/neos-ui-i18n';
 import {InsertModeSelector} from '@neos-project/neos-ui-containers';
 import NodeTypeGroupPanel from './nodeTypeGroupPanel';
 import NodeTypeFilter from './nodeTypeFilter';
-import style from './style.css';
+import style from './style.module.css';
 
 const calculateInitialMode = (allowedSiblingNodeTypes, allowedChildNodeTypes, preferredMode) => {
     if (

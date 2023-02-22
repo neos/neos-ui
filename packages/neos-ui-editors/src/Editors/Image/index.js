@@ -9,7 +9,7 @@ import {neos} from '@neos-project/neos-ui-decorators';
 import {PreviewScreen, Controls, ResizeControls} from './Components/index';
 import {Image, CROP_IMAGE_ADJUSTMENT, RESIZE_IMAGE_ADJUSTMENT} from './Utils/index';
 
-import style from './style.css';
+import style from './style.module.css';
 
 const DEFAULT_FEATURES = {
     crop: true,

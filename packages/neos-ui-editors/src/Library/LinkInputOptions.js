@@ -3,7 +3,7 @@ import {$get} from 'plow-js';
 
 import {TextInput, CheckBox} from '@neos-project/react-ui-components';
 
-import style from './LinkInput.css';
+import style from './LinkInput.module.css';
 
 const LinkInputOptions = ({
     i18nRegistry,

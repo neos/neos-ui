@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {$get} from 'plow-js';
 
-import style from './style.css';
+import style from './style.module.css';
 
 @neos()
 class MediaDetailsScreen extends PureComponent {

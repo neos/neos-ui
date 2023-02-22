@@ -19,7 +19,7 @@ import {
 } from '@neos-project/neos-ui-guest-frame/src/dom';
 import initializeContentDomNode from '@neos-project/neos-ui-guest-frame/src/initializeContentDomNode';
 
-import style from '@neos-project/neos-ui-guest-frame/src/style.css';
+import style from '@neos-project/neos-ui-guest-frame/src/style.module.css';
 
 manifest('main', {}, globalRegistry => {
     //

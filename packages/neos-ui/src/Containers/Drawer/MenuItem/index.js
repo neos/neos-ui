@@ -6,7 +6,7 @@ import Button from '@neos-project/react-ui-components/src/Button/';
 
 import I18n from '@neos-project/neos-ui-i18n';
 
-import style from '../style.css';
+import style from '../style.module.css';
 import {TARGET_WINDOW} from '../constants';
 
 export default class MenuItem extends PureComponent {

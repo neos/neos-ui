@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import {getVersion} from '@neos-project/utils-helpers';
 
-import style from '../style.css';
+import style from '../style.module.css';
 
 export default class VersionPanel extends PureComponent {
     render() {

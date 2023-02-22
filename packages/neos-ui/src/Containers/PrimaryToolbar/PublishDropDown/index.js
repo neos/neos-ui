@@ -19,7 +19,7 @@ const {publishableNodesSelector, publishableNodesInDocumentSelector, baseWorkspa
 
 import AbstractButton from './AbstractButton/index';
 import WorkspaceSelector from './WorkspaceSelector/index';
-import style from './style.css';
+import style from './style.module.css';
 
 @connect($transform({
     isSaving: $get('ui.remote.isSaving'),

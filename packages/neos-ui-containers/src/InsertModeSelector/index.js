@@ -7,7 +7,7 @@ import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 import {neos} from '@neos-project/neos-ui-decorators';
 import I18n from '@neos-project/neos-ui-i18n';
 
-import style from './style.css';
+import style from './style.module.css';
 
 const MODE_AFTER = 'after';
 const MODE_BEFORE = 'before';

@@ -15,7 +15,7 @@ import Dialog from '@neos-project/react-ui-components/src/Dialog/';
 import I18n from '@neos-project/neos-ui-i18n';
 import EditorEnvelope from '@neos-project/neos-ui-editors/src/EditorEnvelope/index';
 
-import style from './style.css';
+import style from './style.module.css';
 
 const defaultState = {
     transient: {},

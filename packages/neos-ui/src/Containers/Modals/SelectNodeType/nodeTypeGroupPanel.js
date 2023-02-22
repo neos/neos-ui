@@ -14,7 +14,7 @@ import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 import I18n from '@neos-project/neos-ui-i18n';
 
 import NodeTypeItem from './nodeTypeItem';
-import style from './style.css';
+import style from './style.module.css';
 
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n'),

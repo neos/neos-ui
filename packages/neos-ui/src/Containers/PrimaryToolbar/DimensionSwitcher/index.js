@@ -5,7 +5,7 @@ import Button from '@neos-project/react-ui-components/src/Button/';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 import DropDown from '@neos-project/react-ui-components/src/DropDown/';
 import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
-import style from './style.css';
+import style from './style.module.css';
 import backend from '@neos-project/neos-ui-backend-connector';
 import {$get, $transform} from 'plow-js';
 import mapValues from 'lodash.mapvalues';

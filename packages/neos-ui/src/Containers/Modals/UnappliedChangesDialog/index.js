@@ -10,7 +10,7 @@ import Dialog from '@neos-project/react-ui-components/src/Dialog/';
 import Button from '@neos-project/react-ui-components/src/Button/';
 import I18n from '@neos-project/neos-ui-i18n';
 
-import style from './style.css';
+import style from './style.module.css';
 
 @neos(globalRegistry => ({
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),

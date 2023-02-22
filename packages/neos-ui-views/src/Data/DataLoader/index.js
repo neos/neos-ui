@@ -6,7 +6,7 @@ import {selectors} from '@neos-project/neos-ui-redux-store';
 import Widget from '../../Widget/index';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 import I18n from '@neos-project/neos-ui-i18n';
-import style from './style.css';
+import style from './style.module.css';
 import isEqual from 'lodash.isequal';
 
 /*

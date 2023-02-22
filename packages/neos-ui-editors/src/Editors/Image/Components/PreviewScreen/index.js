@@ -5,7 +5,7 @@ import {AssetUpload} from '../../../../Library/index';
 
 import {Thumbnail} from '../../Utils/index';
 import {Icon} from '@neos-project/react-ui-components';
-import style from './style.css';
+import style from './style.module.css';
 
 export default class PreviewScreen extends PureComponent {
     static propTypes = {

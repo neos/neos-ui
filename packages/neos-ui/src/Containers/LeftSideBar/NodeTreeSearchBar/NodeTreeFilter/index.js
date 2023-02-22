@@ -7,7 +7,7 @@ import {SelectBox} from '@neos-project/react-ui-components';
 
 import {searchOptions} from '@neos-project/neos-ui-editors/src/Editors/SelectBox/SelectBoxHelpers.js';
 
-import style from './style.css';
+import style from './style.module.css';
 
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n'),

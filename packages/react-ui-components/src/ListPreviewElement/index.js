@@ -1,6 +1,6 @@
 import {themr} from '@friendsofreactjs/react-css-themr';
 import identifiers from '../identifiers';
-import style from './style.css';
+import style from './style.module.css';
 import ListPreviewElement from './listPreviewElement';
 
 const ThemedListPreviewElement = themr(identifiers.listPreviewElement, style)(ListPreviewElement);

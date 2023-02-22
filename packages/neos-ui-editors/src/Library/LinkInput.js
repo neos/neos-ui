@@ -12,7 +12,7 @@ import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 import {isUri, isEmail} from '@neos-project/utils-helpers';
 
 import {sanitizeOptions, sanitizeOption} from './sanitizeOptions';
-import style from './LinkInput.css';
+import style from './LinkInput.module.css';
 
 // TODO: extract this isInternalLink logic into a registry, possibly defining a schema and a custom data loader
 const isUriOrInternalLink = link => Boolean(isUri(link) || link.indexOf('node://') === 0 || link.indexOf('asset://') === 0);

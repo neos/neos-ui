@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {$get} from 'plow-js';
-import style from './style.css';
+import style from './style.module.css';
 import ViewEnvelope from '@neos-project/neos-ui-views/src/ViewEnvelope/index';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {connect} from 'react-redux';

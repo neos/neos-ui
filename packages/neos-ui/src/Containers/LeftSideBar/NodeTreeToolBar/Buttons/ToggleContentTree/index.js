@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
-import style from './style.css';
+import style from './style.module.css';
 
 export default class ToggleContentTree extends PureComponent {
     static propTypes = {

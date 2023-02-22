@@ -5,7 +5,7 @@ import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 import DropDown from '@neos-project/react-ui-components/src/DropDown/';
 
 import {AspectRatioOption, NullAspectRatioStrategy} from '../model';
-import style from './style.css';
+import style from './style.module.css';
 
 class AspectRatioDropDownitem extends PureComponent {
     static propTypes = {

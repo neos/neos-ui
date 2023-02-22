@@ -6,7 +6,7 @@ import mergeClassNames from 'classnames';
 import Dropzone from 'react-dropzone';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 import backend from '@neos-project/neos-ui-backend-connector';
-import style from './style.css';
+import style from './style.module.css';
 import {selectors} from '@neos-project/neos-ui-redux-store';
 
 @connect($transform({

@@ -14,7 +14,7 @@ import {
     dispatchCustomEvent
 } from './dom';
 
-import style from './style.css';
+import style from './style.module.css';
 import {SelectionModeTypes} from '@neos-project/neos-ts-interfaces';
 
 //

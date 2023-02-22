@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import style from './style.css';
+import style from './style.module.css';
 import I18n from '@neos-project/neos-ui-i18n';
 
 export default class Widget extends PureComponent {

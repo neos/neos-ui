@@ -14,7 +14,7 @@ import {InsertModeSelector} from '@neos-project/neos-ui-containers';
 
 import {selectors, actions, actionTypes} from '@neos-project/neos-ui-redux-store';
 
-import style from './style.css';
+import style from './style.module.css';
 
 @connect($transform({
     isOpen: $get('ui.insertionModeModal.isOpen'),

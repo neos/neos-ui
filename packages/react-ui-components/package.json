@@ -37,7 +37,6 @@
     "clean": "rm -rf dist types",
     "jest": "NODE_ENV=test jest",
     "jest:updateSnapshots": "NODE_ENV=test jest -u",
-    "start": "cross-env STORY=true start-storybook -p 9001",
     "example": "cd example && yarn esbuild test.jsx --outdir=dist --bundle --sourcemap=linked --loader:.woff2=file"
   },
   "peerDependencies": {

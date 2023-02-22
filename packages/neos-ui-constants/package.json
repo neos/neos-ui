@@ -5,7 +5,6 @@
   "private": true,
   "main": "./src/index.js",
   "scripts": {
-    "clean": "rimraf ./lib ./dist",
     "lint": "eslint src/**/*.{js,jsx,ts,tsx}"
   },
   "devDependencies": {

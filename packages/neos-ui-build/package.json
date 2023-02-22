@@ -6,12 +6,10 @@
   "bin": {
     "eslint": "../../node_modules/.bin/eslint",
     "jest": "../../node_modules/.bin/jest",
-    "rimraf": "../../node_modules/.bin/rimraf",
     "stylelint": "../../node_modules/.bin/stylelint"
   },
   "dependencies": {
     "eslint": "^5.3.0",
-    "rimraf": "^2.5.4",
     "stylelint": "^13.7.2",
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.15.0",

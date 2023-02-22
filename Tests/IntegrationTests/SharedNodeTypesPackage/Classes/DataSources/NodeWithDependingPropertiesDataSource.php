@@ -23,10 +23,11 @@ class NodeWithDependingPropertiesDataSource extends AbstractDataSource
         $evenOrOdd = $arguments['evenOrOdd'];
 
         $filteredOptions = array_filter($options, function ($option) use ($evenOrOdd) {
-            return match ($evenOrOdd) {
-                'even' => $option % 2 === 0,
-                default => $option % 2 === 1,
-            };
+            if ($evenOrOdd == 'even') {
+                return $option % 2 === 0;
+            } else {
+                return $option % 2 === 1;
+            }
         });
 
         return array_map(

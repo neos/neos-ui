@@ -14,11 +14,6 @@ lcov.info
 Build/Selenium/Settings.yaml
 
 #
-# Custom livereload settings
-#
-.webpack.livereload.local.js
-
-#
 # Application & development dependencies.
 #
 node_modules/
@@ -29,6 +24,7 @@ packages/*/yarn.lock
 #
 Resources/Public/Build/*
 !Resources/Public/Build/.gitkeep
+*.tsbuildinfo
 
 #
 # editors / IDEs
@@ -47,4 +43,3 @@ Resources/Public/Build/*
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
-tsconfig.tsbuildinfo

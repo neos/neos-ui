@@ -5,7 +5,6 @@ import {$get} from 'plow-js';
 import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine';
 import mergeClassNames from 'classnames';
 import isEqual from 'lodash.isequal';
-import {isNil} from '@neos-project/utils-helpers';
 
 // TODO: document component usage && check code in detail
 export default class SelectBox extends PureComponent {
@@ -264,7 +263,9 @@ export default class SelectBox extends PureComponent {
 
         if (
             displaySearchBox && (
-                isNil(value) ||
+                // check for null or undefined
+                /* eslint-disable no-eq-null, eqeqeq */
+                value == null ||
                 value === '' ||
                 this.state.isExpanded ||
                 plainInputMode

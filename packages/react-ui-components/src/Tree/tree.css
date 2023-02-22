@@ -1,0 +1,9 @@
+.treeWrapper {
+    composes: reset from '../reset.module.css';
+
+    padding: 5px 0;
+
+    &:focus {
+        outline: 0;
+    }
+}

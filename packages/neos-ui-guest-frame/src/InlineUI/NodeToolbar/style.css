@@ -24,7 +24,7 @@
         background-color: var(--colors-PrimaryBlue);
     }
 
-    svg {
+    & svg {
         width: 1em;
     }
 }

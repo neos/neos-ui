@@ -9,7 +9,7 @@
     font-weight: bold;
     font-size: 14px;
 
-    span {
+    & span {
         display: inline-block;
         margin-left: .1em;
     }

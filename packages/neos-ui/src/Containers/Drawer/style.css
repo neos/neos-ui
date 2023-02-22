@@ -44,7 +44,7 @@
     text-align: left;
     font-size: 15px;
 
-    span {
+    & span {
         display: inline-flex;
         height: inherit;
         width: inherit;

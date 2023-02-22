@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import mergeClassNames from 'classnames';
 
-import {PickDefaultProps} from '../../types';
+import {PickDefaultProps} from '../utils-typescript';
 import Panel from './panel.index';
 import Icon from '../Icon';
 

@@ -1,6 +1,6 @@
 import React, {PureComponent, ReactNode} from 'react';
 import mergeClassNames from 'classnames';
-import {PickDefaultProps} from '../../types';
+import {PickDefaultProps} from '../utils-typescript';
 
 export interface TooltipProps {
     /**

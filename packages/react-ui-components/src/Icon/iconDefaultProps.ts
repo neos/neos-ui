@@ -1,5 +1,5 @@
 import {IconProps} from './icon';
-import {PickDefaultProps} from '../../types';
+import {PickDefaultProps} from '../utils-typescript';
 
 type DefaultProps = PickDefaultProps<IconProps, 'color' | 'padded' | 'size'>;
 

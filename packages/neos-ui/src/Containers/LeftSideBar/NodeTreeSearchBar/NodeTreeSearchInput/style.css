@@ -1,5 +1,5 @@
 .searchInput {
-    input {
+    & input {
         /* magic number, sorry */
         padding-left: var(--spacing-GoldenUnit);
         border-radius: 0;

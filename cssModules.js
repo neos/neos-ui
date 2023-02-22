@@ -126,6 +126,10 @@ const cssModules = (options) => {
 
                 contents += "}"
 
+                // https://github.com/evanw/esbuild/issues/2943#issuecomment-1439755408
+                const emptyishSourceMap = "data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIiJdLCJtYXBwaW5ncyI6IkEifQ==";
+                contents += `\n//# sourceMappingURL=${emptyishSourceMap}`
+
                 return {
                     contents,
                     loader: "js",

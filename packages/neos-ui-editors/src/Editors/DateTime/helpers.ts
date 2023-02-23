@@ -3,7 +3,9 @@
 // See: https://neos.readthedocs.io/en/stable/References/PropertyEditorReference.html#property-type-datetime-datetimeeditor-date-time-selection-editor
 //
 // ToDo: Move into re-usable fn - Maybe into `util-helpers`?
-export default function (format) {
+import moment from 'moment';
+
+export default function (format: string): string {
     const formatMap = {
         d: 'DD',
         D: 'ddd',
@@ -33,6 +35,7 @@ export default function (format) {
     };
     return format.replace(
         /[dDjlNwWFmMnoYyaAgGhHisOPU]/g,
+        // @ts-ignore
         phpStr => formatMap[phpStr]
     );
 }
@@ -40,9 +43,21 @@ export default function (format) {
 //
 // Check if given format has a date formatting
 //
-export const hasDateFormat = format => /[yYFmMntdDjlNSw]/.test(format);
+export const hasDateFormat = (format: string) => /[yYFmMntdDjlNSw]/.test(format);
 
 //
 // Check if given format has a time formatting
 //
-export const hasTimeFormat = format => /[gGhHis]/.test(format);
+export const hasTimeFormat = (format: string) => /[gGhHis]/.test(format);
+
+export const tryDateFrom = (value: string | Date | undefined | null) => {
+    if (value === 'now') {
+        return new Date();
+    }
+
+    if (typeof value === 'string' && value.length) {
+        return moment(value).toDate();
+    }
+
+    return value || undefined;
+};

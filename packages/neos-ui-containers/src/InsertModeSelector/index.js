@@ -2,7 +2,6 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 
 import ButtonGroup from '@neos-project/react-ui-components/src/ButtonGroup/';
-import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 import Button from '@neos-project/react-ui-components/src/Button/';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 
@@ -103,7 +102,7 @@ export default class InsertModeSelector extends PureComponent {
                         title={`${i18nRegistry.translate('Neos.Neos:Main:insert')} ${i18nRegistry.translate('above')}`}
                     >
                         <Icon icon="level-up-alt" size="1x" padded="right"/>
-                        <I18n id={i18nRegistry.translate('Neos.Neos:Main:above')} fallback="Above"/>
+                        <I18n id="Neos.Neos.Ui:Main:above" fallback="Above"/>
                     </Button>
                     <Button
                         id={MODE_AFTER}
@@ -113,7 +112,7 @@ export default class InsertModeSelector extends PureComponent {
                         title={`${i18nRegistry.translate('Neos.Neos:Main:insert')} ${i18nRegistry.translate('below')}`}
                     >
                         <Icon icon="level-down-alt" size="1x" padded="right"/>
-                        <I18n id={i18nRegistry.translate('Neos.Neos:Main:below')} fallback="Below"/>
+                        <I18n id="Neos.Neos.Ui:Main:below" fallback="Below"/>
                     </Button>
                     <Button
                         id={MODE_INTO}
@@ -124,9 +123,8 @@ export default class InsertModeSelector extends PureComponent {
                         title={`${i18nRegistry.translate('Neos.Neos:Main:insert')} ${i18nRegistry.translate('into')}`}
                     >
                         <Icon icon="sign-in-alt" size="1x" padded="right"/>
-                        <I18n id={i18nRegistry.translate('Neos.Neos:Main:inside')} fallback="Inside"/>
+                        <I18n id="Neos.Neos.Ui:Main:inside" fallback="Inside"/>
                     </Button>
-
                 </ButtonGroup>
             </div>
         );

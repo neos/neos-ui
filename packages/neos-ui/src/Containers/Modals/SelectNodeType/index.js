@@ -60,7 +60,8 @@ const allowedSiblingsOrChildrenChanged = (previousProps, nextProps) => (
             return {
                 isOpen: false,
                 allowedSiblingNodeTypes: [],
-                allowedChildNodeTypes: []
+                allowedChildNodeTypes: [],
+                referenceNodeType: ''
             };
         }
         const referenceNodeType = selectors.CR.Nodes.getPathInNode(state, reference, 'nodeType');
@@ -72,7 +73,8 @@ const allowedSiblingsOrChildrenChanged = (previousProps, nextProps) => (
             isOpen: $get('ui.selectNodeTypeModal.isOpen', state),
             preferredMode: $get('ui.selectNodeTypeModal.preferredMode', state),
             allowedSiblingNodeTypes,
-            allowedChildNodeTypes
+            allowedChildNodeTypes,
+            referenceNodeType
         };
     };
 }, {
@@ -88,7 +90,8 @@ export default class SelectNodeType extends PureComponent {
         allowedChildNodeTypes: PropTypes.array,
         cancel: PropTypes.func.isRequired,
         apply: PropTypes.func.isRequired,
-        i18nRegistry: PropTypes.object.isRequired
+        i18nRegistry: PropTypes.object.isRequired,
+        referenceNodeType: PropTypes.string
     };
 
     state = {
@@ -189,10 +192,17 @@ export default class SelectNodeType extends PureComponent {
     }
 
     renderSelectNodeTypeDialogHeader() {
+        const {insertMode} = this.state;
+        const {i18nRegistry, nodeTypesRegistry, referenceNodeType} = this.props;
+        const nodeTypeLabel = $get('ui.label', nodeTypesRegistry.get(referenceNodeType))
+        const nodeTypeLabelText = i18nRegistry.translate(nodeTypeLabel, 'Node')
+        const addLabel = i18nRegistry.translate('Neos.Neos.Ui:Main:add', 'Add')
+
+        const insertModeLabel = i18nRegistry.translate('Neos.Neos.Ui:Main:InsertModeTitle' + insertMode, 'to')
         return (
             <div>
                 <span className={style.modalTitle}>
-                    <I18n fallback="Create new" id="createNew"/>
+                    {addLabel}&nbsp;{insertModeLabel}&nbsp;{nodeTypeLabelText}
                 </span>
             </div>
         );

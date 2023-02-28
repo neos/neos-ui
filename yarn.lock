@@ -2467,9 +2467,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@neos-project/neos-ui-extensibility-webpack-legacy@workspace:packages/neos-ui-extensibility-webpack-legacy":
+"@neos-project/neos-ui-extensibility-webpack-adapter@workspace:packages/neos-ui-extensibility-webpack-adapter":
   version: 0.0.0-use.local
-  resolution: "@neos-project/neos-ui-extensibility-webpack-legacy@workspace:packages/neos-ui-extensibility-webpack-legacy"
+  resolution: "@neos-project/neos-ui-extensibility-webpack-adapter@workspace:packages/neos-ui-extensibility-webpack-adapter"
   dependencies:
     "@neos-project/neos-ui-extensibility": "workspace:*"
   bin:

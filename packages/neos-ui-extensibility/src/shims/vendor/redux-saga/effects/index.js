@@ -1,3 +1,3 @@
-import readFromConsumerApi from '../../../readFromConsumerApi';
+import readFromConsumerApi from '../../../../readFromConsumerApi';
 
 module.exports = readFromConsumerApi('vendor')().reduxSagaEffects;

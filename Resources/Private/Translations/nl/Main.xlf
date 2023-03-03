@@ -439,6 +439,10 @@
                 <source>Downloadable</source>
         <target state="translated">Downloadbaar</target>
       </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__blockquote" xml:space="preserve">
+                <source>Blockquote</source>
+        <target state="translated">Blokcitaat</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

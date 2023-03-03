@@ -204,11 +204,7 @@ export default class NodeTreeToolBar extends PureComponent {
                             focusedNodeContextPath={focusedNodeContextPath}
                             onClick={this.handleCopyNodes}
                             isActive={isCopied}
-                            disabled={
-                                isWorkspaceReadOnly ||
-                                destructiveOperationsAreDisabled ||
-                                !canBeEdited
-                            }
+                            disabled={isWorkspaceReadOnly}
                             id={`neos-${treeType}-CopySelectedNode`}
                         />
                         <CutSelectedNode
@@ -277,7 +273,7 @@ const visibilityToggleAllowed = (focusedNodesContextPaths, state) => focusedNode
 const editingAllowed = (focusedNodesContextPaths, state) => focusedNodesContextPaths.every(contextPath => {
     const getNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(contextPath);
     const focusedNode = getNodeByContextPathSelector(state);
-    return !$contains('_hidden', 'policy.disallowedProperties', focusedNode);
+    return $get('policy.canEdit', focusedNode);
 });
 
 const makeMapStateToProps = isDocument => (state, {nodeTypesRegistry}) => {

@@ -7,7 +7,7 @@
 //   "jest": {
 //      "preset": "@neos-project/jest-preset-neos-ui",
 //      "setupFiles": [
-//         "../../node_modules/@neos-project/jest-preset-neos-ui/src/setupNeosUiHostEnv.js"
+//         "../jest-preset-neos-ui/src/setupNeosUiHostEnv.js"
 //      ]
 //   }
 // }

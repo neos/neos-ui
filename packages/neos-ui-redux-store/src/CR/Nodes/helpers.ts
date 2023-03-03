@@ -61,7 +61,8 @@ export const getNodeOrThrow = (nodeMap: NodeMap, contextPath: NodeContextPath) =
 export const calculateNewFocusedNodes = (selectionMode: SelectionModeTypes, contextPath: NodeContextPath, focusedNodesContextPaths: NodeContextPath[], nodesByContextPath: NodeMap): NodeContextPath[] | null => {
     if (selectionMode === SelectionModeTypes.SINGLE_SELECT) {
         return [contextPath];
-    } else if (selectionMode === SelectionModeTypes.RANGE_SELECT) {
+    }
+    if (selectionMode === SelectionModeTypes.RANGE_SELECT) {
         const lastSelectedNodeContextPath = focusedNodesContextPaths[focusedNodesContextPaths.length - 1];
         const lastSelectedNode = nodesByContextPath[lastSelectedNodeContextPath];
         if (lastSelectedNode && lastSelectedNode.parent) {
@@ -74,9 +75,8 @@ export const calculateNewFocusedNodes = (selectionMode: SelectionModeTypes, cont
                     if (startSelectionFlag) { // if matches for the second time it means that both start and end of selection were found
                         tempSelection.push(child.contextPath); // also push the last node
                         return true;
-                    } else {
-                        startSelectionFlag = true;
                     }
+                    startSelectionFlag = true;
                 }
                 if (startSelectionFlag) {
                     tempSelection.push(child.contextPath);

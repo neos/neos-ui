@@ -214,15 +214,24 @@ export default class PublishDropDown extends PureComponent {
                             </a>
                         </li>)}
                         <li className={autoPublishWrapperClassNames}>
-                            <Label htmlFor="neos-PublishDropDown-AutoPublish">
+                            {
+                                /**
+                                PLEASE NOTE: this additional styleClass is a fix, because react checkboxes inside a react select component are buggy,
+                                for further information see https://github.com/neos/neos-ui/pull/3211
+                                */
+                            }
+                            <Label htmlFor="neos-PublishDropDown-AutoPublish" className={style.dropdownOptionCheckbox}>
                                 <
 // @ts-ignore
                                 CheckBox
                                     id="neos-PublishDropDown-AutoPublish"
                                     onChange={toggleAutoPublishing}
                                     isChecked={isAutoPublishingEnabled}
+                                    className={style.dropdownOptionCheckbox__input}
                                     />
-                                <I18n id="Neos.Neos:Main:autoPublish" fallback="Auto-Publish"/>
+                                <span className={style.dropdownOptionCheckbox__label}>
+                                    <I18n id="Neos.Neos:Main:autoPublish" fallback="Auto-Publish"/>
+                                </span>
                             </Label>
                         </li>
                         <li className={style.dropDown__item}>

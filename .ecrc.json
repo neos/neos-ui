@@ -10,7 +10,8 @@
     "banner\\.js$",
     "Plugins/ckeditor",
     "\\.xlf$",
-    "Sites\\.xml$"
+    "Sites\\.xml$",
+    "^.yarn\/"
   ],
   "AllowedContentTypes": [],
   "PassedFiles": [],

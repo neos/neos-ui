@@ -4,10 +4,6 @@ import isEmail from 'isemail';
 
 const isNil = (value: any) => value === null || value === undefined;
 
-/**
- * Checks if the given value is a valid email address
- * Source: http://fightingforalostcause.net/misc/2006/compare-email-regex.php
- */
 interface EmailAddressOptions {
     validationErrorMessage?: string;
 }

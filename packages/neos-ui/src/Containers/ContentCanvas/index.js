@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
 
-import {urlAppendParams} from '@neos-project/neos-ui-backend-connector/src/Endpoints/Helpers';
+import {urlWithParams} from '@neos-project/utils-helpers/src/urlWithParams';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 
@@ -86,7 +86,11 @@ export default class ContentCanvas extends PureComponent {
             [style['contentCanvas--isHidden']]: !isVisible
         });
         const InlineUI = guestFrameRegistry.get('InlineUIComponent');
-        const currentEditPreviewModeConfiguration = editPreviewModes[currentEditPreviewMode];
+        const currentEditPreviewModeConfiguration = editPreviewModes[currentEditPreviewMode] || editPreviewModes[Object.keys(editPreviewModes)[0]];
+        const shouldShowInlineUi =
+            typeof currentEditPreviewModeConfiguration === 'object' &&
+            currentEditPreviewModeConfiguration.isEditingMode &&
+            Boolean(InlineUI);
 
         const width = $get('width', currentEditPreviewModeConfiguration);
         const height = $get('height', currentEditPreviewModeConfiguration);
@@ -105,7 +109,7 @@ export default class ContentCanvas extends PureComponent {
             canvasContentOnlyStyle.overflow = 'auto';
         }
 
-        if (currentEditPreviewModeConfiguration.backgroundColor) {
+        if (currentEditPreviewModeConfiguration && currentEditPreviewModeConfiguration.backgroundColor) {
             canvasContentStyle.background = currentEditPreviewModeConfiguration.backgroundColor;
         } else if (backgroundColor) {
             canvasContentStyle.background = backgroundColor;
@@ -133,7 +137,7 @@ export default class ContentCanvas extends PureComponent {
                         role="region"
                         aria-live="assertive"
                         >
-                        {InlineUI && <InlineUI/>}
+                        {shouldShowInlineUi && <InlineUI/>}
                     </Frame>)}
                 </div>
             </div>
@@ -178,7 +182,7 @@ export default class ContentCanvas extends PureComponent {
                         if (this.props.baseNodeType) {
                             link.setAttribute(
                                 'href',
-                                urlAppendParams(link.href, {presetBaseNodeType: this.props.baseNodeType})
+                                urlWithParams(link.href, {presetBaseNodeType: this.props.baseNodeType})
                             );
                         }
                     });

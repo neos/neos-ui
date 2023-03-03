@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {createStore, applyMiddleware, compose} from 'redux';
 import createSagaMiddleware from 'redux-saga';
-import {put, select} from 'redux-saga/effects';
+import {put, select, all} from 'redux-saga/effects';
 import merge from 'lodash.merge';
 import {$get} from 'plow-js';
 
@@ -99,7 +99,7 @@ function * application() {
     const translationsPromise = getJsonResource(configuration.endpoints.translations);
 
     // Fire multiple async requests in parallel
-    const [nodeTypesSchema, translations] = yield [nodeTypesSchemaPromise, translationsPromise];
+    const [nodeTypesSchema, translations] = yield all([nodeTypesSchemaPromise, translationsPromise]);
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
     Object.keys(nodeTypesSchema.nodeTypes).forEach(nodeTypeName => {
         nodeTypesRegistry.set(nodeTypeName, {

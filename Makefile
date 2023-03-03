@@ -39,13 +39,10 @@
 ################################################################################
 
 
-# Add lerna alias as there are currently some MacOS problems
+# Add alias as there are currently some MacOS problems
 # and putting it into the $PATH is simply not enough
-lerna = ./node_modules/.bin/lerna
 editorconfigChecker = ./node_modules/.bin/editorconfig-checker
-webpack = ./node_modules/.bin/webpack
 crossenv = ./node_modules/.bin/crossenv
-
 # Define colors
 GREEN  := $(shell tput -Txterm setaf 2)
 YELLOW := $(shell tput -Txterm setaf 3)
@@ -78,40 +75,26 @@ setup: check-requirements install build ## Run a clean setup
 # Builds
 ################################################################################
 
-
-# TODO: figure out how to pass a parameter to other targets to reduce redundancy
+# Builds the subpackages for standalone use.
 build-subpackages:
-	$(lerna) run build --concurrency 1
-	make build-react-ui-components-standalone
-
-# we build the react UI components ready for standalone usage;
-# so that they can be published on NPM properly.
-
-## Build the react UI components ready for standalone usage.
-build-react-ui-components-standalone:
-	cd packages/react-ui-components && yarn run build-standalone-esm
+	yarn workspaces foreach --parallel run build
 
 ## Runs the development build.
 build:
-	make build-subpackages
-	NEOS_BUILD_ROOT=$(shell pwd) $(webpack) --progress --color
+	node esbuild.js
 
 ## Watches the source files for changes and runs a build in case.
 build-watch:
-	NEOS_BUILD_ROOT=$(shell pwd) $(webpack) --progress --color --watch
-
-## Watches (and polls) the source files on a file share.
-build-watch-poll:
-	NEOS_BUILD_ROOT=$(shell pwd) $(webpack) \
-		--progress --color --watch-poll --watch
+	node esbuild.js --watch
 
 # clean anything before building for production just to be sure
-## Runs the production build.
+## Runs the production build. And also builds the subpackages for standalone use.
 build-production:
+	$(cross-env) NODE_ENV=production node esbuild.js
 	make build-subpackages
-	$(cross-env) NODE_ENV=production NEOS_BUILD_ROOT=$(shell pwd) \
-		$(webpack) --color
 
+build-e2e-testing:
+	$(cross-env) NODE_ENV=production node esbuild.js --e2e-testing
 
 ################################################################################
 # Code Quality
@@ -122,15 +105,18 @@ storybook:
 	@mkdir -p ./packages/react-ui-components/node_modules/@neos-project/ && \
 		ln -s ../../../build-essentials/src \
 		./packages/react-ui-components/node_modules/@neos-project/build-essentials
-	$(lerna) run --scope @neos-project/react-ui-components start
+	yarn workspace @neos-project/react-ui-components start
 
 ## Executes the unit test on all source files.
 test:
-	$(lerna) run test --concurrency 1
+	yarn workspaces foreach run test
+
+test-parallel:
+	yarn workspaces foreach --parallel run test
 
 ## Executes integration tests on saucelabs.
 test-e2e-saucelabs:
-	bash Tests/IntegrationTests/e2e.sh saucelabs:chrome
+	bash Tests/IntegrationTests/e2e.sh "saucelabs:chrome:Windows 10"
 
 ## Executes integration tests locally.
 test-e2e:
@@ -138,18 +124,28 @@ test-e2e:
 
 ## Executes integration tests locally in a docker-compose setup.
 test-e2e-docker:
-	@bash Tests/IntegrationTests/e2e-docker.sh $(or $(browser),chromium)
+	@bash Tests/IntegrationTests/e2e-docker.sh $(or $(browser),chrome)
+
+start-neos-dev-instance:
+	bash Tests/IntegrationTests/start-neos-dev-instance.sh
 
 ## Executes make lint-js and make lint-editorconfig.
 lint: lint-js lint-editorconfig
 
-## Runs lint test in all subpackages via lerna.
+lint-parallel: lint-js-parallel lint-editorconfig
+
+## Runs lint test in all subpackages
 lint-js:
-	$(lerna) run lint --concurrency 1
+	yarn workspaces foreach run lint
+
+lint-js-parallel:
+	yarn workspaces foreach --parallel run lint
 
 ## Tests if all files respect the .editorconfig.
 lint-editorconfig:
-	$(editorconfigChecker) -config .ecrc.json
+	# TODO: editorconfig-checker seems broken in node >14
+	# see https://github.com/editorconfig-checker/editorconfig-checker/issues/178
+	# $(editorconfigChecker) -config .ecrc.json
 
 ################################################################################
 # Releasing
@@ -160,19 +156,16 @@ called-with-version:
 ifeq ($(VERSION),)
 	@echo No version information given.
 	@echo Please run this command like this:
-	@echo VERSION=1.0.0 make release
+	@echo VERSION=1.0.0 make bump-version
 	@false
 endif
 
 bump-version: called-with-version
-	$(lerna) publish \
-		--skip-git --exact --repo-version=$(VERSION) \
-		--yes --force-publish --skip-npm
-	./Build/createVersionFile.sh
+	yarn workspaces foreach version $(VERSION) --deferred
+	yarn version apply --all
 
 publish-npm: called-with-version
-	$(lerna) publish --skip-git --exact --repo-version=$(VERSION) \
-		--yes --force-publish
+	yarn workspaces foreach --no-private npm publish --access public
 
 ################################################################################
 # Misc
@@ -180,7 +173,7 @@ publish-npm: called-with-version
 
 ## Cleans dependency folders
 clean:
-	rm -Rf node_modules; rm -rf packages/*/node_modules
+	rm -rf node_modules; rm -rf packages/*/node_modules
 
 
 ################################################################################
@@ -199,7 +192,7 @@ help:
 	@echo '  ${YELLOW}make${RESET} ${GREEN}<target>${RESET}'
 	@echo ''
 	@echo 'Targets:'
-	@awk '/^[a-zA-Z\-\_0-9]+:/ { \
+	@awk '/^[a-zA-Z0-9_-]+:/ { \
 		helpMessage = match(lastLine, /^## (.*)/); \
 		if (helpMessage) { \
 			helpCommand = substr($$1, 0, index($$1, ":")-1); \

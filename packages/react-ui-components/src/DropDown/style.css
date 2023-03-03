@@ -1,11 +1,11 @@
 .dropDown {
-    composes: reset from './../reset.css';
+    composes: reset from '../reset.module.css';
     position: relative;
     display: inline-block;
     width: 100%;
 }
 .dropDown__btn {
-    composes: reset from './../reset.css';
+    composes: reset from '../reset.module.css';
     display: block;
     width: 100%;
     height: var(--spacing-GoldenUnit);
@@ -22,26 +22,30 @@
     line-height: var(--spacing-GoldenUnit);
     background: var(--colors-ContrastNeutral);
 
-    &:focus{
+    &:focus {
         outline: 1px solid var(--colors-PrimaryBlue);
+    }
+
+    & svg {
+        pointer-events: none;
     }
 }
 .dropDown__btn--withChevron {
     padding-right: var(--spacing-GoldenUnit);
 }
 .dropDown__btnLabel {
-    composes: reset from './../reset.css';
+    composes: reset from '../reset.module.css';
     margin-right: .5em;
 }
 .dropDown__chevron {
-    composes: reset from './../reset.css';
+    composes: reset from '../reset.module.css';
     position: absolute;
     right: 16px;
     top: 50%;
     transform: translateY(-50%);
 }
 .dropDown__contents {
-    composes: reset from './../reset.css';
+    composes: reset from '../reset.module.css';
     position: absolute;
     top: 100%;
     left: 0;
@@ -59,28 +63,25 @@
     overflow-y: auto;
 }
 .dropDown__contents--isOpen {
-    display: block;
+    display: flex;
+    flex-direction: column;
 }
-.dropDown--darker {
-    > .dropDown__btn--open {
-        background-color: var(--colors-ContrastDarker);
-    }
+.dropDown--darker > .dropDown__btn--open {
+    background-color: var(--colors-ContrastDarker);
+}
 
-    > .dropDown__contents {
-        background-color: var(--colors-ContrastDarker);
-    }
+.dropDown--darker > .dropDown__contents {
+    background-color: var(--colors-ContrastDarker);
 }
-.dropDown--darkest {
-    > .dropDown__btn--open {
-        background-color: var(--colors-ContrastDarkest);
-    }
 
-    > .dropDown__contents {
-        background-color: var(--colors-ContrastDarkest);
-    }
+.dropDown--darkest > .dropDown__btn--open {
+    background-color: var(--colors-ContrastDarkest);
 }
-.dropDown--padded {
-    > .dropDown__contents {
-        padding: var(--spacing-Full);
-    }
+
+.dropDown--darkest > .dropDown__contents {
+    background-color: var(--colors-ContrastDarkest);
+}
+
+.dropDown--padded > .dropDown__contents {
+    padding: var(--spacing-Full);
 }

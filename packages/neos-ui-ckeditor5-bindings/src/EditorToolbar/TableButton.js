@@ -6,7 +6,7 @@ import mergeClassNames from 'classnames';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 import style from './TableButton.css';
-import tableStyling from './TableStyles.vanilla-css'; // eslint-disable-line
+import './TableStyles.vanilla-css';
 
 const numberRange = (start, end) => new Array(end - start + 1).fill().map((d, i) => i + start);
 

@@ -14,6 +14,7 @@ const startsWith = prefix => element => element.id.startsWith(prefix);
  * The Actual StyleSelect component
  */
 @neos(globalRegistry => ({
+    i18nRegistry: globalRegistry.get('i18n'),
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),
     toolbarRegistry: globalRegistry.get('ckEditor5').get('richtextToolbar')
 }))
@@ -32,6 +33,7 @@ export default class StyleSelect extends PureComponent {
             PropTypes.object
         ])),
         executeCommand: PropTypes.func.isRequired,
+        i18nRegistry: PropTypes.object.isRequired,
         nodeTypesRegistry: PropTypes.object.isRequired,
         toolbarRegistry: PropTypes.object.isRequired
     };
@@ -53,7 +55,7 @@ export default class StyleSelect extends PureComponent {
             .filter(isToolbarItemVisible(inlineEditorOptions || []));
 
         const options = nestedStyles.map(style => ({
-            label: style.label,
+            label: this.props.i18nRegistry.translate(style.label, style.label),
             value: style.id
         }));
 

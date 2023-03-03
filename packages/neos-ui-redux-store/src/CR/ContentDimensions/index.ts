@@ -1,9 +1,9 @@
 import produce from 'immer';
 import {$get} from 'plow-js';
-import {mapValues} from 'lodash';
+import mapValues from 'lodash.mapvalues';
 import {createSelector} from 'reselect';
 import {action as createAction, ActionType} from 'typesafe-actions';
-import {actionTypes as system, InitAction, GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
+import {actionTypes as system, InitAction, GlobalState} from '../../System';
 import isEqual from 'lodash.isequal';
 import {DimensionInformation, DimensionCombination, DimensionPresetName, DimensionPresetCombination} from '@neos-project/neos-ts-interfaces';
 
@@ -52,7 +52,7 @@ export const actions = {
     /**
      * Sets the currently allowed presets for dimension
      */
-    setAllowed: (dimensionName: string, allowedPresets: DimensionPresetName[]) => createAction(actionTypes.SET_ALLOWED,  {dimensionName, allowedPresets})
+    setAllowed: (dimensionName: string, allowedPresets: DimensionPresetName[]) => createAction(actionTypes.SET_ALLOWED, {dimensionName, allowedPresets})
 };
 
 //
@@ -67,7 +67,7 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
             break;
         }
         case actionTypes.SELECT_PRESET: {
-            const targetPresets = action.payload.targetPresets;
+            const {targetPresets} = action.payload;
             Object.keys(targetPresets).forEach(dimensionName => {
                 const presetName = targetPresets[dimensionName];
                 const dimensionValues = state.byName[dimensionName].presets[presetName].values;
@@ -78,7 +78,7 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
             break;
         }
         case actionTypes.SET_ACTIVE: {
-            const dimensionValues = action.payload.dimensionValues;
+            const {dimensionValues} = action.payload;
             const previousActive = state.active;
             if (previousActive !== null) {
                 Object.keys(previousActive).forEach(dimensionName => {
@@ -165,7 +165,7 @@ const activePresetsSelector = createSelector([
     if (active !== null) {
         return mapValues(active, (dimensionValues, name) => {
             const dimensionConfiguration = byName[name];
-            const presets = dimensionConfiguration.presets;
+            const {presets} = dimensionConfiguration;
             const activePreset = Object.keys(presets).find(dimensionName => isEqual(presets[dimensionName].values, dimensionValues));
             const presetName = activePreset || dimensionConfiguration.defaultPreset;
             const finalActivePreset = presets[presetName];

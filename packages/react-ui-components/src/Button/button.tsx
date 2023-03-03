@@ -1,7 +1,7 @@
 import mergeClassNames from 'classnames';
 import React from 'react';
 
-import {Omit, PickDefaultProps} from '../../types';
+import {PickDefaultProps} from '../utils-typescript';
 import {makeFocusNode} from '../_lib/focusNode';
 
 export type ButtonStyle = 'clean' | 'brand' | 'lighter' | 'neutral' | 'transparent' | 'success' | 'warn' | 'error';

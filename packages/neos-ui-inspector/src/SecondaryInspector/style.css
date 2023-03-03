@@ -1,20 +1,9 @@
 .secondaryInspector {
-    position: absolute;
-    top: 82px;
-    right: var(--size-SidebarWidth);
-    left: var(--size-SidebarWidth);
+    composes: content from "@neos-project/neos-ui/src/Containers/style.css";
+    position: relative;
     background: var(--colors-ContrastDarker);
-    height: calc(100% - 82px);
     border: 1px solid var(--colors-ContrastDark);
     border-bottom-width: 0;
-    transition: var(--transition-Default)  ease left, var(--transition-Default)  ease right;
-    will-change: left, right;
-}
-.secondaryInspector--isFringeLeft {
-    left: 0;
-}
-.secondaryInspector--isFringeRight {
-    right: 0;
 }
 .secondaryInspector--isElevated {
     z-index: var(--zIndex-SecondaryInspectorElevated-Context);

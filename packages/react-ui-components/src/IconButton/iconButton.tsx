@@ -2,7 +2,7 @@ import {IconName} from '@fortawesome/fontawesome-svg-core';
 import mergeClassNames from 'classnames';
 import React, {PureComponent} from 'react';
 
-import {PickDefaultProps} from '../../types';
+import {PickDefaultProps} from '../utils-typescript';
 import Button from '../Button';
 import {ButtonHoverStyle, ButtonSize, ButtonStyle, HTMLButtonElementAttributesExceptStyle} from '../Button/button';
 import Icon from '../Icon';
@@ -17,6 +17,11 @@ export interface IconButtonProps extends HTMLButtonElementAttributesExceptStyle 
      * The icon key which gets passed to the Icon Component.
      */
     readonly icon: string | IconName;
+
+    /**
+     * Additional props passed to the icon
+     */
+    readonly iconProps?: React.ComponentProps<typeof Icon>;
 
     /**
      * An optional `className` to attach to the wrapper.
@@ -59,6 +64,7 @@ class IconButton extends PureComponent<IconButtonProps> {
             className,
             theme,
             icon,
+            iconProps,
             size,
             disabled,
             ...rest
@@ -75,7 +81,7 @@ class IconButton extends PureComponent<IconButtonProps> {
 
         return (
             <Button {...rest} size={size} className={finalClassName} disabled={disabled}>
-                <Icon icon={icon}/>
+                <Icon icon={icon} {...iconProps}/>
             </Button>
         );
     }

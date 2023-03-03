@@ -1,0 +1,39 @@
+name: Build and test
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ '[0-9]+.[0-9]' ]
+  pull_request:
+    branches: [ '[0-9]+.[0-9]' ]
+
+jobs:
+  codestyle:
+    runs-on: ubuntu-latest
+    name: 'Code style'
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'yarn'
+      - name: Install
+        run: make install
+      - name: Lint
+        run: make lint
+
+  unittests:
+    runs-on: ubuntu-latest
+    name: 'Unit tests'
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'yarn'
+      - name: Install
+        run: make install
+      - name: Build
+        run: make build-production
+      - name: Test
+        run: make test

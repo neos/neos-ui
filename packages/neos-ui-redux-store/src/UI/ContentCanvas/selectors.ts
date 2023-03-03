@@ -1,5 +1,5 @@
 import {$get} from 'plow-js';
-import {GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
+import {GlobalState} from '../../System';
 
 export const shouldScrollIntoView = (state: GlobalState) => $get(['ui', 'contentCanvas', 'shouldScrollIntoView'], state);
 

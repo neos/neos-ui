@@ -6,7 +6,7 @@
 .boolean__wrapper {
     padding: 5px;
 
-    label {
+    & label {
         margin-bottom: 0 !important;
     }
 }

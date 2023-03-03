@@ -9,8 +9,8 @@ set -e
 
 cd Packages/Application/Neos.Neos.Ui
 
-yarn install
-node_modules/.bin/lerna run build --concurrency 1
+yarn
+yarn workspaces foreach run build
 
 echo "Please remember to set frontendDevelopmentMode to true in your Settings.yaml."
 echo ""

@@ -2,7 +2,7 @@ import produce from 'immer';
 import {action as createAction, ActionType} from 'typesafe-actions';
 import {$get} from 'plow-js';
 
-import {actionTypes as system, InitAction} from '@neos-project/neos-ui-redux-store/src/System';
+import {actionTypes as system, InitAction} from '../../System';
 import {NodeContextPath, FusionPath} from '@neos-project/neos-ts-interfaces';
 
 export interface State extends Readonly<{
@@ -33,7 +33,7 @@ export enum actionTypes {
  * @param {Object} fusionPath (optional) fusion path of the rendered node relative to which the new node ought to be
  *                            positioned.
  */
-const open = (contextPath: NodeContextPath, fusionPath: FusionPath = '') =>  createAction(actionTypes.OPEN, {contextPath, fusionPath});
+const open = (contextPath: NodeContextPath, fusionPath: FusionPath = '') => createAction(actionTypes.OPEN, {contextPath, fusionPath});
 
 /**
  * Closes the add node modal.

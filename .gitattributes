@@ -1,0 +1,26 @@
+/.yarn/releases/** binary
+/.yarn/plugins/** binary
+
+# Ignore dev related folders in archives
+/.circleci export-ignore
+/.github export-ignore
+/.yarn export-ignore
+/Build export-ignore
+/Tests export-ignore
+/packages export-ignore
+
+# Ignore dev related files in archives
+/.babelrc export-ignore
+/.ecrc.json export-ignore
+/.eslintrc export-ignore
+/.nvmrc export-ignore
+/.styleci.yml export-ignore
+/.stylelintrc export-ignore
+/.yarnrc.yml export-ignore
+/Makefile export-ignore
+/docker-compose.yaml export-ignore
+/package.json export-ignore
+/polyfills.js export-ignore
+/tslint.json export-ignore
+/webpack.config.js export-ignore
+/yarn.lock export-ignore

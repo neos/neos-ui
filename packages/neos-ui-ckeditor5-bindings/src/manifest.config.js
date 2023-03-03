@@ -7,11 +7,13 @@ import Sub from './plugins/sub';
 import Sup from './plugins/sup';
 import LinkTargetBlank from './plugins/linkTargetBlank';
 import LinkRelNofollow from './plugins/linkRelNofollow';
+import LinkDownload from './plugins/linkDownload';
 import LinkTitle from './plugins/linkTitle';
 import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials';
 import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold';
 import Italic from '@ckeditor/ckeditor5-basic-styles/src/italic';
+import ItalicWithEm from './plugins/italicWithEm';
 import Underline from '@ckeditor/ckeditor5-basic-styles/src/underline';
 import Strikethrough from '@ckeditor/ckeditor5-basic-styles/src/strikethrough';
 import Heading from '@ckeditor/ckeditor5-heading/src/heading';
@@ -106,6 +108,7 @@ export default ckEditorRegistry => {
     config.set('link', addPlugin(Link, $get('formatting.a')));
     config.set('linkTargetBlank', addPlugin(LinkTargetBlank, $get('formatting.a')));
     config.set('linkRelNofollow', addPlugin(LinkRelNofollow, $get('formatting.a')));
+    config.set('linkDownload', addPlugin(LinkDownload, $get('formatting.a')));
     config.set('linkTitle', addPlugin(LinkTitle, $get('formatting.a')));
     config.set('table', addPlugin(Table, i => $get('formatting.table', i)));
     config.set('insideTable', addPlugin(InsideTable, i => $get('formatting.table', i)));
@@ -129,6 +132,10 @@ export default ckEditorRegistry => {
         $get('formatting.h6')
     )));
 
+    // Custom Plugin that automatically converts <i> to <em> for italics
+    // @fixes https://github.com/neos/neos-ui/issues/2906
+    config.set('italicWithEm', addPlugin(ItalicWithEm, $get('formatting.em')));
+
     //
     // @see https://docs.ckeditor.com/ckeditor5/latest/features/headings.html#configuring-heading-levels
     // The element names for the heading dropdown are coming from richtextToolbar registry
@@ -143,7 +150,8 @@ export default ckEditorRegistry => {
                 {model: 'heading4', view: 'h4'},
                 {model: 'heading5', view: 'h5'},
                 {model: 'heading6', view: 'h6'},
-                {model: 'pre', view: 'pre'}
+                {model: 'pre', view: 'pre'},
+                {model: 'blockquote', view: 'blockquote'}
             ]}
     }));
 

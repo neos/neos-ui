@@ -3,7 +3,7 @@ import mergeClassNames from 'classnames';
 import TextareaAutosize from 'react-textarea-autosize';
 import enhanceWithClickOutside from '../enhanceWithClickOutside/index';
 
-import {Omit, PickDefaultProps} from '../../types';
+import {PickDefaultProps} from '../utils-typescript';
 
 export interface TextAreaProps extends Omit<React.InputHTMLAttributes<HTMLTextAreaElement>, 'onChange'> {
     /**
@@ -78,6 +78,7 @@ export class TextArea extends PureComponent<TextAreaProps> {
             minRows,
             expandedRows,
             value,
+            style,
             ...restProps
         } = this.props;
         const classNames = mergeClassNames(
@@ -101,6 +102,8 @@ export class TextArea extends PureComponent<TextAreaProps> {
                 onClick={this.handleOnClick}
                 minRows={this.state.isFocused ? expandedRows : minRows}
                 value={value}
+                // @ts-ignore -- WHY: type mismatch even though it shouldn't
+                style={style}
             />
         );
     }

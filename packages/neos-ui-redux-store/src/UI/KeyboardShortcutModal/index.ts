@@ -1,7 +1,7 @@
 import produce from 'immer';
 import {action as createAction, ActionType} from 'typesafe-actions';
 
-import {InitAction} from '@neos-project/neos-ui-redux-store/src/System';
+import {InitAction} from '../../System';
 
 export interface State extends Readonly<{
     isOpen: boolean;
@@ -10,7 +10,6 @@ export interface State extends Readonly<{
 export const defaultState: State = {
     isOpen: false
 };
-
 
 //
 // Export the action types

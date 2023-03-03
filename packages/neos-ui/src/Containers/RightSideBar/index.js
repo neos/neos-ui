@@ -64,9 +64,11 @@ export default class RightSideBar extends PureComponent {
                 role="form"
                 aria-live="assertive"
                 aria-hidden={isSideBarHidden ? 'true' : 'false'}
-                >
+            >
                 {toggle}
-                {!isSideBarHidden && RightSideBarComponents.map((Item, key) => <Item key={key}/>)}
+                <div className={style.rightSideBar__components}>
+                    {!isSideBarHidden && RightSideBarComponents.map((Item, key) => <Item key={key}/>)}
+                </div>
             </SideBar>
         );
     }

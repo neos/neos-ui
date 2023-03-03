@@ -1,17 +1,16 @@
-
 .selectBox__list {
     padding: 0;
 }
 
 .selectBox {
-    composes: reset from './../reset.css', dropDown from './../DropDown/style.css';
+    composes: reset from  '../reset.module.css', dropDown from './../DropDown/style.css';
     position: relative;
     display: inline-block;
     line-height: 0;
 }
 
 .selectBox__btn {
-    composes: reset from './../reset.css', dropDown__btn from './../DropDown/style.css';
+    composes: reset from '../reset.module.css', dropDown__btn from './../DropDown/style.css';
     position: relative;
     display: inline-block;
     text-overflow: clip;
@@ -20,7 +19,6 @@
     line-height: var(--spacing-GoldenUnit);
     padding-left: 0;
     border: 0;
-    background: var(--colors-ContrastNeutral);
     min-width: 160px;
 }
 
@@ -30,7 +28,7 @@
 
 .selectBox__contents {
     min-width: 160px;
-    box-shadow: 0 5px 5px rgba(#000, .2);
+    box-shadow: 0 5px 5px rgba(0, 0, 0, .2);
     z-index: var(--zIndex-SelectBoxContents);
     margin-top: -2px;
 }
@@ -43,7 +41,7 @@
     border-top: 1px solid var(--colors-ContrastDarker);
     background: var(--colors-ContrastDarkest);
 
-    div {
+    & div {
         padding: 5px 14px;
     }
 }

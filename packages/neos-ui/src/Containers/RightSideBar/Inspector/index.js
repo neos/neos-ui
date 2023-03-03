@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {produce} from 'immer';
-import {mapValues} from 'lodash';
+import mapValues from 'lodash.mapvalues';
 import {connect} from 'react-redux';
 import {$get, $contains, $set} from 'plow-js';
 import I18n from '@neos-project/neos-ui-i18n';
@@ -146,9 +146,10 @@ export default class Inspector extends PureComponent {
             if (propertyValue !== null && typeof propertyValue === 'object') {
                 viewConfiguration = this.preprocessViewConfiguration(context, newPath, viewConfiguration, originalViewConfiguration);
             } else if (typeof originalPropertyValue === 'string' && originalPropertyValue.indexOf('ClientEval:') === 0) {
-                const {node, parentNode} = context; // eslint-disable-line
+                const {node, parentNode} = context;
                 try {
-                    const evaluatedValue = eval(originalPropertyValue.replace('ClientEval:', '')); // eslint-disable-line
+                    // eslint-disable-next-line no-new-func
+                    const evaluatedValue = new Function('node,parentNode', 'return ' + originalPropertyValue.replace('ClientEval:', ''))(node, parentNode);
                     if (evaluatedValue !== propertyValue) {
                         this.configurationIsProcessed = true;
                         viewConfiguration = produce(
@@ -331,7 +332,8 @@ export default class Inspector extends PureComponent {
                     className={style.centeredInspector}
                     >
                     <div>{focusedDocumentNodesContextPaths.length} {i18nRegistry.translate('documentsSelected', 'documents selected', {}, 'Neos.Neos.Ui', 'Main')}</div>
-                </div>);
+                </div>
+            );
         }
 
         const augmentedCommit = (propertyId, value, hooks) => {
@@ -412,7 +414,7 @@ export default class Inspector extends PureComponent {
                                         this.handlePanelToggle([$get('id', tab), ...path]);
                                     }}
                                     handleInspectorApply={this.handleApply}
-                                    />);
+                            />);
                         })
                     }
                 </Tabs>

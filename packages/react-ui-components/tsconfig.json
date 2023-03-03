@@ -1,0 +1,15 @@
+{
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "**/*.spec.*",
+    "**/*.story.*"
+  ],
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "outDir": "types"
+  }
+}

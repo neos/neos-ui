@@ -2,7 +2,7 @@ import produce from 'immer';
 import {action as createAction, ActionType} from 'typesafe-actions';
 import {$get} from 'plow-js';
 
-import {InitAction, GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
+import {InitAction, GlobalState} from '../../System';
 
 export interface State extends Readonly<{
     isOpen: boolean,
@@ -69,5 +69,5 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
 
 export const selectors = {
     isOpen: (state: GlobalState) => $get(['ui', 'nodeVariantCreationDialog', 'isOpen'], state),
-    numberOfParentNodesToBeCreated: (state: GlobalState) => $get(['ui', 'nodeVariantCreationDialog', 'numberOfParentNodesToBeCreated'], state),
+    numberOfParentNodesToBeCreated: (state: GlobalState) => $get(['ui', 'nodeVariantCreationDialog', 'numberOfParentNodesToBeCreated'], state)
 };

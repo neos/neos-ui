@@ -1,7 +1,8 @@
-import {merge, mapValues} from 'lodash';
+import merge from 'lodash.merge';
+import mapValues from 'lodash.mapvalues';
 import {$get} from 'plow-js';
-import {SynchronousRegistry} from '@neos-project/neos-ui-extensibility';
-import positionalArraySorter from '@neos-project/positional-array-sorter';
+import {SynchronousRegistry} from '@neos-project/neos-ui-extensibility/src';
+import positionalArraySorter from '@neos-project/positional-array-sorter/src/positionalArraySorter';
 import {NodeTypeName, NodeType} from '@neos-project/neos-ts-interfaces';
 
 interface Constraint {
@@ -40,7 +41,7 @@ interface ViewConfiguration {
     [prop: string]: any;
 }
 // We have to use a custom type guard in order to filter out null values, see https://codereview.stackexchange.com/a/184004
-const isGroupedNodeTypeListItem = (str: GroupedNodeTypeListItem | null): str is GroupedNodeTypeListItem => !!str;
+const isGroupedNodeTypeListItem = (str: GroupedNodeTypeListItem | null): str is GroupedNodeTypeListItem => Boolean(str);
 
 export default class NodeTypesRegistry extends SynchronousRegistry<NodeType> {
     private _constraints: ConstraintsMap = {};
@@ -55,7 +56,7 @@ export default class NodeTypesRegistry extends SynchronousRegistry<NodeType> {
 
     private _inspectorViewConfigurationCache: {[propName: string]: any} = {};
 
-    public setConstraints (constraints: ConstraintsMap): void {
+    public setConstraints(constraints: ConstraintsMap): void {
         this._constraints = constraints;
     }
 
@@ -79,9 +80,8 @@ export default class NodeTypesRegistry extends SynchronousRegistry<NodeType> {
         const role = this.getRole(roleName);
         if (role) {
             return this.isOfType(nodeTypeName, role);
-        } else {
-            return false;
         }
+        return false;
     }
 
     public getAllowedChildNodeTypes(nodeTypeName: string): NodeTypeName[] {
@@ -200,9 +200,9 @@ export default class NodeTypesRegistry extends SynchronousRegistry<NodeType> {
 
                     return isMatch || isDefaultTab;
                 }).map(group => ({
-                        ...group,
-                        items: positionalArraySorter([
-                            ...properties.filter(p => $get(['ui', 'inspector', 'group'], p) === group.id)
+                    ...group,
+                    items: positionalArraySorter([
+                        ...properties.filter(p => $get(['ui', 'inspector', 'group'], p) === group.id)
                                 .map(property => ({
                                     type: 'editor',
                                     id: $get(['id'], property),
@@ -215,7 +215,7 @@ export default class NodeTypesRegistry extends SynchronousRegistry<NodeType> {
                                     helpThumbnail: $get(['ui', 'help', 'thumbnail'], property)
                                 })
                             ),
-                            ...views.filter(v => $get(['group'], v) === group.id)
+                        ...views.filter(v => $get(['group'], v) === group.id)
                                 .map(property => ({
                                     type: 'view',
                                     id: $get(['id'], property),
@@ -226,8 +226,8 @@ export default class NodeTypesRegistry extends SynchronousRegistry<NodeType> {
                                     helpMessage: $get(['helpMessage'], property)
                                 })
                             )
-                        ], 'position', 'id')
-                    })
+                    ], 'position', 'id')
+                })
                 )
             }))
         };

@@ -71,7 +71,7 @@ describe('<IconButtonDropDown/>', () => {
         const wrapper = shallow(<IconButtonDropDown {...props}/>);
         const btn = wrapper.find(Button);
 
-        return new Promise(resolve => {
+        return new Promise<void>(resolve => {
             btn.simulate('mouseDown');
 
             setTimeout(() => {
@@ -85,7 +85,7 @@ describe('<IconButtonDropDown/>', () => {
         const wrapper = shallow(<IconButtonDropDown {...props}/>);
         const btn = wrapper.find(Button);
 
-        return new Promise(resolve => {
+        return new Promise<void>(resolve => {
             btn.simulate('mouseDown');
 
             btn.simulate('click');

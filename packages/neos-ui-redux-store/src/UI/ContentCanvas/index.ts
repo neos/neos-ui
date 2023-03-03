@@ -2,7 +2,7 @@ import produce from 'immer';
 import {action as createAction, ActionType} from 'typesafe-actions';
 import {$get} from 'plow-js';
 
-import {actionTypes as system, InitAction} from '@neos-project/neos-ui-redux-store/src/System';
+import {actionTypes as system, InitAction} from '../../System';
 
 import * as selectors from './selectors';
 
@@ -53,8 +53,8 @@ export enum actionTypes {
     TOGGLE_LINK_EDITOR = '@neos/neos-ui/UI/ContentCanvas/TOGGLE_LINK_EDITOR'
 }
 
-const setPreviewUrl = (previewUrl: string) =>  createAction(actionTypes.SET_PREVIEW_URL, previewUrl);
-const setSrc = (src: string, metaKeyPressed: boolean = false) =>  createAction(actionTypes.SET_SRC, {src, metaKeyPressed});
+const setPreviewUrl = (previewUrl: string) => createAction(actionTypes.SET_PREVIEW_URL, previewUrl);
+const setSrc = (src: string, metaKeyPressed: boolean = false) => createAction(actionTypes.SET_SRC, {src, metaKeyPressed});
 const setFormattingUnderCursor = (formatting: Formatting) => createAction(actionTypes.FORMATTING_UNDER_CURSOR, formatting);
 const setCurrentlyEditedPropertyName = (propertyName: string) => createAction(actionTypes.SET_CURRENTLY_EDITED_PROPERTY_NAME, propertyName);
 const startLoading = () => createAction(actionTypes.START_LOADING);

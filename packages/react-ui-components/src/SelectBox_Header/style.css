@@ -1,4 +1,3 @@
-
 .selectBoxHeader {
     display: flex;
     width: 100%;
@@ -10,7 +9,7 @@
 }
 
 .selectBoxHeader__icon {
-    composes: reset from './../reset.css';
+    composes: reset from '../reset.module.css';
     line-height: var(--spacing-GoldenUnit);
     height: 100%;
 }

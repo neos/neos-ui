@@ -7,6 +7,8 @@ export default class PreviewOption extends PureComponent {
     static propTypes = {
         option: PropTypes.shape({
             label: PropTypes.string.isRequired,
+            secondaryLabel: PropTypes.string,
+            tertiaryLabel: PropTypes.string,
             icon: PropTypes.string,
             preview: PropTypes.string
         })
@@ -16,7 +18,7 @@ export default class PreviewOption extends PureComponent {
         const {option} = this.props;
 
         return (
-            <SelectBox_Option_MultiLineWithThumbnail {...this.props} imageUri={option.preview} icon={option.icon} label={option.label}/>
+            <SelectBox_Option_MultiLineWithThumbnail {...this.props} imageUri={option.preview} icon={option.icon} label={option.label} secondaryLabel={option.secondaryLabel} tertiaryLabel={option.tertiaryLabel}/>
         );
     }
 }

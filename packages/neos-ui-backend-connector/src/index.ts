@@ -41,7 +41,6 @@ export const initializeJsAPI = (parent: {[propName: string]: any}, {alias = 'neo
     return parent[alias];
 };
 
-
 //
 // Expose methods to access the initialized api
 //

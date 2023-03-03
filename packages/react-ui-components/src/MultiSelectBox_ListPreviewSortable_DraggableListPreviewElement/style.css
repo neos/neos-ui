@@ -45,7 +45,7 @@
     border-bottom-left-radius: 2px;
     border-right: 1px solid var(--colors-ContrastDarker);
 
-    svg {
+    & svg {
         color: var(--colors-ContrastDark);
     }
 
@@ -54,7 +54,7 @@
         background: var(--colors-ContrastDark);
         color: var(--colors-ContrastBright) !important;
 
-        svg {
+        & svg {
             color: var(--colors-ContrastBright) !important;
         }
     }

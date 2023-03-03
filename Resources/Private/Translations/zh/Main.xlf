@@ -352,6 +352,42 @@
                     <target xml:lang="zh-CN" state="needs-translation">Discarded {0} changes.</target>
                 </trans-unit>
       </group>
+      <trans-unit id="UI.RightSideBar.tabs.validationErrorTooltip[0]" xml:space="preserve">
+                    <source>{tabName} – {amountOfErrors} validation issue</source>
+      </trans-unit>
+      <trans-unit id="UI.RightSideBar.tabs.validationErrorTooltip[1]" xml:space="preserve">
+                    <source>{tabName} – {amountOfErrors} validation issues</source>
+      </trans-unit>
+      <trans-unit id="nodes" xml:space="preserve">
+                <source>nodes</source>
+      </trans-unit>
+      <trans-unit id="contentElementsSelected" xml:space="preserve">
+                <source>content elements selected</source>
+      </trans-unit>
+      <trans-unit id="documentsSelected" xml:space="preserve">
+                <source>documents selected</source>
+      </trans-unit>
+      <trans-unit id="inspectorMutlipleContentNodesSelectedTooltip" xml:space="preserve">
+                <source>Select a single document in order to be able to edit its properties</source>
+      </trans-unit>
+      <trans-unit id="inspectorMutlipleDocumentNodesSelectedTooltip" xml:space="preserve">
+                <source>Select a single content element in order to be able to edit its properties</source>
+      </trans-unit>
+      <trans-unit id="deleteXNodes" xml:space="preserve">
+                <source>Delete {amount} nodes</source>
+      </trans-unit>
+      <trans-unit id="rangeEditorMinimum" xml:space="preserve">
+                <source>Minimum</source>
+      </trans-unit>
+      <trans-unit id="rangeEditorCurrentValue" xml:space="preserve">
+                <source>Current value</source>
+      </trans-unit>
+      <trans-unit id="syncUriPathSegment" xml:space="preserve">
+                <source>Syncronize with the title property</source>
+      </trans-unit>
+      <trans-unit id="rangeEditorMaximum" xml:space="preserve">
+                <source>Maximum</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

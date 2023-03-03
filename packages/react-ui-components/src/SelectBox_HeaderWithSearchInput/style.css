@@ -20,6 +20,6 @@
 }
 
 .selectBoxHeaderWithSearchInput__icon {
-    composes: reset from './../reset.css';
+    composes: reset from '../reset.module.css';
     height: var(--spacing-GoldenUnit);
 }

@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import mergeClassNames from 'classnames';
 
-import {PickDefaultProps} from '../../types';
+import {PickDefaultProps} from '../utils-typescript';
 import Panel from './panel.index';
 import Icon from '../Icon';
 
@@ -103,7 +103,7 @@ export default class Tabs extends PureComponent<TabsProps> {
         );
     }
 
-    public handleTabNavItemClick = (id: string | number) => {
+    private handleTabNavItemClick = (id: string | number) => {
         this.setState({activeTab: id});
     }
 

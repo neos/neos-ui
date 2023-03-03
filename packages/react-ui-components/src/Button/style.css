@@ -1,5 +1,5 @@
 .btn {
-    composes: reset from './../reset.css';
+    composes: reset from '../reset.module.css';
     position: relative;
     display: inline-block;
     height: var(--spacing-GoldenUnit);
@@ -25,7 +25,7 @@
         &:hover,
         &.btn--isPressed,
         &:hover i,
-        i {
+        & i {
             color: var(--colors-ContrastBrightest);
         }
     }
@@ -73,7 +73,7 @@
 .btn--brandActive {
     background-color: var(--colors-PrimaryBlue);
 
-    svg {
+    & svg {
         color: var(--colors-ContrastBrightest);
     }
 }
@@ -90,7 +90,7 @@
 .btn--cleanHover:hover:enabled i {
     color: var(--colors-PrimaryBlue);
 
-    svg {
+    & svg {
         color: var(--colors-PrimaryBlue);
     }
 }

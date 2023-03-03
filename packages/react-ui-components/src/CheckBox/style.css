@@ -1,5 +1,5 @@
 .checkbox {
-    composes: reset from './../reset.css';
+    composes: reset from '../reset.module.css';
     position: relative;
     display: block;
     width: 20px;
@@ -8,7 +8,7 @@
     vertical-align: middle;
 }
 .checkbox__input {
-    composes: reset from './../reset.css';
+    composes: reset from '../reset.module.css';
     position: absolute;
     top: 50%;
     left: 0;
@@ -27,12 +27,12 @@
     opacity: 0;
 }
 .checkbox__inputMirror {
-    composes: reset from './../reset.css';
+    composes: reset from '../reset.module.css';
     display: inline-block;
     width: 20px;
     height: 20px;
     border-radius: 2px;
-    vertical-align: text-bottom;
+    vertical-align: top;
     background: var(--colors-ContrastDark);
     font-size: 20px;
     font-weight: bold;

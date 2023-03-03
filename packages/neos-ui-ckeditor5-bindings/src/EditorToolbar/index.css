@@ -1,5 +1,11 @@
+.toolbar {
+    flex: 0 1 auto;
+}
+
 .toolBar__btnGroup {
     display: flex;
+    flex-wrap: wrap;
+    background: var(--colors-ContrastDarkest);
 
     &:before,
     &:after {
@@ -9,6 +15,10 @@
     &:after {
         clear: both;
     }
+
+     > * {
+         width: auto;
+     }
 }
 
 .toolBar__btnGroup__btn {

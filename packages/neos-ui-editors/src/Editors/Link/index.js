@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import LinkInput from '@neos-project/neos-ui-editors/src/Library/LinkInput';
+import LinkInput from '../../Library/LinkInput';
 
 class LinkEditor extends PureComponent {
     static propTypes = {
@@ -24,7 +24,7 @@ class LinkEditor extends PureComponent {
                 linkValue={value}
                 onLinkChange={this.props.commit}
                 options={options}
-                />
+            />
         );
     }
 }

@@ -84,3 +84,11 @@
     '@controller': 'BackendService'
     '@action': 'getAdditionalNodeMetadata'
   httpMethods: ['POST']
+
+-
+  name: 'Generate UriPathSegment'
+  uriPattern: 'generate-uri-path-segment'
+  defaults:
+    '@controller': 'BackendService'
+    '@action': 'generateUriPathSegment'
+  httpMethods: ['POST']

@@ -50,9 +50,9 @@
                 <source>Strikethrough</source>
         <target xml:lang="nl" state="translated">Doorhalen</target>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__link" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__link" xml:space="preserve" approved="no">
                 <source>Link</source>
-        <target xml:lang="nl">Link</target>
+        <target xml:lang="nl" state="translated">Link</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__unlink" xml:space="preserve">
                 <source>Unlink</source>
@@ -78,9 +78,9 @@
                 <source>Enter link title</source>
         <target xml:lang="nl" state="translated">Voer linktitel in</target>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__link__title" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__link__title" xml:space="preserve" approved="no">
                 <source>Title</source>
-        <target xml:lang="nl">Titel</target>
+        <target xml:lang="nl" state="translated">Titel</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__anchorPlaceholder" xml:space="preserve">
                 <source>Enter anchor name</source>
@@ -138,9 +138,9 @@
                 <source>Table</source>
         <target xml:lang="nl" state="translated">Tabel</target>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__tableColumn" xml:space="preserve" approved="yes">
+      <trans-unit id="ckeditor__toolbar__tableColumn" xml:space="preserve" approved="no">
                 <source>Column</source>
-        <target xml:lang="nl">Kolom</target>
+        <target xml:lang="nl" state="translated">Kolom</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__tableRow" xml:space="preserve">
                 <source>Row</source>
@@ -218,9 +218,9 @@
                 <source>Split cell horizontally</source>
         <target xml:lang="nl" state="translated">Cel horizontaal splitsen</target>
       </trans-unit>
-      <trans-unit id="createNew" xml:space="preserve" approved="yes">
+      <trans-unit id="createNew" xml:space="preserve" approved="no">
                 <source>Create new</source>
-        <target xml:lang="nl">Maak nieuw</target>
+        <target xml:lang="nl" state="translated">Maak nieuw</target>
       </trans-unit>
       <trans-unit id="noMatchesFound" xml:space="preserve">
                 <source>No matches found</source>
@@ -242,9 +242,9 @@
                     Deze snelkoppelingen worden niet geactiveerd wanneer de focus ligt op een invoerveld.
                 </target>
       </trans-unit>
-      <trans-unit id="Shortcut__UI.RightSideBar.toggle" xml:space="preserve" approved="yes">
+      <trans-unit id="Shortcut__UI.RightSideBar.toggle" xml:space="preserve" approved="no">
                 <source>Toggle inspector</source>
-        <target xml:lang="nl">Inspector verbergen / tonen</target>
+        <target xml:lang="nl" state="translated">Inspector verbergen / tonen</target>
         <alt-trans>
                     <target xml:lang="nl">Schakel inspector om</target>
                 </alt-trans>
@@ -355,10 +355,6 @@
                     <target xml:lang="nl" state="translated">{0} wijzigingen verworpen.</target>
                 </trans-unit>
       </group>
-      <trans-unit id="UI.RightSideBar.tabs.validationErrorTooltip[1]" xml:space="preserve">
-                    <source>{tabName} – {amountOfErrors} validation issues</source>
-        <target state="translated">{tabName} - {amountOfErrors} validatieproblemen</target>
-      </trans-unit>
       <trans-unit id="syncUriPathSegment" xml:space="preserve">
                 <source>Syncronize with the title property</source>
         <target state="translated">Synchroniseer met de paginatitel</target>
@@ -366,26 +362,6 @@
       <trans-unit id="nodes" xml:space="preserve">
                 <source>nodes</source>
         <target state="translated">nodes</target>
-      </trans-unit>
-      <trans-unit id="contentElementsSelected" xml:space="preserve">
-                <source>content elements selected</source>
-        <target state="translated">content elementen geselecteerd</target>
-      </trans-unit>
-      <trans-unit id="documentsSelected" xml:space="preserve">
-                <source>documents selected</source>
-        <target state="translated">documenten geselecteerd</target>
-      </trans-unit>
-      <trans-unit id="inspectorMutlipleContentNodesSelectedTooltip" xml:space="preserve">
-                <source>Select a single document in order to be able to edit its properties</source>
-        <target state="translated">Selecteer uitsluitend één document om de eigenschappen te wijzigen</target>
-      </trans-unit>
-      <trans-unit id="inspectorMutlipleDocumentNodesSelectedTooltip" xml:space="preserve">
-                <source>Select a single content element in order to be able to edit its properties</source>
-        <target state="translated">Selecteer uitsluitend één content element om de eigenschappen aan te passen</target>
-      </trans-unit>
-      <trans-unit id="deleteXNodes" xml:space="preserve">
-                <source>Delete {amount} nodes</source>
-        <target state="translated">Verwijder {amount} nodes</target>
       </trans-unit>
       <trans-unit id="rangeEditorMinimum" xml:space="preserve">
                 <source>Minimum</source>
@@ -395,13 +371,73 @@
                 <source>Maximum</source>
         <target state="translated">Maximum</target>
       </trans-unit>
-      <trans-unit id="rangeEditorCurrentValue" xml:space="preserve">
-                <source>Current value</source>
-        <target state="translated">Huidge waarde</target>
+      <trans-unit id="inspectorMutlipleContentNodesSelectedTooltip" xml:space="preserve">
+                <source>Select a single document in order to be able to edit its properties</source>
+        <target state="translated">Selecteer uitsluitend één document om de eigenschappen te wijzigen</target>
+      </trans-unit>
+      <trans-unit id="UI.RightSideBar.tabs.validationErrorTooltip[1]" xml:space="preserve">
+                    <source>{tabName} – {amountOfErrors} validation issues</source>
+        <target state="translated">{tabName} - {amountOfErrors} validatieproblemen</target>
+      </trans-unit>
+      <trans-unit id="deleteXNodes" xml:space="preserve">
+                <source>Delete {amount} nodes</source>
+        <target state="translated">Verwijder {amount} nodes</target>
+      </trans-unit>
+      <trans-unit id="contentElementsSelected" xml:space="preserve">
+                <source>content elements selected</source>
+        <target state="translated">content elementen geselecteerd</target>
+      </trans-unit>
+      <trans-unit id="inspectorMutlipleDocumentNodesSelectedTooltip" xml:space="preserve">
+                <source>Select a single content element in order to be able to edit its properties</source>
+        <target state="translated">Selecteer uitsluitend één content element om de eigenschappen aan te passen</target>
       </trans-unit>
       <trans-unit id="UI.RightSideBar.tabs.validationErrorTooltip[0]" xml:space="preserve">
                     <source>{tabName} – {amountOfErrors} validation issue</source>
         <target state="translated">{tabName} - {amountOfErrors} validatieprobleem</target>
+      </trans-unit>
+      <trans-unit id="documentsSelected" xml:space="preserve">
+                <source>documents selected</source>
+        <target state="translated">documenten geselecteerd</target>
+      </trans-unit>
+      <trans-unit id="rangeEditorCurrentValue" xml:space="preserve">
+                <source>Current value</source>
+        <target state="translated">Huidge waarde</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__p" xml:space="preserve">
+                <source>Paragraph</source>
+        <target state="translated">Paragraaf</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__h1" xml:space="preserve">
+                <source>Headline 1</source>
+        <target state="translated">H1 kop</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__h2" xml:space="preserve">
+                <source>Headline 2</source>
+        <target state="translated">H2 kop</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__h3" xml:space="preserve">
+                <source>Headline 3</source>
+        <target state="translated">H3 kop</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__h4" xml:space="preserve">
+                <source>Headline 4</source>
+        <target state="translated">H4 kop</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__h5" xml:space="preserve">
+                <source>Headline 5</source>
+        <target state="translated">H5 kop</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__h6" xml:space="preserve">
+                <source>Headline 6</source>
+        <target state="translated">H6 kop</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__pre" xml:space="preserve">
+                <source>Preformatted</source>
+        <target state="translated">Voorgeformateerd</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__link__download" xml:space="preserve">
+                <source>Downloadable</source>
+        <target state="translated">Downloadbaar</target>
       </trans-unit>
     </body>
   </file>

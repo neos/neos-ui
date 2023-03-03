@@ -21,7 +21,7 @@ export default class ColumnView extends PureComponent {
         if (options.hero) {
             return {
                 label: options.hero.label,
-                value: $get(options.hero.data, data)
+                value: String($get(options.hero.data, data))
             };
         }
         return null;
@@ -34,7 +34,7 @@ export default class ColumnView extends PureComponent {
             options.columns.forEach(column => {
                 columns.push({
                     label: column.label,
-                    value: $get(column.data, data)
+                    value: String($get(column.data, data))
                 });
             });
         }

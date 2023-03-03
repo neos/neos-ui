@@ -2,14 +2,14 @@ import produce from 'immer';
 import {action as createAction, ActionType} from 'typesafe-actions';
 import {$get} from 'plow-js';
 
-import {actionTypes as system, InitAction} from '@neos-project/neos-ui-redux-store/src/System';
+import {actionTypes as system, InitAction} from '../../System';
 
 export interface State extends Readonly<{
     isHidden: boolean;
     contentTree: {
         isHidden: boolean;
     },
-    searchBar:  {
+    searchBar: {
         isVisible: boolean;
     };
 }> {}
@@ -23,8 +23,6 @@ export const defaultState: State = {
         isVisible: false
     }
 };
-
-
 
 //
 // Export the action types

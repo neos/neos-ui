@@ -8,7 +8,7 @@ import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
 import style from './style.css';
 import backend from '@neos-project/neos-ui-backend-connector';
 import {$get, $transform} from 'plow-js';
-import {mapValues} from 'lodash';
+import mapValues from 'lodash.mapvalues';
 import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 import I18n from '@neos-project/neos-ui-i18n';
 import sortBy from 'lodash.sortby';
@@ -97,6 +97,7 @@ class DimensionSelector extends PureComponent {
                     searchBoxLeftToTypeLabel={i18nRegistry.translate('Neos.Neos:Main:searchBoxLeftToType')}
                     threshold={0}
                     ListPreviewElement={DimensionSelectorOption}
+                    className={style.dimensionSwitcherDropDown}
                 />
             </li>
         );

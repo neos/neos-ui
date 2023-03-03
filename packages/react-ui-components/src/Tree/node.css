@@ -1,11 +1,11 @@
 .header {
-    composes: reset from './../reset.css';
+    composes: reset from '../reset.module.css';
     margin: 0;
     position: relative;
     line-height: 20px;
 }
 .header__chevron {
-    composes: reset from './../reset.css';
+    composes: reset from '../reset.module.css';
     position: absolute;
     top: 0;
     left: 0;
@@ -46,7 +46,7 @@
 }
 
 .header__data {
-    composes: reset from './../reset.css';
+    composes: reset from '../reset.module.css';
     position: relative;
     display: inline-block;
     min-width: 100%;
@@ -97,7 +97,7 @@
     vertical-align: middle;
 }
 .header__label {
-    composes: reset from './../reset.css';
+    composes: reset from '../reset.module.css';
     margin-left: 2em;
 
     .header__data--isActive & {
@@ -106,7 +106,7 @@
 }
 
 .contents {
-    composes: reset from './../reset.css';
+    composes: reset from '../reset.module.css';
 }
 
 .dropTarget {

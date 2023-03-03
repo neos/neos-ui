@@ -243,6 +243,7 @@ export default class AssetEditor extends PureComponent {
                 placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}
                 options={this.props.value ? this.state.options : this.state.searchOptions}
                 value={this.getValue()}
+                onHeaderClick={() => { /* prevent toggling of select box dropdown */ }}
                 onValueChange={this.handleValueChange}
                 displayLoadingIndicator={this.state.isLoading}
                 showDropDownToggle={false}

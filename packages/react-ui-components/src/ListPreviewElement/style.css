@@ -1,5 +1,5 @@
 .listPreviewElement {
-    composes: reset from './../reset.css';
+    composes: reset from '../reset.module.css';
     cursor: pointer;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -16,7 +16,7 @@
     cursor: not-allowed;
 }
 .listPreviewElement--isHighlighted {
-    background: var(--colors-PrimaryBlue);
+    background-color: var(--colors-PrimaryBlue) !important;
 }
 
 .listPreviewElement--isHighlighted > span {
@@ -24,7 +24,7 @@
 }
 
 .listPreviewElement__icon {
-    composes: reset from './../reset.css';
+    composes: reset from '../reset.module.css';
     margin-right: .5em;
 }
 

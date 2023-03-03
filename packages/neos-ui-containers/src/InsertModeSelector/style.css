@@ -20,15 +20,17 @@
         border-top-right-radius: 2px;
         border-bottom-right-radius: 2px;
     }
-    .intoButton{
+    .intoButton {
         margin-left: 8px;
     }
-    button{
+    > button {
         padding: 0px 14px;
+
+        > span {
+            margin-left: 7px;
+        }
     }
-    span {
-        margin-left: 7px;
-    }
+
 }
 
 

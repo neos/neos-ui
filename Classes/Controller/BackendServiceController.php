@@ -616,8 +616,16 @@ class BackendServiceController extends ActionController
      *
      * @throws \Neos\Neos\Exception
      */
-    public function generateUriPathSegmentAction(NodeInterface $contextNode, string $text): void
+    public function generateUriPathSegmentAction(string $contextNode, string $text): void
     {
+        $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
+        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
+        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
+
+        $contextNodeAddress = $nodeAddressFactory->createFromUriString($contextNode);
+        $subgraph = $contentRepository->getContentGraph()->getSubgraph($contextNodeAddress->contentStreamId, $contextNodeAddress->dimensionSpacePoint, VisibilityConstraints::withoutRestrictions());
+        $contextNode = $subgraph->findNodeById($contextNodeAddress->nodeAggregateId);
+
         $slug = $this->nodeUriPathSegmentGenerator->generateUriPathSegment($contextNode, $text);
         $this->view->assign('value', $slug);
     }

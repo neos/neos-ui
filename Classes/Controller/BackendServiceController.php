@@ -50,6 +50,7 @@ use Neos\Neos\Ui\Service\NodeClipboard;
 use Neos\Neos\Ui\Service\NodePolicyService;
 use Neos\Neos\Ui\Service\PublishingService;
 use Neos\Neos\Ui\TypeConverter\ChangeCollectionConverter;
+use Neos\Neos\Utility\NodeUriPathSegmentGenerator;
 
 class BackendServiceController extends ActionController
 {

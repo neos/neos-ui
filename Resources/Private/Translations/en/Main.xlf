@@ -23,13 +23,13 @@
             <trans-unit id="inside" xml:space="preserve">
                 <source>Inside</source>
             </trans-unit>
-            <trans-unit id="InsertModeTitleinto" xml:space="preserve">
+            <trans-unit id="InsertModeTitleInto" xml:space="preserve">
                 <source>inside</source>
             </trans-unit>
-             <trans-unit id="InsertModeTitlebefore" xml:space="preserve">
+             <trans-unit id="InsertModeTitleBefore" xml:space="preserve">
                 <source>above</source>
             </trans-unit>
-            <trans-unit id="InsertModeTitleafter" xml:space="preserve">
+            <trans-unit id="InsertModeTitleAfter" xml:space="preserve">
                 <source>below</source>
             </trans-unit>
             <trans-unit id="insertMode" xml:space="preserve">

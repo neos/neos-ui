@@ -12,9 +12,6 @@
 .buttonGroup {
     margin-left: 4px;
 
-    span {
-        margin-left: 7px;
-    }
     > button:first-child {
         border-top-left-radius: 2px;
         border-bottom-left-radius: 2px;
@@ -27,7 +24,10 @@
         margin-left: 8px;
     }
     button{
-        padding: 0px 14px
+        padding: 0px 14px;
+    }
+    span {
+        margin-left: 7px;
     }
 }
 

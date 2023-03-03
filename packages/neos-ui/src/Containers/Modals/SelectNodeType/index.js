@@ -194,11 +194,23 @@ export default class SelectNodeType extends PureComponent {
     renderSelectNodeTypeDialogHeader() {
         const {insertMode} = this.state;
         const {i18nRegistry, nodeTypesRegistry, referenceNodeType} = this.props;
+
         const nodeTypeLabel = $get('ui.label', nodeTypesRegistry.get(referenceNodeType))
         const nodeTypeLabelText = i18nRegistry.translate(nodeTypeLabel, 'Node')
         const addLabel = i18nRegistry.translate('Neos.Neos.Ui:Main:add', 'Add')
+        const insertModeLabel = (function () {
+            switch (insertMode) {
+                case 'into':
+                    return i18nRegistry.translate('Neos.Neos.Ui:Main:InsertModeTitleInto', 'inside');
+                case 'before':
+                    return i18nRegistry.translate('Neos.Neos.Ui:Main:InsertModeTitleBefore', 'above');
+                case 'after':
+                    return i18nRegistry.translate('Neos.Neos.Ui:Main:InsertModeTitleAfter', 'below');
+                default:
+                    return 'to';
+            }
+        })();
 
-        const insertModeLabel = i18nRegistry.translate('Neos.Neos.Ui:Main:InsertModeTitle' + insertMode, 'to')
         return (
             <div>
                 <span className={style.modalTitle}>

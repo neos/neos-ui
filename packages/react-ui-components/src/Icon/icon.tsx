@@ -78,9 +78,8 @@ class Icon extends PureComponent<IconProps> {
 
         if (icon && icon.substr(0, 11) === 'resource://') {
             return <ResourceIcon {...this.props as ResourceIconProps} />;
-        } else {
-            return <FontAwesomeIcon {...this.props} />;
         }
+        return <FontAwesomeIcon {...this.props} />;
     }
 }
 

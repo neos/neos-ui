@@ -114,8 +114,8 @@ class TextInput extends PureComponent<TextInputProps> {
                     onChange={this.handleValueChange}
                     onKeyPress={this.handleKeyPress}
                     ref={this.ref}
-                    />
-                </div>
+                />
+            </div>
         );
     }
 }

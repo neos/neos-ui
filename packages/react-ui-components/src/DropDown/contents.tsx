@@ -21,9 +21,8 @@ function getScrollContainer(el: HTMLElement): HTMLElement {
 
     if (el.parentElement) {
         return getScrollContainer(el.parentElement);
-    } else {
-        return document.body;
     }
+    return document.body;
 }
 
 /**
@@ -110,8 +109,8 @@ export interface ShallowDropDownContentsState {
 
 export default class ShallowDropDownContents extends PureComponent<ShallowDropDownContentsProps, ShallowDropDownContentsState> {
     public static defaultProps = {
-        getMinHeight: (window: Window) => .25 * window.innerHeight, // 25vh
-        getMaxHeight: (window: Window) => .8 * window.innerHeight, // 80vh
+        getMinHeight: (window: Window) => 0.25 * window.innerHeight, // 25vh
+        getMaxHeight: (window: Window) => 0.8 * window.innerHeight, // 80vh
     };
 
     /**
@@ -144,7 +143,8 @@ export default class ShallowDropDownContents extends PureComponent<ShallowDropDo
                             width: wrapperBoundingBox.width,
                             maxHeight
                         };
-                    } else if (wrapperBoundingBox.y + wrapperBoundingBox.height + minHeight <= window.innerHeight) {
+                    }
+                    if (wrapperBoundingBox.y + wrapperBoundingBox.height + minHeight <= window.innerHeight) {
                         // Our dropdown contents component still fits below the
                         // dropdown header, but we need to shrink it a little
                         return {
@@ -153,26 +153,24 @@ export default class ShallowDropDownContents extends PureComponent<ShallowDropDo
                             width: wrapperBoundingBox.width,
                             maxHeight: window.innerHeight - wrapperBoundingBox.height - wrapperBoundingBox.y
                         };
-                    } else {
-                        // Our dropdown contents component does not fit below the
-                        // dropdown header, so we open it up above. We also keep the height
-                        // at minimum, so that the upper left corner of our contents keeps
-                        // its proximity to the dropdown header.
-                        return {
-                            bottom: window.innerHeight - wrapperBoundingBox.y,
-                            left: wrapperBoundingBox.x,
-                            width: wrapperBoundingBox.width,
-                            maxHeight: minHeight
-                        };
                     }
+                    // Our dropdown contents component does not fit below the
+                    // dropdown header, so we open it up above. We also keep the height
+                    // at minimum, so that the upper left corner of our contents keeps
+                    // its proximity to the dropdown header.
+                    return {
+                        bottom: window.innerHeight - wrapperBoundingBox.y,
+                        left: wrapperBoundingBox.x,
+                        width: wrapperBoundingBox.width,
+                        maxHeight: minHeight
+                    };
                 }
-            } else {
-                // The dropdown wrapper is outside of the users view, so we hide our
-                // dropdown contents component until it comes back.
-                return {
-                    display: 'none'
-                };
             }
+            // The dropdown wrapper is outside of the users view, so we hide our
+            // dropdown contents component until it comes back.
+            return {
+                display: 'none'
+            };
         }
 
         return {};
@@ -234,8 +232,7 @@ export default class ShallowDropDownContents extends PureComponent<ShallowDropDo
             return scrollable
                 ? ReactDOM.createPortal(contents, document.body)
                 : contents;
-        } else {
-            return null;
         }
+        return null;
     }
 }

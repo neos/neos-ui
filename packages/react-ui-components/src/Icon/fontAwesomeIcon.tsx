@@ -36,10 +36,9 @@ class FontAwesomeIcon extends PureComponent<IconProps> {
             const prefix = iconArray[0];
             const processedIcon = iconArray[1].startsWith('fa-') ? iconArray[1].substr(3) : iconArray[1];
             return [prefix as IconPrefix, processedIcon as IconName];
-        } else {
-            const prefix: IconPrefix = 'fas';
-            return [prefix, mappedIcon as IconName];
         }
+        const prefix: IconPrefix = 'fas';
+        return [prefix, mappedIcon as IconName];
     }
 }
 

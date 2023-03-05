@@ -163,6 +163,7 @@ const EnhancedDialogWithoutEscapeWithClickOutside = enhanceWithClickOutside(Dial
 // tslint:disable-next-line:max-classes-per-file
 class DialogWithEscape extends PureComponent<DialogProps> {
     public render(): JSX.Element | null {
+        /* eslint-disable @typescript-eslint/no-unused-vars */
         const {
             className,
             title,
@@ -175,6 +176,7 @@ class DialogWithEscape extends PureComponent<DialogProps> {
             onRequestClose,
             ...rest
         } = this.props;
+        /* eslint-enable @typescript-eslint/no-unused-vars */
 
         const sectionClassName = mergeClassNames(
             theme.dialog,

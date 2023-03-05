@@ -20,11 +20,19 @@ module.exports = {
         'no-unused-vars': 'off',
         '@typescript-eslint/no-unused-vars': ['error'],
 
-        // The following rules should be fixed and enabled again
+        // remove bs
+        'operator-linebreak': 'off',
+        'object-curly-spacing': 'off', // juckt halt kein,
+        'arrow-parens': 'off',
+        'camelcase': 'off',
+
+        // The following rules should be fixed and enabled again #nobody-likes-you-linter!
         'no-use-before-define': 'off',
         'default-case': 'off',
         'no-mixed-operators': 'off',
         'no-negated-condition': 'off',
-        'complexity': 'off'
+        'complexity': 'off',
+        'comma-dangle': 'off',
+        'lines-between-class-members': 'off',
     },
 }

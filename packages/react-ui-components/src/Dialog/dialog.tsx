@@ -81,7 +81,6 @@ export interface DialogProps {
 }
 
 export class DialogWithoutEscape extends PureComponent<DialogProps> {
-    // tslint:disable-next-line:readonly-keyword
     private ref?: HTMLDivElement;
 
     public render(): JSX.Element {
@@ -125,7 +124,6 @@ export class DialogWithoutEscape extends PureComponent<DialogProps> {
     }
 
     private readonly handleReference = (ref: HTMLDivElement) => {
-        // tslint:disable-next-line:no-object-mutation
         this.ref = ref;
     }
 
@@ -160,7 +158,6 @@ export class DialogWithoutEscape extends PureComponent<DialogProps> {
 
 const EnhancedDialogWithoutEscapeWithClickOutside = enhanceWithClickOutside(DialogWithoutEscape);
 
-// tslint:disable-next-line:max-classes-per-file
 class DialogWithEscape extends PureComponent<DialogProps> {
     public render(): JSX.Element | null {
         /* eslint-disable @typescript-eslint/no-unused-vars */

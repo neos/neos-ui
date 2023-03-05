@@ -12,10 +12,8 @@ describe('<IconButtonDropDown/>', () => {
         ...defaultProps,
         children: [
             // @ts-ignore
-            // tslint:disable-next-line:jsx-key
             <div dropDownId="foo1"/>,
             // @ts-ignore
-            // tslint:disable-next-line:jsx-key
             <div dropDownId="foo2"/>
         ],
         icon: 'barGeneralIcon',

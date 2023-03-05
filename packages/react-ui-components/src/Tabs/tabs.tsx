@@ -86,7 +86,6 @@ export default class Tabs extends PureComponent<TabsProps> {
                 key={index}
                 index={index}
                 id={panel.props.id || index}
-                // tslint:disable-next-line:jsx-no-string-ref
                 ref={`tab-${index}`}
                 onClick={this.handleTabNavItemClick}
                 isActive={activeTab === (isNaN(activeTab as number) ? panel.props.id : index)}
@@ -200,7 +199,6 @@ export const tabMenuItemDefaultProps: PickDefaultProps<TabMenuItemProps, 'isActi
     isActive: false
 };
 
-// tslint:disable-next-line:max-classes-per-file
 export class TabMenuItem extends PureComponent<TabMenuItemProps> {
     public static readonly defaultProps = tabMenuItemDefaultProps;
 

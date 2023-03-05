@@ -21,7 +21,6 @@ const initialState: FrameState = {
     location: '',
 };
 export default class Frame extends PureComponent<FrameProps> {
-    // tslint:disable-next-line:readonly-keyword
     private ref?: HTMLIFrameElement;
     public readonly state = initialState;
 
@@ -44,7 +43,6 @@ export default class Frame extends PureComponent<FrameProps> {
     }
 
     private readonly handleReference = (ref: HTMLIFrameElement) => {
-        // tslint:disable-next-line:no-object-mutation
         this.ref = ref;
     }
 
@@ -102,7 +100,6 @@ export default class Frame extends PureComponent<FrameProps> {
                 win.location.replace(this.props.src);
             }
         } catch (err) {
-            // tslint:disable-next-line:no-console
             console.error('Could not update iFrame Url from within. Trying to set src attribute manually...');
             this.ref.setAttribute('src', this.props.src);
         }

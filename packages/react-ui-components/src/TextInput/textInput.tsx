@@ -50,7 +50,6 @@ export interface TextInputProps extends Omit<React.InputHTMLAttributes<HTMLInput
 }
 
 class TextInput extends PureComponent<TextInputProps> {
-    // tslint:disable-next-line:readonly-keyword
     private ref?: React.RefObject<HTMLInputElement>;
 
     constructor(props: any) {

@@ -578,7 +578,7 @@ export default (routes: Routes) => {
             }
         };
     }).then(response => fetchWithErrorHandling.parseJson(response))
-    .catch(reason => console.warn('Something went wrong with requesting additional node metadata:', reason)); // tslint:disable-line no-console
+    .catch(reason => console.warn('Something went wrong with requesting additional node metadata:', reason));
 
     const dataSource = (dataSourceIdentifier: string, dataSourceUri: string, params = {}) => fetchWithErrorHandling.withCsrfToken(() => ({
         url: urlWithParams(dataSourceUri || `${routes.core.service.dataSource}/${dataSourceIdentifier}`, params),

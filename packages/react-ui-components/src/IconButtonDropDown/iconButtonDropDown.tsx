@@ -95,12 +95,10 @@ const initialState: IconButtonDropDownState = {
 };
 
 export default class IconButtonDropDown extends PureComponent<IconButtonDropDownProps, IconButtonDropDownState> {
-    // tslint:disable:readonly-keyword
     private _timeouts: {
         hold?: number,
         hover?: number
     };
-    // tslint:enable:readonly-keyword
 
     constructor(props: IconButtonDropDownProps) {
         super(props);
@@ -172,7 +170,6 @@ export default class IconButtonDropDown extends PureComponent<IconButtonDropDown
 
     private readonly createHoldTimeout = () => {
         this.cancelHoldTimeout();
-        // tslint:disable-next-line:no-object-mutation
         this._timeouts.hold = window.setTimeout(() => this.openDropDown(), 200);
     }
 
@@ -182,7 +179,6 @@ export default class IconButtonDropDown extends PureComponent<IconButtonDropDown
 
     private readonly createHoverTimeout = () => {
         this.cancelHoverTimeout();
-        // tslint:disable-next-line:no-object-mutation
         this._timeouts.hover = window.setTimeout(() => this.openDropDown(), 700);
     }
 

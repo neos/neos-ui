@@ -50,7 +50,7 @@ export default class SynchronousRegistry<T> extends AbstractRegistry {
      */
     public get(key: string): T | null {
         if (typeof key !== 'string') {
-            console.error('Key must be a string'); // tslint:disable-line no-console
+            console.error('Key must be a string');
             return null;
         }
         const result = this._registry.find(item => item.key === key);
@@ -94,7 +94,7 @@ export default class SynchronousRegistry<T> extends AbstractRegistry {
      */
     public has(key: string): boolean {
         if (typeof key !== 'string') {
-            console.error('Key must be a string'); // tslint:disable-line:no-console
+            console.error('Key must be a string');
             return false;
         }
         return Boolean(this._registry.find(item => item.key === key));

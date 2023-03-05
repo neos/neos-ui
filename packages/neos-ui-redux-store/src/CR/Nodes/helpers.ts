@@ -29,7 +29,7 @@ export const getAllowedNodeTypesTakingAutoCreatedIntoAccount = (baseNode: Node, 
 //
 export const parentNodeContextPath = (contextPath: NodeContextPath) => {
     if (typeof contextPath !== 'string') {
-        console.error('`contextPath` must be a string!'); // tslint:disable-line
+        console.error('`contextPath` must be a string!');
         return null;
     }
     const [path, context] = contextPath.split('@');

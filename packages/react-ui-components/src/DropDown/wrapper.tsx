@@ -3,7 +3,7 @@ import omit from 'lodash.omit';
 import mergeClassNames from 'classnames';
 import enhanceWithClickOutside from '../enhanceWithClickOutside/index';
 
-import { PickDefaultProps } from '../utils-typescript';
+import {PickDefaultProps} from '../utils-typescript';
 import ShallowDropDownHeader from './header';
 import ShallowDropDownContents from './contents';
 import PropTypes from 'prop-types';
@@ -177,7 +177,7 @@ export class DropDownWrapper extends PureComponent<DropDownWrapperProps, DropDow
         }
 
         this.updateIsOpenHandle = setTimeout(() => {
-            this.setState((state) => ({ isOpen: handlerFn(state.isOpen) }));
+            this.setState((state) => ({isOpen: handlerFn(state.isOpen)}));
         }, 0);
     }
 

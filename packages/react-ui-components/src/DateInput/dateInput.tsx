@@ -108,7 +108,7 @@ const defaultProps: PickDefaultProps<DateInputProps, 'labelFormat' | 'timeConstr
             max: 59,
             step: 5
         }
-    },
+    }
 };
 
 interface DateInputState {
@@ -123,6 +123,7 @@ const initialState: DateInputState = {
 
 export class DateInput extends PureComponent<DateInputProps, DateInputState> {
     public static readonly defaultProps = defaultProps;
+
     public readonly state = initialState;
 
     public render(): JSX.Element {
@@ -145,7 +146,7 @@ export class DateInput extends PureComponent<DateInputProps, DateInputState> {
         const wrapper = mergeClassNames(
             theme!.wrapper,
             {
-                [theme!.disabled]: disabled,
+                [theme!.disabled]: disabled
             },
         );
 
@@ -154,21 +155,21 @@ export class DateInput extends PureComponent<DateInputProps, DateInputState> {
         const calendarFakeInputMirror = mergeClassNames(
             theme!.calendarFakeInputMirror,
             {
-                [theme!['disabled-cursor']]: disabled,
+                [theme!['disabled-cursor']]: disabled
             },
         );
 
         const calendarIconBtn = mergeClassNames(
             theme!.calendarIconBtn,
             {
-                [theme!['disabled-cursor']]: disabled,
+                [theme!['disabled-cursor']]: disabled
             },
         );
 
         const closeCalendarIconBtn = mergeClassNames(
             theme!.closeCalendarIconBtn,
             {
-                [theme!['disabled-cursor']]: disabled,
+                [theme!['disabled-cursor']]: disabled
             },
         );
 

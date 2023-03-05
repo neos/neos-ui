@@ -11,7 +11,7 @@ describe('<DropDownWrapper/>', () => {
         theme: {
             'dropDown': 'dropDownClassName',
             'dropDown__btn': 'btnClassName',
-            'dropDown--padded': 'paddedClassName',
+            'dropDown--padded': 'paddedClassName'
         }
     };
 

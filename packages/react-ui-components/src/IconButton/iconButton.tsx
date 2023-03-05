@@ -53,7 +53,7 @@ type DefaultProps = PickDefaultProps<IconButtonProps, 'hoverStyle' | 'size' | 's
 export const defaultProps: DefaultProps = {
     hoverStyle: 'brand',
     size: 'regular',
-    style: 'transparent',
+    style: 'transparent'
 };
 
 class IconButton extends PureComponent<IconButtonProps> {

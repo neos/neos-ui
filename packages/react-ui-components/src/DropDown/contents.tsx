@@ -12,7 +12,7 @@ import mergeClassNames from 'classnames';
  */
 function getScrollContainer(el: HTMLElement): HTMLElement {
     if (el.scrollHeight > el.clientHeight) {
-        const { overflowY } = getComputedStyle(el);
+        const {overflowY} = getComputedStyle(el);
 
         if (overflowY === 'auto' || overflowY === 'scroll') {
             return el;
@@ -110,7 +110,7 @@ export interface ShallowDropDownContentsState {
 export default class ShallowDropDownContents extends PureComponent<ShallowDropDownContentsProps, ShallowDropDownContentsState> {
     public static defaultProps = {
         getMinHeight: (window: Window) => 0.25 * window.innerHeight, // 25vh
-        getMaxHeight: (window: Window) => 0.8 * window.innerHeight, // 80vh
+        getMaxHeight: (window: Window) => 0.8 * window.innerHeight // 80vh
     };
 
     /**
@@ -177,23 +177,23 @@ export default class ShallowDropDownContents extends PureComponent<ShallowDropDo
     }
 
     public static getDerivedStateFromProps(props: ShallowDropDownContentsProps): ShallowDropDownContentsState {
-        return { style: ShallowDropDownContents.getCalculatedStyleFromProps(props) };
+        return {style: ShallowDropDownContents.getCalculatedStyleFromProps(props)};
     }
 
     public readonly state = ShallowDropDownContents.getDerivedStateFromProps(this.props);
 
     public readonly recalculateStyle = () => requestAnimationFrame(() => {
-        this.setState({ style: ShallowDropDownContents.getCalculatedStyleFromProps(this.props) });
+        this.setState({style: ShallowDropDownContents.getCalculatedStyleFromProps(this.props)});
     })
 
     public componentDidMount(): void {
-        document.body.addEventListener('scroll', this.recalculateStyle, { capture: true });
-        window.addEventListener('resize', this.recalculateStyle, { capture: true });
+        document.body.addEventListener('scroll', this.recalculateStyle, {capture: true});
+        window.addEventListener('resize', this.recalculateStyle, {capture: true});
     }
 
     public componentWillUnmount(): void {
-        document.body.removeEventListener('scroll', this.recalculateStyle, { capture: true });
-        window.removeEventListener('resize', this.recalculateStyle, { capture: true });
+        document.body.removeEventListener('scroll', this.recalculateStyle, {capture: true});
+        window.removeEventListener('resize', this.recalculateStyle, {capture: true});
     }
 
     public render(): JSX.Element | null {
@@ -203,7 +203,7 @@ export default class ShallowDropDownContents extends PureComponent<ShallowDropDo
             theme,
             isOpen,
             closeDropDown,
-            scrollable,
+            scrollable
         } = this.props;
         const finalClassName = mergeClassNames(
             theme!.dropDown__contents,

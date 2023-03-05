@@ -7,6 +7,7 @@ export default class RelNofollow extends Plugin {
     static get pluginName() {
         return 'LinkRelNofollow';
     }
+
     init() {
         const {editor} = this;
         editor.model.schema.extend('$text', {allowAttributes: REL_NOFOLLOW});

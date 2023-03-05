@@ -80,10 +80,10 @@ type DefaultProps = PickDefaultProps<IconButtonDropDownProps, 'directButtonProps
 export const defaultProps: DefaultProps = {
     directButtonProps: {
         children: undefined,
-        size: 'regular',
+        size: 'regular'
     },
     disabled: false,
-    modeIcon: 'long-arrow-right',
+    modeIcon: 'long-arrow-right'
 };
 
 export interface IconButtonDropDownState {
@@ -91,7 +91,7 @@ export interface IconButtonDropDownState {
 }
 
 const initialState: IconButtonDropDownState = {
-    isOpen: false,
+    isOpen: false
 };
 
 export default class IconButtonDropDown extends PureComponent<IconButtonDropDownProps, IconButtonDropDownState> {
@@ -128,7 +128,7 @@ export default class IconButtonDropDown extends PureComponent<IconButtonDropDown
         const dropDownClassNames = mergeClassNames(
             theme!.wrapper__dropDown,
             {
-                [theme!['wrapper__dropDown--isOpen']]: isOpen,
+                [theme!['wrapper__dropDown--isOpen']]: isOpen
             }
         );
 

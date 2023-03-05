@@ -3,10 +3,10 @@
 
 // jest mocking doesnt work, but we dont need it anyway
 
-const { extname } = require('path');
-const { createHash } = require('crypto');
-const { transformSync } = require('esbuild');
-const { readFileSync } = require('fs');
+const {extname} = require('path');
+const {createHash} = require('crypto');
+const {transformSync} = require('esbuild');
+const {readFileSync} = require('fs');
 
 /** @param {String} path */
 function isTarget(path) {
@@ -33,7 +33,7 @@ const createTransformer = () => {
         // this way react snapshots are working
         keepNames: true,
         // make sure to use the same tsconfig as the project to for example add the 'use strict' flag
-        tsconfigRaw,
+        tsconfigRaw
     };
 
     return {
@@ -52,7 +52,7 @@ const createTransformer = () => {
         process(source, path) {
             if (!isTarget(path)) {
                 return {
-                    code: source,
+                    code: source
                 };
             }
 
@@ -60,7 +60,7 @@ const createTransformer = () => {
 
             const result = transformSync(source, {
                 loader: extension === 'js' ? 'tsx' : extension,
-                ...options,
+                ...options
             });
 
             if (result.warnings.length) {
@@ -73,10 +73,10 @@ const createTransformer = () => {
             return {
                 code: result.code,
                 // @todo source map doesnt really work in jest errors...
-                map: result.map,
+                map: result.map
             };
-        },
+        }
     };
 };
 
-module.exports = { createTransformer };
+module.exports = {createTransformer};

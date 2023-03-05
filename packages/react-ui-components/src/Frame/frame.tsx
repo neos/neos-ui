@@ -18,10 +18,11 @@ interface FrameState {
 
 const initialState: FrameState = {
     transitioning: false,
-    location: '',
+    location: ''
 };
 export default class Frame extends PureComponent<FrameProps> {
     private ref?: HTMLIFrameElement;
+
     public readonly state = initialState;
 
     public render(): JSX.Element {
@@ -95,7 +96,7 @@ export default class Frame extends PureComponent<FrameProps> {
             if (win && win.location.href !== this.props.src) {
                 this.setState({
                     transitioning: true,
-                    location: this.props.src,
+                    location: this.props.src
                 });
                 win.location.replace(this.props.src);
             }

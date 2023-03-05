@@ -35,7 +35,7 @@ interface TabsTheme extends TabMenuItemTheme {
 }
 
 export const tabsDefaultProps: PickDefaultProps<TabsProps, 'activeTab'> = {
-    activeTab: 0,
+    activeTab: 0
 };
 
 interface TabsState {
@@ -44,8 +44,9 @@ interface TabsState {
 
 export default class Tabs extends PureComponent<TabsProps> {
     public static Panel = Panel;
+
     public state: TabsState = {
-        activeTab: 0,
+        activeTab: 0
     };
 
     public static defaultProps = tabsDefaultProps;
@@ -209,18 +210,18 @@ export class TabMenuItem extends PureComponent<TabMenuItemProps> {
             index,
             icon,
             title,
-            tooltip,
+            tooltip
         } = this.props;
         const finalClassName = mergeClassNames(
             theme!.tabNavigation__item,
             {
-                [theme!['tabNavigation__item--isActive']]: isActive,
+                [theme!['tabNavigation__item--isActive']]: isActive
             },
         );
         const finalIconClassName = mergeClassNames(
             theme!.tabNavigation__itemBtnIcon,
             {
-                [theme!['tabNavigation__itemBtnIcon--hasLabel']]: title && title.length,
+                [theme!['tabNavigation__itemBtnIcon--hasLabel']]: title && title.length
             },
         );
 

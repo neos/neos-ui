@@ -12,9 +12,9 @@ describe('<ButtonGroup/>', () => {
         ],
         onSelect: jest.fn(),
         theme: {
-            buttonGroup: 'buttonGroupClassName',
+            buttonGroup: 'buttonGroupClassName'
         },
-        value: 'foo',
+        value: 'foo'
     };
 
     it('should render correctly.', () => {

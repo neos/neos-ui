@@ -28,7 +28,7 @@ describe('<IconButtonDropDown/>', () => {
             'wrapper__dropDown': 'baseDropDownClassName',
             'wrapper__dropDown--isOpen': 'baseDropDownOpenClassName',
             'wrapper__dropDownItem': 'baseIconButtonDropDownClassName'
-        },
+        }
     };
 
     it('should render correctly.', () => {

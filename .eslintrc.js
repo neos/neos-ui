@@ -22,7 +22,6 @@ module.exports = {
 
         // remove bs
         'operator-linebreak': 'off',
-        'object-curly-spacing': 'off', // juckt halt kein,
         'arrow-parens': 'off',
         'camelcase': 'off',
 
@@ -31,8 +30,6 @@ module.exports = {
         'default-case': 'off',
         'no-mixed-operators': 'off',
         'no-negated-condition': 'off',
-        'complexity': 'off',
-        'comma-dangle': 'off',
-        'lines-between-class-members': 'off',
+        'complexity': 'off'
     },
 }

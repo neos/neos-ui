@@ -102,6 +102,7 @@ const debugReasonForRendering = (TargetReactComponent, key, descriptor) => {
                 internalDebug(TargetReactComponent, this.props, nextProps, this.state, nextState, this.context, nextContext);
                 return true;
             }
+
             render() {
                 return <TargetReactComponent {...this.props}/>;
             }

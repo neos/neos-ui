@@ -22,7 +22,7 @@ class FontAwesomeIcon extends PureComponent<IconProps> {
                 [theme!['icon--paddedRight']]: padded === 'right',
                 [theme!['icon--color-warn']]: color === 'warn',
                 [theme!['icon--color-error']]: color === 'error',
-                [theme!['icon--color-primaryBlue']]: color === 'primaryBlue',
+                [theme!['icon--color-primaryBlue']]: color === 'primaryBlue'
             }
         );
 

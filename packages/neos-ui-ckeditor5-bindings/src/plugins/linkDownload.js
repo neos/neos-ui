@@ -7,6 +7,7 @@ export default class LinkDownload extends Plugin {
     static get pluginName() {
         return 'LinkDownload';
     }
+
     init() {
         const {editor} = this;
         editor.model.schema.extend('$text', {allowAttributes: DOWNLOAD});

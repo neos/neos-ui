@@ -27,9 +27,9 @@ describe('<Dialog/>', () => {
             'dialog__closeBtn': 'closeBtnClassName',
             'dialog__contents': 'contentsClassName',
             'dialog__contentsPosition': 'contentsPositionClassName',
-            'dialog__title': 'titleClassName',
+            'dialog__title': 'titleClassName'
         },
-        title: 'Foo title',
+        title: 'Foo title'
     };
 
     it('Portal should render correctly.', () => {

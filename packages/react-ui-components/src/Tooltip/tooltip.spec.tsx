@@ -13,8 +13,8 @@ describe('<ToolTip/>', () => {
             'tooltip--asError': 'asErrorClassName',
             'tooltip--inline': 'inlineClassName',
             'tooltip--arrow': 'arrowClassName',
-            'tooltip--inner': 'innerClassName',
-        },
+            'tooltip--inner': 'innerClassName'
+        }
     };
 
     it('should render correctly.', () => {

@@ -39,7 +39,7 @@ interface TooltipTheme {
 }
 
 export const defaultProps: PickDefaultProps<TooltipProps, 'renderInline'> = {
-    renderInline: false,
+    renderInline: false
 };
 
 export default class Tooltip extends PureComponent<TooltipProps> {
@@ -58,7 +58,7 @@ export default class Tooltip extends PureComponent<TooltipProps> {
             theme!.tooltip,
             {
                 [theme!['tooltip--asError']]: asError,
-                [theme!['tooltip--inline']]: renderInline,
+                [theme!['tooltip--inline']]: renderInline
             },
             className
         );

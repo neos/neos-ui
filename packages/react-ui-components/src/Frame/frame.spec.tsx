@@ -11,7 +11,7 @@ describe('<Frame/>', () => {
         mountTarget: 'foo',
         onLoad: jest.fn(),
         onUnload: jest.fn(),
-        src: 'localhost',
+        src: 'localhost'
     };
 
     it('should render correctly.', () => {

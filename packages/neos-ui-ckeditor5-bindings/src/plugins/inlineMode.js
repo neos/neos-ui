@@ -4,6 +4,7 @@ export default class InlineMode extends Plugin {
     static get pluginName() {
         return 'InlineMode';
     }
+
     init() {
         const {editor} = this;
 

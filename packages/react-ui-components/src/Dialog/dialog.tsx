@@ -97,7 +97,7 @@ export class DialogWithoutEscape extends PureComponent<DialogProps> {
             {
                 [theme['dialog--success']]: type === 'success',
                 [theme['dialog--warn']]: type === 'warn',
-                [theme['dialog--error']]: type === 'error',
+                [theme['dialog--error']]: type === 'error'
             },
             'dialog__body'
         );
@@ -180,12 +180,12 @@ class DialogWithEscape extends PureComponent<DialogProps> {
             {
                 [theme['dialog--wide']]: style === 'wide',
                 [theme['dialog--jumbo']]: style === 'jumbo',
-                [theme['dialog--narrow']]: style === 'narrow',
+                [theme['dialog--narrow']]: style === 'narrow'
             },
             {
                 [theme['dialog--success']]: type === 'success',
                 [theme['dialog--warn']]: type === 'warn',
-                [theme['dialog--error']]: type === 'error',
+                [theme['dialog--error']]: type === 'error'
             },
             className,
         );

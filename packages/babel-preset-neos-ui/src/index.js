@@ -8,10 +8,10 @@ module.exports = function (api) {
                 modules: false,
                 debug: false,
                 useBuiltIns: 'usage',
-                corejs: '3.22',
-            },
+                corejs: '3.22'
+            }
         ],
-        ['@babel/preset-react'],
+        ['@babel/preset-react']
     ];
 
     const plugins = [
@@ -19,17 +19,17 @@ module.exports = function (api) {
         '@babel/plugin-proposal-export-namespace-from',
         '@babel/plugin-syntax-jsx',
         '@babel/plugin-transform-modules-commonjs',
-        ['@babel/plugin-proposal-decorators', { legacy: true }],
+        ['@babel/plugin-proposal-decorators', {legacy: true}],
         '@babel/plugin-syntax-dynamic-import',
         '@babel/plugin-proposal-object-rest-spread',
         '@babel/plugin-transform-regenerator',
-        ['@babel/plugin-proposal-class-properties', { loose: true }],
-        ['@babel/plugin-proposal-private-property-in-object', { loose: true }],
-        ['@babel/plugin-proposal-private-methods', { loose: true }],
+        ['@babel/plugin-proposal-class-properties', {loose: true}],
+        ['@babel/plugin-proposal-private-property-in-object', {loose: true}],
+        ['@babel/plugin-proposal-private-methods', {loose: true}]
     ];
 
     return {
         presets,
-        plugins,
+        plugins
     };
 };

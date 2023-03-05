@@ -34,7 +34,7 @@ export interface HeadlineProps extends React.HTMLAttributes<HTMLHeadingElement> 
 type DefaultProps = PickDefaultProps<HeadlineProps, 'type'>;
 
 export const defaultProps: DefaultProps = {
-    type: 'h1',
+    type: 'h1'
 };
 
 class Headline extends PureComponent<HeadlineProps> {

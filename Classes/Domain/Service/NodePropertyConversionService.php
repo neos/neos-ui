@@ -104,6 +104,10 @@ class NodePropertyConversionService
 
                     return $this->propertyMapper->convert($rawValue, $propertyType, $propertyMappingConfiguration);
                 } else {
+                    if ($rawValue === '') {
+                        // bugfix for https://github.com/neos/neos-development-collection/issues/4062
+                        return null;
+                    }
                     return $rawValue;
                 }
         }

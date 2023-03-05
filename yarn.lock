@@ -1904,16 +1904,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@friendsofreactjs/react-css-themr@npm:^4.1.0":
-  version: 4.1.0
-  resolution: "@friendsofreactjs/react-css-themr@npm:4.1.0"
+"@friendsofreactjs/react-css-themr@npm:~4.2.0":
+  version: 4.2.1
+  resolution: "@friendsofreactjs/react-css-themr@npm:4.2.1"
   dependencies:
     hoist-non-react-statics: ^3.3.0
     invariant: ^2.2.4
     prop-types: ^15.7.2
   peerDependencies:
     react: ^15.0.0-0 || ^16.0.0
-  checksum: 8ec14acae35218ccee7baf4de59e83351cb99b7e2ac43e388e2b7edd1684bcb8aac93aace472cc91503e87f3b988dfd3cc8588536c9792779d076dfde6b19a28
+  checksum: df2a7b913b1d5a2369c347e1c5177f3b6330786e073ad2a75081399d7d66fed431444c6cb081b2425fe816253e8b4883939f7698d186f72a6292c7d056ef1647
   languageName: node
   linkType: hard
 
@@ -2644,7 +2644,7 @@ __metadata:
     "@fortawesome/free-brands-svg-icons": ^5.15.3
     "@fortawesome/free-regular-svg-icons": ^5.15.3
     "@fortawesome/free-solid-svg-icons": ^5.15.3
-    "@friendsofreactjs/react-css-themr": ^4.1.0
+    "@friendsofreactjs/react-css-themr": ~4.2.0
     "@neos-project/debug-reason-for-rendering": "workspace:*"
     "@neos-project/jest-preset-neos-ui": "workspace:*"
     "@neos-project/neos-ts-interfaces": "workspace:*"
@@ -2784,7 +2784,7 @@ __metadata:
     "@fortawesome/free-brands-svg-icons": ^5.15.3
     "@fortawesome/free-regular-svg-icons": ^5.15.3
     "@fortawesome/free-solid-svg-icons": ^5.15.3
-    "@friendsofreactjs/react-css-themr": ^4.1.0
+    "@friendsofreactjs/react-css-themr": ~4.2.0
     notosans-fontface: ^1.3.0
     prop-types: ^15.5.10
     react: ^16.12.0

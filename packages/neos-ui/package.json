@@ -23,7 +23,7 @@
     "@fortawesome/free-brands-svg-icons": "^5.15.3",
     "@fortawesome/free-regular-svg-icons": "^5.15.3",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
-    "@friendsofreactjs/react-css-themr": "^4.1.0",
+    "@friendsofreactjs/react-css-themr": "~4.2.0",
     "@neos-project/neos-ts-interfaces": "workspace:*",
     "@neos-project/neos-ui-backend-connector": "workspace:*",
     "@neos-project/neos-ui-ckeditor5-bindings": "workspace:*",

@@ -48,7 +48,7 @@ export interface IconButtonProps extends HTMLButtonElementAttributesExceptStyle 
     readonly hoverStyle: ButtonHoverStyle;
 }
 
-type DefaultProps = PickDefaultProps<IconButtonProps, 'hoverStyle' | 'size' | 'style'>;
+type DefaultProps = PickDefaultProps<IconButtonProps, 'hoverStyle' | 'size' | 'style'>;
 
 export const defaultProps: DefaultProps = {
     hoverStyle: 'brand',

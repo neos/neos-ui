@@ -10,7 +10,7 @@ import mapper from './mapper';
 class FontAwesomeIcon extends PureComponent<IconProps> {
     public static readonly defaultProps = defaultProps;
 
-    public render(): JSX.Element | null {
+    public render(): JSX.Element | null {
         const {padded, theme, label, icon, className, color, ...rest} = this.props;
         const iconClassName = icon;
         const classNames = mergeClassNames(

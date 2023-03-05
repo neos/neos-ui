@@ -75,7 +75,7 @@ export interface IconButtonDropDownProps {
     readonly directButtonProps: ButtonProps;
 }
 
-type DefaultProps = PickDefaultProps<IconButtonDropDownProps, 'directButtonProps' | 'disabled' | 'modeIcon'>;
+type DefaultProps = PickDefaultProps<IconButtonDropDownProps, 'directButtonProps' | 'disabled' | 'modeIcon'>;
 
 export const defaultProps: DefaultProps = {
     directButtonProps: {

@@ -141,7 +141,6 @@ class StatelessDropDownWrapperWithoutClickOutsideBehavior extends PureComponent<
 //
 export const StatelessDropDownWrapper = enhanceWithClickOutside(StatelessDropDownWrapperWithoutClickOutsideBehavior);
 
-
 export class DropDownWrapper extends PureComponent<DropDownWrapperProps, DropDownWrapperState> {
     public static readonly defaultProps = defaultProps;
 

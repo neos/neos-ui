@@ -1,7 +1,7 @@
 import mergeClassNames from 'classnames';
 import React, {PureComponent} from 'react';
 
-type SideBarPosition = 'left' | 'right';
+type SideBarPosition = 'left' | 'right';
 
 interface SideBarTheme {
     readonly 'sideBar': string;

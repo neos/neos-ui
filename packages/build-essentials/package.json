@@ -17,9 +17,6 @@
     "watch": "../../node_modules/.bin/watch",
     "webpack": "../../node_modules/.bin/webpack"
   },
-  "scripts": {
-    "lint": "eslint src/**/*.{js,jsx,ts,tsx}"
-  },
   "devDependencies": {
     "@neos-project/babel-preset-neos-ui": "workspace:*",
     "typescript": "^4.6.4"

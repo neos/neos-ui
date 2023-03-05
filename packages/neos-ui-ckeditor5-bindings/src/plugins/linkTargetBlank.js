@@ -8,7 +8,7 @@ export default class TargetBlank extends Plugin {
         return 'LinkTargetBlank';
     }
     init() {
-        const editor = this.editor;
+        const {editor} = this;
         editor.model.schema.extend('$text', {allowAttributes: TARGET_BLANK});
         editor.conversion.attributeToElement({
             model: TARGET_BLANK,

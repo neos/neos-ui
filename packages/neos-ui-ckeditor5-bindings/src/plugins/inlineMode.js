@@ -5,7 +5,7 @@ export default class InlineMode extends Plugin {
         return 'InlineMode';
     }
     init() {
-        const editor = this.editor;
+        const {editor} = this;
 
         // We map paragraph model into plain <span> element
         editor.conversion.elementToElement({model: 'paragraph', view: 'span', converterPriority: 'high'});

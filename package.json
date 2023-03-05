@@ -13,7 +13,7 @@
     "react-codemirror2@7.2.1": "patch:react-codemirror2@npm:7.2.1#./patches/react-codemirror2-npm-7.2.1-browserified.patch"
   },
   "scripts": {
-    "lint": "tsc --noemit"
+    "lint": "tsc --noemit && yarn eslint packages/*/src/**/*.{js,jsx,ts,tsx} && stylelint packages/*/src/**/*.css"
   },
   "engines": {
     "node": "~16"

@@ -105,7 +105,7 @@ export const defaultProps: DefaultProps = {
     isFocused: false,
     size: 'regular',
     style: 'lighter',
-    type: 'button',
+    type: 'button'
 };
 
 class Button extends React.PureComponent<ButtonProps> {
@@ -143,7 +143,7 @@ class Button extends React.PureComponent<ButtonProps> {
             theme![`btn--${effectiveHoverStyle!}Hover`],
             {
                 [theme!['btn--brandActive']]: isActive,
-                [theme!['btn--isPressed']]: isPressed,
+                [theme!['btn--isPressed']]: isPressed
             },
             className,
         );

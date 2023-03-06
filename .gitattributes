@@ -20,7 +20,4 @@
 /Makefile export-ignore
 /docker-compose.yaml export-ignore
 /package.json export-ignore
-/polyfills.js export-ignore
-/tslint.json export-ignore
-/webpack.config.js export-ignore
 /yarn.lock export-ignore

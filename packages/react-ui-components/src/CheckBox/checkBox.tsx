@@ -55,13 +55,13 @@ class CheckBox extends PureComponent<CheckBoxProps> {
             theme.checkbox,
             {
                 [theme.checkbox__checked]: isChecked,
-                [theme.checkbox__disabled]: disabled,
+                [theme.checkbox__disabled]: disabled
             }
         );
         const mirrorClassNames = mergeClassNames(
             theme.checkbox__inputMirror,
             {
-                [theme['checkbox__inputMirror--active']]: isChecked,
+                [theme['checkbox__inputMirror--active']]: isChecked
             }
         );
 

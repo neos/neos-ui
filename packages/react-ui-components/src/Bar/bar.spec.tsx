@@ -11,7 +11,7 @@ describe('<Bar/>', () => {
         theme: {
             'bar': 'barClassName',
             'bar--bottom': 'bottomClassName',
-            'bar--top': 'topClassName',
+            'bar--top': 'topClassName'
         }
     };
 

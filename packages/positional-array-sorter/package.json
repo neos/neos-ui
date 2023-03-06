@@ -16,12 +16,11 @@
     "build": "yarn tsc --declaration",
     "build:watch": "yarn tsc --watch",
     "clean": "rimraf ./lib ./dist",
-    "lint": "eslint src/**/*.{js,jsx,ts,tsx}",
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@neos-project/build-essentials": "workspace:*",
     "@neos-project/jest-preset-neos-ui": "workspace:*",
+    "@neos-project/neos-ui-build": "workspace:*",
     "typescript": "^4.6.4"
   },
   "jest": {

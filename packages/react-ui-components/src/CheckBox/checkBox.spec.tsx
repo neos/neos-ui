@@ -14,7 +14,7 @@ describe('<CheckBox/>', () => {
             checkbox__input: 'inputClassName',
             checkbox__inputMirror: 'inputMirrorClassName',
             'checkbox__inputMirror--active': 'inputMirrorActiveClassName',
-            checkbox__icon: 'checkboxIconClassName',
+            checkbox__icon: 'checkboxIconClassName'
         }
     };
 

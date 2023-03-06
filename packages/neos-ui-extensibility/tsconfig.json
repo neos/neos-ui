@@ -2,8 +2,12 @@
     "include": [
         "src"
     ],
+    "exclude": [
+        "**/*.spec.*"
+    ],
     "extends": "../../tsconfig.json",
     "compilerOptions": {
-        "outDir": "dist"
+        "outDir": "dist",
+        "allowJs": true
     }
 }

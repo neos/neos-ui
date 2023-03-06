@@ -29,8 +29,8 @@
 ################################################################################
 
 .PHONY: check-requirements install setup \
-	build build-watch build-watch-poll build-production \
-	storybook test test-e2e lint lint-js lint-editorconfig \
+	build build-watch build-production \
+	test test-e2e lint lint-js lint-editorconfig \
 	called-with-version bump-version publish-npm \
 	clean
 
@@ -42,7 +42,6 @@
 # Add alias as there are currently some MacOS problems
 # and putting it into the $PATH is simply not enough
 editorconfigChecker = ./node_modules/.bin/editorconfig-checker
-crossenv = ./node_modules/.bin/crossenv
 # Define colors
 GREEN  := $(shell tput -Txterm setaf 2)
 YELLOW := $(shell tput -Txterm setaf 3)
@@ -90,22 +89,15 @@ build-watch:
 # clean anything before building for production just to be sure
 ## Runs the production build. And also builds the subpackages for standalone use.
 build-production:
-	$(cross-env) NODE_ENV=production node esbuild.js
+	node esbuild.js --production
 	make build-subpackages
 
 build-e2e-testing:
-	$(cross-env) NODE_ENV=production node esbuild.js --e2e-testing
+	node esbuild.js --production --e2e-testing
 
 ################################################################################
 # Code Quality
 ################################################################################
-
-## Starts the storybook server on port 9001.
-storybook:
-	@mkdir -p ./packages/react-ui-components/node_modules/@neos-project/ && \
-		ln -s ../../../build-essentials/src \
-		./packages/react-ui-components/node_modules/@neos-project/build-essentials
-	yarn workspace @neos-project/react-ui-components start
 
 ## Executes the unit test on all source files.
 test:
@@ -136,10 +128,7 @@ lint-parallel: lint-js-parallel lint-editorconfig
 
 ## Runs lint test in all subpackages
 lint-js:
-	yarn workspaces foreach run lint
-
-lint-js-parallel:
-	yarn workspaces foreach --parallel run lint
+	yarn run lint
 
 ## Tests if all files respect the .editorconfig.
 lint-editorconfig:

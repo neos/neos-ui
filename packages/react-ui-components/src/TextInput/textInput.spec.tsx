@@ -9,8 +9,8 @@ describe('<TextInput/>', () => {
         className: 'fooClassName',
         theme: {
             'textInput': 'textInputClassName',
-            'textInput--disabled': 'disabledClassName',
-        },
+            'textInput--disabled': 'disabledClassName'
+        }
     };
 
     it('should render correctly.', () => {

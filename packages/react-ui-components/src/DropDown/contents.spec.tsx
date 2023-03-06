@@ -15,7 +15,7 @@ describe('<ShallowDropDownContents/>', () => {
             'dropDown__contents--isOpen': 'openDropDownContentsClassName',
             'dropDown__contents--scrollable': 'scrollDropDownContentsClassName'
         },
-        wrapperRef: React.createRef(),
+        wrapperRef: React.createRef()
     };
 
     it('should not render when having no children.', () => {

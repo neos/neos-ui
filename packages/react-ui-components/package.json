@@ -36,7 +36,6 @@
     "clean": "rm -rf dist types",
     "jest": "NODE_ENV=test jest",
     "jest:updateSnapshots": "NODE_ENV=test jest -u",
-    "start": "cross-env STORY=true start-storybook -p 9001",
     "example": "cd example && yarn esbuild test.jsx --outdir=dist --bundle --sourcemap=linked --loader:.woff2=file"
   },
   "peerDependencies": {
@@ -77,17 +76,11 @@
     "react-textarea-autosize": "^8.3.0"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.19.1",
-    "@neos-project/babel-preset-neos-ui": "workspace:*",
     "@neos-project/debug-reason-for-rendering": "workspace:*",
     "@neos-project/eslint-config-neos": "^2.6.1",
     "@neos-project/jest-preset-neos-ui": "workspace:*",
     "@neos-project/utils-helpers": "workspace:*",
-    "@storybook/addon-info": "^3.2.16",
-    "@storybook/addon-knobs": "3.2.16",
-    "@storybook/react": "3.2.16",
     "@types/classnames": "^2.2.9",
-    "@types/debug": "^4.1.7",
     "@types/enzyme": "^3.1.14",
     "@types/he": "^1.1.0",
     "@types/jest": "^23.3.10",

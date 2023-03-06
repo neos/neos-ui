@@ -18,9 +18,8 @@
     "react-portal": "^4.2.0"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "workspace:*",
-    "@neos-project/build-essentials": "workspace:*",
     "@neos-project/jest-preset-neos-ui": "workspace:*",
+    "@neos-project/neos-ui-build": "workspace:*",
     "typescript": "^4.6.4"
   },
   "peerDependencies": {

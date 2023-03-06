@@ -25,10 +25,9 @@
     "recharts": "^2.4.1"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "workspace:*",
-    "@neos-project/build-essentials": "workspace:*",
     "@neos-project/debug-reason-for-rendering": "workspace:*",
-    "@neos-project/jest-preset-neos-ui": "workspace:*"
+    "@neos-project/jest-preset-neos-ui": "workspace:*",
+    "@neos-project/neos-ui-build": "workspace:*"
   },
   "peerDependencies": {
     "prop-types": "^15.5.10",

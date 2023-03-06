@@ -11,10 +11,11 @@ import {getGuestFrameWindow} from '@neos-project/neos-ui-guest-frame/src/dom';
 export function * watchEditPreviewModesChanged() {
     yield takeLatest(actionTypes.UI.EditPreviewMode.SET, function * editPreviewModeSet(action) {
         const {editPreviewMode} = action.payload;
-        const currentIframeUrl = yield select($get('ui.contentCanvas.src'));
+        const currentIframeUrl = new URL(yield select($get('ui.contentCanvas.src')), document.location.href);
 
         yield backend.get().endpoints.setUserPreferences('contentEditing.editPreviewMode', editPreviewMode);
 
-        getGuestFrameWindow().location.href = currentIframeUrl;
+        currentIframeUrl.searchParams.set('editPreviewMode', editPreviewMode);
+        getGuestFrameWindow().location.href = currentIframeUrl.toString();
     });
 }

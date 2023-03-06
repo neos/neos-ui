@@ -3,7 +3,7 @@ import {takeLatest, put, select, take, race} from 'redux-saga/effects';
 import {$get} from 'plow-js';
 import {getGuestFrameDocument} from '@neos-project/neos-ui-guest-frame/src/dom';
 
-import {actionTypes, actions} from '@neos-project/neos-ui-redux-store';
+import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
 
 /**
  * Load newly created page into canvas
@@ -44,7 +44,9 @@ export function * watchStopLoading({globalRegistry, store}) {
 export function * watchReload() {
     yield takeLatest(actionTypes.UI.ContentCanvas.RELOAD, function * (action) {
         const {uri} = action.payload;
-        const currentIframeUrl = yield select($get('ui.contentCanvas.src'));
+        const currentIframeUrl = new URL(yield select($get('ui.contentCanvas.src')), document.location.href);
+        const currentEditPreviewMode = yield select(selectors.UI.EditPreviewMode.currentEditPreviewMode);
+        currentIframeUrl.searchParams.set('editPreviewMode', currentEditPreviewMode);
 
         [].slice.call(document.querySelectorAll(`iframe[name=neos-content-main]`)).forEach(iframe => {
             const iframeWindow = iframe.contentWindow || iframe;
@@ -54,8 +56,14 @@ export function * watchReload() {
             // might be already handling this.
             // If the new uri is provided in the action payload, use that
             //
-            if (iframeWindow.location.href === currentIframeUrl) {
-                iframeWindow.location.href = uri || iframeWindow.location.href;
+            if (iframeWindow.location.href === currentIframeUrl.toString()) {
+                if (uri) {
+                    const uriUrl = new URL(uri, document.location.href);
+                    uriUrl.searchParams.set('editPreviewMode', currentEditPreviewMode);
+                    iframeWindow.location.href = uriUrl.toString();
+                } else {
+                    iframeWindow.location.reload();
+                }
             }
         });
     });

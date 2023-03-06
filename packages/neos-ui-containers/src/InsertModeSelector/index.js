@@ -2,7 +2,8 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 
 import ButtonGroup from '@neos-project/react-ui-components/src/ButtonGroup/';
-import IconButton from '@neos-project/react-ui-components/src/IconButton/';
+import Button from '@neos-project/react-ui-components/src/Button/';
+import Icon from '@neos-project/react-ui-components/src/Icon/';
 
 import {neos} from '@neos-project/neos-ui-decorators';
 import I18n from '@neos-project/neos-ui-i18n';
@@ -93,30 +94,37 @@ export default class InsertModeSelector extends PureComponent {
                     <I18n id="Neos.Neos:Main:insertMode"/>&nbsp;
                 </span>
                 <ButtonGroup value={mode} onSelect={this.handleSelect} className={style.buttonGroup}>
-                    <IconButton
+                    <Button
                         id={MODE_BEFORE}
                         disabled={!enableAlongsideModes}
                         style="lighter"
                         size="small"
-                        icon="level-up-alt"
-                        title={`${i18nRegistry.translate('Neos.Neos:Main:insert')} ${i18nRegistry.translate('before')}`}
-                        />
-                    <IconButton
-                        id={MODE_INTO}
-                        disabled={!enableIntoMode}
-                        style="lighter"
-                        size="small"
-                        icon="long-arrow-alt-right"
-                        title={`${i18nRegistry.translate('Neos.Neos:Main:insert')} ${i18nRegistry.translate('into')}`}
-                        />
-                    <IconButton
+                        title={`${i18nRegistry.translate('Neos.Neos:Main:insert')} ${i18nRegistry.translate('above')}`}
+                    >
+                        <Icon icon="level-up-alt" size="1x"/>
+                        <I18n id="Neos.Neos.Ui:Main:above" fallback="Above"/>
+                    </Button>
+                    <Button
                         id={MODE_AFTER}
                         disabled={!enableAlongsideModes}
                         style="lighter"
                         size="small"
-                        icon="level-down-alt"
-                        title={`${i18nRegistry.translate('Neos.Neos:Main:insert')} ${i18nRegistry.translate('after')}`}
-                        />
+                        title={`${i18nRegistry.translate('Neos.Neos:Main:insert')} ${i18nRegistry.translate('below')}`}
+                    >
+                        <Icon icon="level-down-alt" size="1x"/>
+                        <I18n id="Neos.Neos.Ui:Main:below" fallback="Below"/>
+                    </Button>
+                    <Button
+                        id={MODE_INTO}
+                        className={style.intoButton}
+                        disabled={!enableIntoMode}
+                        style="lighter"
+                        size="small"
+                        title={`${i18nRegistry.translate('Neos.Neos:Main:insert')} ${i18nRegistry.translate('into')}`}
+                    >
+                        <Icon icon="sign-in-alt" size="1x"/>
+                        <I18n id="Neos.Neos.Ui:Main:inside" fallback="Inside"/>
+                    </Button>
                 </ButtonGroup>
             </div>
         );

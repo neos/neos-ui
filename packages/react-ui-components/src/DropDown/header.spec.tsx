@@ -22,7 +22,7 @@ describe('<ShallowDropDownHeader/>', () => {
             'dropDown__btn': 'baseDropDownHeaderClassName',
             'dropDown__btnLabel': 'baseDropDownHeaderLabelClassName',
             'dropDown__btn--withChevron': 'baseDropDownHeaderWithChevronClassName',
-            'dropDown__chevron': 'baseDropDownHeaderChevronClassName',
+            'dropDown__chevron': 'baseDropDownHeaderChevronClassName'
         }
     };
 

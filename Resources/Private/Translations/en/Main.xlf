@@ -14,6 +14,24 @@
             <trans-unit id="insert" xml:space="preserve">
                 <source>Insert</source>
             </trans-unit>
+            <trans-unit id="above" xml:space="preserve">
+                <source>Above</source>
+            </trans-unit>
+            <trans-unit id="below" xml:space="preserve">
+                <source>Below</source>
+            </trans-unit>
+            <trans-unit id="inside" xml:space="preserve">
+                <source>Inside</source>
+            </trans-unit>
+            <trans-unit id="InsertModeTitleInto" xml:space="preserve">
+                <source>inside</source>
+            </trans-unit>
+             <trans-unit id="InsertModeTitleBefore" xml:space="preserve">
+                <source>above</source>
+            </trans-unit>
+            <trans-unit id="InsertModeTitleAfter" xml:space="preserve">
+                <source>below</source>
+            </trans-unit>
             <trans-unit id="insertMode" xml:space="preserve">
                 <source>Insert mode</source>
             </trans-unit>

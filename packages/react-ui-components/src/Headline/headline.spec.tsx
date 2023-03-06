@@ -9,7 +9,7 @@ describe('<Headline/>', () => {
         ...defaultProps,
         children: 'Foo children',
         theme: {
-            'heading': 'headingClassName',
+            'heading': 'headingClassName'
         }
     };
 

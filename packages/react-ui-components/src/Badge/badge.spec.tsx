@@ -8,8 +8,8 @@ describe('<Badge/>', () => {
     const props: BadgeProps = {
         label: 'Foo children',
         theme: {
-            badge: 'badgeClassName',
-        },
+            badge: 'badgeClassName'
+        }
     };
 
     it('should render correctly.', () => {

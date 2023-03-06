@@ -81,7 +81,6 @@ export interface DialogProps {
 }
 
 export class DialogWithoutEscape extends PureComponent<DialogProps> {
-    // tslint:disable-next-line:readonly-keyword
     private ref?: HTMLDivElement;
 
     public render(): JSX.Element {
@@ -98,7 +97,7 @@ export class DialogWithoutEscape extends PureComponent<DialogProps> {
             {
                 [theme['dialog--success']]: type === 'success',
                 [theme['dialog--warn']]: type === 'warn',
-                [theme['dialog--error']]: type === 'error',
+                [theme['dialog--error']]: type === 'error'
             },
             'dialog__body'
         );
@@ -125,7 +124,6 @@ export class DialogWithoutEscape extends PureComponent<DialogProps> {
     }
 
     private readonly handleReference = (ref: HTMLDivElement) => {
-        // tslint:disable-next-line:no-object-mutation
         this.ref = ref;
     }
 
@@ -160,9 +158,9 @@ export class DialogWithoutEscape extends PureComponent<DialogProps> {
 
 const EnhancedDialogWithoutEscapeWithClickOutside = enhanceWithClickOutside(DialogWithoutEscape);
 
-// tslint:disable-next-line:max-classes-per-file
 class DialogWithEscape extends PureComponent<DialogProps> {
     public render(): JSX.Element | null {
+        /* eslint-disable @typescript-eslint/no-unused-vars */
         const {
             className,
             title,
@@ -175,18 +173,19 @@ class DialogWithEscape extends PureComponent<DialogProps> {
             onRequestClose,
             ...rest
         } = this.props;
+        /* eslint-enable @typescript-eslint/no-unused-vars */
 
         const sectionClassName = mergeClassNames(
             theme.dialog,
             {
                 [theme['dialog--wide']]: style === 'wide',
                 [theme['dialog--jumbo']]: style === 'jumbo',
-                [theme['dialog--narrow']]: style === 'narrow',
+                [theme['dialog--narrow']]: style === 'narrow'
             },
             {
                 [theme['dialog--success']]: type === 'success',
                 [theme['dialog--warn']]: type === 'warn',
-                [theme['dialog--error']]: type === 'error',
+                [theme['dialog--error']]: type === 'error'
             },
             className,
         );

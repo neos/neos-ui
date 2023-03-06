@@ -10,7 +10,6 @@ import {PickDefaultProps} from '../utils-typescript';
 import Button from '../Button';
 import Icon from '../Icon';
 
-
 export interface DateInputProps {
     /**
      * The Date instance which represents the selected value.
@@ -79,7 +78,7 @@ export interface DateInputProps {
     /**
      * The changehandler to call when the date changes.
      */
-    readonly onChange: (date: Date | null) => void;
+    readonly onChange: (date: Date | null) => void;
 
     /**
      * An optional theme using tremr
@@ -101,7 +100,7 @@ interface DateInputTheme {
     'selectTodayBtn': string;
 }
 
-const defaultProps: PickDefaultProps<DateInputProps, 'labelFormat' | 'timeConstraints'> = {
+const defaultProps: PickDefaultProps<DateInputProps, 'labelFormat' | 'timeConstraints'> = {
     labelFormat: 'DD-MM-YYYY hh:mm',
     timeConstraints: {
         minutes: {
@@ -109,12 +108,12 @@ const defaultProps: PickDefaultProps<DateInputProps, 'labelFormat' | 'timeConst
             max: 59,
             step: 5
         }
-    },
+    }
 };
 
 interface DateInputState {
     readonly isOpen: boolean;
-    readonly transientDate: Date | null; // TODO do we have a breaking change when we use 'undefined' in favor of 'null'?
+    readonly transientDate: Date | null; // TODO do we have a breaking change when we use 'undefined' in favor of 'null'?
 }
 
 const initialState: DateInputState = {
@@ -124,6 +123,7 @@ const initialState: DateInputState = {
 
 export class DateInput extends PureComponent<DateInputProps, DateInputState> {
     public static readonly defaultProps = defaultProps;
+
     public readonly state = initialState;
 
     public render(): JSX.Element {
@@ -146,7 +146,7 @@ export class DateInput extends PureComponent<DateInputProps, DateInputState> {
         const wrapper = mergeClassNames(
             theme!.wrapper,
             {
-                [theme!.disabled]: disabled,
+                [theme!.disabled]: disabled
             },
         );
 
@@ -155,21 +155,21 @@ export class DateInput extends PureComponent<DateInputProps, DateInputState> {
         const calendarFakeInputMirror = mergeClassNames(
             theme!.calendarFakeInputMirror,
             {
-                [theme!['disabled-cursor']]: disabled,
+                [theme!['disabled-cursor']]: disabled
             },
         );
 
         const calendarIconBtn = mergeClassNames(
             theme!.calendarIconBtn,
             {
-                [theme!['disabled-cursor']]: disabled,
+                [theme!['disabled-cursor']]: disabled
             },
         );
 
         const closeCalendarIconBtn = mergeClassNames(
             theme!.closeCalendarIconBtn,
             {
-                [theme!['disabled-cursor']]: disabled,
+                [theme!['disabled-cursor']]: disabled
             },
         );
 
@@ -262,7 +262,7 @@ export class DateInput extends PureComponent<DateInputProps, DateInputState> {
         });
     }
 
-    private readonly handleChange = (value: Moment | string) => {
+    private readonly handleChange = (value: Moment | string) => {
         const momentVal: Moment = isMoment(value) ? value : moment(value);
         this.setState({
             transientDate: momentVal.toDate()

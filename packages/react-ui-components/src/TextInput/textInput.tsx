@@ -50,7 +50,6 @@ export interface TextInputProps extends Omit<React.InputHTMLAttributes<HTMLInput
 }
 
 class TextInput extends PureComponent<TextInputProps> {
-    // tslint:disable-next-line:readonly-keyword
     private ref?: React.RefObject<HTMLInputElement>;
 
     constructor(props: any) {
@@ -114,8 +113,8 @@ class TextInput extends PureComponent<TextInputProps> {
                     onChange={this.handleValueChange}
                     onKeyPress={this.handleKeyPress}
                     ref={this.ref}
-                    />
-                </div>
+                />
+            </div>
         );
     }
 }

@@ -75,15 +75,15 @@ export interface IconButtonDropDownProps {
     readonly directButtonProps: ButtonProps;
 }
 
-type DefaultProps = PickDefaultProps<IconButtonDropDownProps, 'directButtonProps' | 'disabled' | 'modeIcon'>;
+type DefaultProps = PickDefaultProps<IconButtonDropDownProps, 'directButtonProps' | 'disabled' | 'modeIcon'>;
 
 export const defaultProps: DefaultProps = {
     directButtonProps: {
         children: undefined,
-        size: 'regular',
+        size: 'regular'
     },
     disabled: false,
-    modeIcon: 'long-arrow-right',
+    modeIcon: 'long-arrow-right'
 };
 
 export interface IconButtonDropDownState {
@@ -91,16 +91,14 @@ export interface IconButtonDropDownState {
 }
 
 const initialState: IconButtonDropDownState = {
-    isOpen: false,
+    isOpen: false
 };
 
 export default class IconButtonDropDown extends PureComponent<IconButtonDropDownProps, IconButtonDropDownState> {
-    // tslint:disable:readonly-keyword
     private _timeouts: {
         hold?: number,
         hover?: number
     };
-    // tslint:enable:readonly-keyword
 
     constructor(props: IconButtonDropDownProps) {
         super(props);
@@ -130,7 +128,7 @@ export default class IconButtonDropDown extends PureComponent<IconButtonDropDown
         const dropDownClassNames = mergeClassNames(
             theme!.wrapper__dropDown,
             {
-                [theme!['wrapper__dropDown--isOpen']]: isOpen,
+                [theme!['wrapper__dropDown--isOpen']]: isOpen
             }
         );
 
@@ -172,7 +170,6 @@ export default class IconButtonDropDown extends PureComponent<IconButtonDropDown
 
     private readonly createHoldTimeout = () => {
         this.cancelHoldTimeout();
-        // tslint:disable-next-line:no-object-mutation
         this._timeouts.hold = window.setTimeout(() => this.openDropDown(), 200);
     }
 
@@ -182,7 +179,6 @@ export default class IconButtonDropDown extends PureComponent<IconButtonDropDown
 
     private readonly createHoverTimeout = () => {
         this.cancelHoverTimeout();
-        // tslint:disable-next-line:no-object-mutation
         this._timeouts.hover = window.setTimeout(() => this.openDropDown(), 700);
     }
 

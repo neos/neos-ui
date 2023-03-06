@@ -7,9 +7,9 @@ describe('<Panel/>', () => {
     const props: PanelProps = {
         title: 'TitleString',
         theme: {
-            panel: 'panelBaseClassName',
+            panel: 'panelBaseClassName'
         },
-        children: 'Foo children',
+        children: 'Foo children'
     };
 
     it('should render correctly.', () => {

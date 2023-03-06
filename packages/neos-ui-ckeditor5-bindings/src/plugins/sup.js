@@ -7,6 +7,7 @@ export default class Sup extends Plugin {
     static get pluginName() {
         return 'Sup';
     }
+
     init() {
         this.editor.model.schema.extend('$text', {allowAttributes: SUP});
         this.editor.conversion.attributeToElement({

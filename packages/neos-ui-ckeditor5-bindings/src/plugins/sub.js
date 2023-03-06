@@ -7,6 +7,7 @@ export default class SubSup extends Plugin {
     static get pluginName() {
         return 'Sub';
     }
+
     init() {
         this.editor.model.schema.extend('$text', {allowAttributes: SUB});
         this.editor.conversion.attributeToElement({

@@ -62,11 +62,12 @@ interface TextAreaState {
 }
 
 const initialState: TextAreaState = {
-    isFocused: false,
+    isFocused: false
 };
 
 export class TextArea extends PureComponent<TextAreaProps> {
     public static defaultProps = defaultProps;
+
     public state = initialState;
 
     public render(): JSX.Element {

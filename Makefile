@@ -128,10 +128,7 @@ lint-parallel: lint-js-parallel lint-editorconfig
 
 ## Runs lint test in all subpackages
 lint-js:
-	yarn workspaces foreach run lint
-
-lint-js-parallel:
-	yarn workspaces foreach --parallel run lint
+	yarn run lint
 
 ## Tests if all files respect the .editorconfig.
 lint-editorconfig:

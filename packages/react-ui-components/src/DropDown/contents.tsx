@@ -12,7 +12,7 @@ import mergeClassNames from 'classnames';
  */
 function getScrollContainer(el: HTMLElement): HTMLElement {
     if (el.scrollHeight > el.clientHeight) {
-        const { overflowY } = getComputedStyle(el);
+        const {overflowY} = getComputedStyle(el);
 
         if (overflowY === 'auto' || overflowY === 'scroll') {
             return el;
@@ -21,9 +21,8 @@ function getScrollContainer(el: HTMLElement): HTMLElement {
 
     if (el.parentElement) {
         return getScrollContainer(el.parentElement);
-    } else {
-        return document.body;
     }
+    return document.body;
 }
 
 /**
@@ -110,8 +109,8 @@ export interface ShallowDropDownContentsState {
 
 export default class ShallowDropDownContents extends PureComponent<ShallowDropDownContentsProps, ShallowDropDownContentsState> {
     public static defaultProps = {
-        getMinHeight: (window: Window) => .25 * window.innerHeight, // 25vh
-        getMaxHeight: (window: Window) => .8 * window.innerHeight, // 80vh
+        getMinHeight: (window: Window) => 0.25 * window.innerHeight, // 25vh
+        getMaxHeight: (window: Window) => 0.8 * window.innerHeight // 80vh
     };
 
     /**
@@ -144,7 +143,8 @@ export default class ShallowDropDownContents extends PureComponent<ShallowDropDo
                             width: wrapperBoundingBox.width,
                             maxHeight
                         };
-                    } else if (wrapperBoundingBox.y + wrapperBoundingBox.height + minHeight <= window.innerHeight) {
+                    }
+                    if (wrapperBoundingBox.y + wrapperBoundingBox.height + minHeight <= window.innerHeight) {
                         // Our dropdown contents component still fits below the
                         // dropdown header, but we need to shrink it a little
                         return {
@@ -153,49 +153,47 @@ export default class ShallowDropDownContents extends PureComponent<ShallowDropDo
                             width: wrapperBoundingBox.width,
                             maxHeight: window.innerHeight - wrapperBoundingBox.height - wrapperBoundingBox.y
                         };
-                    } else {
-                        // Our dropdown contents component does not fit below the
-                        // dropdown header, so we open it up above. We also keep the height
-                        // at minimum, so that the upper left corner of our contents keeps
-                        // its proximity to the dropdown header.
-                        return {
-                            bottom: window.innerHeight - wrapperBoundingBox.y,
-                            left: wrapperBoundingBox.x,
-                            width: wrapperBoundingBox.width,
-                            maxHeight: minHeight
-                        };
                     }
+                    // Our dropdown contents component does not fit below the
+                    // dropdown header, so we open it up above. We also keep the height
+                    // at minimum, so that the upper left corner of our contents keeps
+                    // its proximity to the dropdown header.
+                    return {
+                        bottom: window.innerHeight - wrapperBoundingBox.y,
+                        left: wrapperBoundingBox.x,
+                        width: wrapperBoundingBox.width,
+                        maxHeight: minHeight
+                    };
                 }
-            } else {
-                // The dropdown wrapper is outside of the users view, so we hide our
-                // dropdown contents component until it comes back.
-                return {
-                    display: 'none'
-                };
             }
+            // The dropdown wrapper is outside of the users view, so we hide our
+            // dropdown contents component until it comes back.
+            return {
+                display: 'none'
+            };
         }
 
         return {};
     }
 
     public static getDerivedStateFromProps(props: ShallowDropDownContentsProps): ShallowDropDownContentsState {
-        return { style: ShallowDropDownContents.getCalculatedStyleFromProps(props) };
+        return {style: ShallowDropDownContents.getCalculatedStyleFromProps(props)};
     }
 
     public readonly state = ShallowDropDownContents.getDerivedStateFromProps(this.props);
 
     public readonly recalculateStyle = () => requestAnimationFrame(() => {
-        this.setState({ style: ShallowDropDownContents.getCalculatedStyleFromProps(this.props) });
+        this.setState({style: ShallowDropDownContents.getCalculatedStyleFromProps(this.props)});
     })
 
     public componentDidMount(): void {
-        document.body.addEventListener('scroll', this.recalculateStyle, { capture: true });
-        window.addEventListener('resize', this.recalculateStyle, { capture: true });
+        document.body.addEventListener('scroll', this.recalculateStyle, {capture: true});
+        window.addEventListener('resize', this.recalculateStyle, {capture: true});
     }
 
     public componentWillUnmount(): void {
-        document.body.removeEventListener('scroll', this.recalculateStyle, { capture: true });
-        window.removeEventListener('resize', this.recalculateStyle, { capture: true });
+        document.body.removeEventListener('scroll', this.recalculateStyle, {capture: true});
+        window.removeEventListener('resize', this.recalculateStyle, {capture: true});
     }
 
     public render(): JSX.Element | null {
@@ -205,7 +203,7 @@ export default class ShallowDropDownContents extends PureComponent<ShallowDropDo
             theme,
             isOpen,
             closeDropDown,
-            scrollable,
+            scrollable
         } = this.props;
         const finalClassName = mergeClassNames(
             theme!.dropDown__contents,
@@ -234,8 +232,7 @@ export default class ShallowDropDownContents extends PureComponent<ShallowDropDo
             return scrollable
                 ? ReactDOM.createPortal(contents, document.body)
                 : contents;
-        } else {
-            return null;
         }
+        return null;
     }
 }

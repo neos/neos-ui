@@ -9,7 +9,7 @@ export default class LinkTitle extends Plugin {
     }
 
     init() {
-        const editor = this.editor;
+        const {editor} = this;
         editor.model.schema.extend('$text', {allowAttributes: TITLE});
 
         editor.conversion.for('downcast').attributeToElement({

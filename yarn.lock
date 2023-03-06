@@ -2779,7 +2779,6 @@ __metadata:
     react-svg: ^11.1.2
     react-textarea-autosize: ^8.3.0
     stylelint: ^13.7.2
-    tslint: ^5.20.1
     typescript: ^4.6.0
   peerDependencies:
     "@fortawesome/free-brands-svg-icons": ^5.15.3
@@ -5796,9 +5795,9 @@ __metadata:
   linkType: hard
 
 "decode-uri-component@npm:^0.2.0":
-  version: 0.2.0
-  resolution: "decode-uri-component@npm:0.2.0"
-  checksum: f3749344ab9305ffcfe4bfe300e2dbb61fc6359e2b736812100a3b1b6db0a5668cba31a05e4b45d4d63dbf1a18dfa354cd3ca5bb3ededddabb8cd293f4404f94
+  version: 0.2.2
+  resolution: "decode-uri-component@npm:0.2.2"
+  checksum: 95476a7d28f267292ce745eac3524a9079058bbb35767b76e3ee87d42e34cd0275d2eb19d9d08c3e167f97556e8a2872747f5e65cbebcac8b0c98d83e285f139
   languageName: node
   linkType: hard
 
@@ -13267,9 +13266,6 @@ __metadata:
     testcafe: ^2.1.0
     testcafe-browser-provider-saucelabs: ^1.9.0
     testcafe-react-selectors: ^5.0.2
-    tslint: ^5.20.1
-    tslint-config-prettier: ^1.15.0
-    tslint-react: ^3.6.0
     typescript: ^4.6.4
   languageName: unknown
   linkType: soft
@@ -14759,7 +14755,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^1.8.0, tslib@npm:^1.8.1, tslib@npm:^1.9.0":
+"tslib@npm:^1.8.0":
+  version: 1.14.1
+  resolution: "tslib@npm:1.14.1"
+  checksum: dbe628ef87f66691d5d2959b3e41b9ca0045c3ee3c7c7b906cc1e328b39f199bb1ad9e671c39025bd56122ac57dfbf7385a94843b1cc07c60a4db74795829acd
+  languageName: node
+  linkType: hard
+
+"tslib@npm:^1.8.1, tslib@npm:^1.9.0":
   version: 1.10.0
   resolution: "tslib@npm:1.10.0"
   checksum: 1d0450dc6f64b918b14acaf3b956ebe1c72d7401c632adce932a60e3cd8d2a70f6040ceef6a7c3561146c3f29bcf584c41c2e09a5d20a27d6c3057f0d5f2a836
@@ -14794,7 +14797,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslint@npm:^5.11.0, tslint@npm:^5.20.1":
+"tslint@npm:^5.11.0":
   version: 5.20.1
   resolution: "tslint@npm:5.20.1"
   dependencies:

@@ -22,8 +22,8 @@ describe('<Button/>', () => {
             'btn--darkenHover': 'darkenHoverClassName',
             'btn--isPressed': 'isPressedClassName',
             'btn--lighter': 'lighterClassName',
-            'btn--transparent': 'transparentClassName',
-        },
+            'btn--transparent': 'transparentClassName'
+        }
     };
 
     it('should render correctly.', () => {

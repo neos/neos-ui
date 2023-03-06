@@ -20,7 +20,12 @@ module.exports = {
         'no-unused-vars': 'off',
         '@typescript-eslint/no-unused-vars': ['error'],
 
-        // The following rules should be fixed and enabled again
+        // remove bs
+        'operator-linebreak': 'off',
+        'arrow-parens': 'off',
+        'camelcase': 'off',
+
+        // The following rules should be fixed and enabled again #nobody-likes-you-linter!
         'no-use-before-define': 'off',
         'default-case': 'off',
         'no-mixed-operators': 'off',

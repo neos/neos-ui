@@ -1,10 +1,9 @@
-// tslint:disable:max-classes-per-file
 import React, {PureComponent, ReactNode} from 'react';
 import omit from 'lodash.omit';
 import mergeClassNames from 'classnames';
 import enhanceWithClickOutside from '../enhanceWithClickOutside/index';
 
-import { PickDefaultProps } from '../utils-typescript';
+import {PickDefaultProps} from '../utils-typescript';
 import ShallowDropDownHeader from './header';
 import ShallowDropDownContents from './contents';
 import PropTypes from 'prop-types';
@@ -141,7 +140,6 @@ class StatelessDropDownWrapperWithoutClickOutsideBehavior extends PureComponent<
 //
 export const StatelessDropDownWrapper = enhanceWithClickOutside(StatelessDropDownWrapperWithoutClickOutsideBehavior);
 
-
 export class DropDownWrapper extends PureComponent<DropDownWrapperProps, DropDownWrapperState> {
     public static readonly defaultProps = defaultProps;
 
@@ -179,7 +177,7 @@ export class DropDownWrapper extends PureComponent<DropDownWrapperProps, DropDow
         }
 
         this.updateIsOpenHandle = setTimeout(() => {
-            this.setState((state) => ({ isOpen: handlerFn(state.isOpen) }));
+            this.setState((state) => ({isOpen: handlerFn(state.isOpen)}));
         }, 0);
     }
 

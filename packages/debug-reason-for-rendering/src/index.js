@@ -64,6 +64,7 @@ const findDifferences = (type, oldStatePropsOrContext, newStatePropsOrContext) =
     return result;
 };
 
+// eslint-disable-next-line max-params
 const internalDebug = (TargetReactComponent, oldProps, nextProps, oldState, nextState, oldContext, nextContext) => {
     const differencesInProps = findDifferences('props', oldProps, nextProps);
     const differencesInState = findDifferences('state', oldState, nextState);
@@ -86,9 +87,9 @@ const internalDebug = (TargetReactComponent, oldProps, nextProps, oldState, next
         }
 
         console.group(`%c${TargetReactComponent.constructor.name}: component will re-render because %c${changeMessageParts.join(', ')}%c.`, RESET, BOLD, RESET);
-        differencesInProps.forEach(logString => console.log.apply(console, logString));
-        differencesInState.forEach(logString => console.log.apply(console, logString));
-        differencesInContext.forEach(logString => console.log.apply(console, logString));
+        differencesInProps.forEach(logString => console.log(...logString));
+        differencesInState.forEach(logString => console.log(...logString));
+        differencesInContext.forEach(logString => console.log(...logString));
         console.groupEnd();
     }
 };
@@ -101,6 +102,7 @@ const debugReasonForRendering = (TargetReactComponent, key, descriptor) => {
                 internalDebug(TargetReactComponent, this.props, nextProps, this.state, nextState, this.context, nextContext);
                 return true;
             }
+
             render() {
                 return <TargetReactComponent {...this.props}/>;
             }
@@ -118,6 +120,7 @@ const debugReasonForRendering = (TargetReactComponent, key, descriptor) => {
     descriptor.value = function (nextProps, nextState, nextContext) {
         internalDebug(TargetReactComponent, this.props, nextProps, this.state, nextState, this.context, nextContext);
 
+        // eslint-disable-next-line prefer-rest-params
         return originalShouldComponentUpdate.apply(this, arguments);
     };
 

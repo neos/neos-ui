@@ -13,7 +13,7 @@ describe('<IconButton/>', () => {
         icon: 'fooIconName',
         theme: {
             'iconButton': 'iconButtonClassName',
-            'iconButton--disabled': 'disabledClassName',
+            'iconButton--disabled': 'disabledClassName'
         }
     };
 

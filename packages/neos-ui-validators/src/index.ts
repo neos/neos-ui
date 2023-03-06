@@ -21,7 +21,7 @@ export const validateElement = (elementValue: any, elementConfiguration: Propert
         if (validator) {
             return validator(elementValue, validatorConfiguration);
         }
-        console.warn(`Validator ${validatorName} not found`); // tslint:disable-line no-console
+        console.warn(`Validator ${validatorName} not found`);
         return null;
     };
 

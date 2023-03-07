@@ -42,7 +42,7 @@
     "@fortawesome/free-brands-svg-icons": "^5.15.3",
     "@fortawesome/free-regular-svg-icons": "^5.15.3",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
-    "@friendsofreactjs/react-css-themr": "^4.1.0",
+    "@friendsofreactjs/react-css-themr": "~4.2.0",
     "notosans-fontface": "^1.3.0",
     "prop-types": "^15.5.10",
     "react": "^16.12.0",

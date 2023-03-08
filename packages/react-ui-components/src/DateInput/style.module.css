@@ -270,7 +270,7 @@
     }
     :global(td.rdtMonth:hover),
     :global(td.rdtYear:hover) {
-        background: #eee;
+        background: var(--colors-PrimaryBlue);
     }
 
     :global(.rdtCounters) {

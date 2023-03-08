@@ -27,6 +27,11 @@ Resources/Public/Build/*
 *.tsbuildinfo
 
 #
+# System Files
+#
+.DS_Store
+
+#
 # editors / IDEs
 #
 .vscode/

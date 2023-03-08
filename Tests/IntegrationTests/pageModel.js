@@ -48,9 +48,13 @@ export class PublishDropDown {
     static publishDropdownDiscardAll = ReactSelector('PublishDropDown ShallowDropDownContents').find('button').withText('Discard all');
 
     static async discardAll() {
-        await t
-            .click(this.publishDropdown)
-            .click(this.publishDropdownDiscardAll);
+        await t.click(this.publishDropdown)
+
+        const publishDropdownDiscardAllExists = await Selector(this.publishDropdownDiscardAll).exists;
+        if (publishDropdownDiscardAllExists) {
+            await t.click(this.publishDropdownDiscardAll);
+        }
+
         const confirmButtonExists = await Selector('#neos-DiscardDialog-Confirm').exists;
         if (confirmButtonExists) {
             await t.click(Selector('#neos-DiscardDialog-Confirm'));

@@ -6,8 +6,9 @@ import memoize from 'lodash.memoize';
 import cx from 'classnames';
 
 import {neos} from '@neos-project/neos-ui-decorators';
-import {actions} from '@neos-project/neos-ui-redux-store';
+import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import validate from '@neos-project/neos-ui-validators';
+import preprocessNodeConfiguration from '../../../preprocessNodeConfiguration';
 
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 import Button from '@neos-project/react-ui-components/src/Button/';
@@ -73,8 +74,12 @@ const getDerivedStateFromProps = (props, state) => {
     const isOpen = $get('ui.nodeCreationDialog.isOpen', state);
     const label = $get('ui.nodeCreationDialog.label', state);
     const configuration = $get('ui.nodeCreationDialog.configuration', state);
+    const parentNodeContextPath = $get('ui.nodeCreationDialog.parentNodeContextPath', state);
+    const nodeType = $get('ui.nodeCreationDialog.nodeType', state);
 
-    return {isOpen, label, configuration};
+    const parentNode = selectors.CR.Nodes.makeGetNodeByContextPathSelector(parentNodeContextPath)(state);
+
+    return {isOpen, label, configuration, parentNode, nodeType};
 }, {
     cancel: actions.UI.NodeCreationDialog.cancel,
     back: actions.UI.NodeCreationDialog.back,
@@ -85,6 +90,8 @@ export default class NodeCreationDialog extends PureComponent {
         isOpen: PropTypes.bool.isRequired,
         label: PropTypes.string,
         configuration: PropTypes.object,
+        parentNode: PropTypes.object,
+        nodeType: PropTypes.string,
         validatorRegistry: PropTypes.object.isRequired,
         cancel: PropTypes.func.isRequired,
         back: PropTypes.func.isRequired,
@@ -202,7 +209,7 @@ export default class NodeCreationDialog extends PureComponent {
                 style="lighter"
                 hoverStyle="brand"
                 onClick={this.handleBack}
-                >
+            >
                 <I18n id="Neos.Neos:Main:back" fallback="Back"/>
             </Button>
         );
@@ -229,18 +236,16 @@ export default class NodeCreationDialog extends PureComponent {
                 hoverStyle="success"
                 onClick={this.handleApply}
                 disabled={validationErrors && isDirty}
-                >
+            >
                 <Icon icon="plus-square" className={style.buttonIcon}/>
                 <I18n id="Neos.Neos:Main:createNew" fallback="Create"/>
             </Button>
         );
     }
 
-    renderElement(elementName, isFirst) {
-        const {configuration} = this.props;
+    renderElement(elementName, element, isFirst) {
         const {validationErrors, isDirty} = this.state;
         const validationErrorsForElement = isDirty ? $get(elementName, validationErrors) : [];
-        const element = configuration.elements[elementName];
         const options = $set('autoFocus', isFirst, Object.assign({}, $get('ui.editorOptions', element)));
 
         return (
@@ -265,13 +270,32 @@ export default class NodeCreationDialog extends PureComponent {
     }
 
     renderAllElements() {
-        const {configuration} = this.props;
+        const transientValues = this.getValuesMapFromTransientValues(this.state.transient);
+        const {parentNode} = this.props;
+
+        /**
+         * Transient Node used in CreationDialog for ClientEval.
+         * NOTE: This transient Node does not have all the attributes of a real Node
+         * because the Node does not exist yet.
+         */
+        const transientNode = {
+            nodeType: this.props.nodeType,
+            parent: parentNode.contextPath,
+            properties: {
+                _nodeType: this.props.nodeType,
+                ...transientValues
+            }
+        };
+
+        // evaluate ClientEval in configuration with transientNode and parentNode
+        const configuration = preprocessNodeConfiguration({node: transientNode, parentNode}, this.props.configuration);
 
         return Object.keys(configuration.elements).reduce(
             (result, elementName, index) => {
-                if (configuration.elements[elementName]) {
+                const element = configuration.elements[elementName];
+                if (element) {
                     result.push(
-                        this.renderElement(elementName, index === 0)
+                        this.renderElement(elementName, element, index === 0)
                     );
                 }
 
@@ -297,14 +321,14 @@ export default class NodeCreationDialog extends PureComponent {
                 isOpen
                 style={this.state.secondaryInspectorComponent ? 'jumbo' : 'wide'}
                 id="neos-NodeCreationDialog"
-                >
+            >
                 <div
                     id="neos-NodeCreationDialog-Body"
                     className={cx({
                         [style.body]: true,
                         [style.expanded]: Boolean(this.state.secondaryInspectorComponent)
                     })}
-                    >
+                >
                     <div className={style.secondaryColumn}>
                         <div className={style.secondaryColumn__contentWrapper}>
                             <Button

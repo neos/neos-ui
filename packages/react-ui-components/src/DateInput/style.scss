@@ -273,7 +273,7 @@
         }
         td.rdtMonth:hover,
         td.rdtYear:hover {
-            background: #eee;
+            background: var(--colors-PrimaryBlue);
         }
 
         .rdtCounters {

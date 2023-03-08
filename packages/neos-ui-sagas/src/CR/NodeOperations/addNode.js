@@ -54,6 +54,13 @@ function * nodeCreationWorkflow(context, step = STEP_SELECT_NODETYPE, workflowDa
         }
         case STEP_NODE_CREATION_DIALOG: {
             const nodeType = nodeTypesRegistry.get(workflowData.nodeType);
+            const referenceNodeSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(referenceNodeContextPath);
+            const referencedNode = yield select(referenceNodeSelector);
+
+            const parentNodeContextPath = workflowData.mode === 'into' ?
+                referenceNodeContextPath :
+                referencedNode.parent;
+
             const label = $get('label', nodeType);
             const configuration = $get('ui.creationDialog', nodeType);
             if (configuration) {
@@ -61,7 +68,7 @@ function * nodeCreationWorkflow(context, step = STEP_SELECT_NODETYPE, workflowDa
                 // This node type has a creationDialog configuration,
                 // therefore we show the creation dialog
                 //
-                yield put(actions.UI.NodeCreationDialog.open(label, configuration));
+                yield put(actions.UI.NodeCreationDialog.open(label, configuration, parentNodeContextPath, workflowData.nodeType));
                 const waitForNextAction = yield race([
                     take(actionTypes.UI.NodeCreationDialog.CANCEL),
                     take(actionTypes.UI.NodeCreationDialog.BACK),

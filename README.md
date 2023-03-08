@@ -38,7 +38,6 @@ If you discover bugs in any of the supported browsers, please [report them](http
 * No reload constraint for the correct stylesheets on multi-site systems.
 * Updated Font-Awesome to v5.0 (old icon names are migrated on the fly).
 
-
 ## Installation and usage
 
 The new UI is [already included](https://github.com/neos/neos-base-distribution/blob/3.3/composer.json#L24) in the base Neos distribution. If you don't have it installed yet, follow these steps:

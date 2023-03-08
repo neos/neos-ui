@@ -5,7 +5,7 @@ import toJson from 'enzyme-to-json';
 import ToolTip, {TooltipProps, defaultProps} from './tooltip';
 
 describe('<ToolTip/>', () => {
-    const props: TooltipProps = {
+    const props: TooltipProps = {
         ...defaultProps,
         children: 'Foo children',
         theme: {
@@ -13,8 +13,8 @@ describe('<ToolTip/>', () => {
             'tooltip--asError': 'asErrorClassName',
             'tooltip--inline': 'inlineClassName',
             'tooltip--arrow': 'arrowClassName',
-            'tooltip--inner': 'innerClassName',
-        },
+            'tooltip--inner': 'innerClassName'
+        }
     };
 
     it('should render correctly.', () => {

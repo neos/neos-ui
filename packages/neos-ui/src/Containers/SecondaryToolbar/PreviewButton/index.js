@@ -4,7 +4,7 @@ import Icon from '@neos-project/react-ui-components/src/Icon/';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
-import style from './style.css';
+import style from './style.module.css';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 @neos(globalRegistry => ({

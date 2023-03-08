@@ -24,7 +24,7 @@ describe('<DateInput/>', () => {
             'calendarFakeInput': 'calendarFakeInputClassName',
             'applyBtn': 'applyBtnClassName',
             'closeCalendarIconBtn': 'closeCalendarIconBtnClassName',
-            'selectTodayBtn': 'selectTodayBtnClassName',
+            'selectTodayBtn': 'selectTodayBtnClassName'
         }
     };
 

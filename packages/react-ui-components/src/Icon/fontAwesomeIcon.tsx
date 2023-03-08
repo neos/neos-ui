@@ -10,7 +10,7 @@ import mapper from './mapper';
 class FontAwesomeIcon extends PureComponent<IconProps> {
     public static readonly defaultProps = defaultProps;
 
-    public render(): JSX.Element | null {
+    public render(): JSX.Element | null {
         const {padded, theme, label, icon, className, color, ...rest} = this.props;
         const iconClassName = icon;
         const classNames = mergeClassNames(
@@ -22,7 +22,7 @@ class FontAwesomeIcon extends PureComponent<IconProps> {
                 [theme!['icon--paddedRight']]: padded === 'right',
                 [theme!['icon--color-warn']]: color === 'warn',
                 [theme!['icon--color-error']]: color === 'error',
-                [theme!['icon--color-primaryBlue']]: color === 'primaryBlue',
+                [theme!['icon--color-primaryBlue']]: color === 'primaryBlue'
             }
         );
 
@@ -36,10 +36,9 @@ class FontAwesomeIcon extends PureComponent<IconProps> {
             const prefix = iconArray[0];
             const processedIcon = iconArray[1].startsWith('fa-') ? iconArray[1].substr(3) : iconArray[1];
             return [prefix as IconPrefix, processedIcon as IconName];
-        } else {
-            const prefix: IconPrefix = 'fas';
-            return [prefix, mappedIcon as IconName];
         }
+        const prefix: IconPrefix = 'fas';
+        return [prefix, mappedIcon as IconName];
     }
 }
 

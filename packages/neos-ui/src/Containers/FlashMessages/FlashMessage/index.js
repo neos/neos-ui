@@ -4,7 +4,7 @@ import mergeClassNames from 'classnames';
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 
-import style from './style.css';
+import style from './style.module.css';
 
 export default class FlashMessage extends PureComponent {
     static propTypes = {

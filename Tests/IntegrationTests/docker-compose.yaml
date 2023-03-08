@@ -11,6 +11,7 @@ services:
     environment:
       # Enable GD
       PHP_EXTENSION_GD: 1
+      COMPOSER_CACHE_DIR: /home/circleci/.composer/cache
 
   db:
     image: arm64v8/mysql:8

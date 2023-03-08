@@ -1,6 +1,6 @@
 import mergeClassNames from 'classnames';
 import React, {PureComponent} from 'react';
-import { ReactSVG } from 'react-svg';
+import {ReactSVG} from 'react-svg';
 
 import {defaultProps} from './iconDefaultProps';
 import {IconProps, IconTheme} from './icon';
@@ -16,7 +16,7 @@ export interface ResourceIconProps extends Omit<IconProps, 'theme'> {
 class ResourceIcon extends PureComponent<ResourceIconProps> {
     public static readonly defaultProps = defaultProps;
 
-    public render(): JSX.Element | null {
+    public render(): JSX.Element | null {
         const {padded, theme, label, icon, className, color, size} = this.props;
 
         if (!icon || icon.substr(0, 11) !== 'resource://') {

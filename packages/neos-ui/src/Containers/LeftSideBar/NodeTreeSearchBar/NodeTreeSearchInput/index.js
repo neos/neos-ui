@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {TextInput, Icon, IconButton} from '@neos-project/react-ui-components';
 import mergeClassNames from 'classnames';
 
-import style from './style.css';
+import style from './style.module.css';
 
 const NodeTreeSearchInput = ({
         value,

@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 
 import logo from './logo.svg';
-import style from './style.css';
+import style from './style.module.css';
 
 export default class Logo extends PureComponent {
     render() {

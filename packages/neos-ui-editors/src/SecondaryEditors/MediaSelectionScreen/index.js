@@ -4,7 +4,7 @@ import {neos} from '@neos-project/neos-ui-decorators';
 import {$get} from 'plow-js';
 import {urlWithParams} from '@neos-project/utils-helpers/src/urlWithParams';
 
-import style from './style.css';
+import style from './style.module.css';
 
 @neos()
 class MediaSelectionScreen extends PureComponent {

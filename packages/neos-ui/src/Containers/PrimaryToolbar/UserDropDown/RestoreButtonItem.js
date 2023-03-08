@@ -8,7 +8,7 @@ import {actions} from '@neos-project/neos-ui-redux-store';
 import I18n from '@neos-project/neos-ui-i18n';
 import {$transform, $get} from 'plow-js';
 
-import buttonTheme from './style.css';
+import buttonTheme from './style.module.css';
 
 @connect(
     $transform({

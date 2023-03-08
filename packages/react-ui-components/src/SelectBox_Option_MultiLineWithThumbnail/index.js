@@ -1,7 +1,7 @@
 /* eslint-disable camelcase, react/jsx-pascal-case */
 import {themr} from '@friendsofreactjs/react-css-themr';
 import identifiers from '../identifiers';
-import style from './style.css';
+import style from './style.module.css';
 
 import SelectBox_Option_MultiLineWithThumbnail from './selectBox_Option_MultiLineWithThumbnail';
 

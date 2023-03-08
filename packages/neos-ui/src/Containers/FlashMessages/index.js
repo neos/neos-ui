@@ -6,7 +6,7 @@ import {$transform, $get} from 'plow-js';
 import {actions} from '@neos-project/neos-ui-redux-store';
 import FlashMessage from './FlashMessage/index';
 
-import style from './style.css';
+import style from './style.module.css';
 
 @connect($transform({
     flashMessages: $get('ui.flashMessages')

@@ -8,7 +8,7 @@ describe('<ButtonGroupItem/>', () => {
     const props: ButtonGroupItemProps = {
         element: <div id="foo">Foo button</div>,
         id: 'foo',
-        onClick: jest.fn(),
+        onClick: jest.fn()
     };
 
     it('should render correctly.', () => {

@@ -3,18 +3,18 @@
 
 // jest mocking doesnt work, but we dont need it anyway
 
-const { extname } = require("path");
-const { createHash } = require("crypto");
-const { transformSync } = require("esbuild");
-const { readFileSync } = require("fs");
+const {extname} = require('path');
+const {createHash} = require('crypto');
+const {transformSync} = require('esbuild');
+const {readFileSync} = require('fs');
 
 /** @param {String} path */
 function isTarget(path) {
     return (
-        path.endsWith(".js") ||
-        path.endsWith(".jsx") ||
-        path.endsWith(".ts") ||
-        path.endsWith(".tsx")
+        path.endsWith('.js') ||
+        path.endsWith('.jsx') ||
+        path.endsWith('.ts') ||
+        path.endsWith('.tsx')
     );
 }
 
@@ -22,45 +22,45 @@ function isTarget(path) {
 // you can clear the jest cache also by running `yarn jest --clearCache`
 const thisFileRaw = readFileSync(__filename)
 
-const tsconfigRaw = readFileSync("../../tsconfig.json", "utf8");
+const tsconfigRaw = readFileSync('../../tsconfig.json', 'utf8');
 
 const createTransformer = () => {
-    /** @type {import("esbuild").TransformOptions} */
+    /** @type {import('esbuild').TransformOptions} */
     const options = {
-        format: "cjs",
-        target: "node16",
+        format: 'cjs',
+        target: 'node16',
         sourcemap: true,
         // this way react snapshots are working
         keepNames: true,
-        // make sure to use the same tsconfig as the project to for example add the "use strict" flag
-        tsconfigRaw,
+        // make sure to use the same tsconfig as the project to for example add the 'use strict' flag
+        tsconfigRaw
     };
 
     return {
         canInstrument: true,
         getCacheKey(fileData, filePath) {
-            return createHash("md5")
+            return createHash('md5')
                 .update(thisFileRaw)
                 .update('\0', 'utf8')
                 .update(fileData)
-                .update("\0", "utf8")
+                .update('\0', 'utf8')
                 .update(filePath)
-                .update("\0", "utf8")
-                .update(process.env.NODE_ENV || "")
-                .digest("hex");
+                .update('\0', 'utf8')
+                .update(process.env.NODE_ENV || '')
+                .digest('hex');
         },
         process(source, path) {
             if (!isTarget(path)) {
                 return {
-                    code: source,
+                    code: source
                 };
             }
 
             const extension = extname(path).slice(1);
 
             const result = transformSync(source, {
-                loader: extension === "js" ? "tsx" : extension,
-                ...options,
+                loader: extension === 'js' ? 'tsx' : extension,
+                ...options
             });
 
             if (result.warnings.length) {
@@ -73,10 +73,10 @@ const createTransformer = () => {
             return {
                 code: result.code,
                 // @todo source map doesnt really work in jest errors...
-                map: result.map,
+                map: result.map
             };
-        },
+        }
     };
 };
 
-module.exports = { createTransformer };
+module.exports = {createTransformer};

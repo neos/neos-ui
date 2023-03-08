@@ -9,7 +9,7 @@ describe('<DropDownItem/>', () => {
         children: <div>Foo children</div>,
         className: 'fooClassName',
         id: 'fooId',
-        onClick: jest.fn(),
+        onClick: jest.fn()
     };
 
     it('should render correctly.', () => {

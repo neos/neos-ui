@@ -4,7 +4,7 @@ import {Provider} from 'react-redux';
 import {DndProvider} from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import Neos from './Neos/index';
-import style from './style.css';
+import style from './style.module.css';
 
 import {config, library} from '@fortawesome/fontawesome-svg-core';
 import {fab} from '@fortawesome/free-brands-svg-icons';

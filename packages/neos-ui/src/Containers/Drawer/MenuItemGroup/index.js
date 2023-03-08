@@ -9,7 +9,7 @@ import I18n from '@neos-project/neos-ui-i18n';
 
 import MenuItem from '../MenuItem/index';
 import {TARGET_WINDOW} from '../constants';
-import style from '../style.css';
+import style from '../style.module.css';
 
 export default class MenuItemGroup extends PureComponent {
     static propTypes = {

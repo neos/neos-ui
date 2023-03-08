@@ -15,10 +15,11 @@ import debounce from 'lodash.debounce';
 import {SecondaryInspector} from '@neos-project/neos-ui-inspector';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
+import preprocessNodeConfiguration from '../../../preprocessNodeConfiguration';
 
 import SelectedElement from './SelectedElement/index';
 import TabPanel from './TabPanel/index';
-import style from './style.css';
+import style from './style.module.css';
 
 @neos(globalRegistry => ({
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),
@@ -99,8 +100,8 @@ export default class Inspector extends PureComponent {
                 props.transientValues
             );
 
-            const processedViewConfiguration = this.preprocessViewConfiguration(
-                {node: nodeForContext, parentNode: this.props.parentNode}, [], originalViewConfiguration, originalViewConfiguration
+            const processedViewConfiguration = preprocessNodeConfiguration(
+                {node: nodeForContext, parentNode: this.props.parentNode}, originalViewConfiguration
             );
 
             this.state.viewConfiguration = processedViewConfiguration || originalViewConfiguration;
@@ -187,14 +188,12 @@ export default class Inspector extends PureComponent {
         );
 
         this.configurationIsProcessed = false;
-        const processedViewConfiguration = this.preprocessViewConfiguration(
+        const processedViewConfiguration = preprocessNodeConfiguration(
             {node: nodeForContext, parentNode: this.props.parentNode},
-            [],
-            viewConfiguration,
             originalViewConfiguration
         );
 
-        if (this.configurationIsProcessed === true) {
+        if (processedViewConfiguration !== this.state.viewConfiguration) {
             this.setState({
                 viewConfiguration: processedViewConfiguration
             });

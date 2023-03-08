@@ -1,0 +1,22 @@
+.secondaryInspector {
+    composes: content from '@neos-project/neos-ui/src/Containers/style.module.css';
+    position: relative;
+    background: var(--colors-ContrastDarker);
+    border: 1px solid var(--colors-ContrastDark);
+    border-bottom-width: 0;
+}
+.secondaryInspector--isElevated {
+    z-index: var(--zIndex-SecondaryInspectorElevated-Context);
+}
+.secondaryInspector .close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    font-size: 18px;
+    border-right-width: 0;
+    border-top-width: 0;
+    z-index: var(--zIndex-SecondaryInspector-Close);
+}

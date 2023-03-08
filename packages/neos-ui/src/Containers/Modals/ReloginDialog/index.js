@@ -13,7 +13,7 @@ import Dialog from '@neos-project/react-ui-components/src/Dialog/';
 import TextInput from '@neos-project/react-ui-components/src/TextInput/';
 import Tooltip from '@neos-project/react-ui-components/src/Tooltip/';
 import I18n from '@neos-project/neos-ui-i18n';
-import style from './style.css';
+import style from './style.module.css';
 
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')

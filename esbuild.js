@@ -4,7 +4,7 @@ const {cssModules} = require('./cssModules');
 const esbuild = require('esbuild');
 const { version } = require('./package.json')
 
-const isProduction = process.env.NODE_ENV === 'production' || process.argv.includes('--production');
+const isProduction = process.argv.includes('--production');
 const isE2ETesting = process.argv.includes('--e2e-testing');
 const isWatch = process.argv.includes('--watch');
 const isAnalyze = process.argv.includes('--analyze');
@@ -77,8 +77,6 @@ const options = {
         },
         cssModules(
             {
-                includeFilter: /\.css$/,
-                excludeFilter: /@ckeditor\/|@fortawesome\/fontawesome-svg-core\/|styleHostOnly\.css|normalize\.css/,
                 visitor: compileWithCssVariables(),
                 targets: {
                     chrome: 80 // aligns somewhat to es2020

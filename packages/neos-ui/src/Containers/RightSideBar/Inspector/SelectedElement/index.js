@@ -11,8 +11,8 @@ import I18n from '@neos-project/neos-ui-i18n';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 
-import sidebarStyle from '../../style.css';
-import style from './style.css';
+import sidebarStyle from '../../style.module.css';
+import style from './style.module.css';
 
 @neos(globalRegistry => ({
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')

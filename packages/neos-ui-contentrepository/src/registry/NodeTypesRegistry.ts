@@ -169,7 +169,7 @@ export default class NodeTypesRegistry extends SynchronousRegistry<NodeType> {
         const nodeType = this.get(nodeTypeName);
 
         if (!nodeType) {
-            console.error('Missing nodetype:', nodeTypeName); // tslint:disable-line no-console
+            console.error('Missing nodetype:', nodeTypeName);
             return null;
         }
 
@@ -257,7 +257,7 @@ export default class NodeTypesRegistry extends SynchronousRegistry<NodeType> {
         };
 
         if (!nodeType) {
-            console.error('Nodetype not found', nodeTypeName); // tslint:disable-line no-console
+            console.error('Nodetype not found', nodeTypeName);
             return null;
         }
 
@@ -270,7 +270,7 @@ export default class NodeTypesRegistry extends SynchronousRegistry<NodeType> {
         const nodeType = this.get(nodeTypeName);
 
         if (!nodeType) {
-            console.error('Nodetype not found', nodeTypeName); // tslint:disable-line no-console
+            console.error('Nodetype not found', nodeTypeName);
             return false;
         }
 

@@ -9,8 +9,8 @@ import I18n from '@neos-project/neos-ui-i18n';
 
 import InspectorEditorEnvelope from '../InspectorEditorEnvelope/index';
 import InspectorViewEnvelope from '../InspectorViewEnvelope/index';
-import sidebarStyle from '../../style.css';
-import style from './style.css';
+import sidebarStyle from '../../style.module.css';
+import style from './style.module.css';
 
 export default class PropertyGroup extends PureComponent {
     static propTypes = {

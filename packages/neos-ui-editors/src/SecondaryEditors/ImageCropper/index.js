@@ -10,7 +10,7 @@ import {$get} from 'plow-js';
 
 import AspectRatioDropDown from './AspectRatioDropDown/index';
 import CropConfiguration, {CustomAspectRatioOption, LockedAspectRatioStrategy} from './model.js';
-import style from './style.css';
+import style from './style.module.css';
 
 import './react_crop.vanilla-css';
 

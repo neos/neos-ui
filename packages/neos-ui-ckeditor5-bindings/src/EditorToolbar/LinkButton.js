@@ -8,7 +8,7 @@ import {IconButton} from '@neos-project/react-ui-components';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 
-import style from './LinkButton.css';
+import style from './LinkButton.module.css';
 
 @connect($transform({
     isOpen: selectors.UI.ContentCanvas.isLinkEditorOpen

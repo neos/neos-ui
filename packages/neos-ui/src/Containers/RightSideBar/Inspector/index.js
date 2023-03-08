@@ -15,6 +15,7 @@ import debounce from 'lodash.debounce';
 import {SecondaryInspector} from '@neos-project/neos-ui-inspector';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
+import preprocessNodeConfiguration from '../../../preprocessNodeConfiguration';
 
 import SelectedElement from './SelectedElement/index';
 import TabPanel from './TabPanel/index';
@@ -99,8 +100,8 @@ export default class Inspector extends PureComponent {
                 props.transientValues
             );
 
-            const processedViewConfiguration = this.preprocessViewConfiguration(
-                {node: nodeForContext, parentNode: this.props.parentNode}, [], originalViewConfiguration, originalViewConfiguration
+            const processedViewConfiguration = preprocessNodeConfiguration(
+                {node: nodeForContext, parentNode: this.props.parentNode}, originalViewConfiguration
             );
 
             this.state.viewConfiguration = processedViewConfiguration || originalViewConfiguration;
@@ -132,41 +133,6 @@ export default class Inspector extends PureComponent {
         this.preprocessViewConfigurationDebounced.cancel();
     }
 
-    //
-    // Return updated viewConfiguration, while keeping originalViewConfiguration to read original property values from it
-    //
-    preprocessViewConfiguration = (context = {}, path = [], viewConfiguration, originalViewConfiguration) => {
-        const currentLevel = path.length === 0 ? viewConfiguration : $get(path, viewConfiguration);
-        Object.keys(currentLevel).forEach(propertyName => {
-            const propertyValue = currentLevel[propertyName];
-            const newPath = path.slice();
-            newPath.push(propertyName);
-            const originalPropertyValue = $get(newPath, originalViewConfiguration);
-
-            if (propertyValue !== null && typeof propertyValue === 'object') {
-                viewConfiguration = this.preprocessViewConfiguration(context, newPath, viewConfiguration, originalViewConfiguration);
-            } else if (typeof originalPropertyValue === 'string' && originalPropertyValue.indexOf('ClientEval:') === 0) {
-                const {node, parentNode} = context; // eslint-disable-line
-                try {
-                    const evaluatedValue = eval(originalPropertyValue.replace('ClientEval:', '')); // eslint-disable-line
-                    if (evaluatedValue !== propertyValue) {
-                        this.configurationIsProcessed = true;
-                        viewConfiguration = produce(
-                            viewConfiguration,
-                            draft => {
-                                return $set(newPath, evaluatedValue, draft);
-                            }
-                        );
-                    }
-                } catch (e) {
-                    console.warn('An error occurred while trying to evaluate "' + originalPropertyValue + '"\n', e);
-                }
-            }
-        });
-
-        return viewConfiguration;
-    };
-
     preprocessViewConfigurationDebounced = debounce(() => {
         const {viewConfiguration, originalViewConfiguration} = this.state;
 
@@ -186,14 +152,12 @@ export default class Inspector extends PureComponent {
         );
 
         this.configurationIsProcessed = false;
-        const processedViewConfiguration = this.preprocessViewConfiguration(
+        const processedViewConfiguration = preprocessNodeConfiguration(
             {node: nodeForContext, parentNode: this.props.parentNode},
-            [],
-            viewConfiguration,
             originalViewConfiguration
         );
 
-        if (this.configurationIsProcessed === true) {
+        if (processedViewConfiguration !== this.state.viewConfiguration) {
             this.setState({
                 viewConfiguration: processedViewConfiguration
             });

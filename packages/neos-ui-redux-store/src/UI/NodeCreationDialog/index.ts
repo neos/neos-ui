@@ -7,12 +7,16 @@ export interface State extends Readonly<{
     isOpen: boolean;
     label: string;
     configuration: {} | null;
+    parentNodeContextPath: string
+    nodeType: string
 }> {}
 
 export const defaultState: State = {
     isOpen: false,
     label: '',
-    configuration: null
+    configuration: null,
+    parentNodeContextPath: '',
+    nodeType: ''
 };
 
 //
@@ -39,7 +43,7 @@ interface TransientValuesMap {
     [elementName: string]: TransientValue;
 }
 
-const open = (label: string, configuration: {}) => createAction(actionTypes.OPEN, {label, configuration});
+const open = (label: string, configuration: {}, parentNodeContextPath: string, nodeType: string) => createAction(actionTypes.OPEN, {label, configuration, parentNodeContextPath, nodeType});
 const back = () => createAction(actionTypes.BACK);
 const cancel = () => createAction(actionTypes.CANCEL);
 const apply = (transientValues: TransientValuesMap) => createAction(actionTypes.APPLY, transientValues);
@@ -65,24 +69,32 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
             draft.isOpen = true;
             draft.label = action.payload.label;
             draft.configuration = action.payload.configuration;
+            draft.parentNodeContextPath = action.payload.parentNodeContextPath;
+            draft.nodeType = action.payload.nodeType;
             break;
         }
         case actionTypes.BACK: {
             draft.isOpen = false;
             draft.label = '';
             draft.configuration = null;
+            draft.parentNodeContextPath = '';
+            draft.nodeType = '';
             break;
         }
         case actionTypes.CANCEL: {
             draft.isOpen = false;
             draft.label = '';
             draft.configuration = null;
+            draft.parentNodeContextPath = '';
+            draft.nodeType = '';
             break;
         }
         case actionTypes.APPLY: {
             draft.isOpen = false;
             draft.label = '';
             draft.configuration = null;
+            draft.parentNodeContextPath = '';
+            draft.nodeType = '';
             break;
         }
     }

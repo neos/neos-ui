@@ -30,6 +30,8 @@ echo "##########################################################################
 dc exec -T php bash <<-'BASH'
     cd /usr/src/app
     sudo chown -R docker:docker .
+    # WHY: change owner for composer cache for docker execution
+    sudo chown -R docker:docker /home/circleci/
     cd TestDistribution
     composer install
 BASH

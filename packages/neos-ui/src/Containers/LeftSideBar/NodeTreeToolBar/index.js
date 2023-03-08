@@ -19,7 +19,7 @@ import {
     RefreshPageTree,
     ToggleContentTree
 } from './Buttons/index';
-import style from './style.css';
+import style from './style.module.css';
 
 @connect(
     $transform({

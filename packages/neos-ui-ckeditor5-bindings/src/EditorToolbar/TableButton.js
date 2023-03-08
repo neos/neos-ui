@@ -5,7 +5,7 @@ import {IconButton} from '@neos-project/react-ui-components';
 import mergeClassNames from 'classnames';
 import {neos} from '@neos-project/neos-ui-decorators';
 
-import style from './TableButton.css';
+import style from './TableButton.module.css';
 import './TableStyles.vanilla-css';
 
 const numberRange = (start, end) => new Array(end - start + 1).fill().map((d, i) => i + start);

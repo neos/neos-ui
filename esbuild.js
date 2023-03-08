@@ -77,8 +77,6 @@ const options = {
         },
         cssModules(
             {
-                includeFilter: /\.css$/,
-                excludeFilter: /@ckeditor\/|@fortawesome\/fontawesome-svg-core\/|styleHostOnly\.css|normalize\.css/,
                 visitor: compileWithCssVariables(),
                 targets: {
                     chrome: 80 // aligns somewhat to es2020

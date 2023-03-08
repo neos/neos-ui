@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {EditorToolbar} from '@neos-project/neos-ui-ckeditor5-bindings/src/EditorToolbar';
-import style from './index.css';
+import style from './index.module.css';
 
 @neos(globalRegistry => ({
     globalRegistry,

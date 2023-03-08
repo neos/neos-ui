@@ -1,5 +1,5 @@
 .leftSideBar {
-    composes: leftSidebar from '../style.css';
+    composes: leftSidebar from '../style.module.css';
     display: flex;
     flex-direction: column;
     flex-basis: 100%;
@@ -25,7 +25,7 @@
     line-height: 40px;
     font-weight: bold;
     background: var(--colors-ContrastDarkest);
-    composes: leftSideBarHeader from '../style.css';
+    composes: leftSideBarHeader from '../style.module.css';
 }
 
 .leftSideBar__toggleBtn {

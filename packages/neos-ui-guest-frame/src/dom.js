@@ -4,7 +4,7 @@
 //
 import animate from 'amator';
 
-import style from './style.css';
+import style from './style.module.css';
 
 //
 // Get the guest frame's document object

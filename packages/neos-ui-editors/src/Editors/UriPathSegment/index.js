@@ -6,7 +6,7 @@ import backend from '@neos-project/neos-ui-backend-connector';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors} from '@neos-project/neos-ui-redux-store';
 import {TextInput, IconButton} from '@neos-project/react-ui-components';
-import style from './style.css';
+import style from './style.module.css';
 
 const defaultOptions = {
     autoFocus: false,

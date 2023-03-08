@@ -6,7 +6,7 @@ import {selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {Tooltip} from '@neos-project/react-ui-components';
 import throttle from 'lodash.throttle';
-import style from './style.css';
+import style from './style.module.css';
 
 import {findAllOccurrencesOfNodePropertyInGuestFrame, getAbsolutePositionOfElementInGuestFrame, getGuestFrameWindow, getGuestFrameBody} from '@neos-project/neos-ui-guest-frame/src/dom';
 

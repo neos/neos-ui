@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {$get, $transform} from 'plow-js';
 import mergeClassNames from 'classnames';
-import style from './style.css';
+import style from './style.module.css';
 
 import FlashMessages from './FlashMessages/index';
 

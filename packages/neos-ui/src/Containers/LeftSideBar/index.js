@@ -11,7 +11,7 @@ import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 import SideBar from '@neos-project/react-ui-components/src/SideBar/';
 import {neos} from '@neos-project/neos-ui-decorators';
 
-import style from './style.css';
+import style from './style.module.css';
 
 @neos(globalRegistry => ({
     containerRegistry: globalRegistry.get('containers'),

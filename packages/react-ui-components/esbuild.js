@@ -95,7 +95,6 @@ async function main() {
             },
             cssModules(
                 {
-                    includeFilter: /\.css$/,
                     visitor: compileWithCssVariables(),
                     targets: {
                         chrome: 80 // aligns somewhat to es2020

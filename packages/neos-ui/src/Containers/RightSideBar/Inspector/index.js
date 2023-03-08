@@ -18,7 +18,7 @@ import {neos} from '@neos-project/neos-ui-decorators';
 
 import SelectedElement from './SelectedElement/index';
 import TabPanel from './TabPanel/index';
-import style from './style.css';
+import style from './style.module.css';
 
 @neos(globalRegistry => ({
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),

@@ -9,7 +9,7 @@ import {Tooltip} from '@neos-project/react-ui-components';
 import I18n from '@neos-project/neos-ui-i18n';
 import {neos} from '@neos-project/neos-ui-decorators';
 
-import style from './style.css';
+import style from './style.module.css';
 
 import {Icon} from '@neos-project/react-ui-components';
 

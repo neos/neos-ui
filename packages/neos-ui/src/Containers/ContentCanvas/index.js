@@ -10,7 +10,7 @@ import {neos} from '@neos-project/neos-ui-decorators';
 
 import Frame from '@neos-project/react-ui-components/src/Frame/';
 
-import style from './style.css';
+import style from './style.module.css';
 
 @connect($transform({
     isFringeLeft: $get('ui.leftSideBar.isHidden'),

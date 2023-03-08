@@ -12,7 +12,7 @@ import {dndTypes} from '@neos-project/neos-ui-constants';
 
 import {PageTreeNode, ContentTreeNode} from './Node/index';
 
-import style from './style.css';
+import style from './style.module.css';
 
 const ConnectedDragLayer = connect((state, {currentlyDraggedNodes}) => {
     const getNodeByContextPath = selectors.CR.Nodes.nodeByContextPath(state);

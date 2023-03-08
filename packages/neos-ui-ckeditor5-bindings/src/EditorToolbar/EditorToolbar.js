@@ -4,7 +4,7 @@ import mergeClassNames from 'classnames';
 
 import {neos} from '@neos-project/neos-ui-decorators';
 
-import style from './index.css';
+import style from './index.module.css';
 import {renderToolbarComponents} from './Helpers/index';
 
 @neos(globalRegistry => ({

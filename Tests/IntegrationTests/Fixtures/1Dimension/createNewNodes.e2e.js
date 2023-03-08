@@ -1,17 +1,86 @@
 import {Selector, RequestLogger} from 'testcafe';
 import {ReactSelector} from 'testcafe-react-selectors';
-import {beforeEach, subSection, checkPropTypes} from './../../utils.js';
-import {Page} from './../../pageModel';
+import {beforeEach, subSection, checkPropTypes} from '../../utils';
+import {Page} from '../../pageModel';
 
 /* global fixture:true */
 
 const changeRequestLogger = RequestLogger(request => request.url.endsWith('/neos/ui-services/change') && request.method === 'post' && request.isAjax);
-const contentIframeSelector = Selector('[name="neos-content-main"]', { timeout: 2000 });
+const contentIframeSelector = Selector('[name="neos-content-main"]', {timeout: 2000});
 
 fixture`Create new nodes`
     .beforeEach(beforeEach)
     .afterEach(() => checkPropTypes())
     .requestHooks(changeRequestLogger);
+
+test('Check ClientEval for dependencies between properties of NodeTypes in Creation Dialog', async t => {
+    // create node with NodeType labeled: NodeWithDependingProperties_Test
+    await t
+        .click(Selector('#neos-ContentTree-ToggleContentTree'))
+        .click(Page.treeNode.withText('Content Collection (main)'))
+        .click(Selector('#neos-ContentTree-AddNode'))
+        .click(ReactSelector('NodeTypeItem').find('button>span>span').withText('NodeWithDependingProperties_Test'))
+
+    // in Node Creation Dialog
+    const propertyDependedOnSelectBoxSelector = ReactSelector('SelectBoxEditor')
+        .withProps('identifier', 'propertyDependedOn--creation-dialog')
+        .findReact('SelectBox')
+
+    const propertyDependedOnSelectBox = await propertyDependedOnSelectBoxSelector.getReact()
+
+    const dependingPropertySelectBoxSelector = ReactSelector('SelectBoxEditor')
+        .withProps('identifier', 'dependingProperty--creation-dialog')
+        .findReact('SelectBox')
+
+    const dependingPropertySelectBox = await dependingPropertySelectBoxSelector.getReact()
+
+    await t
+        .expect(propertyDependedOnSelectBox.props.value).eql('odd')
+        .expect(propertyDependedOnSelectBox.props.options).eql([
+            {'label': 'odd', value: 'odd'},
+            {'label': 'even', value: 'even'}
+        ])
+
+    await t
+        .expect(dependingPropertySelectBox.props.value).eql('')
+        .expect(dependingPropertySelectBox.props.options).eql([
+            {label: 'label_1', value: 1},
+            {label: 'label_3', value: 3},
+            {label: 'label_5', value: 5},
+            {label: 'label_7', value: 7},
+            {label: 'label_9', value: 9}
+        ])
+
+    await t.click(propertyDependedOnSelectBoxSelector)
+    await t
+        .click(Selector('span').withText('even'))
+        // FIXME: maybe we should wait for the loading state to finish instead of fixed number of seconds
+        .wait(2000)
+
+    // Re-fetch value
+    const newPropertyDependedOnSelectBoxValue = (await propertyDependedOnSelectBoxSelector
+        .getReact())
+        .props
+        .value
+
+    // Re-fetch options
+    const newDependingPropertySelectBoxOptions = (await dependingPropertySelectBoxSelector
+        .getReact())
+        .props
+        .options
+
+    await t
+        .expect(newPropertyDependedOnSelectBoxValue).eql('even')
+
+    await t
+        .expect(newDependingPropertySelectBoxOptions).eql([
+            {label: 'label_2', value: 2},
+            {label: 'label_4', value: 4},
+            {label: 'label_6', value: 6},
+            {label: 'label_8', value: 8},
+            {label: 'label_10', value: 10}
+        ])
+})
 
 test('Check the nodetype help in create dialog', async t => {
     subSection('Open create dialog node');
@@ -25,22 +94,21 @@ test('Check the nodetype help in create dialog', async t => {
 
     subSection('Open context help and check for Markdown rendering');
     await t
-        .click(ReactSelector('NodeTypeItem').withProps({ nodeType: { label: 'Headline_Test' }}).find('button svg[data-icon="question-circle"]'))
+        .click(ReactSelector('NodeTypeItem').withProps({nodeType: {label: 'Headline_Test'}}).find('button svg[data-icon="question-circle"]'))
         .expect(ReactSelector('ReactMarkdown').find('strong').withText('test').exists).ok('Bold test from Markdown has been rendered');
 });
 
-test('Check that nodetype withou help has no help button', async t => {
+test('Check that nodetype without help has no help button', async t => {
     await t
         .switchToIframe(contentIframeSelector)
         .click(Selector('.neos-contentcollection'))
         .click(Selector('#neos-InlineToolbar-AddNode'))
         .switchToMainWindow()
         .click(Selector('button#into'))
-        .expect(ReactSelector('NodeTypeItem').withProps({ nodeType: { label: 'Text_Test' }}).find('button').count).eql(1);
+        .expect(ReactSelector('NodeTypeItem').withProps({nodeType: {label: 'Text_Test'}}).find('button').count).eql(1);
 });
 
 test('Create an Image node from ContentTree', async t => {
-
     await t.switchToIframe(contentIframeSelector);
     const initialImageCount = await Selector('.test-image[src]').count;
     await t.switchToMainWindow();
@@ -98,7 +166,7 @@ test('Can create content node from inside InlineUI', async t => {
         .click(Selector('#neos-InlineToolbar-AddNode'))
         .switchToMainWindow()
         .click(Selector('button#into'))
-        .click(ReactSelector('NodeTypeItem').withProps({ nodeType: { label: 'Headline_Test' }}));
+        .click(ReactSelector('NodeTypeItem').withProps({nodeType: {label: 'Headline_Test'}}));
 
     subSection('Type something inside of it');
     await Page.waitForIframeLoading(t);

@@ -37,7 +37,13 @@ lerna-debug.log
 npm-debug.log
 
 #
+# System Files
+#
+.DS_Store
+
+#
 # editors / IDEs
 #
 .vscode/
 .idea/
+*.iml

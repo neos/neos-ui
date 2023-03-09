@@ -17,14 +17,8 @@ namespace Neos\Neos\Ui\Service;
 use Neos\ContentRepository\Core\ContentRepository;
 use Neos\ContentRepository\Core\Feature\WorkspacePublication\Command\PublishWorkspace;
 use Neos\ContentRepository\Core\Feature\WorkspaceRebase\Command\RebaseWorkspace;
-use Neos\ContentRepository\Core\Feature\WorkspaceCommandHandler;
-use Neos\ContentRepository\Core\SharedModel\User\UserId;
 use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
-use Neos\ContentRepository\Core\Factory\ContentRepositoryId;
 use Neos\Flow\Annotations as Flow;
-use Neos\Flow\Persistence\PersistenceManagerInterface;
-use Neos\Neos\Domain\Model\User;
-use Neos\Neos\Service\UserService;
 
 /**
  * A generic ContentRepository Publishing Service
@@ -34,38 +28,18 @@ use Neos\Neos\Service\UserService;
  */
 class PublishingService
 {
-    /**
-     * @Flow\Inject
-     * @var PersistenceManagerInterface
-     */
-    protected $persistenceManager;
-
-    /**
-     * @Flow\Inject
-     * @var UserService
-     */
-    protected $userService;
-
     public function publishWorkspace(ContentRepository $contentRepository, WorkspaceName $workspaceName): void
     {
-        /** @var User $backendUser */
-        $backendUser = $this->userService->getBackendUser();
-        $userIdentifier = UserId::fromString(
-            $this->persistenceManager->getIdentifierByObject($backendUser)
-        );
-
         // TODO: only rebase if necessary!
         $contentRepository->handle(
             RebaseWorkspace::create(
-                $workspaceName,
-                $userIdentifier
+                $workspaceName
             )
         )->block();
 
         $contentRepository->handle(
             new PublishWorkspace(
-                $workspaceName,
-                $userIdentifier
+                $workspaceName
             )
         )->block();
     }

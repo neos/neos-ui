@@ -12,11 +12,9 @@ namespace Neos\Neos\Ui\Domain\Model;
  */
 
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
-use Neos\ContentRepository\Core\SharedModel\User\UserId;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
-use Neos\Neos\Domain\Model\User;
 use Neos\Neos\Service\UserService;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\NodeCreated;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;

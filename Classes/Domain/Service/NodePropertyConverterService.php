@@ -183,7 +183,7 @@ class NodePropertyConverterService
     {
         $identifiers = [];
         foreach ($nodes as $node) {
-            $identifiers[] = (string)$node->getNodeAggregateIdentifier();
+            $identifiers[] = (string)$node->nodeAggregateId;
         }
         return $identifiers;
     }

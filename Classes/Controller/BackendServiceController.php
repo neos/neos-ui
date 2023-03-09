@@ -13,39 +13,38 @@ namespace Neos\Neos\Ui\Controller;
  * source code.
  */
 
-use Neos\ContentRepository\Core\Feature\WorkspacePublication\Dto\NodeIdsToPublishOrDiscard;
-use Neos\ContentRepository\Core\Feature\WorkspacePublication\Dto\NodeIdToPublishOrDiscard;
-use Neos\Neos\FrontendRouting\NodeAddressFactory;
-use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
 use Neos\ContentRepository\Core\Feature\WorkspacePublication\Command\DiscardIndividualNodesFromWorkspace;
 use Neos\ContentRepository\Core\Feature\WorkspacePublication\Command\PublishIndividualNodesFromWorkspace;
-use Neos\ContentRepository\Core\SharedModel\User\UserId;
-use Neos\Neos\FrontendRouting\NodeAddress;
+use Neos\ContentRepository\Core\Feature\WorkspacePublication\Dto\NodeIdsToPublishOrDiscard;
+use Neos\ContentRepository\Core\Feature\WorkspacePublication\Dto\NodeIdToPublishOrDiscard;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
+use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
-use Neos\Neos\Domain\Model\WorkspaceName as NeosWorkspaceName;
+use Neos\Eel\FlowQuery\FlowQuery;
+use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\ActionRequest;
 use Neos\Flow\Mvc\ActionResponse;
+use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\Flow\Mvc\View\JsonView;
+use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Flow\Property\PropertyMapper;
 use Neos\Flow\Security\Context;
-use Neos\Neos\Domain\Model\User;
+use Neos\Neos\Domain\Model\WorkspaceName as NeosWorkspaceName;
+use Neos\Neos\FrontendRouting\NodeAddress;
+use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;
+use Neos\Neos\Service\UserService;
 use Neos\Neos\Ui\ContentRepository\Service\NodeService;
 use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService;
 use Neos\Neos\Ui\Domain\Model\ChangeCollection;
-use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
-use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
-use Neos\Neos\Ui\Fusion\Helper\WorkspaceHelper;
-use Neos\Flow\Annotations as Flow;
-use Neos\Flow\Mvc\Controller\ActionController;
-use Neos\Flow\Persistence\PersistenceManagerInterface;
-use Neos\Neos\Service\UserService;
-use Neos\Neos\Ui\Domain\Model\FeedbackCollection;
 use Neos\Neos\Ui\Domain\Model\Feedback\Messages\Error;
 use Neos\Neos\Ui\Domain\Model\Feedback\Messages\Info;
 use Neos\Neos\Ui\Domain\Model\Feedback\Messages\Success;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
+use Neos\Neos\Ui\Domain\Model\FeedbackCollection;
 use Neos\Neos\Ui\Domain\Service\NodeTreeBuilder;
-use Neos\Eel\FlowQuery\FlowQuery;
+use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
+use Neos\Neos\Ui\Fusion\Helper\WorkspaceHelper;
 use Neos\Neos\Ui\Service\NodeClipboard;
 use Neos\Neos\Ui\Service\NodePolicyService;
 use Neos\Neos\Ui\Service\PublishingService;
@@ -232,8 +231,7 @@ class BackendServiceController extends ActionController
             $contentRepository->handle(
                 PublishIndividualNodesFromWorkspace::create(
                     $workspaceName,
-                    NodeIdsToPublishOrDiscard::create(...$nodeIdentifiersToPublish),
-                    $this->getCurrentUserIdentifier()
+                    NodeIdsToPublishOrDiscard::create(...$nodeIdentifiersToPublish)
                 )
             )->block();
 
@@ -286,8 +284,7 @@ class BackendServiceController extends ActionController
             $contentRepository->handle(
                 DiscardIndividualNodesFromWorkspace::create(
                     $workspaceName,
-                    NodeIdsToPublishOrDiscard::create(...$nodeIdentifiersToDiscard),
-                    $this->getCurrentUserIdentifier()
+                    NodeIdsToPublishOrDiscard::create(...$nodeIdentifiersToDiscard)
                 )
             )->block();
 
@@ -543,11 +540,11 @@ class BackendServiceController extends ActionController
         $result = [];
         foreach ($nodes as $nodeAddress) {
             $subgraph = $contentRepository->getContentGraph()->getSubgraph(
-                $nodeAddress->contentStreamIdentifier,
+                $nodeAddress->contentStreamId,
                 $nodeAddress->dimensionSpacePoint,
                 VisibilityConstraints::withoutRestrictions()
             );
-            $node = $subgraph->findNodeById($nodeAddress->nodeAggregateIdentifier);
+            $node = $subgraph->findNodeById($nodeAddress->nodeAggregateId);
             if (!is_null($node)) {
                 $result[$nodeAddress->serializeForUri()] = [
                     'policy' => $this->nodePolicyService->getNodePolicyInformation($node)
@@ -600,15 +597,6 @@ class BackendServiceController extends ActionController
         };
 
         return json_encode($result, JSON_THROW_ON_ERROR);
-    }
-
-    protected function getCurrentUserIdentifier(): UserId
-    {
-        /** @var User $backendUser */
-        $backendUser = $this->userService->getBackendUser();
-        return UserId::fromString(
-            $this->persistenceManager->getIdentifierByObject($backendUser)
-        );
     }
 
     /**

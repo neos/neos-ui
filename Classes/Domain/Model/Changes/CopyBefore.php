@@ -12,10 +12,9 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
+use Neos\ContentRepository\Core\DimensionSpace\OriginDimensionSpacePoint;
 use Neos\ContentRepository\Core\Feature\NodeDuplication\Command\CopyNodesRecursively;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeName;
-use Neos\ContentRepository\Core\DimensionSpace\OriginDimensionSpacePoint;
-use Neos\ContentRepository\Core\SharedModel\User\UserId;
 
 class CopyBefore extends AbstractStructuralChange
 {
@@ -68,7 +67,6 @@ class CopyBefore extends AbstractStructuralChange
                 ),
                 $subject,
                 OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->subgraphIdentity->dimensionSpacePoint),
-                UserId::forSystemUser(), // TODO
                 $parentNodeOfSucceedingSibling->nodeAggregateId,
                 $succeedingSibling->nodeAggregateId,
                 $targetNodeName

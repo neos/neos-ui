@@ -44,9 +44,8 @@ export function * watchStopLoading({globalRegistry, store}) {
 export function * watchReload() {
     yield takeLatest(actionTypes.UI.ContentCanvas.RELOAD, function * (action) {
         const {uri} = action.payload;
-        const currentIframeUrl = new URL(yield select($get('ui.contentCanvas.src')), document.location.href);
-        const currentEditPreviewMode = yield select(selectors.UI.EditPreviewMode.currentEditPreviewMode);
-        currentIframeUrl.searchParams.set('editPreviewMode', currentEditPreviewMode);
+
+        const currentIframeUrl = yield select(selectors.UI.ContentCanvas.src);
 
         [].slice.call(document.querySelectorAll(`iframe[name=neos-content-main]`)).forEach(iframe => {
             const iframeWindow = iframe.contentWindow || iframe;
@@ -56,7 +55,7 @@ export function * watchReload() {
             // might be already handling this.
             // If the new uri is provided in the action payload, use that
             //
-            if (iframeWindow.location.href === currentIframeUrl.toString()) {
+            if (iframeWindow.location.href === currentIframeUrl) {
                 if (uri) {
                     const uriUrl = new URL(uri, document.location.href);
                     uriUrl.searchParams.set('editPreviewMode', currentEditPreviewMode);

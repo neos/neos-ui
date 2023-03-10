@@ -17,12 +17,7 @@ import style from './style.css';
     isFringeRight: $get('ui.rightSideBar.isHidden'),
     isFullScreen: $get('ui.fullScreen.isFullScreen'),
     backgroundColor: $get('ui.contentCanvas.backgroundColor'),
-    src: state => {
-        const src = new URL($get('ui.contentCanvas.src', state), document.location.href);
-        const editPreviewMode = selectors.UI.EditPreviewMode.currentEditPreviewMode(state);
-        src.searchParams.set('editPreviewMode', editPreviewMode);
-        return src.toString();
-    },
+    src: selectors.UI.ContentCanvas.src,
     baseNodeType: $get('ui.pageTree.filterNodeType'),
     currentEditPreviewMode: selectors.UI.EditPreviewMode.currentEditPreviewMode
 }), {

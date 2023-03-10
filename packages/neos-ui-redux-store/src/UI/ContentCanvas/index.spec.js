@@ -76,3 +76,15 @@ test(`The "stopLoading" action should set the proper loading flag.`, () => {
     const nextState = reducer(state, actions.stopLoading());
     expect(nextState.isLoading).toBe(false);
 });
+
+test(`contentCanvas.src selector also calculates the editPreviewMode into the uri as query param.`, () => {
+    const state = {
+        ui: {
+            contentCanvas: {
+                src: "http://127.0.0.1:8081/neos/preview?node%5B__contextNodePath%5D=%2Fsites%2Fneosdemo%40user-admin%3Blanguage%3Den_US"
+            },
+            editPreviewMode: "rawContent"
+        }
+    };
+    expect(selectors.src(state)).toBe("http://127.0.0.1:8081/neos/preview?node%5B__contextNodePath%5D=%2Fsites%2Fneosdemo%40user-admin%3Blanguage%3Den_US&editPreviewMode=rawContent");
+});

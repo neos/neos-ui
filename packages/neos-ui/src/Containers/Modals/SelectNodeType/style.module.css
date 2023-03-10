@@ -149,11 +149,12 @@
     padding-bottom: var(--spacing-Full);
 }
 .nodeTypeDialogHeader__filter {
+    max-width: 342px;
     position: relative;
     display: flex;
     flex: 1;
     align-items: center;
-    margin-right: var(--spacing-Full);
+    margin-left: var(--spacing-Full);
 }
 .nodeTypeDialogHeader__filterInput {
     padding-left: var(--spacing-GoldenUnit);

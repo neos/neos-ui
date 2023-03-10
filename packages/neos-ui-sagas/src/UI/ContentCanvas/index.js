@@ -57,9 +57,19 @@ export function * watchReload() {
             //
             if (iframeWindow.location.href === currentIframeUrl) {
                 if (uri) {
-                    const uriUrl = new URL(uri, document.location.href);
-                    uriUrl.searchParams.set('editPreviewMode', currentEditPreviewMode);
-                    iframeWindow.location.href = uriUrl.toString();
+                    const state = yield select();
+                    // @todo fix me, idk why we dont just write the src in the reducer on UI.ContentCanvas.RELOAD
+                    const reloadSrc = selectors.UI.ContentCanvas.src({
+                        ...state,
+                        ui: {
+                            ...state.ui,
+                            contentCanvas: {
+                                ...state.contentCanvas,
+                                src: uri
+                            }
+                        }
+                    });
+                    iframeWindow.location.href = reloadSrc;
                 } else {
                     iframeWindow.location.reload();
                 }

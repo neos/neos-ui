@@ -12,7 +12,7 @@ export const isLinkEditorOpen = (state: GlobalState) => $get(['ui', 'contentCanv
 
 export const src = (state: GlobalState) => {
     const src = state?.ui?.contentCanvas?.src;
-    if (src === null || src === "") {
+    if (src === null || src === '') {
         return src;
     }
     const contentCanvasUri = new URL(src);

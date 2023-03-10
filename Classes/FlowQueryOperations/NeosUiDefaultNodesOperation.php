@@ -83,8 +83,8 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
         $parents = [];
         $currentNode = $subgraph->findParentNode($documentNode->nodeAggregateId);
         if ($currentNode) {
-            $currentNodePath = $subgraph->findNodePath($currentNode->nodeAggregateId);
-            $siteNodePath = $subgraph->findNodePath($siteNode->nodeAggregateId);
+            $currentNodePath = $subgraph->retrieveNodePath($currentNode->nodeAggregateId);
+            $siteNodePath = $subgraph->retrieveNodePath($siteNode->nodeAggregateId);
             $parentNodeIsUnderneathSiteNode = str_starts_with((string)$currentNodePath, (string)$siteNodePath);
             while ($currentNode instanceof Node
                 && !$currentNode->nodeAggregateId->equals($siteNode->nodeAggregateId)
@@ -151,7 +151,7 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
         if ($loadingDepth === 0) {
             throw new \RuntimeException('TODO: Loading Depth 0 not supported');
         }
-        $subtree = $nodeAccessor->findSubtrees([$siteNode], $loadingDepth, $nodeTypeConstraints);
+        $subtree = $contentSubgraph->findSubtree([$siteNode], $loadingDepth, $nodeTypeConstraints);
         $subtree = $subtree->getChildren()[0];
         $this->flattenSubtreeToNodeList($nodeAccessor, $subtree, $nodes);*/
 

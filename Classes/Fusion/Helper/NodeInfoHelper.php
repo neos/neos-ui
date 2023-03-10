@@ -239,7 +239,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             'label' => $node->getLabel(),
             'isAutoCreated' => self::isAutoCreated($node, $subgraph),
             // TODO: depth is expensive to calculate; maybe let's get rid of this?
-            'depth' => $subgraph->findNodePath($node->nodeAggregateId)->getDepth(),
+            'depth' => $subgraph->retrieveNodePath($node->nodeAggregateId)->getDepth(),
             'children' => [],
             'parent' => $parentNode ? $nodeAddressFactory->createFromNode($parentNode)->serializeForUri() : null,
             'matchesCurrentDimensions' => $node->subgraphIdentity->dimensionSpacePoint->equals($node->originDimensionSpacePoint)
@@ -327,7 +327,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         foreach ($nodes as $node) {
             $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
 
-            $nodePath = $subgraph->findNodePath($node->nodeAggregateId);
+            $nodePath = $subgraph->retrieveNodePath($node->nodeAggregateId);
             if (array_key_exists($nodePath->jsonSerialize(), $renderedNodes)) {
                 $renderedNodes[(string)$nodePath]['matched'] = true;
             } elseif ($renderedNode = $this->renderNodeWithMinimalPropertiesAndChildrenInformation(
@@ -348,7 +348,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
                 continue;
             }
 
-            $parentNodePath = $subgraph->findNodePath($parentNode->nodeAggregateId);
+            $parentNodePath = $subgraph->retrieveNodePath($parentNode->nodeAggregateId);
             while ($parentNode->nodeType->isOfType($baseNodeTypeOverride)) {
                 if (array_key_exists((string)$parentNodePath, $renderedNodes)) {
                     $renderedNodes[(string)$parentNodePath]['intermediate'] = true;

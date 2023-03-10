@@ -14,12 +14,10 @@ declare(strict_types=1);
 
 namespace Neos\Neos\Ui\Domain\Service;
 
-use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindReferencedNodesFilter;
+use Neos\ContentRepository\Core\NodeType\NodeType;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindReferencesFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\Projection\NodeHiddenState\NodeHiddenStateFinder;
-use Neos\ContentRepository\Core\Projection\NodeHiddenState\NodeHiddenStateProjection;
-use Neos\ContentRepository\Core\SharedModel\Node\PropertyName;
-use Neos\ContentRepository\Core\NodeType\NodeType;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Log\ThrowableStorageInterface;
@@ -126,9 +124,9 @@ class NodePropertyConverterService
         if ($propertyType === 'reference') {
             $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
             $referenceIdentifiers = $this->toNodeIdentifierStrings(
-                $subgraph->findReferencedNodes(
+                $subgraph->findReferences(
                     $node->nodeAggregateId,
-                    FindReferencedNodesFilter::referenceName($propertyName)
+                    FindReferencesFilter::referenceName($propertyName)
                 )
             );
             if (count($referenceIdentifiers) === 0) {
@@ -138,9 +136,9 @@ class NodePropertyConverterService
             }
         } elseif ($propertyType === 'references') {
             $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
-            $references = $subgraph->findReferencedNodes(
+            $references = $subgraph->findReferences(
                 $node->nodeAggregateId,
-                FindReferencedNodesFilter::referenceName($propertyName)
+                FindReferencesFilter::referenceName($propertyName)
             );
 
             return $this->toNodeIdentifierStrings($references);

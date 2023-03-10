@@ -181,7 +181,7 @@ abstract class AbstractStructuralChange extends AbstractChange
     {
         // TODO REMOVE
         return $this->contentRepositoryRegistry->subgraphForNode($node)
-            ->findChildNodes($node->nodeAggregateId, FindChildNodesFilter::all());
+            ->findChildNodes($node->nodeAggregateId, FindChildNodesFilter::create());
     }
 
     protected function isNodeTypeAllowedAsChildNode(Node $node, NodeType $nodeType): bool

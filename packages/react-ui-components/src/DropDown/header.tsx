@@ -1,7 +1,7 @@
 import React, {PureComponent, ReactNode} from 'react';
 import mergeClassNames from 'classnames';
 
-import {PickDefaultProps} from '../../types';
+import {PickDefaultProps} from '../utils-typescript';
 import {makeFocusNode} from './../_lib/focusNode';
 import Icon from '../Icon';
 import {IconProps} from '../Icon/icon';

@@ -15,10 +15,11 @@ import debounce from 'lodash.debounce';
 import {SecondaryInspector} from '@neos-project/neos-ui-inspector';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
+import preprocessNodeConfiguration from '../../../preprocessNodeConfiguration';
 
 import SelectedElement from './SelectedElement/index';
 import TabPanel from './TabPanel/index';
-import style from './style.css';
+import style from './style.module.css';
 
 @neos(globalRegistry => ({
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),
@@ -95,7 +96,13 @@ export default class Inspector extends PureComponent {
         if (props.focusedNode) {
             const originalViewConfiguration = props.nodeTypesRegistry.getInspectorViewConfigurationFor(props.focusedNode?.nodeType);
 
-            const processedViewConfiguration = this.preprocessViewConfiguration(originalViewConfiguration);
+            const nodeForContext = this.generateNodeForContext(
+                this.props.focusedNode,
+                this.props.transientValues
+            );
+            const processedViewConfiguration = preprocessNodeConfiguration(
+                {node: nodeForContext, parentNode: this.props.parentNode}, originalViewConfiguration
+            );
 
             this.state.viewConfiguration = processedViewConfiguration || originalViewConfiguration;
             this.state.originalViewConfiguration = originalViewConfiguration;
@@ -185,9 +192,16 @@ export default class Inspector extends PureComponent {
         }
 
         this.configurationIsProcessed = false;
-        const processedViewConfiguration = this.preprocessViewConfiguration(originalViewConfiguration);
+        const nodeForContext = this.generateNodeForContext(
+            this.props.focusedNode,
+            this.props.transientValues
+        );
+        const processedViewConfiguration = preprocessNodeConfiguration(
+            {node: nodeForContext, parentNode: this.props.parentNode},
+            originalViewConfiguration
+        );
 
-        if (this.configurationIsProcessed === true) {
+        if (processedViewConfiguration !== this.state.viewConfiguration) {
             this.setState({
                 viewConfiguration: processedViewConfiguration
             });

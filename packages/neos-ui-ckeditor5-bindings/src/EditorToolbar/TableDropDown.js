@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import {neos} from '@neos-project/neos-ui-decorators';
 import ckeIcons from './icons';
 
-import style from './TableDropDown.css';
+import style from './TableDropDown.module.css';
 
 @neos(globalRegistry => ({
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),

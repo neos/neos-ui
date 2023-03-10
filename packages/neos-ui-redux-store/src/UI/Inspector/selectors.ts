@@ -72,11 +72,11 @@ export const makeValidationErrorsSelector = defaultMemoize((nodeTypesRegistry: N
         }
         const nodeType = nodeTypesRegistry.get(focusedNode.nodeType);
         if (!nodeType) {
-            console.error(`Nodetype ${nodeType} not found`); // tslint:disable-line no-console
+            console.error(`Nodetype ${nodeType} not found`);
             return null;
         }
         if (!nodeType.properties) {
-            console.error(`No properties configured in ${nodeType} nodetype`); // tslint:disable-line no-console
+            console.error(`No properties configured in ${nodeType} nodetype`);
             return null;
         }
 

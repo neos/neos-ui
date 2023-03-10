@@ -7,7 +7,7 @@ import Button from '@neos-project/react-ui-components/src/Button/';
 import {actions} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 
-import style from './style.css';
+import style from './style.module.css';
 
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')

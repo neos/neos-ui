@@ -1,31 +1,33 @@
-const env = require('@neos-project/build-essentials/src/environment');
-const stylePlugin = require('esbuild-style-plugin');
-const {sep, join} = require('path')
+const {sep} = require('path')
+const {compileWithCssVariables} = require('./cssVariables');
+const {cssModules} = require('./cssModules');
+const esbuild = require('esbuild');
+const { version } = require('./package.json')
 
-const cssVariables = require('@neos-project/build-essentials/src/styles/styleConstants');
-const cssVariablesObject = cssVariables.generateCssVarsObject(cssVariables.config);
-
+const isProduction = process.argv.includes('--production');
 const isE2ETesting = process.argv.includes('--e2e-testing');
 const isWatch = process.argv.includes('--watch');
+const isAnalyze = process.argv.includes('--analyze');
 
 if (isE2ETesting) {
     console.log('Building for E2E testing');
 }
 
-require('esbuild').build({
+/** @type {import("esbuild").BuildOptions} */
+const options = {
     entryPoints: {
         'Host': './packages/neos-ui/src/index.js',
         'HostOnlyStyles': './packages/neos-ui/src/styleHostOnly.css'
     },
-    outdir: join(env.rootPath, './Resources/Public/Build'),
+    outdir: './Resources/Public/Build',
     sourcemap: true,
-    minify: env.isProduction,
+    minify: isProduction,
     logLevel: 'info',
     target: 'es2020',
     color: true,
     bundle: true,
     keepNames: isE2ETesting, // for react magic selectors,
-    watch: isWatch,
+    metafile: isAnalyze,
     legalComments: "linked",
     loader: {
         '.js': 'tsx',
@@ -73,23 +75,31 @@ require('esbuild').build({
                 })
             }
         },
-        stylePlugin({
-            // process all .css and .scss files
-            // but exclude those files that start with
-            // - @ckeditor/
-            // - @fortawesome/fontawesome-svg-core/
-            cssModulesMatch: /^(?!@ckeditor\/|@fortawesome\/fontawesome-svg-core\/).*\.s?css$/,
-            postcss: {
-                plugins: [
-                    require('postcss-nested'),
-                    require('postcss-css-variables')({
-                        variables: cssVariablesObject
-                    })
-                ]
+        cssModules(
+            {
+                visitor: compileWithCssVariables(),
+                targets: {
+                    chrome: 80 // aligns somewhat to es2020
+                },
+                drafts: {
+                    nesting: true
+                }
             }
-        })
+        )
     ],
     define: {
         // we dont declare `global = window` as we want to control everything and notice it, when something is odd
+        NEOS_UI_VERSION: JSON.stringify(isProduction ? `v${version}` : `v${version}-dev`)
     }
-})
+}
+
+if (isWatch) {
+    esbuild.context(options).then((ctx) => ctx.watch())
+} else {
+    esbuild.build(options).then(result => {
+        if (isAnalyze) {
+            require("fs").writeFileSync('meta.json', JSON.stringify(result.metafile))
+            console.log("\nUpload './meta.json' to https://esbuild.github.io/analyze/ to analyze the bundle.")
+        }
+    })
+}

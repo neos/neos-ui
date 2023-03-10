@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {neos} from '@neos-project/neos-ui-decorators';
 
-import style from './style.css';
+import style from './style.module.css';
 
 @neos()
 class MediaDetailsScreen extends PureComponent {

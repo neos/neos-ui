@@ -6,7 +6,7 @@ import mergeClassNames from 'classnames';
 import Bar from '@neos-project/react-ui-components/src/Bar/';
 import {neos} from '@neos-project/neos-ui-decorators';
 
-import style from './style.css';
+import style from './style.module.css';
 
 @neos(globalRegistry => ({
     containerRegistry: globalRegistry.get('containers')

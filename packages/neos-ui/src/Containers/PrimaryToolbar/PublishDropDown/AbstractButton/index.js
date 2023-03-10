@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
-import style from './style.css';
+import style from './style.module.css';
 
 export default class AbstractButton extends PureComponent {
     static propTypes = {

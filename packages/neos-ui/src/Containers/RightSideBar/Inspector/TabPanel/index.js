@@ -5,7 +5,7 @@ import Tabs from '@neos-project/react-ui-components/src/Tabs/';
 
 import PropertyGroup from '../PropertyGroup/index';
 
-import style from './style.css';
+import style from './style.module.css';
 
 export default class TabPanel extends PureComponent {
     static displayName = 'Inspector Tab Panel';

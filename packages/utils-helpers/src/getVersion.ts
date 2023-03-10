@@ -1,5 +1,6 @@
 const getVersion = () => {
-    return 'v8.2.1';
+    /** @ts-expect-error set by build stack */
+    return NEOS_UI_VERSION;
 };
 
 export default getVersion;

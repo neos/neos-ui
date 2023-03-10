@@ -6,9 +6,17 @@ import dataLoader from '../Reference/referenceDataLoader';
 import NodeOption from '../../Library/NodeOption';
 import {dndTypes} from '@neos-project/neos-ui-constants';
 import {neos} from '@neos-project/neos-ui-decorators';
+import {connect} from 'react-redux';
+import {actions} from '@neos-project/neos-ui-redux-store';
 
 import {sanitizeOptions} from '../../Library';
 
+@connect((state) => ({
+    creationDialogIsOpen: state?.ui?.nodeCreationDialog?.isOpen,
+    changesInInspector: state?.ui?.inspector?.valuesByNodePath
+}), {
+    setActiveContentCanvasSrc: actions.UI.ContentCanvas.setSrc
+})
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')
 }))
@@ -26,11 +34,22 @@ export default class ReferencesEditor extends PureComponent {
         onCreateNew: PropTypes.func,
         commit: PropTypes.func.isRequired,
         i18nRegistry: PropTypes.object.isRequired,
-        disabled: PropTypes.bool
+        disabled: PropTypes.bool,
+        creationDialogIsOpen: PropTypes.bool,
+        changesInInspector: PropTypes.object,
+        setActiveContentCanvasSrc: PropTypes.func.isRequired
     };
 
     handleValueChange = value => {
         this.props.commit(value);
+    }
+
+    handleClick = option => {
+        const {creationDialogIsOpen, changesInInspector, setActiveContentCanvasSrc} = this.props;
+
+        if (setActiveContentCanvasSrc && option && option.uri && !creationDialogIsOpen && !Object.keys(changesInInspector).length) {
+            setActiveContentCanvasSrc(option.uri);
+        }
     }
 
     render() {
@@ -51,6 +70,7 @@ export default class ReferencesEditor extends PureComponent {
             options={sanitizeOptions(options)}
             values={value}
             onValuesChange={this.handleValueChange}
+            onItemClick={this.handleClick}
             displayLoadingIndicator={displayLoadingIndicator}
             showDropDownToggle={false}
             allowEmpty={true}

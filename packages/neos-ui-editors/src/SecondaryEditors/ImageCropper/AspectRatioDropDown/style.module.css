@@ -1,0 +1,70 @@
+.wrapper {
+    display: inline-block;
+    position: relative;
+    vertical-align: top;
+}
+.dropDown {
+    position: static;
+    display: inline-block;
+}
+.dropDown--disabled {
+    opacity: .65;
+    cursor: not-allowed;
+}
+.dropDown__btn {
+    position: relative;
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+    border: 0;
+    background: var(--colors-ContrastNeutral);
+    min-width: 160px;
+    padding-right: 80px;
+}
+.dropDown__btn--isPlaceholder {
+    color: rgba(255, 255, 255, .5);
+}
+.dropDown__btn--isPlaceholder i {
+    color: white;
+}
+.dropDown__btnIcon {
+    margin-right: .5em;
+}
+.dropDown__contents {
+    min-width: 160px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+    z-index: var(--zIndex-SecondaryInspectorElevated-DropdownContents);
+}
+.dropDown__item {
+    height: 40px;
+    line-height: 40px;
+    background: var(--colors-ContrastNeutral);
+    border-top: 1px solid var(--colors-ContrastDarker);
+    cursor: pointer;
+
+    &:hover {
+        background: var(--colors-PrimaryBlue);
+    }
+
+    > a,
+    & button {
+        display: block;
+        width: 100%;
+        border: 0;
+        padding: 0 var(--spacing-Full);
+        background: 0;
+        color: #FFF;
+        cursor: pointer;
+        text-decoration: none;
+        line-height: 40px;
+        text-align: left;
+    }
+}
+.dropDown__itemIcon {
+    margin-right: .5em;
+}
+.dropDown__clear {
+    position: absolute;
+    top: 0;
+    right: 40px;
+}

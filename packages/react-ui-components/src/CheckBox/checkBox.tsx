@@ -1,6 +1,5 @@
 import mergeClassNames from 'classnames';
 import React, {PureComponent} from 'react';
-import {Omit} from '../../types';
 import Icon from './../Icon';
 
 interface CheckBoxTheme {
@@ -56,13 +55,13 @@ class CheckBox extends PureComponent<CheckBoxProps> {
             theme.checkbox,
             {
                 [theme.checkbox__checked]: isChecked,
-                [theme.checkbox__disabled]: disabled,
+                [theme.checkbox__disabled]: disabled
             }
         );
         const mirrorClassNames = mergeClassNames(
             theme.checkbox__inputMirror,
             {
-                [theme['checkbox__inputMirror--active']]: isChecked,
+                [theme['checkbox__inputMirror--active']]: isChecked
             }
         );
 

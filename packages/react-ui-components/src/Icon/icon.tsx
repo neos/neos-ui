@@ -1,7 +1,6 @@
 import React, {PureComponent} from 'react';
 
 import {FontAwesomeIconProps} from '@fortawesome/react-fontawesome';
-import {Omit} from '../../types';
 import FontAwesomeIcon from './fontAwesomeIcon';
 import ResourceIcon, {ResourceIconProps} from './resourceIcon';
 import {defaultProps} from './iconDefaultProps';
@@ -74,14 +73,13 @@ export {defaultProps};
 class Icon extends PureComponent<IconProps> {
     public static readonly defaultProps = defaultProps;
 
-    public render(): JSX.Element | null {
+    public render(): JSX.Element | null {
         const {icon} = this.props;
 
         if (icon && icon.substr(0, 11) === 'resource://') {
             return <ResourceIcon {...this.props as ResourceIconProps} />;
-        } else {
-            return <FontAwesomeIcon {...this.props} />;
         }
+        return <FontAwesomeIcon {...this.props} />;
     }
 }
 

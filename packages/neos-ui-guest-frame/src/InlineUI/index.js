@@ -7,7 +7,7 @@ import {neos} from '@neos-project/neos-ui-decorators';
 
 import NodeToolbar from './NodeToolbar/index';
 
-import style from './style.css';
+import style from './style.module.css';
 import InlineValidationErrors from './InlineValidationErrors/index';
 import {isEqualSet} from '@neos-project/utils-helpers';
 

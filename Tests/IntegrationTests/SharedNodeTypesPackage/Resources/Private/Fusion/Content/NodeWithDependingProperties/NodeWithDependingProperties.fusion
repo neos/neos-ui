@@ -1,0 +1,12 @@
+prototype(Neos.TestNodeTypes:Content.NodeWithDependingProperties) < prototype(Neos.Neos:ContentComponent) {
+    propertyDependedOn = ${q(node).property('propertyDependedOn')}
+    dependingProperty = ${q(node).property('dependingProperty')}
+
+    renderer = afx`
+        <div>
+            <p>NodeWithDependingPropertiesTest</p>
+            <p>propertyDependedOn: {props.propertyDependedOn}</p>
+            <p>dependingProperty: {props.dependingProperty}</p>
+        </div>
+    `
+}

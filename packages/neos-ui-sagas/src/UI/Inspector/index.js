@@ -4,6 +4,8 @@ import {findNodeInGuestFrame} from '@neos-project/neos-ui-guest-frame/src/dom';
 
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
 
+import backend from '@neos-project/neos-ui-backend-connector';
+
 import {applySaveHooksForTransientValue} from '../../Changes/saveHooks';
 
 const getFocusedNode = selectors.CR.Nodes.focusedSelector;
@@ -37,6 +39,18 @@ export function * inspectorSaga({globalRegistry}) {
             //
             if (nextAction.type === actionTypes.CR.Nodes.FOCUS) {
                 yield put(actions.UI.Inspector.closeSecondaryInspector());
+
+                const focusedNode = yield select(getFocusedNode);
+                if (focusedNode?.isFullyLoaded) {
+                    const {q} = backend.get();
+                    const [fullyLoadedFocusedNode] = yield q(focusedNode).get();
+
+                    if (fullyLoadedFocusedNode) {
+                        yield put(actions.CR.Nodes.merge({
+                            [fullyLoadedFocusedNode.contextPath]: fullyLoadedFocusedNode
+                        }));
+                    }
+                }
                 break;
             }
 

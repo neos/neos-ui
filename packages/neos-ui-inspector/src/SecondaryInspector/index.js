@@ -9,7 +9,7 @@ import {selectors} from '@neos-project/neos-ui-redux-store';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 import Button from '@neos-project/react-ui-components/src/Button/';
 
-import style from './style.css';
+import style from './style.module.css';
 
 @connect(state => {
     const isDirty = selectors.UI.Inspector.isDirty(state);

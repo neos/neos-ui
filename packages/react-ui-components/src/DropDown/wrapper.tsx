@@ -1,10 +1,9 @@
-// tslint:disable:max-classes-per-file
 import React, {PureComponent, ReactNode} from 'react';
 import omit from 'lodash.omit';
 import mergeClassNames from 'classnames';
 import enhanceWithClickOutside from '../enhanceWithClickOutside/index';
 
-import { PickDefaultProps } from '../../types';
+import {PickDefaultProps} from '../utils-typescript';
 import ShallowDropDownHeader from './header';
 import ShallowDropDownContents from './contents';
 import PropTypes from 'prop-types';
@@ -141,9 +140,10 @@ class StatelessDropDownWrapperWithoutClickOutsideBehavior extends PureComponent<
 //
 export const StatelessDropDownWrapper = enhanceWithClickOutside(StatelessDropDownWrapperWithoutClickOutsideBehavior);
 
-
 export class DropDownWrapper extends PureComponent<DropDownWrapperProps, DropDownWrapperState> {
     public static readonly defaultProps = defaultProps;
+
+    private updateIsOpenHandle: null | ReturnType<typeof setTimeout> = null;
 
     constructor(props: DropDownWrapperProps) {
         super(props);
@@ -152,8 +152,33 @@ export class DropDownWrapper extends PureComponent<DropDownWrapperProps, DropDow
         };
     }
 
+    public componentWillUnmount(): void {
+        if (this.updateIsOpenHandle !== null) {
+            clearTimeout(this.updateIsOpenHandle);
+        }
+    }
+
     public render(): JSX.Element {
         return <StatelessDropDownWrapper {...this.props} isOpen={this.state.isOpen} onToggle={this.handleToggle} onClose={this.handleClose}/>;
+    }
+
+    //
+    // Closing the DropDown removes the DropDown.Contents from the DOM. There may be DOM nodes inside the
+    // DropDown.Contents that still need to receive events before that happens.
+    //
+    // This method makes sure that the DropDown closes only after the current call-stack has been
+    // processed. This prevents behavior like the one described in: https://github.com/neos/neos-ui/issues/3305
+    //
+    private readonly updateIsOpen = (
+        handlerFn: (isOpen: boolean) => boolean
+    ) => {
+        if (this.updateIsOpenHandle !== null) {
+            clearTimeout(this.updateIsOpenHandle);
+        }
+
+        this.updateIsOpenHandle = setTimeout(() => {
+            this.setState((state) => ({isOpen: handlerFn(state.isOpen)}));
+        }, 0);
     }
 
     private readonly handleToggle = (event: MouseEvent) => {
@@ -161,11 +186,11 @@ export class DropDownWrapper extends PureComponent<DropDownWrapperProps, DropDow
             this.props.onToggle(event);
         }
 
-        this.setState({isOpen: !this.state.isOpen});
+        this.updateIsOpen((isOpen) => !isOpen);
     }
 
     private readonly handleClose = () => {
-        this.setState({isOpen: false});
+        this.updateIsOpen(() => false);
     }
 }
 

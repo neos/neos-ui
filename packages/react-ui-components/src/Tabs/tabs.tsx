@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import mergeClassNames from 'classnames';
 
-import {PickDefaultProps} from '../../types';
+import {PickDefaultProps} from '../utils-typescript';
 import Panel from './panel.index';
 import Icon from '../Icon';
 
@@ -35,7 +35,7 @@ interface TabsTheme extends TabMenuItemTheme {
 }
 
 export const tabsDefaultProps: PickDefaultProps<TabsProps, 'activeTab'> = {
-    activeTab: 0,
+    activeTab: 0
 };
 
 interface TabsState {
@@ -44,8 +44,9 @@ interface TabsState {
 
 export default class Tabs extends PureComponent<TabsProps> {
     public static Panel = Panel;
+
     public state: TabsState = {
-        activeTab: 0,
+        activeTab: 0
     };
 
     public static defaultProps = tabsDefaultProps;
@@ -67,7 +68,8 @@ export default class Tabs extends PureComponent<TabsProps> {
         if (isNaN(activeTab as number)) {
             const activeTabs = this.props.children.filter(panel => panel.props.id === activeTab);
             return activeTabs.length === 0 ? (this.props.children[0].props.id || 0) : activeTab;
-        } else if (activeTab < React.Children.count(this.props.children)) {
+        }
+        if (activeTab < React.Children.count(this.props.children)) {
             return activeTab;
         }
         return 0;
@@ -85,7 +87,6 @@ export default class Tabs extends PureComponent<TabsProps> {
                 key={index}
                 index={index}
                 id={panel.props.id || index}
-                // tslint:disable-next-line:jsx-no-string-ref
                 ref={`tab-${index}`}
                 onClick={this.handleTabNavItemClick}
                 isActive={activeTab === (isNaN(activeTab as number) ? panel.props.id : index)}
@@ -199,7 +200,6 @@ export const tabMenuItemDefaultProps: PickDefaultProps<TabMenuItemProps, 'isActi
     isActive: false
 };
 
-// tslint:disable-next-line:max-classes-per-file
 export class TabMenuItem extends PureComponent<TabMenuItemProps> {
     public static readonly defaultProps = tabMenuItemDefaultProps;
 
@@ -210,18 +210,18 @@ export class TabMenuItem extends PureComponent<TabMenuItemProps> {
             index,
             icon,
             title,
-            tooltip,
+            tooltip
         } = this.props;
         const finalClassName = mergeClassNames(
             theme!.tabNavigation__item,
             {
-                [theme!['tabNavigation__item--isActive']]: isActive,
+                [theme!['tabNavigation__item--isActive']]: isActive
             },
         );
         const finalIconClassName = mergeClassNames(
             theme!.tabNavigation__itemBtnIcon,
             {
-                [theme!['tabNavigation__itemBtnIcon--hasLabel']]: title && title.length,
+                [theme!['tabNavigation__itemBtnIcon--hasLabel']]: title && title.length
             },
         );
 

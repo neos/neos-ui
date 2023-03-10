@@ -6,7 +6,7 @@ import {
 } from './dom';
 import initializePropertyDomNode from './initializePropertyDomNode';
 
-import style from './style.css';
+import style from './style.module.css';
 
 export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry, nodes}) => contentDomNode => {
     const contextPath = contentDomNode.getAttribute('data-__neos-node-contextpath');

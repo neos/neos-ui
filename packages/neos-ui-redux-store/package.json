@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-redux-store",
-  "version": "8.2.1",
+  "version": "8.2.6",
   "description": "Redux store implementation for the Neos CMS UI",
   "private": true,
   "main": "./src/index.ts",
@@ -8,13 +8,11 @@
     "test": "yarn jest -w 2 --coverage",
     "test:watch": "yarn jest --watch",
     "clean": "rimraf ./lib ./dist",
-    "lint": "yarn tsc --noemit && eslint src/**/*.{js,jsx,ts,tsx}",
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "workspace:*",
-    "@neos-project/build-essentials": "workspace:*",
     "@neos-project/jest-preset-neos-ui": "workspace:*",
+    "@neos-project/neos-ui-build": "workspace:*",
     "typescript": "^4.6.4"
   },
   "dependencies": {

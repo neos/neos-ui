@@ -2,7 +2,7 @@ import {IconName} from '@fortawesome/fontawesome-svg-core';
 import mergeClassNames from 'classnames';
 import React, {PureComponent} from 'react';
 
-import {PickDefaultProps} from '../../types';
+import {PickDefaultProps} from '../utils-typescript';
 import Button from '../Button';
 import {ButtonHoverStyle, ButtonSize, ButtonStyle, HTMLButtonElementAttributesExceptStyle} from '../Button/button';
 import Icon from '../Icon';
@@ -48,12 +48,12 @@ export interface IconButtonProps extends HTMLButtonElementAttributesExceptStyle 
     readonly hoverStyle: ButtonHoverStyle;
 }
 
-type DefaultProps = PickDefaultProps<IconButtonProps, 'hoverStyle' | 'size' | 'style'>;
+type DefaultProps = PickDefaultProps<IconButtonProps, 'hoverStyle' | 'size' | 'style'>;
 
 export const defaultProps: DefaultProps = {
     hoverStyle: 'brand',
     size: 'regular',
-    style: 'transparent',
+    style: 'transparent'
 };
 
 class IconButton extends PureComponent<IconButtonProps> {

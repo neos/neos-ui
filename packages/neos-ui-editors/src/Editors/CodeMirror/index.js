@@ -7,7 +7,7 @@ import Label from '@neos-project/react-ui-components/src/Label/';
 import I18n from '@neos-project/neos-ui-i18n';
 import {neos} from '@neos-project/neos-ui-decorators';
 
-import style from './style.css';
+import style from './style.module.css';
 
 @neos(globalRegistry => ({
     secondaryEditorsRegistry: globalRegistry.get('inspector').get('secondaryEditors')

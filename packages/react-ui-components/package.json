@@ -1,29 +1,55 @@
 {
   "name": "@neos-project/react-ui-components",
-  "version": "8.2.1",
+  "version": "8.2.6",
   "description": "The UI components which power the Neos backend application.",
   "repository": "neos/neos-ui",
   "bugs": "https://github.com/neos/neos-ui/issues",
   "homepage": "https://github.com/neos/neos-ui/blob/master/packages/react-ui-components/README.md",
-  "module": "./lib-esm/index",
   "main": "./src/index",
+  "publishConfig": {
+    "main": "./dist/index.js",
+    "types": "./types/index.d.ts",
+    "exports": {
+      ".": {
+        "import": "./dist/index.js",
+        "types": "./types/index.d.ts"
+      },
+      "./identifiers": {
+        "import": "./dist/identifiers.js",
+        "types": "./types/identifiers.d.ts"
+      },
+      "./unstyled": {
+        "import": "./dist/unstyled.js",
+        "types": "./types/unstyled.d.ts"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "types"
+  ],
+  "sideEffects": false,
   "scripts": {
-    "build-standalone-esm": "rm -Rf .postcssrc lib-esm && tsc --build tsconfig.esm.json && tsc --build tsconfig.esmtypes.json && rsync --prune-empty-dirs  -r --include='*/' --include='*.css' --include='*.svg' --exclude='*' src/ lib-esm -v && node scripts/generate-standalone-postcssrc.js",
+    "build": "rm -rf dist types && tsc && node esbuild.js",
     "test": "yarn jest -w 2 --coverage",
     "test:watch": "yarn jest --watch",
-    "babel": "babel ./src --out-dir ./lib",
-    "css": "cpx './src/**/*.css' ./lib && cpx './src/**/*.woff' ./lib && cpx './src/**/*.woff2' ./lib",
-    "clean": "rimraf ./lib ./dist",
-    "lint": "eslint src/**/*.{js,jsx} && stylelint src/**/*.{css,scss} && tslint -t codeFrame -p ../tsconfig.json -c ../../tslint.json",
+    "clean": "rm -rf dist types",
     "jest": "NODE_ENV=test jest",
     "jest:updateSnapshots": "NODE_ENV=test jest -u",
-    "start": "cross-env STORY=true start-storybook -p 9001"
+    "example": "cd example && yarn esbuild test.jsx --outdir=dist --bundle --sourcemap=linked --loader:.woff2=file"
   },
-  "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.35",
+  "peerDependencies": {
     "@fortawesome/free-brands-svg-icons": "^5.15.3",
     "@fortawesome/free-regular-svg-icons": "^5.15.3",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
+    "@friendsofreactjs/react-css-themr": "~4.2.0",
+    "notosans-fontface": "^1.3.0",
+    "prop-types": "^15.5.10",
+    "react": "^16.12.0",
+    "react-dom": "^16.0.0"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/react-fontawesome": "^0.1.14",
     "classnames": "^2.2.3",
     "hoist-non-react-statics": "^3.3.1",
@@ -35,6 +61,7 @@
     "lodash.omit": "^4.5.0",
     "lodash.throttle": "^4.0.8",
     "moment": "^2.14.1",
+    "raf": "^3.4.1",
     "react-close-on-escape": "^3.0.0",
     "react-collapse": "^5.0.1",
     "react-datetime": "^2.8.10",
@@ -48,17 +75,11 @@
     "react-textarea-autosize": "^8.3.0"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.19.1",
-    "@neos-project/babel-preset-neos-ui": "workspace:*",
-    "@neos-project/build-essentials": "workspace:*",
     "@neos-project/debug-reason-for-rendering": "workspace:*",
     "@neos-project/eslint-config-neos": "^2.6.1",
     "@neos-project/jest-preset-neos-ui": "workspace:*",
-    "@storybook/addon-info": "^3.2.16",
-    "@storybook/addon-knobs": "3.2.16",
-    "@storybook/react": "3.2.16",
+    "@neos-project/utils-helpers": "workspace:*",
     "@types/classnames": "^2.2.9",
-    "@types/debug": "^4.1.7",
     "@types/enzyme": "^3.1.14",
     "@types/he": "^1.1.0",
     "@types/jest": "^23.3.10",
@@ -76,15 +97,11 @@
     "@types/react-portal": "^4.0.1",
     "enzyme": "^3.8.0",
     "enzyme-to-json": "^3.1.3",
-    "tslint": "^5.20.1",
-    "typescript": "^4.6.0",
-    "webpack-merge": "^4.2.2"
-  },
-  "peerDependencies": {
-    "@friendsofreactjs/react-css-themr": "^4.1.0",
-    "prop-types": "^15.5.10",
-    "react": "^16.12.0",
-    "react-dom": "^16.0.0"
+    "esbuild": "~0.17.0",
+    "eslint": "^5.3.0",
+    "lightningcss": "^1.18.0",
+    "stylelint": "^13.7.2",
+    "typescript": "^4.6.0"
   },
   "license": "GNU GPLv3",
   "jest": {

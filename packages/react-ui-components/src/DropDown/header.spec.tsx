@@ -5,6 +5,13 @@ import toJson from 'enzyme-to-json';
 import Icon from '../Icon';
 import ShallowDropDownHeader, {ShallowDropDownHeaderProps, defaultProps} from './header';
 
+// todo find a better way to make font-awesome work ;)
+import {library} from '@fortawesome/fontawesome-svg-core';
+import {fab} from '@fortawesome/free-brands-svg-icons';
+import {far} from '@fortawesome/free-regular-svg-icons';
+import {fas} from '@fortawesome/free-solid-svg-icons';
+library.add(fab, fas, far);
+
 describe('<ShallowDropDownHeader/>', () => {
     const props: ShallowDropDownHeaderProps = {
         ...defaultProps,
@@ -15,7 +22,7 @@ describe('<ShallowDropDownHeader/>', () => {
             'dropDown__btn': 'baseDropDownHeaderClassName',
             'dropDown__btnLabel': 'baseDropDownHeaderLabelClassName',
             'dropDown__btn--withChevron': 'baseDropDownHeaderWithChevronClassName',
-            'dropDown__chevron': 'baseDropDownHeaderChevronClassName',
+            'dropDown__chevron': 'baseDropDownHeaderChevronClassName'
         }
     };
 

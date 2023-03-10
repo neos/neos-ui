@@ -14,7 +14,7 @@ import I18n from '@neos-project/neos-ui-i18n';
 import {InsertModeSelector} from '@neos-project/neos-ui-containers';
 import NodeTypeGroupPanel from './nodeTypeGroupPanel';
 import NodeTypeFilter from './nodeTypeFilter';
-import style from './style.css';
+import style from './style.module.css';
 
 const calculateInitialMode = (allowedSiblingNodeTypes, allowedChildNodeTypes, preferredMode) => {
     if (
@@ -59,7 +59,8 @@ const allowedSiblingsOrChildrenChanged = (previousProps, nextProps) => (
             return {
                 isOpen: false,
                 allowedSiblingNodeTypes: [],
-                allowedChildNodeTypes: []
+                allowedChildNodeTypes: [],
+                referenceNodeType: ''
             };
         }
         const referenceNode = selectors.CR.Nodes.byContextPathSelector(reference)(state);
@@ -72,7 +73,8 @@ const allowedSiblingsOrChildrenChanged = (previousProps, nextProps) => (
             isOpen: state?.ui?.selectNodeTypeModal?.isOpen,
             preferredMode: state?.ui?.selectNodeTypeModal?.preferredMode,
             allowedSiblingNodeTypes,
-            allowedChildNodeTypes
+            allowedChildNodeTypes,
+            referenceNodeType
         };
     };
 }, {
@@ -88,7 +90,8 @@ export default class SelectNodeType extends PureComponent {
         allowedChildNodeTypes: PropTypes.array,
         cancel: PropTypes.func.isRequired,
         apply: PropTypes.func.isRequired,
-        i18nRegistry: PropTypes.object.isRequired
+        i18nRegistry: PropTypes.object.isRequired,
+        referenceNodeType: PropTypes.string
     };
 
     state = {
@@ -121,10 +124,8 @@ export default class SelectNodeType extends PureComponent {
 
     handleCancel = () => {
         const {cancel} = this.props;
-        this.setState({
-            filterSearchTerm: ''
-        });
-        this.handleCloseHelpMessage();
+
+        this.handleClose();
         cancel();
     }
 
@@ -132,8 +133,20 @@ export default class SelectNodeType extends PureComponent {
         const {apply} = this.props;
         const {insertMode} = this.state;
 
+        this.handleClose();
         apply(insertMode, nodeType);
     };
+
+    handleClose = () => {
+        this.handleClearFilterSearchTerm();
+        this.handleCloseHelpMessage();
+    }
+
+    handleClearFilterSearchTerm = () => {
+        this.setState({
+            filterSearchTerm: ''
+        });
+    }
 
     handleCloseHelpMessage = () => {
         this.setState({
@@ -179,10 +192,29 @@ export default class SelectNodeType extends PureComponent {
     }
 
     renderSelectNodeTypeDialogHeader() {
+        const {insertMode} = this.state;
+        const {i18nRegistry, nodeTypesRegistry, referenceNodeType} = this.props;
+
+        const nodeTypeLabel = nodeTypesRegistry.get(referenceNodeType)?.ui?.label
+        const nodeTypeLabelText = i18nRegistry.translate(nodeTypeLabel, 'Node')
+        const addLabel = i18nRegistry.translate('Neos.Neos.Ui:Main:add', 'Add')
+        const insertModeLabel = (function () {
+            switch (insertMode) {
+                case 'into':
+                    return i18nRegistry.translate('Neos.Neos.Ui:Main:InsertModeTitleInto', 'inside');
+                case 'before':
+                    return i18nRegistry.translate('Neos.Neos.Ui:Main:InsertModeTitleBefore', 'above');
+                case 'after':
+                    return i18nRegistry.translate('Neos.Neos.Ui:Main:InsertModeTitleAfter', 'below');
+                default:
+                    return 'to';
+            }
+        })();
+
         return (
             <div>
                 <span className={style.modalTitle}>
-                    <I18n fallback="Create new" id="createNew"/>
+                    {addLabel}&nbsp;{insertModeLabel}&nbsp;{nodeTypeLabelText}
                 </span>
             </div>
         );

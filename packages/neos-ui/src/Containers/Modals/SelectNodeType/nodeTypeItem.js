@@ -11,7 +11,7 @@ import {actions} from '@neos-project/neos-ui-redux-store';
 import I18n from '@neos-project/neos-ui-i18n';
 import {isNil} from '@neos-project/utils-helpers';
 
-import style from './style.css';
+import style from './style.module.css';
 
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')

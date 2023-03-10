@@ -11,7 +11,7 @@ import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 import {isUri, isEmail} from '@neos-project/utils-helpers';
 
 import {sanitizeOptions, sanitizeOption} from './sanitizeOptions';
-import style from './LinkInput.css';
+import style from './LinkInput.module.css';
 
 // TODO: extract this isInternalLink logic into a registry, possibly defining a schema and a custom data loader
 const isUriOrInternalLink = link => Boolean(isUri(link) || link.indexOf('node://') === 0 || link.indexOf('asset://') === 0);
@@ -189,6 +189,12 @@ export default class LinkInput extends PureComponent {
                     }
                 });
         } else {
+            if (this.state.searchTerm) {
+                // The search term has been emptied. To avoid confusion, the emptied
+                // search term gets immediately applied.
+                this.props.onLinkChange(searchTerm);
+            }
+
             this.setState({
                 isLoading: false
             });
@@ -262,7 +268,7 @@ export default class LinkInput extends PureComponent {
     handleManualSetLink = () => {
         this.props.onLinkChange(this.state.searchTerm);
         this.setState({
-            isEditMode: false
+            isEditMode: !this.state.searchTerm
         });
     }
 

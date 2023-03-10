@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-editors",
-  "version": "8.2.1",
+  "version": "8.2.6",
   "description": "Neos CMS UI Editors for use in the inspector.",
   "main": "src/manifest.js",
   "private": true,
@@ -8,14 +8,12 @@
     "test": "yarn jest -w 2 --coverage",
     "test:watch": "yarn jest --watch",
     "clean": "rimraf ./lib ./dist",
-    "lint": "eslint src/**/*.{js,jsx,ts,tsx} && stylelint src/**/*.{css,scss}",
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "workspace:*",
-    "@neos-project/build-essentials": "workspace:*",
     "@neos-project/debug-reason-for-rendering": "workspace:*",
     "@neos-project/jest-preset-neos-ui": "workspace:*",
+    "@neos-project/neos-ui-build": "workspace:*",
     "enzyme": "^3.8.0",
     "react-dnd-test-backend": "^7.0.2",
     "typescript": "^4.6.4"

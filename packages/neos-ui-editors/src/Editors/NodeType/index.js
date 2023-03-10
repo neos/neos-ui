@@ -6,7 +6,7 @@ import mergeClassNames from 'classnames';
 import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors} from '@neos-project/neos-ui-redux-store';
-import style from './style.css';
+import style from './style.module.css';
 
 @neos(globalRegistry => ({
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),

@@ -7,7 +7,7 @@ import {actions} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 import MenuItemGroup from './MenuItemGroup/index';
-import style from './style.css';
+import style from './style.module.css';
 import {TARGET_WINDOW, TARGET_CONTENT_CANVAS, THRESHOLD_MOUSE_LEAVE} from './constants';
 
 @neos(globalRegistry => ({

@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import {actions} from '@neos-project/neos-ui-redux-store';
 import FlashMessage from './FlashMessage/index';
 
-import style from './style.css';
+import style from './style.module.css';
 
 @connect(state => ({
     flashMessages: state?.ui?.flashMessages

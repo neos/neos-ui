@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
-import style from './style.css';
+import style from './style.module.css';
 import dataLoader from '../DataLoader/index';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 

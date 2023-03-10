@@ -11,7 +11,7 @@ describe('<SideBar/>', () => {
         theme: {
             'sideBar': 'sideBarClassName',
             'sideBar--left': 'leftClassName',
-            'sideBar--right': 'rightClassName',
+            'sideBar--right': 'rightClassName'
         }
     };
 

@@ -1,7 +1,7 @@
 import mergeClassNames from 'classnames';
 import React, {PureComponent} from 'react';
 
-import {PickDefaultProps} from '../../types';
+import {PickDefaultProps} from '../utils-typescript';
 
 type HeadlineType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 
@@ -34,7 +34,7 @@ export interface HeadlineProps extends React.HTMLAttributes<HTMLHeadingElement> 
 type DefaultProps = PickDefaultProps<HeadlineProps, 'type'>;
 
 export const defaultProps: DefaultProps = {
-    type: 'h1',
+    type: 'h1'
 };
 
 class Headline extends PureComponent<HeadlineProps> {

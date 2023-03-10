@@ -61,7 +61,7 @@ export default class NeosPlaceholder extends Plugin {
         if (this.editor.config.get('neosPlaceholder')) {
             this.updatePlaceholder();
 
-            const model = this.editor.data.model;
+            const {model} = this.editor.data;
 
             model.on('applyOperation', () => {
                 this.updatePlaceholder();

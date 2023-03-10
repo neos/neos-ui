@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 
 import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors} from '@neos-project/neos-ui-redux-store';
-import style from './style.css';
+import style from './style.module.css';
 
 @connect(state => ({
     focusedNodeContextPath: selectors.CR.Nodes.focusedNodePathSelector(state),

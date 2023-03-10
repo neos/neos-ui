@@ -6,7 +6,6 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-    target-branch: "7.3"
     open-pull-requests-limit: 0
     labels:
       - "security"

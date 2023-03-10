@@ -12,7 +12,7 @@ import {
 } from '@neos-project/neos-ui-guest-frame/src/dom';
 
 import {neos} from '@neos-project/neos-ui-decorators';
-import style from './style.css';
+import style from './style.module.css';
 
 @neos(globalRegistry => ({
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),

@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import style from './style.css';
+import style from './style.module.css';
 
 @connect(state => ({
     isLoading: state?.ui?.contentCanvas?.isLoading

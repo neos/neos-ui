@@ -1,27 +1,29 @@
 {
   "name": "@neos-project/neos-ui",
-  "version": "8.2.1",
+  "version": "8.2.6",
   "description": "Neos CMS UI written in ReactJS and a ton of other fun technology.",
   "private": true,
   "scripts": {
     "test": "yarn jest -w 2 --coverage",
     "test:watch": "yarn jest --watch",
     "clean": "rimraf ./lib ./dist",
-    "lint": "eslint src/**/*.{js,jsx,ts,tsx} && stylelint src/**/*.{css,scss}",
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "workspace:*",
-    "@neos-project/build-essentials": "workspace:*",
     "@neos-project/debug-reason-for-rendering": "workspace:*",
     "@neos-project/jest-preset-neos-ui": "workspace:*",
+    "@neos-project/neos-ui-build": "workspace:*",
     "@neos-project/utils-logger": "workspace:*",
     "enzyme": "^3.8.0",
     "typescript": "^4.6.4"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-highlight": "16.0.0",
-    "@friendsofreactjs/react-css-themr": "^4.1.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.35",
+    "@fortawesome/free-brands-svg-icons": "^5.15.3",
+    "@fortawesome/free-regular-svg-icons": "^5.15.3",
+    "@fortawesome/free-solid-svg-icons": "^5.15.3",
+    "@friendsofreactjs/react-css-themr": "~4.2.0",
     "@neos-project/neos-ts-interfaces": "workspace:*",
     "@neos-project/neos-ui-backend-connector": "workspace:*",
     "@neos-project/neos-ui-ckeditor5-bindings": "workspace:*",

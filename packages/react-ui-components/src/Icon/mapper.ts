@@ -293,7 +293,7 @@ const map: {readonly [key: string]: string} = {
     'yc-square': 'fab fa-hacker-news',
     'yen': 'fas fa-yen-sign',
     'youtube-play': 'fab fa-youtube',
-    'youtube-square': 'fab fa-youtube',
+    'youtube-square': 'fab fa-youtube'
 };
 
 // all Icons from:

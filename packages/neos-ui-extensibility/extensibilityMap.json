@@ -1,0 +1,27 @@
+{
+    "react": "@neos-project/neos-ui-extensibility/dist/shims/vendor/react",
+    "react-dom": "@neos-project/neos-ui-extensibility/dist/shims/vendor/react-dom",
+    "react-dnd": "@neos-project/neos-ui-extensibility/dist/shims/vendor/react-dnd",
+    "react-dnd-html5-backend": "@neos-project/neos-ui-extensibility/dist/shims/vendor/react-dnd-html5-backend",
+    "prop-types": "@neos-project/neos-ui-extensibility/dist/shims/vendor/prop-types",
+    "plow-js": "@neos-project/neos-ui-extensibility/dist/shims/vendor/plow-js",
+    "classnames": "@neos-project/neos-ui-extensibility/dist/shims/vendor/classnames",
+    "react-redux": "@neos-project/neos-ui-extensibility/dist/shims/vendor/react-redux",
+    "redux-actions": "@neos-project/neos-ui-extensibility/dist/shims/vendor/redux-actions",
+    "redux-saga/effects": "@neos-project/neos-ui-extensibility/dist/shims/vendor/redux-saga/effects",
+    "redux-saga": "@neos-project/neos-ui-extensibility/dist/shims/vendor/redux-saga",
+    "reselect": "@neos-project/neos-ui-extensibility/dist/shims/vendor/reselect",
+    "@friendsofreactjs/react-css-themr": "@neos-project/neos-ui-extensibility/dist/shims/vendor/react-css-themr",
+    "ckeditor5-exports": "@neos-project/neos-ui-extensibility/dist/shims/vendor/ckeditor5-exports",
+
+    "@neos-project/react-ui-components": "@neos-project/neos-ui-extensibility/dist/shims/neosProjectPackages/react-ui-components",
+    "@neos-project/neos-ui-backend-connector": "@neos-project/neos-ui-extensibility/dist/shims/neosProjectPackages/neos-ui-backend-connector",
+    "@neos-project/neos-ui-ckeditor5-bindings": "@neos-project/neos-ui-extensibility/dist/shims/neosProjectPackages/neos-ui-ckeditor5-bindings",
+    "@neos-project/neos-ui-decorators": "@neos-project/neos-ui-extensibility/dist/shims/neosProjectPackages/neos-ui-decorators",
+    "@neos-project/neos-ui-editors": "@neos-project/neos-ui-extensibility/dist/shims/neosProjectPackages/neos-ui-editors",
+    "@neos-project/neos-ui-i18n": "@neos-project/neos-ui-extensibility/dist/shims/neosProjectPackages/neos-ui-i18n",
+    "@neos-project/neos-ui-redux-store": "@neos-project/neos-ui-extensibility/dist/shims/neosProjectPackages/neos-ui-redux-store",
+    "@neos-project/neos-ui-views": "@neos-project/neos-ui-extensibility/dist/shims/neosProjectPackages/neos-ui-views",
+    "@neos-project/neos-ui-guest-frame": "@neos-project/neos-ui-extensibility/dist/shims/neosProjectPackages/neos-ui-guest-frame",
+    "@neos-project/utils-redux": "@neos-project/neos-ui-extensibility/dist/shims/neosProjectPackages/utils-redux"
+}

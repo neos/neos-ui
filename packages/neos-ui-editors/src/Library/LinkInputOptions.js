@@ -2,7 +2,7 @@ import React, {Fragment} from 'react';
 
 import {TextInput, CheckBox} from '@neos-project/react-ui-components';
 
-import style from './LinkInput.css';
+import style from './LinkInput.module.css';
 
 const LinkInputOptions = ({
     i18nRegistry,
@@ -30,7 +30,7 @@ const LinkInputOptions = ({
                     <div>
                         <TextInput
                             id="__neos__linkEditor--anchor"
-                            value={anchorValue}
+                            value={anchorValue ?? ''}
                             placeholder={i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__anchorPlaceholder', 'Enter anchor name')}
                             onChange={value => {
                                 onLinkChange(value ? `${baseValue}#${value}` : baseValue);

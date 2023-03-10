@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
 import {neos} from '@neos-project/neos-ui-decorators';
-import style from './style.css';
+import style from './style.module.css';
 
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')

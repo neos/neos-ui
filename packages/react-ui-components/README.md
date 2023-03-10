@@ -12,87 +12,102 @@ This package requires some peerDependencies which you need to install after inst
 yarn add @neos-project/react-ui-components
 ```
 
-## Usage (general)
-To reduce the bundled size of applications, we enforce singular import statements of components.
-You can import components by pointing to the `lib/` folder, f.e.
+## Usage (general with styling)
+
+You can simply import the components:
+
 ```js
-import Button from '@neos-project/react-ui-components/src/Button/';
+import { Button } from '@neos-project/react-ui-components';
 ```
 
-## Usage WITH CSS modules
-Within the `index.js` file of each component, CSS gets imported and injected as a `theme` prop.
-Your build-tool (f.e. webpack) may can handle this, but we require some additional PostCSS-plugins to be configured.
-In case you don't want this, scroll down to the section below, otherwise go on! :-)
+Since version 8.3 you dont even need to have a css modules plugin for bundling installed.
+The lib is already compiled for you to bare ES2020 Javascript and CSS. So just roll with any simple $bundler ;)
 
-An example webpack setup can be found in `.storybook/webpack.config.js`. You can see that we require at least a
-CSS modules compliant loader for `*.css` files, as well as the `postcss-css-variables`, `postcss-nested` and `postcss-hexrgba`
-PostCSS-plugins to be properly configured.
+### Font specialties
 
-In case you have problems with your webpack setup, please attach it within the issue you may want to create.
+You should also install `notosans-fontface` from our peerDependencies and import the `Noto Sans` Font as the components rely on it. See [example](example).
 
-## Usage WITHOUT CSS modules
+
+### `<Icon/>` specialties
+
+Icons require you to import and configure Font Awesome properly.
+An example config could look like this: (See [example](example))
+
+```js
+import { Icon } from '@neos-project/react-ui-components';
+
+import { config, library } from '@fortawesome/fontawesome-svg-core';
+// here we import all the solid icons (which is bad for bundle size, but might be necessary)
+import { fas } from '@fortawesome/free-solid-svg-icons';
+// but you can also only include a certain icon you'd like
+import { faNeos } from '@fortawesome/free-brands-svg-icons/faNeos';
+import '@fortawesome/fontawesome-svg-core/styles.css';
+
+config.autoAddCss = false; // Dont insert the supporting CSS into the <head> of the HTML document
+library.add(
+    fas,
+    faNeos,
+)
+
+export const Component = () => (
+    <Icon icon="neos" />
+)
+```
+
+### Example
+
+See the [example](example) folder for a minimal setup.
+You can build it with a super simple esbuild command or use the alias:
+
+```sh
+yarn workspace @neos-project/react-ui-components example --minify
+```
+
+## Usage within in a Neos.Ui plugin?
+
+You dont actually need to require this plugin when building a pure Neos.Ui Plugin like you dont need `react` installed as well. Your plugin will import `@neos-project/react-ui-components` from the "`window` export" of the Neos.Ui Host.
+
+You still might want to install this package to have typescript autocompletion and type safety ;)
+
+## Advanced Usage: Without styling
+
 You can also use the components without any styles provided by this package, but bear in mind that each component
 requires a `theme` prop with the `classNames` you need to provide.
 
-In case you want to use the components purely, adjust the import statement to point to the react component only e.g.
+In case you want to use the components purely, adjust the import statement to point to the `unstyled` export:
 ```js
-import Button from '@neos-project/react-ui-components/src/Button/button.js';
+import { Button } from '@neos-project/react-ui-components/unstyled';
 ```
 
-## Theming
-All components can be themed using the [react-css-themr](https://github.com/javivelasco/react-css-themr) package,
+## Advanced Usage: Theming
+All styled components can be themed using the [react-css-themr](https://github.com/javivelasco/react-css-themr) package,
 visit their docs for more information about how this approach works. Our identifiers can be imported e.g.
 ```js
-import identifiers from '@neos-project/react-ui-components/src/identifiers';
+import identifiers from '@neos-project/react-ui-components/identifiers';
 ```
 
 ## Contributing
-#### Requirements
-* yarn
 
-#### Setup
-Clone this repository, execute `yarn` in the root directory of the project.
-After the installation succeeded, execute `yarn start` to start the
-[development server of the styleguide](http://localhost:9001).
+### Setup
 
+Proceed with the instructions from the monorepo: [Neos.Neos.Ui](https://github.com/neos/neos-ui)
 
-#### Setup for developing inside the Neos.Neos.Ui Package
+### Test the development version of `@neos-project/react-ui-components` in your project
 
-[Neos.Neos.Ui](https://github.com/neos/neos-ui)
+Inside your [Neos.Neos.Ui](https://github.com/neos/neos-ui) development setup build and pack the `@neos-project/react-ui-components`:
 
-Make a symbolic link inside your Neos installation to your cloned sources od this package. The following example assumes that both installations are in the same folder.
-
-```
-cd YourNeosUiInstanz/Packages/Application/Neos.Neos.Ui/node_modules/@neos-project
-rm -rf react-ui-components
-ln -s ./../../../../../../react-ui-components/ .
+```sh
+yarn workspace @neos-project/react-ui-components build
+yarn workspace @neos-project/react-ui-components pack
 ```
 
+Then you will receive a `package.tgz` which holds essentially the same contents that would have been published to npm.
 
-run the watcher inside the react-ui-components
+You can add it for testing to your project by simply going to your project and adding the `package.tgz`:
 
+```sh
+yarn add path/to/the/package.tgz
 ```
-yarn watch:build
-```
-
-
-run the watcher inside the Neos.Neos.Ui Package
-
-```
-cd YourNeosUiInstanz/Packages/Application/Neos.Neos.Ui
-yarn watch:build
-```
-
-#### Commit Guidelines
-
-Please folllow these commit guidlines. [commit-analyzer](https://github.com/Inkdpixels/commit-analyzer)
-
-#### Building for standalone usage outside of Neos
-
-we build a `lib-esm/` folder to be consumed by e.g. webpack.
-
-This is done by `yarn run build-standalone-esm`.
-
 
 ## License
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR

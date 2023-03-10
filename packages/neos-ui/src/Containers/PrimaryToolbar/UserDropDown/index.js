@@ -9,7 +9,7 @@ import RestoreButtonItem from './RestoreButtonItem';
 
 import I18n from '@neos-project/neos-ui-i18n';
 
-import style from './style.css';
+import style from './style.module.css';
 @connect(state => ({
     userName: state?.user?.name?.fullName,
     impersonateStatus: state?.user?.impersonate?.status

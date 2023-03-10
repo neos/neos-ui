@@ -9,7 +9,7 @@ import {neos} from '@neos-project/neos-ui-decorators';
 
 import Frame from '@neos-project/react-ui-components/src/Frame/';
 
-import style from './style.css';
+import style from './style.module.css';
 
 @connect(state => ({
     isFringeLeft: state?.ui?.leftSideBar?.isHidden,
@@ -86,6 +86,10 @@ export default class ContentCanvas extends PureComponent {
         });
         const InlineUI = guestFrameRegistry.get('InlineUIComponent');
         const currentEditPreviewModeConfiguration = editPreviewModes[currentEditPreviewMode] || editPreviewModes[Object.keys(editPreviewModes)[0]];
+        const shouldShowInlineUi =
+            typeof currentEditPreviewModeConfiguration === 'object' &&
+            currentEditPreviewModeConfiguration.isEditingMode &&
+            Boolean(InlineUI);
 
         const width = currentEditPreviewModeConfiguration?.width;
         const height = currentEditPreviewModeConfiguration?.height;
@@ -132,7 +136,7 @@ export default class ContentCanvas extends PureComponent {
                         role="region"
                         aria-live="assertive"
                         >
-                        {InlineUI && <InlineUI/>}
+                        {shouldShowInlineUi && <InlineUI/>}
                     </Frame>)}
                 </div>
             </div>

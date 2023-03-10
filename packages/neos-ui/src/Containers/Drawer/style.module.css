@@ -1,0 +1,72 @@
+.drawer {
+    position: fixed;
+    display: flex;
+    flex-flow: column;
+    flex-shrink: 0;
+    justify-content: flex-start;
+    top: calc(var(--spacing-GoldenUnit) + 1px);
+    left: 0;
+    z-index: var(--zIndex-Drawer);
+    height: calc(100% - calc(var(--spacing-GoldenUnit) + 1px));
+    width: var(--size-SidebarWidth);
+    background: var(--colors-ContrastDarker);
+    transition: var(--transition-Default) ease transform;
+    overflow: scroll;
+}
+.drawer--isHidden {
+    transform: translateX(calc(var(--size-SidebarWidth) * -1));
+}
+
+.drawer__menuItemGroupsWrapper {
+    display: flex;
+    flex-shrink: 0;
+    flex-direction: column;
+    overflow-y: auto;
+    padding-bottom: calc(var(--spacing-GoldenUnit) + 1px);
+}
+
+.drawer__menuItem {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--colors-ContrastDark);
+    cursor: pointer;
+
+    &:first-child {
+        border-top: 0;
+    }
+}
+.drawer__menuItemGroupBtn,
+.drawer__menuItemBtn {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0;
+    text-align: left;
+    font-size: 15px;
+
+    & span {
+        display: inline-flex;
+        height: inherit;
+        width: inherit;
+        align-items: center;
+    }
+}
+/* Set an explicit width for the icons so that the chars are starting */
+/* on the same place for every MenuItem */
+.drawer__menuItem__header {
+    padding-right: calc(var(--spacing-GoldenUnit) - var(--spacing-Full));
+}
+.drawer__menuItemGroupBtn svg,
+.drawer__menuItemBtn svg {
+    width: 2em !important;
+}
+.drawer__menuItemGroupBtn {
+    font-weight: 700;
+}
+.drawer__bottom {
+    margin-top: auto;
+}
+.drawer__version {
+    color: var(--colors-ContrastBright);
+    padding: var(--spacing-Full);
+}

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
 
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
-import style from './style.css';
+import style from './style.module.css';
 
 export default class RefreshPageTree extends PureComponent {
     static propTypes = {

@@ -9,7 +9,7 @@ describe('<TextArea/>', () => {
     const props: TextAreaProps = {
         theme: {
             textArea: 'textAreaClassName',
-            'textArea--disabled': 'disabledClassName',
+            'textArea--disabled': 'disabledClassName'
         }
     };
 

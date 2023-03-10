@@ -9,7 +9,7 @@ import I18n from '@neos-project/neos-ui-i18n';
 import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 
-import style from './style.css';
+import style from './style.module.css';
 
 @connect(state => ({
     isOpen: selectors.UI.NodeVariantCreationDialog.isOpen(state),

@@ -10,7 +10,7 @@ export default class LinkAttributeCommand extends Command {
     }
 
     refresh() {
-        const model = this.editor.model;
+        const {model} = this.editor;
         const doc = model.document;
 
         this.value = doc.selection.getAttribute(this.attributeKey);
@@ -18,9 +18,9 @@ export default class LinkAttributeCommand extends Command {
     }
 
     execute(value) {
-        const model = this.editor.model;
+        const {model} = this.editor;
         const doc = model.document;
-        const selection = doc.selection;
+        const {selection} = doc;
         const toggleMode = value === undefined;
         value = toggleMode ? !this.value : value;
 

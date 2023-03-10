@@ -11,7 +11,7 @@ describe('<DropDownWrapper/>', () => {
         theme: {
             'dropDown': 'dropDownClassName',
             'dropDown__btn': 'btnClassName',
-            'dropDown--padded': 'paddedClassName',
+            'dropDown--padded': 'paddedClassName'
         }
     };
 
@@ -33,25 +33,28 @@ describe('<DropDownWrapper/>', () => {
         expect(wrapper.state('isOpen')).toBe(false);
     });
 
-    it('should set the "isOpen" state value to opposite when calling the toggle method.', () => {
+    it('should set the "isOpen" state value to opposite when calling the toggle method.', async () => {
         const wrapper = shallow(<DropDownWrapper {...props}/>);
 
         // @ts-ignore
         wrapper.instance().handleToggle();
 
+        await new Promise(resolve => setTimeout(resolve, 0));
         expect(wrapper.state('isOpen')).toBe(true);
 
         // @ts-ignore
         wrapper.instance().handleToggle();
 
+        await new Promise((resolve) => setTimeout(resolve, 0));
         expect(wrapper.state('isOpen')).toBe(false);
     });
-    it('should set the "isOpen" state value to false when calling the close method.', () => {
+    it('should set the "isOpen" state value to false when calling the close method.', async () => {
         const wrapper = shallow(<DropDownWrapper {...props}/>);
 
         // @ts-ignore
         wrapper.instance().handleClose();
 
+        await new Promise((resolve) => setTimeout(resolve, 0));
         expect(wrapper.state('isOpen')).toBe(false);
     });
 });

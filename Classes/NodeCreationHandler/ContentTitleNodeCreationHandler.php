@@ -42,7 +42,7 @@ class ContentTitleNodeCreationHandler implements NodeCreationHandlerInterface
     public function handle(CreateNodeAggregateWithNode $command, array $data, ContentRepository $contentRepository): CreateNodeAggregateWithNode
     {
         if (
-            !$contentRepository->getNodeTypeManager()->getNodeType($command->nodeTypeName->getValue())
+            !$contentRepository->getNodeTypeManager()->getNodeType($command->nodeTypeName)
                 ->isOfType('Neos.Neos:Content')
         ) {
             return $command;

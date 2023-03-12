@@ -41,7 +41,7 @@ class CreationDialogPropertiesCreationHandler implements NodeCreationHandlerInte
         $propertyMappingConfiguration->forProperty('*')->allowAllProperties();
         $propertyMappingConfiguration->setTypeConverterOption(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_OVERRIDE_TARGET_TYPE_ALLOWED, true);
 
-        $nodeType = $contentRepository->getNodeTypeManager()->getNodeType($command->nodeTypeName->getValue());
+        $nodeType = $contentRepository->getNodeTypeManager()->getNodeType($command->nodeTypeName);
         $propertyValues = $command->initialPropertyValues;
         foreach ($nodeType->getConfiguration('properties') as $propertyName => $propertyConfiguration) {
             if (

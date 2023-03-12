@@ -33,7 +33,7 @@ class CreateAfter extends AbstractCreate
         $parent = $this->findParentNode($this->subject);
         $nodeTypeName = $this->getNodeTypeName();
         $contentRepository = $this->contentRepositoryRegistry->get($parent->subgraphIdentity->contentRepositoryId);
-        $nodeType = $contentRepository->getNodeTypeManager()->getNodeType($nodeTypeName->getValue());
+        $nodeType = $contentRepository->getNodeTypeManager()->getNodeType($nodeTypeName);
 
         return $this->isNodeTypeAllowedAsChildNode($parent, $nodeType);
     }

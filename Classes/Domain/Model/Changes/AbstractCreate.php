@@ -136,7 +136,7 @@ abstract class AbstractCreate extends AbstractStructuralChange
         ContentRepository $contentRepository
     ): CreateNodeAggregateWithNode {
         $data = $this->getData() ?: [];
-        $nodeType = $contentRepository->getNodeTypeManager()->getNodeType($nodeTypeName->getValue());
+        $nodeType = $contentRepository->getNodeTypeManager()->getNodeType($nodeTypeName);
         if (!isset($nodeType->getOptions()['nodeCreationHandlers'])
             || !is_array($nodeType->getOptions()['nodeCreationHandlers'])) {
             return $command;

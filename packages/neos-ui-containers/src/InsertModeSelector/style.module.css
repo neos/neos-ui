@@ -25,12 +25,13 @@
     }
     > button {
         padding: 0px 14px;
-
-        > span {
-            margin-left: 7px;
-        }
     }
-
 }
 
-
+.iconAlignmentHack {
+    display: inline-block;
+    vertical-align: -.125em;
+    width: 0.625em;
+    margin-left: 0;
+    margin-right: 7px;
+}

@@ -443,6 +443,30 @@
                 <source>Blockquote</source>
         <target state="translated">Blokcitaat</target>
       </trans-unit>
+      <trans-unit id="above" xml:space="preserve">
+                <source>Above</source>
+        <target state="translated">Boven</target>
+      </trans-unit>
+      <trans-unit id="below" xml:space="preserve">
+                <source>Below</source>
+        <target state="translated">Onder</target>
+      </trans-unit>
+      <trans-unit id="inside" xml:space="preserve">
+                <source>Inside</source>
+        <target state="translated">Binnen</target>
+      </trans-unit>
+      <trans-unit id="InsertModeTitleAfter" xml:space="preserve">
+                <source>below</source>
+        <target state="translated">onder</target>
+      </trans-unit>
+      <trans-unit id="InsertModeTitleInto" xml:space="preserve">
+                <source>inside</source>
+        <target state="translated">binnen</target>
+      </trans-unit>
+      <trans-unit id="InsertModeTitleBefore" xml:space="preserve">
+                <source>above</source>
+        <target state="translated">boven</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

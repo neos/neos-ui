@@ -9,6 +9,20 @@ import {neos} from '@neos-project/neos-ui-decorators';
 import I18n from '@neos-project/neos-ui-i18n';
 
 import style from './style.module.css';
+import {GlobalRegistry} from '@neos-project/neos-ts-interfaces';
+
+type InsertMode = 'after' | 'before' | 'into'
+
+type InsertModeSelectorOwnProps = {
+    mode?: InsertMode
+    enableAlongsideModes: boolean
+    enableIntoMode: boolean
+    onSelect: (mode: InsertMode) => string
+}
+
+type InjectedNeosProps = ReturnType<typeof injectNeosProps>
+
+type InsertModeSelectorProps = InsertModeSelectorOwnProps & InjectedNeosProps
 
 const MODE_AFTER = 'after';
 const MODE_BEFORE = 'before';
@@ -20,10 +34,10 @@ const MODE_INTO = 'into';
 //
 // If the `into` mode is allowed, it should always be preferred.
 //
-// Otherwise `after` should be preferred, since `before` is a rather exceptional
+// Otherwise, `after` should be preferred since `before` is a rather exceptional
 // choice.
 //
-const calculatePreferredInitialMode = props => {
+const calculatePreferredInitialMode = (props: InsertModeSelectorProps) => {
     const {enableAlongsideModes, enableIntoMode} = props;
 
     if (enableIntoMode) {
@@ -37,22 +51,24 @@ const calculatePreferredInitialMode = props => {
     return null;
 };
 
-@neos(globalRegistry => ({
+const injectNeosProps = (globalRegistry: GlobalRegistry) => ({
     i18nRegistry: globalRegistry.get('i18n')
-}))
-export default class InsertModeSelector extends PureComponent {
+})
+
+// @ts-ignore -- NeosDecorator typings do not work for now.
+// Error: Property 'propTypes' is missing in type 'typeof NeosDecorator' but required in type 'typeof InsertModeSelector'.
+@neos<InsertModeSelectorOwnProps, InjectedNeosProps>(injectNeosProps)
+export default class InsertModeSelector extends PureComponent<InsertModeSelectorProps> {
     static propTypes = {
-        mode: PropTypes.string,
+        mode: PropTypes.oneOf([MODE_AFTER, MODE_BEFORE, MODE_INTO]),
         enableAlongsideModes: PropTypes.bool.isRequired,
         enableIntoMode: PropTypes.bool.isRequired,
         onSelect: PropTypes.func.isRequired,
-
+        // injected neos props
         i18nRegistry: PropTypes.object.isRequired
     };
 
-    options = [];
-
-    selectPreferredInitialModeIfModeIsEmpty(props) {
+    selectPreferredInitialModeIfModeIsEmpty(props: InsertModeSelectorProps) {
         const {mode, onSelect} = props;
         let reconsiderMode = !mode;
 
@@ -77,7 +93,7 @@ export default class InsertModeSelector extends PureComponent {
         this.selectPreferredInitialModeIfModeIsEmpty(this.props);
     }
 
-    UNSAFE_componentWillReceiveProps(props) {
+    UNSAFE_componentWillReceiveProps(props: InsertModeSelectorProps) {
         this.selectPreferredInitialModeIfModeIsEmpty(props);
     }
 
@@ -130,7 +146,7 @@ export default class InsertModeSelector extends PureComponent {
         );
     }
 
-    handleSelect = mode => {
+    handleSelect = (mode: InsertMode) => {
         const {onSelect} = this.props;
 
         onSelect(mode);

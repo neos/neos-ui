@@ -5,7 +5,7 @@ import FontAwesomeIcon from './fontAwesomeIcon';
 import ResourceIcon, {ResourceIconProps} from './resourceIcon';
 import {defaultProps} from './iconDefaultProps';
 
-type IconSize = 'xs' | 'sm' | 'lg' | '2x' | '3x';
+type IconSize = 'xs' | 'sm' | 'lg' | '1x' | '2x' | '3x';
 type IconPadding = 'none' | 'left' | 'right';
 type IconColor = 'default' | 'warn' | 'error' | 'primaryBlue';
 

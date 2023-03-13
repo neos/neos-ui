@@ -1,7 +1,7 @@
 import {Selector} from 'testcafe';
 import {ReactSelector} from 'testcafe-react-selectors';
-import {beforeEach, subSection, checkPropTypes} from './../../utils.js';
-import {Page} from './../../pageModel';
+import {beforeEach, subSection, checkPropTypes} from '../../utils';
+import {Page} from '../../pageModel';
 
 /* global fixture:true */
 

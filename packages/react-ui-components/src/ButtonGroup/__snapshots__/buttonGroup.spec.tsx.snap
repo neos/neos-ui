@@ -14,7 +14,7 @@ exports[`<ButtonGroup/> should render correctly. 1`] = `
     }
     id="foo"
     isPressed={true}
-    key="0"
+    key="foo"
     onClick={[MockFunction]}
   >
     Foo button
@@ -29,7 +29,7 @@ exports[`<ButtonGroup/> should render correctly. 1`] = `
     }
     id="bar"
     isPressed={false}
-    key="1"
+    key="bar"
     onClick={[MockFunction]}
   >
     Bar button

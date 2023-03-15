@@ -101,7 +101,7 @@ export default class InsertModeSelector extends PureComponent {
                         size="small"
                         title={`${i18nRegistry.translate('Neos.Neos:Main:insert')} ${i18nRegistry.translate('above')}`}
                     >
-                        <Icon icon="resource://Neos.Neos.Ui/Icons/create-above.svg" className={style.iconAlignmentHack} size="1x"/>
+                        <Icon icon="resource://Neos.Neos.Ui/Icons/create-above.svg" className={style.iconAlignment} size="1x"/>
                         <I18n id="Neos.Neos.Ui:Main:above" fallback="Above"/>
                     </Button>
                     <Button
@@ -111,7 +111,7 @@ export default class InsertModeSelector extends PureComponent {
                         size="small"
                         title={`${i18nRegistry.translate('Neos.Neos:Main:insert')} ${i18nRegistry.translate('below')}`}
                     >
-                        <Icon icon="resource://Neos.Neos.Ui/Icons/create-below.svg" className={style.iconAlignmentHack} size="1x"/>
+                        <Icon icon="resource://Neos.Neos.Ui/Icons/create-below.svg" className={style.iconAlignment} size="1x"/>
                         <I18n id="Neos.Neos.Ui:Main:below" fallback="Below"/>
                     </Button>
                     <Button
@@ -122,7 +122,7 @@ export default class InsertModeSelector extends PureComponent {
                         size="small"
                         title={`${i18nRegistry.translate('Neos.Neos:Main:insert')} ${i18nRegistry.translate('into')}`}
                     >
-                        <Icon icon="resource://Neos.Neos.Ui/Icons/create-inside.svg" className={style.iconAlignmentHack} size="1x"/>
+                        <Icon icon="resource://Neos.Neos.Ui/Icons/create-inside.svg" className={style.iconAlignment} size="1x"/>
                         <I18n id="Neos.Neos.Ui:Main:inside" fallback="Inside"/>
                     </Button>
                 </ButtonGroup>

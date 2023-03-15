@@ -1,12 +1,11 @@
 import React from 'react';
-import {neos} from '@neos-project/neos-ui-decorators';
+import {neos, NeosifiedProps} from '@neos-project/neos-ui-decorators';
 import {GlobalRegistry} from '@neos-project/neos-ts-interfaces';
-import {NeosInjectedProps} from '@neos-project/neos-ui-decorators/src/neos';
 
-const regsToProps = (globalRegistry: GlobalRegistry) => ({
+const neosifier = neos((globalRegistry: GlobalRegistry) => ({
     i18nRegistry: globalRegistry.get('i18n')
-});
-type InjectedProps = NeosInjectedProps<typeof regsToProps>;
+}));
+type InjectedProps = NeosifiedProps<typeof neosifier>;
 
 interface I18nProps {
     // Fallback key which gets rendered once the i18n service doesn't return a translation.
@@ -36,4 +35,4 @@ class I18n extends React.PureComponent<I18nProps & InjectedProps> {
     }
 }
 
-export default neos<I18nProps, InjectedProps>(regsToProps)(I18n);
+export default neosifier(I18n);

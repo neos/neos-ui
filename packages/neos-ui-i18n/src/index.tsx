@@ -1,8 +1,7 @@
 import React from 'react';
 import {neos, NeosifiedProps} from '@neos-project/neos-ui-decorators';
-import {GlobalRegistry} from '@neos-project/neos-ts-interfaces';
 
-const neosifier = neos((globalRegistry: GlobalRegistry) => ({
+const neosifier = neos((globalRegistry) => ({
     i18nRegistry: globalRegistry.get('i18n')
 }));
 type InjectedProps = NeosifiedProps<typeof neosifier>;

@@ -5,11 +5,10 @@ import ButtonGroup from '@neos-project/react-ui-components/src/ButtonGroup/';
 import Button from '@neos-project/react-ui-components/src/Button/';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 
-import {neos} from '@neos-project/neos-ui-decorators';
+import {neos, NeosifiedProps} from '@neos-project/neos-ui-decorators';
 import I18n from '@neos-project/neos-ui-i18n';
 
 import style from './style.module.css';
-import {GlobalRegistry} from '@neos-project/neos-ts-interfaces';
 
 type InsertMode = 'after' | 'before' | 'into'
 
@@ -20,7 +19,11 @@ type InsertModeSelectorOwnProps = {
     onSelect: (mode: InsertMode) => string
 }
 
-type InjectedNeosProps = ReturnType<typeof injectNeosProps>
+const neosifier = neos((globalRegistry) => ({
+    i18nRegistry: globalRegistry.get('i18n')
+}));
+
+type InjectedNeosProps = NeosifiedProps<typeof neosifier>
 
 type InsertModeSelectorProps = InsertModeSelectorOwnProps & InjectedNeosProps
 
@@ -51,14 +54,7 @@ const calculatePreferredInitialMode = (props: InsertModeSelectorProps) => {
     return null;
 };
 
-const injectNeosProps = (globalRegistry: GlobalRegistry) => ({
-    i18nRegistry: globalRegistry.get('i18n')
-})
-
-// @ts-ignore -- NeosDecorator typings do not work for now.
-// Error: Property 'propTypes' is missing in type 'typeof NeosDecorator' but required in type 'typeof InsertModeSelector'.
-@neos<InsertModeSelectorOwnProps, InjectedNeosProps>(injectNeosProps)
-export default class InsertModeSelector extends PureComponent<InsertModeSelectorProps> {
+class InsertModeSelector extends PureComponent<InsertModeSelectorProps> {
     static propTypes = {
         mode: PropTypes.oneOf([MODE_AFTER, MODE_BEFORE, MODE_INTO]),
         enableAlongsideModes: PropTypes.bool.isRequired,
@@ -152,3 +148,5 @@ export default class InsertModeSelector extends PureComponent<InsertModeSelector
         onSelect(mode);
     }
 }
+
+export default neosifier(InsertModeSelector);

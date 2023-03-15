@@ -56,7 +56,7 @@
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__superscript" xml:space="preserve" approved="no">
                 <source>Superscript</source>
-        <target xml:lang="es-ES" state="translated">Superscript</target>
+        <target xml:lang="es-ES" state="translated">Superíndice</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__strikethrough" xml:space="preserve" approved="no">
                 <source>Strikethrough</source>

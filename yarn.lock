@@ -2421,7 +2421,7 @@ __metadata:
     reselect: ^3.0.1
     typescript: ^4.6.4
   peerDependencies:
-    hoist-non-react-statics: "*"
+    hoist-non-react-statics: ^3.3.0
     prop-types: ^15.5.10
     react: ^16.12.0
   languageName: unknown

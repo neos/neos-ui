@@ -1,7 +1,1 @@
-import neos, {NeosContext, NeosInjectedProps} from './neos';
-
-export {
-    neos,
-    NeosContext,
-    NeosInjectedProps
-};
+export {neos, NeosContext, NeosifiedProps} from './neos';

@@ -21,7 +21,7 @@ export interface ButtonGroupProps {
     /**
      * Called when new value is selected. Returns an id of the activated button
      */
-    readonly onSelect: (value: any) => ButtonGroupItemId;
+    readonly onSelect: (value: any) => ButtonGroupItemId | void;
 
     /**
      * The contents to be rendered within the `Bar`.
@@ -52,15 +52,15 @@ class ButtonGroup extends PureComponent<ButtonGroupProps> {
         return (
             <div {...rest} className={finalClassName}>
                 {
-                    children.map((child, index) => {
+                    children.map((child) => {
                         return (
                             <ButtonGroupItem
                                 {...child.props}
-                                key={index}
+                                key={child.props.id}
                                 onClick={onSelect}
                                 isPressed={value === child.props.id}
                                 element={child}
-                                />
+                            />
                         );
                     })
                 }

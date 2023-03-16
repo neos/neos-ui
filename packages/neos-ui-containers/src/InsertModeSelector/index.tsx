@@ -5,10 +5,27 @@ import ButtonGroup from '@neos-project/react-ui-components/src/ButtonGroup/';
 import Button from '@neos-project/react-ui-components/src/Button/';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 
-import {neos} from '@neos-project/neos-ui-decorators';
+import {neos, NeosifiedProps} from '@neos-project/neos-ui-decorators';
 import I18n from '@neos-project/neos-ui-i18n';
 
 import style from './style.module.css';
+
+type InsertMode = 'after' | 'before' | 'into'
+
+type InsertModeSelectorOwnProps = {
+    mode?: InsertMode
+    enableAlongsideModes: boolean
+    enableIntoMode: boolean
+    onSelect: (mode: InsertMode) => string
+}
+
+const neosifier = neos((globalRegistry) => ({
+    i18nRegistry: globalRegistry.get('i18n')
+}));
+
+type InjectedNeosProps = NeosifiedProps<typeof neosifier>
+
+type InsertModeSelectorProps = InsertModeSelectorOwnProps & InjectedNeosProps
 
 const MODE_AFTER = 'after';
 const MODE_BEFORE = 'before';
@@ -20,10 +37,10 @@ const MODE_INTO = 'into';
 //
 // If the `into` mode is allowed, it should always be preferred.
 //
-// Otherwise `after` should be preferred, since `before` is a rather exceptional
+// Otherwise, `after` should be preferred since `before` is a rather exceptional
 // choice.
 //
-const calculatePreferredInitialMode = props => {
+const calculatePreferredInitialMode = (props: InsertModeSelectorProps) => {
     const {enableAlongsideModes, enableIntoMode} = props;
 
     if (enableIntoMode) {
@@ -37,22 +54,17 @@ const calculatePreferredInitialMode = props => {
     return null;
 };
 
-@neos(globalRegistry => ({
-    i18nRegistry: globalRegistry.get('i18n')
-}))
-export default class InsertModeSelector extends PureComponent {
+class InsertModeSelector extends PureComponent<InsertModeSelectorProps> {
     static propTypes = {
-        mode: PropTypes.string,
+        mode: PropTypes.oneOf([MODE_AFTER, MODE_BEFORE, MODE_INTO]),
         enableAlongsideModes: PropTypes.bool.isRequired,
         enableIntoMode: PropTypes.bool.isRequired,
         onSelect: PropTypes.func.isRequired,
-
+        // injected neos props
         i18nRegistry: PropTypes.object.isRequired
     };
 
-    options = [];
-
-    selectPreferredInitialModeIfModeIsEmpty(props) {
+    selectPreferredInitialModeIfModeIsEmpty(props: InsertModeSelectorProps) {
         const {mode, onSelect} = props;
         let reconsiderMode = !mode;
 
@@ -77,7 +89,7 @@ export default class InsertModeSelector extends PureComponent {
         this.selectPreferredInitialModeIfModeIsEmpty(this.props);
     }
 
-    UNSAFE_componentWillReceiveProps(props) {
+    UNSAFE_componentWillReceiveProps(props: InsertModeSelectorProps) {
         this.selectPreferredInitialModeIfModeIsEmpty(props);
     }
 
@@ -130,9 +142,11 @@ export default class InsertModeSelector extends PureComponent {
         );
     }
 
-    handleSelect = mode => {
+    handleSelect = (mode: InsertMode) => {
         const {onSelect} = this.props;
 
         onSelect(mode);
     }
 }
+
+export default neosifier(InsertModeSelector);

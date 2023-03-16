@@ -17,7 +17,7 @@ export const adminUser = Role(adminUrl, async t => {
 
 export async function checkPropTypes() {
     const {error} = await t.getBrowserConsoleMessages();
-    // Quick fix hack to get rid of the react life cycle warnings
+    // Quick fix hack to get rid of the React life cycle warnings
     if (error[0] && error[0].search('Warning: Unsafe legacy lifecycles') >= 0) {
         delete error[0];
     }

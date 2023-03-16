@@ -106,6 +106,7 @@ export default class InsertModeSelector extends PureComponent {
                     </Button>
                     <Button
                         id={MODE_AFTER}
+                        className={style.afterButton}
                         disabled={!enableAlongsideModes}
                         style="lighter"
                         size="small"

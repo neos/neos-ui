@@ -26,8 +26,13 @@
         border-top-right-radius: 2px;
         border-bottom-right-radius: 2px;
     }
+    .afterButton {
+        border-top-right-radius: 2px;
+        border-bottom-right-radius: 2px;
+    }
     .intoButton {
         margin-left: var(--spacing-Half);
+        border-radius: 2px;
     }
     > button {
         padding: 0px 14px;

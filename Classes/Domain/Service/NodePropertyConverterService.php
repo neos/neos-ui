@@ -17,6 +17,8 @@ namespace Neos\Neos\Ui\Domain\Service;
 use Neos\ContentRepository\Core\NodeType\NodeType;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindReferencesFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Reference;
+use Neos\ContentRepository\Core\Projection\ContentGraph\References;
 use Neos\ContentRepository\Core\Projection\NodeHiddenState\NodeHiddenStateFinder;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
@@ -174,14 +176,13 @@ class NodePropertyConverterService
     }
 
     /**
-     * @param iterable<int,Node> $nodes
      * @return array<int,string>
      */
-    private function toNodeIdentifierStrings(iterable $nodes): array
+    private function toNodeIdentifierStrings(References $references): array
     {
         $identifiers = [];
-        foreach ($nodes as $node) {
-            $identifiers[] = (string)$node->nodeAggregateId;
+        foreach ($references as $reference) {
+            $identifiers[] = (string)$reference->node->nodeAggregateId;
         }
         return $identifiers;
     }

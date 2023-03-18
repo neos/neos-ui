@@ -172,7 +172,7 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
             return;
         }
 
-        $nodes[(string)$currentNode->getNodeAggregateIdentifier()] = $currentNode;
+        $nodes[(string)$currentNode->getNodeAggregateId()] = $currentNode;
 
         foreach ($subtree->getChildren() as $childSubtree) {
             $this->flattenSubtreeToNodeList($nodeAccessor, $childSubtree, $nodes);

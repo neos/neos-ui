@@ -84,13 +84,13 @@ abstract class AbstractCreate extends AbstractStructuralChange
 
     /**
      * @param Node $parentNode
-     * @param NodeAggregateId|null $succeedingSiblingNodeAggregateIdentifier
+     * @param NodeAggregateId|null $succeedingSiblingNodeAggregateId
      * @return Node
      * @throws InvalidNodeCreationHandlerException|NodeNameIsAlreadyOccupied|NodeException
      */
     protected function createNode(
         Node $parentNode,
-        NodeAggregateId $succeedingSiblingNodeAggregateIdentifier = null
+        NodeAggregateId $succeedingSiblingNodeAggregateId = null
     ): Node {
         $nodeTypeName = $this->getNodeTypeName();
         if (is_null($nodeTypeName)) {
@@ -100,15 +100,15 @@ abstract class AbstractCreate extends AbstractStructuralChange
         // $name = $this->getName() ?: $this->nodeService->generateUniqueNodeName($parent->findParentNode());
         $nodeName = NodeName::fromString($this->getName() ?: uniqid('node-', false));
 
-        $nodeAggregateIdentifier = NodeAggregateId::create(); // generate a new NodeAggregateIdentifier
+        $nodeAggregateId = NodeAggregateId::create(); // generate a new NodeAggregateId
 
         $command = new CreateNodeAggregateWithNode(
             $parentNode->subgraphIdentity->contentStreamId,
-            $nodeAggregateIdentifier,
+            $nodeAggregateId,
             $nodeTypeName,
             OriginDimensionSpacePoint::fromDimensionSpacePoint($parentNode->subgraphIdentity->dimensionSpacePoint),
             $parentNode->nodeAggregateId,
-            $succeedingSiblingNodeAggregateIdentifier,
+            $succeedingSiblingNodeAggregateId,
             $nodeName
         );
         $contentRepository = $this->contentRepositoryRegistry->get($parentNode->subgraphIdentity->contentRepositoryId);

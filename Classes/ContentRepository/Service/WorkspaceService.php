@@ -64,14 +64,14 @@ class WorkspaceService
             return [];
         }
         $changeFinder = $contentRepository->projectionState(ChangeFinder::class);
-        $changes = $changeFinder->findByContentStreamIdentifier($workspace->currentContentStreamId);
+        $changes = $changeFinder->findByContentStreamId($workspace->currentContentStreamId);
         $unpublishedNodes = [];
         foreach ($changes as $change) {
             if ($change->removalAttachmentPoint) {
                 $nodeAddress = new NodeAddress(
-                    $change->contentStreamIdentifier,
+                    $change->contentStreamId,
                     $change->originDimensionSpacePoint->toDimensionSpacePoint(),
-                    $change->nodeAggregateIdentifier,
+                    $change->nodeAggregateId,
                     $workspaceName
                 );
 
@@ -79,7 +79,7 @@ class WorkspaceService
                  * See {@see Remove::apply} -> Removal Attachment Point == closest document node.
                  */
                 $documentNodeAddress = new NodeAddress(
-                    $change->contentStreamIdentifier,
+                    $change->contentStreamId,
                     $change->originDimensionSpacePoint->toDimensionSpacePoint(),
                     $change->removalAttachmentPoint,
                     $workspaceName
@@ -95,7 +95,7 @@ class WorkspaceService
                     $change->originDimensionSpacePoint->toDimensionSpacePoint(),
                     VisibilityConstraints::withoutRestrictions()
                 );
-                $node = $subgraph->findNodeById($change->nodeAggregateIdentifier);
+                $node = $subgraph->findNodeById($change->nodeAggregateId);
 
                 if ($node instanceof Node) {
                     $documentNode = $this->getClosestDocumentNode($node);

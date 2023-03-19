@@ -152,10 +152,10 @@ class Property extends AbstractChange
             // Use extra commands for reference handling
             if ($propertyType === 'reference' || $propertyType === 'references') {
                 $value = $this->getValue();
-                $destinationNodeAggregateIdentifiers = [];
+                $destinationNodeAggregateIds = [];
                 if ($propertyType === 'reference') {
                     if (is_string($value) && !empty($value)) {
-                        $destinationNodeAggregateIdentifiers[] = $value;
+                        $destinationNodeAggregateIds[] = $value;
                     }
                 }
 
@@ -163,8 +163,8 @@ class Property extends AbstractChange
                     /** @var array<int,string> $values */
                     $values = $value;
                     if (is_array($values)) {
-                        foreach ($values as $singleNodeAggregateIdentifier) {
-                            $destinationNodeAggregateIdentifiers[] = $singleNodeAggregateIdentifier;
+                        foreach ($values as $singleNodeAggregateId) {
+                            $destinationNodeAggregateIds[] = $singleNodeAggregateId;
                         }
                     }
                 }
@@ -175,7 +175,7 @@ class Property extends AbstractChange
                         $subject->nodeAggregateId,
                         $subject->originDimensionSpacePoint,
                         ReferenceName::fromString($propertyName),
-                        NodeReferencesToWrite::fromNodeAggregateIds(NodeAggregateIds::fromArray($destinationNodeAggregateIdentifiers))
+                        NodeReferencesToWrite::fromNodeAggregateIds(NodeAggregateIds::fromArray($destinationNodeAggregateIds))
                     )
                 );
             } else {
@@ -256,11 +256,11 @@ class Property extends AbstractChange
             // because it may have been modified by the commands above.
             // Thus, we need to re-fetch it (as a workaround; until we do not need this anymore)
             $subgraph = $this->contentRepositoryRegistry->subgraphForNode($subject);
-            $originalNodeAggregateIdentifier = $subject->nodeAggregateId;
-            $node = $subgraph->findNodeById($originalNodeAggregateIdentifier);
+            $originalNodeAggregateId = $subject->nodeAggregateId;
+            $node = $subgraph->findNodeById($originalNodeAggregateId);
             if (is_null($node)) {
                 throw new \InvalidArgumentException(
-                    'Cannot apply Property on missing node ' . $originalNodeAggregateIdentifier,
+                    'Cannot apply Property on missing node ' . $originalNodeAggregateId,
                     1645560836
                 );
             }

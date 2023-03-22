@@ -448,7 +448,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
      * @param ControllerContext $controllerContext
      * @return string
      */
-    public  function backendUri(NodeInterface $node = null, ControllerContext $controllerContext)
+    public function backendUri(NodeInterface $node = null, ControllerContext $controllerContext)
     {
         if ($node === null) {
             // This happens when the document node is not published yet

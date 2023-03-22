@@ -322,6 +322,7 @@ export default class Node extends PureComponent {
                     icon={this.getIcon()}
                     customIconComponent={this.getCustomIconComponent()}
                     iconLabel={this.getNodeTypeLabel()}
+                    directLink={isContentTreeNode ? undefined : $get('backendUri', node)}
                     level={level}
                     onToggle={this.handleNodeToggle}
                     onClick={this.handleNodeClick}

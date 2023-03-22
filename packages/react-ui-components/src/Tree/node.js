@@ -108,6 +108,7 @@ export class Header extends PureComponent {
         icon: PropTypes.string,
         customIconComponent: PropTypes.node,
         iconLabel: PropTypes.string,
+        directLink: PropTypes.string,
         level: PropTypes.number.isRequired,
         dragAndDropContext: PropTypes.shape({
             accepts: PropTypes.func.isRequired,
@@ -171,6 +172,7 @@ export class Header extends PureComponent {
             icon,
             customIconComponent,
             iconLabel,
+            directLink,
             level,
             onClick,
             onLabelClick,
@@ -222,16 +224,17 @@ export class Header extends PureComponent {
                                         <IconComponent icon={icon || 'question'} label={iconLabel} />
                                     }
                                 </div>
-                                <span
+                                <a
                                     {...rest}
                                     id={labelIdentifier}
                                     className={theme.header__label}
-                                    onClick={onLabelClick}
+                                    onClick={onLabelClick ? onLabelClick : (directLink ? this.onDirectLinkClick : undefined)}
                                     data-neos-integrational-test="tree__item__nodeHeader__itemLabel"
                                     role="treeitem"
+                                    href={directLink ? directLink : undefined}
                                 >
                                     {label}
-                                </span>
+                                </a>
                             </div>
                         </div>
                     ))}
@@ -249,6 +252,10 @@ export class Header extends PureComponent {
                 </div>
             </div>
         );
+    }
+
+    onDirectLinkClick(e) {
+        e.preventDefault();
     }
 
     renderCollapseControl() {

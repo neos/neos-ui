@@ -137,6 +137,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
         if ($controllerContext !== null) {
             $nodeInfo = array_merge($nodeInfo, $this->getUriInformation($node, $controllerContext));
+            $nodeInfo = array_merge($nodeInfo, $this->getBackendUriInformation($node, $controllerContext));
             if ($controllerContext->getRequest()->hasArgument('presetBaseNodeType')) {
                 $presetBaseNodeType = $controllerContext->getRequest()->getArgument('presetBaseNodeType');
             }
@@ -204,6 +205,30 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         } catch (\Neos\Neos\Exception $exception) {
             // Unless there is a serious problem with routes there shouldn't be an exception ever.
             $nodeInfo['uri'] = '';
+        }
+
+        return $nodeInfo;
+    }
+
+    /**
+     * Get the "backendUri" for the given node
+     *
+     * @param NodeInterface $node
+     * @param ControllerContext $controllerContext
+     * @return array
+     */
+    protected function getBackendUriInformation(NodeInterface $node, ControllerContext $controllerContext): array
+    {
+        $nodeInfo = [];
+        if (!$node->getNodeType()->isOfType($this->documentNodeTypeRole)) {
+            return $nodeInfo;
+        }
+
+        try {
+            $nodeInfo['backendUri'] = $this->backendUri($node, $controllerContext);
+        } catch (\Neos\Neos\Exception $exception) {
+            // Unless there is a serious problem with routes there shouldn't be an exception ever.
+            $nodeInfo['backendUri'] = '';
         }
 
         return $nodeInfo;
@@ -414,6 +439,31 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
         // Create an absolute URI
         return $this->linkingService->createNodeUri($controllerContext, $node, null, null, true);
+    }
+
+    /**
+     * Create a Backend uri (/neos/content[...])
+     *
+     * @param NodeInterface|null $node
+     * @param ControllerContext $controllerContext
+     * @return string
+     */
+    public  function backendUri(NodeInterface $node = null, ControllerContext $controllerContext)
+    {
+        if ($node === null) {
+            // This happens when the document node is not published yet
+            return '';
+        }
+
+        $request = $controllerContext->getRequest()->getMainRequest();
+        $uriBuilder = clone $controllerContext->getUriBuilder();
+        $uriBuilder->setRequest($request);
+
+        return $uriBuilder
+            ->reset()
+            ->setCreateAbsoluteUri(true)
+            ->setFormat('html')
+            ->uriFor('index', ['node' => $node], 'Backend', 'Neos.Neos.Ui');
     }
 
     /**

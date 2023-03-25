@@ -174,11 +174,11 @@
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__tableRow" xml:space="preserve">
                 <source>Row</source>
-        <target xml:lang="es-ES" state="needs-translation">Row</target>
+        <target xml:lang="es-ES" state="translated">Fila</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__tableMergeCells" xml:space="preserve">
                 <source>Merge cells</source>
-        <target xml:lang="es-ES" state="needs-translation">Merge cells</target>
+        <target xml:lang="es-ES" state="translated">Combinar celdas</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__remove-format" xml:space="preserve" approved="yes">
                 <source>Remove format</source>
@@ -200,59 +200,59 @@
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__setTableColumnHeader" xml:space="preserve">
                 <source>Header column</source>
-        <target xml:lang="es-ES" state="needs-translation">Header column</target>
+        <target xml:lang="es-ES" state="translated">Columna de encabezado</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__insertTableColumnLeft" xml:space="preserve">
                 <source>Insert column before</source>
-        <target xml:lang="es-ES" state="needs-translation">Insert column before</target>
+        <target xml:lang="es-ES" state="translated">Insertar una columna antes</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__insertTableColumnRight" xml:space="preserve">
                 <source>Insert column after</source>
-        <target xml:lang="es-ES" state="needs-translation">Insert column after</target>
+        <target xml:lang="es-ES" state="translated">Insertar una columna después de</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__removeTableColumn" xml:space="preserve">
                 <source>Delete column</source>
-        <target xml:lang="es-ES" state="needs-translation">Delete column</target>
+        <target xml:lang="es-ES" state="translated">Borrar columna</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__setTableRowHeader" xml:space="preserve">
                 <source>Header row</source>
-        <target xml:lang="es-ES" state="needs-translation">Header row</target>
+        <target xml:lang="es-ES" state="translated">Línea de cabecera</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__insertTableRowBelow" xml:space="preserve">
                 <source>Insert row below</source>
-        <target xml:lang="es-ES" state="needs-translation">Insert row below</target>
+        <target xml:lang="es-ES" state="translated">Insertar fila a continuación</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__insertTableRowAbove" xml:space="preserve">
                 <source>Insert row above</source>
-        <target xml:lang="es-ES" state="needs-translation">Insert row above</target>
+        <target xml:lang="es-ES" state="translated">Insertar una fila arriba</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__removeTableRow" xml:space="preserve">
                 <source>Delete row</source>
-        <target xml:lang="es-ES" state="needs-translation">Delete row</target>
+        <target xml:lang="es-ES" state="translated">Borrar fila</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__mergeTableCellUp" xml:space="preserve">
                 <source>Merge cell up</source>
-        <target xml:lang="es-ES" state="needs-translation">Merge cell up</target>
+        <target xml:lang="es-ES" state="translated">Fusionar celda hacia arriba</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__mergeTableCellRight" xml:space="preserve">
                 <source>Merge cell right</source>
-        <target xml:lang="es-ES" state="needs-translation">Merge cell right</target>
+        <target xml:lang="es-ES" state="translated">Combinar celda a la derecha</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__mergeTableCellDown" xml:space="preserve">
                 <source>Merge cell down</source>
-        <target xml:lang="es-ES" state="needs-translation">Merge cell down</target>
+        <target xml:lang="es-ES" state="translated">Combinar celda hacia abajo</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__mergeTableCellLeft" xml:space="preserve">
                 <source>Merge cell left</source>
-        <target xml:lang="es-ES" state="needs-translation">Merge cell left</target>
+        <target xml:lang="es-ES" state="translated">Combinar celda a la izquierda</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__splitTableCellVertically" xml:space="preserve">
                 <source>Split cell vertically</source>
-        <target xml:lang="es-ES" state="needs-translation">Split cell vertically</target>
+        <target xml:lang="es-ES" state="translated">Dividir la celda verticalmente</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__splitTableCellHorizontally" xml:space="preserve">
                 <source>Split cell horizontally</source>
-        <target xml:lang="es-ES" state="needs-translation">Split cell horizontally</target>
+        <target xml:lang="es-ES" state="translated">Dividir la celda horizontalmente</target>
       </trans-unit>
       <trans-unit id="createNew" xml:space="preserve">
                 <source>Create new</source>
@@ -278,10 +278,10 @@
                     You have to press the keys on the right after each other.
                     They will not get triggered when you are focusing an input field.
                 </source>
-        <target xml:lang="es-ES" state="needs-translation">
-                    These are Keyboard-Shortcuts we are providing.
-                    You have to press the keys on the right after each other.
-                    They will not get triggered when you are focusing an input field.
+        <target xml:lang="es-ES" state="translated">
+                    Estos son los atajos de teclado que le proporcionamos.
+                    Tiene que pulsar las teclas de la derecha una detrás de otra.
+                    No se activarán cuando esté enfocando un campo de entrada.
                 </target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.RightSideBar.toggle" xml:space="preserve">
@@ -290,27 +290,27 @@
       </trans-unit>
       <trans-unit id="Shortcut__UI.FullScreen.toggle" xml:space="preserve">
                 <source>Toggle full screen</source>
-        <target xml:lang="es-ES" state="needs-translation">Toggle full screen</target>
+        <target xml:lang="es-ES" state="translated">Pantalla completa</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.LeftSideBar.toggle" xml:space="preserve">
                 <source>Toggle left sidebar</source>
-        <target xml:lang="es-ES" state="needs-translation">Toggle left sidebar</target>
+        <target xml:lang="es-ES" state="translated">Alternar la barra lateral a la izquierda</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.LeftSideBar.toggleContentTree" xml:space="preserve">
                 <source>Toggle contenttree</source>
-        <target xml:lang="es-ES" state="needs-translation">Toggle contenttree</target>
+        <target xml:lang="es-ES" state="translated">Alternar con el árbol de contenidos</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.AddNodeModal.close" xml:space="preserve">
                 <source>Close Add-Node-Modal</source>
-        <target xml:lang="es-ES" state="needs-translation">Close Add-Node-Modal</target>
+        <target xml:lang="es-ES" state="translated">Cerrar Añadir nodo modal</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.Drawer.toggle" xml:space="preserve">
                 <source>Toggle Drawer</source>
-        <target xml:lang="es-ES" state="needs-translation">Toggle Drawer</target>
+        <target xml:lang="es-ES" state="translated">Alternar panel</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.EditModePanel.toggle" xml:space="preserve">
                 <source>Toggle EditModePanel</source>
-        <target xml:lang="es-ES" state="needs-translation">Toggle EditModePanel</target>
+        <target xml:lang="es-ES" state="translated">Alternar el panel del modo de edición</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.InsertionModeModal.cancel" xml:space="preserve">
                 <source>Cancel InsertionModeModal</source>
@@ -322,19 +322,19 @@
       </trans-unit>
       <trans-unit id="Shortcut__UI.ContentCanvas.reload" xml:space="preserve">
                 <source>Reload ContentCanvas</source>
-        <target xml:lang="es-ES" state="needs-translation">Reload ContentCanvas</target>
+        <target xml:lang="es-ES" state="translated">Actualizar ContentCanvas</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.Inspector.discard" xml:space="preserve">
                 <source>Discard Inspector</source>
-        <target xml:lang="es-ES" state="needs-translation">Discard Inspector</target>
+        <target xml:lang="es-ES" state="translated">Inspector de descartes</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.Inspector.escape" xml:space="preserve">
                 <source>Escape Inspector</source>
-        <target xml:lang="es-ES" state="needs-translation">Escape Inspector</target>
+        <target xml:lang="es-ES" state="translated">Inspector de Escapes</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.Inspector.resume" xml:space="preserve">
                 <source>Resume Inspector</source>
-        <target xml:lang="es-ES" state="needs-translation">Resume Inspector</target>
+        <target xml:lang="es-ES" state="translated">Inspector de currículum</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.NodeCreationDialog.back" xml:space="preserve">
                 <source>NodeCreationDialog Back</source>
@@ -425,6 +425,14 @@
       <trans-unit id="ckeditor__toolbar__style__pre" xml:space="preserve">
                 <source>Preformatted</source>
         <target state="translated">Preformateado</target>
+      </trans-unit>
+      <trans-unit id="UI.RightSideBar.tabs.validationErrorTooltip[0]" xml:space="preserve">
+                    <source>{tabName} – {amountOfErrors} validation issue</source>
+        <target state="translated">{tabName} - {amountOfErrors} problema de validación</target>
+      </trans-unit>
+      <trans-unit id="UI.RightSideBar.tabs.validationErrorTooltip[1]" xml:space="preserve">
+                    <source>{tabName} – {amountOfErrors} validation issues</source>
+        <target state="translated">{tabName} - {amountOfErrors} problemas de validación</target>
       </trans-unit>
     </body>
   </file>

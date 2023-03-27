@@ -31,11 +31,6 @@
   "sideEffects": false,
   "scripts": {
     "build": "rm -rf dist types && tsc && node esbuild.js",
-    "test": "yarn jest -w 2 --coverage",
-    "test:watch": "yarn jest --watch",
-    "clean": "rm -rf dist types",
-    "jest": "NODE_ENV=test jest",
-    "jest:updateSnapshots": "NODE_ENV=test jest -u",
     "example": "cd example && yarn esbuild test.jsx --outdir=dist --bundle --sourcemap=linked --loader:.woff2=file"
   },
   "peerDependencies": {

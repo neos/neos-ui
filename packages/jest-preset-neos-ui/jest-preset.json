@@ -11,17 +11,17 @@
     "sinon"
   ],
   "setupFiles": [
-    "<rootDir>/packages/jest-preset-neos-ui/src/setupBrowserEnv.js",
-    "<rootDir>/packages/jest-preset-neos-ui/src/enzymeConfiguration.js"
+    "@neos-project/jest-preset-neos-ui/src/setupBrowserEnv.js",
+    "@neos-project/jest-preset-neos-ui/src/enzymeConfiguration.js"
   ],
   "testEnvironment": "node",
   "testMatch": [
     "**/src/**/?(*.)spec.{js,ts,tsx}"
   ],
   "transform": {
-    "^.+\\.(tsx?|js)$": "<rootDir>/packages/jest-preset-neos-ui/src/esbuildTransformer.js"
+    "^.+\\.(tsx?|js)$": "@neos-project/jest-preset-neos-ui/src/esbuildTransformer.js"
   },
-  "resolver": "<rootDir>/packages/jest-preset-neos-ui/src/moduleFieldResolver.js",
+  "resolver": "@neos-project/jest-preset-neos-ui/src/moduleFieldResolver.js",
   "moduleNameMapper": {
     "\\.(css|svg)$": "identity-obj-proxy"
   },

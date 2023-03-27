@@ -314,11 +314,11 @@
       </trans-unit>
       <trans-unit id="Shortcut__UI.InsertionModeModal.cancel" xml:space="preserve">
                 <source>Cancel InsertionModeModal</source>
-        <target xml:lang="es-ES" state="needs-translation">Cancel InsertionModeModal</target>
+        <target xml:lang="es-ES" state="translated">Cancelar Modo Inserción Modal</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.InsertionModeModal.apply" xml:space="preserve">
                 <source>Apply InsertionModeModal</source>
-        <target xml:lang="es-ES" state="needs-translation">Apply InsertionModeModal</target>
+        <target xml:lang="es-ES" state="translated">Aplicar modo de inserción modal</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.ContentCanvas.reload" xml:space="preserve">
                 <source>Reload ContentCanvas</source>
@@ -338,60 +338,60 @@
       </trans-unit>
       <trans-unit id="Shortcut__UI.NodeCreationDialog.back" xml:space="preserve">
                 <source>NodeCreationDialog Back</source>
-        <target xml:lang="es-ES" state="needs-translation">NodeCreationDialog Back</target>
+        <target xml:lang="es-ES" state="translated">Volver al Diálogo de creación de nodos</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.NodeCreationDialog.cancel" xml:space="preserve">
                 <source>NodeCreationDialog Cancel</source>
-        <target xml:lang="es-ES" state="needs-translation">NodeCreationDialog Cancel</target>
+        <target xml:lang="es-ES" state="translated">Cancelar el Diálogo de creación de nodos</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.NodeCreationDialog.apply" xml:space="preserve">
                 <source>NodeCreationDialog Apply</source>
-        <target xml:lang="es-ES" state="needs-translation">NodeCreationDialog Apply</target>
+        <target xml:lang="es-ES" state="translated">Aplicar el Diálogo de creación de nodos</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.NodeVariantCreationDialog.cancel" xml:space="preserve">
                 <source>NodeVariantCreationDialog Cancel</source>
-        <target xml:lang="es-ES" state="needs-translation">NodeVariantCreationDialog Cancel</target>
+        <target xml:lang="es-ES" state="translated">Cancelar el Diálogo de creación de variantes del nodo</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.NodeVariantCreationDialog.createEmpty" xml:space="preserve">
                 <source>NodeVariantCreationDialog Create Empty</source>
-        <target xml:lang="es-ES" state="needs-translation">NodeVariantCreationDialog Create Empty</target>
+        <target xml:lang="es-ES" state="translated">Diálogo de creación de variantes del nodo Crear vacío</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.NodeVariantCreationDialog.createAndCopy" xml:space="preserve">
                 <source>NodeVariantCreationDialog Create and Copy</source>
-        <target xml:lang="es-ES" state="needs-translation">NodeVariantCreationDialog Create and Copy</target>
+        <target xml:lang="es-ES" state="translated">Crear y Copiar el Diálogo de creación de variantes de nodo</target>
       </trans-unit>
       <trans-unit id="Shortcut__CR.Nodes.unfocus" xml:space="preserve">
                 <source>Unfocus Node</source>
-        <target xml:lang="es-ES" state="needs-translation">Unfocus Node</target>
+        <target xml:lang="es-ES" state="translated">Nodo de desenfoque</target>
       </trans-unit>
       <group id="changesApplied" restype="x-gettext-plurals">
         <trans-unit id="changesApplied[0]" xml:space="preserve">
                     <source>{0} change successfully applied.</source>
-                    <target xml:lang="es-ES" state="needs-translation">{0} change successfully applied.</target>
+                    <target xml:lang="es-ES" state="translated">{0} cambio aplicado con éxito.</target>
                 </trans-unit>
         <trans-unit id="changesApplied[1]" xml:space="preserve">
                     <source>{0} changes successfully applied.</source>
-                    <target xml:lang="es-ES" state="needs-translation">{0} changes successfully applied.</target>
+                    <target xml:lang="es-ES" state="translated">{0} cambios aplicados con éxito.</target>
                 </trans-unit>
       </group>
       <group id="changesPublished" restype="x-gettext-plurals">
         <trans-unit id="changesPublished[0]" xml:space="preserve">
                     <source>Published {0} change to "{1}".</source>
-                    <target xml:lang="es-ES" state="needs-translation">Published {0} change to "{1}".</target>
+                    <target xml:lang="es-ES" state="translated">Publicado {0} cambio a "{1}".</target>
                 </trans-unit>
         <trans-unit id="changesPublished[1]" xml:space="preserve">
                     <source>Published {0} changes to "{1}".</source>
-                    <target xml:lang="es-ES" state="needs-translation">Published {0} changes to "{1}".</target>
+                    <target xml:lang="es-ES" state="translated">{0} publicado cambia a "{1}".</target>
                 </trans-unit>
       </group>
       <group id="changesDiscarded" restype="x-gettext-plurals">
         <trans-unit id="changesDiscarded[0]" xml:space="preserve">
                     <source>Discarded {0} change.</source>
-                    <target xml:lang="es-ES" state="needs-translation">Discarded {0} change.</target>
+                    <target xml:lang="es-ES" state="translated">Cambio {0} descartado.</target>
                 </trans-unit>
         <trans-unit id="changesDiscarded[1]" xml:space="preserve">
                     <source>Discarded {0} changes.</source>
-                    <target xml:lang="es-ES" state="needs-translation">Discarded {0} changes.</target>
+                    <target xml:lang="es-ES" state="translated">Cambios {0} descartados.</target>
                 </trans-unit>
       </group>
       <trans-unit id="ckeditor__toolbar__style__h1" xml:space="preserve">
@@ -433,6 +433,46 @@
       <trans-unit id="UI.RightSideBar.tabs.validationErrorTooltip[1]" xml:space="preserve">
                     <source>{tabName} – {amountOfErrors} validation issues</source>
         <target state="translated">{tabName} - {amountOfErrors} problemas de validación</target>
+      </trans-unit>
+      <trans-unit id="rangeEditorCurrentValue" xml:space="preserve">
+                <source>Current value</source>
+        <target state="translated">Valor actual</target>
+      </trans-unit>
+      <trans-unit id="syncUriPathSegment" xml:space="preserve">
+                <source>Syncronize with the title property</source>
+        <target state="translated">Sincronizar con la propiedad del título</target>
+      </trans-unit>
+      <trans-unit id="nodes" xml:space="preserve">
+                <source>nodes</source>
+        <target state="translated">Nodos</target>
+      </trans-unit>
+      <trans-unit id="contentElementsSelected" xml:space="preserve">
+                <source>content elements selected</source>
+        <target state="translated">contenidos seleccionados</target>
+      </trans-unit>
+      <trans-unit id="documentsSelected" xml:space="preserve">
+                <source>documents selected</source>
+        <target state="translated">Documentos seleccionados</target>
+      </trans-unit>
+      <trans-unit id="inspectorMutlipleContentNodesSelectedTooltip" xml:space="preserve">
+                <source>Select a single document in order to be able to edit its properties</source>
+        <target state="translated">Seleccionar un solo documento para poder editar sus propiedades</target>
+      </trans-unit>
+      <trans-unit id="inspectorMutlipleDocumentNodesSelectedTooltip" xml:space="preserve">
+                <source>Select a single content element in order to be able to edit its properties</source>
+        <target state="translated">Seleccione un solo elemento del contenido para poder editar sus propiedades</target>
+      </trans-unit>
+      <trans-unit id="deleteXNodes" xml:space="preserve">
+                <source>Delete {amount} nodes</source>
+        <target state="translated">Suprimir nodos {amount}</target>
+      </trans-unit>
+      <trans-unit id="rangeEditorMinimum" xml:space="preserve">
+                <source>Minimum</source>
+        <target state="translated">Mínimo</target>
+      </trans-unit>
+      <trans-unit id="rangeEditorMaximum" xml:space="preserve">
+                <source>Maximum</source>
+        <target state="translated">Máximo</target>
       </trans-unit>
     </body>
   </file>

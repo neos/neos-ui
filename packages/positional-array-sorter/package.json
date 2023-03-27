@@ -15,7 +15,6 @@
     "test:watch": "yarn jest --watch",
     "build": "yarn tsc --declaration",
     "build:watch": "yarn tsc --watch",
-    "clean": "rimraf ./lib ./dist",
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {

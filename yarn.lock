@@ -2295,7 +2295,6 @@ __metadata:
   resolution: "@neos-project/neos-ts-interfaces@workspace:packages/neos-ts-interfaces"
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     typescript: ^4.6.4
   languageName: unknown
   linkType: soft
@@ -2312,7 +2311,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@neos-project/neos-ui-build@workspace:*, @neos-project/neos-ui-build@workspace:packages/neos-ui-build":
+"@neos-project/neos-ui-build@workspace:packages/neos-ui-build":
   version: 0.0.0-use.local
   resolution: "@neos-project/neos-ui-build@workspace:packages/neos-ui-build"
   languageName: unknown
@@ -2589,7 +2588,6 @@ __metadata:
     "@neos-project/brand": ^1.3.0
     "@neos-project/debug-reason-for-rendering": "workspace:*"
     "@neos-project/jest-preset-neos-ui": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     "@neos-project/neos-ui-decorators": "workspace:*"
     "@neos-project/neos-ui-extensibility": "workspace:*"
     "@neos-project/neos-ui-i18n": "workspace:*"

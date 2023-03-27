@@ -25,8 +25,7 @@
   },
   "devDependencies": {
     "@neos-project/debug-reason-for-rendering": "workspace:*",
-    "@neos-project/jest-preset-neos-ui": "workspace:*",
-    "@neos-project/neos-ui-build": "workspace:*"
+    "@neos-project/jest-preset-neos-ui": "workspace:*"
   },
   "peerDependencies": {
     "prop-types": "^15.5.10",

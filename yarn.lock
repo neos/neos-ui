@@ -2306,7 +2306,6 @@ __metadata:
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
     "@neos-project/neos-ts-interfaces": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     "@neos-project/utils-helpers": "workspace:*"
     plow-js: 3.0.0
     typescript: ^4.6.4
@@ -2359,7 +2358,6 @@ __metadata:
   resolution: "@neos-project/neos-ui-constants@workspace:packages/neos-ui-constants"
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     typescript: ^4.6.4
   languageName: unknown
   linkType: soft
@@ -2369,7 +2367,6 @@ __metadata:
   resolution: "@neos-project/neos-ui-containers@workspace:packages/neos-ui-containers"
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     "@neos-project/neos-ui-decorators": "workspace:*"
     "@neos-project/neos-ui-i18n": "workspace:*"
     "@neos-project/react-ui-components": "workspace:*"
@@ -2387,7 +2384,6 @@ __metadata:
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
     "@neos-project/neos-ts-interfaces": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     "@neos-project/neos-ui-extensibility": "workspace:*"
     "@neos-project/positional-array-sorter": "workspace:*"
     lodash.mapvalues: ^4.6.0
@@ -2403,7 +2399,6 @@ __metadata:
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
     "@neos-project/neos-ts-interfaces": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     reselect: ^3.0.1
     typescript: ^4.6.4
   peerDependencies:
@@ -2419,7 +2414,6 @@ __metadata:
     "@neos-project/debug-reason-for-rendering": "workspace:*"
     "@neos-project/jest-preset-neos-ui": "workspace:*"
     "@neos-project/neos-ui-backend-connector": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     "@neos-project/neos-ui-ckeditor5-bindings": "workspace:*"
     "@neos-project/neos-ui-constants": "workspace:*"
     "@neos-project/neos-ui-decorators": "workspace:*"
@@ -2468,7 +2462,6 @@ __metadata:
   resolution: "@neos-project/neos-ui-extensibility@workspace:packages/neos-ui-extensibility"
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     "@neos-project/positional-array-sorter": "workspace:*"
     typescript: ^4.6.4
   languageName: unknown
@@ -2480,7 +2473,6 @@ __metadata:
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
     "@neos-project/neos-ts-interfaces": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     "@neos-project/neos-ui-decorators": "workspace:*"
     "@neos-project/neos-ui-extensibility": "workspace:*"
     "@neos-project/neos-ui-guest-frame": "workspace:*"
@@ -2508,7 +2500,6 @@ __metadata:
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
     "@neos-project/neos-ts-interfaces": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     "@neos-project/neos-ui-decorators": "workspace:*"
     "@neos-project/neos-ui-extensibility": "workspace:*"
     "@neos-project/utils-logger": "workspace:*"
@@ -2524,7 +2515,6 @@ __metadata:
   resolution: "@neos-project/neos-ui-inspector@workspace:packages/neos-ui-inspector"
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     "@neos-project/neos-ui-redux-store": "workspace:*"
     "@neos-project/react-ui-components": "workspace:*"
     classnames: ^2.2.3
@@ -2544,7 +2534,6 @@ __metadata:
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
     "@neos-project/neos-ts-interfaces": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     "@neos-project/neos-ui-validators": "workspace:*"
     immer: ^9.0.0
     lodash.assignin: ^4.2.0
@@ -2564,7 +2553,6 @@ __metadata:
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
     "@neos-project/neos-ui-backend-connector": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     "@neos-project/neos-ui-extensibility": "workspace:*"
     "@neos-project/neos-ui-guest-frame": "workspace:*"
     "@neos-project/neos-ui-redux-store": "workspace:*"
@@ -2583,7 +2571,6 @@ __metadata:
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
     "@neos-project/neos-ts-interfaces": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     "@neos-project/neos-ui-extensibility": "workspace:*"
     "@neos-project/neos-ui-i18n": "workspace:*"
     "@neos-project/utils-logger": "workspace:*"
@@ -2635,7 +2622,6 @@ __metadata:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
     "@neos-project/neos-ts-interfaces": "workspace:*"
     "@neos-project/neos-ui-backend-connector": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     "@neos-project/neos-ui-ckeditor5-bindings": "workspace:*"
     "@neos-project/neos-ui-constants": "workspace:*"
     "@neos-project/neos-ui-containers": "workspace:*"
@@ -2693,7 +2679,6 @@ __metadata:
   resolution: "@neos-project/positional-array-sorter@workspace:packages/positional-array-sorter"
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     typescript: ^4.6.4
   languageName: unknown
   linkType: soft
@@ -2703,7 +2688,6 @@ __metadata:
   resolution: "@neos-project/react-proptypes@workspace:packages/react-proptypes"
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     typescript: ^4.6.4
   peerDependencies:
     prop-types: ^15.5.10
@@ -2783,7 +2767,6 @@ __metadata:
   resolution: "@neos-project/utils-helpers@workspace:packages/utils-helpers"
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     he: ^1.1.1
     typescript: ^4.6.4
   languageName: unknown
@@ -2794,7 +2777,6 @@ __metadata:
   resolution: "@neos-project/utils-logger@workspace:packages/utils-logger"
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     debug: ^4.1.1
     typescript: ^4.6.4
   languageName: unknown
@@ -2805,7 +2787,6 @@ __metadata:
   resolution: "@neos-project/utils-redux@workspace:packages/utils-redux"
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     typescript: ^4.6.4
   languageName: unknown
   linkType: soft

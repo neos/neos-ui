@@ -13,7 +13,9 @@
     "react-codemirror2@7.2.1": "patch:react-codemirror2@npm:7.2.1#./patches/react-codemirror2-npm-7.2.1-browserified.patch"
   },
   "scripts": {
-    "lint": "tsc --noemit && yarn eslint packages/*/src/**/*.{js,jsx,ts,tsx} && stylelint packages/*/src/**/*.css"
+    "lint": "tsc --noemit && yarn eslint 'packages/*/src/**/*.{js,jsx,ts,tsx}' && stylelint 'packages/*/src/**/*.css'",
+    "test": "NODE_ENV=test jest --testMatch '**/packages/*/src/**/*.spec.{js,jsx,ts,tsx}'",
+    "test-watch": "yarn test --watch"
   },
   "engines": {
     "node": "~16"
@@ -38,5 +40,8 @@
   "workspaces": [
     "packages/*"
   ],
+  "jest": {
+    "preset": "@neos-project/jest-preset-neos-ui"
+  },
   "packageManager": "yarn@3.2.0"
 }

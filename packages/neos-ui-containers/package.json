@@ -23,8 +23,5 @@
     "prop-types": "^15.5.10",
     "react": "^16.12.0"
   },
-  "license": "GNU GPLv3",
-  "jest": {
-    "preset": "@neos-project/jest-preset-neos-ui"
-  }
+  "license": "GNU GPLv3"
 }

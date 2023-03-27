@@ -25,8 +25,5 @@
     "reselect": "^3.0.1",
     "typesafe-actions": "^5.1.0"
   },
-  "license": "GNU GPLv3",
-  "jest": {
-    "preset": "@neos-project/jest-preset-neos-ui"
-  }
+  "license": "GNU GPLv3"
 }

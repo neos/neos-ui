@@ -22,8 +22,5 @@
   },
   "dependencies": {
     "@neos-project/positional-array-sorter": "workspace:*"
-  },
-  "jest": {
-    "preset": "@neos-project/jest-preset-neos-ui"
   }
 }

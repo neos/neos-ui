@@ -155,10 +155,10 @@ publish-npm: called-with-version
 # Misc
 ################################################################################
 
-## Cleans dependency folders
 clean:
-	rm -rf node_modules; rm -rf packages/*/node_modules
-
+	@echo you might want to use the following git command to clear some ignored files interactively
+	@echo ''
+	@echo git clean -idX
 
 ################################################################################
 # help command as default

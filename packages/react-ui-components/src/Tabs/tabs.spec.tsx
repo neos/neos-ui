@@ -51,9 +51,9 @@ describe('<Tabs/>', () => {
 
         const tabMenuItems = wrapper.find(TabMenuItem);
 
-        const buttonOfFirstTabMenuItem = tabMenuItems.at(2).find("button").at(0);
+        const buttonOfFirstTabMenuItem = tabMenuItems.at(2).find('button').at(0);
 
-        buttonOfFirstTabMenuItem.simulate("click");
+        buttonOfFirstTabMenuItem.simulate('click');
 
         expect(wrapper.state('activeTab')).toBe(2);
     });
@@ -71,9 +71,9 @@ describe('<Tabs/>', () => {
 
         const tabMenuItems = wrapper.find(TabMenuItem);
 
-        const buttonOfFirstTabMenuItem = tabMenuItems.at(2).find("button").at(0);
+        const buttonOfFirstTabMenuItem = tabMenuItems.at(2).find('button').at(0);
 
-        buttonOfFirstTabMenuItem.simulate("click");
+        buttonOfFirstTabMenuItem.simulate('click');
 
         expect(onActiveTabChange).toHaveBeenCalledTimes(1);
         expect(onActiveTabChange).toBeCalledWith(2);

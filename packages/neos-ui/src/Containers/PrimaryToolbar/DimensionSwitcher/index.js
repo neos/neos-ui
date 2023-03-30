@@ -170,7 +170,7 @@ export default class DimensionSwitcher extends PureComponent {
                 presets={this.presetsForDimension(dimensionName)}
                 activePreset={activePreset}
                 onSelect={this.handleSelectPreset}
-                showOnlyDimensionDropdown={Object.keys(contentDimensionsObject).length === 1}
+                showDropDownHeaderIcon={Object.keys(contentDimensionsObject).length === 1}
             />
         );
     }
@@ -218,7 +218,17 @@ export default class DimensionSwitcher extends PureComponent {
                     </DropDown.Header>
                     <DropDown.Contents className={style.dropDown__contents}>
                         {contentDimensionsObjectKeys.map(dimensionName => {
-                            return this.renderSingleDimensionSelector(dimensionName, contentDimensionsObject)
+                            const dimensionConfiguration = contentDimensionsObject[dimensionName];
+                            const icon = this.getDimensionIcon(dimensionName, contentDimensionsObject);
+                            return (
+                                <li key={dimensionName} className={style.dimensionCategory}>
+                                    <div className={style.dimensionLabel}>
+                                        <Icon icon={icon} padded="right" className={style.dimensionCategory__icon}/>
+                                        <I18n id={$get('label', dimensionConfiguration)}/>
+                                    </div>
+                                    {this.renderSingleDimensionSelector(dimensionName, contentDimensionsObject)}
+                                </li>
+                            )
                         })}
                         {Object.keys(contentDimensions).length > 1 && <div className={style.buttonGroup}>
                             <Button

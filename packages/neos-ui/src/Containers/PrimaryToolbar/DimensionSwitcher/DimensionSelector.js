@@ -1,11 +1,9 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import Icon from '@neos-project/react-ui-components/src/Icon/';
 import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
 import style from './style.module.css';
 import {$get, $transform} from 'plow-js';
 import mapValues from 'lodash.mapvalues';
-import I18n from '@neos-project/neos-ui-i18n';
 import sortBy from 'lodash.sortby';
 import {neos} from '@neos-project/neos-ui-decorators';
 import DimensionSelectorOption from './DimensionSelectorOption';
@@ -25,7 +23,7 @@ export default class DimensionSelector extends PureComponent {
         dimensionName: PropTypes.string.isRequired,
         isLoading: PropTypes.bool,
         onSelect: PropTypes.func.isRequired,
-        showOnlyDimensionDropdown: PropTypes.bool,
+        showDropDownHeaderIcon: PropTypes.bool,
 
         i18nRegistry: PropTypes.object.isRequired
     };
@@ -34,7 +32,7 @@ export default class DimensionSelector extends PureComponent {
         searchTerm: ''
     };
 
-    renderDimensionDropdown = () => {
+    render() {
         const {
             activePreset,
             isLoading,
@@ -42,7 +40,7 @@ export default class DimensionSelector extends PureComponent {
             dimensionName,
             onSelect,
             presets,
-            showOnlyDimensionDropdown
+            showDropDownHeaderIcon
         } = this.props;
 
         const presetOptions = mapValues(
@@ -72,7 +70,7 @@ export default class DimensionSelector extends PureComponent {
                 onValueChange={onPresetSelect}
                 value={activePreset}
                 allowEmpty={false}
-                headerIcon={showOnlyDimensionDropdown ? this.props.icon : null}
+                headerIcon={showDropDownHeaderIcon ? this.props.icon : null}
                 displaySearchBox={sortedPresetOptions.length >= 10}
                 searchOptions={searchOptions(this.state.searchTerm, sortedPresetOptions)}
                 onSearchTermChange={this.handleSearchTermChange}
@@ -83,27 +81,6 @@ export default class DimensionSelector extends PureComponent {
                 className={style.dimensionSwitcherDropDown}
             />
         )
-    }
-
-    render() {
-        const {
-            icon,
-            dimensionLabel,
-            dimensionName,
-            showOnlyDimensionDropdown
-        } = this.props;
-
-        const dimensionDropdown = this.renderDimensionDropdown();
-
-        return showOnlyDimensionDropdown === true ? dimensionDropdown : (
-            <li key={dimensionName} className={style.dimensionCategory}>
-                <div className={style.dimensionLabel}>
-                    <Icon icon={icon} padded="right" className={style.dimensionCategory__icon}/>
-                    <I18n id={dimensionLabel}/>
-                </div>
-                {dimensionDropdown}
-            </li>
-        );
     }
 
     handleSearchTermChange = searchTerm => {

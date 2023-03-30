@@ -16,7 +16,7 @@ test('Switching dimensions', async t => {
     const otherPageName = 'Untranslated page';
 
     await Page.goToPage(translatedPageName);
-    await DimensionSwitcher.switchLanguageDimension('Latvian');
+    await DimensionSwitcher.switchSingleDimension('Latvian');
     await t.click('#neos-NodeVariantCreationDialog-CreateEmpty');
     await Page.waitForIframeLoading();
     await t
@@ -24,7 +24,7 @@ test('Switching dimensions', async t => {
         .expect(Page.treeNode.withText(otherPageName).exists).notOk('Untranslated node gone from the tree');
 
     subSection('Switch back to original dimension');
-    await DimensionSwitcher.switchLanguageDimension('English (US)');
+    await DimensionSwitcher.switchSingleDimension('English (US)');
     await Page.waitForIframeLoading();
     await t
         .expect(await Page.getReduxState(state => state.cr.contentDimensions.active.language[0])).eql('en_US', 'Dimension back to English')

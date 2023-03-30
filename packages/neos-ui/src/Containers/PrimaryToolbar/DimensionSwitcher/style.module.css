@@ -69,9 +69,17 @@
 }
 
 .singleDimensionDropdown {
+    display: flex;
+    align-items: center;
+    padding-left: var(--spacing-Half);
 
     .dimensionSwitcherDropDown {
         background: unset;
-        min-width: auto;
+        min-width: 200px;
+        padding-left: var(--spacing-GoldenUnit);
     }
+}
+
+.singleDimensionDropdown__icon {
+    margin-right: calc(-1.25 * var(--spacing-GoldenUnit));
 }

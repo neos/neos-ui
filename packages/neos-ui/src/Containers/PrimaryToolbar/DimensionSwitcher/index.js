@@ -64,6 +64,11 @@ export default class DimensionSwitcher extends PureComponent {
         loadingPresets: {}
     };
 
+    getDimensionIcon = (dimensionName, contentDimensionsObject) => {
+        const dimensionConfiguration = contentDimensionsObject[dimensionName];
+        return $get('icon', dimensionConfiguration) && $get('icon', dimensionConfiguration);
+    }
+
     //
     // Merge active presets comming from redux with local transientPresets state (i.e. presents selected, but not yet applied)
     //
@@ -152,7 +157,7 @@ export default class DimensionSwitcher extends PureComponent {
 
     renderSingleDimensionSelector = (dimensionName, contentDimensionsObject) => {
         const dimensionConfiguration = contentDimensionsObject[dimensionName];
-        const icon = $get('icon', dimensionConfiguration) && $get('icon', dimensionConfiguration);
+        const icon = this.getDimensionIcon(dimensionName, contentDimensionsObject);
         // First look for active preset in transient state, else take it from activePresets prop
         const activePreset = this.getEffectivePresets(this.state.transientPresets)[dimensionName];
         return (
@@ -177,8 +182,10 @@ export default class DimensionSwitcher extends PureComponent {
 
         if (contentDimensionsObjectKeys.length === 1) {
             const dimensionName = contentDimensionsObjectKeys[0];
+            const icon = this.getDimensionIcon(dimensionName, contentDimensionsObject);
             return (
                 <div className={style.singleDimensionDropdown}>
+                    <Icon icon={icon} padded="right" className={style.singleDimensionDropdown__icon} />
                     {this.renderSingleDimensionSelector(dimensionName, contentDimensionsObject)}
                 </div>
             )
@@ -199,7 +206,7 @@ export default class DimensionSwitcher extends PureComponent {
                     >
                         {contentDimensionsObjectKeys.map(dimensionName => {
                             const dimensionConfiguration = contentDimensionsObject[dimensionName];
-                            const icon = $get('icon', dimensionConfiguration) && $get('icon', dimensionConfiguration);
+                            const icon = this.getDimensionIcon(dimensionName, contentDimensionsObject);
                             return (
                                 <SelectedPreset
                                     key={dimensionName}

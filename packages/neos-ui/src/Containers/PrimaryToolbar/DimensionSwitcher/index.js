@@ -66,7 +66,7 @@ export default class DimensionSwitcher extends PureComponent {
 
     getDimensionIcon = (dimensionName, contentDimensionsObject) => {
         const dimensionConfiguration = contentDimensionsObject[dimensionName];
-        return $get('icon', dimensionConfiguration) && $get('icon', dimensionConfiguration);
+        return dimensionConfiguration?.icon || null;
     }
 
     //

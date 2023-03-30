@@ -1,17 +1,5 @@
 /**
- * Hi, sorry yes i know this is confusing.
- *
- * This file currently is not the actual source of the used css variables in the UI, as we have packages/build-essentials/src/styles/styleConstants.js
- * So why do i say currently? can i look into the future? As a matter of fact yes.
- * We are currently in the Neos Ui branch 7.3 8.0 8.1 or 8.2,
- * beginning with Neos 8.3 we will start to use this file here as actual source of truth (see https://github.com/neos/neos-ui/pull/3366)
- *
- * So you are still wondering why we introduced it into 7.3? Let me explain...
- * In the 7.3 to 8.2 time the webpack neos-ui-extensibility plugin bundler actually replaces all the css variables as into the bundled plugincode,
- * but starting with Neos 8.3 the webpack adapter doesnt do this anymore (because of overhead) and also because this would require that we have a separate esbuild extensibility plugin to do the same.
- * As you might now we dont even have an esbuild plugin, you can just rely on the alias map of the neos-ui-extensibility and might even be able to use it in rollup of webpack5.
- * So to provide an easy migration, we expose the css variables as real runtime variables, that way they can also be consumed as such.
- * The reason we backported the runtime variables to Neos 7.3 is to reduce overhead for plugin authors, so they can use the new 8.3 extensibility bundlers but their plugins are compatible with Neos 7.3 too
+ * see https://github.com/neos/neos-ui/pull/3438 as to why we have in NeosUi 7.3 - 8.2 two declarations of the same set of css variables.
  */
 
 /** Global CSS variables for Neos.Ui */
@@ -22,6 +10,9 @@
  * We currently dont use runtime variables in the NeosUi see: https://github.com/neos/neos-ui/issues/3201
  * This approach would work for the Host frame, but we inject some rendered html and css (the inline toolbar) into the guest frame where we also rely on css variables.
  * To not collide with consumer css variables in the iframe, we keep them compiled.
+ *
+ * While we do make sure that plugins are working who use the variable names, they are not marked as @api but only available for unplanned extensibility.
+ * In the future we plan to transform the names to lowercase and might get rid of some unused/odd variables (like all the --zIndex- ones).
  */
 :root {
     --spacing-GoldenUnit: 40px;

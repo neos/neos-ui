@@ -2,6 +2,7 @@
     max-width: 320px;
     width: auto;
 }
+
 .dropDown__header {
     background-color: transparent;
 
@@ -9,6 +10,7 @@
         color: var(--colors-PrimaryBlue);
     }
 }
+
 .dropDown__contents {
     width: fit-content;
     min-width: 100%;
@@ -16,9 +18,11 @@
     background-color: var(--colors-ContrastDarker) !important;
     box-shadow: 0 5px 5px rgba(0, 0, 0, .2);
 }
+
 .dropDown__btnIcon {
     margin-right: .5em;
 }
+
 .dimensionCategory {
     background-color: var(--colors-ContrastDarkest);
     padding: var(--spacing-Full);
@@ -49,6 +53,7 @@
 .buttonGroup button {
     flex: 1 0 auto;
 }
+
 @media only screen and (max-width: 1024px) {
     .selectPresetLabel {
         display: none;
@@ -61,4 +66,12 @@
 
 .selectPreset + .selectPreset {
     margin-left: var(--spacing-Half);
+}
+
+.singleDimensionDropdown {
+
+    .dimensionSwitcherDropDown {
+        background: unset;
+        min-width: auto;
+    }
 }

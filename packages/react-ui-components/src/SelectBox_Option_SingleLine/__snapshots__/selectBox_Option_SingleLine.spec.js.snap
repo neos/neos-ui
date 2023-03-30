@@ -4,6 +4,7 @@ exports[`<SelectBox_Option_SingleLine/> should render correctly. 1`] = `
 <ThemedListPreviewElement
   ListPreviewElement={[Function]}
   className=""
+  icon={null}
   label="Foo label"
   onClick={[MockFunction]}
   option={
@@ -11,6 +12,7 @@ exports[`<SelectBox_Option_SingleLine/> should render correctly. 1`] = `
       "label": "Bar label",
     }
   }
+  showIcon={false}
   theme={Object {}}
 >
   <span

@@ -38,6 +38,7 @@ class ListPreviewElement extends PureComponent {
         onClick: PropTypes.func,
         isHighlighted: PropTypes.bool,
         onMouseEnter: PropTypes.func,
+        showIcon: PropTypes.bool,
 
         // ------------------------------
         // Theme & Dependencies
@@ -61,6 +62,7 @@ class ListPreviewElement extends PureComponent {
             onClick,
             isHighlighted,
             onMouseEnter,
+            showIcon,
 
             theme,
             Icon
@@ -82,7 +84,7 @@ class ListPreviewElement extends PureComponent {
                 className={optionClassName}
                 role="button"
                 >
-                {Boolean(icon) && <div className={theme.listPreviewElement__iconWrapper}><Icon className={theme.listPreviewElement__icon} icon={icon}/></div>}
+                {(Boolean(icon) && showIcon) && <div className={theme.listPreviewElement__iconWrapper}><Icon className={theme.listPreviewElement__icon} icon={icon}/></div>}
                 {children}
 
             </div>

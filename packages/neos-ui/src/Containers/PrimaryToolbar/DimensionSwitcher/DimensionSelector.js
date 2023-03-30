@@ -41,7 +41,8 @@ export default class DimensionSelector extends PureComponent {
             i18nRegistry,
             dimensionName,
             onSelect,
-            presets
+            presets,
+            showOnlyDimensionDropdown
         } = this.props;
 
         const presetOptions = mapValues(
@@ -71,7 +72,7 @@ export default class DimensionSelector extends PureComponent {
                 onValueChange={onPresetSelect}
                 value={activePreset}
                 allowEmpty={false}
-                headerIcon={this.props.icon}
+                headerIcon={showOnlyDimensionDropdown ? this.props.icon : null}
                 displaySearchBox={sortedPresetOptions.length >= 10}
                 searchOptions={searchOptions(this.state.searchTerm, sortedPresetOptions)}
                 onSearchTermChange={this.handleSearchTermChange}

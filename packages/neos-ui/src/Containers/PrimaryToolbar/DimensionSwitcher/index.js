@@ -155,7 +155,8 @@ export default class DimensionSwitcher extends PureComponent {
         const icon = $get('icon', dimensionConfiguration) && $get('icon', dimensionConfiguration);
         // First look for active preset in transient state, else take it from activePresets prop
         const activePreset = this.getEffectivePresets(this.state.transientPresets)[dimensionName];
-        return (<DimensionSelector
+        return (
+            <DimensionSelector
                 isLoading={this.state.loadingPresets[dimensionName]}
                 key={dimensionName}
                 dimensionName={dimensionName}
@@ -199,7 +200,8 @@ export default class DimensionSwitcher extends PureComponent {
                         {contentDimensionsObjectKeys.map(dimensionName => {
                             const dimensionConfiguration = contentDimensionsObject[dimensionName];
                             const icon = $get('icon', dimensionConfiguration) && $get('icon', dimensionConfiguration);
-                            return (<SelectedPreset
+                            return (
+                                <SelectedPreset
                                     key={dimensionName}
                                     dimensionName={dimensionName}
                                     icon={icon}

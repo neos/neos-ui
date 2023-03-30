@@ -182,10 +182,8 @@ export default class DimensionSwitcher extends PureComponent {
 
         if (contentDimensionsObjectKeys.length === 1) {
             const dimensionName = contentDimensionsObjectKeys[0];
-            const icon = this.getDimensionIcon(dimensionName, contentDimensionsObject);
             return (
                 <div className={style.singleDimensionDropdown}>
-                    <Icon icon={icon} padded="right" className={style.singleDimensionDropdown__icon} />
                     {this.renderSingleDimensionSelector(dimensionName, contentDimensionsObject)}
                 </div>
             )

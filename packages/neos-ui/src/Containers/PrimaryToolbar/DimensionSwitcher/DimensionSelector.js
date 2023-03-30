@@ -71,6 +71,7 @@ export default class DimensionSelector extends PureComponent {
                 onValueChange={onPresetSelect}
                 value={activePreset}
                 allowEmpty={false}
+                headerIcon={this.props.icon}
                 displaySearchBox={sortedPresetOptions.length >= 10}
                 searchOptions={searchOptions(this.state.searchTerm, sortedPresetOptions)}
                 onSearchTermChange={this.handleSearchTermChange}

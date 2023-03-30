@@ -13,13 +13,12 @@ class SelectBox_Option_SingleLine extends PureComponent {
         }).isRequired,
 
         disabled: PropTypes.bool,
-        showIcon: PropTypes.bool,
 
         className: PropTypes.string
     }
 
     render() {
-        const {option, className, disabled, showIcon, icon} = this.props;
+        const {option, className, disabled, icon} = this.props;
 
         const isDisabled = disabled || option.disabled;
 
@@ -27,13 +26,10 @@ class SelectBox_Option_SingleLine extends PureComponent {
             [className]: className
         });
 
-        // We want to show the icon of the option when it is defined
-        // If we have no option icon but showIcon is true, we want to show the icon of the SelectBox
-        // If we have no option icon and showIcon is false, we want to show no icon
-        const visibleIcon = option.icon ? option.icon : (showIcon ? icon : null);
+        const previewElementIcon = option.icon ? option.icon : (icon ? icon : null);
 
         return (
-            <ListPreviewElement {...this.props} icon={visibleIcon} showIcon={showIcon || Boolean(visibleIcon)} disabled={isDisabled} className={finalClassNames}>
+            <ListPreviewElement {...this.props} icon={previewElementIcon} disabled={isDisabled} className={finalClassNames}>
                 <span title={option.label}>{option.label}</span>
             </ListPreviewElement>
         );

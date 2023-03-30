@@ -12,7 +12,6 @@ exports[`<SelectBox_Option_SingleLine/> should render correctly. 1`] = `
       "label": "Bar label",
     }
   }
-  showIcon={false}
   theme={Object {}}
 >
   <span

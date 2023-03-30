@@ -38,10 +38,13 @@ class SelectBox_ListPreview extends PureComponent {
             SelectBox_ListPreviewFlat,
             SelectBox_ListPreviewGrouped,
             searchBoxLeftToTypeLabel,
+            onCreateNew,
+            searchTerm,
             theme
         } = this.props;
 
         const ListPreviewComponent = options.some(option => option.group) ? SelectBox_ListPreviewGrouped : SelectBox_ListPreviewFlat;
+        const isCreateNewEnabled = onCreateNew && searchTerm;
 
         // TODO: replace horible self-made I18n replace
         return (
@@ -64,9 +67,11 @@ class SelectBox_ListPreview extends PureComponent {
                             />
                     </div>
                 )}
-                <div className={theme.selectBox__item}>
-                    <SelectBox_CreateNew {...this.props}/>
-                </div>
+                {isCreateNewEnabled && (
+                    <div className={theme.selectBox__item}>
+                        <SelectBox_CreateNew {...this.props}/>
+                    </div>
+                )}
             </Fragment>
         );
     }

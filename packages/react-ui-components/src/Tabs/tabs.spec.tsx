@@ -79,6 +79,39 @@ describe('<Tabs/>', () => {
         expect(onActiveTabChange).toBeCalledWith(2);
     });
 
+    it('activeTab as string: should use the activeTab prop when initializing.', () => {
+        const wrapper = shallow(
+            <Tabs {...props} activeTab="zwei">
+                <Tabs.Panel {...panelProps} id="eins" title="foo 1" icon="level-up">Foo 1</Tabs.Panel>
+                <Tabs.Panel {...panelProps} id="zwei" title="foo 2" icon="level-down">Foo 2</Tabs.Panel>
+                <Tabs.Panel {...panelProps} id="drei" title="foo 3" icon="mobile">Foo 3</Tabs.Panel>
+            </Tabs>
+        );
+        expect(wrapper.state('activeTab')).toBe('zwei');
+    });
+
+    it('activeTab as string: should update the state & trigger the hook when a tab menu item is clicked.', () => {
+        const onActiveTabChange = jest.fn();
+
+        const wrapper = mount(
+            <Tabs {...props} onActiveTabChange={onActiveTabChange}>
+                <Tabs.Panel {...panelProps} id="eins" title="foo 1" icon="level-up">Foo 1</Tabs.Panel>
+                <Tabs.Panel {...panelProps} id="zwei" title="foo 2" icon="level-down">Foo 2</Tabs.Panel>
+                <Tabs.Panel {...panelProps} id="drei" title="foo 3" icon="mobile">Foo 3</Tabs.Panel>
+            </Tabs>
+        );
+
+        const tabMenuItems = wrapper.find(TabMenuItem);
+
+        const buttonOfFirstTabMenuItem = tabMenuItems.at(2).find('button').at(0);
+
+        buttonOfFirstTabMenuItem.simulate('click');
+
+        expect(wrapper.state('activeTab')).toBe('drei');
+        expect(onActiveTabChange).toHaveBeenCalledTimes(1);
+        expect(onActiveTabChange).toBeCalledWith('drei');
+    });
+
     it('should render correctly.', () => {
         const wrapper = shallow(
             <Tabs {...props}>

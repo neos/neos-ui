@@ -1,13 +1,12 @@
 {
   "name": "@neos-project/neos-ui-editors",
-  "version": "8.2.6",
+  "version": "8.2.7",
   "description": "Neos CMS UI Editors for use in the inspector.",
   "main": "src/manifest.js",
   "private": true,
   "scripts": {
     "test": "yarn jest -w 2 --coverage",
     "test:watch": "yarn jest --watch",
-    "clean": "rimraf ./lib ./dist",
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {

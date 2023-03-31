@@ -583,14 +583,14 @@ class BackendServiceController extends ActionController
         $nodeInfoHelper = new NodeInfoHelper();
         $type = $finisher['type'] ?? null;
         $result = match ($type) {
-            'get' => $nodeInfoHelper->renderNodes($flowQuery->get(), $this->getControllerContext()),
+            'get' => $nodeInfoHelper->renderNodes(array_filter($flowQuery->get()), $this->getControllerContext()),
             'getForTree' => $nodeInfoHelper->renderNodes(
-                $flowQuery->get(),
+                array_filter($flowQuery->get()),
                 $this->getControllerContext(),
                 true
             ),
             'getForTreeWithParents' => $nodeInfoHelper->renderNodesWithParents(
-                $flowQuery->get(),
+                array_filter($flowQuery->get()),
                 $this->getControllerContext()
             ),
             default => []

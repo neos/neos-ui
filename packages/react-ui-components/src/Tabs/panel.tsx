@@ -24,6 +24,11 @@ export interface PanelProps {
      * An optional css theme to be injected.
      */
     readonly theme?: PanelTheme;
+
+    /**
+     * An optional string id used by `<Tabs />` for communicating the "activeTab" instead of using the index.
+     */
+    readonly id?: string;
 }
 
 export default class Panel extends PureComponent<PanelProps> {

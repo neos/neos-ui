@@ -394,6 +394,10 @@
                     <target xml:lang="es-ES" state="translated">Cambios {0} descartados.</target>
                 </trans-unit>
       </group>
+      <trans-unit id="ckeditor__toolbar__style__p" xml:space="preserve">
+                <source>Paragraph</source>
+        <target state="translated">Párrafo</target>
+      </trans-unit>
       <trans-unit id="ckeditor__toolbar__style__h1" xml:space="preserve">
                 <source>Headline 1</source>
         <target state="translated">Titular 1</target>
@@ -422,10 +426,6 @@
                 <source>Preformatted</source>
         <target state="translated">Preformateado</target>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__style__p" xml:space="preserve">
-                <source>Paragraph</source>
-        <target state="translated">Párrafo</target>
-      </trans-unit>
       <trans-unit id="UI.RightSideBar.tabs.validationErrorTooltip[0]" xml:space="preserve">
                     <source>{tabName} – {amountOfErrors} validation issue</source>
         <target state="translated">{tabName} - {amountOfErrors} problema de validación</target>
@@ -433,10 +433,6 @@
       <trans-unit id="UI.RightSideBar.tabs.validationErrorTooltip[1]" xml:space="preserve">
                     <source>{tabName} – {amountOfErrors} validation issues</source>
         <target state="translated">{tabName} - {amountOfErrors} problemas de validación</target>
-      </trans-unit>
-      <trans-unit id="rangeEditorCurrentValue" xml:space="preserve">
-                <source>Current value</source>
-        <target state="translated">Valor actual</target>
       </trans-unit>
       <trans-unit id="syncUriPathSegment" xml:space="preserve">
                 <source>Syncronize with the title property</source>
@@ -446,13 +442,17 @@
                 <source>nodes</source>
         <target state="translated">Nodos</target>
       </trans-unit>
+      <trans-unit id="contentElementsSelected" xml:space="preserve">
+                <source>content elements selected</source>
+        <target state="translated">contenidos seleccionados</target>
+      </trans-unit>
       <trans-unit id="documentsSelected" xml:space="preserve">
                 <source>documents selected</source>
         <target state="translated">Documentos seleccionados</target>
       </trans-unit>
-      <trans-unit id="inspectorMutlipleContentNodesSelectedTooltip" xml:space="preserve">
-                <source>Select a single document in order to be able to edit its properties</source>
-        <target state="translated">Seleccionar un solo documento para poder editar sus propiedades</target>
+      <trans-unit id="inspectorMutlipleDocumentNodesSelectedTooltip" xml:space="preserve">
+                <source>Select a single content element in order to be able to edit its properties</source>
+        <target state="translated">Seleccione un solo elemento del contenido para poder editar sus propiedades</target>
       </trans-unit>
       <trans-unit id="deleteXNodes" xml:space="preserve">
                 <source>Delete {amount} nodes</source>
@@ -466,13 +466,13 @@
                 <source>Maximum</source>
         <target state="translated">Máximo</target>
       </trans-unit>
-      <trans-unit id="contentElementsSelected" xml:space="preserve">
-                <source>content elements selected</source>
-        <target state="translated">contenidos seleccionados</target>
+      <trans-unit id="rangeEditorCurrentValue" xml:space="preserve">
+                <source>Current value</source>
+        <target state="translated">Valor actual</target>
       </trans-unit>
-      <trans-unit id="inspectorMutlipleDocumentNodesSelectedTooltip" xml:space="preserve">
-                <source>Select a single content element in order to be able to edit its properties</source>
-        <target state="translated">Seleccione un solo elemento del contenido para poder editar sus propiedades</target>
+      <trans-unit id="inspectorMutlipleContentNodesSelectedTooltip" xml:space="preserve">
+                <source>Select a single document in order to be able to edit its properties</source>
+        <target state="translated">Seleccionar un solo documento para poder editar sus propiedades</target>
       </trans-unit>
     </body>
   </file>

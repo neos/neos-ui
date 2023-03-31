@@ -1,4 +1,5 @@
 @import 'normalize.css';
+@import '../../../cssVariables.css';
 
 @font-face {
     font-family: 'Noto Sans';

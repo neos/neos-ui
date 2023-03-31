@@ -12,6 +12,11 @@ export interface TabsProps {
     readonly activeTab?: string | number;
 
     /**
+     * Callback when the active tab id changes.
+     */
+    readonly onActiveTabChange?: (activeTab: string | number) => void;
+
+    /**
      * An optional className to render on the wrapping div.
      */
     readonly className?: string;
@@ -45,19 +50,23 @@ interface TabsState {
 export default class Tabs extends PureComponent<TabsProps> {
     public static Panel = Panel;
     public state: TabsState = {
-        activeTab: 0,
+        activeTab: this.props.activeTab ?? 0
     };
 
     public static defaultProps = tabsDefaultProps;
+
+    private updateActiveTab(activeTab: string | number): void {
+        this.setState({ activeTab }, () => {
+            this.props.onActiveTabChange?.(activeTab);
+        });
+    }
 
     public UNSAFE_componentWillReceiveProps(newProps: TabsProps): void {
         const newactiveTab = newProps.activeTab;
         const {activeTab} = this.state;
 
         if (newactiveTab && newactiveTab !== activeTab) {
-            this.setState({
-                activeTab: newactiveTab
-            });
+            this.updateActiveTab(newactiveTab);
         }
     }
 
@@ -104,7 +113,7 @@ export default class Tabs extends PureComponent<TabsProps> {
     }
 
     private handleTabNavItemClick = (id: string | number) => {
-        this.setState({activeTab: id});
+        this.updateActiveTab(id);
     }
 
     public renderPanels(): JSX.Element {

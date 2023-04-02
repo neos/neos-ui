@@ -29,7 +29,7 @@
 }
 
 .dimensionSwitcherDropDown {
-    min-width: 240px;
+    min-width: fit-content;
 }
 
 .dimensionCategory + .dimensionCategory {
@@ -75,5 +75,9 @@
     .dimensionSwitcherDropDown {
         background: unset;
         min-width: fit-content;
+    }
+
+    .dimensionSwitcherDropDown div[role='button'] {
+        padding: 5px 0 5px var(--spacing-Full);
     }
 }

@@ -1,3 +1,4 @@
+/* eslint-disable */ // IDGAF
 import * as plowOriginal from 'plow-js';
 
 function augmentAndDeprecatedFunction(functionName, functionImplementation) {

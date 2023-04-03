@@ -78,9 +78,9 @@ class NeosUiFilteredChildrenOperation extends AbstractOperation
                 $contextNode->nodeAggregateId,
                 FindChildNodesFilter::nodeTypeConstraints($arguments[0] ?? null)
             ) as $childNode) {
-                if (!isset($outputNodeIdentifiers[(string)$childNode->nodeAggregateId])) {
+                if (!isset($outputNodeIdentifiers[$childNode->nodeAggregateId->value])) {
                     $output[] = $childNode;
-                    $outputNodeIdentifiers[(string)$childNode->nodeAggregateId] = true;
+                    $outputNodeIdentifiers[$childNode->nodeAggregateId->value] = true;
                 }
             }
         }

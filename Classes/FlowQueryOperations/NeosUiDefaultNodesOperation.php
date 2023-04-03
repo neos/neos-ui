@@ -85,7 +85,7 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
         if ($currentNode) {
             $currentNodePath = $subgraph->retrieveNodePath($currentNode->nodeAggregateId);
             $siteNodePath = $subgraph->retrieveNodePath($siteNode->nodeAggregateId);
-            $parentNodeIsUnderneathSiteNode = str_starts_with((string)$currentNodePath, (string)$siteNodePath);
+            $parentNodeIsUnderneathSiteNode = str_starts_with($currentNodePath->value, $siteNodePath->value);
             while ($currentNode instanceof Node
                 && !$currentNode->nodeAggregateId->equals($siteNode->nodeAggregateId)
                 && $parentNodeIsUnderneathSiteNode
@@ -96,7 +96,7 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
         }
 
         $nodes = [
-            ((string)$siteNode->nodeAggregateId) => $siteNode
+            ($siteNode->nodeAggregateId->value) => $siteNode
         ];
 
         $gatherNodesRecursively = function (
@@ -120,29 +120,29 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
                 // load toggled nodes
                 in_array($baseNodeAddress->serializeForUri(), $toggledNodes) ||
                 // load children of all parents of documentNode
-                in_array((string)$baseNode->nodeAggregateId, $parents)
+                in_array($baseNode->nodeAggregateId->value, $parents)
             ) {
                 foreach ($subgraph->findChildNodes(
                     $baseNode->nodeAggregateId,
                     FindChildNodesFilter::nodeTypeConstraints($baseNodeTypeConstraints)
                 ) as $childNode) {
-                    $nodes[(string)$childNode->nodeAggregateId] = $childNode;
+                    $nodes[$childNode->nodeAggregateId->value] = $childNode;
                     $gatherNodesRecursively($nodes, $childNode, $level + 1);
                 }
             }
         };
         $gatherNodesRecursively($nodes, $siteNode);
 
-        if (!isset($nodes[(string)$documentNode->nodeAggregateId])) {
-            $nodes[(string)$documentNode->nodeAggregateId] = $documentNode;
+        if (!isset($nodes[$documentNode->nodeAggregateId->value])) {
+            $nodes[$documentNode->nodeAggregateId->value] = $documentNode;
         }
 
         foreach ($clipboardNodesContextPaths as $clipboardNodeContextPath) {
             // TODO: does not work across multiple CRs yet.
             $clipboardNodeAddress = $nodeAddressFactory->createFromUriString($clipboardNodeContextPath);
             $clipboardNode = $subgraph->findNodeById($clipboardNodeAddress->nodeAggregateId);
-            if ($clipboardNode && !array_key_exists((string)$clipboardNode->nodeAggregateId, $nodes)) {
-                $nodes[(string)$clipboardNode->nodeAggregateId] = $clipboardNode;
+            if ($clipboardNode && !array_key_exists($clipboardNode->nodeAggregateId->value, $nodes)) {
+                $nodes[$clipboardNode->nodeAggregateId->value] = $clipboardNode;
             }
         }
 

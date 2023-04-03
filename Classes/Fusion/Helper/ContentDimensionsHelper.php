@@ -42,7 +42,7 @@ class ContentDimensionsHelper implements ProtectedContextAwareInterface
 
         $result = [];
         foreach ($dimensions as $dimension) {
-            $result[(string)$dimension->id] = [
+            $result[$dimension->id->value] = [
                 'label' => $dimension->getConfigurationValue('label'),
                 'icon' => $dimension->getConfigurationValue('icon'),
 
@@ -53,7 +53,7 @@ class ContentDimensionsHelper implements ProtectedContextAwareInterface
 
             foreach ($dimension->values as $value) {
                 // TODO: make certain values hidable
-                $result[(string)$dimension->id]['presets'][$value->value] = [
+                $result[$dimension->id->value]['presets'][$value->value] = [
                     // TODO: name, uriSegment!
                     'values' => [$value->value],
                     'label' => $value->getConfigurationValue('label')

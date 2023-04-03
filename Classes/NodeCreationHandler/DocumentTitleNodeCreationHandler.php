@@ -60,7 +60,7 @@ class DocumentTitleNodeCreationHandler implements NodeCreationHandlerInterface
 
         // otherwise, we fall back to the node name
         if ($uriPathSegment === null && $command->nodeName !== null) {
-            $uriPathSegment = (string)$command->nodeName;
+            $uriPathSegment = $command->nodeName->value;
         }
 
         // if not empty, we transliterate the uriPathSegment according to the language of the new node

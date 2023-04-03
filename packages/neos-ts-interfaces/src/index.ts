@@ -71,7 +71,6 @@ export interface Node {
     };
     isFullyLoaded: boolean;
     uri: string;
-    backendUri: string;
     parent: NodeContextPath;
     policy?: NodePolicy;
     dimensions?: DimensionPresetCombination;

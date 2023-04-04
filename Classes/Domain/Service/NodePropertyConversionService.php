@@ -11,7 +11,6 @@ namespace Neos\Neos\Ui\Domain\Service;
  * source code.
  */
 
-use Neos\ContentRepository\Core\Projection\ContentGraph\NodeInterface;
 use Neos\ContentRepository\Core\NodeType\NodeType;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\MvcPropertyMappingConfiguration;

@@ -231,7 +231,7 @@ export class Header extends PureComponent {
                                     onClick={onLabelClick ? onLabelClick : (directLink ? this.onDirectLinkClick : undefined)}
                                     data-neos-integrational-test="tree__item__nodeHeader__itemLabel"
                                     role="treeitem"
-                                    href={directLink ? directLink : undefined}
+                                    href={directLink}
                                 >
                                     {label}
                                 </a>

@@ -90,42 +90,42 @@ export default class I18nRegistry extends SynchronousRegistry {
 
         let translation = idOrig;
 
+        // eslint-disable-next-line max-params
+        const translateOne = (idOrig, fallbackOrig, params = {}, packageKeyOrig = 'Neos.Neos', sourceNameOrig = 'Main', quantity = 0) => {
+            const fallback = fallbackOrig || idOrig;
+            const [packageKey, sourceName, id] = getTranslationAddress(idOrig, packageKeyOrig, sourceNameOrig);
+            let translation = [packageKey, sourceName, id]
+                // Replace all dots with underscores
+                .map(s => s ? s.replace(/\./g, '_') : '')
+                // Traverse through translations and find us a fitting one
+                .reduce((prev, cur) => (prev ? prev[cur] || '' : ''), this._translations);
+
+            translation = getPluralForm(translation, quantity);
+            if (translation && translation.length) {
+                if (Object.keys(params).length) {
+                    return substitutePlaceholders(translation, params);
+                }
+                return translation;
+            }
+
+            if (!errorCache[`${packageKey}:${sourceName}:${id}`]) {
+                logger.error(`No translation found for id "${packageKey}:${sourceName}:${id}" in:`, this._translations, `Using ${fallback} instead.`);
+
+                errorCache[`${packageKey}:${sourceName}:${id}`] = true;
+            }
+
+            return fallback;
+        }
+
         translation = translation.replace(
             /([a-z\d.]+:[a-z\d.]+:[a-z\d.]+)/gi,
-            match => this.translateOne(match, match, params, packageKeyOrig, sourceNameOrig, quantity)
+            match => translateOne(match, match, params, packageKeyOrig, sourceNameOrig, quantity)
         );
 
         if (translation !== idOrig) {
             return translation;
         }
 
-        return this.translateOne(idOrig, fallbackOrig, params, packageKeyOrig, sourceNameOrig, quantity);
-    }
-
-    // eslint-disable-next-line max-params
-    translateOne(idOrig, fallbackOrig, params = {}, packageKeyOrig = 'Neos.Neos', sourceNameOrig = 'Main', quantity = 0) {
-        const fallback = fallbackOrig || idOrig;
-        const [packageKey, sourceName, id] = getTranslationAddress(idOrig, packageKeyOrig, sourceNameOrig);
-        let translation = [packageKey, sourceName, id]
-        // Replace all dots with underscores
-            .map(s => s ? s.replace(/\./g, '_') : '')
-            // Traverse through translations and find us a fitting one
-            .reduce((prev, cur) => (prev ? prev[cur] || '' : ''), this._translations);
-
-        translation = getPluralForm(translation, quantity);
-        if (translation && translation.length) {
-            if (Object.keys(params).length) {
-                return substitutePlaceholders(translation, params);
-            }
-            return translation;
-        }
-
-        if (!errorCache[`${packageKey}:${sourceName}:${id}`]) {
-            logger.error(`No translation found for id "${packageKey}:${sourceName}:${id}" in:`, this._translations, `Using ${fallback} instead.`);
-
-            errorCache[`${packageKey}:${sourceName}:${id}`] = true;
-        }
-
-        return fallback;
+        return translateOne(idOrig, fallbackOrig, params, packageKeyOrig, sourceNameOrig, quantity);
     }
 }

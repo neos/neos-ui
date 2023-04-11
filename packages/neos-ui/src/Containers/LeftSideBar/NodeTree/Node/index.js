@@ -387,7 +387,7 @@ export default class Node extends PureComponent {
     createDirectNodeLink = () => {
         const {node} = this.props;
         const uri = new URL(window.location.href);
-        uri.searchParams.set("node", node.contextPath);
+        uri.searchParams.set('node', node.contextPath);
         return uri.toString();
     }
 }

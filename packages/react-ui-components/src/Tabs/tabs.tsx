@@ -57,7 +57,7 @@ export default class Tabs extends PureComponent<TabsProps> {
     public static defaultProps = tabsDefaultProps;
 
     private updateActiveTab(activeTab: string | number): void {
-        this.setState({ activeTab }, () => {
+        this.setState({activeTab}, () => {
             this.props.onActiveTabChange?.(activeTab);
         });
     }

@@ -17,6 +17,7 @@ class SelectBox_Header extends PureComponent {
         }),
         placeholder: PropTypes.string,
         placeholderIcon: PropTypes.string,
+        headerIcon: PropTypes.string,
         showResetButton: PropTypes.bool.isRequired,
         onReset: PropTypes.func,
         onClick: PropTypes.func,
@@ -68,6 +69,7 @@ class SelectBox_Header extends PureComponent {
             theme,
             placeholder,
             placeholderIcon,
+            headerIcon,
             displayLoadingIndicator,
             Icon,
             ListPreviewElement,
@@ -75,7 +77,7 @@ class SelectBox_Header extends PureComponent {
         } = this.props;
 
         const label = option ? option.label : placeholder;
-        const icon = option && option.icon ? option.icon : placeholderIcon;
+        const icon = option && option.icon ? option.icon : (headerIcon ? headerIcon : placeholderIcon);
         const restProps = omit(this.props, ['showResetButton, IconButton']);
 
         return (
@@ -92,6 +94,7 @@ class SelectBox_Header extends PureComponent {
                             icon={icon}
                             disabled={disabled}
                             onClick={this.handleListPreviewElementClick}
+                            showIcon={true}
                             /> : (
                                 <div className={theme.selectBoxHeader__label}>
                                     {icon &&

@@ -18,7 +18,7 @@ class SelectBox_Option_SingleLine extends PureComponent {
     }
 
     render() {
-        const {option, className, disabled} = this.props;
+        const {option, className, disabled, icon} = this.props;
 
         const isDisabled = disabled || option.disabled;
 
@@ -26,8 +26,10 @@ class SelectBox_Option_SingleLine extends PureComponent {
             [className]: className
         });
 
+        const previewElementIcon = option.icon ? option.icon : (icon ? icon : null);
+
         return (
-            <ListPreviewElement {...this.props} icon={option.icon} disabled={isDisabled} className={finalClassNames}>
+            <ListPreviewElement {...this.props} icon={previewElementIcon} disabled={isDisabled} className={finalClassNames}>
                 <span title={option.label}>{option.label}</span>
             </ListPreviewElement>
         );

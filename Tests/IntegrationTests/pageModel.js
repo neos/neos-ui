@@ -40,6 +40,12 @@ export class DimensionSwitcher {
             .click(this.dimensionSwitcherFirstDimensionSelector)
             .click(this.dimensionSwitcherFirstDimensionSelectorWithShallowDropDownContents.find('li').withText(name));
     }
+
+    static async switchSingleDimension(name) {
+        await t
+            .click(this.dimensionSwitcher)
+            .click(ReactSelector('DimensionSelectorOption').withProps('option', {label: name}));
+    }
 }
 
 export class PublishDropDown {

@@ -32,7 +32,6 @@ use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
  */
 class AugmentationAspect
 {
-
     /**
      * @Flow\Inject
      * @var AuthorizationService

@@ -22,7 +22,6 @@ use Neos\Utility\PositionalArraySorter;
  */
 class StyleAndJavascriptInclusionService
 {
-
     /**
      * @Flow\Inject
      * @var ResourceManager

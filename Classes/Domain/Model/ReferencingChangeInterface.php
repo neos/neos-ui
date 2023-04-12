@@ -11,7 +11,8 @@ namespace Neos\Neos\Ui\Domain\Model;
  * source code.
  */
 
-use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
+
 
 /**
  * A change that needs to reference another node
@@ -22,15 +23,15 @@ interface ReferencingChangeInterface extends ChangeInterface
     /**
      * Set the reference
      *
-     * @param NodeInterface $reference
+     * @param Node $reference
      * @return void
      */
-    public function setReference(NodeInterface $reference);
+    public function setReference(Node $reference);
 
     /**
      * Get the reference
      *
-     * @return NodeInterface
+     * @return Node
      */
     public function getReference();
 }

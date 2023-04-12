@@ -199,7 +199,15 @@ export class Header extends PureComponent {
             [theme['header__data--deniesDrop']]: isOver && !canDrop
         });
 
-        const linkHandlingProps = directLink ? {href: directLink, onClick: (e) => e.preventDefault()} : {onClick: onLabelClick};
+        let linkHandlingProps = {onClick: onLabelClick};
+        if (directLink) {
+            linkHandlingProps = {
+                href: directLink,
+                target: '_blank',
+                rel: 'noopener noreferrer',
+                onClick: (event) => event.preventDefault()
+            };
+        }
 
         return (
             <div>

@@ -5,7 +5,7 @@ import {ReactSelector} from 'testcafe-react-selectors';
 // We define all methods as static here so it would be possible to use these classes without `new`
 //
 export class Page {
-    static treeNode = ReactSelector('Node').find('span');
+    static treeNode = ReactSelector('Node').find('a');
 
     static async goToPage(pageTitle) {
         await t.click(this.treeNode.withText(pageTitle));

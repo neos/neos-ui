@@ -199,6 +199,8 @@ export class Header extends PureComponent {
             [theme['header__data--deniesDrop']]: isOver && !canDrop
         });
 
+        const linkHandlingProps = directLink ? {href: directLink, onClick: (e) => e.preventDefault()} : {onClick: onLabelClick};
+
         return (
             <div>
                 <div className={theme.header}>
@@ -228,10 +230,9 @@ export class Header extends PureComponent {
                                     {...rest}
                                     id={labelIdentifier}
                                     className={theme.header__label}
-                                    onClick={onLabelClick ? onLabelClick : (directLink ? this.onDirectLinkClick : undefined)}
                                     data-neos-integrational-test="tree__item__nodeHeader__itemLabel"
                                     role="treeitem"
-                                    href={directLink}
+                                    {...linkHandlingProps}
                                 >
                                     {label}
                                 </a>
@@ -252,10 +253,6 @@ export class Header extends PureComponent {
                 </div>
             </div>
         );
-    }
-
-    onDirectLinkClick(e) {
-        e.preventDefault();
     }
 
     renderCollapseControl() {

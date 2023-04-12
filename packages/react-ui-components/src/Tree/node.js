@@ -108,6 +108,7 @@ export class Header extends PureComponent {
         icon: PropTypes.string,
         customIconComponent: PropTypes.node,
         iconLabel: PropTypes.string,
+        directLink: PropTypes.string,
         level: PropTypes.number.isRequired,
         dragAndDropContext: PropTypes.shape({
             accepts: PropTypes.func.isRequired,
@@ -171,6 +172,7 @@ export class Header extends PureComponent {
             icon,
             customIconComponent,
             iconLabel,
+            directLink,
             level,
             onClick,
             onLabelClick,
@@ -197,6 +199,16 @@ export class Header extends PureComponent {
             [theme['header__data--deniesDrop']]: isOver && !canDrop
         });
 
+        let linkHandlingProps = {onClick: onLabelClick};
+        if (directLink) {
+            linkHandlingProps = {
+                href: directLink,
+                target: '_blank',
+                rel: 'noopener noreferrer',
+                onClick: (event) => event.preventDefault()
+            };
+        }
+
         return (
             <div>
                 <div className={theme.header}>
@@ -222,16 +234,16 @@ export class Header extends PureComponent {
                                         <IconComponent icon={icon || 'question'} label={iconLabel} />
                                     }
                                 </div>
-                                <span
+                                <a
                                     {...rest}
                                     id={labelIdentifier}
                                     className={theme.header__label}
-                                    onClick={onLabelClick}
                                     data-neos-integrational-test="tree__item__nodeHeader__itemLabel"
                                     role="treeitem"
+                                    {...linkHandlingProps}
                                 >
                                     {label}
-                                </span>
+                                </a>
                             </div>
                         </div>
                     ))}

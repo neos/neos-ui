@@ -59,7 +59,7 @@ class Remove extends AbstractChange
             $parentNode = $this->findParentNode($subject);
             if (is_null($parentNode)) {
                 throw new \InvalidArgumentException(
-                    'Cannot apply Remove without a parent on node ' . $subject->nodeAggregateId,
+                    'Cannot apply Remove without a parent on node ' . $subject->nodeAggregateId->value,
                     1645560717
                 );
             }

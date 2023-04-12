@@ -101,7 +101,7 @@ class UpdateWorkspaceInfo extends AbstractFeedback
             return false;
         }
 
-        return (string)$this->getWorkspaceName() === (string)$feedback->getWorkspaceName();
+        return $this->getWorkspaceName()?->value === $feedback->getWorkspaceName()?->value;
     }
 
     /**
@@ -120,12 +120,12 @@ class UpdateWorkspaceInfo extends AbstractFeedback
         $workspace = $contentRepository->getWorkspaceFinder()->findOneByName($this->workspaceName);
 
         return $workspace ? [
-            'name' => (string)$this->workspaceName,
+            'name' => $this->workspaceName->value,
             'publishableNodes' => $this->workspaceService->getPublishableNodeInfo(
                 $this->workspaceName,
                 $this->contentRepositoryId
             ),
-            'baseWorkspace' => (string)$workspace->baseWorkspaceName
+            'baseWorkspace' => $workspace->baseWorkspaceName->value
         ] : [];
     }
 }

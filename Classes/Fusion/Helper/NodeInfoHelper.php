@@ -15,18 +15,14 @@ use Neos\ContentRepository\Core\Projection\ContentGraph\ContentSubgraphInterface
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindChildNodesFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Nodes;
-use Neos\ContentRepository\Core\Projection\NodeHiddenState\NodeHiddenState;
 use Neos\ContentRepository\Core\Projection\NodeHiddenState\NodeHiddenStateFinder;
-use Neos\ContentRepository\Core\Projection\NodeHiddenState\NodeHiddenStateProjection;
-use Neos\Neos\FrontendRouting\NodeAddress;
-use Neos\Neos\FrontendRouting\NodeAddressFactory;
-use Neos\ContentRepository\Core\NodeType\NodeTypeConstraintParser;
-use Neos\ContentRepository\Core\Projection\ContentGraph\NodeTypeConstraints;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
+use Neos\Neos\FrontendRouting\NodeAddress;
+use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\FrontendRouting\NodeUriBuilder;
 use Neos\Neos\TypeConverter\EntityToIdentityConverter;
 use Neos\Neos\Ui\Domain\Service\NodePropertyConverterService;
@@ -250,7 +246,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     {
         $parent = $subgraph->findParentNode($node->nodeAggregateId);
         if ($parent) {
-            if (array_key_exists((string)$node->nodeName, $parent->nodeType->getAutoCreatedChildNodes())) {
+            if (array_key_exists($node->nodeName->value, $parent->nodeType->getAutoCreatedChildNodes())) {
                 return true;
             }
         }
@@ -328,15 +324,15 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
 
             $nodePath = $subgraph->retrieveNodePath($node->nodeAggregateId);
-            if (array_key_exists($nodePath->jsonSerialize(), $renderedNodes)) {
-                $renderedNodes[(string)$nodePath]['matched'] = true;
+            if (array_key_exists($nodePath->value, $renderedNodes)) {
+                $renderedNodes[$nodePath->value]['matched'] = true;
             } elseif ($renderedNode = $this->renderNodeWithMinimalPropertiesAndChildrenInformation(
                 $node,
                 $controllerContext,
                 $baseNodeTypeOverride
             )) {
                 $renderedNode['matched'] = true;
-                $renderedNodes[(string)$nodePath] = $renderedNode;
+                $renderedNodes[$nodePath->value] = $renderedNode;
             } else {
                 continue;
             }
@@ -350,8 +346,8 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
             $parentNodePath = $subgraph->retrieveNodePath($parentNode->nodeAggregateId);
             while ($parentNode->nodeType->isOfType($baseNodeTypeOverride)) {
-                if (array_key_exists((string)$parentNodePath, $renderedNodes)) {
-                    $renderedNodes[(string)$parentNodePath]['intermediate'] = true;
+                if (array_key_exists($parentNodePath->value, $renderedNodes)) {
+                    $renderedNodes[$parentNodePath->value]['intermediate'] = true;
                 } else {
                     $renderedParentNode = $this->renderNodeWithMinimalPropertiesAndChildrenInformation(
                         $parentNode,
@@ -360,7 +356,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
                     );
                     if ($renderedParentNode) {
                         $renderedParentNode['intermediate'] = true;
-                        $renderedNodes[(string)$parentNodePath] = $renderedParentNode;
+                        $renderedNodes[$parentNodePath->value] = $renderedParentNode;
                     }
                 }
                 $parentNode = $subgraph->findParentNode($parentNode->nodeAggregateId);

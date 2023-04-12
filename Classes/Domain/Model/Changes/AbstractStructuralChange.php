@@ -190,7 +190,7 @@ abstract class AbstractStructuralChange extends AbstractChange
         if (NodeInfoHelper::isAutoCreated($node, $subgraph)) {
             $parentNode = $subgraph->findParentNode($node->nodeAggregateId);
             return !$parentNode || $parentNode->nodeType->allowsGrandchildNodeType(
-                (string)$node->nodeName,
+                $node->nodeName->value,
                 $nodeType
             );
         } else {

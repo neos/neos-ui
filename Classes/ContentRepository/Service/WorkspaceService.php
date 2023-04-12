@@ -135,7 +135,7 @@ class WorkspaceService
                 continue;
             }
             // Skip own personal workspace
-            if ($workspace->workspaceName->name === $this->userService->getPersonalWorkspaceName()) {
+            if ($workspace->workspaceName->value === $this->userService->getPersonalWorkspaceName()) {
                 continue;
             }
 

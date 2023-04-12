@@ -260,7 +260,7 @@ class Property extends AbstractChange
             $node = $subgraph->findNodeById($originalNodeAggregateId);
             if (is_null($node)) {
                 throw new \InvalidArgumentException(
-                    'Cannot apply Property on missing node ' . $originalNodeAggregateId,
+                    'Cannot apply Property on missing node ' . $originalNodeAggregateId->value,
                     1645560836
                 );
             }

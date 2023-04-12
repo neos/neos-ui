@@ -7,6 +7,8 @@ import {ReactSelector} from 'testcafe-react-selectors';
 export class Page {
     static treeNode = ReactSelector('Node').find('a');
 
+    static getTreeNodeButton = (name) => Page.treeNode.withExactText(name).parent('[role="button"]');
+
     static async goToPage(pageTitle) {
         await t.click(this.treeNode.withText(pageTitle));
         await this.waitForIframeLoading(t);

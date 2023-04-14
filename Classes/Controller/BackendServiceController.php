@@ -17,7 +17,6 @@ use Neos\ContentRepository\Core\Feature\WorkspacePublication\Command\DiscardIndi
 use Neos\ContentRepository\Core\Feature\WorkspacePublication\Command\PublishIndividualNodesFromWorkspace;
 use Neos\ContentRepository\Core\Feature\WorkspacePublication\Dto\NodeIdsToPublishOrDiscard;
 use Neos\ContentRepository\Core\Feature\WorkspacePublication\Dto\NodeIdToPublishOrDiscard;
-use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\FlowQuery\FlowQuery;
@@ -50,6 +49,12 @@ use Neos\Neos\Ui\Service\NodePolicyService;
 use Neos\Neos\Ui\Service\PublishingService;
 use Neos\Neos\Ui\TypeConverter\ChangeCollectionConverter;
 use Neos\Neos\Utility\NodeUriPathSegmentGenerator;
+use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
+use Neos\ContentRepository\Core\Feature\WorkspaceModification\Command\ChangeBaseWorkspace;
+use Neos\ContentRepository\Core\SharedModel\Workspace\ContentStreamId;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\Redirect;
+use Neos\ContentRepository\Core\Feature\WorkspaceModification\Exception\WorkspaceIsNotEmptyException;
 
 class BackendServiceController extends ActionController
 {
@@ -308,86 +313,90 @@ class BackendServiceController extends ActionController
      * Change base workspace of current user workspace
      *
      * @param string $targetWorkspaceName ,
-     * @param Node $documentNode
+     * @param string $documentNode
      * @return void
      * @throws \Exception
      */
-    public function changeBaseWorkspaceAction(string $targetWorkspaceName, Node $documentNode)
+    public function changeBaseWorkspaceAction(string $targetWorkspaceName, string $documentNode): void
     {
+        $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
+        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
+
+        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
+        $nodeAddress = $nodeAddressFactory->createFromUriString($documentNode);
+
+        $currentAccount = $this->securityContext->getAccount();
+        $userWorkspaceName = NeosWorkspaceName::fromAccountIdentifier(
+            $currentAccount->getAccountIdentifier()
+        )->toContentRepositoryWorkspaceName();
+
         try {
-            throw new \BadMethodCallException('changeBaseWorkspaceAction is not yet implemented', 1645607154);
-            /*
-            $targetWorkspace = $this->workspaceFinder->findOneByName(WorkspaceName::fromString($targetWorkspaceName));
-            $currentAccount = $this->securityContext->getAccount();
-            $workspaceName = NeosWorkspaceName::fromAccountIdentifier(
-                $currentAccount->getAccountIdentifier()
-            )->toContentRepositoryWorkspaceName();
-            $userWorkspace = $this->workspaceFinder->findOneByName($workspaceName);
-
-            #if (count($this->workspaceService->getPublishableNodeInfo($userWorkspace)) > 0) {
-            #    // TODO: proper error dialog
-            #    throw new \Exception(
-            #        'Your personal workspace currently contains unpublished changes.'
-            #            . ' In order to switch to a different target workspace you need to either publish'
-            #            . ' or discard pending changes first.'
-            #    );
-            #
-
-            #$userWorkspace->setBaseWorkspace($targetWorkspace);
-            #$this->workspaceFinder->update($userWorkspace);
-
-            $success = new Success();
-            $success->setMessage(sprintf('Switched base workspace to %s.', $targetWorkspaceName));
-            $this->feedbackCollection->add($success);
-
-            $updateWorkspaceInfo = new UpdateWorkspaceInfo();
-            #$updateWorkspaceInfo->setWorkspace($userWorkspace);
-            $this->feedbackCollection->add($updateWorkspaceInfo);
-
-            // Construct base workspace context
-            $originalContext = $documentNode->getContext();
-            $contextProperties = $documentNode->getContext()->getProperties();
-            $contextProperties['workspaceName'] = $targetWorkspaceName;
-            $contentContext = $this->contextFactory->create($contextProperties);
-
-            // If current document node doesn't exist in the base workspace,
-            // traverse its parents to find the one that exists
-            $redirectNode = $documentNode;
-            while (true) {
-                $redirectNodeInBaseWorkspace = $contentContext->getNodeByIdentifier($redirectNode->getIdentifier());
-                if ($redirectNodeInBaseWorkspace) {
-                    break;
-                } else {
-                    $redirectNode = $redirectNode->getParent();
-                    // get parent always returns Node
-                    if (!$redirectNode) {
-                        throw new \Exception(sprintf(
-                            'Wasn\'t able to locate any valid node in rootline of node %s in the workspace %s.',
-                            $documentNode->getContextPath(),
-                            $targetWorkspaceName
-                        ), 1458814469);
-                    }
-                }
-            }
-
-            // If current document node exists in the base workspace, then reload, else redirect
-            if ($redirectNode === $documentNode) {
-                $reloadDocument = new ReloadDocument();
-                $reloadDocument->setNode($documentNode);
-                $this->feedbackCollection->add($reloadDocument);
-            } else {
-                $redirect = new Redirect();
-                $redirect->setNode($redirectNode);
-                $this->feedbackCollection->add($redirect);
-            }
-
-            $this->persistenceManager->persistAll();
-            */
-        } catch (\Exception $e) {
+            $contentRepository->handle(
+                new ChangeBaseWorkspace(
+                    $userWorkspaceName,
+                    WorkspaceName::fromString($targetWorkspaceName),
+                    $newCOnt = ContentStreamId::create()
+                )
+            )->block();
+        } catch (WorkspaceIsNotEmptyException $exception) {
             $error = new Error();
-            $error->setMessage($e->getMessage());
+            $error->setMessage('Your personal workspace currently contains unpublished changes.'
+                . ' In order to switch to a different target workspace you need to either publish'
+                . ' or discard pending changes first.');
 
             $this->feedbackCollection->add($error);
+        } catch (\Exception $exception) {
+            $error = new Error();
+            $error->setMessage($error->getMessage());
+
+            $this->feedbackCollection->add($error);
+        }
+
+        $subgraph = $contentRepository->getContentGraph()
+            ->getSubgraph(
+                $newCOnt,
+                $nodeAddress->dimensionSpacePoint,
+                VisibilityConstraints::withoutRestrictions()
+            );
+
+        $documentNode = $subgraph->findNodeById($nodeAddress->nodeAggregateId);
+
+        $success = new Success();
+        $success->setMessage(sprintf('Switched base workspace to %s.', $targetWorkspaceName));
+        $this->feedbackCollection->add($success);
+
+        $updateWorkspaceInfo = new UpdateWorkspaceInfo($contentRepositoryId, $userWorkspaceName);
+        $this->feedbackCollection->add($updateWorkspaceInfo);
+
+        // If current document node doesn't exist in the base workspace,
+        // traverse its parents to find the one that exists
+        $redirectNode = $documentNode;
+        while (true) {
+            $redirectNodeInBaseWorkspace = $subgraph->findNodeById($redirectNode->nodeAggregateId);
+            if ($redirectNodeInBaseWorkspace) {
+                break;
+            } else {
+                $redirectNode = $subgraph->findParentNode($redirectNode->nodeAggregateId);
+                // get parent always returns Node
+                if (!$redirectNode) {
+                    throw new \Exception(sprintf(
+                        'Wasn\'t able to locate any valid node in rootline of node %s in the workspace %s.',
+                        $documentNode->nodeAggregateId->value,
+                        $targetWorkspaceName
+                    ), 1458814469);
+                }
+            }
+        }
+
+        // If current document node exists in the base workspace, then reload, else redirect
+        if ($redirectNode->equals($documentNode)) {
+            $reloadDocument = new ReloadDocument();
+            $reloadDocument->setNode($documentNode);
+            $this->feedbackCollection->add($reloadDocument);
+        } else {
+            $redirect = new Redirect();
+            $redirect->setNode($redirectNode);
+            $this->feedbackCollection->add($redirect);
         }
 
         $this->view->assign('value', $this->feedbackCollection);
@@ -411,8 +420,7 @@ class BackendServiceController extends ActionController
 
         /** @var array<int,NodeAddress> $nodeAddresses */
         $nodeAddresses = array_map(
-            fn (string $serializedNodeAddress) =>
-            $nodeAddressFactory->createFromUriString($serializedNodeAddress),
+            fn(string $serializedNodeAddress) => $nodeAddressFactory->createFromUriString($serializedNodeAddress),
             $nodes
         );
         $this->clipboard->copyNodes($nodeAddresses);
@@ -444,8 +452,7 @@ class BackendServiceController extends ActionController
 
         /** @var array<int,\Neos\Neos\FrontendRouting\NodeAddress> $nodeAddresses */
         $nodeAddresses = array_map(
-            fn (string $serializedNodeAddress) =>
-            $nodeAddressFactory->createFromUriString($serializedNodeAddress),
+            fn(string $serializedNodeAddress) => $nodeAddressFactory->createFromUriString($serializedNodeAddress),
             $nodes
         );
 
@@ -571,7 +578,7 @@ class BackendServiceController extends ActionController
         /** @var array<int,mixed> $payload */
         $payload = $createContext['payload'] ?? [];
         $flowQuery = new FlowQuery(array_map(
-            fn ($envelope) => $this->nodeService->getNodeFromContextPath($envelope['$node'], $contentRepositoryId),
+            fn($envelope) => $this->nodeService->getNodeFromContextPath($envelope['$node'], $contentRepositoryId),
             $payload
         ));
 

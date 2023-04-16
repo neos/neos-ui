@@ -345,11 +345,15 @@ class BackendServiceController extends ActionController
                 . ' or discard pending changes first.');
 
             $this->feedbackCollection->add($error);
+            $this->view->assign('value', $this->feedbackCollection);
+            return;
         } catch (\Exception $exception) {
             $error = new Error();
             $error->setMessage($error->getMessage());
 
             $this->feedbackCollection->add($error);
+            $this->view->assign('value', $this->feedbackCollection);
+            return;
         }
 
         $subgraph = $contentRepository->getContentGraph()

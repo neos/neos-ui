@@ -185,7 +185,6 @@ class Property extends AbstractChange
                     $this->getValue()
                 );
 
-                // TODO: Make changing the node type a separated, specific/defined change operation.
                 if ($propertyName[0] !== '_' || $propertyName === '_hiddenInIndex') {
                     $originDimensionSpacePoint = $subject->originDimensionSpacePoint;
                     if (!$subject->subgraphIdentity->dimensionSpacePoint->equals($originDimensionSpacePoint)) {

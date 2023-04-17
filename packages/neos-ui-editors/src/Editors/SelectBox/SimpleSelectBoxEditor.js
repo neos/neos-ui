@@ -1,7 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
-import MultiSelectBox from '@neos-project/react-ui-components/src/MultiSelectBox/';
+import {SelectBox, MultiSelectBox} from '@neos-project/react-ui-components';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {shouldDisplaySearchBox, searchOptions, processSelectBoxOptions} from './SelectBoxHelpers';
 

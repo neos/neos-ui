@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
-import IconButton from '@neos-project/react-ui-components/src/IconButton/';
-import SideBar from '@neos-project/react-ui-components/src/SideBar/';
+import {IconButton, SideBar} from '@neos-project/react-ui-components';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 

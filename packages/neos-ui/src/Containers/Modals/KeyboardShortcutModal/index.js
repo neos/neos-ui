@@ -5,10 +5,9 @@ import {$transform, $get} from 'plow-js';
 
 import {neos} from '@neos-project/neos-ui-decorators';
 import {actions} from '@neos-project/neos-ui-redux-store';
-import Dialog from '@neos-project/react-ui-components/src/Dialog/';
 import I18n from '@neos-project/neos-ui-i18n';
-import Button from '@neos-project/react-ui-components/src/Button/';
 
+import {Dialog, Button} from '@neos-project/react-ui-components';
 import style from './style.module.css';
 
 @neos(globalRegistry => ({

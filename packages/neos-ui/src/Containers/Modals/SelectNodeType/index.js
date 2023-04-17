@@ -8,8 +8,7 @@ import escaperegexp from 'lodash.escaperegexp';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 
-import Button from '@neos-project/react-ui-components/src/Button/';
-import Dialog from '@neos-project/react-ui-components/src/Dialog/';
+import {Button, Dialog} from '@neos-project/react-ui-components';
 import I18n from '@neos-project/neos-ui-i18n';
 
 import {InsertModeSelector} from '@neos-project/neos-ui-containers';

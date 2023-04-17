@@ -10,9 +10,7 @@ import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import validate from '@neos-project/neos-ui-validators';
 import preprocessNodeConfiguration from '../../../preprocessNodeConfiguration';
 
-import Icon from '@neos-project/react-ui-components/src/Icon/';
-import Button from '@neos-project/react-ui-components/src/Button/';
-import Dialog from '@neos-project/react-ui-components/src/Dialog/';
+import {Icon, Button, Dialog} from '@neos-project/react-ui-components';
 import I18n from '@neos-project/neos-ui-i18n';
 import EditorEnvelope from '@neos-project/neos-ui-editors/src/EditorEnvelope/index';
 

@@ -1,7 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import MultiSelectBox from '@neos-project/react-ui-components/src/MultiSelectBox/';
-import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
+import {MultiSelectBox, SelectBox} from '@neos-project/react-ui-components';
 import {dndTypes} from '@neos-project/neos-ui-constants';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {$get} from 'plow-js';

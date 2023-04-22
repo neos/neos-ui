@@ -3,15 +3,9 @@
   "version": "8.2.7",
   "description": "Neos CMS UI written in ReactJS and a ton of other fun technology.",
   "private": true,
-  "scripts": {
-    "test": "yarn jest -w 2 --coverage",
-    "test:watch": "yarn jest --watch",
-    "jest": "NODE_ENV=test jest"
-  },
   "devDependencies": {
     "@neos-project/debug-reason-for-rendering": "workspace:*",
     "@neos-project/jest-preset-neos-ui": "workspace:*",
-    "@neos-project/neos-ui-build": "workspace:*",
     "@neos-project/utils-logger": "workspace:*",
     "enzyme": "^3.8.0",
     "typescript": "^4.6.4"
@@ -72,8 +66,5 @@
     "reselect": "^3.0.1",
     "uuid": "^3.3.2"
   },
-  "license": "GNU GPLv3",
-  "jest": {
-    "preset": "@neos-project/jest-preset-neos-ui"
-  }
+  "license": "GNU GPLv3"
 }

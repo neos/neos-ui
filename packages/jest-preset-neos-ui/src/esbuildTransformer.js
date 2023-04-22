@@ -3,7 +3,7 @@
 
 // jest mocking doesnt work, but we dont need it anyway
 
-const {extname} = require('path');
+const NodePath = require('path');
 const {createHash} = require('crypto');
 const {transformSync} = require('esbuild');
 const {readFileSync} = require('fs');
@@ -22,7 +22,7 @@ function isTarget(path) {
 // you can clear the jest cache also by running `yarn jest --clearCache`
 const thisFileRaw = readFileSync(__filename)
 
-const tsconfigRaw = readFileSync('../../tsconfig.json', 'utf8');
+const tsconfigRaw = readFileSync(NodePath.join(__dirname, '../../../tsconfig.json'), 'utf8');
 
 const createTransformer = () => {
     /** @type {import('esbuild').TransformOptions} */
@@ -56,7 +56,7 @@ const createTransformer = () => {
                 };
             }
 
-            const extension = extname(path).slice(1);
+            const extension = NodePath.extname(path).slice(1);
 
             const result = transformSync(source, {
                 loader: extension === 'js' ? 'tsx' : extension,

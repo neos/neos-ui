@@ -101,10 +101,7 @@ build-e2e-testing:
 
 ## Executes the unit test on all source files.
 test:
-	yarn workspaces foreach run test
-
-test-parallel:
-	yarn workspaces foreach --parallel run test
+	yarn test
 
 ## Executes integration tests on saucelabs.
 test-e2e-saucelabs:
@@ -123,8 +120,6 @@ start-neos-dev-instance:
 
 ## Executes make lint-js and make lint-editorconfig.
 lint: lint-js lint-editorconfig
-
-lint-parallel: lint-js-parallel lint-editorconfig
 
 ## Runs lint test in all subpackages
 lint-js:
@@ -160,10 +155,10 @@ publish-npm: called-with-version
 # Misc
 ################################################################################
 
-## Cleans dependency folders
 clean:
-	rm -rf node_modules; rm -rf packages/*/node_modules
-
+	@echo you might want to use the following git command to clear some ignored files interactively
+	@echo ''
+	@echo git clean -idX
 
 ################################################################################
 # help command as default

@@ -17,7 +17,6 @@ use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 
 class UpdateNodePath extends AbstractFeedback
 {
-
     /**
      * @var string
      */

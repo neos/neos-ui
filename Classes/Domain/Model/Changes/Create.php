@@ -13,7 +13,6 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 class Create extends AbstractCreate
 {
-
     /**
      * @param string $parentContextPath
      */

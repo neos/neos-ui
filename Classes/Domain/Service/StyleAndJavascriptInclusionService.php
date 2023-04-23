@@ -22,7 +22,6 @@ use Neos\Utility\PositionalArraySorter;
  */
 class StyleAndJavascriptInclusionService
 {
-
     /**
      * @Flow\Inject
      * @var ResourceManager
@@ -114,9 +113,9 @@ class StyleAndJavascriptInclusionService
      */
     private function htmlAttributesArrayToString(array $attributes): string
     {
-        return join(' ', array_filter(array_map(function($key, $value) {
+        return join(' ', array_filter(array_map(function ($key, $value) {
             if (is_bool($value)) {
-               return $value ? htmlspecialchars($key) : null;
+                return $value ? htmlspecialchars($key) : null;
             }
             return htmlspecialchars($key) . '="' . htmlspecialchars($value) . '"';
         }, array_keys($attributes), $attributes)));

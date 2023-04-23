@@ -20,7 +20,6 @@ use Neos\Flow\Annotations as Flow;
  */
 class ConfigurationRenderingService
 {
-
     /**
      * @Flow\Inject(lazy=false)
      * @var CompilingEvaluator

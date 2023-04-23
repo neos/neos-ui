@@ -168,7 +168,6 @@ abstract class AbstractStructuralChange extends AbstractChange
         $this->updateWorkspaceInfo();
 
         if ($node->getNodeType()->isOfType('Neos.Neos:Content') && ($this->getParentDomAddress() || $this->getSiblingDomAddress())) {
-
             // we can ONLY render out of band if:
             // 1) the parent of our new (or copied or moved) node is a ContentCollection; so we can directly update an element of this content collection
             if ($node->getParent()->getNodeType()->isOfType('Neos.Neos:ContentCollection') &&

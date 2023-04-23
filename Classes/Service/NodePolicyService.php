@@ -32,7 +32,6 @@ use Neos\Neos\Security\Authorization\Privilege\NodeTreePrivilege;
  */
 class NodePolicyService
 {
-
     /**
      * @Flow\Inject
      * @var PrivilegeManagerInterface

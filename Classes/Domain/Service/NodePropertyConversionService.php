@@ -27,7 +27,6 @@ use Neos\Utility\TypeHandling;
  */
 class NodePropertyConversionService
 {
-
     /**
      * @Flow\Inject
      * @var ObjectManagerInterface

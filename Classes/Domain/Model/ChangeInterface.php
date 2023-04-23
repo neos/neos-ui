@@ -18,7 +18,6 @@ use Neos\ContentRepository\Domain\Model\NodeInterface;
  */
 interface ChangeInterface
 {
-
     /**
      * Set the subject
      *

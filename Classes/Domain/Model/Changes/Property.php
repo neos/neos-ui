@@ -30,7 +30,6 @@ use Neos\Utility\ObjectAccess;
  */
 class Property extends AbstractChange
 {
-
     /**
      * @Flow\Inject
      * @var NodePropertyConversionService

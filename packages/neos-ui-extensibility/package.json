@@ -19,12 +19,10 @@
     "jest": "NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "workspace:*",
     "@neos-project/jest-preset-neos-ui": "workspace:*",
     "typescript": "^4.6.4"
   },
   "dependencies": {
-    "@neos-project/build-essentials": "workspace:*",
     "@neos-project/positional-array-sorter": "workspace:*",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-plugin-transform-object-rest-spread": "^6.20.1",

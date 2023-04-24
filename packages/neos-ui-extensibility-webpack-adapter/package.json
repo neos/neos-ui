@@ -1,7 +1,7 @@
 {
   "name": "@neos-project/neos-ui-extensibility-webpack-adapter",
   "version": "8.2.6",
-  "description": "Webpack extensibility mechanisms for the Neos CMS UI",
+  "description": "Zero configuration, highly opinionated Webpack extensibility mechanisms for the Neos Ui",
   "repository": "neos/neos-ui",
   "bugs": "https://github.com/neos/neos-ui/issues",
   "homepage": "https://github.com/neos/neos-ui/blob/master/README.md",

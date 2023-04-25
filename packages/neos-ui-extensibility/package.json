@@ -1,7 +1,7 @@
 {
   "name": "@neos-project/neos-ui-extensibility",
   "version": "8.2.9",
-  "description": "Code only extensibility mechanisms for the Neos CMS UI",
+  "description": "Core of the extensibility mechanisms for the Neos Ui",
   "repository": "neos/neos-ui",
   "bugs": "https://github.com/neos/neos-ui/issues",
   "homepage": "https://github.com/neos/neos-ui/blob/master/README.md",

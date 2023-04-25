@@ -80,7 +80,7 @@ export const createEditor = store => options => {
             editor.model.document.on('change:data', debounce(() => onChange(cleanupContentBeforeCommit(editor.getData())), 500, {maxWait: 5000}));
         }).catch(e => {
             if (e instanceof TypeError && e.message.match(/Class constructor .* cannot be invoked without 'new'/)) {
-                console.error("Neos.Ui: Youre probably using a CKeditor plugin which needs to be rebuild.\nsee https://github.com/neos/neos-ui/issues/3287\n\nOriginal Error:\n\n" + e.stack);
+                console.error('Neos.Ui: Youre probably using a CKeditor plugin which needs to be rebuild.\nsee https://github.com/neos/neos-ui/issues/3287\n\nOriginal Error:\n\n' + e.stack);
             } else {
                 console.error(e);
             }

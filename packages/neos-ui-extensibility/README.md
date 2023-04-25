@@ -1,6 +1,6 @@
 # @neos-project/neos-ui-extensibility
 
-> Core of the extensibility mechanisms for the Neos UI
+> Core of the extensibility mechanisms for the Neos UI.
 
 ## Installation
 ```bash
@@ -25,7 +25,7 @@ So `import React from "react"` will import react at runtime from the Neos UI hos
 A Neos UI plugin must get access to certain important objects and methods like React, CKEditor, and also the bootstrap function.
 
 **Concept**
-To access the same instance f.x. of React that the Neos UI Host is using, we technically want to do something like: `const {React} = window.NeosUiPluginApi`. The problem being: when we use 3rd party NPM packages in our plugin, they will import React as usual `import React from "react"` which will fail.
+To access the same instance e.g. of React that the Neos UI Host is using, we technically want to do something like: `const {React} = window.NeosUiPluginApi`. The problem being: when we use 3rd party NPM packages in our plugin, they will import React as usual `import React from "react"` which will fail.
 To solve this issue and also make creating plugins a bit more fancy ✨ we make use of your bundlers import alias feature.
 
 The alias resolution will match any imported path against the `extensibilityMap.json` and redirect it to a shim. The shim will then access the Neos UI plugin API at runtime.
@@ -47,21 +47,20 @@ The plugin will be backwards compatible with Neos 7.3 too!
 <summary>Advantages vs @neos-project/neos-ui-extensibility-webpack-adapter</summary>
 
 ```diff
-+ Use Esbuild
-- Cannot use Webpack
-- Code splitting is more advanced in webpack
++ Use esbuild
+- Code splitting is more advanced in Webpack than currently in esbuild
 + No need for Babel
-+ Use latest ES Syntax
++ Use latest JavaScript syntax
 + Fully controll the build process
-+ Speeeeed
-+ Way less dev dependencies -> faster installation.
++ Speeeeed 🔥
++ Way less dev dependencies -> faster installation
 ```
 
 </details>
 
 Creating a basic UI plugin package:
 
-You have free choice about the directory structure (except that the `"buildTargetDirectory"` must point to the `Resources/Public` folder) 
+You have free choice about the directory structure (except that the compiled assets must be in the `Resources/Public` folder) 
 
 <details>
 <summary>Example File structure</summary>

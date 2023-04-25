@@ -1,6 +1,6 @@
 # @neos-project/neos-ui-extensibility-webpack-adapter
 
-> Zero¹ configuration, highly opinionated Webpack 4 + Babel plugin buildstack for the Neos CMS UI.
+> Minimal configuration, highly opinionated Webpack 4 + Babel plugin build stack for the Neos CMS UI.
 
 ## Installation
 ```bash
@@ -36,7 +36,6 @@ So `import React from "react"` will import React at runtime from the Neos UI hos
 
 
 ## Usage / Technial Neos Ui plugin setup 
-¹ well we need one configuration ;)
 
 Creating a basic UI plugin package:
 

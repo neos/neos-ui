@@ -456,15 +456,15 @@
       </trans-unit>
       <trans-unit id="inside" xml:space="preserve">
                 <source>Inside</source>
-        <target state="translated">Dentro de</target>
+        <target state="translated">Dentro</target>
       </trans-unit>
       <trans-unit id="InsertModeTitleInto" xml:space="preserve">
                 <source>inside</source>
-        <target state="translated">dentro de</target>
+        <target state="translated">dentro</target>
       </trans-unit>
       <trans-unit id="InsertModeTitleBefore" xml:space="preserve">
                 <source>above</source>
-        <target state="translated">sobre</target>
+        <target state="translated">arriba</target>
       </trans-unit>
       <trans-unit id="InsertModeTitleAfter" xml:space="preserve">
                 <source>below</source>
@@ -500,7 +500,7 @@
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__style__blockquote" xml:space="preserve">
                 <source>Blockquote</source>
-        <target state="translated">Presupuesto por bloques</target>
+        <target state="translated">cita en bloque</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__download" xml:space="preserve">
                 <source>Downloadable</source>

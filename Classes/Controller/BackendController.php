@@ -193,7 +193,7 @@ class BackendController extends ActionController
             'no-cache',
             'no-store'
         ]);
-        if( $node->getContext()->getWorkspaceName() == 'live'){
+        if( $node->getContext()->getWorkspaceName() === 'live'){
             $this->redirectToUri($this->linkingService->createNodeUri($this->controllerContext, $node, null, null, false, ['presetBaseNodeType' => $presetBaseNodeType]));
         }
         $this->redirectToUri($this->linkingService->createNodeUri($this->controllerContext, $node, null, null, false, ['presetBaseNodeType' => $presetBaseNodeType], overrideDefaultAction: 'preview'));

@@ -242,7 +242,10 @@ class BackendServiceController extends ActionController
                     )
                 )->block();
             } catch (NodeAggregateCurrentlyDoesNotExist $e) {
-                throw new NodeAggregateCurrentlyDoesNotExist('Node could not be published, probably because of a missing parentNode. Please check that the parentNode has been published.', 1682762156);
+                throw new NodeAggregateCurrentlyDoesNotExist(
+                    'Node could not be published, probably because of a missing parentNode. Please check that the parentNode has been published.',
+                    1682762156
+                );
             }
 
             $success = new Success();

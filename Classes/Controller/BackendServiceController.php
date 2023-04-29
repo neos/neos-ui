@@ -18,6 +18,7 @@ use Neos\ContentRepository\Core\Feature\WorkspacePublication\Command\PublishIndi
 use Neos\ContentRepository\Core\Feature\WorkspacePublication\Dto\NodeIdsToPublishOrDiscard;
 use Neos\ContentRepository\Core\Feature\WorkspacePublication\Dto\NodeIdToPublishOrDiscard;
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
+use Neos\ContentRepository\Core\SharedModel\Exception\NodeAggregateCurrentlyDoesNotExist;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Flow\Annotations as Flow;
@@ -233,12 +234,19 @@ class BackendServiceController extends ActionController
                     $nodeAddress->dimensionSpacePoint
                 );
             }
-            $contentRepository->handle(
-                PublishIndividualNodesFromWorkspace::create(
-                    $workspaceName,
-                    NodeIdsToPublishOrDiscard::create(...$nodeIdentifiersToPublish)
-                )
-            )->block();
+            try {
+                $contentRepository->handle(
+                    PublishIndividualNodesFromWorkspace::create(
+                        $workspaceName,
+                        NodeIdsToPublishOrDiscard::create(...$nodeIdentifiersToPublish)
+                    )
+                )->block();
+            } catch (NodeAggregateCurrentlyDoesNotExist $e) {
+                throw new NodeAggregateCurrentlyDoesNotExist(
+                    'Node could not be published, probably because of a missing parentNode. Please check that the parentNode has been published.',
+                    1682762156
+                );
+            }
 
             $success = new Success();
             $success->setMessage(sprintf(
@@ -424,7 +432,7 @@ class BackendServiceController extends ActionController
 
         /** @var array<int,NodeAddress> $nodeAddresses */
         $nodeAddresses = array_map(
-            fn(string $serializedNodeAddress) => $nodeAddressFactory->createFromUriString($serializedNodeAddress),
+            fn (string $serializedNodeAddress) => $nodeAddressFactory->createFromUriString($serializedNodeAddress),
             $nodes
         );
         $this->clipboard->copyNodes($nodeAddresses);
@@ -456,7 +464,7 @@ class BackendServiceController extends ActionController
 
         /** @var array<int,\Neos\Neos\FrontendRouting\NodeAddress> $nodeAddresses */
         $nodeAddresses = array_map(
-            fn(string $serializedNodeAddress) => $nodeAddressFactory->createFromUriString($serializedNodeAddress),
+            fn (string $serializedNodeAddress) => $nodeAddressFactory->createFromUriString($serializedNodeAddress),
             $nodes
         );
 
@@ -582,7 +590,7 @@ class BackendServiceController extends ActionController
         /** @var array<int,mixed> $payload */
         $payload = $createContext['payload'] ?? [];
         $flowQuery = new FlowQuery(array_map(
-            fn($envelope) => $this->nodeService->getNodeFromContextPath($envelope['$node'], $contentRepositoryId),
+            fn ($envelope) => $this->nodeService->getNodeFromContextPath($envelope['$node'], $contentRepositoryId),
             $payload
         ));
 

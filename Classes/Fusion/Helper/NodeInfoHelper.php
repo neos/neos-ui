@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Neos\Ui\Fusion\Helper;
 
 /*
@@ -200,7 +201,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         }
 
         try {
-            $nodeInfo['uri'] = $this->uri($node, $controllerContext);
+            $nodeInfo['uri'] = $this->createEditUri($controllerContext, $node);
         } catch (\Neos\Neos\Exception $exception) {
             // Unless there is a serious problem with routes there shouldn't be an exception ever.
             $nodeInfo['uri'] = '';
@@ -399,13 +400,27 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             ->uriFor('redirectTo', ['node' => $nodeInBaseWorkspace], 'Backend', 'Neos.Neos.Ui');
     }
 
+
     /**
-     * @param NodeInterface $node
-     * @param ControllerContext $controllerContext
-     * @return string
      * @throws \Neos\Neos\Exception
      */
-    public function uri(NodeInterface $node = null, ControllerContext $controllerContext)
+    public function createEditUri(ControllerContext $controllerContext, ?NodeInterface $node = null): string
+    {
+        return $this->createUri($controllerContext, 'edit', $node);
+    }
+
+    /**
+     * @throws \Neos\Neos\Exception
+     */
+    public function createPreviewUri(ControllerContext $controllerContext, ?NodeInterface $node = null): string
+    {
+        return $this->createUri($controllerContext, 'preview', $node);
+    }
+
+    /**
+     * @throws \Neos\Neos\Exception
+     */
+    private function createUri(ControllerContext $controllerContext, string $overrideDefaultAction, ?NodeInterface $node = null): string
     {
         if ($node === null) {
             // This happens when the document node is not published yet
@@ -413,7 +428,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         }
 
         // Create an absolute URI
-        return $this->linkingService->createNodeUri($controllerContext, $node, null, null, true);
+        return $this->linkingService->createNodeUri($controllerContext, $node, null, null, true, overrideDefaultAction: $overrideDefaultAction);
     }
 
     /**

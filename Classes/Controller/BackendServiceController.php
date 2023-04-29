@@ -432,7 +432,7 @@ class BackendServiceController extends ActionController
 
         /** @var array<int,NodeAddress> $nodeAddresses */
         $nodeAddresses = array_map(
-            fn(string $serializedNodeAddress) => $nodeAddressFactory->createFromUriString($serializedNodeAddress),
+            fn (string $serializedNodeAddress) => $nodeAddressFactory->createFromUriString($serializedNodeAddress),
             $nodes
         );
         $this->clipboard->copyNodes($nodeAddresses);
@@ -464,7 +464,7 @@ class BackendServiceController extends ActionController
 
         /** @var array<int,\Neos\Neos\FrontendRouting\NodeAddress> $nodeAddresses */
         $nodeAddresses = array_map(
-            fn(string $serializedNodeAddress) => $nodeAddressFactory->createFromUriString($serializedNodeAddress),
+            fn (string $serializedNodeAddress) => $nodeAddressFactory->createFromUriString($serializedNodeAddress),
             $nodes
         );
 
@@ -590,7 +590,7 @@ class BackendServiceController extends ActionController
         /** @var array<int,mixed> $payload */
         $payload = $createContext['payload'] ?? [];
         $flowQuery = new FlowQuery(array_map(
-            fn($envelope) => $this->nodeService->getNodeFromContextPath($envelope['$node'], $contentRepositoryId),
+            fn ($envelope) => $this->nodeService->getNodeFromContextPath($envelope['$node'], $contentRepositoryId),
             $payload
         ));
 

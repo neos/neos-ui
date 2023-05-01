@@ -128,7 +128,7 @@ class NodePropertyConverterService
             $referenceIdentifiers = $this->toNodeIdentifierStrings(
                 $subgraph->findReferences(
                     $node->nodeAggregateId,
-                    FindReferencesFilter::referenceName($propertyName)
+                    FindReferencesFilter::create(referenceName: $propertyName)
                 )
             );
             if (count($referenceIdentifiers) === 0) {
@@ -140,7 +140,7 @@ class NodePropertyConverterService
             $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
             $references = $subgraph->findReferences(
                 $node->nodeAggregateId,
-                FindReferencesFilter::referenceName($propertyName)
+                FindReferencesFilter::create(referenceName: $propertyName)
             );
 
             return $this->toNodeIdentifierStrings($references);

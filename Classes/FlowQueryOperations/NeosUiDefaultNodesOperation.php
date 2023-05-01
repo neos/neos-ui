@@ -124,7 +124,7 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
             ) {
                 foreach ($subgraph->findChildNodes(
                     $baseNode->nodeAggregateId,
-                    FindChildNodesFilter::nodeTypeConstraints($baseNodeTypeConstraints)
+                    FindChildNodesFilter::create(nodeTypeConstraints: $baseNodeTypeConstraints)
                 ) as $childNode) {
                     $nodes[$childNode->nodeAggregateId->value] = $childNode;
                     $gatherNodesRecursively($nodes, $childNode, $level + 1);

@@ -76,7 +76,7 @@ class NeosUiFilteredChildrenOperation extends AbstractOperation
 
             foreach ($subgraph->findChildNodes(
                 $contextNode->nodeAggregateId,
-                FindChildNodesFilter::nodeTypeConstraints($arguments[0] ?? null)
+                FindChildNodesFilter::create(nodeTypeConstraints: $arguments[0] ?? null)
             ) as $childNode) {
                 if (!isset($outputNodeIdentifiers[$childNode->nodeAggregateId->value])) {
                     $output[] = $childNode;

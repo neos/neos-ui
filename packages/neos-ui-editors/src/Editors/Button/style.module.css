@@ -1,0 +1,8 @@
+.buttonEditor {
+}
+
+.buttonEditor .button {
+    margin-right: var(--spacing-Quarter);
+    margin-top: var(--spacing-Quarter);
+    font-size: 20px;
+}

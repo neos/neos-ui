@@ -16,6 +16,7 @@ import MasterPlugin from './MasterPlugin/index';
 import PluginViews from './PluginViews/index';
 import PluginView from './PluginView/index';
 import UriPathSegment from './UriPathSegment/index';
+import ButtonEditor from './Button/index';
 
 export {
     TextField,
@@ -35,5 +36,6 @@ export {
     MasterPlugin,
     PluginViews,
     PluginView,
-    UriPathSegment
+    UriPathSegment,
+    ButtonEditor
 };

@@ -521,10 +521,10 @@
                 <source>Preformatted</source>
         <target state="translated">Vorformatiert</target>
       </trans-unit>
-        <trans-unit id="ckeditor__toolbar__style__blockquote" xml:space="preserve">
+      <trans-unit id="ckeditor__toolbar__style__blockquote" xml:space="preserve">
                 <source>Blockquote</source>
-                <target state="translated">Block-Zitat</target>
-            </trans-unit>
+        <target state="translated">Block-Zitat</target>
+      </trans-unit>
       <trans-unit id="rangeEditorMaximum" xml:space="preserve">
                 <source>Maximum</source>
         <target state="translated">Maximum</target>
@@ -580,6 +580,22 @@
       <trans-unit id="rangeEditorCurrentValue" xml:space="preserve">
                 <source>Current value</source>
         <target state="translated">Aktueller Wert</target>
+      </trans-unit>
+      <trans-unit id="below" xml:space="preserve">
+                <source>Below</source>
+        <target state="translated">Unten</target>
+      </trans-unit>
+      <trans-unit id="above" xml:space="preserve">
+                <source>Above</source>
+        <target state="translated">Oben</target>
+      </trans-unit>
+      <trans-unit id="InsertModeTitleBefore" xml:space="preserve">
+                <source>above</source>
+        <target state="translated">oberhalb</target>
+      </trans-unit>
+      <trans-unit id="InsertModeTitleAfter" xml:space="preserve">
+                <source>below</source>
+        <target state="translated">unterhalb</target>
       </trans-unit>
     </body>
   </file>

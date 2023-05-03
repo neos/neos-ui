@@ -226,10 +226,12 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
         $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
+        $nodeAddress = $nodeAddressFactory->createFromNode($node);
 
         return [
-            'contextPath' => $nodeAddressFactory->createFromNode($node)->serializeForUri(),
-            'name' => $node->nodeName?->jsonSerialize(),
+            'contextPath' => $nodeAddress->serializeForUri(),
+            'nodeAddress' => $nodeAddress->serializeForUri(),
+            'name' => $node->nodeName?->value ?? '',
             'identifier' => $node->nodeAggregateId->jsonSerialize(),
             'nodeType' => $node->nodeType->getName(),
             'label' => $node->getLabel(),
@@ -238,7 +240,10 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             'depth' => $subgraph->retrieveNodePath($node->nodeAggregateId)->getDepth(),
             'children' => [],
             'parent' => $parentNode ? $nodeAddressFactory->createFromNode($parentNode)->serializeForUri() : null,
-            'matchesCurrentDimensions' => $node->subgraphIdentity->dimensionSpacePoint->equals($node->originDimensionSpacePoint)
+            'matchesCurrentDimensions' => $node->subgraphIdentity->dimensionSpacePoint->equals($node->originDimensionSpacePoint),
+            'lastModificationDateTime' => $node->timestamps->lastModified?->format(\DateTime::ATOM),
+            'creationDateTime' => $node->timestamps->created?->format(\DateTime::ATOM),
+            'lastPublicationDateTime' => $node->timestamps->originalLastModified?->format(\DateTime::ATOM)
         ];
     }
 

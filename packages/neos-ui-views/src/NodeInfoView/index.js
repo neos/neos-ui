@@ -45,12 +45,12 @@ export default class NodeInfoView extends PureComponent {
                 </li>
                 <li className={style.nodeInfoView__item} title={new Date(properties.lastModification).toLocaleString()}>
                     <div className={style.nodeInfoView__title}>{i18nRegistry.translate('lastModification', 'Last modification', {}, 'Neos.Neos')}</div>
-                    <NodeInfoViewContent>{new Date(properties.lastModification).toLocaleString()}</NodeInfoViewContent>
+                    <NodeInfoViewContent>{properties.lastModification ? new Date(properties.lastModification).toLocaleString() : i18nRegistry.translate('unavailable', 'unavailable', {}, 'Neos.Neos')}</NodeInfoViewContent>
                 </li>
-                {properties.lastPublication ? (<li className={style.nodeInfoView__item} title={new Date(properties.lastPublication).toLocaleString()}>
+                <li className={style.nodeInfoView__item} title={new Date(properties.lastPublication).toLocaleString()}>
                     <div className={style.nodeInfoView__title}>{i18nRegistry.translate('lastPublication', 'Last publication', {}, 'Neos.Neos')}</div>
-                    <NodeInfoViewContent>{new Date(properties.lastPublication).toLocaleString()}</NodeInfoViewContent>
-                </li>) : []}
+                    <NodeInfoViewContent>{properties.lastPublication ? new Date(properties.lastPublication).toLocaleString() : i18nRegistry.translate('unavailable', 'unavailable', {}, 'Neos.Neos')}</NodeInfoViewContent>
+                </li>
                 <li className={style.nodeInfoView__item} title={properties.identifier}>
                     <div className={style.nodeInfoView__title}>{i18nRegistry.translate('identifier', 'Identifier', {}, 'Neos.Neos')}</div>
                     <NodeInfoViewContent>{properties.identifier}</NodeInfoViewContent>
@@ -59,10 +59,10 @@ export default class NodeInfoView extends PureComponent {
                     <div className={style.nodeInfoView__title}>{i18nRegistry.translate('nodeAddress', 'Node Address', {}, 'Neos.Neos')}</div>
                     <NodeInfoViewContent>{properties.nodeAddress}</NodeInfoViewContent>
                 </li>
-                {properties.name ? (<li className={style.nodeInfoView__item} title={properties.name}>
+                <li className={style.nodeInfoView__item} title={properties.name}>
                     <div className={style.nodeInfoView__title}>{i18nRegistry.translate('name', 'Name', {}, 'Neos.Neos')}</div>
-                    <NodeInfoViewContent>{properties.name}</NodeInfoViewContent>
-                </li>) : []}
+                    <NodeInfoViewContent>{properties.name ?? i18nRegistry.translate('unavailable', 'unavailable', {}, 'Neos.Neos')}</NodeInfoViewContent>
+                </li>
                 <li className={style.nodeInfoView__item} title={nodeType}>
                     <div className={style.nodeInfoView__title}>{i18nRegistry.translate('type', 'Type', {}, 'Neos.Neos')}</div>
                     <NodeInfoViewContent>{nodeType}</NodeInfoViewContent>

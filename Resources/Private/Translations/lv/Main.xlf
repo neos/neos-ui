@@ -56,11 +56,11 @@
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__unlink" xml:space="preserve">
                 <source>Unlink</source>
-        <target xml:lang="lv" state="needs-translation">Unlink</target>
+        <target xml:lang="lv" state="translated">Atsaistīt</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__hideOptions" xml:space="preserve">
                 <source>Hide link options</source>
-        <target xml:lang="lv" state="needs-translation">Hide link options</target>
+        <target xml:lang="lv" state="translated">Slēpt saites opcijas</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__showOptions" xml:space="preserve">
                 <source>Link options</source>
@@ -390,6 +390,38 @@
       </trans-unit>
       <trans-unit id="syncUriPathSegment" xml:space="preserve">
                 <source>Syncronize with the title property</source>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__p" xml:space="preserve">
+                <source>Paragraph</source>
+        <target state="translated">Paragrāfs</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__h1" xml:space="preserve">
+                <source>Headline 1</source>
+        <target state="translated">Virsraksts 1</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__h2" xml:space="preserve">
+                <source>Headline 2</source>
+        <target state="translated">Virsraksts 2</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__h3" xml:space="preserve">
+                <source>Headline 3</source>
+        <target state="translated">Virsraksts 3</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__h4" xml:space="preserve">
+                <source>Headline 4</source>
+        <target state="translated">Virsraksts 4</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__h5" xml:space="preserve">
+                <source>Headline 5</source>
+        <target state="translated">Virsraksts 5</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__h6" xml:space="preserve">
+                <source>Headline 6</source>
+        <target state="translated">Virsraksts 6</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__pre" xml:space="preserve">
+                <source>Preformatted</source>
+        <target state="translated">Iepriekš formatēts</target>
       </trans-unit>
     </body>
   </file>

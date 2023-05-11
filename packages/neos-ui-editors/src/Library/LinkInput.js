@@ -150,41 +150,41 @@ export default class LinkInput extends PureComponent {
     handleSearchTermChange = searchTerm => {
         this.setState({searchTerm});
 
-        if (looksLikeExternalLink(searchTerm)) {
-            this.setState({
-                isLoading: false,
-                searchOptions: [{
-                    label: this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__formatAsHttp', 'Format as https link?'),
-                    loaderUri: `https://${searchTerm}`
-                }]
-            });
-        } else if (isEmail(searchTerm)) {
-            this.setState({
-                isLoading: false,
-                searchOptions: [{
-                    label: this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__formatAsEmail', 'Format as email?'),
-                    loaderUri: `mailto:${searchTerm}`
-                }]
-            });
-        } else if (isUriOrInternalLink(searchTerm)) {
+        if (isUriOrInternalLink(searchTerm)) {
             this.setState({
                 isLoading: false,
                 searchOptions: []
             });
         } else if (searchTerm) {
-            this.setState({isLoading: true, searchOptions: []});
             // We store the searchTerm at the moment lookup was triggered, and only update the options if the search term hasn't changed
             const searchTermWhenLookupWasTriggered = searchTerm;
+            const groupedSearchOptions = [];
+
+            if (looksLikeExternalLink(searchTermWhenLookupWasTriggered)) {
+                groupedSearchOptions.push({
+                    label: this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__formatAsHttp', 'Format as https link?'),
+                    loaderUri: `https://${searchTermWhenLookupWasTriggered}`
+                });
+            } else if (isEmail(searchTermWhenLookupWasTriggered)) {
+                groupedSearchOptions.push({
+                    label: this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__formatAsEmail', 'Format as email?'),
+                    loaderUri: `mailto:${searchTermWhenLookupWasTriggered}`
+                });
+            }
+
+            this.setState({isLoading: true, searchOptions: groupedSearchOptions});
+
             this.props.linkLookupDataLoader.search(this.getDataLoaderOptions(), searchTerm)
                 .then(searchOptions => {
                     if (searchTermWhenLookupWasTriggered === this.state.searchTerm) {
-                        const groupedSearchOption = searchOptions.map(searchOption => {
+                        searchOptions.forEach(searchOption => {
                             searchOption.group = 'assetSourceLabel' in searchOption ? searchOption.assetSourceLabel : this.props.i18nRegistry.translate('Neos.Neos:Main:document');
-                            return searchOption;
+                            groupedSearchOptions.push(searchOption);
                         });
+
                         this.setState({
                             isLoading: false,
-                            searchOptions: groupedSearchOption
+                            searchOptions: [...groupedSearchOptions]
                         });
                     }
                 });

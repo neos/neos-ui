@@ -162,11 +162,13 @@ export default class LinkInput extends PureComponent {
 
             if (looksLikeExternalLink(searchTermWhenLookupWasTriggered)) {
                 groupedSearchOptions.push({
+                    group: this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__formatOptions', 'Format options'),
                     label: this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__formatAsHttp', 'Format as https link?'),
                     loaderUri: `https://${searchTermWhenLookupWasTriggered}`
                 });
             } else if (isEmail(searchTermWhenLookupWasTriggered)) {
                 groupedSearchOptions.push({
+                    group: this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__formatOptions', 'Format options'),
                     label: this.props.i18nRegistry.translate('Neos.Neos.Ui:Main:ckeditor__toolbar__link__formatAsEmail', 'Format as email?'),
                     loaderUri: `mailto:${searchTermWhenLookupWasTriggered}`
                 });

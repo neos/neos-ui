@@ -50,7 +50,6 @@
     width: calc(100% - var(--size-SidebarWidth));
     height: 100%;
     z-index: var(--zIndex-UnappliedChangesOverlay-Context);
-    filter: blur(5px);
     &,
     &::after {
         position: fixed;

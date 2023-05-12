@@ -1,6 +1,5 @@
 import mergeClassNames from 'classnames';
 import React, {PureComponent, ReactNode} from 'react';
-import enhanceWithClickOutside from '../enhanceWithClickOutside/index';
 import CloseOnEscape from 'react-close-on-escape';
 import {Portal} from 'react-portal';
 
@@ -129,10 +128,6 @@ export class DialogWithoutEscape extends PureComponent<DialogProps> {
         this.ref = ref;
     }
 
-    public readonly handleClickOutside = () => {
-        this.props.onRequestClose();
-    }
-
     public readonly componentDidMount = (): void => {
         document.addEventListener('keydown', (event : KeyboardEvent) => this.handleKeyPress(event));
         const {autoFocus} = this.props;
@@ -157,8 +152,6 @@ export class DialogWithoutEscape extends PureComponent<DialogProps> {
         }
     }
 }
-
-const EnhancedDialogWithoutEscapeWithClickOutside = enhanceWithClickOutside(DialogWithoutEscape);
 
 // tslint:disable-next-line:max-classes-per-file
 class DialogWithEscape extends PureComponent<DialogProps> {
@@ -198,8 +191,8 @@ class DialogWithEscape extends PureComponent<DialogProps> {
         return (
             <CloseOnEscape onEscape={this.onEscape}>
                 <Portal>
-                    <section {...rest} className={sectionClassName} role="dialog" tabIndex={0}>
-                        <EnhancedDialogWithoutEscapeWithClickOutside {...this.props}/>
+                    <section {...rest} className={sectionClassName} role="dialog" tabIndex={0} onClick={this.handleOverlayClick}>
+                        <DialogWithoutEscape {...this.props}/>
                     </section>
                 </Portal>
             </CloseOnEscape>
@@ -208,6 +201,12 @@ class DialogWithEscape extends PureComponent<DialogProps> {
 
     private readonly onEscape = () => {
         this.props.onRequestClose();
+    }
+
+    private readonly handleOverlayClick = (ev: React.MouseEvent) => {
+        if (ev.target === ev.currentTarget) {
+            this.props.onRequestClose();
+        }
     }
 }
 

@@ -44,10 +44,11 @@ exports[`<Dialog/> Portal should render correctly. 1`] = `
     <section
       autoFocus={true}
       className="dialogClassName wideClassName errorClassName"
+      onClick={[Function]}
       role="dialog"
       tabIndex={0}
     >
-      <clickOutside(DialogWithoutEscape)
+      <DialogWithoutEscape
         actions={
           Array [
             "Foo 1",
@@ -79,7 +80,7 @@ exports[`<Dialog/> Portal should render correctly. 1`] = `
         type="error"
       >
         Foo children
-      </clickOutside(DialogWithoutEscape)>
+      </DialogWithoutEscape>
     </section>
   </Portal>
 </CloseOnEscape>

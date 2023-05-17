@@ -333,9 +333,11 @@
       </trans-unit>
       <trans-unit id="UI.RightSideBar.tabs.validationErrorTooltip[0]" xml:space="preserve">
                     <source>{tabName} – {amountOfErrors} validation issue</source>
+        <target state="needs-translation">{tabName} – {amountOfErrors} problema de validação</target>
       </trans-unit>
       <trans-unit id="UI.RightSideBar.tabs.validationErrorTooltip[1]" xml:space="preserve">
                     <source>{tabName} – {amountOfErrors} validation issues</source>
+        <target state="needs-translation">{tabName} – {amountOfErrors} problemas de validação</target>
       </trans-unit>
       <trans-unit id="changesApplied[0]" xml:space="preserve">
                     <source>{0} change successfully applied.</source>

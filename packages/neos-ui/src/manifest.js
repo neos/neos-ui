@@ -565,8 +565,14 @@ manifest('main', {}, globalRegistry => {
                 nodes
             })
         );
-        store.dispatch(actions.CR.Nodes.focus(contextPath, fusionPath));
-        store.dispatch(actions.UI.ContentCanvas.requestScrollIntoView(true));
+
+        const currentlyFocusedNodeContextPaths =
+            selectors.CR.Nodes.focusedNodePathsSelector(store.getState());
+
+        if (currentlyFocusedNodeContextPaths.includes(contextPath)) {
+            store.dispatch(actions.CR.Nodes.focus(contextPath, fusionPath));
+            store.dispatch(actions.UI.ContentCanvas.requestScrollIntoView(true));
+        }
     });
 
     //

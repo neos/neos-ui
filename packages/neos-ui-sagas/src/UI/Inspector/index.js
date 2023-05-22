@@ -30,6 +30,7 @@ export function * inspectorSaga({globalRegistry}) {
             const waitForNextAction = yield race([
                 take(actionTypes.CR.Nodes.FOCUS),
                 take(actionTypes.UI.ContentCanvas.SET_SRC),
+                take(actionTypes.UI.Inspector.ELEMENT_WAS_SELECTED),
                 take(actionTypes.UI.Inspector.DISCARD),
                 take(actionTypes.UI.Inspector.APPLY)
             ]);
@@ -64,6 +65,45 @@ export function * inspectorSaga({globalRegistry}) {
             }
 
             //
+            // If the user used the <SelectedElement/> Dropdown, show the
+            // UnappliedChangesDialog and react accordingly
+            //
+            if (nextAction.type === actionTypes.UI.Inspector.ELEMENT_WAS_SELECTED) {
+                yield put(actions.UI.Inspector.escape());
+                const [escapeAction] = Object.values(
+                    yield race([
+                        take(actionTypes.UI.Inspector.RESUME),
+                        take(actionTypes.UI.Inspector.APPLY),
+                        take(actionTypes.UI.Inspector.DISCARD)
+                    ])
+                );
+
+                if (escapeAction.type === actionTypes.UI.Inspector.RESUME) {
+                    // The user has decided to continue editing properties in the inspector
+                    break;
+                }
+
+                if (escapeAction.type === actionTypes.UI.Inspector.APPLY) {
+                    try {
+                        yield * applyInspectorChanges(inspectorRegistry);
+                    } catch (err) {
+                        //
+                        // An error occured, we should not leave the loop until
+                        // the user does something about it
+                        //
+                        console.error(err);
+                        continue;
+                    }
+                }
+
+                yield put(actions.CR.Nodes.focus(nextAction.payload.selectedElementContextPath));
+
+                if (escapeAction.type === actionTypes.UI.Inspector.DISCARD) {
+                    break;
+                }
+            }
+
+            //
             // If the user discarded his/her changes, just continue
             //
             if (nextAction.type === actionTypes.UI.Inspector.DISCARD) {
@@ -75,12 +115,7 @@ export function * inspectorSaga({globalRegistry}) {
             //
             if (nextAction.type === actionTypes.UI.Inspector.APPLY) {
                 try {
-                    //
-                    // Persist the inspector changes
-                    //
-                    yield call(flushInspector, inspectorRegistry);
-                    const focusedNodeContextPath = yield select(selectors.CR.Nodes.focusedNodePathSelector);
-                    yield put(actions.UI.Inspector.clear(focusedNodeContextPath));
+                    yield * applyInspectorChanges(inspectorRegistry);
                 } catch (err) {
                     //
                     // An error occured, we should not leave the loop until
@@ -94,6 +129,12 @@ export function * inspectorSaga({globalRegistry}) {
             }
         }
     }
+}
+
+function * applyInspectorChanges(inspectorRegistry) {
+    yield call(flushInspector, inspectorRegistry);
+    const focusedNodeContextPath = yield select(selectors.CR.Nodes.focusedNodePathSelector);
+    yield put(actions.UI.Inspector.clear(focusedNodeContextPath));
 }
 
 function * flushInspector(inspectorRegistry) {

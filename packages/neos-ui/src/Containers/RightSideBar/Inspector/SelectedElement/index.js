@@ -23,22 +23,22 @@ import style from './style.css';
         focusedNodeParentLine: selectors.CR.Nodes.focusedNodeParentLineSelector(state)
     };
 }, {
-    focusNode: actions.CR.Nodes.focus
+    selectElement: actions.UI.Inspector.selectElement
 })
 export default class SelectedElement extends PureComponent {
     static propTypes = {
         focusedNode: PropTypes.object.isRequired,
         focusedNodeParentLine: PropTypes.array.isRequired,
 
-        focusNode: PropTypes.func.isRequired,
+        selectElement: PropTypes.func.isRequired,
         nodeTypesRegistry: PropTypes.object.isRequired
     };
 
     handleSelectNode = selectedNodeContextPath => {
-        const {focusNode, focusedNode} = this.props;
+        const {selectElement, focusedNode} = this.props;
 
         if (selectedNodeContextPath && selectedNodeContextPath !== $get('contextPath', focusedNode)) {
-            focusNode(selectedNodeContextPath);
+            selectElement(selectedNodeContextPath);
         }
     };
 

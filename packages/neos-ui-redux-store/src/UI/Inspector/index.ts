@@ -41,6 +41,7 @@ export enum actionTypes {
     DISCARD = '@neos/neos-ui/UI/Inspector/DISCARD',
     ESCAPE = '@neos/neos-ui/UI/Inspector/ESCAPE',
     RESUME = '@neos/neos-ui/UI/Inspector/RESUME',
+    ELEMENT_WAS_SELECTED = '@neos/neos-ui/UI/Inspector/ELEMENT_WAS_SELECTED',
 
     //
     // Actions to control the secondary inspector window
@@ -61,6 +62,10 @@ const apply = () => createAction(actionTypes.APPLY);
 const discard = (focusedNodeContextPath: NodeContextPath) => createAction(actionTypes.DISCARD, {focusedNodeContextPath});
 const escape = () => createAction(actionTypes.ESCAPE);
 const resume = () => createAction(actionTypes.RESUME);
+const selectElement = (selectedElementContextPath: NodeContextPath) =>
+    createAction(actionTypes.ELEMENT_WAS_SELECTED, {
+        selectedElementContextPath,
+    });
 
 const openSecondaryInspector = () => createAction(actionTypes.SECONDARY_OPEN);
 const closeSecondaryInspector = () => createAction(actionTypes.SECONDARY_CLOSE);
@@ -76,9 +81,10 @@ export const actions = {
     discard,
     escape,
     resume,
+    selectElement,
     openSecondaryInspector,
     closeSecondaryInspector,
-    toggleSecondaryInspector
+    toggleSecondaryInspector,
 };
 
 export type Action = ActionType<typeof actions>;

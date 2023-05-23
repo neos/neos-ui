@@ -514,6 +514,10 @@
                 <source>Current value</source>
         <target state="translated">Aktueller Wert</target>
       </trans-unit>
+      <trans-unit id="nodes" xml:space="preserve">
+                <source>nodes</source>
+        <target state="translated">Knoten</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

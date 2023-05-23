@@ -476,6 +476,7 @@
       </trans-unit>
       <trans-unit id="nodes" xml:space="preserve">
                 <source>nodes</source>
+        <target state="translated">Knoten</target>
       </trans-unit>
       <trans-unit id="rangeEditorMinimum" xml:space="preserve">
                 <source>Minimum</source>

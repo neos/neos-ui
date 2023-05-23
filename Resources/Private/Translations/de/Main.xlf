@@ -470,6 +470,10 @@
                 <source>Select a single content element in order to be able to edit its properties</source>
         <target>Wählen Sie ein einzelnes Inhaltselement aus, um dessen Eigenschaften zu bearbeiten</target>
       </trans-unit>
+      <trans-unit id="nodes" xml:space="preserve">
+                <source>nodes</source>
+        <target state="translated">Knoten</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

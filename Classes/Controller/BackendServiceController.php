@@ -276,6 +276,14 @@ class BackendServiceController extends ActionController
         try {
             foreach ($nodeContextPaths as $contextPath) {
                 $node = $this->nodeService->getNodeFromContextPath($contextPath, null, null, true);
+                if (!$node) {
+                    $error = new Error();
+                    $error->setMessage(sprintf('Could not find node for context path "%s"', $contextPath));
+
+                    $this->feedbackCollection->add($error);
+                    continue;
+                }
+
                 if ($node->isRemoved() === true) {
                     // When discarding node removal we should re-create it
                     $updateNodeInfo = new UpdateNodeInfo();

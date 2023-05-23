@@ -305,7 +305,19 @@ class BackendServiceController extends ActionController
                         $reloadDocument = new ReloadDocument();
                         $this->feedbackCollection->add($reloadDocument);
                     }
-                } elseif (!$this->nodeService->nodeExistsInWorkspace($node, $node->getWorkSpace()->getBaseWorkspace())) {
+                } elseif ($nodeInBaseWorkspace = $this->nodeService->getNodeInWorkspace($node, $node->getWorkSpace()->getBaseWorkspace())) {
+                    $nodeHasBeenMoved = $node->getPath() !== $nodeInBaseWorkspace->getPath();
+                    if ($nodeHasBeenMoved) {
+                        $removeNode = new RemoveNode();
+                        $removeNode->setNode($node);
+                        $this->feedbackCollection->add($removeNode);
+
+                        $updateNodeInfo = new UpdateNodeInfo();
+                        $updateNodeInfo->setNode($nodeInBaseWorkspace);
+                        $updateNodeInfo->recursive();
+                        $this->feedbackCollection->add($updateNodeInfo);
+                    }
+                } else {
                     // If the node doesn't exist in the target workspace, tell the UI to remove it
                     $removeNode = new RemoveNode();
                     $removeNode->setNode($node);

@@ -129,10 +129,27 @@ class NodeService
      */
     public function nodeExistsInWorkspace(NodeInterface $node, Workspace $workspace)
     {
+        return $this->getNodeInWorkspace($node, $workspace) !== null;
+    }
+
+    /**
+     * Get the variant of the given node in the given workspace
+     *
+     * @param NodeInterface $node
+     * @param Workspace $workspace
+     * @return NodeInterface|null
+     */
+    public function getNodeInWorkspace(NodeInterface $node, Workspace $workspace): ?NodeInterface
+    {
         $context = ['workspaceName' => $workspace->getName()];
         $flowQuery = new FlowQuery([$node]);
 
-        return $flowQuery->context($context)->count() > 0;
+        $result = $flowQuery->context($context);
+        if ($result->count() > 0) {
+            return $result->get(0);
+        } else {
+            return null;
+        }
     }
 
     /**

@@ -103,6 +103,7 @@ class NodeService
         if ($includeAll === true) {
             $contextProperties['invisibleContentShown'] = true;
             $contextProperties['removedContentShown'] = true;
+            $contextProperties['inaccessibleContentShown'] = true;
         }
 
         $context = $this->contextFactory->create(

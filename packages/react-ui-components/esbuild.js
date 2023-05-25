@@ -29,7 +29,7 @@ function *walkSync(dir) {
  * it ensures our dist build still works eventhough we export `.js` instead of `.ts` (currently there is no import rewrite)
  * this check acts as a safe guard to test against malformed imports
  * in case you want to import a library with specified extension, just exclude the path from the check below, as this is ok ;)
- * 
+ *
  * @param {string} importPath
  */
 function assertImportPathsSpecifiedWithoutExtension(importPath) {
@@ -91,7 +91,7 @@ async function main() {
                             external: true
                         }
                     })
-                }    
+                }
             },
             cssModules(
                 {

@@ -16,7 +16,6 @@ use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 
 class MoveInto extends AbstractMove
 {
-
     /**
      * @var string
      */

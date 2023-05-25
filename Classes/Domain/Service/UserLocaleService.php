@@ -18,7 +18,6 @@ use Neos\Neos\Domain\Service\UserService;
 
 class UserLocaleService
 {
-
     /**
      * @Flow\Inject
      * @var I18nService

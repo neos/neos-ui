@@ -1,6 +1,19 @@
+/**
+ * see https://github.com/neos/neos-ui/pull/3438 as to why we have in NeosUi 7.3 - 8.2 two declarations of the same set of css variables.
+ */
+
 /** Global CSS variables for Neos.Ui */
 
-/** they are compiled into the source code via our buildstack */
+/**
+ * They are compiled into the source code via our buildstack, and additionally exposed on the Host, to be consumed at runtime by plugins
+ *
+ * We currently dont use runtime variables in the NeosUi see: https://github.com/neos/neos-ui/issues/3201
+ * This approach would work for the Host frame, but we inject some rendered html and css (the inline toolbar) into the guest frame where we also rely on css variables.
+ * To not collide with consumer css variables in the iframe, we keep them compiled.
+ *
+ * While we do make sure that plugins are working who use the variable names, they are not marked as @api but only available for unplanned extensibility.
+ * In the future we plan to transform the names to lowercase and might get rid of some unused/odd variables (like all the --zIndex- ones).
+ */
 :root {
     --spacing-GoldenUnit: 40px;
     --spacing-Full: 16px;

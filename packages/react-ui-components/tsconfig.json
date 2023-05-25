@@ -10,6 +10,7 @@
   "compilerOptions": {
     "declaration": true,
     "emitDeclarationOnly": true,
-    "outDir": "types"
+    "outDir": "types",
+    "removeComments": false
   }
 }

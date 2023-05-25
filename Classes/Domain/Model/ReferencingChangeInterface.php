@@ -18,7 +18,6 @@ use Neos\ContentRepository\Domain\Model\NodeInterface;
  */
 interface ReferencingChangeInterface extends ChangeInterface
 {
-
     /**
      * Set the reference
      *

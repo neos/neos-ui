@@ -293,6 +293,8 @@ export default class Node extends PureComponent {
 
         const labelIdentifier = (isContentTreeNode ? 'content-' : '') + 'treeitem-' + hashSum(node.contextPath) + '-label';
 
+        const directLink = (isContentTreeNode ? undefined : this.createDirectNodeLink());
+
         const labelTitle = decodeLabel(node?.label) + ' (' + this.getNodeTypeLabel() + ')';
 
         // Autocreated or we have nested nodes and the node that we are dragging belongs to the selection
@@ -321,6 +323,7 @@ export default class Node extends PureComponent {
                     icon={this.getIcon()}
                     customIconComponent={this.getCustomIconComponent()}
                     iconLabel={this.getNodeTypeLabel()}
+                    directLink={directLink}
                     level={level}
                     onToggle={this.handleNodeToggle}
                     onClick={this.handleNodeClick}
@@ -378,6 +381,13 @@ export default class Node extends PureComponent {
 
         onNodeFocus(node.contextPath, metaKeyPressed, altKeyPressed, shiftKeyPressed);
         onNodeClick(srcWithBaseNodeType, node.contextPath, metaKeyPressed, altKeyPressed, shiftKeyPressed);
+    }
+
+    createDirectNodeLink = () => {
+        const {node} = this.props;
+        const uri = new URL(window.location.href);
+        uri.searchParams.set('node', node.contextPath);
+        return uri.toString();
     }
 }
 

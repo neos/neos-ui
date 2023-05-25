@@ -5,7 +5,9 @@ import {ReactSelector} from 'testcafe-react-selectors';
 // We define all methods as static here so it would be possible to use these classes without `new`
 //
 export class Page {
-    static treeNode = ReactSelector('Node').find('span');
+    static treeNode = ReactSelector('Node').find('a');
+
+    static getTreeNodeButton = (name) => Page.treeNode.withExactText(name).parent('[role="button"]');
 
     static async goToPage(pageTitle) {
         await t.click(this.treeNode.withText(pageTitle));
@@ -39,6 +41,12 @@ export class DimensionSwitcher {
             .click(this.dimensionSwitcher)
             .click(this.dimensionSwitcherFirstDimensionSelector)
             .click(this.dimensionSwitcherFirstDimensionSelectorWithShallowDropDownContents.find('li').withText(name));
+    }
+
+    static async switchSingleDimension(name) {
+        await t
+            .click(this.dimensionSwitcher)
+            .click(ReactSelector('DimensionSelectorOption').withProps('option', {label: name}));
     }
 }
 

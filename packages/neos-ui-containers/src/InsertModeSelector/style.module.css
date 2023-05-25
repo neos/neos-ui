@@ -4,13 +4,19 @@
 }
 
 .label {
-    @media(max-width: 720px) {
+    @media (max-width: 720px) {
         display: none;
     }
 }
 
 .buttonGroup {
-    margin-left: 4px;
+    margin-left: var(--spacing-Quarter);
+
+    > button {
+        align-items: center;
+        justify-content: center;
+        display: inline-flex;
+    }
 
     > button:first-child {
         border-top-left-radius: 2px;
@@ -20,17 +26,28 @@
         border-top-right-radius: 2px;
         border-bottom-right-radius: 2px;
     }
+    .afterButton {
+        border-top-right-radius: 2px;
+        border-bottom-right-radius: 2px;
+    }
     .intoButton {
-        margin-left: 8px;
+        margin-left: var(--spacing-Half);
+        border-radius: 2px;
     }
     > button {
         padding: 0px 14px;
-
-        > span {
-            margin-left: 7px;
-        }
     }
-
 }
 
+.iconAlignment {
+    margin-right: var(--spacing-Half);
+    width: fit-content;
+}
 
+.iconAlignment svg {
+    height: 1rem;
+}
+
+.iconAlignment span {
+    display: flex;
+}

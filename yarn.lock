@@ -2287,9 +2287,6 @@ __metadata:
     regenerator-runtime: ^0.13.2
   peerDependencies:
     enzyme: ^3.8.0
-  bin:
-    babel-jest: ../../node_modules/babel-jest/build/index.js
-    jest: ../../node_modules/.bin/jest
   languageName: unknown
   linkType: soft
 
@@ -2309,7 +2306,6 @@ __metadata:
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
     "@neos-project/neos-ts-interfaces": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     "@neos-project/utils-helpers": "workspace:*"
     typescript: ^4.6.4
   languageName: unknown
@@ -2318,17 +2314,6 @@ __metadata:
 "@neos-project/neos-ui-build@workspace:*, @neos-project/neos-ui-build@workspace:packages/neos-ui-build":
   version: 0.0.0-use.local
   resolution: "@neos-project/neos-ui-build@workspace:packages/neos-ui-build"
-  dependencies:
-    eslint: ^5.3.0
-    stylelint: ^13.7.2
-    tslint: ^5.11.0
-    tslint-config-prettier: ^1.15.0
-    tslint-react: ^3.6.0
-    typescript: ^4.6.4
-  bin:
-    eslint: ../../node_modules/.bin/eslint
-    jest: ../../node_modules/.bin/jest
-    stylelint: ../../node_modules/.bin/stylelint
   languageName: unknown
   linkType: soft
 
@@ -2371,7 +2356,6 @@ __metadata:
   resolution: "@neos-project/neos-ui-constants@workspace:packages/neos-ui-constants"
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     typescript: ^4.6.4
   languageName: unknown
   linkType: soft
@@ -2381,7 +2365,6 @@ __metadata:
   resolution: "@neos-project/neos-ui-containers@workspace:packages/neos-ui-containers"
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     "@neos-project/neos-ui-decorators": "workspace:*"
     "@neos-project/neos-ui-i18n": "workspace:*"
     "@neos-project/react-ui-components": "workspace:*"
@@ -2399,7 +2382,6 @@ __metadata:
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
     "@neos-project/neos-ts-interfaces": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     "@neos-project/neos-ui-extensibility": "workspace:*"
     "@neos-project/positional-array-sorter": "workspace:*"
     lodash.mapvalues: ^4.6.0
@@ -2414,7 +2396,6 @@ __metadata:
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
     "@neos-project/neos-ts-interfaces": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     reselect: ^3.0.1
     typescript: ^4.6.4
   peerDependencies:
@@ -2430,7 +2411,6 @@ __metadata:
     "@neos-project/debug-reason-for-rendering": "workspace:*"
     "@neos-project/jest-preset-neos-ui": "workspace:*"
     "@neos-project/neos-ui-backend-connector": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     "@neos-project/neos-ui-ckeditor5-bindings": "workspace:*"
     "@neos-project/neos-ui-constants": "workspace:*"
     "@neos-project/neos-ui-decorators": "workspace:*"
@@ -2479,7 +2459,6 @@ __metadata:
   resolution: "@neos-project/neos-ui-extensibility@workspace:packages/neos-ui-extensibility"
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     "@neos-project/positional-array-sorter": "workspace:*"
     typescript: ^4.6.4
   languageName: unknown
@@ -2491,7 +2470,6 @@ __metadata:
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
     "@neos-project/neos-ts-interfaces": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     "@neos-project/neos-ui-decorators": "workspace:*"
     "@neos-project/neos-ui-extensibility": "workspace:*"
     "@neos-project/neos-ui-guest-frame": "workspace:*"
@@ -2518,7 +2496,6 @@ __metadata:
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
     "@neos-project/neos-ts-interfaces": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     "@neos-project/neos-ui-decorators": "workspace:*"
     "@neos-project/neos-ui-extensibility": "workspace:*"
     "@neos-project/utils-logger": "workspace:*"
@@ -2534,7 +2511,6 @@ __metadata:
   resolution: "@neos-project/neos-ui-inspector@workspace:packages/neos-ui-inspector"
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     "@neos-project/neos-ui-redux-store": "workspace:*"
     "@neos-project/react-ui-components": "workspace:*"
     classnames: ^2.2.3
@@ -2553,7 +2529,6 @@ __metadata:
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
     "@neos-project/neos-ts-interfaces": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     "@neos-project/neos-ui-validators": "workspace:*"
     immer: ^9.0.0
     lodash.assignin: ^4.2.0
@@ -2572,7 +2547,6 @@ __metadata:
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
     "@neos-project/neos-ui-backend-connector": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     "@neos-project/neos-ui-extensibility": "workspace:*"
     "@neos-project/neos-ui-guest-frame": "workspace:*"
     "@neos-project/neos-ui-redux-store": "workspace:*"
@@ -2590,7 +2564,6 @@ __metadata:
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
     "@neos-project/neos-ts-interfaces": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     "@neos-project/neos-ui-extensibility": "workspace:*"
     "@neos-project/neos-ui-i18n": "workspace:*"
     "@neos-project/utils-logger": "workspace:*"
@@ -2608,7 +2581,6 @@ __metadata:
     "@neos-project/brand": ^1.3.0
     "@neos-project/debug-reason-for-rendering": "workspace:*"
     "@neos-project/jest-preset-neos-ui": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     "@neos-project/neos-ui-decorators": "workspace:*"
     "@neos-project/neos-ui-extensibility": "workspace:*"
     "@neos-project/neos-ui-i18n": "workspace:*"
@@ -2641,7 +2613,6 @@ __metadata:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
     "@neos-project/neos-ts-interfaces": "workspace:*"
     "@neos-project/neos-ui-backend-connector": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     "@neos-project/neos-ui-ckeditor5-bindings": "workspace:*"
     "@neos-project/neos-ui-constants": "workspace:*"
     "@neos-project/neos-ui-containers": "workspace:*"
@@ -2698,7 +2669,6 @@ __metadata:
   resolution: "@neos-project/positional-array-sorter@workspace:packages/positional-array-sorter"
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     typescript: ^4.6.4
   languageName: unknown
   linkType: soft
@@ -2708,7 +2678,6 @@ __metadata:
   resolution: "@neos-project/react-proptypes@workspace:packages/react-proptypes"
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     typescript: ^4.6.4
   peerDependencies:
     prop-types: ^15.5.10
@@ -2787,7 +2756,6 @@ __metadata:
   resolution: "@neos-project/utils-helpers@workspace:packages/utils-helpers"
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     he: ^1.1.1
     typescript: ^4.6.4
   languageName: unknown
@@ -2798,7 +2766,6 @@ __metadata:
   resolution: "@neos-project/utils-logger@workspace:packages/utils-logger"
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     debug: ^4.1.1
     typescript: ^4.6.4
   languageName: unknown
@@ -2809,7 +2776,6 @@ __metadata:
   resolution: "@neos-project/utils-redux@workspace:packages/utils-redux"
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
-    "@neos-project/neos-ui-build": "workspace:*"
     typescript: ^4.6.4
   languageName: unknown
   linkType: soft
@@ -4775,13 +4741,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"builtin-modules@npm:^1.1.1":
-  version: 1.1.1
-  resolution: "builtin-modules@npm:1.1.1"
-  checksum: 0fbf69ffe77fecf11c441b9a7d1e664bb8119a7d3004831d9bd6ce0eacfd5d121ed4b667172870b5f66ecfce4bd54f7c20060d21c339c29049a7a5dd2bb7bf8c
-  languageName: node
-  linkType: hard
-
 "cacache@npm:^16.0.2":
   version: 16.0.7
   resolution: "cacache@npm:16.0.7"
@@ -5243,7 +5202,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:^2.12.1, commander@npm:^2.19.0, commander@npm:^2.20.0":
+"commander@npm:^2.19.0, commander@npm:^2.20.0":
   version: 2.20.3
   resolution: "commander@npm:2.20.3"
   checksum: ab8c07884e42c3a8dbc5dd9592c606176c7eb5c1ca5ff274bcf907039b2c41de3626f684ea75ccf4d361ba004bbaff1f577d5384c155f3871e456bdf27becf9e
@@ -5965,7 +5924,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"diff@npm:^4.0.1, diff@npm:^4.0.2":
+"diff@npm:^4.0.2":
   version: 4.0.2
   resolution: "diff@npm:4.0.2"
   checksum: f2c09b0ce4e6b301c221addd83bf3f454c0bc00caa3dd837cf6c127d6edf7223aa2bbe3b688feea110b7f262adbfc845b757c44c8a9f8c0c5b15d8fa9ce9d20d
@@ -13075,7 +13034,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"resolve@npm:^1.10.0, resolve@npm:^1.13.1, resolve@npm:^1.14.2, resolve@npm:^1.3.2":
+"resolve@npm:^1.10.0, resolve@npm:^1.13.1, resolve@npm:^1.14.2":
   version: 1.22.0
   resolution: "resolve@npm:1.22.0"
   dependencies:
@@ -13114,7 +13073,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"resolve@patch:resolve@^1.10.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.13.1#~builtin<compat/resolve>, resolve@patch:resolve@^1.14.2#~builtin<compat/resolve>, resolve@patch:resolve@^1.3.2#~builtin<compat/resolve>":
+"resolve@patch:resolve@^1.10.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.13.1#~builtin<compat/resolve>, resolve@patch:resolve@^1.14.2#~builtin<compat/resolve>":
   version: 1.22.0
   resolution: "resolve@patch:resolve@npm%3A1.22.0#~builtin<compat/resolve>::version=1.22.0&hash=07638b"
   dependencies:
@@ -13397,7 +13356,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:2 || 3 || 4 || 5, semver@npm:^5.3.0, semver@npm:^5.4.1, semver@npm:^5.5.0, semver@npm:^5.5.1, semver@npm:^5.6.0, semver@npm:^5.7.0, semver@npm:^5.7.1":
+"semver@npm:2 || 3 || 4 || 5, semver@npm:^5.4.1, semver@npm:^5.5.0, semver@npm:^5.5.1, semver@npm:^5.6.0, semver@npm:^5.7.0, semver@npm:^5.7.1":
   version: 5.7.1
   resolution: "semver@npm:5.7.1"
   bin:
@@ -14733,13 +14692,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^1.8.0":
-  version: 1.14.1
-  resolution: "tslib@npm:1.14.1"
-  checksum: dbe628ef87f66691d5d2959b3e41b9ca0045c3ee3c7c7b906cc1e328b39f199bb1ad9e671c39025bd56122ac57dfbf7385a94843b1cc07c60a4db74795829acd
-  languageName: node
-  linkType: hard
-
 "tslib@npm:^1.8.1, tslib@npm:^1.9.0":
   version: 1.10.0
   resolution: "tslib@npm:1.10.0"
@@ -14751,63 +14703,6 @@ __metadata:
   version: 2.4.0
   resolution: "tslib@npm:2.4.0"
   checksum: 8c4aa6a3c5a754bf76aefc38026134180c053b7bd2f81338cb5e5ebf96fefa0f417bff221592bf801077f5bf990562f6264fecbc42cd3309b33872cb6fc3b113
-  languageName: node
-  linkType: hard
-
-"tslint-config-prettier@npm:^1.15.0":
-  version: 1.18.0
-  resolution: "tslint-config-prettier@npm:1.18.0"
-  bin:
-    tslint-config-prettier-check: bin/check.js
-  checksum: f0c548a7a520f9247f8e4ddba1136f300d1b2ec48a8255b030c05e35866cc22c105d9120540dd5ee82e2a04a769d82f5d098b7eaf6928820f6dba1badad6704c
-  languageName: node
-  linkType: hard
-
-"tslint-react@npm:^3.6.0":
-  version: 3.6.0
-  resolution: "tslint-react@npm:3.6.0"
-  dependencies:
-    tsutils: ^2.13.1
-  peerDependencies:
-    tslint: ^5.1.0
-    typescript: ">=2.1.0 || >=2.7.0-dev || >=2.8.0-dev || >=2.9.0-dev"
-  checksum: 4c6f3831af906d0d2dcbdcd23809d2a06819817b112c451da429466aaa5b0c5a886d48c3986a82dca76a60b80da6b9b1de801a8f421a1e95e9c892f1d9d13000
-  languageName: node
-  linkType: hard
-
-"tslint@npm:^5.11.0":
-  version: 5.20.1
-  resolution: "tslint@npm:5.20.1"
-  dependencies:
-    "@babel/code-frame": ^7.0.0
-    builtin-modules: ^1.1.1
-    chalk: ^2.3.0
-    commander: ^2.12.1
-    diff: ^4.0.1
-    glob: ^7.1.1
-    js-yaml: ^3.13.1
-    minimatch: ^3.0.4
-    mkdirp: ^0.5.1
-    resolve: ^1.3.2
-    semver: ^5.3.0
-    tslib: ^1.8.0
-    tsutils: ^2.29.0
-  peerDependencies:
-    typescript: ">=2.3.0-dev || >=2.4.0-dev || >=2.5.0-dev || >=2.6.0-dev || >=2.7.0-dev || >=2.8.0-dev || >=2.9.0-dev || >=3.0.0-dev || >= 3.1.0-dev || >= 3.2.0-dev"
-  bin:
-    tslint: ./bin/tslint
-  checksum: b11ee16c012a65bce260de9d004de4716d8a35baa9658a42d501d8f9e1276e055e68a2bf40a4d5a225e79edceef5f0af9ac8a6259217536c54484bfefd1c2237
-  languageName: node
-  linkType: hard
-
-"tsutils@npm:^2.13.1, tsutils@npm:^2.29.0":
-  version: 2.29.0
-  resolution: "tsutils@npm:2.29.0"
-  dependencies:
-    tslib: ^1.8.1
-  peerDependencies:
-    typescript: ">=2.1.0 || >=2.1.0-dev || >=2.2.0-dev || >=2.3.0-dev || >=2.4.0-dev || >=2.5.0-dev || >=2.6.0-dev || >=2.7.0-dev || >=2.8.0-dev || >=2.9.0-dev || >= 3.0.0-dev || >= 3.1.0-dev"
-  checksum: 5d681bab79979e3b4d61dd0d1e6c1dd6a79b5608cf8dec5a5ee599ac8b5921107870bcf037140b8dce85a479df78aee0ffa61c1b3d8e5660748af36551946616
   languageName: node
   linkType: hard
 

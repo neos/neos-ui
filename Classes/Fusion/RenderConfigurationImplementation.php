@@ -18,7 +18,6 @@ use Neos\Neos\Ui\Domain\Service\ConfigurationRenderingService;
 
 class RenderConfigurationImplementation extends AbstractFusionObject
 {
-
     /**
      * @Flow\Inject
      * @var ConfigurationRenderingService

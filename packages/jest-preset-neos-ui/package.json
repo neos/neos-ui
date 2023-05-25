@@ -1,13 +1,9 @@
 {
   "name": "@neos-project/jest-preset-neos-ui",
-  "version": "8.2.6",
+  "version": "8.3.0",
   "description": "The jest preset for all packages of the neos-ui mono-repo.",
   "main": "jest-preset.json",
   "private": true,
-  "bin": {
-    "babel-jest": "../../node_modules/babel-jest/build/index.js",
-    "jest": "../../node_modules/.bin/jest"
-  },
   "dependencies": {
     "browser-env": "^3.2.4",
     "enzyme-adapter-react-16": "^1.7.1",

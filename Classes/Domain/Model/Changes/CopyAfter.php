@@ -13,7 +13,6 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 class CopyAfter extends AbstractCopy
 {
-
     /**
      * "Subject" is the to-be-copied node; the "sibling" node is the node after which the "Subject" should be copied.
      *

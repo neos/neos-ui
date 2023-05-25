@@ -1,5 +1,5 @@
 import React from 'react';
-import {shallow} from 'enzyme';
+import {shallow, mount} from 'enzyme';
 import toJson from 'enzyme-to-json';
 import Tabs, {TabMenuItem, TabsProps, tabsDefaultProps} from './tabs';
 import {PanelProps} from './panel';
@@ -34,6 +34,90 @@ describe('<Tabs/>', () => {
         },
         children: [<div key={'foo'}>'Foo children'</div>]
     };
+
+    it('should use the activeTab prop when initializing.', () => {
+        const wrapper = shallow(
+            <Tabs {...props} activeTab={2}>
+                <Tabs.Panel {...panelProps} title="foo 1" icon="level-up">Foo 1</Tabs.Panel>
+                <Tabs.Panel {...panelProps} title="foo 2" icon="level-down">Foo 2</Tabs.Panel>
+                <Tabs.Panel {...panelProps} title="foo 3" icon="mobile">Foo 3</Tabs.Panel>
+            </Tabs>
+        );
+
+        expect(wrapper.state('activeTab')).toBe(2);
+    });
+
+    it('should update the state when a tab menu item is clicked.', () => {
+        const wrapper = mount(
+            <Tabs {...props}>
+                <Tabs.Panel {...panelProps} title="foo 1" icon="level-up">Foo 1</Tabs.Panel>
+                <Tabs.Panel {...panelProps} title="foo 2" icon="level-down">Foo 2</Tabs.Panel>
+                <Tabs.Panel {...panelProps} title="foo 3" icon="mobile">Foo 3</Tabs.Panel>
+            </Tabs>
+        );
+
+        const tabMenuItems = wrapper.find(TabMenuItem);
+
+        const buttonOfFirstTabMenuItem = tabMenuItems.at(2).find('button').at(0);
+
+        buttonOfFirstTabMenuItem.simulate('click');
+
+        expect(wrapper.state('activeTab')).toBe(2);
+    });
+
+    it('should trigger the hook, when a tab menu item is clicked.', () => {
+        const onActiveTabChange = jest.fn();
+
+        const wrapper = mount(
+            <Tabs {...props} onActiveTabChange={onActiveTabChange}>
+                <Tabs.Panel {...panelProps} title="foo 1" icon="level-up">Foo 1</Tabs.Panel>
+                <Tabs.Panel {...panelProps} title="foo 2" icon="level-down">Foo 2</Tabs.Panel>
+                <Tabs.Panel {...panelProps} title="foo 3" icon="mobile">Foo 3</Tabs.Panel>
+            </Tabs>
+        );
+
+        const tabMenuItems = wrapper.find(TabMenuItem);
+
+        const buttonOfFirstTabMenuItem = tabMenuItems.at(2).find('button').at(0);
+
+        buttonOfFirstTabMenuItem.simulate('click');
+
+        expect(onActiveTabChange).toHaveBeenCalledTimes(1);
+        expect(onActiveTabChange).toBeCalledWith(2);
+    });
+
+    it('activeTab as string: should use the activeTab prop when initializing.', () => {
+        const wrapper = shallow(
+            <Tabs {...props} activeTab="zwei">
+                <Tabs.Panel {...panelProps} id="eins" title="foo 1" icon="level-up">Foo 1</Tabs.Panel>
+                <Tabs.Panel {...panelProps} id="zwei" title="foo 2" icon="level-down">Foo 2</Tabs.Panel>
+                <Tabs.Panel {...panelProps} id="drei" title="foo 3" icon="mobile">Foo 3</Tabs.Panel>
+            </Tabs>
+        );
+        expect(wrapper.state('activeTab')).toBe('zwei');
+    });
+
+    it('activeTab as string: should update the state & trigger the hook when a tab menu item is clicked.', () => {
+        const onActiveTabChange = jest.fn();
+
+        const wrapper = mount(
+            <Tabs {...props} onActiveTabChange={onActiveTabChange}>
+                <Tabs.Panel {...panelProps} id="eins" title="foo 1" icon="level-up">Foo 1</Tabs.Panel>
+                <Tabs.Panel {...panelProps} id="zwei" title="foo 2" icon="level-down">Foo 2</Tabs.Panel>
+                <Tabs.Panel {...panelProps} id="drei" title="foo 3" icon="mobile">Foo 3</Tabs.Panel>
+            </Tabs>
+        );
+
+        const tabMenuItems = wrapper.find(TabMenuItem);
+
+        const buttonOfFirstTabMenuItem = tabMenuItems.at(2).find('button').at(0);
+
+        buttonOfFirstTabMenuItem.simulate('click');
+
+        expect(wrapper.state('activeTab')).toBe('drei');
+        expect(onActiveTabChange).toHaveBeenCalledTimes(1);
+        expect(onActiveTabChange).toBeCalledWith('drei');
+    });
 
     it('should render correctly.', () => {
         const wrapper = shallow(

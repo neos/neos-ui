@@ -22,7 +22,6 @@ use Neos\Utility\PositionalArraySorter;
  */
 class StyleAndJavascriptInclusionService
 {
-
     /**
      * @Flow\Inject
      * @var ResourceManager
@@ -61,15 +60,15 @@ class StyleAndJavascriptInclusionService
 
     public function getHeadScripts()
     {
-        return $this->build($this->javascriptResources, function ($uri, $defer) {
-            return '<script src="' . $uri . '" ' . $defer . '></script>';
+        return $this->build($this->javascriptResources, function ($uri, $additionalAttributes) {
+            return '<script src="' . $uri . '" ' . $additionalAttributes . '></script>';
         });
     }
 
     public function getHeadStylesheets()
     {
-        return $this->build($this->stylesheetResources, function ($uri, $defer) {
-            return '<link rel="stylesheet" href="' . $uri . '" ' . $defer . '/>';
+        return $this->build($this->stylesheetResources, function ($uri, $additionalAttributes) {
+            return '<link rel="stylesheet" href="' . $uri . '" ' . $additionalAttributes . '/>';
         });
     }
 
@@ -97,10 +96,28 @@ class StyleAndJavascriptInclusionService
                 $resourceExpression = $this->resourceManager->getPublicPackageResourceUriByPath($resourceExpression);
             }
             $finalUri = $hash ? $resourceExpression . '?' . $hash : $resourceExpression;
-            $defer = key_exists('defer', $element) && $element['defer'] ? 'defer ' : '';
-            $result .= $builderForLine($finalUri, $defer);
+            $additionalAttributes = array_merge(
+                // legacy first level 'defer' attribute
+                isset($element['defer']) ? ['defer' => $element['defer']] : [],
+                $element['attributes'] ?? []
+            );
+            $result .= $builderForLine($finalUri, $this->htmlAttributesArrayToString($additionalAttributes));
         }
-
         return $result;
+    }
+
+    /**
+     * @todo use helper like https://github.com/mficzel/neos-development-collection/blob/75e1feaed2e290b1d2ee3e500b82da42c3460aba/Neos.Fusion/Classes/Service/RenderAttributesTrait.php#L19 once its api
+     *
+     * @param array<string,string|bool> $attributes
+     */
+    private function htmlAttributesArrayToString(array $attributes): string
+    {
+        return join(' ', array_filter(array_map(function ($key, $value) {
+            if (is_bool($value)) {
+                return $value ? htmlspecialchars($key) : null;
+            }
+            return htmlspecialchars($key) . '="' . htmlspecialchars($value) . '"';
+        }, array_keys($attributes), $attributes)));
     }
 }

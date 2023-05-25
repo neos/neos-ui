@@ -77,6 +77,11 @@ export default class SelectBox extends PureComponent {
         placeholderIcon: PropTypes.string,
 
         /**
+         * This prop is an icon for the header.
+         */
+        headerIcon: PropTypes.string,
+
+        /**
          * Text for the group label of options without a group
          */
         withoutGroupLabel: PropTypes.string,

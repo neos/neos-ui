@@ -16,7 +16,6 @@ use Neos\ContentRepository\Domain\Model\NodeInterface;
 
 class CopyInto extends AbstractCopy
 {
-
     /**
      * @var string
      */

@@ -76,7 +76,7 @@ class ReloadContentOutOfBand extends AbstractFeedback
 
     public function getDescription(): string
     {
-        return sprintf('Rendering of node "%s" required.', $this->node?->nodeAggregateId ?: '');
+        return sprintf('Rendering of node "%s" required.', $this->node?->nodeAggregateId->value);
     }
 
     /**

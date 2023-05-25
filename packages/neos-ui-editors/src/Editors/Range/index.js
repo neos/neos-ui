@@ -1,5 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
+import cx from 'classnames';
 import {neos} from '@neos-project/neos-ui-decorators';
 import style from './style.css';
 
@@ -21,7 +22,8 @@ class RangeEditor extends PureComponent {
             minLabel: PropTypes.string,
             maxLabel: PropTypes.string,
             disabled: PropTypes.bool
-        })
+        }),
+        highlight: PropTypes.bool
     };
 
     static defaultProps = {
@@ -60,10 +62,16 @@ class RangeEditor extends PureComponent {
 
     render() {
         const options = {...this.constructor.defaultProps.options, ...this.props.options};
-        const {value} = this.props;
+        const {value, highlight} = this.props;
 
         return (
-            <div className={style.rangeEditor + (options.disabled ? ' ' + style.rangeEditorDisabled : '')}>
+            <div
+                className={cx(
+                    style.rangeEditor,
+                    options.disabled && style.rangeEditorDisabled,
+                    highlight && style.rangeEditorHighlight,
+                )}
+            >
                 <input
                     type="range"
                     min={options.min}

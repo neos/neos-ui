@@ -77,7 +77,7 @@ class RangeEditor extends PureComponent {
                     min={options.min}
                     max={options.max}
                     step={options.step}
-                    value={value}
+                    value={value || ''}
                     className="slider"
                     onChange={this.handleChange}
                     disabled={options.disabled}
@@ -92,7 +92,7 @@ class RangeEditor extends PureComponent {
                             type="text"
                             onKeyPress={this.onKeyPress}
                             onChange={this.handleChange}
-                            value={value}
+                            value={value || ''}
                             style={ {width: `${options.max.toString().length}ch`} }
                             disabled={options.disabled}
                         />

@@ -24,6 +24,7 @@ use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\FrontendRouting\NodeAddress;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\FrontendRouting\NodeUriBuilder;
+use Neos\Neos\Fusion\Helper\NodeHelper;
 use Neos\Neos\TypeConverter\EntityToIdentityConverter;
 use Neos\Neos\Ui\Domain\Service\NodePropertyConverterService;
 use Neos\Neos\Ui\Domain\Service\UserLocaleService;
@@ -237,7 +238,9 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             'label' => $node->getLabel(),
             'isAutoCreated' => self::isAutoCreated($node, $subgraph),
             // TODO: depth is expensive to calculate; maybe let's get rid of this?
-            'depth' => $subgraph->retrieveNodePath($node->nodeAggregateId)->getDepth(),
+            // currently only used in the ui to calculate if `isNodeCollapsed`
+            // https://github.com/neos/neos-ui/blob/b2222ab1c8c429462cdec9fac2568f47a6eb727e/packages/neos-ui-redux-store/src/CR/Nodes/helpers.ts#L45-L51
+            'depth' => (new NodeHelper())->depth($node),
             'children' => [],
             'parent' => $parentNode ? $nodeAddressFactory->createFromNode($parentNode)->serializeForUri() : null,
             'matchesCurrentDimensions' => $node->subgraphIdentity->dimensionSpacePoint->equals($node->originDimensionSpacePoint),

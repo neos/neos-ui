@@ -11,13 +11,11 @@ namespace Neos\Neos\Ui\NodeCreationHandler;
  * source code.
  */
 
-use Neos\ContentRepository\Core\ContentRepository;
-use Neos\Flow\Annotations as Flow;
 use Behat\Transliterator\Transliterator;
+use Neos\ContentRepository\Core\ContentRepository;
 use Neos\ContentRepository\Core\Dimension\ContentDimensionId;
 use Neos\ContentRepository\Core\DimensionSpace\DimensionSpacePoint;
-use Neos\ContentRepository\Core\Feature\NodeCreation\Command\CreateNodeAggregateWithNode;
-use Neos\ContentRepository\Core\NodeType\NodeTypeManager;
+use Neos\Flow\Annotations as Flow;
 use Neos\Flow\I18n\Exception\InvalidLocaleIdentifierException;
 use Neos\Flow\I18n\Locale;
 use Neos\Neos\Service\TransliterationService;
@@ -42,15 +40,16 @@ class DocumentTitleNodeCreationHandler implements NodeCreationHandlerInterface
     /**
      * @param array<string|int,mixed> $data
      */
-    public function handle(CreateNodeAggregateWithNode $command, array $data, ContentRepository $contentRepository): CreateNodeAggregateWithNode
+    public function handle(NodeCreationCommands $commands, array $data, ContentRepository $contentRepository): NodeCreationCommands
     {
+        $initialCommand = $commands->initialCreateCommand;
         if (
-            !$contentRepository->getNodeTypeManager()->getNodeType($command->nodeTypeName)
+            !$contentRepository->getNodeTypeManager()->getNodeType($initialCommand->nodeTypeName)
                 ->isOfType('Neos.Neos:Document')
         ) {
-            return $command;
+            return $commands;
         }
-        $propertyValues = $command->initialPropertyValues;
+        $propertyValues = $initialCommand->initialPropertyValues;
         if (isset($data['title'])) {
             $propertyValues = $propertyValues->withValue('title', $data['title']);
         }
@@ -59,14 +58,14 @@ class DocumentTitleNodeCreationHandler implements NodeCreationHandlerInterface
         $uriPathSegment = $data['title'];
 
         // otherwise, we fall back to the node name
-        if ($uriPathSegment === null && $command->nodeName !== null) {
-            $uriPathSegment = $command->nodeName->value;
+        if ($uriPathSegment === null && $initialCommand->nodeName !== null) {
+            $uriPathSegment = $initialCommand->nodeName->value;
         }
 
         // if not empty, we transliterate the uriPathSegment according to the language of the new node
         if ($uriPathSegment !== null && $uriPathSegment !== '') {
             $uriPathSegment = $this->transliterateText(
-                $command->originDimensionSpacePoint->toDimensionSpacePoint(),
+                $initialCommand->originDimensionSpacePoint->toDimensionSpacePoint(),
                 $uriPathSegment
             );
         } else {
@@ -76,7 +75,7 @@ class DocumentTitleNodeCreationHandler implements NodeCreationHandlerInterface
         $uriPathSegment = Transliterator::urlize($uriPathSegment);
         $propertyValues = $propertyValues->withValue('uriPathSegment', $uriPathSegment);
 
-        return $command->withInitialPropertyValues($propertyValues);
+        return $commands->withInitialPropertyValues($propertyValues);
     }
 
     private function transliterateText(DimensionSpacePoint $dimensionSpacePoint, string $text): string

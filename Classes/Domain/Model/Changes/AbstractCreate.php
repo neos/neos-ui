@@ -21,6 +21,7 @@ use Neos\ContentRepository\Core\SharedModel\Exception\NodeNameIsAlreadyOccupied;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateId;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeName;
 use Neos\Neos\Ui\Exception\InvalidNodeCreationHandlerException;
+use Neos\Neos\Ui\NodeCreationHandler\NodeCreationCommands;
 use Neos\Neos\Ui\NodeCreationHandler\NodeCreationHandlerInterface;
 
 abstract class AbstractCreate extends AbstractStructuralChange
@@ -102,6 +103,9 @@ abstract class AbstractCreate extends AbstractStructuralChange
 
         $nodeAggregateId = NodeAggregateId::create(); // generate a new NodeAggregateId
 
+        $contentRepository = $this->contentRepositoryRegistry->get($parentNode->subgraphIdentity->contentRepositoryId);
+        $nodeType = $contentRepository->getNodeTypeManager()->getNodeType($nodeTypeName);
+
         $command = new CreateNodeAggregateWithNode(
             $parentNode->subgraphIdentity->contentStreamId,
             $nodeAggregateId,
@@ -109,16 +113,19 @@ abstract class AbstractCreate extends AbstractStructuralChange
             OriginDimensionSpacePoint::fromDimensionSpacePoint($parentNode->subgraphIdentity->dimensionSpacePoint),
             $parentNode->nodeAggregateId,
             $succeedingSiblingNodeAggregateId,
-            $nodeName
+            $nodeName,
+            tetheredDescendantNodeAggregateIds: $nodeType->createTetheredDescendantNodeAggregateIds(),
         );
-        $contentRepository = $this->contentRepositoryRegistry->get($parentNode->subgraphIdentity->contentRepositoryId);
 
-        $command = $this->applyNodeCreationHandlers($command, $nodeTypeName, $contentRepository);
+        $commands = $this->applyNodeCreationHandlers(new NodeCreationCommands($command), $nodeTypeName, $contentRepository);
 
-        $contentRepository->handle($command)->block();
+        foreach ($commands as $command) {
+            $contentRepository->handle($command)->block();
+        }
+
         /** @var Node $newlyCreatedNode */
         $newlyCreatedNode = $this->contentRepositoryRegistry->subgraphForNode($parentNode)
-            ->findChildNodeConnectedThroughEdgeName($parentNode->nodeAggregateId, $nodeName);
+            ->findNodeById($nodeAggregateId);
 
         $this->finish($newlyCreatedNode);
         // NOTE: we need to run "finish" before "addNodeCreatedFeedback"
@@ -131,15 +138,15 @@ abstract class AbstractCreate extends AbstractStructuralChange
      * @throws InvalidNodeCreationHandlerException
      */
     protected function applyNodeCreationHandlers(
-        CreateNodeAggregateWithNode $command,
+        NodeCreationCommands $commands,
         NodeTypeName $nodeTypeName,
         ContentRepository $contentRepository
-    ): CreateNodeAggregateWithNode {
+    ): NodeCreationCommands {
         $data = $this->getData() ?: [];
         $nodeType = $contentRepository->getNodeTypeManager()->getNodeType($nodeTypeName);
         if (!isset($nodeType->getOptions()['nodeCreationHandlers'])
             || !is_array($nodeType->getOptions()['nodeCreationHandlers'])) {
-            return $command;
+            return $commands;
         }
         foreach ($nodeType->getOptions()['nodeCreationHandlers'] as $nodeCreationHandlerConfiguration) {
             $nodeCreationHandler = new $nodeCreationHandlerConfiguration['nodeCreationHandler']();
@@ -150,8 +157,8 @@ abstract class AbstractCreate extends AbstractStructuralChange
                     get_class($nodeCreationHandler)
                 ), 1364759956);
             }
-            $command = $nodeCreationHandler->handle($command, $data, $contentRepository);
+            $commands = $nodeCreationHandler->handle($commands, $data, $contentRepository);
         }
-        return $command;
+        return $commands;
     }
 }

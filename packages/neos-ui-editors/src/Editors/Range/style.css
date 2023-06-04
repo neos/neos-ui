@@ -7,6 +7,10 @@
     width: 100%;
     border-radius: 2px;
 }
+.rangeEditor.rangeEditorHighlight input[type='range'] {
+    box-shadow: 0 0 0 2px var(--colors-Warn);
+    border-radius: 2px;
+}
 
 .rangeEditor input[type='range']::-webkit-slider-thumb {
     appearance: none;

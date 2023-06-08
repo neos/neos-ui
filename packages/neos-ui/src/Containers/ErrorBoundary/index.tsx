@@ -1,6 +1,10 @@
 import React from 'react';
 import styles from './style.module.css';
-import {Logo, Button, Icon} from '@neos-project/react-ui-components';
+
+// @ts-ignore
+import Logo from '@neos-project/react-ui-components/src/Logo';
+import Button from '@neos-project/react-ui-components/src/Button';
+import Icon from '@neos-project/react-ui-components/src/Icon';
 
 class ErrorBoundary extends React.Component<
     { children: React.ReactNode },

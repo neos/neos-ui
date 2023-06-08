@@ -10,13 +10,13 @@ class ErrorBoundary extends React.Component<
     { children: React.ReactNode },
     { error: any }
 > {
-    state = {error: undefined};
+    public state = {error: undefined};
 
-    static getDerivedStateFromError(error: any) {
+    public static getDerivedStateFromError(error: any): {error: any} {
         return {error};
     }
 
-    render() {
+    public render(): React.ReactNode {
         if (this.state.error !== undefined) {
             return <ErrorFallback error={this.state.error} />;
         }
@@ -31,14 +31,14 @@ const CopyTechnicalDetailsButton = (props: { error: any }) => {
         setCopied(true);
         const error = props.error as Error;
         window.navigator.clipboard.writeText(`Name: ${error.name}\n\nMessage: ${error.message}\n\nStacktrace: ${error.stack}`);
-    }
+    };
 
     if (!window.navigator.clipboard || !(props.error instanceof Error)) {
         return null;
     }
 
-    return <Button onClick={copyErrorDetails} isActive={hasCopied}>{!hasCopied ? 'Copy technical details' : 'Technical details copied'} &nbsp; <Icon icon="copy" size="sm"/></Button>
-}
+    return <Button onClick={copyErrorDetails} isActive={hasCopied}>{!hasCopied ? 'Copy technical details' : 'Technical details copied'} &nbsp; <Icon icon="copy" size="sm"/></Button>;
+};
 
 const ReloadNeosUiButton = () => {
     const [isReloading, setReload] = React.useState(false);
@@ -49,11 +49,11 @@ const ReloadNeosUiButton = () => {
         setReload(true);
         setTimeout(() => {
             document.location.reload();
-        }, 100)
-    }
+        }, 100);
+    };
 
     return <Button onClick={reload}>Reload Neos UI &nbsp; <Icon icon="redo" size="sm" spin={isReloading}/></Button>;
-}
+};
 
 const ErrorFallback = (props: { error: any }) => {
     // @ts-ignore
@@ -91,7 +91,7 @@ const ErrorFallback = (props: { error: any }) => {
                 <CopyTechnicalDetailsButton error={props.error} />
             </div>
         </div>
-    </div>
+    </div>;
 };
 
 export default ErrorBoundary;

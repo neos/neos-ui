@@ -19,6 +19,7 @@ use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 use Neos\Neos\Ui\Exception\InvalidNodeCreationHandlerException;
 use Neos\Neos\Ui\NodeCreationHandler\NodeCreationHandlerInterface;
+use Neos\Utility\PositionalArraySorter;
 
 abstract class AbstractCreate extends AbstractStructuralChange
 {
@@ -175,7 +176,7 @@ abstract class AbstractCreate extends AbstractStructuralChange
         if (isset($nodeType->getOptions()['nodeCreationHandlers'])) {
             $nodeCreationHandlers = $nodeType->getOptions()['nodeCreationHandlers'];
             if (is_array($nodeCreationHandlers)) {
-                foreach ($nodeCreationHandlers as $nodeCreationHandlerConfiguration) {
+                foreach ((new PositionalArraySorter($nodeCreationHandlers))->toArray() as $nodeCreationHandlerConfiguration) {
                     $nodeCreationHandler = new $nodeCreationHandlerConfiguration['nodeCreationHandler']();
                     if (!$nodeCreationHandler instanceof NodeCreationHandlerInterface) {
                         throw new InvalidNodeCreationHandlerException(sprintf('Expected NodeCreationHandlerInterface but got "%s"', get_class($nodeCreationHandler)), 1364759956);

@@ -16,7 +16,7 @@ class Root extends PureComponent {
         const App = containerRegistry.get('App');
 
         return (
-            <ErrorBoundary>
+            <ErrorBoundary i18nRegistry={globalRegistry.get('i18n')}>
                 <div className={style.applicationWrapper}>
                     <Provider store={store}>
                         <DndProvider backend={HTML5Backend}>

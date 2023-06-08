@@ -5,9 +5,10 @@ import styles from './style.module.css';
 import Logo from '@neos-project/react-ui-components/src/Logo';
 import Button from '@neos-project/react-ui-components/src/Button';
 import Icon from '@neos-project/react-ui-components/src/Icon';
+import {I18nRegistry} from '@neos-project/neos-ts-interfaces';
 
 class ErrorBoundary extends React.Component<
-    { children: React.ReactNode },
+    { children: React.ReactNode, i18nRegistry: I18nRegistry },
     { error: any }
 > {
     public state = {error: undefined};
@@ -18,13 +19,13 @@ class ErrorBoundary extends React.Component<
 
     public render(): React.ReactNode {
         if (this.state.error !== undefined) {
-            return <ErrorFallback error={this.state.error} />;
+            return <ErrorFallback error={this.state.error} i18nRegistry={this.props.i18nRegistry} />;
         }
         return this.props.children;
     }
 }
 
-const CopyTechnicalDetailsButton = (props: { error: any }) => {
+const CopyTechnicalDetailsButton = (props: { error: any, i18nRegistry: I18nRegistry } ) => {
     const [hasCopied, setCopied] = React.useState(false);
 
     const copyErrorDetails = () => {
@@ -37,10 +38,15 @@ const CopyTechnicalDetailsButton = (props: { error: any }) => {
         return null;
     }
 
-    return <Button onClick={copyErrorDetails} isActive={hasCopied}>{!hasCopied ? 'Copy technical details' : 'Technical details copied'} &nbsp; <Icon icon="copy" size="sm"/></Button>;
+    return <Button onClick={copyErrorDetails} isActive={hasCopied}>
+        {!hasCopied ?
+            props.i18nRegistry.translate('Neos.Neos.Ui:Main:errorBoundary.copyTechnicalDetails')
+            : props.i18nRegistry.translate('Neos.Neos.Ui:Main:errorBoundary.technicalDetailsCopied')}
+        &nbsp; <Icon icon="copy" size="sm"/>
+    </Button>;
 };
 
-const ReloadNeosUiButton = () => {
+const ReloadNeosUiButton = (props: { i18nRegistry: I18nRegistry }) => {
     const [isReloading, setReload] = React.useState(false);
     const reload = () => {
         if (isReloading) {
@@ -52,10 +58,13 @@ const ReloadNeosUiButton = () => {
         }, 100);
     };
 
-    return <Button onClick={reload}>Reload Neos UI &nbsp; <Icon icon="redo" size="sm" spin={isReloading}/></Button>;
+    return <Button onClick={reload}>
+        {props.i18nRegistry.translate('Neos.Neos.Ui:Main:errorBoundary.reloadUi')}
+        &nbsp; <Icon icon="redo" size="sm" spin={isReloading}/>
+    </Button>;
 };
 
-const ErrorFallback = (props: { error: any }) => {
+const ErrorFallback = (props: { error: any, i18nRegistry: I18nRegistry }) => {
     // @ts-ignore
     const isDev = window.neos?.systemEnv.startsWith('Development');
 
@@ -65,8 +74,8 @@ const ErrorFallback = (props: { error: any }) => {
                 ? <img style={{height: '48px'}} src="/_Resources/Static/Packages/Neos.Neos.UI/Images/neos-logo-enhanced.gif" title="This... This can't be. We programm without bugs." alt="Neos Logo" />
                 : <Logo />
             }
-            <h1 className={styles.title}>Sorry, but the Neos UI could not recover from this Error.</h1>
-            <p>Please reload the application, or contact your system administrator with the given details.</p>
+            <h1 className={styles.title}>{props.i18nRegistry.translate('Neos.Neos.Ui:Main:errorBoundary.title')}</h1>
+            <p>{props.i18nRegistry.translate('Neos.Neos.Ui:Main:errorBoundary.description')}</p>
 
             {props.error instanceof Error &&
                 <>
@@ -84,11 +93,11 @@ const ErrorFallback = (props: { error: any }) => {
                     </pre>
                 </>
             }
-            <p>For more information about the Error please refer to the JavaScript console.</p>
+            <p>{props.i18nRegistry.translate('Neos.Neos.Ui:Main:errorBoundary.footer')}</p>
 
             <div className={styles.buttonGroup}>
-                <ReloadNeosUiButton />
-                <CopyTechnicalDetailsButton error={props.error} />
+                <ReloadNeosUiButton i18nRegistry={props.i18nRegistry} />
+                <CopyTechnicalDetailsButton error={props.error} i18nRegistry={props.i18nRegistry} />
             </div>
         </div>
     </div>;

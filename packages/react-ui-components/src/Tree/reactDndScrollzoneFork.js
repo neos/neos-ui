@@ -164,9 +164,17 @@ export default function createScrollingComponent(WrappedComponent) {
 
             if (!this.dragging && isDragging) {
                 this.dragging = true;
+
+                if (this.wrappedInstance) {
+                    this.wrappedInstance.setAttribute('data-is-drag-happening', 'true');
+                }
             } else if (this.dragging && !isDragging) {
                 this.dragging = false;
                 this.stopScrolling();
+
+                if (this.wrappedInstance) {
+                    this.wrappedInstance.removeAttribute('data-is-drag-happening');
+                }
             }
         }
 

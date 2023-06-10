@@ -11,14 +11,9 @@ namespace Neos\Neos\Ui\NodeCreationHandler;
  * source code.
  */
 
-use Behat\Transliterator\Transliterator;
 use Neos\ContentRepository\Core\ContentRepository;
-use Neos\ContentRepository\Core\Dimension\ContentDimensionId;
-use Neos\ContentRepository\Core\DimensionSpace\DimensionSpacePoint;
 use Neos\Flow\Annotations as Flow;
-use Neos\Flow\I18n\Exception\InvalidLocaleIdentifierException;
-use Neos\Flow\I18n\Locale;
-use Neos\Neos\Service\TransliterationService;
+use Neos\Neos\Utility\NodeUriPathSegmentGenerator;
 
 /**
  * Node creation handler that
@@ -33,9 +28,9 @@ class DocumentTitleNodeCreationHandler implements NodeCreationHandlerInterface
 {
     /**
      * @Flow\Inject
-     * @var TransliterationService
+     * @var NodeUriPathSegmentGenerator
      */
-    protected $transliterationService;
+    protected $nodeUriPathSegmentGenerator;
 
     /**
      * @param array<string|int,mixed> $data
@@ -54,40 +49,24 @@ class DocumentTitleNodeCreationHandler implements NodeCreationHandlerInterface
             $propertyValues = $propertyValues->withValue('title', $data['title']);
         }
 
-        // if specified, the uriPathSegment equals the title
-        $uriPathSegment = $data['title'];
+        $uriPathSegment = match(true) {
+            // if specified, the uriPathSegment equals the title
+            !empty($data['title']) => $data['title'],
+            // otherwise, we fall back to the node name
+            $initialCommand->nodeName !== null => $initialCommand->nodeName,
+            // last resort: set it to a random string
+            default => uniqid('', true),
+        };
 
-        // otherwise, we fall back to the node name
-        if ($uriPathSegment === null && $initialCommand->nodeName !== null) {
-            $uriPathSegment = $initialCommand->nodeName->value;
-        }
-
-        // if not empty, we transliterate the uriPathSegment according to the language of the new node
-        if ($uriPathSegment !== null && $uriPathSegment !== '') {
-            $uriPathSegment = $this->transliterateText(
-                $initialCommand->originDimensionSpacePoint->toDimensionSpacePoint(),
-                $uriPathSegment
-            );
-        } else {
-            // alternatively we set it to a random string
-            $uriPathSegment = uniqid('', true);
-        }
-        $uriPathSegment = Transliterator::urlize($uriPathSegment);
-        $propertyValues = $propertyValues->withValue('uriPathSegment', $uriPathSegment);
+        $propertyValues = $propertyValues->withValue(
+            'uriPathSegment',
+            $this->nodeUriPathSegmentGenerator->generateUriPathSegmentFromTextForDimension(
+                $uriPathSegment,
+                // we transliterate the uriPathSegment according to the language of the new node
+                $initialCommand->originDimensionSpacePoint->toDimensionSpacePoint()
+            )
+        );
 
         return $commands->withInitialPropertyValues($propertyValues);
-    }
-
-    private function transliterateText(DimensionSpacePoint $dimensionSpacePoint, string $text): string
-    {
-        $languageDimensionValue = $dimensionSpacePoint->getCoordinate(new ContentDimensionId('language'));
-        if ($languageDimensionValue !== null) {
-            try {
-                $language = (new Locale($languageDimensionValue))->getLanguage();
-            } catch (InvalidLocaleIdentifierException $e) {
-                // we don't need to do anything here; we'll just transliterate the text.
-            }
-        }
-        return $this->transliterationService->transliterate($text, $language ?? null);
     }
 }

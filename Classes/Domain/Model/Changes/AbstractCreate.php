@@ -101,10 +101,13 @@ abstract class AbstractCreate extends AbstractStructuralChange
         // $name = $this->getName() ?: $this->nodeService->generateUniqueNodeName($parent->findParentNode());
         $nodeName = NodeName::fromString($this->getName() ?: uniqid('node-', false));
 
-        $nodeAggregateId = NodeAggregateId::create(); // generate a new NodeAggregateId
+        // deterministic node id
+        $nodeAggregateId = NodeAggregateId::fromParentNodeAggregateIdAndNodeName(
+            $parentNode->nodeAggregateId,
+            $nodeName
+        );
 
         $contentRepository = $this->contentRepositoryRegistry->get($parentNode->subgraphIdentity->contentRepositoryId);
-        $nodeType = $contentRepository->getNodeTypeManager()->getNodeType($nodeTypeName);
 
         $command = new CreateNodeAggregateWithNode(
             $parentNode->subgraphIdentity->contentStreamId,
@@ -113,8 +116,7 @@ abstract class AbstractCreate extends AbstractStructuralChange
             OriginDimensionSpacePoint::fromDimensionSpacePoint($parentNode->subgraphIdentity->dimensionSpacePoint),
             $parentNode->nodeAggregateId,
             $succeedingSiblingNodeAggregateId,
-            $nodeName,
-            tetheredDescendantNodeAggregateIds: $nodeType->createTetheredDescendantNodeAggregateIds(),
+            $nodeName
         );
 
         $commands = $this->applyNodeCreationHandlers(new NodeCreationCommands($command), $nodeTypeName, $contentRepository);

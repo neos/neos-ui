@@ -5,7 +5,11 @@ namespace Neos\Neos\Ui\NodeCreationHandler;
 
 use Neos\ContentRepository\Core\CommandHandler\CommandInterface;
 use Neos\ContentRepository\Core\Feature\NodeCreation\Command\CreateNodeAggregateWithNode;
+use Neos\ContentRepository\Core\Feature\NodeDisabling\Command\DisableNodeAggregate;
+use Neos\ContentRepository\Core\Feature\NodeDisabling\Command\EnableNodeAggregate;
+use Neos\ContentRepository\Core\Feature\NodeModification\Command\SetNodeProperties;
 use Neos\ContentRepository\Core\Feature\NodeModification\Dto\PropertyValuesToWrite;
+use Neos\ContentRepository\Core\Feature\NodeReferencing\Command\SetNodeReferences;
 
 class NodeCreationCommands implements \IteratorAggregate
 {
@@ -13,7 +17,7 @@ class NodeCreationCommands implements \IteratorAggregate
     public readonly array $additionalCommands;
 
     /**
-     * @interal to guarantee that the initial create command is mostly preserved as intended.
+     * @internal to guarantee that the initial create command is mostly preserved as intended.
      * You should use {@see self::withInitialPropertyValues()} and {@see self::withAdditionalCommands()} instead.
      */
     public function __construct(
@@ -26,7 +30,7 @@ class NodeCreationCommands implements \IteratorAggregate
          * Add a list of commands that are executed after the initial created command was run.
          * This allows you to create child-nodes and other operations.
          */
-        CommandInterface ...$additionalCommands
+        CreateNodeAggregateWithNode|SetNodeProperties|DisableNodeAggregate|EnableNodeAggregate|SetNodeReferences ...$additionalCommands
     ) {
         $this->additionalCommands = $additionalCommands;
     }

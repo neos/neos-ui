@@ -12,11 +12,7 @@ namespace Neos\Neos\Ui\NodeCreationHandler;
  */
 
 use Neos\ContentRepository\Core\ContentRepository;
-use Neos\ContentRepository\Core\NodeType\NodeTypeManager;
 use Neos\ContentRepository\Core\SharedModel\Exception\NodeTypeNotFoundException;
-use Neos\ContentRepository\Core\Feature\NodeCreation\Command\CreateNodeAggregateWithNode;
-use Neos\Flow\Annotations as Flow;
-use Neos\Neos\Service\TransliterationService;
 
 /**
  * Node creation handler that sets the "title" property for new content elements according
@@ -29,31 +25,25 @@ use Neos\Neos\Service\TransliterationService;
 class ContentTitleNodeCreationHandler implements NodeCreationHandlerInterface
 {
     /**
-     * @Flow\Inject
-     * @var TransliterationService
-     */
-    protected $transliterationService;
-
-    /**
      * Set the node title for the newly created Content node
      *
      * @param array<string|int,mixed> $data incoming data from the creationDialog
      * @throws NodeTypeNotFoundException
      */
-    public function handle(CreateNodeAggregateWithNode $command, array $data, ContentRepository $contentRepository): CreateNodeAggregateWithNode
+    public function handle(NodeCreationCommands $commands, array $data, ContentRepository $contentRepository): NodeCreationCommands
     {
         if (
-            !$contentRepository->getNodeTypeManager()->getNodeType($command->nodeTypeName)
+            !$contentRepository->getNodeTypeManager()->getNodeType($commands->first->nodeTypeName)
                 ->isOfType('Neos.Neos:Content')
         ) {
-            return $command;
+            return $commands;
         }
 
-        $propertyValues = $command->initialPropertyValues;
+        $propertyValues = $commands->first->initialPropertyValues;
         if (isset($data['title'])) {
             $propertyValues = $propertyValues->withValue('title', $data['title']);
         }
 
-        return $command->withInitialPropertyValues($propertyValues);
+        return $commands->withInitialPropertyValues($propertyValues);
     }
 }

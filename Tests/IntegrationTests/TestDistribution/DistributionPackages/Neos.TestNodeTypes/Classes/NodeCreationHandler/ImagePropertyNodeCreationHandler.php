@@ -12,11 +12,11 @@ namespace Neos\TestNodeTypes\NodeCreationHandler;
  */
 
 use Neos\ContentRepository\Core\ContentRepository;
-use Neos\ContentRepository\Core\Feature\NodeCreation\Command\CreateNodeAggregateWithNode;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Property\PropertyMapper;
 use Neos\Flow\Property\TypeConverter\PersistentObjectConverter;
 use Neos\Media\Domain\Model\ImageInterface;
+use Neos\Neos\Ui\NodeCreationHandler\NodeCreationCommands;
 use Neos\Neos\Ui\NodeCreationHandler\NodeCreationHandlerInterface;
 
 class ImagePropertyNodeCreationHandler implements NodeCreationHandlerInterface
@@ -27,17 +27,17 @@ class ImagePropertyNodeCreationHandler implements NodeCreationHandlerInterface
      */
     protected $propertyMapper;
 
-    public function handle(CreateNodeAggregateWithNode $command, array $data, ContentRepository $contentRepository): CreateNodeAggregateWithNode
+    public function handle(NodeCreationCommands $commands, array $data, ContentRepository $contentRepository): NodeCreationCommands
     {
         if (!isset($data['image'])) {
-            return $command;
+            return $commands;
         }
         $propertyMappingConfiguration = $this->propertyMapper->buildPropertyMappingConfiguration();
         $propertyMappingConfiguration->forProperty('*')->allowAllProperties();
         $propertyMappingConfiguration->setTypeConverterOption(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_OVERRIDE_TARGET_TYPE_ALLOWED, true);
         $image = $this->propertyMapper->convert($data['image'], ImageInterface::class, $propertyMappingConfiguration);
 
-        $propertyValues = $command->initialPropertyValues->withValue('image', $image);
-        return $command->withInitialPropertyValues($propertyValues);
+        $propertyValues = $commands->first->initialPropertyValues->withValue('image', $image);
+        return $commands->withInitialPropertyValues($propertyValues);
     }
 }

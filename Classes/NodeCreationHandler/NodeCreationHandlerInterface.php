@@ -12,7 +12,6 @@ namespace Neos\Neos\Ui\NodeCreationHandler;
  */
 
 use Neos\ContentRepository\Core\ContentRepository;
-use Neos\ContentRepository\Core\Feature\NodeCreation\Command\CreateNodeAggregateWithNode;
 
 /**
  * Contract for Node Creation handler that allow to hook into the process just before a node is being added
@@ -22,11 +21,12 @@ use Neos\ContentRepository\Core\Feature\NodeCreation\Command\CreateNodeAggregate
 interface NodeCreationHandlerInterface
 {
     /**
-     * Do something with the newly created node
+     * You can "enrich" the node creation, by for example adding initial properties {@see NodeCreationCommands::withInitialPropertyValues()}
+     * or appending additional f.x. create-child nodes commands {@see NodeCreationCommands::withAdditionalCommands()}
      *
-     * @param CreateNodeAggregateWithNode $command The original node creation command
+     * @param NodeCreationCommands $commands original or previous commands, with the first command being the initial intended node creation
      * @param array<string|int,mixed> $data incoming data from the creationDialog
-     * @return CreateNodeAggregateWithNode the original command or a new creation command with altered properties
+     * @return NodeCreationCommands the "enriched" commands, to be passed to the next handler or run at the end
      */
-    public function handle(CreateNodeAggregateWithNode $command, array $data, ContentRepository $contentRepository): CreateNodeAggregateWithNode;
+    public function handle(NodeCreationCommands $commands, array $data, ContentRepository $contentRepository): NodeCreationCommands;
 }

@@ -12,8 +12,6 @@ namespace Neos\Neos\Ui\NodeCreationHandler;
  */
 
 use Neos\ContentRepository\Core\ContentRepository;
-use Neos\ContentRepository\Core\NodeType\NodeTypeManager;
-use Neos\ContentRepository\Core\Feature\NodeCreation\Command\CreateNodeAggregateWithNode;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Property\PropertyMapper;
 use Neos\Flow\Property\TypeConverter\PersistentObjectConverter;
@@ -36,14 +34,14 @@ class CreationDialogPropertiesCreationHandler implements NodeCreationHandlerInte
     /**
      * @param array<string|int,mixed> $data
      */
-    public function handle(CreateNodeAggregateWithNode $command, array $data, ContentRepository $contentRepository): CreateNodeAggregateWithNode
+    public function handle(NodeCreationCommands $commands, array $data, ContentRepository $contentRepository): NodeCreationCommands
     {
         $propertyMappingConfiguration = $this->propertyMapper->buildPropertyMappingConfiguration();
         $propertyMappingConfiguration->forProperty('*')->allowAllProperties();
         $propertyMappingConfiguration->setTypeConverterOption(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_OVERRIDE_TARGET_TYPE_ALLOWED, true);
 
-        $nodeType = $contentRepository->getNodeTypeManager()->getNodeType($command->nodeTypeName);
-        $propertyValues = $command->initialPropertyValues;
+        $nodeType = $contentRepository->getNodeTypeManager()->getNodeType($commands->first->nodeTypeName);
+        $propertyValues = $commands->first->initialPropertyValues;
         foreach ($nodeType->getConfiguration('properties') as $propertyName => $propertyConfiguration) {
             if (
                 !isset($propertyConfiguration['ui']['showInCreationDialog'])
@@ -63,6 +61,6 @@ class CreationDialogPropertiesCreationHandler implements NodeCreationHandlerInte
             $propertyValues = $propertyValues->withValue($propertyName, $propertyValue);
         }
 
-        return $command->withInitialPropertyValues($propertyValues);
+        return $commands->withInitialPropertyValues($propertyValues);
     }
 }

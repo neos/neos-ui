@@ -177,7 +177,7 @@ class BackendController extends ActionController
 
         $siteNode = $subgraph->findChildNodeConnectedThroughEdgeName(
             $rootNode->nodeAggregateId,
-            $this->siteRepository->findDefault()->getNodeName()->toNodeName()
+            $siteDetectionResult->siteNodeName->toNodeName()
         );
 
         if (!$nodeAddress) {

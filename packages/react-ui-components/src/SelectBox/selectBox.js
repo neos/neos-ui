@@ -5,7 +5,6 @@ import {$get} from 'plow-js';
 import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine';
 import mergeClassNames from 'classnames';
 import isEqual from 'lodash.isequal';
-import {isNil} from '@neos-project/utils-helpers';
 
 // TODO: document component usage && check code in detail
 export default class SelectBox extends PureComponent {
@@ -262,10 +261,13 @@ export default class SelectBox extends PureComponent {
         // Compare selected value less strictly: allow loose comparision and deep equality of objects
         const selectedOption = options.find(option => optionValueAccessor(option) == value || isEqual(optionValueAccessor(option), value)); // eslint-disable-line eqeqeq
 
+        // check for null or undefined
+        /* eslint-disable no-eq-null, eqeqeq */
+        const valueIsEmpty = value == null || value === '';
+
         if (
             displaySearchBox && (
-                isNil(value) ||
-                value === '' ||
+                valueIsEmpty ||
                 this.state.isExpanded ||
                 plainInputMode
             )
@@ -281,12 +283,18 @@ export default class SelectBox extends PureComponent {
             );
         }
 
-        const showResetButton = Boolean(allowEmpty && !displayLoadingIndicator && value);
+        const mismatchOfValueInOptions = !valueIsEmpty && !selectedOption;
+        const showResetButton = (allowEmpty && !displayLoadingIndicator && !valueIsEmpty) || mismatchOfValueInOptions;
 
         return (
             <SelectBox_Header
                 {...this.props}
-                option={selectedOption}
+                option={mismatchOfValueInOptions
+                    ? {
+                        label: `Invalid: "${value}"`,
+                        icon: 'exclamation-triangle'
+                    } : selectedOption
+                }
                 showResetButton={showResetButton}
                 onReset={this.handleDeleteClick}
                 onClick={onHeaderClick}

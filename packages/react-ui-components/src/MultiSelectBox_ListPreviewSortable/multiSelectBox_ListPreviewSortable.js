@@ -66,8 +66,11 @@ export default class MultiSelectBox_ListPreviewSortable extends PureComponent {
 
         // Sorted options by draggable value ordering
         const draggableOptions = draggableValues.map(value =>
-            options.find(option => optionValueAccessor(option) === value)
-        ).filter(Boolean);
+            options.find(option => optionValueAccessor(option) === value) || {
+                label: `Invalid: "${value}"`,
+                icon: 'exclamation-triangle'
+            }
+        );
 
         return draggableOptions.map(this.renderOption);
     }

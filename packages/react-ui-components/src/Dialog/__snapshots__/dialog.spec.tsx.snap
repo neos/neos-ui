@@ -37,51 +37,47 @@ exports[`<Dialog/> Content should render correctly. 1`] = `
 `;
 
 exports[`<Dialog/> Portal should render correctly. 1`] = `
-<CloseOnEscape
-  onEscape={[Function]}
->
-  <Portal>
-    <section
+<Portal>
+  <section
+    autoFocus={true}
+    className="dialogClassName wideClassName errorClassName"
+    onClick={[Function]}
+    role="dialog"
+    tabIndex={0}
+  >
+    <DialogWithoutOverlay
+      actions={
+        Array [
+          "Foo 1",
+          "Foo 2",
+        ]
+      }
       autoFocus={true}
-      className="dialogClassName wideClassName errorClassName"
-      onClick={[Function]}
-      role="dialog"
-      tabIndex={0}
+      isOpen={true}
+      onRequestClose={[Function]}
+      style="wide"
+      theme={
+        Object {
+          "dialog": "dialogClassName",
+          "dialog--error": "errorClassName",
+          "dialog--jumbo": "jumboClassName",
+          "dialog--narrow": "narrowClassName",
+          "dialog--success": "successClassName",
+          "dialog--warn": "warnClassName",
+          "dialog--wide": "wideClassName",
+          "dialog__actions": "actionsClassName",
+          "dialog__body": "bodyClassName",
+          "dialog__closeBtn": "closeBtnClassName",
+          "dialog__contents": "contentsClassName",
+          "dialog__contentsPosition": "contentsPositionClassName",
+          "dialog__title": "titleClassName",
+        }
+      }
+      title="Foo title"
+      type="error"
     >
-      <DialogWithoutEscape
-        actions={
-          Array [
-            "Foo 1",
-            "Foo 2",
-          ]
-        }
-        autoFocus={true}
-        isOpen={true}
-        onRequestClose={[Function]}
-        style="wide"
-        theme={
-          Object {
-            "dialog": "dialogClassName",
-            "dialog--error": "errorClassName",
-            "dialog--jumbo": "jumboClassName",
-            "dialog--narrow": "narrowClassName",
-            "dialog--success": "successClassName",
-            "dialog--warn": "warnClassName",
-            "dialog--wide": "wideClassName",
-            "dialog__actions": "actionsClassName",
-            "dialog__body": "bodyClassName",
-            "dialog__closeBtn": "closeBtnClassName",
-            "dialog__contents": "contentsClassName",
-            "dialog__contentsPosition": "contentsPositionClassName",
-            "dialog__title": "titleClassName",
-          }
-        }
-        title="Foo title"
-        type="error"
-      >
-        Foo children
-      </DialogWithoutEscape>
-    </section>
-  </Portal>
-</CloseOnEscape>
+      Foo children
+    </DialogWithoutOverlay>
+  </section>
+</Portal>
 `;

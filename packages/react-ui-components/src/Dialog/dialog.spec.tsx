@@ -3,7 +3,7 @@ import toJson from 'enzyme-to-json';
 import React from 'react';
 import {Portal} from 'react-portal';
 
-import DialogWithEscape, {DialogProps, DialogWithoutEscape} from './dialog';
+import DialogWithOverlay, {DialogProps, DialogWithoutOverlay} from './dialog';
 
 describe('<Dialog/>', () => {
     const props: DialogProps = {
@@ -33,19 +33,19 @@ describe('<Dialog/>', () => {
     };
 
     it('Portal should render correctly.', () => {
-        const wrapper = shallow(<DialogWithEscape {...props}/>);
+        const wrapper = shallow(<DialogWithOverlay {...props}/>);
 
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
     it('Content should render correctly.', () => {
-        const wrapper = shallow(<DialogWithoutEscape {...props}/>);
+        const wrapper = shallow(<DialogWithoutOverlay {...props}/>);
 
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
     it('should render the "dialog--wide" className from the "theme" prop if the style is wide.', () => {
-        const wrapper = shallow(<DialogWithEscape {...props} style="wide"/>);
+        const wrapper = shallow(<DialogWithOverlay {...props} style="wide"/>);
         const portal = wrapper.find(Portal);
         const section = portal.find('section');
 
@@ -53,7 +53,7 @@ describe('<Dialog/>', () => {
     });
 
     it('should render the "dialog--jumbo" className from the "theme" prop if the style is jumbo.', () => {
-        const wrapper = shallow(<DialogWithEscape {...props} style="jumbo"/>);
+        const wrapper = shallow(<DialogWithOverlay {...props} style="jumbo"/>);
         const portal = wrapper.find(Portal);
         const section = portal.find('section');
 
@@ -61,7 +61,7 @@ describe('<Dialog/>', () => {
     });
 
     it('should render the "dialog--narrow" className from the "theme" prop if the style is narrow.', () => {
-        const wrapper = shallow(<DialogWithEscape {...props} style="narrow"/>);
+        const wrapper = shallow(<DialogWithOverlay {...props} style="narrow"/>);
         const portal = wrapper.find(Portal);
         const section = portal.find('section');
 
@@ -69,7 +69,7 @@ describe('<Dialog/>', () => {
     });
 
     it('should render the actions if passed.', () => {
-        const wrapper = shallow(<DialogWithoutEscape {...props}/>);
+        const wrapper = shallow(<DialogWithoutOverlay {...props}/>);
 
         expect(wrapper.html().includes('Foo 1')).toBeTruthy();
         expect(wrapper.html().includes('Foo 2')).toBeTruthy();

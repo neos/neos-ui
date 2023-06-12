@@ -1,7 +1,7 @@
 import mergeClassNames from 'classnames';
-import React, {PureComponent, ReactNode} from 'react';
-import CloseOnEscape from 'react-close-on-escape';
-import {Portal} from 'react-portal';
+import React, { PureComponent, ReactNode } from 'react';
+import { Portal } from 'react-portal';
+import { Dialog, DialogManager } from './DialogManager';
 
 type DialogType = 'success' | 'warn' | 'error';
 type DialogStyle = 'wide' | 'jumbo' | 'narrow';
@@ -79,18 +79,20 @@ export interface DialogProps {
     readonly theme: DialogTheme;
 }
 
-export class DialogWithoutEscape extends PureComponent<DialogProps> {
+const dialogManager = new DialogManager({
+    eventRoot: document
+});
+
+export class DialogWithoutOverlay extends PureComponent<DialogProps> {
     // tslint:disable-next-line:readonly-keyword
     private ref?: HTMLDivElement;
 
+    private dialog: Dialog = {
+        close: this.props.onRequestClose,
+    };
+
     public render(): JSX.Element {
-        const {
-            title,
-            children,
-            actions,
-            theme,
-            type
-        } = this.props;
+        const { title, children, actions, theme, type } = this.props;
 
         const finalClassNameBody = mergeClassNames(
             theme.dialog__body,
@@ -103,21 +105,22 @@ export class DialogWithoutEscape extends PureComponent<DialogProps> {
         );
 
         return (
-            <div ref={this.handleReference} className={theme.dialog__contentsPosition} tabIndex={0}>
+            <div
+                ref={this.handleReference}
+                className={theme.dialog__contentsPosition}
+                tabIndex={0}
+            >
                 <div className={theme.dialog__contents}>
+                    <div className={theme.dialog__title}>{title}</div>
+                    <div className={finalClassNameBody}>{children}</div>
 
-                    <div className={theme.dialog__title}>
-                        {title}
-                    </div>
-                    <div className={finalClassNameBody}>
-                        {children}
-                    </div>
-
-                    {actions && actions.length ?
+                    {actions && actions.length ? (
                         <div className={theme.dialog__actions}>
-                            {React.Children.map(actions, (action, index) => <span key={index}>{action}</span>)}
-                        </div> : null
-                    }
+                            {React.Children.map(actions, (action, index) => (
+                                <span key={index}>{action}</span>
+                            ))}
+                        </div>
+                    ) : null}
                 </div>
             </div>
         );
@@ -129,32 +132,21 @@ export class DialogWithoutEscape extends PureComponent<DialogProps> {
     }
 
     public readonly componentDidMount = (): void => {
-        document.addEventListener('keydown', (event : KeyboardEvent) => this.handleKeyPress(event));
-        const {autoFocus} = this.props;
+        const { autoFocus } = this.props;
         if (this.ref && autoFocus) {
             this.ref.focus();
         }
+
+        dialogManager.register(this.dialog);
     }
 
     public readonly componentWillUnmount = (): void => {
-        document.removeEventListener('keydown', (event : KeyboardEvent) => this.handleKeyPress(event));
-    }
-
-    /**
-     * Closes the dialog when the escape key has been pressed.
-     *
-     * @param {KeyboardEvent} event
-     * @returns {void}
-     */
-    public readonly handleKeyPress = (event : KeyboardEvent): void => {
-        if (event.key === 'Escape') {
-            this.props.onRequestClose();
-        }
+        dialogManager.forget(this.dialog);
     }
 }
 
 // tslint:disable-next-line:max-classes-per-file
-class DialogWithEscape extends PureComponent<DialogProps> {
+class DialogWithOverlay extends PureComponent<DialogProps> {
     public render(): JSX.Element | null {
         const {
             className,
@@ -189,18 +181,18 @@ class DialogWithEscape extends PureComponent<DialogProps> {
         }
 
         return (
-            <CloseOnEscape onEscape={this.onEscape}>
-                <Portal>
-                    <section {...rest} className={sectionClassName} role="dialog" tabIndex={0} onClick={this.handleOverlayClick}>
-                        <DialogWithoutEscape {...this.props}/>
-                    </section>
-                </Portal>
-            </CloseOnEscape>
+            <Portal>
+                <section
+                    {...rest}
+                    className={sectionClassName}
+                    role="dialog"
+                    tabIndex={0}
+                    onClick={this.handleOverlayClick}
+                >
+                    <DialogWithoutOverlay {...this.props} />
+                </section>
+            </Portal>
         );
-    }
-
-    private readonly onEscape = () => {
-        this.props.onRequestClose();
     }
 
     private readonly handleOverlayClick = (ev: React.MouseEvent) => {
@@ -210,4 +202,4 @@ class DialogWithEscape extends PureComponent<DialogProps> {
     }
 }
 
-export default DialogWithEscape;
+export default DialogWithOverlay;

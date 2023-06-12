@@ -37,7 +37,9 @@ exports[`<Dialog/> Content should render correctly. 1`] = `
 `;
 
 exports[`<Dialog/> Portal should render correctly. 1`] = `
-<Portal>
+<Portal
+  containerInfo={<body />}
+>
   <section
     autoFocus={true}
     className="dialogClassName wideClassName errorClassName"

@@ -1,7 +1,6 @@
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
 import React from 'react';
-import {Portal} from 'react-portal';
 
 import DialogWithOverlay, {DialogProps, DialogWithoutOverlay} from './dialog';
 
@@ -46,24 +45,21 @@ describe('<Dialog/>', () => {
 
     it('should render the "dialog--wide" className from the "theme" prop if the style is wide.', () => {
         const wrapper = shallow(<DialogWithOverlay {...props} style="wide"/>);
-        const portal = wrapper.find(Portal);
-        const section = portal.find('section');
+        const section = wrapper.find('section');
 
         expect(section.prop('className')).toContain('wideClassName');
     });
 
     it('should render the "dialog--jumbo" className from the "theme" prop if the style is jumbo.', () => {
         const wrapper = shallow(<DialogWithOverlay {...props} style="jumbo"/>);
-        const portal = wrapper.find(Portal);
-        const section = portal.find('section');
+        const section = wrapper.find('section');
 
         expect(section.prop('className')).toContain('jumboClassName');
     });
 
     it('should render the "dialog--narrow" className from the "theme" prop if the style is narrow.', () => {
         const wrapper = shallow(<DialogWithOverlay {...props} style="narrow"/>);
-        const portal = wrapper.find(Portal);
-        const section = portal.find('section');
+        const section = wrapper.find('section');
 
         expect(section.prop('className')).toContain('narrowClassName');
     });

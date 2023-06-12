@@ -1,6 +1,6 @@
 import mergeClassNames from 'classnames';
 import React, { PureComponent, ReactNode } from 'react';
-import { Portal } from 'react-portal';
+import { createPortal } from 'react-dom';
 import { Dialog, DialogManager } from './DialogManager';
 
 type DialogType = 'success' | 'warn' | 'error';
@@ -180,18 +180,17 @@ class DialogWithOverlay extends PureComponent<DialogProps> {
             return null;
         }
 
-        return (
-            <Portal>
-                <section
-                    {...rest}
-                    className={sectionClassName}
-                    role="dialog"
-                    tabIndex={0}
-                    onClick={this.handleOverlayClick}
-                >
-                    <DialogWithoutOverlay {...this.props} />
-                </section>
-            </Portal>
+        return createPortal(
+            <section
+                {...rest}
+                className={sectionClassName}
+                role="dialog"
+                tabIndex={0}
+                onClick={this.handleOverlayClick}
+            >
+                <DialogWithoutOverlay {...this.props} />
+            </section>,
+            document.body
         );
     }
 

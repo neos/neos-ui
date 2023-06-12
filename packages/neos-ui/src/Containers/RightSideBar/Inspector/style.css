@@ -59,8 +59,9 @@
     &::after {
         content: '';
         top: 0;
-        right: calc(-1 * var(--size-SidebarWidth));
-        height: var(--spacing-GoldenUnit);
+        right: 0;
+        /* 101px accounts for the "Selected element" drop down */
+        height: calc(var(--spacing-GoldenUnit) + 101px);
         width: var(--size-SidebarWidth);
     }
 }

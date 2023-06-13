@@ -65,15 +65,9 @@ const ReloadNeosUiButton = (props: { i18nRegistry: I18nRegistry }) => {
 };
 
 const ErrorFallback = (props: { error: any, i18nRegistry: I18nRegistry }) => {
-    // @ts-ignore
-    const isDev = window.neos?.systemEnv.startsWith('Development');
-
     return <div className={styles.container}>
         <div>
-            {isDev
-                ? <img style={{height: '48px'}} src="/_Resources/Static/Packages/Neos.Neos.UI/Images/neos-logo-enhanced.gif" title="This... This can't be. We programm without bugs." alt="Neos Logo" />
-                : <Logo />
-            }
+            <Logo />
             <h1 className={styles.title}>{props.i18nRegistry.translate('Neos.Neos.Ui:Main:errorBoundary.title')}</h1>
             <p>{props.i18nRegistry.translate('Neos.Neos.Ui:Main:errorBoundary.description')}</p>
 

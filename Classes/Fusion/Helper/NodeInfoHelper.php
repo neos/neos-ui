@@ -329,15 +329,15 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
 
             $nodePath = $subgraph->retrieveNodePath($node->nodeAggregateId);
-            if (array_key_exists($nodePath->value, $renderedNodes)) {
-                $renderedNodes[$nodePath->value]['matched'] = true;
+            if (array_key_exists($nodePath->serializeToString(), $renderedNodes)) {
+                $renderedNodes[$nodePath->serializeToString()]['matched'] = true;
             } elseif ($renderedNode = $this->renderNodeWithMinimalPropertiesAndChildrenInformation(
                 $node,
                 $controllerContext,
                 $baseNodeTypeOverride
             )) {
                 $renderedNode['matched'] = true;
-                $renderedNodes[$nodePath->value] = $renderedNode;
+                $renderedNodes[$nodePath->serializeToString()] = $renderedNode;
             } else {
                 continue;
             }
@@ -351,8 +351,8 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
             $parentNodePath = $subgraph->retrieveNodePath($parentNode->nodeAggregateId);
             while ($parentNode->nodeType->isOfType($baseNodeTypeOverride)) {
-                if (array_key_exists($parentNodePath->value, $renderedNodes)) {
-                    $renderedNodes[$parentNodePath->value]['intermediate'] = true;
+                if (array_key_exists($parentNodePath->serializeToString(), $renderedNodes)) {
+                    $renderedNodes[$parentNodePath->serializeToString()]['intermediate'] = true;
                 } else {
                     $renderedParentNode = $this->renderNodeWithMinimalPropertiesAndChildrenInformation(
                         $parentNode,
@@ -361,7 +361,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
                     );
                     if ($renderedParentNode) {
                         $renderedParentNode['intermediate'] = true;
-                        $renderedNodes[$parentNodePath->value] = $renderedParentNode;
+                        $renderedNodes[$parentNodePath->serializeToString()] = $renderedParentNode;
                     }
                 }
                 $parentNode = $subgraph->findParentNode($parentNode->nodeAggregateId);

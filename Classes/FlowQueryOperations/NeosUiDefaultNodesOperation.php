@@ -85,7 +85,7 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
         if ($currentNode) {
             $currentNodePath = $subgraph->retrieveNodePath($currentNode->nodeAggregateId);
             $siteNodePath = $subgraph->retrieveNodePath($siteNode->nodeAggregateId);
-            $parentNodeIsUnderneathSiteNode = str_starts_with($currentNodePath->value, $siteNodePath->value);
+            $parentNodeIsUnderneathSiteNode = str_starts_with($currentNodePath->serializeToString(), $siteNodePath->serializeToString());
             while ($currentNode instanceof Node
                 && !$currentNode->nodeAggregateId->equals($siteNode->nodeAggregateId)
                 && $parentNodeIsUnderneathSiteNode

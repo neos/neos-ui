@@ -9,7 +9,7 @@ const cleanupContentBeforeCommit = content => {
         return '';
     }
 
-    if (content.match(/^<span>/) && content.match(/<\/span>$/)) {
+    if (content.match(/^<span>[^<]*<\/span>$/)) {
         return content
             .replace(/^<span>/, '')
             .replace(/<\/span>$/, '');

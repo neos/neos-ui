@@ -155,11 +155,15 @@ class NodePropertyConversionService
      * Convert raw value to integer
      *
      * @param mixed $rawValue
-     * @return integer
+     * @return null|integer
      */
     protected function convertInteger($rawValue)
     {
-        return (int)$rawValue;
+        if (is_numeric($rawValue)) {
+            return (int) $rawValue;
+        }
+
+        return null;
     }
 
     /**

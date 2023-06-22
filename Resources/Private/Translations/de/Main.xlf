@@ -518,6 +518,30 @@
                 <source>nodes</source>
         <target state="translated">Knoten</target>
       </trans-unit>
+      <trans-unit id="errorBoundary.copyTechnicalDetails" xml:space="preserve">
+                <source>Copy technical details</source>
+        <target state="translated">Technische Details kopieren</target>
+      </trans-unit>
+      <trans-unit id="errorBoundary.technicalDetailsCopied" xml:space="preserve">
+                <source>Technical details copied</source>
+        <target state="translated">Technische Details kopiert</target>
+      </trans-unit>
+      <trans-unit id="errorBoundary.title" xml:space="preserve">
+                <source>Sorry, but the Neos UI could not recover from this error.</source>
+        <target state="translated">Es tut uns leid, aber die Neos UI konnte sich von diesem Fehler nicht wiederherstellen.</target>
+      </trans-unit>
+      <trans-unit id="errorBoundary.description" xml:space="preserve">
+                <source>Please reload the application, or contact your system administrator with the given details.</source>
+        <target state="translated">Bitte laden Sie die Anwendung neu, oder wenden Sie sich mit den angegebenen Details an Ihren Systemadministrator.</target>
+      </trans-unit>
+      <trans-unit id="errorBoundary.footer" xml:space="preserve">
+                <source>For more information about the error please refer to the JavaScript console.</source>
+        <target state="translated">Weitere Informationen zu diesem Fehler finden Sie in der JavaScript-Konsole.</target>
+      </trans-unit>
+      <trans-unit id="errorBoundary.reloadUi" xml:space="preserve">
+                <source>Reload Neos UI</source>
+        <target state="translated">Neos UI neu laden</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

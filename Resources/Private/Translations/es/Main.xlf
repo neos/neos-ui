@@ -474,6 +474,30 @@
                 <source>Maximum</source>
         <target state="translated">Máximo</target>
       </trans-unit>
+      <trans-unit id="errorBoundary.copyTechnicalDetails" xml:space="preserve">
+                <source>Copy technical details</source>
+        <target state="translated">Copiar los detalles técnicos</target>
+      </trans-unit>
+      <trans-unit id="errorBoundary.technicalDetailsCopied" xml:space="preserve">
+                <source>Technical details copied</source>
+        <target state="translated">Detalles técnicos copiados</target>
+      </trans-unit>
+      <trans-unit id="errorBoundary.reloadUi" xml:space="preserve">
+                <source>Reload Neos UI</source>
+        <target state="translated">Recargar la interfaz de usuario de Neo</target>
+      </trans-unit>
+      <trans-unit id="errorBoundary.title" xml:space="preserve">
+                <source>Sorry, but the Neos UI could not recover from this error.</source>
+        <target state="translated">Lo sentimos, pero la interfaz de usuario de Neos no pudo recuperarse de este error.</target>
+      </trans-unit>
+      <trans-unit id="errorBoundary.footer" xml:space="preserve">
+                <source>For more information about the error please refer to the JavaScript console.</source>
+        <target state="translated">Para obtener más información sobre el error, consulta la consola de JavaScript.</target>
+      </trans-unit>
+      <trans-unit id="errorBoundary.description" xml:space="preserve">
+                <source>Please reload the application, or contact your system administrator with the given details.</source>
+        <target state="translated">Por favor, vuelve a cargar la aplicación o ponte en contacto con el administrador del sistema con los detalles proporcionados.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

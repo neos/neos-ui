@@ -16,6 +16,7 @@ use Neos\ContentRepository\Core\CommandHandler\CommandInterface;
 use Neos\ContentRepository\Core\Feature\NodeCreation\Command\CreateNodeAggregateWithNode;
 use Neos\ContentRepository\Core\Feature\NodeDisabling\Command\DisableNodeAggregate;
 use Neos\ContentRepository\Core\Feature\NodeDisabling\Command\EnableNodeAggregate;
+use Neos\ContentRepository\Core\Feature\NodeDuplication\Command\CopyNodesRecursively;
 use Neos\ContentRepository\Core\Feature\NodeModification\Command\SetNodeProperties;
 use Neos\ContentRepository\Core\Feature\NodeModification\Dto\PropertyValuesToWrite;
 use Neos\ContentRepository\Core\Feature\NodeReferencing\Command\SetNodeReferences;
@@ -29,34 +30,51 @@ use Neos\ContentRepository\Core\Feature\NodeReferencing\Command\SetNodeReference
  *
  * All commands will be executed blocking.
  *
- * @api except the constructor
+ * You can retrieve the subgraph or the parent node (where the first node will be created in) the following way:
+ *
+ *  $subgraph = $contentRepository->getContentGraph()->getSubgraph(
+ *      $commands->first->contentStreamId,
+ *      $commands->first->originDimensionSpacePoint->toDimensionSpacePoint(),
+ *      VisibilityConstraints::frontend()
+ *  );
+ *  $parentNode = $subgraph->findNodeById($commands->first->parentNodeAggregateId);
+ *
+ * @api Note: The constructor and {@see self::fromFirstCommand} are not part of the public API
  */
-class NodeCreationCommands implements \IteratorAggregate
+final readonly class NodeCreationCommands implements \IteratorAggregate
 {
     /**
      * The initial node creation command.
      * It is only allowed to change its properties via {@see self::withInitialPropertyValues()}
      */
-    public readonly CreateNodeAggregateWithNode $first;
+    public CreateNodeAggregateWithNode $first;
 
     /**
      * Add a list of commands that are executed after the initial created command was run.
      * This allows to create child-nodes and append other allowed commands.
      *
-     * @var array<int|string, CreateNodeAggregateWithNode|SetNodeProperties|DisableNodeAggregate|EnableNodeAggregate|SetNodeReferences>
+     * @var array<int|string, CreateNodeAggregateWithNode|SetNodeProperties|DisableNodeAggregate|EnableNodeAggregate|SetNodeReferences|CopyNodesRecursively>
      */
-    public readonly array $additionalCommands;
+    public array $additionalCommands;
+
+    private function __construct(
+        CreateNodeAggregateWithNode $first,
+        CreateNodeAggregateWithNode|SetNodeProperties|DisableNodeAggregate|EnableNodeAggregate|SetNodeReferences|CopyNodesRecursively ...$additionalCommands
+    ) {
+        $this->first = $first;
+        $this->additionalCommands = $additionalCommands;
+    }
 
     /**
      * @internal to guarantee that the initial create command is mostly preserved as intended.
      * You can use {@see self::withInitialPropertyValues()} to add new properties of the to be created node.
      */
-    public function __construct(
-        CreateNodeAggregateWithNode $first,
-        CreateNodeAggregateWithNode|SetNodeProperties|DisableNodeAggregate|EnableNodeAggregate|SetNodeReferences ...$additionalCommands
-    ) {
-        $this->first = $first;
-        $this->additionalCommands = $additionalCommands;
+    public static function fromFirstCommand(
+        CreateNodeAggregateWithNode $firstCreateNodeAggregateWithNodeCommand,
+    ): self {
+        return new self(
+            $firstCreateNodeAggregateWithNodeCommand,
+        );
     }
 
     /**
@@ -71,7 +89,7 @@ class NodeCreationCommands implements \IteratorAggregate
     }
 
     public function withAdditionalCommands(
-        CreateNodeAggregateWithNode|SetNodeProperties|DisableNodeAggregate|EnableNodeAggregate|SetNodeReferences ...$additionalCommands
+        CreateNodeAggregateWithNode|SetNodeProperties|DisableNodeAggregate|EnableNodeAggregate|SetNodeReferences|CopyNodesRecursively ...$additionalCommands
     ): self {
         return new self($this->first, ...$this->additionalCommands, ...$additionalCommands);
     }

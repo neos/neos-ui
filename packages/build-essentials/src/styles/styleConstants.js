@@ -18,10 +18,11 @@ const config = {
     },
     zIndex: {
         secondaryToolbar: ['linkIconButtonFlyout'],
-        flashMessageContainer: '6',
+        flashMessageContainer: '7',
         loadingIndicatorContainer: '5',
         secondaryInspector: ['context', 'iframe', 'close'],
-        secondaryInspectorElevated: ['context', 'dropdownContents'],
+        secondaryInspectorElevated: '6',
+        'secondaryInspectorElevated-DropDownContents': '7',
         dialog: '5',
         fullScreenClose: ['context'],
         drawer: ['context'],

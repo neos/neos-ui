@@ -24,13 +24,13 @@
     --transition-Default: .25s;
     --transition-Slow: .5s;
     --zIndex-SecondaryToolbar-LinkIconButtonFlyout: 1;
-    --zIndex-FlashMessageContainer: 60;
+    --zIndex-FlashMessageContainer: 70;
     --zIndex-LoadingIndicatorContainer: 50;
     --zIndex-SecondaryInspector-Context: 1;
     --zIndex-SecondaryInspector-Iframe: 2;
     --zIndex-SecondaryInspector-Close: 3;
-    --zIndex-SecondaryInspectorElevated-Context: 1;
-    --zIndex-SecondaryInspectorElevated-DropdownContents: 2;
+    --zIndex-SecondaryInspectorElevated: 60;
+    --zIndex-SecondaryInspectorElevated-DropdownContents: 70;
     --zIndex-Dialog: 55;
     --zIndex-FullScreenClose-Context: 1;
     --zIndex-Drawer: 45;

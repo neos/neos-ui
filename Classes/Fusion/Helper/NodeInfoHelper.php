@@ -12,6 +12,7 @@ namespace Neos\Neos\Ui\Fusion\Helper;
  */
 
 use Neos\ContentRepository\Core\Projection\ContentGraph\ContentSubgraphInterface;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\CountAncestorNodesFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindChildNodesFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Nodes;
@@ -237,7 +238,10 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             'label' => $node->getLabel(),
             'isAutoCreated' => self::isAutoCreated($node, $subgraph),
             // TODO: depth is expensive to calculate; maybe let's get rid of this?
-            'depth' => $subgraph->retrieveNodePath($node->nodeAggregateId)->getDepth(),
+            'depth' => $subgraph->countAncestorNodes(
+                $node->nodeAggregateId,
+                CountAncestorNodesFilter::create()
+            ),
             'children' => [],
             'parent' => $parentNode ? $nodeAddressFactory->createFromNode($parentNode)->serializeForUri() : null,
             'matchesCurrentDimensions' => $node->subgraphIdentity->dimensionSpacePoint->equals($node->originDimensionSpacePoint),
@@ -328,16 +332,15 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         foreach ($nodes as $node) {
             $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
 
-            $nodePath = $subgraph->retrieveNodePath($node->nodeAggregateId);
-            if (array_key_exists($nodePath->serializeToString(), $renderedNodes)) {
-                $renderedNodes[$nodePath->serializeToString()]['matched'] = true;
+            if (array_key_exists($node->nodeAggregateId->value, $renderedNodes)) {
+                $renderedNodes[$node->nodeAggregateId->value]['matched'] = true;
             } elseif ($renderedNode = $this->renderNodeWithMinimalPropertiesAndChildrenInformation(
                 $node,
                 $controllerContext,
                 $baseNodeTypeOverride
             )) {
                 $renderedNode['matched'] = true;
-                $renderedNodes[$nodePath->serializeToString()] = $renderedNode;
+                $renderedNodes[$node->nodeAggregateId->value] = $renderedNode;
             } else {
                 continue;
             }
@@ -349,10 +352,9 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
                 continue;
             }
 
-            $parentNodePath = $subgraph->retrieveNodePath($parentNode->nodeAggregateId);
             while ($parentNode->nodeType->isOfType($baseNodeTypeOverride)) {
-                if (array_key_exists($parentNodePath->serializeToString(), $renderedNodes)) {
-                    $renderedNodes[$parentNodePath->serializeToString()]['intermediate'] = true;
+                if (array_key_exists($parentNode->nodeAggregateId->value, $renderedNodes)) {
+                    $renderedNodes[$parentNode->nodeAggregateId->value]['intermediate'] = true;
                 } else {
                     $renderedParentNode = $this->renderNodeWithMinimalPropertiesAndChildrenInformation(
                         $parentNode,
@@ -361,7 +363,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
                     );
                     if ($renderedParentNode) {
                         $renderedParentNode['intermediate'] = true;
-                        $renderedNodes[$parentNodePath->serializeToString()] = $renderedParentNode;
+                        $renderedNodes[$parentNode->nodeAggregateId->value] = $renderedParentNode;
                     }
                 }
                 $parentNode = $subgraph->findParentNode($parentNode->nodeAggregateId);
@@ -401,8 +403,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
 
         return array_reduce(
-            $this->getChildNodes($node, $this->buildContentChildNodeFilterString())
-                ->getIterator()->getArrayCopy(),
+            iterator_to_array($this->getChildNodes($node, $this->buildContentChildNodeFilterString())),
             $reducer,
             [
                 $nodeAddressFactory->createFromNode($node)->serializeForUri()

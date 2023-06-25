@@ -12,9 +12,9 @@ namespace Neos\Neos\Ui\FlowQueryOperations;
  * source code.
  */
 
+use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindAncestorNodesFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindChildNodesFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
-use Neos\ContentRepository\Core\NodeType\NodeTypeConstraintParser;
 use Neos\ContentRepository\Core\Projection\ContentGraph\NodeTypeConstraints;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\FlowQuery\FlowQuery;
@@ -79,21 +79,12 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
 
         $subgraph = $this->contentRepositoryRegistry->subgraphForNode($documentNode);
 
-        // Collect all parents of documentNode up to siteNode
-        $parents = [];
-        $currentNode = $subgraph->findParentNode($documentNode->nodeAggregateId);
-        if ($currentNode) {
-            $currentNodePath = $subgraph->retrieveNodePath($currentNode->nodeAggregateId);
-            $siteNodePath = $subgraph->retrieveNodePath($siteNode->nodeAggregateId);
-            $parentNodeIsUnderneathSiteNode = str_starts_with($currentNodePath->serializeToString(), $siteNodePath->serializeToString());
-            while ($currentNode instanceof Node
-                && !$currentNode->nodeAggregateId->equals($siteNode->nodeAggregateId)
-                && $parentNodeIsUnderneathSiteNode
-            ) {
-                $parents[] = $currentNode->nodeAggregateId->jsonSerialize();
-                $currentNode = $subgraph->findParentNode($currentNode->nodeAggregateId);
-            }
-        }
+        $ancestors = $subgraph->findAncestorNodes(
+            $documentNode->nodeAggregateId,
+            FindAncestorNodesFilter::create(
+                NodeTypeConstraints::fromFilterString('Neos.Neos:Document')
+            )
+        );
 
         $nodes = [
             ($siteNode->nodeAggregateId->value) => $siteNode
@@ -108,7 +99,7 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
             $baseNodeTypeConstraints,
             $loadingDepth,
             $toggledNodes,
-            $parents,
+            $ancestors,
             $subgraph,
             $nodeAddressFactory,
             $contentRepository
@@ -120,7 +111,10 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
                 // load toggled nodes
                 in_array($baseNodeAddress->serializeForUri(), $toggledNodes) ||
                 // load children of all parents of documentNode
-                in_array($baseNode->nodeAggregateId->value, $parents)
+                in_array($baseNode->nodeAggregateId->value, array_map(
+                    fn (Node $node): string => $node->nodeAggregateId->value,
+                    iterator_to_array($ancestors)
+                ))
             ) {
                 foreach ($subgraph->findChildNodes(
                     $baseNode->nodeAggregateId,

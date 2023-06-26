@@ -49,8 +49,7 @@
     left: 0;
     width: calc(100% - var(--size-SidebarWidth));
     height: 100%;
-    z-index: var(--zIndex-UnappliedChangesOverlay-Context);
-    filter: blur(5px);
+    z-index: var(--zIndex-UnappliedChangesOverlay);
     &,
     &::after {
         position: fixed;
@@ -61,7 +60,8 @@
         content: '';
         top: 0;
         right: 0;
-        height: var(--spacing-GoldenUnit);
+        /* 101px accounts for the "Selected element" drop down */
+        height: calc(var(--spacing-GoldenUnit) + 101px);
         width: var(--size-SidebarWidth);
     }
 }

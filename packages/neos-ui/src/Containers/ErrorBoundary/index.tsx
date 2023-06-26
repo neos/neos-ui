@@ -25,7 +25,7 @@ class ErrorBoundary extends React.Component<
     }
 }
 
-const CopyTechnicalDetailsButton = (props: { error: any, i18nRegistry: I18nRegistry } ) => {
+const CopyTechnicalDetailsButton = (props: { error: any, i18nRegistry: I18nRegistry }) => {
     const [hasCopied, setCopied] = React.useState(false);
 
     const copyErrorDetails = () => {
@@ -40,8 +40,8 @@ const CopyTechnicalDetailsButton = (props: { error: any, i18nRegistry: I18nRegis
 
     return <Button onClick={copyErrorDetails} isActive={hasCopied}>
         {!hasCopied ?
-            props.i18nRegistry.translate('Neos.Neos.Ui:Main:errorBoundary.copyTechnicalDetails')
-            : props.i18nRegistry.translate('Neos.Neos.Ui:Main:errorBoundary.technicalDetailsCopied')}
+            props.i18nRegistry.translate('Neos.Neos.Ui:Main:errorBoundary.copyTechnicalDetails') :
+            props.i18nRegistry.translate('Neos.Neos.Ui:Main:errorBoundary.technicalDetailsCopied')}
         &nbsp; <Icon icon="copy" size="sm"/>
     </Button>;
 };

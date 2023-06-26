@@ -4,7 +4,7 @@
   "bugs": "https://github.com/neos/neos-ui/issues",
   "homepage": "https://github.com/neos/neos-ui/blob/master/README.md",
   "license": "GNU GPLv3",
-  "version": "8.2.7",
+  "version": "8.3.0",
   "private": true,
   "resolutions": {
     "moment": "^2.20.1",
@@ -13,7 +13,10 @@
     "react-codemirror2@7.2.1": "patch:react-codemirror2@npm:7.2.1#./patches/react-codemirror2-npm-7.2.1-browserified.patch"
   },
   "scripts": {
-    "lint": "tsc --noemit && yarn eslint packages/*/src/**/*.{js,jsx,ts,tsx} && stylelint packages/*/src/**/*.css"
+    "lint": "tsc --noemit && yarn eslint 'packages/*/src/**/*.{js,jsx,ts,tsx}' && stylelint 'packages/*/src/**/*.css'",
+    "test": "NODE_ENV=test jest --testMatch '**/packages/*/src/**/*.spec.{js,jsx,ts,tsx}'",
+    "test-watch": "yarn test --watch",
+    "test-update-snapshots": "yarn test -u"
   },
   "engines": {
     "node": "~16"
@@ -38,5 +41,8 @@
   "workspaces": [
     "packages/*"
   ],
+  "jest": {
+    "preset": "@neos-project/jest-preset-neos-ui"
+  },
   "packageManager": "yarn@3.2.0"
 }

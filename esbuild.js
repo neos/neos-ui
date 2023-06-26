@@ -41,10 +41,7 @@ const options = {
             setup: ({onResolve, onLoad, resolve}) => {
                 // exclude CKEditor styles
                 // the filter must match the import statement - and as one usually uses relative paths we cannot look for `@ckeditor` here
-                // the most correct way would be to look for all `/\.css/` - but this draws performance as we would intercept each css file
-                // so we use the the longest/most expressive regex that tries to match all ckeditor includes
-                // and luckely all includes look like `../theme/link.css` so we use the theme prefix `/theme\/[^.]+\.css$/`
-                // @todo i cant measure any time differences ... so using .css
+                // we are currently intercepting all `/\.css/` files, as this is the most accurate way and has nearly no impact on performance
                 onResolve({filter: /\.css$/, namespace: 'file'}, ({path, ...options}) => {
                     if (!options.importer.includes(`${sep}@ckeditor${sep}`)) {
                         return resolve(path, {...options, namespace: 'noRecurse'})

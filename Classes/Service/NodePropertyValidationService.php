@@ -25,7 +25,6 @@ use Psr\Log\LoggerInterface;
  */
 class NodePropertyValidationService
 {
-
     /**
      * @Flow\Inject
      * @var LoggerInterface

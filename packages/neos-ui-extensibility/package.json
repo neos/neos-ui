@@ -1,7 +1,7 @@
 {
   "name": "@neos-project/neos-ui-extensibility",
-  "version": "8.2.6",
-  "description": "Code only extensibility mechanisms for the Neos CMS UI",
+  "version": "8.3.0",
+  "description": "Core of the extensibility mechanisms for the Neos UI",
   "repository": "neos/neos-ui",
   "bugs": "https://github.com/neos/neos-ui/issues",
   "homepage": "https://github.com/neos/neos-ui/blob/master/README.md",
@@ -9,22 +9,18 @@
   "publishConfig": {
     "main": "./dist/index.js"
   },
+  "files": [
+    "dist",
+    "extensibilityMap.json"
+  ],
   "scripts": {
-    "test": "yarn jest -w 2 --coverage",
-    "test:watch": "yarn jest --watch",
-    "build": "yarn tsc --declaration",
-    "build:watch": "yarn tsc --watch",
-    "jest": "NODE_ENV=test jest"
+    "build": "yarn tsc --declaration"
   },
   "devDependencies": {
     "@neos-project/jest-preset-neos-ui": "workspace:*",
-    "@neos-project/neos-ui-build": "workspace:*",
     "typescript": "^4.6.4"
   },
   "dependencies": {
     "@neos-project/positional-array-sorter": "workspace:*"
-  },
-  "jest": {
-    "preset": "@neos-project/jest-preset-neos-ui"
   }
 }

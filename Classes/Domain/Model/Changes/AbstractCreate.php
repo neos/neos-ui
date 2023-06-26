@@ -22,6 +22,7 @@ use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateId;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeName;
 use Neos\Neos\Ui\Exception\InvalidNodeCreationHandlerException;
 use Neos\Neos\Ui\NodeCreationHandler\NodeCreationHandlerInterface;
+use Neos\Utility\PositionalArraySorter;
 
 abstract class AbstractCreate extends AbstractStructuralChange
 {
@@ -141,7 +142,7 @@ abstract class AbstractCreate extends AbstractStructuralChange
             || !is_array($nodeType->getOptions()['nodeCreationHandlers'])) {
             return $command;
         }
-        foreach ($nodeType->getOptions()['nodeCreationHandlers'] as $nodeCreationHandlerConfiguration) {
+        foreach ((new PositionalArraySorter($nodeType->getOptions()['nodeCreationHandlers']))->toArray() as $nodeCreationHandlerConfiguration) {
             $nodeCreationHandler = new $nodeCreationHandlerConfiguration['nodeCreationHandler']();
             if (!$nodeCreationHandler instanceof NodeCreationHandlerInterface) {
                 throw new InvalidNodeCreationHandlerException(sprintf(

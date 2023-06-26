@@ -21,12 +21,15 @@ transform({
 
 /**
  * lightningcss AST visitor (plugin), to compile the used CSS variables directly into the css
- * 
+ *
  * @returns {import("lightningcss").Visitor}
  */
 const compileWithCssVariables = () => ({
     Variable: (variable) => {
         const variableValueTokens = cssVariables[variable.name.ident];
+        if (!variableValueTokens) {
+            throw new Error(`The css variable "${variable.name.ident}" cannot be compiled, because it was not declared.`);
+        }
         return [
             ...variableValueTokens,
             {

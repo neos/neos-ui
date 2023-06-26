@@ -19,7 +19,6 @@ use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
  */
 interface ReferencingChangeInterface extends ChangeInterface
 {
-
     /**
      * Set the reference
      *

@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {Provider} from 'react-redux';
+import ErrorBoundary from './ErrorBoundary';
 import {DndProvider} from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import style from './style.css';
@@ -15,19 +16,21 @@ class Root extends PureComponent {
         const App = containerRegistry.get('App');
 
         return (
-            <div className={style.applicationWrapper}>
-                <Provider store={store}>
-                    <DndProvider backend={HTML5Backend}>
-                        <Neos
-                            globalRegistry={globalRegistry}
-                            configuration={configuration}
-                            routes={routes}
-                            >
-                            <App globalRegistry={globalRegistry} menu={menu}/>
-                        </Neos>
-                    </DndProvider>
-                </Provider>
-            </div>
+            <ErrorBoundary i18nRegistry={globalRegistry.get('i18n')}>
+                <div className={style.applicationWrapper}>
+                    <Provider store={store}>
+                        <DndProvider backend={HTML5Backend}>
+                            <Neos
+                                globalRegistry={globalRegistry}
+                                configuration={configuration}
+                                routes={routes}
+                                >
+                                <App globalRegistry={globalRegistry} menu={menu}/>
+                            </Neos>
+                        </DndProvider>
+                    </Provider>
+                </div>
+            </ErrorBoundary>
         );
     }
 }

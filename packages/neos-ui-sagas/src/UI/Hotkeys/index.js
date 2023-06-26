@@ -37,7 +37,7 @@ export function * handleHotkeys({globalRegistry, store}) {
 
         // Pause mousetrap during inline editing
         if (action.type === actionTypes.UI.ContentCanvas.SET_CURRENTLY_EDITED_PROPERTY_NAME) {
-            mousetrapPaused = action.payload.propertyName !== '';
+            mousetrapPaused = action.payload !== '';
         }
     }
 }

@@ -191,6 +191,7 @@ export interface NodeType {
                 [propName: string]: {
                     type?: string;
                     ui?: {
+                        hidden?: boolean | string;
                         label?: string;
                         editor?: string;
                         editorOptions?: {

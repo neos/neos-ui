@@ -6,7 +6,7 @@
     border-bottom-width: 0;
 }
 .secondaryInspector--isElevated {
-    z-index: var(--zIndex-SecondaryInspectorElevated-Context);
+    z-index: var(--zIndex-SecondaryInspectorElevated);
 }
 .secondaryInspector .close {
     position: absolute;

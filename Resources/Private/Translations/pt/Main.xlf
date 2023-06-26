@@ -60,11 +60,11 @@
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__hideOptions" xml:space="preserve">
                 <source>Hide link options</source>
-        <target xml:lang="pt-BR" state="needs-translation">Hide link options</target>
+        <target xml:lang="pt-BR" state="needs-translation">Ocultar opções da ligação</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__showOptions" xml:space="preserve">
                 <source>Link options</source>
-        <target xml:lang="pt-BR" state="needs-translation">Link options</target>
+        <target xml:lang="pt-BR" state="needs-translation">Opções de ligação</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__noFollow" xml:space="preserve">
                 <source>No follow</source>
@@ -72,7 +72,7 @@
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__targetBlank" xml:space="preserve">
                 <source>Open in new window</source>
-        <target xml:lang="pt-BR" state="needs-translation">Open in new window</target>
+        <target xml:lang="pt-BR" state="needs-translation">Abrir numa janela nova</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__titlePlaceholder" xml:space="preserve">
                 <source>Enter link title</source>
@@ -92,23 +92,23 @@
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__edit" xml:space="preserve">
                 <source>Edit link</source>
-        <target xml:lang="pt-BR" state="needs-translation">Edit link</target>
+        <target xml:lang="pt-BR" state="needs-translation">Editar a ligação</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__apply" xml:space="preserve">
                 <source>Apply link</source>
-        <target xml:lang="pt-BR" state="needs-translation">Apply link</target>
+        <target xml:lang="pt-BR" state="needs-translation">Aplicar a ligação</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__placeholder" xml:space="preserve">
                 <source>Paste a link, or search</source>
-        <target xml:lang="pt-BR" state="needs-translation">Paste a link, or search</target>
+        <target xml:lang="pt-BR" state="needs-translation">Colar uma ligação ou pesquisar</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__formatAsHttp" xml:space="preserve">
                 <source>Format as http link?</source>
-        <target xml:lang="pt-BR" state="needs-translation">Format as http link?</target>
+        <target xml:lang="pt-BR" state="needs-translation">Formatar como ligação de http?</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__formatAsEmail" xml:space="preserve">
                 <source>Format as email?</source>
-        <target xml:lang="pt-BR" state="needs-translation">Format as email?</target>
+        <target xml:lang="pt-BR" state="needs-translation">Formatar como e-mail?</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__ordered-list" xml:space="preserve">
                 <source>Ordered list</source>
@@ -147,11 +147,11 @@
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__tableRow" xml:space="preserve">
                 <source>Row</source>
-        <target xml:lang="pt-BR" state="needs-translation">Row</target>
+        <target xml:lang="pt-BR" state="needs-translation">Linha</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__tableMergeCells" xml:space="preserve">
                 <source>Merge cells</source>
-        <target xml:lang="pt-BR" state="needs-translation">Merge cells</target>
+        <target xml:lang="pt-BR" state="needs-translation">Unir células</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__remove-format" xml:space="preserve">
                 <source>Remove format</source>
@@ -177,55 +177,55 @@
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__insertTableColumnLeft" xml:space="preserve">
                 <source>Insert column before</source>
-        <target xml:lang="pt-BR" state="needs-translation">Insert column before</target>
+        <target xml:lang="pt-BR" state="needs-translation">Inserir coluna antes</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__insertTableColumnRight" xml:space="preserve">
                 <source>Insert column after</source>
-        <target xml:lang="pt-BR" state="needs-translation">Insert column after</target>
+        <target xml:lang="pt-BR" state="needs-translation">Inserir coluna após</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__removeTableColumn" xml:space="preserve">
                 <source>Delete column</source>
-        <target xml:lang="pt-BR" state="needs-translation">Delete column</target>
+        <target xml:lang="pt-BR" state="needs-translation">Apagar coluna</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__setTableRowHeader" xml:space="preserve">
                 <source>Header row</source>
-        <target xml:lang="pt-BR" state="needs-translation">Header row</target>
+        <target xml:lang="pt-BR" state="needs-translation">Linha de cabeçalho</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__insertTableRowBelow" xml:space="preserve">
                 <source>Insert row below</source>
-        <target xml:lang="pt-BR" state="needs-translation">Insert row below</target>
+        <target xml:lang="pt-BR" state="needs-translation">Inserir linha abaixo</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__insertTableRowAbove" xml:space="preserve">
                 <source>Insert row above</source>
-        <target xml:lang="pt-BR" state="needs-translation">Insert row above</target>
+        <target xml:lang="pt-BR" state="needs-translation">Inserir linha acima</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__removeTableRow" xml:space="preserve">
                 <source>Delete row</source>
-        <target xml:lang="pt-BR" state="needs-translation">Delete row</target>
+        <target xml:lang="pt-BR" state="needs-translation">Apagar linha</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__mergeTableCellUp" xml:space="preserve">
                 <source>Merge cell up</source>
-        <target xml:lang="pt-BR" state="needs-translation">Merge cell up</target>
+        <target xml:lang="pt-BR" state="needs-translation">Mesclar célula para cima</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__mergeTableCellRight" xml:space="preserve">
                 <source>Merge cell right</source>
-        <target xml:lang="pt-BR" state="needs-translation">Merge cell right</target>
+        <target xml:lang="pt-BR" state="needs-translation">Mesclar célula à direita</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__mergeTableCellDown" xml:space="preserve">
                 <source>Merge cell down</source>
-        <target xml:lang="pt-BR" state="needs-translation">Merge cell down</target>
+        <target xml:lang="pt-BR" state="needs-translation">Mesclar célula para baixo</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__mergeTableCellLeft" xml:space="preserve">
                 <source>Merge cell left</source>
-        <target xml:lang="pt-BR" state="needs-translation">Merge cell left</target>
+        <target xml:lang="pt-BR" state="needs-translation">Mesclar célula à esquerda</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__splitTableCellVertically" xml:space="preserve">
                 <source>Split cell vertically</source>
-        <target xml:lang="pt-BR" state="needs-translation">Split cell vertically</target>
+        <target xml:lang="pt-BR" state="needs-translation">Dividir célula verticalmente</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__splitTableCellHorizontally" xml:space="preserve">
                 <source>Split cell horizontally</source>
-        <target xml:lang="pt-BR" state="needs-translation">Split cell horizontally</target>
+        <target xml:lang="pt-BR" state="needs-translation">Dividir célula horizontalmente</target>
       </trans-unit>
       <trans-unit id="createNew" xml:space="preserve">
                 <source>Create new</source>
@@ -257,15 +257,15 @@
       </trans-unit>
       <trans-unit id="Shortcut__UI.FullScreen.toggle" xml:space="preserve">
                 <source>Toggle full screen</source>
-        <target xml:lang="pt-BR" state="needs-translation">Toggle full screen</target>
+        <target xml:lang="pt-BR" state="needs-translation">Alternar ecrã inteiro</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.LeftSideBar.toggle" xml:space="preserve">
                 <source>Toggle left sidebar</source>
-        <target xml:lang="pt-BR" state="needs-translation">Toggle left sidebar</target>
+        <target xml:lang="pt-BR" state="needs-translation">Alternar a barra lateral esquerda</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.LeftSideBar.toggleContentTree" xml:space="preserve">
                 <source>Toggle contenttree</source>
-        <target xml:lang="pt-BR" state="needs-translation">Toggle contenttree</target>
+        <target xml:lang="pt-BR" state="needs-translation">Alternar o painel de conteúdo</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.AddNodeModal.close" xml:space="preserve">
                 <source>Close Add-Node-Modal</source>
@@ -273,7 +273,7 @@
       </trans-unit>
       <trans-unit id="Shortcut__UI.Drawer.toggle" xml:space="preserve">
                 <source>Toggle Drawer</source>
-        <target xml:lang="pt-BR" state="needs-translation">Toggle Drawer</target>
+        <target xml:lang="pt-BR" state="needs-translation">Alternar a Gaveta</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.EditModePanel.toggle" xml:space="preserve">
                 <source>Toggle EditModePanel</source>

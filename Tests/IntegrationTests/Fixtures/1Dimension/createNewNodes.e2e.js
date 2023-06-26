@@ -1,6 +1,6 @@
 import {Selector, RequestLogger} from 'testcafe';
 import {ReactSelector} from 'testcafe-react-selectors';
-import {beforeEach, subSection, checkPropTypes} from '../../utils';
+import {createBeforeEach, subSection, checkPropTypes} from '../../utils';
 import {Page} from '../../pageModel';
 
 /* global fixture:true */
@@ -9,7 +9,7 @@ const changeRequestLogger = RequestLogger(request => request.url.endsWith('/neos
 const contentIframeSelector = Selector('[name="neos-content-main"]', {timeout: 2000});
 
 fixture`Create new nodes`
-    .beforeEach(beforeEach)
+    .beforeEach(createBeforeEach({ pageTitle: 'Create new nodes' })) // Create new nodes doesnt work
     .afterEach(() => checkPropTypes())
     .requestHooks(changeRequestLogger);
 
@@ -160,9 +160,16 @@ test('Can create content node from inside InlineUI', async t => {
     const headlineTitle = 'Helloworld!';
     subSection('Create a headline node');
     await Page.waitForIframeLoading(t);
+
+    await t.switchToIframe(contentIframeSelector)
+
+    try {
+        await t.click(Selector('.neos-contentcollection'));
+    } catch (error) {
+        console.log(error);
+    }
+
     await t
-        .switchToIframe(contentIframeSelector)
-        .click(Selector('.neos-contentcollection'))
         .click(Selector('#neos-InlineToolbar-AddNode'))
         .switchToMainWindow()
         .click(Selector('button#into'))
@@ -172,7 +179,7 @@ test('Can create content node from inside InlineUI', async t => {
     await Page.waitForIframeLoading(t);
     await t
         .switchToIframe(contentIframeSelector)
-        .typeText(Selector('.test-headline h1'), headlineTitle)
+        .typeText(Selector('.test-headline [contenteditable="true"]'), headlineTitle)
         .expect(Selector('.neos-contentcollection').withText(headlineTitle).exists).ok('Typed headline text exists');
 
     subSection('Inline validation');
@@ -180,8 +187,8 @@ test('Can create content node from inside InlineUI', async t => {
     await t.wait(600);
     await changeRequestLogger.clear();
     await t
-        .expect(Selector('.test-headline h1').exists).ok('Validation tooltip appeared')
-        .click('.test-headline h1')
+        .expect(Selector('.test-headline').exists).ok('Validation tooltip appeared')
+        .click('.test-headline [contenteditable="true"]')
         .pressKey('ctrl+a delete')
         .switchToMainWindow()
         .wait(600)
@@ -190,20 +197,20 @@ test('Can create content node from inside InlineUI', async t => {
         .expect(changeRequestLogger.count(() => true)).eql(0, 'No requests were fired with invalid state');
     await t
         .switchToIframe(contentIframeSelector)
-        .typeText(Selector('.test-headline h1'), 'Some text')
+        .typeText(Selector('.test-headline [contenteditable="true"]'), 'Some text')
         .wait(600);
     await t.expect(changeRequestLogger.count(() => true)).eql(1, 'Request fired when field became valid');
 
     subSection('Create a link to node');
     const linkTargetPage = 'Link target';
     await t
-        .doubleClick('.test-headline h1')
+        .doubleClick('.test-headline')
         .switchToMainWindow()
         .click(ReactSelector('EditorToolbar LinkButton'))
         .typeText(ReactSelector('EditorToolbar LinkButton TextInput'), linkTargetPage)
         .click(ReactSelector('EditorToolbar ShallowDropDownContents NodeOption'))
         .switchToIframe(contentIframeSelector)
-        .expect(Selector('.test-headline h1 a').withAttribute('href').exists).ok('Newly inserted link exists')
+        .expect(Selector('.test-headline a').withAttribute('href').exists).ok('Newly inserted link exists')
         .switchToMainWindow();
 });
 

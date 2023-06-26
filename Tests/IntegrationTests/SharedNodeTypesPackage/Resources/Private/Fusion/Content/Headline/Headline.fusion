@@ -4,6 +4,6 @@ prototype(Neos.TestNodeTypes:Content.Headline) < prototype(Neos.Neos:ContentComp
     }
 
     renderer = afx`
-        <div class="test-headline">{props.title}</div>
+        <h1 class="test-headline">{props.title}</h1>
     `
 }

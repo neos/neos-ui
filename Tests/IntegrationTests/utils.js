@@ -32,8 +32,12 @@ export async function checkPropTypes() {
 }
 
 export async function beforeEach(t) {
+    await createBeforeEach({ pageTitle: 'Home' })(t)
+}
+
+export const createBeforeEach = ({ pageTitle }) => async function beforeEach(t) {
     await t.useRole(adminUser);
     await waitForReact(30000);
     await PublishDropDown.discardAll();
-    await Page.goToPage('Home');
+    await Page.goToPage(pageTitle);
 }

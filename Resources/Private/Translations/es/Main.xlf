@@ -432,7 +432,7 @@
       </trans-unit>
       <trans-unit id="nodes" xml:space="preserve">
                 <source>nodes</source>
-        <target state="translated">Nodos</target>
+        <target state="translated">nodos</target>
       </trans-unit>
       <trans-unit id="syncUriPathSegment" xml:space="preserve">
                 <source>Syncronize with the title property</source>
@@ -508,27 +508,27 @@
       </trans-unit>
       <trans-unit id="errorBoundary.copyTechnicalDetails" xml:space="preserve">
                 <source>Copy technical details</source>
-        <target state="needs-translation">Copiar los detalles técnicos</target>
+        <target state="translated">Copiar la información técnica</target>
       </trans-unit>
       <trans-unit id="errorBoundary.technicalDetailsCopied" xml:space="preserve">
                 <source>Technical details copied</source>
-        <target state="needs-translation">Detalles técnicos copiados</target>
+        <target state="translated">Información técnica copiada</target>
       </trans-unit>
       <trans-unit id="errorBoundary.reloadUi" xml:space="preserve">
                 <source>Reload Neos UI</source>
-        <target state="needs-translation">Recargar la interfaz de usuario de Neo</target>
+        <target state="translated">Recargar la interfaz del suario de Neos</target>
       </trans-unit>
       <trans-unit id="errorBoundary.title" xml:space="preserve">
                 <source>Sorry, but the Neos UI could not recover from this error.</source>
-        <target state="needs-translation">Lo sentimos, pero la interfaz de usuario de Neos no pudo recuperarse de este error.</target>
+        <target state="translated">Lo sentimos, pero la interfaz de usuario de Neos no ha podido recuperarse de este error.</target>
       </trans-unit>
       <trans-unit id="errorBoundary.description" xml:space="preserve">
                 <source>Please reload the application, or contact your system administrator with the given details.</source>
-        <target state="needs-translation">Por favor, vuelve a cargar la aplicación o ponte en contacto con el administrador del sistema con los detalles proporcionados.</target>
+        <target state="translated">Por favor, vuelve a cargar la aplicación o pónte en contacto con el administrador del sistema con los datos facilitados.</target>
       </trans-unit>
       <trans-unit id="errorBoundary.footer" xml:space="preserve">
                 <source>For more information about the error please refer to the JavaScript console.</source>
-        <target state="needs-translation">Para obtener más información sobre el error, consulta la consola de JavaScript.</target>
+        <target state="translated">Para obtener más información sobre el error, consulta la consola JavaScript.</target>
       </trans-unit>
     </body>
   </file>

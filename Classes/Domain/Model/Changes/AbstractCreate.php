@@ -119,7 +119,7 @@ abstract class AbstractCreate extends AbstractStructuralChange
         $contentRepository->handle($command)->block();
         /** @var Node $newlyCreatedNode */
         $newlyCreatedNode = $this->contentRepositoryRegistry->subgraphForNode($parentNode)
-            ->findChildNodeConnectedThroughEdgeName($parentNode->nodeAggregateId, $nodeName);
+            ->findNodeById($nodeAggregateId);
 
         $this->finish($newlyCreatedNode);
         // NOTE: we need to run "finish" before "addNodeCreatedFeedback"

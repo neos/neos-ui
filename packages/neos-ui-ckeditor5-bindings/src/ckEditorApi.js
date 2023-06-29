@@ -1,21 +1,7 @@
 import debounce from 'lodash.debounce';
 import DecoupledEditor from '@ckeditor/ckeditor5-editor-decoupled/src/decouplededitor';
 import {actions} from '@neos-project/neos-ui-redux-store';
-
-// We remove opening and closing span tags that are produced by the inlineMode plugin
-const cleanupContentBeforeCommit = content => {
-    // TODO: remove when this is fixed: https://github.com/ckeditor/ckeditor5/issues/401
-    if (content.match(/^<([a-z][a-z0-9]*)\b[^>]*>&nbsp;<\/\1>$/)) {
-        return '';
-    }
-
-    if (content.match(/^<span>/) && content.match(/<\/span>$/)) {
-        return content
-            .replace(/^<span>/, '')
-            .replace(/<\/span>$/, '');
-    }
-    return content;
-};
+import {cleanupContentBeforeCommit} from './cleanupContentBeforeCommit'
 
 let currentEditor = null;
 let editorConfig = {};
@@ -48,7 +34,7 @@ export const bootstrap = _editorConfig => {
     editorConfig = _editorConfig;
 };
 
-export const createEditor = store => options => {
+export const createEditor = store => async options => {
     const {propertyDomNode, propertyName, editorOptions, globalRegistry, userPreferences, onChange} = options;
     const ckEditorConfig = editorConfig.configRegistry.getCkeditorConfig({
         editorOptions,
@@ -57,7 +43,7 @@ export const createEditor = store => options => {
         propertyDomNode
     });
 
-    DecoupledEditor
+    return DecoupledEditor
         .create(propertyDomNode, ckEditorConfig)
         .then(editor => {
             editor.ui.focusTracker.on('change:isFocused', event => {
@@ -78,6 +64,7 @@ export const createEditor = store => options => {
 
             editor.model.document.on('change', () => handleUserInteractionCallback());
             editor.model.document.on('change:data', debounce(() => onChange(cleanupContentBeforeCommit(editor.getData())), 500, {maxWait: 5000}));
+            return editor;
         }).catch(e => {
             if (e instanceof TypeError && e.message.match(/Class constructor .* cannot be invoked without 'new'/)) {
                 console.error("Neos.Ui: Youre probably using a CKeditor plugin which needs to be rebuild.\nsee https://github.com/neos/neos-ui/issues/3287\n\nOriginal Error:\n\n" + e.stack);

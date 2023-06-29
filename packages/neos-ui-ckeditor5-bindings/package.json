@@ -4,8 +4,14 @@
   "description": "Prepare CKEditor5 for the Neos CMS UI",
   "private": true,
   "main": "./src/manifest.js",
+  "scripts": {
+    "test": "yarn jest -w 2 --coverage",
+    "test:watch": "yarn jest --watch"
+  },
   "devDependencies": {
-    "@neos-project/babel-preset-neos-ui": "workspace:*"
+    "@neos-project/babel-preset-neos-ui": "workspace:*",
+    "@neos-project/jest-preset-neos-ui": "workspace:*",
+    "esbuild": "~0.17.0"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-alignment": "^16.0.0",
@@ -38,5 +44,8 @@
     "react": "^16.12.0",
     "react-redux": "^7.1.3"
   },
-  "license": "GNU GPLv3"
+  "license": "GNU GPLv3",
+  "jest": {
+    "preset": "@neos-project/jest-preset-neos-ui"
+  }
 }

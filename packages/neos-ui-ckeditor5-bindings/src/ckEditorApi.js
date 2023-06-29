@@ -43,6 +43,16 @@ export const createEditor = store => async options => {
         propertyDomNode
     });
 
+    class NeosEditor extends DecoupledEditor {
+        constructor(...args) {
+            super(...args);
+            // We attach all options for this editor to the editor DOM node, so it would be easier to access them from CKE plugins
+            // this has to be done after / in the constructor as `create` is async and plugins accessing .neos have to account for this
+            // https://github.com/neos/neos-ui/issues/3223
+            this.neos = options;
+        }
+    }
+
     return DecoupledEditor
         .create(propertyDomNode, ckEditorConfig)
         .then(editor => {
@@ -58,9 +68,6 @@ export const createEditor = store => async options => {
                 store.dispatch(actions.UI.ContentCanvas.toggleLinkEditor());
                 cancel();
             });
-
-            // We attach all options for this editor to the editor DOM node, so it would be easier to access them from CKE plugins
-            editor.neos = options;
 
             editor.model.document.on('change', () => handleUserInteractionCallback());
             editor.model.document.on('change:data', debounce(() => onChange(cleanupContentBeforeCommit(editor.getData())), 500, {maxWait: 5000}));

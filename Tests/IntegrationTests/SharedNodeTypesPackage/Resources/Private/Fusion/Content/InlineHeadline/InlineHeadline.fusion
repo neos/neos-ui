@@ -1,0 +1,9 @@
+prototype(Neos.TestNodeTypes:Content.InlineHeadline) < prototype(Neos.Neos:ContentComponent) {
+    title = Neos.Neos:Editable {
+        property = 'title'
+    }
+
+    renderer = afx`
+        <h1 class="test-inline-headline">{props.title}</h1>
+    `
+}

@@ -1494,7 +1494,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ckeditor/ckeditor5-editor-decoupled@npm:^16.0.0":
+"@ckeditor/ckeditor5-editor-decoupled@npm:16.0.0":
   version: 16.0.0
   resolution: "@ckeditor/ckeditor5-editor-decoupled@npm:16.0.0"
   dependencies:
@@ -1504,6 +1504,19 @@ __metadata:
     "@ckeditor/ckeditor5-utils": ^16.0.0
     lodash-es: ^4.17.10
   checksum: c8f4aa63b5dab832a489a173cf37e74beb8a169c774118d68939123d661d20a36f91e847c8d0879137cef35c036740490f3ac3121e2ed472a18cf102c98370c6
+  languageName: node
+  linkType: hard
+
+"@ckeditor/ckeditor5-editor-decoupled@patch:@ckeditor/ckeditor5-editor-decoupled@npm:16.0.0#./patches/@ckeditor-ckeditor5-editor-decoupled-npm-16.0.0-inline-mode.patch::locator=root-workspace-0b6124%40workspace%3A.":
+  version: 16.0.0
+  resolution: "@ckeditor/ckeditor5-editor-decoupled@patch:@ckeditor/ckeditor5-editor-decoupled@npm%3A16.0.0#./patches/@ckeditor-ckeditor5-editor-decoupled-npm-16.0.0-inline-mode.patch::version=16.0.0&hash=29fcf6&locator=root-workspace-0b6124%40workspace%3A."
+  dependencies:
+    "@ckeditor/ckeditor5-core": ^16.0.0
+    "@ckeditor/ckeditor5-engine": ^16.0.0
+    "@ckeditor/ckeditor5-ui": ^16.0.0
+    "@ckeditor/ckeditor5-utils": ^16.0.0
+    lodash-es: ^4.17.10
+  checksum: bdaefd4a0b870ce741ee8fa0963560b4f1e37b14f0fbc12b910667a8993aad186f57e64128ba5a9058ab44d9deea8b0e82b9ec9ed88c1d24afd2c80fea4a8dc9
   languageName: node
   linkType: hard
 
@@ -2325,7 +2338,7 @@ __metadata:
     "@ckeditor/ckeditor5-alignment": ^16.0.0
     "@ckeditor/ckeditor5-basic-styles": ^16.0.0
     "@ckeditor/ckeditor5-core": ^16.0.0
-    "@ckeditor/ckeditor5-editor-decoupled": ^16.0.0
+    "@ckeditor/ckeditor5-editor-decoupled": 16.0.0
     "@ckeditor/ckeditor5-engine": ^16.0.0
     "@ckeditor/ckeditor5-essentials": ^16.0.0
     "@ckeditor/ckeditor5-heading": ^16.0.0

@@ -11,10 +11,6 @@ export default class InlineMode extends Plugin {
     init() {
         const editor = this.editor;
 
-        // we avoid multiple paragraph's to be created - eg when pasting a text with newlines (this will created soft breaks (<br>))
-        editor.model.schema.extend('paragraph', { isLimit: true });
-
-
         // we map paragraph model into plain <span> element in edit mode
         editor.conversion.for('editingDowncast').elementToElement({model: 'paragraph', view: 'span', converterPriority: 'high'});
 

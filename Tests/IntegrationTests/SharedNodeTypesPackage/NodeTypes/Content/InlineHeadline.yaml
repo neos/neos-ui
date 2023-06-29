@@ -1,0 +1,28 @@
+'Neos.TestNodeTypes:Content.InlineHeadline':
+  superTypes:
+    'Neos.Neos:Content': true
+  ui:
+    label: Inline_Headline_Test
+    icon: icon-header
+    position: 200
+    inspector:
+      groups:
+        default:
+          label: 'Default'
+          position: 5
+          icon: 'icon-cogs'
+
+  properties:
+    title:
+      type: string
+      ui:
+        reloadIfChanged: true
+
+        inlineEditable: true
+        inline:
+          editorOptions:
+            autoparagraph: false
+        # we show it also in the inspector so we can easily see the raw text content
+        inspector:
+          group: 'default'
+          editor: 'Neos.Neos/Inspector/Editors/TextAreaEditor'

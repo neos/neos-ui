@@ -5,6 +5,7 @@
   "private": true,
   "main": "./src/manifest.js",
   "devDependencies": {
+    "esbuild": "~0.17.0",
     "@neos-project/babel-preset-neos-ui": "7.3.17",
     "@neos-project/build-essentials": "7.3.17",
     "@neos-project/jest-preset-neos-ui": "7.3.17"

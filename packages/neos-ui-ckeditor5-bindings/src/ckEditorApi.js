@@ -58,7 +58,7 @@ export const bootstrap = _editorConfig => {
     editorConfig = _editorConfig;
 };
 
-export const createEditor = store => options => {
+export const createEditor = store => async options => {
     const {propertyDomNode, propertyName, editorOptions, globalRegistry, userPreferences, onChange} = options;
     const ckEditorConfig = editorConfig.configRegistry.getCkeditorConfig({
         editorOptions,
@@ -67,7 +67,7 @@ export const createEditor = store => options => {
         propertyDomNode
     });
 
-    DecoupledEditor
+    return DecoupledEditor
         .create(propertyDomNode, ckEditorConfig)
         .then(editor => {
             editor.ui.focusTracker.on('change:isFocused', event => {
@@ -88,6 +88,7 @@ export const createEditor = store => options => {
 
             editor.model.document.on('change', () => handleUserInteractionCallback());
             editor.model.document.on('change:data', debounce(() => onChange(cleanupContentBeforeCommit(editor.getData())), 500, {maxWait: 5000}));
+            return editor;
         }).catch(e => console.error(e));
 };
 

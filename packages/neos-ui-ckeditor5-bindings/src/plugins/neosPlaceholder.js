@@ -9,7 +9,7 @@ const htmlIsEmptyish = data => {
         return true;
     }
 
-    if (data.length > 20) {
+    if (data.length > 50) {
         return false;
     }
     const value = data.replace(/[\n|\t|\u200b]*/g, '').toLowerCase().trim();
@@ -17,6 +17,7 @@ const htmlIsEmptyish = data => {
         !value ||
         value === '<br>' ||
         value === '<span>&nbsp;</span>' ||
+        value === '<neos-inline-wrapper>&nbsp;</neos-inline-wrapper>' ||
         value === '<p>&nbsp;</p>' ||
         value === '<p>&nbsp;<br></p>' ||
         value === '<p><br></p>' ||

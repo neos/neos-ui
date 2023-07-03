@@ -2,6 +2,7 @@ import debounce from 'lodash.debounce';
 import DecoupledEditor from '@ckeditor/ckeditor5-editor-decoupled/src/decouplededitor';
 import {actions} from '@neos-project/neos-ui-redux-store';
 import {cleanupContentBeforeCommit} from './cleanupContentBeforeCommit'
+import './placeholder.vanilla-css'; // eslint-disable-line no-unused-vars
 
 let currentEditor = null;
 let editorConfig = {};

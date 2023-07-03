@@ -1,7 +1,7 @@
 import CkEditorConfigRegistry from './registry/CkEditorConfigRegistry';
 import {$add, $get, $or} from 'plow-js';
+import {stripTags} from '@neos-project/utils-helpers';
 
-import NeosPlaceholder from './plugins/neosPlaceholder';
 import InlineMode from './plugins/inlineMode';
 import Sub from './plugins/sub';
 import Sup from './plugins/sup';
@@ -82,11 +82,9 @@ export default ckEditorRegistry => {
     //
     // Base CKE configuration
     //
-    config.set('baseConfiguration', (ckEditorConfiguration, {globalRegistry, editorOptions, userPreferences}) => {
-        const i18nRegistry = globalRegistry.get('i18n');
+    config.set('baseConfiguration', (ckEditorConfiguration, {userPreferences}) => {
         return Object.assign(ckEditorConfiguration, {
-            language: String($get('interfaceLanguage', userPreferences)),
-            neosPlaceholder: unescape(i18nRegistry.translate($get('placeholder', editorOptions) || ''))
+            language: String($get('interfaceLanguage', userPreferences))
         });
     });
 
@@ -96,7 +94,6 @@ export default ckEditorRegistry => {
     config.set('essentials', addPlugin(Essentials));
     config.set('paragraph', addPlugin(Paragraph));
     config.set('inlineMode', addPlugin(InlineMode, disableParagraph));
-    config.set('neosPlaceholder', addPlugin(NeosPlaceholder));
     config.set('sub', addPlugin(Sub, $get('formatting.sub')));
     config.set('sup', addPlugin(Sup, $get('formatting.sup')));
     config.set('bold', addPlugin(Bold, $get('formatting.strong')));
@@ -146,6 +143,22 @@ export default ckEditorRegistry => {
                 {model: 'pre', view: 'pre'}
             ]}
     }));
+
+    //
+    // @see https://ckeditor.com/docs/ckeditor5/16.0.0/api/module_core_editor_editorconfig-EditorConfig.html#member-placeholder
+    //
+    config.set('placeholder', (config, {globalRegistry, editorOptions}) => {
+        const i18nRegistry = globalRegistry.get('i18n');
+        const placeholder = $get('placeholder', editorOptions);
+        if (!placeholder) {
+            return config;
+        }
+        return {
+            ...config,
+            // stripTags, because we allow `<p>Edit text here</p>` as placeholder for legacy
+            placeholder: stripTags(i18nRegistry.translate(placeholder))
+        };
+    });
 
     return config;
 };

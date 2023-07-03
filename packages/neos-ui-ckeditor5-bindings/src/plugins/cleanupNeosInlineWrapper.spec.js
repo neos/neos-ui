@@ -1,4 +1,4 @@
-import {cleanupNeosInlineWrapper} from './inlineMode'
+import {cleanupNeosInlineWrapper} from './cleanupNeosInlineWrapper';
 
 const assertCleanedUpContent = (input, expected) => {
     expect(cleanupNeosInlineWrapper(input)).toBe(expected);

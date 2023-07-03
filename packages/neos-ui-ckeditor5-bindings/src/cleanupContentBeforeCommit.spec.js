@@ -1,4 +1,4 @@
-import {cleanupContentBeforeCommit} from './cleanupContentBeforeCommit'
+import {cleanupContentBeforeCommit} from './cleanupContentBeforeCommit';
 
 const assertCleanedUpContent = (input, expected) => {
     expect(cleanupContentBeforeCommit(input)).toBe(expected);

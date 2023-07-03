@@ -81,11 +81,18 @@ export default ckEditorRegistry => {
 
     //
     // Base CKE configuration
+    // - configuration of language
+    // - and placeholder feature see https://ckeditor.com/docs/ckeditor5/16.0.0/api/module_core_editor_editorconfig-EditorConfig.html#member-placeholder
     //
-    config.set('baseConfiguration', (ckEditorConfiguration, {userPreferences}) => {
-        return Object.assign(ckEditorConfiguration, {
+    config.set('baseConfiguration', (ckEditorConfiguration, {globalRegistry, editorOptions, userPreferences}) => {
+        const i18nRegistry = globalRegistry.get('i18n');
+        const placeholder = $get('placeholder', editorOptions);
+        return {
+            ...ckEditorConfiguration,
+            // stripTags, because we allow `<p>Edit text here</p>` as placeholder for legacy
+            placeholder: placeholder ? stripTags(i18nRegistry.translate(placeholder)) : undefined,
             language: String($get('interfaceLanguage', userPreferences))
-        });
+        };
     });
 
     //
@@ -143,22 +150,6 @@ export default ckEditorRegistry => {
                 {model: 'pre', view: 'pre'}
             ]}
     }));
-
-    //
-    // @see https://ckeditor.com/docs/ckeditor5/16.0.0/api/module_core_editor_editorconfig-EditorConfig.html#member-placeholder
-    //
-    config.set('placeholder', (config, {globalRegistry, editorOptions}) => {
-        const i18nRegistry = globalRegistry.get('i18n');
-        const placeholder = $get('placeholder', editorOptions);
-        if (!placeholder) {
-            return config;
-        }
-        return {
-            ...config,
-            // stripTags, because we allow `<p>Edit text here</p>` as placeholder for legacy
-            placeholder: stripTags(i18nRegistry.translate(placeholder))
-        };
-    });
 
     return config;
 };

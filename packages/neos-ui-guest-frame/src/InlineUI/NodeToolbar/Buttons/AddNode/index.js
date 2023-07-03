@@ -15,8 +15,13 @@ import {neos} from '@neos-project/neos-ui-decorators';
 
     return state => {
         const focusedNodeContextPath = selectors.CR.Nodes.focusedNodePathSelector(state);
+        const getNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(focusedNodeContextPath);
+        const focusedNode = getNodeByContextPathSelector(state);
+
+        const role = focusedNode ? (nodeTypesRegistry.hasRole(focusedNode.nodeType, 'document') ? 'document' : 'content') : null;
         const isAllowedToAddChildOrSiblingNodes = isAllowedToAddChildOrSiblingNodesSelector(state, {
-            reference: focusedNodeContextPath
+            reference: focusedNodeContextPath,
+            role
         });
 
         return {

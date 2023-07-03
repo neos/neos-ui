@@ -1,0 +1,31 @@
+.container {
+    width: 100%;
+    min-height: 100vh;
+    background-color: #222;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.container > * {
+    flex: 0 1 800px;
+    margin: var(--spacing-Full);
+    overflow: auto;
+}
+
+.title {
+    line-height: 1;
+}
+.stackTrace {
+    overflow-x: auto;
+    border-top: 1px solid var(--colors-PrimaryBlue);
+    border-bottom: 1px solid var(--colors-PrimaryBlue);
+    padding: var(--spacing-Half) 0;
+}
+
+.buttonGroup {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-Half) var(--spacing-Full);
+}

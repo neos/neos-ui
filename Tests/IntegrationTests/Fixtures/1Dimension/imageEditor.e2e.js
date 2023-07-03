@@ -20,10 +20,19 @@ test('Can crop an image', async t => {
     await t
         .click(imageEditor.findReact('IconButton').withProps('icon', 'crop'));
     const initialTopOffset = await imageEditor.find('img').getStyleProperty('top');
+
+    // Crop the image
+    await t.drag(ReactSelector('ReactCrop'), 50, 50, {offsetX: 5, offsetY: 5});
+
+    // Verify that there's no z-index interference between the secondary
+    // inspector and the "unapplied changes"-overlay
+    await t.click(ReactSelector('SecondaryInspector'));
+    await t.expect(Selector("#neos-UnappliedChangesDialog").exists).notOk();
+
     await t
-        .drag(ReactSelector('ReactCrop'), 50, 50, {offsetX: 5, offsetY: 5})
         .expect(imageEditor.find('img').getStyleProperty('top')).notEql(initialTopOffset, 'The preview image should reflect the cropping results')
         .click(Selector('#neos-Inspector-Apply'));
+
     await Page.waitForIframeLoading(t);
     await t.switchToIframe('[name="neos-content-main"]');
     await t.expect(Selector('.test-page-image').getAttribute('src')).notEql(initialImage, 'Header image should have changed after crop');

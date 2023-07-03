@@ -1,4 +1,5 @@
 import React, {PureComponent} from 'react';
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import {produce} from 'immer';
 import {mapValues} from 'lodash';
@@ -315,13 +316,14 @@ export default class Inspector extends PureComponent {
 
         return (
             <div id="neos-Inspector" className={style.inspector}>
-                {shouldShowUnappliedChangesOverlay &&
+                {shouldShowUnappliedChangesOverlay && ReactDOM.createPortal(
                     <div
                         role="button"
                         className={style.unappliedChangesOverlay}
                         onClick={this.handleEscape}
-                        />
-                }
+                        />,
+                    document.body
+                )}
                 <SelectedElement/>
                 <Tabs
                     className={style.tabs}

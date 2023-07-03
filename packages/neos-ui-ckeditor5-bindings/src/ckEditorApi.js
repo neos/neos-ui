@@ -1,21 +1,8 @@
 import debounce from 'lodash.debounce';
 import DecoupledEditor from '@ckeditor/ckeditor5-editor-decoupled/src/decouplededitor';
 import {actions} from '@neos-project/neos-ui-redux-store';
-
-// We remove opening and closing span tags that are produced by the inlineMode plugin
-const cleanupContentBeforeCommit = content => {
-    // TODO: remove when this is fixed: https://github.com/ckeditor/ckeditor5/issues/401
-    if (content.match(/^<([a-z][a-z0-9]*)\b[^>]*>&nbsp;<\/\1>$/)) {
-        return '';
-    }
-
-    if (content.match(/^<span>/) && content.match(/<\/span>$/)) {
-        return content
-            .replace(/^<span>/, '')
-            .replace(/<\/span>$/, '');
-    }
-    return content;
-};
+import {cleanupContentBeforeCommit} from './cleanupContentBeforeCommit'
+import './placeholder.vanilla-css'; // eslint-disable-line no-unused-vars
 
 let currentEditor = null;
 let editorConfig = {};
@@ -48,7 +35,7 @@ export const bootstrap = _editorConfig => {
     editorConfig = _editorConfig;
 };
 
-export const createEditor = store => options => {
+export const createEditor = store => async options => {
     const {propertyDomNode, propertyName, editorOptions, globalRegistry, userPreferences, onChange} = options;
     const ckEditorConfig = editorConfig.configRegistry.getCkeditorConfig({
         editorOptions,
@@ -57,7 +44,17 @@ export const createEditor = store => options => {
         propertyDomNode
     });
 
-    DecoupledEditor
+    class NeosEditor extends DecoupledEditor {
+        constructor(...args) {
+            super(...args);
+            // We attach all options for this editor to the editor DOM node, so it would be easier to access them from CKE plugins
+            // this has to be done after / in the constructor as `create` is async and plugins accessing .neos have to account for this
+            // https://github.com/neos/neos-ui/issues/3223
+            this.neos = options;
+        }
+    }
+
+    return NeosEditor
         .create(propertyDomNode, ckEditorConfig)
         .then(editor => {
             editor.ui.focusTracker.on('change:isFocused', event => {
@@ -73,11 +70,9 @@ export const createEditor = store => options => {
                 cancel();
             });
 
-            // We attach all options for this editor to the editor DOM node, so it would be easier to access them from CKE plugins
-            editor.neos = options;
-
             editor.model.document.on('change', () => handleUserInteractionCallback());
             editor.model.document.on('change:data', debounce(() => onChange(cleanupContentBeforeCommit(editor.getData())), 500, {maxWait: 5000}));
+            return editor;
         }).catch(e => console.error(e));
 };
 

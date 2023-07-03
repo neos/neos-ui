@@ -53,7 +53,7 @@ export const createEditor = store => async options => {
         }
     }
 
-    return DecoupledEditor
+    return NeosEditor
         .create(propertyDomNode, ckEditorConfig)
         .then(editor => {
             editor.ui.focusTracker.on('change:isFocused', event => {

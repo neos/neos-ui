@@ -107,6 +107,9 @@
             <trans-unit id="ckeditor__toolbar__link__formatAsEmail" xml:space="preserve">
                 <source>Format as email?</source>
             </trans-unit>
+            <trans-unit id="ckeditor__toolbar__link__formatOptions" xml:space="preserve">
+                <source>Format options</source>
+            </trans-unit>
             <trans-unit id="ckeditor__toolbar__ordered-list" xml:space="preserve">
                 <source>Ordered list</source>
             </trans-unit>

@@ -515,6 +515,10 @@
                 <source>Sorry, but the Neos UI could not recover from this error.</source>
         <target state="translated">Sorry, maar de Neos UI kon niet hersteld worden van deze fout.</target>
       </trans-unit>
+      <trans-unit id="ckeditor__toolbar__link__formatOptions" xml:space="preserve">
+                <source>Format options</source>
+        <target state="needs-translation">Opmaakopties</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

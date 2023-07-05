@@ -53,6 +53,10 @@ final class RenderedNodeDomAddressTest extends UnitTestCase
             '(Full) Content Element via second-level ContentCase' => [
                 'root<Neos.Fusion:Case>/documentType<Neos.Fusion:Matcher>/element<Vendor.Site:Document.HomePage>/renderer<Vendor.Site:Document.Base>/body<Vendor.Site:Component.Template.Page>/content<Neos.Neos:ContentCollection>/content<Neos.Neos:ContentCollectionRenderer>/itemRenderer<Neos.Neos:ContentCase>/default<Neos.Fusion:Matcher>/element<Vendor.Site:Content.2767.Reproduction.TwoColumn>/column0<Neos.Neos:ContentCollection>/content<Neos.Neos:ContentCollectionRenderer>/itemRenderer<Neos.Neos:ContentCase>/default<Neos.Fusion:Matcher>/element<Vendor.Site:Content.2767.Reproduction.TwoColumn>',
                 'root<Neos.Fusion:Case>/documentType<Neos.Fusion:Matcher>/element<Vendor.Site:Document.HomePage>/renderer<Vendor.Site:Document.Base>/body<Vendor.Site:Component.Template.Page>/content<Neos.Neos:ContentCollection>/content<Neos.Neos:ContentCollectionRenderer>/itemRenderer<Neos.Neos:ContentCase>/default<Neos.Fusion:Matcher>/element<Vendor.Site:Content.2767.Reproduction.TwoColumn>/column0<Neos.Neos:ContentCollection>/content<Neos.Neos:ContentCollectionRenderer>/itemRenderer<Neos.Neos:ContentCase>'
+            ],
+            '(Full) Content Element via other than "default"-branch' => [
+                'root<Neos.Fusion:Case>/documentType<Neos.Fusion:Matcher>/element<Vendor.Site:Document.HomePage>/renderer<Vendor.Site:Document.Base>/body<Vendor.Site:Component.Template.Page>/content<Neos.Neos:ContentCollection>/content<Neos.Neos:ContentCollectionRenderer>/itemRenderer<Neos.Neos:ContentCase>/content<Neos.Fusion:Matcher>/element<Vendor.Site:Content.H2>',
+                'root<Neos.Fusion:Case>/documentType<Neos.Fusion:Matcher>/element<Vendor.Site:Document.HomePage>/renderer<Vendor.Site:Document.Base>/body<Vendor.Site:Component.Template.Page>/content<Neos.Neos:ContentCollection>/content<Neos.Neos:ContentCollectionRenderer>/itemRenderer<Neos.Neos:ContentCase>'
             ]
         ];
     }

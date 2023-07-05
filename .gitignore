@@ -47,3 +47,9 @@ npm-debug.log
 .vscode/
 .idea/
 *.iml
+
+#
+# Artifacts from Neos 8.2 / 8.3
+#
+Resources/Public/Build
+.yarn/install-state.gz

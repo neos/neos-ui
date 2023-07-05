@@ -41,7 +41,7 @@ export default class TextField extends PureComponent {
             className={className}
             id={id}
             autoFocus={finalOptions.autoFocus}
-            value={value}
+            value={value === null ? '' : value}
             onChange={commit}
             placeholder={placeholder}
             onKeyPress={onKeyPress}

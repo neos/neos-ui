@@ -2,6 +2,7 @@ import debounce from 'lodash.debounce';
 import DecoupledEditor from '@ckeditor/ckeditor5-editor-decoupled/src/decouplededitor';
 import {actions} from '@neos-project/neos-ui-redux-store';
 import {cleanupContentBeforeCommit} from './cleanupContentBeforeCommit'
+import './placeholder.vanilla-css'; // eslint-disable-line no-unused-vars
 
 let currentEditor = null;
 let editorConfig = {};
@@ -43,7 +44,17 @@ export const createEditor = store => async options => {
         propertyDomNode
     });
 
-    return DecoupledEditor
+    class NeosEditor extends DecoupledEditor {
+        constructor(...args) {
+            super(...args);
+            // We attach all options for this editor to the editor DOM node, so it would be easier to access them from CKE plugins
+            // this has to be done after / in the constructor as `create` is async and plugins accessing .neos have to account for this
+            // https://github.com/neos/neos-ui/issues/3223
+            this.neos = options;
+        }
+    }
+
+    return NeosEditor
         .create(propertyDomNode, ckEditorConfig)
         .then(editor => {
             editor.ui.focusTracker.on('change:isFocused', event => {
@@ -58,9 +69,6 @@ export const createEditor = store => async options => {
                 store.dispatch(actions.UI.ContentCanvas.toggleLinkEditor());
                 cancel();
             });
-
-            // We attach all options for this editor to the editor DOM node, so it would be easier to access them from CKE plugins
-            editor.neos = options;
 
             editor.model.document.on('change', () => handleUserInteractionCallback());
             editor.model.document.on('change:data', debounce(() => onChange(cleanupContentBeforeCommit(editor.getData())), 500, {maxWait: 5000}));

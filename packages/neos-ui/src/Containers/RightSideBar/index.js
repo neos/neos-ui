@@ -66,7 +66,7 @@ export default class RightSideBar extends PureComponent {
                 aria-hidden={isSideBarHidden ? 'true' : 'false'}
                 >
                 {toggle}
-                {!isSideBarHidden && RightSideBarComponents.map((Item, key) => <Item key={key}/>)}
+                {RightSideBarComponents.map((Item, key) => <Item key={key}/>)}
             </SideBar>
         );
     }

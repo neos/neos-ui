@@ -1,8 +1,8 @@
 import CkEditorConfigRegistry from './registry/CkEditorConfigRegistry';
 import {$add, $get, $or} from 'plow-js';
+import {stripTags} from '@neos-project/utils-helpers';
 
-import NeosPlaceholder from './plugins/neosPlaceholder';
-import InlineMode from './plugins/inlineMode';
+import DisabledAutoparagraphMode from './plugins/disabledAutoparagraphMode';
 import Sub from './plugins/sub';
 import Sup from './plugins/sup';
 import LinkTargetBlank from './plugins/linkTargetBlank';
@@ -35,8 +35,8 @@ const addPlugin = (Plugin, isEnabled) => (ckEditorConfiguration, options) => {
 
 // If the editable is a span or a heading, we automatically disable paragraphs and enable the soft break mode
 // Also possible to force this behavior with `autoparagraph: false`
-const disableParagraph = (editorOptions, {propertyDomNode}) =>
-    $get('autoparagraph', editorOptions) === false ||
+const disableAutoparagraph = (editorOptions, {propertyDomNode}) =>
+    editorOptions?.autoparagraph === false ||
     propertyDomNode.tagName === 'SPAN' ||
     propertyDomNode.tagName === 'H1' ||
     propertyDomNode.tagName === 'H2' ||
@@ -83,13 +83,18 @@ export default ckEditorRegistry => {
 
     //
     // Base CKE configuration
+    // - configuration of language
+    // - and placeholder feature see https://ckeditor.com/docs/ckeditor5/16.0.0/api/module_core_editor_editorconfig-EditorConfig.html#member-placeholder
     //
     config.set('baseConfiguration', (ckEditorConfiguration, {globalRegistry, editorOptions, userPreferences}) => {
         const i18nRegistry = globalRegistry.get('i18n');
-        return Object.assign(ckEditorConfiguration, {
-            language: String($get('interfaceLanguage', userPreferences)),
-            neosPlaceholder: unescape(i18nRegistry.translate($get('placeholder', editorOptions) || ''))
-        });
+        const placeholder = editorOptions?.placeholder;
+        return {
+            ...ckEditorConfiguration,
+            // stripTags, because we allow `<p>Edit text here</p>` as placeholder for legacy
+            placeholder: placeholder ? stripTags(i18nRegistry.translate(placeholder)) : undefined,
+            language: String(userPreferences?.interfaceLanguage)
+        };
     });
 
     //
@@ -97,8 +102,7 @@ export default ckEditorRegistry => {
     //
     config.set('essentials', addPlugin(Essentials));
     config.set('paragraph', addPlugin(Paragraph));
-    config.set('inlineMode', addPlugin(InlineMode, disableParagraph));
-    config.set('neosPlaceholder', addPlugin(NeosPlaceholder));
+    config.set('disabledAutoparagraphMode', addPlugin(DisabledAutoparagraphMode, disableAutoparagraph));
     config.set('sub', addPlugin(Sub, $get('formatting.sub')));
     config.set('sup', addPlugin(Sup, $get('formatting.sup')));
     config.set('bold', addPlugin(Bold, $get('formatting.strong')));

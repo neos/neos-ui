@@ -29,7 +29,7 @@ describe('ckeditor DisabledAutoparagraphMode hack, cleanup outer spans', () => {
     })
 
     test('cleanup <span> root after other root', () => {
-        // in the case you had multiple paragraphs and a headline and switched to autoparagrahp: false
+        // in the case you had multiple paragraphs and a headline and switched to autoparagraph: false
         assertCleanedUpContent('<h1>foo</h1><span>bar</span>', '<h1>foo</h1><span>bar</span>');
     })
 })

@@ -34,7 +34,7 @@ export default class TextAreaEditor extends PureComponent {
 
         return (<TextArea
             id={id}
-            value={value}
+            value={value === null ? '' : value}
             className={className}
             onChange={commit}
             disabled={finalOptions.disabled}

@@ -87,11 +87,11 @@ export class DialogWithoutOverlay extends PureComponent<DialogProps> {
     private ref?: HTMLDivElement;
 
     private dialog: Dialog = {
-        close: this.props.onRequestClose,
+        close: this.props.onRequestClose
     };
 
     public render(): JSX.Element {
-        const { title, children, actions, theme, type } = this.props;
+        const {title, children, actions, theme, type} = this.props;
 
         const finalClassNameBody = mergeClassNames(
             theme.dialog__body,
@@ -130,7 +130,7 @@ export class DialogWithoutOverlay extends PureComponent<DialogProps> {
     }
 
     public readonly componentDidMount = (): void => {
-        const { autoFocus } = this.props;
+        const {autoFocus} = this.props;
         if (this.ref && autoFocus) {
             this.ref.focus();
         }

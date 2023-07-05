@@ -1,14 +1,14 @@
-import { DialogManager, Dialog, EventRoot } from './DialogManager';
+import {DialogManager, Dialog, EventRoot} from './DialogManager';
 
 describe('DialogManager', () => {
     describe('#register', () => {
         it('adds the `dialogManager.handleKeydown` event listener to the given event root if invoked for the first time', () => {
             const eventRoot: EventRoot = {
                 addEventListener: jest.fn(),
-                removeEventListener: jest.fn(),
+                removeEventListener: jest.fn()
             };
-            const dialogManager = new DialogManager({ eventRoot });
-            const dialog: Dialog = { close: jest.fn() };
+            const dialogManager = new DialogManager({eventRoot});
+            const dialog: Dialog = {close: jest.fn()};
 
             dialogManager.register(dialog);
 
@@ -21,12 +21,12 @@ describe('DialogManager', () => {
         it('does not add the event listener to the given event root on subsequent calls', () => {
             const eventRoot: EventRoot = {
                 addEventListener: jest.fn(),
-                removeEventListener: jest.fn(),
+                removeEventListener: jest.fn()
             };
-            const dialogManager = new DialogManager({ eventRoot });
-            const dialog1: Dialog = { close: jest.fn() };
-            const dialog2: Dialog = { close: jest.fn() };
-            const dialog3: Dialog = { close: jest.fn() };
+            const dialogManager = new DialogManager({eventRoot});
+            const dialog1: Dialog = {close: jest.fn()};
+            const dialog2: Dialog = {close: jest.fn()};
+            const dialog3: Dialog = {close: jest.fn()};
 
             dialogManager.register(dialog1);
             dialogManager.register(dialog2);
@@ -38,12 +38,12 @@ describe('DialogManager', () => {
         it('re-adds the event listener to the given event root if invoked after all dialogs have been closed', () => {
             const eventRoot: EventRoot = {
                 addEventListener: jest.fn(),
-                removeEventListener: jest.fn(),
+                removeEventListener: jest.fn()
             };
-            const dialogManager = new DialogManager({ eventRoot });
-            const dialog1: Dialog = { close: jest.fn() };
-            const dialog2: Dialog = { close: jest.fn() };
-            const dialog3: Dialog = { close: jest.fn() };
+            const dialogManager = new DialogManager({eventRoot});
+            const dialog1: Dialog = {close: jest.fn()};
+            const dialog2: Dialog = {close: jest.fn()};
+            const dialog3: Dialog = {close: jest.fn()};
 
             // Register dialogs
             dialogManager.register(dialog1);
@@ -68,14 +68,14 @@ describe('DialogManager', () => {
         it('invokes `dialogManager.closeLatest` if the given event was an Escape-Keypress', () => {
             const eventRoot: EventRoot = {
                 addEventListener: jest.fn(),
-                removeEventListener: jest.fn(),
+                removeEventListener: jest.fn()
             };
             const dialogManager = Object.assign(
-                new DialogManager({ eventRoot }),
-                { closeLatest: jest.fn() }
+                new DialogManager({eventRoot}),
+                {closeLatest: jest.fn()}
             );
             const event: KeyboardEvent = {
-                key: 'Escape',
+                key: 'Escape'
             } as KeyboardEvent;
 
             dialogManager.handleKeydown(event);
@@ -85,21 +85,21 @@ describe('DialogManager', () => {
         it('does not invoke `dialogManager.closeLatest` if the given event was not an Escape-Keypress', () => {
             const eventRoot: EventRoot = {
                 addEventListener: jest.fn(),
-                removeEventListener: jest.fn(),
+                removeEventListener: jest.fn()
             };
             const dialogManager = Object.assign(
-                new DialogManager({ eventRoot }),
-                { closeLatest: jest.fn() }
+                new DialogManager({eventRoot}),
+                {closeLatest: jest.fn()}
             );
 
             dialogManager.handleKeydown({
-                key: 'A',
+                key: 'A'
             } as KeyboardEvent);
 
             expect(dialogManager.closeLatest).not.toBeCalled();
 
             dialogManager.handleKeydown({
-                key: 'Foo',
+                key: 'Foo'
             } as KeyboardEvent);
 
             expect(dialogManager.closeLatest).not.toBeCalled();
@@ -110,12 +110,12 @@ describe('DialogManager', () => {
         it('picks the latest registered dialog and invokes `dialog.close` on it', () => {
             const eventRoot: EventRoot = {
                 addEventListener: jest.fn(),
-                removeEventListener: jest.fn(),
+                removeEventListener: jest.fn()
             };
-            const dialogManager = new DialogManager({ eventRoot });
-            const dialog1: Dialog = { close: jest.fn() };
-            const dialog2: Dialog = { close: jest.fn() };
-            const dialog3: Dialog = { close: jest.fn() };
+            const dialogManager = new DialogManager({eventRoot});
+            const dialog1: Dialog = {close: jest.fn()};
+            const dialog2: Dialog = {close: jest.fn()};
+            const dialog3: Dialog = {close: jest.fn()};
 
             dialogManager.register(dialog1);
             dialogManager.register(dialog2);
@@ -145,12 +145,12 @@ describe('DialogManager', () => {
         it('removes the `dialogManager.handleKeydown` event listener from the given event root once all dialogs have been closed', () => {
             const eventRoot: EventRoot = {
                 addEventListener: jest.fn(),
-                removeEventListener: jest.fn(),
+                removeEventListener: jest.fn()
             };
-            const dialogManager = new DialogManager({ eventRoot });
-            const dialog1: Dialog = { close: jest.fn() };
-            const dialog2: Dialog = { close: jest.fn() };
-            const dialog3: Dialog = { close: jest.fn() };
+            const dialogManager = new DialogManager({eventRoot});
+            const dialog1: Dialog = {close: jest.fn()};
+            const dialog2: Dialog = {close: jest.fn()};
+            const dialog3: Dialog = {close: jest.fn()};
 
             dialogManager.register(dialog1);
             dialogManager.register(dialog2);
@@ -176,11 +176,11 @@ describe('DialogManager', () => {
         it('closes a registered dialog only once, even if has been registered twice - in which case it uses order of first registration', () => {
             const eventRoot: EventRoot = {
                 addEventListener: jest.fn(),
-                removeEventListener: jest.fn(),
+                removeEventListener: jest.fn()
             };
-            const dialogManager = new DialogManager({ eventRoot });
-            const dialog1: Dialog = { close: jest.fn() };
-            const dialog2: Dialog = { close: jest.fn() };
+            const dialogManager = new DialogManager({eventRoot});
+            const dialog1: Dialog = {close: jest.fn()};
+            const dialog2: Dialog = {close: jest.fn()};
 
             dialogManager.register(dialog1);
             dialogManager.register(dialog2);
@@ -200,12 +200,12 @@ describe('DialogManager', () => {
         it('removes a dialog from the stack', () => {
             const eventRoot: EventRoot = {
                 addEventListener: jest.fn(),
-                removeEventListener: jest.fn(),
+                removeEventListener: jest.fn()
             };
-            const dialogManager = new DialogManager({ eventRoot });
-            const dialog1: Dialog = { close: jest.fn() };
-            const dialog2: Dialog = { close: jest.fn() };
-            const dialog3: Dialog = { close: jest.fn() };
+            const dialogManager = new DialogManager({eventRoot});
+            const dialog1: Dialog = {close: jest.fn()};
+            const dialog2: Dialog = {close: jest.fn()};
+            const dialog3: Dialog = {close: jest.fn()};
 
             dialogManager.register(dialog1);
             dialogManager.register(dialog2);
@@ -225,10 +225,10 @@ describe('DialogManager', () => {
         it('removes the `dialogManager.handleKeydown` event listener from the given event root if the last remaining dialog is removed', () => {
             const eventRoot: EventRoot = {
                 addEventListener: jest.fn(),
-                removeEventListener: jest.fn(),
+                removeEventListener: jest.fn()
             };
-            const dialogManager = new DialogManager({ eventRoot });
-            const dialog: Dialog = { close: jest.fn() };
+            const dialogManager = new DialogManager({eventRoot});
+            const dialog: Dialog = {close: jest.fn()};
 
             dialogManager.register(dialog);
             dialogManager.forget(dialog);

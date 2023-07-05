@@ -10,6 +10,8 @@ export interface Dialog {
 export class DialogManager {
     private dialogs: Dialog[] = [];
 
+    // https://github.com/typescript-eslint/typescript-eslint/issues/48
+    // eslint-disable-next-line no-useless-constructor
     constructor(private readonly deps: { eventRoot: EventRoot }) {}
 
     public register(dialog: Dialog): void {

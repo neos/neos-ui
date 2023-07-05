@@ -311,8 +311,10 @@ const makeMapStateToProps = isDocument => (state, {nodeTypesRegistry}) => {
 
         const isHidden = $get('properties._hidden', focusedNode);
 
+        const role = focusedNode ? (nodeTypesRegistry.hasRole(focusedNode.nodeType, 'document') ? 'document' : 'content') : null;
         const isAllowedToAddChildOrSiblingNodes = isAllowedToAddChildOrSiblingNodesSelector(state, {
-            reference: focusedNodeContextPath
+            reference: focusedNodeContextPath,
+            role
         });
         const isHiddenContentTree = $get('ui.leftSideBar.contentTree.isHidden', state);
 

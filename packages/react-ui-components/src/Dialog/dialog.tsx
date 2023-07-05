@@ -1,8 +1,7 @@
 import mergeClassNames from 'classnames';
 import React, {PureComponent, ReactNode} from 'react';
-import enhanceWithClickOutside from '../enhanceWithClickOutside/index';
-import CloseOnEscape from 'react-close-on-escape';
-import {Portal} from 'react-portal';
+import {createPortal} from 'react-dom';
+import {Dialog, DialogManager} from './DialogManager';
 
 type DialogType = 'success' | 'warn' | 'error';
 type DialogStyle = 'wide' | 'jumbo' | 'narrow';
@@ -80,17 +79,19 @@ export interface DialogProps {
     readonly theme: DialogTheme;
 }
 
-export class DialogWithoutEscape extends PureComponent<DialogProps> {
+const dialogManager = new DialogManager({
+    eventRoot: document
+});
+
+export class DialogWithoutOverlay extends PureComponent<DialogProps> {
     private ref?: HTMLDivElement;
 
+    private dialog: Dialog = {
+        close: this.props.onRequestClose,
+    };
+
     public render(): JSX.Element {
-        const {
-            title,
-            children,
-            actions,
-            theme,
-            type
-        } = this.props;
+        const { title, children, actions, theme, type } = this.props;
 
         const finalClassNameBody = mergeClassNames(
             theme.dialog__body,
@@ -103,21 +104,22 @@ export class DialogWithoutEscape extends PureComponent<DialogProps> {
         );
 
         return (
-            <div ref={this.handleReference} className={theme.dialog__contentsPosition} tabIndex={0}>
+            <div
+                ref={this.handleReference}
+                className={theme.dialog__contentsPosition}
+                tabIndex={0}
+            >
                 <div className={theme.dialog__contents}>
+                    <div className={theme.dialog__title}>{title}</div>
+                    <div className={finalClassNameBody}>{children}</div>
 
-                    <div className={theme.dialog__title}>
-                        {title}
-                    </div>
-                    <div className={finalClassNameBody}>
-                        {children}
-                    </div>
-
-                    {actions && actions.length ?
+                    {actions && actions.length ? (
                         <div className={theme.dialog__actions}>
-                            {React.Children.map(actions, (action, index) => <span key={index}>{action}</span>)}
-                        </div> : null
-                    }
+                            {React.Children.map(actions, (action, index) => (
+                                <span key={index}>{action}</span>
+                            ))}
+                        </div>
+                    ) : null}
                 </div>
             </div>
         );
@@ -127,38 +129,21 @@ export class DialogWithoutEscape extends PureComponent<DialogProps> {
         this.ref = ref;
     }
 
-    public readonly handleClickOutside = () => {
-        this.props.onRequestClose();
-    }
-
     public readonly componentDidMount = (): void => {
-        document.addEventListener('keydown', (event : KeyboardEvent) => this.handleKeyPress(event));
-        const {autoFocus} = this.props;
+        const { autoFocus } = this.props;
         if (this.ref && autoFocus) {
             this.ref.focus();
         }
+
+        dialogManager.register(this.dialog);
     }
 
     public readonly componentWillUnmount = (): void => {
-        document.removeEventListener('keydown', (event : KeyboardEvent) => this.handleKeyPress(event));
-    }
-
-    /**
-     * Closes the dialog when the escape key has been pressed.
-     *
-     * @param {KeyboardEvent} event
-     * @returns {void}
-     */
-    public readonly handleKeyPress = (event : KeyboardEvent): void => {
-        if (event.key === 'Escape') {
-            this.props.onRequestClose();
-        }
+        dialogManager.forget(this.dialog);
     }
 }
 
-const EnhancedDialogWithoutEscapeWithClickOutside = enhanceWithClickOutside(DialogWithoutEscape);
-
-class DialogWithEscape extends PureComponent<DialogProps> {
+class DialogWithOverlay extends PureComponent<DialogProps> {
     public render(): JSX.Element | null {
         /* eslint-disable @typescript-eslint/no-unused-vars */
         const {
@@ -194,20 +179,25 @@ class DialogWithEscape extends PureComponent<DialogProps> {
             return null;
         }
 
-        return (
-            <CloseOnEscape onEscape={this.onEscape}>
-                <Portal>
-                    <section {...rest} className={sectionClassName} role="dialog" tabIndex={0}>
-                        <EnhancedDialogWithoutEscapeWithClickOutside {...this.props}/>
-                    </section>
-                </Portal>
-            </CloseOnEscape>
+        return createPortal(
+            <section
+                {...rest}
+                className={sectionClassName}
+                role="dialog"
+                tabIndex={0}
+                onClick={this.handleOverlayClick}
+            >
+                <DialogWithoutOverlay {...this.props} />
+            </section>,
+            document.body
         );
     }
 
-    private readonly onEscape = () => {
-        this.props.onRequestClose();
+    private readonly handleOverlayClick = (ev: React.MouseEvent) => {
+        if (ev.target === ev.currentTarget) {
+            this.props.onRequestClose();
+        }
     }
 }
 
-export default DialogWithEscape;
+export default DialogWithOverlay;

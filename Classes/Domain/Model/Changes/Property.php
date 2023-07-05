@@ -267,6 +267,11 @@ class Property extends AbstractChange
             $this->updateWorkspaceInfo();
             $parentNode = $subgraph->findParentNode($node->nodeAggregateId);
 
+            // This might be needed to update node label and other things that we can calculate only on the server
+            $updateNodeInfo = new UpdateNodeInfo();
+            $updateNodeInfo->setNode($node);
+            $this->feedbackCollection->add($updateNodeInfo);
+
             $reloadIfChangedConfigurationPath = sprintf('properties.%s.ui.reloadIfChanged', $propertyName);
             if (!$this->getIsInline() && $node->nodeType->getConfiguration($reloadIfChangedConfigurationPath)) {
                 if ($this->getNodeDomAddress() && $this->getNodeDomAddress()->getFusionPath()
@@ -286,11 +291,6 @@ class Property extends AbstractChange
                 && $node->nodeType->getConfiguration($reloadPageIfChangedConfigurationPath)) {
                 $this->reloadDocument($node);
             }
-
-            // This might be needed to update node label and other things that we can calculate only on the server
-            $updateNodeInfo = new UpdateNodeInfo();
-            $updateNodeInfo->setNode($node);
-            $this->feedbackCollection->add($updateNodeInfo);
         }
     }
 }

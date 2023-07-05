@@ -132,9 +132,13 @@ class NodePropertyConversionService
      *
      * @param string|array<int|string,mixed> $rawValue
      */
-    protected function convertInteger(string|array $rawValue): int
+    protected function convertInteger(string|array $rawValue): ?int
     {
-        return (int)$rawValue;
+        if (is_numeric($rawValue)) {
+            return (int) $rawValue;
+        }
+
+        return null;
     }
 
     /**

@@ -28,7 +28,10 @@ module.exports = merge(
             modules: [
                 path.resolve(__dirname, './packages/neos-ui/node_modules'),
                 path.resolve(__dirname, './node_modules')
-            ]
+            ],
+            alias: {
+                '@neos-project/react-ui-components$': path.resolve(__dirname, './packages/react-ui-components/src')
+            },
         },
         watchOptions: {
             ignored: /node_modules/

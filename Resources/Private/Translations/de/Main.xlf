@@ -128,6 +128,10 @@
                 <source>Format as email?</source>
         <target xml:lang="de">Formatieren als E-Mail?</target>
       </trans-unit>
+      <trans-unit id="ckeditor__toolbar__link__formatOptions" xml:space="preserve" approved="yes">
+                <source>Format options</source>
+        <target xml:lang="de">Formatierungsoptionen</target>
+      </trans-unit>
       <trans-unit id="ckeditor__toolbar__ordered-list" xml:space="preserve">
                 <source>Ordered list</source>
         <target xml:lang="de" state="translated">Geordnete Liste</target>

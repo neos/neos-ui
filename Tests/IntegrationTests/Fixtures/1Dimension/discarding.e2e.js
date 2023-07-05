@@ -142,7 +142,7 @@ test('Discarding: delete a content node and then discard deletion', async t => {
     await t
         .expect(Page.treeNode.withText(headlineToDelete).exists).notOk('Deleted node gone from the tree')
         .switchToIframe('[name="neos-content-main"]')
-        .expect(Selector('.neos-inline-editable').withText(headlineToDelete).exists).notOk('New headline gone from the page')
+        .expect(Selector('[data-__neos-property]').withText(headlineToDelete).exists).notOk('New headline gone from the page')
         .switchToMainWindow();
 
     subSection('Discard page deletion');
@@ -152,6 +152,6 @@ test('Discarding: delete a content node and then discard deletion', async t => {
     await Page.waitForIframeLoading(t);
     await t
         .switchToIframe('[name="neos-content-main"]')
-        .expect(Selector('.neos-inline-editable').withText(headlineToDelete).exists).ok('New headline reappeared on the page')
+        .expect(Selector('[data-__neos-property]').withText(headlineToDelete).exists).ok('New headline reappeared on the page')
         .switchToMainWindow();
 });

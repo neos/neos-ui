@@ -502,6 +502,10 @@
                 <source>For more information about the error please refer to the JavaScript console.</source>
         <target state="translated">Para obtener más información sobre el error, consulta la consola JavaScript.</target>
       </trans-unit>
+      <trans-unit id="ckeditor__toolbar__link__formatOptions" xml:space="preserve">
+                <source>Format options</source>
+        <target state="needs-translation">Formato de las opciones</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

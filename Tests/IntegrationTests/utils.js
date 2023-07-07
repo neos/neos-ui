@@ -1,4 +1,4 @@
-import {t, Role} from 'testcafe';
+import {t, Role, ClientFunction} from 'testcafe';
 import {waitForReact} from 'testcafe-react-selectors';
 import {PublishDropDown, Page} from './pageModel';
 
@@ -8,11 +8,18 @@ const adminUrl = 'http://127.0.0.1:8081/neos';
 const adminUserName = 'admin';
 const adminPassword = 'password';
 
+export const getUrl = ClientFunction(() => window.location.href);
+
 export const adminUser = Role(adminUrl, async t => {
     await t
         .typeText('#username', adminUserName)
         .typeText('#password', adminPassword)
         .click('button.neos-login-btn');
+
+    await t.expect(getUrl()).contains('/content');
+
+    await waitForReact(30000);
+    await Page.waitForIframeLoading();
 }, {preserveUrl: true});
 
 export async function checkPropTypes() {

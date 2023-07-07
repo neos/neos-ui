@@ -9,16 +9,18 @@
           "neos/composer-plugin": true
         }
     },
-    "minimum-stability": "dev",
     "require": {
-      "neos/neos-ui": "8.3.x-dev",
-      "neos/fusion-afx": "*",
+      "neos/flow-development-collection": "9.0.x-dev as 9.0",
+
+      "neos/neos-development-collection": "9.0.x-dev as 9.0",
+      "neos/eventstore": "dev-main",
+      "neos/eventstore-doctrineadapter": "dev-main",
+
+      "neos/neos-ui": "9.0.x-dev as 9.0",
+      "neos/neos-ui-compiled": "9.0.x-dev as 9.0",
+
       "neos/test-site": "@dev",
       "neos/test-nodetypes": "@dev"
-    },
-    "require-dev": {
-      "neos/buildessentials": "@dev",
-      "phpunit/phpunit": "^8.1"
     },
     "repositories": {
         "distribution": {

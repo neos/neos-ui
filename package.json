@@ -32,7 +32,7 @@
     "jest": "^27.0.0",
     "lightningcss": "^1.18.0",
     "rimraf": "^2.5.4",
-    "stylelint": "^13.7.2",
+    "stylelint": "^15.10.1",
     "testcafe": "^2.1.0",
     "testcafe-browser-provider-saucelabs": "^1.9.0",
     "testcafe-react-selectors": "^5.0.2",

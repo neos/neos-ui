@@ -500,7 +500,7 @@
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__formatOptions" xml:space="preserve">
                 <source>Format options</source>
-        <target state="needs-translation">Formato de las opciones</target>
+        <target state="translated">Opciones del formato</target>
       </trans-unit>
     </body>
   </file>

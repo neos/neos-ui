@@ -29,7 +29,8 @@
       "patches": {
         "neos/neos-development-collection": {
           "!!!FEATURE: (Neos.Neos) Track created nodes in PendingChangesProjection": "https://github.com/neos/neos-development-collection/pull/4393.patch",
-          "BUGFIX: (Neos.Neos) Restore show action of ContentDimensionsController": "https://github.com/neos/neos-development-collection/pull/4395.patch"
+          "BUGFIX: (Neos.Neos) Restore show action of ContentDimensionsController": "https://github.com/neos/neos-development-collection/pull/4395.patch",
+          "FEATURE: Edit preview mode support for Neos 9": "https://github.com/neos/neos-development-collection/pull/4067.patch"
         }
       }
     },

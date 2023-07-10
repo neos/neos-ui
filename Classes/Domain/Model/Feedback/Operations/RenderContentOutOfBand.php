@@ -178,7 +178,20 @@ class RenderContentOutOfBand extends AbstractFeedback
             $parentDomAddress = $this->getParentDomAddress();
             if ($parentDomAddress) {
                 $fusionView = new FusionView();
-                $fusionView->setControllerContext($controllerContext);
+
+                $fakeActionRequest = clone $controllerContext->getRequest();
+                $fakeActionRequest->setControllerPackageKey('Neos.Neos');
+                $fakeActionRequest->setControllerName('Frontend\\Node');
+                $fakeActionRequest->setControllerActionName('edit');
+
+                $fakeControllerContext = new ControllerContext(
+                    $fakeActionRequest,
+                    $controllerContext->getResponse(),
+                    $controllerContext->getArguments(),
+                    $controllerContext->getUriBuilder(),
+                );
+
+                $fusionView->setControllerContext($fakeControllerContext);
 
                 $fusionView->assign('value', $parentNode);
                 $fusionView->setFusionPath($parentDomAddress->getFusionPath());

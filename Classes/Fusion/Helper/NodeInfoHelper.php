@@ -211,7 +211,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         if (!$node->nodeType->isOfType($this->documentNodeTypeRole)) {
             return $nodeInfo;
         }
-        $nodeInfo['uri'] = $this->previewUri($node, $controllerContext);
+        $nodeInfo['uri'] = $this->editUri($node, $controllerContext);
         return $nodeInfo;
     }
 
@@ -440,6 +440,14 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             $nodeAddress = $nodeAddressFactory->createFromNode($nodeAddress);
         }
         return (string)NodeUriBuilder::fromRequest($controllerContext->getRequest())->uriFor($nodeAddress);
+    }
+
+    public function editUri(Node $node, ControllerContext $controllerContext): string
+    {
+        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
+        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
+        $nodeAddress = $nodeAddressFactory->createFromNode($node);
+        return (string)NodeUriBuilder::fromRequest($controllerContext->getRequest())->editUriFor($nodeAddress);
     }
 
     public function previewUri(Node $node, ControllerContext $controllerContext): string

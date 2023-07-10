@@ -134,6 +134,10 @@ export default class NodeCreationDialog extends PureComponent {
 
     handleCancel = () => {
         const {cancel} = this.props;
+        if (this.state.isDirty) {
+            // prevent accidental close https://github.com/neos/neos-ui/issues/3531
+            return;
+        }
         cancel();
     }
 

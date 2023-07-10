@@ -1,103 +1,91 @@
 Neos:
-  ContentRepository:
-    contentDimensions:
-      'country':
-        default: 'deu'
-        defaultPreset: 'deu'
-        label: 'Country'
-        icon: 'icon-globe'
-        presets:
-          'deu':
-            label: 'Germany'
-            values: ['deu']
-            uriSegment: 'deu'
-          'aut':
-            label: 'Austria'
-            values: ['aut', 'deu']
-            uriSegment: 'aut'
-          'lux':
-            label: 'Luxembourg'
-            values: ['lux', 'deu']
-            uriSegment: 'lux'
-          'dnk':
-            label: 'Denmark'
-            values: ['dnk']
-            uriSegment: 'dnk'
-      'language':
-        label: 'Language'
-        icon: icon-language
-        default: en_US
-        defaultPreset: en_US
-        presets:
-          en_US:
-            label: 'English (US)'
+  ContentRepositoryRegistry:
+    contentRepositories:
+      default:
+        contentDimensions:
+          country:
+            label: 'Country'
+            icon: 'icon-globe'
             values:
-              - en_US
-            uriSegment: en
-            constraints:
-              country:
-                '*': false
-                'deu': true
-                'aut': true
-          en_UK:
-            label: 'English (UK)'
+              'deu':
+                label: 'Germany'
+                specializations:
+                  'aut':
+                    label: 'Austria'
+                  'lux':
+                    label: 'Luxembourg'
+              'dnk':
+                label: 'Denmark'
+
+          'language':
+            label: 'Language'
+            icon: icon-language
             values:
-              - en_UK
-              - en_US
-            uriSegment: uk
-            constraints:
-              country:
-                '*': false
-                'deu': true
-                'aut': true
-          de:
-            label: German
-            values:
-              - de
-            uriSegment: de
-            constraints:
-              country:
-                '*': false
-                'deu': true
-                'aut': true
-                'lux': true
-          fr:
-            label: French
-            values:
-              - fr
-            uriSegment: fr
-            constraints:
-              country:
-                '*': false
-                'deu': true
-                'aut': true
-          nl:
-            label: Dutch
-            values:
-              - nl
-              - de
-            uriSegment: nl
-            constraints:
-              country:
-                '*': false
-                'deu': true
-                'aut': true
-          da:
-            label: Danish
-            values:
-              - da
-            uriSegment: da
-            constraints:
-              country:
-                '*': false
-                'dnk': true
-          lv:
-            label: Latvian
-            values:
-              - lv
-            uriSegment: lv
-            constraints:
-              country:
-                '*': false
-                'deu': true
-                'aut': true
+              'en_US':
+                label: 'English (US)'
+                constraints:
+                  'country':
+                    '*': false
+                    'deu': true
+                    'aut': true
+                specializations:
+                  'en_UK':
+                    label: 'English (UK)'
+              'de':
+                label: German
+                constraints:
+                  'country':
+                    '*': false
+                    'deu': true
+                    'aut': true
+                    'lux': true
+              'fr':
+                label: French
+                constraints:
+                  'country':
+                    '*': false
+                    'deu': true
+                    'aut': true
+              'nl':
+                label: Dutch
+                constraints:
+                  'country':
+                    '*': false
+                    'deu': true
+                    'aut': true
+              'da':
+                label: Danish
+                constraints:
+                  'country':
+                    '*': false
+                    'dnk': true
+              'lv':
+                label: Latvian
+                constraints:
+                  'country':
+                    '*': false
+                    'deu': true
+                    'aut': true
+  Neos:
+    sites:
+      '*':
+        contentDimensions:
+          resolver:
+            factoryClassName: Neos\Neos\FrontendRouting\DimensionResolution\Resolver\UriPathResolverFactory
+            options:
+              segments:
+                - dimensionIdentifier: 'country'
+                  dimensionValueMapping:
+                    'deu': 'deu'
+                    'aut': 'aut'
+                    'lux': 'lux'
+                    'dnk': 'dnk'
+                - dimensionIdentifier: 'language'
+                  dimensionValueMapping:
+                    'en_US': 'en'
+                    'en_UK': 'uk'
+                    'de': 'de'
+                    'fr': 'fr'
+                    'nl': 'nl'
+                    'da': 'da'
+                    'lv': 'lv'

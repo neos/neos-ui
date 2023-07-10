@@ -28,7 +28,8 @@
     "extra": {
       "patches": {
         "neos/neos-development-collection": {
-          "!!!FEATURE: (Neos.Neos) Track created nodes in PendingChangesProjection": "https://github.com/neos/neos-development-collection/pull/4393.patch"
+          "!!!FEATURE: (Neos.Neos) Track created nodes in PendingChangesProjection": "https://github.com/neos/neos-development-collection/pull/4393.patch",
+          "BUGFIX: (Neos.Neos) Restore show action of ContentDimensionsController": "https://github.com/neos/neos-development-collection/pull/4395.patch"
         }
       }
     },

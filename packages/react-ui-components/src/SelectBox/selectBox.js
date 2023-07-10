@@ -284,7 +284,7 @@ export default class SelectBox extends PureComponent {
         }
 
         const mismatchOfValueInOptions = !valueIsEmpty && !selectedOption;
-        const showResetButton = (allowEmpty && !displayLoadingIndicator && !valueIsEmpty) || mismatchOfValueInOptions;
+        const showResetButton = (allowEmpty && !valueIsEmpty) || mismatchOfValueInOptions;
 
         return (
             <SelectBox_Header
@@ -295,7 +295,7 @@ export default class SelectBox extends PureComponent {
                         icon: 'exclamation-triangle'
                     } : selectedOption
                 }
-                showResetButton={showResetButton}
+                showResetButton={!displayLoadingIndicator && showResetButton}
                 onReset={this.handleDeleteClick}
                 onClick={onHeaderClick}
                 />

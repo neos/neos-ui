@@ -2,7 +2,7 @@ import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
 import React from 'react';
 
-import DialogWithOverlay, {DialogProps, DialogWithoutOverlay} from './dialog';
+import DialogWithOverlay, {DialogProps} from './dialog';
 
 describe('<Dialog/>', () => {
     const props: DialogProps = {
@@ -38,7 +38,9 @@ describe('<Dialog/>', () => {
     });
 
     it('Content should render correctly.', () => {
-        const wrapper = shallow(<DialogWithoutOverlay {...props}/>);
+        const component = new DialogWithOverlay(props);
+
+        const wrapper = shallow(component.renderDialogWithoutOverlay());
 
         expect(toJson(wrapper)).toMatchSnapshot();
     });
@@ -65,7 +67,9 @@ describe('<Dialog/>', () => {
     });
 
     it('should render the actions if passed.', () => {
-        const wrapper = shallow(<DialogWithoutOverlay {...props}/>);
+        const component = new DialogWithOverlay(props);
+
+        const wrapper = shallow(component.renderDialogWithoutOverlay());
 
         expect(wrapper.html().includes('Foo 1')).toBeTruthy();
         expect(wrapper.html().includes('Foo 2')).toBeTruthy();

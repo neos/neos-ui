@@ -83,7 +83,7 @@ const dialogManager = new DialogManager({
     eventRoot: document
 });
 
-export class DialogWithoutOverlay extends PureComponent<DialogProps> {
+class DialogWithOverlay extends PureComponent<DialogProps> {
     // tslint:disable-next-line:readonly-keyword
     private ref?: HTMLDivElement;
 
@@ -91,7 +91,7 @@ export class DialogWithoutOverlay extends PureComponent<DialogProps> {
         close: this.props.onRequestClose,
     };
 
-    public render(): JSX.Element {
+    public renderDialogWithoutOverlay(): JSX.Element {
         const { title, children, actions, theme, type } = this.props;
 
         const finalClassNameBody = mergeClassNames(
@@ -143,10 +143,7 @@ export class DialogWithoutOverlay extends PureComponent<DialogProps> {
     public readonly componentWillUnmount = (): void => {
         dialogManager.forget(this.dialog);
     }
-}
 
-// tslint:disable-next-line:max-classes-per-file
-class DialogWithOverlay extends PureComponent<DialogProps> {
     public render(): JSX.Element | null {
         const {
             className,
@@ -188,7 +185,7 @@ class DialogWithOverlay extends PureComponent<DialogProps> {
                 tabIndex={0}
                 onClick={this.handleOverlayClick}
             >
-                <DialogWithoutOverlay {...this.props} />
+                {this.renderDialogWithoutOverlay()}
             </section>,
             document.body
         );

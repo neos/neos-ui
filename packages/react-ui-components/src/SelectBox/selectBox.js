@@ -289,12 +289,10 @@ export default class SelectBox extends PureComponent {
         return (
             <SelectBox_Header
                 {...this.props}
-                option={mismatchOfValueInOptions
-                    ? {
-                        label: `Invalid: "${value}"`,
-                        icon: 'exclamation-triangle'
-                    } : selectedOption
-                }
+                option={mismatchOfValueInOptions ? {
+                    label: `Invalid: "${value}"`,
+                    icon: 'exclamation-triangle'
+                } : selectedOption}
                 showResetButton={!displayLoadingIndicator && showResetButton}
                 onReset={this.handleDeleteClick}
                 onClick={onHeaderClick}

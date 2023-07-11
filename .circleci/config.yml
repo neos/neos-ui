@@ -113,6 +113,8 @@ jobs:
           cd /home/circleci/app/Packages/Application/Neos.Neos.Ui
           nvm install
           nvm use
+          echo 127.0.0.1 onedimension.localhost | sudo tee -a /etc/hosts
+          echo 127.0.0.1 twodimensions.localhost | sudo tee -a /etc/hosts
           make test-e2e-saucelabs
       - store_artifacts:
           path: /home/circleci/app/Data/Logs

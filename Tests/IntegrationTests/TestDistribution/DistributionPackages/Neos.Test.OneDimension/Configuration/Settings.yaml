@@ -1,7 +1,8 @@
 Neos:
   ContentRepositoryRegistry:
     contentRepositories:
-      default:
+      onedimension:
+        preset: default
         contentDimensions:
           language:
             label: 'Language'
@@ -22,3 +23,10 @@ Neos:
                 label: Danish
               'lv':
                 label: Latvian
+  Neos:
+    sites:
+      'neos-test-onedimension':
+        contentRepository: 'onedimension'
+        contentDimensions:
+          resolver:
+            factoryClassName: Neos\Neos\FrontendRouting\DimensionResolution\Resolver\AutoUriPathResolverFactory

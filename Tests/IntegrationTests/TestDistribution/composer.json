@@ -20,7 +20,8 @@
       "neos/neos-ui": "9.0.x-dev as 9.0",
       "neos/neos-ui-compiled": "9.0.x-dev as 9.0",
 
-      "neos/test-site": "@dev",
+      "neos/test-onedimension": "@dev",
+      "neos/test-twodimensions": "@dev",
       "neos/test-nodetypes": "@dev",
 
       "cweagans/composer-patches": "^1.7.3"
@@ -30,7 +31,8 @@
         "neos/neos-development-collection": {
           "!!!FEATURE: (Neos.Neos) Track created nodes in PendingChangesProjection": "https://github.com/neos/neos-development-collection/pull/4393.patch",
           "BUGFIX: (Neos.Neos) Restore show action of ContentDimensionsController": "https://github.com/neos/neos-development-collection/pull/4395.patch",
-          "FEATURE: Edit preview mode support for Neos 9": "https://github.com/neos/neos-development-collection/pull/4067.patch"
+          "FEATURE: Edit preview mode support for Neos 9": "https://github.com/neos/neos-development-collection/pull/4067.patch",
+          "BUGFIX: Consistently use correct cr identifier across delegated cr:* commands": "https://github.com/neos/neos-development-collection/pull/4400.patch"
         }
       }
     },

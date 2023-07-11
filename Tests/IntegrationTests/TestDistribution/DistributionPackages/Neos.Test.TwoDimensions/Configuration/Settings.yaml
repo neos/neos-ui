@@ -1,7 +1,8 @@
 Neos:
   ContentRepositoryRegistry:
     contentRepositories:
-      default:
+      twodimensions:
+        preset: default
         contentDimensions:
           country:
             label: 'Country'
@@ -68,7 +69,8 @@ Neos:
                     'aut': true
   Neos:
     sites:
-      '*':
+      'neos-test-twodimensions':
+        contentRepository: 'twodimensions'
         contentDimensions:
           resolver:
             factoryClassName: Neos\Neos\FrontendRouting\DimensionResolution\Resolver\UriPathResolverFactory

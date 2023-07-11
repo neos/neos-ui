@@ -50,6 +50,22 @@ dc exec -T php bash <<-'BASH'
     ./flow flow:cache:warmup
     ./flow doctrine:migrate
     ./flow user:create --username=admin --password=password --first-name=John --last-name=Doe --roles=Administrator || true
+
+    ./flow cr:setup --content-repository onedimension
+    ./flow site:create neos-test-onedimension Neos.Test.OneDimension Neos.TestNodeTypes:Document.Page
+    ./flow domain:add neos-test-onedimension onedimension.localhost --port 8081
+    # TODO: Replace with "--assume-yes" flag once "./flow cr:prune" has one
+    printf "y\n" | ./flow cr:prune --content-repository onedimension
+    ./flow cr:import --content-repository onedimension --path ./DistributionPackages/Neos.Test.OneDimension/Resources/Private/Content
+
+    ./flow cr:setup --content-repository twodimensions
+    ./flow site:create neos-test-twodimensions Neos.Test.TwoDimensions Neos.TestNodeTypes:Document.Page
+    ./flow domain:add neos-test-twodimensions twodimensions.localhost --port 8081
+    # TODO: Replace with "--assume-yes" flag once "./flow cr:prune" has one
+    printf "y\n" | ./flow cr:prune --content-repository twodimensions
+    ./flow cr:import --content-repository twodimensions --path ./DistributionPackages/Neos.Test.TwoDimensions/Resources/Private/Content
+
+    ./flow resource:publish
 BASH
 
 echo ""
@@ -70,36 +86,6 @@ for fixture in $(pwd)/Tests/IntegrationTests/Fixtures/*/; do
     echo "########################################"
     echo "# Fixture '$(basename $fixture)'"
     echo "########################################"
-    dc exec -T php bash <<-BASH
-        mkdir -p ./TestDistribution/DistributionPackages
-
-        rm -rf ./TestDistribution/DistributionPackages/Neos.TestNodeTypes
-        ln -s "../../SharedNodeTypesPackage" ./TestDistribution/DistributionPackages/Neos.TestNodeTypes
-
-        rm -rf ./TestDistribution/DistributionPackages/Neos.TestSite
-        ln -s "../../Fixtures/$(basename $fixture)/SitePackage" ./TestDistribution/DistributionPackages/Neos.TestSite
-
-        # TODO: optimize this
-        cd TestDistribution
-
-        composer reinstall neos/test-nodetypes
-        composer reinstall neos/test-site
-        ./flow flow:cache:flush --force
-        ./flow flow:cache:warmup
-        if ./flow site:list | grep -q 'Node name'; then
-            ./flow site:prune '*'
-        fi
-        ./flow configuration:show --path Neos.ContentRepositoryRegistry.contentRepositories.default.contentDimensions
-
-        ./flow cr:setup
-        ./flow site:create neos-test-site Neos.TestSite Neos.TestNodeTypes:Document.Page
-        # TODO: Replace with "--assume-yes" flag once "./flow cr:prune" has one
-        printf "y\n" | ./flow cr:prune
-        echo ./flow cr:import --path ./DistributionPackages/Neos.TestSite/Resources/Private/Content
-        ./flow cr:import --path ./DistributionPackages/Neos.TestSite/Resources/Private/Content
-        echo Done
-        ./flow resource:publish
-BASH
 
     yarn run testcafe "$1" "${fixture}*.e2e.js" \
         --selector-timeout=10000 --assertion-timeout=30000 --debug-on-fail

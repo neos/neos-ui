@@ -30,6 +30,7 @@ export default class MultiSelectBox_ListPreviewSortable extends PureComponent {
         ).isRequired,
         values: PropTypes.arrayOf(PropTypes.string),
         onValuesChange: PropTypes.func.isRequired,
+        displayLoadingIndicator: PropTypes.bool,
         ListPreviewElement: PropTypes.any.isRequired,
 
         // API with MultiSelectBox
@@ -59,8 +60,13 @@ export default class MultiSelectBox_ListPreviewSortable extends PureComponent {
     render() {
         const {
             options,
-            optionValueAccessor
+            optionValueAccessor,
+            displayLoadingIndicator
         } = this.props;
+
+        if (displayLoadingIndicator) {
+            return '';
+        }
 
         const {draggableValues} = this.state;
 

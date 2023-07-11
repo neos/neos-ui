@@ -81,16 +81,16 @@ for fixture in $(pwd)/Tests/IntegrationTests/Fixtures/*/; do
 
         # TODO: optimize this
         cd TestDistribution
+
         composer reinstall neos/test-nodetypes
         composer reinstall neos/test-site
         ./flow flow:cache:flush --force
         ./flow flow:cache:warmup
-        ./flow configuration:show --path Neos.ContentRepositoryRegistry.contentRepositories.default.contentDimensions
-
         if ./flow site:list | grep -q 'Node name'; then
             ./flow site:prune '*'
         fi
-        #./flow site:import --package-key=Neos.TestSite
+        ./flow configuration:show --path Neos.ContentRepositoryRegistry.contentRepositories.default.contentDimensions
+
         ./flow cr:setup
         ./flow site:create neos-test-site Neos.TestSite Neos.TestNodeTypes:Document.Page
         # TODO: Replace with "--assume-yes" flag once "./flow cr:prune" has one

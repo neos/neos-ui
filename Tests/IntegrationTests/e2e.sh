@@ -24,12 +24,21 @@ for fixture in Packages/Application/Neos.Neos.Ui/Tests/IntegrationTests/Fixtures
     composer reinstall neos/test-site
     ./flow flow:cache:flush --force
     ./flow flow:cache:warmup
-    ./flow configuration:show --path Neos.ContentRepository.contentDimensions
+    ./flow configuration:show --path Neos.ContentRepositoryRegistry.contentRepositories.default.contentDimensions
 
     if ./flow site:list | grep -q 'Node name'; then
-        ./flow site:prune '*'
+    # TODO: Remove "|| true" - This is currently only needed to prevent CircleCI from exiting
+        ./flow site:prune '*' || true
     fi
-    ./flow site:import --package-key=Neos.TestSite
+
+    ./flow cr:setup
+    # TODO: Remove "|| true" - This is currently only needed to prevent CircleCI from exiting
+    ./flow site:create neos-test-site Neos.TestSite Neos.TestNodeTypes:Document.Page || true
+    # TODO: Replace with "--assume-yes" flag once "./flow cr:prune" has one
+    printf "y\n" | ./flow cr:prune
+    echo ./flow cr:import --path ./DistributionPackages/Neos.TestSite/Resources/Private/Content
+    ./flow cr:import --path ./DistributionPackages/Neos.TestSite/Resources/Private/Content
+    echo Done
     ./flow resource:publish
 
     cd Packages/Application/Neos.Neos.Ui

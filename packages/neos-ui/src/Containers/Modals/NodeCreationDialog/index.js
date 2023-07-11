@@ -50,6 +50,7 @@ export default class NodeCreationDialog extends PureComponent {
     };
 
     static defaultState = {
+        dialogType: 'success',
         transient: {},
         validationErrors: null,
         isDirty: false,
@@ -135,6 +136,9 @@ export default class NodeCreationDialog extends PureComponent {
     handleCancel = () => {
         const {cancel} = this.props;
         if (this.state.isDirty) {
+            this.setState({
+                dialogType: 'warn'
+            });
             // prevent accidental close https://github.com/neos/neos-ui/issues/3531
             return;
         }
@@ -311,7 +315,7 @@ export default class NodeCreationDialog extends PureComponent {
                 actions={[this.renderBackAction(), this.renderSaveAction()]}
                 title={this.renderTitle()}
                 onRequestClose={this.handleCancel}
-                type="success"
+                type={this.state.dialogType}
                 isOpen
                 style={this.state.secondaryInspectorComponent ? 'jumbo' : 'wide'}
                 id="neos-NodeCreationDialog"

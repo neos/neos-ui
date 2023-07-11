@@ -27,6 +27,7 @@ describe('<Dialog/>', () => {
             'dialog__contents': 'contentsClassName',
             'dialog__contentsPosition': 'contentsPositionClassName',
             'dialog__title': 'titleClassName',
+            'dialog--effect__shake': 'effectShakeClassName'
         },
         title: 'Foo title',
     };

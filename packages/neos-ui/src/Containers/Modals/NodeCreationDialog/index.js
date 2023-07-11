@@ -307,6 +307,7 @@ export default class NodeCreationDialog extends PureComponent {
                 actions={[this.renderBackAction(), this.renderSaveAction()]}
                 title={this.renderTitle()}
                 onRequestClose={this.handleCancel}
+                preventClosing={true}
                 type="success"
                 isOpen
                 style={this.state.secondaryInspectorComponent ? 'jumbo' : 'wide'}

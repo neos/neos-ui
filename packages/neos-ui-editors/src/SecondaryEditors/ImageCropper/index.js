@@ -159,8 +159,14 @@ export default class ImageCropper extends PureComponent {
             const normalizedAspectRatioHeight = currentAspectRatioStrategy.height / aspectRatioGcd;
 
             // pixel perfect calculations
-            const naturalCropWidth = Math.floor(imageWidth * (cropArea.width / 100) / normalizedAspectRatioWidth) * normalizedAspectRatioWidth;
-            const naturalCropHeight = naturalCropWidth / normalizedAspectRatioWidth * normalizedAspectRatioHeight;
+            let naturalCropWidth = Math.floor(imageWidth * (cropArea.width / 100) / normalizedAspectRatioWidth) * normalizedAspectRatioWidth;
+            let naturalCropHeight = naturalCropWidth / normalizedAspectRatioWidth * normalizedAspectRatioHeight;
+
+            while (naturalCropHeight > imageHeight) {
+                // can't crop area larger than image itself, so keep subtracting normalized aspect ratio values until area is valid
+                naturalCropHeight -= normalizedAspectRatioHeight;
+                naturalCropWidth -= normalizedAspectRatioWidth;
+            }
 
             // modify cropArea with pixel snapping values
             cropArea.width = (naturalCropWidth / imageWidth) * 100;

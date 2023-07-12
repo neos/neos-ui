@@ -4,7 +4,7 @@ export interface EventRoot {
 }
 
 export interface Dialog {
-    close: () => void;
+    close: () => boolean;
 }
 
 export class DialogManager {
@@ -36,8 +36,11 @@ export class DialogManager {
     public closeLatest(): void {
         const dialog = this.dialogs.pop();
         if (dialog) {
-            dialog.close();
-            this.removeHandleKeydownEventListenerIfNecessary();
+            if (dialog.close()) {
+                this.removeHandleKeydownEventListenerIfNecessary();
+            } else {
+                this.dialogs.push(dialog);
+            }
         }
     }
 

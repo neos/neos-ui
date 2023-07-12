@@ -12,7 +12,7 @@ fixture`Select Boxes`
 test('SelectBox opens below and breaks out of the creation dialog if there\'s enough space below.', async t => {
     await t
         .click(Selector('#neos-PageTree-AddNode'))
-        .click(ReactSelector('NodeTypeItem').withText('SelectBox opens below and breaks out'))
+        .click(ReactSelector('NodeTypeItem').withExactText('SelectBox opens below and breaks out'))
         .click(ReactSelector('NodeCreationDialog SelectBox'));
 
     subSection('SelectBox contents open below the SelectBox.');
@@ -25,7 +25,7 @@ test('SelectBox opens above in creation dialog if there\'s not enough space belo
     await t
         .resizeWindow(1200, 768)
         .click(Selector('#neos-PageTree-AddNode'))
-        .click(ReactSelector('NodeTypeItem').withText('SelectBox opens above'))
+        .click(ReactSelector('NodeTypeItem').withExactText('SelectBox opens above'))
         .click(ReactSelector('NodeCreationDialog SelectBox'));
 
     subSection('SelectBox contents open above if the SelectBox is just above the screen bottom.');

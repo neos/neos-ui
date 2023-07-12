@@ -12,6 +12,13 @@ import style from './style.css';
 
 export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry, nodes}) => contentDomNode => {
     const contextPath = contentDomNode.getAttribute('data-__neos-node-contextpath');
+
+    if (!nodes[contextPath]) {
+        // Node is not available in the store yet, so we can't initialize any interaction
+        console.warn(`Node with context path "${contextPath}" is not available in the store yet.`);
+        return;
+    }
+
     const isHidden = $get([contextPath, 'properties', '_hidden'], nodes);
     const hasChildren = Boolean($count([contextPath, 'children'], nodes));
     const isInlineEditable = nodeTypesRegistry.isInlineEditable($get([contextPath, 'nodeType'], nodes));

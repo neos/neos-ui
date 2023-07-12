@@ -63,6 +63,7 @@ class RangeEditor extends PureComponent {
     render() {
         const options = {...this.constructor.defaultProps.options, ...this.props.options};
         const {value, highlight} = this.props;
+        const valueAsString = value === 0 ? '0' : (value || '');
 
         return (
             <div
@@ -77,7 +78,7 @@ class RangeEditor extends PureComponent {
                     min={options.min}
                     max={options.max}
                     step={options.step}
-                    value={value || ''}
+                    value={valueAsString}
                     className="slider"
                     onChange={this.handleChange}
                     disabled={options.disabled}
@@ -92,7 +93,7 @@ class RangeEditor extends PureComponent {
                             type="text"
                             onKeyPress={this.onKeyPress}
                             onChange={this.handleChange}
-                            value={value || ''}
+                            value={valueAsString}
                             style={ {width: `${options.max.toString().length}ch`} }
                             disabled={options.disabled}
                         />

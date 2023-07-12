@@ -40,6 +40,11 @@ export default class SelectBox extends PureComponent {
         ),
 
         /**
+         * Current value is shown as readonly
+         */
+        disabled: PropTypes.bool,
+
+        /**
          * Additional className wich will be applied
          */
         className: PropTypes.string,

@@ -26,6 +26,10 @@
 
       "cweagans/composer-patches": "^1.7.3"
     },
+    "require-dev": {
+      "neos/buildessentials": "@dev",
+      "phpunit/phpunit": "^9.0"
+    },
     "extra": {
       "patches": {
         "neos/neos-development-collection": {

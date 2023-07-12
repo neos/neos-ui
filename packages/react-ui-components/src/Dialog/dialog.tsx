@@ -129,7 +129,7 @@ class DialogWithOverlay extends PureComponent<DialogProps> {
 
         const finalClassNameBody = mergeClassNames(
             theme.dialog__body,
-            {
+            this.state.isShaking ? theme['dialog--warn'] : {
                 [theme['dialog--success']]: type === 'success',
                 [theme['dialog--warn']]: type === 'warn',
                 [theme['dialog--error']]: type === 'error',
@@ -201,7 +201,7 @@ class DialogWithOverlay extends PureComponent<DialogProps> {
                 [theme['dialog--jumbo']]: style === 'jumbo',
                 [theme['dialog--narrow']]: style === 'narrow',
             },
-            {
+            this.state.isShaking ? theme['dialog--warn'] : {
                 [theme['dialog--success']]: type === 'success',
                 [theme['dialog--warn']]: type === 'warn',
                 [theme['dialog--error']]: type === 'error',

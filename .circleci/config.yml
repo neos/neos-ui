@@ -81,6 +81,7 @@ jobs:
   e2e:
     environment:
       FLOW_CONTEXT: Production
+      DB_HOST: 127.0.0.1
     docker:
       - image: cimg/php:8.2-node
       - image: cimg/mariadb:10.6

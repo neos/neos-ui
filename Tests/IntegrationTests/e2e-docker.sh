@@ -18,9 +18,10 @@ echo "##########################################################################
 dc down
 dc up -d
 dc exec -T php bash <<-'BASH'
-    rm -rf /usr/src/app/*
+    # WHY: change owner for composer cache for docker execution
+    sudo chown -R docker:docker /home/circleci/
 BASH
-docker cp $(pwd)/Tests/IntegrationTests/. $(dc ps -q php):/usr/src/app
+docker cp $(pwd)/Tests/IntegrationTests/TestDistribution/composer.json $(dc ps -q php):/usr/src/app/composer.json
 sleep 2
 
 echo ""
@@ -29,10 +30,12 @@ echo "# Install dependencies...                                                 
 echo "#############################################################################"
 dc exec -T php bash <<-'BASH'
     cd /usr/src/app
+    mkdir -p Configuration
     sudo chown -R docker:docker .
-    # WHY: change owner for composer cache for docker execution
-    sudo chown -R docker:docker /home/circleci/
-    cd TestDistribution
+
+    ln -sf /usr/src/neos-ui/Tests/IntegrationTests/TestDistribution/Configuration/Settings.yaml /usr/src/app/Configuration/Settings.yaml
+    ln -sfn /usr/src/neos-ui/Tests/IntegrationTests/TestDistribution/DistributionPackages /usr/src/app/DistributionPackages
+
     composer install
 BASH
 
@@ -40,12 +43,10 @@ echo ""
 echo "#############################################################################"
 echo "# Initialize Neos...                                                        #"
 echo "#############################################################################"
-docker cp $(pwd)/. $(dc ps -q php):/usr/src/app/TestDistribution/Packages/Application/neos-ui
 dc exec -T php bash <<-'BASH'
-    cd TestDistribution
     rm -rf Packages/Application/Neos.Neos.Ui
-    mv Packages/Application/neos-ui Packages/Application/Neos.Neos.Ui
-    sed -i 's/host: 127.0.0.1/host: db/g' Configuration/Settings.yaml
+    ln -s /usr/src/neos-ui /usr/src/app/Packages/Application/Neos.Neos.Ui
+
     ./flow flow:cache:flush
     ./flow flow:cache:warmup
     ./flow doctrine:migrate
@@ -73,7 +74,6 @@ echo "##########################################################################
 echo "# Start Flow Server...                                                      #"
 echo "#############################################################################"
 dc exec -T php bash <<-'BASH'
-    cd TestDistribution
     ./flow server:run --port 8081 --host 0.0.0.0 &
 BASH
 

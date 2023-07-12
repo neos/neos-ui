@@ -7,7 +7,7 @@ Neos:
         driver: pdo_mysql
         dbname: neos
         user: root
-        host: 127.0.0.1
+        host: '%env(string):DB_HOST%'
         password: not_a_real_password
     reflection:
       ignoredTags:

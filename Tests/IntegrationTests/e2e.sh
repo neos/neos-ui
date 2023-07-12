@@ -26,11 +26,7 @@ printf "y\n" | ./flow cr:prune --content-repository twodimensions
 
 cd Packages/Application/Neos.Neos.Ui
 
-for fixture in Tests/IntegrationTests/Fixtures/*/; do
-    echo "$fixture"
-
-    yarn run testcafe "$1" "${fixture}*.e2e.js" \
-            --selector-timeout=10000 --assertion-timeout=30000
-done
+yarn run testcafe "$1" "Tests/IntegrationTests/Fixtures/*/*.e2e.js" \
+    --selector-timeout=10000 --assertion-timeout=30000
 
 cd ../../..

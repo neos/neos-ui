@@ -81,12 +81,5 @@ echo ""
 echo "#############################################################################"
 echo "# Run E2E tests...                                                          #"
 echo "#############################################################################"
-for fixture in $(pwd)/Tests/IntegrationTests/Fixtures/*/; do
-    echo ""
-    echo "########################################"
-    echo "# Fixture '$(basename $fixture)'"
-    echo "########################################"
-
-    yarn run testcafe "$1" "${fixture}*.e2e.js" \
-        --selector-timeout=10000 --assertion-timeout=30000 --debug-on-fail
-done
+yarn run testcafe "$1" "$(pwd)/Tests/IntegrationTests/Fixtures/*/*.e2e.js" \
+    --selector-timeout=10000 --assertion-timeout=30000 --debug-on-fail

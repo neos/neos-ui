@@ -48,8 +48,8 @@ const spec = {
             index: props.index
         };
     },
-    canDrag({values}) {
-        return values && values.length > 1;
+    canDrag({values, disabled}) {
+        return !disabled && (values && values.length > 1);
     }
 }, (connect, monitor) => ({
     connectDragSource: connect.dragSource(),
@@ -64,6 +64,7 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
         option: PropTypes.shape({
         }),
         values: PropTypes.arrayOf(PropTypes.string),
+        disabled: PropTypes.bool,
 
         // Drag&Drop specific propTypes
         dndType: PropTypes.string.isRequired,
@@ -101,6 +102,7 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
     render() {
         const {
             option,
+            disabled,
             connectDragSource,
             connectDropTarget,
             isDragging,
@@ -115,7 +117,7 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
 
         // TODO Loading State: const {icon, label} = option || {label: `[Loading ${value}]`};
 
-        const isDraggable = values && values.length > 1;
+        const isDraggable = !disabled && (values && values.length > 1);
 
         const finalClassNames = mergeClassNames({
             [theme.selectedOptions__item]: true,
@@ -127,7 +129,7 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
             this.node = node;
         };
 
-        const handleRemoveItem = () => onRemoveItem(index);
+        const handleRemoveItem = () => disabled ? null : onRemoveItem(index);
 
         return connectDragSource(connectDropTarget(
             <li style={{opacity}} ref={refName}>
@@ -152,6 +154,7 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
                             />
                     </div>
                     <IconButton
+                        disabled={disabled}
                         icon={'close'}
                         onClick={handleRemoveItem}
                         className={theme.selectedOption__removeButton}

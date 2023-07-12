@@ -281,8 +281,8 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         // child nodes for content tree, must not include those nodes filtered out by `baseNodeType`
         $contentChildNodes = $subgraph->findChildNodes(
             $node->nodeAggregateId,
-            FindChildNodesFilter::create(nodeTypeConstraints:
-                $this->buildContentChildNodeFilterString()
+            FindChildNodesFilter::create(
+                nodeTypeConstraints: $this->buildContentChildNodeFilterString()
             )
         );
         $childNodes = $documentChildNodes->merge($contentChildNodes);

@@ -32,7 +32,6 @@ use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
  */
 class WorkspaceService
 {
-
     /**
      * @Flow\Inject
      * @var UserService

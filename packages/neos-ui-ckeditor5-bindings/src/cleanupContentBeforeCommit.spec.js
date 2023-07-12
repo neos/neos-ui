@@ -23,7 +23,6 @@ describe('ckeditor DisabledAutoparagraphMode hack, cleanup outer spans', () => {
         assertCleanedUpContent('<span>foo</span>', 'foo');
     })
 
-
     test('cleanup multiple root <span>', () => {
         assertCleanedUpContent('<span>foo</span><span>bar</span>', '<span>foo</span><span>bar</span>');
     })

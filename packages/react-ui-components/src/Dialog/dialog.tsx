@@ -20,6 +20,7 @@ interface DialogTheme {
     readonly 'dialog--success': string;
     readonly 'dialog--warn': string;
     readonly 'dialog--error': string;
+    readonly 'dialog--effect__shake': string;
 }
 
 export interface DialogProps {
@@ -32,6 +33,11 @@ export interface DialogProps {
      * The handler which gets called once the user clicks on the close symbol in the top right corner of the Dialog.
      */
     readonly onRequestClose: () => void;
+
+    /**
+     * An optional boolean flag to keep the user in the dialog.
+     */
+    readonly preventClosing?: boolean;
 
     /**
      * The title to be rendered on top of the Dialogs contents.
@@ -83,19 +89,47 @@ const dialogManager = new DialogManager({
     eventRoot: document
 });
 
-export class DialogWithoutOverlay extends PureComponent<DialogProps> {
+class DialogWithOverlay extends PureComponent<DialogProps> {
+    // tslint:disable-next-line:readonly-keyword
     private ref?: HTMLDivElement;
 
     private dialog: Dialog = {
-        close: this.props.onRequestClose,
+        close: () => {
+            if (this.props.preventClosing) {
+                this.startShaking();
+                return false;
+            }
+            this.props.onRequestClose();
+            return true;
+        }
     };
 
-    public render(): JSX.Element {
-        const { title, children, actions, theme, type } = this.props;
+    public state: Readonly<{
+        isShaking: boolean
+    }> = {
+        isShaking: false
+    };
+
+    private startShaking = () => {
+        if (this.state.isShaking) {
+            return;
+        }
+        this.setState({
+            isShaking: true
+        });
+        setTimeout(() => {
+            this.setState({
+                isShaking: false
+            });
+        }, 820);
+    }
+
+    public renderDialogWithoutOverlay(): JSX.Element {
+        const {title, children, actions, theme, type} = this.props;
 
         const finalClassNameBody = mergeClassNames(
             theme.dialog__body,
-            {
+            this.state.isShaking ? theme['dialog--warn'] : {
                 [theme['dialog--success']]: type === 'success',
                 [theme['dialog--warn']]: type === 'warn',
                 [theme['dialog--error']]: type === 'error'
@@ -109,7 +143,10 @@ export class DialogWithoutOverlay extends PureComponent<DialogProps> {
                 className={theme.dialog__contentsPosition}
                 tabIndex={0}
             >
-                <div className={theme.dialog__contents}>
+                <div className={mergeClassNames(
+                    theme.dialog__contents,
+                    this.state.isShaking && theme['dialog--effect__shake']
+                )}>
                     <div className={theme.dialog__title}>{title}</div>
                     <div className={finalClassNameBody}>{children}</div>
 
@@ -126,11 +163,12 @@ export class DialogWithoutOverlay extends PureComponent<DialogProps> {
     }
 
     private readonly handleReference = (ref: HTMLDivElement) => {
+        // tslint:disable-next-line:no-object-mutation
         this.ref = ref;
     }
 
     public readonly componentDidMount = (): void => {
-        const { autoFocus } = this.props;
+        const {autoFocus} = this.props;
         if (this.ref && autoFocus) {
             this.ref.focus();
         }
@@ -141,9 +179,7 @@ export class DialogWithoutOverlay extends PureComponent<DialogProps> {
     public readonly componentWillUnmount = (): void => {
         dialogManager.forget(this.dialog);
     }
-}
 
-class DialogWithOverlay extends PureComponent<DialogProps> {
     public render(): JSX.Element | null {
         /* eslint-disable @typescript-eslint/no-unused-vars */
         const {
@@ -167,7 +203,7 @@ class DialogWithOverlay extends PureComponent<DialogProps> {
                 [theme['dialog--jumbo']]: style === 'jumbo',
                 [theme['dialog--narrow']]: style === 'narrow'
             },
-            {
+            this.state.isShaking ? theme['dialog--warn'] : {
                 [theme['dialog--success']]: type === 'success',
                 [theme['dialog--warn']]: type === 'warn',
                 [theme['dialog--error']]: type === 'error'
@@ -187,7 +223,7 @@ class DialogWithOverlay extends PureComponent<DialogProps> {
                 tabIndex={0}
                 onClick={this.handleOverlayClick}
             >
-                <DialogWithoutOverlay {...this.props} />
+                {this.renderDialogWithoutOverlay()}
             </section>,
             document.body
         );
@@ -195,7 +231,7 @@ class DialogWithOverlay extends PureComponent<DialogProps> {
 
     private readonly handleOverlayClick = (ev: React.MouseEvent) => {
         if (ev.target === ev.currentTarget) {
-            this.props.onRequestClose();
+            this.dialog.close();
         }
     }
 }

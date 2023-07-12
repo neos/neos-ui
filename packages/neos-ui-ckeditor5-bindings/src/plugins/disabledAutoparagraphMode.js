@@ -10,6 +10,7 @@ export default class DisabledAutoparagraphMode extends Plugin {
     static get pluginName() {
         return 'DisabledAutoparagraphMode';
     }
+
     init() {
         const {editor} = this;
 

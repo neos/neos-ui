@@ -4,12 +4,14 @@ export interface EventRoot {
 }
 
 export interface Dialog {
-    close: () => void;
+    close: () => boolean;
 }
 
 export class DialogManager {
     private dialogs: Dialog[] = [];
 
+    // https://github.com/typescript-eslint/typescript-eslint/issues/48
+    // eslint-disable-next-line no-useless-constructor
     constructor(private readonly deps: { eventRoot: EventRoot }) {}
 
     public register(dialog: Dialog): void {
@@ -36,8 +38,11 @@ export class DialogManager {
     public closeLatest(): void {
         const dialog = this.dialogs.pop();
         if (dialog) {
-            dialog.close();
-            this.removeHandleKeydownEventListenerIfNecessary();
+            if (dialog.close()) {
+                this.removeHandleKeydownEventListenerIfNecessary();
+            } else {
+                this.dialogs.push(dialog);
+            }
         }
     }
 

@@ -2,9 +2,8 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Icon, IconButton} from '@neos-project/react-ui-components';
 import style from './style.module.css';
-
+import cx from 'classnames';
 import {neos} from '@neos-project/neos-ui-decorators';
-import {$transform} from 'plow-js';
 import {connect} from 'react-redux';
 import {selectors} from '@neos-project/neos-ui-redux-store';
 
@@ -20,12 +19,14 @@ const getDataLoaderOptionsForProps = props => ({
     i18nRegistry: globalRegistry.get('i18n'),
     dataSourcesDataLoader: globalRegistry.get('dataLoaders').get('DataSources')
 }))
-@connect($transform({
-    focusedNodePath: selectors.CR.Nodes.focusedNodePathSelector
+@connect(state => ({
+    focusedNodePath: selectors.CR.Nodes.focusedNodePathSelector(state)
 }))
+
 export default class ButtonEditor extends Component {
     static propTypes = {
         commit: PropTypes.func.isRequired,
+        highlight: PropTypes.bool,
         value: PropTypes.any,
         className: PropTypes.string,
         options: PropTypes.shape({
@@ -49,107 +50,114 @@ export default class ButtonEditor extends Component {
     };
 
     static defaultOptions = {
-        allowEmpty: false,
+        allowEmpty: true,
         multiple: false,
         disabled: false
     };
 
     state = {
-        active: [],
+        selected: [],
         isLoading: false,
         buttons: []
     };
+
+    options = {};
 
     initialValueType = 'string';
 
     constructor(props) {
         super(props);
-
         const {commit, options, value} = props;
+        this.options = Object.assign({}, this.constructor.defaultOptions, options)
+        // TODO: get actual property data type
         this.initialValueType = Array.isArray(value) ? 'array' : 'string';
-        if (options.multiple && this.initialValueType === 'string') {
+        if (this.options.multiple && this.initialValueType === 'string') {
             console.warn(`Misconfiguration in property "${props.identifier}". Multiple is activated but value type seems to be "string" but should be "array".`);
         }
 
         this.state = {
-            active: Array.isArray(value) ? value : (value ? [value] : []),
-            buttons: this.hasDataSource() ? [] : this.flattenValues(options.values)
+            selected: Array.isArray(value) ? value : (value ? [value] : []),
+            buttons: this.hasDataSource() ? [] : this.createButtonsFromConfiguration(this.options.values)
         };
         this.commit = commit;
     }
 
     hasDataSource() {
-        return this.props.options.dataSourceIdentifier || this.props.options.dataSourceUri;
+        return this.options.dataSourceIdentifier || this.options.dataSourceUri;
     }
 
     componentDidMount() {
         if (this.hasDataSource()) {
-            this.loadOptions();
+            this.loadDataSourceOptions();
         }
     }
 
-    loadOptions() {
+    loadDataSourceOptions() {
         this.setState({isLoading: true});
         this.props.dataSourcesDataLoader.resolveValue(getDataLoaderOptionsForProps(this.props), this.props.value)
-            .then(buttons => {
+            .then(configuredValues => {
                 this.setState({
                     isLoading: false,
-                    buttons
+                    buttons: this.createButtonsFromConfiguration(configuredValues)
                 });
             });
     }
 
-    flattenValues(values) {
-        return Object.entries(values).map(([key, val]) => {
-            return {...val, value: key, label: this.props.i18nRegistry.translate(val.label)};
+    createButtonsFromConfiguration(configuredValues) {
+        return Object.entries(configuredValues).map(([key, configuredValue]) => {
+            return {
+                value: configuredValue.value ?? key,
+                label: this.props.i18nRegistry.translate(configuredValue.label),
+                icon: configuredValue.icon,
+                iconActive: configuredValue.iconActive
+            };
         });
     }
 
-    toggleActive(toggleValue) {
-        const {multiple, allowEmpty} = this.props.options;
+    handleSelect(selectedValue) {
+        const {multiple, allowEmpty} = this.options;
         // we'd like to have a copy instead of ref
-        let active = [...this.state.active];
+        let selected = [...this.state.selected];
         if (multiple === false) {
-            if (active.includes(toggleValue)) {
-                active = [];
+            if (selected.includes(selectedValue)) {
+                selected = [];
             } else {
-                active = [toggleValue];
+                selected = [selectedValue];
             }
-        } else if (active.includes(toggleValue)) {
-            active.splice(active.indexOf(toggleValue), 1);
+        } else if (selected.includes(selectedValue)) {
+            selected.splice(selected.indexOf(selectedValue), 1);
         } else {
-            active.push(toggleValue);
+            selected.push(selectedValue);
         }
 
-        // if allowEmpty is false but new active length will be 0, drop changes
-        if (!allowEmpty && active.length === 0) {
+        // if allowEmpty is false but new selected length will be 0, drop changes
+        if (!allowEmpty && selected.length === 0) {
             return;
         }
-        this.setState({active});
+        this.setState({selected});
 
-        this.commit(this.initialValueType === 'string' ? active[0] || '' : active);
+        this.commit(this.initialValueType === 'string' ? selected[0] || '' : selected);
     }
 
-    isActive(val) {
-        return this.state.active.includes(val);
+    isSelected(val) {
+        return this.state.selected.includes(val);
     }
 
     render() {
-        const options = Object.assign({}, this.constructor.defaultOptions, this.props.options);
-
-        return (<div className={style.buttonEditor}>
+        return (<div className={cx(style.buttonEditor, this.props.highlight && style.buttonEditorHighlight)}>
             {
                 this.state.isLoading
                     ? <Icon icon="spinner" size="lg" spin/>
                     : this.state.buttons.map((button) => (<IconButton
+                            key={button.value}
                             style="lighter"
                             hoverStyle="darken"
                             className={style.button}
-                            icon={button.iconActive ? (this.isActive(button.value) ? button.iconActive : button.icon) : button.icon}
+                            icon={button.iconActive ? (this.isSelected(button.value) ? button.iconActive : button.icon) : button.icon}
                             title={button.label}
-                            disabled={options.disabled || button.disabled}
-                            isActive={this.isActive(button.value)}
-                            onClick={this.toggleActive.bind(this, button.value)}
+                            disabled={this.options.disabled || button.disabled}
+                            isActive={this.isSelected(button.value)}
+                            onClick={this.handleSelect.bind(this, button.value)}
                     />))
             }
         </div>);

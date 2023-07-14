@@ -1,8 +1,12 @@
 .buttonEditor {
+    margin-inline: calc(var(--spacing-Quarter) / -2);
 }
 
 .buttonEditor .button {
-    margin-right: var(--spacing-Quarter);
-    margin-top: var(--spacing-Quarter);
-    font-size: 20px;
+    margin: calc(var(--spacing-Quarter) / 2);
+}
+
+.buttonEditor.buttonEditorHighlight {
+    box-shadow: 0 0 0 2px var(--colors-Warn);
+    border-radius: 2px;
 }

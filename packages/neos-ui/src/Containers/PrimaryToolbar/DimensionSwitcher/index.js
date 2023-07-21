@@ -33,7 +33,9 @@ SelectedPreset.propTypes = {
 @connect($transform({
     contentDimensions: selectors.CR.ContentDimensions.byName,
     allowedPresets: selectors.CR.ContentDimensions.allowedPresets,
-    activePresets: selectors.CR.ContentDimensions.activePresets
+    activePresets: selectors.CR.ContentDimensions.activePresets,
+    getNodeByContextPath: selectors.CR.Nodes.nodeByContextPath,
+    documentNode: selectors.CR.Nodes.documentNodeSelector
 }), {
     selectPreset: actions.CR.ContentDimensions.selectPreset,
     setAllowed: actions.CR.ContentDimensions.setAllowed
@@ -255,15 +257,58 @@ export default class DimensionSwitcher extends PureComponent {
         return null;
     }
 
+    getExistingDimensions() {
+        const allowed = this.props.allowedPresets
+        const currentDocumentNode = this.props.getNodeByContextPath(this.props.documentNode.contextPath)
+        const dimensionsWithVariants = currentDocumentNode?.otherNodeVariants;
+        if (!dimensionsWithVariants) {
+            return [currentDocumentNode.dimensions]
+        }
+
+        const existingDimensions = {};
+        Object.keys(allowed).forEach((dimensionName) => {
+            const dimensionValues = allowed[dimensionName];
+
+            existingDimensions[dimensionName] = [];
+            Array.from(dimensionValues).forEach((dimensionValue) => {
+                const result = [...dimensionsWithVariants, currentDocumentNode.dimensions].find((dimension) => {
+                    return dimension[dimensionName] === dimensionValue;
+                });
+                if (result) {
+                    existingDimensions[dimensionName].push(dimensionValue);
+                }
+            });
+        });
+
+        return existingDimensions;
+    }
+
     presetsForDimension(dimensionName) {
         const {contentDimensions, allowedPresets, i18nRegistry} = this.props;
         const dimensionConfiguration = $get(dimensionName, contentDimensions);
+        const existingDimensions = this.getExistingDimensions();
 
         return mapValues(dimensionConfiguration.presets,
             (presetConfiguration, presetName) => {
+                // if we do not know which dimensions exist, show all as existing
+                let existing = existingDimensions.length === 1 && existingDimensions[0] === undefined;
+                for (const value of presetConfiguration.values) {
+                    if (existingDimensions[dimensionName]?.includes(value)) {
+                        existing = true;
+                    }
+                }
+
+                const uri = new URL(window.location.href);
+                const contextPathWithoutDimensions = this.props.documentNode.contextPath.split(';')[0];
+                const uriDimension = ';' + dimensionName + '=' + presetConfiguration.values.join(',')
+                uri.searchParams.set('node', contextPathWithoutDimensions + uriDimension);
+                const url = uri.toString();
+
                 return Object.assign({}, presetConfiguration, {
                     label: i18nRegistry.translate(presetConfiguration.label),
-                    disallowed: !(allowedPresets[dimensionName] && allowedPresets[dimensionName].includes(presetName))
+                    disallowed: !(allowedPresets[dimensionName] && allowedPresets[dimensionName].includes(presetName)),
+                    existing,
+                    url
                 });
             });
     }

@@ -60,8 +60,16 @@
     }
 }
 
-.dimmed {
-    filter: opacity(50%);
+.strikethrough {
+    text-decoration: line-through;
+}
+
+.lighter {
+    filter: opacity(75%);
+}
+
+.whiteLink {
+    color: white;
 }
 
 .selectPreset + .selectPreset {

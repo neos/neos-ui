@@ -155,7 +155,7 @@ class BackendController extends ActionController
             $this->redirectToUri($this->uriBuilder->uriFor('index', [], 'Login', 'Neos.Neos'));
         }
 
-        $backendControllerInternals = $this->contentRepositoryRegistry->getService(
+        $backendControllerInternals = $this->contentRepositoryRegistry->buildService(
             $siteDetectionResult->contentRepositoryId,
             new BackendControllerInternalsFactory()
         );

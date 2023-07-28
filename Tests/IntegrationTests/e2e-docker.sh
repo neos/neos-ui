@@ -21,7 +21,9 @@ dc exec -T php bash <<-'BASH'
     # WHY: change owner for composer cache for docker execution
     sudo chown -R docker:docker /home/circleci/
 BASH
-docker cp $(pwd)/Tests/IntegrationTests/TestDistribution/composer.json $(dc ps -q php):/usr/src/app/composer.json
+#echo docker cp $(pwd)/Tests/IntegrationTests/TestDistribution/composer.json $(dc ps -q php):/usr/src/app/composer.json
+#docker cp $(pwd)/Tests/IntegrationTests/TestDistribution/composer.json $(dc ps -q php):/usr/src/app/composer.json
+
 sleep 2
 
 echo ""
@@ -33,6 +35,7 @@ dc exec -T php bash <<-'BASH'
     mkdir -p Configuration
     sudo chown -R docker:docker .
 
+    ln -sf /usr/src/neos-ui/Tests/IntegrationTests/TestDistribution/composer.json /usr/src/app/Configuration/composer.json
     ln -sf /usr/src/neos-ui/Tests/IntegrationTests/TestDistribution/Configuration/Settings.yaml /usr/src/app/Configuration/Settings.yaml
     ln -sfn /usr/src/neos-ui/Tests/IntegrationTests/TestDistribution/DistributionPackages /usr/src/app/DistributionPackages
 

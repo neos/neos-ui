@@ -544,7 +544,7 @@ manifest('main', {}, globalRegistry => {
 
         const children = findAllChildNodes(contentElement);
 
-        // in case there are foreign refernced nodes, we need to put them into the store:
+        // in case there are foreign referenced nodes, we need to put them into the store:
         const uninitializedReferencedNodes = [];
         for (const el of children) {
             const contextPath = el.getAttribute('data-__neos-node-contextpath');

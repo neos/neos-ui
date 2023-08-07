@@ -106,7 +106,7 @@ exports[`<DateInput/> should render correctly. 1`] = `
 </div>
 `;
 
-exports[`<DateInput/> should set "utc" on DatePickerComponent if "dateOnly" prop is set. 1`] = `
+exports[`<DateInput/> should not set "UTC" on DatePickerComponent if "dateOnly" prop is set. 1`] = `
 <div
   className="wrapperClassName"
 >
@@ -190,7 +190,7 @@ exports[`<DateInput/> should set "utc" on DatePickerComponent if "dateOnly" prop
         }
       }
       timeFormat={false}
-      utc={true}
+      utc={false}
     />
     <ThemedButton
       _refHandler={[Function]}

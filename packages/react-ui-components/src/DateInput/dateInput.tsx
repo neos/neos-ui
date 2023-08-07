@@ -216,7 +216,7 @@ export class DateInput extends PureComponent<DateInputProps, DateInputState> {
                         open={true}
                         defaultValue={value}
                         dateFormat={!timeOnly}
-                        utc={dateOnly}
+                        utc={false}
                         locale={locale}
                         timeFormat={!dateOnly}
                         onChange={this.handleChange}

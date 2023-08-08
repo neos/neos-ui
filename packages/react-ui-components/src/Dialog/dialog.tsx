@@ -190,6 +190,7 @@ class DialogWithOverlay extends PureComponent<DialogProps> {
             actions,
             theme,
             type,
+            preventClosing,
             onRequestClose,
             ...rest
         } = this.props;

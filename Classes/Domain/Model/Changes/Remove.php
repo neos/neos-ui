@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 /*
@@ -11,6 +12,13 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
+use Neos\ContentRepository\Core\DimensionSpace\Exception\DimensionSpacePointNotFound;
+use Neos\ContentRepository\Core\SharedModel\Exception\ContentStreamDoesNotExistYet;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeVariantSelectionStrategy;
+use Neos\ContentRepository\Core\Feature\NodeRemoval\Command\RemoveNodeAggregate;
+use Neos\ContentRepository\Core\SharedModel\Exception\NodeAggregatesTypeIsAmbiguous;
+use Neos\Flow\Annotations as Flow;
+use Neos\Neos\Fusion\Cache\ContentCacheFlusher;
 use Neos\Neos\Ui\Domain\Model\AbstractChange;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
@@ -21,35 +29,62 @@ use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 class Remove extends AbstractChange
 {
     /**
+     * @Flow\Inject
+     * @var ContentCacheFlusher
+     */
+    protected $contentCacheFlusher;
+
+    /**
      * Checks whether this change can be applied to the subject
      *
      * @return boolean
      */
-    public function canApply()
+    public function canApply(): bool
     {
-        return true;
+        return !is_null($this->subject);
     }
 
     /**
      * Applies this change
      *
-     * @return void
+     * @throws NodeAggregatesTypeIsAmbiguous
+     * @throws ContentStreamDoesNotExistYet
+     * @throws DimensionSpacePointNotFound
+     * @throws \Neos\ContentRepository\Exception\NodeException
      */
-    public function apply()
+    public function apply(): void
     {
-        if ($this->canApply()) {
-            $node = $this->getSubject();
-            $node->remove();
+        $subject = $this->subject;
+        if ($this->canApply() && !is_null($subject)) {
+            $parentNode = $this->findParentNode($subject);
+            if (is_null($parentNode)) {
+                throw new \InvalidArgumentException(
+                    'Cannot apply Remove without a parent on node ' . $subject->nodeAggregateId->value,
+                    1645560717
+                );
+            }
 
+            // we have to schedule and the update workspace info before we actually delete the node;
+            // otherwise we cannot find the parent nodes anymore.
             $this->updateWorkspaceInfo();
 
-            $removeNode = new RemoveNode();
-            $removeNode->setNode($node);
+            $closestDocumentParentNode = $this->findClosestDocumentNode($subject);
+            $command = new RemoveNodeAggregate(
+                $subject->subgraphIdentity->contentStreamId,
+                $subject->nodeAggregateId,
+                $subject->subgraphIdentity->dimensionSpacePoint,
+                NodeVariantSelectionStrategy::STRATEGY_ALL_SPECIALIZATIONS,
+                $closestDocumentParentNode?->nodeAggregateId
+            );
 
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
+            $contentRepository->handle($command)->block();
+
+            $removeNode = new RemoveNode($subject, $parentNode);
             $this->feedbackCollection->add($removeNode);
 
             $updateParentNodeInfo = new UpdateNodeInfo();
-            $updateParentNodeInfo->setNode($node->getParent());
+            $updateParentNodeInfo->setNode($parentNode);
 
             $this->feedbackCollection->add($updateParentNodeInfo);
         }

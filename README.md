@@ -11,7 +11,7 @@ Release roadmap is [available here](https://www.neos.io/features/release-process
 
 That means:
 * All bugfixes go to the lowest maintained branch
-* All new features go only to the 8.3 branch
+* All new features go only to the 8.3 and 9.0 branch
 * New minor and major releases are made in sync with Neos/Flow. Bugfix releases may be available independantly
 
 ### Currently maintained versions
@@ -20,7 +20,9 @@ That means:
 * NeosCMS version 8.0: branch 8.0
 * NeosCMS version 8.1: branch 8.1
 * NeosCMS version 8.2: branch 8.2
-* latest development happens currently in the 8.3 branch
+* NeosCMS version 8.3: branch 8.3
+* NeosCMS version 9.0: branch 9.0
+* latest development happens currently in the 8.3 and 9.0 branch
 
 #### Releases with just security updates
 
@@ -57,10 +59,10 @@ composer update neos/neos-ui
 
 For trying out the new UI, we recommend you to run the regularily released beta releases.
 However, if you want to stay on bleeding-edge, or want to help out developing, you'll
-need the `8.3.x-dev` release. You can install the latest release using:
+need the `9.0.x-dev` release. You can install the latest release using:
 
 ```
-composer require neos/neos-ui-compiled:8.3.x-dev neos/neos-ui:8.3.x-dev
+composer require neos/neos-ui-compiled:9.0.x-dev neos/neos-ui:9.0.x-dev
 ```
 
 ## Contributing
@@ -138,6 +140,8 @@ git checkout 8.1 && git fetch && git reset --hard origin/8.1 && git merge --no-f
 git checkout 8.2 && git fetch && git reset --hard origin/8.2 && git merge --no-ff --no-commit origin/8.1
 # review and `git commit`
 git checkout 8.3 && git fetch && git reset --hard origin/8.3 && git merge --no-ff --no-commit origin/8.2
+# review and `git commit`
+git checkout 9.0 && git fetch && git reset --hard origin/9.0 && git merge --no-ff --no-commit origin/8.3
 # review and `git commit`
 ```
 

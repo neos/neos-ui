@@ -13,27 +13,26 @@ namespace Neos\Neos\Ui\Controller;
  * source code.
  */
 
-use Exception;
-use Neos\ContentRepository\Domain\Model\NodeInterface;
-use Neos\ContentRepository\Domain\Repository\WorkspaceRepository;
+use Neos\ContentRepository\Core\Feature\WorkspacePublication\Command\DiscardIndividualNodesFromWorkspace;
+use Neos\ContentRepository\Core\Feature\WorkspacePublication\Command\PublishIndividualNodesFromWorkspace;
+use Neos\ContentRepository\Core\Feature\WorkspacePublication\Dto\NodeIdsToPublishOrDiscard;
+use Neos\ContentRepository\Core\Feature\WorkspacePublication\Dto\NodeIdToPublishOrDiscard;
+use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
+use Neos\ContentRepository\Core\SharedModel\Exception\NodeAggregateCurrentlyDoesNotExist;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Flow\Annotations as Flow;
-use Neos\Flow\I18n\Exception\InvalidLocaleIdentifierException;
-use Neos\Flow\I18n\Locale;
-use Neos\Flow\I18n\Service;
-use Neos\Flow\I18n\Translator;
 use Neos\Flow\Mvc\ActionRequest;
 use Neos\Flow\Mvc\ActionResponse;
 use Neos\Flow\Mvc\Controller\ActionController;
-use Neos\Flow\Mvc\Exception\NoSuchArgumentException;
-use Neos\Flow\Mvc\Exception\UnsupportedRequestTypeException;
 use Neos\Flow\Mvc\View\JsonView;
-use Neos\Flow\Persistence\Exception\IllegalObjectTypeException;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Flow\Property\PropertyMapper;
-use Neos\Neos\Domain\Service\ContentContextFactory;
-use Neos\Neos\Domain\Service\ContentDimensionPresetSourceInterface;
-use Neos\Neos\Service\PublishingService;
+use Neos\Flow\Security\Context;
+use Neos\Neos\Domain\Model\WorkspaceName as NeosWorkspaceName;
+use Neos\Neos\FrontendRouting\NodeAddress;
+use Neos\Neos\FrontendRouting\NodeAddressFactory;
+use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;
 use Neos\Neos\Service\UserService;
 use Neos\Neos\Ui\ContentRepository\Service\NodeService;
 use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService;
@@ -41,30 +40,27 @@ use Neos\Neos\Ui\Domain\Model\ChangeCollection;
 use Neos\Neos\Ui\Domain\Model\Feedback\Messages\Error;
 use Neos\Neos\Ui\Domain\Model\Feedback\Messages\Info;
 use Neos\Neos\Ui\Domain\Model\Feedback\Messages\Success;
-use Neos\Neos\Ui\Domain\Model\Feedback\Operations\Redirect;
-use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
-use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
-use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
-use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodePreviewUrl;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
 use Neos\Neos\Ui\Domain\Model\FeedbackCollection;
-use Neos\Neos\Ui\Service\NodeClipboard;
-use Neos\Neos\Ui\Service\NodePolicyService;
 use Neos\Neos\Ui\Domain\Service\NodeTreeBuilder;
 use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 use Neos\Neos\Ui\Fusion\Helper\WorkspaceHelper;
+use Neos\Neos\Ui\Service\NodeClipboard;
+use Neos\Neos\Ui\Service\NodePolicyService;
+use Neos\Neos\Ui\Service\PublishingService;
+use Neos\Neos\Ui\TypeConverter\ChangeCollectionConverter;
 use Neos\Neos\Utility\NodeUriPathSegmentGenerator;
+use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
+use Neos\ContentRepository\Core\Feature\WorkspaceModification\Command\ChangeBaseWorkspace;
+use Neos\ContentRepository\Core\SharedModel\Workspace\ContentStreamId;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\Redirect;
+use Neos\ContentRepository\Core\Feature\WorkspaceModification\Exception\WorkspaceIsNotEmptyException;
 
 class BackendServiceController extends ActionController
 {
     /**
-     * @Flow\Inject
-     * @var ContentContextFactory
-     */
-    protected $contextFactory;
-
-    /**
-     * @var array
+     * @var array<int,string>
      */
     protected $supportedMediaTypes = ['application/json'];
 
@@ -99,12 +95,6 @@ class BackendServiceController extends ActionController
 
     /**
      * @Flow\Inject
-     * @var WorkspaceRepository
-     */
-    protected $workspaceRepository;
-
-    /**
-     * @Flow\Inject
      * @var WorkspaceService
      */
     protected $workspaceService;
@@ -123,15 +113,15 @@ class BackendServiceController extends ActionController
 
     /**
      * @Flow\Inject
-     * @var NodeClipboard
+     * @var ChangeCollectionConverter
      */
-    protected $clipboard;
+    protected $changeCollectionConverter;
 
     /**
      * @Flow\Inject
-     * @var Service
+     * @var NodeClipboard
      */
-    protected $localizationService;
+    protected $clipboard;
 
     /**
      * @Flow\Inject
@@ -141,15 +131,15 @@ class BackendServiceController extends ActionController
 
     /**
      * @Flow\Inject
-     * @var ContentDimensionPresetSourceInterface
+     * @var Context
      */
-    protected $contentDimensionsPresetSource;
+    protected $securityContext;
 
     /**
      * @Flow\Inject
-     * @var Translator
+     * @var ContentRepositoryRegistry
      */
-    protected $translator;
+    protected $contentRepositoryRegistry;
 
     /**
      * @Flow\Inject
@@ -160,60 +150,33 @@ class BackendServiceController extends ActionController
     /**
      * Set the controller context on the feedback collection after the controller
      * has been initialized
-     *
-     * @param ActionRequest $request
-     * @param ActionResponse $response
-     * @return void
-     * @throws UnsupportedRequestTypeException
      */
-    protected function initializeController(ActionRequest $request, ActionResponse $response)
+    protected function initializeController(ActionRequest $request, ActionResponse $response): void
     {
         parent::initializeController($request, $response);
         $this->feedbackCollection->setControllerContext($this->getControllerContext());
-
-        try {
-            $this->localizationService->getConfiguration()->setCurrentLocale(new Locale($this->userService->getInterfaceLanguage()));
-        } catch (InvalidLocaleIdentifierException $e) {
-            // Do nothing, stay in the default locale
-        }
-    }
-
-    /**
-     * Helper method to inform the client, that new workspace information is available
-     *
-     * @param string $documentNodeContextPath
-     * @return void
-     * @throws IllegalObjectTypeException
-     */
-    protected function updateWorkspaceInfo(string $documentNodeContextPath): void
-    {
-        $updateWorkspaceInfo = new UpdateWorkspaceInfo();
-        $documentNode = $this->nodeService->getNodeFromContextPath($documentNodeContextPath, null, null, true);
-        $updateWorkspaceInfo->setWorkspace(
-            $documentNode->getContext()->getWorkspace()
-        );
-
-        $this->feedbackCollection->add($updateWorkspaceInfo);
     }
 
     /**
      * Apply a set of changes to the system
-     *
-     * @param ChangeCollection $changes
-     * @return void
      */
-    public function changeAction(ChangeCollection $changes): void
+    /** @phpstan-ignore-next-line */
+    public function changeAction(array $changes): void
     {
+        $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
+
+        /** @param array<int,array<string,mixed>> $changes */
+        $changes = $this->changeCollectionConverter->convert($changes, $contentRepositoryId);
+        /** @var ChangeCollection $changes */
         try {
             $count = $changes->count();
             $changes->apply();
 
             $success = new Info();
-            $success->setMessage($this->translator->translateById('changesApplied', [$count], $count, null, 'Main', 'Neos.Neos.Ui'));
+            $success->setMessage(sprintf('%d change(s) successfully applied.', $count));
 
             $this->feedbackCollection->add($success);
-            $this->persistenceManager->persistAll();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $error = new Error();
             $error->setMessage($e->getMessage());
 
@@ -224,38 +187,78 @@ class BackendServiceController extends ActionController
     }
 
     /**
+     * Publish all nodes
+     */
+    public function publishAllAction(): void
+    {
+        $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
+        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
+
+        $currentAccount = $this->securityContext->getAccount();
+        $workspaceName = NeosWorkspaceName::fromAccountIdentifier($currentAccount->getAccountIdentifier())
+            ->toContentRepositoryWorkspaceName();
+        $this->publishingService->publishWorkspace($contentRepository, $workspaceName);
+
+        $success = new Success();
+        $success->setMessage(sprintf('Published.'));
+
+        $updateWorkspaceInfo = new UpdateWorkspaceInfo($contentRepositoryId, $workspaceName);
+        $this->feedbackCollection->add($success);
+        $this->feedbackCollection->add($updateWorkspaceInfo);
+        $this->view->assign('value', $this->feedbackCollection);
+    }
+
+    /**
      * Publish nodes
      *
      * @param array $nodeContextPaths
-     * @param string $targetWorkspaceName
-     * @return void
      */
+    /** @phpstan-ignore-next-line */
     public function publishAction(array $nodeContextPaths, string $targetWorkspaceName): void
     {
+        $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
+        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
+        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
+
         try {
-            $targetWorkspace = $this->workspaceRepository->findOneByName($targetWorkspaceName);
+            $currentAccount = $this->securityContext->getAccount();
+            $workspaceName = NeosWorkspaceName::fromAccountIdentifier($currentAccount->getAccountIdentifier())
+                ->toContentRepositoryWorkspaceName();
 
+            $nodeIdentifiersToPublish = [];
             foreach ($nodeContextPaths as $contextPath) {
-                $node = $this->nodeService->getNodeFromContextPath($contextPath, null, null, true);
-                $this->publishingService->publishNode($node, $targetWorkspace);
-
-                if ($node->getNodeType()->isAggregate()) {
-                    $updateNodePreviewUrl = new UpdateNodePreviewUrl();
-                    $updateNodePreviewUrl->setNode($node);
-                    $this->feedbackCollection->add($updateNodePreviewUrl);
-                }
+                $nodeAddress = $nodeAddressFactory->createFromUriString($contextPath);
+                $nodeIdentifiersToPublish[] = new NodeIdToPublishOrDiscard(
+                    $nodeAddress->contentStreamId,
+                    $nodeAddress->nodeAggregateId,
+                    $nodeAddress->dimensionSpacePoint
+                );
+            }
+            try {
+                $contentRepository->handle(
+                    PublishIndividualNodesFromWorkspace::create(
+                        $workspaceName,
+                        NodeIdsToPublishOrDiscard::create(...$nodeIdentifiersToPublish)
+                    )
+                )->block();
+            } catch (NodeAggregateCurrentlyDoesNotExist $e) {
+                throw new NodeAggregateCurrentlyDoesNotExist(
+                    'Node could not be published, probably because of a missing parentNode. Please check that the parentNode has been published.',
+                    1682762156
+                );
             }
 
-            $count = count($nodeContextPaths);
-
             $success = new Success();
-            $success->setMessage($this->translator->translateById('changesPublished', [$count, $targetWorkspace->getTitle()], $count, null, 'Main', 'Neos.Neos.Ui'));
+            $success->setMessage(sprintf(
+                'Published %d change(s) to %s.',
+                count($nodeContextPaths),
+                $targetWorkspaceName
+            ));
 
-            $this->updateWorkspaceInfo($nodeContextPaths[0]);
+            $updateWorkspaceInfo = new UpdateWorkspaceInfo($contentRepositoryId, $workspaceName);
             $this->feedbackCollection->add($success);
-
-            $this->persistenceManager->persistAll();
-        } catch (Exception $e) {
+            $this->feedbackCollection->add($updateWorkspaceInfo);
+        } catch (\Exception $e) {
             $error = new Error();
             $error->setMessage($e->getMessage());
 
@@ -269,54 +272,42 @@ class BackendServiceController extends ActionController
      * Discard nodes
      *
      * @param array $nodeContextPaths
-     * @return void
      */
+    /** @phpstan-ignore-next-line */
     public function discardAction(array $nodeContextPaths): void
     {
+        $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
+        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
+        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
+
         try {
+            $currentAccount = $this->securityContext->getAccount();
+            $workspaceName = NeosWorkspaceName::fromAccountIdentifier($currentAccount->getAccountIdentifier())
+                ->toContentRepositoryWorkspaceName();
+
+            $nodeIdentifiersToDiscard = [];
             foreach ($nodeContextPaths as $contextPath) {
-                $node = $this->nodeService->getNodeFromContextPath($contextPath, null, null, true);
-                if ($node->isRemoved() === true) {
-                    // When discarding node removal we should re-create it
-                    $updateNodeInfo = new UpdateNodeInfo();
-                    $updateNodeInfo->setNode($node);
-                    $updateNodeInfo->recursive();
-                    $this->feedbackCollection->add($updateNodeInfo);
-
-                    // handle parent node, if needed
-                    $parentNode = $node->getParent();
-                    if ($parentNode instanceof NodeInterface) {
-                        $updateParentNodeInfo = new UpdateNodeInfo();
-                        $updateParentNodeInfo->setNode($parentNode);
-                        $this->feedbackCollection->add($updateParentNodeInfo);
-                    }
-
-                    // Reload document for content node changes
-                    // (as we can't RenderContentOutOfBand from here, we don't know dom addresses)
-                    if (!$this->nodeService->isDocument($node)) {
-                        $reloadDocument = new ReloadDocument();
-                        $this->feedbackCollection->add($reloadDocument);
-                    }
-                } elseif (!$this->nodeService->nodeExistsInWorkspace($node, $node->getWorkSpace()->getBaseWorkspace())) {
-                    // If the node doesn't exist in the target workspace, tell the UI to remove it
-                    $removeNode = new RemoveNode();
-                    $removeNode->setNode($node);
-                    $this->feedbackCollection->add($removeNode);
-                }
-
-                $this->publishingService->discardNode($node);
+                $nodeAddress = $nodeAddressFactory->createFromUriString($contextPath);
+                $nodeIdentifiersToDiscard[] = new NodeIdToPublishOrDiscard(
+                    $nodeAddress->contentStreamId,
+                    $nodeAddress->nodeAggregateId,
+                    $nodeAddress->dimensionSpacePoint
+                );
             }
-
-            $count = count($nodeContextPaths);
+            $contentRepository->handle(
+                DiscardIndividualNodesFromWorkspace::create(
+                    $workspaceName,
+                    NodeIdsToPublishOrDiscard::create(...$nodeIdentifiersToDiscard)
+                )
+            )->block();
 
             $success = new Success();
-            $success->setMessage($this->translator->translateById('changesDiscarded', [$count], $count, null, 'Main', 'Neos.Neos.Ui'));
+            $success->setMessage(sprintf('Discarded %d node(s).', count($nodeContextPaths)));
 
-            $this->updateWorkspaceInfo($nodeContextPaths[0]);
+            $updateWorkspaceInfo = new UpdateWorkspaceInfo($contentRepositoryId, $workspaceName);
             $this->feedbackCollection->add($success);
-
-            $this->persistenceManager->persistAll();
-        } catch (Exception $e) {
+            $this->feedbackCollection->add($updateWorkspaceInfo);
+        } catch (\Exception $e) {
             $error = new Error();
             $error->setMessage($e->getMessage());
 
@@ -330,87 +321,121 @@ class BackendServiceController extends ActionController
      * Change base workspace of current user workspace
      *
      * @param string $targetWorkspaceName ,
-     * @param NodeInterface $documentNode
+     * @param string $documentNode
      * @return void
-     * @throws Exception
+     * @throws \Exception
      */
-    public function changeBaseWorkspaceAction(string $targetWorkspaceName, NodeInterface $documentNode): void
+    public function changeBaseWorkspaceAction(string $targetWorkspaceName, string $documentNode): void
     {
+        $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
+        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
+
+        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
+        $nodeAddress = $nodeAddressFactory->createFromUriString($documentNode);
+
+        $currentAccount = $this->securityContext->getAccount();
+        $userWorkspaceName = NeosWorkspaceName::fromAccountIdentifier(
+            $currentAccount->getAccountIdentifier()
+        )->toContentRepositoryWorkspaceName();
+
         try {
-            $targetWorkspace = $this->workspaceRepository->findOneByName($targetWorkspaceName);
-            $userWorkspace = $this->userService->getPersonalWorkspace();
-
-            if (count($this->workspaceService->getPublishableNodeInfo($userWorkspace)) > 0) {
-                // TODO: proper error dialog
-                throw new Exception('Your personal workspace currently contains unpublished changes. In order to switch to a different target workspace you need to either publish or discard pending changes first.', 1582800654);
-            }
-
-            $userWorkspace->setBaseWorkspace($targetWorkspace);
-            $this->workspaceRepository->update($userWorkspace);
-
-            $success = new Success();
-            $success->setMessage(sprintf('Switched base workspace to %s.', $targetWorkspaceName));
-            $this->feedbackCollection->add($success);
-
-            $updateWorkspaceInfo = new UpdateWorkspaceInfo();
-            $updateWorkspaceInfo->setWorkspace($userWorkspace);
-            $this->feedbackCollection->add($updateWorkspaceInfo);
-
-            // Construct base workspace context
-            $originalContext = $documentNode->getContext();
-            $contextProperties = $documentNode->getContext()->getProperties();
-            $contextProperties['workspaceName'] = $targetWorkspaceName;
-            $contentContext = $this->contextFactory->create($contextProperties);
-
-            // If current document node doesn't exist in the base workspace, traverse its parents to find the one that exists
-            $redirectNode = $documentNode;
-            while (true) {
-                $redirectNodeInBaseWorkspace = $contentContext->getNodeByIdentifier($redirectNode->getIdentifier());
-                if ($redirectNodeInBaseWorkspace) {
-                    break;
-                } else {
-                    $redirectNode = $redirectNode->getParent();
-                    if (!$redirectNode) {
-                        throw new Exception(sprintf('Wasn\'t able to locate any valid node in rootline of node %s in the workspace %s.', $documentNode->getContextPath(), $targetWorkspaceName), 1458814469);
-                    }
-                }
-            }
-
-            // If current document node exists in the base workspace, then reload, else redirect
-            if ($redirectNode === $documentNode) {
-                $reloadDocument = new ReloadDocument();
-                $reloadDocument->setNode($documentNode);
-                $this->feedbackCollection->add($reloadDocument);
-            } else {
-                $redirect = new Redirect();
-                $redirect->setNode($redirectNode);
-                $this->feedbackCollection->add($redirect);
-            }
-
-            $this->persistenceManager->persistAll();
-        } catch (Exception $e) {
+            $contentRepository->handle(
+                new ChangeBaseWorkspace(
+                    $userWorkspaceName,
+                    WorkspaceName::fromString($targetWorkspaceName),
+                    $newCOnt = ContentStreamId::create()
+                )
+            )->block();
+        } catch (WorkspaceIsNotEmptyException $exception) {
             $error = new Error();
-            $error->setMessage($e->getMessage());
+            $error->setMessage('Your personal workspace currently contains unpublished changes.'
+                . ' In order to switch to a different target workspace you need to either publish'
+                . ' or discard pending changes first.');
 
             $this->feedbackCollection->add($error);
+            $this->view->assign('value', $this->feedbackCollection);
+            return;
+        } catch (\Exception $exception) {
+            $error = new Error();
+            $error->setMessage($error->getMessage());
+
+            $this->feedbackCollection->add($error);
+            $this->view->assign('value', $this->feedbackCollection);
+            return;
+        }
+
+        $subgraph = $contentRepository->getContentGraph()
+            ->getSubgraph(
+                $newCOnt,
+                $nodeAddress->dimensionSpacePoint,
+                VisibilityConstraints::withoutRestrictions()
+            );
+
+        $documentNode = $subgraph->findNodeById($nodeAddress->nodeAggregateId);
+
+        $success = new Success();
+        $success->setMessage(sprintf('Switched base workspace to %s.', $targetWorkspaceName));
+        $this->feedbackCollection->add($success);
+
+        $updateWorkspaceInfo = new UpdateWorkspaceInfo($contentRepositoryId, $userWorkspaceName);
+        $this->feedbackCollection->add($updateWorkspaceInfo);
+
+        // If current document node doesn't exist in the base workspace,
+        // traverse its parents to find the one that exists
+        $redirectNode = $documentNode;
+        while (true) {
+            $redirectNodeInBaseWorkspace = $subgraph->findNodeById($redirectNode->nodeAggregateId);
+            if ($redirectNodeInBaseWorkspace) {
+                break;
+            } else {
+                $redirectNode = $subgraph->findParentNode($redirectNode->nodeAggregateId);
+                // get parent always returns Node
+                if (!$redirectNode) {
+                    throw new \Exception(sprintf(
+                        'Wasn\'t able to locate any valid node in rootline of node %s in the workspace %s.',
+                        $documentNode->nodeAggregateId->value,
+                        $targetWorkspaceName
+                    ), 1458814469);
+                }
+            }
+        }
+
+        // If current document node exists in the base workspace, then reload, else redirect
+        if ($redirectNode->equals($documentNode)) {
+            $reloadDocument = new ReloadDocument();
+            $reloadDocument->setNode($documentNode);
+            $this->feedbackCollection->add($reloadDocument);
+        } else {
+            $redirect = new Redirect();
+            $redirect->setNode($redirectNode);
+            $this->feedbackCollection->add($redirect);
         }
 
         $this->view->assign('value', $this->feedbackCollection);
     }
+
 
     /**
      * Persists the clipboard node on copy
      *
      * @param array $nodes
      * @return void
+     * @throws \Neos\Flow\Property\Exception
+     * @throws \Neos\Flow\Security\Exception
      */
+    /** @phpstan-ignore-next-line */
     public function copyNodesAction(array $nodes): void
     {
-        // TODO @christianm want's to have a property mapper for this
-        $nodes = array_map(function ($node) {
-            return $this->propertyMapper->convert($node, NodeInterface::class);
-        }, $nodes);
-        $this->clipboard->copyNodes($nodes);
+        $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
+        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
+        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
+
+        /** @var array<int,NodeAddress> $nodeAddresses */
+        $nodeAddresses = array_map(
+            fn (string $serializedNodeAddress) => $nodeAddressFactory->createFromUriString($serializedNodeAddress),
+            $nodes
+        );
+        $this->clipboard->copyNodes($nodeAddresses);
     }
 
     /**
@@ -418,7 +443,7 @@ class BackendServiceController extends ActionController
      *
      * @return void
      */
-    public function clearClipboardAction(): void
+    public function clearClipboardAction()
     {
         $this->clipboard->clear();
     }
@@ -427,21 +452,30 @@ class BackendServiceController extends ActionController
      * Persists the clipboard node on cut
      *
      * @param array $nodes
-     * @return void
+     * @throws \Neos\Flow\Property\Exception
+     * @throws \Neos\Flow\Security\Exception
      */
+    /** @phpstan-ignore-next-line */
     public function cutNodesAction(array $nodes): void
     {
-        // TODO @christianm want's to have a property mapper for this
-        $nodes = array_map(function ($node) {
-            return $this->propertyMapper->convert($node, NodeInterface::class);
-        }, $nodes);
-        $this->clipboard->cutNodes($nodes);
+        $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
+        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
+        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
+
+        /** @var array<int,\Neos\Neos\FrontendRouting\NodeAddress> $nodeAddresses */
+        $nodeAddresses = array_map(
+            fn (string $serializedNodeAddress) => $nodeAddressFactory->createFromUriString($serializedNodeAddress),
+            $nodes
+        );
+
+        $this->clipboard->cutNodes($nodeAddresses);
     }
 
     public function getWorkspaceInfoAction(): void
     {
+        $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
         $workspaceHelper = new WorkspaceHelper();
-        $personalWorkspaceInfo = $workspaceHelper->getPersonalWorkspace();
+        $personalWorkspaceInfo = $workspaceHelper->getPersonalWorkspace($contentRepositoryId);
         $this->view->assign('value', $personalWorkspaceInfo);
     }
 
@@ -452,105 +486,136 @@ class BackendServiceController extends ActionController
 
     /**
      * Load the nodetree
-     *
-     * @param NodeTreeBuilder $nodeTreeArguments
-     * @param boolean $includeRoot
-     * @return void
      */
-    public function loadTreeAction(NodeTreeBuilder $nodeTreeArguments, $includeRoot = false): void
+    public function loadTreeAction(NodeTreeBuilder $nodeTreeArguments, bool $includeRoot = false): void
     {
+        $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
+
         $nodeTreeArguments->setControllerContext($this->controllerContext);
-        $this->view->assign('value', $nodeTreeArguments->build($includeRoot));
+        $this->view->assign('value', $nodeTreeArguments->build($contentRepositoryId, $includeRoot));
     }
 
     /**
-     * @throws NoSuchArgumentException
+     * @throws \Neos\Flow\Mvc\Exception\NoSuchArgumentException
      */
     public function initializeGetAdditionalNodeMetadataAction(): void
     {
-        $this->arguments->getArgument('nodes')->getPropertyMappingConfiguration()->allowAllProperties();
+        $this->arguments->getArgument('nodes')
+            ->getPropertyMappingConfiguration()->allowAllProperties();
     }
 
     /**
      * Fetches all the node information that can be lazy-loaded
-     *
-     * @param array<NodeInterface> $nodes
      */
+    /** @phpstan-ignore-next-line */
     public function getAdditionalNodeMetadataAction(array $nodes): void
     {
+        $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
+        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
+        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
+
         $result = [];
-        /** @var NodeInterface $node */
-        foreach ($nodes as $node) {
-            $otherNodeVariants = array_values(array_filter(array_map(function ($node) {
+        foreach ($nodes as $nodeAddressString) {
+            $nodeAddress = $nodeAddressFactory->createFromUriString($nodeAddressString);
+            $subgraph = $contentRepository->getContentGraph()->getSubgraph(
+                $nodeAddress->contentStreamId,
+                $nodeAddress->dimensionSpacePoint,
+                VisibilityConstraints::withoutRestrictions()
+            );
+            $node = $subgraph->findNodeById($nodeAddress->nodeAggregateId);
+
+            // TODO finish implementation
+            /*$otherNodeVariants = array_values(array_filter(array_map(function ($node) {
                 return $this->getCurrentDimensionPresetIdentifiersForNode($node);
-            }, $node->getOtherNodeVariants())));
-            $result[$node->getContextPath()] = [
-                'policy' => $this->nodePolicyService->getNodePolicyInformation($node),
-                'dimensions' => $this->getCurrentDimensionPresetIdentifiersForNode($node),
-                'otherNodeVariants' => $otherNodeVariants
-            ];
+            }, $node->getOtherNodeVariants())));*/
+            if (!is_null($node)) {
+                $result[$nodeAddress->serializeForUri()] = [
+                    'policy' => $this->nodePolicyService->getNodePolicyInformation($node),
+                    //'dimensions' => $this->getCurrentDimensionPresetIdentifiersForNode($node),
+                    //'otherNodeVariants' => $otherNodeVariants
+                ];
+            }
         }
 
         $this->view->assign('value', $result);
     }
 
     /**
-     * Gets an array of current preset identifiers for each dimension of the give node
-     *
-     * @param NodeInterface $node
-     * @return array
+     * @throws \Neos\Flow\Mvc\Exception\NoSuchArgumentException
      */
-    protected function getCurrentDimensionPresetIdentifiersForNode($node): array
+    public function initializeGetPolicyInformationAction(): void
     {
-        $targetPresets = $this->contentDimensionsPresetSource->findPresetsByTargetValues($node->getDimensions());
-        $presetCombo = [];
-        foreach ($targetPresets as $dimensionName => $presetConfig) {
-            $fullPresetConfig = $this->contentDimensionsPresetSource->findPresetByDimensionValues($dimensionName, $presetConfig['values']);
-            if ($fullPresetConfig !== null) {
-                $presetCombo[$dimensionName] = $fullPresetConfig['identifier'];
+        $this->arguments->getArgument('nodes')->getPropertyMappingConfiguration()->allowAllProperties();
+    }
+
+    /**
+     * @param array<NodeAddress> $nodes
+     */
+    public function getPolicyInformationAction(array $nodes): void
+    {
+        $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
+        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
+
+        $result = [];
+        foreach ($nodes as $nodeAddress) {
+            $subgraph = $contentRepository->getContentGraph()->getSubgraph(
+                $nodeAddress->contentStreamId,
+                $nodeAddress->dimensionSpacePoint,
+                VisibilityConstraints::withoutRestrictions()
+            );
+            $node = $subgraph->findNodeById($nodeAddress->nodeAggregateId);
+            if (!is_null($node)) {
+                $result[$nodeAddress->serializeForUri()] = [
+                    'policy' => $this->nodePolicyService->getNodePolicyInformation($node)
+                ];
             }
         }
-        return $presetCombo;
+
+        $this->view->assign('value', $result);
     }
 
     /**
      * Build and execute a flow query chain
      *
      * @param array $chain
-     * @return string
-     * @throws \Neos\Eel\Exception
      */
+    /** @phpstan-ignore-next-line */
     public function flowQueryAction(array $chain): string
     {
+        $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
+
         $createContext = array_shift($chain);
         $finisher = array_pop($chain);
 
+        /** @var array<int,mixed> $payload */
+        $payload = $createContext['payload'] ?? [];
         $flowQuery = new FlowQuery(array_map(
-            function ($envelope) {
-                return $this->nodeService->getNodeFromContextPath($envelope['$node']);
-            },
-            $createContext['payload']
+            fn ($envelope) => $this->nodeService->getNodeFromContextPath($envelope['$node'], $contentRepositoryId),
+            $payload
         ));
 
         foreach ($chain as $operation) {
+            // @phpstan-ignore-next-line
             $flowQuery = call_user_func_array([$flowQuery, $operation['type']], $operation['payload']);
         }
 
         $nodeInfoHelper = new NodeInfoHelper();
-        $result = [];
-        switch ($finisher['type']) {
-            case 'get':
-                $result = $nodeInfoHelper->renderNodes(array_filter($flowQuery->get()), $this->getControllerContext());
-                break;
-            case 'getForTree':
-                $result = $nodeInfoHelper->renderNodes(array_filter($flowQuery->get()), $this->getControllerContext(), true);
-                break;
-            case 'getForTreeWithParents':
-                $result = $nodeInfoHelper->renderNodesWithParents(array_filter($flowQuery->get()), $this->getControllerContext());
-                break;
-        }
+        $type = $finisher['type'] ?? null;
+        $result = match ($type) {
+            'get' => $nodeInfoHelper->renderNodes(array_filter($flowQuery->get()), $this->getControllerContext()),
+            'getForTree' => $nodeInfoHelper->renderNodes(
+                array_filter($flowQuery->get()),
+                $this->getControllerContext(),
+                true
+            ),
+            'getForTreeWithParents' => $nodeInfoHelper->renderNodesWithParents(
+                array_filter($flowQuery->get()),
+                $this->getControllerContext()
+            ),
+            default => []
+        };
 
-        return json_encode($result);
+        return json_encode($result, JSON_THROW_ON_ERROR);
     }
 
     /**
@@ -558,8 +623,16 @@ class BackendServiceController extends ActionController
      *
      * @throws \Neos\Neos\Exception
      */
-    public function generateUriPathSegmentAction(NodeInterface $contextNode, string $text): void
+    public function generateUriPathSegmentAction(string $contextNode, string $text): void
     {
+        $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
+        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
+        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
+
+        $contextNodeAddress = $nodeAddressFactory->createFromUriString($contextNode);
+        $subgraph = $contentRepository->getContentGraph()->getSubgraph($contextNodeAddress->contentStreamId, $contextNodeAddress->dimensionSpacePoint, VisibilityConstraints::withoutRestrictions());
+        $contextNode = $subgraph->findNodeById($contextNodeAddress->nodeAggregateId);
+
         $slug = $this->nodeUriPathSegmentGenerator->generateUriPathSegment($contextNode, $text);
         $this->view->assign('value', $slug);
     }

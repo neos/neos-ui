@@ -1,6 +1,5 @@
 <?php
 declare(strict_types=1);
-
 namespace Neos\Neos\Ui\Controller;
 
 /*
@@ -13,42 +12,40 @@ namespace Neos\Neos\Ui\Controller;
  * source code.
  */
 
-use Neos\ContentRepository\Domain\Model\NodeInterface;
-use Neos\ContentRepository\Domain\Service\ContextFactoryInterface;
+use Neos\ContentRepository\Core\NodeType\NodeTypeName;
+use Neos\Neos\FrontendRouting\NodeAddressFactory;
+use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
+use Neos\Neos\Domain\Model\WorkspaceName as NeosWorkspaceName;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ActionController;
-use Neos\Flow\Mvc\Exception\NoSuchArgumentException;
-use Neos\Flow\Mvc\Exception\StopActionException;
-use Neos\Flow\Mvc\Exception\UnsupportedRequestTypeException;
-use Neos\Flow\Mvc\Routing\Exception\MissingActionNameException;
-use Neos\Flow\Mvc\View\ViewInterface;
-use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Flow\ResourceManagement\ResourceManager;
+use Neos\Flow\Security\Context;
 use Neos\Flow\Session\SessionInterface;
 use Neos\Neos\Controller\Backend\MenuHelper;
 use Neos\Neos\Domain\Repository\DomainRepository;
 use Neos\Neos\Domain\Repository\SiteRepository;
-use Neos\Neos\Domain\Service\ContentContext;
+use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;
 use Neos\Neos\Service\BackendRedirectionService;
-use Neos\Neos\Service\LinkingService;
 use Neos\Neos\Service\UserService;
-use Neos\Neos\TypeConverter\NodeConverter;
+use Neos\Flow\Persistence\PersistenceManagerInterface;
+use Neos\Fusion\View\FusionView;
+use Neos\Flow\Mvc\View\ViewInterface;
 use Neos\Neos\Ui\Domain\Service\StyleAndJavascriptInclusionService;
 use Neos\Neos\Ui\Service\NodeClipboard;
 
 class BackendController extends ActionController
 {
     /**
+     * @var FusionView
+     */
+    protected $view;
+
+    /**
      * @Flow\Inject
      * @var UserService
      */
     protected $userService;
-
-    /**
-     * @Flow\Inject
-     * @var ContextFactoryInterface
-     */
-    protected $contextFactory;
 
     /**
      * @Flow\Inject
@@ -94,6 +91,18 @@ class BackendController extends ActionController
 
     /**
      * @Flow\Inject
+     * @var ContentRepositoryRegistry
+     */
+    protected $contentRepositoryRegistry;
+
+    /**
+     * @Flow\Inject
+     * @var Context
+     */
+    protected $securityContext;
+
+    /**
+     * @Flow\Inject
      * @var StyleAndJavascriptInclusionService
      */
     protected $styleAndJavascriptInclusionService;
@@ -105,152 +114,112 @@ class BackendController extends ActionController
     protected $clipboard;
 
     /**
-     * @Flow\Inject
-     * @var LinkingService
+     * @Flow\InjectConfiguration(package="Neos.Neos.Ui", path="splashScreen.partial")
+     * @var string
      */
-    protected $linkingService;
+    protected $splashScreenPartial;
 
-    /**
-     * Initializes the view before invoking an action method.
-     *
-     * @param ViewInterface $view The view to be initialized
-     * @return void
-     */
     public function initializeView(ViewInterface $view)
     {
+        /** @var FusionView $view */
         $view->setFusionPath('backend');
     }
 
     /**
      * Displays the backend interface
      *
-     * @Flow\IgnoreValidation("$node")
-     * @param NodeInterface|null $node The node that will be displayed on the first tab
+     * @param string $node The node that will be displayed on the first tab
      * @return void
-     * @throws StopActionException
-     * @throws UnsupportedRequestTypeException
-     * @throws MissingActionNameException
-     * @throws \ReflectionException
-     * @throws \Neos\Flow\Http\Exception
      */
-    public function indexAction(NodeInterface $node = null): void
+    public function indexAction(string $node = null)
     {
+        $siteDetectionResult = SiteDetectionResult::fromRequest($this->request->getHttpRequest());
+        $contentRepository = $this->contentRepositoryRegistry->get($siteDetectionResult->contentRepositoryId);
+
+        $nodeAddress = $node !== null ? NodeAddressFactory::create($contentRepository)->createFromUriString($node) : null;
+        unset($node);
+        $this->session->start();
+        $this->session->putData('__neosLegacyUiEnabled__', false);
         $user = $this->userService->getBackendUser();
 
         if ($user === null) {
             $this->redirectToUri($this->uriBuilder->uriFor('index', [], 'Login', 'Neos.Neos'));
         }
 
-        if ($node === null) {
-            $node = $this->findNodeToEdit();
+        $currentAccount = $this->securityContext->getAccount();
+        $workspace = $contentRepository->getWorkspaceFinder()->findOneByName(
+            NeosWorkspaceName::fromAccountIdentifier($currentAccount->getAccountIdentifier())
+                ->toContentRepositoryWorkspaceName()
+        );
+        if (is_null($workspace)) {
+            $this->redirectToUri($this->uriBuilder->uriFor('index', [], 'Login', 'Neos.Neos'));
         }
 
-        $siteNode = $node->getContext()->getCurrentSiteNode();
+        $backendControllerInternals = $this->contentRepositoryRegistry->buildService(
+            $siteDetectionResult->contentRepositoryId,
+            new BackendControllerInternalsFactory()
+        );
+        $defaultDimensionSpacePoint = $backendControllerInternals->getDefaultDimensionSpacePoint();
+
+        $subgraph = $contentRepository->getContentGraph()->getSubgraph(
+            $workspace->currentContentStreamId,
+            $nodeAddress ? $nodeAddress->dimensionSpacePoint : $defaultDimensionSpacePoint,
+            VisibilityConstraints::withoutRestrictions()
+        );
+
+        // we assume that the ROOT node is always stored in the CR as "physical" node; so it is safe
+        // to call the contentGraph here directly.
+        $rootNodeAggregate = $contentRepository->getContentGraph()->findRootNodeAggregateByType(
+            $workspace->currentContentStreamId,
+            NodeTypeName::fromString('Neos.Neos:Sites')
+        );
+        $rootNode = $rootNodeAggregate->getNodeByCoveredDimensionSpacePoint($defaultDimensionSpacePoint);
+
+        $siteNode = $subgraph->findChildNodeConnectedThroughEdgeName(
+            $rootNode->nodeAggregateId,
+            $siteDetectionResult->siteNodeName->toNodeName()
+        );
+
+        if (!$nodeAddress) {
+            // TODO: fix resolving node address from session?
+            $node = $siteNode;
+        } else {
+            $node = $subgraph->findNodeById($nodeAddress->nodeAggregateId);
+        }
 
         $this->view->assign('user', $user);
         $this->view->assign('documentNode', $node);
         $this->view->assign('site', $siteNode);
-        $this->view->assign('clipboardNodes', $this->clipboard->getNodeContextPaths());
+        $this->view->assign('clipboardNodes', $this->clipboard->getSerializedNodeAddresses());
         $this->view->assign('clipboardMode', $this->clipboard->getMode());
         $this->view->assign('headScripts', $this->styleAndJavascriptInclusionService->getHeadScripts());
         $this->view->assign('headStylesheets', $this->styleAndJavascriptInclusionService->getHeadStylesheets());
-        $this->view->assign('splashScreenPartial', $this->settings['splashScreen']['partial']);
+        $this->view->assign('splashScreenPartial', $this->splashScreenPartial);
         $this->view->assign('sitesForMenu', $this->menuHelper->buildSiteList($this->getControllerContext()));
         $this->view->assign('modulesForMenu', $this->menuHelper->buildModuleList($this->getControllerContext()));
+        $this->view->assign('contentRepositoryId', $siteDetectionResult->contentRepositoryId);
+
+        $this->view->assignMultiple([
+            'subgraph' => $subgraph
+        ]);
 
         $this->view->assign('interfaceLanguage', $this->userService->getInterfaceLanguage());
     }
 
     /**
-     * Allow invisible nodes to be redirected to
-     *
-     * @return void
-     * @throws NoSuchArgumentException
+     * @throws \Neos\Flow\Mvc\Exception\StopActionException
      */
-    protected function initializeRedirectToAction(): void
+    public function redirectToAction(string $node): void
     {
-        // use this constant only if available (became available with patch level releases in Neos 4.0 and up)
-        if (defined(NodeConverter::class . '::INVISIBLE_CONTENT_SHOWN')) {
-            $this->arguments->getArgument('node')->getPropertyMappingConfiguration()->setTypeConverterOption(NodeConverter::class, NodeConverter::INVISIBLE_CONTENT_SHOWN, true);
-        }
-    }
+        $siteDetectionResult = SiteDetectionResult::fromRequest($this->request->getHttpRequest());
 
-    /**
-     * @param NodeInterface $node
-     * @param string $presetBaseNodeType
-     * @throws MissingActionNameException
-     * @throws StopActionException
-     * @throws UnsupportedRequestTypeException
-     * @throws \Neos\Flow\Http\Exception
-     * @throws \Neos\Flow\Persistence\Exception\IllegalObjectTypeException
-     * @throws \Neos\Flow\Property\Exception
-     * @throws \Neos\Flow\Security\Exception
-     * @throws \Neos\Neos\Exception
-     */
-    public function redirectToAction(NodeInterface $node, string $presetBaseNodeType = null): void
-    {
+        $contentRepository = $this->contentRepositoryRegistry->get($siteDetectionResult->contentRepositoryId);
+
+        $nodeAddress = NodeAddressFactory::create($contentRepository)->createFromUriString($node);
         $this->response->setHttpHeader('Cache-Control', [
             'no-cache',
             'no-store'
         ]);
-        $this->redirectToUri($this->linkingService->createNodeUri($this->controllerContext, $node, null, null, false, ['presetBaseNodeType' => $presetBaseNodeType]));
-    }
-
-    /**
-     * @return NodeInterface|null
-     */
-    protected function getSiteNodeForLoggedInUser(): ?NodeInterface
-    {
-        $user = $this->userService->getBackendUser();
-        if ($user === null) {
-            return null;
-        }
-
-        $workspaceName = $this->userService->getPersonalWorkspaceName();
-        return $this->createContext($workspaceName)->getCurrentSiteNode();
-    }
-
-    /**
-     * @return NodeInterface|null
-     * @throws \ReflectionException
-     */
-    protected function findNodeToEdit(): ?NodeInterface
-    {
-        $siteNode = $this->getSiteNodeForLoggedInUser();
-        $reflectionMethod = new \ReflectionMethod($this->backendRedirectionService, 'getLastVisitedNode');
-        $reflectionMethod->setAccessible(true);
-        $node = $reflectionMethod->invoke($this->backendRedirectionService, $siteNode->getContext()->getWorkspaceName());
-
-        if ($node === null) {
-            $node = $siteNode;
-        }
-
-        return $node;
-    }
-
-    /**
-     * Create a ContentContext to be used for the backend redirects.
-     *
-     * @param string $workspaceName
-     * @return ContentContext
-     */
-    protected function createContext(string $workspaceName): ?ContentContext
-    {
-        $contextProperties = [
-            'workspaceName' => $workspaceName,
-            'invisibleContentShown' => true,
-            'inaccessibleContentShown' => true
-        ];
-
-        $currentDomain = $this->domainRepository->findOneByActiveRequest();
-
-        if ($currentDomain !== null) {
-            $contextProperties['currentSite'] = $currentDomain->getSite();
-            $contextProperties['currentDomain'] = $currentDomain;
-        } else {
-            $contextProperties['currentSite'] = $this->siteRepository->findFirstOnline();
-        }
-
-        return $this->contextFactory->create($contextProperties);
+        $this->redirect('show', 'Frontend\Node', 'Neos.Neos', ['node' => $nodeAddress]);
     }
 }

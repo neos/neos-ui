@@ -11,9 +11,7 @@ namespace Neos\Neos\Ui\Domain\Service;
  * source code.
  */
 
-use Neos\ContentRepository\Domain\Model\NodeInterface;
-use Neos\ContentRepository\Domain\Model\NodeType;
-use Neos\ContentRepository\Domain\Service\Context;
+use Neos\ContentRepository\Core\NodeType\NodeType;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\MvcPropertyMappingConfiguration;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
@@ -42,25 +40,28 @@ class NodePropertyConversionService
     /**
      * Convert raw property values to the correct type according to a node type configuration
      *
-     * @param NodeType $nodeType
-     * @param string $propertyName
-     * @param string $rawValue
-     * @param Context $context
-     * @return mixed
+     * @param string|array<int|string,mixed>|null $rawValue
      */
-    public function convert(NodeType $nodeType, $propertyName, $rawValue, Context $context)
+    public function convert(NodeType $nodeType, string $propertyName, string|array|null $rawValue): mixed
     {
+        // WORKAROUND: $nodeType->getPropertyType() is missing the "initialize" call,
+        // so we need to trigger another method beforehand.
+        $nodeType->getFullConfiguration();
         $propertyType = $nodeType->getPropertyType($propertyName);
+
+        if (is_null($rawValue)) {
+            return null;
+        }
 
         switch ($propertyType) {
             case 'string':
                 return $rawValue;
 
             case 'reference':
-                return $this->convertReference($rawValue, $context);
+                throw new \Exception("not implemented here, must be handled outside.");
 
             case 'references':
-                return $this->convertReferences($rawValue, $context);
+                throw new \Exception("not implemented here, must be handled outside.");
 
             case 'DateTime':
                 return $this->convertDateTime($rawValue);
@@ -84,80 +85,54 @@ class NodePropertyConversionService
                     }
                 }
 
-                if ((is_string($rawValue) || is_array($rawValue)) && $this->objectManager->isRegistered($innerType) && $rawValue !== '') {
+                if ($this->objectManager->isRegistered($innerType) && $rawValue !== '') {
                     $propertyMappingConfiguration = new MvcPropertyMappingConfiguration();
                     $propertyMappingConfiguration->allowOverrideTargetType();
                     $propertyMappingConfiguration->allowAllProperties();
                     $propertyMappingConfiguration->skipUnknownProperties();
-                    $propertyMappingConfiguration->setTypeConverterOption(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED, true);
-                    $propertyMappingConfiguration->setTypeConverterOption(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED, true);
+                    $propertyMappingConfiguration->setTypeConverterOption(
+                        PersistentObjectConverter::class,
+                        PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED,
+                        true
+                    );
+                    $propertyMappingConfiguration->setTypeConverterOption(
+                        PersistentObjectConverter::class,
+                        PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED,
+                        true
+                    );
 
                     return $this->propertyMapper->convert($rawValue, $propertyType, $propertyMappingConfiguration);
                 } else {
+                    if ($rawValue === '') {
+                        // bugfix for https://github.com/neos/neos-development-collection/issues/4062
+                        return null;
+                    }
                     return $rawValue;
                 }
         }
     }
 
     /**
-     * Convert raw value to reference
-     *
-     * @param string $rawValue
-     * @param Context $context
-     * @return NodeInterface
-     */
-    protected function convertReference($rawValue, Context $context)
-    {
-        return $context->getNodeByIdentifier($rawValue);
-    }
-
-    /**
-     * Convert raw value to references
-     *
-     * @param string $rawValue
-     * @param Context $context
-     * @return array<NodeInterface>
-     */
-    protected function convertReferences($rawValue, Context $context)
-    {
-        $nodeIdentifiers = $rawValue;
-        $result = [];
-
-        if (is_array($nodeIdentifiers)) {
-            foreach ($nodeIdentifiers as $nodeIdentifier) {
-                $referencedNode = $context->getNodeByIdentifier($nodeIdentifier);
-                if ($referencedNode !== null) {
-                    $result[] = $referencedNode;
-                }
-            }
-        }
-
-        return $result;
-    }
-
-    /**
      * Convert raw value to \DateTime
      *
-     * @param string $rawValue
-     * @return \DateTime|null
+     * @param string|array<int|string,mixed> $rawValue
      */
-    protected function convertDateTime($rawValue)
+    protected function convertDateTime(string|array $rawValue): ?\DateTime
     {
-        if ($rawValue !== '') {
-            $result = \DateTime::createFromFormat(\DateTime::W3C, $rawValue);
-            $result->setTimezone(new \DateTimeZone(date_default_timezone_get()));
-
-            return $result;
+        if (is_string($rawValue) && $rawValue !== '') {
+            return (\DateTime::createFromFormat(\DateTime::W3C, $rawValue) ?: null)
+                ?->setTimezone(new \DateTimeZone(date_default_timezone_get()));
         }
+
+        return null;
     }
 
     /**
      * Convert raw value to integer
      *
-     * @param mixed $rawValue
-     * @return null|integer
+     * @param string|array<int|string,mixed> $rawValue
      */
-    protected function convertInteger($rawValue)
+    protected function convertInteger(string|array $rawValue): ?int
     {
         if (is_numeric($rawValue)) {
             return (int) $rawValue;
@@ -169,10 +144,9 @@ class NodePropertyConversionService
     /**
      * Convert raw value to boolean
      *
-     * @param mixed $rawValue
-     * @return boolean
+     * @param string|array<int|string,mixed> $rawValue
      */
-    protected function convertBoolean($rawValue)
+    protected function convertBoolean(string|array $rawValue): bool
     {
         if (is_string($rawValue) && strtolower($rawValue) === 'false') {
             return false;
@@ -184,10 +158,10 @@ class NodePropertyConversionService
     /**
      * Convert raw value to array
      *
-     * @param string|array $rawValue
-     * @return array
+     * @param string|array<int|string,mixed> $rawValue
+     * @return array<int|string,mixed>
      */
-    protected function convertArray($rawValue)
+    protected function convertArray(string|array $rawValue): array
     {
         if (is_string($rawValue)) {
             return json_decode($rawValue, true);

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 /*
@@ -11,21 +12,31 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
-class CopyBefore extends AbstractCopy
+use Neos\ContentRepository\Core\DimensionSpace\OriginDimensionSpacePoint;
+use Neos\ContentRepository\Core\Feature\NodeDuplication\Command\CopyNodesRecursively;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeName;
+
+class CopyBefore extends AbstractStructuralChange
 {
     /**
      * "Subject" is the to-be-copied node; the "sibling" node is the node after which the "Subject" should be copied.
-     *
-     * @return boolean
      */
-    public function canApply()
+    public function canApply(): bool
     {
-        $nodeType = $this->getSubject()->getNodeType();
+        if (is_null($this->subject)) {
+            return false;
+        }
+        $siblingNode = $this->getSiblingNode();
+        if (is_null($siblingNode)) {
+            return false;
+        }
+        $parentNode = $this->findParentNode($siblingNode);
+        $nodeType = $this->subject->nodeType;
 
-        return $this->getSiblingNode()->getParent()->isNodeTypeAllowedAsChildNode($nodeType);
+        return !is_null($parentNode) && $this->isNodeTypeAllowedAsChildNode($parentNode, $nodeType);
     }
 
-    public function getMode()
+    public function getMode(): string
     {
         return 'before';
     }
@@ -35,12 +46,42 @@ class CopyBefore extends AbstractCopy
      *
      * @return void
      */
-    public function apply()
+    public function apply(): void
     {
-        if ($this->canApply()) {
-            $nodeName = $this->generateUniqueNodeName($this->getSiblingNode()->getParent());
-            $node = $this->getSubject()->copyBefore($this->getSiblingNode(), $nodeName);
-            $this->finish($node);
+        $succeedingSibling = $this->getSiblingNode();
+        $parentNodeOfSucceedingSibling = !is_null($succeedingSibling)
+            ? $this->findParentNode($succeedingSibling)
+            : null;
+        $subject = $this->subject;
+        if ($this->canApply() && !is_null($subject) && !is_null($succeedingSibling)
+            && !is_null($parentNodeOfSucceedingSibling)
+        ) {
+            $targetNodeName = NodeName::fromString(uniqid('node-'));
+
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
+            $command = CopyNodesRecursively::createFromSubgraphAndStartNode(
+                $contentRepository->getContentGraph()->getSubgraph(
+                    $subject->subgraphIdentity->contentStreamId,
+                    $subject->subgraphIdentity->dimensionSpacePoint,
+                    $subject->subgraphIdentity->visibilityConstraints
+                ),
+                $subject,
+                OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->subgraphIdentity->dimensionSpacePoint),
+                $parentNodeOfSucceedingSibling->nodeAggregateId,
+                $succeedingSibling->nodeAggregateId,
+                $targetNodeName
+            );
+            $contentRepository->handle($command)->block();
+
+            $newlyCreatedNode = $this->contentRepositoryRegistry->subgraphForNode($parentNodeOfSucceedingSibling)
+                ->findChildNodeConnectedThroughEdgeName(
+                    $parentNodeOfSucceedingSibling->nodeAggregateId,
+                    $targetNodeName
+                );
+            $this->finish($newlyCreatedNode);
+            // NOTE: we need to run "finish" before "addNodeCreatedFeedback"
+            // to ensure the new node already exists when the last feedback is processed
+            $this->addNodeCreatedFeedback($newlyCreatedNode);
         }
     }
 }

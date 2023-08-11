@@ -12,7 +12,8 @@ namespace Neos\Neos\Ui\Domain\Service;
  * source code.
  */
 
-use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
+use Neos\ContentRepository\Core\Factory\ContentRepositoryId;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Neos\Service\LinkingService;
@@ -20,19 +21,8 @@ use Neos\Neos\Ui\ContentRepository\Service\NodeService;
 
 class NodeTreeBuilder
 {
-    /**
-     * The site node
-     *
-     * @var NodeInterface
-     */
-    protected $root;
-
-    /**
-     * The currently active node in the tree
-     *
-     * @var NodeInterface
-     */
-    protected $active;
+    private string $rootContextPath;
+    private string $activeContextPath;
 
     /**
      * An (optional) node type filter
@@ -80,15 +70,15 @@ class NodeTreeBuilder
      */
     public function setRoot($rootContextPath)
     {
-        $this->root = $this->nodeService->getNodeFromContextPath($rootContextPath);
+        $this->rootContextPath = $rootContextPath;
     }
 
     /**
      * Get the root node
      *
-     * @return NodeInterface
+     * @return Node
      */
-    public function getRoot()
+    private function getRoot()
     {
         if (!$this->root) {
             $this->root = $this->active->getContext()->getCurrentSiteNode();
@@ -105,7 +95,7 @@ class NodeTreeBuilder
      */
     public function setActive($activeContextPath)
     {
-        $this->active = $this->nodeService->getNodeFromContextPath($activeContextPath);
+        $this->activeContextPath = $activeContextPath;
     }
 
     /**
@@ -159,14 +149,14 @@ class NodeTreeBuilder
      * @param null $depth
      * @return array
      */
-    public function build($includeRoot = false, $root = null, $depth = null)
+    public function build(ContentRepositoryId $contentRepositoryId, $includeRoot = false, $root = null, $depth = null)
     {
         $root = $root === null ? $this->getRoot() : $root;
         $depth = $depth === null ? $this->depth : $depth;
 
         $result = [];
 
-        /** @var NodeInterface $childNode */
+        /** @var Node $childNode */
         foreach ($root->getChildNodes($this->nodeTypeFilter) as $childNode) {
             $hasChildNodes = $childNode->hasChildNodes($this->nodeTypeFilter);
             $shouldLoadChildNodes = $hasChildNodes && ($depth > 1 || $this->isInRootLine($this->active, $childNode));
@@ -224,7 +214,7 @@ class NodeTreeBuilder
         return $result;
     }
 
-    protected function isInRootLine(NodeInterface $haystack = null, NodeInterface $needle)
+    protected function isInRootLine(Node $haystack = null, Node $needle)
     {
         if ($haystack === null) {
             return false;

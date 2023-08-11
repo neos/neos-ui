@@ -11,10 +11,11 @@ namespace Neos\TestNodeTypes\NodeCreationHandler;
  * source code.
  */
 
+use Neos\ContentRepository\Core\ContentRepository;
+use Neos\ContentRepository\Core\Feature\NodeCreation\Command\CreateNodeAggregateWithNode;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Property\PropertyMapper;
 use Neos\Flow\Property\TypeConverter\PersistentObjectConverter;
-use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Media\Domain\Model\ImageInterface;
 use Neos\Neos\Ui\NodeCreationHandler\NodeCreationHandlerInterface;
 
@@ -26,22 +27,17 @@ class ImagePropertyNodeCreationHandler implements NodeCreationHandlerInterface
      */
     protected $propertyMapper;
 
-    /**
-     * Set the node title for the newly created Document node
-     *
-     * @param NodeInterface $node The newly created node
-     * @param array $data incoming data from the creationDialog
-     * @return void
-     */
-    public function handle(NodeInterface $node, array $data)
+    public function handle(CreateNodeAggregateWithNode $command, array $data, ContentRepository $contentRepository): CreateNodeAggregateWithNode
     {
+        if (!isset($data['image'])) {
+            return $command;
+        }
         $propertyMappingConfiguration = $this->propertyMapper->buildPropertyMappingConfiguration();
         $propertyMappingConfiguration->forProperty('*')->allowAllProperties();
         $propertyMappingConfiguration->setTypeConverterOption(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_OVERRIDE_TARGET_TYPE_ALLOWED, true);
+        $image = $this->propertyMapper->convert($data['image'], ImageInterface::class, $propertyMappingConfiguration);
 
-        if (isset($data['image'])) {
-            $image = $this->propertyMapper->convert($data['image'], ImageInterface::class, $propertyMappingConfiguration);
-            $node->setProperty('image', $image);
-        }
+        $propertyValues = $command->initialPropertyValues->withValue('image', $image);
+        return $command->withInitialPropertyValues($propertyValues);
     }
 }

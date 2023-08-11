@@ -11,15 +11,27 @@ namespace Neos\Neos\Ui\Fusion\Helper;
  * source code.
  */
 
-use Neos\ContentRepository\Domain\Model\Workspace;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
+use Neos\ContentRepository\Core\Factory\ContentRepositoryId;
 use Neos\Eel\ProtectedContextAwareInterface;
-use Neos\Flow\Annotations as Flow;
+use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
+use Neos\Neos\Domain\Model\WorkspaceName as NeosWorkspaceName;
+use Neos\Flow\Security\Context;
 use Neos\Neos\Domain\Service\UserService as DomainUserService;
-use Neos\Neos\Service\UserService;
+use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService;
 
+/**
+ * The Workspace helper for EEL contexts
+ */
 class WorkspaceHelper implements ProtectedContextAwareInterface
 {
+    /**
+     * @Flow\Inject
+     * @var ContentRepositoryRegistry
+     */
+    protected $contentRepositoryRegistry;
+
     /**
      * @Flow\Inject
      * @var WorkspaceService
@@ -34,40 +46,45 @@ class WorkspaceHelper implements ProtectedContextAwareInterface
 
     /**
      * @Flow\Inject
-     * @var UserService
+     * @var Context
      */
-    protected $userService;
+    protected $securityContext;
 
-    /**
-     * @param Workspace $workspace
-     * @return array
-     */
-    public function getPublishableNodeInfo(Workspace $workspace)
+    public function getAllowedTargetWorkspaces(ContentRepositoryId $contentRepositoryId)
     {
-        return $this->workspaceService->getPublishableNodeInfo($workspace);
-    }
-
-    public function getPersonalWorkspace()
-    {
-        $personalWorkspace = $this->userService->getPersonalWorkspace();
-        $baseWorkspace = $personalWorkspace->getBaseWorkspace();
-
-        return [
-            'name' => $personalWorkspace->getName(),
-            'publishableNodes' => $this->getPublishableNodeInfo($personalWorkspace),
-            'baseWorkspace' => $baseWorkspace->getName(),
-            'readOnly' => !$this->domainUserService->currentUserCanPublishToWorkspace($baseWorkspace)
-        ];
-    }
-
-    public function getAllowedTargetWorkspaces()
-    {
-        return $this->workspaceService->getAllowedTargetWorkspaces();
+        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
+        return $this->workspaceService->getAllowedTargetWorkspaces($contentRepository);
     }
 
     /**
+     * @return array<string,mixed>
+     */
+    public function getPersonalWorkspace(ContentRepositoryId $contentRepositoryId): array
+    {
+        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
+        $currentAccount = $this->securityContext->getAccount();
+        $personalWorkspaceName = NeosWorkspaceName::fromAccountIdentifier(
+            $currentAccount->getAccountIdentifier()
+        )->toContentRepositoryWorkspaceName();
+        $personalWorkspace = $contentRepository->getWorkspaceFinder()->findOneByName($personalWorkspaceName);
+
+        return !is_null($personalWorkspace)
+            ? [
+                'name' => $personalWorkspace->workspaceName,
+                'publishableNodes' => $this->workspaceService->getPublishableNodeInfo($personalWorkspaceName, $contentRepositoryId),
+                'baseWorkspace' => $personalWorkspace->baseWorkspaceName,
+                // TODO: FIX readonly flag!
+                //'readOnly' => !$this->domainUserService->currentUserCanPublishToWorkspace($baseWorkspace)
+                'readOnly' => false
+            ]
+            : [];
+    }
+
+    /**
+     * All methods are considered safe
+     *
      * @param string $methodName
-     * @return boolean
+     * @return bool
      */
     public function allowsCallOfMethod($methodName)
     {

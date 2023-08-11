@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 /*
@@ -11,54 +12,85 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
+use Neos\ContentRepository\Core\Feature\NodeMove\Command\MoveNodeAggregate;
+use Neos\ContentRepository\Core\Feature\NodeMove\Dto\RelationDistributionStrategy;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 
-class MoveBefore extends AbstractMove
+class MoveBefore extends AbstractStructuralChange
 {
     /**
      * "Subject" is the to-be-moved node; the "sibling" node is the node after which the "Subject" should be copied.
-     *
-     * @return boolean
      */
-    public function canApply()
+    public function canApply(): bool
     {
-        $nodeType = $this->getSubject()->getNodeType();
+        if (is_null($this->subject)) {
+            return false;
+        }
+        $siblingNode = $this->getSiblingNode();
+        if (is_null($siblingNode)) {
+            return false;
+        }
+        $parent = $this->findParentNode($siblingNode);
+        $nodeType = $this->subject->nodeType;
 
-        return $this->getSiblingNode()->getParent()->isNodeTypeAllowedAsChildNode($nodeType);
+        return $parent && $this->isNodeTypeAllowedAsChildNode($parent, $nodeType);
     }
 
-    public function getMode()
+    public function getMode(): string
     {
         return 'before';
     }
 
     /**
      * Applies this change
-     *
-     * @return void
      */
-    public function apply()
+    public function apply(): void
     {
-        if ($this->canApply()) {
-            $before = self::cloneNodeWithNodeData($this->getSubject());
-            $parent = $before->getParent();
-
-            if ($this->nodeNameAvailableBelowNode($this->getSiblingNode()->getParent(), $this->getSubject())) {
-                $this->getSubject()->moveBefore($this->getSiblingNode());
-            } else {
-                $nodeName = $this->generateUniqueNodeName($this->getSiblingNode()->getParent());
-                $this->getSubject()->moveBefore($this->getSiblingNode(), $nodeName);
+        $succeedingSibling = $this->getSiblingNode();
+        // "subject" is the to-be-moved node
+        $subject = $this->subject;
+        $parentNode = $subject ? $this->findParentNode($subject) : null;
+        $succeedingSiblingParent = $succeedingSibling ? $this->findParentNode($succeedingSibling) : null;
+        if ($this->canApply() && !is_null($subject) && !is_null($succeedingSibling)
+            && !is_null($parentNode) && !is_null($succeedingSiblingParent)
+        ) {
+            $precedingSibling = null;
+            try {
+                $precedingSibling = $this->findChildNodes($parentNode)
+                    ->previous($succeedingSibling);
+            } catch (\InvalidArgumentException $e) {
+                // do nothing; $precedingSibling is null.
             }
+
+            $hasEqualParentNode = $parentNode->nodeAggregateId
+                ->equals($succeedingSiblingParent->nodeAggregateId);
+
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
+
+            $contentRepository->handle(
+                new MoveNodeAggregate(
+                    $subject->subgraphIdentity->contentStreamId,
+                    $subject->subgraphIdentity->dimensionSpacePoint,
+                    $subject->nodeAggregateId,
+                    $hasEqualParentNode
+                        ? null
+                        : $succeedingSiblingParent->nodeAggregateId,
+                    $precedingSibling?->nodeAggregateId,
+                    $succeedingSibling->nodeAggregateId,
+                    RelationDistributionStrategy::STRATEGY_GATHER_ALL
+                )
+            )->block();
 
             $updateParentNodeInfo = new UpdateNodeInfo();
-            $updateParentNodeInfo->setNode($parent);
-            if ($this->baseNodeType) {
-                $updateParentNodeInfo->setBaseNodeType($this->baseNodeType);
-            }
+            $updateParentNodeInfo->setNode($succeedingSiblingParent);
 
             $this->feedbackCollection->add($updateParentNodeInfo);
 
-            $this->finish($before);
+            $removeNode = new RemoveNode($subject, $succeedingSiblingParent);
+            $this->feedbackCollection->add($removeNode);
+
+            $this->finish($subject);
         }
     }
 }

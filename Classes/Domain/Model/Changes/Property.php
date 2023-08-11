@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 /*
@@ -11,19 +12,32 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
-use Neos\ContentRepository\Domain\Model\NodeInterface;
-use Neos\ContentRepository\Domain\Model\NodeType;
-use Neos\ContentRepository\Domain\Service\NodeServiceInterface;
-use Neos\ContentRepository\Domain\Service\NodeTypeManager;
-use Neos\ContentRepository\Exception\NodeTypeNotFoundException;
+use Neos\ContentRepository\Core\DimensionSpace\Exception\DimensionSpacePointNotFound;
+use Neos\ContentRepository\Core\DimensionSpace\OriginDimensionSpacePoint;
+use Neos\ContentRepository\Core\Feature\NodeDisabling\Command\DisableNodeAggregate;
+use Neos\ContentRepository\Core\Feature\NodeDisabling\Command\EnableNodeAggregate;
+use Neos\ContentRepository\Core\Feature\NodeModification\Command\SetNodeProperties;
+use Neos\ContentRepository\Core\Feature\NodeModification\Dto\PropertyValuesToWrite;
+use Neos\ContentRepository\Core\Feature\NodeReferencing\Command\SetNodeReferences;
+use Neos\ContentRepository\Core\Feature\NodeReferencing\Dto\NodeReferencesToWrite;
+use Neos\ContentRepository\Core\Feature\NodeTypeChange\Command\ChangeNodeAggregateType;
+use Neos\ContentRepository\Core\Feature\NodeTypeChange\Dto\NodeAggregateTypeChangeChildConstraintConflictResolutionStrategy;
+use Neos\ContentRepository\Core\Feature\NodeVariation\Command\CreateNodeVariant;
+use Neos\ContentRepository\Core\NodeType\NodeTypeName;
+use Neos\ContentRepository\Core\SharedModel\Exception\ContentStreamDoesNotExistYet;
+use Neos\ContentRepository\Core\SharedModel\Exception\NodeAggregatesTypeIsAmbiguous;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateIds;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeVariantSelectionStrategy;
+use Neos\ContentRepository\Core\SharedModel\Node\ReferenceName;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Ui\Domain\Model\AbstractChange;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadContentOutOfBand;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 use Neos\Neos\Ui\Domain\Model\RenderedNodeDomAddress;
 use Neos\Neos\Ui\Domain\Service\NodePropertyConversionService;
-use Neos\Neos\Ui\Service\NodePropertyValidationService;
-use Neos\Utility\ObjectAccess;
+
+/** @codingStandardsIgnoreStart */
+/** @codingStandardsIgnoreEnd */
 
 /**
  * Changes a property on a node
@@ -37,191 +51,221 @@ class Property extends AbstractChange
     protected $nodePropertyConversionService;
 
     /**
-     * @Flow\Inject
-     * @var NodePropertyValidationService
-     */
-    protected $nodePropertyValidationService;
-
-    /**
-     * @Flow\Inject
-     * @var NodeTypeManager
-     */
-    protected $nodeTypeManager;
-
-    /**
-     * @Flow\Inject
-     * @var NodeServiceInterface
-     */
-    protected $nodeService;
-
-    /**
      * The node dom address
-     *
-     * @var RenderedNodeDomAddress
      */
-    protected $nodeDomAddress;
+    protected ?RenderedNodeDomAddress $nodeDomAddress = null;
 
     /**
      * The name of the property to be changed
-     *
-     * @var string
      */
-    protected $propertyName;
+    protected ?string $propertyName = null;
 
     /**
      * The value, the property will be set to
-     *
-     * @var string
+     * @var string|array<int|string,mixed>|null
      */
-    protected $value;
+    protected string|array|null $value = null;
 
     /**
      * The change has been initiated from the inline editing
-     *
-     * @var bool
      */
-    protected $isInline;
+    protected bool $isInline = false;
 
-    /**
-     * Set the property name
-     *
-     * @param string $propertyName
-     * @return void
-     */
-    public function setPropertyName($propertyName)
+    public function setPropertyName(string $propertyName): void
     {
         $this->propertyName = $propertyName;
     }
 
-    /**
-     * Get the property name
-     *
-     * @return string
-     */
-    public function getPropertyName()
+    public function getPropertyName(): ?string
     {
         return $this->propertyName;
     }
 
-    /**
-     * Set the node dom address
-     *
-     * @param RenderedNodeDomAddress $nodeDomAddress
-     * @return void
-     */
-    public function setNodeDomAddress(RenderedNodeDomAddress $nodeDomAddress = null)
+    public function setNodeDomAddress(RenderedNodeDomAddress $nodeDomAddress = null): void
     {
         $this->nodeDomAddress = $nodeDomAddress;
     }
 
-    /**
-     * Get the node dom address
-     *
-     * @return RenderedNodeDomAddress
-     */
-    public function getNodeDomAddress()
+    public function getNodeDomAddress(): ?RenderedNodeDomAddress
     {
         return $this->nodeDomAddress;
     }
 
     /**
-     * Set the value
-     *
-     * @param string $value
+     * @param string|array<int|string,mixed>|null $value
      */
-    public function setValue($value)
+    public function setValue(string|array|null $value): void
     {
         $this->value = $value;
     }
 
     /**
-     * Get the value
-     *
-     * @return string
+     * @return string|array<int|string,mixed>|null
      */
-    public function getValue()
+    public function getValue(): string|array|null
     {
         return $this->value;
     }
 
-    /**
-     * Set isInline
-     *
-     * @param bool $isInline
-     */
-    public function setIsInline($isInline)
+    public function setIsInline(bool $isInline): void
     {
         $this->isInline = $isInline;
     }
 
-    /**
-     * Get isInline
-     *
-     * @return bool
-     */
-    public function getIsInline()
+    public function getIsInline(): bool
     {
         return $this->isInline;
     }
 
     /**
      * Checks whether this change can be applied to the subject
-     *
-     * @return boolean
      */
-    public function canApply()
+    public function canApply(): bool
     {
-        $nodeType = $this->getSubject()->getNodeType();
+        if (is_null($this->subject)) {
+            return false;
+        }
+        $nodeType = $this->subject->nodeType;
         $propertyName = $this->getPropertyName();
         $nodeTypeProperties = $nodeType->getProperties();
 
-        if (!isset($nodeTypeProperties[$propertyName])) {
-            return false;
-        }
-
-        if (isset($nodeTypeProperties[$propertyName]['validation'])) {
-            foreach ($nodeTypeProperties[$propertyName]['validation'] as $validatorName => $validatorConfiguration) {
-                if (!\is_array($validatorConfiguration)) {
-                    $validatorConfiguration = [];
-                }
-                if ($this->nodePropertyValidationService->validate($this->value, $validatorName, $validatorConfiguration) === false) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
+        return isset($nodeTypeProperties[$propertyName]);
     }
 
     /**
      * Applies this change
      *
-     * @return void
-     * @throws NodeTypeNotFoundException
+     * @throws \Neos\ContentRepository\Exception\NodeException
+     * @throws ContentStreamDoesNotExistYet
+     * @throws NodeAggregatesTypeIsAmbiguous
+     * @throws DimensionSpacePointNotFound
      */
-    public function apply()
+    public function apply(): void
     {
-        if ($this->canApply()) {
-            $node = $this->getSubject();
-            $propertyName = $this->getPropertyName();
-            $value = $this->nodePropertyConversionService->convert(
-                $node->getNodeType(),
-                $propertyName,
-                $this->getValue(),
-                $node->getContext()
-            );
+        $subject = $this->subject;
+        $propertyName = $this->getPropertyName();
+        if ($this->canApply() && !is_null($subject) && !is_null($propertyName)) {
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
 
-            // TODO: Make changing the node type a separated, specific/defined change operation.
-            if ($propertyName === '_nodeType') {
-                $nodeType = $this->nodeTypeManager->getNodeType($value);
-                $node = $this->changeNodeType($node, $nodeType);
-            } elseif ($propertyName[0] === '_') {
-                ObjectAccess::setProperty($node, substr($propertyName, 1), $value);
+            $propertyType = $subject->nodeType->getPropertyType($propertyName);
+
+            // Use extra commands for reference handling
+            if ($propertyType === 'reference' || $propertyType === 'references') {
+                $value = $this->getValue();
+                $destinationNodeAggregateIds = [];
+                if ($propertyType === 'reference') {
+                    if (is_string($value) && !empty($value)) {
+                        $destinationNodeAggregateIds[] = $value;
+                    }
+                }
+
+                if ($propertyType === 'references') {
+                    /** @var array<int,string> $values */
+                    $values = $value;
+                    if (is_array($values)) {
+                        foreach ($values as $singleNodeAggregateId) {
+                            $destinationNodeAggregateIds[] = $singleNodeAggregateId;
+                        }
+                    }
+                }
+
+                $commandResult = $contentRepository->handle(
+                    new SetNodeReferences(
+                        $subject->subgraphIdentity->contentStreamId,
+                        $subject->nodeAggregateId,
+                        $subject->originDimensionSpacePoint,
+                        ReferenceName::fromString($propertyName),
+                        NodeReferencesToWrite::fromNodeAggregateIds(NodeAggregateIds::fromArray($destinationNodeAggregateIds))
+                    )
+                );
             } else {
-                $node->setProperty($propertyName, $value);
+                $value = $this->nodePropertyConversionService->convert(
+                    $subject->nodeType,
+                    $propertyName,
+                    $this->getValue()
+                );
+
+                if ($propertyName[0] !== '_' || $propertyName === '_hiddenInIndex') {
+                    $originDimensionSpacePoint = $subject->originDimensionSpacePoint;
+                    if (!$subject->subgraphIdentity->dimensionSpacePoint->equals($originDimensionSpacePoint)) {
+                        $originDimensionSpacePoint = OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->subgraphIdentity->dimensionSpacePoint);
+                        // if origin dimension space point != current DSP -> translate transparently (matching old behavior)
+                        $contentRepository->handle(
+                            new CreateNodeVariant(
+                                $subject->subgraphIdentity->contentStreamId,
+                                $subject->nodeAggregateId,
+                                $subject->originDimensionSpacePoint,
+                                $originDimensionSpacePoint
+                            )
+                        )->block();
+                    }
+                    $commandResult = $contentRepository->handle(
+                        new SetNodeProperties(
+                            $subject->subgraphIdentity->contentStreamId,
+                            $subject->nodeAggregateId,
+                            $originDimensionSpacePoint,
+                            PropertyValuesToWrite::fromArray(
+                                [
+                                    $propertyName => $value
+                                ]
+                            )
+                        )
+                    );
+                } else {
+                    // property starts with "_"
+                    if ($propertyName === '_nodeType') {
+                        $commandResult = $contentRepository->handle(
+                            new ChangeNodeAggregateType(
+                                $subject->subgraphIdentity->contentStreamId,
+                                $subject->nodeAggregateId,
+                                NodeTypeName::fromString($value),
+                                NodeAggregateTypeChangeChildConstraintConflictResolutionStrategy::STRATEGY_DELETE
+                            )
+                        );
+                    } elseif ($propertyName === '_hidden') {
+                        if ($value === true) {
+                            $commandResult = $contentRepository->handle(
+                                new DisableNodeAggregate(
+                                    $subject->subgraphIdentity->contentStreamId,
+                                    $subject->nodeAggregateId,
+                                    $subject->originDimensionSpacePoint->toDimensionSpacePoint(),
+                                    NodeVariantSelectionStrategy::STRATEGY_ALL_SPECIALIZATIONS
+                                )
+                            );
+                        } else {
+                            // unhide
+                            $commandResult = $contentRepository->handle(
+                                new EnableNodeAggregate(
+                                    $subject->subgraphIdentity->contentStreamId,
+                                    $subject->nodeAggregateId,
+                                    $subject->originDimensionSpacePoint->toDimensionSpacePoint(),
+                                    NodeVariantSelectionStrategy::STRATEGY_ALL_SPECIALIZATIONS
+                                )
+                            );
+                        }
+                    } else {
+                        throw new \Exception("TODO FIX");
+                    }
+                }
+            }
+
+            $commandResult->block();
+
+            // !!! REMEMBER: we are not allowed to use $node anymore,
+            // because it may have been modified by the commands above.
+            // Thus, we need to re-fetch it (as a workaround; until we do not need this anymore)
+            $subgraph = $this->contentRepositoryRegistry->subgraphForNode($subject);
+            $originalNodeAggregateId = $subject->nodeAggregateId;
+            $node = $subgraph->findNodeById($originalNodeAggregateId);
+            if (is_null($node)) {
+                throw new \InvalidArgumentException(
+                    'Cannot apply Property on missing node ' . $originalNodeAggregateId->value,
+                    1645560836
+                );
             }
 
             $this->updateWorkspaceInfo();
+            $parentNode = $subgraph->findParentNode($node->nodeAggregateId);
 
             // This might be needed to update node label and other things that we can calculate only on the server
             $updateNodeInfo = new UpdateNodeInfo();
@@ -229,71 +273,24 @@ class Property extends AbstractChange
             $this->feedbackCollection->add($updateNodeInfo);
 
             $reloadIfChangedConfigurationPath = sprintf('properties.%s.ui.reloadIfChanged', $propertyName);
-            if (!$this->getIsInline() && $node->getNodeType()->getConfiguration($reloadIfChangedConfigurationPath)) {
+            if (!$this->getIsInline() && $node->nodeType->getConfiguration($reloadIfChangedConfigurationPath)) {
                 if ($this->getNodeDomAddress() && $this->getNodeDomAddress()->getFusionPath()
-                    && $node->getNodeType()->isOfType('Neos.Neos:Content')
-                    && $node->getParent()->getNodeType()->isOfType('Neos.Neos:ContentCollection')
-                ) {
+                    && $parentNode
+                    && $parentNode->nodeType->isOfType('Neos.Neos:ContentCollection')) {
                     $reloadContentOutOfBand = new ReloadContentOutOfBand();
                     $reloadContentOutOfBand->setNode($node);
                     $reloadContentOutOfBand->setNodeDomAddress($this->getNodeDomAddress());
                     $this->feedbackCollection->add($reloadContentOutOfBand);
                 } else {
-                    // To prevent a full document reload we try to find a ContentCollection in the list of parents
-                    // which would allows us to reload its children. Then we request a reload on the child that is
-                    // a parent of our modified node.
-                    $closestCollectionChildNode = $node;
-                    while ($closestCollectionChildNode->getParent()
-                        && !($closestCollectionChildNode->getParent()->getNodeType()->isOfType('Neos.Neos:ContentCollection')
-                            || $closestCollectionChildNode->getParent()->getNodeType()->isOfType('Neos.Neos:Document'))) {
-                        $closestCollectionChildNode = $closestCollectionChildNode->getParent();
-                    }
-                    if ($closestCollectionChildNode && $closestCollectionChildNode->getParent() && $closestCollectionChildNode->getParent()->getNodeType()->isOfType('Neos.Neos:ContentCollection')) {
-                        $fusionContextNodeTypeTag = '<' . $closestCollectionChildNode->getNodeType() . '>';
-
-                        // Traverse to the fusion path that matches the tag of the closest node we can reload
-                        $closestCollectionChildNodeFusionPath = explode('/', $this->getNodeDomAddress()->getFusionPath());
-                        for ($i = count($closestCollectionChildNodeFusionPath) - 1; $i >= 0; $i--) {
-                            if (strpos($closestCollectionChildNodeFusionPath[$i], $fusionContextNodeTypeTag) === false) {
-                                array_pop($closestCollectionChildNodeFusionPath);
-                            } else {
-                                break;
-                            }
-                        }
-
-                        $reloadContentOutOfBand = new ReloadContentOutOfBand();
-                        $reloadContentOutOfBand->setNode($closestCollectionChildNode);
-                        $parentNodeDomAddress = new RenderedNodeDomAddress();
-                        $parentNodeDomAddress->setContextPath($closestCollectionChildNode->getContextPath());
-                        $parentNodeDomAddress->setFusionPath(join('/', $closestCollectionChildNodeFusionPath));
-                        $reloadContentOutOfBand->setNodeDomAddress($parentNodeDomAddress);
-                        $this->feedbackCollection->add($reloadContentOutOfBand);
-                    } else {
-                        $this->reloadDocument($node);
-                    }
+                    $this->reloadDocument($node);
                 }
             }
 
             $reloadPageIfChangedConfigurationPath = sprintf('properties.%s.ui.reloadPageIfChanged', $propertyName);
-            if (!$this->getIsInline() && $node->getNodeType()->getConfiguration($reloadPageIfChangedConfigurationPath)) {
+            if (!$this->getIsInline()
+                && $node->nodeType->getConfiguration($reloadPageIfChangedConfigurationPath)) {
                 $this->reloadDocument($node);
             }
         }
-    }
-
-    /**
-     * @param NodeInterface $node
-     * @param NodeType $nodeType
-     * @return NodeInterface
-     */
-    protected function changeNodeType(NodeInterface $node, NodeType $nodeType)
-    {
-        $oldNodeType = $node->getNodeType();
-        ObjectAccess::setProperty($node, 'nodeType', $nodeType);
-        $this->nodeService->cleanUpProperties($node);
-        $this->nodeService->cleanUpAutoCreatedChildNodes($node, $oldNodeType);
-        $this->nodeService->createChildNodes($node);
-
-        return $node;
     }
 }

@@ -330,11 +330,11 @@
       </trans-unit>
       <trans-unit id="Shortcut__UI.Inspector.escape" xml:space="preserve">
                 <source>Escape Inspector</source>
-        <target xml:lang="es-ES" state="translated">Inspector de Escapes</target>
+        <target xml:lang="es-ES" state="translated">Dejar al inspector</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.Inspector.resume" xml:space="preserve">
                 <source>Resume Inspector</source>
-        <target xml:lang="es-ES" state="translated">Inspector de currículum</target>
+        <target xml:lang="es-ES" state="translated">Resumen del Inspector</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.NodeCreationDialog.back" xml:space="preserve">
                 <source>NodeCreationDialog Back</source>
@@ -442,49 +442,13 @@
                     <source>{tabName} – {amountOfErrors} validation issues</source>
         <target state="translated">{tabName} - {amountOfErrors} problemas de validación</target>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__style__p" xml:space="preserve">
-                <source>Paragraph</source>
-        <target state="translated">Párrafo</target>
-      </trans-unit>
-      <trans-unit id="ckeditor__toolbar__style__h1" xml:space="preserve">
-                <source>Headline 1</source>
-        <target state="translated">Titular 1</target>
-      </trans-unit>
-      <trans-unit id="ckeditor__toolbar__style__h3" xml:space="preserve">
-                <source>Headline 3</source>
-        <target state="translated">Titular 3</target>
-      </trans-unit>
-      <trans-unit id="ckeditor__toolbar__style__h4" xml:space="preserve">
-                <source>Headline 4</source>
-        <target state="translated">Titular 4</target>
-      </trans-unit>
-      <trans-unit id="ckeditor__toolbar__style__h5" xml:space="preserve">
-                <source>Headline 5</source>
-        <target state="translated">Titular 5</target>
-      </trans-unit>
-      <trans-unit id="ckeditor__toolbar__style__h6" xml:space="preserve">
-                <source>Headline 6</source>
-        <target state="translated">Titular 6</target>
-      </trans-unit>
-      <trans-unit id="ckeditor__toolbar__style__pre" xml:space="preserve">
-                <source>Preformatted</source>
-        <target state="translated">Preformateado</target>
-      </trans-unit>
-      <trans-unit id="ckeditor__toolbar__style__h2" xml:space="preserve">
-                <source>Headline 2</source>
-        <target state="translated">Titular 2</target>
-      </trans-unit>
-      <trans-unit id="ckeditor__toolbar__link__download" xml:space="preserve">
-                <source>Downloadable</source>
-        <target state="translated">Puede descargarse</target>
-      </trans-unit>
       <trans-unit id="above" xml:space="preserve">
                 <source>Above</source>
         <target state="translated">Sobre</target>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__style__blockquote" xml:space="preserve">
-                <source>Blockquote</source>
-        <target state="translated">cita en bloque</target>
+      <trans-unit id="ckeditor__toolbar__style__h1" xml:space="preserve">
+                <source>Headline 1</source>
+        <target state="translated">Titular 1</target>
       </trans-unit>
       <trans-unit id="below" xml:space="preserve">
                 <source>Below</source>
@@ -506,13 +470,45 @@
                 <source>below</source>
         <target state="translated">abajo</target>
       </trans-unit>
-      <trans-unit id="errorBoundary.description" xml:space="preserve">
-                <source>Please reload the application, or contact your system administrator with the given details.</source>
-        <target state="translated">Por favor, vuelve a cargar la aplicación o pónte en contacto con el administrador del sistema con los datos facilitados.</target>
+      <trans-unit id="ckeditor__toolbar__style__p" xml:space="preserve">
+                <source>Paragraph</source>
+        <target state="translated">Párrafo</target>
       </trans-unit>
-      <trans-unit id="errorBoundary.footer" xml:space="preserve">
-                <source>For more information about the error please refer to the JavaScript console.</source>
-        <target state="translated">Para obtener más información sobre el error, consulta la consola JavaScript.</target>
+      <trans-unit id="ckeditor__toolbar__style__h2" xml:space="preserve">
+                <source>Headline 2</source>
+        <target state="translated">Titular 2</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__h3" xml:space="preserve">
+                <source>Headline 3</source>
+        <target state="translated">Titular 3</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__h4" xml:space="preserve">
+                <source>Headline 4</source>
+        <target state="translated">Titular 4</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__h5" xml:space="preserve">
+                <source>Headline 5</source>
+        <target state="translated">Titular 5</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__h6" xml:space="preserve">
+                <source>Headline 6</source>
+        <target state="translated">Titular 6</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__pre" xml:space="preserve">
+                <source>Preformatted</source>
+        <target state="translated">Preformateado</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__blockquote" xml:space="preserve">
+                <source>Blockquote</source>
+        <target state="translated">cita en bloque</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__link__download" xml:space="preserve">
+                <source>Downloadable</source>
+        <target state="translated">Puede descargarse</target>
+      </trans-unit>
+      <trans-unit id="errorBoundary.copyTechnicalDetails" xml:space="preserve">
+                <source>Copy technical details</source>
+        <target state="translated">Copiar la información técnica</target>
       </trans-unit>
       <trans-unit id="errorBoundary.technicalDetailsCopied" xml:space="preserve">
                 <source>Technical details copied</source>
@@ -526,13 +522,13 @@
                 <source>Sorry, but the Neos UI could not recover from this error.</source>
         <target state="translated">Lo sentimos, pero la interfaz de usuario de Neos no ha podido recuperarse de este error.</target>
       </trans-unit>
-      <trans-unit id="errorBoundary.copyTechnicalDetails" xml:space="preserve">
-                <source>Copy technical details</source>
-        <target state="translated">Copiar la información técnica</target>
+      <trans-unit id="errorBoundary.description" xml:space="preserve">
+                <source>Please reload the application, or contact your system administrator with the given details.</source>
+        <target state="translated">Por favor, vuelve a cargar la aplicación o pónte en contacto con el administrador del sistema con los datos facilitados.</target>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__link__formatOptions" xml:space="preserve">
-                <source>Format options</source>
-        <target state="translated">Opciones del formato</target>
+      <trans-unit id="errorBoundary.footer" xml:space="preserve">
+                <source>For more information about the error please refer to the JavaScript console.</source>
+        <target state="translated">Para obtener más información sobre el error, consulta la consola JavaScript.</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__formatOptions" xml:space="preserve">
                 <source>Format options</source>

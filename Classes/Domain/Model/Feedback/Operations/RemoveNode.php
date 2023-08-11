@@ -11,35 +11,33 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
  * source code.
  */
 
-use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
+use Neos\Flow\Annotations as Flow;
+use Neos\Neos\FrontendRouting\NodeAddressFactory;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 
 class RemoveNode extends AbstractFeedback
 {
-    /**
-     * @var NodeInterface
-     */
-    protected $node;
+    protected Node $node;
+
+    protected Node $parentNode;
 
     /**
-     * Set the node
-     *
-     * @param NodeInterface $node
-     * @return void
+     * @Flow\Inject
+     * @var ContentRepositoryRegistry
      */
-    public function setNode(NodeInterface $node)
+    protected $contentRepositoryRegistry;
+
+    public function __construct(Node $node, Node $parentNode)
     {
         $this->node = $node;
+        $this->parentNode = $parentNode;
     }
 
-    /**
-     * Get the node
-     *
-     * @return NodeInterface
-     */
-    public function getNode()
+    public function getNode(): Node
     {
         return $this->node;
     }
@@ -59,7 +57,7 @@ class RemoveNode extends AbstractFeedback
      *
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return sprintf('Node "%s" has been removed.', $this->getNode()->getLabel());
     }
@@ -76,7 +74,9 @@ class RemoveNode extends AbstractFeedback
             return false;
         }
 
-        return $this->getNode()->getContextPath() === $feedback->getNode()->getContextPath();
+        return $this->getNode()->nodeAggregateId->equals(
+            $feedback->getNode()->nodeAggregateId
+        );
     }
 
     /**
@@ -87,9 +87,11 @@ class RemoveNode extends AbstractFeedback
      */
     public function serializePayload(ControllerContext $controllerContext)
     {
+        $contentRepository = $this->contentRepositoryRegistry->get($this->node->subgraphIdentity->contentRepositoryId);
+        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
         return [
-            'contextPath' => $this->getNode()->getContextPath(),
-            'parentContextPath' => $this->getNode()->getParent()->getContextPath()
+            'contextPath' => $nodeAddressFactory->createFromNode($this->node)->serializeForUri(),
+            'parentContextPath' => $nodeAddressFactory->createFromNode($this->parentNode)->serializeForUri()
         ];
     }
 }

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 /*
@@ -11,92 +12,93 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
-use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Core\Feature\NodeMove\Command\MoveNodeAggregate;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
+use Neos\ContentRepository\Core\Feature\NodeMove\Dto\RelationDistributionStrategy;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 
-class MoveInto extends AbstractMove
+class MoveInto extends AbstractStructuralChange
 {
-    /**
-     * @var string
-     */
-    protected $parentContextPath;
+    protected ?string $parentContextPath;
 
-    /**
-     * @var NodeInterface
-     */
-    protected $cachedParentNode;
-
-    /**
-     * @param string $parentContextPath
-     */
-    public function setParentContextPath($parentContextPath)
+    public function setParentContextPath(string $parentContextPath): void
     {
         $this->parentContextPath = $parentContextPath;
     }
 
+    public function getParentNode(): ?Node
+    {
+        if ($this->parentContextPath === null) {
+            return null;
+        }
+
+        return $this->nodeService->getNodeFromContextPath(
+            $this->parentContextPath,
+            $this->getSubject()->subgraphIdentity->contentRepositoryId
+        );
+    }
+
+
     /**
      * Get the insertion mode (before|after|into) that is represented by this change
-     *
-     * @return string
      */
-    public function getMode()
+    public function getMode(): string
     {
         return 'into';
     }
 
     /**
-     * @return NodeInterface
+     * Checks whether this change can be applied to the subject
      */
-    public function getParentNode()
+    public function canApply(): bool
     {
-        if ($this->cachedParentNode === null) {
-            $this->cachedParentNode = $this->nodeService->getNodeFromContextPath(
-                $this->parentContextPath
-            );
+        if (is_null($this->subject)) {
+            return false;
         }
+        $parent = $this->getParentNode();
+        $nodeType = $this->subject->nodeType;
 
-        return $this->cachedParentNode;
-    }
-
-    /**
-     * "Subject" is the to-be-copied node; the "parent" node is the new parent
-     *
-     * @return boolean
-     */
-    public function canApply()
-    {
-        $nodeType = $this->getSubject()->getNodeType();
-
-        return $this->getParentNode()->isNodeTypeAllowedAsChildNode($nodeType);
+        return $parent && $this->isNodeTypeAllowedAsChildNode($parent, $nodeType);
     }
 
     /**
      * Applies this change
-     *
-     * @return void
      */
-    public function apply()
+    public function apply(): void
     {
-        if ($this->canApply()) {
-            $before = self::cloneNodeWithNodeData($this->getSubject());
-            $parent = $before->getParent();
+        // "parentNode" is the node where the $subject should be moved INTO
+        $parentNode = $this->getParentNode();
+        // "subject" is the to-be-moved node
+        $subject = $this->subject;
+        if ($this->canApply() && $parentNode && $subject) {
+            $otherParent = $this->contentRepositoryRegistry->subgraphForNode($subject)
+                ->findParentNode($subject->nodeAggregateId);
 
-            if ($this->nodeNameAvailableBelowNode($this->getParentNode(), $this->getSubject())) {
-                $this->getSubject()->moveInto($this->getParentNode());
-            } else {
-                $nodeName = $this->generateUniqueNodeName($this->getParentNode());
-                $this->getSubject()->moveInto($this->getParentNode(), $nodeName);
-            }
+            $hasEqualParentNode = $otherParent && $otherParent->nodeAggregateId
+                    ->equals($parentNode->nodeAggregateId);
+
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
+            $contentRepository->handle(
+                new MoveNodeAggregate(
+                    $subject->subgraphIdentity->contentStreamId,
+                    $subject->subgraphIdentity->dimensionSpacePoint,
+                    $subject->nodeAggregateId,
+                    $hasEqualParentNode ? null : $parentNode->nodeAggregateId,
+                    null,
+                    null,
+                    RelationDistributionStrategy::STRATEGY_GATHER_ALL
+                )
+            )->block();
 
             $updateParentNodeInfo = new UpdateNodeInfo();
-            $updateParentNodeInfo->setNode($parent);
-            if ($this->baseNodeType) {
-                $updateParentNodeInfo->setBaseNodeType($this->baseNodeType);
-            }
-
+            $updateParentNodeInfo->setNode($parentNode);
             $this->feedbackCollection->add($updateParentNodeInfo);
 
-            $this->finish($before);
+            $removeNode = new RemoveNode($subject, $parentNode);
+            $this->feedbackCollection->add($removeNode);
+
+            $this->finish($subject);
         }
     }
 }

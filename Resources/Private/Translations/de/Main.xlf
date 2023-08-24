@@ -546,6 +546,10 @@
                 <source>Reload Neos UI</source>
         <target state="translated">Neos UI neu laden</target>
       </trans-unit>
+      <trans-unit id="add" xml:space="preserve">
+                <source>Add</source>
+        <target state="translated">Einfügen</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

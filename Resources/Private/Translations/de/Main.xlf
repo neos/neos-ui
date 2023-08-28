@@ -598,6 +598,10 @@
                 <source>For more information about the error please refer to the JavaScript console.</source>
         <target state="translated">Weitere Informationen zu diesem Fehler finden Sie in der JavaScript-Konsole.</target>
       </trans-unit>
+      <trans-unit id="add" xml:space="preserve">
+                <source>Add</source>
+        <target state="needs-translation">Einfügen</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

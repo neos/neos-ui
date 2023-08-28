@@ -10,6 +10,9 @@ import {PickDefaultProps} from '../utils-typescript';
 import Button from '../Button';
 import Icon from '../Icon';
 
+// WHY: Because momentJs locales are not bundled automatically, we have to explicitly add them.
+import 'moment/locale/de';
+
 export interface DateInputProps {
     /**
      * The Date instance which represents the selected value.

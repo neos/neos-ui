@@ -504,7 +504,7 @@
       </trans-unit>
       <trans-unit id="add" xml:space="preserve">
                 <source>Add</source>
-        <target state="needs-translation">Añadir</target>
+        <target state="translated">Añadir</target>
       </trans-unit>
     </body>
   </file>

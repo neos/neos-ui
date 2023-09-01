@@ -17,7 +17,6 @@ use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindChildNodesFil
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Nodes;
 use Neos\ContentRepository\Core\Projection\NodeHiddenState\NodeHiddenStateFinder;
-use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
@@ -29,12 +28,15 @@ use Neos\Neos\TypeConverter\EntityToIdentityConverter;
 use Neos\Neos\Ui\Domain\Service\NodePropertyConverterService;
 use Neos\Neos\Ui\Domain\Service\UserLocaleService;
 use Neos\Neos\Ui\Service\NodePolicyService;
+use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
 
 /**
  * @Flow\Scope("singleton")
  */
 class NodeInfoHelper implements ProtectedContextAwareInterface
 {
+    use NodeTypeWithFallbackProvider;
+
     /**
      * @Flow\Inject
      * @var NodePolicyService
@@ -46,12 +48,6 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
      * @var UserLocaleService
      */
     protected $userLocaleService;
-
-    /**
-     * @Flow\Inject
-     * @var ContentRepositoryRegistry
-     */
-    protected $contentRepositoryRegistry;
 
     /**
      * @Flow\Inject
@@ -208,7 +204,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     protected function getUriInformation(Node $node, ControllerContext $controllerContext): array
     {
         $nodeInfo = [];
-        if (!$node->nodeType->isOfType($this->documentNodeTypeRole)) {
+        if (!$this->getNodeType($node)->isOfType($this->documentNodeTypeRole)) {
             return $nodeInfo;
         }
         $nodeInfo['uri'] = $this->previewUri($node, $controllerContext);
@@ -234,9 +230,9 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             'nodeAddress' => $nodeAddress->serializeForUri(),
             'name' => $node->nodeName?->value ?? '',
             'identifier' => $node->nodeAggregateId->jsonSerialize(),
-            'nodeType' => $node->nodeType->getName(),
+            'nodeType' => $node->nodeTypeName->value,
             'label' => $node->getLabel(),
-            'isAutoCreated' => self::isAutoCreated($node, $subgraph),
+            'isAutoCreated' => $this->isAutoCreated($node, $subgraph),
             // TODO: depth is expensive to calculate; maybe let's get rid of this?
             'depth' => $subgraph->countAncestorNodes(
                 $node->nodeAggregateId,
@@ -251,11 +247,11 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         ];
     }
 
-    public static function isAutoCreated(Node $node, ContentSubgraphInterface $subgraph): bool
+    public function isAutoCreated(Node $node, ContentSubgraphInterface $subgraph): bool
     {
         $parent = $subgraph->findParentNode($node->nodeAggregateId);
         if ($parent) {
-            if (array_key_exists($node->nodeName->value, $parent->nodeType->getAutoCreatedChildNodes())) {
+            if (array_key_exists($node->nodeName->value, $this->getNodeType($parent)->getAutoCreatedChildNodes())) {
                 return true;
             }
         }
@@ -271,7 +267,6 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
      */
     protected function renderChildrenInformation(Node $node, string $nodeTypeFilterString): array
     {
-        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
         $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
 
         $documentChildNodes = $subgraph->findChildNodes(
@@ -293,7 +288,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
             $infos[] = [
                 'contextPath' => $nodeAddressFactory->createFromNode($childNode)->serializeForUri(),
-                'nodeType' => $childNode->nodeType->getName() // TODO: DUPLICATED; should NOT be needed!!!
+                'nodeType' => $childNode->nodeTypeName->value // TODO: DUPLICATED; should NOT be needed!!!
             ];
         };
         return $infos;
@@ -352,7 +347,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
                 continue;
             }
 
-            while ($parentNode->nodeType->isOfType($baseNodeTypeOverride)) {
+            while ($this->getNodeType($parentNode)->isOfType($baseNodeTypeOverride)) {
                 if (array_key_exists($parentNode->nodeAggregateId->value, $renderedNodes)) {
                     $renderedNodes[$parentNode->nodeAggregateId->value]['intermediate'] = true;
                 } else {

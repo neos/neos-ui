@@ -13,25 +13,23 @@ namespace Neos\Neos\Ui\ContentRepository\Service;
 
 use Neos\ContentRepository\Core\ContentRepository;
 use Neos\ContentRepository\Core\Factory\ContentRepositoryId;
-use Neos\ContentRepository\Core\Projection\ContentGraph\ContentSubgraphIdentity;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\Projection\Workspace\Workspace;
+use Neos\Neos\Domain\Service\NodeTypeNameFactory;
 use Neos\Neos\FrontendRouting\NodeAddress;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
 use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
-use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Domain\Service\UserService as DomainUserService;
 use Neos\Neos\PendingChangesProjection\ChangeFinder;
-use Neos\Neos\PendingChangesProjection\ChangeProjection;
 use Neos\Neos\Service\UserService;
+use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
 
-/**
- * @Flow\Scope("singleton")
- */
+#[Flow\Scope('singleton')]
 class WorkspaceService
 {
+    use NodeTypeWithFallbackProvider;
 
     /**
      * @Flow\Inject
@@ -44,12 +42,6 @@ class WorkspaceService
      * @var DomainUserService
      */
     protected $domainUserService;
-
-    /**
-     * @Flow\Inject
-     * @var ContentRepositoryRegistry
-     */
-    protected $contentRepositoryRegistry;
 
     /**
      * Get all publishable node context paths for a workspace
@@ -161,7 +153,7 @@ class WorkspaceService
         $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
 
         while ($node instanceof Node) {
-            if ($node->nodeType->isOfType('Neos.Neos:Document')) {
+            if ($this->getNodeType($node)->isOfType(NodeTypeNameFactory::NAME_DOCUMENT)) {
                 return $node;
             }
             $node = $subgraph->findParentNode($node->nodeAggregateId);

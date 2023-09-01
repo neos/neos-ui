@@ -19,6 +19,7 @@ use Neos\ContentRepository\Core\Projection\ContentGraph\NodeTypeConstraints;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Eel\FlowQuery\Operations\AbstractOperation;
+use Neos\Neos\Domain\Service\NodeTypeNameFactory;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Flow\Annotations as Flow;
 
@@ -82,7 +83,7 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
         $ancestors = $subgraph->findAncestorNodes(
             $documentNode->nodeAggregateId,
             FindAncestorNodesFilter::create(
-                NodeTypeConstraints::fromFilterString('Neos.Neos:Document')
+                NodeTypeConstraints::fromFilterString(NodeTypeNameFactory::NAME_DOCUMENT)
             )
         );
 

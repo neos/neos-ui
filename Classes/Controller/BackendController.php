@@ -13,6 +13,7 @@ namespace Neos\Neos\Ui\Controller;
  */
 
 use Neos\ContentRepository\Core\NodeType\NodeTypeName;
+use Neos\Neos\Domain\Service\NodeTypeNameFactory;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
@@ -171,7 +172,7 @@ class BackendController extends ActionController
         // to call the contentGraph here directly.
         $rootNodeAggregate = $contentRepository->getContentGraph()->findRootNodeAggregateByType(
             $workspace->currentContentStreamId,
-            NodeTypeName::fromString('Neos.Neos:Sites')
+            NodeTypeNameFactory::forSites()
         );
         $rootNode = $rootNodeAggregate->getNodeByCoveredDimensionSpacePoint($defaultDimensionSpacePoint);
 

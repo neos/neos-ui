@@ -12,16 +12,19 @@ namespace Neos\Neos\Ui\Domain\Model;
  */
 
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
-use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
+use Neos\Neos\Domain\Service\NodeTypeNameFactory;
 use Neos\Neos\Service\UserService;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\NodeCreated;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
+use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
 
 abstract class AbstractChange implements ChangeInterface
 {
+    use NodeTypeWithFallbackProvider;
+
     protected ?Node $subject;
 
     /**
@@ -41,12 +44,6 @@ abstract class AbstractChange implements ChangeInterface
      * @var PersistenceManagerInterface
      */
     protected $persistenceManager;
-
-    /**
-     * @Flow\Inject
-     * @var ContentRepositoryRegistry
-     */
-    protected $contentRepositoryRegistry;
 
     public function setSubject(Node $subject): void
     {
@@ -81,7 +78,7 @@ abstract class AbstractChange implements ChangeInterface
     final protected function findClosestDocumentNode(Node $node): ?Node
     {
         while ($node instanceof Node) {
-            if ($node->nodeType->isOfType('Neos.Neos:Document')) {
+            if ($this->getNodeType($node)->isOfType(NodeTypeNameFactory::NAME_DOCUMENT)) {
                 return $node;
             }
             $node = $this->findParentNode($node);

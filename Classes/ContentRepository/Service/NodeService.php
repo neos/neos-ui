@@ -14,35 +14,30 @@ namespace Neos\Neos\Ui\ContentRepository\Service;
 
 use Neos\ContentRepository\Core\Factory\ContentRepositoryId;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
+use Neos\Neos\Domain\Service\NodeTypeNameFactory;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
-use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
+use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
 
-/**
- * @Flow\Scope("singleton")
- */
+#[Flow\Scope('singleton')]
 class NodeService
 {
-    /**
-     * @Flow\Inject
-     * @var ContentRepositoryRegistry
-     */
-    protected $contentRepositoryRegistry;
+    use NodeTypeWithFallbackProvider;
 
     /**
      * Helper method to retrieve the closest document for a node
      */
     public function getClosestDocument(Node $node): ?Node
     {
-        if ($node->nodeType->isOfType('Neos.Neos:Document')) {
+        if ($this->getNodeType($node)->isOfType(NodeTypeNameFactory::NAME_DOCUMENT)) {
             return $node;
         }
 
         $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
 
         while ($node instanceof Node) {
-            if ($node->nodeType->isOfType('Neos.Neos:Document')) {
+            if ($this->getNodeType($node)->isOfType(NodeTypeNameFactory::NAME_DOCUMENT)) {
                 return $node;
             }
             $node = $subgraph->findParentNode($node->nodeAggregateId);

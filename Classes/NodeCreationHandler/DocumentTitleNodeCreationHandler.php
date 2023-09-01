@@ -20,6 +20,7 @@ use Neos\ContentRepository\Core\Feature\NodeCreation\Command\CreateNodeAggregate
 use Neos\ContentRepository\Core\NodeType\NodeTypeManager;
 use Neos\Flow\I18n\Exception\InvalidLocaleIdentifierException;
 use Neos\Flow\I18n\Locale;
+use Neos\Neos\Domain\Service\NodeTypeNameFactory;
 use Neos\Neos\Service\TransliterationService;
 
 /**
@@ -46,7 +47,7 @@ class DocumentTitleNodeCreationHandler implements NodeCreationHandlerInterface
     {
         if (
             !$contentRepository->getNodeTypeManager()->getNodeType($command->nodeTypeName)
-                ->isOfType('Neos.Neos:Document')
+                ->isOfType(NodeTypeNameFactory::NAME_DOCUMENT)
         ) {
             return $command;
         }

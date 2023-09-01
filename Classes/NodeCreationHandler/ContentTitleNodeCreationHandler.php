@@ -16,6 +16,7 @@ use Neos\ContentRepository\Core\NodeType\NodeTypeManager;
 use Neos\ContentRepository\Core\SharedModel\Exception\NodeTypeNotFoundException;
 use Neos\ContentRepository\Core\Feature\NodeCreation\Command\CreateNodeAggregateWithNode;
 use Neos\Flow\Annotations as Flow;
+use Neos\Neos\Domain\Service\NodeTypeNameFactory;
 use Neos\Neos\Service\TransliterationService;
 
 /**
@@ -43,7 +44,7 @@ class ContentTitleNodeCreationHandler implements NodeCreationHandlerInterface
     {
         if (
             !$contentRepository->getNodeTypeManager()->getNodeType($command->nodeTypeName)
-                ->isOfType('Neos.Neos:Content')
+                ->isOfType(NodeTypeNameFactory::NAME_CONTENT)
         ) {
             return $command;
         }

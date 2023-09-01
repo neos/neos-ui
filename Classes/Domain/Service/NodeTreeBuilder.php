@@ -16,6 +16,7 @@ use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\Factory\ContentRepositoryId;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
+use Neos\Neos\Domain\Service\NodeTypeNameFactory;
 use Neos\Neos\Service\LinkingService;
 use Neos\Neos\Ui\ContentRepository\Service\NodeService;
 
@@ -162,7 +163,7 @@ class NodeTreeBuilder
             $shouldLoadChildNodes = $hasChildNodes && ($depth > 1 || $this->isInRootLine($this->active, $childNode));
 
             $result[$childNode->getName()] = [
-                'label' => $childNode->getNodeType()->isOfType('Neos.Neos:Document') ?
+                'label' => $childNode->getNodeType()->isOfType(NodeTypeNameFactory::NAME_DOCUMENT) ?
                     $childNode->getProperty('title') : $childNode->getLabel(),
                 'contextPath' => $childNode->getContextPath(),
                 'nodeType' => $childNode->getNodeType()->getName(),
@@ -178,7 +179,7 @@ class NodeTreeBuilder
                     $this->build(false, $childNode, $depth - 1);
             }
 
-            if ($childNode->getNodeType()->isOfType('Neos.Neos:Document')) {
+            if ($childNode->getNodeType()->isOfType(NodeTypeNameFactory::NAME_DOCUMENT)) {
                 $result[$childNode->getName()]['href'] = $this->linkingService->createNodeUri(
                     /* $controllerContext */
                     $this->controllerContext,
@@ -197,7 +198,7 @@ class NodeTreeBuilder
         if ($includeRoot) {
             return [
                 $root->getName() => [
-                    'label' => $root->getNodeType()->isOfType('Neos.Neos:Document') ?
+                    'label' => $root->getNodeType()->isOfType(NodeTypeNameFactory::NAME_DOCUMENT) ?
                         $root->getProperty('title') : $root->getLabel(),
                     'icon' => 'globe',
                     'contextPath' => $root->getContextPath(),

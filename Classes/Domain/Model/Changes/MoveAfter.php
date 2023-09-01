@@ -33,9 +33,8 @@ class MoveAfter extends AbstractStructuralChange
             return false;
         }
         $parent = $this->findParentNode($sibling);
-        $nodeType = $this->subject->nodeType;
 
-        return !is_null($parent) && $this->isNodeTypeAllowedAsChildNode($parent, $nodeType);
+        return !is_null($parent) && $this->isNodeTypeAllowedAsChildNode($parent, $this->getNodeType($this->subject));
     }
 
     public function getMode(): string

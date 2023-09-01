@@ -33,10 +33,9 @@ class CopyAfter extends AbstractStructuralChange
         if (is_null($siblingNode)) {
             return false;
         }
-        $nodeType = $this->subject->nodeType;
         $parentNode = $this->findParentNode($siblingNode);
         return !is_null($parentNode)
-            && $this->isNodeTypeAllowedAsChildNode($parentNode, $nodeType);
+            && $this->isNodeTypeAllowedAsChildNode($parentNode, $this->getNodeType($this->subject));
     }
 
     public function getMode(): string

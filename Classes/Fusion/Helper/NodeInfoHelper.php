@@ -17,6 +17,7 @@ use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindChildNodesFil
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Nodes;
 use Neos\ContentRepository\Core\Projection\NodeHiddenState\NodeHiddenStateFinder;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateClassification;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
@@ -236,7 +237,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             'identifier' => $node->nodeAggregateId->jsonSerialize(),
             'nodeType' => $node->nodeType->getName(),
             'label' => $node->getLabel(),
-            'isAutoCreated' => self::isAutoCreated($node, $subgraph),
+            'isAutoCreated' => $node->classification === NodeAggregateClassification::CLASSIFICATION_TETHERED,
             // TODO: depth is expensive to calculate; maybe let's get rid of this?
             'depth' => $subgraph->countAncestorNodes(
                 $node->nodeAggregateId,
@@ -249,20 +250,6 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             'creationDateTime' => $node->timestamps->created?->format(\DateTime::ATOM),
             'lastPublicationDateTime' => $node->timestamps->originalLastModified?->format(\DateTime::ATOM)
         ];
-    }
-
-    public static function isAutoCreated(Node $node, ContentSubgraphInterface $subgraph): bool
-    {
-        if (!$node->nodeName) {
-            return false;
-        }
-        $parent = $subgraph->findParentNode($node->nodeAggregateId);
-        if ($parent) {
-            if (array_key_exists($node->nodeName->value, $parent->nodeType->getAutoCreatedChildNodes())) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**

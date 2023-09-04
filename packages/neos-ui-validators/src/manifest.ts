@@ -12,6 +12,7 @@ import String from './String';
 import StringLength from './StringLength';
 import Text from './Text';
 import Uuid from './Uuid';
+import URL from './URL'
 
 import manifest from '@neos-project/neos-ui-extensibility/src';
 import {GlobalRegistry} from '@neos-project/neos-ts-interfaces';
@@ -33,4 +34,5 @@ manifest('validators', {}, (globalRegistry: GlobalRegistry) => {
     validatorRegistry.set('Neos.Neos/Validation/StringLengthValidator', StringLength);
     validatorRegistry.set('Neos.Neos/Validation/TextValidator', Text);
     validatorRegistry.set('Neos.Neos/Validation/UuidValidator', Uuid);
+    validatorRegistry.set('Neos.Neos/Validation/URLValidator', URL);
 });

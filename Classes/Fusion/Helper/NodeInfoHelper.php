@@ -253,6 +253,9 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
     public static function isAutoCreated(Node $node, ContentSubgraphInterface $subgraph): bool
     {
+        if (!$node->nodeName) {
+            return false;
+        }
         $parent = $subgraph->findParentNode($node->nodeAggregateId);
         if ($parent) {
             if (array_key_exists($node->nodeName->value, $parent->nodeType->getAutoCreatedChildNodes())) {

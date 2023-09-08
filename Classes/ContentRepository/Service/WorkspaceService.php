@@ -32,7 +32,6 @@ use Neos\Neos\Service\UserService;
  */
 class WorkspaceService
 {
-
     /**
      * @Flow\Inject
      * @var UserService

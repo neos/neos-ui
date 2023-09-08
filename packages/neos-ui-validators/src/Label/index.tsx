@@ -17,7 +17,7 @@ const Label = (value: any, validatorOptions: LabelOptions) => {
         return null;
     }
     const label = validatorOptions?.validationErrorMessage ?? 'content.inspector.validators.labelValidator.invalidLabel';
-    return <I18n id={label}/>;
+    return <I18n id={label} packageKey="Neos.Neos.Ui" sourceName="Main" />;
 };
 
 export default Label;

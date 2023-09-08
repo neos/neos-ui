@@ -25,7 +25,7 @@ const RegularExpression = (value: any, validatorOptions: RegularExpressionOption
     }
     const pattern = regularExpression.toString();
     const label = validatorOptions?.validationErrorMessage ?? 'content.inspector.validators.regularExpressionValidator.patternDoesNotMatch';
-    return <I18n id={label} params={{pattern}}/>;
+    return <I18n id={label} params={{pattern}} packageKey="Neos.Neos.Ui" sourceName="Main" />;
 };
 
 export default RegularExpression;

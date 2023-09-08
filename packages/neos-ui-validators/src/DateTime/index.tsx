@@ -12,7 +12,7 @@ const DateTime = (value: any, validatorOptions: DateTimeOptions) => {
 
     if (value !== undefined && value !== null && value !== '' && value.length > 0 && (dateRegularExpression.test(value) === false || /Invalid|NaN/.test(new Date(value).toString()))) {
         const label = validatorOptions?.validationErrorMessage ?? 'content.inspector.validators.dateTimeRangeValidator.invalidDate';
-        return <I18n id={label}/>;
+        return <I18n id={label} packageKey="Neos.Neos.Ui" sourceName="Main" />;
     }
     return null;
 };

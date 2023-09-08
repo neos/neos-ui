@@ -17,7 +17,7 @@ const Alphanumeric = (value: any, validatorOptions: AlphanumericOptions) => {
         return null;
     }
     const label = validatorOptions?.validationErrorMessage ?? 'content.inspector.validators.alphanumericValidator';
-    return <I18n id={label}/>;
+    return <I18n id={label} packageKey="Neos.Neos.Ui" sourceName="Main" />;
 };
 
 export default Alphanumeric;

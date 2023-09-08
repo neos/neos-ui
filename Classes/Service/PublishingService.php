@@ -38,7 +38,7 @@ class PublishingService
         )->block();
 
         $contentRepository->handle(
-            new PublishWorkspace(
+            PublishWorkspace::create(
                 $workspaceName
             )
         )->block();

@@ -65,10 +65,12 @@ test('[1, 2, 3, 4] should result in an error message for min: 1 max: 3', () => {
     expect(actual).not.toBe(null);
     expect(actual.props).toEqual({
         id: 'content.inspector.validators.countValidator.countBetween',
+        packageKey: 'Neos.Neos.Ui',
         params: {
             minimum: 1,
             maximum: 3
-        }
+        },
+        sourceName: 'Main'
     });
 });
 

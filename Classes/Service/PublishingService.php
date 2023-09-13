@@ -18,6 +18,7 @@ use Neos\ContentRepository\Core\ContentRepository;
 use Neos\ContentRepository\Core\Feature\WorkspacePublication\Command\PublishWorkspace;
 use Neos\ContentRepository\Core\Feature\WorkspaceRebase\Command\RebaseWorkspace;
 use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
+use Neos\ContentRepositoryRegistry\Factory\ProjectionCatchUpTrigger\CatchUpTriggerWithSynchronousOption;
 use Neos\Flow\Annotations as Flow;
 
 /**
@@ -31,16 +32,22 @@ class PublishingService
     public function publishWorkspace(ContentRepository $contentRepository, WorkspaceName $workspaceName): void
     {
         // TODO: only rebase if necessary!
-        $contentRepository->handle(
-            RebaseWorkspace::create(
-                $workspaceName
-            )
-        )->block();
+        // performance speedup
+        CatchUpTriggerWithSynchronousOption::synchronously(fn() =>
+            $contentRepository->handle(
+                RebaseWorkspace::create(
+                    $workspaceName
+                )
+            )->block()
+        );
 
-        $contentRepository->handle(
-            new PublishWorkspace(
-                $workspaceName
-            )
-        )->block();
+        // performance speedup
+        CatchUpTriggerWithSynchronousOption::synchronously(fn() =>
+            $contentRepository->handle(
+                new PublishWorkspace(
+                    $workspaceName
+                )
+            )->block()
+        );
     }
 }

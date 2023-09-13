@@ -20,6 +20,7 @@ use Neos\ContentRepository\Core\Feature\WorkspacePublication\Dto\NodeIdToPublish
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
 use Neos\ContentRepository\Core\SharedModel\Exception\NodeAggregateCurrentlyDoesNotExist;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
+use Neos\ContentRepositoryRegistry\Factory\ProjectionCatchUpTrigger\CatchUpTriggerWithSynchronousOption;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\ActionRequest;
@@ -235,12 +236,16 @@ class BackendServiceController extends ActionController
                 );
             }
             try {
-                $contentRepository->handle(
-                    PublishIndividualNodesFromWorkspace::create(
-                        $workspaceName,
-                        NodeIdsToPublishOrDiscard::create(...$nodeIdentifiersToPublish)
-                    )
-                )->block();
+                // performance speedup
+                CatchUpTriggerWithSynchronousOption::synchronously(fn() =>
+                    $contentRepository->handle(
+                        PublishIndividualNodesFromWorkspace::create(
+                            $workspaceName,
+                            NodeIdsToPublishOrDiscard::create(...$nodeIdentifiersToPublish)
+                        )
+                    )->block()
+                );
+
             } catch (NodeAggregateCurrentlyDoesNotExist $e) {
                 throw new NodeAggregateCurrentlyDoesNotExist(
                     'Node could not be published, probably because of a missing parentNode. Please check that the parentNode has been published.',
@@ -294,12 +299,16 @@ class BackendServiceController extends ActionController
                     $nodeAddress->dimensionSpacePoint
                 );
             }
-            $contentRepository->handle(
-                DiscardIndividualNodesFromWorkspace::create(
-                    $workspaceName,
-                    NodeIdsToPublishOrDiscard::create(...$nodeIdentifiersToDiscard)
-                )
-            )->block();
+
+            // performance speedup
+            CatchUpTriggerWithSynchronousOption::synchronously(fn() =>
+                $contentRepository->handle(
+                    DiscardIndividualNodesFromWorkspace::create(
+                        $workspaceName,
+                        NodeIdsToPublishOrDiscard::create(...$nodeIdentifiersToDiscard)
+                    )
+                )->block()
+            );
 
             $success = new Success();
             $success->setMessage(sprintf('Discarded %d node(s).', count($nodeContextPaths)));

@@ -191,7 +191,7 @@ class Property extends AbstractChange
                         $originDimensionSpacePoint = OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->subgraphIdentity->dimensionSpacePoint);
                         // if origin dimension space point != current DSP -> translate transparently (matching old behavior)
                         $contentRepository->handle(
-                            new CreateNodeVariant(
+                            CreateNodeVariant::create(
                                 $subject->subgraphIdentity->contentStreamId,
                                 $subject->nodeAggregateId,
                                 $subject->originDimensionSpacePoint,
@@ -200,7 +200,7 @@ class Property extends AbstractChange
                         )->block();
                     }
                     $commandResult = $contentRepository->handle(
-                        new SetNodeProperties(
+                        SetNodeProperties::create(
                             $subject->subgraphIdentity->contentStreamId,
                             $subject->nodeAggregateId,
                             $originDimensionSpacePoint,
@@ -215,7 +215,7 @@ class Property extends AbstractChange
                     // property starts with "_"
                     if ($propertyName === '_nodeType') {
                         $commandResult = $contentRepository->handle(
-                            new ChangeNodeAggregateType(
+                            ChangeNodeAggregateType::create(
                                 $subject->subgraphIdentity->contentStreamId,
                                 $subject->nodeAggregateId,
                                 NodeTypeName::fromString($value),
@@ -225,7 +225,7 @@ class Property extends AbstractChange
                     } elseif ($propertyName === '_hidden') {
                         if ($value === true) {
                             $commandResult = $contentRepository->handle(
-                                new DisableNodeAggregate(
+                                DisableNodeAggregate::create(
                                     $subject->subgraphIdentity->contentStreamId,
                                     $subject->nodeAggregateId,
                                     $subject->originDimensionSpacePoint->toDimensionSpacePoint(),
@@ -235,7 +235,7 @@ class Property extends AbstractChange
                         } else {
                             // unhide
                             $commandResult = $contentRepository->handle(
-                                new EnableNodeAggregate(
+                                EnableNodeAggregate::create(
                                     $subject->subgraphIdentity->contentStreamId,
                                     $subject->nodeAggregateId,
                                     $subject->originDimensionSpacePoint->toDimensionSpacePoint(),

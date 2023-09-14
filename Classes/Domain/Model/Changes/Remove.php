@@ -69,13 +69,15 @@ class Remove extends AbstractChange
             $this->updateWorkspaceInfo();
 
             $closestDocumentParentNode = $this->findClosestDocumentNode($subject);
-            $command = new RemoveNodeAggregate(
+            $command = RemoveNodeAggregate::create(
                 $subject->subgraphIdentity->contentStreamId,
                 $subject->nodeAggregateId,
                 $subject->subgraphIdentity->dimensionSpacePoint,
                 NodeVariantSelectionStrategy::STRATEGY_ALL_SPECIALIZATIONS,
-                $closestDocumentParentNode?->nodeAggregateId
             );
+            if ($closestDocumentParentNode !== null) {
+                $command = $command->withRemovalAttachmentPoint($closestDocumentParentNode?->nodeAggregateId);
+            }
 
             $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
             $contentRepository->handle($command)->block();

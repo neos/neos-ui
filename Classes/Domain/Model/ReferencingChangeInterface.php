@@ -13,7 +13,6 @@ namespace Neos\Neos\Ui\Domain\Model;
 
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 
-
 /**
  * A change that needs to reference another node
  */

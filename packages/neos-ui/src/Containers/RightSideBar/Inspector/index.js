@@ -37,7 +37,7 @@ import style from './style.css';
         const shouldShowUnappliedChangesOverlay = isDirty && !shouldPromptToHandleUnappliedChanges;
         const shouldShowSecondaryInspector = selectors.UI.Inspector.shouldShowSecondaryInspector(state);
         const focusedNode = selectors.CR.Nodes.focusedSelector(state);
-        const parentNode = selectors.CR.Nodes.nodeByContextPath(state)(focusedNode.parent);
+        const parentNode = focusedNode ? selectors.CR.Nodes.nodeByContextPath(state)(focusedNode.parent) : null;
 
         return {
             focusedNode,

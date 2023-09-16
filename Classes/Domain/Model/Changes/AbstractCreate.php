@@ -103,7 +103,7 @@ abstract class AbstractCreate extends AbstractStructuralChange
 
         $nodeAggregateId = NodeAggregateId::create(); // generate a new NodeAggregateId
 
-        $command = new CreateNodeAggregateWithNode(
+        $command = CreateNodeAggregateWithNode::create(
             $parentNode->subgraphIdentity->contentStreamId,
             $nodeAggregateId,
             $nodeTypeName,

@@ -347,14 +347,9 @@ class BackendServiceController extends ActionController
             $currentAccount->getAccountIdentifier()
         )->toContentRepositoryWorkspaceName();
 
+        $command = ChangeBaseWorkspace::create($userWorkspaceName, WorkspaceName::fromString($targetWorkspaceName));
         try {
-            $contentRepository->handle(
-                new ChangeBaseWorkspace(
-                    $userWorkspaceName,
-                    WorkspaceName::fromString($targetWorkspaceName),
-                    $newCOnt = ContentStreamId::create()
-                )
-            )->block();
+            $contentRepository->handle($command)->block();
         } catch (WorkspaceIsNotEmptyException $exception) {
             $error = new Error();
             $error->setMessage('Your personal workspace currently contains unpublished changes.'
@@ -375,7 +370,7 @@ class BackendServiceController extends ActionController
 
         $subgraph = $contentRepository->getContentGraph()
             ->getSubgraph(
-                $newCOnt,
+                $command->newContentStreamId,
                 $nodeAddress->dimensionSpacePoint,
                 VisibilityConstraints::withoutRestrictions()
             );

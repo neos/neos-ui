@@ -132,20 +132,7 @@ class ReloadContentOutOfBand extends AbstractFeedback
 
             if ($this->nodeDomAddress) {
                 $fusionView = new FusionView();
-
-                $fakeActionRequest = clone $controllerContext->getRequest();
-                $fakeActionRequest->setControllerPackageKey('Neos.Neos');
-                $fakeActionRequest->setControllerName('Frontend\\Node');
-                $fakeActionRequest->setControllerActionName('edit');
-
-                $fakeControllerContext = new ControllerContext(
-                    $fakeActionRequest,
-                    $controllerContext->getResponse(),
-                    $controllerContext->getArguments(),
-                    $controllerContext->getUriBuilder(),
-                );
-
-                $fusionView->setControllerContext($fakeControllerContext);
+                $fusionView->setControllerContext($controllerContext);
 
                 $fusionView->assign('value', $this->node);
                 $fusionView->setFusionPath($this->nodeDomAddress->getFusionPathForContentRendering());

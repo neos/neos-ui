@@ -32,9 +32,6 @@
     },
     "extra": {
       "patches": {
-        "neos/neos-development-collection": {
-          "FEATURE: Edit preview mode support for Neos 9": "https://github.com/neos/neos-development-collection/pull/4067.patch"
-        }
       }
     },
     "repositories": {

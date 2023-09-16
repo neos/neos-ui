@@ -44,7 +44,7 @@ export enum actionTypes {
 }
 
 const focus = (contextPath: NodeContextPath, _: undefined, selectionMode: SelectionModeTypes = SelectionModeTypes.SINGLE_SELECT) => createAction(actionTypes.FOCUS, {contextPath, selectionMode});
-const toggle = (contextPath: NodeContextPath) => createAction(actionTypes.TOGGLE, {contextPath});
+const toggle = (contextPath: NodeContextPath, collapseChildren: boolean, childrenContextPaths: NodeContextPath[], childrenCollapsedByDefault: boolean) => createAction(actionTypes.TOGGLE, {contextPath, collapseChildren, childrenContextPaths, childrenCollapsedByDefault});
 const invalidate = (contextPath: NodeContextPath) => createAction(actionTypes.INVALIDATE, {contextPath});
 const requestChildren = (contextPath: NodeContextPath, {unCollapse = true, activate = false} = {}) => createAction(actionTypes.REQUEST_CHILDREN, {contextPath, opts: {unCollapse, activate}});
 const setAsLoading = (contextPath: NodeContextPath) => createAction(actionTypes.SET_AS_LOADING, {contextPath});
@@ -96,8 +96,16 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
             break;
         }
         case actionTypes.TOGGLE: {
-            const {contextPath} = action.payload;
-            if (draft.toggled.includes(contextPath)) {
+            const {contextPath, collapseChildren, childrenContextPaths, childrenCollapsedByDefault} = action.payload;
+            if (collapseChildren) {
+                childrenContextPaths.forEach(child => {
+                    if (!childrenCollapsedByDefault && !draft.toggled.includes(child)) {
+                        draft.toggled.push(child);
+                    } else if (childrenCollapsedByDefault && draft.toggled.includes(child)) {
+                        draft.toggled = draft.toggled.filter(i => i !== child);
+                    }
+                })
+            } else if (draft.toggled.includes(contextPath)) {
                 draft.toggled = draft.toggled.filter(i => i !== contextPath);
             } else {
                 draft.toggled.push(contextPath);

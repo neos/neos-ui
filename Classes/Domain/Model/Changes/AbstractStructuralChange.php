@@ -187,14 +187,17 @@ abstract class AbstractStructuralChange extends AbstractChange
     protected function isNodeTypeAllowedAsChildNode(Node $node, NodeType $nodeType): bool
     {
         $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
-        if (NodeInfoHelper::isAutoCreated($node, $subgraph)) {
-            $parentNode = $subgraph->findParentNode($node->nodeAggregateId);
-            return !$parentNode || $parentNode->nodeType->allowsGrandchildNodeType(
-                $node->nodeName->value,
-                $nodeType
-            );
-        } else {
+        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
+        $nodeTypeManager = $contentRepository->getNodeTypeManager();
+        if (!$node->classification->isTethered()) {
             return $node->nodeType->allowsChildNodeType($nodeType);
         }
+
+        $parentNode = $subgraph->findParentNode($node->nodeAggregateId);
+        return !$parentNode || $nodeTypeManager->allowsGrandchildNodeType(
+                $parentNode->nodeType,
+                $node->nodeName,
+                $nodeType
+            );
     }
 }

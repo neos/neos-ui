@@ -16,7 +16,7 @@ use Neos\ContentRepository\Core\NodeType\NodeTypeName;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
-use Neos\Neos\Domain\Model\WorkspaceName as NeosWorkspaceName;
+use Neos\Neos\Domain\Model\NeosWorkspaceName;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\Flow\ResourceManagement\ResourceManager;

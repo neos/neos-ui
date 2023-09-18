@@ -29,7 +29,7 @@ use Neos\Flow\Mvc\View\JsonView;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Flow\Property\PropertyMapper;
 use Neos\Flow\Security\Context;
-use Neos\Neos\Domain\Model\WorkspaceName as NeosWorkspaceName;
+use Neos\Neos\Domain\Model\NeosWorkspaceName;
 use Neos\Neos\FrontendRouting\NodeAddress;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;

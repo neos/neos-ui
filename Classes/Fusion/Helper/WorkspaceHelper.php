@@ -14,6 +14,7 @@ namespace Neos\Neos\Ui\Fusion\Helper;
 use Neos\ContentRepository\Core\Factory\ContentRepositoryId;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\ProtectedContextAwareInterface;
+use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Security\Context;
 use Neos\Neos\Domain\Service\UserService as DomainUserService;
 use Neos\Neos\Domain\Service\WorkspaceNameBuilder;

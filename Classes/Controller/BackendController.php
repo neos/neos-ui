@@ -15,6 +15,7 @@ namespace Neos\Neos\Ui\Controller;
 use Neos\ContentRepository\Core\NodeType\NodeTypeName;
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
+use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\Flow\Mvc\View\ViewInterface;
 use Neos\Flow\Persistence\PersistenceManagerInterface;

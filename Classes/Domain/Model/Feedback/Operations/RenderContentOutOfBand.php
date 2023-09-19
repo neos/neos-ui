@@ -12,6 +12,7 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
  */
 
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
+use Neos\Neos\Domain\Service\RenderingModeService;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
@@ -58,6 +59,9 @@ class RenderContentOutOfBand extends AbstractFeedback
      * @var ContentRepositoryRegistry
      */
     protected $contentRepositoryRegistry;
+
+    #[Flow\Inject]
+    protected RenderingModeService $renderingModeService;
 
     public function setNode(Node $node): void
     {
@@ -177,8 +181,11 @@ class RenderContentOutOfBand extends AbstractFeedback
 
             $parentDomAddress = $this->getParentDomAddress();
             if ($parentDomAddress) {
+                $renderingMode = $this->renderingModeService->findByCurrentUser();
+
                 $fusionView = new FusionView();
                 $fusionView->setControllerContext($controllerContext);
+                $fusionView->setOption('renderingModeName', $renderingMode->name);
 
                 $fusionView->assign('value', $parentNode);
                 $fusionView->setFusionPath($parentDomAddress->getFusionPath());

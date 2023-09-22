@@ -14,7 +14,7 @@ namespace Neos\Neos\Ui\FlowQueryOperations;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindChildNodesFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\NodeType\NodeTypeConstraintParser;
-use Neos\ContentRepository\Core\Projection\ContentGraph\NodeTypeConstraints;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\NodeType\NodeTypeCriteria;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Eel\FlowQuery\Operations\AbstractOperation;
@@ -76,7 +76,7 @@ class NeosUiFilteredChildrenOperation extends AbstractOperation
 
             foreach ($subgraph->findChildNodes(
                 $contextNode->nodeAggregateId,
-                FindChildNodesFilter::create(nodeTypeConstraints: $arguments[0] ?? null)
+                FindChildNodesFilter::create(nodeTypes: $arguments[0] ?? null)
             ) as $childNode) {
                 if (!isset($outputNodeIdentifiers[$childNode->nodeAggregateId->value])) {
                     $output[] = $childNode;

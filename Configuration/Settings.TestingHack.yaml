@@ -1,9 +1,0 @@
-# TODO remove this temporary hack once neos is fixed.
-Neos:
-  Flow:
-    object:
-      includeClasses:
-        "Neos.ContentRepository.TestSuite":
-          - "(*FAIL)"
-        "Neos.ContentRepositoryRegistry":
-          - "Neos\\\\ContentRepositoryRegistry\\\\(?!TestSuite\\\\Behavior\\\\CRRegistrySubjectProvider)"

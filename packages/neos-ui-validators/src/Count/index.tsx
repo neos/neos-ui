@@ -28,7 +28,7 @@ const Count = (value: any, validatorOptions: CountOptions) => {
     }
 
     if (typeof value !== 'object' || value === null) {
-        return <I18n id="content.inspector.validators.countValidator.notCountable"/>;
+        return <I18n id="content.inspector.validators.countValidator.notCountable" packageKey="Neos.Neos.Ui" sourceName="Main" />;
     }
 
     const {length} = Object.keys(value);
@@ -41,7 +41,7 @@ const Count = (value: any, validatorOptions: CountOptions) => {
 
     if (length < minimum || length > maximum) {
         const label = validatorOptions?.validationErrorMessage ?? 'content.inspector.validators.countValidator.countBetween';
-        return <I18n id={label} params={{minimum, maximum}}/>;
+        return <I18n id={label} params={{minimum, maximum}} packageKey="Neos.Neos.Ui" sourceName="Main" />;
     }
 
     return null;

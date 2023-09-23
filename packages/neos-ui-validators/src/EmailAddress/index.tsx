@@ -12,7 +12,7 @@ const EmailAddress = (value: any, validatorOptions: EmailAddressOptions) => {
         return null;
     }
     const label = validatorOptions?.validationErrorMessage ?? 'content.inspector.validators.emailAddressValidator.invalidEmail';
-    return isEmail.validate(value) ? null : <I18n id={label}/>;
+    return isEmail.validate(value) ? null : <I18n id={label} packageKey="Neos.Neos.Ui" sourceName="Main" />;
 };
 
 export default EmailAddress;

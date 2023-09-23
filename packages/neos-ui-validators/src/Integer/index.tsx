@@ -19,7 +19,7 @@ const Integer = (value: any, validatorOptions: IntegerOptions) => {
         // if the value contains other characters than '-' or a digit it's not valid
         !(/^[\d-]+$/.test(value)))) {
         const label = validatorOptions?.validationErrorMessage ?? 'content.inspector.validators.integerValidator.aValidIntegerNumberIsExpected';
-        return <I18n id={label}/>;
+        return <I18n id={label} packageKey="Neos.Neos.Ui" sourceName="Main" />;
     }
     return null;
 };

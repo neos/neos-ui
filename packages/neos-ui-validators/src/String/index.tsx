@@ -10,7 +10,7 @@ interface StringOptions {
 const String = (value: any, validatorOptions: StringOptions) => {
     if (value !== undefined && value !== null && typeof value !== 'string') {
         const label = validatorOptions?.validationErrorMessage ?? 'content.inspector.validators.stringValidator.stringIsExpected';
-        return <I18n id={label}/>;
+        return <I18n id={label} packageKey="Neos.Neos.Ui" sourceName="Main" />;
     }
     return null;
 };

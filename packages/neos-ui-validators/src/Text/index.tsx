@@ -11,7 +11,7 @@ interface TextOptions {
 const Text = (value: any, validatorOptions: TextOptions) => {
     if (value !== undefined && value !== null && value !== value.replace(/<\/?([a-z][a-z0-9]*)\b[^>]*>/gi, '')) {
         const label = validatorOptions?.validationErrorMessage ?? 'content.inspector.validators.textValidator.validTextWithoutAnyXMLtagsIsExpected';
-        return <I18n id={label}/>;
+        return <I18n id={label} packageKey="Neos.Neos.Ui" sourceName="Main" />;
     }
     return null;
 };

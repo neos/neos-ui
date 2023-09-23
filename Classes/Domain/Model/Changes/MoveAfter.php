@@ -88,9 +88,6 @@ class MoveAfter extends AbstractStructuralChange
             $updateParentNodeInfo->setNode($parentNodeOfPreviousSibling);
             $this->feedbackCollection->add($updateParentNodeInfo);
 
-            $removeNode = new RemoveNode($subject, $parentNodeOfPreviousSibling);
-            $this->feedbackCollection->add($removeNode);
-
             $this->finish($subject);
         }
     }

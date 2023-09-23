@@ -26,7 +26,7 @@ test('Move multiple nodes via toolbar', async t => {
         .expect(ReactSelector('Provider').getReact(({props}) => {
             const reduxState = props.store.getState();
             return reduxState.cr.nodes.documentNode;
-        })).eql('/sites/neos-test-site/node-knm2pltb5454z/node-18qsaeidy6765/node-e8tw6sparbtp3@user-admin;language=en_US', 'Node B\'s context path changed');
+        })).eql('user-admin__eyJsYW5ndWFnZSI6ImVuX1VTIn0=__5b0d6ac0-40ab-47e8-b79e-39de6c0700df', 'Node B\'s node address changed');
     await t.click(Page.getTreeNodeButton('Home'))
 });
 
@@ -43,7 +43,7 @@ test('Move multiple nodes via DND, CMD-click', async t => {
         .expect(ReactSelector('Provider').getReact(({props}) => {
             const reduxState = props.store.getState();
             return reduxState.cr.nodes.documentNode;
-        })).eql('/sites/neos-test-site/node-knm2pltb5454z/node-18qsaeidy6765/node-e8tw6sparbtp3@user-admin;language=en_US', 'Node B\'s context path changed');
+        })).eql('user-admin__eyJsYW5ndWFnZSI6ImVuX1VTIn0=__5b0d6ac0-40ab-47e8-b79e-39de6c0700df', 'Node B\'s node address changed');
     await t.click(Page.getTreeNodeButton('Home'))
 });
 
@@ -60,6 +60,6 @@ test('Move multiple nodes via DND, SHIFT-click', async t => {
         .expect(ReactSelector('Provider').getReact(({props}) => {
             const reduxState = props.store.getState();
             return reduxState.cr.nodes.documentNode;
-        })).eql('/sites/neos-test-site/node-knm2pltb5454z/node-18qsaeidy6765/node-oml0cxaompt29@user-admin;language=en_US', 'Node C\'s context path changed');
+        })).eql('user-admin__eyJsYW5ndWFnZSI6ImVuX1VTIn0=__84eb0340-ba34-4fdb-98b1-da503f967121', 'Node C\'s node address changed');
     await t.click(Page.getTreeNodeButton('Home'))
 });

@@ -13,7 +13,6 @@ namespace Neos\Neos\Ui\Domain\Model;
  * source code.
  */
 
-
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 
 /**

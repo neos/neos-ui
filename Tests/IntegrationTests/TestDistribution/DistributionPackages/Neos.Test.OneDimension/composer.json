@@ -1,6 +1,6 @@
 {
-    "name": "neos/test-site",
-    "description": "A Neos website",
+    "name": "neos/test-onedimension",
+    "description": "A Neos website with one dimension",
     "type": "neos-site",
     "require": {
         "neos/neos": "*",
@@ -9,7 +9,7 @@
     },
     "extra": {
         "neos": {
-            "package-key": "Neos.TestSite"
+            "package-key": "Neos.Test.OneDimension"
         }
     }
 }

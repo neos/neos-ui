@@ -142,7 +142,7 @@ export function * watchCurrentDocument({globalRegistry, configuration}) {
         }
 
         const state = yield select();
-        const childrenAreFullyLoaded = $get(['cr', 'nodes', 'byContextPath', contextPath, 'children'], state)
+        const childrenAreFullyLoaded = ($get(['cr', 'nodes', 'byContextPath', contextPath, 'children'], state) || [])
         .filter(childEnvelope => nodeTypesRegistry.hasRole(childEnvelope.nodeType, 'content') || nodeTypesRegistry.hasRole(childEnvelope.nodeType, 'contentCollection'))
         .every(
             childEnvelope => Boolean($get(['cr', 'nodes', 'byContextPath', $get('contextPath', childEnvelope)], state))

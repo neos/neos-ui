@@ -2,22 +2,27 @@ version: "3.4"
 services:
 
   php:
-    image: thecodingmachine/php:8.0-v4-cli-node16
+    image: thecodingmachine/php:8.2-v4-cli-node16
     command: tail -f /dev/null
     ports:
       - 8081:8081
     volumes:
+      - app:/usr/src/app
       - composer_cache:/home/circleci/.composer/cache
+      # add Neos Ui root as cached read-only volume that will be later symlinked into TestDistribution/Packages/
+      - ../../.:/usr/src/neos-ui:cached,ro
     environment:
       # Enable GD
       PHP_EXTENSION_GD: 1
       COMPOSER_CACHE_DIR: /home/circleci/.composer/cache
+      DB_HOST: db
 
   db:
-    image: mysql:8
+    image: mariadb:10.4
     environment:
       MYSQL_DATABASE: neos
       MYSQL_ROOT_PASSWORD: not_a_real_password
 
 volumes:
+  app:
   composer_cache:

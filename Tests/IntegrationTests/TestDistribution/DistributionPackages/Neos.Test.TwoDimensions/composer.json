@@ -1,6 +1,6 @@
 {
-    "name": "neos/test-site",
-    "description": "A Neos website",
+    "name": "neos/test-twodimensions",
+    "description": "A Neos website with two dimensions",
     "type": "neos-site",
     "require": {
         "neos/neos": "*",
@@ -9,7 +9,7 @@
     },
     "extra": {
         "neos": {
-            "package-key": "Neos.TestSite"
+            "package-key": "Neos.Test.TwoDimensions"
         }
     }
 }

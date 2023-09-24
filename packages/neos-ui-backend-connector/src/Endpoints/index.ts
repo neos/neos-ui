@@ -476,9 +476,14 @@ export default (routes: Routes) => {
                     throw new Error('.node-frontend-uri does not contain a valid href attribut');
                 }
 
-                const nodeContextPath = d.querySelector('.node-context-path');
-                if (!nodeContextPath) {
+                const nodeContextPathElement = d.querySelector('.node-context-path');
+                if (!nodeContextPathElement) {
                     throw new Error('.node-context-path is not found in the result');
+                }
+
+                const nodeContextPath = nodeContextPathElement.innerHTML.trim();
+                if (!nodeContextPath) {
+                    throw new Error('.node-context-path is empty');
                 }
 
                 return {

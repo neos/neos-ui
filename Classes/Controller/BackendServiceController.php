@@ -294,18 +294,27 @@ class BackendServiceController extends ActionController
                     $nodeAddress->dimensionSpacePoint
                 );
             }
-            $contentRepository->handle(
-                DiscardIndividualNodesFromWorkspace::create(
-                    $workspaceName,
-                    NodeIdsToPublishOrDiscard::create(...$nodeIdentifiersToDiscard)
-                )
-            )->block();
+
+            $command = DiscardIndividualNodesFromWorkspace::create(
+                $workspaceName,
+                NodeIdsToPublishOrDiscard::create(...$nodeIdentifiersToDiscard)
+            );
+            $removeNodeFeedback = $this->workspaceService
+                ->predictRemoveNodeFeedbackFromDiscardIndividualNodesFromWorkspaceCommand(
+                    $command,
+                    $contentRepository
+                );
+
+            $contentRepository->handle($command)->block();
 
             $success = new Success();
             $success->setMessage(sprintf('Discarded %d node(s).', count($nodeContextPaths)));
 
             $updateWorkspaceInfo = new UpdateWorkspaceInfo($contentRepositoryId, $workspaceName);
             $this->feedbackCollection->add($success);
+            foreach ($removeNodeFeedback as $removeNode) {
+                $this->feedbackCollection->add($removeNode);
+            }
             $this->feedbackCollection->add($updateWorkspaceInfo);
         } catch (\Exception $e) {
             $error = new Error();

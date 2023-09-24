@@ -93,9 +93,6 @@ class MoveInto extends AbstractStructuralChange
             $updateParentNodeInfo->setNode($parentNode);
             $this->feedbackCollection->add($updateParentNodeInfo);
 
-            $removeNode = new RemoveNode($subject, $parentNode);
-            $this->feedbackCollection->add($removeNode);
-
             $this->finish($subject);
         }
     }

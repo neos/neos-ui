@@ -14,6 +14,7 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
+use Neos\Neos\FrontendRouting\NodeAddress;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
@@ -25,6 +26,10 @@ class RemoveNode extends AbstractFeedback
 
     protected Node $parentNode;
 
+    private NodeAddress $nodeAddress;
+
+    private NodeAddress $parentNodeAddress;
+
     /**
      * @Flow\Inject
      * @var ContentRepositoryRegistry
@@ -35,6 +40,15 @@ class RemoveNode extends AbstractFeedback
     {
         $this->node = $node;
         $this->parentNode = $parentNode;
+    }
+
+    protected function initializeObject(): void
+    {
+        $contentRepository = $this->contentRepositoryRegistry->get($this->node->subgraphIdentity->contentRepositoryId);
+        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
+
+        $this->nodeAddress = $nodeAddressFactory->createFromNode($this->node);
+        $this->parentNodeAddress = $nodeAddressFactory->createFromNode($this->parentNode);
     }
 
     public function getNode(): Node
@@ -87,11 +101,9 @@ class RemoveNode extends AbstractFeedback
      */
     public function serializePayload(ControllerContext $controllerContext)
     {
-        $contentRepository = $this->contentRepositoryRegistry->get($this->node->subgraphIdentity->contentRepositoryId);
-        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
         return [
-            'contextPath' => $nodeAddressFactory->createFromNode($this->node)->serializeForUri(),
-            'parentContextPath' => $nodeAddressFactory->createFromNode($this->parentNode)->serializeForUri()
+            'contextPath' => $this->nodeAddress->serializeForUri(),
+            'parentContextPath' => $this->parentNodeAddress->serializeForUri()
         ];
     }
 }

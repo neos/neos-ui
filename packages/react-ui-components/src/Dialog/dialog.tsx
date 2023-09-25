@@ -30,9 +30,9 @@ export interface DialogProps {
     readonly isOpen: boolean;
 
     /**
-     * The handler which gets called once the user clicks on the close symbol in the top right corner of the Dialog.
+     * An optional handler, which gets called once the user clicks on the close symbol in the top right corner of the Dialog.
      */
-    readonly onRequestClose: () => void;
+    readonly onRequestClose?: () => void;
 
     /**
      * An optional boolean flag to keep the user in the dialog.
@@ -99,7 +99,9 @@ class DialogWithOverlay extends PureComponent<DialogProps> {
                 this.startShaking();
                 return false;
             }
-            this.props.onRequestClose();
+            if (this.props.onRequestClose) {
+                this.props.onRequestClose();
+            }
             return true;
         }
     };
@@ -191,6 +193,7 @@ class DialogWithOverlay extends PureComponent<DialogProps> {
             actions,
             theme,
             type,
+            preventClosing,
             onRequestClose,
             ...rest
         } = this.props;

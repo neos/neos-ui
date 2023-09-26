@@ -634,6 +634,10 @@
                 <source>Inside</source>
         <target state="translated">Innen</target>
       </trans-unit>
+      <trans-unit id="add" xml:space="preserve">
+                <source>Add</source>
+        <target state="needs-translation">Einfügen</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

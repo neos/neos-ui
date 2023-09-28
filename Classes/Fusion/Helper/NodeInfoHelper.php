@@ -234,7 +234,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             'nodeAddress' => $nodeAddress->serializeForUri(),
             'name' => $node->nodeName?->value ?? '',
             'identifier' => $node->nodeAggregateId->jsonSerialize(),
-            'nodeType' => $node->nodeType->getName(),
+            'nodeType' => $node->nodeTypeName->value,
             'label' => $node->getLabel(),
             'isAutoCreated' => self::isAutoCreated($node, $subgraph),
             // TODO: depth is expensive to calculate; maybe let's get rid of this?
@@ -293,7 +293,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
             $infos[] = [
                 'contextPath' => $nodeAddressFactory->createFromNode($childNode)->serializeForUri(),
-                'nodeType' => $childNode->nodeType->getName() // TODO: DUPLICATED; should NOT be needed!!!
+                'nodeType' => $childNode->nodeTypeName->value // TODO: DUPLICATED; should NOT be needed!!!
             ];
         };
         return $infos;

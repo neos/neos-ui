@@ -24,7 +24,7 @@ import InsideTable from './plugins/insideTable';
 import RemoveFormat from '@ckeditor/ckeditor5-remove-format/src/removeformat';
 
 const addPlugin = (Plugin, isEnabled) => (ckEditorConfiguration, options) => {
-    // we duplicate editorOptions here so it would be possible to write smth like `$get('formatting.sup')`
+    // LEGACY: we duplicate editorOptions here so it would be possible to write smth like `$get('formatting.sup')`
     if (!isEnabled || isEnabled(options.editorOptions, options)) {
         return {
             ...ckEditorConfiguration,
@@ -75,7 +75,7 @@ export default ckEditorRegistry => {
         Thus, to e.g. only adjust the CKEditor config if a certain formatting option is enabled, you can do the following:
 
         config.set('doSmthWithConfig', (ckeConfig, {editorOptions}) => {
-            if ($get(['formatting', 'myCustomField'], editorOptions)) {
+            if (editorOptions?.formatting.?myCustomField) {
                 ckeConfig.mySetting = true;
             }
             return ckeConfig;

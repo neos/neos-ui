@@ -298,7 +298,7 @@ export default class NodeCreationDialog extends PureComponent {
         return Object.keys(configuration.elements).reduce(
             (result, elementName, index) => {
                 const element = configuration.elements[elementName];
-                const isHidden = $get('ui.hidden', element);
+                const isHidden = element?.ui?.hidden;
                 if (element && !isHidden) {
                     result.push(
                         this.renderElement(elementName, element, index === 0)

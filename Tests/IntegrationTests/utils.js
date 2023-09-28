@@ -5,7 +5,7 @@ import {PublishDropDown, Page} from './pageModel';
 export const subSection = name => console.log('\x1b[33m%s\x1b[0m', ' - ' + name);
 
 const adminUserName = 'admin';
-const adminPassword = 'password';
+const adminPassword = 'admin';
 
 export const getUrl = ClientFunction(() => window.location.href);
 

@@ -30,3 +30,10 @@ Neos:
         contentDimensions:
           resolver:
             factoryClassName: Neos\Neos\FrontendRouting\DimensionResolution\Resolver\AutoUriPathResolverFactory
+
+    userInterface:
+      navigateComponent:
+        nodeTree:
+          # must be at least 3, so when moving document nodes into each other
+          # they will still be shown and we can assert this
+          loadingDepth: 3

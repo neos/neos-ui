@@ -19,7 +19,6 @@ export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry,
         return;
     }
 
-
     const nodeTypeName = nodes?.[contextPath]?.nodeType;
     const nodeType = nodeTypesRegistry.get(nodeTypeName);
     const isInlineEditable = (

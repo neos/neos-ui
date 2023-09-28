@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Neos\Neos\Ui\Domain\Model;
 
 /*
@@ -11,7 +13,7 @@ namespace Neos\Neos\Ui\Domain\Model;
  * source code.
  */
 
-use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 
 /**
  * An interface to describe a change
@@ -20,30 +22,21 @@ interface ChangeInterface
 {
     /**
      * Set the subject
-     *
-     * @param NodeInterface $subject
-     * @return void
      */
-    public function setSubject(NodeInterface $subject);
+    public function setSubject(Node $subject): void;
 
     /**
      * Get the subject
-     *
-     * @return NodeInterface
      */
-    public function getSubject();
+    public function getSubject(): ?Node;
 
     /**
      * Checks whether this change can be applied to the subject
-     *
-     * @return boolean
      */
-    public function canApply();
+    public function canApply(): bool;
 
     /**
      * Applies this change
-     *
-     * @return void
      */
-    public function apply();
+    public function apply(): void;
 }

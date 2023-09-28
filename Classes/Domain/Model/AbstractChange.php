@@ -11,20 +11,18 @@ namespace Neos\Neos\Ui\Domain\Model;
  * source code.
  */
 
-use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
-use Neos\Neos\Ui\ContentRepository\Service\NodeService;
+use Neos\Neos\Service\UserService;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\NodeCreated;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
 
 abstract class AbstractChange implements ChangeInterface
 {
-    /**
-     * @var NodeInterface
-     */
-    protected $subject;
+    protected ?Node $subject;
 
     /**
      * @Flow\Inject
@@ -33,68 +31,77 @@ abstract class AbstractChange implements ChangeInterface
     protected $feedbackCollection;
 
     /**
+     * @Flow\Inject
+     * @var UserService
+     */
+    protected $userService;
+
+    /**
+     * @Flow\Inject
      * @var PersistenceManagerInterface
      */
     protected $persistenceManager;
 
     /**
-     * Inject the persistence manager
-     *
-     * @param PersistenceManagerInterface $persistenceManager
-     * @return void
+     * @Flow\Inject
+     * @var ContentRepositoryRegistry
      */
-    public function injectPersistenceManager(PersistenceManagerInterface $persistenceManager)
-    {
-        $this->persistenceManager = $persistenceManager;
-    }
+    protected $contentRepositoryRegistry;
 
-    /**
-     * Set the subject
-     *
-     * @param NodeInterface $subject
-     * @return void
-     */
-    public function setSubject(NodeInterface $subject)
+    public function setSubject(Node $subject): void
     {
         $this->subject = $subject;
     }
 
-    /**
-     * Get the subject
-     *
-     * @return NodeInterface
-     */
-    public function getSubject()
+    public function getSubject(): ?Node
     {
         return $this->subject;
     }
 
     /**
      * Helper method to inform the client, that new workspace information is available
-     *
-     * @return void
      */
-    protected function updateWorkspaceInfo()
+    protected function updateWorkspaceInfo(): void
     {
-        $nodeService = new NodeService();
-        $updateWorkspaceInfo = new UpdateWorkspaceInfo();
-        $documentNode = $nodeService->getClosestDocument($this->getSubject());
-        $updateWorkspaceInfo->setWorkspace(
-            $documentNode->getContext()->getWorkspace()
-        );
+        if (!is_null($this->subject)) {
+            $documentNode = $this->findClosestDocumentNode($this->subject);
+            if (!is_null($documentNode)) {
+                $contentRepository = $this->contentRepositoryRegistry->get($this->subject->subgraphIdentity->contentRepositoryId);
+                $workspace = $contentRepository->getWorkspaceFinder()->findOneByCurrentContentStreamId(
+                    $documentNode->subgraphIdentity->contentStreamId
+                );
+                if (!is_null($workspace)) {
+                    $updateWorkspaceInfo = new UpdateWorkspaceInfo($documentNode->subgraphIdentity->contentRepositoryId, $workspace->workspaceName);
+                    $this->feedbackCollection->add($updateWorkspaceInfo);
+                }
+            }
+        }
+    }
 
-        $this->feedbackCollection->add($updateWorkspaceInfo);
+    final protected function findClosestDocumentNode(Node $node): ?Node
+    {
+        while ($node instanceof Node) {
+            if ($node->nodeType->isOfType('Neos.Neos:Document')) {
+                return $node;
+            }
+            $node = $this->findParentNode($node);
+        }
+
+        return null;
+    }
+
+    protected function findParentNode(Node $node): ?Node
+    {
+        return $this->contentRepositoryRegistry->subgraphForNode($node)
+            ->findParentNode($node->nodeAggregateId);
     }
 
     /**
      * Inform the client to reload the currently-displayed document, because the rendering has changed.
      *
      * This method will be triggered if [nodeType].properties.[propertyName].ui.reloadIfChanged is TRUE.
-     *
-     * @param NodeInterface $node
-     * @return void
      */
-    protected function reloadDocument($node = null)
+    protected function reloadDocument(Node $node = null): void
     {
         $reloadDocument = new ReloadDocument();
         if ($node) {
@@ -106,15 +113,14 @@ abstract class AbstractChange implements ChangeInterface
 
     /**
      * Inform the client that a node has been created, the client decides if and which tree should react to this change.
-     *
-     * @param NodeInterface $subject
-     * @return void
      */
-    protected function addNodeCreatedFeedback($subject = null)
+    protected function addNodeCreatedFeedback(Node $subject = null): void
     {
         $node = $subject ?: $this->getSubject();
-        $nodeCreated = new NodeCreated();
-        $nodeCreated->setNode($node);
-        $this->feedbackCollection->add($nodeCreated);
+        if ($node) {
+            $nodeCreated = new NodeCreated();
+            $nodeCreated->setNode($node);
+            $this->feedbackCollection->add($nodeCreated);
+        }
     }
 }

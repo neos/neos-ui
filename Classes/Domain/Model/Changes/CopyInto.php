@@ -12,37 +12,28 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
-use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Core\DimensionSpace\OriginDimensionSpacePoint;
+use Neos\ContentRepository\Core\Feature\NodeDuplication\Command\CopyNodesRecursively;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeName;
 
-class CopyInto extends AbstractCopy
+class CopyInto extends AbstractStructuralChange
 {
-    /**
-     * @var string
-     */
-    protected $parentContextPath;
+    protected ?string $parentContextPath;
 
-    /**
-     * @var NodeInterface
-     */
-    protected $cachedParentNode;
+    protected ?Node $cachedParentNode;
 
-    /**
-     * @param string $parentContextPath
-     */
-    public function setParentContextPath($parentContextPath)
+    public function setParentContextPath(string $parentContextPath): void
     {
         $this->parentContextPath = $parentContextPath;
     }
 
-    /**
-     * @return NodeInterface
-     */
-    public function getParentNode()
+    public function getParentNode(): ?Node
     {
-        if ($this->cachedParentNode === null) {
-            $this->cachedParentNode = $this->nodeService->getNodeFromContextPath(
-                $this->parentContextPath
-            );
+        if (!isset($this->cachedParentNode)) {
+            $this->cachedParentNode = $this->parentContextPath
+                ? $this->nodeService->getNodeFromContextPath($this->parentContextPath, $this->getSubject()->subgraphIdentity->contentRepositoryId)
+                : null;
         }
 
         return $this->cachedParentNode;
@@ -50,32 +41,55 @@ class CopyInto extends AbstractCopy
 
     /**
      * "Subject" is the to-be-copied node; the "parent" node is the new parent
-     *
-     * @return boolean
      */
-    public function canApply()
+    public function canApply(): bool
     {
-        $nodeType = $this->getSubject()->getNodeType();
+        $parentNode = $this->getParentNode();
 
-        return $this->getParentNode()->isNodeTypeAllowedAsChildNode($nodeType);
+        return $this->subject
+            && $parentNode
+            && $this->isNodeTypeAllowedAsChildNode($parentNode, $this->subject->nodeType);
     }
 
-    public function getMode()
+    public function getMode(): string
     {
         return 'into';
     }
 
     /**
      * Applies this change
-     *
-     * @return void
      */
-    public function apply()
+    public function apply(): void
     {
-        if ($this->canApply()) {
-            $nodeName = $this->generateUniqueNodeName($this->getParentNode());
-            $node = $this->getSubject()->copyInto($this->getParentNode(), $nodeName);
-            $this->finish($node);
+        $subject = $this->getSubject();
+        $parentNode = $this->getParentNode();
+        if ($parentNode && $subject && $this->canApply()) {
+            $targetNodeName = NodeName::fromString(uniqid('node-'));
+
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
+            $command = CopyNodesRecursively::createFromSubgraphAndStartNode(
+                $contentRepository->getContentGraph()->getSubgraph(
+                    $subject->subgraphIdentity->contentStreamId,
+                    $subject->subgraphIdentity->dimensionSpacePoint,
+                    $subject->subgraphIdentity->visibilityConstraints
+                ),
+                $subject,
+                OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->subgraphIdentity->dimensionSpacePoint),
+                $parentNode->nodeAggregateId,
+                null,
+                $targetNodeName
+            );
+            $contentRepository->handle($command)->block();
+
+            $newlyCreatedNode = $this->contentRepositoryRegistry->subgraphForNode($parentNode)
+                ->findChildNodeConnectedThroughEdgeName(
+                    $parentNode->nodeAggregateId,
+                    $targetNodeName
+                );
+            $this->finish($newlyCreatedNode);
+            // NOTE: we need to run "finish" before "addNodeCreatedFeedback"
+            // to ensure the new node already exists when the last feedback is processed
+            $this->addNodeCreatedFeedback($newlyCreatedNode);
         }
     }
 }

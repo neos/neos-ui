@@ -8,37 +8,25 @@ fi
 
 cd ../../..
 
-rm -rf DummyDistributionPackages || true
-mv DistributionPackages DummyDistributionPackages
-mkdir DistributionPackages
+./flow cr:setup --content-repository onedimension
+./flow site:create neos-test-onedimension Neos.Test.OneDimension Neos.TestNodeTypes:Document.Page
+./flow domain:add neos-test-onedimension onedimension.localhost --port 8081
+# TODO: Replace with "--assume-yes" flag once "./flow cr:prune" has one
+printf "y\n" | ./flow cr:prune --content-repository onedimension
+./flow cr:import --content-repository onedimension --path ./DistributionPackages/Neos.Test.OneDimension/Resources/Private/Content
 
-ln -s "../Packages/Application/Neos.Neos.Ui/Tests/IntegrationTests/SharedNodeTypesPackage" DistributionPackages/Neos.TestNodeTypes
+./flow cr:setup --content-repository twodimensions
+./flow site:create neos-test-twodimensions Neos.Test.TwoDimensions Neos.TestNodeTypes:Document.Page
+./flow domain:add neos-test-twodimensions twodimensions.localhost --port 8081
+# TODO: Replace with "--assume-yes" flag once "./flow cr:prune" has one
+printf "y\n" | ./flow cr:prune --content-repository twodimensions
+./flow cr:import --content-repository twodimensions --path ./DistributionPackages/Neos.Test.TwoDimensions/Resources/Private/Content
 
-for fixture in Packages/Application/Neos.Neos.Ui/Tests/IntegrationTests/Fixtures/*/; do
-    echo "$fixture"
+./flow resource:publish
 
-    ln -s "../${fixture}SitePackage" DistributionPackages/Neos.TestSite
+cd Packages/Application/Neos.Neos.Ui
 
-    # TODO: optimize this
-    composer reinstall neos/test-nodetypes
-    composer reinstall neos/test-site
-    ./flow flow:cache:flush --force
-    ./flow flow:cache:warmup
-    ./flow configuration:show --path Neos.ContentRepository.contentDimensions
+yarn run testcafe "$1" "Tests/IntegrationTests/Fixtures/*/*.e2e.js" \
+    --selector-timeout=10000 --assertion-timeout=30000
 
-    if ./flow site:list | grep -q 'Node name'; then
-        ./flow site:prune '*'
-    fi
-    ./flow site:import --package-key=Neos.TestSite
-    ./flow resource:publish
-
-    cd Packages/Application/Neos.Neos.Ui
-    yarn run testcafe "$1" "../../../${fixture}*.e2e.js" \
-            --selector-timeout=10000 --assertion-timeout=30000
-    cd ../../..
-    rm -f DistributionPackages/Neos.TestSite
-
-done
-
-rm -rf DistributionPackages
-mv DummyDistributionPackages DistributionPackages
+cd ../../..

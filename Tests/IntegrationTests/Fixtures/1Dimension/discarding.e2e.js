@@ -18,7 +18,7 @@ test('Discarding: create multiple nodes nested within each other and then discar
     await t
         .click(Selector('#neos-PageTree-AddNode'))
         .click(ReactSelector('InsertModeSelector').find('#into'))
-        .click(ReactSelector('NodeTypeItem'))
+        .click(ReactSelector('NodeTypeItem').find('button>span>span').withText('Page_Test'))
         .typeText(Selector('#neos-NodeCreationDialog-Body input'), pageTitleToCreate)
         .click(Selector('#neos-NodeCreationDialog-CreateNew'));
     await Page.waitForIframeLoading();
@@ -27,7 +27,7 @@ test('Discarding: create multiple nodes nested within each other and then discar
     await t
         .click(Selector('#neos-PageTree-AddNode'))
         .click(ReactSelector('InsertModeSelector').find('#into'))
-        .click(ReactSelector('NodeTypeItem'))
+        .click(ReactSelector('NodeTypeItem').find('button>span>span').withText('Page_Test'))
         .typeText(Selector('#neos-NodeCreationDialog-Body input'), pageTitleToCreate)
         .click(Selector('#neos-NodeCreationDialog-CreateNew'));
     await Page.waitForIframeLoading();
@@ -38,7 +38,7 @@ test('Discarding: create multiple nodes nested within each other and then discar
         .expect(ReactSelector('Provider').getReact(({props}) => {
             const reduxState = props.store.getState();
             return reduxState.cr.nodes.documentNode;
-        })).eql('/sites/neos-test-site@user-admin;language=en_US', 'After discarding we are back to the main page');
+        })).eql('user-admin__eyJsYW5ndWFnZSI6ImVuX1VTIn0=__f676459d-ca77-44bc-aeea-44114814c279', 'After discarding we are back to the main page');
 });
 
 test('Discarding: create a document node and then discard it', async t => {
@@ -46,7 +46,7 @@ test('Discarding: create a document node and then discard it', async t => {
     subSection('Create a document node');
     await t
         .click(Selector('#neos-PageTree-AddNode'))
-        .click(ReactSelector('NodeTypeItem'))
+        .click(ReactSelector('NodeTypeItem').find('button>span>span').withText('Page_Test'))
         .typeText(Selector('#neos-NodeCreationDialog-Body input'), pageTitleToCreate)
         .click(Selector('#neos-NodeCreationDialog-CreateNew'))
         .expect(Page.treeNode.withText(pageTitleToCreate).exists).ok('Node with the given title appeared in the tree')
@@ -102,7 +102,7 @@ test('Discarding: create a content node and then discard it', async t => {
         .click(Selector('#neos-ContentTree-ToggleContentTree'))
         .click(Page.treeNode.withText('Content Collection (main)'))
         .click(Selector('#neos-ContentTree-AddNode'))
-        .click(ReactSelector('NodeTypeItem').find('button>span>span').withText('Headline'));
+        .click(ReactSelector('NodeTypeItem').find('button>span>span').withText('Headline_Test'));
     await Page.waitForIframeLoading(t);
     await t
         .switchToIframe('[name="neos-content-main"]')
@@ -142,7 +142,7 @@ test('Discarding: delete a content node and then discard deletion', async t => {
     await t
         .expect(Page.treeNode.withText(headlineToDelete).exists).notOk('Deleted node gone from the tree')
         .switchToIframe('[name="neos-content-main"]')
-        .expect(Selector('.neos-inline-editable').withText(headlineToDelete).exists).notOk('New headline gone from the page')
+        .expect(Selector('[data-__neos-property]').withText(headlineToDelete).exists).notOk('New headline gone from the page')
         .switchToMainWindow();
 
     subSection('Discard page deletion');
@@ -152,6 +152,6 @@ test('Discarding: delete a content node and then discard deletion', async t => {
     await Page.waitForIframeLoading(t);
     await t
         .switchToIframe('[name="neos-content-main"]')
-        .expect(Selector('.neos-inline-editable').withText(headlineToDelete).exists).ok('New headline reappeared on the page')
+        .expect(Selector('[data-__neos-property]').withText(headlineToDelete).exists).ok('New headline reappeared on the page')
         .switchToMainWindow();
 });

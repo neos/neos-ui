@@ -12,6 +12,14 @@ export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry,
     const initializedInlineEditorApis = guestFrameWindow['@Neos.Neos.Ui:InitializedInlineEditors'];
     const propertyName = propertyDomNode.getAttribute('data-__neos-property');
     const contextPath = closestContextPathInGuestFrame(propertyDomNode);
+
+    if (!nodes[contextPath]) {
+        // Node is not available in the store, so we can't initialize the inline editor
+        console.warn(`Node with context path "${contextPath}" is not available in the store yet.`);
+        return;
+    }
+
+
     const nodeTypeName = nodes?.[contextPath]?.nodeType;
     const nodeType = nodeTypesRegistry.get(nodeTypeName);
     const isInlineEditable = (

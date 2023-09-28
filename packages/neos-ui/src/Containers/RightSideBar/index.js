@@ -67,7 +67,7 @@ export default class RightSideBar extends PureComponent {
             >
                 {toggle}
                 <div className={style.rightSideBar__components}>
-                    {!isSideBarHidden && RightSideBarComponents.map((Item, key) => <Item key={key}/>)}
+                    {RightSideBarComponents.map((Item, key) => <Item key={key}/>)}
                 </div>
             </SideBar>
         );

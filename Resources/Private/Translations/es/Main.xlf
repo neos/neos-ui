@@ -330,11 +330,11 @@
       </trans-unit>
       <trans-unit id="Shortcut__UI.Inspector.escape" xml:space="preserve">
                 <source>Escape Inspector</source>
-        <target xml:lang="es-ES" state="translated">Inspector de Escapes</target>
+        <target xml:lang="es-ES" state="translated">Dejar al inspector</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.Inspector.resume" xml:space="preserve">
                 <source>Resume Inspector</source>
-        <target xml:lang="es-ES" state="translated">Inspector de currículum</target>
+        <target xml:lang="es-ES" state="translated">Resumen del Inspector</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.NodeCreationDialog.back" xml:space="preserve">
                 <source>NodeCreationDialog Back</source>
@@ -432,7 +432,7 @@
       </trans-unit>
       <trans-unit id="nodes" xml:space="preserve">
                 <source>nodes</source>
-        <target state="translated">Nodos</target>
+        <target state="translated">nodos</target>
       </trans-unit>
       <trans-unit id="syncUriPathSegment" xml:space="preserve">
                 <source>Syncronize with the title property</source>
@@ -442,13 +442,41 @@
                     <source>{tabName} – {amountOfErrors} validation issues</source>
         <target state="translated">{tabName} - {amountOfErrors} problemas de validación</target>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__style__p" xml:space="preserve">
-                <source>Paragraph</source>
-        <target state="translated">Párrafo</target>
+      <trans-unit id="above" xml:space="preserve">
+                <source>Above</source>
+        <target state="translated">Sobre</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__style__h1" xml:space="preserve">
                 <source>Headline 1</source>
         <target state="translated">Titular 1</target>
+      </trans-unit>
+      <trans-unit id="below" xml:space="preserve">
+                <source>Below</source>
+        <target state="translated">Abajo</target>
+      </trans-unit>
+      <trans-unit id="inside" xml:space="preserve">
+                <source>Inside</source>
+        <target state="translated">Dentro</target>
+      </trans-unit>
+      <trans-unit id="InsertModeTitleInto" xml:space="preserve">
+                <source>inside</source>
+        <target state="translated">dentro</target>
+      </trans-unit>
+      <trans-unit id="InsertModeTitleBefore" xml:space="preserve">
+                <source>above</source>
+        <target state="translated">arriba</target>
+      </trans-unit>
+      <trans-unit id="InsertModeTitleAfter" xml:space="preserve">
+                <source>below</source>
+        <target state="translated">abajo</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__p" xml:space="preserve">
+                <source>Paragraph</source>
+        <target state="translated">Párrafo</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__h2" xml:space="preserve">
+                <source>Headline 2</source>
+        <target state="translated">Titular 2</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__style__h3" xml:space="preserve">
                 <source>Headline 3</source>
@@ -470,41 +498,45 @@
                 <source>Preformatted</source>
         <target state="translated">Preformateado</target>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__style__h2" xml:space="preserve">
-                <source>Headline 2</source>
-        <target state="translated">Titular 2</target>
+      <trans-unit id="ckeditor__toolbar__style__blockquote" xml:space="preserve">
+                <source>Blockquote</source>
+        <target state="translated">cita en bloque</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__download" xml:space="preserve">
                 <source>Downloadable</source>
         <target state="translated">Puede descargarse</target>
       </trans-unit>
-      <trans-unit id="above" xml:space="preserve">
-                <source>Above</source>
-        <target state="translated">Sobre</target>
+      <trans-unit id="errorBoundary.copyTechnicalDetails" xml:space="preserve">
+                <source>Copy technical details</source>
+        <target state="translated">Copiar la información técnica</target>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__style__blockquote" xml:space="preserve">
-                <source>Blockquote</source>
-        <target state="translated">cita en bloque</target>
+      <trans-unit id="errorBoundary.technicalDetailsCopied" xml:space="preserve">
+                <source>Technical details copied</source>
+        <target state="translated">Información técnica copiada</target>
       </trans-unit>
-      <trans-unit id="below" xml:space="preserve">
-                <source>Below</source>
-        <target state="translated">Abajo</target>
+      <trans-unit id="errorBoundary.reloadUi" xml:space="preserve">
+                <source>Reload Neos UI</source>
+        <target state="translated">Recargar la interfaz del suario de Neos</target>
       </trans-unit>
-      <trans-unit id="inside" xml:space="preserve">
-                <source>Inside</source>
-        <target state="translated">Dentro</target>
+      <trans-unit id="errorBoundary.title" xml:space="preserve">
+                <source>Sorry, but the Neos UI could not recover from this error.</source>
+        <target state="translated">Lo sentimos, pero la interfaz de usuario de Neos no ha podido recuperarse de este error.</target>
       </trans-unit>
-      <trans-unit id="InsertModeTitleInto" xml:space="preserve">
-                <source>inside</source>
-        <target state="translated">dentro</target>
+      <trans-unit id="errorBoundary.description" xml:space="preserve">
+                <source>Please reload the application, or contact your system administrator with the given details.</source>
+        <target state="translated">Por favor, vuelve a cargar la aplicación o pónte en contacto con el administrador del sistema con los datos facilitados.</target>
       </trans-unit>
-      <trans-unit id="InsertModeTitleBefore" xml:space="preserve">
-                <source>above</source>
-        <target state="translated">arriba</target>
+      <trans-unit id="errorBoundary.footer" xml:space="preserve">
+                <source>For more information about the error please refer to the JavaScript console.</source>
+        <target state="translated">Para obtener más información sobre el error, consulta la consola JavaScript.</target>
       </trans-unit>
-      <trans-unit id="InsertModeTitleAfter" xml:space="preserve">
-                <source>below</source>
-        <target state="translated">abajo</target>
+      <trans-unit id="ckeditor__toolbar__link__formatOptions" xml:space="preserve">
+                <source>Format options</source>
+        <target state="translated">Opciones del formato</target>
+      </trans-unit>
+      <trans-unit id="add" xml:space="preserve">
+                <source>Add</source>
+        <target state="translated">Añadir</target>
       </trans-unit>
     </body>
   </file>

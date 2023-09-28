@@ -2706,7 +2706,6 @@ __metadata:
     "@types/lodash.omit": ^4.5.7
     "@types/prop-types": ^15.7.3
     "@types/react": ^16.9.17
-    "@types/react-close-on-escape": ^3.0.0
     "@types/react-dom": ^16.9.4
     "@types/react-fontawesome": ^1.6.4
     "@types/react-portal": ^4.0.1
@@ -2726,7 +2725,6 @@ __metadata:
     lodash.throttle: ^4.0.8
     moment: ^2.14.1
     raf: ^3.4.1
-    react-close-on-escape: ^3.0.0
     react-collapse: ^5.0.1
     react-datetime: ^2.8.10
     react-dnd: ^10.0.0
@@ -2734,7 +2732,6 @@ __metadata:
     react-height: ^3.0.0
     react-keydown: ^1.9.4
     react-motion: ^0.5.0
-    react-portal: ^4.2.0
     react-svg: ^11.1.2
     react-textarea-autosize: ^8.3.0
     stylelint: ^13.7.2
@@ -3393,15 +3390,6 @@ __metadata:
   version: 15.7.5
   resolution: "@types/prop-types@npm:15.7.5"
   checksum: 5b43b8b15415e1f298243165f1d44390403bb2bd42e662bca3b5b5633fdd39c938e91b7fce3a9483699db0f7a715d08cef220c121f723a634972fdf596aec980
-  languageName: node
-  linkType: hard
-
-"@types/react-close-on-escape@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "@types/react-close-on-escape@npm:3.0.0"
-  dependencies:
-    "@types/react": "*"
-  checksum: dcc827d90977b706e597464c4cbf0e3340f2828f8cba05adde5c3906a8a411d67a64f09257ef3165c22aa74a88795a7350bbaed39500ce43c4eb8a15db4ad7df
   languageName: node
   linkType: hard
 
@@ -12118,16 +12106,6 @@ __metadata:
     discontinuous-range: 1.0.0
     ret: ~0.1.10
   checksum: 3c0d440a3f89d6d36844aa4dd57b5cdb0cab938a41956a16da743d3a3578ab32538fc41c16cc0984b6938f2ae4cbc0216967e9829e52191f70e32690d8e3445d
-  languageName: node
-  linkType: hard
-
-"react-close-on-escape@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "react-close-on-escape@npm:3.0.0"
-  peerDependencies:
-    prop-types: ">=15.5.0"
-    react: ">=15.5.0"
-  checksum: 1d99f130f838fd2edf80fcfd791943d2e68cf21fb5154298bf3911f56b091ba36e041cba9fa05ced45b81ca0af960c51a32e99f4e2f02ff3ad68805bf6318d25
   languageName: node
   linkType: hard
 

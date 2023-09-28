@@ -110,12 +110,12 @@ Neos:
         Neos.Ui.PositionalArraySorter: Neos\Neos\Ui\Fusion\Helper\PositionalArraySorterHelper
       documentNodeInformation:
         metaData:
-          documentNode: '${q(documentNode).property("_contextPath")}'
-          siteNode: '${q(site).property(''_contextPath'')}'
-          previewUrl: '${Neos.Ui.NodeInfo.createRedirectToNode(controllerContext, documentNode)}'
+          documentNode: '${Neos.Ui.NodeInfo.serializedNodeAddress(documentNode)}'
+          siteNode: '${Neos.Ui.NodeInfo.serializedNodeAddress(site)}'
+          previewUrl: '${Neos.Ui.NodeInfo.createRedirectToNode(documentNode, controllerContext)}'
           contentDimensions:
-            active: '${documentNode.context.dimensions}'
-            allowedPresets: '${Neos.Ui.Api.emptyArrayToObject(Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions))}'
+            active: '${Neos.Ui.ContentDimensions.dimensionSpacePointArray(documentNode.subgraphIdentity.dimensionSpacePoint)}'
+            allowedPresets: '${Neos.Ui.Api.emptyArrayToObject(Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.subgraphIdentity.dimensionSpacePoint, documentNode.subgraphIdentity.contentRepositoryId))}'
           documentNodeSerialization: '${Neos.Ui.NodeInfo.renderNodeWithPropertiesAndChildrenInformation(documentNode, controllerContext)}'
       initialState:
         changes:
@@ -125,16 +125,16 @@ Neos:
         cr:
           nodes:
             byContextPath: '${Neos.Ui.NodeInfo.defaultNodesForBackend(site, documentNode, controllerContext)}'
-            siteNode: '${q(site).property(''_contextPath'')}'
-            documentNode: '${q(documentNode).property(''_contextPath'')}'
+            siteNode: '${Neos.Ui.NodeInfo.serializedNodeAddress(site)}'
+            documentNode: '${Neos.Ui.NodeInfo.serializedNodeAddress(documentNode)}'
             clipboard: '${clipboardNodes || []}'
             clipboardMode: '${clipboardMode || null}'
           contentDimensions:
-            byName: '${Neos.Ui.ContentDimensions.contentDimensionsByName()}'
-            active: '${documentNode.context.dimensions}'
-            allowedPresets: '${Neos.Ui.Api.emptyArrayToObject(Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.context.dimensions))}'
+            byName: '${Neos.Ui.ContentDimensions.contentDimensionsByName(contentRepositoryId)}'
+            active: '${Neos.Ui.ContentDimensions.dimensionSpacePointArray(documentNode.subgraphIdentity.dimensionSpacePoint)}'
+            allowedPresets: '${Neos.Ui.Api.emptyArrayToObject(Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.subgraphIdentity.dimensionSpacePoint, contentRepositoryId))}'
           workspaces:
-            personalWorkspace: '${Neos.Ui.Workspace.getPersonalWorkspace()}'
+            personalWorkspace: '${Neos.Ui.Workspace.getPersonalWorkspace(contentRepositoryId)}'
         ui:
           contentCanvas:
             src: '${Neos.Ui.NodeInfo.uri(documentNode, controllerContext)}'
@@ -210,3 +210,4 @@ Neos:
       Neos.Ui.Workspace: Neos\Neos\Ui\Fusion\Helper\WorkspaceHelper
       Neos.Ui.StaticResources: Neos\Neos\Ui\Fusion\Helper\StaticResourcesHelper
       Neos.Ui.PositionalArraySorter: Neos\Neos\Ui\Fusion\Helper\PositionalArraySorterHelper
+      Neos.Ui.NodeInfo: Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper

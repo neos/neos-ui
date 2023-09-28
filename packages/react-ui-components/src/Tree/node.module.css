@@ -115,6 +115,11 @@
     right: 0;
     padding-left: 15px;
     height: 2px;
+    visibility: hidden;
+
+    [data-is-drag-happening] & {
+        visibility: visible;
+    }
 }
 .dropTarget--before {
     top: -5px;

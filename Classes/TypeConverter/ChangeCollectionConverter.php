@@ -11,6 +11,7 @@ namespace Neos\Neos\Ui\TypeConverter;
  * source code.
  */
 
+use Neos\ContentRepository\Core\Factory\ContentRepositoryId;
 use Neos\Error\Messages\Error;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
@@ -30,10 +31,10 @@ use Neos\Utility\ObjectAccess;
  *
  * @Flow\Scope("singleton")
  */
-class ChangeCollectionConverter extends AbstractTypeConverter
+class ChangeCollectionConverter
 {
     /**
-     * @var array
+     * @var array<int,string>
      */
     protected $sourceTypes = ['array'];
 
@@ -45,24 +46,27 @@ class ChangeCollectionConverter extends AbstractTypeConverter
     /**
      * @var integer
      */
-    protected $priority = 1;
+    protected $priority = 5;
 
     /**
-     * @Flow\Inject(lazy=false)
+     * @Flow\Inject
      * @var PersistenceManagerInterface
      */
     protected $persistenceManager;
 
-    protected $disallowedPayloadProperties = [
+    /**
+     * @var array<int,string>
+     */
+    protected array $disallowedPayloadProperties = [
         'subject',
         'reference'
     ];
 
     /**
-     * @Flow\InjectConfiguration(path="changes.types")
-     * @var array
+     * @Flow\InjectConfiguration(package="Neos.Neos.Ui", path="changes.types")
+     * @var array<string,string>
      */
-    protected $typeMap;
+    protected array $typeMap;
 
     /**
      * @Flow\Inject
@@ -91,26 +95,25 @@ class ChangeCollectionConverter extends AbstractTypeConverter
     /**
      * Converts a accordingly formatted, associative array to a change collection
      *
-     * @param array $source
+     * @param array<int,array<string,mixed>> $source
      * @param string $targetType not used
-     * @param array $subProperties not used
-     * @param \Neos\Flow\Property\PropertyMappingConfigurationInterface $configuration not used
-     * @return mixed An object or \Neos\Error\Messages\Error if the input format is not supported or could not be converted for other reasons
+     * @param array<string,mixed> $subProperties not used
+     * @param PropertyMappingConfigurationInterface $configuration not used
+     * @return ChangeCollection|Error An object or \Neos\Error\Messages\Error if the input format is not supported
+     *               or could not be converted for other reasons
      * @throws \Exception
      */
-    public function convertFrom($source, $targetType, array $subProperties = [], PropertyMappingConfigurationInterface $configuration = null)
-    {
+    public function convert(
+        array $source,
+        ContentRepositoryId $contentRepositoryId
+    ): ChangeCollection {
         if (!is_array($source)) {
-            return new Error(sprintf('Cannot convert %s to ChangeCollection.', gettype($source)));
+            throw new \RuntimeException(sprintf('Cannot convert %s to ChangeCollection.', gettype($source)));
         }
 
         $changeCollection = new ChangeCollection();
         foreach ($source as $changeData) {
-            $convertedData = $this->convertChangeData($changeData);
-
-            if ($convertedData instanceof Error) {
-                return $convertedData;
-            }
+            $convertedData = $this->convertChangeData($changeData, $contentRepositoryId);
 
             $changeCollection->add($convertedData);
         }
@@ -121,52 +124,50 @@ class ChangeCollectionConverter extends AbstractTypeConverter
     /**
      * Convert array to change interface
      *
-     * @param array $changeData
-     * @return ChangeInterface
+     * @param array<string,mixed> $changeData
      */
-    protected function convertChangeData($changeData)
+    protected function convertChangeData(array $changeData, ContentRepositoryId $contentRepositoryId): ChangeInterface
     {
         $type = $changeData['type'];
 
         if (!isset($this->typeMap[$type])) {
-            return new Error(sprintf('Could not convert change type %s, it is unknown to the system', $type));
+            throw new \RuntimeException(sprintf('Could not convert change type %s, it is unknown to the system', $type));
         }
 
         $changeClass = $this->typeMap[$type];
+        /** @var ChangeInterface $changeClassInstance */
         $changeClassInstance = $this->objectManager->get($changeClass);
-        $changeClassInstance->injectPersistenceManager($this->persistenceManager);
+
+
 
         $subjectContextPath = $changeData['subject'];
-        $subject = $this->nodeService->getNodeFromContextPath($subjectContextPath);
-
-        if ($subject instanceof Error) {
-            return $subject;
+        $subject = $this->nodeService->getNodeFromContextPath($subjectContextPath, $contentRepositoryId);
+        if (is_null($subject)) {
+            throw new \RuntimeException('Could not find node for subject "' . $subjectContextPath . '"', 1645657340);
         }
 
         $changeClassInstance->setSubject($subject);
 
         if (isset($changeData['reference']) && method_exists($changeClassInstance, 'setReference')) {
             $referenceContextPath = $changeData['reference'];
-            $reference = $this->nodeService->getNodeFromContextPath($referenceContextPath);
-
-            if ($reference instanceof Error) {
-                return $reference;
-            }
-
+            $reference = $this->nodeService->getNodeFromContextPath($referenceContextPath, $contentRepositoryId);
             $changeClassInstance->setReference($reference);
         }
 
         if (isset($changeData['payload'])) {
             foreach ($changeData['payload'] as $propertyName => $value) {
                 if (!in_array($propertyName, $this->disallowedPayloadProperties)) {
-                    $methodParameters = $this->reflectionService->getMethodParameters($changeClass, ObjectAccess::buildSetterMethodName($propertyName));
+                    $methodParameters = $this->reflectionService->getMethodParameters(
+                        $changeClass,
+                        ObjectAccess::buildSetterMethodName($propertyName)
+                    );
                     $methodParameter = current($methodParameters);
                     $targetType = $methodParameter['type'];
 
                     // Fixme: The type conversion runs depending on the target node property type inside Property::class
                     // This is why we are not allowed to modify the value in any way.
-                    // Without this condition the object was parsed to a string leading to fatal errors when changing images
-                    // in the UI.
+                    // Without this condition the object was parsed to a string leading to fatal errors
+                    // when changing images in the UI.
                     if ($propertyName !== 'value' && $targetType !== Property::class) {
                         $value = $this->propertyMapper->convert($value, $targetType);
                     }

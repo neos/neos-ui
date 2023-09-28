@@ -68,7 +68,7 @@ export default class DimensionSelector extends PureComponent {
                 value={activePreset}
                 allowEmpty={false}
                 headerIcon={showDropDownHeaderIcon ? this.props.icon : null}
-                displaySearchBox={sortedPresetOptions.length >= 10}
+                displaySearchBox={false} // TODO reenable `sortedPresetOptions.length >= 10` but see https://github.com/neos/neos-ui/issues/3495
                 searchOptions={searchOptions(this.state.searchTerm, sortedPresetOptions)}
                 onSearchTermChange={this.handleSearchTermChange}
                 noMatchesFoundLabel={i18nRegistry.translate('Neos.Neos:Main:noMatchesFound')}

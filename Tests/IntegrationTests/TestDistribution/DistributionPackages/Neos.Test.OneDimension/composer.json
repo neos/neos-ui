@@ -1,0 +1,15 @@
+{
+    "name": "neos/test-onedimension",
+    "description": "A Neos website with one dimension",
+    "type": "neos-site",
+    "require": {
+        "neos/neos": "*",
+        "neos/neos-ui": "*",
+        "neos/test-nodetypes": "*"
+    },
+    "extra": {
+        "neos": {
+            "package-key": "Neos.Test.OneDimension"
+        }
+    }
+}

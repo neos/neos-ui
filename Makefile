@@ -112,7 +112,11 @@ test-e2e:
 	bash Tests/IntegrationTests/e2e.sh chrome
 
 ## Executes integration tests locally in a docker-compose setup.
-test-e2e-docker:
+#
+# Note: On mac os you might need those two additional `/etc/hosts` entries:
+# 	127.0.0.1 onedimension.localhost
+# 	127.0.0.1 twodimensions.localhost
+test-e2e-docker: build-e2e-testing
 	@bash Tests/IntegrationTests/e2e-docker.sh $(or $(browser),chrome)
 
 start-neos-dev-instance:

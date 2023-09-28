@@ -5,7 +5,6 @@ import {connect} from 'react-redux';
 import {isEqualSet} from '@neos-project/utils-helpers';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors, actions} from '@neos-project/neos-ui-redux-store';
-import {hasNestedNodes} from '../NodeTree/helpers';
 import {InsertPosition} from '@neos-project/neos-ts-interfaces';
 
 import {
@@ -297,9 +296,9 @@ const makeMapStateToProps = isDocument => (state, {nodeTypesRegistry}) => {
             });
         }
 
-        const selectionHasNestedNodes = hasNestedNodes(focusedNodesContextPaths);
+        const areFocusedNodesNestedInEachOther = selectors.UI.PageTree.areFocusedNodesNestedInEachOther(state);
 
-        const canBeDeleted = (removeAllowed(focusedNodesContextPaths, state) && !selectionHasNestedNodes) || false;
+        const canBeDeleted = (removeAllowed(focusedNodesContextPaths, state) && !areFocusedNodesNestedInEachOther) || false;
         const visibilityCanBeToggled = visibilityToggleAllowed(focusedNodesContextPaths, state);
         const canBeEdited = editingAllowed(focusedNodesContextPaths, state);
 
@@ -310,8 +309,10 @@ const makeMapStateToProps = isDocument => (state, {nodeTypesRegistry}) => {
 
         const isHidden = focusedNode?.properties?._hidden;
 
+        const role = focusedNode ? (nodeTypesRegistry.hasRole(focusedNode.nodeType, 'document') ? 'document' : 'content') : null;
         const isAllowedToAddChildOrSiblingNodes = isAllowedToAddChildOrSiblingNodesSelector(state, {
-            reference: focusedNodeContextPath
+            reference: focusedNodeContextPath,
+            role
         });
         const isHiddenContentTree = state?.ui?.leftSideBar?.contentTree?.isHidden;
 
@@ -319,7 +320,7 @@ const makeMapStateToProps = isDocument => (state, {nodeTypesRegistry}) => {
             isDocument ?
             selectors.UI.PageTree.destructiveOperationsAreDisabledForPageTreeSelector(state) :
             selectors.CR.Nodes.destructiveOperationsAreDisabledForContentTreeSelector(state)
-        ) || selectionHasNestedNodes;
+        ) || areFocusedNodesNestedInEachOther;
         const isLoading = isDocument ? selectors.UI.PageTree.getIsLoading(state) : selectors.UI.ContentTree.getIsLoading(state);
 
         return {

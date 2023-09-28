@@ -1,9 +1,8 @@
 import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
 import React from 'react';
-import {Portal} from 'react-portal';
 
-import DialogWithEscape, {DialogProps, DialogWithoutEscape} from './dialog';
+import DialogWithOverlay, {DialogProps} from './dialog';
 
 describe('<Dialog/>', () => {
     const props: DialogProps = {
@@ -27,49 +26,51 @@ describe('<Dialog/>', () => {
             'dialog__closeBtn': 'closeBtnClassName',
             'dialog__contents': 'contentsClassName',
             'dialog__contentsPosition': 'contentsPositionClassName',
-            'dialog__title': 'titleClassName'
+            'dialog__title': 'titleClassName',
+            'dialog--effect__shake': 'effectShakeClassName'
         },
         title: 'Foo title'
     };
 
     it('Portal should render correctly.', () => {
-        const wrapper = shallow(<DialogWithEscape {...props}/>);
+        const wrapper = shallow(<DialogWithOverlay {...props}/>);
 
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
     it('Content should render correctly.', () => {
-        const wrapper = shallow(<DialogWithoutEscape {...props}/>);
+        const component = new DialogWithOverlay(props);
+
+        const wrapper = shallow(component.renderDialogWithoutOverlay());
 
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
     it('should render the "dialog--wide" className from the "theme" prop if the style is wide.', () => {
-        const wrapper = shallow(<DialogWithEscape {...props} style="wide"/>);
-        const portal = wrapper.find(Portal);
-        const section = portal.find('section');
+        const wrapper = shallow(<DialogWithOverlay {...props} style="wide"/>);
+        const section = wrapper.find('section');
 
         expect(section.prop('className')).toContain('wideClassName');
     });
 
     it('should render the "dialog--jumbo" className from the "theme" prop if the style is jumbo.', () => {
-        const wrapper = shallow(<DialogWithEscape {...props} style="jumbo"/>);
-        const portal = wrapper.find(Portal);
-        const section = portal.find('section');
+        const wrapper = shallow(<DialogWithOverlay {...props} style="jumbo"/>);
+        const section = wrapper.find('section');
 
         expect(section.prop('className')).toContain('jumboClassName');
     });
 
     it('should render the "dialog--narrow" className from the "theme" prop if the style is narrow.', () => {
-        const wrapper = shallow(<DialogWithEscape {...props} style="narrow"/>);
-        const portal = wrapper.find(Portal);
-        const section = portal.find('section');
+        const wrapper = shallow(<DialogWithOverlay {...props} style="narrow"/>);
+        const section = wrapper.find('section');
 
         expect(section.prop('className')).toContain('narrowClassName');
     });
 
     it('should render the actions if passed.', () => {
-        const wrapper = shallow(<DialogWithoutEscape {...props}/>);
+        const component = new DialogWithOverlay(props);
+
+        const wrapper = shallow(component.renderDialogWithoutOverlay());
 
         expect(wrapper.html().includes('Foo 1')).toBeTruthy();
         expect(wrapper.html().includes('Foo 2')).toBeTruthy();

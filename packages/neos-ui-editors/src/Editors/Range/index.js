@@ -1,5 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
+import cx from 'classnames';
 import {neos} from '@neos-project/neos-ui-decorators';
 import style from './style.module.css';
 
@@ -21,7 +22,8 @@ class RangeEditor extends PureComponent {
             minLabel: PropTypes.string,
             maxLabel: PropTypes.string,
             disabled: PropTypes.bool
-        })
+        }),
+        highlight: PropTypes.bool
     };
 
     static defaultProps = {
@@ -60,16 +62,23 @@ class RangeEditor extends PureComponent {
 
     render() {
         const options = {...this.constructor.defaultProps.options, ...this.props.options};
-        const {value} = this.props;
+        const {value, highlight} = this.props;
+        const valueAsString = value === 0 ? '0' : (value || '');
 
         return (
-            <div className={style.rangeEditor + (options.disabled ? ' ' + style.rangeEditorDisabled : '')}>
+            <div
+                className={cx(
+                    style.rangeEditor,
+                    options.disabled && style.rangeEditorDisabled,
+                    highlight && style.rangeEditorHighlight,
+                )}
+            >
                 <input
                     type="range"
                     min={options.min}
                     max={options.max}
                     step={options.step}
-                    value={value}
+                    value={valueAsString}
                     className="slider"
                     onChange={this.handleChange}
                     disabled={options.disabled}
@@ -84,7 +93,7 @@ class RangeEditor extends PureComponent {
                             type="text"
                             onKeyPress={this.onKeyPress}
                             onChange={this.handleChange}
-                            value={value}
+                            value={valueAsString}
                             style={ {width: `${options.max.toString().length}ch`} }
                             disabled={options.disabled}
                         />

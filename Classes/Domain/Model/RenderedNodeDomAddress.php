@@ -84,7 +84,7 @@ class RenderedNodeDomAddress implements \JsonSerializable
     {
         $fusionPathForContentRendering = $this->getFusionPath();
         $fusionPathForContentRendering = preg_replace(
-            '/(\/itemRenderer<Neos\.Neos:ContentCase>)\/default<Neos\.Fusion:Matcher>\/element(<[^>]+>)$/',
+            '/(\/itemRenderer<Neos\.Neos:ContentCase>)\/([^<>\/]+)<Neos\.Fusion:Matcher>\/element(<[^>]+>)$/',
             '$1',
             $fusionPathForContentRendering
         );
@@ -97,6 +97,7 @@ class RenderedNodeDomAddress implements \JsonSerializable
      *
      * @return array
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize(): mixed
     {
         return [

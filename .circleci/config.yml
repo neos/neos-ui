@@ -65,7 +65,7 @@ jobs:
     environment:
       COMPOSER_CACHE_DIR: /home/circleci/composer/cache-dir
     docker:
-      - image: cimg/php:8.0-node
+      - image: cimg/php:8.2-node
     steps:
       - attach_workspace: *attach_workspace
       - run: chmod -R 777 /home/circleci
@@ -81,8 +81,9 @@ jobs:
   e2e:
     environment:
       FLOW_CONTEXT: Production
+      DB_HOST: 127.0.0.1
     docker:
-      - image: cimg/php:8.0-node
+      - image: cimg/php:8.2-node
       - image: cimg/mariadb:10.6
         environment:
           MYSQL_DATABASE: neos
@@ -99,7 +100,7 @@ jobs:
           ./flow flow:cache:flush
           ./flow flow:cache:warmup
           ./flow doctrine:migrate
-          ./flow user:create --username=admin --password=password --first-name=John --last-name=Doe --roles=Administrator
+          ./flow user:create --username=admin --password=admin --first-name=John --last-name=Doe --roles=Administrator
       - run:
           name: Start flow server
           command: /home/circleci/app/flow server:run --port 8081
@@ -113,6 +114,8 @@ jobs:
           cd /home/circleci/app/Packages/Application/Neos.Neos.Ui
           nvm install
           nvm use
+          echo 127.0.0.1 onedimension.localhost | sudo tee -a /etc/hosts
+          echo 127.0.0.1 twodimensions.localhost | sudo tee -a /etc/hosts
           make test-e2e-saucelabs
       - store_artifacts:
           path: /home/circleci/app/Data/Logs
@@ -121,7 +124,7 @@ jobs:
     environment:
       FLOW_CONTEXT: Production
     docker:
-      - image: cimg/php:8.0-node
+      - image: cimg/php:8.2-node
       - image: cimg/mariadb:10.6
         environment:
           MYSQL_DATABASE: neos

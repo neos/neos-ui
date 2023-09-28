@@ -391,10 +391,6 @@
       <trans-unit id="syncUriPathSegment" xml:space="preserve">
                 <source>Syncronize with the title property</source>
       </trans-unit>
-      <trans-unit id="inside" xml:space="preserve">
-                <source>Inside</source>
-        <target state="translated">Iekšpusē</target>
-      </trans-unit>
       <trans-unit id="above" xml:space="preserve">
                 <source>Above</source>
         <target state="translated">Virs</target>
@@ -402,6 +398,10 @@
       <trans-unit id="below" xml:space="preserve">
                 <source>Below</source>
         <target state="translated">Zem</target>
+      </trans-unit>
+      <trans-unit id="inside" xml:space="preserve">
+                <source>Inside</source>
+        <target state="translated">Iekšpusē</target>
       </trans-unit>
       <trans-unit id="InsertModeTitleInto" xml:space="preserve">
                 <source>inside</source>
@@ -411,25 +411,25 @@
                 <source>above</source>
         <target state="translated">virs</target>
       </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__p" xml:space="preserve">
+                <source>Paragraph</source>
+        <target state="translated">Paragrāfs</target>
+      </trans-unit>
       <trans-unit id="ckeditor__toolbar__style__h1" xml:space="preserve">
                 <source>Headline 1</source>
         <target state="translated">Virsraksts 1</target>
+      </trans-unit>
+      <trans-unit id="InsertModeTitleAfter" xml:space="preserve">
+                <source>below</source>
+        <target state="translated">zem</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__style__h2" xml:space="preserve">
                 <source>Headline 2</source>
         <target state="translated">Virsraksts 2</target>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__style__p" xml:space="preserve">
-                <source>Paragraph</source>
-        <target state="translated">Paragrāfs</target>
-      </trans-unit>
       <trans-unit id="ckeditor__toolbar__style__h3" xml:space="preserve">
                 <source>Headline 3</source>
         <target state="translated">Virsraksts 3</target>
-      </trans-unit>
-      <trans-unit id="InsertModeTitleAfter" xml:space="preserve">
-                <source>below</source>
-        <target state="translated">zem</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__style__h4" xml:space="preserve">
                 <source>Headline 4</source>

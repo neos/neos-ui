@@ -1,0 +1,39 @@
+Neos:
+  ContentRepositoryRegistry:
+    contentRepositories:
+      onedimension:
+        preset: default
+        contentDimensions:
+          language:
+            label: 'Language'
+            values:
+              'en_US':
+                label: English (US)
+                specializations:
+                  'en_UK':
+                    label: English (UK)
+              'de':
+                label: German
+                specializations:
+                  'nl':
+                    label: Dutch
+              'fr':
+                label: French
+              'da':
+                label: Danish
+              'lv':
+                label: Latvian
+  Neos:
+    sites:
+      'neos-test-onedimension':
+        contentRepository: 'onedimension'
+        contentDimensions:
+          resolver:
+            factoryClassName: Neos\Neos\FrontendRouting\DimensionResolution\Resolver\AutoUriPathResolverFactory
+
+    userInterface:
+      navigateComponent:
+        nodeTree:
+          # must be at least 3, so when moving document nodes into each other
+          # they will still be shown and we can assert this
+          loadingDepth: 3

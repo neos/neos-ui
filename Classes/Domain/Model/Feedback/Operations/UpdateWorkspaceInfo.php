@@ -11,20 +11,19 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
  * source code.
  */
 
-use Neos\ContentRepository\Domain\Model\Workspace;
+use Neos\ContentRepository\Core\Projection\Workspace\Workspace;
+use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
+use Neos\ContentRepository\Core\Factory\ContentRepositoryId;
 use Neos\Flow\Annotations as Flow;
-use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
-use Neos\Neos\Domain\Service\UserService as DomainUserService;
+use Neos\Flow\Mvc\Controller\ControllerContext;
 
 class UpdateWorkspaceInfo extends AbstractFeedback
 {
-    /**
-     * @var Workspace
-     */
-    protected $workspace;
+    protected ?WorkspaceName $workspaceName;
 
     /**
      * @Flow\Inject
@@ -34,29 +33,40 @@ class UpdateWorkspaceInfo extends AbstractFeedback
 
     /**
      * @Flow\Inject
-     * @var DomainUserService
+     * @var ContentRepositoryRegistry
      */
-    protected $domainUserService;
+    protected $contentRepositoryRegistry;
+
+    /**
+     * UpdateWorkspaceInfo constructor.
+     *
+     * @param WorkspaceName $workspaceName
+     */
+    public function __construct(
+        private readonly ContentRepositoryId $contentRepositoryId,
+        WorkspaceName $workspaceName = null
+    ) {
+        $this->workspaceName = $workspaceName;
+    }
 
     /**
      * Set the workspace
      *
      * @param Workspace $workspace
      * @return void
+     * @deprecated
      */
     public function setWorkspace(Workspace $workspace)
     {
-        $this->workspace = $workspace;
+        $this->workspaceName = $workspace->workspaceName;
     }
 
     /**
-     * Get the document
-     *
-     * @return Workspace
+     * Getter for WorkspaceName
      */
-    public function getWorkspace()
+    public function getWorkspaceName(): ?WorkspaceName
     {
-        return $this->workspace;
+        return $this->workspaceName;
     }
 
     /**
@@ -74,7 +84,7 @@ class UpdateWorkspaceInfo extends AbstractFeedback
      *
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return sprintf('New workspace info available.');
     }
@@ -91,23 +101,31 @@ class UpdateWorkspaceInfo extends AbstractFeedback
             return false;
         }
 
-        return $this->getWorkspace() === $feedback->getWorkspace();
+        return $this->getWorkspaceName()?->value === $feedback->getWorkspaceName()?->value;
     }
 
     /**
      * Serialize the payload for this feedback
      *
+     * @param ControllerContext $controllerContext
      * @return mixed
      */
     public function serializePayload(ControllerContext $controllerContext)
     {
-        $workspace = $this->getWorkspace();
-        $baseWorkspace = $workspace->getBaseWorkspace();
-        return [
-            'name' => $workspace->getName(),
-            'publishableNodes' => $this->workspaceService->getPublishableNodeInfo($workspace),
-            'baseWorkspace' => $baseWorkspace->getName(),
-            'readOnly' => !$this->domainUserService->currentUserCanPublishToWorkspace($baseWorkspace)
-        ];
+        if (!$this->workspaceName) {
+            return null;
+        }
+
+        $contentRepository = $this->contentRepositoryRegistry->get($this->contentRepositoryId);
+        $workspace = $contentRepository->getWorkspaceFinder()->findOneByName($this->workspaceName);
+
+        return $workspace ? [
+            'name' => $this->workspaceName->value,
+            'publishableNodes' => $this->workspaceService->getPublishableNodeInfo(
+                $this->workspaceName,
+                $this->contentRepositoryId
+            ),
+            'baseWorkspace' => $workspace->baseWorkspaceName->value
+        ] : [];
     }
 }

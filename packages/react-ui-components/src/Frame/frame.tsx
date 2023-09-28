@@ -130,10 +130,25 @@ export default class Frame extends PureComponent<FrameProps> {
             transitioning: false
         });
 
-        const {onLoad} = this.props;
+        if (this.ref) {
+            const {onLoad} = this.props;
 
-        if (typeof onLoad === 'function' && this.ref) {
-            onLoad(e);
+            if (typeof onLoad === 'function') {
+                onLoad(e);
+            }
+
+            // Sync with iframe window location, in case the latest navigation
+            // happened in-frame (e.g. via click on link)
+            try {
+                const win = this.ref.contentWindow;
+                if (win && win.location.href !== this.state.location) {
+                    this.setState({
+                        location: win.location.href
+                    });
+                }
+            } catch {
+                // This almost definitely means we've lost access to the iframe
+            }
         }
     }
 

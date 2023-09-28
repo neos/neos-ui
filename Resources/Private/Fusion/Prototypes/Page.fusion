@@ -19,9 +19,7 @@ prototype(Neos.Neos:Page) {
 
             @process.json = ${Json.stringify(value)}
             @process.wrapInJsObject = ${'<script>window[\'@Neos.Neos.Ui:DocumentInformation\']=' + value + '</script>'}
-            @if {
-                inBackend = ${documentNode.context.inBackend}
-            }
+            @if.inBackend = ${renderingMode.isEdit || renderingMode.isPreview}
 
             // We need to ensure the JS backend information is always up to date, especially
             // when child nodes change. Otherwise errors like the following might happen:
@@ -36,12 +34,12 @@ prototype(Neos.Neos:Page) {
                 mode = 'cached'
                 entryIdentifier {
                     jsBackendInfo = 'javascriptBackendInformation'
-                    documentNode = ${documentNode}
-                    inBackend = ${documentNode.context.inBackend}
+                    documentNode = ${Neos.Caching.entryIdentifierForNode(documentNode)}
+                    inBackend = ${renderingMode.isEdit || renderingMode.isPreview}
                 }
                 entryTags {
                     1 = ${Neos.Caching.nodeTag(documentNode)}
-                    2 = ${documentNode.context.inBackend ? Neos.Caching.descendantOfTag(documentNode) : null}
+                    2 = ${(renderingMode.isEdit || renderingMode.isPreview) ? Neos.Caching.descendantOfTag(documentNode) : null}
                 }
             }
         }
@@ -53,20 +51,18 @@ prototype(Neos.Neos:Page) {
             compiledResourcePackage = ${Neos.Ui.StaticResources.compiledResourcePackage()}
 
             sectionName = 'guestFrameApplication'
-            @if {
-                inBackend = ${documentNode.context.inBackend}
-            }
+            @if.inBackend = ${renderingMode.isEdit || renderingMode.isPreview}
         }
     }
 
     neosBackendContainer = '<div id="neos-backend-container"></div>'
     neosBackendContainer.@position = 'before closingBodyTag'
-    neosBackendContainer.@if.inBackend = ${documentNode.context.inBackend}
+    neosBackendContainer.@if.inBackend = ${renderingMode.isEdit || renderingMode.isPreview}
 
     neosBackendNotification = Neos.Fusion:Template {
         @position = 'before closingBodyTag'
         templatePath = 'resource://Neos.Neos.Ui/Private/Templates/Backend/GuestNotificationScript.html'
-        @if.inBackend = ${documentNode.context.inBackend}
+        @if.inBackend = ${renderingMode.isEdit || renderingMode.isPreview}
     }
 
     @exceptionHandler = 'Neos\\Neos\\Ui\\Fusion\\ExceptionHandler\\PageExceptionHandler'

@@ -207,6 +207,31 @@ test('Can create content node from inside InlineUI', async t => {
         .switchToMainWindow();
 });
 
+test('Inline CKEditor mode `paragraph: false` works as expected', async t => {
+    subSection('Create an inline headline node');
+    await t
+        .click(Selector('#neos-ContentTree-ToggleContentTree'))
+        .click(Page.treeNode.withText('Content Collection (main)'))
+        .click(Selector('#neos-ContentTree-AddNode'))
+        .click(ReactSelector('NodeTypeItem').withProps({nodeType: {label: 'Inline_Headline_Test'}}));
+    await Page.waitForIframeLoading(t);
+
+    subSection('Insert text into the inline text and press enter');
+
+    await Page.waitForIframeLoading(t);
+    await t
+        .switchToIframe(contentIframeSelector)
+        .typeText(Selector('.test-inline-headline [contenteditable="true"]'), 'Foo Bar')
+        .click(Selector('.test-inline-headline [contenteditable="true"]'))
+        .pressKey('enter')
+        .typeText(Selector('.test-inline-headline [contenteditable="true"]'), 'Bun Buz')
+        .expect(Selector('.neos-contentcollection').withText('Foo Bar').exists).ok('Inserted text exists');
+
+    await t.switchToMainWindow();
+    await t.wait(500); // we debounce the change
+    await t.expect(ReactSelector('Inspector TextAreaEditor').withProps({ value: 'Foo Bar<br>Bun Buz'}).exists).ok('The TextAreaEditor mirrors the expected value')
+});
+
 test('Supports secondary inspector view for element editors', async t => {
     const SelectNodeTypeModal = ReactSelector('SelectNodeType');
     await t

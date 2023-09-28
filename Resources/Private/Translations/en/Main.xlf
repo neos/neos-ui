@@ -11,6 +11,9 @@
             <trans-unit id="copy__from__to--description" xml:space="preserve">
                 <source>Please select the position at which you want {source} inserted relative to {target}.</source>
             </trans-unit>
+            <trans-unit id="add" xml:space="preserve">
+                <source>Add</source>
+            </trans-unit>
             <trans-unit id="insert" xml:space="preserve">
                 <source>Insert</source>
             </trans-unit>
@@ -130,6 +133,9 @@
             </trans-unit>
             <trans-unit id="ckeditor__toolbar__link__formatAsEmail" xml:space="preserve">
                 <source>Format as email?</source>
+            </trans-unit>
+            <trans-unit id="ckeditor__toolbar__link__formatOptions" xml:space="preserve">
+                <source>Format options</source>
             </trans-unit>
             <trans-unit id="ckeditor__toolbar__ordered-list" xml:space="preserve">
                 <source>Ordered list</source>
@@ -349,6 +355,24 @@
             </trans-unit>
             <trans-unit id="rangeEditorCurrentValue" xml:space="preserve">
                 <source>Current value</source>
+            </trans-unit>
+            <trans-unit id="errorBoundary.copyTechnicalDetails" xml:space="preserve">
+                <source>Copy technical details</source>
+            </trans-unit>
+            <trans-unit id="errorBoundary.technicalDetailsCopied" xml:space="preserve">
+                <source>Technical details copied</source>
+            </trans-unit>
+            <trans-unit id="errorBoundary.reloadUi" xml:space="preserve">
+                <source>Reload Neos UI</source>
+            </trans-unit>
+            <trans-unit id="errorBoundary.title" xml:space="preserve">
+                <source>Sorry, but the Neos UI could not recover from this error.</source>
+            </trans-unit>
+            <trans-unit id="errorBoundary.description" xml:space="preserve">
+                <source>Please reload the application, or contact your system administrator with the given details.</source>
+            </trans-unit>
+            <trans-unit id="errorBoundary.footer" xml:space="preserve">
+                <source>For more information about the error please refer to the JavaScript console.</source>
             </trans-unit>
         </body>
     </file>

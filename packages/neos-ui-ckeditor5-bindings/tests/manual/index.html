@@ -1,0 +1,22 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./dist/index.js" defer></script>
+    <link rel="stylesheet" href="./dist/index.css">
+    <title>CKEditor Manual Test</title>
+</head>
+<body>
+    <h2>Test Neos + CKEditor Version <span id="ckVersion"></span></h2>
+
+    <h3>Input</h3>
+    <div id="input">Insert text here</div>
+
+    <h3>Output</h3>
+    <pre id="output">...</pre>
+
+    <h3>Enabled Commands (via editor options)</h3>
+    <p>You can run them via <code>editor.execute('bold')</code> or <code>editor.execute('heading', { value: 'heading1' })</code></p>
+    <pre id="enabledCommands"></pre>
+</body>
+</html>

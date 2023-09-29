@@ -30,12 +30,18 @@ use Neos\Neos\TypeConverter\EntityToIdentityConverter;
 use Neos\Neos\Ui\Domain\Service\NodePropertyConverterService;
 use Neos\Neos\Ui\Domain\Service\UserLocaleService;
 use Neos\Neos\Ui\Service\NodePolicyService;
+use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
 
 /**
  * @Flow\Scope("singleton")
  */
 class NodeInfoHelper implements ProtectedContextAwareInterface
 {
+    use NodeTypeWithFallbackProvider;
+
+    #[Flow\Inject]
+    protected ContentRepositoryRegistry $contentRepositoryRegistry;
+
     /**
      * @Flow\Inject
      * @var NodePolicyService
@@ -47,12 +53,6 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
      * @var UserLocaleService
      */
     protected $userLocaleService;
-
-    /**
-     * @Flow\Inject
-     * @var ContentRepositoryRegistry
-     */
-    protected $contentRepositoryRegistry;
 
     /**
      * @Flow\Inject
@@ -209,7 +209,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     protected function getUriInformation(Node $node, ControllerContext $controllerContext): array
     {
         $nodeInfo = [];
-        if (!$node->nodeType->isOfType($this->documentNodeTypeRole)) {
+        if (!$this->getNodeType($node)->isOfType($this->documentNodeTypeRole)) {
             return $nodeInfo;
         }
         $nodeInfo['uri'] = $this->previewUri($node, $controllerContext);
@@ -342,7 +342,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
                 continue;
             }
 
-            while ($parentNode->nodeType->isOfType($baseNodeTypeOverride)) {
+            while ($this->getNodeType($parentNode)->isOfType($baseNodeTypeOverride)) {
                 if (array_key_exists($parentNode->nodeAggregateId->value, $renderedNodes)) {
                     $renderedNodes[$parentNode->nodeAggregateId->value]['intermediate'] = true;
                 } else {

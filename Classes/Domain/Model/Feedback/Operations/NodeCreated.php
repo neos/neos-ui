@@ -19,19 +19,19 @@ use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Neos\Domain\Service\NodeTypeNameFactory;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
+use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
 
 class NodeCreated extends AbstractFeedback
 {
+    use NodeTypeWithFallbackProvider;
+
+    #[Flow\Inject]
+    protected ContentRepositoryRegistry $contentRepositoryRegistry;
+
     /**
      * @var Node
      */
     protected $node;
-
-    /**
-     * @Flow\Inject
-     * @var ContentRepositoryRegistry
-     */
-    protected $contentRepositoryRegistry;
 
     /**
      * Set the node
@@ -97,7 +97,7 @@ class NodeCreated extends AbstractFeedback
         return [
             'contextPath' => $nodeAddressFactory->createFromNode($node)->serializeForUri(),
             'identifier' => $node->nodeAggregateId->value,
-            'isDocument' => $node->nodeType->isOfType(NodeTypeNameFactory::NAME_DOCUMENT)
+            'isDocument' => $this->getNodeType($node)->isOfType(NodeTypeNameFactory::NAME_DOCUMENT)
         ];
     }
 }

@@ -18,7 +18,7 @@
 
     cursor: pointer;
 
-    &:hover {
+    &:hover > svg {
         color: var(--colors-PrimaryBlue);
     }
 }
@@ -43,6 +43,11 @@
     display: inline-block;
     position: absolute;
     text-align: center;
+
+    .header:hover & > svg,
+    .header__data--isActive & > svg {
+        color: var(--colors-PrimaryBlue);
+    }
 }
 
 .header__data {
@@ -100,6 +105,7 @@
     composes: reset from './../reset.css';
     margin-left: 2em;
 
+    .header:hover &,
     .header__data--isActive & {
         color: var(--colors-PrimaryBlue);
     }
@@ -119,6 +125,7 @@
 
     [data-is-drag-happening] & {
         visibility: visible;
+        height: 5px;
     }
 }
 .dropTarget--before {

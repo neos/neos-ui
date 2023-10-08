@@ -355,9 +355,23 @@ export default class Node extends PureComponent {
         );
     }
 
-    handleNodeToggle = () => {
-        const {node, onNodeToggle} = this.props;
-        onNodeToggle(node.contextPath);
+    handleNodeToggle = (e) => {
+        const {node, onNodeToggle, childNodes, isContentTreeNode, loadingDepth, rootNode} = this.props;
+        const children = [...childNodes];
+        const childrenLoaded = children[0] !== undefined;
+        const childrenContextPaths = [];
+        let childrenCollapsedByDefault = false;
+
+        if (childrenLoaded) {
+            childrenCollapsedByDefault = loadingDepth === 0 ? false : (node.depth + 1) - rootNode.depth >= loadingDepth;
+            const childrenWithChildren = children.filter((child) => child.children.length > (isContentTreeNode ? 0 : 1));
+
+            childrenWithChildren.forEach(child => {
+                childrenContextPaths.push(child.contextPath);
+            })
+        }
+
+        onNodeToggle(node.contextPath, e.shiftKey, childrenContextPaths, childrenCollapsedByDefault);
     }
 
     handleNodeClick = e => {

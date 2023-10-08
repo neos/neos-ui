@@ -11,18 +11,13 @@
   properties:
     title:
       type: string
-      defaultValue: '<h1>Enter headline here</h1>'
+      defaultValue: 'Enter headline here'
       ui:
         inlineEditable: true
         inline:
           editorOptions:
-            placeholder: '<h2>Enter headline here...</h2>'
+            placeholder: 'Enter headline here...'
             formatting:
-              h1: true
-              h2: true
-              h3: true
-              h4: true
-              h5: true
               a: true
       validation:
         'Neos.Neos/Validation/NotEmptyValidator': []

@@ -104,7 +104,7 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
                     } else if (childrenCollapsedByDefault && draft.toggled.includes(child)) {
                         draft.toggled = draft.toggled.filter(i => i !== child);
                     }
-                })
+                });
             } else if (draft.toggled.includes(contextPath)) {
                 draft.toggled = draft.toggled.filter(i => i !== contextPath);
             } else {

@@ -53,7 +53,7 @@ dc exec -T php bash <<-'BASH'
     ./flow flow:cache:flush
     ./flow flow:cache:warmup
     ./flow doctrine:migrate
-    ./flow user:create --username=admin --password=password --first-name=John --last-name=Doe --roles=Administrator || true
+    ./flow user:create --username=admin --password=admin --first-name=John --last-name=Doe --roles=Administrator || true
 
     ./flow cr:setup --content-repository onedimension
     ./flow site:create neos-test-onedimension Neos.Test.OneDimension Neos.TestNodeTypes:Document.Page

@@ -534,6 +534,10 @@
                 <source>Format options</source>
         <target state="translated">Opciones del formato</target>
       </trans-unit>
+      <trans-unit id="add" xml:space="preserve">
+                <source>Add</source>
+        <target state="translated">Añadir</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

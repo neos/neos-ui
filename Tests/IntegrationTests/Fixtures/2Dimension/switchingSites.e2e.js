@@ -13,7 +13,7 @@ test('Switching from Neos.Test.OneDimension to Neos.Test.TwoDimensions and back'
     await t.navigateTo('http://onedimension.localhost:8081/neos');
     await t
         .typeText('#username', 'admin')
-        .typeText('#password', 'password')
+        .typeText('#password', 'admin')
         .click('button.neos-login-btn');
     await waitForReact(30000);
     await Page.goToPage('Home');
@@ -38,7 +38,7 @@ test('Switching from Neos.Test.TwoDimensions to Neos.Test.OneDimension and back'
     await t.navigateTo('http://twodimensions.localhost:8081/neos');
     await t
         .typeText('#username', 'admin')
-        .typeText('#password', 'password')
+        .typeText('#password', 'admin')
         .click('button.neos-login-btn');
     await waitForReact(30000);
     await Page.goToPage('Home');

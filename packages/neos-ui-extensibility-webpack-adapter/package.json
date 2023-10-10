@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-extensibility-webpack-adapter",
-  "version": "8.3.2",
+  "version": "8.3.4",
   "description": "Minimal configuration, highly opinionated Webpack 4 + Babel plugin build stack for the Neos CMS UI",
   "repository": "neos/neos-ui",
   "bugs": "https://github.com/neos/neos-ui/issues",

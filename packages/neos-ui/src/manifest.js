@@ -20,6 +20,7 @@ import {
 import initializeContentDomNode from '@neos-project/neos-ui-guest-frame/src/initializeContentDomNode';
 
 import style from '@neos-project/neos-ui-guest-frame/src/style.module.css';
+import backend from '@neos-project/neos-ui-backend-connector';
 
 manifest('main', {}, globalRegistry => {
     //
@@ -513,7 +514,7 @@ manifest('main', {}, globalRegistry => {
     // When the server advices to replace a node (e.g. on property change), put the delivered html to the
     // correct place inside the DOM
     //
-    serverFeedbackHandlers.set('Neos.Neos.Ui:ReloadContentOutOfBand/Main', (feedbackPayload, {store, globalRegistry}) => {
+    serverFeedbackHandlers.set('Neos.Neos.Ui:ReloadContentOutOfBand/Main', async (feedbackPayload, {store, globalRegistry}) => {
         const {contextPath, renderedContent, nodeDomAddress} = feedbackPayload;
         const domNode = nodeDomAddress && findNodeInGuestFrame(
             nodeDomAddress.contextPath,
@@ -542,6 +543,27 @@ manifest('main', {}, globalRegistry => {
         domNode.parentElement.replaceChild(contentElement, domNode);
 
         const children = findAllChildNodes(contentElement);
+
+        // in case there are foreign referenced nodes, we need to put them into the store:
+        const uninitializedReferencedNodes = [];
+        for (const el of children) {
+            const contextPath = el.getAttribute('data-__neos-node-contextpath');
+            if (!selectors.CR.Nodes.byContextPathSelector(contextPath)(store.getState())) {
+                uninitializedReferencedNodes.push(contextPath);
+            }
+        }
+        if (uninitializedReferencedNodes.length) {
+            const {q} = backend.get();
+            const additionalNodes = await q(uninitializedReferencedNodes).get();
+            if (additionalNodes.length) {
+                store.dispatch(actions.CR.Nodes.merge(
+                    additionalNodes.reduce((carry, node) => {
+                        carry[node.contextPath] = node;
+                        return carry;
+                    }, {})
+                ));
+            }
+        }
 
         const nodes = Object.assign(
             {[contextPath]: selectors.CR.Nodes.byContextPathSelector(contextPath)(store.getState())},

@@ -5,7 +5,7 @@ import {PublishDropDown, Page} from './pageModel';
 export const subSection = name => console.log('\x1b[33m%s\x1b[0m', ' - ' + name);
 
 const adminUserName = 'admin';
-const adminPassword = 'password';
+const adminPassword = 'admin';
 
 export const getUrl = ClientFunction(() => window.location.href);
 
@@ -37,10 +37,6 @@ export async function checkPropTypes() {
     const {error} = await t.getBrowserConsoleMessages();
     // Quick fix hack to get rid of the react life cycle warnings
     if (error[0] && error[0].search('Warning: Unsafe legacy lifecycles') >= 0) {
-        delete error[0];
-    }
-    // Quick fix to be able to use node 16 with testcafe @see https://github.com/DevExpress/testcafe/issues/7097
-    if (error[0] && error[0].search('hammerhead.js') >= 0) {
         delete error[0];
     }
     if (error[0]) {

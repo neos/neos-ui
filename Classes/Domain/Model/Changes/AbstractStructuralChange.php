@@ -15,6 +15,7 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindChildNodesFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\NodeType\NodeType;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateClassification;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Nodes;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
@@ -25,13 +26,18 @@ use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RenderContentOutOfBand;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 use Neos\Neos\Ui\Domain\Model\RenderedNodeDomAddress;
-use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
+use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
 
 /**
  * A change that performs structural actions like moving or creating nodes
  */
 abstract class AbstractStructuralChange extends AbstractChange
 {
+    use NodeTypeWithFallbackProvider;
+
+    #[Flow\Inject]
+    protected ContentRepositoryRegistry $contentRepositoryRegistry;
+
     /**
      * The node dom address for the parent node of the created node
      */
@@ -47,12 +53,6 @@ abstract class AbstractStructuralChange extends AbstractChange
      * @var NodeService
      */
     protected $nodeService;
-
-    /**
-     * @Flow\Inject
-     * @var ContentRepositoryRegistry
-     */
-    protected $contentRepositoryRegistry;
 
     protected ?Node $cachedSiblingNode = null;
 
@@ -146,14 +146,14 @@ abstract class AbstractStructuralChange extends AbstractChange
 
         $this->updateWorkspaceInfo();
 
-        if ($node->nodeType->isOfType('Neos.Neos:Content')
+        if ($this->getNodeType($node)->isOfType('Neos.Neos:Content')
             && ($this->getParentDomAddress() || $this->getSiblingDomAddress())) {
             // we can ONLY render out of band if:
             // 1) the parent of our new (or copied or moved) node is a ContentCollection;
             // so we can directly update an element of this content collection
 
             $contentRepository = $this->contentRepositoryRegistry->get($parentNode->subgraphIdentity->contentRepositoryId);
-            if ($parentNode && $parentNode->nodeType->isOfType('Neos.Neos:ContentCollection') &&
+            if ($parentNode && $this->getNodeType($parentNode)->isOfType('Neos.Neos:ContentCollection') &&
                 // 2) the parent DOM address (i.e. the closest RENDERED node in DOM is actually the ContentCollection;
                 // and no other node in between
                 $this->getParentDomAddress() &&
@@ -187,14 +187,14 @@ abstract class AbstractStructuralChange extends AbstractChange
     protected function isNodeTypeAllowedAsChildNode(Node $node, NodeType $nodeType): bool
     {
         $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
-        if (NodeInfoHelper::isAutoCreated($node, $subgraph)) {
+        if ($node->classification === NodeAggregateClassification::CLASSIFICATION_TETHERED) {
             $parentNode = $subgraph->findParentNode($node->nodeAggregateId);
-            return !$parentNode || $parentNode->nodeType->allowsGrandchildNodeType(
+            return !$parentNode || $this->getNodeType($parentNode)->allowsGrandchildNodeType(
                 $node->nodeName->value,
                 $nodeType
             );
         } else {
-            return $node->nodeType->allowsChildNodeType($nodeType);
+            return $this->getNodeType($node)->allowsChildNodeType($nodeType);
         }
     }
 }

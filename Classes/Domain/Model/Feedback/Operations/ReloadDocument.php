@@ -11,10 +11,12 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
  * source code.
  */
 
+use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindClosestNodeFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
-use Neos\Neos\Ui\ContentRepository\Service\NodeService;
+use Neos\Neos\Domain\Service\NodeTypeNameFactory;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
@@ -23,11 +25,8 @@ class ReloadDocument extends AbstractFeedback
 {
     protected ?Node $node;
 
-    /**
-     * @Flow\Inject
-     * @var NodeService
-     */
-    protected $nodeService;
+    #[Flow\Inject]
+    protected ContentRepositoryRegistry $contentRepositoryRegistry;
 
     public function getType(): string
     {
@@ -73,7 +72,10 @@ class ReloadDocument extends AbstractFeedback
         }
         $nodeInfoHelper = new NodeInfoHelper();
 
-        if ($documentNode = $this->nodeService->getClosestDocument($this->node)) {
+        $documentNode = $this->contentRepositoryRegistry->subgraphForNode($this->node)
+            ->findClosestNode($this->node->nodeAggregateId, FindClosestNodeFilter::create(nodeTypeConstraints: NodeTypeNameFactory::NAME_DOCUMENT));
+
+        if ($documentNode) {
             return [
                 'uri' => $nodeInfoHelper->previewUri($documentNode, $controllerContext)
             ];

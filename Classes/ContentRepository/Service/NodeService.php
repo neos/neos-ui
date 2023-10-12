@@ -31,38 +31,6 @@ class NodeService
     protected ContentRepositoryRegistry $contentRepositoryRegistry;
 
     /**
-     * Helper method to retrieve the closest document for a node
-     */
-    public function getClosestDocument(Node $node): ?Node
-    {
-        if ($this->getNodeType($node)->isOfType('Neos.Neos:Document')) {
-            return $node;
-        }
-
-        $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
-
-        while ($node instanceof Node) {
-            if ($this->getNodeType($node)->isOfType('Neos.Neos:Document')) {
-                return $node;
-            }
-            $node = $subgraph->findParentNode($node->nodeAggregateId);
-        }
-
-        return null;
-    }
-
-    /**
-     * Helper method to check if a given node is a document node.
-     *
-     * @param  Node $node The node to check
-     * @return boolean             A boolean which indicates if the given node is a document node.
-     */
-    public function isDocument(Node $node): bool
-    {
-        return ($this->getClosestDocument($node) === $node);
-    }
-
-    /**
      * Converts a given context path to a node object
      */
     public function getNodeFromContextPath(string $contextPath, ContentRepositoryId $contentRepositoryId): ?Node

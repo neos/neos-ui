@@ -21,22 +21,20 @@ use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
 
 /**
+ * @internal
  * @Flow\Scope("singleton")
  */
-class NodeService
+class NeosUiNodeService
 {
     use NodeTypeWithFallbackProvider;
 
     #[Flow\Inject]
     protected ContentRepositoryRegistry $contentRepositoryRegistry;
 
-    /**
-     * Converts a given context path to a node object
-     */
-    public function getNodeFromContextPath(string $contextPath, ContentRepositoryId $contentRepositoryId): ?Node
+    public function findNodeBySerializedNodeAddress(string $serializedNodeAddress, ContentRepositoryId $contentRepositoryId): ?Node
     {
         $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
-        $nodeAddress = NodeAddressFactory::create($contentRepository)->createFromUriString($contextPath);
+        $nodeAddress = NodeAddressFactory::create($contentRepository)->createFromUriString($serializedNodeAddress);
 
         $subgraph = $contentRepository->getContentGraph()->getSubgraph(
             $nodeAddress->contentStreamId,

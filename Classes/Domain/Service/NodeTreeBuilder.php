@@ -17,7 +17,7 @@ use Neos\ContentRepository\Core\Factory\ContentRepositoryId;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Neos\Service\LinkingService;
-use Neos\Neos\Ui\ContentRepository\Service\NodeService;
+use Neos\Neos\Ui\ContentRepository\Service\NeosUiNodeService;
 
 class NodeTreeBuilder
 {
@@ -58,7 +58,7 @@ class NodeTreeBuilder
 
     /**
      * @Flow\Inject
-     * @var NodeService
+     * @var NeosUiNodeService
      */
     protected $nodeService;
 

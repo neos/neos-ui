@@ -478,11 +478,6 @@ class BackendServiceController extends ActionController
         $this->view->assign('value', $personalWorkspaceInfo);
     }
 
-    public function initializeLoadTreeAction(): void
-    {
-        $this->arguments['nodeTreeArguments']->getPropertyMappingConfiguration()->allowAllProperties();
-    }
-
     /**
      * @throws \Neos\Flow\Mvc\Exception\NoSuchArgumentException
      */

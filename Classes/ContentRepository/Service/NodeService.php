@@ -18,31 +18,31 @@ use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
+use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
 
 /**
  * @Flow\Scope("singleton")
  */
 class NodeService
 {
-    /**
-     * @Flow\Inject
-     * @var ContentRepositoryRegistry
-     */
-    protected $contentRepositoryRegistry;
+    use NodeTypeWithFallbackProvider;
+
+    #[Flow\Inject]
+    protected ContentRepositoryRegistry $contentRepositoryRegistry;
 
     /**
      * Helper method to retrieve the closest document for a node
      */
     public function getClosestDocument(Node $node): ?Node
     {
-        if ($node->nodeType->isOfType('Neos.Neos:Document')) {
+        if ($this->getNodeType($node)->isOfType('Neos.Neos:Document')) {
             return $node;
         }
 
         $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
 
         while ($node instanceof Node) {
-            if ($node->nodeType->isOfType('Neos.Neos:Document')) {
+            if ($this->getNodeType($node)->isOfType('Neos.Neos:Document')) {
                 return $node;
             }
             $node = $subgraph->findParentNode($node->nodeAggregateId);

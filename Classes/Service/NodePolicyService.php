@@ -27,23 +27,23 @@ use Neos\Flow\Security\Authorization\Privilege\PrivilegeInterface;
 use Neos\Flow\Security\Authorization\PrivilegeManagerInterface;
 use Neos\Flow\Security\Policy\PolicyService;
 use Neos\Neos\Security\Authorization\Privilege\NodeTreePrivilege;
+use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
 
 /**
  * @Flow\Scope("singleton")
  */
 class NodePolicyService
 {
+    use NodeTypeWithFallbackProvider;
+
+    #[Flow\Inject]
+    protected ContentRepositoryRegistry $contentRepositoryRegistry;
+
     /**
      * @Flow\Inject
      * @var PrivilegeManagerInterface
      */
     protected $privilegeManager;
-
-    /**
-     * @Flow\Inject
-     * @var ContentRepositoryRegistry
-     */
-    protected $contentRepositoryRegistry;
 
     /**
      * @Flow\Inject
@@ -183,7 +183,7 @@ class NodePolicyService
             );
         };
 
-        $disallowedProperties = array_filter(array_keys($node->nodeType->getProperties()), $filter);
+        $disallowedProperties = array_filter(array_keys($this->getNodeType($node)->getProperties()), $filter);
         return $disallowedProperties;
     }
 }

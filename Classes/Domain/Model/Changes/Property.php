@@ -29,12 +29,14 @@ use Neos\ContentRepository\Core\SharedModel\Exception\NodeAggregatesTypeIsAmbigu
 use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateIds;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeVariantSelectionStrategy;
 use Neos\ContentRepository\Core\SharedModel\Node\ReferenceName;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Ui\Domain\Model\AbstractChange;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadContentOutOfBand;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 use Neos\Neos\Ui\Domain\Model\RenderedNodeDomAddress;
 use Neos\Neos\Ui\Domain\Service\NodePropertyConversionService;
+use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
 
 /** @codingStandardsIgnoreStart */
 /** @codingStandardsIgnoreEnd */
@@ -44,6 +46,11 @@ use Neos\Neos\Ui\Domain\Service\NodePropertyConversionService;
  */
 class Property extends AbstractChange
 {
+    use NodeTypeWithFallbackProvider;
+
+    #[Flow\Inject]
+    protected ContentRepositoryRegistry $contentRepositoryRegistry;
+
     /**
      * @Flow\Inject
      * @var NodePropertyConversionService
@@ -147,7 +154,7 @@ class Property extends AbstractChange
         if ($this->canApply() && !is_null($subject) && !is_null($propertyName)) {
             $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
 
-            $propertyType = $subject->nodeType->getPropertyType($propertyName);
+            $propertyType = $this->getNodeType($subject)->getPropertyType($propertyName);
 
             // Use extra commands for reference handling
             if ($propertyType === 'reference' || $propertyType === 'references') {
@@ -180,7 +187,7 @@ class Property extends AbstractChange
                 );
             } else {
                 $value = $this->nodePropertyConversionService->convert(
-                    $subject->nodeType,
+                    $this->getNodeType($subject),
                     $propertyName,
                     $this->getValue()
                 );
@@ -273,10 +280,10 @@ class Property extends AbstractChange
             $this->feedbackCollection->add($updateNodeInfo);
 
             $reloadIfChangedConfigurationPath = sprintf('properties.%s.ui.reloadIfChanged', $propertyName);
-            if (!$this->getIsInline() && $node->nodeType->getConfiguration($reloadIfChangedConfigurationPath)) {
+            if (!$this->getIsInline() && $this->getNodeType($node)->getConfiguration($reloadIfChangedConfigurationPath)) {
                 if ($this->getNodeDomAddress() && $this->getNodeDomAddress()->getFusionPath()
                     && $parentNode
-                    && $parentNode->nodeType->isOfType('Neos.Neos:ContentCollection')) {
+                    && $this->getNodeType($parentNode)->isOfType('Neos.Neos:ContentCollection')) {
                     $reloadContentOutOfBand = new ReloadContentOutOfBand();
                     $reloadContentOutOfBand->setNode($node);
                     $reloadContentOutOfBand->setNodeDomAddress($this->getNodeDomAddress());
@@ -288,7 +295,7 @@ class Property extends AbstractChange
 
             $reloadPageIfChangedConfigurationPath = sprintf('properties.%s.ui.reloadPageIfChanged', $propertyName);
             if (!$this->getIsInline()
-                && $node->nodeType->getConfiguration($reloadPageIfChangedConfigurationPath)) {
+                && $this->getNodeType($node)->getConfiguration($reloadPageIfChangedConfigurationPath)) {
                 $this->reloadDocument($node);
             }
         }

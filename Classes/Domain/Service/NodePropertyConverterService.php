@@ -17,7 +17,6 @@ namespace Neos\Neos\Ui\Domain\Service;
 use Neos\ContentRepository\Core\NodeType\NodeType;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindReferencesFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
-use Neos\ContentRepository\Core\Projection\ContentGraph\Reference;
 use Neos\ContentRepository\Core\Projection\ContentGraph\References;
 use Neos\ContentRepository\Core\Projection\NodeHiddenState\NodeHiddenStateFinder;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
@@ -30,6 +29,7 @@ use Neos\Flow\Property\PropertyMapper;
 use Neos\Flow\Property\PropertyMappingConfiguration;
 use Neos\Flow\Property\PropertyMappingConfigurationInterface;
 use Neos\Flow\Property\TypeConverterInterface;
+use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
 use Neos\Utility\ObjectAccess;
 use Neos\Utility\TypeHandling;
 use Psr\Log\LoggerInterface;
@@ -44,6 +44,11 @@ use Psr\Log\LoggerInterface;
  */
 class NodePropertyConverterService
 {
+    use NodeTypeWithFallbackProvider;
+
+    #[Flow\Inject]
+    protected ContentRepositoryRegistry $contentRepositoryRegistry;
+
     /**
      * @Flow\InjectConfiguration(package="Neos.Neos", path="userInterface.inspector.dataTypes")
      * @var array<string,array<string,mixed>>
@@ -77,12 +82,6 @@ class NodePropertyConverterService
      * @var ThrowableStorageInterface
      */
     private $throwableStorage;
-
-    /**
-     * @Flow\Inject
-     * @var ContentRepositoryRegistry
-     */
-    protected $contentRepositoryRegistry;
 
     /**
      * @param LoggerInterface $logger
@@ -119,7 +118,7 @@ class NodePropertyConverterService
                 $node->nodeAggregateId
             )->isHidden;
         }
-        $propertyType = $node->nodeType->getPropertyType($propertyName);
+        $propertyType = $this->getNodeType($node)->getPropertyType($propertyName);
 
         // We handle "reference" and "references" differently than other properties;
         // because we need to use another API for querying these references.
@@ -160,7 +159,7 @@ class NodePropertyConverterService
         }
 
         if ($convertedValue === null) {
-            $convertedValue = $this->getDefaultValueForProperty($node->nodeType, $propertyName);
+            $convertedValue = $this->getDefaultValueForProperty($this->getNodeType($node), $propertyName);
             if ($convertedValue !== null) {
                 try {
                     $convertedValue = $this->convertValue($convertedValue, $propertyType);
@@ -196,7 +195,7 @@ class NodePropertyConverterService
     public function getPropertiesArray(Node $node)
     {
         $properties = [];
-        foreach ($node->nodeType->getProperties() as $propertyName => $propertyConfiguration) {
+        foreach ($this->getNodeType($node)->getProperties() as $propertyName => $propertyConfiguration) {
             if ($propertyName[0] === '_' && $propertyName[1] === '_') {
                 // skip fully-private properties
                 continue;

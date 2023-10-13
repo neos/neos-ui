@@ -18,7 +18,7 @@ test('Discarding: create multiple nodes nested within each other and then discar
     await t
         .click(Selector('#neos-PageTree-AddNode'))
         .click(ReactSelector('InsertModeSelector').find('#into'))
-        .click(ReactSelector('NodeTypeItem'))
+        .click(ReactSelector('NodeTypeItem').find('button>span>span').withText('Page_Test'))
         .typeText(Selector('#neos-NodeCreationDialog-Body input'), pageTitleToCreate)
         .click(Selector('#neos-NodeCreationDialog-CreateNew'));
     await Page.waitForIframeLoading();
@@ -27,7 +27,7 @@ test('Discarding: create multiple nodes nested within each other and then discar
     await t
         .click(Selector('#neos-PageTree-AddNode'))
         .click(ReactSelector('InsertModeSelector').find('#into'))
-        .click(ReactSelector('NodeTypeItem'))
+        .click(ReactSelector('NodeTypeItem').find('button>span>span').withText('Page_Test'))
         .typeText(Selector('#neos-NodeCreationDialog-Body input'), pageTitleToCreate)
         .click(Selector('#neos-NodeCreationDialog-CreateNew'));
     await Page.waitForIframeLoading();
@@ -46,7 +46,7 @@ test('Discarding: create a document node and then discard it', async t => {
     subSection('Create a document node');
     await t
         .click(Selector('#neos-PageTree-AddNode'))
-        .click(ReactSelector('NodeTypeItem'))
+        .click(ReactSelector('NodeTypeItem').find('button>span>span').withText('Page_Test'))
         .typeText(Selector('#neos-NodeCreationDialog-Body input'), pageTitleToCreate)
         .click(Selector('#neos-NodeCreationDialog-CreateNew'))
         .expect(Page.treeNode.withText(pageTitleToCreate).exists).ok('Node with the given title appeared in the tree')
@@ -102,7 +102,7 @@ test('Discarding: create a content node and then discard it', async t => {
         .click(Selector('#neos-ContentTree-ToggleContentTree'))
         .click(Page.treeNode.withText('Content Collection (main)'))
         .click(Selector('#neos-ContentTree-AddNode'))
-        .click(ReactSelector('NodeTypeItem').find('button>span>span').withText('Headline'));
+        .click(ReactSelector('NodeTypeItem').find('button>span>span').withText('Headline_Test'));
     await Page.waitForIframeLoading(t);
     await t
         .switchToIframe('[name="neos-content-main"]')

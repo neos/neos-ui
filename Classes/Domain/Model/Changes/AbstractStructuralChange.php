@@ -195,9 +195,9 @@ abstract class AbstractStructuralChange extends AbstractChange
         $nodeTypeManager = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId)->getNodeTypeManager();
 
         return !$parentNode || $nodeTypeManager->isNodeTypeAllowedAsChildToTetheredNode(
-                $this->getNodeType($parentNode),
-                $node->nodeName,
-                $nodeType
-            );
+            $this->getNodeType($parentNode),
+            $node->nodeName,
+            $nodeType
+        );
     }
 }

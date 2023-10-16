@@ -1,0 +1,4 @@
+'Neos.TestNodeTypes:Document.HomePage':
+  superTypes:
+    'Neos.Neos:Site': true
+    'Neos.TestNodeTypes:Document.Page': true

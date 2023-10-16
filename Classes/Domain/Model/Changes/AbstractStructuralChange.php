@@ -20,7 +20,7 @@ use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Nodes;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
-use Neos\Neos\Ui\ContentRepository\Service\NodeService;
+use Neos\Neos\Ui\ContentRepository\Service\NeosUiNodeService;
 use Neos\Neos\Ui\Domain\Model\AbstractChange;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RenderContentOutOfBand;
@@ -50,7 +50,7 @@ abstract class AbstractStructuralChange extends AbstractChange
 
     /**
      * @Flow\Inject
-     * @var NodeService
+     * @var NeosUiNodeService
      */
     protected $nodeService;
 
@@ -111,7 +111,7 @@ abstract class AbstractStructuralChange extends AbstractChange
         }
 
         if ($this->cachedSiblingNode === null) {
-            $this->cachedSiblingNode = $this->nodeService->getNodeFromContextPath(
+            $this->cachedSiblingNode = $this->nodeService->findNodeBySerializedNodeAddress(
                 $this->siblingDomAddress->getContextPath(),
                 $this->getSubject()->subgraphIdentity->contentRepositoryId
             );

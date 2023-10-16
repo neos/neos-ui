@@ -37,7 +37,7 @@ use Neos\Neos\FrontendRouting\NodeAddress;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;
 use Neos\Neos\Service\UserService;
-use Neos\Neos\Ui\ContentRepository\Service\NodeService;
+use Neos\Neos\Ui\ContentRepository\Service\NeosUiNodeService;
 use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService;
 use Neos\Neos\Ui\Domain\Model\ChangeCollection;
 use Neos\Neos\Ui\Domain\Model\Feedback\Messages\Error;
@@ -88,7 +88,7 @@ class BackendServiceController extends ActionController
 
     /**
      * @Flow\Inject
-     * @var NodeService
+     * @var NeosUiNodeService
      */
     protected $nodeService;
 
@@ -590,7 +590,7 @@ class BackendServiceController extends ActionController
         /** @var array<int,mixed> $payload */
         $payload = $createContext['payload'] ?? [];
         $flowQuery = new FlowQuery(array_map(
-            fn ($envelope) => $this->nodeService->getNodeFromContextPath($envelope['$node'], $contentRepositoryId),
+            fn ($envelope) => $this->nodeService->findNodeBySerializedNodeAddress($envelope['$node'], $contentRepositoryId),
             $payload
         ));
 

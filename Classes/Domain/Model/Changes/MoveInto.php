@@ -33,7 +33,7 @@ class MoveInto extends AbstractStructuralChange
             return null;
         }
 
-        return $this->nodeService->getNodeFromContextPath(
+        return $this->nodeService->findNodeBySerializedNodeAddress(
             $this->parentContextPath,
             $this->getSubject()->subgraphIdentity->contentRepositoryId
         );

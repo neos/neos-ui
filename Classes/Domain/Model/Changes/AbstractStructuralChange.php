@@ -186,15 +186,18 @@ abstract class AbstractStructuralChange extends AbstractChange
 
     protected function isNodeTypeAllowedAsChildNode(Node $node, NodeType $nodeType): bool
     {
-        $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
-        if ($node->classification === NodeAggregateClassification::CLASSIFICATION_TETHERED) {
-            $parentNode = $subgraph->findParentNode($node->nodeAggregateId);
-            return !$parentNode || $this->getNodeType($parentNode)->allowsGrandchildNodeType(
-                $node->nodeName->value,
-                $nodeType
-            );
-        } else {
+        if ($node->classification !== NodeAggregateClassification::CLASSIFICATION_TETHERED) {
             return $this->getNodeType($node)->allowsChildNodeType($nodeType);
         }
+
+        $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
+        $parentNode = $subgraph->findParentNode($node->nodeAggregateId);
+        $nodeTypeManager = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId)->getNodeTypeManager();
+
+        return !$parentNode || $nodeTypeManager->isNodeTypeAllowedAsChildToTetheredNode(
+            $this->getNodeType($parentNode),
+            $node->nodeName,
+            $nodeType
+        );
     }
 }

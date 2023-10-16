@@ -15,7 +15,6 @@ export interface Routes {
             copyNodes: string;
             cutNodes: string;
             clearClipboard: string;
-            loadTree: string;
             flowQuery: string;
             generateUriPathSegment: string;
             getWorkspaceInfo: string;

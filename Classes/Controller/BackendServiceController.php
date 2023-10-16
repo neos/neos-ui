@@ -47,7 +47,6 @@ use Neos\Neos\Ui\Domain\Model\Feedback\Operations\Redirect;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
 use Neos\Neos\Ui\Domain\Model\FeedbackCollection;
-use Neos\Neos\Ui\Domain\Service\NodeTreeBuilder;
 use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 use Neos\Neos\Ui\Fusion\Helper\WorkspaceHelper;
 use Neos\Neos\Ui\Service\NodeClipboard;
@@ -477,22 +476,6 @@ class BackendServiceController extends ActionController
         $workspaceHelper = new WorkspaceHelper();
         $personalWorkspaceInfo = $workspaceHelper->getPersonalWorkspace($contentRepositoryId);
         $this->view->assign('value', $personalWorkspaceInfo);
-    }
-
-    public function initializeLoadTreeAction(): void
-    {
-        $this->arguments['nodeTreeArguments']->getPropertyMappingConfiguration()->allowAllProperties();
-    }
-
-    /**
-     * Load the nodetree
-     */
-    public function loadTreeAction(NodeTreeBuilder $nodeTreeArguments, bool $includeRoot = false): void
-    {
-        $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
-
-        $nodeTreeArguments->setControllerContext($this->controllerContext);
-        $this->view->assign('value', $nodeTreeArguments->build($contentRepositoryId, $includeRoot));
     }
 
     /**

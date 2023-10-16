@@ -55,14 +55,6 @@
   httpMethods: ['POST']
 
 -
-  name: 'Load Tree'
-  uriPattern: 'load-tree'
-  defaults:
-    '@controller': 'BackendService'
-    '@action': 'loadTree'
-  httpMethods: ['POST']
-
--
   name: 'FlowQuery'
   uriPattern: 'flow-query'
   defaults:

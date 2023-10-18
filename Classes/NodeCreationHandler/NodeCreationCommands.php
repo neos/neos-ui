@@ -14,12 +14,14 @@ namespace Neos\Neos\Ui\NodeCreationHandler;
 
 use Neos\ContentRepository\Core\CommandHandler\CommandInterface;
 use Neos\ContentRepository\Core\Feature\NodeCreation\Command\CreateNodeAggregateWithNode;
+use Neos\ContentRepository\Core\Feature\NodeCreation\Dto\NodeAggregateIdsByNodePaths;
 use Neos\ContentRepository\Core\Feature\NodeDisabling\Command\DisableNodeAggregate;
 use Neos\ContentRepository\Core\Feature\NodeDisabling\Command\EnableNodeAggregate;
 use Neos\ContentRepository\Core\Feature\NodeDuplication\Command\CopyNodesRecursively;
 use Neos\ContentRepository\Core\Feature\NodeModification\Command\SetNodeProperties;
 use Neos\ContentRepository\Core\Feature\NodeModification\Dto\PropertyValuesToWrite;
 use Neos\ContentRepository\Core\Feature\NodeReferencing\Command\SetNodeReferences;
+use Neos\ContentRepository\Core\NodeType\NodeTypeManager;
 
 /**
  * A collection of commands that can be "enriched" via a {@see NodeCreationHandlerInterface}
@@ -70,10 +72,15 @@ final readonly class NodeCreationCommands implements \IteratorAggregate
      * You can use {@see self::withInitialPropertyValues()} to add new properties of the to be created node.
      */
     public static function fromFirstCommand(
-        CreateNodeAggregateWithNode $firstCreateNodeAggregateWithNodeCommand,
+        CreateNodeAggregateWithNode $first,
+        NodeTypeManager $nodeTypeManager
     ): self {
+        $tetheredDescendantNodeAggregateIds = NodeAggregateIdsByNodePaths::createForNodeType(
+            $first->nodeTypeName,
+            $nodeTypeManager
+        );
         return new self(
-            $firstCreateNodeAggregateWithNodeCommand,
+            $first->withTetheredDescendantNodeAggregateIds($tetheredDescendantNodeAggregateIds),
         );
     }
 

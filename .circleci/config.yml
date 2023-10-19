@@ -175,3 +175,6 @@ workflows:
       - php-unittests:
           requires:
             - build_flow_app
+      - php-linting:
+          requires:
+            - build_flow_app

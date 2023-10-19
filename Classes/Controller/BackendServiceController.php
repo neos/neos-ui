@@ -150,14 +150,13 @@ class BackendServiceController extends ActionController
 
     /**
      * Apply a set of changes to the system
+     * @param array<int,array<string,mixed>> $changes
      */
     public function changeAction(array $changes): void
     {
         $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
 
-        /** @param array<int,array<string,mixed>> $changes */
         $changes = $this->changeCollectionConverter->convert($changes, $contentRepositoryId);
-        /** @var ChangeCollection $changes */
         try {
             $count = $changes->count();
             $changes->apply();
@@ -200,7 +199,7 @@ class BackendServiceController extends ActionController
     /**
      * Publish nodes
      *
-     * @param array $nodeContextPaths
+     * @param list<string> $nodeContextPaths
      */
     public function publishAction(array $nodeContextPaths, string $targetWorkspaceName): void
     {
@@ -258,7 +257,7 @@ class BackendServiceController extends ActionController
     /**
      * Discard nodes
      *
-     * @param array $nodeContextPaths
+     * @param list<string> $nodeContextPaths
      */
     public function discardAction(array $nodeContextPaths): void
     {
@@ -407,7 +406,7 @@ class BackendServiceController extends ActionController
     /**
      * Persists the clipboard node on copy
      *
-     * @param array $nodes
+     * @param list<string> $nodes
      * @return void
      * @throws \Neos\Flow\Property\Exception
      * @throws \Neos\Flow\Security\Exception
@@ -439,7 +438,7 @@ class BackendServiceController extends ActionController
     /**
      * Persists the clipboard node on cut
      *
-     * @param array $nodes
+     * @param list<string> $nodes
      * @throws \Neos\Flow\Property\Exception
      * @throws \Neos\Flow\Security\Exception
      */
@@ -477,6 +476,7 @@ class BackendServiceController extends ActionController
 
     /**
      * Fetches all the node information that can be lazy-loaded
+     * @param list<string> $nodes
      */
     public function getAdditionalNodeMetadataAction(array $nodes): void
     {
@@ -559,7 +559,7 @@ class BackendServiceController extends ActionController
     /**
      * Build and execute a flow query chain
      *
-     * @param array $chain
+     * @param array<string, mixed> $chain
      */
     public function flowQueryAction(array $chain): string
     {

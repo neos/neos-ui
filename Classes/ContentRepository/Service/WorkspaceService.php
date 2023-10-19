@@ -157,6 +157,7 @@ class WorkspaceService
         return $workspacesArray;
     }
 
+    /** @return list<RemoveNode> */
     public function predictRemoveNodeFeedbackFromDiscardIndividualNodesFromWorkspaceCommand(
         DiscardIndividualNodesFromWorkspace $command,
         ContentRepository $contentRepository

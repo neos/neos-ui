@@ -24,6 +24,7 @@ use Neos\ContentRepository\Core\SharedModel\Exception\NodeAggregateCurrentlyDoes
 use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\FlowQuery\FlowQuery;
+use Neos\Eel\FlowQuery\Operations\GetOperation;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\ActionRequest;
 use Neos\Flow\Mvc\ActionResponse;
@@ -39,7 +40,6 @@ use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;
 use Neos\Neos\Service\UserService;
 use Neos\Neos\Ui\ContentRepository\Service\NeosUiNodeService;
 use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService;
-use Neos\Neos\Ui\Domain\Model\ChangeCollection;
 use Neos\Neos\Ui\Domain\Model\Feedback\Messages\Error;
 use Neos\Neos\Ui\Domain\Model\Feedback\Messages\Info;
 use Neos\Neos\Ui\Domain\Model\Feedback\Messages\Success;
@@ -559,7 +559,7 @@ class BackendServiceController extends ActionController
     /**
      * Build and execute a flow query chain
      *
-     * @param array<string, mixed> $chain
+     * @param list<array{type: string, payload: array<string|int, mixed>}> $chain
      */
     public function flowQueryAction(array $chain): string
     {
@@ -568,7 +568,6 @@ class BackendServiceController extends ActionController
         $createContext = array_shift($chain);
         $finisher = array_pop($chain);
 
-        /** @var array<int,mixed> $payload */
         $payload = $createContext['payload'] ?? [];
         $flowQuery = new FlowQuery(array_map(
             fn ($envelope) => $this->nodeService->findNodeBySerializedNodeAddress($envelope['$node'], $contentRepositoryId),
@@ -576,8 +575,11 @@ class BackendServiceController extends ActionController
         ));
 
         foreach ($chain as $operation) {
-            $flowQuery = call_user_func_array([$flowQuery, $operation['type']], $operation['payload']);
+            $flowQuery = $flowQuery->__call($operation['type'], $operation['payload']);
         }
+
+        /** @see GetOperation */
+        assert(is_callable([$flowQuery, 'get']));
 
         $nodeInfoHelper = new NodeInfoHelper();
         $type = $finisher['type'] ?? null;

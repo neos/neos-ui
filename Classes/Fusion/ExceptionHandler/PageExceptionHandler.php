@@ -69,6 +69,7 @@ class PageExceptionHandler extends AbstractRenderingExceptionHandler
             'message' => $output
         ]);
 
+        // @phpstan-ignore-next-line
         return $this->wrapHttpResponse($exception, $fluidView->render());
     }
 

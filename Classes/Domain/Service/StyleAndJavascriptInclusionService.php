@@ -95,7 +95,7 @@ class StyleAndJavascriptInclusionService
 
             if (strpos($resourceExpression, 'resource://') === 0) {
                 // Cache breaker
-                $hash = substr(md5_file($resourceExpression), 0, 8);
+                $hash = substr(md5_file($resourceExpression) ?: '', 0, 8);
                 $resourceExpression = $this->resourceManager->getPublicPackageResourceUriByPath($resourceExpression);
             }
             $finalUri = $hash ? $resourceExpression . '?' . $hash : $resourceExpression;

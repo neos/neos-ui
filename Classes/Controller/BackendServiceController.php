@@ -513,7 +513,13 @@ class BackendServiceController extends ActionController
             }, $node->getOtherNodeVariants())));*/
             if (!is_null($node)) {
                 $result[$nodeAddress->serializeForUri()] = [
-                    'policy' => $this->nodePolicyService->getNodePolicyInformation($node),
+                    // todo reimplement nodePolicyService
+                    'policy' => [
+                        'disallowedNodeTypes' => [],
+                        'canRemove' => true,
+                        'canEdit' => true,
+                        'disallowedProperties' => []
+                    ]
                     //'dimensions' => $this->getCurrentDimensionPresetIdentifiersForNode($node),
                     //'otherNodeVariants' => $otherNodeVariants
                 ];
@@ -549,7 +555,13 @@ class BackendServiceController extends ActionController
             $node = $subgraph->findNodeById($nodeAddress->nodeAggregateId);
             if (!is_null($node)) {
                 $result[$nodeAddress->serializeForUri()] = [
-                    'policy' => $this->nodePolicyService->getNodePolicyInformation($node)
+                    // todo reimplement nodePolicyService
+                    'policy' => [
+                        'disallowedNodeTypes' => [],
+                        'canRemove' => true,
+                        'canEdit' => true,
+                        'disallowedProperties' => []
+                    ]
                 ];
             }
         }

@@ -52,7 +52,6 @@ class Remove extends AbstractChange
      * @throws NodeAggregatesTypeIsAmbiguous
      * @throws ContentStreamDoesNotExistYet
      * @throws DimensionSpacePointNotFound
-     * @throws \Neos\ContentRepository\Exception\NodeException
      */
     public function apply(): void
     {

@@ -50,7 +50,6 @@ use Neos\Neos\Ui\Domain\Model\FeedbackCollection;
 use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 use Neos\Neos\Ui\Fusion\Helper\WorkspaceHelper;
 use Neos\Neos\Ui\Service\NodeClipboard;
-use Neos\Neos\Ui\Service\NodePolicyService;
 use Neos\Neos\Ui\Service\PublishingService;
 use Neos\Neos\Ui\TypeConverter\ChangeCollectionConverter;
 use Neos\Neos\Utility\NodeUriPathSegmentGenerator;
@@ -105,12 +104,6 @@ class BackendServiceController extends ActionController
 
     /**
      * @Flow\Inject
-     * @var NodePolicyService
-     */
-    protected $nodePolicyService;
-
-    /**
-     * @Flow\Inject
      * @var ChangeCollectionConverter
      */
     protected $changeCollectionConverter;
@@ -158,7 +151,6 @@ class BackendServiceController extends ActionController
     /**
      * Apply a set of changes to the system
      */
-    /** @phpstan-ignore-next-line */
     public function changeAction(array $changes): void
     {
         $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
@@ -210,7 +202,6 @@ class BackendServiceController extends ActionController
      *
      * @param array $nodeContextPaths
      */
-    /** @phpstan-ignore-next-line */
     public function publishAction(array $nodeContextPaths, string $targetWorkspaceName): void
     {
         $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
@@ -269,7 +260,6 @@ class BackendServiceController extends ActionController
      *
      * @param array $nodeContextPaths
      */
-    /** @phpstan-ignore-next-line */
     public function discardAction(array $nodeContextPaths): void
     {
         $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
@@ -422,7 +412,6 @@ class BackendServiceController extends ActionController
      * @throws \Neos\Flow\Property\Exception
      * @throws \Neos\Flow\Security\Exception
      */
-    /** @phpstan-ignore-next-line */
     public function copyNodesAction(array $nodes): void
     {
         $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
@@ -454,7 +443,6 @@ class BackendServiceController extends ActionController
      * @throws \Neos\Flow\Property\Exception
      * @throws \Neos\Flow\Security\Exception
      */
-    /** @phpstan-ignore-next-line */
     public function cutNodesAction(array $nodes): void
     {
         $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
@@ -490,7 +478,6 @@ class BackendServiceController extends ActionController
     /**
      * Fetches all the node information that can be lazy-loaded
      */
-    /** @phpstan-ignore-next-line */
     public function getAdditionalNodeMetadataAction(array $nodes): void
     {
         $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
@@ -574,7 +561,6 @@ class BackendServiceController extends ActionController
      *
      * @param array $chain
      */
-    /** @phpstan-ignore-next-line */
     public function flowQueryAction(array $chain): string
     {
         $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
@@ -590,7 +576,6 @@ class BackendServiceController extends ActionController
         ));
 
         foreach ($chain as $operation) {
-            // @phpstan-ignore-next-line
             $flowQuery = call_user_func_array([$flowQuery, $operation['type']], $operation['payload']);
         }
 

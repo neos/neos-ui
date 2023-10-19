@@ -11,7 +11,6 @@ namespace Neos\Neos\Ui\Fusion\Helper;
  * source code.
  */
 
-use Neos\ContentRepository\Core\Projection\ContentGraph\ContentSubgraphInterface;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\CountAncestorNodesFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindChildNodesFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
@@ -26,10 +25,8 @@ use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\FrontendRouting\NodeAddress;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\FrontendRouting\NodeUriBuilder;
-use Neos\Neos\TypeConverter\EntityToIdentityConverter;
 use Neos\Neos\Ui\Domain\Service\NodePropertyConverterService;
 use Neos\Neos\Ui\Domain\Service\UserLocaleService;
-use Neos\Neos\Ui\Service\NodePolicyService;
 use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
 
 /**
@@ -44,21 +41,9 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
     /**
      * @Flow\Inject
-     * @var NodePolicyService
-     */
-    protected $nodePolicyService;
-
-    /**
-     * @Flow\Inject
      * @var UserLocaleService
      */
     protected $userLocaleService;
-
-    /**
-     * @Flow\Inject
-     * @var EntityToIdentityConverter
-     */
-    protected $entityToIdentityConverter;
 
     /**
      * @Flow\Inject
@@ -77,12 +62,6 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
      * @var string
      */
     protected $baseNodeType;
-
-    /**
-     * @Flow\InjectConfiguration(path="userInterface.navigateComponent.nodeTree.loadingDepth", package="Neos.Neos")
-     * @var string
-     */
-    protected $loadingDepth;
 
     /**
      * @Flow\InjectConfiguration(path="nodeTypeRoles.document", package="Neos.Neos.Ui")

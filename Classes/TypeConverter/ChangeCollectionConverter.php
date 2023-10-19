@@ -96,21 +96,12 @@ class ChangeCollectionConverter
      * Converts a accordingly formatted, associative array to a change collection
      *
      * @param array<int,array<string,mixed>> $source
-     * @param string $targetType not used
-     * @param array<string,mixed> $subProperties not used
-     * @param PropertyMappingConfigurationInterface $configuration not used
-     * @return ChangeCollection|Error An object or \Neos\Error\Messages\Error if the input format is not supported
-     *               or could not be converted for other reasons
      * @throws \Exception
      */
     public function convert(
         array $source,
         ContentRepositoryId $contentRepositoryId
     ): ChangeCollection {
-        if (!is_array($source)) {
-            throw new \RuntimeException(sprintf('Cannot convert %s to ChangeCollection.', gettype($source)));
-        }
-
         $changeCollection = new ChangeCollection();
         foreach ($source as $changeData) {
             $convertedData = $this->convertChangeData($changeData, $contentRepositoryId);

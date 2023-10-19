@@ -12,7 +12,6 @@ namespace Neos\Neos\Ui\Fusion\ExceptionHandler;
  */
 
 use GuzzleHttp\Psr7\Message;
-use function GuzzleHttp\Psr7\str;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Exception;
 use Neos\Flow\Mvc\View\ViewInterface;
@@ -76,7 +75,7 @@ class PageExceptionHandler extends AbstractRenderingExceptionHandler
     /**
      * Renders an actual HTTP response including the correct status and cache control header.
      *
-     * @param \Exception the exception
+     * @param \Exception $exception the exception
      * @param string $bodyContent
      * @return string
      */

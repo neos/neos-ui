@@ -18,10 +18,11 @@ use Neos\ContentRepository\Core\Factory\ContentRepositoryServiceInterface;
 
 /**
  * @deprecated ugly - we want to get rid of this by adding dimension infos in the Subgraph
+ * @implements ContentRepositoryServiceFactoryInterface<ContentDimensionsHelperInternals>
  */
 class ContentDimensionsHelperInternalsFactory implements ContentRepositoryServiceFactoryInterface
 {
-    public function build(ContentRepositoryServiceFactoryDependencies $serviceFactoryDependencies): ContentRepositoryServiceInterface
+    public function build(ContentRepositoryServiceFactoryDependencies $serviceFactoryDependencies): ContentDimensionsHelperInternals
     {
         return new ContentDimensionsHelperInternals($serviceFactoryDependencies->contentDimensionSource);
     }

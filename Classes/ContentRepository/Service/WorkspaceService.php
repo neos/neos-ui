@@ -16,7 +16,6 @@ use Neos\ContentRepository\Core\Factory\ContentRepositoryId;
 use Neos\ContentRepository\Core\Feature\WorkspacePublication\Command\DiscardIndividualNodesFromWorkspace;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindClosestNodeFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
-use Neos\ContentRepository\Core\Projection\Workspace\Workspace;
 use Neos\Neos\Domain\Service\NodeTypeNameFactory;
 use Neos\Neos\FrontendRouting\NodeAddress;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
@@ -128,7 +127,6 @@ class WorkspaceService
         $user = $this->domainUserService->getCurrentUser();
 
         $workspacesArray = [];
-        /** @var Workspace $workspace */
         foreach ($contentRepository->getWorkspaceFinder()->findAll() as $workspace) {
             // FIXME: This check should be implemented through a specialized Workspace Privilege or something similar
             // Skip workspace not owned by current user
@@ -193,7 +191,7 @@ class WorkspaceService
 
                         $childNode = $subgraph->findNodeById($nodeToDiscard->nodeAggregateId);
                         $parentNode = $subgraph->findParentNode($nodeToDiscard->nodeAggregateId);
-                        if ($parentNode) {
+                        if ($childNode && $parentNode) {
                             $result[] = new RemoveNode($childNode, $parentNode);
                             $handledNodes[] = $nodeToDiscard;
                         }

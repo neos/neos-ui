@@ -106,7 +106,7 @@ abstract class AbstractStructuralChange extends AbstractChange
      */
     public function getSiblingNode(): ?Node
     {
-        if ($this->siblingDomAddress === null) {
+        if ($this->siblingDomAddress === null || !$this->getSubject()) {
             return null;
         }
 
@@ -152,7 +152,7 @@ abstract class AbstractStructuralChange extends AbstractChange
             // 1) the parent of our new (or copied or moved) node is a ContentCollection;
             // so we can directly update an element of this content collection
 
-            $contentRepository = $this->contentRepositoryRegistry->get($parentNode->subgraphIdentity->contentRepositoryId);
+            $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
             if ($parentNode && $this->getNodeType($parentNode)->isOfType('Neos.Neos:ContentCollection') &&
                 // 2) the parent DOM address (i.e. the closest RENDERED node in DOM is actually the ContentCollection;
                 // and no other node in between

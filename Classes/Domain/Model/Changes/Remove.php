@@ -78,7 +78,7 @@ class Remove extends AbstractChange
                 NodeVariantSelectionStrategy::STRATEGY_ALL_SPECIALIZATIONS,
             );
             if ($closestDocumentParentNode !== null) {
-                $command = $command->withRemovalAttachmentPoint($closestDocumentParentNode?->nodeAggregateId);
+                $command = $command->withRemovalAttachmentPoint($closestDocumentParentNode->nodeAggregateId);
             }
 
             $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);

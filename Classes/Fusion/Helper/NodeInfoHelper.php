@@ -226,7 +226,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             'parent' => $parentNode ? $nodeAddressFactory->createFromNode($parentNode)->serializeForUri() : null,
             'matchesCurrentDimensions' => $node->subgraphIdentity->dimensionSpacePoint->equals($node->originDimensionSpacePoint),
             'lastModificationDateTime' => $node->timestamps->lastModified?->format(\DateTime::ATOM),
-            'creationDateTime' => $node->timestamps->created?->format(\DateTime::ATOM),
+            'creationDateTime' => $node->timestamps->created->format(\DateTime::ATOM),
             'lastPublicationDateTime' => $node->timestamps->originalLastModified?->format(\DateTime::ATOM)
         ];
     }

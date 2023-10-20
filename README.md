@@ -12,7 +12,7 @@ Release roadmap is [available here](https://www.neos.io/features/release-process
 That means:
 * All bugfixes go to the lowest maintained branch
 * All new features go only to the 8.3 and 9.0 branch
-* New minor and major releases are made in sync with Neos/Flow. Bugfix releases may be available independantly
+* New minor and major releases are made in sync with Neos/Flow. Bugfix releases may be available independently
 
 ### Currently maintained versions
 
@@ -57,7 +57,7 @@ composer update neos/neos-ui
 
 ### Installing latest development
 
-For trying out the new UI, we recommend you to run the regularily released beta releases.
+For trying out the new UI, we recommend you to run the regularly  released beta releases.
 However, if you want to stay on bleeding-edge, or want to help out developing, you'll
 need the `9.0.x-dev` release. You can install the latest release using:
 

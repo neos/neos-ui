@@ -191,6 +191,8 @@ Neos:
           'Neos.Neos.Ui:MoveBefore': Neos\Neos\Ui\Domain\Model\Changes\MoveBefore
           'Neos.Neos.Ui:MoveAfter': Neos\Neos\Ui\Domain\Model\Changes\MoveAfter
           'Neos.Neos.Ui:MoveInto': Neos\Neos\Ui\Domain\Model\Changes\MoveInto
+      outOfBandRendering:
+        viewObjectName: 'Neos\Neos\View\FusionView'
   Flow:
     security:
       authentication:

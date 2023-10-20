@@ -23,7 +23,6 @@ use Neos\Neos\Fusion\Helper\CachingHelper;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 use Neos\Neos\Ui\Domain\Model\RenderedNodeDomAddress;
-use Neos\Neos\View\FusionView;
 use Psr\Http\Message\ResponseInterface;
 
 class ReloadContentOutOfBand extends AbstractFeedback
@@ -52,6 +51,9 @@ class ReloadContentOutOfBand extends AbstractFeedback
 
     #[Flow\Inject]
     protected RenderingModeService $renderingModeService;
+
+    #[Flow\Inject]
+    protected OutOfBandRenderingViewFactory $outOfBandRenderingViewFactory;
 
     public function setNode(Node $node): void
     {
@@ -137,14 +139,14 @@ class ReloadContentOutOfBand extends AbstractFeedback
             if ($this->nodeDomAddress) {
                 $renderingMode = $this->renderingModeService->findByCurrentUser();
 
-                $fusionView = new FusionView();
-                $fusionView->setControllerContext($controllerContext);
-                $fusionView->setOption('renderingModeName', $renderingMode->name);
+                $view = $this->outOfBandRenderingViewFactory->resolveView();
+                $view->setControllerContext($controllerContext);
+                $view->setOption('renderingModeName', $renderingMode->name);
 
-                $fusionView->assign('value', $this->node);
-                $fusionView->setFusionPath($this->nodeDomAddress->getFusionPathForContentRendering());
+                $view->assign('value', $this->node);
+                $view->setRenderingEntryPoint($this->nodeDomAddress->getFusionPathForContentRendering());
 
-                return $fusionView->render();
+                return $view->render();
             }
         }
 

@@ -150,7 +150,7 @@ class BackendServiceController extends ActionController
 
     /**
      * Apply a set of changes to the system
-     * @param array<int,array<string,mixed>> $changes
+     * @psalm-param list<array<string,mixed>> $changes
      */
     public function changeAction(array $changes): void
     {
@@ -525,7 +525,7 @@ class BackendServiceController extends ActionController
     }
 
     /**
-     * @param array<NodeAddress> $nodes
+     * @psalm-param list<NodeAddress> $nodes
      */
     public function getPolicyInformationAction(array $nodes): void
     {

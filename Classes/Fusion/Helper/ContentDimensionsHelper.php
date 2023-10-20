@@ -88,6 +88,7 @@ class ContentDimensionsHelper implements ProtectedContextAwareInterface
         return $allowedPresets;
     }
 
+    /** @return array<string,array<int,string>> */
     public function dimensionSpacePointArray(AbstractDimensionSpacePoint $dimensionSpacePoint): array
     {
         return $dimensionSpacePoint->toLegacyDimensionArray();

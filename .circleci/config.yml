@@ -140,6 +140,20 @@ jobs:
           cd /home/circleci/app/
           bin/phpunit -c Build/BuildEssentials/PhpUnit/UnitTests.xml Packages/Application/Neos.Neos.Ui/Tests/Unit
 
+  php-linting:
+    docker:
+      - image: cimg/php:8.2-node
+    working_directory: *workspace_root
+    steps:
+      - attach_workspace: *attach_workspace
+      - restore_cache: *restore_app_cache
+
+      - run: rm -rf /home/circleci/app/Packages/Application/Neos.Neos.Ui
+      - run: cd /home/circleci/app/Packages/Application && mv ~/neos-ui-workspace Neos.Neos.Ui
+      - run: |
+          cd /home/circleci/app/Packages/Application/Neos.Neos.Ui/Tests/Unit
+          ../../../bin/phpstan analyse
+
 workflows:
   version: 2
   build_and_test:
@@ -159,5 +173,8 @@ workflows:
           requires:
             - build_flow_app
       - php-unittests:
+          requires:
+            - build_flow_app
+      - php-linting:
           requires:
             - build_flow_app

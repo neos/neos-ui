@@ -142,7 +142,6 @@ class Property extends AbstractChange
     /**
      * Applies this change
      *
-     * @throws \Neos\ContentRepository\Exception\NodeException
      * @throws ContentStreamDoesNotExistYet
      * @throws NodeAggregatesTypeIsAmbiguous
      * @throws DimensionSpacePointNotFound

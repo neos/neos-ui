@@ -17,11 +17,11 @@ use Neos\Utility\PositionalArraySorter;
 class PositionalArraySorterHelper implements ProtectedContextAwareInterface
 {
     /**
-     * @param array $array
+     * @param array<int|string, mixed> $array
      * @param string $positionPath
-     * @return array
+     * @return array<int|string, mixed>
      */
-    public function sort($array, $positionPath = 'position')
+    public function sort(array $array, string $positionPath = 'position'): array
     {
         return (new PositionalArraySorter($array, $positionPath))->toArray();
     }

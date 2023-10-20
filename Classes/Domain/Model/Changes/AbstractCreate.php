@@ -87,7 +87,7 @@ abstract class AbstractCreate extends AbstractStructuralChange
      * @param Node $parentNode
      * @param NodeAggregateId|null $succeedingSiblingNodeAggregateId
      * @return Node
-     * @throws InvalidNodeCreationHandlerException|NodeNameIsAlreadyOccupied|NodeException
+     * @throws InvalidNodeCreationHandlerException|NodeNameIsAlreadyOccupied
      */
     protected function createNode(
         Node $parentNode,

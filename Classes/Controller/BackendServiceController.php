@@ -199,7 +199,7 @@ class BackendServiceController extends ActionController
     /**
      * Publish nodes
      *
-     * @param list<string> $nodeContextPaths
+     * @psalm-param list<string> $nodeContextPaths
      */
     public function publishAction(array $nodeContextPaths, string $targetWorkspaceName): void
     {
@@ -257,7 +257,7 @@ class BackendServiceController extends ActionController
     /**
      * Discard nodes
      *
-     * @param list<string> $nodeContextPaths
+     * @psalm-param list<string> $nodeContextPaths
      */
     public function discardAction(array $nodeContextPaths): void
     {
@@ -406,7 +406,7 @@ class BackendServiceController extends ActionController
     /**
      * Persists the clipboard node on copy
      *
-     * @param list<string> $nodes
+     * @psalm-param list<string> $nodes
      * @return void
      * @throws \Neos\Flow\Property\Exception
      * @throws \Neos\Flow\Security\Exception
@@ -438,7 +438,7 @@ class BackendServiceController extends ActionController
     /**
      * Persists the clipboard node on cut
      *
-     * @param list<string> $nodes
+     * @psalm-param list<string> $nodes
      * @throws \Neos\Flow\Property\Exception
      * @throws \Neos\Flow\Security\Exception
      */
@@ -476,7 +476,7 @@ class BackendServiceController extends ActionController
 
     /**
      * Fetches all the node information that can be lazy-loaded
-     * @param list<string> $nodes
+     * @psalm-param list<string> $nodes
      */
     public function getAdditionalNodeMetadataAction(array $nodes): void
     {
@@ -559,7 +559,7 @@ class BackendServiceController extends ActionController
     /**
      * Build and execute a flow query chain
      *
-     * @param list<array{type: string, payload: array<string|int, mixed>}> $chain
+     * @psalm-param list<array{type: string, payload: array<string|int, mixed>}> $chain
      */
     public function flowQueryAction(array $chain): string
     {

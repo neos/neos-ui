@@ -4,7 +4,7 @@
   options:
     nodeCreationHandlers:
       image:
-        nodeCreationHandler: 'Neos\TestNodeTypes\NodeCreationHandler\ImagePropertyNodeCreationHandler'
+        factoryClassName: 'Neos\TestNodeTypes\NodeCreationHandler\ImagePropertyNodeCreationHandlerFactory'
   ui:
     label: PageWithImage_Test
     icon: icon-file-o

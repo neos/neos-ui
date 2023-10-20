@@ -19,13 +19,17 @@
   options:
     nodeCreationHandlers:
       documentTitle:
-        nodeCreationHandler: 'Neos\Neos\Ui\NodeCreationHandler\DocumentTitleNodeCreationHandler'
+        factoryClassName: 'Neos\Neos\Ui\NodeCreationHandler\Factory\DocumentTitleNodeCreationHandlerFactory'
+      creationDialogProperties:
+        factoryClassName: 'Neos\Neos\Ui\NodeCreationHandler\Factory\CreationDialogPropertiesCreationHandlerFactory'
 
 'Neos.Neos:Content':
   options:
     nodeCreationHandlers:
-      documentTitle:
-        nodeCreationHandler: 'Neos\Neos\Ui\NodeCreationHandler\ContentTitleNodeCreationHandler'
+      contentTitle:
+        factoryClassName: 'Neos\Neos\Ui\NodeCreationHandler\Factory\ContentTitleNodeCreationHandlerFactory'
+      creationDialogProperties:
+        factoryClassName: 'Neos\Neos\Ui\NodeCreationHandler\Factory\CreationDialogPropertiesCreationHandlerFactory'
 
 'Neos.Neos:ContentCollection':
   ui:

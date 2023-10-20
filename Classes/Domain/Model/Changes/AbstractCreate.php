@@ -14,12 +14,15 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 use Neos\ContentRepository\Core\ContentRepository;
 use Neos\ContentRepository\Core\DimensionSpace\OriginDimensionSpacePoint;
+use Neos\ContentRepository\Core\Factory\ContentRepositoryServiceFactoryInterface;
 use Neos\ContentRepository\Core\Feature\NodeCreation\Command\CreateNodeAggregateWithNode;
 use Neos\ContentRepository\Core\NodeType\NodeTypeName;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\SharedModel\Exception\NodeNameIsAlreadyOccupied;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateId;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeName;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Neos\Ui\Exception\InvalidNodeCreationHandlerException;
 use Neos\Neos\Ui\NodeCreationHandler\NodeCreationCommands;
 use Neos\Neos\Ui\NodeCreationHandler\NodeCreationHandlerInterface;
@@ -32,6 +35,11 @@ use Neos\Utility\PositionalArraySorter;
  */
 abstract class AbstractCreate extends AbstractStructuralChange
 {
+    /**
+     * @Flow\Inject
+     */
+    protected ObjectManagerInterface $objectManager;
+
     /**
      * The type of the node that will be created
      */
@@ -174,16 +182,34 @@ abstract class AbstractCreate extends AbstractStructuralChange
             || !is_array($nodeType->getOptions()['nodeCreationHandlers'])) {
             return $commands;
         }
-        foreach ((new PositionalArraySorter($nodeType->getOptions()['nodeCreationHandlers']))->toArray() as $nodeCreationHandlerConfiguration) {
-            $nodeCreationHandler = new $nodeCreationHandlerConfiguration['nodeCreationHandler']();
+        foreach ((new PositionalArraySorter($nodeType->getOptions()['nodeCreationHandlers']))->toArray() as $key => $nodeCreationHandlerConfiguration) {
+            if (!isset($nodeCreationHandlerConfiguration['factoryClassName'])) {
+                throw new InvalidNodeCreationHandlerException(sprintf(
+                    'Node creation handler "%s" has no "factoryClassName" specified.',
+                    $key
+                ), 1697750190);
+            }
+
+            $nodeCreationHandlerFactory = $this->objectManager->get($nodeCreationHandlerConfiguration['factoryClassName']);
+            if (!$nodeCreationHandlerFactory instanceof ContentRepositoryServiceFactoryInterface) {
+                throw new InvalidNodeCreationHandlerException(sprintf(
+                    'Node creation handler "%s" didnt specify factory class of type %s. Got "%s"',
+                    $key,
+                    ContentRepositoryServiceFactoryInterface::class,
+                    get_class($nodeCreationHandlerFactory)
+                ), 1697750193);
+            }
+
+            $nodeCreationHandler = $this->contentRepositoryRegistry->buildService($contentRepository->id, $nodeCreationHandlerFactory);
             if (!$nodeCreationHandler instanceof NodeCreationHandlerInterface) {
                 throw new InvalidNodeCreationHandlerException(sprintf(
-                    'Expected %s but got "%s"',
+                    'Node creation handler "%s" didnt specify factory class of type %s. Got "%s"',
+                    $key,
                     NodeCreationHandlerInterface::class,
                     get_class($nodeCreationHandler)
                 ), 1364759956);
             }
-            $commands = $nodeCreationHandler->handle($commands, $data, $contentRepository);
+            $commands = $nodeCreationHandler->handle($commands, $data);
         }
         return $commands;
     }

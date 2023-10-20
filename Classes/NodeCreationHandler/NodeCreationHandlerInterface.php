@@ -11,14 +11,14 @@ namespace Neos\Neos\Ui\NodeCreationHandler;
  * source code.
  */
 
-use Neos\ContentRepository\Core\ContentRepository;
+use Neos\ContentRepository\Core\Factory\ContentRepositoryServiceInterface;
 
 /**
  * Contract for Node Creation handler that allow to hook into the process just before a node is being added
  * via the Neos UI
  * @api
  */
-interface NodeCreationHandlerInterface
+interface NodeCreationHandlerInterface extends ContentRepositoryServiceInterface
 {
     /**
      * You can "enrich" the node creation, by for example adding initial properties {@see NodeCreationCommands::withInitialPropertyValues()}
@@ -28,5 +28,5 @@ interface NodeCreationHandlerInterface
      * @param array<string|int,mixed> $data incoming data from the creationDialog
      * @return NodeCreationCommands the "enriched" commands, to be passed to the next handler or run at the end
      */
-    public function handle(NodeCreationCommands $commands, array $data, ContentRepository $contentRepository): NodeCreationCommands;
+    public function handle(NodeCreationCommands $commands, array $data): NodeCreationCommands;
 }

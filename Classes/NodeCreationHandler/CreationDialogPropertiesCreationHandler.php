@@ -12,7 +12,6 @@ namespace Neos\Neos\Ui\NodeCreationHandler;
  */
 
 use Neos\ContentRepository\Core\ContentRepository;
-use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Property\PropertyMapper;
 use Neos\Flow\Property\TypeConverter\PersistentObjectConverter;
 use Neos\Utility\TypeHandling;
@@ -23,24 +22,24 @@ use Neos\Utility\TypeHandling;
  * and sets the initial property values accordingly
  * @internal
  */
-class CreationDialogPropertiesCreationHandler implements NodeCreationHandlerInterface
+final readonly class CreationDialogPropertiesCreationHandler implements NodeCreationHandlerInterface
 {
-    /**
-     * @Flow\Inject
-     * @var PropertyMapper
-     */
-    protected $propertyMapper;
+    public function __construct(
+        private ContentRepository $contentRepository,
+        private PropertyMapper $propertyMapper
+    ) {
+    }
 
     /**
      * @param array<string|int,mixed> $data
      */
-    public function handle(NodeCreationCommands $commands, array $data, ContentRepository $contentRepository): NodeCreationCommands
+    public function handle(NodeCreationCommands $commands, array $data): NodeCreationCommands
     {
         $propertyMappingConfiguration = $this->propertyMapper->buildPropertyMappingConfiguration();
         $propertyMappingConfiguration->forProperty('*')->allowAllProperties();
         $propertyMappingConfiguration->setTypeConverterOption(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_OVERRIDE_TARGET_TYPE_ALLOWED, true);
 
-        $nodeType = $contentRepository->getNodeTypeManager()->getNodeType($commands->first->nodeTypeName);
+        $nodeType = $this->contentRepository->getNodeTypeManager()->getNodeType($commands->first->nodeTypeName);
         $propertyValues = $commands->first->initialPropertyValues;
         foreach ($nodeType->getConfiguration('properties') as $propertyName => $propertyConfiguration) {
             if (

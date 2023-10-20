@@ -11,8 +11,6 @@ namespace Neos\TestNodeTypes\NodeCreationHandler;
  * source code.
  */
 
-use Neos\ContentRepository\Core\ContentRepository;
-use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Property\PropertyMapper;
 use Neos\Flow\Property\TypeConverter\PersistentObjectConverter;
 use Neos\Media\Domain\Model\ImageInterface;
@@ -21,13 +19,12 @@ use Neos\Neos\Ui\NodeCreationHandler\NodeCreationHandlerInterface;
 
 class ImagePropertyNodeCreationHandler implements NodeCreationHandlerInterface
 {
-    /**
-     * @Flow\Inject
-     * @var PropertyMapper
-     */
-    protected $propertyMapper;
+    public function __construct(
+        private PropertyMapper $propertyMapper
+    ) {
+    }
 
-    public function handle(NodeCreationCommands $commands, array $data, ContentRepository $contentRepository): NodeCreationCommands
+    public function handle(NodeCreationCommands $commands, array $data): NodeCreationCommands
     {
         if (!isset($data['image'])) {
             return $commands;

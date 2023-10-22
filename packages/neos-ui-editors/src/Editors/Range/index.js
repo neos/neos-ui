@@ -64,7 +64,7 @@ class RangeEditor extends PureComponent {
         const options = {...this.constructor.defaultProps.options, ...this.props.options};
         const {value, highlight} = this.props;
         const valueAsString = value === 0 ? '0' : (value || '');
-        const styleWidth = Math.max(options.min.toString().length, options.max.toString().length) + 'ch'
+        const styleWidth = Math.max(options.min.toString().length, options.max.toString().length) + 'ch';
 
         return (
             <div

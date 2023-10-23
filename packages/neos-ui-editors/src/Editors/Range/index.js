@@ -41,8 +41,9 @@ class RangeEditor extends PureComponent {
     handleChange = event => {
         const {options} = this.props;
         const {target} = event;
+        const useParseInt = options.step % 1 === 0;
 
-        let value = parseFloat(target.value, 10);
+        let value = useParseInt ? parseInt(target.value, 10) : parseFloat(target.value, 10);
         if (isNaN(value)) {
             return;
         }

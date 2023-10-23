@@ -42,7 +42,7 @@ class RangeEditor extends PureComponent {
         const {options} = this.props;
         const {target} = event;
 
-        let value = parseInt(target.value, 10);
+        let value = parseFloat(target.value, 10);
         if (isNaN(value)) {
             return;
         }
@@ -64,7 +64,10 @@ class RangeEditor extends PureComponent {
         const options = {...this.constructor.defaultProps.options, ...this.props.options};
         const {value, highlight} = this.props;
         const valueAsString = value === 0 ? '0' : (value || '');
-        const styleWidth = Math.max(options.min.toString().length, options.max.toString().length) + 'ch';
+        // Calculate the width of the input field based on the length of the min, max and step values
+        const numLength = (value) => value.toString().length;
+        const additionalStepLength = numLength(options.step) - 1;
+        const styleWidth = Math.max(numLength(options.min), numLength(options.max)) + additionalStepLength + 'ch';
 
         return (
             <div

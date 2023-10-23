@@ -65,7 +65,7 @@ class RangeEditor extends PureComponent {
         const {value, highlight} = this.props;
         const valueAsString = value === 0 ? '0' : (value || '');
         // Calculate the width of the input field based on the length of the min, max and step values
-        const numLength = (value) => value.toString().length;
+        const numLength = value => value.toString().length;
         const additionalStepLength = numLength(options.step) - 1;
         const styleWidth = Math.max(numLength(options.min), numLength(options.max)) + additionalStepLength + 'ch';
 

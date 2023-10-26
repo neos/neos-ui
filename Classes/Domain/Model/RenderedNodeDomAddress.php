@@ -95,10 +95,9 @@ class RenderedNodeDomAddress implements \JsonSerializable
     /**
      * Serialize to json
      *
-     * @return array
+     * @return array<string, string>
      */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize(): mixed
+    public function jsonSerialize(): array
     {
         return [
             'contextPath' => $this->getContextPath(),

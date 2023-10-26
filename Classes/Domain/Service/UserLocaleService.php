@@ -40,9 +40,9 @@ class UserLocaleService
     /**
      * For serialization, we need to respect the UI locale, rather than the content locale
      *
-     * @param boolean $reset Reset to remebered locale
+     * @param boolean $reset Reset to remembered locale
      */
-    public function switchToUILocale($reset = false)
+    public function switchToUILocale($reset = false): void
     {
         if ($reset === true) {
             // Reset the locale

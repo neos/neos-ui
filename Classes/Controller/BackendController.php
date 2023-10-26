@@ -13,24 +13,25 @@ namespace Neos\Neos\Ui\Controller;
  */
 
 use Neos\ContentRepository\Core\NodeType\NodeTypeName;
-use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
-use Neos\Neos\Domain\Model\WorkspaceName as NeosWorkspaceName;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ActionController;
+use Neos\Flow\Mvc\View\ViewInterface;
+use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Flow\ResourceManagement\ResourceManager;
 use Neos\Flow\Security\Context;
 use Neos\Flow\Session\SessionInterface;
+use Neos\Fusion\View\FusionView;
 use Neos\Neos\Controller\Backend\MenuHelper;
 use Neos\Neos\Domain\Repository\DomainRepository;
 use Neos\Neos\Domain\Repository\SiteRepository;
+use Neos\Neos\Domain\Service\NodeTypeNameFactory;
+use Neos\Neos\Domain\Service\WorkspaceNameBuilder;
+use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;
 use Neos\Neos\Service\BackendRedirectionService;
 use Neos\Neos\Service\UserService;
-use Neos\Flow\Persistence\PersistenceManagerInterface;
-use Neos\Fusion\View\FusionView;
-use Neos\Flow\Mvc\View\ViewInterface;
 use Neos\Neos\Ui\Domain\Service\StyleAndJavascriptInclusionService;
 use Neos\Neos\Ui\Service\NodeClipboard;
 
@@ -148,8 +149,7 @@ class BackendController extends ActionController
 
         $currentAccount = $this->securityContext->getAccount();
         $workspace = $contentRepository->getWorkspaceFinder()->findOneByName(
-            NeosWorkspaceName::fromAccountIdentifier($currentAccount->getAccountIdentifier())
-                ->toContentRepositoryWorkspaceName()
+            WorkspaceNameBuilder::fromAccountIdentifier($currentAccount->getAccountIdentifier())
         );
         if (is_null($workspace)) {
             $this->redirectToUri($this->uriBuilder->uriFor('index', [], 'Login', 'Neos.Neos'));
@@ -171,7 +171,7 @@ class BackendController extends ActionController
         // to call the contentGraph here directly.
         $rootNodeAggregate = $contentRepository->getContentGraph()->findRootNodeAggregateByType(
             $workspace->currentContentStreamId,
-            NodeTypeName::fromString('Neos.Neos:Sites')
+            NodeTypeNameFactory::forSites()
         );
         $rootNode = $rootNodeAggregate->getNodeByCoveredDimensionSpacePoint($defaultDimensionSpacePoint);
 

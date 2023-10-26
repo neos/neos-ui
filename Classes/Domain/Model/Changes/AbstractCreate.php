@@ -87,7 +87,7 @@ abstract class AbstractCreate extends AbstractStructuralChange
      * @param Node $parentNode
      * @param NodeAggregateId|null $succeedingSiblingNodeAggregateId
      * @return Node
-     * @throws InvalidNodeCreationHandlerException|NodeNameIsAlreadyOccupied|NodeException
+     * @throws InvalidNodeCreationHandlerException|NodeNameIsAlreadyOccupied
      */
     protected function createNode(
         Node $parentNode,
@@ -97,9 +97,9 @@ abstract class AbstractCreate extends AbstractStructuralChange
         if (is_null($nodeTypeName)) {
             throw new \RuntimeException('Cannot run createNode without a set node type.', 1645577794);
         }
-        // TODO: the $name=... line should be as expressed below
-        // $name = $this->getName() ?: $this->nodeService->generateUniqueNodeName($parent->findParentNode());
-        $nodeName = NodeName::fromString($this->getName() ?: uniqid('node-', false));
+        $nodeName = $this->getName()
+            ? NodeName::fromString($this->getName())
+            : null;
 
         $nodeAggregateId = NodeAggregateId::create(); // generate a new NodeAggregateId
 

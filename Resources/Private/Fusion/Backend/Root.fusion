@@ -125,9 +125,6 @@ backend = Neos.Fusion:Template {
                 clearClipboard = Neos.Fusion:UriBuilder {
                     action = 'clearClipboard'
                 }
-                loadTree = Neos.Fusion:UriBuilder {
-                    action = 'loadTree'
-                }
                 flowQuery = Neos.Fusion:UriBuilder {
                     action = 'flowQuery'
                 }

@@ -1,4 +1,1 @@
 include: **/*.fusion
-page = Neos.Fusion:Renderer {
-    type = ${documentNode.nodeType.name}
-}

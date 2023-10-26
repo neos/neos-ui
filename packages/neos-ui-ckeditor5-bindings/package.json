@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-ckeditor5-bindings",
-  "version": "8.3.2",
+  "version": "8.3.4",
   "description": "Prepare CKEditor5 for the Neos CMS UI",
   "private": true,
   "main": "./src/manifest.js",

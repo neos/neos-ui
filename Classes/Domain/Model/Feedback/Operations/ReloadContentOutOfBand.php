@@ -154,7 +154,7 @@ class ReloadContentOutOfBand extends AbstractFeedback
     /**
      * @return array<string,mixed>
      */
-    public function serialize(ControllerContext $controllerContext)
+    public function serialize(ControllerContext $controllerContext): array
     {
         try {
             return parent::serialize($controllerContext);

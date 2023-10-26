@@ -22,7 +22,7 @@ class StaticResourcesHelper implements ProtectedContextAwareInterface
      */
     protected $frontendDevelopmentMode;
 
-    public function compiledResourcePackage()
+    public function compiledResourcePackage(): string
     {
         if ($this->frontendDevelopmentMode) {
             return 'Neos.Neos.Ui';

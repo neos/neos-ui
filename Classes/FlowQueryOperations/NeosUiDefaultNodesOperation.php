@@ -101,8 +101,7 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
             $toggledNodes,
             $ancestors,
             $subgraph,
-            $nodeAddressFactory,
-            $contentRepository
+            $nodeAddressFactory
         ) {
             $baseNodeAddress = $nodeAddressFactory->createFromNode($baseNode);
 

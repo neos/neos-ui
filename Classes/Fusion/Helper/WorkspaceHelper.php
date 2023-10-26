@@ -11,14 +11,13 @@ namespace Neos\Neos\Ui\Fusion\Helper;
  * source code.
  */
 
-use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\ContentRepository\Core\Factory\ContentRepositoryId;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\ProtectedContextAwareInterface;
-use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
-use Neos\Neos\Domain\Model\WorkspaceName as NeosWorkspaceName;
+use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Security\Context;
 use Neos\Neos\Domain\Service\UserService as DomainUserService;
-use Neos\Flow\Annotations as Flow;
+use Neos\Neos\Domain\Service\WorkspaceNameBuilder;
 use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService;
 
 /**
@@ -50,7 +49,10 @@ class WorkspaceHelper implements ProtectedContextAwareInterface
      */
     protected $securityContext;
 
-    public function getAllowedTargetWorkspaces(ContentRepositoryId $contentRepositoryId)
+    /**
+     * @return array<string,array<string,mixed>>
+     */
+    public function getAllowedTargetWorkspaces(ContentRepositoryId $contentRepositoryId): array
     {
         $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
         return $this->workspaceService->getAllowedTargetWorkspaces($contentRepository);
@@ -63,9 +65,7 @@ class WorkspaceHelper implements ProtectedContextAwareInterface
     {
         $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
         $currentAccount = $this->securityContext->getAccount();
-        $personalWorkspaceName = NeosWorkspaceName::fromAccountIdentifier(
-            $currentAccount->getAccountIdentifier()
-        )->toContentRepositoryWorkspaceName();
+        $personalWorkspaceName = WorkspaceNameBuilder::fromAccountIdentifier($currentAccount->getAccountIdentifier());
         $personalWorkspace = $contentRepository->getWorkspaceFinder()->findOneByName($personalWorkspaceName);
 
         return !is_null($personalWorkspace)

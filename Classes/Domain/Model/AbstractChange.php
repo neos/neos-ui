@@ -11,18 +11,26 @@ namespace Neos\Neos\Ui\Domain\Model;
  * source code.
  */
 
+use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindClosestNodeFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
+use Neos\Neos\Domain\Service\NodeTypeNameFactory;
 use Neos\Neos\Service\UserService;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\NodeCreated;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
+use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
 
 abstract class AbstractChange implements ChangeInterface
 {
+    use NodeTypeWithFallbackProvider;
+
     protected ?Node $subject;
+
+    #[Flow\Inject]
+    protected ContentRepositoryRegistry $contentRepositoryRegistry;
 
     /**
      * @Flow\Inject
@@ -42,12 +50,6 @@ abstract class AbstractChange implements ChangeInterface
      */
     protected $persistenceManager;
 
-    /**
-     * @Flow\Inject
-     * @var ContentRepositoryRegistry
-     */
-    protected $contentRepositoryRegistry;
-
     public function setSubject(Node $subject): void
     {
         $this->subject = $subject;
@@ -64,7 +66,8 @@ abstract class AbstractChange implements ChangeInterface
     protected function updateWorkspaceInfo(): void
     {
         if (!is_null($this->subject)) {
-            $documentNode = $this->findClosestDocumentNode($this->subject);
+            $subgraph = $this->contentRepositoryRegistry->subgraphForNode($this->subject);
+            $documentNode = $subgraph->findClosestNode($this->subject->nodeAggregateId, FindClosestNodeFilter::create(nodeTypeConstraints: NodeTypeNameFactory::NAME_DOCUMENT));
             if (!is_null($documentNode)) {
                 $contentRepository = $this->contentRepositoryRegistry->get($this->subject->subgraphIdentity->contentRepositoryId);
                 $workspace = $contentRepository->getWorkspaceFinder()->findOneByCurrentContentStreamId(
@@ -76,18 +79,6 @@ abstract class AbstractChange implements ChangeInterface
                 }
             }
         }
-    }
-
-    final protected function findClosestDocumentNode(Node $node): ?Node
-    {
-        while ($node instanceof Node) {
-            if ($node->nodeType->isOfType('Neos.Neos:Document')) {
-                return $node;
-            }
-            $node = $this->findParentNode($node);
-        }
-
-        return null;
     }
 
     protected function findParentNode(Node $node): ?Node

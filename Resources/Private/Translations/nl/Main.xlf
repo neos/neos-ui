@@ -519,6 +519,10 @@
                 <source>Format options</source>
         <target state="translated">Opmaakopties</target>
       </trans-unit>
+      <trans-unit id="add" xml:space="preserve">
+                <source>Add</source>
+        <target state="translated">Voeg toe</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

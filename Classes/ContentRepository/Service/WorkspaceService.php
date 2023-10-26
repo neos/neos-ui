@@ -98,7 +98,7 @@ class WorkspaceService
                 $node = $subgraph->findNodeById($change->nodeAggregateId);
 
                 if ($node instanceof Node) {
-                    $documentNode = $subgraph->findClosestNode($node->nodeAggregateId, FindClosestNodeFilter::create(nodeTypeConstraints: NodeTypeNameFactory::NAME_DOCUMENT));
+                    $documentNode = $subgraph->findClosestNode($node->nodeAggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_DOCUMENT));
                     if ($documentNode instanceof Node) {
                         $contentRepository = $this->contentRepositoryRegistry->get($documentNode->subgraphIdentity->contentRepositoryId);
                         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);

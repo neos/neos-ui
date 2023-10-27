@@ -161,7 +161,7 @@ git checkout 9.0 && git fetch && git reset --hard origin/9.0 && git merge --no-f
 The unit tests are executed with [jest](https://facebook.github.io/jest/).
 To run the unit tests, execute `make test` in your shell.
 
-Adding unit tests is fairly simple, just create a file on the same tree level as your changed/new feature, named `[filename].spec.js` and karma will execute all tests found within the spec file, other than that, just orient yourself on the existing tests.
+Adding unit tests is fairly simple, just create a file on the same directory level as your changed/new feature, named `[filename].spec.js` and karma will execute all tests found within the spec file, other than that, just orient yourself on the existing tests.
 
 Use `it.only(() => {})` and `describe.only(() => {})` if you want to run a specific test and not the whole test suite.
 

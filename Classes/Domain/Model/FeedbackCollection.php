@@ -48,8 +48,9 @@ class FeedbackCollection implements \JsonSerializable
      */
     public function add(FeedbackInterface $feedback)
     {
-        foreach ($this->feedbacks as $value) {
-            if ($value->isSimilarTo($feedback)) {
+        foreach ($this->feedbacks as $i => $value) {
+            if ($feedback->isSimilarTo($value)) {
+                $this->feedbacks[$i] = $feedback;
                 return;
             }
         }

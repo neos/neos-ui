@@ -147,7 +147,11 @@ class ReloadContentOutOfBand extends AbstractFeedback
                 $view->assign('value', $this->node);
                 $view->setRenderingEntryPoint($this->nodeDomAddress->getFusionPathForContentRendering());
 
-                return $view->render();
+                $result = $view->render();
+
+                return (is_string($result) || $result instanceof ResponseInterface)
+                    ? $result
+                    : '';
             }
         }
 

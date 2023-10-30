@@ -176,7 +176,7 @@ class Property extends AbstractChange
                 }
 
                 $commandResult = $contentRepository->handle(
-                    new SetNodeReferences(
+                    SetNodeReferences::create(
                         $subject->subgraphIdentity->contentStreamId,
                         $subject->nodeAggregateId,
                         $subject->originDimensionSpacePoint,

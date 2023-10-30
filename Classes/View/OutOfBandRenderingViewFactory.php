@@ -12,11 +12,10 @@
 
 declare(strict_types=1);
 
-namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
+namespace Neos\Neos\Ui\View;
 
 use Neos\Flow\Mvc\View\AbstractView;
 use Neos\Flow\Annotations as Flow;
-use Neos\Neos\View\RenderingEntryPointAware;
 
 class OutOfBandRenderingViewFactory
 {
@@ -26,7 +25,7 @@ class OutOfBandRenderingViewFactory
     #[Flow\InjectConfiguration(path: 'outOfBandRendering.viewObjectName')]
     protected string $viewObjectName;
 
-    public function resolveView(): AbstractView&RenderingEntryPointAware
+    public function resolveView(): AbstractView&OutOfBandRenderingCapable
     {
         if (!class_exists($this->viewObjectName)) {
             throw new \DomainException(
@@ -42,9 +41,9 @@ class OutOfBandRenderingViewFactory
                 1697821429
             );
         }
-        if (!$view instanceof RenderingEntryPointAware) {
+        if (!$view instanceof OutOfBandRenderingCapable) {
             throw new \DomainException(
-                'Declared view (' . $this->viewObjectName . ') does not implement ' . RenderingEntryPointAware::class
+                'Declared view (' . $this->viewObjectName . ') does not implement ' . OutOfBandRenderingCapable::class
                 . ' required for out-of-band rendering',
                 1697821364
             );

@@ -196,11 +196,7 @@ class RenderContentOutOfBand extends AbstractFeedback
                 $view->assign('value', $parentNode);
                 $view->setRenderingEntryPoint($parentDomAddress->getFusionPath());
 
-                $result = $view->render();
-
-                return (is_string($result) || $result instanceof ResponseInterface)
-                    ? $result
-                    : '';
+                return $view->render();
             }
         }
 

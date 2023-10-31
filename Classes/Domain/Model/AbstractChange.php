@@ -27,7 +27,7 @@ abstract class AbstractChange implements ChangeInterface
 {
     use NodeTypeWithFallbackProvider;
 
-    protected ?Node $subject;
+    protected ?Node $subject = null;
 
     #[Flow\Inject]
     protected ContentRepositoryRegistry $contentRepositoryRegistry;

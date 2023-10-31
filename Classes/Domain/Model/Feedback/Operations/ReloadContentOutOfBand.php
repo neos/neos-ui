@@ -28,7 +28,7 @@ use Psr\Http\Message\ResponseInterface;
 
 class ReloadContentOutOfBand extends AbstractFeedback
 {
-    protected ?Node $node;
+    protected ?Node $node = null;
 
     protected ?RenderedNodeDomAddress $nodeDomAddress;
 

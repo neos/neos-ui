@@ -23,7 +23,7 @@ use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 
 class ReloadDocument extends AbstractFeedback
 {
-    protected ?Node $node;
+    protected ?Node $node = null;
 
     #[Flow\Inject]
     protected ContentRepositoryRegistry $contentRepositoryRegistry;

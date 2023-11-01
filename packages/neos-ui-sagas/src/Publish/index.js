@@ -5,8 +5,6 @@ import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store
 import backend from '@neos-project/neos-ui-backend-connector';
 import {getGuestFrameDocument} from '@neos-project/neos-ui-guest-frame/src/dom';
 
-const {publishableNodesInDocumentSelector} = selectors.CR.Workspaces;
-
 export function * watchPublish() {
     const {publish} = backend.get().endpoints;
 
@@ -23,18 +21,6 @@ export function * watchPublish() {
             } catch (error) {
                 console.error('Failed to publish', error);
             }
-        }
-    });
-}
-
-export function * watchToggleAutoPublish() {
-    yield takeEvery(actionTypes.User.Settings.TOGGLE_AUTO_PUBLISHING, function * publishInitially() {
-        const state = yield select();
-        const isAutoPublishingEnabled = $get('user.settings.isAutoPublishingEnabled', state);
-
-        if (isAutoPublishingEnabled) {
-            const publishableNodesInDocument = publishableNodesInDocumentSelector(state);
-            yield put(actions.CR.Workspaces.publish(publishableNodesInDocument.map($get('contextPath')), 'live'));
         }
     });
 }

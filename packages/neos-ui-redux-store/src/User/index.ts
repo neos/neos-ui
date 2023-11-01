@@ -1,17 +1,15 @@
 import {combineReducers} from '../combineReducers';
 
-import * as Settings from './Settings';
 import * as Preferences from './Preferences';
 import * as Name from './Name';
 import * as Impersonate from './Impersonate';
 
-const all = {Settings, Preferences, Name, Impersonate};
+const all = {Preferences, Name, Impersonate};
 
 //
 // Export the subreducer state shape interface
 //
 export interface State {
-    settings: Settings.State;
     preferences: Preferences.State;
     name: Name.State;
     impersonate: Impersonate.State;
@@ -35,7 +33,6 @@ export const actions = typedKeys(all).reduce((acc, cur) => ({...acc, [cur]: all[
 // Export the reducer
 //
 export const reducer = combineReducers({
-    settings: Settings.reducer,
     preferences: Preferences.reducer,
     name: Name.reducer,
     impersonate: Impersonate.reducer

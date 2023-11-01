@@ -7,8 +7,6 @@ import {$transform, $get} from 'plow-js';
 
 import Badge from '@neos-project/react-ui-components/src/Badge/';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
-import CheckBox from '@neos-project/react-ui-components/src/CheckBox/';
-import Label from '@neos-project/react-ui-components/src/Label/';
 import DropDown from '@neos-project/react-ui-components/src/DropDown/';
 
 import I18n from '@neos-project/neos-ui-i18n';
@@ -29,10 +27,8 @@ import style from './style.module.css';
     publishableNodesInDocument: publishableNodesInDocumentSelector,
     personalWorkspaceName: personalWorkspaceNameSelector,
     baseWorkspace: baseWorkspaceSelector,
-    isWorkspaceReadOnly: isWorkspaceReadOnlySelector,
-    isAutoPublishingEnabled: $get('user.settings.isAutoPublishingEnabled')
+    isWorkspaceReadOnly: isWorkspaceReadOnlySelector
 }), {
-    toggleAutoPublishing: actions.User.Settings.toggleAutoPublishing,
     changeBaseWorkspaceAction: actions.CR.Workspaces.changeBaseWorkspace,
     publishAction: actions.CR.Workspaces.publish,
     discardAction: actions.CR.Workspaces.commenceDiscard
@@ -52,8 +48,6 @@ export default class PublishDropDown extends PureComponent {
         personalWorkspaceName: PropTypes.string.isRequired,
         baseWorkspace: PropTypes.string.isRequired,
         neos: PropTypes.object.isRequired,
-        isAutoPublishingEnabled: PropTypes.bool,
-        toggleAutoPublishing: PropTypes.func.isRequired,
         publishAction: PropTypes.func.isRequired,
         discardAction: PropTypes.func.isRequired,
         changeBaseWorkspaceAction: PropTypes.func.isRequired,
@@ -92,9 +86,7 @@ export default class PublishDropDown extends PureComponent {
             isSaving,
             isPublishing,
             isDiscarding,
-            isAutoPublishingEnabled,
             isWorkspaceReadOnly,
-            toggleAutoPublishing,
             baseWorkspace,
             changeBaseWorkspaceAction,
             i18nRegistry,
@@ -107,10 +99,6 @@ export default class PublishDropDown extends PureComponent {
         const canPublishLocally = !isSaving && !isPublishing && !isDiscarding && publishableNodesInDocument && (publishableNodesInDocument.length > 0);
         const canPublishGlobally = !isSaving && !isPublishing && !isDiscarding && publishableNodes && (publishableNodes.length > 0);
         const changingWorkspaceAllowed = !canPublishGlobally;
-        const autoPublishWrapperClassNames = mergeClassNames({
-            [style.dropDown__item]: true,
-            [style['dropDown__item--noHover']]: true
-        });
         const mainButton = this.getTranslatedMainButton(baseWorkspaceTitle);
         const dropDownBtnClassName = mergeClassNames({
             [style.dropDown__btn]: true,
@@ -213,27 +201,6 @@ export default class PublishDropDown extends PureComponent {
                                 <I18n id="Neos.Neos:Main:reviewChanges" fallback="Review changes"/>
                             </a>
                         </li>)}
-                        <li className={autoPublishWrapperClassNames}>
-                            {
-                                /**
-                                PLEASE NOTE: this additional styleClass is a fix, because react checkboxes inside a react select component are buggy,
-                                for further information see https://github.com/neos/neos-ui/pull/3211
-                                */
-                            }
-                            <Label htmlFor="neos-PublishDropDown-AutoPublish" className={style.dropdownOptionCheckbox}>
-                                <
-// @ts-ignore
-                                CheckBox
-                                    id="neos-PublishDropDown-AutoPublish"
-                                    onChange={toggleAutoPublishing}
-                                    isChecked={isAutoPublishingEnabled}
-                                    className={style.dropdownOptionCheckbox__input}
-                                    />
-                                <span className={style.dropdownOptionCheckbox__label}>
-                                    <I18n id="Neos.Neos:Main:autoPublish" fallback="Auto-Publish"/>
-                                </span>
-                            </Label>
-                        </li>
                         <li className={style.dropDown__item}>
                             <a id="neos-PublishDropDown-Workspaces" href={workspaceModuleUri}>
                                 <div className={style.dropDown__iconWrapper}>
@@ -253,8 +220,7 @@ export default class PublishDropDown extends PureComponent {
             publishableNodesInDocument,
             isSaving,
             isPublishing,
-            isDiscarding,
-            isAutoPublishingEnabled
+            isDiscarding
         } = this.props;
         const canPublishLocally = publishableNodesInDocument && (publishableNodesInDocument.length > 0);
 
@@ -268,13 +234,6 @@ export default class PublishDropDown extends PureComponent {
 
         if (isDiscarding) {
             return 'Discarding...';
-        }
-
-        if (isAutoPublishingEnabled) {
-            if (baseWorkspaceTitle) {
-                return <I18n id="Neos.Neos:Main:autoPublishTo" fallback={'Auto publish to ' + baseWorkspaceTitle} params={{0: baseWorkspaceTitle}}/>;
-            }
-            return <I18n id="Neos.Neos:Main:autoPublish" fallback="Auto publish"/>;
         }
 
         if (canPublishLocally) {

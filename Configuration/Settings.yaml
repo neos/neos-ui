@@ -176,7 +176,6 @@ Neos:
           preferences:
             interfaceLanguage: '${q(user).property(''preferences.interfaceLanguage'') || Configuration.setting(''Neos.Neos.userInterface.defaultLanguage'')}'
           settings:
-            isAutoPublishingEnabled: false
             targetWorkspace: 'live'
       changes:
         types:

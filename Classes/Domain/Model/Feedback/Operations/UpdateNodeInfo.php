@@ -23,7 +23,7 @@ use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 
 class UpdateNodeInfo extends AbstractFeedback
 {
-    protected ?Node $node;
+    protected ?Node $node = null;
 
     /**
      * @Flow\Inject

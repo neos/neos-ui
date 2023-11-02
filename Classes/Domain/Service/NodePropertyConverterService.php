@@ -19,6 +19,7 @@ use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindReferencesFil
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\Projection\ContentGraph\References;
 use Neos\ContentRepository\Core\Projection\NodeHiddenState\NodeHiddenStateFinder;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateIds;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Log\ThrowableStorageInterface;
@@ -120,31 +121,7 @@ class NodePropertyConverterService
         }
         $propertyType = $this->getNodeType($node)->getPropertyType($propertyName);
 
-        // We handle "reference" and "references" differently than other properties;
-        // because we need to use another API for querying these references.
-        if ($propertyType === 'reference') {
-            $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
-            $referenceIdentifiers = $this->toNodeIdentifierStrings(
-                $subgraph->findReferences(
-                    $node->nodeAggregateId,
-                    FindReferencesFilter::create(referenceName: $propertyName)
-                )
-            );
-            if (count($referenceIdentifiers) === 0) {
-                return null;
-            } else {
-                return reset($referenceIdentifiers);
-            }
-        } elseif ($propertyType === 'references') {
-            $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
-            $references = $subgraph->findReferences(
-                $node->nodeAggregateId,
-                FindReferencesFilter::create(referenceName: $propertyName)
-            );
-
-            return $this->toNodeIdentifierStrings($references);
-            // Here, the normal property access logic starts.
-        } elseif ($propertyName[0] === '_' && $propertyName !== '_hiddenInIndex') {
+        if ($propertyName[0] === '_' && $propertyName !== '_hiddenInIndex') {
             $propertyValue = ObjectAccess::getProperty($node, ltrim($propertyName, '_'));
         } else {
             $propertyValue = $node->getProperty($propertyName);
@@ -175,27 +152,16 @@ class NodePropertyConverterService
     }
 
     /**
-     * @return array<int,string>
-     */
-    private function toNodeIdentifierStrings(References $references): array
-    {
-        $identifiers = [];
-        foreach ($references as $reference) {
-            $identifiers[] = $reference->node->nodeAggregateId->value;
-        }
-        return $identifiers;
-    }
-
-    /**
      * Get all properties reduced to simple type (no objects) representations in an array
      *
      * @param Node $node
      * @return array<string,mixed>
      */
-    public function getPropertiesArray(Node $node)
+    public function getPropertiesArray(Node $node): array
     {
         $properties = [];
-        foreach ($this->getNodeType($node)->getProperties() as $propertyName => $propertyConfiguration) {
+        $nodeType = $this->getNodeType($node);
+        foreach ($nodeType->getProperties() as $propertyName => $propertyConfiguration) {
             if ($propertyName[0] === '_' && $propertyName[1] === '_') {
                 // skip fully-private properties
                 continue;
@@ -203,8 +169,33 @@ class NodePropertyConverterService
 
             $properties[$propertyName] = $this->getProperty($node, $propertyName);
         }
+        foreach ($nodeType->getReferences() as $referenceName => $referenceConfiguration) {
+            $properties[$referenceName] = $this->getReferenceValue($node, $referenceName);
+        }
 
         return $properties;
+    }
+
+    /**
+     * Get reference value(s) reduced to their node aggregate IDs
+     *
+     * @return array<int,string>|string|null
+     */
+    protected function getReferenceValue(Node $node, string $referenceName): array|string|null
+    {
+        $nodeType = $this->getNodeType($node);
+        $referenceConfiguration = $nodeType->getReferences()[$referenceName];
+        $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
+        $referenceIdentifiers = NodeAggregateIds::fromNodes($subgraph->findReferences(
+            $node->nodeAggregateId,
+            FindReferencesFilter::create(referenceName: $referenceName)
+        )->getNodes())->toStringArray();
+
+        $expectsArray = ($referenceConfiguration['constraints']['valueReference']['maxValue'] ?? null) !== 1;
+
+        return $expectsArray
+            ? $referenceIdentifiers
+            : (reset($referenceIdentifiers) ?: null);
     }
 
     /**

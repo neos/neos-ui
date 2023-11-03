@@ -21,7 +21,7 @@ class CopyInto extends AbstractStructuralChange
 {
     protected ?string $parentContextPath;
 
-    protected ?Node $cachedParentNode;
+    protected ?Node $cachedParentNode = null;
 
     public function setParentContextPath(string $parentContextPath): void
     {

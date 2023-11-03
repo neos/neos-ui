@@ -51,7 +51,6 @@ manifest('main.sagas', {}, globalRegistry => {
     sagasRegistry.set('neos-ui/Publish/watchChangeBaseWorkspace', {saga: publish.watchChangeBaseWorkspace});
     sagasRegistry.set('neos-ui/Publish/discardIfConfirmed', {saga: publish.discardIfConfirmed});
     sagasRegistry.set('neos-ui/Publish/watchPublish', {saga: publish.watchPublish});
-    sagasRegistry.set('neos-ui/Publish/watchToggleAutoPublish', {saga: publish.watchToggleAutoPublish});
 
     sagasRegistry.set('neos-ui/ServerFeedback/watchServerFeedback', {saga: serverFeedback.watchServerFeedback});
 

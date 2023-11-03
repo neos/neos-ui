@@ -67,7 +67,7 @@ abstract class AbstractChange implements ChangeInterface
     {
         if (!is_null($this->subject)) {
             $subgraph = $this->contentRepositoryRegistry->subgraphForNode($this->subject);
-            $documentNode = $subgraph->findClosestNode($this->subject->nodeAggregateId, FindClosestNodeFilter::create(nodeTypeConstraints: NodeTypeNameFactory::NAME_DOCUMENT));
+            $documentNode = $subgraph->findClosestNode($this->subject->nodeAggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_DOCUMENT));
             if (!is_null($documentNode)) {
                 $contentRepository = $this->contentRepositoryRegistry->get($this->subject->subgraphIdentity->contentRepositoryId);
                 $workspace = $contentRepository->getWorkspaceFinder()->findOneByCurrentContentStreamId(

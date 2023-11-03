@@ -70,7 +70,7 @@ class Remove extends AbstractChange
             $this->updateWorkspaceInfo();
 
             $subgraph = $this->contentRepositoryRegistry->subgraphForNode($this->subject);
-            $closestDocumentParentNode = $subgraph->findClosestNode($this->subject->nodeAggregateId, FindClosestNodeFilter::create(nodeTypeConstraints: NodeTypeNameFactory::NAME_DOCUMENT));
+            $closestDocumentParentNode = $subgraph->findClosestNode($this->subject->nodeAggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_DOCUMENT));
             $command = RemoveNodeAggregate::create(
                 $subject->subgraphIdentity->contentStreamId,
                 $subject->nodeAggregateId,

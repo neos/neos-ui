@@ -245,13 +245,13 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
         $documentChildNodes = $subgraph->findChildNodes(
             $node->nodeAggregateId,
-            FindChildNodesFilter::create(nodeTypeConstraints: $nodeTypeFilterString)
+            FindChildNodesFilter::create(nodeTypes: $nodeTypeFilterString)
         );
         // child nodes for content tree, must not include those nodes filtered out by `baseNodeType`
         $contentChildNodes = $subgraph->findChildNodes(
             $node->nodeAggregateId,
             FindChildNodesFilter::create(
-                nodeTypeConstraints: $this->buildContentChildNodeFilterString()
+                nodeTypes: $this->buildContentChildNodeFilterString()
             )
         );
         $childNodes = $documentChildNodes->merge($contentChildNodes);
@@ -480,7 +480,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         return $this->contentRepositoryRegistry->subgraphForNode($node)
             ->findChildNodes(
                 $node->nodeAggregateId,
-                FindChildNodesFilter::create(nodeTypeConstraints: $nodeTypeFilterString)
+                FindChildNodesFilter::create(nodeTypes: $nodeTypeFilterString)
             );
     }
 

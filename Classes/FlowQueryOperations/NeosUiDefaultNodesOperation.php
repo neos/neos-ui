@@ -15,7 +15,7 @@ namespace Neos\Neos\Ui\FlowQueryOperations;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindAncestorNodesFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindChildNodesFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
-use Neos\ContentRepository\Core\Projection\ContentGraph\NodeTypeConstraints;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\NodeType\NodeTypeCriteria;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Eel\FlowQuery\Operations\AbstractOperation;
@@ -75,14 +75,14 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
         $contentRepository = $this->contentRepositoryRegistry->get($documentNode->subgraphIdentity->contentRepositoryId);
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
 
-        $baseNodeTypeConstraints = NodeTypeConstraints::fromFilterString($baseNodeType);
+        $baseNodeTypeConstraints = NodeTypeCriteria::fromFilterString($baseNodeType);
 
         $subgraph = $this->contentRepositoryRegistry->subgraphForNode($documentNode);
 
         $ancestors = $subgraph->findAncestorNodes(
             $documentNode->nodeAggregateId,
             FindAncestorNodesFilter::create(
-                NodeTypeConstraints::fromFilterString('Neos.Neos:Document')
+                NodeTypeCriteria::fromFilterString('Neos.Neos:Document')
             )
         );
 
@@ -117,7 +117,7 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
             ) {
                 foreach ($subgraph->findChildNodes(
                     $baseNode->nodeAggregateId,
-                    FindChildNodesFilter::create(nodeTypeConstraints: $baseNodeTypeConstraints)
+                    FindChildNodesFilter::create(nodeTypes: $baseNodeTypeConstraints)
                 ) as $childNode) {
                     $nodes[$childNode->nodeAggregateId->value] = $childNode;
                     $gatherNodesRecursively($nodes, $childNode, $level + 1);

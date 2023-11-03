@@ -108,8 +108,17 @@ abstract class AbstractCreate extends AbstractStructuralChange
 
         $nodeAggregateId = NodeAggregateId::create(); // generate a new NodeAggregateId
 
+        $contentRepository = $this->contentRepositoryRegistry->get($parentNode->subgraphIdentity->contentRepositoryId);
+        $workspace = $this->contentRepositoryRegistry->get($this->subject->subgraphIdentity->contentRepositoryId)
+            ->getWorkspaceFinder()->findOneByCurrentContentStreamId($parentNode->subgraphIdentity->contentStreamId);
+        if (!$workspace) {
+            throw new \Exception(
+                'Could not find workspace for content stream "' . $parentNode->subgraphIdentity->contentStreamId->value . '"',
+                1699008140
+            );
+        }
         $command = CreateNodeAggregateWithNode::create(
-            $parentNode->subgraphIdentity->contentStreamId,
+            $workspace->workspaceName,
             $nodeAggregateId,
             $nodeTypeName,
             OriginDimensionSpacePoint::fromDimensionSpacePoint($parentNode->subgraphIdentity->dimensionSpacePoint),
@@ -117,7 +126,6 @@ abstract class AbstractCreate extends AbstractStructuralChange
             $succeedingSiblingNodeAggregateId,
             $nodeName
         );
-        $contentRepository = $this->contentRepositoryRegistry->get($parentNode->subgraphIdentity->contentRepositoryId);
 
         $command = $this->applyNodeCreationHandlers($command, $nodeTypeName, $contentRepository);
 

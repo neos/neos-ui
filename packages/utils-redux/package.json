@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/utils-redux",
-  "version": "8.3.4",
+  "version": "9.0.0-beta1",
   "description": "Neos CMS UI Redux Helper utilitites",
   "private": true,
   "main": "./src/index.ts",
@@ -8,5 +8,6 @@
     "@neos-project/jest-preset-neos-ui": "workspace:*",
     "typescript": "^4.6.4"
   },
-  "license": "GNU GPLv3"
+  "license": "GNU GPLv3",
+  "stableVersion": "8.3.4"
 }

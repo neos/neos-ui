@@ -15,7 +15,7 @@ use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindDescendantNod
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\Projection\ContentGraph\SearchTerm;
 use Neos\ContentRepository\Core\NodeType\NodeTypeConstraintParser;
-use Neos\ContentRepository\Core\Projection\ContentGraph\NodeTypeConstraints;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\NodeType\NodeTypeCriteria;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateIds;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\FlowQuery\FlowQuery;
@@ -80,7 +80,7 @@ class SearchOperation extends AbstractOperation
             $filter = $filter->with(searchTerm: $arguments[0]);
         }
         if (isset($arguments[1]) && $arguments[1] !== '') {
-            $filter = $filter->with(nodeTypeConstraints: $arguments[1]);
+            $filter = $filter->with(nodeTypes: $arguments[1]);
         }
         $nodes = $subgraph->findDescendantNodes(
             $contextNode->nodeAggregateId,

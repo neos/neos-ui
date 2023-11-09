@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui",
-  "version": "8.3.4",
+  "version": "9.0.0-beta1",
   "description": "Neos CMS UI written in ReactJS and a ton of other fun technology.",
   "private": true,
   "devDependencies": {
@@ -65,5 +65,6 @@
     "reselect": "^3.0.1",
     "uuid": "^3.3.2"
   },
-  "license": "GNU GPLv3"
+  "license": "GNU GPLv3",
+  "stableVersion": "8.3.4"
 }

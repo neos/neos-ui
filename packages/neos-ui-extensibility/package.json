@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-extensibility",
-  "version": "8.3.4",
+  "version": "9.0.0-beta1",
   "description": "Core of the extensibility mechanisms for the Neos UI",
   "repository": "neos/neos-ui",
   "bugs": "https://github.com/neos/neos-ui/issues",
@@ -22,5 +22,6 @@
   },
   "dependencies": {
     "@neos-project/positional-array-sorter": "workspace:*"
-  }
+  },
+  "stableVersion": "8.3.4"
 }

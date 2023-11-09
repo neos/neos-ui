@@ -38,12 +38,11 @@ class NodePropertyValidationService
     protected $dateTimeConverter;
 
     /**
-     * @param $value
      * @param string $validatorName
-     * @param array $validatorConfiguration
+     * @param array<string|int, mixed> $validatorConfiguration
      * @return bool
      */
-    public function validate($value, string $validatorName, array $validatorConfiguration): bool
+    public function validate(mixed $value, string $validatorName, array $validatorConfiguration): bool
     {
         $validator = $this->resolveValidator($validatorName, $validatorConfiguration);
 
@@ -70,7 +69,7 @@ class NodePropertyValidationService
 
     /**
      * @param string $validatorName
-     * @param array $validatorConfiguration
+     * @param array<string|int, mixed> $validatorConfiguration
      * @return ValidatorInterface|null
      */
     protected function resolveValidator(string $validatorName, array $validatorConfiguration)
@@ -88,6 +87,8 @@ class NodePropertyValidationService
             return null;
         }
 
-        return new $fullQualifiedValidatorClassName($validatorConfiguration);
+        /** @var ValidatorInterface $validator */
+        $validator = new $fullQualifiedValidatorClassName($validatorConfiguration);
+        return $validator;
     }
 }

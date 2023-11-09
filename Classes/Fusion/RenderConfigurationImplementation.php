@@ -26,12 +26,12 @@ class RenderConfigurationImplementation extends AbstractFusionObject
 
     /**
      * @Flow\InjectConfiguration()
-     * @var array
+     * @var array<string, mixed>
      */
     protected $settings;
 
     /**
-     * @return array
+     * @return array<string, mixed>
      */
     protected function getContext(): array
     {
@@ -49,7 +49,7 @@ class RenderConfigurationImplementation extends AbstractFusionObject
     /**
      * Appends an item to the given collection
      *
-     * @return array
+     * @return array<string|int, mixed>
      * @throws Exception
      */
     public function evaluate()

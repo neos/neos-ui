@@ -1,9 +1,7 @@
 import {takeEvery, put, call, select} from 'redux-saga/effects';
 
-import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
+import {actionTypes, actions} from '@neos-project/neos-ui-redux-store';
 import backend from '@neos-project/neos-ui-backend-connector';
-
-const {publishableNodesInDocumentSelector, baseWorkspaceSelector} = selectors.CR.Workspaces;
 
 function * persistChanges(changes) {
     const {change} = backend.get().endpoints;
@@ -13,15 +11,6 @@ function * persistChanges(changes) {
     try {
         const feedback = yield call(change, changes);
         yield put(actions.ServerFeedback.handleServerFeedback(feedback));
-
-        const state = yield select();
-        const isAutoPublishingEnabled = state?.user?.settings?.isAutoPublishingEnabled ?? false;
-
-        if (isAutoPublishingEnabled) {
-            const baseWorkspace = baseWorkspaceSelector(state);
-            const publishableNodesInDocument = publishableNodesInDocumentSelector(state);
-            yield put(actions.CR.Workspaces.publish(publishableNodesInDocument.map(node => node?.contextPath), baseWorkspace));
-        }
     } catch (error) {
         console.error('Failed to persist changes', error);
     } finally {

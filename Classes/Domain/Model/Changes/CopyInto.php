@@ -21,7 +21,7 @@ class CopyInto extends AbstractStructuralChange
 {
     protected ?string $parentContextPath;
 
-    protected ?Node $cachedParentNode;
+    protected ?Node $cachedParentNode = null;
 
     public function setParentContextPath(string $parentContextPath): void
     {
@@ -32,7 +32,7 @@ class CopyInto extends AbstractStructuralChange
     {
         if (!isset($this->cachedParentNode)) {
             $this->cachedParentNode = $this->parentContextPath
-                ? $this->nodeService->getNodeFromContextPath($this->parentContextPath, $this->getSubject()->subgraphIdentity->contentRepositoryId)
+                ? $this->nodeService->findNodeBySerializedNodeAddress($this->parentContextPath, $this->getSubject()->subgraphIdentity->contentRepositoryId)
                 : null;
         }
 

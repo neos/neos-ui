@@ -20,12 +20,11 @@ class ApiHelper implements ProtectedContextAwareInterface
      *
      * Use this helper to prevent associative arrays from being converted to non-associative arrays by json_encode.
      * This is an internal helper and might change without further notice
-     * FIXME: Probably better to produce objects in the first place "upstream".
      *
-     * @param array $array Associative array which may be empty
-     * @return array|\stdClass Non-empty associative array or empty object
+     * @param array<string|int, mixed> $array Associative array which may be empty
+     * @return array<string|int, mixed>|\stdClass Non-empty associative array or empty object
      */
-    public function emptyArrayToObject(array $array)
+    public function emptyArrayToObject(array $array): array|object
     {
         return $array === [] ? new \stdClass() : $array;
     }

@@ -10,8 +10,7 @@
   },
   "dependencies": {
     "@neos-project/neos-ts-interfaces": "workspace:*",
-    "@neos-project/utils-helpers": "workspace:*",
-    "plow-js": "3.0.0"
+    "@neos-project/utils-helpers": "workspace:*"
   },
   "license": "GNU GPLv3",
   "stableVersion": "8.3.4"

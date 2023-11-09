@@ -1,5 +1,4 @@
 import produce from 'immer';
-import {$get} from 'plow-js';
 import mapValues from 'lodash.mapvalues';
 import {createSelector} from 'reselect';
 import {action as createAction, ActionType} from 'typesafe-actions';
@@ -107,7 +106,7 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
  *     country: ["fr"]
  *   }
  */
-const activeSelector = (state: GlobalState) => $get(['cr', 'contentDimensions', 'active'], state);
+const activeSelector = (state: GlobalState) => state?.cr?.contentDimensions?.active;
 
 /**
  * Get the allowed presets for the currently active dimension values by dimension name
@@ -118,7 +117,7 @@ const activeSelector = (state: GlobalState) => $get(['cr', 'contentDimensions', 
  *     language: ["en_US", "en_UK", "de", "fr", ...]
  *   }
  */
-const allowedPresetsSelector = (state: GlobalState) => $get(['cr', 'contentDimensions', 'allowedPresets'], state);
+const allowedPresetsSelector = (state: GlobalState) => state?.cr?.contentDimensions?.allowedPresets;
 
 /**
  * Get dimension configurations by dimension name
@@ -142,7 +141,7 @@ const allowedPresetsSelector = (state: GlobalState) => $get(['cr', 'contentDimen
  *     }
  *   }
  */
-const byNameSelector = (state: GlobalState) => $get(['cr', 'contentDimensions', 'byName'], state);
+const byNameSelector = (state: GlobalState) => state?.cr?.contentDimensions?.byName;
 
 /**
  * Get the currently active dimension presets by dimension name

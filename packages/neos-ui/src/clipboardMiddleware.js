@@ -1,4 +1,3 @@
-import {$get} from 'plow-js';
 import backend from '@neos-project/neos-ui-backend-connector';
 
 //
@@ -28,14 +27,14 @@ const clipboardMiddleware = ({getState}) => {
             timer = setTimeout(() => {
                 const {copyNodes, cutNodes, clearClipboard} = backend.get().endpoints;
                 const state = getState();
-                const contextPaths = $get('cr.nodes.clipboard', state);
+                const contextPaths = state?.cr?.nodes?.clipboard;
                 if (action.type === '@neos/neos-ui/CR/Nodes/COMMIT_PASTE') {
                     if (action.payload === 'Move') {
                         clearClipboard();
                     }
-                } else if ($get('cr.nodes.clipboardMode', state) === 'Copy') {
+                } else if (state?.cr?.nodes?.clipboardMode === 'Copy') {
                     copyNodes(contextPaths);
-                } else if ($get('cr.nodes.clipboardMode', state) === 'Move') {
+                } else if (state?.cr?.nodes?.clipboardMode === 'Move') {
                     cutNodes(contextPaths);
                 }
                 timer = null;

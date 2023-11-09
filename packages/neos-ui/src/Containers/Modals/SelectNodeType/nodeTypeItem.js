@@ -1,7 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$transform, $get} from 'plow-js';
 import mergeClassNames from 'classnames';
 
 import {neos} from '@neos-project/neos-ui-decorators';
@@ -17,8 +16,8 @@ import style from './style.module.css';
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')
 }))
-@connect($transform({
-    mode: $get('ui.addNodeModal.mode')
+@connect(state => ({
+    mode: state?.ui?.addNodeModal?.mode
 }), {
     closeModal: actions.UI.AddNodeModal.close,
     persistChanges: actions.Changes.persistChanges
@@ -47,7 +46,7 @@ class NodeTypeItem extends PureComponent {
      * @returns {string}
      */
     getIconSize() {
-        const {previewIconSize, previewIcon} = $get('nodeType.ui', this.props);
+        const {previewIconSize, previewIcon} = this.props?.nodeType?.ui;
         const allowedSizes = ['xs', 'sm', 'lg', '2x', '3x'];
         const size = !isNil(previewIconSize) && allowedSizes.includes(previewIconSize) ? previewIconSize : '2x';
         return isNil(previewIcon) ? 'lg' : size;
@@ -55,12 +54,12 @@ class NodeTypeItem extends PureComponent {
 
     render() {
         const {ui, name} = this.props.nodeType;
-        const label = $get('label', ui);
+        const label = ui?.label;
         const usePreviewIcon = ('previewIcon' in ui);
-        const icon = $get(usePreviewIcon ? 'previewIcon' : 'icon', ui);
+        const icon = ui?.[usePreviewIcon ? 'previewIcon' : 'icon'];
         const size = this.getIconSize();
         const {onHelpMessage, groupName, i18nRegistry, focused} = this.props;
-        const helpMessage = i18nRegistry.translate($get('help.message', ui));
+        const helpMessage = i18nRegistry.translate(ui?.help?.message);
 
         return (
             <div className={style.nodeType}>

@@ -1,7 +1,6 @@
 /* eslint-disable camelcase, react/jsx-pascal-case */
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {$get} from 'plow-js';
 import mergeClassNames from 'classnames';
 import omit from 'lodash.omit';
 import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine';
@@ -170,7 +169,7 @@ class MultiSelectBox extends PureComponent {
 
     getOptionValueAccessor = () => {
         const {optionValueField} = this.props;
-        return $get([optionValueField]);
+        return subject => subject?.[optionValueField];
     };
 
     handleNewValueSelected = value => {

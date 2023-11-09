@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {$get} from 'plow-js';
+
 import style from './style.module.css';
 import EditorEnvelope from '@neos-project/neos-ui-editors/src/EditorEnvelope/index';
 import {neos} from '@neos-project/neos-ui-decorators';
@@ -18,8 +18,8 @@ import {selectors} from '@neos-project/neos-ui-redux-store';
 @connect((state, {id, nodeTypesRegistry, validatorRegistry}) => {
     const validationErrorsSelector = selectors.UI.Inspector.makeValidationErrorsSelector(nodeTypesRegistry, validatorRegistry);
     return state => ({
-        transientValueRaw: $get([id], selectors.UI.Inspector.transientValues(state)),
-        validationErrors: $get([id], validationErrorsSelector(state)) || null,
+        transientValueRaw: selectors.UI.Inspector.transientValues(state)?.[id],
+        validationErrors: validationErrorsSelector(state)?.[id] || null,
         isWorkspaceReadOnly: selectors.CR.Workspaces.isWorkspaceReadOnlySelector(state)
     });
 })
@@ -43,7 +43,7 @@ export default class InspectorEditorEnvelope extends PureComponent {
     get options() {
         // This makes sure that auto-created child nodes cannot be hidden
         // via the insprector (see: #2282)
-        if (this.props.isWorkspaceReadOnly || ($get('isAutoCreated', this.props.node) === true && this.props.id === '_hidden')) {
+        if (this.props.isWorkspaceReadOnly || (this.props.node?.isAutoCreated === true && this.props.id === '_hidden')) {
             return {...this.props.options, disabled: true};
         }
 
@@ -67,7 +67,7 @@ export default class InspectorEditorEnvelope extends PureComponent {
         //
         // nodeType needs to be read directly from node
         //
-        const sourceValueRaw = id === '_nodeType' ? $get('nodeType', node) : $get(['properties', id], node);
+        const sourceValueRaw = id === '_nodeType' ? node?.nodeType : node?.properties?.[id];
         const sourceValue = sourceValueRaw;
         const transientValue = transientValueRaw;
 

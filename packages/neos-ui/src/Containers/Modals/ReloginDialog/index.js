@@ -1,7 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$transform} from 'plow-js';
 
 import {neos} from '@neos-project/neos-ui-decorators';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
@@ -18,8 +17,8 @@ import style from './style.module.css';
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')
 }))
-@connect($transform({
-    authenticationTimeout: selectors.System.authenticationTimeout
+@connect(state => ({
+    authenticationTimeout: selectors.System.authenticationTimeout(state)
 }), {
     reauthenticationSucceeded: actions.System.reauthenticationSucceeded
 })

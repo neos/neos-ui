@@ -1,7 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$get, $transform} from 'plow-js';
 
 import Button from '@neos-project/react-ui-components/src/Button/';
 import Dialog from '@neos-project/react-ui-components/src/Dialog/';
@@ -12,9 +11,9 @@ import {neos} from '@neos-project/neos-ui-decorators';
 
 import style from './style.module.css';
 
-@connect($transform({
-    nodesToBeDeletedContextPaths: $get('cr.nodes.toBeRemoved'),
-    getNodeByContextPath: selectors.CR.Nodes.nodeByContextPath
+@connect(state => ({
+    nodesToBeDeletedContextPaths: state?.cr?.nodes?.toBeRemoved,
+    getNodeByContextPath: selectors.CR.Nodes.nodeByContextPath(state)
 }), {
     confirm: actions.CR.Nodes.confirmRemoval,
     abort: actions.CR.Nodes.abortRemoval
@@ -51,8 +50,8 @@ export default class DeleteNodeModal extends PureComponent {
         if (nodesToBeDeletedContextPaths.length === 1) {
             const singleNodeToBeDeletedContextPath = nodesToBeDeletedContextPaths[0];
             const node = getNodeByContextPath(singleNodeToBeDeletedContextPath);
-            const nodeType = $get('nodeType', node);
-            const nodeTypeLabel = $get('ui.label', nodeTypesRegistry.get(nodeType)) || 'Neos.Neos:Main:node';
+            const nodeType = node?.nodeType;
+            const nodeTypeLabel = nodeTypesRegistry.get(nodeType)?.ui?.label || 'Neos.Neos:Main:node';
             const nodeTypeLabelText = i18nRegistry.translate(nodeTypeLabel, 'Node')
             const deleteLabel = i18nRegistry.translate('delete', 'Delete')
             return (
@@ -63,7 +62,7 @@ export default class DeleteNodeModal extends PureComponent {
                         &nbsp;
                         {nodeTypeLabelText}
                         &nbsp;
-                        "{$get('label', node)}"
+                        "{node?.label}"
                     </span>
                 </div>
             );
@@ -128,9 +127,9 @@ export default class DeleteNodeModal extends PureComponent {
 
         nodesToBeDeletedContextPaths.forEach(nodeToBeDeleted => {
             node = getNodeByContextPath(nodeToBeDeleted);
-            const nodeLabel = $get('label', node);
-            const deleteMessage = $get('ui.deleteConfirmation.message', nodeTypesRegistry.get(node.nodeType));
-            const nodeType = $get('ui.label', nodeTypesRegistry.get(node.nodeType))
+            const nodeLabel = node?.label;
+            const deleteMessage = nodeTypesRegistry.get(node.nodeType)?.ui?.deleteConfirmation?.message;
+            const nodeType = nodeTypesRegistry.get(node.nodeType)?.ui?.label
             warnings.push({
                 'deleteMessage': i18nRegistry.translate(deleteMessage),
                 'nodeType': i18nRegistry.translate(nodeType, 'Node'),
@@ -151,7 +150,7 @@ export default class DeleteNodeModal extends PureComponent {
                 <div className={style.modalContents}>
                     <p>
                         {i18nRegistry.translate('content.navigate.deleteNodeDialog.header')}
-                        &nbsp; {nodesToBeDeletedContextPaths.length > 1 ? `${nodesToBeDeletedContextPaths.length} ${i18nRegistry.translate('nodes', 'nodes', {}, 'Neos.Neos.Ui', 'Main')}` : `"${$get('label', node)}"`}?
+                        &nbsp; {nodesToBeDeletedContextPaths.length > 1 ? `${nodesToBeDeletedContextPaths.length} ${i18nRegistry.translate('nodes', 'nodes', {}, 'Neos.Neos.Ui', 'Main')}` : `"$${node?.label}"`}?
                     </p>
                     {warnings.length > 0 ? <hr /> : ''}
                     {warnings.map((warning, index) => <p key={index}>

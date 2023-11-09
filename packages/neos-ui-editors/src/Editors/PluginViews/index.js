@@ -5,7 +5,7 @@ import {neos} from '@neos-project/neos-ui-decorators';
 import {connect} from 'react-redux';
 import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 import mergeClassNames from 'classnames';
-import {$transform} from 'plow-js';
+
 import style from './style.module.css';
 
 @neos(globalRegistry => {
@@ -14,10 +14,10 @@ import style from './style.module.css';
     };
 })
 
-@connect($transform({
-    activeContentDimensions: selectors.CR.ContentDimensions.active,
-    personalWorkspace: selectors.CR.Workspaces.personalWorkspaceNameSelector,
-    focusedNodeIdentifier: selectors.CR.Nodes.focusedNodeIdentifierSelector
+@connect(state => ({
+    activeContentDimensions: selectors.CR.ContentDimensions.active(state),
+    personalWorkspace: selectors.CR.Workspaces.personalWorkspaceNameSelector(state),
+    focusedNodeIdentifier: selectors.CR.Nodes.focusedNodeIdentifierSelector(state)
 }), {
     setActiveContentCanvasSrc: actions.UI.ContentCanvas.setSrc
 })

@@ -2,7 +2,6 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
-import {$transform, $get} from 'plow-js';
 
 import {urlWithParams} from '@neos-project/utils-helpers/src/urlWithParams';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
@@ -12,14 +11,14 @@ import Frame from '@neos-project/react-ui-components/src/Frame/';
 
 import style from './style.module.css';
 
-@connect($transform({
-    isFringeLeft: $get('ui.leftSideBar.isHidden'),
-    isFringeRight: $get('ui.rightSideBar.isHidden'),
-    isFullScreen: $get('ui.fullScreen.isFullScreen'),
-    backgroundColor: $get('ui.contentCanvas.backgroundColor'),
-    src: $get('ui.contentCanvas.src'),
-    baseNodeType: $get('ui.pageTree.filterNodeType'),
-    currentEditPreviewMode: selectors.UI.EditPreviewMode.currentEditPreviewMode
+@connect(state => ({
+    isFringeLeft: state?.ui?.leftSideBar?.isHidden,
+    isFringeRight: state?.ui?.rightSideBar?.isHidden,
+    isFullScreen: state?.ui?.fullScreen?.isFullScreen,
+    backgroundColor: state?.ui?.contentCanvas?.backgroundColor,
+    src: state?.ui?.contentCanvas?.src,
+    baseNodeType: state?.ui?.pageTree?.filterNodeType,
+    currentEditPreviewMode: selectors.UI.EditPreviewMode.currentEditPreviewMode(state)
 }), {
     startLoading: actions.UI.ContentCanvas.startLoading,
     stopLoading: actions.UI.ContentCanvas.stopLoading,
@@ -92,8 +91,8 @@ export default class ContentCanvas extends PureComponent {
             currentEditPreviewModeConfiguration.isEditingMode &&
             Boolean(InlineUI);
 
-        const width = $get('width', currentEditPreviewModeConfiguration);
-        const height = $get('height', currentEditPreviewModeConfiguration);
+        const width = currentEditPreviewModeConfiguration?.width;
+        const height = currentEditPreviewModeConfiguration?.height;
 
         const canvasContentStyle = {};
         const inlineStyles = {};

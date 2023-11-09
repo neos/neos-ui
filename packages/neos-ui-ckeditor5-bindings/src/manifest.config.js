@@ -1,5 +1,4 @@
 import CkEditorConfigRegistry from './registry/CkEditorConfigRegistry';
-import {$add, $get, $or} from 'plow-js';
 import {stripTags} from '@neos-project/utils-helpers';
 
 import DisabledAutoparagraphMode from './plugins/disabledAutoparagraphMode';
@@ -25,10 +24,15 @@ import InsideTable from './plugins/insideTable';
 import RemoveFormat from '@ckeditor/ckeditor5-remove-format/src/removeformat';
 
 const addPlugin = (Plugin, isEnabled) => (ckEditorConfiguration, options) => {
-    // we duplicate editorOptions here so it would be possible to write smth like `$get('formatting.sup')`
+    // LEGACY: we duplicate editorOptions here so it would be possible to write smth like `$get('formatting.sup')`
     if (!isEnabled || isEnabled(options.editorOptions, options)) {
-        ckEditorConfiguration.plugins = ckEditorConfiguration.plugins || [];
-        return $add('plugins', Plugin, ckEditorConfiguration);
+        return {
+            ...ckEditorConfiguration,
+            plugins: [
+                ...(ckEditorConfiguration.plugins ?? []),
+                Plugin
+            ]
+        };
     }
     return ckEditorConfiguration;
 };
@@ -71,7 +75,7 @@ export default ckEditorRegistry => {
         Thus, to e.g. only adjust the CKEditor config if a certain formatting option is enabled, you can do the following:
 
         config.set('doSmthWithConfig', (ckeConfig, {editorOptions}) => {
-            if ($get(['formatting', 'myCustomField'], editorOptions)) {
+            if (editorOptions?.formatting.?myCustomField) {
                 ckeConfig.mySetting = true;
             }
             return ckeConfig;
@@ -103,42 +107,42 @@ export default ckEditorRegistry => {
     config.set('essentials', addPlugin(Essentials));
     config.set('paragraph', addPlugin(Paragraph));
     config.set('disabledAutoparagraphMode', addPlugin(DisabledAutoparagraphMode, disableAutoparagraph));
-    config.set('sub', addPlugin(Sub, $get('formatting.sub')));
-    config.set('sup', addPlugin(Sup, $get('formatting.sup')));
-    config.set('bold', addPlugin(Bold, $get('formatting.strong')));
-    config.set('italic', addPlugin(Italic, $get('formatting.em')));
-    config.set('underline', addPlugin(Underline, $get('formatting.underline')));
-    config.set('strikethrough', addPlugin(Strikethrough, $get('formatting.strikethrough')));
-    config.set('link', addPlugin(Link, $get('formatting.a')));
-    config.set('linkTargetBlank', addPlugin(LinkTargetBlank, $get('formatting.a')));
-    config.set('linkRelNofollow', addPlugin(LinkRelNofollow, $get('formatting.a')));
-    config.set('linkDownload', addPlugin(LinkDownload, $get('formatting.a')));
-    config.set('linkTitle', addPlugin(LinkTitle, $get('formatting.a')));
-    config.set('table', addPlugin(Table, i => $get('formatting.table', i)));
-    config.set('insideTable', addPlugin(InsideTable, i => $get('formatting.table', i)));
-    config.set('removeFormat', addPlugin(RemoveFormat, $get('formatting.removeFormat')));
-    config.set('list', addPlugin(List, $or(
-        $get('formatting.ul'),
-        $get('formatting.ol')
+    config.set('sub', addPlugin(Sub, editorOptions => editorOptions?.formatting?.sub));
+    config.set('sup', addPlugin(Sup, editorOptions => editorOptions?.formatting?.sup));
+    config.set('bold', addPlugin(Bold, editorOptions => editorOptions?.formatting?.strong));
+    config.set('italic', addPlugin(Italic, editorOptions => editorOptions?.formatting?.em));
+    config.set('underline', addPlugin(Underline, editorOptions => editorOptions?.formatting?.underline));
+    config.set('strikethrough', addPlugin(Strikethrough, editorOptions => editorOptions?.formatting?.strikethrough));
+    config.set('link', addPlugin(Link, editorOptions => editorOptions?.formatting?.a));
+    config.set('linkTargetBlank', addPlugin(LinkTargetBlank, editorOptions => editorOptions?.formatting?.a));
+    config.set('linkRelNofollow', addPlugin(LinkRelNofollow, editorOptions => editorOptions?.formatting?.a));
+    config.set('linkDownload', addPlugin(LinkDownload, editorOptions => editorOptions?.formatting?.a));
+    config.set('linkTitle', addPlugin(LinkTitle, editorOptions => editorOptions?.formatting?.a));
+    config.set('table', addPlugin(Table, editorOptions => editorOptions?.formatting?.table));
+    config.set('insideTable', addPlugin(InsideTable, editorOptions => editorOptions?.formatting?.table));
+    config.set('removeFormat', addPlugin(RemoveFormat, editorOptions => editorOptions?.formatting?.removeFormat));
+    config.set('list', addPlugin(List, editorOptions => (
+        editorOptions?.formatting?.ul
+        || editorOptions?.formatting?.ol
     )));
-    config.set('alignment', addPlugin(Alignment, $or(
-        $get('formatting.left'),
-        $get('formatting.center'),
-        $get('formatting.right'),
-        $get('formatting.justify')
+    config.set('alignment', addPlugin(Alignment, editorOptions => (
+        editorOptions?.formatting?.left
+        || editorOptions?.formatting?.center
+        || editorOptions?.formatting?.right
+        || editorOptions?.formatting?.justify
     )));
-    config.set('heading', addPlugin(Heading, $or(
-        $get('formatting.h1'),
-        $get('formatting.h2'),
-        $get('formatting.h3'),
-        $get('formatting.h4'),
-        $get('formatting.h5'),
-        $get('formatting.h6')
+    config.set('heading', addPlugin(Heading, editorOptions => (
+        editorOptions?.formatting?.h1
+        || editorOptions?.formatting?.h2
+        || editorOptions?.formatting?.h3
+        || editorOptions?.formatting?.h4
+        || editorOptions?.formatting?.h5
+        || editorOptions?.formatting?.h6
     )));
 
     // Custom Plugin that automatically converts <i> to <em> for italics
     // @fixes https://github.com/neos/neos-ui/issues/2906
-    config.set('italicWithEm', addPlugin(ItalicWithEm, $get('formatting.em')));
+    config.set('italicWithEm', addPlugin(ItalicWithEm, editorOptions => editorOptions?.formatting?.em));
 
     //
     // @see https://docs.ckeditor.com/ckeditor5/latest/features/headings.html#configuring-heading-levels

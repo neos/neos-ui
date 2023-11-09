@@ -16,7 +16,6 @@
     "@neos-project/neos-ui-redux-store": "workspace:*",
     "lodash.escaperegexp": "^4.1.2",
     "mousetrap": "^1.6.3",
-    "plow-js": "3.0.0",
     "redux-saga": "^0.15.0"
   },
   "license": "GNU GPLv3",

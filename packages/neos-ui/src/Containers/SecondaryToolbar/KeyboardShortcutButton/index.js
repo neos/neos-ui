@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {connect} from 'react-redux';
-import {$transform, $get} from 'plow-js';
+
 import {actions} from '@neos-project/neos-ui-redux-store';
 
 @neos(globalRegistry => ({
@@ -11,7 +11,7 @@ import {actions} from '@neos-project/neos-ui-redux-store';
     hotkeyRegistry: globalRegistry.get('hotkeys')
 }))
 @connect(
-    $transform({isOpen: $get('ui.keyboardShortcutModal.isOpen')}),
+    state => ({isOpen: state?.ui?.keyboardShortcutModal?.isOpen}),
     {open: actions.UI.KeyboardShortcutModal.open}
 )
 export default class KeyboardShortcutButton extends PureComponent {

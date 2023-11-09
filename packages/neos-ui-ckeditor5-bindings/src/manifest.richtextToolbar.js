@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import omit from 'lodash.omit';
-import {$get} from 'plow-js';
+
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 import LinkButton from './EditorToolbar/LinkButton';
 import TableButton from './EditorToolbar/TableButton';
@@ -70,8 +70,8 @@ export default ckEditorRegistry => {
         icon: 'bold',
         hoverStyle: 'brand',
         tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__bold',
-        isVisible: $get('formatting.strong'),
-        isActive: $get('bold')
+        isVisible: editorOptions => editorOptions?.formatting?.strong,
+        isActive: formattingUnderCursor => formattingUnderCursor?.bold
     });
 
     // Italic
@@ -82,8 +82,8 @@ export default ckEditorRegistry => {
         icon: 'italic',
         hoverStyle: 'brand',
         tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__italic',
-        isVisible: $get('formatting.em'),
-        isActive: $get('italic')
+        isVisible: editorOptions => editorOptions?.formatting?.em,
+        isActive: formattingUnderCursor => formattingUnderCursor?.italic
     });
 
     // Underline
@@ -94,8 +94,8 @@ export default ckEditorRegistry => {
         icon: 'underline',
         hoverStyle: 'brand',
         tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__underline',
-        isVisible: $get('formatting.underline'),
-        isActive: $get('underline')
+        isVisible: editorOptions => editorOptions?.formatting?.underline,
+        isActive: formattingUnderCursor => formattingUnderCursor?.underline
     });
 
     // Subscript
@@ -106,8 +106,8 @@ export default ckEditorRegistry => {
         icon: 'subscript',
         hoverStyle: 'brand',
         tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__subscript',
-        isVisible: $get('formatting.sub'),
-        isActive: $get('sub')
+        isVisible: editorOptions => editorOptions?.formatting?.sub,
+        isActive: formattingUnderCursor => formattingUnderCursor?.sub
     });
 
     // Superscript
@@ -118,8 +118,8 @@ export default ckEditorRegistry => {
         icon: 'superscript',
         hoverStyle: 'brand',
         tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__superscript',
-        isVisible: $get('formatting.sup'),
-        isActive: $get('sup')
+        isVisible: editorOptions => editorOptions?.formatting?.sup,
+        isActive: formattingUnderCursor => formattingUnderCursor?.sup
     });
 
     // Strike-Through
@@ -130,15 +130,15 @@ export default ckEditorRegistry => {
         icon: 'strikethrough',
         hoverStyle: 'brand',
         tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__strikethrough',
-        isVisible: $get('formatting.strikethrough'),
-        isActive: $get('strikethrough')
+        isVisible: editorOptions => editorOptions?.formatting?.strikethrough,
+        isActive: formattingUnderCursor => formattingUnderCursor?.strikethrough
     });
 
     // Strike-Through
     richtextToolbar.set('link', {
         commandName: 'link',
         component: LinkButton,
-        isVisible: $get('formatting.a')
+        isVisible: formattingUnderCursor => formattingUnderCursor?.formatting?.a
     });
 
     /**
@@ -148,7 +148,7 @@ export default ckEditorRegistry => {
         component: StyleSelect,
         callbackPropName: 'onSelect',
         isVisible: () => true,
-        isActive: $get('heading')
+        isActive: formattingUnderCursor => formattingUnderCursor?.heading
     });
 
     // P tag
@@ -158,8 +158,8 @@ export default ckEditorRegistry => {
             value: 'paragraph'
         }],
         label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__style__p',
-        isVisible: $get('formatting.p'),
-        isActive: formattingUnderCursor => !$get('heading', formattingUnderCursor)
+        isVisible: editorOptions => editorOptions?.formatting?.p,
+        isActive: formattingUnderCursor => !formattingUnderCursor?.heading
     });
 
     // H1
@@ -169,8 +169,8 @@ export default ckEditorRegistry => {
             value: 'heading1'
         }],
         label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__style__h1',
-        isVisible: $get('formatting.h1'),
-        isActive: formattingUnderCursor => $get('heading', formattingUnderCursor) === 'heading1'
+        isVisible: editorOptions => editorOptions?.formatting?.h1,
+        isActive: formattingUnderCursor => formattingUnderCursor?.heading === 'heading1'
     });
 
     // H2
@@ -180,8 +180,8 @@ export default ckEditorRegistry => {
             value: 'heading2'
         }],
         label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__style__h2',
-        isVisible: $get('formatting.h2'),
-        isActive: formattingUnderCursor => $get('heading', formattingUnderCursor) === 'heading2'
+        isVisible: editorOptions => editorOptions?.formatting?.h2,
+        isActive: formattingUnderCursor => formattingUnderCursor?.heading === 'heading2'
     });
 
     // H3
@@ -191,8 +191,8 @@ export default ckEditorRegistry => {
             value: 'heading3'
         }],
         label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__style__h3',
-        isVisible: $get('formatting.h3'),
-        isActive: formattingUnderCursor => $get('heading', formattingUnderCursor) === 'heading3'
+        isVisible: editorOptions => editorOptions?.formatting?.h3,
+        isActive: formattingUnderCursor => formattingUnderCursor?.heading === 'heading3'
     });
 
     // H4
@@ -202,8 +202,8 @@ export default ckEditorRegistry => {
             value: 'heading4'
         }],
         label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__style__h4',
-        isVisible: $get('formatting.h4'),
-        isActive: formattingUnderCursor => $get('heading', formattingUnderCursor) === 'heading4'
+        isVisible: editorOptions => editorOptions?.formatting?.h4,
+        isActive: formattingUnderCursor => formattingUnderCursor?.heading === 'heading4'
     });
 
     // H5
@@ -213,8 +213,8 @@ export default ckEditorRegistry => {
             value: 'heading5'
         }],
         label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__style__h5',
-        isVisible: $get('formatting.h5'),
-        isActive: formattingUnderCursor => $get('heading', formattingUnderCursor) === 'heading5'
+        isVisible: editorOptions => editorOptions?.formatting?.h5,
+        isActive: formattingUnderCursor => formattingUnderCursor?.heading === 'heading5'
     });
 
     // H6
@@ -224,8 +224,8 @@ export default ckEditorRegistry => {
             value: 'heading6'
         }],
         label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__style__h6',
-        isVisible: $get('formatting.h6'),
-        isActive: formattingUnderCursor => $get('heading', formattingUnderCursor) === 'heading6'
+        isVisible: editorOptions => editorOptions?.formatting?.h6,
+        isActive: formattingUnderCursor => formattingUnderCursor?.heading === 'heading6'
     });
 
     // Pre
@@ -235,8 +235,8 @@ export default ckEditorRegistry => {
             value: 'pre'
         }],
         label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__style__pre',
-        isVisible: $get('formatting.pre'),
-        isActive: formattingUnderCursor => $get('heading', formattingUnderCursor) === 'pre'
+        isVisible: editorOptions => editorOptions?.formatting?.pre,
+        isActive: formattingUnderCursor => formattingUnderCursor?.heading === 'pre'
     });
 
     // Blockquote
@@ -246,8 +246,8 @@ export default ckEditorRegistry => {
             value: 'blockquote'
         }],
         label: 'Neos.Neos.Ui:Main:ckeditor__toolbar__style__blockquote',
-        isVisible: $get('formatting.blockquote'),
-        isActive: formattingUnderCursor => $get('heading', formattingUnderCursor) === 'blockquote'
+        isVisible: editorOptions => editorOptions?.formatting?.blockquote,
+        isActive: formattingUnderCursor => formattingUnderCursor?.heading === 'blockquote'
     });
 
     // // Example of custom headline
@@ -260,8 +260,8 @@ export default ckEditorRegistry => {
     //         value: 'headingFancy'
     //     }],
     //     label: 'Fancy',
-    //     isVisible: $get('formatting.h1'),
-    //     isActive: formattingUnderCursor => $get('heading', formattingUnderCursor) === 'headingFancy'
+    //     isVisible: editorOptions => editorOptions?.formatting?.h1,
+    //     isActive: formattingUnderCursor => formattingUnderCursor?.heading === 'headingFancy'
     // });
 
     // /**
@@ -276,8 +276,8 @@ export default ckEditorRegistry => {
         icon: 'list-ol',
         hoverStyle: 'brand',
         tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__ordered-list',
-        isVisible: $get('formatting.ol'),
-        isActive: $get('numberedList')
+        isVisible: editorOptions => editorOptions?.formatting?.ol,
+        isActive: formattingUnderCursor => formattingUnderCursor?.numberedList
     });
 
     // Unordered list
@@ -288,8 +288,8 @@ export default ckEditorRegistry => {
         icon: 'list-ul',
         hoverStyle: 'brand',
         tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__unordered-list',
-        isVisible: $get('formatting.ul'),
-        isActive: $get('bulletedList')
+        isVisible: editorOptions => editorOptions?.formatting?.ul,
+        isActive: formattingUnderCursor => formattingUnderCursor?.bulletedList
     });
 
     // Indent
@@ -302,11 +302,11 @@ export default ckEditorRegistry => {
         tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__indent',
         isVisible: (editorOptions, formattingUnderCursor) => (
             // Cursor in ul
-            $get('bulletedList', formattingUnderCursor) ||
+            formattingUnderCursor?.bulletedList ||
             // Cursor in ol
-            $get('numberedList', formattingUnderCursor) ||
+            formattingUnderCursor?.numberedList ||
             // Indent generally enabled
-            $get('formatting.indent', editorOptions)
+            editorOptions?.formatting?.indent
         )
     });
 
@@ -321,11 +321,11 @@ export default ckEditorRegistry => {
         tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__outdent',
         isVisible: (editorOptions, formattingUnderCursor) => (
             // Cursor in ul
-            $get('bulletedList', formattingUnderCursor) ||
+            formattingUnderCursor?.bulletedList ||
             // Cursor in ol
-            $get('numberedList', formattingUnderCursor) ||
+            formattingUnderCursor?.numberedList ||
             // Outdent generally enabled
-            $get('formatting.outdent', editorOptions)
+            editorOptions?.formatting?.outdent
         )
     });
 
@@ -340,8 +340,8 @@ export default ckEditorRegistry => {
         icon: 'align-left',
         hoverStyle: 'brand',
         tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__align-left',
-        isVisible: $get('formatting.left'),
-        isActive: formattingUnderCursor => $get('alignment', formattingUnderCursor) === 'left'
+        isVisible: editorOptions => editorOptions?.formatting?.left,
+        isActive: formattingUnderCursor => formattingUnderCursor?.alignment === 'left'
     });
 
     richtextToolbar.set('aligncenter', {
@@ -352,8 +352,8 @@ export default ckEditorRegistry => {
         icon: 'align-center',
         hoverStyle: 'brand',
         tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__align-center',
-        isVisible: $get('formatting.center'),
-        isActive: formattingUnderCursor => $get('alignment', formattingUnderCursor) === 'center'
+        isVisible: editorOptions => editorOptions?.formatting?.center,
+        isActive: formattingUnderCursor => formattingUnderCursor?.alignment === 'center'
     });
 
     richtextToolbar.set('alignright', {
@@ -364,8 +364,8 @@ export default ckEditorRegistry => {
         icon: 'align-right',
         hoverStyle: 'brand',
         tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__align-right',
-        isVisible: $get('formatting.right'),
-        isActive: formattingUnderCursor => $get('alignment', formattingUnderCursor) === 'right'
+        isVisible: editorOptions => editorOptions?.formatting?.right,
+        isActive: formattingUnderCursor => formattingUnderCursor?.alignment === 'right'
     });
 
     richtextToolbar.set('alignjustify', {
@@ -376,8 +376,8 @@ export default ckEditorRegistry => {
         icon: 'align-justify',
         hoverStyle: 'brand',
         tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__align-justify',
-        isVisible: $get('formatting.justify'),
-        isActive: formattingUnderCursor => $get('alignment', formattingUnderCursor) === 'justify'
+        isVisible: editorOptions => editorOptions?.formatting?.justify,
+        isActive: formattingUnderCursor => formattingUnderCursor?.alignment === 'justify'
     });
 
     /**
@@ -387,13 +387,13 @@ export default ckEditorRegistry => {
         component: TableButton,
         icon: 'table',
         tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__table',
-        isVisible: (editorOptions, formattingUnderCursor) => !$get('insideTable', formattingUnderCursor) && $get('formatting.table', editorOptions)
+        isVisible: (editorOptions, formattingUnderCursor) => !formattingUnderCursor?.insideTable && editorOptions?.formatting?.table
     });
     richtextToolbar.set('tableColumn', {
         component: TableDropDown,
         icon: 'tableColumn',
         tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__tableColumn',
-        isVisible: (editorOptions, formattingUnderCursor) => $get('insideTable', formattingUnderCursor),
+        isVisible: (editorOptions, formattingUnderCursor) => formattingUnderCursor?.insideTable,
         options: [
             {
                 commandName: 'setTableColumnHeader',
@@ -418,7 +418,7 @@ export default ckEditorRegistry => {
         component: TableDropDown,
         icon: 'tableRow',
         tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__tableRow',
-        isVisible: (editorOptions, formattingUnderCursor) => $get('insideTable', formattingUnderCursor),
+        isVisible: (editorOptions, formattingUnderCursor) => formattingUnderCursor?.insideTable,
         options: [
             {
                 commandName: 'setTableRowHeader',
@@ -442,7 +442,7 @@ export default ckEditorRegistry => {
     richtextToolbar.set('mergeTableCells', {
         component: TableDropDown,
         icon: 'tableMergeCells',
-        isVisible: (editorOptions, formattingUnderCursor) => $get('insideTable', formattingUnderCursor),
+        isVisible: (editorOptions, formattingUnderCursor) => formattingUnderCursor?.insideTable,
         tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__tableMergeCells',
         options: [
             {
@@ -483,7 +483,7 @@ export default ckEditorRegistry => {
         icon: 'eraser',
         hoverStyle: 'brand',
         tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__remove-format',
-        isVisible: $get('formatting.removeFormat')
+        isVisible: editorOptions => editorOptions?.formatting?.removeFormat
     });
 
     return richtextToolbar;

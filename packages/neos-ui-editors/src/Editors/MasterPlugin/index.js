@@ -5,16 +5,15 @@ import backend from '@neos-project/neos-ui-backend-connector';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {connect} from 'react-redux';
 import {selectors} from '@neos-project/neos-ui-redux-store';
-import {$transform, $get} from 'plow-js';
 
 @neos(globalRegistry => {
     return {
         i18nRegistry: globalRegistry.get('i18n')
     };
 })
-@connect($transform({
-    activeContentDimensions: selectors.CR.ContentDimensions.active,
-    personalWorkspace: selectors.CR.Workspaces.personalWorkspaceNameSelector
+@connect(state => ({
+    activeContentDimensions: selectors.CR.ContentDimensions.active(state),
+    personalWorkspace: selectors.CR.Workspaces.personalWorkspaceNameSelector(state)
 }))
 class MasterPluginEditor extends React.PureComponent {
     static propTypes = {
@@ -79,7 +78,7 @@ class MasterPluginEditor extends React.PureComponent {
 
     render() {
         const {options, isLoading} = this.state;
-        const disabled = $get('options.disabled', this.props);
+        const disabled = this.props?.options?.disabled;
 
         return (
             <SelectBox

@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
 import {connect} from 'react-redux';
-import {$transform, $get} from 'plow-js';
+
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 import SideBar from '@neos-project/react-ui-components/src/SideBar/';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
@@ -14,9 +14,9 @@ import style from './style.module.css';
     containerRegistry: globalRegistry.get('containers'),
     i18nRegistry: globalRegistry.get('i18n')
 }))
-@connect($transform({
-    isHidden: selectors.UI.RightSideBar.isHidden,
-    isFullScreen: $get('ui.fullScreen.isFullScreen')
+@connect(state => ({
+    isHidden: selectors.UI.RightSideBar.isHidden(state),
+    isFullScreen: state?.ui?.fullScreen?.isFullScreen
 }), {
     toggleSidebar: actions.UI.RightSideBar.toggle
 })

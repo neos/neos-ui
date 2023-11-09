@@ -1,15 +1,14 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$transform, $get} from 'plow-js';
 
 import {actions} from '@neos-project/neos-ui-redux-store';
 import FlashMessage from './FlashMessage/index';
 
 import style from './style.module.css';
 
-@connect($transform({
-    flashMessages: $get('ui.flashMessages')
+@connect(state => ({
+    flashMessages: state?.ui?.flashMessages
 }), {
     removeMessage: actions.UI.FlashMessages.remove
 })

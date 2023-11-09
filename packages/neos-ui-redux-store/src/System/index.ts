@@ -1,5 +1,4 @@
 import produce from 'immer';
-import {$get} from 'plow-js';
 import {action as createAction, ActionType} from 'typesafe-actions';
 import {State as UIState} from './../UI/index';
 import {State as UserState} from './../User/index';
@@ -71,5 +70,5 @@ export const reducer = (state: State = defaultState, action: Action) => produce(
 // Export the selectors
 //
 export const selectors = {
-    authenticationTimeout: (state: any) => $get(['system'], state).authenticationTimeout
+    authenticationTimeout: (state: any) => state?.system?.authenticationTimeout
 };

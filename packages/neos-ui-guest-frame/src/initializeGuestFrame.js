@@ -1,5 +1,4 @@
 import {takeEvery, put, select} from 'redux-saga/effects';
-import {$get} from 'plow-js';
 
 import {selectors, actions, actionTypes} from '@neos-project/neos-ui-redux-store';
 import {requestIdleCallback} from '@neos-project/utils-helpers';
@@ -72,7 +71,9 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     const state = store.getState();
 
     // Set the current document node to the one that is rendered in the guest frame which might be different from the one that is currently selected in the page tree
-    const currentDocumentNodeContextPath = yield select($get('cr.nodes.documentNode'));
+    const currentDocumentNodeContextPath = yield select(
+        state => state?.cr?.nodes?.documentNode
+    );
     if (currentDocumentNodeContextPath !== documentInformation.metaData.documentNode) {
         yield put(actions.CR.Nodes.setDocumentNode(documentInformation.metaData.documentNode, documentInformation.metaData.siteNode));
     }
@@ -82,7 +83,7 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     // We need to set the src to the actual src of the iframe, and not retrieve it from documentInformation, as it may differ, e.g. contain additional arguments.
     yield put(actions.UI.ContentCanvas.setSrc(guestFrameWindow.document.location.href));
 
-    const editPreviewMode = $get(['ui', 'editPreviewMode'], state);
+    const editPreviewMode = state?.ui?.editPreviewMode;
     const editPreviewModes = globalRegistry.get('frontendConfiguration').get('editPreviewModes');
     const isWorkspaceReadOnly = selectors.CR.Workspaces.isWorkspaceReadOnlySelector(state);
     const currentEditMode = editPreviewModes[editPreviewMode];

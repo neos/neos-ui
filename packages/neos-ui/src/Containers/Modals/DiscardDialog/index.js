@@ -1,7 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$get, $transform} from 'plow-js';
 
 import Button from '@neos-project/react-ui-components/src/Button/';
 import Dialog from '@neos-project/react-ui-components/src/Dialog/';
@@ -12,8 +11,8 @@ import {actions} from '@neos-project/neos-ui-redux-store';
 
 import style from './style.module.css';
 
-@connect($transform({
-    nodesToBeDiscarded: $get('cr.workspaces.toBeDiscarded')
+@connect(state => ({
+    nodesToBeDiscarded: state?.cr?.workspaces?.toBeDiscarded
 }), {
     confirm: actions.CR.Workspaces.confirmDiscard,
     abort: actions.CR.Workspaces.abortDiscard

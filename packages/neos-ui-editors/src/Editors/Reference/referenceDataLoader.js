@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$get, $transform} from 'plow-js';
+
 import {selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 
@@ -10,8 +10,8 @@ export default ({isMulti}) => WrappedComponent => {
         nodeLookupDataLoader: globalRegistry.get('dataLoaders').get('NodeLookup'),
         nodeTypeRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
     }))
-    @connect($transform({
-        contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking
+    @connect(state => ({
+        contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking(state)
     }))
 
     class ReferenceDataLoader extends PureComponent {
@@ -62,7 +62,7 @@ export default ({isMulti}) => WrappedComponent => {
                     .then(options => {
                         options.forEach(option => {
                             const nodeType = this.props.nodeTypeRegistry.getNodeType(option.nodeType);
-                            const icon = $get('ui.icon', nodeType);
+                            const icon = nodeType?.ui?.icon;
                             if (icon) {
                                 option.icon = icon;
                             }
@@ -83,7 +83,7 @@ export default ({isMulti}) => WrappedComponent => {
                     .then(searchOptions => {
                         searchOptions.forEach(option => {
                             const nodeType = this.props.nodeTypeRegistry.getNodeType(option.nodeType);
-                            const icon = $get('ui.icon', nodeType);
+                            const icon = nodeType?.ui?.icon;
                             if (icon) {
                                 option.icon = icon;
                             }
@@ -103,7 +103,7 @@ export default ({isMulti}) => WrappedComponent => {
         }
 
         getDataLoaderOptions() {
-            const startingPoint = $get('options.startingPoint', this.props);
+            const startingPoint = this.props?.options?.startingPoint;
             const contextForNodeLinking = startingPoint ?
                 Object.assign({}, this.props.contextForNodeLinking, {
                     contextNode: startingPoint.indexOf('ClientEval:') === 0 ?
@@ -114,7 +114,7 @@ export default ({isMulti}) => WrappedComponent => {
                 this.props.contextForNodeLinking;
 
             return {
-                nodeTypes: $get('options.nodeTypes', this.props) || ['Neos.Neos:Document'],
+                nodeTypes: this.props?.options?.nodeTypes || ['Neos.Neos:Document'],
                 contextForNodeLinking
             };
         }

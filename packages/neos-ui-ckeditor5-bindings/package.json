@@ -27,8 +27,7 @@
     "@neos-project/utils-helpers": "workspace:*",
     "classnames": "^2.2.3",
     "lodash.debounce": "^4.0.8",
-    "lodash.omit": "^4.5.0",
-    "plow-js": "3.0.0"
+    "lodash.omit": "^4.5.0"
   },
   "peerDependencies": {
     "prop-types": "^15.5.10",

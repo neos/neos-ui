@@ -1,11 +1,10 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {$transform, $get} from 'plow-js';
 import {connect} from 'react-redux';
 import style from './style.module.css';
 
-@connect($transform({
-    isLoading: $get('ui.contentCanvas.isLoading')
+@connect(state => ({
+    isLoading: state?.ui?.contentCanvas?.isLoading
 }))
 export default class LoadingIndicator extends PureComponent {
     static propTypes = {

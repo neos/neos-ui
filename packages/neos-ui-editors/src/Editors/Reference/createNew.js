@@ -1,13 +1,13 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$get, $transform} from 'plow-js';
+
 import backend from '@neos-project/neos-ui-backend-connector';
 import {actions} from '@neos-project/neos-ui-redux-store';
 
 export default () => WrappedComponent => {
-    @connect($transform({
-        siteNodeContextPath: $get('cr.nodes.siteNode')
+    @connect(state => ({
+        siteNodeContextPath: state?.cr?.nodes?.siteNode
     }), {
         handleServerFeedback: actions.ServerFeedback.handleServerFeedback
     })
@@ -54,7 +54,7 @@ export default () => WrappedComponent => {
             const feedbacks = response.feedbacks.filter(feedback => feedback.type !== 'Neos.Neos.Ui:NodeCreated');
             this.props.handleServerFeedback({feedbacks});
             const nodeCreatedFeedback = response.feedbacks.find(item => item.type === 'Neos.Neos.Ui:NodeCreated');
-            const identifier = $get('payload.identifier', nodeCreatedFeedback);
+            const identifier = nodeCreatedFeedback?.payload?.identifier;
 
             const value = Array.isArray(this.props.value) ? this.props.value.concat(identifier) : identifier;
             this.props.commit(value);
@@ -63,8 +63,8 @@ export default () => WrappedComponent => {
         }
 
         render() {
-            const onCreateNew = $get('options.createNew.type', this.props) && $get('options.createNew.path', this.props) ? this.handleCreateNew : null;
-            const disabled = $get('options.disabled', this.props);
+            const onCreateNew = this.props?.options?.createNew?.type && this.props?.options?.createNew?.path ? this.handleCreateNew : null;
+            const disabled = this.props?.options?.disabled;
 
             return (
                 <WrappedComponent

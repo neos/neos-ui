@@ -6,7 +6,6 @@ import Icon from '@neos-project/react-ui-components/src/Icon/';
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 import TextInput from '@neos-project/react-ui-components/src/TextInput/';
 import {neos} from '@neos-project/neos-ui-decorators';
-import {$get} from 'plow-js';
 
 import AspectRatioDropDown from './AspectRatioDropDown/index';
 import CropConfiguration, {CustomAspectRatioOption, LockedAspectRatioStrategy} from './model.js';
@@ -150,11 +149,11 @@ export default class ImageCropper extends PureComponent {
         const {onComplete, sourceImage, options} = this.props;
         const {cropConfiguration} = this.state;
         const currentAspectRatioStrategy = cropConfiguration.aspectRatioStrategy;
-        const pixelSnapping = $get('crop.aspectRatio.pixelSnapping', options);
+        const pixelSnapping = options?.crop?.aspectRatio?.pixelSnapping;
 
         if (pixelSnapping && currentAspectRatioStrategy && currentAspectRatioStrategy.width && currentAspectRatioStrategy.height) {
-            const imageWidth = $get('image.originalDimensions.width', sourceImage);
-            const imageHeight = $get('image.originalDimensions.height', sourceImage);
+            const imageWidth = sourceImage?.image?.originalDimensions?.width;
+            const imageHeight = sourceImage?.image?.originalDimensions?.height;
 
             // normalize aspect ratio values by dividing by gcd
             const aspectRatioGcd = calculateGcdRecursive(currentAspectRatioStrategy.width, currentAspectRatioStrategy.height);

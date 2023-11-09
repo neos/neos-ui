@@ -6,13 +6,12 @@ import {neos} from '@neos-project/neos-ui-decorators';
 import {connect} from 'react-redux';
 import {actions} from '@neos-project/neos-ui-redux-store';
 import I18n from '@neos-project/neos-ui-i18n';
-import {$transform, $get} from 'plow-js';
 
 import buttonTheme from './style.module.css';
 
 @connect(
-    $transform({
-        originUser: $get('user.impersonate.origin')
+    state => ({
+        originUser: state?.user?.impersonate?.origin
     }),
     {
         impersonateRestore: actions.User.Impersonate.restore

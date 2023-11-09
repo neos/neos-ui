@@ -1,7 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$transform, $get} from 'plow-js';
 
 import Button from '@neos-project/react-ui-components/src/Button/';
 import Dialog from '@neos-project/react-ui-components/src/Dialog/';
@@ -12,12 +11,12 @@ import {neos} from '@neos-project/neos-ui-decorators';
 
 import style from './style.module.css';
 
-@connect($transform({
-    isOpen: selectors.UI.NodeVariantCreationDialog.isOpen,
-    numberOfParentNodesToBeCreated: selectors.UI.NodeVariantCreationDialog.numberOfParentNodesToBeCreated,
-    contentDimensions: selectors.CR.ContentDimensions.byName,
-    activePresets: selectors.CR.ContentDimensions.activePresets,
-    documentNode: selectors.CR.Nodes.documentNodeSelector
+@connect(state => ({
+    isOpen: selectors.UI.NodeVariantCreationDialog.isOpen(state),
+    numberOfParentNodesToBeCreated: selectors.UI.NodeVariantCreationDialog.numberOfParentNodesToBeCreated(state),
+    contentDimensions: selectors.CR.ContentDimensions.byName(state),
+    activePresets: selectors.CR.ContentDimensions.activePresets(state),
+    documentNode: selectors.CR.Nodes.documentNodeSelector(state)
 }), {
     cancel: actions.UI.NodeVariantCreationDialog.cancel,
     createEmpty: actions.UI.NodeVariantCreationDialog.createEmpty,
@@ -122,8 +121,8 @@ export default class NodeVariantCreationDialog extends PureComponent {
         let currentDimensionChoiceText = '';
         Object.keys(activePresets).forEach(dimensionName => {
             const dimensionConfig = activePresets[dimensionName];
-            const dimensionLabel = i18nRegistry.translate($get([dimensionName, 'label'], contentDimensions));
-            const dimensionValueLabel = i18nRegistry.translate($get('label', dimensionConfig));
+            const dimensionLabel = i18nRegistry.translate(contentDimensions?.[dimensionName]?.label);
+            const dimensionValueLabel = i18nRegistry.translate(dimensionConfig?.label);
 
             if (currentDimensionChoiceText) {
                 currentDimensionChoiceText += ', ';
@@ -131,12 +130,12 @@ export default class NodeVariantCreationDialog extends PureComponent {
             currentDimensionChoiceText += `${dimensionLabel} ${dimensionValueLabel}`;
         });
 
-        const nodeType = nodeTypesRegistry.get($get('nodeType', documentNode));
+        const nodeType = nodeTypesRegistry.get(documentNode?.nodeType);
 
         const i18nParams = {
             currentDimensionChoiceText,
             currentDocumentDimensionChoiceText: currentDimensionChoiceText,
-            nodeTypeLabel: i18nRegistry.translate($get('label', nodeType))
+            nodeTypeLabel: i18nRegistry.translate(nodeType?.label)
         };
 
         return (

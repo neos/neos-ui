@@ -4,7 +4,7 @@ import MultiSelectBox from '@neos-project/react-ui-components/src/MultiSelectBox
 import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
 import {dndTypes} from '@neos-project/neos-ui-constants';
 import {neos} from '@neos-project/neos-ui-decorators';
-import {$get} from 'plow-js';
+
 import Controls from './Components/Controls/index';
 import AssetOption from '../../Library/AssetOption';
 import {AssetUpload} from '../../Library/index';
@@ -185,7 +185,7 @@ export default class AssetEditor extends PureComponent {
     }
 
     renderControls() {
-        const disabled = $get('options.disabled', this.props);
+        const disabled = this.props?.options?.disabled;
 
         return (
             <Controls
@@ -199,9 +199,9 @@ export default class AssetEditor extends PureComponent {
     }
 
     renderAssetSelectorAndUpload() {
-        const mediaTypeConstraint = $get('options.constraints.mediaTypes', this.props);
-        const accept = $get('options.accept', this.props) || (mediaTypeConstraint && mediaTypeConstraint.join(','));
-        const multiple = $get('options.multiple', this.props);
+        const mediaTypeConstraint = this.props?.options?.constraints?.mediaTypes;
+        const accept = this.props?.options?.accept || (mediaTypeConstraint && mediaTypeConstraint.join(','));
+        const multiple = this.props?.options?.multiple;
         const {className, imagesOnly, value, identifier} = this.props;
 
         if (!this.isFeatureEnabled('upload')) {
@@ -226,13 +226,13 @@ export default class AssetEditor extends PureComponent {
     }
 
     renderAssetSelect() {
-        const multiple = $get('options.multiple', this.props);
+        const multiple = this.props?.options?.multiple;
 
         return multiple ? this.renderAssetMultiSelect() : this.renderAssetSingleSelect();
     }
 
     renderAssetSingleSelect() {
-        const disabled = $get('options.disabled', this.props);
+        const disabled = this.props?.options?.disabled;
 
         return (
             <SelectBox
@@ -251,14 +251,14 @@ export default class AssetEditor extends PureComponent {
                 onSearchTermChange={this.handleSearchTermChange}
                 noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:noMatchesFound')}
                 searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:searchBoxLeftToType')}
-                threshold={$get('options.threshold', this.props)}
+                threshold={this.props?.options?.threshold}
                 disabled={disabled}
             />
         );
     }
 
     renderAssetMultiSelect() {
-        const disabled = $get('options.disabled', this.props);
+        const disabled = this.props?.options?.disabled;
 
         return (
             <MultiSelectBox
@@ -277,7 +277,7 @@ export default class AssetEditor extends PureComponent {
                 onSearchTermChange={this.handleSearchTermChange}
                 noMatchesFoundLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:noMatchesFound')}
                 searchBoxLeftToTypeLabel={this.props.i18nRegistry.translate('Neos.Neos:Main:searchBoxLeftToType')}
-                threshold={$get('options.threshold', this.props)}
+                threshold={this.props?.options?.threshold}
                 disabled={disabled}
             />
         );

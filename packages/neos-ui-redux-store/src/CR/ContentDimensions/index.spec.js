@@ -1,16 +1,16 @@
-import {$all, $set, $get} from 'plow-js';
+import produce from 'immer';
 
 import {actionTypes, actions, reducer, selectors, defaultState} from './index';
 import {actionTypes as system} from '../../System/index';
 
 const fixtures = {};
 
-fixtures.dimensionState = $all(
-    $set('active', {language: ['fr']}),
-    $set('allowedPresets', {
+fixtures.dimensionState = {
+    active: {language: ['fr']},
+    allowedPresets: {
         language: ['en_US', 'en_UK', 'de', 'fr']
-    }),
-    $set('byName', {
+    },
+    byName: {
         language: {
             label: 'Language',
             icon: 'fa-language',
@@ -67,9 +67,8 @@ fixtures.dimensionState = $all(
                 }
             }
         }
-    }),
-    {}
-);
+    }
+};
 
 fixtures.globalState = {
     cr: {
@@ -175,8 +174,10 @@ test(`activePresets selector should return the active dimensions configuration`,
 });
 
 test(`activePresets selector should fall back to default preset, if none is set`, () => {
-    const state = $set('cr.contentDimensions.active.language', null, fixtures.globalState);
+    const state = produce(fixtures.globalState, state => {
+        state.cr.contentDimensions.active.language = null;
+    });
     const activePresets = selectors.activePresets(state);
 
-    expect($get('language.name', activePresets)).toBe('en_US');
+    expect(activePresets?.language?.name).toBe('en_US');
 });

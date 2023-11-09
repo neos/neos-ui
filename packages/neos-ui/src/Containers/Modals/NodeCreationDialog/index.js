@@ -1,7 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$get, $set} from 'plow-js';
 import memoize from 'lodash.memoize';
 import cx from 'classnames';
 
@@ -71,11 +70,11 @@ const getDerivedStateFromProps = (props, state) => {
     validatorRegistry: globalRegistry.get('validators')
 }))
 @connect(state => {
-    const isOpen = $get('ui.nodeCreationDialog.isOpen', state);
-    const label = $get('ui.nodeCreationDialog.label', state);
-    const configuration = $get('ui.nodeCreationDialog.configuration', state);
-    const parentNodeContextPath = $get('ui.nodeCreationDialog.parentNodeContextPath', state);
-    const nodeType = $get('ui.nodeCreationDialog.nodeType', state);
+    const isOpen = state?.ui?.nodeCreationDialog?.isOpen;
+    const label = state?.ui?.nodeCreationDialog?.label;
+    const configuration = state?.ui?.nodeCreationDialog?.configuration;
+    const parentNodeContextPath = state?.ui?.nodeCreationDialog?.parentNodeContextPath;
+    const nodeType = state?.ui?.nodeCreationDialog?.nodeType;
 
     const parentNode = selectors.CR.Nodes.makeGetNodeByContextPathSelector(parentNodeContextPath)(state);
 
@@ -116,7 +115,10 @@ export default class NodeCreationDialog extends PureComponent {
     }
 
     handleDialogEditorValueChange = memoize(elementName => (value, hooks) => {
-        const transient = $set(elementName, {value, hooks}, this.state.transient);
+        const transient = {
+            ...this.state.transient,
+            [elementName]: {value, hooks}
+        };
         const validationErrors = this.getValidationErrorsForTransientValues(transient);
 
         this.setState({
@@ -245,17 +247,20 @@ export default class NodeCreationDialog extends PureComponent {
 
     renderElement(elementName, element, isFirst) {
         const {validationErrors, isDirty} = this.state;
-        const validationErrorsForElement = isDirty ? $get(elementName, validationErrors) : [];
-        const options = $set('autoFocus', isFirst, Object.assign({}, $get('ui.editorOptions', element)));
+        const validationErrorsForElement = isDirty ? validationErrors?.[elementName] : [];
+        const options = {
+            ...element?.ui?.editorOptions,
+            autoFocus: isFirst
+        };
 
         return (
             <div key={elementName} className={style.editor}>
                 <EditorEnvelope
                     identifier={`${elementName}--creation-dialog`}
-                    label={$get('ui.label', element)}
-                    editor={$get('ui.editor', element)}
-                    helpMessage={$get('ui.help.message', element) || ''}
-                    helpThumbnail={$get('ui.help.thumbnail', element) || ''}
+                    label={element?.ui?.label}
+                    editor={element?.ui?.editor}
+                    helpMessage={element?.ui?.help?.message || ''}
+                    helpThumbnail={element?.ui?.help?.thumbnail || ''}
                     options={options}
                     commit={this.handleDialogEditorValueChange(elementName)}
                     validationErrors={validationErrorsForElement}
@@ -293,7 +298,7 @@ export default class NodeCreationDialog extends PureComponent {
         return Object.keys(configuration.elements).reduce(
             (result, elementName, index) => {
                 const element = configuration.elements[elementName];
-                const isHidden = $get('ui.hidden', element);
+                const isHidden = element?.ui?.hidden;
                 if (element && !isHidden) {
                     result.push(
                         this.renderElement(elementName, element, index === 0)

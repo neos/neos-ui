@@ -1,5 +1,4 @@
 import {takeLatest, takeEvery, put, select} from 'redux-saga/effects';
-import {$get, $contains} from 'plow-js';
 
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
 import backend from '@neos-project/neos-ui-backend-connector';
@@ -12,11 +11,12 @@ export function * watchToggle({globalRegistry}) {
         const state = yield select();
         const {contextPath} = action.payload;
 
-        const childrenAreFullyLoaded = $get(['cr', 'nodes', 'byContextPath', contextPath, 'children'], state)
-            .filter(childEnvelope => nodeTypesRegistry.hasRole(childEnvelope.nodeType, 'document'))
-            .every(
-                childEnvelope => Boolean($get(['cr', 'nodes', 'byContextPath', $get('contextPath', childEnvelope)], state))
-            );
+        const children = state?.cr?.nodes?.byContextPath?.[contextPath]?.children;
+        const childrenAreFullyLoaded = children
+            ?.filter(childEnvelope => nodeTypesRegistry.hasRole(childEnvelope.nodeType, 'document'))
+            ?.every(
+                childEnvelope => Boolean(state?.cr?.nodes?.byContextPath?.[childEnvelope?.contextPath])
+            ) ?? true;
 
         if (!childrenAreFullyLoaded) {
             yield put(actions.UI.PageTree.requestChildren(contextPath));
@@ -49,7 +49,7 @@ export function * watchRequestChildrenForContextPath({configuration}) {
 
         if (childNodes && parentNodes) {
             const nodes = parentNodes.concat(childNodes).reduce((nodeMap, node) => {
-                nodeMap[$get('contextPath', node)] = node;
+                nodeMap[node?.contextPath] = node;
                 return nodeMap;
             }, {});
 
@@ -104,6 +104,7 @@ export function * watchCurrentDocument({configuration}) {
                 return;
             }
 
+            // eslint-disable-next-line require-atomic-updates
             parentContextPath = parentNode.parent;
             const getNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(parentContextPath);
             let node = yield select(getNodeByContextPathSelector);
@@ -113,7 +114,7 @@ export function * watchCurrentDocument({configuration}) {
                 yield put(actions.UI.PageTree.setAsLoading(siteNodeContextPath));
                 const nodes = yield q(parentContextPath).get();
                 yield put(actions.CR.Nodes.merge(nodes.reduce((nodeMap, node) => {
-                    nodeMap[$get('contextPath', node)] = node;
+                    nodeMap[node?.contextPath] = node;
                     return nodeMap;
                 }, {})));
                 node = yield select(getNodeByContextPathSelector);
@@ -121,7 +122,9 @@ export function * watchCurrentDocument({configuration}) {
             }
 
             // Calculate if the given node is collapsed, and if so the uncollapse it
-            const isToggled = yield select($contains(parentContextPath, 'ui.pageTree.toggled'));
+            const isToggled = yield select(
+                state => state?.ui?.pageTree?.toggled?.includes(parentContextPath)
+            );
             const isCollapsed = isNodeCollapsed(node, isToggled, siteNode, loadingDepth);
             if (isCollapsed) {
                 yield put(actions.UI.PageTree.toggle(parentContextPath));
@@ -160,9 +163,15 @@ export function * watchSearch({configuration}) {
             if (filterNodeType || searchQuery) {
                 matchingNodes = yield query.search(searchQuery, effectiveFilterNodeType).getForTreeWithParents();
             } else {
-                const clipboardNodeContextPath = yield select($get('cr.nodes.clipboard'));
-                const toggledNodes = yield select($get('ui.pageTree.toggled'));
-                const documentNodeContextPath = yield select($get('cr.nodes.documentNode'));
+                const clipboardNodeContextPath = yield select(
+                    state => state?.cr?.nodes?.clipboard
+                );
+                const toggledNodes = yield select(
+                    state => state?.ui?.pageTree?.toggled
+                );
+                const documentNodeContextPath = yield select(
+                    state => state?.cr?.nodes?.documentNode
+                );
 
                 matchingNodes = yield q([contextPath, documentNodeContextPath]).neosUiDefaultNodes(
                     configuration.nodeTree.presets.default.baseNodeType,
@@ -182,7 +191,7 @@ export function * watchSearch({configuration}) {
 
         if (matchingNodes.length > 0) {
             const nodes = matchingNodes.reduce((map, node) => {
-                map[$get('contextPath', node)] = node;
+                map[node?.contextPath] = node;
                 return map;
             }, {});
 

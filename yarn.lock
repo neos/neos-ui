@@ -2307,7 +2307,6 @@ __metadata:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
     "@neos-project/neos-ts-interfaces": "workspace:*"
     "@neos-project/utils-helpers": "workspace:*"
-    plow-js: 3.0.0
     typescript: ^4.6.4
   languageName: unknown
   linkType: soft
@@ -2345,7 +2344,6 @@ __metadata:
     classnames: ^2.2.3
     lodash.debounce: ^4.0.8
     lodash.omit: ^4.5.0
-    plow-js: 3.0.0
   peerDependencies:
     prop-types: ^15.5.10
     react: ^16.12.0
@@ -2388,7 +2386,6 @@ __metadata:
     "@neos-project/positional-array-sorter": "workspace:*"
     lodash.mapvalues: ^4.6.0
     lodash.merge: ^4.6.0
-    plow-js: 3.0.0
     typescript: ^4.6.4
   languageName: unknown
   linkType: soft
@@ -2425,13 +2422,13 @@ __metadata:
     classnames: ^2.2.3
     codemirror: ^5.58.2
     enzyme: ^3.8.0
+    immer: ^9.0.0
     lodash.debounce: ^4.0.8
     lodash.memoize: ^4.1.2
     lodash.omit: ^4.5.0
     lodash.unescape: 4.0.1
     moment: ^2.20.1
     monet: ^0.9.2
-    plow-js: 3.0.0
     react-codemirror2: 7.2.1
     react-dnd: ^10.0.0
     react-dnd-test-backend: ^7.0.2
@@ -2484,7 +2481,6 @@ __metadata:
     classnames: ^2.2.3
     lodash.debounce: ^4.0.8
     lodash.throttle: ^4.1.1
-    plow-js: 3.0.0
     redux-saga: ^0.15.0
     typescript: ^4.6.4
   peerDependencies:
@@ -2518,7 +2514,6 @@ __metadata:
     "@neos-project/neos-ui-redux-store": "workspace:*"
     "@neos-project/react-ui-components": "workspace:*"
     classnames: ^2.2.3
-    plow-js: 3.0.0
     react-portal: ^4.2.0
     typescript: ^4.6.4
   peerDependencies:
@@ -2540,7 +2535,6 @@ __metadata:
     lodash.defaultsdeep: ^4.6.1
     lodash.isequal: ^4.5.0
     lodash.mapvalues: ^4.6.0
-    plow-js: 3.0.0
     reselect: ^3.0.1
     typesafe-actions: ^5.1.0
     typescript: ^4.6.4
@@ -2558,7 +2552,6 @@ __metadata:
     "@neos-project/neos-ui-redux-store": "workspace:*"
     lodash.escaperegexp: ^4.1.2
     mousetrap: ^1.6.3
-    plow-js: 3.0.0
     redux-saga: ^0.15.0
     redux-saga-test-plan: ^3.6.0
     typescript: ^4.6.4
@@ -2575,7 +2568,6 @@ __metadata:
     "@neos-project/neos-ui-i18n": "workspace:*"
     "@neos-project/utils-logger": "workspace:*"
     isemail: 3.2.0
-    plow-js: 3.0.0
     typescript: ^4.6.4
   peerDependencies:
     react: ^16.12.0
@@ -2596,9 +2588,9 @@ __metadata:
     "@neos-project/react-ui-components": "workspace:*"
     d3-scale: ^4.0.2
     d3-time: ^1.0.8
+    lodash.get: ^4.4.2
     lodash.isequal: ^4.5.0
     moment: ^2.20.1
-    plow-js: 3.0.0
     recharts: ^2.4.1
   peerDependencies:
     prop-types: ^15.5.10
@@ -2656,7 +2648,6 @@ __metadata:
     monet: ^0.9.2
     normalize.css: ^8.0.0
     notosans-fontface: ^1.3.0
-    plow-js: 3.0.0
     prop-types: ^15.5.10
     react: ^16.12.0
     react-dnd: ^10.0.0
@@ -2733,7 +2724,6 @@ __metadata:
     lodash.omit: ^4.5.0
     lodash.throttle: ^4.0.8
     moment: ^2.14.1
-    plow-js: 3.0.0
     raf: ^3.4.1
     react-collapse: ^5.0.1
     react-datetime: ^2.8.10
@@ -8167,13 +8157,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"immutable@npm:^3.7.6":
-  version: 3.8.2
-  resolution: "immutable@npm:3.8.2"
-  checksum: 41909b386950ff84ca3cfca77c74cfc87d225a914e98e6c57996fa81a328da61a7c32216d6d5abad40f54747ffdc5c4b02b102e6ad1a504c1752efde8041f964
-  languageName: node
-  linkType: hard
-
 "import-fresh@npm:^3.0.0, import-fresh@npm:^3.2.1":
   version: 3.2.2
   resolution: "import-fresh@npm:3.2.2"
@@ -10019,6 +10002,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash.get@npm:^4.4.2":
+  version: 4.4.2
+  resolution: "lodash.get@npm:4.4.2"
+  checksum: e403047ddb03181c9d0e92df9556570e2b67e0f0a930fcbbbd779370972368f5568e914f913e93f3b08f6d492abc71e14d4e9b7a18916c31fa04bd2306efe545
+  languageName: node
+  linkType: hard
+
 "lodash.includes@npm:^4.3.0":
   version: 4.3.0
   resolution: "lodash.includes@npm:4.3.0"
@@ -11765,18 +11755,6 @@ __metadata:
   dependencies:
     find-up: ^3.0.0
   checksum: 5bac346b7c7c903613c057ae3ab722f320716199d753f4a7d053d38f2b5955460f3e6ab73b4762c62fd3e947f58e04f1343e92089e7bb6091c90877406fcd8c8
-  languageName: node
-  linkType: hard
-
-"plow-js@npm:3.0.0":
-  version: 3.0.0
-  resolution: "plow-js@npm:3.0.0"
-  dependencies:
-    immutable: ^3.7.6
-  dependenciesMeta:
-    immutable:
-      optional: true
-  checksum: ad59f0014bc40dd54284e6caf65904fb853b80c40f1c11c30529034be51448c64c73a44233cf6d633a8d0007c0a8753ff1a979b8215c74c4a220c43432e872d2
   languageName: node
   linkType: hard
 

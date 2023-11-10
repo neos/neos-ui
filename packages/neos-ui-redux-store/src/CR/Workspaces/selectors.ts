@@ -5,6 +5,8 @@ import {NodeContextPath} from '@neos-project/neos-ts-interfaces';
 
 export const personalWorkspaceNameSelector = (state: GlobalState) => state?.cr?.workspaces?.personalWorkspace?.name;
 
+export const personalWorkspaceRebaseStatusSelector = (state: GlobalState) => state?.cr?.workspaces?.personalWorkspace?.status;
+
 export const baseWorkspaceSelector = (state: GlobalState) => state?.cr?.workspaces?.personalWorkspace?.baseWorkspace;
 
 export const isWorkspaceReadOnlySelector = (state: GlobalState) => state?.cr?.workspaces?.personalWorkspace?.readOnly || false;

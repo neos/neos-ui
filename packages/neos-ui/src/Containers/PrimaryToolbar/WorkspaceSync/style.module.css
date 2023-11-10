@@ -1,0 +1,24 @@
+.wrapper {
+    display: inline-block;
+    position: relative;
+    vertical-align: top;
+    height: var(--spacing-GoldenUnit);
+}
+.iconRebase {
+    height: 100%;
+    width: auto;
+}
+
+.iconRebase svg {
+    height: 2rem;
+    width: auto;
+}
+
+.iconRebase span {
+    display: flex;
+    align-items: center;
+}
+.rebaseButton {
+    padding: 4px;
+    border-left: 1px solid black;
+}

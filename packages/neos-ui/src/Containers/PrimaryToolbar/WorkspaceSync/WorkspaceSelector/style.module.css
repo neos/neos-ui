@@ -1,0 +1,8 @@
+.selectBox {
+    border-radius: 0;
+}
+.notAllowed {
+    padding: 12px var(--spacing-Full);
+    cursor: not-allowed;
+    opacity: .5;
+}

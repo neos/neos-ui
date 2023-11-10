@@ -75,7 +75,8 @@ class WorkspaceHelper implements ProtectedContextAwareInterface
                 'baseWorkspace' => $personalWorkspace->baseWorkspaceName,
                 // TODO: FIX readonly flag!
                 //'readOnly' => !$this->domainUserService->currentUserCanPublishToWorkspace($baseWorkspace)
-                'readOnly' => false
+                'readOnly' => false,
+                'status' => $personalWorkspace->status->value
             ]
             : [];
     }

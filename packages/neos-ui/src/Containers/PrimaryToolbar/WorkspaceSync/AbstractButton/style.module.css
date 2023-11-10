@@ -1,0 +1,27 @@
+.btn {
+    display: inline-block;
+    padding: 0 var(--spacing-Full);
+    height: var(--spacing-GoldenUnit);
+    line-height: var(--spacing-GoldenUnit);
+    border: 0;
+    background: var(--colors-Success);
+    text-align: center;
+    vertical-align: top;
+    color: white;
+    cursor: pointer;
+}
+.btn--disabled {
+    opacity: .5;
+}
+.btn--notAllowed {
+    &[disabled] {
+        cursor: not-allowed;
+    }
+}
+.btn--highlighted {
+    background: var(--colors-Warn);
+
+    &:hover {
+        background: var(--colors-WarnHover);
+    }
+}

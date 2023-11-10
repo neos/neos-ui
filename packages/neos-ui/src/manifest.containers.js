@@ -17,6 +17,7 @@ import PrimaryToolbar from './Containers/PrimaryToolbar/index';
 import DimensionSwitcher from './Containers/PrimaryToolbar/DimensionSwitcher/index';
 import UserDropDown from './Containers/PrimaryToolbar/UserDropDown/index';
 import PublishDropDown from './Containers/PrimaryToolbar/PublishDropDown/index';
+import WorkspaceSync from './Containers/PrimaryToolbar/WorkspaceSync/index';
 import MenuToggler from './Containers/PrimaryToolbar/MenuToggler/index';
 import Brand from './Containers/PrimaryToolbar/Brand/index';
 import EditPreviewDropDown from './Containers/PrimaryToolbar/EditPreviewDropDown/index';
@@ -63,6 +64,7 @@ manifest('main.containers', {}, globalRegistry => {
     containerRegistry.set('PrimaryToolbar/Right/DimensionSwitcher', DimensionSwitcher);
     containerRegistry.set('PrimaryToolbar/Right/UserDropDown', UserDropDown);
     containerRegistry.set('PrimaryToolbar/Right/PublishDropDown', PublishDropDown);
+    containerRegistry.set('PrimaryToolbar/Right/WorkspaceSync', WorkspaceSync);
 
     containerRegistry.set('SecondaryToolbar', SecondaryToolbar);
     containerRegistry.set('SecondaryToolbar/LoadingIndicator', LoadingIndicator);

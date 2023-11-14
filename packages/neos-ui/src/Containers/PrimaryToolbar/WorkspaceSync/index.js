@@ -4,21 +4,21 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
 import Icon from '@neos-project/react-ui-components/src/Icon/';
+import Button from '@neos-project/react-ui-components/src/Button/';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 
-const {baseWorkspaceSelector, personalWorkspaceNameSelector, personalWorkspaceRebaseStatusSelector} = selectors.CR.Workspaces;
+const {personalWorkspaceRebaseStatusSelector} = selectors.CR.Workspaces;
 
-import AbstractButton from './AbstractButton/index';
 import style from './style.module.css';
 
 @connect(state => ({
-    personalWorkspaceName: personalWorkspaceNameSelector(state),
-    baseWorkspace: baseWorkspaceSelector(state),
+    isOpen: state?.ui?.SyncWorkspaceModal?.isOpen,
+    isSaving: state?.ui?.remote?.isSaving,
     personalWorkspaceStatus: personalWorkspaceRebaseStatusSelector(state)
 }), {
-    rebaseWorkspaceAction: actions.CR.Workspaces.rebaseWorkspaceAction
+    openModal: actions.UI.SyncWorkspaceModal.open
 })
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')
@@ -26,25 +26,20 @@ import style from './style.module.css';
 
 export default class WorkspaceSync extends PureComponent {
     static propTypes = {
+        isOpen: PropTypes.bool.isRequired,
+        isSaving: PropTypes.bool.isRequired,
+        openModal: PropTypes.func.isRequired,
         personalWorkspaceStatus: PropTypes.string.isRequired,
-        rebaseWorkspaceAction: PropTypes.func.isRequired,
-        personalWorkspaceName: PropTypes.string.isRequired,
-        baseWorkspace: PropTypes.string.isRequired,
         i18nRegistry: PropTypes.object.isRequired
     };
-
-    handleRebaseClick = () => {
-        const {publishableNodesInDocument, rebaseWorkspaceAction, baseWorkspace} = this.props;
-
-        rebaseWorkspaceAction(publishableNodesInDocument.map(node => node?.contextPath), baseWorkspace);
-    }
 
     render() {
         const {
             personalWorkspaceStatus,
-            i18nRegistry
+            openModal,
+            isSaving,
+            isOpen
         } = this.props;
-
         let icon = 'resource://Neos.Neos.Ui/Icons/sync_check.svg';
         switch (personalWorkspaceStatus) {
             case 'OUTDATED':
@@ -54,21 +49,24 @@ export default class WorkspaceSync extends PureComponent {
                 icon = 'resource://Neos.Neos.Ui/Icons/sync_alert.svg';
                 break;
         }
-        return (
-            <div id="neos-WorkspaceSync" className={style.wrapper}>
-                <AbstractButton
-                    id="neos-workspace-rebase"
-                    className={style.rebaseButton}
-                    onClick={this.handleRebaseClick}
-                    isEnabled={personalWorkspaceStatus !== 'UP_TO_DATE'}
-                    isOutdated={personalWorkspaceStatus === 'OUTDATED'}
-                    isError={personalWorkspaceStatus === 'OUTDATED_CONFLICT'}
-                    label="sync with parent workspace"
+        if (personalWorkspaceStatus !== 'UP_TO_DATE') {
+            return (
+                <div id="neos-WorkspaceSync" className={style.wrapper}>
+                    <Button
+                        id="neos-workspace-rebase"
+                        className={style.rebaseButton}
+                        onClick={openModal}
+                        disabled={isSaving || isOpen}
+                        style={personalWorkspaceStatus === 'OUTDATED' ? 'warn' : 'error'}
+                        hoverStyle={personalWorkspaceStatus === 'OUTDATED' ? 'warn' : 'error'}
+                        label="sync with parent workspace"
                     >
-                    <Icon icon={icon} className={style.iconRebase} size="1x"/>
-                </AbstractButton>
-            </div>
-        );
+                        <Icon icon={icon} className={style.iconRebase} size="1x"/>
+                    </Button>
+                </div>
+            );
+        }
+        return (null);
     }
 
    /* getTranslatedMainButton(baseWorkspaceTitle = '') {

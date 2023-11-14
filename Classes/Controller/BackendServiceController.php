@@ -19,6 +19,7 @@ use Neos\ContentRepository\Core\Feature\WorkspacePublication\Command\DiscardIndi
 use Neos\ContentRepository\Core\Feature\WorkspacePublication\Command\PublishIndividualNodesFromWorkspace;
 use Neos\ContentRepository\Core\Feature\WorkspacePublication\Dto\NodeIdsToPublishOrDiscard;
 use Neos\ContentRepository\Core\Feature\WorkspacePublication\Dto\NodeIdToPublishOrDiscard;
+use Neos\ContentRepository\Core\Feature\WorkspaceRebase\Command\RebaseWorkspace;
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
 use Neos\ContentRepository\Core\SharedModel\Exception\NodeAggregateCurrentlyDoesNotExist;
 use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
@@ -617,5 +618,36 @@ class BackendServiceController extends ActionController
 
         $slug = $this->nodeUriPathSegmentGenerator->generateUriPathSegment($contextNode, $text);
         $this->view->assign('value', $slug);
+    }
+
+    /**
+     * Change base workspace of current user workspace
+     *
+     * @param string $targetWorkspaceName
+     * @return void
+     * @throws \Exception
+     */
+    public function rebaseWorkspaceAction(string $targetWorkspaceName): void
+    {
+        $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
+        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
+
+        $command = RebaseWorkspace::create(WorkspaceName::fromString($targetWorkspaceName));
+        try {
+            $contentRepository->handle($command)->block();
+        } catch (\Exception $exception) {
+            $error = new Error();
+            $error->setMessage($error->getMessage());
+
+            $this->feedbackCollection->add($error);
+            $this->view->assign('value', $this->feedbackCollection);
+            return;
+        }
+
+        $success = new Success();
+        $success->setMessage(sprintf('Successfully synced User workspace'));
+        $this->feedbackCollection->add($success);
+
+        $this->view->assign('value', $this->feedbackCollection);
     }
 }

@@ -12,6 +12,7 @@ export interface Routes {
             publish: string;
             discard: string;
             changeBaseWorkspace: string;
+            rebaseWorkspace: string;
             copyNodes: string;
             cutNodes: string;
             clearClipboard: string;
@@ -110,6 +111,21 @@ export default (routes: Routes) => {
         })
     })).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+
+    const rebaseWorkspace = (targetWorkspaceName: WorkspaceName) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+        url: routes.ui.service.rebaseWorkspace,
+
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'X-Flow-Csrftoken': csrfToken,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            targetWorkspaceName
+        })
+    })).then(response => fetchWithErrorHandling.parseJson(response))
+        .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const copyNodes = (nodes: NodeContextPath[]) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
         url: routes.ui.service.copyNodes,
@@ -660,6 +676,7 @@ export default (routes: Routes) => {
         publish,
         discard,
         changeBaseWorkspace,
+        rebaseWorkspace,
         copyNodes,
         cutNodes,
         clearClipboard,

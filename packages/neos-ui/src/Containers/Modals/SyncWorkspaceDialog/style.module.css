@@ -1,0 +1,21 @@
+.modalContents {
+    padding: var(--spacing-Full);
+}
+
+.buttonIcon {
+    display: inline-block;
+    width: 1.5rem;
+    float: left;
+    margin-right: var(--spacing-Half);
+}
+.buttonIcon span {
+    display: inline-block;
+    width: 100%;
+}
+.buttonIcon svg {
+    width: 100%;
+    height: auto;
+}
+.confirmText{
+    vertical-align: sub;
+}

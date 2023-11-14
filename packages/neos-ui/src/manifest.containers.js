@@ -12,6 +12,7 @@ import NodeVariantCreationDialog from './Containers/Modals/NodeVariantCreationDi
 import ReloginDialog from './Containers/Modals/ReloginDialog/index';
 import KeyboardShortcutModal from './Containers/Modals/KeyboardShortcutModal/index';
 import UnappliedChangesDialog from './Containers/Modals/UnappliedChangesDialog/index';
+import SyncWorkspaceDialog from './Containers/Modals/SyncWorkspaceDialog/index';
 
 import PrimaryToolbar from './Containers/PrimaryToolbar/index';
 import DimensionSwitcher from './Containers/PrimaryToolbar/DimensionSwitcher/index';
@@ -56,6 +57,7 @@ manifest('main.containers', {}, globalRegistry => {
     containerRegistry.set('Modals/ReloginDialog', ReloginDialog);
     containerRegistry.set('Modals/KeyboardShortcutModal', KeyboardShortcutModal);
     containerRegistry.set('Modals/UnappliedChangesDialog', UnappliedChangesDialog);
+    containerRegistry.set('Modals/SyncWorkspaceDialog', SyncWorkspaceDialog);
 
     containerRegistry.set('PrimaryToolbar', PrimaryToolbar);
     containerRegistry.set('PrimaryToolbar/Left/MenuToggler', MenuToggler);

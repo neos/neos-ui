@@ -9,6 +9,7 @@ test(`should export actionTypes`, () => {
     expect(typeof (actionTypes.DISCARD_ABORTED)).toBe('string');
     expect(typeof (actionTypes.DISCARD_CONFIRMED)).toBe('string');
     expect(typeof (actionTypes.CHANGE_BASE_WORKSPACE)).toBe('string');
+    expect(typeof (actionTypes.REBASE_WORKSPACE)).toBe('string');
 });
 
 test(`should export action creators`, () => {
@@ -19,6 +20,7 @@ test(`should export action creators`, () => {
     expect(typeof (actions.abortDiscard)).toBe('function');
     expect(typeof (actions.confirmDiscard)).toBe('function');
     expect(typeof (actions.changeBaseWorkspace)).toBe('function');
+    expect(typeof (actions.rebaseWorkspace)).toBe('function');
 });
 
 test(`should export a reducer`, () => {

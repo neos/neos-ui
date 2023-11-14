@@ -42,6 +42,25 @@ export function * watchChangeBaseWorkspace() {
     });
 }
 
+export function * watchRebaseWorkspace() {
+    const {rebaseWorkspace, getWorkspaceInfo} = backend.get().endpoints;
+    yield takeEvery(actionTypes.CR.Workspaces.REBASE_WORKSPACE, function * change(action) {
+        yield put(actions.UI.Remote.startSaving());
+
+        try {
+            const feedback = yield call(rebaseWorkspace, action.payload);
+            yield put(actions.ServerFeedback.handleServerFeedback(feedback));
+
+        } catch (error) {
+            console.error('Failed to sync user workspace', error);
+        } finally {
+            const workspaceInfo = yield call(getWorkspaceInfo);
+            yield put(actions.CR.Workspaces.update(workspaceInfo));
+            yield put(actions.UI.Remote.finishSaving());
+        }
+    });
+}
+
 export function * discardIfConfirmed() {
     const {discard} = backend.get().endpoints;
     yield takeLatest(actionTypes.CR.Workspaces.COMMENCE_DISCARD, function * waitForConfirmation() {

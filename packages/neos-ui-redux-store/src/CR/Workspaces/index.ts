@@ -79,9 +79,9 @@ const confirmDiscard = () => createAction(actionTypes.DISCARD_CONFIRMED);
 const changeBaseWorkspace = (name: string) => createAction(actionTypes.CHANGE_BASE_WORKSPACE, name);
 
 /**
- * Confirm the ongoing discard
+ * Rebase the user workspace
  */
-const rebaseWorkspace = () => createAction(actionTypes.REBASE_WORKSPACE);
+const rebaseWorkspace = (name: string) => createAction(actionTypes.REBASE_WORKSPACE, name);
 
 //
 // Export the actions

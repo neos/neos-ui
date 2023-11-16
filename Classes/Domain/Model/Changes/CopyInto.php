@@ -82,7 +82,7 @@ class CopyInto extends AbstractStructuralChange
             $contentRepository->handle($command)->block();
 
             $newlyCreatedNode = $this->contentRepositoryRegistry->subgraphForNode($parentNode)
-                ->findChildNodeConnectedThroughEdgeName(
+                ->findChildNodeByNodeName(
                     $parentNode->nodeAggregateId,
                     $targetNodeName
                 );

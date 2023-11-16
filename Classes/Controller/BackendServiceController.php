@@ -621,11 +621,10 @@ class BackendServiceController extends ActionController
     }
 
     /**
-     * Change base workspace of current user workspace
+     * Rebase user workspace to current workspace
      *
      * @param string $targetWorkspaceName
      * @return void
-     * @throws \Exception
      */
     public function rebaseWorkspaceAction(string $targetWorkspaceName): void
     {

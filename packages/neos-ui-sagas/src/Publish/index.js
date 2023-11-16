@@ -50,7 +50,6 @@ export function * watchRebaseWorkspace() {
         try {
             const feedback = yield call(rebaseWorkspace, action.payload);
             yield put(actions.ServerFeedback.handleServerFeedback(feedback));
-
         } catch (error) {
             console.error('Failed to sync user workspace', error);
         } finally {

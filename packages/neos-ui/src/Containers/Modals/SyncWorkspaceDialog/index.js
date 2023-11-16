@@ -1,4 +1,4 @@
-import React, {Fragment, PureComponent} from 'react';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
@@ -83,7 +83,7 @@ export default class SyncWorkspaceDialog extends PureComponent {
         const confirmationLabel = i18nRegistry.translate(
             'syncPersonalWorkSpaceConfirm',
             'Synchronize now', {}, 'Neos.Neos.Ui', 'Main')
-        if(personalWorkspaceStatus !== 'OUTDATED'){
+        if (personalWorkspaceStatus !== 'OUTDATED') {
             return (null);
         }
         return (

@@ -14,6 +14,7 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 use Neos\ContentRepository\Core\DimensionSpace\OriginDimensionSpacePoint;
 use Neos\ContentRepository\Core\Feature\NodeDuplication\Command\CopyNodesRecursively;
+use Neos\ContentRepository\Core\Projection\ContentGraph\NodePath;
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeName;
 
@@ -81,9 +82,9 @@ class CopyAfter extends AbstractStructuralChange
             $contentRepository->handle($command)->block();
 
             $newlyCreatedNode = $this->contentRepositoryRegistry->subgraphForNode($parentNodeOfPreviousSibling)
-                ->findChildNodeByNodeName(
-                    $parentNodeOfPreviousSibling->nodeAggregateId,
-                    $targetNodeName
+                ->findNodeByPath(
+                    NodePath::fromNodeNames($targetNodeName),
+                    $parentNodeOfPreviousSibling->nodeAggregateId
                 );
             $this->finish($newlyCreatedNode);
             // NOTE: we need to run "finish" before "addNodeCreatedFeedback"

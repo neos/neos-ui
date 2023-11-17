@@ -40,13 +40,13 @@ export default class WorkspaceSync extends PureComponent {
             isSaving,
             isOpen
         } = this.props;
-        let icon = 'resource://Neos.Neos.Ui/Icons/sync_check.svg';
+        let icon = 'resource://Neos.Neos.Ui/Icons/syncronize_check.svg';
         switch (personalWorkspaceStatus) {
             case 'OUTDATED':
-                icon = 'resource://Neos.Neos.Ui/Icons/sync.svg';
+                icon = 'resource://Neos.Neos.Ui/Icons/syncronize.svg';
                 break;
             case 'OUTDATED_CONFLICT':
-                icon = 'resource://Neos.Neos.Ui/Icons/sync_alert.svg';
+                icon = 'resource://Neos.Neos.Ui/Icons/syncronize_alert.svg';
                 break;
         }
         if (personalWorkspaceStatus !== 'UP_TO_DATE') {

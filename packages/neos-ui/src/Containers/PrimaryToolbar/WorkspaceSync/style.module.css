@@ -10,7 +10,7 @@
 }
 
 .iconRebase svg {
-    height: 2rem;
+    height: 1.5rem;
     width: auto;
 }
 
@@ -19,6 +19,6 @@
     align-items: center;
 }
 .rebaseButton {
-    padding: 4px;
+    padding: var(--spacing-Quarter);
     border-left: 1px solid black;
 }

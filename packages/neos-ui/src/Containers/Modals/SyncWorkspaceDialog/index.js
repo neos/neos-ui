@@ -55,7 +55,7 @@ export default class SyncWorkspaceDialog extends PureComponent {
             'Synchronize personal workspace', {}, 'Neos.Neos.Ui', 'Main')
         return (
             <div>
-                <Icon icon="resource://Neos.Neos.Ui/Icons/sync_alert.svg" className={style.buttonIcon} size="2x"/>
+                <Icon icon="resource://Neos.Neos.Ui/Icons/syncronize_alert.svg" className={style.buttonIcon} size="2x"/>
                 <span className={style.modalTitle}>
                     {synchronizeWorkspaceLabel}
                 </span>
@@ -94,7 +94,7 @@ export default class SyncWorkspaceDialog extends PureComponent {
                 hoverStyle="warn"
                 onClick={this.handleConfirm}
             >
-                <Icon icon="resource://Neos.Neos.Ui/Icons/sync.svg" className={style.buttonIcon} size="2x"/>
+                <Icon icon="resource://Neos.Neos.Ui/Icons/syncronize.svg" className={style.buttonIcon} size="2x"/>
                 <span className={style.confirmText}>
                     {confirmationLabel}
                 </span>

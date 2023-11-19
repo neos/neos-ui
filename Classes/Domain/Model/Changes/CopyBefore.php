@@ -14,7 +14,6 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 use Neos\ContentRepository\Core\DimensionSpace\OriginDimensionSpacePoint;
 use Neos\ContentRepository\Core\Feature\NodeDuplication\Command\CopyNodesRecursively;
-use Neos\ContentRepository\Core\Projection\ContentGraph\NodePath;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeName;
 
 class CopyBefore extends AbstractStructuralChange
@@ -76,7 +75,7 @@ class CopyBefore extends AbstractStructuralChange
 
             $newlyCreatedNode = $this->contentRepositoryRegistry->subgraphForNode($parentNodeOfSucceedingSibling)
                 ->findNodeByPath(
-                    NodePath::fromNodeNames($targetNodeName),
+                    $targetNodeName,
                     $parentNodeOfSucceedingSibling->nodeAggregateId
                 );
             $this->finish($newlyCreatedNode);

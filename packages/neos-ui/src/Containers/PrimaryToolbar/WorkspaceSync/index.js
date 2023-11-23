@@ -12,6 +12,7 @@ import {neos} from '@neos-project/neos-ui-decorators';
 const {personalWorkspaceRebaseStatusSelector} = selectors.CR.Workspaces;
 
 import style from './style.module.css';
+import {WorkspaceStatus} from '@neos-project/neos-ts-interfaces';
 
 @connect(state => ({
     isOpen: state?.ui?.SyncWorkspaceModal?.isOpen,
@@ -42,10 +43,10 @@ export default class WorkspaceSync extends PureComponent {
         } = this.props;
         let icon = 'resource://Neos.Neos.Ui/Icons/syncronize_check.svg';
         switch (personalWorkspaceStatus) {
-            case 'OUTDATED':
+            case WorkspaceStatus.OUTDATED:
                 icon = 'resource://Neos.Neos.Ui/Icons/syncronize.svg';
                 break;
-            case 'OUTDATED_CONFLICT':
+            case WorkspaceStatus.OUTDATED_CONFLICT:
                 icon = 'resource://Neos.Neos.Ui/Icons/syncronize_alert.svg';
                 break;
         }
@@ -57,8 +58,8 @@ export default class WorkspaceSync extends PureComponent {
                         className={style.rebaseButton}
                         onClick={openModal}
                         disabled={isSaving || isOpen}
-                        style={personalWorkspaceStatus === 'OUTDATED' ? 'warn' : 'error'}
-                        hoverStyle={personalWorkspaceStatus === 'OUTDATED' ? 'warn' : 'error'}
+                        style={personalWorkspaceStatus === WorkspaceStatus.OUTDATED ? 'warn' : 'error'}
+                        hoverStyle={personalWorkspaceStatus === WorkspaceStatus.OUTDATED ? 'warn' : 'error'}
                         label="sync with parent workspace"
                     >
                         <Icon icon={icon} className={style.iconRebase} size="1x"/>

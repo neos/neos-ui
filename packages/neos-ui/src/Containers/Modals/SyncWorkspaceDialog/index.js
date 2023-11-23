@@ -12,6 +12,7 @@ import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 import style from './style.module.css';
+import {WorkspaceStatus} from '@neos-project/neos-ts-interfaces';
 
 @connect(state => ({
     isOpen: state?.ui?.SyncWorkspaceModal?.isOpen,
@@ -83,7 +84,7 @@ export default class SyncWorkspaceDialog extends PureComponent {
         const confirmationLabel = i18nRegistry.translate(
             'syncPersonalWorkSpaceConfirm',
             'Synchronize now', {}, 'Neos.Neos.Ui', 'Main')
-        if (personalWorkspaceStatus !== 'OUTDATED') {
+        if (personalWorkspaceStatus !== WorkspaceStatus.OUTDATED) {
             return (null);
         }
         return (
@@ -113,7 +114,7 @@ export default class SyncWorkspaceDialog extends PureComponent {
                 actions={[this.renderAbort(), this.renderConfirm()]}
                 title={this.renderTitle()}
                 onRequestClose={this.handleAbort}
-                type={personalWorkspaceStatus === 'OUTDATED' ? 'warn' : 'error'}
+                type={personalWorkspaceStatus === WorkspaceStatus.OUTDATED ? 'warn' : 'error'}
                 isOpen
                 id="neos-DeleteNodeDialog"
             >
@@ -126,13 +127,13 @@ export default class SyncWorkspaceDialog extends PureComponent {
 
     getTranslatedContent() {
         const {personalWorkspaceStatus, i18nRegistry} = this.props;
-        if (personalWorkspaceStatus === 'OUTDATED') {
+        if (personalWorkspaceStatus === WorkspaceStatus.OUTDATED) {
             return i18nRegistry.translate(
                 'syncPersonalWorkSpaceMessageOutdated',
                 'It seems like there are changes in the workspace that are not reflected in your personal workspace.\n' +
                 'You should synchronize your personal workspace to avoid conflicts.', {}, 'Neos.Neos.Ui', 'Main')
         }
-        if (personalWorkspaceStatus === 'OUTDATED_CONFLICT') {
+        if (personalWorkspaceStatus === WorkspaceStatus.OUTDATED_CONFLICT) {
             return i18nRegistry.translate(
                 'syncPersonalWorkSpaceMessageOutdatedConflict',
                 'It seems like there are changes in the workspace that are not reflected in your personal workspace.\n' +

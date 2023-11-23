@@ -21,17 +21,17 @@ export enum actionTypes {
 }
 
 /**
- * Opens the add node modal.
+ * Opens the sync workspace modal
  */
 const open = () => createAction(actionTypes.OPEN);
 
 /**
- * Closes the add node modal.
+ * Closes the sync workspace modal
  */
 const cancel = () => createAction(actionTypes.CANCEL);
 
 /**
- * Closes the add node modal.
+ * Triggers the workspace rebase
  */
 const apply = () => createAction(actionTypes.APPLY);
 

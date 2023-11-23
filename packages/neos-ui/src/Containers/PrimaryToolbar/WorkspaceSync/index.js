@@ -69,37 +69,4 @@ export default class WorkspaceSync extends PureComponent {
         }
         return (null);
     }
-
-   /* getTranslatedMainButton(baseWorkspaceTitle = '') {
-        const {
-            publishableNodesInDocument,
-            isSaving,
-            isPublishing,
-            isDiscarding
-        } = this.props;
-        const canPublishLocally = publishableNodesInDocument && (publishableNodesInDocument.length > 0);
-
-        if (isSaving) {
-            return <I18n id="Neos.Neos:Main:saving" fallback="saving"/>;
-        }
-
-        if (isPublishing) {
-            return <I18n id="Neos.Neos:Main:publishTo" fallback="Publish to" params={{0: baseWorkspaceTitle}}/>;
-        }
-
-        if (isDiscarding) {
-            return 'Discarding...';
-        }
-
-        if (canPublishLocally) {
-            return <I18n id="Neos.Neos:Main:publishTo" fallback="Publish to" params={{0: baseWorkspaceTitle}}/>;
-        }
-
-        return (
-            <Fragment>
-                <I18n id="Neos.Neos:Main:published" fallback="Published"/>
-                {(baseWorkspaceTitle ? ' - ' + baseWorkspaceTitle : '')}
-            </Fragment>
-        );
-    } */
 }

@@ -17,6 +17,8 @@ import {WorkspaceStatus} from '@neos-project/neos-ts-interfaces';
 @connect(state => ({
     isOpen: state?.ui?.SyncWorkspaceModal?.isOpen,
     isSaving: state?.ui?.remote?.isSaving,
+    isPublishing: state?.ui?.remote?.isPublishing,
+    isDiscarding: state?.ui?.remote?.isDiscarding,
     personalWorkspaceStatus: personalWorkspaceRebaseStatusSelector(state)
 }), {
     openModal: actions.UI.SyncWorkspaceModal.open
@@ -29,6 +31,8 @@ export default class WorkspaceSync extends PureComponent {
     static propTypes = {
         isOpen: PropTypes.bool.isRequired,
         isSaving: PropTypes.bool.isRequired,
+        isPublishing: PropTypes.bool.isRequired,
+        isDiscarding: PropTypes.bool.isRequired,
         openModal: PropTypes.func.isRequired,
         personalWorkspaceStatus: PropTypes.string.isRequired,
         i18nRegistry: PropTypes.object.isRequired
@@ -39,8 +43,14 @@ export default class WorkspaceSync extends PureComponent {
             personalWorkspaceStatus,
             openModal,
             isSaving,
-            isOpen
+            isOpen,
+            isPublishing,
+            isDiscarding,
+            i18nRegistry
         } = this.props;
+        if (personalWorkspaceStatus === WorkspaceStatus.UP_TO_DATE) {
+            return (null);
+        }
         let icon = 'resource://Neos.Neos.Ui/Icons/syncronize_check.svg';
         switch (personalWorkspaceStatus) {
             case WorkspaceStatus.OUTDATED:
@@ -50,23 +60,27 @@ export default class WorkspaceSync extends PureComponent {
                 icon = 'resource://Neos.Neos.Ui/Icons/syncronize_alert.svg';
                 break;
         }
-        if (personalWorkspaceStatus !== 'UP_TO_DATE') {
-            return (
-                <div id="neos-WorkspaceSync" className={style.wrapper}>
-                    <Button
-                        id="neos-workspace-rebase"
-                        className={style.rebaseButton}
-                        onClick={openModal}
-                        disabled={isSaving || isOpen}
-                        style={personalWorkspaceStatus === WorkspaceStatus.OUTDATED ? 'warn' : 'error'}
-                        hoverStyle={personalWorkspaceStatus === WorkspaceStatus.OUTDATED ? 'warn' : 'error'}
-                        label="sync with parent workspace"
-                    >
+        const buttonLabel = i18nRegistry.translate(
+            'syncPersonalWorkSpace',
+            'Synchronize personal workspace', {}, 'Neos.Neos.Ui', 'Main');
+        return (
+            <div id="neos-WorkspaceSync" className={style.wrapper}>
+                <Button
+                    id="neos-workspace-rebase"
+                    className={style.rebaseButton}
+                    onClick={openModal}
+                    disabled={isSaving || isOpen || isPublishing || isDiscarding }
+                    style={personalWorkspaceStatus === WorkspaceStatus.OUTDATED ? 'warn' : 'error'}
+                    hoverStyle={personalWorkspaceStatus === WorkspaceStatus.OUTDATED ? 'warn' : 'error'}
+                    label={buttonLabel}
+                >
+                    {(isSaving || isPublishing || isDiscarding) ? (
+                        <Icon icon="spinner" spin={true} />
+                    ) : (
                         <Icon icon={icon} className={style.iconRebase} size="1x"/>
-                    </Button>
-                </div>
-            );
-        }
-        return (null);
+                    )}
+                </Button>
+            </div>
+        );
     }
 }

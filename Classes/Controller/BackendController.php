@@ -175,9 +175,9 @@ class BackendController extends ActionController
         );
         $rootNode = $rootNodeAggregate->getNodeByCoveredDimensionSpacePoint($defaultDimensionSpacePoint);
 
-        $siteNode = $subgraph->findChildNodeByNodeName(
-            $rootNode->nodeAggregateId,
-            $siteDetectionResult->siteNodeName->toNodeName()
+        $siteNode = $subgraph->findNodeByPath(
+            $siteDetectionResult->siteNodeName->toNodeName(),
+            $rootNode->nodeAggregateId
         );
 
         if (!$nodeAddress) {

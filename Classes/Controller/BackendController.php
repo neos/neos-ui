@@ -217,6 +217,9 @@ class BackendController extends ActionController
     protected function findNodeToEdit(): ?NodeInterface
     {
         $siteNode = $this->getSiteNodeForLoggedInUser();
+        if (!$siteNode) {
+            throw new \RuntimeException('Could not find site node for current user.', 1697707361);
+        }
         $reflectionMethod = new \ReflectionMethod($this->backendRedirectionService, 'getLastVisitedNode');
         $reflectionMethod->setAccessible(true);
         $node = $reflectionMethod->invoke($this->backendRedirectionService, $siteNode->getContext()->getWorkspaceName());

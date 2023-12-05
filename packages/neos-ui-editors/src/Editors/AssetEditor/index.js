@@ -1,9 +1,13 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {MultiSelectBox, SelectBox} from '@neos-project/react-ui-components';
+import {$get} from 'plow-js';
+import {connect} from 'react-redux';
+import MultiSelectBox from '@neos-project/react-ui-components/src/MultiSelectBox/';
+import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
 import {dndTypes} from '@neos-project/neos-ui-constants';
 import {neos} from '@neos-project/neos-ui-decorators';
-import {$get} from 'plow-js';
+import {selectors} from '@neos-project/neos-ui-redux-store';
+
 import Controls from './Components/Controls/index';
 import AssetOption from '../../Library/AssetOption';
 import {AssetUpload} from '../../Library/index';
@@ -14,6 +18,10 @@ const DEFAULT_FEATURES = {
     upload: true
 };
 
+@connect(state => ({
+    siteNodePath: state?.cr?.nodes?.siteNode,
+    focusedNodePath: selectors.CR.Nodes.focusedNodePathSelector(state)
+}), null, null, {forwardRef: true})
 @neos(globalRegistry => ({
     assetLookupDataLoader: globalRegistry.get('dataLoaders').get('AssetLookup'),
     i18nRegistry: globalRegistry.get('i18n'),
@@ -44,7 +52,9 @@ export default class AssetEditor extends PureComponent {
         }).isRequired,
         secondaryEditorsRegistry: PropTypes.object.isRequired,
         renderSecondaryInspector: PropTypes.func.isRequired,
-        imagesOnly: PropTypes.bool
+        imagesOnly: PropTypes.bool,
+        siteNodePath: PropTypes.string.isRequired,
+        focusedNodePath: PropTypes.string.isRequired
     };
 
     static defaultProps = {
@@ -179,8 +189,30 @@ export default class AssetEditor extends PureComponent {
         }
     }
 
+    afterUpload = uploadResult => {
+        if (uploadResult?.object) {
+            this.handleValueChange(uploadResult?.object?.__identity);
+        } else {
+            this.handleValuesChange(uploadResult);
+        }
+    }
+
     handleChooseFile = () => {
-        this.assetUpload.chooseFromLocalFileSystem();
+        const {secondaryEditorsRegistry, options} = this.props;
+        if (secondaryEditorsRegistry.get('Neos.Neos/Inspector/Secondary/Editors/AssetUploadScreen')) {
+            // set media type constraint to "image/*" if it is not explicitly specified via options.constraints.mediaTypes
+            const constraints = {...options.constraints, mediaTypes: (options.constraints && options.constraints.mediaTypes) || ['image/*']};
+            const {component: AssetUploadScreen} = secondaryEditorsRegistry.get('Neos.Neos/Inspector/Secondary/Editors/AssetUploadScreen');
+            const additionalData = {
+                propertyName: this.props.identifier,
+                focusedNodePath: this.props.focusedNodePath,
+                siteNodePath: this.props.siteNodePath,
+                metaData: this.props.imagesOnly ? 'Image' : 'Asset'
+            };
+            this.props.renderSecondaryInspector('ASSET_UPLOAD_MEDIA', () => <AssetUploadScreen type={this.props.imagesOnly ? 'images' : 'all'} constraints={constraints} onComplete={this.afterUpload} additionalData={additionalData}/>);
+        } else {
+            this.assetUpload.chooseFromLocalFileSystem();
+        }
     }
 
     renderControls() {

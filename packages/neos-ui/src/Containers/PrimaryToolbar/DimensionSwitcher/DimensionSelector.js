@@ -54,7 +54,7 @@ export default class DimensionSelector extends PureComponent {
             }
         );
 
-        const sortedPresetOptions = sortBy(presetOptions, ['label']);
+        const sortedPresetOptions = sortBy(presetOptions, ['group', 'label']);
 
         const onPresetSelect = presetName => {
             onSelect(dimensionName, presetName);

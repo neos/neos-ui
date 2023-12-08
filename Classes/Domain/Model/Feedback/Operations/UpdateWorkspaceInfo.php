@@ -23,7 +23,7 @@ use Neos\Flow\Mvc\Controller\ControllerContext;
 
 class UpdateWorkspaceInfo extends AbstractFeedback
 {
-    protected ?WorkspaceName $workspaceName;
+    protected ?WorkspaceName $workspaceName = null;
 
     /**
      * @Flow\Inject

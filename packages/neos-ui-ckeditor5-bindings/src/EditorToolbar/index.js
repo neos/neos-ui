@@ -1,7 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$transform} from 'plow-js';
 
 import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors} from '@neos-project/neos-ui-redux-store';
@@ -11,10 +10,10 @@ import EditorToolbar from './EditorToolbar';
 
 export {EditorToolbar};
 
-@connect($transform({
-    focusedNodeType: selectors.CR.Nodes.focusedNodeTypeSelector,
-    currentlyEditedPropertyName: selectors.UI.ContentCanvas.currentlyEditedPropertyName,
-    formattingUnderCursor: selectors.UI.ContentCanvas.formattingUnderCursor
+@connect(state => ({
+    focusedNodeType: selectors.CR.Nodes.focusedNodeTypeSelector(state),
+    currentlyEditedPropertyName: selectors.UI.ContentCanvas.currentlyEditedPropertyName(state),
+    formattingUnderCursor: selectors.UI.ContentCanvas.formattingUnderCursor(state)
 }))
 @neos(globalRegistry => ({
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')

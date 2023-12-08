@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {$get} from 'plow-js';
+import get from 'lodash.get';
 import style from './style.module.css';
 import dataLoader from '../DataLoader/index';
 import Hero from './hero';
@@ -21,7 +21,7 @@ export default class ColumnView extends PureComponent {
         if (options.hero) {
             return {
                 label: options.hero.label,
-                value: String($get(options.hero.data, data))
+                value: String(get(data, options.hero.data))
             };
         }
         return null;
@@ -34,7 +34,7 @@ export default class ColumnView extends PureComponent {
             options.columns.forEach(column => {
                 columns.push({
                     label: column.label,
-                    value: String($get(column.data, data))
+                    value: String(get(data, column.data))
                 });
             });
         }

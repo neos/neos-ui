@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$transform, $get} from 'plow-js';
+
 import ToggablePanel from '@neos-project/react-ui-components/src/ToggablePanel/';
 import {neos} from '@neos-project/neos-ui-decorators';
 import escaperegexp from 'lodash.escaperegexp';
@@ -20,8 +20,8 @@ import style from './style.module.css';
     i18nRegistry: globalRegistry.get('i18n'),
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
 }))
-@connect($transform({
-    toggledGroups: $get('ui.addNodeModal.toggledGroups')
+@connect(state => ({
+    toggledGroups: state?.ui?.addNodeModal?.toggledGroups
 }), {
     toggleNodeTypeGroup: actions.UI.AddNodeModal.toggleGroup
 })
@@ -81,11 +81,11 @@ class NodeTypeGroupPanel extends PureComponent {
         } = this.props;
 
         const nodeType = nodeTypesRegistry.getNodeType(showHelpMessageFor);
-        const message = i18nRegistry.translate($get('ui.help.message', nodeType));
-        const thumbnail = $get('ui.help.thumbnail', nodeType);
+        const message = i18nRegistry.translate(nodeType?.ui?.help?.message);
+        const thumbnail = nodeType?.ui?.help?.thumbnail;
 
-        const icon = $get('ui.icon', nodeType);
-        const label = $get('ui.label', nodeType);
+        const icon = nodeType?.ui?.icon;
+        const label = nodeType?.ui?.label;
 
         if (activeHelpMessageGroupPanel !== group.name) {
             return null;
@@ -133,7 +133,7 @@ class NodeTypeGroupPanel extends PureComponent {
 
         // Take `collapsed: true` group setting into account
         // force open state if a filterSearchTerm is set
-        const isOpen = filterSearchTerm.length > 0 ? true : $get('collapsed', group) ? toggledGroups.includes(name) : !toggledGroups.includes(name);
+        const isOpen = filterSearchTerm.length > 0 ? true : group?.collapsed ? toggledGroups.includes(name) : !toggledGroups.includes(name);
 
         return (
             <ToggablePanel

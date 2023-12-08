@@ -1,7 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$transform, $get} from 'plow-js';
 
 import {neos} from '@neos-project/neos-ui-decorators';
 import {actions} from '@neos-project/neos-ui-redux-store';
@@ -15,7 +14,7 @@ import style from './style.module.css';
     hotkeyRegistry: globalRegistry.get('hotkeys')
 }))
 @connect(
-    $transform({isOpen: $get('ui.keyboardShortcutModal.isOpen')}),
+    state => ({isOpen: state?.ui?.keyboardShortcutModal?.isOpen}),
     {close: actions.UI.KeyboardShortcutModal.close}
 )
 class KeyboardShortcutModal extends PureComponent {

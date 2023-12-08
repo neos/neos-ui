@@ -48,8 +48,9 @@ class FeedbackCollection implements \JsonSerializable
      */
     public function add(FeedbackInterface $feedback)
     {
-        foreach ($this->feedbacks as $value) {
-            if ($value->isSimilarTo($feedback)) {
+        foreach ($this->feedbacks as $i => $value) {
+            if ($feedback->isSimilarTo($value)) {
+                $this->feedbacks[$i] = $feedback;
                 return;
             }
         }
@@ -60,7 +61,7 @@ class FeedbackCollection implements \JsonSerializable
     /**
      * Serialize collection to `json_encode`able array
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function jsonSerialize(): array
     {
@@ -76,7 +77,7 @@ class FeedbackCollection implements \JsonSerializable
         ];
     }
 
-    public function reset()
+    public function reset(): void
     {
         $this->feedbacks = [];
     }

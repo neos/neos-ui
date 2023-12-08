@@ -1,5 +1,4 @@
 import uuid from 'uuid';
-import {$get} from 'plow-js';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 
@@ -225,7 +224,7 @@ manifest('main', {}, globalRegistry => {
     //
     serverFeedbackHandlers.set('Neos.Neos.Ui:UpdateNodePreviewUrl/Main', (feedbackPayload, {store}) => {
         const state = store.getState();
-        const currentDocumentNodePath = $get('cr.nodes.documentNode', state);
+        const currentDocumentNodePath = state?.cr?.nodes?.documentNode;
         if (feedbackPayload.contextPath === currentDocumentNodePath) {
             store.dispatch(actions.UI.ContentCanvas.setPreviewUrl(feedbackPayload.newPreviewUrl));
         }
@@ -270,17 +269,17 @@ manifest('main', {}, globalRegistry => {
         const parentContextPath = parentNodeContextPath(oldContextPath);
 
         const state = store.getState();
-        if ($get('cr.nodes.focused.contextPath', state) === oldContextPath) {
+        if (state?.cr?.nodes?.focused?.contextPath === oldContextPath) {
             store.dispatch(actions.CR.Nodes.unFocus());
         }
 
-        if ($get('ui.pageTree.isFocused', state) === oldContextPath) {
+        if (state?.ui?.pageTree?.isFocused === oldContextPath) {
             store.dispatch(actions.UI.PageTree.focus(parentContextPath));
         }
 
         // If we are moving the current document node or one of its parents...
         const [oldPath] = oldContextPath.split('@');
-        const currentDocumentNodePath = $get('cr.nodes.documentNode', state);
+        const currentDocumentNodePath = state?.cr?.nodes?.documentNode;
         if (currentDocumentNodePath && (currentDocumentNodePath === oldContextPath || currentDocumentNodePath.split('@')[0].startsWith(oldPath + '/'))) {
             currentDocumentNodeMoved = true;
             let redirectContextPath = oldContextPath;
@@ -294,7 +293,7 @@ manifest('main', {}, globalRegistry => {
                     window.location = '/neos';
                     break;
                 }
-                redirectUri = $get(['cr', 'nodes', 'byContextPath', redirectContextPath, 'uri'], state);
+                redirectUri = state?.cr?.nodes?.byContextPath?.[redirectContextPath]?.uri;
             }
 
             // Temporarily set the document node to the moved nodes parent before updating its path
@@ -307,12 +306,12 @@ manifest('main', {}, globalRegistry => {
         // and also update the selected document node
         if (currentDocumentNodeMoved) {
             const newState = store.getState();
-            store.dispatch(actions.UI.ContentCanvas.setSrc($get(['cr', 'nodes', 'byContextPath', newContextPath, 'uri'], newState)));
+            store.dispatch(actions.UI.ContentCanvas.setSrc(newState?.cr?.nodes?.byContextPath?.[newContextPath]?.uri));
             store.dispatch(actions.CR.Nodes.setDocumentNode(newContextPath));
         }
 
         // Remove the node from the old position in the dom
-        if ($get('cr.nodes.documentNode', state) !== oldContextPath) {
+        if (state?.cr?.nodes?.documentNode !== oldContextPath) {
             findAllOccurrencesOfNodeInGuestFrame(oldContextPath).forEach(el => {
                 const closestContentCollection = el.closest('.neos-contentcollection');
                 el.remove();
@@ -336,16 +335,16 @@ manifest('main', {}, globalRegistry => {
             store.dispatch(actions.CR.Nodes.unFocus());
         }
 
-        if ($get('ui.pageTree.isFocused', state) === contextPath) {
+        if (state?.ui?.pageTree?.isFocused === contextPath) {
             store.dispatch(actions.UI.PageTree.focus(parentContextPath));
         }
 
         // If we are removing current document node ...
-        if ($get('cr.nodes.documentNode', state) === contextPath) {
+        if (state?.cr?.nodes?.documentNode === contextPath) {
             // ... then, we need to determine the closest parent which is not removed, so that we can
             // redirect to this node in the UI.
             //
-            // Finding the closest existing parent node is not so easy: We cannot access the Redux store to find parent node paths (e.g.  via selectors.CR.Nodes.getPathInNode(state, redirectContextPath, 'parent')),
+            // Finding the closest existing parent node is not so easy: We cannot access the Redux store to find parent node paths,
             // because the parent's parent node might have ALSO been removed in the same request.
             //
             // Instead, we need to check ALL the RemoveNode feedbacks from the current change request; and traverse the parent hierarchy there.
@@ -363,7 +362,7 @@ manifest('main', {}, globalRegistry => {
                     window.location = '/neos';
                     break;
                 }
-                redirectUri = $get(['cr', 'nodes', 'byContextPath', redirectContextPath, 'uri'], state);
+                redirectUri = state?.cr?.nodes?.byContextPath?.[redirectContextPath]?.uri;
             }
 
             store.dispatch(actions.UI.ContentCanvas.setSrc(redirectUri));
@@ -373,7 +372,7 @@ manifest('main', {}, globalRegistry => {
         store.dispatch(actions.CR.Nodes.remove(contextPath));
 
         // Remove the node from the dom
-        if ($get('cr.nodes.documentNode', state) !== contextPath) {
+        if (state?.cr?.nodes?.documentNode !== contextPath) {
             findAllOccurrencesOfNodeInGuestFrame(contextPath).forEach(el => {
                 const closestContentCollection = el.closest('.neos-contentcollection');
                 el.remove();

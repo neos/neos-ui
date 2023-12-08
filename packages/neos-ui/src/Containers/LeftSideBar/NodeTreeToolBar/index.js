@@ -1,7 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$transform, $get, $contains} from 'plow-js';
 
 import {isEqualSet} from '@neos-project/utils-helpers';
 import {neos} from '@neos-project/neos-ui-decorators';
@@ -21,8 +20,8 @@ import {
 import style from './style.module.css';
 
 @connect(
-    $transform({
-        isWorkspaceReadOnly: selectors.CR.Workspaces.isWorkspaceReadOnlySelector
+    state => ({
+        isWorkspaceReadOnly: selectors.CR.Workspaces.isWorkspaceReadOnlySelector(state)
     })
 )
 @neos(globalRegistry => ({
@@ -263,17 +262,17 @@ const withNodeTypesRegistry = neos(globalRegistry => ({
 const removeAllowed = (focusedNodesContextPaths, state) => focusedNodesContextPaths.every(contextPath => {
     const getNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(contextPath);
     const focusedNode = getNodeByContextPathSelector(state);
-    return $get('policy.canRemove', focusedNode);
+    return focusedNode?.policy?.canRemove;
 });
 const visibilityToggleAllowed = (focusedNodesContextPaths, state) => focusedNodesContextPaths.every(contextPath => {
     const getNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(contextPath);
     const focusedNode = getNodeByContextPathSelector(state);
-    return !$contains('_hidden', 'policy.disallowedProperties', focusedNode);
+    return !focusedNode?.policy?.disallowedProperties?.includes('_hidden');
 });
 const editingAllowed = (focusedNodesContextPaths, state) => focusedNodesContextPaths.every(contextPath => {
     const getNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(contextPath);
     const focusedNode = getNodeByContextPathSelector(state);
-    return $get('policy.canEdit', focusedNode);
+    return focusedNode?.policy?.canEdit;
 });
 
 const makeMapStateToProps = isDocument => (state, {nodeTypesRegistry}) => {
@@ -303,19 +302,19 @@ const makeMapStateToProps = isDocument => (state, {nodeTypesRegistry}) => {
         const visibilityCanBeToggled = visibilityToggleAllowed(focusedNodesContextPaths, state);
         const canBeEdited = editingAllowed(focusedNodesContextPaths, state);
 
-        const clipboardMode = $get('cr.nodes.clipboardMode', state);
+        const clipboardMode = state?.cr?.nodes?.clipboardMode;
         const allFocusedNodesAreInClipboard = isEqualSet(focusedNodesContextPaths, clipboardNodesContextPaths);
         const isCut = allFocusedNodesAreInClipboard && clipboardMode === 'Move';
         const isCopied = allFocusedNodesAreInClipboard && clipboardMode === 'Copy';
 
-        const isHidden = $get('properties._hidden', focusedNode);
+        const isHidden = focusedNode?.properties?._hidden;
 
         const role = focusedNode ? (nodeTypesRegistry.hasRole(focusedNode.nodeType, 'document') ? 'document' : 'content') : null;
         const isAllowedToAddChildOrSiblingNodes = isAllowedToAddChildOrSiblingNodesSelector(state, {
             reference: focusedNodeContextPath,
             role
         });
-        const isHiddenContentTree = $get('ui.leftSideBar.contentTree.isHidden', state);
+        const isHiddenContentTree = state?.ui?.leftSideBar?.contentTree?.isHidden;
 
         const destructiveOperationsAreDisabled = (
             isDocument ?

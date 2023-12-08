@@ -12,7 +12,7 @@ Release roadmap is [available here](https://www.neos.io/features/release-process
 That means:
 * All bugfixes go to the lowest maintained branch
 * All new features go only to the 8.3 and 9.0 branch
-* New minor and major releases are made in sync with Neos/Flow. Bugfix releases may be available independantly
+* New minor and major releases are made in sync with Neos/Flow. Bugfix releases may be available independently
 
 ### Currently maintained versions
 
@@ -57,7 +57,7 @@ composer update neos/neos-ui
 
 ### Installing latest development
 
-For trying out the new UI, we recommend you to run the regularily released beta releases.
+For trying out the new UI, we recommend you to run the regularly  released beta releases.
 However, if you want to stay on bleeding-edge, or want to help out developing, you'll
 need the `9.0.x-dev` release. You can install the latest release using:
 
@@ -190,18 +190,6 @@ To speed up the e2e-test workflow/feedback loop you can start the system under t
 * View the recording via Sauce Labs. You can find the url in the beginning of the test output.
 * Observe Flow exceptions and logs in build artifacts.
 * You can trigger a SSH enabled build via the CircleCI interface and then login.
-
-###### Just the end to end tests fail
-
-It can happen that end to end tests fail caused by cached sources. So if you change PHP code for instance and don't adjust the composer.json it can happen that your new code change is not used because it is not part of the cache. In this case we need to flush the CircleCI caches manualy.
-
-We have introduced an environment variable called CACHE_VERSION. We need to change the variable to to new timestamp for instance to invalidate the caches.
-
-1. go to https://app.circleci.com/settings/project/github/neos/neos-ui and login
-2. open the project settings and choose `Environment Variables`
-3. Delete the `CACHE_VERSION` and create a new one with the value of the current timestamp
-
-Retrigger the build and it should work.
 
 #### Releasing
 

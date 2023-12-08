@@ -26,6 +26,7 @@ use Neos\Fusion\View\FusionView;
 use Neos\Neos\Controller\Backend\MenuHelper;
 use Neos\Neos\Domain\Repository\DomainRepository;
 use Neos\Neos\Domain\Repository\SiteRepository;
+use Neos\Neos\Domain\Service\NodeTypeNameFactory;
 use Neos\Neos\Domain\Service\WorkspaceNameBuilder;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;
@@ -170,13 +171,13 @@ class BackendController extends ActionController
         // to call the contentGraph here directly.
         $rootNodeAggregate = $contentRepository->getContentGraph()->findRootNodeAggregateByType(
             $workspace->currentContentStreamId,
-            NodeTypeName::fromString('Neos.Neos:Sites')
+            NodeTypeNameFactory::forSites()
         );
         $rootNode = $rootNodeAggregate->getNodeByCoveredDimensionSpacePoint($defaultDimensionSpacePoint);
 
-        $siteNode = $subgraph->findChildNodeConnectedThroughEdgeName(
-            $rootNode->nodeAggregateId,
-            $siteDetectionResult->siteNodeName->toNodeName()
+        $siteNode = $subgraph->findNodeByPath(
+            $siteDetectionResult->siteNodeName->toNodeName(),
+            $rootNode->nodeAggregateId
         );
 
         if (!$nodeAddress) {

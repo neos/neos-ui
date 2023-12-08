@@ -1,6 +1,5 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {$transform, $get} from 'plow-js';
 import {connect} from 'react-redux';
 
 import flowright from 'lodash.flowright';
@@ -16,7 +15,7 @@ import hashSum from 'hash-sum';
 import moment from 'moment';
 import {urlWithParams} from '@neos-project/utils-helpers/src/urlWithParams';
 
-const getContextPath = $get('contextPath');
+const getContextPath = node => node?.contextPath;
 
 //
 // Finds the first parent element that has a scrollbar
@@ -40,8 +39,8 @@ const decodeLabel = flowright(
 );
 
 @connect(
-    $transform({
-        isWorkspaceReadOnly: selectors.CR.Workspaces.isWorkspaceReadOnlySelector
+    state => ({
+        isWorkspaceReadOnly: selectors.CR.Workspaces.isWorkspaceReadOnlySelector(state)
     })
 )
 export default class Node extends PureComponent {
@@ -159,9 +158,9 @@ export default class Node extends PureComponent {
 
     getIcon() {
         const {node, nodeTypesRegistry} = this.props;
-        const nodeType = $get('nodeType', node);
+        const nodeType = node?.nodeType;
 
-        return $get('ui.icon', nodeTypesRegistry.get(nodeType));
+        return nodeTypesRegistry.get(nodeType)?.ui?.icon;
     }
 
     /**
@@ -171,9 +170,9 @@ export default class Node extends PureComponent {
     getCustomIconComponent() {
         const {node} = this.props;
 
-        const isHidden = $get('properties._hidden', node);
-        const isHiddenBefore = $get('properties._hiddenBeforeDateTime', node);
-        const isHiddenAfter = $get('properties._hiddenAfterDateTime', node);
+        const isHidden = node?.properties?._hidden;
+        const isHiddenBefore = node?.properties?._hiddenBeforeDateTime;
+        const isHiddenAfter = node?.properties?._hiddenAfterDateTime;
 
         if (isHidden) {
             return (
@@ -205,8 +204,8 @@ export default class Node extends PureComponent {
 
     getNodeTypeLabel() {
         const {node, nodeTypesRegistry, i18nRegistry} = this.props;
-        const nodeType = $get('nodeType', node);
-        const nodeTypeLabel = $get('ui.label', nodeTypesRegistry.get(nodeType));
+        const nodeType = node?.nodeType;
+        const nodeTypeLabel = nodeTypesRegistry.get(nodeType)?.ui?.label;
         return i18nRegistry.translate(nodeTypeLabel, nodeTypeLabel);
     }
 
@@ -297,7 +296,7 @@ export default class Node extends PureComponent {
 
         const directLink = (isContentTreeNode ? undefined : this.createDirectNodeLink());
 
-        const labelTitle = decodeLabel($get('label', node)) + ' (' + this.getNodeTypeLabel() + ')';
+        const labelTitle = decodeLabel(node?.label) + ' (' + this.getNodeTypeLabel() + ')';
 
         // Autocreated or we have nested nodes and the node that we are dragging belongs to the selection
         // For read only workspaces we also forbid drag and drop
@@ -317,11 +316,11 @@ export default class Node extends PureComponent {
                     isFocused={this.isFocused()}
                     isLoading={this.isLoading()}
                     isDirty={this.props.isNodeDirty}
-                    isHidden={$get('properties._hidden', node)}
-                    isHiddenInIndex={$get('properties._hiddenInIndex', node) || this.isIntermediate()}
+                    isHidden={node?.properties?._hidden}
+                    isHiddenInIndex={node?.properties?._hiddenInIndex || this.isIntermediate()}
                     isDragging={currentlyDraggedNodes.includes(node.contextPath)}
                     hasError={this.hasError()}
-                    label={decodeLabel($get('label', node))}
+                    label={decodeLabel(node?.label)}
                     icon={this.getIcon()}
                     customIconComponent={this.getCustomIconComponent()}
                     iconLabel={this.getNodeTypeLabel()}
@@ -377,9 +376,9 @@ export default class Node extends PureComponent {
 
         // Append presetBaseNodeType param to src
         const srcWithBaseNodeType = this.props.filterNodeType ? urlWithParams(
-            $get('uri', node),
+            node?.uri,
             {presetBaseNodeType: this.props.filterNodeType}
-        ) : $get('uri', node);
+        ) : node?.uri;
 
         onNodeFocus(node.contextPath, metaKeyPressed, altKeyPressed, shiftKeyPressed);
         onNodeClick(srcWithBaseNodeType, node.contextPath, metaKeyPressed, altKeyPressed, shiftKeyPressed);
@@ -433,7 +432,7 @@ export const PageTreeNode = withNodeTypeRegistryAndI18nRegistry(connect(
                 loadingNodeContextPaths: selectors.UI.PageTree.getLoading(state),
                 errorNodeContextPaths: selectors.UI.PageTree.getErrors(state),
                 isNodeDirty: isDocumentNodeDirtySelector(state, node.contextPath),
-                filterNodeType: $get('ui.pageTree.filterNodeType', state),
+                filterNodeType: state?.ui?.pageTree?.filterNodeType,
                 canBeInsertedAlongside,
                 canBeInsertedInto
             });

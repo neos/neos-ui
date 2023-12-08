@@ -6,7 +6,6 @@ import Icon from '@neos-project/react-ui-components/src/Icon/';
 import DropDown from '@neos-project/react-ui-components/src/DropDown/';
 import style from './style.module.css';
 import backend from '@neos-project/neos-ui-backend-connector';
-import {$get, $transform} from 'plow-js';
 import mapValues from 'lodash.mapvalues';
 import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 import I18n from '@neos-project/neos-ui-i18n';
@@ -30,10 +29,10 @@ SelectedPreset.propTypes = {
     dimensionName: PropTypes.string.isRequired
 };
 
-@connect($transform({
-    contentDimensions: selectors.CR.ContentDimensions.byName,
-    allowedPresets: selectors.CR.ContentDimensions.allowedPresets,
-    activePresets: selectors.CR.ContentDimensions.activePresets
+@connect(state => ({
+    contentDimensions: selectors.CR.ContentDimensions.byName(state),
+    allowedPresets: selectors.CR.ContentDimensions.allowedPresets(state),
+    activePresets: selectors.CR.ContentDimensions.activePresets(state)
 }), {
     selectPreset: actions.CR.ContentDimensions.selectPreset,
     setAllowed: actions.CR.ContentDimensions.setAllowed
@@ -108,7 +107,7 @@ export default class DimensionSwitcher extends PureComponent {
                     contentDimensions(dimensionName, effectivePresets).then(
                         dimensionConfig => {
                             const allowedPresets = Object.keys(
-                                $get([dimensionName, 'presets'], dimensionConfig)
+                                dimensionConfig?.[dimensionName]?.presets
                             );
                             this.props.setAllowed(dimensionName, allowedPresets);
 
@@ -130,7 +129,7 @@ export default class DimensionSwitcher extends PureComponent {
                             if (!this.props.allowedPresets[selectedDimensionName].includes(presetName)) {
                                 contentDimensions(selectedDimensionName, this.getEffectivePresets(transientPresets)).then(
                                     dimensionConfig => {
-                                        const allowedPresets = Object.keys($get([selectedDimensionName, 'presets'], dimensionConfig));
+                                        const allowedPresets = Object.keys(dimensionConfig?.[selectedDimensionName]?.presets);
                                         this.props.setAllowed(selectedDimensionName, allowedPresets);
                                     }
                                 );
@@ -166,7 +165,7 @@ export default class DimensionSwitcher extends PureComponent {
                 key={dimensionName}
                 dimensionName={dimensionName}
                 icon={icon}
-                dimensionLabel={$get('label', dimensionConfiguration)}
+                dimensionLabel={dimensionConfiguration?.label}
                 presets={this.presetsForDimension(dimensionName)}
                 activePreset={activePreset}
                 onSelect={this.handleSelectPreset}
@@ -210,8 +209,8 @@ export default class DimensionSwitcher extends PureComponent {
                                     key={dimensionName}
                                     dimensionName={dimensionName}
                                     icon={icon}
-                                    dimensionLabel={i18nRegistry.translate($get('label', dimensionConfiguration))}
-                                    presetLabel={i18nRegistry.translate($get([dimensionName, 'label'], activePresets))}
+                                    dimensionLabel={i18nRegistry.translate(dimensionConfiguration?.label)}
+                                    presetLabel={i18nRegistry.translate(activePresets?.[dimensionName]?.label)}
                                 />
                             );
                         })}
@@ -224,7 +223,7 @@ export default class DimensionSwitcher extends PureComponent {
                                 <li key={dimensionName} className={style.dimensionCategory}>
                                     <div className={style.dimensionLabel}>
                                         <Icon icon={icon} padded="right" className={style.dimensionCategory__icon}/>
-                                        <I18n id={$get('label', dimensionConfiguration)}/>
+                                        <I18n id={dimensionConfiguration?.label}/>
                                     </div>
                                     {this.renderSingleDimensionSelector(dimensionName, contentDimensionsObject)}
                                 </li>
@@ -257,7 +256,7 @@ export default class DimensionSwitcher extends PureComponent {
 
     presetsForDimension(dimensionName) {
         const {contentDimensions, allowedPresets, i18nRegistry} = this.props;
-        const dimensionConfiguration = $get(dimensionName, contentDimensions);
+        const dimensionConfiguration = contentDimensions?.[dimensionName];
 
         return mapValues(dimensionConfiguration.presets,
             (presetConfiguration, presetName) => {

@@ -29,7 +29,7 @@ abstract class AbstractCreate extends AbstractStructuralChange
     /**
      * The type of the node that will be created
      */
-    protected ?NodeTypeName $nodeTypeName;
+    protected ?NodeTypeName $nodeTypeName = null;
 
     /**
      * Incoming data from creationDialog
@@ -87,7 +87,7 @@ abstract class AbstractCreate extends AbstractStructuralChange
      * @param Node $parentNode
      * @param NodeAggregateId|null $succeedingSiblingNodeAggregateId
      * @return Node
-     * @throws InvalidNodeCreationHandlerException|NodeNameIsAlreadyOccupied|NodeException
+     * @throws InvalidNodeCreationHandlerException|NodeNameIsAlreadyOccupied
      */
     protected function createNode(
         Node $parentNode,

@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-validators",
-  "version": "8.3.4",
+  "version": "9.0.0-beta1",
   "description": "Validators for Neos CMS UI.",
   "private": true,
   "main": "./src/index.ts",
@@ -8,8 +8,7 @@
     "@neos-project/neos-ui-extensibility": "workspace:*",
     "@neos-project/neos-ui-i18n": "workspace:*",
     "@neos-project/utils-logger": "workspace:*",
-    "isemail": "3.2.0",
-    "plow-js": "3.0.0"
+    "isemail": "3.2.0"
   },
   "devDependencies": {
     "@neos-project/jest-preset-neos-ui": "workspace:*",
@@ -19,5 +18,6 @@
   "peerDependencies": {
     "react": "^16.12.0"
   },
-  "license": "GNU GPLv3"
+  "license": "GNU GPLv3",
+  "stableVersion": "8.3.4"
 }

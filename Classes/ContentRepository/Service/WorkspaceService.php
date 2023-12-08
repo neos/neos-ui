@@ -14,8 +14,9 @@ namespace Neos\Neos\Ui\ContentRepository\Service;
 use Neos\ContentRepository\Core\ContentRepository;
 use Neos\ContentRepository\Core\Factory\ContentRepositoryId;
 use Neos\ContentRepository\Core\Feature\WorkspacePublication\Command\DiscardIndividualNodesFromWorkspace;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindClosestNodeFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
-use Neos\ContentRepository\Core\Projection\Workspace\Workspace;
+use Neos\Neos\Domain\Service\NodeTypeNameFactory;
 use Neos\Neos\FrontendRouting\NodeAddress;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
@@ -97,7 +98,7 @@ class WorkspaceService
                 $node = $subgraph->findNodeById($change->nodeAggregateId);
 
                 if ($node instanceof Node) {
-                    $documentNode = $this->getClosestDocumentNode($node);
+                    $documentNode = $subgraph->findClosestNode($node->nodeAggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_DOCUMENT));
                     if ($documentNode instanceof Node) {
                         $contentRepository = $this->contentRepositoryRegistry->get($documentNode->subgraphIdentity->contentRepositoryId);
                         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
@@ -126,7 +127,6 @@ class WorkspaceService
         $user = $this->domainUserService->getCurrentUser();
 
         $workspacesArray = [];
-        /** @var Workspace $workspace */
         foreach ($contentRepository->getWorkspaceFinder()->findAll() as $workspace) {
             // FIXME: This check should be implemented through a specialized Workspace Privilege or something similar
             // Skip workspace not owned by current user
@@ -155,13 +155,14 @@ class WorkspaceService
         return $workspacesArray;
     }
 
+    /** @return list<RemoveNode> */
     public function predictRemoveNodeFeedbackFromDiscardIndividualNodesFromWorkspaceCommand(
         DiscardIndividualNodesFromWorkspace $command,
         ContentRepository $contentRepository
     ): array {
         $workspace = $contentRepository->getWorkspaceFinder()->findOneByName($command->workspaceName);
         if (is_null($workspace)) {
-            return Nodes::createEmpty();
+            return [];
         }
 
         $changeFinder = $contentRepository->projectionState(ChangeFinder::class);
@@ -190,7 +191,7 @@ class WorkspaceService
 
                         $childNode = $subgraph->findNodeById($nodeToDiscard->nodeAggregateId);
                         $parentNode = $subgraph->findParentNode($nodeToDiscard->nodeAggregateId);
-                        if ($parentNode) {
+                        if ($childNode && $parentNode) {
                             $result[] = new RemoveNode($childNode, $parentNode);
                             $handledNodes[] = $nodeToDiscard;
                         }
@@ -200,19 +201,5 @@ class WorkspaceService
         }
 
         return $result;
-    }
-
-    private function getClosestDocumentNode(Node $node): ?Node
-    {
-        $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
-
-        while ($node instanceof Node) {
-            if ($this->getNodeType($node)->isOfType('Neos.Neos:Document')) {
-                return $node;
-            }
-            $node = $subgraph->findParentNode($node->nodeAggregateId);
-        }
-
-        return null;
     }
 }

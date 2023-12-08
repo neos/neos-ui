@@ -1,7 +1,6 @@
 import React, {PureComponent, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$get, $transform} from 'plow-js';
 
 import {IconButton, SelectBox, Icon} from '@neos-project/react-ui-components';
 import LinkOption from './LinkOption';
@@ -37,8 +36,8 @@ const looksLikeExternalLink = link => {
     i18nRegistry: globalRegistry.get('i18n'),
     containerRegistry: globalRegistry.get('containers')
 }))
-@connect($transform({
-    contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking
+@connect(state => ({
+    contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking(state)
 }), {
     lockPublishing: actions.UI.Remote.lockPublishing,
     unlockPublishing: actions.UI.Remote.unlockPublishing
@@ -96,16 +95,16 @@ export default class LinkInput extends PureComponent {
     getDataLoaderOptions() {
         const options = {...this.props.options, ...this.props.linkingOptions};
 
-        const contextForNodeLinking = $get('startingPoint', options) ?
+        const contextForNodeLinking = options?.startingPoint ?
             {...this.props.contextForNodeLinking, contextNode: options.startingPoint} :
             this.props.contextForNodeLinking;
 
         return {
-            nodeTypes: $get('nodeTypes', options) || ['Neos.Neos:Document'],
-            asset: $get('assets', options),
-            node: $get('nodes', options),
-            startingPoint: $get('startingPoint', options),
-            constraints: $get('constraints', options),
+            nodeTypes: options?.nodeTypes || ['Neos.Neos:Document'],
+            asset: options?.assets,
+            node: options?.nodes,
+            startingPoint: options?.startingPoint,
+            constraints: options?.constraints,
             contextForNodeLinking
         };
     }
@@ -297,7 +296,7 @@ export default class LinkInput extends PureComponent {
                     value={''}
                     plainInputMode={isUri(this.state.searchTerm)}
                     onValueChange={this.handleValueChange}
-                    placeholder={this.props.i18nRegistry.translate($get('options.placeholder', this.props) || 'Neos.Neos.Ui:Main:ckeditor__toolbar__link__placeholder', 'Paste a link, or search')}
+                    placeholder={this.props.i18nRegistry.translate(this.props?.options?.placeholder || 'Neos.Neos.Ui:Main:ckeditor__toolbar__link__placeholder', 'Paste a link, or search')}
                     displayLoadingIndicator={this.state.isLoading}
                     displaySearchBox={true}
                     setFocus={this.props.setFocus}
@@ -382,7 +381,7 @@ export default class LinkInput extends PureComponent {
         return (
             <div>
                 <div className={style.linkInput__wrap}>
-                    {this.state.isEditMode && !$get('options.disabled', this.props) ? this.renderEditMode() : this.renderViewMode()}
+                    {this.state.isEditMode && !this.props?.options?.disabled ? this.renderEditMode() : this.renderViewMode()}
                     {optionsPanelEnabled && (
                         <IconButton
                             disabled={!linkValue}

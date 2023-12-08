@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
 import style from './style.module.css';
-import {$get, $transform} from 'plow-js';
+
 import mapValues from 'lodash.mapvalues';
 import sortBy from 'lodash.sortby';
 import {neos} from '@neos-project/neos-ui-decorators';
@@ -46,14 +46,11 @@ export default class DimensionSelector extends PureComponent {
         const presetOptions = mapValues(
             presets,
             (presetConfiguration, presetName) => {
-                return $transform(
-                    {
-                        label: $get('label'),
-                        value: presetName,
-                        disallowed: $get('disallowed')
-                    },
-                    presetConfiguration
-                );
+                return {
+                    label: presetConfiguration?.label,
+                    value: presetName,
+                    disallowed: presetConfiguration?.disallowed
+                };
             }
         );
 

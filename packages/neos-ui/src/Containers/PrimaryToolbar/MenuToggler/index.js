@@ -2,7 +2,6 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
-import {$transform, $get} from 'plow-js';
 
 import Button from '@neos-project/react-ui-components/src/Button/';
 import {actions} from '@neos-project/neos-ui-redux-store';
@@ -14,8 +13,8 @@ import style from './style.module.css';
     i18nRegistry: globalRegistry.get('i18n')
 }))
 
-@connect($transform({
-    isMenuHidden: $get('ui.drawer.isHidden')
+@connect(state => ({
+    isMenuHidden: state?.ui?.drawer?.isHidden
 }), {
     toggleDrawer: actions.UI.Drawer.toggle
 })

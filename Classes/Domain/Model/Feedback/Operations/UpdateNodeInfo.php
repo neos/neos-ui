@@ -23,7 +23,7 @@ use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 
 class UpdateNodeInfo extends AbstractFeedback
 {
-    protected ?Node $node;
+    protected ?Node $node = null;
 
     /**
      * @Flow\Inject
@@ -113,7 +113,7 @@ class UpdateNodeInfo extends AbstractFeedback
      *
      * @return array<string,?array<string,mixed>>
      */
-    public function serializeNodeRecursively(Node $node, ControllerContext $controllerContext): array
+    private function serializeNodeRecursively(Node $node, ControllerContext $controllerContext): array
     {
         $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);

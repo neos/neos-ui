@@ -20,7 +20,7 @@ Neos:
       inspector:
         dataTypes:
           Neos\Media\Domain\Model\ImageInterface:
-            typeConverter: Neos\Neos\Ui\TypeConverter\UiDependentImageSerializer
+            typeConverter: Neos\Media\TypeConverter\ImageInterfaceArrayPresenter
       translation:
         autoInclude:
           'Neos.Neos.Ui':
@@ -176,7 +176,6 @@ Neos:
           preferences:
             interfaceLanguage: '${q(user).property(''preferences.interfaceLanguage'') || Configuration.setting(''Neos.Neos.userInterface.defaultLanguage'')}'
           settings:
-            isAutoPublishingEnabled: false
             targetWorkspace: 'live'
       changes:
         types:
@@ -191,6 +190,8 @@ Neos:
           'Neos.Neos.Ui:MoveBefore': Neos\Neos\Ui\Domain\Model\Changes\MoveBefore
           'Neos.Neos.Ui:MoveAfter': Neos\Neos\Ui\Domain\Model\Changes\MoveAfter
           'Neos.Neos.Ui:MoveInto': Neos\Neos\Ui\Domain\Model\Changes\MoveInto
+      outOfBandRendering:
+        viewObjectName: 'Neos\Neos\Ui\View\OutOfBandRenderingFusionView'
   Flow:
     security:
       authentication:

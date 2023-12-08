@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {produce} from 'immer';
 import mapValues from 'lodash.mapvalues';
 import {connect} from 'react-redux';
-import {$get, $contains, $set} from 'plow-js';
+
 import I18n from '@neos-project/neos-ui-i18n';
 import Bar from '@neos-project/react-ui-components/src/Bar/';
 import Button from '@neos-project/react-ui-components/src/Button/';
@@ -95,12 +95,12 @@ export default class Inspector extends PureComponent {
         super(props);
 
         if (props.focusedNode) {
-            const originalViewConfiguration = props.nodeTypesRegistry.getInspectorViewConfigurationFor($get('nodeType', props.focusedNode));
-            const nodeForContext = this.generateNodeForContext(
-                props.focusedNode,
-                props.transientValues
-            );
+            const originalViewConfiguration = props.nodeTypesRegistry.getInspectorViewConfigurationFor(props.focusedNode?.nodeType);
 
+            const nodeForContext = this.generateNodeForContext(
+                this.props.focusedNode,
+                this.props.transientValues
+            );
             const processedViewConfiguration = preprocessNodeConfiguration(
                 {node: nodeForContext, parentNode: this.props.parentNode}, originalViewConfiguration
             );
@@ -113,8 +113,8 @@ export default class Inspector extends PureComponent {
     UNSAFE_componentWillReceiveProps(newProps) {
         if (newProps.focusedNode !== this.props.focusedNode) {
             this.setState({
-                viewConfiguration: newProps.nodeTypesRegistry.getInspectorViewConfigurationFor($get('nodeType', newProps.focusedNode)),
-                originalViewConfiguration: newProps.nodeTypesRegistry.getInspectorViewConfigurationFor($get('nodeType', newProps.focusedNode))
+                viewConfiguration: newProps.nodeTypesRegistry.getInspectorViewConfigurationFor(newProps.focusedNode?.nodeType),
+                originalViewConfiguration: newProps.nodeTypesRegistry.getInspectorViewConfigurationFor(newProps.focusedNode?.nodeType)
             });
         }
         if (!newProps.shouldShowSecondaryInspector) {
@@ -134,61 +134,69 @@ export default class Inspector extends PureComponent {
         this.preprocessViewConfigurationDebounced.cancel();
     }
 
+    evaluateExpression = expression => {
+        try {
+            // eslint-disable-next-line no-new-func
+            const fn = new Function(
+                'node,parentNode',
+                'return ' + expression.replace('ClientEval:', '')
+            );
+            const nodeForContext = this.generateNodeForContext(
+                this.props.focusedNode,
+                this.props.transientValues
+            );
+
+            return fn(nodeForContext, this.props.parentNode);
+        } catch (e) {
+            console.warn('An error occurred while trying to evaluate "' + expression + '"\n', e);
+            return null;
+        }
+    }
+
     //
     // Return updated viewConfiguration, while keeping originalViewConfiguration to read original property values from it
     //
-    preprocessViewConfiguration = (context = {}, path = [], viewConfiguration, originalViewConfiguration) => {
-        const currentLevel = path.length === 0 ? viewConfiguration : $get(path, viewConfiguration);
-        Object.keys(currentLevel).forEach(propertyName => {
-            const propertyValue = currentLevel[propertyName];
-            const newPath = path.slice();
-            newPath.push(propertyName);
-            const originalPropertyValue = $get(newPath, originalViewConfiguration);
+    preprocessViewConfiguration = value => {
+        if (value?.constructor === Object) { // value is plain object
+            return Object.fromEntries(
+                Object.entries(value).map(
+                    ([key, value]) => [
+                        key,
+                        this.preprocessViewConfiguration(value)
+                    ])
+            );
+        }
 
-            if (propertyValue !== null && typeof propertyValue === 'object') {
-                viewConfiguration = this.preprocessViewConfiguration(context, newPath, viewConfiguration, originalViewConfiguration);
-            } else if (typeof originalPropertyValue === 'string' && originalPropertyValue.indexOf('ClientEval:') === 0) {
-                const {node, parentNode} = context;
-                try {
-                    // eslint-disable-next-line no-new-func
-                    const evaluatedValue = new Function('node,parentNode', 'return ' + originalPropertyValue.replace('ClientEval:', ''))(node, parentNode);
-                    if (evaluatedValue !== propertyValue) {
-                        this.configurationIsProcessed = true;
-                        viewConfiguration = produce(
-                            viewConfiguration,
-                            draft => {
-                                return $set(newPath, evaluatedValue, draft);
-                            }
-                        );
-                    }
-                } catch (e) {
-                    console.warn('An error occurred while trying to evaluate "' + originalPropertyValue + '"\n', e);
-                }
+        if (Array.isArray(value)) {
+            return value.map(this.preprocessViewConfiguration);
+        }
+
+        if (typeof value === 'string') {
+            const nextValue = value.startsWith('ClientEval:') ? this.evaluateExpression(value) : value;
+
+            if (nextValue !== value) {
+                this.configurationIsProcessed = true;
             }
-        });
 
-        return viewConfiguration;
+            return nextValue;
+        }
+
+        return value;
     };
 
     preprocessViewConfigurationDebounced = debounce(() => {
-        const {viewConfiguration, originalViewConfiguration} = this.state;
-
-        // View Configuration may be null, if there's no focused node
-        if (!viewConfiguration) {
-            return;
-        }
+        const {originalViewConfiguration} = this.state;
 
         // Original View Configuration may be null, if there's no focused node
         if (!originalViewConfiguration) {
             return;
         }
 
+        this.configurationIsProcessed = false;
         const nodeForContext = this.generateNodeForContext(
             this.props.focusedNode,
             this.props.transientValues
         );
-
-        this.configurationIsProcessed = false;
         const processedViewConfiguration = preprocessNodeConfiguration(
             {node: nodeForContext, parentNode: this.props.parentNode},
             originalViewConfiguration
@@ -204,7 +212,7 @@ export default class Inspector extends PureComponent {
     generateNodeForContext(focusedNode, transientValues) {
         if (transientValues) {
             return produce(focusedNode, draft => {
-                const mappedTransientValues = mapValues(transientValues, item => $get('value', item));
+                const mappedTransientValues = mapValues(transientValues, item => item?.value);
                 draft.properties = Object.assign({}, draft.properties, mappedTransientValues);
             });
         }
@@ -245,13 +253,13 @@ export default class Inspector extends PureComponent {
             return true;
         }
 
-        if ($get('hidden', item) || ($get('isAutoCreated', focusedNode) === true && item.id === '_hidden')) {
+        if (item?.hidden || (focusedNode?.isAutoCreated === true && item?.id === '_hidden')) {
             // This accounts for the fact that auto-created child nodes cannot
             // be hidden via the insprector (see: #2282)
             return false;
         }
 
-        return $get(['policy', 'canEdit'], focusedNode) && !$contains(item.id, 'policy.disallowedProperties', focusedNode);
+        return focusedNode?.policy?.canEdit && !focusedNode?.policy?.disallowedProperties?.includes(item?.id);
     };
 
     /**
@@ -282,11 +290,19 @@ export default class Inspector extends PureComponent {
         return (<div className={style.centeredInspector}><div><Icon icon="spinner" spin={true} size="lg" /></div></div>);
     }
 
-    handlePanelToggle = path => {
-        const value = $get(path, this.state.toggledPanels);
-        const newState = $set(path, !value, this.state.toggledPanels);
-        this.setState({toggledPanels: newState});
-    };
+    handlePanelToggle = (tabName, groupName) => this.setState(state => {
+        const isPanelOpen = state.toggledPanels?.[tabName]?.[groupName] ?? false;
+
+        return {
+            toggledPanels: {
+                ...state?.toggledPanels,
+                [tabName]: {
+                    ...state.toggledPanels?.[tabName],
+                    [groupName]: !isPanelOpen
+                }
+            }
+        };
+    });
 
     getAmountOfValidationErrors = (tab, validationErrors) => {
         let errors = 0;
@@ -343,11 +359,11 @@ export default class Inspector extends PureComponent {
         if (!focusedNode) {
             return null;
         }
-        if (!$get('isFullyLoaded', focusedNode)) {
+        if (!focusedNode?.isFullyLoaded) {
             return this.renderFallback();
         }
 
-        if (!$get('tabs', this.state.viewConfiguration)) {
+        if (!this.state.viewConfiguration?.tabs) {
             return this.renderFallback();
         }
 
@@ -368,12 +384,12 @@ export default class Inspector extends PureComponent {
                         tabs__content: style.tabsContent // eslint-disable-line camelcase
                     }}
                     >
-                    {$get('tabs', this.state.viewConfiguration)
+                    {this.state.viewConfiguration?.tabs
                         //
                         // Only display tabs, that have groups and these groups have properties
                         //
-                        .filter(tab => $get('groups', tab) && $get('groups', tab).some(group => (
-                            $get('items', group).some(this.isPropertyEnabled)
+                        .filter(tab => tab?.groups?.some(group => (
+                            group?.items?.some(this.isPropertyEnabled)
                         )))
 
                         //
@@ -382,7 +398,7 @@ export default class Inspector extends PureComponent {
                         .map(tab => {
                             const notifications = validationErrors ?
                                 this.getAmountOfValidationErrors(tab, validationErrors) : 0;
-                            const tabLabel = i18nRegistry.translate($get('label', tab));
+                            const tabLabel = i18nRegistry.translate(tab?.label);
                             const notificationTooltipLabelPieces = i18nRegistry.translate(
                                 'UI.RightSideBar.tabs.validationErrorTooltip',
                                 '',
@@ -400,19 +416,19 @@ export default class Inspector extends PureComponent {
 
                             return (
                                 <TabPanel
-                                    key={$get('id', tab)}
-                                    id={$get('id', tab)}
-                                    icon={$get('icon', tab)}
-                                    groups={$get('groups', tab)}
+                                    key={tab?.id}
+                                    id={tab?.id}
+                                    icon={tab?.icon}
+                                    groups={tab?.groups}
                                     notifications={notifications}
                                     title={Boolean(notifications) && <Badge className={style.tabs__notificationBadge} label={String(notifications)}/>}
-                                    toggledPanels={$get($get('id', tab), this.state.toggledPanels)}
+                                    toggledPanels={this.state.toggledPanels?.[tab?.id]}
                                     tooltip={notifications ? notificationTooltipLabel : tabLabel}
                                     renderSecondaryInspector={this.renderSecondaryInspector}
                                     node={focusedNode}
                                     commit={augmentedCommit}
-                                    handlePanelToggle={path => {
-                                        this.handlePanelToggle([$get('id', tab), ...path]);
+                                    handlePanelToggle={([groupName]) => {
+                                        this.handlePanelToggle(tab?.id, groupName);
                                     }}
                                     handleInspectorApply={this.handleApply}
                             />);

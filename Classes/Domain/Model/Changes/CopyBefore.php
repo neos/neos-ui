@@ -74,9 +74,9 @@ class CopyBefore extends AbstractStructuralChange
             $contentRepository->handle($command)->block();
 
             $newlyCreatedNode = $this->contentRepositoryRegistry->subgraphForNode($parentNodeOfSucceedingSibling)
-                ->findChildNodeConnectedThroughEdgeName(
-                    $parentNodeOfSucceedingSibling->nodeAggregateId,
-                    $targetNodeName
+                ->findNodeByPath(
+                    $targetNodeName,
+                    $parentNodeOfSucceedingSibling->nodeAggregateId
                 );
             $this->finish($newlyCreatedNode);
             // NOTE: we need to run "finish" before "addNodeCreatedFeedback"

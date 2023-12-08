@@ -49,7 +49,10 @@ class WorkspaceHelper implements ProtectedContextAwareInterface
      */
     protected $securityContext;
 
-    public function getAllowedTargetWorkspaces(ContentRepositoryId $contentRepositoryId)
+    /**
+     * @return array<string,array<string,mixed>>
+     */
+    public function getAllowedTargetWorkspaces(ContentRepositoryId $contentRepositoryId): array
     {
         $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
         return $this->workspaceService->getAllowedTargetWorkspaces($contentRepository);

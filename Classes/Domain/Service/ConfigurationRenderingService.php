@@ -28,20 +28,20 @@ class ConfigurationRenderingService
 
     /**
      * @Flow\InjectConfiguration(package="Neos.Fusion", path="defaultContext")
-     * @var array
+     * @var array<string, string>
      */
     protected $fusionDefaultEelContext;
 
     /**
      * @Flow\InjectConfiguration(path="configurationDefaultEelContext")
-     * @var array
+     * @var array<string, string>
      */
     protected $additionalEelDefaultContext;
 
     /**
-     * @param array $configuration
-     * @param array $context
-     * @return array
+     * @param array<string|int, mixed> $configuration
+     * @param array<string|int, mixed> $context
+     * @return array<string|int, mixed>
      * @throws \Neos\Eel\Exception
      */
     public function computeConfiguration(array $configuration, array $context): array
@@ -53,11 +53,11 @@ class ConfigurationRenderingService
     }
 
     /**
-     * @param array $adjustedConfiguration
-     * @param array $context
+     * @param array<string|int, mixed> $adjustedConfiguration
+     * @param array<string|int, mixed> $context
      * @throws \Neos\Eel\Exception
      */
-    protected function computeConfigurationInternally(array &$adjustedConfiguration, array $context)
+    protected function computeConfigurationInternally(array &$adjustedConfiguration, array $context): void
     {
         foreach ($adjustedConfiguration as $key => &$value) {
             if (is_array($value)) {

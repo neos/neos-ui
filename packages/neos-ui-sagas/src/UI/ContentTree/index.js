@@ -1,5 +1,4 @@
 import {takeLatest, put, select, takeEvery} from 'redux-saga/effects';
-import {$get, $contains} from 'plow-js';
 
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {isNodeCollapsed} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/helpers';
@@ -17,7 +16,9 @@ export function * watchReloadTree({globalRegistry}) {
 
         yield put(actions.UI.ContentTree.startLoading());
 
-        const documentNodeContextPath = yield select($get('cr.nodes.documentNode'));
+        const documentNodeContextPath = yield select(
+            state => state?.cr?.nodes?.documentNode
+        );
         const self = yield q(documentNodeContextPath).get();
         const directChildNodes = yield q(documentNodeContextPath).children(FILTER_BOTH).get();
         const consecutiveChildNodes = yield q(directChildNodes).find(FILTER_BOTH).get();
@@ -34,7 +35,9 @@ export function * watchReloadTree({globalRegistry}) {
 export function * watchNodeFocus({configuration}) {
     yield takeLatest(actionTypes.CR.Nodes.FOCUS, function * loadContentNodeRootLine(action) {
         const {contextPath} = action.payload;
-        const documentNodeContextPath = yield select($get('cr.nodes.documentNode'));
+        const documentNodeContextPath = yield select(
+            state => state?.cr?.nodes?.documentNode
+        );
 
         let parentContextPath = contextPath;
 
@@ -51,11 +54,15 @@ export function * watchNodeFocus({configuration}) {
                 // we reached the top level, where we need to abort the loop to avoid infinite spinning.
                 break;
             }
+
+            // eslint-disable-next-line require-atomic-updates
             parentContextPath = parentNode.parent;
 
             const getNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(parentContextPath);
             const node = yield select(getNodeByContextPathSelector);
-            const isToggled = yield select($contains(parentContextPath, 'ui.contentTree.toggled'));
+            const isToggled = yield select(
+                state => state?.ui?.contentTree?.toggled?.includes(parentContextPath)
+            );
             const isCollapsed = (node ? isNodeCollapsed(node, isToggled, documentNode, loadingDepth) : false);
 
             if (!node || isCollapsed) {
@@ -71,20 +78,22 @@ export function * watchToggle({globalRegistry}) {
         const state = yield select();
         const contextPath = action.payload;
 
-        const children = $get(['cr', 'nodes', 'byContextPath', contextPath, 'children'], state);
+        const children = state?.cr?.nodes?.byContextPath?.[contextPath]?.children;
 
         if (!children) {
             return;
         }
 
         const checkIfChildrenAreFullyLoadedRecursively = contextPath => {
-            return $get(['cr', 'nodes', 'byContextPath', contextPath, 'children'], state)
-            .filter(childEnvelope => nodeTypesRegistry.hasRole(childEnvelope.nodeType, 'content') || nodeTypesRegistry.hasRole(childEnvelope.nodeType, 'contentCollection'))
-            .every(
+            const children = state?.cr?.nodes?.byContextPath?.[contextPath]?.children;
+
+            return children
+            ?.filter(childEnvelope => nodeTypesRegistry.hasRole(childEnvelope.nodeType, 'content') || nodeTypesRegistry.hasRole(childEnvelope.nodeType, 'contentCollection'))
+            ?.every(
                 childEnvelope =>
-                    $get(['cr', 'nodes', 'byContextPath', $get('contextPath', childEnvelope)], state) &&
-                    checkIfChildrenAreFullyLoadedRecursively($get('contextPath', childEnvelope))
-            );
+                    state?.cr?.nodes?.byContextPath?.[childEnvelope?.contextPath] &&
+                    checkIfChildrenAreFullyLoadedRecursively(childEnvelope?.contextPath)
+            ) ?? true;
         };
         const childrenAreFullyLoaded = checkIfChildrenAreFullyLoadedRecursively(contextPath);
 
@@ -120,7 +129,7 @@ export function * watchRequestChildrenForContextPath({globalRegistry}) {
 
         if (childNodes && parentNodes) {
             const nodes = parentNodes.concat(childNodes).reduce((nodeMap, node) => {
-                nodeMap[$get('contextPath', node)] = node;
+                nodeMap[node?.contextPath] = node;
                 return nodeMap;
             }, {});
             yield put(actions.CR.Nodes.merge(nodes));
@@ -142,11 +151,12 @@ export function * watchCurrentDocument({globalRegistry, configuration}) {
         }
 
         const state = yield select();
-        const childrenAreFullyLoaded = ($get(['cr', 'nodes', 'byContextPath', contextPath, 'children'], state) || [])
-        .filter(childEnvelope => nodeTypesRegistry.hasRole(childEnvelope.nodeType, 'content') || nodeTypesRegistry.hasRole(childEnvelope.nodeType, 'contentCollection'))
-        .every(
-            childEnvelope => Boolean($get(['cr', 'nodes', 'byContextPath', $get('contextPath', childEnvelope)], state))
-        );
+        const children = state?.cr?.nodes?.byContextPath?.[contextPath]?.children;
+        const childrenAreFullyLoaded = children
+        ?.filter(childEnvelope => nodeTypesRegistry.hasRole(childEnvelope.nodeType, 'content') || nodeTypesRegistry.hasRole(childEnvelope.nodeType, 'contentCollection'))
+        ?.every(
+            childEnvelope => Boolean(state?.cr?.nodes?.byContextPath?.[childEnvelope?.contextPath])
+        ) ?? true;
 
         if (!childrenAreFullyLoaded) {
             yield put(actions.UI.ContentTree.setAsLoading(contextPath));
@@ -159,7 +169,7 @@ export function * watchCurrentDocument({globalRegistry, configuration}) {
                 []
             ).get();
             const nodeMap = nodes.reduce((nodeMap, node) => {
-                nodeMap[$get('contextPath', node)] = node;
+                nodeMap[node?.contextPath] = node;
                 return nodeMap;
             }, {});
 

@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$transform, $get} from 'plow-js';
+
 import {neos} from '@neos-project/neos-ui-decorators';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 import DropDown from '@neos-project/react-ui-components/src/DropDown/';
@@ -10,9 +10,9 @@ import RestoreButtonItem from './RestoreButtonItem';
 import I18n from '@neos-project/neos-ui-i18n';
 
 import style from './style.module.css';
-@connect($transform({
-    userName: $get('user.name.fullName'),
-    impersonateStatus: $get('user.impersonate.status')
+@connect(state => ({
+    userName: state?.user?.name?.fullName,
+    impersonateStatus: state?.user?.impersonate?.status
 }))
 @neos()
 export default class UserDropDown extends PureComponent {
@@ -22,8 +22,8 @@ export default class UserDropDown extends PureComponent {
     };
 
     render() {
-        const logoutUri = $get('routes.core.logout', this.props.neos);
-        const userSettingsUri = $get('routes.core.modules.userSettings', this.props.neos);
+        const logoutUri = this.props.neos?.routes?.core?.logout;
+        const userSettingsUri = this.props.neos?.routes?.core?.modules?.userSettings;
         const {csrfToken} = document.getElementById('appContainer').dataset;
         return (
             <div className={style.wrapper}>

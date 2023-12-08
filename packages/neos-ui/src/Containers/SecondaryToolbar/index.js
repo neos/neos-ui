@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
-import {$transform, $get} from 'plow-js';
+
 import {neos} from '@neos-project/neos-ui-decorators';
 
 import {selectors} from '@neos-project/neos-ui-redux-store';
@@ -13,13 +13,13 @@ import style from './style.module.css';
     inlineEditorRegistry: globalRegistry.get('inlineEditors'),
     containerRegistry: globalRegistry.get('containers')
 }))
-@connect($transform({
-    currentlyEditedPropertyName: $get('ui.contentCanvas.currentlyEditedPropertyName'),
-    isFringedLeft: $get('ui.leftSideBar.isHidden'),
-    isFringedRight: $get('ui.rightSideBar.isHidden'),
-    isFullScreen: $get('ui.fullScreen.isFullScreen'),
-    hasFocusedContentNode: selectors.CR.Nodes.hasFocusedContentNode,
-    focusedNodeTypeName: selectors.CR.Nodes.focusedNodeTypeSelector
+@connect(state => ({
+    currentlyEditedPropertyName: state?.ui?.contentCanvas?.currentlyEditedPropertyName,
+    isFringedLeft: state?.ui?.leftSideBar?.isHidden,
+    isFringedRight: state?.ui?.rightSideBar?.isHidden,
+    isFullScreen: state?.ui?.fullScreen?.isFullScreen,
+    hasFocusedContentNode: selectors.CR.Nodes.hasFocusedContentNode(state),
+    focusedNodeTypeName: selectors.CR.Nodes.focusedNodeTypeSelector(state)
 }))
 export default class SecondaryToolbar extends PureComponent {
     static propTypes = {

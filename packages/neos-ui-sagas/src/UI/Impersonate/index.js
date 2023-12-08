@@ -2,7 +2,6 @@ import {put, call, takeEvery} from 'redux-saga/effects';
 
 import {actionTypes, actions} from '@neos-project/neos-ui-redux-store';
 import backend from '@neos-project/neos-ui-backend-connector';
-import {$get} from 'plow-js';
 
 export function * impersonateRestore({globalRegistry}) {
     const {impersonateRestore} = backend.get().endpoints;
@@ -18,9 +17,9 @@ export function * impersonateRestore({globalRegistry}) {
     yield takeEvery(actionTypes.User.Impersonate.RESTORE, function * restore(action) {
         try {
             const feedback = yield call(impersonateRestore, action.payload);
-            const originUser = $get('origin.accountIdentifier', feedback);
-            const user = $get('impersonate.accountIdentifier', feedback);
-            const status = $get('status', feedback);
+            const originUser = feedback?.origin?.accountIdentifier;
+            const user = feedback?.impersonate?.accountIdentifier;
+            const status = feedback?.status;
 
             const restoreMessage = i18nRegistry.translate(
                 'impersonate.success.restoreUser',

@@ -1,5 +1,4 @@
 <?php
-namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
 
 /*
  * This file is part of the Neos.Neos.Ui package.
@@ -10,6 +9,10 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
+
+declare(strict_types=1);
+
+namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
 
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\Neos\Domain\Service\RenderingModeService;
@@ -23,7 +26,7 @@ use Neos\Neos\Fusion\Helper\CachingHelper;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 use Neos\Neos\Ui\Domain\Model\RenderedNodeDomAddress;
-use Neos\Neos\View\FusionView;
+use Neos\Neos\Ui\View\OutOfBandRenderingViewFactory;
 use Psr\Http\Message\ResponseInterface;
 
 class RenderContentOutOfBand extends AbstractFeedback
@@ -62,6 +65,9 @@ class RenderContentOutOfBand extends AbstractFeedback
 
     #[Flow\Inject]
     protected RenderingModeService $renderingModeService;
+
+    #[Flow\Inject]
+    protected OutOfBandRenderingViewFactory $outOfBandRenderingViewFactory;
 
     public function setNode(Node $node): void
     {
@@ -183,14 +189,14 @@ class RenderContentOutOfBand extends AbstractFeedback
             if ($parentDomAddress) {
                 $renderingMode = $this->renderingModeService->findByCurrentUser();
 
-                $fusionView = new FusionView();
-                $fusionView->setControllerContext($controllerContext);
-                $fusionView->setOption('renderingModeName', $renderingMode->name);
+                $view = $this->outOfBandRenderingViewFactory->resolveView();
+                $view->setControllerContext($controllerContext);
+                $view->setOption('renderingModeName', $renderingMode->name);
 
-                $fusionView->assign('value', $parentNode);
-                $fusionView->setFusionPath($parentDomAddress->getFusionPath());
+                $view->assign('value', $parentNode);
+                $view->setRenderingEntryPoint($parentDomAddress->getFusionPath());
 
-                return $fusionView->render();
+                return $view->render();
             }
         }
 

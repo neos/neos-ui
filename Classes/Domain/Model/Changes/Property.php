@@ -142,7 +142,6 @@ class Property extends AbstractChange
     /**
      * Applies this change
      *
-     * @throws \Neos\ContentRepository\Exception\NodeException
      * @throws ContentStreamDoesNotExistYet
      * @throws NodeAggregatesTypeIsAmbiguous
      * @throws DimensionSpacePointNotFound
@@ -177,7 +176,7 @@ class Property extends AbstractChange
                 }
 
                 $commandResult = $contentRepository->handle(
-                    new SetNodeReferences(
+                    SetNodeReferences::create(
                         $subject->subgraphIdentity->contentStreamId,
                         $subject->nodeAggregateId,
                         $subject->originDimensionSpacePoint,

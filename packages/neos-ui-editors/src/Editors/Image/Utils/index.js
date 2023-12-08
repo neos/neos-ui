@@ -1,27 +1,15 @@
-import {$get, $map, $transform} from 'plow-js';
 import {Maybe} from 'monet';
-
-export const CROP_IMAGE_ADJUSTMENT = [
-    'object',
-    'adjustments',
-    'Neos\\Media\\Domain\\Model\\Adjustment\\CropImageAdjustment'
-];
-export const RESIZE_IMAGE_ADJUSTMENT = [
-    'object',
-    'adjustments',
-    'Neos\\Media\\Domain\\Model\\Adjustment\\ResizeImageAdjustment'
-];
 
 const DEFAULT_OFFSET = {x: 0, y: 0};
 
-const extractOriginalDimensions = $transform({
-    width: $get('originalDimensions.width'),
-    height: $get('originalDimensions.height')
+const extractOriginalDimensions = image => ({
+    width: image?.originalDimensions?.width,
+    height: image?.originalDimensions?.height
 });
 
-const extractPreviewDimensions = $transform({
-    width: $get('previewDimensions.width'),
-    height: $get('previewDimensions.height')
+const extractPreviewDimensions = image => ({
+    width: image?.previewDimensions?.width,
+    height: image?.previewDimensions?.height
 });
 
 export class Image {
@@ -33,12 +21,12 @@ export class Image {
 
     get previewUri() {
         const {image} = this;
-        return $get('previewImageResourceUri', image);
+        return image?.previewImageResourceUri;
     }
 
     get previewScalingFactor() {
         const {image} = this;
-        return $get('previewDimensions.width', image) / $get('originalDimensions.width', image);
+        return image?.previewDimensions?.width / image?.originalDimensions?.width;
     }
 
     get dimensions() {
@@ -58,7 +46,9 @@ export class Image {
 
     get cropAdjustment() {
         const {image} = this;
-        return Maybe.fromNull($get(CROP_IMAGE_ADJUSTMENT, image));
+        return Maybe.fromNull(
+            image?.object?.adjustments?.['Neos\\Media\\Domain\\Model\\Adjustment\\CropImageAdjustment'] ?? null
+        );
     }
 
     get cropAspectRatio() {
@@ -67,17 +57,27 @@ export class Image {
 
     get previewCropAdjustment() {
         const {cropAdjustment, previewScalingFactor} = this;
-        return cropAdjustment.map($map(v => v * previewScalingFactor, []));
+        return cropAdjustment.map(cropAdjustment => Object.fromEntries(
+            Object.entries(cropAdjustment).map(
+                ([key, value]) => [key, value * previewScalingFactor]
+            )
+        ));
     }
 
     get resizeAdjustment() {
         const {image} = this;
-        return Maybe.fromNull($get(RESIZE_IMAGE_ADJUSTMENT, image));
+        return Maybe.fromNull(
+            image?.object?.adjustments?.['Neos\\Media\\Domain\\Model\\Adjustment\\ResizeImageAdjustment'] ?? null
+        );
     }
 
     get previewResizeAdjustment() {
         const {resizeAdjustment, previewScalingFactor} = this;
-        return resizeAdjustment.map($map(v => v * previewScalingFactor, []));
+        return resizeAdjustment.map(resizeAdjustment => Object.fromEntries(
+            Object.entries(resizeAdjustment).map(
+                ([key, value]) => [key, value * previewScalingFactor]
+            )
+        ));
     }
 }
 

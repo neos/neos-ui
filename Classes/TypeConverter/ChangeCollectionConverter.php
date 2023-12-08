@@ -20,7 +20,7 @@ use Neos\Flow\Property\PropertyMapper;
 use Neos\Flow\Property\PropertyMappingConfigurationInterface;
 use Neos\Flow\Property\TypeConverter\AbstractTypeConverter;
 use Neos\Flow\Reflection\ReflectionService;
-use Neos\Neos\Ui\ContentRepository\Service\NodeService;
+use Neos\Neos\Ui\ContentRepository\Service\NeosUiNodeService;
 use Neos\Neos\Ui\Domain\Model\ChangeCollection;
 use Neos\Neos\Ui\Domain\Model\ChangeInterface;
 use Neos\Neos\Ui\Domain\Model\Changes\Property;
@@ -76,7 +76,7 @@ class ChangeCollectionConverter
 
     /**
      * @Flow\Inject
-     * @var NodeService
+     * @var NeosUiNodeService
      */
     protected $nodeService;
 
@@ -96,21 +96,12 @@ class ChangeCollectionConverter
      * Converts a accordingly formatted, associative array to a change collection
      *
      * @param array<int,array<string,mixed>> $source
-     * @param string $targetType not used
-     * @param array<string,mixed> $subProperties not used
-     * @param PropertyMappingConfigurationInterface $configuration not used
-     * @return ChangeCollection|Error An object or \Neos\Error\Messages\Error if the input format is not supported
-     *               or could not be converted for other reasons
      * @throws \Exception
      */
     public function convert(
         array $source,
         ContentRepositoryId $contentRepositoryId
     ): ChangeCollection {
-        if (!is_array($source)) {
-            throw new \RuntimeException(sprintf('Cannot convert %s to ChangeCollection.', gettype($source)));
-        }
-
         $changeCollection = new ChangeCollection();
         foreach ($source as $changeData) {
             $convertedData = $this->convertChangeData($changeData, $contentRepositoryId);
@@ -141,7 +132,7 @@ class ChangeCollectionConverter
 
 
         $subjectContextPath = $changeData['subject'];
-        $subject = $this->nodeService->getNodeFromContextPath($subjectContextPath, $contentRepositoryId);
+        $subject = $this->nodeService->findNodeBySerializedNodeAddress($subjectContextPath, $contentRepositoryId);
         if (is_null($subject)) {
             throw new \RuntimeException('Could not find node for subject "' . $subjectContextPath . '"', 1645657340);
         }
@@ -150,7 +141,7 @@ class ChangeCollectionConverter
 
         if (isset($changeData['reference']) && method_exists($changeClassInstance, 'setReference')) {
             $referenceContextPath = $changeData['reference'];
-            $reference = $this->nodeService->getNodeFromContextPath($referenceContextPath, $contentRepositoryId);
+            $reference = $this->nodeService->findNodeBySerializedNodeAddress($referenceContextPath, $contentRepositoryId);
             $changeClassInstance->setReference($reference);
         }
 

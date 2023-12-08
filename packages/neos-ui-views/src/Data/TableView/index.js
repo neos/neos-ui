@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {$get} from 'plow-js';
+import get from 'lodash.get';
 import style from './style.module.css';
 import dataLoader from '../DataLoader/index';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
@@ -21,11 +21,11 @@ export default class TableView extends PureComponent {
         if (!data || !collectionPath) {
             return [];
         }
-        const collection = $get(collectionPath, data);
+        const collection = get(data, collectionPath);
         const {columns} = options;
         return collection.map(row => columns.map(column => {
             const rowValue = {
-                value: $get(column.data, row),
+                value: get(row, column.data),
                 suffix: column.suffix
             };
             if (column.iconMap) {

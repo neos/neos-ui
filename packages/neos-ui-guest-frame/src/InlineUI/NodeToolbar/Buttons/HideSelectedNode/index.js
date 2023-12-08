@@ -1,13 +1,13 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$transform, $get} from 'plow-js';
+
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 
 import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 
-@connect($transform({
-    node: selectors.CR.Nodes.focusedSelector
+@connect(state => ({
+    node: selectors.CR.Nodes.focusedSelector(state)
 }), {
     hideNode: actions.CR.Nodes.hide,
     showNode: actions.CR.Nodes.show
@@ -28,7 +28,7 @@ export default class HideSelectedNode extends PureComponent {
         const {node, hideNode, canBeEdited, visibilityCanBeToggled} = this.props;
 
         if (canBeEdited && visibilityCanBeToggled) {
-            hideNode($get('contextPath', node));
+            hideNode(node?.contextPath);
         }
     }
 
@@ -36,13 +36,13 @@ export default class HideSelectedNode extends PureComponent {
         const {node, showNode, canBeEdited, visibilityCanBeToggled} = this.props;
 
         if (canBeEdited && visibilityCanBeToggled) {
-            showNode($get('contextPath', node));
+            showNode(node?.contextPath);
         }
     }
 
     render() {
         const {className, node, destructiveOperationsAreDisabled, canBeEdited, visibilityCanBeToggled, i18nRegistry} = this.props;
-        const isHidden = $get('properties._hidden', node);
+        const isHidden = node?.properties?._hidden;
 
         return (
             <IconButton

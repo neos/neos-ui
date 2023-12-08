@@ -4,7 +4,7 @@
   "bugs": "https://github.com/neos/neos-ui/issues",
   "homepage": "https://github.com/neos/neos-ui/blob/master/README.md",
   "license": "GNU GPLv3",
-  "version": "8.3.4",
+  "version": "9.0.0-beta1",
   "private": true,
   "resolutions": {
     "moment": "^2.20.1",
@@ -44,5 +44,6 @@
   "jest": {
     "preset": "@neos-project/jest-preset-neos-ui"
   },
-  "packageManager": "yarn@3.2.0"
+  "packageManager": "yarn@3.2.0",
+  "stableVersion": "8.3.4"
 }

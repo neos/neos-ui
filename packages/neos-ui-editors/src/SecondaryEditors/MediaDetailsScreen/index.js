@@ -1,7 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {neos} from '@neos-project/neos-ui-decorators';
-import {$get} from 'plow-js';
 
 import style from './style.module.css';
 
@@ -28,7 +27,7 @@ class MediaDetailsScreen extends PureComponent {
             }
         };
 
-        const mediaBrowserUri = $get('routes.core.modules.mediaBrowser', neos);
+        const mediaBrowserUri = neos?.routes?.core?.modules?.mediaBrowser;
 
         const uri = `${mediaBrowserUri}/images/edit.html?asset[__identity]=${imageIdentity}`;
 

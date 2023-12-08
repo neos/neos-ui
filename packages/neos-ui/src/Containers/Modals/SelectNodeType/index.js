@@ -1,7 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$get} from 'plow-js';
 import isEqual from 'lodash.isequal';
 import escaperegexp from 'lodash.escaperegexp';
 
@@ -55,7 +54,7 @@ const allowedSiblingsOrChildrenChanged = (previousProps, nextProps) => (
     const getAllowedChildNodeTypesSelector = selectors.CR.Nodes.makeGetAllowedChildNodeTypesSelector(nodeTypesRegistry);
 
     return state => {
-        const reference = $get('ui.selectNodeTypeModal.referenceNodeContextPath', state);
+        const reference = state?.ui?.selectNodeTypeModal?.referenceNodeContextPath;
         if (!reference) {
             return {
                 isOpen: false,
@@ -64,14 +63,15 @@ const allowedSiblingsOrChildrenChanged = (previousProps, nextProps) => (
                 referenceNodeType: ''
             };
         }
-        const referenceNodeType = selectors.CR.Nodes.getPathInNode(state, reference, 'nodeType');
+        const referenceNode = selectors.CR.Nodes.byContextPathSelector(reference)(state);
+        const referenceNodeType = referenceNode?.nodeType;
         const role = nodeTypesRegistry.hasRole(referenceNodeType, 'document') ? 'document' : 'content';
         const allowedSiblingNodeTypes = nodeTypesRegistry.getGroupedNodeTypeList(getAllowedSiblingNodeTypesSelector(state, {reference, role}));
         const allowedChildNodeTypes = nodeTypesRegistry.getGroupedNodeTypeList(getAllowedChildNodeTypesSelector(state, {reference, role}));
 
         return {
-            isOpen: $get('ui.selectNodeTypeModal.isOpen', state),
-            preferredMode: $get('ui.selectNodeTypeModal.preferredMode', state),
+            isOpen: state?.ui?.selectNodeTypeModal?.isOpen,
+            preferredMode: state?.ui?.selectNodeTypeModal?.preferredMode,
             allowedSiblingNodeTypes,
             allowedChildNodeTypes,
             referenceNodeType
@@ -195,7 +195,7 @@ export default class SelectNodeType extends PureComponent {
         const {insertMode} = this.state;
         const {i18nRegistry, nodeTypesRegistry, referenceNodeType} = this.props;
 
-        const nodeTypeLabel = $get('ui.label', nodeTypesRegistry.get(referenceNodeType))
+        const nodeTypeLabel = nodeTypesRegistry.get(referenceNodeType)?.ui?.label
         const nodeTypeLabelText = i18nRegistry.translate(nodeTypeLabel, 'Node')
         const addLabel = i18nRegistry.translate('Neos.Neos.Ui:Main:add', 'Add')
         const insertModeLabel = (function () {

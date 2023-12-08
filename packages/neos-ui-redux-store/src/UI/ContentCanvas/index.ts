@@ -1,6 +1,5 @@
 import produce from 'immer';
 import {action as createAction, ActionType} from 'typesafe-actions';
-import {$get} from 'plow-js';
 
 import {actionTypes as system, InitAction} from '../../System';
 
@@ -92,8 +91,8 @@ export type Action = ActionType<typeof actions>;
 export const reducer = (state: State = defaultState, action: InitAction | Action) => produce(state, draft => {
     switch (action.type) {
         case system.INIT: {
-            draft.backgroundColor = $get(['payload', 'ui', 'contentCanvas', 'backgroundColor'], action);
-            draft.src = $get(['payload', 'ui', 'contentCanvas', 'src'], action) || null;
+            draft.backgroundColor = action?.payload?.ui?.contentCanvas?.backgroundColor;
+            draft.src = action?.payload?.ui?.contentCanvas?.src || null;
             break;
         }
         case actionTypes.SET_PREVIEW_URL: {
@@ -107,7 +106,7 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
         case actionTypes.FORMATTING_UNDER_CURSOR: {
             draft.formattingUnderCursor = action.payload;
             // if new selection doesn't have a link, close the link dialog
-            draft.isLinkEditorOpen = Boolean($get(['link'], action.payload));
+            draft.isLinkEditorOpen = Boolean(action.payload?.link);
             break;
         }
         case actionTypes.SET_CURRENTLY_EDITED_PROPERTY_NAME: {

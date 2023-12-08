@@ -1,11 +1,8 @@
 import {put, call, select, takeEvery, takeLatest, take, race} from 'redux-saga/effects';
-import {$get} from 'plow-js';
 
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
 import backend from '@neos-project/neos-ui-backend-connector';
 import {getGuestFrameDocument} from '@neos-project/neos-ui-guest-frame/src/dom';
-
-const {publishableNodesInDocumentSelector} = selectors.CR.Workspaces;
 
 export function * watchPublish() {
     const {publish} = backend.get().endpoints;
@@ -27,23 +24,13 @@ export function * watchPublish() {
     });
 }
 
-export function * watchToggleAutoPublish() {
-    yield takeEvery(actionTypes.User.Settings.TOGGLE_AUTO_PUBLISHING, function * publishInitially() {
-        const state = yield select();
-        const isAutoPublishingEnabled = $get('user.settings.isAutoPublishingEnabled', state);
-
-        if (isAutoPublishingEnabled) {
-            const publishableNodesInDocument = publishableNodesInDocumentSelector(state);
-            yield put(actions.CR.Workspaces.publish(publishableNodesInDocument.map($get('contextPath')), 'live'));
-        }
-    });
-}
-
 export function * watchChangeBaseWorkspace() {
     const {changeBaseWorkspace} = backend.get().endpoints;
     yield takeEvery(actionTypes.CR.Workspaces.CHANGE_BASE_WORKSPACE, function * change(action) {
         try {
-            const documentNode = yield select($get('cr.nodes.documentNode'));
+            const documentNode = yield select(
+                state => state?.cr?.nodes?.documentNode
+            );
             const feedback = yield call(changeBaseWorkspace, action.payload, documentNode);
             yield put(actions.ServerFeedback.handleServerFeedback(feedback));
 
@@ -71,7 +58,7 @@ export function * discardIfConfirmed() {
 
         if (nextAction.type === actionTypes.CR.Workspaces.DISCARD_CONFIRMED) {
             yield put(actions.UI.Remote.startDiscarding());
-            const nodesToBeDiscarded = $get('cr.workspaces.toBeDiscarded', state);
+            const nodesToBeDiscarded = state?.cr?.workspaces?.toBeDiscarded;
 
             try {
                 const currentContentCanvasContextPath = yield select(selectors.CR.Nodes.documentNodeContextPathSelector);

@@ -53,9 +53,7 @@ export default class EditorEnvelope extends PureComponent {
 
     getEditorDefinition() {
         const {editor, editorRegistry} = this.props;
-        // Support legacy editor definitions
-        const editorName = editor.replace('Content/Inspector/Editors', 'Neos.Neos/Inspector/Editors');
-        return editorRegistry.get(editorName);
+        return editorRegistry.get(editor);
     }
 
     isInvalid() {

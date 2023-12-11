@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import Button from '@neos-project/react-ui-components/src/Button/';
 import Dialog from '@neos-project/react-ui-components/src/Dialog/';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
+import WorkspaceSyncIcon from '../../PrimaryToolbar/WorkspaceSync/WorkspaceSyncIcon';
 
 const {personalWorkspaceNameSelector, personalWorkspaceRebaseStatusSelector} = selectors.CR.Workspaces;
 
@@ -55,9 +56,9 @@ export default class SyncWorkspaceDialog extends PureComponent {
             'syncPersonalWorkSpace',
             'Synchronize personal workspace', {}, 'Neos.Neos.Ui', 'Main')
         return (
-            <div>
-                <Icon icon="resource://Neos.Neos.Ui/Icons/syncronize_alert.svg" className={style.buttonIcon} size="2x"/>
-                <span className={style.modalTitle}>
+            <div className={style.modalTitle}>
+                <WorkspaceSyncIcon personalWorkspaceStatus={WorkspaceStatus.OUTDATED_CONFLICT} onDarkBackground={true}/>
+                <span>
                     {synchronizeWorkspaceLabel}
                 </span>
             </div>
@@ -95,7 +96,7 @@ export default class SyncWorkspaceDialog extends PureComponent {
                 hoverStyle="warn"
                 onClick={this.handleConfirm}
             >
-                <Icon icon="resource://Neos.Neos.Ui/Icons/syncronize.svg" className={style.buttonIcon} size="2x"/>
+                <Icon icon="sync" className={style.buttonIcon}/>
                 <span className={style.confirmText}>
                     {confirmationLabel}
                 </span>

@@ -3,16 +3,16 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
+import {actions, selectors} from '@neos-project/neos-ui-redux-store';
+const {personalWorkspaceRebaseStatusSelector} = selectors.CR.Workspaces;
+import {neos} from '@neos-project/neos-ui-decorators';
+import {WorkspaceStatus} from '@neos-project/neos-ts-interfaces';
+
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 import Button from '@neos-project/react-ui-components/src/Button/';
-
-import {actions, selectors} from '@neos-project/neos-ui-redux-store';
-import {neos} from '@neos-project/neos-ui-decorators';
-
-const {personalWorkspaceRebaseStatusSelector} = selectors.CR.Workspaces;
+import WorkspaceSyncIcon from './WorkspaceSyncIcon';
 
 import style from './style.module.css';
-import {WorkspaceStatus} from '@neos-project/neos-ts-interfaces';
 
 @connect(state => ({
     isOpen: state?.ui?.SyncWorkspaceModal?.isOpen,
@@ -48,18 +48,11 @@ export default class WorkspaceSync extends PureComponent {
             isDiscarding,
             i18nRegistry
         } = this.props;
+
         if (personalWorkspaceStatus === WorkspaceStatus.UP_TO_DATE) {
             return (null);
         }
-        let icon = 'resource://Neos.Neos.Ui/Icons/syncronize_check.svg';
-        switch (personalWorkspaceStatus) {
-            case WorkspaceStatus.OUTDATED:
-                icon = 'resource://Neos.Neos.Ui/Icons/syncronize.svg';
-                break;
-            case WorkspaceStatus.OUTDATED_CONFLICT:
-                icon = 'resource://Neos.Neos.Ui/Icons/syncronize_alert.svg';
-                break;
-        }
+
         const buttonLabel = i18nRegistry.translate(
             'syncPersonalWorkSpace',
             'Synchronize personal workspace', {}, 'Neos.Neos.Ui', 'Main');
@@ -69,15 +62,15 @@ export default class WorkspaceSync extends PureComponent {
                     id="neos-workspace-rebase"
                     className={style.rebaseButton}
                     onClick={openModal}
-                    disabled={isSaving || isOpen || isPublishing || isDiscarding }
+                    disabled={isSaving || isOpen || isPublishing || isDiscarding}
                     style={personalWorkspaceStatus === WorkspaceStatus.OUTDATED ? 'warn' : 'error'}
                     hoverStyle={personalWorkspaceStatus === WorkspaceStatus.OUTDATED ? 'warn' : 'error'}
                     label={buttonLabel}
                 >
                     {(isSaving || isPublishing || isDiscarding) ? (
-                        <Icon icon="spinner" spin={true} />
+                        <Icon icon="spinner" spin={true}/>
                     ) : (
-                        <Icon icon={icon} className={style.iconRebase} size="1x"/>
+                        <WorkspaceSyncIcon personalWorkspaceStatus={personalWorkspaceStatus}/>
                     )}
                 </Button>
             </div>

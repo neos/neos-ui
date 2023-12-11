@@ -21,6 +21,16 @@
     height: auto;
 }
 
-.confirmText{
+.confirmText {
     vertical-align: sub;
+}
+
+.modalTitle {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.modalTitle span:first-child {
+    scale: .8;
 }

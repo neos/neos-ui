@@ -52,7 +52,7 @@
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link" xml:space="preserve">
                 <source>Link</source>
-        <target xml:lang="cs" state="needs-translation">Link</target>
+        <target xml:lang="cs" state="translated">Odkaz</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__unlink" xml:space="preserve">
                 <source>Unlink</source>

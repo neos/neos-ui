@@ -49,7 +49,7 @@
     position: absolute;
     top: 100%;
     left: 0;
-    z-index: var(--zIndex-DropdownContents-Context);
+    z-index: var(--zIndex-SecondaryInspectorElevated-DropDownContents);
     display: none;
     width: 100%;
     margin: 0;

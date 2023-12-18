@@ -22,21 +22,5 @@ exports[`<MultiSelectBox/> should render correctly. 1`] = `
       values={Array []}
     />
   </ul>
-  <Component
-    IconButtonComponent={[Function]}
-    IconComponent={[Function]}
-    ListPreviewElement={[Function]}
-    MultiSelectBox_ListPreviewSortable={[Function]}
-    SelectBox={[Function]}
-    allowEmpty={true}
-    dndType="multiselect-box-value"
-    onCreateNew={[MockFunction]}
-    onValueChange={[Function]}
-    onValuesChange={[MockFunction]}
-    optionValueField="value"
-    options={Array []}
-    value=""
-    values={Array []}
-  />
 </div>
 `;

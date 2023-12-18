@@ -185,6 +185,7 @@ class MultiSelectBox extends PureComponent {
     render() {
         const {
             searchOptions,
+            displaySearchBox,
             values,
             optionValueField,
             theme,
@@ -217,13 +218,13 @@ class MultiSelectBox extends PureComponent {
                         disabled={disabled}
                         />
                 </ul>
-                <SelectBox
+                {displaySearchBox && (<SelectBox
                     {...omit(this.props, ['theme', 'className'])}
                     options={filteredSearchOptions}
                     value=""
                     onValueChange={this.handleNewValueSelected}
                     disabled={disabled}
-                    />
+                />)}
             </div>
         );
     }

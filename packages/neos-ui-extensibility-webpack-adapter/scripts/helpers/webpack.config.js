@@ -45,7 +45,6 @@ module.exports = function (neosPackageJson) {
                                 require.resolve('babel-plugin-transform-es2015-block-scoping'),
                                 require.resolve('babel-plugin-transform-es2015-typeof-symbol'),
                                 require.resolve('babel-plugin-transform-es2015-modules-commonjs'),
-                                [require.resolve('babel-plugin-transform-regenerator'), {async: false, asyncGenerators: false}]
                             ]
                         }
                     }]

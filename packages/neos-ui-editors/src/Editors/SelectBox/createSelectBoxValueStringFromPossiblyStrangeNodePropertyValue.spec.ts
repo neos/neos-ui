@@ -16,7 +16,7 @@ describe('createSelectBoxValueStringFromPossiblyStrangeNodePropertyValue', () =>
         const value =
             createSelectBoxValueStringFromPossiblyStrangeNodePropertyValue({
                 __identity: 'de93b358-cb77-422e-b295-2f219bfc4dfb',
-                __type: 'Neos\\Media\\Domain\\Model\\Tag',
+                __type: 'Neos\\Media\\Domain\\Model\\Tag'
             });
 
         expect(value).toEqual('de93b358-cb77-422e-b295-2f219bfc4dfb');

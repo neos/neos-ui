@@ -29,7 +29,7 @@
 .selectBox__contents {
     min-width: 160px;
     box-shadow: 0 5px 5px rgba(0, 0, 0, .2);
-    z-index: var(--zIndex-SelectBoxContents);
+    z-index: var(--zIndex-SecondaryInspectorElevated-DropDownContents);
     margin-top: -2px;
 }
 

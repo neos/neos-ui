@@ -3,6 +3,7 @@ import {
     Page,
     DimensionSwitcher
 } from './../../pageModel';
+import {Selector} from 'testcafe';
 
 /* global fixture:true */
 
@@ -29,4 +30,10 @@ test('Switching dimensions', async t => {
     await t
         .expect(await Page.getReduxState(state => state.cr.contentDimensions.active.language[0])).eql('en_US', 'Dimension back to English')
         .expect(Page.treeNode.withText(otherPageName).exists).ok('Untranslated node back in the tree');
+});
+
+test('Grouping of dimensions', async t => {
+    await t
+        .click(DimensionSwitcher.dimensionSwitcher)
+        .expect(Selector('div[class*="selectBox__groupHeader"]').withExactText('EU').exists).ok('Languages group exists');
 });

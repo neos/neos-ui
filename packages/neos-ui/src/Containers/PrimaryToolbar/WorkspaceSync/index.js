@@ -16,9 +16,7 @@ import style from './style.module.css';
 
 @connect(state => ({
     isOpen: state?.ui?.SyncWorkspaceModal?.isOpen,
-    isSaving: state?.ui?.remote?.isSaving,
-    isPublishing: state?.ui?.remote?.isPublishing,
-    isDiscarding: state?.ui?.remote?.isDiscarding,
+    isSyncing: state?.ui?.remote?.isSyncing,
     personalWorkspaceStatus: personalWorkspaceRebaseStatusSelector(state)
 }), {
     openModal: actions.UI.SyncWorkspaceModal.open
@@ -30,9 +28,7 @@ import style from './style.module.css';
 export default class WorkspaceSync extends PureComponent {
     static propTypes = {
         isOpen: PropTypes.bool.isRequired,
-        isSaving: PropTypes.bool.isRequired,
-        isPublishing: PropTypes.bool.isRequired,
-        isDiscarding: PropTypes.bool.isRequired,
+        isSyncing: PropTypes.bool.isRequired,
         openModal: PropTypes.func.isRequired,
         personalWorkspaceStatus: PropTypes.string.isRequired,
         i18nRegistry: PropTypes.object.isRequired
@@ -42,10 +38,8 @@ export default class WorkspaceSync extends PureComponent {
         const {
             personalWorkspaceStatus,
             openModal,
-            isSaving,
             isOpen,
-            isPublishing,
-            isDiscarding,
+            isSyncing,
             i18nRegistry
         } = this.props;
 
@@ -62,12 +56,12 @@ export default class WorkspaceSync extends PureComponent {
                     id="neos-workspace-rebase"
                     className={style.rebaseButton}
                     onClick={openModal}
-                    disabled={isSaving || isOpen || isPublishing || isDiscarding}
+                    disabled={isSyncing || isOpen}
                     style={personalWorkspaceStatus === WorkspaceStatus.OUTDATED ? 'warn' : 'error'}
                     hoverStyle={personalWorkspaceStatus === WorkspaceStatus.OUTDATED ? 'warn' : 'error'}
                     label={buttonLabel}
                 >
-                    {(isSaving || isPublishing || isDiscarding) ? (
+                    {isSyncing ? (
                         <Icon icon="spinner" spin={true}/>
                     ) : (
                         <WorkspaceSyncIcon personalWorkspaceStatus={personalWorkspaceStatus}/>

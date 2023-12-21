@@ -45,7 +45,7 @@ export function * watchChangeBaseWorkspace() {
 export function * watchRebaseWorkspace() {
     const {rebaseWorkspace, getWorkspaceInfo} = backend.get().endpoints;
     yield takeEvery(actionTypes.CR.Workspaces.REBASE_WORKSPACE, function * change(action) {
-        yield put(actions.UI.Remote.startSaving());
+        yield put(actions.UI.Remote.startSynchronization());
 
         try {
             const feedback = yield call(rebaseWorkspace, action.payload);
@@ -55,7 +55,7 @@ export function * watchRebaseWorkspace() {
         } finally {
             const workspaceInfo = yield call(getWorkspaceInfo);
             yield put(actions.CR.Workspaces.update(workspaceInfo));
-            yield put(actions.UI.Remote.finishSaving());
+            yield put(actions.UI.Remote.finishSynchronization());
         }
     });
 }

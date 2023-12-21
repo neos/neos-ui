@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/build-essentials",
-  "version": "8.2.12",
+  "version": "8.2.13",
   "description": "Dependencies for building @neos-project packages",
   "repository": "neos/neos-ui",
   "bugs": "https://github.com/neos/neos-ui/issues",

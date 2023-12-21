@@ -347,6 +347,9 @@
             <trans-unit id="deleteXNodes" xml:space="preserve">
                 <source>Delete {amount} nodes</source>
             </trans-unit>
+            <trans-unit id="workspaceSynchronizationApplied" xml:space="preserve">
+                <source>Successfully synced "{workspaceName}" workspace.</source>
+            </trans-unit>
             <trans-unit id="syncPersonalWorkSpace" xml:space="preserve">
                 <source>Synchronize personal workspace</source>
             </trans-unit>

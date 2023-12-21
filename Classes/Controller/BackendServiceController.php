@@ -57,6 +57,8 @@ use Neos\Neos\Utility\NodeUriPathSegmentGenerator;
 
 class BackendServiceController extends ActionController
 {
+    use TranslationTrait;
+
     /**
      * @var array<int,string>
      */
@@ -644,7 +646,9 @@ class BackendServiceController extends ActionController
         }
 
         $success = new Success();
-        $success->setMessage(sprintf('Successfully synced User workspace'));
+        $success->setMessage(
+            $this->getLabel('workspaceSynchronizationApplied', ['workspaceName' => $targetWorkspaceName])
+        );
         $this->feedbackCollection->add($success);
 
         $this->view->assign('value', $this->feedbackCollection);

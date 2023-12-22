@@ -60,8 +60,11 @@
     }
 }
 
-.dimmed {
-    filter: opacity(50%);
+.nonExistent {
+    opacity: 0.5;
+}
+.disallowed {
+    background-color: var(--colors-ContrastBright);
 }
 
 .selectPreset + .selectPreset {

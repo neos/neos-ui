@@ -33,7 +33,9 @@ SelectedPreset.propTypes = {
 @connect($transform({
     contentDimensions: selectors.CR.ContentDimensions.byName,
     allowedPresets: selectors.CR.ContentDimensions.allowedPresets,
-    activePresets: selectors.CR.ContentDimensions.activePresets
+    activePresets: selectors.CR.ContentDimensions.activePresets,
+    getNodeByContextPath: selectors.CR.Nodes.nodeByContextPath,
+    documentNode: selectors.CR.Nodes.documentNodeSelector
 }), {
     selectPreset: actions.CR.ContentDimensions.selectPreset,
     setAllowed: actions.CR.ContentDimensions.setAllowed
@@ -47,6 +49,8 @@ export default class DimensionSwitcher extends PureComponent {
         activePresets: PropTypes.object.isRequired,
         allowedPresets: PropTypes.object.isRequired,
         selectPreset: PropTypes.func.isRequired,
+        getNodeByContextPath: PropTypes.func.isRequired,
+        documentNode: PropTypes.string.isRequired,
         setAllowed: PropTypes.func.isRequired,
 
         i18nRegistry: PropTypes.object.isRequired
@@ -254,16 +258,33 @@ export default class DimensionSwitcher extends PureComponent {
 
         return null;
     }
+    getDocumentDimensions(dimensionName) {
+        const {getNodeByContextPath, documentNode, allowedPresets} = this.props;
+        const currentDocumentNode = getNodeByContextPath(documentNode.contextPath)
+
+        if(!currentDocumentNode.dimensions) return allowedPresets[dimensionName]
+
+        let variants = currentDocumentNode?.otherNodeVariants;
+        let dimensions = [currentDocumentNode.dimensions[dimensionName]];
+
+        Object.values(variants).forEach(entry => {
+            if(entry[dimensionName]) dimensions.push(entry[dimensionName]);
+        });
+
+        return dimensions;
+    }
+
 
     presetsForDimension(dimensionName) {
         const {contentDimensions, allowedPresets, i18nRegistry} = this.props;
         const dimensionConfiguration = $get(dimensionName, contentDimensions);
-
+        const documentDimensions = this.getDocumentDimensions(dimensionName);
         return mapValues(dimensionConfiguration.presets,
             (presetConfiguration, presetName) => {
                 return Object.assign({}, presetConfiguration, {
                     label: i18nRegistry.translate(presetConfiguration.label),
-                    disallowed: !(allowedPresets[dimensionName] && allowedPresets[dimensionName].includes(presetName))
+                    disallowed: !(allowedPresets[dimensionName] && allowedPresets[dimensionName].includes(presetName)),
+                    existing: (documentDimensions.some(dimension=> presetConfiguration.values.includes(dimension))),
                 });
             });
     }

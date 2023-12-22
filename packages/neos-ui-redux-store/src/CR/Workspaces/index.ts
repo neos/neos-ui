@@ -16,6 +16,7 @@ export interface WorkspaceInformation {
     }>;
     baseWorkspace: WorkspaceName;
     readOnly?: boolean;
+    status?: string;
 }
 
 export interface State extends Readonly<{
@@ -27,7 +28,8 @@ export const defaultState: State = {
     personalWorkspace: {
         name: '',
         publishableNodes: [],
-        baseWorkspace: ''
+        baseWorkspace: '',
+        status: ''
     },
     toBeDiscarded: []
 };
@@ -38,7 +40,8 @@ export enum actionTypes {
     COMMENCE_DISCARD = '@neos/neos-ui/CR/Workspaces/COMMENCE_DISCARD',
     DISCARD_ABORTED = '@neos/neos-ui/CR/Workspaces/DISCARD_ABORTED',
     DISCARD_CONFIRMED = '@neos/neos-ui/CR/Workspaces/DISCARD_CONFIRMED',
-    CHANGE_BASE_WORKSPACE = '@neos/neos-ui/CR/Workspaces/CHANGE_BASE_WORKSPACE'
+    CHANGE_BASE_WORKSPACE = '@neos/neos-ui/CR/Workspaces/CHANGE_BASE_WORKSPACE',
+    REBASE_WORKSPACE = '@neos/neos-ui/CR/Workspaces/REBASE_WORKSPACE'
 }
 
 export type Action = ActionType<typeof actions>;
@@ -75,6 +78,11 @@ const confirmDiscard = () => createAction(actionTypes.DISCARD_CONFIRMED);
  */
 const changeBaseWorkspace = (name: string) => createAction(actionTypes.CHANGE_BASE_WORKSPACE, name);
 
+/**
+ * Rebase the user workspace
+ */
+const rebaseWorkspace = (name: string) => createAction(actionTypes.REBASE_WORKSPACE, name);
+
 //
 // Export the actions
 //
@@ -84,7 +92,8 @@ export const actions = {
     commenceDiscard,
     abortDiscard,
     confirmDiscard,
-    changeBaseWorkspace
+    changeBaseWorkspace,
+    rebaseWorkspace
 };
 
 //

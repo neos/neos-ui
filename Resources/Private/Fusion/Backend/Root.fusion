@@ -116,6 +116,9 @@ backend = Neos.Fusion:Template {
                 changeBaseWorkspace = Neos.Fusion:UriBuilder {
                     action = 'changeBaseWorkspace'
                 }
+                rebaseWorkspace = Neos.Fusion:UriBuilder {
+                    action = 'rebaseWorkspace'
+                }
                 copyNodes = Neos.Fusion:UriBuilder {
                     action = 'copyNodes'
                 }

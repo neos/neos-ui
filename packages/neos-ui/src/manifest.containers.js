@@ -12,11 +12,13 @@ import NodeVariantCreationDialog from './Containers/Modals/NodeVariantCreationDi
 import ReloginDialog from './Containers/Modals/ReloginDialog/index';
 import KeyboardShortcutModal from './Containers/Modals/KeyboardShortcutModal/index';
 import UnappliedChangesDialog from './Containers/Modals/UnappliedChangesDialog/index';
+import SyncWorkspaceDialog from './Containers/Modals/SyncWorkspaceDialog/index';
 
 import PrimaryToolbar from './Containers/PrimaryToolbar/index';
 import DimensionSwitcher from './Containers/PrimaryToolbar/DimensionSwitcher/index';
 import UserDropDown from './Containers/PrimaryToolbar/UserDropDown/index';
 import PublishDropDown from './Containers/PrimaryToolbar/PublishDropDown/index';
+import WorkspaceSync from './Containers/PrimaryToolbar/WorkspaceSync/index';
 import MenuToggler from './Containers/PrimaryToolbar/MenuToggler/index';
 import Brand from './Containers/PrimaryToolbar/Brand/index';
 import EditPreviewDropDown from './Containers/PrimaryToolbar/EditPreviewDropDown/index';
@@ -55,6 +57,7 @@ manifest('main.containers', {}, globalRegistry => {
     containerRegistry.set('Modals/ReloginDialog', ReloginDialog);
     containerRegistry.set('Modals/KeyboardShortcutModal', KeyboardShortcutModal);
     containerRegistry.set('Modals/UnappliedChangesDialog', UnappliedChangesDialog);
+    containerRegistry.set('Modals/SyncWorkspaceDialog', SyncWorkspaceDialog);
 
     containerRegistry.set('PrimaryToolbar', PrimaryToolbar);
     containerRegistry.set('PrimaryToolbar/Left/MenuToggler', MenuToggler);
@@ -63,6 +66,7 @@ manifest('main.containers', {}, globalRegistry => {
     containerRegistry.set('PrimaryToolbar/Right/DimensionSwitcher', DimensionSwitcher);
     containerRegistry.set('PrimaryToolbar/Right/UserDropDown', UserDropDown);
     containerRegistry.set('PrimaryToolbar/Right/PublishDropDown', PublishDropDown);
+    containerRegistry.set('PrimaryToolbar/Right/WorkspaceSync', WorkspaceSync);
 
     containerRegistry.set('SecondaryToolbar', SecondaryToolbar);
     containerRegistry.set('SecondaryToolbar/LoadingIndicator', LoadingIndicator);

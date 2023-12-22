@@ -1,0 +1,28 @@
+.wrapper {
+    display: inline-block;
+    position: relative;
+    vertical-align: top;
+    height: var(--spacing-GoldenUnit);
+}
+
+.rebaseButton {
+    padding: 0 calc(var(--spacing-Full) - var(--spacing-Quarter));
+    border-left: 1px solid black;
+}
+
+.iconLayer {
+    width: 1.5em;
+    height: 1.5em;
+}
+
+.badgeIconBackground {
+    background: var(--colors-ContrastDarkest);
+}
+
+.badgeIconOnDarkBackground {
+    background: var(--colors-ContrastBrightest);
+}
+
+.badgeIconOnDarkBackground svg {
+    color: var(--colors-ContrastDarkest);
+}

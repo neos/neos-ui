@@ -1,0 +1,36 @@
+.modalContents {
+    padding: var(--spacing-Full);
+    white-space: pre-line;
+}
+
+.buttonIcon {
+    display: inline-block;
+    width: 1.5rem;
+    height: 1.5rem;
+    float: left;
+    margin-right: var(--spacing-Quarter);
+}
+
+.buttonIcon span {
+    display: inline-block;
+    width: 100%;
+}
+
+.buttonIcon svg {
+    width: 100%;
+    height: auto;
+}
+
+.confirmText {
+    vertical-align: sub;
+}
+
+.modalTitle {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.modalTitle span:first-child {
+    scale: .8;
+}

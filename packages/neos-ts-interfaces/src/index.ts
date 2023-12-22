@@ -101,6 +101,12 @@ export enum SelectionModeTypes {
     RANGE_SELECT = 'RANGE_SELECT'
 }
 
+export enum WorkspaceStatus {
+    UP_TO_DATE = 'UP_TO_DATE',
+    OUTDATED = 'OUTDATED',
+    OUTDATED_CONFLICT = 'OUTDATED_CONFLICT'
+}
+
 export interface ValidatorConfiguration {
     [propName: string]: any;
 }

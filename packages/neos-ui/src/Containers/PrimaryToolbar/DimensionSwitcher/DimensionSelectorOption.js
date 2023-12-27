@@ -25,7 +25,7 @@ export default class DimensionSelectorOption extends PureComponent {
             <SelectBox_Option_SingleLine
                 {...this.props}
                 className={className}
-                label={option.label}
+                label={'DInge'+ option.label}
             />
         );
     }

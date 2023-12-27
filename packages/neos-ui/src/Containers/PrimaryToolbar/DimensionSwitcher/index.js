@@ -50,7 +50,7 @@ export default class DimensionSwitcher extends PureComponent {
         allowedPresets: PropTypes.object.isRequired,
         selectPreset: PropTypes.func.isRequired,
         getNodeByContextPath: PropTypes.func.isRequired,
-        documentNode: PropTypes.string.isRequired,
+        documentNode: PropTypes.object.isRequired,
         setAllowed: PropTypes.func.isRequired,
 
         i18nRegistry: PropTypes.object.isRequired
@@ -159,6 +159,16 @@ export default class DimensionSwitcher extends PureComponent {
         this.setState({isOpen: false});
     }
 
+    createDirectDimensionsLink = (dimensionName, presetConfigurationValues ) => {
+        const {documentNode} = this.props;
+
+        const nodeContextPath = documentNode.properties._path + ';' + dimensionName + '=' + presetConfigurationValues.join(',')
+        const uri = new URL(window.location.href);
+        uri.searchParams.set('node', nodeContextPath);
+        //console.log(uri.toString());
+        return uri.toString();
+    }
+
     renderSingleDimensionSelector = (dimensionName, contentDimensionsObject) => {
         const dimensionConfiguration = contentDimensionsObject[dimensionName];
         const icon = this.getDimensionIcon(dimensionName, contentDimensionsObject);
@@ -259,18 +269,16 @@ export default class DimensionSwitcher extends PureComponent {
         return null;
     }
     getDocumentDimensions(dimensionName) {
-        const {getNodeByContextPath, documentNode, allowedPresets} = this.props;
+        const {getNodeByContextPath, documentNode, allowedPresets, activePresets} = this.props;
         const currentDocumentNode = getNodeByContextPath(documentNode.contextPath)
-
         if(!currentDocumentNode.dimensions) return allowedPresets[dimensionName]
 
         let variants = currentDocumentNode?.otherNodeVariants;
         let dimensions = [currentDocumentNode.dimensions[dimensionName]];
 
         Object.values(variants).forEach(entry => {
-            if(entry[dimensionName]) dimensions.push(entry[dimensionName]);
+            dimensions.push(entry[dimensionName]);
         });
-
         return dimensions;
     }
 
@@ -284,7 +292,8 @@ export default class DimensionSwitcher extends PureComponent {
                 return Object.assign({}, presetConfiguration, {
                     label: i18nRegistry.translate(presetConfiguration.label),
                     disallowed: !(allowedPresets[dimensionName] && allowedPresets[dimensionName].includes(presetName)),
-                    existing: (documentDimensions.some(dimension=> presetConfiguration.values.includes(dimension))),
+                    existing: documentDimensions.some(dimension=> presetConfiguration.values.includes(dimension)),
+                    uri: this.createDirectDimensionsLink( dimensionName, presetConfiguration.values)
                 });
             });
     }

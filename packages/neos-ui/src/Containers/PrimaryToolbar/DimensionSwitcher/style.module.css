@@ -64,7 +64,7 @@
     opacity: 0.5;
 }
 .disallowed {
-    background-color: var(--colors-ContrastBright);
+    text-decoration: line-through;
 }
 
 .selectPreset + .selectPreset {

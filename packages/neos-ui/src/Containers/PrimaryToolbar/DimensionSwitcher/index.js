@@ -68,6 +68,17 @@ export default class DimensionSwitcher extends PureComponent {
         loadingPresets: {}
     };
 
+    componentDidMount() {
+        const activePresets = mapValues(
+            this.props.activePresets,
+            dimensionPreset => dimensionPreset.name
+        );
+        this.setState({
+            transientPresets: activePresets
+        });
+        console.log(this.state.transientPresets);
+    }
+
     getDimensionIcon = (dimensionName, contentDimensionsObject) => {
         const dimensionConfiguration = contentDimensionsObject[dimensionName];
         return dimensionConfiguration?.icon || null;
@@ -145,6 +156,7 @@ export default class DimensionSwitcher extends PureComponent {
             });
         }
     }
+
 
     handleApplyPresets = () => {
         this.props.selectPreset(this.state.transientPresets);
@@ -269,16 +281,32 @@ export default class DimensionSwitcher extends PureComponent {
         return null;
     }
     getDocumentDimensions(dimensionName) {
-        const {getNodeByContextPath, documentNode, allowedPresets, activePresets} = this.props;
+        const {getNodeByContextPath, documentNode, allowedPresets, contentDimensions} = this.props;
         const currentDocumentNode = getNodeByContextPath(documentNode.contextPath)
-        if(!currentDocumentNode.dimensions) return allowedPresets[dimensionName]
+        if(!currentDocumentNode.dimensions){
+            return allowedPresets[dimensionName]
+        }
 
-        let variants = currentDocumentNode?.otherNodeVariants;
-        let dimensions = [currentDocumentNode.dimensions[dimensionName]];
+        let variants = [...currentDocumentNode?.otherNodeVariants];
+        variants.push(currentDocumentNode.dimensions)
 
+        for(let dimensionKey of Object.keys(contentDimensions)){
+            if(dimensionKey == dimensionName) {
+                break;
+            }
+            Object.entries(variants).forEach(entry => {
+                const [key, value] = entry;
+                if(value[dimensionKey] != this.state.transientPresets[dimensionKey]){
+                   delete variants[key]
+                }
+            });
+        }
+        let dimensions = []
         Object.values(variants).forEach(entry => {
+
             dimensions.push(entry[dimensionName]);
         });
+
         return dimensions;
     }
 

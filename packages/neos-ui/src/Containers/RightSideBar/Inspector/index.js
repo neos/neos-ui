@@ -6,11 +6,7 @@ import mapValues from 'lodash.mapvalues';
 import {connect} from 'react-redux';
 import {$get, $contains, $set} from 'plow-js';
 import I18n from '@neos-project/neos-ui-i18n';
-import Bar from '@neos-project/react-ui-components/src/Bar/';
-import Button from '@neos-project/react-ui-components/src/Button/';
-import Tabs from '@neos-project/react-ui-components/src/Tabs/';
-import Icon from '@neos-project/react-ui-components/src/Icon/';
-import Badge from '@neos-project/react-ui-components/src/Badge/';
+import {Bar, Button, Tabs, Icon, Badge} from '@neos-project/react-ui-components';
 import debounce from 'lodash.debounce';
 
 import {SecondaryInspector} from '@neos-project/neos-ui-inspector';

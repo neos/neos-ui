@@ -8,10 +8,7 @@ import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import backend from '@neos-project/neos-ui-backend-connector';
 import fetchWithErrorHandling from '@neos-project/neos-ui-backend-connector/src/FetchWithErrorHandling/index';
 
-import Button from '@neos-project/react-ui-components/src/Button/';
-import Dialog from '@neos-project/react-ui-components/src/Dialog/';
-import TextInput from '@neos-project/react-ui-components/src/TextInput/';
-import Tooltip from '@neos-project/react-ui-components/src/Tooltip/';
+import {Button, Dialog, TextInput, Tooltip} from '@neos-project/react-ui-components';
 import I18n from '@neos-project/neos-ui-i18n';
 import style from './style.module.css';
 

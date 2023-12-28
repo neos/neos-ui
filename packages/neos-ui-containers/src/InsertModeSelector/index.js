@@ -1,10 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 
-import ButtonGroup from '@neos-project/react-ui-components/src/ButtonGroup/';
-import Button from '@neos-project/react-ui-components/src/Button/';
-import Icon from '@neos-project/react-ui-components/src/Icon/';
-
+import {ButtonGroup, Button, Icon} from '@neos-project/react-ui-components';
 import {neos} from '@neos-project/neos-ui-decorators';
 import I18n from '@neos-project/neos-ui-i18n';
 

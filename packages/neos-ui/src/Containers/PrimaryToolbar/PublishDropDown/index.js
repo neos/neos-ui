@@ -5,11 +5,7 @@ import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import {$transform, $get} from 'plow-js';
 
-import Badge from '@neos-project/react-ui-components/src/Badge/';
-import Icon from '@neos-project/react-ui-components/src/Icon/';
-import CheckBox from '@neos-project/react-ui-components/src/CheckBox/';
-import Label from '@neos-project/react-ui-components/src/Label/';
-import DropDown from '@neos-project/react-ui-components/src/DropDown/';
+import {Badge, Icon, CheckBox, Label, DropDown} from '@neos-project/react-ui-components';
 
 import I18n from '@neos-project/neos-ui-i18n';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';

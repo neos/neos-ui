@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {$get} from 'plow-js';
 
-import Headline from '@neos-project/react-ui-components/src/Headline/';
-import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
-
+import {Headline, SelectBox} from '@neos-project/react-ui-components';
 import I18n from '@neos-project/neos-ui-i18n';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';

@@ -6,9 +6,7 @@ import {$transform, $get} from 'plow-js';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 
-import IconButton from '@neos-project/react-ui-components/src/IconButton/';
-
-import SideBar from '@neos-project/react-ui-components/src/SideBar/';
+import {IconButton, SideBar} from '@neos-project/react-ui-components';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 import style from './style.module.css';

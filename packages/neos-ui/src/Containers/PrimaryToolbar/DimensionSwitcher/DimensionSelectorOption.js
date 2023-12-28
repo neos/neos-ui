@@ -13,6 +13,7 @@ export default class DimensionSelectorOption extends PureComponent {
             existing: PropTypes.bool
         })
     };
+
     render() {
         const {option} = this.props;
         const className = mergeClassNames({
@@ -25,7 +26,7 @@ export default class DimensionSelectorOption extends PureComponent {
             <SelectBox_Option_SingleLine
                 {...this.props}
                 className={className}
-                label={'DInge'+ option.label}
+                label={'DInge' + option.label}
             />
         );
     }

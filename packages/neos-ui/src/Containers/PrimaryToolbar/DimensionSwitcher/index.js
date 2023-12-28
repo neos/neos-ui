@@ -157,7 +157,6 @@ export default class DimensionSwitcher extends PureComponent {
         }
     }
 
-
     handleApplyPresets = () => {
         this.props.selectPreset(this.state.transientPresets);
         this.setState({isOpen: false, transientPresets: {}});
@@ -171,13 +170,13 @@ export default class DimensionSwitcher extends PureComponent {
         this.setState({isOpen: false});
     }
 
-    createDirectDimensionsLink = (dimensionName, presetConfigurationValues ) => {
+    createDirectDimensionsLink = (dimensionName, presetConfigurationValues) => {
         const {documentNode} = this.props;
 
         const nodeContextPath = documentNode.properties._path + ';' + dimensionName + '=' + presetConfigurationValues.join(',')
         const uri = new URL(window.location.href);
         uri.searchParams.set('node', nodeContextPath);
-        //console.log(uri.toString());
+        // console.log(uri.toString());
         return uri.toString();
     }
 
@@ -280,36 +279,35 @@ export default class DimensionSwitcher extends PureComponent {
 
         return null;
     }
+
     getDocumentDimensions(dimensionName) {
         const {getNodeByContextPath, documentNode, allowedPresets, contentDimensions} = this.props;
         const currentDocumentNode = getNodeByContextPath(documentNode.contextPath)
-        if(!currentDocumentNode.dimensions){
+        if (!currentDocumentNode.dimensions) {
             return allowedPresets[dimensionName]
         }
 
-        let variants = [...currentDocumentNode?.otherNodeVariants];
+        const variants = [...currentDocumentNode?.otherNodeVariants];
         variants.push(currentDocumentNode.dimensions)
 
-        for(let dimensionKey of Object.keys(contentDimensions)){
-            if(dimensionKey == dimensionName) {
+        for (const dimensionKey of Object.keys(contentDimensions)) {
+            if (dimensionKey === dimensionName) {
                 break;
             }
             Object.entries(variants).forEach(entry => {
                 const [key, value] = entry;
-                if(value[dimensionKey] != this.state.transientPresets[dimensionKey]){
-                   delete variants[key]
+                if (value[dimensionKey] !== this.state.transientPresets[dimensionKey]) {
+                    delete variants[key]
                 }
             });
         }
-        let dimensions = []
+        const dimensions = []
         Object.values(variants).forEach(entry => {
-
             dimensions.push(entry[dimensionName]);
         });
 
         return dimensions;
     }
-
 
     presetsForDimension(dimensionName) {
         const {contentDimensions, allowedPresets, i18nRegistry} = this.props;
@@ -320,8 +318,8 @@ export default class DimensionSwitcher extends PureComponent {
                 return Object.assign({}, presetConfiguration, {
                     label: i18nRegistry.translate(presetConfiguration.label),
                     disallowed: !(allowedPresets[dimensionName] && allowedPresets[dimensionName].includes(presetName)),
-                    existing: documentDimensions.some(dimension=> presetConfiguration.values.includes(dimension)),
-                    uri: this.createDirectDimensionsLink( dimensionName, presetConfiguration.values)
+                    existing: documentDimensions.some(dimension => presetConfiguration.values.includes(dimension)),
+                    uri: this.createDirectDimensionsLink(dimensionName, presetConfiguration.values)
                 });
             });
     }

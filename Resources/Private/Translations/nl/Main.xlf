@@ -523,6 +523,34 @@
                 <source>Add</source>
         <target state="translated">Voeg toe</target>
       </trans-unit>
+      <trans-unit id="syncPersonalWorkSpaceMessageOutdated" xml:space="preserve">
+                <source>It seems like there are changes in the workspace that are not reflected in your personal workspace.
+                You should synchronize your personal workspace to avoid conflicts.</source>
+        <target state="translated">Het lijkt erop dat er wijzigingen zijn in het werkblad die niet in uw persoonlijke werkblad zitten.
+U wordt aangeraden uw persoonlijke werkblad te synchroniseren om conflicten te voorkomen.</target>
+      </trans-unit>
+      <trans-unit id="workspaceSynchronizationApplied" xml:space="preserve">
+                <source>Successfully synced "{workspaceName}" workspace.</source>
+        <target state="translated">Werkblad "{workspaceName}" succesvol gesynchroniseerd.</target>
+      </trans-unit>
+      <trans-unit id="syncPersonalWorkSpaceMessage" xml:space="preserve">
+                <source>Your personal workspace is up-to-date with the current workspace.</source>
+        <target state="translated">Uw persoonlijke werkblad is bijgewerkt met het huidige werkblad.</target>
+      </trans-unit>
+      <trans-unit id="syncPersonalWorkSpace" xml:space="preserve">
+                <source>Synchronize personal workspace</source>
+        <target state="translated">Synchroniseer persoonlijk werkblad</target>
+      </trans-unit>
+      <trans-unit id="syncPersonalWorkSpaceMessageOutdatedConflict" xml:space="preserve">
+                <source>It seems like there are changes in the workspace that are not reflected in your personal workspace.
+                The changes lead to an error state. Please contact your administrator to resolve the problem.</source>
+        <target state="translated">Het lijkt erop dat er wijzigingen zijn in het werkblad die niet in uw persoonlijke werkblad zitten.
+De wijzigingen hebben geresulteerd in een foutmelding. Neemt u alstublieft contact op met de beheerder om het probleem op te lossen.</target>
+      </trans-unit>
+      <trans-unit id="syncPersonalWorkSpaceConfirm" xml:space="preserve">
+                <source>Synchronize now</source>
+        <target state="translated">Nu synchroniseren</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

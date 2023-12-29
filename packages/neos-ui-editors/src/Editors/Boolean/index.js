@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
 
-import CheckBox from '@neos-project/react-ui-components/src/CheckBox/';
-import Label from '@neos-project/react-ui-components/src/Label/';
+import {CheckBox, Label} from '@neos-project/react-ui-components';
 import I18n from '@neos-project/neos-ui-i18n';
 
 import style from './style.module.css';

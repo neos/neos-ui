@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import TextInput from '@neos-project/react-ui-components/src/TextInput/';
-import IconButton from '@neos-project/react-ui-components/src/IconButton/';
-import Icon from '@neos-project/react-ui-components/src/Icon/';
+import {TextInput, IconButton, Icon} from '@neos-project/react-ui-components';
 import {neos} from '@neos-project/neos-ui-decorators';
 import style from './style.module.css';
 

@@ -4,14 +4,11 @@ import mergeClassNames from 'classnames';
 import ReactMarkdown from 'react-markdown';
 import omit from 'lodash.omit';
 
-import Label from '@neos-project/react-ui-components/src/Label/';
-import {Tooltip} from '@neos-project/react-ui-components';
+import {Tooltip, Label, Icon} from '@neos-project/react-ui-components';
 import I18n from '@neos-project/neos-ui-i18n';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 import style from './style.module.css';
-
-import {Icon} from '@neos-project/react-ui-components';
 
 @neos(globalRegistry => ({
     editorRegistry: globalRegistry.get('inspector').get('editors'),

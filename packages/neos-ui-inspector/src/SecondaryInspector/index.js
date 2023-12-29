@@ -7,8 +7,7 @@ import {$get} from 'plow-js';
 
 import {selectors} from '@neos-project/neos-ui-redux-store';
 
-import Icon from '@neos-project/react-ui-components/src/Icon/';
-import Button from '@neos-project/react-ui-components/src/Button/';
+import {Icon, Button} from '@neos-project/react-ui-components';
 
 import style from './style.module.css';
 

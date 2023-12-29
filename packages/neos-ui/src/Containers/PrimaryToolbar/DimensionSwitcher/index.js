@@ -286,10 +286,10 @@ export default class DimensionSwitcher extends PureComponent {
 
         const variants = [...currentDocumentNode?.otherNodeVariants];
         variants.push(currentDocumentNode.dimensions)
-        console.log(variants);
-        for(let dimensionKey of Object.keys(contentDimensions)){
-            if(dimensionKey == dimensionName && contentDimensions.length !== 1) {
-              break;
+
+        for (const dimensionKey of Object.keys(contentDimensions)) {
+            if (dimensionKey === dimensionName || Object.keys(contentDimensions).length === 1) {
+                break;
             }
             Object.entries(variants).forEach(entry => {
                 const [key, value] = entry;
@@ -298,12 +298,13 @@ export default class DimensionSwitcher extends PureComponent {
                    delete variants[key]
                 }
             });
+
         }
         const dimensions = []
         Object.values(variants).forEach(entry => {
             dimensions.push(entry[dimensionName]);
         });
-        
+
         return dimensions;
     }
 
@@ -317,7 +318,7 @@ export default class DimensionSwitcher extends PureComponent {
                     label: i18nRegistry.translate(presetConfiguration.label),
                     disallowed: !(allowedPresets[dimensionName] && allowedPresets[dimensionName].includes(presetName)),
                     existing: documentDimensions.some(dimension=> presetConfiguration.values.includes(dimension)),
-                    url: (Object.keys(contentDimensionsObject).length === 1) ? this.createDirectDimensionsLink( dimensionName, presetName) : null
+                    url: (Object.keys(contentDimensions).length === 1) ? this.createDirectDimensionsLink( dimensionName, presetName) : null
                 });
             });
     }

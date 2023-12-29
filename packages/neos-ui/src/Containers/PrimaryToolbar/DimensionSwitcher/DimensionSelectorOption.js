@@ -11,7 +11,7 @@ export default class DimensionSelectorOption extends PureComponent {
             label: PropTypes.string.isRequired,
             disallowed: PropTypes.bool,
             existing: PropTypes.bool,
-            url: PropTypes.bool
+            url: PropTypes.string
         })
     };
 

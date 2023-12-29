@@ -32,8 +32,8 @@ class SelectBox_Option_SingleLine extends PureComponent {
         const isDisabled = disabled || option.disabled;
 
         const finalClassNames = mergeClassNames({
-            [className]: className
-            [style.linkedItem]: true
+            [className]: className,
+            [style.linkedItem]: linkOptions
         });
         const previewElementIcon = option.icon ? option.icon : (icon ? icon : null);
 

@@ -1,6 +1,8 @@
 .dropdownLink{
     color: white;
+    padding: 5px 14px;
+    display: inline-block;
 }
 .linkedItem{
-    background-color: red;
+    padding: 0px !important;
 }

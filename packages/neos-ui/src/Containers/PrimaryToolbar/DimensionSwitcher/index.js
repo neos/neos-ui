@@ -155,7 +155,6 @@ export default class DimensionSwitcher extends PureComponent {
         }
     }
 
-
     handleApplyPresets = () => {
         this.props.selectPreset(this.state.transientPresets);
         this.setState({isOpen: false, transientPresets: {}});
@@ -277,21 +276,21 @@ export default class DimensionSwitcher extends PureComponent {
 
         return null;
     }
+
     getDocumentDimensions(dimensionName) {
         const {getNodeByContextPath, documentNode, allowedPresets, contentDimensions} = this.props;
         const currentDocumentNode = getNodeByContextPath(documentNode.contextPath)
-        if(!currentDocumentNode.dimensions){
+        if (!currentDocumentNode.dimensions) {
             return allowedPresets[dimensionName]
         }
 
-        let variants = [...currentDocumentNode?.otherNodeVariants];
+        const variants = [...currentDocumentNode?.otherNodeVariants];
         variants.push(currentDocumentNode.dimensions)
         console.log(variants);
         for(let dimensionKey of Object.keys(contentDimensions)){
             if(dimensionKey == dimensionName && contentDimensions.length !== 1) {
               break;
             }
-            console.log(this.state.transientPresets[dimensionKey])
             Object.entries(variants).forEach(entry => {
                 const [key, value] = entry;
                 console.log(value[dimensionKey])
@@ -300,14 +299,13 @@ export default class DimensionSwitcher extends PureComponent {
                 }
             });
         }
-        let dimensions = []
+        const dimensions = []
         Object.values(variants).forEach(entry => {
             dimensions.push(entry[dimensionName]);
         });
-        console.log(dimensions)
+        
         return dimensions;
     }
-
 
     presetsForDimension(dimensionName) {
         const {contentDimensions, allowedPresets, i18nRegistry} = this.props;
@@ -319,7 +317,7 @@ export default class DimensionSwitcher extends PureComponent {
                     label: i18nRegistry.translate(presetConfiguration.label),
                     disallowed: !(allowedPresets[dimensionName] && allowedPresets[dimensionName].includes(presetName)),
                     existing: documentDimensions.some(dimension=> presetConfiguration.values.includes(dimension)),
-                    url: this.createDirectDimensionsLink( dimensionName, presetName)
+                    url: (Object.keys(contentDimensionsObject).length === 1) ? this.createDirectDimensionsLink( dimensionName, presetName) : null
                 });
             });
     }

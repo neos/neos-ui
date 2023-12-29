@@ -45,7 +45,6 @@ export default class DimensionSelector extends PureComponent {
         const presetOptions = mapValues(
             presets,
             (presetConfiguration, presetName) => {
-
                 return {
                     label: presetConfiguration?.label,
                     value: presetName,

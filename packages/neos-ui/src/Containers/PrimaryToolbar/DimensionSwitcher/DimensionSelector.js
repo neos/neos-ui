@@ -51,7 +51,8 @@ export default class DimensionSelector extends PureComponent {
                     value: presetName,
                     disallowed: presetConfiguration?.disallowed,
                     existing: presetConfiguration?.existing,
-                    group: presetConfiguration?.group
+                    group: presetConfiguration?.group,
+                    url: presetConfiguration?.url
                 };
             }
         );

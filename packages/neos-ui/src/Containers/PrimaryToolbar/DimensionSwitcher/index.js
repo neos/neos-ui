@@ -319,7 +319,7 @@ export default class DimensionSwitcher extends PureComponent {
                     label: i18nRegistry.translate(presetConfiguration.label),
                     disallowed: !(allowedPresets[dimensionName] && allowedPresets[dimensionName].includes(presetName)),
                     existing: documentDimensions.some(dimension=> presetConfiguration.values.includes(dimension)),
-                    uri: (contentDimensions.length === 1) ? this.createDirectDimensionsLink( dimensionName, presetName) : null
+                    url: this.createDirectDimensionsLink( dimensionName, presetName)
                 });
             });
     }

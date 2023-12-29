@@ -10,9 +10,11 @@ export default class DimensionSelectorOption extends PureComponent {
         option: PropTypes.shape({
             label: PropTypes.string.isRequired,
             disallowed: PropTypes.bool,
-            existing: PropTypes.bool
+            existing: PropTypes.bool,
+            url: PropTypes.bool
         })
     };
+
     render() {
         const {option} = this.props;
         const className = mergeClassNames({
@@ -20,6 +22,24 @@ export default class DimensionSelectorOption extends PureComponent {
             [style.nonExistent]: !option.existing
         });
 
+        if(!option.disallowed && option.existing && option.url){
+
+            const linkOptions = {
+                href: option.url,
+                target: '_blank',
+                rel: 'noopener noreferrer',
+                onClick: (event) => event.preventDefault()
+            }
+            return  (
+
+                // eslint-disable-next-line camelcase
+                <SelectBox_Option_SingleLine
+                    {...this.props}
+                    className={className}
+                    linkOptions={linkOptions}
+                />
+            );
+        }
         return (
             // eslint-disable-next-line camelcase
             <SelectBox_Option_SingleLine

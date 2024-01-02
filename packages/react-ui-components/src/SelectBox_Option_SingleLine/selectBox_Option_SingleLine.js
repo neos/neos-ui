@@ -43,9 +43,9 @@ class SelectBox_Option_SingleLine extends PureComponent {
                     <a
                         {...linkOptions}
                         className={style.dropdownLink}
-                        title={option.title ? options.title: option.label}>{option.label}</a>
+                        title={option.title ? option.title : option.label}>{option.label}</a>
                 ) : (
-                    <span title={option.label}>{option.label}</span>
+                    <span title={option.title ? option.title : option.label}>{option.label}</span>
                 )}
             </ListPreviewElement>
         );

@@ -22,15 +22,14 @@ export default class DimensionSelectorOption extends PureComponent {
             [style.nonExistent]: !option.existing
         });
 
-        if(!option.disallowed && option.existing && option.url){
-
+        if (!option.disallowed && option.existing && option.url) {
             const linkOptions = {
                 href: option.url,
                 target: '_blank',
                 rel: 'noopener noreferrer',
                 onClick: (event) => event.preventDefault()
             }
-            return  (
+            return (
 
                 // eslint-disable-next-line camelcase
                 <SelectBox_Option_SingleLine

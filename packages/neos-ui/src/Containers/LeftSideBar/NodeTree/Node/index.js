@@ -174,21 +174,11 @@ export default class Node extends PureComponent {
         const isHiddenBefore = node?.properties?._hiddenBeforeDateTime;
         const isHiddenAfter = node?.properties?._hiddenAfterDateTime;
 
-        if (isHidden) {
-            return (
-                <span className="fa-layers fa-fw">
-                    <Icon icon={this.getIcon()} />
-                    <Icon icon="circle" color="error" transform="shrink-3 down-6 right-4" />
-                    <Icon icon="times" transform="shrink-7 down-6 right-4" />
-                </span>
-            );
-        }
-
         if (isHiddenBefore || isHiddenAfter) {
             let isCurrentlyHidden = false;
             isCurrentlyHidden = isHiddenBefore && moment(isHiddenBefore).isAfter(moment()) ? true : isCurrentlyHidden;
             isCurrentlyHidden = isHiddenAfter && moment(isHiddenAfter).isBefore(moment()) ? true : isCurrentlyHidden;
-            const circleColor = isCurrentlyHidden ? 'error' : 'primaryBlue';
+            const circleColor = isCurrentlyHidden && isHidden ? 'error' : 'primaryBlue';
 
             return (
                 <span className="fa-layers fa-fw">

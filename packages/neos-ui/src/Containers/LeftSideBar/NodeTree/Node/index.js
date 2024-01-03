@@ -171,8 +171,8 @@ export default class Node extends PureComponent {
         const {node} = this.props;
 
         const isHidden = node?.properties?._hidden;
-        const isHiddenBefore = node?.properties?._hiddenBeforeDateTime;
-        const isHiddenAfter = node?.properties?._hiddenAfterDateTime;
+        const isHiddenBefore = node?.properties?.enableAfterDateTime;
+        const isHiddenAfter = node?.properties?.disableAfterDateTime;
 
         if (isHiddenBefore || isHiddenAfter) {
             let isCurrentlyHidden = false;

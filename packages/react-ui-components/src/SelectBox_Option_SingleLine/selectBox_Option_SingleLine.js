@@ -18,6 +18,8 @@ class SelectBox_Option_SingleLine extends PureComponent {
 
         className: PropTypes.string,
 
+        icon: PropTypes.string,
+
         linkOptions: PropTypes.shape({
             href: PropTypes.string.isRequired,
             target: PropTypes.string,
@@ -35,6 +37,11 @@ class SelectBox_Option_SingleLine extends PureComponent {
             [className]: className,
             [style.linkedItem]: linkOptions
         });
+        const linkClassname = mergeClassNames({
+            [style.dropdownLink]: true,
+            [style.hasIcon]: (option.icon || icon ? true: false)
+        });
+
         const previewElementIcon = option.icon ? option.icon : (icon ? icon : null);
 
         return (
@@ -42,7 +49,7 @@ class SelectBox_Option_SingleLine extends PureComponent {
                 {linkOptions ? (
                     <a
                         {...linkOptions}
-                        className={style.dropdownLink}
+                        className={linkClassname}
                         title={option.title ? option.title : option.label}>{option.label}</a>
                 ) : (
                     <span title={option.title ? option.title : option.label}>{option.label}</span>

@@ -2,6 +2,12 @@
     color: white;
     padding: 5px 14px;
     display: inline-block;
+    width: 100%;
+
+}
+.hasIcon {
+    width: calc(100% - 2em);
+    padding: 5px 0px;
 }
 .linkedItem{
     padding: 0px !important;

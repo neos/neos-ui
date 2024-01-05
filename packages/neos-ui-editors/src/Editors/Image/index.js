@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {$set, $drop, $get} from 'plow-js';
+import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 
 import backend from '@neos-project/neos-ui-backend-connector';
 import {neos} from '@neos-project/neos-ui-decorators';
+import {selectors} from '@neos-project/neos-ui-redux-store';
 
 import {PreviewScreen, Controls, ResizeControls} from './Components/index';
 import {Image, CROP_IMAGE_ADJUSTMENT, RESIZE_IMAGE_ADJUSTMENT} from './Utils/index';
@@ -18,6 +20,10 @@ const DEFAULT_FEATURES = {
     upload: true
 };
 
+@connect(state => ({
+    siteNodePath: state?.cr?.nodes?.siteNode,
+    focusedNodePath: selectors.CR.Nodes.focusedNodePathSelector(state)
+}), null, null, {forwardRef: true})
 @neos(globalRegistry => ({secondaryEditorsRegistry: globalRegistry.get('inspector').get('secondaryEditors')}))
 export default class ImageEditor extends Component {
     state = {
@@ -48,7 +54,10 @@ export default class ImageEditor extends Component {
         // I18N key
         fileChooserLabel: PropTypes.string,
 
-        accept: PropTypes.string
+        accept: PropTypes.string,
+
+        siteNodePath: PropTypes.string.isRequired,
+        focusedNodePath: PropTypes.string.isRequired,
     };
 
     static defaultProps = {
@@ -215,8 +224,22 @@ export default class ImageEditor extends Component {
     }
 
     handleChooseFile = () => {
-        this.previewScreen.chooseFromLocalFileSystem();
-        this.setState({isAssetLoading: true});
+        const {secondaryEditorsRegistry, options} = this.props;
+        if (secondaryEditorsRegistry.get('Neos.Neos/Inspector/Secondary/Editors/AssetUploadScreen')) {
+            // set media type constraint to "image/*" if it is not explicitly specified via options.constraints.mediaTypes
+            const constraints = {...options.constraints, mediaTypes: (options.constraints && options.constraints.mediaTypes) || ['image/*']};
+            const {component: AssetUploadScreen} = secondaryEditorsRegistry.get('Neos.Neos/Inspector/Secondary/Editors/AssetUploadScreen');
+            const additionalData = {
+                propertyName: this.props.identifier,
+                focusedNodePath: this.props.focusedNodePath,
+                siteNodePath: this.props.siteNodePath,
+                metaData: 'Image'
+            };
+            this.props.renderSecondaryInspector('IMAGE_UPLOAD_MEDIA', () => <AssetUploadScreen type="images" constraints={constraints} onComplete={this.afterUpload} additionalData={additionalData}/>);
+        } else {
+            this.previewScreen.chooseFromLocalFileSystem();
+            this.setState({isAssetLoading: true});
+        }
     }
 
     handleChooseFromMedia = () => {

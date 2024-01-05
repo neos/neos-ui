@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$transform, $get, $contains} from 'plow-js';
+import {$transform, $get} from 'plow-js';
 
 import {isEqualSet} from '@neos-project/utils-helpers';
 import {neos} from '@neos-project/neos-ui-decorators';

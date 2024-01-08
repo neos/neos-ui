@@ -61,7 +61,7 @@ class StyleAndJavascriptInclusionService
     public function getHeadScripts(): string
     {
         return $this->build($this->javascriptResources, function ($uri, $additionalAttributes) {
-            return '<script src="' . $uri . '" ' . $additionalAttributes . '></script>';
+            return '<script src="' . $uri . '" ' . $additionalAttributes . ' defer></script>';
         });
     }
 

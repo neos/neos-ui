@@ -58,7 +58,7 @@ class StyleAndJavascriptInclusionService
      */
     protected $stylesheetResources;
 
-    public function getHeadScripts(): string
+    public function getScripts(): string
     {
         return $this->build($this->javascriptResources, function ($uri, $additionalAttributes) {
             return '<script src="' . $uri . '" ' . $additionalAttributes . '></script>';

@@ -192,7 +192,7 @@ class BackendController extends ActionController
         $this->view->assign('site', $siteNode);
         $this->view->assign('clipboardNodes', $this->clipboard->getSerializedNodeAddresses());
         $this->view->assign('clipboardMode', $this->clipboard->getMode());
-        $this->view->assign('headScripts', $this->styleAndJavascriptInclusionService->getHeadScripts());
+        $this->view->assign('scripts', $this->styleAndJavascriptInclusionService->getScripts());
         $this->view->assign('headStylesheets', $this->styleAndJavascriptInclusionService->getHeadStylesheets());
         $this->view->assign('splashScreenPartial', $this->splashScreenPartial);
         $this->view->assign('sitesForMenu', $this->menuHelper->buildSiteList($this->getControllerContext()));

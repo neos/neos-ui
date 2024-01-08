@@ -5,7 +5,7 @@ import ReactMarkdown from 'react-markdown';
 import omit from 'lodash.omit';
 
 import Label from '@neos-project/react-ui-components/src/Label/';
-import {Tooltip} from '@neos-project/react-ui-components';
+import {IconButton, Tooltip} from '@neos-project/react-ui-components';
 import I18n from '@neos-project/neos-ui-i18n';
 import {neos} from '@neos-project/neos-ui-decorators';
 
@@ -19,7 +19,8 @@ import {Icon} from '@neos-project/react-ui-components';
 }))
 export default class EditorEnvelope extends PureComponent {
     state = {
-        showHelpMessage: false
+        showHelpMessage: false,
+        hasImplausibleValue: false
     };
 
     static defaultProps = {
@@ -66,6 +67,18 @@ export default class EditorEnvelope extends PureComponent {
     renderEditorComponent() {
         const editorDefinition = this.getEditorDefinition();
 
+        if (this.state.hasImplausibleValue) {
+            return <div>
+                <div className={style['envelope--invalid']}>invalid Value in editor {JSON.stringify(this.props.value)}</div>;
+                <IconButton onClick={() => {
+                    this.props.commit('');
+                    this.setState({
+                        hasImplausibleValue: false
+                    })
+                }} icon='x'>Reset</IconButton>
+            </div>;
+        }
+
         if (editorDefinition && editorDefinition.component) {
             const EditorComponent = editorDefinition && editorDefinition.component;
 
@@ -82,6 +95,12 @@ export default class EditorEnvelope extends PureComponent {
                 <EditorComponent className={classNames}
                     id={this.generateIdentifier()}
                     renderHelpIcon={this.renderHelpIcon}
+                    onImplausibleValue={(lieblingsWert) => {
+                        this.setState({
+                            hasImplausibleValue: true
+                        })
+                    }}
+
                     {...restProps} />
             );
         }

@@ -15,6 +15,10 @@ export default class SelectBoxEditor extends PureComponent {
     render() {
         const {options} = this.props;
 
+        if (this.props.value) {
+            this.props.onImplausibleValue();
+        }
+
         if (options.dataSourceIdentifier || options.dataSourceUri) {
             return <DataSourceBasedSelectBoxEditor {...this.props}/>;
         }

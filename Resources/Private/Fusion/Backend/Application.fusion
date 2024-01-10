@@ -1,0 +1,51 @@
+/*
+ * This file is part of the Neos.Neos.Ui package.
+ *
+ * (c) Contributors of the Neos Project - www.neos.io
+ *
+ * This package is Open Source Software. For the full copyright and license
+ * information, please view the LICENSE file which was distributed with this
+ * source code.
+ */
+
+#
+# The Base component for Neos UI Applications
+#
+# Usage:
+#   <Neos.Neos.Ui:Application title="Content Module"/>
+#
+prototype(Neos.Neos.Ui:Application) < prototype(Neos.Fusion:Component) {
+    title = 'Untitled Neos UI Application'
+    lang = ${Neos.Backend.interfaceLanguage()}
+    csrfToken = ${Security.csrfToken()}
+    applicationContext = ${Configuration.setting('Neos.Flow.core.context')}
+
+    renderer = afx`
+        {'<!DOCTYPE html>'}
+        <html lang={props.lang}>
+        <head>
+            <meta charset="UTF-8"/>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+            <script id="initialData" type="application/json">
+                <Neos.Neos.Ui:Component.InitialData
+                    @process.json={Json.stringify(value)}
+                />
+            </script>
+            <title>{props.title}</title>
+
+            <Neos.Neos.Ui:Component.HeadStylesheets/>
+            <Neos.Neos.Ui:Component.HeadScripts/>
+            <Neos.Neos.Ui:Component.HeadIcons/>
+        </head>
+        <body>
+            <div
+                id="appContainer"
+                data-csrf-token={props.csrfToken}
+                data-env={props.applicationContext}
+            >
+                <Neos.Neos.Ui:Component.SplashScreen/>
+            </div>
+        </body>
+        </html>
+    `
+}

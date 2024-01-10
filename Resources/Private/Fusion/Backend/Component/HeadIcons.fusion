@@ -1,0 +1,55 @@
+/*
+ * This file is part of the Neos.Neos.Ui package.
+ *
+ * (c) Contributors of the Neos Project - www.neos.io
+ *
+ * This package is Open Source Software. For the full copyright and license
+ * information, please view the LICENSE file which was distributed with this
+ * source code.
+ */
+
+/** @internal */
+prototype(Neos.Neos.Ui:Component.HeadIcons) < prototype(Neos.Fusion:Join) {
+    appleTouchIcon = Neos.Fusion:Tag {
+        tagName = 'link'
+        attributes {
+            href = Neos.Fusion:ResourceUri {
+                path = 'resource://Neos.Neos.Ui/Public/Images/apple-touch-icon.png'
+            }
+            sizes = '180x180'
+            rel = 'apple-touch-icon'
+        }
+    }
+    favicon16 = Neos.Fusion:Tag {
+        tagName = 'link'
+        attributes {
+            href = Neos.Fusion:ResourceUri {
+                path = 'resource://Neos.Neos.Ui/Public/Images/favicon-16x16.png'
+            }
+            sizes = '16x16'
+            rel = 'icon'
+            type = 'image/png'
+        }
+    }
+    favicon32 = Neos.Fusion:Tag {
+        tagName = 'link'
+        attributes {
+            href = Neos.Fusion:ResourceUri {
+                path = 'resource://Neos.Neos.Ui/Public/Images/favicon-32x32.png'
+            }
+            sizes = '32x32'
+            rel = 'icon'
+            type = 'image/png'
+        }
+    }
+    safariPinnedTab = Neos.Fusion:Tag {
+        tagName = 'link'
+        attributes {
+            href = Neos.Fusion:ResourceUri {
+                path = 'resource://Neos.Neos.Ui/Public/Images/safari-pinned-tab.svg'
+            }
+            rel = 'mask-icon'
+            color = '#00adee'
+        }
+    }
+}

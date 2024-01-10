@@ -1,14 +1,14 @@
 include: resource://Neos.Fusion/Private/Fusion/Root.fusion
 include: resource://Neos.Neos/Private/Fusion/Prototypes/NodeUri.fusion
 include: resource://Neos.Neos.Ui/Private/Fusion/Prototypes/RenderConfiguration.fusion
-include: resource://Neos.Neos.Ui/Private/Fusion/Backend/Component/*
+include: resource://Neos.Neos.Ui/Private/Fusion/Backend/Component/**/*.fusion
 
 backend = Neos.Fusion:Template {
     templatePath = 'resource://Neos.Neos.Ui/Private/Templates/Backend/Index.html'
 
     headScripts = ${headScripts}
     headStylesheets = ${headStylesheets}
-    splashScreenPartial = ${splashScreenPartial}
+    splashScreen = Neos.Neos.Ui:Component.SplashScreen
 
     headIcons = Neos.Fusion:Join {
         appleTouchIcon = Neos.Fusion:Tag {

@@ -7,7 +7,7 @@ backend = Neos.Fusion:Template {
     templatePath = 'resource://Neos.Neos.Ui/Private/Templates/Backend/Index.html'
 
     scripts = ${scripts}
-    headStylesheets = ${headStylesheets}
+    headStylesheets = Neos.Neos.Ui:Component.HeadStylesheets
     splashScreen = Neos.Neos.Ui:Component.SplashScreen
 
     headIcons = Neos.Fusion:Join {

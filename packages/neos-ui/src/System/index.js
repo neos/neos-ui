@@ -12,17 +12,51 @@ function fatalInitializationError(reason) {
     throw new Error(document.body.innerText);
 }
 
-function getInlinedData(dataName) {
-    const result = window['_NEOS_UI_' + dataName];
-    delete window['_NEOS_UI_' + dataName];
+let initialData = null;
+function parseInitialData() {
+    if (initialData) {
+        return initialData;
+    }
 
-    if (!result) {
-        fatalInitializationError(`
-            <p>No value was found under the variable <code>window._NEOS_UI_${dataName}</code>.</p>
+    const initialDataContainer = document.getElementById('initialData');
+    if (!initialDataContainer) {
+        return fatalInitializationError(`
+            <p>This page is missing a <script/>-container with the
+            id <code>#initialData</code>.</p>
         `);
     }
 
-    return result;
+    try {
+        const initialDataAsJson = initialDataContainer.innerText;
+        initialData = JSON.parse(initialDataAsJson);
+
+        if (typeof initialData === 'object' && initialData) {
+            return initialData;
+        }
+
+        return fatalInitializationError(`
+            <p>JSON-content of <code>#initialData</code> has an unexpected
+            type: <code>${typeof initialData}</code></p>
+        `);
+    } catch (err) {
+        return fatalInitializationError(`
+            <p>JSON.parse for content of <code>#initialData</code> failed:
+            ${err}</p>
+        `);
+    }
+}
+
+function getInlinedData(dataName) {
+    const initialData = parseInitialData();
+
+    if (dataName in initialData) {
+        return initialData[dataName];
+    }
+
+    return fatalInitializationError(`
+        <p>Initial data for <code>${dataName}</code> could not
+        be read from <code>#initialData</code> container.</p>
+    `);
 }
 
 export const appContainer = document.getElementById('appContainer');

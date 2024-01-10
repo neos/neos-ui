@@ -8,6 +8,8 @@
  * source code.
  */
 
+include: ../../Prototypes/RenderConfiguration.fusion
+
 /** @internal */
 prototype(Neos.Neos.Ui:Component.InitialData) < prototype(Neos.Fusion:DataStructure) {
     configuration = Neos.Fusion:DataStructure {

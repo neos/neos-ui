@@ -8,6 +8,8 @@
  * source code.
  */
 
+include: resource://Neos.Fusion/Private/Fusion/Root.fusion
+
 /** @internal */
 prototype(Neos.Neos.Ui:Component.HeadIcons) < prototype(Neos.Fusion:Join) {
     appleTouchIcon = Neos.Fusion:Tag {

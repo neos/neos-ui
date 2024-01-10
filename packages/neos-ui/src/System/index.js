@@ -1,16 +1,7 @@
 import {initializeJsAPI} from '@neos-project/neos-ui-backend-connector';
 import fetchWithErrorHandling from '@neos-project/neos-ui-backend-connector/src/FetchWithErrorHandling/index';
 
-function fatalInitializationError(reason) {
-    document.title = 'Neos UI could not be initialized.';
-    document.body.style.backgroundColor = 'var(--colors-Error)';
-    document.body.innerHTML = `
-        <h1>Neos UI could not be initialized.</h1>
-        ${reason}
-    `;
-
-    throw new Error(document.body.innerText);
-}
+import {terminateDueToFatalInitializationError} from './terminateDueToFatalInitializationError';
 
 let initialData = null;
 function parseInitialData() {
@@ -20,8 +11,8 @@ function parseInitialData() {
 
     const initialDataContainer = document.getElementById('initialData');
     if (!initialDataContainer) {
-        return fatalInitializationError(`
-            <p>This page is missing a <script/>-container with the
+        return terminateDueToFatalInitializationError(`
+            <p>This page is missing a <code>&lt;script/&gt;</code>-container with the
             id <code>#initialData</code>.</p>
         `);
     }
@@ -34,12 +25,12 @@ function parseInitialData() {
             return initialData;
         }
 
-        return fatalInitializationError(`
+        return terminateDueToFatalInitializationError(`
             <p>JSON-content of <code>#initialData</code> has an unexpected
             type: <code>${typeof initialData}</code></p>
         `);
     } catch (err) {
-        return fatalInitializationError(`
+        return terminateDueToFatalInitializationError(`
             <p>JSON.parse for content of <code>#initialData</code> failed:
             ${err}</p>
         `);
@@ -53,7 +44,7 @@ function getInlinedData(dataName) {
         return initialData[dataName];
     }
 
-    return fatalInitializationError(`
+    return terminateDueToFatalInitializationError(`
         <p>Initial data for <code>${dataName}</code> could not
         be read from <code>#initialData</code> container.</p>
     `);
@@ -61,14 +52,14 @@ function getInlinedData(dataName) {
 
 export const appContainer = document.getElementById('appContainer');
 if (!appContainer) {
-    fatalInitializationError(`
+    terminateDueToFatalInitializationError(`
         <p>This page is missing a container with the id <code>#appContainer</code>.</p>
     `);
 }
 
 export const {csrfToken} = appContainer.dataset;
 if (!csrfToken) {
-    fatalInitializationError(`
+    terminateDueToFatalInitializationError(`
         <p>The container with the id <code>#appContainer</code> is missing an attribute
         <code>data-csrf-token</code>.</p>
     `);
@@ -78,7 +69,7 @@ fetchWithErrorHandling.setCsrfToken(csrfToken);
 
 export const {env: systemEnv} = appContainer.dataset;
 if (!systemEnv) {
-    fatalInitializationError(`
+    terminateDueToFatalInitializationError(`
         <p>The container with the id <code>#appContainer</code> is missing an attribute
         <code>data-env</code> (eg. Production, Development, etc...).</p>
     `);

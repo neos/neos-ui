@@ -6,7 +6,7 @@ include: resource://Neos.Neos.Ui/Private/Fusion/Backend/Component/**/*.fusion
 backend = Neos.Fusion:Template {
     templatePath = 'resource://Neos.Neos.Ui/Private/Templates/Backend/Index.html'
 
-    scripts = ${scripts}
+    scripts = Neos.Neos.Ui:Component.Scripts
     headStylesheets = Neos.Neos.Ui:Component.HeadStylesheets
     headIcons = Neos.Neos.Ui:Component.HeadIcons
 

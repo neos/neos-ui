@@ -8,6 +8,8 @@
  * source code.
  */
 
+include: resource://Neos.Fusion/Private/Fusion/Root.fusion
+
 /** @internal */
 prototype(Neos.Neos.Ui:Component.HeadScripts) < prototype(Neos.Fusion:Value) {
     value = ${headScripts}

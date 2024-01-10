@@ -8,6 +8,10 @@
  * source code.
  */
 
+include: resource://Neos.Fusion/Private/Fusion/Root.fusion
+
+include: ./Component/**/*.fusion
+
 #
 # The Base component for Neos UI Applications
 #

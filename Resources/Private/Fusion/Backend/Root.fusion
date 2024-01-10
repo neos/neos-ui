@@ -3,18 +3,8 @@ include: resource://Neos.Neos/Private/Fusion/Prototypes/NodeUri.fusion
 include: resource://Neos.Neos.Ui/Private/Fusion/Prototypes/RenderConfiguration.fusion
 include: resource://Neos.Neos.Ui/Private/Fusion/Backend/Component/**/*.fusion
 
-backend = Neos.Fusion:Template {
-    templatePath = 'resource://Neos.Neos.Ui/Private/Templates/Backend/Index.html'
+include: ./Application.fusion
 
-    headScripts = Neos.Neos.Ui:Component.HeadScripts
-    headStylesheets = Neos.Neos.Ui:Component.HeadStylesheets
-    headIcons = Neos.Neos.Ui:Component.HeadIcons
-
-    splashScreen = Neos.Neos.Ui:Component.SplashScreen
-
-    initialData = Neos.Neos.Ui:Component.InitialData {
-        @process.json = ${Json.stringify(value)}
-    }
-
-    env = ${Configuration.setting('Neos.Flow.core.context')}
+backend = Neos.Neos.Ui:Application {
+    title = 'Neos CMS'
 }

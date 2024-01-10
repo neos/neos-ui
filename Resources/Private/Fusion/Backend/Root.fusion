@@ -55,223 +55,220 @@ backend = Neos.Fusion:Template {
         }
     }
 
-    configuration = Neos.Fusion:DataStructure {
-        nodeTree = ${Configuration.setting('Neos.Neos.userInterface.navigateComponent.nodeTree')}
-        structureTree = ${Configuration.setting('Neos.Neos.userInterface.navigateComponent.structureTree')}
-        allowedTargetWorkspaces = ${Neos.Ui.Workspace.getAllowedTargetWorkspaces(contentRepositoryId)}
-        endpoints = Neos.Fusion:DataStructure {
-            nodeTypeSchema = Neos.Fusion:UriBuilder {
-                package = 'Neos.Neos'
-                controller = 'Backend\\Schema'
-                action = 'nodeTypeSchema'
-                absolute = true
-                arguments = Neos.Fusion:DataStructure {
-                    # TODO: dirty hack to not have to re-implement neos:backend.configurationCacheVersion VH
-                    version = Neos.Fusion:Template {
-                        templatePath = 'resource://Neos.Neos.Ui/Private/Templates/Backend/ConfigurationVersion.html'
-                        @process.trim = ${String.trim(value)}
+    initialData = Neos.Fusion:DataStructure {
+        configuration = Neos.Fusion:DataStructure {
+            nodeTree = ${Configuration.setting('Neos.Neos.userInterface.navigateComponent.nodeTree')}
+            structureTree = ${Configuration.setting('Neos.Neos.userInterface.navigateComponent.structureTree')}
+            allowedTargetWorkspaces = ${Neos.Ui.Workspace.getAllowedTargetWorkspaces(contentRepositoryId)}
+            endpoints = Neos.Fusion:DataStructure {
+                nodeTypeSchema = Neos.Fusion:UriBuilder {
+                    package = 'Neos.Neos'
+                    controller = 'Backend\\Schema'
+                    action = 'nodeTypeSchema'
+                    absolute = true
+                    arguments = Neos.Fusion:DataStructure {
+                        # TODO: dirty hack to not have to re-implement neos:backend.configurationCacheVersion VH
+                        version = Neos.Fusion:Template {
+                            templatePath = 'resource://Neos.Neos.Ui/Private/Templates/Backend/ConfigurationVersion.html'
+                            @process.trim = ${String.trim(value)}
+                        }
+                    }
+                }
+                translations = Neos.Fusion:UriBuilder {
+                    package = 'Neos.Neos'
+                    controller = 'Backend\\Backend'
+                    action = 'xliffAsJson'
+                    absolute = true
+                    arguments = Neos.Fusion:DataStructure {
+                        locale = ${interfaceLanguage}
+
+                        # TODO: dirty hack to not have to re-implement neos:backend.configurationCacheVersion VH
+                        version = Neos.Fusion:Template {
+                            templatePath = 'resource://Neos.Neos.Ui/Private/Templates/Backend/ConfigurationVersion.html'
+                            @process.trim = ${String.trim(value)}
+                        }
                     }
                 }
             }
-            translations = Neos.Fusion:UriBuilder {
-                package = 'Neos.Neos'
-                controller = 'Backend\\Backend'
-                action = 'xliffAsJson'
-                absolute = true
-                arguments = Neos.Fusion:DataStructure {
-                    locale = ${interfaceLanguage}
-
-                    # TODO: dirty hack to not have to re-implement neos:backend.configurationCacheVersion VH
-                    version = Neos.Fusion:Template {
-                        templatePath = 'resource://Neos.Neos.Ui/Private/Templates/Backend/ConfigurationVersion.html'
-                        @process.trim = ${String.trim(value)}
-                    }
-                }
-            }
-        }
-        @process.json = ${Json.stringify(value)}
-    }
-
-    routes = Neos.Fusion:DataStructure {
-        prototype(Neos.Fusion:UriBuilder) {
-            absolute = true
         }
 
-        ui = Neos.Fusion:DataStructure {
-            service = Neos.Fusion:DataStructure {
-                prototype(Neos.Fusion:UriBuilder) {
-                    package = 'Neos.Neos.Ui'
-                    controller = 'BackendService'
-                }
-
-                change = Neos.Fusion:UriBuilder {
-                    action = 'change'
-                }
-                publish = Neos.Fusion:UriBuilder {
-                    action = 'publish'
-                }
-                discard = Neos.Fusion:UriBuilder {
-                    action = 'discard'
-                }
-                changeBaseWorkspace = Neos.Fusion:UriBuilder {
-                    action = 'changeBaseWorkspace'
-                }
-                rebaseWorkspace = Neos.Fusion:UriBuilder {
-                    action = 'rebaseWorkspace'
-                }
-                copyNodes = Neos.Fusion:UriBuilder {
-                    action = 'copyNodes'
-                }
-                cutNodes = Neos.Fusion:UriBuilder {
-                    action = 'cutNodes'
-                }
-                clearClipboard = Neos.Fusion:UriBuilder {
-                    action = 'clearClipboard'
-                }
-                flowQuery = Neos.Fusion:UriBuilder {
-                    action = 'flowQuery'
-                }
-                generateUriPathSegment = Neos.Fusion:UriBuilder {
-                    action = 'generateUriPathSegment'
-                }
-                getWorkspaceInfo = Neos.Fusion:UriBuilder {
-                    action = 'getWorkspaceInfo'
-                }
-                getAdditionalNodeMetadata = Neos.Fusion:UriBuilder {
-                    action = 'getAdditionalNodeMetadata'
-                }
-            }
-        }
-        core = Neos.Fusion:DataStructure {
+        routes = Neos.Fusion:DataStructure {
             prototype(Neos.Fusion:UriBuilder) {
-                package = 'Neos.Neos'
+                absolute = true
             }
 
-            content = Neos.Fusion:DataStructure {
+            ui = Neos.Fusion:DataStructure {
+                service = Neos.Fusion:DataStructure {
+                    prototype(Neos.Fusion:UriBuilder) {
+                        package = 'Neos.Neos.Ui'
+                        controller = 'BackendService'
+                    }
+
+                    change = Neos.Fusion:UriBuilder {
+                        action = 'change'
+                    }
+                    publish = Neos.Fusion:UriBuilder {
+                        action = 'publish'
+                    }
+                    discard = Neos.Fusion:UriBuilder {
+                        action = 'discard'
+                    }
+                    changeBaseWorkspace = Neos.Fusion:UriBuilder {
+                        action = 'changeBaseWorkspace'
+                    }
+                    rebaseWorkspace = Neos.Fusion:UriBuilder {
+                        action = 'rebaseWorkspace'
+                    }
+                    copyNodes = Neos.Fusion:UriBuilder {
+                        action = 'copyNodes'
+                    }
+                    cutNodes = Neos.Fusion:UriBuilder {
+                        action = 'cutNodes'
+                    }
+                    clearClipboard = Neos.Fusion:UriBuilder {
+                        action = 'clearClipboard'
+                    }
+                    flowQuery = Neos.Fusion:UriBuilder {
+                        action = 'flowQuery'
+                    }
+                    generateUriPathSegment = Neos.Fusion:UriBuilder {
+                        action = 'generateUriPathSegment'
+                    }
+                    getWorkspaceInfo = Neos.Fusion:UriBuilder {
+                        action = 'getWorkspaceInfo'
+                    }
+                    getAdditionalNodeMetadata = Neos.Fusion:UriBuilder {
+                        action = 'getAdditionalNodeMetadata'
+                    }
+                }
+            }
+            core = Neos.Fusion:DataStructure {
                 prototype(Neos.Fusion:UriBuilder) {
-                    controller = 'Backend\\Content'
+                    package = 'Neos.Neos'
                 }
 
-                imageWithMetadata = Neos.Fusion:UriBuilder {
-                    action = 'imageWithMetaData'
-                }
-                createImageVariant = Neos.Fusion:UriBuilder {
-                    action = 'createImageVariant'
-                }
-                loadMasterPlugins = Neos.Fusion:UriBuilder {
-                    action = 'masterPlugins'
-                }
-                loadPluginViews = Neos.Fusion:UriBuilder {
-                    action = 'pluginViews'
-                }
-                uploadAsset = Neos.Fusion:UriBuilder {
-                    action = 'uploadAsset'
-                }
-            }
-            service = Neos.Fusion:DataStructure {
-                assetProxies = Neos.Fusion:UriBuilder {
-                    controller = 'Service\\AssetProxies'
-                    action = 'index'
-                }
-                assets = Neos.Fusion:UriBuilder {
-                    controller = 'Service\\Assets'
-                    action = 'index'
-                }
-                nodes = Neos.Fusion:UriBuilder {
-                    controller = 'Service\\Nodes'
-                    action = 'index'
-                }
-                userPreferences = Neos.Fusion:UriBuilder {
-                    subpackage = 'Service'
-                    controller = 'UserPreference'
-                    action = 'index'
-                    format = 'json'
-                }
-                dataSource = Neos.Fusion:UriBuilder {
-                    subpackage = 'Service'
-                    controller = 'DataSource'
-                    action = 'index'
-                    format = 'json'
-                }
-                contentDimensions = Neos.Fusion:UriBuilder {
-                    package = 'Neos.Neos'
-                    controller = 'Service\\ContentDimensions'
-                    action = 'index'
-                }
-                impersonateStatus = Neos.Fusion:UriBuilder {
-                    package = 'Neos.Neos'
-                    controller = 'Backend\\Impersonate'
-                    action = 'status'
-                    format = 'json'
-                }
-                impersonateRestore = Neos.Fusion:UriBuilder {
-                    package = 'Neos.Neos'
-                    controller = 'Backend\\Impersonate'
-                    action = 'restoreWithResponse'
-                    format = 'json'
-                }
-            }
-            modules = Neos.Fusion:DataStructure {
-                prototype(Neos.Fusion:UriBuilder) {
-                    controller = 'Backend\\Module'
-                }
-                workspaces = Neos.Fusion:UriBuilder {
-                    action = 'index'
-                    arguments {
-                        module = 'management/workspaces'
+                content = Neos.Fusion:DataStructure {
+                    prototype(Neos.Fusion:UriBuilder) {
+                        controller = 'Backend\\Content'
+                    }
+
+                    imageWithMetadata = Neos.Fusion:UriBuilder {
+                        action = 'imageWithMetaData'
+                    }
+                    createImageVariant = Neos.Fusion:UriBuilder {
+                        action = 'createImageVariant'
+                    }
+                    loadMasterPlugins = Neos.Fusion:UriBuilder {
+                        action = 'masterPlugins'
+                    }
+                    loadPluginViews = Neos.Fusion:UriBuilder {
+                        action = 'pluginViews'
+                    }
+                    uploadAsset = Neos.Fusion:UriBuilder {
+                        action = 'uploadAsset'
                     }
                 }
-                userSettings = Neos.Fusion:UriBuilder {
-                    controller = 'Backend\\Module'
-                    action = 'index'
-                    arguments {
-                        module = 'user/usersettings'
+                service = Neos.Fusion:DataStructure {
+                    assetProxies = Neos.Fusion:UriBuilder {
+                        controller = 'Service\\AssetProxies'
+                        action = 'index'
+                    }
+                    assets = Neos.Fusion:UriBuilder {
+                        controller = 'Service\\Assets'
+                        action = 'index'
+                    }
+                    nodes = Neos.Fusion:UriBuilder {
+                        controller = 'Service\\Nodes'
+                        action = 'index'
+                    }
+                    userPreferences = Neos.Fusion:UriBuilder {
+                        subpackage = 'Service'
+                        controller = 'UserPreference'
+                        action = 'index'
+                        format = 'json'
+                    }
+                    dataSource = Neos.Fusion:UriBuilder {
+                        subpackage = 'Service'
+                        controller = 'DataSource'
+                        action = 'index'
+                        format = 'json'
+                    }
+                    contentDimensions = Neos.Fusion:UriBuilder {
+                        package = 'Neos.Neos'
+                        controller = 'Service\\ContentDimensions'
+                        action = 'index'
+                    }
+                    impersonateStatus = Neos.Fusion:UriBuilder {
+                        package = 'Neos.Neos'
+                        controller = 'Backend\\Impersonate'
+                        action = 'status'
+                        format = 'json'
+                    }
+                    impersonateRestore = Neos.Fusion:UriBuilder {
+                        package = 'Neos.Neos'
+                        controller = 'Backend\\Impersonate'
+                        action = 'restoreWithResponse'
+                        format = 'json'
                     }
                 }
-                mediaBrowser = Neos.Fusion:UriBuilder {
-                    controller = 'Backend\\Module'
-                    action = 'index'
-                    arguments {
-                        module = 'media/browser'
+                modules = Neos.Fusion:DataStructure {
+                    prototype(Neos.Fusion:UriBuilder) {
+                        controller = 'Backend\\Module'
+                    }
+                    workspaces = Neos.Fusion:UriBuilder {
+                        action = 'index'
+                        arguments {
+                            module = 'management/workspaces'
+                        }
+                    }
+                    userSettings = Neos.Fusion:UriBuilder {
+                        controller = 'Backend\\Module'
+                        action = 'index'
+                        arguments {
+                            module = 'user/usersettings'
+                        }
+                    }
+                    mediaBrowser = Neos.Fusion:UriBuilder {
+                        controller = 'Backend\\Module'
+                        action = 'index'
+                        arguments {
+                            module = 'media/browser'
+                        }
                     }
                 }
-            }
-            login = Neos.Fusion:UriBuilder {
-                controller = 'Login'
-                action = 'index'
-                format = 'json'
-            }
-            logout = Neos.Fusion:UriBuilder {
-                controller = 'Login'
-                action = 'logout'
+                login = Neos.Fusion:UriBuilder {
+                    controller = 'Login'
+                    action = 'index'
+                    format = 'json'
+                }
+                logout = Neos.Fusion:UriBuilder {
+                    controller = 'Login'
+                    action = 'logout'
+                }
             }
         }
-        @process.json = ${Json.stringify(value)}
-    }
 
-    frontendConfiguration = Neos.Neos.Ui:RenderConfiguration {
-        path = 'frontendConfiguration'
-        @process.json = ${Json.stringify(value)}
-    }
+        frontendConfiguration = Neos.Neos.Ui:RenderConfiguration {
+            path = 'frontendConfiguration'
+        }
 
-    nodeTypes = Neos.Fusion:DataStructure {
-        roles = ${Configuration.setting('Neos.Neos.Ui.nodeTypeRoles')}
-        groups = ${Neos.Ui.PositionalArraySorter.sort(Configuration.setting('Neos.Neos.nodeTypes.groups'))}
+        nodeTypes = Neos.Fusion:DataStructure {
+            roles = ${Configuration.setting('Neos.Neos.Ui.nodeTypeRoles')}
+            groups = ${Neos.Ui.PositionalArraySorter.sort(Configuration.setting('Neos.Neos.nodeTypes.groups'))}
+        }
 
-        @process.json = ${Json.stringify(value)}
-    }
+        menu = Neos.Neos.Ui:Component.ModuleMenu
 
-    menu = Neos.Neos.Ui:Component.ModuleMenu
-
-    initialState = Neos.Neos.Ui:RenderConfiguration {
-        path = 'initialState'
-        context {
-            contentRepositoryId = ${contentRepositoryId}
-            documentNode = ${documentNode}
-            site = ${site}
-            user = ${user}
-            clipboardNodes = ${clipboardNodes}
-            clipboardMode = ${clipboardMode}
+        initialState = Neos.Neos.Ui:RenderConfiguration {
+            path = 'initialState'
+            context {
+                contentRepositoryId = ${contentRepositoryId}
+                documentNode = ${documentNode}
+                site = ${site}
+                user = ${user}
+                clipboardNodes = ${clipboardNodes}
+                clipboardMode = ${clipboardMode}
+            }
         }
 
         @process.json = ${Json.stringify(value)}

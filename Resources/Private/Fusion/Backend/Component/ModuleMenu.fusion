@@ -60,5 +60,4 @@ prototype(Neos.Neos.Ui:Component.ModuleMenu) < prototype(Neos.Fusion:Map) {
     }
 
     @process.filterHiddenModules = ${Array.values(Array.filter(value, (x, index) => x != null))}
-    @process.json = ${Json.stringify(value)}
 }

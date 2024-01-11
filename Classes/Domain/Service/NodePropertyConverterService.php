@@ -143,7 +143,7 @@ class NodePropertyConverterService
             );
 
             return $this->toNodeIdentifierStrings($references);
-            // Here, the normal property access logic starts.
+        // Here, the normal property access logic starts.
         } elseif ($propertyName[0] === '_' && $propertyName !== '_hiddenInIndex') {
             $propertyValue = ObjectAccess::getProperty($node, ltrim($propertyName, '_'));
         } else {

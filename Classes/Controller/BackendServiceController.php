@@ -228,10 +228,16 @@ class BackendServiceController extends ActionController
                         NodeIdsToPublishOrDiscard::create(...$nodeIdentifiersToPublish)
                     )
                 )->block();
-            } catch (\DomainException $e) {
-                throw new \DomainException(
-                    'Node could not be published, probably because of a missing or unpublished parentNode. Please check that the parentNode has been published and exists in the current dimension.',
-                    1682762156,
+            } catch (NodeAggregateCurrentlyDoesNotExist $e) {
+                throw new \RuntimeException(
+                    'Node could not be published, probably because of a missing parentNode. Please check that the parentNode has been published.',
+                    1705053430,
+                    $e
+                );
+            } catch (NodeAggregateDoesCurrentlyNotCoverDimensionSpacePoint $e) {
+                throw new \RuntimeException(
+                    'Node could not be published, probably because the parentNode does not exist in the current dimension. Please check that the parentNode has been published.',
+                    1705053432,
                     $e
                 );
             }

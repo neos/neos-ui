@@ -136,7 +136,6 @@
 
     [data-is-drag-happening] & {
         visibility: visible;
-        height: 5px;
     }
 }
 .dropTarget--before {

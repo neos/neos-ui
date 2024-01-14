@@ -1,6 +1,5 @@
 'Neos.Neos:Document':
   ui:
-    group: 'general'
     creationDialog:
       elements:
         title:
@@ -9,7 +8,7 @@
             label: i18n
             editor: 'Neos.Neos/Inspector/Editors/TextFieldEditor'
           validation:
-            'Neos.Neos/Validation/NotEmptyValidator': []
+            'Neos.Neos/Validation/NotEmptyValidator': {}
   properties:
     uriPathSegment:
       ui:

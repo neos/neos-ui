@@ -67,16 +67,6 @@ final class RoutesProvider implements RoutesProviderInterface
                     controllerName: 'Backend\\Content',
                     actionName: 'createImageVariant'
                 ),
-            'loadMasterPlugins' =>
-                $helper->buildCoreRoute(
-                    controllerName: 'Backend\\Content',
-                    actionName: 'masterPlugins'
-                ),
-            'loadPluginViews' =>
-                $helper->buildCoreRoute(
-                    controllerName: 'Backend\\Content',
-                    actionName: 'pluginViews'
-                ),
             'uploadAsset' =>
                 $helper->buildCoreRoute(
                     controllerName: 'Backend\\Content',

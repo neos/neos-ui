@@ -77,19 +77,6 @@ manifest('inspectorEditors', {}, globalRegistry => {
         component: Editors.AssetEditor
     });
 
-    editorsRegistry.set('Neos.Neos/Inspector/Editors/MasterPluginEditor', {
-        component: Editors.MasterPlugin
-    });
-
-    editorsRegistry.set('Neos.Neos/Inspector/Editors/PluginViewsEditor', {
-        component: Editors.PluginViews,
-        hasOwnLabel: true
-    });
-
-    editorsRegistry.set('Neos.Neos/Inspector/Editors/PluginViewEditor', {
-        component: Editors.PluginView
-    });
-
     editorsRegistry.set('Neos.Neos/Inspector/Editors/UriPathSegmentEditor', {
         component: Editors.UriPathSegment
     });

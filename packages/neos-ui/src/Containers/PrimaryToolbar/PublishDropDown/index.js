@@ -4,9 +4,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 
-import Badge from '@neos-project/react-ui-components/src/Badge/';
-import Icon from '@neos-project/react-ui-components/src/Icon/';
-import DropDown from '@neos-project/react-ui-components/src/DropDown/';
+import {Badge, Icon, DropDown} from '@neos-project/react-ui-components';
 
 import I18n from '@neos-project/neos-ui-i18n';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';

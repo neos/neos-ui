@@ -2,9 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import ReactCrop from 'react-image-crop';
 
-import Icon from '@neos-project/react-ui-components/src/Icon/';
-import IconButton from '@neos-project/react-ui-components/src/IconButton/';
-import TextInput from '@neos-project/react-ui-components/src/TextInput/';
+import {Icon, IconButton, TextInput} from '@neos-project/react-ui-components';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 import AspectRatioDropDown from './AspectRatioDropDown/index';

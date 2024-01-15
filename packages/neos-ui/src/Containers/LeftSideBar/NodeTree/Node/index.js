@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
 import flowright from 'lodash.flowright';
-import Tree from '@neos-project/react-ui-components/src/Tree/';
-import Icon from '@neos-project/react-ui-components/src/Icon/';
+import {Tree, Icon} from '@neos-project/react-ui-components';
 import {stripTags, decodeHtml} from '@neos-project/utils-helpers';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';

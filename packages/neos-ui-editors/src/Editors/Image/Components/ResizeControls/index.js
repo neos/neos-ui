@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import TextInput from '@neos-project/react-ui-components/src/TextInput/';
-import CheckBox from '@neos-project/react-ui-components/src/CheckBox/';
+import {TextInput, CheckBox} from '@neos-project/react-ui-components';
 import I18n from '@neos-project/neos-ui-i18n';
 
 import style from './style.module.css';

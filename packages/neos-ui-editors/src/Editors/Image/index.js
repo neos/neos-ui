@@ -57,7 +57,7 @@ export default class ImageEditor extends Component {
         accept: PropTypes.string,
 
         siteNodePath: PropTypes.string.isRequired,
-        focusedNodePath: PropTypes.string.isRequired,
+        focusedNodePath: PropTypes.string.isRequired
     };
 
     static defaultProps = {

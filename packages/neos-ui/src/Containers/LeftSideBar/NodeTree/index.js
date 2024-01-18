@@ -39,9 +39,10 @@ export default class NodeTree extends PureComponent {
         currentlyDraggedNodes: []
     };
 
-    handleToggle = (contextPath, collapseChildren, childrenContextPaths, childrenCollapsedByDefault) => {
+    handleToggle = contextPath => {
         const {toggle} = this.props;
-        toggle(contextPath, collapseChildren, childrenContextPaths, childrenCollapsedByDefault);
+
+        toggle(contextPath);
     }
 
     handleFocus = (contextPath, metaKeyPressed, altKeyPressed, shiftKeyPressed) => {

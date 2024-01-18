@@ -33,7 +33,7 @@ export enum actionTypes {
     SET_AS_LOADED = '@neos/neos-ui/UI/ContentTree/SET_AS_LOADED',
 }
 
-const toggle = (contextPath: NodeContextPath, collapseChildren: boolean, childrenContextPaths: NodeContextPath[], childrenCollapsedByDefault: boolean) => createAction(actionTypes.TOGGLE, {contextPath, collapseChildren, childrenContextPaths, childrenCollapsedByDefault});
+const toggle = (contextPath: NodeContextPath) => createAction(actionTypes.TOGGLE, contextPath);
 const startLoading = () => createAction(actionTypes.START_LOADING);
 const stopLoading = () => createAction(actionTypes.STOP_LOADING);
 const reloadTree = () => createAction(actionTypes.RELOAD_TREE);
@@ -70,16 +70,8 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
             break;
         }
         case actionTypes.TOGGLE: {
-            const {contextPath, collapseChildren, childrenContextPaths, childrenCollapsedByDefault} = action.payload;
-            if (collapseChildren) {
-                childrenContextPaths.forEach(child => {
-                    if (!childrenCollapsedByDefault && !draft.toggled.includes(child)) {
-                        draft.toggled.push(child);
-                    } else if (childrenCollapsedByDefault && draft.toggled.includes(child)) {
-                        draft.toggled = draft.toggled.filter(i => i !== child);
-                    }
-                });
-            } else if (draft.toggled.includes(contextPath)) {
+            const contextPath = action.payload;
+            if (draft.toggled.includes(contextPath)) {
                 draft.toggled = draft.toggled.filter(i => i !== contextPath);
             } else {
                 draft.toggled.push(contextPath);

@@ -44,7 +44,7 @@ export enum actionTypes {
 }
 
 const focus = (contextPath: NodeContextPath, _: undefined, selectionMode: SelectionModeTypes = SelectionModeTypes.SINGLE_SELECT) => createAction(actionTypes.FOCUS, {contextPath, selectionMode});
-const toggle = (contextPath: NodeContextPath) => createAction(actionTypes.TOGGLE, contextPath);
+const toggle = (contextPath: NodeContextPath) => createAction(actionTypes.TOGGLE, {contextPath});
 const invalidate = (contextPath: NodeContextPath) => createAction(actionTypes.INVALIDATE, {contextPath});
 const requestChildren = (contextPath: NodeContextPath, {unCollapse = true, activate = false} = {}) =>  createAction(actionTypes.REQUEST_CHILDREN, {contextPath, opts: {unCollapse, activate}});
 const setAsLoading = (contextPath: NodeContextPath) => createAction(actionTypes.SET_AS_LOADING, {contextPath});
@@ -96,7 +96,7 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
             break;
         }
         case actionTypes.TOGGLE: {
-            const contextPath = action.payload;
+            const contextPath = action.payload.contextPath;
             if (draft.toggled.includes(contextPath)) {
                 draft.toggled = draft.toggled.filter(i => i !== contextPath);
             } else {

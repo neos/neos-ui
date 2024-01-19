@@ -3,6 +3,10 @@
     margin: 0;
     position: relative;
     line-height: 20px;
+
+    &:hover {
+        background: var(--colors-PrimaryBlueHover)25;
+    }
 }
 .header__chevron {
     composes: reset from './../reset.css';
@@ -18,8 +22,8 @@
 
     cursor: pointer;
 
-    &:hover {
-        color: var(--colors-PrimaryBlue);
+    &:hover > svg {
+        color: var(--colors-PrimaryBlueHover);
     }
 }
 .header__chevron--isCollapsed > svg {
@@ -43,6 +47,11 @@
     display: inline-block;
     position: absolute;
     text-align: center;
+
+    .header:hover & > svg,
+    .header__data--isActive & > svg {
+        color: var(--colors-PrimaryBlueHover);
+    }
 }
 
 .header__data {
@@ -74,6 +83,9 @@
 
 .header__data--isFocused {
     background: var(--colors-ContrastNeutral);
+    &:hover {
+        background: var(--colors-PrimaryBlue)10;
+    }
 
     &.header__data--isHiddenInIndex,
     &.header__data--isHidden {
@@ -100,8 +112,13 @@
     composes: reset from './../reset.css';
     margin-left: 2em;
 
+    .header:hover &,
     .header__data--isActive & {
         color: var(--colors-PrimaryBlue);
+    }
+
+    &:hover {
+        color: var(--colors-PrimaryBlueHover);
     }
 }
 

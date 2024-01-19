@@ -184,6 +184,8 @@ class Property extends AbstractChange
                 if (!\is_array($validatorConfiguration)) {
                     $validatorConfiguration = [];
                 }
+                // Fixes "Unsupported validation option(s) found: validationErrorMessage" by omitting this option https://github.com/neos/neos-ui/issues/3691
+                unset($validatorConfiguration['validationErrorMessage']);
                 if ($this->nodePropertyValidationService->validate($this->value, $validatorName, $validatorConfiguration) === false) {
                     return false;
                 }

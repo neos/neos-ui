@@ -61,8 +61,6 @@ async function main() {
     initializeReduxState();
     initializeFetchWithErrorHandling();
 
-    store.dispatch(actions.System.boot());
-
     await Promise.all([
         loadNodeTypesSchema(),
         loadTranslations(),

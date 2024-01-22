@@ -12,18 +12,13 @@ namespace Neos\Neos\Ui\Controller;
  * source code.
  */
 
-use Neos\ContentRepository\Core\NodeType\NodeTypeName;
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ActionController;
-use Neos\Flow\Mvc\View\ViewInterface;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
-use Neos\Flow\ResourceManagement\ResourceManager;
 use Neos\Flow\Security\Context;
 use Neos\Flow\Session\SessionInterface;
-use Neos\Fusion\View\FusionView;
-use Neos\Neos\Controller\Backend\MenuHelper;
 use Neos\Neos\Domain\Repository\DomainRepository;
 use Neos\Neos\Domain\Repository\SiteRepository;
 use Neos\Neos\Domain\Service\NodeTypeNameFactory;
@@ -32,13 +27,18 @@ use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;
 use Neos\Neos\Service\BackendRedirectionService;
 use Neos\Neos\Service\UserService;
-use Neos\Neos\Ui\Domain\Service\StyleAndJavascriptInclusionService;
-use Neos\Neos\Ui\Service\NodeClipboard;
+use Neos\Neos\Ui\Domain\ConfigurationProviderInterface;
+use Neos\Neos\Ui\Domain\FrontendConfigurationProviderInterface;
+use Neos\Neos\Ui\Domain\InitialStateProviderInterface;
+use Neos\Neos\Ui\Domain\MenuProviderInterface;
+use Neos\Neos\Ui\Domain\NodeTypeGroupsAndRolesProviderInterface;
+use Neos\Neos\Ui\Domain\RoutesProviderInterface;
+use Neos\Neos\Ui\Presentation\ApplicationView;
 
 class BackendController extends ActionController
 {
     /**
-     * @var FusionView
+     * @var ApplicationView
      */
     protected $view;
 
@@ -73,18 +73,6 @@ class BackendController extends ActionController
     protected $session;
 
     /**
-     * @Flow\Inject
-     * @var ResourceManager
-     */
-    protected $resourceManager;
-
-    /**
-     * @Flow\Inject
-     * @var MenuHelper
-     */
-    protected $menuHelper;
-
-    /**
      * @Flow\Inject(lazy=false)
      * @var BackendRedirectionService
      */
@@ -104,21 +92,39 @@ class BackendController extends ActionController
 
     /**
      * @Flow\Inject
-     * @var StyleAndJavascriptInclusionService
+     * @var ConfigurationProviderInterface
      */
-    protected $styleAndJavascriptInclusionService;
+    protected $configurationProvider;
 
     /**
      * @Flow\Inject
-     * @var NodeClipboard
+     * @var RoutesProviderInterface
      */
-    protected $clipboard;
+    protected $routesProvider;
 
     /**
-     * @Flow\InjectConfiguration(package="Neos.Neos.Ui", path="splashScreen.partial")
-     * @var string
+     * @Flow\Inject
+     * @var FrontendConfigurationProviderInterface
      */
-    protected $splashScreenPartial;
+    protected $frontendConfigurationProvider;
+
+    /**
+     * @Flow\Inject
+     * @var NodeTypeGroupsAndRolesProviderInterface
+     */
+    protected $nodeTypeGroupsAndRolesProvider;
+
+    /**
+     * @Flow\Inject
+     * @var MenuProviderInterface
+     */
+    protected $menuProvider;
+
+    /**
+     * @Flow\Inject
+     * @var InitialStateProviderInterface
+     */
+    protected $initialStateProvider;
 
     /**
      * Displays the backend interface
@@ -181,22 +187,35 @@ class BackendController extends ActionController
             $node = $subgraph->findNodeById($nodeAddress->nodeAggregateId);
         }
 
-        $this->view->assign('user', $user);
-        $this->view->assign('documentNode', $node);
-        $this->view->assign('site', $siteNode);
-        $this->view->assign('clipboardNodes', $this->clipboard->getSerializedNodeAddresses());
-        $this->view->assign('clipboardMode', $this->clipboard->getMode());
-        $this->view->assign('headScripts', $this->styleAndJavascriptInclusionService->getHeadScripts());
-        $this->view->assign('headStylesheets', $this->styleAndJavascriptInclusionService->getHeadStylesheets());
-        $this->view->assign('sitesForMenu', $this->menuHelper->buildSiteList($this->getControllerContext()));
-        $this->view->assign('modulesForMenu', $this->menuHelper->buildModuleList($this->getControllerContext()));
-        $this->view->assign('contentRepositoryId', $siteDetectionResult->contentRepositoryId);
-
         $this->view->assignMultiple([
-            'subgraph' => $subgraph
+            'configuration' =>
+                $this->configurationProvider->getConfiguration(
+                    contentRepository: $contentRepository,
+                    uriBuilder: $this->controllerContext->getUriBuilder(),
+                ),
+            'routes' =>
+                $this->routesProvider->getRoutes(
+                    uriBuilder: $this->controllerContext->getUriBuilder()
+                ),
+            'frontendConfiguration' =>
+                $this->frontendConfigurationProvider->getFrontendConfiguration(
+                    controllerContext: $this->controllerContext,
+                ),
+            'nodeTypes' =>
+                $this->nodeTypeGroupsAndRolesProvider->getNodeTypes(),
+            'menu' =>
+                $this->menuProvider->getMenu(
+                    controllerContext: $this->controllerContext,
+                ),
+            'initialState' =>
+                $this->initialStateProvider->getInitialState(
+                    controllerContext: $this->controllerContext,
+                    contentRepositoryId: $siteDetectionResult->contentRepositoryId,
+                    documentNode: $node,
+                    site: $siteNode,
+                    user: $user,
+                ),
         ]);
-
-        $this->view->assign('interfaceLanguage', $this->userService->getInterfaceLanguage());
     }
 
     /**

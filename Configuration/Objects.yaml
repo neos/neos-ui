@@ -1,0 +1,30 @@
+Neos\Neos\Ui\Domain\CacheConfigurationVersionProviderInterface:
+  className: Neos\Neos\Ui\Infrastructure\Cache\CacheConfigurationVersionProvider
+
+Neos\Neos\Ui\Domain\ConfigurationProviderInterface:
+  className: Neos\Neos\Ui\Infrastructure\Configuration\ConfigurationProvider
+
+Neos\Neos\Ui\Domain\FrontendConfigurationProviderInterface:
+  className: Neos\Neos\Ui\Infrastructure\Configuration\FrontendConfigurationProvider
+
+Neos\Neos\Ui\Domain\InitialStateProviderInterface:
+  className: Neos\Neos\Ui\Infrastructure\Configuration\InitialStateProvider
+
+Neos\Neos\Ui\Domain\MenuProviderInterface:
+  className: Neos\Neos\Ui\Infrastructure\Neos\MenuProvider
+
+Neos\Neos\Ui\Domain\NodeTypeGroupsAndRolesProviderInterface:
+  className: Neos\Neos\Ui\Infrastructure\ContentRepository\NodeTypeGroupsAndRolesProvider
+
+Neos\Neos\Ui\Domain\RoutesProviderInterface:
+  className: Neos\Neos\Ui\Infrastructure\MVC\RoutesProvider
+
+Neos\Neos\Ui\Infrastructure\Cache\CacheConfigurationVersionProvider:
+  properties:
+    configurationCache:
+      object:
+        factoryObjectName: Neos\Flow\Cache\CacheManager
+        factoryMethodName: getCache
+        arguments:
+          1:
+            value: Neos_Neos_Configuration_Version

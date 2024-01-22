@@ -1,7 +1,6 @@
 -
   requestFilter: 'isPackage("Neos.Neos.Ui") && isController("Backend")'
-  viewObjectName: 'Neos\Fusion\View\FusionView'
+  viewObjectName: 'Neos\Neos\Ui\Presentation\ApplicationView'
   options:
-    fusionPathPatterns:
-      - 'resource://Neos.Neos.Ui/Private/Fusion/Backend'
+    title: 'Neos CMS'
 

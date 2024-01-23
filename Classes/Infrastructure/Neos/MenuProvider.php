@@ -32,6 +32,10 @@ final class MenuProvider implements MenuProviderInterface
 
         $result = [];
         foreach ($modulesForMenu as $moduleName => $module) {
+            if ($module['hideInMenu'] === true) {
+                continue;
+            }
+
             $result[$moduleName]['label'] = $module['label'];
             $result[$moduleName]['icon'] = $module['icon'];
             $result[$moduleName]['uri'] = $module['uri'];

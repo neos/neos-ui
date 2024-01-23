@@ -187,7 +187,7 @@ class BackendController extends ActionController
             $node = $subgraph->findNodeById($nodeAddress->nodeAggregateId);
         }
 
-        $this->view->assignMultiple([
+        $this->view->assign('initialData', [
             'configuration' =>
                 $this->configurationProvider->getConfiguration(
                     contentRepository: $contentRepository,

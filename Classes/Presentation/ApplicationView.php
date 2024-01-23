@@ -111,7 +111,7 @@ final class ApplicationView extends AbstractView
 
         $result .= sprintf(
             '<script id="initialData" type="application/json">%s</script>',
-            json_encode($this->variables),
+            json_encode($this->variables['initialData']),
         );
 
         return $result;

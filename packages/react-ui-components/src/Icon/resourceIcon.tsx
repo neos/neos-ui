@@ -25,16 +25,30 @@ class ResourceIcon extends PureComponent<ResourceIconProps> {
     public render(): JSX.Element | null {
         const {padded, theme, label, icon, className, color, size} = this.props;
 
-        if (!icon?.startsWith('resource://')) {
-            return null;
-        }
+
 
         if (!this.context) {
             console.error('ResourceIconContext missing! Cannot resolve uri: ', icon);
             return null;
         }
 
-        const iconResourcePath = this.context.createFromResourcePath(icon);
+        const regex = /^resource:\/\/([^\\/]+)\/(.*)/;
+
+        const matches = icon?.match(regex);
+
+        if (!matches) {
+            return null;
+        }
+        const [_, packageName, rawPath] = matches;
+
+        let publicPath = rawPath;
+        if (!rawPath.startsWith('Public/')) {
+            publicPath = `Public/${rawPath}`;
+        }
+
+        const resourcePath = `resource://${packageName}/${publicPath}`;
+
+        const iconResourcePath = this.context.createFromResourcePath(resourcePath);
         const classNames = mergeClassNames(
             theme!.icon,
             className,

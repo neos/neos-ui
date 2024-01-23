@@ -31,6 +31,7 @@ use Neos\Flow\Mvc\View\JsonView;
 use Neos\Flow\Persistence\Exception\IllegalObjectTypeException;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Flow\Property\PropertyMapper;
+use Neos\Flow\ResourceManagement\ResourceManager;
 use Neos\Neos\Domain\Service\ContentContextFactory;
 use Neos\Neos\Domain\Service\ContentDimensionPresetSourceInterface;
 use Neos\Neos\Service\PublishingService;
@@ -156,6 +157,12 @@ class BackendServiceController extends ActionController
      * @var NodeUriPathSegmentGenerator
      */
     protected $nodeUriPathSegmentGenerator;
+
+    /**
+     * @Flow\Inject
+     * @var ResourceManager
+     */
+    protected $resourceManager;
 
     /**
      * Set the controller context on the feedback collection after the controller
@@ -569,5 +576,11 @@ class BackendServiceController extends ActionController
     {
         $slug = $this->nodeUriPathSegmentGenerator->generateUriPathSegment($contextNode, $text);
         $this->view->assign('value', $slug);
+    }
+
+    public function redirectToResourceUriAction(string $resourcePath): void
+    {
+        $target = $this->resourceManager->getPublicPackageResourceUriByPath($resourcePath);
+        $this->redirectToUri($target, 0, 301);
     }
 }

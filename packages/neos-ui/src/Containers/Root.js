@@ -26,7 +26,11 @@ class Root extends PureComponent {
 
         const containerRegistry = globalRegistry.get('containers');
         const App = containerRegistry.get('App');
-        const createFromResourcePath = (path) => '/_Resources/Static/Packages/' + path.substr(11);
+        const createFromResourcePath = (resourcePath) => {
+            const redirectToResourceUri = new URL(routes.ui.service.redirectToResourceUri);
+            redirectToResourceUri.searchParams.set('resourcePath', resourcePath);
+            return redirectToResourceUri.toString();
+        };
 
         return (
             <ErrorBoundary i18nRegistry={globalRegistry.get('i18n')}>

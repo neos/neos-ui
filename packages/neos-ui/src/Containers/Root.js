@@ -12,6 +12,7 @@ import {fab} from '@fortawesome/free-brands-svg-icons';
 import {far} from '@fortawesome/free-regular-svg-icons';
 import {fas} from '@fortawesome/free-solid-svg-icons';
 import '@fortawesome/fontawesome-svg-core/styles.css';
+import {ResourceIconContext} from "@neos-project/react-ui-components/src/Icon/resourceIcon";
 
 config.autoAddCss = false; // Dont insert the supporting CSS into the <head> of the HTML document
 config.familyPrefix = 'neos-fa';
@@ -25,6 +26,7 @@ class Root extends PureComponent {
 
         const containerRegistry = globalRegistry.get('containers');
         const App = containerRegistry.get('App');
+        const createFromResourcePath = (path) => '/_Resources/Static/Packages/' + path.substr(11);
 
         return (
             <ErrorBoundary i18nRegistry={globalRegistry.get('i18n')}>
@@ -36,7 +38,9 @@ class Root extends PureComponent {
                                 configuration={configuration}
                                 routes={routes}
                                 >
-                                <App globalRegistry={globalRegistry} menu={menu}/>
+                                <ResourceIconContext.Provider value={{createFromResourcePath}}>
+                                    <App globalRegistry={globalRegistry} menu={menu}/>
+                                </ResourceIconContext.Provider>
                             </Neos>
                         </DndProvider>
                     </Provider>

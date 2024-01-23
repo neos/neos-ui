@@ -3,6 +3,10 @@ import logo from '@neos-project/react-ui-components/src/Logo/logo.svg';
 import styles from '../Containers/ErrorBoundary/style.module.css';
 
 export function terminateDueToFatalInitializationError(reason) {
+    if (!document.body) {
+        throw new Error(reason);
+    }
+
     document.title = 'The Neos UI could not be initialized.';
     document.body.innerHTML = `
         <div class="${styles.container}">

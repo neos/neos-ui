@@ -4,7 +4,7 @@ export interface EventRoot {
 }
 
 export interface Dialog {
-    close: () => boolean;
+    close: (force?: boolean) => boolean;
 }
 
 export class DialogManager {
@@ -29,14 +29,14 @@ export class DialogManager {
 
     public readonly handleKeydown = (event: KeyboardEvent): void => {
         if (event.key === 'Escape') {
-            this.closeLatest();
+            this.closeLatest(true);
         }
     }
 
-    public closeLatest(): void {
+    public closeLatest(force: boolean = false): void {
         const dialog = this.dialogs.pop();
         if (dialog) {
-            if (dialog.close()) {
+            if (dialog.close(force)) {
                 this.removeHandleKeydownEventListenerIfNecessary();
             } else {
                 this.dialogs.push(dialog);

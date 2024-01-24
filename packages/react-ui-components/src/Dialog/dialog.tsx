@@ -94,8 +94,8 @@ class DialogWithOverlay extends PureComponent<DialogProps> {
     private ref?: HTMLDivElement;
 
     private dialog: Dialog = {
-        close: () => {
-            if (this.props.preventClosing) {
+        close: (force: boolean = false) => {
+            if (!force && this.props.preventClosing) {
                 this.startShaking();
                 return false;
             }
@@ -232,7 +232,7 @@ class DialogWithOverlay extends PureComponent<DialogProps> {
 
     private readonly handleOverlayClick = (ev: React.MouseEvent) => {
         if (ev.target === ev.currentTarget) {
-            this.dialog.close();
+            this.dialog.close(true);
         }
     }
 }

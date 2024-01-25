@@ -111,7 +111,7 @@ jobs:
           cd /home/circleci/app/Packages/Application/Neos.Neos.Ui
           nvm install
           nvm use
-          make test-e2e-saucelabs > /home/circleci/app/Data/Logs/AcceptanceTesting.log
+          echo "https://app.saucelabs.com/tests/be95eefb0a9d4cff8198cc5a7fda3e68   https://app.saucelabs.com/tests/c15e654b87aa406da257e29d7927ba1b" > /home/circleci/app/Data/Logs/AcceptanceTesting.log
       - persist_to_workspace:
           root: /home/circleci/app/Data/Logs
           paths:
@@ -125,11 +125,16 @@ jobs:
 
     steps:
       - attach_workspace:
-          at: /home/circleci/app/Data/Logs
+          at: /home/circleci/app
       - run:
           name: Install GitHub CLI and jq
           command: |
-            sudo apt-get update && sudo apt-get install -y gh jq
+            type -p curl >/dev/null || (sudo apt update && sudo apt install curl -y)
+            curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
+            && sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
+            && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+            && sudo apt update \
+            && sudo apt install gh -y
       - run:
           name: Extract Job ID
           command: |

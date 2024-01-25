@@ -139,12 +139,13 @@ jobs:
           name: Extract Job ID
           command: |
             # Extract job ID from the output file
-            JOB_IDS=$(cat /home/circleci/app/Data/Logs/AcceptanceTesting.log | grep -o 'https://app.saucelabs.com/tests/[a-zA-Z0-9]\+' | sed 's/.*\///')
+            JOB_IDS=$(cat /home/circleci/app/AcceptanceTesting.log | grep -o 'https://app.saucelabs.com/tests/[a-zA-Z0-9]\+' | sed 's/.*\///')
             echo "Job IDs: $JOB_IDS"
       - run:
           name: Run Script
           command: |
-            ./Build/comment-acceptance-tests.sh $JOB_IDS $CIRCLE_PULL_REQUEST
+            cd /home/circleci/app
+            ./Build/comment-acceptance-tests.sh "$JOB_IDS" "$(basename "$CIRCLE_PULL_REQUEST")"
 
   php-unittests:
     environment:

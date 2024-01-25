@@ -28,12 +28,12 @@ trait TranslationTrait
     /**
      * @param array<int|string,mixed> $arguments
      */
-    public function getLabel(string $id, array $arguments = []): string
+    public function getLabel(string $id, array $arguments = [], ?int $quantity=null): string
     {
         return $this->translator->translateById(
             $id,
             $arguments,
-            null,
+            $quantity,
             null,
             'Main',
             'Neos.Neos.Ui'

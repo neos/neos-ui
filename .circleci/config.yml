@@ -111,9 +111,27 @@ jobs:
           cd /home/circleci/app/Packages/Application/Neos.Neos.Ui
           nvm install
           nvm use
-          make test-e2e-saucelabs
-      - store_artifacts:
-          path: /home/circleci/app/Data/Logs
+          make test-e2e-saucelabs > /home/circleci/app/Data/Logs/AcceptanceTesting.log
+      - persist_to_workspace:
+          root: /home/circleci/app/Data/Logs
+          paths:
+            - AcceptanceTesting.log
+
+  extract_job_id:
+    environment:
+      FLOW_CONTEXT: Production
+    docker:
+      - image: cimg/php:7.4.12-node
+
+    steps:
+      - attach_workspace:
+          at: /home/circleci/app/Data/Logs
+      - run:
+          name: Extract Job ID
+          command: |
+            # Extract job ID from the output file
+            job_id=$(cat /home/circleci/app/Data/Logs/AcceptanceTesting.log | grep -o 'https://app.saucelabs.com/tests/[a-zA-Z0-9]\+' | sed 's/.*\///')
+            echo "Job ID: $job_id"
 
   php-unittests:
     environment:
@@ -153,6 +171,9 @@ workflows:
       - e2e:
           requires:
             - build_flow_app
+      - extract_job_id:
+          requires:
+            - e2e
       - php-unittests:
           requires:
             - build_flow_app

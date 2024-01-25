@@ -15,10 +15,10 @@ function generateCommentBody() {
 
     # Iterate over each JobID in the array
     for i in ${!jobIdArray[@]}; do
-      iterator=$(($i+1))
-      jobId="${jobIdArray[$i]}"
-      link="[Recording $iterator](https://app.saucelabs.com/rest/v1/jobs/$jobId/video.mp4)"
-      videoRecordingsLinks+="\n* $link"
+        iterator=$(($i+1))
+        jobId="${jobIdArray[$i]}"
+        link="[Recording $iterator](https://app.saucelabs.com/rest/v1/jobs/$jobId/video.mp4)"
+        videoRecordingsLinks+="\n* $link"
     done
 
     # Construct the comment with the latest acceptance test recordings
@@ -27,7 +27,7 @@ function generateCommentBody() {
 
 # Check if a comment with recordings already exists
 function getExistingComment() {
-  existingComment=$(gh pr view --repo neos/neos-ui $pullRequestNumber --json comments | jq -r ".comments[] | select( .body | contains(\"Linked recordings of the acceptance tests\"))")
+    existingComment=$(gh pr view --repo neos/neos-ui $pullRequestNumber --json comments | jq -r ".comments[] | select( .body | contains(\"Linked recordings of the acceptance tests\"))")
 }
 
 function createComment() {

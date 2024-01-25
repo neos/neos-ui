@@ -233,13 +233,13 @@ class BackendServiceController extends ActionController
                 )->block();
             } catch (NodeAggregateCurrentlyDoesNotExist $e) {
                 throw new \RuntimeException(
-                    'Node could not be published, probably because of a missing parentNode. Please check that the parentNode has been published.',
+                    $this->getLabel('NodeNotPublishedMissingParentNode'),
                     1705053430,
                     $e
                 );
             } catch (NodeAggregateDoesCurrentlyNotCoverDimensionSpacePoint $e) {
                 throw new \RuntimeException(
-                    'Node could not be published, probably because the parentNode does not exist in the current dimension. Please check that the parentNode has been published.',
+                    $this->getLabel('NodeNotPublishedParentNodeNotInCurrentDimension'),
                     1705053432,
                     $e
                 );

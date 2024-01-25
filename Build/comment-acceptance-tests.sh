@@ -22,12 +22,20 @@ function generateCommentBody() {
     done
 
     # Construct the comment with the latest acceptance test recordings
-    commentBody="🎥 **End-to-End Test Recordings**\n\n$videoRecordingsLinks\n\nThese videos demonstrate the end-to-end tests for the changes in this pull request."
+    # Construct the comment with the latest acceptance test recordings
+        if [ -n "$videoRecordingsLinks" ]; then
+            commentBody="🎥 **End-to-End Test Recordings**\n\n$videoRecordingsLinks\n\nThese videos demonstrate the end-to-end tests for the changes in this pull request."
+        else
+            # empty comment body to prevent a comment without recordings
+            commentBody=""
+        fi
 }
 
 # Check if a comment with recordings already exists
 function getExistingComment() {
-    existingComment=$(gh pr view --repo neos/neos-ui $pullRequestNumber --json comments | jq -r ".comments[] | select( .body | contains(\"Linked recordings of the acceptance tests\"))")
+    echo "Checking if a comment with recordings already exists..."
+    echo "Pull Request Number: $pullRequestNumber"
+    existingComment=$(gh pr view --repo neos/neos-ui $pullRequestNumber --json comments | jq -r ".comments[] | select( .body | contains(\"End-to-End Test Recordings\"))")
 }
 
 function createComment() {
@@ -37,10 +45,13 @@ function createComment() {
 
 # If a comment with recordings exists, update the existing comment
 function updateComment() {
-    # Todo: The gh cli does not support editing comments yet, so we have to use the GitHub API directly
+    # Note: The gh cli does not support editing comments yet, so we have to use the GitHub API directly
     echo "Updating existing comment..."
-    comment_uri=$(echo "$existing_comment" | jq -r ".url")
-    gh pr comment $comment_uri --body "$(printf "$commentBody")"
+    commentUri=$(echo "$existingComment" | jq -r ".url")
+    commentId=$(echo "$commentUri" | awk -F'#issuecomment-' '{print $2}')
+    curl -s -H "Authorization: token $GH_TOKEN" \
+            -X PATCH -d "{\"body\":\"$(printf "$commentBody")\"}" \
+            "https://api.github.com/repos/neos/neos-ui/issues/comments/$commentId"
 }
 
 jobIds=$1
@@ -48,9 +59,10 @@ pullRequestNumber=$2
 generateCommentBody
 getExistingComment
 
+echo "Existing comment: $existingComment"
 if [ -n "$existingComment" ]; then
-    # @todo: use updateComment once the gh cli supports editing comments or we use the Github API directly
-    createComment
+    echo "Updating existing comment..."
+    updateComment
 else
     createComment
 fi

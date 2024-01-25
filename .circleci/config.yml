@@ -117,7 +117,7 @@ jobs:
           paths:
             - AcceptanceTesting.log
 
-  extract_job_id:
+  post-acceptance-tests-recordings:
     environment:
       FLOW_CONTEXT: Production
     docker:
@@ -180,7 +180,7 @@ workflows:
       - e2e:
           requires:
             - build_flow_app
-      - extract_job_id:
+      - post-acceptance-tests-recordings:
           requires:
             - e2e
       - php-unittests:

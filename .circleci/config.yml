@@ -111,7 +111,7 @@ jobs:
           cd /home/circleci/app/Packages/Application/Neos.Neos.Ui
           nvm install
           nvm use
-          echo "https://app.saucelabs.com/tests/be95eefb0a9d4cff8198cc5a7fda3e68   https://app.saucelabs.com/tests/c15e654b87aa406da257e29d7927ba1b" > /home/circleci/app/Data/Logs/AcceptanceTesting.log
+          make test-e2e-saucelabs > /home/circleci/app/Data/Logs/AcceptanceTesting.log
       - persist_to_workspace:
           root: /home/circleci/app/Data/Logs
           paths:

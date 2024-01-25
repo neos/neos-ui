@@ -12,17 +12,14 @@ fi
 function generateCommentBody() {
     # Split the JobID string into an array
     IFS=$'\n' read -r -d '' -a jobIdArray <<< "$jobIds"
-    echo "JobID: $jobIds"
-    echo "JobID Array: ${jobIdArray[@]}"
+    echo "Generate comment message for following JobIDs: ${jobIdArray[@]}"
 
     # Iterate over each JobID in the array
     for i in ${!jobIdArray[@]}; do
         iterator=$(($i+1))
         jobId="${jobIdArray[$i]}"
-        echo "JobID: $jobId"
         link="[Recording $iterator](https://app.saucelabs.com/rest/v1/jobs/$jobId/video.mp4)"
         videoRecordingsLinks+="\n* $link"
-        echo "Video Recording Link: $link"
     done
 
     # Construct the comment with the latest acceptance test recordings
@@ -38,7 +35,6 @@ function generateCommentBody() {
 # Check if a comment with recordings already exists
 function getExistingComment() {
     echo "Checking if a comment with recordings already exists..."
-    echo "Pull Request Number: $pullRequestNumber"
     existingComment=$(gh pr view --repo neos/neos-ui $pullRequestNumber --json comments | jq -r ".comments[] | select( .body | contains(\"End-to-End Test Recordings\"))")
 }
 
@@ -54,8 +50,7 @@ function updateComment() {
     commentUri=$(echo "$existingComment" | jq -r ".url")
     commentId=$(echo "$commentUri" | awk -F'#issuecomment-' '{print $2}')
     jsonBody=$(jq -n --arg str  "$(printf "$commentBody")" '{"body": $str}')
-    echo "Comment JSON: $jsonBody"
-    echo "Comment ID: $commentId"
+
     curl -s -H "Authorization: token $GH_TOKEN" \
             -X PATCH -d "$jsonBody" \
             "https://api.github.com/repos/neos/neos-ui/issues/comments/$commentId"

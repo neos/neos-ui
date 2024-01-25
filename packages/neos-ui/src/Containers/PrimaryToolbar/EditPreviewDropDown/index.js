@@ -3,15 +3,12 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
 import {neos} from '@neos-project/neos-ui-decorators';
-import Icon from '@neos-project/react-ui-components/src/Icon/';
-import DropDown from '@neos-project/react-ui-components/src/DropDown/';
-
 import I18n from '@neos-project/neos-ui-i18n';
 
 import style from './style.module.css';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store/src';
 import memoize from 'lodash.memoize';
-import Button from '@neos-project/react-ui-components/src/Button';
+import {Icon, DropDown, Button} from '@neos-project/react-ui-components';
 
 @connect(state => ({
     editPreviewMode: selectors.UI.EditPreviewMode.currentEditPreviewMode(state)

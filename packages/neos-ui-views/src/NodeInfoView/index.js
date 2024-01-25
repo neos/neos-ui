@@ -36,6 +36,8 @@ export default class NodeInfoView extends PureComponent {
         };
 
         const nodeType = node?.nodeType;
+        // Insert soft hyphens after dots and colon to make the node type more readable
+        const hyphenatedNodeTypeName = nodeType.replace(/([.:])/g, '$1\u00AD');
 
         return (
             <ul className={style.nodeInfoView}>
@@ -65,7 +67,7 @@ export default class NodeInfoView extends PureComponent {
                 </li>
                 <li className={style.nodeInfoView__item} title={nodeType}>
                     <div className={style.nodeInfoView__title}>{i18nRegistry.translate('type', 'Type', {}, 'Neos.Neos')}</div>
-                    <NodeInfoViewContent>{nodeType}</NodeInfoViewContent>
+                    <NodeInfoViewContent>{hyphenatedNodeTypeName}</NodeInfoViewContent>
                 </li>
             </ul>
         );

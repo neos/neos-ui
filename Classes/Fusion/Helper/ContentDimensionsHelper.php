@@ -56,7 +56,8 @@ class ContentDimensionsHelper implements ProtectedContextAwareInterface
                 $result[$dimension->id->value]['presets'][$value->value] = [
                     // TODO: name, uriSegment!
                     'values' => [$value->value],
-                    'label' => $value->getConfigurationValue('label')
+                    'label' => $value->getConfigurationValue('label'),
+                    'group' => $value->getConfigurationValue('group'),
                 ];
             }
         }

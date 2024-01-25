@@ -49,12 +49,13 @@ export default class DimensionSelector extends PureComponent {
                 return {
                     label: presetConfiguration?.label,
                     value: presetName,
-                    disallowed: presetConfiguration?.disallowed
+                    disallowed: presetConfiguration?.disallowed,
+                    group: presetConfiguration?.group
                 };
             }
         );
 
-        const sortedPresetOptions = sortBy(presetOptions, ['label']);
+        const sortedPresetOptions = sortBy(presetOptions, ['group', 'label']);
 
         const onPresetSelect = presetName => {
             onSelect(dimensionName, presetName);

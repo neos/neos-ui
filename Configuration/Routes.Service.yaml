@@ -31,6 +31,13 @@
   httpMethods: ['POST']
 
 -
+  name: 'Rebase Workspace'
+  uriPattern: 'rebase-workspace'
+  defaults:
+    '@controller': 'BackendService'
+    '@action': 'rebaseWorkspace'
+  httpMethods: ['POST']
+-
   name: 'Copy nodes to clipboard'
   uriPattern: 'copy-nodes'
   defaults:

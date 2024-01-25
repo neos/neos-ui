@@ -57,22 +57,26 @@
 /* Scrollbar styles for appContainer, its siblings (needed for React portals) and also for contentcanvas' body */
 :global(#appContainer ::-webkit-scrollbar),
 :global(#appContainer ~ * ::-webkit-scrollbar),
+:global(#appContainer ~ *::-webkit-scrollbar),
 :global(body::-webkit-scrollbar) {
     width: 4px;
     height: 4px;
 }
 :global(#appContainer ::-webkit-scrollbar-track),
 :global(#appContainer ~ * ::-webkit-scrollbar-track),
+:global(#appContainer ~ *::-webkit-scrollbar-track),
 :global(body::-webkit-scrollbar-track) {
     background-color: transparent;
 }
 :global(#appContainer ::-webkit-scrollbar-thumb),
 :global(#appContainer ~ * ::-webkit-scrollbar-thumb),
+:global(#appContainer ~ *::-webkit-scrollbar-thumb),
 :global(body::-webkit-scrollbar-thumb) {
     background-color: var(--colors-ContrastBright);
 }
 :global(#appContainer ::-webkit-scrollbar-corner),
 :global(#appContainer ~ * ::-webkit-scrollbar-corner),
+:global(#appContainer ~ *::-webkit-scrollbar-corner),
 :global(body::-webkit-scrollbar-corner) {
     background-color: var(--colors-ContrastDark);
 }

@@ -9,19 +9,26 @@ Neos:
             values:
               'en_US':
                 label: English (US)
+                group: NON-EU
                 specializations:
                   'en_UK':
+                    group: NON-EU
                     label: English (UK)
               'de':
                 label: German
+                group: EU
                 specializations:
                   'nl':
+                    group: EU
                     label: Dutch
               'fr':
+                group: EU
                 label: French
               'da':
+                group: EU
                 label: Danish
               'lv':
+                group: EU
                 label: Latvian
   Neos:
     sites:

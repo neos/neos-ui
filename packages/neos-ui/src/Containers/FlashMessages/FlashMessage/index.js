@@ -1,8 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
-import IconButton from '@neos-project/react-ui-components/src/IconButton/';
-import Icon from '@neos-project/react-ui-components/src/Icon/';
+import {IconButton, Icon} from '@neos-project/react-ui-components';
 
 import style from './style.module.css';
 

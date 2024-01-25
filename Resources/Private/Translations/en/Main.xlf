@@ -347,6 +347,26 @@
             <trans-unit id="deleteXNodes" xml:space="preserve">
                 <source>Delete {amount} nodes</source>
             </trans-unit>
+            <trans-unit id="workspaceSynchronizationApplied" xml:space="preserve">
+                <source>Successfully synced "{workspaceName}" workspace.</source>
+            </trans-unit>
+            <trans-unit id="syncPersonalWorkSpace" xml:space="preserve">
+                <source>Synchronize personal workspace</source>
+            </trans-unit>
+            <trans-unit id="syncPersonalWorkSpaceConfirm" xml:space="preserve">
+                <source>Synchronize now</source>
+            </trans-unit>
+            <trans-unit id="syncPersonalWorkSpaceMessage" xml:space="preserve">
+                <source>Your personal workspace is up-to-date with the current workspace.</source>
+            </trans-unit>
+            <trans-unit id="syncPersonalWorkSpaceMessageOutdated" xml:space="preserve">
+                <source>It seems like there are changes in the workspace that are not reflected in your personal workspace.
+                You should synchronize your personal workspace to avoid conflicts.</source>
+            </trans-unit>
+            <trans-unit id="syncPersonalWorkSpaceMessageOutdatedConflict" xml:space="preserve">
+                <source>It seems like there are changes in the workspace that are not reflected in your personal workspace.
+                The changes lead to an error state. Please contact your administrator to resolve the problem.</source>
+            </trans-unit>
             <trans-unit id="rangeEditorMinimum" xml:space="preserve">
                 <source>Minimum</source>
             </trans-unit>

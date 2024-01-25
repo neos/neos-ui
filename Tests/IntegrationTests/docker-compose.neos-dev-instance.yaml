@@ -2,7 +2,7 @@ version: "3.4"
 services:
 
   php:
-    image: thecodingmachine/php:8.0-v4-cli-node16
+    image: thecodingmachine/php:8.2-v4-cli-node16
     command: tail -f /dev/null
     ports:
       - 8081:8081

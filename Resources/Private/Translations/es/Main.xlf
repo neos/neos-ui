@@ -538,6 +538,34 @@
                 <source>Add</source>
         <target state="translated">Añadir</target>
       </trans-unit>
+      <trans-unit id="syncPersonalWorkSpaceMessageOutdated" xml:space="preserve">
+                <source>It seems like there are changes in the workspace that are not reflected in your personal workspace.
+                You should synchronize your personal workspace to avoid conflicts.</source>
+        <target state="translated">Parece que hay cambios en el espacio de trabajo que no se reflejan en su espacio de trabajo personal.
+                Debería sincronizar su espacio de trabajo personal para evitar conflictos.</target>
+      </trans-unit>
+      <trans-unit id="workspaceSynchronizationApplied" xml:space="preserve">
+                <source>Successfully synced "{workspaceName}" workspace.</source>
+        <target state="translated">Sincronizado con éxito el espacio de trabajo "{workspaceName}".</target>
+      </trans-unit>
+      <trans-unit id="syncPersonalWorkSpaceMessage" xml:space="preserve">
+                <source>Your personal workspace is up-to-date with the current workspace.</source>
+        <target state="translated">Su espacio de trabajo personal está actualizado con el espacio de trabajo actual.</target>
+      </trans-unit>
+      <trans-unit id="syncPersonalWorkSpace" xml:space="preserve">
+                <source>Synchronize personal workspace</source>
+        <target state="translated">Sincronizar el espacio de trabajo personal</target>
+      </trans-unit>
+      <trans-unit id="syncPersonalWorkSpaceMessageOutdatedConflict" xml:space="preserve">
+                <source>It seems like there are changes in the workspace that are not reflected in your personal workspace.
+                The changes lead to an error state. Please contact your administrator to resolve the problem.</source>
+        <target state="translated">Parece que hay cambios en el espacio de trabajo que no se reflejan en su espacio de trabajo personal.
+                Los cambios provocan un estado de error. Póngase en contacto con su administrador para resolver el problema.</target>
+      </trans-unit>
+      <trans-unit id="syncPersonalWorkSpaceConfirm" xml:space="preserve">
+                <source>Synchronize now</source>
+        <target state="translated">Sincronizar ahora</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

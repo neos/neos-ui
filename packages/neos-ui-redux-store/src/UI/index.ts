@@ -17,6 +17,7 @@ import * as InsertionModeModal from './InsertionModeModal';
 import * as SelectNodeTypeModal from './SelectNodeTypeModal';
 import * as NodeCreationDialog from './NodeCreationDialog';
 import * as NodeVariantCreationDialog from './NodeVariantCreationDialog';
+import * as SyncWorkspaceModal from './SyncWorkspaceModal';
 import * as ContentTree from './ContentTree';
 
 const all = {
@@ -37,6 +38,7 @@ const all = {
     SelectNodeTypeModal,
     NodeCreationDialog,
     NodeVariantCreationDialog,
+    SyncWorkspaceModal,
     ContentTree
 };
 
@@ -64,6 +66,7 @@ export interface State {
     selectNodeTypeModal: SelectNodeTypeModal.State;
     nodeCreationDialog: NodeCreationDialog.State;
     nodeVariantCreationDialog: NodeVariantCreationDialog.State;
+    SyncWorkspaceModal: SyncWorkspaceModal.State;
     contentTree: ContentTree.State;
 }
 
@@ -97,6 +100,7 @@ export const reducer = combineReducers({
     selectNodeTypeModal: SelectNodeTypeModal.reducer,
     nodeCreationDialog: NodeCreationDialog.reducer,
     nodeVariantCreationDialog: NodeVariantCreationDialog.reducer,
+    SyncWorkspaceModal: SyncWorkspaceModal.reducer,
     contentTree: ContentTree.reducer
 } as any); // TODO: when we update redux, this shouldn't be necessary https://github.com/reduxjs/redux/issues/2709#issuecomment-357328709
 

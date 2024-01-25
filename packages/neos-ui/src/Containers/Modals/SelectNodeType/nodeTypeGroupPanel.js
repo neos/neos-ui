@@ -2,14 +2,12 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
-import ToggablePanel from '@neos-project/react-ui-components/src/ToggablePanel/';
+import {ToggablePanel, Icon, IconButton} from '@neos-project/react-ui-components';
 import {neos} from '@neos-project/neos-ui-decorators';
 import escaperegexp from 'lodash.escaperegexp';
 import {actions} from '@neos-project/neos-ui-redux-store';
 
 import ReactMarkdown from 'react-markdown';
-import Icon from '@neos-project/react-ui-components/src/Icon/';
-import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 
 import I18n from '@neos-project/neos-ui-i18n';
 

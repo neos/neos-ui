@@ -127,11 +127,19 @@ jobs:
       - attach_workspace:
           at: /home/circleci/app/Data/Logs
       - run:
+          name: Install GitHub CLI and jq
+          command: |
+            sudo apt-get update && sudo apt-get install -y gh jq
+      - run:
           name: Extract Job ID
           command: |
             # Extract job ID from the output file
-            job_id=$(cat /home/circleci/app/Data/Logs/AcceptanceTesting.log | grep -o 'https://app.saucelabs.com/tests/[a-zA-Z0-9]\+' | sed 's/.*\///')
-            echo "Job ID: $job_id"
+            JOB_IDS=$(cat /home/circleci/app/Data/Logs/AcceptanceTesting.log | grep -o 'https://app.saucelabs.com/tests/[a-zA-Z0-9]\+' | sed 's/.*\///')
+            echo "Job IDs: $JOB_IDS"
+      - run:
+          name: Run Script
+          command: |
+            ./Build/comment-acceptance-tests.sh $JOB_IDS $CIRCLE_PULL_REQUEST
 
   php-unittests:
     environment:

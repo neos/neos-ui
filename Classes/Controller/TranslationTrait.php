@@ -28,7 +28,7 @@ trait TranslationTrait
     /**
      * @param array<int|string,mixed> $arguments
      */
-    public function getLabel(string $id, array $arguments = [], ?int $quantity=null): string
+    public function getLabel(string $id, array $arguments = [], ?int $quantity = null): string
     {
         return $this->translator->translateById(
             $id,

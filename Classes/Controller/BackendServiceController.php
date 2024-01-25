@@ -244,7 +244,7 @@ class BackendServiceController extends ActionController
             $success = new Success();
             $changesCount = count($nodeContextPaths);
             $success->setMessage(
-                $this->getLabel('changesPublished', [$changesCount,$targetWorkspaceName], $changesCount)
+                $this->getLabel('changesPublished', [$changesCount, $targetWorkspaceName], $changesCount)
             );
 
             $updateWorkspaceInfo = new UpdateWorkspaceInfo($contentRepositoryId, $workspaceName);

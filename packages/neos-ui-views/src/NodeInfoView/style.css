@@ -29,5 +29,8 @@
     &__content {
         font-size: 13px;
         color: var(--colors-ContrastBright);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 }

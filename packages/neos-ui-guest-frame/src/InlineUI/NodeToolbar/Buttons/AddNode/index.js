@@ -12,6 +12,8 @@ import {neos} from '@neos-project/neos-ui-decorators';
 }))
 @connect((state, {nodeTypesRegistry}) => {
     const isAllowedToAddChildOrSiblingNodesSelector = selectors.CR.Nodes.makeIsAllowedToAddChildOrSiblingNodes(nodeTypesRegistry);
+    const getAllowedChildNodeTypesSelector = selectors.CR.Nodes.makeGetAllowedChildNodeTypesSelector(nodeTypesRegistry);
+    const getAllowedSiblingNodeTypesSelector = selectors.CR.Nodes.makeGetAllowedSiblingNodeTypesSelector(nodeTypesRegistry);
 
     return state => {
         const focusedNodeContextPath = selectors.CR.Nodes.focusedNodePathSelector(state);
@@ -23,9 +25,19 @@ import {neos} from '@neos-project/neos-ui-decorators';
             reference: focusedNodeContextPath,
             role
         });
+        const allowedChildNodeTypes = getAllowedChildNodeTypesSelector(state, {
+            reference: focusedNodeContextPath
+        });
+        const isAllowedToAddChildNodes = Boolean(allowedChildNodeTypes.length);
+        const allowedSiblingNodeTypes = getAllowedSiblingNodeTypesSelector(state, {
+            reference: focusedNodeContextPath
+        });
+        const isAllowedToAddSiblingNodes = Boolean(allowedSiblingNodeTypes.length);
 
         return {
-            isAllowedToAddChildOrSiblingNodes
+            isAllowedToAddChildOrSiblingNodes,
+            isAllowedToAddChildNodes,
+            isAllowedToAddSiblingNodes
         };
     };
 }, {
@@ -35,29 +47,47 @@ export default class AddNode extends PureComponent {
     static propTypes = {
         contextPath: PropTypes.string,
         fusionPath: PropTypes.string,
+        preferredMode: PropTypes.string,
         className: PropTypes.string,
         commenceNodeCreation: PropTypes.func.isRequired,
         isAllowedToAddChildOrSiblingNodes: PropTypes.bool,
+        isAllowedToAddChildNodes: PropTypes.bool,
+        isAllowedToAddSiblingNodes: PropTypes.bool,
         i18nRegistry: PropTypes.object.isRequired
     };
 
     handleCommenceNodeCreation = () => {
         const {
             commenceNodeCreation,
+            preferredMode,
             contextPath,
             fusionPath
         } = this.props;
 
-        commenceNodeCreation(contextPath, fusionPath);
+        commenceNodeCreation(contextPath, fusionPath, preferredMode);
+    }
+
+    isEnabled = () => {
+        const {isAllowedToAddChildOrSiblingNodes, isAllowedToAddChildNodes, isAllowedToAddSiblingNodes, preferredMode} = this.props;
+
+        if (preferredMode === 'before' || preferredMode === 'after') {
+            return isAllowedToAddSiblingNodes;
+        }
+        if (preferredMode === 'into') {
+            return isAllowedToAddChildNodes;
+        }
+
+        return isAllowedToAddChildOrSiblingNodes;
     }
 
     render() {
-        const {isAllowedToAddChildOrSiblingNodes, i18nRegistry} = this.props;
+        const {i18nRegistry} = this.props;
+        const isEnabled = this.isEnabled();
 
-        return (
+        return isEnabled && (
             <IconButton
                 id="neos-InlineToolbar-AddNode"
-                disabled={!isAllowedToAddChildOrSiblingNodes}
+                disabled={!isEnabled}
                 className={this.props.className}
                 icon="plus"
                 onClick={this.handleCommenceNodeCreation}

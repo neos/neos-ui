@@ -94,6 +94,10 @@ manifest('inspectorEditors', {}, globalRegistry => {
         component: Editors.UriPathSegment
     });
 
+    editorsRegistry.set('Neos.Neos/Inspector/Editors/ButtonEditor', {
+        component: Editors.ButtonEditor
+    });
+
     //
     // Secondary inspector editors
     //

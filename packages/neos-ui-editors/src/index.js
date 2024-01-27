@@ -18,7 +18,8 @@ import {
     AssetEditor,
     PluginViews,
     PluginView,
-    UriPathSegment
+    UriPathSegment,
+    ButtonEditor
 } from './Editors/index';
 
 import {
@@ -58,6 +59,7 @@ export {
     PluginViews,
     PluginView,
     UriPathSegment,
+    ButtonEditor,
 
     CodeMirrorWrap,
     CKEditorWrap,
@@ -93,6 +95,7 @@ export default {
     PluginViews,
     PluginView,
     UriPathSegment,
+    ButtonEditor,
 
     CodeMirrorWrap,
     CKEditorWrap,

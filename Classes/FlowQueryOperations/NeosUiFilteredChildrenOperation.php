@@ -24,6 +24,7 @@ use Neos\Flow\Annotations as Flow;
  * "children" operation working on ContentRepository nodes. It iterates over all
  * context elements and returns all child nodes or only those matching
  * the filter expression specified as optional argument.
+ * @internal
  */
 class NeosUiFilteredChildrenOperation extends AbstractOperation
 {

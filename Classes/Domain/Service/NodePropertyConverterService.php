@@ -41,6 +41,7 @@ use Psr\Log\LoggerInterface;
  * instead of the objects.
  *
  * @Flow\Scope("singleton")
+ * @internal
  */
 class NodePropertyConverterService
 {

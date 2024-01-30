@@ -25,6 +25,7 @@ use Neos\Flow\Annotations as Flow;
  *
  * @api
  * @Flow\Scope("singleton")
+ * @internal
  */
 class PublishingService
 {

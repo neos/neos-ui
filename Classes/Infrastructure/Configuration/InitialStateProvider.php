@@ -23,6 +23,9 @@ use Neos\Neos\Ui\Domain\InitialData\InitialStateProviderInterface;
 use Neos\Neos\Ui\Domain\Service\ConfigurationRenderingService;
 use Neos\Neos\Ui\Service\NodeClipboard;
 
+/**
+ * @internal
+ */
 #[Flow\Scope("singleton")]
 final class InitialStateProvider implements InitialStateProviderInterface
 {

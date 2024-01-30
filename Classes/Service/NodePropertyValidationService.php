@@ -22,6 +22,7 @@ use Psr\Log\LoggerInterface;
 
 /**
  * @Flow\Scope("singleton")
+ * @internal
  */
 class NodePropertyValidationService
 {

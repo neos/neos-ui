@@ -30,6 +30,7 @@ use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
 use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
 
 /**
+ * @internal
  * @Flow\Scope("singleton")
  */
 class WorkspaceService

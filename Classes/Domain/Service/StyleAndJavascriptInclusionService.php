@@ -19,6 +19,7 @@ use Neos\Utility\PositionalArraySorter;
 
 /**
  * @Flow\Scope("singleton")
+ * @internal
  */
 class StyleAndJavascriptInclusionService
 {

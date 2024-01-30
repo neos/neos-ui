@@ -21,6 +21,9 @@ use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 
+/**
+ * @internal
+ */
 class ReloadDocument extends AbstractFeedback
 {
     protected ?Node $node = null;

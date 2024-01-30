@@ -30,6 +30,7 @@ use Neos\Neos\Service\TransliterationService;
  *
  * Note: This is not actually a Command Handler in the sense of CQRS but rather some kind of
  *       "command enricher"
+ * @internal
  */
 class DocumentTitleNodeCreationHandler implements NodeCreationHandlerInterface
 {

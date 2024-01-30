@@ -31,6 +31,7 @@ use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
 
 /**
  * @Flow\Scope("singleton")
+ * @internal
  */
 class NodeInfoHelper implements ProtectedContextAwareInterface
 {

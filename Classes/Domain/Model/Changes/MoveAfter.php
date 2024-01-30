@@ -18,6 +18,11 @@ use Neos\ContentRepository\Core\Feature\NodeMove\Dto\RelationDistributionStrateg
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 
+/**
+ * @internal These objects internally reflect possible operations made by the Neos.Ui.
+ *           They are sorely an implementation detail. You should not use them!
+ *           Please look into the php command API of the Neos CR instead.
+ */
 class MoveAfter extends AbstractStructuralChange
 {
     /**

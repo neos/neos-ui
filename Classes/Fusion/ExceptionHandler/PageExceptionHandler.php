@@ -27,6 +27,7 @@ use Psr\Http\Message\StreamFactoryInterface;
  *
  * FIXME: When the old UI is removed this handler needs to be untangled from the PageHandler as the parent functionality is no longer needed.
  * FIXME: We should adapt rendering to requested "format" at some point
+ * @internal
  */
 class PageExceptionHandler extends AbstractRenderingExceptionHandler
 {

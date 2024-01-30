@@ -21,6 +21,9 @@ use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 
+/**
+ * @internal
+ */
 class UpdateWorkspaceInfo extends AbstractFeedback
 {
     protected ?WorkspaceName $workspaceName = null;

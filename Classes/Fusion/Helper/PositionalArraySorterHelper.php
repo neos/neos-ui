@@ -14,6 +14,9 @@ namespace Neos\Neos\Ui\Fusion\Helper;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Utility\PositionalArraySorter;
 
+/**
+ * @internal
+ */
 class PositionalArraySorterHelper implements ProtectedContextAwareInterface
 {
     /**

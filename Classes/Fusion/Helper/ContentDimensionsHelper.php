@@ -21,6 +21,9 @@ use Neos\ContentRepository\Core\Factory\ContentRepositoryId;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
 
+/**
+ * @internal
+ */
 class ContentDimensionsHelper implements ProtectedContextAwareInterface
 {
     /**

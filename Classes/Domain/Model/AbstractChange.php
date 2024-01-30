@@ -23,6 +23,9 @@ use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
 use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
 
+/**
+ * @internal
+ */
 abstract class AbstractChange implements ChangeInterface
 {
     use NodeTypeWithFallbackProvider;

@@ -19,6 +19,7 @@ use Neos\ContentRepository\Core\Factory\ContentRepositoryServiceInterface;
 /**
  * @deprecated ugly - we want to get rid of this by adding dimension infos in the Subgraph
  * @implements ContentRepositoryServiceFactoryInterface<ContentDimensionsHelperInternals>
+ * @internal
  */
 class ContentDimensionsHelperInternalsFactory implements ContentRepositoryServiceFactoryInterface
 {

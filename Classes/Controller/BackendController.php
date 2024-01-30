@@ -204,7 +204,7 @@ class BackendController extends ActionController
                 $this->nodeTypeGroupsAndRolesProvider->getNodeTypes(),
             'menu' =>
                 $this->menuProvider->getMenu(
-                    controllerContext: $this->controllerContext,
+                    actionRequest: $this->request,
                 ),
             'initialState' =>
                 $this->initialStateProvider->getInitialState(

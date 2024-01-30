@@ -80,30 +80,6 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
     /**
      * @return ?array<string,mixed>
-     * @deprecated See methods with specific names for different behaviors
-     */
-    public function renderNode(
-        Node $node,
-        ControllerContext $controllerContext = null,
-        bool $omitMostPropertiesForTreeState = false,
-        string $nodeTypeFilterOverride = null
-    ):?array {
-        return ($omitMostPropertiesForTreeState
-            ? $this->renderNodeWithMinimalPropertiesAndChildrenInformation(
-                $node,
-                $controllerContext?->getRequest(),
-                $nodeTypeFilterOverride
-            )
-            : $this->renderNodeWithPropertiesAndChildrenInformation(
-                $node,
-                $controllerContext?->getRequest(),
-                $nodeTypeFilterOverride
-            )
-        );
-    }
-
-    /**
-     * @return ?array<string,mixed>
      */
     public function renderNodeWithMinimalPropertiesAndChildrenInformation(
         Node $node,

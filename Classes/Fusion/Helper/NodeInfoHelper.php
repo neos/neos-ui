@@ -20,7 +20,6 @@ use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\ActionRequest;
-use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Flow\Mvc\Routing\UriBuilder;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\FrontendRouting\NodeAddress;
@@ -414,13 +413,6 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
                 $this->ignoredNodeTypeRole
             )
         );
-    }
-
-    public function nodeAddress(Node $node): NodeAddress
-    {
-        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
-        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
-        return $nodeAddressFactory->createFromNode($node);
     }
 
     public function serializedNodeAddress(Node $node): string

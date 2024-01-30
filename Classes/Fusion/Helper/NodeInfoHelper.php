@@ -436,6 +436,13 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
      */
     public function allowsCallOfMethod($methodName)
     {
-        return true;
+        // to control what is used in eel we maintain this list.
+        return in_array($methodName, [
+            'serializedNodeAddress',
+            'createRedirectToNode',
+            'renderNodeWithPropertiesAndChildrenInformation',
+            'defaultNodesForBackend',
+            'uri'
+        ], true);
     }
 }

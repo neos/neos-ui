@@ -31,6 +31,7 @@ use Neos\Neos\Ui\Domain\Service\UserLocaleService;
 use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
 
 /**
+ * @internal
  * @Flow\Scope("singleton")
  * @todo EEL helpers are still to be declared as internal
  */

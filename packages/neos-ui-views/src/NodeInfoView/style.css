@@ -11,16 +11,16 @@
     line-height: 20px;
     min-height: 20px;
 
-    &:first-child {
-        border-top-left-radius: 2px;
-        border-top-right-radius: 2px;
-    }
+&:first-child {
+     border-top-left-radius: 2px;
+     border-top-right-radius: 2px;
+ }
 
-    &:last-child {
-        border-bottom: none;
-        border-bottom-left-radius: 2px;
-        border-bottom-right-radius: 2px;
-    }
+&:last-child {
+     border-bottom: none;
+     border-bottom-left-radius: 2px;
+     border-bottom-right-radius: 2px;
+ }
 }
 
 .nodeInfoView__title {
@@ -30,4 +30,7 @@
 .nodeInfoView__content {
     font-size: 13px;
     color: var(--colors-ContrastBright);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

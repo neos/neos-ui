@@ -16,7 +16,7 @@ namespace Neos\Neos\Ui\Infrastructure\MVC;
 
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Routing\UriBuilder;
-use Neos\Neos\Ui\Domain\RoutesProviderInterface;
+use Neos\Neos\Ui\Domain\InitialData\RoutesProviderInterface;
 
 /**
  * @internal

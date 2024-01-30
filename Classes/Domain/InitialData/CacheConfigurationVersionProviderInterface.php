@@ -12,7 +12,7 @@
 
 declare(strict_types=1);
 
-namespace Neos\Neos\Ui\Domain;
+namespace Neos\Neos\Ui\Domain\InitialData;
 
 /**
  * Retrieves the current version identifier for the configuration cache so it

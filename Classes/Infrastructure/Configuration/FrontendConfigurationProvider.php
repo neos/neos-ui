@@ -16,7 +16,7 @@ namespace Neos\Neos\Ui\Infrastructure\Configuration;
 
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
-use Neos\Neos\Ui\Domain\FrontendConfigurationProviderInterface;
+use Neos\Neos\Ui\Domain\InitialData\FrontendConfigurationProviderInterface;
 use Neos\Neos\Ui\Domain\Service\ConfigurationRenderingService;
 
 /**

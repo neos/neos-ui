@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace Neos\Neos\Ui\Infrastructure\ContentRepository;
 
 use Neos\Flow\Annotations as Flow;
-use Neos\Neos\Ui\Domain\NodeTypeGroupsAndRolesProviderInterface;
+use Neos\Neos\Ui\Domain\InitialData\NodeTypeGroupsAndRolesProviderInterface;
 
 #[Flow\Scope("singleton")]
 final class NodeTypeGroupsAndRolesProvider implements NodeTypeGroupsAndRolesProviderInterface

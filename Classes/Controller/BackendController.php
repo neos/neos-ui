@@ -27,12 +27,12 @@ use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;
 use Neos\Neos\Service\BackendRedirectionService;
 use Neos\Neos\Service\UserService;
-use Neos\Neos\Ui\Domain\ConfigurationProviderInterface;
-use Neos\Neos\Ui\Domain\FrontendConfigurationProviderInterface;
-use Neos\Neos\Ui\Domain\InitialStateProviderInterface;
-use Neos\Neos\Ui\Domain\MenuProviderInterface;
-use Neos\Neos\Ui\Domain\NodeTypeGroupsAndRolesProviderInterface;
-use Neos\Neos\Ui\Domain\RoutesProviderInterface;
+use Neos\Neos\Ui\Domain\InitialData\ConfigurationProviderInterface;
+use Neos\Neos\Ui\Domain\InitialData\FrontendConfigurationProviderInterface;
+use Neos\Neos\Ui\Domain\InitialData\InitialStateProviderInterface;
+use Neos\Neos\Ui\Domain\InitialData\MenuProviderInterface;
+use Neos\Neos\Ui\Domain\InitialData\NodeTypeGroupsAndRolesProviderInterface;
+use Neos\Neos\Ui\Domain\InitialData\RoutesProviderInterface;
 use Neos\Neos\Ui\Presentation\ApplicationView;
 
 class BackendController extends ActionController

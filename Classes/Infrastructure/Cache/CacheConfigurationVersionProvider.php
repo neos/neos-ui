@@ -18,7 +18,7 @@ use Neos\Cache\Frontend\StringFrontend;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Security\Account;
 use Neos\Flow\Security\Context as SecurityContext;
-use Neos\Neos\Ui\Domain\CacheConfigurationVersionProviderInterface;
+use Neos\Neos\Ui\Domain\InitialData\CacheConfigurationVersionProviderInterface;
 
 /**
  * @internal This is an almost verbatim copy of the

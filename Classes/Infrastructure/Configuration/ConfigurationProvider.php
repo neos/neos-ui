@@ -20,8 +20,8 @@ use Neos\Flow\Configuration\ConfigurationManager;
 use Neos\Flow\Mvc\Routing\UriBuilder;
 use Neos\Neos\Service\UserService;
 use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService;
-use Neos\Neos\Ui\Domain\CacheConfigurationVersionProviderInterface;
-use Neos\Neos\Ui\Domain\ConfigurationProviderInterface;
+use Neos\Neos\Ui\Domain\InitialData\CacheConfigurationVersionProviderInterface;
+use Neos\Neos\Ui\Domain\InitialData\ConfigurationProviderInterface;
 
 /**
  * @internal

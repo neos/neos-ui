@@ -17,7 +17,7 @@ namespace Neos\Neos\Ui\Infrastructure\Neos;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Neos\Controller\Backend\MenuHelper;
-use Neos\Neos\Ui\Domain\MenuProviderInterface;
+use Neos\Neos\Ui\Domain\InitialData\MenuProviderInterface;
 use Neos\Utility\PositionalArraySorter;
 
 #[Flow\Scope("singleton")]

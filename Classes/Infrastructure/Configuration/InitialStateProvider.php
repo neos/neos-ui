@@ -19,7 +19,7 @@ use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Neos\Domain\Model\User;
-use Neos\Neos\Ui\Domain\InitialStateProviderInterface;
+use Neos\Neos\Ui\Domain\InitialData\InitialStateProviderInterface;
 use Neos\Neos\Ui\Domain\Service\ConfigurationRenderingService;
 use Neos\Neos\Ui\Service\NodeClipboard;
 

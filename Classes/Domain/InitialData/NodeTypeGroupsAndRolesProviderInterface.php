@@ -12,7 +12,7 @@
 
 declare(strict_types=1);
 
-namespace Neos\Neos\Ui\Domain;
+namespace Neos\Neos\Ui\Domain\InitialData;
 
 /**
  * Retrieves information about node type roles and node type groups.

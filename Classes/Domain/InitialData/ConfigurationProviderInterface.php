@@ -12,7 +12,7 @@
 
 declare(strict_types=1);
 
-namespace Neos\Neos\Ui\Domain;
+namespace Neos\Neos\Ui\Domain\InitialData;
 
 use Neos\ContentRepository\Core\ContentRepository;
 use Neos\Flow\Mvc\Routing\UriBuilder;

@@ -109,11 +109,11 @@ Neos:
         metaData:
           documentNode: '${Neos.Ui.NodeInfo.serializedNodeAddress(documentNode)}'
           siteNode: '${Neos.Ui.NodeInfo.serializedNodeAddress(site)}'
-          previewUrl: '${Neos.Ui.NodeInfo.createRedirectToNode(documentNode, controllerContext)}'
+          previewUrl: '${Neos.Ui.NodeInfo.createRedirectToNode(documentNode, controllerContext.request)}'
           contentDimensions:
             active: '${Neos.Ui.ContentDimensions.dimensionSpacePointArray(documentNode.subgraphIdentity.dimensionSpacePoint)}'
             allowedPresets: '${Neos.Ui.Api.emptyArrayToObject(Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.subgraphIdentity.dimensionSpacePoint, documentNode.subgraphIdentity.contentRepositoryId))}'
-          documentNodeSerialization: '${Neos.Ui.NodeInfo.renderNodeWithPropertiesAndChildrenInformation(documentNode, controllerContext)}'
+          documentNodeSerialization: '${Neos.Ui.NodeInfo.renderNodeWithPropertiesAndChildrenInformation(documentNode, controllerContext.request)}'
       initialState:
         changes:
           pending: {  }
@@ -121,7 +121,7 @@ Neos:
           failed: {  }
         cr:
           nodes:
-            byContextPath: '${Neos.Ui.NodeInfo.defaultNodesForBackend(site, documentNode, controllerContext)}'
+            byContextPath: '${Neos.Ui.NodeInfo.defaultNodesForBackend(site, documentNode, controllerContext.request)}'
             siteNode: '${Neos.Ui.NodeInfo.serializedNodeAddress(site)}'
             documentNode: '${Neos.Ui.NodeInfo.serializedNodeAddress(documentNode)}'
             clipboard: '${clipboardNodes || []}'
@@ -134,7 +134,7 @@ Neos:
             personalWorkspace: '${Neos.Ui.Workspace.getPersonalWorkspace(contentRepositoryId)}'
         ui:
           contentCanvas:
-            src: '${Neos.Ui.NodeInfo.uri(documentNode, controllerContext)}'
+            src: '${Neos.Ui.NodeInfo.uri(documentNode, controllerContext.request)}'
             backgroundColor: '${Configuration.setting(''Neos.Neos.Ui.contentCanvas.backgroundColor'')}'
           debugMode: false
           editPreviewMode: '${q(user).property("preferences.preferences")["contentEditing.editPreviewMode"] || Configuration.setting(''Neos.Neos.userInterface.defaultEditPreviewMode'')}'

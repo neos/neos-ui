@@ -349,40 +349,6 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     }
 
     /**
-     * @param Node $documentNode
-     * @param ControllerContext $controllerContext
-     * @return array<string,mixed>>
-     */
-    public function renderDocumentNodeAndChildContent(
-        Node $documentNode,
-        ControllerContext $controllerContext
-    ): array {
-        return $this->renderNodeAndChildContent($documentNode, $controllerContext);
-    }
-
-    /**
-     * @return array<string,mixed>>
-     */
-    protected function renderNodeAndChildContent(Node $node, ControllerContext $controllerContext): array
-    {
-        $reducer = function ($nodes, $node) use ($controllerContext) {
-            return array_merge($nodes, $this->renderNodeAndChildContent($node, $controllerContext));
-        };
-
-        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
-        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
-
-        return array_reduce(
-            iterator_to_array($this->getChildNodes($node, $this->buildContentChildNodeFilterString())),
-            $reducer,
-            [
-                $nodeAddressFactory->createFromNode($node)->serializeForUri()
-                => $this->renderNodeWithPropertiesAndChildrenInformation($node, $controllerContext)
-            ]
-        );
-    }
-
-    /**
      * @return array<string,array<string,mixed>|null>
      */
     public function defaultNodesForBackend(

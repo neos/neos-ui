@@ -108,20 +108,23 @@ jobs:
 
       - run: curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
       - run: chmod +x ~/.nvm/nvm.sh
-      - run: |
-          export NVM_DIR="$HOME/.nvm"
-          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-          cd /home/circleci/app/Packages/Application/Neos.Neos.Ui
-          nvm install
-          nvm use
-          echo 127.0.0.1 onedimension.localhost | sudo tee -a /etc/hosts
-          echo 127.0.0.1 twodimensions.localhost | sudo tee -a /etc/hosts
-          make test-e2e-saucelabs > /home/circleci/app/Data/Logs/AcceptanceTesting.log
+      - run:
+          no_output_timeout: 20m
+          command: |
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            cd /home/circleci/app/Packages/Application/Neos.Neos.Ui
+            nvm install
+            nvm use
+            echo 127.0.0.1 onedimension.localhost | sudo tee -a /etc/hosts
+            echo 127.0.0.1 twodimensions.localhost | sudo tee -a /etc/hosts
+            make test-e2e-saucelabs > /home/circleci/app/Data/Logs/AcceptanceTesting.log
       - store_artifacts:
           path: /home/circleci/app/Data/Logs
-      - store_artifacts:
-          path: /home/circleci/app/Data/Logs
-          destination: AcceptanceTesting.log
+      - persist_to_workspace:
+          root: /home/circleci/app/Data/Logs
+          paths:
+            - .
 
   post-acceptance-tests-recordings:
     environment:

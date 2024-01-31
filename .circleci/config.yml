@@ -123,7 +123,7 @@ jobs:
     environment:
       FLOW_CONTEXT: Production
     docker:
-      - image: cimg/php:7.4.12-node
+      - image: cimg/php:8.2-node
 
     steps:
       - attach_workspace:

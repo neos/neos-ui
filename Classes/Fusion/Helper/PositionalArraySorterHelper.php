@@ -15,7 +15,7 @@ use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Utility\PositionalArraySorter;
 
 /**
- * @internal
+ * @todo EEL helpers are still to be declared as internal
  */
 class PositionalArraySorterHelper implements ProtectedContextAwareInterface
 {

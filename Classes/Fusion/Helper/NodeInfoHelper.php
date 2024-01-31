@@ -31,7 +31,7 @@ use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
 
 /**
  * @Flow\Scope("singleton")
- * @internal
+ * @todo EEL helpers are still to be declared as internal
  */
 class NodeInfoHelper implements ProtectedContextAwareInterface
 {

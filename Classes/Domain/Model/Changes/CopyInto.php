@@ -73,8 +73,16 @@ class CopyInto extends AbstractCopy
     public function apply()
     {
         if ($this->canApply()) {
-            $nodeName = $this->generateUniqueNodeName($this->getParentNode());
-            $node = $this->getSubject()->copyInto($this->getParentNode(), $nodeName);
+            $parentNode = $this->getParentNode();
+            $nodeName = $this->generateUniqueNodeName($parentNode);
+            // If the parent node has children, we copy the node after the last child node to prevent the copied nodes
+            // from being mixed with the existing ones due the duplication of their relative indices.
+            if ($parentNode->hasChildNodes()) {
+                $lastChildNode = array_slice($parentNode->getChildNodes(), -1, 1)[0];
+                $node = $this->getSubject()->copyAfter($lastChildNode, $nodeName);
+            } else {
+                $node = $this->getSubject()->copyInto($parentNode, $nodeName);
+            }
             $this->finish($node);
         }
     }

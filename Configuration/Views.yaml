@@ -1,6 +1,0 @@
--
-  requestFilter: 'isPackage("Neos.Neos.Ui") && isController("Backend")'
-  viewObjectName: 'Neos\Neos\Ui\Presentation\ApplicationView'
-  options:
-    title: 'Neos CMS'
-

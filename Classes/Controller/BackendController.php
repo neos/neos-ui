@@ -25,7 +25,6 @@ use Neos\Neos\Domain\Service\NodeTypeNameFactory;
 use Neos\Neos\Domain\Service\WorkspaceNameBuilder;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;
-use Neos\Neos\Service\BackendRedirectionService;
 use Neos\Neos\Service\UserService;
 use Neos\Neos\Ui\Domain\InitialData\ConfigurationProviderInterface;
 use Neos\Neos\Ui\Domain\InitialData\FrontendConfigurationProviderInterface;
@@ -41,6 +40,8 @@ class BackendController extends ActionController
      * @var ApplicationView
      */
     protected $view;
+
+    protected $defaultViewObjectName = ApplicationView::class;
 
     /**
      * @Flow\Inject
@@ -71,12 +72,6 @@ class BackendController extends ActionController
      * @var SessionInterface
      */
     protected $session;
-
-    /**
-     * @Flow\Inject(lazy=false)
-     * @var BackendRedirectionService
-     */
-    protected $backendRedirectionService;
 
     /**
      * @Flow\Inject
@@ -187,6 +182,7 @@ class BackendController extends ActionController
             $node = $subgraph->findNodeById($nodeAddress->nodeAggregateId);
         }
 
+        $this->view->setOption('title', 'Neos CMS');
         $this->view->assign('initialData', [
             'configuration' =>
                 $this->configurationProvider->getConfiguration(

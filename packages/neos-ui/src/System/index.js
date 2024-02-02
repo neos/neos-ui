@@ -1,65 +1,93 @@
-import {discover} from '@neos-project/utils-helpers';
 import {initializeJsAPI} from '@neos-project/neos-ui-backend-connector';
 import fetchWithErrorHandling from '@neos-project/neos-ui-backend-connector/src/FetchWithErrorHandling/index';
 
-const getInlinedData = dataName => {
-    return new Promise((resolve, reject) => {
-        const result = window['_NEOS_UI_' + dataName];
-        delete window['_NEOS_UI_' + dataName];
-        try {
-            resolve(result);
-        } catch (ex) {
-            reject(ex);
+import {terminateDueToFatalInitializationError} from './terminateDueToFatalInitializationError';
+
+let initialData = null;
+function parseInitialData() {
+    if (initialData) {
+        return initialData;
+    }
+
+    const initialDataContainer = document.getElementById('initialData');
+    if (!initialDataContainer) {
+        return terminateDueToFatalInitializationError(`
+            <p>This page is missing a <code>&lt;script/&gt;</code>-container with the
+            id <code>#initialData</code>.</p>
+        `);
+    }
+
+    try {
+        const initialDataAsJson = initialDataContainer.innerText;
+        initialData = JSON.parse(initialDataAsJson);
+
+        if (typeof initialData === 'object' && initialData) {
+            return initialData;
         }
-    });
-};
 
-export const getAppContainer = discover(function * () {
-    const appContainer = yield new Promise(resolve => {
-        document.addEventListener('DOMContentLoaded', () => {
-            resolve(document.getElementById('appContainer'));
-        });
-    });
+        return terminateDueToFatalInitializationError(`
+            <p>JSON-content of <code>#initialData</code> has an unexpected
+            type: <code>${typeof initialData}</code></p>
+        `);
+    } catch (err) {
+        return terminateDueToFatalInitializationError(`
+            <p>JSON.parse for content of <code>#initialData</code> failed:
+            ${err}</p>
+        `);
+    }
+}
 
-    return appContainer;
-});
+function getInlinedData(dataName) {
+    const initialData = parseInitialData();
 
-export const getCsrfToken = discover(function * () {
-    const appContainer = yield getAppContainer;
+    if (dataName in initialData) {
+        return initialData[dataName];
+    }
 
-    return appContainer.dataset.csrfToken;
-});
+    return terminateDueToFatalInitializationError(`
+        <p>Initial data for <code>${dataName}</code> could not
+        be read from <code>#initialData</code> container.</p>
+    `);
+}
 
-export const getSystemEnv = discover(function * () {
-    const appContainer = yield getAppContainer;
+export const appContainer = document.getElementById('appContainer');
+if (!appContainer) {
+    terminateDueToFatalInitializationError(`
+        <p>This page is missing a container with the id <code>#appContainer</code>.</p>
+    `);
+}
 
-    return appContainer.dataset.env;
-});
+export const {csrfToken} = appContainer.dataset;
+if (!csrfToken) {
+    terminateDueToFatalInitializationError(`
+        <p>The container with the id <code>#appContainer</code> is missing an attribute
+        <code>data-csrf-token</code>.</p>
+    `);
+}
 
-export const getServerState = getInlinedData('initialState');
+fetchWithErrorHandling.setCsrfToken(csrfToken);
 
-export const getConfiguration = getInlinedData('configuration');
+export const {env: systemEnv} = appContainer.dataset;
+if (!systemEnv) {
+    terminateDueToFatalInitializationError(`
+        <p>The container with the id <code>#appContainer</code> is missing an attribute
+        <code>data-env</code> (eg. Production, Development, etc...).</p>
+    `);
+}
 
-export const getNodeTypes = getInlinedData('nodeTypes');
+export const serverState = getInlinedData('initialState');
 
-export const getFrontendConfiguration = getInlinedData('frontendConfiguration');
+export const configuration = getInlinedData('configuration');
 
-export const getRoutes = getInlinedData('routes');
+export const nodeTypes = getInlinedData('nodeTypes');
 
-export const getMenu = getInlinedData('menu');
+export const frontendConfiguration = getInlinedData('frontendConfiguration');
 
-export const getNeos = discover(function * () {
-    const csrfToken = yield getCsrfToken;
+export const routes = getInlinedData('routes');
 
-    fetchWithErrorHandling.setCsrfToken(csrfToken);
+export const menu = getInlinedData('menu');
 
-    const systemEnv = yield getSystemEnv;
-    const routes = yield getRoutes;
-
-    const neos = initializeJsAPI(window, {
-        systemEnv,
-        routes
-    });
-
-    return neos;
+export const neos = initializeJsAPI(window, {
+    systemEnv,
+    routes
 });

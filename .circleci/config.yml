@@ -183,7 +183,7 @@ jobs:
       - run: cd /home/circleci/app/Packages/Application && mv ~/neos-ui-workspace Neos.Neos.Ui
       - run: |
           cd /home/circleci/app/Packages/Application/Neos.Neos.Ui
-          ../../../bin/phpstan analyse
+          composer run lint:phpstan
 
 workflows:
   version: 2

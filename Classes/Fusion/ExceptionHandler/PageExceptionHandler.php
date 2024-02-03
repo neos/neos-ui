@@ -53,7 +53,7 @@ class PageExceptionHandler extends AbstractRenderingExceptionHandler
      *
      * @param string $fusionPath path causing the exception
      * @param \Exception $exception exception to handle
-     * @param integer $referenceCode
+     * @param string|null $referenceCode
      * @return string
      * @throws \Neos\Flow\Mvc\Exception\StopActionException
      * @throws \Neos\Flow\Security\Exception

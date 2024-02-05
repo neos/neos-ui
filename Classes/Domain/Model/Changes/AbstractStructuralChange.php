@@ -30,6 +30,9 @@ use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
 
 /**
  * A change that performs structural actions like moving or creating nodes
+ * @internal These objects internally reflect possible operations made by the Neos.Ui.
+ *           They are sorely an implementation detail. You should not use them!
+ *           Please look into the php command API of the Neos CR instead.
  */
 abstract class AbstractStructuralChange extends AbstractChange
 {

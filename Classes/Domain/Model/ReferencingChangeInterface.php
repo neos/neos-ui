@@ -15,6 +15,7 @@ use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 
 /**
  * A change that needs to reference another node
+ * @internal
  */
 interface ReferencingChangeInterface extends ChangeInterface
 {

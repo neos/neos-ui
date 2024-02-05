@@ -22,6 +22,7 @@ use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService;
 
 /**
  * The Workspace helper for EEL contexts
+ * @todo EEL helpers are still to be declared as internal
  */
 class WorkspaceHelper implements ProtectedContextAwareInterface
 {

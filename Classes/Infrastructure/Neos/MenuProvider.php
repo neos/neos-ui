@@ -20,6 +20,9 @@ use Neos\Neos\Controller\Backend\MenuHelper;
 use Neos\Neos\Ui\Domain\InitialData\MenuProviderInterface;
 use Neos\Utility\PositionalArraySorter;
 
+/**
+ * @internal
+ */
 #[Flow\Scope("singleton")]
 final class MenuProvider implements MenuProviderInterface
 {

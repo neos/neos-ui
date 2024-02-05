@@ -10,6 +10,9 @@ use Neos\Neos\Service\LinkingService;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 
+/**
+ * @internal
+ */
 class Redirect extends AbstractFeedback
 {
     /**

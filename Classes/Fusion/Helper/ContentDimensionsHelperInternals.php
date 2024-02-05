@@ -17,6 +17,7 @@ use Neos\ContentRepository\Core\Factory\ContentRepositoryServiceInterface;
 
 /**
  * @deprecated ugly - we want to get rid of this by adding dimension infos in the Subgraph
+ * @todo EEL helpers are still to be declared as internal
  */
 class ContentDimensionsHelperInternals implements ContentRepositoryServiceInterface
 {

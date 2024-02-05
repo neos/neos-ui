@@ -18,6 +18,7 @@ use Neos\Flow\Annotations as Flow;
  * This is a container for clipboard state that needs to be persisted server side
  *
  * @Flow\Scope("session")
+ * @internal
  */
 class NodeClipboard
 {

@@ -21,6 +21,9 @@ use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
 
+/**
+ * @internal
+ */
 class NodeCreated extends AbstractFeedback
 {
     use NodeTypeWithFallbackProvider;

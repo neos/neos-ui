@@ -29,6 +29,9 @@ use Neos\Neos\Ui\Domain\Model\RenderedNodeDomAddress;
 use Neos\Neos\Ui\View\OutOfBandRenderingViewFactory;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * @internal
+ */
 class RenderContentOutOfBand extends AbstractFeedback
 {
     protected ?Node $node = null;

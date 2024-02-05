@@ -16,6 +16,9 @@ use Neos\Flow\Exception;
 use Neos\Fusion\FusionObjects\AbstractFusionObject;
 use Neos\Neos\Ui\Domain\Service\ConfigurationRenderingService;
 
+/**
+ * @internal
+ */
 class RenderConfigurationImplementation extends AbstractFusionObject
 {
     /**

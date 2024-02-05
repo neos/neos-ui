@@ -26,6 +26,7 @@ use Neos\Flow\Annotations as Flow;
  * Custom search operation using the Content Graph fulltext search
  *
  * Original implementation: \Neos\Neos\Ui\FlowQueryOperations\SearchOperation
+ * @internal
  */
 class SearchOperation extends AbstractOperation
 {

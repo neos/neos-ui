@@ -55,6 +55,9 @@ use Neos\Neos\Ui\Service\PublishingService;
 use Neos\Neos\Ui\TypeConverter\ChangeCollectionConverter;
 use Neos\Neos\Utility\NodeUriPathSegmentGenerator;
 
+/**
+ * @internal
+ */
 class BackendServiceController extends ActionController
 {
     use TranslationTrait;

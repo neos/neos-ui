@@ -13,6 +13,7 @@ namespace Neos\Neos\Ui\Exception;
 
 /**
  * InvalidNodeCreationHandlerException exception
+ * @internal
  */
 class InvalidNodeCreationHandlerException extends \Exception
 {

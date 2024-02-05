@@ -34,6 +34,9 @@ use Neos\Neos\Ui\Domain\InitialData\NodeTypeGroupsAndRolesProviderInterface;
 use Neos\Neos\Ui\Domain\InitialData\RoutesProviderInterface;
 use Neos\Neos\Ui\Presentation\ApplicationView;
 
+/**
+ * @internal
+ */
 class BackendController extends ActionController
 {
     /**

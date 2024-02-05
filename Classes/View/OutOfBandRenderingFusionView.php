@@ -18,6 +18,7 @@ use Neos\Neos\View\FusionView;
 
 /**
  * A Fusion view capable of out-of-band rendering
+ * @internal
  */
 class OutOfBandRenderingFusionView extends FusionView implements OutOfBandRenderingCapable
 {

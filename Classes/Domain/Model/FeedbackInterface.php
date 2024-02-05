@@ -13,6 +13,9 @@ namespace Neos\Neos\Ui\Domain\Model;
 
 use Neos\Flow\Mvc\Controller\ControllerContext;
 
+/**
+ * @internal
+ */
 interface FeedbackInterface
 {
     /**

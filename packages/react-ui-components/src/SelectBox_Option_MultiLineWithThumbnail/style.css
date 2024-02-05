@@ -1,6 +1,26 @@
 .multiLineWithThumbnail__item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: var(--spacing-Half);
+    align-items: start;
     box-sizing: content-box;
     background-color: var(--colors-ContrastDarkest);
+}
+
+.multiLineWithThumbnail__item span {
+    grid-column: 2;
+    grid-row: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &.multiLineWithThumbnail__secondaryLabel {
+        grid-row: 2;
+    }
+
+    &.multiLineWithThumbnail__tertiaryLabel {
+        grid-row: 3;
+    }
 }
 
 .multiLineWithThumbnail__item--multiLine {
@@ -26,17 +46,17 @@
 .multiLineWithThumbnail__image {
     width: calc(1.33 * (var(--spacing-GoldenUnit) + var(--spacing-Full)));
     height: calc(var(--spacing-GoldenUnit) + var(--spacing-Full));
+    grid-column: 1;
+    grid-row: 1 / 4;
     object-fit: contain;
     background-color: #fff;
     background-size: 10px 10px;
     background-position: 0 0, 25px 25px;
     background-image: linear-gradient(45deg, #cccccc 25%, transparent 25%, transparent 75%, #cccccc 75%, #cccccc), linear-gradient(45deg, #cccccc 25%, transparent 25%, transparent 75%, #cccccc 75%, #cccccc);
-    margin-right: .75em;
     display: inline-block;
     vertical-align: middle;
-    margin-left: -var(--spacing-Full);
-    margin-top: -var(--spacing-Half);
-    margin-bottom: -var(--spacing-Half);
+    margin-left: -var(--spacing-Half);
+    align-self: center;
 }
 
 .multiLineWithThumbnail__item:hover .multiLineWithThumbnail__secondaryLabel,

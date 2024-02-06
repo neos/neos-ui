@@ -15,7 +15,8 @@ use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
 
 /**
- * @todo EEL helpers are still to be declared as internal
+ * @internal implementation detail of the Neos Ui to build its initialState.
+ *           determines if to use the compiled script resources
  */
 class StaticResourcesHelper implements ProtectedContextAwareInterface
 {

@@ -69,10 +69,9 @@ class ContentDimensionsHelper implements ProtectedContextAwareInterface
 
     /**
      * @param DimensionSpacePoint $dimensions Dimension values indexed by dimension name
-     * @return array<string,array<int,string>> Allowed preset names for the given dimension combination
-     *                                         indexed by dimension name
+     * @return array<string,array<int,string>>|object Allowed preset names for the given dimension combination indexed by dimension name
      */
-    public function allowedPresetsByName(DimensionSpacePoint $dimensions, ContentRepositoryId $contentRepositoryId): array
+    public function allowedPresetsByName(DimensionSpacePoint $dimensions, ContentRepositoryId $contentRepositoryId): array|object
     {
         $contentDimensionHelperInternals = $this->contentRepositoryRegistry->buildService($contentRepositoryId, new ContentDimensionsHelperInternalsFactory());
         $contentDimensionSource = $contentDimensionHelperInternals->contentDimensionSource;
@@ -89,7 +88,8 @@ class ContentDimensionsHelper implements ProtectedContextAwareInterface
             }
         }
 
-        return $allowedPresets;
+        /** empty arrays must be rendered as `{}` in json for our client code to work */
+        return $allowedPresets === [] ? new \stdClass() : $allowedPresets;
     }
 
     /** @return array<string,array<int,string>> */

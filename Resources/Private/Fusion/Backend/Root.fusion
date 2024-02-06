@@ -232,6 +232,12 @@ backend = Neos.Fusion:Template {
                         module = 'media/browser'
                     }
                 }
+                defaultModule = Neos.Fusion:UriBuilder {
+                    package = 'Neos.Neos'
+                    controller = 'Backend\\Backend'
+                    action = 'index'
+                    absolute = true
+                }
             }
             login = Neos.Fusion:UriBuilder {
                 controller = 'Login'

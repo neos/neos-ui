@@ -32,6 +32,7 @@ export const initializeJsAPI = (parent: {[propName: string]: any}, {alias = 'neo
     addLibrary('use', initializeUse(addLibrary, neos));
     addLibrary('q', initializeFlowQuery(routes));
     addLibrary('endpoints', initializeEndpoints(routes));
+    addLibrary('routes', routes);
 
     //
     // Attach Neos API to the parent object

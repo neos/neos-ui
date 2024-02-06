@@ -38,7 +38,8 @@ export function * impersonateRestore({globalRegistry}) {
             } else {
                 yield put(actions.UI.FlashMessages.add('restoreUserImpersonateUser', errorMessage, 'error'));
             }
-            window.location.pathname = '/neos';
+
+            window.location.href = $get('core.modules.defaultModule', window.neos.routes);
         } catch (error) {
             yield put(actions.UI.FlashMessages.add('restoreUserImpersonateUser', errorMessage, 'error'));
         }

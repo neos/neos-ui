@@ -11,9 +11,7 @@ namespace Neos\Neos\Ui\Fusion\Helper;
  * source code.
  */
 
-use Neos\ContentRepository\Core\Dimension\ContentDimension;
 use Neos\ContentRepository\Core\Dimension\ContentDimensionId;
-use Neos\ContentRepository\Core\Dimension\ContentDimensionSourceInterface;
 use Neos\ContentRepository\Core\DimensionSpace\AbstractDimensionSpacePoint;
 use Neos\ContentRepository\Core\DimensionSpace\DimensionSpacePoint;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
@@ -22,7 +20,8 @@ use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
 
 /**
- * @todo EEL helpers are still to be declared as internal
+ * @internal implementation detail of the Neos Ui to build its initialState.
+ *           only used in EEL for the configuration Neos.Neos.Ui.initialState.
  */
 class ContentDimensionsHelper implements ProtectedContextAwareInterface
 {

@@ -16,13 +16,12 @@ use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Security\Context;
-use Neos\Neos\Domain\Service\UserService as DomainUserService;
 use Neos\Neos\Domain\Service\WorkspaceNameBuilder;
 use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService;
 
 /**
- * The Workspace helper for EEL contexts
- * @todo EEL helpers are still to be declared as internal
+ * @internal implementation detail of the Neos Ui to build its initialState.
+ *           and used for the workspace-info endpoint.
  */
 class WorkspaceHelper implements ProtectedContextAwareInterface
 {
@@ -40,24 +39,9 @@ class WorkspaceHelper implements ProtectedContextAwareInterface
 
     /**
      * @Flow\Inject
-     * @var DomainUserService
-     */
-    protected $domainUserService;
-
-    /**
-     * @Flow\Inject
      * @var Context
      */
     protected $securityContext;
-
-    /**
-     * @return array<string,array<string,mixed>>
-     */
-    public function getAllowedTargetWorkspaces(ContentRepositoryId $contentRepositoryId): array
-    {
-        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
-        return $this->workspaceService->getAllowedTargetWorkspaces($contentRepository);
-    }
 
     /**
      * @return array<string,mixed>
@@ -66,6 +50,7 @@ class WorkspaceHelper implements ProtectedContextAwareInterface
     {
         $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
         $currentAccount = $this->securityContext->getAccount();
+        // todo use \Neos\Neos\Service\UserService::getPersonalWorkspaceName instead?
         $personalWorkspaceName = WorkspaceNameBuilder::fromAccountIdentifier($currentAccount->getAccountIdentifier());
         $personalWorkspace = $contentRepository->getWorkspaceFinder()->findOneByName($personalWorkspaceName);
 
@@ -83,8 +68,6 @@ class WorkspaceHelper implements ProtectedContextAwareInterface
     }
 
     /**
-     * All methods are considered safe
-     *
      * @param string $methodName
      * @return bool
      */

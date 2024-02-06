@@ -25,8 +25,9 @@ final class RenderingModeHelper implements ProtectedContextAwareInterface
     /**
      * Returns the sorted configuration of all rendering modes {@see RenderingMode}
      *
-     * todo: evaluate if this should be part of {@see RenderingModeService}
-     * @return array
+     * TODO evaluate if this should be part of {@see RenderingModeService}
+     *
+     * @return array<string,array<mixed>>
      */
     public function findAllSorted(): array
     {

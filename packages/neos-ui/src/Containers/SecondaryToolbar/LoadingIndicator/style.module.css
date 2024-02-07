@@ -19,6 +19,12 @@
     animation: cssload-width 2s cubic-bezier(.45, 0, 1, 1) infinite;
 }
 
+.loadingIndicator__failed {
+    height: 100%;
+    position: relative;
+    background-color: red;
+}
+
 @keyframes cssload-width {
     0%,
     100% {

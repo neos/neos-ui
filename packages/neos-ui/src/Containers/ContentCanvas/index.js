@@ -23,6 +23,7 @@ import style from './style.module.css';
 }), {
     startLoading: actions.UI.ContentCanvas.startLoading,
     stopLoading: actions.UI.ContentCanvas.stopLoading,
+    loadingFailed: actions.UI.ContentCanvas.loadingFailed,
     requestRegainControl: actions.UI.ContentCanvas.requestRegainControl,
     requestLogin: actions.UI.ContentCanvas.requestLogin
 })
@@ -39,6 +40,7 @@ export default class ContentCanvas extends PureComponent {
         src: PropTypes.string,
         startLoading: PropTypes.func.isRequired,
         stopLoading: PropTypes.func.isRequired,
+        loadingFailed: PropTypes.func.isRequired,
         requestRegainControl: PropTypes.func.isRequired,
         requestLogin: PropTypes.func.isRequired,
         currentEditPreviewMode: PropTypes.string.isRequired,
@@ -56,6 +58,8 @@ export default class ContentCanvas extends PureComponent {
     // Make sure we skip the loading bar update when triggered from inline
     // We don't need to put this into state
     skipNextLoaderStatusUpdate = false;
+
+    iframeInitialisationTimeout = null;
 
     componentDidUpdate(prevProps) {
         // Start loading as soon as the src has changed, but watch out for skipNextLoaderStatusUpdate
@@ -145,10 +149,17 @@ export default class ContentCanvas extends PureComponent {
     }
 
     handelLoadStart = () => {
+        if (this.iframeInitialisationTimeout) {
+            clearTimeout(this.iframeInitialisationTimeout);
+        }
         this.props.startLoading();
     };
 
     onFrameChange = (iframeWindow, iframeDocument) => {
+        if (this.iframeInitialisationTimeout) {
+            clearTimeout(this.iframeInitialisationTimeout);
+        }
+
         if (iframeDocument.__isInitialized) {
             return;
         }
@@ -160,8 +171,21 @@ export default class ContentCanvas extends PureComponent {
     }
 
     handleFrameAccess = event => {
-        const {requestRegainControl, requestLogin} = this.props;
+        const {requestRegainControl, requestLogin, loadingFailed} = this.props;
         const iframe = event.target;
+
+        if (this.iframeInitialisationTimeout) {
+            clearTimeout(this.iframeInitialisationTimeout);
+        }
+
+        // this callback is called onLoad, thus the response from the server was already received.
+        // but the neos ui expects the event `Neos.Neos.Ui.ContentReady` to be fired (see contentDidUpdate) to continue
+        // if that doesn't happen after two seconds we indicate that loading took to long
+        // https://github.com/neos/neos-ui/issues/3477
+        this.iframeInitialisationTimeout = setTimeout(() => {
+            console.error('The server did not respond as expected. The iframe should boot up and fire the `Neos.Neos.Ui.ContentReady` event. Timed out after 2 seconds.');
+            loadingFailed();
+        }, 500);
 
         try {
             if (iframe) {
@@ -201,6 +225,12 @@ export default class ContentCanvas extends PureComponent {
             console.error(`Lost access to iframe: ${err}`);
             this.setState({isVisible: false});
             requestRegainControl(this.state.loadedSrc, err.toString());
+        }
+    }
+
+    componentWillUnmount() {
+        if (this.iframeInitialisationTimeout) {
+            clearTimeout(this.iframeInitialisationTimeout);
         }
     }
 }

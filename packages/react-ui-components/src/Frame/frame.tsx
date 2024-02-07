@@ -184,6 +184,7 @@ export default class Frame extends PureComponent<FrameProps> {
 
     public componentWillUnmount(): void {
         if (this.ref) {
+            // todo not a listener!!!
             document.removeEventListener('Neos.Neos.Ui.ContentReady', this.renderFrameContents);
         }
         this.removeClickListener();

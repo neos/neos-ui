@@ -12,7 +12,6 @@ import {isNodeCollapsed} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/he
 import {neos} from '@neos-project/neos-ui-decorators';
 
 import hashSum from 'hash-sum';
-import moment from 'moment';
 import {urlWithParams} from '@neos-project/utils-helpers/src/urlWithParams';
 
 const getContextPath = node => node?.contextPath;

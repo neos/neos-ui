@@ -170,10 +170,9 @@ export default class Node extends PureComponent {
         const {node} = this.props;
 
         const isDisabled = node?.properties?._hidden;
-        const enableAfterDateTime = node?.properties?.enableAfterDateTime;
-        const disableAfterDateTime = node?.properties?.disableAfterDateTime;
+        const hasTimeableNodeVisibility = node?.properties?._hasTimeableNodeVisibility;
 
-        if (enableAfterDateTime || disableAfterDateTime) {
+        if (hasTimeableNodeVisibility) {
             const circleColor = isDisabled ? 'error' : 'primaryBlue';
 
             return (

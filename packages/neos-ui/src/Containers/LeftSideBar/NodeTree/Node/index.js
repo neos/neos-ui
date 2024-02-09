@@ -170,21 +170,27 @@ export default class Node extends PureComponent {
     getCustomIconComponent() {
         const {node} = this.props;
 
-        const isHidden = node?.properties?._hidden;
-        const isHiddenBefore = node?.properties?.enableAfterDateTime;
-        const isHiddenAfter = node?.properties?.disableAfterDateTime;
+        const isDisabled = node?.properties?._hidden;
+        const enableAfterDateTime = node?.properties?.enableAfterDateTime;
+        const disableAfterDateTime = node?.properties?.disableAfterDateTime;
 
-        if (isHiddenBefore || isHiddenAfter) {
-            let isCurrentlyHidden = false;
-            isCurrentlyHidden = isHiddenBefore && moment(isHiddenBefore).isAfter(moment()) ? true : isCurrentlyHidden;
-            isCurrentlyHidden = isHiddenAfter && moment(isHiddenAfter).isBefore(moment()) ? true : isCurrentlyHidden;
-            const circleColor = isCurrentlyHidden && isHidden ? 'error' : 'primaryBlue';
+        if (enableAfterDateTime || disableAfterDateTime) {
+            const circleColor = isDisabled ? 'error' : 'primaryBlue';
 
             return (
                 <span className="fa-layers fa-fw">
                     <Icon icon={this.getIcon()} />
                     <Icon icon="circle" color={circleColor} transform="shrink-5 down-6 right-4" />
                     <Icon icon="clock" transform="shrink-9 down-6 right-4" />
+                </span>
+            );
+        }
+        if (isDisabled) {
+            return (
+                <span className="fa-layers fa-fw">
+                    <Icon icon={this.getIcon()} />
+                    <Icon icon="circle" color="error" transform="shrink-3 down-6 right-4" />
+                    <Icon icon="times" transform="shrink-7 down-6 right-4" />
                 </span>
             );
         }

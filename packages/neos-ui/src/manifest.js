@@ -22,7 +22,7 @@ import initializeContentDomNode from '@neos-project/neos-ui-guest-frame/src/init
 import style from '@neos-project/neos-ui-guest-frame/src/style.css';
 import backend from '@neos-project/neos-ui-backend-connector';
 
-manifest('main', {}, ({globalRegistry, routes}) => {
+manifest('main', {}, (globalRegistry, {routes}) => {
     //
     // Create edit preview mode registry
     //

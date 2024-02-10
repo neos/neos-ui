@@ -18,6 +18,7 @@ use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\MvcPropertyMappingConfiguration;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\Property\PropertyMapper;
+use Neos\Flow\Property\TypeConverter\DenormalizingObjectConverter;
 use Neos\Flow\Property\TypeConverter\PersistentObjectConverter;
 use Neos\Utility\Exception\InvalidTypeException;
 use Neos\Utility\TypeHandling;
@@ -51,6 +52,18 @@ class NodePropertyConversionService
     public function convert(NodeType $nodeType, $propertyName, $rawValue, Context $context)
     {
         $propertyType = $nodeType->getPropertyType($propertyName);
+
+        /**
+         * Explicit value object support, as they can be stored directly the node properties flow_json_array
+         * {@see \Neos\Flow\Persistence\Doctrine\DataTypes\JsonArrayType::serializeValueObject}
+         */
+        $valueIsDeserializeable = DenormalizingObjectConverter::canConvertFromSourceType(
+            gettype($rawValue),
+            $propertyType
+        );
+        if ($valueIsDeserializeable) {
+            return DenormalizingObjectConverter::convertFromSource($rawValue, $propertyType);
+        }
 
         switch ($propertyType) {
             case 'string':

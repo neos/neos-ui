@@ -4,7 +4,7 @@ import {actionTypes, actions} from '@neos-project/neos-ui-redux-store';
 import backend from '@neos-project/neos-ui-backend-connector';
 import {$get} from 'plow-js';
 
-export function * impersonateRestore({globalRegistry}) {
+export function * impersonateRestore({globalRegistry, routes}) {
     const {impersonateRestore} = backend.get().endpoints;
     const i18nRegistry = globalRegistry.get('i18n');
     const errorMessage = i18nRegistry.translate(
@@ -39,7 +39,7 @@ export function * impersonateRestore({globalRegistry}) {
                 yield put(actions.UI.FlashMessages.add('restoreUserImpersonateUser', errorMessage, 'error'));
             }
 
-            window.location.href = $get('core.modules.defaultModule', window.neos.routes);
+            window.location.href = $get('core.modules.defaultModule', routes);
         } catch (error) {
             yield put(actions.UI.FlashMessages.add('restoreUserImpersonateUser', errorMessage, 'error'));
         }

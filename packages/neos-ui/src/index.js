@@ -81,7 +81,7 @@ function * application() {
     //
     // Bootstrap the saga middleware with initial sagas
     //
-    globalRegistry.get('sagas').getAllAsList().forEach(element => sagaMiddleWare.run(element.saga, {store, globalRegistry, configuration}));
+    globalRegistry.get('sagas').getAllAsList().forEach(element => sagaMiddleWare.run(element.saga, {store, globalRegistry, configuration, routes}));
 
     //
     // Tell everybody, that we're booting now

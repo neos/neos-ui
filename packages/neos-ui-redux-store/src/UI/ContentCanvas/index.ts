@@ -17,7 +17,6 @@ export interface State extends Readonly<{
     formattingUnderCursor: Formatting;
     currentlyEditedPropertyName: string | null;
     isLoading: boolean;
-    loadingFailed: boolean;
     focusedProperty: string | null;
     backgroundColor: string;
     shouldScrollIntoView: boolean;
@@ -30,7 +29,6 @@ export const defaultState: State = {
     formattingUnderCursor: {},
     currentlyEditedPropertyName: null,
     isLoading: true,
-    loadingFailed: false,
     focusedProperty: null,
     backgroundColor: '#ffffff',
     shouldScrollIntoView: false,
@@ -46,7 +44,6 @@ export enum actionTypes {
     FORMATTING_UNDER_CURSOR = '@neos/neos-ui/UI/ContentCanvas/FORMATTING_UNDER_CURSOR',
     SET_CURRENTLY_EDITED_PROPERTY_NAME = '@neos/neos-ui/UI/ContentCanvas/SET_CURRENTLY_EDITED_PROPERTY_NAME',
     START_LOADING = '@neos/neos-ui/UI/ContentCanvas/START_LOADING',
-    LOADING_FAILED = '@neos/neos-ui/UI/ContentCanvas/LOADING_FAILED',
     STOP_LOADING = '@neos/neos-ui/UI/ContentCanvas/STOP_LOADING',
     RELOAD = '@neos/neos-ui/UI/ContentCanvas/RELOAD',
     FOCUS_PROPERTY = '@neos/neos-ui/UI/ContentCanvas/FOCUS_PROPERTY',
@@ -62,7 +59,6 @@ const setFormattingUnderCursor = (formatting: Formatting) => createAction(action
 const setCurrentlyEditedPropertyName = (propertyName: string) => createAction(actionTypes.SET_CURRENTLY_EDITED_PROPERTY_NAME, propertyName);
 const startLoading = () => createAction(actionTypes.START_LOADING);
 const stopLoading = () => createAction(actionTypes.STOP_LOADING);
-const loadingFailed = () => createAction(actionTypes.LOADING_FAILED);
 const reload = (uri: string) => createAction(actionTypes.RELOAD, {uri});
 // Set a flag to tell ContentCanvas to scroll the focused node into view
 const requestScrollIntoView = (activate: boolean) => createAction(actionTypes.REQUEST_SCROLL_INTO_VIEW, activate);
@@ -81,7 +77,6 @@ export const actions = {
     setCurrentlyEditedPropertyName,
     startLoading,
     stopLoading,
-    loadingFailed,
     reload,
     requestScrollIntoView,
     requestRegainControl,
@@ -122,18 +117,10 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
         }
         case actionTypes.STOP_LOADING: {
             draft.isLoading = false;
-            draft.loadingFailed = false;
             break;
         }
         case actionTypes.START_LOADING: {
             draft.isLoading = true;
-            draft.loadingFailed = false;
-            break;
-        }
-        case actionTypes.LOADING_FAILED: {
-            if (draft.isLoading) {
-                draft.loadingFailed = true;
-            }
             break;
         }
         case actionTypes.REQUEST_SCROLL_INTO_VIEW: {

@@ -163,6 +163,15 @@ export default class ContentCanvas extends PureComponent {
         const {requestRegainControl, requestLogin} = this.props;
         const iframe = event.target;
 
+        if (iframe?.contentDocument) {
+            const {stopLoading} = this.props;
+            iframe.contentDocument.addEventListener('DOMContentLoaded', () => {
+                iframe.contentDocument.__isInitialized = true;
+                this.skipNextLoaderStatusUpdate = true;
+                stopLoading();
+            });
+        }
+
         try {
             if (iframe) {
                 // TODO: Find a more reliable way to determine login page

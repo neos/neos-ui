@@ -127,8 +127,9 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
                 $node->nodeAggregateId
             )->isHidden,
             '_hiddenInIndex' => $node->getProperty('_hiddenInIndex'),
-            //'_hiddenBeforeDateTime' => $node->getHiddenBeforeDateTime() instanceof \DateTimeInterface,
-            //'_hiddenAfterDateTime' => $node->getHiddenAfterDateTime() instanceof \DateTimeInterface,
+            '_hasTimeableNodeVisibility' =>
+                $node->getProperty('enableAfterDateTime') instanceof \DateTimeInterface
+                || $node->getProperty('disableAfterDateTime') instanceof \DateTimeInterface,
         ];
 
         if ($controllerContext !== null) {

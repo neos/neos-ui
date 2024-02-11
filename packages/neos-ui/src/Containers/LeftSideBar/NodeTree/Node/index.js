@@ -11,7 +11,6 @@ import {isNodeCollapsed} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/he
 import {neos} from '@neos-project/neos-ui-decorators';
 
 import hashSum from 'hash-sum';
-import moment from 'moment';
 import {urlWithParams} from '@neos-project/utils-helpers/src/urlWithParams';
 
 const getContextPath = node => node?.contextPath;
@@ -169,31 +168,26 @@ export default class Node extends PureComponent {
     getCustomIconComponent() {
         const {node} = this.props;
 
-        const isHidden = node?.properties?._hidden;
-        const isHiddenBefore = node?.properties?._hiddenBeforeDateTime;
-        const isHiddenAfter = node?.properties?._hiddenAfterDateTime;
+        const isDisabled = node?.properties?._hidden;
+        const hasTimeableNodeVisibility = node?.properties?._hasTimeableNodeVisibility;
 
-        if (isHidden) {
-            return (
-                <span className="fa-layers fa-fw">
-                    <Icon icon={this.getIcon()} />
-                    <Icon icon="circle" color="error" transform="shrink-3 down-6 right-4" />
-                    <Icon icon="times" transform="shrink-7 down-6 right-4" />
-                </span>
-            );
-        }
-
-        if (isHiddenBefore || isHiddenAfter) {
-            let isCurrentlyHidden = false;
-            isCurrentlyHidden = isHiddenBefore && moment(isHiddenBefore).isAfter(moment()) ? true : isCurrentlyHidden;
-            isCurrentlyHidden = isHiddenAfter && moment(isHiddenAfter).isBefore(moment()) ? true : isCurrentlyHidden;
-            const circleColor = isCurrentlyHidden ? 'error' : 'primaryBlue';
+        if (hasTimeableNodeVisibility) {
+            const circleColor = isDisabled ? 'error' : 'primaryBlue';
 
             return (
                 <span className="fa-layers fa-fw">
                     <Icon icon={this.getIcon()} />
                     <Icon icon="circle" color={circleColor} transform="shrink-5 down-6 right-4" />
                     <Icon icon="clock" transform="shrink-9 down-6 right-4" />
+                </span>
+            );
+        }
+        if (isDisabled) {
+            return (
+                <span className="fa-layers fa-fw">
+                    <Icon icon={this.getIcon()} />
+                    <Icon icon="circle" color="error" transform="shrink-3 down-6 right-4" />
+                    <Icon icon="times" transform="shrink-7 down-6 right-4" />
                 </span>
             );
         }

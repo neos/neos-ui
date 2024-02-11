@@ -30,6 +30,7 @@ use Neos\Utility\ObjectAccess;
  * An Object Converter for ChangeCollections.
  *
  * @Flow\Scope("singleton")
+ * @internal
  */
 class ChangeCollectionConverter
 {

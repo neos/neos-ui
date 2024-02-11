@@ -18,6 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 
 /**
  * The interface for views capable of out-of-band rendering by accepting string serialized entry points
+ * @internal experimental
  */
 interface OutOfBandRenderingCapable
 {

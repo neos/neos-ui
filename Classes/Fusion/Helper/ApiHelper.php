@@ -13,6 +13,9 @@ namespace Neos\Neos\Ui\Fusion\Helper;
 
 use Neos\Eel\ProtectedContextAwareInterface;
 
+/**
+ * @todo EEL helpers are still to be declared as internal
+ */
 class ApiHelper implements ProtectedContextAwareInterface
 {
     /**

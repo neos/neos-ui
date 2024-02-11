@@ -43,6 +43,9 @@ use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
 
 /**
  * Changes a property on a node
+ * @internal These objects internally reflect possible operations made by the Neos.Ui.
+ *           They are sorely an implementation detail. You should not use them!
+ *           Please look into the php command API of the Neos CR instead.
  */
 class Property extends AbstractChange
 {

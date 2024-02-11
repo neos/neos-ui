@@ -19,6 +19,7 @@ use Neos\Flow\I18n\Translator;
 
 /**
  * A trait to do easy backend module translations
+ * @internal
  */
 trait TranslationTrait
 {

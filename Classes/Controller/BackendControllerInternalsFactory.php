@@ -20,6 +20,7 @@ use Neos\ContentRepository\Core\Factory\ContentRepositoryServiceFactoryInterface
 /**
  * @deprecated
  * @implements ContentRepositoryServiceFactoryInterface<BackendControllerInternals>
+ * @internal
  */
 class BackendControllerInternalsFactory implements ContentRepositoryServiceFactoryInterface
 {

@@ -27,7 +27,6 @@ export const defaultState: State = {
 // Export the action types
 //
 export enum actionTypes {
-    BOOT = '@neos/neos-ui/System/BOOT',
     INIT = '@neos/neos-ui/System/INIT',
     READY = '@neos/neos-ui/System/READY',
     AUTHENTICATION_TIMEOUT = '@neos/neos-ui/System/AUTHENTICATION_TIMEOUT',
@@ -38,7 +37,6 @@ export enum actionTypes {
 // Export the actions
 //
 export const actions = {
-    boot: () => createAction(actionTypes.BOOT),
     init: (state: GlobalState) => createAction(actionTypes.INIT, state),
     ready: () => createAction(actionTypes.READY),
     authenticationTimeout: () => createAction(actionTypes.AUTHENTICATION_TIMEOUT),

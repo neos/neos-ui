@@ -22,6 +22,7 @@ use Neos\Utility\TypeHandling;
 
 /**
  * @Flow\Scope("singleton")
+ * @internal
  */
 class NodePropertyConversionService
 {

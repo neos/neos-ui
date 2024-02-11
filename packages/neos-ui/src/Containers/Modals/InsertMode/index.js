@@ -4,9 +4,7 @@ import {connect} from 'react-redux';
 
 import {neos} from '@neos-project/neos-ui-decorators';
 
-import Button from '@neos-project/react-ui-components/src/Button/';
-import Dialog from '@neos-project/react-ui-components/src/Dialog/';
-import Icon from '@neos-project/react-ui-components/src/Icon/';
+import {Button, Dialog, Icon} from '@neos-project/react-ui-components';
 import I18n from '@neos-project/neos-ui-i18n';
 
 import {InsertModeSelector} from '@neos-project/neos-ui-containers';

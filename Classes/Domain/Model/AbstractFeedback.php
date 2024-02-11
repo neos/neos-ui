@@ -14,6 +14,9 @@ namespace Neos\Neos\Ui\Domain\Model;
 
 use Neos\Flow\Mvc\Controller\ControllerContext;
 
+/**
+ * @internal
+ */
 abstract class AbstractFeedback implements FeedbackInterface
 {
     /** @return array<string, mixed> */

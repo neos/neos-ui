@@ -1,9 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import Button from '@neos-project/react-ui-components/src/Button/';
-import Icon from '@neos-project/react-ui-components/src/Icon/';
-import DropDown from '@neos-project/react-ui-components/src/DropDown/';
+import {Button, Icon, DropDown} from '@neos-project/react-ui-components';
 import style from './style.module.css';
 import backend from '@neos-project/neos-ui-backend-connector';
 import mapValues from 'lodash.mapvalues';

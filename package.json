@@ -19,7 +19,7 @@
     "test-update-snapshots": "yarn test -u"
   },
   "engines": {
-    "node": "~16"
+    "node": "~20"
   },
   "devDependencies": {
     "@neos-project/eslint-config-neos": "^2.6.1",

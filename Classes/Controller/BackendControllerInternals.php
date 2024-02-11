@@ -20,6 +20,7 @@ use Neos\ContentRepository\Core\Factory\ContentRepositoryServiceInterface;
 
 /**
  * @deprecated really un-nice :D
+ * @internal
  */
 class BackendControllerInternals implements ContentRepositoryServiceInterface
 {

@@ -22,6 +22,9 @@ use Neos\Eel\FlowQuery\Operations\AbstractOperation;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Flow\Annotations as Flow;
 
+/**
+ * @internal
+ */
 class NeosUiDefaultNodesOperation extends AbstractOperation
 {
     /**

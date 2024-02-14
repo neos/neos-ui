@@ -13,6 +13,7 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
 
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindChildNodesFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
+use Neos\Flow\Mvc\ActionRequest;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
@@ -106,7 +107,7 @@ class UpdateNodeInfo extends AbstractFeedback
     {
         return $this->node
             ? [
-                'byContextPath' => $this->serializeNodeRecursively($this->node, $controllerContext)
+                'byContextPath' => $this->serializeNodeRecursively($this->node, $controllerContext->getRequest())
             ]
             : [];
     }
@@ -116,7 +117,7 @@ class UpdateNodeInfo extends AbstractFeedback
      *
      * @return array<string,?array<string,mixed>>
      */
-    private function serializeNodeRecursively(Node $node, ControllerContext $controllerContext): array
+    private function serializeNodeRecursively(Node $node, ActionRequest $actionRequest): array
     {
         $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
@@ -125,14 +126,14 @@ class UpdateNodeInfo extends AbstractFeedback
             $nodeAddressFactory->createFromNode($node)->serializeForUri()
             => $this->nodeInfoHelper->renderNodeWithPropertiesAndChildrenInformation(
                 $node,
-                $controllerContext
+                $actionRequest
             )
         ];
 
         if ($this->isRecursive === true) {
             $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
             foreach ($subgraph->findChildNodes($node->nodeAggregateId, FindChildNodesFilter::create()) as $childNode) {
-                $result = array_merge($result, $this->serializeNodeRecursively($childNode, $controllerContext));
+                $result = array_merge($result, $this->serializeNodeRecursively($childNode, $actionRequest));
             }
         }
 

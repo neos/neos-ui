@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace Neos\Neos\Ui\Infrastructure\Configuration;
 
 use Neos\Flow\Annotations as Flow;
-use Neos\Flow\Mvc\Controller\ControllerContext;
+use Neos\Flow\Mvc\ActionRequest;
 use Neos\Neos\Ui\Domain\InitialData\FrontendConfigurationProviderInterface;
 use Neos\Neos\Ui\Domain\Service\ConfigurationRenderingService;
 
@@ -33,11 +33,11 @@ final class FrontendConfigurationProvider implements FrontendConfigurationProvid
     protected array $frontendConfigurationBeforeProcessing;
 
     public function getFrontendConfiguration(
-        ControllerContext $controllerContext
+        ActionRequest $actionRequest
     ): array {
         return $this->configurationRenderingService->computeConfiguration(
             $this->frontendConfigurationBeforeProcessing,
-            ['controllerContext' => $controllerContext]
+            ['request' => $actionRequest]
         );
     }
 }

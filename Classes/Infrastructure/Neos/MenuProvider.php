@@ -15,7 +15,11 @@ declare(strict_types=1);
 namespace Neos\Neos\Ui\Infrastructure\Neos;
 
 use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Mvc\ActionRequest;
+use Neos\Flow\Mvc\ActionResponse;
+use Neos\Flow\Mvc\Controller\Arguments;
 use Neos\Flow\Mvc\Controller\ControllerContext;
+use Neos\Flow\Mvc\Routing\UriBuilder;
 use Neos\Neos\Controller\Backend\MenuHelper;
 use Neos\Neos\Ui\Domain\InitialData\MenuProviderInterface;
 use Neos\Utility\PositionalArraySorter;
@@ -29,8 +33,17 @@ final class MenuProvider implements MenuProviderInterface
     #[Flow\Inject]
     protected MenuHelper $menuHelper;
 
-    public function getMenu(ControllerContext $controllerContext): array
+    public function getMenu(ActionRequest $actionRequest): array
     {
+        $uriBuilder = new UriBuilder();
+        $uriBuilder->setRequest($actionRequest);
+        $controllerContext = new ControllerContext(
+            $actionRequest,
+            new ActionResponse(),
+            new Arguments(),
+            $uriBuilder
+        );
+
         $modulesForMenu = $this->menuHelper->buildModuleList($controllerContext);
 
         $result = [];

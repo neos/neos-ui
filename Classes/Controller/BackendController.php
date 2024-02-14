@@ -198,17 +198,17 @@ class BackendController extends ActionController
                 ),
             'frontendConfiguration' =>
                 $this->frontendConfigurationProvider->getFrontendConfiguration(
-                    controllerContext: $this->controllerContext,
+                    actionRequest: $this->request,
                 ),
             'nodeTypes' =>
                 $this->nodeTypeGroupsAndRolesProvider->getNodeTypes(),
             'menu' =>
                 $this->menuProvider->getMenu(
-                    controllerContext: $this->controllerContext,
+                    actionRequest: $this->request,
                 ),
             'initialState' =>
                 $this->initialStateProvider->getInitialState(
-                    controllerContext: $this->controllerContext,
+                    actionRequest: $this->request,
                     contentRepositoryId: $siteDetectionResult->contentRepositoryId,
                     documentNode: $node,
                     site: $siteNode,

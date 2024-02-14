@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Neos\Neos\Ui\Domain\InitialData;
 
-use Neos\Flow\Mvc\Controller\ControllerContext;
+use Neos\Flow\Mvc\ActionRequest;
 
 /**
  * Reads and preprocesses the `Neos.Neos.Ui.frontendConfiguration` settings
@@ -27,6 +27,6 @@ interface FrontendConfigurationProviderInterface
 {
     /** @return array<mixed> */
     public function getFrontendConfiguration(
-        ControllerContext $controllerContext
+        ActionRequest $actionRequest
     ): array;
 }

@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Neos\Neos\Ui\Domain\InitialData;
 
-use Neos\Flow\Mvc\Controller\ControllerContext;
+use Neos\Flow\Mvc\ActionRequest;
 
 /**
  * Retrieves all data needed to render the main burger menu located in the
@@ -27,5 +27,5 @@ interface MenuProviderInterface
     /**
      * @return array<int,array{label:string,icon:string,uri:string,target:string,children:array<int,array{icon:string,label:string,uri:string,position?:string,isActive:bool,target:string,skipI18n:bool}>}>
      */
-    public function getMenu(ControllerContext $controllerContext): array;
+    public function getMenu(ActionRequest $actionRequest): array;
 }

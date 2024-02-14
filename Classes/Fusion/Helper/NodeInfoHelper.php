@@ -14,13 +14,13 @@ namespace Neos\Neos\Ui\Fusion\Helper;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\CountAncestorNodesFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindChildNodesFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
-use Neos\ContentRepository\Core\Projection\ContentGraph\Nodes;
 use Neos\ContentRepository\Core\Projection\NodeHiddenState\NodeHiddenStateFinder;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateClassification;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
-use Neos\Flow\Mvc\Controller\ControllerContext;
+use Neos\Flow\Mvc\ActionRequest;
+use Neos\Flow\Mvc\Routing\UriBuilder;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\FrontendRouting\NodeAddress;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
@@ -30,6 +30,7 @@ use Neos\Neos\Ui\Domain\Service\UserLocaleService;
 use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
 
 /**
+ * @internal
  * @Flow\Scope("singleton")
  * @todo EEL helpers are still to be declared as internal
  */
@@ -78,34 +79,10 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
     /**
      * @return ?array<string,mixed>
-     * @deprecated See methods with specific names for different behaviors
-     */
-    public function renderNode(
-        Node $node,
-        ControllerContext $controllerContext = null,
-        bool $omitMostPropertiesForTreeState = false,
-        string $nodeTypeFilterOverride = null
-    ):?array {
-        return ($omitMostPropertiesForTreeState
-            ? $this->renderNodeWithMinimalPropertiesAndChildrenInformation(
-                $node,
-                $controllerContext,
-                $nodeTypeFilterOverride
-            )
-            : $this->renderNodeWithPropertiesAndChildrenInformation(
-                $node,
-                $controllerContext,
-                $nodeTypeFilterOverride
-            )
-        );
-    }
-
-    /**
-     * @return ?array<string,mixed>
      */
     public function renderNodeWithMinimalPropertiesAndChildrenInformation(
         Node $node,
-        ControllerContext $controllerContext = null,
+        ActionRequest $actionRequest = null,
         string $nodeTypeFilterOverride = null
     ): ?array {
         $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
@@ -132,8 +109,8 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
                 || $node->getProperty('disableAfterDateTime') instanceof \DateTimeInterface,
         ];
 
-        if ($controllerContext !== null) {
-            $nodeInfo = array_merge($nodeInfo, $this->getUriInformation($node, $controllerContext));
+        if ($actionRequest !== null) {
+            $nodeInfo = array_merge($nodeInfo, $this->getUriInformation($node, $actionRequest));
         }
 
         $baseNodeType = $nodeTypeFilterOverride ?: $this->baseNodeType;
@@ -154,7 +131,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
      */
     public function renderNodeWithPropertiesAndChildrenInformation(
         Node $node,
-        ControllerContext $controllerContext = null,
+        ActionRequest $actionRequest = null,
         string $nodeTypeFilterOverride = null
     ): ?array {
         /** @todo implement custom node policy service
@@ -168,8 +145,8 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         $nodeInfo['properties'] = $this->nodePropertyConverterService->getPropertiesArray($node);
         $nodeInfo['isFullyLoaded'] = true;
 
-        if ($controllerContext !== null) {
-            $nodeInfo = array_merge($nodeInfo, $this->getUriInformation($node, $controllerContext));
+        if ($actionRequest !== null) {
+            $nodeInfo = array_merge($nodeInfo, $this->getUriInformation($node, $actionRequest));
         }
 
         $baseNodeType = $nodeTypeFilterOverride ? $nodeTypeFilterOverride : $this->baseNodeType;
@@ -184,16 +161,15 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
      * Get the "uri" and "previewUri" for the given node
      *
      * @param Node $node
-     * @param ControllerContext $controllerContext
      * @return array<string,string>
      */
-    protected function getUriInformation(Node $node, ControllerContext $controllerContext): array
+    protected function getUriInformation(Node $node, ActionRequest $actionRequest): array
     {
         $nodeInfo = [];
         if (!$this->getNodeType($node)->isOfType($this->documentNodeTypeRole)) {
             return $nodeInfo;
         }
-        $nodeInfo['uri'] = $this->previewUri($node, $controllerContext);
+        $nodeInfo['uri'] = $this->previewUri($node, $actionRequest);
         return $nodeInfo;
     }
 
@@ -276,16 +252,14 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
      */
     public function renderNodes(
         array $nodes,
-        ControllerContext $controllerContext,
+        ActionRequest $actionRequest,
         bool $omitMostPropertiesForTreeState = false
     ): array {
-        $methodName = $omitMostPropertiesForTreeState
-            ? 'renderNodeWithMinimalPropertiesAndChildrenInformation'
-            : 'renderNodeWithPropertiesAndChildrenInformation';
-        $mapper = function (Node $node) use ($controllerContext, $methodName) {
-            return $this->$methodName($node, $controllerContext);
+        $mapper = function (Node $node) use ($actionRequest, $omitMostPropertiesForTreeState) {
+            return $omitMostPropertiesForTreeState
+                ? $this->renderNodeWithMinimalPropertiesAndChildrenInformation($node, $actionRequest)
+                : $this->renderNodeWithPropertiesAndChildrenInformation($node, $actionRequest);
         };
-
         return array_values(array_filter(array_map($mapper, $nodes)));
     }
 
@@ -293,7 +267,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
      * @param array<int,?array<string,mixed>> $nodes
      * @return array<int,?array<string,mixed>>
      */
-    public function renderNodesWithParents(array $nodes, ControllerContext $controllerContext): array
+    public function renderNodesWithParents(array $nodes, ActionRequest $actionRequest): array
     {
         // For search operation we want to include all nodes, not respecting the "baseNodeType" setting
         $baseNodeTypeOverride = $this->documentNodeTypeRole;
@@ -307,7 +281,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
                 $renderedNodes[$node->nodeAggregateId->value]['matched'] = true;
             } elseif ($renderedNode = $this->renderNodeWithMinimalPropertiesAndChildrenInformation(
                 $node,
-                $controllerContext,
+                $actionRequest,
                 $baseNodeTypeOverride
             )) {
                 $renderedNode['matched'] = true;
@@ -329,7 +303,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
                 } else {
                     $renderedParentNode = $this->renderNodeWithMinimalPropertiesAndChildrenInformation(
                         $parentNode,
-                        $controllerContext,
+                        $actionRequest,
                         $baseNodeTypeOverride
                     );
                     if ($renderedParentNode) {
@@ -350,46 +324,12 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     }
 
     /**
-     * @param Node $documentNode
-     * @param ControllerContext $controllerContext
-     * @return array<string,mixed>>
-     */
-    public function renderDocumentNodeAndChildContent(
-        Node $documentNode,
-        ControllerContext $controllerContext
-    ): array {
-        return $this->renderNodeAndChildContent($documentNode, $controllerContext);
-    }
-
-    /**
-     * @return array<string,mixed>>
-     */
-    protected function renderNodeAndChildContent(Node $node, ControllerContext $controllerContext): array
-    {
-        $reducer = function ($nodes, $node) use ($controllerContext) {
-            return array_merge($nodes, $this->renderNodeAndChildContent($node, $controllerContext));
-        };
-
-        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
-        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
-
-        return array_reduce(
-            iterator_to_array($this->getChildNodes($node, $this->buildContentChildNodeFilterString())),
-            $reducer,
-            [
-                $nodeAddressFactory->createFromNode($node)->serializeForUri()
-                => $this->renderNodeWithPropertiesAndChildrenInformation($node, $controllerContext)
-            ]
-        );
-    }
-
-    /**
      * @return array<string,array<string,mixed>|null>
      */
     public function defaultNodesForBackend(
         Node $site,
         Node $documentNode,
-        ControllerContext $controllerContext
+        ActionRequest $actionRequest
     ): array {
         // does not support multiple CRs here yet
         $contentRepository = $this->contentRepositoryRegistry->get($site->subgraphIdentity->contentRepositoryId);
@@ -397,37 +337,38 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
         return [
             ($nodeAddressFactory->createFromNode($site)->serializeForUri())
-            => $this->renderNodeWithPropertiesAndChildrenInformation($site, $controllerContext),
+            => $this->renderNodeWithPropertiesAndChildrenInformation($site, $actionRequest),
             ($nodeAddressFactory->createFromNode($documentNode)->serializeForUri())
-            => $this->renderNodeWithPropertiesAndChildrenInformation($documentNode, $controllerContext)
+            => $this->renderNodeWithPropertiesAndChildrenInformation($documentNode, $actionRequest)
         ];
     }
 
-    public function uri(Node|NodeAddress $nodeAddress, ControllerContext $controllerContext): string
+    public function uri(Node|NodeAddress $nodeAddress, ActionRequest $actionRequest): string
     {
         if ($nodeAddress instanceof Node) {
             $contentRepository = $this->contentRepositoryRegistry->get($nodeAddress->subgraphIdentity->contentRepositoryId);
             $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
             $nodeAddress = $nodeAddressFactory->createFromNode($nodeAddress);
         }
-        return (string)NodeUriBuilder::fromRequest($controllerContext->getRequest())->uriFor($nodeAddress);
+        return (string)NodeUriBuilder::fromRequest($actionRequest)->uriFor($nodeAddress);
     }
 
-    public function previewUri(Node $node, ControllerContext $controllerContext): string
+    public function previewUri(Node $node, ActionRequest $actionRequest): string
     {
         $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
         $nodeAddress = $nodeAddressFactory->createFromNode($node);
-        return (string)NodeUriBuilder::fromRequest($controllerContext->getRequest())->previewUriFor($nodeAddress);
+        return (string)NodeUriBuilder::fromRequest($actionRequest)->previewUriFor($nodeAddress);
     }
 
-    public function createRedirectToNode(Node $node, ControllerContext $controllerContext): string
+    public function createRedirectToNode(Node $node, ActionRequest $actionRequest): string
     {
         $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
         $nodeAddress = $nodeAddressFactory->createFromNode($node);
-        return $controllerContext->getUriBuilder()
-            ->reset()
+        $uriBuilder = new UriBuilder();
+        $uriBuilder->setRequest($actionRequest);
+        return $uriBuilder
             ->setCreateAbsoluteUri(true)
             ->setFormat('html')
             ->uriFor('redirectTo', ['node' => $nodeAddress->serializeForUri()], 'Backend', 'Neos.Neos.Ui');
@@ -475,24 +416,6 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         );
     }
 
-    private function getChildNodes(Node $node, string $nodeTypeFilterString): Nodes
-    {
-        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
-
-        return $this->contentRepositoryRegistry->subgraphForNode($node)
-            ->findChildNodes(
-                $node->nodeAggregateId,
-                FindChildNodesFilter::create(nodeTypes: $nodeTypeFilterString)
-            );
-    }
-
-    public function nodeAddress(Node $node): NodeAddress
-    {
-        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
-        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
-        return $nodeAddressFactory->createFromNode($node);
-    }
-
     public function serializedNodeAddress(Node $node): string
     {
         $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
@@ -506,6 +429,13 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
      */
     public function allowsCallOfMethod($methodName)
     {
-        return true;
+        // to control what is used in eel we maintain this list.
+        return in_array($methodName, [
+            'serializedNodeAddress',
+            'createRedirectToNode',
+            'renderNodeWithPropertiesAndChildrenInformation',
+            'defaultNodesForBackend',
+            'uri'
+        ], true);
     }
 }

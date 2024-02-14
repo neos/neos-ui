@@ -80,7 +80,7 @@ class ReloadDocument extends AbstractFeedback
 
         if ($documentNode) {
             return [
-                'uri' => $nodeInfoHelper->previewUri($documentNode, $controllerContext)
+                'uri' => $nodeInfoHelper->previewUri($documentNode, $controllerContext->getRequest())
             ];
         }
 

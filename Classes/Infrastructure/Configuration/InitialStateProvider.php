@@ -17,7 +17,7 @@ namespace Neos\Neos\Ui\Infrastructure\Configuration;
 use Neos\ContentRepository\Core\Factory\ContentRepositoryId;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\Flow\Annotations as Flow;
-use Neos\Flow\Mvc\Controller\ControllerContext;
+use Neos\Flow\Mvc\ActionRequest;
 use Neos\Neos\Domain\Model\User;
 use Neos\Neos\Ui\Domain\InitialData\InitialStateProviderInterface;
 use Neos\Neos\Ui\Domain\Service\ConfigurationRenderingService;
@@ -40,7 +40,7 @@ final class InitialStateProvider implements InitialStateProviderInterface
     protected array $initialStateBeforeProcessing;
 
     public function getInitialState(
-        ControllerContext $controllerContext,
+        ActionRequest $actionRequest,
         ContentRepositoryId $contentRepositoryId,
         ?Node $documentNode,
         ?Node $site,
@@ -49,7 +49,7 @@ final class InitialStateProvider implements InitialStateProviderInterface
         return $this->configurationRenderingService->computeConfiguration(
             $this->initialStateBeforeProcessing,
             [
-                'controllerContext' => $controllerContext,
+                'request' => $actionRequest,
                 'contentRepositoryId' => $contentRepositoryId,
                 'documentNode' => $documentNode,
                 'site' => $site,

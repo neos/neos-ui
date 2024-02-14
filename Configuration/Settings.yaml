@@ -51,7 +51,7 @@ Neos:
         backgroundColor: '#ffffff'
 
       frontendConfiguration:
-        editPreviewModes: '${Neos.Ui.PositionalArraySorter.sort(Configuration.setting(''Neos.Neos.userInterface.editPreviewModes''))}'
+        editPreviewModes: '${Neos.Ui.RenderingMode.findAllSorted()}'
         # You may use this place to deliver some configuration to your custom UI components, e.g.:
         # 'Your.Own:Package':
         #   someKey: someValue
@@ -99,12 +99,11 @@ Neos:
         content: 'Neos.Neos:Content'
         contentCollection: 'Neos.Neos:ContentCollection'
       configurationDefaultEelContext:
-        Neos.Ui.Api: Neos\Neos\Ui\Fusion\Helper\ApiHelper
-        Neos.Ui.Workspace: Neos\Neos\Ui\Fusion\Helper\WorkspaceHelper
-        Neos.Ui.NodeInfo: Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper
         Neos.Ui.ContentDimensions: Neos\Neos\Ui\Fusion\Helper\ContentDimensionsHelper
+        Neos.Ui.NodeInfo: Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper
+        Neos.Ui.RenderingMode: Neos\Neos\Ui\Fusion\Helper\RenderingModeHelper
         Neos.Ui.StaticResources: Neos\Neos\Ui\Fusion\Helper\StaticResourcesHelper
-        Neos.Ui.PositionalArraySorter: Neos\Neos\Ui\Fusion\Helper\PositionalArraySorterHelper
+        Neos.Ui.Workspace: Neos\Neos\Ui\Fusion\Helper\WorkspaceHelper
       documentNodeInformation:
         metaData:
           documentNode: '${Neos.Ui.NodeInfo.serializedNodeAddress(documentNode)}'
@@ -112,7 +111,7 @@ Neos:
           previewUrl: '${Neos.Ui.NodeInfo.createRedirectToNode(documentNode, request)}'
           contentDimensions:
             active: '${Neos.Ui.ContentDimensions.dimensionSpacePointArray(documentNode.subgraphIdentity.dimensionSpacePoint)}'
-            allowedPresets: '${Neos.Ui.Api.emptyArrayToObject(Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.subgraphIdentity.dimensionSpacePoint, documentNode.subgraphIdentity.contentRepositoryId))}'
+            allowedPresets: '${Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.subgraphIdentity.dimensionSpacePoint, documentNode.subgraphIdentity.contentRepositoryId)}'
           documentNodeSerialization: '${Neos.Ui.NodeInfo.renderNodeWithPropertiesAndChildrenInformation(documentNode, request)}'
       initialState:
         changes:
@@ -129,7 +128,7 @@ Neos:
           contentDimensions:
             byName: '${Neos.Ui.ContentDimensions.contentDimensionsByName(contentRepositoryId)}'
             active: '${Neos.Ui.ContentDimensions.dimensionSpacePointArray(documentNode.subgraphIdentity.dimensionSpacePoint)}'
-            allowedPresets: '${Neos.Ui.Api.emptyArrayToObject(Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.subgraphIdentity.dimensionSpacePoint, contentRepositoryId))}'
+            allowedPresets: '${Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.subgraphIdentity.dimensionSpacePoint, contentRepositoryId)}'
           workspaces:
             personalWorkspace: '${Neos.Ui.Workspace.getPersonalWorkspace(contentRepositoryId)}'
         ui:
@@ -205,6 +204,4 @@ Neos:
           position: 'before Neos.Neos'
   Fusion:
     defaultContext:
-      Neos.Ui.Workspace: Neos\Neos\Ui\Fusion\Helper\WorkspaceHelper
       Neos.Ui.StaticResources: Neos\Neos\Ui\Fusion\Helper\StaticResourcesHelper
-      Neos.Ui.PositionalArraySorter: Neos\Neos\Ui\Fusion\Helper\PositionalArraySorterHelper

@@ -30,9 +30,9 @@ use Neos\Neos\Ui\Domain\Service\UserLocaleService;
 use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
 
 /**
- * @internal
  * @Flow\Scope("singleton")
- * @todo EEL helpers are still to be declared as internal
+ * @internal implementation detail of the Neos Ui to build its initialState.
+ *           and used for rendering node properties for the inline element wrapping from php.
  */
 class NodeInfoHelper implements ProtectedContextAwareInterface
 {

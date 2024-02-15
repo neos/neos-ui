@@ -31,7 +31,8 @@ test('Remove homepage title to get one error', async t => {
         .ok('The badge shows one validation error in Props');
 });
 
-test('Remove homepage title and URI segment to get two errors', async t => {
+test('Remove Page title and URI segment to get two errors', async t => {
+    await Page.goToPage('Discarding')
     subSection('Clean title and uri path segment field');
     await t
         .typeText(InspectorTitleProperty, ' ', {replace: true})

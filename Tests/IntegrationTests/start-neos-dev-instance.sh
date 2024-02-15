@@ -4,7 +4,7 @@ set -e
 
 function dc() {
     # use the docker composer plugin
-    docker compose -f ./Tests/IntegrationTests/docker-compose.neos-dev-instance.yaml $@
+    docker-compose -f ./Tests/IntegrationTests/docker-compose.neos-dev-instance.yaml $@
 }
 
 echo "#############################################################################"

@@ -271,14 +271,7 @@ class NodePropertyConverterService
             $propertyMappingConfiguration = new PropertyMappingConfiguration();
             $propertyMappingConfiguration->allowAllProperties();
 
-            $parsedType = [
-                'elementType' => null,
-                'type' => $dataType
-            ];
-            // Special handling for "reference(s)", should be deprecated and normlized to array<Node>
-            if ($dataType !== 'references' && $dataType !== 'reference') {
-                $parsedType = TypeHandling::parseType($dataType);
-            }
+            $parsedType = TypeHandling::parseType($dataType);
 
             if ($this->setTypeConverterForType($propertyMappingConfiguration, $dataType) === false) {
                 $this->setTypeConverterForType($propertyMappingConfiguration, $parsedType['type']);

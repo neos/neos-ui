@@ -37,7 +37,7 @@ class CreationDialogPropertiesCreationHandler implements NodeCreationHandlerInte
                 continue;
             }
             $propertyType = TypeHandling::normalizeType($propertyConfiguration['type'] ?? 'string');
-            if ($propertyValue === '' && !TypeHandling::isSimpleType($propertyType)) {
+            if ($propertyValue === null || ($propertyValue === '' && !TypeHandling::isSimpleType($propertyType))) {
                 continue;
             }
             $propertyValue = $this->nodePropertyConversionService->convert($node->getNodeType(), $propertyName, $propertyValue, $node->getContext());

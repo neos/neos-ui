@@ -295,8 +295,8 @@ class Property extends AbstractChange
 
             if (!$this->getIsInline()
                 && (
-                    $this->getNodeType($node)->hasConfiguration(sprintf('properties.%s.ui.reloadPageIfChanged', $propertyName))
-                    || $this->getNodeType($node)->hasConfiguration(sprintf('references.%s.ui.reloadPageIfChanged', $propertyName))
+                    $this->getNodeType($node)->getConfiguration(sprintf('properties.%s.ui.reloadPageIfChanged', $propertyName))
+                    || $this->getNodeType($node)->getConfiguration(sprintf('references.%s.ui.reloadPageIfChanged', $propertyName))
                 )
             ) {
                 $this->reloadDocument($node);

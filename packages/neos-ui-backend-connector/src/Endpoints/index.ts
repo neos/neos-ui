@@ -26,8 +26,6 @@ export interface Routes {
         content: {
             imageWithMetadata: string;
             createImageVariant: string;
-            loadMasterPlugins: string;
-            loadPluginViews: string;
             uploadAsset: string;
         };
         service: {
@@ -203,26 +201,6 @@ export default (routes: Routes) => {
                 adjustments
             }
         })
-    })).then(response => fetchWithErrorHandling.parseJson(response))
-    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
-
-    const loadMasterPlugins = (workspaceName: WorkspaceName, dimensions: DimensionCombination) => fetchWithErrorHandling.withCsrfToken(() => ({
-        url: urlWithParams(routes.core.content.loadMasterPlugins, {workspaceName, dimensions}),
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })).then(response => fetchWithErrorHandling.parseJson(response))
-    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
-
-    const loadPluginViews = (identifier: string, workspaceName: WorkspaceName, dimensions: DimensionCombination) => fetchWithErrorHandling.withCsrfToken(() => ({
-        url: urlWithParams(routes.core.content.loadPluginViews, {identifier, workspaceName, dimensions}),
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-            'Content-Type': 'application/json'
-        }
     })).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
@@ -681,8 +659,6 @@ export default (routes: Routes) => {
         cutNodes,
         clearClipboard,
         createImageVariant,
-        loadMasterPlugins,
-        loadPluginViews,
         uploadAsset,
         assetProxyImport,
         assetProxySearch,

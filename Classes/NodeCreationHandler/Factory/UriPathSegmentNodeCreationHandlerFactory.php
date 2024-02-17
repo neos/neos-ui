@@ -21,13 +21,14 @@ use Neos\Neos\Ui\NodeCreationHandler\NodeCreationHandlerInterface;
 /**
  * Node creation handler that
  *
- * - sets the "title" property according to the incoming title from a creation dialog
  * - sets the "uriPathSegment" property according to the specified title or node name
+ * - sets the "title" property according to the incoming title from a creation dialog
+ *   - (actually obsolete with CreationDialogPropertiesCreationHandler)
  *
  * @internal you should not to interact with this factory directly. The node creation handle will already be configured under `nodeCreationHandlers`
  * @implements ContentRepositoryServiceFactoryInterface<NodeCreationHandlerInterface>
  */
-final class DocumentTitleNodeCreationHandlerFactory implements ContentRepositoryServiceFactoryInterface
+final class UriPathSegmentNodeCreationHandlerFactory implements ContentRepositoryServiceFactoryInterface
 {
     /**
      * @Flow\Inject
@@ -36,15 +37,15 @@ final class DocumentTitleNodeCreationHandlerFactory implements ContentRepository
 
     public function build(ContentRepositoryServiceFactoryDependencies $serviceFactoryDependencies): NodeCreationHandlerInterface
     {
-        return new class($serviceFactoryDependencies->nodeTypeManager, $this->transliterationService) implements NodeCreationHandlerInterface
-        {
+        return new class($serviceFactoryDependencies->nodeTypeManager, $this->transliterationService) implements NodeCreationHandlerInterface {
             public function __construct(
                 private readonly NodeTypeManager $nodeTypeManager,
                 private readonly TransliterationService $transliterationService
             ) {
             }
 
-            public function handle(NodeCreationCommands $commands, NodeCreationElements $elements): NodeCreationCommands {
+            public function handle(NodeCreationCommands $commands, NodeCreationElements $elements): NodeCreationCommands
+            {
                 if (
                     !$this->nodeTypeManager->getNodeType($commands->first->nodeTypeName)
                         ->isOfType('Neos.Neos:Document')

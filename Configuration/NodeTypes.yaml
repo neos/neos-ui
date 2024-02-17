@@ -18,8 +18,8 @@
             title: "ClientEval:node.properties.title"
   options:
     nodeCreationHandlers:
-      documentTitle:
-        factoryClassName: 'Neos\Neos\Ui\NodeCreationHandler\Factory\DocumentTitleNodeCreationHandlerFactory'
+      uriPathSegment:
+        factoryClassName: 'Neos\Neos\Ui\NodeCreationHandler\Factory\UriPathSegmentNodeCreationHandlerFactory'
       creationDialogProperties:
         factoryClassName: 'Neos\Neos\Ui\NodeCreationHandler\Factory\CreationDialogPropertiesCreationHandlerFactory'
 

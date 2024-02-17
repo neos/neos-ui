@@ -6,13 +6,15 @@ namespace Neos\TestNodeTypes\NodeCreationHandler;
 
 use Neos\ContentRepository\Core\Factory\ContentRepositoryServiceFactoryDependencies;
 use Neos\ContentRepository\Core\Factory\ContentRepositoryServiceFactoryInterface;
-use Neos\ContentRepository\Core\Factory\ContentRepositoryServiceInterface;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Property\PropertyMapper;
-use Neos\TestNodeTypes\NodeCreationHandler\ImagePropertyNodeCreationHandler;
+use Neos\Flow\Property\TypeConverter\PersistentObjectConverter;
+use Neos\Media\Domain\Model\ImageInterface;
+use Neos\Neos\Ui\NodeCreationHandler\NodeCreationCommands;
+use Neos\Neos\Ui\NodeCreationHandler\NodeCreationHandlerInterface;
 
 /**
- * @implements ContentRepositoryServiceFactoryInterface<ImagePropertyNodeCreationHandler>
+ * @implements ContentRepositoryServiceFactoryInterface<NodeCreationHandlerInterface>
  */
 final class ImagePropertyNodeCreationHandlerFactory implements ContentRepositoryServiceFactoryInterface
 {
@@ -21,8 +23,28 @@ final class ImagePropertyNodeCreationHandlerFactory implements ContentRepository
      */
     protected PropertyMapper $propertyMapper;
 
-    public function build(ContentRepositoryServiceFactoryDependencies $serviceFactoryDependencies): ContentRepositoryServiceInterface
+    public function build(ContentRepositoryServiceFactoryDependencies $serviceFactoryDependencies): NodeCreationHandlerInterface
     {
-        return new ImagePropertyNodeCreationHandler($this->propertyMapper);
+        return new class ($this->propertyMapper) implements NodeCreationHandlerInterface
+        {
+            public function __construct(
+                private PropertyMapper $propertyMapper
+            ) {
+            }
+
+            public function handle(NodeCreationCommands $commands, array $data): NodeCreationCommands
+            {
+                if (!isset($data['image'])) {
+                    return $commands;
+                }
+                $propertyMappingConfiguration = $this->propertyMapper->buildPropertyMappingConfiguration();
+                $propertyMappingConfiguration->forProperty('*')->allowAllProperties();
+                $propertyMappingConfiguration->setTypeConverterOption(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_OVERRIDE_TARGET_TYPE_ALLOWED, true);
+                $image = $this->propertyMapper->convert($data['image'], ImageInterface::class, $propertyMappingConfiguration);
+
+                $propertyValues = $commands->first->initialPropertyValues->withValue('image', $image);
+                return $commands->withInitialPropertyValues($propertyValues);
+            }
+        };
     }
 }

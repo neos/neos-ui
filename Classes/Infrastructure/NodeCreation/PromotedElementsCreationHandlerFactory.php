@@ -6,7 +6,10 @@ namespace Neos\Neos\Ui\Infrastructure\NodeCreation;
 
 use Neos\ContentRepository\Core\Factory\ContentRepositoryServiceFactoryDependencies;
 use Neos\ContentRepository\Core\Factory\ContentRepositoryServiceFactoryInterface;
+use Neos\ContentRepository\Core\Feature\NodeReferencing\Command\SetNodeReferences;
+use Neos\ContentRepository\Core\Feature\NodeReferencing\Dto\NodeReferencesToWrite;
 use Neos\ContentRepository\Core\NodeType\NodeTypeManager;
+use Neos\ContentRepository\Core\SharedModel\Node\ReferenceName;
 use Neos\Neos\Ui\Domain\NodeCreation\NodeCreationCommands;
 use Neos\Neos\Ui\Domain\NodeCreation\NodeCreationElements;
 use Neos\Neos\Ui\Domain\NodeCreation\NodeCreationHandlerInterface;
@@ -31,8 +34,10 @@ final class PromotedElementsCreationHandlerFactory implements ContentRepositoryS
             public function handle(NodeCreationCommands $commands, NodeCreationElements $elements): NodeCreationCommands
             {
                 $nodeType = $this->nodeTypeManager->getNodeType($commands->first->nodeTypeName);
+
+                // handle properties
                 $propertyValues = $commands->first->initialPropertyValues;
-                foreach ($nodeType->getConfiguration('properties') as $propertyName => $propertyConfiguration) {
+                foreach ($nodeType->getProperties() as $propertyName => $propertyConfiguration) {
                     if (
                         !isset($propertyConfiguration['ui']['showInCreationDialog'])
                         || $propertyConfiguration['ui']['showInCreationDialog'] !== true
@@ -43,11 +48,39 @@ final class PromotedElementsCreationHandlerFactory implements ContentRepositoryS
                     if (!$elements->hasPropertyLike($propertyName)) {
                         continue;
                     }
-                    // todo support also references https://github.com/neos/neos-ui/issues/3615
                     $propertyValues = $propertyValues->withValue($propertyName, $elements->getPropertyLike($propertyName));
                 }
 
-                return $commands->withInitialPropertyValues($propertyValues);
+                // handle references
+                $setReferencesCommands = [];
+                foreach ($nodeType->getProperties() as $referenceName => $referenceConfiguration) {
+                    // todo this will be replaced by $nodeType->getReferences()
+                    if ($nodeType->getPropertyType($referenceName) !== 'references' && $nodeType->getPropertyType($referenceName) !== 'reference') {
+                        continue; // no a reference
+                    }
+                    if (
+                        !isset($referenceConfiguration['ui']['showInCreationDialog'])
+                        || $referenceConfiguration['ui']['showInCreationDialog'] !== true
+                    ) {
+                        // not a promoted reference
+                        continue;
+                    }
+                    if (!$elements->hasReferenceLike($referenceName)) {
+                        continue;
+                    }
+
+                    $setReferencesCommands[] = SetNodeReferences::create(
+                        $commands->first->contentStreamId,
+                        $commands->first->nodeAggregateId,
+                        $commands->first->originDimensionSpacePoint,
+                        ReferenceName::fromString($referenceName),
+                        NodeReferencesToWrite::fromNodeAggregateIds($elements->getReferenceLike($referenceName))
+                    );
+                }
+
+                return $commands
+                    ->withInitialPropertyValues($propertyValues)
+                    ->withAdditionalCommands(...$setReferencesCommands);
             }
         };
     }

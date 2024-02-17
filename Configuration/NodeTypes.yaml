@@ -26,8 +26,6 @@
 'Neos.Neos:Content':
   options:
     nodeCreationHandlers:
-      contentTitle:
-        factoryClassName: 'Neos\Neos\Ui\NodeCreationHandler\Factory\ContentTitleNodeCreationHandlerFactory'
       creationDialogProperties:
         factoryClassName: 'Neos\Neos\Ui\NodeCreationHandler\Factory\CreationDialogPropertiesCreationHandlerFactory'
 

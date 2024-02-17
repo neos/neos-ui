@@ -20,14 +20,14 @@
     nodeCreationHandlers:
       uriPathSegment:
         factoryClassName: 'Neos\Neos\Ui\NodeCreationHandler\Factory\UriPathSegmentNodeCreationHandlerFactory'
-      creationDialogProperties:
-        factoryClassName: 'Neos\Neos\Ui\NodeCreationHandler\Factory\CreationDialogPropertiesCreationHandlerFactory'
+      promotedElements:
+        factoryClassName: 'Neos\Neos\Ui\NodeCreationHandler\Factory\PromotedElementsCreationHandlerFactory'
 
 'Neos.Neos:Content':
   options:
     nodeCreationHandlers:
-      creationDialogProperties:
-        factoryClassName: 'Neos\Neos\Ui\NodeCreationHandler\Factory\CreationDialogPropertiesCreationHandlerFactory'
+      promotedElements:
+        factoryClassName: 'Neos\Neos\Ui\NodeCreationHandler\Factory\PromotedElementsCreationHandlerFactory'
 
 'Neos.Neos:ContentCollection':
   ui:

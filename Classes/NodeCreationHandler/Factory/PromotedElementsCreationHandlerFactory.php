@@ -19,7 +19,7 @@ use Neos\Neos\Ui\NodeCreationHandler\NodeCreationHandlerInterface;
  * @internal you should not to interact with this factory directly. The node creation handle will already be configured under `nodeCreationHandlers`
  * @implements ContentRepositoryServiceFactoryInterface<NodeCreationHandlerInterface>
  */
-final class CreationDialogPropertiesCreationHandlerFactory implements ContentRepositoryServiceFactoryInterface
+final class PromotedElementsCreationHandlerFactory implements ContentRepositoryServiceFactoryInterface
 {
     public function build(ContentRepositoryServiceFactoryDependencies $serviceFactoryDependencies): NodeCreationHandlerInterface
     {

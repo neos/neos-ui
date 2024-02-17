@@ -23,7 +23,7 @@ use Neos\Neos\Ui\NodeCreationHandler\NodeCreationHandlerInterface;
  *
  * - sets the "uriPathSegment" property according to the specified title or node name
  * - sets the "title" property according to the incoming title from a creation dialog
- *   - (actually obsolete with CreationDialogPropertiesCreationHandler)
+ *   - (actually obsolete with PromotedElementsCreationHandler)
  *
  * @internal you should not to interact with this factory directly. The node creation handle will already be configured under `nodeCreationHandlers`
  * @implements ContentRepositoryServiceFactoryInterface<NodeCreationHandlerInterface>
@@ -55,7 +55,7 @@ final class UriPathSegmentNodeCreationHandlerFactory implements ContentRepositor
                 $propertyValues = $commands->first->initialPropertyValues;
 
                 if ($elements->hasPropertyLike('title')) {
-                    // technically we only need to set the uriPathSegment as the CreationDialogPropertiesCreationHandler
+                    // technically we only need to set the uriPathSegment as the PromotedElementsCreationHandler
                     // will take care of setting the title already
                     $propertyValues = $propertyValues->withValue('title', $elements->getPropertyLike('title'));
                 }

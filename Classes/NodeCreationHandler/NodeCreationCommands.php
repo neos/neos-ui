@@ -34,14 +34,16 @@ use Neos\ContentRepository\Core\NodeType\NodeTypeManager;
  *
  * You can retrieve the subgraph or the parent node (where the first node will be created in) the following way:
  *
- *  $subgraph = $contentRepository->getContentGraph()->getSubgraph(
- *      $commands->first->contentStreamId,
- *      $commands->first->originDimensionSpacePoint->toDimensionSpacePoint(),
- *      VisibilityConstraints::frontend()
- *  );
- *  $parentNode = $subgraph->findNodeById($commands->first->parentNodeAggregateId);
+ *     $subgraph = $contentRepository->getContentGraph()->getSubgraph(
+ *         $commands->first->contentStreamId,
+ *         $commands->first->originDimensionSpacePoint->toDimensionSpacePoint(),
+ *         VisibilityConstraints::frontend()
+ *     );
+ *     $parentNode = $subgraph->findNodeById($commands->first->parentNodeAggregateId);
  *
- * @api Note: The constructor and {@see self::fromFirstCommand} are not part of the public API
+ * @implements \IteratorAggregate<int, CommandInterface>
+ * @api As part of the {@see NodeCreationHandlerInterface}
+ *      Note: The constructors are not part of the public API
  */
 final readonly class NodeCreationCommands implements \IteratorAggregate
 {
@@ -107,6 +109,10 @@ final readonly class NodeCreationCommands implements \IteratorAggregate
     public function getIterator(): \Traversable
     {
         yield $this->first;
-        yield from $this->additionalCommands;
+        foreach ($this->additionalCommands as $command) {
+            // if yield from is used, the default setting of iterator_to_array, "preserve_keys: true"
+            // would cause the first command to be overridden.
+            yield $command;
+        }
     }
 }

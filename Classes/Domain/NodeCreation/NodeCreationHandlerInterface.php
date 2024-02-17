@@ -1,5 +1,5 @@
 <?php
-namespace Neos\Neos\Ui\NodeCreationHandler;
+namespace Neos\Neos\Ui\Domain\NodeCreation;
 
 /*
  * This file is part of the Neos.Neos.Ui package.

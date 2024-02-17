@@ -18,7 +18,7 @@ use Neos\Flow\Mvc\Controller\MvcPropertyMappingConfiguration;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\Property\PropertyMapper;
 use Neos\Flow\Property\TypeConverter\PersistentObjectConverter;
-use Neos\Neos\Ui\NodeCreationHandler\NodeCreationElements;
+use Neos\Neos\Ui\Domain\NodeCreation\NodeCreationElements;
 use Neos\Utility\Exception\InvalidTypeException;
 use Neos\Utility\TypeHandling;
 

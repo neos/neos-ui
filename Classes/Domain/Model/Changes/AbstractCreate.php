@@ -25,9 +25,9 @@ use Neos\Flow\Annotations as Flow;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Neos\Ui\Domain\Service\NodePropertyConversionService;
 use Neos\Neos\Ui\Exception\InvalidNodeCreationHandlerException;
-use Neos\Neos\Ui\NodeCreationHandler\NodeCreationCommands;
-use Neos\Neos\Ui\NodeCreationHandler\NodeCreationElements;
-use Neos\Neos\Ui\NodeCreationHandler\NodeCreationHandlerInterface;
+use Neos\Neos\Ui\Domain\NodeCreation\NodeCreationCommands;
+use Neos\Neos\Ui\Domain\NodeCreation\NodeCreationElements;
+use Neos\Neos\Ui\Domain\NodeCreation\NodeCreationHandlerInterface;
 use Neos\Utility\PositionalArraySorter;
 
 /**

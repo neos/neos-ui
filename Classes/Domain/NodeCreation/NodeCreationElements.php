@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Neos\Neos\Ui\NodeCreationHandler;
+namespace Neos\Neos\Ui\Domain\NodeCreation;
 
 use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateIds;
 

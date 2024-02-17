@@ -19,15 +19,15 @@
   options:
     nodeCreationHandlers:
       uriPathSegment:
-        factoryClassName: 'Neos\Neos\Ui\NodeCreationHandler\Factory\UriPathSegmentNodeCreationHandlerFactory'
+        factoryClassName: 'Neos\Neos\Ui\Infrastructure\NodeCreation\UriPathSegmentNodeCreationHandlerFactory'
       promotedElements:
-        factoryClassName: 'Neos\Neos\Ui\NodeCreationHandler\Factory\PromotedElementsCreationHandlerFactory'
+        factoryClassName: 'Neos\Neos\Ui\Infrastructure\NodeCreation\PromotedElementsCreationHandlerFactory'
 
 'Neos.Neos:Content':
   options:
     nodeCreationHandlers:
       promotedElements:
-        factoryClassName: 'Neos\Neos\Ui\NodeCreationHandler\Factory\PromotedElementsCreationHandlerFactory'
+        factoryClassName: 'Neos\Neos\Ui\Infrastructure\NodeCreation\PromotedElementsCreationHandlerFactory'
 
 'Neos.Neos:ContentCollection':
   ui:

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Neos\Neos\Ui\NodeCreationHandler\Factory;
+namespace Neos\Neos\Ui\Infrastructure\NodeCreation;
 
 use Neos\ContentRepository\Core\Factory\ContentRepositoryServiceFactoryDependencies;
 use Neos\ContentRepository\Core\Factory\ContentRepositoryServiceFactoryInterface;
 use Neos\ContentRepository\Core\NodeType\NodeTypeManager;
-use Neos\Neos\Ui\NodeCreationHandler\NodeCreationCommands;
-use Neos\Neos\Ui\NodeCreationHandler\NodeCreationElements;
-use Neos\Neos\Ui\NodeCreationHandler\NodeCreationHandlerInterface;
+use Neos\Neos\Ui\Domain\NodeCreation\NodeCreationCommands;
+use Neos\Neos\Ui\Domain\NodeCreation\NodeCreationElements;
+use Neos\Neos\Ui\Domain\NodeCreation\NodeCreationHandlerInterface;
 
 /**
  * Generic creation dialog node creation handler that iterates

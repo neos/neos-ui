@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Neos\Neos\Ui\NodeCreationHandler\Factory;
+namespace Neos\Neos\Ui\Infrastructure\NodeCreation;
 
 use Behat\Transliterator\Transliterator;
 use Neos\ContentRepository\Core\Dimension\ContentDimensionId;
@@ -14,9 +14,9 @@ use Neos\Flow\Annotations as Flow;
 use Neos\Flow\I18n\Exception\InvalidLocaleIdentifierException;
 use Neos\Flow\I18n\Locale;
 use Neos\Neos\Service\TransliterationService;
-use Neos\Neos\Ui\NodeCreationHandler\NodeCreationCommands;
-use Neos\Neos\Ui\NodeCreationHandler\NodeCreationElements;
-use Neos\Neos\Ui\NodeCreationHandler\NodeCreationHandlerInterface;
+use Neos\Neos\Ui\Domain\NodeCreation\NodeCreationCommands;
+use Neos\Neos\Ui\Domain\NodeCreation\NodeCreationElements;
+use Neos\Neos\Ui\Domain\NodeCreation\NodeCreationHandlerInterface;
 
 /**
  * Node creation handler that

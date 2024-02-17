@@ -23,8 +23,10 @@ use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateId;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeName;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
+use Neos\Neos\Ui\Domain\Service\NodePropertyConversionService;
 use Neos\Neos\Ui\Exception\InvalidNodeCreationHandlerException;
 use Neos\Neos\Ui\NodeCreationHandler\NodeCreationCommands;
+use Neos\Neos\Ui\NodeCreationHandler\NodeCreationElements;
 use Neos\Neos\Ui\NodeCreationHandler\NodeCreationHandlerInterface;
 use Neos\Utility\PositionalArraySorter;
 
@@ -39,6 +41,12 @@ abstract class AbstractCreate extends AbstractStructuralChange
      * @Flow\Inject
      */
     protected ObjectManagerInterface $objectManager;
+
+    /**
+     * @Flow\Inject
+     * @var NodePropertyConversionService
+     */
+    protected $nodePropertyConversionService;
 
     /**
      * The type of the node that will be created

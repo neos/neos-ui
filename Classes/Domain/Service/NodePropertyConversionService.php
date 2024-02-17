@@ -12,11 +12,13 @@ namespace Neos\Neos\Ui\Domain\Service;
  */
 
 use Neos\ContentRepository\Core\NodeType\NodeType;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateIds;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\MvcPropertyMappingConfiguration;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\Property\PropertyMapper;
 use Neos\Flow\Property\TypeConverter\PersistentObjectConverter;
+use Neos\Neos\Ui\NodeCreationHandler\NodeCreationElements;
 use Neos\Utility\Exception\InvalidTypeException;
 use Neos\Utility\TypeHandling;
 
@@ -43,17 +45,13 @@ class NodePropertyConversionService
      *
      * @param string|array<int|string,mixed>|null $rawValue
      */
-    public function convert(NodeType $nodeType, string $propertyName, string|array|null $rawValue): mixed
+    public function convert(string $propertyType, string|array|null $rawValue): mixed
     {
-        // WORKAROUND: $nodeType->getPropertyType() is missing the "initialize" call,
-        // so we need to trigger another method beforehand.
-        $nodeType->getFullConfiguration();
-        $propertyType = $nodeType->getPropertyType($propertyName);
-
         if (is_null($rawValue)) {
             return null;
         }
 
+        $propertyType = TypeHandling::normalizeType($propertyType);
         switch ($propertyType) {
             case 'string':
                 return $rawValue;
@@ -111,6 +109,36 @@ class NodePropertyConversionService
                     return $rawValue;
                 }
         }
+    }
+
+    /**
+     * @param array<int|string, mixed> $data
+     */
+    public function convertNodeCreationElements(NodeType $nodeType, array $data): NodeCreationElements
+    {
+        $convertedProperties = [];
+        $convertedReferences = [];
+        /** @var string $elementName */
+        foreach ($nodeType->getConfiguration('ui.creationDialog.elements') ?? [] as $elementName => $elementConfiguration) {
+            $rawValue = $data[$elementName] ?? null;
+            if ($rawValue === null) {
+                continue;
+            }
+            $propertyType = $elementConfiguration['type'] ?? 'string';
+            if ($propertyType === 'references' || $propertyType === 'reference') {
+                $destinationNodeAggregateIds = [];
+                if (is_string($rawValue) && !empty($rawValue)) {
+                    $destinationNodeAggregateIds = [$rawValue];
+                } elseif (is_array($rawValue)) {
+                    $destinationNodeAggregateIds = $rawValue;
+                }
+                $convertedReferences[$elementName] = NodeAggregateIds::fromArray($destinationNodeAggregateIds);
+                continue;
+            }
+            $convertedProperties[$elementName] = $this->convert($propertyType, $rawValue);
+        }
+
+        return new NodeCreationElements(propertyLikeValues: $convertedProperties, referenceLikeValues: $convertedReferences, serializedValues: $data);
     }
 
     /**

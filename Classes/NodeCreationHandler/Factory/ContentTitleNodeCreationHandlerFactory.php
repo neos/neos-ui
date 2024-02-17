@@ -9,6 +9,7 @@ use Neos\ContentRepository\Core\Factory\ContentRepositoryServiceFactoryDependenc
 use Neos\ContentRepository\Core\Factory\ContentRepositoryServiceFactoryInterface;
 use Neos\ContentRepository\Core\SharedModel\Exception\NodeTypeNotFoundException;
 use Neos\Neos\Ui\NodeCreationHandler\NodeCreationCommands;
+use Neos\Neos\Ui\NodeCreationHandler\NodeCreationElements;
 use Neos\Neos\Ui\NodeCreationHandler\NodeCreationHandlerInterface;
 
 /**
@@ -22,8 +23,7 @@ final class ContentTitleNodeCreationHandlerFactory implements ContentRepositoryS
 {
     public function build(ContentRepositoryServiceFactoryDependencies $serviceFactoryDependencies): NodeCreationHandlerInterface
     {
-        return new class($serviceFactoryDependencies->contentRepository) implements NodeCreationHandlerInterface
-        {
+        return new class($serviceFactoryDependencies->contentRepository) implements NodeCreationHandlerInterface {
             public function __construct(
                 private readonly ContentRepository $contentRepository
             ) {
@@ -32,10 +32,9 @@ final class ContentTitleNodeCreationHandlerFactory implements ContentRepositoryS
             /**
              * Set the node title for the newly created Content node
              *
-             * @param array<string|int,mixed> $data incoming data from the creationDialog
              * @throws NodeTypeNotFoundException
              */
-            public function handle(NodeCreationCommands $commands, array $data): NodeCreationCommands
+            public function handle(NodeCreationCommands $commands, NodeCreationElements $elements): NodeCreationCommands
             {
                 if (
                     !$this->contentRepository->getNodeTypeManager()->getNodeType($commands->first->nodeTypeName)
@@ -45,8 +44,8 @@ final class ContentTitleNodeCreationHandlerFactory implements ContentRepositoryS
                 }
 
                 $propertyValues = $commands->first->initialPropertyValues;
-                if (isset($data['title'])) {
-                    $propertyValues = $propertyValues->withValue('title', $data['title']);
+                if ($elements->hasPropertyLike('title')) {
+                    $propertyValues = $propertyValues->withValue('title', $elements->getPropertyLike('title'));
                 }
 
                 return $commands->withInitialPropertyValues($propertyValues);

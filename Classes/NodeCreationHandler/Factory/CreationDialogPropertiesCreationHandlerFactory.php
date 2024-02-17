@@ -4,15 +4,12 @@ declare(strict_types=1);
 
 namespace Neos\Neos\Ui\NodeCreationHandler\Factory;
 
-use Neos\ContentRepository\Core\ContentRepository;
 use Neos\ContentRepository\Core\Factory\ContentRepositoryServiceFactoryDependencies;
 use Neos\ContentRepository\Core\Factory\ContentRepositoryServiceFactoryInterface;
-use Neos\Flow\Annotations as Flow;
-use Neos\Flow\Property\PropertyMapper;
-use Neos\Flow\Property\TypeConverter\PersistentObjectConverter;
+use Neos\ContentRepository\Core\NodeType\NodeTypeManager;
 use Neos\Neos\Ui\NodeCreationHandler\NodeCreationCommands;
+use Neos\Neos\Ui\NodeCreationHandler\NodeCreationElements;
 use Neos\Neos\Ui\NodeCreationHandler\NodeCreationHandlerInterface;
-use Neos\Utility\TypeHandling;
 
 /**
  * Generic creation dialog node creation handler that iterates
@@ -24,49 +21,30 @@ use Neos\Utility\TypeHandling;
  */
 final class CreationDialogPropertiesCreationHandlerFactory implements ContentRepositoryServiceFactoryInterface
 {
-    /**
-     * @Flow\Inject
-     */
-    protected PropertyMapper $propertyMapper;
-
     public function build(ContentRepositoryServiceFactoryDependencies $serviceFactoryDependencies): NodeCreationHandlerInterface
     {
-        return new class($serviceFactoryDependencies->contentRepository, $this->propertyMapper) implements NodeCreationHandlerInterface
-        {
+        return new class($serviceFactoryDependencies->nodeTypeManager) implements NodeCreationHandlerInterface {
             public function __construct(
-                private readonly ContentRepository $contentRepository,
-                private readonly PropertyMapper $propertyMapper
+                private readonly NodeTypeManager $nodeTypeManager
             ) {
             }
-
-            /**
-             * @param array<string|int,mixed> $data
-             */
-            public function handle(NodeCreationCommands $commands, array $data): NodeCreationCommands
+            public function handle(NodeCreationCommands $commands, NodeCreationElements $elements): NodeCreationCommands
             {
-                $propertyMappingConfiguration = $this->propertyMapper->buildPropertyMappingConfiguration();
-                $propertyMappingConfiguration->forProperty('*')->allowAllProperties();
-                $propertyMappingConfiguration->setTypeConverterOption(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_OVERRIDE_TARGET_TYPE_ALLOWED, true);
-
-                $nodeType = $this->contentRepository->getNodeTypeManager()->getNodeType($commands->first->nodeTypeName);
+                $nodeType = $this->nodeTypeManager->getNodeType($commands->first->nodeTypeName);
                 $propertyValues = $commands->first->initialPropertyValues;
                 foreach ($nodeType->getConfiguration('properties') as $propertyName => $propertyConfiguration) {
                     if (
                         !isset($propertyConfiguration['ui']['showInCreationDialog'])
                         || $propertyConfiguration['ui']['showInCreationDialog'] !== true
                     ) {
+                        // not a promoted property
                         continue;
                     }
-                    $propertyType = TypeHandling::normalizeType($propertyConfiguration['type'] ?? 'string');
-                    if (!isset($data[$propertyName])) {
+                    if (!$elements->hasPropertyLike($propertyName)) {
                         continue;
                     }
-                    $propertyValue = $data[$propertyName];
-                    if ($propertyType !== 'references' && $propertyType !== 'reference' && $propertyType !== TypeHandling::getTypeForValue($propertyValue)) {
-                        $propertyValue = $this->propertyMapper->convert($propertyValue, $propertyType, $propertyMappingConfiguration);
-                    }
-
-                    $propertyValues = $propertyValues->withValue($propertyName, $propertyValue);
+                    // todo support also references https://github.com/neos/neos-ui/issues/3615
+                    $propertyValues = $propertyValues->withValue($propertyName, $elements->getPropertyLike($propertyName));
                 }
 
                 return $commands->withInitialPropertyValues($propertyValues);

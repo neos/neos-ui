@@ -156,6 +156,10 @@ abstract class AbstractCreate extends AbstractStructuralChange
                 $command,
                 $contentRepository->getNodeTypeManager()
             ),
+            $this->nodePropertyConversionService->convertNodeCreationElements(
+                $contentRepository->getNodeTypeManager()->getNodeType($nodeTypeName),
+                $this->getData() ?: []
+            ),
             $nodeTypeName,
             $contentRepository
         );
@@ -181,10 +185,10 @@ abstract class AbstractCreate extends AbstractStructuralChange
      */
     protected function applyNodeCreationHandlers(
         NodeCreationCommands $commands,
+        NodeCreationElements $elements,
         NodeTypeName $nodeTypeName,
         ContentRepository $contentRepository
     ): NodeCreationCommands {
-        $data = $this->getData() ?: [];
         $nodeType = $contentRepository->getNodeTypeManager()->getNodeType($nodeTypeName);
         if (!isset($nodeType->getOptions()['nodeCreationHandlers'])
             || !is_array($nodeType->getOptions()['nodeCreationHandlers'])) {
@@ -217,7 +221,7 @@ abstract class AbstractCreate extends AbstractStructuralChange
                     get_class($nodeCreationHandler)
                 ), 1364759956);
             }
-            $commands = $nodeCreationHandler->handle($commands, $data);
+            $commands = $nodeCreationHandler->handle($commands, $elements);
         }
         return $commands;
     }

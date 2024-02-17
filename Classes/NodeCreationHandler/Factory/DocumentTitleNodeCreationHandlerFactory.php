@@ -5,16 +5,17 @@ declare(strict_types=1);
 namespace Neos\Neos\Ui\NodeCreationHandler\Factory;
 
 use Behat\Transliterator\Transliterator;
-use Neos\ContentRepository\Core\ContentRepository;
 use Neos\ContentRepository\Core\Dimension\ContentDimensionId;
 use Neos\ContentRepository\Core\DimensionSpace\DimensionSpacePoint;
 use Neos\ContentRepository\Core\Factory\ContentRepositoryServiceFactoryDependencies;
 use Neos\ContentRepository\Core\Factory\ContentRepositoryServiceFactoryInterface;
+use Neos\ContentRepository\Core\NodeType\NodeTypeManager;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\I18n\Exception\InvalidLocaleIdentifierException;
 use Neos\Flow\I18n\Locale;
 use Neos\Neos\Service\TransliterationService;
 use Neos\Neos\Ui\NodeCreationHandler\NodeCreationCommands;
+use Neos\Neos\Ui\NodeCreationHandler\NodeCreationElements;
 use Neos\Neos\Ui\NodeCreationHandler\NodeCreationHandlerInterface;
 
 /**
@@ -35,32 +36,31 @@ final class DocumentTitleNodeCreationHandlerFactory implements ContentRepository
 
     public function build(ContentRepositoryServiceFactoryDependencies $serviceFactoryDependencies): NodeCreationHandlerInterface
     {
-        return new class($serviceFactoryDependencies->contentRepository, $this->transliterationService) implements NodeCreationHandlerInterface
+        return new class($serviceFactoryDependencies->nodeTypeManager, $this->transliterationService) implements NodeCreationHandlerInterface
         {
             public function __construct(
-                private readonly ContentRepository $contentRepository,
+                private readonly NodeTypeManager $nodeTypeManager,
                 private readonly TransliterationService $transliterationService
             ) {
             }
 
-            /**
-             * @param array<string|int,mixed> $data
-             */
-            public function handle(NodeCreationCommands $commands, array $data): NodeCreationCommands
-            {
+            public function handle(NodeCreationCommands $commands, NodeCreationElements $elements): NodeCreationCommands {
                 if (
-                    !$this->contentRepository->getNodeTypeManager()->getNodeType($commands->first->nodeTypeName)
+                    !$this->nodeTypeManager->getNodeType($commands->first->nodeTypeName)
                         ->isOfType('Neos.Neos:Document')
                 ) {
                     return $commands;
                 }
                 $propertyValues = $commands->first->initialPropertyValues;
-                if (isset($data['title'])) {
-                    $propertyValues = $propertyValues->withValue('title', $data['title']);
+
+                if ($elements->hasPropertyLike('title')) {
+                    // technically we only need to set the uriPathSegment as the CreationDialogPropertiesCreationHandler
+                    // will take care of setting the title already
+                    $propertyValues = $propertyValues->withValue('title', $elements->getPropertyLike('title'));
                 }
 
                 // if specified, the uriPathSegment equals the title
-                $uriPathSegment = $data['title'];
+                $uriPathSegment = $elements->getPropertyLike('title');
 
                 // otherwise, we fall back to the node name
                 if ($uriPathSegment === null && $commands->first->nodeName !== null) {
@@ -74,6 +74,8 @@ final class DocumentTitleNodeCreationHandlerFactory implements ContentRepository
                         $uriPathSegment
                     );
                 } else {
+                    // todo in case the title is missing dont set it to something random like 65d0ba5d8f4593-93420885
+                    // but use the node label name instead like in 8.3. The problem is with two nodes on the same level.
                     // alternatively we set it to a random string
                     $uriPathSegment = uniqid('', true);
                 }

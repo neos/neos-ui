@@ -25,8 +25,8 @@ interface NodeCreationHandlerInterface extends ContentRepositoryServiceInterface
      * or appending additional f.x. create-child nodes commands {@see NodeCreationCommands::withAdditionalCommands()}
      *
      * @param NodeCreationCommands $commands original or previous commands, with the first command being the initial intended node creation
-     * @param array<string|int,mixed> $data incoming data from the creationDialog
+     * @param NodeCreationElements $elements incoming data from the creationDialog
      * @return NodeCreationCommands the "enriched" commands, to be passed to the next handler or run at the end
      */
-    public function handle(NodeCreationCommands $commands, array $data): NodeCreationCommands;
+    public function handle(NodeCreationCommands $commands, NodeCreationElements $elements): NodeCreationCommands;
 }

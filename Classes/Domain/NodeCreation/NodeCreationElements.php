@@ -9,19 +9,37 @@ use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateIds;
 /**
  * Access to deserialize elements of the node creation dialog
  *
- * property-like elements are of simple types or objects:
+ * Property-like elements are of simple types or objects.
+ * The values will be deserialized according to its type.
+ * For example myImage will be an actual image object instance.
  *
- *     creationDialog:
- *       elements:
+ *     Vendor.Site:Content:
+ *       ui:
+ *         creationDialog:
+ *           elements:
+ *             myString:
+ *               type: string
+ *             myImage:
+ *               type: Neos\Media\Domain\Model\ImageInterface
+ *
+ * Reference-like elements are of type `references` or `reference`
+ * And will be available as NodeAggregateIds collection.
+ *
+ *     Vendor.Site:Content:
+ *       ui:
+ *         creationDialog:
+ *           elements:
+ *             myReferences:
+ *               type: references
+ *
+ * The same categories apply to promoted elements:
+ *
+ *     Vendor.Site:Content:
+ *       properties:
  *         myString:
  *           type: string
- *
- * while reference-like elements are of type `references` or `reference`:
- *
- *     creationDialog:
- *       elements:
- *         myReferences:
- *           type: references
+ *           ui:
+ *             showInCreationDialog: true
  *
  * @api As part of the {@see NodeCreationHandlerInterface}
  */

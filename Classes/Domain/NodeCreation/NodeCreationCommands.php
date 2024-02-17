@@ -24,12 +24,15 @@ use Neos\ContentRepository\Core\Feature\NodeReferencing\Command\SetNodeReference
 use Neos\ContentRepository\Core\NodeType\NodeTypeManager;
 
 /**
- * A collection of commands that can be "enriched" via a {@see NodeCreationHandlerInterface}
- * The first command points to the initial node creation command.
- * It is ensured, that the initial node creation command, will be mostly preserved, to not contradict the users intend.
+ * A collection of commands that describe a node creation from the Neos Ui.
+ *
+ * The node creation can be enriched via a node creation handler {@see NodeCreationHandlerInterface}
+ *
+ * The first command points to the triggered node creation command.
+ * To not contradict the users intend it is ensured that the initial node
+ * creation will be mostly preserved by only allowing to add additional properties.
  *
  * Additional commands can be also appended, to be run after the initial node creation command.
- *
  * All commands will be executed blocking.
  *
  * You can retrieve the subgraph or the parent node (where the first node will be created in) the following way:
@@ -88,6 +91,15 @@ final readonly class NodeCreationCommands implements \IteratorAggregate
 
     /**
      * Augment the first {@see CreateNodeAggregateWithNode} command with altered properties.
+     *
+     * The properties will be completely replaced.
+     * To merge the properties please use:
+     *
+     *     $commands->withInitialPropertyValues(
+     *         $commands->first->initialPropertyValues
+     *             ->withValue('album', 'rep')
+     *     )
+     *
      */
     public function withInitialPropertyValues(PropertyValuesToWrite $newInitialPropertyValues): self
     {

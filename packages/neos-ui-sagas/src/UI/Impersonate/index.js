@@ -38,7 +38,7 @@ export function * impersonateRestore({globalRegistry, routes}) {
                 yield put(actions.UI.FlashMessages.add('restoreUserImpersonateUser', errorMessage, 'error'));
             }
 
-            window.location.href = $get('core.modules.defaultModule', routes);
+            window.location.href = routes?.core?.modules?.defaultModule;
         } catch (error) {
             yield put(actions.UI.FlashMessages.add('restoreUserImpersonateUser', errorMessage, 'error'));
         }

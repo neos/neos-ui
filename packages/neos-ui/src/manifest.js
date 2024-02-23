@@ -290,7 +290,7 @@ manifest('main', {}, (globalRegistry, {routes}) => {
                 // This is an extreme case when even the top node does not exist in the given dimension
                 // TODO: still find a nicer way to break out of this situation
                 if (redirectContextPath === false) {
-                    window.location.href = $get('core.modules.defaultModule', routes);
+                    window.location.href = routes?.core?.modules?.defaultModule;
                     break;
                 }
                 redirectUri = state?.cr?.nodes?.byContextPath?.[redirectContextPath]?.uri;
@@ -359,7 +359,7 @@ manifest('main', {}, (globalRegistry, {routes}) => {
                 // This is an extreme case when even the top node does not exist in the given dimension
                 // TODO: still find a nicer way to break out of this situation
                 if (!redirectContextPath) {
-                    window.location.href = $get('core.modules.defaultModule', routes);
+                    window.location.href = routes?.core?.modules?.defaultModule;
                     break;
                 }
                 redirectUri = state?.cr?.nodes?.byContextPath?.[redirectContextPath]?.uri;

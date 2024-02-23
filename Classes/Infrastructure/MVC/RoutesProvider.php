@@ -148,6 +148,11 @@ final class RoutesProvider implements RoutesProviderInterface
                         'module' => 'media/browser'
                     ]
                 ),
+            'defaultModule' =>
+                $helper->buildCoreRoute(
+                    controllerName: 'Backend\\Backend',
+                    actionName: 'index',
+                ),
         ];
 
         $routes['core']['login'] =

@@ -43,6 +43,7 @@ export interface Routes {
             workspaces: string;
             userSettings: string;
             mediaBrowser: string;
+            defaultModule: string;
         };
         login: string;
         logout: string;

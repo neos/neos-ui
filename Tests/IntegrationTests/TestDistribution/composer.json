@@ -32,6 +32,9 @@
     },
     "extra": {
       "patches": {
+        "neos/neos-development-collection": {
+          "TASK: Remove declaration of ui nodeCreationHandlers": "https://github.com/neos/neos-development-collection/pull/4630.patch"
+        }
       }
     },
     "repositories": {

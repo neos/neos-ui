@@ -7,10 +7,12 @@ namespace Neos\Neos\Ui\Domain\NodeCreation;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateIds;
 
 /**
- * Access to deserialize elements of the node creation dialog
+ * Holds the deserialized elements of the submitted node creation dialog form
  *
- * Property-like elements are of simple types or objects.
- * The values will be deserialized according to its type.
+ * Elements are configured like properties or references in the schema,
+ * but its up to the node-creation-handler if they are handled in any way or just left out.
+ *
+ * Elements that are of simple types or objects, will be available according to its type.
  * For example myImage will be an actual image object instance.
  *
  *     Vendor.Site:Content:
@@ -22,8 +24,8 @@ use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateIds;
  *             myImage:
  *               type: Neos\Media\Domain\Model\ImageInterface
  *
- * Reference-like elements are of type `references` or `reference`
- * And will be available as NodeAggregateIds collection.
+ * Elements that refer to nodes are of type `references` or `reference`.
+ * They will be available as {@see NodeAggregateIds} collection.
  *
  *     Vendor.Site:Content:
  *       ui:
@@ -32,7 +34,11 @@ use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateIds;
  *             myReferences:
  *               type: references
  *
- * The same categories apply to promoted elements:
+ * The naming `references` in the `element` configuration does not refer to the content repository reference edges.
+ * Referring to a node will just denote that an editor will be used capable of returning node ids.
+ * The node ids might be used for setting references but that is up to a node-creation-handler.
+ *
+ * To promoted properties / references the same rules apply:
  *
  *     Vendor.Site:Content:
  *       properties:
@@ -41,65 +47,50 @@ use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateIds;
  *           ui:
  *             showInCreationDialog: true
  *
- * @api As part of the {@see NodeCreationHandlerInterface}
+ * @implements \IteratorAggregate<string, mixed>
+ * @api As part of the {@see NodeCreationHandlerInterface} except the constructor and serialized data
  */
-final readonly class NodeCreationElements
+final readonly class NodeCreationElements implements \IteratorAggregate
 {
     /**
-     * @param array<string, mixed> $propertyLikeValues
-     * @param array<string, NodeAggregateIds> $referenceLikeValues
+     * @param array<string, mixed> $elementValues
      * @param array<int|string, mixed> $serializedValues
      * @internal you should not need to construct this
      */
     public function __construct(
-        private array $propertyLikeValues,
-        private array $referenceLikeValues,
+        private array $elementValues,
         private array $serializedValues,
     ) {
     }
 
-    public function hasPropertyLike(string $name): bool
+    public function has(string $name): bool
     {
-        return isset($this->propertyLikeValues[$name]);
-    }
-
-    public function getPropertyLike(string $name): mixed
-    {
-        return $this->propertyLikeValues[$name] ?? null;
-    }
-
-    public function hasReferenceLike(string $name): bool
-    {
-        return isset($this->referenceLikeValues[$name]);
-    }
-
-    public function getReferenceLike(string $name): NodeAggregateIds
-    {
-        return $this->referenceLikeValues[$name] ;
+        return isset($this->elementValues[$name]);
     }
 
     /**
-     * @return iterable<string, mixed>
+     * Returns the type according to the element schema
+     * For elements that refer to a node {@see NodeAggregateIds} will be returned.
      */
-    public function getPropertyLikeValues(): iterable
+    public function get(string $name): mixed
     {
-        return $this->propertyLikeValues;
-    }
-
-    /**
-     * @return iterable<string, NodeAggregateIds>
-     */
-    public function getReferenceLikeValues(): iterable
-    {
-        return $this->referenceLikeValues;
+        return $this->elementValues[$name] ?? null;
     }
 
     /**
      * @internal returns values formatted by the internal format used for the Ui
-     * @return iterable<int|string, mixed>
+     * @return \Traversable<int|string, mixed>
      */
-    public function serialized(): iterable
+    public function serialized(): \Traversable
     {
-        return $this->serializedValues;
+        yield from $this->serializedValues;
+    }
+
+    /**
+     * @return \Traversable<string,mixed>
+     */
+    public function getIterator(): \Traversable
+    {
+        yield from $this->elementValues;
     }
 }

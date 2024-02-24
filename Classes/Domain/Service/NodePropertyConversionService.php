@@ -116,8 +116,7 @@ class NodePropertyConversionService
      */
     public function convertNodeCreationElements(NodeType $nodeType, array $data): NodeCreationElements
     {
-        $convertedProperties = [];
-        $convertedReferences = [];
+        $convertedElements = [];
         /** @var string $elementName */
         foreach ($nodeType->getConfiguration('ui.creationDialog.elements') ?? [] as $elementName => $elementConfiguration) {
             $rawValue = $data[$elementName] ?? null;
@@ -126,19 +125,19 @@ class NodePropertyConversionService
             }
             $propertyType = $elementConfiguration['type'] ?? 'string';
             if ($propertyType === 'references' || $propertyType === 'reference') {
-                $destinationNodeAggregateIds = [];
+                $nodeAggregateIds = [];
                 if (is_string($rawValue) && !empty($rawValue)) {
-                    $destinationNodeAggregateIds = [$rawValue];
+                    $nodeAggregateIds = [$rawValue];
                 } elseif (is_array($rawValue)) {
-                    $destinationNodeAggregateIds = $rawValue;
+                    $nodeAggregateIds = $rawValue;
                 }
-                $convertedReferences[$elementName] = NodeAggregateIds::fromArray($destinationNodeAggregateIds);
+                $convertedElements[$elementName] = NodeAggregateIds::fromArray($nodeAggregateIds);
                 continue;
             }
-            $convertedProperties[$elementName] = $this->convert($propertyType, $rawValue);
+            $convertedElements[$elementName] = $this->convert($propertyType, $rawValue);
         }
 
-        return new NodeCreationElements(propertyLikeValues: $convertedProperties, referenceLikeValues: $convertedReferences, serializedValues: $data);
+        return new NodeCreationElements(elementValues: $convertedElements, serializedValues: $data);
     }
 
     /**

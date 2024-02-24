@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Neos\Neos\Ui\Infrastructure\NodeCreation;
+namespace Neos\Neos\Ui\Infrastructure\Neos;
 
 use Behat\Transliterator\Transliterator;
 use Neos\ContentRepository\Core\Dimension\ContentDimensionId;

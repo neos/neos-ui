@@ -44,9 +44,8 @@ abstract class AbstractCreate extends AbstractStructuralChange
 
     /**
      * @Flow\Inject
-     * @var NodePropertyConversionService
      */
-    protected $nodePropertyConversionService;
+    protected NodePropertyConversionService $nodePropertyConversionService;
 
     /**
      * The type of the node that will be created

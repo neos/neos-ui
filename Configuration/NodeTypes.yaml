@@ -1,4 +1,8 @@
 'Neos.Neos:Document':
+  postprocessors:
+    'CreationDialogPostprocessor':
+      position: 'after NodeTypePresetPostprocessor'
+      postprocessor: 'Neos\Neos\Ui\Infrastructure\ContentRepository\CreationDialogPostprocessor'
   ui:
     creationDialog:
       elements:
@@ -24,6 +28,10 @@
         factoryClassName: 'Neos\Neos\Ui\Infrastructure\ContentRepository\PromotedElementsCreationHandlerFactory'
 
 'Neos.Neos:Content':
+  postprocessors:
+    'CreationDialogPostprocessor':
+      position: 'after NodeTypePresetPostprocessor'
+      postprocessor: 'Neos\Neos\Ui\Infrastructure\ContentRepository\CreationDialogPostprocessor'
   options:
     nodeCreationHandlers:
       promotedElements:

@@ -5,14 +5,14 @@ use Neos\ContentRepository\Core\NodeType\DefaultNodeLabelGeneratorFactory;
 use Neos\ContentRepository\Core\NodeType\NodeType;
 use Neos\ContentRepository\Core\NodeType\NodeTypeName;
 use Neos\Flow\Tests\UnitTestCase;
-use Neos\Neos\Ui\Infrastructure\ContentRepository\CreationDialogPostprocessor;
+use Neos\Neos\Ui\Infrastructure\ContentRepository\CreationDialog\CreationDialogNodeTypePostprocessor;
 
-class CreationDialogPostprocessorTest extends UnitTestCase
+class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
 {
     /**
-     * @var CreationDialogPostprocessor
+     * @var CreationDialogNodeTypePostprocessor
      */
-    private $creationDialogPostprocessor;
+    private $postprocessor;
 
     /**
      * @var NodeType
@@ -21,7 +21,7 @@ class CreationDialogPostprocessorTest extends UnitTestCase
 
     public function setUp(): void
     {
-        $this->creationDialogPostprocessor = new CreationDialogPostprocessor();
+        $this->postprocessor = new CreationDialogNodeTypePostprocessor();
         $this->mockNodeType = new NodeType(NodeTypeName::fromString('Foo:Bar'), [], [], new DefaultNodeLabelGeneratorFactory());
     }
 
@@ -53,7 +53,7 @@ class CreationDialogPostprocessorTest extends UnitTestCase
             ],
         ];
 
-        $this->creationDialogPostprocessor->process($this->mockNodeType, $configuration, []);
+        $this->postprocessor->process($this->mockNodeType, $configuration, []);
 
         $expectedElements = [
             'somePropertyName' => [
@@ -97,7 +97,7 @@ class CreationDialogPostprocessorTest extends UnitTestCase
         ];
         $originalConfiguration = $configuration;
 
-        $this->creationDialogPostprocessor->process($this->mockNodeType, $configuration, []);
+        $this->postprocessor->process($this->mockNodeType, $configuration, []);
 
         self::assertSame($originalConfiguration, $configuration);
     }
@@ -121,7 +121,7 @@ class CreationDialogPostprocessorTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->inject($this->creationDialogPostprocessor, 'dataTypesDefaultConfiguration', [
+        $this->inject($this->postprocessor, 'dataTypesDefaultConfiguration', [
             'SomeType' => [
                 'editor' => 'Some\Default\Editor',
                 'editorOptions' => [
@@ -131,7 +131,7 @@ class CreationDialogPostprocessorTest extends UnitTestCase
             ]
         ]);
 
-        $this->creationDialogPostprocessor->process($this->mockNodeType, $configuration, []);
+        $this->postprocessor->process($this->mockNodeType, $configuration, []);
 
         $expectedElements = [
             'somePropertyName' => [
@@ -165,7 +165,7 @@ class CreationDialogPostprocessorTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->inject($this->creationDialogPostprocessor, 'editorDefaultConfiguration', [
+        $this->inject($this->postprocessor, 'editorDefaultConfiguration', [
             'Some\Editor' => [
                 'editorOptions' => [
                     'some' => 'editorDefault',
@@ -174,7 +174,7 @@ class CreationDialogPostprocessorTest extends UnitTestCase
                 ]
             ]
         ]);
-        $this->inject($this->creationDialogPostprocessor, 'dataTypesDefaultConfiguration', [
+        $this->inject($this->postprocessor, 'dataTypesDefaultConfiguration', [
             'SomeType' => [
                 'editor' => 'Some\Editor',
                 'editorOptions' => [
@@ -185,7 +185,7 @@ class CreationDialogPostprocessorTest extends UnitTestCase
         ]);
 
 
-        $this->creationDialogPostprocessor->process($this->mockNodeType, $configuration, []);
+        $this->postprocessor->process($this->mockNodeType, $configuration, []);
 
         $expectedElements = [
             'somePropertyName' => [

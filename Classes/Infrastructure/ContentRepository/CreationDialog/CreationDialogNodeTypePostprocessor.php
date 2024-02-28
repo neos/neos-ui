@@ -12,7 +12,7 @@
 
 declare(strict_types=1);
 
-namespace Neos\Neos\Ui\Infrastructure\ContentRepository;
+namespace Neos\Neos\Ui\Infrastructure\ContentRepository\CreationDialog;
 
 use Neos\ContentRepository\Core\NodeType\NodeType;
 use Neos\ContentRepository\Core\NodeType\NodeTypePostprocessorInterface;
@@ -53,7 +53,7 @@ use Neos\Utility\PositionalArraySorter;
  *     'someProperty':
  *       # ...
  */
-class CreationDialogPostprocessor implements NodeTypePostprocessorInterface
+class CreationDialogNodeTypePostprocessor implements NodeTypePostprocessorInterface
 {
     /**
      * @var array

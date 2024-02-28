@@ -2,7 +2,7 @@
   postprocessors:
     'CreationDialogPostprocessor':
       position: 'after NodeTypePresetPostprocessor'
-      postprocessor: 'Neos\Neos\Ui\Infrastructure\ContentRepository\CreationDialogPostprocessor'
+      postprocessor: 'Neos\Neos\Ui\Infrastructure\ContentRepository\CreationDialog\CreationDialogNodeTypePostprocessor'
   ui:
     creationDialog:
       elements:
@@ -25,17 +25,17 @@
       uriPathSegment:
         factoryClassName: 'Neos\Neos\Ui\Infrastructure\Neos\UriPathSegmentNodeCreationHandlerFactory'
       promotedElements:
-        factoryClassName: 'Neos\Neos\Ui\Infrastructure\ContentRepository\PromotedElementsCreationHandlerFactory'
+        factoryClassName: 'Neos\Neos\Ui\Infrastructure\ContentRepository\CreationDialog\PromotedElementsCreationHandlerFactory'
 
 'Neos.Neos:Content':
   postprocessors:
     'CreationDialogPostprocessor':
       position: 'after NodeTypePresetPostprocessor'
-      postprocessor: 'Neos\Neos\Ui\Infrastructure\ContentRepository\CreationDialogPostprocessor'
+      postprocessor: 'Neos\Neos\Ui\Infrastructure\ContentRepository\CreationDialog\CreationDialogNodeTypePostprocessor'
   options:
     nodeCreationHandlers:
       promotedElements:
-        factoryClassName: 'Neos\Neos\Ui\Infrastructure\ContentRepository\PromotedElementsCreationHandlerFactory'
+        factoryClassName: 'Neos\Neos\Ui\Infrastructure\ContentRepository\CreationDialog\PromotedElementsCreationHandlerFactory'
 
 'Neos.Neos:ContentCollection':
   ui:

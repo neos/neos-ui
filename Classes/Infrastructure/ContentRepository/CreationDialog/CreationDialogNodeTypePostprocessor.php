@@ -21,50 +21,53 @@ use Neos\Utility\Arrays;
 use Neos\Utility\PositionalArraySorter;
 
 /**
- * Node Type post processor that looks for properties flagged with "showInCreationDialog"
+ * NodeType post processor for the "ui.creationDialog" configuration:
+ *
+ * Promotes elements into creation dialog
+ * --------------------------------------
+ * We look for properties flagged with "showInCreationDialog"
  * and sets the "creationDialog" configuration accordingly
  *
  * Example NodeTypes.yaml configuration:
  *
- * 'Some.Node:Type':
- *   # ...
- *   properties:
- *     'someProperty':
- *       type: string
- *       ui:
- *         label: 'Link'
- *         showInCreationDialog: true
- *         inspector:
- *           editor: 'Neos.Neos/Inspector/Editors/LinkEditor'
- *
- * Will be converted to:
- *
- * 'Some.Node:Type':
- *   # ...
- *   ui:
- *     creationDialog:
- *       elements:
+ *     'Some.Node:Type':
+ *       # ...
+ *       properties:
  *         'someProperty':
  *           type: string
  *           ui:
  *             label: 'Link'
- *             editor: 'Neos.Neos/Inspector/Editors/LinkEditor'
- *   properties:
- *     'someProperty':
+ *             showInCreationDialog: true
+ *             inspector:
+ *               editor: 'Neos.Neos/Inspector/Editors/LinkEditor'
+ *
+ * Will be converted to:
+ *
+ *     'Some.Node:Type':
  *       # ...
+ *       ui:
+ *         creationDialog:
+ *           elements:
+ *             'someProperty':
+ *               type: string
+ *               ui:
+ *                 label: 'Link'
+ *                 editor: 'Neos.Neos/Inspector/Editors/LinkEditor'
+ *       properties:
+ *         'someProperty':
+ *           # ...
+ *
  */
 class CreationDialogNodeTypePostprocessor implements NodeTypePostprocessorInterface
 {
     /**
-     * @var array
-     * @phpstan-var array<string,mixed>
+     * @var array<string,mixed>
      * @Flow\InjectConfiguration(package="Neos.Neos", path="userInterface.inspector.dataTypes")
      */
     protected $dataTypesDefaultConfiguration;
 
     /**
-     * @var array
-     * @phpstan-var array<string,mixed>
+     * @var array<string,mixed>
      * @Flow\InjectConfiguration(package="Neos.Neos", path="userInterface.inspector.editors")
      */
     protected $editorDefaultConfiguration;
@@ -81,26 +84,33 @@ class CreationDialogNodeTypePostprocessor implements NodeTypePostprocessorInterf
             return;
         }
         $creationDialogElements = $configuration['ui']['creationDialog']['elements'] ?? [];
-        foreach ($configuration['properties'] as $propertyName => $propertyConfiguration) {
+
+        $creationDialogElements = $this->promotePropertiesIntoCreationDialog($configuration['properties'], $creationDialogElements);
+
+        if ($creationDialogElements !== []) {
+            $configuration['ui']['creationDialog']['elements'] = (new PositionalArraySorter($creationDialogElements))->toArray();
+        }
+    }
+
+    private function promotePropertiesIntoCreationDialog(array $properties, array $explicitCreationDialogElements): array
+    {
+        foreach ($properties as $propertyName => $propertyConfiguration) {
             if (
                 !isset($propertyConfiguration['ui']['showInCreationDialog'])
                 || $propertyConfiguration['ui']['showInCreationDialog'] !== true
             ) {
                 continue;
             }
-            $creationDialogElement = $this->convertPropertyConfiguration($propertyName, $propertyConfiguration);
-            if (isset($configuration['ui']['creationDialog']['elements'][$propertyName])) {
+            $creationDialogElement = $this->promotePropertyIntoCreationDialog($propertyName, $propertyConfiguration);
+            if (isset($explicitCreationDialogElements[$propertyName])) {
                 $creationDialogElement = Arrays::arrayMergeRecursiveOverrule(
                     $creationDialogElement,
-                    $configuration['ui']['creationDialog']['elements'][$propertyName]
+                    $explicitCreationDialogElements[$propertyName]
                 );
             }
-            $creationDialogElements[$propertyName] = $creationDialogElement;
+            $explicitCreationDialogElements[$propertyName] = $creationDialogElement;
         }
-        if ($creationDialogElements !== []) {
-            $configuration['ui']['creationDialog']['elements']
-                = (new PositionalArraySorter($creationDialogElements))->toArray();
-        }
+        return $explicitCreationDialogElements;
     }
 
     /**
@@ -110,7 +120,7 @@ class CreationDialogNodeTypePostprocessor implements NodeTypePostprocessorInterf
      * @param array<string,mixed> $propertyConfiguration
      * @return array<string,mixed>
      */
-    private function convertPropertyConfiguration(string $propertyName, array $propertyConfiguration): array
+    private function promotePropertyIntoCreationDialog(string $propertyName, array $propertyConfiguration): array
     {
         $dataType = $propertyConfiguration['type'] ?? 'string';
         $dataTypeDefaultConfiguration = $this->dataTypesDefaultConfiguration[$dataType] ?? [];

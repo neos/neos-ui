@@ -26,6 +26,8 @@ class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
     }
 
     /**
+     * promoted elements (showInCreationDialog: true)
+     *
      * @test
      */
     public function processCopiesInspectorConfigurationToCreationDialogElements(): void
@@ -103,6 +105,8 @@ class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
     }
 
     /**
+     * promoted elements (showInCreationDialog: true)
+     *
      * @test
      */
     public function processRespectsDataTypeDefaultConfiguration(): void
@@ -144,10 +148,12 @@ class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
             ],
         ];
 
-        self::assertSame($expectedElements, $configuration['ui']['creationDialog']['elements']);
+        self::assertEquals($expectedElements, $configuration['ui']['creationDialog']['elements']);
     }
 
     /**
+     * promoted elements (showInCreationDialog: true)
+     *
      * @test
      */
     public function processRespectsEditorDefaultConfiguration(): void
@@ -198,6 +204,220 @@ class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
             ],
         ];
 
-        self::assertSame($expectedElements, $configuration['ui']['creationDialog']['elements']);
+        self::assertEquals($expectedElements, $configuration['ui']['creationDialog']['elements']);
+    }
+
+    /**
+     * default editor
+     *
+     * @test
+     */
+    public function processConvertsCreationDialogConfiguration(): void
+    {
+        $configuration = [
+            'ui' => [
+                'creationDialog' => [
+                    'elements' => [
+                        'elementWithoutType' => [
+                            'ui' => [
+                                'label' => 'Some Label'
+                            ]
+                        ],
+                        'elementWithUnknownType' => [
+                            'type' => 'TypeWithoutDataTypeConfig',
+                            'ui' => [
+                                'label' => 'Some Label',
+                                'editor' => 'EditorFromPropertyConfig',
+                            ]
+                        ],
+                        'elementWithEditorFromDataTypeConfig' => [
+                            'type' => 'TypeWithDataTypeConfig',
+                            'ui' => [
+                                'value' => 'fromPropertyConfig',
+                                'elementValue' => 'fromPropertyConfig',
+                            ]
+                        ],
+                        'elementWithEditorFromDataTypeConfigWithoutUiConfig' => [
+                            'type' => 'TypeWithDataTypeConfig'
+                        ],
+                        'elementWithOverriddenEditorConfig' => [
+                            'type' => 'TypeWithDataTypeConfig',
+                            'ui' => [
+                                'editor' => 'EditorFromPropertyConfig',
+                                'value' => 'fromPropertyConfig',
+                                'elementValue' => 'fromPropertyConfig',
+                            ]
+                        ],
+                        'elementWithOverriddenEditorConfigAndEditorDefaultConfig' => [
+                            'type' => 'TypeWithDataTypeConfig',
+                            'ui' => [
+                                'editor' => 'EditorWithDefaultConfig',
+                                'value' => 'fromPropertyConfig',
+                                'elementValue' => 'fromPropertyConfig',
+                            ]
+                        ],
+                        'elementWithEditorDefaultConfig' => [
+                            'type' => 'TypeWithDefaultEditorConfig',
+                            'ui' => [
+                                'value' => 'fromPropertyConfig',
+                                'elementValue' => 'fromPropertyConfig',
+                            ]
+                        ],
+                        'elementWithOverriddenEditorConfigAndEditorDefaultConfig2' => [
+                            'type' => 'TypeWithDefaultEditorConfig',
+                            'ui' => [
+                                'editor' => 'EditorWithoutDefaultConfig',
+                                'elementValue' => 'fromPropertyConfig',
+                            ]
+                        ],
+                        'elementWithOverriddenEditorConfigAndEditorDefaultConfig3' => [
+                            'type' => 'TypeWithDefaultEditorConfig2',
+                            'ui' => [
+                                'editor' => 'EditorWithDefaultConfig',
+                                'elementValue' => 'fromPropertyConfig',
+                            ]
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->inject($this->postprocessor, 'editorDefaultConfiguration', [
+            'EditorWithDefaultConfig' => [
+                'value' => 'fromEditorDefaultConfig',
+                'editorDefaultValue' => 'fromEditorDefaultConfig',
+            ],
+        ]);
+
+        $this->inject($this->postprocessor, 'dataTypesDefaultConfiguration', [
+            'TypeWithDataTypeConfig' => [
+                'editor' => 'EditorFromDataTypeConfig',
+                'value' => 'fromDataTypeConfig',
+                'dataTypeValue' => 'fromDataTypeConfig',
+            ],
+            'TypeWithDefaultEditorConfig' => [
+                'editor' => 'EditorWithDefaultConfig',
+                'value' => 'fromDataTypeConfig',
+                'dataTypeValue' => 'fromDataTypeConfig',
+            ],
+            'TypeWithDefaultEditorConfig2' => [
+                'editor' => 'EditorWithDefaultConfig',
+                'dataTypeValue' => 'fromDataTypeConfig',
+            ],
+        ]);
+
+        $expectedResult = [
+            'ui' => [
+                'creationDialog' => [
+                    'elements' => [
+                        'elementWithoutType' => [
+                            'ui' => [
+                                'label' => 'Some Label'
+                            ]
+                        ],
+                        'elementWithUnknownType' => [
+                            'type' => 'TypeWithoutDataTypeConfig',
+                            'ui' => [
+                                'label' => 'Some Label',
+                                'editor' => 'EditorFromPropertyConfig',
+                            ]
+                        ],
+                        'elementWithEditorFromDataTypeConfig' => [
+                            'type' => 'TypeWithDataTypeConfig',
+                            'ui' => [
+                                'editor' => 'EditorFromDataTypeConfig',
+                                'value' => 'fromPropertyConfig',
+                                'dataTypeValue' => 'fromDataTypeConfig',
+                                'elementValue' => 'fromPropertyConfig',
+                            ]
+                        ],
+                        'elementWithEditorFromDataTypeConfigWithoutUiConfig' => [
+                            'type' => 'TypeWithDataTypeConfig',
+                            'ui' => [
+                                'editor' => 'EditorFromDataTypeConfig',
+                                'value' => 'fromDataTypeConfig',
+                                'dataTypeValue' => 'fromDataTypeConfig',
+                            ]
+                        ],
+                        'elementWithOverriddenEditorConfig' => [
+                            'type' => 'TypeWithDataTypeConfig',
+                            'ui' => [
+                                'editor' => 'EditorFromPropertyConfig',
+                                'value' => 'fromPropertyConfig',
+                                'dataTypeValue' => 'fromDataTypeConfig',
+                                'elementValue' => 'fromPropertyConfig',
+                            ]
+                        ],
+                        'elementWithOverriddenEditorConfigAndEditorDefaultConfig' => [
+                            'type' => 'TypeWithDataTypeConfig',
+                            'ui' => [
+                                'value' => 'fromPropertyConfig',
+                                'editorDefaultValue' => 'fromEditorDefaultConfig',
+                                'editor' => 'EditorWithDefaultConfig',
+                                'dataTypeValue' => 'fromDataTypeConfig',
+                                'elementValue' => 'fromPropertyConfig',
+                            ]
+                        ],
+                        'elementWithEditorDefaultConfig' => [
+                            'type' => 'TypeWithDefaultEditorConfig',
+                            'ui' => [
+                                'value' => 'fromPropertyConfig',
+                                'editorDefaultValue' => 'fromEditorDefaultConfig',
+                                'editor' => 'EditorWithDefaultConfig',
+                                'dataTypeValue' => 'fromDataTypeConfig',
+                                'elementValue' => 'fromPropertyConfig',
+                            ]
+                        ],
+                        'elementWithOverriddenEditorConfigAndEditorDefaultConfig2' => [
+                            'type' => 'TypeWithDefaultEditorConfig',
+                            'ui' => [
+                                'editor' => 'EditorWithoutDefaultConfig',
+                                'value' => 'fromDataTypeConfig',
+                                'dataTypeValue' => 'fromDataTypeConfig',
+                                'elementValue' => 'fromPropertyConfig',
+                            ]
+                        ],
+                        'elementWithOverriddenEditorConfigAndEditorDefaultConfig3' => [
+                            'type' => 'TypeWithDefaultEditorConfig2',
+                            'ui' => [
+                                'value' => 'fromEditorDefaultConfig',
+                                'editorDefaultValue' => 'fromEditorDefaultConfig',
+                                'editor' => 'EditorWithDefaultConfig',
+                                'dataTypeValue' => 'fromDataTypeConfig',
+                                'elementValue' => 'fromPropertyConfig',
+                            ]
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->postprocessor->process($this->mockNodeType, $configuration, []);
+
+        self::assertSame($expectedResult, $configuration);
+    }
+
+    /**
+     * @test
+     */
+    public function processDoesNotThrowExceptionIfNoCreationDialogEditorCanBeResolved(): void
+    {
+        $configuration = [
+            'ui' => [
+                'creationDialog' => [
+                    'elements' => [
+                        'someElement' => [
+                            'type' => 'string',
+                            'ui' => ['label' => 'Foo']
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = $configuration;
+
+        $this->postprocessor->process($this->mockNodeType, $configuration, []);
+
+        self::assertSame($expected, $configuration);
     }
 }

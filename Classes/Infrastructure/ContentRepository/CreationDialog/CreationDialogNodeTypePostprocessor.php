@@ -57,6 +57,12 @@ use Neos\Utility\PositionalArraySorter;
  *         'someProperty':
  *           # ...
  *
+ *
+ * Sets default editor configurations for elements
+ * -----------------------------------------------
+ * We add default editor configurations for elements based on type and editor.
+ * Similar to the process for regular properties in {@see \Neos\Neos\NodeTypePostprocessor\DefaultPropertyEditorPostprocessor}
+ *
  */
 class CreationDialogNodeTypePostprocessor implements NodeTypePostprocessorInterface
 {
@@ -80,18 +86,68 @@ class CreationDialogNodeTypePostprocessor implements NodeTypePostprocessorInterf
      */
     public function process(NodeType $nodeType, array &$configuration, array $options): void
     {
-        if (!isset($configuration['properties'])) {
-            return;
-        }
         $creationDialogElements = $configuration['ui']['creationDialog']['elements'] ?? [];
 
-        $creationDialogElements = $this->promotePropertiesIntoCreationDialog($configuration['properties'], $creationDialogElements);
+        if (!empty($configuration['properties'] ?? null)) {
+            $creationDialogElements = $this->promotePropertiesIntoCreationDialog($configuration['properties'], $creationDialogElements);
+        }
+
+        $this->mergeDefaultCreationDialogElementEditors($creationDialogElements);
 
         if ($creationDialogElements !== []) {
             $configuration['ui']['creationDialog']['elements'] = (new PositionalArraySorter($creationDialogElements))->toArray();
         }
     }
 
+    /**
+     * @param array<string, mixed> $creationDialogElements
+     */
+    private function mergeDefaultCreationDialogElementEditors(array &$creationDialogElements): void
+    {
+        foreach ($creationDialogElements as &$elementConfiguration) {
+            if (!isset($elementConfiguration['type'])) {
+                continue;
+            }
+
+            $type = $elementConfiguration['type'];
+            $defaultConfigurationFromDataType = $this->dataTypesDefaultConfiguration[$type] ?? [];
+
+            // FIRST STEP: Figure out which editor should be used
+            // - Default: editor as configured from the data type
+            // - Override: editor as configured from the property configuration.
+            if (isset($elementConfiguration['ui']['editor'])) {
+                $editor = $elementConfiguration['ui']['editor'];
+            } elseif (isset($defaultConfigurationFromDataType['editor'])) {
+                $editor = $defaultConfigurationFromDataType['editor'];
+            } else {
+                // No exception since the configuration could be a partial configuration overriding a property
+                // with showInCreationDialog flag set
+                continue;
+            }
+
+            // SECOND STEP: Build up the full UI configuration by merging:
+            // - take configuration from editor defaults
+            // - take configuration from dataType
+            // - take configuration from creationDialog elements (NodeTypes)
+            $mergedUiConfiguration = $this->editorDefaultConfiguration[$editor] ?? [];
+            $mergedUiConfiguration = Arrays::arrayMergeRecursiveOverrule(
+                $mergedUiConfiguration,
+                $defaultConfigurationFromDataType
+            );
+            $mergedUiConfiguration = Arrays::arrayMergeRecursiveOverrule(
+                $mergedUiConfiguration,
+                $elementConfiguration['ui'] ?? []
+            );
+            $elementConfiguration['ui'] = $mergedUiConfiguration;
+            $elementConfiguration['ui']['editor'] = $editor;
+        }
+    }
+
+    /**
+     * @param array<string, mixed> $properties
+     * @param array<string, mixed> $explicitCreationDialogElements
+     * @return array<string, mixed>
+     */
     private function promotePropertiesIntoCreationDialog(array $properties, array $explicitCreationDialogElements): array
     {
         foreach ($properties as $propertyName => $propertyConfiguration) {
@@ -146,6 +202,7 @@ class CreationDialogNodeTypePostprocessor implements NodeTypePostprocessorInterf
             $convertedConfiguration['ui']['hidden'] = $propertyConfiguration['ui']['inspector']['hidden'];
         }
 
+        // todo maybe duplicated due to mergeDefaultCreationDialogElementEditors
         $editor = $propertyConfiguration['ui']['inspector']['editor']
             ?? $dataTypeDefaultConfiguration['editor']
             ?? 'Neos.Neos/Inspector/Editors/TextFieldEditor';

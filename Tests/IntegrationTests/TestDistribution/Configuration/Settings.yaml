@@ -13,15 +13,6 @@ Neos:
       ignoredTags:
         template: true
         psalm: true
-
-  # TODO remove this temporary hack once neos is fixed.
-    object:
-      includeClasses:
-        "Neos.ContentRepository.TestSuite":
-          - "(*FAIL)"
-        "Neos.ContentRepositoryRegistry":
-          - "Neos\\\\ContentRepositoryRegistry\\\\(?!TestSuite\\\\Behavior\\\\CRRegistrySubjectProvider)"
-
   Neos:
     Ui:
       frontendDevelopmentMode: true

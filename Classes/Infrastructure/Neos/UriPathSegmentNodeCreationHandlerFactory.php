@@ -56,11 +56,6 @@ final class UriPathSegmentNodeCreationHandlerFactory implements ContentRepositor
                 // if specified, the uriPathSegment equals the title
                 $uriPathSegment = $elements->get('title');
 
-                // otherwise, we fall back to the node name
-                if ($uriPathSegment === null && $commands->first->nodeName !== null) {
-                    $uriPathSegment = $commands->first->nodeName->value;
-                }
-
                 // if not empty, we transliterate the uriPathSegment according to the language of the new node
                 if ($uriPathSegment !== null && $uriPathSegment !== '') {
                     $uriPathSegment = $this->transliterateText(
@@ -68,10 +63,9 @@ final class UriPathSegmentNodeCreationHandlerFactory implements ContentRepositor
                         $uriPathSegment
                     );
                 } else {
-                    // todo in case the title is missing dont set it to something random like 65d0ba5d8f4593-93420885
-                    // but use the node label name instead like in 8.3. The problem is with two nodes on the same level.
-                    // alternatively we set it to a random string
-                    $uriPathSegment = uniqid('', true);
+                    // alternatively we set it to a random string like `document-blog-022`
+                    $nodeTypeSuffix = explode(':', $commands->first->nodeTypeName->value)[1] ?? '';
+                    $uriPathSegment = sprintf('%s-%03d', $nodeTypeSuffix, random_int(0, 999));
                 }
                 $uriPathSegment = Transliterator::urlize($uriPathSegment);
                 $propertyValues = $commands->first->initialPropertyValues->withValue('uriPathSegment', $uriPathSegment);

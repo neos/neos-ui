@@ -52,13 +52,6 @@ final class UriPathSegmentNodeCreationHandlerFactory implements ContentRepositor
                 ) {
                     return $commands;
                 }
-                $propertyValues = $commands->first->initialPropertyValues;
-
-                if ($elements->has('title')) {
-                    // technically we only need to set the uriPathSegment as the PromotedElementsCreationHandler
-                    // will take care of setting the title already
-                    $propertyValues = $propertyValues->withValue('title', $elements->get('title'));
-                }
 
                 // if specified, the uriPathSegment equals the title
                 $uriPathSegment = $elements->get('title');
@@ -81,7 +74,7 @@ final class UriPathSegmentNodeCreationHandlerFactory implements ContentRepositor
                     $uriPathSegment = uniqid('', true);
                 }
                 $uriPathSegment = Transliterator::urlize($uriPathSegment);
-                $propertyValues = $propertyValues->withValue('uriPathSegment', $uriPathSegment);
+                $propertyValues = $commands->first->initialPropertyValues->withValue('uriPathSegment', $uriPathSegment);
 
                 return $commands->withInitialPropertyValues($propertyValues);
             }

@@ -3,6 +3,11 @@
     'CreationDialogPostprocessor':
       position: 'after NodeTypePresetPostprocessor'
       postprocessor: 'Neos\Neos\Ui\Infrastructure\ContentRepository\CreationDialog\CreationDialogNodeTypePostprocessor'
+  ui:
+    creationDialog:
+      elements:
+        title:
+          position: 'start'
   properties:
     title:
       ui:

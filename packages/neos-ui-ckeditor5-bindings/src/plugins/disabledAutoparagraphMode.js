@@ -1,10 +1,8 @@
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 
 /**
- * HACK, since there is yet no native support for CKEditor 4 autoparagraph false
- * see https://github.com/ckeditor/ckeditor5/issues/762
- *
- * We will try to find a serious alternative see https://github.com/neos/neos-ui/pull/3553
+ * Legacy HACK -> our previous "inlineMode" the `autoparagraph: false` mode (from CKEditor 4) for backwards compatibility
+ * @deprecated in favour of the serious "inlineMode"
  */
 export default class DisabledAutoparagraphMode extends Plugin {
     static get pluginName() {

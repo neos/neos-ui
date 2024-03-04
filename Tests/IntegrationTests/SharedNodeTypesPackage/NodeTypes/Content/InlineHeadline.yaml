@@ -21,7 +21,7 @@
         inlineEditable: true
         inline:
           editorOptions:
-            autoparagraph: false
+            isInline: true
         # we show it also in the inspector so we can easily see the raw text content
         inspector:
           group: 'default'

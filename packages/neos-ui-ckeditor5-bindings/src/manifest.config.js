@@ -33,18 +33,6 @@ const addPlugin = (Plugin, isEnabled) => (ckEditorConfiguration, options) => {
     return ckEditorConfiguration;
 };
 
-// If the editable is a span or a heading, we automatically disable paragraphs and enable the soft break mode
-// Also possible to force this behavior with `autoparagraph: false`
-const disableAutoparagraph = (editorOptions, {propertyDomNode}) =>
-    editorOptions?.autoparagraph === false ||
-    propertyDomNode.tagName === 'SPAN' ||
-    propertyDomNode.tagName === 'H1' ||
-    propertyDomNode.tagName === 'H2' ||
-    propertyDomNode.tagName === 'H3' ||
-    propertyDomNode.tagName === 'H4' ||
-    propertyDomNode.tagName === 'H5' ||
-    propertyDomNode.tagName === 'H6';
-
 //
 // Create richtext editing toolbar registry
 //
@@ -102,7 +90,8 @@ export default ckEditorRegistry => {
     //
     config.set('essentials', addPlugin(Essentials));
     config.set('paragraph', addPlugin(Paragraph));
-    config.set('disabledAutoparagraphMode', addPlugin(DisabledAutoparagraphMode, disableAutoparagraph));
+    // @deprecated
+    config.set('disabledAutoparagraphMode', addPlugin(DisabledAutoparagraphMode, (editorOptions) => editorOptions?.autoparagraph === false));
     config.set('sub', addPlugin(Sub, $get('formatting.sub')));
     config.set('sup', addPlugin(Sup, $get('formatting.sup')));
     config.set('bold', addPlugin(Bold, $get('formatting.strong')));

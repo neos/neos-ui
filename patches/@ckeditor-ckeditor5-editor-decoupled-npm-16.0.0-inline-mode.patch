@@ -1,0 +1,64 @@
+
+fixes https://github.com/neos/neos-ui/issues/3545
+
+diff --git a/src/decouplededitor.js b/src/decouplededitor.js
+index 807e531075bdbded8a34a15ddc5fe50370e0fd61..73afd7a95c8d6b9adf16fe48bf4774d0cfade361 100755
+--- a/src/decouplededitor.js
++++ b/src/decouplededitor.js
+@@ -64,7 +64,7 @@ export default class DecoupledEditor extends Editor {
+ 	 * {@link module:editor-balloon/ballooneditor~BalloonEditor.create `BalloonEditor.create()`}.
+ 	 * @param {module:core/editor/editorconfig~EditorConfig} config The editor configuration.
+ 	 */
+-	constructor( sourceElementOrData, config ) {
++	constructor( sourceElementOrData, config, isInlineMode ) {
+ 		super( config );
+
+ 		if ( isElement( sourceElementOrData ) ) {
+@@ -74,7 +74,25 @@ export default class DecoupledEditor extends Editor {
+
+ 		this.data.processor = new HtmlDataProcessor();
+
+-		this.model.document.createRoot();
++		if (isInlineMode === false) {
++			this.model.document.createRoot();
++		} else {
++			// patched ala https://github.com/ckeditor/ckeditor5/issues/762#issuecomment-370762111
++
++			// we define paragraph as root instead of $root. This will give us no outer tags out of the box and also disable the splitting
++			this.model.document.createRoot('paragraph');
++
++			// it is enforced that the root cannot be splitted, but to make this obvious for other plugins we set isLimit
++		    this.on('ready', () => this.model.schema.extend('paragraph', {isLimit: true}));
++
++			// we redefine enter key to create soft breaks (<br>) instead of new paragraphs
++			this.editing.view.document.on('enter', (evt, data) => {
++				this.execute('shiftEnter');
++				data.preventDefault();
++				evt.stop();
++				this.editing.view.scrollToTheSelection();
++			}, {priority: 'high'});
++		}
+
+ 		const shouldToolbarGroupWhenFull = !this.config.get( 'toolbar.shouldNotGroupWhenFull' );
+ 		const view = new DecoupledEditorUIView( this.locale, this.editing.view, {
+@@ -218,9 +236,10 @@ export default class DecoupledEditor extends Editor {
+ 	 * {@link module:editor-decoupled/decouplededitorui~DecoupledEditorUI#getEditableElement `editor.ui.getEditableElement()`}.
+ 	 *
+ 	 * @param {module:core/editor/editorconfig~EditorConfig} [config] The editor configuration.
++	 * @param {Boolean} isInlineMode Patched inline mode https://github.com/ckeditor/ckeditor5/issues/762#issuecomment-370762111
+ 	 * @returns {Promise} A promise resolved once the editor is ready. The promise resolves with the created editor instance.
+ 	 */
+-	static create( sourceElementOrData, config = {} ) {
++	static create( sourceElementOrData, config = {}, isInlineMode ) {
+ 		return new Promise( resolve => {
+ 			const isHTMLElement = isElement( sourceElementOrData );
+
+@@ -230,7 +249,7 @@ export default class DecoupledEditor extends Editor {
+ 					'editor-wrong-element: This type of editor cannot be initialized inside <textarea> element.', null );
+ 			}
+
+-			const editor = new this( sourceElementOrData, config );
++			const editor = new this( sourceElementOrData, config, isInlineMode );
+
+ 			resolve(
+ 				editor.initPlugins()

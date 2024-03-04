@@ -44,6 +44,16 @@ export const createEditor = store => async options => {
         propertyDomNode
     });
 
+    const isInline = editorOptions?.isInline === true ||
+        propertyDomNode.tagName === 'SPAN' ||
+        propertyDomNode.tagName === 'H1' ||
+        propertyDomNode.tagName === 'H2' ||
+        propertyDomNode.tagName === 'H3' ||
+        propertyDomNode.tagName === 'H4' ||
+        propertyDomNode.tagName === 'H5' ||
+        propertyDomNode.tagName === 'H6' ||
+        propertyDomNode.tagName === 'P';
+
     class NeosEditor extends DecoupledEditor {
         constructor(...args) {
             super(...args);
@@ -55,7 +65,7 @@ export const createEditor = store => async options => {
     }
 
     return NeosEditor
-        .create(propertyDomNode, ckEditorConfig)
+        .create(propertyDomNode, ckEditorConfig, /* this option is introduced via patch */ isInline)
         .then(editor => {
             editor.ui.focusTracker.on('change:isFocused', event => {
                 if (event.source.isFocused) {

@@ -9,12 +9,12 @@ fixture`Rich text editor`
     .beforeEach(beforeEach)
     .afterEach(() => checkPropTypes());
 
-test('Can crop an image', async t => {
+test('Secondary RTE editor works', async t => {
     const testContent = 'Test RTE content';
     await Page.waitForIframeLoading(t);
 
     const rteInspectorEditor = await ReactSelector('InspectorEditorEnvelope').withProps('id', 'rte');
-    const ckeContent = await Selector('.ck-content p');
+    const ckeContent = await Selector('.ck-content');
     await t
         .click(rteInspectorEditor.findReact('Button'));
     await t

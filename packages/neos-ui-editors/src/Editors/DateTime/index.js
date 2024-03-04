@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import DateInput from '@neos-project/react-ui-components/src/DateInput/';
 import moment from 'moment';
 import {neos} from '@neos-project/neos-ui-decorators';
-import convertPhpDateFormatToMoment, {hasDateFormat, hasTimeFormat} from './helpers';
+import convertPhpDateFormatToMoment, {hasDateFormat, hasTimeFormat, tryDateFrom} from './helpers';
 import {connect} from 'react-redux';
 import {$transform, $get} from 'plow-js';
 
@@ -39,7 +39,7 @@ class DateTime extends PureComponent {
             i18nRegistry,
             interfaceLanguage
         } = this.props;
-        const mappedValue = (typeof value === 'string' && value.length) ? moment(value).toDate() : (value || undefined);
+        const mappedValue = tryDateFrom(value);
 
         const onChange = date => {
             commit(date ? moment(date).format('YYYY-MM-DDTHH:mm:ssZ') : '');

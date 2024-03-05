@@ -202,7 +202,14 @@ export default class NodeTypesRegistry extends SynchronousRegistry<NodeType> {
                 }).map(group => ({
                     ...group,
                     items: positionalArraySorter([
-                        ...properties.filter(p => $get(['ui', 'inspector', 'group'], p) === group.id)
+                        ...properties.filter(p => {
+                            const isMatch = p?.ui?.inspector?.group === group.id;
+                            const useDefaultGroup = !p?.ui?.inspector?.group
+                                && group.id === 'default'
+                                && p?.ui?.inspector?.editor;
+
+                            return isMatch || useDefaultGroup;
+                        })
                                 .map(property => ({
                                     type: 'editor',
                                     id: $get(['id'], property),

@@ -345,6 +345,9 @@ class BackendServiceController extends ActionController
                 throw new Exception('Your personal workspace currently contains unpublished changes. In order to switch to a different target workspace you need to either publish or discard pending changes first.', 1582800654);
             }
 
+            $sitePath = $documentNode->getContext()->getRootNode()->getPath();
+            $originalNodePath = $documentNode->getPath();
+
             $userWorkspace->setBaseWorkspace($targetWorkspace);
             $this->workspaceRepository->update($userWorkspace);
 
@@ -357,24 +360,13 @@ class BackendServiceController extends ActionController
             $this->feedbackCollection->add($updateWorkspaceInfo);
 
             // Construct base workspace context
-            $originalContext = $documentNode->getContext();
             $contextProperties = $documentNode->getContext()->getProperties();
             $contextProperties['workspaceName'] = $targetWorkspaceName;
             $contentContext = $this->contextFactory->create($contextProperties);
 
             // If current document node doesn't exist in the base workspace, traverse its parents to find the one that exists
-            $redirectNode = $documentNode;
-            while (true) {
-                $redirectNodeInBaseWorkspace = $contentContext->getNodeByIdentifier($redirectNode->getIdentifier());
-                if ($redirectNodeInBaseWorkspace) {
-                    break;
-                } else {
-                    $redirectNode = $redirectNode->getParent();
-                    if (!$redirectNode) {
-                        throw new Exception(sprintf('Wasn\'t able to locate any valid node in rootline of node %s in the workspace %s.', $documentNode->getContextPath(), $targetWorkspaceName), 1458814469);
-                    }
-                }
-            }
+            $nodesOnPath = $documentNode->getContext()->getNodesOnPath($sitePath, $originalNodePath);
+            $redirectNode = $nodesOnPath[count($nodesOnPath) - 1];
 
             // If current document node exists in the base workspace, then reload, else redirect
             if ($redirectNode === $documentNode) {

@@ -359,11 +359,6 @@ class BackendServiceController extends ActionController
             $updateWorkspaceInfo->setWorkspace($userWorkspace);
             $this->feedbackCollection->add($updateWorkspaceInfo);
 
-            // Construct base workspace context
-            $contextProperties = $documentNode->getContext()->getProperties();
-            $contextProperties['workspaceName'] = $targetWorkspaceName;
-            $contentContext = $this->contextFactory->create($contextProperties);
-
             // If current document node doesn't exist in the base workspace, traverse its parents to find the one that exists
             $nodesOnPath = $documentNode->getContext()->getNodesOnPath($sitePath, $originalNodePath);
             $redirectNode = $nodesOnPath[count($nodesOnPath) - 1];

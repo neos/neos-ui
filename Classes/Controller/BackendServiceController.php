@@ -345,7 +345,7 @@ class BackendServiceController extends ActionController
                 throw new Exception('Your personal workspace currently contains unpublished changes. In order to switch to a different target workspace you need to either publish or discard pending changes first.', 1582800654);
             }
 
-            $sitePath = $documentNode->getContext()->getRootNode()->getPath();
+            $sitePath = $documentNode->getContext()->getCurrentSiteNode()->getPath();
             $originalNodePath = $documentNode->getPath();
 
             $userWorkspace->setBaseWorkspace($targetWorkspace);
@@ -361,7 +361,7 @@ class BackendServiceController extends ActionController
 
             // If current document node doesn't exist in the base workspace, traverse its parents to find the one that exists
             $nodesOnPath = $documentNode->getContext()->getNodesOnPath($sitePath, $originalNodePath);
-            $redirectNode = $nodesOnPath[count($nodesOnPath) - 1];
+            $redirectNode = array_pop($nodesOnPath) ?? $documentNode->getContext()->getCurrentSiteNode();
 
             // If current document node exists in the base workspace, then reload, else redirect
             if ($redirectNode === $documentNode) {

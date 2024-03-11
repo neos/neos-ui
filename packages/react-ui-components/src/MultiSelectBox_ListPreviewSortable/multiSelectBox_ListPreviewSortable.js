@@ -30,6 +30,7 @@ export default class MultiSelectBox_ListPreviewSortable extends PureComponent {
         ).isRequired,
         values: PropTypes.arrayOf(PropTypes.string),
         onValuesChange: PropTypes.func.isRequired,
+        displayLoadingIndicator: PropTypes.bool,
         ListPreviewElement: PropTypes.any.isRequired,
 
         // API with MultiSelectBox
@@ -59,15 +60,23 @@ export default class MultiSelectBox_ListPreviewSortable extends PureComponent {
     render() {
         const {
             options,
-            optionValueAccessor
+            optionValueAccessor,
+            displayLoadingIndicator
         } = this.props;
+
+        if (displayLoadingIndicator) {
+            return '';
+        }
 
         const {draggableValues} = this.state;
 
         // Sorted options by draggable value ordering
         const draggableOptions = draggableValues.map(value =>
-            options.find(option => optionValueAccessor(option) === value)
-        ).filter(Boolean);
+            options.find(option => optionValueAccessor(option) === value) || {
+                label: `Invalid: "${value}"`,
+                icon: 'exclamation-triangle'
+            }
+        );
 
         return draggableOptions.map(this.renderOption);
     }

@@ -109,13 +109,12 @@ const defaultProps: PickDefaultProps<DateInputProps, 'labelFormat' | 'timeConstr
 };
 
 interface DateInputState {
-    readonly isOpen: boolean;
-    readonly transientDate: Date | null; // TODO do we have a breaking change when we use 'undefined' in favor of 'null'?
+    readonly isOpen: boolean
+
 }
 
 const initialState: DateInputState = {
-    isOpen: false,
-    transientDate: null
+    isOpen: false
 };
 
 export class DateInput extends PureComponent<DateInputProps, DateInputState> {
@@ -246,11 +245,7 @@ export class DateInput extends PureComponent<DateInputProps, DateInputState> {
 
     private readonly handleChange = (value: Moment | string) => {
         const momentVal: Moment = isMoment(value) ? value : moment(value);
-        const selectedDate = momentVal.toDate()
-        this.setState({
-            transientDate: selectedDate
-        });
-        this.props.onChange(selectedDate);
+        this.props.onChange(momentVal.toDate());
     }
 
     private readonly handleSelectTodayBtnClick = () => {

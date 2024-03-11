@@ -34,7 +34,6 @@ describe('<DateInput/>', () => {
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
-
     it('should initialize with a state of {isOpen = false}.', () => {
         const wrapper = shallow(<DateInput {...props}/>);
 

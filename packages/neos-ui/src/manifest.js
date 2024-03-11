@@ -109,11 +109,10 @@ manifest('main', {}, (globalRegistry, {routes}) => {
 
         Every component gets the following properties (see EditorEnvelope/index.js)
 
-        - identifier: an identifier which can be used for HTML ID generation
+        - id: an identifier which can be used for HTML ID generation
         - label: the label
-        - node: the current node
         - value: The value to display
-        - propertyName: Name of the property to edit (of the node)
+        - identifier: Name of the property to edit (of the node)
         - options: additional editor options
         - commit: a callback function when the content changes.
             - 1st argument: the new value
@@ -125,6 +124,8 @@ manifest('main', {}, (globalRegistry, {routes}) => {
             - 2nd argument: a callback function which can be used to render the secondary inspector. The callback function should return the secondary inspector content itself; or "undefined/null" to close the secondary inspector.
 
             Example usage: props.renderSecondaryInspector('IMAGE_CROPPING', () => <MySecondaryInspectorContent />)
+        
+        the current node is not passed and must be acquired via @connect($transform({ node: selectors.CR.Nodes.focusedSelector }))
 
     `));
 

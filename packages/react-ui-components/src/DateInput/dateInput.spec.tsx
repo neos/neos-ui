@@ -29,10 +29,11 @@ describe('<DateInput/>', () => {
     };
 
     it('should render correctly.', () => {
-        const wrapper = shallow(<DateInput {...props}/>);
+        const wrapper = shallow(<DateInput {...props} is24Hour/>);
 
         expect(toJson(wrapper)).toMatchSnapshot();
     });
+
 
     it('should initialize with a state of {isOpen = false}.', () => {
         const wrapper = shallow(<DateInput {...props}/>);
@@ -115,5 +116,11 @@ describe('<DateInput/>', () => {
         expect(receivedDate.getUTCMinutes()).toBe(0);
         expect(receivedDate.getUTCSeconds()).toBe(0);
         expect(receivedDate.getUTCMilliseconds()).toBe(0);
+    });
+
+    it('should format time in 24 hour format', () => {
+        const wrapper = shallow(<DateInput {...props} is24Hour/>);
+
+        expect(toJson(wrapper)).toMatchSnapshot();
     });
 });

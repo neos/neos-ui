@@ -88,22 +88,6 @@ exports[`<DateInput/> should render correctly. 1`] = `
       timeFormat={true}
       utc={false}
     />
-    <ThemedButton
-      _refHandler={[Function]}
-      className="applyBtnClassName"
-      composeTheme="deeply"
-      disabled={false}
-      hoverStyle="brand"
-      isActive={false}
-      isFocused={false}
-      mapThemrProps={[Function]}
-      onClick={[Function]}
-      size="regular"
-      style="brand"
-      type="button"
-    >
-      applyLabel
-    </ThemedButton>
   </UnmountClosed>
 </div>
 `;
@@ -196,22 +180,6 @@ exports[`<DateInput/> should set "utc" on DatePickerComponent if "dateOnly" prop
       timeFormat={false}
       utc={true}
     />
-    <ThemedButton
-      _refHandler={[Function]}
-      className="applyBtnClassName"
-      composeTheme="deeply"
-      disabled={false}
-      hoverStyle="brand"
-      isActive={false}
-      isFocused={false}
-      mapThemrProps={[Function]}
-      onClick={[Function]}
-      size="regular"
-      style="brand"
-      type="button"
-    >
-      applyLabel
-    </ThemedButton>
   </UnmountClosed>
 </div>
 `;

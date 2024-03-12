@@ -28,11 +28,6 @@
     margin-right: .75em;
     width: 2em !important;
 }
-.dropDown__userName {
-    @media(max-width: 1024px) {
-        display: none;
-    }
-}
 .dropDown__contents {
     min-width: 160px;
     padding: 2px !important;
@@ -40,12 +35,6 @@
     background: var(--colors-ContrastDarkest);
     position: relative;
     box-shadow: none;
-
-    @media(max-width: 768px) {
-        min-width: 240px;
-        top: 40px;
-        margin-top: 0;
-    }
 }
 .dropDown__item {
     height: var(--spacing-GoldenUnit);

@@ -23,6 +23,7 @@ use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateId;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeName;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
+use Neos\Neos\Ui\Domain\NodeCreation\NodeCreationHandlerFactoryInterface;
 use Neos\Neos\Ui\Domain\Service\NodePropertyConversionService;
 use Neos\Neos\Ui\Exception\InvalidNodeCreationHandlerException;
 use Neos\Neos\Ui\Domain\NodeCreation\NodeCreationCommands;
@@ -202,16 +203,16 @@ abstract class AbstractCreate extends AbstractStructuralChange
             }
 
             $nodeCreationHandlerFactory = $this->objectManager->get($nodeCreationHandlerConfiguration['factoryClassName']);
-            if (!$nodeCreationHandlerFactory instanceof ContentRepositoryServiceFactoryInterface) {
+            if (!$nodeCreationHandlerFactory instanceof NodeCreationHandlerFactoryInterface) {
                 throw new InvalidNodeCreationHandlerException(sprintf(
                     'Node creation handler "%s" didnt specify factory class of type %s. Got "%s"',
                     $key,
-                    ContentRepositoryServiceFactoryInterface::class,
+                    NodeCreationHandlerFactoryInterface::class,
                     get_class($nodeCreationHandlerFactory)
                 ), 1697750193);
             }
 
-            $nodeCreationHandler = $this->contentRepositoryRegistry->buildService($contentRepository->id, $nodeCreationHandlerFactory);
+            $nodeCreationHandler = $nodeCreationHandlerFactory->build($contentRepository);
             if (!$nodeCreationHandler instanceof NodeCreationHandlerInterface) {
                 throw new InvalidNodeCreationHandlerException(sprintf(
                     'Node creation handler "%s" didnt specify factory class of type %s. Got "%s"',

@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Neos\Neos\Ui\Infrastructure\ContentRepository\CreationDialog;
 
-use Neos\ContentRepository\Core\Factory\ContentRepositoryServiceFactoryDependencies;
-use Neos\ContentRepository\Core\Factory\ContentRepositoryServiceFactoryInterface;
+use Neos\ContentRepository\Core\ContentRepository;
 use Neos\ContentRepository\Core\Feature\NodeReferencing\Command\SetNodeReferences;
 use Neos\ContentRepository\Core\Feature\NodeReferencing\Dto\NodeReferencesToWrite;
 use Neos\ContentRepository\Core\NodeType\NodeTypeManager;
@@ -13,6 +12,7 @@ use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateIds;
 use Neos\ContentRepository\Core\SharedModel\Node\ReferenceName;
 use Neos\Neos\Ui\Domain\NodeCreation\NodeCreationCommands;
 use Neos\Neos\Ui\Domain\NodeCreation\NodeCreationElements;
+use Neos\Neos\Ui\Domain\NodeCreation\NodeCreationHandlerFactoryInterface;
 use Neos\Neos\Ui\Domain\NodeCreation\NodeCreationHandlerInterface;
 
 /**
@@ -21,13 +21,12 @@ use Neos\Neos\Ui\Domain\NodeCreation\NodeCreationHandlerInterface;
  * and sets the initial property values accordingly
  *
  * @internal you should not to interact with this factory directly. The node creation handle will already be configured under `nodeCreationHandlers`
- * @implements ContentRepositoryServiceFactoryInterface<NodeCreationHandlerInterface>
  */
-final class PromotedElementsCreationHandlerFactory implements ContentRepositoryServiceFactoryInterface
+final class PromotedElementsCreationHandlerFactory implements NodeCreationHandlerFactoryInterface
 {
-    public function build(ContentRepositoryServiceFactoryDependencies $serviceFactoryDependencies): NodeCreationHandlerInterface
+    public function build(ContentRepository $contentRepository): NodeCreationHandlerInterface
     {
-        return new class($serviceFactoryDependencies->nodeTypeManager) implements NodeCreationHandlerInterface {
+        return new class($contentRepository->getNodeTypeManager()) implements NodeCreationHandlerInterface {
             public function __construct(
                 private readonly NodeTypeManager $nodeTypeManager
             ) {

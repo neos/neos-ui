@@ -30,14 +30,14 @@ use Neos\ContentRepository\Core\Factory\ContentRepositoryServiceInterface;
  *             factoryClassName: 'Vendor\Site\MyHandlerFactory'
  *             position: end
  *
- * The factory must implement the {@see ContentRepositoryServiceFactoryInterface} and
+ * The factory must implement the {@see NodeCreationHandlerFactoryInterface} and
  * return an implementation with this {@see NodeCreationHandlerInterface} interface.
  *
  * The current content-repository or NodeType-manager will be accessible via the factory dependencies.
  *
  * @api
  */
-interface NodeCreationHandlerInterface extends ContentRepositoryServiceInterface
+interface NodeCreationHandlerInterface
 {
     /**
      * @param NodeCreationCommands $commands original or previous commands,

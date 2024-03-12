@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace Neos\Neos\Ui\Infrastructure\Neos;
 
 use Behat\Transliterator\Transliterator;
+use Neos\ContentRepository\Core\ContentRepository;
 use Neos\ContentRepository\Core\Dimension\ContentDimensionId;
 use Neos\ContentRepository\Core\DimensionSpace\DimensionSpacePoint;
-use Neos\ContentRepository\Core\Factory\ContentRepositoryServiceFactoryDependencies;
-use Neos\ContentRepository\Core\Factory\ContentRepositoryServiceFactoryInterface;
 use Neos\ContentRepository\Core\NodeType\NodeTypeManager;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\I18n\Exception\InvalidLocaleIdentifierException;
@@ -16,6 +15,7 @@ use Neos\Flow\I18n\Locale;
 use Neos\Neos\Service\TransliterationService;
 use Neos\Neos\Ui\Domain\NodeCreation\NodeCreationCommands;
 use Neos\Neos\Ui\Domain\NodeCreation\NodeCreationElements;
+use Neos\Neos\Ui\Domain\NodeCreation\NodeCreationHandlerFactoryInterface;
 use Neos\Neos\Ui\Domain\NodeCreation\NodeCreationHandlerInterface;
 
 /**
@@ -26,18 +26,17 @@ use Neos\Neos\Ui\Domain\NodeCreation\NodeCreationHandlerInterface;
  *   - (actually obsolete with PromotedElementsCreationHandler)
  *
  * @internal you should not to interact with this factory directly. The node creation handle will already be configured under `nodeCreationHandlers`
- * @implements ContentRepositoryServiceFactoryInterface<NodeCreationHandlerInterface>
  */
-final class UriPathSegmentNodeCreationHandlerFactory implements ContentRepositoryServiceFactoryInterface
+final class UriPathSegmentNodeCreationHandlerFactory implements NodeCreationHandlerFactoryInterface
 {
     /**
      * @Flow\Inject
      */
     protected TransliterationService $transliterationService;
 
-    public function build(ContentRepositoryServiceFactoryDependencies $serviceFactoryDependencies): NodeCreationHandlerInterface
+    public function build(ContentRepository $contentRepository): NodeCreationHandlerInterface
     {
-        return new class($serviceFactoryDependencies->nodeTypeManager, $this->transliterationService) implements NodeCreationHandlerInterface {
+        return new class($contentRepository->getNodeTypeManager(), $this->transliterationService) implements NodeCreationHandlerInterface {
             public function __construct(
                 private readonly NodeTypeManager $nodeTypeManager,
                 private readonly TransliterationService $transliterationService

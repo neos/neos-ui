@@ -1,7 +1,7 @@
 .wrapper {
-    display: inline-block;
     position: relative;
     vertical-align: top;
+    width: 100%;
 }
 .dropDown {
     position: static;
@@ -12,15 +12,21 @@
     position: relative;
     height: var(--spacing-GoldenUnit);
     border: 0;
-    background-color: var(--colors-ContrastDarker);
     text-align: right;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background: var(--colors-ContrastDarkest);
+    padding-top: 2em;
+    padding-bottom: 2em;
 
-    &:hover {
+    &:hover span {
         color: var(--colors-PrimaryBlue);
     }
 }
 .dropDown__btnIcon {
-    margin-right: .5em;
+    margin-right: 0.75em;
+    width: 2em !important;
 }
 .dropDown__userName {
     @media(max-width: 1024px) {
@@ -28,15 +34,12 @@
     }
 }
 .dropDown__contents {
-    position: absolute;
     min-width: 160px;
-    width: max-content;
-    right: 0px;
-    left: auto;
     padding: 2px !important;
     margin-top: -2px;
-    background: var(--colors-ContrastDarker);
-    box-shadow: 0 5px 5px rgba(0, 0, 0, .2);
+    background: var(--colors-ContrastDarkest);
+    position: relative;
+    box-shadow: none;
 
     @media(max-width: 768px) {
         min-width: 240px;
@@ -47,7 +50,6 @@
 .dropDown__item {
     height: var(--spacing-GoldenUnit);
     border-top: 1px solid var(--colors-ContrastDarker);
-    background: var(--colors-ContrastDarkest);
 
     &:hover {
         background: var(--colors-PrimaryBlue);
@@ -68,5 +70,19 @@
     }
 }
 .dropDown__itemIcon {
-    margin-right: .5em;
+    margin-right: 0.75em;
+    width: 2em !important;
+}
+
+.user__image {
+    margin-right: 2em;
+    border-radius: 100%;
+    background: var(--colors-ContrastBright);
+    height: 32px;
+    width: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: nowrap;
 }

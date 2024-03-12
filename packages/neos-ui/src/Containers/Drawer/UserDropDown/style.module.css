@@ -25,7 +25,7 @@
     }
 }
 .dropDown__btnIcon {
-    margin-right: 0.75em;
+    margin-right: .75em;
     width: 2em !important;
 }
 .dropDown__userName {
@@ -70,7 +70,7 @@
     }
 }
 .dropDown__itemIcon {
-    margin-right: 0.75em;
+    margin-right: .75em;
     width: 2em !important;
 }
 

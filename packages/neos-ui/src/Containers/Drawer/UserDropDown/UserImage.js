@@ -14,7 +14,7 @@ import style from './style.module.css';
 export default class UserImage extends PureComponent {
     static propTypes = {
         userFirstName: PropTypes.string.isRequired,
-        impersonateStatus: PropTypes.bool.isRequired
+        userLastName: PropTypes.string.isRequired
     };
 
     render() {

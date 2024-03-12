@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-inspector",
-  "version": "9.0.0-beta2",
+  "version": "9.0.0-beta3",
   "description": "Components for integrating views and editors into the Neos CMS UI inspector.",
   "private": true,
   "main": "./src/index.js",

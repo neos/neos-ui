@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-editors",
-  "version": "9.0.0-beta2",
+  "version": "9.0.0-beta3",
   "description": "Neos CMS UI Editors for use in the inspector.",
   "main": "src/manifest.js",
   "private": true,

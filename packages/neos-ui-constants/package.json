@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-constants",
-  "version": "9.0.0-beta2",
+  "version": "9.0.0-beta3",
   "description": "Container package to store Neos CMS UI constants",
   "private": true,
   "main": "./src/index.js",

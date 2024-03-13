@@ -119,11 +119,6 @@ final readonly class NodeCreationCommands implements \IteratorAggregate
      */
     public function getIterator(): \Traversable
     {
-        yield $this->first;
-        foreach ($this->additionalCommands as $command) {
-            // if yield from is used, the default setting of iterator_to_array, "preserve_keys: true"
-            // would cause the first command to be overridden.
-            yield $command;
-        }
+        yield from [$this->first, ...$this->additionalCommands];
     }
 }

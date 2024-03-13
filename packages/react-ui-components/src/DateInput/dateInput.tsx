@@ -146,7 +146,6 @@ export class DateInput extends PureComponent<DateInputProps, DateInputState> {
             labelFormat,
             dateOnly,
             timeOnly,
-            is24Hour,
             locale,
             disabled
         } = this.props;
@@ -181,15 +180,6 @@ export class DateInput extends PureComponent<DateInputProps, DateInputState> {
                 [theme!['disabled-cursor']]: disabled
             },
         );
-
-        const getTimeFormat = () => {
-            if (dateOnly) {
-                return false
-            }
-
-            console.log('getTimeFormat', is24Hour);
-            return is24Hour ? 'HH:m' : 'hh:m A'
-        }
 
         return (
             <div className={wrapper}>
@@ -236,7 +226,7 @@ export class DateInput extends PureComponent<DateInputProps, DateInputState> {
                         dateFormat={!timeOnly}
                         utc={dateOnly}
                         locale={locale}
-                        timeFormat={getTimeFormat()}
+                        timeFormat={this.timeFormat}
                         onChange={this.handleChange}
                         timeConstraints={this.props.timeConstraints}
                     />
@@ -317,6 +307,13 @@ export class DateInput extends PureComponent<DateInputProps, DateInputState> {
         this.setState({
             isOpen: false
         });
+    }
+
+    private get timeFormat(): false | string {
+        if (this.props.dateOnly) {
+            return false;
+        }
+        return this.props.is24Hour ? 'HH:m' : 'hh:m A';
     }
 }
 

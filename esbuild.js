@@ -3,8 +3,6 @@ const {compileWithCssVariables} = require('./cssVariables');
 const {cssModules} = require('./cssModules');
 const esbuild = require('esbuild');
 const { version } = require('./package.json')
-const { browserslistToTargets } = require('lightningcss');
-const browserslist = require('browserslist');
 
 const isProduction = process.argv.includes('--production');
 const isE2ETesting = process.argv.includes('--e2e-testing');
@@ -77,7 +75,13 @@ const options = {
         cssModules(
             {
                 visitor: compileWithCssVariables(),
-                targets: browserslistToTargets(browserslist('last 2 versions')),
+                targets: { // only support es2020 browser
+                    // only supports browserList format
+                    chrome: (80 << 16), // 80
+                    safari: (13 << 16) | (1 << 8), // 13.1
+                    firefox: (72 << 16), // 72
+                    edge: (80 << 16) // 80
+                },
                 drafts: {
                     nesting: true
                 }

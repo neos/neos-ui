@@ -9,8 +9,3 @@
     }
 }
 
-@supports (-webkit-user-select: none) {
-    .treeWrapper {
-        -webkit-user-select: none;
-    }
-}

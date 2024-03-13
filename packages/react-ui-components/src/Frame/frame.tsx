@@ -48,6 +48,19 @@ export default class Frame extends PureComponent<FrameProps> {
     }
 
     public componentDidMount(): void {
+        if (this.ref) {
+            this.ref.addEventListener('load', () => {
+                if (this.ref && this.ref.contentDocument && this.ref.contentWindow) {
+                    const doc = this.ref.contentDocument;
+                    const win = this.ref.contentWindow;
+                    const mountTarget = doc.querySelector(this.props.mountTarget);
+                    if (mountTarget) {
+                        this.props.contentDidUpdate(win, doc, mountTarget);
+                    }
+                }
+            });
+        }
+
         this.updateIframeUrlIfNecessary();
         this.addClickListener();
     }
@@ -104,19 +117,6 @@ export default class Frame extends PureComponent<FrameProps> {
             console.error('Could not update iFrame Url from within. Trying to set src attribute manually...');
             this.ref.setAttribute('src', this.props.src);
         }
-    }
-
-    public UNSAFE_componentWillMount(): void {
-        document.addEventListener('Neos.Neos.Ui.ContentReady', () => {
-            if (this.ref && this.ref.contentDocument && this.ref.contentWindow) {
-                const doc = this.ref.contentDocument;
-                const win = this.ref.contentWindow;
-                const mountTarget = doc.querySelector(this.props.mountTarget);
-                if (mountTarget) {
-                    this.props.contentDidUpdate(win, doc, mountTarget);
-                }
-            }
-        });
     }
 
     private readonly handleUnload = () => {
@@ -184,7 +184,7 @@ export default class Frame extends PureComponent<FrameProps> {
 
     public componentWillUnmount(): void {
         if (this.ref) {
-            document.removeEventListener('Neos.Neos.Ui.ContentReady', this.renderFrameContents);
+            this.ref.removeEventListener('load', this.renderFrameContents);
         }
         this.removeClickListener();
     }

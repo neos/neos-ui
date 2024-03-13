@@ -5,8 +5,8 @@ namespace Neos\Neos\Ui\Domain\NodeCreation;
 use Neos\ContentRepository\Core\ContentRepository;
 
 /**
- * @see NodeCreationHandlerInterface
- * @api
+ * @see NodeCreationHandlerInterface how to configure a handler
+ * @internal
  */
 interface NodeCreationHandlerFactoryInterface
 {

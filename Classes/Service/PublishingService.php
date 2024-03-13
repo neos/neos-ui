@@ -23,7 +23,6 @@ use Neos\Flow\Annotations as Flow;
 /**
  * A generic ContentRepository Publishing Service
  *
- * @api
  * @Flow\Scope("singleton")
  * @internal
  */

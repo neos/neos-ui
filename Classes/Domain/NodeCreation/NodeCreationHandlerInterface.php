@@ -33,9 +33,10 @@ use Neos\ContentRepository\Core\Factory\ContentRepositoryServiceInterface;
  * The factory must implement the {@see NodeCreationHandlerFactoryInterface} and
  * return an implementation with this {@see NodeCreationHandlerInterface} interface.
  *
- * The current content-repository or NodeType-manager will be accessible via the factory dependencies.
+ * The current content-repository or NodeType-manager will be accessible via the
+ * content repository in {@see NodeCreationHandlerFactoryInterface::build()}.
  *
- * @api
+ * @internal
  */
 interface NodeCreationHandlerInterface
 {

@@ -48,7 +48,7 @@ use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateIds;
  *             showInCreationDialog: true
  *
  * @implements \IteratorAggregate<string, mixed>
- * @api As part of the {@see NodeCreationHandlerInterface} except the constructor and serialized data
+ * @internal Especially the constructor and the serialized data
  */
 final readonly class NodeCreationElements implements \IteratorAggregate
 {

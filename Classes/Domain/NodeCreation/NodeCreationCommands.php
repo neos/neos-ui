@@ -45,8 +45,7 @@ use Neos\ContentRepository\Core\NodeType\NodeTypeManager;
  *     $parentNode = $subgraph->findNodeById($commands->first->parentNodeAggregateId);
  *
  * @implements \IteratorAggregate<int, CommandInterface>
- * @api As part of the {@see NodeCreationHandlerInterface}
- *      Note: The constructors are not part of the public API
+ * @internal Especially the constructors
  */
 final readonly class NodeCreationCommands implements \IteratorAggregate
 {

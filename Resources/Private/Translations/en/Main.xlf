@@ -374,6 +374,9 @@
             <trans-unit id="errorBoundary.footer" xml:space="preserve">
                 <source>For more information about the error please refer to the JavaScript console.</source>
             </trans-unit>
+            <trans-unit id="invalidValue" xml:space="preserve">
+                <source>Invalid value</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>

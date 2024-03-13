@@ -585,7 +585,7 @@ class BackendServiceController extends ActionController
         }
 
         /** @see GetOperation */
-        assert(is_callable([$flowQuery, 'get']));
+        assert(is_object($flowQuery) && is_callable([$flowQuery, 'get']));
 
         $nodeInfoHelper = new NodeInfoHelper();
         $type = $finisher['type'] ?? null;

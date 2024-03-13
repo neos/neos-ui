@@ -11,10 +11,10 @@ namespace Neos\Neos\Ui\Fusion\Helper;
  * source code.
  */
 
+use Neos\ContentRepository\Core\Feature\SubtreeTagging\Dto\SubtreeTag;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\CountAncestorNodesFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindChildNodesFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
-use Neos\ContentRepository\Core\Projection\NodeHiddenState\NodeHiddenStateFinder;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateClassification;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\ProtectedContextAwareInterface;
@@ -85,9 +85,6 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         ActionRequest $actionRequest = null,
         string $nodeTypeFilterOverride = null
     ): ?array {
-        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
-        $nodeHiddenStateFinder = $contentRepository->projectionState(NodeHiddenStateFinder::class);
-
         /** @todo implement custom node policy service
         if (!$this->nodePolicyService->isNodeTreePrivilegeGranted($node)) {
         return null;
@@ -98,11 +95,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         $nodeInfo['properties'] = [
             // if we are only rendering the tree state,
             // ensure _isHidden is sent to hidden nodes are correctly shown in the tree.
-            '_hidden' => $nodeHiddenStateFinder->findHiddenState(
-                $node->subgraphIdentity->contentStreamId,
-                $node->subgraphIdentity->dimensionSpacePoint,
-                $node->nodeAggregateId
-            )->isHidden,
+            '_hidden' => $node->tags->contain(SubtreeTag::fromString('disabled')),
             '_hiddenInIndex' => $node->getProperty('_hiddenInIndex'),
             '_hasTimeableNodeVisibility' =>
                 $node->getProperty('enableAfterDateTime') instanceof \DateTimeInterface
@@ -143,6 +136,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
         $nodeInfo = $this->getBasicNodeInformation($node);
         $nodeInfo['properties'] = $this->nodePropertyConverterService->getPropertiesArray($node);
+        $nodeInfo['tags'] = $node->tags;
         $nodeInfo['isFullyLoaded'] = true;
 
         if ($actionRequest !== null) {

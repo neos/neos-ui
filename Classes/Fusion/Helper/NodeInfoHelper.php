@@ -103,7 +103,8 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
                 $node->subgraphIdentity->dimensionSpacePoint,
                 $node->nodeAggregateId
             )->isHidden,
-            '_hiddenInIndex' => $node->getProperty('_hiddenInIndex'),
+            // TODO: we should export this correctly named, but that needs changes throughout the JS code as well.
+            '_hiddenInIndex' => $node->getProperty('hiddenInMenu'),
             '_hasTimeableNodeVisibility' =>
                 $node->getProperty('enableAfterDateTime') instanceof \DateTimeInterface
                 || $node->getProperty('disableAfterDateTime') instanceof \DateTimeInterface,

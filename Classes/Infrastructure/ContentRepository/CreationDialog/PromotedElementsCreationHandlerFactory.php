@@ -61,7 +61,7 @@ final class PromotedElementsCreationHandlerFactory implements NodeCreationHandle
                         ) {
                             // a promoted element
                             $setReferencesCommands[] = SetNodeReferences::create(
-                                $commands->first->contentStreamId,
+                                $commands->first->workspaceName,
                                 $commands->first->nodeAggregateId,
                                 $commands->first->originDimensionSpacePoint,
                                 ReferenceName::fromString($elementName),

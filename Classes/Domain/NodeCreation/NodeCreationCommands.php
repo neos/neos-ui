@@ -59,7 +59,7 @@ final readonly class NodeCreationCommands implements \IteratorAggregate
      * Add a list of commands that are executed after the initial created command was run.
      * This allows to create child-nodes and append other allowed commands.
      *
-     * @var array<int|string, CreateNodeAggregateWithNode|SetNodeProperties|DisableNodeAggregate|EnableNodeAggregate|SetNodeReferences|CopyNodesRecursively>
+     * @var array<int,CreateNodeAggregateWithNode|SetNodeProperties|DisableNodeAggregate|EnableNodeAggregate|SetNodeReferences|CopyNodesRecursively>
      */
     public array $additionalCommands;
 
@@ -68,7 +68,7 @@ final readonly class NodeCreationCommands implements \IteratorAggregate
         CreateNodeAggregateWithNode|SetNodeProperties|DisableNodeAggregate|EnableNodeAggregate|SetNodeReferences|CopyNodesRecursively ...$additionalCommands
     ) {
         $this->first = $first;
-        $this->additionalCommands = $additionalCommands;
+        $this->additionalCommands = array_values($additionalCommands);
     }
 
     /**

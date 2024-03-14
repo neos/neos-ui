@@ -63,7 +63,6 @@ class DateTime extends PureComponent {
                 is24Hour={hasTimeFormat(options.format) && has24HourFormat(options.format)}
                 placeholder={i18nRegistry.translate($get('placeholder', options) || 'Neos.Neos:Main:content.inspector.editors.dateTimeEditor.noDateSet')}
                 todayLabel={i18nRegistry.translate('content.inspector.editors.dateTimeEditor.today', 'Today', {}, 'Neos.Neos', 'Main')}
-                applyLabel={i18nRegistry.translate('content.inspector.editors.dateTimeEditor.apply', 'Apply', {}, 'Neos.Neos', 'Main')}
                 locale={interfaceLanguage}
                 disabled={options.disabled}
                 timeConstraints={timeConstraints}

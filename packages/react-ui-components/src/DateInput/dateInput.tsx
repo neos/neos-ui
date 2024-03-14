@@ -7,7 +7,6 @@ import Collapse from 'react-collapse';
 import DatePicker, {TimeConstraints} from 'react-datetime';
 
 import {PickDefaultProps} from '../utils-typescript';
-import Button from '../Button';
 import Icon from '../Icon';
 
 // WHY: Because momentJs locales are not bundled automatically, we have to explicitly add them.
@@ -38,11 +37,6 @@ export interface DateInputProps {
      * The label which will be displayed within the `Select Today` btn.
      */
     readonly todayLabel: string;
-
-    /**
-     * The label which will be displayed within the `Apply` btn.
-     */
-    readonly applyLabel: string;
 
     /**
      * The moment format string to use to format the passed value.
@@ -120,13 +114,12 @@ const defaultProps: PickDefaultProps<DateInputProps, 'labelFormat' | 'timeConstr
 };
 
 interface DateInputState {
-    readonly isOpen: boolean;
-    readonly transientDate: Date | null; // TODO do we have a breaking change when we use 'undefined' in favor of 'null'?
+    readonly isOpen: boolean
+
 }
 
 const initialState: DateInputState = {
-    isOpen: false,
-    transientDate: null
+    isOpen: false
 };
 
 export class DateInput extends PureComponent<DateInputProps, DateInputState> {
@@ -142,7 +135,6 @@ export class DateInput extends PureComponent<DateInputProps, DateInputState> {
             className,
             id,
             todayLabel,
-            applyLabel,
             labelFormat,
             dateOnly,
             timeOnly,
@@ -228,15 +220,9 @@ export class DateInput extends PureComponent<DateInputProps, DateInputState> {
                         locale={locale}
                         timeFormat={this.timeFormat}
                         onChange={this.handleChange}
+
                         timeConstraints={this.props.timeConstraints}
                     />
-                    <Button
-                        onClick={this.handleApply}
-                        className={theme!.applyBtn}
-                        style="brand"
-                    >
-                        {applyLabel}
-                    </Button>
                 </Collapse>
             </div>
         );
@@ -262,19 +248,9 @@ export class DateInput extends PureComponent<DateInputProps, DateInputState> {
         }
     }
 
-    private readonly handleApply = () => {
-        this.setState({
-            isOpen: false
-        }, () => {
-            this.props.onChange(this.state.transientDate);
-        });
-    }
-
     private readonly handleChange = (value: Moment | string) => {
         const momentVal: Moment = isMoment(value) ? value : moment(value);
-        this.setState({
-            transientDate: momentVal.toDate()
-        });
+        this.props.onChange(momentVal.toDate());
     }
 
     private readonly handleSelectTodayBtnClick = () => {

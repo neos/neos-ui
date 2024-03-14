@@ -1,5 +1,113 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<DateInput/> should format time in 24 hour format 1`] = `
+<div
+  className="wrapperClassName"
+>
+  <div
+    className="calendarInputWrapperClassName"
+  >
+    <button
+      className="calendarIconBtnClassName"
+      onClick={[Function]}
+    >
+      <ThemedIcon
+        color="default"
+        composeTheme="deeply"
+        icon="far calendar-alt"
+        mapThemrProps={[Function]}
+        padded="none"
+        size="sm"
+      />
+    </button>
+    <div
+      className="calendarFakeInputWrapperClassName"
+    >
+      <div
+        className="calendarFakeInputMirrorClassName"
+        onClick={[Function]}
+        role="presentation"
+      />
+      <input
+        className="calendarFakeInputClassName"
+        onFocus={[Function]}
+        readOnly={true}
+        type="datetime"
+        value=""
+      />
+    </div>
+    <button
+      className="closeCalendarIconBtnClassName"
+      onClick={[Function]}
+    >
+      <ThemedIcon
+        color="default"
+        composeTheme="deeply"
+        icon="times"
+        mapThemrProps={[Function]}
+        padded="none"
+        size="sm"
+      />
+    </button>
+  </div>
+  <UnmountClosed
+    isOpened={false}
+  >
+    <button
+      className="selectTodayBtnClassName"
+      onClick={[Function]}
+    >
+      todayLabel
+    </button>
+    <DateTime
+      className=""
+      closeOnSelect={false}
+      closeOnTab={true}
+      dateFormat={true}
+      defaultValue=""
+      input={true}
+      inputProps={Object {}}
+      locale="en-US"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onFocus={[Function]}
+      onNavigateBack={[Function]}
+      onNavigateForward={[Function]}
+      onViewModeChange={[Function]}
+      open={true}
+      strictParsing={true}
+      timeConstraints={
+        Object {
+          "minutes": Object {
+            "max": 59,
+            "min": 0,
+            "step": 5,
+          },
+        }
+      }
+      timeFormat="HH:m"
+      utc={false}
+    />
+    <ThemedButton
+      _refHandler={[Function]}
+      className="applyBtnClassName"
+      composeTheme="deeply"
+      disabled={false}
+      hoverStyle="brand"
+      isActive={false}
+      isFocused={false}
+      mapThemrProps={[Function]}
+      onClick={[Function]}
+      size="regular"
+      style="brand"
+      type="button"
+    >
+      applyLabel
+    </ThemedButton>
+  </UnmountClosed>
+</div>
+`;
+
 exports[`<DateInput/> should render correctly. 1`] = `
 <div
   className="wrapperClassName"
@@ -85,7 +193,7 @@ exports[`<DateInput/> should render correctly. 1`] = `
           },
         }
       }
-      timeFormat={true}
+      timeFormat="HH:m"
       utc={false}
     />
     <ThemedButton

@@ -15,7 +15,6 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
 use Neos\ContentRepository\Core\Feature\NodeMove\Command\MoveNodeAggregate;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\Feature\NodeMove\Dto\RelationDistributionStrategy;
-use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 
 /**
@@ -84,9 +83,17 @@ class MoveInto extends AbstractStructuralChange
                     ->equals($parentNode->nodeAggregateId);
 
             $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
+            $workspace = $this->contentRepositoryRegistry->get($this->subject->subgraphIdentity->contentRepositoryId)
+                ->getWorkspaceFinder()->findOneByCurrentContentStreamId($subject->subgraphIdentity->contentStreamId);
+            if (!$workspace) {
+                throw new \Exception(
+                    'Could not find workspace for content stream "' . $subject->subgraphIdentity->contentStreamId->value . '"',
+                    1699008140
+                );
+            }
             $contentRepository->handle(
                 MoveNodeAggregate::create(
-                    $subject->subgraphIdentity->contentStreamId,
+                    $workspace->workspaceName,
                     $subject->subgraphIdentity->dimensionSpacePoint,
                     $subject->nodeAggregateId,
                     RelationDistributionStrategy::STRATEGY_GATHER_ALL,

@@ -16,7 +16,6 @@ import SyncWorkspaceDialog from './Containers/Modals/SyncWorkspaceDialog/index';
 
 import PrimaryToolbar from './Containers/PrimaryToolbar/index';
 import DimensionSwitcher from './Containers/PrimaryToolbar/DimensionSwitcher/index';
-import UserDropDown from './Containers/PrimaryToolbar/UserDropDown/index';
 import PublishDropDown from './Containers/PrimaryToolbar/PublishDropDown/index';
 import WorkspaceSync from './Containers/PrimaryToolbar/WorkspaceSync/index';
 import MenuToggler from './Containers/PrimaryToolbar/MenuToggler/index';
@@ -30,6 +29,7 @@ import PreviewButton from './Containers/SecondaryToolbar/PreviewButton/index';
 import FullScreenButton from './Containers/SecondaryToolbar/FullScreenButton/index';
 
 import Drawer from './Containers/Drawer/index';
+import UserDropDown from './Containers/Drawer/UserDropDown/index';
 import VersionPanel from './Containers/Drawer/VersionPanel/index';
 
 import LeftSideBar from './Containers/LeftSideBar/index';
@@ -64,7 +64,6 @@ manifest('main.containers', {}, globalRegistry => {
     containerRegistry.set('PrimaryToolbar/Left/Brand', Brand);
     containerRegistry.set('PrimaryToolbar/Right/EditPreviewDropDown', EditPreviewDropDown);
     containerRegistry.set('PrimaryToolbar/Right/DimensionSwitcher', DimensionSwitcher);
-    containerRegistry.set('PrimaryToolbar/Right/UserDropDown', UserDropDown);
     containerRegistry.set('PrimaryToolbar/Right/PublishDropDown', PublishDropDown);
     containerRegistry.set('PrimaryToolbar/Right/WorkspaceSync', WorkspaceSync);
 
@@ -76,6 +75,7 @@ manifest('main.containers', {}, globalRegistry => {
 
     containerRegistry.set('Drawer', Drawer);
     containerRegistry.set('Drawer/Bottom/VersionPanel', VersionPanel);
+    containerRegistry.set('Drawer/Bottom/UserDropDown', UserDropDown);
 
     containerRegistry.set('LeftSideBar', LeftSideBar);
     containerRegistry.set('LeftSideBar/Top/PageTreeToolbar', PageTreeToolbar);

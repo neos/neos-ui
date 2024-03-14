@@ -74,8 +74,16 @@ class Remove extends AbstractChange
 
             $subgraph = $this->contentRepositoryRegistry->subgraphForNode($this->subject);
             $closestDocumentParentNode = $subgraph->findClosestNode($this->subject->nodeAggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_DOCUMENT));
+            $workspace = $this->contentRepositoryRegistry->get($this->subject->subgraphIdentity->contentRepositoryId)
+                ->getWorkspaceFinder()->findOneByCurrentContentStreamId($subject->subgraphIdentity->contentStreamId);
+            if (!$workspace) {
+                throw new \Exception(
+                    'Could not find workspace for content stream "' . $subject->subgraphIdentity->contentStreamId->value . '"',
+                    1699008140
+                );
+            }
             $command = RemoveNodeAggregate::create(
-                $subject->subgraphIdentity->contentStreamId,
+                $workspace->workspaceName,
                 $subject->nodeAggregateId,
                 $subject->subgraphIdentity->dimensionSpacePoint,
                 NodeVariantSelectionStrategy::STRATEGY_ALL_SPECIALIZATIONS,

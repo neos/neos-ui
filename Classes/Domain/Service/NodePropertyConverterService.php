@@ -14,6 +14,11 @@ declare(strict_types=1);
 
 namespace Neos\Neos\Ui\Domain\Service;
 
+use Neos\ContentRepository\Core\Infrastructure\Property\Normalizer\ValueObjectArrayDenormalizer;
+use Neos\ContentRepository\Core\Infrastructure\Property\Normalizer\ValueObjectBoolDenormalizer;
+use Neos\ContentRepository\Core\Infrastructure\Property\Normalizer\ValueObjectFloatDenormalizer;
+use Neos\ContentRepository\Core\Infrastructure\Property\Normalizer\ValueObjectIntDenormalizer;
+use Neos\ContentRepository\Core\Infrastructure\Property\Normalizer\ValueObjectStringDenormalizer;
 use Neos\ContentRepository\Core\NodeType\NodeType;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindReferencesFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
@@ -209,15 +214,34 @@ class NodePropertyConverterService
     }
 
     /**
-     * Convert the given value to a simple type or an array of simple types.
+     * Convert the given value to a simple type or an array of simple types or to a \JsonSerializable.
      *
-     * @param mixed $propertyValue
-     * @param string $dataType
-     * @return mixed
+     * @param mixed $propertyValue the deserialized node property value
+     * @param string $dataType the property type from the node type schema
+     * @return \JsonSerializable|int|float|string|bool|null|array<mixed>
      * @throws PropertyException
      */
     protected function convertValue($propertyValue, $dataType)
     {
+        if (
+            $propertyValue instanceof \JsonSerializable
+            // todo maybe combine them for performance with a static `isDenormalizable` utility.
+            && (new ValueObjectArrayDenormalizer())->supportsDenormalization([], $propertyValue::class)
+            && (new ValueObjectBoolDenormalizer())->supportsDenormalization(true, $propertyValue::class)
+            && (new ValueObjectFloatDenormalizer())->supportsDenormalization(1.1, $propertyValue::class)
+            && (new ValueObjectIntDenormalizer())->supportsDenormalization(1, $propertyValue::class)
+            && (new ValueObjectStringDenormalizer())->supportsDenormalization('', $propertyValue::class)
+        ) {
+            /**
+             * Value object support as they can be stored directly the node properties via the serializer:
+             * {@see \Neos\ContentRepository\Core\Infrastructure\Property\PropertyConverter}
+             *
+             * If the value is json-serializable and deserializable via e.g. fromArray
+             * We return the json-serializable directly.
+             */
+            return $propertyValue;
+        }
+
         $parsedType = TypeHandling::parseType($dataType);
 
         // This hardcoded handling is to circumvent rewriting PropertyMappers that convert objects.

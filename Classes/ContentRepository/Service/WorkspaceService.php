@@ -179,13 +179,12 @@ class WorkspaceService
                     }
 
                     if (
-                        $nodeToDiscard->contentStreamId->equals($change->contentStreamId)
-                        && $nodeToDiscard->nodeAggregateId->equals($change->nodeAggregateId)
+                        $nodeToDiscard->nodeAggregateId->equals($change->nodeAggregateId)
                         && $nodeToDiscard->dimensionSpacePoint->equals($change->originDimensionSpacePoint)
                     ) {
                         $subgraph = $contentRepository->getContentGraph()
                             ->getSubgraph(
-                                $nodeToDiscard->contentStreamId,
+                                $workspace->currentContentStreamId,
                                 $nodeToDiscard->dimensionSpacePoint,
                                 VisibilityConstraints::withoutRestrictions()
                             );

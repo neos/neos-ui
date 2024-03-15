@@ -64,12 +64,17 @@ class CopyBefore extends AbstractStructuralChange
             $targetNodeName = NodeName::fromString(uniqid('node-'));
 
             $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
+            $workspace = $contentRepository->getWorkspaceFinder()->findOneByCurrentContentStreamId($subject->subgraphIdentity->contentStreamId);
+            if (!$workspace) {
+                throw new \Exception('Could not find workspace for content stream', 1699004343);
+            }
             $command = CopyNodesRecursively::createFromSubgraphAndStartNode(
                 $contentRepository->getContentGraph()->getSubgraph(
                     $subject->subgraphIdentity->contentStreamId,
                     $subject->subgraphIdentity->dimensionSpacePoint,
                     $subject->subgraphIdentity->visibilityConstraints
                 ),
+                $workspace->workspaceName,
                 $subject,
                 OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->subgraphIdentity->dimensionSpacePoint),
                 $parentNodeOfSucceedingSibling->nodeAggregateId,

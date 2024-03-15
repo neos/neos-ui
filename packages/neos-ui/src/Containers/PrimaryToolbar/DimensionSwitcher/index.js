@@ -74,7 +74,6 @@ export default class DimensionSwitcher extends PureComponent {
         this.setState({
             transientPresets: activePresets
         });
-        console.log(this.state.transientPresets);
     }
 
     getDimensionIcon = (dimensionName, contentDimensionsObject) => {
@@ -162,6 +161,7 @@ export default class DimensionSwitcher extends PureComponent {
 
     handleToggle = () => {
         this.setState({isOpen: !this.state.isOpen});
+
     }
 
     handleClose = () => {
@@ -182,6 +182,7 @@ export default class DimensionSwitcher extends PureComponent {
         const icon = this.getDimensionIcon(dimensionName, contentDimensionsObject);
         // First look for active preset in transient state, else take it from activePresets prop
         const activePreset = this.getEffectivePresets(this.state.transientPresets)[dimensionName];
+
         return (
             <DimensionSelector
                 isLoading={this.state.loadingPresets[dimensionName]}
@@ -210,7 +211,7 @@ export default class DimensionSwitcher extends PureComponent {
                 </div>
             )
         }
-
+        
         if (contentDimensionsObjectKeys.length > 1) {
             return (
                 <DropDown.Stateless
@@ -280,11 +281,11 @@ export default class DimensionSwitcher extends PureComponent {
     getDocumentDimensions(dimensionName) {
         const {getNodeByContextPath, documentNode, allowedPresets, contentDimensions} = this.props;
         const currentDocumentNode = getNodeByContextPath(documentNode.contextPath)
-        if (!currentDocumentNode.dimensions) {
+        if (!currentDocumentNode.dimensions || currentDocumentNode.length === 0) {
             return allowedPresets[dimensionName]
         }
 
-        const variants = [...currentDocumentNode?.otherNodeVariants];
+        const variants = [...currentDocumentNode.otherNodeVariants];
         variants.push(currentDocumentNode.dimensions)
 
         for (const dimensionKey of Object.keys(contentDimensions)) {

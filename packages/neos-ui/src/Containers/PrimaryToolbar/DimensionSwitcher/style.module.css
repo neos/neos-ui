@@ -61,10 +61,30 @@
 }
 
 .nonExistent {
-    opacity: .5;
+    position:relative;
+    background-image: repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0) 12px, #323232 0, #323232 23px);
+}
+.nonExistent:after {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 3px;
+    top: 0px;
+    left: 0px;
+    background-color: var(--colors-Warn);
 }
 .disallowed {
-    text-decoration: line-through;
+    position: relative;
+    background-color: #323232;
+}
+.disallowed:after {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 3px;
+    top: 0px;
+    left: 0px;
+    background-color: var(--colors-Error);
 }
 
 .selectPreset + .selectPreset {

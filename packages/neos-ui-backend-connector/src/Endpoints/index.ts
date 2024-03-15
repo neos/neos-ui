@@ -9,8 +9,10 @@ export interface Routes {
     ui: {
         service: {
             change: string;
-            publish: string;
-            discard: string;
+            publishSite: string;
+            publishDocument: string;
+            discardSite: string;
+            discardDocument: string;
             changeBaseWorkspace: string;
             rebaseWorkspace: string;
             copyNodes: string;
@@ -65,8 +67,8 @@ export default (routes: Routes) => {
     })).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
-    const publish = (nodeContextPaths: NodeContextPath[], targetWorkspaceName: WorkspaceName) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
-        url: routes.ui.service.publish,
+    const publishSite = (siteId: NodeContextPath, workspaceName: WorkspaceName) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+        url: routes.ui.service.publishSite,
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -74,15 +76,14 @@ export default (routes: Routes) => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            nodeContextPaths,
-            targetWorkspaceName
+            siteId,
+            workspaceName
         })
     })).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
-    const discard = (nodeContextPaths: NodeContextPath[]) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
-        url: routes.ui.service.discard,
-
+    const publishDocument = (documentId: NodeContextPath, workspaceName: WorkspaceName) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+        url: routes.ui.service.publishDocument,
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -90,7 +91,38 @@ export default (routes: Routes) => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            nodeContextPaths
+            documentId,
+            workspaceName
+        })
+    })).then(response => fetchWithErrorHandling.parseJson(response))
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+
+    const discardSite = (siteId: NodeContextPath, workspaceName: WorkspaceName) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+        url: routes.ui.service.discardSite,
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'X-Flow-Csrftoken': csrfToken,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            siteId,
+            workspaceName
+        })
+    })).then(response => fetchWithErrorHandling.parseJson(response))
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+
+    const discardDocument = (documentId: NodeContextPath, workspaceName: WorkspaceName) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+        url: routes.ui.service.discardDocument,
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'X-Flow-Csrftoken': csrfToken,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            documentId,
+            workspaceName
         })
     })).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
@@ -652,8 +684,10 @@ export default (routes: Routes) => {
     return {
         loadImageMetadata,
         change,
-        publish,
-        discard,
+        publishSite,
+        publishDocument,
+        discardSite,
+        discardDocument,
         changeBaseWorkspace,
         rebaseWorkspace,
         copyNodes,

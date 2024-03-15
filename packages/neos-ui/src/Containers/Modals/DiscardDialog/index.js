@@ -5,19 +5,31 @@ import {connect} from 'react-redux';
 import {Button, Dialog, Icon} from '@neos-project/react-ui-components';
 import I18n from '@neos-project/neos-ui-i18n';
 
-import {actions} from '@neos-project/neos-ui-redux-store';
+import {actions, selectors} from '@neos-project/neos-ui-redux-store';
+import {PublishDiscardSope} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces';
 
 import style from './style.module.css';
 
-@connect(state => ({
-    nodesToBeDiscarded: state?.cr?.workspaces?.toBeDiscarded
-}), {
+const {publishableNodesSelector, publishableNodesInDocumentSelector} = selectors.CR.Workspaces;
+
+@connect(state => {
+    const scope = state?.CR?.Workspaces?.scope;
+
+    let numberOfChangesToBeDiscarded = 0;
+    if (scope === PublishDiscardSope.SITE) {
+        numberOfChangesToBeDiscarded = publishableNodesSelector(state);
+    } else if (scope === PublishDiscardSope.DOCUMENT) {
+        numberOfChangesToBeDiscarded = publishableNodesInDocumentSelector(state);
+    }
+
+    return {numberOfChangesToBeDiscarded};
+}, {
     confirm: actions.CR.Workspaces.confirmDiscard,
     abort: actions.CR.Workspaces.abortDiscard
 })
 export default class DiscardDialog extends PureComponent {
     static propTypes = {
-        nodesToBeDiscarded: PropTypes.array,
+        numberOfChangesToBeDiscarded: PropTypes.array,
         confirm: PropTypes.func.isRequired,
         abort: PropTypes.func.isRequired
     };
@@ -75,11 +87,10 @@ export default class DiscardDialog extends PureComponent {
     }
 
     render() {
-        const {nodesToBeDiscarded} = this.props;
-        if (nodesToBeDiscarded.length === 0) {
+        const {numberOfChangesToBeDiscarded: numberOfChanges} = this.props;
+        if (numberOfChanges === 0) {
             return null;
         }
-        const numberOfChanges = nodesToBeDiscarded.length;
 
         return (
             <Dialog

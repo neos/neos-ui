@@ -19,9 +19,16 @@ export interface WorkspaceInformation {
     status?: string;
 }
 
+export const PublishDiscardSope = {
+    SITE: 0,
+    DOCUMENT: 1
+} as const;
+
+export type PublishDiscardScope = typeof PublishDiscardSope;
+
 export interface State extends Readonly<{
     personalWorkspace: WorkspaceInformation;
-    toBeDiscarded: NodeContextPath[];
+    scope: null | PublishDiscardScope;
 }> {}
 
 export const defaultState: State = {
@@ -31,15 +38,17 @@ export const defaultState: State = {
         baseWorkspace: '',
         status: ''
     },
-    toBeDiscarded: []
+    scope: null
 };
 
 export enum actionTypes {
     UPDATE = '@neos/neos-ui/CR/Workspaces/UPDATE',
-    PUBLISH = '@neos/neos-ui/CR/Workspaces/PUBLISH',
-    COMMENCE_DISCARD = '@neos/neos-ui/CR/Workspaces/COMMENCE_DISCARD',
+    PUBLISH_STARTED = '@neos/neos-ui/CR/Workspaces/PUBLISH_STARTED',
+    PUBLISH_FINISHED = '@neos/neos-ui/CR/Workspaces/PUBLISH_FINISHED',
+    DISCARD_STARTED = '@neos/neos-ui/CR/Workspaces/DISCARD_STARTED',
     DISCARD_ABORTED = '@neos/neos-ui/CR/Workspaces/DISCARD_ABORTED',
     DISCARD_CONFIRMED = '@neos/neos-ui/CR/Workspaces/DISCARD_CONFIRMED',
+    DISCARD_FINISHED = '@neos/neos-ui/CR/Workspaces/DISCARD_FINISHED',
     CHANGE_BASE_WORKSPACE = '@neos/neos-ui/CR/Workspaces/CHANGE_BASE_WORKSPACE',
     REBASE_WORKSPACE = '@neos/neos-ui/CR/Workspaces/REBASE_WORKSPACE'
 }
@@ -52,16 +61,19 @@ export type Action = ActionType<typeof actions>;
 const update = (data: WorkspaceInformation) => createAction(actionTypes.UPDATE, data);
 
 /**
- * Publish nodes to the given workspace
+ * Publishes all changes in the given scope
  */
-const publish = (nodeContextPaths: NodeContextPath[], targetWorkspaceName: string) => createAction(actionTypes.PUBLISH, {nodeContextPaths, targetWorkspaceName});
+const publish = (scope: PublishDiscardScope) => createAction(actionTypes.PUBLISH_STARTED, {scope});
 
 /**
- * Start node discard workflow
- *
- * @param {String} contextPath The contexts paths of the nodes to be discarded
+ * Finish the ongoing publish
  */
-const commenceDiscard = (nodeContextPaths: NodeContextPath[]) => createAction(actionTypes.COMMENCE_DISCARD, nodeContextPaths);
+const finishPublish = () => createAction(actionTypes.PUBLISH_FINISHED);
+
+/**
+ * Discards all changes in the given scope
+ */
+const discard = (scope: PublishDiscardScope) => createAction(actionTypes.DISCARD_STARTED, {scope});
 
 /**
  * Abort the ongoing node discard workflow
@@ -72,6 +84,11 @@ const abortDiscard = () => createAction(actionTypes.DISCARD_ABORTED);
  * Confirm the ongoing discard
  */
 const confirmDiscard = () => createAction(actionTypes.DISCARD_CONFIRMED);
+
+/**
+ * Finish the ongoing discard
+ */
+const finishDiscard = () => createAction(actionTypes.DISCARD_FINISHED);
 
 /**
  * Change base workspace
@@ -89,9 +106,11 @@ const rebaseWorkspace = (name: string) => createAction(actionTypes.REBASE_WORKSP
 export const actions = {
     update,
     publish,
-    commenceDiscard,
+    finishPublish,
+    discard,
     abortDiscard,
     confirmDiscard,
+    finishDiscard,
     changeBaseWorkspace,
     rebaseWorkspace
 };
@@ -109,16 +128,15 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
             draft.personalWorkspace = assignIn(draft.personalWorkspace, action.payload);
             break;
         }
-        case actionTypes.COMMENCE_DISCARD: {
-            draft.toBeDiscarded = action.payload;
+        case actionTypes.PUBLISH_STARTED:
+        case actionTypes.DISCARD_STARTED: {
+            draft.scope = action.payload.scope;
             break;
         }
-        case actionTypes.DISCARD_ABORTED: {
-            draft.toBeDiscarded = [];
-            break;
-        }
-        case actionTypes.DISCARD_CONFIRMED: {
-            draft.toBeDiscarded = [];
+        case actionTypes.PUBLISH_FINISHED:
+        case actionTypes.DISCARD_ABORTED:
+        case actionTypes.DISCARD_FINISHED: {
+            draft.scope = null;
             break;
         }
     }

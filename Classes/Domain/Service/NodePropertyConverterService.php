@@ -14,11 +14,11 @@ declare(strict_types=1);
 
 namespace Neos\Neos\Ui\Domain\Service;
 
+use Neos\ContentRepository\Core\Feature\SubtreeTagging\Dto\SubtreeTag;
 use Neos\ContentRepository\Core\NodeType\NodeType;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindReferencesFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\Projection\ContentGraph\References;
-use Neos\ContentRepository\Core\Projection\NodeHiddenState\NodeHiddenStateFinder;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Log\ThrowableStorageInterface;
@@ -110,14 +110,7 @@ class NodePropertyConverterService
     public function getProperty(Node $node, $propertyName)
     {
         if ($propertyName === '_hidden') {
-            $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
-            $nodeHiddenStateFinder = $contentRepository->projectionState(NodeHiddenStateFinder::class);
-
-            return $nodeHiddenStateFinder->findHiddenState(
-                $node->subgraphIdentity->contentStreamId,
-                $node->subgraphIdentity->dimensionSpacePoint,
-                $node->nodeAggregateId
-            )->isHidden;
+            return $node->tags->contain(SubtreeTag::fromString('disabled'));
         }
         $propertyType = $this->getNodeType($node)->getPropertyType($propertyName);
 

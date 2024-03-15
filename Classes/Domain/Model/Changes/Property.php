@@ -195,8 +195,7 @@ class Property extends AbstractChange
                 );
             } else {
                 $value = $this->nodePropertyConversionService->convert(
-                    $this->getNodeType($subject),
-                    $propertyName,
+                    $this->getNodeType($subject)->getPropertyType($propertyName),
                     $this->getValue()
                 );
 

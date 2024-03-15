@@ -179,8 +179,7 @@ class WorkspaceService
                     }
 
                     if (
-                        $nodeToDiscard->workspaceName->equals($workspace->workspaceName)
-                        && $nodeToDiscard->nodeAggregateId->equals($change->nodeAggregateId)
+                        $nodeToDiscard->nodeAggregateId->equals($change->nodeAggregateId)
                         && $nodeToDiscard->dimensionSpacePoint->equals($change->originDimensionSpacePoint)
                     ) {
                         $subgraph = $contentRepository->getContentGraph()

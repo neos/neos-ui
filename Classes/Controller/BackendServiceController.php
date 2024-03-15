@@ -221,7 +221,6 @@ class BackendServiceController extends ActionController
             foreach ($nodeContextPaths as $contextPath) {
                 $nodeAddress = $nodeAddressFactory->createFromUriString($contextPath);
                 $nodeIdentifiersToPublish[] = new NodeIdToPublishOrDiscard(
-                    $workspaceName,
                     $nodeAddress->nodeAggregateId,
                     $nodeAddress->dimensionSpacePoint
                 );
@@ -279,7 +278,6 @@ class BackendServiceController extends ActionController
             foreach ($nodeContextPaths as $contextPath) {
                 $nodeAddress = $nodeAddressFactory->createFromUriString($contextPath);
                 $nodeIdentifiersToDiscard[] = new NodeIdToPublishOrDiscard(
-                    $workspaceName,
                     $nodeAddress->nodeAggregateId,
                     $nodeAddress->dimensionSpacePoint
                 );

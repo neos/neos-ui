@@ -32,7 +32,7 @@ class CreationDialogPropertiesCreationHandler implements NodeCreationHandlerInte
     public function handle(NodeInterface $node, array $data): void
     {
         foreach ($data as $propertyName => $propertyValue) {
-            $propertyConfiguration = $node->getNodeType()->getConfiguration('properties')[$propertyName];
+            $propertyConfiguration = $node->getNodeType()->getConfiguration('properties')[$propertyName] ?? null;
             if (!isset($propertyConfiguration['ui']['showInCreationDialog']) || $propertyConfiguration['ui']['showInCreationDialog'] !== true) {
                 continue;
             }

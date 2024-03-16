@@ -46,3 +46,8 @@ export const hasDateFormat = format => /[yYFmMntdDjlNSw]/.test(format);
 // Check if given format has a time formatting
 //
 export const hasTimeFormat = format => /[gGhHis]/.test(format);
+
+//
+// Check if the time is 24 hour or 12 hour format
+//
+export const has24HourFormat = format => /[GH]/.test(format);

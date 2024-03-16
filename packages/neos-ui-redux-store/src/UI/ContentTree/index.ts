@@ -106,7 +106,6 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
 
             collapsedByDefaultNodeContextPaths.forEach(path => {
                 if (draft.toggled.includes(path)) {
-                    draft.toggled.push(path);
                     draft.toggled = draft.toggled.filter(i => i !== path);
                 }
             });

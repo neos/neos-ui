@@ -66,6 +66,67 @@ export const makeGetDocumentNodes = (nodeTypesRegistry: NodeTypesRegistry) => cr
     }
 );
 
+export const makeGetCollapsableDocumentNodes = (nodeTypesRegistry: NodeTypesRegistry) => createSelector(
+    [
+        nodesByContextPathSelector
+    ],
+    nodesMap => {
+        const documentRole = nodeTypesRegistry.getRole('document');
+        if (!documentRole) {
+            throw new Error('Document role is not loaded!');
+        }
+        const documentSubNodeTypes = nodeTypesRegistry.getSubTypesOf(documentRole);
+
+        const result: NodeMap = {};
+        Object.keys(nodesMap).forEach(contextPath => {
+            const node = nodesMap[contextPath];
+            if (!node) {
+                throw new Error('This error should never be thrown, it\'s a way to fool TypeScript');
+            }
+            const isCollapsable = node.children.some(
+                child => child ? documentSubNodeTypes.includes(child.nodeType) : false
+            )
+            if (documentSubNodeTypes.includes(node.nodeType) && isCollapsable) {
+                result[contextPath] = node;
+            }
+        });
+        return result;
+    }
+);
+
+export const makeGetCollapsableContentNodes = (nodeTypesRegistry: NodeTypesRegistry) => createSelector(
+    [
+        nodesByContextPathSelector
+    ],
+    nodesMap => {
+        const contentRole = nodeTypesRegistry.getRole('content');
+        const collectionRole = nodeTypesRegistry.getRole('contentCollection');
+        if (!contentRole) {
+            throw new Error('Content role is not loaded!');
+        }
+        if (!collectionRole) {
+            throw new Error('ContentCollection role is not loaded!');
+        }
+        const contentSubNodeTypes = nodeTypesRegistry.getSubTypesOf(contentRole);
+        contentSubNodeTypes.push(...nodeTypesRegistry.getSubTypesOf(collectionRole))
+
+        const result: NodeMap = {};
+        Object.keys(nodesMap).forEach(contextPath => {
+            const node = nodesMap[contextPath];
+            if (!node) {
+                throw new Error('This error should never be thrown, it\'s a way to fool TypeScript');
+            }
+            const isCollapsable = node.children.some(
+                child => child ? contentSubNodeTypes.includes(child.nodeType) : false
+            )
+            if (contentSubNodeTypes.includes(node.nodeType) && isCollapsable) {
+                result[contextPath] = node;
+            }
+        });
+        return result;
+    }
+);
+
 export const makeGetNodeByContextPathSelector = (contextPath: NodeContextPath) => createSelector(
     [
         (state: GlobalState) => $get(['cr', 'nodes', 'byContextPath', contextPath], state)

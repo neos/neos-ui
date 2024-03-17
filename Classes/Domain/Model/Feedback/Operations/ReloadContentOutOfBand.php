@@ -132,7 +132,7 @@ class ReloadContentOutOfBand extends AbstractFeedback
     /**
      * Render the node
      */
-    protected function renderContent(ControllerContext $controllerContext): string|ResponseInterface
+    protected function renderContent(ControllerContext $controllerContext): string
     {
         if (!is_null($this->node)) {
             $cacheTags = $this->cachingHelper->nodeTag($this->getNode());
@@ -150,7 +150,12 @@ class ReloadContentOutOfBand extends AbstractFeedback
                 $view->assign('value', $this->node);
                 $view->setRenderingEntryPoint($this->nodeDomAddress->getFusionPathForContentRendering());
 
-                return $view->render();
+                $content = $view->render();
+                if ($content instanceof ResponseInterface) {
+                    // todo should not happen, as we never render a full Neos.Neos:Page here?
+                    return $content->getBody()->getContents();
+                }
+                return $content->getContents();
             }
         }
 

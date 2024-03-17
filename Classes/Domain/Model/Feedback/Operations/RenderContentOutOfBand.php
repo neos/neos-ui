@@ -175,7 +175,7 @@ class RenderContentOutOfBand extends AbstractFeedback
     /**
      * Render the node
      */
-    protected function renderContent(ControllerContext $controllerContext): string|ResponseInterface
+    protected function renderContent(ControllerContext $controllerContext): string
     {
         if (is_null($this->node)) {
             return '';
@@ -199,7 +199,12 @@ class RenderContentOutOfBand extends AbstractFeedback
                 $view->assign('value', $parentNode);
                 $view->setRenderingEntryPoint($parentDomAddress->getFusionPath());
 
-                return $view->render();
+                $content = $view->render();
+                if ($content instanceof ResponseInterface) {
+                    // todo should not happen, as we never render a full Neos.Neos:Page here?
+                    return $content->getBody()->getContents();
+                }
+                return $content->getContents();
             }
         }
 

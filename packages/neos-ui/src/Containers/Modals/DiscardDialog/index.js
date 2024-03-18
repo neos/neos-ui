@@ -6,7 +6,7 @@ import {Button, Dialog, Icon} from '@neos-project/react-ui-components';
 import I18n from '@neos-project/neos-ui-i18n';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
-import {PublishDiscardSope} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces';
+import {PublishDiscardScope} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces';
 
 import style from './style.module.css';
 
@@ -16,9 +16,9 @@ const {publishableNodesSelector, publishableNodesInDocumentSelector} = selectors
     const scope = state?.cr?.workspaces?.scope;
 
     let numberOfChangesToBeDiscarded = 0;
-    if (scope === PublishDiscardSope.SITE) {
+    if (scope === PublishDiscardScope.SITE) {
         numberOfChangesToBeDiscarded = publishableNodesSelector(state).length;
-    } else if (scope === PublishDiscardSope.DOCUMENT) {
+    } else if (scope === PublishDiscardScope.DOCUMENT) {
         numberOfChangesToBeDiscarded = publishableNodesInDocumentSelector(state).length;
     }
 

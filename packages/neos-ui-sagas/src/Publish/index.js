@@ -1,7 +1,7 @@
 import {put, call, select, takeEvery, takeLatest, take, race} from 'redux-saga/effects';
 
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
-import {PublishDiscardSope} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces';
+import {PublishDiscardScope} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces';
 import backend from '@neos-project/neos-ui-backend-connector';
 import {getGuestFrameDocument} from '@neos-project/neos-ui-guest-frame/src/dom';
 
@@ -17,11 +17,11 @@ export function * watchPublish() {
         let feedback = null;
         let publishedNodes = [];
         try {
-            if (scope === PublishDiscardSope.SITE) {
+            if (scope === PublishDiscardScope.SITE) {
                 const siteId = yield select(selectors.CR.Nodes.siteNodeContextPathSelector);
                 publishedNodes = yield select(selectors.CR.Workspaces.publishableNodesSelector);
                 feedback = yield call(publishSite, siteId, workspaceName);
-            } else if (scope === PublishDiscardSope.DOCUMENT) {
+            } else if (scope === PublishDiscardScope.DOCUMENT) {
                 const documentId = yield select(selectors.CR.Nodes.documentNodeContextPathSelector);
                 publishedNodes = yield select(selectors.CR.Workspaces.publishableNodesInDocumentSelector);
                 feedback = yield call(publishDocument, documentId, workspaceName);

@@ -21,12 +21,11 @@ export interface WorkspaceInformation {
     status?: string;
 }
 
-export const PublishDiscardSope = {
-    SITE: 0,
-    DOCUMENT: 1
-} as const;
 
-export type PublishDiscardScope = typeof PublishDiscardSope;
+export enum PublishDiscardScope {
+    SITE,
+    DOCUMENT
+}
 
 export interface State extends Readonly<{
     personalWorkspace: WorkspaceInformation;

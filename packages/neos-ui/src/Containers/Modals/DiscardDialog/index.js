@@ -29,7 +29,7 @@ const {publishableNodesSelector, publishableNodesInDocumentSelector} = selectors
 })
 export default class DiscardDialog extends PureComponent {
     static propTypes = {
-        numberOfChangesToBeDiscarded: PropTypes.array,
+        numberOfChangesToBeDiscarded: PropTypes.number,
         confirm: PropTypes.func.isRequired,
         abort: PropTypes.func.isRequired
     };

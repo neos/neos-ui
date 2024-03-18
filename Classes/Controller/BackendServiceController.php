@@ -176,7 +176,9 @@ class BackendServiceController extends ActionController
     public function publishSiteAction(array $command): void
     {
         /** @todo send from UI */
-        $command['contentRepositoryId'] = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
+        $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
+        $command['contentRepositoryId'] = $contentRepositoryId->value;
+        $command['siteId'] = $this->nodeService->deserializeNodeAddress($command['siteId'], $contentRepositoryId)->nodeAggregateId->value;
         $command = PublishSite::fromArray($command);
 
         try {
@@ -203,7 +205,9 @@ class BackendServiceController extends ActionController
     public function publishDocumentAction(array $command): void
     {
         /** @todo send from UI */
-        $command['contentRepositoryId'] = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
+        $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
+        $command['contentRepositoryId'] = $contentRepositoryId->value;
+        $command['documentId'] = $this->nodeService->deserializeNodeAddress($command['documentId'], $contentRepositoryId)->nodeAggregateId->value;
         $command = PublishDocument::fromArray($command);
 
         $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
@@ -246,7 +250,9 @@ class BackendServiceController extends ActionController
     public function discardSiteAction(array $command): void
     {
         /** @todo send from UI */
-        $command['contentRepositoryId'] = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
+        $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
+        $command['contentRepositoryId'] = $contentRepositoryId->value;
+        $command['siteId'] = $this->nodeService->deserializeNodeAddress($command['siteId'], $contentRepositoryId)->nodeAggregateId->value;
         $command = DiscardSite::fromArray($command);
 
         try {
@@ -274,7 +280,9 @@ class BackendServiceController extends ActionController
     public function discardDocumentAction(array $command): void
     {
         /** @todo send from UI */
-        $command['contentRepositoryId'] = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
+        $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
+        $command['contentRepositoryId'] = $contentRepositoryId->value;
+        $command['documentId'] = $this->nodeService->deserializeNodeAddress($command['documentId'], $contentRepositoryId)->nodeAggregateId->value;
         $command = DiscardDocument::fromArray($command);
 
         try {

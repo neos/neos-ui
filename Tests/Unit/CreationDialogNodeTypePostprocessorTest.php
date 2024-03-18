@@ -33,6 +33,7 @@ class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
     public function processCopiesInspectorConfigurationToCreationDialogElements(): void
     {
         $configuration = [
+            'references' => [],
             'properties' => [
                 'somePropertyName' => [
                     'ui' => [
@@ -215,6 +216,8 @@ class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
     public function processConvertsCreationDialogConfiguration(): void
     {
         $configuration = [
+            'references' => [],
+            'properties' => [],
             'ui' => [
                 'creationDialog' => [
                     'elements' => [
@@ -307,6 +310,8 @@ class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
         ]);
 
         $expectedResult = [
+            'references' => [],
+            'properties' => [],
             'ui' => [
                 'creationDialog' => [
                     'elements' => [
@@ -403,6 +408,8 @@ class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
     public function processDoesNotThrowExceptionIfNoCreationDialogEditorCanBeResolved(): void
     {
         $configuration = [
+            'references' => [],
+            'properties' => [],
             'ui' => [
                 'creationDialog' => [
                     'elements' => [

@@ -40,8 +40,7 @@ final class PromotedElementsCreationHandlerFactory implements NodeCreationHandle
                 $setReferencesCommands = [];
                 foreach ($elements as $elementName => $elementValue) {
                     // handle properties
-                    // todo this will be simplified once hasProperty does not return true for references
-                    if ($nodeType->hasProperty($elementName) && ($nodeType->getPropertyType($elementName) !== 'references' && $nodeType->getPropertyType($elementName) !== 'reference')) {
+                    if ($nodeType->hasProperty($elementName)) {
                         $propertyConfiguration = $nodeType->getProperties()[$elementName];
                         if (
                             ($propertyConfiguration['ui']['showInCreationDialog'] ?? false) === true
@@ -52,10 +51,9 @@ final class PromotedElementsCreationHandlerFactory implements NodeCreationHandle
                     }
 
                     // handle references
-                    // todo this will be replaced by $nodeType->hasReference()
-                    if ($nodeType->hasProperty($elementName) && ($nodeType->getPropertyType($elementName) === 'references' || $nodeType->getPropertyType($elementName) === 'reference')) {
+                    if ($nodeType->hasReference($elementName)) {
                         assert($elementValue instanceof NodeAggregateIds);
-                        $referenceConfiguration = $nodeType->getProperties()[$elementName];
+                        $referenceConfiguration = $nodeType->getReferences()[$elementName];
                         if (
                             ($referenceConfiguration['ui']['showInCreationDialog'] ?? false) === true
                         ) {

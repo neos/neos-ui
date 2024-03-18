@@ -156,6 +156,7 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
                 );
             break;
         }
+        case actionTypes.DISCARD_CONFIRMED:
         case actionTypes.DISCARD_ABORTED: {
             draft.mode = null;
             draft.scope = null;

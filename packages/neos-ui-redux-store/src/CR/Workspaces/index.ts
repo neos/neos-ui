@@ -8,12 +8,14 @@ import {WorkspaceName} from '@neos-project/neos-ts-interfaces';
 
 import * as selectors from './selectors';
 
+interface PublishableNode {
+    contextPath: NodeContextPath;
+    documentContextPath: NodeContextPath;
+}
+
 export interface WorkspaceInformation {
     name: WorkspaceName;
-    publishableNodes: Array<{
-        contextPath: NodeContextPath;
-        documentContextPath: NodeContextPath;
-    }>;
+    publishableNodes: Array<PublishableNode>;
     baseWorkspace: WorkspaceName;
     readOnly?: boolean;
     status?: string;
@@ -68,7 +70,7 @@ const publish = (scope: PublishDiscardScope) => createAction(actionTypes.PUBLISH
 /**
  * Finish the ongoing publish
  */
-const finishPublish = () => createAction(actionTypes.PUBLISH_FINISHED);
+const finishPublish = (publishedNodes: PublishableNode[]) => createAction(actionTypes.PUBLISH_FINISHED, {publishedNodes});
 
 /**
  * Discards all changes in the given scope
@@ -133,7 +135,16 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
             draft.scope = action.payload.scope;
             break;
         }
-        case actionTypes.PUBLISH_FINISHED:
+        case actionTypes.PUBLISH_FINISHED: {
+            draft.scope = null;
+            draft.personalWorkspace.publishableNodes =
+                state.personalWorkspace.publishableNodes.filter(
+                    (publishableNode) => !action.payload.publishedNodes.some(
+                        (publishedNode) => publishedNode.contextPath === publishableNode.contextPath
+                    )
+                );
+            break;
+        }
         case actionTypes.DISCARD_ABORTED:
         case actionTypes.DISCARD_FINISHED: {
             draft.scope = null;

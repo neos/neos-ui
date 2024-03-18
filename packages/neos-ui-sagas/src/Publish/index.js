@@ -1,26 +1,41 @@
 import {put, call, select, takeEvery, takeLatest, take, race} from 'redux-saga/effects';
 
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
+import {PublishDiscardSope} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces';
 import backend from '@neos-project/neos-ui-backend-connector';
 import {getGuestFrameDocument} from '@neos-project/neos-ui-guest-frame/src/dom';
 
 export function * watchPublish() {
-    const {publish} = backend.get().endpoints;
+    const {publishSite, publishDocument} = backend.get().endpoints;
 
-    yield takeEvery(actionTypes.CR.Workspaces.PUBLISH, function * publishNodes(action) {
-        const {nodeContextPaths, targetWorkspaceName} = action.payload;
+    yield takeEvery(actionTypes.CR.Workspaces.PUBLISH_STARTED, function * publishNodes(action) {
+        const {scope} = action.payload;
+        const workspaceName = yield select(selectors.CR.Workspaces.personalWorkspaceNameSelector);
 
-        if (nodeContextPaths.length > 0) {
-            yield put(actions.UI.Remote.startPublishing());
+        yield put(actions.UI.Remote.startPublishing());
 
-            try {
-                const feedback = yield call(publish, nodeContextPaths, targetWorkspaceName);
-                yield put(actions.UI.Remote.finishPublishing());
-                yield put(actions.ServerFeedback.handleServerFeedback(feedback));
-            } catch (error) {
-                console.error('Failed to publish', error);
+        let feedback = null;
+        let publishedNodes = [];
+        try {
+            if (scope === PublishDiscardSope.SITE) {
+                const siteId = yield select(selectors.CR.Nodes.siteNodeContextPathSelector);
+                publishedNodes = yield select(selectors.CR.Workspaces.publishableNodesSelector);
+                feedback = yield call(publishSite, siteId, workspaceName);
+            } else if (scope === PublishDiscardSope.DOCUMENT) {
+                const documentId = yield select(selectors.CR.Nodes.documentNodeContextPathSelector);
+                publishedNodes = yield select(selectors.CR.Workspaces.publishableNodesInDocumentSelector);
+                feedback = yield call(publishDocument, documentId, workspaceName);
             }
+        } catch (error) {
+            console.error('Failed to publish', error);
         }
+
+        if (feedback !== null) {
+            yield put(actions.ServerFeedback.handleServerFeedback(feedback));
+        }
+
+        yield put(actions.CR.Workspaces.finishPublish(publishedNodes));
+        yield put(actions.UI.Remote.finishPublishing());
     });
 }
 
@@ -62,7 +77,7 @@ export function * watchRebaseWorkspace() {
 
 export function * discardIfConfirmed() {
     const {discard} = backend.get().endpoints;
-    yield takeLatest(actionTypes.CR.Workspaces.COMMENCE_DISCARD, function * waitForConfirmation() {
+    yield takeLatest(actionTypes.CR.Workspaces.DISCARD_STARTED, function * waitForConfirmation() {
         const state = yield select();
         const waitForNextAction = yield race([
             take(actionTypes.CR.Workspaces.DISCARD_ABORTED),

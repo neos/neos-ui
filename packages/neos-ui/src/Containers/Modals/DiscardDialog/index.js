@@ -13,7 +13,7 @@ import style from './style.module.css';
 const {publishableNodesSelector, publishableNodesInDocumentSelector} = selectors.CR.Workspaces;
 
 @connect(state => {
-    const scope = state?.CR?.Workspaces?.scope;
+    const scope = state?.cr?.workspaces?.scope;
 
     let numberOfChangesToBeDiscarded = 0;
     if (scope === PublishDiscardSope.SITE) {

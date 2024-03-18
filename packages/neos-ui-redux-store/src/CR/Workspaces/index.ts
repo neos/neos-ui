@@ -21,6 +21,10 @@ export interface WorkspaceInformation {
     status?: string;
 }
 
+export enum PublishDiscardMode {
+    PUBLISHING,
+    DISCARDING
+}
 
 export enum PublishDiscardScope {
     SITE,
@@ -29,6 +33,7 @@ export enum PublishDiscardScope {
 
 export interface State extends Readonly<{
     personalWorkspace: WorkspaceInformation;
+    mode: null | PublishDiscardMode;
     scope: null | PublishDiscardScope;
 }> {}
 
@@ -39,7 +44,8 @@ export const defaultState: State = {
         baseWorkspace: '',
         status: ''
     },
-    scope: null
+    mode: null,
+    scope: null,
 };
 
 export enum actionTypes {
@@ -89,7 +95,7 @@ const confirmDiscard = () => createAction(actionTypes.DISCARD_CONFIRMED);
 /**
  * Finish the ongoing discard
  */
-const finishDiscard = () => createAction(actionTypes.DISCARD_FINISHED);
+const finishDiscard = (discardedNodes: PublishableNode[]) => createAction(actionTypes.DISCARD_FINISHED, {discardedNodes});
 
 /**
  * Change base workspace
@@ -129,12 +135,18 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
             draft.personalWorkspace = assignIn(draft.personalWorkspace, action.payload);
             break;
         }
-        case actionTypes.PUBLISH_STARTED:
+        case actionTypes.PUBLISH_STARTED: {
+            draft.mode = PublishDiscardMode.PUBLISHING;
+            draft.scope = action.payload.scope;
+            break;
+        }
         case actionTypes.DISCARD_STARTED: {
+            draft.mode = PublishDiscardMode.DISCARDING;
             draft.scope = action.payload.scope;
             break;
         }
         case actionTypes.PUBLISH_FINISHED: {
+            draft.mode = null;
             draft.scope = null;
             draft.personalWorkspace.publishableNodes =
                 state.personalWorkspace.publishableNodes.filter(
@@ -144,9 +156,20 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
                 );
             break;
         }
-        case actionTypes.DISCARD_ABORTED:
-        case actionTypes.DISCARD_FINISHED: {
+        case actionTypes.DISCARD_ABORTED: {
+            draft.mode = null;
             draft.scope = null;
+            break;
+        }
+        case actionTypes.DISCARD_FINISHED: {
+            draft.mode = null;
+            draft.scope = null;
+            draft.personalWorkspace.publishableNodes =
+                state.personalWorkspace.publishableNodes.filter(
+                    (publishableNode) => !action.payload.discardedNodes.some(
+                        (discardedNode) => discardedNode.contextPath === publishableNode.contextPath
+                    )
+                );
             break;
         }
     }

@@ -17,9 +17,9 @@ const {publishableNodesSelector, publishableNodesInDocumentSelector} = selectors
 
     let numberOfChangesToBeDiscarded = 0;
     if (scope === PublishDiscardSope.SITE) {
-        numberOfChangesToBeDiscarded = publishableNodesSelector(state);
+        numberOfChangesToBeDiscarded = publishableNodesSelector(state).length;
     } else if (scope === PublishDiscardSope.DOCUMENT) {
-        numberOfChangesToBeDiscarded = publishableNodesInDocumentSelector(state);
+        numberOfChangesToBeDiscarded = publishableNodesInDocumentSelector(state).length;
     }
 
     return {numberOfChangesToBeDiscarded};

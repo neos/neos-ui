@@ -18,6 +18,7 @@ use Neos\ContentRepository\Core\SharedModel\Exception\ContentStreamDoesNotExistY
 use Neos\ContentRepository\Core\SharedModel\Node\NodeVariantSelectionStrategy;
 use Neos\ContentRepository\Core\Feature\NodeRemoval\Command\RemoveNodeAggregate;
 use Neos\ContentRepository\Core\SharedModel\Exception\NodeAggregatesTypeIsAmbiguous;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateId;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Domain\Service\NodeTypeNameFactory;
 use Neos\Neos\Fusion\Cache\ContentCacheFlusher;
@@ -72,8 +73,6 @@ class Remove extends AbstractChange
             // otherwise we cannot find the parent nodes anymore.
             $this->updateWorkspaceInfo();
 
-            $subgraph = $this->contentRepositoryRegistry->subgraphForNode($this->subject);
-            $closestDocumentParentNode = $subgraph->findClosestNode($this->subject->nodeAggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_DOCUMENT));
             $workspace = $this->contentRepositoryRegistry->get($this->subject->subgraphIdentity->contentRepositoryId)
                 ->getWorkspaceFinder()->findOneByCurrentContentStreamId($subject->subgraphIdentity->contentStreamId);
             if (!$workspace) {
@@ -88,8 +87,9 @@ class Remove extends AbstractChange
                 $subject->subgraphIdentity->dimensionSpacePoint,
                 NodeVariantSelectionStrategy::STRATEGY_ALL_SPECIALIZATIONS,
             );
-            if ($closestDocumentParentNode !== null) {
-                $command = $command->withRemovalAttachmentPoint($closestDocumentParentNode->nodeAggregateId);
+            $removalAttachmentPoint = $this->getRemovalAttachmentPoint();
+            if ($removalAttachmentPoint !== null) {
+                $command = $command->withRemovalAttachmentPoint($removalAttachmentPoint);
             }
 
             $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
@@ -103,5 +103,18 @@ class Remove extends AbstractChange
 
             $this->feedbackCollection->add($updateParentNodeInfo);
         }
+    }
+
+    private function getRemovalAttachmentPoint(): ?NodeAggregateId
+    {
+        $subgraph = $this->contentRepositoryRegistry->subgraphForNode($this->subject);
+
+        if ($this->subject->nodeType->isOfType(NodeTypeNameFactory::NAME_DOCUMENT)) {
+            $closestSiteNode = $subgraph->findClosestNode($this->subject->nodeAggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_SITE));
+            return $closestSiteNode?->nodeAggregateId;
+        }
+
+        $closestDocumentParentNode = $subgraph->findClosestNode($this->subject->nodeAggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_DOCUMENT));
+        return $closestDocumentParentNode?->nodeAggregateId;
     }
 }

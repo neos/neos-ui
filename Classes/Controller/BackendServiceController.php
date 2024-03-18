@@ -171,7 +171,7 @@ class BackendServiceController extends ActionController
     /**
      * Publish all nodes in the current site
      *
-     * @param array<string,string> $command
+     * @phpstan-param array<string,string> $command
      */
     public function publishSiteAction(array $command): void
     {
@@ -198,7 +198,7 @@ class BackendServiceController extends ActionController
     /**
      * Publish all nodes in the current document
      *
-     * @param array<string,string> $command
+     * @phpstan-param array<string,string> $command
      */
     public function publishDocumentAction(array $command): void
     {
@@ -241,7 +241,7 @@ class BackendServiceController extends ActionController
     /**
      * Discard all nodes in the given site
      *
-     * @param array<string,string> $command
+     * @phpstan-param array<string,string> $command
      */
     public function discardSiteAction(array $command): void
     {
@@ -269,7 +269,7 @@ class BackendServiceController extends ActionController
     /**
      * Discard all nodes in the given document
      *
-     * @param array<string,string> $command
+     * @phpstan-param array<string,string> $command
      */
     public function discardDocumentAction(array $command): void
     {

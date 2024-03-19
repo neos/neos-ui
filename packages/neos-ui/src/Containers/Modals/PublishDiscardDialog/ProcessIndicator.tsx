@@ -11,36 +11,70 @@ import React from 'react';
 
 import {Dialog, Icon} from '@neos-project/react-ui-components';
 import I18n from '@neos-project/neos-ui-i18n';
-import {PublishDiscardMode} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces';
+import {PublishDiscardMode, PublishDiscardScope} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces';
 
 import style from './style.module.css';
 
 const ProcessIndicatorVariants = {
     [PublishDiscardMode.PUBLISHING]: {
         id: 'neos-PublishDialog',
-        label: {
-            dialogTitle: {
-                id: 'Neos.Neos:Main:publishing',
-                fallback: 'Publishing...'
-            },
-            message: {
-                id: 'Neos.Neos:Main:content.components.publishAllDialog.publishIsOngoing',
-                fallback: (props: { numberOfChanges: number; }) =>
-                    `Please wait while ${props.numberOfChanges} change(s) are being published. This may take a while.`
+        [PublishDiscardScope.SITE]: {
+            label: {
+                title: {
+                    id: 'Neos.Neos.Ui:PublishDiscardDialog:publish.site.process.title',
+                    fallback: (props: { scopeTitle: string; }) =>
+                        `Publishing all changes in site "${props.scopeTitle}"...`
+                },
+                message: {
+                    id: 'Neos.Neos.Ui:PublishDiscardDialog:publish.site.process.message',
+                    fallback: (props: { numberOfChanges: number; }) =>
+                        `Please wait while ${props.numberOfChanges} change(s) are being published. This may take a while.`
+                }
+            }
+        },
+        [PublishDiscardScope.DOCUMENT]: {
+            label: {
+                title: {
+                    id: 'Neos.Neos.Ui:PublishDiscardDialog:publish.document.process.title',
+                    fallback: (props: { scopeTitle: string; }) =>
+                        `Publishing all changes in document "${props.scopeTitle}"...`
+                },
+                message: {
+                    id: 'Neos.Neos.Ui:PublishDiscardDialog:publish.document.process.message',
+                    fallback: (props: { numberOfChanges: number; }) =>
+                        `Please wait while ${props.numberOfChanges} change(s) are being published. This may take a while.`
+                }
             }
         }
     },
     [PublishDiscardMode.DISCARDING]: {
         id: 'neos-DiscardDialog',
-        label: {
-            dialogTitle: {
-                id: 'Neos.Neos:Main:discarding',
-                fallback: 'Discarding...'
-            },
-            message: {
-                id: 'Neos.Neos:Main:content.components.discardAllDialog.discardIsOngoing',
-                fallback: (props: { numberOfChanges: number; }) =>
-                    `Please wait while ${props.numberOfChanges} change(s) are being discarded. This may take a while.`
+        [PublishDiscardScope.SITE]: {
+            label: {
+                title: {
+                    id: 'Neos.Neos.Ui:PublishDiscardDialog:discard.site.process.title',
+                    fallback: (props: { scopeTitle: string; }) =>
+                        `Discarding all changes in site "${props.scopeTitle}"...`
+                },
+                message: {
+                    id: 'Neos.Neos.Ui:PublishDiscardDialog:discard.site.process.message',
+                    fallback: (props: { numberOfChanges: number; }) =>
+                        `Please wait while ${props.numberOfChanges} change(s) are being discarded. This may take a while.`
+                }
+            }
+        },
+        [PublishDiscardScope.DOCUMENT]: {
+            label: {
+                title: {
+                    id: 'Neos.Neos.Ui:PublishDiscardDialog:discard.document.process.title',
+                    fallback: (props: { scopeTitle: string; }) =>
+                        `Discarding all changes in document "${props.scopeTitle}"...`
+                },
+                message: {
+                    id: 'Neos.Neos.Ui:PublishDiscardDialog:discard.document.process.message',
+                    fallback: (props: { numberOfChanges: number; }) =>
+                        `Please wait while ${props.numberOfChanges} change(s) are being discarded. This may take a while.`
+                }
             }
         }
     }
@@ -48,6 +82,8 @@ const ProcessIndicatorVariants = {
 
 export const ProcessIndicator: React.FC<{
     mode: PublishDiscardMode;
+    scope: PublishDiscardScope;
+    scopeTitle: string;
     numberOfChanges: number;
 }> = (props) => {
     const variant = ProcessIndicatorVariants[props.mode];
@@ -55,12 +91,18 @@ export const ProcessIndicator: React.FC<{
     return (
         <Dialog
             actions={[]}
-            title={<div>
-                <Icon icon="refresh" spin />
-                <span className={style.modalTitle}>
-                    <I18n {...variant.label.dialogTitle} />
-                </span>
-            </div>}
+            title={
+                <div>
+                    <Icon icon="refresh" spin />
+                    <span className={style.modalTitle}>
+                        <I18n
+                            id={variant[props.scope].label.title.id}
+                            params={props}
+                            fallback={variant[props.scope].label.title.fallback(props)}
+                            />
+                    </span>
+                </div>
+            }
             type={undefined as any}
             isOpen
             autoFocus
@@ -70,9 +112,10 @@ export const ProcessIndicator: React.FC<{
         >
             <div className={style.modalContents}>
                 <I18n
-                    id={variant.label.message.id}
-                    params={{numberOfChanges: props.numberOfChanges}}
-                    fallback={variant.label.message.fallback(props)} />
+                    id={variant[props.scope].label.message.id}
+                    params={props}
+                    fallback={variant[props.scope].label.message.fallback(props)}
+                    />
             </div>
         </Dialog>
     );

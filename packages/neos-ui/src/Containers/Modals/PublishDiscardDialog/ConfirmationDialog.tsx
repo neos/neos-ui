@@ -11,7 +11,7 @@ import React from 'react';
 
 import {Button, Dialog, Icon} from '@neos-project/react-ui-components';
 import I18n from '@neos-project/neos-ui-i18n';
-import {PublishDiscardMode} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces';
+import {PublishDiscardMode, PublishDiscardScope} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces';
 
 import style from './style.module.css';
 
@@ -20,21 +20,51 @@ const ConfirmationDialogVariants = {
         id: 'neos-PublishDialog',
         style: 'success',
         icon: {
-            dialogTitle: 'share-square-o',
-            confirmButton: 'share-square-o'
+            title: 'share-square-o',
+            confirm: 'share-square-o'
         },
-        label: {
-            dialogTitle: {
-                id: 'Neos.Neos:Main:publish',
-                fallback: 'Publish'
-            },
-            confirmButton: {
-                id: 'Neos.Neos:Main:publish',
-                fallback: 'Publish'
-            },
-            message: {
-                id: 'Neos.Neos:Main:content.components.publishAllDialog.publishXChangesSubheader',
-                fallback: (props: { numberOfChanges: number; }) => `Are you sure that you want to publish ${props.numberOfChanges} change(s) in this workspace?`
+        [PublishDiscardScope.SITE]: {
+            label: {
+                title: {
+                    id: 'Neos.Neos.Ui:PublishDiscardDialog:publish.site.confirmation.title',
+                    fallback: (props: { scopeTitle: string; }) =>
+                        `Publish all changes in site "${props.scopeTitle}"`
+                },
+                message: {
+                    id: 'Neos.Neos.Ui:PublishDiscardDialog:publish.site.confirmation.message',
+                    fallback: (props: { numberOfChanges: number; scopeTitle: string; workspaceName: string; }) =>
+                        `Are you sure that you want to publish all ${props.numberOfChanges} change(s) in site "${props.scopeTitle}" within workspace "${props.workspaceName}"? Be careful: This cannot be undone!`
+                },
+                cancel: {
+                    id: 'Neos.Neos.Ui:PublishDiscardDialog:publish.site.confirmation.cancel',
+                    fallback: 'No, cancel'
+                },
+                confirm: {
+                    id: 'Neos.Neos.Ui:PublishDiscardDialog:publish.site.confirmation.confirm',
+                    fallback: 'Yes, publish'
+                }
+            }
+        },
+        [PublishDiscardScope.DOCUMENT]: {
+            label: {
+                title: {
+                    id: 'Neos.Neos.Ui:PublishDiscardDialog:publish.document.confirmation.title',
+                    fallback: (props: { scopeTitle: string; }) =>
+                        `Publish all changes in document "${props.scopeTitle}"`
+                },
+                message: {
+                    id: 'Neos.Neos.Ui:PublishDiscardDialog:publish.document.confirmation.message',
+                    fallback: (props: { numberOfChanges: number; scopeTitle: string; workspaceName: string; }) =>
+                        `Are you sure that you want to publish all ${props.numberOfChanges} change(s) in document "${props.scopeTitle}" within workspace "${props.workspaceName}"? Be careful: This cannot be undone!`
+                },
+                cancel: {
+                    id: 'Neos.Neos.Ui:PublishDiscardDialog:publish.document.confirmation.cancel',
+                    fallback: 'No, cancel'
+                },
+                confirm: {
+                    id: 'Neos.Neos.Ui:PublishDiscardDialog:publish.document.confirmation.confirm',
+                    fallback: 'Yes, publish'
+                }
             }
         }
     },
@@ -42,21 +72,51 @@ const ConfirmationDialogVariants = {
         id: 'neos-DiscardDialog',
         style: 'error',
         icon: {
-            dialogTitle: 'exclamation-triangle',
-            confirmButton: 'ban'
+            title: 'exclamation-triangle',
+            confirm: 'ban'
         },
-        label: {
-            dialogTitle: {
-                id: 'Neos.Neos:Main:discard',
-                fallback: 'Discard'
-            },
-            confirmButton: {
-                id: 'Neos.Neos:Main:discard',
-                fallback: 'Discard'
-            },
-            message: {
-                id: 'Neos.Neos:Main:content.components.discardAllDialog.discardXChangesSubheader',
-                fallback: (props: { numberOfChanges: number; }) => `Are you sure that you want to discard ${props.numberOfChanges} change(s) in this workspace?`
+        [PublishDiscardScope.SITE]: {
+            label: {
+                title: {
+                    id: 'Neos.Neos.Ui:PublishDiscardDialog:discard.site.confirmation.title',
+                    fallback: (props: { scopeTitle: string; }) =>
+                        `Discard all changes in site "${props.scopeTitle}"`
+                },
+                message: {
+                    id: 'Neos.Neos.Ui:PublishDiscardDialog:discard.site.confirmation.message',
+                    fallback: (props: { numberOfChanges: number; scopeTitle: string; workspaceName: string; }) =>
+                        `Are you sure that you want to discard all ${props.numberOfChanges} change(s) in site "${props.scopeTitle}" within workspace "${props.workspaceName}"? Be careful: This cannot be undone!`
+                },
+                cancel: {
+                    id: 'Neos.Neos.Ui:PublishDiscardDialog:discard.site.confirmation.cancel',
+                    fallback: 'No, cancel'
+                },
+                confirm: {
+                    id: 'Neos.Neos.Ui:PublishDiscardDialog:discard.site.confirmation.confirm',
+                    fallback: 'Yes, discard'
+                }
+            }
+        },
+        [PublishDiscardScope.DOCUMENT]: {
+            label: {
+                title: {
+                    id: 'Neos.Neos.Ui:PublishDiscardDialog:discard.document.confirmation.title',
+                    fallback: (props: { scopeTitle: string; }) =>
+                        `Discard all changes in document "${props.scopeTitle}"`
+                },
+                message: {
+                    id: 'Neos.Neos.Ui:PublishDiscardDialog:discard.document.confirmation.message',
+                    fallback: (props: { numberOfChanges: number; scopeTitle: string; workspaceName: string; }) =>
+                        `Are you sure that you want to discard all ${props.numberOfChanges} change(s) in document "${props.scopeTitle}" within workspace "${props.workspaceName}"? Be careful: This cannot be undone!`
+                },
+                cancel: {
+                    id: 'Neos.Neos.Ui:PublishDiscardDialog:discard.document.confirmation.cancel',
+                    fallback: 'No, cancel'
+                },
+                confirm: {
+                    id: 'Neos.Neos.Ui:PublishDiscardDialog:discard.document.confirmation.confirm',
+                    fallback: 'Yes, discard'
+                }
             }
         }
     }
@@ -64,6 +124,9 @@ const ConfirmationDialogVariants = {
 
 export const ConfirmationDialog: React.FC<{
     mode: PublishDiscardMode;
+    scope: PublishDiscardScope;
+    scopeTitle: string;
+    workspaceName: string;
     numberOfChanges: number;
     onAbort: () => void;
     onConfirm: () => void;
@@ -80,7 +143,7 @@ export const ConfirmationDialog: React.FC<{
                     hoverStyle="brand"
                     onClick={props.onAbort}
                 >
-                    <I18n id="Neos.Neos:Main:cancel" fallback="Cancel" />
+                    <I18n {...variant[props.scope].label.cancel} />
                 </Button>,
                 <Button
                     id={`${variant.id}-Confirm`}
@@ -89,14 +152,18 @@ export const ConfirmationDialog: React.FC<{
                     hoverStyle={variant.style}
                     onClick={props.onConfirm}
                 >
-                    <Icon icon={variant.icon.confirmButton} className={style.buttonIcon} />
-                    <I18n {...variant.label.confirmButton} />
+                    <Icon icon={variant.icon.confirm} className={style.buttonIcon} />
+                    <I18n {...variant[props.scope].label.confirm} />
                 </Button>
             ]}
             title={<div>
-                <Icon icon={variant.icon.dialogTitle} />
+                <Icon icon={variant.icon.title} />
                 <span className={style.modalTitle}>
-                    <I18n {...variant.label.dialogTitle} />
+                    <I18n
+                        id={variant[props.scope].label.title.id}
+                        params={props}
+                        fallback={variant[props.scope].label.title.fallback(props)}
+                        />
                 </span>
             </div>}
             onRequestClose={props.onAbort}
@@ -108,9 +175,10 @@ export const ConfirmationDialog: React.FC<{
         >
             <div className={style.modalContents}>
                 <I18n
-                    id={variant.label.message.id}
-                    params={{numberOfChanges: props.numberOfChanges}}
-                    fallback={variant.label.message.fallback(props)} />
+                    id={variant[props.scope].label.message.id}
+                    params={props}
+                    fallback={variant[props.scope].label.message.fallback(props)}
+                    />
             </div>
         </Dialog>
     );

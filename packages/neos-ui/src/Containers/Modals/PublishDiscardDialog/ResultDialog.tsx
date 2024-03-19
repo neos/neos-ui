@@ -11,51 +11,170 @@ import React from 'react';
 
 import {Button, Dialog, Icon} from '@neos-project/react-ui-components';
 import I18n from '@neos-project/neos-ui-i18n';
-import {PublishDiscardMode} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces';
+import {PublishDiscardMode, PublishDiscardScope} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces';
 
 import style from './style.module.css';
 
 const ResultDialogVariants = {
     [PublishDiscardMode.PUBLISHING]: {
         id: 'neos-PublishDialog',
-        style: {
-            success: 'success',
-            error: 'error'
-        },
-        icon: {
-            success: 'check',
-            error: 'exclamation-circle'
-        },
-        label: {
-            dialogTitle: {
-                id: 'Neos.Neos:Main:publish',
-                fallback: 'Publish'
+        success: {
+            style: 'success',
+            icon: 'check',
+            [PublishDiscardScope.SITE]: {
+                label: {
+                    title: {
+                        id: 'Neos.Neos.Ui:PublishDiscardDialog:publish.site.success.title',
+                        fallback: (props: { scopeTitle: string; }) =>
+                            `Changes in site "${props.scopeTitle}" were published`
+                    },
+                    message: {
+                        id: 'Neos.Neos.Ui:PublishDiscardDialog:publish.site.success.message',
+                        fallback: (props: { numberOfChanges: number; scopeTitle: string; }) =>
+                            `${props.numberOfChanges} change(s) in site "${props.scopeTitle}" were sucessfully published.`
+                    },
+                    acknowledge: {
+                        id: 'Neos.Neos.Ui:PublishDiscardDialog:publish.site.success.acknowledge',
+                        fallback: 'Okay, take me back'
+                    }
+                }
             },
-            message: {
-                id: 'Neos.Neos:Main:content.components.publishAllDialog.publishXChangesSubheader',
-                fallback: (props: { numberOfChanges: number; }) =>
-                    `Are you sure that you want to publish ${props.numberOfChanges} change(s) in this workspace?`
+            [PublishDiscardScope.DOCUMENT]: {
+                label: {
+                    title: {
+                        id: 'Neos.Neos.Ui:PublishDiscardDialog:publish.document.success.title',
+                        fallback: (props: { scopeTitle: string; }) =>
+                            `Changes in document "${props.scopeTitle}" were published`
+                    },
+                    message: {
+                        id: 'Neos.Neos.Ui:PublishDiscardDialog:publish.document.success.message',
+                        fallback: (props: { numberOfChanges: number; scopeTitle: string; }) =>
+                            `${props.numberOfChanges} change(s) in document "${props.scopeTitle}" were sucessfully published.`
+                    },
+                    acknowledge: {
+                        id: 'Neos.Neos.Ui:PublishDiscardDialog:publish.document.success.acknowledge',
+                        fallback: 'Okay, take me back'
+                    }
+                }
+            }
+        },
+        error: {
+            style: 'error',
+            icon: 'exclamation-circle',
+            [PublishDiscardScope.SITE]: {
+                label: {
+                    title: {
+                        id: 'Neos.Neos.Ui:PublishDiscardDialog:publish.site.error.title',
+                        fallback: (props: { scopeTitle: string; }) =>
+                            `Changes in site "${props.scopeTitle}" could not be published`
+                    },
+                    retry: {
+                        id: 'Neos.Neos.Ui:PublishDiscardDialog:publish.site.error.retry',
+                        fallback: 'Try again'
+                    },
+                    acknowledge: {
+                        id: 'Neos.Neos.Ui:PublishDiscardDialog:publish.site.error.acknowledge',
+                        fallback: 'Okay, take me back'
+                    }
+                }
+            },
+            [PublishDiscardScope.DOCUMENT]: {
+                label: {
+                    title: {
+                        id: 'Neos.Neos.Ui:PublishDiscardDialog:publish.document.error.title',
+                        fallback: (props: { scopeTitle: string; }) =>
+                            `Changes in document "${props.scopeTitle}" could not be published`
+                    },
+                    retry: {
+                        id: 'Neos.Neos.Ui:PublishDiscardDialog:publish.document.error.retry',
+                        fallback: 'Try again'
+                    },
+                    acknowledge: {
+                        id: 'Neos.Neos.Ui:PublishDiscardDialog:publish.document.error.acknowledge',
+                        fallback: 'Okay, take me back'
+                    }
+                }
             }
         }
     },
     [PublishDiscardMode.DISCARDING]: {
         id: 'neos-DiscardDialog',
-        style: {
-            success: 'success',
-            error: 'error'
-        },
-        icon: {
-            success: 'check',
-            error: 'exclamation-circle'
-        },
-        label: {
-            dialogTitle: {
-                id: 'Neos.Neos:Main:discard',
-                fallback: 'Discard'
+        success: {
+            style: 'success',
+            icon: 'check',
+            [PublishDiscardScope.SITE]: {
+                label: {
+                    title: {
+                        id: 'Neos.Neos.Ui:PublishDiscardDialog:discard.site.success.title',
+                        fallback: (props: { scopeTitle: string; }) =>
+                            `Changes in site "${props.scopeTitle}" were discarded`
+                    },
+                    message: {
+                        id: 'Neos.Neos.Ui:PublishDiscardDialog:discard.site.success.message',
+                        fallback: (props: { numberOfChanges: number; scopeTitle: string; }) =>
+                            `${props.numberOfChanges} change(s) in site "${props.scopeTitle}" were sucessfully discarded.`
+                    },
+                    acknowledge: {
+                        id: 'Neos.Neos.Ui:PublishDiscardDialog:discard.site.success.acknowledge',
+                        fallback: 'Okay, take me back'
+                    }
+                }
             },
-            message: {
-                id: 'Neos.Neos:Main:content.components.discardAllDialog.discardXChangesSubheader',
-                fallback: (props: { numberOfChanges: number; }) => `Are you sure that you want to discard ${props.numberOfChanges} change(s) in this workspace?`
+            [PublishDiscardScope.DOCUMENT]: {
+                label: {
+                    title: {
+                        id: 'Neos.Neos.Ui:PublishDiscardDialog:discard.document.success.title',
+                        fallback: (props: { scopeTitle: string; }) =>
+                            `Changes in document "${props.scopeTitle}" were discarded`
+                    },
+                    message: {
+                        id: 'Neos.Neos.Ui:PublishDiscardDialog:discard.document.success.message',
+                        fallback: (props: { numberOfChanges: number; scopeTitle: string; }) =>
+                            `${props.numberOfChanges} change(s) in document "${props.scopeTitle}" were sucessfully discarded.`
+                    },
+                    acknowledge: {
+                        id: 'Neos.Neos.Ui:PublishDiscardDialog:discard.document.success.acknowledge',
+                        fallback: 'Okay, take me back'
+                    }
+                }
+            }
+        },
+        error: {
+            style: 'error',
+            icon: 'exclamation-circle',
+            [PublishDiscardScope.SITE]: {
+                label: {
+                    title: {
+                        id: 'Neos.Neos.Ui:PublishDiscardDialog:discard.site.error.title',
+                        fallback: (props: { scopeTitle: string; }) =>
+                            `Changes in site "${props.scopeTitle}" could not be discarded`
+                    },
+                    retry: {
+                        id: 'Neos.Neos.Ui:PublishDiscardDialog:discard.site.error.retry',
+                        fallback: 'Try again'
+                    },
+                    acknowledge: {
+                        id: 'Neos.Neos.Ui:PublishDiscardDialog:discard.site.error.acknowledge',
+                        fallback: 'Okay, take me back'
+                    }
+                }
+            },
+            [PublishDiscardScope.DOCUMENT]: {
+                label: {
+                    title: {
+                        id: 'Neos.Neos.Ui:PublishDiscardDialog:discard.document.error.title',
+                        fallback: (props: { scopeTitle: string; }) =>
+                            `Changes in document "${props.scopeTitle}" could not be discarded`
+                    },
+                    retry: {
+                        id: 'Neos.Neos.Ui:PublishDiscardDialog:discard.document.error.retry',
+                        fallback: 'Try again'
+                    },
+                    acknowledge: {
+                        id: 'Neos.Neos.Ui:PublishDiscardDialog:discard.document.error.acknowledge',
+                        fallback: 'Okay, take me back'
+                    }
+                }
             }
         }
     }
@@ -64,7 +183,10 @@ const ResultDialogVariants = {
 export const ResultDialog: React.FC<{
     type: 'success' | 'error';
     mode: PublishDiscardMode;
-    message: string;
+    scope: PublishDiscardScope;
+    scopeTitle: string;
+    numberOfChanges: number;
+    message?: string;
     onAcknowledge: () => void;
     onRetry: () => void;
 }> = (props) => {
@@ -82,28 +204,33 @@ export const ResultDialog: React.FC<{
                         onClick={props.onRetry}
                     >
                         <Icon icon="refresh" className={style.buttonIcon} />
-                        <I18n id="Neos.Neos:Main:retry" fallback="Try again" />
+                        <I18n {...variant.error[props.scope].label.retry} />
                     </Button>
                 ) : null,
                 <Button
                     id={`${variant.id}-Acknowledge`}
                     key="acknowledge"
-                    style={variant.style[props.type]}
-                    hoverStyle={variant.style[props.type]}
+                    style={variant[props.type].style}
+                    hoverStyle={variant[props.type].style}
                     onClick={props.onAcknowledge}
                 >
-                    <Icon icon="check" className={style.buttonIcon} />
-                    <I18n id="Neos.Neos:Main:okay" fallback="OK" />
+                    <I18n {...variant[props.type][props.scope].label.acknowledge} />
                 </Button>
             ]}
-            title={<div>
-                <Icon icon={variant.icon[props.type]} />
-                <span className={style.modalTitle}>
-                    <I18n {...variant.label.dialogTitle} />
-                </span>
-            </div>}
+            title={
+                <div>
+                    <Icon icon={variant[props.type].icon} />
+                    <span className={style.modalTitle}>
+                        <I18n
+                            id={variant[props.type][props.scope].label.title.id}
+                            params={props}
+                            fallback={variant[props.type][props.scope].label.title.fallback(props)}
+                            />
+                    </span>
+                </div>
+            }
             onRequestClose={props.onAcknowledge}
-            type={variant.style[props.type]}
+            type={variant[props.type].style}
             isOpen
             autoFocus
             preventClosing={props.type === 'error'}
@@ -111,7 +238,13 @@ export const ResultDialog: React.FC<{
             style={undefined as any}
         >
             <div className={style.modalContents}>
-                {props.message}
+                {props.type === 'error' ? props.message : (
+                    <I18n
+                        id={variant.success[props.scope].label.message.id}
+                        params={props}
+                        fallback={variant.success[props.scope].label.message.fallback(props)}
+                        />
+                )}
             </div>
         </Dialog>
     );

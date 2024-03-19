@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file original="" product-name="Neos.Neos.Ui" source-language="en" datatype="plaintext" target-language="en">
+    <body>
+      <trans-unit id="publish.site.confirmation.title" xml:space="preserve">
+        <source>Publish all changes in site "{scopeTitle}"</source>
+      </trans-unit>
+      <trans-unit id="publish.site.confirmation.message" xml:space="preserve">
+        <source>Are you sure that you want to publish all {numberOfChanges} change(s) in site "{scopeTitle}" within workspace "{workspaceName}"? Be careful: This cannot be undone!</source>
+      </trans-unit>
+      <trans-unit id="publish.site.confirmation.cancel" xml:space="preserve">
+        <source>No, cancel</source>
+      </trans-unit>
+      <trans-unit id="publish.site.confirmation.confirm" xml:space="preserve">
+        <source>Yes, publish</source>
+      </trans-unit>
+      <trans-unit id="publish.site.process.title" xml:space="preserve">
+        <source>Publishing all changes in site "{scopeTitle}"...</source>
+      </trans-unit>
+      <trans-unit id="publish.site.process.message" xml:space="preserve">
+        <source>Please wait while {numberOfChanges} change(s) are being published. This may take a while.</source>
+      </trans-unit>
+      <trans-unit id="publish.site.error.title" xml:space="preserve">
+        <source>Changes in site "{scopeTitle}" could not be published</source>
+      </trans-unit>
+      <trans-unit id="publish.site.error.retry" xml:space="preserve">
+        <source>Try again</source>
+      </trans-unit>
+      <trans-unit id="publish.site.error.acknowledge" xml:space="preserve">
+        <source>Okay, take me back</source>
+      </trans-unit>
+      <trans-unit id="publish.site.success.title" xml:space="preserve">
+        <source>Changes in site "{scopeTitle}" were published</source>
+      </trans-unit>
+      <trans-unit id="publish.site.success.message" xml:space="preserve">
+        <source>{numberOfChanges} change(s) in site "{scopeTitle}" were sucessfully published.</source>
+      </trans-unit>
+      <trans-unit id="publish.site.success.acknowledge" xml:space="preserve">
+        <source>Okay, take me back</source>
+      </trans-unit>
+      <trans-unit id="publish.document.confirmation.title" xml:space="preserve">
+        <source>Publish all changes in document "{scopeTitle}"</source>
+      </trans-unit>
+      <trans-unit id="publish.document.confirmation.message" xml:space="preserve">
+        <source>Are you sure that you want to publish the {numberOfChanges} change(s) in document "{scopeTitle}" within workspace "{workspaceName}"? Be careful: This cannot be undone!</source>
+      </trans-unit>
+      <trans-unit id="publish.document.confirmation.cancel" xml:space="preserve">
+        <source>No, cancel</source>
+      </trans-unit>
+      <trans-unit id="publish.document.confirmation.confirm" xml:space="preserve">
+        <source>Yes, publish</source>
+      </trans-unit>
+      <trans-unit id="publish.document.process.title" xml:space="preserve">
+        <source>Publishing all changes in document "{scopeTitle}"...</source>
+      </trans-unit>
+      <trans-unit id="publish.document.process.message" xml:space="preserve">
+        <source>Please wait while {numberOfChanges} change(s) are being published. This may take a while.</source>
+      </trans-unit>
+      <trans-unit id="publish.document.error.title" xml:space="preserve">
+        <source>Changes in document "{scopeTitle}" could not be published</source>
+      </trans-unit>
+      <trans-unit id="publish.document.error.retry" xml:space="preserve">
+        <source>Try again</source>
+      </trans-unit>
+      <trans-unit id="publish.document.error.acknowledge" xml:space="preserve">
+        <source>Okay, take me back</source>
+      </trans-unit>
+      <trans-unit id="publish.document.success.title" xml:space="preserve">
+        <source>Changes in document "{scopeTitle}" were published</source>
+      </trans-unit>
+      <trans-unit id="publish.document.success.message" xml:space="preserve">
+        <source>{numberOfChanges} change(s) were sucessfully published.</source>
+      </trans-unit>
+      <trans-unit id="publish.document.success.acknowledge" xml:space="preserve">
+        <source>Okay, take me back</source>
+      </trans-unit>
+      <trans-unit id="discard.site.confirmation.title" xml:space="preserve">
+        <source>Discard all changes in site "{scopeTitle}"</source>
+      </trans-unit>
+      <trans-unit id="discard.site.confirmation.message" xml:space="preserve">
+        <source>Are you sure that you want to discard all {numberOfChanges} change(s) in site "{scopeTitle}" within workspace "{workspaceName}"? Be careful: This cannot be undone!</source>
+      </trans-unit>
+      <trans-unit id="discard.site.confirmation.cancel" xml:space="preserve">
+        <source>No, cancel</source>
+      </trans-unit>
+      <trans-unit id="discard.site.confirmation.confirm" xml:space="preserve">
+        <source>Yes, discard</source>
+      </trans-unit>
+      <trans-unit id="discard.site.process.title" xml:space="preserve">
+        <source>Discarding all changes in site "{scopeTitle}"...</source>
+      </trans-unit>
+      <trans-unit id="discard.site.process.message" xml:space="preserve">
+        <source>Please wait while {numberOfChanges} change(s) are being discarded. This may take a while.</source>
+      </trans-unit>
+      <trans-unit id="discard.site.error.title" xml:space="preserve">
+        <source>Changes in site "{scopeTitle}" could not be discarded</source>
+      </trans-unit>
+      <trans-unit id="discard.site.error.retry" xml:space="preserve">
+        <source>Try again</source>
+      </trans-unit>
+      <trans-unit id="discard.site.error.acknowledge" xml:space="preserve">
+        <source>Okay, take me back</source>
+      </trans-unit>
+      <trans-unit id="discard.site.success.title" xml:space="preserve">
+        <source>Changes in site "{scopeTitle}" were discarded</source>
+      </trans-unit>
+      <trans-unit id="discard.site.success.message" xml:space="preserve">
+        <source>{numberOfChanges} change(s) were sucessfully discarded.</source>
+      </trans-unit>
+      <trans-unit id="discard.site.success.acknowledge" xml:space="preserve">
+        <source>Okay, take me back</source>
+      </trans-unit>
+      <trans-unit id="discard.document.confirmation.title" xml:space="preserve">
+        <source>Discard all changes in document "{scopeTitle}"</source>
+      </trans-unit>
+      <trans-unit id="discard.document.confirmation.message" xml:space="preserve">
+        <source>Are you sure that you want to discard the {numberOfChanges} change(s) in document "{scopeTitle}" within workspace "{workspaceName}"? Be careful: This cannot be undone!</source>
+      </trans-unit>
+      <trans-unit id="discard.document.confirmation.cancel" xml:space="preserve">
+        <source>No, cancel</source>
+      </trans-unit>
+      <trans-unit id="discard.document.confirmation.confirm" xml:space="preserve">
+        <source>Yes, discard</source>
+      </trans-unit>
+      <trans-unit id="discard.document.process.title" xml:space="preserve">
+        <source>Discarding all changes in document "{scopeTitle}"...</source>
+      </trans-unit>
+      <trans-unit id="discard.document.process.message" xml:space="preserve">
+        <source>Please wait while {numberOfChanges} change(s) are being published. This may take a while.</source>
+      </trans-unit>
+      <trans-unit id="discard.document.error.title" xml:space="preserve">
+        <source>Changes in document "{scopeTitle}" could not be discarded</source>
+      </trans-unit>
+      <trans-unit id="discard.document.error.retry" xml:space="preserve">
+        <source>Try again</source>
+      </trans-unit>
+      <trans-unit id="discard.document.error.acknowledge" xml:space="preserve">
+        <source>Okay, take me back</source>
+      </trans-unit>
+      <trans-unit id="discard.document.success.title" xml:space="preserve">
+        <source>Changes in document "{scopeTitle}" were discarded</source>
+      </trans-unit>
+      <trans-unit id="discard.document.success.message" xml:space="preserve">
+        <source>{numberOfChanges} change(s) were sucessfully discarded.</source>
+      </trans-unit>
+      <trans-unit id="discard.document.success.acknowledge" xml:space="preserve">
+        <source>Okay, take me back</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -75,7 +75,7 @@ export function * watchRebaseWorkspace() {
     });
 }
 
-export function * discardIfConfirmed({ routes }) {
+export function * discardIfConfirmed({routes}) {
     yield takeLatest(actionTypes.CR.Workspaces.DISCARD_STARTED, function * waitForConfirmation(action) {
         const waitForNextAction = yield race([
             take(actionTypes.CR.Workspaces.DISCARD_ABORTED),
@@ -88,12 +88,12 @@ export function * discardIfConfirmed({ routes }) {
         }
 
         if (nextAction.type === actionTypes.CR.Workspaces.DISCARD_CONFIRMED) {
-            yield* discard(action.payload.scope, routes);
+            yield * discard(action.payload.scope, routes);
         }
     });
 }
 
-function *discard(scope, routes) {
+function * discard(scope, routes) {
     const {discardSite, discardDocument} = backend.get().endpoints;
     const workspaceName = yield select(selectors.CR.Workspaces.personalWorkspaceNameSelector);
 
@@ -119,7 +119,7 @@ function *discard(scope, routes) {
         yield put(actions.ServerFeedback.handleServerFeedback(feedback));
     }
 
-    yield* reloadAfterDiscard(discardedNodes, routes);
+    yield * reloadAfterDiscard(discardedNodes, routes);
 
     yield put(actions.CR.Workspaces.finishDiscard(discardedNodes));
     yield put(actions.UI.Remote.finishDiscarding());
@@ -127,7 +127,7 @@ function *discard(scope, routes) {
 
 const NODE_HAS_BEEN_CREATED = 0b0001;
 
-function *reloadAfterDiscard(discardedNodes, routes) {
+function * reloadAfterDiscard(discardedNodes, routes) {
     const currentContentCanvasContextPath = yield select(selectors.CR.Nodes.documentNodeContextPathSelector);
     const currentDocumentParentLine = yield select(selectors.CR.Nodes.documentNodeParentLineSelector);
 

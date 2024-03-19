@@ -48,7 +48,7 @@ export const defaultState: State = {
         status: ''
     },
     mode: null,
-    scope: null,
+    scope: null
 };
 
 export enum actionTypes {

@@ -11,11 +11,16 @@ import React from 'react';
 // @ts-ignore
 import {connect} from 'react-redux';
 
+import {actions, selectors} from '@neos-project/neos-ui-redux-store';
+import {GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
 import {PublishDiscardScope, PublishDiscardMode} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces';
 
 import {ConfirmationDialog} from './ConfirmationDialog';
 import {ProcessIndicator} from './ProcessIndicator';
 import {ResultDialog} from './ResultDialog';
+
+const {publishableNodesSelector, publishableNodesInDocumentSelector} = (selectors as any).CR.Workspaces;
+const {siteNodeSelector, documentNodeSelector} = (selectors as any).CR.Nodes;
 
 type PublishDiscardDialogState =
     | { type: 'idle' }
@@ -51,16 +56,42 @@ type PublishDiscardDialogState =
         message: string;
     }
 
-const PublishDiscardDialog: React.FC<{ state: PublishDiscardDialogState }> = (props) => {
+const PublishDiscardDialog: React.FC<{
+    state: PublishDiscardDialogState;
+    confirmDiscard: () => void;
+    abortDiscard: () => void;
+    acknowledgeDiscard: () => void;
+    confirmPublish: () => void;
+    abortPublish: () => void;
+    acknowledgePublish: () => void;
+}> = (props) => {
     const handleAbort = React.useCallback(() => {
-        console.log('@TODO: handleAbort');
-    }, []);
+        if (props.state.type === 'start') {
+            if (props.state.mode === PublishDiscardMode.PUBLISHING) {
+                props.abortPublish();
+            } else if (props.state.mode === PublishDiscardMode.DISCARDING) {
+                props.abortDiscard();
+            }
+        }
+    }, [props.state.type]);
     const handleConfirm = React.useCallback(() => {
-        console.log('@TODO: handleConfirm');
-    }, []);
+        if (props.state.type === 'start') {
+            if (props.state.mode === PublishDiscardMode.PUBLISHING) {
+                props.confirmPublish();
+            } else if (props.state.mode === PublishDiscardMode.DISCARDING) {
+                props.confirmDiscard();
+            }
+        }
+    }, [props.state.type]);
     const handleAcknowledge = React.useCallback(() => {
-        console.log('@TODO: handleAcknowledge');
-    }, []);
+        if (props.state.type === 'success' || props.state.type === 'error') {
+            if (props.state.mode === PublishDiscardMode.PUBLISHING) {
+                props.acknowledgePublish();
+            } else if (props.state.mode === PublishDiscardMode.DISCARDING) {
+                props.acknowledgeDiscard();
+            }
+        }
+    }, [props.state.type]);
     const handleRetry = React.useCallback(() => {
         console.log('@TODO: handleRetry');
     }, []);
@@ -96,10 +127,72 @@ const PublishDiscardDialog: React.FC<{ state: PublishDiscardDialogState }> = (pr
     }
 };
 
-export default connect((): { state: PublishDiscardDialogState } => {
-    const state: PublishDiscardDialogState = {
-        type: 'idle'
-    };
+export default connect((state: GlobalState): { state: PublishDiscardDialogState } => {
+    const {publishing} = state.cr.workspaces;
+    if (publishing === null) {
+        return {state: {type: 'idle'}};
+    }
 
-    return {state};
+    const {name: workspaceName} = state.cr.workspaces.personalWorkspace;
+
+    let numberOfChanges = 0;
+    if (publishing.scope === PublishDiscardScope.SITE) {
+        numberOfChanges = publishableNodesSelector(state).length;
+    } else if (publishing.scope === PublishDiscardScope.DOCUMENT) {
+        numberOfChanges = publishableNodesInDocumentSelector(state).length;
+    }
+
+    let scopeTitle = 'N/A';
+    if (publishing.scope === PublishDiscardScope.SITE) {
+        scopeTitle = siteNodeSelector(state).label;
+    } else if (publishing.scope === PublishDiscardScope.DOCUMENT) {
+        scopeTitle = documentNodeSelector(state).label;
+    }
+
+    let result: PublishDiscardDialogState = {type: 'idle'};
+    if (publishing.type === 'start') {
+        result = {
+            type: 'start',
+            mode: publishing.mode,
+            scope: publishing.scope,
+            scopeTitle,
+            workspaceName,
+            numberOfChanges
+        };
+    } else if (publishing.type === 'ongoing') {
+        result = {
+            type: 'ongoing',
+            mode: publishing.mode,
+            scope: publishing.scope,
+            scopeTitle,
+            workspaceName,
+            numberOfChanges
+        };
+    } else if (publishing.type === 'error') {
+        result = {
+            type: 'error',
+            mode: publishing.mode,
+            scope: publishing.scope,
+            message: publishing.message,
+            scopeTitle,
+            numberOfChanges
+        };
+    } else if (publishing.type === 'success') {
+        result = {
+            type: 'success',
+            mode: publishing.mode,
+            scope: publishing.scope,
+            scopeTitle,
+            numberOfChanges
+        };
+    }
+
+    return {state: result};
+}, {
+    confirmDiscard: (actions as any).CR.Workspaces.confirmDiscard,
+    abortDiscard: (actions as any).CR.Workspaces.abortDiscard,
+    acknowledgeDiscard: (actions as any).CR.Workspaces.acknowledgeDiscard,
+    confirmPublish: (actions as any).CR.Workspaces.confirmPublish,
+    abortPublish: (actions as any).CR.Workspaces.abortPublish,
+    acknowledgePublish: (actions as any).CR.Workspaces.acknowledgePublish
 })(PublishDiscardDialog);

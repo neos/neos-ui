@@ -12,31 +12,47 @@ export function * watchPublish() {
         const {scope} = action.payload;
         const workspaceName = yield select(selectors.CR.Workspaces.personalWorkspaceNameSelector);
 
-        yield put(actions.UI.Remote.startPublishing());
-
-        let feedback = null;
-        let publishedNodes = [];
-        try {
-            if (scope === PublishDiscardScope.SITE) {
-                const siteId = yield select(selectors.CR.Nodes.siteNodeContextPathSelector);
-                publishedNodes = yield select(selectors.CR.Workspaces.publishableNodesSelector);
-                feedback = yield call(publishChangesInSite, siteId, workspaceName);
-            } else if (scope === PublishDiscardScope.DOCUMENT) {
-                const documentId = yield select(selectors.CR.Nodes.documentNodeContextPathSelector);
-                publishedNodes = yield select(selectors.CR.Workspaces.publishableNodesInDocumentSelector);
-                feedback = yield call(publishChangesInDocument, documentId, workspaceName);
+        if (yield * confirmPublish()) {
+            let feedback = null;
+            let publishedNodes = [];
+            try {
+                if (scope === PublishDiscardScope.SITE) {
+                    const siteId = yield select(selectors.CR.Nodes.siteNodeContextPathSelector);
+                    publishedNodes = yield select(selectors.CR.Workspaces.publishableNodesSelector);
+                    feedback = yield call(publishChangesInSite, siteId, workspaceName);
+                } else if (scope === PublishDiscardScope.DOCUMENT) {
+                    const documentId = yield select(selectors.CR.Nodes.documentNodeContextPathSelector);
+                    publishedNodes = yield select(selectors.CR.Workspaces.publishableNodesInDocumentSelector);
+                    feedback = yield call(publishChangesInDocument, documentId, workspaceName);
+                }
+                yield put(actions.CR.Workspaces.succeedPublish());
+            } catch (error) {
+                console.error('Failed to publish', error);
+                yield put(actions.CR.Workspaces.failPublish('Failed to Publish'));
             }
-        } catch (error) {
-            console.error('Failed to publish', error);
-        }
 
-        if (feedback !== null) {
-            yield put(actions.ServerFeedback.handleServerFeedback(feedback));
-        }
+            if (feedback !== null) {
+                yield put(actions.ServerFeedback.handleServerFeedback(feedback));
+            }
 
-        yield put(actions.CR.Workspaces.finishPublish(publishedNodes));
-        yield put(actions.UI.Remote.finishPublishing());
+            yield take(actionTypes.CR.Workspaces.PUBLISH_ACKNOWLEDGED);
+            yield put(actions.CR.Workspaces.finishPublish(publishedNodes));
+        }
     });
+}
+
+function * confirmPublish() {
+    const waitForNextAction = yield race([
+        take(actionTypes.CR.Workspaces.PUBLISH_ABORTED),
+        take(actionTypes.CR.Workspaces.PUBLISH_CONFIRMED)
+    ]);
+    const [nextAction] = Object.values(waitForNextAction);
+
+    if (nextAction.type === actionTypes.CR.Workspaces.PUBLISH_CONFIRMED) {
+        return true;
+    }
+
+    return false;
 }
 
 export function * watchChangeBaseWorkspace() {
@@ -77,27 +93,29 @@ export function * watchRebaseWorkspace() {
 
 export function * discardIfConfirmed({routes}) {
     yield takeLatest(actionTypes.CR.Workspaces.DISCARD_STARTED, function * waitForConfirmation(action) {
-        const waitForNextAction = yield race([
-            take(actionTypes.CR.Workspaces.DISCARD_ABORTED),
-            take(actionTypes.CR.Workspaces.DISCARD_CONFIRMED)
-        ]);
-        const nextAction = Object.values(waitForNextAction)[0];
-
-        if (nextAction.type === actionTypes.CR.Workspaces.DISCARD_ABORTED) {
-            return;
-        }
-
-        if (nextAction.type === actionTypes.CR.Workspaces.DISCARD_CONFIRMED) {
+        if (yield * confirmDiscard()) {
             yield * discard(action.payload.scope, routes);
         }
     });
 }
 
+function * confirmDiscard() {
+    const waitForNextAction = yield race([
+        take(actionTypes.CR.Workspaces.DISCARD_ABORTED),
+        take(actionTypes.CR.Workspaces.DISCARD_CONFIRMED)
+    ]);
+    const [nextAction] = Object.values(waitForNextAction);
+
+    if (nextAction.type === actionTypes.CR.Workspaces.DISCARD_CONFIRMED) {
+        return true;
+    }
+
+    return false;
+}
+
 function * discard(scope, routes) {
     const {discardChangesInSite, discardChangesInDocument} = backend.get().endpoints;
     const workspaceName = yield select(selectors.CR.Workspaces.personalWorkspaceNameSelector);
-
-    yield put(actions.UI.Remote.startDiscarding());
 
     let feedback = null;
     let discardedNodes = [];
@@ -111,8 +129,10 @@ function * discard(scope, routes) {
             discardedNodes = yield select(selectors.CR.Workspaces.publishableNodesInDocumentSelector);
             feedback = yield call(discardChangesInDocument, documentId, workspaceName);
         }
+        yield put(actions.CR.Workspaces.succeedDiscard());
     } catch (error) {
         console.error('Failed to discard', error);
+        yield put(actions.CR.Workspaces.failDiscard('Failed to discard'));
     }
 
     if (feedback !== null) {
@@ -121,8 +141,8 @@ function * discard(scope, routes) {
 
     yield * reloadAfterDiscard(discardedNodes, routes);
 
+    yield take(actionTypes.CR.Workspaces.DISCARD_ACKNOWLEDGED);
     yield put(actions.CR.Workspaces.finishDiscard(discardedNodes));
-    yield put(actions.UI.Remote.finishDiscarding());
 }
 
 const NODE_HAS_BEEN_CREATED = 0b0001;

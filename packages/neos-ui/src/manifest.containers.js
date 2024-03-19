@@ -9,6 +9,7 @@ import InsertModeModal from './Containers/Modals/InsertMode/index';
 import SelectNodeTypeModal from './Containers/Modals/SelectNodeType/index';
 import NodeCreationDialog from './Containers/Modals/NodeCreationDialog/index';
 import NodeVariantCreationDialog from './Containers/Modals/NodeVariantCreationDialog/index';
+import {PublishDiscardDialog} from './Containers/Modals/PublishDiscardDialog/index';
 import ReloginDialog from './Containers/Modals/ReloginDialog/index';
 import KeyboardShortcutModal from './Containers/Modals/KeyboardShortcutModal/index';
 import UnappliedChangesDialog from './Containers/Modals/UnappliedChangesDialog/index';
@@ -54,6 +55,7 @@ manifest('main.containers', {}, globalRegistry => {
     containerRegistry.set('Modals/SelectNodeTypeModal', SelectNodeTypeModal);
     containerRegistry.set('Modals/NodeCreationDialog', NodeCreationDialog);
     containerRegistry.set('Modals/NodeVariantCreationDialog', NodeVariantCreationDialog);
+    containerRegistry.set('Modals/PublishDiscardDialog', PublishDiscardDialog);
     containerRegistry.set('Modals/ReloginDialog', ReloginDialog);
     containerRegistry.set('Modals/KeyboardShortcutModal', KeyboardShortcutModal);
     containerRegistry.set('Modals/UnappliedChangesDialog', UnappliedChangesDialog);

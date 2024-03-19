@@ -25,6 +25,7 @@ Neos:
         autoInclude:
           'Neos.Neos.Ui':
             - Main
+            - PublishDiscardDialog
     fusion:
       autoInclude:
         Neos.Neos.Ui: true

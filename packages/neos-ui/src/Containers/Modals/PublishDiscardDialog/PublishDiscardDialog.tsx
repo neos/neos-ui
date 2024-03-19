@@ -23,22 +23,31 @@ type PublishDiscardDialogState =
         type: 'start';
         mode: PublishDiscardMode;
         scope: PublishDiscardScope;
+        scopeTitle: string;
+        workspaceName: string;
         numberOfChanges: number;
     }
     | {
         type: 'ongoing';
         mode: PublishDiscardMode;
         scope: PublishDiscardScope;
+        scopeTitle: string;
+        workspaceName: string;
         numberOfChanges: number;
     }
     | {
         type: 'success';
         mode: PublishDiscardMode;
-        message: string;
+        scope: PublishDiscardScope;
+        scopeTitle: string;
+        numberOfChanges: number;
     }
     | {
         type: 'error';
         mode: PublishDiscardMode;
+        scope: PublishDiscardScope;
+        scopeTitle: string;
+        numberOfChanges: number;
         message: string;
     }
 

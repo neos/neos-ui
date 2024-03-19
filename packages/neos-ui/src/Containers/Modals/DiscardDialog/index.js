@@ -5,28 +5,28 @@ import {connect} from 'react-redux';
 import {Button, Dialog, Icon} from '@neos-project/react-ui-components';
 import I18n from '@neos-project/neos-ui-i18n';
 
-import {actions, selectors} from '@neos-project/neos-ui-redux-store';
-import {PublishDiscardScope, PublishDiscardMode} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces';
+import {actions/* , selectors */} from '@neos-project/neos-ui-redux-store';
+// import {PublishDiscardScope, PublishDiscardMode} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces';
 
 import style from './style.module.css';
 
-const {publishableNodesSelector, publishableNodesInDocumentSelector} = selectors.CR.Workspaces;
+// const {publishableNodesSelector, publishableNodesInDocumentSelector} = selectors.CR.Workspaces;
 
-@connect(state => {
-    const mode = state?.cr?.workspaces?.mode;
+@connect(() => {
+    // const mode = state?.cr?.workspaces?.mode;
 
-    let numberOfChangesToBeDiscarded = 0;
-    if (mode === PublishDiscardMode.DISCARDING) {
-        const scope = state?.cr?.workspaces?.scope;
+    // let numberOfChangesToBeDiscarded = 0;
+    // if (mode === PublishDiscardMode.DISCARDING) {
+    //     const scope = state?.cr?.workspaces?.scope;
 
-        if (scope === PublishDiscardScope.SITE) {
-            numberOfChangesToBeDiscarded = publishableNodesSelector(state).length;
-        } else if (scope === PublishDiscardScope.DOCUMENT) {
-            numberOfChangesToBeDiscarded = publishableNodesInDocumentSelector(state).length;
-        }
-    }
+    //     if (scope === PublishDiscardScope.SITE) {
+    //         numberOfChangesToBeDiscarded = publishableNodesSelector(state).length;
+    //     } else if (scope === PublishDiscardScope.DOCUMENT) {
+    //         numberOfChangesToBeDiscarded = publishableNodesInDocumentSelector(state).length;
+    //     }
+    // }
 
-    return {numberOfChangesToBeDiscarded};
+    return {numberOfChangesToBeDiscarded: 0};
 }, {
     confirm: actions.CR.Workspaces.confirmDiscard,
     abort: actions.CR.Workspaces.abortDiscard

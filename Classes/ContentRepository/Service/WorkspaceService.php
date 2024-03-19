@@ -23,6 +23,7 @@ use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Domain\Service\UserService as DomainUserService;
+use Neos\Neos\PendingChangesProjection\Change;
 use Neos\Neos\PendingChangesProjection\ChangeFinder;
 use Neos\Neos\Service\UserService;
 use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
@@ -33,6 +34,11 @@ use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
  */
 class WorkspaceService
 {
+    private const NODE_HAS_BEEN_CREATED = 0b0001;
+    private const NODE_HAS_BEEN_CHANGED = 0b0010;
+    private const NODE_HAS_BEEN_MOVED = 0b0100;
+    private const NODE_HAS_BEEN_DELETED = 0b1000;
+
     use NodeTypeWithFallbackProvider;
 
     #[Flow\Inject]
@@ -86,7 +92,8 @@ class WorkspaceService
 
                 $unpublishedNodes[] = [
                     'contextPath' => $nodeAddress->serializeForUri(),
-                    'documentContextPath' => $documentNodeAddress->serializeForUri()
+                    'documentContextPath' => $documentNodeAddress->serializeForUri(),
+                    'typeOfChange' => $this->getTypeOfChange($change)
                 ];
             } else {
                 $subgraph = $contentRepository->getContentGraph()->getSubgraph(
@@ -104,7 +111,8 @@ class WorkspaceService
                         $unpublishedNodes[] = [
                             'contextPath' => $nodeAddressFactory->createFromNode($node)->serializeForUri(),
                             'documentContextPath' => $nodeAddressFactory->createFromNode($documentNode)
-                                ->serializeForUri()
+                                ->serializeForUri(),
+                            'typeOfChange' => $this->getTypeOfChange($change)
                         ];
                     }
                 }
@@ -152,5 +160,28 @@ class WorkspaceService
         }
 
         return $workspacesArray;
+    }
+
+    private function getTypeOfChange(Change $change): int
+    {
+        $result = 0;
+
+        if ($change->created) {
+            $result = $result | self::NODE_HAS_BEEN_CREATED;
+        }
+
+        if ($change->changed) {
+            $result = $result | self::NODE_HAS_BEEN_CHANGED;
+        }
+
+        if ($change->moved) {
+            $result = $result | self::NODE_HAS_BEEN_MOVED;
+        }
+
+        if ($change->deleted) {
+            $result = $result | self::NODE_HAS_BEEN_DELETED;
+        }
+
+        return $result;
     }
 }

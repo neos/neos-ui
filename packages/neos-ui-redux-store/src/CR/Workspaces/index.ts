@@ -8,9 +8,12 @@ import {WorkspaceName} from '@neos-project/neos-ts-interfaces';
 
 import * as selectors from './selectors';
 
+type TypeOfChange = number;
+
 interface PublishableNode {
     contextPath: NodeContextPath;
     documentContextPath: NodeContextPath;
+    typeOfChange: TypeOfChange;
 }
 
 export interface WorkspaceInformation {

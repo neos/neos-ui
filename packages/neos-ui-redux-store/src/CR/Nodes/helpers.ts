@@ -67,11 +67,18 @@ export const calculateNewFocusedNodes = (selectionMode: SelectionModeTypes, cont
         const lastSelectedNode = nodesByContextPath[lastSelectedNodeContextPath];
         if (lastSelectedNode && lastSelectedNode.parent) {
             const parentNode = getNodeOrThrow(nodesByContextPath, lastSelectedNode.parent);
-            const tempSelection: string[] = [];
+            let tempSelection: string[] = [];
             let startSelectionFlag = false;
+            let startIndex = -1;
+            let endIndex = -1;
             // if both start and end nodes are within children, then we can do range select
-            const startAndEndOfSelectionAreOnOneLevel = parentNode.children.some(child => {
+            const startAndEndOfSelectionAreOnOneLevel = parentNode.children.some((child, index) => {
                 if (child.contextPath === lastSelectedNodeContextPath || child.contextPath === contextPath) {
+                    if (child.contextPath === lastSelectedNodeContextPath) {
+                        startIndex = index;
+                    } else if (child.contextPath === contextPath) {
+                        endIndex = index;
+                    }
                     if (startSelectionFlag) { // if matches for the second time it means that both start and end of selection were found
                         tempSelection.push(child.contextPath); // also push the last node
                         return true;
@@ -84,6 +91,10 @@ export const calculateNewFocusedNodes = (selectionMode: SelectionModeTypes, cont
                 return false;
             });
             if (startAndEndOfSelectionAreOnOneLevel) {
+                // Reverse the selection if the nodes were selected from "bottom" to "top" in the tree, or they would be out of order on insertion
+                if (startIndex > endIndex) {
+                    tempSelection = tempSelection.reverse();
+                }
                 const focusedNodesContextPathsSet = new Set(focusedNodesContextPaths);
                 tempSelection.forEach(contextPath => focusedNodesContextPathsSet.add(contextPath));
                 return [...focusedNodesContextPathsSet] as string[];

@@ -39,16 +39,25 @@ export default function * pasteNode({globalRegistry}) {
             const referenceNodeSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(reference);
             const referenceNode = yield select(referenceNodeSelector);
             const baseNodeType = yield select($get('ui.pageTree.filterNodeType'));
+            const changeType = calculateChangeTypeFromMode(mode, clipboardMode);
+            const domAddresses = calculateDomAddressesFromMode(mode, referenceNode, fusionPath);
 
             yield put(actions.CR.Nodes.commitPaste(clipboardMode));
-            const changes = subject.map(contextPath => ({
-                type: calculateChangeTypeFromMode(mode, clipboardMode),
+            let changes = subject.map(contextPath => ({
+                type: changeType,
                 subject: contextPath,
                 payload: {
-                    ...calculateDomAddressesFromMode(mode, referenceNode, fusionPath),
+                    ...domAddresses,
                     baseNodeType
                 }
             }));
+
+            // Reverse the order of nodes if we are pasting after the reference node as the insertions are all
+            // applied to the same reference node and would otherwise be applied in reverse order.
+            if (mode === 'after') {
+                changes = changes.reverse();
+            }
+
             yield put(actions.Changes.persistChanges(changes));
         }
     });

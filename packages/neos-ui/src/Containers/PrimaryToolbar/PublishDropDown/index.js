@@ -8,7 +8,7 @@ import {Badge, Icon, DropDown} from '@neos-project/react-ui-components';
 
 import I18n from '@neos-project/neos-ui-i18n';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
-import {PublishDiscardScope} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces';
+import {PublishDiscardMode, PublishDiscardScope} from '@neos-project/neos-ui-redux-store/src/CR/Publishing';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 const {publishableNodesSelector, publishableNodesInDocumentSelector, baseWorkspaceSelector, isWorkspaceReadOnlySelector, personalWorkspaceNameSelector} = selectors.CR.Workspaces;
@@ -28,8 +28,7 @@ import style from './style.module.css';
     isWorkspaceReadOnly: isWorkspaceReadOnlySelector(state)
 }), {
     changeBaseWorkspaceAction: actions.CR.Workspaces.changeBaseWorkspace,
-    publish: actions.CR.Workspaces.publish,
-    discard: actions.CR.Workspaces.discard
+    start: actions.CR.Publishing.start
 })
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')
@@ -46,31 +45,30 @@ export default class PublishDropDown extends PureComponent {
         personalWorkspaceName: PropTypes.string.isRequired,
         baseWorkspace: PropTypes.string.isRequired,
         neos: PropTypes.object.isRequired,
-        publish: PropTypes.func.isRequired,
-        discard: PropTypes.func.isRequired,
+        start: PropTypes.func.isRequired,
         changeBaseWorkspaceAction: PropTypes.func.isRequired,
         routes: PropTypes.object,
         i18nRegistry: PropTypes.object.isRequired
     };
 
     handlePublishClick = () => {
-        const {publish} = this.props;
-        publish(PublishDiscardScope.DOCUMENT);
+        const {start} = this.props;
+        start(PublishDiscardMode.PUBLISHING, PublishDiscardScope.DOCUMENT);
     }
 
     handlePublishAllClick = () => {
-        const {publish} = this.props;
-        publish(PublishDiscardScope.SITE);
+        const {start} = this.props;
+        start(PublishDiscardMode.PUBLISHING, PublishDiscardScope.SITE);
     }
 
     handleDiscardClick = () => {
-        const {discard} = this.props;
-        discard(PublishDiscardScope.DOCUMENT);
+        const {start} = this.props;
+        start(PublishDiscardMode.DISCARDING, PublishDiscardScope.DOCUMENT);
     }
 
     handleDiscardAllClick = () => {
-        const {discard} = this.props;
-        discard(PublishDiscardScope.SITE);
+        const {start} = this.props;
+        start(PublishDiscardMode.DISCARDING, PublishDiscardScope.SITE);
     }
 
     render() {

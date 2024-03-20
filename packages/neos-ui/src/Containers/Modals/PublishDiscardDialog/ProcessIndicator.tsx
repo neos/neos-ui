@@ -11,7 +11,7 @@ import React from 'react';
 
 import {Dialog, Icon} from '@neos-project/react-ui-components';
 import I18n from '@neos-project/neos-ui-i18n';
-import {PublishDiscardMode, PublishDiscardScope} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces';
+import {PublishDiscardMode, PublishDiscardScope} from '@neos-project/neos-ui-redux-store/src/CR/Publishing';
 
 import style from './style.module.css';
 

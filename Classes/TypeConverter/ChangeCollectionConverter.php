@@ -137,7 +137,7 @@ class ChangeCollectionConverter extends AbstractTypeConverter
         $changeClassInstance->injectPersistenceManager($this->persistenceManager);
 
         $subjectContextPath = $changeData['subject'];
-        $subject = $this->nodeService->getNodeFromContextPath($subjectContextPath);
+        $subject = $this->nodeService->getNodeFromContextPath($subjectContextPath, null, null, true);
 
         if ($subject instanceof Error) {
             return $subject;

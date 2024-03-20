@@ -1,18 +1,22 @@
 import {put, call, select, takeEvery, takeLatest, take, race} from 'redux-saga/effects';
 
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
-import {PublishDiscardScope} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces';
+import {PublishDiscardMode, PublishDiscardScope} from '@neos-project/neos-ui-redux-store/src/CR/Publishing';
 import backend from '@neos-project/neos-ui-backend-connector';
 import {getGuestFrameDocument} from '@neos-project/neos-ui-guest-frame/src/dom';
 
 export function * watchPublish() {
     const {publishChangesInSite, publishChangesInDocument} = backend.get().endpoints;
 
-    yield takeEvery(actionTypes.CR.Workspaces.PUBLISH_STARTED, function * publishNodes(action) {
-        const {scope} = action.payload;
+    yield takeEvery(actionTypes.CR.Publishing.STARTED, function * publishNodes(action) {
+        const {scope, mode} = action.payload;
+        if (mode !== PublishDiscardMode.PUBLISHING) {
+            return;
+        }
+
         const workspaceName = yield select(selectors.CR.Workspaces.personalWorkspaceNameSelector);
 
-        if (yield * confirmPublish()) {
+        if (yield * confirm()) {
             let feedback = null;
             let publishedNodes = [];
             try {
@@ -25,30 +29,30 @@ export function * watchPublish() {
                     publishedNodes = yield select(selectors.CR.Workspaces.publishableNodesInDocumentSelector);
                     feedback = yield call(publishChangesInDocument, documentId, workspaceName);
                 }
-                yield put(actions.CR.Workspaces.succeedPublish());
+                yield put(actions.CR.Publishing.succeed());
             } catch (error) {
                 console.error('Failed to publish', error);
-                yield put(actions.CR.Workspaces.failPublish('Failed to Publish'));
+                yield put(actions.CR.Publishing.fail('Failed to Publish'));
             }
 
             if (feedback !== null) {
                 yield put(actions.ServerFeedback.handleServerFeedback(feedback));
             }
 
-            yield take(actionTypes.CR.Workspaces.PUBLISH_ACKNOWLEDGED);
-            yield put(actions.CR.Workspaces.finishPublish(publishedNodes));
+            yield take(actionTypes.CR.Publishing.ACKNOWLEDGED);
+            yield put(actions.CR.Publishing.finish(publishedNodes));
         }
     });
 }
 
-function * confirmPublish() {
+function * confirm() {
     const waitForNextAction = yield race([
-        take(actionTypes.CR.Workspaces.PUBLISH_ABORTED),
-        take(actionTypes.CR.Workspaces.PUBLISH_CONFIRMED)
+        take(actionTypes.CR.Publishing.CANCELLED),
+        take(actionTypes.CR.Publishing.CONFIRMED)
     ]);
     const [nextAction] = Object.values(waitForNextAction);
 
-    if (nextAction.type === actionTypes.CR.Workspaces.PUBLISH_CONFIRMED) {
+    if (nextAction.type === actionTypes.CR.Publishing.CONFIRMED) {
         return true;
     }
 
@@ -92,25 +96,16 @@ export function * watchRebaseWorkspace() {
 }
 
 export function * discardIfConfirmed({routes}) {
-    yield takeLatest(actionTypes.CR.Workspaces.DISCARD_STARTED, function * waitForConfirmation(action) {
-        if (yield * confirmDiscard()) {
+    yield takeLatest(actionTypes.CR.Publishing.STARTED, function * waitForConfirmation(action) {
+        const {mode} = action.payload;
+        if (mode !== PublishDiscardMode.DISCARDING) {
+            return;
+        }
+
+        if (yield * confirm()) {
             yield * discard(action.payload.scope, routes);
         }
     });
-}
-
-function * confirmDiscard() {
-    const waitForNextAction = yield race([
-        take(actionTypes.CR.Workspaces.DISCARD_ABORTED),
-        take(actionTypes.CR.Workspaces.DISCARD_CONFIRMED)
-    ]);
-    const [nextAction] = Object.values(waitForNextAction);
-
-    if (nextAction.type === actionTypes.CR.Workspaces.DISCARD_CONFIRMED) {
-        return true;
-    }
-
-    return false;
 }
 
 function * discard(scope, routes) {
@@ -129,10 +124,10 @@ function * discard(scope, routes) {
             discardedNodes = yield select(selectors.CR.Workspaces.publishableNodesInDocumentSelector);
             feedback = yield call(discardChangesInDocument, documentId, workspaceName);
         }
-        yield put(actions.CR.Workspaces.succeedDiscard());
+        yield put(actions.CR.Publishing.succeed());
     } catch (error) {
         console.error('Failed to discard', error);
-        yield put(actions.CR.Workspaces.failDiscard('Failed to discard'));
+        yield put(actions.CR.Publishing.fail('Failed to discard'));
     }
 
     if (feedback !== null) {
@@ -141,8 +136,8 @@ function * discard(scope, routes) {
 
     yield * reloadAfterDiscard(discardedNodes, routes);
 
-    yield take(actionTypes.CR.Workspaces.DISCARD_ACKNOWLEDGED);
-    yield put(actions.CR.Workspaces.finishDiscard(discardedNodes));
+    yield take(actionTypes.CR.Publishing.ACKNOWLEDGED);
+    yield put(actions.CR.Publishing.finish(discardedNodes));
 }
 
 const NODE_HAS_BEEN_CREATED = 0b0001;

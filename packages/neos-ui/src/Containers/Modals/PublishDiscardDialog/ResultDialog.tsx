@@ -11,14 +11,14 @@ import React from 'react';
 
 import {Button, Dialog, Icon} from '@neos-project/react-ui-components';
 import I18n from '@neos-project/neos-ui-i18n';
-import {PublishDiscardMode, PublishDiscardScope} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces';
+import {PublishDiscardMode, PublishDiscardPhase, PublishDiscardScope} from '@neos-project/neos-ui-redux-store/src/CR/Publishing';
 
 import style from './style.module.css';
 
 const ResultDialogVariants = {
     [PublishDiscardMode.PUBLISHING]: {
         id: 'neos-PublishDialog',
-        success: {
+        [PublishDiscardPhase.SUCCESS]: {
             style: 'success',
             icon: 'check',
             [PublishDiscardScope.SITE]: {
@@ -58,7 +58,7 @@ const ResultDialogVariants = {
                 }
             }
         },
-        error: {
+        [PublishDiscardPhase.ERROR]: {
             style: 'error',
             icon: 'exclamation-circle',
             [PublishDiscardScope.SITE]: {
@@ -99,7 +99,7 @@ const ResultDialogVariants = {
     },
     [PublishDiscardMode.DISCARDING]: {
         id: 'neos-DiscardDialog',
-        success: {
+        [PublishDiscardPhase.SUCCESS]: {
             style: 'success',
             icon: 'check',
             [PublishDiscardScope.SITE]: {
@@ -139,7 +139,7 @@ const ResultDialogVariants = {
                 }
             }
         },
-        error: {
+        [PublishDiscardPhase.ERROR]: {
             style: 'error',
             icon: 'exclamation-circle',
             [PublishDiscardScope.SITE]: {
@@ -180,13 +180,19 @@ const ResultDialogVariants = {
     }
 } as const;
 
+type Result =
+    | {
+        phase: PublishDiscardPhase.ERROR,
+        message: string
+    }
+    | { phase: PublishDiscardPhase.SUCCESS };
+
 export const ResultDialog: React.FC<{
-    type: 'success' | 'error';
     mode: PublishDiscardMode;
     scope: PublishDiscardScope;
     scopeTitle: string;
     numberOfChanges: number;
-    message?: string;
+    result: Result;
     onAcknowledge: () => void;
     onRetry: () => void;
 }> = (props) => {
@@ -195,7 +201,7 @@ export const ResultDialog: React.FC<{
     return (
         <Dialog
             actions={[
-                props.type === 'error' ? (
+                props.result.phase === PublishDiscardPhase.ERROR ? (
                     <Button
                         id={`${variant.id}-Retry`}
                         key="retry"
@@ -204,47 +210,50 @@ export const ResultDialog: React.FC<{
                         onClick={props.onRetry}
                     >
                         <Icon icon="refresh" className={style.buttonIcon} />
-                        <I18n {...variant.error[props.scope].label.retry} />
+                        <I18n {...variant[props.result.phase][props.scope].label.retry} />
                     </Button>
                 ) : null,
                 <Button
                     id={`${variant.id}-Acknowledge`}
                     key="acknowledge"
-                    style={variant[props.type].style}
-                    hoverStyle={variant[props.type].style}
+                    style={variant[props.result.phase].style}
+                    hoverStyle={variant[props.result.phase].style}
                     onClick={props.onAcknowledge}
                 >
-                    <I18n {...variant[props.type][props.scope].label.acknowledge} />
+                    <I18n {...variant[props.result.phase][props.scope].label.acknowledge} />
                 </Button>
             ]}
             title={
                 <div>
-                    <Icon icon={variant[props.type].icon} />
+                    <Icon icon={variant[props.result.phase].icon} />
                     <span className={style.modalTitle}>
                         <I18n
-                            id={variant[props.type][props.scope].label.title.id}
+                            id={variant[props.result.phase][props.scope].label.title.id}
                             params={props}
-                            fallback={variant[props.type][props.scope].label.title.fallback(props)}
+                            fallback={variant[props.result.phase][props.scope].label.title.fallback(props)}
                             />
                     </span>
                 </div>
             }
             onRequestClose={props.onAcknowledge}
-            type={variant[props.type].style}
+            type={variant[props.result.phase].style}
             isOpen
             autoFocus
-            preventClosing={props.type === 'error'}
+            preventClosing={props.result.phase === PublishDiscardPhase.ERROR}
             theme={undefined as any}
             style={undefined as any}
         >
             <div className={style.modalContents}>
-                {props.type === 'error' ? props.message : (
-                    <I18n
-                        id={variant.success[props.scope].label.message.id}
-                        params={props}
-                        fallback={variant.success[props.scope].label.message.fallback(props)}
-                        />
-                )}
+                {props.result.phase === PublishDiscardPhase.ERROR
+                    ? props.result.message
+                    : (
+                        <I18n
+                            id={variant[props.result.phase][props.scope].label.message.id}
+                            params={props}
+                            fallback={variant[props.result.phase][props.scope].label.message.fallback(props)}
+                            />
+                    )
+                }
             </div>
         </Dialog>
     );

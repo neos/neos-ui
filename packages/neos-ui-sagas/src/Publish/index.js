@@ -43,31 +43,32 @@ export function * watchPublishing({routes}) {
         const endpoint = ENDPOINT_BY_MODE_AND_SCOPE[mode][scope];
         const {ancestorIdSelector, publishableNodesSelector} = SELECTORS_BY_SCOPE[scope];
 
-        let feedback = null;
-        let publishableNodes = [];
+        const workspaceName = yield select(selectors.CR.Workspaces.personalWorkspaceNameSelector);
+        const ancestorId = yield select(ancestorIdSelector);
+        const publishableNodes = yield select(publishableNodesSelector);
 
+        let affectedNodes = [];
         try {
-            const workspaceName = yield select(selectors.CR.Workspaces.personalWorkspaceNameSelector);
-            const ancestorId = yield select(ancestorIdSelector);
-            publishableNodes = yield select(publishableNodesSelector);
-            feedback = yield call(endpoint, ancestorId, workspaceName)
+            const result = yield call(endpoint, ancestorId, workspaceName);
 
-            yield put(actions.CR.Publishing.succeed());
+            if ('success' in result) {
+                affectedNodes = publishableNodes;
+                yield put(actions.CR.Publishing.succeed());
+
+                if (mode === PublishingMode.DISCARD) {
+                    yield * reloadAfterDiscard(publishableNodes, routes);
+                }
+            } else if ('error' in result) {
+                yield put(actions.CR.Publishing.fail(result.error));
+            } else {
+                yield put(actions.CR.Publishing.fail(null));
+            }
         } catch (error) {
-            console.error('Publishing failed', error);
-            yield put(actions.CR.Publishing.fail('Publishing failed'));
-        }
-
-        if (feedback !== null) {
-            yield put(actions.ServerFeedback.handleServerFeedback(feedback));
-        }
-
-        if (mode === PublishingMode.DISCARD) {
-            yield * reloadAfterDiscard(publishableNodes, routes);
+            yield put(actions.CR.Publishing.fail(error));
         }
 
         yield take(actionTypes.CR.Publishing.ACKNOWLEDGED);
-        yield put(actions.CR.Publishing.finish(publishableNodes));
+        yield put(actions.CR.Publishing.finish(affectedNodes));
     });
 }
 

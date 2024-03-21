@@ -25,6 +25,7 @@
     "@neos-project/neos-ui-contentrepository": "workspace:*",
     "@neos-project/neos-ui-decorators": "workspace:*",
     "@neos-project/neos-ui-editors": "workspace:*",
+    "@neos-project/neos-ui-error": "workspace:*",
     "@neos-project/neos-ui-extensibility": "workspace:*",
     "@neos-project/neos-ui-guest-frame": "workspace:*",
     "@neos-project/neos-ui-i18n": "workspace:*",

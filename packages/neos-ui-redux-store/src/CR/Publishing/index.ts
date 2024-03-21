@@ -9,6 +9,8 @@
  */
 import {action as createAction, ActionType} from 'typesafe-actions';
 
+import type {AnyError} from '@neos-project/neos-ui-error';
+
 import {PublishableNode} from '../Workspaces';
 
 export enum PublishingMode {
@@ -36,7 +38,7 @@ export type State = null | {
         | { phase: PublishingPhase.ONGOING }
         | {
               phase: PublishingPhase.ERROR;
-              message: string;
+              error: null | AnyError;
           }
         | { phase: PublishingPhase.SUCCESS };
 };
@@ -72,8 +74,8 @@ const confirm = () => createAction(actionTypes.CONFIRMED);
 /**
  * Signal that the ongoing publish/discard workflow has failed
  */
-const fail = (message: string) =>
-    createAction(actionTypes.FAILED, {message});
+const fail = (error: null | AnyError) =>
+    createAction(actionTypes.FAILED, {error});
 
 /**
  * Signal that the ongoing publish/discard workflow succeeded
@@ -139,7 +141,7 @@ export const reducer = (state: State = defaultState, action: Action): State => {
                 ...state,
                 process: {
                     phase: PublishingPhase.ERROR,
-                    message: action.payload.message
+                    error: action.payload.error
                 }
             };
         case actionTypes.SUCEEDED:

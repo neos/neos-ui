@@ -12,6 +12,7 @@ import React from 'react';
 import {Button, Dialog, Icon} from '@neos-project/react-ui-components';
 import I18n from '@neos-project/neos-ui-i18n';
 import {PublishingMode, PublishingPhase, PublishingScope} from '@neos-project/neos-ui-redux-store/src/CR/Publishing';
+import {AnyError, ErrorView} from '@neos-project/neos-ui-error';
 
 import style from './style.module.css';
 
@@ -182,8 +183,8 @@ const ResultDialogVariants = {
 
 type Result =
     | {
-        phase: PublishingPhase.ERROR,
-        message: string
+        phase: PublishingPhase.ERROR;
+        error: null | AnyError;
     }
     | { phase: PublishingPhase.SUCCESS };
 
@@ -245,7 +246,7 @@ export const ResultDialog: React.FC<{
         >
             <div className={style.modalContents}>
                 {props.result.phase === PublishingPhase.ERROR
-                    ? props.result.message
+                    ? (<ErrorView error={props.result.error} />)
                     : (
                         <I18n
                             id={variant[props.result.phase][props.scope].label.message.id}

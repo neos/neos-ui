@@ -11,19 +11,19 @@ import React from 'react';
 
 import {Button, Dialog, Icon} from '@neos-project/react-ui-components';
 import I18n from '@neos-project/neos-ui-i18n';
-import {PublishDiscardMode, PublishDiscardScope} from '@neos-project/neos-ui-redux-store/src/CR/Publishing';
+import {PublishingMode, PublishingScope} from '@neos-project/neos-ui-redux-store/src/CR/Publishing';
 
 import style from './style.module.css';
 
 const ConfirmationDialogVariants = {
-    [PublishDiscardMode.PUBLISHING]: {
+    [PublishingMode.PUBLISH]: {
         id: 'neos-PublishDialog',
         style: 'success',
         icon: {
             title: 'share-square-o',
             confirm: 'share-square-o'
         },
-        [PublishDiscardScope.SITE]: {
+        [PublishingScope.SITE]: {
             label: {
                 title: {
                     id: 'Neos.Neos.Ui:PublishingDialog:publish.site.confirmation.title',
@@ -45,7 +45,7 @@ const ConfirmationDialogVariants = {
                 }
             }
         },
-        [PublishDiscardScope.DOCUMENT]: {
+        [PublishingScope.DOCUMENT]: {
             label: {
                 title: {
                     id: 'Neos.Neos.Ui:PublishingDialog:publish.document.confirmation.title',
@@ -68,14 +68,14 @@ const ConfirmationDialogVariants = {
             }
         }
     },
-    [PublishDiscardMode.DISCARDING]: {
+    [PublishingMode.DISCARD]: {
         id: 'neos-DiscardDialog',
         style: 'error',
         icon: {
             title: 'exclamation-triangle',
             confirm: 'ban'
         },
-        [PublishDiscardScope.SITE]: {
+        [PublishingScope.SITE]: {
             label: {
                 title: {
                     id: 'Neos.Neos.Ui:PublishingDialog:discard.site.confirmation.title',
@@ -97,7 +97,7 @@ const ConfirmationDialogVariants = {
                 }
             }
         },
-        [PublishDiscardScope.DOCUMENT]: {
+        [PublishingScope.DOCUMENT]: {
             label: {
                 title: {
                     id: 'Neos.Neos.Ui:PublishingDialog:discard.document.confirmation.title',
@@ -123,8 +123,8 @@ const ConfirmationDialogVariants = {
 } as const;
 
 export const ConfirmationDialog: React.FC<{
-    mode: PublishDiscardMode;
-    scope: PublishDiscardScope;
+    mode: PublishingMode;
+    scope: PublishingScope;
     scopeTitle: string;
     workspaceName: string;
     numberOfChanges: number;

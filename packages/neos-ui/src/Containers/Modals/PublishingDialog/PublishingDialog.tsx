@@ -14,8 +14,8 @@ import {connect} from 'react-redux';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
 import {
-    PublishDiscardScope,
-    PublishDiscardPhase,
+    PublishingScope,
+    PublishingPhase,
     State as PublishingState
 } from '@neos-project/neos-ui-redux-store/src/CR/Publishing';
 
@@ -63,7 +63,7 @@ const PublishingDialog: React.FC<PublishingDialogProps> = (props) => {
     }
 
     switch (props.publishingState.process.phase) {
-        case PublishDiscardPhase.START:
+        case PublishingPhase.START:
             return (
                 <ConfirmationDialog
                     mode={props.publishingState.mode}
@@ -76,7 +76,7 @@ const PublishingDialog: React.FC<PublishingDialogProps> = (props) => {
                     />
             );
 
-        case PublishDiscardPhase.ONGOING:
+        case PublishingPhase.ONGOING:
             return (
                 <ProcessIndicator
                     mode={props.publishingState.mode}
@@ -86,8 +86,8 @@ const PublishingDialog: React.FC<PublishingDialogProps> = (props) => {
                     />
             );
 
-        case PublishDiscardPhase.ERROR:
-        case PublishDiscardPhase.SUCCESS:
+        case PublishingPhase.ERROR:
+        case PublishingPhase.SUCCESS:
             return (
                 <ResultDialog
                     mode={props.publishingState.mode}
@@ -112,16 +112,16 @@ export default connect((state: GlobalState): PublishingDialogProperties => {
     const {name: workspaceName} = state.cr.workspaces.personalWorkspace;
 
     let numberOfChanges = 0;
-    if (scope === PublishDiscardScope.SITE) {
+    if (scope === PublishingScope.SITE) {
         numberOfChanges = publishableNodesSelector(state).length;
-    } else if (scope === PublishDiscardScope.DOCUMENT) {
+    } else if (scope === PublishingScope.DOCUMENT) {
         numberOfChanges = publishableNodesInDocumentSelector(state).length;
     }
 
     let scopeTitle = 'N/A';
-    if (scope === PublishDiscardScope.SITE) {
+    if (scope === PublishingScope.SITE) {
         scopeTitle = siteNodeSelector(state).label;
-    } else if (scope === PublishDiscardScope.DOCUMENT) {
+    } else if (scope === PublishingScope.DOCUMENT) {
         scopeTitle = documentNodeSelector(state).label;
     }
 

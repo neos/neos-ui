@@ -11,17 +11,17 @@ import {action as createAction, ActionType} from 'typesafe-actions';
 
 import {PublishableNode} from '../Workspaces';
 
-export enum PublishDiscardMode {
-    PUBLISHING,
-    DISCARDING
+export enum PublishingMode {
+    PUBLISH,
+    DISCARD
 }
 
-export enum PublishDiscardScope {
+export enum PublishingScope {
     SITE,
     DOCUMENT
 }
 
-export enum PublishDiscardPhase {
+export enum PublishingPhase {
     START,
     ONGOING,
     SUCCESS,
@@ -29,16 +29,16 @@ export enum PublishDiscardPhase {
 }
 
 export type State = null | {
-    mode: PublishDiscardMode;
-    scope: PublishDiscardScope;
+    mode: PublishingMode;
+    scope: PublishingScope;
     process:
-        | { phase: PublishDiscardPhase.START }
-        | { phase: PublishDiscardPhase.ONGOING }
+        | { phase: PublishingPhase.START }
+        | { phase: PublishingPhase.ONGOING }
         | {
-              phase: PublishDiscardPhase.ERROR;
+              phase: PublishingPhase.ERROR;
               message: string;
           }
-        | { phase: PublishDiscardPhase.SUCCESS };
+        | { phase: PublishingPhase.SUCCESS };
 };
 
 export const defaultState: State = null;
@@ -50,13 +50,13 @@ export enum actionTypes {
     FAILED = '@neos/neos-ui/CR/Publishing/FAILED',
     SUCEEDED = '@neos/neos-ui/CR/Publishing/SUCEEDED',
     ACKNOWLEDGED = '@neos/neos-ui/CR/Publishing/ACKNOWLEDGED',
-    FINISHED = '@neos/neos-ui/CR/Publishing/FINISHED',
+    FINISHED = '@neos/neos-ui/CR/Publishing/FINISHED'
 }
 
 /**
  * Publishes or discards all changes in the given scope
  */
-const start = (mode: PublishDiscardMode, scope: PublishDiscardScope) =>
+const start = (mode: PublishingMode, scope: PublishingScope) =>
     createAction(actionTypes.STARTED, {mode, scope});
 
 /**
@@ -116,7 +116,7 @@ export const reducer = (state: State = defaultState, action: Action): State => {
                 mode: action.payload.mode,
                 scope: action.payload.scope,
                 process: {
-                    phase: PublishDiscardPhase.START
+                    phase: PublishingPhase.START
                 }
             };
         }
@@ -131,14 +131,14 @@ export const reducer = (state: State = defaultState, action: Action): State => {
             return {
                 ...state,
                 process: {
-                    phase: PublishDiscardPhase.ONGOING
+                    phase: PublishingPhase.ONGOING
                 }
             };
         case actionTypes.FAILED:
             return {
                 ...state,
                 process: {
-                    phase: PublishDiscardPhase.ERROR,
+                    phase: PublishingPhase.ERROR,
                     message: action.payload.message
                 }
             };
@@ -146,7 +146,7 @@ export const reducer = (state: State = defaultState, action: Action): State => {
             return {
                 ...state,
                 process: {
-                    phase: PublishDiscardPhase.SUCCESS
+                    phase: PublishingPhase.SUCCESS
                 }
             };
         case actionTypes.FINISHED:

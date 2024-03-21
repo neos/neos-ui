@@ -11,14 +11,14 @@ import React from 'react';
 
 import {Dialog, Icon} from '@neos-project/react-ui-components';
 import I18n from '@neos-project/neos-ui-i18n';
-import {PublishDiscardMode, PublishDiscardScope} from '@neos-project/neos-ui-redux-store/src/CR/Publishing';
+import {PublishingMode, PublishingScope} from '@neos-project/neos-ui-redux-store/src/CR/Publishing';
 
 import style from './style.module.css';
 
 const ProcessIndicatorVariants = {
-    [PublishDiscardMode.PUBLISHING]: {
+    [PublishingMode.PUBLISH]: {
         id: 'neos-PublishDialog',
-        [PublishDiscardScope.SITE]: {
+        [PublishingScope.SITE]: {
             label: {
                 title: {
                     id: 'Neos.Neos.Ui:PublishingDialog:publish.site.process.title',
@@ -32,7 +32,7 @@ const ProcessIndicatorVariants = {
                 }
             }
         },
-        [PublishDiscardScope.DOCUMENT]: {
+        [PublishingScope.DOCUMENT]: {
             label: {
                 title: {
                     id: 'Neos.Neos.Ui:PublishingDialog:publish.document.process.title',
@@ -47,9 +47,9 @@ const ProcessIndicatorVariants = {
             }
         }
     },
-    [PublishDiscardMode.DISCARDING]: {
+    [PublishingMode.DISCARD]: {
         id: 'neos-DiscardDialog',
-        [PublishDiscardScope.SITE]: {
+        [PublishingScope.SITE]: {
             label: {
                 title: {
                     id: 'Neos.Neos.Ui:PublishingDialog:discard.site.process.title',
@@ -63,7 +63,7 @@ const ProcessIndicatorVariants = {
                 }
             }
         },
-        [PublishDiscardScope.DOCUMENT]: {
+        [PublishingScope.DOCUMENT]: {
             label: {
                 title: {
                     id: 'Neos.Neos.Ui:PublishingDialog:discard.document.process.title',
@@ -81,8 +81,8 @@ const ProcessIndicatorVariants = {
 } as const;
 
 export const ProcessIndicator: React.FC<{
-    mode: PublishDiscardMode;
-    scope: PublishDiscardScope;
+    mode: PublishingMode;
+    scope: PublishingScope;
     scopeTitle: string;
     numberOfChanges: number;
 }> = (props) => {

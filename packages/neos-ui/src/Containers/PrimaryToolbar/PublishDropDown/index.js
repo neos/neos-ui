@@ -8,7 +8,7 @@ import {Badge, Icon, DropDown} from '@neos-project/react-ui-components';
 
 import I18n from '@neos-project/neos-ui-i18n';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
-import {PublishDiscardMode, PublishDiscardScope} from '@neos-project/neos-ui-redux-store/src/CR/Publishing';
+import {PublishingMode, PublishingScope} from '@neos-project/neos-ui-redux-store/src/CR/Publishing';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 const {publishableNodesSelector, publishableNodesInDocumentSelector, baseWorkspaceSelector, isWorkspaceReadOnlySelector, personalWorkspaceNameSelector} = selectors.CR.Workspaces;
@@ -53,22 +53,22 @@ export default class PublishDropDown extends PureComponent {
 
     handlePublishClick = () => {
         const {start} = this.props;
-        start(PublishDiscardMode.PUBLISHING, PublishDiscardScope.DOCUMENT);
+        start(PublishingMode.PUBLISH, PublishingScope.DOCUMENT);
     }
 
     handlePublishAllClick = () => {
         const {start} = this.props;
-        start(PublishDiscardMode.PUBLISHING, PublishDiscardScope.SITE);
+        start(PublishingMode.PUBLISH, PublishingScope.SITE);
     }
 
     handleDiscardClick = () => {
         const {start} = this.props;
-        start(PublishDiscardMode.DISCARDING, PublishDiscardScope.DOCUMENT);
+        start(PublishingMode.DISCARD, PublishingScope.DOCUMENT);
     }
 
     handleDiscardAllClick = () => {
         const {start} = this.props;
-        start(PublishDiscardMode.DISCARDING, PublishDiscardScope.SITE);
+        start(PublishingMode.DISCARD, PublishingScope.SITE);
     }
 
     render() {

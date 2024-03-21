@@ -194,8 +194,8 @@ export const ResultDialog: React.FC<{
     scopeTitle: string;
     numberOfChanges: number;
     result: Result;
-    onAcknowledge: () => void;
     onRetry: () => void;
+    onAcknowledge: () => void;
 }> = (props) => {
     const variant = ResultDialogVariants[props.mode];
 

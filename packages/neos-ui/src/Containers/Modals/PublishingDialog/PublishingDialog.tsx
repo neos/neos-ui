@@ -38,6 +38,7 @@ type PublishingDialogProperties =
 type PublishingDialogHandlers = {
     cancel: () => void;
     confirm: () => void;
+    retry: () => void;
     acknowledge: () => void;
 }
 
@@ -51,11 +52,11 @@ const PublishingDialog: React.FC<PublishingDialogProps> = (props) => {
     const handleConfirm = React.useCallback(() => {
         props.confirm();
     }, []);
+    const handleRetry = React.useCallback(() => {
+        props.retry();
+    }, []);
     const handleAcknowledge = React.useCallback(() => {
         props.acknowledge();
-    }, []);
-    const handleRetry = React.useCallback(() => {
-        console.log('@TODO: handleRetry');
     }, []);
 
     if (props.publishingState === null) {
@@ -95,8 +96,8 @@ const PublishingDialog: React.FC<PublishingDialogProps> = (props) => {
                     scopeTitle={props.scopeTitle}
                     numberOfChanges={props.numberOfChanges}
                     result={props.publishingState.process}
-                    onAcknowledge={handleAcknowledge}
                     onRetry={handleRetry}
+                    onAcknowledge={handleAcknowledge}
                     />
             );
     }
@@ -134,5 +135,6 @@ export default connect((state: GlobalState): PublishingDialogProperties => {
 }, {
     confirm: (actions as any).CR.Publishing.confirm,
     cancel: (actions as any).CR.Publishing.cancel,
+    retry: (actions as any).CR.Publishing.retry,
     acknowledge: (actions as any).CR.Publishing.acknowledge
 })(PublishingDialog);

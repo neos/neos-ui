@@ -36,7 +36,7 @@ const ResultDialogVariants = {
                     },
                     acknowledge: {
                         id: 'Neos.Neos.Ui:PublishingDialog:publish.site.success.acknowledge',
-                        fallback: 'Okay, take me back'
+                        fallback: 'OK'
                     }
                 }
             },
@@ -54,7 +54,7 @@ const ResultDialogVariants = {
                     },
                     acknowledge: {
                         id: 'Neos.Neos.Ui:PublishingDialog:publish.document.success.acknowledge',
-                        fallback: 'Okay, take me back'
+                        fallback: 'OK'
                     }
                 }
             }
@@ -75,7 +75,7 @@ const ResultDialogVariants = {
                     },
                     acknowledge: {
                         id: 'Neos.Neos.Ui:PublishingDialog:publish.site.error.acknowledge',
-                        fallback: 'Okay, take me back'
+                        fallback: 'OK'
                     }
                 }
             },
@@ -92,7 +92,7 @@ const ResultDialogVariants = {
                     },
                     acknowledge: {
                         id: 'Neos.Neos.Ui:PublishingDialog:publish.document.error.acknowledge',
-                        fallback: 'Okay, take me back'
+                        fallback: 'OK'
                     }
                 }
             }
@@ -117,7 +117,7 @@ const ResultDialogVariants = {
                     },
                     acknowledge: {
                         id: 'Neos.Neos.Ui:PublishingDialog:discard.site.success.acknowledge',
-                        fallback: 'Okay, take me back'
+                        fallback: 'OK'
                     }
                 }
             },
@@ -135,7 +135,7 @@ const ResultDialogVariants = {
                     },
                     acknowledge: {
                         id: 'Neos.Neos.Ui:PublishingDialog:discard.document.success.acknowledge',
-                        fallback: 'Okay, take me back'
+                        fallback: 'OK'
                     }
                 }
             }
@@ -150,13 +150,13 @@ const ResultDialogVariants = {
                         fallback: (props: { scopeTitle: string; }) =>
                             `Changes in site "${props.scopeTitle}" could not be discarded`
                     },
+                    acknowledge: {
+                        id: 'Neos.Neos.Ui:PublishingDialog:discard.site.error.acknowledge',
+                        fallback: 'Cancel'
+                    },
                     retry: {
                         id: 'Neos.Neos.Ui:PublishingDialog:discard.site.error.retry',
                         fallback: 'Try again'
-                    },
-                    acknowledge: {
-                        id: 'Neos.Neos.Ui:PublishingDialog:discard.site.error.acknowledge',
-                        fallback: 'Okay, take me back'
                     }
                 }
             },
@@ -167,13 +167,13 @@ const ResultDialogVariants = {
                         fallback: (props: { scopeTitle: string; }) =>
                             `Changes in document "${props.scopeTitle}" could not be discarded`
                     },
+                    acknowledge: {
+                        id: 'Neos.Neos.Ui:PublishingDialog:discard.document.error.acknowledge',
+                        fallback: 'Cancel'
+                    },
                     retry: {
                         id: 'Neos.Neos.Ui:PublishingDialog:discard.document.error.retry',
                         fallback: 'Try again'
-                    },
-                    acknowledge: {
-                        id: 'Neos.Neos.Ui:PublishingDialog:discard.document.error.acknowledge',
-                        fallback: 'Okay, take me back'
                     }
                 }
             }
@@ -201,19 +201,27 @@ export const ResultDialog: React.FC<{
 
     return (
         <Dialog
-            actions={[
-                props.result.phase === PublishingPhase.ERROR ? (
-                    <Button
-                        id={`${variant.id}-Retry`}
-                        key="retry"
-                        style="warn"
-                        hoverStyle="warn"
-                        onClick={props.onRetry}
-                    >
-                        <Icon icon="refresh" className={style.buttonIcon} />
-                        <I18n {...variant[props.result.phase][props.scope].label.retry} />
-                    </Button>
-                ) : null,
+            actions={props.result.phase === PublishingPhase.ERROR ? [
+                <Button
+                    id={`${variant.id}-Acknowledge`}
+                    key="acknowledge"
+                    style="lighter"
+                    hoverStyle="brand"
+                    onClick={props.onAcknowledge}
+                >
+                    <I18n {...variant[props.result.phase][props.scope].label.acknowledge} />
+                </Button>,
+                <Button
+                    id={`${variant.id}-Retry`}
+                    key="retry"
+                    style="warn"
+                    hoverStyle="warn"
+                    onClick={props.onRetry}
+                >
+                    <Icon icon="refresh" className={style.buttonIcon} />
+                    <I18n {...variant[props.result.phase][props.scope].label.retry} />
+                </Button>
+            ] : [
                 <Button
                     id={`${variant.id}-Acknowledge`}
                     key="acknowledge"

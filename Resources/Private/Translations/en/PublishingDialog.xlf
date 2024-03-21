@@ -27,7 +27,7 @@
         <source>Try again</source>
       </trans-unit>
       <trans-unit id="publish.site.error.acknowledge" xml:space="preserve">
-        <source>Okay, take me back</source>
+        <source>Cancel</source>
       </trans-unit>
       <trans-unit id="publish.site.success.title" xml:space="preserve">
         <source>Changes in site "{scopeTitle}" were published</source>
@@ -36,7 +36,7 @@
         <source>{numberOfChanges} change(s) in site "{scopeTitle}" were sucessfully published.</source>
       </trans-unit>
       <trans-unit id="publish.site.success.acknowledge" xml:space="preserve">
-        <source>Okay, take me back</source>
+        <source>OK</source>
       </trans-unit>
       <trans-unit id="publish.document.confirmation.title" xml:space="preserve">
         <source>Publish all changes in document "{scopeTitle}"</source>
@@ -63,7 +63,7 @@
         <source>Try again</source>
       </trans-unit>
       <trans-unit id="publish.document.error.acknowledge" xml:space="preserve">
-        <source>Okay, take me back</source>
+        <source>Cancel</source>
       </trans-unit>
       <trans-unit id="publish.document.success.title" xml:space="preserve">
         <source>Changes in document "{scopeTitle}" were published</source>
@@ -72,7 +72,7 @@
         <source>{numberOfChanges} change(s) were sucessfully published.</source>
       </trans-unit>
       <trans-unit id="publish.document.success.acknowledge" xml:space="preserve">
-        <source>Okay, take me back</source>
+        <source>OK</source>
       </trans-unit>
       <trans-unit id="discard.site.confirmation.title" xml:space="preserve">
         <source>Discard all changes in site "{scopeTitle}"</source>
@@ -99,7 +99,7 @@
         <source>Try again</source>
       </trans-unit>
       <trans-unit id="discard.site.error.acknowledge" xml:space="preserve">
-        <source>Okay, take me back</source>
+        <source>Cancel</source>
       </trans-unit>
       <trans-unit id="discard.site.success.title" xml:space="preserve">
         <source>Changes in site "{scopeTitle}" were discarded</source>
@@ -108,7 +108,7 @@
         <source>{numberOfChanges} change(s) were sucessfully discarded.</source>
       </trans-unit>
       <trans-unit id="discard.site.success.acknowledge" xml:space="preserve">
-        <source>Okay, take me back</source>
+        <source>OK</source>
       </trans-unit>
       <trans-unit id="discard.document.confirmation.title" xml:space="preserve">
         <source>Discard all changes in document "{scopeTitle}"</source>
@@ -135,7 +135,7 @@
         <source>Try again</source>
       </trans-unit>
       <trans-unit id="discard.document.error.acknowledge" xml:space="preserve">
-        <source>Okay, take me back</source>
+        <source>Cancel</source>
       </trans-unit>
       <trans-unit id="discard.document.success.title" xml:space="preserve">
         <source>Changes in document "{scopeTitle}" were discarded</source>
@@ -144,7 +144,7 @@
         <source>{numberOfChanges} change(s) were sucessfully discarded.</source>
       </trans-unit>
       <trans-unit id="discard.document.success.acknowledge" xml:space="preserve">
-        <source>Okay, take me back</source>
+        <source>OK</source>
       </trans-unit>
     </body>
   </file>

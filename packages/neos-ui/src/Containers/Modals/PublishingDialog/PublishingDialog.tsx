@@ -41,10 +41,10 @@ type PublishingDialogHandlers = {
     acknowledge: () => void;
 }
 
-type PublishDiscardDialogProps =
+type PublishingDialogProps =
     PublishingDialogProperties & PublishingDialogHandlers;
 
-const PublishDiscardDialog: React.FC<PublishDiscardDialogProps> = (props) => {
+const PublishingDialog: React.FC<PublishingDialogProps> = (props) => {
     const handleCancel = React.useCallback(() => {
         props.cancel();
     }, []);
@@ -135,4 +135,4 @@ export default connect((state: GlobalState): PublishingDialogProperties => {
     confirm: (actions as any).CR.Publishing.confirm,
     cancel: (actions as any).CR.Publishing.cancel,
     acknowledge: (actions as any).CR.Publishing.acknowledge
-})(PublishDiscardDialog);
+})(PublishingDialog);

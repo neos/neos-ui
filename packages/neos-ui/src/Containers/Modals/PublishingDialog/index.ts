@@ -7,6 +7,6 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-import PublishDiscardDialog from './PublishDiscardDialog';
+import PublishingDialog from './PublishingDialog';
 
-export {PublishDiscardDialog};
+export {PublishingDialog};

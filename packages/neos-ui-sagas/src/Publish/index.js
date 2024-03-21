@@ -48,26 +48,27 @@ export function * watchPublishing({routes}) {
         const publishableNodes = yield select(publishableNodesSelector);
 
         let affectedNodes = [];
-        try {
-            const result = yield call(endpoint, ancestorId, workspaceName);
+        do {
+            try {
+                const result = yield call(endpoint, ancestorId, workspaceName);
 
-            if ('success' in result) {
-                affectedNodes = publishableNodes;
-                yield put(actions.CR.Publishing.succeed());
+                if ('success' in result) {
+                    affectedNodes = publishableNodes;
+                    yield put(actions.CR.Publishing.succeed());
 
-                if (mode === PublishingMode.DISCARD) {
-                    yield * reloadAfterDiscard(publishableNodes, routes);
+                    if (mode === PublishingMode.DISCARD) {
+                        yield * reloadAfterDiscard(publishableNodes, routes);
+                    }
+                } else if ('error' in result) {
+                    yield put(actions.CR.Publishing.fail(result.error));
+                } else {
+                    yield put(actions.CR.Publishing.fail(null));
                 }
-            } else if ('error' in result) {
-                yield put(actions.CR.Publishing.fail(result.error));
-            } else {
-                yield put(actions.CR.Publishing.fail(null));
+            } catch (error) {
+                yield put(actions.CR.Publishing.fail(error));
             }
-        } catch (error) {
-            yield put(actions.CR.Publishing.fail(error));
-        }
+        } while (yield * waitForRetry());
 
-        yield take(actionTypes.CR.Publishing.ACKNOWLEDGED);
         yield put(actions.CR.Publishing.finish(affectedNodes));
     });
 }
@@ -80,6 +81,20 @@ function * waitForConfirmation() {
     const [nextAction] = Object.values(waitForNextAction);
 
     if (nextAction.type === actionTypes.CR.Publishing.CONFIRMED) {
+        return true;
+    }
+
+    return false;
+}
+
+function * waitForRetry() {
+    const waitForNextAction = yield race([
+        take(actionTypes.CR.Publishing.ACKNOWLEDGED),
+        take(actionTypes.CR.Publishing.RETRIED)
+    ]);
+    const [nextAction] = Object.values(waitForNextAction);
+
+    if (nextAction.type === actionTypes.CR.Publishing.RETRIED) {
         return true;
     }
 

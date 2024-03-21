@@ -50,6 +50,7 @@ export enum actionTypes {
     CANCELLED = '@neos/neos-ui/CR/Publishing/CANCELLED',
     CONFIRMED = '@neos/neos-ui/CR/Publishing/CONFIRMED',
     FAILED = '@neos/neos-ui/CR/Publishing/FAILED',
+    RETRIED = '@neos/neos-ui/CR/Publishing/RETRIED',
     SUCEEDED = '@neos/neos-ui/CR/Publishing/SUCEEDED',
     ACKNOWLEDGED = '@neos/neos-ui/CR/Publishing/ACKNOWLEDGED',
     FINISHED = '@neos/neos-ui/CR/Publishing/FINISHED'
@@ -78,6 +79,11 @@ const fail = (error: null | AnyError) =>
     createAction(actionTypes.FAILED, {error});
 
 /**
+ * Attempt to retry a failed publish/discard workflow
+ */
+const retry = () => createAction(actionTypes.RETRIED);
+
+/**
  * Signal that the ongoing publish/discard workflow succeeded
  */
 const succeed = () => createAction(actionTypes.SUCEEDED);
@@ -100,6 +106,7 @@ export const actions = {
     cancel,
     confirm,
     fail,
+    retry,
     succeed,
     acknowledge,
     finish
@@ -142,6 +149,13 @@ export const reducer = (state: State = defaultState, action: Action): State => {
                 process: {
                     phase: PublishingPhase.ERROR,
                     error: action.payload.error
+                }
+            };
+        case actionTypes.RETRIED:
+            return {
+                ...state,
+                process: {
+                    phase: PublishingPhase.ONGOING
                 }
             };
         case actionTypes.SUCEEDED:

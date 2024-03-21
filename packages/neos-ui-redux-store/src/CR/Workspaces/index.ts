@@ -10,7 +10,12 @@ import {actionTypes as publishing, FinishAction} from '../Publishing';
 
 import * as selectors from './selectors';
 
-type TypeOfChange = number;
+export enum TypeOfChange {
+    NODE_HAS_BEEN_CREATED = 0b0001,
+    NODE_HAS_BEEN_CHANGED = 0b0010,
+    NODE_HAS_BEEN_MOVED = 0b0100,
+    NODE_HAS_BEEN_DELETED = 0b1000
+}
 
 export interface PublishableNode {
     contextPath: NodeContextPath;

@@ -21,12 +21,12 @@ const ProcessIndicatorVariants = {
         [PublishDiscardScope.SITE]: {
             label: {
                 title: {
-                    id: 'Neos.Neos.Ui:PublishDiscardDialog:publish.site.process.title',
+                    id: 'Neos.Neos.Ui:PublishingDialog:publish.site.process.title',
                     fallback: (props: { scopeTitle: string; }) =>
                         `Publishing all changes in site "${props.scopeTitle}"...`
                 },
                 message: {
-                    id: 'Neos.Neos.Ui:PublishDiscardDialog:publish.site.process.message',
+                    id: 'Neos.Neos.Ui:PublishingDialog:publish.site.process.message',
                     fallback: (props: { numberOfChanges: number; }) =>
                         `Please wait while ${props.numberOfChanges} change(s) are being published. This may take a while.`
                 }
@@ -35,12 +35,12 @@ const ProcessIndicatorVariants = {
         [PublishDiscardScope.DOCUMENT]: {
             label: {
                 title: {
-                    id: 'Neos.Neos.Ui:PublishDiscardDialog:publish.document.process.title',
+                    id: 'Neos.Neos.Ui:PublishingDialog:publish.document.process.title',
                     fallback: (props: { scopeTitle: string; }) =>
                         `Publishing all changes in document "${props.scopeTitle}"...`
                 },
                 message: {
-                    id: 'Neos.Neos.Ui:PublishDiscardDialog:publish.document.process.message',
+                    id: 'Neos.Neos.Ui:PublishingDialog:publish.document.process.message',
                     fallback: (props: { numberOfChanges: number; }) =>
                         `Please wait while ${props.numberOfChanges} change(s) are being published. This may take a while.`
                 }
@@ -52,12 +52,12 @@ const ProcessIndicatorVariants = {
         [PublishDiscardScope.SITE]: {
             label: {
                 title: {
-                    id: 'Neos.Neos.Ui:PublishDiscardDialog:discard.site.process.title',
+                    id: 'Neos.Neos.Ui:PublishingDialog:discard.site.process.title',
                     fallback: (props: { scopeTitle: string; }) =>
                         `Discarding all changes in site "${props.scopeTitle}"...`
                 },
                 message: {
-                    id: 'Neos.Neos.Ui:PublishDiscardDialog:discard.site.process.message',
+                    id: 'Neos.Neos.Ui:PublishingDialog:discard.site.process.message',
                     fallback: (props: { numberOfChanges: number; }) =>
                         `Please wait while ${props.numberOfChanges} change(s) are being discarded. This may take a while.`
                 }
@@ -66,12 +66,12 @@ const ProcessIndicatorVariants = {
         [PublishDiscardScope.DOCUMENT]: {
             label: {
                 title: {
-                    id: 'Neos.Neos.Ui:PublishDiscardDialog:discard.document.process.title',
+                    id: 'Neos.Neos.Ui:PublishingDialog:discard.document.process.title',
                     fallback: (props: { scopeTitle: string; }) =>
                         `Discarding all changes in document "${props.scopeTitle}"...`
                 },
                 message: {
-                    id: 'Neos.Neos.Ui:PublishDiscardDialog:discard.document.process.message',
+                    id: 'Neos.Neos.Ui:PublishingDialog:discard.document.process.message',
                     fallback: (props: { numberOfChanges: number; }) =>
                         `Please wait while ${props.numberOfChanges} change(s) are being discarded. This may take a while.`
                 }

@@ -26,7 +26,7 @@ Neos:
           'Neos.Neos.Ui':
             - Error
             - Main
-            - PublishDiscardDialog
+            - PublishingDialog
     fusion:
       autoInclude:
         Neos.Neos.Ui: true

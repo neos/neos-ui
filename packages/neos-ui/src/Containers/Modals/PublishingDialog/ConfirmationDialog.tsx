@@ -26,21 +26,21 @@ const ConfirmationDialogVariants = {
         [PublishDiscardScope.SITE]: {
             label: {
                 title: {
-                    id: 'Neos.Neos.Ui:PublishDiscardDialog:publish.site.confirmation.title',
+                    id: 'Neos.Neos.Ui:PublishingDialog:publish.site.confirmation.title',
                     fallback: (props: { scopeTitle: string; }) =>
                         `Publish all changes in site "${props.scopeTitle}"`
                 },
                 message: {
-                    id: 'Neos.Neos.Ui:PublishDiscardDialog:publish.site.confirmation.message',
+                    id: 'Neos.Neos.Ui:PublishingDialog:publish.site.confirmation.message',
                     fallback: (props: { numberOfChanges: number; scopeTitle: string; workspaceName: string; }) =>
                         `Are you sure that you want to publish all ${props.numberOfChanges} change(s) in site "${props.scopeTitle}" within workspace "${props.workspaceName}"? Be careful: This cannot be undone!`
                 },
                 cancel: {
-                    id: 'Neos.Neos.Ui:PublishDiscardDialog:publish.site.confirmation.cancel',
+                    id: 'Neos.Neos.Ui:PublishingDialog:publish.site.confirmation.cancel',
                     fallback: 'No, cancel'
                 },
                 confirm: {
-                    id: 'Neos.Neos.Ui:PublishDiscardDialog:publish.site.confirmation.confirm',
+                    id: 'Neos.Neos.Ui:PublishingDialog:publish.site.confirmation.confirm',
                     fallback: 'Yes, publish'
                 }
             }
@@ -48,21 +48,21 @@ const ConfirmationDialogVariants = {
         [PublishDiscardScope.DOCUMENT]: {
             label: {
                 title: {
-                    id: 'Neos.Neos.Ui:PublishDiscardDialog:publish.document.confirmation.title',
+                    id: 'Neos.Neos.Ui:PublishingDialog:publish.document.confirmation.title',
                     fallback: (props: { scopeTitle: string; }) =>
                         `Publish all changes in document "${props.scopeTitle}"`
                 },
                 message: {
-                    id: 'Neos.Neos.Ui:PublishDiscardDialog:publish.document.confirmation.message',
+                    id: 'Neos.Neos.Ui:PublishingDialog:publish.document.confirmation.message',
                     fallback: (props: { numberOfChanges: number; scopeTitle: string; workspaceName: string; }) =>
                         `Are you sure that you want to publish all ${props.numberOfChanges} change(s) in document "${props.scopeTitle}" within workspace "${props.workspaceName}"? Be careful: This cannot be undone!`
                 },
                 cancel: {
-                    id: 'Neos.Neos.Ui:PublishDiscardDialog:publish.document.confirmation.cancel',
+                    id: 'Neos.Neos.Ui:PublishingDialog:publish.document.confirmation.cancel',
                     fallback: 'No, cancel'
                 },
                 confirm: {
-                    id: 'Neos.Neos.Ui:PublishDiscardDialog:publish.document.confirmation.confirm',
+                    id: 'Neos.Neos.Ui:PublishingDialog:publish.document.confirmation.confirm',
                     fallback: 'Yes, publish'
                 }
             }
@@ -78,21 +78,21 @@ const ConfirmationDialogVariants = {
         [PublishDiscardScope.SITE]: {
             label: {
                 title: {
-                    id: 'Neos.Neos.Ui:PublishDiscardDialog:discard.site.confirmation.title',
+                    id: 'Neos.Neos.Ui:PublishingDialog:discard.site.confirmation.title',
                     fallback: (props: { scopeTitle: string; }) =>
                         `Discard all changes in site "${props.scopeTitle}"`
                 },
                 message: {
-                    id: 'Neos.Neos.Ui:PublishDiscardDialog:discard.site.confirmation.message',
+                    id: 'Neos.Neos.Ui:PublishingDialog:discard.site.confirmation.message',
                     fallback: (props: { numberOfChanges: number; scopeTitle: string; workspaceName: string; }) =>
                         `Are you sure that you want to discard all ${props.numberOfChanges} change(s) in site "${props.scopeTitle}" within workspace "${props.workspaceName}"? Be careful: This cannot be undone!`
                 },
                 cancel: {
-                    id: 'Neos.Neos.Ui:PublishDiscardDialog:discard.site.confirmation.cancel',
+                    id: 'Neos.Neos.Ui:PublishingDialog:discard.site.confirmation.cancel',
                     fallback: 'No, cancel'
                 },
                 confirm: {
-                    id: 'Neos.Neos.Ui:PublishDiscardDialog:discard.site.confirmation.confirm',
+                    id: 'Neos.Neos.Ui:PublishingDialog:discard.site.confirmation.confirm',
                     fallback: 'Yes, discard'
                 }
             }
@@ -100,21 +100,21 @@ const ConfirmationDialogVariants = {
         [PublishDiscardScope.DOCUMENT]: {
             label: {
                 title: {
-                    id: 'Neos.Neos.Ui:PublishDiscardDialog:discard.document.confirmation.title',
+                    id: 'Neos.Neos.Ui:PublishingDialog:discard.document.confirmation.title',
                     fallback: (props: { scopeTitle: string; }) =>
                         `Discard all changes in document "${props.scopeTitle}"`
                 },
                 message: {
-                    id: 'Neos.Neos.Ui:PublishDiscardDialog:discard.document.confirmation.message',
+                    id: 'Neos.Neos.Ui:PublishingDialog:discard.document.confirmation.message',
                     fallback: (props: { numberOfChanges: number; scopeTitle: string; workspaceName: string; }) =>
                         `Are you sure that you want to discard all ${props.numberOfChanges} change(s) in document "${props.scopeTitle}" within workspace "${props.workspaceName}"? Be careful: This cannot be undone!`
                 },
                 cancel: {
-                    id: 'Neos.Neos.Ui:PublishDiscardDialog:discard.document.confirmation.cancel',
+                    id: 'Neos.Neos.Ui:PublishingDialog:discard.document.confirmation.cancel',
                     fallback: 'No, cancel'
                 },
                 confirm: {
-                    id: 'Neos.Neos.Ui:PublishDiscardDialog:discard.document.confirmation.confirm',
+                    id: 'Neos.Neos.Ui:PublishingDialog:discard.document.confirmation.confirm',
                     fallback: 'Yes, discard'
                 }
             }

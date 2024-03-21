@@ -24,6 +24,7 @@ Neos:
       translation:
         autoInclude:
           'Neos.Neos.Ui':
+            - Error
             - Main
     fusion:
       autoInclude:

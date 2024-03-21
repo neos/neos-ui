@@ -2,6 +2,7 @@ import {put, call, select, takeEvery, take, race} from 'redux-saga/effects';
 
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {PublishingMode, PublishingScope} from '@neos-project/neos-ui-redux-store/src/CR/Publishing';
+import {TypeOfChange} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces';
 import backend from '@neos-project/neos-ui-backend-connector';
 import {getGuestFrameDocument} from '@neos-project/neos-ui-guest-frame/src/dom';
 
@@ -84,8 +85,6 @@ function * waitForConfirmation() {
     return false;
 }
 
-const NODE_HAS_BEEN_CREATED = 0b0001;
-
 function * reloadAfterDiscard(discardedNodes, routes) {
     const currentContentCanvasContextPath = yield select(selectors.CR.Nodes.documentNodeContextPathSelector);
     const currentDocumentParentLine = yield select(selectors.CR.Nodes.documentNodeParentLineSelector);
@@ -97,7 +96,10 @@ function * reloadAfterDiscard(discardedNodes, routes) {
                     return false;
                 }
 
-                return Boolean(discardedNode.typeOfChange & NODE_HAS_BEEN_CREATED);
+                return Boolean(
+                    discardedNode.typeOfChange
+                    & TypeOfChange.NODE_HAS_BEEN_CREATED
+                );
             });
 
             if (!hasBeenRemovedByDiscard) {

@@ -1,7 +1,7 @@
 import {put, call, select, takeEvery, takeLatest, take, race} from 'redux-saga/effects';
 
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
-import {PublishDiscardMode, PublishDiscardScope} from '@neos-project/neos-ui-redux-store/src/CR/Publishing';
+import {PublishingMode, PublishingScope} from '@neos-project/neos-ui-redux-store/src/CR/Publishing';
 import backend from '@neos-project/neos-ui-backend-connector';
 import {getGuestFrameDocument} from '@neos-project/neos-ui-guest-frame/src/dom';
 
@@ -10,7 +10,7 @@ export function * watchPublish() {
 
     yield takeEvery(actionTypes.CR.Publishing.STARTED, function * publishNodes(action) {
         const {scope, mode} = action.payload;
-        if (mode !== PublishDiscardMode.PUBLISHING) {
+        if (mode !== PublishingMode.PUBLISH) {
             return;
         }
 
@@ -20,11 +20,11 @@ export function * watchPublish() {
             let feedback = null;
             let publishedNodes = [];
             try {
-                if (scope === PublishDiscardScope.SITE) {
+                if (scope === PublishingScope.SITE) {
                     const siteId = yield select(selectors.CR.Nodes.siteNodeContextPathSelector);
                     publishedNodes = yield select(selectors.CR.Workspaces.publishableNodesSelector);
                     feedback = yield call(publishChangesInSite, siteId, workspaceName);
-                } else if (scope === PublishDiscardScope.DOCUMENT) {
+                } else if (scope === PublishingScope.DOCUMENT) {
                     const documentId = yield select(selectors.CR.Nodes.documentNodeContextPathSelector);
                     publishedNodes = yield select(selectors.CR.Workspaces.publishableNodesInDocumentSelector);
                     feedback = yield call(publishChangesInDocument, documentId, workspaceName);
@@ -98,7 +98,7 @@ export function * watchRebaseWorkspace() {
 export function * discardIfConfirmed({routes}) {
     yield takeLatest(actionTypes.CR.Publishing.STARTED, function * waitForConfirmation(action) {
         const {mode} = action.payload;
-        if (mode !== PublishDiscardMode.DISCARDING) {
+        if (mode !== PublishingMode.DISCARD) {
             return;
         }
 
@@ -115,11 +115,11 @@ function * discard(scope, routes) {
     let feedback = null;
     let discardedNodes = [];
     try {
-        if (scope === PublishDiscardScope.SITE) {
+        if (scope === PublishingScope.SITE) {
             const siteId = yield select(selectors.CR.Nodes.siteNodeContextPathSelector);
             discardedNodes = yield select(selectors.CR.Workspaces.publishableNodesSelector);
             feedback = yield call(discardChangesInSite, siteId, workspaceName);
-        } else if (scope === PublishDiscardScope.DOCUMENT) {
+        } else if (scope === PublishingScope.DOCUMENT) {
             const documentId = yield select(selectors.CR.Nodes.documentNodeContextPathSelector);
             discardedNodes = yield select(selectors.CR.Workspaces.publishableNodesInDocumentSelector);
             feedback = yield call(discardChangesInDocument, documentId, workspaceName);

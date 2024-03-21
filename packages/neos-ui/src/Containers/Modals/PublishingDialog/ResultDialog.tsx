@@ -11,17 +11,17 @@ import React from 'react';
 
 import {Button, Dialog, Icon} from '@neos-project/react-ui-components';
 import I18n from '@neos-project/neos-ui-i18n';
-import {PublishDiscardMode, PublishDiscardPhase, PublishDiscardScope} from '@neos-project/neos-ui-redux-store/src/CR/Publishing';
+import {PublishingMode, PublishingPhase, PublishingScope} from '@neos-project/neos-ui-redux-store/src/CR/Publishing';
 
 import style from './style.module.css';
 
 const ResultDialogVariants = {
-    [PublishDiscardMode.PUBLISHING]: {
+    [PublishingMode.PUBLISH]: {
         id: 'neos-PublishDialog',
-        [PublishDiscardPhase.SUCCESS]: {
+        [PublishingPhase.SUCCESS]: {
             style: 'success',
             icon: 'check',
-            [PublishDiscardScope.SITE]: {
+            [PublishingScope.SITE]: {
                 label: {
                     title: {
                         id: 'Neos.Neos.Ui:PublishingDialog:publish.site.success.title',
@@ -39,7 +39,7 @@ const ResultDialogVariants = {
                     }
                 }
             },
-            [PublishDiscardScope.DOCUMENT]: {
+            [PublishingScope.DOCUMENT]: {
                 label: {
                     title: {
                         id: 'Neos.Neos.Ui:PublishingDialog:publish.document.success.title',
@@ -58,10 +58,10 @@ const ResultDialogVariants = {
                 }
             }
         },
-        [PublishDiscardPhase.ERROR]: {
+        [PublishingPhase.ERROR]: {
             style: 'error',
             icon: 'exclamation-circle',
-            [PublishDiscardScope.SITE]: {
+            [PublishingScope.SITE]: {
                 label: {
                     title: {
                         id: 'Neos.Neos.Ui:PublishingDialog:publish.site.error.title',
@@ -78,7 +78,7 @@ const ResultDialogVariants = {
                     }
                 }
             },
-            [PublishDiscardScope.DOCUMENT]: {
+            [PublishingScope.DOCUMENT]: {
                 label: {
                     title: {
                         id: 'Neos.Neos.Ui:PublishingDialog:publish.document.error.title',
@@ -97,12 +97,12 @@ const ResultDialogVariants = {
             }
         }
     },
-    [PublishDiscardMode.DISCARDING]: {
+    [PublishingMode.DISCARD]: {
         id: 'neos-DiscardDialog',
-        [PublishDiscardPhase.SUCCESS]: {
+        [PublishingPhase.SUCCESS]: {
             style: 'success',
             icon: 'check',
-            [PublishDiscardScope.SITE]: {
+            [PublishingScope.SITE]: {
                 label: {
                     title: {
                         id: 'Neos.Neos.Ui:PublishingDialog:discard.site.success.title',
@@ -120,7 +120,7 @@ const ResultDialogVariants = {
                     }
                 }
             },
-            [PublishDiscardScope.DOCUMENT]: {
+            [PublishingScope.DOCUMENT]: {
                 label: {
                     title: {
                         id: 'Neos.Neos.Ui:PublishingDialog:discard.document.success.title',
@@ -139,10 +139,10 @@ const ResultDialogVariants = {
                 }
             }
         },
-        [PublishDiscardPhase.ERROR]: {
+        [PublishingPhase.ERROR]: {
             style: 'error',
             icon: 'exclamation-circle',
-            [PublishDiscardScope.SITE]: {
+            [PublishingScope.SITE]: {
                 label: {
                     title: {
                         id: 'Neos.Neos.Ui:PublishingDialog:discard.site.error.title',
@@ -159,7 +159,7 @@ const ResultDialogVariants = {
                     }
                 }
             },
-            [PublishDiscardScope.DOCUMENT]: {
+            [PublishingScope.DOCUMENT]: {
                 label: {
                     title: {
                         id: 'Neos.Neos.Ui:PublishingDialog:discard.document.error.title',
@@ -182,14 +182,14 @@ const ResultDialogVariants = {
 
 type Result =
     | {
-        phase: PublishDiscardPhase.ERROR,
+        phase: PublishingPhase.ERROR,
         message: string
     }
-    | { phase: PublishDiscardPhase.SUCCESS };
+    | { phase: PublishingPhase.SUCCESS };
 
 export const ResultDialog: React.FC<{
-    mode: PublishDiscardMode;
-    scope: PublishDiscardScope;
+    mode: PublishingMode;
+    scope: PublishingScope;
     scopeTitle: string;
     numberOfChanges: number;
     result: Result;
@@ -201,7 +201,7 @@ export const ResultDialog: React.FC<{
     return (
         <Dialog
             actions={[
-                props.result.phase === PublishDiscardPhase.ERROR ? (
+                props.result.phase === PublishingPhase.ERROR ? (
                     <Button
                         id={`${variant.id}-Retry`}
                         key="retry"
@@ -239,12 +239,12 @@ export const ResultDialog: React.FC<{
             type={variant[props.result.phase].style}
             isOpen
             autoFocus
-            preventClosing={props.result.phase === PublishDiscardPhase.ERROR}
+            preventClosing={props.result.phase === PublishingPhase.ERROR}
             theme={undefined as any}
             style={undefined as any}
         >
             <div className={style.modalContents}>
-                {props.result.phase === PublishDiscardPhase.ERROR
+                {props.result.phase === PublishingPhase.ERROR
                     ? props.result.message
                     : (
                         <I18n

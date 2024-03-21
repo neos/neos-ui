@@ -184,33 +184,41 @@ class BackendServiceController extends ActionController
      */
     public function publishChangesInSiteAction(array $command): void
     {
-        /** @todo send from UI */
-        $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
-        $command['contentRepositoryId'] = $contentRepositoryId->value;
-        $command['siteId'] = $this->nodeService->deserializeNodeAddress(
-            $command['siteId'],
-            $contentRepositoryId
-        )->nodeAggregateId->value;
-        $command = PublishChangesInSite::fromArray($command);
-
         try {
+            /** @todo send from UI */
+            $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
+            $command['contentRepositoryId'] = $contentRepositoryId->value;
+            $command['siteId'] = $this->nodeService->deserializeNodeAddress(
+                $command['siteId'],
+                $contentRepositoryId
+            )->nodeAggregateId->value;
+            $command = PublishChangesInSite::fromArray($command);
             $workspace = $this->workspaceProvider->provideForWorkspaceName(
                 $command->contentRepositoryId,
                 $command->workspaceName
             );
-            $workspace->publishChangesInSite($command->siteId);
+            $publishingResult = $workspace
+                ->publishChangesInSite($command->siteId);
 
-            $success = new Success();
-            $success->setMessage(sprintf('Published.'));
+            $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
+            $baseWorkspaceName = $contentRepository->getWorkspaceFinder()->findOneByName($command->workspaceName)->baseWorkspaceName;
 
-            $this->feedbackCollection->add($success);
+            $this->view->assign('value', [
+                'success' => [
+                    'numberOfPublishedChanges' => $publishingResult->numberOfPublishedChanges,
+                    'baseWorkspaceName' => $baseWorkspaceName->value
+                ]
+            ]);
         } catch (\Exception $e) {
-            $error = new Error();
-            $error->setMessage($e->getMessage());
-
-            $this->feedbackCollection->add($error);
+            $this->view->assign('value', [
+                'error' => [
+                    'class' => $e::class,
+                    'code' => $e->getCode(),
+                    'message' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString()
+                ]
+            ]);
         }
-        $this->view->assign('value', $this->feedbackCollection);
     }
 
     /**
@@ -220,53 +228,51 @@ class BackendServiceController extends ActionController
      */
     public function publishChangesInDocumentAction(array $command): void
     {
-        /** @todo send from UI */
-        $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
-        $command['contentRepositoryId'] = $contentRepositoryId->value;
-        $command['documentId'] = $this->nodeService->deserializeNodeAddress(
-            $command['documentId'],
-            $contentRepositoryId
-        )->nodeAggregateId->value;
-        $command = PublishChangesInDocument::fromArray($command);
-
-        $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
-        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
-        $baseWorkspaceName = $contentRepository->getWorkspaceFinder()->findOneByName(
-            $command->workspaceName
-        )->baseWorkspaceName;
-
         try {
+            /** @todo send from UI */
+            $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
+            $command['contentRepositoryId'] = $contentRepositoryId->value;
+            $command['documentId'] = $this->nodeService->deserializeNodeAddress(
+                $command['documentId'],
+                $contentRepositoryId
+            )->nodeAggregateId->value;
+            $command = PublishChangesInDocument::fromArray($command);
+
+            $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
+            $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
+            $baseWorkspaceName = $contentRepository->getWorkspaceFinder()->findOneByName(
+                $command->workspaceName
+            )->baseWorkspaceName;
+
             try {
                 $workspace = $this->workspaceProvider->provideForWorkspaceName(
                     $command->contentRepositoryId,
                     $command->workspaceName
                 );
                 $publishingResult = $workspace->publishChangesInDocument($command->documentId);
+
+                $this->view->assign('value', [
+                    'success' => [
+                        'numberOfPublishedChanges' => $publishingResult->numberOfPublishedChanges,
+                        'baseWorkspaceName' => $baseWorkspaceName->value
+                    ]
+                ]);
             } catch (NodeAggregateCurrentlyDoesNotExist $e) {
                 throw new NodeAggregateCurrentlyDoesNotExist(
                     'Node could not be published, probably because of a missing parentNode. Please check that the parentNode has been published.',
                     1682762156
                 );
             }
-
-            $success = new Success();
-            $success->setMessage(
-                sprintf(
-                    'Published %d change(s) to %s.',
-                    $publishingResult->numberOfPublishedChanges,
-                    $baseWorkspaceName->value
-                )
-            );
-
-            $this->feedbackCollection->add($success);
         } catch (\Exception $e) {
-            $error = new Error();
-            $error->setMessage($e->getMessage());
-
-            $this->feedbackCollection->add($error);
+            $this->view->assign('value', [
+                'error' => [
+                    'class' => $e::class,
+                    'code' => $e->getCode(),
+                    'message' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString()
+                ]
+            ]);
         }
-
-        $this->view->assign('value', $this->feedbackCollection);
     }
 
     /**
@@ -276,34 +282,37 @@ class BackendServiceController extends ActionController
      */
     public function discardChangesInSiteAction(array $command): void
     {
-        /** @todo send from UI */
-        $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
-        $command['contentRepositoryId'] = $contentRepositoryId->value;
-        $command['siteId'] = $this->nodeService->deserializeNodeAddress(
-            $command['siteId'],
-            $contentRepositoryId
-        )->nodeAggregateId->value;
-        $command = DiscardChangesInSite::fromArray($command);
-
         try {
+            /** @todo send from UI */
+            $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
+            $command['contentRepositoryId'] = $contentRepositoryId->value;
+            $command['siteId'] = $this->nodeService->deserializeNodeAddress(
+                $command['siteId'],
+                $contentRepositoryId
+            )->nodeAggregateId->value;
+            $command = DiscardChangesInSite::fromArray($command);
+
             $workspace = $this->workspaceProvider->provideForWorkspaceName(
                 $command->contentRepositoryId,
                 $command->workspaceName
             );
             $discardingResult = $workspace->discardChangesInSite($command->siteId);
 
-            $success = new Success();
-            $success->setMessage(sprintf('Discarded %d change(s).', $discardingResult->numberOfDiscardedChanges));
-
-            $this->feedbackCollection->add($success);
+            $this->view->assign('value', [
+                'success' => [
+                    'numberOfDiscardedChanges' => $discardingResult->numberOfDiscardedChanges
+                ]
+            ]);
         } catch (\Exception $e) {
-            $error = new Error();
-            $error->setMessage($e->getMessage());
-
-            $this->feedbackCollection->add($error);
+            $this->view->assign('value', [
+                'error' => [
+                    'class' => $e::class,
+                    'code' => $e->getCode(),
+                    'message' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString()
+                ]
+            ]);
         }
-
-        $this->view->assign('value', $this->feedbackCollection);
     }
 
     /**
@@ -313,34 +322,37 @@ class BackendServiceController extends ActionController
      */
     public function discardChangesInDocumentAction(array $command): void
     {
-        /** @todo send from UI */
-        $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
-        $command['contentRepositoryId'] = $contentRepositoryId->value;
-        $command['documentId'] = $this->nodeService->deserializeNodeAddress(
-            $command['documentId'],
-            $contentRepositoryId
-        )->nodeAggregateId->value;
-        $command = DiscardChangesInDocument::fromArray($command);
-
         try {
+            /** @todo send from UI */
+            $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
+            $command['contentRepositoryId'] = $contentRepositoryId->value;
+            $command['documentId'] = $this->nodeService->deserializeNodeAddress(
+                $command['documentId'],
+                $contentRepositoryId
+            )->nodeAggregateId->value;
+            $command = DiscardChangesInDocument::fromArray($command);
+
             $workspace = $this->workspaceProvider->provideForWorkspaceName(
                 $command->contentRepositoryId,
                 $command->workspaceName
             );
             $discardingResult = $workspace->discardChangesInDocument($command->documentId);
 
-            $success = new Success();
-            $success->setMessage(sprintf('Discarded %d change(s).', $discardingResult->numberOfDiscardedChanges));
-
-            $this->feedbackCollection->add($success);
+            $this->view->assign('value', [
+                'success' => [
+                    'numberOfDiscardedChanges' => $discardingResult->numberOfDiscardedChanges
+                ]
+            ]);
         } catch (\Exception $e) {
-            $error = new Error();
-            $error->setMessage($e->getMessage());
-
-            $this->feedbackCollection->add($error);
+            $this->view->assign('value', [
+                'error' => [
+                    'class' => $e::class,
+                    'code' => $e->getCode(),
+                    'message' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString()
+                ]
+            ]);
         }
-
-        $this->view->assign('value', $this->feedbackCollection);
     }
 
     /**

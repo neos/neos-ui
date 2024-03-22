@@ -59,7 +59,7 @@ class WorkspaceService
     /**
      * Get all publishable node context paths for a workspace
      *
-     * @return array<int,array<string,string|int>>
+     * @return array{contextPath:string,documentContextPath:string,typeOfChange:int}[]
      */
     public function getPublishableNodeInfo(WorkspaceName $workspaceName, ContentRepositoryId $contentRepositoryId): array
     {
@@ -70,6 +70,7 @@ class WorkspaceService
         }
         $changeFinder = $contentRepository->projectionState(ChangeFinder::class);
         $changes = $changeFinder->findByContentStreamId($workspace->currentContentStreamId);
+        /** @var array{contextPath:string,documentContextPath:string,typeOfChange:int}[] $unpublishedNodes */
         $unpublishedNodes = [];
         foreach ($changes as $change) {
             if ($change->removalAttachmentPoint) {
@@ -119,9 +120,9 @@ class WorkspaceService
             }
         }
 
-        return array_filter($unpublishedNodes, function ($item) {
+        return array_values(array_filter($unpublishedNodes, function ($item) {
             return (bool)$item;
-        });
+        }));
     }
 
     /**

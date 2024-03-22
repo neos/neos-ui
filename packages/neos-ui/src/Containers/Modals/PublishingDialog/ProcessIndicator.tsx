@@ -11,8 +11,9 @@ import React from 'react';
 
 import {Dialog, Icon} from '@neos-project/react-ui-components';
 import I18n from '@neos-project/neos-ui-i18n';
-import {PublishingMode, PublishingScope} from '@neos-project/neos-ui-redux-store/src/CR/Publishing';
+import {PublishingMode, PublishingPhase, PublishingScope} from '@neos-project/neos-ui-redux-store/src/CR/Publishing';
 
+import {Diagram} from './Diagram';
 import style from './style.module.css';
 
 const ProcessIndicatorVariants = {
@@ -84,6 +85,8 @@ export const ProcessIndicator: React.FC<{
     mode: PublishingMode;
     scope: PublishingScope;
     scopeTitle: string;
+    sourceWorkspaceName: string;
+    targetWorkspaceName: null | string;
     numberOfChanges: number;
 }> = (props) => {
     const variant = ProcessIndicatorVariants[props.mode];
@@ -111,6 +114,12 @@ export const ProcessIndicator: React.FC<{
             style={undefined as any}
         >
             <div className={style.modalContents}>
+                <Diagram
+                    phase={PublishingPhase.ONGOING}
+                    sourceWorkspaceName={props.sourceWorkspaceName}
+                    targetWorkspaceName={props.targetWorkspaceName}
+                    numberOfChanges={props.numberOfChanges}
+                />
                 <I18n
                     id={variant[props.scope].label.message.id}
                     params={props}

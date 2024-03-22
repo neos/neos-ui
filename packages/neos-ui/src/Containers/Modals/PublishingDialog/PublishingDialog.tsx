@@ -16,7 +16,8 @@ import {GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
 import {
     PublishingScope,
     PublishingPhase,
-    State as PublishingState
+    State as PublishingState,
+    PublishingMode
 } from '@neos-project/neos-ui-redux-store/src/CR/Publishing';
 
 import {ConfirmationDialog} from './ConfirmationDialog';
@@ -31,7 +32,8 @@ type PublishingDialogProperties =
     | {
         publishingState: NonNullable<PublishingState>;
         scopeTitle: string;
-        workspaceName: string;
+        sourceWorkspaceName: string;
+        targetWorkspaceName: null | string;
         numberOfChanges: number;
     };
 
@@ -70,7 +72,8 @@ const PublishingDialog: React.FC<PublishingDialogProps> = (props) => {
                     mode={props.publishingState.mode}
                     scope={props.publishingState.scope}
                     scopeTitle={props.scopeTitle}
-                    workspaceName={props.workspaceName}
+                    sourceWorkspaceName={props.sourceWorkspaceName}
+                    targetWorkspaceName={props.targetWorkspaceName}
                     numberOfChanges={props.numberOfChanges}
                     onAbort={handleCancel}
                     onConfirm={handleConfirm}
@@ -83,6 +86,8 @@ const PublishingDialog: React.FC<PublishingDialogProps> = (props) => {
                     mode={props.publishingState.mode}
                     scope={props.publishingState.scope}
                     scopeTitle={props.scopeTitle}
+                    sourceWorkspaceName={props.sourceWorkspaceName}
+                    targetWorkspaceName={props.targetWorkspaceName}
                     numberOfChanges={props.numberOfChanges}
                     />
             );
@@ -94,6 +99,8 @@ const PublishingDialog: React.FC<PublishingDialogProps> = (props) => {
                     mode={props.publishingState.mode}
                     scope={props.publishingState.scope}
                     scopeTitle={props.scopeTitle}
+                    sourceWorkspaceName={props.sourceWorkspaceName}
+                    targetWorkspaceName={props.targetWorkspaceName}
                     numberOfChanges={props.numberOfChanges}
                     result={props.publishingState.process}
                     onRetry={handleRetry}
@@ -110,7 +117,10 @@ export default connect((state: GlobalState): PublishingDialogProperties => {
     }
 
     const {scope} = publishingState;
-    const {name: workspaceName} = state.cr.workspaces.personalWorkspace;
+    const {name: sourceWorkspaceName, baseWorkspace} = state.cr.workspaces.personalWorkspace;
+    const targetWorkspaceName = publishingState.mode === PublishingMode.PUBLISH
+        ? baseWorkspace
+        : null;
 
     let numberOfChanges = 0;
     if (scope === PublishingScope.SITE) {
@@ -128,7 +138,8 @@ export default connect((state: GlobalState): PublishingDialogProperties => {
 
     return {
         publishingState,
-        workspaceName,
+        sourceWorkspaceName,
+        targetWorkspaceName,
         numberOfChanges,
         scopeTitle
     };

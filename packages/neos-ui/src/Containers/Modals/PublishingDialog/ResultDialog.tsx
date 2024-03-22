@@ -14,6 +14,8 @@ import I18n from '@neos-project/neos-ui-i18n';
 import {PublishingMode, PublishingPhase, PublishingScope} from '@neos-project/neos-ui-redux-store/src/CR/Publishing';
 import {AnyError, ErrorView} from '@neos-project/neos-ui-error';
 
+import {Diagram} from './Diagram';
+
 import style from './style.module.css';
 
 const ResultDialogVariants = {
@@ -31,8 +33,8 @@ const ResultDialogVariants = {
                     },
                     message: {
                         id: 'Neos.Neos.Ui:PublishingDialog:publish.site.success.message',
-                        fallback: (props: { numberOfChanges: number; scopeTitle: string; }) =>
-                            `${props.numberOfChanges} change(s) in site "${props.scopeTitle}" were sucessfully published.`
+                        fallback: (props: { numberOfChanges: number; scopeTitle: string; targetWorkspaceName: null | string; }) =>
+                            `${props.numberOfChanges} change(s) in site "${props.scopeTitle}" were sucessfully published to workspace "${props.targetWorkspaceName}".`
                     },
                     acknowledge: {
                         id: 'Neos.Neos.Ui:PublishingDialog:publish.site.success.acknowledge',
@@ -49,8 +51,8 @@ const ResultDialogVariants = {
                     },
                     message: {
                         id: 'Neos.Neos.Ui:PublishingDialog:publish.document.success.message',
-                        fallback: (props: { numberOfChanges: number; scopeTitle: string; }) =>
-                            `${props.numberOfChanges} change(s) in document "${props.scopeTitle}" were sucessfully published.`
+                        fallback: (props: { numberOfChanges: number; scopeTitle: string; targetWorkspaceName: null | string; }) =>
+                            `${props.numberOfChanges} change(s) in document "${props.scopeTitle}" were sucessfully published to workspace "${props.targetWorkspaceName}".`
                     },
                     acknowledge: {
                         id: 'Neos.Neos.Ui:PublishingDialog:publish.document.success.acknowledge',
@@ -192,6 +194,8 @@ export const ResultDialog: React.FC<{
     mode: PublishingMode;
     scope: PublishingScope;
     scopeTitle: string;
+    sourceWorkspaceName: string;
+    targetWorkspaceName: null | string;
     numberOfChanges: number;
     result: Result;
     onRetry: () => void;
@@ -229,6 +233,7 @@ export const ResultDialog: React.FC<{
                     hoverStyle={variant[props.result.phase].style}
                     onClick={props.onAcknowledge}
                 >
+                    <Icon icon="check" className={style.buttonIcon} />
                     <I18n {...variant[props.result.phase][props.scope].label.acknowledge} />
                 </Button>
             ]}
@@ -253,6 +258,12 @@ export const ResultDialog: React.FC<{
             style={undefined as any}
         >
             <div className={style.modalContents}>
+                <Diagram
+                    phase={props.result.phase}
+                    sourceWorkspaceName={props.sourceWorkspaceName}
+                    targetWorkspaceName={props.targetWorkspaceName}
+                    numberOfChanges={props.numberOfChanges}
+                    />
                 {props.result.phase === PublishingPhase.ERROR
                     ? (<ErrorView error={props.result.error} />)
                     : (

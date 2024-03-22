@@ -47,8 +47,6 @@ export function * watchPublishing({routes}) {
         const ancestorId = yield select(ancestorIdSelector);
         const publishableNodes = yield select(publishableNodesSelector);
 
-
-
         let affectedNodes = [];
         do {
             try {

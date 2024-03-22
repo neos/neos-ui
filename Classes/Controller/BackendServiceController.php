@@ -168,7 +168,9 @@ class BackendServiceController extends ActionController
             $changes->apply();
 
             $success = new Info();
-            $success->setMessage(sprintf('%d change(s) successfully applied.', $count));
+            $success->setMessage(
+                $this->getLabel('changesApplied', [$count], $count)
+            );
 
             $this->feedbackCollection->add($success);
         } catch (\Exception $e) {
@@ -194,7 +196,9 @@ class BackendServiceController extends ActionController
         $this->publishingService->publishWorkspace($contentRepository, $workspaceName);
 
         $success = new Success();
-        $success->setMessage(sprintf('Published.'));
+        $success->setMessage(
+            $this->getLabel('publishedAllChanges', ['workspaceName' => $workspaceName])
+        );
 
         $updateWorkspaceInfo = new UpdateWorkspaceInfo($contentRepositoryId, $workspaceName);
         $this->feedbackCollection->add($success);
@@ -240,11 +244,10 @@ class BackendServiceController extends ActionController
             }
 
             $success = new Success();
-            $success->setMessage(sprintf(
-                'Published %d change(s) to %s.',
-                count($nodeContextPaths),
-                $targetWorkspaceName
-            ));
+            $changesCount = count($nodeContextPaths);
+            $success->setMessage(
+                $this->getLabel('changesPublished', [$changesCount, $targetWorkspaceName], $changesCount)
+            );
 
             $updateWorkspaceInfo = new UpdateWorkspaceInfo($contentRepositoryId, $workspaceName);
             $this->feedbackCollection->add($success);
@@ -296,7 +299,10 @@ class BackendServiceController extends ActionController
             $contentRepository->handle($command)->block();
 
             $success = new Success();
-            $success->setMessage(sprintf('Discarded %d node(s).', count($nodeContextPaths)));
+            $changesCount = count($nodeContextPaths);
+            $success->setMessage(
+                $this->getLabel('changesDiscarded', [$changesCount], $changesCount)
+            );
 
             $updateWorkspaceInfo = new UpdateWorkspaceInfo($contentRepositoryId, $workspaceName);
             $this->feedbackCollection->add($success);
@@ -340,9 +346,9 @@ class BackendServiceController extends ActionController
             $contentRepository->handle($command)->block();
         } catch (WorkspaceIsNotEmptyException $exception) {
             $error = new Error();
-            $error->setMessage('Your personal workspace currently contains unpublished changes.'
-                . ' In order to switch to a different target workspace you need to either publish'
-                . ' or discard pending changes first.');
+            $error->setMessage(
+                $this->getLabel('workspaceContainsUnpublishedChanges')
+            );
 
             $this->feedbackCollection->add($error);
             $this->view->assign('value', $this->feedbackCollection);
@@ -366,7 +372,9 @@ class BackendServiceController extends ActionController
         $documentNode = $subgraph->findNodeById($nodeAddress->nodeAggregateId);
 
         $success = new Success();
-        $success->setMessage(sprintf('Switched base workspace to %s.', $targetWorkspaceName));
+        $success->setMessage(
+            $this->getLabel('switchedBaseWorkspace', ['workspace' => $targetWorkspaceName])
+        );
         $this->feedbackCollection->add($success);
 
         $updateWorkspaceInfo = new UpdateWorkspaceInfo($contentRepositoryId, $userWorkspaceName);

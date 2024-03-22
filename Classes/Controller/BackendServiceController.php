@@ -169,11 +169,11 @@ class BackendServiceController extends ActionController
     }
 
     /**
-     * Publish all nodes in the current site
+     * Publish all changes in the current site
      *
      * @phpstan-param array<string,string> $command
      */
-    public function publishSiteAction(array $command): void
+    public function publishChangesInSiteAction(array $command): void
     {
         /** @todo send from UI */
         $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
@@ -198,11 +198,11 @@ class BackendServiceController extends ActionController
     }
 
     /**
-     * Publish all nodes in the current document
+     * Publish all changes in the current document
      *
      * @phpstan-param array<string,string> $command
      */
-    public function publishDocumentAction(array $command): void
+    public function publishChangesInDocumentAction(array $command): void
     {
         /** @todo send from UI */
         $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
@@ -243,11 +243,11 @@ class BackendServiceController extends ActionController
     }
 
     /**
-     * Discard all nodes in the given site
+     * Discard all changes in the given site
      *
      * @phpstan-param array<string,string> $command
      */
-    public function discardSiteAction(array $command): void
+    public function discardChangesInSiteAction(array $command): void
     {
         /** @todo send from UI */
         $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
@@ -273,11 +273,11 @@ class BackendServiceController extends ActionController
     }
 
     /**
-     * Discard all nodes in the given document
+     * Discard all changes in the given document
      *
      * @phpstan-param array<string,string> $command
      */
-    public function discardDocumentAction(array $command): void
+    public function discardChangesInDocumentAction(array $command): void
     {
         /** @todo send from UI */
         $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;

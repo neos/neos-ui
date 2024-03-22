@@ -6,7 +6,7 @@ import backend from '@neos-project/neos-ui-backend-connector';
 import {getGuestFrameDocument} from '@neos-project/neos-ui-guest-frame/src/dom';
 
 export function * watchPublish() {
-    const {publishSite, publishDocument} = backend.get().endpoints;
+    const {publishChangesInSite, publishChangesInDocument} = backend.get().endpoints;
 
     yield takeEvery(actionTypes.CR.Workspaces.PUBLISH_STARTED, function * publishNodes(action) {
         const {scope} = action.payload;
@@ -20,11 +20,11 @@ export function * watchPublish() {
             if (scope === PublishDiscardScope.SITE) {
                 const siteId = yield select(selectors.CR.Nodes.siteNodeContextPathSelector);
                 publishedNodes = yield select(selectors.CR.Workspaces.publishableNodesSelector);
-                feedback = yield call(publishSite, siteId, workspaceName);
+                feedback = yield call(publishChangesInSite, siteId, workspaceName);
             } else if (scope === PublishDiscardScope.DOCUMENT) {
                 const documentId = yield select(selectors.CR.Nodes.documentNodeContextPathSelector);
                 publishedNodes = yield select(selectors.CR.Workspaces.publishableNodesInDocumentSelector);
-                feedback = yield call(publishDocument, documentId, workspaceName);
+                feedback = yield call(publishChangesInDocument, documentId, workspaceName);
             }
         } catch (error) {
             console.error('Failed to publish', error);
@@ -94,7 +94,7 @@ export function * discardIfConfirmed({routes}) {
 }
 
 function * discard(scope, routes) {
-    const {discardSite, discardDocument} = backend.get().endpoints;
+    const {discardChangesInSite, discardChangesInDocument} = backend.get().endpoints;
     const workspaceName = yield select(selectors.CR.Workspaces.personalWorkspaceNameSelector);
 
     yield put(actions.UI.Remote.startDiscarding());
@@ -105,11 +105,11 @@ function * discard(scope, routes) {
         if (scope === PublishDiscardScope.SITE) {
             const siteId = yield select(selectors.CR.Nodes.siteNodeContextPathSelector);
             discardedNodes = yield select(selectors.CR.Workspaces.publishableNodesSelector);
-            feedback = yield call(discardSite, siteId, workspaceName);
+            feedback = yield call(discardChangesInSite, siteId, workspaceName);
         } else if (scope === PublishDiscardScope.DOCUMENT) {
             const documentId = yield select(selectors.CR.Nodes.documentNodeContextPathSelector);
             discardedNodes = yield select(selectors.CR.Workspaces.publishableNodesInDocumentSelector);
-            feedback = yield call(discardDocument, documentId, workspaceName);
+            feedback = yield call(discardChangesInDocument, documentId, workspaceName);
         }
     } catch (error) {
         console.error('Failed to discard', error);

@@ -32,14 +32,14 @@ final class RoutesProvider implements RoutesProviderInterface
         $routes['ui']['service'] = [
             'change' =>
                 $helper->buildUiServiceRoute('change'),
-            'publishSite' =>
-                $helper->buildUiServiceRoute('publishSite'),
-            'publishDocument' =>
-                $helper->buildUiServiceRoute('publishDocument'),
-            'discardSite' =>
-                $helper->buildUiServiceRoute('discardSite'),
-            'discardDocument' =>
-                $helper->buildUiServiceRoute('discardDocument'),
+            'publishChangesInSite' =>
+                $helper->buildUiServiceRoute('publishChangesInSite'),
+            'publishChangesInDocument' =>
+                $helper->buildUiServiceRoute('publishChangesInDocument'),
+            'discardChangesInSite' =>
+                $helper->buildUiServiceRoute('discardChangesInSite'),
+            'discardChangesInDocument' =>
+                $helper->buildUiServiceRoute('discardChangesInDocument'),
             'changeBaseWorkspace' =>
                 $helper->buildUiServiceRoute('changeBaseWorkspace'),
             'rebaseWorkspace' =>

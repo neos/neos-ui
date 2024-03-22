@@ -7,35 +7,35 @@
   httpMethods: ['POST']
 
 -
-  name: 'Publish Site'
-  uriPattern: 'publish-site'
+  name: 'Publish all changes in site'
+  uriPattern: 'publish-changes-in-site'
   defaults:
     '@controller': 'BackendService'
-    '@action': 'publishSite'
+    '@action': 'publishChangesInSite'
   httpMethods: ['POST']
 
 -
-  name: 'Publish Document'
-  uriPattern: 'publish-document'
+  name: 'Publish all changes in document'
+  uriPattern: 'publish-changes-in-document'
   defaults:
     '@controller': 'BackendService'
-    '@action': 'publishDocument'
+    '@action': 'publishChangesInDocument'
   httpMethods: ['POST']
 
 -
-  name: 'Discard Site'
-  uriPattern: 'discard-site'
+  name: 'Discard all changes in site'
+  uriPattern: 'discard-changes-in-site'
   defaults:
     '@controller': 'BackendService'
-    '@action': 'discardSite'
+    '@action': 'discardChangesInSite'
   httpMethods: ['POST']
 
 -
-  name: 'Discard Document'
-  uriPattern: 'discard-document'
+  name: 'Discard all changes in document'
+  uriPattern: 'discard-changes-in-document'
   defaults:
     '@controller': 'BackendService'
-    '@action': 'discardDocument'
+    '@action': 'discardChangesInDocument'
   httpMethods: ['POST']
 
 -

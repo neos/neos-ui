@@ -1,4 +1,4 @@
-import {t, Role, ClientFunction} from 'testcafe';
+import {t, Role, ClientFunction, Selector} from 'testcafe';
 import {waitForReact} from 'testcafe-react-selectors';
 import {PublishDropDown, Page} from './pageModel';
 
@@ -49,5 +49,8 @@ export async function beforeEach(t) {
     await t.useRole(adminUserOnOneDimensionTestSite);
     await waitForReact(30000);
     await PublishDropDown.discardAll();
+    if (await Selector('#neos-DiscardDialog-Acknowledge').exists) {
+        await t.click(Selector('#neos-DiscardDialog-Acknowledge'));
+    }
     await Page.goToPage('Home');
 }

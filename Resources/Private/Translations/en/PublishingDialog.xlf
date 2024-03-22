@@ -6,7 +6,7 @@
         <source>Publish all changes in site "{scopeTitle}"</source>
       </trans-unit>
       <trans-unit id="publish.site.confirmation.message" xml:space="preserve">
-        <source>Are you sure that you want to publish all {numberOfChanges} change(s) in site "{scopeTitle}" within workspace "{workspaceName}"? Be careful: This cannot be undone!</source>
+        <source>Are you sure that you want to publish all {numberOfChanges} change(s) in site "{scopeTitle}" from workspace "{sourceWorkspaceName}" to workspace "{targetWorkspaceName}"? Be careful: This cannot be undone!</source>
       </trans-unit>
       <trans-unit id="publish.site.confirmation.cancel" xml:space="preserve">
         <source>No, cancel</source>
@@ -33,7 +33,7 @@
         <source>Changes in site "{scopeTitle}" were published</source>
       </trans-unit>
       <trans-unit id="publish.site.success.message" xml:space="preserve">
-        <source>{numberOfChanges} change(s) in site "{scopeTitle}" were sucessfully published.</source>
+        <source>{numberOfChanges} change(s) in site "{scopeTitle}" were successfully published to workspace "{targetWorkspaceName}".</source>
       </trans-unit>
       <trans-unit id="publish.site.success.acknowledge" xml:space="preserve">
         <source>OK</source>
@@ -42,7 +42,7 @@
         <source>Publish all changes in document "{scopeTitle}"</source>
       </trans-unit>
       <trans-unit id="publish.document.confirmation.message" xml:space="preserve">
-        <source>Are you sure that you want to publish the {numberOfChanges} change(s) in document "{scopeTitle}" within workspace "{workspaceName}"? Be careful: This cannot be undone!</source>
+        <source>Are you sure that you want to publish all {numberOfChanges} change(s) in document "{scopeTitle}" from workspace "{sourceWorkspaceName}" to workspace "{targetWorkspaceName}"? Be careful: This cannot be undone!</source>
       </trans-unit>
       <trans-unit id="publish.document.confirmation.cancel" xml:space="preserve">
         <source>No, cancel</source>
@@ -69,7 +69,7 @@
         <source>Changes in document "{scopeTitle}" were published</source>
       </trans-unit>
       <trans-unit id="publish.document.success.message" xml:space="preserve">
-        <source>{numberOfChanges} change(s) were sucessfully published.</source>
+        <source>{numberOfChanges} change(s) in document "{scopeTitle}" were sucessfully published to workspace "{targetWorkspaceName}".</source>
       </trans-unit>
       <trans-unit id="publish.document.success.acknowledge" xml:space="preserve">
         <source>OK</source>
@@ -78,7 +78,7 @@
         <source>Discard all changes in site "{scopeTitle}"</source>
       </trans-unit>
       <trans-unit id="discard.site.confirmation.message" xml:space="preserve">
-        <source>Are you sure that you want to discard all {numberOfChanges} change(s) in site "{scopeTitle}" within workspace "{workspaceName}"? Be careful: This cannot be undone!</source>
+        <source>Are you sure that you want to discard all {numberOfChanges} change(s) in site "{scopeTitle}" from workspace "{sourceWorkspaceName}"? Be careful: This cannot be undone!</source>
       </trans-unit>
       <trans-unit id="discard.site.confirmation.cancel" xml:space="preserve">
         <source>No, cancel</source>
@@ -114,7 +114,7 @@
         <source>Discard all changes in document "{scopeTitle}"</source>
       </trans-unit>
       <trans-unit id="discard.document.confirmation.message" xml:space="preserve">
-        <source>Are you sure that you want to discard the {numberOfChanges} change(s) in document "{scopeTitle}" within workspace "{workspaceName}"? Be careful: This cannot be undone!</source>
+        <source>Are you sure that you want to discard all {numberOfChanges} change(s) in document "{scopeTitle}" from workspace "{sourceWorkspaceName}"? Be careful: This cannot be undone!</source>
       </trans-unit>
       <trans-unit id="discard.document.confirmation.cancel" xml:space="preserve">
         <source>No, cancel</source>

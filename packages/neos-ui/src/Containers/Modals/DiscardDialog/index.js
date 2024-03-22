@@ -5,19 +5,35 @@ import {connect} from 'react-redux';
 import {Button, Dialog, Icon} from '@neos-project/react-ui-components';
 import I18n from '@neos-project/neos-ui-i18n';
 
-import {actions} from '@neos-project/neos-ui-redux-store';
+import {actions, selectors} from '@neos-project/neos-ui-redux-store';
+import {PublishDiscardScope, PublishDiscardMode} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces';
 
 import style from './style.module.css';
 
-@connect(state => ({
-    nodesToBeDiscarded: state?.cr?.workspaces?.toBeDiscarded
-}), {
+const {publishableNodesSelector, publishableNodesInDocumentSelector} = selectors.CR.Workspaces;
+
+@connect(state => {
+    const mode = state?.cr?.workspaces?.mode;
+
+    let numberOfChangesToBeDiscarded = 0;
+    if (mode === PublishDiscardMode.DISCARDING) {
+        const scope = state?.cr?.workspaces?.scope;
+
+        if (scope === PublishDiscardScope.SITE) {
+            numberOfChangesToBeDiscarded = publishableNodesSelector(state).length;
+        } else if (scope === PublishDiscardScope.DOCUMENT) {
+            numberOfChangesToBeDiscarded = publishableNodesInDocumentSelector(state).length;
+        }
+    }
+
+    return {numberOfChangesToBeDiscarded};
+}, {
     confirm: actions.CR.Workspaces.confirmDiscard,
     abort: actions.CR.Workspaces.abortDiscard
 })
 export default class DiscardDialog extends PureComponent {
     static propTypes = {
-        nodesToBeDiscarded: PropTypes.array,
+        numberOfChangesToBeDiscarded: PropTypes.number,
         confirm: PropTypes.func.isRequired,
         abort: PropTypes.func.isRequired
     };
@@ -75,11 +91,10 @@ export default class DiscardDialog extends PureComponent {
     }
 
     render() {
-        const {nodesToBeDiscarded} = this.props;
-        if (nodesToBeDiscarded.length === 0) {
+        const {numberOfChangesToBeDiscarded: numberOfChanges} = this.props;
+        if (numberOfChanges === 0) {
             return null;
         }
-        const numberOfChanges = nodesToBeDiscarded.length;
 
         return (
             <Dialog

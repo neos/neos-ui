@@ -9,8 +9,10 @@ export interface Routes {
     ui: {
         service: {
             change: string;
-            publish: string;
-            discard: string;
+            publishChangesInSite: string;
+            publishChangesInDocument: string;
+            discardChangesInSite: string;
+            discardChangesInDocument: string;
             changeBaseWorkspace: string;
             rebaseWorkspace: string;
             copyNodes: string;
@@ -65,8 +67,8 @@ export default (routes: Routes) => {
     })).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
-    const publish = (nodeContextPaths: NodeContextPath[], targetWorkspaceName: WorkspaceName) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
-        url: routes.ui.service.publish,
+    const publishChangesInSite = (siteId: NodeContextPath, workspaceName: WorkspaceName) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+        url: routes.ui.service.publishChangesInSite,
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -74,15 +76,13 @@ export default (routes: Routes) => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            nodeContextPaths,
-            targetWorkspaceName
+            command: {siteId, workspaceName}
         })
     })).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
-    const discard = (nodeContextPaths: NodeContextPath[]) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
-        url: routes.ui.service.discard,
-
+    const publishChangesInDocument = (documentId: NodeContextPath, workspaceName: WorkspaceName) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+        url: routes.ui.service.publishChangesInDocument,
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -90,7 +90,35 @@ export default (routes: Routes) => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            nodeContextPaths
+            command: {documentId, workspaceName}
+        })
+    })).then(response => fetchWithErrorHandling.parseJson(response))
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+
+    const discardChangesInSite = (siteId: NodeContextPath, workspaceName: WorkspaceName) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+        url: routes.ui.service.discardChangesInSite,
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'X-Flow-Csrftoken': csrfToken,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            command: {siteId, workspaceName}
+        })
+    })).then(response => fetchWithErrorHandling.parseJson(response))
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+
+    const discardChangesInDocument = (documentId: NodeContextPath, workspaceName: WorkspaceName) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+        url: routes.ui.service.discardChangesInDocument,
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'X-Flow-Csrftoken': csrfToken,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            command: {documentId, workspaceName}
         })
     })).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
@@ -652,8 +680,10 @@ export default (routes: Routes) => {
     return {
         loadImageMetadata,
         change,
-        publish,
-        discard,
+        publishChangesInSite,
+        publishChangesInDocument,
+        discardChangesInSite,
+        discardChangesInDocument,
         changeBaseWorkspace,
         rebaseWorkspace,
         copyNodes,

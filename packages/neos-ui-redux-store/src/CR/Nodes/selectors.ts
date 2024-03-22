@@ -448,27 +448,37 @@ export const destructiveOperationsAreDisabledForContentTreeSelector = createSele
     }
 );
 
+const parentLineCombiner = (focusedNode: Node | null, nodesByContextPath: NodeMap) => {
+    const result = [focusedNode];
+    let currentNode = focusedNode;
+
+    while (currentNode) {
+        const {parent} = currentNode;
+        if (parent) {
+            currentNode = nodesByContextPath[parent] || null;
+            if (currentNode) {
+                result.push(currentNode);
+            }
+        } else {
+            break;
+        }
+    }
+
+    return result;
+};
+
 export const focusedNodeParentLineSelector = createSelector(
     [
         focusedSelector,
         nodesByContextPathSelector
     ],
-    (focusedNode, nodesByContextPath) => {
-        const result = [focusedNode];
-        let currentNode = focusedNode;
+    parentLineCombiner
+);
 
-        while (currentNode) {
-            const {parent} = currentNode;
-            if (parent) {
-                currentNode = nodesByContextPath[parent] || null;
-                if (currentNode) {
-                    result.push(currentNode);
-                }
-            } else {
-                break;
-            }
-        }
-
-        return result;
-    }
+export const documentNodeParentLineSelector = createSelector(
+    [
+        documentNodeSelector,
+        nodesByContextPathSelector
+    ],
+    parentLineCombiner
 );

@@ -36,5 +36,6 @@ export default function * watchReloadState({configuration}) {
             merge: action?.payload?.merge
         }));
         yield put(actions.UI.PageTree.setAsLoaded(currentSiteNodeContextPath));
+        yield put(actions.CR.Nodes.finishReloadState());
     });
 }

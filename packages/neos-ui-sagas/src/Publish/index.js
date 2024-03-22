@@ -1,26 +1,41 @@
 import {put, call, select, takeEvery, takeLatest, take, race} from 'redux-saga/effects';
 
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
+import {PublishDiscardScope} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces';
 import backend from '@neos-project/neos-ui-backend-connector';
 import {getGuestFrameDocument} from '@neos-project/neos-ui-guest-frame/src/dom';
 
 export function * watchPublish() {
-    const {publish} = backend.get().endpoints;
+    const {publishChangesInSite, publishChangesInDocument} = backend.get().endpoints;
 
-    yield takeEvery(actionTypes.CR.Workspaces.PUBLISH, function * publishNodes(action) {
-        const {nodeContextPaths, targetWorkspaceName} = action.payload;
+    yield takeEvery(actionTypes.CR.Workspaces.PUBLISH_STARTED, function * publishNodes(action) {
+        const {scope} = action.payload;
+        const workspaceName = yield select(selectors.CR.Workspaces.personalWorkspaceNameSelector);
 
-        if (nodeContextPaths.length > 0) {
-            yield put(actions.UI.Remote.startPublishing());
+        yield put(actions.UI.Remote.startPublishing());
 
-            try {
-                const feedback = yield call(publish, nodeContextPaths, targetWorkspaceName);
-                yield put(actions.UI.Remote.finishPublishing());
-                yield put(actions.ServerFeedback.handleServerFeedback(feedback));
-            } catch (error) {
-                console.error('Failed to publish', error);
+        let feedback = null;
+        let publishedNodes = [];
+        try {
+            if (scope === PublishDiscardScope.SITE) {
+                const siteId = yield select(selectors.CR.Nodes.siteNodeContextPathSelector);
+                publishedNodes = yield select(selectors.CR.Workspaces.publishableNodesSelector);
+                feedback = yield call(publishChangesInSite, siteId, workspaceName);
+            } else if (scope === PublishDiscardScope.DOCUMENT) {
+                const documentId = yield select(selectors.CR.Nodes.documentNodeContextPathSelector);
+                publishedNodes = yield select(selectors.CR.Workspaces.publishableNodesInDocumentSelector);
+                feedback = yield call(publishChangesInDocument, documentId, workspaceName);
             }
+        } catch (error) {
+            console.error('Failed to publish', error);
         }
+
+        if (feedback !== null) {
+            yield put(actions.ServerFeedback.handleServerFeedback(feedback));
+        }
+
+        yield put(actions.CR.Workspaces.finishPublish(publishedNodes));
+        yield put(actions.UI.Remote.finishPublishing());
     });
 }
 
@@ -60,10 +75,8 @@ export function * watchRebaseWorkspace() {
     });
 }
 
-export function * discardIfConfirmed() {
-    const {discard} = backend.get().endpoints;
-    yield takeLatest(actionTypes.CR.Workspaces.COMMENCE_DISCARD, function * waitForConfirmation() {
-        const state = yield select();
+export function * discardIfConfirmed({routes}) {
+    yield takeLatest(actionTypes.CR.Workspaces.DISCARD_STARTED, function * waitForConfirmation(action) {
         const waitForNextAction = yield race([
             take(actionTypes.CR.Workspaces.DISCARD_ABORTED),
             take(actionTypes.CR.Workspaces.DISCARD_CONFIRMED)
@@ -75,29 +88,90 @@ export function * discardIfConfirmed() {
         }
 
         if (nextAction.type === actionTypes.CR.Workspaces.DISCARD_CONFIRMED) {
-            yield put(actions.UI.Remote.startDiscarding());
-            const nodesToBeDiscarded = state?.cr?.workspaces?.toBeDiscarded;
-
-            try {
-                const currentContentCanvasContextPath = yield select(selectors.CR.Nodes.documentNodeContextPathSelector);
-
-                const feedback = yield call(discard, nodesToBeDiscarded);
-                yield put(actions.UI.Remote.finishDiscarding());
-                yield put(actions.ServerFeedback.handleServerFeedback(feedback));
-
-                // Check if the currently focused document node has been removed
-                const contentCanvasNodeIsStillThere = Boolean(yield select(selectors.CR.Nodes.byContextPathSelector(currentContentCanvasContextPath)));
-
-                // If not, reload the document
-                if (contentCanvasNodeIsStillThere) {
-                    getGuestFrameDocument().location.reload();
-                }
-
-                // Reload the page tree
-                yield put(actions.CR.Nodes.reloadState());
-            } catch (error) {
-                console.error('Failed to discard', error);
-            }
+            yield * discard(action.payload.scope, routes);
         }
     });
+}
+
+function * discard(scope, routes) {
+    const {discardChangesInSite, discardChangesInDocument} = backend.get().endpoints;
+    const workspaceName = yield select(selectors.CR.Workspaces.personalWorkspaceNameSelector);
+
+    yield put(actions.UI.Remote.startDiscarding());
+
+    let feedback = null;
+    let discardedNodes = [];
+    try {
+        if (scope === PublishDiscardScope.SITE) {
+            const siteId = yield select(selectors.CR.Nodes.siteNodeContextPathSelector);
+            discardedNodes = yield select(selectors.CR.Workspaces.publishableNodesSelector);
+            feedback = yield call(discardChangesInSite, siteId, workspaceName);
+        } else if (scope === PublishDiscardScope.DOCUMENT) {
+            const documentId = yield select(selectors.CR.Nodes.documentNodeContextPathSelector);
+            discardedNodes = yield select(selectors.CR.Workspaces.publishableNodesInDocumentSelector);
+            feedback = yield call(discardChangesInDocument, documentId, workspaceName);
+        }
+    } catch (error) {
+        console.error('Failed to discard', error);
+    }
+
+    if (feedback !== null) {
+        yield put(actions.ServerFeedback.handleServerFeedback(feedback));
+    }
+
+    yield * reloadAfterDiscard(discardedNodes, routes);
+
+    yield put(actions.CR.Workspaces.finishDiscard(discardedNodes));
+    yield put(actions.UI.Remote.finishDiscarding());
+}
+
+const NODE_HAS_BEEN_CREATED = 0b0001;
+
+function * reloadAfterDiscard(discardedNodes, routes) {
+    const currentContentCanvasContextPath = yield select(selectors.CR.Nodes.documentNodeContextPathSelector);
+    const currentDocumentParentLine = yield select(selectors.CR.Nodes.documentNodeParentLineSelector);
+
+    const avilableAncestorDocumentNode = currentDocumentParentLine.reduce((prev, cur) => {
+        if (prev === null) {
+            const hasBeenRemovedByDiscard = discardedNodes.some((discardedNode) => {
+                if (discardedNode.contextPath !== cur.contextPath) {
+                    return false;
+                }
+
+                return Boolean(discardedNode.typeOfChange & NODE_HAS_BEEN_CREATED);
+            });
+
+            if (!hasBeenRemovedByDiscard) {
+                return cur;
+            }
+        }
+
+        return prev;
+    }, null);
+
+    if (avilableAncestorDocumentNode === null) {
+        // We're doomed - there's no document left to navigate to
+        // In this (rather unlikely) case, we leave the UI and navigate
+        // to whatever default entry module is configured:
+        window.location.href = routes?.core?.modules?.defaultModule;
+        return;
+    }
+
+    // Reload all nodes aaand...
+    yield put(actions.CR.Nodes.reloadState({
+        documentNodeContextPath: avilableAncestorDocumentNode.contextPath
+    }));
+    // wait for it.
+    yield take(actionTypes.CR.Nodes.RELOAD_STATE_FINISHED);
+
+    // Check if the currently focused document node has been removed
+    const contentCanvasNodeIsStillThere = Boolean(yield select(selectors.CR.Nodes.byContextPathSelector(currentContentCanvasContextPath)));
+
+    if (contentCanvasNodeIsStillThere) {
+        // If it's still there, reload the document
+        getGuestFrameDocument().location.reload();
+    } else {
+        // If it's gone navigate to the next available ancestor document
+        yield put(actions.UI.ContentCanvas.setSrc(avilableAncestorDocumentNode.uri));
+    }
 }

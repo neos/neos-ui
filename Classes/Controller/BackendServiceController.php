@@ -31,11 +31,11 @@ use Neos\Flow\Mvc\View\JsonView;
 use Neos\Flow\Property\PropertyMapper;
 use Neos\Flow\Security\Context;
 use Neos\Neos\Domain\Service\WorkspaceNameBuilder;
-use Neos\Neos\Domain\Workspace\DiscardDocument;
-use Neos\Neos\Domain\Workspace\DiscardSite;
-use Neos\Neos\Domain\Workspace\PublishDocument;
+use Neos\Neos\Domain\Workspace\DiscardChangesInDocument;
+use Neos\Neos\Domain\Workspace\DiscardChangesInSite;
+use Neos\Neos\Domain\Workspace\PublishChangesInDocument;
+use Neos\Neos\Domain\Workspace\PublishChangesInSite;
 use Neos\Neos\Domain\Workspace\WorkspacePublisher;
-use Neos\Neos\Domain\Workspace\PublishSite;
 use Neos\Neos\FrontendRouting\NodeAddress;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;
@@ -179,10 +179,10 @@ class BackendServiceController extends ActionController
         $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
         $command['contentRepositoryId'] = $contentRepositoryId->value;
         $command['siteId'] = $this->nodeService->deserializeNodeAddress($command['siteId'], $contentRepositoryId)->nodeAggregateId->value;
-        $command = PublishSite::fromArray($command);
+        $command = PublishChangesInSite::fromArray($command);
 
         try {
-            $this->workspacePublisher->publishSite($command);
+            $this->workspacePublisher->publishChangesInSite($command);
 
             $success = new Success();
             $success->setMessage(sprintf('Published.'));
@@ -208,7 +208,7 @@ class BackendServiceController extends ActionController
         $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
         $command['contentRepositoryId'] = $contentRepositoryId->value;
         $command['documentId'] = $this->nodeService->deserializeNodeAddress($command['documentId'], $contentRepositoryId)->nodeAggregateId->value;
-        $command = PublishDocument::fromArray($command);
+        $command = PublishChangesInDocument::fromArray($command);
 
         $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
         $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
@@ -216,7 +216,7 @@ class BackendServiceController extends ActionController
 
         try {
             try {
-                $numberOfChanges = $this->workspacePublisher->publishDocument($command);
+                $numberOfChanges = $this->workspacePublisher->publishChangesInDocument($command);
             } catch (NodeAggregateCurrentlyDoesNotExist $e) {
                 throw new NodeAggregateCurrentlyDoesNotExist(
                     'Node could not be published, probably because of a missing parentNode. Please check that the parentNode has been published.',
@@ -253,10 +253,10 @@ class BackendServiceController extends ActionController
         $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
         $command['contentRepositoryId'] = $contentRepositoryId->value;
         $command['siteId'] = $this->nodeService->deserializeNodeAddress($command['siteId'], $contentRepositoryId)->nodeAggregateId->value;
-        $command = DiscardSite::fromArray($command);
+        $command = DiscardChangesInSite::fromArray($command);
 
         try {
-            $numberOfDiscardedChanges = $this->workspacePublisher->discardSite($command);
+            $numberOfDiscardedChanges = $this->workspacePublisher->discardChangesInSite($command);
 
             $success = new Success();
             $success->setMessage(sprintf('Discarded %d change(s).', $numberOfDiscardedChanges));
@@ -283,10 +283,10 @@ class BackendServiceController extends ActionController
         $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
         $command['contentRepositoryId'] = $contentRepositoryId->value;
         $command['documentId'] = $this->nodeService->deserializeNodeAddress($command['documentId'], $contentRepositoryId)->nodeAggregateId->value;
-        $command = DiscardDocument::fromArray($command);
+        $command = DiscardChangesInDocument::fromArray($command);
 
         try {
-            $numberOfDiscardedChanges = $this->workspacePublisher->discardDocument($command);
+            $numberOfDiscardedChanges = $this->workspacePublisher->discardChangesInDocument($command);
 
             $success = new Success();
             $success->setMessage(sprintf('Discarded %d change(s).', $numberOfDiscardedChanges));

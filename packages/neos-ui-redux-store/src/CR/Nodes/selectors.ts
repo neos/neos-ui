@@ -66,7 +66,7 @@ export const makeGetDocumentNodes = (nodeTypesRegistry: NodeTypesRegistry) => cr
     }
 );
 
-export const makeGetCollapsableDocumentNodes = (nodeTypesRegistry: NodeTypesRegistry) => createSelector(
+export const makeGetCollapsibleDocumentNodes = (nodeTypesRegistry: NodeTypesRegistry) => createSelector(
     [
         nodesByContextPathSelector
     ],
@@ -83,10 +83,10 @@ export const makeGetCollapsableDocumentNodes = (nodeTypesRegistry: NodeTypesRegi
             if (!node) {
                 throw new Error('This error should never be thrown, it\'s a way to fool TypeScript');
             }
-            const isCollapsable = node.children.some(
+            const isCollapsible = node.children.some(
                 child => child ? documentSubNodeTypes.includes(child.nodeType) : false
             )
-            if (documentSubNodeTypes.includes(node.nodeType) && isCollapsable) {
+            if (documentSubNodeTypes.includes(node.nodeType) && isCollapsible) {
                 result[contextPath] = node;
             }
         });
@@ -94,7 +94,7 @@ export const makeGetCollapsableDocumentNodes = (nodeTypesRegistry: NodeTypesRegi
     }
 );
 
-export const makeGetCollapsableContentNodes = (nodeTypesRegistry: NodeTypesRegistry) => createSelector(
+export const makeGetCollapsibleContentNodes = (nodeTypesRegistry: NodeTypesRegistry) => createSelector(
     [
         nodesByContextPathSelector
     ],
@@ -116,10 +116,10 @@ export const makeGetCollapsableContentNodes = (nodeTypesRegistry: NodeTypesRegis
             if (!node) {
                 throw new Error('This error should never be thrown, it\'s a way to fool TypeScript');
             }
-            const isCollapsable = node.children.some(
+            const isCollapsible = node.children.some(
                 child => child ? contentSubNodeTypes.includes(child.nodeType) : false
             )
-            if (contentSubNodeTypes.includes(node.nodeType) && isCollapsable) {
+            if (contentSubNodeTypes.includes(node.nodeType) && isCollapsible) {
                 result[contextPath] = node;
             }
         });

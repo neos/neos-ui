@@ -35,7 +35,7 @@ export default class NodeTree extends PureComponent {
         setActiveContentCanvasSrc: PropTypes.func,
         setActiveContentCanvasContextPath: PropTypes.func,
         moveNodes: PropTypes.func,
-        allCollapsableNodes: PropTypes.object,
+        allCollapsibleNodes: PropTypes.object,
         loadingDepth: PropTypes.number
     };
 
@@ -50,11 +50,11 @@ export default class NodeTree extends PureComponent {
     }
 
     handleCollapseAll = () => {
-        const {collapseAll, allCollapsableNodes, rootNode, loadingDepth} = this.props
+        const {collapseAll, allCollapsibleNodes, rootNode, loadingDepth} = this.props
         let nodeContextPaths = []
         const collapsedByDefaultNodesContextPaths = []
 
-        Object.values(allCollapsableNodes).forEach(node => {
+        Object.values(allCollapsibleNodes).forEach(node => {
             const collapsedByDefault = loadingDepth === 0 ? false : node.depth - rootNode.depth >= loadingDepth
             if (collapsedByDefault) {
                 collapsedByDefaultNodesContextPaths.push(node.contextPath)
@@ -183,14 +183,14 @@ const withNodeTypeRegistry = neos(globalRegistry => ({
 
 export const PageTree = withNodeTypeRegistry(connect(
     (state, {neos, nodeTypesRegistry}) => {
-        const documentNodesSelector = selectors.CR.Nodes.makeGetCollapsableDocumentNodes(nodeTypesRegistry);
+        const documentNodesSelector = selectors.CR.Nodes.makeGetCollapsibleDocumentNodes(nodeTypesRegistry);
         return ({
             rootNode: selectors.CR.Nodes.siteNodeSelector(state),
             focusedNodesContextPaths: selectors.UI.PageTree.getAllFocused(state),
             ChildRenderer: PageTreeNode,
             allowOpeningNodesInNewWindow: true,
             loadingDepth: neos.configuration.structureTree.loadingDepth,
-            allCollapsableNodes: documentNodesSelector(state)
+            allCollapsibleNodes: documentNodesSelector(state)
         })
     }, {
         toggle: actions.UI.PageTree.toggle,
@@ -208,14 +208,14 @@ export const PageTree = withNodeTypeRegistry(connect(
 
 export const ContentTree = withNodeTypeRegistry(connect(
     (state, {neos, nodeTypesRegistry}) => {
-        const contentNodesSelector = selectors.CR.Nodes.makeGetCollapsableContentNodes(nodeTypesRegistry);
+        const contentNodesSelector = selectors.CR.Nodes.makeGetCollapsibleContentNodes(nodeTypesRegistry);
         return ({
             rootNode: selectors.CR.Nodes.documentNodeSelector(state),
             focusedNodesContextPaths: selectors.CR.Nodes.focusedNodePathsSelector(state),
             ChildRenderer: ContentTreeNode,
             allowOpeningNodesInNewWindow: false,
             loadingDepth: neos.configuration.structureTree.loadingDepth,
-            allCollapsableNodes: contentNodesSelector(state)
+            allCollapsibleNodes: contentNodesSelector(state)
         })
     }, {
         toggle: actions.UI.ContentTree.toggle,

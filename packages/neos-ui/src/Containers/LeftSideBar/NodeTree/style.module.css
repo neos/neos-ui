@@ -16,12 +16,12 @@
     right: 0;
     top: 0;
     opacity: .5;
-    text-align: center;
     cursor: pointer;
     z-index: 5;
-    padding: 10px 5px 0 5px;
+    padding: 8px;
+    font-size: 1.4em;
 
-    &:hover {
+    &:hover > svg {
         color: var(--colors-PrimaryBlueHover);
     }
 }

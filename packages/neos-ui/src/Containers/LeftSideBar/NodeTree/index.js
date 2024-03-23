@@ -150,8 +150,9 @@ export default class NodeTree extends PureComponent {
                     role="button"
                     onClick={this.handleCollapseAll}
                     className={style.collapseAll}
+                    title="Collapse All"
                 >
-                    Collapse All
+                    <Icon icon="compress-alt"/>
                 </a>
                 <ConnectedDragLayer
                     nodeDndType={dndTypes.NODE}

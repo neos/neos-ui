@@ -31,6 +31,7 @@ export enum actionTypes {
     REQUEST_CHILDREN = '@neos/neos-ui/UI/ContentTree/REQUEST_CHILDREN',
     SET_AS_LOADING = '@neos/neos-ui/UI/ContentTree/SET_AS_LOADING',
     SET_AS_LOADED = '@neos/neos-ui/UI/ContentTree/SET_AS_LOADED',
+    COLLAPSE_ALL = '@neos/neos-ui/UI/ContentTree/COLLAPSE_ALL'
 }
 
 const toggle = (contextPath: NodeContextPath) => createAction(actionTypes.TOGGLE, contextPath);
@@ -40,6 +41,10 @@ const reloadTree = () => createAction(actionTypes.RELOAD_TREE);
 const requestChildren = (contextPath: NodeContextPath, {unCollapse = true, activate = false} = {}) => createAction(actionTypes.REQUEST_CHILDREN, {contextPath, opts: {unCollapse, activate}});
 const setAsLoading = (contextPath: NodeContextPath) => createAction(actionTypes.SET_AS_LOADING, {contextPath});
 const setAsLoaded = (contextPath: NodeContextPath) => createAction(actionTypes.SET_AS_LOADED, {contextPath});
+const collapseAll = (
+    nodeContextPaths: NodeContextPath[],
+    collapsedByDefaultNodeContextPaths: NodeContextPath[]
+) => createAction(actionTypes.COLLAPSE_ALL, {nodeContextPaths, collapsedByDefaultNodeContextPaths});
 
 //
 // Export the actions
@@ -51,7 +56,8 @@ export const actions = {
     reloadTree,
     requestChildren,
     setAsLoading,
-    setAsLoaded
+    setAsLoaded,
+    collapseAll
 };
 
 export type Action = ActionType<typeof actions>;
@@ -87,6 +93,22 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
         case actionTypes.SET_AS_LOADED: {
             const {contextPath} = action.payload;
             draft.loading = draft.loading.filter(i => i !== contextPath);
+            break;
+        }
+        case actionTypes.COLLAPSE_ALL: {
+            const {nodeContextPaths, collapsedByDefaultNodeContextPaths} = action.payload;
+
+            nodeContextPaths.forEach(path => {
+                if (!draft.toggled.includes(path)) {
+                    draft.toggled.push(path);
+                }
+            });
+
+            collapsedByDefaultNodeContextPaths.forEach(path => {
+                if (draft.toggled.includes(path)) {
+                    draft.toggled = draft.toggled.filter(i => i !== path);
+                }
+            });
             break;
         }
     }

@@ -6,6 +6,12 @@ import {TypeOfChange} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces'
 import backend from '@neos-project/neos-ui-backend-connector';
 import {getGuestFrameDocument} from '@neos-project/neos-ui-guest-frame/src/dom';
 
+const handleWindowBeforeUnload = (event) => {
+    event.preventDefault();
+    event.returnValue = true;
+    return true;
+};
+
 export function * watchPublishing({routes}) {
     const {endpoints} = backend.get();
     const ENDPOINT_BY_MODE_AND_SCOPE = {
@@ -50,6 +56,7 @@ export function * watchPublishing({routes}) {
         let affectedNodes = [];
         do {
             try {
+                window.addEventListener('beforeunload', handleWindowBeforeUnload);
                 const result = yield call(endpoint, ancestorId, workspaceName);
 
                 if ('success' in result) {
@@ -66,6 +73,8 @@ export function * watchPublishing({routes}) {
                 }
             } catch (error) {
                 yield put(actions.CR.Publishing.fail(error));
+            } finally {
+                window.removeEventListener('beforeunload', handleWindowBeforeUnload);
             }
         } while (yield * waitForRetry());
 

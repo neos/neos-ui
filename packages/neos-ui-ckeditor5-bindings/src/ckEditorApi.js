@@ -57,12 +57,16 @@ export const createEditor = store => async options => {
     return NeosEditor
         .create(propertyDomNode, ckEditorConfig)
         .then(editor => {
+            console.log('editor.ui', editor.ui);
             editor.ui.focusTracker.on('change:isFocused', event => {
-                if (event.source.isFocused) {
-                    currentEditor = editor;
-                    editorConfig.setCurrentlyEditedPropertyName(propertyName);
-                    handleUserInteractionCallback();
+                if (!event.source.isFocused) {
+                    onChange(cleanupContentBeforeCommit(editor.getData()))
+                    return
                 }
+
+                currentEditor = editor;
+                editorConfig.setCurrentlyEditedPropertyName(propertyName);
+                handleUserInteractionCallback();
             });
 
             editor.keystrokes.set('Ctrl+K', (_, cancel) => {
@@ -71,7 +75,7 @@ export const createEditor = store => async options => {
             });
 
             editor.model.document.on('change', () => handleUserInteractionCallback());
-            editor.model.document.on('change:data', debounce(() => onChange(cleanupContentBeforeCommit(editor.getData())), 500, {maxWait: 5000}));
+            editor.model.document.on('change:data', debounce(() => onChange(cleanupContentBeforeCommit(editor.getData())), 1500, {maxWait: 5000}));
             return editor;
         }).catch(e => {
             if (e instanceof TypeError && e.message.match(/Class constructor .* cannot be invoked without 'new'/)) {

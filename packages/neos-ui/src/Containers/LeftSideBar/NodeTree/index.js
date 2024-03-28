@@ -146,14 +146,13 @@ export default class NodeTree extends PureComponent {
 
         return (
             <Tree className={classNames}>
-                <a
-                    role="button"
+                <button
                     onClick={this.handleCollapseAll}
                     className={style.collapseAll}
                     title="Collapse All"
                 >
-                    <Icon icon="compress-alt"/>
-                </a>
+                    <Icon className={style.collapseAllIcon} icon="compress-alt"/>
+                </button>
                 <ConnectedDragLayer
                     nodeDndType={dndTypes.NODE}
                     ChildRenderer={ChildRenderer}

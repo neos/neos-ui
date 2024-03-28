@@ -19,9 +19,18 @@
     cursor: pointer;
     z-index: 5;
     padding: var(--spacing-Half);
-    font-size: 1.4em;
+    background-color: transparent;
+    border: 0;
 
-    &:hover > svg {
+    .collapseAllIcon {
+        font-size: 1.2em;
+    }
+
+    &:hover > .collapseAllIcon {
         color: var(--colors-PrimaryBlueHover);
+    }
+
+    &:hover {
+        opacity: 1;
     }
 }

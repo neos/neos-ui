@@ -36,7 +36,8 @@ export default class NodeTree extends PureComponent {
         setActiveContentCanvasContextPath: PropTypes.func,
         moveNodes: PropTypes.func,
         allCollapsibleNodes: PropTypes.object,
-        loadingDepth: PropTypes.number
+        loadingDepth: PropTypes.number,
+        i18nRegistry: PropTypes.object.isRequired
     };
 
     state = {
@@ -131,7 +132,7 @@ export default class NodeTree extends PureComponent {
     }
 
     render() {
-        const {rootNode, ChildRenderer} = this.props;
+        const {rootNode, ChildRenderer, i18nRegistry} = this.props;
         if (!rootNode) {
             return (
                 <div className={style.loader}>
@@ -149,7 +150,7 @@ export default class NodeTree extends PureComponent {
                 <button
                     onClick={this.handleCollapseAll}
                     className={style.collapseAll}
-                    title="Collapse All"
+                    title={i18nRegistry.translate('collapseAll')}
                 >
                     <Icon className={style.collapseAllIcon} icon="compress-alt"/>
                 </button>
@@ -177,11 +178,12 @@ export default class NodeTree extends PureComponent {
     }
 }
 
-const withNodeTypeRegistry = neos(globalRegistry => ({
-    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
+const withNodeTypeRegistryAndI18nRegistry = neos(globalRegistry => ({
+    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),
+    i18nRegistry: globalRegistry.get('i18n')
 }));
 
-export const PageTree = withNodeTypeRegistry(connect(
+export const PageTree = withNodeTypeRegistryAndI18nRegistry(connect(
     (state, {neos, nodeTypesRegistry}) => {
         const documentNodesSelector = selectors.CR.Nodes.makeGetCollapsibleDocumentNodes(nodeTypesRegistry);
         return ({
@@ -206,7 +208,7 @@ export const PageTree = withNodeTypeRegistry(connect(
     }
 )(NodeTree));
 
-export const ContentTree = withNodeTypeRegistry(connect(
+export const ContentTree = withNodeTypeRegistryAndI18nRegistry(connect(
     (state, {neos, nodeTypesRegistry}) => {
         const contentNodesSelector = selectors.CR.Nodes.makeGetCollapsibleContentNodes(nodeTypesRegistry);
         return ({

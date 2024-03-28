@@ -27,6 +27,7 @@ Neos:
             - Error
             - Main
             - PublishingDialog
+            - SyncWorkspaceDialog
     fusion:
       autoInclude:
         Neos.Neos.Ui: true

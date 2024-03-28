@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file original="" product-name="Neos.Neos.Ui" source-language="en" datatype="plaintext" target-language="en">
+    <body>
+      <trans-unit id="confirmation.title" xml:space="preserve">
+        <source>Synchronize workspace "{workspaceName}" with "{baseWorkspaceName}"</source>
+      </trans-unit>
+      <trans-unit id="confirmation.message" xml:space="preserve">
+        <source>Workspace "{baseWorkspaceName}" has been modified. You need to synchronize your workspace "{workspaceName}" with it in order to see those changes and avoid conflicts. Do you wish to proceed?</source>
+      </trans-unit>
+      <trans-unit id="confirmation.cancel" xml:space="preserve">
+        <source>No, cancel</source>
+      </trans-unit>
+      <trans-unit id="confirmation.confirm" xml:space="preserve">
+        <source>Yes, synchronize now</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

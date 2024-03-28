@@ -1,42 +1,165 @@
-import {put, call, select, takeEvery, takeLatest, take, race} from 'redux-saga/effects';
+import {put, call, select, takeEvery, take, race} from 'redux-saga/effects';
 
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
-import {PublishDiscardScope} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces';
+import {PublishingMode, PublishingScope} from '@neos-project/neos-ui-redux-store/src/CR/Publishing';
+import {TypeOfChange} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces';
 import backend from '@neos-project/neos-ui-backend-connector';
 import {getGuestFrameDocument} from '@neos-project/neos-ui-guest-frame/src/dom';
 
-export function * watchPublish() {
-    const {publishChangesInSite, publishChangesInDocument} = backend.get().endpoints;
+const handleWindowBeforeUnload = (event) => {
+    event.preventDefault();
+    event.returnValue = true;
+    return true;
+};
 
-    yield takeEvery(actionTypes.CR.Workspaces.PUBLISH_STARTED, function * publishNodes(action) {
-        const {scope} = action.payload;
+export function * watchPublishing({routes}) {
+    const {endpoints} = backend.get();
+    const ENDPOINT_BY_MODE_AND_SCOPE = {
+        [PublishingMode.PUBLISH]: {
+            [PublishingScope.SITE]:
+                endpoints.publishChangesInSite,
+            [PublishingScope.DOCUMENT]:
+                endpoints.publishChangesInDocument
+        },
+        [PublishingMode.DISCARD]: {
+            [PublishingScope.SITE]:
+                endpoints.discardChangesInSite,
+            [PublishingScope.DOCUMENT]:
+                endpoints.discardChangesInDocument
+        }
+    };
+    const SELECTORS_BY_SCOPE = {
+        [PublishingScope.SITE]: {
+            ancestorIdSelector: selectors.CR.Nodes.siteNodeContextPathSelector,
+            publishableNodesSelector: selectors.CR.Workspaces.publishableNodesSelector
+        },
+        [PublishingScope.DOCUMENT]: {
+            ancestorIdSelector: selectors.CR.Nodes.documentNodeContextPathSelector,
+            publishableNodesSelector: selectors.CR.Workspaces.publishableNodesInDocumentSelector
+        }
+    };
+
+    yield takeEvery(actionTypes.CR.Publishing.STARTED, function * publishingWorkflow(action) {
+        const confirmed = yield * waitForConfirmation();
+        if (!confirmed) {
+            return;
+        }
+
+        const {scope, mode} = action.payload;
+        const endpoint = ENDPOINT_BY_MODE_AND_SCOPE[mode][scope];
+        const {ancestorIdSelector, publishableNodesSelector} = SELECTORS_BY_SCOPE[scope];
+
         const workspaceName = yield select(selectors.CR.Workspaces.personalWorkspaceNameSelector);
+        const ancestorId = yield select(ancestorIdSelector);
+        const publishableNodes = yield select(publishableNodesSelector);
 
-        yield put(actions.UI.Remote.startPublishing());
+        let affectedNodes = [];
+        do {
+            try {
+                window.addEventListener('beforeunload', handleWindowBeforeUnload);
+                const result = yield call(endpoint, ancestorId, workspaceName);
 
-        let feedback = null;
-        let publishedNodes = [];
-        try {
-            if (scope === PublishDiscardScope.SITE) {
-                const siteId = yield select(selectors.CR.Nodes.siteNodeContextPathSelector);
-                publishedNodes = yield select(selectors.CR.Workspaces.publishableNodesSelector);
-                feedback = yield call(publishChangesInSite, siteId, workspaceName);
-            } else if (scope === PublishDiscardScope.DOCUMENT) {
-                const documentId = yield select(selectors.CR.Nodes.documentNodeContextPathSelector);
-                publishedNodes = yield select(selectors.CR.Workspaces.publishableNodesInDocumentSelector);
-                feedback = yield call(publishChangesInDocument, documentId, workspaceName);
+                if ('success' in result) {
+                    affectedNodes = publishableNodes;
+                    yield put(actions.CR.Publishing.succeed());
+
+                    if (mode === PublishingMode.DISCARD) {
+                        yield * reloadAfterDiscard(publishableNodes, routes);
+                    }
+                } else if ('error' in result) {
+                    yield put(actions.CR.Publishing.fail(result.error));
+                } else {
+                    yield put(actions.CR.Publishing.fail(null));
+                }
+            } catch (error) {
+                yield put(actions.CR.Publishing.fail(error));
+            } finally {
+                window.removeEventListener('beforeunload', handleWindowBeforeUnload);
             }
-        } catch (error) {
-            console.error('Failed to publish', error);
-        }
+        } while (yield * waitForRetry());
 
-        if (feedback !== null) {
-            yield put(actions.ServerFeedback.handleServerFeedback(feedback));
-        }
-
-        yield put(actions.CR.Workspaces.finishPublish(publishedNodes));
-        yield put(actions.UI.Remote.finishPublishing());
+        yield put(actions.CR.Publishing.finish(affectedNodes));
     });
+}
+
+function * waitForConfirmation() {
+    const waitForNextAction = yield race([
+        take(actionTypes.CR.Publishing.CANCELLED),
+        take(actionTypes.CR.Publishing.CONFIRMED)
+    ]);
+    const [nextAction] = Object.values(waitForNextAction);
+
+    if (nextAction.type === actionTypes.CR.Publishing.CONFIRMED) {
+        return true;
+    }
+
+    return false;
+}
+
+function * waitForRetry() {
+    const waitForNextAction = yield race([
+        take(actionTypes.CR.Publishing.ACKNOWLEDGED),
+        take(actionTypes.CR.Publishing.RETRIED)
+    ]);
+    const [nextAction] = Object.values(waitForNextAction);
+
+    if (nextAction.type === actionTypes.CR.Publishing.RETRIED) {
+        return true;
+    }
+
+    return false;
+}
+
+function * reloadAfterDiscard(discardedNodes, routes) {
+    const currentContentCanvasContextPath = yield select(selectors.CR.Nodes.documentNodeContextPathSelector);
+    const currentDocumentParentLine = yield select(selectors.CR.Nodes.documentNodeParentLineSelector);
+
+    const avilableAncestorDocumentNode = currentDocumentParentLine.reduce((prev, cur) => {
+        if (prev === null) {
+            const hasBeenRemovedByDiscard = discardedNodes.some((discardedNode) => {
+                if (discardedNode.contextPath !== cur.contextPath) {
+                    return false;
+                }
+
+                return Boolean(
+                    discardedNode.typeOfChange
+                    & TypeOfChange.NODE_HAS_BEEN_CREATED
+                );
+            });
+
+            if (!hasBeenRemovedByDiscard) {
+                return cur;
+            }
+        }
+
+        return prev;
+    }, null);
+
+    if (avilableAncestorDocumentNode === null) {
+        // We're doomed - there's no document left to navigate to
+        // In this (rather unlikely) case, we leave the UI and navigate
+        // to whatever default entry module is configured:
+        window.location.href = routes?.core?.modules?.defaultModule;
+        return;
+    }
+
+    // Reload all nodes aaand...
+    yield put(actions.CR.Nodes.reloadState({
+        documentNodeContextPath: avilableAncestorDocumentNode.contextPath
+    }));
+    // wait for it.
+    yield take(actionTypes.CR.Nodes.RELOAD_STATE_FINISHED);
+
+    // Check if the currently focused document node has been removed
+    const contentCanvasNodeIsStillThere = Boolean(yield select(selectors.CR.Nodes.byContextPathSelector(currentContentCanvasContextPath)));
+
+    if (contentCanvasNodeIsStillThere) {
+        // If it's still there, reload the document
+        getGuestFrameDocument().location.reload();
+    } else {
+        // If it's gone navigate to the next available ancestor document
+        yield put(actions.UI.ContentCanvas.setSrc(avilableAncestorDocumentNode.uri));
+    }
 }
 
 export function * watchChangeBaseWorkspace() {
@@ -73,105 +196,4 @@ export function * watchRebaseWorkspace() {
             yield put(actions.UI.Remote.finishSynchronization());
         }
     });
-}
-
-export function * discardIfConfirmed({routes}) {
-    yield takeLatest(actionTypes.CR.Workspaces.DISCARD_STARTED, function * waitForConfirmation(action) {
-        const waitForNextAction = yield race([
-            take(actionTypes.CR.Workspaces.DISCARD_ABORTED),
-            take(actionTypes.CR.Workspaces.DISCARD_CONFIRMED)
-        ]);
-        const nextAction = Object.values(waitForNextAction)[0];
-
-        if (nextAction.type === actionTypes.CR.Workspaces.DISCARD_ABORTED) {
-            return;
-        }
-
-        if (nextAction.type === actionTypes.CR.Workspaces.DISCARD_CONFIRMED) {
-            yield * discard(action.payload.scope, routes);
-        }
-    });
-}
-
-function * discard(scope, routes) {
-    const {discardChangesInSite, discardChangesInDocument} = backend.get().endpoints;
-    const workspaceName = yield select(selectors.CR.Workspaces.personalWorkspaceNameSelector);
-
-    yield put(actions.UI.Remote.startDiscarding());
-
-    let feedback = null;
-    let discardedNodes = [];
-    try {
-        if (scope === PublishDiscardScope.SITE) {
-            const siteId = yield select(selectors.CR.Nodes.siteNodeContextPathSelector);
-            discardedNodes = yield select(selectors.CR.Workspaces.publishableNodesSelector);
-            feedback = yield call(discardChangesInSite, siteId, workspaceName);
-        } else if (scope === PublishDiscardScope.DOCUMENT) {
-            const documentId = yield select(selectors.CR.Nodes.documentNodeContextPathSelector);
-            discardedNodes = yield select(selectors.CR.Workspaces.publishableNodesInDocumentSelector);
-            feedback = yield call(discardChangesInDocument, documentId, workspaceName);
-        }
-    } catch (error) {
-        console.error('Failed to discard', error);
-    }
-
-    if (feedback !== null) {
-        yield put(actions.ServerFeedback.handleServerFeedback(feedback));
-    }
-
-    yield * reloadAfterDiscard(discardedNodes, routes);
-
-    yield put(actions.CR.Workspaces.finishDiscard(discardedNodes));
-    yield put(actions.UI.Remote.finishDiscarding());
-}
-
-const NODE_HAS_BEEN_CREATED = 0b0001;
-
-function * reloadAfterDiscard(discardedNodes, routes) {
-    const currentContentCanvasContextPath = yield select(selectors.CR.Nodes.documentNodeContextPathSelector);
-    const currentDocumentParentLine = yield select(selectors.CR.Nodes.documentNodeParentLineSelector);
-
-    const avilableAncestorDocumentNode = currentDocumentParentLine.reduce((prev, cur) => {
-        if (prev === null) {
-            const hasBeenRemovedByDiscard = discardedNodes.some((discardedNode) => {
-                if (discardedNode.contextPath !== cur.contextPath) {
-                    return false;
-                }
-
-                return Boolean(discardedNode.typeOfChange & NODE_HAS_BEEN_CREATED);
-            });
-
-            if (!hasBeenRemovedByDiscard) {
-                return cur;
-            }
-        }
-
-        return prev;
-    }, null);
-
-    if (avilableAncestorDocumentNode === null) {
-        // We're doomed - there's no document left to navigate to
-        // In this (rather unlikely) case, we leave the UI and navigate
-        // to whatever default entry module is configured:
-        window.location.href = routes?.core?.modules?.defaultModule;
-        return;
-    }
-
-    // Reload all nodes aaand...
-    yield put(actions.CR.Nodes.reloadState({
-        documentNodeContextPath: avilableAncestorDocumentNode.contextPath
-    }));
-    // wait for it.
-    yield take(actionTypes.CR.Nodes.RELOAD_STATE_FINISHED);
-
-    // Check if the currently focused document node has been removed
-    const contentCanvasNodeIsStillThere = Boolean(yield select(selectors.CR.Nodes.byContextPathSelector(currentContentCanvasContextPath)));
-
-    if (contentCanvasNodeIsStillThere) {
-        // If it's still there, reload the document
-        getGuestFrameDocument().location.reload();
-    } else {
-        // If it's gone navigate to the next available ancestor document
-        yield put(actions.UI.ContentCanvas.setSrc(avilableAncestorDocumentNode.uri));
-    }
 }

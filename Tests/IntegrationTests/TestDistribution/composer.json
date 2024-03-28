@@ -14,7 +14,7 @@
     "require": {
       "neos/flow-development-collection": "9.0.x-dev as 9.0",
 
-      "neos/neos-development-collection": "9.0.x-dev as 9.0",
+      "neos/neos-development-collection": "dev-publishingBonanza as 9.0",
 
       "neos/neos-ui": "9.0.x-dev as 9.0",
       "neos/neos-ui-compiled": "9.0.x-dev as 9.0",
@@ -32,9 +32,6 @@
     },
     "extra": {
       "patches": {
-        "neos/neos-development-collection": {
-          "Publishing Bonanza": "https://github.com/neos/neos-development-collection/pull/4943.patch"
-        }
       }
     },
     "repositories": {

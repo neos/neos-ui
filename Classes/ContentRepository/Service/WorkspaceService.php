@@ -59,7 +59,7 @@ class WorkspaceService
     /**
      * Get all publishable node context paths for a workspace
      *
-     * @return array<int,array<string,string>>
+     * @return array<int,array<string,string|int>>
      */
     public function getPublishableNodeInfo(WorkspaceName $workspaceName, ContentRepositoryId $contentRepositoryId): array
     {

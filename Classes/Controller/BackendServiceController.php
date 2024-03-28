@@ -31,15 +31,15 @@ use Neos\Flow\Mvc\View\JsonView;
 use Neos\Flow\Property\PropertyMapper;
 use Neos\Flow\Security\Context;
 use Neos\Neos\Domain\Service\WorkspaceNameBuilder;
-use Neos\Neos\Domain\Workspace\DiscardChangesInDocument;
-use Neos\Neos\Domain\Workspace\DiscardChangesInSite;
-use Neos\Neos\Domain\Workspace\PublishChangesInDocument;
-use Neos\Neos\Domain\Workspace\PublishChangesInSite;
-use Neos\Neos\Domain\Workspace\WorkspacePublisher;
+use Neos\Neos\Domain\Workspace\WorkspaceFactory;
 use Neos\Neos\FrontendRouting\NodeAddress;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;
 use Neos\Neos\Service\UserService;
+use Neos\Neos\Ui\Application\DiscardChangesInDocument;
+use Neos\Neos\Ui\Application\DiscardChangesInSite;
+use Neos\Neos\Ui\Application\PublishChangesInDocument;
+use Neos\Neos\Ui\Application\PublishChangesInSite;
 use Neos\Neos\Ui\ContentRepository\Service\NeosUiNodeService;
 use Neos\Neos\Ui\Domain\Model\Feedback\Messages\Error;
 use Neos\Neos\Ui\Domain\Model\Feedback\Messages\Info;
@@ -127,9 +127,9 @@ class BackendServiceController extends ActionController
 
     /**
      * @Flow\Inject
-     * @var WorkspacePublisher
+     * @var WorkspaceFactory
      */
-    protected $workspacePublisher;
+    protected $workspaceFactory;
 
     /**
      * Set the controller context on the feedback collection after the controller
@@ -178,11 +178,18 @@ class BackendServiceController extends ActionController
         /** @todo send from UI */
         $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
         $command['contentRepositoryId'] = $contentRepositoryId->value;
-        $command['siteId'] = $this->nodeService->deserializeNodeAddress($command['siteId'], $contentRepositoryId)->nodeAggregateId->value;
+        $command['siteId'] = $this->nodeService->deserializeNodeAddress(
+            $command['siteId'],
+            $contentRepositoryId
+        )->nodeAggregateId->value;
         $command = PublishChangesInSite::fromArray($command);
 
         try {
-            $this->workspacePublisher->publishChangesInSite($command);
+            $workspace = $this->workspaceFactory->create(
+                $command->contentRepositoryId,
+                $command->workspaceName
+            );
+            $workspace->publishChangesInSite($command->siteId);
 
             $success = new Success();
             $success->setMessage(sprintf('Published.'));
@@ -207,16 +214,25 @@ class BackendServiceController extends ActionController
         /** @todo send from UI */
         $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
         $command['contentRepositoryId'] = $contentRepositoryId->value;
-        $command['documentId'] = $this->nodeService->deserializeNodeAddress($command['documentId'], $contentRepositoryId)->nodeAggregateId->value;
+        $command['documentId'] = $this->nodeService->deserializeNodeAddress(
+            $command['documentId'],
+            $contentRepositoryId
+        )->nodeAggregateId->value;
         $command = PublishChangesInDocument::fromArray($command);
 
         $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
         $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
-        $baseWorkspaceName = $contentRepository->getWorkspaceFinder()->findOneByName($command->workspaceName)->baseWorkspaceName;
+        $baseWorkspaceName = $contentRepository->getWorkspaceFinder()->findOneByName(
+            $command->workspaceName
+        )->baseWorkspaceName;
 
         try {
             try {
-                $numberOfChanges = $this->workspacePublisher->publishChangesInDocument($command);
+                $workspace = $this->workspaceFactory->create(
+                    $command->contentRepositoryId,
+                    $command->workspaceName
+                );
+                $numberOfChanges = $workspace->publishChangesInDocument($command->documentId);
             } catch (NodeAggregateCurrentlyDoesNotExist $e) {
                 throw new NodeAggregateCurrentlyDoesNotExist(
                     'Node could not be published, probably because of a missing parentNode. Please check that the parentNode has been published.',
@@ -225,11 +241,13 @@ class BackendServiceController extends ActionController
             }
 
             $success = new Success();
-            $success->setMessage(sprintf(
-                'Published %d change(s) to %s.',
-                $numberOfChanges,
-                $baseWorkspaceName->value
-            ));
+            $success->setMessage(
+                sprintf(
+                    'Published %d change(s) to %s.',
+                    $numberOfChanges,
+                    $baseWorkspaceName->value
+                )
+            );
 
             $this->feedbackCollection->add($success);
         } catch (\Exception $e) {
@@ -252,11 +270,18 @@ class BackendServiceController extends ActionController
         /** @todo send from UI */
         $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
         $command['contentRepositoryId'] = $contentRepositoryId->value;
-        $command['siteId'] = $this->nodeService->deserializeNodeAddress($command['siteId'], $contentRepositoryId)->nodeAggregateId->value;
+        $command['siteId'] = $this->nodeService->deserializeNodeAddress(
+            $command['siteId'],
+            $contentRepositoryId
+        )->nodeAggregateId->value;
         $command = DiscardChangesInSite::fromArray($command);
 
         try {
-            $numberOfDiscardedChanges = $this->workspacePublisher->discardChangesInSite($command);
+            $workspace = $this->workspaceFactory->create(
+                $command->contentRepositoryId,
+                $command->workspaceName
+            );
+            $numberOfDiscardedChanges = $workspace->discardChangesInSite($command->siteId);
 
             $success = new Success();
             $success->setMessage(sprintf('Discarded %d change(s).', $numberOfDiscardedChanges));
@@ -282,11 +307,18 @@ class BackendServiceController extends ActionController
         /** @todo send from UI */
         $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
         $command['contentRepositoryId'] = $contentRepositoryId->value;
-        $command['documentId'] = $this->nodeService->deserializeNodeAddress($command['documentId'], $contentRepositoryId)->nodeAggregateId->value;
+        $command['documentId'] = $this->nodeService->deserializeNodeAddress(
+            $command['documentId'],
+            $contentRepositoryId
+        )->nodeAggregateId->value;
         $command = DiscardChangesInDocument::fromArray($command);
 
         try {
-            $numberOfDiscardedChanges = $this->workspacePublisher->discardChangesInDocument($command);
+            $workspace = $this->workspaceFactory->create(
+                $command->contentRepositoryId,
+                $command->workspaceName
+            );
+            $numberOfDiscardedChanges = $workspace->discardChangesInDocument($command->documentId);
 
             $success = new Success();
             $success->setMessage(sprintf('Discarded %d change(s).', $numberOfDiscardedChanges));
@@ -328,9 +360,11 @@ class BackendServiceController extends ActionController
             $contentRepository->handle($command)->block();
         } catch (WorkspaceIsNotEmptyException $exception) {
             $error = new Error();
-            $error->setMessage('Your personal workspace currently contains unpublished changes.'
+            $error->setMessage(
+                'Your personal workspace currently contains unpublished changes.'
                 . ' In order to switch to a different target workspace you need to either publish'
-                . ' or discard pending changes first.');
+                . ' or discard pending changes first.'
+            );
 
             $this->feedbackCollection->add($error);
             $this->view->assign('value', $this->feedbackCollection);
@@ -371,11 +405,13 @@ class BackendServiceController extends ActionController
                 $redirectNode = $subgraph->findParentNode($redirectNode->nodeAggregateId);
                 // get parent always returns Node
                 if (!$redirectNode) {
-                    throw new \Exception(sprintf(
-                        'Wasn\'t able to locate any valid node in rootline of node %s in the workspace %s.',
-                        $documentNode->nodeAggregateId->value,
-                        $targetWorkspaceName
-                    ), 1458814469);
+                    throw new \Exception(
+                        sprintf(
+                            'Wasn\'t able to locate any valid node in rootline of node %s in the workspace %s.',
+                            $documentNode->nodeAggregateId->value,
+                            $targetWorkspaceName
+                        ), 1458814469
+                    );
                 }
             }
         }
@@ -411,7 +447,7 @@ class BackendServiceController extends ActionController
 
         /** @var array<int,NodeAddress> $nodeAddresses */
         $nodeAddresses = array_map(
-            fn (string $serializedNodeAddress) => $nodeAddressFactory->createFromUriString($serializedNodeAddress),
+            fn(string $serializedNodeAddress) => $nodeAddressFactory->createFromUriString($serializedNodeAddress),
             $nodes
         );
         $this->clipboard->copyNodes($nodeAddresses);
@@ -442,7 +478,7 @@ class BackendServiceController extends ActionController
 
         /** @var array<int,\Neos\Neos\FrontendRouting\NodeAddress> $nodeAddresses */
         $nodeAddresses = array_map(
-            fn (string $serializedNodeAddress) => $nodeAddressFactory->createFromUriString($serializedNodeAddress),
+            fn(string $serializedNodeAddress) => $nodeAddressFactory->createFromUriString($serializedNodeAddress),
             $nodes
         );
 
@@ -561,10 +597,15 @@ class BackendServiceController extends ActionController
         $finisher = array_pop($chain);
 
         $payload = $createContext['payload'] ?? [];
-        $flowQuery = new FlowQuery(array_map(
-            fn ($envelope) => $this->nodeService->findNodeBySerializedNodeAddress($envelope['$node'], $contentRepositoryId),
-            $payload
-        ));
+        $flowQuery = new FlowQuery(
+            array_map(
+                fn($envelope) => $this->nodeService->findNodeBySerializedNodeAddress(
+                    $envelope['$node'],
+                    $contentRepositoryId
+                ),
+                $payload
+            )
+        );
 
         foreach ($chain as $operation) {
             $flowQuery = $flowQuery->__call($operation['type'], $operation['payload']);
@@ -604,7 +645,11 @@ class BackendServiceController extends ActionController
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
 
         $contextNodeAddress = $nodeAddressFactory->createFromUriString($contextNode);
-        $subgraph = $contentRepository->getContentGraph()->getSubgraph($contextNodeAddress->contentStreamId, $contextNodeAddress->dimensionSpacePoint, VisibilityConstraints::withoutRestrictions());
+        $subgraph = $contentRepository->getContentGraph()->getSubgraph(
+            $contextNodeAddress->contentStreamId,
+            $contextNodeAddress->dimensionSpacePoint,
+            VisibilityConstraints::withoutRestrictions()
+        );
         $contextNode = $subgraph->findNodeById($contextNodeAddress->nodeAggregateId);
 
         $slug = $this->nodeUriPathSegmentGenerator->generateUriPathSegment($contextNode, $text);

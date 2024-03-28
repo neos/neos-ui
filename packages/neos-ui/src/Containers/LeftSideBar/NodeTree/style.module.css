@@ -18,7 +18,7 @@
     opacity: .5;
     cursor: pointer;
     z-index: 5;
-    padding: 8px;
+    padding: var(--spacing-Half);
     font-size: 1.4em;
 
     &:hover > svg {

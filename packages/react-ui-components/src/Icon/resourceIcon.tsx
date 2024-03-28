@@ -13,17 +13,42 @@ export interface ResourceIconProps extends Omit<IconProps, 'theme'> {
     readonly theme?: ResourceIconTheme;
 }
 
+export const ResourceIconContext = React.createContext<{createFromResourcePath:(path: string) => string} | null>(null);
+
 class ResourceIcon extends PureComponent<ResourceIconProps> {
+    public static readonly contextType = ResourceIconContext;
+
+    context!: React.ContextType<typeof ResourceIconContext>;
+
     public static readonly defaultProps = defaultProps;
 
     public render(): JSX.Element | null {
         const {padded, theme, label, icon, className, color, size} = this.props;
 
-        if (!icon || icon.substr(0, 11) !== 'resource://') {
+
+
+        if (!this.context) {
+            console.error('ResourceIconContext missing! Cannot resolve uri: ', icon);
             return null;
         }
 
-        const iconResourcePath = '/_Resources/Static/Packages/' + icon.substr(11);
+        const regex = /^resource:\/\/([^\\/]+)\/(.*)/;
+
+        const matches = icon?.match(regex);
+
+        if (!matches) {
+            return null;
+        }
+        const [_, packageName, rawPath] = matches;
+
+        let publicPath = rawPath;
+        if (!rawPath.startsWith('Public/')) {
+            publicPath = `Public/${rawPath}`;
+        }
+
+        const resourcePath = `resource://${packageName}/${publicPath}`;
+
+        const iconResourcePath = this.context.createFromResourcePath(resourcePath);
         const classNames = mergeClassNames(
             theme!.icon,
             className,

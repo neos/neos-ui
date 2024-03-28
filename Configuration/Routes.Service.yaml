@@ -92,3 +92,11 @@
     '@controller': 'BackendService'
     '@action': 'generateUriPathSegment'
   httpMethods: ['POST']
+
+-
+  name: 'Redirect to resource uri'
+  uriPattern: 'redirect-resource-uri'
+  defaults:
+    '@controller': 'BackendService'
+    '@action': 'redirectToResourceUri'
+  httpMethods: ['GET']

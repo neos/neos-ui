@@ -20,6 +20,7 @@ export interface Routes {
             generateUriPathSegment: string;
             getWorkspaceInfo: string;
             getAdditionalNodeMetadata: string;
+            redirectToResourceUri: string;
         };
     };
     core: {

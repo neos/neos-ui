@@ -12,12 +12,12 @@ import {PublishingDialog} from './Containers/Modals/PublishingDialog/index';
 import ReloginDialog from './Containers/Modals/ReloginDialog/index';
 import KeyboardShortcutModal from './Containers/Modals/KeyboardShortcutModal/index';
 import UnappliedChangesDialog from './Containers/Modals/UnappliedChangesDialog/index';
-import SyncWorkspaceDialog from './Containers/Modals/SyncWorkspaceDialog/index';
+import {SyncWorkspaceDialog} from './Containers/Modals/SyncWorkspaceDialog/index';
 
 import PrimaryToolbar from './Containers/PrimaryToolbar/index';
 import DimensionSwitcher from './Containers/PrimaryToolbar/DimensionSwitcher/index';
 import PublishDropDown from './Containers/PrimaryToolbar/PublishDropDown/index';
-import WorkspaceSync from './Containers/PrimaryToolbar/WorkspaceSync/index';
+import {WorkspaceSync} from './Containers/PrimaryToolbar/WorkspaceSync/index';
 import MenuToggler from './Containers/PrimaryToolbar/MenuToggler/index';
 import Brand from './Containers/PrimaryToolbar/Brand/index';
 import EditPreviewDropDown from './Containers/PrimaryToolbar/EditPreviewDropDown/index';

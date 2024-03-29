@@ -44,6 +44,20 @@
       <trans-unit id="resolutionStrategy.selection.accept" xml:space="preserve">
         <source>Accept choice and continue</source>
       </trans-unit>
+      <trans-unit id="resolutionStrategy.DISCARD_ALL.confirmation.title" xml:space="preserve">
+        <source>Discard all changes in workspace "{workspaceName}"</source>
+      </trans-unit>
+      <trans-unit id="resolutionStrategy.DISCARD_ALL.confirmation.message" xml:space="preserve">
+        <source>You are about to discard all changes in workspace "{workspaceName}". This includes all changes on other sites.
+
+        Do you wish to proceed? Be careful: This cannot be undone!</source>
+      </trans-unit>
+      <trans-unit id="resolutionStrategy.DISCARD_ALL.confirmation.cancel" xml:space="preserve">
+        <source>No, cancel</source>
+      </trans-unit>
+      <trans-unit id="resolutionStrategy.DISCARD_ALL.confirmation.confirm" xml:space="preserve">
+        <source>Yes, discard everything</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

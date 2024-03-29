@@ -20,17 +20,20 @@ import {TypeOfChange} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces'
 
 import {ConfirmationDialog} from './ConfirmationDialog';
 import {ResolutionStrategySelectionDialog} from './ResolutionStrategySelectionDialog';
+import {ResolutionStrategyConfirmationDialog} from './ResolutionStrategyConfirmationDialog';
 
 type SyncWorkspaceDialogPropsFromReduxState = {
     syncingState: SyncingState;
     personalWorkspaceName: WorkspaceName;
     baseWorkspaceName: WorkspaceName;
+    totalNumberOfChangesInWorkspace: number;
 };
 
 const withReduxState = connect((state: GlobalState): SyncWorkspaceDialogPropsFromReduxState => ({
     syncingState: {
         process: {
-            phase: SyncingPhase.CONFLICT,
+            phase: SyncingPhase.RESOLVING,
+            strategy: ResolutionStrategy.DISCARD_ALL,
             conflicts: [{
                 affectedNode: {
                     icon: 'header',
@@ -81,8 +84,10 @@ const withReduxState = connect((state: GlobalState): SyncWorkspaceDialogPropsFro
     },
     personalWorkspaceName: (selectors as any).CR.Workspaces
         .personalWorkspaceNameSelector(state),
-    baseWorkspaceName: (selectors as any).CR.Workspaces
-        .baseWorkspaceSelector(state)
+    baseWorkspaceName: selectors.CR.Workspaces
+        .baseWorkspaceSelector(state),
+    totalNumberOfChangesInWorkspace: state.cr.workspaces.personalWorkspace
+        .totalNumberOfChanges
 }), {
     confirmRebase: actions.CR.Syncing.confirm,
     abortRebase: actions.CR.Syncing.cancel
@@ -116,6 +121,12 @@ const SyncWorkspaceDialog: React.FC<SyncWorkspaceDialogProps> = (props) => {
     const handleSelectResolutionStrategy = React.useCallback((selectedStrategy: ResolutionStrategy) => {
         console.log('@TODO: Resolution strategy was selected', {selectedStrategy});
     }, []);
+    const handleCancelConflictResolution = React.useCallback(() => {
+        console.log('@TODO: handleCancelConflictResolution');
+    }, []);
+    const handleConfirmResolutionStrategy = React.useCallback(() => {
+        console.log('@TODO: handleConfirmResolutionStrategy');
+    }, []);
 
     switch (props.syncingState?.process.phase) {
         case SyncingPhase.START:
@@ -136,6 +147,15 @@ const SyncWorkspaceDialog: React.FC<SyncWorkspaceDialogProps> = (props) => {
                     i18n={props.i18nRegistry}
                     onCancel={handleCancel}
                     onSelectResolutionStrategy={handleSelectResolutionStrategy}
+                    />
+            );
+        case SyncingPhase.RESOLVING:
+            return (
+                <ResolutionStrategyConfirmationDialog
+                    workspaceName={props.personalWorkspaceName}
+                    totalNumberOfChangesInWorkspace={props.totalNumberOfChangesInWorkspace}
+                    onCancelConflictResolution={handleCancelConflictResolution}
+                    onConfirmResolutionStrategy={handleConfirmResolutionStrategy}
                     />
             );
         default:

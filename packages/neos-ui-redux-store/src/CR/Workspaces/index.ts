@@ -24,6 +24,7 @@ export interface PublishableNode {
 
 export interface WorkspaceInformation {
     name: WorkspaceName;
+    totalNumberOfChanges: number;
     publishableNodes: Array<PublishableNode>;
     baseWorkspace: WorkspaceName;
     readOnly?: boolean;
@@ -37,6 +38,7 @@ export interface State extends Readonly<{
 export const defaultState: State = {
     personalWorkspace: {
         name: '',
+        totalNumberOfChanges: 0,
         publishableNodes: [],
         baseWorkspace: '',
         status: WorkspaceStatus.UP_TO_DATE

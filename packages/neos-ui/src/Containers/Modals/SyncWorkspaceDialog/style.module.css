@@ -19,6 +19,10 @@
     height: 1.5rem;
 }
 
+.summary {
+    cursor: pointer;
+}
+
 .modalTitle {
     display: flex;
     flex-direction: row;
@@ -72,4 +76,67 @@
 }
 .diagram__process__icon--warn {
     color: var(--colors-Warn);
+}
+
+.node {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--spacing-Half);
+    position: relative;
+    padding-left: 1.6em;
+}
+.node__icon {
+    position: absolute;
+    left: 0;
+}
+.node__changeIcon {
+    position: absolute;
+    font-size: 10px;
+    bottom: 0px;
+    left: 6px;
+    color: var(--colors-Warn);
+}
+
+.conflictList > * + * {
+    margin-top: 2px;
+}
+
+.conflict__details[open] {
+    border: 2px solid var(--colors-ContrastBright);
+}
+.conflict__summary {
+    cursor: pointer;
+    background-color: var(--colors-ContrastDark);
+    padding: var(--spacing-Full);
+}
+.conflict__summary::marker {
+    position: absolute;
+}
+.conflict__summary__contents {
+    display: inline-block;
+    max-width: 95%;
+    padding-left: var(--spacing-Half);
+}
+.conflict__changeIcon {
+    color: var(--colors-Warn);
+}
+.conflict__descriptionList {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: var(--spacing-Full);
+    background-color: var(--colors-ContrastDarkest);
+    gap: var(--spacing-Full);
+}
+.conflict__descriptionList__group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-Quarter);
+}
+.conflict__descriptionList__description {
+    display: flex;
+    flex-direction: row;
+    align-items: first baseline;
+    gap: var(--spacing-Full);
+    margin-left: var(--spacing-Full);
 }

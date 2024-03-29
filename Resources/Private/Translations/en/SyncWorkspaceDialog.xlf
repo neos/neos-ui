@@ -14,6 +14,36 @@
       <trans-unit id="confirmation.confirm" xml:space="preserve">
         <source>Yes, synchronize now</source>
       </trans-unit>
+      <trans-unit id="resolutionStrategy.selection.title" xml:space="preserve">
+        <source>Conflicts between workspace "{workspaceName}" and "{baseWorkspaceName}"</source>
+      </trans-unit>
+      <trans-unit id="resolutionStrategy.selection.message" xml:space="preserve">
+        <source>Workspace "{baseWorkspaceName}" contains modifications that are in conflict with the changes in workspace "{workspaceName}".</source>
+      </trans-unit>
+      <trans-unit id="resolutionStrategy.selection.summary" xml:space="preserve">
+        <source>Show information about {numberOfConflicts} conflict(s)</source>
+      </trans-unit>
+      <trans-unit id="resolutionStrategy.selection.prompt" xml:space="preserve">
+        <source>In order to proceed, you need to decide what to do with the conflicting changes:</source>
+      </trans-unit>
+      <trans-unit id="resolutionStrategy.selection.option.FORCE.label" xml:space="preserve">
+        <source>Drop conflicting changes</source>
+      </trans-unit>
+      <trans-unit id="resolutionStrategy.selection.option.FORCE.description" xml:space="preserve">
+        <source>This will save all non-conflicting changes, while every conflicting change will be lost.</source>
+      </trans-unit>
+      <trans-unit id="resolutionStrategy.selection.option.DISCARD_ALL.label" xml:space="preserve">
+        <source>Discard workspace "{workspaceName}"</source>
+      </trans-unit>
+      <trans-unit id="resolutionStrategy.selection.option.DISCARD_ALL.description" xml:space="preserve">
+        <source>This will discard all changes in your workspace, including those on other sites.</source>
+      </trans-unit>
+      <trans-unit id="resolutionStrategy.selection.cancel" xml:space="preserve">
+        <source>Cancel Synchronization</source>
+      </trans-unit>
+      <trans-unit id="resolutionStrategy.selection.accept" xml:space="preserve">
+        <source>Accept choice and continue</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -11,20 +11,74 @@ import React from 'react';
 // @ts-ignore
 import {connect} from 'react-redux';
 
+import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 import {GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
-import {WorkspaceName} from '@neos-project/neos-ts-interfaces';
+import {I18nRegistry, WorkspaceName} from '@neos-project/neos-ts-interfaces';
+import {ReasonForConflict, ResolutionStrategy, SyncingPhase, State as SyncingState} from '@neos-project/neos-ui-redux-store/src/CR/Syncing';
+import {TypeOfChange} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces';
 
 import {ConfirmationDialog} from './ConfirmationDialog';
+import {ResolutionStrategySelectionDialog} from './ResolutionStrategySelectionDialog';
 
 type SyncWorkspaceDialogPropsFromReduxState = {
-    isOpen: boolean;
+    syncingState: SyncingState;
     personalWorkspaceName: WorkspaceName;
     baseWorkspaceName: WorkspaceName;
 };
 
 const withReduxState = connect((state: GlobalState): SyncWorkspaceDialogPropsFromReduxState => ({
-    isOpen: true,
+    syncingState: {
+        process: {
+            phase: SyncingPhase.CONFLICT,
+            conflicts: [{
+                affectedNode: {
+                    icon: 'header',
+                    label: 'New Blog article'
+                },
+                affectedSite: {
+                    icon: 'globe',
+                    label: 'Our Website'
+                },
+                affectedDocument: {
+                    icon: 'file',
+                    label: 'New Blog article'
+                },
+                typeOfChange: TypeOfChange.NODE_HAS_BEEN_CHANGED,
+                reasonForConflict: ReasonForConflict.NODE_HAS_BEEN_DELETED
+            }, {
+                affectedNode: {
+                    icon: 'image',
+                    label: 'A dog sitting next to a chair'
+                },
+                affectedSite: {
+                    icon: 'globe',
+                    label: 'Our Website'
+                },
+                affectedDocument: {
+                    icon: 'file',
+                    label: 'Old Blog article'
+                },
+                typeOfChange: TypeOfChange.NODE_HAS_BEEN_CREATED,
+                reasonForConflict: ReasonForConflict.NODE_HAS_BEEN_DELETED
+            }, {
+                affectedNode: {
+                    icon: 'image',
+                    label: 'A very long text to stress the design a little (or a lot, depending of what your definition of this is)'
+                },
+                affectedSite: {
+                    icon: 'globe',
+                    label: 'Our Website'
+                },
+                affectedDocument: {
+                    icon: 'file',
+                    label: 'Old Blog article'
+                },
+                typeOfChange: TypeOfChange.NODE_HAS_BEEN_DELETED,
+                reasonForConflict: ReasonForConflict.NODE_HAS_BEEN_DELETED
+            }]
+        }
+    },
     personalWorkspaceName: (selectors as any).CR.Workspaces
         .personalWorkspaceNameSelector(state),
     baseWorkspaceName: (selectors as any).CR.Workspaces
@@ -34,6 +88,14 @@ const withReduxState = connect((state: GlobalState): SyncWorkspaceDialogPropsFro
     abortRebase: actions.CR.Syncing.cancel
 });
 
+type SyncWorkspaceDialogPropsFromNeosGlobals = {
+    i18nRegistry: I18nRegistry;
+};
+
+const withNeosGlobals = neos((globalRegistry): SyncWorkspaceDialogPropsFromNeosGlobals => ({
+    i18nRegistry: globalRegistry.get('i18n')
+}));
+
 type SyncWorkspaceDialogHandlers = {
     confirmRebase: () => void;
     abortRebase: () => void;
@@ -41,28 +103,44 @@ type SyncWorkspaceDialogHandlers = {
 
 type SyncWorkspaceDialogProps =
     & SyncWorkspaceDialogPropsFromReduxState
+    & SyncWorkspaceDialogPropsFromNeosGlobals
     & SyncWorkspaceDialogHandlers;
 
 const SyncWorkspaceDialog: React.FC<SyncWorkspaceDialogProps> = (props) => {
     const handleCancel = React.useCallback(() => {
-        props.abortRebase();
+        console.log('@TODO: props.abortRebase()');
     }, []);
     const handleConfirm = React.useCallback(() => {
-        props.confirmRebase();
+        console.log('@TODO: props.confirmRebase()');
+    }, [props.personalWorkspaceName]);
+    const handleSelectResolutionStrategy = React.useCallback((selectedStrategy: ResolutionStrategy) => {
+        console.log('@TODO: Resolution strategy was selected', {selectedStrategy});
     }, []);
 
-    if (!props.isOpen) {
-        return null;
+    switch (props.syncingState?.process.phase) {
+        case SyncingPhase.START:
+            return (
+                <ConfirmationDialog
+                    workspaceName={props.personalWorkspaceName}
+                    baseWorkspaceName={props.baseWorkspaceName}
+                    onCancel={handleCancel}
+                    onConfirm={handleConfirm}
+                    />
+            );
+        case SyncingPhase.CONFLICT:
+            return (
+                <ResolutionStrategySelectionDialog
+                    workspaceName={props.personalWorkspaceName}
+                    baseWorkspaceName={props.baseWorkspaceName}
+                    conflicts={props.syncingState.process.conflicts}
+                    i18n={props.i18nRegistry}
+                    onCancel={handleCancel}
+                    onSelectResolutionStrategy={handleSelectResolutionStrategy}
+                    />
+            );
+        default:
+            return null;
     }
-
-    return (
-        <ConfirmationDialog
-            workspaceName={props.personalWorkspaceName}
-            baseWorkspaceName={props.baseWorkspaceName}
-            onCancel={handleCancel}
-            onConfirm={handleConfirm}
-            />
-    );
 };
 
-export default withReduxState(SyncWorkspaceDialog as any);
+export default withReduxState(withNeosGlobals(SyncWorkspaceDialog as any));

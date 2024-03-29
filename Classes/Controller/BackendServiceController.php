@@ -15,7 +15,6 @@ namespace Neos\Neos\Ui\Controller;
  */
 
 use Neos\ContentRepository\Core\Feature\WorkspaceModification\Exception\WorkspaceIsNotEmptyException;
-use Neos\ContentRepository\Core\Feature\WorkspaceRebase\Exception\WorkspaceRebaseFailed;
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
 use Neos\ContentRepository\Core\SharedModel\Exception\NodeAggregateCurrentlyDoesNotExist;
 use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
@@ -27,12 +26,14 @@ use Neos\Flow\Mvc\ActionRequest;
 use Neos\Flow\Mvc\ActionResponse;
 use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\Flow\Mvc\View\JsonView;
+use Neos\Flow\Property\PropertyMapper;
 use Neos\Flow\Security\Context;
 use Neos\Neos\Domain\Service\WorkspaceNameBuilder;
 use Neos\Neos\Domain\Workspace\WorkspaceFactory;
 use Neos\Neos\FrontendRouting\NodeAddress;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;
+use Neos\Neos\Service\UserService;
 use Neos\Neos\Ui\Application\ChangeTargetWorkspace;
 use Neos\Neos\Ui\Application\DiscardChangesInDocument;
 use Neos\Neos\Ui\Application\DiscardChangesInSite;
@@ -84,6 +85,12 @@ class BackendServiceController extends ActionController
 
     /**
      * @Flow\Inject
+     * @var UserService
+     */
+    protected $userService;
+
+    /**
+     * @Flow\Inject
      * @var ChangeCollectionConverter
      */
     protected $changeCollectionConverter;
@@ -93,6 +100,12 @@ class BackendServiceController extends ActionController
      * @var NodeClipboard
      */
     protected $clipboard;
+
+    /**
+     * @Flow\Inject
+     * @var PropertyMapper
+     */
+    protected $propertyMapper;
 
     /**
      * @Flow\Inject
@@ -659,30 +672,24 @@ class BackendServiceController extends ActionController
      * @param string $targetWorkspaceName
      * @return void
      */
-    public function rebaseWorkspaceAction(string $targetWorkspaceName, bool $force = false): void
+    public function rebaseWorkspaceAction(string $targetWorkspaceName): void
     {
         $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
+        $targetWorkspaceName = WorkspaceName::fromString($targetWorkspaceName);
+
         /** @todo send from UI */
         $command = new SyncWorkspace(
-            $contentRepositoryId,
-            WorkspaceName::fromString($targetWorkspaceName),
-            $force
+            contentRepositoryId: $contentRepositoryId,
+            workspaceName: $targetWorkspaceName,
+            force: false
         );
+
         try {
             $workspace = $this->workspaceFactory->create(
                 $command->contentRepositoryId,
                 $command->workspaceName
             );
             $workspace->rebase($command->force);
-        } catch (WorkspaceRebaseFailed $exception) {
-            foreach ($exception->commandsThatFailedDuringRebase as $commandThatFailedDuringRebase) {
-                // @todo build more helpful feedback
-                $error = new Error();
-                $error->setMessage($commandThatFailedDuringRebase->exception->getMessage());
-                $this->feedbackCollection->add($error);
-            }
-            $this->view->assign('value', $this->feedbackCollection);
-            return;
         } catch (\Exception $exception) {
             $error = new Error();
             $error->setMessage($exception->getMessage());
@@ -694,7 +701,7 @@ class BackendServiceController extends ActionController
 
         $success = new Success();
         $success->setMessage(
-            $this->getLabel('workspaceSynchronizationApplied', ['workspaceName' => $targetWorkspaceName])
+            $this->getLabel('workspaceSynchronizationApplied', ['workspaceName' => $targetWorkspaceName->value])
         );
         $this->feedbackCollection->add($success);
 

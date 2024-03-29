@@ -36,6 +36,7 @@ use Neos\Neos\FrontendRouting\NodeAddress;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;
 use Neos\Neos\Service\UserService;
+use Neos\Neos\Ui\Application\ChangeTargetWorkspace;
 use Neos\Neos\Ui\Application\DiscardChangesInDocument;
 use Neos\Neos\Ui\Application\DiscardChangesInSite;
 use Neos\Neos\Ui\Application\PublishChangesInDocument;
@@ -348,16 +349,26 @@ class BackendServiceController extends ActionController
         $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
 
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
-        $nodeAddress = $nodeAddressFactory->createFromUriString($documentNode);
 
         $currentAccount = $this->securityContext->getAccount();
         $userWorkspaceName = WorkspaceNameBuilder::fromAccountIdentifier(
             $currentAccount->getAccountIdentifier()
         );
 
-        $command = ChangeBaseWorkspace::create($userWorkspaceName, WorkspaceName::fromString($targetWorkspaceName));
+        /** @todo send from UI */
+        $command = new ChangeTargetWorkspace(
+            $contentRepositoryId,
+            $userWorkspaceName,
+            WorkspaceName::fromString($targetWorkspaceName),
+            $nodeAddressFactory->createFromUriString($documentNode)
+        );
+
         try {
-            $contentRepository->handle($command)->block();
+            $workspace = $this->workspaceFactory->create(
+                $command->contentRepositoryId,
+                $command->workspaceName
+            );
+            $workspace->changeBaseWorkspace($command->targetWorkspaceName);
         } catch (WorkspaceIsNotEmptyException $exception) {
             $error = new Error();
             $error->setMessage(
@@ -380,12 +391,12 @@ class BackendServiceController extends ActionController
 
         $subgraph = $contentRepository->getContentGraph()
             ->getSubgraph(
-                $command->newContentStreamId,
-                $nodeAddress->dimensionSpacePoint,
+                $workspace->getCurrentContentStreamId(),
+                $command->documentNode->dimensionSpacePoint,
                 VisibilityConstraints::withoutRestrictions()
             );
 
-        $documentNode = $subgraph->findNodeById($nodeAddress->nodeAggregateId);
+        $documentNode = $subgraph->findNodeById($command->documentNode->nodeAggregateId);
 
         $success = new Success();
         $success->setMessage(sprintf('Switched base workspace to %s.', $targetWorkspaceName));

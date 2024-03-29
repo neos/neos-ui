@@ -21,6 +21,8 @@ use Neos\Flow\Annotations as Flow;
 
 /**
  * The application layer level command DTO to communicate publication of all changes recorded for a given document
+ *
+ * @internal for communication within the Neos UI only
  */
 #[Flow\Proxy(false)]
 final readonly class PublishChangesInDocument

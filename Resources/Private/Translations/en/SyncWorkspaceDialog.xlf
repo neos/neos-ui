@@ -58,6 +58,57 @@
       <trans-unit id="resolutionStrategy.DISCARD_ALL.confirmation.confirm" xml:space="preserve">
         <source>Yes, discard everything</source>
       </trans-unit>
+      <trans-unit id="resolutionStrategy.FORCE.confirmation.conflicts.label" xml:space="preserve">
+        <source>You are about to drop the following changes:</source>
+      </trans-unit>
+      <trans-unit id="resolutionStrategy.FORCE.confirmation.message" xml:space="preserve">
+        <source>Do you wish to proceed? Be careful: This cannot be undone!</source>
+      </trans-unit>
+      <trans-unit id="resolutionStrategy.FORCE.confirmation.cancel" xml:space="preserve">
+        <source>No, cancel</source>
+      </trans-unit>
+      <trans-unit id="resolutionStrategy.FORCE.confirmation.confirm" xml:space="preserve">
+        <source>Yes, drop those changes</source>
+      </trans-unit>
+      <trans-unit id="resolutionStrategy.FORCE.confirmation.title" xml:space="preserve">
+        <source>Drop conflicting changes in workspace "{workspaceName}"</source>
+      </trans-unit>
+      <trans-unit id="conflictList.typeOfChange.NODE_HAS_BEEN_CHANGED.label" xml:space="preserve">
+        <source>"{label}" has been edited.</source>
+      </trans-unit>
+      <trans-unit id="conflictList.typeOfChange.NODE_HAS_BEEN_CREATED.label" xml:space="preserve">
+        <source>"{label}" has been created.</source>
+      </trans-unit>
+      <trans-unit id="conflictList.typeOfChange.NODE_HAS_BEEN_DELETED.label" xml:space="preserve">
+        <source>"{label}" has been deleted.</source>
+      </trans-unit>
+      <trans-unit id="conflictList.typeOfChange.NODE_HAS_BEEN_MOVED.label" xml:space="preserve">
+        <source>"{label}" has been moved.</source>
+      </trans-unit>
+      <trans-unit id="conflictList.reasonForConflict.NODE_HAS_BEEN_DELETED.label" xml:space="preserve">
+        <source>"{label}" or one of its ancestor nodes has been deleted.</source>
+      </trans-unit>
+      <trans-unit id="conflictList.affectedSite.label" xml:space="preserve">
+        <source>Affected Site</source>
+      </trans-unit>
+      <trans-unit id="conflictList.affectedDocument.label" xml:space="preserve">
+        <source>Affected Document</source>
+      </trans-unit>
+      <trans-unit id="conflictList.typeOfChange.label" xml:space="preserve">
+        <source>What was changed?</source>
+      </trans-unit>
+      <trans-unit id="conflictList.reasonForConflict.label" xml:space="preserve">
+        <source>Why is there a conflict?</source>
+      </trans-unit>
+      <trans-unit id="conflictList.unknownNode" xml:space="preserve">
+        <source>Unknown Node</source>
+      </trans-unit>
+      <trans-unit id="conflictList.unknownDocument" xml:space="preserve">
+        <source>Unknown Document</source>
+      </trans-unit>
+      <trans-unit id="conflictList.unknownSite" xml:space="preserve">
+        <source>Unknown Site</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

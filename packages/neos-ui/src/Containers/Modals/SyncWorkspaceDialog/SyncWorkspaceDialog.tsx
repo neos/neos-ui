@@ -33,7 +33,7 @@ const withReduxState = connect((state: GlobalState): SyncWorkspaceDialogPropsFro
     syncingState: {
         process: {
             phase: SyncingPhase.RESOLVING,
-            strategy: ResolutionStrategy.DISCARD_ALL,
+            strategy: ResolutionStrategy.FORCE,
             conflicts: [{
                 affectedNode: {
                     icon: 'header',
@@ -82,7 +82,7 @@ const withReduxState = connect((state: GlobalState): SyncWorkspaceDialogPropsFro
             }]
         }
     },
-    personalWorkspaceName: (selectors as any).CR.Workspaces
+    personalWorkspaceName: selectors.CR.Workspaces
         .personalWorkspaceNameSelector(state),
     baseWorkspaceName: selectors.CR.Workspaces
         .baseWorkspaceSelector(state),
@@ -153,7 +153,11 @@ const SyncWorkspaceDialog: React.FC<SyncWorkspaceDialogProps> = (props) => {
             return (
                 <ResolutionStrategyConfirmationDialog
                     workspaceName={props.personalWorkspaceName}
+                    baseWorkspaceName={props.baseWorkspaceName}
                     totalNumberOfChangesInWorkspace={props.totalNumberOfChangesInWorkspace}
+                    strategy={props.syncingState.process.strategy}
+                    conflicts={props.syncingState.process.conflicts}
+                    i18n={props.i18nRegistry}
                     onCancelConflictResolution={handleCancelConflictResolution}
                     onConfirmResolutionStrategy={handleConfirmResolutionStrategy}
                     />

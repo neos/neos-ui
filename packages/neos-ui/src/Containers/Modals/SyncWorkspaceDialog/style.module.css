@@ -9,7 +9,7 @@
 .button {
     display: inline-flex;
     flex-direction: row;
-    gap: var(--spacing-Full);
+    gap: var(--spacing-Half);
     align-items: center;
     justify-content: center;
 }

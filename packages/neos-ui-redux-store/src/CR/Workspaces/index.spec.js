@@ -12,7 +12,7 @@ test(`should export action creators`, () => {
     expect(actions).not.toBe(undefined);
     expect(typeof (actions.update)).toBe('function');
     expect(typeof (actions.changeBaseWorkspace)).toBe('function');
-    expect(typeof (actions.rebaseWorkspace)).toBe('function');
+    expect(typeof (actions.syncWorkspace)).toBe('function');
 });
 
 test(`should export a reducer`, () => {

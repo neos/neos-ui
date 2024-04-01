@@ -10,7 +10,7 @@
 import {put, call, select, takeEvery, take, race, all} from 'redux-saga/effects';
 
 import {AnyError} from '@neos-project/neos-ui-error';
-import {NodeContextPath, WorkspaceName} from '@neos-project/neos-ts-interfaces';
+import {DimensionCombination, NodeContextPath, WorkspaceName} from '@neos-project/neos-ts-interfaces';
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
 import {FeedbackEnvelope} from '@neos-project/neos-ui-redux-store/src/ServerFeedback';
@@ -160,13 +160,13 @@ export function * watchChangeBaseWorkspace() {
 }
 
 export function * watchRebaseWorkspace() {
-    const {rebaseWorkspace, getWorkspaceInfo} = backend.get().endpoints;
-    yield takeEvery(actionTypes.CR.Workspaces.REBASE_WORKSPACE, function * change(action: ReturnType<typeof actions.CR.Workspaces.rebaseWorkspace>) {
+    const {syncWorkspace, getWorkspaceInfo} = backend.get().endpoints;
+    yield takeEvery(actionTypes.CR.Workspaces.SYNC_WORKSPACE, function * change(action: ReturnType<typeof actions.CR.Workspaces.syncWorkspace>) {
         yield put(actions.UI.Remote.startSynchronization());
 
         try {
-            const feedback: FeedbackEnvelope = yield call(rebaseWorkspace, action.payload);
-            yield put(actions.ServerFeedback.handleServerFeedback(feedback));
+            const dimensionSpacePoint: DimensionCombination = yield select(selectors.CR.ContentDimensions.active);
+            yield call(syncWorkspace, action.payload, false, dimensionSpacePoint);
         } catch (error) {
             console.error('Failed to sync user workspace', error);
         } finally {

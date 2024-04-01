@@ -42,8 +42,8 @@ final class RoutesProvider implements RoutesProviderInterface
                 $helper->buildUiServiceRoute('discardChangesInDocument'),
             'changeBaseWorkspace' =>
                 $helper->buildUiServiceRoute('changeBaseWorkspace'),
-            'rebaseWorkspace' =>
-                $helper->buildUiServiceRoute('rebaseWorkspace'),
+            'syncWorkspace' =>
+                $helper->buildUiServiceRoute('syncWorkspace'),
             'copyNodes' =>
                 $helper->buildUiServiceRoute('copyNodes'),
             'cutNodes' =>

@@ -22,7 +22,7 @@ import {WorkspaceStatus} from '@neos-project/neos-ts-interfaces';
 }), {
     confirmRebase: actions.UI.SyncWorkspaceModal.apply,
     abortRebase: actions.UI.SyncWorkspaceModal.cancel,
-    rebaseWorkspace: actions.CR.Workspaces.rebaseWorkspace
+    syncWorkspace: actions.CR.Workspaces.syncWorkspace
 })
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')
@@ -34,7 +34,7 @@ export default class SyncWorkspaceDialog extends PureComponent {
         personalWorkspaceName: PropTypes.string.isRequired,
         confirmRebase: PropTypes.func.isRequired,
         abortRebase: PropTypes.func.isRequired,
-        rebaseWorkspace: PropTypes.func.isRequired
+        syncWorkspace: PropTypes.func.isRequired
     };
 
     handleAbort = () => {
@@ -44,9 +44,9 @@ export default class SyncWorkspaceDialog extends PureComponent {
     }
 
     handleConfirm = () => {
-        const {confirmRebase, rebaseWorkspace, personalWorkspaceName} = this.props;
+        const {confirmRebase, syncWorkspace, personalWorkspaceName} = this.props;
         confirmRebase();
-        rebaseWorkspace(personalWorkspaceName);
+        syncWorkspace(personalWorkspaceName);
     }
 
     renderTitle() {

@@ -12,24 +12,27 @@
 
 declare(strict_types=1);
 
-namespace Neos\Neos\Ui\Application;
+namespace Neos\Neos\Ui\Application\SyncWorkspace;
 
+use Neos\ContentRepository\Core\DimensionSpace\DimensionSpacePoint;
 use Neos\ContentRepository\Core\Feature\WorkspaceRebase\Dto\RebaseErrorHandlingStrategy;
 use Neos\ContentRepository\Core\SharedModel\ContentRepository\ContentRepositoryId;
 use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
 use Neos\Flow\Annotations as Flow;
 
 /**
- * The application layer level command DTO to communicate the intent to rebase the workspace
+ * The application layer level command DTO to communicate the intent to
+ * rebase the workspace
  *
  * @internal for communication within the Neos UI only
  */
 #[Flow\Proxy(false)]
-final readonly class SyncWorkspace
+final readonly class SyncWorkspaceCommand
 {
     public function __construct(
         public ContentRepositoryId $contentRepositoryId,
         public WorkspaceName $workspaceName,
+        public DimensionSpacePoint $preferredDimensionSpacePoint,
         public RebaseErrorHandlingStrategy $rebaseErrorHandlingStrategy
     ) {
     }

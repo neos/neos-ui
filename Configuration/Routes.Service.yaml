@@ -47,11 +47,11 @@
   httpMethods: ['POST']
 
 -
-  name: 'Rebase Workspace'
-  uriPattern: 'rebase-workspace'
+  name: 'Sync Workspace'
+  uriPattern: 'sync-workspace'
   defaults:
     '@controller': 'BackendService'
-    '@action': 'rebaseWorkspace'
+    '@action': 'syncWorkspace'
   httpMethods: ['POST']
 -
   name: 'Copy nodes to clipboard'

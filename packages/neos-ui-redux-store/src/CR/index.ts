@@ -4,12 +4,6 @@ import * as ContentDimensions from './ContentDimensions';
 import * as Nodes from './Nodes';
 import * as Workspaces from './Workspaces';
 
-const all = {ContentDimensions, Nodes, Workspaces};
-
-function typedKeys<T extends {}>(o: T) : Array<keyof T> {
-    return Object.keys(o) as Array<keyof T>;
-}
-
 //
 // Export the subreducer state shape interface
 //
@@ -22,12 +16,20 @@ export interface State {
 //
 // Export the actionTypes
 //
-export const actionTypes = typedKeys(all).reduce((acc, cur) => ({...acc, [cur]: all[cur].actionTypes}), {});
+export const actionTypes = {
+    ContentDimensions: ContentDimensions.actionTypes,
+    Nodes: Nodes.actionTypes,
+    Workspaces: Workspaces.actionTypes
+} as const;
 
 //
 // Export the actions
 //
-export const actions = typedKeys(all).reduce((acc, cur) => ({...acc, [cur]: all[cur].actions}), {});
+export const actions = {
+    ContentDimensions: ContentDimensions.actions,
+    Nodes: Nodes.actions,
+    Workspaces: Workspaces.actions
+} as const;
 
 //
 // Export the reducer
@@ -41,4 +43,8 @@ export const reducer = combineReducers({
 //
 // Export the selectors
 //
-export const selectors = typedKeys(all).reduce((acc, cur) => ({...acc, [cur]: all[cur].selectors}), {});
+export const selectors = {
+    ContentDimensions: ContentDimensions.selectors,
+    Nodes: Nodes.selectors,
+    Workspaces: Workspaces.selectors
+} as const;

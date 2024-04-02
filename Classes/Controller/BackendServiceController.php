@@ -185,7 +185,7 @@ class BackendServiceController extends ActionController
         $command = PublishChangesInSite::fromArray($command);
 
         try {
-            $workspace = $this->workspaceFactory->create(
+            $workspace = $this->workspaceFactory->createFromContentRepositoryIdAndWorkspaceName(
                 $command->contentRepositoryId,
                 $command->workspaceName
             );
@@ -228,11 +228,11 @@ class BackendServiceController extends ActionController
 
         try {
             try {
-                $workspace = $this->workspaceFactory->create(
+                $workspace = $this->workspaceFactory->createFromContentRepositoryIdAndWorkspaceName(
                     $command->contentRepositoryId,
                     $command->workspaceName
                 );
-                $numberOfChanges = $workspace->publishChangesInDocument($command->documentId);
+                $publishingResult = $workspace->publishChangesInDocument($command->documentId);
             } catch (NodeAggregateCurrentlyDoesNotExist $e) {
                 throw new NodeAggregateCurrentlyDoesNotExist(
                     'Node could not be published, probably because of a missing parentNode. Please check that the parentNode has been published.',
@@ -244,7 +244,7 @@ class BackendServiceController extends ActionController
             $success->setMessage(
                 sprintf(
                     'Published %d change(s) to %s.',
-                    $numberOfChanges,
+                    $publishingResult->numberOfPublishedChanges,
                     $baseWorkspaceName->value
                 )
             );
@@ -277,14 +277,14 @@ class BackendServiceController extends ActionController
         $command = DiscardChangesInSite::fromArray($command);
 
         try {
-            $workspace = $this->workspaceFactory->create(
+            $workspace = $this->workspaceFactory->createFromContentRepositoryIdAndWorkspaceName(
                 $command->contentRepositoryId,
                 $command->workspaceName
             );
-            $numberOfDiscardedChanges = $workspace->discardChangesInSite($command->siteId);
+            $discardingResult = $workspace->discardChangesInSite($command->siteId);
 
             $success = new Success();
-            $success->setMessage(sprintf('Discarded %d change(s).', $numberOfDiscardedChanges));
+            $success->setMessage(sprintf('Discarded %d change(s).', $discardingResult->numberOfDiscardedChanges));
 
             $this->feedbackCollection->add($success);
         } catch (\Exception $e) {
@@ -314,14 +314,14 @@ class BackendServiceController extends ActionController
         $command = DiscardChangesInDocument::fromArray($command);
 
         try {
-            $workspace = $this->workspaceFactory->create(
+            $workspace = $this->workspaceFactory->createFromContentRepositoryIdAndWorkspaceName(
                 $command->contentRepositoryId,
                 $command->workspaceName
             );
-            $numberOfDiscardedChanges = $workspace->discardChangesInDocument($command->documentId);
+            $discardingResult = $workspace->discardChangesInDocument($command->documentId);
 
             $success = new Success();
-            $success->setMessage(sprintf('Discarded %d change(s).', $numberOfDiscardedChanges));
+            $success->setMessage(sprintf('Discarded %d change(s).', $discardingResult->numberOfDiscardedChanges));
 
             $this->feedbackCollection->add($success);
         } catch (\Exception $e) {
@@ -363,7 +363,7 @@ class BackendServiceController extends ActionController
         );
 
         try {
-            $workspace = $this->workspaceFactory->create(
+            $workspace = $this->workspaceFactory->createFromContentRepositoryIdAndWorkspaceName(
                 $command->contentRepositoryId,
                 $command->workspaceName
             );
@@ -685,7 +685,7 @@ class BackendServiceController extends ActionController
         );
 
         try {
-            $workspace = $this->workspaceFactory->create(
+            $workspace = $this->workspaceFactory->createFromContentRepositoryIdAndWorkspaceName(
                 $command->contentRepositoryId,
                 $command->workspaceName
             );

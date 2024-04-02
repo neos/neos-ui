@@ -140,3 +140,44 @@
     gap: var(--spacing-Full);
     margin-left: var(--spacing-Full);
 }
+
+.diagram {
+    display: flex;
+    gap: var(--spacing-Full);
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-Full);
+    margin: 0 auto calc(2 * var(--spacing-Full));
+    width: 300px;
+}
+.diagram__workspace {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-Half);
+    position: relative;
+}
+.diagram__workspace__icon {
+    font-size: 32px;
+}
+.diagram__workspace__icon--trash {
+    color: var(--colors-Warn);
+}
+.diagram__workspace__label {
+    position: absolute;
+    display: block;
+    bottom: -100%;
+    left: 50%;
+    width: 160px;
+    transform: translate(-50%, 0);
+    text-align: center;
+}
+.diagram__process__icon {
+    font-size: 48px;
+}
+.diagram__process__icon--error {
+    color: var(--colors-Error);
+}
+.diagram__process__icon--success {
+    color: var(--colors-Success);
+}

@@ -109,6 +109,27 @@
       <trans-unit id="conflictList.unknownSite" xml:space="preserve">
         <source>Unknown Site</source>
       </trans-unit>
+      <trans-unit id="success.title" xml:space="preserve">
+        <source>Workspace "{workspaceName}" is up-to-date</source>
+      </trans-unit>
+      <trans-unit id="success.message" xml:space="preserve">
+        <source>Workspace "{workspaceName}" has been successfully synchronized with all recent changes in workspace "{baseWorkspaceName}".</source>
+      </trans-unit>
+      <trans-unit id="success.acknowledge" xml:space="preserve">
+        <source>OK</source>
+      </trans-unit>
+      <trans-unit id="error.title" xml:space="preserve">
+        <source>Workspace "{workspaceName}" could not be synchronized</source>
+      </trans-unit>
+      <trans-unit id="error.message" xml:space="preserve">
+        <source>Workspace "{workspaceName}" could not be synchronized with the recent changes in workspace "{baseWorkspaceName}".</source>
+      </trans-unit>
+      <trans-unit id="error.acknowledge" xml:space="preserve">
+        <source>Cancel</source>
+      </trans-unit>
+      <trans-unit id="error.retry" xml:space="preserve">
+        <source>Try again</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

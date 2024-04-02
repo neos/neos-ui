@@ -15,12 +15,12 @@ import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 import {GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
 import {I18nRegistry, WorkspaceName} from '@neos-project/neos-ts-interfaces';
-import {ReasonForConflict, ResolutionStrategy, SyncingPhase, State as SyncingState} from '@neos-project/neos-ui-redux-store/src/CR/Syncing';
-import {TypeOfChange} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces';
+import {ResolutionStrategy, SyncingPhase, State as SyncingState} from '@neos-project/neos-ui-redux-store/src/CR/Syncing';
 
 import {ConfirmationDialog} from './ConfirmationDialog';
 import {ResolutionStrategySelectionDialog} from './ResolutionStrategySelectionDialog';
 import {ResolutionStrategyConfirmationDialog} from './ResolutionStrategyConfirmationDialog';
+import {ResultDialog} from './ResultDialog';
 
 type SyncWorkspaceDialogPropsFromReduxState = {
     syncingState: SyncingState;
@@ -32,54 +32,8 @@ type SyncWorkspaceDialogPropsFromReduxState = {
 const withReduxState = connect((state: GlobalState): SyncWorkspaceDialogPropsFromReduxState => ({
     syncingState: {
         process: {
-            phase: SyncingPhase.RESOLVING,
-            strategy: ResolutionStrategy.FORCE,
-            conflicts: [{
-                affectedNode: {
-                    icon: 'header',
-                    label: 'New Blog article'
-                },
-                affectedSite: {
-                    icon: 'globe',
-                    label: 'Our Website'
-                },
-                affectedDocument: {
-                    icon: 'file',
-                    label: 'New Blog article'
-                },
-                typeOfChange: TypeOfChange.NODE_HAS_BEEN_CHANGED,
-                reasonForConflict: ReasonForConflict.NODE_HAS_BEEN_DELETED
-            }, {
-                affectedNode: {
-                    icon: 'image',
-                    label: 'A dog sitting next to a chair'
-                },
-                affectedSite: {
-                    icon: 'globe',
-                    label: 'Our Website'
-                },
-                affectedDocument: {
-                    icon: 'file',
-                    label: 'Old Blog article'
-                },
-                typeOfChange: TypeOfChange.NODE_HAS_BEEN_CREATED,
-                reasonForConflict: ReasonForConflict.NODE_HAS_BEEN_DELETED
-            }, {
-                affectedNode: {
-                    icon: 'image',
-                    label: 'A very long text to stress the design a little (or a lot, depending of what your definition of this is)'
-                },
-                affectedSite: {
-                    icon: 'globe',
-                    label: 'Our Website'
-                },
-                affectedDocument: {
-                    icon: 'file',
-                    label: 'Old Blog article'
-                },
-                typeOfChange: TypeOfChange.NODE_HAS_BEEN_DELETED,
-                reasonForConflict: ReasonForConflict.NODE_HAS_BEEN_DELETED
-            }]
+            phase: SyncingPhase.ERROR,
+            error: new Error('Something bad happened')
         }
     },
     personalWorkspaceName: selectors.CR.Workspaces
@@ -127,6 +81,12 @@ const SyncWorkspaceDialog: React.FC<SyncWorkspaceDialogProps> = (props) => {
     const handleConfirmResolutionStrategy = React.useCallback(() => {
         console.log('@TODO: handleConfirmResolutionStrategy');
     }, []);
+    const handleAcknowledge = React.useCallback(() => {
+        console.log('@TODO: handleAcknowledge');
+    }, []);
+    const handleRetry = React.useCallback(() => {
+        console.log('@TODO: handleRetry');
+    }, []);
 
     switch (props.syncingState?.process.phase) {
         case SyncingPhase.START:
@@ -160,6 +120,17 @@ const SyncWorkspaceDialog: React.FC<SyncWorkspaceDialogProps> = (props) => {
                     i18n={props.i18nRegistry}
                     onCancelConflictResolution={handleCancelConflictResolution}
                     onConfirmResolutionStrategy={handleConfirmResolutionStrategy}
+                    />
+            );
+        case SyncingPhase.ERROR:
+        case SyncingPhase.SUCCESS:
+            return (
+                <ResultDialog
+                    workspaceName={props.personalWorkspaceName}
+                    baseWorkspaceName={props.baseWorkspaceName}
+                    result={props.syncingState.process}
+                    onAcknowledge={handleAcknowledge}
+                    onRetry={handleRetry}
                     />
             );
         default:

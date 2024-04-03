@@ -421,7 +421,8 @@ class BackendServiceController extends ActionController
                             'Wasn\'t able to locate any valid node in rootline of node %s in the workspace %s.',
                             $documentNode->nodeAggregateId->value,
                             $targetWorkspaceName
-                        ), 1458814469
+                        ),
+                        1458814469
                     );
                 }
             }
@@ -458,7 +459,7 @@ class BackendServiceController extends ActionController
 
         /** @var array<int,NodeAddress> $nodeAddresses */
         $nodeAddresses = array_map(
-            fn(string $serializedNodeAddress) => $nodeAddressFactory->createFromUriString($serializedNodeAddress),
+            fn (string $serializedNodeAddress) => $nodeAddressFactory->createFromUriString($serializedNodeAddress),
             $nodes
         );
         $this->clipboard->copyNodes($nodeAddresses);
@@ -489,7 +490,7 @@ class BackendServiceController extends ActionController
 
         /** @var array<int,\Neos\Neos\FrontendRouting\NodeAddress> $nodeAddresses */
         $nodeAddresses = array_map(
-            fn(string $serializedNodeAddress) => $nodeAddressFactory->createFromUriString($serializedNodeAddress),
+            fn (string $serializedNodeAddress) => $nodeAddressFactory->createFromUriString($serializedNodeAddress),
             $nodes
         );
 
@@ -610,7 +611,7 @@ class BackendServiceController extends ActionController
         $payload = $createContext['payload'] ?? [];
         $flowQuery = new FlowQuery(
             array_map(
-                fn($envelope) => $this->nodeService->findNodeBySerializedNodeAddress(
+                fn ($envelope) => $this->nodeService->findNodeBySerializedNodeAddress(
                     $envelope['$node'],
                     $contentRepositoryId
                 ),

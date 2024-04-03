@@ -31,11 +31,7 @@ type SyncWorkspaceDialogPropsFromReduxState = {
 };
 
 const withReduxState = connect((state: GlobalState): SyncWorkspaceDialogPropsFromReduxState => ({
-    syncingState: {
-        process: {
-            phase: SyncingPhase.ONGOING
-        }
-    },
+    syncingState: state.cr.syncing,
     personalWorkspaceName: selectors.CR.Workspaces
         .personalWorkspaceNameSelector(state),
     baseWorkspaceName: selectors.CR.Workspaces
@@ -43,8 +39,13 @@ const withReduxState = connect((state: GlobalState): SyncWorkspaceDialogPropsFro
     totalNumberOfChangesInWorkspace: state.cr.workspaces.personalWorkspace
         .totalNumberOfChanges
 }), {
-    confirmRebase: actions.CR.Syncing.confirm,
-    abortRebase: actions.CR.Syncing.cancel
+    confirm: actions.CR.Syncing.confirm,
+    cancel: actions.CR.Syncing.cancel,
+    selectResolutionStrategy: actions.CR.Syncing.selectResolutionStrategy,
+    cancelResolution: actions.CR.Syncing.cancelResolution,
+    confirmResolution: actions.CR.Syncing.confirmResolution,
+    retry: actions.CR.Syncing.retry,
+    acknowledge: actions.CR.Syncing.acknowledge
 });
 
 type SyncWorkspaceDialogPropsFromNeosGlobals = {
@@ -56,8 +57,13 @@ const withNeosGlobals = neos((globalRegistry): SyncWorkspaceDialogPropsFromNeosG
 }));
 
 type SyncWorkspaceDialogHandlers = {
-    confirmRebase: () => void;
-    abortRebase: () => void;
+    confirm: () => void;
+    cancel: () => void;
+    selectResolutionStrategy: (selectedStrategy: ResolutionStrategy) => void;
+    cancelResolution: () => void;
+    confirmResolution: () => void;
+    retry: () => void;
+    acknowledge: () => void;
 };
 
 type SyncWorkspaceDialogProps =
@@ -67,25 +73,25 @@ type SyncWorkspaceDialogProps =
 
 const SyncWorkspaceDialog: React.FC<SyncWorkspaceDialogProps> = (props) => {
     const handleCancel = React.useCallback(() => {
-        console.log('@TODO: props.abortRebase()');
+        props.cancel();
     }, []);
     const handleConfirm = React.useCallback(() => {
-        console.log('@TODO: props.confirmRebase()');
-    }, [props.personalWorkspaceName]);
+        props.confirm();
+    }, []);
     const handleSelectResolutionStrategy = React.useCallback((selectedStrategy: ResolutionStrategy) => {
-        console.log('@TODO: Resolution strategy was selected', {selectedStrategy});
+        props.selectResolutionStrategy(selectedStrategy);
     }, []);
     const handleCancelConflictResolution = React.useCallback(() => {
-        console.log('@TODO: handleCancelConflictResolution');
+        props.cancelResolution();
     }, []);
     const handleConfirmResolutionStrategy = React.useCallback(() => {
-        console.log('@TODO: handleConfirmResolutionStrategy');
+        props.confirmResolution();
     }, []);
     const handleAcknowledge = React.useCallback(() => {
-        console.log('@TODO: handleAcknowledge');
+        props.acknowledge();
     }, []);
     const handleRetry = React.useCallback(() => {
-        console.log('@TODO: handleRetry');
+        props.retry();
     }, []);
 
     switch (props.syncingState?.process.phase) {

@@ -1,7 +1,7 @@
 import produce from 'immer';
 import assignIn from 'lodash.assignin';
 import {action as createAction, ActionType} from 'typesafe-actions';
-import {NodeContextPath} from '@neos-project/neos-ts-interfaces';
+import {NodeContextPath, WorkspaceStatus} from '@neos-project/neos-ts-interfaces';
 
 import {WorkspaceName} from '@neos-project/neos-ts-interfaces';
 
@@ -27,7 +27,7 @@ export interface WorkspaceInformation {
     publishableNodes: Array<PublishableNode>;
     baseWorkspace: WorkspaceName;
     readOnly?: boolean;
-    status?: string;
+    status: WorkspaceStatus;
 }
 
 export interface State extends Readonly<{
@@ -39,7 +39,7 @@ export const defaultState: State = {
         name: '',
         publishableNodes: [],
         baseWorkspace: '',
-        status: ''
+        status: WorkspaceStatus.UP_TO_DATE
     }
 };
 

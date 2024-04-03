@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Neos\Neos\Ui\Application;
 
+use Neos\ContentRepository\Core\Feature\WorkspaceRebase\Dto\RebaseErrorHandlingStrategy;
 use Neos\ContentRepository\Core\SharedModel\ContentRepository\ContentRepositoryId;
 use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
 use Neos\Flow\Annotations as Flow;
@@ -29,7 +30,7 @@ final readonly class SyncWorkspace
     public function __construct(
         public ContentRepositoryId $contentRepositoryId,
         public WorkspaceName $workspaceName,
-        public bool $force
+        public RebaseErrorHandlingStrategy $rebaseErrorHandlingStrategy
     ) {
     }
 }

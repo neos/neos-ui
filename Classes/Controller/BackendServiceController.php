@@ -15,6 +15,7 @@ namespace Neos\Neos\Ui\Controller;
  */
 
 use Neos\ContentRepository\Core\Feature\WorkspaceModification\Exception\WorkspaceIsNotEmptyException;
+use Neos\ContentRepository\Core\Feature\WorkspaceRebase\Dto\RebaseErrorHandlingStrategy;
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
 use Neos\ContentRepository\Core\SharedModel\Exception\NodeAggregateCurrentlyDoesNotExist;
 use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
@@ -681,7 +682,7 @@ class BackendServiceController extends ActionController
         $command = new SyncWorkspace(
             contentRepositoryId: $contentRepositoryId,
             workspaceName: $targetWorkspaceName,
-            force: false
+            rebaseErrorHandlingStrategy: RebaseErrorHandlingStrategy::STRATEGY_FAIL
         );
 
         try {
@@ -689,7 +690,7 @@ class BackendServiceController extends ActionController
                 $command->contentRepositoryId,
                 $command->workspaceName
             );
-            $workspace->rebase($command->force);
+            $workspace->rebase($command->rebaseErrorHandlingStrategy);
         } catch (\Exception $exception) {
             $error = new Error();
             $error->setMessage($exception->getMessage());

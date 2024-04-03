@@ -47,8 +47,7 @@ export const defaultState: State = {
 
 export enum actionTypes {
     UPDATE = '@neos/neos-ui/CR/Workspaces/UPDATE',
-    CHANGE_BASE_WORKSPACE = '@neos/neos-ui/CR/Workspaces/CHANGE_BASE_WORKSPACE',
-    SYNC_WORKSPACE = '@neos/neos-ui/CR/Workspaces/SYNC_WORKSPACE'
+    CHANGE_BASE_WORKSPACE = '@neos/neos-ui/CR/Workspaces/CHANGE_BASE_WORKSPACE'
 }
 
 export type Action = ActionType<typeof actions>;
@@ -63,18 +62,12 @@ const update = (data: WorkspaceInformation) => createAction(actionTypes.UPDATE, 
  */
 const changeBaseWorkspace = (name: string) => createAction(actionTypes.CHANGE_BASE_WORKSPACE, name);
 
-/**
- * Rebase the user workspace
- */
-const syncWorkspace = (name: string) => createAction(actionTypes.SYNC_WORKSPACE, name);
-
 //
 // Export the actions
 //
 export const actions = {
     update,
-    changeBaseWorkspace,
-    syncWorkspace
+    changeBaseWorkspace
 };
 
 //

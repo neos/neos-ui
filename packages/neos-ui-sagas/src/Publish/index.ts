@@ -10,12 +10,11 @@
 import {put, call, select, takeEvery, take, race, all} from 'redux-saga/effects';
 
 import {AnyError} from '@neos-project/neos-ui-error';
-import {DimensionCombination, NodeContextPath, WorkspaceName} from '@neos-project/neos-ts-interfaces';
+import {NodeContextPath, WorkspaceName} from '@neos-project/neos-ts-interfaces';
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
 import {FeedbackEnvelope} from '@neos-project/neos-ui-redux-store/src/ServerFeedback';
 import {PublishingMode, PublishingScope} from '@neos-project/neos-ui-redux-store/src/CR/Publishing';
-import {WorkspaceInformation} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces';
 import backend, {Routes} from '@neos-project/neos-ui-backend-connector';
 
 import {makeReloadNodes} from '../CR/NodeOperations/reloadNodes';
@@ -155,24 +154,6 @@ export function * watchChangeBaseWorkspace() {
             }
         } catch (error) {
             console.error('Failed to change base workspace', error);
-        }
-    });
-}
-
-export function * watchRebaseWorkspace() {
-    const {syncWorkspace, getWorkspaceInfo} = backend.get().endpoints;
-    yield takeEvery(actionTypes.CR.Workspaces.SYNC_WORKSPACE, function * change(action: ReturnType<typeof actions.CR.Workspaces.syncWorkspace>) {
-        yield put(actions.UI.Remote.startSynchronization());
-
-        try {
-            const dimensionSpacePoint: DimensionCombination = yield select(selectors.CR.ContentDimensions.active);
-            yield call(syncWorkspace, action.payload, false, dimensionSpacePoint);
-        } catch (error) {
-            console.error('Failed to sync user workspace', error);
-        } finally {
-            const workspaceInfo: WorkspaceInformation = yield call(getWorkspaceInfo);
-            yield put(actions.CR.Workspaces.update(workspaceInfo));
-            yield put(actions.UI.Remote.finishSynchronization());
         }
     });
 }

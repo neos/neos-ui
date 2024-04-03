@@ -14,6 +14,12 @@
       <trans-unit id="confirmation.confirm" xml:space="preserve">
         <source>Yes, synchronize now</source>
       </trans-unit>
+      <trans-unit id="process.title" xml:space="preserve">
+        <source>Synchronizing workspace "{workspaceName}"...</source>
+      </trans-unit>
+      <trans-unit id="process.message" xml:space="preserve">
+        <source>Please wait, while workspace "{workspaceName}" is being synchronized with recent changes in workspace "{baseWorkspaceName}". This may take a while.</source>
+      </trans-unit>
       <trans-unit id="resolutionStrategy.selection.title" xml:space="preserve">
         <source>Conflicts between workspace "{workspaceName}" and "{baseWorkspaceName}"</source>
       </trans-unit>

@@ -18,6 +18,7 @@ import {I18nRegistry, WorkspaceName} from '@neos-project/neos-ts-interfaces';
 import {ResolutionStrategy, SyncingPhase, State as SyncingState} from '@neos-project/neos-ui-redux-store/src/CR/Syncing';
 
 import {ConfirmationDialog} from './ConfirmationDialog';
+import {ProcessIndicator} from './ProcessIndicator';
 import {ResolutionStrategySelectionDialog} from './ResolutionStrategySelectionDialog';
 import {ResolutionStrategyConfirmationDialog} from './ResolutionStrategyConfirmationDialog';
 import {ResultDialog} from './ResultDialog';
@@ -32,8 +33,7 @@ type SyncWorkspaceDialogPropsFromReduxState = {
 const withReduxState = connect((state: GlobalState): SyncWorkspaceDialogPropsFromReduxState => ({
     syncingState: {
         process: {
-            phase: SyncingPhase.ERROR,
-            error: new Error('Something bad happened')
+            phase: SyncingPhase.ONGOING
         }
     },
     personalWorkspaceName: selectors.CR.Workspaces
@@ -96,6 +96,13 @@ const SyncWorkspaceDialog: React.FC<SyncWorkspaceDialogProps> = (props) => {
                     baseWorkspaceName={props.baseWorkspaceName}
                     onCancel={handleCancel}
                     onConfirm={handleConfirm}
+                    />
+            );
+        case SyncingPhase.ONGOING:
+            return (
+                <ProcessIndicator
+                    workspaceName={props.personalWorkspaceName}
+                    baseWorkspaceName={props.baseWorkspaceName}
                     />
             );
         case SyncingPhase.CONFLICT:

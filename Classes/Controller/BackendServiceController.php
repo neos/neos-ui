@@ -30,7 +30,7 @@ use Neos\Flow\Mvc\View\JsonView;
 use Neos\Flow\Property\PropertyMapper;
 use Neos\Flow\Security\Context;
 use Neos\Neos\Domain\Service\WorkspaceNameBuilder;
-use Neos\Neos\Domain\Workspace\WorkspaceFactory;
+use Neos\Neos\Domain\Workspace\WorkspaceProvider;
 use Neos\Neos\FrontendRouting\NodeAddress;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;
@@ -128,7 +128,7 @@ class BackendServiceController extends ActionController
 
     /**
      * @Flow\Inject
-     * @var WorkspaceFactory
+     * @var WorkspaceProvider
      */
     protected $workspaceFactory;
 
@@ -186,7 +186,7 @@ class BackendServiceController extends ActionController
         $command = PublishChangesInSite::fromArray($command);
 
         try {
-            $workspace = $this->workspaceFactory->createFromContentRepositoryIdAndWorkspaceName(
+            $workspace = $this->workspaceFactory->getForWorkspaceName(
                 $command->contentRepositoryId,
                 $command->workspaceName
             );
@@ -229,7 +229,7 @@ class BackendServiceController extends ActionController
 
         try {
             try {
-                $workspace = $this->workspaceFactory->createFromContentRepositoryIdAndWorkspaceName(
+                $workspace = $this->workspaceFactory->getForWorkspaceName(
                     $command->contentRepositoryId,
                     $command->workspaceName
                 );
@@ -278,7 +278,7 @@ class BackendServiceController extends ActionController
         $command = DiscardChangesInSite::fromArray($command);
 
         try {
-            $workspace = $this->workspaceFactory->createFromContentRepositoryIdAndWorkspaceName(
+            $workspace = $this->workspaceFactory->getForWorkspaceName(
                 $command->contentRepositoryId,
                 $command->workspaceName
             );
@@ -315,7 +315,7 @@ class BackendServiceController extends ActionController
         $command = DiscardChangesInDocument::fromArray($command);
 
         try {
-            $workspace = $this->workspaceFactory->createFromContentRepositoryIdAndWorkspaceName(
+            $workspace = $this->workspaceFactory->getForWorkspaceName(
                 $command->contentRepositoryId,
                 $command->workspaceName
             );
@@ -364,7 +364,7 @@ class BackendServiceController extends ActionController
         );
 
         try {
-            $workspace = $this->workspaceFactory->createFromContentRepositoryIdAndWorkspaceName(
+            $workspace = $this->workspaceFactory->getForWorkspaceName(
                 $command->contentRepositoryId,
                 $command->workspaceName
             );
@@ -687,7 +687,7 @@ class BackendServiceController extends ActionController
         );
 
         try {
-            $workspace = $this->workspaceFactory->createFromContentRepositoryIdAndWorkspaceName(
+            $workspace = $this->workspaceFactory->getForWorkspaceName(
                 $command->contentRepositoryId,
                 $command->workspaceName
             );

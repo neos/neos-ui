@@ -6,7 +6,7 @@ import * as Workspaces from './Workspaces';
 
 const all = {ContentDimensions, Nodes, Workspaces};
 
-function typedKeys<T>(o: T) : Array<keyof T> {
+function typedKeys<T extends {}>(o: T) : Array<keyof T> {
     return Object.keys(o) as Array<keyof T>;
 }
 

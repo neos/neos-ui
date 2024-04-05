@@ -186,7 +186,7 @@ class BackendServiceController extends ActionController
         $command = PublishChangesInSite::fromArray($command);
 
         try {
-            $workspace = $this->workspaceProvider->retrieveForWorkspaceName(
+            $workspace = $this->workspaceProvider->provideForWorkspaceName(
                 $command->contentRepositoryId,
                 $command->workspaceName
             );
@@ -229,7 +229,7 @@ class BackendServiceController extends ActionController
 
         try {
             try {
-                $workspace = $this->workspaceProvider->retrieveForWorkspaceName(
+                $workspace = $this->workspaceProvider->provideForWorkspaceName(
                     $command->contentRepositoryId,
                     $command->workspaceName
                 );
@@ -278,7 +278,7 @@ class BackendServiceController extends ActionController
         $command = DiscardChangesInSite::fromArray($command);
 
         try {
-            $workspace = $this->workspaceProvider->retrieveForWorkspaceName(
+            $workspace = $this->workspaceProvider->provideForWorkspaceName(
                 $command->contentRepositoryId,
                 $command->workspaceName
             );
@@ -315,7 +315,7 @@ class BackendServiceController extends ActionController
         $command = DiscardChangesInDocument::fromArray($command);
 
         try {
-            $workspace = $this->workspaceProvider->retrieveForWorkspaceName(
+            $workspace = $this->workspaceProvider->provideForWorkspaceName(
                 $command->contentRepositoryId,
                 $command->workspaceName
             );
@@ -364,7 +364,7 @@ class BackendServiceController extends ActionController
         );
 
         try {
-            $workspace = $this->workspaceProvider->retrieveForWorkspaceName(
+            $workspace = $this->workspaceProvider->provideForWorkspaceName(
                 $command->contentRepositoryId,
                 $command->workspaceName
             );
@@ -687,7 +687,7 @@ class BackendServiceController extends ActionController
         );
 
         try {
-            $workspace = $this->workspaceProvider->retrieveForWorkspaceName(
+            $workspace = $this->workspaceProvider->provideForWorkspaceName(
                 $command->contentRepositoryId,
                 $command->workspaceName
             );

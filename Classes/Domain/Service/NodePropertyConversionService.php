@@ -57,8 +57,6 @@ class NodePropertyConversionService
                 return $rawValue;
 
             case 'reference':
-                throw new \Exception("not implemented here, must be handled outside.");
-
             case 'references':
                 throw new \Exception("not implemented here, must be handled outside.");
 

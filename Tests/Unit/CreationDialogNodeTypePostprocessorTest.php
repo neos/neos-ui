@@ -5,24 +5,72 @@ use Neos\ContentRepository\Core\NodeType\DefaultNodeLabelGeneratorFactory;
 use Neos\ContentRepository\Core\NodeType\NodeType;
 use Neos\ContentRepository\Core\NodeType\NodeTypeName;
 use Neos\Flow\Tests\UnitTestCase;
+use Neos\Neos\NodeTypePostprocessor\DefaultPropertyEditorPostprocessor;
 use Neos\Neos\Ui\Infrastructure\ContentRepository\CreationDialog\CreationDialogNodeTypePostprocessor;
+use Symfony\Component\Yaml\Yaml;
 
 class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
 {
-    /**
-     * @var CreationDialogNodeTypePostprocessor
-     */
-    private $postprocessor;
-
-    /**
-     * @var NodeType
-     */
-    private $mockNodeType;
-
-    public function setUp(): void
+    public function examples(): iterable
     {
-        $this->postprocessor = new CreationDialogNodeTypePostprocessor();
-        $this->mockNodeType = new NodeType(NodeTypeName::fromString('Foo:Bar'), [], [], new DefaultNodeLabelGeneratorFactory());
+        yield 'multiple references' => [
+            'nodeTypeDefinition' => <<<'YAML'
+            references:
+              someReferences:
+                ui:
+                  showInCreationDialog: true
+            YAML,
+            'expectedCreationDialog' => <<<'YAML'
+            elements:
+              someReferences:
+                type: references
+                ui:
+                  editor: ReferencesEditor
+            YAML
+        ];
+
+        yield 'singular reference' => [
+            'nodeTypeDefinition' => <<<'YAML'
+            references:
+              someReference:
+                constraints:
+                  maxItems: 1
+                ui:
+                  showInCreationDialog: true
+            YAML,
+            'expectedCreationDialog' => <<<'YAML'
+            elements:
+              someReference:
+                type: reference
+                ui:
+                  editor: SingularReferenceEditor
+            YAML
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider examples
+     */
+    public function processExamples(string $nodeTypeDefinition, string $expectedCreationDialog)
+    {
+        $configuration = array_merge([
+            'references' => [],
+            'properties' => []
+        ], Yaml::parse($nodeTypeDefinition));
+
+        $dataTypesDefaultConfiguration = [
+            'reference' => [
+                'editor' => 'SingularReferenceEditor',
+            ],
+            'references' => [
+                'editor' => 'ReferencesEditor',
+            ],
+        ];
+
+        $result = $this->processConfigurationFully($configuration, $dataTypesDefaultConfiguration, []);
+
+        self::assertEquals(Yaml::parse($expectedCreationDialog), $result['ui']['creationDialog'] ?? null);
     }
 
     /**
@@ -33,6 +81,7 @@ class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
     public function processCopiesInspectorConfigurationToCreationDialogElements(): void
     {
         $configuration = [
+            'references' => [],
             'properties' => [
                 'somePropertyName' => [
                     'ui' => [
@@ -55,8 +104,6 @@ class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
             ],
         ];
 
-        $this->postprocessor->process($this->mockNodeType, $configuration, []);
-
         $expectedElements = [
             'somePropertyName' => [
                 'type' => 'string',
@@ -77,7 +124,9 @@ class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
             ],
         ];
 
-        self::assertSame($expectedElements, $configuration['ui']['creationDialog']['elements']);
+        $result = $this->processConfigurationLegacyOnlyOnce($configuration, [], []);
+
+        self::assertSame($expectedElements, $result['ui']['creationDialog']['elements']);
     }
 
     /**
@@ -97,11 +146,11 @@ class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
                 ],
             ],
         ];
-        $originalConfiguration = $configuration;
 
-        $this->postprocessor->process($this->mockNodeType, $configuration, []);
+        $result = $this->processConfigurationLegacyOnlyOnce($configuration, [], []);
 
-        self::assertSame($originalConfiguration, $configuration);
+        self::assertSame($configuration, $result);
+
     }
 
     /**
@@ -125,7 +174,7 @@ class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->inject($this->postprocessor, 'dataTypesDefaultConfiguration', [
+        $dataTypesDefaultConfiguration = [
             'SomeType' => [
                 'editor' => 'Some\Default\Editor',
                 'editorOptions' => [
@@ -133,9 +182,7 @@ class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
                     'someDefault' => 'option',
                 ]
             ]
-        ]);
-
-        $this->postprocessor->process($this->mockNodeType, $configuration, []);
+        ];
 
         $expectedElements = [
             'somePropertyName' => [
@@ -148,7 +195,9 @@ class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
             ],
         ];
 
-        self::assertEquals($expectedElements, $configuration['ui']['creationDialog']['elements']);
+        $result = $this->processConfigurationLegacyOnlyOnce($configuration, $dataTypesDefaultConfiguration, []);
+
+        self::assertEquals($expectedElements, $result['ui']['creationDialog']['elements']);
     }
 
     /**
@@ -171,7 +220,7 @@ class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->inject($this->postprocessor, 'editorDefaultConfiguration', [
+        $editorDefaultConfiguration = [
             'Some\Editor' => [
                 'editorOptions' => [
                     'some' => 'editorDefault',
@@ -179,8 +228,8 @@ class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
                     'someEditorDefault' => 'fromEditor',
                 ]
             ]
-        ]);
-        $this->inject($this->postprocessor, 'dataTypesDefaultConfiguration', [
+        ];
+        $dataTypesDefaultConfiguration = [
             'SomeType' => [
                 'editor' => 'Some\Editor',
                 'editorOptions' => [
@@ -188,10 +237,7 @@ class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
                     'someDefault' => 'fromDataType',
                 ]
             ]
-        ]);
-
-
-        $this->postprocessor->process($this->mockNodeType, $configuration, []);
+        ];
 
         $expectedElements = [
             'somePropertyName' => [
@@ -204,7 +250,9 @@ class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
             ],
         ];
 
-        self::assertEquals($expectedElements, $configuration['ui']['creationDialog']['elements']);
+        $result = $this->processConfigurationLegacyOnlyOnce($configuration, $dataTypesDefaultConfiguration, $editorDefaultConfiguration);
+
+        self::assertEquals($expectedElements, $result['ui']['creationDialog']['elements']);
     }
 
     /**
@@ -215,6 +263,8 @@ class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
     public function processConvertsCreationDialogConfiguration(): void
     {
         $configuration = [
+            'references' => [],
+            'properties' => [],
             'ui' => [
                 'creationDialog' => [
                     'elements' => [
@@ -282,14 +332,14 @@ class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
             ],
         ];
 
-        $this->inject($this->postprocessor, 'editorDefaultConfiguration', [
+        $editorDefaultConfiguration = [
             'EditorWithDefaultConfig' => [
                 'value' => 'fromEditorDefaultConfig',
                 'editorDefaultValue' => 'fromEditorDefaultConfig',
             ],
-        ]);
+        ];
 
-        $this->inject($this->postprocessor, 'dataTypesDefaultConfiguration', [
+        $dataTypesDefaultConfiguration = [
             'TypeWithDataTypeConfig' => [
                 'editor' => 'EditorFromDataTypeConfig',
                 'value' => 'fromDataTypeConfig',
@@ -304,9 +354,11 @@ class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
                 'editor' => 'EditorWithDefaultConfig',
                 'dataTypeValue' => 'fromDataTypeConfig',
             ],
-        ]);
+        ];
 
         $expectedResult = [
+            'references' => [],
+            'properties' => [],
             'ui' => [
                 'creationDialog' => [
                     'elements' => [
@@ -392,9 +444,7 @@ class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
             ],
         ];
 
-        $this->postprocessor->process($this->mockNodeType, $configuration, []);
-
-        self::assertSame($expectedResult, $configuration);
+        self::assertSame($expectedResult, $this->processConfigurationLegacyOnlyOnce($configuration, $dataTypesDefaultConfiguration, $editorDefaultConfiguration));
     }
 
     /**
@@ -403,6 +453,8 @@ class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
     public function processDoesNotThrowExceptionIfNoCreationDialogEditorCanBeResolved(): void
     {
         $configuration = [
+            'references' => [],
+            'properties' => [],
             'ui' => [
                 'creationDialog' => [
                     'elements' => [
@@ -414,10 +466,39 @@ class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
                 ],
             ],
         ];
-        $expected = $configuration;
 
-        $this->postprocessor->process($this->mockNodeType, $configuration, []);
+        self::assertSame($configuration, $this->processConfigurationFully($configuration, [], []));
+    }
 
-        self::assertSame($expected, $configuration);
+    private function processConfigurationFully(array $configuration, array $dataTypesDefaultConfiguration, array $editorDefaultConfiguration): array
+    {
+        $mockNodeType = new NodeType(NodeTypeName::fromString('Some.NodeType:Name'), [], [], new DefaultNodeLabelGeneratorFactory());
+
+        $firstProcessor = new DefaultPropertyEditorPostprocessor();
+        $this->inject($firstProcessor, 'dataTypesDefaultConfiguration', $dataTypesDefaultConfiguration);
+        $this->inject($firstProcessor, 'editorDefaultConfiguration', $editorDefaultConfiguration);
+
+        $firstProcessor->process($mockNodeType, $configuration, []);
+
+
+        $secondProcessor = new CreationDialogNodeTypePostprocessor();
+        $this->inject($secondProcessor, 'dataTypesDefaultConfiguration', $dataTypesDefaultConfiguration);
+        $this->inject($secondProcessor, 'editorDefaultConfiguration', $editorDefaultConfiguration);
+
+        $secondProcessor->process($mockNodeType, $configuration, []);
+
+        return $configuration;
+    }
+
+    private function processConfigurationLegacyOnlyOnce(array $configuration, array $dataTypesDefaultConfiguration, array $editorDefaultConfiguration): array
+    {
+        $mockNodeType = new NodeType(NodeTypeName::fromString('Some.NodeType:Name'), [], [], new DefaultNodeLabelGeneratorFactory());
+
+        $postprocessor = new CreationDialogNodeTypePostprocessor();
+        $this->inject($postprocessor, 'dataTypesDefaultConfiguration', $dataTypesDefaultConfiguration);
+        $this->inject($postprocessor, 'editorDefaultConfiguration', $editorDefaultConfiguration);
+
+        $postprocessor->process($mockNodeType, $configuration, []);
+        return $configuration;
     }
 }

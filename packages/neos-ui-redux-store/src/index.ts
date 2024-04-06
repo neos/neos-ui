@@ -9,7 +9,7 @@ import * as ServerFeedback from './ServerFeedback';
 
 const all = {Changes, CR, System, UI, User, ServerFeedback};
 
-function typedKeys<T>(o: T) : Array<keyof T> {
+function typedKeys<T extends {}>(o: T) : Array<keyof T> {
     return Object.keys(o) as Array<keyof T>;
 }
 

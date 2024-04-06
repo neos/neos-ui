@@ -46,6 +46,10 @@ use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateIds;
  *           type: string
  *           ui:
  *             showInCreationDialog: true
+ *       references:
+ *         myReferences:
+ *           ui:
+ *             showInCreationDialog: true
  *
  * @implements \IteratorAggregate<string, mixed>
  * @internal Especially the constructor and the serialized data

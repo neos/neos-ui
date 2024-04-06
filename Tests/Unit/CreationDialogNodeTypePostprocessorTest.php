@@ -7,9 +7,72 @@ use Neos\ContentRepository\Core\NodeType\NodeTypeName;
 use Neos\Flow\Tests\UnitTestCase;
 use Neos\Neos\NodeTypePostprocessor\DefaultPropertyEditorPostprocessor;
 use Neos\Neos\Ui\Infrastructure\ContentRepository\CreationDialog\CreationDialogNodeTypePostprocessor;
+use Symfony\Component\Yaml\Yaml;
 
 class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
 {
+    public function examples(): iterable
+    {
+        yield 'multiple references' => [
+            'nodeTypeDefinition' => <<<'YAML'
+            references:
+              someReferences:
+                ui:
+                  showInCreationDialog: true
+            YAML,
+            'expectedCreationDialog' => <<<'YAML'
+            elements:
+              someReferences:
+                type: references
+                ui:
+                  editor: ReferencesEditor
+            YAML
+        ];
+
+        yield 'singular reference' => [
+            'nodeTypeDefinition' => <<<'YAML'
+            references:
+              someReference:
+                constraints:
+                  maxItems: 1
+                ui:
+                  showInCreationDialog: true
+            YAML,
+            'expectedCreationDialog' => <<<'YAML'
+            elements:
+              someReference:
+                type: reference
+                ui:
+                  editor: SingularReferenceEditor
+            YAML
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider examples
+     */
+    public function processExamples(string $nodeTypeDefinition, string $expectedCreationDialog)
+    {
+        $configuration = array_merge([
+            'references' => [],
+            'properties' => []
+        ], Yaml::parse($nodeTypeDefinition));
+
+        $dataTypesDefaultConfiguration = [
+            'reference' => [
+                'editor' => 'SingularReferenceEditor',
+            ],
+            'references' => [
+                'editor' => 'ReferencesEditor',
+            ],
+        ];
+
+        $result = $this->processConfigurationFully($configuration, $dataTypesDefaultConfiguration, []);
+
+        self::assertEquals(Yaml::parse($expectedCreationDialog), $result['ui']['creationDialog'] ?? null);
+    }
+
     /**
      * promoted elements (showInCreationDialog: true)
      *

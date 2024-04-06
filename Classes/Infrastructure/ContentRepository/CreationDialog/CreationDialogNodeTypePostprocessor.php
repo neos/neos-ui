@@ -17,6 +17,7 @@ namespace Neos\Neos\Ui\Infrastructure\ContentRepository\CreationDialog;
 use Neos\ContentRepository\Core\NodeType\NodeType;
 use Neos\ContentRepository\Core\NodeType\NodeTypePostprocessorInterface;
 use Neos\Flow\Annotations as Flow;
+use Neos\Neos\Ui\Domain\NodeCreation\NodeCreationElements;
 use Neos\Utility\Arrays;
 use Neos\Utility\PositionalArraySorter;
 
@@ -88,8 +89,12 @@ class CreationDialogNodeTypePostprocessor implements NodeTypePostprocessorInterf
     {
         $creationDialogElements = $configuration['ui']['creationDialog']['elements'] ?? [];
 
-        if (!empty($configuration['properties'] ?? null)) {
+        if (!empty($configuration['properties'])) {
             $creationDialogElements = $this->promotePropertiesIntoCreationDialog($configuration['properties'], $creationDialogElements);
+        }
+
+        if (!empty($configuration['references'])) {
+            $creationDialogElements = $this->promoteReferencesIntoCreationDialog($configuration['references'], $creationDialogElements);
         }
 
         $this->mergeDefaultCreationDialogElementEditors($creationDialogElements);
@@ -222,6 +227,76 @@ class CreationDialogNodeTypePostprocessor implements NodeTypePostprocessorInterf
 
         $convertedConfiguration['ui']['editor'] = $editor;
         $convertedConfiguration['ui']['editorOptions'] = $editorOptions;
+        return $convertedConfiguration;
+    }
+
+    /**
+     * @param array<string, mixed> $references
+     * @param array<string, mixed> $explicitCreationDialogElements
+     * @return array<string, mixed>
+     */
+    private function promoteReferencesIntoCreationDialog(array $references, array $explicitCreationDialogElements): array
+    {
+        foreach ($references as $referenceName => $referenceConfiguration) {
+            if (
+                !isset($referenceConfiguration['ui']['showInCreationDialog'])
+                || $referenceConfiguration['ui']['showInCreationDialog'] !== true
+            ) {
+                continue;
+            }
+
+            $creationDialogElement = $this->promoteReferenceIntoCreationDialog($referenceConfiguration);
+            if (isset($explicitCreationDialogElements[$referenceName])) {
+                $creationDialogElement = Arrays::arrayMergeRecursiveOverrule(
+                    $creationDialogElement,
+                    $explicitCreationDialogElements[$referenceName]
+                );
+            }
+            $explicitCreationDialogElements[$referenceName] = $creationDialogElement;
+        }
+        return $explicitCreationDialogElements;
+    }
+
+    /**
+     * Converts a NodeType reference configuration to the corresponding creationDialog "element" configuration
+     *
+     * @param array<string,mixed> $referenceConfiguration
+     * @return array<string,mixed>
+     */
+    private function promoteReferenceIntoCreationDialog(array $referenceConfiguration): array
+    {
+        $maxAllowedItems = $referenceConfiguration['constraints']['maxItems'] ?? null;
+        $referenceMagicType = $maxAllowedItems === 1 ? 'reference' : 'references';
+        /**
+         * For references, we add this magic type to the elements configuration {@see NodeCreationElements}
+         */
+        $convertedConfiguration = [
+            'type' => $referenceMagicType,
+        ];
+        if (isset($referenceConfiguration['ui']['label'])) {
+            $convertedConfiguration['ui']['label'] = $referenceConfiguration['ui']['label'];
+        }
+        if (isset($referenceConfiguration['defaultValue'])) {
+            $convertedConfiguration['defaultValue'] = $referenceConfiguration['defaultValue'];
+        }
+        if (isset($referenceConfiguration['ui']['help'])) {
+            $convertedConfiguration['ui']['help'] = $referenceConfiguration['ui']['help'];
+        }
+        if (isset($referenceConfiguration['ui']['inspector']['position'])) {
+            $convertedConfiguration['position'] = $referenceConfiguration['ui']['inspector']['position'];
+        }
+        if (isset($referenceConfiguration['ui']['inspector']['hidden'])) {
+            $convertedConfiguration['ui']['hidden'] = $referenceConfiguration['ui']['inspector']['hidden'];
+        }
+        /**
+         * the editor will be set based on the type above via {@see self::mergeDefaultCreationDialogElementEditors}
+         */
+        if (isset($referenceConfiguration['ui']['inspector']['editor'])) {
+            $convertedConfiguration['ui']['editor'] = $referenceConfiguration['ui']['inspector']['editor'];
+        }
+        if (isset($referenceConfiguration['ui']['inspector']['editorOptions'])) {
+            $convertedConfiguration['ui']['editorOptions'] = $referenceConfiguration['ui']['inspector']['editorOptions'];
+        }
         return $convertedConfiguration;
     }
 }

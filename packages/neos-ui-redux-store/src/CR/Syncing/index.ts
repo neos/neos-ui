@@ -54,6 +54,7 @@ export type State = null | {
         | { phase: SyncingPhase.ONGOING }
         | {
             phase: SyncingPhase.CONFLICT;
+            strategy: null | ResolutionStrategy;
             conflicts: Conflict[];
         }
         | {
@@ -198,7 +199,8 @@ export const reducer = (state: State = defaultState, action: Action): State => {
             return {
                 process: {
                     phase: SyncingPhase.CONFLICT,
-                    conflicts: action.payload.conflicts
+                    conflicts: action.payload.conflicts,
+                    strategy: null
                 }
             };
         case actionTypes.RESOLUTION_STARTED:

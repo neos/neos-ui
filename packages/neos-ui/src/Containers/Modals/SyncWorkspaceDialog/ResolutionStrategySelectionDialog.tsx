@@ -63,6 +63,7 @@ export const ResolutionStrategySelectionDialog: React.FC<{
     workspaceName: WorkspaceName;
     baseWorkspaceName: WorkspaceName;
     conflicts: Conflict[];
+    defaultStrategy: null | ResolutionStrategy;
     i18n: I18nRegistry;
     onCancel: () => void;
     onSelectResolutionStrategy: (strategy: ResolutionStrategy) => void;
@@ -70,7 +71,7 @@ export const ResolutionStrategySelectionDialog: React.FC<{
     const [
         selectedResolutionStrategy,
         setSelectedResolutionStrategy
-    ] = React.useState(ResolutionStrategy.FORCE);
+    ] = React.useState(props.defaultStrategy ?? ResolutionStrategy.FORCE);
     const options = React.useMemo(() => {
         return OPTIONS_FOR_RESOLUTION_STRATEGY_SELECTION
             .map(({value}) => {

@@ -117,24 +117,28 @@ const SyncWorkspaceDialog: React.FC<SyncWorkspaceDialogProps> = (props) => {
                     workspaceName={props.personalWorkspaceName}
                     baseWorkspaceName={props.baseWorkspaceName}
                     conflicts={props.syncingState.process.conflicts}
+                    defaultStrategy={props.syncingState.process.strategy}
                     i18n={props.i18nRegistry}
                     onCancel={handleCancel}
                     onSelectResolutionStrategy={handleSelectResolutionStrategy}
                     />
             );
         case SyncingPhase.RESOLVING:
-            return (
-                <ResolutionStrategyConfirmationDialog
-                    workspaceName={props.personalWorkspaceName}
-                    baseWorkspaceName={props.baseWorkspaceName}
-                    totalNumberOfChangesInWorkspace={props.totalNumberOfChangesInWorkspace}
-                    strategy={props.syncingState.process.strategy}
-                    conflicts={props.syncingState.process.conflicts}
-                    i18n={props.i18nRegistry}
-                    onCancelConflictResolution={handleCancelConflictResolution}
-                    onConfirmResolutionStrategy={handleConfirmResolutionStrategy}
-                    />
-            );
+            if (props.syncingState.process.strategy === ResolutionStrategy.FORCE) {
+                return (
+                    <ResolutionStrategyConfirmationDialog
+                        workspaceName={props.personalWorkspaceName}
+                        baseWorkspaceName={props.baseWorkspaceName}
+                        totalNumberOfChangesInWorkspace={props.totalNumberOfChangesInWorkspace}
+                        strategy={props.syncingState.process.strategy}
+                        conflicts={props.syncingState.process.conflicts}
+                        i18n={props.i18nRegistry}
+                        onCancelConflictResolution={handleCancelConflictResolution}
+                        onConfirmResolutionStrategy={handleConfirmResolutionStrategy}
+                        />
+                );
+            }
+            return null;
         case SyncingPhase.ERROR:
         case SyncingPhase.SUCCESS:
             return (

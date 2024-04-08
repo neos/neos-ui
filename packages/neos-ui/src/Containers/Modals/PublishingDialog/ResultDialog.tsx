@@ -24,6 +24,24 @@ const ResultDialogVariants = {
         [PublishingPhase.SUCCESS]: {
             style: 'success',
             icon: 'check',
+            [PublishingScope.ALL]: {
+                label: {
+                    title: {
+                        id: 'Neos.Neos.Ui:PublishingDialog:publish.all.success.title',
+                        fallback: (props: { scopeTitle: string; }) =>
+                            `All changes in workspace "${props.scopeTitle}" were published`
+                    },
+                    message: {
+                        id: 'Neos.Neos.Ui:PublishingDialog:publish.all.success.message',
+                        fallback: (props: { numberOfChanges: number; scopeTitle: string; targetWorkspaceName: null | string; }) =>
+                            `All ${props.numberOfChanges} change(s) in workspace "${props.scopeTitle}" were sucessfully published to workspace "${props.targetWorkspaceName}".`
+                    },
+                    acknowledge: {
+                        id: 'Neos.Neos.Ui:PublishingDialog:publish.all.success.acknowledge',
+                        fallback: 'OK'
+                    }
+                }
+            },
             [PublishingScope.SITE]: {
                 label: {
                     title: {
@@ -64,6 +82,23 @@ const ResultDialogVariants = {
         [PublishingPhase.ERROR]: {
             style: 'error',
             icon: 'exclamation-circle',
+            [PublishingScope.ALL]: {
+                label: {
+                    title: {
+                        id: 'Neos.Neos.Ui:PublishingDialog:publish.all.error.title',
+                        fallback: (props: { scopeTitle: string; }) =>
+                            `Changes in workspace "${props.scopeTitle}" could not be published`
+                    },
+                    retry: {
+                        id: 'Neos.Neos.Ui:PublishingDialog:publish.all.error.retry',
+                        fallback: 'Try again'
+                    },
+                    acknowledge: {
+                        id: 'Neos.Neos.Ui:PublishingDialog:publish.all.error.acknowledge',
+                        fallback: 'OK'
+                    }
+                }
+            },
             [PublishingScope.SITE]: {
                 label: {
                     title: {
@@ -105,6 +140,24 @@ const ResultDialogVariants = {
         [PublishingPhase.SUCCESS]: {
             style: 'success',
             icon: 'check',
+            [PublishingScope.ALL]: {
+                label: {
+                    title: {
+                        id: 'Neos.Neos.Ui:PublishingDialog:discard.all.success.title',
+                        fallback: (props: { scopeTitle: string; }) =>
+                            `All changes in workspace "${props.scopeTitle}" were discarded`
+                    },
+                    message: {
+                        id: 'Neos.Neos.Ui:PublishingDialog:discard.all.success.message',
+                        fallback: (props: { numberOfChanges: number; scopeTitle: string; }) =>
+                            `All ${props.numberOfChanges} change(s) in workspace "${props.scopeTitle}" were sucessfully discarded.`
+                    },
+                    acknowledge: {
+                        id: 'Neos.Neos.Ui:PublishingDialog:discard.all.success.acknowledge',
+                        fallback: 'OK'
+                    }
+                }
+            },
             [PublishingScope.SITE]: {
                 label: {
                     title: {
@@ -145,6 +198,23 @@ const ResultDialogVariants = {
         [PublishingPhase.ERROR]: {
             style: 'error',
             icon: 'exclamation-circle',
+            [PublishingScope.ALL]: {
+                label: {
+                    title: {
+                        id: 'Neos.Neos.Ui:PublishingDialog:discard.all.error.title',
+                        fallback: (props: { scopeTitle: string; }) =>
+                            `Changes in workspace "${props.scopeTitle}" could not be discarded`
+                    },
+                    acknowledge: {
+                        id: 'Neos.Neos.Ui:PublishingDialog:discard.all.error.acknowledge',
+                        fallback: 'Cancel'
+                    },
+                    retry: {
+                        id: 'Neos.Neos.Ui:PublishingDialog:discard.all.error.retry',
+                        fallback: 'Try again'
+                    }
+                }
+            },
             [PublishingScope.SITE]: {
                 label: {
                     title: {

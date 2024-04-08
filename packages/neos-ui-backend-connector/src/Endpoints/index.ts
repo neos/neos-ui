@@ -11,6 +11,7 @@ export interface Routes {
             change: string;
             publishChangesInSite: string;
             publishChangesInDocument: string;
+            discardAllChanges: string;
             discardChangesInSite: string;
             discardChangesInDocument: string;
             changeBaseWorkspace: string;
@@ -92,6 +93,20 @@ export default (routes: Routes) => {
         },
         body: JSON.stringify({
             command: {documentId, workspaceName}
+        })
+    })).then(response => fetchWithErrorHandling.parseJson(response))
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+
+    const discardAllChanges = (workspaceName: WorkspaceName) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+        url: routes.ui.service.discardAllChanges,
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'X-Flow-Csrftoken': csrfToken,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            command: {workspaceName}
         })
     })).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
@@ -706,6 +721,7 @@ export default (routes: Routes) => {
         change,
         publishChangesInSite,
         publishChangesInDocument,
+        discardAllChanges,
         discardChangesInSite,
         discardChangesInDocument,
         changeBaseWorkspace,

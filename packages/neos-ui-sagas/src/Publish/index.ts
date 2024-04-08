@@ -38,12 +38,16 @@ export function * watchPublishing({routes}: {routes: Routes}) {
     const {endpoints} = backend.get();
     const ENDPOINT_BY_MODE_AND_SCOPE = {
         [PublishingMode.PUBLISH]: {
+            [PublishingScope.ALL]:
+                null,
             [PublishingScope.SITE]:
                 endpoints.publishChangesInSite,
             [PublishingScope.DOCUMENT]:
                 endpoints.publishChangesInDocument
         },
         [PublishingMode.DISCARD]: {
+            [PublishingScope.ALL]:
+                endpoints.discardAllChanges,
             [PublishingScope.SITE]:
                 endpoints.discardChangesInSite,
             [PublishingScope.DOCUMENT]:
@@ -51,6 +55,9 @@ export function * watchPublishing({routes}: {routes: Routes}) {
         }
     };
     const SELECTORS_BY_SCOPE = {
+        [PublishingScope.ALL]: {
+            ancestorIdSelector: null
+        },
         [PublishingScope.SITE]: {
             ancestorIdSelector: selectors.CR.Nodes.siteNodeContextPathSelector
         },
@@ -69,15 +76,23 @@ export function * watchPublishing({routes}: {routes: Routes}) {
 
         const {scope, mode} = action.payload;
         const endpoint = ENDPOINT_BY_MODE_AND_SCOPE[mode][scope];
+        if (!endpoint) {
+            console.warn('"Publish all" is not implemented!');
+            return;
+        }
         const {ancestorIdSelector} = SELECTORS_BY_SCOPE[scope];
 
         const workspaceName: WorkspaceName = yield select(selectors.CR.Workspaces.personalWorkspaceNameSelector);
-        const ancestorId: NodeContextPath = yield select(ancestorIdSelector);
+        const ancestorId: NodeContextPath = ancestorIdSelector
+            ? yield select(ancestorIdSelector)
+            : null;
 
         do {
             try {
                 window.addEventListener('beforeunload', handleWindowBeforeUnload);
-                const result: PublishingResponse = yield call(endpoint, ancestorId, workspaceName);
+                const result: PublishingResponse = scope === PublishingScope.ALL
+                    ? yield call(endpoint as any, workspaceName)
+                    : yield call(endpoint, ancestorId, workspaceName);
 
                 if ('success' in result) {
                     yield put(actions.CR.Publishing.succeed(result.success.numberOfAffectedChanges));

@@ -25,6 +25,28 @@ const ConfirmationDialogVariants = {
             title: 'share-square-o',
             confirm: 'share-square-o'
         },
+        [PublishingScope.ALL]: {
+            label: {
+                title: {
+                    id: 'Neos.Neos.Ui:PublishingDialog:publish.all.confirmation.title',
+                    fallback: (props: { scopeTitle: string; }) =>
+                        `Publish all changes in workspace "${props.scopeTitle}"`
+                },
+                message: {
+                    id: 'Neos.Neos.Ui:PublishingDialog:publish.all.confirmation.message',
+                    fallback: (props: { numberOfChanges: number; scopeTitle: string; targetWorkspaceName: null | string; }) =>
+                        `Are you sure that you want to publish all ${props.numberOfChanges} change(s) in workspace "${props.scopeTitle}" to workspace "${props.targetWorkspaceName}"? Be careful: This cannot be undone!`
+                },
+                cancel: {
+                    id: 'Neos.Neos.Ui:PublishingDialog:publish.all.confirmation.cancel',
+                    fallback: 'No, cancel'
+                },
+                confirm: {
+                    id: 'Neos.Neos.Ui:PublishingDialog:publish.all.confirmation.confirm',
+                    fallback: 'Yes, publish'
+                }
+            }
+        },
         [PublishingScope.SITE]: {
             label: {
                 title: {
@@ -76,6 +98,28 @@ const ConfirmationDialogVariants = {
         icon: {
             title: 'exclamation-triangle',
             confirm: 'ban'
+        },
+        [PublishingScope.ALL]: {
+            label: {
+                title: {
+                    id: 'Neos.Neos.Ui:PublishingDialog:discard.all.confirmation.title',
+                    fallback: (props: { scopeTitle: string; }) =>
+                        `Discard all changes in workspace "${props.scopeTitle}"`
+                },
+                message: {
+                    id: 'Neos.Neos.Ui:PublishingDialog:discard.all.confirmation.message',
+                    fallback: (props: { numberOfChanges: number; scopeTitle: string; }) =>
+                        `Are you sure that you want to discard all ${props.numberOfChanges} change(s) in workspace "${props.scopeTitle}"? Be careful: This cannot be undone!`
+                },
+                cancel: {
+                    id: 'Neos.Neos.Ui:PublishingDialog:discard.all.confirmation.cancel',
+                    fallback: 'No, cancel'
+                },
+                confirm: {
+                    id: 'Neos.Neos.Ui:PublishingDialog:discard.all.confirmation.confirm',
+                    fallback: 'Yes, discard'
+                }
+            }
         },
         [PublishingScope.SITE]: {
             label: {

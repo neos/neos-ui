@@ -40,6 +40,8 @@ use Neos\Neos\Ui\Application\DiscardChangesInDocument;
 use Neos\Neos\Ui\Application\DiscardChangesInSite;
 use Neos\Neos\Ui\Application\PublishChangesInDocument;
 use Neos\Neos\Ui\Application\PublishChangesInSite;
+use Neos\Neos\Ui\Application\ReloadNodes\ReloadNodesQuery;
+use Neos\Neos\Ui\Application\ReloadNodes\ReloadNodesQueryHandler;
 use Neos\Neos\Ui\Application\SyncWorkspace;
 use Neos\Neos\Ui\ContentRepository\Service\NeosUiNodeService;
 use Neos\Neos\Ui\Domain\Model\Feedback\Messages\Error;
@@ -131,6 +133,12 @@ class BackendServiceController extends ActionController
      * @var WorkspaceProvider
      */
     protected $workspaceProvider;
+
+    /**
+     * @Flow\Inject
+     * @var ReloadNodesQueryHandler
+     */
+    protected $reloadNodesQueryHandler;
 
     /**
      * Set the controller context on the feedback collection after the controller
@@ -708,5 +716,66 @@ class BackendServiceController extends ActionController
         $this->feedbackCollection->add($success);
 
         $this->view->assign('value', $this->feedbackCollection);
+    }
+
+    /**
+     * @phpstan-param array<mixed> $query
+     * @return void
+     */
+    public function reloadNodesAction(array $query): void
+    {
+        /** @todo send from UI */
+        $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
+        $query['contentRepositoryId'] = $contentRepositoryId->value;
+        $query['siteId'] = $this->nodeService->deserializeNodeAddress(
+            $query['siteId'],
+            $contentRepositoryId
+        )->nodeAggregateId->value;
+        $query['documentId'] = $this->nodeService->deserializeNodeAddress(
+            $query['documentId'],
+            $contentRepositoryId
+        )->nodeAggregateId->value;
+        $query['ancestorsOfDocumentIds'] = array_map(
+            fn (string $nodeAddress) =>
+                $this->nodeService->deserializeNodeAddress(
+                    $nodeAddress,
+                    $contentRepositoryId
+                )->nodeAggregateId->value,
+            $query['ancestorsOfDocumentIds']
+        );
+        $query['toggledNodesIds'] = array_map(
+            fn (string $nodeAddress) =>
+                $this->nodeService->deserializeNodeAddress(
+                    $nodeAddress,
+                    $contentRepositoryId
+                )->nodeAggregateId->value,
+            $query['toggledNodesIds']
+        );
+        $query['clipboardNodesIds'] = array_map(
+            fn (string $nodeAddress) =>
+                $this->nodeService->deserializeNodeAddress(
+                    $nodeAddress,
+                    $contentRepositoryId
+                )->nodeAggregateId->value,
+            $query['clipboardNodesIds']
+        );
+        $query = ReloadNodesQuery::fromArray($query);
+
+
+        try {
+            $result = $this->reloadNodesQueryHandler->handle($query, $this->request);
+            $this->view->assign('value', [
+                'success' => $result
+            ]);
+        } catch (\Exception $e) {
+            $this->view->assign('value', [
+                'error' => [
+                    'class' => $e::class,
+                    'code' => $e->getCode(),
+                    'message' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString()
+                ]
+            ]);
+        }
     }
 }

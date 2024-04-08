@@ -58,6 +58,8 @@ final class RoutesProvider implements RoutesProviderInterface
                 $helper->buildUiServiceRoute('getWorkspaceInfo'),
             'getAdditionalNodeMetadata' =>
                 $helper->buildUiServiceRoute('getAdditionalNodeMetadata'),
+            'reloadNodes' =>
+                $helper->buildUiServiceRoute('reloadNodes'),
         ];
 
         $routes['core']['content'] = [

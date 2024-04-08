@@ -37,6 +37,7 @@ use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;
 use Neos\Neos\Service\UserService;
 use Neos\Neos\Ui\Application\ChangeTargetWorkspace;
+use Neos\Neos\Ui\Application\DiscardAllChanges;
 use Neos\Neos\Ui\Application\DiscardChangesInDocument;
 use Neos\Neos\Ui\Application\DiscardChangesInSite;
 use Neos\Neos\Ui\Application\PublishChangesInDocument;
@@ -265,6 +266,42 @@ class BackendServiceController extends ActionController
                     1682762156
                 );
             }
+        } catch (\Exception $e) {
+            $this->view->assign('value', [
+                'error' => [
+                    'class' => $e::class,
+                    'code' => $e->getCode(),
+                    'message' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString()
+                ]
+            ]);
+        }
+    }
+
+    /**
+     * Discard all changes in the user's personal workspace
+     *
+     * @phpstan-param array<string,string> $command
+     */
+    public function discardAllChangesAction(array $command): void
+    {
+        try {
+            /** @todo send from UI */
+            $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
+            $command['contentRepositoryId'] = $contentRepositoryId->value;
+            $command = DiscardAllChanges::fromArray($command);
+
+            $workspace = $this->workspaceProvider->provideForWorkspaceName(
+                $command->contentRepositoryId,
+                $command->workspaceName
+            );
+            $discardingResult = $workspace->discardAllChanges();
+
+            $this->view->assign('value', [
+                'success' => [
+                    'numberOfAffectedChanges' => $discardingResult->numberOfDiscardedChanges
+                ]
+            ]);
         } catch (\Exception $e) {
             $this->view->assign('value', [
                 'error' => [

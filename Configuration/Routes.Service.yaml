@@ -23,6 +23,14 @@
   httpMethods: ['POST']
 
 -
+  name: 'Discard all changes in workspace'
+  uriPattern: 'discard-all-changes'
+  defaults:
+    '@controller': 'BackendService'
+    '@action': 'discardAllChanges'
+  httpMethods: ['POST']
+
+-
   name: 'Discard all changes in site'
   uriPattern: 'discard-changes-in-site'
   defaults:

@@ -95,8 +95,14 @@ export default class NodeTree extends PureComponent {
     }
 
     handleDrop = (targetNode, position) => {
-        const {currentlyDraggedNodes} = this.state;
+        let {currentlyDraggedNodes} = this.state;
         const {moveNodes, focus} = this.props;
+
+        if (position === 'after') {
+            // Reverse the order of nodes to keep the correct order after each node is inserted after the target node individually
+            currentlyDraggedNodes = Array.from(currentlyDraggedNodes).reverse();
+        }
+
         moveNodes(currentlyDraggedNodes, $get('contextPath', targetNode), position);
         // We need to refocus the tree, so all focus would be reset, because its context paths have changed while moving
         // Could be removed with the new CR

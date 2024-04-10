@@ -7,7 +7,7 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-import {put, call, select, takeEvery, take, race} from 'redux-saga/effects';
+import {put, call, select, takeEvery, take, race, all} from 'redux-saga/effects';
 
 import {AnyError} from '@neos-project/neos-ui-error';
 import {NodeContextPath, WorkspaceName} from '@neos-project/neos-ts-interfaces';
@@ -15,10 +15,11 @@ import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store
 import {GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
 import {FeedbackEnvelope} from '@neos-project/neos-ui-redux-store/src/ServerFeedback';
 import {PublishingMode, PublishingScope} from '@neos-project/neos-ui-redux-store/src/CR/Publishing';
-import {PublishableNode, WorkspaceInformation} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces';
+import {WorkspaceInformation} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces';
 import backend, {Routes} from '@neos-project/neos-ui-backend-connector';
 
 import {makeReloadNodes} from '../CR/NodeOperations/reloadNodes';
+import {updateWorkspaceInfo} from '../CR/Workspaces';
 
 const handleWindowBeforeUnload = (event: BeforeUnloadEvent) => {
     event.preventDefault();
@@ -48,12 +49,10 @@ export function * watchPublishing({routes}: {routes: Routes}) {
     };
     const SELECTORS_BY_SCOPE = {
         [PublishingScope.SITE]: {
-            ancestorIdSelector: selectors.CR.Nodes.siteNodeContextPathSelector,
-            publishableNodesSelector: selectors.CR.Workspaces.publishableNodesSelector
+            ancestorIdSelector: selectors.CR.Nodes.siteNodeContextPathSelector
         },
         [PublishingScope.DOCUMENT]: {
-            ancestorIdSelector: selectors.CR.Nodes.documentNodeContextPathSelector,
-            publishableNodesSelector: selectors.CR.Workspaces.publishableNodesInDocumentSelector
+            ancestorIdSelector: selectors.CR.Nodes.documentNodeContextPathSelector
         }
     };
 
@@ -67,24 +66,23 @@ export function * watchPublishing({routes}: {routes: Routes}) {
 
         const {scope, mode} = action.payload;
         const endpoint = ENDPOINT_BY_MODE_AND_SCOPE[mode][scope];
-        const {ancestorIdSelector, publishableNodesSelector} = SELECTORS_BY_SCOPE[scope];
+        const {ancestorIdSelector} = SELECTORS_BY_SCOPE[scope];
 
         const workspaceName: WorkspaceName = yield select(selectors.CR.Workspaces.personalWorkspaceNameSelector);
         const ancestorId: NodeContextPath = yield select(ancestorIdSelector);
-        const publishableNodes: PublishableNode[] = yield select(publishableNodesSelector);
 
-        let affectedNodes: PublishableNode[] = [];
         do {
             try {
                 window.addEventListener('beforeunload', handleWindowBeforeUnload);
                 const result: PublishingResponse = yield call(endpoint, ancestorId, workspaceName);
 
                 if ('success' in result) {
-                    affectedNodes = publishableNodes;
                     yield put(actions.CR.Publishing.succeed());
 
                     if (mode === PublishingMode.DISCARD) {
                         yield * reloadAfterDiscard();
+                    } else {
+                        yield * updateWorkspaceInfo();
                     }
                 } else if ('error' in result) {
                     yield put(actions.CR.Publishing.fail(result.error));
@@ -98,7 +96,7 @@ export function * watchPublishing({routes}: {routes: Routes}) {
             }
         } while (yield * waitForRetry());
 
-        yield put(actions.CR.Publishing.finish(affectedNodes));
+        yield put(actions.CR.Publishing.finish());
     });
 }
 
@@ -132,7 +130,10 @@ const makeReloadAfterDiscard = (deps: {
     const reloadNodes = makeReloadNodes(deps);
 
     function * reloadAfterDiscard() {
-        yield * reloadNodes();
+        yield all([
+            call(updateWorkspaceInfo),
+            call(reloadNodes)
+        ]);
     }
 
     return reloadAfterDiscard;

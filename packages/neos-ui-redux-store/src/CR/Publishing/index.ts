@@ -11,8 +11,6 @@ import {action as createAction, ActionType} from 'typesafe-actions';
 
 import type {AnyError} from '@neos-project/neos-ui-error';
 
-import {PublishableNode} from '../Workspaces';
-
 export enum PublishingMode {
     PUBLISH,
     DISCARD
@@ -96,7 +94,7 @@ const acknowledge = () => createAction(actionTypes.ACKNOWLEDGED);
 /**
  * Finish the ongoing publish/discard workflow
  */
-const finish = (affectedNodes: PublishableNode[]) => createAction(actionTypes.FINISHED, {affectedNodes});
+const finish = () => createAction(actionTypes.FINISHED);
 
 //
 // Export the actions
@@ -113,7 +111,6 @@ export const actions = {
 };
 
 export type Action = ActionType<typeof actions>;
-export type FinishAction = ActionType<typeof actions.finish>;
 
 //
 // Export the reducer

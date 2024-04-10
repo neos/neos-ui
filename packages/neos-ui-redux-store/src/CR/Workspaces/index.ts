@@ -6,7 +6,6 @@ import {NodeContextPath} from '@neos-project/neos-ts-interfaces';
 import {WorkspaceName} from '@neos-project/neos-ts-interfaces';
 
 import {actionTypes as system, InitAction} from '../../System';
-import {actionTypes as publishing, FinishAction} from '../Publishing';
 
 import * as selectors from './selectors';
 
@@ -79,7 +78,7 @@ export const actions = {
 //
 // Export the reducer
 //
-export const reducer = (state: State = defaultState, action: InitAction | FinishAction | Action) => produce(state, draft => {
+export const reducer = (state: State = defaultState, action: InitAction | Action) => produce(state, draft => {
     switch (action.type) {
         case system.INIT: {
             draft.personalWorkspace = action.payload.cr.workspaces.personalWorkspace;
@@ -87,15 +86,6 @@ export const reducer = (state: State = defaultState, action: InitAction | Finish
         }
         case actionTypes.UPDATE: {
             draft.personalWorkspace = assignIn(draft.personalWorkspace, action.payload);
-            break;
-        }
-        case publishing.FINISHED: {
-            draft.personalWorkspace.publishableNodes =
-                state.personalWorkspace.publishableNodes.filter(
-                    (publishableNode) => !action.payload.affectedNodes.some(
-                        (affectedNode) => affectedNode.contextPath === publishableNode.contextPath
-                    )
-                );
             break;
         }
     }

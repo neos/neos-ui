@@ -15,10 +15,10 @@ import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store
 import {GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
 import {FeedbackEnvelope} from '@neos-project/neos-ui-redux-store/src/ServerFeedback';
 import {PublishingMode, PublishingScope} from '@neos-project/neos-ui-redux-store/src/CR/Publishing';
-import {PublishableNode, TypeOfChange, WorkspaceInformation} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces';
+import {PublishableNode, WorkspaceInformation} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces';
 import backend, {Routes} from '@neos-project/neos-ui-backend-connector';
-// @ts-ignore
-import {getGuestFrameDocument} from '@neos-project/neos-ui-guest-frame/src/dom';
+
+import {makeReloadNodes} from '../CR/NodeOperations/reloadNodes';
 
 const handleWindowBeforeUnload = (event: BeforeUnloadEvent) => {
     event.preventDefault();
@@ -57,6 +57,8 @@ export function * watchPublishing({routes}: {routes: Routes}) {
         }
     };
 
+    const reloadAfterDiscard = makeReloadAfterDiscard({routes});
+
     yield takeEvery(actionTypes.CR.Publishing.STARTED, function * publishingWorkflow(action: ReturnType<typeof actions.CR.Publishing.start>) {
         const confirmed = yield * waitForConfirmation();
         if (!confirmed) {
@@ -82,7 +84,7 @@ export function * watchPublishing({routes}: {routes: Routes}) {
                     yield put(actions.CR.Publishing.succeed());
 
                     if (mode === PublishingMode.DISCARD) {
-                        yield * reloadAfterDiscard(publishableNodes, routes);
+                        yield * reloadAfterDiscard();
                     }
                 } else if ('error' in result) {
                     yield put(actions.CR.Publishing.fail(result.error));
@@ -124,59 +126,16 @@ function * waitForRetry() {
     return Boolean(retried);
 }
 
-function * reloadAfterDiscard(discardedNodes: PublishableNode[], routes: Routes) {
-    const currentContentCanvasContextPath: NodeContextPath = yield select(selectors.CR.Nodes.documentNodeContextPathSelector);
-    const currentDocumentParentLine: ReturnType<typeof selectors.CR.Nodes.documentNodeParentLineSelector> =
-        yield select(selectors.CR.Nodes.documentNodeParentLineSelector);
+const makeReloadAfterDiscard = (deps: {
+    routes: Routes
+}) => {
+    const reloadNodes = makeReloadNodes(deps);
 
-    const avilableAncestorDocumentNode = currentDocumentParentLine.reduce((prev, cur) => {
-        if (prev === null) {
-            const hasBeenRemovedByDiscard = discardedNodes.some((discardedNode) => {
-                if (discardedNode.contextPath !== cur?.contextPath) {
-                    return false;
-                }
-
-                return Boolean(
-                    discardedNode.typeOfChange
-                    & TypeOfChange.NODE_HAS_BEEN_CREATED
-                );
-            });
-
-            if (!hasBeenRemovedByDiscard) {
-                return cur;
-            }
-        }
-
-        return prev;
-    }, null);
-
-    if (avilableAncestorDocumentNode === null) {
-        // We're doomed - there's no document left to navigate to
-        // In this (rather unlikely) case, we leave the UI and navigate
-        // to whatever default entry module is configured:
-        window.location.href = routes?.core?.modules?.defaultModule;
-        return;
+    function * reloadAfterDiscard() {
+        yield * reloadNodes();
     }
 
-    // Reload all nodes aaand...
-    yield put(actions.CR.Nodes.reloadState({
-        documentNodeContextPath: avilableAncestorDocumentNode.contextPath
-    }));
-    // wait for it.
-    yield take(actionTypes.CR.Nodes.RELOAD_STATE_FINISHED);
-
-    // Check if the currently focused document node has been removed
-    const contentCanvasNode: ReturnType<typeof selectors.CR.Nodes.byContextPathSelector> =
-        yield select(selectors.CR.Nodes.byContextPathSelector(currentContentCanvasContextPath));
-    const contentCanvasNodeIsStillThere = Boolean(contentCanvasNode);
-
-    if (contentCanvasNodeIsStillThere) {
-        // If it's still there, reload the document
-        getGuestFrameDocument().location.reload();
-    } else {
-        // If it's gone navigate to the next available ancestor document
-        yield put(actions.UI.ContentCanvas.setSrc(avilableAncestorDocumentNode.uri));
-    }
+    return reloadAfterDiscard;
 }
 
 export function * watchChangeBaseWorkspace() {

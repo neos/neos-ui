@@ -1,18 +1,36 @@
+/*
+ * This file is part of the Neos.Neos.Ui package.
+ *
+ * (c) Contributors of the Neos Project - www.neos.io
+ *
+ * This package is Open Source Software. For the full copyright and license
+ * information, please view the LICENSE file which was distributed with this
+ * source code.
+ */
 import {put, call, select, takeEvery, take, race} from 'redux-saga/effects';
 
+import {AnyError} from '@neos-project/neos-ui-error';
+import {NodeContextPath, WorkspaceName} from '@neos-project/neos-ts-interfaces';
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
+import {GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
+import {FeedbackEnvelope} from '@neos-project/neos-ui-redux-store/src/ServerFeedback';
 import {PublishingMode, PublishingScope} from '@neos-project/neos-ui-redux-store/src/CR/Publishing';
-import {TypeOfChange} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces';
-import backend from '@neos-project/neos-ui-backend-connector';
+import {PublishableNode, TypeOfChange, WorkspaceInformation} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces';
+import backend, {Routes} from '@neos-project/neos-ui-backend-connector';
+// @ts-ignore
 import {getGuestFrameDocument} from '@neos-project/neos-ui-guest-frame/src/dom';
 
-const handleWindowBeforeUnload = (event) => {
+const handleWindowBeforeUnload = (event: BeforeUnloadEvent) => {
     event.preventDefault();
     event.returnValue = true;
     return true;
 };
 
-export function * watchPublishing({routes}) {
+type PublishingResponse =
+    | { success: unknown }
+    | { error: AnyError };
+
+export function * watchPublishing({routes}: {routes: Routes}) {
     const {endpoints} = backend.get();
     const ENDPOINT_BY_MODE_AND_SCOPE = {
         [PublishingMode.PUBLISH]: {
@@ -39,7 +57,7 @@ export function * watchPublishing({routes}) {
         }
     };
 
-    yield takeEvery(actionTypes.CR.Publishing.STARTED, function * publishingWorkflow(action) {
+    yield takeEvery(actionTypes.CR.Publishing.STARTED, function * publishingWorkflow(action: ReturnType<typeof actions.CR.Publishing.start>) {
         const confirmed = yield * waitForConfirmation();
         if (!confirmed) {
             return;
@@ -49,15 +67,15 @@ export function * watchPublishing({routes}) {
         const endpoint = ENDPOINT_BY_MODE_AND_SCOPE[mode][scope];
         const {ancestorIdSelector, publishableNodesSelector} = SELECTORS_BY_SCOPE[scope];
 
-        const workspaceName = yield select(selectors.CR.Workspaces.personalWorkspaceNameSelector);
-        const ancestorId = yield select(ancestorIdSelector);
-        const publishableNodes = yield select(publishableNodesSelector);
+        const workspaceName: WorkspaceName = yield select(selectors.CR.Workspaces.personalWorkspaceNameSelector);
+        const ancestorId: NodeContextPath = yield select(ancestorIdSelector);
+        const publishableNodes: PublishableNode[] = yield select(publishableNodesSelector);
 
-        let affectedNodes = [];
+        let affectedNodes: PublishableNode[] = [];
         do {
             try {
                 window.addEventListener('beforeunload', handleWindowBeforeUnload);
-                const result = yield call(endpoint, ancestorId, workspaceName);
+                const result: PublishingResponse = yield call(endpoint, ancestorId, workspaceName);
 
                 if ('success' in result) {
                     affectedNodes = publishableNodes;
@@ -72,7 +90,7 @@ export function * watchPublishing({routes}) {
                     yield put(actions.CR.Publishing.fail(null));
                 }
             } catch (error) {
-                yield put(actions.CR.Publishing.fail(error));
+                yield put(actions.CR.Publishing.fail(error as AnyError));
             } finally {
                 window.removeEventListener('beforeunload', handleWindowBeforeUnload);
             }
@@ -83,41 +101,38 @@ export function * watchPublishing({routes}) {
 }
 
 function * waitForConfirmation() {
-    const waitForNextAction = yield race([
-        take(actionTypes.CR.Publishing.CANCELLED),
-        take(actionTypes.CR.Publishing.CONFIRMED)
-    ]);
-    const [nextAction] = Object.values(waitForNextAction);
+    const {confirmed}: {
+        cancelled: ReturnType<typeof actions.CR.Publishing.cancel>;
+        confirmed: ReturnType<typeof actions.CR.Publishing.confirm>;
+    } = yield race({
+        cancelled: take(actionTypes.CR.Publishing.CANCELLED),
+        confirmed: take(actionTypes.CR.Publishing.CONFIRMED)
+    });
 
-    if (nextAction.type === actionTypes.CR.Publishing.CONFIRMED) {
-        return true;
-    }
-
-    return false;
+    return Boolean(confirmed);
 }
 
 function * waitForRetry() {
-    const waitForNextAction = yield race([
-        take(actionTypes.CR.Publishing.ACKNOWLEDGED),
-        take(actionTypes.CR.Publishing.RETRIED)
-    ]);
-    const [nextAction] = Object.values(waitForNextAction);
+    const {retried}: {
+        acknowledged: ReturnType<typeof actions.CR.Publishing.acknowledge>;
+        retried: ReturnType<typeof actions.CR.Publishing.retry>;
+    } = yield race({
+        acknowledged: take(actionTypes.CR.Publishing.ACKNOWLEDGED),
+        retried: take(actionTypes.CR.Publishing.RETRIED)
+    });
 
-    if (nextAction.type === actionTypes.CR.Publishing.RETRIED) {
-        return true;
-    }
-
-    return false;
+    return Boolean(retried);
 }
 
-function * reloadAfterDiscard(discardedNodes, routes) {
-    const currentContentCanvasContextPath = yield select(selectors.CR.Nodes.documentNodeContextPathSelector);
-    const currentDocumentParentLine = yield select(selectors.CR.Nodes.documentNodeParentLineSelector);
+function * reloadAfterDiscard(discardedNodes: PublishableNode[], routes: Routes) {
+    const currentContentCanvasContextPath: NodeContextPath = yield select(selectors.CR.Nodes.documentNodeContextPathSelector);
+    const currentDocumentParentLine: ReturnType<typeof selectors.CR.Nodes.documentNodeParentLineSelector> =
+        yield select(selectors.CR.Nodes.documentNodeParentLineSelector);
 
     const avilableAncestorDocumentNode = currentDocumentParentLine.reduce((prev, cur) => {
         if (prev === null) {
             const hasBeenRemovedByDiscard = discardedNodes.some((discardedNode) => {
-                if (discardedNode.contextPath !== cur.contextPath) {
+                if (discardedNode.contextPath !== cur?.contextPath) {
                     return false;
                 }
 
@@ -151,7 +166,9 @@ function * reloadAfterDiscard(discardedNodes, routes) {
     yield take(actionTypes.CR.Nodes.RELOAD_STATE_FINISHED);
 
     // Check if the currently focused document node has been removed
-    const contentCanvasNodeIsStillThere = Boolean(yield select(selectors.CR.Nodes.byContextPathSelector(currentContentCanvasContextPath)));
+    const contentCanvasNode: ReturnType<typeof selectors.CR.Nodes.byContextPathSelector> =
+        yield select(selectors.CR.Nodes.byContextPathSelector(currentContentCanvasContextPath));
+    const contentCanvasNodeIsStillThere = Boolean(contentCanvasNode);
 
     if (contentCanvasNodeIsStillThere) {
         // If it's still there, reload the document
@@ -164,16 +181,19 @@ function * reloadAfterDiscard(discardedNodes, routes) {
 
 export function * watchChangeBaseWorkspace() {
     const {changeBaseWorkspace} = backend.get().endpoints;
-    yield takeEvery(actionTypes.CR.Workspaces.CHANGE_BASE_WORKSPACE, function * change(action) {
+    yield takeEvery(actionTypes.CR.Workspaces.CHANGE_BASE_WORKSPACE, function * change(action: ReturnType<typeof actions.CR.Workspaces.changeBaseWorkspace>) {
         try {
-            const documentNode = yield select(
-                state => state?.cr?.nodes?.documentNode
+            const documentNode: null | string = yield select(
+                (state: GlobalState) => state?.cr?.nodes?.documentNode
             );
-            const feedback = yield call(changeBaseWorkspace, action.payload, documentNode);
-            yield put(actions.ServerFeedback.handleServerFeedback(feedback));
 
-            // Reload the page tree
-            yield put(actions.CR.Nodes.reloadState());
+            if (documentNode) {
+                const feedback: FeedbackEnvelope = yield call(changeBaseWorkspace, action.payload, documentNode);
+                yield put(actions.ServerFeedback.handleServerFeedback(feedback));
+
+                // Reload the page tree
+                yield put(actions.CR.Nodes.reloadState());
+            }
         } catch (error) {
             console.error('Failed to change base workspace', error);
         }
@@ -182,16 +202,16 @@ export function * watchChangeBaseWorkspace() {
 
 export function * watchRebaseWorkspace() {
     const {rebaseWorkspace, getWorkspaceInfo} = backend.get().endpoints;
-    yield takeEvery(actionTypes.CR.Workspaces.REBASE_WORKSPACE, function * change(action) {
+    yield takeEvery(actionTypes.CR.Workspaces.REBASE_WORKSPACE, function * change(action: ReturnType<typeof actions.CR.Workspaces.rebaseWorkspace>) {
         yield put(actions.UI.Remote.startSynchronization());
 
         try {
-            const feedback = yield call(rebaseWorkspace, action.payload);
+            const feedback: FeedbackEnvelope = yield call(rebaseWorkspace, action.payload);
             yield put(actions.ServerFeedback.handleServerFeedback(feedback));
         } catch (error) {
             console.error('Failed to sync user workspace', error);
         } finally {
-            const workspaceInfo = yield call(getWorkspaceInfo);
+            const workspaceInfo: WorkspaceInformation = yield call(getWorkspaceInfo);
             yield put(actions.CR.Workspaces.update(workspaceInfo));
             yield put(actions.UI.Remote.finishSynchronization());
         }

@@ -57,7 +57,6 @@ export const createEditor = store => async options => {
     return NeosEditor
         .create(propertyDomNode, ckEditorConfig)
         .then(editor => {
-            console.log('editor.ui', editor.ui);
             editor.ui.focusTracker.on('change:isFocused', event => {
                 if (!event.source.isFocused) {
                     onChange(cleanupContentBeforeCommit(editor.getData()))

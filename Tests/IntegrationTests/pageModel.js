@@ -55,6 +55,8 @@ export class PublishDropDown {
 
     static publishDropdownDiscardAll = ReactSelector('PublishDropDown ShallowDropDownContents').find('button').withText('Discard all');
 
+    static publishDropdownPublishAll = ReactSelector('PublishDropDown ShallowDropDownContents').find('button').withText('Publish all');
+
     static async discardAll() {
         await t.click(this.publishDropdown)
 
@@ -68,6 +70,30 @@ export class PublishDropDown {
             await t.click(Selector('#neos-DiscardDialog-Confirm'));
         }
         await Page.waitForIframeLoading();
+
+        const acknowledgeButtonExists = await Selector('#neos-DiscardDialog-Acknowledge').exists;
+        if (acknowledgeButtonExists) {
+            await t.click(Selector('#neos-DiscardDialog-Acknowledge'));
+        }
+    }
+
+    static async publishAll() {
+        const $publishAllBtn = Selector(this.publishDropdownPublishAll);
+        const $confirmBtn = Selector('#neos-PublishDialog-Confirm');
+        const $acknowledgeBtn = Selector('#neos-PublishDialog-Acknowledge');
+
+        await t.click(this.publishDropdown)
+        await t.expect($publishAllBtn.exists)
+            .ok('"Publish all" button is not available.');
+        await t.click($publishAllBtn);
+        await t.expect($confirmBtn.exists)
+            .ok('Confirmation button for "Publish all" is not available.');
+        await t.click($confirmBtn);
+        await t.expect($acknowledgeBtn.exists)
+            .ok('Acknowledge button for "Publish all" is not available.', {
+                timeout: 30000
+            });
+        await t.click($acknowledgeBtn);
     }
 }
 

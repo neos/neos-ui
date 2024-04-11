@@ -178,6 +178,7 @@ export const ResolutionStrategySelectionDialog: React.FC<{
                     fallback="In order to proceed, you need to decide what to do with the conflicting changes:"
                     />
                 <SelectBox
+                    id="neos-SelectResolutionStrategy-SelectBox"
                     options={options}
                     value={String(selectedResolutionStrategy)}
                     onValueChange={handleSelectResolutionStrategy}

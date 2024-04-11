@@ -6,6 +6,8 @@ export const subSection = name => console.log('\x1b[33m%s\x1b[0m', ' - ' + name)
 
 const adminUserName = 'admin';
 const adminPassword = 'admin';
+const editorUserName = 'editor';
+const editorPassword = 'editor';
 
 export const getUrl = ClientFunction(() => window.location.href);
 
@@ -13,6 +15,18 @@ export const adminUserOnOneDimensionTestSite = Role('http://onedimension.localho
     await t
         .typeText('#username', adminUserName)
         .typeText('#password', adminPassword)
+        .click('button.neos-login-btn');
+
+    await t.expect(getUrl()).contains('/content');
+
+    await waitForReact(30000);
+    await Page.waitForIframeLoading();
+}, {preserveUrl: true});
+
+export const editorUserOnOneDimensionTestSite = Role('http://onedimension.localhost:8081/neos', async t => {
+    await t
+        .typeText('#username', editorUserName)
+        .typeText('#password', editorPassword)
         .click('button.neos-login-btn');
 
     await t.expect(getUrl()).contains('/content');

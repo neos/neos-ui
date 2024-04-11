@@ -25,6 +25,12 @@ type Endpoints = ReturnType<typeof Endpoints>;
 
 import {makeReloadNodes} from '../CR/NodeOperations/reloadNodes';
 
+const handleWindowBeforeUnload = (event: BeforeUnloadEvent) => {
+    event.preventDefault();
+    event.returnValue = true;
+    return true;
+};
+
 type SyncWorkspaceResult =
     | { success: true }
     | { conflicts: Conflict[] }
@@ -68,6 +74,7 @@ const makeSyncPersonalWorkspace = (deps: {
         const dimensionSpacePoint: null|DimensionCombination = yield select(selectors.CR.ContentDimensions.active);
 
         try {
+            window.addEventListener('beforeunload', handleWindowBeforeUnload);
             const result: SyncWorkspaceResult = yield call(syncWorkspace, personalWorkspaceName, force, dimensionSpacePoint);
             if ('success' in result) {
                 yield * refreshAfterSyncing();
@@ -79,6 +86,8 @@ const makeSyncPersonalWorkspace = (deps: {
             }
         } catch (error) {
             yield put(actions.CR.Syncing.fail(error as AnyError));
+        } finally {
+            window.removeEventListener('beforeunload', handleWindowBeforeUnload);
         }
     }
 

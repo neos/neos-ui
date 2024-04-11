@@ -100,7 +100,8 @@ jobs:
           ./flow flow:cache:flush
           ./flow flow:cache:warmup
           ./flow doctrine:migrate
-          ./flow user:create --username=admin --password=admin --first-name=John --last-name=Doe --roles=Administrator
+          ./flow user:create --username=admin --password=admin --first-name=Admin --last-name=Admington --roles=Administrator
+          ./flow user:create --username=editor --password=editor --first-name=Editor --last-name=McEditworth --roles=Editor
       - run:
           name: Start flow server
           command: /home/circleci/app/flow server:run --port 8081

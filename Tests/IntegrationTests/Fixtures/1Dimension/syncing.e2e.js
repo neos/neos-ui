@@ -19,7 +19,20 @@ test('Syncing: Create a conflict state between two editors and choose "Discard a
     await assertThatSynchronizationWasSuccessful(t);
 });
 
+test('Syncing: Create a conflict state between two editors and choose "Drop conflicting changes" as a resolution strategy during rebase', async t => {
+    await prepareConflictBetweenAdminAndEditor(t);
+    await chooseDropConflictingChangesAndFinishSynchronization(t);
+    await assertThatSynchronizationWasSuccessful(t);
+});
+
 async function prepareConflictBetweenAdminAndEditor(t) {
+    //
+    // Login as "editor" once, to initialize a content stream for their workspace
+    // in case there isn't one already
+    //
+    await switchToRole(t, editorUserOnOneDimensionTestSite);
+    await Page.waitForIframeLoading();
+
     //
     // Login as "admin"
     //
@@ -156,6 +169,25 @@ async function chooseDiscardAllAndFinishSynchronization(t) {
     // Synchronization should restart automatically,
     // so we must wait for it to succeed
     //
+    await t.expect(Selector('#neos-SyncWorkspace-Acknowledge').exists)
+        .ok('Acknowledge button for "Sync Workspace" is not available.', {
+            timeout: 30000
+        });
+    await t.click(Selector('#neos-SyncWorkspace-Acknowledge'));
+}
+
+async function chooseDropConflictingChangesAndFinishSynchronization(t) {
+    //
+    // Choose "Drop conflicting changes" as resolution strategy
+    //
+    await t.click(Selector('#neos-SelectResolutionStrategy-SelectBox'));
+    await t.click(Selector('[role="button"]').withText('Drop conflicting changes'));
+    await t.click(Selector('#neos-SelectResolutionStrategy-Accept'));
+
+    //
+    // Confirm the strategy
+    //
+    await t.click(Selector('#neos-ResolutionStrategyConfirmation-Confirm'));
     await t.expect(Selector('#neos-SyncWorkspace-Acknowledge').exists)
         .ok('Acknowledge button for "Sync Workspace" is not available.', {
             timeout: 30000

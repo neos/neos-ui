@@ -5,13 +5,11 @@ import {InitAction} from '../../System';
 import {NodeContextPath} from '@neos-project/neos-ts-interfaces';
 
 export interface State extends Readonly<{
-    isSaving: boolean,
-    isSyncing: boolean
+    isSaving: boolean
 }> {}
 
 export const defaultState: State = {
-    isSaving: false,
-    isSyncing: false
+    isSaving: false
 };
 
 //
@@ -22,8 +20,6 @@ export enum actionTypes {
     FINISH_SAVING = '@neos/neos-ui/UI/Remote/FINISH_SAVING',
     LOCK_PUBLISHING = '@neos/neos-ui/UI/Remote/LOCK_PUBLISHING',
     UNLOCK_PUBLISHING = '@neos/neos-ui/UI/Remote/UNLOCK_PUBLISHING',
-    START_SYNCHRONIZATION = '@neos/neos-ui/UI/Remote/START_SYNCHRONIZATION',
-    FINISH_SYNCHRONIZATION = '@neos/neos-ui/UI/Remote/FINISH_SYNCHRONIZATION',
     DOCUMENT_NODE_CREATED = '@neos/neos-ui/UI/Remote/DOCUMENT_NODE_CREATED'
 }
 
@@ -36,16 +32,6 @@ const startSaving = () => createAction(actionTypes.START_SAVING);
  * Marks that an ongoing saving process has finished.
  */
 const finishSaving = () => createAction(actionTypes.FINISH_SAVING);
-
-/**
- * Marks an ongoing synchronization process.
- */
-const startSynchronization = () => createAction(actionTypes.START_SYNCHRONIZATION);
-
-/**
- * Marks that an ongoing synchronization process has finished.
- */
-const finishSynchronization = () => createAction(actionTypes.FINISH_SYNCHRONIZATION);
 
 /**
  * Marks that an publishing process has been locked.
@@ -70,8 +56,6 @@ export const actions = {
     finishSaving,
     lockPublishing,
     unlockPublishing,
-    startSynchronization,
-    finishSynchronization,
     documentNodeCreated
 };
 
@@ -96,14 +80,6 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
         }
         case actionTypes.UNLOCK_PUBLISHING: {
             draft.isSaving = false;
-            break;
-        }
-        case actionTypes.START_SYNCHRONIZATION: {
-            draft.isSyncing = true;
-            break;
-        }
-        case actionTypes.FINISH_SYNCHRONIZATION: {
-            draft.isSyncing = false;
             break;
         }
     }

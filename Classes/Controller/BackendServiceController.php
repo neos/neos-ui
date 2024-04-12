@@ -205,7 +205,7 @@ class BackendServiceController extends ActionController
 
             $this->view->assign('value', [
                 'success' => [
-                    'numberOfPublishedChanges' => $publishingResult->numberOfPublishedChanges,
+                    'numberOfAffectedChanges' => $publishingResult->numberOfPublishedChanges,
                     'baseWorkspaceName' => $baseWorkspaceName->value
                 ]
             ]);
@@ -253,7 +253,7 @@ class BackendServiceController extends ActionController
 
                 $this->view->assign('value', [
                     'success' => [
-                        'numberOfPublishedChanges' => $publishingResult->numberOfPublishedChanges,
+                        'numberOfAffectedChanges' => $publishingResult->numberOfPublishedChanges,
                         'baseWorkspaceName' => $baseWorkspaceName->value
                     ]
                 ]);
@@ -300,7 +300,7 @@ class BackendServiceController extends ActionController
 
             $this->view->assign('value', [
                 'success' => [
-                    'numberOfDiscardedChanges' => $discardingResult->numberOfDiscardedChanges
+                    'numberOfAffectedChanges' => $discardingResult->numberOfDiscardedChanges
                 ]
             ]);
         } catch (\Exception $e) {
@@ -340,7 +340,7 @@ class BackendServiceController extends ActionController
 
             $this->view->assign('value', [
                 'success' => [
-                    'numberOfDiscardedChanges' => $discardingResult->numberOfDiscardedChanges
+                    'numberOfAffectedChanges' => $discardingResult->numberOfDiscardedChanges
                 ]
             ]);
         } catch (\Exception $e) {

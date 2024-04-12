@@ -123,7 +123,9 @@ export default connect((state: GlobalState): PublishingDialogProperties => {
         : null;
 
     let numberOfChanges = 0;
-    if (scope === PublishingScope.SITE) {
+    if (publishingState.process.phase === PublishingPhase.SUCCESS) {
+        numberOfChanges = publishingState.process.numberOfAffectedChanges;
+    } else if (scope === PublishingScope.SITE) {
         numberOfChanges = publishableNodesSelector(state).length;
     } else if (scope === PublishingScope.DOCUMENT) {
         numberOfChanges = publishableNodesInDocumentSelector(state).length;

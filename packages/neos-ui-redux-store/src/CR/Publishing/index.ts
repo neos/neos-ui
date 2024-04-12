@@ -38,7 +38,10 @@ export type State = null | {
               phase: PublishingPhase.ERROR;
               error: null | AnyError;
           }
-        | { phase: PublishingPhase.SUCCESS };
+        | {
+            phase: PublishingPhase.SUCCESS;
+            numberOfAffectedChanges: number;
+        };
 };
 
 export const defaultState: State = null;
@@ -84,7 +87,8 @@ const retry = () => createAction(actionTypes.RETRIED);
 /**
  * Signal that the ongoing publish/discard workflow succeeded
  */
-const succeed = () => createAction(actionTypes.SUCEEDED);
+const succeed = (numberOfAffectedChanges: number) =>
+        createAction(actionTypes.SUCEEDED, {numberOfAffectedChanges});
 
 /**
  * Acknowledge that the publish/discard operation is finished
@@ -159,7 +163,8 @@ export const reducer = (state: State = defaultState, action: Action): State => {
             return {
                 ...state,
                 process: {
-                    phase: PublishingPhase.SUCCESS
+                    phase: PublishingPhase.SUCCESS,
+                    numberOfAffectedChanges: action.payload.numberOfAffectedChanges
                 }
             };
         case actionTypes.FINISHED:

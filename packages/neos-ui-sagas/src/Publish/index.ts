@@ -28,7 +28,11 @@ const handleWindowBeforeUnload = (event: BeforeUnloadEvent) => {
 };
 
 type PublishingResponse =
-    | { success: unknown }
+    | {
+        success: {
+            numberOfAffectedChanges: number;
+        }
+    }
     | { error: AnyError };
 
 export function * watchPublishing({routes}: {routes: Routes}) {
@@ -77,7 +81,7 @@ export function * watchPublishing({routes}: {routes: Routes}) {
                 const result: PublishingResponse = yield call(endpoint, ancestorId, workspaceName);
 
                 if ('success' in result) {
-                    yield put(actions.CR.Publishing.succeed());
+                    yield put(actions.CR.Publishing.succeed(result.success.numberOfAffectedChanges));
 
                     if (mode === PublishingMode.DISCARD) {
                         yield * reloadAfterDiscard();

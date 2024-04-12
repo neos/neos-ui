@@ -58,23 +58,27 @@ export class PublishDropDown {
     static publishDropdownPublishAll = ReactSelector('PublishDropDown ShallowDropDownContents').find('button').withText('Publish all');
 
     static async discardAll() {
+        const $discardAllBtn = Selector(this.publishDropdownDiscardAll);
+        const $confirmBtn = Selector('#neos-DiscardDialog-Confirm');
+        const $acknowledgeBtn = Selector('#neos-DiscardDialog-Acknowledge');
+
         await t.click(this.publishDropdown)
+        await t.expect($discardAllBtn.exists)
+            .ok('"Discard all" button is not available.');
 
-        const publishDropdownDiscardAllExists = await Selector(this.publishDropdownDiscardAll).exists;
-        if (publishDropdownDiscardAllExists) {
-            await t.click(this.publishDropdownDiscardAll);
+        if (await $discardAllBtn.hasAttribute('disabled')) {
+            return;
         }
 
-        const confirmButtonExists = await Selector('#neos-DiscardDialog-Confirm').exists;
-        if (confirmButtonExists) {
-            await t.click(Selector('#neos-DiscardDialog-Confirm'));
-        }
-        await Page.waitForIframeLoading();
-
-        const acknowledgeButtonExists = await Selector('#neos-DiscardDialog-Acknowledge').exists;
-        if (acknowledgeButtonExists) {
-            await t.click(Selector('#neos-DiscardDialog-Acknowledge'));
-        }
+        await t.click($discardAllBtn);
+        await t.expect($confirmBtn.exists)
+            .ok('Confirmation button for "Discard all" is not available.');
+        await t.click($confirmBtn);
+        await t.expect($acknowledgeBtn.exists)
+            .ok('Acknowledge button for "Discard all" is not available.', {
+                timeout: 30000
+            });
+        await t.click($acknowledgeBtn);
     }
 
     static async publishAll() {
@@ -85,6 +89,11 @@ export class PublishDropDown {
         await t.click(this.publishDropdown)
         await t.expect($publishAllBtn.exists)
             .ok('"Publish all" button is not available.');
+
+        if (await $publishAllBtn.hasAttribute('disabled')) {
+            return;
+        }
+
         await t.click($publishAllBtn);
         await t.expect($confirmBtn.exists)
             .ok('Confirmation button for "Publish all" is not available.');

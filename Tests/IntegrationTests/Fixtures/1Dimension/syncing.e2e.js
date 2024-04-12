@@ -32,6 +32,7 @@ async function prepareConflictBetweenAdminAndEditor(t) {
     //
     await switchToRole(t, editorUserOnOneDimensionTestSite);
     await Page.waitForIframeLoading();
+    await t.wait(2000);
 
     //
     // Login as "admin"

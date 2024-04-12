@@ -70,9 +70,7 @@ const WorkspaceSync: React.FC<WorkspaceSyncProps> = (props) => {
                 hoverStyle={props.personalWorkspaceStatus === WorkspaceStatus.OUTDATED ? 'warn' : 'error'}
                 title={buttonTitle}
             >
-                <WorkspaceSyncIcon
-                    hasProblem={props.personalWorkspaceStatus === WorkspaceStatus.OUTDATED_CONFLICT}
-                    />
+                <WorkspaceSyncIcon />
             </Button>
         </div>
     );

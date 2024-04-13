@@ -150,7 +150,7 @@ export default class NodeTree extends PureComponent {
                 <button
                     onClick={this.handleCollapseAll}
                     className={style.collapseAll}
-                    title={i18nRegistry.translate('collapseAll')}
+                    title={i18nRegistry.translate('Neos.Neos.Ui:Main:collapseAll')}
                 >
                     <Icon className={style.collapseAllIcon} icon="compress-alt"/>
                 </button>

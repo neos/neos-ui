@@ -91,7 +91,7 @@ class MoveAfter extends AbstractStructuralChange
                 $workspace->workspaceName,
                 $subject->subgraphIdentity->dimensionSpacePoint,
                 $subject->nodeAggregateId,
-                RelationDistributionStrategy::STRATEGY_GATHER_ALL,
+                null,
                 $hasEqualParentNode ? null : $parentNodeOfPreviousSibling->nodeAggregateId,
                 $precedingSibling->nodeAggregateId,
                 $succeedingSibling?->nodeAggregateId,

@@ -35,7 +35,7 @@ final readonly class MinimalNodeForTree implements \JsonSerializable
     {
     }
 
-    public static function fromNode(
+    public static function tryFromNode(
         Node $node,
         NodeInfoHelper $nodeInfoHelper,
         ActionRequest $actionRequest

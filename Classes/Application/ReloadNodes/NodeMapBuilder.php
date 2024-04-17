@@ -42,11 +42,15 @@ final class NodeMapBuilder
 
     public function addNode(Node $node): void
     {
-        $this->items[] = $this->nodeRepresentationClass::fromNode(
+        $item = $this->nodeRepresentationClass::tryFromNode(
             node: $node,
             nodeInfoHelper: $this->nodeInfoHelper,
             actionRequest: $this->actionRequest
         );
+
+        if ($item !== null) {
+            $this->items[] = $item;
+        }
     }
 
     public function build(): NodeMap

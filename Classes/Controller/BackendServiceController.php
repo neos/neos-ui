@@ -200,13 +200,10 @@ class BackendServiceController extends ActionController
             $publishingResult = $workspace
                 ->publishChangesInSite($command->siteId);
 
-            $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
-            $baseWorkspaceName = $contentRepository->getWorkspaceFinder()->findOneByName($command->workspaceName)->baseWorkspaceName;
-
             $this->view->assign('value', [
                 'success' => [
                     'numberOfAffectedChanges' => $publishingResult->numberOfPublishedChanges,
-                    'baseWorkspaceName' => $baseWorkspaceName->value
+                    'baseWorkspaceName' => $workspace->getCurrentBaseWorkspaceName()?->value
                 ]
             ]);
         } catch (\Exception $e) {
@@ -239,10 +236,6 @@ class BackendServiceController extends ActionController
             $command = PublishChangesInDocument::fromArray($command);
 
             $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
-            $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
-            $baseWorkspaceName = $contentRepository->getWorkspaceFinder()->findOneByName(
-                $command->workspaceName
-            )->baseWorkspaceName;
 
             try {
                 $workspace = $this->workspaceProvider->provideForWorkspaceName(
@@ -254,7 +247,7 @@ class BackendServiceController extends ActionController
                 $this->view->assign('value', [
                     'success' => [
                         'numberOfAffectedChanges' => $publishingResult->numberOfPublishedChanges,
-                        'baseWorkspaceName' => $baseWorkspaceName->value
+                        'baseWorkspaceName' => $workspace->getCurrentBaseWorkspaceName()?->value
                     ]
                 ]);
             } catch (NodeAggregateCurrentlyDoesNotExist $e) {

@@ -4,14 +4,12 @@ import toJson from 'enzyme-to-json';
 import moment from 'moment';
 import DatePicker from 'react-datetime';
 
-import Button from '../Button';
 import {DateInput} from './dateInput';
 
 describe('<DateInput/>', () => {
     const props: DateInput['props'] = {
         onChange: jest.fn(),
         locale: 'en-US',
-        applyLabel: 'applyLabel',
         todayLabel: 'todayLabel',
         theme: {
             'wrapper': 'wrapperClassName',
@@ -29,7 +27,7 @@ describe('<DateInput/>', () => {
     };
 
     it('should render correctly.', () => {
-        const wrapper = shallow(<DateInput {...props}/>);
+        const wrapper = shallow(<DateInput {...props} is24Hour/>);
 
         expect(toJson(wrapper)).toMatchSnapshot();
     });
@@ -62,15 +60,13 @@ describe('<DateInput/>', () => {
         expect(onChange.mock.calls[0][0]).toBe(null);
     });
 
-    it('should call the "onChange" prop when triggering the change event on the "DatePicker" Component and clicking apply.', () => {
+    it('should call the "onChange" prop when triggering the change event on the "DatePicker".', () => {
         const onChange = jest.fn();
         const wrapper = shallow(<DateInput {...props} value={new Date()} onChange={onChange}/>);
         const picker = wrapper.find(DatePicker);
-        const applyButton = wrapper.find(Button);
         const newVal = moment();
 
         picker.simulate('change', newVal);
-        applyButton.simulate('click');
 
         expect(onChange.mock.calls.length).toBe(1);
         expect(onChange.mock.calls[0][0].toTimeString()).toBe(newVal.toDate().toTimeString());
@@ -115,5 +111,11 @@ describe('<DateInput/>', () => {
         expect(receivedDate.getUTCMinutes()).toBe(0);
         expect(receivedDate.getUTCSeconds()).toBe(0);
         expect(receivedDate.getUTCMilliseconds()).toBe(0);
+    });
+
+    it('should format time in 24 hour format', () => {
+        const wrapper = shallow(<DateInput {...props} is24Hour/>);
+
+        expect(toJson(wrapper)).toMatchSnapshot();
     });
 });

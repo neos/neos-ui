@@ -76,8 +76,19 @@ class MoveAfter extends AbstractStructuralChange
             $hasEqualParentNode = $parentNode->nodeAggregateId
                 ->equals($parentNodeOfPreviousSibling->nodeAggregateId);
 
+
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
+            $workspace = $this->contentRepositoryRegistry->get($this->subject->subgraphIdentity->contentRepositoryId)
+                ->getWorkspaceFinder()->findOneByCurrentContentStreamId($subject->subgraphIdentity->contentStreamId);
+            if (!$workspace) {
+                throw new \Exception(
+                    'Could not find workspace for content stream "' . $subject->subgraphIdentity->contentStreamId->value . '"',
+                    1699008140
+                );
+            }
+
             $command = MoveNodeAggregate::create(
-                $subject->subgraphIdentity->contentStreamId,
+                $workspace->workspaceName,
                 $subject->subgraphIdentity->dimensionSpacePoint,
                 $subject->nodeAggregateId,
                 RelationDistributionStrategy::STRATEGY_GATHER_ALL,
@@ -85,8 +96,6 @@ class MoveAfter extends AbstractStructuralChange
                 $precedingSibling->nodeAggregateId,
                 $succeedingSibling?->nodeAggregateId,
             );
-
-            $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
             $contentRepository->handle($command)->block();
 
             $updateParentNodeInfo = new UpdateNodeInfo();

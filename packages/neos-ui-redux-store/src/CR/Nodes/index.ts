@@ -73,6 +73,7 @@ export enum actionTypes {
     SET_DOCUMENT_NODE = '@neos/neos-ui/CR/Nodes/SET_DOCUMENT_NODE',
     SET_STATE = '@neos/neos-ui/CR/Nodes/SET_STATE',
     RELOAD_STATE = '@neos/neos-ui/CR/Nodes/RELOAD_STATE',
+    RELOAD_STATE_FINISHED = '@neos/neos-ui/CR/Nodes/RELOAD_STATE_FINISHED',
     COPY = '@neos/neos-ui/CR/Nodes/COPY',
     COPY_MULTIPLE = '@neos/neos-ui/CR/Nodes/COPY_MULTIPLE',
     CUT = '@neos/neos-ui/CR/Nodes/CUT',
@@ -219,6 +220,11 @@ const reloadState = ((payload: {
     );
 });
 
+/**
+ * Signals that the node state has been fully reloaded
+ */
+const finishReloadState = () => createAction(actionTypes.RELOAD_STATE_FINISHED);
+
 // This data may be coming from the Guest frame, so we need to re-create it at host/
 // Otherwise we get all "can't execute code from a freed script" errors in Edge,
 // when the guest frame has been navigated away and old guest frame document was destroyed
@@ -329,6 +335,7 @@ export const actions = {
     setDocumentNode,
     setState,
     reloadState,
+    finishReloadState,
     copy,
     copyMultiple,
     cut,

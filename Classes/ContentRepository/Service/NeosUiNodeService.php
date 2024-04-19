@@ -12,12 +12,13 @@ namespace Neos\Neos\Ui\ContentRepository\Service;
  */
 
 
-use Neos\ContentRepository\Core\Factory\ContentRepositoryId;
+use Neos\ContentRepository\Core\SharedModel\ContentRepository\ContentRepositoryId;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
+use Neos\Neos\FrontendRouting\NodeAddress;
 use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
 
 /**
@@ -42,5 +43,11 @@ class NeosUiNodeService
             VisibilityConstraints::withoutRestrictions()
         );
         return $subgraph->findNodeById($nodeAddress->nodeAggregateId);
+    }
+
+    public function deserializeNodeAddress(string $serializedNodeAddress, ContentRepositoryId $contentRepositoryId): NodeAddress
+    {
+        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
+        return NodeAddressFactory::create($contentRepository)->createFromUriString($serializedNodeAddress);
     }
 }

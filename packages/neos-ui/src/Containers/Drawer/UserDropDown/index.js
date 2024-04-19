@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 
 import {neos} from '@neos-project/neos-ui-decorators';
 import {Icon, DropDown} from '@neos-project/react-ui-components';
+import UserImage from './UserImage';
 import RestoreButtonItem from './RestoreButtonItem';
 
 import I18n from '@neos-project/neos-ui-i18n';
@@ -28,10 +29,16 @@ export default class UserDropDown extends PureComponent {
             <div className={style.wrapper}>
                 <DropDown className={style.dropDown}>
                     <DropDown.Header className={style.dropDown__btn}>
-                        <Icon className={style.dropDown__btnIcon} icon="user"/>
+                        <UserImage />
                         <span className={style.dropDown__userName}>{this.props.userName}</span>
                     </DropDown.Header>
                     <DropDown.Contents className={style.dropDown__contents}>
+                        <li className={style.dropDown__item}>
+                            <a title="User Settings" href={userSettingsUri}>
+                                <Icon icon="wrench" aria-hidden="true" className={style.dropDown__itemIcon}/>
+                                <I18n id="userSettings.label" sourceName="Modules" packageKey="Neos.Neos" fallback="User Settings"/>
+                            </a>
+                        </li>
                         <li className={style.dropDown__item}>
                             <form title="Logout" action={logoutUri} method="post" role="presentation">
                                 <input type="hidden" name="__csrfToken" value={csrfToken}/>
@@ -40,12 +47,6 @@ export default class UserDropDown extends PureComponent {
                                     <I18n id="logout" sourceName="Main" packageKey="Neos.Neos" fallback="Logout"/>
                                 </button>
                             </form>
-                        </li>
-                        <li className={style.dropDown__item}>
-                            <a title="User Settings" href={userSettingsUri}>
-                                <Icon icon="wrench" aria-hidden="true" className={style.dropDown__itemIcon}/>
-                                <I18n id="userSettings.label" sourceName="Modules" packageKey="Neos.Neos" fallback="User Settings"/>
-                            </a>
                         </li>
                         {this.props.impersonateStatus === true ? (
                             <RestoreButtonItem />

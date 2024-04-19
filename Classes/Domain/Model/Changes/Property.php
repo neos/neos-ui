@@ -26,6 +26,7 @@ use Neos\ContentRepository\Core\Feature\NodeTypeChange\Dto\NodeAggregateTypeChan
 use Neos\ContentRepository\Core\Feature\NodeVariation\Command\CreateNodeVariant;
 use Neos\ContentRepository\Core\NodeType\NodeTypeName;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
+use Neos\ContentRepository\Core\Projection\Workspace\Workspace;
 use Neos\ContentRepository\Core\SharedModel\Exception\ContentStreamDoesNotExistYet;
 use Neos\ContentRepository\Core\SharedModel\Exception\NodeAggregatesTypeIsAmbiguous;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateIds;
@@ -39,9 +40,6 @@ use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 use Neos\Neos\Ui\Domain\Model\RenderedNodeDomAddress;
 use Neos\Neos\Ui\Domain\Service\NodePropertyConversionService;
 use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
-
-/** @codingStandardsIgnoreStart */
-/** @codingStandardsIgnoreEnd */
 
 /**
  * Changes a property on a node
@@ -140,9 +138,8 @@ class Property extends AbstractChange
         }
         $nodeType = $this->subject->nodeType;
         $propertyName = $this->getPropertyName();
-        $nodeTypeProperties = $nodeType->getProperties();
 
-        return isset($nodeTypeProperties[$propertyName]);
+        return $nodeType->hasProperty($propertyName) || $nodeType->hasReference($propertyName);
     }
 
     /**
@@ -161,13 +158,20 @@ class Property extends AbstractChange
             return;
         }
 
-        $propertyType = $this->getNodeType($subject)->getPropertyType($propertyName);
+        $workspace = $this->contentRepositoryRegistry->get($this->subject->subgraphIdentity->contentRepositoryId)
+            ->getWorkspaceFinder()->findOneByCurrentContentStreamId($subject->subgraphIdentity->contentStreamId);
+        if (!$workspace) {
+            throw new \Exception(
+                'Could not find workspace for content stream "' . $subject->subgraphIdentity->contentStreamId->value . '"',
+                1699008140
+            );
+        }
 
-        $commandResult = match ($propertyType) {
-            'reference', 'references'  => $this->handleNodeReferenceChange($subject, $propertyName),
-            '_nodeType' => $this->handleNodeTypeChange($subject, $propertyName),
-            '_hidden' => $this->handleHiddenPropertyChange($subject, $propertyName),
-            default => $this->handlePropertyChange($subject, $propertyName)
+        $commandResult = match (true) {
+            $this->getNodeType($subject)->hasReference($propertyName) => $this->handleNodeReferenceChange($workspace, $subject, $propertyName),
+            $propertyName === '_nodeType' => $this->handleNodeTypeChange($workspace, $subject, $propertyName),
+            $propertyName === '_hidden' => $this->handleHiddenPropertyChange($workspace, $subject, $propertyName),
+            default => $this->handlePropertyChange($workspace, $subject, $propertyName)
         };
 
         $commandResult->block();
@@ -199,8 +203,14 @@ class Property extends AbstractChange
         $updateNodeInfo->setNode($node);
         $this->feedbackCollection->add($updateNodeInfo);
 
-        $reloadIfChangedConfigurationPath = sprintf('properties.%s.ui.reloadIfChanged', $propertyName);
-        if (!$this->getIsInline() && $this->getNodeType($node)->getConfiguration($reloadIfChangedConfigurationPath)) {
+        $reloadIfChangedConfigurationPathForProperty = sprintf('properties.%s.ui.reloadIfChanged', $propertyName);
+        $reloadIfChangedConfigurationPathForReference = sprintf('references.%s.ui.reloadIfChanged', $propertyName);
+        if (!$this->getIsInline()
+            && (
+                $this->getNodeType($node)->getConfiguration($reloadIfChangedConfigurationPathForProperty)
+                || $this->getNodeType($node)->getConfiguration($reloadIfChangedConfigurationPathForReference)
+            )
+        ) {
             if ($this->getNodeDomAddress() && $this->getNodeDomAddress()->getFusionPath()
                 && $parentNode
                 && $this->getNodeType($parentNode)->isOfType('Neos.Neos:ContentCollection')) {
@@ -213,14 +223,19 @@ class Property extends AbstractChange
             }
         }
 
-        $reloadPageIfChangedConfigurationPath = sprintf('properties.%s.ui.reloadPageIfChanged', $propertyName);
+        $reloadPageIfChangedConfigurationPathForProperty = sprintf('properties.%s.ui.reloadPageIfChanged', $propertyName);
+        $reloadPageIfChangedConfigurationPathForReference = sprintf('references.%s.ui.reloadPageIfChanged', $propertyName);
         if (!$this->getIsInline()
-            && $this->getNodeType($node)->getConfiguration($reloadPageIfChangedConfigurationPath)) {
+            && (
+                $this->getNodeType($node)->getConfiguration($reloadPageIfChangedConfigurationPathForProperty)
+                || $this->getNodeType($node)->getConfiguration($reloadPageIfChangedConfigurationPathForReference)
+            )
+        ) {
             $this->reloadDocument($node);
         }
     }
 
-    private function handleNodeReferenceChange(Node $subject, string $propertyName): CommandResult
+    private function handleNodeReferenceChange(Workspace $workspace, Node $subject, string $propertyName): CommandResult
     {
         $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
         $value = $this->getValue();
@@ -234,7 +249,7 @@ class Property extends AbstractChange
 
         return $contentRepository->handle(
             SetNodeReferences::create(
-                $subject->subgraphIdentity->contentStreamId,
+                $workspace->workspaceName,
                 $subject->nodeAggregateId,
                 $subject->originDimensionSpacePoint,
                 ReferenceName::fromString($propertyName),
@@ -243,18 +258,17 @@ class Property extends AbstractChange
         );
     }
 
-    private function handleHiddenPropertyChange(Node $subject, string $propertyName): CommandResult
+    private function handleHiddenPropertyChange(Workspace $workspace, Node $subject, string $propertyName): CommandResult
     {
         $value = $this->nodePropertyConversionService->convert(
-            $this->getNodeType($subject),
-            $propertyName,
+            $this->getNodeType($subject)->getPropertyType($propertyName),
             $this->getValue()
         );
 
         $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
 
         $command = EnableNodeAggregate::create(
-            $subject->subgraphIdentity->contentStreamId,
+            $workspace->workspaceName,
             $subject->nodeAggregateId,
             $subject->originDimensionSpacePoint->toDimensionSpacePoint(),
             NodeVariantSelectionStrategy::STRATEGY_ALL_SPECIALIZATIONS
@@ -262,7 +276,7 @@ class Property extends AbstractChange
 
         if ($value === true) {
             $command = DisableNodeAggregate::create(
-                $subject->subgraphIdentity->contentStreamId,
+                $workspace->workspaceName,
                 $subject->nodeAggregateId,
                 $subject->originDimensionSpacePoint->toDimensionSpacePoint(),
                 NodeVariantSelectionStrategy::STRATEGY_ALL_SPECIALIZATIONS
@@ -272,18 +286,17 @@ class Property extends AbstractChange
         return $contentRepository->handle($command);
     }
 
-    private function handleNodeTypeChange(Node $subject, string $propertyName): CommandResult
+    private function handleNodeTypeChange(Workspace $workspace, Node $subject, string $propertyName): CommandResult
     {
         $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
         $value = $this->nodePropertyConversionService->convert(
-            $this->getNodeType($subject),
-            $propertyName,
+            $this->getNodeType($subject)->getPropertyType($propertyName),
             $this->getValue()
         );
 
         return $contentRepository->handle(
             ChangeNodeAggregateType::create(
-                $subject->subgraphIdentity->contentStreamId,
+                $workspace->workspaceName,
                 $subject->nodeAggregateId,
                 NodeTypeName::fromString($value),
                 NodeAggregateTypeChangeChildConstraintConflictResolutionStrategy::STRATEGY_DELETE
@@ -291,12 +304,11 @@ class Property extends AbstractChange
         );
     }
 
-    private function handlePropertyChange(Node $subject, string $propertyName): CommandResult
+    private function handlePropertyChange(Workspace $workspace, Node $subject, string $propertyName): CommandResult
     {
         $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
         $value = $this->nodePropertyConversionService->convert(
-            $this->getNodeType($subject),
-            $propertyName,
+            $this->getNodeType($subject)->getPropertyType($propertyName),
             $this->getValue()
         );
 
@@ -306,7 +318,7 @@ class Property extends AbstractChange
             // if origin dimension space point != current DSP -> translate transparently (matching old behavior)
             $contentRepository->handle(
                 CreateNodeVariant::create(
-                    $subject->subgraphIdentity->contentStreamId,
+                    $workspace->workspaceName,
                     $subject->nodeAggregateId,
                     $subject->originDimensionSpacePoint,
                     $originDimensionSpacePoint
@@ -316,7 +328,7 @@ class Property extends AbstractChange
 
         return $contentRepository->handle(
             SetNodeProperties::create(
-                $subject->subgraphIdentity->contentStreamId,
+                $workspace->workspaceName,
                 $subject->nodeAggregateId,
                 $originDimensionSpacePoint,
                 PropertyValuesToWrite::fromArray(

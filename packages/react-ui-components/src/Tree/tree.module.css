@@ -2,8 +2,10 @@
     composes: reset from '../reset.module.css';
 
     padding: 5px 0;
+    user-select: none;
 
     &:focus {
         outline: 0;
     }
 }
+

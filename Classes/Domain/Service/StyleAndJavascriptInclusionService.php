@@ -99,7 +99,7 @@ class StyleAndJavascriptInclusionService
                 $hash = substr(md5_file($resourceExpression) ?: '', 0, 8);
                 $resourceExpression = $this->resourceManager->getPublicPackageResourceUriByPath($resourceExpression);
             }
-            $finalUri = $hash ? $resourceExpression . '?' . $hash : $resourceExpression;
+            $finalUri = $hash ? $resourceExpression . (str_contains($resourceExpression, '?') ? '&' : '?') . $hash : $resourceExpression;
             $additionalAttributes = $element['attributes'] ?? [];
 
             // All scripts are deferred by default. This prevents the attribute from
@@ -107,7 +107,6 @@ class StyleAndJavascriptInclusionService
             if (isset($additionalAttributes['defer'])) {
                 unset($additionalAttributes['defer']);
             }
-
             $result .= $builderForLine($finalUri, $this->htmlAttributesArrayToString($additionalAttributes));
         }
         return $result;

@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/utils-logger",
-  "version": "9.0.0-beta3",
+  "version": "8.3.7",
   "description": "Logger implementation for Neos CMS UI.",
   "private": true,
   "main": "./src/index.ts",
@@ -11,6 +11,5 @@
     "@neos-project/jest-preset-neos-ui": "workspace:*",
     "typescript": "^4.6.4"
   },
-  "license": "GNU GPLv3",
-  "stableVersion": "8.3.4"
+  "license": "GNU GPLv3"
 }

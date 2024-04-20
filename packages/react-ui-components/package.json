@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/react-ui-components",
-  "version": "8.3.7",
+  "version": "9.0.0-beta8",
   "description": "The UI components which power the Neos backend application.",
   "repository": "neos/neos-ui",
   "bugs": "https://github.com/neos/neos-ui/issues",
@@ -95,5 +95,6 @@
     "stylelint": "^13.7.2",
     "typescript": "^4.6.0"
   },
-  "license": "GNU GPLv3"
+  "license": "GNU GPLv3",
+  "stableVersion": "8.3.7"
 }

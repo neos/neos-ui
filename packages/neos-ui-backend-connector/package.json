@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-backend-connector",
-  "version": "8.3.7",
+  "version": "9.0.0-beta8",
   "description": "Endoints and fetch cals to the Neos CMS backend",
   "private": true,
   "main": "./src/index.ts",
@@ -12,5 +12,6 @@
     "@neos-project/neos-ts-interfaces": "workspace:*",
     "@neos-project/utils-helpers": "workspace:*"
   },
-  "license": "GNU GPLv3"
+  "license": "GNU GPLv3",
+  "stableVersion": "8.3.7"
 }

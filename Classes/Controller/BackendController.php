@@ -13,6 +13,7 @@ namespace Neos\Neos\Ui\Controller;
  */
 
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
+use Neos\ContentRepository\Core\SharedModel\Exception\WorkspaceDoesNotExist;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ActionController;
@@ -23,6 +24,7 @@ use Neos\Neos\Domain\Repository\DomainRepository;
 use Neos\Neos\Domain\Repository\SiteRepository;
 use Neos\Neos\Domain\Service\NodeTypeNameFactory;
 use Neos\Neos\Domain\Service\WorkspaceNameBuilder;
+use Neos\Neos\Domain\Workspace\WorkspaceProvider;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;
 use Neos\Neos\Service\UserService;
@@ -125,6 +127,12 @@ class BackendController extends ActionController
     protected $initialStateProvider;
 
     /**
+     * @Flow\Inject
+     * @var WorkspaceProvider
+     */
+    protected $workspaceProvider;
+
+    /**
      * Displays the backend interface
      *
      * @param string $node The node that will be displayed on the first tab
@@ -145,12 +153,10 @@ class BackendController extends ActionController
             $this->redirectToUri($this->uriBuilder->uriFor('index', [], 'Login', 'Neos.Neos'));
         }
 
-        $currentAccount = $this->securityContext->getAccount();
-        $workspace = $contentRepository->getWorkspaceFinder()->findOneByName(
-            WorkspaceNameBuilder::fromAccountIdentifier($currentAccount->getAccountIdentifier())
-        );
-        if (is_null($workspace)) {
-            $this->redirectToUri($this->uriBuilder->uriFor('index', [], 'Login', 'Neos.Neos'));
+        try {
+            $workspace = $this->workspaceProvider->provideForCurrentAccount($contentRepository->id);
+        } catch (WorkspaceDoesNotExist) {
+            $this->redirectToUri($this->uriBuilder->uriFor(actionName: 'index', controllerName: 'Login', packageKey: 'Neos.Neos'));
         }
 
         $backendControllerInternals = $this->contentRepositoryRegistry->buildService(
@@ -160,7 +166,7 @@ class BackendController extends ActionController
         $defaultDimensionSpacePoint = $backendControllerInternals->getDefaultDimensionSpacePoint();
 
         $subgraph = $contentRepository->getContentGraph()->getSubgraph(
-            $workspace->currentContentStreamId,
+            $workspace->getCurrentContentStreamId(),
             $nodeAddress ? $nodeAddress->dimensionSpacePoint : $defaultDimensionSpacePoint,
             VisibilityConstraints::withoutRestrictions()
         );
@@ -168,7 +174,7 @@ class BackendController extends ActionController
         // we assume that the ROOT node is always stored in the CR as "physical" node; so it is safe
         // to call the contentGraph here directly.
         $rootNodeAggregate = $contentRepository->getContentGraph()->findRootNodeAggregateByType(
-            $workspace->currentContentStreamId,
+            $workspace->getCurrentContentStreamId(),
             NodeTypeNameFactory::forSites()
         );
         $rootNode = $rootNodeAggregate->getNodeByCoveredDimensionSpacePoint($defaultDimensionSpacePoint);

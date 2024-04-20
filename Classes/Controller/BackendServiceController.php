@@ -221,12 +221,6 @@ class BackendServiceController extends ActionController
         )->nodeAggregateId->value;
         $command = PublishChangesInDocument::fromArray($command);
 
-        $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
-        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
-        $baseWorkspaceName = $contentRepository->getWorkspaceFinder()->findOneByName(
-            $command->workspaceName
-        )->baseWorkspaceName;
-
         try {
             try {
                 $workspace = $this->workspaceProvider->provideForWorkspaceName(
@@ -246,7 +240,7 @@ class BackendServiceController extends ActionController
                 sprintf(
                     'Published %d change(s) to %s.',
                     $publishingResult->numberOfPublishedChanges,
-                    $baseWorkspaceName->value
+                    $workspace->getCurrentBaseWorkspaceName()->value
                 )
             );
 

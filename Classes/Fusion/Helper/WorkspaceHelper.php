@@ -1,5 +1,4 @@
 <?php
-namespace Neos\Neos\Ui\Fusion\Helper;
 
 /*
  * This file is part of the Neos.Neos.Ui package.
@@ -11,12 +10,15 @@ namespace Neos\Neos\Ui\Fusion\Helper;
  * source code.
  */
 
+declare(strict_types=1);
+
+namespace Neos\Neos\Ui\Fusion\Helper;
+
 use Neos\ContentRepository\Core\SharedModel\ContentRepository\ContentRepositoryId;
-use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
+use Neos\ContentRepository\Core\SharedModel\Exception\WorkspaceDoesNotExist;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
-use Neos\Flow\Security\Context;
-use Neos\Neos\Domain\Service\WorkspaceNameBuilder;
+use Neos\Neos\Domain\Workspace\WorkspaceProvider;
 use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService;
 
 /**
@@ -27,44 +29,36 @@ class WorkspaceHelper implements ProtectedContextAwareInterface
 {
     /**
      * @Flow\Inject
-     * @var ContentRepositoryRegistry
-     */
-    protected $contentRepositoryRegistry;
-
-    /**
-     * @Flow\Inject
      * @var WorkspaceService
      */
     protected $workspaceService;
 
     /**
      * @Flow\Inject
-     * @var Context
+     * @var WorkspaceProvider
      */
-    protected $securityContext;
+    protected $workspaceProvider;
 
     /**
      * @return array<string,mixed>
      */
     public function getPersonalWorkspace(ContentRepositoryId $contentRepositoryId): array
     {
-        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
-        $currentAccount = $this->securityContext->getAccount();
-        // todo use \Neos\Neos\Service\UserService::getPersonalWorkspaceName instead?
-        $personalWorkspaceName = WorkspaceNameBuilder::fromAccountIdentifier($currentAccount->getAccountIdentifier());
-        $personalWorkspace = $contentRepository->getWorkspaceFinder()->findOneByName($personalWorkspaceName);
+        try {
+            $personalWorkspace = $this->workspaceProvider->provideForCurrentAccount($contentRepositoryId);
+        } catch (WorkspaceDoesNotExist $exception) {
+            return [];
+        }
 
-        return !is_null($personalWorkspace)
-            ? [
-                'name' => $personalWorkspace->workspaceName,
-                'publishableNodes' => $this->workspaceService->getPublishableNodeInfo($personalWorkspaceName, $contentRepositoryId),
-                'baseWorkspace' => $personalWorkspace->baseWorkspaceName,
-                // TODO: FIX readonly flag!
-                //'readOnly' => !$this->domainUserService->currentUserCanPublishToWorkspace($baseWorkspace)
-                'readOnly' => false,
-                'status' => $personalWorkspace->status->value
-            ]
-            : [];
+        return [
+            'name' => $personalWorkspace->name,
+            'publishableNodes' => $this->workspaceService->getPublishableNodeInfo($personalWorkspace->name, $contentRepositoryId),
+            'baseWorkspace' => $personalWorkspace->getCurrentBaseWorkspaceName()->value,
+            // TODO: FIX readonly flag!
+            //'readOnly' => !$this->domainUserService->currentUserCanPublishToWorkspace($baseWorkspace)
+            'readOnly' => false,
+            'status' => $personalWorkspace->getCurrentStatus()->value
+        ];
     }
 
     /**

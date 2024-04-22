@@ -12,17 +12,24 @@
 
 declare(strict_types=1);
 
-namespace Neos\Neos\Ui\Application\SyncWorkspace;
+namespace Neos\Neos\Ui\Application\Shared;
+
+use Neos\Flow\Annotations as Flow;
 
 /**
  * @internal for communication within the Neos UI only
  */
-enum ReasonForConflict : int implements \JsonSerializable
+#[Flow\Proxy(false)]
+final readonly class IconLabel implements \JsonSerializable
 {
-    case NODE_HAS_BEEN_DELETED = 0;
+    public function __construct(
+        public string $icon,
+        public string $label
+    ) {
+    }
 
     public function jsonSerialize(): mixed
     {
-        return $this->value;
+        return get_object_vars($this);
     }
 }

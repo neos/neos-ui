@@ -19,6 +19,8 @@ use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Domain\NodeLabel\NodeLabelGeneratorInterface;
 use Neos\Neos\Domain\Workspace\WorkspaceProvider;
+use Neos\Neos\Ui\Application\Shared\Conflicts;
+use Neos\Neos\Ui\Application\Shared\ConflictsOccurred;
 
 /**
  * The application layer level command handler to for rebasing the workspace
@@ -37,6 +39,9 @@ final class SyncWorkspaceCommandHandler
     #[Flow\Inject]
     protected NodeLabelGeneratorInterface $nodeLabelGenerator;
 
+    /**
+     * @throws ConflictsOccurred
+     */
     public function handle(SyncWorkspaceCommand $command): void
     {
         try {

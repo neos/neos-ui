@@ -46,7 +46,7 @@ use Neos\Neos\Ui\Application\PublishChangesInDocument;
 use Neos\Neos\Ui\Application\PublishChangesInSite;
 use Neos\Neos\Ui\Application\ReloadNodes\ReloadNodesQuery;
 use Neos\Neos\Ui\Application\ReloadNodes\ReloadNodesQueryHandler;
-use Neos\Neos\Ui\Application\SyncWorkspace\ConflictsOccurred;
+use Neos\Neos\Ui\Application\Shared\ConflictsOccurred;
 use Neos\Neos\Ui\Application\SyncWorkspace\SyncWorkspaceCommand;
 use Neos\Neos\Ui\Application\SyncWorkspace\SyncWorkspaceCommandHandler;
 use Neos\Neos\Ui\ContentRepository\Service\NeosUiNodeService;

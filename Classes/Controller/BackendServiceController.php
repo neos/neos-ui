@@ -19,8 +19,6 @@ use Neos\ContentRepository\Core\Feature\WorkspaceModification\Exception\Workspac
 use Neos\ContentRepository\Core\Feature\WorkspaceRebase\Dto\RebaseErrorHandlingStrategy;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
-use Neos\ContentRepository\Core\SharedModel\Exception\NodeAggregateCurrentlyDoesNotExist;
-use Neos\ContentRepository\Core\SharedModel\Exception\NodeAggregateDoesCurrentlyNotCoverDimensionSpacePoint;
 use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\FlowQuery\FlowQuery;
@@ -42,8 +40,10 @@ use Neos\Neos\Ui\Application\ChangeTargetWorkspace;
 use Neos\Neos\Ui\Application\DiscardAllChanges;
 use Neos\Neos\Ui\Application\DiscardChangesInDocument;
 use Neos\Neos\Ui\Application\DiscardChangesInSite;
-use Neos\Neos\Ui\Application\PublishChangesInDocument;
-use Neos\Neos\Ui\Application\PublishChangesInSite;
+use Neos\Neos\Ui\Application\PublishChangesInDocument\PublishChangesInDocumentCommand;
+use Neos\Neos\Ui\Application\PublishChangesInDocument\PublishChangesInDocumentCommandHandler;
+use Neos\Neos\Ui\Application\PublishChangesInSite\PublishChangesInSiteCommand;
+use Neos\Neos\Ui\Application\PublishChangesInSite\PublishChangesInSiteCommandHandler;
 use Neos\Neos\Ui\Application\ReloadNodes\ReloadNodesQuery;
 use Neos\Neos\Ui\Application\ReloadNodes\ReloadNodesQueryHandler;
 use Neos\Neos\Ui\Application\Shared\ConflictsOccurred;
@@ -142,6 +142,18 @@ class BackendServiceController extends ActionController
 
     /**
      * @Flow\Inject
+     * @var PublishChangesInSiteCommandHandler
+     */
+    protected $publishChangesInSiteCommandHandler;
+
+    /**
+     * @Flow\Inject
+     * @var PublishChangesInDocumentCommandHandler
+     */
+    protected $publishChangesInDocumentCommandHandler;
+
+    /**
+     * @Flow\Inject
      * @var SyncWorkspaceCommandHandler
      */
     protected $syncWorkspaceCommandHandler;
@@ -206,20 +218,12 @@ class BackendServiceController extends ActionController
                 $command['siteId'],
                 $contentRepositoryId
             )->nodeAggregateId->value;
-            $command = PublishChangesInSite::fromArray($command);
-            $workspace = $this->workspaceProvider->provideForWorkspaceName(
-                $command->contentRepositoryId,
-                $command->workspaceName
-            );
-            $publishingResult = $workspace
-                ->publishChangesInSite($command->siteId);
+            $command = PublishChangesInSiteCommand::fromArray($command);
 
-            $this->view->assign('value', [
-                'success' => [
-                    'numberOfAffectedChanges' => $publishingResult->numberOfPublishedChanges,
-                    'baseWorkspaceName' => $workspace->getCurrentBaseWorkspaceName()?->value
-                ]
-            ]);
+            $result = $this->publishChangesInSiteCommandHandler
+                ->handle($command);
+
+            $this->view->assign('value', $result);
         } catch (\Exception $e) {
             $this->view->assign('value', [
                 'error' => [
@@ -247,36 +251,12 @@ class BackendServiceController extends ActionController
                 $command['documentId'],
                 $contentRepositoryId
             )->nodeAggregateId->value;
-            $command = PublishChangesInDocument::fromArray($command);
+            $command = PublishChangesInDocumentCommand::fromArray($command);
 
-            $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
+            $result = $this->publishChangesInDocumentCommandHandler
+                ->handle($command);
 
-            try {
-                $workspace = $this->workspaceProvider->provideForWorkspaceName(
-                    $command->contentRepositoryId,
-                    $command->workspaceName
-                );
-                $publishingResult = $workspace->publishChangesInDocument($command->documentId);
-
-                $this->view->assign('value', [
-                    'success' => [
-                        'numberOfAffectedChanges' => $publishingResult->numberOfPublishedChanges,
-                        'baseWorkspaceName' => $workspace->getCurrentBaseWorkspaceName()?->value
-                    ]
-                ]);
-            } catch (NodeAggregateCurrentlyDoesNotExist $e) {
-                throw new \RuntimeException(
-                    $this->getLabel('NodeNotPublishedMissingParentNode'),
-                    1705053430,
-                    $e
-                );
-            } catch (NodeAggregateDoesCurrentlyNotCoverDimensionSpacePoint $e) {
-                throw new \RuntimeException(
-                    $this->getLabel('NodeNotPublishedParentNodeNotInCurrentDimension'),
-                    1705053432,
-                    $e
-                );
-            }
+            $this->view->assign('value', $result);
         } catch (\Exception $e) {
             $this->view->assign('value', [
                 'error' => [

@@ -10,7 +10,7 @@
 import {put, call, select, takeEvery, take, race, all} from 'redux-saga/effects';
 
 import {AnyError} from '@neos-project/neos-ui-error';
-import {NodeContextPath, WorkspaceName} from '@neos-project/neos-ts-interfaces';
+import {DimensionCombination, NodeContextPath, WorkspaceName} from '@neos-project/neos-ts-interfaces';
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
 import {FeedbackEnvelope} from '@neos-project/neos-ui-redux-store/src/ServerFeedback';
@@ -83,6 +83,7 @@ export function * watchPublishing({routes}: {routes: Routes}) {
         const {ancestorIdSelector} = SELECTORS_BY_SCOPE[scope];
 
         const workspaceName: WorkspaceName = yield select(selectors.CR.Workspaces.personalWorkspaceNameSelector);
+        const dimensionSpacePoint: null|DimensionCombination = yield select(selectors.CR.ContentDimensions.active);
         const ancestorId: NodeContextPath = ancestorIdSelector
             ? yield select(ancestorIdSelector)
             : null;
@@ -92,7 +93,7 @@ export function * watchPublishing({routes}: {routes: Routes}) {
                 window.addEventListener('beforeunload', handleWindowBeforeUnload);
                 const result: PublishingResponse = scope === PublishingScope.ALL
                     ? yield call(endpoint as any, workspaceName)
-                    : yield call(endpoint, ancestorId, workspaceName);
+                    : yield call(endpoint, ancestorId, workspaceName, dimensionSpacePoint);
 
                 if ('success' in result) {
                     yield put(actions.CR.Publishing.succeed(result.success.numberOfAffectedChanges));

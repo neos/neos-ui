@@ -14,8 +14,12 @@ declare(strict_types=1);
 
 namespace Neos\Neos\Ui\Application\PublishChangesInSite;
 
+use Neos\ContentRepository\Core\Feature\WorkspaceRebase\Exception\WorkspaceRebaseFailed;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Domain\Workspace\WorkspaceProvider;
+use Neos\Neos\Ui\Application\Shared\Conflicts;
+use Neos\Neos\Ui\Application\Shared\ConflictsOccurred;
 use Neos\Neos\Ui\Application\Shared\PublishSucceeded;
 
 /**
@@ -28,19 +32,40 @@ use Neos\Neos\Ui\Application\Shared\PublishSucceeded;
 final class PublishChangesInSiteCommandHandler
 {
     #[Flow\Inject]
+    protected ContentRepositoryRegistry $contentRepositoryRegistry;
+
+    #[Flow\Inject]
     protected WorkspaceProvider $workspaceProvider;
 
     public function handle(PublishChangesInSiteCommand $command): PublishSucceeded
     {
-        $workspace = $this->workspaceProvider->provideForWorkspaceName(
-            $command->contentRepositoryId,
-            $command->workspaceName
-        );
-        $publishingResult = $workspace->publishChangesInSite($command->siteId);
+        try {
+            $workspace = $this->workspaceProvider->provideForWorkspaceName(
+                $command->contentRepositoryId,
+                $command->workspaceName
+            );
+            $publishingResult = $workspace->publishChangesInSite($command->siteId);
 
-        return new PublishSucceeded(
-            numberOfAffectedChanges: $publishingResult->numberOfPublishedChanges,
-            baseWorkspaceName: $workspace->getCurrentBaseWorkspaceName()?->value
-        );
+            return new PublishSucceeded(
+                numberOfAffectedChanges: $publishingResult->numberOfPublishedChanges,
+                baseWorkspaceName: $workspace->getCurrentBaseWorkspaceName()?->value
+            );
+        } catch (WorkspaceRebaseFailed $e) {
+            $conflictsBuilder = Conflicts::builder(
+                contentRepository: $this->contentRepositoryRegistry
+                    ->get($command->contentRepositoryId),
+                workspaceName: $command->workspaceName,
+                preferredDimensionSpacePoint: $command->preferredDimensionSpacePoint
+            );
+
+            foreach ($e->commandsThatFailedDuringRebase as $commandThatFailedDuringRebase) {
+                $conflictsBuilder->addCommandThatFailedDuringRebase($commandThatFailedDuringRebase);
+            }
+
+            throw new ConflictsOccurred(
+                $conflictsBuilder->build(),
+                1712832228
+            );
+        }
     }
 }

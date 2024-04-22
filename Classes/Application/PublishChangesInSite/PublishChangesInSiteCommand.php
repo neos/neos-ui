@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Neos\Neos\Ui\Application\PublishChangesInSite;
 
+use Neos\ContentRepository\Core\DimensionSpace\DimensionSpacePoint;
 use Neos\ContentRepository\Core\SharedModel\ContentRepository\ContentRepositoryId;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateId;
 use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
@@ -32,11 +33,12 @@ final readonly class PublishChangesInSiteCommand
         public ContentRepositoryId $contentRepositoryId,
         public WorkspaceName $workspaceName,
         public NodeAggregateId $siteId,
+        public ?DimensionSpacePoint $preferredDimensionSpacePoint,
     ) {
     }
 
     /**
-     * @param array<string,string> $values
+     * @param array{contentRepositoryId:string,workspaceName:string,siteId:string,preferredDimensionSpacePoint?:array<string,string[]>} $values
      */
     public static function fromArray(array $values): self
     {
@@ -44,6 +46,9 @@ final readonly class PublishChangesInSiteCommand
             ContentRepositoryId::fromString($values['contentRepositoryId']),
             WorkspaceName::fromString($values['workspaceName']),
             NodeAggregateId::fromString($values['siteId']),
+            isset($values['preferredDimensionSpacePoint']) && !empty($values['preferredDimensionSpacePoint'])
+                ? DimensionSpacePoint::fromLegacyDimensionArray($values['preferredDimensionSpacePoint'])
+                : null,
         );
     }
 }

@@ -12,23 +12,21 @@
 
 declare(strict_types=1);
 
-namespace Neos\Neos\Ui\Application\Shared;
+namespace Neos\Neos\Ui\Application\SyncWorkspace;
 
 use Neos\Flow\Annotations as Flow;
 
 /**
+ * The application layer level result DTO to signal that a rebase operation
+ * has succeeded
+ *
  * @internal for communication within the Neos UI only
  */
 #[Flow\Proxy(false)]
-final readonly class ConflictsOccurred implements \JsonSerializable
+final readonly class SyncingSucceeded implements \JsonSerializable
 {
-    public function __construct(
-        public readonly Conflicts $conflicts
-    ) {
-    }
-
     public function jsonSerialize(): mixed
     {
-        return get_object_vars($this);
+        return ['success' => true];
     }
 }

@@ -39,11 +39,9 @@ final class SyncWorkspaceCommandHandler
     #[Flow\Inject]
     protected NodeLabelGeneratorInterface $nodeLabelGenerator;
 
-    /**
-     * @throws ConflictsOccurred
-     */
-    public function handle(SyncWorkspaceCommand $command): void
-    {
+    public function handle(
+        SyncWorkspaceCommand $command
+    ): SyncingSucceeded|ConflictsOccurred {
         try {
             $workspace = $this->workspaceProvider->provideForWorkspaceName(
                 $command->contentRepositoryId,
@@ -51,6 +49,8 @@ final class SyncWorkspaceCommandHandler
             );
 
             $workspace->rebase($command->rebaseErrorHandlingStrategy);
+
+            return new SyncingSucceeded();
         } catch (WorkspaceRebaseFailed $e) {
             $conflictsBuilder = Conflicts::builder(
                 contentRepository: $this->contentRepositoryRegistry
@@ -64,9 +64,8 @@ final class SyncWorkspaceCommandHandler
                 $conflictsBuilder->addCommandThatFailedDuringRebase($commandThatFailedDuringRebase);
             }
 
-            throw new ConflictsOccurred(
-                $conflictsBuilder->build(),
-                1712832228
+            return new ConflictsOccurred(
+                conflicts: $conflictsBuilder->build()
             );
         }
     }

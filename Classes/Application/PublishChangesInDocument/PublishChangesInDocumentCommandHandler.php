@@ -45,8 +45,9 @@ final class PublishChangesInDocumentCommandHandler
     /**
      * @throws NodeAggregateCurrentlyDoesNotExist
      */
-    public function handle(PublishChangesInDocumentCommand $command): PublishSucceeded
-    {
+    public function handle(
+        PublishChangesInDocumentCommand $command
+    ): PublishSucceeded|ConflictsOccurred {
         try {
             $workspace = $this->workspaceProvider->provideForWorkspaceName(
                 $command->contentRepositoryId,
@@ -82,9 +83,8 @@ final class PublishChangesInDocumentCommandHandler
                 $conflictsBuilder->addCommandThatFailedDuringRebase($commandThatFailedDuringRebase);
             }
 
-            throw new ConflictsOccurred(
-                $conflictsBuilder->build(),
-                1712832228
+            return new ConflictsOccurred(
+                conflicts: $conflictsBuilder->build()
             );
         }
     }

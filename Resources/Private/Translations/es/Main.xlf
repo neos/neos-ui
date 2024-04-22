@@ -568,7 +568,7 @@
       </trans-unit>
       <trans-unit id="copyNodeTypeNameToClipboard" xml:space="preserve">
         <source>Copy node type to clipboard</source>
-        <target state="needs-translation">Copiar el tipo de nodo al portapapeles</target>
+        <target state="translated">Copiar tipo de nodo al portapapeles</target>
       </trans-unit>
     </body>
   </file>

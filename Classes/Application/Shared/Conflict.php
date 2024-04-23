@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Neos\Neos\Ui\Application\Shared;
 
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateId;
 use Neos\Flow\Annotations as Flow;
 
 /**
@@ -25,6 +26,7 @@ use Neos\Flow\Annotations as Flow;
 final readonly class Conflict implements \JsonSerializable
 {
     public function __construct(
+        public string $key,
         public ?IconLabel $affectedSite,
         public ?IconLabel $affectedDocument,
         public ?IconLabel $affectedNode,

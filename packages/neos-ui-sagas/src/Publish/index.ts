@@ -15,10 +15,12 @@ import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store
 import {GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
 import {FeedbackEnvelope} from '@neos-project/neos-ui-redux-store/src/ServerFeedback';
 import {PublishingMode, PublishingScope} from '@neos-project/neos-ui-redux-store/src/CR/Publishing';
+import {Conflict} from '@neos-project/neos-ui-redux-store/src/CR/Syncing';
 import backend, {Routes} from '@neos-project/neos-ui-backend-connector';
 
 import {makeReloadNodes} from '../CR/NodeOperations/reloadNodes';
 import {updateWorkspaceInfo} from '../CR/Workspaces';
+import {makeResolveConflicts, makeSyncPersonalWorkspace} from '../Sync';
 
 const handleWindowBeforeUnload = (event: BeforeUnloadEvent) => {
     event.preventDefault();
@@ -32,6 +34,7 @@ type PublishingResponse =
             numberOfAffectedChanges: number;
         }
     }
+    | { conflicts: Conflict[] }
     | { error: AnyError };
 
 export function * watchPublishing({routes}: {routes: Routes}) {
@@ -67,6 +70,8 @@ export function * watchPublishing({routes}: {routes: Routes}) {
     };
 
     const reloadAfterPublishing = makeReloadAfterPublishing({routes});
+    const syncPersonalWorkspace = makeSyncPersonalWorkspace({routes});
+    const resolveConflicts = makeResolveConflicts({syncPersonalWorkspace});
 
     yield takeEvery(actionTypes.CR.Publishing.STARTED, function * publishingWorkflow(action: ReturnType<typeof actions.CR.Publishing.start>) {
         const confirmed = yield * waitForConfirmation();
@@ -88,21 +93,37 @@ export function * watchPublishing({routes}: {routes: Routes}) {
             ? yield select(ancestorIdSelector)
             : null;
 
+        function * attemptToPublishOrDiscard(): Generator<any, any, any> {
+            const result: PublishingResponse = scope === PublishingScope.ALL
+                ? yield call(endpoint as any, workspaceName)
+                : yield call(endpoint!, ancestorId, workspaceName, dimensionSpacePoint);
+
+            if ('success' in result) {
+                yield put(actions.CR.Publishing.succeed(result.success.numberOfAffectedChanges));
+                yield * reloadAfterPublishing();
+            } else if ('conflicts' in result) {
+                yield put(actions.CR.Publishing.conflicts());
+                const conflictsWereResolved: boolean =
+                    yield * resolveConflicts(result.conflicts);
+
+                if (conflictsWereResolved) {
+                    yield put(actions.CR.Publishing.resolveConflicts());
+                    yield * attemptToPublishOrDiscard();
+                } else {
+                    yield put(actions.CR.Publishing.cancel());
+                    yield call(updateWorkspaceInfo);
+                }
+            } else if ('error' in result) {
+                yield put(actions.CR.Publishing.fail(result.error));
+            } else {
+                yield put(actions.CR.Publishing.fail(null));
+            }
+        }
+
         do {
             try {
                 window.addEventListener('beforeunload', handleWindowBeforeUnload);
-                const result: PublishingResponse = scope === PublishingScope.ALL
-                    ? yield call(endpoint as any, workspaceName)
-                    : yield call(endpoint, ancestorId, workspaceName, dimensionSpacePoint);
-
-                if ('success' in result) {
-                    yield put(actions.CR.Publishing.succeed(result.success.numberOfAffectedChanges));
-                    yield * reloadAfterPublishing();
-                } else if ('error' in result) {
-                    yield put(actions.CR.Publishing.fail(result.error));
-                } else {
-                    yield put(actions.CR.Publishing.fail(null));
-                }
+                yield * attemptToPublishOrDiscard();
             } catch (error) {
                 yield put(actions.CR.Publishing.fail(error as AnyError));
             } finally {
@@ -127,6 +148,13 @@ function * waitForConfirmation() {
 }
 
 function * waitForRetry() {
+    const isOngoing: boolean = yield select(
+        (state: GlobalState) => state.cr.publishing !== null
+    );
+    if (!isOngoing) {
+        return false;
+    }
+
     const {retried}: {
         acknowledged: ReturnType<typeof actions.CR.Publishing.acknowledge>;
         retried: ReturnType<typeof actions.CR.Publishing.retry>;

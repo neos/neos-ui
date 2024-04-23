@@ -23,9 +23,9 @@ export const ConflictList: React.FC<{
 }> = (props) => {
     return (
         <ul className={style.conflictList}>
-            {props.conflicts.map((conflict, i) => (
+            {props.conflicts.map((conflict) => (
                 <ConflictItem
-                    key={String(i)}
+                    key={conflict.key}
                     conflict={conflict}
                     i18n={props.i18n}
                     />

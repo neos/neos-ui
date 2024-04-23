@@ -32,6 +32,7 @@ export enum ReasonForConflict {
 }
 
 export type Conflict = {
+    key: string;
     affectedNode: null | {
         icon: string;
         label: string;

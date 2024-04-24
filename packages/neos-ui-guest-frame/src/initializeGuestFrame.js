@@ -1,21 +1,22 @@
-import {takeEvery, put, select} from 'redux-saga/effects';
+import {put, select, takeEvery} from 'redux-saga/effects';
 import {$get} from 'plow-js';
 
-import {selectors, actions, actionTypes} from '@neos-project/neos-ui-redux-store';
+import {actions, actionTypes, selectors} from '@neos-project/neos-ui-redux-store';
 import {requestIdleCallback} from '@neos-project/utils-helpers';
 
 import initializeContentDomNode from './initializeContentDomNode';
 import {
-    getGuestFrameWindow,
-    getGuestFrameDocument,
+    dispatchCustomEvent,
     findAllNodesInGuestFrame,
     findInGuestFrame,
     findNodeInGuestFrame,
-    dispatchCustomEvent
+    getGuestFrameDocument,
+    getGuestFrameWindow
 } from './dom';
 
 import style from './style.module.css';
 import {SelectionModeTypes} from '@neos-project/neos-ts-interfaces';
+import backend from "@neos-project/neos-ui-backend-connector";
 
 //
 // Get all parent elements of the event target.
@@ -60,13 +61,36 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
         return;
     }
 
-    const nodes = Object.assign({}, guestFrameWindow['@Neos.Neos.Ui:Nodes'], {
-        [documentInformation.metaData.documentNode]: documentInformation.metaData.documentNodeSerialization
-    });
+    // Load legacy node data scripts from guest frame - remove with Neos 9.0
+    const legacyNodeData = guestFrameWindow['@Neos.Neos.Ui:NodeData'] || {};
+
+    // Load nodedata from augmented nodes in guest frame
+    const embeddedNodeData = {};
+    Array.prototype.forEach.call(
+        guestFrameWindow.document.querySelectorAll('[data-__neos-nodedata]'),
+            (element) => {
+                const contextPath = element.dataset.__neosNodeContextpath;
+                try {
+                    embeddedNodeData[contextPath] = JSON.parse(element.dataset.__neosNodedata);
+                    element.removeAttribute('data-__neos-nodedata');
+                } catch (e) {
+                    console.error('Could not parse node data for context path', contextPath, e);
+                }
+            }
+    );
+
+    const nodes = Object.assign(
+        {},
+        legacyNodeData, // Merge legacy node data from the guest frame - remove with Neos 9.0
+        embeddedNodeData,
+        {
+            [documentInformation.metaData.documentNode]: documentInformation.metaData.documentNodeSerialization
+        }
+    );
 
     yield put(actions.CR.Nodes.merge(nodes));
 
-    // Remove the inline scripts after initialization
+    // Remove the legacy inline scripts after initialization - remove with Neos 9.0
     Array.prototype.forEach.call(guestFrameWindow.document.querySelectorAll('script[data-neos-nodedata]'), element => element.parentElement.removeChild(element));
 
     const state = store.getState();
@@ -210,4 +234,14 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
             node.classList.remove(style['markActiveNodeAsFocused--focusedNode']);
         }
     });
+
+    // Load all nodedata from content at the end of the initialisation to avoid blocking the UI
+    const {q} = backend.get();
+    const fullyLoadedNodesInContent = yield q(Object.keys(embeddedNodeData)).get();
+    if (fullyLoadedNodesInContent) {
+        yield put(actions.CR.Nodes.merge(fullyLoadedNodesInContent.reduce((nodes, node) => {
+            nodes[node.contextPath] = node;
+            return nodes;
+        }, {})));
+    }
 };

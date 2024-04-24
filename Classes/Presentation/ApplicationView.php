@@ -19,8 +19,10 @@ use Neos\Flow\Core\Bootstrap;
 use Neos\Flow\Mvc\View\AbstractView;
 use Neos\Flow\ResourceManagement\ResourceManager;
 use Neos\Flow\Security\Context as SecurityContext;
+use Neos\Http\Factories\StreamFactoryTrait;
 use Neos\Neos\Service\UserService;
 use Neos\Neos\Ui\Domain\Service\StyleAndJavascriptInclusionService;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * @internal This view is meant to be used exclusively in conjunction with
@@ -30,6 +32,8 @@ use Neos\Neos\Ui\Domain\Service\StyleAndJavascriptInclusionService;
 #[Flow\Scope("singleton")]
 final class ApplicationView extends AbstractView
 {
+    use StreamFactoryTrait;
+
     #[Flow\Inject]
     protected UserService $userService;
 
@@ -54,7 +58,7 @@ final class ApplicationView extends AbstractView
         'title' => [null, 'The application title which will be used as the HTML <title>.', 'string'],
     ];
 
-    public function render(): string
+    public function render(): StreamInterface
     {
         $result = '<!DOCTYPE html>';
         $result .= '<html lang="' . $this->renderLang() . '">';
@@ -66,7 +70,7 @@ final class ApplicationView extends AbstractView
         $result .= '</body>';
         $result .= '</html>';
 
-        return $result;
+        return $this->createStream($result);
     }
 
     private function renderLang(): string

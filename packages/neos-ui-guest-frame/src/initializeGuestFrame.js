@@ -16,7 +16,7 @@ import {
 
 import style from './style.module.css';
 import {SelectionModeTypes} from '@neos-project/neos-ts-interfaces';
-import backend from "@neos-project/neos-ui-backend-connector";
+import backend from '@neos-project/neos-ui-backend-connector';
 
 //
 // Get all parent elements of the event target.
@@ -64,25 +64,18 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     // Load legacy node data scripts from guest frame - remove with Neos 9.0
     const legacyNodeData = guestFrameWindow['@Neos.Neos.Ui:NodeData'] || {};
 
-    // Load nodedata from augmented nodes in guest frame
-    const embeddedNodeData = {};
-    Array.prototype.forEach.call(
-        guestFrameWindow.document.querySelectorAll('[data-__neos-nodedata]'),
-            (element) => {
-                const contextPath = element.dataset.__neosNodeContextpath;
-                try {
-                    embeddedNodeData[contextPath] = JSON.parse(element.dataset.__neosNodedata);
-                    element.removeAttribute('data-__neos-nodedata');
-                } catch (e) {
-                    console.error('Could not parse node data for context path', contextPath, e);
-                }
-            }
-    );
+    // Load all nodedata for nodes in the guest frame
+    const {q} = yield backend.get();
+    const nodeContextPathsInGuestFrame = findAllNodesInGuestFrame().map(node => node.getAttribute('data-__neos-node-contextpath'));
+    const fullyLoadedNodesFromContent = (yield q(nodeContextPathsInGuestFrame).get()).reduce((nodes, node) => {
+        nodes[node.contextPath] = node;
+        return nodes;
+    }, {});
 
     const nodes = Object.assign(
         {},
         legacyNodeData, // Merge legacy node data from the guest frame - remove with Neos 9.0
-        embeddedNodeData,
+        fullyLoadedNodesFromContent,
         {
             [documentInformation.metaData.documentNode]: documentInformation.metaData.documentNodeSerialization
         }
@@ -234,14 +227,4 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
             node.classList.remove(style['markActiveNodeAsFocused--focusedNode']);
         }
     });
-
-    // Load all nodedata from content at the end of the initialisation to avoid blocking the UI
-    const {q} = backend.get();
-    const fullyLoadedNodesInContent = yield q(Object.keys(embeddedNodeData)).get();
-    if (fullyLoadedNodesInContent) {
-        yield put(actions.CR.Nodes.merge(fullyLoadedNodesInContent.reduce((nodes, node) => {
-            nodes[node.contextPath] = node;
-            return nodes;
-        }, {})));
-    }
 };

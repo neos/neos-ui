@@ -40,21 +40,9 @@ class AugmentationAspect
 
     /**
      * @Flow\Inject
-     * @var UserLocaleService
-     */
-    protected $userLocaleService;
-
-    /**
-     * @Flow\Inject
      * @var HtmlAugmenter
      */
     protected $htmlAugmenter;
-
-    /**
-     * @Flow\Inject
-     * @var NodeInfoHelper
-     */
-    protected $nodeInfoHelper;
 
     /**
      * @Flow\Inject
@@ -126,15 +114,7 @@ class AugmentationAspect
         $attributes['data-__neos-node-contextpath'] = $node->getContextPath();
         $attributes['data-__neos-fusion-path'] = $fusionPath;
 
-        $this->userLocaleService->switchToUILocale();
-
-        $serializedNode = json_encode($this->nodeInfoHelper->renderNodeWithMinimalPropertiesAndChildrenInformation($node, $this->controllerContext));
-        $attributes['data-__neos-nodedata'] = $serializedNode;
-
-        $this->userLocaleService->switchToUILocale(true);
-
-        $wrappedContent = $this->htmlAugmenter->addAttributes($content, $attributes, 'div');
-        return $wrappedContent;
+        return $this->htmlAugmenter->addAttributes($content, $attributes);
     }
 
     /**

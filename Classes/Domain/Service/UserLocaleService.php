@@ -38,6 +38,13 @@ class UserLocaleService
     protected $rememberedContentLocale;
 
     /**
+     * Remebered content locale for locale switching
+     *
+     * @var Locale
+     */
+    protected $rememberedUserLocale;
+
+    /**
      * For serialization, we need to respect the UI locale, rather than the content locale
      *
      * @param boolean $reset Reset to remebered locale
@@ -47,11 +54,15 @@ class UserLocaleService
         if ($reset === true) {
             // Reset the locale
             $this->i18nService->getConfiguration()->setCurrentLocale($this->rememberedContentLocale);
+        } elseif ($this->rememberedUserLocale) {
+            // Restore the local
+            $this->i18nService->getConfiguration()->setCurrentLocale($this->rememberedUserLocale);
         } else {
             $this->rememberedContentLocale = $this->i18nService->getConfiguration()->getCurrentLocale();
             $userLocalePreference = ($this->userService->getCurrentUser() ? $this->userService->getCurrentUser()->getPreferences()->getInterfaceLanguage() : null);
             $defaultLocale = $this->i18nService->getConfiguration()->getDefaultLocale();
             $userLocale = $userLocalePreference ? new Locale($userLocalePreference) : $defaultLocale;
+            $this->rememberedUserLocale = $userLocale;
             $this->i18nService->getConfiguration()->setCurrentLocale($userLocale);
         }
     }

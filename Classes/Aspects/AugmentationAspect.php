@@ -128,13 +128,12 @@ class AugmentationAspect
 
         $this->userLocaleService->switchToUILocale();
 
-        $serializedNode = json_encode($this->nodeInfoHelper->renderNodeWithPropertiesAndChildrenInformation($node, $this->controllerContext));
+        $serializedNode = json_encode($this->nodeInfoHelper->renderNodeWithMinimalPropertiesAndChildrenInformation($node, $this->controllerContext));
+        $attributes['data-__neos-nodedata'] = $serializedNode;
 
         $this->userLocaleService->switchToUILocale(true);
 
         $wrappedContent = $this->htmlAugmenter->addAttributes($content, $attributes, 'div');
-        $wrappedContent .= "<script data-neos-nodedata>(function(){(this['@Neos.Neos.Ui:Nodes'] = this['@Neos.Neos.Ui:Nodes'] || {})['{$node->getContextPath()}'] = {$serializedNode}})()</script>";
-
         return $wrappedContent;
     }
 

@@ -60,7 +60,7 @@ export function * watchPublishing({routes}: {routes: Routes}) {
         }
     };
 
-    const reloadAfterDiscard = makeReloadAfterDiscard({routes});
+    const reloadAfterPublishing = makeReloadAfterDiscard({routes});
 
     yield takeEvery(actionTypes.CR.Publishing.STARTED, function * publishingWorkflow(action: ReturnType<typeof actions.CR.Publishing.start>) {
         const confirmed = yield * waitForConfirmation();
@@ -82,12 +82,7 @@ export function * watchPublishing({routes}: {routes: Routes}) {
 
                 if ('success' in result) {
                     yield put(actions.CR.Publishing.succeed(result.success.numberOfAffectedChanges));
-
-                    if (mode === PublishingMode.DISCARD) {
-                        yield * reloadAfterDiscard();
-                    } else {
-                        yield * updateWorkspaceInfo();
-                    }
+                    yield * reloadAfterPublishing();
                 } else if ('error' in result) {
                     yield put(actions.CR.Publishing.fail(result.error));
                 } else {

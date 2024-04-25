@@ -3,12 +3,12 @@ import manifest from '@neos-project/neos-ui-extensibility';
 import App from './Containers/App';
 
 import Modals from './Containers/Modals/index';
-import DiscardDialog from './Containers/Modals/DiscardDialog/index';
 import DeleteNodeModal from './Containers/Modals/DeleteNode/index';
 import InsertModeModal from './Containers/Modals/InsertMode/index';
 import SelectNodeTypeModal from './Containers/Modals/SelectNodeType/index';
 import NodeCreationDialog from './Containers/Modals/NodeCreationDialog/index';
 import NodeVariantCreationDialog from './Containers/Modals/NodeVariantCreationDialog/index';
+import {PublishingDialog} from './Containers/Modals/PublishingDialog/index';
 import ReloginDialog from './Containers/Modals/ReloginDialog/index';
 import KeyboardShortcutModal from './Containers/Modals/KeyboardShortcutModal/index';
 import UnappliedChangesDialog from './Containers/Modals/UnappliedChangesDialog/index';
@@ -48,12 +48,12 @@ manifest('main.containers', {}, globalRegistry => {
     containerRegistry.set('App', App);
 
     containerRegistry.set('Modals', Modals);
-    containerRegistry.set('Modals/DiscardDialog', DiscardDialog);
     containerRegistry.set('Modals/DeleteNodeModal', DeleteNodeModal);
     containerRegistry.set('Modals/InsertModeModal', InsertModeModal);
     containerRegistry.set('Modals/SelectNodeTypeModal', SelectNodeTypeModal);
     containerRegistry.set('Modals/NodeCreationDialog', NodeCreationDialog);
     containerRegistry.set('Modals/NodeVariantCreationDialog', NodeVariantCreationDialog);
+    containerRegistry.set('Modals/PublishingDialog', PublishingDialog);
     containerRegistry.set('Modals/ReloginDialog', ReloginDialog);
     containerRegistry.set('Modals/KeyboardShortcutModal', KeyboardShortcutModal);
     containerRegistry.set('Modals/UnappliedChangesDialog', UnappliedChangesDialog);

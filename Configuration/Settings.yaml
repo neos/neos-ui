@@ -24,7 +24,9 @@ Neos:
       translation:
         autoInclude:
           'Neos.Neos.Ui':
+            - Error
             - Main
+            - PublishingDialog
     fusion:
       autoInclude:
         Neos.Neos.Ui: true

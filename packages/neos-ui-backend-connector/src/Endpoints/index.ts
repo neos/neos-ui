@@ -22,6 +22,7 @@ export interface Routes {
             generateUriPathSegment: string;
             getWorkspaceInfo: string;
             getAdditionalNodeMetadata: string;
+            reloadNodes: string;
         };
     };
     core: {
@@ -677,6 +678,27 @@ export default (routes: Routes) => {
             .then(response => fetchWithErrorHandling.parseJson(response))
             .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
+    const reloadNodes = (query: {
+        workspaceName: WorkspaceName;
+        dimensionSpacePoint: DimensionCombination;
+        siteId: NodeContextPath;
+        documentId: NodeContextPath;
+        ancestorsOfDocumentIds: NodeContextPath[];
+        toggledNodesIds: NodeContextPath[];
+        clipboardNodesIds: NodeContextPath[];
+    }) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+        url: routes.ui.service.reloadNodes,
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'X-Flow-Csrftoken': csrfToken,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({query})
+    }))
+        .then(response => fetchWithErrorHandling.parseJson(response))
+        .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+
     return {
         loadImageMetadata,
         change,
@@ -708,6 +730,7 @@ export default (routes: Routes) => {
         tryLogin,
         contentDimensions,
         impersonateStatus,
-        impersonateRestore
+        impersonateRestore,
+        reloadNodes
     };
 };

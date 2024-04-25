@@ -32,8 +32,6 @@
     },
     "extra": {
       "patches": {
-        "neos/neos-development-collection": {
-        }
       }
     },
     "repositories": {

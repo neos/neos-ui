@@ -2444,6 +2444,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@neos-project/neos-ui-error@workspace:*, @neos-project/neos-ui-error@workspace:packages/neos-ui-error":
+  version: 0.0.0-use.local
+  resolution: "@neos-project/neos-ui-error@workspace:packages/neos-ui-error"
+  dependencies:
+    "@neos-project/neos-ui-i18n": "workspace:*"
+    classnames: ^2.2.3
+    react: ^16.12.0
+  languageName: unknown
+  linkType: soft
+
 "@neos-project/neos-ui-extensibility-webpack-adapter@workspace:packages/neos-ui-extensibility-webpack-adapter":
   version: 0.0.0-use.local
   resolution: "@neos-project/neos-ui-extensibility-webpack-adapter@workspace:packages/neos-ui-extensibility-webpack-adapter"
@@ -2529,6 +2539,7 @@ __metadata:
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
     "@neos-project/neos-ts-interfaces": "workspace:*"
+    "@neos-project/neos-ui-error": "workspace:*"
     "@neos-project/neos-ui-validators": "workspace:*"
     immer: ^9.0.0
     lodash.assignin: ^4.2.0
@@ -2619,6 +2630,7 @@ __metadata:
     "@neos-project/neos-ui-contentrepository": "workspace:*"
     "@neos-project/neos-ui-decorators": "workspace:*"
     "@neos-project/neos-ui-editors": "workspace:*"
+    "@neos-project/neos-ui-error": "workspace:*"
     "@neos-project/neos-ui-extensibility": "workspace:*"
     "@neos-project/neos-ui-guest-frame": "workspace:*"
     "@neos-project/neos-ui-i18n": "workspace:*"

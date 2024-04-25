@@ -107,3 +107,11 @@
     '@controller': 'BackendService'
     '@action': 'generateUriPathSegment'
   httpMethods: ['POST']
+
+-
+  name: 'Reload Nodes'
+  uriPattern: 'reload-nodes'
+  defaults:
+    '@controller': 'BackendService'
+    '@action': 'reloadNodes'
+  httpMethods: ['POST']

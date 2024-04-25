@@ -60,7 +60,7 @@ export function * watchPublishing({routes}: {routes: Routes}) {
         }
     };
 
-    const reloadAfterPublishing = makeReloadAfterDiscard({routes});
+    const reloadAfterPublishing = makeReloadAfterPublishing({routes});
 
     yield takeEvery(actionTypes.CR.Publishing.STARTED, function * publishingWorkflow(action: ReturnType<typeof actions.CR.Publishing.start>) {
         const confirmed = yield * waitForConfirmation();
@@ -123,19 +123,19 @@ function * waitForRetry() {
     return Boolean(retried);
 }
 
-const makeReloadAfterDiscard = (deps: {
+const makeReloadAfterPublishing = (deps: {
     routes: Routes
 }) => {
     const reloadNodes = makeReloadNodes(deps);
 
-    function * reloadAfterDiscard() {
+    function * reloadAfterPublishing() {
         yield all([
             call(updateWorkspaceInfo),
             call(reloadNodes)
         ]);
     }
 
-    return reloadAfterDiscard;
+    return reloadAfterPublishing;
 }
 
 export function * watchChangeBaseWorkspace() {

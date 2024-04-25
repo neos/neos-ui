@@ -13,10 +13,8 @@ namespace Neos\Neos\Ui\NodeCreationHandler;
 
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Flow\Annotations as Flow;
-use Neos\Flow\Property\Exception as PropertyException;
-use Neos\Flow\Property\PropertyMapper;
-use Neos\Flow\Property\TypeConverter\PersistentObjectConverter;
-use Neos\Flow\Security\Exception as SecurityException;
+use Neos\Neos\Ui\Domain\Service\NodePropertyConversionService;
+use Neos\Neos\Ui\NodeCreationHandler\NodeCreationHandlerInterface;
 use Neos\Utility\ObjectAccess;
 use Neos\Utility\TypeHandling;
 
@@ -27,37 +25,22 @@ class CreationDialogPropertiesCreationHandler implements NodeCreationHandlerInte
 {
     /**
      * @Flow\Inject
-     * @var PropertyMapper
+     * @var NodePropertyConversionService
      */
-    protected $propertyMapper;
+    protected $nodePropertyConversionService;
 
-    /**
-     * @param NodeInterface $node The newly created node
-     * @param array $data incoming data from the creationDialog
-     * @return void
-     * @throws PropertyException | SecurityException
-     */
     public function handle(NodeInterface $node, array $data): void
     {
-        $propertyMappingConfiguration = $this->propertyMapper->buildPropertyMappingConfiguration();
-        $propertyMappingConfiguration->forProperty('*')->allowAllProperties();
-        $propertyMappingConfiguration->setTypeConverterOption(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_OVERRIDE_TARGET_TYPE_ALLOWED, true);
-
-        foreach ($node->getNodeType()->getConfiguration('properties') as $propertyName => $propertyConfiguration) {
+        foreach ($data as $propertyName => $propertyValue) {
+            $propertyConfiguration = $node->getNodeType()->getConfiguration('properties')[$propertyName] ?? null;
             if (!isset($propertyConfiguration['ui']['showInCreationDialog']) || $propertyConfiguration['ui']['showInCreationDialog'] !== true) {
                 continue;
             }
             $propertyType = TypeHandling::normalizeType($propertyConfiguration['type'] ?? 'string');
-            if (!isset($data[$propertyName])) {
+            if ($propertyValue === null || ($propertyValue === '' && !TypeHandling::isSimpleType($propertyType))) {
                 continue;
             }
-            $propertyValue = $data[$propertyName];
-            if ($propertyValue === '' && !TypeHandling::isSimpleType($propertyType)) {
-                continue;
-            }
-            if ($propertyType !== 'references' && $propertyType !== 'reference' && $propertyType !== TypeHandling::getTypeForValue($propertyValue)) {
-                $propertyValue = $this->propertyMapper->convert($propertyValue, $propertyType, $propertyMappingConfiguration);
-            }
+            $propertyValue = $this->nodePropertyConversionService->convert($node->getNodeType(), $propertyName, $propertyValue, $node->getContext());
             if (strncmp($propertyName, '_', 1) === 0) {
                 ObjectAccess::setProperty($node, substr($propertyName, 1), $propertyValue);
             } else {

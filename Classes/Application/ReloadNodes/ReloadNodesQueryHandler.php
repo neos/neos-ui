@@ -155,12 +155,7 @@ final class ReloadNodesQueryHandler
 
         /* TODO: we might use the Subtree as this may be more efficient
          - but the logic above mirrors the old behavior better.
-        if ($loadingDepth === 0) {
-            throw new \RuntimeException('TODO: Loading Depth 0 not supported');
-        }
-        $subtree = $contentSubgraph->findSubtree([$siteNode], $loadingDepth, $nodeTypeConstraints);
-        $subtree = $subtree->getChildren()[0];
-        $this->flattenSubtreeToNodeList($nodeAccessor, $subtree, $nodeMapBuilder);*/
+         https://github.com/neos/neos-ui/issues/3517#issuecomment-2070274053 */
 
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
 

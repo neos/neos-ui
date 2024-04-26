@@ -16,12 +16,7 @@ import backend from '@neos-project/neos-ui-backend-connector';
 import {PublishingMode, PublishingScope} from '@neos-project/neos-ui-redux-store/src/CR/Publishing';
 import {Conflict, ResolutionStrategy} from '@neos-project/neos-ui-redux-store/src/CR/Syncing';
 import {WorkspaceInformation} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces';
-
-// @TODO: This is a helper to gain type access to the available backend endpoints.
-// It shouldn't be necessary to do this, and this hack should be removed once a
-// better type API is available
-import {default as Endpoints, Routes} from '@neos-project/neos-ui-backend-connector/src/Endpoints';
-type Endpoints = ReturnType<typeof Endpoints>;
+import {Routes} from '@neos-project/neos-ui-backend-connector/src/Endpoints';
 
 import {makeReloadNodes} from '../CR/NodeOperations/reloadNodes';
 
@@ -69,7 +64,7 @@ const makeSyncPersonalWorkspace = (deps: {
     const resolveConflicts = makeResolveConflicts({syncPersonalWorkspace});
 
     function * syncPersonalWorkspace(force: boolean) {
-        const {syncWorkspace} = backend.get().endpoints as Endpoints;
+        const {syncWorkspace} = backend.get().endpoints;
         const personalWorkspaceName: WorkspaceName = yield select(selectors.CR.Workspaces.personalWorkspaceNameSelector);
         const dimensionSpacePoint: null|DimensionCombination = yield select(selectors.CR.ContentDimensions.active);
 
@@ -178,7 +173,7 @@ const makeDiscardAll = (deps: {
 const makeRefreshAfterSyncing = (deps: {
     routes: Routes
 }) => {
-    const {getWorkspaceInfo} = backend.get().endpoints as Endpoints;
+    const {getWorkspaceInfo} = backend.get().endpoints;
     const reloadNodes = makeReloadNodes(deps);
 
     function * refreshAfterSyncing() {

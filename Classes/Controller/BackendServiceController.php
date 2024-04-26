@@ -363,25 +363,18 @@ class BackendServiceController extends ActionController
 
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
 
-        $currentAccount = $this->securityContext->getAccount();
-        $userWorkspaceName = WorkspaceNameBuilder::fromAccountIdentifier(
-            $currentAccount->getAccountIdentifier()
-        );
+        $personalWorkspace = $this->workspaceProvider->providePrimaryPersonalWorkspaceForCurrentUser($contentRepositoryId);
 
         /** @todo send from UI */
         $command = new ChangeTargetWorkspace(
             $contentRepositoryId,
-            $userWorkspaceName,
+            $personalWorkspace->name,
             WorkspaceName::fromString($targetWorkspaceName),
             $nodeAddressFactory->createFromUriString($documentNode)
         );
 
         try {
-            $workspace = $this->workspaceProvider->provideForWorkspaceName(
-                $command->contentRepositoryId,
-                $command->workspaceName
-            );
-            $workspace->changeBaseWorkspace($command->targetWorkspaceName);
+            $personalWorkspace->changeBaseWorkspace($command->targetWorkspaceName);
         } catch (WorkspaceIsNotEmptyException $exception) {
             $error = new Error();
             $error->setMessage(
@@ -404,7 +397,7 @@ class BackendServiceController extends ActionController
 
         $subgraph = $contentRepository->getContentGraph()
             ->getSubgraph(
-                $workspace->getCurrentContentStreamId(),
+                $personalWorkspace->getCurrentContentStreamId(),
                 $command->documentNode->dimensionSpacePoint,
                 VisibilityConstraints::withoutRestrictions()
             );
@@ -415,7 +408,7 @@ class BackendServiceController extends ActionController
         $success->setMessage(sprintf('Switched base workspace to %s.', $targetWorkspaceName));
         $this->feedbackCollection->add($success);
 
-        $updateWorkspaceInfo = new UpdateWorkspaceInfo($contentRepositoryId, $userWorkspaceName);
+        $updateWorkspaceInfo = new UpdateWorkspaceInfo($contentRepositoryId, $personalWorkspace->name);
         $this->feedbackCollection->add($updateWorkspaceInfo);
 
         // If current document node doesn't exist in the base workspace,

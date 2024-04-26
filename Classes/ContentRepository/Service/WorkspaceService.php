@@ -1,5 +1,4 @@
 <?php
-namespace Neos\Neos\Ui\ContentRepository\Service;
 
 /*
  * This file is part of the Neos.Neos.Ui package.
@@ -11,11 +10,16 @@ namespace Neos\Neos\Ui\ContentRepository\Service;
  * source code.
  */
 
+declare(strict_types=1);
+
+namespace Neos\Neos\Ui\ContentRepository\Service;
+
 use Neos\ContentRepository\Core\ContentRepository;
 use Neos\ContentRepository\Core\SharedModel\ContentRepository\ContentRepositoryId;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindClosestNodeFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\Neos\Domain\Service\NodeTypeNameFactory;
+use Neos\Neos\Domain\Workspace\WorkspaceAssignmentDirectory;
 use Neos\Neos\FrontendRouting\NodeAddress;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
@@ -25,13 +29,12 @@ use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Domain\Service\UserService as DomainUserService;
 use Neos\Neos\PendingChangesProjection\Change;
 use Neos\Neos\PendingChangesProjection\ChangeFinder;
-use Neos\Neos\Service\UserService;
 use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
 
 /**
  * @internal
- * @Flow\Scope("singleton")
  */
+#[Flow\Scope('singleton')]
 class WorkspaceService
 {
     private const NODE_HAS_BEEN_CREATED = 0b0001;
@@ -44,11 +47,8 @@ class WorkspaceService
     #[Flow\Inject]
     protected ContentRepositoryRegistry $contentRepositoryRegistry;
 
-    /**
-     * @Flow\Inject
-     * @var UserService
-     */
-    protected $userService;
+    #[Flow\Inject]
+    protected WorkspaceAssignmentDirectory $workspaceAssignmentDirectory;
 
     /**
      * @Flow\Inject
@@ -132,22 +132,31 @@ class WorkspaceService
      */
     public function getAllowedTargetWorkspaces(ContentRepository $contentRepository): array
     {
-        $user = $this->domainUserService->getCurrentUser();
+        $currentUser = $this->domainUserService->getCurrentUser();
+        $currentUserId = $this->domainUserService->getCurrentUserIdentifier();
+        if (!$currentUser || !$currentUserId) {
+            return [];
+        }
+
+        $primaryPersonalWorkspaceName = $this->workspaceAssignmentDirectory->findPrimaryPersonalWorkspaceName(
+            $contentRepository->id,
+            $currentUser,
+        );
 
         $workspacesArray = [];
         foreach ($contentRepository->getWorkspaceFinder()->findAll() as $workspace) {
             // FIXME: This check should be implemented through a specialized Workspace Privilege or something similar
-            // Skip workspace not owned by current user
-            if ($workspace->workspaceOwner !== null && $workspace->workspaceOwner !== $user) {
-                continue;
-            }
-            // Skip own personal workspace
-            if ($workspace->workspaceName->value === $this->userService->getPersonalWorkspaceName()) {
+            // Skip workspace not assigned to the current user
+            $assignedUserId = $this->workspaceAssignmentDirectory->findAssignedUserId(
+                $contentRepository->id,
+                $workspace->workspaceName
+            );
+            if ($assignedUserId && !$currentUserId->equals($assignedUserId)) {
                 continue;
             }
 
-            if ($workspace->isPersonalWorkspace()) {
-                // Skip other personal workspaces
+            // Skip own personal workspace
+            if ($primaryPersonalWorkspaceName && $workspace->workspaceName->equals($primaryPersonalWorkspaceName)) {
                 continue;
             }
 

@@ -33,6 +33,7 @@ use Neos\ContentRepository\Core\Feature\SubtreeTagging\Command\TagSubtree;
 use Neos\ContentRepository\Core\Feature\SubtreeTagging\Command\UntagSubtree;
 use Neos\ContentRepository\Core\Feature\WorkspaceRebase\CommandsThatFailedDuringRebase;
 use Neos\ContentRepository\Core\Feature\WorkspaceRebase\CommandThatFailedDuringRebase;
+use Neos\ContentRepository\Core\NodeType\NodeTypeManager;
 use Neos\ContentRepository\Core\Projection\ContentGraph\ContentSubgraphInterface;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindClosestNodeFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
@@ -56,6 +57,8 @@ use Neos\Neos\Ui\Application\SyncWorkspace\TypeOfChange;
 #[Flow\Proxy(false)]
 final class ConflictsBuilder
 {
+    private NodeTypeManager $nodeTypeManager;
+
     private ?Workspace $workspace;
 
     /**
@@ -73,6 +76,8 @@ final class ConflictsBuilder
         WorkspaceName $workspaceName,
         private ?DimensionSpacePoint $preferredDimensionSpacePoint,
     ) {
+        $this->nodeTypeManager = $contentRepository->getNodeTypeManager();
+
         $this->workspace = $contentRepository->getWorkspaceFinder()
             ->findOneByName($workspaceName);
     }
@@ -250,8 +255,10 @@ final class ConflictsBuilder
 
     private function createIconLabelForNode(Node $node): IconLabel
     {
+        $nodeType = $this->nodeTypeManager->getNodeType($node->nodeTypeName);
+
         return new IconLabel(
-            icon: $node->nodeType?->getConfiguration('ui.icon') ?? 'questionmark',
+            icon: $nodeType?->getConfiguration('ui.icon') ?? 'questionmark',
             label: $node->getLabel()
         );
     }

@@ -344,7 +344,10 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
             $nodeAddress = $nodeAddressFactory->createFromNode($nodeAddress);
         }
-        return (string)NodeUriBuilder::fromRequest($actionRequest)->uriFor($nodeAddress);
+        $uriBuilder = new UriBuilder();
+        $uriBuilder->setRequest($actionRequest);
+        $uriBuilder->setCreateAbsoluteUri(true);
+        return (string)NodeUriBuilder::fromUriBuilder($uriBuilder)->uriFor($nodeAddress);
     }
 
     public function previewUri(Node $node, ActionRequest $actionRequest): string
@@ -352,7 +355,11 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
         $nodeAddress = $nodeAddressFactory->createFromNode($node);
-        return (string)NodeUriBuilder::fromRequest($actionRequest)->previewUriFor($nodeAddress);
+
+        $uriBuilder = new UriBuilder();
+        $uriBuilder->setRequest($actionRequest);
+        $uriBuilder->setCreateAbsoluteUri(true);
+        return (string)NodeUriBuilder::fromUriBuilder($uriBuilder)->previewUriFor($nodeAddress);
     }
 
     public function createRedirectToNode(Node $node, ActionRequest $actionRequest): string

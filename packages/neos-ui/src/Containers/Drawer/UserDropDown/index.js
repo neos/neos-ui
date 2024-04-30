@@ -4,8 +4,10 @@ import {connect} from 'react-redux';
 
 import {neos} from '@neos-project/neos-ui-decorators';
 import {Icon, DropDown} from '@neos-project/react-ui-components';
+import {actions} from '@neos-project/neos-ui-redux-store';
+
 import {UserImage} from './UserImage';
-import RestoreButtonItem from './RestoreButtonItem';
+import {RestoreButtonItem} from './RestoreButtonItem';
 
 import I18n from '@neos-project/neos-ui-i18n';
 
@@ -14,15 +16,23 @@ import style from './style.module.css';
     userName: state?.user?.name?.fullName,
     userFirstName: state?.user?.name?.firstName,
     userLastName: state?.user?.name?.lastName,
+    originUser: state?.user?.impersonate?.origin,
     impersonateStatus: state?.user?.impersonate?.status
+}), {
+    impersonateRestore: actions.User.Impersonate.restore
+})
+@neos(globalRegistry => ({
+    i18nRegistry: globalRegistry.get('i18n')
 }))
-@neos()
 export default class UserDropDown extends PureComponent {
     static propTypes = {
         userName: PropTypes.string.isRequired,
         userFirstName: PropTypes.string.isRequired,
         userLastName: PropTypes.string.isRequired,
-        impersonateStatus: PropTypes.bool.isRequired
+        originUser: PropTypes.object,
+        impersonateStatus: PropTypes.bool.isRequired,
+        impersonateRestore: PropTypes.func.isRequired,
+        i18nRegistry: PropTypes.object.isRequired
     };
 
     render() {
@@ -56,7 +66,11 @@ export default class UserDropDown extends PureComponent {
                             </form>
                         </li>
                         {this.props.impersonateStatus === true ? (
-                            <RestoreButtonItem />
+                            <RestoreButtonItem
+                                i18n={this.props.i18nRegistry}
+                                originUser={this.props.originUser}
+                                onClick={() => this.props.impersonateRestore()}
+                                />
                         ) : null}
                     </DropDown.Contents>
                 </DropDown>

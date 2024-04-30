@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 
 import {neos} from '@neos-project/neos-ui-decorators';
 import {Icon, DropDown} from '@neos-project/react-ui-components';
-import UserImage from './UserImage';
+import {UserImage} from './UserImage';
 import RestoreButtonItem from './RestoreButtonItem';
 
 import I18n from '@neos-project/neos-ui-i18n';
@@ -12,12 +12,16 @@ import I18n from '@neos-project/neos-ui-i18n';
 import style from './style.module.css';
 @connect(state => ({
     userName: state?.user?.name?.fullName,
+    userFirstName: state?.user?.name?.firstName,
+    userLastName: state?.user?.name?.lastName,
     impersonateStatus: state?.user?.impersonate?.status
 }))
 @neos()
 export default class UserDropDown extends PureComponent {
     static propTypes = {
         userName: PropTypes.string.isRequired,
+        userFirstName: PropTypes.string.isRequired,
+        userLastName: PropTypes.string.isRequired,
         impersonateStatus: PropTypes.bool.isRequired
     };
 
@@ -29,7 +33,10 @@ export default class UserDropDown extends PureComponent {
             <div className={style.wrapper}>
                 <DropDown className={style.dropDown}>
                     <DropDown.Header className={style.dropDown__btn}>
-                        <UserImage />
+                        <UserImage
+                            userFirstName={this.props.userFirstName}
+                            userLastName={this.props.userLastName}
+                            />
                         <span className={style.dropDown__userName}>{this.props.userName}</span>
                     </DropDown.Header>
                     <DropDown.Contents className={style.dropDown__contents}>

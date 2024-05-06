@@ -13,6 +13,7 @@ namespace Neos\Neos\Ui\ContentRepository\Service;
 
 use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\ContentRepository\Domain\Model\Workspace;
+use Neos\ContentRepository\Domain\Service\Context;
 use Neos\ContentRepository\Domain\Service\ContextFactoryInterface;
 use Neos\ContentRepository\Domain\Utility\NodePaths;
 use Neos\Eel\FlowQuery\FlowQuery;
@@ -45,6 +46,11 @@ class NodeService
      * @var DomainRepository
      */
     protected $domainRepository;
+
+    /**
+     * @var array<string, Context>
+     */
+    protected array $contextCache = [];
 
     /**
      * Helper method to retrieve the closest document for a node
@@ -86,36 +92,43 @@ class NodeService
         $nodePath = $nodePathAndContext['nodePath'];
         $workspaceName = $nodePathAndContext['workspaceName'];
         $dimensions = $nodePathAndContext['dimensions'];
+        $siteNodeName = $site ? $site->getNodeName() : explode('/', $nodePath)[2];
 
-        $contextProperties = $this->prepareContextProperties($workspaceName, $dimensions);
+        // Prevent reloading the same context multiple times
+        $contextHash = md5(implode('|', [$siteNodeName, $workspaceName, json_encode($dimensions), $includeAll]));
+        if (isset($this->contextCache[$contextHash])) {
+            $context = $this->contextCache[$contextHash];
+        } else {
+            $contextProperties = $this->prepareContextProperties($workspaceName, $dimensions);
 
-        if ($site === null) {
-            list(, , $siteNodeName) = explode('/', $nodePath);
-            $site = $this->siteRepository->findOneByNodeName($siteNodeName);
-        }
+            if ($site === null) {
+                $site = $this->siteRepository->findOneByNodeName($siteNodeName);
+            }
 
-        if ($domain === null) {
-            $domain = $this->domainRepository->findOneBySite($site);
-        }
+            if ($domain === null) {
+                $domain = $this->domainRepository->findOneBySite($site);
+            }
 
-        $contextProperties['currentSite'] = $site;
-        $contextProperties['currentDomain'] = $domain;
-        if ($includeAll === true) {
-            $contextProperties['invisibleContentShown'] = true;
-            $contextProperties['removedContentShown'] = true;
-            $contextProperties['inaccessibleContentShown'] = true;
-        }
+            $contextProperties['currentSite'] = $site;
+            $contextProperties['currentDomain'] = $domain;
+            if ($includeAll === true) {
+                $contextProperties['invisibleContentShown'] = true;
+                $contextProperties['removedContentShown'] = true;
+                $contextProperties['inaccessibleContentShown'] = true;
+            }
 
-        $context = $this->contextFactory->create(
-            $contextProperties
-        );
-
-        $workspace = $context->getWorkspace(false);
-        if (!$workspace) {
-            return new Error(
-                sprintf('Could not convert the given source to Node object because the workspace "%s" as specified in the context node path does not exist.', $workspaceName),
-                1451392329
+            $context = $this->contextFactory->create(
+                $contextProperties
             );
+
+            $workspace = $context->getWorkspace(false);
+            if (!$workspace) {
+                return new Error(
+                    sprintf('Could not convert the given source to Node object because the workspace "%s" as specified in the context node path does not exist.', $workspaceName),
+                    1451392329
+                );
+            }
+            $this->contextCache[$contextHash] = $context;
         }
 
         return $context->getNode($nodePath);

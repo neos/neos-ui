@@ -53,14 +53,9 @@ final class ReloadNodesQueryHandler
 
     public function handle(ReloadNodesQuery $query, ActionRequest $actionRequest): ReloadNodesQueryResult
     {
-        $workspace = $this->workspaceProvider->provideForWorkspaceName(
-            $query->contentRepositoryId,
-            $query->workspaceName
-        );
         $contentRepository = $this->contentRepositoryRegistry
             ->get($query->contentRepositoryId);
-        $subgraph = $contentRepository->getContentGraph()->getSubgraph(
-            $workspace->getCurrentContentStreamId(),
+        $subgraph = $contentRepository->getContentGraph($query->workspaceName)->getSubgraph(
             $query->dimensionSpacePoint,
             VisibilityConstraints::withoutRestrictions()
         );

@@ -76,8 +76,7 @@ class CopyAfter extends AbstractStructuralChange
                 throw new \Exception('Could not find workspace for content stream', 1699004343);
             }
             $command = CopyNodesRecursively::createFromSubgraphAndStartNode(
-                $contentRepository->getContentGraph()->getSubgraph(
-                    $subject->subgraphIdentity->contentStreamId,
+                $contentRepository->getContentGraph($workspace->workspaceName)->getSubgraph(
                     $subject->subgraphIdentity->dimensionSpacePoint,
                     VisibilityConstraints::withoutRestrictions()
                 ),

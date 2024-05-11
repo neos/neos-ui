@@ -69,8 +69,6 @@ class CopyInto extends AbstractStructuralChange
         $subject = $this->getSubject();
         $parentNode = $this->getParentNode();
         if ($parentNode && $subject && $this->canApply()) {
-            $targetNodeName = NodeName::fromString(uniqid('node-'));
-
             $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
             $workspace = $contentRepository->getWorkspaceFinder()->findOneByCurrentContentStreamId($subject->subgraphIdentity->contentStreamId);
             if (!$workspace) {
@@ -86,14 +84,13 @@ class CopyInto extends AbstractStructuralChange
                 OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->subgraphIdentity->dimensionSpacePoint),
                 $parentNode->nodeAggregateId,
                 null,
-                $targetNodeName
+                null
             );
             $contentRepository->handle($command)->block();
 
             $newlyCreatedNode = $this->contentRepositoryRegistry->subgraphForNode($parentNode)
-                ->findNodeByPath(
-                    $targetNodeName,
-                    $parentNode->nodeAggregateId
+                ->findNodeById(
+                    $command->nodeAggregateIdMapping->getNewNodeAggregateId($subject->nodeAggregateId),
                 );
             $this->finish($newlyCreatedNode);
             // NOTE: we need to run "finish" before "addNodeCreatedFeedback"

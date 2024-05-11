@@ -61,8 +61,6 @@ class CopyBefore extends AbstractStructuralChange
         if ($this->canApply() && !is_null($subject) && !is_null($succeedingSibling)
             && !is_null($parentNodeOfSucceedingSibling)
         ) {
-            $targetNodeName = NodeName::fromString(uniqid('node-'));
-
             $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
             $workspace = $contentRepository->getWorkspaceFinder()->findOneByCurrentContentStreamId($subject->subgraphIdentity->contentStreamId);
             if (!$workspace) {
@@ -78,14 +76,14 @@ class CopyBefore extends AbstractStructuralChange
                 OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->subgraphIdentity->dimensionSpacePoint),
                 $parentNodeOfSucceedingSibling->nodeAggregateId,
                 $succeedingSibling->nodeAggregateId,
-                $targetNodeName
+                null
             );
+
             $contentRepository->handle($command)->block();
 
             $newlyCreatedNode = $this->contentRepositoryRegistry->subgraphForNode($parentNodeOfSucceedingSibling)
-                ->findNodeByPath(
-                    $targetNodeName,
-                    $parentNodeOfSucceedingSibling->nodeAggregateId
+                ->findNodeById(
+                    $command->nodeAggregateIdMapping->getNewNodeAggregateId($subject->nodeAggregateId)
                 );
             $this->finish($newlyCreatedNode);
             // NOTE: we need to run "finish" before "addNodeCreatedFeedback"

@@ -97,8 +97,7 @@ class WorkspaceService
                     'typeOfChange' => $this->getTypeOfChange($change)
                 ];
             } else {
-                $subgraph = $contentRepository->getContentGraph()->getSubgraph(
-                    $workspace->currentContentStreamId,
+                $subgraph = $contentRepository->getContentGraph($workspaceName)->getSubgraph(
                     $change->originDimensionSpacePoint->toDimensionSpacePoint(),
                     VisibilityConstraints::withoutRestrictions()
                 );

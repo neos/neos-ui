@@ -13,6 +13,7 @@ namespace Neos\Neos\Ui\Controller;
  */
 
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
+use Neos\ContentRepository\Core\SharedModel\Exception\WorkspaceDoesNotExist;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ActionController;
@@ -146,10 +147,12 @@ class BackendController extends ActionController
         }
 
         $currentAccount = $this->securityContext->getAccount();
-        $workspace = $contentRepository->getWorkspaceFinder()->findOneByName(
-            WorkspaceNameBuilder::fromAccountIdentifier($currentAccount->getAccountIdentifier())
-        );
-        if (is_null($workspace)) {
+        $workspaceName = WorkspaceNameBuilder::fromAccountIdentifier($currentAccount->getAccountIdentifier());
+
+        try {
+            $contentGraph = $contentRepository->getContentGraph($workspaceName);
+        } catch (WorkspaceDoesNotExist) {
+            // todo will cause infinite loop: https://github.com/neos/neos-development-collection/issues/4401
             $this->redirectToUri($this->uriBuilder->uriFor('index', [], 'Login', 'Neos.Neos'));
         }
 
@@ -159,16 +162,14 @@ class BackendController extends ActionController
         );
         $defaultDimensionSpacePoint = $backendControllerInternals->getDefaultDimensionSpacePoint();
 
-        $subgraph = $contentRepository->getContentGraph()->getSubgraph(
-            $workspace->currentContentStreamId,
+        $subgraph = $contentGraph->getSubgraph(
             $nodeAddress ? $nodeAddress->dimensionSpacePoint : $defaultDimensionSpacePoint,
             VisibilityConstraints::withoutRestrictions()
         );
 
         // we assume that the ROOT node is always stored in the CR as "physical" node; so it is safe
         // to call the contentGraph here directly.
-        $rootNodeAggregate = $contentRepository->getContentGraph()->findRootNodeAggregateByType(
-            $workspace->currentContentStreamId,
+        $rootNodeAggregate = $contentGraph->findRootNodeAggregateByType(
             NodeTypeNameFactory::forSites()
         );
         $rootNode = $rootNodeAggregate->getNodeByCoveredDimensionSpacePoint($defaultDimensionSpacePoint);

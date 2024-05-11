@@ -402,9 +402,8 @@ class BackendServiceController extends ActionController
             return;
         }
 
-        $subgraph = $contentRepository->getContentGraph()
+        $subgraph = $contentRepository->getContentGraph($workspace->name)
             ->getSubgraph(
-                $workspace->getCurrentContentStreamId(),
                 $command->documentNode->dimensionSpacePoint,
                 VisibilityConstraints::withoutRestrictions()
             );
@@ -540,8 +539,7 @@ class BackendServiceController extends ActionController
         $result = [];
         foreach ($nodes as $nodeAddressString) {
             $nodeAddress = $nodeAddressFactory->createFromUriString($nodeAddressString);
-            $subgraph = $contentRepository->getContentGraph()->getSubgraph(
-                $nodeAddress->contentStreamId,
+            $subgraph = $contentRepository->getContentGraph($nodeAddress->workspaceName)->getSubgraph(
                 $nodeAddress->dimensionSpacePoint,
                 VisibilityConstraints::withoutRestrictions()
             );
@@ -587,8 +585,7 @@ class BackendServiceController extends ActionController
 
         $result = [];
         foreach ($nodes as $nodeAddress) {
-            $subgraph = $contentRepository->getContentGraph()->getSubgraph(
-                $nodeAddress->contentStreamId,
+            $subgraph = $contentRepository->getContentGraph($nodeAddress->workspaceName)->getSubgraph(
                 $nodeAddress->dimensionSpacePoint,
                 VisibilityConstraints::withoutRestrictions()
             );
@@ -670,8 +667,7 @@ class BackendServiceController extends ActionController
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
 
         $contextNodeAddress = $nodeAddressFactory->createFromUriString($contextNode);
-        $subgraph = $contentRepository->getContentGraph()->getSubgraph(
-            $contextNodeAddress->contentStreamId,
+        $subgraph = $contentRepository->getContentGraph($contextNodeAddress->workspaceName)->getSubgraph(
             $contextNodeAddress->dimensionSpacePoint,
             VisibilityConstraints::withoutRestrictions()
         );

@@ -37,8 +37,7 @@ class NeosUiNodeService
         $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
         $nodeAddress = NodeAddressFactory::create($contentRepository)->createFromUriString($serializedNodeAddress);
 
-        $subgraph = $contentRepository->getContentGraph()->getSubgraph(
-            $nodeAddress->contentStreamId,
+        $subgraph = $contentRepository->getContentGraph($nodeAddress->workspaceName)->getSubgraph(
             $nodeAddress->dimensionSpacePoint,
             VisibilityConstraints::withoutRestrictions()
         );

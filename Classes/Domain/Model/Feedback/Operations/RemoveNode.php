@@ -98,9 +98,7 @@ class RemoveNode extends AbstractFeedback
             return false;
         }
 
-        return $this->getNode()->nodeAggregateId->equals(
-            $feedback->getNode()->nodeAggregateId
-        );
+        return $this->getNode()->equals($feedback->getNode());
     }
 
     /**

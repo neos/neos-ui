@@ -104,7 +104,7 @@ class UpdateWorkspaceInfo extends AbstractFeedback
             return false;
         }
 
-        return $this->getWorkspaceName()?->value === $feedback->getWorkspaceName()?->value;
+        return $this->getWorkspaceName()->equals($feedback->getWorkspaceName());
     }
 
     /**

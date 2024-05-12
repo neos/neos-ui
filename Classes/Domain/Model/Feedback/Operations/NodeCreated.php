@@ -80,10 +80,7 @@ class NodeCreated extends AbstractFeedback
             return false;
         }
 
-        return (
-            $this->getNode()->subgraphIdentity->equals($feedback->getNode()->subgraphIdentity) &&
-            $this->getNode()->nodeAggregateId->equals($feedback->getNode()->nodeAggregateId)
-        );
+        return $this->getNode()->equals($feedback->getNode());
     }
 
     /**

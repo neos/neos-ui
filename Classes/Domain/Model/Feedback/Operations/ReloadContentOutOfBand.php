@@ -98,16 +98,8 @@ class ReloadContentOutOfBand extends AbstractFeedback
             return false;
         }
 
-        $feedbackNode = $feedback->getNode();
-        return (
-            $this->node instanceof Node &&
-            $feedbackNode instanceof Node &&
-            $this->node->subgraphIdentity->equals($feedbackNode->subgraphIdentity) &&
-            $this->node->nodeAggregateId->equals(
-                $feedbackNode->nodeAggregateId
-            ) &&
-            $this->getNodeDomAddress() == $feedback->getNodeDomAddress()
-        );
+        return $this->getNode()->equals($feedback->getNode())
+            && $this->getNodeDomAddress() == $feedback->getNodeDomAddress();
     }
 
     /**

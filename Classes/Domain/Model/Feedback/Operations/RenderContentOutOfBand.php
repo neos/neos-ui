@@ -144,11 +144,8 @@ class RenderContentOutOfBand extends AbstractFeedback
             return false;
         }
 
-        return (
-            $this->node->subgraphIdentity->equals($feedbackNode->subgraphIdentity) &&
-            $this->node->nodeAggregateId->equals($feedbackNode->nodeAggregateId)
-            // @todo what's this? && $this->getReferenceData() == $feedback->getReferenceData()
-        );
+        return $this->node->equals($feedbackNode);
+        // @todo what's this? && $this->getReferenceData() == $feedback->getReferenceData()
     }
 
     /**

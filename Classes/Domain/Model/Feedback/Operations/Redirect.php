@@ -92,7 +92,7 @@ class Redirect extends AbstractFeedback
             return false;
         }
 
-        return $this->getNode()->subgraphIdentity->equals($feedback->getNode()->subgraphIdentity);
+        return $this->getNode()->equals($feedback->getNode());
     }
 
     /**

@@ -110,7 +110,7 @@ class ReloadContentOutOfBand extends AbstractFeedback
     public function serializePayload(ControllerContext $controllerContext): array
     {
         if (!is_null($this->node) && !is_null($this->nodeDomAddress)) {
-            $contentRepository = $this->contentRepositoryRegistry->get($this->node->subgraphIdentity->contentRepositoryId);
+            $contentRepository = $this->contentRepositoryRegistry->get($this->node->contentRepositoryId);
             $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
             return [
                 'contextPath' => $nodeAddressFactory->createFromNode($this->node)->serializeForUri(),

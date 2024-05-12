@@ -106,7 +106,7 @@ class WorkspaceService
                 if ($node instanceof Node) {
                     $documentNode = $subgraph->findClosestNode($node->nodeAggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_DOCUMENT));
                     if ($documentNode instanceof Node) {
-                        $contentRepository = $this->contentRepositoryRegistry->get($documentNode->subgraphIdentity->contentRepositoryId);
+                        $contentRepository = $this->contentRepositoryRegistry->get($documentNode->contentRepositoryId);
                         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
                         $unpublishedNodes[] = [
                             'contextPath' => $nodeAddressFactory->createFromNode($node)->serializeForUri(),

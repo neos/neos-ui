@@ -111,7 +111,7 @@ class UpdateNodePreviewUrl extends AbstractFeedback
             $contextPath = '';
         } else {
             $nodeInfoHelper = new NodeInfoHelper();
-            $contentRepository = $this->contentRepositoryRegistry->get($this->node->subgraphIdentity->contentRepositoryId);
+            $contentRepository = $this->contentRepositoryRegistry->get($this->node->contentRepositoryId);
             $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
             $newPreviewUrl = $nodeInfoHelper->createRedirectToNode($this->node, $controllerContext->getRequest());
             $contextPath = $nodeAddressFactory->createFromNode($this->node)->serializeForUri();

@@ -116,7 +116,7 @@ class UpdateNodeInfo extends AbstractFeedback
      */
     private function serializeNodeRecursively(Node $node, ActionRequest $actionRequest): array
     {
-        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
+        $contentRepository = $this->contentRepositoryRegistry->get($node->contentRepositoryId);
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
 
         $result = [

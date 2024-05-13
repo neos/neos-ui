@@ -14,6 +14,7 @@ namespace Neos\Neos\Ui\Controller;
  * source code.
  */
 
+use Neos\ContentRepository\Core\DimensionSpace\DimensionSpacePoint;
 use Neos\ContentRepository\Core\Feature\WorkspaceModification\Exception\WorkspaceIsNotEmptyException;
 use Neos\ContentRepository\Core\Feature\WorkspaceRebase\Dto\RebaseErrorHandlingStrategy;
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
@@ -36,13 +37,16 @@ use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;
 use Neos\Neos\Service\UserService;
 use Neos\Neos\Ui\Application\ChangeTargetWorkspace;
+use Neos\Neos\Ui\Application\DiscardAllChanges;
 use Neos\Neos\Ui\Application\DiscardChangesInDocument;
 use Neos\Neos\Ui\Application\DiscardChangesInSite;
 use Neos\Neos\Ui\Application\PublishChangesInDocument;
 use Neos\Neos\Ui\Application\PublishChangesInSite;
 use Neos\Neos\Ui\Application\ReloadNodes\ReloadNodesQuery;
 use Neos\Neos\Ui\Application\ReloadNodes\ReloadNodesQueryHandler;
-use Neos\Neos\Ui\Application\SyncWorkspace;
+use Neos\Neos\Ui\Application\SyncWorkspace\ConflictsOccurred;
+use Neos\Neos\Ui\Application\SyncWorkspace\SyncWorkspaceCommand;
+use Neos\Neos\Ui\Application\SyncWorkspace\SyncWorkspaceCommandHandler;
 use Neos\Neos\Ui\ContentRepository\Service\NeosUiNodeService;
 use Neos\Neos\Ui\Domain\Model\Feedback\Messages\Error;
 use Neos\Neos\Ui\Domain\Model\Feedback\Messages\Info;
@@ -133,6 +137,12 @@ class BackendServiceController extends ActionController
      * @var WorkspaceProvider
      */
     protected $workspaceProvider;
+
+    /**
+     * @Flow\Inject
+     * @var SyncWorkspaceCommandHandler
+     */
+    protected $syncWorkspaceCommandHandler;
 
     /**
      * @Flow\Inject
@@ -256,6 +266,42 @@ class BackendServiceController extends ActionController
                     1682762156
                 );
             }
+        } catch (\Exception $e) {
+            $this->view->assign('value', [
+                'error' => [
+                    'class' => $e::class,
+                    'code' => $e->getCode(),
+                    'message' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString()
+                ]
+            ]);
+        }
+    }
+
+    /**
+     * Discard all changes in the user's personal workspace
+     *
+     * @phpstan-param array<string,string> $command
+     */
+    public function discardAllChangesAction(array $command): void
+    {
+        try {
+            /** @todo send from UI */
+            $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
+            $command['contentRepositoryId'] = $contentRepositoryId->value;
+            $command = DiscardAllChanges::fromArray($command);
+
+            $workspace = $this->workspaceProvider->provideForWorkspaceName(
+                $command->contentRepositoryId,
+                $command->workspaceName
+            );
+            $discardingResult = $workspace->discardAllChanges();
+
+            $this->view->assign('value', [
+                'success' => [
+                    'numberOfAffectedChanges' => $discardingResult->numberOfDiscardedChanges
+                ]
+            ]);
         } catch (\Exception $e) {
             $this->view->assign('value', [
                 'error' => [
@@ -681,42 +727,48 @@ class BackendServiceController extends ActionController
      * Rebase user workspace to current workspace
      *
      * @param string $targetWorkspaceName
+     * @param bool $force
+     * @phpstan-param null|array<mixed> $dimensionSpacePoint
      * @return void
      */
-    public function rebaseWorkspaceAction(string $targetWorkspaceName): void
+    public function syncWorkspaceAction(string $targetWorkspaceName, bool $force, ?array $dimensionSpacePoint): void
     {
-        $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
-        $targetWorkspaceName = WorkspaceName::fromString($targetWorkspaceName);
-
-        /** @todo send from UI */
-        $command = new SyncWorkspace(
-            contentRepositoryId: $contentRepositoryId,
-            workspaceName: $targetWorkspaceName,
-            rebaseErrorHandlingStrategy: RebaseErrorHandlingStrategy::STRATEGY_FAIL
-        );
-
         try {
-            $workspace = $this->workspaceProvider->provideForWorkspaceName(
-                $command->contentRepositoryId,
-                $command->workspaceName
+            $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
+            $targetWorkspaceName = WorkspaceName::fromString($targetWorkspaceName);
+            $dimensionSpacePoint = $dimensionSpacePoint
+                ? DimensionSpacePoint::fromLegacyDimensionArray($dimensionSpacePoint)
+                : null;
+
+            /** @todo send from UI */
+            $command = new SyncWorkspaceCommand(
+                contentRepositoryId: $contentRepositoryId,
+                workspaceName: $targetWorkspaceName,
+                preferredDimensionSpacePoint: $dimensionSpacePoint,
+                rebaseErrorHandlingStrategy: $force
+                    ? RebaseErrorHandlingStrategy::STRATEGY_FORCE
+                    : RebaseErrorHandlingStrategy::STRATEGY_FAIL
             );
-            $workspace->rebase($command->rebaseErrorHandlingStrategy);
-        } catch (\Exception $exception) {
-            $error = new Error();
-            $error->setMessage($exception->getMessage());
 
-            $this->feedbackCollection->add($error);
-            $this->view->assign('value', $this->feedbackCollection);
-            return;
+            $this->syncWorkspaceCommandHandler->handle($command);
+
+            $this->view->assign('value', [
+                'success' => true
+            ]);
+        } catch (ConflictsOccurred $e) {
+            $this->view->assign('value', [
+                'conflicts' => $e->conflicts
+            ]);
+        } catch (\Exception $e) {
+            $this->view->assign('value', [
+                'error' => [
+                    'class' => $e::class,
+                    'code' => $e->getCode(),
+                    'message' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString()
+                ]
+            ]);
         }
-
-        $success = new Success();
-        $success->setMessage(
-            $this->getLabel('workspaceSynchronizationApplied', ['workspaceName' => $targetWorkspaceName->value])
-        );
-        $this->feedbackCollection->add($success);
-
-        $this->view->assign('value', $this->feedbackCollection);
     }
 
     /**

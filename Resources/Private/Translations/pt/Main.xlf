@@ -421,23 +421,9 @@
         <source>Format options</source>
         <target state="translated">Opções de formatação</target>
       </trans-unit>
-      <trans-unit id="workspaceSynchronizationApplied" xml:space="preserve">
-        <source>Successfully synced "{workspaceName}" workspace.</source>
-        <target state="translated">Espaço de trabalho "{workspaceName}" sincronizado com sucesso.</target>
-      </trans-unit>
       <trans-unit id="syncPersonalWorkSpace" xml:space="preserve">
         <source>Synchronize personal workspace</source>
         <target state="translated">Sincronizar espaço de trabalho pessoal</target>
-      </trans-unit>
-      <trans-unit id="syncPersonalWorkSpaceMessage" xml:space="preserve">
-        <source>Your personal workspace is up-to-date with the current workspace.</source>
-        <target state="translated">O seu espaço de trabalho pessoal está atualizado com o espaço de trabalho atual.</target>
-      </trans-unit>
-      <trans-unit id="syncPersonalWorkSpaceMessageOutdated" xml:space="preserve">
-        <source>It seems like there are changes in the workspace that are not reflected in your personal workspace.
-                You should synchronize your personal workspace to avoid conflicts.</source>
-        <target state="translated">Parece que há alterações no espaço de trabalho que não se refletem no seu espaço de trabalho pessoal.
-Você deve sincronizar o seu espaço de trabalho pessoal para evitar conflitos.</target>
       </trans-unit>
       <trans-unit id="errorBoundary.technicalDetailsCopied" xml:space="preserve">
         <source>Technical details copied</source>
@@ -482,16 +468,6 @@ Você deve sincronizar o seu espaço de trabalho pessoal para evitar conflitos.<
       <trans-unit id="ckeditor__toolbar__style__h4" xml:space="preserve">
         <source>Headline 4</source>
         <target state="translated">Título 4</target>
-      </trans-unit>
-      <trans-unit id="syncPersonalWorkSpaceConfirm" xml:space="preserve">
-        <source>Synchronize now</source>
-        <target state="translated">Sincronizar agora</target>
-      </trans-unit>
-      <trans-unit id="syncPersonalWorkSpaceMessageOutdatedConflict" xml:space="preserve">
-        <source>It seems like there are changes in the workspace that are not reflected in your personal workspace.
-                The changes lead to an error state. Please contact your administrator to resolve the problem.</source>
-        <target state="translated">Parece que há alterações no espaço de trabalho que não se refletem no seu espaço de trabalho pessoal.
-As mudanças levam a um estado de erro. Entre em contacto com o seu administrador para resolver o problema.</target>
       </trans-unit>
       <trans-unit id="errorBoundary.copyTechnicalDetails" xml:space="preserve">
         <source>Copy technical details</source>

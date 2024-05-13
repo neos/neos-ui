@@ -57,7 +57,6 @@ test('Discarding: create a document node and then discard it', async t => {
 
     subSection('Discard that node');
     await PublishDropDown.discardAll(t);
-    await t.click(Selector('#neos-DiscardDialog-Acknowledge'));
     await t
         .expect(Page.treeNode.withText(pageTitleToCreate).exists).notOk('Discarded node gone from the tree')
         .expect(ReactSelector('Provider').getReact(({props}) => {
@@ -91,7 +90,6 @@ test('Discarding: delete a document node and then discard deletion', async t => 
 
     subSection('Discard page deletion');
     await PublishDropDown.discardAll(t);
-    await t.click(Selector('#neos-DiscardDialog-Acknowledge'));
     await t
         .expect(Page.treeNode.withText(pageTitleToDelete).exists).ok('Deleted node reappeared in the tree');
 });
@@ -118,7 +116,6 @@ test('Discarding: create a content node and then discard it', async t => {
 
     subSection('Discard that node');
     await PublishDropDown.discardAll(t);
-    await t.click(Selector('#neos-DiscardDialog-Acknowledge'));
     await t
         .expect(Page.treeNode.withText(defaultHeadlineTitle).exists).notOk('Discarded node gone from the tree')
         .expect(ReactSelector('Provider').getReact(({props}) => {
@@ -150,7 +147,6 @@ test('Discarding: delete a content node and then discard deletion', async t => {
 
     subSection('Discard page deletion');
     await PublishDropDown.discardAll(t);
-    await t.click(Selector('#neos-DiscardDialog-Acknowledge'));
     await t
         .expect(Page.treeNode.withText(headlineToDelete).exists).ok('Deleted node reappeared in the tree');
     await Page.waitForIframeLoading(t);

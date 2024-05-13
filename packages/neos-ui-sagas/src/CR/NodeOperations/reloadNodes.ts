@@ -16,12 +16,7 @@ import {AnyError} from '@neos-project/neos-ui-error';
 import backend from '@neos-project/neos-ui-backend-connector';
 // @ts-ignore
 import {getGuestFrameDocument} from '@neos-project/neos-ui-guest-frame/src/dom';
-
-// @TODO: This is a helper to gain type access to the available backend endpoints.
-// It shouldn't be necessary to do this, and this hack should be removed once a
-// better type API is available
-import {default as Endpoints, Routes} from '@neos-project/neos-ui-backend-connector/src/Endpoints';
-type Endpoints = ReturnType<typeof Endpoints>;
+import {Routes} from '@neos-project/neos-ui-backend-connector/src/Endpoints';
 
 type ReloadNodesResponse =
     | {
@@ -36,7 +31,7 @@ export const makeReloadNodes = (deps: {
     routes?: Routes;
 }) => {
     const redirectToDefaultModule = makeRedirectToDefaultModule(deps);
-    const {reloadNodes: reloadNodesEndpoint} = backend.get().endpoints as Endpoints;
+    const {reloadNodes: reloadNodesEndpoint} = backend.get().endpoints;
 
     return function * reloadNodes() {
         const workspaceName: WorkspaceName = yield select<GlobalState>(

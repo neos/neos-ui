@@ -24,7 +24,11 @@ import {ConfirmationDialog} from './ConfirmationDialog';
 import {ProcessIndicator} from './ProcessIndicator';
 import {ResultDialog} from './ResultDialog';
 
-const {publishableNodesSelector, publishableNodesInDocumentSelector} = (selectors as any).CR.Workspaces;
+const {
+    publishableNodesSelector,
+    publishableNodesInDocumentSelector,
+    personalWorkspaceNameSelector
+} = (selectors as any).CR.Workspaces;
 const {siteNodeSelector, documentNodeSelector} = (selectors as any).CR.Nodes;
 
 type PublishingDialogProperties =
@@ -125,6 +129,8 @@ export default connect((state: GlobalState): PublishingDialogProperties => {
     let numberOfChanges = 0;
     if (publishingState.process.phase === PublishingPhase.SUCCESS) {
         numberOfChanges = publishingState.process.numberOfAffectedChanges;
+    } else if (scope === PublishingScope.ALL) {
+        numberOfChanges = state.cr.workspaces.personalWorkspace.totalNumberOfChanges;
     } else if (scope === PublishingScope.SITE) {
         numberOfChanges = publishableNodesSelector(state).length;
     } else if (scope === PublishingScope.DOCUMENT) {
@@ -132,7 +138,9 @@ export default connect((state: GlobalState): PublishingDialogProperties => {
     }
 
     let scopeTitle = 'N/A';
-    if (scope === PublishingScope.SITE) {
+    if (scope === PublishingScope.ALL) {
+        scopeTitle = personalWorkspaceNameSelector(state);
+    } else if (scope === PublishingScope.SITE) {
         scopeTitle = siteNodeSelector(state).label;
     } else if (scope === PublishingScope.DOCUMENT) {
         scopeTitle = documentNodeSelector(state).label;

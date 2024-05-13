@@ -11,10 +11,11 @@ export interface Routes {
             change: string;
             publishChangesInSite: string;
             publishChangesInDocument: string;
+            discardAllChanges: string;
             discardChangesInSite: string;
             discardChangesInDocument: string;
             changeBaseWorkspace: string;
-            rebaseWorkspace: string;
+            syncWorkspace: string;
             copyNodes: string;
             cutNodes: string;
             clearClipboard: string;
@@ -96,6 +97,20 @@ export default (routes: Routes) => {
     })).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
+    const discardAllChanges = (workspaceName: WorkspaceName) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+        url: routes.ui.service.discardAllChanges,
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'X-Flow-Csrftoken': csrfToken,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            command: {workspaceName}
+        })
+    })).then(response => fetchWithErrorHandling.parseJson(response))
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+
     const discardChangesInSite = (siteId: NodeContextPath, workspaceName: WorkspaceName) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
         url: routes.ui.service.discardChangesInSite,
         method: 'POST',
@@ -140,8 +155,8 @@ export default (routes: Routes) => {
     })).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
-    const rebaseWorkspace = (targetWorkspaceName: WorkspaceName) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
-        url: routes.ui.service.rebaseWorkspace,
+    const syncWorkspace = (targetWorkspaceName: WorkspaceName, force: boolean, dimensionSpacePoint: null|DimensionCombination) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+        url: routes.ui.service.syncWorkspace,
 
         method: 'POST',
         credentials: 'include',
@@ -150,7 +165,9 @@ export default (routes: Routes) => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            targetWorkspaceName
+            targetWorkspaceName,
+            force,
+            dimensionSpacePoint
         })
     })).then(response => fetchWithErrorHandling.parseJson(response))
         .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
@@ -704,10 +721,11 @@ export default (routes: Routes) => {
         change,
         publishChangesInSite,
         publishChangesInDocument,
+        discardAllChanges,
         discardChangesInSite,
         discardChangesInDocument,
         changeBaseWorkspace,
-        rebaseWorkspace,
+        syncWorkspace,
         copyNodes,
         cutNodes,
         clearClipboard,

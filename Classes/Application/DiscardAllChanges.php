@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Neos.Neos.Ui package.
+ * This file is part of the Neos.Neos package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -14,23 +14,32 @@ declare(strict_types=1);
 
 namespace Neos\Neos\Ui\Application;
 
-use Neos\ContentRepository\Core\Feature\WorkspaceRebase\Dto\RebaseErrorHandlingStrategy;
 use Neos\ContentRepository\Core\SharedModel\ContentRepository\ContentRepositoryId;
 use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
 use Neos\Flow\Annotations as Flow;
 
 /**
- * The application layer level command DTO to communicate the intent to rebase the workspace
+ * The application layer level command DTO to communicate discarding of all changes recorded for a workspace
  *
  * @internal for communication within the Neos UI only
  */
 #[Flow\Proxy(false)]
-final readonly class SyncWorkspace
+final readonly class DiscardAllChanges
 {
     public function __construct(
         public ContentRepositoryId $contentRepositoryId,
         public WorkspaceName $workspaceName,
-        public RebaseErrorHandlingStrategy $rebaseErrorHandlingStrategy
     ) {
+    }
+
+    /**
+     * @param array<string,string> $values
+     */
+    public static function fromArray(array $values): self
+    {
+        return new self(
+            ContentRepositoryId::fromString($values['contentRepositoryId']),
+            WorkspaceName::fromString($values['workspaceName']),
+        );
     }
 }

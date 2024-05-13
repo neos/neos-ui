@@ -1,7 +1,7 @@
 import {createSelector} from 'reselect';
 import {documentNodeContextPathSelector} from '../Nodes/selectors';
 import {GlobalState} from '../../System';
-import {NodeContextPath, WorkspaceStatus} from '@neos-project/neos-ts-interfaces';
+import {NodeContextPath} from '@neos-project/neos-ts-interfaces';
 
 export const personalWorkspaceNameSelector = (state: GlobalState) => state?.cr?.workspaces?.personalWorkspace?.name;
 
@@ -10,9 +10,6 @@ export const personalWorkspaceRebaseStatusSelector = (state: GlobalState) => sta
 export const baseWorkspaceSelector = (state: GlobalState) => state?.cr?.workspaces?.personalWorkspace?.baseWorkspace;
 
 export const isWorkspaceReadOnlySelector = (state: GlobalState) => {
-    if (state?.cr?.workspaces?.personalWorkspace?.status === WorkspaceStatus.OUTDATED_CONFLICT) {
-        return true;
-    }
     return state?.cr?.workspaces?.personalWorkspace?.readOnly || false
 };
 

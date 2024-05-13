@@ -17,6 +17,7 @@ export enum PublishingMode {
 }
 
 export enum PublishingScope {
+    ALL,
     SITE,
     DOCUMENT
 }

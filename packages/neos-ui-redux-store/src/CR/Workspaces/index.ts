@@ -1,7 +1,7 @@
 import produce from 'immer';
 import assignIn from 'lodash.assignin';
 import {action as createAction, ActionType} from 'typesafe-actions';
-import {NodeContextPath} from '@neos-project/neos-ts-interfaces';
+import {NodeContextPath, WorkspaceStatus} from '@neos-project/neos-ts-interfaces';
 
 import {WorkspaceName} from '@neos-project/neos-ts-interfaces';
 
@@ -24,10 +24,11 @@ export interface PublishableNode {
 
 export interface WorkspaceInformation {
     name: WorkspaceName;
+    totalNumberOfChanges: number;
     publishableNodes: Array<PublishableNode>;
     baseWorkspace: WorkspaceName;
     readOnly?: boolean;
-    status?: string;
+    status: WorkspaceStatus;
 }
 
 export interface State extends Readonly<{
@@ -37,16 +38,16 @@ export interface State extends Readonly<{
 export const defaultState: State = {
     personalWorkspace: {
         name: '',
+        totalNumberOfChanges: 0,
         publishableNodes: [],
         baseWorkspace: '',
-        status: ''
+        status: WorkspaceStatus.UP_TO_DATE
     }
 };
 
 export enum actionTypes {
     UPDATE = '@neos/neos-ui/CR/Workspaces/UPDATE',
-    CHANGE_BASE_WORKSPACE = '@neos/neos-ui/CR/Workspaces/CHANGE_BASE_WORKSPACE',
-    REBASE_WORKSPACE = '@neos/neos-ui/CR/Workspaces/REBASE_WORKSPACE'
+    CHANGE_BASE_WORKSPACE = '@neos/neos-ui/CR/Workspaces/CHANGE_BASE_WORKSPACE'
 }
 
 export type Action = ActionType<typeof actions>;
@@ -61,18 +62,12 @@ const update = (data: WorkspaceInformation) => createAction(actionTypes.UPDATE, 
  */
 const changeBaseWorkspace = (name: string) => createAction(actionTypes.CHANGE_BASE_WORKSPACE, name);
 
-/**
- * Rebase the user workspace
- */
-const rebaseWorkspace = (name: string) => createAction(actionTypes.REBASE_WORKSPACE, name);
-
 //
 // Export the actions
 //
 export const actions = {
     update,
-    changeBaseWorkspace,
-    rebaseWorkspace
+    changeBaseWorkspace
 };
 
 //

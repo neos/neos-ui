@@ -15,7 +15,6 @@ import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store
 import {GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
 import {FeedbackEnvelope} from '@neos-project/neos-ui-redux-store/src/ServerFeedback';
 import {PublishingMode, PublishingScope} from '@neos-project/neos-ui-redux-store/src/CR/Publishing';
-import {WorkspaceInformation} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces';
 import backend, {Routes} from '@neos-project/neos-ui-backend-connector';
 
 import {makeReloadNodes} from '../CR/NodeOperations/reloadNodes';
@@ -39,12 +38,16 @@ export function * watchPublishing({routes}: {routes: Routes}) {
     const {endpoints} = backend.get();
     const ENDPOINT_BY_MODE_AND_SCOPE = {
         [PublishingMode.PUBLISH]: {
+            [PublishingScope.ALL]:
+                null,
             [PublishingScope.SITE]:
                 endpoints.publishChangesInSite,
             [PublishingScope.DOCUMENT]:
                 endpoints.publishChangesInDocument
         },
         [PublishingMode.DISCARD]: {
+            [PublishingScope.ALL]:
+                endpoints.discardAllChanges,
             [PublishingScope.SITE]:
                 endpoints.discardChangesInSite,
             [PublishingScope.DOCUMENT]:
@@ -52,6 +55,9 @@ export function * watchPublishing({routes}: {routes: Routes}) {
         }
     };
     const SELECTORS_BY_SCOPE = {
+        [PublishingScope.ALL]: {
+            ancestorIdSelector: null
+        },
         [PublishingScope.SITE]: {
             ancestorIdSelector: selectors.CR.Nodes.siteNodeContextPathSelector
         },
@@ -70,15 +76,23 @@ export function * watchPublishing({routes}: {routes: Routes}) {
 
         const {scope, mode} = action.payload;
         const endpoint = ENDPOINT_BY_MODE_AND_SCOPE[mode][scope];
+        if (!endpoint) {
+            console.warn('"Publish all" is not implemented!');
+            return;
+        }
         const {ancestorIdSelector} = SELECTORS_BY_SCOPE[scope];
 
         const workspaceName: WorkspaceName = yield select(selectors.CR.Workspaces.personalWorkspaceNameSelector);
-        const ancestorId: NodeContextPath = yield select(ancestorIdSelector);
+        const ancestorId: NodeContextPath = ancestorIdSelector
+            ? yield select(ancestorIdSelector)
+            : null;
 
         do {
             try {
                 window.addEventListener('beforeunload', handleWindowBeforeUnload);
-                const result: PublishingResponse = yield call(endpoint, ancestorId, workspaceName);
+                const result: PublishingResponse = scope === PublishingScope.ALL
+                    ? yield call(endpoint as any, workspaceName)
+                    : yield call(endpoint, ancestorId, workspaceName);
 
                 if ('success' in result) {
                     yield put(actions.CR.Publishing.succeed(result.success.numberOfAffectedChanges));
@@ -155,24 +169,6 @@ export function * watchChangeBaseWorkspace() {
             }
         } catch (error) {
             console.error('Failed to change base workspace', error);
-        }
-    });
-}
-
-export function * watchRebaseWorkspace() {
-    const {rebaseWorkspace, getWorkspaceInfo} = backend.get().endpoints;
-    yield takeEvery(actionTypes.CR.Workspaces.REBASE_WORKSPACE, function * change(action: ReturnType<typeof actions.CR.Workspaces.rebaseWorkspace>) {
-        yield put(actions.UI.Remote.startSynchronization());
-
-        try {
-            const feedback: FeedbackEnvelope = yield call(rebaseWorkspace, action.payload);
-            yield put(actions.ServerFeedback.handleServerFeedback(feedback));
-        } catch (error) {
-            console.error('Failed to sync user workspace', error);
-        } finally {
-            const workspaceInfo: WorkspaceInformation = yield call(getWorkspaceInfo);
-            yield put(actions.CR.Workspaces.update(workspaceInfo));
-            yield put(actions.UI.Remote.finishSynchronization());
         }
     });
 }

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file original="" product-name="Neos.Neos.Ui" source-language="en" datatype="plaintext" target-language="en">
+    <body>
+      <trans-unit id="confirmation.title" xml:space="preserve">
+        <source>Synchronize workspace "{workspaceName}" with "{baseWorkspaceName}"</source>
+      </trans-unit>
+      <trans-unit id="confirmation.message" xml:space="preserve">
+        <source>Workspace "{baseWorkspaceName}" has been modified. You need to synchronize your workspace "{workspaceName}" with it in order to see those changes and avoid conflicts. Do you wish to proceed?</source>
+      </trans-unit>
+      <trans-unit id="confirmation.cancel" xml:space="preserve">
+        <source>No, cancel</source>
+      </trans-unit>
+      <trans-unit id="confirmation.confirm" xml:space="preserve">
+        <source>Yes, synchronize now</source>
+      </trans-unit>
+      <trans-unit id="process.title" xml:space="preserve">
+        <source>Synchronizing workspace "{workspaceName}"...</source>
+      </trans-unit>
+      <trans-unit id="process.message" xml:space="preserve">
+        <source>Please wait, while workspace "{workspaceName}" is being synchronized with recent changes in workspace "{baseWorkspaceName}". This may take a while.</source>
+      </trans-unit>
+      <trans-unit id="resolutionStrategy.selection.title" xml:space="preserve">
+        <source>Conflicts between workspace "{workspaceName}" and "{baseWorkspaceName}"</source>
+      </trans-unit>
+      <trans-unit id="resolutionStrategy.selection.message" xml:space="preserve">
+        <source>Workspace "{baseWorkspaceName}" contains modifications that are in conflict with the changes in workspace "{workspaceName}".</source>
+      </trans-unit>
+      <trans-unit id="resolutionStrategy.selection.summary" xml:space="preserve">
+        <source>Show information about {numberOfConflicts} conflict(s)</source>
+      </trans-unit>
+      <trans-unit id="resolutionStrategy.selection.prompt" xml:space="preserve">
+        <source>In order to proceed, you need to decide what to do with the conflicting changes:</source>
+      </trans-unit>
+      <trans-unit id="resolutionStrategy.selection.option.FORCE.label" xml:space="preserve">
+        <source>Drop conflicting changes</source>
+      </trans-unit>
+      <trans-unit id="resolutionStrategy.selection.option.FORCE.description" xml:space="preserve">
+        <source>This will save all non-conflicting changes, while every conflicting change will be lost.</source>
+      </trans-unit>
+      <trans-unit id="resolutionStrategy.selection.option.DISCARD_ALL.label" xml:space="preserve">
+        <source>Discard workspace "{workspaceName}"</source>
+      </trans-unit>
+      <trans-unit id="resolutionStrategy.selection.option.DISCARD_ALL.description" xml:space="preserve">
+        <source>This will discard all changes in your workspace, including those on other sites.</source>
+      </trans-unit>
+      <trans-unit id="resolutionStrategy.selection.cancel" xml:space="preserve">
+        <source>Cancel Synchronization</source>
+      </trans-unit>
+      <trans-unit id="resolutionStrategy.selection.accept" xml:space="preserve">
+        <source>Accept choice and continue</source>
+      </trans-unit>
+      <trans-unit id="resolutionStrategy.DISCARD_ALL.confirmation.title" xml:space="preserve">
+        <source>Discard all changes in workspace "{workspaceName}"</source>
+      </trans-unit>
+      <trans-unit id="resolutionStrategy.DISCARD_ALL.confirmation.message" xml:space="preserve">
+        <source>You are about to discard all changes in workspace "{workspaceName}". This includes all changes on other sites.
+
+        Do you wish to proceed? Be careful: This cannot be undone!</source>
+      </trans-unit>
+      <trans-unit id="resolutionStrategy.DISCARD_ALL.confirmation.cancel" xml:space="preserve">
+        <source>No, cancel</source>
+      </trans-unit>
+      <trans-unit id="resolutionStrategy.DISCARD_ALL.confirmation.confirm" xml:space="preserve">
+        <source>Yes, discard everything</source>
+      </trans-unit>
+      <trans-unit id="resolutionStrategy.FORCE.confirmation.conflicts.label" xml:space="preserve">
+        <source>You are about to drop the following changes:</source>
+      </trans-unit>
+      <trans-unit id="resolutionStrategy.FORCE.confirmation.message" xml:space="preserve">
+        <source>Do you wish to proceed? Be careful: This cannot be undone!</source>
+      </trans-unit>
+      <trans-unit id="resolutionStrategy.FORCE.confirmation.cancel" xml:space="preserve">
+        <source>No, cancel</source>
+      </trans-unit>
+      <trans-unit id="resolutionStrategy.FORCE.confirmation.confirm" xml:space="preserve">
+        <source>Yes, drop those changes</source>
+      </trans-unit>
+      <trans-unit id="resolutionStrategy.FORCE.confirmation.title" xml:space="preserve">
+        <source>Drop conflicting changes in workspace "{workspaceName}"</source>
+      </trans-unit>
+      <trans-unit id="conflictList.typeOfChange.NODE_HAS_BEEN_CHANGED.label" xml:space="preserve">
+        <source>"{label}" has been edited.</source>
+      </trans-unit>
+      <trans-unit id="conflictList.typeOfChange.NODE_HAS_BEEN_CREATED.label" xml:space="preserve">
+        <source>"{label}" has been created.</source>
+      </trans-unit>
+      <trans-unit id="conflictList.typeOfChange.NODE_HAS_BEEN_DELETED.label" xml:space="preserve">
+        <source>"{label}" has been deleted.</source>
+      </trans-unit>
+      <trans-unit id="conflictList.typeOfChange.NODE_HAS_BEEN_MOVED.label" xml:space="preserve">
+        <source>"{label}" has been moved.</source>
+      </trans-unit>
+      <trans-unit id="conflictList.reasonForConflict.NODE_HAS_BEEN_DELETED.label" xml:space="preserve">
+        <source>"{label}" or one of its ancestor nodes has been deleted.</source>
+      </trans-unit>
+      <trans-unit id="conflictList.affectedSite.label" xml:space="preserve">
+        <source>Affected Site</source>
+      </trans-unit>
+      <trans-unit id="conflictList.affectedDocument.label" xml:space="preserve">
+        <source>Affected Document</source>
+      </trans-unit>
+      <trans-unit id="conflictList.typeOfChange.label" xml:space="preserve">
+        <source>What was changed?</source>
+      </trans-unit>
+      <trans-unit id="conflictList.reasonForConflict.label" xml:space="preserve">
+        <source>Why is there a conflict?</source>
+      </trans-unit>
+      <trans-unit id="conflictList.unknownNode" xml:space="preserve">
+        <source>Unknown Node</source>
+      </trans-unit>
+      <trans-unit id="conflictList.unknownDocument" xml:space="preserve">
+        <source>Unknown Document</source>
+      </trans-unit>
+      <trans-unit id="conflictList.unknownSite" xml:space="preserve">
+        <source>Unknown Site</source>
+      </trans-unit>
+      <trans-unit id="success.title" xml:space="preserve">
+        <source>Workspace "{workspaceName}" is up-to-date</source>
+      </trans-unit>
+      <trans-unit id="success.message" xml:space="preserve">
+        <source>Workspace "{workspaceName}" has been successfully synchronized with all recent changes in workspace "{baseWorkspaceName}".</source>
+      </trans-unit>
+      <trans-unit id="success.acknowledge" xml:space="preserve">
+        <source>OK</source>
+      </trans-unit>
+      <trans-unit id="error.title" xml:space="preserve">
+        <source>Workspace "{workspaceName}" could not be synchronized</source>
+      </trans-unit>
+      <trans-unit id="error.message" xml:space="preserve">
+        <source>Workspace "{workspaceName}" could not be synchronized with the recent changes in workspace "{baseWorkspaceName}".</source>
+      </trans-unit>
+      <trans-unit id="error.acknowledge" xml:space="preserve">
+        <source>Cancel</source>
+      </trans-unit>
+      <trans-unit id="error.retry" xml:space="preserve">
+        <source>Try again</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

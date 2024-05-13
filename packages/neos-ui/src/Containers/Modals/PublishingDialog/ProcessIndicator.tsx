@@ -19,6 +19,20 @@ import style from './style.module.css';
 const ProcessIndicatorVariants = {
     [PublishingMode.PUBLISH]: {
         id: 'neos-PublishDialog',
+        [PublishingScope.ALL]: {
+            label: {
+                title: {
+                    id: 'Neos.Neos.Ui:PublishingDialog:publish.all.process.title',
+                    fallback: (props: { scopeTitle: string; }) =>
+                        `Publishing all changes in workspace "${props.scopeTitle}"...`
+                },
+                message: {
+                    id: 'Neos.Neos.Ui:PublishingDialog:publish.all.process.message',
+                    fallback: (props: { numberOfChanges: number; }) =>
+                        `Please wait while ${props.numberOfChanges} change(s) are being published. This may take a while.`
+                }
+            }
+        },
         [PublishingScope.SITE]: {
             label: {
                 title: {
@@ -50,6 +64,20 @@ const ProcessIndicatorVariants = {
     },
     [PublishingMode.DISCARD]: {
         id: 'neos-DiscardDialog',
+        [PublishingScope.ALL]: {
+            label: {
+                title: {
+                    id: 'Neos.Neos.Ui:PublishingDialog:discard.all.process.title',
+                    fallback: (props: { scopeTitle: string; }) =>
+                        `Discarding all changes in workspace "${props.scopeTitle}"...`
+                },
+                message: {
+                    id: 'Neos.Neos.Ui:PublishingDialog:discard.all.process.message',
+                    fallback: (props: { numberOfChanges: number; }) =>
+                        `Please wait while ${props.numberOfChanges} change(s) are being discarded. This may take a while.`
+                }
+            }
+        },
         [PublishingScope.SITE]: {
             label: {
                 title: {

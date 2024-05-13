@@ -22,7 +22,7 @@ use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\ActionRequest;
 use Neos\Flow\Mvc\Routing\UriBuilder;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
-use Neos\Neos\Domain\NodeLabel\NodeLabelRendererInterface;
+use Neos\Neos\Domain\NodeLabel\NodeLabelGeneratorInterface;
 use Neos\Neos\FrontendRouting\NodeAddress;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\FrontendRouting\NodeUriBuilder;
@@ -43,7 +43,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     protected ContentRepositoryRegistry $contentRepositoryRegistry;
 
     #[Flow\Inject]
-    protected NodeLabelRendererInterface $nodeLabelRenderer;
+    protected NodeLabelGeneratorInterface $nodeLabelGenerator;
 
     /**
      * @Flow\Inject
@@ -191,7 +191,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             'name' => $node->nodeName?->value ?? '',
             'identifier' => $node->nodeAggregateId->jsonSerialize(),
             'nodeType' => $node->nodeTypeName->value,
-            'label' => $this->nodeLabelRenderer->renderNodeLabel($node),
+            'label' => $this->nodeLabelGenerator->getLabel($node),
             'isAutoCreated' => $node->classification === NodeAggregateClassification::CLASSIFICATION_TETHERED,
             // TODO: depth is expensive to calculate; maybe let's get rid of this?
             'depth' => $subgraph->countAncestorNodes(

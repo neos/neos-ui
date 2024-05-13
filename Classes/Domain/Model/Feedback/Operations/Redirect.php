@@ -5,7 +5,7 @@ use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
-use Neos\Neos\Domain\NodeLabel\NodeLabelRendererInterface;
+use Neos\Neos\Domain\NodeLabel\NodeLabelGeneratorInterface;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\Service\LinkingService;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
@@ -29,9 +29,9 @@ class Redirect extends AbstractFeedback
 
     /**
      * @Flow\Inject
-     * @var NodeLabelRendererInterface
+     * @var NodeLabelGeneratorInterface
      */
-    protected $nodeLabelRenderer;
+    protected $nodeLabelGenerator;
 
     /**
      * @Flow\Inject
@@ -77,7 +77,7 @@ class Redirect extends AbstractFeedback
      */
     public function getDescription()
     {
-        return sprintf('Redirect to node "%s".', $this->nodeLabelRenderer->renderNodeLabel($this->getNode())->value);
+        return sprintf('Redirect to node "%s".', $this->nodeLabelGenerator->getLabel($this->getNode())->value);
     }
 
     /**

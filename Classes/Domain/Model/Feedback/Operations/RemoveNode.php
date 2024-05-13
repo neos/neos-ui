@@ -13,7 +13,7 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
 
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
-use Neos\Neos\Domain\NodeLabel\NodeLabelRendererInterface;
+use Neos\Neos\Domain\NodeLabel\NodeLabelGeneratorInterface;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\FrontendRouting\NodeAddress;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
@@ -36,9 +36,9 @@ class RemoveNode extends AbstractFeedback
 
     /**
      * @Flow\Inject
-     * @var NodeLabelRendererInterface
+     * @var NodeLabelGeneratorInterface
      */
-    protected $nodeLabelRenderer;
+    protected $nodeLabelGenerator;
 
     /**
      * @Flow\Inject
@@ -83,7 +83,7 @@ class RemoveNode extends AbstractFeedback
      */
     public function getDescription(): string
     {
-        return sprintf('Node "%s" has been removed.', $this->nodeLabelRenderer->renderNodeLabel($this->getNode())->value);
+        return sprintf('Node "%s" has been removed.', $this->nodeLabelGenerator->getLabel($this->getNode())->value);
     }
 
     /**

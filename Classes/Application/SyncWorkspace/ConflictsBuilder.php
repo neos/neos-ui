@@ -31,7 +31,6 @@ use Neos\ContentRepository\Core\Feature\NodeTypeChange\Command\ChangeNodeAggrega
 use Neos\ContentRepository\Core\Feature\NodeVariation\Command\CreateNodeVariant;
 use Neos\ContentRepository\Core\Feature\SubtreeTagging\Command\TagSubtree;
 use Neos\ContentRepository\Core\Feature\SubtreeTagging\Command\UntagSubtree;
-use Neos\ContentRepository\Core\Feature\WorkspaceRebase\CommandsThatFailedDuringRebase;
 use Neos\ContentRepository\Core\Feature\WorkspaceRebase\CommandThatFailedDuringRebase;
 use Neos\ContentRepository\Core\NodeType\NodeTypeManager;
 use Neos\ContentRepository\Core\Projection\ContentGraph\ContentSubgraphInterface;
@@ -39,17 +38,12 @@ use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindClosestNodeFi
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\Projection\ContentGraph\NodeAggregate;
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
-use Neos\ContentRepository\Core\Projection\Workspace\Workspace;
 use Neos\ContentRepository\Core\SharedModel\Exception\NodeAggregateCurrentlyDoesNotExist;
+use Neos\ContentRepository\Core\SharedModel\Exception\WorkspaceDoesNotExist;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateId;
 use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Domain\Service\NodeTypeNameFactory;
-use Neos\Neos\Ui\Application\SyncWorkspace\Conflict;
-use Neos\Neos\Ui\Application\SyncWorkspace\Conflicts;
-use Neos\Neos\Ui\Application\SyncWorkspace\IconLabel;
-use Neos\Neos\Ui\Application\SyncWorkspace\ReasonForConflict;
-use Neos\Neos\Ui\Application\SyncWorkspace\TypeOfChange;
 
 /**
  * @internal
@@ -58,8 +52,6 @@ use Neos\Neos\Ui\Application\SyncWorkspace\TypeOfChange;
 final class ConflictsBuilder
 {
     private NodeTypeManager $nodeTypeManager;
-
-    private ?Workspace $workspace;
 
     /**
      * @var Conflict[]
@@ -73,13 +65,10 @@ final class ConflictsBuilder
 
     public function __construct(
         private ContentRepository $contentRepository,
-        WorkspaceName $workspaceName,
+        private WorkspaceName $workspaceName,
         private ?DimensionSpacePoint $preferredDimensionSpacePoint,
     ) {
         $this->nodeTypeManager = $contentRepository->getNodeTypeManager();
-
-        $this->workspace = $contentRepository->getWorkspaceFinder()
-            ->findOneByName($workspaceName);
     }
 
     public function addCommandThatFailedDuringRebase(
@@ -181,7 +170,9 @@ final class ConflictsBuilder
         CommandInterface $command,
         ?NodeAggregateId $nodeAggregateIdForDimensionFallback
     ): ?ContentSubgraphInterface {
-        if ($this->workspace === null) {
+        try {
+            $contentGraph = $this->contentRepository->getContentGraph($this->workspaceName);
+        } catch (WorkspaceDoesNotExist) {
             return null;
         }
 
@@ -214,9 +205,8 @@ final class ConflictsBuilder
                 return null;
             }
 
-            $nodeAggregate = $this->contentRepository->getContentGraph()
+            $nodeAggregate = $contentGraph
                 ->findNodeAggregateById(
-                    $this->workspace->currentContentStreamId,
                     $nodeAggregateIdForDimensionFallback
                 );
 
@@ -231,8 +221,7 @@ final class ConflictsBuilder
             }
         }
 
-        return $this->contentRepository->getContentGraph()->getSubgraph(
-            $this->workspace->currentContentStreamId,
+        return $contentGraph->getSubgraph(
             $dimensionSpacePoint,
             VisibilityConstraints::withoutRestrictions()
         );

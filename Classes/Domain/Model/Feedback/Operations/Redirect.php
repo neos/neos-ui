@@ -92,7 +92,7 @@ class Redirect extends AbstractFeedback
             return false;
         }
 
-        return $this->getNode()->subgraphIdentity->equals($feedback->getNode()->subgraphIdentity);
+        return $this->getNode()->equals($feedback->getNode());
     }
 
     /**
@@ -105,7 +105,7 @@ class Redirect extends AbstractFeedback
     {
         $node = $this->getNode();
         $redirectUri = $this->linkingService->createNodeUri($controllerContext, $node, null, null, true);
-        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
+        $contentRepository = $this->contentRepositoryRegistry->get($node->contentRepositoryId);
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
 
         return [

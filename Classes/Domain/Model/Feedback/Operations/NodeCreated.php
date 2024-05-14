@@ -80,10 +80,7 @@ class NodeCreated extends AbstractFeedback
             return false;
         }
 
-        return (
-            $this->getNode()->subgraphIdentity->equals($feedback->getNode()->subgraphIdentity) &&
-            $this->getNode()->nodeAggregateId->equals($feedback->getNode()->nodeAggregateId)
-        );
+        return $this->getNode()->equals($feedback->getNode());
     }
 
     /**
@@ -95,7 +92,7 @@ class NodeCreated extends AbstractFeedback
     public function serializePayload(ControllerContext $controllerContext)
     {
         $node = $this->getNode();
-        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
+        $contentRepository = $this->contentRepositoryRegistry->get($node->contentRepositoryId);
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
         return [
             'contextPath' => $nodeAddressFactory->createFromNode($node)->serializeForUri(),

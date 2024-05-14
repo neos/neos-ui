@@ -144,11 +144,8 @@ class RenderContentOutOfBand extends AbstractFeedback
             return false;
         }
 
-        return (
-            $this->node->subgraphIdentity->equals($feedbackNode->subgraphIdentity) &&
-            $this->node->nodeAggregateId->equals($feedbackNode->nodeAggregateId)
-            // @todo what's this? && $this->getReferenceData() == $feedback->getReferenceData()
-        );
+        return $this->node->equals($feedbackNode);
+        // @todo what's this? && $this->getReferenceData() == $feedback->getReferenceData()
     }
 
     /**
@@ -159,7 +156,7 @@ class RenderContentOutOfBand extends AbstractFeedback
     public function serializePayload(ControllerContext $controllerContext): array
     {
         if (!is_null($this->node)) {
-            $contentRepository = $this->contentRepositoryRegistry->get($this->node->subgraphIdentity->contentRepositoryId);
+            $contentRepository = $this->contentRepositoryRegistry->get($this->node->contentRepositoryId);
             $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
             return [
                 'contextPath' => $nodeAddressFactory->createFromNode($this->node)->serializeForUri(),

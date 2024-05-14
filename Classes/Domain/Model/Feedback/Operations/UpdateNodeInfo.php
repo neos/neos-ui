@@ -91,11 +91,8 @@ class UpdateNodeInfo extends AbstractFeedback
         if (!$feedback instanceof UpdateNodeInfo) {
             return false;
         }
-        $feedbackNode = $feedback->getNode();
 
-        return $this->node && $feedbackNode && $this->node->nodeAggregateId->equals(
-            $feedbackNode->nodeAggregateId
-        );
+        return $this->getNode()->equals($feedback->getNode());
     }
 
     /**
@@ -119,7 +116,7 @@ class UpdateNodeInfo extends AbstractFeedback
      */
     private function serializeNodeRecursively(Node $node, ActionRequest $actionRequest): array
     {
-        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
+        $contentRepository = $this->contentRepositoryRegistry->get($node->contentRepositoryId);
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
 
         $result = [

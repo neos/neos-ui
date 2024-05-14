@@ -71,20 +71,12 @@ class MoveBefore extends AbstractStructuralChange
             $hasEqualParentNode = $parentNode->nodeAggregateId
                 ->equals($succeedingSiblingParent->nodeAggregateId);
 
-            $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
-            $workspace = $this->contentRepositoryRegistry->get($this->subject->subgraphIdentity->contentRepositoryId)
-                ->getWorkspaceFinder()->findOneByCurrentContentStreamId($subject->subgraphIdentity->contentStreamId);
-            if (!$workspace) {
-                throw new \Exception(
-                    'Could not find workspace for content stream "' . $subject->subgraphIdentity->contentStreamId->value . '"',
-                    1699008140
-                );
-            }
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->contentRepositoryId);
 
             $contentRepository->handle(
                 MoveNodeAggregate::create(
-                    $workspace->workspaceName,
-                    $subject->subgraphIdentity->dimensionSpacePoint,
+                    $subject->workspaceName,
+                    $subject->dimensionSpacePoint,
                     $subject->nodeAggregateId,
                     RelationDistributionStrategy::STRATEGY_GATHER_ALL,
                     $hasEqualParentNode

@@ -12,7 +12,6 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
-use Neos\ContentRepository\Core\CommandHandler\CommandResult;
 use Neos\ContentRepository\Core\DimensionSpace\Exception\DimensionSpacePointNotFound;
 use Neos\ContentRepository\Core\DimensionSpace\OriginDimensionSpacePoint;
 use Neos\ContentRepository\Core\Feature\NodeDisabling\Command\DisableNodeAggregate;
@@ -26,7 +25,6 @@ use Neos\ContentRepository\Core\Feature\NodeTypeChange\Dto\NodeAggregateTypeChan
 use Neos\ContentRepository\Core\Feature\NodeVariation\Command\CreateNodeVariant;
 use Neos\ContentRepository\Core\NodeType\NodeTypeName;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
-use Neos\ContentRepository\Core\Projection\Workspace\Workspace;
 use Neos\ContentRepository\Core\SharedModel\Exception\ContentStreamDoesNotExistYet;
 use Neos\ContentRepository\Core\SharedModel\Exception\NodeAggregatesTypeIsAmbiguous;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateIds;
@@ -158,25 +156,15 @@ class Property extends AbstractChange
             return;
         }
 
-        $workspace = $this->contentRepositoryRegistry->get($this->subject->subgraphIdentity->contentRepositoryId)
-            ->getWorkspaceFinder()->findOneByCurrentContentStreamId($subject->subgraphIdentity->contentStreamId);
-        if (!$workspace) {
-            throw new \Exception(
-                'Could not find workspace for content stream "' . $subject->subgraphIdentity->contentStreamId->value . '"',
-                1699008140
-            );
-        }
-
-        $commandResult = match (true) {
-            $this->getNodeType($subject)->hasReference($propertyName) => $this->handleNodeReferenceChange($workspace, $subject, $propertyName),
+        match (true) {
+            $this->getNodeType($subject)->hasReference($propertyName) => $this->handleNodeReferenceChange($subject, $propertyName),
             // todo create custom 'changes' for these special cases
             // we continue to use the underscore logic in the Neos Ui code base as the JS-client code works this way
-            $propertyName === '_nodeType' => $this->handleNodeTypeChange($workspace, $subject, $propertyName),
-            $propertyName === '_hidden' => $this->handleHiddenPropertyChange($workspace, $subject, $propertyName),
-            default => $this->handlePropertyChange($workspace, $subject, $propertyName)
+            $propertyName === '_nodeType' => $this->handleNodeTypeChange($subject, $propertyName),
+            $propertyName === '_hidden' => $this->handleHiddenPropertyChange($subject, $propertyName),
+            default => $this->handlePropertyChange($subject, $propertyName)
         };
 
-        $commandResult->block();
         $this->createFeedback($subject);
     }
 
@@ -237,9 +225,9 @@ class Property extends AbstractChange
         }
     }
 
-    private function handleNodeReferenceChange(Workspace $workspace, Node $subject, string $propertyName): CommandResult
+    private function handleNodeReferenceChange(Node $subject, string $propertyName): void
     {
-        $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
+        $contentRepository = $this->contentRepositoryRegistry->get($subject->contentRepositoryId);
         $value = $this->getValue();
 
         if (!is_array($value)) {
@@ -249,9 +237,9 @@ class Property extends AbstractChange
         $value = array_filter($value, fn ($v) => is_string($v) && !empty($v));
         $destinationNodeAggregateIds = array_values($value);
 
-        return $contentRepository->handle(
+        $contentRepository->handle(
             SetNodeReferences::create(
-                $workspace->workspaceName,
+                $subject->workspaceName,
                 $subject->nodeAggregateId,
                 $subject->originDimensionSpacePoint,
                 ReferenceName::fromString($propertyName),
@@ -260,17 +248,17 @@ class Property extends AbstractChange
         );
     }
 
-    private function handleHiddenPropertyChange(Workspace $workspace, Node $subject, string $propertyName): CommandResult
+    private function handleHiddenPropertyChange(Node $subject, string $propertyName): void
     {
         $value = $this->nodePropertyConversionService->convert(
             $this->getNodeType($subject)->getPropertyType($propertyName),
             $this->getValue()
         );
 
-        $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
+        $contentRepository = $this->contentRepositoryRegistry->get($subject->contentRepositoryId);
 
         $command = EnableNodeAggregate::create(
-            $workspace->workspaceName,
+            $subject->workspaceName,
             $subject->nodeAggregateId,
             $subject->originDimensionSpacePoint->toDimensionSpacePoint(),
             NodeVariantSelectionStrategy::STRATEGY_ALL_SPECIALIZATIONS
@@ -278,27 +266,27 @@ class Property extends AbstractChange
 
         if ($value === true) {
             $command = DisableNodeAggregate::create(
-                $workspace->workspaceName,
+                $subject->workspaceName,
                 $subject->nodeAggregateId,
                 $subject->originDimensionSpacePoint->toDimensionSpacePoint(),
                 NodeVariantSelectionStrategy::STRATEGY_ALL_SPECIALIZATIONS
             );
         }
 
-        return $contentRepository->handle($command);
+        $contentRepository->handle($command);
     }
 
-    private function handleNodeTypeChange(Workspace $workspace, Node $subject, string $propertyName): CommandResult
+    private function handleNodeTypeChange(Node $subject, string $propertyName): void
     {
-        $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
+        $contentRepository = $this->contentRepositoryRegistry->get($subject->contentRepositoryId);
         $value = $this->nodePropertyConversionService->convert(
             $this->getNodeType($subject)->getPropertyType($propertyName),
             $this->getValue()
         );
 
-        return $contentRepository->handle(
+        $contentRepository->handle(
             ChangeNodeAggregateType::create(
-                $workspace->workspaceName,
+                $subject->workspaceName,
                 $subject->nodeAggregateId,
                 NodeTypeName::fromString($value),
                 NodeAggregateTypeChangeChildConstraintConflictResolutionStrategy::STRATEGY_DELETE
@@ -306,31 +294,31 @@ class Property extends AbstractChange
         );
     }
 
-    private function handlePropertyChange(Workspace $workspace, Node $subject, string $propertyName): CommandResult
+    private function handlePropertyChange(Node $subject, string $propertyName): void
     {
-        $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
+        $contentRepository = $this->contentRepositoryRegistry->get($subject->contentRepositoryId);
         $value = $this->nodePropertyConversionService->convert(
             $this->getNodeType($subject)->getPropertyType($propertyName),
             $this->getValue()
         );
 
         $originDimensionSpacePoint = $subject->originDimensionSpacePoint;
-        if (!$subject->subgraphIdentity->dimensionSpacePoint->equals($originDimensionSpacePoint)) {
-            $originDimensionSpacePoint = OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->subgraphIdentity->dimensionSpacePoint);
+        if (!$subject->dimensionSpacePoint->equals($originDimensionSpacePoint)) {
+            $originDimensionSpacePoint = OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->dimensionSpacePoint);
             // if origin dimension space point != current DSP -> translate transparently (matching old behavior)
             $contentRepository->handle(
                 CreateNodeVariant::create(
-                    $workspace->workspaceName,
+                    $subject->workspaceName,
                     $subject->nodeAggregateId,
                     $subject->originDimensionSpacePoint,
                     $originDimensionSpacePoint
                 )
-            )->block();
+            );
         }
 
-        return $contentRepository->handle(
+        $contentRepository->handle(
             SetNodeProperties::create(
-                $workspace->workspaceName,
+                $subject->workspaceName,
                 $subject->nodeAggregateId,
                 $originDimensionSpacePoint,
                 PropertyValuesToWrite::fromArray(

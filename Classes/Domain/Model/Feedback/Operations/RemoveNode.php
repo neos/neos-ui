@@ -54,7 +54,7 @@ class RemoveNode extends AbstractFeedback
 
     protected function initializeObject(): void
     {
-        $contentRepository = $this->contentRepositoryRegistry->get($this->node->subgraphIdentity->contentRepositoryId);
+        $contentRepository = $this->contentRepositoryRegistry->get($this->node->contentRepositoryId);
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
 
         $this->nodeAddress = $nodeAddressFactory->createFromNode($this->node);
@@ -98,9 +98,7 @@ class RemoveNode extends AbstractFeedback
             return false;
         }
 
-        return $this->getNode()->nodeAggregateId->equals(
-            $feedback->getNode()->nodeAggregateId
-        );
+        return $this->getNode()->equals($feedback->getNode());
     }
 
     /**

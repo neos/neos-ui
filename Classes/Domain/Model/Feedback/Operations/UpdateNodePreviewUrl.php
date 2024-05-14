@@ -95,7 +95,7 @@ class UpdateNodePreviewUrl extends AbstractFeedback
         if (!$feedback instanceof UpdateNodePreviewUrl) {
             return false;
         }
-        return $this->getNode()->subgraphIdentity->equals($feedback->getNode()->subgraphIdentity);
+        return $this->getNode()->equals($feedback->getNode());
     }
 
     /**
@@ -111,7 +111,7 @@ class UpdateNodePreviewUrl extends AbstractFeedback
             $contextPath = '';
         } else {
             $nodeInfoHelper = new NodeInfoHelper();
-            $contentRepository = $this->contentRepositoryRegistry->get($this->node->subgraphIdentity->contentRepositoryId);
+            $contentRepository = $this->contentRepositoryRegistry->get($this->node->contentRepositoryId);
             $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
             $newPreviewUrl = $nodeInfoHelper->createRedirectToNode($this->node, $controllerContext->getRequest());
             $contextPath = $nodeAddressFactory->createFromNode($this->node)->serializeForUri();

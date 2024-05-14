@@ -73,18 +73,10 @@ class Remove extends AbstractChange
             // otherwise we cannot find the parent nodes anymore.
             $this->updateWorkspaceInfo();
 
-            $workspace = $this->contentRepositoryRegistry->get($this->subject->subgraphIdentity->contentRepositoryId)
-                ->getWorkspaceFinder()->findOneByCurrentContentStreamId($subject->subgraphIdentity->contentStreamId);
-            if (!$workspace) {
-                throw new \Exception(
-                    'Could not find workspace for content stream "' . $subject->subgraphIdentity->contentStreamId->value . '"',
-                    1699008140
-                );
-            }
             $command = RemoveNodeAggregate::create(
-                $workspace->workspaceName,
+                $subject->workspaceName,
                 $subject->nodeAggregateId,
-                $subject->subgraphIdentity->dimensionSpacePoint,
+                $subject->dimensionSpacePoint,
                 NodeVariantSelectionStrategy::STRATEGY_ALL_SPECIALIZATIONS,
             );
             $removalAttachmentPoint = $this->getRemovalAttachmentPoint();
@@ -92,7 +84,7 @@ class Remove extends AbstractChange
                 $command = $command->withRemovalAttachmentPoint($removalAttachmentPoint);
             }
 
-            $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->contentRepositoryId);
             $contentRepository->handle($command)->block();
 
             $removeNode = new RemoveNode($subject, $parentNode);

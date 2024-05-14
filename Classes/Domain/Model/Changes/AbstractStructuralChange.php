@@ -116,7 +116,7 @@ abstract class AbstractStructuralChange extends AbstractChange
         if ($this->cachedSiblingNode === null) {
             $this->cachedSiblingNode = $this->nodeService->findNodeBySerializedNodeAddress(
                 $this->siblingDomAddress->getContextPath(),
-                $this->getSubject()->subgraphIdentity->contentRepositoryId
+                $this->getSubject()->contentRepositoryId
             );
         }
 
@@ -155,7 +155,7 @@ abstract class AbstractStructuralChange extends AbstractChange
             // 1) the parent of our new (or copied or moved) node is a ContentCollection;
             // so we can directly update an element of this content collection
 
-            $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
+            $contentRepository = $this->contentRepositoryRegistry->get($node->contentRepositoryId);
             if ($parentNode && $this->getNodeType($parentNode)->isOfType('Neos.Neos:ContentCollection') &&
                 // 2) the parent DOM address (i.e. the closest RENDERED node in DOM is actually the ContentCollection;
                 // and no other node in between
@@ -195,7 +195,7 @@ abstract class AbstractStructuralChange extends AbstractChange
 
         $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
         $parentNode = $subgraph->findParentNode($node->nodeAggregateId);
-        $nodeTypeManager = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId)->getNodeTypeManager();
+        $nodeTypeManager = $this->contentRepositoryRegistry->get($node->contentRepositoryId)->getNodeTypeManager();
 
         return !$parentNode || $nodeTypeManager->isNodeTypeAllowedAsChildToTetheredNode(
             $this->getNodeType($parentNode),

@@ -61,19 +61,15 @@ class CopyBefore extends AbstractStructuralChange
         if ($this->canApply() && !is_null($subject) && !is_null($succeedingSibling)
             && !is_null($parentNodeOfSucceedingSibling)
         ) {
-            $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
-            $workspace = $contentRepository->getWorkspaceFinder()->findOneByCurrentContentStreamId($subject->subgraphIdentity->contentStreamId);
-            if (!$workspace) {
-                throw new \Exception('Could not find workspace for content stream', 1699004343);
-            }
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->contentRepositoryId);
             $command = CopyNodesRecursively::createFromSubgraphAndStartNode(
-                $contentRepository->getContentGraph($workspace->workspaceName)->getSubgraph(
-                    $subject->subgraphIdentity->dimensionSpacePoint,
-                    $subject->subgraphIdentity->visibilityConstraints
+                $contentRepository->getContentGraph($subject->workspaceName)->getSubgraph(
+                    $subject->dimensionSpacePoint,
+                    $subject->visibilityConstraints
                 ),
-                $workspace->workspaceName,
+                $subject->workspaceName,
                 $subject,
-                OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->subgraphIdentity->dimensionSpacePoint),
+                OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->dimensionSpacePoint),
                 $parentNodeOfSucceedingSibling->nodeAggregateId,
                 $succeedingSibling->nodeAggregateId,
                 null

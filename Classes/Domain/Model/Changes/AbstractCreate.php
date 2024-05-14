@@ -140,20 +140,13 @@ abstract class AbstractCreate extends AbstractStructuralChange
 
         $nodeAggregateId = $this->getNodeAggregateId() ?? NodeAggregateId::create(); // generate a new NodeAggregateId
 
-        $contentRepository = $this->contentRepositoryRegistry->get($parentNode->subgraphIdentity->contentRepositoryId);
-        $workspace = $this->contentRepositoryRegistry->get($this->subject->subgraphIdentity->contentRepositoryId)
-            ->getWorkspaceFinder()->findOneByCurrentContentStreamId($parentNode->subgraphIdentity->contentStreamId);
-        if (!$workspace) {
-            throw new \Exception(
-                'Could not find workspace for content stream "' . $parentNode->subgraphIdentity->contentStreamId->value . '"',
-                1699008140
-            );
-        }
+        $contentRepository = $this->contentRepositoryRegistry->get($parentNode->contentRepositoryId);
+
         $command = CreateNodeAggregateWithNode::create(
-            $workspace->workspaceName,
+            $parentNode->workspaceName,
             $nodeAggregateId,
             $nodeTypeName,
-            OriginDimensionSpacePoint::fromDimensionSpacePoint($parentNode->subgraphIdentity->dimensionSpacePoint),
+            OriginDimensionSpacePoint::fromDimensionSpacePoint($parentNode->dimensionSpacePoint),
             $parentNode->nodeAggregateId,
             $succeedingSiblingNodeAggregateId,
             $nodeName

@@ -68,19 +68,15 @@ class CopyAfter extends AbstractStructuralChange
                 // do nothing; $succeedingSibling is null.
             }
 
-            $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
-            $workspace = $contentRepository->getWorkspaceFinder()->findOneByCurrentContentStreamId($subject->subgraphIdentity->contentStreamId);
-            if (!$workspace) {
-                throw new \Exception('Could not find workspace for content stream', 1699004343);
-            }
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->contentRepositoryId);
             $command = CopyNodesRecursively::createFromSubgraphAndStartNode(
-                $contentRepository->getContentGraph($workspace->workspaceName)->getSubgraph(
-                    $subject->subgraphIdentity->dimensionSpacePoint,
+                $contentRepository->getContentGraph($subject->workspaceName)->getSubgraph(
+                    $subject->dimensionSpacePoint,
                     VisibilityConstraints::withoutRestrictions()
                 ),
-                $workspace->workspaceName,
+                $subject->workspaceName,
                 $subject,
-                OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->subgraphIdentity->dimensionSpacePoint),
+                OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->dimensionSpacePoint),
                 $parentNodeOfPreviousSibling->nodeAggregateId,
                 $succeedingSibling?->nodeAggregateId,
                 null

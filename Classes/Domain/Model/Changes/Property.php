@@ -169,6 +169,8 @@ class Property extends AbstractChange
 
         $commandResult = match (true) {
             $this->getNodeType($subject)->hasReference($propertyName) => $this->handleNodeReferenceChange($workspace, $subject, $propertyName),
+            // todo create custom 'changes' for these special cases
+            // we continue to use the underscore logic in the Neos Ui code base as the JS-client code works this way
             $propertyName === '_nodeType' => $this->handleNodeTypeChange($workspace, $subject, $propertyName),
             $propertyName === '_hidden' => $this->handleHiddenPropertyChange($workspace, $subject, $propertyName),
             default => $this->handlePropertyChange($workspace, $subject, $propertyName)
@@ -182,9 +184,9 @@ class Property extends AbstractChange
     {
         $propertyName = $this->getPropertyName();
 
-        // !!! REMEMBER: we are not allowed to use $node anymore,
-        // because it may have been modified by the commands above.
-        // Thus, we need to re-fetch it (as a workaround; until we do not need this anymore)
+        // We have to refetch the Node after modifications because its a read-only model
+        // These 'Change' classes have been designed with mutable Neos < 9 Nodes and thus this might seem hacky 
+        // When fully redesigning the Neos Ui php integration this will fixed
         $subgraph = $this->contentRepositoryRegistry->subgraphForNode($subject);
         $originalNodeAggregateId = $subject->nodeAggregateId;
         $node = $subgraph->findNodeById($originalNodeAggregateId);

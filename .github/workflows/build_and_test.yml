@@ -18,7 +18,7 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'yarn'
       - name: Install
-        run: make install
+        run: make install-and-verify
       - name: Lint
         run: make lint
 
@@ -32,7 +32,7 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'yarn'
       - name: Install
-        run: make install
+        run: make install-and-verify
       - name: Build
         run: make build-production
       - name: Test

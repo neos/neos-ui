@@ -465,6 +465,7 @@ class BackendServiceController extends ActionController
 
         // If current document node doesn't exist in the base workspace,
         // traverse its parents to find the one that exists
+        // todo ensure that https://github.com/neos/neos-ui/pull/3734 doesnt need to be refixed in Neos 9.0
         $redirectNode = $documentNode;
         while (true) {
             $redirectNodeInBaseWorkspace = $subgraph->findNodeById($redirectNode->nodeAggregateId);

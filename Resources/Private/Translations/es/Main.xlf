@@ -538,6 +538,9 @@
         <source>Add</source>
         <target state="translated">Añadir</target>
       </trans-unit>
+      <trans-unit id="copyNodeTypeNameToClipboard" xml:space="preserve">
+        <source>Copy node type to clipboard</source>
+        <target state="translated">Copiar tipo de nodo al portapapeles</target>
       <trans-unit id="syncPersonalWorkSpace" xml:space="preserve">
         <source>Synchronize personal workspace</source>
         <target state="translated">Sincronizar el espacio de trabajo personal</target>

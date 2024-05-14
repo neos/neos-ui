@@ -5,8 +5,7 @@
         "vendor-dir": "Packages/Libraries",
         "bin-dir": "bin",
         "allow-plugins": {
-          "neos/composer-plugin": true,
-          "cweagans/composer-patches": true
+          "neos/composer-plugin": true
         }
     },
     "minimum-stability": "dev",
@@ -25,14 +24,16 @@
 
       "cweagans/composer-patches": "^1.7.3"
     },
+    "extra": {
+      "patches": {
+        "neos/neos-development-collection": {
+        }
+      }
+    },
     "require-dev": {
       "neos/buildessentials": "@dev",
       "phpunit/phpunit": "^9.0",
       "phpstan/phpstan": "^1.10"
-    },
-    "extra": {
-      "patches": {
-      }
     },
     "repositories": {
         "distribution": {

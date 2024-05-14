@@ -638,6 +638,10 @@
                 <source>Add</source>
         <target state="needs-translation">Einfügen</target>
       </trans-unit>
+      <trans-unit id="collapseAll" xml:space="preserve">
+          <source>Collapse All</source>
+          <target state="translated">Alle Ordner zuklappen</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

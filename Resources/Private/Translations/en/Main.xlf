@@ -377,6 +377,9 @@
             <trans-unit id="errorBoundary.footer" xml:space="preserve">
                 <source>For more information about the error please refer to the JavaScript console.</source>
             </trans-unit>
+            <trans-unit id="collapseAll" xml:space="preserve">
+              <source>Collapse All</source>
+            </trans-unit>
             <trans-unit id="copyNodeTypeNameToClipboard" xml:space="preserve">
                 <source>Copy node type to clipboard</source>
             </trans-unit>

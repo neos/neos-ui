@@ -1,6 +1,5 @@
 {
   "name": "@neos-project/react-proptypes",
-  "version": "9.0.0-beta8",
   "description": "Neos CMS specific proptypes for react",
   "private": true,
   "main": "./src/index.js",
@@ -11,6 +10,5 @@
   "peerDependencies": {
     "prop-types": "^15.5.10"
   },
-  "license": "GNU GPLv3",
-  "stableVersion": "8.3.7"
+  "license": "GNU GPLv3"
 }

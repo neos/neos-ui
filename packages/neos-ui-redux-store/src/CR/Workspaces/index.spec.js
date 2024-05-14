@@ -5,14 +5,12 @@ test(`should export actionTypes`, () => {
     expect(actionTypes).not.toBe(undefined);
     expect(typeof (actionTypes.UPDATE)).toBe('string');
     expect(typeof (actionTypes.CHANGE_BASE_WORKSPACE)).toBe('string');
-    expect(typeof (actionTypes.REBASE_WORKSPACE)).toBe('string');
 });
 
 test(`should export action creators`, () => {
     expect(actions).not.toBe(undefined);
     expect(typeof (actions.update)).toBe('function');
     expect(typeof (actions.changeBaseWorkspace)).toBe('function');
-    expect(typeof (actions.syncWorkspace)).toBe('function');
 });
 
 test(`should export a reducer`, () => {

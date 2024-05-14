@@ -185,7 +185,7 @@ class Property extends AbstractChange
         $propertyName = $this->getPropertyName();
 
         // We have to refetch the Node after modifications because its a read-only model
-        // These 'Change' classes have been designed with mutable Neos < 9 Nodes and thus this might seem hacky 
+        // These 'Change' classes have been designed with mutable Neos < 9 Nodes and thus this might seem hacky
         // When fully redesigning the Neos Ui php integration this will fixed
         $subgraph = $this->contentRepositoryRegistry->subgraphForNode($subject);
         $originalNodeAggregateId = $subject->nodeAggregateId;

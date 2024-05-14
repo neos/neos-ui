@@ -77,7 +77,7 @@ class Redirect extends AbstractFeedback
      */
     public function getDescription()
     {
-        return sprintf('Redirect to node "%s".', $this->nodeLabelGenerator->getLabel($this->getNode())->value);
+        return sprintf('Redirect to node "%s".', $this->nodeLabelGenerator->getLabel($this->getNode()));
     }
 
     /**

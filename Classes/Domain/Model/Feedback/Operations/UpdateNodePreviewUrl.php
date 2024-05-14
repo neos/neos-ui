@@ -81,7 +81,7 @@ class UpdateNodePreviewUrl extends AbstractFeedback
      */
     public function getDescription()
     {
-        return sprintf('The "preview URL" of node "%s" has been changed potentially.', $this->nodeLabelGenerator->getLabel($this->getNode())->value);
+        return sprintf('The "preview URL" of node "%s" has been changed potentially.', $this->nodeLabelGenerator->getLabel($this->getNode()));
     }
 
     /**

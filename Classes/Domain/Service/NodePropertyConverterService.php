@@ -138,12 +138,7 @@ class NodePropertyConverterService
             return $node->tags->contain(SubtreeTag::fromString('disabled'));
         }
 
-        if ($propertyName[0] === '_' && $propertyName !== '_hiddenInIndex') {
-            $propertyValue = ObjectAccess::getProperty($node, ltrim($propertyName, '_'));
-        } else {
-            $propertyValue = $node->getProperty($propertyName);
-        }
-
+        $propertyValue = $node->getProperty($propertyName);
         $propertyType = $this->getNodeType($node)->getPropertyType($propertyName);
         try {
             $convertedValue = $this->convertValue($propertyValue, $propertyType);

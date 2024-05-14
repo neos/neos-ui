@@ -99,8 +99,9 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         $nodeInfo['properties'] = [
             // if we are only rendering the tree state,
             // ensure _isHidden is sent to hidden nodes are correctly shown in the tree.
-            '_hidden' => $node->tags->contain(SubtreeTag::fromString('disabled')),
-            '_hiddenInIndex' => $node->getProperty('_hiddenInIndex'),
+            // TODO: we should export this correctly named, but that needs changes throughout the JS code as well.
+            '_hidden' => $node->tags->withoutInherited()->contain(SubtreeTag::disabled()),
+            '_hiddenInIndex' => $node->getProperty('hiddenInMenu'),
             '_hasTimeableNodeVisibility' =>
                 $node->getProperty('enableAfterDateTime') instanceof \DateTimeInterface
                 || $node->getProperty('disableAfterDateTime') instanceof \DateTimeInterface,

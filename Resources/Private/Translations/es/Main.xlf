@@ -545,6 +545,10 @@
         <source>Synchronize personal workspace</source>
         <target state="translated">Sincronizar el espacio de trabajo personal</target>
       </trans-unit>
+      <trans-unit id="copyNodeTypeNameToClipboard" xml:space="preserve">
+        <source>Copy node type to clipboard</source>
+        <target state="needs-translation">Copiar tipo de nodo al portapapeles</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

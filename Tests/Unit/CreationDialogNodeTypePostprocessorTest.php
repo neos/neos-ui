@@ -1,7 +1,6 @@
 <?php
 namespace Neos\Neos\Ui\Tests\Unit;
 
-use Neos\ContentRepository\Core\NodeType\DefaultNodeLabelGeneratorFactory;
 use Neos\ContentRepository\Core\NodeType\NodeType;
 use Neos\ContentRepository\Core\NodeType\NodeTypeName;
 use Neos\Flow\Tests\UnitTestCase;
@@ -472,7 +471,7 @@ class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
 
     private function processConfigurationFully(array $configuration, array $dataTypesDefaultConfiguration, array $editorDefaultConfiguration): array
     {
-        $mockNodeType = new NodeType(NodeTypeName::fromString('Some.NodeType:Name'), [], [], new DefaultNodeLabelGeneratorFactory());
+        $mockNodeType = new NodeType(NodeTypeName::fromString('Some.NodeType:Name'), [], []);
 
         $firstProcessor = new DefaultPropertyEditorPostprocessor();
         $this->inject($firstProcessor, 'dataTypesDefaultConfiguration', $dataTypesDefaultConfiguration);
@@ -492,7 +491,7 @@ class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
 
     private function processConfigurationLegacyOnlyOnce(array $configuration, array $dataTypesDefaultConfiguration, array $editorDefaultConfiguration): array
     {
-        $mockNodeType = new NodeType(NodeTypeName::fromString('Some.NodeType:Name'), [], [], new DefaultNodeLabelGeneratorFactory());
+        $mockNodeType = new NodeType(NodeTypeName::fromString('Some.NodeType:Name'), [], []);
 
         $postprocessor = new CreationDialogNodeTypePostprocessor();
         $this->inject($postprocessor, 'dataTypesDefaultConfiguration', $dataTypesDefaultConfiguration);

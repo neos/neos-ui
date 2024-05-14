@@ -57,6 +57,5 @@ VERSION=$VERSION NPM_TOKEN=$NPM_TOKEN make publish-npm
 # we do not commit our working dir (the changes to the `version` field, as they will cause conflicts)
 # see https://github.com/neos/neos-ui/issues/3778
 
-git push origin HEAD:$BRANCH
 git tag -a -m "$VERSION" $VERSION
 git push origin $VERSION

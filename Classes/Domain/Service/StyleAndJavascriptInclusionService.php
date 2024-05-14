@@ -95,7 +95,7 @@ class StyleAndJavascriptInclusionService
                 $hash = substr(md5_file($resourceExpression), 0, 8);
                 $resourceExpression = $this->resourceManager->getPublicPackageResourceUriByPath($resourceExpression);
             }
-            $finalUri = $hash ? $resourceExpression . '?' . $hash : $resourceExpression;
+            $finalUri = $hash ? $resourceExpression . (str_contains($resourceExpression, '?') ? '&' : '?') . $hash : $resourceExpression;
             $additionalAttributes = array_merge(
                 // legacy first level 'defer' attribute
                 isset($element['defer']) ? ['defer' => $element['defer']] : [],

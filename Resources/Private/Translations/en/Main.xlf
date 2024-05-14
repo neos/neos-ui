@@ -377,6 +377,9 @@
             <trans-unit id="collapseAll" xml:space="preserve">
               <source>Collapse All</source>
             </trans-unit>
+            <trans-unit id="copyNodeTypeNameToClipboard" xml:space="preserve">
+                <source>Copy node type to clipboard</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>

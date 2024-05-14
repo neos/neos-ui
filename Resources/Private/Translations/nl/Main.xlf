@@ -505,7 +505,7 @@
       </trans-unit>
       <trans-unit id="copyNodeTypeNameToClipboard" xml:space="preserve">
         <source>Copy node type to clipboard</source>
-        <target state="needs-translation">Kopieer node type naar klembord</target>
+        <target state="translated">Kopieer node type naar klembord</target>
       </trans-unit>
     </body>
   </file>

@@ -1,5 +1,6 @@
 {
   "name": "@neos-project/jest-preset-neos-ui",
+  "version": "",
   "description": "The jest preset for all packages of the neos-ui mono-repo.",
   "main": "jest-preset.json",
   "private": true,

@@ -54,10 +54,8 @@ make test
 VERSION=$VERSION make bump-version
 VERSION=$VERSION NPM_TOKEN=$NPM_TOKEN make publish-npm
 
-# add changes to git and push
-git add .
-git commit -m "Updating composer dependency and npm versions for release of $VERSION"
+# we do not commit our working dir (the changes to the `version` field, as they will cause conflicts)
+# see https://github.com/neos/neos-ui/issues/3778
 
-git push origin HEAD:$BRANCH
 git tag -a -m "$VERSION" $VERSION
 git push origin $VERSION

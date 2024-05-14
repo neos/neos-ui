@@ -1,6 +1,5 @@
 {
   "name": "@neos-project/react-proptypes",
-  "version": "8.3.7",
   "description": "Neos CMS specific proptypes for react",
   "private": true,
   "main": "./src/index.js",

@@ -1,6 +1,5 @@
 {
   "name": "@neos-project/neos-ts-interfaces",
-  "version": "8.3.7",
   "description": "Neos domain-related TypeScript interfaces",
   "private": true,
   "main": "src/index.ts",

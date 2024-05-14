@@ -23,8 +23,6 @@
     "extra": {
       "patches": {
         "neos/neos-development-collection": {
-          "BUGFIX: Invalidate caches correctly after node move changes have been discarded":
-            "https://github.com/neos/neos-development-collection/pull/4291.patch"
         }
       }
     },

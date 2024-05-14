@@ -27,8 +27,6 @@
     },
     "extra": {
       "patches": {
-        "neos/neos-development-collection": {
-        }
       }
     },
     "require-dev": {

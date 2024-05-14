@@ -1,5 +1,6 @@
 {
   "name": "@neos-project/neos-ui-sagas",
+  "version": "",
   "description": "Redux Sagas implementation for the Neos CMS UI",
   "private": true,
   "main": "src/index.js",

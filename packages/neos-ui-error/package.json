@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-error",
-  "version": "9.0.0-beta3",
+  "version": "",
   "description": "Dedicated package for handling all kinds of errors in the Neos UI",
   "private": true,
   "main": "./src/index.ts",

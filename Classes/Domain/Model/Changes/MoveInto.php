@@ -61,9 +61,8 @@ class MoveInto extends AbstractStructuralChange
             return false;
         }
         $parent = $this->getParentNode();
-        $nodeType = $this->subject->nodeType;
 
-        return $parent && $this->isNodeTypeAllowedAsChildNode($parent, $nodeType);
+        return $parent && $this->isNodeTypeAllowedAsChildNode($parent, $this->subject->nodeTypeName);
     }
 
     /**

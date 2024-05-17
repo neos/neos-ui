@@ -51,9 +51,7 @@ class CopyInto extends AbstractStructuralChange
     {
         $parentNode = $this->getParentNode();
 
-        return $this->subject
-            && $parentNode
-            && $this->isNodeTypeAllowedAsChildNode($parentNode, $this->subject->nodeType);
+        return $parentNode && $this->isNodeTypeAllowedAsChildNode($parentNode, $this->subject->nodeTypeName);
     }
 
     public function getMode(): string

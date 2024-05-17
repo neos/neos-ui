@@ -15,7 +15,6 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
 use Neos\ContentRepository\Core\DimensionSpace\OriginDimensionSpacePoint;
 use Neos\ContentRepository\Core\Feature\NodeDuplication\Command\CopyNodesRecursively;
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
-use Neos\ContentRepository\Core\SharedModel\Node\NodeName;
 
 /**
  * @internal These objects internally reflect possible operations made by the Neos.Ui.
@@ -38,10 +37,8 @@ class CopyAfter extends AbstractStructuralChange
         if (is_null($siblingNode)) {
             return false;
         }
-        $nodeType = $this->subject->nodeType;
         $parentNode = $this->findParentNode($siblingNode);
-        return !is_null($parentNode)
-            && $this->isNodeTypeAllowedAsChildNode($parentNode, $nodeType);
+        return $parentNode && $this->isNodeTypeAllowedAsChildNode($parentNode, $this->subject->nodeTypeName);
     }
 
     public function getMode(): string

@@ -12,14 +12,14 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
+use Neos\ContentRepository\Core\NodeType\NodeTypeName;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindChildNodesFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
-use Neos\ContentRepository\Core\NodeType\NodeType;
-use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateClassification;
-use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Nodes;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateClassification;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
+use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\Ui\ContentRepository\Service\NeosUiNodeService;
 use Neos\Neos\Ui\Domain\Model\AbstractChange;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
@@ -187,20 +187,30 @@ abstract class AbstractStructuralChange extends AbstractChange
             ->findChildNodes($node->nodeAggregateId, FindChildNodesFilter::create());
     }
 
-    protected function isNodeTypeAllowedAsChildNode(Node $node, NodeType $nodeType): bool
+    protected function isNodeTypeAllowedAsChildNode(Node $parentNode, NodeTypeName $nodeTypeNameToCheck): bool
     {
-        if ($node->classification !== NodeAggregateClassification::CLASSIFICATION_TETHERED) {
-            return $this->getNodeType($node)->allowsChildNodeType($nodeType);
+        $nodeTypeManager = $this->contentRepositoryRegistry->get($parentNode->contentRepositoryId)->getNodeTypeManager();
+
+        $parentNodeType = $nodeTypeManager->getNodeType($parentNode->nodeTypeName);
+        if (!$parentNodeType) {
+            return false;
         }
 
-        $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
-        $parentNode = $subgraph->findParentNode($node->nodeAggregateId);
-        $nodeTypeManager = $this->contentRepositoryRegistry->get($node->contentRepositoryId)->getNodeTypeManager();
+        if ($parentNode->classification !== NodeAggregateClassification::CLASSIFICATION_TETHERED) {
+            $nodeTypeToCheck = $nodeTypeManager->getNodeType($nodeTypeNameToCheck);
+            if (!$nodeTypeToCheck) {
+                return false;
+            }
+            return $parentNodeType->allowsChildNodeType($nodeTypeToCheck);
+        }
 
-        return !$parentNode || $nodeTypeManager->isNodeTypeAllowedAsChildToTetheredNode(
-            $this->getNodeType($parentNode),
-            $node->nodeName,
-            $nodeType
+        $subgraph = $this->contentRepositoryRegistry->subgraphForNode($parentNode);
+        $grandParentNode = $subgraph->findParentNode($parentNode->aggregateId);
+
+        return !$grandParentNode || $nodeTypeManager->isNodeTypeAllowedAsChildToTetheredNode(
+            $grandParentNode->nodeTypeName,
+            $parentNode->name,
+            $nodeTypeNameToCheck
         );
     }
 }

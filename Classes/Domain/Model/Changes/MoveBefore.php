@@ -37,9 +37,8 @@ class MoveBefore extends AbstractStructuralChange
             return false;
         }
         $parent = $this->findParentNode($siblingNode);
-        $nodeType = $this->subject->nodeType;
 
-        return $parent && $this->isNodeTypeAllowedAsChildNode($parent, $nodeType);
+        return $parent && $this->isNodeTypeAllowedAsChildNode($parent, $this->subject->nodeTypeName);
     }
 
     public function getMode(): string

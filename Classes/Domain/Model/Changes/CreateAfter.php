@@ -56,7 +56,7 @@ class CreateAfter extends AbstractCreate
                 // do nothing; $succeedingSibling is null.
             }
 
-            $this->createNode($parentNode, $succeedingSibling?->nodeAggregateId);
+            $this->createNode($parentNode, $succeedingSibling?->aggregateId);
 
             $this->updateWorkspaceInfo();
         }

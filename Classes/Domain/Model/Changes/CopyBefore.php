@@ -69,8 +69,8 @@ class CopyBefore extends AbstractStructuralChange
                 $subject->workspaceName,
                 $subject,
                 OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->dimensionSpacePoint),
-                $parentNodeOfSucceedingSibling->nodeAggregateId,
-                $succeedingSibling->nodeAggregateId,
+                $parentNodeOfSucceedingSibling->aggregateId,
+                $succeedingSibling->aggregateId,
                 null
             );
 
@@ -78,7 +78,7 @@ class CopyBefore extends AbstractStructuralChange
 
             $newlyCreatedNode = $this->contentRepositoryRegistry->subgraphForNode($parentNodeOfSucceedingSibling)
                 ->findNodeById(
-                    $command->nodeAggregateIdMapping->getNewNodeAggregateId($subject->nodeAggregateId)
+                    $command->nodeAggregateIdMapping->getNewNodeAggregateId($subject->aggregateId)
                 );
             $this->finish($newlyCreatedNode);
             // NOTE: we need to run "finish" before "addNodeCreatedFeedback"

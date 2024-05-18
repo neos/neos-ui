@@ -180,7 +180,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     protected function getBasicNodeInformation(Node $node): array
     {
         $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
-        $parentNode = $subgraph->findParentNode($node->nodeAggregateId);
+        $parentNode = $subgraph->findParentNode($node->aggregateId);
 
         $contentRepository = $this->contentRepositoryRegistry->get($node->contentRepositoryId);
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
@@ -190,13 +190,13 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             'contextPath' => $nodeAddress->serializeForUri(),
             'nodeAddress' => $nodeAddress->serializeForUri(),
             'name' => $node->nodeName?->value ?? '',
-            'identifier' => $node->nodeAggregateId->jsonSerialize(),
+            'identifier' => $node->aggregateId->jsonSerialize(),
             'nodeType' => $node->nodeTypeName->value,
             'label' => $this->nodeLabelGenerator->getLabel($node),
             'isAutoCreated' => $node->classification === NodeAggregateClassification::CLASSIFICATION_TETHERED,
             // TODO: depth is expensive to calculate; maybe let's get rid of this?
             'depth' => $subgraph->countAncestorNodes(
-                $node->nodeAggregateId,
+                $node->aggregateId,
                 CountAncestorNodesFilter::create()
             ),
             'children' => [],
@@ -221,12 +221,12 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
 
         $documentChildNodes = $subgraph->findChildNodes(
-            $node->nodeAggregateId,
+            $node->aggregateId,
             FindChildNodesFilter::create(nodeTypes: $nodeTypeFilterString)
         );
         // child nodes for content tree, must not include those nodes filtered out by `baseNodeType`
         $contentChildNodes = $subgraph->findChildNodes(
-            $node->nodeAggregateId,
+            $node->aggregateId,
             FindChildNodesFilter::create(
                 nodeTypes: $this->buildContentChildNodeFilterString()
             )
@@ -276,20 +276,20 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         foreach ($nodes as $node) {
             $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
 
-            if (array_key_exists($node->nodeAggregateId->value, $renderedNodes)) {
-                $renderedNodes[$node->nodeAggregateId->value]['matched'] = true;
+            if (array_key_exists($node->aggregateId->value, $renderedNodes)) {
+                $renderedNodes[$node->aggregateId->value]['matched'] = true;
             } elseif ($renderedNode = $this->renderNodeWithMinimalPropertiesAndChildrenInformation(
                 $node,
                 $actionRequest,
                 $baseNodeTypeOverride
             )) {
                 $renderedNode['matched'] = true;
-                $renderedNodes[$node->nodeAggregateId->value] = $renderedNode;
+                $renderedNodes[$node->aggregateId->value] = $renderedNode;
             } else {
                 continue;
             }
 
-            $parentNode = $subgraph->findParentNode($node->nodeAggregateId);
+            $parentNode = $subgraph->findParentNode($node->aggregateId);
             if ($parentNode === null) {
                 // There are a multitude of reasons why a node might not have a parent
                 // and we should ignore these gracefully.
@@ -297,8 +297,8 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             }
 
             while ($this->getNodeType($parentNode)->isOfType($baseNodeTypeOverride)) {
-                if (array_key_exists($parentNode->nodeAggregateId->value, $renderedNodes)) {
-                    $renderedNodes[$parentNode->nodeAggregateId->value]['intermediate'] = true;
+                if (array_key_exists($parentNode->aggregateId->value, $renderedNodes)) {
+                    $renderedNodes[$parentNode->aggregateId->value]['intermediate'] = true;
                 } else {
                     $renderedParentNode = $this->renderNodeWithMinimalPropertiesAndChildrenInformation(
                         $parentNode,
@@ -307,10 +307,10 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
                     );
                     if ($renderedParentNode) {
                         $renderedParentNode['intermediate'] = true;
-                        $renderedNodes[$parentNode->nodeAggregateId->value] = $renderedParentNode;
+                        $renderedNodes[$parentNode->aggregateId->value] = $renderedParentNode;
                     }
                 }
-                $parentNode = $subgraph->findParentNode($parentNode->nodeAggregateId);
+                $parentNode = $subgraph->findParentNode($parentNode->aggregateId);
                 if ($parentNode === null) {
                     // There are a multitude of reasons why a node might not have a parent
                     // and we should ignore these gracefully.

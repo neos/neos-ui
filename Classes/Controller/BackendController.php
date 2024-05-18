@@ -176,7 +176,7 @@ class BackendController extends ActionController
 
         $siteNode = $subgraph->findNodeByPath(
             $siteDetectionResult->siteNodeName->toNodeName(),
-            $rootNode->nodeAggregateId
+            $rootNode->aggregateId
         );
 
         if (!$nodeAddress) {

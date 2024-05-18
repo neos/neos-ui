@@ -76,7 +76,7 @@ class CopyInto extends AbstractStructuralChange
                 $subject->workspaceName,
                 $subject,
                 OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->dimensionSpacePoint),
-                $parentNode->nodeAggregateId,
+                $parentNode->aggregateId,
                 null,
                 null
             );
@@ -84,7 +84,7 @@ class CopyInto extends AbstractStructuralChange
 
             $newlyCreatedNode = $this->contentRepositoryRegistry->subgraphForNode($parentNode)
                 ->findNodeById(
-                    $command->nodeAggregateIdMapping->getNewNodeAggregateId($subject->nodeAggregateId),
+                    $command->nodeAggregateIdMapping->getNewNodeAggregateId($subject->aggregateId),
                 );
             $this->finish($newlyCreatedNode);
             // NOTE: we need to run "finish" before "addNodeCreatedFeedback"

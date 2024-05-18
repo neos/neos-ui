@@ -137,7 +137,7 @@ abstract class AbstractStructuralChange extends AbstractChange
         $this->feedbackCollection->add($updateNodeInfo);
 
         $parentNode = $this->contentRepositoryRegistry->subgraphForNode($node)
-            ->findParentNode($node->nodeAggregateId);
+            ->findParentNode($node->aggregateId);
         if ($parentNode) {
             $updateParentNodeInfo = new UpdateNodeInfo();
             $updateParentNodeInfo->setNode($parentNode);
@@ -184,7 +184,7 @@ abstract class AbstractStructuralChange extends AbstractChange
     {
         // TODO REMOVE
         return $this->contentRepositoryRegistry->subgraphForNode($node)
-            ->findChildNodes($node->nodeAggregateId, FindChildNodesFilter::create());
+            ->findChildNodes($node->aggregateId, FindChildNodesFilter::create());
     }
 
     protected function isNodeTypeAllowedAsChildNode(Node $parentNode, NodeTypeName $nodeTypeNameToCheck): bool

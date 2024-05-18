@@ -76,7 +76,7 @@ class ReloadDocument extends AbstractFeedback
         $nodeInfoHelper = new NodeInfoHelper();
 
         $documentNode = $this->contentRepositoryRegistry->subgraphForNode($this->node)
-            ->findClosestNode($this->node->nodeAggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_DOCUMENT));
+            ->findClosestNode($this->node->aggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_DOCUMENT));
 
         if ($documentNode) {
             return [

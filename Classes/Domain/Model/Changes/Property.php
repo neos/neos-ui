@@ -176,7 +176,7 @@ class Property extends AbstractChange
         // These 'Change' classes have been designed with mutable Neos < 9 Nodes and thus this might seem hacky
         // When fully redesigning the Neos Ui php integration this will fixed
         $subgraph = $this->contentRepositoryRegistry->subgraphForNode($subject);
-        $originalNodeAggregateId = $subject->nodeAggregateId;
+        $originalNodeAggregateId = $subject->aggregateId;
         $node = $subgraph->findNodeById($originalNodeAggregateId);
         if (is_null($node)) {
             throw new \InvalidArgumentException(
@@ -186,7 +186,7 @@ class Property extends AbstractChange
         }
 
         $this->updateWorkspaceInfo();
-        $parentNode = $subgraph->findParentNode($node->nodeAggregateId);
+        $parentNode = $subgraph->findParentNode($node->aggregateId);
 
         // This might be needed to update node label and other things that we can calculate only on the server
         $updateNodeInfo = new UpdateNodeInfo();
@@ -240,7 +240,7 @@ class Property extends AbstractChange
         $contentRepository->handle(
             SetNodeReferences::create(
                 $subject->workspaceName,
-                $subject->nodeAggregateId,
+                $subject->aggregateId,
                 $subject->originDimensionSpacePoint,
                 ReferenceName::fromString($propertyName),
                 NodeReferencesToWrite::fromNodeAggregateIds(NodeAggregateIds::fromArray($destinationNodeAggregateIds))
@@ -259,7 +259,7 @@ class Property extends AbstractChange
 
         $command = EnableNodeAggregate::create(
             $subject->workspaceName,
-            $subject->nodeAggregateId,
+            $subject->aggregateId,
             $subject->originDimensionSpacePoint->toDimensionSpacePoint(),
             NodeVariantSelectionStrategy::STRATEGY_ALL_SPECIALIZATIONS
         );
@@ -267,7 +267,7 @@ class Property extends AbstractChange
         if ($value === true) {
             $command = DisableNodeAggregate::create(
                 $subject->workspaceName,
-                $subject->nodeAggregateId,
+                $subject->aggregateId,
                 $subject->originDimensionSpacePoint->toDimensionSpacePoint(),
                 NodeVariantSelectionStrategy::STRATEGY_ALL_SPECIALIZATIONS
             );
@@ -287,7 +287,7 @@ class Property extends AbstractChange
         $contentRepository->handle(
             ChangeNodeAggregateType::create(
                 $subject->workspaceName,
-                $subject->nodeAggregateId,
+                $subject->aggregateId,
                 NodeTypeName::fromString($value),
                 NodeAggregateTypeChangeChildConstraintConflictResolutionStrategy::STRATEGY_DELETE
             )
@@ -309,7 +309,7 @@ class Property extends AbstractChange
             $contentRepository->handle(
                 CreateNodeVariant::create(
                     $subject->workspaceName,
-                    $subject->nodeAggregateId,
+                    $subject->aggregateId,
                     $subject->originDimensionSpacePoint,
                     $originDimensionSpacePoint
                 )
@@ -319,7 +319,7 @@ class Property extends AbstractChange
         $contentRepository->handle(
             SetNodeProperties::create(
                 $subject->workspaceName,
-                $subject->nodeAggregateId,
+                $subject->aggregateId,
                 $originDimensionSpacePoint,
                 PropertyValuesToWrite::fromArray(
                     [

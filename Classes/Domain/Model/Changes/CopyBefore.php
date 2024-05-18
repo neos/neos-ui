@@ -76,10 +76,13 @@ class CopyBefore extends AbstractStructuralChange
 
             $contentRepository->handle($command);
 
+            $newlyCreatedNodeId = $command->nodeAggregateIdMapping->getNewNodeAggregateId($subject->aggregateId);
+            assert($newlyCreatedNodeId !== null); // cannot happen
             $newlyCreatedNode = $this->contentRepositoryRegistry->subgraphForNode($parentNodeOfSucceedingSibling)
-                ->findNodeById(
-                    $command->nodeAggregateIdMapping->getNewNodeAggregateId($subject->aggregateId)
-                );
+                ->findNodeById($newlyCreatedNodeId);
+            if (!$newlyCreatedNode) {
+                throw new \RuntimeException(sprintf('Node %s was not found after copy.', $newlyCreatedNodeId->value), 1716023308);
+            }
             $this->finish($newlyCreatedNode);
             // NOTE: we need to run "finish" before "addNodeCreatedFeedback"
             // to ensure the new node already exists when the last feedback is processed

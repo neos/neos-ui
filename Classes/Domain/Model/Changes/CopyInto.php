@@ -51,7 +51,7 @@ class CopyInto extends AbstractStructuralChange
     {
         $parentNode = $this->getParentNode();
 
-        return $parentNode && $this->isNodeTypeAllowedAsChildNode($parentNode, $this->subject->nodeTypeName);
+        return $this->subject && $parentNode && $this->isNodeTypeAllowedAsChildNode($parentNode, $this->subject->nodeTypeName);
     }
 
     public function getMode(): string
@@ -82,10 +82,13 @@ class CopyInto extends AbstractStructuralChange
             );
             $contentRepository->handle($command);
 
+            $newlyCreatedNodeId = $command->nodeAggregateIdMapping->getNewNodeAggregateId($subject->aggregateId);
+            assert($newlyCreatedNodeId !== null); // cannot happen
             $newlyCreatedNode = $this->contentRepositoryRegistry->subgraphForNode($parentNode)
-                ->findNodeById(
-                    $command->nodeAggregateIdMapping->getNewNodeAggregateId($subject->aggregateId),
-                );
+                ->findNodeById($newlyCreatedNodeId);
+            if (!$newlyCreatedNode) {
+                throw new \RuntimeException(sprintf('Node %s was not found after copy.', $newlyCreatedNodeId->value), 1716023308);
+            }
             $this->finish($newlyCreatedNode);
             // NOTE: we need to run "finish" before "addNodeCreatedFeedback"
             // to ensure the new node already exists when the last feedback is processed

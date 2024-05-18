@@ -109,13 +109,13 @@ final class ConflictsBuilder
             $nodeAggregateId
         );
         $affectedSite = $nodeAggregateId
-            ? $subgraph->findClosestNode(
+            ? $subgraph?->findClosestNode(
                 $nodeAggregateId,
                 FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_SITE)
             )
             : null;
         $affectedDocument = $nodeAggregateId
-            ? $subgraph->findClosestNode(
+            ? $subgraph?->findClosestNode(
                 $nodeAggregateId,
                 FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_DOCUMENT)
             )
@@ -214,11 +214,11 @@ final class ConflictsBuilder
                 $dimensionSpacePoint = $this->extractValidDimensionSpacePointFromNodeAggregate(
                     $nodeAggregate
                 );
-
-                if ($dimensionSpacePoint === null) {
-                    return null;
-                }
             }
+        }
+
+        if ($dimensionSpacePoint === null) {
+            return null;
         }
 
         return $contentGraph->getSubgraph(

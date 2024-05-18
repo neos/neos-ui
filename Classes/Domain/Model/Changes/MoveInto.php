@@ -33,7 +33,7 @@ class MoveInto extends AbstractStructuralChange
 
     public function getParentNode(): ?Node
     {
-        if ($this->parentContextPath === null) {
+        if ($this->parentContextPath === null || !$this->getSubject()) {
             return null;
         }
 

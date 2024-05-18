@@ -37,7 +37,7 @@ class CopyInto extends AbstractStructuralChange
     {
         if (!isset($this->cachedParentNode)) {
             $this->cachedParentNode = $this->parentContextPath
-                ? $this->nodeService->findNodeBySerializedNodeAddress($this->parentContextPath, $this->getSubject()->subgraphIdentity->contentRepositoryId)
+                ? $this->nodeService->findNodeBySerializedNodeAddress($this->parentContextPath, $this->getSubject()->contentRepositoryId)
                 : null;
         }
 
@@ -80,7 +80,7 @@ class CopyInto extends AbstractStructuralChange
                 null,
                 null
             );
-            $contentRepository->handle($command)->block();
+            $contentRepository->handle($command);
 
             $newlyCreatedNode = $this->contentRepositoryRegistry->subgraphForNode($parentNode)
                 ->findNodeById(

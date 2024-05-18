@@ -87,7 +87,7 @@ class MoveAfter extends AbstractStructuralChange
                 $precedingSibling->aggregateId,
                 $succeedingSibling?->aggregateId,
             );
-            $contentRepository->handle($command)->block();
+            $contentRepository->handle($command);
 
             $updateParentNodeInfo = new UpdateNodeInfo();
             $updateParentNodeInfo->setNode($parentNodeOfPreviousSibling);

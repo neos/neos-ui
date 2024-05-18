@@ -90,7 +90,7 @@ class MoveInto extends AbstractStructuralChange
                     RelationDistributionStrategy::STRATEGY_GATHER_ALL,
                     $hasEqualParentNode ? null : $parentNode->aggregateId,
                 )
-            )->block();
+            );
 
             $updateParentNodeInfo = new UpdateNodeInfo();
             $updateParentNodeInfo->setNode($parentNode);

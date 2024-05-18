@@ -85,7 +85,7 @@ class Remove extends AbstractChange
             }
 
             $contentRepository = $this->contentRepositoryRegistry->get($subject->contentRepositoryId);
-            $contentRepository->handle($command)->block();
+            $contentRepository->handle($command);
 
             $removeNode = new RemoveNode($subject, $parentNode);
             $this->feedbackCollection->add($removeNode);

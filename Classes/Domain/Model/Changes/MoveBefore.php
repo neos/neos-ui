@@ -84,7 +84,7 @@ class MoveBefore extends AbstractStructuralChange
                     $precedingSibling?->aggregateId,
                     $succeedingSibling->aggregateId,
                 )
-            )->block();
+            );
 
             $updateParentNodeInfo = new UpdateNodeInfo();
             $updateParentNodeInfo->setNode($succeedingSiblingParent);

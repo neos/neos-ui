@@ -79,7 +79,7 @@ class CopyAfter extends AbstractStructuralChange
                 null
             );
 
-            $contentRepository->handle($command)->block();
+            $contentRepository->handle($command);
 
             $newlyCreatedNode = $this->contentRepositoryRegistry->subgraphForNode($parentNodeOfPreviousSibling)
                 ->findNodeById(

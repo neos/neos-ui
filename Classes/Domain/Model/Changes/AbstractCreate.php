@@ -166,8 +166,7 @@ abstract class AbstractCreate extends AbstractStructuralChange
         );
 
         foreach ($commands as $command) {
-            $contentRepository->handle($command)
-                ->block();
+            $contentRepository->handle($command);
         }
 
         /** @var Node $newlyCreatedNode */

@@ -56,6 +56,7 @@ class WorkspaceHelper implements ProtectedContextAwareInterface
     public function getPersonalWorkspace(ContentRepositoryId $contentRepositoryId): array
     {
         $currentAccount = $this->securityContext->getAccount();
+        assert($currentAccount !== null);
         // todo use \Neos\Neos\Service\UserService::getPersonalWorkspaceName instead?
         $personalWorkspaceName = WorkspaceNameBuilder::fromAccountIdentifier($currentAccount->getAccountIdentifier());
 

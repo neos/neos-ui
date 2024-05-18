@@ -418,6 +418,7 @@ class BackendServiceController extends ActionController
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
 
         $currentAccount = $this->securityContext->getAccount();
+        assert($currentAccount !== null);
         $userWorkspaceName = WorkspaceNameBuilder::fromAccountIdentifier(
             $currentAccount->getAccountIdentifier()
         );

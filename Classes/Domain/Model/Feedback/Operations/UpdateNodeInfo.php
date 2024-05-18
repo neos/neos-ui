@@ -80,7 +80,7 @@ class UpdateNodeInfo extends AbstractFeedback
 
     public function getDescription(): string
     {
-        return sprintf('Updated info for node "%s" is available.', $this->node?->nodeAggregateId->value);
+        return sprintf('Updated info for node "%s" is available.', $this->node?->aggregateId->value);
     }
 
     /**
@@ -129,7 +129,7 @@ class UpdateNodeInfo extends AbstractFeedback
 
         if ($this->isRecursive === true) {
             $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
-            foreach ($subgraph->findChildNodes($node->nodeAggregateId, FindChildNodesFilter::create()) as $childNode) {
+            foreach ($subgraph->findChildNodes($node->aggregateId, FindChildNodesFilter::create()) as $childNode) {
                 $result = array_merge($result, $this->serializeNodeRecursively($childNode, $actionRequest));
             }
         }

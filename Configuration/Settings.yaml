@@ -113,8 +113,8 @@ Neos:
           siteNode: '${Neos.Ui.NodeInfo.serializedNodeAddress(site)}'
           previewUrl: '${Neos.Ui.NodeInfo.createRedirectToNode(documentNode, request)}'
           contentDimensions:
-            active: '${Neos.Ui.ContentDimensions.dimensionSpacePointArray(documentNode.subgraphIdentity.dimensionSpacePoint)}'
-            allowedPresets: '${Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.subgraphIdentity.dimensionSpacePoint, documentNode.subgraphIdentity.contentRepositoryId)}'
+            active: '${Neos.Ui.ContentDimensions.dimensionSpacePointArray(documentNode.dimensionSpacePoint)}'
+            allowedPresets: '${Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.dimensionSpacePoint, documentNode.contentRepositoryId)}'
           documentNodeSerialization: '${Neos.Ui.NodeInfo.renderNodeWithPropertiesAndChildrenInformation(documentNode, request)}'
       initialState:
         changes:
@@ -129,11 +129,11 @@ Neos:
             clipboard: '${clipboardNodes || []}'
             clipboardMode: '${clipboardMode || null}'
           contentDimensions:
-            byName: '${Neos.Ui.ContentDimensions.contentDimensionsByName(contentRepositoryId)}'
-            active: '${Neos.Ui.ContentDimensions.dimensionSpacePointArray(documentNode.subgraphIdentity.dimensionSpacePoint)}'
-            allowedPresets: '${Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.subgraphIdentity.dimensionSpacePoint, contentRepositoryId)}'
+            byName: '${Neos.Ui.ContentDimensions.contentDimensionsByName(documentNode.contentRepositoryId)}'
+            active: '${Neos.Ui.ContentDimensions.dimensionSpacePointArray(documentNode.dimensionSpacePoint)}'
+            allowedPresets: '${Neos.Ui.ContentDimensions.allowedPresetsByName(documentNode.dimensionSpacePoint, documentNode.contentRepositoryId)}'
           workspaces:
-            personalWorkspace: '${Neos.Ui.Workspace.getPersonalWorkspace(contentRepositoryId)}'
+            personalWorkspace: '${Neos.Ui.Workspace.getPersonalWorkspace(documentNode.contentRepositoryId)}'
         ui:
           contentCanvas:
             src: '${Neos.Ui.NodeInfo.uri(documentNode, request)}'

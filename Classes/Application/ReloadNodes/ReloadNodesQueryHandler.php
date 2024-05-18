@@ -93,7 +93,7 @@ final class ReloadNodesQueryHandler
         }
 
         $ancestors = $subgraph->findAncestorNodes(
-            $documentNode->nodeAggregateId,
+            $documentNode->aggregateId,
             FindAncestorNodesFilter::create(
                 NodeTypeCriteria::fromFilterString(NodeTypeNameFactory::NAME_DOCUMENT)
             )
@@ -120,15 +120,15 @@ final class ReloadNodesQueryHandler
             if ($level < $this->loadingDepth || // load all nodes within loadingDepth
                 $this->loadingDepth === 0 || // unlimited loadingDepth
                 // load toggled nodes
-                $query->toggledNodesIds->contain($baseNode->nodeAggregateId) ||
+                $query->toggledNodesIds->contain($baseNode->aggregateId) ||
                 // load children of all parents of documentNode
-                in_array($baseNode->nodeAggregateId->value, array_map(
-                    fn (Node $node): string => $node->nodeAggregateId->value,
+                in_array($baseNode->aggregateId->value, array_map(
+                    fn (Node $node): string => $node->aggregateId->value,
                     iterator_to_array($ancestors)
                 ))
             ) {
                 foreach ($subgraph->findChildNodes(
-                    $baseNode->nodeAggregateId,
+                    $baseNode->aggregateId,
                     FindChildNodesFilter::create(nodeTypes: $baseNodeTypeConstraints)
                 ) as $childNode) {
                     $nodeMapBuilder->addNode($childNode);

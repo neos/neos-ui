@@ -70,7 +70,7 @@ abstract class AbstractChange implements ChangeInterface
     {
         if (!is_null($this->subject)) {
             $subgraph = $this->contentRepositoryRegistry->subgraphForNode($this->subject);
-            $documentNode = $subgraph->findClosestNode($this->subject->nodeAggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_DOCUMENT));
+            $documentNode = $subgraph->findClosestNode($this->subject->aggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_DOCUMENT));
             if (!is_null($documentNode)) {
                 $updateWorkspaceInfo = new UpdateWorkspaceInfo($documentNode->contentRepositoryId, $documentNode->workspaceName);
                 $this->feedbackCollection->add($updateWorkspaceInfo);
@@ -81,7 +81,7 @@ abstract class AbstractChange implements ChangeInterface
     protected function findParentNode(Node $node): ?Node
     {
         return $this->contentRepositoryRegistry->subgraphForNode($node)
-            ->findParentNode($node->nodeAggregateId);
+            ->findParentNode($node->aggregateId);
     }
 
     /**

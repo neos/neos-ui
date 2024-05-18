@@ -147,7 +147,7 @@ abstract class AbstractCreate extends AbstractStructuralChange
             $nodeAggregateId,
             $nodeTypeName,
             OriginDimensionSpacePoint::fromDimensionSpacePoint($parentNode->dimensionSpacePoint),
-            $parentNode->nodeAggregateId,
+            $parentNode->aggregateId,
             $succeedingSiblingNodeAggregateId,
             $nodeName
         );
@@ -166,8 +166,7 @@ abstract class AbstractCreate extends AbstractStructuralChange
         );
 
         foreach ($commands as $command) {
-            $contentRepository->handle($command)
-                ->block();
+            $contentRepository->handle($command);
         }
 
         /** @var Node $newlyCreatedNode */

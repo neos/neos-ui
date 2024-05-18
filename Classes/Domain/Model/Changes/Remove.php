@@ -64,7 +64,7 @@ class Remove extends AbstractChange
             $parentNode = $this->findParentNode($subject);
             if (is_null($parentNode)) {
                 throw new \InvalidArgumentException(
-                    'Cannot apply Remove without a parent on node ' . $subject->nodeAggregateId->value,
+                    'Cannot apply Remove without a parent on node ' . $subject->aggregateId->value,
                     1645560717
                 );
             }
@@ -75,7 +75,7 @@ class Remove extends AbstractChange
 
             $command = RemoveNodeAggregate::create(
                 $subject->workspaceName,
-                $subject->nodeAggregateId,
+                $subject->aggregateId,
                 $subject->dimensionSpacePoint,
                 NodeVariantSelectionStrategy::STRATEGY_ALL_SPECIALIZATIONS,
             );
@@ -85,7 +85,7 @@ class Remove extends AbstractChange
             }
 
             $contentRepository = $this->contentRepositoryRegistry->get($subject->contentRepositoryId);
-            $contentRepository->handle($command)->block();
+            $contentRepository->handle($command);
 
             $removeNode = new RemoveNode($subject, $parentNode);
             $this->feedbackCollection->add($removeNode);
@@ -102,11 +102,11 @@ class Remove extends AbstractChange
         $subgraph = $this->contentRepositoryRegistry->subgraphForNode($this->subject);
 
         if ($this->subject->nodeType?->isOfType(NodeTypeNameFactory::NAME_DOCUMENT)) {
-            $closestSiteNode = $subgraph->findClosestNode($this->subject->nodeAggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_SITE));
-            return $closestSiteNode?->nodeAggregateId;
+            $closestSiteNode = $subgraph->findClosestNode($this->subject->aggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_SITE));
+            return $closestSiteNode?->aggregateId;
         }
 
-        $closestDocumentParentNode = $subgraph->findClosestNode($this->subject->nodeAggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_DOCUMENT));
-        return $closestDocumentParentNode?->nodeAggregateId;
+        $closestDocumentParentNode = $subgraph->findClosestNode($this->subject->aggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_DOCUMENT));
+        return $closestDocumentParentNode?->aggregateId;
     }
 }

@@ -67,8 +67,8 @@ class MoveBefore extends AbstractStructuralChange
                 // do nothing; $precedingSibling is null.
             }
 
-            $hasEqualParentNode = $parentNode->nodeAggregateId
-                ->equals($succeedingSiblingParent->nodeAggregateId);
+            $hasEqualParentNode = $parentNode->aggregateId
+                ->equals($succeedingSiblingParent->aggregateId);
 
             $contentRepository = $this->contentRepositoryRegistry->get($subject->contentRepositoryId);
 
@@ -76,15 +76,15 @@ class MoveBefore extends AbstractStructuralChange
                 MoveNodeAggregate::create(
                     $subject->workspaceName,
                     $subject->dimensionSpacePoint,
-                    $subject->nodeAggregateId,
+                    $subject->aggregateId,
                     RelationDistributionStrategy::STRATEGY_GATHER_ALL,
                     $hasEqualParentNode
                         ? null
-                        : $succeedingSiblingParent->nodeAggregateId,
-                    $precedingSibling?->nodeAggregateId,
-                    $succeedingSibling->nodeAggregateId,
+                        : $succeedingSiblingParent->aggregateId,
+                    $precedingSibling?->aggregateId,
+                    $succeedingSibling->aggregateId,
                 )
-            )->block();
+            );
 
             $updateParentNodeInfo = new UpdateNodeInfo();
             $updateParentNodeInfo->setNode($succeedingSiblingParent);

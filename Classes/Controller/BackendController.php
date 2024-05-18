@@ -176,7 +176,7 @@ class BackendController extends ActionController
 
         $siteNode = $subgraph->findNodeByPath(
             $siteDetectionResult->siteNodeName->toNodeName(),
-            $rootNode->nodeAggregateId
+            $rootNode->aggregateId
         );
 
         if (!$nodeAddress) {
@@ -210,7 +210,6 @@ class BackendController extends ActionController
             'initialState' =>
                 $this->initialStateProvider->getInitialState(
                     actionRequest: $this->request,
-                    contentRepositoryId: $siteDetectionResult->contentRepositoryId,
                     documentNode: $node,
                     site: $siteNode,
                     user: $user,

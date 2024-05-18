@@ -106,13 +106,13 @@ class NodePropertyConverterService
     {
         $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
         $references = $subgraph->findReferences(
-            $node->nodeAggregateId,
+            $node->aggregateId,
             FindReferencesFilter::create(referenceName: $referenceName)
         );
 
         $referenceIdentifiers = [];
         foreach ($references as $reference) {
-            $referenceIdentifiers[] = $reference->node->nodeAggregateId->value;
+            $referenceIdentifiers[] = $reference->node->aggregateId->value;
         }
 
         $maxItems = $this->getNodeType($node)->getReferences()[$referenceName]['constraints']['maxItems'] ?? null;

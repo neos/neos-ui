@@ -65,7 +65,7 @@ class NodeCreated extends AbstractFeedback
      */
     public function getDescription(): string
     {
-        return sprintf('Document Node "%s" created.', $this->getNode()->nodeAggregateId->value);
+        return sprintf('Document Node "%s" created.', $this->getNode()->aggregateId->value);
     }
 
     /**
@@ -96,7 +96,7 @@ class NodeCreated extends AbstractFeedback
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
         return [
             'contextPath' => $nodeAddressFactory->createFromNode($node)->serializeForUri(),
-            'identifier' => $node->nodeAggregateId->value,
+            'identifier' => $node->aggregateId->value,
             'isDocument' => $this->getNodeType($node)->isOfType(NodeTypeNameFactory::NAME_DOCUMENT)
         ];
     }

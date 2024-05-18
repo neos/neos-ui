@@ -76,21 +76,21 @@ class MoveInto extends AbstractStructuralChange
         $subject = $this->subject;
         if ($this->canApply() && $parentNode && $subject) {
             $otherParent = $this->contentRepositoryRegistry->subgraphForNode($subject)
-                ->findParentNode($subject->nodeAggregateId);
+                ->findParentNode($subject->aggregateId);
 
-            $hasEqualParentNode = $otherParent && $otherParent->nodeAggregateId
-                    ->equals($parentNode->nodeAggregateId);
+            $hasEqualParentNode = $otherParent && $otherParent->aggregateId
+                    ->equals($parentNode->aggregateId);
 
             $contentRepository = $this->contentRepositoryRegistry->get($subject->contentRepositoryId);
             $contentRepository->handle(
                 MoveNodeAggregate::create(
                     $subject->workspaceName,
                     $subject->dimensionSpacePoint,
-                    $subject->nodeAggregateId,
+                    $subject->aggregateId,
                     RelationDistributionStrategy::STRATEGY_GATHER_ALL,
-                    $hasEqualParentNode ? null : $parentNode->nodeAggregateId,
+                    $hasEqualParentNode ? null : $parentNode->aggregateId,
                 )
-            )->block();
+            );
 
             $updateParentNodeInfo = new UpdateNodeInfo();
             $updateParentNodeInfo->setNode($parentNode);

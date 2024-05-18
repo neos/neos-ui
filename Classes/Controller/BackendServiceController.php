@@ -468,17 +468,17 @@ class BackendServiceController extends ActionController
         // todo ensure that https://github.com/neos/neos-ui/pull/3734 doesnt need to be refixed in Neos 9.0
         $redirectNode = $documentNode;
         while (true) {
-            $redirectNodeInBaseWorkspace = $subgraph->findNodeById($redirectNode->nodeAggregateId);
+            $redirectNodeInBaseWorkspace = $subgraph->findNodeById($redirectNode->aggregateId);
             if ($redirectNodeInBaseWorkspace) {
                 break;
             } else {
-                $redirectNode = $subgraph->findParentNode($redirectNode->nodeAggregateId);
+                $redirectNode = $subgraph->findParentNode($redirectNode->aggregateId);
                 // get parent always returns Node
                 if (!$redirectNode) {
                     throw new \Exception(
                         sprintf(
                             'Wasn\'t able to locate any valid node in rootline of node %s in the workspace %s.',
-                            $documentNode->nodeAggregateId->value,
+                            $documentNode->aggregateId->value,
                             $targetWorkspaceName
                         ),
                         1458814469

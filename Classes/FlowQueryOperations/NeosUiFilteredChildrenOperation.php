@@ -76,12 +76,12 @@ class NeosUiFilteredChildrenOperation extends AbstractOperation
             $subgraph = $this->contentRepositoryRegistry->subgraphForNode($contextNode);
 
             foreach ($subgraph->findChildNodes(
-                $contextNode->nodeAggregateId,
+                $contextNode->aggregateId,
                 FindChildNodesFilter::create(nodeTypes: $arguments[0] ?? null)
             ) as $childNode) {
-                if (!isset($outputNodeIdentifiers[$childNode->nodeAggregateId->value])) {
+                if (!isset($outputNodeIdentifiers[$childNode->aggregateId->value])) {
                     $output[] = $childNode;
-                    $outputNodeIdentifiers[$childNode->nodeAggregateId->value] = true;
+                    $outputNodeIdentifiers[$childNode->aggregateId->value] = true;
                 }
             }
         }

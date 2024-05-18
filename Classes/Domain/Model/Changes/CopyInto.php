@@ -37,7 +37,7 @@ class CopyInto extends AbstractStructuralChange
     {
         if (!isset($this->cachedParentNode)) {
             $this->cachedParentNode = $this->parentContextPath
-                ? $this->nodeService->findNodeBySerializedNodeAddress($this->parentContextPath, $this->getSubject()->subgraphIdentity->contentRepositoryId)
+                ? $this->nodeService->findNodeBySerializedNodeAddress($this->parentContextPath, $this->getSubject()->contentRepositoryId)
                 : null;
         }
 
@@ -76,15 +76,15 @@ class CopyInto extends AbstractStructuralChange
                 $subject->workspaceName,
                 $subject,
                 OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->dimensionSpacePoint),
-                $parentNode->nodeAggregateId,
+                $parentNode->aggregateId,
                 null,
                 null
             );
-            $contentRepository->handle($command)->block();
+            $contentRepository->handle($command);
 
             $newlyCreatedNode = $this->contentRepositoryRegistry->subgraphForNode($parentNode)
                 ->findNodeById(
-                    $command->nodeAggregateIdMapping->getNewNodeAggregateId($subject->nodeAggregateId),
+                    $command->nodeAggregateIdMapping->getNewNodeAggregateId($subject->aggregateId),
                 );
             $this->finish($newlyCreatedNode);
             // NOTE: we need to run "finish" before "addNodeCreatedFeedback"

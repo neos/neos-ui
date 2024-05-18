@@ -30,7 +30,6 @@ interface InitialStateProviderInterface
     /** @return array<mixed> */
     public function getInitialState(
         ActionRequest $actionRequest,
-        ContentRepositoryId $contentRepositoryId,
         ?Node $documentNode,
         ?Node $site,
         User $user,

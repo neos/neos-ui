@@ -33,7 +33,6 @@ use Neos\ContentRepository\Core\NodeType\NodeTypeManager;
  * creation will be mostly preserved by only allowing to add additional properties.
  *
  * Additional commands can be also appended, to be run after the initial node creation command.
- * All commands will be executed blocking.
  *
  * You can retrieve the subgraph or the parent node (where the first node will be created in) the following way:
  *

@@ -125,7 +125,7 @@ class RenderContentOutOfBand extends AbstractFeedback
 
     public function getDescription(): string
     {
-        return sprintf('Rendering of node "%s" required.', $this->node?->nodeAggregateId->value);
+        return sprintf('Rendering of node "%s" required.', $this->node?->aggregateId->value);
     }
 
     /**
@@ -178,7 +178,7 @@ class RenderContentOutOfBand extends AbstractFeedback
             return '';
         }
         $subgraph = $this->contentRepositoryRegistry->subgraphForNode($this->node);
-        $parentNode = $subgraph->findParentNode($this->node->nodeAggregateId);
+        $parentNode = $subgraph->findParentNode($this->node->aggregateId);
         if ($parentNode) {
             $cacheTags = $this->cachingHelper->nodeTag($parentNode);
             foreach ($cacheTags as $tag) {

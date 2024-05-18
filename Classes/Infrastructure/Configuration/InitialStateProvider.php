@@ -41,7 +41,6 @@ final class InitialStateProvider implements InitialStateProviderInterface
 
     public function getInitialState(
         ActionRequest $actionRequest,
-        ContentRepositoryId $contentRepositoryId,
         ?Node $documentNode,
         ?Node $site,
         User $user,
@@ -50,7 +49,6 @@ final class InitialStateProvider implements InitialStateProviderInterface
             $this->initialStateBeforeProcessing,
             [
                 'request' => $actionRequest,
-                'contentRepositoryId' => $contentRepositoryId,
                 'documentNode' => $documentNode,
                 'site' => $site,
                 'user' => $user,

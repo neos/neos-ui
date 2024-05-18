@@ -49,7 +49,7 @@ class CreateBefore extends AbstractCreate
         $parent = $this->subject ? $this->findParentNode($this->subject) : null;
         $subject = $this->subject;
         if ($this->canApply() && !is_null($subject) && !is_null($parent)) {
-            $this->createNode($parent, $subject->nodeAggregateId);
+            $this->createNode($parent, $subject->aggregateId);
             $this->updateWorkspaceInfo();
         }
     }

@@ -84,7 +84,7 @@ class SearchOperation extends AbstractOperation
             $filter = $filter->with(nodeTypes: $arguments[1]);
         }
         $nodes = $subgraph->findDescendantNodes(
-            $contextNode->nodeAggregateId,
+            $contextNode->aggregateId,
             $filter
         );
         $flowQuery->setContext(iterator_to_array($nodes));

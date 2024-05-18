@@ -24,6 +24,8 @@ use Neos\Neos\Domain\Repository\SiteRepository;
 use Neos\Neos\Domain\Service\NodeTypeNameFactory;
 use Neos\Neos\Domain\Service\WorkspaceNameBuilder;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
+use Neos\Neos\FrontendRouting\NodeUriBuilderFactory;
+use Neos\Neos\FrontendRouting\NodeUriSpecification;
 use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;
 use Neos\Neos\Service\UserService;
 use Neos\Neos\Ui\Domain\InitialData\ConfigurationProviderInterface;
@@ -117,6 +119,12 @@ class BackendController extends ActionController
      * @var InitialStateProviderInterface
      */
     protected $initialStateProvider;
+
+    /**
+     * @Flow\Inject
+     * @var NodeUriBuilderFactory
+     */
+    protected $nodeUriBuilderFactory;
 
     /**
      * Displays the backend interface
@@ -216,11 +224,15 @@ class BackendController extends ActionController
 
         $contentRepository = $this->contentRepositoryRegistry->get($siteDetectionResult->contentRepositoryId);
 
-        $nodeAddress = NodeAddressFactory::create($contentRepository)->createFromUriString($node);
+        $nodeAddress = NodeAddressFactory::create($contentRepository)->createCoreNodeAddressFromLegacyUriString($node);
         $this->response->setHttpHeader('Cache-Control', [
             'no-cache',
             'no-store'
         ]);
-        $this->redirect('show', 'Frontend\Node', 'Neos.Neos', ['node' => $nodeAddress]);
+
+        $this->redirectToUri(
+            $this->nodeUriBuilderFactory->forRequest($this->request->getHttpRequest())
+                ->uriFor(NodeUriSpecification::create($nodeAddress))
+        );
     }
 }

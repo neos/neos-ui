@@ -101,7 +101,7 @@ class Remove extends AbstractChange
     {
         $subgraph = $this->contentRepositoryRegistry->subgraphForNode($this->subject);
 
-        if ($this->subject->nodeType?->isOfType(NodeTypeNameFactory::NAME_DOCUMENT)) {
+        if ($this->getNodeType($this->subject)?->isOfType(NodeTypeNameFactory::NAME_DOCUMENT)) {
             $closestSiteNode = $subgraph->findClosestNode($this->subject->aggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_SITE));
             return $closestSiteNode?->aggregateId;
         }

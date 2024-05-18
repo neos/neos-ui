@@ -189,7 +189,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         return [
             'contextPath' => $nodeAddress->serializeForUri(),
             'nodeAddress' => $nodeAddress->serializeForUri(),
-            'name' => $node->nodeName?->value ?? '',
+            'name' => $node->name?->value ?? '',
             'identifier' => $node->aggregateId->jsonSerialize(),
             'nodeType' => $node->nodeTypeName->value,
             'label' => $this->nodeLabelGenerator->getLabel($node),

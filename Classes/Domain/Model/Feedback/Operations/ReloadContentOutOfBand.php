@@ -136,7 +136,10 @@ class ReloadContentOutOfBand extends AbstractFeedback
                 $renderingMode = $this->renderingModeService->findByCurrentUser();
 
                 $view = $this->outOfBandRenderingViewFactory->resolveView();
-                $view->setControllerContext($controllerContext);
+                if (method_exists($view, 'setControllerContext')) {
+                    // deprecated
+                    $view->setControllerContext($controllerContext);
+                }
                 $view->setOption('renderingModeName', $renderingMode->name);
 
                 $view->assign('value', $this->node);

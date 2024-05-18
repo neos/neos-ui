@@ -38,7 +38,7 @@ class CreateAfter extends AbstractCreate
         $parent = $this->findParentNode($this->subject);
         $nodeTypeName = $this->getNodeTypeName();
 
-        return $parent && $this->isNodeTypeAllowedAsChildNode($parent, $nodeTypeName);
+        return $parent && $nodeTypeName && $this->isNodeTypeAllowedAsChildNode($parent, $nodeTypeName);
     }
 
     /**

@@ -357,15 +357,23 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
     public function createRedirectToNode(Node $node, ActionRequest $actionRequest): string
     {
+        // we always want to redirect to the node in the base workspace.
         $contentRepository = $this->contentRepositoryRegistry->get($node->contentRepositoryId);
-        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
-        $nodeAddress = $nodeAddressFactory->createFromNode($node);
+        $workspace = $contentRepository->getWorkspaceFinder()->findOneByName($node->workspaceName);
+
+        $nodeAddress = NodeAddress::create(
+            $node->contentRepositoryId,
+            $workspace->baseWorkspaceName ?? WorkspaceName::forLive(),
+            $node->dimensionSpacePoint,
+            $node->aggregateId
+        );
+
         $uriBuilder = new UriBuilder();
         $uriBuilder->setRequest($actionRequest);
         return $uriBuilder
             ->setCreateAbsoluteUri(true)
             ->setFormat('html')
-            ->uriFor('redirectTo', ['node' => $nodeAddress->serializeForUri()], 'Backend', 'Neos.Neos.Ui');
+            ->uriFor('redirectTo', ['node' => $nodeAddress->toUriString()], 'Backend', 'Neos.Neos.Ui');
     }
 
     /**

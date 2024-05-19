@@ -14,6 +14,7 @@ namespace Neos\Neos\Ui\Controller;
 
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
 use Neos\ContentRepository\Core\SharedModel\Exception\WorkspaceDoesNotExist;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ActionController;
@@ -24,8 +25,7 @@ use Neos\Neos\Domain\Repository\SiteRepository;
 use Neos\Neos\Domain\Service\NodeTypeNameFactory;
 use Neos\Neos\Domain\Service\WorkspaceNameBuilder;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
-use Neos\Neos\FrontendRouting\NodeUriBuilderFactory;
-use Neos\Neos\FrontendRouting\NodeUriSpecification;
+use Neos\Neos\FrontendRouting\NodeUri\NodeUriBuilderFactory;
 use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;
 use Neos\Neos\Service\UserService;
 use Neos\Neos\Ui\Domain\InitialData\ConfigurationProviderInterface;
@@ -220,19 +220,16 @@ class BackendController extends ActionController
      */
     public function redirectToAction(string $node): void
     {
-        $siteDetectionResult = SiteDetectionResult::fromRequest($this->request->getHttpRequest());
-
-        $contentRepository = $this->contentRepositoryRegistry->get($siteDetectionResult->contentRepositoryId);
-
-        $nodeAddress = NodeAddressFactory::create($contentRepository)->createCoreNodeAddressFromLegacyUriString($node);
         $this->response->setHttpHeader('Cache-Control', [
             'no-cache',
             'no-store'
         ]);
 
+        $nodeAddress = NodeAddress::fromUriString($node);
+
         $this->redirectToUri(
             $this->nodeUriBuilderFactory->forRequest($this->request->getHttpRequest())
-                ->uriFor(NodeUriSpecification::create($nodeAddress))
+                ->uriFor($nodeAddress)
         );
     }
 }

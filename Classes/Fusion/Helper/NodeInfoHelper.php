@@ -17,6 +17,7 @@ use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindChildNodesFil
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateClassification;
+use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
@@ -25,8 +26,8 @@ use Neos\Flow\Mvc\Routing\UriBuilder;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\Domain\NodeLabel\NodeLabelGeneratorInterface;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
-use Neos\Neos\FrontendRouting\NodeUriBuilderFactory;
-use Neos\Neos\FrontendRouting\NodeUriSpecification;
+use Neos\Neos\FrontendRouting\NodeUri\NodeUriBuilderFactory;
+use Neos\Neos\FrontendRouting\NodeUri\Options;
 use Neos\Neos\Ui\Domain\Service\NodePropertyConverterService;
 use Neos\Neos\Ui\Domain\Service\UserLocaleService;
 use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
@@ -349,10 +350,9 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     public function previewUri(Node $node, ActionRequest $actionRequest): string
     {
         $nodeAddress = NodeAddress::fromNode($node);
-        // todo must be absolute
         return (string)$this->nodeUriBuilderFactory
             ->forRequest($actionRequest->getHttpRequest())
-            ->absolutePreviewUriFor(NodeUriSpecification::create($nodeAddress));
+            ->previewUriFor($nodeAddress, Options::create(forceAbsolute: true));
     }
 
     public function createRedirectToNode(Node $node, ActionRequest $actionRequest): string

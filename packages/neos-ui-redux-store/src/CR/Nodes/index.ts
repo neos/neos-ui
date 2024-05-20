@@ -450,10 +450,16 @@ export const reducer = (state: State = defaultState, action: InitAction | EditPr
                 if (!newNode) {
                     throw new Error('This error should never be thrown, it\'s a way to fool TypeScript');
                 }
-                const mergedNode = defaultsDeep({}, newNode, draft.byContextPath[contextPath]);
-                // Force overwrite of children
+                const oldNode = state.byContextPath[contextPath];
+                const mergedNode = defaultsDeep({}, newNode, oldNode);
                 if (newNode.children !== undefined) {
+                    // Force overwrite of children
                     mergedNode.children = newNode.children;
+                } else if (!oldNode) {
+                    // newNode only adds meta info, but oldNode is gone from the store.
+                    // In order to avoid zombie nodes occupying the store, we'll leave
+                    // the node alone in this case.
+                    return;
                 }
                 // Force overwrite of matchesCurrentDimensions
                 if (newNode.matchesCurrentDimensions !== undefined) {

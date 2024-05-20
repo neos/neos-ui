@@ -248,8 +248,7 @@ class Property extends AbstractChange
     private function handleHiddenPropertyChange(Node $subject): void
     {
         // todo simplify conversion
-        /** @var bool $value */
-        $value = $this->nodePropertyConversionService->convert('boolean', $this->getValue());
+        $value = (bool)$this->nodePropertyConversionService->convert('boolean', $this->getValue());
 
         $contentRepository = $this->contentRepositoryRegistry->get($subject->contentRepositoryId);
 

@@ -1,8 +1,17 @@
+/*
+ * This file is part of the Neos.Neos.Ui package.
+ *
+ * (c) Contributors of the Neos Project - www.neos.io
+ *
+ * This package is Open Source Software. For the full copyright and license
+ * information, please view the LICENSE file which was distributed with this
+ * source code.
+ */
 import {initializeJsAPI} from '@neos-project/neos-ui-backend-connector';
 import fetchWithErrorHandling from '@neos-project/neos-ui-backend-connector/src/FetchWithErrorHandling/index';
 import {terminateDueToFatalInitializationError} from '@neos-project/neos-ui-error';
 
-let initialData = null;
+let initialData: any = null;
 function parseInitialData() {
     if (initialData) {
         return initialData;
@@ -36,7 +45,7 @@ function parseInitialData() {
     }
 }
 
-function getInlinedData(dataName) {
+function getInlinedData(dataName: string): any {
     const initialData = parseInitialData();
 
     if (dataName in initialData) {
@@ -49,30 +58,32 @@ function getInlinedData(dataName) {
     `);
 }
 
-export const appContainer = document.getElementById('appContainer');
-if (!appContainer) {
+const appContainerOrNull = document.getElementById('appContainer');
+if (!appContainerOrNull) {
     terminateDueToFatalInitializationError(`
         <p>This page is missing a container with the id <code>#appContainer</code>.</p>
     `);
 }
+export const appContainer = appContainerOrNull;
 
-export const {csrfToken} = appContainer.dataset;
-if (!csrfToken) {
+const {csrfToken: csrfTokenOrNull} = appContainer.dataset;
+if (!csrfTokenOrNull) {
     terminateDueToFatalInitializationError(`
         <p>The container with the id <code>#appContainer</code> is missing an attribute
         <code>data-csrf-token</code>.</p>
     `);
 }
-
+export const csrfToken = csrfTokenOrNull;
 fetchWithErrorHandling.setCsrfToken(csrfToken);
 
-export const {env: systemEnv} = appContainer.dataset;
-if (!systemEnv) {
+const {env: systemEnvOrNull} = appContainer.dataset;
+if (!systemEnvOrNull) {
     terminateDueToFatalInitializationError(`
         <p>The container with the id <code>#appContainer</code> is missing an attribute
         <code>data-env</code> (eg. Production, Development, etc...).</p>
     `);
 }
+export const systemEnv = systemEnvOrNull;
 
 export const serverState = getInlinedData('initialState');
 
@@ -84,9 +95,34 @@ export const frontendConfiguration = getInlinedData('frontendConfiguration');
 
 export const routes = getInlinedData('routes');
 
-export const menu = getInlinedData('menu');
+export const menu: {
+    label: string;
+    icon: string;
+    uri: string;
+    target: 'Window';
+    children: {
+        icon: string;
+        label: string;
+        uri: string;
+        target: 'Window';
+        isActive: boolean;
+        skipI18n: boolean;
+    }[]
+}[] = getInlinedData('menu');
 
-export const user = getInlinedData('user');
+export const user: {
+    name: {
+        title: string;
+        firstName: string;
+        middleName: string;
+        lastName: string;
+        otherName: string;
+        fullName: string;
+    };
+    preferences: {
+        interfaceLanguage: null | string;
+    };
+} = getInlinedData('user');
 
 export const neos = initializeJsAPI(window, {
     systemEnv,

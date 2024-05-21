@@ -69,6 +69,10 @@ async function prepareConflictBetweenAdminAndEditor(t) {
     //
     // Sync changes from "admin"
     //
+    await t.wait(2000);
+    await t.eval(() => location.reload(true));
+    await waitForReact(30000);
+    await Page.waitForIframeLoading();
     await t.click(Selector('#neos-workspace-rebase'));
     await t.click(Selector('#neos-SyncWorkspace-Confirm'));
     await t.wait(1000);

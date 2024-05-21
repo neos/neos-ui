@@ -66,8 +66,7 @@ async function main() {
 
     await Promise.all([
         loadNodeTypesSchema(),
-        initializeI18n(),
-        loadImpersonateStatus()
+        initializeI18n()
     ]);
 
     store.dispatch(actions.System.ready());
@@ -180,22 +179,6 @@ async function loadNodeTypesSchema() {
     const {groups, roles} = nodeTypes;
     nodeTypesRegistry.setGroups(groups);
     nodeTypesRegistry.setRoles(roles);
-}
-
-async function loadImpersonateStatus() {
-    try {
-        const {impersonateStatus} = backend.get().endpoints;
-        const impersonateState = await impersonateStatus();
-        if (impersonateState) {
-            store.dispatch(actions.User.Impersonate.fetchStatus(impersonateState));
-        }
-    } catch (error) {
-        showFlashMessage({
-            id: 'impersonateStatusError',
-            severity: 'error',
-            message: error.message
-        });
-    }
 }
 
 function renderApplication() {

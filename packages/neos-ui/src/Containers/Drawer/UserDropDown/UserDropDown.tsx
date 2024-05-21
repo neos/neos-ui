@@ -14,9 +14,9 @@ import {connect} from 'react-redux';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {Icon, DropDown} from '@neos-project/react-ui-components';
 import {actions} from '@neos-project/neos-ui-redux-store';
-import {GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
 import {I18nRegistry} from '@neos-project/neos-ts-interfaces';
 import {NeosContextInterface} from '@neos-project/neos-ui-decorators/src/neos';
+import {showFlashMessage} from '@neos-project/neos-ui-error';
 
 import {UserImage} from './UserImage';
 import {RestoreButtonItem} from './RestoreButtonItem';
@@ -25,14 +25,11 @@ import I18n from '@neos-project/neos-ui-i18n';
 
 import style from './style.module.css';
 
-const withReduxState = connect((state: GlobalState) => ({
-    userName: state?.user?.name?.fullName,
-    userFirstName: state?.user?.name?.firstName,
-    userLastName: state?.user?.name?.lastName,
-    originUser: state?.user?.impersonate?.origin,
-    impersonateStatus: state?.user?.impersonate?.status
+import {user} from '../../../System';
+
+const withReduxState = connect(() => ({
 }), {
-    impersonateRestore: actions.User.Impersonate.restore
+    impersonateRestore: actions.User.Impersonate.restore,
 });
 
 const withNeosGlobals = neos(globalRegistry => ({
@@ -40,14 +37,8 @@ const withNeosGlobals = neos(globalRegistry => ({
 }));
 
 const UserDropDown: React.FC<{
-    userName: string;
-    userFirstName: string;
-    userLastName: string;
-    originUser?: {
-        fullName: string;
-    };
-    impersonateStatus: boolean;
     impersonateRestore: () => void;
+    addFlashMessage: typeof actions.UI.FlashMessages.add;
     i18nRegistry: I18nRegistry;
     neos: NeosContextInterface;
 }> = (props) => {
@@ -60,10 +51,10 @@ const UserDropDown: React.FC<{
             <DropDown className={style.dropDown}>
                 <DropDown.Header className={style.dropDown__btn}>
                     <UserImage
-                        userFirstName={props.userFirstName}
-                        userLastName={props.userLastName}
+                        userFirstName={user.name.firstName}
+                        userLastName={user.name.lastName}
                         />
-                    <span className={style.dropDown__userName}>{props.userName}</span>
+                    <span className={style.dropDown__userName}>{user.name.fullName}</span>
                 </DropDown.Header>
                 <DropDown.Contents className={style.dropDown__contents}>
                     <li className={style.dropDown__item}>
@@ -81,13 +72,15 @@ const UserDropDown: React.FC<{
                             </button>
                         </form>
                     </li>
-                    {props.impersonateStatus === true ? (
-                        <RestoreButtonItem
-                            i18n={props.i18nRegistry}
-                            originUser={props.originUser}
-                            onClick={() => props.impersonateRestore()}
-                            />
-                    ) : null}
+                    <RestoreButtonItem
+                        i18n={props.i18nRegistry}
+                        onClick={() => props.impersonateRestore()}
+                        onError={(message) => showFlashMessage({
+                            id: 'impersonateStatusError',
+                            severity: 'error',
+                            message
+                        })}
+                        />
                 </DropDown.Contents>
             </DropDown>
         </div>

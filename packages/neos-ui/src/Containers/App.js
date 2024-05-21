@@ -6,7 +6,7 @@ import style from './style.module.css';
 
 import {FlashMessages} from '@neos-project/neos-ui-error';
 
-const App = ({globalRegistry, menu, isFullScreen, leftSidebarIsHidden, rightSidebarIsHidden}) => {
+const App = ({globalRegistry, menu, user, isFullScreen, leftSidebarIsHidden, rightSidebarIsHidden}) => {
     const containerRegistry = globalRegistry.get('containers');
 
     const Modals = containerRegistry.get('Modals');
@@ -34,7 +34,7 @@ const App = ({globalRegistry, menu, isFullScreen, leftSidebarIsHidden, rightSide
             <PrimaryToolbar/>
             <SecondaryToolbar/>
             <ContentCanvas/>
-            <Drawer menuData={menu}/>
+            <Drawer menuData={menu} user={user}/>
             <LeftSideBar/>
             <RightSideBar/>
         </div>
@@ -61,6 +61,19 @@ App.propTypes = {
             )
         })
     ).isRequired,
+    user: PropTypes.shape({
+        name: PropTypes.shape({
+            title: PropTypes.string,
+            firstName: PropTypes.string,
+            middleName: PropTypes.string,
+            lastName: PropTypes.string,
+            otherName: PropTypes.string,
+            fullName: PropTypes.string
+        }).isRequired,
+        preferences: PropTypes.shape({
+            interfaceLanguage: PropTypes.string
+        }).isRequired
+    }).isRequired,
     isFullScreen: PropTypes.bool.isRequired,
     leftSidebarIsHidden: PropTypes.bool.isRequired,
     rightSidebarIsHidden: PropTypes.bool.isRequired

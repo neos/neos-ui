@@ -23,7 +23,7 @@ namespace Neos\Neos\Ui\Domain\InitialData;
 interface UserProviderInterface
 {
     /**
-     * @return array{name:array{title:string,firstName:string,middleName:string,lastName:string,otherName:string,fullName:string},preferences:{interfaceLanguage?:string}}
+     * @return array{name:array{title:string,firstName:string,middleName:string,lastName:string,otherName:string,fullName:string},preferences:array{interfaceLanguage:null|string}}
      */
     public function getUser(): ?array;
 }

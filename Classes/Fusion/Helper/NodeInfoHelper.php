@@ -373,7 +373,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         return $uriBuilder
             ->setCreateAbsoluteUri(true)
             ->setFormat('html')
-            ->uriFor('redirectTo', ['node' => $nodeAddress->toUriString()], 'Backend', 'Neos.Neos.Ui');
+            ->uriFor('redirectTo', ['node' => $nodeAddress->toJson()], 'Backend', 'Neos.Neos.Ui');
     }
 
     /**

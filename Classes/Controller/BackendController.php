@@ -225,7 +225,7 @@ class BackendController extends ActionController
             'no-store'
         ]);
 
-        $nodeAddress = NodeAddress::fromUriString($node);
+        $nodeAddress = NodeAddress::fromJsonString($node);
 
         $this->redirectToUri(
             $this->nodeUriBuilderFactory->forRequest($this->request->getHttpRequest())

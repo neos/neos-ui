@@ -80,8 +80,8 @@ class SearchOperation extends AbstractOperation
         $matchingNodeByAggregateId = [];
         $filter = FindDescendantNodesFilter::create();
         if (isset($arguments[0]) && $arguments[0] !== '') {
-            if (NodeAggregateId::hasValidFormat($arguments[0])) {
-                $matchingNodeByAggregateId = $subgraph->findNodeById(NodeAggregateId::fromString($arguments[0]));
+            if ($nodeAggregateId = NodeAggregateId::tryFromString($arguments[0])) {
+                $matchingNodeByAggregateId = $subgraph->findNodeById($nodeAggregateId);
             }
             $filter = $filter->with(searchTerm: $arguments[0]);
         }

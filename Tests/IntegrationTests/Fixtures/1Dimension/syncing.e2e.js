@@ -144,6 +144,10 @@ async function prepareConflictBetweenAdminAndEditor(t) {
 }
 
 async function switchToRole(t, role) {
+    // We need to add a time buffer here, otherwise `t.useRole` might interrupt
+    // some long-running background process, errororing like this:
+    //  > Error: NetworkError when attempting to fetch resource.
+    await t.wait(2000);
     await t.useRole(role);
     await waitForReact(30000);
     await Page.goToPage('Home');
@@ -167,7 +171,7 @@ async function chooseDiscardAllAndFinishSynchronization(t) {
         });
     // For reasons unknown, we have to press the acknowledge button really
     // hard for testcafe to realize our intent...
-    await t.wait(200);
+    await t.wait(500);
     await t.click(Selector('#neos-DiscardDialog-Acknowledge'));
 
     //

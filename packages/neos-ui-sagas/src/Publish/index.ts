@@ -108,7 +108,23 @@ export function * watchPublishing({routes}: {routes: Routes}) {
 
                 if (conflictsWereResolved) {
                     yield put(actions.CR.Publishing.resolveConflicts());
-                    yield * attemptToPublishOrDiscard();
+
+                    //
+                    // It may happen that after conflicts are resolved, the
+                    // document we're trying to publish no longer exists.
+                    //
+                    // We need to finish the publishing operation in this
+                    // case, otherwise it'll lead to an error.
+                    //
+                    const publishingShouldContinue = scope === PublishingScope.DOCUMENT
+                        ? Boolean(yield select(selectors.CR.Nodes.byContextPathSelector(ancestorId)))
+                        : true;
+
+                    if (publishingShouldContinue) {
+                        yield * attemptToPublishOrDiscard();
+                    } else {
+                        yield put(actions.CR.Publishing.succeed(0));
+                    }
                 } else {
                     yield put(actions.CR.Publishing.cancel());
                     yield call(updateWorkspaceInfo);

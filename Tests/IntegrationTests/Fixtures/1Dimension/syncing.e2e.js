@@ -15,13 +15,38 @@ const contentIframeSelector = Selector('[name="neos-content-main"]', {timeout: 2
 
 test('Syncing: Create a conflict state between two editors and choose "Discard all" as a resolution strategy during rebase', async t => {
     await prepareConflictBetweenAdminAndEditor(t);
-    await chooseDiscardAllAndFinishSynchronization(t);
+    await chooseDiscardAllAsResolutionStrategy(t);
+    await confirmAndPerformDiscardAll(t);
+    await finishSynchronization(t);
     await assertThatSynchronizationWasSuccessful(t);
 });
 
 test('Syncing: Create a conflict state between two editors and choose "Drop conflicting changes" as a resolution strategy during rebase', async t => {
     await prepareConflictBetweenAdminAndEditor(t);
-    await chooseDropConflictingChangesAndFinishSynchronization(t);
+    await chooseDropConflictingChangesAsResolutionStrategy(t);
+    await confirmDropConflictingChanges(t);
+    await finishSynchronization(t);
+    await assertThatSynchronizationWasSuccessful(t);
+});
+
+test('Syncing: Create a conflict state between two editors, start and cancel resolution, then restart and choose "Drop conflicting changes" as a resolution strategy during rebase', async t => {
+    await prepareConflictBetweenAdminAndEditor(t);
+    await cancelResolutionDuringStrategyChoice(t);
+    await startSynchronization(t);
+    await assertThatConflictResolutionHasStarted(t);
+    await chooseDropConflictingChangesAsResolutionStrategy(t);
+    await confirmDropConflictingChanges(t);
+    await finishSynchronization(t);
+    await assertThatSynchronizationWasSuccessful(t);
+});
+
+test('Syncing: Create a conflict state between two editors and choose "Drop conflicting changes" as a resolution strategy, then cancel and choose "Discard all" as a resolution strategy during rebase', async t => {
+    await prepareConflictBetweenAdminAndEditor(t);
+    await chooseDropConflictingChangesAsResolutionStrategy(t);
+    await cancelDropConflictingChanges(t);
+    await chooseDiscardAllAsResolutionStrategy(t);
+    await confirmAndPerformDiscardAll(t);
+    await finishSynchronization(t);
     await assertThatSynchronizationWasSuccessful(t);
 });
 
@@ -73,8 +98,7 @@ async function prepareConflictBetweenAdminAndEditor(t) {
     await t.eval(() => location.reload(true));
     await waitForReact(30000);
     await Page.waitForIframeLoading();
-    await t.click(Selector('#neos-workspace-rebase'));
-    await t.click(Selector('#neos-SyncWorkspace-Confirm'));
+    await startSynchronization(t);
     await t.wait(1000);
 
     //
@@ -135,12 +159,8 @@ async function prepareConflictBetweenAdminAndEditor(t) {
     //
     // Sync changes from "editor"
     //
-    await t.click(Selector('#neos-workspace-rebase'));
-    await t.click(Selector('#neos-SyncWorkspace-Confirm'));
-    await t.expect(Selector('#neos-SelectResolutionStrategy-SelectBox').exists)
-        .ok('Select box for resolution strategy slection is not available', {
-            timeout: 30000
-        });
+    await startSynchronization(t);
+    await assertThatConflictResolutionHasStarted(t);
 }
 
 async function switchToRole(t, role) {
@@ -153,17 +173,22 @@ async function switchToRole(t, role) {
     await Page.goToPage('Home');
 }
 
-async function chooseDiscardAllAndFinishSynchronization(t) {
-    //
-    // Choose "Discard All" as resolution strategy
-    //
+async function startSynchronization(t) {
+    await t.click(Selector('#neos-workspace-rebase'));
+    await t.click(Selector('#neos-SyncWorkspace-Confirm'));
+}
+
+async function cancelResolutionDuringStrategyChoice(t) {
+    await t.click(Selector('#neos-SelectResolutionStrategy-Cancel'));
+}
+
+async function chooseDiscardAllAsResolutionStrategy(t) {
     await t.click(Selector('#neos-SelectResolutionStrategy-SelectBox'));
     await t.click(Selector('[role="button"]').withText('Discard workspace "user-admin"'));
     await t.click(Selector('#neos-SelectResolutionStrategy-Accept'));
+}
 
-    //
-    // Go through discard workflow
-    //
+async function confirmAndPerformDiscardAll(t) {
     await t.click(Selector('#neos-DiscardDialog-Confirm'));
     await t.expect(Selector('#neos-DiscardDialog-Acknowledge').exists)
         .ok('Acknowledge button for "Discard all" is not available.', {
@@ -173,35 +198,35 @@ async function chooseDiscardAllAndFinishSynchronization(t) {
     // hard for testcafe to realize our intent...
     await t.wait(500);
     await t.click(Selector('#neos-DiscardDialog-Acknowledge'));
-
-    //
-    // Synchronization should restart automatically,
-    // so we must wait for it to succeed
-    //
-    await t.expect(Selector('#neos-SyncWorkspace-Acknowledge').exists)
-        .ok('Acknowledge button for "Sync Workspace" is not available.', {
-            timeout: 30000
-        });
-    await t.click(Selector('#neos-SyncWorkspace-Acknowledge'));
 }
 
-async function chooseDropConflictingChangesAndFinishSynchronization(t) {
-    //
-    // Choose "Drop conflicting changes" as resolution strategy
-    //
+async function chooseDropConflictingChangesAsResolutionStrategy(t) {
     await t.click(Selector('#neos-SelectResolutionStrategy-SelectBox'));
     await t.click(Selector('[role="button"]').withText('Drop conflicting changes'));
     await t.click(Selector('#neos-SelectResolutionStrategy-Accept'));
+}
 
-    //
-    // Confirm the strategy
-    //
+async function confirmDropConflictingChanges(t) {
     await t.click(Selector('#neos-ResolutionStrategyConfirmation-Confirm'));
+}
+
+async function cancelDropConflictingChanges(t) {
+    await t.click(Selector('#neos-ResolutionStrategyConfirmation-Cancel'));
+}
+
+async function finishSynchronization(t) {
     await t.expect(Selector('#neos-SyncWorkspace-Acknowledge').exists)
-        .ok('Acknowledge button for "Sync Workspace" is not available.', {
+    .ok('Acknowledge button for "Sync Workspace" is not available.', {
+        timeout: 30000
+    });
+    await t.click(Selector('#neos-SyncWorkspace-Acknowledge'));
+}
+
+async function assertThatConflictResolutionHasStarted(t) {
+    await t.expect(Selector('#neos-SelectResolutionStrategy-SelectBox').exists)
+        .ok('Select box for resolution strategy slection is not available', {
             timeout: 30000
         });
-    await t.click(Selector('#neos-SyncWorkspace-Acknowledge'));
 }
 
 async function assertThatSynchronizationWasSuccessful(t) {

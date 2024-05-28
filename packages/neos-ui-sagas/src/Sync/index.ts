@@ -95,35 +95,37 @@ export const makeResolveConflicts = (deps: {
     const discardAll = makeDiscardAll(deps);
 
     function * resolveConflicts(conflicts: Conflict[]): any {
-        yield put(actions.CR.Syncing.resolve(conflicts));
+        while (true) {
+            yield put(actions.CR.Syncing.resolve(conflicts));
 
-        const {started}: {
-            cancelled: null | ReturnType<typeof actions.CR.Syncing.cancel>;
-            started: null | ReturnType<typeof actions.CR.Syncing.selectResolutionStrategy>;
-        } = yield race({
-            cancelled: take(actionTypes.CR.Syncing.CANCELLED),
-            started: take(actionTypes.CR.Syncing.RESOLUTION_STARTED)
-        });
+            const {started}: {
+                cancelled: null | ReturnType<typeof actions.CR.Syncing.cancel>;
+                started: null | ReturnType<typeof actions.CR.Syncing.selectResolutionStrategy>;
+            } = yield race({
+                cancelled: take(actionTypes.CR.Syncing.CANCELLED),
+                started: take(actionTypes.CR.Syncing.RESOLUTION_STARTED)
+            });
 
-        if (started) {
-            const {payload: {strategy}} = started;
+            if (started) {
+                const {payload: {strategy}} = started;
 
-            if (strategy === ResolutionStrategy.FORCE) {
-                if (yield * waitForResolutionConfirmation()) {
-                    yield * deps.syncPersonalWorkspace(true);
-                    return true;
+                if (strategy === ResolutionStrategy.FORCE) {
+                    if (yield * waitForResolutionConfirmation()) {
+                        yield * deps.syncPersonalWorkspace(true);
+                        return true;
+                    }
+
+                    continue;
                 }
 
-                return false;
+                if (strategy === ResolutionStrategy.DISCARD_ALL) {
+                    yield * discardAll();
+                    return true;
+                }
             }
 
-            if (strategy === ResolutionStrategy.DISCARD_ALL) {
-                yield * discardAll();
-                return true;
-            }
+            return false;
         }
-
-        return false;
     }
 
     return resolveConflicts;

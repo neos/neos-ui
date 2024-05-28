@@ -19,7 +19,6 @@ use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Flow\Security\Context;
-use Neos\Flow\Session\SessionInterface;
 use Neos\Neos\Domain\Repository\DomainRepository;
 use Neos\Neos\Domain\Repository\SiteRepository;
 use Neos\Neos\Domain\Service\NodeTypeNameFactory;
@@ -70,12 +69,6 @@ class BackendController extends ActionController
      * @var PersistenceManagerInterface
      */
     protected $persistenceManager;
-
-    /**
-     * @Flow\Inject
-     * @var SessionInterface
-     */
-    protected $session;
 
     /**
      * @Flow\Inject
@@ -138,8 +131,6 @@ class BackendController extends ActionController
 
         $nodeAddress = $node !== null ? NodeAddressFactory::create($contentRepository)->createFromUriString($node) : null;
         unset($node);
-        $this->session->start();
-        $this->session->putData('__neosLegacyUiEnabled__', false);
         $user = $this->userService->getBackendUser();
 
         if ($user === null) {
@@ -180,7 +171,6 @@ class BackendController extends ActionController
         );
 
         if (!$nodeAddress) {
-            // TODO: fix resolving node address from session?
             $node = $siteNode;
         } else {
             $node = $subgraph->findNodeById($nodeAddress->nodeAggregateId);

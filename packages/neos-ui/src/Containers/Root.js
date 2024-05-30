@@ -21,7 +21,7 @@ library.add(fab, fas, far);
 
 class Root extends PureComponent {
     render() {
-        const {store, globalRegistry, configuration, menu, user, routes} = this.props;
+        const {store, globalRegistry, configuration, menu, routes} = this.props;
 
         const containerRegistry = globalRegistry.get('containers');
         const App = containerRegistry.get('App');
@@ -36,7 +36,7 @@ class Root extends PureComponent {
                                 configuration={configuration}
                                 routes={routes}
                                 >
-                                <App globalRegistry={globalRegistry} menu={menu} user={user}/>
+                                <App globalRegistry={globalRegistry} menu={menu}/>
                             </Neos>
                         </DndProvider>
                     </Provider>
@@ -69,19 +69,6 @@ Root.propTypes = {
             )
         })
     ).isRequired,
-    user: PropTypes.shape({
-        name: PropTypes.shape({
-            title: PropTypes.string,
-            firstName: PropTypes.string,
-            middleName: PropTypes.string,
-            lastName: PropTypes.string,
-            otherName: PropTypes.string,
-            fullName: PropTypes.string
-        }).isRequired,
-        preferences: PropTypes.shape({
-            interfaceLanguage: PropTypes.string
-        }).isRequired
-    }).isRequired,
     routes: PropTypes.object.isRequired
 };
 

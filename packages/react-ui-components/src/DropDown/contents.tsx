@@ -214,25 +214,22 @@ export default class ShallowDropDownContents extends PureComponent<ShallowDropDo
             }
         );
 
-        if (isOpen) {
-            const contents = (
-                <ul
-                    className={finalClassName}
-                    aria-hidden={isOpen ? 'false' : 'true'}
-                    aria-label="dropdown"
-                    role="listbox"
-                    onClick={closeDropDown}
-                    style={this.state.style}
-                    data-ignore_click_outside={true}
-                >
-                    {children}
-                </ul>
-            );
+        const contents = (
+            <ul
+                className={finalClassName}
+                aria-hidden={isOpen ? 'false' : 'true'}
+                aria-label="dropdown"
+                role="listbox"
+                onClick={closeDropDown}
+                style={this.state.style}
+                data-ignore_click_outside={true}
+            >
+                {children}
+            </ul>
+        );
 
-            return scrollable
-                ? ReactDOM.createPortal(contents, document.body)
-                : contents;
-        }
-        return null;
+        return scrollable
+            ? ReactDOM.createPortal(contents, document.body)
+            : contents;
     }
 }

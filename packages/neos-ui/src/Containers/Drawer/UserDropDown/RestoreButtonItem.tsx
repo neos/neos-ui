@@ -14,6 +14,8 @@ import I18n from '@neos-project/neos-ui-i18n';
 import {I18nRegistry} from '@neos-project/neos-ts-interfaces';
 import backend from '@neos-project/neos-ui-backend-connector';
 
+import {routes} from '../../../System';
+
 import buttonTheme from './style.module.css';
 
 type ImpersonateAccount = {
@@ -31,8 +33,9 @@ export const RestoreButtonItem: React.FC<{
     originUser?: {
         fullName: string;
     };
-    onClick: () => void;
-    onError: (message: string) => void;
+    onLoadError: (message: string) => void;
+    onRestoreSuccess: (message: string) => void;
+    onRestoreError: (message: string) => void;
     i18n: I18nRegistry;
 }> = (props) => {
     const [impersonateStatus, setImpersonateStatus] = React.useState<null | ImpersonateStatus>(null);
@@ -42,6 +45,42 @@ export const RestoreButtonItem: React.FC<{
         {},
         'Neos.Neos',
         'Main'
+    );
+    const errorMessage = props.i18n.translate(
+        'impersonate.error.restoreUser',
+        'Could not switch back to the original user.',
+        {},
+        'Neos.Neos',
+        'Main'
+    );
+    const handleClick = React.useCallback(
+        async function restoreOriginalUser() {
+            const {impersonateRestore} = backend.get().endpoints;
+            const feedback = await impersonateRestore();
+            const originUser = feedback?.origin?.accountIdentifier;
+            const user = feedback?.impersonate?.accountIdentifier;
+            const status = feedback?.status;
+
+            const restoreMessage = props.i18n.translate(
+                'impersonate.success.restoreUser',
+                'Switched back from {0} to the orginal user {1}.',
+                {
+                    0: user,
+                    1: originUser
+                },
+                'Neos.Neos',
+                'Main'
+            );
+
+            if (status) {
+                props.onRestoreSuccess(restoreMessage);
+            } else {
+                props.onRestoreError(errorMessage);
+            }
+
+            window.location.href = routes?.core?.modules?.defaultModule;
+        },
+        [props.i18n]
     );
 
     React.useEffect(
@@ -57,7 +96,7 @@ export const RestoreButtonItem: React.FC<{
                         setImpersonateStatus(impersonateStatus);
                     }
                 } catch (error) {
-                    props.onError((error as Error).message);
+                    props.onLoadError((error as Error).message);
                 }
             })();
         },
@@ -76,7 +115,7 @@ export const RestoreButtonItem: React.FC<{
         <li className={buttonTheme.dropDown__item}>
             <button
                 title={title}
-                onClick={props.onClick}
+                onClick={handleClick}
             >
                 <Icon
                     icon="random"

@@ -29,7 +29,7 @@ import {user} from '../../../System';
 
 const withReduxState = connect(() => ({
 }), {
-    impersonateRestore: actions.User.Impersonate.restore,
+    impersonateRestore: actions.User.Impersonate.restore
 });
 
 const withNeosGlobals = neos(globalRegistry => ({
@@ -37,7 +37,6 @@ const withNeosGlobals = neos(globalRegistry => ({
 }));
 
 const UserDropDown: React.FC<{
-    impersonateRestore: () => void;
     addFlashMessage: typeof actions.UI.FlashMessages.add;
     i18nRegistry: I18nRegistry;
     neos: NeosContextInterface;
@@ -74,10 +73,19 @@ const UserDropDown: React.FC<{
                     </li>
                     <RestoreButtonItem
                         i18n={props.i18nRegistry}
-                        onClick={() => props.impersonateRestore()}
-                        onError={(message) => showFlashMessage({
+                        onLoadError={(message) => showFlashMessage({
                             id: 'impersonateStatusError',
                             severity: 'error',
+                            message
+                        })}
+                        onRestoreSuccess={(message) => showFlashMessage({
+                            id: 'restoreUserImpersonateUser',
+                            severity: 'success',
+                            message
+                        })}
+                        onRestoreError={(message) => showFlashMessage({
+                            id: 'restoreUserImpersonateUser',
+                            severity: 'success',
                             message
                         })}
                         />

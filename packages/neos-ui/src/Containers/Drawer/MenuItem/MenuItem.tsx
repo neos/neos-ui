@@ -17,7 +17,7 @@ import style from '../style.module.css';
 import {TARGET_WINDOW} from '../constants';
 
 export const MenuItem: React.FC<{
-    icon: string;
+    icon?: string;
     label: string;
     uri?: string;
     target?: string;

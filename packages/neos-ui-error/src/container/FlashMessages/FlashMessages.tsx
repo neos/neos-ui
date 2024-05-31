@@ -14,7 +14,7 @@ import {connect} from 'react-redux';
 import {actions} from '@neos-project/neos-ui-redux-store';
 import {GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
 
-import FlashMessage from './FlashMessage';
+import {FlashMessage} from './FlashMessage';
 
 import style from './style.module.css';
 

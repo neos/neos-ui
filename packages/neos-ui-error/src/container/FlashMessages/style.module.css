@@ -1,3 +1,19 @@
+.flashMessageContainer {
+    position: fixed;
+    z-index: var(--zIndex-FlashMessageContainer);
+    top: 0;
+    left: 50%;
+    width: 516px;
+    margin-top: 8px;
+    transform: translate(-50%, 0);
+    max-height: calc(100% - 16px);
+    overflow: auto;
+
+    &:empty {
+        display: none;
+    }
+}
+
 .flashMessage {
     color: white;
     font-size: 14px;
@@ -30,7 +46,7 @@
     position: absolute;
     left: 0;
     top: 0;
-    height: 100%;
+    height: 100% !important;
     line-height: var(--spacing-GoldenUnit);
     width: var(--spacing-GoldenUnit) !important;
     text-align: center;

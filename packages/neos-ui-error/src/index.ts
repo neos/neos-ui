@@ -17,5 +17,6 @@ export type {
 export {
     ErrorBoundary,
     ErrorView,
+    FlashMessages,
     terminateDueToFatalInitializationError
 } from './container';

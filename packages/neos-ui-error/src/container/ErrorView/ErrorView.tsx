@@ -11,7 +11,7 @@ import React from 'react';
 
 import I18n from '@neos-project/neos-ui-i18n';
 
-import {AnyError, isECMAScriptError, isServerSideError, isStringError} from './types';
+import {AnyError, isECMAScriptError, isServerSideError, isStringError} from '../../types';
 
 import style from './style.module.css';
 

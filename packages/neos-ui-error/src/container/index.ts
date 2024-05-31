@@ -7,11 +7,4 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-export type {
-    ECMAScriptError as ClientSideError,
-    ServerSideError,
-    StringError,
-    AnyError
-} from './types';
-
-export {ErrorView} from './container';
+export {ErrorView} from './ErrorView';

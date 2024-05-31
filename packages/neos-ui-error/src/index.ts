@@ -14,4 +14,8 @@ export type {
     AnyError
 } from './types';
 
-export {ErrorBoundary, ErrorView} from './container';
+export {
+    ErrorBoundary,
+    ErrorView,
+    terminateDueToFatalInitializationError
+} from './container';

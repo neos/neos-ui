@@ -2442,6 +2442,7 @@ __metadata:
   resolution: "@neos-project/neos-ui-error@workspace:packages/neos-ui-error"
   dependencies:
     "@neos-project/neos-ui-i18n": "workspace:*"
+    "@neos-project/react-ui-components": "workspace:*"
     classnames: ^2.2.3
     react: ^16.12.0
   languageName: unknown

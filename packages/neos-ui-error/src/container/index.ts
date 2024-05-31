@@ -7,5 +7,5 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-export {ErrorBoundary} from './ErrorBoundary';
+export {ErrorBoundary, terminateDueToFatalInitializationError} from './ErrorBoundary';
 export {ErrorView} from './ErrorView';

@@ -1,5 +1,13 @@
+/*
+ * This file is part of the Neos.Neos.Ui package.
+ *
+ * (c) Contributors of the Neos Project - www.neos.io
+ *
+ * This package is Open Source Software. For the full copyright and license
+ * information, please view the LICENSE file which was distributed with this
+ * source code.
+ */
 import React from 'react';
-import styles from './style.module.css';
 
 // @ts-ignore
 import Logo from '@neos-project/react-ui-components/src/Logo';
@@ -7,7 +15,9 @@ import Button from '@neos-project/react-ui-components/src/Button';
 import Icon from '@neos-project/react-ui-components/src/Icon';
 import {I18nRegistry} from '@neos-project/neos-ts-interfaces';
 
-class ErrorBoundary extends React.Component<
+import styles from './style.module.css';
+
+export class ErrorBoundary extends React.Component<
     { children: React.ReactNode, i18nRegistry: I18nRegistry },
     { error: any }
 > {
@@ -97,4 +107,3 @@ const ErrorFallback = (props: { error: any, i18nRegistry: I18nRegistry }) => {
     </div>;
 };
 
-export default ErrorBoundary;

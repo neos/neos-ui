@@ -1,6 +1,6 @@
 import logo from '@neos-project/react-ui-components/src/Logo/logo.svg';
 
-import styles from '../Containers/ErrorBoundary/style.module.css';
+import styles from '@neos-project/neos-ui-error/src/container/ErrorBoundary/style.module.css';
 
 export function terminateDueToFatalInitializationError(reason) {
     if (!document.body) {

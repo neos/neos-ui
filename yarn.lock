@@ -2277,6 +2277,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@neos-project/framework-observable-react@workspace:packages/framework-observable-react":
+  version: 0.0.0-use.local
+  resolution: "@neos-project/framework-observable-react@workspace:packages/framework-observable-react"
+  dependencies:
+    "@neos-project/framework-observable": "workspace:*"
+    react: ^16.12.0
+  languageName: unknown
+  linkType: soft
+
 "@neos-project/framework-observable@workspace:*, @neos-project/framework-observable@workspace:packages/framework-observable":
   version: 0.0.0-use.local
   resolution: "@neos-project/framework-observable@workspace:packages/framework-observable"

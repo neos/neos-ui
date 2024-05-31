@@ -2277,6 +2277,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@neos-project/framework-observable@workspace:*, @neos-project/framework-observable@workspace:packages/framework-observable":
+  version: 0.0.0-use.local
+  resolution: "@neos-project/framework-observable@workspace:packages/framework-observable"
+  languageName: unknown
+  linkType: soft
+
 "@neos-project/jest-preset-neos-ui@workspace:*, @neos-project/jest-preset-neos-ui@workspace:packages/jest-preset-neos-ui":
   version: 0.0.0-use.local
   resolution: "@neos-project/jest-preset-neos-ui@workspace:packages/jest-preset-neos-ui"

@@ -8,32 +8,55 @@
  * source code.
  */
 import React from 'react';
-// @ts-ignore
-import {connect} from 'react-redux';
 
-import {actions} from '@neos-project/neos-ui-redux-store';
-import {GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
+import {createState} from '@neos-project/framework-observable';
+import {useLatestState} from '@neos-project/framework-observable-react';
 
 import {FlashMessage} from './FlashMessage';
 
+import {Severity} from '../../types';
+
 import style from './style.module.css';
 
-const withReduxState = connect((state: GlobalState) => ({
-    flashMessages: state?.ui?.flashMessages
-}), {
-    removeMessage: actions.UI.FlashMessages.remove
-});
+const flashMessages$ = createState<Record<string, {
+    id: string;
+    message: string;
+    severity: Severity;
+    timeout?: number;
+}>>({});
 
-const StatelessFlashMessages: React.FC<{
-    flashMessages: Record<string, {
-        id: string;
-        message: string;
-        severity: 'success' | 'error' | 'info';
-        timeout?: number;
-    }>;
-    removeMessage: (id: string) => void;
-}> = (props) => {
-    const {flashMessages, removeMessage} = props;
+export function showFlashMessage(flashMessage: {
+    id: string;
+    message: string;
+    severity?: Severity;
+    timeout?: number;
+}) {
+    const flashMessageWithDefaults = {
+        id: flashMessage.id,
+        message: flashMessage.message,
+        severity: flashMessage.severity ?? 'info',
+        timeout: flashMessage.timeout
+    };
+
+    flashMessages$.update((flashMessages) => ({
+        ...flashMessages,
+        [flashMessageWithDefaults.id]: flashMessageWithDefaults
+    }));
+}
+
+function removeFlashMessage(id: string) {
+    flashMessages$.update((flashMessages) => {
+        const {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            [id]: _,
+            ...remainingFlashMessages
+        } = flashMessages;
+        return remainingFlashMessages;
+    });
+}
+
+export const FlashMessages: React.FC = () => {
+    const flashMessages = useLatestState(flashMessages$);
 
     return (
         <div className={style.flashMessageContainer}>
@@ -48,12 +71,10 @@ const StatelessFlashMessages: React.FC<{
                         message={message}
                         severity={severity}
                         timeout={timeout}
-                        onClose={removeMessage}
+                        onClose={removeFlashMessage}
                         />
                 );
             })}
         </div>
     );
 }
-
-export const FlashMessages = withReduxState(StatelessFlashMessages);

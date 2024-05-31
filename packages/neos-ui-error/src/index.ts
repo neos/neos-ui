@@ -11,12 +11,14 @@ export type {
     ECMAScriptError as ClientSideError,
     ServerSideError,
     StringError,
-    AnyError
+    AnyError,
+    Severity
 } from './types';
 
 export {
     ErrorBoundary,
     ErrorView,
     FlashMessages,
+    showFlashMessage,
     terminateDueToFatalInitializationError
 } from './container';

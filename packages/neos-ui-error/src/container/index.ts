@@ -9,4 +9,4 @@
  */
 export {ErrorBoundary, terminateDueToFatalInitializationError} from './ErrorBoundary';
 export {ErrorView} from './ErrorView';
-export {FlashMessages} from './FlashMessages';
+export {FlashMessages, showFlashMessage} from './FlashMessages';

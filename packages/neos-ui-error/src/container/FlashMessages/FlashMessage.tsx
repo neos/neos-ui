@@ -12,12 +12,14 @@ import mergeClassNames from 'classnames';
 
 import {IconButton, Icon} from '@neos-project/react-ui-components';
 
+import {Severity} from '../../types';
+
 import style from './style.module.css';
 
 export const FlashMessage: React.FC<{
     id: string;
     message: string;
-    severity: 'success' | 'error' | 'info';
+    severity: Severity;
     timeout?: number;
 
     onClose: (id: string) => void;

@@ -7,4 +7,4 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-export {FlashMessages} from './FlashMessages';
+export {FlashMessages, showFlashMessage} from './FlashMessages';

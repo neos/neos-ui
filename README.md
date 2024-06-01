@@ -60,7 +60,7 @@ However, if you want to stay on bleeding-edge, or want to help out developing, y
 need the `9.0.x-dev` release. You can install the latest release using:
 
 ```
-composer require neos/neos-ui-compiled:9.0.x-dev neos/neos-ui:9.0.x-dev
+composer require neos/neos-ui-compiled:9.0.x-dev neos/neos-ui:9.0.x-dev --prefer-source
 ```
 
 ## Contributing

@@ -224,7 +224,7 @@ class BackendController extends ActionController
         $reflectionMethod->setAccessible(true);
         $node = $reflectionMethod->invoke($this->backendRedirectionService, $siteNode->getContext()->getWorkspaceName());
 
-        if ($node === null) {
+        if ($node === null || !str_starts_with($node->findNodePath()->jsonSerialize(), $siteNode->findNodePath()->jsonSerialize())) {
             $node = $siteNode;
         }
 

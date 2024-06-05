@@ -161,7 +161,6 @@ export default class DimensionSwitcher extends PureComponent {
 
     handleToggle = () => {
         this.setState({isOpen: !this.state.isOpen});
-
     }
 
     handleClose = () => {
@@ -211,7 +210,7 @@ export default class DimensionSwitcher extends PureComponent {
                 </div>
             )
         }
-        
+
         if (contentDimensionsObjectKeys.length > 1) {
             return (
                 <DropDown.Stateless

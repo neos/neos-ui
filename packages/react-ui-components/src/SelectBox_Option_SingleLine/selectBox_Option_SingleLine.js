@@ -39,7 +39,7 @@ class SelectBox_Option_SingleLine extends PureComponent {
         });
         const linkClassname = mergeClassNames({
             [style.dropdownLink]: true,
-            [style.hasIcon]: (option.icon || icon ? true: false)
+            [style.hasIcon]: (Boolean(option.icon || icon))
         });
 
         const previewElementIcon = option.icon ? option.icon : (icon ? icon : null);

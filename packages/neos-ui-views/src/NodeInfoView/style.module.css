@@ -5,6 +5,7 @@
 }
 
 .nodeInfoView__item {
+    position: relative;
     background-color: var(--colors-ContrastDarkest);
     padding: 8px 12px;
     margin-bottom: 1px;
@@ -32,4 +33,22 @@
     color: var(--colors-ContrastBright);
     hyphenate-character: '';
     word-wrap: break-word;
+}
+
+.nodeInfoView__nodeTypeTextarea {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    border: 0;
+    position: absolute;
+}
+
+.nodeInfoView__copyButton {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 30px;
+    min-width: 30px;
+    height: 30px;
 }

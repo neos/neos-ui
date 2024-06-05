@@ -44,7 +44,7 @@ test('Can edit the page title via inspector', async t => {
     await t
         .click(InspectorTitleProperty)
         .typeText(InspectorTitleProperty, '-2')
-        .click(Selector('[name="neos-content-main"]'))
+        .click(Selector('#neos-Inspector'), {offsetX: -400}) // hack to click into the iframe even with overlaying changes div in dom
         .expect(Selector('#neos-UnappliedChangesDialog').exists)
         .ok()
         .click(Selector('#neos-UnappliedChangesDialog-resume'))
@@ -55,7 +55,7 @@ test('Can edit the page title via inspector', async t => {
 
     subSection('Test unapplied changes dialog - discard');
     await t
-        .click(Selector('[name="neos-content-main"]'))
+        .click(Selector('#neos-Inspector'), {offsetX: -400}) // hack to click into the iframe even with overlaying changes div in dom
         .click(Selector('#neos-UnappliedChangesDialog-discard'))
         .expect(InspectorTitleProperty.value)
         .eql('Home-1');
@@ -63,11 +63,11 @@ test('Can edit the page title via inspector', async t => {
     subSection('Test unapplied changes dialog - apply');
     await t
         .typeText(InspectorTitleProperty, '-3')
-        .click(Selector('[name="neos-content-main"]'))
+        .click(Selector('#neos-Inspector'), {offsetX: -400}) // hack to click into the iframe even with overlaying changes div in dom
         .click(Selector('#neos-UnappliedChangesDialog-apply'))
         .expect(InspectorTitleProperty.value)
         .eql('Home-1-3')
-        .click(Selector('[name="neos-content-main"]'))
+        .click(Selector('#neos-Inspector'), {offsetX: -400}) // hack to click into the iframe even with overlaying changes div in dom
         .expect(Selector('#neos-UnappliedChangesDialog').exists)
         .notOk();
 });

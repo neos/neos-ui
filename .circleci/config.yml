@@ -43,7 +43,7 @@ aliases:
 jobs:
   checkout:
     docker:
-      - image: cimg/node:16.17-browsers
+      - image: cimg/node:20.9-browsers
     environment:
       FLOW_CONTEXT: Production
     steps:
@@ -107,15 +107,46 @@ jobs:
 
       - run: curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
       - run: chmod +x ~/.nvm/nvm.sh
-      - run: |
-          export NVM_DIR="$HOME/.nvm"
-          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-          cd /home/circleci/app/Packages/Application/Neos.Neos.Ui
-          nvm install
-          nvm use
-          make test-e2e-saucelabs
+      - run:
+          no_output_timeout: 30m
+          command: |
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            cd /home/circleci/app/Packages/Application/Neos.Neos.Ui
+            nvm install
+            nvm use
+            make test-e2e-saucelabs > /home/circleci/app/Data/Logs/AcceptanceTesting.log
       - store_artifacts:
           path: /home/circleci/app/Data/Logs
+      - persist_to_workspace:
+          root: /home/circleci/app/Data/Logs
+          paths:
+            - .
+
+  post-acceptance-tests-recordings:
+    environment:
+      FLOW_CONTEXT: Production
+    docker:
+      - image: cimg/php:8.2-node
+
+    steps:
+      - attach_workspace:
+          at: /home/circleci/app
+      - run:
+          name: Install GitHub CLI and jq
+          command: |
+            type -p curl >/dev/null || (sudo apt update && sudo apt install curl -y)
+            curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
+            && sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
+            && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+            && sudo apt update \
+            && sudo apt install gh -y
+      - run:
+          name: Run Script
+          command: |
+            JOB_IDS=$(cat /home/circleci/app/AcceptanceTesting.log | grep -o 'https://app.saucelabs.com/tests/[a-zA-Z0-9]\+' | sed 's/.*\///')
+            echo "Job IDs: $JOB_IDS"
+            /home/circleci/app/Build/comment-acceptance-tests.sh "$JOB_IDS" "$(basename "$CIRCLE_PULL_REQUEST")"
 
   php-unittests:
     environment:
@@ -155,6 +186,9 @@ workflows:
       - e2e:
           requires:
             - build_flow_app
+      - post-acceptance-tests-recordings:
+          requires:
+            - e2e
       - php-unittests:
           requires:
             - build_flow_app

@@ -16,19 +16,17 @@ That means:
 
 ### Currently maintained versions
 
+* NeosCMS version 8.3: branch 8.3
+* NeosCMS version 8.3: branch 8.4
+* NeosCMS version 9.0: branch 9.0
+* latest development happens currently in the 8.4 and 9.0 branch
+
+#### Releases with just security updates
+
 * NeosCMS version 7.3: branch 7.3
 * NeosCMS version 8.0: branch 8.0
 * NeosCMS version 8.1: branch 8.1
 * NeosCMS version 8.2: branch 8.2
-* NeosCMS version 8.3: branch 8.3
-* latest development happens currently in the 8.4 branch
-
-#### Releases with just security updates
-
-* NeosCMS version 5.3: branch 5.3
-* NeosCMS version 7.0: branch 7.0
-* NeosCMS version 7.1: branch 7.1
-* NeosCMS version 7.2: branch 7.2
 
 ## Browser support
 
@@ -124,13 +122,6 @@ on how to write meaningful descriptions for your contributions.
 To do the upmerge run the following commands
 
 ```
-git checkout 7.0 && git fetch && git reset --hard origin/7.0 && git merge --no-ff --no-commit origin/5.3
-# review and `git commit`
-git checkout 7.1 && git fetch && git reset --hard origin/7.1 && git merge --no-ff --no-commit origin/7.0
-# review and `git commit`
-git checkout 7.2 && git fetch && git reset --hard origin/7.2 && git merge --no-ff --no-commit origin/7.1
-# review and `git commit`
-git checkout 7.3 && git fetch && git reset --hard origin/7.3 && git merge --no-ff --no-commit origin/7.2
 # review and `git commit`
 git checkout 8.0 && git fetch && git reset --hard origin/8.0 && git merge --no-ff --no-commit origin/7.3
 # review and `git commit`

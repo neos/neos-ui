@@ -13,6 +13,7 @@ import {dndTypes} from '@neos-project/neos-ui-constants';
 import {PageTreeNode, ContentTreeNode} from './Node/index';
 
 import style from './style.module.css';
+import {neos} from '@neos-project/neos-ui-decorators';
 
 const ConnectedDragLayer = connect((state, {currentlyDraggedNodes}) => {
     const getNodeByContextPath = selectors.CR.Nodes.nodeByContextPath(state);
@@ -28,11 +29,15 @@ export default class NodeTree extends PureComponent {
         allowOpeningNodesInNewWindow: PropTypes.bool,
         nodeTypeRole: PropTypes.string,
         toggle: PropTypes.func,
+        collapseAll: PropTypes.func,
         focus: PropTypes.func,
         requestScrollIntoView: PropTypes.func,
         setActiveContentCanvasSrc: PropTypes.func,
         setActiveContentCanvasContextPath: PropTypes.func,
-        moveNodes: PropTypes.func
+        moveNodes: PropTypes.func,
+        allCollapsibleNodes: PropTypes.object,
+        loadingDepth: PropTypes.number,
+        i18nRegistry: PropTypes.object.isRequired
     };
 
     state = {
@@ -43,6 +48,25 @@ export default class NodeTree extends PureComponent {
         const {toggle} = this.props;
 
         toggle(contextPath);
+    }
+
+    handleCollapseAll = () => {
+        const {collapseAll, allCollapsibleNodes, rootNode, loadingDepth} = this.props
+        let nodeContextPaths = []
+        const collapsedByDefaultNodesContextPaths = []
+
+        Object.values(allCollapsibleNodes).forEach(node => {
+            const collapsedByDefault = loadingDepth === 0 ? false : node.depth - rootNode.depth >= loadingDepth
+            if (collapsedByDefault) {
+                collapsedByDefaultNodesContextPaths.push(node.contextPath)
+            } else {
+                nodeContextPaths.push(node.contextPath)
+            }
+        });
+
+        // Do not Collapse RootNode
+        nodeContextPaths = nodeContextPaths.filter(i => i !== rootNode.contextPath);
+        collapseAll(nodeContextPaths, collapsedByDefaultNodesContextPaths);
     }
 
     handleFocus = (contextPath, metaKeyPressed, altKeyPressed, shiftKeyPressed) => {
@@ -95,8 +119,14 @@ export default class NodeTree extends PureComponent {
     }
 
     handleDrop = (targetNode, position) => {
-        const {currentlyDraggedNodes} = this.state;
+        let {currentlyDraggedNodes} = this.state;
         const {moveNodes, focus} = this.props;
+
+        if (position === 'after') {
+            // Reverse the order of nodes to keep the correct order after each node is inserted after the target node individually
+            currentlyDraggedNodes = Array.from(currentlyDraggedNodes).reverse();
+        }
+
         moveNodes(currentlyDraggedNodes, $get('contextPath', targetNode), position);
         // We need to refocus the tree, so all focus would be reset, because its context paths have changed while moving
         // Could be removed with the new CR
@@ -108,7 +138,7 @@ export default class NodeTree extends PureComponent {
     }
 
     render() {
-        const {rootNode, ChildRenderer} = this.props;
+        const {rootNode, ChildRenderer, i18nRegistry} = this.props;
         if (!rootNode) {
             return (
                 <div className={style.loader}>
@@ -123,6 +153,13 @@ export default class NodeTree extends PureComponent {
 
         return (
             <Tree className={classNames}>
+                <button
+                    onClick={this.handleCollapseAll}
+                    className={style.collapseAll}
+                    title={i18nRegistry.translate('Neos.Neos.Ui:Main:collapseAll')}
+                >
+                    <Icon className={style.collapseAllIcon} icon="compress-alt"/>
+                </button>
                 <ConnectedDragLayer
                     nodeDndType={dndTypes.NODE}
                     ChildRenderer={ChildRenderer}
@@ -134,6 +171,7 @@ export default class NodeTree extends PureComponent {
                     node={rootNode}
                     level={1}
                     onNodeToggle={this.handleToggle}
+                    onToggleChildren={this.handleToggleChildren}
                     onNodeClick={this.handleClick}
                     onNodeFocus={this.handleFocus}
                     onNodeDrag={this.handleDrag}
@@ -146,32 +184,55 @@ export default class NodeTree extends PureComponent {
     }
 }
 
-export const PageTree = connect(state => ({
-    rootNode: selectors.CR.Nodes.siteNodeSelector(state),
-    focusedNodesContextPaths: selectors.UI.PageTree.getAllFocused(state),
-    ChildRenderer: PageTreeNode,
-    allowOpeningNodesInNewWindow: true
-}), {
-    toggle: actions.UI.PageTree.toggle,
-    focus: actions.UI.PageTree.focus,
-    setActiveContentCanvasSrc: actions.UI.ContentCanvas.setSrc,
-    setActiveContentCanvasContextPath: actions.CR.Nodes.setDocumentNode,
-    moveNodes: actions.CR.Nodes.moveMultiple,
-    requestScrollIntoView: null
-}, (stateProps, dispatchProps, ownProps) => {
-    return Object.assign({}, stateProps, dispatchProps, ownProps);
-})(NodeTree);
+const withNodeTypeRegistryAndI18nRegistry = neos(globalRegistry => ({
+    nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),
+    i18nRegistry: globalRegistry.get('i18n')
+}));
 
-export const ContentTree = connect(state => ({
-    rootNode: selectors.CR.Nodes.documentNodeSelector(state),
-    focusedNodesContextPaths: selectors.CR.Nodes.focusedNodePathsSelector(state),
-    ChildRenderer: ContentTreeNode,
-    allowOpeningNodesInNewWindow: false
-}), {
-    toggle: actions.UI.ContentTree.toggle,
-    focus: actions.CR.Nodes.focus,
-    moveNodes: actions.CR.Nodes.moveMultiple,
-    requestScrollIntoView: actions.UI.ContentCanvas.requestScrollIntoView
-}, (stateProps, dispatchProps, ownProps) => {
-    return Object.assign({}, stateProps, dispatchProps, ownProps);
-})(NodeTree);
+export const PageTree = withNodeTypeRegistryAndI18nRegistry(connect(
+    (state, {neos, nodeTypesRegistry}) => {
+        const documentNodesSelector = selectors.CR.Nodes.makeGetCollapsibleDocumentNodes(nodeTypesRegistry);
+        return ({
+            rootNode: selectors.CR.Nodes.siteNodeSelector(state),
+            focusedNodesContextPaths: selectors.UI.PageTree.getAllFocused(state),
+            ChildRenderer: PageTreeNode,
+            allowOpeningNodesInNewWindow: true,
+            loadingDepth: neos.configuration.structureTree.loadingDepth,
+            allCollapsibleNodes: documentNodesSelector(state)
+        })
+    }, {
+        toggle: actions.UI.PageTree.toggle,
+        collapseAll: actions.UI.PageTree.collapseAll,
+        focus: actions.UI.PageTree.focus,
+        setActiveContentCanvasSrc: actions.UI.ContentCanvas.setSrc,
+        setActiveContentCanvasContextPath: actions.CR.Nodes.setDocumentNode,
+        moveNodes: actions.CR.Nodes.moveMultiple,
+        requestScrollIntoView: null,
+        isContentTree: false
+    }, (stateProps, dispatchProps, ownProps) => {
+        return Object.assign({}, stateProps, dispatchProps, ownProps);
+    }
+)(NodeTree));
+
+export const ContentTree = withNodeTypeRegistryAndI18nRegistry(connect(
+    (state, {neos, nodeTypesRegistry}) => {
+        const contentNodesSelector = selectors.CR.Nodes.makeGetCollapsibleContentNodes(nodeTypesRegistry);
+        return ({
+            rootNode: selectors.CR.Nodes.documentNodeSelector(state),
+            focusedNodesContextPaths: selectors.CR.Nodes.focusedNodePathsSelector(state),
+            ChildRenderer: ContentTreeNode,
+            allowOpeningNodesInNewWindow: false,
+            loadingDepth: neos.configuration.structureTree.loadingDepth,
+            allCollapsibleNodes: contentNodesSelector(state)
+        })
+    }, {
+        toggle: actions.UI.ContentTree.toggle,
+        collapseAll: actions.UI.ContentTree.collapseAll,
+        focus: actions.CR.Nodes.focus,
+        moveNodes: actions.CR.Nodes.moveMultiple,
+        requestScrollIntoView: actions.UI.ContentCanvas.requestScrollIntoView,
+        isContentTree: true
+    }, (stateProps, dispatchProps, ownProps) => {
+        return Object.assign({}, stateProps, dispatchProps, ownProps);
+    }
+)(NodeTree));

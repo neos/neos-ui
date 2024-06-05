@@ -1,6 +1,5 @@
 {
   "name": "@neos-project/neos-ui-contentrepository",
-  "version": "8.3.5",
   "description": "Bindings for the Neos ContentRepository",
   "private": true,
   "main": "./src/manifest.js",

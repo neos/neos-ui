@@ -94,6 +94,7 @@
 .singleDimensionDropdown {
     display: flex;
     align-items: center;
+    align-self: start;
 
     .dimensionSwitcherDropDown {
         background: unset;

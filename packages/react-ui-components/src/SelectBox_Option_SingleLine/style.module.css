@@ -1,4 +1,4 @@
-.dropdownLink{
+.dropdownLink {
     color: white;
     padding: 5px 14px;
     display: inline-block;
@@ -9,6 +9,6 @@
     width: calc(100% - 2em);
     padding: 5px 0px;
 }
-.linkedItem{
+.linkedItem {
     padding: 0px !important;
 }

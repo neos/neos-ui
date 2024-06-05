@@ -60,11 +60,11 @@
     }
 }
 
-.nonExistent {
+.notCovered {
     position: relative;
     background-image: repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0) 12px, #323232 0, #323232 23px);
 }
-.nonExistent:after {
+.notCovered:after {
     content: '';
     position: absolute;
     height: 100%;

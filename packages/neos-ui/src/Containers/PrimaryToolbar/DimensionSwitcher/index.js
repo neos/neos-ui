@@ -315,7 +315,7 @@ export default class DimensionSwitcher extends PureComponent {
                 return Object.assign({}, presetConfiguration, {
                     label: i18nRegistry.translate(presetConfiguration.label),
                     disallowed: !(allowedPresets[dimensionName] && allowedPresets[dimensionName].includes(presetName)),
-                    existing: documentDimensions.some(dimension => presetConfiguration.values.includes(dimension)),
+                    covered: documentDimensions.some(dimension => presetConfiguration.values.includes(dimension)),
                     url: (Object.keys(contentDimensions).length === 1) ? this.createDirectDimensionsLink(dimensionName, presetName) : null
                 });
             });

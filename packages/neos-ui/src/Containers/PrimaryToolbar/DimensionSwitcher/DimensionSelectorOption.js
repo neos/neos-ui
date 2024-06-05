@@ -15,7 +15,7 @@ export default class DimensionSelectorOption extends PureComponent {
         option: PropTypes.shape({
             label: PropTypes.string.isRequired,
             disallowed: PropTypes.bool,
-            existing: PropTypes.bool,
+            covered: PropTypes.bool,
             url: PropTypes.string
         }),
         i18nRegistry: PropTypes.object.isRequired
@@ -25,10 +25,10 @@ export default class DimensionSelectorOption extends PureComponent {
         const {option, i18nRegistry} = this.props;
         const className = mergeClassNames({
             [style.disallowed]: option.disallowed,
-            [style.nonExistent]: !option.existing
+            [style.notCovered]: !option.covered
         });
 
-        if (!option.disallowed && option.existing && option.url) {
+        if (!option.disallowed && option.covered && option.url) {
             const linkOptions = {
                 href: option.url,
                 target: '_blank',

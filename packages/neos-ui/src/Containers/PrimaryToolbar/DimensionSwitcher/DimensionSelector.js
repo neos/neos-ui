@@ -49,7 +49,7 @@ export default class DimensionSelector extends PureComponent {
                     label: presetConfiguration?.label,
                     value: presetName,
                     disallowed: presetConfiguration?.disallowed,
-                    existing: presetConfiguration?.existing,
+                    covered: presetConfiguration?.covered,
                     group: presetConfiguration?.group,
                     url: presetConfiguration?.url
                 };

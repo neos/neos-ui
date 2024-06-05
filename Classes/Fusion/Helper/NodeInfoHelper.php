@@ -27,7 +27,6 @@ use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\Domain\NodeLabel\NodeLabelGeneratorInterface;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\FrontendRouting\NodeUri\NodeUriBuilderFactory;
-use Neos\Neos\FrontendRouting\NodeUri\Options;
 use Neos\Neos\Ui\Domain\Service\NodePropertyConverterService;
 use Neos\Neos\Ui\Domain\Service\UserLocaleService;
 use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
@@ -351,8 +350,8 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     {
         $nodeAddress = NodeAddress::fromNode($node);
         return (string)$this->nodeUriBuilderFactory
-            ->forRequest($actionRequest->getHttpRequest())
-            ->previewUriFor($nodeAddress, Options::create(forceAbsolute: true));
+            ->forActionRequest($actionRequest)
+            ->previewUriFor($nodeAddress);
     }
 
     public function createRedirectToNode(Node $node, ActionRequest $actionRequest): string

@@ -548,7 +548,7 @@
       </trans-unit>
       <trans-unit id="collapseAll" xml:space="preserve">
         <source>Collapse All</source>
-        <target state="needs-translation">Contraer todo</target>
+        <target state="translated">Contraer todo</target>
       </trans-unit>
     </body>
   </file>

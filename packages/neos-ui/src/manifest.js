@@ -21,6 +21,8 @@ import initializeContentDomNode from '@neos-project/neos-ui-guest-frame/src/init
 import style from '@neos-project/neos-ui-guest-frame/src/style.module.css';
 import backend from '@neos-project/neos-ui-backend-connector';
 
+import {showFlashMessage} from '@neos-project/neos-ui-error';
+
 manifest('main', {}, (globalRegistry, {routes}) => {
     //
     // Create edit preview mode registry
@@ -191,12 +193,13 @@ manifest('main', {}, (globalRegistry, {routes}) => {
     //
     // Take care of message feedback
     //
-    const flashMessageFeedbackHandler = (feedbackPayload, {store}) => {
-        const {message, severity} = feedbackPayload;
-        const timeout = severity.toLowerCase() === 'success' ? 5000 : 0;
+    const flashMessageFeedbackHandler = (feedbackPayload) => {
+        const {message} = feedbackPayload;
+        const severity = feedbackPayload.severity.toLowerCase();
+        const timeout = severity === 'success' ? 5000 : 0;
         const id = uuid.v4();
 
-        store.dispatch(actions.UI.FlashMessages.add(id, message, severity, timeout));
+        showFlashMessage({id, message, severity, timeout});
     };
     serverFeedbackHandlers.set('Neos.Neos.Ui:Success/Main', flashMessageFeedbackHandler);
     serverFeedbackHandlers.set('Neos.Neos.Ui:Error/Main', flashMessageFeedbackHandler);

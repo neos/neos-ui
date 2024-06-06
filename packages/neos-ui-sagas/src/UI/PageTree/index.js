@@ -2,6 +2,7 @@ import {takeLatest, takeEvery, put, select} from 'redux-saga/effects';
 
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
 import backend from '@neos-project/neos-ui-backend-connector';
+import {showFlashMessage} from '@neos-project/neos-ui-error';
 
 import {isNodeCollapsed} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/helpers';
 
@@ -42,7 +43,11 @@ export function * watchRequestChildrenForContextPath({configuration}) {
             childNodes = yield query.neosUiFilteredChildren(baseNodeType).getForTree();
         } catch (err) {
             yield put(actions.UI.PageTree.invalidate(contextPath));
-            yield put(actions.UI.FlashMessages.add('loadChildNodesError', err.message, 'error'));
+            showFlashMessage({
+                id: 'loadChildNodesError',
+                severity: 'error',
+                message: err.message
+            });
         }
 
         yield put(actions.UI.PageTree.setAsLoaded(contextPath));
@@ -183,7 +188,11 @@ export function * watchSearch({configuration}) {
         } catch (err) {
             console.error('Error while executing a tree search: ', err);
             yield put(actions.UI.PageTree.invalidate(contextPath));
-            yield put(actions.UI.FlashMessages.add('searchError', 'There was an error searching in the node tree. Contact your administrator for fixing this issue.', 'error'));
+            showFlashMessage({
+                id: 'searchError',
+                severity: 'error',
+                message: 'There was an error searching in the node tree. Contact your administrator for fixing this issue.'
+            });
             return;
         }
         const siteNode = yield select(selectors.CR.Nodes.siteNodeSelector);

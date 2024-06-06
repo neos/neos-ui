@@ -546,6 +546,10 @@
         <source>Copy node type to clipboard</source>
         <target state="translated">Copiar tipo de nodo al portapapeles</target>
       </trans-unit>
+      <trans-unit id="collapseAll" xml:space="preserve">
+        <source>Collapse All</source>
+        <target state="needs-translation">Contraer todo</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

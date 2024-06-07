@@ -628,11 +628,11 @@
       </trans-unit>
       <trans-unit id="add" xml:space="preserve">
         <source>Add</source>
-        <target state="needs-translation">Hinzufügen</target>
+        <target state="translated">Hinzufügen</target>
       </trans-unit>
       <trans-unit id="copyNodeTypeNameToClipboard" xml:space="preserve">
         <source>Copy node type to clipboard</source>
-        <target state="needs-translation">Knotentyp in die Zwischenablage kopieren</target>
+        <target state="translated">Knotentyp in die Zwischenablage kopieren</target>
       </trans-unit>
     </body>
   </file>

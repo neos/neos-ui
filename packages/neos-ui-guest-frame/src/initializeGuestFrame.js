@@ -62,7 +62,7 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     }
 
     // Load legacy node data scripts from guest frame - remove with Neos 9.0
-    const legacyNodeData = guestFrameWindow['@Neos.Neos.Ui:NodeData'] || {};
+    const legacyNodeData = guestFrameWindow['@Neos.Neos.Ui:Nodes'] || {};
 
     // Load all nodedata for nodes in the guest frame
     const {q} = yield backend.get();

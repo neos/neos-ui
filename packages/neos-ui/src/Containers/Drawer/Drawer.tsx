@@ -19,15 +19,14 @@ import {SynchronousRegistry} from '@neos-project/neos-ui-extensibility';
 
 import MenuItemGroup from './MenuItemGroup/index';
 import style from './style.module.css';
-import {TARGET_WINDOW, TARGET_CONTENT_CANVAS, THRESHOLD_MOUSE_LEAVE} from './constants';
+import {THRESHOLD_MOUSE_LEAVE} from './constants';
 
 const withReduxState = connect((state: GlobalState) => ({
     isHidden: state?.ui?.drawer?.isHidden,
     collapsedMenuGroups: state?.ui?.drawer?.collapsedMenuGroups
 }), {
     hideDrawer: actions.UI.Drawer.hide,
-    toggleMenuGroup: actions.UI.Drawer.toggleMenuGroup,
-    setContentCanvasSrc: actions.UI.ContentCanvas.setSrc
+    toggleMenuGroup: actions.UI.Drawer.toggleMenuGroup
 });
 
 const withNeosGlobals = neos(globalRegistry => ({
@@ -40,7 +39,6 @@ const StatelessDrawer: React.FC<{
 
     hideDrawer: () => void;
     toggleMenuGroup: (menuGroup: string) => void;
-    setContentCanvasSrc: (src: string) => void;
 
     containerRegistry: SynchronousRegistry<any>;
 
@@ -54,7 +52,6 @@ const StatelessDrawer: React.FC<{
             icon?: string;
             label: string;
             uri?: string;
-            target?: string;
             isActive: boolean;
             skipI18n: boolean;
         }[];
@@ -75,25 +72,6 @@ const StatelessDrawer: React.FC<{
             }, THRESHOLD_MOUSE_LEAVE);
         }
     }, [props.hideDrawer]);
-    const handleMenuItemClick = React.useCallback((target?: string, uri?: string) => {
-        const {setContentCanvasSrc, hideDrawer} = props;
-
-        switch (target) {
-            case TARGET_CONTENT_CANVAS:
-                if (uri) {
-                    setContentCanvasSrc(uri);
-                }
-                hideDrawer();
-                break;
-
-            case TARGET_WINDOW:
-            default:
-                // we do not need to do anything here, as MenuItems of type TARGET_WINDOW automatically
-                // wrap their contents in an <a>-tag (such that the user can crtl-click it to open in a
-                // new window).
-                break;
-        }
-    }, [props.setContentCanvasSrc, props.hideDrawer]);
     const {isHidden, menuData, collapsedMenuGroups, toggleMenuGroup, containerRegistry} = props;
     const classNames = mergeClassNames({
         [style.drawer]: true,
@@ -110,11 +88,9 @@ const StatelessDrawer: React.FC<{
             aria-hidden={isHidden ? 'true' : 'false'}
             >
             <div className={style.drawer__menuItemGroupsWrapper}>
-                {!isHidden && Object.entries(menuData).map(([menuGroup, menuGroupConfiguration]) => (
+                {Object.entries(menuData).map(([menuGroup, menuGroupConfiguration]) => (
                     <MenuItemGroup
                         key={menuGroup}
-                        onClick={handleMenuItemClick}
-                        onChildClick={handleMenuItemClick}
                         collapsed={Boolean(collapsedMenuGroups.includes(menuGroup))}
                         handleMenuGroupToggle={() => toggleMenuGroup(menuGroup)}
                         {...menuGroupConfiguration}

@@ -14,41 +14,27 @@ import {Icon, Button} from '@neos-project/react-ui-components';
 import I18n from '@neos-project/neos-ui-i18n';
 
 import style from '../style.module.css';
-import {TARGET_WINDOW} from '../constants';
 
 export const MenuItem: React.FC<{
     icon?: string;
     label: string;
     uri?: string;
-    target?: string;
     isActive: boolean;
     skipI18n?: boolean;
-
-    onClick: (target?: string, uri?: string) => void;
 }> = (props) => {
-    const handleClick = React.useCallback(() => {
-        const {uri, target, onClick} = props;
+    const {skipI18n, label, icon, uri} = props;
 
-        onClick(target, uri);
-    }, [props.onClick, props.uri, props.target]);
-
-    const {skipI18n, label, icon, uri, target} = props;
-
-    const button = (
-        <Button
-            className={style.drawer__menuItemBtn}
-            onClick={handleClick}
-            style="transparent"
-            hoverStyle="clean"
-            disabled={!uri}
-            >
-            {icon && <Icon icon={icon} padded="right"/>}
-            {skipI18n ? label : <I18n id={label} fallback={label}/>}
-        </Button>
+    return (
+        <a href={uri}>
+            <Button
+                className={style.drawer__menuItemBtn}
+                style="transparent"
+                hoverStyle="clean"
+                disabled={!uri}
+                >
+                {icon && <Icon icon={icon} padded="right"/>}
+                {skipI18n ? label : <I18n id={label} fallback={label}/>}
+            </Button>
+        </a>
     );
-
-    if (target === TARGET_WINDOW) {
-        return <a href={uri}>{button}</a>;
-    }
-    return button;
 }

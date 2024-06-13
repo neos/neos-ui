@@ -13,7 +13,6 @@ import {connect} from 'react-redux';
 
 import {neos} from '@neos-project/neos-ui-decorators';
 import {Icon, DropDown} from '@neos-project/react-ui-components';
-import {actions} from '@neos-project/neos-ui-redux-store';
 import {I18nRegistry} from '@neos-project/neos-ts-interfaces';
 import {NeosContextInterface} from '@neos-project/neos-ui-decorators/src/neos';
 import {showFlashMessage} from '@neos-project/neos-ui-error';
@@ -27,17 +26,11 @@ import style from './style.module.css';
 
 import {user} from '../../../System';
 
-const withReduxState = connect(() => ({
-}), {
-    impersonateRestore: actions.User.Impersonate.restore
-});
-
 const withNeosGlobals = neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')
 }));
 
 const UserDropDown: React.FC<{
-    addFlashMessage: typeof actions.UI.FlashMessages.add;
     i18nRegistry: I18nRegistry;
     neos: NeosContextInterface;
 }> = (props) => {
@@ -95,4 +88,4 @@ const UserDropDown: React.FC<{
     );
 }
 
-export default withReduxState(withNeosGlobals(UserDropDown as any));
+export default withNeosGlobals(UserDropDown as any);

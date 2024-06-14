@@ -12,6 +12,11 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
+/**
+ * @internal These objects internally reflect possible operations made by the Neos.Ui.
+ *           They are sorely an implementation detail. You should not use them!
+ *           Please look into the php command API of the Neos CR instead.
+ */
 class Create extends AbstractCreate
 {
     public function setParentContextPath(string $parentContextPath): void
@@ -34,10 +39,8 @@ class Create extends AbstractCreate
     {
         $subject = $this->getSubject();
         $nodeTypeName = $this->getNodeTypeName();
-        $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
-        $nodeType = $contentRepository->getNodeTypeManager()->getNodeType($nodeTypeName);
 
-        return $this->isNodeTypeAllowedAsChildNode($subject, $nodeType);
+        return $this->isNodeTypeAllowedAsChildNode($subject, $nodeTypeName);
     }
 
     /**

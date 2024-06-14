@@ -23,6 +23,9 @@ use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
 use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
 
+/**
+ * @internal
+ */
 abstract class AbstractChange implements ChangeInterface
 {
     use NodeTypeWithFallbackProvider;
@@ -67,16 +70,10 @@ abstract class AbstractChange implements ChangeInterface
     {
         if (!is_null($this->subject)) {
             $subgraph = $this->contentRepositoryRegistry->subgraphForNode($this->subject);
-            $documentNode = $subgraph->findClosestNode($this->subject->nodeAggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_DOCUMENT));
+            $documentNode = $subgraph->findClosestNode($this->subject->aggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_DOCUMENT));
             if (!is_null($documentNode)) {
-                $contentRepository = $this->contentRepositoryRegistry->get($this->subject->subgraphIdentity->contentRepositoryId);
-                $workspace = $contentRepository->getWorkspaceFinder()->findOneByCurrentContentStreamId(
-                    $documentNode->subgraphIdentity->contentStreamId
-                );
-                if (!is_null($workspace)) {
-                    $updateWorkspaceInfo = new UpdateWorkspaceInfo($documentNode->subgraphIdentity->contentRepositoryId, $workspace->workspaceName);
-                    $this->feedbackCollection->add($updateWorkspaceInfo);
-                }
+                $updateWorkspaceInfo = new UpdateWorkspaceInfo($documentNode->contentRepositoryId, $documentNode->workspaceName);
+                $this->feedbackCollection->add($updateWorkspaceInfo);
             }
         }
     }
@@ -84,7 +81,7 @@ abstract class AbstractChange implements ChangeInterface
     protected function findParentNode(Node $node): ?Node
     {
         return $this->contentRepositoryRegistry->subgraphForNode($node)
-            ->findParentNode($node->nodeAggregateId);
+            ->findParentNode($node->aggregateId);
     }
 
     /**

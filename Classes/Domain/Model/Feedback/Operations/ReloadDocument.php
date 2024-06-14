@@ -21,6 +21,9 @@ use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 
+/**
+ * @internal
+ */
 class ReloadDocument extends AbstractFeedback
 {
     protected ?Node $node = null;
@@ -73,11 +76,11 @@ class ReloadDocument extends AbstractFeedback
         $nodeInfoHelper = new NodeInfoHelper();
 
         $documentNode = $this->contentRepositoryRegistry->subgraphForNode($this->node)
-            ->findClosestNode($this->node->nodeAggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_DOCUMENT));
+            ->findClosestNode($this->node->aggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_DOCUMENT));
 
         if ($documentNode) {
             return [
-                'uri' => $nodeInfoHelper->previewUri($documentNode, $controllerContext)
+                'uri' => $nodeInfoHelper->previewUri($documentNode, $controllerContext->getRequest())
             ];
         }
 

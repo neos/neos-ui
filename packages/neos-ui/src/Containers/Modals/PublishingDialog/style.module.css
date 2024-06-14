@@ -1,0 +1,130 @@
+/*
+ * This file is part of the Neos.Neos.Ui package.
+ *
+ * (c) Contributors of the Neos Project - www.neos.io
+ *
+ * This package is Open Source Software. For the full copyright and license
+ * information, please view the LICENSE file which was distributed with this
+ * source code.
+ */
+.modalTitle {
+    margin-left: var(--spacing-Full);
+}
+.modalContents {
+    padding: var(--spacing-Full);
+}
+.buttonIcon {
+    margin-right: var(--spacing-Half);
+}
+
+.diagram {
+    display: flex;
+    gap: var(--spacing-Full);
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-Full);
+    margin-bottom: calc(2 * var(--spacing-Full));
+}
+.diagram__workspace {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-Half);
+    position: relative;
+}
+.diagram__workspace__icon {
+    font-size: 32px;
+}
+.diagram__workspace__icon--trash {
+    color: var(--colors-Warn);
+}
+.diagram__workspace__label {
+    position: absolute;
+    display: block;
+    bottom: -100%;
+    left: 50%;
+    width: 160px;
+    transform: translate(-50%, 0);
+    text-align: center;
+}
+.diagram__process {
+    width: 160px;
+    height: 0;
+    position: relative;
+    border-bottom: 2px solid var(--colors-ContrastBrighter);
+}
+.diagram__process--result {
+    border-bottom: none;
+}
+.diagram__process__chevron {
+    position: absolute;
+    right: -1px;
+    top: 1px;
+    transform: translate(0, -50%);
+    color: var(--colors-ContrastBrighter);
+}
+.diagram__process--result .diagram__process__chevron {
+    display: none;
+}
+.diagram__process__changes {
+    position: relative;
+}
+.diagram__process__changes__number {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 100%);
+    background: var(--colors-ContrastBrightest);
+    color: var(--colors-ContrastDarkest);
+    padding: 0 var(--spacing-Half);
+    border-radius: var(--spacing-Half);
+}
+.diagram__process__icon {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 32px;
+}
+.diagram__process__icon--ongoing {
+    animation: ongoing 1.6s ease-in-out infinite;
+}
+.diagram__process__icon--error {
+    color: var(--colors-Error);
+    font-size: 48px;
+}
+.diagram__process__icon--success {
+    color: var(--colors-Success);
+    font-size: 48px;
+}
+
+@keyframes ongoing {
+    0%,
+    100% {
+        left: 10%;
+        transform: translate(-50%, -50%) scale(0);
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.25);
+    }
+    99% {
+        left: 90%;
+    }
+}
+
+@media (prefers-reduced-motion) {
+    .diagram__process__icon--ongoing {
+        animation: ongoing 3.2s ease-in-out infinite;
+    }
+
+    @keyframes ongoing {
+        0%,
+        100% {
+            opacity: 0;
+        }
+        25% {
+            opacity: 1;
+        }
+        75% {
+            opacity: 1;
+        }
+    }
+}

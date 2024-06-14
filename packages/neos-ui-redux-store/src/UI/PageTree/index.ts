@@ -40,7 +40,8 @@ export enum actionTypes {
     SET_AS_LOADED = '@neos/neos-ui/UI/PageTree/SET_AS_LOADED',
     REQUEST_CHILDREN = '@neos/neos-ui/UI/PageTree/REQUEST_CHILDREN',
     COMMENCE_SEARCH = '@neos/neos-ui/UI/PageTree/COMMENCE_SEARCH',
-    SET_SEARCH_RESULT = '@neos/neos-ui/UI/PageTree/SET_SEARCH_RESULT'
+    SET_SEARCH_RESULT = '@neos/neos-ui/UI/PageTree/SET_SEARCH_RESULT',
+    COLLAPSE_ALL = '@neos/neos-ui/UI/PageTree/COLLAPSE_ALL'
 }
 
 const focus = (contextPath: NodeContextPath, _: undefined, selectionMode: SelectionModeTypes = SelectionModeTypes.SINGLE_SELECT) => createAction(actionTypes.FOCUS, {contextPath, selectionMode});
@@ -49,6 +50,11 @@ const invalidate = (contextPath: NodeContextPath) => createAction(actionTypes.IN
 const requestChildren = (contextPath: NodeContextPath, {unCollapse = true, activate = false} = {}) => createAction(actionTypes.REQUEST_CHILDREN, {contextPath, opts: {unCollapse, activate}});
 const setAsLoading = (contextPath: NodeContextPath) => createAction(actionTypes.SET_AS_LOADING, {contextPath});
 const setAsLoaded = (contextPath: NodeContextPath) => createAction(actionTypes.SET_AS_LOADED, {contextPath});
+const collapseAll = (
+    nodeContextPaths: NodeContextPath[],
+    collapsedByDefaultNodeContextPaths: NodeContextPath[]
+) => createAction(actionTypes.COLLAPSE_ALL, {nodeContextPaths, collapsedByDefaultNodeContextPaths});
+
 interface CommenceSearchOptions extends Readonly<{
     query: string;
     filterNodeType: string;
@@ -72,7 +78,8 @@ export const actions = {
     setAsLoaded,
     requestChildren,
     commenceSearch,
-    setSearchResult
+    setSearchResult,
+    collapseAll
 };
 
 export type Action = ActionType<typeof actions>;
@@ -132,6 +139,22 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
             // Store search arguments, to be used during tree reload
             draft.query = action.payload.query;
             draft.filterNodeType = action.payload.filterNodeType;
+            break;
+        }
+        case actionTypes.COLLAPSE_ALL: {
+            const {nodeContextPaths, collapsedByDefaultNodeContextPaths} = action.payload;
+
+            nodeContextPaths.forEach(path => {
+                if (!draft.toggled.includes(path)) {
+                    draft.toggled.push(path);
+                }
+            });
+
+            collapsedByDefaultNodeContextPaths.forEach(path => {
+                if (draft.toggled.includes(path)) {
+                    draft.toggled = draft.toggled.filter(i => i !== path);
+                }
+            });
             break;
         }
     }

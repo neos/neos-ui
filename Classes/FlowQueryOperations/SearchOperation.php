@@ -26,6 +26,7 @@ use Neos\Flow\Annotations as Flow;
  * Custom search operation using the Content Graph fulltext search
  *
  * Original implementation: \Neos\Neos\Ui\FlowQueryOperations\SearchOperation
+ * @internal
  */
 class SearchOperation extends AbstractOperation
 {
@@ -83,7 +84,7 @@ class SearchOperation extends AbstractOperation
             $filter = $filter->with(nodeTypes: $arguments[1]);
         }
         $nodes = $subgraph->findDescendantNodes(
-            $contextNode->nodeAggregateId,
+            $contextNode->aggregateId,
             $filter
         );
         $flowQuery->setContext(iterator_to_array($nodes));

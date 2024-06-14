@@ -8,6 +8,7 @@ import {
     crNodeOperations,
     crPolicies,
     publish,
+    sync,
     serverFeedback,
     uiContentCanvas,
     uiContentTree,
@@ -48,10 +49,10 @@ manifest('main.sagas', {}, globalRegistry => {
 
     sagasRegistry.set('neos-ui/CR/Policies/watchNodeInformationChanges', {saga: crPolicies.watchNodeInformationChanges});
 
-    sagasRegistry.set('neos-ui/Publish/watchRebaseWorkspace', {saga: publish.watchRebaseWorkspace});
     sagasRegistry.set('neos-ui/Publish/watchChangeBaseWorkspace', {saga: publish.watchChangeBaseWorkspace});
-    sagasRegistry.set('neos-ui/Publish/discardIfConfirmed', {saga: publish.discardIfConfirmed});
-    sagasRegistry.set('neos-ui/Publish/watchPublish', {saga: publish.watchPublish});
+    sagasRegistry.set('neos-ui/Publish/discardIfConfirmed', {saga: publish.watchPublishing});
+
+    sagasRegistry.set('neos-ui/Sync/watchSync', {saga: sync.watchSyncing});
 
     sagasRegistry.set('neos-ui/ServerFeedback/watchServerFeedback', {saga: serverFeedback.watchServerFeedback});
 

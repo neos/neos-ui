@@ -8,6 +8,7 @@ import {Badge, Icon, DropDown} from '@neos-project/react-ui-components';
 
 import I18n from '@neos-project/neos-ui-i18n';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
+import {PublishingMode, PublishingScope} from '@neos-project/neos-ui-redux-store/src/CR/Publishing';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 const {publishableNodesSelector, publishableNodesInDocumentSelector, baseWorkspaceSelector, isWorkspaceReadOnlySelector, personalWorkspaceNameSelector} = selectors.CR.Workspaces;
@@ -27,8 +28,7 @@ import style from './style.module.css';
     isWorkspaceReadOnly: isWorkspaceReadOnlySelector(state)
 }), {
     changeBaseWorkspaceAction: actions.CR.Workspaces.changeBaseWorkspace,
-    publishAction: actions.CR.Workspaces.publish,
-    discardAction: actions.CR.Workspaces.commenceDiscard
+    start: actions.CR.Publishing.start
 })
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')
@@ -45,35 +45,30 @@ export default class PublishDropDown extends PureComponent {
         personalWorkspaceName: PropTypes.string.isRequired,
         baseWorkspace: PropTypes.string.isRequired,
         neos: PropTypes.object.isRequired,
-        publishAction: PropTypes.func.isRequired,
-        discardAction: PropTypes.func.isRequired,
+        start: PropTypes.func.isRequired,
         changeBaseWorkspaceAction: PropTypes.func.isRequired,
         routes: PropTypes.object,
         i18nRegistry: PropTypes.object.isRequired
     };
 
     handlePublishClick = () => {
-        const {publishableNodesInDocument, publishAction, baseWorkspace} = this.props;
-
-        publishAction(publishableNodesInDocument.map(node => node?.contextPath), baseWorkspace);
+        const {start} = this.props;
+        start(PublishingMode.PUBLISH, PublishingScope.DOCUMENT);
     }
 
     handlePublishAllClick = () => {
-        const {publishableNodes, publishAction, baseWorkspace} = this.props;
-
-        publishAction(publishableNodes.map(node => node?.contextPath), baseWorkspace);
+        const {start} = this.props;
+        start(PublishingMode.PUBLISH, PublishingScope.SITE);
     }
 
     handleDiscardClick = () => {
-        const {publishableNodesInDocument, discardAction} = this.props;
-
-        discardAction(publishableNodesInDocument.map(node => node?.contextPath));
+        const {start} = this.props;
+        start(PublishingMode.DISCARD, PublishingScope.DOCUMENT);
     }
 
     handleDiscardAllClick = () => {
-        const {publishableNodes, discardAction} = this.props;
-
-        discardAction(publishableNodes.map(node => node?.contextPath));
+        const {start} = this.props;
+        start(PublishingMode.DISCARD, PublishingScope.SITE);
     }
 
     render() {

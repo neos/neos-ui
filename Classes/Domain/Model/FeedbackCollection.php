@@ -16,6 +16,7 @@ use Neos\Flow\Mvc\Controller\ControllerContext;
 
 /**
  * @Flow\Scope("singleton")
+ * @internal
  */
 class FeedbackCollection implements \JsonSerializable
 {

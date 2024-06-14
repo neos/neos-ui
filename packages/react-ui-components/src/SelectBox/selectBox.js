@@ -22,6 +22,11 @@ export default class SelectBox extends PureComponent {
         // Basic Props for core functionality
         // ------------------------------
         /**
+         * DOM id of the select box
+         */
+        id: PropTypes.string,
+
+        /**
          * This prop represents the set of options to be chosen from
          * Each option must have a value and can have a label and an icon.
          */
@@ -189,6 +194,7 @@ export default class SelectBox extends PureComponent {
 
     render() {
         const {
+            id,
             options,
             theme,
             showDropDownToggle,
@@ -225,7 +231,7 @@ export default class SelectBox extends PureComponent {
         });
 
         return (
-            <DropDown.Stateless className={theme.selectBox} isOpen={isExpanded} onToggle={this.handleToggleExpanded} onClose={this.handleClose}>
+            <DropDown.Stateless id={id} className={theme.selectBox} isOpen={isExpanded} onToggle={this.handleToggleExpanded} onClose={this.handleClose}>
                 <DropDown.Header className={headerClassName} shouldKeepFocusState={false} showDropDownToggle={showDropDownToggle && Boolean(options.length)}>
                     {this.renderHeader()}
                 </DropDown.Header>

@@ -103,8 +103,7 @@ export enum SelectionModeTypes {
 
 export enum WorkspaceStatus {
     UP_TO_DATE = 'UP_TO_DATE',
-    OUTDATED = 'OUTDATED',
-    OUTDATED_CONFLICT = 'OUTDATED_CONFLICT'
+    OUTDATED = 'OUTDATED'
 }
 
 export interface ValidatorConfiguration {

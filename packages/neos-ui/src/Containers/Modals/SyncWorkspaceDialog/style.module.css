@@ -1,36 +1,183 @@
 .modalContents {
     padding: var(--spacing-Full);
     white-space: pre-line;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-Full);
 }
 
-.buttonIcon {
-    display: inline-block;
+.button {
+    display: inline-flex;
+    flex-direction: row;
+    gap: var(--spacing-Half);
+    align-items: center;
+    justify-content: center;
+}
+
+.icon {
     width: 1.5rem;
     height: 1.5rem;
-    float: left;
-    margin-right: var(--spacing-Quarter);
 }
 
-.buttonIcon span {
-    display: inline-block;
-    width: 100%;
-}
-
-.buttonIcon svg {
-    width: 100%;
-    height: auto;
-}
-
-.confirmText {
-    vertical-align: sub;
+.summary {
+    cursor: pointer;
 }
 
 .modalTitle {
     display: flex;
     flex-direction: row;
     align-items: center;
+    gap: var(--spacing-Full);
 }
 
 .modalTitle span:first-child {
     scale: .8;
+}
+
+.diagram {
+    display: flex;
+    gap: var(--spacing-Full);
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-Full);
+    margin: 0 auto calc(2 * var(--spacing-Full));
+    width: 300px;
+}
+.diagram__workspace {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-Half);
+    position: relative;
+}
+.diagram__workspace__icon {
+    font-size: 32px;
+}
+.diagram__workspace__icon--trash {
+    color: var(--colors-Warn);
+}
+.diagram__workspace__label {
+    position: absolute;
+    display: block;
+    bottom: -100%;
+    left: 50%;
+    width: 160px;
+    transform: translate(-50%, 0);
+    text-align: center;
+}
+.diagram__process__icon {
+    font-size: 48px;
+}
+.diagram__process__icon--error {
+    color: var(--colors-Error);
+}
+.diagram__process__icon--success {
+    color: var(--colors-Success);
+}
+.diagram__process__icon--warn {
+    color: var(--colors-Warn);
+}
+
+.node {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--spacing-Half);
+    position: relative;
+    padding-left: 1.6em;
+}
+.node__icon {
+    position: absolute;
+    left: 0;
+}
+.node__changeIcon {
+    position: absolute;
+    font-size: 10px;
+    bottom: 0px;
+    left: 6px;
+    color: var(--colors-Warn);
+}
+
+.conflictList > * + * {
+    margin-top: 2px;
+}
+
+.conflict__details[open] {
+    border: 2px solid var(--colors-ContrastBright);
+}
+.conflict__summary {
+    cursor: pointer;
+    background-color: var(--colors-ContrastDark);
+    padding: var(--spacing-Full);
+}
+.conflict__summary::marker {
+    position: absolute;
+}
+.conflict__summary__contents {
+    display: inline-block;
+    max-width: 95%;
+    padding-left: var(--spacing-Half);
+}
+.conflict__changeIcon {
+    color: var(--colors-Warn);
+}
+.conflict__descriptionList {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: var(--spacing-Full);
+    background-color: var(--colors-ContrastDarkest);
+    gap: var(--spacing-Full);
+}
+.conflict__descriptionList__group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-Quarter);
+}
+.conflict__descriptionList__description {
+    display: flex;
+    flex-direction: row;
+    align-items: first baseline;
+    gap: var(--spacing-Full);
+    margin-left: var(--spacing-Full);
+}
+
+.diagram {
+    display: flex;
+    gap: var(--spacing-Full);
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-Full);
+    margin: 0 auto calc(2 * var(--spacing-Full));
+    width: 300px;
+}
+.diagram__workspace {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-Half);
+    position: relative;
+}
+.diagram__workspace__icon {
+    font-size: 32px;
+}
+.diagram__workspace__icon--trash {
+    color: var(--colors-Warn);
+}
+.diagram__workspace__label {
+    position: absolute;
+    display: block;
+    bottom: -100%;
+    left: 50%;
+    width: 160px;
+    transform: translate(-50%, 0);
+    text-align: center;
+}
+.diagram__process__icon {
+    font-size: 48px;
+}
+.diagram__process__icon--error {
+    color: var(--colors-Error);
+}
+.diagram__process__icon--success {
+    color: var(--colors-Success);
 }

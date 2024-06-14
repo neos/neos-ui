@@ -1,6 +1,6 @@
 {
   "name": "@neos-project/neos-ui-inspector",
-  "version": "9.0.0-beta2",
+  "version": "",
   "description": "Components for integrating views and editors into the Neos CMS UI inspector.",
   "private": true,
   "main": "./src/index.js",
@@ -19,6 +19,5 @@
     "react": "^16.12.0",
     "react-redux": "^7.1.3"
   },
-  "license": "GNU GPLv3",
-  "stableVersion": "8.3.4"
+  "license": "GNU GPLv3"
 }

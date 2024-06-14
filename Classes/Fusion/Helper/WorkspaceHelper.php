@@ -11,17 +11,18 @@ namespace Neos\Neos\Ui\Fusion\Helper;
  * source code.
  */
 
-use Neos\ContentRepository\Core\Factory\ContentRepositoryId;
+use Neos\ContentRepository\Core\SharedModel\ContentRepository\ContentRepositoryId;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Security\Context;
-use Neos\Neos\Domain\Service\UserService as DomainUserService;
 use Neos\Neos\Domain\Service\WorkspaceNameBuilder;
+use Neos\Neos\Domain\Workspace\WorkspaceProvider;
 use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService;
 
 /**
- * The Workspace helper for EEL contexts
+ * @internal implementation detail of the Neos Ui to build its initialState.
+ *           and used for the workspace-info endpoint.
  */
 class WorkspaceHelper implements ProtectedContextAwareInterface
 {
@@ -39,51 +40,43 @@ class WorkspaceHelper implements ProtectedContextAwareInterface
 
     /**
      * @Flow\Inject
-     * @var DomainUserService
-     */
-    protected $domainUserService;
-
-    /**
-     * @Flow\Inject
      * @var Context
      */
     protected $securityContext;
 
     /**
-     * @return array<string,array<string,mixed>>
+     * @Flow\Inject
+     * @var WorkspaceProvider
      */
-    public function getAllowedTargetWorkspaces(ContentRepositoryId $contentRepositoryId): array
-    {
-        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
-        return $this->workspaceService->getAllowedTargetWorkspaces($contentRepository);
-    }
+    protected $workspaceProvider;
 
     /**
      * @return array<string,mixed>
      */
     public function getPersonalWorkspace(ContentRepositoryId $contentRepositoryId): array
     {
-        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
         $currentAccount = $this->securityContext->getAccount();
+        // todo use \Neos\Neos\Service\UserService::getPersonalWorkspaceName instead?
         $personalWorkspaceName = WorkspaceNameBuilder::fromAccountIdentifier($currentAccount->getAccountIdentifier());
-        $personalWorkspace = $contentRepository->getWorkspaceFinder()->findOneByName($personalWorkspaceName);
 
-        return !is_null($personalWorkspace)
-            ? [
-                'name' => $personalWorkspace->workspaceName,
-                'publishableNodes' => $this->workspaceService->getPublishableNodeInfo($personalWorkspaceName, $contentRepositoryId),
-                'baseWorkspace' => $personalWorkspace->baseWorkspaceName,
-                // TODO: FIX readonly flag!
-                //'readOnly' => !$this->domainUserService->currentUserCanPublishToWorkspace($baseWorkspace)
-                'readOnly' => false,
-                'status' => $personalWorkspace->status->value
-            ]
-            : [];
+        $workspace = $this->workspaceProvider->provideForWorkspaceName(
+            $contentRepositoryId,
+            $personalWorkspaceName
+        );
+
+        return [
+            'name' => $workspace->name,
+            'totalNumberOfChanges' => $workspace->countAllChanges(),
+            'publishableNodes' => $this->workspaceService->getPublishableNodeInfo($personalWorkspaceName, $contentRepositoryId),
+            'baseWorkspace' => $workspace->getCurrentBaseWorkspaceName(),
+            // TODO: FIX readonly flag!
+            //'readOnly' => !$this->domainUserService->currentUserCanPublishToWorkspace($baseWorkspace)
+            'readOnly' => false,
+            'status' => $workspace->getCurrentStatus()
+        ];
     }
 
     /**
-     * All methods are considered safe
-     *
      * @param string $methodName
      * @return bool
      */

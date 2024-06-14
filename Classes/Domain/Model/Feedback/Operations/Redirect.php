@@ -5,11 +5,15 @@ use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
+use Neos\Neos\Domain\NodeLabel\NodeLabelGeneratorInterface;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\Service\LinkingService;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 
+/**
+ * @internal
+ */
 class Redirect extends AbstractFeedback
 {
     /**
@@ -22,6 +26,12 @@ class Redirect extends AbstractFeedback
      * @var ContentRepositoryRegistry
      */
     protected $contentRepositoryRegistry;
+
+    /**
+     * @Flow\Inject
+     * @var NodeLabelGeneratorInterface
+     */
+    protected $nodeLabelGenerator;
 
     /**
      * @Flow\Inject
@@ -67,7 +77,7 @@ class Redirect extends AbstractFeedback
      */
     public function getDescription()
     {
-        return sprintf('Redirect to node "%s".', $this->getNode()->getLabel());
+        return sprintf('Redirect to node "%s".', $this->nodeLabelGenerator->getLabel($this->getNode()));
     }
 
     /**
@@ -82,7 +92,7 @@ class Redirect extends AbstractFeedback
             return false;
         }
 
-        return $this->getNode()->subgraphIdentity->equals($feedback->getNode()->subgraphIdentity);
+        return $this->getNode()->equals($feedback->getNode());
     }
 
     /**
@@ -95,7 +105,7 @@ class Redirect extends AbstractFeedback
     {
         $node = $this->getNode();
         $redirectUri = $this->linkingService->createNodeUri($controllerContext, $node, null, null, true);
-        $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
+        $contentRepository = $this->contentRepositoryRegistry->get($node->contentRepositoryId);
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
 
         return [

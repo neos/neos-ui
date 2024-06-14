@@ -1,7 +1,0 @@
-{
-  "name": "@neos-project/neos-ui-build",
-  "version": "9.0.0-beta2",
-  "description": "Bob der Baumeister",
-  "private": true,
-  "stableVersion": "8.3.4"
-}

@@ -1,5 +1,3 @@
-import delay from './delay';
-import discover from './discover';
 import isThenable from './isThenable';
 import {stripTags, stripTagsEncoded} from './stripTags';
 import decodeHtml from './decodeHtml';
@@ -12,8 +10,6 @@ import isEqualSet from './isEqualSet';
 import isNil from './isNil';
 
 export {
-    delay,
-    discover,
     decodeHtml,
     getVersion,
     isThenable,

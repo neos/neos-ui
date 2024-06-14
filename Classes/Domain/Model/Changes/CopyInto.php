@@ -17,6 +17,11 @@ use Neos\ContentRepository\Core\Feature\NodeDuplication\Command\CopyNodesRecursi
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeName;
 
+/**
+ * @internal These objects internally reflect possible operations made by the Neos.Ui.
+ *           They are sorely an implementation detail. You should not use them!
+ *           Please look into the php command API of the Neos CR instead.
+ */
 class CopyInto extends AbstractStructuralChange
 {
     protected ?string $parentContextPath;
@@ -32,7 +37,7 @@ class CopyInto extends AbstractStructuralChange
     {
         if (!isset($this->cachedParentNode)) {
             $this->cachedParentNode = $this->parentContextPath
-                ? $this->nodeService->findNodeBySerializedNodeAddress($this->parentContextPath, $this->getSubject()->subgraphIdentity->contentRepositoryId)
+                ? $this->nodeService->findNodeBySerializedNodeAddress($this->parentContextPath, $this->getSubject()->contentRepositoryId)
                 : null;
         }
 
@@ -46,9 +51,7 @@ class CopyInto extends AbstractStructuralChange
     {
         $parentNode = $this->getParentNode();
 
-        return $this->subject
-            && $parentNode
-            && $this->isNodeTypeAllowedAsChildNode($parentNode, $this->subject->nodeType);
+        return $parentNode && $this->isNodeTypeAllowedAsChildNode($parentNode, $this->subject->nodeTypeName);
     }
 
     public function getMode(): string
@@ -64,27 +67,24 @@ class CopyInto extends AbstractStructuralChange
         $subject = $this->getSubject();
         $parentNode = $this->getParentNode();
         if ($parentNode && $subject && $this->canApply()) {
-            $targetNodeName = NodeName::fromString(uniqid('node-'));
-
-            $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->contentRepositoryId);
             $command = CopyNodesRecursively::createFromSubgraphAndStartNode(
-                $contentRepository->getContentGraph()->getSubgraph(
-                    $subject->subgraphIdentity->contentStreamId,
-                    $subject->subgraphIdentity->dimensionSpacePoint,
-                    $subject->subgraphIdentity->visibilityConstraints
+                $contentRepository->getContentGraph($subject->workspaceName)->getSubgraph(
+                    $subject->dimensionSpacePoint,
+                    $subject->visibilityConstraints
                 ),
+                $subject->workspaceName,
                 $subject,
-                OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->subgraphIdentity->dimensionSpacePoint),
-                $parentNode->nodeAggregateId,
+                OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->dimensionSpacePoint),
+                $parentNode->aggregateId,
                 null,
-                $targetNodeName
+                null
             );
-            $contentRepository->handle($command)->block();
+            $contentRepository->handle($command);
 
             $newlyCreatedNode = $this->contentRepositoryRegistry->subgraphForNode($parentNode)
-                ->findNodeByPath(
-                    $targetNodeName,
-                    $parentNode->nodeAggregateId
+                ->findNodeById(
+                    $command->nodeAggregateIdMapping->getNewNodeAggregateId($subject->aggregateId),
                 );
             $this->finish($newlyCreatedNode);
             // NOTE: we need to run "finish" before "addNodeCreatedFeedback"

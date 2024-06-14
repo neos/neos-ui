@@ -6,7 +6,31 @@
     background: var(--colors-ContrastDarker);
     border-bottom: 1px solid var(--colors-ContrastDark);
     border-right: 1px solid var(--colors-ContrastDark);
+    position: relative;
 }
 .loader {
     margin: var(--spacing-Quarter);
+}
+.collapseAll {
+    position: absolute;
+    right: 0;
+    top: 0;
+    opacity: .5;
+    cursor: pointer;
+    z-index: 5;
+    padding: var(--spacing-Half);
+    background-color: transparent;
+    border: 0;
+
+    .collapseAllIcon {
+        font-size: 1.2em;
+    }
+
+    &:hover > .collapseAllIcon {
+        color: var(--colors-PrimaryBlueHover);
+    }
+
+    &:hover {
+        opacity: 1;
+    }
 }

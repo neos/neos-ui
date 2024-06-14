@@ -17,6 +17,11 @@ use Neos\ContentRepository\Core\Feature\NodeMove\Dto\RelationDistributionStrateg
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 
+/**
+ * @internal These objects internally reflect possible operations made by the Neos.Ui.
+ *           They are sorely an implementation detail. You should not use them!
+ *           Please look into the php command API of the Neos CR instead.
+ */
 class MoveBefore extends AbstractStructuralChange
 {
     /**
@@ -32,9 +37,8 @@ class MoveBefore extends AbstractStructuralChange
             return false;
         }
         $parent = $this->findParentNode($siblingNode);
-        $nodeType = $this->subject->nodeType;
 
-        return $parent && $this->isNodeTypeAllowedAsChildNode($parent, $nodeType);
+        return $parent && $this->isNodeTypeAllowedAsChildNode($parent, $this->subject->nodeTypeName);
     }
 
     public function getMode(): string
@@ -63,24 +67,24 @@ class MoveBefore extends AbstractStructuralChange
                 // do nothing; $precedingSibling is null.
             }
 
-            $hasEqualParentNode = $parentNode->nodeAggregateId
-                ->equals($succeedingSiblingParent->nodeAggregateId);
+            $hasEqualParentNode = $parentNode->aggregateId
+                ->equals($succeedingSiblingParent->aggregateId);
 
-            $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->contentRepositoryId);
 
             $contentRepository->handle(
                 MoveNodeAggregate::create(
-                    $subject->subgraphIdentity->contentStreamId,
-                    $subject->subgraphIdentity->dimensionSpacePoint,
-                    $subject->nodeAggregateId,
+                    $subject->workspaceName,
+                    $subject->dimensionSpacePoint,
+                    $subject->aggregateId,
                     RelationDistributionStrategy::STRATEGY_GATHER_ALL,
                     $hasEqualParentNode
                         ? null
-                        : $succeedingSiblingParent->nodeAggregateId,
-                    $precedingSibling?->nodeAggregateId,
-                    $succeedingSibling->nodeAggregateId,
+                        : $succeedingSiblingParent->aggregateId,
+                    $precedingSibling?->aggregateId,
+                    $succeedingSibling->aggregateId,
                 )
-            )->block();
+            );
 
             $updateParentNodeInfo = new UpdateNodeInfo();
             $updateParentNodeInfo->setNode($succeedingSiblingParent);

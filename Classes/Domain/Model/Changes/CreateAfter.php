@@ -12,6 +12,11 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
+/**
+ * @internal These objects internally reflect possible operations made by the Neos.Ui.
+ *           They are sorely an implementation detail. You should not use them!
+ *           Please look into the php command API of the Neos CR instead.
+ */
 class CreateAfter extends AbstractCreate
 {
     /**
@@ -32,10 +37,8 @@ class CreateAfter extends AbstractCreate
         }
         $parent = $this->findParentNode($this->subject);
         $nodeTypeName = $this->getNodeTypeName();
-        $contentRepository = $this->contentRepositoryRegistry->get($parent->subgraphIdentity->contentRepositoryId);
-        $nodeType = $contentRepository->getNodeTypeManager()->getNodeType($nodeTypeName);
 
-        return $this->isNodeTypeAllowedAsChildNode($parent, $nodeType);
+        return $parent && $this->isNodeTypeAllowedAsChildNode($parent, $nodeTypeName);
     }
 
     /**
@@ -53,7 +56,7 @@ class CreateAfter extends AbstractCreate
                 // do nothing; $succeedingSibling is null.
             }
 
-            $this->createNode($parentNode, $succeedingSibling?->nodeAggregateId);
+            $this->createNode($parentNode, $succeedingSibling?->aggregateId);
 
             $this->updateWorkspaceInfo();
         }

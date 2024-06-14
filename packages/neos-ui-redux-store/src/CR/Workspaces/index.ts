@@ -1,47 +1,53 @@
 import produce from 'immer';
 import assignIn from 'lodash.assignin';
 import {action as createAction, ActionType} from 'typesafe-actions';
-import {NodeContextPath} from '@neos-project/neos-ts-interfaces';
+import {NodeContextPath, WorkspaceStatus} from '@neos-project/neos-ts-interfaces';
+
+import {WorkspaceName} from '@neos-project/neos-ts-interfaces';
 
 import {actionTypes as system, InitAction} from '../../System';
-import {WorkspaceName} from '@neos-project/neos-ts-interfaces';
 
 import * as selectors from './selectors';
 
+export enum TypeOfChange {
+    NODE_HAS_BEEN_CREATED = 0b0001,
+    NODE_HAS_BEEN_CHANGED = 0b0010,
+    NODE_HAS_BEEN_MOVED = 0b0100,
+    NODE_HAS_BEEN_DELETED = 0b1000
+}
+
+export interface PublishableNode {
+    contextPath: NodeContextPath;
+    documentContextPath: NodeContextPath;
+    typeOfChange: TypeOfChange;
+}
+
 export interface WorkspaceInformation {
     name: WorkspaceName;
-    publishableNodes: Array<{
-        contextPath: NodeContextPath;
-        documentContextPath: NodeContextPath;
-    }>;
+    totalNumberOfChanges: number;
+    publishableNodes: Array<PublishableNode>;
     baseWorkspace: WorkspaceName;
     readOnly?: boolean;
-    status?: string;
+    status: WorkspaceStatus;
 }
 
 export interface State extends Readonly<{
     personalWorkspace: WorkspaceInformation;
-    toBeDiscarded: NodeContextPath[];
 }> {}
 
 export const defaultState: State = {
     personalWorkspace: {
         name: '',
+        totalNumberOfChanges: 0,
         publishableNodes: [],
         baseWorkspace: '',
-        status: ''
-    },
-    toBeDiscarded: []
+        status: WorkspaceStatus.UP_TO_DATE
+    }
 };
 
 export enum actionTypes {
     UPDATE = '@neos/neos-ui/CR/Workspaces/UPDATE',
-    PUBLISH = '@neos/neos-ui/CR/Workspaces/PUBLISH',
-    COMMENCE_DISCARD = '@neos/neos-ui/CR/Workspaces/COMMENCE_DISCARD',
-    DISCARD_ABORTED = '@neos/neos-ui/CR/Workspaces/DISCARD_ABORTED',
-    DISCARD_CONFIRMED = '@neos/neos-ui/CR/Workspaces/DISCARD_CONFIRMED',
-    CHANGE_BASE_WORKSPACE = '@neos/neos-ui/CR/Workspaces/CHANGE_BASE_WORKSPACE',
-    REBASE_WORKSPACE = '@neos/neos-ui/CR/Workspaces/REBASE_WORKSPACE'
+    CHANGE_BASE_WORKSPACE = '@neos/neos-ui/CR/Workspaces/CHANGE_BASE_WORKSPACE'
 }
 
 export type Action = ActionType<typeof actions>;
@@ -52,48 +58,16 @@ export type Action = ActionType<typeof actions>;
 const update = (data: WorkspaceInformation) => createAction(actionTypes.UPDATE, data);
 
 /**
- * Publish nodes to the given workspace
- */
-const publish = (nodeContextPaths: NodeContextPath[], targetWorkspaceName: string) => createAction(actionTypes.PUBLISH, {nodeContextPaths, targetWorkspaceName});
-
-/**
- * Start node discard workflow
- *
- * @param {String} contextPath The contexts paths of the nodes to be discarded
- */
-const commenceDiscard = (nodeContextPaths: NodeContextPath[]) => createAction(actionTypes.COMMENCE_DISCARD, nodeContextPaths);
-
-/**
- * Abort the ongoing node discard workflow
- */
-const abortDiscard = () => createAction(actionTypes.DISCARD_ABORTED);
-
-/**
- * Confirm the ongoing discard
- */
-const confirmDiscard = () => createAction(actionTypes.DISCARD_CONFIRMED);
-
-/**
  * Change base workspace
  */
 const changeBaseWorkspace = (name: string) => createAction(actionTypes.CHANGE_BASE_WORKSPACE, name);
-
-/**
- * Rebase the user workspace
- */
-const rebaseWorkspace = (name: string) => createAction(actionTypes.REBASE_WORKSPACE, name);
 
 //
 // Export the actions
 //
 export const actions = {
     update,
-    publish,
-    commenceDiscard,
-    abortDiscard,
-    confirmDiscard,
-    changeBaseWorkspace,
-    rebaseWorkspace
+    changeBaseWorkspace
 };
 
 //
@@ -107,18 +81,6 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
         }
         case actionTypes.UPDATE: {
             draft.personalWorkspace = assignIn(draft.personalWorkspace, action.payload);
-            break;
-        }
-        case actionTypes.COMMENCE_DISCARD: {
-            draft.toBeDiscarded = action.payload;
-            break;
-        }
-        case actionTypes.DISCARD_ABORTED: {
-            draft.toBeDiscarded = [];
-            break;
-        }
-        case actionTypes.DISCARD_CONFIRMED: {
-            draft.toBeDiscarded = [];
             break;
         }
     }

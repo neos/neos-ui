@@ -15,11 +15,15 @@ use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
+use Neos\Neos\Domain\NodeLabel\NodeLabelGeneratorInterface;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 
+/**
+ * @internal
+ */
 class UpdateNodePreviewUrl extends AbstractFeedback
 {
     /**
@@ -32,6 +36,12 @@ class UpdateNodePreviewUrl extends AbstractFeedback
      * @var ContentRepositoryRegistry
      */
     protected $contentRepositoryRegistry;
+
+    /**
+     * @Flow\Inject
+     * @var NodeLabelGeneratorInterface
+     */
+    protected $nodeLabelGenerator;
 
     /**
      * Set the node
@@ -71,7 +81,7 @@ class UpdateNodePreviewUrl extends AbstractFeedback
      */
     public function getDescription()
     {
-        return sprintf('The "preview URL" of node "%s" has been changed potentially.', $this->getNode()->getLabel());
+        return sprintf('The "preview URL" of node "%s" has been changed potentially.', $this->nodeLabelGenerator->getLabel($this->getNode()));
     }
 
     /**
@@ -85,7 +95,7 @@ class UpdateNodePreviewUrl extends AbstractFeedback
         if (!$feedback instanceof UpdateNodePreviewUrl) {
             return false;
         }
-        return $this->getNode()->subgraphIdentity->equals($feedback->getNode()->subgraphIdentity);
+        return $this->getNode()->equals($feedback->getNode());
     }
 
     /**
@@ -101,9 +111,9 @@ class UpdateNodePreviewUrl extends AbstractFeedback
             $contextPath = '';
         } else {
             $nodeInfoHelper = new NodeInfoHelper();
-            $contentRepository = $this->contentRepositoryRegistry->get($this->node->subgraphIdentity->contentRepositoryId);
+            $contentRepository = $this->contentRepositoryRegistry->get($this->node->contentRepositoryId);
             $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
-            $newPreviewUrl = $nodeInfoHelper->createRedirectToNode($this->node, $controllerContext);
+            $newPreviewUrl = $nodeInfoHelper->createRedirectToNode($this->node, $controllerContext->getRequest());
             $contextPath = $nodeAddressFactory->createFromNode($this->node)->serializeForUri();
         }
         return [

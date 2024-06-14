@@ -14,19 +14,22 @@ namespace Neos\Neos\Ui\Fusion\ExceptionHandler;
 use GuzzleHttp\Psr7\Message;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Exception;
+use Neos\Flow\Mvc\Controller\Arguments;
+use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Flow\Mvc\View\ViewInterface;
 use Neos\Flow\Utility\Environment;
 use Neos\FluidAdaptor\View\StandaloneView;
 use Neos\Fusion\Core\ExceptionHandlers\AbstractRenderingExceptionHandler;
 use Neos\Fusion\Core\ExceptionHandlers\HtmlMessageHandler;
 use Psr\Http\Message\ResponseFactoryInterface;
-use Psr\Http\Message\StreamFactoryInterface;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * A page exception handler for the new UI.
  *
  * FIXME: When the old UI is removed this handler needs to be untangled from the PageHandler as the parent functionality is no longer needed.
  * FIXME: We should adapt rendering to requested "format" at some point
+ * @internal
  */
 class PageExceptionHandler extends AbstractRenderingExceptionHandler
 {
@@ -35,12 +38,6 @@ class PageExceptionHandler extends AbstractRenderingExceptionHandler
      * @var ResponseFactoryInterface
      */
     protected $responseFactory;
-
-    /**
-     * @Flow\Inject
-     * @var StreamFactoryInterface
-     */
-    protected $contentFactory;
 
     /**
      * @Flow\Inject
@@ -53,7 +50,7 @@ class PageExceptionHandler extends AbstractRenderingExceptionHandler
      *
      * @param string $fusionPath path causing the exception
      * @param \Exception $exception exception to handle
-     * @param integer $referenceCode
+     * @param string|null $referenceCode
      * @return string
      * @throws \Neos\Flow\Mvc\Exception\StopActionException
      * @throws \Neos\Flow\Security\Exception
@@ -77,13 +74,11 @@ class PageExceptionHandler extends AbstractRenderingExceptionHandler
      * Renders an actual HTTP response including the correct status and cache control header.
      *
      * @param \Exception $exception the exception
-     * @param string $bodyContent
-     * @return string
      */
-    protected function wrapHttpResponse(\Exception $exception, string $bodyContent): string
+    protected function wrapHttpResponse(\Exception $exception, StreamInterface $bodyContent): string
     {
         $response = $this->responseFactory->createResponse($exception instanceof Exception ? $exception->getStatusCode() : 500)
-            ->withBody($this->contentFactory->createStream($bodyContent))
+            ->withBody($bodyContent)
             ->withHeader('Cache-Control', 'no-store');
 
         return Message::toString($response);
@@ -98,13 +93,20 @@ class PageExceptionHandler extends AbstractRenderingExceptionHandler
     protected function prepareFluidView(): ViewInterface
     {
         $fluidView = new StandaloneView();
-        $fluidView->setControllerContext($this->runtime->getControllerContext());
+        $fluidView->setControllerContext(
+            new ControllerContext(
+                $this->runtime->getControllerContext()->getRequest(),
+                $this->runtime->getControllerContext()->getResponse(),
+                new Arguments(),
+                $this->runtime->getControllerContext()->getUriBuilder()
+            )
+        );
         $fluidView->setFormat('html');
         $fluidView->setTemplatePathAndFilename('resource://Neos.Neos.Ui/Private/Templates/Error/ErrorMessage.html');
 
         $guestNotificationScript = new StandaloneView();
         $guestNotificationScript->setTemplatePathAndFilename('resource://Neos.Neos.Ui/Private/Templates/Backend/GuestNotificationScript.html');
-        $fluidView->assign('guestNotificationScript', $guestNotificationScript->render());
+        $fluidView->assign('guestNotificationScript', $guestNotificationScript->render()->getContents());
 
         return $fluidView;
     }

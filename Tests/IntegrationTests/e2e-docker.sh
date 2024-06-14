@@ -53,21 +53,20 @@ dc exec -T php bash <<-'BASH'
     ./flow flow:cache:flush
     ./flow flow:cache:warmup
     ./flow doctrine:migrate
-    ./flow user:create --username=admin --password=admin --first-name=John --last-name=Doe --roles=Administrator || true
+    ./flow user:create --username=admin --password=admin --first-name=Admin --last-name=Admington --roles=Administrator || true
+    ./flow user:create --username=editor --password=editor --first-name=Editor --last-name=McEditworth --roles=Editor || true
 
     ./flow cr:setup --content-repository onedimension
+    ./flow cr:import --content-repository onedimension --path ./DistributionPackages/Neos.Test.OneDimension/Resources/Private/Content
+    # Connect to a Neos site, todo the nodeTypeName parameter is obsolete but necessary
     ./flow site:create neos-test-onedimension Neos.Test.OneDimension Neos.TestNodeTypes:Document.HomePage
     ./flow domain:add neos-test-onedimension onedimension.localhost --port 8081
-    # TODO: Replace with "--assume-yes" flag once "./flow cr:prune" has one
-    printf "y\n" | ./flow cr:prune --content-repository onedimension
-    ./flow cr:import --content-repository onedimension --path ./DistributionPackages/Neos.Test.OneDimension/Resources/Private/Content
 
     ./flow cr:setup --content-repository twodimensions
+    ./flow cr:import --content-repository twodimensions --path ./DistributionPackages/Neos.Test.TwoDimensions/Resources/Private/Content
+    # Connect to a Neos site, todo the nodeTypeName parameter is obsolete but necessary
     ./flow site:create neos-test-twodimensions Neos.Test.TwoDimensions Neos.TestNodeTypes:Document.HomePage
     ./flow domain:add neos-test-twodimensions twodimensions.localhost --port 8081
-    # TODO: Replace with "--assume-yes" flag once "./flow cr:prune" has one
-    printf "y\n" | ./flow cr:prune --content-repository twodimensions
-    ./flow cr:import --content-repository twodimensions --path ./DistributionPackages/Neos.Test.TwoDimensions/Resources/Private/Content
 
     ./flow resource:publish
 BASH

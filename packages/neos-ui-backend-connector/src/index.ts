@@ -41,11 +41,18 @@ export const initializeJsAPI = (parent: {[propName: string]: any}, {alias = 'neo
     return parent[alias];
 };
 
+type Api = {
+    use: ReturnType<typeof initializeUse>;
+    q: ReturnType<typeof initializeFlowQuery>;
+    endpoints: ReturnType<typeof initializeEndpoints>;
+    [libraryName: string]: any
+}
+
 //
 // Expose methods to access the initialized api
 //
 export default {
-    get(alias: string = 'neos', ctx: {[propName: string]: any} = window): any {
+    get(alias: string = 'neos', ctx: {[propName: string]: any} = window): Api {
         return ctx[alias];
     }
 };
@@ -62,3 +69,8 @@ export const createPlugin = (identifier: string, factory: any) => {
 // Expose fetchWithErrorHandling
 //
 export {fetchWithErrorHandling};
+
+//
+// Expose types
+//
+export type {Routes};

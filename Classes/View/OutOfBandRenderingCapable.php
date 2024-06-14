@@ -15,9 +15,11 @@ declare(strict_types=1);
 namespace Neos\Neos\Ui\View;
 
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * The interface for views capable of out-of-band rendering by accepting string serialized entry points
+ * @internal experimental
  */
 interface OutOfBandRenderingCapable
 {
@@ -26,5 +28,5 @@ interface OutOfBandRenderingCapable
      */
     public function setRenderingEntryPoint(string $renderingEntryPoint): void;
 
-    public function render(): string|ResponseInterface;
+    public function render(): ResponseInterface|StreamInterface;
 }

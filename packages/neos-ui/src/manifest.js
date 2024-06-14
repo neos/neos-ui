@@ -21,7 +21,7 @@ import initializeContentDomNode from '@neos-project/neos-ui-guest-frame/src/init
 import style from '@neos-project/neos-ui-guest-frame/src/style.module.css';
 import backend from '@neos-project/neos-ui-backend-connector';
 
-manifest('main', {}, globalRegistry => {
+manifest('main', {}, (globalRegistry, {routes}) => {
     //
     // Create edit preview mode registry
     //
@@ -290,7 +290,7 @@ manifest('main', {}, globalRegistry => {
                 // This is an extreme case when even the top node does not exist in the given dimension
                 // TODO: still find a nicer way to break out of this situation
                 if (redirectContextPath === false) {
-                    window.location = '/neos';
+                    window.location.href = routes?.core?.modules?.defaultModule;
                     break;
                 }
                 redirectUri = state?.cr?.nodes?.byContextPath?.[redirectContextPath]?.uri;
@@ -359,7 +359,7 @@ manifest('main', {}, globalRegistry => {
                 // This is an extreme case when even the top node does not exist in the given dimension
                 // TODO: still find a nicer way to break out of this situation
                 if (!redirectContextPath) {
-                    window.location = '/neos';
+                    window.location.href = routes?.core?.modules?.defaultModule;
                     break;
                 }
                 redirectUri = state?.cr?.nodes?.byContextPath?.[redirectContextPath]?.uri;

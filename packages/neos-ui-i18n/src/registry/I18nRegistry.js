@@ -2,15 +2,9 @@ import {SynchronousRegistry} from '@neos-project/neos-ui-extensibility/src/regis
 
 import logger from '@neos-project/utils-logger';
 
+import {getTranslationAddress} from './getTranslationAddress';
+
 const errorCache = {};
-
-const getTranslationAddress = function (id, packageKey, sourceName) {
-    if (id && id.indexOf(':') !== -1) {
-        return id.split(':');
-    }
-
-    return [packageKey, sourceName, id];
-};
 
 /**
  * This code is taken from the Ember version with minor adjustments. Possibly refactor it later

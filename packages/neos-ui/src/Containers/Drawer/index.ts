@@ -7,4 +7,4 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-export {Drawer as default} from './Drawer';
+export {Drawer as default, drawer$, toggleDrawer} from './Drawer';

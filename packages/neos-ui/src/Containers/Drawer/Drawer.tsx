@@ -9,37 +9,49 @@
  */
 import React from 'react';
 import mergeClassNames from 'classnames';
-// @ts-ignore
-import {connect} from 'react-redux';
 
-import {actions} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
-import {GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
 import {SynchronousRegistry} from '@neos-project/neos-ui-extensibility';
+import {createState} from '@neos-project/framework-observable';
+import {useLatestState} from '@neos-project/framework-observable-react';
 
 import MenuItemGroup from './MenuItemGroup/index';
 import style from './style.module.css';
 import {THRESHOLD_MOUSE_LEAVE} from './constants';
 
-const withReduxState = connect((state: GlobalState) => ({
-    isHidden: state?.ui?.drawer?.isHidden,
-    collapsedMenuGroups: state?.ui?.drawer?.collapsedMenuGroups
-}), {
-    hideDrawer: actions.UI.Drawer.hide,
-    toggleMenuGroup: actions.UI.Drawer.toggleMenuGroup
-});
-
 const withNeosGlobals = neos(globalRegistry => ({
     containerRegistry: globalRegistry.get('containers')
 }));
 
+export const drawer$ = createState({
+    isHidden: true,
+    collapsedMenuGroups: [] as string[]
+});
+
+export function toggleDrawer() {
+    drawer$.update((state) => ({
+        ...state,
+        isHidden: !state.isHidden
+    }));
+}
+
+function hideDrawer() {
+    drawer$.update((state) => ({
+        ...state,
+        isHidden: true
+    }));
+}
+
+function toggleMenuGroup(menuGroupId: string) {
+    drawer$.update((state) => ({
+        ...state,
+        collapsedMenuGroups: state.collapsedMenuGroups.includes(menuGroupId)
+            ? state.collapsedMenuGroups.filter((m) => m !== menuGroupId)
+            : [...state.collapsedMenuGroups, menuGroupId]
+    }));
+}
+
 const StatelessDrawer: React.FC<{
-    isHidden: boolean;
-    collapsedMenuGroups: string[],
-
-    hideDrawer: () => void;
-    toggleMenuGroup: (menuGroup: string) => void;
-
     containerRegistry: SynchronousRegistry<any>;
 
     menuData: {
@@ -57,6 +69,7 @@ const StatelessDrawer: React.FC<{
         }[];
     }[];
 }> = (props) => {
+    const {isHidden, collapsedMenuGroups} = useLatestState(drawer$);
     const mouseLeaveTimeoutRef = React.useRef<null | ReturnType<typeof setTimeout>>(null);
     const handleMouseEnter = React.useCallback(() => {
         if (mouseLeaveTimeoutRef.current) {
@@ -67,12 +80,12 @@ const StatelessDrawer: React.FC<{
     const handleMouseLeave = React.useCallback(() => {
         if (!mouseLeaveTimeoutRef.current) {
             mouseLeaveTimeoutRef.current = setTimeout(() => {
-                props.hideDrawer();
+                hideDrawer();
                 mouseLeaveTimeoutRef.current = null;
             }, THRESHOLD_MOUSE_LEAVE);
         }
-    }, [props.hideDrawer]);
-    const {isHidden, menuData, collapsedMenuGroups, toggleMenuGroup, containerRegistry} = props;
+    }, []);
+    const {menuData, containerRegistry} = props;
     const classNames = mergeClassNames({
         [style.drawer]: true,
         [style['drawer--isHidden']]: isHidden
@@ -91,8 +104,9 @@ const StatelessDrawer: React.FC<{
                 {Object.entries(menuData).map(([menuGroup, menuGroupConfiguration]) => (
                     <MenuItemGroup
                         key={menuGroup}
-                        collapsed={Boolean(collapsedMenuGroups.includes(menuGroup))}
-                        handleMenuGroupToggle={() => toggleMenuGroup(menuGroup)}
+                        id={menuGroup}
+                        collapsed={collapsedMenuGroups.includes(menuGroup)}
+                        onMenuGroupToggle={toggleMenuGroup}
                         {...menuGroupConfiguration}
                         />
                 ))}
@@ -104,4 +118,4 @@ const StatelessDrawer: React.FC<{
     );
 }
 
-export const Drawer = withReduxState(withNeosGlobals(StatelessDrawer as any));
+export const Drawer = withNeosGlobals(StatelessDrawer as any);

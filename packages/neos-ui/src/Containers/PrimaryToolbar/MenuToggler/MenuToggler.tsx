@@ -8,15 +8,14 @@
  * source code.
  */
 import React from 'react';
-// @ts-ignore
-import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 
 import Button from '@neos-project/react-ui-components/src/Button/';
-import {actions} from '@neos-project/neos-ui-redux-store';
-import {GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {I18nRegistry} from '@neos-project/neos-ts-interfaces';
+import {useLatestState} from '@neos-project/framework-observable-react';
+
+import {drawer$, toggleDrawer} from '../../Drawer';
 
 import style from './style.module.css';
 
@@ -24,24 +23,17 @@ const withNeosGlobals = neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')
 }));
 
-const withReduxState = connect((state: GlobalState) => ({
-    isMenuHidden: state?.ui?.drawer?.isHidden
-}), {
-    toggleDrawer: actions.UI.Drawer.toggle
-});
-
 const StatelessMenuToggler: React.FC<{
     i18nRegistry: I18nRegistry;
 
     className?: string;
-    isMenuHidden: boolean;
-    toggleDrawer: () => void;
 }> = (props) => {
     const handleToggle = React.useCallback(() => {
-        props.toggleDrawer();
+        toggleDrawer();
     }, []);
 
-    const {className, isMenuHidden, i18nRegistry} = props;
+    const {className, i18nRegistry} = props;
+    const {isHidden: isMenuHidden} = useLatestState(drawer$);
     const isMenuVisible = !isMenuHidden;
     const classNames = mergeClassNames({
         [style.menuToggler]: true,
@@ -70,4 +62,4 @@ const StatelessMenuToggler: React.FC<{
     );
 }
 
-export const MenuToggler = withNeosGlobals(withReduxState(StatelessMenuToggler));
+export const MenuToggler = withNeosGlobals(StatelessMenuToggler as any);

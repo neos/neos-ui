@@ -17,12 +17,13 @@ import MenuItem from '../MenuItem/index';
 import style from '../style.module.css';
 
 export const MenuItemGroup: React.FC<{
+    id: string;
     icon?: string;
     label: string;
     uri: string;
     target?: string;
     collapsed: boolean;
-    handleMenuGroupToggle: () => void;
+    onMenuGroupToggle: (menuGroupId: string) => void;
     children: {
         icon?: string;
         label: string;
@@ -31,7 +32,10 @@ export const MenuItemGroup: React.FC<{
         skipI18n?: boolean;
     }[];
 }> = (props) => {
-    const {label, icon, children, uri, collapsed, handleMenuGroupToggle} = props;
+    const {label, icon, children, uri, collapsed} = props;
+    const handleMenuGroupToggle = React.useCallback(() => {
+        props.onMenuGroupToggle(props.id);
+    }, [props.id])
 
     return (
         <ToggablePanel onPanelToggle={handleMenuGroupToggle} isOpen={!collapsed} style="condensed" className={style.drawer__menuItem}>

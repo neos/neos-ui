@@ -2632,6 +2632,8 @@ __metadata:
     "@fortawesome/free-solid-svg-icons": ^5.15.3
     "@friendsofreactjs/react-css-themr": ~4.2.0
     "@neos-project/debug-reason-for-rendering": "workspace:*"
+    "@neos-project/framework-observable": "workspace:*"
+    "@neos-project/framework-observable-react": "workspace:*"
     "@neos-project/jest-preset-neos-ui": "workspace:*"
     "@neos-project/neos-ts-interfaces": "workspace:*"
     "@neos-project/neos-ui-backend-connector": "workspace:*"

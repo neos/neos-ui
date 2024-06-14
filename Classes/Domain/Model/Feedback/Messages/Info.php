@@ -13,6 +13,9 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Messages;
 
 use Neos\Neos\Ui\Domain\Model\Feedback\AbstractMessageFeedback;
 
+/**
+ * @internal
+ */
 class Info extends AbstractMessageFeedback
 {
     /**

@@ -24,6 +24,7 @@ use Neos\Flow\Annotations as Flow;
  * "children" operation working on ContentRepository nodes. It iterates over all
  * context elements and returns all child nodes or only those matching
  * the filter expression specified as optional argument.
+ * @internal
  */
 class NeosUiFilteredChildrenOperation extends AbstractOperation
 {
@@ -75,12 +76,12 @@ class NeosUiFilteredChildrenOperation extends AbstractOperation
             $subgraph = $this->contentRepositoryRegistry->subgraphForNode($contextNode);
 
             foreach ($subgraph->findChildNodes(
-                $contextNode->nodeAggregateId,
+                $contextNode->aggregateId,
                 FindChildNodesFilter::create(nodeTypes: $arguments[0] ?? null)
             ) as $childNode) {
-                if (!isset($outputNodeIdentifiers[$childNode->nodeAggregateId->value])) {
+                if (!isset($outputNodeIdentifiers[$childNode->aggregateId->value])) {
                     $output[] = $childNode;
-                    $outputNodeIdentifiers[$childNode->nodeAggregateId->value] = true;
+                    $outputNodeIdentifiers[$childNode->aggregateId->value] = true;
                 }
             }
         }

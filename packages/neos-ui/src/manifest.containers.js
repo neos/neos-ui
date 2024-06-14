@@ -3,22 +3,21 @@ import manifest from '@neos-project/neos-ui-extensibility';
 import App from './Containers/App';
 
 import Modals from './Containers/Modals/index';
-import DiscardDialog from './Containers/Modals/DiscardDialog/index';
 import DeleteNodeModal from './Containers/Modals/DeleteNode/index';
 import InsertModeModal from './Containers/Modals/InsertMode/index';
 import SelectNodeTypeModal from './Containers/Modals/SelectNodeType/index';
 import NodeCreationDialog from './Containers/Modals/NodeCreationDialog/index';
 import NodeVariantCreationDialog from './Containers/Modals/NodeVariantCreationDialog/index';
+import {PublishingDialog} from './Containers/Modals/PublishingDialog/index';
 import ReloginDialog from './Containers/Modals/ReloginDialog/index';
 import KeyboardShortcutModal from './Containers/Modals/KeyboardShortcutModal/index';
 import UnappliedChangesDialog from './Containers/Modals/UnappliedChangesDialog/index';
-import SyncWorkspaceDialog from './Containers/Modals/SyncWorkspaceDialog/index';
+import {SyncWorkspaceDialog} from './Containers/Modals/SyncWorkspaceDialog/index';
 
 import PrimaryToolbar from './Containers/PrimaryToolbar/index';
 import DimensionSwitcher from './Containers/PrimaryToolbar/DimensionSwitcher/index';
-import UserDropDown from './Containers/PrimaryToolbar/UserDropDown/index';
 import PublishDropDown from './Containers/PrimaryToolbar/PublishDropDown/index';
-import WorkspaceSync from './Containers/PrimaryToolbar/WorkspaceSync/index';
+import {WorkspaceSync} from './Containers/PrimaryToolbar/WorkspaceSync/index';
 import MenuToggler from './Containers/PrimaryToolbar/MenuToggler/index';
 import Brand from './Containers/PrimaryToolbar/Brand/index';
 import EditPreviewDropDown from './Containers/PrimaryToolbar/EditPreviewDropDown/index';
@@ -30,6 +29,7 @@ import PreviewButton from './Containers/SecondaryToolbar/PreviewButton/index';
 import FullScreenButton from './Containers/SecondaryToolbar/FullScreenButton/index';
 
 import Drawer from './Containers/Drawer/index';
+import UserDropDown from './Containers/Drawer/UserDropDown/index';
 import VersionPanel from './Containers/Drawer/VersionPanel/index';
 
 import LeftSideBar from './Containers/LeftSideBar/index';
@@ -48,12 +48,12 @@ manifest('main.containers', {}, globalRegistry => {
     containerRegistry.set('App', App);
 
     containerRegistry.set('Modals', Modals);
-    containerRegistry.set('Modals/DiscardDialog', DiscardDialog);
     containerRegistry.set('Modals/DeleteNodeModal', DeleteNodeModal);
     containerRegistry.set('Modals/InsertModeModal', InsertModeModal);
     containerRegistry.set('Modals/SelectNodeTypeModal', SelectNodeTypeModal);
     containerRegistry.set('Modals/NodeCreationDialog', NodeCreationDialog);
     containerRegistry.set('Modals/NodeVariantCreationDialog', NodeVariantCreationDialog);
+    containerRegistry.set('Modals/PublishingDialog', PublishingDialog);
     containerRegistry.set('Modals/ReloginDialog', ReloginDialog);
     containerRegistry.set('Modals/KeyboardShortcutModal', KeyboardShortcutModal);
     containerRegistry.set('Modals/UnappliedChangesDialog', UnappliedChangesDialog);
@@ -64,7 +64,6 @@ manifest('main.containers', {}, globalRegistry => {
     containerRegistry.set('PrimaryToolbar/Left/Brand', Brand);
     containerRegistry.set('PrimaryToolbar/Right/EditPreviewDropDown', EditPreviewDropDown);
     containerRegistry.set('PrimaryToolbar/Right/DimensionSwitcher', DimensionSwitcher);
-    containerRegistry.set('PrimaryToolbar/Right/UserDropDown', UserDropDown);
     containerRegistry.set('PrimaryToolbar/Right/PublishDropDown', PublishDropDown);
     containerRegistry.set('PrimaryToolbar/Right/WorkspaceSync', WorkspaceSync);
 
@@ -76,6 +75,7 @@ manifest('main.containers', {}, globalRegistry => {
 
     containerRegistry.set('Drawer', Drawer);
     containerRegistry.set('Drawer/Bottom/VersionPanel', VersionPanel);
+    containerRegistry.set('Drawer/Bottom/UserDropDown', UserDropDown);
 
     containerRegistry.set('LeftSideBar', LeftSideBar);
     containerRegistry.set('LeftSideBar/Top/PageTreeToolbar', PageTreeToolbar);

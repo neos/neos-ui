@@ -13,14 +13,17 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
 
 use Neos\ContentRepository\Core\Projection\Workspace\Workspace;
 use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
-use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
-use Neos\ContentRepository\Core\Factory\ContentRepositoryId;
+use Neos\ContentRepository\Core\SharedModel\ContentRepository\ContentRepositoryId;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 use Neos\Flow\Mvc\Controller\ControllerContext;
+use Neos\Neos\Domain\Workspace\WorkspaceProvider;
 
+/**
+ * @internal
+ */
 class UpdateWorkspaceInfo extends AbstractFeedback
 {
     protected ?WorkspaceName $workspaceName = null;
@@ -33,9 +36,9 @@ class UpdateWorkspaceInfo extends AbstractFeedback
 
     /**
      * @Flow\Inject
-     * @var ContentRepositoryRegistry
+     * @var WorkspaceProvider
      */
-    protected $contentRepositoryRegistry;
+    protected $workspaceProvider;
 
     /**
      * UpdateWorkspaceInfo constructor.
@@ -101,7 +104,7 @@ class UpdateWorkspaceInfo extends AbstractFeedback
             return false;
         }
 
-        return $this->getWorkspaceName()?->value === $feedback->getWorkspaceName()?->value;
+        return $this->getWorkspaceName()->equals($feedback->getWorkspaceName());
     }
 
     /**
@@ -116,17 +119,21 @@ class UpdateWorkspaceInfo extends AbstractFeedback
             return null;
         }
 
-        $contentRepository = $this->contentRepositoryRegistry->get($this->contentRepositoryId);
-        $workspace = $contentRepository->getWorkspaceFinder()->findOneByName($this->workspaceName);
+        $workspace = $this->workspaceProvider->provideForWorkspaceName(
+            $this->contentRepositoryId,
+            $this->workspaceName
+        );
+        $totalNumberOfChanges = $workspace->countAllChanges();
 
-        return $workspace ? [
+        return [
             'name' => $this->workspaceName->value,
+            'totalNumberOfChanges' => $totalNumberOfChanges,
             'publishableNodes' => $this->workspaceService->getPublishableNodeInfo(
                 $this->workspaceName,
                 $this->contentRepositoryId
             ),
-            'baseWorkspace' => $workspace->baseWorkspaceName->value,
-            'status' => $workspace->status
-        ] : [];
+            'baseWorkspace' => $workspace->getCurrentBaseWorkspaceName()?->value,
+            'status' => $workspace->getCurrentStatus()
+        ];
     }
 }

@@ -11,16 +11,18 @@ namespace Neos\Neos\Ui\Fusion\Helper;
  * source code.
  */
 
-use Neos\ContentRepository\Core\Dimension\ContentDimension;
 use Neos\ContentRepository\Core\Dimension\ContentDimensionId;
-use Neos\ContentRepository\Core\Dimension\ContentDimensionSourceInterface;
 use Neos\ContentRepository\Core\DimensionSpace\AbstractDimensionSpacePoint;
 use Neos\ContentRepository\Core\DimensionSpace\DimensionSpacePoint;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
-use Neos\ContentRepository\Core\Factory\ContentRepositoryId;
+use Neos\ContentRepository\Core\SharedModel\ContentRepository\ContentRepositoryId;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
 
+/**
+ * @internal implementation detail of the Neos Ui to build its initialState.
+ *           only used in EEL for the configuration Neos.Neos.Ui.initialState.
+ */
 class ContentDimensionsHelper implements ProtectedContextAwareInterface
 {
     /**
@@ -66,10 +68,9 @@ class ContentDimensionsHelper implements ProtectedContextAwareInterface
 
     /**
      * @param DimensionSpacePoint $dimensions Dimension values indexed by dimension name
-     * @return array<string,array<int,string>> Allowed preset names for the given dimension combination
-     *                                         indexed by dimension name
+     * @return array<string,array<int,string>>|object Allowed preset names for the given dimension combination indexed by dimension name
      */
-    public function allowedPresetsByName(DimensionSpacePoint $dimensions, ContentRepositoryId $contentRepositoryId): array
+    public function allowedPresetsByName(DimensionSpacePoint $dimensions, ContentRepositoryId $contentRepositoryId): array|object
     {
         $contentDimensionHelperInternals = $this->contentRepositoryRegistry->buildService($contentRepositoryId, new ContentDimensionsHelperInternalsFactory());
         $contentDimensionSource = $contentDimensionHelperInternals->contentDimensionSource;
@@ -86,7 +87,8 @@ class ContentDimensionsHelper implements ProtectedContextAwareInterface
             }
         }
 
-        return $allowedPresets;
+        /** empty arrays must be rendered as `{}` in json for our client code to work */
+        return $allowedPresets === [] ? new \stdClass() : $allowedPresets;
     }
 
     /** @return array<string,array<int,string>> */

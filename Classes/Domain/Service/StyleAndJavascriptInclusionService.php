@@ -19,6 +19,7 @@ use Neos\Utility\PositionalArraySorter;
 
 /**
  * @Flow\Scope("singleton")
+ * @internal
  */
 class StyleAndJavascriptInclusionService
 {
@@ -61,7 +62,7 @@ class StyleAndJavascriptInclusionService
     public function getHeadScripts(): string
     {
         return $this->build($this->javascriptResources, function ($uri, $additionalAttributes) {
-            return '<script src="' . $uri . '" ' . $additionalAttributes . '></script>';
+            return '<script src="' . $uri . '" ' . $additionalAttributes . ' defer></script>';
         });
     }
 
@@ -98,12 +99,14 @@ class StyleAndJavascriptInclusionService
                 $hash = substr(md5_file($resourceExpression) ?: '', 0, 8);
                 $resourceExpression = $this->resourceManager->getPublicPackageResourceUriByPath($resourceExpression);
             }
-            $finalUri = $hash ? $resourceExpression . '?' . $hash : $resourceExpression;
-            $additionalAttributes = array_merge(
-                // legacy first level 'defer' attribute
-                isset($element['defer']) ? ['defer' => $element['defer']] : [],
-                $element['attributes'] ?? []
-            );
+            $finalUri = $hash ? $resourceExpression . (str_contains($resourceExpression, '?') ? '&' : '?') . $hash : $resourceExpression;
+            $additionalAttributes = $element['attributes'] ?? [];
+
+            // All scripts are deferred by default. This prevents the attribute from
+            // being specified redundantly.
+            if (isset($additionalAttributes['defer'])) {
+                unset($additionalAttributes['defer']);
+            }
             $result .= $builderForLine($finalUri, $this->htmlAttributesArrayToString($additionalAttributes));
         }
         return $result;

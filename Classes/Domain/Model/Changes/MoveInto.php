@@ -15,9 +15,13 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
 use Neos\ContentRepository\Core\Feature\NodeMove\Command\MoveNodeAggregate;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\Feature\NodeMove\Dto\RelationDistributionStrategy;
-use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 
+/**
+ * @internal These objects internally reflect possible operations made by the Neos.Ui.
+ *           They are sorely an implementation detail. You should not use them!
+ *           Please look into the php command API of the Neos CR instead.
+ */
 class MoveInto extends AbstractStructuralChange
 {
     protected ?string $parentContextPath;
@@ -35,7 +39,7 @@ class MoveInto extends AbstractStructuralChange
 
         return $this->nodeService->findNodeBySerializedNodeAddress(
             $this->parentContextPath,
-            $this->getSubject()->subgraphIdentity->contentRepositoryId
+            $this->getSubject()->contentRepositoryId
         );
     }
 
@@ -57,9 +61,8 @@ class MoveInto extends AbstractStructuralChange
             return false;
         }
         $parent = $this->getParentNode();
-        $nodeType = $this->subject->nodeType;
 
-        return $parent && $this->isNodeTypeAllowedAsChildNode($parent, $nodeType);
+        return $parent && $this->isNodeTypeAllowedAsChildNode($parent, $this->subject->nodeTypeName);
     }
 
     /**
@@ -73,21 +76,21 @@ class MoveInto extends AbstractStructuralChange
         $subject = $this->subject;
         if ($this->canApply() && $parentNode && $subject) {
             $otherParent = $this->contentRepositoryRegistry->subgraphForNode($subject)
-                ->findParentNode($subject->nodeAggregateId);
+                ->findParentNode($subject->aggregateId);
 
-            $hasEqualParentNode = $otherParent && $otherParent->nodeAggregateId
-                    ->equals($parentNode->nodeAggregateId);
+            $hasEqualParentNode = $otherParent && $otherParent->aggregateId
+                    ->equals($parentNode->aggregateId);
 
-            $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->contentRepositoryId);
             $contentRepository->handle(
                 MoveNodeAggregate::create(
-                    $subject->subgraphIdentity->contentStreamId,
-                    $subject->subgraphIdentity->dimensionSpacePoint,
-                    $subject->nodeAggregateId,
+                    $subject->workspaceName,
+                    $subject->dimensionSpacePoint,
+                    $subject->aggregateId,
                     RelationDistributionStrategy::STRATEGY_GATHER_ALL,
-                    $hasEqualParentNode ? null : $parentNode->nodeAggregateId,
+                    $hasEqualParentNode ? null : $parentNode->aggregateId,
                 )
-            )->block();
+            );
 
             $updateParentNodeInfo = new UpdateNodeInfo();
             $updateParentNodeInfo->setNode($parentNode);

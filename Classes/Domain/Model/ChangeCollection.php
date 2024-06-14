@@ -13,6 +13,7 @@ namespace Neos\Neos\Ui\Domain\Model;
 
 /**
  * A collection of changes
+ * @internal
  */
 class ChangeCollection
 {

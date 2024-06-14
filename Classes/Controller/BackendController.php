@@ -12,35 +12,40 @@ namespace Neos\Neos\Ui\Controller;
  * source code.
  */
 
-use Neos\ContentRepository\Core\NodeType\NodeTypeName;
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
+use Neos\ContentRepository\Core\SharedModel\Exception\WorkspaceDoesNotExist;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ActionController;
-use Neos\Flow\Mvc\View\ViewInterface;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
-use Neos\Flow\ResourceManagement\ResourceManager;
 use Neos\Flow\Security\Context;
 use Neos\Flow\Session\SessionInterface;
-use Neos\Fusion\View\FusionView;
-use Neos\Neos\Controller\Backend\MenuHelper;
 use Neos\Neos\Domain\Repository\DomainRepository;
 use Neos\Neos\Domain\Repository\SiteRepository;
 use Neos\Neos\Domain\Service\NodeTypeNameFactory;
 use Neos\Neos\Domain\Service\WorkspaceNameBuilder;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;
-use Neos\Neos\Service\BackendRedirectionService;
 use Neos\Neos\Service\UserService;
-use Neos\Neos\Ui\Domain\Service\StyleAndJavascriptInclusionService;
-use Neos\Neos\Ui\Service\NodeClipboard;
+use Neos\Neos\Ui\Domain\InitialData\ConfigurationProviderInterface;
+use Neos\Neos\Ui\Domain\InitialData\FrontendConfigurationProviderInterface;
+use Neos\Neos\Ui\Domain\InitialData\InitialStateProviderInterface;
+use Neos\Neos\Ui\Domain\InitialData\MenuProviderInterface;
+use Neos\Neos\Ui\Domain\InitialData\NodeTypeGroupsAndRolesProviderInterface;
+use Neos\Neos\Ui\Domain\InitialData\RoutesProviderInterface;
+use Neos\Neos\Ui\Presentation\ApplicationView;
 
+/**
+ * @internal
+ */
 class BackendController extends ActionController
 {
     /**
-     * @var FusionView
+     * @var ApplicationView
      */
     protected $view;
+
+    protected $defaultViewObjectName = ApplicationView::class;
 
     /**
      * @Flow\Inject
@@ -74,24 +79,6 @@ class BackendController extends ActionController
 
     /**
      * @Flow\Inject
-     * @var ResourceManager
-     */
-    protected $resourceManager;
-
-    /**
-     * @Flow\Inject
-     * @var MenuHelper
-     */
-    protected $menuHelper;
-
-    /**
-     * @Flow\Inject(lazy=false)
-     * @var BackendRedirectionService
-     */
-    protected $backendRedirectionService;
-
-    /**
-     * @Flow\Inject
      * @var ContentRepositoryRegistry
      */
     protected $contentRepositoryRegistry;
@@ -104,27 +91,39 @@ class BackendController extends ActionController
 
     /**
      * @Flow\Inject
-     * @var StyleAndJavascriptInclusionService
+     * @var ConfigurationProviderInterface
      */
-    protected $styleAndJavascriptInclusionService;
+    protected $configurationProvider;
 
     /**
      * @Flow\Inject
-     * @var NodeClipboard
+     * @var RoutesProviderInterface
      */
-    protected $clipboard;
+    protected $routesProvider;
 
     /**
-     * @Flow\InjectConfiguration(package="Neos.Neos.Ui", path="splashScreen.partial")
-     * @var string
+     * @Flow\Inject
+     * @var FrontendConfigurationProviderInterface
      */
-    protected $splashScreenPartial;
+    protected $frontendConfigurationProvider;
 
-    public function initializeView(ViewInterface $view)
-    {
-        /** @var FusionView $view */
-        $view->setFusionPath('backend');
-    }
+    /**
+     * @Flow\Inject
+     * @var NodeTypeGroupsAndRolesProviderInterface
+     */
+    protected $nodeTypeGroupsAndRolesProvider;
+
+    /**
+     * @Flow\Inject
+     * @var MenuProviderInterface
+     */
+    protected $menuProvider;
+
+    /**
+     * @Flow\Inject
+     * @var InitialStateProviderInterface
+     */
+    protected $initialStateProvider;
 
     /**
      * Displays the backend interface
@@ -148,10 +147,12 @@ class BackendController extends ActionController
         }
 
         $currentAccount = $this->securityContext->getAccount();
-        $workspace = $contentRepository->getWorkspaceFinder()->findOneByName(
-            WorkspaceNameBuilder::fromAccountIdentifier($currentAccount->getAccountIdentifier())
-        );
-        if (is_null($workspace)) {
+        $workspaceName = WorkspaceNameBuilder::fromAccountIdentifier($currentAccount->getAccountIdentifier());
+
+        try {
+            $contentGraph = $contentRepository->getContentGraph($workspaceName);
+        } catch (WorkspaceDoesNotExist) {
+            // todo will cause infinite loop: https://github.com/neos/neos-development-collection/issues/4401
             $this->redirectToUri($this->uriBuilder->uriFor('index', [], 'Login', 'Neos.Neos'));
         }
 
@@ -161,23 +162,21 @@ class BackendController extends ActionController
         );
         $defaultDimensionSpacePoint = $backendControllerInternals->getDefaultDimensionSpacePoint();
 
-        $subgraph = $contentRepository->getContentGraph()->getSubgraph(
-            $workspace->currentContentStreamId,
+        $subgraph = $contentGraph->getSubgraph(
             $nodeAddress ? $nodeAddress->dimensionSpacePoint : $defaultDimensionSpacePoint,
             VisibilityConstraints::withoutRestrictions()
         );
 
         // we assume that the ROOT node is always stored in the CR as "physical" node; so it is safe
         // to call the contentGraph here directly.
-        $rootNodeAggregate = $contentRepository->getContentGraph()->findRootNodeAggregateByType(
-            $workspace->currentContentStreamId,
+        $rootNodeAggregate = $contentGraph->findRootNodeAggregateByType(
             NodeTypeNameFactory::forSites()
         );
         $rootNode = $rootNodeAggregate->getNodeByCoveredDimensionSpacePoint($defaultDimensionSpacePoint);
 
         $siteNode = $subgraph->findNodeByPath(
             $siteDetectionResult->siteNodeName->toNodeName(),
-            $rootNode->nodeAggregateId
+            $rootNode->aggregateId
         );
 
         if (!$nodeAddress) {
@@ -187,23 +186,35 @@ class BackendController extends ActionController
             $node = $subgraph->findNodeById($nodeAddress->nodeAggregateId);
         }
 
-        $this->view->assign('user', $user);
-        $this->view->assign('documentNode', $node);
-        $this->view->assign('site', $siteNode);
-        $this->view->assign('clipboardNodes', $this->clipboard->getSerializedNodeAddresses());
-        $this->view->assign('clipboardMode', $this->clipboard->getMode());
-        $this->view->assign('headScripts', $this->styleAndJavascriptInclusionService->getHeadScripts());
-        $this->view->assign('headStylesheets', $this->styleAndJavascriptInclusionService->getHeadStylesheets());
-        $this->view->assign('splashScreenPartial', $this->splashScreenPartial);
-        $this->view->assign('sitesForMenu', $this->menuHelper->buildSiteList($this->getControllerContext()));
-        $this->view->assign('modulesForMenu', $this->menuHelper->buildModuleList($this->getControllerContext()));
-        $this->view->assign('contentRepositoryId', $siteDetectionResult->contentRepositoryId);
-
-        $this->view->assignMultiple([
-            'subgraph' => $subgraph
+        $this->view->setOption('title', 'Neos CMS');
+        $this->view->assign('initialData', [
+            'configuration' =>
+                $this->configurationProvider->getConfiguration(
+                    contentRepository: $contentRepository,
+                    uriBuilder: $this->controllerContext->getUriBuilder(),
+                ),
+            'routes' =>
+                $this->routesProvider->getRoutes(
+                    uriBuilder: $this->controllerContext->getUriBuilder()
+                ),
+            'frontendConfiguration' =>
+                $this->frontendConfigurationProvider->getFrontendConfiguration(
+                    actionRequest: $this->request,
+                ),
+            'nodeTypes' =>
+                $this->nodeTypeGroupsAndRolesProvider->getNodeTypes(),
+            'menu' =>
+                $this->menuProvider->getMenu(
+                    actionRequest: $this->request,
+                ),
+            'initialState' =>
+                $this->initialStateProvider->getInitialState(
+                    actionRequest: $this->request,
+                    documentNode: $node,
+                    site: $siteNode,
+                    user: $user,
+                ),
         ]);
-
-        $this->view->assign('interfaceLanguage', $this->userService->getInterfaceLanguage());
     }
 
     /**

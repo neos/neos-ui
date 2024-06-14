@@ -2,7 +2,6 @@ import {actionTypes, actions, reducer, defaultState, selectors} from './index';
 
 test(`should export actionTypes`, () => {
     expect(actionTypes).not.toBe(undefined);
-    expect(typeof (actionTypes.BOOT)).toBe('string');
     expect(typeof (actionTypes.INIT)).toBe('string');
     expect(typeof (actionTypes.READY)).toBe('string');
     expect(typeof (actionTypes.AUTHENTICATION_TIMEOUT)).toBe('string');
@@ -11,13 +10,11 @@ test(`should export actionTypes`, () => {
 
 test(`should export action creators`, () => {
     expect(actions).not.toBe(undefined);
-    expect(typeof (actions.boot)).toBe('function');
     expect(typeof (actions.init)).toBe('function');
     expect(typeof (actions.ready)).toBe('function');
     expect(typeof (actions.authenticationTimeout)).toBe('function');
     expect(typeof (actions.reauthenticationSucceeded)).toBe('function');
 
-    expect(typeof (actions.boot().type)).toBe('string');
     expect(typeof (actions.init().type)).toBe('string');
     expect(typeof (actions.ready().type)).toBe('string');
     expect(typeof (actions.authenticationTimeout().type)).toBe('string');

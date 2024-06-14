@@ -12,8 +12,7 @@ namespace Neos\Neos\Ui\ContentRepository\Service;
  */
 
 use Neos\ContentRepository\Core\ContentRepository;
-use Neos\ContentRepository\Core\Factory\ContentRepositoryId;
-use Neos\ContentRepository\Core\Feature\WorkspacePublication\Command\DiscardIndividualNodesFromWorkspace;
+use Neos\ContentRepository\Core\SharedModel\ContentRepository\ContentRepositoryId;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindClosestNodeFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\Neos\Domain\Service\NodeTypeNameFactory;
@@ -24,16 +23,22 @@ use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Domain\Service\UserService as DomainUserService;
+use Neos\Neos\PendingChangesProjection\Change;
 use Neos\Neos\PendingChangesProjection\ChangeFinder;
 use Neos\Neos\Service\UserService;
-use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
 use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
 
 /**
+ * @internal
  * @Flow\Scope("singleton")
  */
 class WorkspaceService
 {
+    private const NODE_HAS_BEEN_CREATED = 0b0001;
+    private const NODE_HAS_BEEN_CHANGED = 0b0010;
+    private const NODE_HAS_BEEN_MOVED = 0b0100;
+    private const NODE_HAS_BEEN_DELETED = 0b1000;
+
     use NodeTypeWithFallbackProvider;
 
     #[Flow\Inject]
@@ -54,7 +59,7 @@ class WorkspaceService
     /**
      * Get all publishable node context paths for a workspace
      *
-     * @return array<int,array<string,string>>
+     * @return array{contextPath:string,documentContextPath:string,typeOfChange:int}[]
      */
     public function getPublishableNodeInfo(WorkspaceName $workspaceName, ContentRepositoryId $contentRepositoryId): array
     {
@@ -65,6 +70,7 @@ class WorkspaceService
         }
         $changeFinder = $contentRepository->projectionState(ChangeFinder::class);
         $changes = $changeFinder->findByContentStreamId($workspace->currentContentStreamId);
+        /** @var array{contextPath:string,documentContextPath:string,typeOfChange:int}[] $unpublishedNodes */
         $unpublishedNodes = [];
         foreach ($changes as $change) {
             if ($change->removalAttachmentPoint) {
@@ -87,34 +93,35 @@ class WorkspaceService
 
                 $unpublishedNodes[] = [
                     'contextPath' => $nodeAddress->serializeForUri(),
-                    'documentContextPath' => $documentNodeAddress->serializeForUri()
+                    'documentContextPath' => $documentNodeAddress->serializeForUri(),
+                    'typeOfChange' => $this->getTypeOfChange($change)
                 ];
             } else {
-                $subgraph = $contentRepository->getContentGraph()->getSubgraph(
-                    $workspace->currentContentStreamId,
+                $subgraph = $contentRepository->getContentGraph($workspaceName)->getSubgraph(
                     $change->originDimensionSpacePoint->toDimensionSpacePoint(),
                     VisibilityConstraints::withoutRestrictions()
                 );
                 $node = $subgraph->findNodeById($change->nodeAggregateId);
 
                 if ($node instanceof Node) {
-                    $documentNode = $subgraph->findClosestNode($node->nodeAggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_DOCUMENT));
+                    $documentNode = $subgraph->findClosestNode($node->aggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_DOCUMENT));
                     if ($documentNode instanceof Node) {
-                        $contentRepository = $this->contentRepositoryRegistry->get($documentNode->subgraphIdentity->contentRepositoryId);
+                        $contentRepository = $this->contentRepositoryRegistry->get($documentNode->contentRepositoryId);
                         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
                         $unpublishedNodes[] = [
                             'contextPath' => $nodeAddressFactory->createFromNode($node)->serializeForUri(),
                             'documentContextPath' => $nodeAddressFactory->createFromNode($documentNode)
-                                ->serializeForUri()
+                                ->serializeForUri(),
+                            'typeOfChange' => $this->getTypeOfChange($change)
                         ];
                     }
                 }
             }
         }
 
-        return array_filter($unpublishedNodes, function ($item) {
+        return array_values(array_filter($unpublishedNodes, function ($item) {
             return (bool)$item;
-        });
+        }));
     }
 
     /**
@@ -155,49 +162,24 @@ class WorkspaceService
         return $workspacesArray;
     }
 
-    /** @return list<RemoveNode> */
-    public function predictRemoveNodeFeedbackFromDiscardIndividualNodesFromWorkspaceCommand(
-        DiscardIndividualNodesFromWorkspace $command,
-        ContentRepository $contentRepository
-    ): array {
-        $workspace = $contentRepository->getWorkspaceFinder()->findOneByName($command->workspaceName);
-        if (is_null($workspace)) {
-            return [];
+    private function getTypeOfChange(Change $change): int
+    {
+        $result = 0;
+
+        if ($change->created) {
+            $result = $result | self::NODE_HAS_BEEN_CREATED;
         }
 
-        $changeFinder = $contentRepository->projectionState(ChangeFinder::class);
-        $changes = $changeFinder->findByContentStreamId($workspace->currentContentStreamId);
+        if ($change->changed) {
+            $result = $result | self::NODE_HAS_BEEN_CHANGED;
+        }
 
-        $handledNodes = [];
-        $result = [];
-        foreach ($changes as $change) {
-            if ($change->created) {
-                foreach ($command->nodesToDiscard as $nodeToDiscard) {
-                    if (in_array($nodeToDiscard, $handledNodes)) {
-                        continue;
-                    }
+        if ($change->moved) {
+            $result = $result | self::NODE_HAS_BEEN_MOVED;
+        }
 
-                    if (
-                        $nodeToDiscard->contentStreamId->equals($change->contentStreamId)
-                        && $nodeToDiscard->nodeAggregateId->equals($change->nodeAggregateId)
-                        && $nodeToDiscard->dimensionSpacePoint->equals($change->originDimensionSpacePoint)
-                    ) {
-                        $subgraph = $contentRepository->getContentGraph()
-                            ->getSubgraph(
-                                $nodeToDiscard->contentStreamId,
-                                $nodeToDiscard->dimensionSpacePoint,
-                                VisibilityConstraints::withoutRestrictions()
-                            );
-
-                        $childNode = $subgraph->findNodeById($nodeToDiscard->nodeAggregateId);
-                        $parentNode = $subgraph->findParentNode($nodeToDiscard->nodeAggregateId);
-                        if ($childNode && $parentNode) {
-                            $result[] = new RemoveNode($childNode, $parentNode);
-                            $handledNodes[] = $nodeToDiscard;
-                        }
-                    }
-                }
-            }
+        if ($change->deleted) {
+            $result = $result | self::NODE_HAS_BEEN_DELETED;
         }
 
         return $result;

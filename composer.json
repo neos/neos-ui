@@ -9,6 +9,9 @@
     "neos/neos": "^9.0.0 || 9.0.x-dev",
     "neos/neos-ui-compiled": "self.version"
   },
+  "scripts": {
+    "lint:phpstan": "../../../bin/phpstan analyse"
+  },
   "autoload": {
     "psr-4": {
       "Neos\\Neos\\Ui\\": "Classes"

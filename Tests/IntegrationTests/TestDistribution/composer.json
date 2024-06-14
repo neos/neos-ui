@@ -25,14 +25,14 @@
 
       "cweagans/composer-patches": "^1.7.3"
     },
+    "extra": {
+      "patches": {
+      }
+    },
     "require-dev": {
       "neos/buildessentials": "@dev",
       "phpunit/phpunit": "^9.0",
       "phpstan/phpstan": "^1.10"
-    },
-    "extra": {
-      "patches": {
-      }
     },
     "repositories": {
         "distribution": {

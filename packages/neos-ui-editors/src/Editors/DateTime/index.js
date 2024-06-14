@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import DateInput from '@neos-project/react-ui-components/src/DateInput/';
 import moment from 'moment';
 import {neos} from '@neos-project/neos-ui-decorators';
-import convertPhpDateFormatToMoment, {hasDateFormat, hasTimeFormat} from './helpers';
+import convertPhpDateFormatToMoment, {has24HourFormat, hasDateFormat, hasTimeFormat} from './helpers';
 import {connect} from 'react-redux';
 
 @neos(globalRegistry => ({
@@ -59,9 +59,9 @@ class DateTime extends PureComponent {
                 labelFormat={convertPhpDateFormatToMoment(options.format)}
                 dateOnly={!hasTimeFormat(options.format)}
                 timeOnly={!hasDateFormat(options.format)}
+                is24Hour={hasTimeFormat(options.format) && has24HourFormat(options.format)}
                 placeholder={i18nRegistry.translate(options?.placeholder || 'Neos.Neos:Main:content.inspector.editors.dateTimeEditor.noDateSet')}
                 todayLabel={i18nRegistry.translate('content.inspector.editors.dateTimeEditor.today', 'Today', {}, 'Neos.Neos', 'Main')}
-                applyLabel={i18nRegistry.translate('content.inspector.editors.dateTimeEditor.apply', 'Apply', {}, 'Neos.Neos', 'Main')}
                 locale={interfaceLanguage}
                 disabled={options.disabled}
                 timeConstraints={timeConstraints}

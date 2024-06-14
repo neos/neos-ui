@@ -18,6 +18,7 @@ use Neos\ContentRepository\Core\SharedModel\Exception\ContentStreamDoesNotExistY
 use Neos\ContentRepository\Core\SharedModel\Node\NodeVariantSelectionStrategy;
 use Neos\ContentRepository\Core\Feature\NodeRemoval\Command\RemoveNodeAggregate;
 use Neos\ContentRepository\Core\SharedModel\Exception\NodeAggregatesTypeIsAmbiguous;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateId;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Domain\Service\NodeTypeNameFactory;
 use Neos\Neos\Fusion\Cache\ContentCacheFlusher;
@@ -27,6 +28,9 @@ use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 
 /**
  * Removes a node
+ * @internal These objects internally reflect possible operations made by the Neos.Ui.
+ *           They are sorely an implementation detail. You should not use them!
+ *           Please look into the php command API of the Neos CR instead.
  */
 class Remove extends AbstractChange
 {
@@ -60,7 +64,7 @@ class Remove extends AbstractChange
             $parentNode = $this->findParentNode($subject);
             if (is_null($parentNode)) {
                 throw new \InvalidArgumentException(
-                    'Cannot apply Remove without a parent on node ' . $subject->nodeAggregateId->value,
+                    'Cannot apply Remove without a parent on node ' . $subject->aggregateId->value,
                     1645560717
                 );
             }
@@ -69,20 +73,19 @@ class Remove extends AbstractChange
             // otherwise we cannot find the parent nodes anymore.
             $this->updateWorkspaceInfo();
 
-            $subgraph = $this->contentRepositoryRegistry->subgraphForNode($this->subject);
-            $closestDocumentParentNode = $subgraph->findClosestNode($this->subject->nodeAggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_DOCUMENT));
             $command = RemoveNodeAggregate::create(
-                $subject->subgraphIdentity->contentStreamId,
-                $subject->nodeAggregateId,
-                $subject->subgraphIdentity->dimensionSpacePoint,
+                $subject->workspaceName,
+                $subject->aggregateId,
+                $subject->dimensionSpacePoint,
                 NodeVariantSelectionStrategy::STRATEGY_ALL_SPECIALIZATIONS,
             );
-            if ($closestDocumentParentNode !== null) {
-                $command = $command->withRemovalAttachmentPoint($closestDocumentParentNode->nodeAggregateId);
+            $removalAttachmentPoint = $this->getRemovalAttachmentPoint();
+            if ($removalAttachmentPoint !== null) {
+                $command = $command->withRemovalAttachmentPoint($removalAttachmentPoint);
             }
 
-            $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
-            $contentRepository->handle($command)->block();
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->contentRepositoryId);
+            $contentRepository->handle($command);
 
             $removeNode = new RemoveNode($subject, $parentNode);
             $this->feedbackCollection->add($removeNode);
@@ -92,5 +95,18 @@ class Remove extends AbstractChange
 
             $this->feedbackCollection->add($updateParentNodeInfo);
         }
+    }
+
+    private function getRemovalAttachmentPoint(): ?NodeAggregateId
+    {
+        $subgraph = $this->contentRepositoryRegistry->subgraphForNode($this->subject);
+
+        if ($this->subject->nodeType?->isOfType(NodeTypeNameFactory::NAME_DOCUMENT)) {
+            $closestSiteNode = $subgraph->findClosestNode($this->subject->aggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_SITE));
+            return $closestSiteNode?->aggregateId;
+        }
+
+        $closestDocumentParentNode = $subgraph->findClosestNode($this->subject->aggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_DOCUMENT));
+        return $closestDocumentParentNode?->aggregateId;
     }
 }

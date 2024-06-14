@@ -16,6 +16,11 @@ use Neos\ContentRepository\Core\DimensionSpace\OriginDimensionSpacePoint;
 use Neos\ContentRepository\Core\Feature\NodeDuplication\Command\CopyNodesRecursively;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeName;
 
+/**
+ * @internal These objects internally reflect possible operations made by the Neos.Ui.
+ *           They are sorely an implementation detail. You should not use them!
+ *           Please look into the php command API of the Neos CR instead.
+ */
 class CopyBefore extends AbstractStructuralChange
 {
     /**
@@ -31,9 +36,8 @@ class CopyBefore extends AbstractStructuralChange
             return false;
         }
         $parentNode = $this->findParentNode($siblingNode);
-        $nodeType = $this->subject->nodeType;
 
-        return !is_null($parentNode) && $this->isNodeTypeAllowedAsChildNode($parentNode, $nodeType);
+        return $parentNode && $this->isNodeTypeAllowedAsChildNode($parentNode, $this->subject->nodeTypeName);
     }
 
     public function getMode(): string
@@ -56,27 +60,25 @@ class CopyBefore extends AbstractStructuralChange
         if ($this->canApply() && !is_null($subject) && !is_null($succeedingSibling)
             && !is_null($parentNodeOfSucceedingSibling)
         ) {
-            $targetNodeName = NodeName::fromString(uniqid('node-'));
-
-            $contentRepository = $this->contentRepositoryRegistry->get($subject->subgraphIdentity->contentRepositoryId);
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->contentRepositoryId);
             $command = CopyNodesRecursively::createFromSubgraphAndStartNode(
-                $contentRepository->getContentGraph()->getSubgraph(
-                    $subject->subgraphIdentity->contentStreamId,
-                    $subject->subgraphIdentity->dimensionSpacePoint,
-                    $subject->subgraphIdentity->visibilityConstraints
+                $contentRepository->getContentGraph($subject->workspaceName)->getSubgraph(
+                    $subject->dimensionSpacePoint,
+                    $subject->visibilityConstraints
                 ),
+                $subject->workspaceName,
                 $subject,
-                OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->subgraphIdentity->dimensionSpacePoint),
-                $parentNodeOfSucceedingSibling->nodeAggregateId,
-                $succeedingSibling->nodeAggregateId,
-                $targetNodeName
+                OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->dimensionSpacePoint),
+                $parentNodeOfSucceedingSibling->aggregateId,
+                $succeedingSibling->aggregateId,
+                null
             );
-            $contentRepository->handle($command)->block();
+
+            $contentRepository->handle($command);
 
             $newlyCreatedNode = $this->contentRepositoryRegistry->subgraphForNode($parentNodeOfSucceedingSibling)
-                ->findNodeByPath(
-                    $targetNodeName,
-                    $parentNodeOfSucceedingSibling->nodeAggregateId
+                ->findNodeById(
+                    $command->nodeAggregateIdMapping->getNewNodeAggregateId($subject->aggregateId)
                 );
             $this->finish($newlyCreatedNode);
             // NOTE: we need to run "finish" before "addNodeCreatedFeedback"

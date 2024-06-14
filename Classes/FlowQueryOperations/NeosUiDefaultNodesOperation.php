@@ -22,6 +22,9 @@ use Neos\Eel\FlowQuery\Operations\AbstractOperation;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Flow\Annotations as Flow;
 
+/**
+ * @internal
+ */
 class NeosUiDefaultNodesOperation extends AbstractOperation
 {
     /**
@@ -72,7 +75,7 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
         /** @var string[] $toggledNodes Node Addresses */
         list($baseNodeType, $loadingDepth, $toggledNodes, $clipboardNodesContextPaths) = $arguments;
 
-        $contentRepository = $this->contentRepositoryRegistry->get($documentNode->subgraphIdentity->contentRepositoryId);
+        $contentRepository = $this->contentRepositoryRegistry->get($documentNode->contentRepositoryId);
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
 
         $baseNodeTypeConstraints = NodeTypeCriteria::fromFilterString($baseNodeType);
@@ -80,14 +83,14 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
         $subgraph = $this->contentRepositoryRegistry->subgraphForNode($documentNode);
 
         $ancestors = $subgraph->findAncestorNodes(
-            $documentNode->nodeAggregateId,
+            $documentNode->aggregateId,
             FindAncestorNodesFilter::create(
                 NodeTypeCriteria::fromFilterString('Neos.Neos:Document')
             )
         );
 
         $nodes = [
-            ($siteNode->nodeAggregateId->value) => $siteNode
+            ($siteNode->aggregateId->value) => $siteNode
         ];
 
         $gatherNodesRecursively = function (
@@ -110,32 +113,32 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
                 // load toggled nodes
                 in_array($baseNodeAddress->serializeForUri(), $toggledNodes) ||
                 // load children of all parents of documentNode
-                in_array($baseNode->nodeAggregateId->value, array_map(
-                    fn (Node $node): string => $node->nodeAggregateId->value,
+                in_array($baseNode->aggregateId->value, array_map(
+                    fn (Node $node): string => $node->aggregateId->value,
                     iterator_to_array($ancestors)
                 ))
             ) {
                 foreach ($subgraph->findChildNodes(
-                    $baseNode->nodeAggregateId,
+                    $baseNode->aggregateId,
                     FindChildNodesFilter::create(nodeTypes: $baseNodeTypeConstraints)
                 ) as $childNode) {
-                    $nodes[$childNode->nodeAggregateId->value] = $childNode;
+                    $nodes[$childNode->aggregateId->value] = $childNode;
                     $gatherNodesRecursively($nodes, $childNode, $level + 1);
                 }
             }
         };
         $gatherNodesRecursively($nodes, $siteNode);
 
-        if (!isset($nodes[$documentNode->nodeAggregateId->value])) {
-            $nodes[$documentNode->nodeAggregateId->value] = $documentNode;
+        if (!isset($nodes[$documentNode->aggregateId->value])) {
+            $nodes[$documentNode->aggregateId->value] = $documentNode;
         }
 
         foreach ($clipboardNodesContextPaths as $clipboardNodeContextPath) {
             // TODO: does not work across multiple CRs yet.
             $clipboardNodeAddress = $nodeAddressFactory->createFromUriString($clipboardNodeContextPath);
             $clipboardNode = $subgraph->findNodeById($clipboardNodeAddress->nodeAggregateId);
-            if ($clipboardNode && !array_key_exists($clipboardNode->nodeAggregateId->value, $nodes)) {
-                $nodes[$clipboardNode->nodeAggregateId->value] = $clipboardNode;
+            if ($clipboardNode && !array_key_exists($clipboardNode->aggregateId->value, $nodes)) {
+                $nodes[$clipboardNode->aggregateId->value] = $clipboardNode;
             }
         }
 

@@ -12,14 +12,14 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
+use Neos\ContentRepository\Core\NodeType\NodeTypeName;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindChildNodesFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
-use Neos\ContentRepository\Core\NodeType\NodeType;
-use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateClassification;
-use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Nodes;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateClassification;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
+use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\Ui\ContentRepository\Service\NeosUiNodeService;
 use Neos\Neos\Ui\Domain\Model\AbstractChange;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
@@ -30,6 +30,9 @@ use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
 
 /**
  * A change that performs structural actions like moving or creating nodes
+ * @internal These objects internally reflect possible operations made by the Neos.Ui.
+ *           They are sorely an implementation detail. You should not use them!
+ *           Please look into the php command API of the Neos CR instead.
  */
 abstract class AbstractStructuralChange extends AbstractChange
 {
@@ -113,7 +116,7 @@ abstract class AbstractStructuralChange extends AbstractChange
         if ($this->cachedSiblingNode === null) {
             $this->cachedSiblingNode = $this->nodeService->findNodeBySerializedNodeAddress(
                 $this->siblingDomAddress->getContextPath(),
-                $this->getSubject()->subgraphIdentity->contentRepositoryId
+                $this->getSubject()->contentRepositoryId
             );
         }
 
@@ -134,7 +137,7 @@ abstract class AbstractStructuralChange extends AbstractChange
         $this->feedbackCollection->add($updateNodeInfo);
 
         $parentNode = $this->contentRepositoryRegistry->subgraphForNode($node)
-            ->findParentNode($node->nodeAggregateId);
+            ->findParentNode($node->aggregateId);
         if ($parentNode) {
             $updateParentNodeInfo = new UpdateNodeInfo();
             $updateParentNodeInfo->setNode($parentNode);
@@ -152,7 +155,7 @@ abstract class AbstractStructuralChange extends AbstractChange
             // 1) the parent of our new (or copied or moved) node is a ContentCollection;
             // so we can directly update an element of this content collection
 
-            $contentRepository = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId);
+            $contentRepository = $this->contentRepositoryRegistry->get($node->contentRepositoryId);
             if ($parentNode && $this->getNodeType($parentNode)->isOfType('Neos.Neos:ContentCollection') &&
                 // 2) the parent DOM address (i.e. the closest RENDERED node in DOM is actually the ContentCollection;
                 // and no other node in between
@@ -181,23 +184,33 @@ abstract class AbstractStructuralChange extends AbstractChange
     {
         // TODO REMOVE
         return $this->contentRepositoryRegistry->subgraphForNode($node)
-            ->findChildNodes($node->nodeAggregateId, FindChildNodesFilter::create());
+            ->findChildNodes($node->aggregateId, FindChildNodesFilter::create());
     }
 
-    protected function isNodeTypeAllowedAsChildNode(Node $node, NodeType $nodeType): bool
+    protected function isNodeTypeAllowedAsChildNode(Node $parentNode, NodeTypeName $nodeTypeNameToCheck): bool
     {
-        if ($node->classification !== NodeAggregateClassification::CLASSIFICATION_TETHERED) {
-            return $this->getNodeType($node)->allowsChildNodeType($nodeType);
+        $nodeTypeManager = $this->contentRepositoryRegistry->get($parentNode->contentRepositoryId)->getNodeTypeManager();
+
+        $parentNodeType = $nodeTypeManager->getNodeType($parentNode->nodeTypeName);
+        if (!$parentNodeType) {
+            return false;
         }
 
-        $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
-        $parentNode = $subgraph->findParentNode($node->nodeAggregateId);
-        $nodeTypeManager = $this->contentRepositoryRegistry->get($node->subgraphIdentity->contentRepositoryId)->getNodeTypeManager();
+        if ($parentNode->classification !== NodeAggregateClassification::CLASSIFICATION_TETHERED) {
+            $nodeTypeToCheck = $nodeTypeManager->getNodeType($nodeTypeNameToCheck);
+            if (!$nodeTypeToCheck) {
+                return false;
+            }
+            return $parentNodeType->allowsChildNodeType($nodeTypeToCheck);
+        }
 
-        return !$parentNode || $nodeTypeManager->isNodeTypeAllowedAsChildToTetheredNode(
-            $this->getNodeType($parentNode),
-            $node->nodeName,
-            $nodeType
+        $subgraph = $this->contentRepositoryRegistry->subgraphForNode($parentNode);
+        $grandParentNode = $subgraph->findParentNode($parentNode->aggregateId);
+
+        return !$grandParentNode || $nodeTypeManager->isNodeTypeAllowedAsChildToTetheredNode(
+            $grandParentNode->nodeTypeName,
+            $parentNode->name,
+            $nodeTypeNameToCheck
         );
     }
 }

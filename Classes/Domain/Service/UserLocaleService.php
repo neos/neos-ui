@@ -16,6 +16,9 @@ use Neos\Flow\I18n\Locale;
 use Neos\Flow\I18n\Service as I18nService;
 use Neos\Neos\Domain\Service\UserService;
 
+/**
+ * @internal
+ */
 class UserLocaleService
 {
     /**

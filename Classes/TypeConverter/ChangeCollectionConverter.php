@@ -11,7 +11,7 @@ namespace Neos\Neos\Ui\TypeConverter;
  * source code.
  */
 
-use Neos\ContentRepository\Core\Factory\ContentRepositoryId;
+use Neos\ContentRepository\Core\SharedModel\ContentRepository\ContentRepositoryId;
 use Neos\Error\Messages\Error;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
@@ -30,6 +30,7 @@ use Neos\Utility\ObjectAccess;
  * An Object Converter for ChangeCollections.
  *
  * @Flow\Scope("singleton")
+ * @internal
  */
 class ChangeCollectionConverter
 {

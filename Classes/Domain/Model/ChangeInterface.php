@@ -17,6 +17,7 @@ use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 
 /**
  * An interface to describe a change
+ * @internal
  */
 interface ChangeInterface
 {

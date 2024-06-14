@@ -60,6 +60,10 @@ check-requirements:
 install: ## Install dependencies
 	yarn install
 
+install-and-verify:
+	# Validate this project because were using Zero-Installs (slightly safer as we accept external PRs)
+	yarn install --immutable --immutable-cache --check-cache
+
 setup: check-requirements install build ## Run a clean setup
 	@echo Please remember to set frontendDevelopmentMode \
 		to true in your Settings.yaml.

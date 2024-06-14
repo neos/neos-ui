@@ -12,13 +12,13 @@ jobs:
     runs-on: ubuntu-latest
     name: 'Code style'
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           cache: 'yarn'
       - name: Install
-        run: make install
+        run: make install-and-verify
       - name: Lint
         run: make lint
 
@@ -26,13 +26,13 @@ jobs:
     runs-on: ubuntu-latest
     name: 'Unit tests'
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           cache: 'yarn'
       - name: Install
-        run: make install
+        run: make install-and-verify
       - name: Build
         run: make build-production
       - name: Test

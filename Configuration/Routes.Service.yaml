@@ -7,19 +7,43 @@
   httpMethods: ['POST']
 
 -
-  name: 'Publish'
-  uriPattern: 'publish'
+  name: 'Publish all changes in site'
+  uriPattern: 'publish-changes-in-site'
   defaults:
     '@controller': 'BackendService'
-    '@action': 'publish'
+    '@action': 'publishChangesInSite'
   httpMethods: ['POST']
 
 -
-  name: 'Discard'
-  uriPattern: 'discard'
+  name: 'Publish all changes in document'
+  uriPattern: 'publish-changes-in-document'
   defaults:
     '@controller': 'BackendService'
-    '@action': 'discard'
+    '@action': 'publishChangesInDocument'
+  httpMethods: ['POST']
+
+-
+  name: 'Discard all changes in workspace'
+  uriPattern: 'discard-all-changes'
+  defaults:
+    '@controller': 'BackendService'
+    '@action': 'discardAllChanges'
+  httpMethods: ['POST']
+
+-
+  name: 'Discard all changes in site'
+  uriPattern: 'discard-changes-in-site'
+  defaults:
+    '@controller': 'BackendService'
+    '@action': 'discardChangesInSite'
+  httpMethods: ['POST']
+
+-
+  name: 'Discard all changes in document'
+  uriPattern: 'discard-changes-in-document'
+  defaults:
+    '@controller': 'BackendService'
+    '@action': 'discardChangesInDocument'
   httpMethods: ['POST']
 
 -
@@ -31,11 +55,11 @@
   httpMethods: ['POST']
 
 -
-  name: 'Rebase Workspace'
-  uriPattern: 'rebase-workspace'
+  name: 'Sync Workspace'
+  uriPattern: 'sync-workspace'
   defaults:
     '@controller': 'BackendService'
-    '@action': 'rebaseWorkspace'
+    '@action': 'syncWorkspace'
   httpMethods: ['POST']
 -
   name: 'Copy nodes to clipboard'
@@ -90,4 +114,12 @@
   defaults:
     '@controller': 'BackendService'
     '@action': 'generateUriPathSegment'
+  httpMethods: ['POST']
+
+-
+  name: 'Reload Nodes'
+  uriPattern: 'reload-nodes'
+  defaults:
+    '@controller': 'BackendService'
+    '@action': 'reloadNodes'
   httpMethods: ['POST']

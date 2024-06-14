@@ -20,6 +20,7 @@ use Neos\ContentRepository\Core\Factory\ContentRepositoryServiceInterface;
 
 /**
  * @deprecated really un-nice :D
+ * @internal
  */
 class BackendControllerInternals implements ContentRepositoryServiceInterface
 {
@@ -31,12 +32,6 @@ class BackendControllerInternals implements ContentRepositoryServiceInterface
     public function getDefaultDimensionSpacePoint(): DimensionSpacePoint
     {
         $rootDimensionSpacePoints = $this->interDimensionalVariationGraph->getRootGeneralizations();
-        if (empty($rootDimensionSpacePoints)) {
-            throw new \InvalidArgumentException(
-                'The dimension space is empty, please check your configuration.',
-                1651957153
-            );
-        }
         $arbitraryRootDimensionSpacePoint = array_shift($rootDimensionSpacePoints);
         return $arbitraryRootDimensionSpacePoint;
     }

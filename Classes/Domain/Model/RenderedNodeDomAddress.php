@@ -13,6 +13,7 @@ namespace Neos\Neos\Ui\Domain\Model;
 
 /**
  * Data to address rendered nodes within the DOM
+ * @internal
  */
 class RenderedNodeDomAddress implements \JsonSerializable
 {

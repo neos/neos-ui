@@ -29,6 +29,9 @@ use Neos\Neos\Ui\Domain\Model\RenderedNodeDomAddress;
 use Neos\Neos\Ui\View\OutOfBandRenderingViewFactory;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * @internal
+ */
 class RenderContentOutOfBand extends AbstractFeedback
 {
     protected ?Node $node = null;
@@ -122,7 +125,7 @@ class RenderContentOutOfBand extends AbstractFeedback
 
     public function getDescription(): string
     {
-        return sprintf('Rendering of node "%s" required.', $this->node?->nodeAggregateId->value);
+        return sprintf('Rendering of node "%s" required.', $this->node?->aggregateId->value);
     }
 
     /**
@@ -141,11 +144,8 @@ class RenderContentOutOfBand extends AbstractFeedback
             return false;
         }
 
-        return (
-            $this->node->subgraphIdentity->equals($feedbackNode->subgraphIdentity) &&
-            $this->node->nodeAggregateId->equals($feedbackNode->nodeAggregateId)
-            // @todo what's this? && $this->getReferenceData() == $feedback->getReferenceData()
-        );
+        return $this->node->equals($feedbackNode);
+        // @todo what's this? && $this->getReferenceData() == $feedback->getReferenceData()
     }
 
     /**
@@ -156,7 +156,7 @@ class RenderContentOutOfBand extends AbstractFeedback
     public function serializePayload(ControllerContext $controllerContext): array
     {
         if (!is_null($this->node)) {
-            $contentRepository = $this->contentRepositoryRegistry->get($this->node->subgraphIdentity->contentRepositoryId);
+            $contentRepository = $this->contentRepositoryRegistry->get($this->node->contentRepositoryId);
             $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
             return [
                 'contextPath' => $nodeAddressFactory->createFromNode($this->node)->serializeForUri(),
@@ -172,13 +172,13 @@ class RenderContentOutOfBand extends AbstractFeedback
     /**
      * Render the node
      */
-    protected function renderContent(ControllerContext $controllerContext): string|ResponseInterface
+    protected function renderContent(ControllerContext $controllerContext): string
     {
         if (is_null($this->node)) {
             return '';
         }
         $subgraph = $this->contentRepositoryRegistry->subgraphForNode($this->node);
-        $parentNode = $subgraph->findParentNode($this->node->nodeAggregateId);
+        $parentNode = $subgraph->findParentNode($this->node->aggregateId);
         if ($parentNode) {
             $cacheTags = $this->cachingHelper->nodeTag($parentNode);
             foreach ($cacheTags as $tag) {
@@ -196,7 +196,12 @@ class RenderContentOutOfBand extends AbstractFeedback
                 $view->assign('value', $parentNode);
                 $view->setRenderingEntryPoint($parentDomAddress->getFusionPath());
 
-                return $view->render();
+                $content = $view->render();
+                if ($content instanceof ResponseInterface) {
+                    // todo should not happen, as we never render a full Neos.Neos:Page here?
+                    return $content->getBody()->getContents();
+                }
+                return $content->getContents();
             }
         }
 

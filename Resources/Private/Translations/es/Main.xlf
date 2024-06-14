@@ -554,6 +554,14 @@
         <source>Collapse All</source>
         <target state="translated">Contraer todo</target>
       </trans-unit>
+      <trans-unit id="NodeNotPublishedMissingParentNode" xml:space="preserve">
+        <source>Node could not be published, probably because of a missing parentNode. Please check that the parentNode has been published.</source>
+        <target state="translated">No se pudo publicar el nodo, probablemente debido a que falta un nodo principal. Verifique que parentNode haya sido publicado.</target>
+      </trans-unit>
+      <trans-unit id="NodeNotPublishedParentNodeNotInCurrentDimension" xml:space="preserve">
+        <source>Node could not be published, probably because the parentNode does not exist in the current dimension. Please check that the parentNode has been published.</source>
+        <target state="translated">No se pudo publicar el nodo, probablemente porque el parentNode no existe en la dimensión actual. Verifique que parentNode haya sido publicado.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -30,6 +30,9 @@ module.exports = {
         'default-case': 'off',
         'no-mixed-operators': 'off',
         'no-negated-condition': 'off',
-        'complexity': 'off'
+        'complexity': 'off',
+
+        // This rule would prevent us from implementing meaningful value objects
+        'no-useless-constructor': 'off'
     },
 }

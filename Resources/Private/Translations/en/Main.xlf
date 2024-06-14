@@ -377,6 +377,12 @@
             <trans-unit id="errorBoundary.footer" xml:space="preserve">
                 <source>For more information about the error please refer to the JavaScript console.</source>
             </trans-unit>
+            <trans-unit id="NodeNotPublishedMissingParentNode" xml:space="preserve">
+                <source>Node could not be published, probably because of a missing parentNode. Please check that the parentNode has been published.</source>
+            </trans-unit>
+            <trans-unit id="NodeNotPublishedParentNodeNotInCurrentDimension" xml:space="preserve">
+                <source>Node could not be published, probably because the parentNode does not exist in the current dimension. Please check that the parentNode has been published.</source>
+            </trans-unit>
             <trans-unit id="collapseAll" xml:space="preserve">
               <source>Collapse All</source>
             </trans-unit>

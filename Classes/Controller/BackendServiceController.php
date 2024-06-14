@@ -19,6 +19,7 @@ use Neos\ContentRepository\Core\Feature\WorkspaceModification\Exception\Workspac
 use Neos\ContentRepository\Core\Feature\WorkspaceRebase\Dto\RebaseErrorHandlingStrategy;
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
 use Neos\ContentRepository\Core\SharedModel\Exception\NodeAggregateCurrentlyDoesNotExist;
+use Neos\ContentRepository\Core\SharedModel\Exception\NodeAggregateDoesCurrentlyNotCoverDimensionSpacePoint;
 use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\FlowQuery\FlowQuery;
@@ -261,9 +262,16 @@ class BackendServiceController extends ActionController
                     ]
                 ]);
             } catch (NodeAggregateCurrentlyDoesNotExist $e) {
-                throw new NodeAggregateCurrentlyDoesNotExist(
-                    'Node could not be published, probably because of a missing parentNode. Please check that the parentNode has been published.',
-                    1682762156
+                throw new \RuntimeException(
+                    $this->getLabel('NodeNotPublishedMissingParentNode'),
+                    1705053430,
+                    $e
+                );
+            } catch (NodeAggregateDoesCurrentlyNotCoverDimensionSpacePoint $e) {
+                throw new \RuntimeException(
+                    $this->getLabel('NodeNotPublishedParentNodeNotInCurrentDimension'),
+                    1705053432,
+                    $e
                 );
             }
         } catch (\Exception $e) {

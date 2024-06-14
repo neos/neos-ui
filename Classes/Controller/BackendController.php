@@ -25,7 +25,7 @@ use Neos\Neos\Domain\Repository\SiteRepository;
 use Neos\Neos\Domain\Service\NodeTypeNameFactory;
 use Neos\Neos\Domain\Service\WorkspaceNameBuilder;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
-use Neos\Neos\FrontendRouting\NodeUri\NodeUriBuilderFactory;
+use Neos\Neos\FrontendRouting\NodeUriBuilderFactory;
 use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;
 use Neos\Neos\Service\UserService;
 use Neos\Neos\Ui\Domain\InitialData\ConfigurationProviderInterface;

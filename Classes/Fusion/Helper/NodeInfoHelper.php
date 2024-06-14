@@ -26,7 +26,7 @@ use Neos\Flow\Mvc\Routing\UriBuilder;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\Domain\NodeLabel\NodeLabelGeneratorInterface;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
-use Neos\Neos\FrontendRouting\NodeUri\NodeUriBuilderFactory;
+use Neos\Neos\FrontendRouting\NodeUriBuilderFactory;
 use Neos\Neos\Ui\Domain\Service\NodePropertyConverterService;
 use Neos\Neos\Ui\Domain\Service\UserLocaleService;
 use Neos\Neos\Utility\NodeTypeWithFallbackProvider;

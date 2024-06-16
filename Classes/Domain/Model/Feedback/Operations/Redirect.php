@@ -110,7 +110,7 @@ class Redirect extends AbstractFeedback
         $redirectUri = $this->nodeUriBuilderFactory->forActionRequest($controllerContext->getRequest())
             ->uriFor(
                 NodeAddress::fromNode($node),
-                Options::create(forceAbsolute: true)
+                Options::createForceAbsolute()
             );
 
         $contentRepository = $this->contentRepositoryRegistry->get($node->contentRepositoryId);

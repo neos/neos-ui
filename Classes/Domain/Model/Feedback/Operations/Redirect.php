@@ -2,12 +2,14 @@
 namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
 
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Neos\Domain\NodeLabel\NodeLabelGeneratorInterface;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
-use Neos\Neos\Service\LinkingService;
+use Neos\Neos\FrontendRouting\NodeUriBuilderFactory;
+use Neos\Neos\FrontendRouting\Options;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 
@@ -35,9 +37,9 @@ class Redirect extends AbstractFeedback
 
     /**
      * @Flow\Inject
-     * @var LinkingService
+     * @var NodeUriBuilderFactory
      */
-    protected $linkingService;
+    protected $nodeUriBuilderFactory;
 
     /**
      * Set the node
@@ -104,12 +106,18 @@ class Redirect extends AbstractFeedback
     public function serializePayload(ControllerContext $controllerContext): array
     {
         $node = $this->getNode();
-        $redirectUri = $this->linkingService->createNodeUri($controllerContext, $node, null, null, true);
+
+        $redirectUri = $this->nodeUriBuilderFactory->forActionRequest($controllerContext->getRequest())
+            ->uriFor(
+                NodeAddress::fromNode($node),
+                Options::create(forceAbsolute: true)
+            );
+
         $contentRepository = $this->contentRepositoryRegistry->get($node->contentRepositoryId);
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
 
         return [
-            'redirectUri' => $redirectUri,
+            'redirectUri' => (string)$redirectUri,
             'redirectContextPath' => $nodeAddressFactory->createFromNode($node)->serializeForUri(),
         ];
     }

@@ -12,9 +12,7 @@ import {SynchronousRegistry} from '@neos-project/neos-ui-extensibility/src/regis
 import logger from '@neos-project/utils-logger';
 
 import {getTranslationAddress} from './getTranslationAddress';
-import {substitutePlaceholders} from './substitutePlaceholders';
-import {getPluralForm} from './getPluralForm';
-import type {TranslationUnitDTO} from './TranslationUnit';
+import type {TranslationUnit} from './TranslationUnit';
 import type {TranslationAddress} from './TranslationAddress';
 import {TranslationUnitRepository, TranslationsDTO} from './TranslationUnitRepository';
 import type {Parameters} from './Parameters';
@@ -191,9 +189,7 @@ export default class I18nRegistry extends SynchronousRegistry<unknown> {
             return fallback;
         }
 
-        return parameters
-            ? substitutePlaceholders(getPluralForm(translationUnit, quantity), parameters)
-            : getPluralForm(translationUnit, quantity);
+        return translationUnit.render(parameters, quantity);
     }
 
     private logTranslationUnitNotFound(address: TranslationAddress, fallback: string) {
@@ -203,7 +199,7 @@ export default class I18nRegistry extends SynchronousRegistry<unknown> {
         }
     }
 
-    private getTranslationUnit(address: TranslationAddress): null | TranslationUnitDTO {
+    private getTranslationUnit(address: TranslationAddress): null | TranslationUnit {
         return this._translations?.findOneByAddress(address) ?? null;
     }
 }

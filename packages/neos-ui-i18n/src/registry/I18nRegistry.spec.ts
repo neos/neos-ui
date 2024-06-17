@@ -1,9 +1,18 @@
+/*
+ * This file is part of the Neos.Neos.Ui package.
+ *
+ * (c) Contributors of the Neos Project - www.neos.io
+ *
+ * This package is Open Source Software. For the full copyright and license
+ * information, please view the LICENSE file which was distributed with this
+ * source code.
+ */
 import I18nRegistry from './I18nRegistry';
 
 test(`
     Host > Containers > I18n: should display configured fallback, if no translation
     was found.`, () => {
-    const registry = new I18nRegistry();
+    const registry = new I18nRegistry('');
     const actual = registry.translate('', 'The Fallback');
 
     expect(actual).toBe('The Fallback');
@@ -12,7 +21,7 @@ test(`
 test(`
     Host > Containers > I18n: should display the trans unit id, if no translation
     was found and no fallback was configured.`, () => {
-    const registry = new I18nRegistry();
+    const registry = new I18nRegistry('');
     const actual = registry.translate('The Trans Unit ID');
 
     expect(actual).toBe('The Trans Unit ID');
@@ -29,7 +38,7 @@ test(`
         }
     };
 
-    const registry = new I18nRegistry();
+    const registry = new I18nRegistry('');
     registry.setTranslations(translations);
     const actual = registry.translate('Neos.Neos:Main:someLabel');
 
@@ -47,7 +56,7 @@ test(`
         }
     };
 
-    const registry = new I18nRegistry();
+    const registry = new I18nRegistry('');
     registry.setTranslations(translations);
     const actual = registry.translate('Neos.Neos:Main:someLabel', undefined, undefined, 'Neos.Neos', 'Main');
 
@@ -68,7 +77,7 @@ test(`
         }
     };
 
-    const registry = new I18nRegistry();
+    const registry = new I18nRegistry('');
     registry.setTranslations(translations);
     const actual = registry.translate('Neos.Neos:Main:pluralLabel', undefined, undefined, 'Neos.Neos', 'Main');
 
@@ -89,7 +98,7 @@ test(`
         }
     };
 
-    const registry = new I18nRegistry();
+    const registry = new I18nRegistry('');
     registry.setTranslations(translations);
     const actual = registry.translate('Neos.Neos:Main:pluralLabel', undefined, undefined, 'Neos.Neos', 'Main', 0);
 
@@ -110,7 +119,7 @@ test(`
         }
     };
 
-    const registry = new I18nRegistry();
+    const registry = new I18nRegistry('');
     registry.setTranslations(translations);
     const actual = registry.translate('Neos.Neos:Main:pluralLabel', undefined, undefined, 'Neos.Neos', 'Main', 1);
 
@@ -131,7 +140,7 @@ test(`
         }
     };
 
-    const registry = new I18nRegistry();
+    const registry = new I18nRegistry('');
     registry.setTranslations(translations);
     const actual = registry.translate('Neos.Neos:Main:pluralLabel', undefined, undefined, 'Neos.Neos', 'Main', 2);
 
@@ -152,7 +161,7 @@ test(`
         }
     };
 
-    const registry = new I18nRegistry();
+    const registry = new I18nRegistry('');
     registry.setTranslations(translations);
     const actual = registry.translate('Neos.Neos:Main:someLabel', undefined, undefined, 'Neos.Neos', 'Main', 2);
 
@@ -172,7 +181,7 @@ test(`
         }
     };
 
-    const registry = new I18nRegistry();
+    const registry = new I18nRegistry('');
     registry.setTranslations(translations);
     const actual = registry.translate('Neos.Neos:Main:pluralLabel', undefined, undefined, 'Neos.Neos', 'Main', 2);
 

@@ -16,17 +16,17 @@ import {substitutePlaceholders} from './substitutePlaceholders';
 import {getPluralForm} from './getPluralForm';
 import type {TranslationUnit} from './TranslationUnit';
 import type {TranslationAddress} from './TranslationAddress';
+import type {TranslationsDTO} from './TranslationUnitRepository';
 
 const errorCache: Record<string, boolean> = {};
 
-type Translations = Record<string, Record<string, Record<string, TranslationUnit>>>;
 type Parameters = (string | number)[] | Record<string, string | number>;
 
 export default class I18nRegistry extends SynchronousRegistry<unknown> {
-    private _translations: Translations = {};
+    private _translations: TranslationsDTO = {};
 
     /** @internal */
-    setTranslations(translations: Translations) {
+    setTranslations(translations: TranslationsDTO) {
         this._translations = translations;
     }
 

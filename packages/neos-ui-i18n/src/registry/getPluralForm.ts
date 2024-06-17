@@ -7,9 +7,9 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-import type {TranslationUnit} from './TranslationUnit';
+import type {TranslationUnitDTO} from './TranslationUnit';
 
-export const getPluralForm = (translation: TranslationUnit, quantity = 0): string => {
+export const getPluralForm = (translation: TranslationUnitDTO, quantity = 0): string => {
     const translationHasPlurals = translation instanceof Object;
 
     // no defined quantity or less than one returns singular

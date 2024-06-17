@@ -7,4 +7,5 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-export {I18nRegistry} from './I18nRegistry';
+export type {I18nRegistry} from './I18nRegistry';
+export {i18nRegistry} from './I18nRegistry';

@@ -203,3 +203,5 @@ export class I18nRegistry extends SynchronousRegistry<unknown> {
         return this._translations?.findOneByAddress(address) ?? null;
     }
 }
+
+export const i18nRegistry = new I18nRegistry('The i18n registry');

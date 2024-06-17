@@ -65,6 +65,26 @@ describe('substitutePlaceholders', () => {
             );
         });
 
+        it('complains when arguments of a strange type have been provided', () => {
+            const logError = jest.spyOn(logger, 'error');
+
+            substitutePlaceholders('One argument: {0}', [() => {}]);
+            expect(logError).toHaveBeenCalledTimes(1);
+            expect(logError).toHaveBeenNthCalledWith(
+                1,
+                expect.stringContaining('is not of type string or number')
+            );
+
+            substitutePlaceholders('One argument: {0}', [Boolean]);
+            expect(logError).toHaveBeenCalledTimes(2);
+            expect(logError).toHaveBeenNthCalledWith(
+                2,
+                expect.stringContaining('is not of type string or number')
+            );
+
+            logError.mockClear();
+        });
+
         it('substitutes multiple occurrences of the same placeholder', () => {
             expect(substitutePlaceholders('{0} {0} {0} {1} {1} {1}', ['foo', 'bar']))
                 .toBe('foo foo foo bar bar bar');
@@ -124,6 +144,30 @@ describe('substitutePlaceholders', () => {
                 2,
                 expect.stringContaining('provide values for every placeholder')
             );
+        });
+
+        it('complains when arguments of a strange type have been provided', () => {
+            const logError = jest.spyOn(logger, 'error');
+
+            substitutePlaceholders('One argument: {a}', {
+                a: () => {}
+            });
+            expect(logError).toHaveBeenCalledTimes(1);
+            expect(logError).toHaveBeenNthCalledWith(
+                1,
+                expect.stringContaining('is not of type string or number')
+            );
+
+            substitutePlaceholders('One argument: {a}', {
+                a: Boolean
+            });
+            expect(logError).toHaveBeenCalledTimes(2);
+            expect(logError).toHaveBeenNthCalledWith(
+                2,
+                expect.stringContaining('is not of type string or number')
+            );
+
+            logError.mockClear();
         });
 
         it('substitutes multiple occurrences of the same placeholder', () => {

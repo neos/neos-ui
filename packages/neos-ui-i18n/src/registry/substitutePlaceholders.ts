@@ -9,11 +9,13 @@
  */
 import logger from '@neos-project/utils-logger';
 
+import {Parameters} from './Parameters';
+
 /**
  * This code is taken from the Ember version with minor adjustments. Possibly refactor it later
  * as its style is not superb.
  */
-export const substitutePlaceholders = function (textWithPlaceholders: string, parameters: (string|number)[] | Record<string, string|number>) {
+export const substitutePlaceholders = function (textWithPlaceholders: string, parameters: Parameters) {
     const result = [];
     let startOfPlaceholder;
     let offset = 0;
@@ -36,6 +38,10 @@ export const substitutePlaceholders = function (textWithPlaceholders: string, pa
             : parameters[valueIndex];
         if (typeof value === 'undefined') {
             logger.error('Placeholder "' + valueIndex + '" was not provided, make sure you provide values for every placeholder.');
+            break;
+        }
+        if (typeof value !== 'string' && typeof value !== 'number') {
+            logger.error('Placeholder "' + valueIndex + '" is not of type string or number.');
             break;
         }
 

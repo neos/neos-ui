@@ -9,3 +9,5 @@
  */
 export type {I18nRegistry} from './I18nRegistry';
 export {i18nRegistry} from './I18nRegistry';
+
+export type {Parameters} from './Parameters';

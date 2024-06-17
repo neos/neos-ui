@@ -9,8 +9,7 @@
  */
 import React from 'react';
 
-import {I18nRegistry} from '@neos-project/neos-ts-interfaces';
-import I18n from '@neos-project/neos-ui-i18n';
+import I18n, {I18nRegistry} from '@neos-project/neos-ui-i18n';
 import {Icon} from '@neos-project/react-ui-components';
 import {Conflict, ReasonForConflict} from '@neos-project/neos-ui-redux-store/src/CR/Syncing';
 import {TypeOfChange} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces';

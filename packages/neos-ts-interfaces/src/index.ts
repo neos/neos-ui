@@ -1,3 +1,5 @@
+import type {I18nRegistry} from '@neos-project/neos-ui-i18n';
+
 export type NodeContextPath = string;
 export type FusionPath = string;
 export type NodeTypeName = string;
@@ -267,9 +269,6 @@ type Validator = (
 export interface ValidatorRegistry {
     get: (validatorName: string) => Validator | null;
     set: (validatorName: string, validator: Validator) => void;
-}
-export interface I18nRegistry {
-    translate: (id?: string, fallback?: string, params?: {}, packageKey?: string, sourceName?: string) => string;
 }
 export interface GlobalRegistry {
     get: <K extends string>(key: K) => K extends 'i18n' ? I18nRegistry :

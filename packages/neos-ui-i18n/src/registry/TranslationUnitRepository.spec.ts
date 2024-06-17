@@ -8,6 +8,7 @@
  * source code.
  */
 import {TranslationAddress} from './TranslationAddress';
+import {TranslationUnit} from './TranslationUnit';
 import {TranslationUnitRepository} from './TranslationUnitRepository';
 
 describe('TranslationUnitRepository', () => {
@@ -25,6 +26,6 @@ describe('TranslationUnitRepository', () => {
         expect(translationUnitRepository.findOneByAddress(translationAddressThatCannotBeFound))
             .toBeNull();
         expect(translationUnitRepository.findOneByAddress(translationAddressThatCanBeFound))
-            .toEqual('The Translation');
+            .toStrictEqual(TranslationUnit.fromDTO('The Translation'));
     });
 });

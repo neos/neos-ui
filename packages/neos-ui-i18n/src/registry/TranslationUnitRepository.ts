@@ -8,19 +8,19 @@
  * source code.
  */
 import type {TranslationAddress} from './TranslationAddress';
-import type {TranslationUnitDTO} from './TranslationUnit';
+import {TranslationUnit, TranslationUnitDTO} from './TranslationUnit';
 
 export type TranslationsDTO = Record<string, Record<string, Record<string, TranslationUnitDTO>>>;
 
 export class TranslationUnitRepository {
-    private _translationUnitsByAddress: Record<string, TranslationUnitDTO> = {};
+    private _translationUnitsByAddress: Record<string, null | TranslationUnit> = {};
 
     private constructor(private readonly translations: TranslationsDTO) {}
 
     public static fromDTO = (translations: TranslationsDTO): TranslationUnitRepository =>
         new TranslationUnitRepository(translations);
 
-    public findOneByAddress = (address: TranslationAddress): null | TranslationUnitDTO => {
+    public findOneByAddress = (address: TranslationAddress): null | TranslationUnit => {
         if (address.fullyQualified in this._translationUnitsByAddress) {
             return this._translationUnitsByAddress[address.fullyQualified];
         }
@@ -29,7 +29,10 @@ export class TranslationUnitRepository {
             // Replace all dots with underscores
             .map(s => s ? s.replace(/\./g, '_') : '')
 
-        const translationUnit = this.translations[packageKey]?.[sourceName]?.[id] ?? null;
+        const translationUnitDTO = this.translations[packageKey]?.[sourceName]?.[id] ?? null;
+        const translationUnit = translationUnitDTO
+            ? TranslationUnit.fromDTO(translationUnitDTO)
+            : null;
         this._translationUnitsByAddress[address.fullyQualified] = translationUnit;
 
         return translationUnit;

@@ -32,57 +32,57 @@ export default class I18nRegistry extends SynchronousRegistry<unknown> {
 
     /**
      * Retrieves a the translation string that is identified by the given
-     * trans-unit id. If that id is a fully qualified trans-unit id (an id
+     * identifier. If it is a fully qualified translation address (a string
      * following the pattern "{Package.Key:SourceName:actual.trans.unit.id}"),
      * then the translation will be looked up in the respective package and
-     * *.xlf file. If it's just a simple trans-unit id, the translation will
-     * be looked up in the "Main.xlf" file of the "Neos.Neos" package.
+     * *.xlf file. If it's a trans-unit id, the translation will be looked up
+     * in the "Main.xlf" file of the "Neos.Neos" package.
      *
      * If no translation string can be found for the given id, the fully
-     * qualified trans-unit id will be returned.
+     * qualified translation address will be returned.
      *
-     * @param {string} transUnitIdOrFullyQualifiedTransUnitId A trans-unit id or a fully qualified trans-unit id
+     * @param {string} transUnitIdOrFullyQualifiedTranslationAddress A trans-unit id or a fully qualified translation address
      */
-    translate(transUnitIdOrFullyQualifiedTransUnitId: string): string;
+    translate(transUnitIdOrFullyQualifiedTranslationAddress: string): string;
 
     /**
      * Retrieves a the translation string that is identified by the given
-     * trans-unit id. If that id is a fully qualified trans-unit id (an id
+     * identifier. If it is a fully qualified translation address (a string
      * following the pattern "{Package.Key:SourceName:actual.trans.unit.id}"),
      * then the translation will be looked up in the respective package and
-     * *.xlf file. If it's just a simple trans-unit id, the translation will
-     * be looked up in the "Main.xlf" file of the "Neos.Neos" package.
+     * *.xlf file. If it's a trans-unit id, the translation will be looked up
+     * in the "Main.xlf" file of the "Neos.Neos" package.
      *
      * If no translation string can be found for the given id, the given
      * fallback value will be returned.
      *
-     * @param {string} transUnitIdOrFullyQualifiedTransUnitId A trans-unit id or a fully qualified trans-unit id
+     * @param {string} transUnitIdOrFullyQualifiedTranslationAddress A trans-unit id or a fully qualified translation address
      * @param {string} fallback The string that shall be displayed, when no translation string could be found.
      */
-    translate(transUnitIdOrFullyQualifiedTransUnitId: string, fallback: string): string;
+    translate(transUnitIdOrFullyQualifiedTranslationAddress: string, fallback: string): string;
 
     /**
      * Retrieves a the translation string that is identified by the given
-     * trans-unit id. If that id is a fully qualified trans-unit id (an id
+     * identifier. If it is a fully qualified translation address (a string
      * following the pattern "{Package.Key:SourceName:actual.trans.unit.id}"),
      * then the translation will be looked up in the respective package and
-     * *.xlf file. If it's just a simple trans-unit id, the translation will
-     * be looked up in the "Main.xlf" file of the "Neos.Neos" package.
+     * *.xlf file. If it's just a trans-unit id, the translation will be looked
+     * up in the "Main.xlf" file of the "Neos.Neos" package.
      *
      * If no translation string can be found for the given id, the given
      * fallback value will be returned. If no fallback value has been given,
-     * the fully qualified trans-unit id will be returned.
+     * the fully qualified translation address will be returned.
      *
      * If a translation string was found and it contains substition placeholders
      * (e.g.: "{0}", or "{somePlaceholder}"), the placeholders will be replaced
      * with the corresponding values that were passed as parameters.
      *
-     * @param {string} transUnitIdOrFullyQualifiedTransUnitId The fully qualified trans-unit id, that follows the format "{Package.Key:SourceName:trans.unit.id}"
+     * @param {string} transUnitIdOrFullyQualifiedTranslationAddress The fully qualified translation address, that follows the format "{Package.Key:SourceName:trans.unit.id}"
      * @param {undefined|string} fallback The string that shall be displayed, when no translation string could be found.
      * @param {Parameters} parameters The values to replace substitution placeholders with in the translation string
      */
     translate(
-        transUnitIdOrFullyQualifiedTransUnitId: string,
+        transUnitIdOrFullyQualifiedTranslationAddress: string,
         fallback: undefined | string,
         parameters: Parameters
     ): string;
@@ -95,7 +95,7 @@ export default class I18nRegistry extends SynchronousRegistry<unknown> {
      *
      * If no translation string can be found for the given id, the given fallback
      * value will be returned. If no fallback value has been given, the fully
-     * qualified trans-unit id will be returned.
+     * qualified translation address will be returned.
      *
      * If a translation string was found and it contains substition placeholders
      * (e.g.: "{0}", or "{somePlaceholder}"), the placeholders will be replaced
@@ -122,7 +122,7 @@ export default class I18nRegistry extends SynchronousRegistry<unknown> {
      *
      * If no translation string can be found for the given id, the given fallback
      * value will be returned. If no fallback value has been given, the fully
-     * qualified trans-unit id will be returned.
+     * qualified translation address will be returned.
      *
      * If a translation string was found and it contains substition placeholders
      * (e.g.: "{0}", or "{somePlaceholder}"), the placeholders will be replaced
@@ -151,7 +151,7 @@ export default class I18nRegistry extends SynchronousRegistry<unknown> {
      *
      * If no translation string can be found for the given id, the given fallback
      * value will be returned. If no fallback value has been given, the fully
-     * qualified trans-unit id will be returned.
+     * qualified translation address will be returned.
      *
      * If the provided quantity is greater than 1, and the found translation has a
      * plural form, then the plural form will be used. If the quantity equals 1
@@ -177,15 +177,15 @@ export default class I18nRegistry extends SynchronousRegistry<unknown> {
     ): string;
 
     translate(
-        transUnitIdOrFullyQualifiedTransUnitId: string,
+        transUnitIdOrFullyQualifiedTranslationAddress: string,
         explicitlyProvidedFallback?: string,
         parameters?: Parameters,
         explicitlyProvidedPackageKey: string = 'Neos.Neos',
         explicitlyProvidedSourceName: string = 'Main',
         quantity: number = 0
     ) {
-        const fallback = explicitlyProvidedFallback || transUnitIdOrFullyQualifiedTransUnitId;
-        const translationAddess = getTranslationAddress(transUnitIdOrFullyQualifiedTransUnitId, explicitlyProvidedPackageKey, explicitlyProvidedSourceName);
+        const fallback = explicitlyProvidedFallback || transUnitIdOrFullyQualifiedTranslationAddress;
+        const translationAddess = getTranslationAddress(transUnitIdOrFullyQualifiedTranslationAddress, explicitlyProvidedPackageKey, explicitlyProvidedSourceName);
         const translationUnit = this.getTranslationUnit(translationAddess);
         if (translationUnit === null) {
             this.logTranslationUnitNotFound(translationAddess, fallback);

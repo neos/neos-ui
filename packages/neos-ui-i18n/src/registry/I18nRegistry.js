@@ -4,23 +4,9 @@ import logger from '@neos-project/utils-logger';
 
 import {getTranslationAddress} from './getTranslationAddress';
 import {substitutePlaceholders} from './substitutePlaceholders';
+import {getPluralForm} from './getPluralForm';
 
 const errorCache = {};
-
-const getPluralForm = (translation, quantity = 0) => {
-    const translationHasPlurals = translation instanceof Object;
-
-    // no defined quantity or less than one returns singular
-    if (translationHasPlurals && (!quantity || quantity <= 1)) {
-        return translation[0];
-    }
-
-    if (translationHasPlurals && quantity > 1) {
-        return translation[1] ? translation[1] : translation[0];
-    }
-
-    return translation;
-};
 
 export default class I18nRegistry extends SynchronousRegistry {
     _translations = {};

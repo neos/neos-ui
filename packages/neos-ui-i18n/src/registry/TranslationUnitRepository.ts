@@ -13,16 +13,25 @@ import type {TranslationUnit} from './TranslationUnit';
 export type TranslationsDTO = Record<string, Record<string, Record<string, TranslationUnit>>>;
 
 export class TranslationUnitRepository {
+    private _translationUnitsByAddress: Record<string, TranslationUnit> = {};
+
     private constructor(private readonly translations: TranslationsDTO) {}
 
     public static fromDTO = (translations: TranslationsDTO): TranslationUnitRepository =>
         new TranslationUnitRepository(translations);
 
     public findOneByAddress = (address: TranslationAddress): null | TranslationUnit => {
+        if (address.fullyQualified in this._translationUnitsByAddress) {
+            return this._translationUnitsByAddress[address.fullyQualified];
+        }
+
         const [packageKey, sourceName, id] = [address.packageKey, address.sourceName, address.id]
             // Replace all dots with underscores
             .map(s => s ? s.replace(/\./g, '_') : '')
 
-        return this.translations[packageKey]?.[sourceName]?.[id] ?? null;
+        const translationUnit = this.translations[packageKey]?.[sourceName]?.[id] ?? null;
+        this._translationUnitsByAddress[address.fullyQualified] = translationUnit;
+
+        return translationUnit;
     }
 }

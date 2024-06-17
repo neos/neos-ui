@@ -20,6 +20,7 @@ describe('TranslationAddress', () => {
         expect(translationAddress.id).toBe('some.transunit.id');
         expect(translationAddress.sourceName).toBe('SomeSource');
         expect(translationAddress.packageKey).toBe('Some.Package');
+        expect(translationAddress.fullyQualified).toBe('Some.Package:SomeSource:some.transunit.id');
     });
 
     it('can be created from string', () => {
@@ -30,6 +31,7 @@ describe('TranslationAddress', () => {
         expect(translationAddress.id).toBe('some.transunit.id');
         expect(translationAddress.sourceName).toBe('SomeSource');
         expect(translationAddress.packageKey).toBe('Some.Package');
+        expect(translationAddress.fullyQualified).toBe('Some.Package:SomeSource:some.transunit.id');
     });
 
     it('throws if given an invalid string', () => {

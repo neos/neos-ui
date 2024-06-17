@@ -13,7 +13,8 @@ export class TranslationAddress {
     private constructor(
         public readonly id: string,
         public readonly sourceName: string,
-        public readonly packageKey: string
+        public readonly packageKey: string,
+        public readonly fullyQualified: string
     ) {}
 
     public static create = (props: {
@@ -21,7 +22,7 @@ export class TranslationAddress {
         sourceName: string;
         packageKey: string;
     }): TranslationAddress =>
-        new TranslationAddress(props.id, props.sourceName, props.packageKey);
+        new TranslationAddress(props.id, props.sourceName, props.packageKey, `${props.packageKey}:${props.sourceName}:${props.id}`);
 
     public static fromString = (string: string): TranslationAddress => {
         const parts = string.split(TRANSLATION_ADDRESS_SEPARATOR);
@@ -32,7 +33,7 @@ export class TranslationAddress {
 
         const [packageKey, sourceName, id] = parts;
 
-        return new TranslationAddress(id, sourceName, packageKey);
+        return new TranslationAddress(id, sourceName, packageKey, string);
     }
 }
 

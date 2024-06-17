@@ -198,9 +198,9 @@ export default class I18nRegistry extends SynchronousRegistry<unknown> {
     }
 
     private logTranslationUnitNotFound(address: TranslationAddress, fallback: string) {
-        if (!errorCache[address.toString()]) {
-            logger.error(`No translation found for id "${address.toString()}" in:`, this._translations, `Using ${fallback} instead.`);
-            errorCache[address.toString()] = true;
+        if (!errorCache[address.fullyQualified]) {
+            logger.error(`No translation found for id "${address.fullyQualified}" in:`, this._translations, `Using ${fallback} instead.`);
+            errorCache[address.fullyQualified] = true;
         }
     }
 

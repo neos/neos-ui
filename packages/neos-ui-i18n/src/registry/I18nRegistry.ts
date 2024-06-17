@@ -19,7 +19,7 @@ import type {Parameters} from './Parameters';
 
 const errorCache: Record<string, boolean> = {};
 
-export default class I18nRegistry extends SynchronousRegistry<unknown> {
+export class I18nRegistry extends SynchronousRegistry<unknown> {
     private _translations: null|TranslationUnitRepository = null;
 
     /** @internal */

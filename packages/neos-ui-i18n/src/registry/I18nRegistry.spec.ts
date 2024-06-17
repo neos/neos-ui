@@ -7,7 +7,7 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-import I18nRegistry from './I18nRegistry';
+import {I18nRegistry} from './I18nRegistry';
 
 test(`
     Host > Containers > I18n: should display configured fallback, if no translation

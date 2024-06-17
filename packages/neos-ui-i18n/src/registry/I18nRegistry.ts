@@ -16,18 +16,18 @@ import {substitutePlaceholders} from './substitutePlaceholders';
 import {getPluralForm} from './getPluralForm';
 import type {TranslationUnit} from './TranslationUnit';
 import type {TranslationAddress} from './TranslationAddress';
-import type {TranslationsDTO} from './TranslationUnitRepository';
+import {TranslationUnitRepository, TranslationsDTO} from './TranslationUnitRepository';
 
 const errorCache: Record<string, boolean> = {};
 
 type Parameters = (string | number)[] | Record<string, string | number>;
 
 export default class I18nRegistry extends SynchronousRegistry<unknown> {
-    private _translations: TranslationsDTO = {};
+    private _translations: null|TranslationUnitRepository = null;
 
     /** @internal */
     setTranslations(translations: TranslationsDTO) {
-        this._translations = translations;
+        this._translations = TranslationUnitRepository.fromDTO(translations);
     }
 
     /**
@@ -205,10 +205,6 @@ export default class I18nRegistry extends SynchronousRegistry<unknown> {
     }
 
     private getTranslationUnit(address: TranslationAddress): null | TranslationUnit {
-        const [packageKey, sourceName, id] = [address.packageKey, address.sourceName, address.id]
-            // Replace all dots with underscores
-            .map(s => s ? s.replace(/\./g, '_') : '')
-
-        return this._translations[packageKey]?.[sourceName]?.[id] ?? null;
+        return this._translations?.findOneByAddress(address) ?? null;
     }
 }

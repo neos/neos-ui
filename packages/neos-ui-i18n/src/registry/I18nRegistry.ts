@@ -15,6 +15,7 @@ import {getTranslationAddress} from './getTranslationAddress';
 import {substitutePlaceholders} from './substitutePlaceholders';
 import {getPluralForm} from './getPluralForm';
 import type {TranslationUnit} from './TranslationUnit';
+import type {TranslationAddress} from './TranslationAddress';
 
 const errorCache: Record<string, boolean> = {};
 
@@ -184,10 +185,10 @@ export default class I18nRegistry extends SynchronousRegistry<unknown> {
         quantity: number = 0
     ) {
         const fallback = explicitlyProvidedFallback || transUnitIdOrFullyQualifiedTransUnitId;
-        const [packageKey, sourceName, id] = getTranslationAddress(transUnitIdOrFullyQualifiedTransUnitId, explicitlyProvidedPackageKey, explicitlyProvidedSourceName);
-        const translationUnit = this.getTranslationUnit(packageKey, sourceName, id);
+        const translationAddess = getTranslationAddress(transUnitIdOrFullyQualifiedTransUnitId, explicitlyProvidedPackageKey, explicitlyProvidedSourceName);
+        const translationUnit = this.getTranslationUnit(translationAddess);
         if (translationUnit === null) {
-            this.logTranslationUnitNotFound(packageKey, sourceName, id, fallback);
+            this.logTranslationUnitNotFound(translationAddess, fallback);
             return fallback;
         }
 
@@ -196,15 +197,15 @@ export default class I18nRegistry extends SynchronousRegistry<unknown> {
             : getPluralForm(translationUnit, quantity);
     }
 
-    private logTranslationUnitNotFound(packageKey: string, sourceName: string, id: string, fallback: string) {
-        if (!errorCache[`${packageKey}:${sourceName}:${id}`]) {
-            logger.error(`No translation found for id "${packageKey}:${sourceName}:${id}" in:`, this._translations, `Using ${fallback} instead.`);
-            errorCache[`${packageKey}:${sourceName}:${id}`] = true;
+    private logTranslationUnitNotFound(address: TranslationAddress, fallback: string) {
+        if (!errorCache[address.toString()]) {
+            logger.error(`No translation found for id "${address.toString()}" in:`, this._translations, `Using ${fallback} instead.`);
+            errorCache[address.toString()] = true;
         }
     }
 
-    private getTranslationUnit(packageKey: string, sourceName: string, id: string): null | TranslationUnit {
-        [packageKey, sourceName, id] = [packageKey, sourceName, id]
+    private getTranslationUnit(address: TranslationAddress): null | TranslationUnit {
+        const [packageKey, sourceName, id] = [address.packageKey, address.sourceName, address.id]
             // Replace all dots with underscores
             .map(s => s ? s.replace(/\./g, '_') : '')
 

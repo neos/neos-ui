@@ -17,10 +17,9 @@ import {getPluralForm} from './getPluralForm';
 import type {TranslationUnitDTO} from './TranslationUnit';
 import type {TranslationAddress} from './TranslationAddress';
 import {TranslationUnitRepository, TranslationsDTO} from './TranslationUnitRepository';
+import type {Parameters} from './Parameters';
 
 const errorCache: Record<string, boolean> = {};
-
-type Parameters = (string | number)[] | Record<string, string | number>;
 
 export default class I18nRegistry extends SynchronousRegistry<unknown> {
     private _translations: null|TranslationUnitRepository = null;

@@ -14,7 +14,7 @@ import logger from '@neos-project/utils-logger';
 import {getTranslationAddress} from './getTranslationAddress';
 import {substitutePlaceholders} from './substitutePlaceholders';
 import {getPluralForm} from './getPluralForm';
-import type {TranslationUnit} from './TranslationUnit';
+import type {TranslationUnitDTO} from './TranslationUnit';
 import type {TranslationAddress} from './TranslationAddress';
 import {TranslationUnitRepository, TranslationsDTO} from './TranslationUnitRepository';
 
@@ -204,7 +204,7 @@ export default class I18nRegistry extends SynchronousRegistry<unknown> {
         }
     }
 
-    private getTranslationUnit(address: TranslationAddress): null | TranslationUnit {
+    private getTranslationUnit(address: TranslationAddress): null | TranslationUnitDTO {
         return this._translations?.findOneByAddress(address) ?? null;
     }
 }

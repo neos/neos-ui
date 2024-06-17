@@ -8,19 +8,19 @@
  * source code.
  */
 import type {TranslationAddress} from './TranslationAddress';
-import type {TranslationUnit} from './TranslationUnit';
+import type {TranslationUnitDTO} from './TranslationUnit';
 
-export type TranslationsDTO = Record<string, Record<string, Record<string, TranslationUnit>>>;
+export type TranslationsDTO = Record<string, Record<string, Record<string, TranslationUnitDTO>>>;
 
 export class TranslationUnitRepository {
-    private _translationUnitsByAddress: Record<string, TranslationUnit> = {};
+    private _translationUnitsByAddress: Record<string, TranslationUnitDTO> = {};
 
     private constructor(private readonly translations: TranslationsDTO) {}
 
     public static fromDTO = (translations: TranslationsDTO): TranslationUnitRepository =>
         new TranslationUnitRepository(translations);
 
-    public findOneByAddress = (address: TranslationAddress): null | TranslationUnit => {
+    public findOneByAddress = (address: TranslationAddress): null | TranslationUnitDTO => {
         if (address.fullyQualified in this._translationUnitsByAddress) {
             return this._translationUnitsByAddress[address.fullyQualified];
         }

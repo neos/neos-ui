@@ -14,7 +14,8 @@ import {connect} from 'react-redux';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 import {GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
-import {I18nRegistry, WorkspaceName} from '@neos-project/neos-ts-interfaces';
+import type {WorkspaceName} from '@neos-project/neos-ts-interfaces';
+import type {I18nRegistry} from '@neos-project/neos-ui-i18n';
 import {ResolutionStrategy, SyncingPhase, State as SyncingState} from '@neos-project/neos-ui-redux-store/src/CR/Syncing';
 
 import {ConfirmationDialog} from './ConfirmationDialog';

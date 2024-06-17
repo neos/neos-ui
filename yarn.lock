@@ -2295,6 +2295,7 @@ __metadata:
   resolution: "@neos-project/neos-ts-interfaces@workspace:packages/neos-ts-interfaces"
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
+    "@neos-project/neos-ui-i18n": "workspace:*"
     typescript: ^4.6.4
   languageName: unknown
   linkType: soft

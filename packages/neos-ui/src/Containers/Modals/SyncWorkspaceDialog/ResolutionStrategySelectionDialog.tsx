@@ -9,8 +9,8 @@
  */
 import React from 'react';
 
-import I18n from '@neos-project/neos-ui-i18n';
-import {I18nRegistry, WorkspaceName} from '@neos-project/neos-ts-interfaces';
+import I18n, {I18nRegistry} from '@neos-project/neos-ui-i18n';
+import {WorkspaceName} from '@neos-project/neos-ts-interfaces';
 import {Button, Dialog, Icon, SelectBox, SelectBox_Option_MultiLineWithThumbnail} from '@neos-project/react-ui-components';
 import {Conflict, ResolutionStrategy, SyncingPhase} from '@neos-project/neos-ui-redux-store/src/CR/Syncing';
 

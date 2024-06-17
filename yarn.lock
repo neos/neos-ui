@@ -2498,8 +2498,6 @@ __metadata:
   resolution: "@neos-project/neos-ui-i18n@workspace:packages/neos-ui-i18n"
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
-    "@neos-project/neos-ts-interfaces": "workspace:*"
-    "@neos-project/neos-ui-decorators": "workspace:*"
     "@neos-project/neos-ui-extensibility": "workspace:*"
     "@neos-project/utils-logger": "workspace:*"
     enzyme: ^3.8.0

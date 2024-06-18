@@ -10,6 +10,7 @@ import fetchWithErrorHandling from '@neos-project/neos-ui-backend-connector/src/
 import {SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
 import backend from '@neos-project/neos-ui-backend-connector';
 import {handleActions} from '@neos-project/utils-redux';
+import {registerTranslations} from '@neos-project/neos-ui-i18n';
 
 import {
     appContainer,
@@ -167,10 +168,9 @@ async function loadNodeTypesSchema() {
 
 async function loadTranslations() {
     const {getJsonResource} = backend.get().endpoints;
-    const i18nRegistry = globalRegistry.get('i18n');
     const translations = await getJsonResource(configuration.endpoints.translations);
 
-    i18nRegistry.setTranslations(translations);
+    registerTranslations(translations);
 }
 
 async function loadImpersonateStatus() {

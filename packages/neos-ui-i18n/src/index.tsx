@@ -2,6 +2,7 @@ import React from 'react';
 import {Parameters, i18nRegistry} from './registry';
 
 export type {I18nRegistry} from './registry';
+export {registerTranslations} from './registry';
 
 interface I18nProps {
     // Fallback key which gets rendered once the i18n service doesn't return a translation.

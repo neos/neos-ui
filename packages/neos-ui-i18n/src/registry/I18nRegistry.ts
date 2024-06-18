@@ -14,19 +14,12 @@ import logger from '@neos-project/utils-logger';
 import {getTranslationAddress} from './getTranslationAddress';
 import type {Translation} from './Translation';
 import type {TranslationAddress} from './TranslationAddress';
-import {TranslationRepository, TranslationsDTO} from './TranslationRepository';
 import type {Parameters} from './Parameters';
+import {getTranslationRepository} from './TranslationRepository';
 
 const errorCache: Record<string, boolean> = {};
 
 export class I18nRegistry extends SynchronousRegistry<unknown> {
-    private _translations: null|TranslationRepository = null;
-
-    /** @internal */
-    setTranslations(translations: TranslationsDTO) {
-        this._translations = TranslationRepository.fromDTO(translations);
-    }
-
     /**
      * Retrieves a the translation string that is identified by the given
      * identifier. If it is a fully qualified translation address (a string
@@ -194,13 +187,13 @@ export class I18nRegistry extends SynchronousRegistry<unknown> {
 
     private logTranslationNotFound(address: TranslationAddress, fallback: string) {
         if (!errorCache[address.fullyQualified]) {
-            logger.error(`No translation found for id "${address.fullyQualified}" in:`, this._translations, `Using ${fallback} instead.`);
+            logger.error(`No translation found for id "${address.fullyQualified}" in:`, getTranslationRepository(), `Using ${fallback} instead.`);
             errorCache[address.fullyQualified] = true;
         }
     }
 
     private getTranslation(address: TranslationAddress): null | Translation {
-        return this._translations?.findOneByAddress(address) ?? null;
+        return getTranslationRepository().findOneByAddress(address) ?? null;
     }
 }
 

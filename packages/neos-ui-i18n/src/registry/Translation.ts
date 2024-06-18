@@ -10,32 +10,32 @@
 import type {Parameters} from './Parameters';
 import {substitutePlaceholders} from './substitutePlaceholders';
 
-export type TranslationUnitDTO = string | TranslationUnitDTOTuple;
-type TranslationUnitDTOTuple = [string, string] | Record<number, string>;
+export type TranslationDTO = string | TranslationDTOTuple;
+type TranslationDTOTuple = [string, string] | Record<number, string>;
 
-export class TranslationUnit {
+export class Translation {
     private constructor(
         private readonly implementation:
-            | TranslationUnitWithSingularFormOnly
-            | TranslationUnitWithSingularAndPluralForm
+            | TranslationWithSingularFormOnly
+            | TranslationWithSingularAndPluralForm
     ) {
     }
 
-    public static fromDTO = (dto: TranslationUnitDTO): TranslationUnit =>
+    public static fromDTO = (dto: TranslationDTO): Translation =>
         dto instanceof Object
-            ? TranslationUnit.fromTuple(dto)
-            : TranslationUnit.fromString(dto);
+            ? Translation.fromTuple(dto)
+            : Translation.fromString(dto);
 
-    private static fromTuple = (tuple: TranslationUnitDTOTuple): TranslationUnit =>
-        new TranslationUnit(
+    private static fromTuple = (tuple: TranslationDTOTuple): Translation =>
+        new Translation(
             tuple[1] === undefined
-                ? new TranslationUnitWithSingularFormOnly(tuple[0])
-                : new TranslationUnitWithSingularAndPluralForm(tuple[0], tuple[1])
+                ? new TranslationWithSingularFormOnly(tuple[0])
+                : new TranslationWithSingularAndPluralForm(tuple[0], tuple[1])
         );
 
-    private static fromString = (string: string): TranslationUnit =>
-        new TranslationUnit(
-            new TranslationUnitWithSingularFormOnly(string)
+    private static fromString = (string: string): Translation =>
+        new Translation(
+            new TranslationWithSingularFormOnly(string)
         );
 
     public render(parameters: undefined | Parameters, quantity: number): string {
@@ -43,7 +43,7 @@ export class TranslationUnit {
     }
 }
 
-class TranslationUnitWithSingularFormOnly {
+class TranslationWithSingularFormOnly {
     public constructor(private readonly value: string) {}
 
     public render(parameters: undefined | Parameters): string {
@@ -53,7 +53,7 @@ class TranslationUnitWithSingularFormOnly {
     }
 }
 
-class TranslationUnitWithSingularAndPluralForm {
+class TranslationWithSingularAndPluralForm {
     public constructor(
         private readonly singular: string,
         private readonly plural: string

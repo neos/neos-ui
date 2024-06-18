@@ -8,12 +8,12 @@
  * source code.
  */
 import {TranslationAddress} from './TranslationAddress';
-import {TranslationUnit} from './TranslationUnit';
-import {TranslationUnitRepository} from './TranslationUnitRepository';
+import {Translation} from './Translation';
+import {TranslationRepository} from './TranslationRepository';
 
-describe('TranslationUnitRepository', () => {
-    it('can find a translation unit by its translationAddress', () => {
-        const translationUnitRepository = TranslationUnitRepository.fromDTO({
+describe('TranslationRepository', () => {
+    it('can find a translation by its translationAddress', () => {
+        const translationRepository = TranslationRepository.fromDTO({
             'Neos_Neos': { // eslint-disable-line quote-props
                 'Main': { // eslint-disable-line quote-props
                     'someLabel': 'The Translation' // eslint-disable-line quote-props
@@ -23,9 +23,9 @@ describe('TranslationUnitRepository', () => {
         const translationAddressThatCanBeFound = TranslationAddress.fromString('Neos.Neos:Main:someLabel');
         const translationAddressThatCannotBeFound = TranslationAddress.fromString('Vendor.Site:Main:someLabel');
 
-        expect(translationUnitRepository.findOneByAddress(translationAddressThatCannotBeFound))
+        expect(translationRepository.findOneByAddress(translationAddressThatCannotBeFound))
             .toBeNull();
-        expect(translationUnitRepository.findOneByAddress(translationAddressThatCanBeFound))
-            .toStrictEqual(TranslationUnit.fromDTO('The Translation'));
+        expect(translationRepository.findOneByAddress(translationAddressThatCanBeFound))
+            .toStrictEqual(Translation.fromDTO('The Translation'));
     });
 });

@@ -12,19 +12,19 @@ import {SynchronousRegistry} from '@neos-project/neos-ui-extensibility/src/regis
 import logger from '@neos-project/utils-logger';
 
 import {getTranslationAddress} from './getTranslationAddress';
-import type {TranslationUnit} from './TranslationUnit';
+import type {Translation} from './Translation';
 import type {TranslationAddress} from './TranslationAddress';
-import {TranslationUnitRepository, TranslationsDTO} from './TranslationUnitRepository';
+import {TranslationRepository, TranslationsDTO} from './TranslationRepository';
 import type {Parameters} from './Parameters';
 
 const errorCache: Record<string, boolean> = {};
 
 export class I18nRegistry extends SynchronousRegistry<unknown> {
-    private _translations: null|TranslationUnitRepository = null;
+    private _translations: null|TranslationRepository = null;
 
     /** @internal */
     setTranslations(translations: TranslationsDTO) {
-        this._translations = TranslationUnitRepository.fromDTO(translations);
+        this._translations = TranslationRepository.fromDTO(translations);
     }
 
     /**
@@ -183,23 +183,23 @@ export class I18nRegistry extends SynchronousRegistry<unknown> {
     ) {
         const fallback = explicitlyProvidedFallback || transUnitIdOrFullyQualifiedTranslationAddress;
         const translationAddess = getTranslationAddress(transUnitIdOrFullyQualifiedTranslationAddress, explicitlyProvidedPackageKey, explicitlyProvidedSourceName);
-        const translationUnit = this.getTranslationUnit(translationAddess);
-        if (translationUnit === null) {
-            this.logTranslationUnitNotFound(translationAddess, fallback);
+        const translation = this.getTranslation(translationAddess);
+        if (translation === null) {
+            this.logTranslationNotFound(translationAddess, fallback);
             return fallback;
         }
 
-        return translationUnit.render(parameters, quantity);
+        return translation.render(parameters, quantity);
     }
 
-    private logTranslationUnitNotFound(address: TranslationAddress, fallback: string) {
+    private logTranslationNotFound(address: TranslationAddress, fallback: string) {
         if (!errorCache[address.fullyQualified]) {
             logger.error(`No translation found for id "${address.fullyQualified}" in:`, this._translations, `Using ${fallback} instead.`);
             errorCache[address.fullyQualified] = true;
         }
     }
 
-    private getTranslationUnit(address: TranslationAddress): null | TranslationUnit {
+    private getTranslation(address: TranslationAddress): null | Translation {
         return this._translations?.findOneByAddress(address) ?? null;
     }
 }

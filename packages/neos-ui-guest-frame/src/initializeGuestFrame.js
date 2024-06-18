@@ -67,7 +67,22 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     // Load all nodedata for nodes in the guest frame
     const {q} = yield backend.get();
     const nodeContextPathsInGuestFrame = findAllNodesInGuestFrame().map(node => node.getAttribute('data-__neos-node-contextpath'));
-    const fullyLoadedNodesFromContent = (yield q(nodeContextPathsInGuestFrame).get()).reduce((nodes, node) => {
+
+    // Filter nodes that are already loaded in the redux store
+    const nodesByContextPath = store.getState().cr.nodes.byContextPath;
+    const nodesAlreadyPresentInStore = {};
+    const notFullyLoadedNodeContextPaths = nodeContextPathsInGuestFrame.filter((contextPath) => {
+        const node = nodesByContextPath[contextPath];
+        const nodeIsLoaded = node !== undefined && node.isFullyLoaded;
+        if (nodeIsLoaded){
+            nodesAlreadyPresentInStore[contextPath] = node;
+            return false;
+        }
+        return true;
+    });
+
+    // Load remaining list of nodes from the backend
+    const fullyLoadedNodesFromContent = (yield q(notFullyLoadedNodeContextPaths).get()).reduce((nodes, node) => {
         nodes[node.contextPath] = node;
         return nodes;
     }, {});
@@ -75,6 +90,7 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     const nodes = Object.assign(
         {},
         legacyNodeData, // Merge legacy node data from the guest frame - remove with Neos 9.0
+        nodesAlreadyPresentInStore,
         fullyLoadedNodesFromContent,
         {
             [documentInformation.metaData.documentNode]: documentInformation.metaData.documentNodeSerialization

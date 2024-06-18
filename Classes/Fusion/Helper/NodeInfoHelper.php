@@ -116,7 +116,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     /**
      * @param NodeInterface $node
      * @param ControllerContext|null $controllerContext
-     * @param string $nodeTypeFilterOverride
+     * @param string|null $nodeTypeFilterOverride
      * @return array|null
      */
     public function renderNodeWithMinimalPropertiesAndChildrenInformation(NodeInterface $node, ControllerContext $controllerContext = null, string $nodeTypeFilterOverride = null)
@@ -137,15 +137,9 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
         if ($controllerContext !== null) {
             $nodeInfo = array_merge($nodeInfo, $this->getUriInformation($node, $controllerContext));
-            if ($controllerContext->getRequest()->hasArgument('presetBaseNodeType')) {
-                $presetBaseNodeType = $controllerContext->getRequest()->getArgument('presetBaseNodeType');
-            }
         }
 
-        $baseNodeType = $nodeTypeFilterOverride ? $nodeTypeFilterOverride : (isset($presetBaseNodeType) ? $presetBaseNodeType : $this->defaultBaseNodeType);
-        $nodeTypeFilter = $this->buildNodeTypeFilterString($this->nodeTypeStringsToList($baseNodeType), $this->nodeTypeStringsToList($this->ignoredNodeTypeRole));
-
-        $nodeInfo['children'] = $this->renderChildrenInformation($node, $nodeTypeFilter);
+        $nodeInfo['children'] = $this->renderChildrenInformation($node);
 
         $this->userLocaleService->switchToUILocale(true);
 
@@ -172,13 +166,9 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
         if ($controllerContext !== null) {
             $nodeInfo = array_merge($nodeInfo, $this->getUriInformation($node, $controllerContext));
-            if ($controllerContext->getRequest()->hasArgument('presetBaseNodeType')) {
-                $presetBaseNodeType = $controllerContext->getRequest()->getArgument('presetBaseNodeType');
-            }
         }
 
-        $baseNodeType = $nodeTypeFilterOverride ?: (isset($presetBaseNodeType) ? $presetBaseNodeType : $this->defaultBaseNodeType);
-        $nodeInfo['children'] = $this->renderChildrenInformation($node, $baseNodeType);
+        $nodeInfo['children'] = $this->renderChildrenInformation($node);
 
         $this->userLocaleService->switchToUILocale(true);
 
@@ -234,26 +224,17 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
     /**
      * Get information for all children of the given parent node.
-     *
-     * @param NodeInterface $node
-     * @param string $nodeTypeFilterString
-     * @return array
      */
-    protected function renderChildrenInformation(NodeInterface $node, string $nodeTypeFilterString): array
+    protected function renderChildrenInformation(NodeInterface $node): array
     {
-        $documentChildNodes = $node->getChildNodes($nodeTypeFilterString);
-        // child nodes for content tree, must not include those nodes filtered out by `baseNodeType`
-        $contentChildNodes = $node->getChildNodes($this->buildContentChildNodeFilterString());
-        $childNodes = array_merge($documentChildNodes, $contentChildNodes);
+        $childNodes = $node->getChildNodes($this->buildNodeTypeFilterString([], [$this->ignoredNodeTypeRole]));
 
-        $mapper = static function (NodeInterface $childNode) {
+        return array_map(static function (NodeInterface $childNode) {
             return [
                 'contextPath' => $childNode->getContextPath(),
-                'nodeType' => $childNode->getNodeType()->getName()
+                'nodeType' => $childNode->getNodeType()->getName(),
             ];
-        };
-
-        return array_map($mapper, $childNodes);
+        }, $childNodes);
     }
 
     /**

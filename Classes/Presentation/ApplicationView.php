@@ -113,6 +113,12 @@ final class ApplicationView extends AbstractView
             )
         );
 
+        // @TODO: All endpoints should be treated this way and be isolated from
+        //        initial data.
+        $result .= sprintf(
+            '<link id="neos-ui-uri:/neos/xliff.json" rel="prefetch" href="%s">',
+            $this->variables['initialData']['configuration']['endpoints']['translations'],
+        );
         $result .= sprintf(
             '<script id="initialData" type="application/json">%s</script>',
             json_encode($this->variables['initialData']),

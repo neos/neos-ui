@@ -168,7 +168,8 @@ async function loadNodeTypesSchema() {
 
 async function loadTranslations() {
     const {getJsonResource} = backend.get().endpoints;
-    const translations = await getJsonResource(configuration.endpoints.translations);
+    const endpoint = document.getElementById('neos-ui-uri:/neos/xliff.json').getAttribute('href');
+    const translations = await getJsonResource(endpoint);
 
     registerTranslations(translations);
 }

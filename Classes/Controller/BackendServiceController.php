@@ -533,13 +533,9 @@ class BackendServiceController extends ActionController
         $finisher = array_pop($chain);
 
         $nodeContextPaths = array_unique(array_column($createContext['payload'], '$node'));
+        $nodes = $this->nodeService->getNodesFromContextPaths($nodeContextPaths);
 
-        $flowQuery = new FlowQuery(array_map(
-            function ($contextPath) {
-                return $this->nodeService->getNodeFromContextPath($contextPath);
-            },
-            $nodeContextPaths
-        ));
+        $flowQuery = new FlowQuery($nodes);
 
         foreach ($chain as $operation) {
             $flowQuery = call_user_func_array([$flowQuery, $operation['type']], $operation['payload']);

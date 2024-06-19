@@ -64,28 +64,28 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     // Load legacy node data scripts from guest frame - remove with Neos 9.0
     const legacyNodeData = guestFrameWindow['@Neos.Neos.Ui:Nodes'] || {};
 
-    // Load all nodedata for nodes in the guest frame
+    // Load all nodedata for nodes in the guest frame and filter duplicates
     const {q} = yield backend.get();
     const nodeContextPathsInGuestFrame = findAllNodesInGuestFrame().map(node => node.getAttribute('data-__neos-node-contextpath'));
 
-    // Filter nodes that are already loaded in the redux store
+    // Filter nodes that are already present in the redux store and duplicates
     const nodesByContextPath = store.getState().cr.nodes.byContextPath;
     const nodesAlreadyPresentInStore = {};
-    const notFullyLoadedNodeContextPaths = nodeContextPathsInGuestFrame.filter((contextPath) => {
+    const notFullyLoadedNodeContextPaths = [...new Set(nodeContextPathsInGuestFrame)].filter((contextPath) => {
         const node = nodesByContextPath[contextPath];
         const nodeIsLoaded = node !== undefined && node.isFullyLoaded;
-        if (nodeIsLoaded){
+        if (nodeIsLoaded) {
             nodesAlreadyPresentInStore[contextPath] = node;
             return false;
         }
         return true;
     });
 
-    // Load remaining list of nodes from the backend
-    const fullyLoadedNodesFromContent = (yield q(notFullyLoadedNodeContextPaths).get()).reduce((nodes, node) => {
+    // Load remaining list of not fully loaded nodes from the backend if there are any
+    const fullyLoadedNodesFromContent = notFullyLoadedNodeContextPaths.length > 0 ? (yield q(notFullyLoadedNodeContextPaths).get()).reduce((nodes, node) => {
         nodes[node.contextPath] = node;
         return nodes;
-    }, {});
+    }, {}) : [];
 
     const nodes = Object.assign(
         {},

@@ -532,11 +532,13 @@ class BackendServiceController extends ActionController
         $createContext = array_shift($chain);
         $finisher = array_pop($chain);
 
+        $nodeContextPaths = array_unique(array_column($createContext['payload'], '$node'));
+
         $flowQuery = new FlowQuery(array_map(
-            function ($envelope) {
-                return $this->nodeService->getNodeFromContextPath($envelope['$node']);
+            function ($contextPath) {
+                return $this->nodeService->getNodeFromContextPath($contextPath);
             },
-            $createContext['payload']
+            $nodeContextPaths
         ));
 
         foreach ($chain as $operation) {
@@ -548,8 +550,8 @@ class BackendServiceController extends ActionController
 
         switch ($finisher['type']) {
             case 'get':
-                $result = $nodeInfoHelper->renderNodes(array_filter(
-                    $flowQuery->get()),
+                $result = $nodeInfoHelper->renderNodes(
+                    array_filter($flowQuery->get()),
                     $this->getControllerContext()
                 );
                 break;

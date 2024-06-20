@@ -276,6 +276,14 @@ class BackendServiceController extends ActionController
         try {
             foreach ($nodeContextPaths as $contextPath) {
                 $node = $this->nodeService->getNodeFromContextPath($contextPath, null, null, true);
+                if (!$node) {
+                    $error = new Error();
+                    $error->setMessage(sprintf('Could not find node for context path "%s"', $contextPath));
+
+                    $this->feedbackCollection->add($error);
+                    continue;
+                }
+
                 if ($node->isRemoved() === true) {
                     // When discarding node removal we should re-create it
                     $updateNodeInfo = new UpdateNodeInfo();
@@ -297,7 +305,19 @@ class BackendServiceController extends ActionController
                         $reloadDocument = new ReloadDocument();
                         $this->feedbackCollection->add($reloadDocument);
                     }
-                } elseif (!$this->nodeService->nodeExistsInWorkspace($node, $node->getWorkSpace()->getBaseWorkspace())) {
+                } elseif ($nodeInBaseWorkspace = $this->nodeService->getNodeInWorkspace($node, $node->getWorkSpace()->getBaseWorkspace())) {
+                    $nodeHasBeenMoved = $node->getPath() !== $nodeInBaseWorkspace->getPath();
+                    if ($nodeHasBeenMoved) {
+                        $removeNode = new RemoveNode();
+                        $removeNode->setNode($node);
+                        $this->feedbackCollection->add($removeNode);
+
+                        $updateNodeInfo = new UpdateNodeInfo();
+                        $updateNodeInfo->setNode($nodeInBaseWorkspace);
+                        $updateNodeInfo->recursive();
+                        $this->feedbackCollection->add($updateNodeInfo);
+                    }
+                } else {
                     // If the node doesn't exist in the target workspace, tell the UI to remove it
                     $removeNode = new RemoveNode();
                     $removeNode->setNode($node);
@@ -345,6 +365,9 @@ class BackendServiceController extends ActionController
                 throw new Exception('Your personal workspace currently contains unpublished changes. In order to switch to a different target workspace you need to either publish or discard pending changes first.', 1582800654);
             }
 
+            $sitePath = $documentNode->getContext()->getCurrentSiteNode()->getPath();
+            $originalNodePath = $documentNode->getPath();
+
             $userWorkspace->setBaseWorkspace($targetWorkspace);
             $this->workspaceRepository->update($userWorkspace);
 
@@ -356,25 +379,9 @@ class BackendServiceController extends ActionController
             $updateWorkspaceInfo->setWorkspace($userWorkspace);
             $this->feedbackCollection->add($updateWorkspaceInfo);
 
-            // Construct base workspace context
-            $originalContext = $documentNode->getContext();
-            $contextProperties = $documentNode->getContext()->getProperties();
-            $contextProperties['workspaceName'] = $targetWorkspaceName;
-            $contentContext = $this->contextFactory->create($contextProperties);
-
             // If current document node doesn't exist in the base workspace, traverse its parents to find the one that exists
-            $redirectNode = $documentNode;
-            while (true) {
-                $redirectNodeInBaseWorkspace = $contentContext->getNodeByIdentifier($redirectNode->getIdentifier());
-                if ($redirectNodeInBaseWorkspace) {
-                    break;
-                } else {
-                    $redirectNode = $redirectNode->getParent();
-                    if (!$redirectNode) {
-                        throw new Exception(sprintf('Wasn\'t able to locate any valid node in rootline of node %s in the workspace %s.', $documentNode->getContextPath(), $targetWorkspaceName), 1458814469);
-                    }
-                }
-            }
+            $nodesOnPath = $documentNode->getContext()->getNodesOnPath($sitePath, $originalNodePath);
+            $redirectNode = array_pop($nodesOnPath) ?? $documentNode->getContext()->getCurrentSiteNode();
 
             // If current document node exists in the base workspace, then reload, else redirect
             if ($redirectNode === $documentNode) {

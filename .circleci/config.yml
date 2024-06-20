@@ -43,7 +43,7 @@ aliases:
 jobs:
   checkout:
     docker:
-      - image: cimg/node:16.17-browsers
+      - image: cimg/node:20.9-browsers
     environment:
       FLOW_CONTEXT: Production
     steps:
@@ -108,7 +108,7 @@ jobs:
       - run: curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
       - run: chmod +x ~/.nvm/nvm.sh
       - run:
-          no_output_timeout: 20m
+          no_output_timeout: 30m
           command: |
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"

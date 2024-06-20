@@ -22,6 +22,8 @@ for fixture in Packages/Application/Neos.Neos.Ui/Tests/IntegrationTests/Fixtures
     # TODO: optimize this
     composer reinstall neos/test-nodetypes
     composer reinstall neos/test-site
+    # make sure neos is installed even if patching led to the removal (bug)
+    composer update neos/neos-development-collection
     ./flow flow:cache:flush --force
     ./flow flow:cache:warmup
     ./flow configuration:show --path Neos.ContentRepository.contentDimensions

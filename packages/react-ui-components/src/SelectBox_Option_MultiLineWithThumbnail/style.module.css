@@ -1,6 +1,26 @@
 .multiLineWithThumbnail__item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: var(--spacing-Half);
+    align-items: start;
     box-sizing: content-box;
     background: var(--colors-ContrastDarkest);
+}
+
+.multiLineWithThumbnail__item span {
+    grid-column: 2;
+    grid-row: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &.multiLineWithThumbnail__secondaryLabel {
+        grid-row: 2;
+    }
+
+    &.multiLineWithThumbnail__tertiaryLabel {
+        grid-row: 3;
+    }
 }
 
 .multiLineWithThumbnail__item--multiLine {
@@ -26,6 +46,8 @@
 .multiLineWithThumbnail__image {
     width: calc(1.33 * (var(--spacing-GoldenUnit) + var(--spacing-Full)));
     height: calc(var(--spacing-GoldenUnit) + var(--spacing-Full));
+    grid-column: 1;
+    grid-row: 1 / 4;
     object-fit: contain;
     background-color: #fff;
     background-size: 10px 10px;
@@ -35,8 +57,7 @@
     display: inline-block;
     vertical-align: middle;
     margin-left: calc(var(--spacing-Full) * -1);
-    margin-top: calc(var(--spacing-Half) * -1);
-    margin-bottom: calc(var(--spacing-Half) * -1);
+    align-self: center;
 }
 
 .multiLineWithThumbnail__item:hover .multiLineWithThumbnail__secondaryLabel,

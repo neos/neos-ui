@@ -75,8 +75,15 @@ const options = {
         cssModules(
             {
                 visitor: compileWithCssVariables(),
-                targets: {
-                    chrome: 80 // aligns somewhat to es2020
+                targets: { // only support es2020 browser
+                    // only supports browserList format
+                    // https://lightningcss.dev/transpilation.html
+                    // list of supported browser version per es version
+                    // https://github.com/evanw/esbuild/issues/121#issuecomment-646956379
+                    chrome: (80 << 16), // 80
+                    safari: (13 << 16) | (1 << 8), // 13.1
+                    firefox: (72 << 16), // 72
+                    edge: (80 << 16) // 80
                 },
                 drafts: {
                     nesting: true

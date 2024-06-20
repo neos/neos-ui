@@ -5,22 +5,29 @@ export const searchOptions = (searchTerm, processedSelectBoxOptions) =>
     processedSelectBoxOptions.filter(option => option.label && option.label.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1);
 
 export const processSelectBoxOptions = (i18nRegistry, selectBoxOptions, currentValue) => {
-    // ToDo: Can't we optimize this by using Object.values and one instead of two filter statements instead?
-    const processedSelectBoxOptions = Object.keys(selectBoxOptions)
-        .filter(k => selectBoxOptions[k])
-        // Filter out items without a label
-        .map(k => selectBoxOptions[k].label && Object.assign(
-            {value: k},
-            selectBoxOptions[k], // value in here overrules value above!!!
-            {label: i18nRegistry.translate(selectBoxOptions[k].label)}
-        ))
-        .filter(k => k);
-
-    for (const singleValue of Array.isArray(currentValue) ? currentValue : (currentValue === undefined ? [] : [currentValue])) {
-        if (processedSelectBoxOptions.find((k) => k.value === singleValue)) {
+    const validValues = {};
+    const processedSelectBoxOptions = [];
+    for (const [key, selectBoxOption] of Object.entries(selectBoxOptions)) {
+        if (!selectBoxOption || !selectBoxOption.label) {
             continue;
         }
 
+        const processedSelectBoxOption = {
+            value: key,
+            ...selectBoxOption, // a value in here overrules value based on the key above.
+            label: i18nRegistry.translate(selectBoxOption.label)
+        };
+
+        validValues[processedSelectBoxOption.value] = true;
+        processedSelectBoxOptions.push(processedSelectBoxOption);
+    }
+
+    for (const singleValue of Array.isArray(currentValue) ? currentValue : (currentValue === undefined ? [] : [currentValue])) {
+        if (singleValue in validValues) {
+            continue;
+        }
+
+        // Mismatch detected. Thus we add an option to the schema so the value is displayable: https://github.com/neos/neos-ui/issues/3520
         processedSelectBoxOptions.push({
             value: singleValue,
             label: `${i18nRegistry.translate('Neos.Neos.Ui:Main:invalidValue')}: "${singleValue}"`,

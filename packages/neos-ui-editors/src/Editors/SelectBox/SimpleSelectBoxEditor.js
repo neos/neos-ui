@@ -48,53 +48,21 @@ export default class SimpleSelectBoxEditor extends PureComponent {
     };
 
     render() {
-        const {commit, i18nRegistry, className} = this.props;
-        let {value} = this.props;
+        const {commit, i18nRegistry, className, value} = this.props;
         const options = Object.assign({}, this.constructor.defaultOptions, this.props.options);
 
-        const processedSelectBoxOptions = processSelectBoxOptions(i18nRegistry, options.values);
+        const processedSelectBoxOptions = processSelectBoxOptions(i18nRegistry, options.values, value);
 
         const allowEmpty = options.allowEmpty || Object.prototype.hasOwnProperty.call(options.values, '');
 
         // Placeholder text must be unescaped in case html entities were used
-        let placeholder = options && options.placeholder && i18nRegistry.translate(unescape(options.placeholder));
-        const invalidPlaceholder = i18nRegistry.translate('Neos.Neos.Ui:Main:invalidValue');
-
-        function isValidValueInArray(values) {
-            if (values.length === 0) {
-                return true;
-            }
-            const valueKeys = Object.keys(options.values);
-            return values.every((value) => valueKeys.includes(value));
-        }
-
-        function isValidValueInString(value) {
-            if (value === '') {
-                return true;
-            }
-            const valueKeys = Object.keys(options.values);
-            return valueKeys.find((v) => v === value);
-        }
-
-        if (Array.isArray(value)) {
-            const isValidValue = isValidValueInArray(value);
-            if (!isValidValue) {
-                placeholder = invalidPlaceholder;
-                value = [];
-            }
-        } else {
-            const isValidValue = isValidValueInString(value);
-            if (!isValidValue) {
-                placeholder = invalidPlaceholder;
-                value = null;
-            }
-        }
+        const placeholder = options && options.placeholder && i18nRegistry.translate(unescape(options.placeholder));
 
         if (options.multiple) {
             return (<MultiSelectBox
                 className={className}
                 options={processedSelectBoxOptions}
-                values={value}
+                values={value || []}
                 onValuesChange={commit}
                 placeholder={placeholder}
                 allowEmpty={allowEmpty}

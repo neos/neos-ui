@@ -194,8 +194,6 @@ export default class NodeTypesRegistry extends SynchronousRegistry<NodeType> {
         const _references = Object.values(withId(nodeType.references || {}));
         const references = positionalArraySorter(_references, 'position', 'id');
 
-        console.log(references);
-        console.log(properties);
         const viewConfiguration = {
             tabs: tabs.map(tab => ({
                 ...tab,

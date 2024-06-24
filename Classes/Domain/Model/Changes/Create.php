@@ -40,7 +40,7 @@ class Create extends AbstractCreate
         $subject = $this->getSubject();
         $nodeTypeName = $this->getNodeTypeName();
 
-        return $subject && $nodeTypeName && $this->isNodeTypeAllowedAsChildNode($subject, $nodeTypeName);
+        return $nodeTypeName && $this->isNodeTypeAllowedAsChildNode($subject, $nodeTypeName);
     }
 
     /**
@@ -49,7 +49,7 @@ class Create extends AbstractCreate
     public function apply(): void
     {
         $parentNode = $this->getSubject();
-        if ($parentNode && $this->canApply()) {
+        if ($this->canApply()) {
             $this->createNode($parentNode, null);
             $this->updateWorkspaceInfo();
         }

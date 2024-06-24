@@ -51,7 +51,7 @@ class CopyInto extends AbstractStructuralChange
     {
         $parentNode = $this->getParentNode();
 
-        return $this->subject && $parentNode && $this->isNodeTypeAllowedAsChildNode($parentNode, $this->subject->nodeTypeName);
+        return $parentNode && $this->isNodeTypeAllowedAsChildNode($parentNode, $this->subject->nodeTypeName);
     }
 
     public function getMode(): string
@@ -66,7 +66,7 @@ class CopyInto extends AbstractStructuralChange
     {
         $subject = $this->getSubject();
         $parentNode = $this->getParentNode();
-        if ($parentNode && $subject && $this->canApply()) {
+        if ($parentNode && $this->canApply()) {
             $contentRepository = $this->contentRepositoryRegistry->get($subject->contentRepositoryId);
             $command = CopyNodesRecursively::createFromSubgraphAndStartNode(
                 $contentRepository->getContentGraph($subject->workspaceName)->getSubgraph(

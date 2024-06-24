@@ -31,7 +31,7 @@ use Psr\Http\Message\ResponseInterface;
  */
 class ReloadContentOutOfBand extends AbstractFeedback
 {
-    protected ?Node $node = null;
+    protected Node $node;
 
     protected ?RenderedNodeDomAddress $nodeDomAddress;
 
@@ -64,7 +64,7 @@ class ReloadContentOutOfBand extends AbstractFeedback
         $this->node = $node;
     }
 
-    public function getNode(): ?Node
+    public function getNode(): Node
     {
         return $this->node;
     }
@@ -86,7 +86,7 @@ class ReloadContentOutOfBand extends AbstractFeedback
 
     public function getDescription(): string
     {
-        return sprintf('Rendering of node "%s" required.', $this->node?->aggregateId->value);
+        return sprintf('Rendering of node "%s" required.', $this->node->aggregateId->value);
     }
 
     /**
@@ -109,7 +109,7 @@ class ReloadContentOutOfBand extends AbstractFeedback
      */
     public function serializePayload(ControllerContext $controllerContext): array
     {
-        if (!is_null($this->node) && !is_null($this->nodeDomAddress)) {
+        if (!is_null($this->nodeDomAddress)) {
             $contentRepository = $this->contentRepositoryRegistry->get($this->node->contentRepositoryId);
             $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
             return [
@@ -126,32 +126,30 @@ class ReloadContentOutOfBand extends AbstractFeedback
      */
     protected function renderContent(ControllerContext $controllerContext): string
     {
-        if (!is_null($this->node)) {
-            $cacheTags = $this->cachingHelper->nodeTag($this->node);
-            foreach ($cacheTags as $tag) {
-                $this->contentCache->flushByTag($tag);
+        $cacheTags = $this->cachingHelper->nodeTag($this->node);
+        foreach ($cacheTags as $tag) {
+            $this->contentCache->flushByTag($tag);
+        }
+
+        if ($this->nodeDomAddress) {
+            $renderingMode = $this->renderingModeService->findByCurrentUser();
+
+            $view = $this->outOfBandRenderingViewFactory->resolveView();
+            if (method_exists($view, 'setControllerContext')) {
+                // deprecated
+                $view->setControllerContext($controllerContext);
             }
+            $view->setOption('renderingModeName', $renderingMode->name);
 
-            if ($this->nodeDomAddress) {
-                $renderingMode = $this->renderingModeService->findByCurrentUser();
+            $view->assign('value', $this->node);
+            $view->setRenderingEntryPoint($this->nodeDomAddress->getFusionPathForContentRendering());
 
-                $view = $this->outOfBandRenderingViewFactory->resolveView();
-                if (method_exists($view, 'setControllerContext')) {
-                    // deprecated
-                    $view->setControllerContext($controllerContext);
-                }
-                $view->setOption('renderingModeName', $renderingMode->name);
-
-                $view->assign('value', $this->node);
-                $view->setRenderingEntryPoint($this->nodeDomAddress->getFusionPathForContentRendering());
-
-                $content = $view->render();
-                if ($content instanceof ResponseInterface) {
-                    // todo should not happen, as we never render a full Neos.Neos:Page here?
-                    return $content->getBody()->getContents();
-                }
-                return $content->getContents();
+            $content = $view->render();
+            if ($content instanceof ResponseInterface) {
+                // todo should not happen, as we never render a full Neos.Neos:Page here?
+                return $content->getBody()->getContents();
             }
+            return $content->getContents();
         }
 
         return '';

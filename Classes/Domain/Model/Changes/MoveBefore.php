@@ -29,9 +29,6 @@ class MoveBefore extends AbstractStructuralChange
      */
     public function canApply(): bool
     {
-        if (is_null($this->subject)) {
-            return false;
-        }
         $siblingNode = $this->getSiblingNode();
         if (is_null($siblingNode)) {
             return false;
@@ -54,9 +51,9 @@ class MoveBefore extends AbstractStructuralChange
         $succeedingSibling = $this->getSiblingNode();
         // "subject" is the to-be-moved node
         $subject = $this->subject;
-        $parentNode = $subject ? $this->findParentNode($subject) : null;
+        $parentNode = $this->findParentNode($subject);
         $succeedingSiblingParent = $succeedingSibling ? $this->findParentNode($succeedingSibling) : null;
-        if ($this->canApply() && !is_null($subject) && !is_null($succeedingSibling)
+        if ($this->canApply() && !is_null($succeedingSibling)
             && !is_null($parentNode) && !is_null($succeedingSiblingParent)
         ) {
             $precedingSibling = null;

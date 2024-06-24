@@ -102,7 +102,7 @@ abstract class AbstractStructuralChange extends AbstractChange
      */
     public function getSiblingNode(): ?Node
     {
-        if ($this->siblingDomAddress === null || !$this->getSubject()) {
+        if ($this->siblingDomAddress === null) {
             return null;
         }
 

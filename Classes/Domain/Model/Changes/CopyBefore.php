@@ -28,9 +28,6 @@ class CopyBefore extends AbstractStructuralChange
      */
     public function canApply(): bool
     {
-        if (is_null($this->subject)) {
-            return false;
-        }
         $siblingNode = $this->getSiblingNode();
         if (is_null($siblingNode)) {
             return false;
@@ -57,7 +54,7 @@ class CopyBefore extends AbstractStructuralChange
             ? $this->findParentNode($succeedingSibling)
             : null;
         $subject = $this->subject;
-        if ($this->canApply() && !is_null($subject) && !is_null($succeedingSibling)
+        if ($this->canApply() && !is_null($succeedingSibling)
             && !is_null($parentNodeOfSucceedingSibling)
         ) {
             $contentRepository = $this->contentRepositoryRegistry->get($subject->contentRepositoryId);

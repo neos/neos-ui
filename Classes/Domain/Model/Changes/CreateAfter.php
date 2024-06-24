@@ -32,9 +32,6 @@ class CreateAfter extends AbstractCreate
      */
     public function canApply(): bool
     {
-        if (is_null($this->subject)) {
-            return false;
-        }
         $parent = $this->findParentNode($this->subject);
         $nodeTypeName = $this->getNodeTypeName();
 
@@ -46,9 +43,9 @@ class CreateAfter extends AbstractCreate
      */
     public function apply(): void
     {
-        $parentNode = $this->subject ? $this->findParentNode($this->subject) : null;
+        $parentNode = $this->findParentNode($this->subject);
         $subject = $this->subject;
-        if ($this->canApply() && !is_null($subject) && !is_null($parentNode)) {
+        if ($this->canApply() && !is_null($parentNode)) {
             $succeedingSibling = null;
             try {
                 $succeedingSibling = $this->findChildNodes($parentNode)->next($subject);

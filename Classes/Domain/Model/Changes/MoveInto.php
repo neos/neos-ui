@@ -33,7 +33,7 @@ class MoveInto extends AbstractStructuralChange
 
     public function getParentNode(): ?Node
     {
-        if ($this->parentContextPath === null || !$this->getSubject()) {
+        if ($this->parentContextPath === null) {
             return null;
         }
 
@@ -57,9 +57,6 @@ class MoveInto extends AbstractStructuralChange
      */
     public function canApply(): bool
     {
-        if (is_null($this->subject)) {
-            return false;
-        }
         $parent = $this->getParentNode();
 
         return $parent && $this->isNodeTypeAllowedAsChildNode($parent, $this->subject->nodeTypeName);
@@ -74,7 +71,7 @@ class MoveInto extends AbstractStructuralChange
         $parentNode = $this->getParentNode();
         // "subject" is the to-be-moved node
         $subject = $this->subject;
-        if ($this->canApply() && $parentNode && $subject) {
+        if ($this->canApply() && $parentNode) {
             $otherParent = $this->contentRepositoryRegistry->subgraphForNode($subject)
                 ->findParentNode($subject->aggregateId);
 

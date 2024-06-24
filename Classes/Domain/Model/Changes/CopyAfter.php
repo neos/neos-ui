@@ -30,9 +30,6 @@ class CopyAfter extends AbstractStructuralChange
      */
     public function canApply(): bool
     {
-        if (is_null($this->subject)) {
-            return false;
-        }
         $siblingNode = $this->getSiblingNode();
         if (is_null($siblingNode)) {
             return false;
@@ -57,7 +54,7 @@ class CopyAfter extends AbstractStructuralChange
             : null;
         $subject = $this->subject;
 
-        if ($this->canApply() && $subject && !is_null($previousSibling) && !is_null($parentNodeOfPreviousSibling)) {
+        if ($this->canApply() && !is_null($previousSibling) && !is_null($parentNodeOfPreviousSibling)) {
             $succeedingSibling = null;
             try {
                 $succeedingSibling = $this->findChildNodes($parentNodeOfPreviousSibling)->next($previousSibling);

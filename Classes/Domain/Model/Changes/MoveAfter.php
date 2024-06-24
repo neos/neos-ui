@@ -30,9 +30,6 @@ class MoveAfter extends AbstractStructuralChange
      */
     public function canApply(): bool
     {
-        if (is_null($this->subject)) {
-            return false;
-        }
         $sibling = $this->getSiblingNode();
         if (is_null($sibling)) {
             return false;
@@ -58,9 +55,8 @@ class MoveAfter extends AbstractStructuralChange
         $parentNodeOfPreviousSibling = $precedingSibling ? $this->findParentNode($precedingSibling) : null;
         // "subject" is the to-be-moved node
         $subject = $this->subject;
-        $parentNode = $this->subject ? $this->findParentNode($this->subject) : null;
+        $parentNode = $this->findParentNode($this->subject);
         if ($this->canApply()
-            && !is_null($subject)
             && !is_null($precedingSibling)
             && !is_null($parentNodeOfPreviousSibling)
             && !is_null($parentNode)

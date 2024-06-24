@@ -548,7 +548,19 @@
       </trans-unit>
       <trans-unit id="copyNodeTypeNameToClipboard" xml:space="preserve">
         <source>Copy node type to clipboard</source>
-        <target state="needs-translation">Copiar tipo de nodo al portapapeles</target>
+        <target state="translated">Copiar el tipo de nodo al portapapeles</target>
+      </trans-unit>
+      <trans-unit id="collapseAll" xml:space="preserve">
+        <source>Collapse All</source>
+        <target state="translated">Contraer todo</target>
+      </trans-unit>
+      <trans-unit id="NodeNotPublishedMissingParentNode" xml:space="preserve">
+        <source>Node could not be published, probably because of a missing parentNode. Please check that the parentNode has been published.</source>
+        <target state="translated">No se pudo publicar el nodo, probablemente debido a que falta un nodo principal. Verifique que parentNode haya sido publicado.</target>
+      </trans-unit>
+      <trans-unit id="NodeNotPublishedParentNodeNotInCurrentDimension" xml:space="preserve">
+        <source>Node could not be published, probably because the parentNode does not exist in the current dimension. Please check that the parentNode has been published.</source>
+        <target state="translated">No se pudo publicar el nodo, probablemente porque el parentNode no existe en la dimensión actual. Verifique que parentNode haya sido publicado.</target>
       </trans-unit>
     </body>
   </file>

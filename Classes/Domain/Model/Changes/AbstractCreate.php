@@ -174,9 +174,12 @@ abstract class AbstractCreate extends AbstractStructuralChange
             $contentRepository->handle($command);
         }
 
-        /** @var Node $newlyCreatedNode */
         $newlyCreatedNode = $this->contentRepositoryRegistry->subgraphForNode($parentNode)
             ->findNodeById($nodeAggregateId);
+
+        if (!$newlyCreatedNode) {
+            throw new \RuntimeException(sprintf('Node %s was not created successfully or the graph was not up to date.', $nodeAggregateId->value));
+        }
 
         $this->finish($newlyCreatedNode);
         // NOTE: we need to run "finish" before "addNodeCreatedFeedback"

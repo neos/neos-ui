@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import {SelectBox, MultiSelectBox} from '@neos-project/react-ui-components';
 import {selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
-import {shouldDisplaySearchBox, searchOptions, processSelectBoxOptions} from './SelectBoxHelpers';
+import {shouldDisplaySearchBox, searchOptions, processSelectBoxOptions} from './selectBoxHelpers';
 import {createSelectBoxValueStringFromPossiblyStrangeNodePropertyValue} from './createSelectBoxValueStringFromPossiblyStrangeNodePropertyValue';
 import PreviewOption from '../../Library/PreviewOption';
 

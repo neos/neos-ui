@@ -1,11 +1,17 @@
-export const shouldDisplaySearchBox = (options, processedSelectBoxOptions) => options.minimumResultsForSearch >= 0 && processedSelectBoxOptions.length >= options.minimumResultsForSearch;
+import {I18nRegistry} from '@neos-project/neos-ts-interfaces';
+
+type RawSelectBoxOptions = {value: string, icon: string; disabled?: boolean; label?: string;}[]|{[key: string]: {icon: string; disabled?: boolean; label?: string;}};
+
+type SelectBoxOptions = {value: string, icon: string; disabled?: boolean; label?: string;}[];
+
+export const shouldDisplaySearchBox = (options: any, processedSelectBoxOptions: SelectBoxOptions) => options.minimumResultsForSearch >= 0 && processedSelectBoxOptions.length >= options.minimumResultsForSearch;
 
 // Currently, we're doing an extremely simple lowercase substring matching; of course this could be improved a lot!
-export const searchOptions = (searchTerm, processedSelectBoxOptions) =>
+export const searchOptions = (searchTerm: string, processedSelectBoxOptions: SelectBoxOptions) =>
     processedSelectBoxOptions.filter(option => option.label && option.label.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1);
 
-export const processSelectBoxOptions = (i18nRegistry, selectBoxOptions, currentValue) => {
-    const validValues = {};
+export const processSelectBoxOptions = (i18nRegistry: I18nRegistry, selectBoxOptions: RawSelectBoxOptions, currentValue: string): SelectBoxOptions => {
+    const validValues: Record<string, true> = {};
     const processedSelectBoxOptions = [];
     for (const [key, selectBoxOption] of Object.entries(selectBoxOptions)) {
         if (!selectBoxOption || !selectBoxOption.label) {

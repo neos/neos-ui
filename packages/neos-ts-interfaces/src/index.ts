@@ -161,9 +161,6 @@ export interface ReferencesConfiguration {
             thumbnail?: string;
         };
     };
-    properties?: {
-        [propName: string]: PropertyConfiguration | undefined;
-    };
 }
 export interface NodeType {
     name?: string;
@@ -238,7 +235,7 @@ export interface NodeType {
         [propName: string]: PropertyConfiguration | undefined;
     };
     references?: {
-        [propName: string]: ReferencesConfiguration | undefined;
+        [referenceName: string]: ReferencesConfiguration | undefined;
     };
 }
 

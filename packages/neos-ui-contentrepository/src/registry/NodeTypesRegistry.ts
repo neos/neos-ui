@@ -221,15 +221,14 @@ export default class NodeTypesRegistry extends SynchronousRegistry<NodeType> {
                         ...references.filter(p => p.ui?.inspector?.group === group.id)
                                 .map(reference => ({
                                     type: 'editor',
-                                    id: property.id,
-                                    label: property.ui?.label,
-                                    editor: property.ui?.inspector?.editor,
-                                    editorOptions: property.ui?.inspector?.editorOptions,
-                                    position: property.ui?.inspector?.position,
-                                    hidden: property.ui?.inspector?.hidden,
-                                    helpMessage: property.ui?.help?.message,
-                                    helpThumbnail: property.ui?.help?.thumbnail,
-                                    properties: property?.properties
+                                    id: reference.id,
+                                    label: reference.ui?.label,
+                                    editor: reference.ui?.inspector?.editor,
+                                    editorOptions: reference.ui?.inspector?.editorOptions,
+                                    position: reference.ui?.inspector?.position,
+                                    hidden: reference.ui?.inspector?.hidden,
+                                    helpMessage: reference.ui?.help?.message,
+                                    helpThumbnail: reference.ui?.help?.thumbnail
                                 })
                             ),
                         ...views.filter(v => v.group === group.id)

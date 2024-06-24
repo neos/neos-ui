@@ -141,6 +141,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
         $nodeInfo = $this->getBasicNodeInformation($node);
         $nodeInfo['properties'] = $this->nodePropertyConverterService->getPropertiesArray($node);
+        $nodeInfo['references'] = $this->nodePropertyConverterService->getReferencesArray($node);
         $nodeInfo['tags'] = $node->tags;
         $nodeInfo['isFullyLoaded'] = true;
 

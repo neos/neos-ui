@@ -18,7 +18,7 @@ services:
       DB_HOST: db
 
   db:
-    image: mariadb:10.4
+    image: mariadb:10.6
     environment:
       MYSQL_DATABASE: neos
       MYSQL_ROOT_PASSWORD: not_a_real_password

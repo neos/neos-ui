@@ -147,16 +147,8 @@ export interface ReferencesConfiguration {
     ui?: {
         label?: string;
         reloadIfChanged?: boolean;
-        inline?: {
-            editor?: string;
-            editorOptions?: {
-                [propName: string]: any;
-            };
-        }
-        inlineEditable?: boolean;
         inspector?: {
             hidden?: boolean;
-            defaultValue?: string;
             editor?: string;
             editorOptions?: {
                 [propName: string]: any;
@@ -168,9 +160,6 @@ export interface ReferencesConfiguration {
             message?: string;
             thumbnail?: string;
         };
-    };
-    validation?: {
-        [propName: string]: ValidatorConfiguration | undefined;
     };
     properties?: {
         [propName: string]: PropertyConfiguration | undefined;

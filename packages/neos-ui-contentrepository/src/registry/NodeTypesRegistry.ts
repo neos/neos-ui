@@ -219,7 +219,7 @@ export default class NodeTypesRegistry extends SynchronousRegistry<NodeType> {
                                 })
                             ),
                         ...references.filter(p => p.ui?.inspector?.group === group.id)
-                                .map(property => ({
+                                .map(reference => ({
                                     type: 'editor',
                                     id: property.id,
                                     label: property.ui?.label,

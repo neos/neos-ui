@@ -1,6 +1,7 @@
 import {I18nRegistry} from '@neos-project/neos-ts-interfaces';
+import {isNil} from '@neos-project/utils-helpers';
 
-type RawSelectBoxOptions = {value: string, icon?: string; disabled?: boolean; label?: string;}[]|{[key: string]: {icon?: string; disabled?: boolean; label?: string;}};
+type RawSelectBoxOptions = {value: string, icon?: string; disabled?: boolean; label: string;}[]|{[key: string]: {icon?: string; disabled?: boolean; label: string;}};
 
 type SelectBoxOptions = {value: string, icon?: string; disabled?: boolean; label: string;}[];
 
@@ -28,8 +29,7 @@ export const processSelectBoxOptions = (i18nRegistry: I18nRegistry, selectBoxOpt
         processedSelectBoxOptions.push(processedSelectBoxOption);
     }
 
-    // eslint-disable-next-line eqeqeq,no-eq-null
-    for (const singleValue of Array.isArray(currentValue) ? currentValue : (currentValue == null ? [] : [currentValue])) {
+    for (const singleValue of Array.isArray(currentValue) ? currentValue : (isNil(currentValue) ? [] : [currentValue])) {
         if (singleValue in validValues) {
             continue;
         }

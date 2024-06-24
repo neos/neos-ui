@@ -9,14 +9,14 @@ describe('processSelectBoxOptions', () => {
     it('transforms an associative array with labels to list of objects', () => {
         const processOptions = processSelectBoxOptions(fakeI18NRegistry, {
             'key1': {label: 'Key 1'},
-            'key2': {label: 'Key 2'}
+            'key2': {label: 'Key 2', icon: 'foo', disabled: true}
         }, null);
 
-        expect(processOptions).toEqual([{value: 'key1', label: 'Key 1'}, {value: 'key2', label: 'Key 2'}]);
+        expect(processOptions).toEqual([{value: 'key1', label: 'Key 1'}, {value: 'key2', label: 'Key 2', icon: 'foo', disabled: true}]);
     });
 
     it('keeps valid shape of list of objects intact', () => {
-        const options = [{value: 'key1', label: 'Key 1'}, {value: 'key2', label: 'Key 2'}];
+        const options = [{value: 'key1', label: 'Key 1'}, {value: 'key2', label: 'Key 2', icon: 'foo', disabled: true}];
         const processOptions = processSelectBoxOptions(fakeI18NRegistry, options, null);
 
         expect(processOptions).toEqual(options);
@@ -30,6 +30,47 @@ describe('processSelectBoxOptions', () => {
         }, null);
 
         expect(processOptions).toEqual([{value: 'key1', label: 'Key 1'}, {value: 'key2-overrule', label: 'Key 2'}]);
+    });
+
+    it('uses numeric string array key for list of objects', () => {
+        const processOptions = processSelectBoxOptions(fakeI18NRegistry, [
+            {value: 'key1', label: 'Key 1'},
+            {label: 'Key 2'}
+        ] as any, null);
+
+        expect(processOptions).toEqual([{value: 'key1', label: 'Key 1'}, {value: '1', label: 'Key 2'}]);
+    });
+
+    it('omits entries that are invalid and empty', () => {
+        let processOptions = processSelectBoxOptions(fakeI18NRegistry, {
+            'key1': {label: 'Key 1'},
+            // @ts-expect-error we declare the typescript types to what we want, but cant influence user input
+            'key2': null
+        }, null);
+
+        expect(processOptions).toEqual([{value: 'key1', label: 'Key 1'}]);
+
+        processOptions = processSelectBoxOptions(fakeI18NRegistry, {
+            'key1': {label: 'Key 1'},
+            // @ts-expect-error we declare the typescript types to what we want, but cant influence user input
+            'key2': {}
+        }, null);
+
+        expect(processOptions).toEqual([{value: 'key1', label: 'Key 1'}]);
+
+        processOptions = processSelectBoxOptions(fakeI18NRegistry, [
+            {value: 'key1', label: 'Key 1'},
+            {value: 'key2'}
+        ] as any, null);
+
+        expect(processOptions).toEqual([{value: 'key1', label: 'Key 1'}]);
+
+        processOptions = processSelectBoxOptions(fakeI18NRegistry, [
+            {value: 'key1', label: 'Key 1'},
+            {}
+        ] as any, null);
+
+        expect(processOptions).toEqual([{value: 'key1', label: 'Key 1'}]);
     });
 
     it('creates missing option for unmatched string value', () => {
@@ -72,7 +113,7 @@ describe('processSelectBoxOptions', () => {
         ]);
     });
 
-    it('ignored current value being null or undefined', () => {
+    it('ignored current value being null or undefined and doesnt create missing option', () => {
         let processOptions = processSelectBoxOptions(fakeI18NRegistry, {
             'key1': {label: 'Key 1'}
         }, null);

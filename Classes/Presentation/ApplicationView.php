@@ -16,6 +16,8 @@ namespace Neos\Neos\Ui\Presentation;
 
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Core\Bootstrap;
+use Neos\Flow\I18n\Cldr\Reader\PluralsReader;
+use Neos\Flow\I18n\Locale;
 use Neos\Flow\Mvc\View\AbstractView;
 use Neos\Flow\ResourceManagement\ResourceManager;
 use Neos\Flow\Security\Context as SecurityContext;
@@ -48,6 +50,9 @@ final class ApplicationView extends AbstractView
 
     #[Flow\Inject]
     protected Bootstrap $bootstrap;
+
+    #[Flow\Inject]
+    protected PluralsReader $pluralsReader;
 
     /**
      * This contains the supported options, their default values, descriptions and types.
@@ -113,11 +118,14 @@ final class ApplicationView extends AbstractView
             )
         );
 
+        $locale = new Locale($this->userService->getInterfaceLanguage());
         // @TODO: All endpoints should be treated this way and be isolated from
         //        initial data.
         $result .= sprintf(
-            '<link id="neos-ui-uri:/neos/xliff.json" rel="prefetch" href="%s">',
+            '<link id="neos-ui-uri:/neos/xliff.json" rel="prefetch" href="%s" data-locale="%s" data-locale-plural-rules="%s">',
             $this->variables['initialData']['configuration']['endpoints']['translations'],
+            (string) $locale,
+            implode(',', $this->pluralsReader->getPluralForms($locale)),
         );
         $result .= sprintf(
             '<script id="initialData" type="application/json">%s</script>',

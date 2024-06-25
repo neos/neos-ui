@@ -10,7 +10,7 @@ import fetchWithErrorHandling from '@neos-project/neos-ui-backend-connector/src/
 import {SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
 import backend from '@neos-project/neos-ui-backend-connector';
 import {handleActions} from '@neos-project/utils-redux';
-import {registerTranslations} from '@neos-project/neos-ui-i18n';
+import {registerLocale, registerTranslations} from '@neos-project/neos-ui-i18n';
 
 import {
     appContainer,
@@ -168,9 +168,11 @@ async function loadNodeTypesSchema() {
 
 async function loadTranslations() {
     const {getJsonResource} = backend.get().endpoints;
-    const endpoint = document.getElementById('neos-ui-uri:/neos/xliff.json').getAttribute('href');
+    const link = document.getElementById('neos-ui-uri:/neos/xliff.json');
+    const endpoint = link.getAttribute('href');
     const translations = await getJsonResource(endpoint);
 
+    registerLocale(link.dataset.locale, link.dataset.localePluralRules);
     registerTranslations(translations);
 }
 

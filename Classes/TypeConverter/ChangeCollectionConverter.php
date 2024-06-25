@@ -134,6 +134,7 @@ class ChangeCollectionConverter
 
         $subjectContextPath = $changeData['subject'];
         $subject = $this->nodeService->findNodeBySerializedNodeAddress($subjectContextPath, $contentRepositoryId);
+        // we guard that `setSubject` gets a Node!
         if (is_null($subject)) {
             throw new \RuntimeException('Could not find node for subject "' . $subjectContextPath . '"', 1645657340);
         }

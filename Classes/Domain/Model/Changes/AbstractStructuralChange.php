@@ -102,7 +102,7 @@ abstract class AbstractStructuralChange extends AbstractChange
      */
     public function getSiblingNode(): ?Node
     {
-        if ($this->siblingDomAddress === null || !$this->getSubject()) {
+        if ($this->siblingDomAddress === null) {
             return null;
         }
 
@@ -173,14 +173,14 @@ abstract class AbstractStructuralChange extends AbstractChange
         }
     }
 
-    protected function findChildNodes(Node $node): Nodes
+    final protected function findChildNodes(Node $node): Nodes
     {
         // TODO REMOVE
         return $this->contentRepositoryRegistry->subgraphForNode($node)
             ->findChildNodes($node->aggregateId, FindChildNodesFilter::create());
     }
 
-    protected function isNodeTypeAllowedAsChildNode(Node $parentNode, NodeTypeName $nodeTypeNameToCheck): bool
+    final protected function isNodeTypeAllowedAsChildNode(Node $parentNode, NodeTypeName $nodeTypeNameToCheck): bool
     {
         $nodeTypeManager = $this->contentRepositoryRegistry->get($parentNode->contentRepositoryId)->getNodeTypeManager();
 
@@ -196,7 +196,7 @@ abstract class AbstractStructuralChange extends AbstractChange
             }
             return $parentNodeType->allowsChildNodeType($nodeTypeToCheck);
         }
-
+        assert($parentNode->name !== null); // were tethered
         $subgraph = $this->contentRepositoryRegistry->subgraphForNode($parentNode);
         $grandParentNode = $subgraph->findParentNode($parentNode->aggregateId);
 

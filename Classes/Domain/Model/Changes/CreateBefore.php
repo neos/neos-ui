@@ -32,13 +32,10 @@ class CreateBefore extends AbstractCreate
      */
     public function canApply(): bool
     {
-        if (is_null($this->subject)) {
-            return false;
-        }
         $parent = $this->findParentNode($this->subject);
         $nodeTypeName = $this->getNodeTypeName();
 
-        return $parent && $this->isNodeTypeAllowedAsChildNode($parent, $nodeTypeName);
+        return $parent && $nodeTypeName && $this->isNodeTypeAllowedAsChildNode($parent, $nodeTypeName);
     }
 
     /**
@@ -46,9 +43,9 @@ class CreateBefore extends AbstractCreate
      */
     public function apply(): void
     {
-        $parent = $this->subject ? $this->findParentNode($this->subject) : null;
+        $parent = $this->findParentNode($this->subject);
         $subject = $this->subject;
-        if ($this->canApply() && !is_null($subject) && !is_null($parent)) {
+        if ($this->canApply() && !is_null($parent)) {
             $this->createNode($parent, $subject->aggregateId);
             $this->updateWorkspaceInfo();
         }

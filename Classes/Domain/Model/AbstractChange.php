@@ -28,7 +28,7 @@ use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
  */
 abstract class AbstractChange implements ChangeInterface
 {
-    protected ?Node $subject = null;
+    protected Node $subject;
 
     #[Flow\Inject]
     protected ContentRepositoryRegistry $contentRepositoryRegistry;
@@ -56,7 +56,7 @@ abstract class AbstractChange implements ChangeInterface
         $this->subject = $subject;
     }
 
-    final public function getSubject(): ?Node
+    final public function getSubject(): Node
     {
         return $this->subject;
     }
@@ -66,13 +66,11 @@ abstract class AbstractChange implements ChangeInterface
      */
     final protected function updateWorkspaceInfo(): void
     {
-        if (!is_null($this->subject)) {
-            $subgraph = $this->contentRepositoryRegistry->subgraphForNode($this->subject);
-            $documentNode = $subgraph->findClosestNode($this->subject->aggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_DOCUMENT));
-            if (!is_null($documentNode)) {
-                $updateWorkspaceInfo = new UpdateWorkspaceInfo($documentNode->contentRepositoryId, $documentNode->workspaceName);
-                $this->feedbackCollection->add($updateWorkspaceInfo);
-            }
+        $subgraph = $this->contentRepositoryRegistry->subgraphForNode($this->subject);
+        $documentNode = $subgraph->findClosestNode($this->subject->aggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_DOCUMENT));
+        if (!is_null($documentNode)) {
+            $updateWorkspaceInfo = new UpdateWorkspaceInfo($documentNode->contentRepositoryId, $documentNode->workspaceName);
+            $this->feedbackCollection->add($updateWorkspaceInfo);
         }
     }
 
@@ -108,11 +106,9 @@ abstract class AbstractChange implements ChangeInterface
      */
     final protected function addNodeCreatedFeedback(Node $subject = null): void
     {
-        $node = $subject ?: $this->getSubject();
-        if ($node) {
-            $nodeCreated = new NodeCreated();
-            $nodeCreated->setNode($node);
-            $this->feedbackCollection->add($nodeCreated);
-        }
+        $node = $subject ?? $this->getSubject();
+        $nodeCreated = new NodeCreated();
+        $nodeCreated->setNode($node);
+        $this->feedbackCollection->add($nodeCreated);
     }
 }

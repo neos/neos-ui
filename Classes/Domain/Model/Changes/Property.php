@@ -126,7 +126,7 @@ class Property extends AbstractChange
     public function canApply(): bool
     {
         $propertyName = $this->getPropertyName();
-        if (!$this->subject || !$propertyName) {
+        if (!$propertyName) {
             return false;
         }
         $nodeType = $this->getNodeType($this->subject);
@@ -147,9 +147,9 @@ class Property extends AbstractChange
     public function apply(): void
     {
         $subject = $this->subject;
-        $nodeType = $subject ? $this->getNodeType($subject) : null;
+        $nodeType = $this->getNodeType($subject);
         $propertyName = $this->getPropertyName();
-        if (is_null($subject) || is_null($nodeType) || is_null($propertyName) || $this->canApply() === false) {
+        if (is_null($nodeType) || is_null($propertyName) || $this->canApply() === false) {
             return;
         }
 

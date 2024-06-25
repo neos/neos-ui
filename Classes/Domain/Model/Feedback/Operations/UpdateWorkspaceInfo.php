@@ -26,8 +26,6 @@ use Neos\Neos\Domain\Workspace\WorkspaceProvider;
  */
 class UpdateWorkspaceInfo extends AbstractFeedback
 {
-    protected ?WorkspaceName $workspaceName = null;
-
     /**
      * @Flow\Inject
      * @var WorkspaceService
@@ -43,31 +41,17 @@ class UpdateWorkspaceInfo extends AbstractFeedback
     /**
      * UpdateWorkspaceInfo constructor.
      *
-     * @param WorkspaceName $workspaceName
      */
     public function __construct(
         private readonly ContentRepositoryId $contentRepositoryId,
-        WorkspaceName $workspaceName = null
+        private readonly WorkspaceName $workspaceName
     ) {
-        $this->workspaceName = $workspaceName;
-    }
-
-    /**
-     * Set the workspace
-     *
-     * @param Workspace $workspace
-     * @return void
-     * @deprecated
-     */
-    public function setWorkspace(Workspace $workspace)
-    {
-        $this->workspaceName = $workspace->workspaceName;
     }
 
     /**
      * Getter for WorkspaceName
      */
-    public function getWorkspaceName(): ?WorkspaceName
+    public function getWorkspaceName(): WorkspaceName
     {
         return $this->workspaceName;
     }
@@ -115,10 +99,6 @@ class UpdateWorkspaceInfo extends AbstractFeedback
      */
     public function serializePayload(ControllerContext $controllerContext)
     {
-        if (!$this->workspaceName) {
-            return null;
-        }
-
         $workspace = $this->workspaceProvider->provideForWorkspaceName(
             $this->contentRepositoryId,
             $this->workspaceName

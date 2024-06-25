@@ -30,9 +30,6 @@ class CopyAfter extends AbstractStructuralChange
      */
     public function canApply(): bool
     {
-        if (is_null($this->subject)) {
-            return false;
-        }
         $siblingNode = $this->getSiblingNode();
         if (is_null($siblingNode)) {
             return false;
@@ -57,7 +54,7 @@ class CopyAfter extends AbstractStructuralChange
             : null;
         $subject = $this->subject;
 
-        if ($this->canApply() && $subject && !is_null($previousSibling) && !is_null($parentNodeOfPreviousSibling)) {
+        if ($this->canApply() && !is_null($previousSibling) && !is_null($parentNodeOfPreviousSibling)) {
             $succeedingSibling = null;
             try {
                 $succeedingSibling = $this->findChildNodes($parentNodeOfPreviousSibling)->next($previousSibling);
@@ -81,10 +78,13 @@ class CopyAfter extends AbstractStructuralChange
 
             $contentRepository->handle($command);
 
+            $newlyCreatedNodeId = $command->nodeAggregateIdMapping->getNewNodeAggregateId($subject->aggregateId);
+            assert($newlyCreatedNodeId !== null); // cannot happen
             $newlyCreatedNode = $this->contentRepositoryRegistry->subgraphForNode($parentNodeOfPreviousSibling)
-                ->findNodeById(
-                    $command->nodeAggregateIdMapping->getNewNodeAggregateId($subject->aggregateId)
-                );
+                ->findNodeById($newlyCreatedNodeId);
+            if (!$newlyCreatedNode) {
+                throw new \RuntimeException(sprintf('Node %s was not found after copy.', $newlyCreatedNodeId->value), 1716023308);
+            }
             $this->finish($newlyCreatedNode);
             // NOTE: we need to run "finish" before "addNodeCreatedFeedback"
             // to ensure the new node already exists when the last feedback is processed

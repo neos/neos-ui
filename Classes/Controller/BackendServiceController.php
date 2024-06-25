@@ -17,6 +17,7 @@ namespace Neos\Neos\Ui\Controller;
 use Neos\ContentRepository\Core\DimensionSpace\DimensionSpacePoint;
 use Neos\ContentRepository\Core\Feature\WorkspaceModification\Exception\WorkspaceIsNotEmptyException;
 use Neos\ContentRepository\Core\Feature\WorkspaceRebase\Dto\RebaseErrorHandlingStrategy;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
 use Neos\ContentRepository\Core\SharedModel\Exception\NodeAggregateCurrentlyDoesNotExist;
 use Neos\ContentRepository\Core\SharedModel\Exception\NodeAggregateDoesCurrentlyNotCoverDimensionSpacePoint;
@@ -418,6 +419,7 @@ class BackendServiceController extends ActionController
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
 
         $currentAccount = $this->securityContext->getAccount();
+        assert($currentAccount !== null);
         $userWorkspaceName = WorkspaceNameBuilder::fromAccountIdentifier(
             $currentAccount->getAccountIdentifier()
         );
@@ -476,17 +478,19 @@ class BackendServiceController extends ActionController
         // todo ensure that https://github.com/neos/neos-ui/pull/3734 doesnt need to be refixed in Neos 9.0
         $redirectNode = $documentNode;
         while (true) {
+            // @phpstan-ignore-next-line
             $redirectNodeInBaseWorkspace = $subgraph->findNodeById($redirectNode->aggregateId);
             if ($redirectNodeInBaseWorkspace) {
                 break;
             } else {
+                // @phpstan-ignore-next-line
                 $redirectNode = $subgraph->findParentNode($redirectNode->aggregateId);
                 // get parent always returns Node
                 if (!$redirectNode) {
                     throw new \Exception(
                         sprintf(
                             'Wasn\'t able to locate any valid node in rootline of node %s in the workspace %s.',
-                            $documentNode->aggregateId->value,
+                            $documentNode?->aggregateId->value,
                             $targetWorkspaceName
                         ),
                         1458814469
@@ -494,6 +498,8 @@ class BackendServiceController extends ActionController
                 }
             }
         }
+        /** @var Node $documentNode */
+        /** @var Node $redirectNode */
 
         // If current document node exists in the base workspace, then reload, else redirect
         if ($redirectNode->equals($documentNode)) {

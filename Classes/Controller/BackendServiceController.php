@@ -176,7 +176,9 @@ class BackendServiceController extends ActionController
             $changes->apply();
 
             $success = new Info();
-            $success->setMessage(sprintf('%d change(s) successfully applied.', $count));
+            $success->setMessage(
+                $this->getLabel('changesApplied', [$count], $count)
+            );
 
             $this->feedbackCollection->add($success);
         } catch (\Exception $e) {
@@ -441,9 +443,7 @@ class BackendServiceController extends ActionController
         } catch (WorkspaceIsNotEmptyException $exception) {
             $error = new Error();
             $error->setMessage(
-                'Your personal workspace currently contains unpublished changes.'
-                . ' In order to switch to a different target workspace you need to either publish'
-                . ' or discard pending changes first.'
+                $this->getLabel('workspaceContainsUnpublishedChanges')
             );
 
             $this->feedbackCollection->add($error);
@@ -467,7 +467,9 @@ class BackendServiceController extends ActionController
         $documentNode = $subgraph->findNodeById($command->documentNode->nodeAggregateId);
 
         $success = new Success();
-        $success->setMessage(sprintf('Switched base workspace to %s.', $targetWorkspaceName));
+        $success->setMessage(
+            $this->getLabel('switchedBaseWorkspace', ['workspace' => $targetWorkspaceName])
+        );
         $this->feedbackCollection->add($success);
 
         $updateWorkspaceInfo = new UpdateWorkspaceInfo($contentRepositoryId, $userWorkspaceName);

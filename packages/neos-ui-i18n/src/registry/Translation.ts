@@ -7,57 +7,31 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
+import {Locale} from '../model';
+
 import type {Parameters} from './Parameters';
 import {substitutePlaceholders} from './substitutePlaceholders';
 
 export type TranslationDTO = string | TranslationDTOTuple;
-type TranslationDTOTuple = [string, string] | Record<number, string>;
+type TranslationDTOTuple = string[] | Record<number, string>;
 
 export class Translation {
     private constructor(
-        private readonly implementation:
-            | TranslationWithSingularFormOnly
-            | TranslationWithSingularAndPluralForm
+        private readonly locale: Locale,
+        private readonly value: string[]
     ) {
     }
 
-    public static fromDTO = (dto: TranslationDTO): Translation =>
+    public static fromDTO = (locale: Locale, dto: TranslationDTO): Translation =>
         dto instanceof Object
-            ? Translation.fromTuple(dto)
-            : Translation.fromString(dto);
+            ? Translation.fromTuple(locale, dto)
+            : Translation.fromString(locale, dto);
 
-    private static fromTuple = (tuple: TranslationDTOTuple): Translation =>
-        new Translation(
-            tuple[1] === undefined
-                ? new TranslationWithSingularFormOnly(tuple[0])
-                : new TranslationWithSingularAndPluralForm(tuple[0], tuple[1])
-        );
+    private static fromTuple = (locale: Locale, tuple: TranslationDTOTuple): Translation =>
+        new Translation(locale, Object.values(tuple));
 
-    private static fromString = (string: string): Translation =>
-        new Translation(
-            new TranslationWithSingularFormOnly(string)
-        );
-
-    public render(parameters: undefined | Parameters, quantity: number): string {
-        return this.implementation.render(parameters, quantity);
-    }
-}
-
-class TranslationWithSingularFormOnly {
-    public constructor(private readonly value: string) {}
-
-    public render(parameters: undefined | Parameters): string {
-        return parameters
-            ? substitutePlaceholders(this.value, parameters)
-            : this.value;
-    }
-}
-
-class TranslationWithSingularAndPluralForm {
-    public constructor(
-        private readonly singular: string,
-        private readonly plural: string
-    ) {}
+    private static fromString = (locale: Locale, string: string): Translation =>
+        new Translation(locale, [string]);
 
     public render(parameters: undefined | Parameters, quantity: number): string {
         return parameters
@@ -66,6 +40,8 @@ class TranslationWithSingularAndPluralForm {
     }
 
     private byQuantity(quantity: number): string {
-        return quantity <= 1 ? this.singular : this.plural;
+        const index = this.locale.getPluralFormIndexForQuantity(quantity);
+
+        return this.value[index] ?? this.value[0] ?? '';
     }
 }

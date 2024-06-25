@@ -7,6 +7,8 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
+import {Locale, registerLocale} from '../model';
+
 import {TranslationAddress} from './TranslationAddress';
 import {Translation} from './Translation';
 import {
@@ -18,8 +20,10 @@ import {
 } from './TranslationRepository';
 
 describe('TranslationRepository', () => {
-    it('can find a translation by its translationAddress', () => {
-        const translationRepository = TranslationRepository.fromDTO({
+    const locale_en_US = Locale.create('en-US', 'one,other');
+
+    it('can find a translation by its translation address', () => {
+        const translationRepository = TranslationRepository.fromDTO(locale_en_US, {
             'Neos_Neos': { // eslint-disable-line quote-props
                 'Main': { // eslint-disable-line quote-props
                     'someLabel': 'The Translation' // eslint-disable-line quote-props
@@ -32,7 +36,7 @@ describe('TranslationRepository', () => {
         expect(translationRepository.findOneByAddress(translationAddressThatCannotBeFound))
             .toBeNull();
         expect(translationRepository.findOneByAddress(translationAddressThatCanBeFound))
-            .toStrictEqual(Translation.fromDTO('The Translation'));
+            .toStrictEqual(Translation.fromDTO(locale_en_US, 'The Translation'));
     });
 
     describe('singleton', () => {
@@ -45,6 +49,7 @@ describe('TranslationRepository', () => {
         });
 
         test('getTranslationRepository returns the singleton TranslationRepository instance after translations have been registered', () => {
+            registerLocale('en-US', 'one,other');
             registerTranslations({
                 'Neos_Neos': { // eslint-disable-line quote-props
                     'Main': { // eslint-disable-line quote-props
@@ -55,7 +60,7 @@ describe('TranslationRepository', () => {
 
             expect(getTranslationRepository())
                 .toStrictEqual(
-                    TranslationRepository.fromDTO({
+                    TranslationRepository.fromDTO(locale_en_US, {
                         'Neos_Neos': { // eslint-disable-line quote-props
                             'Main': { // eslint-disable-line quote-props
                                 'someLabel': 'The Translation' // eslint-disable-line quote-props

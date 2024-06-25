@@ -7,10 +7,13 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
+import {registerLocale} from '../model';
+
 import {I18nRegistry} from './I18nRegistry';
 import {registerTranslations} from './TranslationRepository';
 
 beforeAll(() => {
+    registerLocale('en-US', 'one,other');
     registerTranslations({
         'Neos_Neos': { // eslint-disable-line quote-props
             'Main': { // eslint-disable-line quote-props
@@ -64,19 +67,19 @@ test(`
 });
 
 test(`
-    Host > Containers > I18n: Should display singular when no quantity is defined.`, () => {
+    Host > Containers > I18n: Should display plural when no quantity is defined.`, () => {
     const registry = new I18nRegistry('');
     const actual = registry.translate('Neos.Neos:Main:pluralLabel', undefined, undefined, 'Neos.Neos', 'Main');
 
-    expect(actual).toBe('Singular Translation');
+    expect(actual).toBe('Plural Translation');
 });
 
 test(`
-    Host > Containers > I18n: Should display singular when quantity is zero.`, () => {
+    Host > Containers > I18n: Should display plural when quantity is zero.`, () => {
     const registry = new I18nRegistry('');
     const actual = registry.translate('Neos.Neos:Main:pluralLabel', undefined, undefined, 'Neos.Neos', 'Main', 0);
 
-    expect(actual).toBe('Singular Translation');
+    expect(actual).toBe('Plural Translation');
 });
 
 test(`

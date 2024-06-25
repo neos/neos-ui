@@ -7,11 +7,15 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
+import {Locale} from '../model';
+
 import {Translation} from './Translation';
 
 describe('Translation', () => {
+    const locale_en_US = Locale.create('en-US', 'one,other');
+
     it('can be created from a defective DTO', () => {
-        const translation = Translation.fromDTO([
+        const translation = Translation.fromDTO(locale_en_US, [
             'This translation has only a singular form, despite its DTO being an array.'
         ]);
 
@@ -21,7 +25,7 @@ describe('Translation', () => {
 
     describe('having a singular form only', () => {
         it('renders a translation string without placeholders and quantity = 0', () => {
-            const translation = Translation.fromDTO(
+            const translation = Translation.fromDTO(locale_en_US,
                 'This translation has only a singular form and no placeholders.'
             );
 
@@ -30,7 +34,7 @@ describe('Translation', () => {
         });
 
         it('renders a translation string without placeholders and with quantity = 1', () => {
-            const translation = Translation.fromDTO(
+            const translation = Translation.fromDTO(locale_en_US,
                 'This translation has only a singular form and no placeholders.'
             );
 
@@ -39,7 +43,7 @@ describe('Translation', () => {
         });
 
         it('renders a translation string without placeholders and with quantity > 1', () => {
-            const translation = Translation.fromDTO(
+            const translation = Translation.fromDTO(locale_en_US,
                 'This translation has only a singular form and no placeholders.'
             );
 
@@ -48,7 +52,7 @@ describe('Translation', () => {
         });
 
         it('renders a translation string with placeholders and quantity = 0', () => {
-            const translation = Translation.fromDTO(
+            const translation = Translation.fromDTO(locale_en_US,
                 'This translation has only a singular form and {some} placeholder.'
             );
 
@@ -57,7 +61,7 @@ describe('Translation', () => {
         });
 
         it('renders a translation string with placeholders and with quantity = 1', () => {
-            const translation = Translation.fromDTO(
+            const translation = Translation.fromDTO(locale_en_US,
                 'This translation has only a singular form and {some} placeholder.'
             );
 
@@ -66,7 +70,7 @@ describe('Translation', () => {
         });
 
         it('renders a translation string with placeholders and with quantity > 1', () => {
-            const translation = Translation.fromDTO(
+            const translation = Translation.fromDTO(locale_en_US,
                 'This translation has only a singular form and {some} placeholder.'
             );
 
@@ -77,17 +81,17 @@ describe('Translation', () => {
 
     describe('having a singular and a plural form', () => {
         it('renders a translation string without placeholders and quantity = 0', () => {
-            const translation = Translation.fromDTO([
+            const translation = Translation.fromDTO(locale_en_US, [
                 'This translation has a singular form with no placeholders.',
                 'This translation has a plural form with no placeholders.'
             ]);
 
             expect(translation.render(undefined, 0))
-                .toBe('This translation has a singular form with no placeholders.');
+                .toBe('This translation has a plural form with no placeholders.');
         });
 
         it('renders a translation string without placeholders and with quantity = 1', () => {
-            const translation = Translation.fromDTO([
+            const translation = Translation.fromDTO(locale_en_US, [
                 'This translation has a singular form with no placeholders.',
                 'This translation has a plural form with no placeholders.'
             ]);
@@ -97,7 +101,7 @@ describe('Translation', () => {
         });
 
         it('renders a translation string without placeholders and with quantity > 1', () => {
-            const translation = Translation.fromDTO([
+            const translation = Translation.fromDTO(locale_en_US, [
                 'This translation has a singular form with no placeholders.',
                 'This translation has a plural form with no placeholders.'
             ]);
@@ -107,17 +111,17 @@ describe('Translation', () => {
         });
 
         it('renders a translation string with placeholders and quantity = 0', () => {
-            const translation = Translation.fromDTO([
+            const translation = Translation.fromDTO(locale_en_US, [
                 'This translation has a singular form with {some} placeholder.',
                 'This translation has a plural form with {some} placeholder.'
             ]);
 
             expect(translation.render({some: 'one'}, 0))
-                .toBe('This translation has a singular form with one placeholder.');
+                .toBe('This translation has a plural form with one placeholder.');
         });
 
         it('renders a translation string with placeholders and with quantity = 1', () => {
-            const translation = Translation.fromDTO([
+            const translation = Translation.fromDTO(locale_en_US, [
                 'This translation has a singular form with {some} placeholder.',
                 'This translation has a plural form with {some} placeholder.'
             ]);
@@ -127,7 +131,7 @@ describe('Translation', () => {
         });
 
         it('renders a translation string with placeholders and with quantity > 1', () => {
-            const translation = Translation.fromDTO([
+            const translation = Translation.fromDTO(locale_en_US, [
                 'This translation has a singular form with {some} placeholder.',
                 'This translation has a plural form with {some} placeholder.'
             ]);

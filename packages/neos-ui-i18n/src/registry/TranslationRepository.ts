@@ -7,6 +7,8 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
+import {Locale, getLocale} from '../model';
+
 import type {TranslationAddress} from './TranslationAddress';
 import {Translation, TranslationDTO} from './Translation';
 
@@ -15,10 +17,13 @@ export type TranslationsDTO = Record<string, Record<string, Record<string, Trans
 export class TranslationRepository {
     private _translationsByAddress: Record<string, null | Translation> = {};
 
-    private constructor(private readonly translations: TranslationsDTO) {}
+    private constructor(
+        private readonly locale: Locale,
+        private readonly translations: TranslationsDTO
+    ) {}
 
-    public static fromDTO = (translations: TranslationsDTO): TranslationRepository =>
-        new TranslationRepository(translations);
+    public static fromDTO = (locale: Locale, translations: TranslationsDTO): TranslationRepository =>
+        new TranslationRepository(locale, translations);
 
     public findOneByAddress(address: TranslationAddress): null | Translation {
         if (address.fullyQualified in this._translationsByAddress) {
@@ -31,7 +36,7 @@ export class TranslationRepository {
 
         const translationDTO = this.translations[packageKey]?.[sourceName]?.[id] ?? null;
         const translation = translationDTO
-            ? Translation.fromDTO(translationDTO)
+            ? Translation.fromDTO(this.locale, translationDTO)
             : null;
         this._translationsByAddress[address.fullyQualified] = translation;
 
@@ -53,7 +58,10 @@ export function registerTranslations(translations: TranslationsDTO): void {
             .becauseTranslationsHaveAlreadyBeenRegistered();
     }
 
-    translationRepository = TranslationRepository.fromDTO(translations);
+    translationRepository = TranslationRepository.fromDTO(
+        getLocale(),
+        translations
+    );
 }
 
 export class TranslationsCannotBeRegistered extends Error {

@@ -23,6 +23,7 @@
     position: absolute;
     left: var(--spacing-Full);
     height: var(--spacing-GoldenUnit);
+    width: 1em;
 }
 
 .wrapper {

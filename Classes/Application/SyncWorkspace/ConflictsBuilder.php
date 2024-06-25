@@ -43,6 +43,7 @@ use Neos\ContentRepository\Core\SharedModel\Exception\WorkspaceDoesNotExist;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateId;
 use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
 use Neos\Flow\Annotations as Flow;
+use Neos\Neos\Domain\NodeLabel\NodeLabelGeneratorInterface;
 use Neos\Neos\Domain\Service\NodeTypeNameFactory;
 
 /**
@@ -65,6 +66,7 @@ final class ConflictsBuilder
 
     public function __construct(
         private ContentRepository $contentRepository,
+        private NodeLabelGeneratorInterface $nodeLabelGenerator,
         private WorkspaceName $workspaceName,
         private ?DimensionSpacePoint $preferredDimensionSpacePoint,
     ) {
@@ -248,7 +250,7 @@ final class ConflictsBuilder
 
         return new IconLabel(
             icon: $nodeType?->getConfiguration('ui.icon') ?? 'questionmark',
-            label: $node->getLabel()
+            label: $this->nodeLabelGenerator->getLabel($node)
         );
     }
 

@@ -94,7 +94,7 @@ test('Check the nodetype help in create dialog', async t => {
 
     subSection('Open context help and check for Markdown rendering');
     await t
-        .click(ReactSelector('NodeTypeItem').withProps({nodeType: {label: 'Headline_Test'}}).find('button svg[data-icon="question-circle"]'))
+        .click(ReactSelector('NodeTypeItem').withProps({nodeType: {label: 'Headline_Test'}}).find('button svg[data-icon="circle-question"]'))
         .expect(ReactSelector('ReactMarkdown').find('strong').withText('test').exists).ok('Bold test from Markdown has been rendered');
 });
 

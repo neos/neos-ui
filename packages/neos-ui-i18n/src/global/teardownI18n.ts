@@ -7,4 +7,14 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-export {Locale} from './Locale';
+import {unsetGlobals} from './globals';
+
+/**
+ * Unsets the previously registered locale and translations
+ *
+ * You may use this function for cleaning up after running setupI18n in a
+ * testing scenario.
+ */
+export function teardownI18n(): void {
+    unsetGlobals();
+}

@@ -7,8 +7,8 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-import {getTranslationRepository, substitutePlaceholders} from './registry';
-import {TranslationAddress} from './registry/TranslationAddress';
+import {requireGlobals} from './global';
+import {substitutePlaceholders, TranslationAddress} from './registry';
 
 /**
  * Retrieves a the translation string that is identified by the given fully
@@ -39,7 +39,7 @@ export function translate(
     parameters: (string | number)[] | Record<string, string | number> = [],
     quantity: number = 0
 ): string {
-    const translationRepository = getTranslationRepository();
+    const {translationRepository} = requireGlobals();
     const translationAddress = TranslationAddress.fromString(fullyQualifiedTranslationAddressAsString);
     const translation = translationRepository.findOneByAddress(translationAddress);
 

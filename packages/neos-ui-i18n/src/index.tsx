@@ -1,10 +1,9 @@
 import React from 'react';
 import {Parameters, i18nRegistry} from './registry';
 
-export {registerLocale} from './model';
+export {setupI18n, teardownI18n} from './global';
 
 export type {I18nRegistry} from './registry';
-export {registerTranslations} from './registry';
 
 export {translate} from './translate';
 

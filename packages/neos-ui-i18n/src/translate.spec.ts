@@ -7,19 +7,17 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-import {registerLocale, unregisterLocale} from './model';
-import {registerTranslations, unregisterTranslations} from './registry';
+import {setupI18n, teardownI18n} from './global';
 import {translate} from './translate';
 
+/* eslint-disable max-nested-callbacks */
 describe('translate', () => {
     describe('when no translation was found', () => {
         beforeAll(() => {
-            registerLocale('en-US', 'one,other');
-            registerTranslations({});
+            setupI18n('en-US', 'one,other', {});
         });
         afterAll(() => {
-            unregisterLocale();
-            unregisterTranslations();
+            teardownI18n();
         });
 
         it('returns given fallback', () => {
@@ -70,8 +68,7 @@ describe('translate', () => {
     describe('when a translation was found', () => {
         describe('in locale "en-US"', () => {
             beforeAll(() => {
-                registerLocale('en-US', 'one,other');
-                registerTranslations({
+                setupI18n('en-US', 'one,other', {
                     'Neos_Neos_Ui': {
                         'Main': {
                             'translation_without_plural_forms':
@@ -97,8 +94,7 @@ describe('translate', () => {
                 });
             });
             afterAll(() => {
-                unregisterLocale();
-                unregisterTranslations();
+                teardownI18n();
             });
 
             it('returns translated string', () => {
@@ -170,8 +166,7 @@ describe('translate', () => {
 
         describe('in locale "ar-EG"', () => {
             beforeAll(() => {
-                registerLocale('ar-EG', 'zero,one,two,few,many');
-                registerTranslations({
+                setupI18n('ar-EG', 'zero,one,two,few,many', {
                     'Neos_Neos_Ui': {
                         'Main': {
                             'translation_without_plural_forms':
@@ -206,8 +201,7 @@ describe('translate', () => {
                 });
             });
             afterAll(() => {
-                unregisterLocale();
-                unregisterTranslations();
+                teardownI18n();
             });
 
             it('returns translated string', () => {

@@ -14,8 +14,5 @@ export type {Parameters} from './Parameters';
 
 export {substitutePlaceholders} from './substitutePlaceholders';
 
-export {
-    getTranslationRepository,
-    registerTranslations,
-    unregisterTranslations
-} from './TranslationRepository';
+export {TranslationAddress} from './TranslationAddress';
+export {TranslationRepository} from './TranslationRepository';

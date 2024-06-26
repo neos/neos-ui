@@ -83,6 +83,15 @@ export function registerLocale(identifier: string, pluralRulesAsString: string):
     locale = Locale.create(identifier, pluralRulesAsString);
 }
 
+/**
+ * Unregisters the currently globally registered locale (if there is any)
+ *
+ * @internal For testing purposes only!
+ */
+export function unregisterLocale(): void {
+    locale = null;
+}
+
 export class LocaleCannotBeRegistered extends Error {
     private constructor(message: string) {
         super(`[Locale cannot be registered]: ${message}`);

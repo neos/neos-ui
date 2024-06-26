@@ -7,4 +7,4 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-export {getLocale, Locale, registerLocale} from './Locale';
+export {getLocale, Locale, registerLocale, unregisterLocale} from './Locale';

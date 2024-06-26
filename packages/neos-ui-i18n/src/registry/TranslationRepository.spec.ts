@@ -16,7 +16,8 @@ import {
     TranslationRepositoryIsNotAvailable,
     TranslationsCannotBeRegistered,
     getTranslationRepository,
-    registerTranslations
+    registerTranslations,
+    unregisterTranslations
 } from './TranslationRepository';
 
 describe('TranslationRepository', () => {
@@ -84,6 +85,17 @@ describe('TranslationRepository', () => {
                 TranslationsCannotBeRegistered
                     .becauseTranslationsHaveAlreadyBeenRegistered()
             );
+        });
+
+        test('unregisterTranslations allows to run registerTranslations again for testing purposes', () => {
+            unregisterTranslations();
+            expect(() => registerTranslations({
+                'Neos_Neos': { // eslint-disable-line quote-props
+                    'Main': { // eslint-disable-line quote-props
+                        'someLabel': 'The Translation' // eslint-disable-line quote-props
+                    }
+                }
+            })).not.toThrow();
         });
     });
 });

@@ -64,6 +64,15 @@ export function registerTranslations(translations: TranslationsDTO): void {
     );
 }
 
+/**
+ * Unregisters the currently globally registered translations (if there are any)
+ *
+ * @internal For testing purposes only!
+ */
+export function unregisterTranslations(): void {
+    translationRepository = null;
+}
+
 export class TranslationsCannotBeRegistered extends Error {
     private constructor(message: string) {
         super(`[Translations cannot be registered]: ${message}`);

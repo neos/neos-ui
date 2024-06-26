@@ -7,18 +7,11 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-import {Locale, registerLocale} from '../model';
+import {Locale} from '../model';
 
 import {TranslationAddress} from './TranslationAddress';
 import {Translation} from './Translation';
-import {
-    TranslationRepository,
-    TranslationRepositoryIsNotAvailable,
-    TranslationsCannotBeRegistered,
-    getTranslationRepository,
-    registerTranslations,
-    unregisterTranslations
-} from './TranslationRepository';
+import {TranslationRepository} from './TranslationRepository';
 
 describe('TranslationRepository', () => {
     const locale_en_US = Locale.create('en-US', 'one,other');
@@ -38,64 +31,5 @@ describe('TranslationRepository', () => {
             .toBeNull();
         expect(translationRepository.findOneByAddress(translationAddressThatCanBeFound))
             .toStrictEqual(Translation.fromDTO(locale_en_US, 'The Translation'));
-    });
-
-    describe('singleton', () => {
-        test('getTranslationRepository throws if called before translations have been registered', () => {
-            expect(() => getTranslationRepository())
-                .toThrow(
-                    TranslationRepositoryIsNotAvailable
-                        .becauseTranslationsHaveNotBeenRegisteredYet()
-                );
-        });
-
-        test('getTranslationRepository returns the singleton TranslationRepository instance after translations have been registered', () => {
-            registerLocale('en-US', 'one,other');
-            registerTranslations({
-                'Neos_Neos': { // eslint-disable-line quote-props
-                    'Main': { // eslint-disable-line quote-props
-                        'someLabel': 'The Translation' // eslint-disable-line quote-props
-                    }
-                }
-            });
-
-            expect(getTranslationRepository())
-                .toStrictEqual(
-                    TranslationRepository.fromDTO(locale_en_US, {
-                        'Neos_Neos': { // eslint-disable-line quote-props
-                            'Main': { // eslint-disable-line quote-props
-                                'someLabel': 'The Translation' // eslint-disable-line quote-props
-                            }
-                        }
-                    })
-                );
-
-            expect(getTranslationRepository())
-                .toBe(getTranslationRepository());
-        });
-
-        test('registerTranslations throws if called more than once', () => {
-            expect(() => registerTranslations({
-                'Neos_Neos': { // eslint-disable-line quote-props
-                    'Main': { // eslint-disable-line quote-props
-                        'someLabel': 'The Translation' // eslint-disable-line quote-props
-                    }
-                }
-            })).toThrow(
-                TranslationsCannotBeRegistered
-                    .becauseTranslationsHaveAlreadyBeenRegistered()
-            );
-        });
-
-        test('unregisterTranslations allows to run registerTranslations again for testing purposes', () => {
-            unregisterTranslations();
-            expect(() => registerTranslations({
-                'Neos_Neos': { // eslint-disable-line quote-props
-                    'Main': { // eslint-disable-line quote-props
-                        'someLabel': 'The Translation' // eslint-disable-line quote-props
-                    }
-                }
-            })).not.toThrow();
-        });
     });
 });

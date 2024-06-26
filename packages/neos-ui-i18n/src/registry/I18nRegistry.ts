@@ -11,11 +11,12 @@ import {SynchronousRegistry} from '@neos-project/neos-ui-extensibility/src/regis
 
 import logger from '@neos-project/utils-logger';
 
+import {requireGlobals} from '../global';
+
 import {getTranslationAddress} from './getTranslationAddress';
 import type {Translation} from './Translation';
 import type {TranslationAddress} from './TranslationAddress';
 import type {Parameters} from './Parameters';
-import {getTranslationRepository} from './TranslationRepository';
 
 const errorCache: Record<string, boolean> = {};
 
@@ -187,13 +188,15 @@ export class I18nRegistry extends SynchronousRegistry<unknown> {
 
     private logTranslationNotFound(address: TranslationAddress, fallback: string) {
         if (!errorCache[address.fullyQualified]) {
-            logger.error(`No translation found for id "${address.fullyQualified}" in:`, getTranslationRepository(), `Using ${fallback} instead.`);
+            const {translationRepository} = requireGlobals();
+            logger.error(`No translation found for id "${address.fullyQualified}" in:`, translationRepository, `Using ${fallback} instead.`);
             errorCache[address.fullyQualified] = true;
         }
     }
 
     private getTranslation(address: TranslationAddress): null | Translation {
-        return getTranslationRepository().findOneByAddress(address) ?? null;
+        const {translationRepository} = requireGlobals();
+        return translationRepository.findOneByAddress(address) ?? null;
     }
 }
 

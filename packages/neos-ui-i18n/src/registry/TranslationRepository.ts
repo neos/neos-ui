@@ -7,7 +7,7 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-import {Locale, getLocale} from '../model';
+import {Locale} from '../model';
 
 import type {TranslationAddress} from './TranslationAddress';
 import {Translation, TranslationDTO} from './Translation';
@@ -42,65 +42,4 @@ export class TranslationRepository {
 
         return translation;
     }
-}
-
-let translationRepository: null | TranslationRepository = null;
-
-/**
- * Registers the given translations globally for use throughout the application
- *
- * @internal For use in the Neos UI application bootstrapping process only!
- * @param {TranslationsDTO} translations
- */
-export function registerTranslations(translations: TranslationsDTO): void {
-    if (translationRepository !== null) {
-        throw TranslationsCannotBeRegistered
-            .becauseTranslationsHaveAlreadyBeenRegistered();
-    }
-
-    translationRepository = TranslationRepository.fromDTO(
-        getLocale(),
-        translations
-    );
-}
-
-/**
- * Unregisters the currently globally registered translations (if there are any)
- *
- * @internal For testing purposes only!
- */
-export function unregisterTranslations(): void {
-    translationRepository = null;
-}
-
-export class TranslationsCannotBeRegistered extends Error {
-    private constructor(message: string) {
-        super(`[Translations cannot be registered]: ${message}`);
-    }
-
-    public static becauseTranslationsHaveAlreadyBeenRegistered = () =>
-        new TranslationsCannotBeRegistered(
-            'Translations can only be registered once, and have already been registered.'
-        );
-}
-
-export function getTranslationRepository(): TranslationRepository {
-    if (translationRepository === null) {
-        throw TranslationRepositoryIsNotAvailable
-            .becauseTranslationsHaveNotBeenRegisteredYet();
-    }
-
-    return translationRepository;
-}
-
-export class TranslationRepositoryIsNotAvailable extends Error {
-    private constructor(message: string) {
-        super(`[TranslationRepository is not available]: ${message}`);
-    }
-
-    public static becauseTranslationsHaveNotBeenRegisteredYet = () =>
-        new TranslationRepositoryIsNotAvailable(
-            'Translations have not been registered yet. Make sure to call'
-             + ' `registerTranslations` during the application bootstrapping process.'
-        );
 }

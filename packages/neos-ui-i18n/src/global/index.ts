@@ -7,4 +7,6 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-export {Locale} from './Locale';
+export {requireGlobals} from './globals';
+export {setupI18n} from './setupI18n';
+export {teardownI18n} from './teardownI18n';

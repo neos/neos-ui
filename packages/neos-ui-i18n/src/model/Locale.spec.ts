@@ -7,15 +7,7 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-import {
-    getLocale,
-    InvalidLocale,
-    Locale,
-    LocaleIsNotAvailable,
-    LocaleCannotBeRegistered,
-    registerLocale,
-    unregisterLocale
-} from './Locale';
+import {InvalidLocale, Locale} from './Locale';
 import {InvalidPluralRules} from './PluralRules';
 
 describe('Locale', () => {
@@ -53,35 +45,6 @@ describe('Locale', () => {
                 .toBe(3);
             expect(locale_ar_EG.getPluralFormIndexForQuantity(18))
                 .toBe(4);
-        });
-    });
-
-    describe('singleton', () => {
-        test('getLocale throws if called before locale has been registered', () => {
-            expect(() => getLocale()).toThrow(
-                LocaleIsNotAvailable.becauseLocaleHasNotBeenRegisteredYet()
-            );
-        });
-
-        test('getLocale returns the singleton Locale instance after locale has been registered', () => {
-            registerLocale('en-US', 'one,other');
-
-            expect(getLocale()).toStrictEqual(
-                Locale.create('en-US', 'one,other')
-            );
-
-            expect(getLocale()).toBe(getLocale());
-        });
-
-        test('registerLocale throws if called more than once', () => {
-            expect(() => registerLocale('en-US', 'one,other')).toThrow(
-                LocaleCannotBeRegistered.becauseLocaleHasAlreadyBeenRegistered()
-            );
-        });
-
-        test('unregisterLocale allows to run registerLocale again for testing purposes', () => {
-            unregisterLocale();
-            expect(() => registerLocale('en-US', 'one,other')).not.toThrow();
         });
     });
 });

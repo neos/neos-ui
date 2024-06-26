@@ -7,14 +7,12 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-import {registerLocale} from '../model';
+import {setupI18n} from '../global';
 
 import {I18nRegistry} from './I18nRegistry';
-import {registerTranslations} from './TranslationRepository';
 
 beforeAll(() => {
-    registerLocale('en-US', 'one,other');
-    registerTranslations({
+    setupI18n('en-US', 'one,other', {
         'Neos_Neos': { // eslint-disable-line quote-props
             'Main': { // eslint-disable-line quote-props
                 'someLabel': 'The Translation', // eslint-disable-line quote-props

@@ -10,8 +10,8 @@ import fetchWithErrorHandling from '@neos-project/neos-ui-backend-connector/src/
 import {SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
 import backend from '@neos-project/neos-ui-backend-connector';
 import {handleActions} from '@neos-project/utils-redux';
+import {setupI18n} from '@neos-project/neos-ui-i18n';
 import {showFlashMessage} from '@neos-project/neos-ui-error';
-import {registerLocale, registerTranslations} from '@neos-project/neos-ui-i18n';
 
 import {
     appContainer,
@@ -177,8 +177,7 @@ async function loadTranslations() {
     const endpoint = link.getAttribute('href');
     const translations = await getJsonResource(endpoint);
 
-    registerLocale(link.dataset.locale, link.dataset.localePluralRules);
-    registerTranslations(translations);
+    setupI18n(link.dataset.locale, link.dataset.localePluralRules, translations);
 }
 
 async function loadImpersonateStatus() {

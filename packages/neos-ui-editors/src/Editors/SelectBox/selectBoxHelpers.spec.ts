@@ -81,14 +81,6 @@ describe('processSelectBoxOptions', () => {
         expect(processOptions).toEqual([{value: 'key1', label: 'Key 1'}, {value: 'oldValue', label: 'Neos.Neos.Ui:Main:invalidValue: "oldValue"', icon: 'exclamation-triangle'}]);
     });
 
-    it('creates missing option for unmatched empty string value', () => {
-        const processOptions = processSelectBoxOptions(fakeI18NRegistry, {
-            'key1': {label: 'Key 1'}
-        }, '');
-
-        expect(processOptions).toEqual([{value: 'key1', label: 'Key 1'}, {value: '', label: 'Neos.Neos.Ui:Main:invalidValue: ""', icon: 'exclamation-triangle'}]);
-    });
-
     it('creates missing options for unmatched additional array value', () => {
         const processOptions = processSelectBoxOptions(fakeI18NRegistry, {
             'key1': {label: 'Key 1'}
@@ -113,7 +105,7 @@ describe('processSelectBoxOptions', () => {
         ]);
     });
 
-    it('ignored current value being null or undefined and doesnt create missing option', () => {
+    it('ignored current value being empty and dont create missing option', () => {
         let processOptions = processSelectBoxOptions(fakeI18NRegistry, {
             'key1': {label: 'Key 1'}
         }, null);
@@ -123,6 +115,12 @@ describe('processSelectBoxOptions', () => {
         processOptions = processSelectBoxOptions(fakeI18NRegistry, {
             'key1': {label: 'Key 1'}
         }, undefined);
+
+        expect(processOptions).toEqual([{value: 'key1', label: 'Key 1'}]);
+
+        processOptions = processSelectBoxOptions(fakeI18NRegistry, {
+            'key1': {label: 'Key 1'}
+        }, '');
 
         expect(processOptions).toEqual([{value: 'key1', label: 'Key 1'}]);
     });

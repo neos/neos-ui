@@ -29,7 +29,12 @@ export const processSelectBoxOptions = (i18nRegistry: I18nRegistry, selectBoxOpt
         processedSelectBoxOptions.push(processedSelectBoxOption);
     }
 
-    for (const singleValue of Array.isArray(currentValue) ? currentValue : (isNil(currentValue) ? [] : [currentValue])) {
+    const valueIsEmpty = isNil(currentValue) || currentValue === '';
+    if (valueIsEmpty) {
+        return processedSelectBoxOptions;
+    }
+
+    for (const singleValue of Array.isArray(currentValue) ? currentValue : [currentValue]) {
         if (singleValue in validValues) {
             continue;
         }

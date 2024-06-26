@@ -12,4 +12,10 @@ export {i18nRegistry} from './I18nRegistry';
 
 export type {Parameters} from './Parameters';
 
-export {registerTranslations} from './TranslationRepository';
+export {substitutePlaceholders} from './substitutePlaceholders';
+
+export {
+    getTranslationRepository,
+    registerTranslations,
+    unregisterTranslations
+} from './TranslationRepository';

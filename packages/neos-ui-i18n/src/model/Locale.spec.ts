@@ -13,7 +13,8 @@ import {
     Locale,
     LocaleIsNotAvailable,
     LocaleCannotBeRegistered,
-    registerLocale
+    registerLocale,
+    unregisterLocale
 } from './Locale';
 import {InvalidPluralRules} from './PluralRules';
 
@@ -76,6 +77,11 @@ describe('Locale', () => {
             expect(() => registerLocale('en-US', 'one,other')).toThrow(
                 LocaleCannotBeRegistered.becauseLocaleHasAlreadyBeenRegistered()
             );
+        });
+
+        test('unregisterLocale allows to run registerLocale again for testing purposes', () => {
+            unregisterLocale();
+            expect(() => registerLocale('en-US', 'one,other')).not.toThrow();
         });
     });
 });

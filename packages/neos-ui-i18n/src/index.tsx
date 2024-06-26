@@ -6,6 +6,8 @@ export {registerLocale} from './model';
 export type {I18nRegistry} from './registry';
 export {registerTranslations} from './registry';
 
+export {translate} from './translate';
+
 interface I18nProps {
     // Fallback key which gets rendered once the i18n service doesn't return a translation.
     fallback?: string;

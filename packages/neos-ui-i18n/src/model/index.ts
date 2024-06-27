@@ -9,3 +9,4 @@
  */
 export {Locale} from './Locale';
 export {Translation, TranslationDTO} from './Translation';
+export {TranslationAddress} from './TranslationAddress';

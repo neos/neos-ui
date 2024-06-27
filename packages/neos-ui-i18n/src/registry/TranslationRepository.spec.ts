@@ -7,9 +7,8 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-import {Locale, Translation} from '../model';
+import {Locale, Translation, TranslationAddress} from '../model';
 
-import {TranslationAddress} from './TranslationAddress';
 import {TranslationRepository} from './TranslationRepository';
 
 describe('TranslationRepository', () => {

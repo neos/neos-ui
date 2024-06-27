@@ -7,4 +7,4 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-export type Parameters = unknown[] | Record<string, unknown>;
+export type LegacyParameters = unknown[] | Record<string, unknown>;

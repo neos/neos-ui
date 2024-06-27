@@ -8,3 +8,4 @@
  * source code.
  */
 export {Locale} from './Locale';
+export {Translation, TranslationDTO} from './Translation';

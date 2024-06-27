@@ -7,8 +7,7 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-import {Locale} from '../model';
-import {TranslationRepository, TranslationsDTO} from '../registry/TranslationRepository';
+import {Locale, TranslationRepository, type TranslationsDTO} from '../model';
 
 import {setGlobals} from './globals';
 

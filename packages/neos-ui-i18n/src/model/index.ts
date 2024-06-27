@@ -10,3 +10,7 @@
 export {Locale} from './Locale';
 export {Translation, TranslationDTO} from './Translation';
 export {TranslationAddress} from './TranslationAddress';
+export {
+    TranslationRepository,
+    type TranslationsDTO
+} from './TranslationRepository';

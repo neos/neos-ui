@@ -12,9 +12,9 @@ import {SynchronousRegistry} from '@neos-project/neos-ui-extensibility/src/regis
 import logger from '@neos-project/utils-logger';
 
 import {requireGlobals} from '../global';
+import type {Translation} from '../model';
 
 import {getTranslationAddress} from './getTranslationAddress';
-import type {Translation} from './Translation';
 import type {TranslationAddress} from './TranslationAddress';
 import type {Parameters} from './Parameters';
 

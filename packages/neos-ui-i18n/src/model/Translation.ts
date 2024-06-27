@@ -7,10 +7,11 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-import {Locale} from '../model';
 
-import type {Parameters} from './Parameters';
-import {substitutePlaceholders} from './substitutePlaceholders';
+import type {Parameters} from '../registry/Parameters';
+import {substitutePlaceholders} from '../registry/substitutePlaceholders';
+
+import {Locale} from './Locale';
 
 export type TranslationDTO = string | TranslationDTOTuple;
 type TranslationDTOTuple = string[] | Record<number, string>;

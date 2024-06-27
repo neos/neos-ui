@@ -7,7 +7,7 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-import {TranslationAddress} from './TranslationAddress';
+import {TranslationAddress} from '../model';
 
 export function getTranslationAddress(
     fullyQualifiedTransUnitId: string

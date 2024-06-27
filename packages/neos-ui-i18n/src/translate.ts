@@ -8,7 +8,8 @@
  * source code.
  */
 import {requireGlobals} from './global';
-import {substitutePlaceholders, TranslationAddress} from './registry';
+import {TranslationAddress} from './model';
+import {substitutePlaceholders} from './registry';
 
 /**
  * Retrieves a the translation string that is identified by the given fully

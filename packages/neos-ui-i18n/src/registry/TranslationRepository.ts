@@ -7,9 +7,12 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-import {Locale, Translation, TranslationDTO} from '../model';
-
-import type {TranslationAddress} from './TranslationAddress';
+import {
+    Locale,
+    Translation,
+    TranslationDTO,
+    type TranslationAddress
+} from '../model';
 
 export type TranslationsDTO = Record<string, Record<string, Record<string, TranslationDTO>>>;
 

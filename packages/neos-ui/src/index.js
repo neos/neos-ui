@@ -10,7 +10,7 @@ import fetchWithErrorHandling from '@neos-project/neos-ui-backend-connector/src/
 import {SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
 import backend from '@neos-project/neos-ui-backend-connector';
 import {handleActions} from '@neos-project/utils-redux';
-import {setupI18n} from '@neos-project/neos-ui-i18n';
+import {initializeI18n} from '@neos-project/neos-ui-i18n';
 
 import {
     appContainer,
@@ -64,7 +64,7 @@ async function main() {
 
     await Promise.all([
         loadNodeTypesSchema(),
-        loadTranslations(),
+        initializeI18n(),
         loadImpersonateStatus()
     ]);
 
@@ -164,15 +164,6 @@ async function loadNodeTypesSchema() {
     const {groups, roles} = nodeTypes;
     nodeTypesRegistry.setGroups(groups);
     nodeTypesRegistry.setRoles(roles);
-}
-
-async function loadTranslations() {
-    const {getJsonResource} = backend.get().endpoints;
-    const link = document.getElementById('neos-ui-uri:/neos/xliff.json');
-    const endpoint = link.getAttribute('href');
-    const translations = await getJsonResource(endpoint);
-
-    setupI18n(link.dataset.locale, link.dataset.localePluralRules, translations);
 }
 
 async function loadImpersonateStatus() {

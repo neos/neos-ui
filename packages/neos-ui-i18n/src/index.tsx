@@ -1,7 +1,7 @@
 import React from 'react';
 import {Parameters, i18nRegistry} from './registry';
 
-export {setupI18n, teardownI18n} from './global';
+export {initializeI18n, setupI18n, teardownI18n} from './global';
 
 export type {I18nRegistry} from './registry';
 

@@ -182,7 +182,7 @@ export class I18nRegistry extends SynchronousRegistry<unknown> {
             return fallback;
         }
 
-        return translation.render(parameters, quantity);
+        return translation.render(parameters as any, quantity);
     }
 
     private logTranslationNotFound(address: TranslationAddress, fallback: string) {

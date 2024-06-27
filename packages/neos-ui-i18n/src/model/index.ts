@@ -8,6 +8,7 @@
  * source code.
  */
 export {Locale} from './Locale';
+export type {Parameters} from './Parameters';
 export {Translation, TranslationDTO} from './Translation';
 export {TranslationAddress} from './TranslationAddress';
 export {

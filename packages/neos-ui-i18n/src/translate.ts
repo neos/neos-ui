@@ -8,7 +8,7 @@
  * source code.
  */
 import {requireGlobals} from './global';
-import {TranslationAddress} from './model';
+import {TranslationAddress, type Parameters} from './model';
 import {substitutePlaceholders} from './registry';
 
 /**
@@ -31,13 +31,13 @@ import {substitutePlaceholders} from './registry';
  * @api
  * @param {string} fullyQualifiedTranslationAddressAsString The translation address
  * @param {string | [string, string]} fallback The string that shall be displayed, when no translation string could be found. If a tuple of two values is given, the first value will be treated as the singular, the second value as the plural form.
- * @param {(string | number)[] | Record<string, string | number>} [parameters] The values to replace substitution placeholders with in the translation string
+ * @param {Parameters} [parameters] The values to replace substitution placeholders with in the translation string
  * @param {quantity} [quantity] The key of the package in which to look for the translation file
  */
 export function translate(
     fullyQualifiedTranslationAddressAsString: string,
     fallback: string | [string, string],
-    parameters: (string | number)[] | Record<string, string | number> = [],
+    parameters: Parameters = [],
     quantity: number = 0
 ): string {
     const {translationRepository} = requireGlobals();
@@ -54,7 +54,7 @@ export function translate(
 function renderFallback(
     fallback: string | [string, string],
     quantity: number,
-    parameters: (string | number)[] | Record<string, string | number>
+    parameters: Parameters
 ) {
     const fallbackHasPluralForms = Array.isArray(fallback);
     let result: string;

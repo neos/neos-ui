@@ -8,10 +8,10 @@
  * source code.
  */
 
-import type {LegacyParameters} from '../registry/Parameters';
 import {substitutePlaceholders} from '../registry/substitutePlaceholders';
 
 import {Locale} from './Locale';
+import type {Parameters} from './Parameters';
 
 export type TranslationDTO = string | TranslationDTOTuple;
 type TranslationDTOTuple = string[] | Record<number, string>;
@@ -34,7 +34,7 @@ export class Translation {
     private static fromString = (locale: Locale, string: string): Translation =>
         new Translation(locale, [string]);
 
-    public render(parameters: undefined | LegacyParameters, quantity: number): string {
+    public render(parameters: undefined | Parameters, quantity: number): string {
         return parameters
             ? substitutePlaceholders(this.byQuantity(quantity), parameters)
             : this.byQuantity(quantity);

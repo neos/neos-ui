@@ -7,8 +7,7 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-import {Locale} from '../model';
-import {TranslationRepository} from '../registry';
+import {Locale, TranslationRepository} from '../model';
 
 export const globals = {
     current: null as null | {

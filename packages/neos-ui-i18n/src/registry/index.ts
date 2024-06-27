@@ -13,5 +13,3 @@ export {i18nRegistry} from './I18nRegistry';
 export type {Parameters} from './Parameters';
 
 export {substitutePlaceholders} from './substitutePlaceholders';
-
-export {TranslationRepository} from './TranslationRepository';

@@ -7,8 +7,7 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-import {Locale} from '../model';
-import {TranslationRepository} from '../registry/TranslationRepository';
+import {Locale, TranslationRepository} from '../model';
 import {requireGlobals, unsetGlobals} from './globals';
 import {setupI18n} from './setupI18n';
 

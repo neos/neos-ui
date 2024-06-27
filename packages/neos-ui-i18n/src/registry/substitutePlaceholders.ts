@@ -9,13 +9,13 @@
  */
 import logger from '@neos-project/utils-logger';
 
-import {Parameters} from './Parameters';
+import {LegacyParameters} from './LegacyParameters';
 
 /**
  * This code is taken from the Ember version with minor adjustments. Possibly refactor it later
  * as its style is not superb.
  */
-export const substitutePlaceholders = function (textWithPlaceholders: string, parameters: Parameters) {
+export const substitutePlaceholders = function (textWithPlaceholders: string, parameters: LegacyParameters) {
     const result = [];
     let startOfPlaceholder;
     let offset = 0;

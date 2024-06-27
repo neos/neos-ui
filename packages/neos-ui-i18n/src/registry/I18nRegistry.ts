@@ -15,7 +15,7 @@ import {requireGlobals} from '../global';
 import type {Translation, TranslationAddress} from '../model';
 
 import {getTranslationAddress} from './getTranslationAddress';
-import type {Parameters} from './Parameters';
+import type {LegacyParameters} from './LegacyParameters';
 
 const errorCache: Record<string, boolean> = {};
 
@@ -69,12 +69,12 @@ export class I18nRegistry extends SynchronousRegistry<unknown> {
      *
      * @param {string} transUnitIdOrFullyQualifiedTranslationAddress The fully qualified translation address, that follows the format "{Package.Key:SourceName:trans.unit.id}"
      * @param {undefined|string} fallback The string that shall be displayed, when no translation string could be found.
-     * @param {Parameters} parameters The values to replace substitution placeholders with in the translation string
+     * @param {LegacyParameters} parameters The values to replace substitution placeholders with in the translation string
      */
     translate(
         transUnitIdOrFullyQualifiedTranslationAddress: string,
         fallback: undefined | string,
-        parameters: Parameters
+        parameters: LegacyParameters
     ): string;
 
     /**
@@ -93,13 +93,13 @@ export class I18nRegistry extends SynchronousRegistry<unknown> {
      *
      * @param {string} transUnitId The trans-unit id
      * @param {undefined|string} fallback The string that shall be displayed, when no translation string could be found.
-     * @param {Parameters} parameters The values to replace substitution placeholders with in the translation string
+     * @param {LegacyParameters} parameters The values to replace substitution placeholders with in the translation string
      * @param {string} packageKey The key of the package in which to look for the translation file
      */
     translate(
         transUnitId: string,
         fallback: undefined | string,
-        parameters: undefined | Parameters,
+        parameters: undefined | LegacyParameters,
         packageKey: string
     ): string;
 
@@ -120,14 +120,14 @@ export class I18nRegistry extends SynchronousRegistry<unknown> {
      *
      * @param {string} transUnitId The trans-unit id
      * @param {undefined|string} fallback The string that shall be displayed, when no translation string could be found.
-     * @param {Parameters} parameters The values to replace substitution placeholders with in the translation string
+     * @param {LegacyParameters} parameters The values to replace substitution placeholders with in the translation string
      * @param {string} packageKey The key of the package in which to look for the translation file
      * @param {string} sourceName The name of the translation file in that package's resource translations
      */
     translate(
         transUnitId: string,
         fallback: undefined | string,
-        parameters: undefined | Parameters,
+        parameters: undefined | LegacyParameters,
         packageKey: string,
         sourceName: string
     ): string;
@@ -153,14 +153,14 @@ export class I18nRegistry extends SynchronousRegistry<unknown> {
      *
      * @param {string} transUnitId The trans-unit id
      * @param {undefined|string} fallback The string that shall be displayed, when no translation string could be found.
-     * @param {Parameters} parameters The values to replace substitution placeholders with in the translation string
+     * @param {LegacyParameters} parameters The values to replace substitution placeholders with in the translation string
      * @param {string} packageKey The key of the package in which to look for the translation file
      * @param {string} sourceName The name of the translation file in that package's resource translations
      */
     translate(
         transUnitId: string,
         fallback: undefined | string,
-        parameters: undefined | Parameters,
+        parameters: undefined | LegacyParameters,
         packageKey: string,
         sourceName: string,
         quantity: number
@@ -169,7 +169,7 @@ export class I18nRegistry extends SynchronousRegistry<unknown> {
     translate(
         transUnitIdOrFullyQualifiedTranslationAddress: string,
         explicitlyProvidedFallback?: string,
-        parameters?: Parameters,
+        parameters?: LegacyParameters,
         explicitlyProvidedPackageKey: string = 'Neos.Neos',
         explicitlyProvidedSourceName: string = 'Main',
         quantity: number = 0

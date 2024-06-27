@@ -1,5 +1,5 @@
 import React from 'react';
-import {Parameters, i18nRegistry} from './registry';
+import {LegacyParameters, i18nRegistry} from './registry';
 
 export {initializeI18n, setupI18n, teardownI18n} from './global';
 
@@ -19,7 +19,7 @@ interface I18nProps {
     sourceName?: string;
 
     // Additional parameters which are passed to the i18n service.
-    params?: Parameters;
+    params?: LegacyParameters;
 
     // Optional className which gets added to the translation span.
     className?: string;

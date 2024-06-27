@@ -87,17 +87,20 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
         return nodes;
     }, {}) : [];
 
-    const nodes = Object.assign(
+    let nodes = Object.assign(
         {},
         legacyNodeData, // Merge legacy node data from the guest frame - remove with Neos 9.0
-        nodesAlreadyPresentInStore,
         fullyLoadedNodesFromContent,
         {
             [documentInformation.metaData.documentNode]: documentInformation.metaData.documentNodeSerialization
         }
     );
 
+    // Merge new nodes into the store
     yield put(actions.CR.Nodes.merge(nodes));
+
+    // Combine new and existing nodes into a list for initialisation in the guest frame
+    nodes = Object.assign(nodes, nodesAlreadyPresentInStore);
 
     // Remove the legacy inline scripts after initialization - remove with Neos 9.0
     Array.prototype.forEach.call(guestFrameWindow.document.querySelectorAll('script[data-neos-nodedata]'), element => element.parentElement.removeChild(element));

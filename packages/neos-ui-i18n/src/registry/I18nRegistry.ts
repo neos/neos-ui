@@ -19,6 +19,9 @@ import type {LegacyParameters} from './LegacyParameters';
 
 const errorCache: Record<string, boolean> = {};
 
+/**
+ * @deprecated Use `import {tranlsate} from '@neos-project/neos-ui-i18n'` instead
+ */
 export class I18nRegistry extends SynchronousRegistry<unknown> {
     /**
      * Retrieves a the translation string that is identified by the given
@@ -205,4 +208,7 @@ export class I18nRegistry extends SynchronousRegistry<unknown> {
     }
 }
 
+/**
+ * @deprecated Use `import {tranlsate} from '@neos-project/neos-ui-i18n'` instead
+ */
 export const i18nRegistry = new I18nRegistry('The i18n registry');

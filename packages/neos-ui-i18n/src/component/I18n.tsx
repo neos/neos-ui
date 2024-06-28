@@ -29,6 +29,9 @@ interface I18nProps {
     className?: string;
 }
 
+/**
+ * @deprecated Use `import {tranlsate} from '@neos-project/neos-ui-i18n'` instead
+ */
 export class I18n extends React.PureComponent<I18nProps> {
     public render(): JSX.Element {
         const {packageKey, sourceName, params, id, fallback} = this.props;

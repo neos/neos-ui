@@ -127,7 +127,7 @@ abstract class AbstractCreate extends AbstractStructuralChange
      */
     protected function createNode(
         Node $parentNode,
-        NodeAggregateId $succeedingSiblingNodeAggregateId = null
+        ?NodeAggregateId $succeedingSiblingNodeAggregateId = null
     ): Node {
         $nodeTypeName = $this->getNodeTypeName();
         if (is_null($nodeTypeName)) {
@@ -140,12 +140,7 @@ abstract class AbstractCreate extends AbstractStructuralChange
             throw new \RuntimeException(sprintf('Cannot run create node because the node type %s is missing.', $nodeTypeName->value), 1716019747);
         }
 
-        $nodeName = $this->getName()
-            ? NodeName::fromString($this->getName())
-            : null;
-
         $nodeAggregateId = $this->getNodeAggregateId() ?? NodeAggregateId::create(); // generate a new NodeAggregateId
-
 
         $command = CreateNodeAggregateWithNode::create(
             $parentNode->workspaceName,
@@ -153,9 +148,12 @@ abstract class AbstractCreate extends AbstractStructuralChange
             $nodeTypeName,
             OriginDimensionSpacePoint::fromDimensionSpacePoint($parentNode->dimensionSpacePoint),
             $parentNode->aggregateId,
-            $succeedingSiblingNodeAggregateId,
-            $nodeName
+            $succeedingSiblingNodeAggregateId
         );
+
+        if ($this->getName()) {
+            $command = $command->withNodeName(NodeName::fromString($this->getName()));
+        }
 
         $commands = $this->applyNodeCreationHandlers(
             NodeCreationCommands::fromFirstCommand(

@@ -77,7 +77,6 @@ class CopyInto extends AbstractStructuralChange
                 $subject,
                 OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->dimensionSpacePoint),
                 $parentNode->aggregateId,
-                null,
                 null
             );
             $contentRepository->handle($command);

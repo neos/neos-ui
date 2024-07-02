@@ -271,12 +271,11 @@ export default class SelectBox extends PureComponent {
         // Compare selected value less strictly: allow loose comparision and deep equality of objects
         const selectedOption = options.find(option => optionValueAccessor(option) == value || isEqual(optionValueAccessor(option), value)); // eslint-disable-line eqeqeq
 
+        /* eslint-disable no-eq-null, eqeqeq */ // to check for null or undefined, we cannot use the isNil helper as it's not published to npm
+        const valueIsEmpty = value == null || value === '';
         if (
             displaySearchBox && (
-                // check for null or undefined
-                /* eslint-disable no-eq-null, eqeqeq */
-                value == null ||
-                value === '' ||
+                valueIsEmpty ||
                 this.state.isExpanded ||
                 plainInputMode
             )
@@ -292,7 +291,7 @@ export default class SelectBox extends PureComponent {
             );
         }
 
-        const showResetButton = Boolean(allowEmpty && !displayLoadingIndicator && value);
+        const showResetButton = allowEmpty && !displayLoadingIndicator && !valueIsEmpty;
 
         return (
             <SelectBox_Header

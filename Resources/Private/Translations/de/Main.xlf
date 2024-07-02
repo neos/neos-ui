@@ -630,6 +630,10 @@
         <source>Copy node type to clipboard</source>
         <target state="translated">Knotentyp in die Zwischenablage kopieren</target>
       </trans-unit>
+      <trans-unit id="invalidValue" xml:space="preserve">
+        <source>Invalid value</source>
+        <target state="translated">Ungültiger Wert</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

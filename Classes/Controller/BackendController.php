@@ -14,6 +14,7 @@ namespace Neos\Neos\Ui\Controller;
 
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
 use Neos\ContentRepository\Core\SharedModel\Exception\WorkspaceDoesNotExist;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ActionController;
@@ -24,6 +25,7 @@ use Neos\Neos\Domain\Repository\SiteRepository;
 use Neos\Neos\Domain\Service\NodeTypeNameFactory;
 use Neos\Neos\Domain\Service\WorkspaceNameBuilder;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
+use Neos\Neos\FrontendRouting\NodeUriBuilderFactory;
 use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;
 use Neos\Neos\Service\UserService;
 use Neos\Neos\Ui\Domain\InitialData\ConfigurationProviderInterface;
@@ -119,6 +121,12 @@ class BackendController extends ActionController
     protected $initialStateProvider;
 
     /**
+     * @Flow\Inject
+     * @var NodeUriBuilderFactory
+     */
+    protected $nodeUriBuilderFactory;
+
+    /**
      * Displays the backend interface
      *
      * @param string $node The node that will be displayed on the first tab
@@ -138,6 +146,7 @@ class BackendController extends ActionController
         }
 
         $currentAccount = $this->securityContext->getAccount();
+        assert($currentAccount !== null);
         $workspaceName = WorkspaceNameBuilder::fromAccountIdentifier($currentAccount->getAccountIdentifier());
 
         try {
@@ -212,15 +221,16 @@ class BackendController extends ActionController
      */
     public function redirectToAction(string $node): void
     {
-        $siteDetectionResult = SiteDetectionResult::fromRequest($this->request->getHttpRequest());
-
-        $contentRepository = $this->contentRepositoryRegistry->get($siteDetectionResult->contentRepositoryId);
-
-        $nodeAddress = NodeAddressFactory::create($contentRepository)->createFromUriString($node);
         $this->response->setHttpHeader('Cache-Control', [
             'no-cache',
             'no-store'
         ]);
-        $this->redirect('show', 'Frontend\Node', 'Neos.Neos', ['node' => $nodeAddress]);
+
+        $nodeAddress = NodeAddress::fromJsonString($node);
+
+        $this->redirectToUri(
+            $this->nodeUriBuilderFactory->forActionRequest($this->request)
+                ->uriFor($nodeAddress)
+        );
     }
 }

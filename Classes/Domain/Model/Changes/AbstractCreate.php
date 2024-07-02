@@ -14,11 +14,10 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 use Neos\ContentRepository\Core\ContentRepository;
 use Neos\ContentRepository\Core\DimensionSpace\OriginDimensionSpacePoint;
-use Neos\ContentRepository\Core\Factory\ContentRepositoryServiceFactoryInterface;
 use Neos\ContentRepository\Core\Feature\NodeCreation\Command\CreateNodeAggregateWithNode;
+use Neos\ContentRepository\Core\NodeType\NodeType;
 use Neos\ContentRepository\Core\NodeType\NodeTypeName;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
-use Neos\ContentRepository\Core\SharedModel\Exception\NodeNameIsAlreadyOccupied;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateId;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeName;
 use Neos\Flow\Annotations as Flow;
@@ -134,13 +133,19 @@ abstract class AbstractCreate extends AbstractStructuralChange
         if (is_null($nodeTypeName)) {
             throw new \RuntimeException('Cannot run createNode without a set node type.', 1645577794);
         }
+
+        $contentRepository = $this->contentRepositoryRegistry->get($parentNode->contentRepositoryId);
+        $nodeType = $contentRepository->getNodeTypeManager()->getNodeType($nodeTypeName);
+        if (is_null($nodeType)) {
+            throw new \RuntimeException(sprintf('Cannot run create node because the node type %s is missing.', $nodeTypeName->value), 1716019747);
+        }
+
         $nodeName = $this->getName()
             ? NodeName::fromString($this->getName())
             : null;
 
         $nodeAggregateId = $this->getNodeAggregateId() ?? NodeAggregateId::create(); // generate a new NodeAggregateId
 
-        $contentRepository = $this->contentRepositoryRegistry->get($parentNode->contentRepositoryId);
 
         $command = CreateNodeAggregateWithNode::create(
             $parentNode->workspaceName,
@@ -158,10 +163,10 @@ abstract class AbstractCreate extends AbstractStructuralChange
                 $contentRepository->getNodeTypeManager()
             ),
             $this->nodePropertyConversionService->convertNodeCreationElements(
-                $contentRepository->getNodeTypeManager()->getNodeType($nodeTypeName),
+                $nodeType,
                 $this->getData() ?: []
             ),
-            $nodeTypeName,
+            $nodeType,
             $contentRepository
         );
 
@@ -169,9 +174,12 @@ abstract class AbstractCreate extends AbstractStructuralChange
             $contentRepository->handle($command);
         }
 
-        /** @var Node $newlyCreatedNode */
         $newlyCreatedNode = $this->contentRepositoryRegistry->subgraphForNode($parentNode)
             ->findNodeById($nodeAggregateId);
+
+        if (!$newlyCreatedNode) {
+            throw new \RuntimeException(sprintf('Node %s was not created successfully or the graph was not up to date.', $nodeAggregateId->value));
+        }
 
         $this->finish($newlyCreatedNode);
         // NOTE: we need to run "finish" before "addNodeCreatedFeedback"
@@ -186,10 +194,9 @@ abstract class AbstractCreate extends AbstractStructuralChange
     protected function applyNodeCreationHandlers(
         NodeCreationCommands $commands,
         NodeCreationElements $elements,
-        NodeTypeName $nodeTypeName,
+        NodeType $nodeType,
         ContentRepository $contentRepository
     ): NodeCreationCommands {
-        $nodeType = $contentRepository->getNodeTypeManager()->getNodeType($nodeTypeName);
         if (!isset($nodeType->getOptions()['nodeCreationHandlers'])
             || !is_array($nodeType->getOptions()['nodeCreationHandlers'])) {
             return $commands;

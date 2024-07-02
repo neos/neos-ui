@@ -17,6 +17,7 @@ namespace Neos\Neos\Ui\Application\SyncWorkspace;
 use Neos\ContentRepository\Core\Feature\WorkspaceRebase\Exception\WorkspaceRebaseFailed;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
+use Neos\Neos\Domain\NodeLabel\NodeLabelGeneratorInterface;
 use Neos\Neos\Domain\Workspace\WorkspaceProvider;
 
 /**
@@ -33,6 +34,9 @@ final class SyncWorkspaceCommandHandler
     #[Flow\Inject]
     protected WorkspaceProvider $workspaceProvider;
 
+    #[Flow\Inject]
+    protected NodeLabelGeneratorInterface $nodeLabelGenerator;
+
     public function handle(SyncWorkspaceCommand $command): void
     {
         try {
@@ -46,6 +50,7 @@ final class SyncWorkspaceCommandHandler
             $conflictsBuilder = Conflicts::builder(
                 contentRepository: $this->contentRepositoryRegistry
                     ->get($command->contentRepositoryId),
+                nodeLabelGenerator: $this->nodeLabelGenerator,
                 workspaceName: $command->workspaceName,
                 preferredDimensionSpacePoint: $command->preferredDimensionSpacePoint
             );

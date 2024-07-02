@@ -11,6 +11,7 @@ namespace Neos\Neos\Ui\Domain\Model;
  * source code.
  */
 
+use Neos\ContentRepository\Core\NodeType\NodeType;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindClosestNodeFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
@@ -21,16 +22,13 @@ use Neos\Neos\Service\UserService;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\NodeCreated;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateWorkspaceInfo;
-use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
 
 /**
  * @internal
  */
 abstract class AbstractChange implements ChangeInterface
 {
-    use NodeTypeWithFallbackProvider;
-
-    protected ?Node $subject = null;
+    protected Node $subject;
 
     #[Flow\Inject]
     protected ContentRepositoryRegistry $contentRepositoryRegistry;
@@ -53,12 +51,12 @@ abstract class AbstractChange implements ChangeInterface
      */
     protected $persistenceManager;
 
-    public function setSubject(Node $subject): void
+    final public function setSubject(Node $subject): void
     {
         $this->subject = $subject;
     }
 
-    public function getSubject(): ?Node
+    final public function getSubject(): Node
     {
         return $this->subject;
     }
@@ -66,22 +64,26 @@ abstract class AbstractChange implements ChangeInterface
     /**
      * Helper method to inform the client, that new workspace information is available
      */
-    protected function updateWorkspaceInfo(): void
+    final protected function updateWorkspaceInfo(): void
     {
-        if (!is_null($this->subject)) {
-            $subgraph = $this->contentRepositoryRegistry->subgraphForNode($this->subject);
-            $documentNode = $subgraph->findClosestNode($this->subject->aggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_DOCUMENT));
-            if (!is_null($documentNode)) {
-                $updateWorkspaceInfo = new UpdateWorkspaceInfo($documentNode->contentRepositoryId, $documentNode->workspaceName);
-                $this->feedbackCollection->add($updateWorkspaceInfo);
-            }
+        $subgraph = $this->contentRepositoryRegistry->subgraphForNode($this->subject);
+        $documentNode = $subgraph->findClosestNode($this->subject->aggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_DOCUMENT));
+        if (!is_null($documentNode)) {
+            $updateWorkspaceInfo = new UpdateWorkspaceInfo($documentNode->contentRepositoryId, $documentNode->workspaceName);
+            $this->feedbackCollection->add($updateWorkspaceInfo);
         }
     }
 
-    protected function findParentNode(Node $node): ?Node
+    final protected function findParentNode(Node $node): ?Node
     {
         return $this->contentRepositoryRegistry->subgraphForNode($node)
             ->findParentNode($node->aggregateId);
+    }
+
+    final protected function getNodeType(Node $node): ?NodeType
+    {
+        $contentRepository = $this->contentRepositoryRegistry->get($node->contentRepositoryId);
+        return $contentRepository->getNodeTypeManager()->getNodeType($node->nodeTypeName);
     }
 
     /**
@@ -102,13 +104,11 @@ abstract class AbstractChange implements ChangeInterface
     /**
      * Inform the client that a node has been created, the client decides if and which tree should react to this change.
      */
-    protected function addNodeCreatedFeedback(Node $subject = null): void
+    final protected function addNodeCreatedFeedback(Node $subject = null): void
     {
-        $node = $subject ?: $this->getSubject();
-        if ($node) {
-            $nodeCreated = new NodeCreated();
-            $nodeCreated->setNode($node);
-            $this->feedbackCollection->add($nodeCreated);
-        }
+        $node = $subject ?? $this->getSubject();
+        $nodeCreated = new NodeCreated();
+        $nodeCreated->setNode($node);
+        $this->feedbackCollection->add($nodeCreated);
     }
 }

@@ -35,7 +35,9 @@ final class PromotedElementsCreationHandlerFactory implements NodeCreationHandle
             public function handle(NodeCreationCommands $commands, NodeCreationElements $elements): NodeCreationCommands
             {
                 $nodeType = $this->nodeTypeManager->getNodeType($commands->first->nodeTypeName);
-
+                if (!$nodeType) {
+                    return $commands;
+                }
                 $propertyValues = $commands->first->initialPropertyValues;
                 $setReferencesCommands = [];
                 foreach ($elements as $elementName => $elementValue) {

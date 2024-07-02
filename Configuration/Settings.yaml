@@ -136,7 +136,7 @@ Neos:
             personalWorkspace: '${Neos.Ui.Workspace.getPersonalWorkspace(documentNode.contentRepositoryId)}'
         ui:
           contentCanvas:
-            src: '${Neos.Ui.NodeInfo.uri(documentNode, request)}'
+            src: '${Neos.Ui.NodeInfo.previewUri(documentNode, request)}'
             backgroundColor: '${Configuration.setting(''Neos.Neos.Ui.contentCanvas.backgroundColor'')}'
           debugMode: false
           editPreviewMode: '${q(user).property("preferences.preferences")["contentEditing.editPreviewMode"] || Configuration.setting(''Neos.Neos.userInterface.defaultEditPreviewMode'')}'

@@ -15,7 +15,9 @@ use Neos\ContentRepository\Core\Feature\SubtreeTagging\Dto\SubtreeTag;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\CountAncestorNodesFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindChildNodesFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateClassification;
+use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
@@ -23,9 +25,8 @@ use Neos\Flow\Mvc\ActionRequest;
 use Neos\Flow\Mvc\Routing\UriBuilder;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\Domain\NodeLabel\NodeLabelGeneratorInterface;
-use Neos\Neos\FrontendRouting\NodeAddress;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
-use Neos\Neos\FrontendRouting\NodeUriBuilder;
+use Neos\Neos\FrontendRouting\NodeUriBuilderFactory;
 use Neos\Neos\Ui\Domain\Service\NodePropertyConverterService;
 use Neos\Neos\Ui\Domain\Service\UserLocaleService;
 use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
@@ -41,6 +42,9 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
     #[Flow\Inject]
     protected ContentRepositoryRegistry $contentRepositoryRegistry;
+
+    #[Flow\Inject]
+    protected NodeUriBuilderFactory $nodeUriBuilderFactory;
 
     #[Flow\Inject]
     protected NodeLabelGeneratorInterface $nodeLabelGenerator;
@@ -342,42 +346,33 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         ];
     }
 
-    public function uri(Node|NodeAddress $nodeAddress, ActionRequest $actionRequest): string
-    {
-        if ($nodeAddress instanceof Node) {
-            $contentRepository = $this->contentRepositoryRegistry->get($nodeAddress->contentRepositoryId);
-            $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
-            $nodeAddress = $nodeAddressFactory->createFromNode($nodeAddress);
-        }
-        $uriBuilder = new UriBuilder();
-        $uriBuilder->setRequest($actionRequest);
-        $uriBuilder->setCreateAbsoluteUri(true);
-        return (string)NodeUriBuilder::fromUriBuilder($uriBuilder)->uriFor($nodeAddress);
-    }
-
     public function previewUri(Node $node, ActionRequest $actionRequest): string
     {
-        $contentRepository = $this->contentRepositoryRegistry->get($node->contentRepositoryId);
-        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
-        $nodeAddress = $nodeAddressFactory->createFromNode($node);
-
-        $uriBuilder = new UriBuilder();
-        $uriBuilder->setRequest($actionRequest);
-        $uriBuilder->setCreateAbsoluteUri(true);
-        return (string)NodeUriBuilder::fromUriBuilder($uriBuilder)->previewUriFor($nodeAddress);
+        $nodeAddress = NodeAddress::fromNode($node);
+        return (string)$this->nodeUriBuilderFactory
+            ->forActionRequest($actionRequest)
+            ->previewUriFor($nodeAddress);
     }
 
     public function createRedirectToNode(Node $node, ActionRequest $actionRequest): string
     {
+        // we always want to redirect to the node in the base workspace.
         $contentRepository = $this->contentRepositoryRegistry->get($node->contentRepositoryId);
-        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
-        $nodeAddress = $nodeAddressFactory->createFromNode($node);
+        $workspace = $contentRepository->getWorkspaceFinder()->findOneByName($node->workspaceName);
+
+        $nodeAddress = NodeAddress::create(
+            $node->contentRepositoryId,
+            $workspace->baseWorkspaceName ?? WorkspaceName::forLive(),
+            $node->dimensionSpacePoint,
+            $node->aggregateId
+        );
+
         $uriBuilder = new UriBuilder();
         $uriBuilder->setRequest($actionRequest);
         return $uriBuilder
             ->setCreateAbsoluteUri(true)
             ->setFormat('html')
-            ->uriFor('redirectTo', ['node' => $nodeAddress->serializeForUri()], 'Backend', 'Neos.Neos.Ui');
+            ->uriFor('redirectTo', ['node' => $nodeAddress->toJson()], 'Backend', 'Neos.Neos.Ui');
     }
 
     /**
@@ -441,7 +436,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             'createRedirectToNode',
             'renderNodeWithPropertiesAndChildrenInformation',
             'defaultNodesForBackend',
-            'uri'
+            'previewUri'
         ], true);
     }
 }

@@ -85,7 +85,7 @@ export default class PublishDropDown extends PureComponent {
             neos
         } = this.props;
 
-        const workspaceModuleUri = neos?.routes?.core?.modules?.workspaces;
+        const workspaceModuleUri = neos?.routes?.core?.modules?.workspace;
         const allowedWorkspaces = neos?.configuration?.allowedTargetWorkspaces;
         const baseWorkspaceTitle = allowedWorkspaces?.[baseWorkspace]?.title;
         const canPublishLocally = !isSaving && !isPublishing && !isDiscarding && publishableNodesInDocument && (publishableNodesInDocument.length > 0);

@@ -326,6 +326,14 @@
                     <source>Discarded {0} changes.</source>
                 </trans-unit>
             </group>
+            <trans-unit id="switchedBaseWorkspace" xml:space="preserve">
+                <source>Switched base workspace to "{workspace}".</source>
+            </trans-unit>
+            <trans-unit id="workspaceContainsUnpublishedChanges" xml:space="preserve">
+                <source>Your personal workspace currently contains unpublished changes.
+                In order to switch to a different target workspace you need to either publish or discard pending changes first.
+                </source>
+            </trans-unit>
             <trans-unit id="syncUriPathSegment" xml:space="preserve">
                 <source>Syncronize with the title property</source>
             </trans-unit>

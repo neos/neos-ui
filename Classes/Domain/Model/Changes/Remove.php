@@ -35,19 +35,13 @@ use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 class Remove extends AbstractChange
 {
     /**
-     * @Flow\Inject
-     * @var ContentCacheFlusher
-     */
-    protected $contentCacheFlusher;
-
-    /**
      * Checks whether this change can be applied to the subject
      *
      * @return boolean
      */
     public function canApply(): bool
     {
-        return !is_null($this->subject);
+        return true;
     }
 
     /**
@@ -60,7 +54,7 @@ class Remove extends AbstractChange
     public function apply(): void
     {
         $subject = $this->subject;
-        if ($this->canApply() && !is_null($subject)) {
+        if ($this->canApply()) {
             $parentNode = $this->findParentNode($subject);
             if (is_null($parentNode)) {
                 throw new \InvalidArgumentException(
@@ -101,7 +95,7 @@ class Remove extends AbstractChange
     {
         $subgraph = $this->contentRepositoryRegistry->subgraphForNode($this->subject);
 
-        if ($this->subject->nodeType?->isOfType(NodeTypeNameFactory::NAME_DOCUMENT)) {
+        if ($this->getNodeType($this->subject)?->isOfType(NodeTypeNameFactory::NAME_DOCUMENT)) {
             $closestSiteNode = $subgraph->findClosestNode($this->subject->aggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_SITE));
             return $closestSiteNode?->aggregateId;
         }

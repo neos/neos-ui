@@ -47,7 +47,7 @@ final class UriPathSegmentNodeCreationHandlerFactory implements NodeCreationHand
             {
                 if (
                     !$this->nodeTypeManager->getNodeType($commands->first->nodeTypeName)
-                        ->isOfType('Neos.Neos:Document')
+                        ?->isOfType('Neos.Neos:Document')
                 ) {
                     return $commands;
                 }

@@ -44,6 +44,11 @@ export default class SelectBox extends PureComponent {
         disabled: PropTypes.bool,
 
         /**
+         * Optional id for the element
+         */
+        id: PropTypes.string,
+
+        /**
          * Additional className wich will be applied
          */
         className: PropTypes.string,

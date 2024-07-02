@@ -142,7 +142,26 @@ export interface PropertyConfiguration {
         [propName: string]: ValidatorConfiguration | undefined;
     };
 }
-
+export interface ReferencesConfiguration {
+    type?: string;
+    ui?: {
+        label?: string;
+        reloadIfChanged?: boolean;
+        inspector?: {
+            hidden?: boolean;
+            editor?: string;
+            editorOptions?: {
+                [propName: string]: any;
+            }
+            group?: string;
+            position?: number | string;
+        };
+        help?: {
+            message?: string;
+            thumbnail?: string;
+        };
+    };
+}
 export interface NodeType {
     name?: string;
     superTypes: {
@@ -214,6 +233,9 @@ export interface NodeType {
     };
     properties?: {
         [propName: string]: PropertyConfiguration | undefined;
+    };
+    references?: {
+        [referenceName: string]: ReferencesConfiguration | undefined;
     };
 }
 

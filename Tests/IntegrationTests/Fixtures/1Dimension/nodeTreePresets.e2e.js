@@ -140,3 +140,30 @@ test.skip('BUG #3816: Switching back from node tree preset "blog" does not affec
 
 //
 // Original issue: https://github.com/neos/neos-ui/issues/2583
+//
+test.skip('BUG #2583: Searching the document tree does not break expansion in node tree preset "default"', async (t) => {
+    await t.click(Page.getToggleChildrenButtonOf('Nested Page #1'));
+    await t.expect(Page.treeNode.withExactText('Nested Page #2').exists)
+        .ok('[🗋 Nested Page #2] did not show up after toggling children of [🗋 Nested Page #1] the first time.');
+    await t.click(Page.getToggleChildrenButtonOf('Nested Page #1'));
+    await t.expect(Page.treeNode.withExactText('Nested Page #2').exists)
+        .notOk('[🗋 Nested Page #2] did not disappear after toggling children of [🗋 Nested Page #1] the second time.');
+
+    await t.click('#btn-ToggleDocumentTreeFilter');
+
+    await t.typeText(Selector('#neos-NodeTreeSearchInput input[type="search"]'), 'Nested Page #10');
+    await t.expect(Page.treeNode.withExactText('Nested Page #10').exists)
+        .ok('[🗋 Nested Page #10] did not show up after searching for "Nested Page #10".');
+
+    await t.click('#neos-NodeTreeSearchInput-btn-reset');
+    await t.expect(Page.treeNode.withExactText('Nested Page #10').exists)
+        .notOk('[🗋 Nested Page #10] did not disappear after clearing search.');
+
+    await t.click(Page.getToggleChildrenButtonOf('Nested Page #1'));
+    await t.expect(Page.treeNode.withExactText('Nested Page #2').exists)
+        .ok('[🗋 Nested Page #2] did not show up after toggling children of [🗋 Nested Page #1] the third time.');
+    await t.click(Page.getToggleChildrenButtonOf('Nested Page #1'));
+    await t.expect(Page.treeNode.withExactText('Nested Page #2').exists)
+        .notOk('[🗋 Nested Page #2] did not disappear after toggling children of [🗋 Nested Page #1] the fourth time.');
+});
+

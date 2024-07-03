@@ -111,3 +111,32 @@ test('Node tree preset "blog-articles" shows page [🗋 Blog] and all articles b
 
 //
 // Original issue: https://github.com/neos/neos-ui/issues/3816
+//
+test.skip('BUG #3816: Switching back from node tree preset "blog" does not affect loading children in node tree preset "default"', async (t) => {
+    await t.click(Page.getToggleChildrenButtonOf('Nested Page #1'));
+    await t.expect(Page.treeNode.withExactText('Nested Page #2').exists)
+        .ok('[🗋 Nested Page #2] did not show up after toggling children of [🗋 Nested Page #1] the first time.');
+    await t.click(Page.getToggleChildrenButtonOf('Nested Page #1'));
+    await t.expect(Page.treeNode.withExactText('Nested Page #2').exists)
+        .notOk('[🗋 Nested Page #2] did not disappear after toggling children of [🗋 Nested Page #1] the second time.');
+
+    await t.click('#btn-ToggleDocumentTreeFilter');
+    await t.click('#neos-NodeTreeFilter');
+    await t.click(Selector('[role="button"]').withText('Show Blog only'));
+    await t.expect(Page.treeNode.withExactText('Blog').exists)
+        .ok('[🗋 Blog] did not show up after switching to node tree preset "blog".');
+
+    await t.click('#neos-NodeTreeFilter-SelectBox-btn-reset');
+    await t.expect(Page.treeNode.withExactText('Blog').exists)
+        .notOk('[🗋 Blog] did not disappear after switching back to node tree preset "default".');
+
+    await t.click(Page.getToggleChildrenButtonOf('Nested Page #1'));
+    await t.expect(Page.treeNode.withExactText('Nested Page #2').exists)
+        .ok('[🗋 Nested Page #2] did not show up after toggling children of [🗋 Nested Page #1] the third time.');
+    await t.click(Page.getToggleChildrenButtonOf('Nested Page #1'));
+    await t.expect(Page.treeNode.withExactText('Nested Page #2').exists)
+        .notOk('[🗋 Nested Page #2] did not disappear after toggling children of [🗋 Nested Page #1] the fourth time.');
+});
+
+//
+// Original issue: https://github.com/neos/neos-ui/issues/2583

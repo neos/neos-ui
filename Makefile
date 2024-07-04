@@ -144,7 +144,7 @@ called-with-version:
 ifeq ($(VERSION),)
 	@echo No version information given.
 	@echo Please run this command like this:
-	@echo VERSION=1.0.0 make bump-version
+	@echo VERSION=9.0.0 make ...
 	@false
 endif
 

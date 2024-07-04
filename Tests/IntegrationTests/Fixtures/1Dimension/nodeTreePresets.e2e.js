@@ -170,7 +170,7 @@ test('BUG #2583: Searching the document tree does not break expansion in node tr
 //
 // Original issue: https://github.com/neos/neos-ui/issues/2800
 //
-test.skip('BUG #2800: Moving pages in a filtered view does not lead to the disappearance of nodes', async (t) => {
+test('BUG #2800 1/2: Moving pages before/after in a filtered view does not lead to the disappearance of nodes', async (t) => {
     await t.click('#btn-ToggleDocumentTreeFilter');
     await t.click('#neos-NodeTreeFilter');
     await t.click(Selector('[role="button"]').withText('Show Blog Articles only'));
@@ -181,6 +181,23 @@ test.skip('BUG #2800: Moving pages in a filtered view does not lead to the disap
     await t.dragToElement(
         Page.getTreeNodeButton('Hello World!'),
         Page.getTreeNodeButton('Writing Blog Articles considered harmful').prevSibling()
+    );
+
+    await t.expect(Page.treeNode.withExactText('Blog').exists)
+        .ok('[🗋 Blog] disappeared after moving nodes in node tree preset "blog-articles".');
+    await t.expect(Page.treeNode.withExactText('Hello World!').exists)
+        .ok('[🗋 Hello World!] disappeared after moving nodes in node tree preset "blog-articles".');
+    await t.expect(Page.treeNode.withExactText('Fix all the bugs with this weird little trick!').exists)
+        .ok('[🗋 Fix all the bugs with this weird little trick!] disappeared after moving nodes in node tree preset "blog-articles".');
+    await t.expect(Page.treeNode.withExactText('Writing Blog Articles considered harmful').exists)
+        .ok('[🗋 Writing Blog Articles considered harmful] disappeared after moving nodes in node tree preset "blog-articles".');
+
+    //
+    // Move Blog Article [🗋 Hello World!] after [🗋 Writing Blog Articles considered harmful]
+    //
+    await t.dragToElement(
+        Page.getTreeNodeButton('Hello World!'),
+        Page.getTreeNodeButton('Writing Blog Articles considered harmful').nextSibling()
     );
 
     await t.expect(Page.treeNode.withExactText('Blog').exists)

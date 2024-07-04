@@ -232,7 +232,7 @@ export default class Node extends PureComponent {
 
     isVisible() {
         const {node, visibleContextPaths} = this.props;
-        return visibleContextPaths === null || visibleContextPaths.includes(node.contextPath);
+        return !Array.isArray(visibleContextPaths) || visibleContextPaths.includes(node.contextPath);
     }
 
     isIntermediate() {

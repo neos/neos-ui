@@ -94,7 +94,7 @@ test('Node tree preset "blog" shows nothing but page [🗋 Blog]', async (t) => 
         .ok('[🗋 Blog] did not show up after switching to node tree preset "blog".');
 });
 
-test.skip('Reloading the node tree while in preset "blog" results in nothing but page [🗋 Blog]', async (t) => {
+test('Reloading the node tree while in preset "blog" results in nothing but page [🗋 Blog]', async (t) => {
     await t.click('#btn-ToggleDocumentTreeFilter');
     await t.click('#neos-NodeTreeFilter');
     await t.click(Selector('[role="button"]').withText('Show Blog only'));

@@ -209,3 +209,30 @@ test('BUG #2800 1/2: Moving pages before/after in a filtered view does not lead 
     await t.expect(Page.treeNode.withExactText('Writing Blog Articles considered harmful').exists)
         .ok('[🗋 Writing Blog Articles considered harmful] disappeared after moving nodes in node tree preset "blog-articles".');
 });
+
+test.skip('BUG #2800 2/2: Moving pages into each other in a filtered view does not break expansion', async (t) => {
+    await t.click('#btn-ToggleDocumentTreeFilter');
+    await t.click('#neos-NodeTreeFilter');
+    await t.click(Selector('[role="button"]').withText('Show Blog Articles only'));
+
+    //
+    // Move Blog Article [🗋 Hello World!] into [🗋 Writing Blog Articles considered harmful]
+    //
+    await t.dragToElement(
+        Page.getTreeNodeButton('Hello World!'),
+        Page.getTreeNodeButton('Writing Blog Articles considered harmful')
+    );
+
+    await t.expect(Page.treeNode.withExactText('Blog').exists)
+        .ok('[🗋 Blog] disappeared after moving nodes in node tree preset "blog-articles".');
+    await t.expect(Page.treeNode.withExactText('Fix all the bugs with this weird little trick!').exists)
+        .ok('[🗋 Fix all the bugs with this weird little trick!] disappeared after moving nodes in node tree preset "blog-articles".');
+    await t.expect(Page.treeNode.withExactText('Writing Blog Articles considered harmful').exists)
+        .ok('[🗋 Writing Blog Articles considered harmful] disappeared after moving nodes in node tree preset "blog-articles".');
+
+    await t.expect(Page.treeNode.withExactText('Hello World!').exists)
+        .notOk('[🗋 Hello World!] unexpectedly appeared before uncollapsing [🗋 Writing Blog Articles considered harmful].');
+    await t.click(Page.getToggleChildrenButtonOf('Writing Blog Articles considered harmful'));
+    await t.expect(Page.treeNode.withExactText('Hello World!').exists)
+        .ok('[🗋 Writing Blog Articles considered harmful] cannot be uncollapsed after [🗋 Hello World!] was moved into it in node tree preset "blog-articles".');
+});

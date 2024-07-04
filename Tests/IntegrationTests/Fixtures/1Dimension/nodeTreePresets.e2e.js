@@ -94,6 +94,15 @@ test('Node tree preset "blog" shows nothing but page [🗋 Blog]', async (t) => 
         .ok('[🗋 Blog] did not show up after switching to node tree preset "blog".');
 });
 
+test.skip('In node tree preset "blog", page [🗋 Blog] has no toggle handle', async (t) => {
+    await t.click('#btn-ToggleDocumentTreeFilter');
+    await t.click('#neos-NodeTreeFilter');
+    await t.click(Selector('[role="button"]').withText('Show Blog only'));
+
+    await t.expect(Page.getToggleChildrenButtonOf('Blog').exists)
+        .notOk('[🗋 Blog] has a toggle handle, even though its children do not match the currently set filter in node tree preset "blog".');
+});
+
 test('Reloading the node tree while in preset "blog" results in nothing but page [🗋 Blog]', async (t) => {
     await t.click('#btn-ToggleDocumentTreeFilter');
     await t.click('#neos-NodeTreeFilter');

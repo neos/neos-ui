@@ -111,6 +111,16 @@ export const reducer = (state: State = defaultState, action: InitAction | NodesA
             }
             break;
         }
+        case nodes.UPDATE_PATH: {
+            if (state.visible !== null) {
+                const visible = new Set(state.visible);
+                visible.delete(action.payload.oldContextPath);
+                visible.add(action.payload.newContextPath);
+
+                draft.visible = [...visible];
+            }
+            break;
+        }
         case actionTypes.FOCUS: {
             const {contextPath, selectionMode} = action.payload;
             const newFocusedNodes = calculateNewFocusedNodes(selectionMode, contextPath, draft.focused, globalState.cr.nodes.byContextPath);

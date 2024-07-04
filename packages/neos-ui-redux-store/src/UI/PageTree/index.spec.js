@@ -258,3 +258,35 @@ test(`When "visible" state is not null and CR.Nodes.SET_STATE occurs, all added 
         'some-other-context-path'
     ]);
 });
+
+test(`When "visible" state is null and CR.Nodes.UPDATE_PATH occurs, "visible" state remains null`, () => {
+    const state = reducer({visible: null}, nodes.updatePath(
+        'some-visible-context-path',
+        'some-visible-context-path-with-a-different-name'
+    ));
+
+    expect(state.visible).toBeNull();
+});
+
+test(`When "visible" state is not null and CR.Nodes.UPDATE_PATH occurs, the context path will be updated in "visible" as well`, () => {
+    const state = reducer({visible: ['some-visible-context-path']}, nodes.updatePath(
+        'some-visible-context-path',
+        'some-visible-context-path-with-a-different-name'
+    ));
+
+    expect(state.visible).toStrictEqual([
+        'some-visible-context-path-with-a-different-name'
+    ]);
+});
+
+test(`When "visible" state is not null and CR.Nodes.UPDATE_PATH occurs with an unknown old context path, the new context path will be added to "visible"`, () => {
+    const state = reducer({visible: ['some-visible-context-path']}, nodes.updatePath(
+        'another-visible-context-path',
+        'another-visible-context-path-with-a-different-name'
+    ));
+
+    expect(state.visible).toStrictEqual([
+        'some-visible-context-path',
+        'another-visible-context-path-with-a-different-name'
+    ]);
+});

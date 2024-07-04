@@ -210,7 +210,7 @@ test('BUG #2800 1/2: Moving pages before/after in a filtered view does not lead 
         .ok('[🗋 Writing Blog Articles considered harmful] disappeared after moving nodes in node tree preset "blog-articles".');
 });
 
-test.skip('BUG #2800 2/2: Moving pages into each other in a filtered view does not break expansion', async (t) => {
+test('BUG #2800 2/2: Moving pages into each other in a filtered view does not break expansion', async (t) => {
     await t.click('#btn-ToggleDocumentTreeFilter');
     await t.click('#neos-NodeTreeFilter');
     await t.click(Selector('[role="button"]').withText('Show Blog Articles only'));

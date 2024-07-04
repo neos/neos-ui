@@ -5,6 +5,9 @@ import {actions, actionTypes, selectors} from '@neos-project/neos-ui-redux-store
 
 import {calculateChangeTypeFromMode, calculateDomAddressesFromMode} from './helpers';
 
+/**
+ * @deprecated `moveDroppedNodes` should be used
+ */
 export default function * moveDroppedNode() {
     yield takeEvery(actionTypes.CR.Nodes.MOVE, function * handleNodeMove({payload}) {
         const {nodeToBeMoved: subject, targetNode: reference, position} = payload;

@@ -275,9 +275,10 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     /**
      * @param array $nodes
      * @param ControllerContext $controllerContext
+     * @param null|string $nodeTypeFilter
      * @return array
      */
-    public function renderNodesWithParents(array $nodes, ControllerContext $controllerContext): array
+    public function renderNodesWithParents(array $nodes, ControllerContext $controllerContext, ?string $nodeTypeFilter = null): array
     {
         // For search operation we want to include all nodes, not respecting the "baseNodeType" setting
         $baseNodeTypeOverride = $this->documentNodeTypeRole;
@@ -287,7 +288,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         foreach ($nodes as $node) {
             if (array_key_exists($node->getPath(), $renderedNodes)) {
                 $renderedNodes[$node->getPath()]['matched'] = true;
-            } elseif ($renderedNode = $this->renderNodeWithMinimalPropertiesAndChildrenInformation($node, $controllerContext, $baseNodeTypeOverride)) {
+            } elseif ($renderedNode = $this->renderNodeWithMinimalPropertiesAndChildrenInformation($node, $controllerContext, $nodeTypeFilter ?? $baseNodeTypeOverride)) {
                 $renderedNode['matched'] = true;
                 $renderedNodes[$node->getPath()] = $renderedNode;
             } else {

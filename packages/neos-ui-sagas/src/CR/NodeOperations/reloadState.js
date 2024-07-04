@@ -22,7 +22,7 @@ export default function * watchReloadState({configuration}) {
 
         let nodes = [];
         if (isSearch) {
-            nodes = yield q(siteNodeContextPath).search(searchQuery, effectiveFilterNodeType).getForTreeWithParents();
+            nodes = yield q(siteNodeContextPath).search(searchQuery, effectiveFilterNodeType).getForTreeWithParents(effectiveFilterNodeType);
         } else {
             nodes = yield q([siteNodeContextPath, documentNodeContextPath]).neosUiDefaultNodes(
                 configuration.nodeTree.presets.default.baseNodeType,

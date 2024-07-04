@@ -157,7 +157,7 @@ export function * watchSearch({configuration}) {
             const query = q(contextPath);
 
             if (isSearch) {
-                matchingNodes = yield query.search(searchQuery, effectiveFilterNodeType).getForTreeWithParents();
+                matchingNodes = yield query.search(searchQuery, effectiveFilterNodeType).getForTreeWithParents(effectiveFilterNodeType);
             } else {
                 const clipboardNodeContextPath = yield select($get('cr.nodes.clipboard'));
                 const toggledNodes = yield select($get('ui.pageTree.toggled'));

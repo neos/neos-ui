@@ -94,6 +94,16 @@ test('Node tree preset "blog" shows nothing but page [🗋 Blog]', async (t) => 
         .ok('[🗋 Blog] did not show up after switching to node tree preset "blog".');
 });
 
+test.skip('Reloading the node tree while in preset "blog" results in nothing but page [🗋 Blog]', async (t) => {
+    await t.click('#btn-ToggleDocumentTreeFilter');
+    await t.click('#neos-NodeTreeFilter');
+    await t.click(Selector('[role="button"]').withText('Show Blog only'));
+    await t.click('#neos-PageTree-RefreshPageTree');
+
+    await t.expect(Page.treeNode.withExactText('Blog').exists)
+        .ok('[🗋 Blog] did not show up after switching to node tree preset "blog".');
+});
+
 test('Node tree preset "blog-articles" shows page [🗋 Blog] and all articles beneath it', async (t) => {
     await t.click('#btn-ToggleDocumentTreeFilter');
     await t.click('#neos-NodeTreeFilter');

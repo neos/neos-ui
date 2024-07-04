@@ -13,7 +13,7 @@ export const getFocused = (state: GlobalState) => {
 export const getToggled = (state: GlobalState) => $get(['ui', 'pageTree', 'toggled'], state);
 export const getLoading = (state: GlobalState) => $get(['ui', 'pageTree', 'loading'], state);
 export const getErrors = (state: GlobalState) => $get(['ui', 'pageTree', 'errors'], state);
-export const getHidden = (state: GlobalState) => $get(['ui', 'pageTree', 'hidden'], state);
+export const getVisible = (state: GlobalState) => state?.ui?.pageTree?.visible;
 export const getIntermediate = (state: GlobalState) => $get(['ui', 'pageTree', 'intermediate'], state);
 
 export const destructiveOperationsAreDisabledForPageTreeSelector = createSelector(

@@ -112,7 +112,7 @@ test('Node tree preset "blog-articles" shows page [🗋 Blog] and all articles b
 //
 // Original issue: https://github.com/neos/neos-ui/issues/3816
 //
-test.skip('BUG #3816: Switching back from node tree preset "blog" does not affect loading children in node tree preset "default"', async (t) => {
+test('BUG #3816: Switching back from node tree preset "blog" does not affect loading children in node tree preset "default"', async (t) => {
     await t.click(Page.getToggleChildrenButtonOf('Nested Page #1'));
     await t.expect(Page.treeNode.withExactText('Nested Page #2').exists)
         .ok('[🗋 Nested Page #2] did not show up after toggling children of [🗋 Nested Page #1] the first time.');
@@ -141,7 +141,7 @@ test.skip('BUG #3816: Switching back from node tree preset "blog" does not affec
 //
 // Original issue: https://github.com/neos/neos-ui/issues/2583
 //
-test.skip('BUG #2583: Searching the document tree does not break expansion in node tree preset "default"', async (t) => {
+test('BUG #2583: Searching the document tree does not break expansion in node tree preset "default"', async (t) => {
     await t.click(Page.getToggleChildrenButtonOf('Nested Page #1'));
     await t.expect(Page.treeNode.withExactText('Nested Page #2').exists)
         .ok('[🗋 Nested Page #2] did not show up after toggling children of [🗋 Nested Page #1] the first time.');

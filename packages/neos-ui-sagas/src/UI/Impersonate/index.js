@@ -7,15 +7,16 @@ import {showFlashMessage} from '@neos-project/neos-ui-error';
 export function * impersonateRestore({globalRegistry, routes}) {
     const {impersonateRestore} = backend.get().endpoints;
     const i18nRegistry = globalRegistry.get('i18n');
-    const errorMessage = i18nRegistry.translate(
-        'impersonate.error.restoreUser',
-        'Could not switch back to the original user.',
-        {},
-        'Neos.Neos',
-        'Main'
-    );
 
     yield takeEvery(actionTypes.User.Impersonate.RESTORE, function * restore(action) {
+        const errorMessage = i18nRegistry.translate(
+            'impersonate.error.restoreUser',
+            'Could not switch back to the original user.',
+            {},
+            'Neos.Neos',
+            'Main'
+        );
+
         try {
             const feedback = yield call(impersonateRestore, action.payload);
             const originUser = feedback?.origin?.accountIdentifier;

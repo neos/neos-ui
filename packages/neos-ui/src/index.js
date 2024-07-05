@@ -11,6 +11,7 @@ import {SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/src/r
 import backend from '@neos-project/neos-ui-backend-connector';
 import {handleActions} from '@neos-project/utils-redux';
 import {showFlashMessage} from '@neos-project/neos-ui-error';
+import {initializeI18n} from '@neos-project/neos-ui-i18n';
 
 import {
     appContainer,
@@ -64,7 +65,7 @@ async function main() {
 
     await Promise.all([
         loadNodeTypesSchema(),
-        loadTranslations(),
+        initializeI18n(),
         loadImpersonateStatus()
     ]);
 
@@ -168,14 +169,6 @@ async function loadNodeTypesSchema() {
     const {groups, roles} = nodeTypes;
     nodeTypesRegistry.setGroups(groups);
     nodeTypesRegistry.setRoles(roles);
-}
-
-async function loadTranslations() {
-    const {getJsonResource} = backend.get().endpoints;
-    const i18nRegistry = globalRegistry.get('i18n');
-    const translations = await getJsonResource(configuration.endpoints.translations);
-
-    i18nRegistry.setTranslations(translations);
 }
 
 async function loadImpersonateStatus() {

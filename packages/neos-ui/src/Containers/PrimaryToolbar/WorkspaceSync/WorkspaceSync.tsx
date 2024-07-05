@@ -14,7 +14,8 @@ import {connect} from 'react-redux';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
 import {neos} from '@neos-project/neos-ui-decorators';
-import {I18nRegistry, WorkspaceStatus} from '@neos-project/neos-ts-interfaces';
+import {WorkspaceStatus} from '@neos-project/neos-ts-interfaces';
+import type {I18nRegistry} from '@neos-project/neos-ui-i18n';
 import {Button} from '@neos-project/react-ui-components';
 
 import {WorkspaceSyncIcon} from './WorkspaceSyncIcon';

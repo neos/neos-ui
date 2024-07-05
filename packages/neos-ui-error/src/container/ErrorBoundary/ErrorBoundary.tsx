@@ -13,7 +13,7 @@ import React from 'react';
 import Logo from '@neos-project/react-ui-components/src/Logo';
 import Button from '@neos-project/react-ui-components/src/Button';
 import Icon from '@neos-project/react-ui-components/src/Icon';
-import {I18nRegistry} from '@neos-project/neos-ts-interfaces';
+import type {I18nRegistry} from '@neos-project/neos-ui-i18n';
 
 import styles from './style.module.css';
 

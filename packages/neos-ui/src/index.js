@@ -10,6 +10,7 @@ import fetchWithErrorHandling from '@neos-project/neos-ui-backend-connector/src/
 import {SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
 import backend from '@neos-project/neos-ui-backend-connector';
 import {handleActions} from '@neos-project/utils-redux';
+import {showFlashMessage} from '@neos-project/neos-ui-error';
 
 import {
     appContainer,
@@ -141,7 +142,11 @@ function initializeFetchWithErrorHandling() {
             message = exception.textContent;
         }
 
-        store.dispatch(actions.UI.FlashMessages.add('fetch error', message, 'error'));
+        showFlashMessage({
+            id: 'fetch error',
+            severity: 'error',
+            message
+        });
     });
 }
 
@@ -181,7 +186,11 @@ async function loadImpersonateStatus() {
             store.dispatch(actions.User.Impersonate.fetchStatus(impersonateState));
         }
     } catch (error) {
-        store.dispatch(actions.UI.FlashMessages.add('impersonateStatusError', error.message, 'error'));
+        showFlashMessage({
+            id: 'impersonateStatusError',
+            severity: 'error',
+            message: error.message
+        });
     }
 }
 

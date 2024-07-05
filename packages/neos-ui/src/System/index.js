@@ -1,7 +1,6 @@
 import {initializeJsAPI} from '@neos-project/neos-ui-backend-connector';
 import fetchWithErrorHandling from '@neos-project/neos-ui-backend-connector/src/FetchWithErrorHandling/index';
-
-import {terminateDueToFatalInitializationError} from './terminateDueToFatalInitializationError';
+import {terminateDueToFatalInitializationError} from '@neos-project/neos-ui-error';
 
 let initialData = null;
 function parseInitialData() {

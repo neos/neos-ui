@@ -4,6 +4,7 @@ import {takeLatest, put, select, take, race} from 'redux-saga/effects';
 import {getGuestFrameDocument} from '@neos-project/neos-ui-guest-frame/src/dom';
 
 import {actionTypes, actions} from '@neos-project/neos-ui-redux-store';
+import {showFlashMessage} from '@neos-project/neos-ui-error';
 
 /**
  * Load newly created page into canvas
@@ -80,7 +81,12 @@ export function * watchControlOverIFrame() {
         const nextAction = Object.keys(waitForNextAction).map(k => waitForNextAction[k])[0];
 
         if (nextAction.type === actionTypes.UI.ContentCanvas.REQUEST_REGAIN_CONTROL) {
-            yield put(actions.UI.FlashMessages.add('iframe access', nextAction.payload.errorMessage, 'error', 5000));
+            showFlashMessage({
+                id: 'iframe access',
+                severity: 'error',
+                message: nextAction.payload.errorMessage,
+                timeout: 5000
+            });
 
             //
             // We need to delay, so that the iframe gets cleared before we load a new src

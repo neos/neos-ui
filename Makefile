@@ -91,10 +91,9 @@ build-watch:
 	node esbuild.js --watch
 
 # clean anything before building for production just to be sure
-## Runs the production build. And also builds the subpackages for standalone use.
+## Runs the production build.
 build-production:
 	node esbuild.js --production
-	make build-subpackages
 
 build-e2e-testing:
 	node esbuild.js --production --e2e-testing

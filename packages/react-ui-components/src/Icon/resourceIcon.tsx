@@ -25,8 +25,6 @@ class ResourceIcon extends PureComponent<ResourceIconProps> {
     public render(): JSX.Element | null {
         const {padded, theme, label, icon, className, color, size} = this.props;
 
-
-
         if (!this.context) {
             console.error('ResourceIconContext missing! Cannot resolve uri: ', icon);
             return null;
@@ -43,6 +41,7 @@ class ResourceIcon extends PureComponent<ResourceIconProps> {
 
         let publicPath = rawPath;
         if (!rawPath.startsWith('Public/')) {
+            // legacy syntax not including the "Public" segment see https://github.com/neos/neos-ui/issues/2092#issuecomment-1606055787
             publicPath = `Public/${rawPath}`;
         }
 

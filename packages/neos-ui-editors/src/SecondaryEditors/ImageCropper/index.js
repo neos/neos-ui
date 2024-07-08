@@ -11,6 +11,7 @@ import CropConfiguration, {CustomAspectRatioOption, LockedAspectRatioStrategy} f
 import style from './style.module.css';
 
 import './react_crop.vanilla-css';
+import {ResourceIconContext} from '@neos-project/react-ui-components/src/Icon/resourceIcon';
 
 /**
  * Calculates the greatest common divisor for given numbers a, b
@@ -74,6 +75,8 @@ class AspectRatioItem extends PureComponent {
     i18nRegistry: globalRegistry.get('i18n')
 }))
 export default class ImageCropper extends PureComponent {
+    static contextType = ResourceIconContext;
+
     state = {
         cropConfiguration: CropConfiguration.fromNeosConfiguration(
             this.props.sourceImage,
@@ -176,7 +179,7 @@ export default class ImageCropper extends PureComponent {
         const aspectRatioLocked = cropConfiguration.aspectRatioStrategy instanceof LockedAspectRatioStrategy;
         const allowCustomRatios = cropConfiguration.aspectRatioOptions.some(option => option instanceof CustomAspectRatioOption);
         const {sourceImage, i18nRegistry} = this.props;
-        const src = sourceImage.previewUri || '/_Resources/Static/Packages/Neos.Neos/Images/dummy-image.svg';
+        const src = sourceImage.previewUri || this.context.createFromResourcePath('resource://Neos.Neos/Public/Images/dummy-image.svg');
 
         const toolbarRef = el => {
             this.toolbarNode = el;

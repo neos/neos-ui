@@ -9,12 +9,15 @@ import I18n from '@neos-project/neos-ui-i18n';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 import style from './style.module.css';
+import {ResourceIconContext} from '@neos-project/react-ui-components/src/Icon/resourceIcon';
 
 @neos(globalRegistry => ({
     editorRegistry: globalRegistry.get('inspector').get('editors'),
     i18nRegistry: globalRegistry.get('i18n')
 }))
 export default class EditorEnvelope extends PureComponent {
+    static contextType = ResourceIconContext;
+
     state = {
         showHelpMessage: false
     };
@@ -118,11 +121,30 @@ export default class EditorEnvelope extends PureComponent {
     };
 
     getThumbnailSrc(thumbnail) {
-        if (thumbnail.substr(0, 11) === 'resource://') {
-            thumbnail = '/_Resources/Static/Packages/' + thumbnail.substr(11);
+        const regex = /^resource:\/\/([^\\/]+)\/(.*)/;
+
+        const matches = thumbnail?.match(regex);
+
+        if (!matches) {
+            return thumbnail;
         }
 
-        return thumbnail;
+        if (!this.context) {
+            console.error('ResourceIconContext missing! Cannot resolve uri: ', thumbnail);
+            return null;
+        }
+
+        const [_, packageName, rawPath] = matches;
+
+        let publicPath = rawPath;
+        if (!rawPath.startsWith('Public/')) {
+            // legacy syntax not including the "Public" segment see https://github.com/neos/neos-ui/issues/2092#issuecomment-1606055787
+            publicPath = `Public/${rawPath}`;
+        }
+
+        const resourcePath = `resource://${packageName}/${publicPath}`;
+
+        return this.context.createFromResourcePath(resourcePath);
     }
 
     renderHelpMessage() {
@@ -134,7 +156,7 @@ export default class EditorEnvelope extends PureComponent {
         return (
             <Tooltip renderInline className={style.envelope__helpmessage}>
                 {helpMessage ? <ReactMarkdown children={translatedHelpMessage} linkTarget="_blank" /> : ''}
-                {helpThumbnail ? <img alt={label} src={helpThumbnailSrc} className={style.envelope__helpThumbnail} /> : ''}
+                {helpThumbnailSrc ? <img alt={label} src={helpThumbnailSrc} className={style.envelope__helpThumbnail} /> : ''}
             </Tooltip>
         );
     }

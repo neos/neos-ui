@@ -18,6 +18,7 @@ use Neos\ContentRepository\Core\ContentRepository;
 use Neos\ContentRepository\Core\DimensionSpace\DimensionSpacePoint;
 use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
 use Neos\Flow\Annotations as Flow;
+use Neos\Neos\Domain\NodeLabel\NodeLabelGeneratorInterface;
 
 /**
  * @internal for communication within the Neos UI only
@@ -35,11 +36,13 @@ final readonly class Conflicts implements \JsonSerializable, \Countable
 
     public static function builder(
         ContentRepository $contentRepository,
+        NodeLabelGeneratorInterface $nodeLabelGenerator,
         WorkspaceName $workspaceName,
         ?DimensionSpacePoint $preferredDimensionSpacePoint,
     ): ConflictsBuilder {
         return new ConflictsBuilder(
             contentRepository: $contentRepository,
+            nodeLabelGenerator: $nodeLabelGenerator,
             workspaceName: $workspaceName,
             preferredDimensionSpacePoint: $preferredDimensionSpacePoint
         );

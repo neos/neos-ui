@@ -326,6 +326,14 @@
                     <source>Discarded {0} changes.</source>
                 </trans-unit>
             </group>
+            <trans-unit id="switchedBaseWorkspace" xml:space="preserve">
+                <source>Switched base workspace to "{workspace}".</source>
+            </trans-unit>
+            <trans-unit id="workspaceContainsUnpublishedChanges" xml:space="preserve">
+                <source>Your personal workspace currently contains unpublished changes.
+                In order to switch to a different target workspace you need to either publish or discard pending changes first.
+                </source>
+            </trans-unit>
             <trans-unit id="syncUriPathSegment" xml:space="preserve">
                 <source>Syncronize with the title property</source>
             </trans-unit>
@@ -376,6 +384,12 @@
             </trans-unit>
             <trans-unit id="errorBoundary.footer" xml:space="preserve">
                 <source>For more information about the error please refer to the JavaScript console.</source>
+            </trans-unit>
+            <trans-unit id="NodeNotPublishedMissingParentNode" xml:space="preserve">
+                <source>Node could not be published, probably because of a missing parentNode. Please check that the parentNode has been published.</source>
+            </trans-unit>
+            <trans-unit id="NodeNotPublishedParentNodeNotInCurrentDimension" xml:space="preserve">
+                <source>Node could not be published, probably because the parentNode does not exist in the current dimension. Please check that the parentNode has been published.</source>
             </trans-unit>
             <trans-unit id="collapseAll" xml:space="preserve">
               <source>Collapse All</source>

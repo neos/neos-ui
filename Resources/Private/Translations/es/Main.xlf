@@ -554,6 +554,26 @@
         <source>Collapse All</source>
         <target state="translated">Contraer todo</target>
       </trans-unit>
+      <trans-unit id="NodeNotPublishedMissingParentNode" xml:space="preserve">
+        <source>Node could not be published, probably because of a missing parentNode. Please check that the parentNode has been published.</source>
+        <target state="translated">No se pudo publicar el nodo, probablemente debido a que falta un nodo principal. Verifique que parentNode haya sido publicado.</target>
+      </trans-unit>
+      <trans-unit id="NodeNotPublishedParentNodeNotInCurrentDimension" xml:space="preserve">
+        <source>Node could not be published, probably because the parentNode does not exist in the current dimension. Please check that the parentNode has been published.</source>
+        <target state="translated">No se pudo publicar el nodo, probablemente porque el parentNode no existe en la dimensión actual. Verifique que parentNode haya sido publicado.</target>
+      </trans-unit>
+      <trans-unit id="switchedBaseWorkspace" xml:space="preserve">
+        <source>Switched base workspace to "{workspace}".</source>
+        <target state="translated">Cambiado el espacio de trabajo en base a "{workspace}".</target>
+      </trans-unit>
+      <trans-unit id="workspaceContainsUnpublishedChanges" xml:space="preserve">
+        <source>Your personal workspace currently contains unpublished changes.
+                In order to switch to a different target workspace you need to either publish or discard pending changes first.
+                </source>
+        <target state="translated">Su espacio de trabajo personal contiene actualmente cambios sin publicar.
+                Para cambiar a un espacio de trabajo de destino diferente, primero debe publicar o descartar los cambios pendientes.
+                </target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

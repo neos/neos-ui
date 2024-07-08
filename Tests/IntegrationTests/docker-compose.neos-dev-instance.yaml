@@ -16,7 +16,7 @@ services:
       COMPOSER_CACHE_DIR: /home/circleci/.composer/cache
 
   db:
-    image: mysql:8
+    image: mariadb:10.6
     environment:
       MYSQL_DATABASE: neos
       MYSQL_ROOT_PASSWORD: not_a_real_password

@@ -132,12 +132,12 @@ final class RoutesProvider implements RoutesProviderInterface
         ];
 
         $routes['core']['modules'] = [
-            'workspaces' =>
+            'workspace' =>
                 $helper->buildCoreRoute(
                     controllerName: 'Backend\\Module',
                     actionName: 'index',
                     arguments: [
-                        'module' => 'management/workspaces'
+                        'module' => 'management/workspace'
                     ]
                 ),
             'userSettings' =>

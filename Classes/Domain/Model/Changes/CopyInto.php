@@ -66,7 +66,7 @@ class CopyInto extends AbstractStructuralChange
     {
         $subject = $this->getSubject();
         $parentNode = $this->getParentNode();
-        if ($parentNode && $subject && $this->canApply()) {
+        if ($parentNode && $this->canApply()) {
             $contentRepository = $this->contentRepositoryRegistry->get($subject->contentRepositoryId);
             $command = CopyNodesRecursively::createFromSubgraphAndStartNode(
                 $contentRepository->getContentGraph($subject->workspaceName)->getSubgraph(
@@ -77,15 +77,17 @@ class CopyInto extends AbstractStructuralChange
                 $subject,
                 OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->dimensionSpacePoint),
                 $parentNode->aggregateId,
-                null,
                 null
             );
             $contentRepository->handle($command);
 
+            $newlyCreatedNodeId = $command->nodeAggregateIdMapping->getNewNodeAggregateId($subject->aggregateId);
+            assert($newlyCreatedNodeId !== null); // cannot happen
             $newlyCreatedNode = $this->contentRepositoryRegistry->subgraphForNode($parentNode)
-                ->findNodeById(
-                    $command->nodeAggregateIdMapping->getNewNodeAggregateId($subject->aggregateId),
-                );
+                ->findNodeById($newlyCreatedNodeId);
+            if (!$newlyCreatedNode) {
+                throw new \RuntimeException(sprintf('Node %s was not found after copy.', $newlyCreatedNodeId->value), 1716023308);
+            }
             $this->finish($newlyCreatedNode);
             // NOTE: we need to run "finish" before "addNodeCreatedFeedback"
             // to ensure the new node already exists when the last feedback is processed

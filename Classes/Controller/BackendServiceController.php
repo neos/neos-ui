@@ -17,8 +17,10 @@ namespace Neos\Neos\Ui\Controller;
 use Neos\ContentRepository\Core\DimensionSpace\DimensionSpacePoint;
 use Neos\ContentRepository\Core\Feature\WorkspaceModification\Exception\WorkspaceIsNotEmptyException;
 use Neos\ContentRepository\Core\Feature\WorkspaceRebase\Dto\RebaseErrorHandlingStrategy;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
 use Neos\ContentRepository\Core\SharedModel\Exception\NodeAggregateCurrentlyDoesNotExist;
+use Neos\ContentRepository\Core\SharedModel\Exception\NodeAggregateDoesCurrentlyNotCoverDimensionSpacePoint;
 use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\FlowQuery\FlowQuery;
@@ -174,7 +176,9 @@ class BackendServiceController extends ActionController
             $changes->apply();
 
             $success = new Info();
-            $success->setMessage(sprintf('%d change(s) successfully applied.', $count));
+            $success->setMessage(
+                $this->getLabel('changesApplied', [$count], $count)
+            );
 
             $this->feedbackCollection->add($success);
         } catch (\Exception $e) {
@@ -261,9 +265,16 @@ class BackendServiceController extends ActionController
                     ]
                 ]);
             } catch (NodeAggregateCurrentlyDoesNotExist $e) {
-                throw new NodeAggregateCurrentlyDoesNotExist(
-                    'Node could not be published, probably because of a missing parentNode. Please check that the parentNode has been published.',
-                    1682762156
+                throw new \RuntimeException(
+                    $this->getLabel('NodeNotPublishedMissingParentNode'),
+                    1705053430,
+                    $e
+                );
+            } catch (NodeAggregateDoesCurrentlyNotCoverDimensionSpacePoint $e) {
+                throw new \RuntimeException(
+                    $this->getLabel('NodeNotPublishedParentNodeNotInCurrentDimension'),
+                    1705053432,
+                    $e
                 );
             }
         } catch (\Exception $e) {
@@ -410,6 +421,7 @@ class BackendServiceController extends ActionController
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
 
         $currentAccount = $this->securityContext->getAccount();
+        assert($currentAccount !== null);
         $userWorkspaceName = WorkspaceNameBuilder::fromAccountIdentifier(
             $currentAccount->getAccountIdentifier()
         );
@@ -431,9 +443,7 @@ class BackendServiceController extends ActionController
         } catch (WorkspaceIsNotEmptyException $exception) {
             $error = new Error();
             $error->setMessage(
-                'Your personal workspace currently contains unpublished changes.'
-                . ' In order to switch to a different target workspace you need to either publish'
-                . ' or discard pending changes first.'
+                $this->getLabel('workspaceContainsUnpublishedChanges')
             );
 
             $this->feedbackCollection->add($error);
@@ -457,7 +467,9 @@ class BackendServiceController extends ActionController
         $documentNode = $subgraph->findNodeById($command->documentNode->nodeAggregateId);
 
         $success = new Success();
-        $success->setMessage(sprintf('Switched base workspace to %s.', $targetWorkspaceName));
+        $success->setMessage(
+            $this->getLabel('switchedBaseWorkspace', ['workspace' => $targetWorkspaceName])
+        );
         $this->feedbackCollection->add($success);
 
         $updateWorkspaceInfo = new UpdateWorkspaceInfo($contentRepositoryId, $userWorkspaceName);
@@ -468,17 +480,19 @@ class BackendServiceController extends ActionController
         // todo ensure that https://github.com/neos/neos-ui/pull/3734 doesnt need to be refixed in Neos 9.0
         $redirectNode = $documentNode;
         while (true) {
+            // @phpstan-ignore-next-line
             $redirectNodeInBaseWorkspace = $subgraph->findNodeById($redirectNode->aggregateId);
             if ($redirectNodeInBaseWorkspace) {
                 break;
             } else {
+                // @phpstan-ignore-next-line
                 $redirectNode = $subgraph->findParentNode($redirectNode->aggregateId);
                 // get parent always returns Node
                 if (!$redirectNode) {
                     throw new \Exception(
                         sprintf(
                             'Wasn\'t able to locate any valid node in rootline of node %s in the workspace %s.',
-                            $documentNode->aggregateId->value,
+                            $documentNode?->aggregateId->value,
                             $targetWorkspaceName
                         ),
                         1458814469
@@ -486,6 +500,8 @@ class BackendServiceController extends ActionController
                 }
             }
         }
+        /** @var Node $documentNode */
+        /** @var Node $redirectNode */
 
         // If current document node exists in the base workspace, then reload, else redirect
         if ($redirectNode->equals($documentNode)) {

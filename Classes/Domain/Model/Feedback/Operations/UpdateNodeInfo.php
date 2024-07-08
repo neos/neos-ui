@@ -27,7 +27,7 @@ use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
  */
 class UpdateNodeInfo extends AbstractFeedback
 {
-    protected ?Node $node = null;
+    protected Node $node;
 
     /**
      * @Flow\Inject
@@ -68,7 +68,7 @@ class UpdateNodeInfo extends AbstractFeedback
         $this->isRecursive = true;
     }
 
-    public function getNode(): ?Node
+    public function getNode(): Node
     {
         return $this->node;
     }
@@ -80,7 +80,7 @@ class UpdateNodeInfo extends AbstractFeedback
 
     public function getDescription(): string
     {
-        return sprintf('Updated info for node "%s" is available.', $this->node?->aggregateId->value);
+        return sprintf('Updated info for node "%s" is available.', $this->node->aggregateId->value);
     }
 
     /**
@@ -102,11 +102,9 @@ class UpdateNodeInfo extends AbstractFeedback
      */
     public function serializePayload(ControllerContext $controllerContext): array
     {
-        return $this->node
-            ? [
-                'byContextPath' => $this->serializeNodeRecursively($this->node, $controllerContext->getRequest())
-            ]
-            : [];
+        return [
+            'byContextPath' => $this->serializeNodeRecursively($this->node, $controllerContext->getRequest())
+        ];
     }
 
     /**

@@ -1,5 +1,6 @@
 /* eslint-disable camelcase, react/jsx-pascal-case */
 export {default as enhanceWithClickOutside} from './enhanceWithClickOutside';
+export * from './resourceStreamWrapper';
 export {default as Badge} from './Badge';
 export {default as Bar} from './Bar';
 export {default as Button} from './Button';

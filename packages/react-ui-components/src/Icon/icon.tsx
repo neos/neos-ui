@@ -4,6 +4,7 @@ import {FontAwesomeIconProps} from '@fortawesome/react-fontawesome';
 import FontAwesomeIcon from './fontAwesomeIcon';
 import ResourceIcon, {ResourceIconProps} from './resourceIcon';
 import {defaultProps} from './iconDefaultProps';
+import {isResourceProtocol} from '../resourceStreamWrapper';
 
 type IconSize = 'xs' | 'sm' | 'lg' | '2x' | '3x';
 type IconPadding = 'none' | 'left' | 'right';
@@ -76,7 +77,7 @@ class Icon extends PureComponent<IconProps> {
     public render(): JSX.Element | null {
         const {icon} = this.props;
 
-        if (icon && icon.substr(0, 11) === 'resource://') {
+        if (icon && isResourceProtocol(icon)) {
             return <ResourceIcon {...this.props as ResourceIconProps} />;
         }
         return <FontAwesomeIcon {...this.props} />;

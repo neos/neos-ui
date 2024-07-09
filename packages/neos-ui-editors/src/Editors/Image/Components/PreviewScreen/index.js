@@ -4,7 +4,7 @@ import mergeClassNames from 'classnames';
 import {AssetUpload} from '../../../../Library/index';
 
 import {Thumbnail} from '../../Utils/index';
-import {Icon} from '@neos-project/react-ui-components';
+import {getRedirectForPublicPackageResourceUriByPath, Icon} from '@neos-project/react-ui-components';
 import style from './style.module.css';
 
 export default class PreviewScreen extends PureComponent {
@@ -52,7 +52,7 @@ export default class PreviewScreen extends PureComponent {
                         </div>
                         <img
                             className={(thumbnail ? style.cropArea__image : style['cropArea__image--placeholder'])}
-                            src={thumbnail ? thumbnail.uri : this.context.createFromResourcePath('resource://Neos.Neos/Public/Images/dummy-image.svg')}
+                            src={thumbnail ? thumbnail.uri : getRedirectForPublicPackageResourceUriByPath('resource://Neos.Neos/Public/Images/dummy-image.svg')}
                             style={thumbnail ? thumbnail.styles.thumbnail : {}}
                             alt={propertyName}
                             />

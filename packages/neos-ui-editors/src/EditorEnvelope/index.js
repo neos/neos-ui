@@ -9,6 +9,7 @@ import I18n from '@neos-project/neos-ui-i18n';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 import style from './style.module.css';
+import {getRedirectForPublicPackageResourceUriByPath, isResourceProtocol, normaliseLegacyResourcePath} from '@neos-project/react-ui-components/src/resourceStreamWrapper';
 
 @neos(globalRegistry => ({
     editorRegistry: globalRegistry.get('inspector').get('editors'),
@@ -118,11 +119,12 @@ export default class EditorEnvelope extends PureComponent {
     };
 
     getThumbnailSrc(thumbnail) {
-        if (thumbnail.substr(0, 11) === 'resource://') {
-            thumbnail = '/_Resources/Static/Packages/' + thumbnail.substr(11);
+        if (!thumbnail || !isResourceProtocol(thumbnail)) {
+            return thumbnail;
         }
-
-        return thumbnail;
+        return getRedirectForPublicPackageResourceUriByPath(
+            normaliseLegacyResourcePath(thumbnail)
+        );
     }
 
     renderHelpMessage() {

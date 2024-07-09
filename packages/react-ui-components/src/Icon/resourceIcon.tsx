@@ -4,6 +4,11 @@ import {ReactSVG} from 'react-svg';
 
 import {defaultProps} from './iconDefaultProps';
 import {IconProps, IconTheme} from './icon';
+import {
+    getRedirectForPublicPackageResourceUriByPath,
+    isResourceProtocol,
+    normaliseLegacyResourcePath
+} from '../resourceStreamWrapper';
 
 interface ResourceIconTheme extends IconTheme {
     readonly 'icon--resource': string;
@@ -19,11 +24,13 @@ class ResourceIcon extends PureComponent<ResourceIconProps> {
     public render(): JSX.Element | null {
         const {padded, theme, label, icon, className, color, size} = this.props;
 
-        if (!icon || icon.substr(0, 11) !== 'resource://') {
+        if (!icon || !isResourceProtocol(icon)) {
             return null;
         }
 
-        const iconResourcePath = '/_Resources/Static/Packages/' + icon.substr(11);
+        const iconResourcePath = getRedirectForPublicPackageResourceUriByPath(
+            normaliseLegacyResourcePath(icon)
+        );
         const classNames = mergeClassNames(
             theme!.icon,
             className,

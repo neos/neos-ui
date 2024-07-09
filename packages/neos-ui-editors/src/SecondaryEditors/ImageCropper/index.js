@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import ReactCrop from 'react-image-crop';
 
-import {Icon, IconButton, TextInput} from '@neos-project/react-ui-components';
+import {getRedirectForPublicPackageResourceUriByPath, Icon, IconButton, TextInput} from '@neos-project/react-ui-components';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {$get} from 'plow-js';
 
@@ -176,7 +176,7 @@ export default class ImageCropper extends PureComponent {
         const aspectRatioLocked = cropConfiguration.aspectRatioStrategy instanceof LockedAspectRatioStrategy;
         const allowCustomRatios = cropConfiguration.aspectRatioOptions.some(option => option instanceof CustomAspectRatioOption);
         const {sourceImage, i18nRegistry} = this.props;
-        const src = sourceImage.previewUri || this.context.createFromResourcePath('resource://Neos.Neos/Public/Images/dummy-image.svg');
+        const src = sourceImage.previewUri || getRedirectForPublicPackageResourceUriByPath('resource://Neos.Neos/Public/Images/dummy-image.svg');
 
         const toolbarRef = el => {
             this.toolbarNode = el;

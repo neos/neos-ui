@@ -6,11 +6,8 @@ import {AssetUpload} from '../../../../Library/index';
 import {Thumbnail} from '../../Utils/index';
 import {Icon} from '@neos-project/react-ui-components';
 import style from './style.module.css';
-import {ResourceIconContext} from '@neos-project/react-ui-components/src/Icon/resourceIcon';
 
 export default class PreviewScreen extends PureComponent {
-    static contextType = ResourceIconContext;
-
     static propTypes = {
         className: PropTypes.string,
         propertyName: PropTypes.string,

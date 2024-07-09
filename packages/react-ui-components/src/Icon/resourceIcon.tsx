@@ -13,41 +13,17 @@ export interface ResourceIconProps extends Omit<IconProps, 'theme'> {
     readonly theme?: ResourceIconTheme;
 }
 
-export const ResourceIconContext = React.createContext<{createFromResourcePath:(path: string) => string} | null>(null);
-
 class ResourceIcon extends PureComponent<ResourceIconProps> {
-    public static readonly contextType = ResourceIconContext;
-
-    context!: React.ContextType<typeof ResourceIconContext>;
-
     public static readonly defaultProps = defaultProps;
 
     public render(): JSX.Element | null {
         const {padded, theme, label, icon, className, color, size} = this.props;
 
-        if (!this.context) {
-            console.error('ResourceIconContext missing! Cannot resolve uri: ', icon);
+        if (!icon || icon.substr(0, 11) !== 'resource://') {
             return null;
         }
 
-        const regex = /^resource:\/\/([^\\/]+)\/(.*)/;
-
-        const matches = icon?.match(regex);
-
-        if (!matches) {
-            return null;
-        }
-        const [_, packageName, rawPath] = matches;
-
-        let publicPath = rawPath;
-        if (!rawPath.startsWith('Public/')) {
-            // legacy syntax not including the "Public" segment see https://github.com/neos/neos-ui/issues/2092#issuecomment-1606055787
-            publicPath = `Public/${rawPath}`;
-        }
-
-        const resourcePath = `resource://${packageName}/${publicPath}`;
-
-        const iconResourcePath = this.context.createFromResourcePath(resourcePath);
+        const iconResourcePath = '/_Resources/Static/Packages/' + icon.substr(11);
         const classNames = mergeClassNames(
             theme!.icon,
             className,

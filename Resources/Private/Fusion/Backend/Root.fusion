@@ -134,9 +134,6 @@ backend = Neos.Fusion:Template {
                 generateUriPathSegment = Neos.Fusion:UriBuilder {
                     action = 'generateUriPathSegment'
                 }
-                redirectToResourceUri = Neos.Fusion:UriBuilder {
-                    action = 'redirectToResourceUri'
-                }
                 getWorkspaceInfo = Neos.Fusion:UriBuilder {
                     action = 'getWorkspaceInfo'
                 }

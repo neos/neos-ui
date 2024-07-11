@@ -51,6 +51,11 @@ interface ShallowDropDownContentsTheme {
 
 export interface ShallowDropDownContentsProps {
     /**
+     * An optional `id` to attach to the wrapper.
+     */
+    readonly id?: string;
+
+    /**
      * An optional `className` to attach to the wrapper.
      */
     readonly className?: string;
@@ -198,6 +203,7 @@ export default class ShallowDropDownContents extends PureComponent<ShallowDropDo
 
     public render(): JSX.Element | null {
         const {
+            id,
             className,
             children,
             theme,
@@ -217,6 +223,7 @@ export default class ShallowDropDownContents extends PureComponent<ShallowDropDo
         if (isOpen) {
             const contents = (
                 <ul
+                    id={id}
                     className={finalClassName}
                     aria-hidden={isOpen ? 'false' : 'true'}
                     aria-label="dropdown"

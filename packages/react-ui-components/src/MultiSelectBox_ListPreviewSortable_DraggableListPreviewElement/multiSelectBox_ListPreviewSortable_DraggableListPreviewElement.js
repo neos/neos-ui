@@ -48,8 +48,8 @@ const spec = {
             index: props.index
         };
     },
-    canDrag({values, disabled}) {
-        return !disabled && (values && values.length > 1);
+    canDrag({values, disabled, allowDragging}) {
+        return allowDragging && !disabled && (values && values.length > 1);
     }
 }, (connect, monitor) => ({
     connectDragSource: connect.dragSource(),
@@ -65,6 +65,7 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
         }),
         values: PropTypes.arrayOf(PropTypes.string),
         disabled: PropTypes.bool,
+        allowDragging: PropTypes.bool,
 
         // Drag&Drop specific propTypes
         dndType: PropTypes.string.isRequired,
@@ -103,6 +104,7 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
         const {
             option,
             disabled,
+            allowDragging,
             connectDragSource,
             connectDropTarget,
             isDragging,
@@ -117,7 +119,7 @@ export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElem
 
         // TODO Loading State: const {icon, label} = option || {label: `[Loading ${value}]`};
 
-        const isDraggable = !disabled && (values && values.length > 1);
+        const isDraggable = allowDragging && !disabled && (values && values.length > 1);
 
         const finalClassNames = mergeClassNames({
             [theme.selectedOptions__item]: true,

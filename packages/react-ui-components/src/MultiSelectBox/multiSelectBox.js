@@ -32,6 +32,11 @@ class MultiSelectBox extends PureComponent {
         disabled: PropTypes.bool,
 
         /**
+         * Allows dragging.
+         */
+        allowDragging: PropTypes.bool,
+
+        /**
          * Additional className wich will be applied
          */
         className: PropTypes.string,

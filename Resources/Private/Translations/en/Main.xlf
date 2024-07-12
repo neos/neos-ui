@@ -380,6 +380,12 @@
             <trans-unit id="copyNodeTypeNameToClipboard" xml:space="preserve">
                 <source>Copy node type to clipboard</source>
             </trans-unit>
+            <trans-unit id="dimensions.doesNotExistsInDimension" xml:space="preserve">
+                <source>The current document does not exist in the dimension</source>
+            </trans-unit>
+            <trans-unit id="dimensions.combinationNotAllowed" xml:space="preserve">
+                <source>This combination of dimensions is not allowed</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>

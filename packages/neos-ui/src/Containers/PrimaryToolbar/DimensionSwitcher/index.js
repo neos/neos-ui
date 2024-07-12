@@ -31,7 +31,9 @@ SelectedPreset.propTypes = {
 @connect($transform({
     contentDimensions: selectors.CR.ContentDimensions.byName,
     allowedPresets: selectors.CR.ContentDimensions.allowedPresets,
-    activePresets: selectors.CR.ContentDimensions.activePresets
+    activePresets: selectors.CR.ContentDimensions.activePresets,
+    getNodeByContextPath: selectors.CR.Nodes.nodeByContextPath,
+    documentNode: selectors.CR.Nodes.documentNodeSelector
 }), {
     selectPreset: actions.CR.ContentDimensions.selectPreset,
     setAllowed: actions.CR.ContentDimensions.setAllowed
@@ -45,6 +47,8 @@ export default class DimensionSwitcher extends PureComponent {
         activePresets: PropTypes.object.isRequired,
         allowedPresets: PropTypes.object.isRequired,
         selectPreset: PropTypes.func.isRequired,
+        getNodeByContextPath: PropTypes.func.isRequired,
+        documentNode: PropTypes.object.isRequired,
         setAllowed: PropTypes.func.isRequired,
 
         i18nRegistry: PropTypes.object.isRequired
@@ -61,6 +65,16 @@ export default class DimensionSwitcher extends PureComponent {
         transientPresets: {},
         loadingPresets: {}
     };
+
+    componentDidMount() {
+        const activePresets = mapValues(
+            this.props.activePresets,
+            dimensionPreset => dimensionPreset.name
+        );
+        this.setState({
+            transientPresets: activePresets
+        });
+    }
 
     getDimensionIcon = (dimensionName, contentDimensionsObject) => {
         const dimensionConfiguration = contentDimensionsObject[dimensionName];
@@ -153,11 +167,21 @@ export default class DimensionSwitcher extends PureComponent {
         this.setState({isOpen: false});
     }
 
+    createDirectDimensionsLink = (dimensionName, presetName) => {
+        const {documentNode} = this.props;
+
+        const nodeContextPath = documentNode.properties._path + ';' + dimensionName + '=' + presetName
+        const uri = new URL(window.location.href);
+        uri.searchParams.set('node', nodeContextPath);
+        return uri.toString();
+    }
+
     renderSingleDimensionSelector = (dimensionName, contentDimensionsObject) => {
         const dimensionConfiguration = contentDimensionsObject[dimensionName];
         const icon = this.getDimensionIcon(dimensionName, contentDimensionsObject);
         // First look for active preset in transient state, else take it from activePresets prop
         const activePreset = this.getEffectivePresets(this.state.transientPresets)[dimensionName];
+
         return (
             <DimensionSelector
                 isLoading={this.state.loadingPresets[dimensionName]}
@@ -253,15 +277,46 @@ export default class DimensionSwitcher extends PureComponent {
         return null;
     }
 
+    getDocumentDimensions(dimensionName) {
+        const {getNodeByContextPath, documentNode, allowedPresets, contentDimensions} = this.props;
+        const currentDocumentNode = getNodeByContextPath(documentNode.contextPath)
+        if (!currentDocumentNode.dimensions || currentDocumentNode.length === 0) {
+            return allowedPresets[dimensionName]
+        }
+
+        const variants = [...currentDocumentNode.otherNodeVariants];
+        variants.push(currentDocumentNode.dimensions)
+
+        for (const dimensionKey of Object.keys(contentDimensions)) {
+            if (dimensionKey === dimensionName || Object.keys(contentDimensions).length === 1) {
+                break;
+            }
+            Object.entries(variants).forEach(entry => {
+                const [key, value] = entry;
+                if (value[dimensionKey] !== this.state.transientPresets[dimensionKey]) {
+                    delete variants[key]
+                }
+            });
+        }
+        const dimensions = []
+        Object.values(variants).forEach(entry => {
+            dimensions.push(entry[dimensionName]);
+        });
+
+        return dimensions;
+    }
+
     presetsForDimension(dimensionName) {
         const {contentDimensions, allowedPresets, i18nRegistry} = this.props;
         const dimensionConfiguration = $get(dimensionName, contentDimensions);
-
+        const documentDimensions = this.getDocumentDimensions(dimensionName);
         return mapValues(dimensionConfiguration.presets,
             (presetConfiguration, presetName) => {
                 return Object.assign({}, presetConfiguration, {
                     label: i18nRegistry.translate(presetConfiguration.label),
-                    disallowed: !(allowedPresets[dimensionName] && allowedPresets[dimensionName].includes(presetName))
+                    disallowed: !(allowedPresets[dimensionName] && allowedPresets[dimensionName].includes(presetName)),
+                    covered: documentDimensions.some(dimension => presetConfiguration.values.includes(dimension)),
+                    url: (Object.keys(contentDimensions).length === 1) ? this.createDirectDimensionsLink(dimensionName, presetName) : null
                 });
             });
     }

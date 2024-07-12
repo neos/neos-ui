@@ -17,6 +17,7 @@
 }
 .listPreviewElement--isHighlighted {
     background-color: var(--colors-PrimaryBlue) !important;
+    background-image: none !important;
 }
 
 .listPreviewElement--isHighlighted > span {

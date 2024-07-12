@@ -1,11 +1,11 @@
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 import Command from '@ckeditor/ckeditor5-core/src/command';
-import {findAncestor} from '@ckeditor/ckeditor5-table/src/commands/utils';
 
 class InsideTableCommand extends Command {
     refresh() {
         const {selection} = this.editor.model.document;
-        const tableParent = findAncestor('table', selection.getFirstPosition());
+        const tableParent = selection.getFirstPosition().findAncestor('table');
+
         this.value = Boolean(tableParent);
     }
 

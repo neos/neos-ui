@@ -1,5 +1,5 @@
 import Command from '@ckeditor/ckeditor5-core/src/command';
-import findLinkRange from '@ckeditor/ckeditor5-link/src/findlinkrange';
+import findAttributeRange from '@ckeditor/ckeditor5-typing/src/utils/findattributerange'
 import toMap from '@ckeditor/ckeditor5-utils/src/tomap';
 
 export default class LinkAttributeCommand extends Command {
@@ -27,7 +27,7 @@ export default class LinkAttributeCommand extends Command {
         model.change(writer => {
             if (toggleMode && !value) {
                 const rangesToUnset = selection.isCollapsed ?
-                    [findLinkRange(selection.getFirstPosition(), selection.getAttribute('linkHref'), model)] : selection.getRanges();
+                    [findAttributeRange(selection.getFirstPosition(), selection.getAttribute('linkHref'), model)] : selection.getRanges();
                 for (const range of rangesToUnset) {
                     writer.removeAttribute(this.attributeKey, range);
                 }
@@ -35,7 +35,7 @@ export default class LinkAttributeCommand extends Command {
                 const position = selection.getFirstPosition();
 
                 if (selection.hasAttribute('linkHref')) {
-                    const linkRange = findLinkRange(selection.getFirstPosition(), selection.getAttribute('linkHref'), model);
+                    const linkRange = findAttributeRange(selection.getFirstPosition(), selection.getAttribute('linkHref'), model);
                     if (value === false) {
                         writer.removeAttribute(this.attributeKey, linkRange);
                     } else {

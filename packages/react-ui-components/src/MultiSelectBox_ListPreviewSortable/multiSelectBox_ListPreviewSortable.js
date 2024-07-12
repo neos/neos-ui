@@ -31,6 +31,7 @@ export default class MultiSelectBox_ListPreviewSortable extends PureComponent {
         values: PropTypes.arrayOf(PropTypes.string),
         onValuesChange: PropTypes.func.isRequired,
         ListPreviewElement: PropTypes.any.isRequired,
+        allowDragging: PropTypes.bool,
 
         // API with MultiSelectBox
         optionValueAccessor: PropTypes.func.isRequired

@@ -63,6 +63,9 @@ class NodePropertyConversionService
             case 'DateTime':
                 return $this->convertDateTime($rawValue);
 
+            case 'float':
+                return $this->convertFloat($rawValue);
+
             case 'integer':
                 return $this->convertInteger($rawValue);
 
@@ -153,6 +156,20 @@ class NodePropertyConversionService
         return null;
     }
 
+    /**
+     * Convert raw value to float
+     *
+     * @param string|array<int|string,mixed> $rawValue
+     */
+    protected function convertFloat(string|array $rawValue): ?float
+    {
+        if (is_numeric($rawValue)) {
+            return (float)$rawValue;
+        }
+
+        return null;
+    }
+    
     /**
      * Convert raw value to integer
      *

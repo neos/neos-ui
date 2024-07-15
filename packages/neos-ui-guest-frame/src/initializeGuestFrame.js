@@ -70,24 +70,19 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
 
     // Filter nodes that are already present in the redux store and duplicates
     const nodesByContextPath = store.getState().cr.nodes.byContextPath;
-    const nodesAlreadyPresentInStore = {};
     const notFullyLoadedNodeContextPaths = [...new Set(nodeContextPathsInGuestFrame)].filter((contextPath) => {
         const node = nodesByContextPath[contextPath];
         const nodeIsLoaded = node !== undefined && node.isFullyLoaded;
-        if (nodeIsLoaded) {
-            nodesAlreadyPresentInStore[contextPath] = node;
-            return false;
-        }
-        return true;
+        return !nodeIsLoaded;
     });
 
     // Load remaining list of not fully loaded nodes from the backend if there are any
     const fullyLoadedNodesFromContent = notFullyLoadedNodeContextPaths.length > 0 ? (yield q(notFullyLoadedNodeContextPaths).get()).reduce((nodes, node) => {
         nodes[node.contextPath] = node;
         return nodes;
-    }, {}) : [];
+    }, {}) : {};
 
-    let nodes = Object.assign(
+    const nodes = Object.assign(
         {},
         legacyNodeData, // Merge legacy node data from the guest frame - remove with Neos 9.0
         fullyLoadedNodesFromContent,
@@ -98,9 +93,6 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
 
     // Merge new nodes into the store
     yield put(actions.CR.Nodes.merge(nodes));
-
-    // Combine new and existing nodes into a list for initialisation in the guest frame
-    nodes = Object.assign(nodes, nodesAlreadyPresentInStore);
 
     // Remove the legacy inline scripts after initialization - remove with Neos 9.0
     Array.prototype.forEach.call(guestFrameWindow.document.querySelectorAll('script[data-neos-nodedata]'), element => element.parentElement.removeChild(element));
@@ -186,8 +178,7 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
             store,
             globalRegistry,
             nodeTypesRegistry,
-            inlineEditorRegistry,
-            nodes
+            inlineEditorRegistry
         });
 
         requestIdleCallback(() => {

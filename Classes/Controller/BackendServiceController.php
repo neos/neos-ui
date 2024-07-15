@@ -532,6 +532,7 @@ class BackendServiceController extends ActionController
         $createContext = array_shift($chain);
         $finisher = array_pop($chain);
 
+        // we deduplicate passed nodes here
         $nodeContextPaths = array_unique(array_column($createContext['payload'], '$node'));
 
         $flowQuery = new FlowQuery(array_map(

@@ -152,7 +152,7 @@ export function * watchCurrentDocument({globalRegistry, configuration}) {
             yield put(actions.UI.ContentTree.setAsLoading(contextPath));
 
             const nodeTypeFilter = `${nodeTypesRegistry.getRole('contentCollection')},${nodeTypesRegistry.getRole('content')}`;
-            const nodes = yield q([contextPath, contextPath]).neosUiDefaultNodes(
+            const nodes = yield q([contextPath]).neosUiDefaultNodes(
                 nodeTypeFilter,
                 configuration.structureTree.loadingDepth,
                 [],

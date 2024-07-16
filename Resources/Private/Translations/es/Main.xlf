@@ -540,7 +540,11 @@
       </trans-unit>
       <trans-unit id="copyNodeTypeNameToClipboard" xml:space="preserve">
         <source>Copy node type to clipboard</source>
-        <target state="translated">Copiar tipo de nodo al portapapeles</target>
+        <target state="translated">Copiar el tipo de nodo al portapapeles</target>
+      </trans-unit>
+      <trans-unit id="collapseAll" xml:space="preserve">
+        <source>Collapse All</source>
+        <target state="translated">Contraer todo</target>
       </trans-unit>
       <trans-unit id="syncPersonalWorkSpace" xml:space="preserve">
         <source>Synchronize personal workspace</source>

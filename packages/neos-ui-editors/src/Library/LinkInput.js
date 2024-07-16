@@ -296,7 +296,7 @@ export default class LinkInput extends PureComponent {
                     value={''}
                     plainInputMode={isUri(this.state.searchTerm)}
                     onValueChange={this.handleValueChange}
-                    placeholder={this.props.i18nRegistry.translate(this.props?.options?.placeholder || 'Neos.Neos.Ui:Main:ckeditor__toolbar__link__placeholder', 'Paste a link, or search')}
+                    placeholder={this.props.i18nRegistry.translate(this.props?.options?.placeholder || 'Neos.Neos:Main:content.inspector.editors.linkEditor.search', 'Paste a link, or type to search')}
                     displayLoadingIndicator={this.state.isLoading}
                     displaySearchBox={true}
                     setFocus={this.props.setFocus}

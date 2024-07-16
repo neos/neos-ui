@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {SelectBox, MultiSelectBox} from '@neos-project/react-ui-components';
 import {neos} from '@neos-project/neos-ui-decorators';
-import {shouldDisplaySearchBox, searchOptions, processSelectBoxOptions} from './SelectBoxHelpers';
+import {shouldDisplaySearchBox, searchOptions, processSelectBoxOptions} from './selectBoxHelpers';
 
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')
@@ -48,10 +48,10 @@ export default class SimpleSelectBoxEditor extends PureComponent {
     };
 
     render() {
-        const {commit, value, i18nRegistry, className} = this.props;
+        const {commit, i18nRegistry, className, value} = this.props;
         const options = Object.assign({}, this.constructor.defaultOptions, this.props.options);
 
-        const processedSelectBoxOptions = processSelectBoxOptions(i18nRegistry, options.values);
+        const processedSelectBoxOptions = processSelectBoxOptions(i18nRegistry, options.values, value);
 
         const allowEmpty = options.allowEmpty || Object.prototype.hasOwnProperty.call(options.values, '');
 

@@ -94,7 +94,7 @@ test('Check the nodetype help in create dialog', async t => {
 
     subSection('Open context help and check for Markdown rendering');
     await t
-        .click(ReactSelector('NodeTypeItem').withProps({nodeType: {label: 'Headline_Test'}}).find('button svg[data-icon="question-circle"]'))
+        .click(ReactSelector('NodeTypeItem').withProps({nodeType: {label: 'Headline_Test'}}).find('button svg[data-icon="circle-question"]'))
         .expect(ReactSelector('ReactMarkdown').find('strong').withText('test').exists).ok('Bold test from Markdown has been rendered');
 });
 
@@ -177,21 +177,21 @@ test('Can create content node from inside InlineUI', async t => {
 
     subSection('Inline validation');
     // We have to wait for ajax requests to be triggered, since they are debounced for 0.5s
-    await t.wait(600);
+    await t.wait(1600);
     await changeRequestLogger.clear();
     await t
         .expect(Selector('.test-headline h1').exists).ok('Validation tooltip appeared')
         .click('.test-headline h1')
         .pressKey('ctrl+a delete')
         .switchToMainWindow()
-        .wait(600)
+        .wait(1600)
         .expect(ReactSelector('InlineValidationTooltips').exists).ok('Validation tooltip appeared');
     await t
         .expect(changeRequestLogger.count(() => true)).eql(0, 'No requests were fired with invalid state');
     await t
         .switchToIframe(contentIframeSelector)
         .typeText(Selector('.test-headline h1'), 'Some text')
-        .wait(600);
+        .wait(1600);
     await t.expect(changeRequestLogger.count(() => true)).eql(1, 'Request fired when field became valid');
 
     subSection('Create a link to node');
@@ -228,7 +228,7 @@ test('Inline CKEditor mode `paragraph: false` works as expected', async t => {
         .expect(Selector('.neos-contentcollection').withText('Foo Bar').exists).ok('Inserted text exists');
 
     await t.switchToMainWindow();
-    await t.wait(500); // we debounce the change
+    await t.wait(1500); // we debounce the change
     await t.expect(ReactSelector('Inspector TextAreaEditor').withProps({ value: 'Foo Bar<br>Bun Buz'}).exists).ok('The TextAreaEditor mirrors the expected value')
 });
 

@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="imageCropper__aspect-ratio-placeholder" xml:space="preserve">
         <source>Choose an Aspect Ratio</source>
-        <target xml:lang="pt-PT" state="translated">Escolha uma proporção</target>
+        <target xml:lang="pt-PT" state="translated">Escolha uma Proporção</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__bold" xml:space="preserve">
         <source>Bold</source>
@@ -244,7 +244,7 @@
       </trans-unit>
       <trans-unit id="Shortcut__UI.RightSideBar.toggle" xml:space="preserve">
         <source>Toggle inspector</source>
-        <target xml:lang="pt-PT" state="translated">Ativar/Desativar inspetor</target>
+        <target xml:lang="pt-PT" state="translated">Exibir/Ocultar inspetor</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.FullScreen.toggle" xml:space="preserve">
         <source>Toggle full screen</source>
@@ -284,7 +284,7 @@
       </trans-unit>
       <trans-unit id="Shortcut__UI.Inspector.discard" xml:space="preserve">
         <source>Discard Inspector</source>
-        <target xml:lang="pt-PT" state="translated">Descsartar inspetor</target>
+        <target xml:lang="pt-PT" state="translated">Descartar inspetor</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.Inspector.escape" xml:space="preserve">
         <source>Escape Inspector</source>
@@ -362,11 +362,11 @@
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__style__h1" xml:space="preserve">
         <source>Headline 1</source>
-        <target state="translated">Cabeçalho 1</target>
+        <target state="translated">Título 1</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__style__h3" xml:space="preserve">
         <source>Headline 3</source>
-        <target state="translated">Cabeçalho 3</target>
+        <target state="translated">Título 3</target>
       </trans-unit>
       <trans-unit id="above" xml:space="preserve">
         <source>Above</source>
@@ -394,15 +394,15 @@
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__style__h4" xml:space="preserve">
         <source>Headline 4</source>
-        <target state="translated">Cabeçalho 4</target>
+        <target state="translated">Título 4</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__style__h5" xml:space="preserve">
         <source>Headline 5</source>
-        <target state="translated">Cabeçalho 5</target>
+        <target state="translated">Título 5</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__style__h6" xml:space="preserve">
         <source>Headline 6</source>
-        <target state="translated">Cabeçalho 6</target>
+        <target state="translated">Título 6</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__style__pre" xml:space="preserve">
         <source>Preformatted</source>
@@ -470,7 +470,7 @@
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__style__h2" xml:space="preserve">
         <source>Headline 2</source>
-        <target state="translated">Cabeçalho 2</target>
+        <target state="translated">Título 2</target>
       </trans-unit>
       <trans-unit id="inspectorMutlipleDocumentNodesSelectedTooltip" xml:space="preserve">
         <source>Select a single content element in order to be able to edit its properties</source>

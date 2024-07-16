@@ -531,6 +531,10 @@
         <source>Copy node type to clipboard</source>
         <target state="translated">Copiar o tipo de nó para a área de transferência</target>
       </trans-unit>
+      <trans-unit id="invalidValue" xml:space="preserve">
+        <source>Invalid value</source>
+        <target state="needs-translation">Valor Inválido</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -504,6 +504,10 @@
         <source>Copy technical details</source>
         <target state="translated">Copiar detalhes técnicos</target>
       </trans-unit>
+      <trans-unit id="invalidValue" xml:space="preserve">
+        <source>Invalid value</source>
+        <target state="needs-translation">Valor inválido</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

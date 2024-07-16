@@ -507,6 +507,10 @@
         <source>Collapse All</source>
         <target state="translated">Colapsar Tudo</target>
       </trans-unit>
+      <trans-unit id="invalidValue" xml:space="preserve">
+        <source>Invalid value</source>
+        <target state="needs-translation">Valor Inválido</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

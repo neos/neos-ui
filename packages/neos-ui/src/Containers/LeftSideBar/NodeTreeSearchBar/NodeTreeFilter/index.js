@@ -5,7 +5,7 @@ import {$get} from 'plow-js';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {SelectBox} from '@neos-project/react-ui-components';
 
-import {searchOptions} from '@neos-project/neos-ui-editors/src/Editors/SelectBox/SelectBoxHelpers.js';
+import {searchOptions} from '@neos-project/neos-ui-editors/src/Editors/SelectBox/selectBoxHelpers.js';
 
 import style from './style.module.css';
 

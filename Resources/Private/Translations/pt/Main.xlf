@@ -12,7 +12,7 @@
       </trans-unit>
       <trans-unit id="copy__from__to--description" xml:space="preserve">
         <source>Please select the position at which you want {source} inserted relative to {target}.</source>
-        <target xml:lang="pt-BR" state="translated">Por favor selecione a posição na qual você quer {source} inserido relativo a {target}.</target>
+        <target xml:lang="pt-BR" state="translated">Por favor, selecione a posição onde deseja inserir a {source} em relação a {target}.</target>
       </trans-unit>
       <trans-unit id="insert" xml:space="preserve">
         <source>Insert</source>
@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="imageCropper__aspect-ratio-placeholder" xml:space="preserve">
         <source>Choose an Aspect Ratio</source>
-        <target xml:lang="pt-BR" state="translated">Escolha uma proporção</target>
+        <target xml:lang="pt-BR" state="translated">Escolha uma Proporção</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__bold" xml:space="preserve">
         <source>Bold</source>
@@ -48,35 +48,35 @@
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__strikethrough" xml:space="preserve">
         <source>Strikethrough</source>
-        <target xml:lang="pt-BR" state="translated">Tachado</target>
+        <target xml:lang="pt-BR" state="translated">Rasurado</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link" xml:space="preserve">
         <source>Link</source>
-        <target xml:lang="pt-BR" state="translated">Link</target>
+        <target xml:lang="pt-BR" state="translated">Criar Hiperligação</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__unlink" xml:space="preserve">
         <source>Unlink</source>
-        <target xml:lang="pt-BR" state="needs-translation">Unlink</target>
+        <target xml:lang="pt-BR" state="translated">Remover Hiperligação</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__hideOptions" xml:space="preserve">
         <source>Hide link options</source>
-        <target xml:lang="pt-BR" state="needs-translation">Hide link options</target>
+        <target xml:lang="pt-BR" state="translated">Esconder opções da hiperligação</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__showOptions" xml:space="preserve">
         <source>Link options</source>
-        <target xml:lang="pt-BR" state="translated">Opções de ligação</target>
+        <target xml:lang="pt-BR" state="translated">Opções da hiperligação</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__noFollow" xml:space="preserve">
         <source>No follow</source>
-        <target xml:lang="pt-BR" state="needs-translation">No follow</target>
+        <target xml:lang="pt-BR" state="translated">Não seguir (no follow)</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__targetBlank" xml:space="preserve">
         <source>Open in new window</source>
-        <target xml:lang="pt-BR" state="translated">Abrir numa janela nova</target>
+        <target xml:lang="pt-BR" state="translated">Abrir em nova janela</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__titlePlaceholder" xml:space="preserve">
         <source>Enter link title</source>
-        <target xml:lang="pt-BR" state="translated">Insira o título da ligação</target>
+        <target xml:lang="pt-BR" state="translated">Defina o título da hiperligação</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__title" xml:space="preserve">
         <source>Title</source>
@@ -84,31 +84,31 @@
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__anchorPlaceholder" xml:space="preserve">
         <source>Enter anchor name</source>
-        <target xml:lang="pt-BR" state="translated">Digite o nome da âncora</target>
+        <target xml:lang="pt-BR" state="translated">Insira o nome do identificador</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__anchor" xml:space="preserve">
         <source>Link to anchor</source>
-        <target xml:lang="pt-BR" state="translated">Ligação à âncora</target>
+        <target xml:lang="pt-BR" state="translated">Hiperligar a um identificador</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__edit" xml:space="preserve">
         <source>Edit link</source>
-        <target xml:lang="pt-BR" state="translated">Editar a ligação</target>
+        <target xml:lang="pt-BR" state="translated">Editar hiperligação</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__apply" xml:space="preserve">
         <source>Apply link</source>
-        <target xml:lang="pt-BR" state="translated">Aplicar a ligação</target>
+        <target xml:lang="pt-BR" state="translated">Aplicar hiperligação</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__placeholder" xml:space="preserve">
         <source>Paste a link, or search</source>
-        <target xml:lang="pt-BR" state="translated">Colar uma ligação ou pesquisar</target>
+        <target xml:lang="pt-BR" state="translated">Colar uma hiperligação, ou pesquisar</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__formatAsHttp" xml:space="preserve">
         <source>Format as http link?</source>
-        <target xml:lang="pt-BR" state="translated">Formatar como ligação de http?</target>
+        <target xml:lang="pt-BR" state="translated">Formatar como hiperligação http?</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__formatAsEmail" xml:space="preserve">
         <source>Format as email?</source>
-        <target xml:lang="pt-BR" state="translated">Formatar como e-mail?</target>
+        <target xml:lang="pt-BR" state="translated">Formatar como correio eletrónico?</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__ordered-list" xml:space="preserve">
         <source>Ordered list</source>
@@ -135,7 +135,7 @@
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__align-justify" xml:space="preserve">
         <source>Align justify</source>
-        <target xml:lang="pt-BR" state="translated">Alinhar justificado</target>
+        <target xml:lang="pt-BR" state="translated">Justificar</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__table" xml:space="preserve">
         <source>Table</source>
@@ -155,33 +155,33 @@
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__remove-format" xml:space="preserve">
         <source>Remove format</source>
-        <target xml:lang="pt-BR" state="translated">Remover formatação</target>
+        <target xml:lang="pt-BR" state="translated">Remover a formatação</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__outdent" xml:space="preserve">
         <source>Outdent</source>
-        <target xml:lang="pt-BR" state="translated">Desindentar</target>
+        <target xml:lang="pt-BR" state="translated">Reduzir indentação</target>
         <alt-trans>
           <target xml:lang="pt-BR">Desidentar</target>
         </alt-trans>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__indent" xml:space="preserve">
         <source>Indent</source>
-        <target xml:lang="pt-BR" state="translated">Indentar</target>
+        <target xml:lang="pt-BR" state="translated">Aumentar indentação</target>
         <alt-trans>
           <target xml:lang="pt-BR">Identar</target>
         </alt-trans>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__setTableColumnHeader" xml:space="preserve">
         <source>Header column</source>
-        <target xml:lang="pt-BR" state="translated">Coluna de cabeçalho</target>
+        <target xml:lang="pt-BR" state="translated">Definir coluna como cabeçalho</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__insertTableColumnLeft" xml:space="preserve">
         <source>Insert column before</source>
-        <target xml:lang="pt-BR" state="translated">Inserir coluna antes</target>
+        <target xml:lang="pt-BR" state="translated">Inserir uma coluna antes</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__insertTableColumnRight" xml:space="preserve">
         <source>Insert column after</source>
-        <target xml:lang="pt-BR" state="translated">Inserir coluna após</target>
+        <target xml:lang="pt-BR" state="translated">Inserir uma coluna depois</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__removeTableColumn" xml:space="preserve">
         <source>Delete column</source>
@@ -189,15 +189,15 @@
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__setTableRowHeader" xml:space="preserve">
         <source>Header row</source>
-        <target xml:lang="pt-BR" state="translated">Linha de cabeçalho</target>
+        <target xml:lang="pt-BR" state="translated">Definir linha como cabeçalho</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__insertTableRowBelow" xml:space="preserve">
         <source>Insert row below</source>
-        <target xml:lang="pt-BR" state="translated">Inserir linha abaixo</target>
+        <target xml:lang="pt-BR" state="translated">Inserir uma linha por baixo</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__insertTableRowAbove" xml:space="preserve">
         <source>Insert row above</source>
-        <target xml:lang="pt-BR" state="translated">Inserir linha acima</target>
+        <target xml:lang="pt-BR" state="translated">Inserir uma linha por cima</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__removeTableRow" xml:space="preserve">
         <source>Delete row</source>
@@ -205,27 +205,27 @@
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__mergeTableCellUp" xml:space="preserve">
         <source>Merge cell up</source>
-        <target xml:lang="pt-BR" state="translated">Mesclar célula para cima</target>
+        <target xml:lang="pt-BR" state="translated">Unir com a célula acima</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__mergeTableCellRight" xml:space="preserve">
         <source>Merge cell right</source>
-        <target xml:lang="pt-BR" state="translated">Mesclar célula para a direita</target>
+        <target xml:lang="pt-BR" state="translated">Unir com a célula à direita</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__mergeTableCellDown" xml:space="preserve">
         <source>Merge cell down</source>
-        <target xml:lang="pt-BR" state="translated">Mesclar célula para baixo</target>
+        <target xml:lang="pt-BR" state="translated">Unir com a célula abaixo</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__mergeTableCellLeft" xml:space="preserve">
         <source>Merge cell left</source>
-        <target xml:lang="pt-BR" state="translated">Mesclar célula para a esquerda</target>
+        <target xml:lang="pt-BR" state="translated">Unir com a célula à esquerda</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__splitTableCellVertically" xml:space="preserve">
         <source>Split cell vertically</source>
-        <target xml:lang="pt-BR" state="translated">Dividir célula verticalmente</target>
+        <target xml:lang="pt-BR" state="translated">Dividir as células verticalmente</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__splitTableCellHorizontally" xml:space="preserve">
         <source>Split cell horizontally</source>
-        <target xml:lang="pt-BR" state="translated">Dividir célula horizontalmente</target>
+        <target xml:lang="pt-BR" state="translated">Dividir as células horizontalmente</target>
       </trans-unit>
       <trans-unit id="createNew" xml:space="preserve">
         <source>Create new</source>
@@ -233,11 +233,11 @@
       </trans-unit>
       <trans-unit id="noMatchesFound" xml:space="preserve">
         <source>No matches found</source>
-        <target xml:lang="pt-BR" state="translated">Nenhuma correspondência encontrada</target>
+        <target xml:lang="pt-BR" state="translated">Não foram encontradas correspondências</target>
       </trans-unit>
       <trans-unit id="searchBoxLeftToType" xml:space="preserve">
         <source>Please enter ###CHARACTERS### more character</source>
-        <target xml:lang="pt-BR" state="translated">Por favor, insira ###CHARACTERS### caracteres a mais</target>
+        <target xml:lang="pt-BR" state="translated">Por favor, insira mais ###CHARACTERS### caracteres</target>
       </trans-unit>
       <trans-unit id="Shortcut__Introduction" xml:space="preserve">
         <source>
@@ -245,119 +245,119 @@
                     You have to press the keys on the right after each other.
                     They will not get triggered when you are focusing an input field.
                 </source>
-        <target xml:lang="pt-BR" state="needs-translation">
-                    These are Keyboard-Shortcuts we are providing.
-                    You have to press the keys on the right after each other.
-                    They will not get triggered when you are focusing an input field.
+        <target xml:lang="pt-BR" state="translated">
+                    Estes são os atalhos pré-definidos no sistema.
+                    A sequência de caracteres apresentada, terá de ser duplicada por si, para ativar a ação.
+                    As ações não serão ativadas quando uma caixa de texto estiver selecionada.
                 </target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.RightSideBar.toggle" xml:space="preserve">
         <source>Toggle inspector</source>
-        <target xml:lang="pt-BR" state="translated">Ativar/Desativar inspetor</target>
+        <target xml:lang="pt-BR" state="translated">Exibir/Ocultar inspetor</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.FullScreen.toggle" xml:space="preserve">
         <source>Toggle full screen</source>
-        <target xml:lang="pt-BR" state="translated">Alternar ecrã inteiro</target>
+        <target xml:lang="pt-BR" state="translated">Alternar ecrã completo</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.LeftSideBar.toggle" xml:space="preserve">
         <source>Toggle left sidebar</source>
-        <target xml:lang="pt-BR" state="translated">Alternar a barra lateral esquerda</target>
+        <target xml:lang="pt-BR" state="translated">Alternar barra lateral esquerda</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.LeftSideBar.toggleContentTree" xml:space="preserve">
         <source>Toggle contenttree</source>
-        <target xml:lang="pt-BR" state="needs-translation">Toggle contenttree</target>
+        <target xml:lang="pt-BR" state="translated">Alternar árvore de conteúdo</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.AddNodeModal.close" xml:space="preserve">
         <source>Close Add-Node-Modal</source>
-        <target xml:lang="pt-BR" state="needs-translation">Close Add-Node-Modal</target>
+        <target xml:lang="pt-BR" state="translated">Fechar a caixa de adição de novo Nó</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.Drawer.toggle" xml:space="preserve">
         <source>Toggle Drawer</source>
-        <target xml:lang="pt-BR" state="needs-translation">Toggle Drawer</target>
+        <target xml:lang="pt-BR" state="translated">Alternar visibilidade do menu</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.EditModePanel.toggle" xml:space="preserve">
         <source>Toggle EditModePanel</source>
-        <target xml:lang="pt-BR" state="needs-translation">Toggle EditModePanel</target>
+        <target xml:lang="pt-BR" state="translated">Alternar painel de modo de edição</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.InsertionModeModal.cancel" xml:space="preserve">
         <source>Cancel InsertionModeModal</source>
-        <target xml:lang="pt-BR" state="needs-translation">Cancel InsertionModeModal</target>
+        <target xml:lang="pt-BR" state="translated">Cancelar caixa de modo de inserção</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.InsertionModeModal.apply" xml:space="preserve">
         <source>Apply InsertionModeModal</source>
-        <target xml:lang="pt-BR" state="needs-translation">Apply InsertionModeModal</target>
+        <target xml:lang="pt-BR" state="translated">Aplicar caixa de modo de inserção</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.ContentCanvas.reload" xml:space="preserve">
         <source>Reload ContentCanvas</source>
-        <target xml:lang="pt-BR" state="needs-translation">Reload ContentCanvas</target>
+        <target xml:lang="pt-BR" state="translated">Recarregar conteúdo</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.Inspector.discard" xml:space="preserve">
         <source>Discard Inspector</source>
-        <target xml:lang="pt-BR" state="needs-translation">Discard Inspector</target>
+        <target xml:lang="pt-BR" state="translated">Descartar inspetor</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.Inspector.escape" xml:space="preserve">
         <source>Escape Inspector</source>
-        <target xml:lang="pt-BR" state="needs-translation">Escape Inspector</target>
+        <target xml:lang="pt-BR" state="translated">Sair do inspetor</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.Inspector.resume" xml:space="preserve">
         <source>Resume Inspector</source>
-        <target xml:lang="pt-BR" state="needs-translation">Resume Inspector</target>
+        <target xml:lang="pt-BR" state="translated">Retomar inspetor</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.NodeCreationDialog.back" xml:space="preserve">
         <source>NodeCreationDialog Back</source>
-        <target xml:lang="pt-BR" state="needs-translation">NodeCreationDialog Back</target>
+        <target xml:lang="pt-BR" state="translated">Voltar atrás na caixa de Criação de Nós</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.NodeCreationDialog.cancel" xml:space="preserve">
         <source>NodeCreationDialog Cancel</source>
-        <target xml:lang="pt-BR" state="needs-translation">NodeCreationDialog Cancel</target>
+        <target xml:lang="pt-BR" state="translated">Cancelar caixa de Criação de Nós</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.NodeCreationDialog.apply" xml:space="preserve">
         <source>NodeCreationDialog Apply</source>
-        <target xml:lang="pt-BR" state="needs-translation">NodeCreationDialog Apply</target>
+        <target xml:lang="pt-BR" state="translated">Aplicar Criação de Nós</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.NodeVariantCreationDialog.cancel" xml:space="preserve">
         <source>NodeVariantCreationDialog Cancel</source>
-        <target xml:lang="pt-BR" state="needs-translation">NodeVariantCreationDialog Cancel</target>
+        <target xml:lang="pt-BR" state="translated">Cancelar caixa de Criação de Nós</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.NodeVariantCreationDialog.createEmpty" xml:space="preserve">
         <source>NodeVariantCreationDialog Create Empty</source>
-        <target xml:lang="pt-BR" state="needs-translation">NodeVariantCreationDialog Create Empty</target>
+        <target xml:lang="pt-BR" state="translated">Criar uma caixa de Variante de Nó vazia</target>
       </trans-unit>
       <trans-unit id="Shortcut__UI.NodeVariantCreationDialog.createAndCopy" xml:space="preserve">
         <source>NodeVariantCreationDialog Create and Copy</source>
-        <target xml:lang="pt-BR" state="needs-translation">NodeVariantCreationDialog Create and Copy</target>
+        <target xml:lang="pt-BR" state="translated">Criar e Copiar uma caixa de Variante de Nó</target>
       </trans-unit>
       <trans-unit id="Shortcut__CR.Nodes.unfocus" xml:space="preserve">
         <source>Unfocus Node</source>
-        <target xml:lang="pt-BR" state="needs-translation">Unfocus Node</target>
+        <target xml:lang="pt-BR" state="translated">Desselecionar Nó</target>
       </trans-unit>
       <trans-unit id="UI.RightSideBar.tabs.validationErrorTooltip[0]" xml:space="preserve">
         <source>{tabName} – {amountOfErrors} validation issue</source>
-        <target state="translated">{tabName} – {amountOfErrors} problema de validação</target>
+        <target state="translated">{tabName} – {amountOfErrors} falha de validação</target>
       </trans-unit>
       <trans-unit id="UI.RightSideBar.tabs.validationErrorTooltip[1]" xml:space="preserve">
         <source>{tabName} – {amountOfErrors} validation issues</source>
-        <target state="translated">{tabName} – {amountOfErrors} problemas de validação</target>
+        <target state="translated">{tabName} – {amountOfErrors} falhas de validação</target>
       </trans-unit>
       <trans-unit id="changesApplied[0]" xml:space="preserve">
         <source>{0} change successfully applied.</source>
-        <target state="translated">{0} alteração aplicada com sucesso.</target>
+        <target state="translated">{0} alteração foi aplicada com sucesso.</target>
       </trans-unit>
       <trans-unit id="changesApplied[1]" xml:space="preserve">
         <source>{0} changes successfully applied.</source>
-        <target state="translated">{0} alterações aplicadas com sucesso.</target>
+        <target state="translated">{0} alterações foram aplicadas com sucesso.</target>
       </trans-unit>
       <trans-unit id="changesDiscarded[0]" xml:space="preserve">
         <source>Discarded {0} change.</source>
-        <target state="translated">Descartado {0} alteração.</target>
+        <target state="translated">Foi descartada {0} alteração.</target>
       </trans-unit>
       <trans-unit id="changesDiscarded[1]" xml:space="preserve">
         <source>Discarded {0} changes.</source>
-        <target state="translated">Descartado {0} alterações.</target>
+        <target state="translated">Foram descartadas {0} alterações.</target>
       </trans-unit>
       <trans-unit id="syncUriPathSegment" xml:space="preserve">
         <source>Syncronize with the title property</source>
-        <target state="translated">Sincronizar com a propriedade título</target>
+        <target state="translated">Sincronizar com a propriedade "Título"</target>
       </trans-unit>
       <trans-unit id="nodes" xml:space="preserve">
         <source>nodes</source>
@@ -373,11 +373,11 @@
       </trans-unit>
       <trans-unit id="inspectorMutlipleContentNodesSelectedTooltip" xml:space="preserve">
         <source>Select a single document in order to be able to edit its properties</source>
-        <target state="translated">Selecione um único documento para poder editar as suas propriedades</target>
+        <target state="translated">Selecione um único documento para alterar as suas propriedades</target>
       </trans-unit>
       <trans-unit id="inspectorMutlipleDocumentNodesSelectedTooltip" xml:space="preserve">
         <source>Select a single content element in order to be able to edit its properties</source>
-        <target state="translated">Selecione um único elemento de conteúdo para poder editar as suas propriedades</target>
+        <target state="translated">Selecione um único elemento de conteúdo para editar as suas propriedades</target>
       </trans-unit>
       <trans-unit id="deleteXNodes" xml:space="preserve">
         <source>Delete {amount} nodes</source>
@@ -397,15 +397,15 @@
       </trans-unit>
       <trans-unit id="errorBoundary.copyTechnicalDetails" xml:space="preserve">
         <source>Copy technical details</source>
-        <target state="translated">Copiar pormenores técnicos</target>
+        <target state="translated">Copiar detalhes técnicos</target>
       </trans-unit>
       <trans-unit id="errorBoundary.title" xml:space="preserve">
         <source>Sorry, but the Neos UI could not recover from this error.</source>
-        <target state="translated">Desculpe, mas a IU Neos não pôde recuperar deste erro.</target>
+        <target state="translated">Lamentamos, mas o Neos UI não consegue recuperar deste erro.</target>
       </trans-unit>
       <trans-unit id="errorBoundary.description" xml:space="preserve">
         <source>Please reload the application, or contact your system administrator with the given details.</source>
-        <target state="translated">Por favor, recarregue a aplicação ou entre em contacto com o administrador do sistema com os detalhes dados.</target>
+        <target state="translated">Por favor recarregue a aplicação, ou envie ao seu administrador de sistema os detalhes apresentados.</target>
       </trans-unit>
       <trans-unit id="add" xml:space="preserve">
         <source>Add</source>
@@ -413,19 +413,19 @@
       </trans-unit>
       <trans-unit id="above" xml:space="preserve">
         <source>Above</source>
-        <target state="translated">Acima</target>
+        <target state="translated">Por Cima</target>
       </trans-unit>
       <trans-unit id="below" xml:space="preserve">
         <source>Below</source>
-        <target state="translated">Abaixo</target>
+        <target state="translated">Por Baixo</target>
       </trans-unit>
       <trans-unit id="InsertModeTitleBefore" xml:space="preserve">
         <source>above</source>
-        <target state="translated">acima</target>
+        <target state="translated">por cima</target>
       </trans-unit>
       <trans-unit id="InsertModeTitleAfter" xml:space="preserve">
         <source>below</source>
-        <target state="translated">abaixo</target>
+        <target state="translated">por baixo</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__style__p" xml:space="preserve">
         <source>Paragraph</source>
@@ -461,11 +461,11 @@
       </trans-unit>
       <trans-unit id="errorBoundary.reloadUi" xml:space="preserve">
         <source>Reload Neos UI</source>
-        <target state="translated">Recarregar o IU do Neos</target>
+        <target state="translated">Recarregar Neos UI</target>
       </trans-unit>
       <trans-unit id="errorBoundary.footer" xml:space="preserve">
         <source>For more information about the error please refer to the JavaScript console.</source>
-        <target state="translated">Para mais informações sobre o erro, consulte o console JavaScript.</target>
+        <target state="translated">Para mais informações sobre este erro por favor consulte a consola de JavaScript.</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__style__h4" xml:space="preserve">
         <source>Headline 4</source>
@@ -477,7 +477,35 @@
       </trans-unit>
       <trans-unit id="errorBoundary.technicalDetailsCopied" xml:space="preserve">
         <source>Technical details copied</source>
-        <target state="translated">Pormenores técnicos copiados</target>
+        <target state="translated">Os detalhes técnicos foram copiados</target>
+      </trans-unit>
+      <trans-unit id="invalidValue" xml:space="preserve">
+        <source>Invalid value</source>
+        <target state="translated">Valor Inválido</target>
+      </trans-unit>
+      <trans-unit id="InsertModeTitleInto" xml:space="preserve">
+        <source>inside</source>
+        <target state="translated">no interior</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__blockquote" xml:space="preserve">
+        <source>Blockquote</source>
+        <target state="translated">Citação</target>
+      </trans-unit>
+      <trans-unit id="copyNodeTypeNameToClipboard" xml:space="preserve">
+        <source>Copy node type to clipboard</source>
+        <target state="translated">Copiar o tipo de nó para a área de transferência</target>
+      </trans-unit>
+      <trans-unit id="inside" xml:space="preserve">
+        <source>Inside</source>
+        <target state="translated">No Interior</target>
+      </trans-unit>
+      <trans-unit id="changesPublished[1]" xml:space="preserve">
+        <source>Published {0} changes to "{1}".</source>
+        <target state="translated">Foram publicadas {0} alterações em "{1}".</target>
+      </trans-unit>
+      <trans-unit id="changesPublished[0]" xml:space="preserve">
+        <source>Published {0} change to "{1}".</source>
+        <target state="translated">Foi publicada {0} alteração em "{1}".</target>
       </trans-unit>
     </body>
   </file>

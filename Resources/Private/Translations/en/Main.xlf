@@ -377,6 +377,9 @@
             <trans-unit id="copyNodeTypeNameToClipboard" xml:space="preserve">
                 <source>Copy node type to clipboard</source>
             </trans-unit>
+            <trans-unit id="invalidValue" xml:space="preserve">
+                <source>Invalid value</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>

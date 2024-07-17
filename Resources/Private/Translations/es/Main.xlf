@@ -548,7 +548,7 @@
       </trans-unit>
       <trans-unit id="invalidValue" xml:space="preserve">
         <source>Invalid value</source>
-        <target state="translated">Valor no válido</target>
+        <target state="translated">Valor incorrecto</target>
       </trans-unit>
     </body>
   </file>

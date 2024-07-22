@@ -165,6 +165,7 @@ class MultiSelectBox extends PureComponent {
         optionValueField: 'value',
         dndType: 'multiselect-box-value',
         allowEmpty: true,
+        allowDragging: true,
         ListPreviewElement: SelectBox_Option_SingleLine
     }
 

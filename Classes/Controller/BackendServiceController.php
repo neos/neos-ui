@@ -567,7 +567,7 @@ class BackendServiceController extends ActionController
                 $nodeTypeFilter = $finisher['payload']['nodeTypeFilter'] ?? null;
                 $result = $nodeInfoHelper->renderNodesWithParents(
                     array_filter($flowQuery->get()),
-                    $this->getControllerContext(), 
+                    $this->getControllerContext(),
                     $nodeTypeFilter
                 );
                 break;

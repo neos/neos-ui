@@ -10,6 +10,11 @@ import PropTypes from 'prop-types';
 
 export interface DropDownWrapperProps {
     /**
+     * An optional `id` to attach to the wrapper.
+     */
+    readonly id?: string;
+
+    /**
      * An optional `className` to attach to the wrapper.
      */
     readonly className?: string;
@@ -95,7 +100,7 @@ class StatelessDropDownWrapperWithoutClickOutsideBehavior extends PureComponent<
     }
 
     public render(): JSX.Element {
-        const {children, className, theme, style, padded, ...restProps} = this.props;
+        const {id, children, className, theme, style, padded, ...restProps} = this.props;
         const rest = omit(restProps, ['isOpen', 'onToggle', 'onClose']);
         const styleClassName: string = style ? `dropDown--${style}` : '';
         const finalClassName = mergeClassNames(
@@ -109,7 +114,7 @@ class StatelessDropDownWrapperWithoutClickOutsideBehavior extends PureComponent<
         );
 
         return (
-            <div ref={this.ref} {...rest} className={finalClassName}>
+            <div id={id} ref={this.ref} {...rest} className={finalClassName}>
                 {React.Children.map(
                     children,
                     // @ts-ignore

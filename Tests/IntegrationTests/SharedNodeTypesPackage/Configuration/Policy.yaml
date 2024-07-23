@@ -1,0 +1,15 @@
+---
+privilegeTargets:
+
+  'Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilege':
+
+    'Neos.TestNodeTypes:TestApiAccess':
+      matcher: 'method(Neos\TestNodeTypes\Application\.*\Controller\.*Controller->processRequest())'
+
+roles:
+
+    'Neos.Flow:Everybody':
+      privileges:
+        -
+          privilegeTarget: 'Neos.TestNodeTypes:TestApiAccess'
+          permission: GRANT

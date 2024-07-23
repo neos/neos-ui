@@ -96,6 +96,7 @@ class NodeTreeSearchBar extends PureComponent {
         return (
             <div className={style.searchWrapper}>
                 <IconButton
+                    id="btn-ToggleDocumentTreeFilter"
                     className={searchToggleClassName}
                     icon="ellipsis-v"
                     onClick={this.handleSearchToggle}

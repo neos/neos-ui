@@ -1,0 +1,12 @@
+{
+  "name": "@neos-project/framework-observable-react",
+  "version": "",
+  "description": "React bindings for @neos-project/framework-observable",
+  "private": true,
+  "main": "./src/index.ts",
+  "dependencies": {
+    "@neos-project/framework-observable": "workspace:*",
+    "react": "^16.12.0"
+  },
+  "license": "GNU GPLv3"
+}

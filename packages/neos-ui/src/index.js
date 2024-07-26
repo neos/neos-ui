@@ -10,6 +10,8 @@ import fetchWithErrorHandling from '@neos-project/neos-ui-backend-connector/src/
 import {SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
 import backend from '@neos-project/neos-ui-backend-connector';
 import {handleActions} from '@neos-project/utils-redux';
+import {showFlashMessage} from '@neos-project/neos-ui-error';
+import {initializeI18n} from '@neos-project/neos-ui-i18n';
 
 import {
     appContainer,
@@ -18,6 +20,7 @@ import {
     routes,
     serverState,
     menu,
+    user,
     nodeTypes
 } from './System';
 import localStorageMiddleware from './localStorageMiddleware';
@@ -63,8 +66,7 @@ async function main() {
 
     await Promise.all([
         loadNodeTypesSchema(),
-        loadTranslations(),
-        loadImpersonateStatus()
+        initializeI18n()
     ]);
 
     store.dispatch(actions.System.ready());
@@ -102,7 +104,17 @@ function initializeReduxState() {
     const persistedState = localStorage.getItem('persistedState')
         ? JSON.parse(localStorage.getItem('persistedState'))
         : {};
-    const mergedState = merge({}, serverState, persistedState);
+    const mergedState = merge(
+        {},
+        serverState,
+        // QUIRK ALERT:
+        // The `user` state used to be part of `initialState` (a.k.a.
+        // `serverState`) but has been moved to a separate key within
+        // `initialData`. It is still being merged at this point to
+        // keep downstream impact at a minimum.
+        {user},
+        persistedState
+    );
 
     store.dispatch(actions.System.init(mergedState));
 }
@@ -141,7 +153,11 @@ function initializeFetchWithErrorHandling() {
             message = exception.textContent;
         }
 
-        store.dispatch(actions.UI.FlashMessages.add('fetch error', message, 'error'));
+        showFlashMessage({
+            id: 'fetch error',
+            severity: 'error',
+            message
+        });
     });
 }
 
@@ -163,26 +179,6 @@ async function loadNodeTypesSchema() {
     const {groups, roles} = nodeTypes;
     nodeTypesRegistry.setGroups(groups);
     nodeTypesRegistry.setRoles(roles);
-}
-
-async function loadTranslations() {
-    const {getJsonResource} = backend.get().endpoints;
-    const i18nRegistry = globalRegistry.get('i18n');
-    const translations = await getJsonResource(configuration.endpoints.translations);
-
-    i18nRegistry.setTranslations(translations);
-}
-
-async function loadImpersonateStatus() {
-    try {
-        const {impersonateStatus} = backend.get().endpoints;
-        const impersonateState = await impersonateStatus();
-        if (impersonateState) {
-            store.dispatch(actions.User.Impersonate.fetchStatus(impersonateState));
-        }
-    } catch (error) {
-        store.dispatch(actions.UI.FlashMessages.add('impersonateStatusError', error.message, 'error'));
-    }
 }
 
 function renderApplication() {

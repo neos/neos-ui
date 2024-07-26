@@ -1,0 +1,73 @@
+.flashMessageContainer {
+    position: fixed;
+    z-index: var(--zIndex-FlashMessageContainer);
+    top: 0;
+    left: 50%;
+    width: 516px;
+    margin-top: 8px;
+    transform: translate(-50%, 0);
+    max-height: calc(100% - 16px);
+    overflow: auto;
+
+    &:empty {
+        display: none;
+    }
+}
+
+.flashMessage {
+    color: white;
+    font-size: 14px;
+    position: relative;
+    width: 512px;
+    margin: 0 auto 4px;
+    word-wrap: break-word;
+    overflow: hidden;
+    box-sizing: border-box;
+    box-shadow: 0 0 14px rgba(0, 0, 0, .15);
+
+    &:last-child {
+        margin-bottom: 0px;
+    }
+}
+
+.flashMessage--success {
+    background-color: var(--colors-Success);
+}
+
+.flashMessage--error {
+    background-color: var(--colors-Error);
+}
+
+.flashMessage--info {
+    background-color: var(--colors-PrimaryBlue);
+}
+
+.flashMessage__icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100% !important;
+    line-height: var(--spacing-GoldenUnit);
+    width: var(--spacing-GoldenUnit) !important;
+    text-align: center;
+    font-size: 16px;
+    padding: 0 calc((var(--spacing-GoldenUnit) - 1em)/2);
+    margin: 0;
+    vertical-align: text-top;
+    border-right: 1px solid rgba(255, 255, 255, .3);
+}
+
+.flashMessage__heading {
+    padding: 12px 49px 12px;
+    margin-bottom: 0;
+    color: white;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 14px;
+}
+
+.flashMessage__btnClose {
+    position: absolute;
+    right: 0;
+    top: 0;
+}

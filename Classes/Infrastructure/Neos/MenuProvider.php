@@ -55,7 +55,6 @@ final class MenuProvider implements MenuProviderInterface
             $result[$moduleName]['label'] = $module['label'];
             $result[$moduleName]['icon'] = $module['icon'];
             $result[$moduleName]['uri'] = $module['uri'];
-            $result[$moduleName]['target'] = 'Window';
 
             $result[$moduleName]['children'] = match ($module['module']) {
                 'content' => $this->buildChildrenForSites($controllerContext),
@@ -89,7 +88,6 @@ final class MenuProvider implements MenuProviderInterface
             $result[$index]['icon'] = 'globe';
             $result[$index]['label'] = $name;
             $result[$index]['uri'] = $uri;
-            $result[$index]['target'] = 'Window';
             $result[$index]['isActive'] = $active;
             $result[$index]['skipI18n'] = true;
         }
@@ -114,7 +112,6 @@ final class MenuProvider implements MenuProviderInterface
             $result[$submoduleName]['uri'] = $submodule['uri'];
             $result[$submoduleName]['position'] = $submodule['position'];
             $result[$submoduleName]['isActive'] = true;
-            $result[$submoduleName]['target'] = 'Window';
             $result[$submoduleName]['skipI18n'] = false;
         }
 

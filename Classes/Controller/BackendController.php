@@ -27,13 +27,13 @@ use Neos\Neos\Domain\Service\WorkspaceNameBuilder;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\FrontendRouting\NodeUriBuilderFactory;
 use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;
-use Neos\Neos\Service\UserService;
 use Neos\Neos\Ui\Domain\InitialData\ConfigurationProviderInterface;
 use Neos\Neos\Ui\Domain\InitialData\FrontendConfigurationProviderInterface;
 use Neos\Neos\Ui\Domain\InitialData\InitialStateProviderInterface;
 use Neos\Neos\Ui\Domain\InitialData\MenuProviderInterface;
 use Neos\Neos\Ui\Domain\InitialData\NodeTypeGroupsAndRolesProviderInterface;
 use Neos\Neos\Ui\Domain\InitialData\RoutesProviderInterface;
+use Neos\Neos\Ui\Domain\InitialData\UserProviderInterface;
 use Neos\Neos\Ui\Presentation\ApplicationView;
 
 /**
@@ -47,12 +47,6 @@ class BackendController extends ActionController
     protected $view;
 
     protected $defaultViewObjectName = ApplicationView::class;
-
-    /**
-     * @Flow\Inject
-     * @var UserService
-     */
-    protected $userService;
 
     /**
      * @Flow\Inject
@@ -116,6 +110,12 @@ class BackendController extends ActionController
 
     /**
      * @Flow\Inject
+     * @var UserProviderInterface
+     */
+    protected $userProvider;
+
+    /**
+     * @Flow\Inject
      * @var InitialStateProviderInterface
      */
     protected $initialStateProvider;
@@ -139,11 +139,6 @@ class BackendController extends ActionController
 
         $nodeAddress = $node !== null ? NodeAddressFactory::create($contentRepository)->createFromUriString($node) : null;
         unset($node);
-        $user = $this->userService->getBackendUser();
-
-        if ($user === null) {
-            $this->redirectToUri($this->uriBuilder->uriFor('index', [], 'Login', 'Neos.Neos'));
-        }
 
         $currentAccount = $this->securityContext->getAccount();
         assert($currentAccount !== null);
@@ -185,6 +180,11 @@ class BackendController extends ActionController
             $node = $subgraph->findNodeById($nodeAddress->nodeAggregateId);
         }
 
+        $user = $this->userProvider->getUser();
+        if (!$user) {
+            $this->redirectToUri($this->uriBuilder->uriFor('index', [], 'Login', 'Neos.Neos'));
+        }
+
         $this->view->setOption('title', 'Neos CMS');
         $this->view->assign('initialData', [
             'configuration' =>
@@ -206,12 +206,12 @@ class BackendController extends ActionController
                 $this->menuProvider->getMenu(
                     actionRequest: $this->request,
                 ),
+            'user' => $user,
             'initialState' =>
                 $this->initialStateProvider->getInitialState(
                     actionRequest: $this->request,
                     documentNode: $node,
                     site: $siteNode,
-                    user: $user,
                 ),
         ]);
     }

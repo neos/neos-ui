@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ShallowDropDownContents/> should not render when having no children. 1`] = `
+<ul
+  aria-hidden="true"
+  aria-label="dropdown"
+  className="baseDropDownContentsClassName"
+  data-ignore_click_outside={true}
+  onClick={[MockFunction]}
+  role="listbox"
+  style={Object {}}
+>
+  Foo children
+</ul>
+`;

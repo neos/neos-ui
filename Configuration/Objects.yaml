@@ -16,6 +16,9 @@ Neos\Neos\Ui\Domain\InitialData\InitialStateProviderInterface:
 Neos\Neos\Ui\Domain\InitialData\MenuProviderInterface:
   className: Neos\Neos\Ui\Infrastructure\Neos\MenuProvider
 
+Neos\Neos\Ui\Domain\InitialData\UserProviderInterface:
+  className: Neos\Neos\Ui\Infrastructure\Neos\UserProvider
+
 Neos\Neos\Ui\Domain\InitialData\NodeTypeGroupsAndRolesProviderInterface:
   className: Neos\Neos\Ui\Infrastructure\ContentRepository\NodeTypeGroupsAndRolesProvider
 

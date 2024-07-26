@@ -21,7 +21,7 @@ export const define = (parent: {[propName: string]: any}) => (name: string, valu
 //
 // Initializes the Neos API
 //
-export const initializeJsAPI = (parent: {[propName: string]: any}, {alias = 'neos', systemEnv = 'Development', routes}: {alias: string, systemEnv: string, routes: Routes}) => {
+export const initializeJsAPI = (parent: {[propName: string]: any}, {alias = 'neos', systemEnv = 'Development', routes}: {alias?: string, systemEnv: string, routes: Routes}) => {
     if (parent[alias] !== undefined) {
         throw new Error(`Could not initialize Neos API, because ${alias} is already defined.`);
     }

@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import style from './style.module.css';
 
-import FlashMessages from './FlashMessages/index';
+import {FlashMessages} from '@neos-project/neos-ui-error';
 
 const App = ({globalRegistry, menu, isFullScreen, leftSidebarIsHidden, rightSidebarIsHidden}) => {
     const containerRegistry = globalRegistry.get('containers');

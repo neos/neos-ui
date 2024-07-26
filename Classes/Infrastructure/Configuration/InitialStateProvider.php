@@ -43,7 +43,6 @@ final class InitialStateProvider implements InitialStateProviderInterface
         ActionRequest $actionRequest,
         ?Node $documentNode,
         ?Node $site,
-        User $user,
     ): array {
         return $this->configurationRenderingService->computeConfiguration(
             $this->initialStateBeforeProcessing,
@@ -51,7 +50,6 @@ final class InitialStateProvider implements InitialStateProviderInterface
                 'request' => $actionRequest,
                 'documentNode' => $documentNode,
                 'site' => $site,
-                'user' => $user,
                 'clipboardNodes' => $this->clipboard->getSerializedNodeAddresses(),
                 'clipboardMode' => $this->clipboard->getMode(),
             ]

@@ -11,7 +11,7 @@
     "typescript": "^4.6.4"
   },
   "dependencies": {
-    "@ckeditor/ckeditor5-highlight": "42.0.0",
+    "@ckeditor/ckeditor5-highlight": "42.0.2",
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
     "@fortawesome/free-brands-svg-icons": "^6.5.2",
     "@fortawesome/free-regular-svg-icons": "^6.5.2",

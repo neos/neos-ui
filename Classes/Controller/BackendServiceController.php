@@ -545,6 +545,7 @@ class BackendServiceController extends ActionController
 
         $nodeInfoHelper = new NodeInfoHelper();
         $result = [];
+
         switch ($finisher['type']) {
             case 'get':
                 $result = $nodeInfoHelper->renderNodes(array_filter($flowQuery->get()), $this->getControllerContext());
@@ -553,7 +554,8 @@ class BackendServiceController extends ActionController
                 $result = $nodeInfoHelper->renderNodes(array_filter($flowQuery->get()), $this->getControllerContext(), true);
                 break;
             case 'getForTreeWithParents':
-                $result = $nodeInfoHelper->renderNodesWithParents(array_filter($flowQuery->get()), $this->getControllerContext());
+                $nodeTypeFilter = $finisher['payload']['nodeTypeFilter'] ?? null;
+                $result = $nodeInfoHelper->renderNodesWithParents(array_filter($flowQuery->get()), $this->getControllerContext(), $nodeTypeFilter);
                 break;
         }
 

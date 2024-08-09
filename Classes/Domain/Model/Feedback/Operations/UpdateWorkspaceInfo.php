@@ -11,15 +11,15 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
  * source code.
  */
 
-use Neos\ContentRepository\Core\Projection\Workspace\Workspace;
-use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
 use Neos\ContentRepository\Core\SharedModel\ContentRepository\ContentRepositoryId;
+use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Mvc\Controller\ControllerContext;
+use Neos\Neos\PendingChangesProjection\ChangeFinder;
 use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
-use Neos\Flow\Mvc\Controller\ControllerContext;
-use Neos\Neos\Domain\Workspace\WorkspaceProvider;
 
 /**
  * @internal
@@ -34,9 +34,9 @@ class UpdateWorkspaceInfo extends AbstractFeedback
 
     /**
      * @Flow\Inject
-     * @var WorkspaceProvider
+     * @var ContentRepositoryRegistry
      */
-    protected $workspaceProvider;
+    protected $contentRepositoryRegistry;
 
     /**
      * UpdateWorkspaceInfo constructor.
@@ -87,8 +87,8 @@ class UpdateWorkspaceInfo extends AbstractFeedback
         if (!$feedback instanceof UpdateWorkspaceInfo) {
             return false;
         }
-
-        return $this->getWorkspaceName()->equals($feedback->getWorkspaceName());
+        $feedbackWorkspaceName = $feedback->getWorkspaceName();
+        return $feedbackWorkspaceName !== null && $this->getWorkspaceName()?->equals($feedbackWorkspaceName);
     }
 
     /**
@@ -99,11 +99,17 @@ class UpdateWorkspaceInfo extends AbstractFeedback
      */
     public function serializePayload(ControllerContext $controllerContext)
     {
-        $workspace = $this->workspaceProvider->provideForWorkspaceName(
-            $this->contentRepositoryId,
-            $this->workspaceName
-        );
-        $totalNumberOfChanges = $workspace->countAllChanges();
+        if (!$this->workspaceName) {
+            return null;
+        }
+        $contentRepository = $this->contentRepositoryRegistry->get($this->contentRepositoryId);
+        $workspace = $contentRepository->findWorkspaceByName($this->workspaceName);
+        if ($workspace === null) {
+            return null;
+        }
+        /** @var ChangeFinder $changeFinder */
+        $changeFinder = $contentRepository->projectionState(ChangeFinder::class);
+        $totalNumberOfChanges = $changeFinder->countByContentStreamId($workspace->currentContentStreamId);
 
         return [
             'name' => $this->workspaceName->value,
@@ -112,8 +118,8 @@ class UpdateWorkspaceInfo extends AbstractFeedback
                 $this->workspaceName,
                 $this->contentRepositoryId
             ),
-            'baseWorkspace' => $workspace->getCurrentBaseWorkspaceName()?->value,
-            'status' => $workspace->getCurrentStatus()
+            'baseWorkspace' => $workspace->baseWorkspaceName?->value,
+            'status' => $workspace->status->value,
         ];
     }
 }

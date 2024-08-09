@@ -57,6 +57,12 @@ class WorkspaceService
     protected $domainUserService;
 
     /**
+     * @Flow\Inject
+     * @var \Neos\Neos\Domain\Service\WorkspaceService
+     */
+    protected $neosWorkspaceService;
+
+    /**
      * Get all publishable node context paths for a workspace
      *
      * @return array{contextPath:string,documentContextPath:string,typeOfChange:int}[]
@@ -132,6 +138,9 @@ class WorkspaceService
     public function getAllowedTargetWorkspaces(ContentRepository $contentRepository): array
     {
         $user = $this->domainUserService->getCurrentUser();
+        if ($user === null) {
+            return [];
+        }
 
         $workspacesArray = [];
         foreach ($contentRepository->getWorkspaceFinder()->findAll() as $workspace) {
@@ -149,12 +158,13 @@ class WorkspaceService
                 // Skip other personal workspaces
                 continue;
             }
+            $workspacePermissions = $this->neosWorkspaceService->getWorkspacePermissionsForUser($contentRepository->id, $workspace->workspaceName, $user);
 
             $workspaceArray = [
                 'name' => $workspace->workspaceName->jsonSerialize(),
                 'title' => $workspace->workspaceTitle->jsonSerialize(),
                 'description' => $workspace->workspaceDescription->jsonSerialize(),
-                'readonly' => !$this->domainUserService->currentUserCanPublishToWorkspace($workspace)
+                'readonly' => !$workspacePermissions->write,
             ];
             $workspacesArray[$workspace->workspaceName->jsonSerialize()] = $workspaceArray;
         }

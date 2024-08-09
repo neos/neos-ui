@@ -17,7 +17,6 @@ namespace Neos\Neos\Ui\Controller;
 use Neos\ContentRepository\Core\DimensionSpace\DimensionSpacePoint;
 use Neos\ContentRepository\Core\Feature\WorkspaceModification\Exception\WorkspaceIsNotEmptyException;
 use Neos\ContentRepository\Core\Feature\WorkspaceRebase\Dto\RebaseErrorHandlingStrategy;
-use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
 use Neos\ContentRepository\Core\SharedModel\Exception\NodeAggregateCurrentlyDoesNotExist;
 use Neos\ContentRepository\Core\SharedModel\Exception\NodeAggregateDoesCurrentlyNotCoverDimensionSpacePoint;
@@ -33,17 +32,12 @@ use Neos\Flow\Mvc\View\JsonView;
 use Neos\Flow\Property\PropertyMapper;
 use Neos\Flow\Security\Context;
 use Neos\Neos\Domain\Service\WorkspaceNameBuilder;
-use Neos\Neos\Domain\Workspace\WorkspaceProvider;
+use Neos\Neos\Domain\Service\WorkspacePublishingService;
 use Neos\Neos\FrontendRouting\NodeAddress;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;
 use Neos\Neos\Service\UserService;
 use Neos\Neos\Ui\Application\ChangeTargetWorkspace;
-use Neos\Neos\Ui\Application\DiscardAllChanges;
-use Neos\Neos\Ui\Application\DiscardChangesInDocument;
-use Neos\Neos\Ui\Application\DiscardChangesInSite;
-use Neos\Neos\Ui\Application\PublishChangesInDocument;
-use Neos\Neos\Ui\Application\PublishChangesInSite;
 use Neos\Neos\Ui\Application\ReloadNodes\ReloadNodesQuery;
 use Neos\Neos\Ui\Application\ReloadNodes\ReloadNodesQueryHandler;
 use Neos\Neos\Ui\Application\SyncWorkspace\ConflictsOccurred;
@@ -136,9 +130,9 @@ class BackendServiceController extends ActionController
 
     /**
      * @Flow\Inject
-     * @var WorkspaceProvider
+     * @var WorkspacePublishingService
      */
-    protected $workspaceProvider;
+    protected $workspacePublishingService;
 
     /**
      * @Flow\Inject
@@ -164,16 +158,16 @@ class BackendServiceController extends ActionController
 
     /**
      * Apply a set of changes to the system
-     * @psalm-param list<array<string,mixed>> $changes
+     * @psalm-param list<array<string,mixed>> $changeCollection
      */
     public function changeAction(array $changes): void
     {
         $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
 
-        $changes = $this->changeCollectionConverter->convert($changes, $contentRepositoryId);
+        $changeCollection = $this->changeCollectionConverter->convert($changes, $contentRepositoryId);
         try {
-            $count = $changes->count();
-            $changes->apply();
+            $count = $changeCollection->count();
+            $changeCollection->apply();
 
             $success = new Info();
             $success->setMessage(
@@ -201,23 +195,19 @@ class BackendServiceController extends ActionController
         try {
             /** @todo send from UI */
             $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
-            $command['contentRepositoryId'] = $contentRepositoryId->value;
-            $command['siteId'] = $this->nodeService->deserializeNodeAddress(
+            $siteNodeAddress = $this->nodeService->deserializeNodeAddress(
                 $command['siteId'],
                 $contentRepositoryId
-            )->nodeAggregateId->value;
-            $command = PublishChangesInSite::fromArray($command);
-            $workspace = $this->workspaceProvider->provideForWorkspaceName(
-                $command->contentRepositoryId,
-                $command->workspaceName
             );
-            $publishingResult = $workspace
-                ->publishChangesInSite($command->siteId);
-
+            $publishingResult = $this->workspacePublishingService->publishChangesInSite(
+                $contentRepositoryId,
+                $siteNodeAddress->workspaceName,
+                $siteNodeAddress->nodeAggregateId,
+            );
             $this->view->assign('value', [
                 'success' => [
                     'numberOfAffectedChanges' => $publishingResult->numberOfPublishedChanges,
-                    'baseWorkspaceName' => $workspace->getCurrentBaseWorkspaceName()?->value
+                    'baseWorkspaceName' => $publishingResult->targetWorkspaceName->value
                 ]
             ]);
         } catch (\Exception $e) {
@@ -242,26 +232,21 @@ class BackendServiceController extends ActionController
         try {
             /** @todo send from UI */
             $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
-            $command['contentRepositoryId'] = $contentRepositoryId->value;
-            $command['documentId'] = $this->nodeService->deserializeNodeAddress(
+            $documentNodeAddress = $this->nodeService->deserializeNodeAddress(
                 $command['documentId'],
                 $contentRepositoryId
-            )->nodeAggregateId->value;
-            $command = PublishChangesInDocument::fromArray($command);
-
-            $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
-
+            );
             try {
-                $workspace = $this->workspaceProvider->provideForWorkspaceName(
-                    $command->contentRepositoryId,
-                    $command->workspaceName
+                $publishingResult = $this->workspacePublishingService->publishChangesInDocument(
+                    $contentRepositoryId,
+                    $documentNodeAddress->workspaceName,
+                    $documentNodeAddress->nodeAggregateId,
                 );
-                $publishingResult = $workspace->publishChangesInDocument($command->documentId);
 
                 $this->view->assign('value', [
                     'success' => [
                         'numberOfAffectedChanges' => $publishingResult->numberOfPublishedChanges,
-                        'baseWorkspaceName' => $workspace->getCurrentBaseWorkspaceName()?->value
+                        'baseWorkspaceName' => $publishingResult->targetWorkspaceName->value,
                     ]
                 ]);
             } catch (NodeAggregateCurrentlyDoesNotExist $e) {
@@ -299,15 +284,9 @@ class BackendServiceController extends ActionController
         try {
             /** @todo send from UI */
             $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
-            $command['contentRepositoryId'] = $contentRepositoryId->value;
-            $command = DiscardAllChanges::fromArray($command);
+            $workspaceName = WorkspaceName::fromString($command['workspaceName']);
 
-            $workspace = $this->workspaceProvider->provideForWorkspaceName(
-                $command->contentRepositoryId,
-                $command->workspaceName
-            );
-            $discardingResult = $workspace->discardAllChanges();
-
+            $discardingResult = $this->workspacePublishingService->discardAllWorkspaceChanges($contentRepositoryId, $workspaceName);
             $this->view->assign('value', [
                 'success' => [
                     'numberOfAffectedChanges' => $discardingResult->numberOfDiscardedChanges
@@ -335,18 +314,16 @@ class BackendServiceController extends ActionController
         try {
             /** @todo send from UI */
             $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
-            $command['contentRepositoryId'] = $contentRepositoryId->value;
-            $command['siteId'] = $this->nodeService->deserializeNodeAddress(
+            $siteNodeAddress = $this->nodeService->deserializeNodeAddress(
                 $command['siteId'],
                 $contentRepositoryId
-            )->nodeAggregateId->value;
-            $command = DiscardChangesInSite::fromArray($command);
-
-            $workspace = $this->workspaceProvider->provideForWorkspaceName(
-                $command->contentRepositoryId,
-                $command->workspaceName
             );
-            $discardingResult = $workspace->discardChangesInSite($command->siteId);
+
+            $discardingResult = $this->workspacePublishingService->discardChangesInSite(
+                $contentRepositoryId,
+                $siteNodeAddress->workspaceName,
+                $siteNodeAddress->nodeAggregateId
+            );
 
             $this->view->assign('value', [
                 'success' => [
@@ -375,18 +352,11 @@ class BackendServiceController extends ActionController
         try {
             /** @todo send from UI */
             $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
-            $command['contentRepositoryId'] = $contentRepositoryId->value;
-            $command['documentId'] = $this->nodeService->deserializeNodeAddress(
+            $documentNodeAddress = $this->nodeService->deserializeNodeAddress(
                 $command['documentId'],
                 $contentRepositoryId
-            )->nodeAggregateId->value;
-            $command = DiscardChangesInDocument::fromArray($command);
-
-            $workspace = $this->workspaceProvider->provideForWorkspaceName(
-                $command->contentRepositoryId,
-                $command->workspaceName
             );
-            $discardingResult = $workspace->discardChangesInDocument($command->documentId);
+            $discardingResult = $this->workspacePublishingService->discardChangesInDocument($contentRepositoryId, $documentNodeAddress->workspaceName, $documentNodeAddress->nodeAggregateId);
 
             $this->view->assign('value', [
                 'success' => [
@@ -421,7 +391,13 @@ class BackendServiceController extends ActionController
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
 
         $currentAccount = $this->securityContext->getAccount();
-        assert($currentAccount !== null);
+        if ($currentAccount === null) {
+            $error = new Error();
+            $error->setMessage('No authenticated account');
+            $this->feedbackCollection->add($error);
+            $this->view->assign('value', $this->feedbackCollection);
+            return;
+        }
         $userWorkspaceName = WorkspaceNameBuilder::fromAccountIdentifier(
             $currentAccount->getAccountIdentifier()
         );
@@ -435,11 +411,7 @@ class BackendServiceController extends ActionController
         );
 
         try {
-            $workspace = $this->workspaceProvider->provideForWorkspaceName(
-                $command->contentRepositoryId,
-                $command->workspaceName
-            );
-            $workspace->changeBaseWorkspace($command->targetWorkspaceName);
+            $this->workspacePublishingService->changeBaseWorkspace($contentRepositoryId, $userWorkspaceName, WorkspaceName::fromString($targetWorkspaceName));
         } catch (WorkspaceIsNotEmptyException $exception) {
             $error = new Error();
             $error->setMessage(
@@ -458,13 +430,14 @@ class BackendServiceController extends ActionController
             return;
         }
 
-        $subgraph = $contentRepository->getContentGraph($workspace->name)
+        $subgraph = $contentRepository->getContentGraph($userWorkspaceName)
             ->getSubgraph(
                 $command->documentNode->dimensionSpacePoint,
                 VisibilityConstraints::withoutRestrictions()
             );
 
-        $documentNode = $subgraph->findNodeById($command->documentNode->nodeAggregateId);
+        $documentNodeInstance = $subgraph->findNodeById($command->documentNode->nodeAggregateId);
+        assert($documentNodeInstance !== null);
 
         $success = new Success();
         $success->setMessage(
@@ -478,7 +451,7 @@ class BackendServiceController extends ActionController
         // If current document node doesn't exist in the base workspace,
         // traverse its parents to find the one that exists
         // todo ensure that https://github.com/neos/neos-ui/pull/3734 doesnt need to be refixed in Neos 9.0
-        $redirectNode = $documentNode;
+        $redirectNode = $documentNodeInstance;
         while (true) {
             // @phpstan-ignore-next-line
             $redirectNodeInBaseWorkspace = $subgraph->findNodeById($redirectNode->aggregateId);
@@ -492,7 +465,7 @@ class BackendServiceController extends ActionController
                     throw new \Exception(
                         sprintf(
                             'Wasn\'t able to locate any valid node in rootline of node %s in the workspace %s.',
-                            $documentNode?->aggregateId->value,
+                            $documentNodeInstance->aggregateId->value,
                             $targetWorkspaceName
                         ),
                         1458814469
@@ -500,13 +473,11 @@ class BackendServiceController extends ActionController
                 }
             }
         }
-        /** @var Node $documentNode */
-        /** @var Node $redirectNode */
 
         // If current document node exists in the base workspace, then reload, else redirect
-        if ($redirectNode->equals($documentNode)) {
+        if ($redirectNode->equals($documentNodeInstance)) {
             $reloadDocument = new ReloadDocument();
-            $reloadDocument->setNode($documentNode);
+            $reloadDocument->setNode($documentNodeInstance);
             $this->feedbackCollection->add($reloadDocument);
         } else {
             $redirect = new Redirect();
@@ -575,8 +546,7 @@ class BackendServiceController extends ActionController
     public function getWorkspaceInfoAction(): void
     {
         $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
-        $workspaceHelper = new WorkspaceHelper();
-        $personalWorkspaceInfo = $workspaceHelper->getPersonalWorkspace($contentRepositoryId);
+        $personalWorkspaceInfo = (new WorkspaceHelper())->getPersonalWorkspace($contentRepositoryId);
         $this->view->assign('value', $personalWorkspaceInfo);
     }
 

@@ -32,6 +32,7 @@ const options = {
     legalComments: "linked",
     loader: {
         '.js': 'tsx',
+        '.dataurl.svg': 'dataurl',
         '.svg': 'text',
         '.vanilla-css': 'css',
         '.woff2': 'file'

@@ -532,11 +532,14 @@ class BackendServiceController extends ActionController
         $createContext = array_shift($chain);
         $finisher = array_pop($chain);
 
+        // we deduplicate passed nodes here
+        $nodeContextPaths = array_unique(array_column($createContext['payload'], '$node'));
+
         $flowQuery = new FlowQuery(array_map(
-            function ($envelope) {
-                return $this->nodeService->getNodeFromContextPath($envelope['$node']);
+            function ($contextPath) {
+                return $this->nodeService->getNodeFromContextPath($contextPath);
             },
-            $createContext['payload']
+            $nodeContextPaths
         ));
 
         foreach ($chain as $operation) {
@@ -548,14 +551,25 @@ class BackendServiceController extends ActionController
 
         switch ($finisher['type']) {
             case 'get':
-                $result = $nodeInfoHelper->renderNodes(array_filter($flowQuery->get()), $this->getControllerContext());
+                $result = $nodeInfoHelper->renderNodes(
+                    array_filter($flowQuery->get()),
+                    $this->getControllerContext()
+                );
                 break;
             case 'getForTree':
-                $result = $nodeInfoHelper->renderNodes(array_filter($flowQuery->get()), $this->getControllerContext(), true);
+                $result = $nodeInfoHelper->renderNodes(
+                    array_filter($flowQuery->get()),
+                    $this->getControllerContext(),
+                    true
+                );
                 break;
             case 'getForTreeWithParents':
                 $nodeTypeFilter = $finisher['payload']['nodeTypeFilter'] ?? null;
-                $result = $nodeInfoHelper->renderNodesWithParents(array_filter($flowQuery->get()), $this->getControllerContext(), $nodeTypeFilter);
+                $result = $nodeInfoHelper->renderNodesWithParents(
+                    array_filter($flowQuery->get()),
+                    $this->getControllerContext(),
+                    $nodeTypeFilter
+                );
                 break;
         }
 

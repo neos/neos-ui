@@ -710,7 +710,8 @@ class BackendServiceController extends ActionController
             ),
             'getForTreeWithParents' => $nodeInfoHelper->renderNodesWithParents(
                 array_filter($flowQuery->get()),
-                $this->request
+                $this->request,
+                $finisher['payload']['nodeTypeFilter'] ?? null
             ),
             default => []
         };

@@ -9,6 +9,10 @@ export class Page {
 
     static getTreeNodeButton = (name) => Page.treeNode.withExactText(name).parent('[role="button"]');
 
+    static getToggleChildrenButtonOf = (name) => Page
+        .getTreeNodeButton(name)
+        .sibling('[data-neos-integrational-test="tree__item__nodeHeader__subTreetoggle"]');
+
     static async goToPage(pageTitle) {
         await t.click(this.treeNode.withText(pageTitle));
         await this.waitForIframeLoading(t);

@@ -31,6 +31,11 @@
     outline: 2px dashed var(--colors-PrimaryBlue);
 }
 
+:global([data-neos-inline-editor-markup-derivation]) {
+    outline-offset: 5px;
+    outline: 2px dashed var(--colors-Warn);
+}
+
 .notInlineEditableOverlay {
     position: absolute;
     top: 0;

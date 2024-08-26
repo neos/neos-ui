@@ -37,12 +37,17 @@ export const bootstrap = _editorConfig => {
 
 export const createEditor = store => async options => {
     const {propertyDomNode, propertyName, editorOptions, globalRegistry, userPreferences, onChange} = options;
+
+    const clonedTemporaryPropertyDomNode = propertyDomNode.cloneNode(true);
+
     const ckEditorConfig = editorConfig.configRegistry.getCkeditorConfig({
         editorOptions,
         userPreferences,
         globalRegistry,
         propertyDomNode
     });
+
+    const initialData = propertyDomNode.innerHTML;
 
     class NeosEditor extends DecoupledEditor {
         constructor(...args) {
@@ -55,9 +60,46 @@ export const createEditor = store => async options => {
     }
 
     return NeosEditor
-        .create(propertyDomNode, ckEditorConfig)
+        .create(clonedTemporaryPropertyDomNode, {...ckEditorConfig, initialData})
         .then(editor => {
             const debouncedOnChange = debounce(() => onChange(cleanupContentBeforeCommit(editor.getData())), 1500, {maxWait: 5000});
+
+            const firstUpcastedData = cleanupContentBeforeCommit(editor.getData());
+            const hasMarkupDerivation = firstUpcastedData !== initialData;
+
+            if (!hasMarkupDerivation) {
+                propertyDomNode.replaceWith(clonedTemporaryPropertyDomNode)
+                clonedTemporaryPropertyDomNode.dataset.neosInlineEditorIsInitialized = true
+            } else {
+                const openMarkupDerivationDialogOnClickInText = () => {
+                    let cleanupSubscription = null;
+                    const waitForConfirmation = () => {
+                        const {acknowledgement} = store.getState().ui.inlineEditorMarkupDerivationDialog;
+                        switch (acknowledgement) {
+                            case 'CONFIRMED':
+                                cleanupSubscription?.()
+                                propertyDomNode.removeEventListener('click', openMarkupDerivationDialogOnClickInText)
+
+                                debouncedOnChange()
+                                propertyDomNode.replaceWith(clonedTemporaryPropertyDomNode)
+                                clonedTemporaryPropertyDomNode.dataset.neosInlineEditorIsInitialized = true
+
+                                editor.editing.view.focus();
+                                break;
+                            case 'CANCELED':
+                                cleanupSubscription?.()
+                                break;
+                        }
+                    };
+                    cleanupSubscription = store.subscribe(waitForConfirmation)
+                    store.dispatch(actions.UI.InlineEditorMarkupDerivationDialog.open())
+                    console.warn('ckeditor formatting derivation', initialData, firstUpcastedData)
+                };
+
+                propertyDomNode.dataset.neosInlineEditorMarkupDerivation = true
+                propertyDomNode.addEventListener('click', openMarkupDerivationDialogOnClickInText)
+            }
+
             editor.model.document.on('change:data', debouncedOnChange);
             editor.ui.focusTracker.on('change:isFocused', event => {
                 if (!event.source.isFocused) {

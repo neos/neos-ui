@@ -1,0 +1,9 @@
+.modalTitle {
+    margin-left: var(--spacing-Full);
+}
+.modalContents {
+    padding: var(--spacing-Full);
+}
+.buttonIcon {
+    margin-right: var(--spacing-Half);
+}

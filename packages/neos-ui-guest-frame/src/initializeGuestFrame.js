@@ -60,9 +60,6 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
         return;
     }
 
-    // Load legacy node data scripts from guest frame - remove with Neos 9.0
-    const legacyNodeData = guestFrameWindow['@Neos.Neos.Ui:Nodes'] || {};
-
     // Load all nodedata for nodes in the guest frame and filter duplicates
     const {q} = yield backend.get();
     const nodeContextPathsInGuestFrame = findAllNodesInGuestFrame().map(node => node.getAttribute('data-__neos-node-contextpath'));
@@ -83,7 +80,6 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
 
     const nodes = Object.assign(
         {},
-        legacyNodeData, // Merge legacy node data from the guest frame - remove with Neos 9.0
         fullyLoadedNodesFromContent,
         {
             [documentInformation.metaData.documentNode]: documentInformation.metaData.documentNodeSerialization
@@ -92,9 +88,6 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
 
     // Merge new nodes into the store
     yield put(actions.CR.Nodes.merge(nodes));
-
-    // Remove the legacy inline scripts after initialization - remove with Neos 9.0
-    Array.prototype.forEach.call(guestFrameWindow.document.querySelectorAll('script[data-neos-nodedata]'), element => element.parentElement.removeChild(element));
 
     const state = store.getState();
 

@@ -67,10 +67,13 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
      */
     public function evaluate(FlowQuery $flowQuery, array $arguments)
     {
+        /** @var array<int,mixed> $context */
+        $context = $flowQuery->getContext();
+
         /** @var Node $siteNode */
-        $siteNode = $flowQuery->getContext()[0];
+        $siteNode = $context[0];
         /** @var Node $documentNode */
-        $documentNode = $flowQuery->getContext()[1] ?? $siteNode;
+        $documentNode = $context[1] ?? $siteNode;
         /** @var string[] $toggledNodes */
         list($baseNodeType, $loadingDepth, $toggledNodes, $clipboardNodesContextPaths) = $arguments;
 

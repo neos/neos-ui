@@ -44,7 +44,7 @@ class UserLocaleService
     /**
      * The current user's locale (cached for performance)
      *
-     * @var Locale
+     * @var Locale|null
      */
     protected $userLocaleRuntimeCache;
 

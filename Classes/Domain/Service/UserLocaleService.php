@@ -15,6 +15,7 @@ use Neos\Flow\Annotations as Flow;
 use Neos\Flow\I18n\Locale;
 use Neos\Flow\I18n\Service as I18nService;
 use Neos\Neos\Domain\Service\UserService;
+use Neos\Neos\Fusion\Helper\NodeLabelToken;
 
 /**
  * @internal
@@ -41,7 +42,17 @@ class UserLocaleService
     protected $rememberedContentLocale;
 
     /**
+     * The current user's locale (cached for performance)
+     *
+     * @var Locale
+     */
+    protected $userLocaleRuntimeCache;
+
+    /**
      * For serialization, we need to respect the UI locale, rather than the content locale
+     * This is done to translate the node labels correctly.
+     * For example {@see NodeLabelToken::resolveLabelFromNodeType()} will call the translator which will uses the globally set locale.
+     * FIXME we should eliminate hacking the global state and passing the locale differently
      *
      * @param boolean $reset Reset to remembered locale
      */
@@ -50,12 +61,17 @@ class UserLocaleService
         if ($reset === true) {
             // Reset the locale
             $this->i18nService->getConfiguration()->setCurrentLocale($this->rememberedContentLocale);
-        } else {
-            $this->rememberedContentLocale = $this->i18nService->getConfiguration()->getCurrentLocale();
-            $userLocalePreference = ($this->userService->getCurrentUser() ? $this->userService->getCurrentUser()->getPreferences()->getInterfaceLanguage() : null);
-            $defaultLocale = $this->i18nService->getConfiguration()->getDefaultLocale();
-            $userLocale = $userLocalePreference ? new Locale($userLocalePreference) : $defaultLocale;
-            $this->i18nService->getConfiguration()->setCurrentLocale($userLocale);
+            return;
         }
+        $this->rememberedContentLocale = $this->i18nService->getConfiguration()->getCurrentLocale();
+        if ($this->userLocaleRuntimeCache) {
+            $this->i18nService->getConfiguration()->setCurrentLocale($this->userLocaleRuntimeCache);
+            return;
+        }
+        $userLocalePreference = ($this->userService->getCurrentUser() ? $this->userService->getCurrentUser()->getPreferences()->getInterfaceLanguage() : null);
+        $defaultLocale = $this->i18nService->getConfiguration()->getDefaultLocale();
+        $userLocale = $userLocalePreference ? new Locale($userLocalePreference) : $defaultLocale;
+        $this->userLocaleRuntimeCache = $userLocale;
+        $this->i18nService->getConfiguration()->setCurrentLocale($userLocale);
     }
 }

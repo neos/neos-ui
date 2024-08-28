@@ -152,7 +152,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             $nodeInfo = array_merge($nodeInfo, $this->getUriInformation($node, $actionRequest));
         }
 
-        $baseNodeType = $nodeTypeFilterOverride ? $nodeTypeFilterOverride : $this->baseNodeType;
+        $baseNodeType = $nodeTypeFilterOverride ?: $this->baseNodeType;
         $nodeInfo['children'] = $this->renderChildrenInformation($node, $baseNodeType);
 
         $this->userLocaleService->switchToUILocale(true);
@@ -243,7 +243,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
             $infos[] = [
                 'contextPath' => $nodeAddressFactory->createFromNode($childNode)->serializeForUri(),
-                'nodeType' => $childNode->nodeTypeName->value // TODO: DUPLICATED; should NOT be needed!!!
+                'nodeType' => $childNode->nodeTypeName->value
             ];
         };
         return $infos;

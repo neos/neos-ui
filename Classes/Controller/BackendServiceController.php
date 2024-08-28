@@ -681,14 +681,16 @@ class BackendServiceController extends ActionController
         $createContext = array_shift($chain);
         $finisher = array_pop($chain);
 
-        $payload = $createContext['payload'] ?? [];
+        // we deduplicate passed nodes here
+        $nodeContextPaths = array_unique(array_column($createContext['payload'], '$node'));
+
         $flowQuery = new FlowQuery(
             array_map(
-                fn ($envelope) => $this->nodeService->findNodeBySerializedNodeAddress(
-                    $envelope['$node'],
+                fn ($nodeContextPath) => $this->nodeService->findNodeBySerializedNodeAddress(
+                    $nodeContextPath,
                     $contentRepositoryId
                 ),
-                $payload
+                $nodeContextPaths
             )
         );
 

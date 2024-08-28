@@ -86,22 +86,26 @@ export default class EditPreviewModeDropDown extends PureComponent {
                                 </li>
                             ))}
                         </ul>
-                        <div className={style.dropDown__groupHeader}>
-                            <Icon className={style.dropDown__btnIcon} icon={'eye'}/> {i18nRegistry.translate('content.components.editPreviewPanel.previewCentral', 'Preview Central')}
-                        </div>
-                        <ul>
-                            {previewModes.map(previewMode => (
-                                <li className={style.dropDown__item} key={previewMode.id}>
-                                    <Button
-                                        disabled={previewMode.id === editPreviewMode}
-                                        onClick={this.handleEditPreviewModeClick(previewMode.id)}
-                                        style={previewMode.id === editPreviewMode ? 'brand' : null}
-                                    >
-                                        <I18n id={previewMode.title}/>
-                                    </Button>
-                                </li>
-                            ))}
-                        </ul>
+                        {previewModes.length > 0 && (
+                            <>
+                                <div className={style.dropDown__groupHeader}>
+                                    <Icon className={style.dropDown__btnIcon} icon={'eye'}/> {i18nRegistry.translate('content.components.editPreviewPanel.previewCentral', 'Preview Central')}
+                                </div>
+                                <ul>
+                                    {previewModes.map(previewMode => (
+                                        <li className={style.dropDown__item} key={previewMode.id}>
+                                            <Button
+                                                disabled={previewMode.id === editPreviewMode}
+                                                onClick={this.handleEditPreviewModeClick(previewMode.id)}
+                                                style={previewMode.id === editPreviewMode ? 'brand' : null}
+                                            >
+                                                <I18n id={previewMode.title}/>
+                                            </Button>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </>
+                        )}
                     </DropDown.Contents>
                 </DropDown>
             </div>

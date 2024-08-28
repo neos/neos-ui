@@ -1,20 +1,21 @@
-import {takeEvery, put, select} from 'redux-saga/effects';
+import {put, select, takeEvery} from 'redux-saga/effects';
 
-import {selectors, actions, actionTypes} from '@neos-project/neos-ui-redux-store';
+import {actions, actionTypes, selectors} from '@neos-project/neos-ui-redux-store';
 import {requestIdleCallback} from '@neos-project/utils-helpers';
 
 import initializeContentDomNode from './initializeContentDomNode';
 import {
-    getGuestFrameWindow,
-    getGuestFrameDocument,
+    dispatchCustomEvent,
     findAllNodesInGuestFrame,
     findInGuestFrame,
     findNodeInGuestFrame,
-    dispatchCustomEvent
+    getGuestFrameDocument,
+    getGuestFrameWindow
 } from './dom';
 
 import style from './style.module.css';
 import {SelectionModeTypes} from '@neos-project/neos-ts-interfaces';
+import backend from '@neos-project/neos-ui-backend-connector';
 
 //
 // Get all parent elements of the event target.
@@ -59,13 +60,40 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
         return;
     }
 
-    const nodes = Object.assign({}, guestFrameWindow['@Neos.Neos.Ui:Nodes'], {
-        [documentInformation.metaData.documentNode]: documentInformation.metaData.documentNodeSerialization
+    // Load legacy node data scripts from guest frame - remove with Neos 9.0
+    const legacyNodeData = guestFrameWindow['@Neos.Neos.Ui:Nodes'] || {};
+
+    // Load all nodedata for nodes in the guest frame and filter duplicates
+    const {q} = yield backend.get();
+    const nodeContextPathsInGuestFrame = findAllNodesInGuestFrame().map(node => node.getAttribute('data-__neos-node-contextpath'));
+
+    // Filter nodes that are already present in the redux store and duplicates
+    const nodesByContextPath = store.getState().cr.nodes.byContextPath;
+    const notFullyLoadedNodeContextPaths = [...new Set(nodeContextPathsInGuestFrame)].filter((contextPath) => {
+        const node = nodesByContextPath[contextPath];
+        const nodeIsLoaded = node !== undefined && node.isFullyLoaded;
+        return !nodeIsLoaded;
     });
 
+    // Load remaining list of not fully loaded nodes from the backend if there are any
+    const fullyLoadedNodesFromContent = notFullyLoadedNodeContextPaths.length > 0 ? (yield q(notFullyLoadedNodeContextPaths).get()).reduce((nodes, node) => {
+        nodes[node.contextPath] = node;
+        return nodes;
+    }, {}) : {};
+
+    const nodes = Object.assign(
+        {},
+        legacyNodeData, // Merge legacy node data from the guest frame - remove with Neos 9.0
+        fullyLoadedNodesFromContent,
+        {
+            [documentInformation.metaData.documentNode]: documentInformation.metaData.documentNodeSerialization
+        }
+    );
+
+    // Merge new nodes into the store
     yield put(actions.CR.Nodes.merge(nodes));
 
-    // Remove the inline scripts after initialization
+    // Remove the legacy inline scripts after initialization - remove with Neos 9.0
     Array.prototype.forEach.call(guestFrameWindow.document.querySelectorAll('script[data-neos-nodedata]'), element => element.parentElement.removeChild(element));
 
     const state = store.getState();
@@ -151,8 +179,7 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
             store,
             globalRegistry,
             nodeTypesRegistry,
-            inlineEditorRegistry,
-            nodes
+            inlineEditorRegistry
         });
 
         requestIdleCallback(() => {

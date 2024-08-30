@@ -64,8 +64,7 @@ final class PromotedElementsCreationHandlerFactory implements NodeCreationHandle
                                 $commands->first->workspaceName,
                                 $commands->first->nodeAggregateId,
                                 $commands->first->originDimensionSpacePoint,
-                                ReferenceName::fromString($elementName),
-                                NodeReferencesToWrite::fromNodeAggregateIds($elementValue)
+                                NodeReferencesToWrite::fromReferenceNameAndNodeAggregateIds(ReferenceName::fromString($elementName), $elementValue)
                             );
                         }
                     }

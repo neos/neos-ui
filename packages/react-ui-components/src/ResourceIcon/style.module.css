@@ -1,0 +1,20 @@
+.resource-icon {
+    composes: reset from '../reset.module.css';
+    display: inline-block;
+    font: normal normal normal FontAwesome;
+    font-size: 14px/1;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+
+.resource-icon {
+    display: inline-grid;
+    width: 100%;
+    justify-content: center;
+}
+
+.resource-icon > svg {
+    fill: none;
+}

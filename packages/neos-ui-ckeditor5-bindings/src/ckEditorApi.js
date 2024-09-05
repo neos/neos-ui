@@ -69,7 +69,6 @@ export const createEditor = store => async options => {
 
             if (!hasMarkupDerivation) {
                 propertyDomNode.replaceWith(clonedTemporaryPropertyDomNode)
-                clonedTemporaryPropertyDomNode.dataset.neosInlineEditorIsInitialized = true
             } else {
                 const openMarkupDerivationDialogOnClickInText = () => {
                     let cleanupSubscription = null;
@@ -82,7 +81,6 @@ export const createEditor = store => async options => {
 
                                 debouncedOnChange()
                                 propertyDomNode.replaceWith(clonedTemporaryPropertyDomNode)
-                                clonedTemporaryPropertyDomNode.dataset.neosInlineEditorIsInitialized = true
 
                                 editor.editing.view.focus();
                                 break;

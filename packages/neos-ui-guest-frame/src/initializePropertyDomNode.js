@@ -59,7 +59,7 @@ export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry,
         }
 
         try {
-            if (!propertyDomNode.dataset.neosInlineEditorIsInitialized) {
+            if (!propertyDomNode.ckeditorInstance) {
                 const userPreferences = $get('user.preferences', store.getState());
 
                 createInlineEditor({
@@ -96,8 +96,6 @@ export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry,
                         }
                     }
                 });
-
-                propertyDomNode.dataset.neosInlineEditorIsInitialized = true;
             }
         } catch (err) {
             //

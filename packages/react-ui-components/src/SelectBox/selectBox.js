@@ -232,10 +232,10 @@ export default class SelectBox extends PureComponent {
 
         return (
             <DropDown.Stateless id={id} className={theme.selectBox} isOpen={isExpanded} onToggle={this.handleToggleExpanded} onClose={this.handleClose}>
-                <DropDown.Header className={headerClassName} shouldKeepFocusState={false} showDropDownToggle={showDropDownToggle && Boolean(options.length)}>
+                <DropDown.Header id={id ? `${id}-header` : undefined} className={headerClassName} shouldKeepFocusState={false} showDropDownToggle={showDropDownToggle && Boolean(options.length)}>
                     {this.renderHeader()}
                 </DropDown.Header>
-                <DropDown.Contents className={dropDownContentsClassName} scrollable={true}>
+                <DropDown.Contents id={id ? `${id}-contents` : undefined} className={dropDownContentsClassName} scrollable={true}>
                     {!plainInputMode && <ul className={theme.selectBox__list}>
                         <SelectBox_ListPreview
                             {...this.props}

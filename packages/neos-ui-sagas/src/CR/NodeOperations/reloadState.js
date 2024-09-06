@@ -17,14 +17,24 @@ export default function * watchReloadState({configuration}) {
         );
         const siteNodeContextPath = action?.payload?.siteNodeContextPath || currentSiteNodeContextPath;
         const documentNodeContextPath = yield action?.payload?.documentNodeContextPath || select(state => state?.cr?.nodes?.documentNode);
+        const {query: searchQuery, filterNodeType} = yield select(state => state?.ui?.pageTree);
+        const effectiveFilterNodeType = filterNodeType || configuration.nodeTree.presets.default.baseNodeType;
+        const isSearch = Boolean(filterNodeType || searchQuery);
         yield put(actions.CR.Nodes.setDocumentNode(documentNodeContextPath, currentSiteNodeContextPath));
         yield put(actions.UI.PageTree.setAsLoading(currentSiteNodeContextPath));
-        const nodes = yield q([siteNodeContextPath, documentNodeContextPath]).neosUiDefaultNodes(
-            configuration.nodeTree.presets.default.baseNodeType,
-            configuration.nodeTree.loadingDepth,
-            toggledNodes,
-            clipboardNodesContextPaths
-        ).getForTree();
+
+        let nodes = [];
+        if (isSearch) {
+            nodes = yield q(siteNodeContextPath).search(searchQuery, effectiveFilterNodeType).getForTreeWithParents(effectiveFilterNodeType);
+        } else {
+            nodes = yield q([siteNodeContextPath, documentNodeContextPath]).neosUiDefaultNodes(
+                configuration.nodeTree.presets.default.baseNodeType,
+                configuration.nodeTree.loadingDepth,
+                toggledNodes,
+                clipboardNodesContextPaths
+            ).getForTree();
+        }
+
         const nodeMap = nodes.reduce((nodeMap, node) => {
             nodeMap[node?.contextPath] = node;
             return nodeMap;

@@ -152,7 +152,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             $nodeInfo = array_merge($nodeInfo, $this->getUriInformation($node, $actionRequest));
         }
 
-        $baseNodeType = $nodeTypeFilterOverride ? $nodeTypeFilterOverride : $this->baseNodeType;
+        $baseNodeType = $nodeTypeFilterOverride ?: $this->baseNodeType;
         $nodeInfo['children'] = $this->renderChildrenInformation($node, $baseNodeType);
 
         $this->userLocaleService->switchToUILocale(true);
@@ -243,7 +243,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
             $infos[] = [
                 'contextPath' => $nodeAddressFactory->createFromNode($childNode)->serializeForUri(),
-                'nodeType' => $childNode->nodeTypeName->value // TODO: DUPLICATED; should NOT be needed!!!
+                'nodeType' => $childNode->nodeTypeName->value
             ];
         };
         return $infos;
@@ -270,7 +270,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
      * @param array<int,?array<string,mixed>> $nodes
      * @return array<int,?array<string,mixed>>
      */
-    public function renderNodesWithParents(array $nodes, ActionRequest $actionRequest): array
+    public function renderNodesWithParents(array $nodes, ActionRequest $actionRequest, ?string $nodeTypeFilter = null): array
     {
         // For search operation we want to include all nodes, not respecting the "baseNodeType" setting
         $baseNodeTypeOverride = $this->documentNodeTypeRole;
@@ -285,7 +285,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             } elseif ($renderedNode = $this->renderNodeWithMinimalPropertiesAndChildrenInformation(
                 $node,
                 $actionRequest,
-                $baseNodeTypeOverride
+                $nodeTypeFilter ?? $baseNodeTypeOverride
             )) {
                 $renderedNode['matched'] = true;
                 $renderedNodes[$node->aggregateId->value] = $renderedNode;

@@ -88,7 +88,7 @@ class UpdateWorkspaceInfo extends AbstractFeedback
             return false;
         }
         $feedbackWorkspaceName = $feedback->getWorkspaceName();
-        return $feedbackWorkspaceName !== null && $this->getWorkspaceName()?->equals($feedbackWorkspaceName);
+        return $feedbackWorkspaceName !== null && $this->getWorkspaceName()->equals($feedbackWorkspaceName);
     }
 
     /**
@@ -99,11 +99,8 @@ class UpdateWorkspaceInfo extends AbstractFeedback
      */
     public function serializePayload(ControllerContext $controllerContext)
     {
-        if (!$this->workspaceName) {
-            return null;
-        }
         $contentRepository = $this->contentRepositoryRegistry->get($this->contentRepositoryId);
-        $workspace = $contentRepository->findWorkspaceByName($this->workspaceName);
+        $workspace = $contentRepository->getWorkspaceFinder()->findOneByName($this->workspaceName);
         if ($workspace === null) {
             return null;
         }

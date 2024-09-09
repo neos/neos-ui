@@ -22,13 +22,18 @@
     outline-color: var(--colors-Warn);
 }
 
-:global(.neos-inline-editable:focus) {
+:global([data-__neos-property].ck-content:focus) {
     outline: none;
 }
 
-:global([data-neos-inline-editor-is-initialized]:hover) {
+:global([data-__neos-property].ck-content:hover) {
     outline-offset: 5px;
     outline: 2px dashed var(--colors-PrimaryBlue);
+}
+
+:global([data-neos-inline-editor-markup-derivation]) {
+    outline-offset: 5px;
+    outline: 2px dashed var(--colors-Warn);
 }
 
 .notInlineEditableOverlay {

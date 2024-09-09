@@ -18,6 +18,7 @@ import * as SelectNodeTypeModal from './SelectNodeTypeModal';
 import * as NodeCreationDialog from './NodeCreationDialog';
 import * as NodeVariantCreationDialog from './NodeVariantCreationDialog';
 import * as ContentTree from './ContentTree';
+import * as InlineEditorMarkupDerivationDialog from './InlineEditorMarkupDerivationDialog';
 
 const all = {
     FlashMessages,
@@ -37,7 +38,8 @@ const all = {
     SelectNodeTypeModal,
     NodeCreationDialog,
     NodeVariantCreationDialog,
-    ContentTree
+    ContentTree,
+    InlineEditorMarkupDerivationDialog
 };
 
 function typedKeys<T>(o: T) : Array<keyof T> {
@@ -65,6 +67,7 @@ export interface State {
     nodeCreationDialog: NodeCreationDialog.State;
     nodeVariantCreationDialog: NodeVariantCreationDialog.State;
     contentTree: ContentTree.State;
+    inlineEditorMarkupDerivationDialog: InlineEditorMarkupDerivationDialog.State;
 }
 
 //
@@ -97,7 +100,8 @@ export const reducer = combineReducers({
     selectNodeTypeModal: SelectNodeTypeModal.reducer,
     nodeCreationDialog: NodeCreationDialog.reducer,
     nodeVariantCreationDialog: NodeVariantCreationDialog.reducer,
-    contentTree: ContentTree.reducer
+    contentTree: ContentTree.reducer,
+    inlineEditorMarkupDerivationDialog: InlineEditorMarkupDerivationDialog.reducer
 } as any); // TODO: when we update redux, this shouldn't be necessary https://github.com/reduxjs/redux/issues/2709#issuecomment-357328709
 
 //

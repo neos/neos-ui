@@ -14,12 +14,13 @@ declare(strict_types=1);
 
 namespace Neos\TestNodeTypes\Application\RemoveAdditionalSettings\Controller;
 
+use GuzzleHttp\Psr7\Response;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\ActionRequest;
-use Neos\Flow\Mvc\ActionResponse;
 use Neos\Flow\Mvc\Controller\ControllerInterface;
 use Neos\TestNodeTypes\Application\RemoveAdditionalSettings\RemoveAdditionalSettingsCommand;
 use Neos\TestNodeTypes\Application\RemoveAdditionalSettings\RemoveAdditionalSettingsCommandHandler;
+use Psr\Http\Message\ResponseInterface;
 
 #[Flow\Scope("singleton")]
 final class RemoveAdditionalSettingsController implements ControllerInterface
@@ -27,46 +28,33 @@ final class RemoveAdditionalSettingsController implements ControllerInterface
     #[Flow\Inject]
     protected RemoveAdditionalSettingsCommandHandler $commandHandler;
 
-    public function processRequest(ActionRequest $request, ActionResponse $response)
+    public function processRequest(ActionRequest $request): ResponseInterface
     {
-        $request->setDispatched(true);
-        $response->setContentType('application/json');
-
         try {
             $command = RemoveAdditionalSettingsCommand::fromArray($request->getArguments());
             $this->commandHandler->handle($command);
-
-            $response->setStatusCode(200);
-            $response->setContent(
-                json_encode(
-                    ['success' => true],
-                    JSON_THROW_ON_ERROR
-                )
-            );
+            return new Response(status: 200, headers: ['Content-Type' => 'application/json'], body: json_encode(
+                ['success' => true],
+                JSON_THROW_ON_ERROR
+            ));
         } catch (\InvalidArgumentException $e) {
-            $response->setStatusCode(400);
-            $response->setContent(
-                json_encode(
-                    ['error' => [
-                        'type' => $e::class,
-                        'code' => $e->getCode(),
-                        'message' => $e->getMessage(),
-                    ]],
-                    JSON_THROW_ON_ERROR
-                )
-            );
+            return new Response(status: 400, headers: ['Content-Type' => 'application/json'], body: json_encode(
+                ['error' => [
+                    'type' => $e::class,
+                    'code' => $e->getCode(),
+                    'message' => $e->getMessage(),
+                ]],
+                JSON_THROW_ON_ERROR
+            ));
         } catch (\Exception $e) {
-            $response->setStatusCode(500);
-            $response->setContent(
-                json_encode(
-                    ['error' => [
-                        'type' => $e::class,
-                        'code' => $e->getCode(),
-                        'message' => $e->getMessage(),
-                    ]],
-                    JSON_THROW_ON_ERROR
-                )
-            );
+            return new Response(status: 500, headers: ['Content-Type' => 'application/json'], body:                 json_encode(
+                ['error' => [
+                    'type' => $e::class,
+                    'code' => $e->getCode(),
+                    'message' => $e->getMessage(),
+                ]],
+                JSON_THROW_ON_ERROR
+            ));
         }
     }
 }

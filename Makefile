@@ -112,7 +112,7 @@ test-e2e-saucelabs:
 
 ## Executes integration tests locally.
 test-e2e:
-	bash Tests/IntegrationTests/e2e.sh chrome
+	bash Tests/IntegrationTests/e2e.sh chrome:--disable-search-engine-choice-screen
 
 ## Executes integration tests locally in a docker-compose setup.
 #
@@ -120,7 +120,7 @@ test-e2e:
 # 	127.0.0.1 onedimension.localhost
 # 	127.0.0.1 twodimensions.localhost
 test-e2e-docker: build-e2e-testing
-	@bash Tests/IntegrationTests/e2e-docker.sh $(or $(browser),chrome)
+	@bash Tests/IntegrationTests/e2e-docker.sh $(or $(browser),chrome:--disable-search-engine-choice-screen)
 
 start-neos-dev-instance:
 	bash Tests/IntegrationTests/start-neos-dev-instance.sh

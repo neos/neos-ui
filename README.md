@@ -161,14 +161,19 @@ To setup end-to-end tests locally you have got to do the same things described i
 
 For executing the end to end tests on a Mac with catalina or higher you need to permit screen recording. Open 'System Preferences > Security & Privacy > Privacy > Screen Recording' and check 'TestCafe Browser Tools' in the application list.
 
+```bash
+make test-e2e-docker
+```
+
 #### Local Development with e2e-tests & docker
+
 To speed up the e2e-test workflow/feedback loop you can start the system under test in a docker setup and run the tests against that:
-* `make start-neos-dev-instance` (starts a docker setup with the system under test)
+* `make start-neos-dev-instance` (starts a docker setup with the system under test and keep it running - in the `1Dimension` scenario)
 * The neos dev instance is available at `localhost:8081`
 * To enter the container run `docker compose -f Tests/IntegrationTests/docker-compose.neos-dev-instance.yaml exec php bash`
 * `yarn run testcafe <browser> <testFile> <optional flags>`
-  * for example, this runs all tests in chrome:
-  `yarn run testcafe chrome Tests/IntegrationTests/Fixtures`
+  * for example, this runs all tests in chrome: (NOTE starting with Chrome 127, --disable-search-engine-choice-screen is needed)
+  `yarn run testcafe chrome:--disable-search-engine-choice-screen Tests/IntegrationTests/Fixtures/1Dimension`
   * some helpful optional flags are
     * `-T 'sidebars'` - grep tests by pattern and only execute those
     * `--selector-timeout=10000` - if you work on async pieces of the UI then this might help to prevent race conditions 

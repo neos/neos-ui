@@ -1,0 +1,37 @@
+kind: testcafe
+sauce:
+  region: us-west-1
+  concurrency: 2 # Controls how many suites are executed at the same time.
+  metadata:
+    tags:
+      - e2e
+      - release team
+      - other tag
+    build: Release $CI_COMMIT_SHORT_SHA
+testcafe:
+  version: 3.6.2
+# Controls what files are available in the context of a test run (unless explicitly excluded by .sauceignore).
+rootDir: ./
+suites:
+  - name: "One dimensional Tests in Firefox on Windows"
+    browserName: "firefox"
+    src:
+      - "../../../1Dimension/*.e2e.js"
+    platformName: "Windows 11"
+  - name: "Two dimensional Tests in Firefox on Windows"
+    browserName: "firefox"
+    src:
+      - "../../../2Dimension/*.e2e.js"
+    platformName: "Windows 11"
+
+# Controls what artifacts to fetch when the suites have finished.
+artifacts:
+  download:
+    when: always
+    match:
+      - console.log
+    directory: ./artifacts/
+
+reporters:
+  spotlight: # Prints an overview of failed or otherwise interesting jobs.
+    enabled: true

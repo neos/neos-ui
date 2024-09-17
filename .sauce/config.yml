@@ -1,3 +1,4 @@
+apiVersion: v1alpha
 kind: testcafe
 sauce:
   region: us-west-1

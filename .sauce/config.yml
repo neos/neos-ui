@@ -17,12 +17,12 @@ suites:
   - name: "One dimensional Tests in Firefox on Windows"
     browserName: "firefox"
     src:
-      - "../../../1Dimension/*.e2e.js"
+      - "Tests/IntegrationTests/Fixtures/1Dimension/*.e2e.js"
     platformName: "Windows 11"
   - name: "Two dimensional Tests in Firefox on Windows"
     browserName: "firefox"
     src:
-      - "../../../2Dimension/*.e2e.js"
+      - "Tests/IntegrationTests/Fixtures/2Dimension/*.e2e.js"
     platformName: "Windows 11"
 
 # Controls what artifacts to fetch when the suites have finished.

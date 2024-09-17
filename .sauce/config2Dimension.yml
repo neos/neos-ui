@@ -14,16 +14,24 @@ testcafe:
 # Controls what files are available in the context of a test run (unless explicitly excluded by .sauceignore).
 rootDir: ./
 suites:
-  - name: "One dimensional Tests in Firefox on Windows"
+  - name: "Two dimensional Tests in Firefox on Windows"
     browserName: "firefox"
     src:
       - "Tests/IntegrationTests/Fixtures/1Dimension/*.e2e.js"
     platformName: "Windows 11"
-  - name: "Two dimensional Tests in Firefox on Windows"
-    browserName: "firefox"
+    tunnelName: "circleci-tunnel"
+  - name: "Two dimensional Tests in Chrome on Windows"
+    browserName: "chrome"
     src:
-      - "Tests/IntegrationTests/Fixtures/2Dimension/*.e2e.js"
+      - "Tests/IntegrationTests/Fixtures/1Dimension/*.e2e.js"
     platformName: "Windows 11"
+    tunnelName: "circleci-tunnel"
+  - name: "Two dimensional Tests in Safari on MacOS"
+    browserName: "Safari"
+    src:
+      - "Tests/IntegrationTests/Fixtures/1Dimension/*.e2e.js"
+    platformName: "MacOS 11"
+    tunnelName: "circleci-tunnel"
 
 # Controls what artifacts to fetch when the suites have finished.
 artifacts:

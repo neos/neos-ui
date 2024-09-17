@@ -28,6 +28,8 @@ ln -s "../Packages/Application/Neos.Neos.Ui/Tests/IntegrationTests/SharedNodeTyp
 
 for fixture in Packages/Application/Neos.Neos.Ui/Tests/IntegrationTests/Fixtures/*/; do
     echo "$fixture"
+    dimension=$(basename "$fixture")
+    echo "$dimension"
 
     ln -s "../${fixture}SitePackage" DistributionPackages/Neos.TestSite
 
@@ -47,7 +49,7 @@ for fixture in Packages/Application/Neos.Neos.Ui/Tests/IntegrationTests/Fixtures
     ./flow resource:publish
 
     cd Packages/Application/Neos.Neos.Ui
-    saucectl run
+    saucectl run --config .sauce/config${dimension}.yml
     cd ../../..
     rm -f DistributionPackages/Neos.TestSite
 

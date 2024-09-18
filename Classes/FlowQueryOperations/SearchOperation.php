@@ -73,7 +73,7 @@ class SearchOperation extends AbstractOperation
         /** @var Node $contextNode */
         $contextNode = $context[0];
         $subgraph = $this->contentRepositoryRegistry->subgraphForNode($contextNode);
-        $matchingNodeByAggregateId = [];
+        $matchingNodeByAggregateId = null;
         $filter = FindDescendantNodesFilter::create();
         if (isset($arguments[0]) && $arguments[0] !== '') {
             if ($nodeAggregateId = NodeAggregateId::tryFromString($arguments[0])) {

@@ -1,5 +1,6 @@
 apiVersion: v1alpha
 kind: testcafe
+showConsoleLog: true
 sauce:
   region: us-west-1
   concurrency: 2 # Controls how many suites are executed at the same time.

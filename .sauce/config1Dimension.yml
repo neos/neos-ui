@@ -3,7 +3,7 @@ kind: testcafe
 showConsoleLog: true
 sauce:
   region: us-west-1
-  concurrency: 2 # Controls how many suites are executed at the same time.
+  concurrency: 1 # Controls how many suites are executed at the same time.
   metadata:
     tags:
       - e2e
@@ -22,7 +22,7 @@ suites:
     src:
       - "Tests/IntegrationTests/Fixtures/1Dimension/*.e2e.js"
     platformName: "Windows 10"
-  - name: "One dimensional Tests in Chrome on Windows"
+  - name: "One dimensional Tests in Firefox on MacOS"
     browserName: "firefox"
     src:
       - "Tests/IntegrationTests/Fixtures/1Dimension/*.e2e.js"

@@ -2,7 +2,7 @@ apiVersion: v1alpha
 kind: testcafe
 sauce:
   region: us-west-1
-  concurrency: 2 # Controls how many suites are executed at the same time.
+  concurrency: 1 # Controls how many suites are executed at the same time.
   metadata:
     tags:
       - e2e
@@ -27,7 +27,7 @@ suites:
       - "Tests/IntegrationTests/Fixtures/1Dimension/*.e2e.js"
     platformName: "Windows 10"
   - name: "Two dimensional Tests in Safari on MacOS"
-    browserName: "Safari"
+    browserName: "safari"
     src:
       - "Tests/IntegrationTests/Fixtures/1Dimension/*.e2e.js"
     platformName: "macOS 13"

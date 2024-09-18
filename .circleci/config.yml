@@ -100,7 +100,7 @@ jobs:
       - run:
           name: Start Sauce Connect
           background: true
-          command: sc run --username ${SAUCE_USERNAME} --access-key ${SAUCE_ACCESS_KEY} --tunnel-name "circleci-tunnel"
+          command: sc run --username ${SAUCE_USERNAME} --access-key ${SAUCE_ACCESS_KEY} --tunnel-name "circleci-tunnel" --region "us-west-1"
       - run: rm -rf /home/circleci/app/Packages/Application/Neos.Neos.Ui
       - run: cd /home/circleci/app/Packages/Application && mv ~/neos-ui-workspace Neos.Neos.Ui
       - run: |

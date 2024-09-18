@@ -10,14 +10,18 @@ export default function * moveDroppedNodes() {
 
         const referenceNodeSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(reference);
         const referenceNode = yield select(referenceNodeSelector);
+        const baseNodeType = yield select(state => state?.ui?.pageTree?.filterNodeType);
 
         const changes = nodesToBeMoved.map(subject => ({
             type: calculateChangeTypeFromMode(position, 'Move'),
             subject,
-            payload: calculateDomAddressesFromMode(
-                position,
-                referenceNode
-            )
+            payload: {
+                ...calculateDomAddressesFromMode(
+                    position,
+                    referenceNode
+                ),
+                baseNodeType
+            }
         }));
 
         yield put(actions.Changes.persistChanges(changes));

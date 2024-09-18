@@ -9,7 +9,7 @@ then
 fi
 
 function dc() {
-    docker-compose -f ./Tests/IntegrationTests/docker-compose.yaml $@
+    docker compose -f ./Tests/IntegrationTests/docker-compose.yaml $@
 }
 
 echo "#############################################################################"

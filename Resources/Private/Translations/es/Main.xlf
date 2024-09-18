@@ -540,7 +540,11 @@
       </trans-unit>
       <trans-unit id="copyNodeTypeNameToClipboard" xml:space="preserve">
         <source>Copy node type to clipboard</source>
-        <target state="translated">Copiar tipo de nodo al portapapeles</target>
+        <target state="translated">Copiar el tipo de nodo al portapapeles</target>
+      </trans-unit>
+      <trans-unit id="collapseAll" xml:space="preserve">
+        <source>Collapse All</source>
+        <target state="translated">Contraer todo</target>
       </trans-unit>
       <trans-unit id="syncPersonalWorkSpace" xml:space="preserve">
         <source>Synchronize personal workspace</source>
@@ -573,6 +577,10 @@
         <target state="translated">Su espacio de trabajo personal contiene actualmente cambios sin publicar.
                 Para cambiar a un espacio de trabajo de destino diferente, primero debe publicar o descartar los cambios pendientes.
                 </target>
+      </trans-unit>
+      <trans-unit id="invalidValue" xml:space="preserve">
+        <source>Invalid value</source>
+        <target state="translated">Valor incorrecto</target>
       </trans-unit>
     </body>
   </file>

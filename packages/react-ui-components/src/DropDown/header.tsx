@@ -15,6 +15,11 @@ interface ShallowDropDownHeaderTheme {
 
 export interface ShallowDropDownHeaderProps {
     /**
+     * An optional `id` to attach to the wrapper.
+     */
+    readonly id?: string;
+
+    /**
      * An optional `className` to attach to the wrapper.
      */
     readonly className?: string;
@@ -93,6 +98,7 @@ class ShallowDropDownHeader extends PureComponent<ShallowDropDownHeaderProps> {
 
     public render(): JSX.Element {
         const {
+            id,
             className,
             children,
             theme,
@@ -115,6 +121,7 @@ class ShallowDropDownHeader extends PureComponent<ShallowDropDownHeaderProps> {
 
         return (
             <div
+                id={id}
                 role="button"
                 onClick={disabled ? undefined : toggleDropDown}
                 ref={this.handleReferenceHandler}

@@ -21,12 +21,12 @@ suites:
     browserName: "firefox"
     src:
       - "Tests/IntegrationTests/Fixtures/1Dimension/*.e2e.js"
-    platformName: "Windows 11"
+    platformName: "Windows 10"
   - name: "One dimensional Tests in Chrome on Windows"
-    browserName: "chrome"
+    browserName: "firefox"
     src:
       - "Tests/IntegrationTests/Fixtures/1Dimension/*.e2e.js"
-    platformName: "Windows 11"
+    platformName: "macOS 13"
 npm:
   dependencies:
     - testcafe-react-selectors

@@ -5,7 +5,7 @@ import {ReactSelector} from 'testcafe-react-selectors';
 // We define all methods as static here so it would be possible to use these classes without `new`
 //
 export class Page {
-    static treeNode = ReactSelector('Node').find('a');
+    static treeNode = Selector('a[data-neos-integrational-test="tree__item__nodeHeader__itemLabel"]');
 
     static getTreeNodeButton = (name) => Page.treeNode.withExactText(name).parent('[role="button"]');
 
@@ -38,7 +38,7 @@ export class DimensionSwitcher {
 
     static dimensionSwitcherFirstDimensionSelector = ReactSelector('DimensionSwitcher SelectBox');
 
-    static dimensionSwitcherFirstDimensionSelectorWithShallowDropDownContents = ReactSelector('DimensionSwitcher SelectBox ShallowDropDownContents');
+    static dimensionSwitcherFirstDimensionSelectorWithShallowDropDownContents = ReactSelector('DimensionSwitcher SelectBox ContextDropDownContents');
 
     static async switchLanguageDimension(name) {
         await t
@@ -57,7 +57,7 @@ export class DimensionSwitcher {
 export class PublishDropDown {
     static publishDropdown = ReactSelector('PublishDropDown ContextDropDownHeader');
 
-    static publishDropdownDiscardAll = ReactSelector('PublishDropDown ShallowDropDownContents').find('button').withText('Discard all');
+    static publishDropdownDiscardAll = ReactSelector('PublishDropDown ContextDropDownContents').find('button').withText('Discard all');
 
     static publishDropdownPublishAll = ReactSelector('PublishDropDown ShallowDropDownContents').find('button').withText('Publish all');
 

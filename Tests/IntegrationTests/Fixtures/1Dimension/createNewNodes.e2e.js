@@ -201,7 +201,7 @@ test('Can create content node from inside InlineUI', async t => {
         .switchToMainWindow()
         .click(ReactSelector('EditorToolbar LinkButton'))
         .typeText(ReactSelector('EditorToolbar LinkButton TextInput'), linkTargetPage)
-        .click(ReactSelector('EditorToolbar ShallowDropDownContents NodeOption'))
+        .click(ReactSelector('EditorToolbar ContextDropDownContents NodeOption'))
         .switchToIframe(contentIframeSelector)
         .expect(Selector('.test-headline h1 a').withAttribute('href').exists).ok('Newly inserted link exists')
         .switchToMainWindow();
@@ -229,7 +229,7 @@ test('Inline CKEditor mode `paragraph: false` works as expected', async t => {
 
     await t.switchToMainWindow();
     await t.wait(1500); // we debounce the change
-    await t.expect(ReactSelector('Inspector TextAreaEditor').withProps({ value: 'Foo Bar<br>Bun Buz'}).exists).ok('The TextAreaEditor mirrors the expected value')
+    await t.expect(ReactSelector('Inspector TextAreaEditor').withProps({value: 'Foo Bar<br>Bun Buz'}).exists).ok('The TextAreaEditor mirrors the expected value')
 });
 
 test('Supports secondary inspector view for element editors', async t => {
@@ -255,7 +255,8 @@ test('Supports secondary inspector view for element editors', async t => {
     const initialLeftOffset = await imageEditor.find('img').getStyleProperty('left');
 
     await t
-        .drag(ReactSelector('ReactCrop'), 50, 50, {offsetX: 5, offsetY: 5})
+        .click(Selector('.ReactCrop')) // Click to unset any previous selection
+        .drag(Selector('.ReactCrop'), 50, 50, {offsetX: 5, offsetY: 5})
         .expect(imageEditor.find('img').getStyleProperty('left')).notEql(initialLeftOffset, 'The preview image in the creation dialog should reflect the cropping results');
 
     const leftOffsetAfterCrop = await imageEditor.find('img').getStyleProperty('left');

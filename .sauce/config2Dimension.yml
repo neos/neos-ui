@@ -9,6 +9,8 @@ sauce:
       - release team
       - other tag
     build: Release $CI_COMMIT_SHORT_SHA
+  tunnel:
+    name: "circleci-tunnel"
 testcafe:
   version: 3.6.2
 # Controls what files are available in the context of a test run (unless explicitly excluded by .sauceignore).
@@ -19,19 +21,16 @@ suites:
     src:
       - "Tests/IntegrationTests/Fixtures/1Dimension/*.e2e.js"
     platformName: "Windows 11"
-    tunnelName: "circleci-tunnel"
   - name: "Two dimensional Tests in Chrome on Windows"
     browserName: "chrome"
     src:
       - "Tests/IntegrationTests/Fixtures/1Dimension/*.e2e.js"
     platformName: "Windows 11"
-    tunnelName: "circleci-tunnel"
   - name: "Two dimensional Tests in Safari on MacOS"
     browserName: "Safari"
     src:
       - "Tests/IntegrationTests/Fixtures/1Dimension/*.e2e.js"
     platformName: "MacOS 11"
-    tunnelName: "circleci-tunnel"
 
 # Controls what artifacts to fetch when the suites have finished.
 artifacts:

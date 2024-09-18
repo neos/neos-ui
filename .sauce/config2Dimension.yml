@@ -31,6 +31,9 @@ suites:
     src:
       - "Tests/IntegrationTests/Fixtures/1Dimension/*.e2e.js"
     platformName: "MacOS 11"
+npm:
+  dependencies:
+    - testcafe-react-selectors
 
 # Controls what artifacts to fetch when the suites have finished.
 artifacts:

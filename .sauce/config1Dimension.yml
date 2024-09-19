@@ -41,11 +41,13 @@ npm:
 # Controls what artifacts to fetch when the suites have finished.
 artifacts:
   download:
-    when: always
     match:
-      - console.log
+      - neosui-one-dimensional-test-report.json
+    when: always
+    allAttempts: true
     directory: ./artifacts/
 
 reporters:
-  spotlight: # Prints an overview of failed or otherwise interesting jobs.
+  json:
     enabled: true
+    filename: neosui-one-dimensional-test-report.json

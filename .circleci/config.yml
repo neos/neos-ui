@@ -1,4 +1,4 @@
-version: 2.0
+version: 2.1
 
 aliases:
   - &workspace_root ~/neos-ui-workspace
@@ -41,7 +41,7 @@ aliases:
       - .
 
 orbs:
-  gh: circleci/github-cli@2.1.0
+  gh: circleci/github-cli@2.3.0
 
 jobs:
   checkout:
@@ -92,10 +92,15 @@ jobs:
           MYSQL_ROOT_PASSWORD: not_a_real_password
     working_directory: *workspace_root
     steps:
+      - checkout
       - attach_workspace: *attach_workspace
       - restore_cache: *restore_app_cache
 
-      - gh/setup
+      - gh/install
+      - run:
+          name: Login to GitHub
+          command: |
+            echo $AUTH_TOKEN_GITHUB | gh auth login --with-token
       - run:
           name: Define target branch
           command: |

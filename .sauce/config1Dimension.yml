@@ -42,10 +42,12 @@ npm:
 artifacts:
   download:
     match:
-      - neosui-one-dimensional-test-report.json
+      - neosui-two-dimensional-test-report.json
+      - console.log
+      - sauce-test-report.json
     when: always
     allAttempts: true
-    directory: ./artifacts/
+    directory: ../../Data/Logs/saucelabs-artifacts/
 
 reporters:
   json:

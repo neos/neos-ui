@@ -21,16 +21,13 @@ suites:
     src:
       - "Tests/IntegrationTests/Fixtures/1Dimension/*.e2e.js"
     platformName: "Windows 10"
-  - name: "Two dimensional Tests in Chrome on Windows"
-    browserName: "chrome"
-    src:
-      - "Tests/IntegrationTests/Fixtures/1Dimension/*.e2e.js"
-    platformName: "Windows 10"
-  - name: "Two dimensional Tests in Safari on MacOS"
-    browserName: "safari"
+    screenResolution: "1280x1024"
+  - name: "Two dimensional Tests in Firefox on MacOS"
+    browserName: "firefox"
     src:
       - "Tests/IntegrationTests/Fixtures/1Dimension/*.e2e.js"
     platformName: "macOS 13"
+    screenResolution: "1280x1024"
 npm:
   dependencies:
     - testcafe-react-selectors

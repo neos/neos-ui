@@ -28,7 +28,7 @@ suites:
     src:
       - "Tests/IntegrationTests/Fixtures/1Dimension/*.e2e.js"
     platformName: "macOS 13"
-    screenResolution: "1280x1024"
+    screenResolution: "1440x900"
 npm:
   dependencies:
     - testcafe-react-selectors

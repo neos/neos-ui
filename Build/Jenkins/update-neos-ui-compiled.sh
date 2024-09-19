@@ -35,7 +35,7 @@ export NODE_OPTIONS="--max-old-space-size=4096"
 
 nvm install && nvm use
 make clean && make setup
-NEOS_UI_VERSION="${GIT_TAG:-${GIT_BRANCH}-dev}" make build-production
+NEOS_UI_VERSION="${GIT_TAG:-${GIT_BRANCH#*/}-dev}" make build-production
 
 rm -Rf tmp_compiled_pkg
 git clone git@github.com:neos/neos-ui-compiled.git tmp_compiled_pkg

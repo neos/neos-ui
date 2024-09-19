@@ -102,11 +102,6 @@ jobs:
           command: |
             echo $AUTH_TOKEN_GITHUB | gh auth login --with-token
       - run:
-          name: Define target branch
-          command: |
-            TARGET_BRANCH=$(gh pr view $CIRCLE_PULL_REQUEST --json baseRefName --jq '.baseRefName')
-            echo "Target Branch: $TARGET_BRANCH"
-      - run:
           name: Install Sauce Connect
           command: |
             curl -L -o sauce-connect.deb https://saucelabs.com/downloads/sauce-connect/5.1.3/sauce-connect_5.1.3.linux_amd64.deb
@@ -131,6 +126,18 @@ jobs:
           background: true
           command: sc run --username ${SAUCE_USERNAME} --access-key ${SAUCE_ACCESS_KEY} --tunnel-name "circleci-tunnel" --region "us-west-1" --proxy-localhost allow
       - run:
+          name: Define target branch
+          command: |
+            TARGET_BRANCH=$(gh pr view $CIRCLE_PULL_REQUEST --json baseRefName --jq '.baseRefName')
+            echo "Target Branch: $TARGET_BRANCH"
+            # Save the variable to BASH_ENV to be able to access it in the next steps
+            echo "export TARGET_BRANCH=$TARGET_BRANCH" >> $BASH_ENV
+      - run:
+          name: Use target branch
+          command: |
+            echo "Using target branch: $TARGET_BRANCH"
+      - run:
+          name: Prepare and run e2e tests
           no_output_timeout: 30m
           command: |
             export NVM_DIR="$HOME/.nvm"

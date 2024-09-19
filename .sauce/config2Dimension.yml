@@ -8,7 +8,7 @@ sauce:
     tags:
       - e2e
       - $TARGET_BRANCH
-    build: Release $CI_COMMIT_SHORT_SHA
+    build: $TARGET_BRANCH
   tunnel:
     name: "circleci-tunnel"
 testcafe:

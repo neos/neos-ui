@@ -40,6 +40,9 @@ aliases:
     paths:
       - .
 
+orbs:
+  gh: circleci/github-cli@2.1.0
+
 jobs:
   checkout:
     docker:
@@ -92,6 +95,12 @@ jobs:
       - attach_workspace: *attach_workspace
       - restore_cache: *restore_app_cache
 
+      - gh/setup
+      - run:
+          name: Define target branch
+          command: |
+            TARGET_BRANCH=$(gh pr view $CIRCLE_PULL_REQUEST --json baseRefName --jq '.baseRefName')
+            echo "Target Branch: $TARGET_BRANCH"
       - run:
           name: Install Sauce Connect
           command: |

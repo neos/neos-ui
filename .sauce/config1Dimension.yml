@@ -1,0 +1,54 @@
+apiVersion: v1alpha
+kind: testcafe
+showConsoleLog: true
+sauce:
+  region: us-west-1
+  concurrency: 1 # Controls how many suites are executed at the same time.
+  retries: 3
+  metadata:
+    tags:
+      - e2e
+      - $TARGET_BRANCH
+    build: $TARGET_BRANCH
+  tunnel:
+    name: "circleci-tunnel"
+testcafe:
+  version: 3.6.2
+# Controls what files are available in the context of a test run (unless explicitly excluded by .sauceignore).
+rootDir: ./
+suites:
+  - name: "One dimensional Tests in Firefox on Windows"
+    browserName: "firefox"
+    src:
+      - "Tests/IntegrationTests/Fixtures/1Dimension/*.e2e.js"
+    platformName: "Windows 10"
+    screenResolution: "1280x1024"
+    smartRetry:
+      failedOnly: true
+  - name: "One dimensional Tests in Firefox on MacOS"
+    browserName: "firefox"
+    src:
+      - "Tests/IntegrationTests/Fixtures/1Dimension/*.e2e.js"
+    platformName: "macOS 13"
+    screenResolution: "1440x900"
+    smartRetry:
+      failedOnly: true
+npm:
+  dependencies:
+    - testcafe-react-selectors
+
+# Controls what artifacts to fetch when the suites have finished.
+artifacts:
+  download:
+    match:
+      - neosui-two-dimensional-test-report.json
+      - console.log
+      - sauce-test-report.json
+    when: always
+    allAttempts: true
+    directory: ../../Data/Logs/saucelabs-artifacts/
+
+reporters:
+  json:
+    enabled: true
+    filename: neosui-one-dimensional-test-report.json

@@ -128,7 +128,12 @@ jobs:
       - run:
           name: Define target branch
           command: |
-            TARGET_BRANCH=$(gh pr view $CIRCLE_PULL_REQUEST --json baseRefName --jq '.baseRefName')
+            # Get the target branch of the PR but when we are not one a PR, use the current branch
+            if [ -n "$CIRCLE_PULL_REQUEST" ]; then
+              TARGET_BRANCH=$(gh pr view $CIRCLE_PULL_REQUEST --json baseRefName --jq '.baseRefName')
+            else
+              TARGET_BRANCH=$CIRCLE_BRANCH
+            fi
             echo "Target Branch: $TARGET_BRANCH"
             # Save the variable to BASH_ENV to be able to access it in the next steps
             echo "export TARGET_BRANCH=$TARGET_BRANCH" >> $BASH_ENV

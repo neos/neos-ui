@@ -18,12 +18,10 @@ use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Security\Context;
 use Neos\Neos\Domain\Service\UserService;
 use Neos\Neos\Domain\Service\WorkspacePublishingService;
-use Neos\Neos\Domain\Service\WorkspaceService as NeosWorkspaceService;
-use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService;
+use Neos\Neos\Domain\Service\WorkspaceService;
 
 /**
- * @internal implementation detail of the Neos Ui to build its initialState.
- *           and used for the workspace-info endpoint.
+ * @internal implementation detail of the Neos Ui to build its initialState {@see \Neos\Neos\Ui\Infrastructure\Configuration\InitialStateProvider}
  *
  * TODO REMOVE
  */
@@ -34,12 +32,6 @@ class WorkspaceHelper implements ProtectedContextAwareInterface
      * @var ContentRepositoryRegistry
      */
     protected $contentRepositoryRegistry;
-
-    /**
-     * @Flow\Inject
-     * @var WorkspaceService
-     */
-    protected $workspaceService;
 
     /**
      * @Flow\Inject
@@ -61,9 +53,9 @@ class WorkspaceHelper implements ProtectedContextAwareInterface
 
     /**
      * @Flow\Inject
-     * @var NeosWorkspaceService
+     * @var WorkspaceService
      */
-    protected $neosWorkspaceService;
+    protected $workspaceService;
 
     /**
      * @return array<string,mixed>
@@ -74,12 +66,14 @@ class WorkspaceHelper implements ProtectedContextAwareInterface
         if ($currentUser === null) {
             return [];
         }
-        $personalWorkspace = $this->neosWorkspaceService->getPersonalWorkspaceForUser($contentRepositoryId, $currentUser->getId());
-        $personalWorkspacePermissions = $this->neosWorkspaceService->getWorkspacePermissionsForUser($contentRepositoryId, $personalWorkspace->workspaceName, $currentUser);
+        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
+        $personalWorkspace = $this->workspaceService->getPersonalWorkspaceForUser($contentRepositoryId, $currentUser->getId());
+        $personalWorkspacePermissions = $this->workspaceService->getWorkspacePermissionsForUser($contentRepositoryId, $personalWorkspace->workspaceName, $currentUser);
+        $pendingChanges = $this->workspacePublishingService->pendingWorkspaceChanges($contentRepositoryId, $personalWorkspace->workspaceName);
         return [
             'name' => $personalWorkspace->workspaceName->value,
-            'totalNumberOfChanges' => $this->workspacePublishingService->countPendingWorkspaceChanges($contentRepositoryId, $personalWorkspace->workspaceName),
-            'publishableNodes' => $this->workspaceService->getPublishableNodeInfo($personalWorkspace->workspaceName, $contentRepositoryId),
+            'totalNumberOfChanges' => $pendingChanges->count(),
+            'publishableNodes' => $pendingChanges->toPublishableNodeInfo($contentRepository, $personalWorkspace->workspaceName),
             'baseWorkspace' => $personalWorkspace->baseWorkspaceName?->value,
             'readOnly' => !($personalWorkspace->baseWorkspaceName !== null && $personalWorkspacePermissions->write),
             'status' => $personalWorkspace->status->value,

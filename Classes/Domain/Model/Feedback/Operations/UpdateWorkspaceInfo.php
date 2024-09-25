@@ -16,8 +16,7 @@ use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
-use Neos\Neos\PendingChangesProjection\ChangeFinder;
-use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService;
+use Neos\Neos\Domain\Service\WorkspacePublishingService;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 
@@ -28,9 +27,9 @@ class UpdateWorkspaceInfo extends AbstractFeedback
 {
     /**
      * @Flow\Inject
-     * @var WorkspaceService
+     * @var WorkspacePublishingService
      */
-    protected $workspaceService;
+    protected $workspacePublishingService;
 
     /**
      * @Flow\Inject
@@ -104,17 +103,11 @@ class UpdateWorkspaceInfo extends AbstractFeedback
         if ($workspace === null) {
             return null;
         }
-        /** @var ChangeFinder $changeFinder */
-        $changeFinder = $contentRepository->projectionState(ChangeFinder::class);
-        $totalNumberOfChanges = $changeFinder->countByContentStreamId($workspace->currentContentStreamId);
-
+        $pendingChanges = $this->workspacePublishingService->pendingWorkspaceChanges($this->contentRepositoryId, $this->workspaceName);
         return [
             'name' => $this->workspaceName->value,
-            'totalNumberOfChanges' => $totalNumberOfChanges,
-            'publishableNodes' => $this->workspaceService->getPublishableNodeInfo(
-                $this->workspaceName,
-                $this->contentRepositoryId
-            ),
+            'totalNumberOfChanges' => $pendingChanges->count(),
+            'publishableNodes' => $pendingChanges->toPublishableNodeInfo($contentRepository, $workspace->workspaceName),
             'baseWorkspace' => $workspace->baseWorkspaceName?->value,
             'status' => $workspace->status->value,
         ];

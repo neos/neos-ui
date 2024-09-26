@@ -12,12 +12,14 @@ test(`PropertyGroup > is rendered`, () => {
         {
             id: '1',
             type: 'editor',
+            editor: '',
             label: 'Foo',
             hidden: false
         },
         {
             id: '2',
             type: 'editor',
+            editor: '',
             label: 'Bar',
             hidden: true
         }

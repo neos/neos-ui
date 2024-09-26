@@ -25,7 +25,7 @@ suites:
     smartRetry:
       failedOnly: true
   - name: "Two dimensional Tests in Firefox on MacOS"
-    browserName: "firefox"
+    browserName: "chrome"
     src:
       - "Tests/IntegrationTests/Fixtures/2Dimension/*.e2e.js"
     platformName: "macOS 13"

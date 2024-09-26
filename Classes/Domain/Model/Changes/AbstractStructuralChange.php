@@ -16,9 +16,9 @@ use Neos\ContentRepository\Core\NodeType\NodeTypeName;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindChildNodesFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Nodes;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateClassification;
 use Neos\Flow\Annotations as Flow;
-use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\Ui\ContentRepository\Service\NeosUiNodeService;
 use Neos\Neos\Ui\Domain\Model\AbstractChange;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
@@ -147,14 +147,13 @@ abstract class AbstractStructuralChange extends AbstractChange
             // 1) the parent of our new (or copied or moved) node is a ContentCollection;
             // so we can directly update an element of this content collection
 
-            $contentRepository = $this->contentRepositoryRegistry->get($node->contentRepositoryId);
             if ($parentNode && $this->getNodeType($parentNode)?->isOfType('Neos.Neos:ContentCollection') &&
                 // 2) the parent DOM address (i.e. the closest RENDERED node in DOM is actually the ContentCollection;
                 // and no other node in between
                 $this->getParentDomAddress() &&
                 $this->getParentDomAddress()->getFusionPath() &&
                 $this->getParentDomAddress()->getContextPath() ===
-                    NodeAddressFactory::create($contentRepository)->createFromNode($parentNode)->serializeForUri()
+                    NodeAddress::fromNode($parentNode)->toJson()
             ) {
                 $renderContentOutOfBand = new RenderContentOutOfBand();
                 $renderContentOutOfBand->setNode($node);

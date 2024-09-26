@@ -23,7 +23,6 @@ use Neos\Neos\Domain\Repository\DomainRepository;
 use Neos\Neos\Domain\Repository\SiteRepository;
 use Neos\Neos\Domain\Service\NodeTypeNameFactory;
 use Neos\Neos\Domain\Service\WorkspaceService;
-use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\FrontendRouting\NodeUriBuilderFactory;
 use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;
 use Neos\Neos\Service\UserService;
@@ -136,7 +135,7 @@ class BackendController extends ActionController
         $siteDetectionResult = SiteDetectionResult::fromRequest($this->request->getHttpRequest());
         $contentRepository = $this->contentRepositoryRegistry->get($siteDetectionResult->contentRepositoryId);
 
-        $nodeAddress = $node !== null ? NodeAddressFactory::create($contentRepository)->createFromUriString($node) : null;
+        $nodeAddress = $node !== null ? NodeAddress::fromJsonString($node) : null;
         $user = $this->userService->getBackendUser();
 
         if ($user === null) {
@@ -180,7 +179,7 @@ class BackendController extends ActionController
         if (!$nodeAddress) {
             $node = $siteNode;
         } else {
-            $node = $subgraph->findNodeById($nodeAddress->nodeAggregateId);
+            $node = $subgraph->findNodeById($nodeAddress->aggregateId);
         }
 
         $this->view->setOption('title', 'Neos CMS');

@@ -149,6 +149,10 @@ export default class LinkInput extends PureComponent {
     }
 
     handleSearchTermChange = searchTerm => {
+        // trim leading and trailing whitespace as it can cause issues
+        // with the further processing
+        searchTerm.trim()
+
         this.setState({searchTerm});
 
         if (isUriOrInternalLink(searchTerm)) {

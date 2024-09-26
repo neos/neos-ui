@@ -24,7 +24,6 @@ import * as ContentTree from './ContentTree';
 // Export the reducer state shape interface
 //
 export interface State {
-    flashMessages: FlashMessages.State;
     fullScreen: FullScreen.State;
     keyboardShortcutModal: KeyboardShortcutModal.State;
     leftSideBar: LeftSideBar.State;
@@ -98,7 +97,6 @@ export const actions = {
 // Export the reducer
 //
 export const reducer = combineReducers({
-    flashMessages: FlashMessages.reducer,
     fullScreen: FullScreen.reducer,
     keyboardShortcutModal: KeyboardShortcutModal.reducer,
     leftSideBar: LeftSideBar.reducer,
@@ -122,7 +120,6 @@ export const reducer = combineReducers({
 // Export the selectors
 //
 export const selectors = {
-    FlashMessages: FlashMessages.selectors,
     FullScreen: FullScreen.selectors,
     KeyboardShortcutModal: KeyboardShortcutModal.selectors,
     LeftSideBar: LeftSideBar.selectors,

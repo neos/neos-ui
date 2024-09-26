@@ -4,6 +4,7 @@ import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store
 import {isNodeCollapsed} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/helpers';
 
 import backend from '@neos-project/neos-ui-backend-connector';
+import {showFlashMessage} from '@neos-project/neos-ui-error';
 
 export function * watchReloadTree({globalRegistry}) {
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
@@ -122,7 +123,11 @@ export function * watchRequestChildrenForContextPath({globalRegistry}) {
             childNodes = yield query.neosUiFilteredChildren(nodeTypeFilter).get();
         } catch (err) {
             yield put(actions.UI.ContentTree.invalidate(contextPath));
-            yield put(actions.UI.FlashMessages.add('loadChildNodesError', err.message, 'error'));
+            showFlashMessage({
+                id: 'loadChildNodesError',
+                severity: 'error',
+                message: err.message
+            });
         }
 
         yield put(actions.UI.ContentTree.setAsLoaded(contextPath));

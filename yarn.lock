@@ -2878,6 +2878,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@neos-project/framework-observable-react@workspace:*, @neos-project/framework-observable-react@workspace:packages/framework-observable-react":
+  version: 0.0.0-use.local
+  resolution: "@neos-project/framework-observable-react@workspace:packages/framework-observable-react"
+  dependencies:
+    "@neos-project/framework-observable": "workspace:*"
+    react: ^16.12.0
+  languageName: unknown
+  linkType: soft
+
+"@neos-project/framework-observable@workspace:*, @neos-project/framework-observable@workspace:packages/framework-observable":
+  version: 0.0.0-use.local
+  resolution: "@neos-project/framework-observable@workspace:packages/framework-observable"
+  languageName: unknown
+  linkType: soft
+
 "@neos-project/jest-preset-neos-ui@workspace:*, @neos-project/jest-preset-neos-ui@workspace:packages/jest-preset-neos-ui":
   version: 0.0.0-use.local
   resolution: "@neos-project/jest-preset-neos-ui@workspace:packages/jest-preset-neos-ui"
@@ -3042,7 +3057,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@neos-project/neos-ui-error@workspace:packages/neos-ui-error"
   dependencies:
+    "@neos-project/framework-observable": "workspace:*"
+    "@neos-project/framework-observable-react": "workspace:*"
     "@neos-project/neos-ui-i18n": "workspace:*"
+    "@neos-project/react-ui-components": "workspace:*"
     classnames: ^2.2.3
     react: ^16.12.0
   languageName: unknown
@@ -3152,6 +3170,7 @@ __metadata:
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
     "@neos-project/neos-ui-backend-connector": "workspace:*"
+    "@neos-project/neos-ui-error": "workspace:*"
     "@neos-project/neos-ui-extensibility": "workspace:*"
     "@neos-project/neos-ui-guest-frame": "workspace:*"
     "@neos-project/neos-ui-redux-store": "workspace:*"

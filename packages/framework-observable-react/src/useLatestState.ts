@@ -7,18 +7,10 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-export type {
-    ECMAScriptError as ClientSideError,
-    ServerSideError,
-    StringError,
-    AnyError,
-    Severity
-} from './types';
+import type {State} from '@neos-project/framework-observable';
 
-export {
-    ErrorBoundary,
-    ErrorView,
-    FlashMessages,
-    showFlashMessage,
-    terminateDueToFatalInitializationError
-} from './container';
+import {useLatestValueFrom} from './useLatestValueFrom';
+
+export function useLatestState<V>(state$: State<V>) {
+    return useLatestValueFrom(state$, state$.current);
+}

@@ -12,14 +12,11 @@ namespace Neos\Neos\Ui\ContentRepository\Service;
  */
 
 
-use Neos\ContentRepository\Core\SharedModel\ContentRepository\ContentRepositoryId;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
-use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
-use Neos\Neos\FrontendRouting\NodeAddress;
-use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
 
 /**
  * @internal
@@ -27,26 +24,18 @@ use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
  */
 class NeosUiNodeService
 {
-    use NodeTypeWithFallbackProvider;
-
     #[Flow\Inject]
     protected ContentRepositoryRegistry $contentRepositoryRegistry;
 
-    public function findNodeBySerializedNodeAddress(string $serializedNodeAddress, ContentRepositoryId $contentRepositoryId): ?Node
+    public function findNodeBySerializedNodeAddress(string $serializedNodeAddress): ?Node
     {
-        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
-        $nodeAddress = NodeAddressFactory::create($contentRepository)->createFromUriString($serializedNodeAddress);
+        $nodeAddress = NodeAddress::fromJsonString($serializedNodeAddress);
+        $contentRepository = $this->contentRepositoryRegistry->get($nodeAddress->contentRepositoryId);
 
         $subgraph = $contentRepository->getContentGraph($nodeAddress->workspaceName)->getSubgraph(
             $nodeAddress->dimensionSpacePoint,
             VisibilityConstraints::withoutRestrictions()
         );
-        return $subgraph->findNodeById($nodeAddress->nodeAggregateId);
-    }
-
-    public function deserializeNodeAddress(string $serializedNodeAddress, ContentRepositoryId $contentRepositoryId): NodeAddress
-    {
-        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
-        return NodeAddressFactory::create($contentRepository)->createFromUriString($serializedNodeAddress);
+        return $subgraph->findNodeById($nodeAddress->aggregateId);
     }
 }

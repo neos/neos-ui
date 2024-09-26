@@ -12,13 +12,10 @@ namespace Neos\Neos\Ui\TypeConverter;
  */
 
 use Neos\ContentRepository\Core\SharedModel\ContentRepository\ContentRepositoryId;
-use Neos\Error\Messages\Error;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Flow\Property\PropertyMapper;
-use Neos\Flow\Property\PropertyMappingConfigurationInterface;
-use Neos\Flow\Property\TypeConverter\AbstractTypeConverter;
 use Neos\Flow\Reflection\ReflectionService;
 use Neos\Neos\Ui\ContentRepository\Service\NeosUiNodeService;
 use Neos\Neos\Ui\Domain\Model\ChangeCollection;
@@ -133,7 +130,7 @@ class ChangeCollectionConverter
 
 
         $subjectContextPath = $changeData['subject'];
-        $subject = $this->nodeService->findNodeBySerializedNodeAddress($subjectContextPath, $contentRepositoryId);
+        $subject = $this->nodeService->findNodeBySerializedNodeAddress($subjectContextPath);
         // we guard that `setSubject` gets a Node!
         if (is_null($subject)) {
             throw new \RuntimeException('Could not find node for subject "' . $subjectContextPath . '"', 1645657340);
@@ -143,7 +140,7 @@ class ChangeCollectionConverter
 
         if (isset($changeData['reference']) && method_exists($changeClassInstance, 'setReference')) {
             $referenceContextPath = $changeData['reference'];
-            $reference = $this->nodeService->findNodeBySerializedNodeAddress($referenceContextPath, $contentRepositoryId);
+            $reference = $this->nodeService->findNodeBySerializedNodeAddress($referenceContextPath);
             $changeClassInstance->setReference($reference);
         }
 

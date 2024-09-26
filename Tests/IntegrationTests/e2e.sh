@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -ex
+
 # Global variables
 BROWSER=""
 USE_SAUCELABS=false
@@ -118,11 +120,11 @@ function run_tests() {
         cd Packages/Application/Neos.Neos.Ui
 
         if [[ $BROWSER ]]; then
-            yarn run testcafe "$BROWSER" "../../../${fixture}*.e2e.js" --selector-timeout=10000 --assertion-timeout=30000
+            yarn run testcafe "$BROWSER" "../../../${fixture}*.e2e.js" --selector-timeout=10000 --assertion-timeout=30000 || hasFailure=1
         fi
 
         if [[ $USE_SAUCELABS ]]; then
-          saucectl run --config .sauce/config${dimension}.yml
+          saucectl run --config .sauce/config${dimension}.yml || hasFailure=1
         fi
 
         # cd back to the root directory and clean up
@@ -132,6 +134,10 @@ function run_tests() {
 
     rm -rf DistributionPackages
     mv DummyDistributionPackages DistributionPackages
+
+    if [[ $hasFailure -eq 1 ]] ; then
+        exit 1
+    fi
 }
 
 parse_arguments "$@"

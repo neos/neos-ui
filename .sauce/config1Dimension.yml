@@ -4,7 +4,7 @@ showConsoleLog: true
 sauce:
   region: us-west-1
   concurrency: 1 # Controls how many suites are executed at the same time.
-  retries: 3
+  retries: 0
   metadata:
     tags:
       - e2e
@@ -23,16 +23,12 @@ suites:
       - "Tests/IntegrationTests/Fixtures/1Dimension/*.e2e.js"
     platformName: "Windows 10"
     screenResolution: "1280x1024"
-    smartRetry:
-      failedOnly: true
   - name: "One dimensional Tests in Chrome on MacOS"
     browserName: "chrome"
     src:
       - "Tests/IntegrationTests/Fixtures/1Dimension/*.e2e.js"
     platformName: "macOS 13"
     screenResolution: "1600x1200"
-    smartRetry:
-      failedOnly: true
 npm:
   dependencies:
     - testcafe-react-selectors

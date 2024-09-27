@@ -6,7 +6,6 @@ import makeInitializeGuestFrame from './initializeGuestFrame';
 import InlineUI from './InlineUI';
 
 import {
-    AddNode,
     CopySelectedNode,
     CutSelectedNode,
     DeleteSelectedNode,
@@ -47,7 +46,6 @@ manifest('@neos-project/neos-ui-guestframe', {}, globalRegistry => {
     guestFrameRegistry.set('makeInitializeGuestFrame', makeInitializeGuestFrame);
     guestFrameRegistry.set('InlineUIComponent', InlineUI);
 
-    guestFrameRegistry.set('NodeToolbar/Buttons/AddNode', AddNode);
     guestFrameRegistry.set('NodeToolbar/Buttons/HideSelectedNode', HideSelectedNode);
     guestFrameRegistry.set('NodeToolbar/Buttons/CopySelectedNode', CopySelectedNode);
     guestFrameRegistry.set('NodeToolbar/Buttons/CutSelectedNode', CutSelectedNode);

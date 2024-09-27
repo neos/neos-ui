@@ -18,12 +18,24 @@ testcafe:
 # Controls what files are available in the context of a test run (unless explicitly excluded by .sauceignore).
 rootDir: ./
 suites:
-  - name: "One dimensional Tests in Chrome on Windows"
-    browserName: "chrome"
+  - name: "One dimensional Tests in Edge on Windows"
+    browserName: "microsoftedge"
     src:
       - "Tests/IntegrationTests/Fixtures/1Dimension/*.e2e.js"
     platformName: "Windows 10"
     screenResolution: "1280x1024"
+  - name: "One dimensional Tests on Firefox on Windows"
+    browserName: "firefox"
+    src:
+      - "Tests/IntegrationTests/Fixtures/1Dimension/*.e2e.js"
+    platformName: "Windows 10"
+    screenResolution: "1280x1024"
+  - name: "One dimensional Tests in Edge on MacOS"
+    browserName: "microsoftedge"
+    src:
+      - "Tests/IntegrationTests/Fixtures/1Dimension/*.e2e.js"
+    platformName: "macOS 13"
+    screenResolution: "1440x900"
 npm:
   dependencies:
     - testcafe-react-selectors

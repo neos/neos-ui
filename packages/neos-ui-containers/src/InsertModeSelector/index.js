@@ -1,11 +1,15 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 
-import {ButtonGroup, Button, Icon} from '@neos-project/react-ui-components';
+import {ButtonGroup, Button, ResourceIcon} from '@neos-project/react-ui-components';
 import {neos} from '@neos-project/neos-ui-decorators';
 import I18n from '@neos-project/neos-ui-i18n';
 
 import style from './style.module.css';
+
+import createAboveIcon from './resources/create-above.svg';
+import createBelowIcon from './resources/create-below.svg';
+import createInsideIcon from './resources/create-inside.svg';
 
 const MODE_AFTER = 'after';
 const MODE_BEFORE = 'before';
@@ -98,7 +102,7 @@ export default class InsertModeSelector extends PureComponent {
                         size="small"
                         title={`${i18nRegistry.translate('Neos.Neos:Main:insert')} ${i18nRegistry.translate('above')}`}
                     >
-                        <Icon icon="resource://Neos.Neos.Ui/Icons/create-above.svg" className={style.iconAlignment} size="1x"/>
+                        <ResourceIcon source={createAboveIcon} className={style.iconAlignment}/>
                         <I18n id="Neos.Neos.Ui:Main:above" fallback="Above"/>
                     </Button>
                     <Button
@@ -109,7 +113,7 @@ export default class InsertModeSelector extends PureComponent {
                         size="small"
                         title={`${i18nRegistry.translate('Neos.Neos:Main:insert')} ${i18nRegistry.translate('below')}`}
                     >
-                        <Icon icon="resource://Neos.Neos.Ui/Icons/create-below.svg" className={style.iconAlignment} size="1x"/>
+                        <ResourceIcon source={createBelowIcon} className={style.iconAlignment}/>
                         <I18n id="Neos.Neos.Ui:Main:below" fallback="Below"/>
                     </Button>
                     <Button
@@ -120,7 +124,7 @@ export default class InsertModeSelector extends PureComponent {
                         size="small"
                         title={`${i18nRegistry.translate('Neos.Neos:Main:insert')} ${i18nRegistry.translate('into')}`}
                     >
-                        <Icon icon="resource://Neos.Neos.Ui/Icons/create-inside.svg" className={style.iconAlignment} size="1x"/>
+                        <ResourceIcon source={createInsideIcon} className={style.iconAlignment}/>
                         <I18n id="Neos.Neos.Ui:Main:inside" fallback="Inside"/>
                     </Button>
                 </ButtonGroup>

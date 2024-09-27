@@ -175,7 +175,7 @@ To speed up the e2e-test workflow/feedback loop you can start the system under t
 * The neos dev instance is available at `localhost:8081`
 * To enter the container run `docker compose -f Tests/IntegrationTests/docker-compose.neos-dev-instance.yaml exec php bash`
 * `yarn run testcafe <browser> <testFile> <optional flags>`
-  * for example, this runs all tests in chrome: (NOTE starting with Chrome 127, --disable-search-engine-choice-screen is needed)
+  * for example, this runs all tests in chrome: (NOTE starting with Chrome 127, --disable-search-engine-choice-screen is needed until https://github.com/DevExpress/testcafe/pull/8248 is released)
   `yarn run testcafe chrome:--disable-search-engine-choice-screen Tests/IntegrationTests/Fixtures/1Dimension`
   * some helpful optional flags are
     * `-T 'sidebars'` - grep tests by pattern and only execute those

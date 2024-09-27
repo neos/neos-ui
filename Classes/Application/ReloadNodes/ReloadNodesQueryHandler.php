@@ -35,7 +35,6 @@ use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 #[Flow\Scope("singleton")]
 final class ReloadNodesQueryHandler
 {
-
     #[Flow\Inject]
     protected ContentRepositoryRegistry $contentRepositoryRegistry;
 

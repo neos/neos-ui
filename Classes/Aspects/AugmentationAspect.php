@@ -114,7 +114,15 @@ class AugmentationAspect
         $attributes['data-__neos-node-contextpath'] = $node->getContextPath();
         $attributes['data-__neos-fusion-path'] = $fusionPath;
 
-        return $this->htmlAugmenter->addAttributes($content, $attributes);
+        // Define all attribute names as exclusive via the `exclusiveAttributes` parameter, to prevent the data of
+        // two different nodes to be concatenated into the attributes of a single html node.
+        // This way an outer div is added, if the wrapped content already has node related data-attributes set.
+        return $this->htmlAugmenter->addAttributes(
+            $content,
+            $attributes,
+            'div',
+            array_keys($attributes)
+        );
     }
 
     /**

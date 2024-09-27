@@ -4,7 +4,8 @@ showConsoleLog: true
 sauce:
   region: us-west-1
   concurrency: 1 # Controls how many suites are executed at the same time.
-  retries: 3
+  # todo fix and enable retries
+  retries: 0
   metadata:
     tags:
       - e2e
@@ -23,16 +24,13 @@ suites:
       - "Tests/IntegrationTests/Fixtures/1Dimension/*.e2e.js"
     platformName: "Windows 10"
     screenResolution: "1280x1024"
-    smartRetry:
-      failedOnly: true
   - name: "One dimensional Tests in Firefox on MacOS"
+    # todo use chrome here and fix ci https://github.com/neos/neos-ui/issues/3591
     browserName: "firefox"
     src:
       - "Tests/IntegrationTests/Fixtures/1Dimension/*.e2e.js"
     platformName: "macOS 13"
     screenResolution: "1440x900"
-    smartRetry:
-      failedOnly: true
 npm:
   dependencies:
     - testcafe-react-selectors

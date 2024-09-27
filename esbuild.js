@@ -32,7 +32,8 @@ const options = {
     legalComments: "linked",
     loader: {
         '.js': 'tsx',
-        '.svg': 'dataurl',
+        '.dataurl.svg': 'dataurl',
+        '.svg': 'text',
         '.vanilla-css': 'css',
         '.woff2': 'file'
     },
@@ -52,13 +53,6 @@ const options = {
                         sideEffects: false
                     }
                 })
-
-                // load ckeditor icons as plain text and not via `.svg: dataurl`
-                // (currently neccessary for the table select handle icon)
-                onLoad({filter: /node_modules\/@ckeditor\/.*\.svg$/}, async ({path}) => ({
-                    contents: (await require('fs/promises').readFile(path)).toString(),
-                    loader: 'text'
-                }))
 
                 // prefix Fontawesome with "neos-" to prevent clashes with customer Fontawesome
                 onLoad({filter: /@fortawesome\/fontawesome-svg-core\/styles\.css$/}, async ({path}) => {

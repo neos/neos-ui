@@ -1,6 +1,6 @@
 import {$get, $contains} from 'plow-js';
 
-import {actions, selectors} from '@neos-project/neos-ui-redux-store';
+import {actions} from '@neos-project/neos-ui-redux-store';
 import {validateElement} from '@neos-project/neos-ui-validators';
 
 import {getGuestFrameWindow, closestContextPathInGuestFrame} from './dom';
@@ -74,14 +74,6 @@ export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry,
                         actions.Changes.persistChanges([change])
                     ),
                     onChange: value => {
-                        const node = selectors.CR.Nodes.byContextPathSelector(contextPath)(store.getState());
-                        if (node) {
-                            const oldValue = node.properties[propertyName];
-                            if (oldValue === value) {
-                                return;
-                            }
-                        }
-
                         const validationResult = validateElement(value, $get(['properties', propertyName], nodeType), globalRegistry.get('validators'));
                         // Update inline validation errors
                         store.dispatch(

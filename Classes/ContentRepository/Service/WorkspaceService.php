@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Neos\Ui\ContentRepository\Service;
 
 /*
@@ -54,6 +55,18 @@ class WorkspaceService
     protected $domainUserService;
 
     /**
+     * @Flow\InjectConfiguration(path="initialState.user.settings.hideReadOnlyWorkspaces", package="Neos.Neos.Ui")
+     * @var boolean
+     */
+    protected $hideReadOnlyWorkspaces;
+
+    /**
+     * @Flow\InjectConfiguration(path="initialState.user.settings.targetWorkspace", package="Neos.Neos.Ui")
+     * @var boolean
+     */
+    protected $initialUserTargetWorkspace;
+
+    /**
      * Get all publishable node context paths for a workspace
      *
      * @param Workspace $workspace
@@ -104,11 +117,17 @@ class WorkspaceService
                 continue;
             }
 
+            $readOnly = !$this->domainUserService->currentUserCanPublishToWorkspace($workspace);
+            if ($readOnly === true && $this->hideReadOnlyWorkspaces) {
+                // Skip read only workspaces
+                continue;
+            }
+
             $workspaceArray = [
                 'name' => $workspace->getName(),
                 'title' => $workspace->getTitle(),
                 'description' => $workspace->getDescription(),
-                'readonly' => !$this->domainUserService->currentUserCanPublishToWorkspace($workspace)
+                'readonly' => $readOnly
             ];
             $workspacesArray[$workspace->getName()] = $workspaceArray;
         }
@@ -126,5 +145,32 @@ class WorkspaceService
     {
         $userWorkspace = $this->userService->getPersonalWorkspace();
         $userWorkspace->setBaseWorkspace($workspace);
+    }
+
+    /**
+     * Returns a workspace object if workspace with the given name exists.
+     *
+     * @param string $workspaceName
+     * @return Workspace|null
+     */
+    public function getWorkspaceByName($workspaceName): ?Workspace
+    {
+        return $this->workspaceRepository->findOneByName($workspaceName);
+    }
+
+    /**
+     * @return bool
+     */
+    public function shouldHideReadOnlyWorkspaces(): bool
+    {
+        return $this->hideReadOnlyWorkspaces;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInitialUserTargetWorkspace(): string
+    {
+        return $this->initialUserTargetWorkspace;
     }
 }

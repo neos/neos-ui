@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -ex
+
 # Global variables
 BROWSER=""
 USE_SAUCELABS=false
@@ -9,7 +11,7 @@ parse_arguments() {
     while [[ $# -gt 0 ]]; do
         case "$1" in
             -h|--help)
-                usage
+                print_usage_information
                 exit 0
                 ;;
             -s|--saucelabs)
@@ -21,7 +23,7 @@ parse_arguments() {
                 ;;
             *)
                 echo "Unknown option: $1"
-                usage
+                print_usage_information
                 exit 1
                 ;;
         esac
@@ -29,15 +31,14 @@ parse_arguments() {
     done
 }
 
-# Function to print usage information
-usage() {
+print_usage_information() {
     cat <<EOF
 Usage: $0 [options]
 
 Options:
     -h, --help       Show this help message
-    -s, --saucelabs  Enable remote browser from SauceLabs
-    -b, --browser    Specify local browser to use
+    -s, --saucelabs  Run in remote browser from SauceLabs configured in .sauce
+    -b, --browser    Run in specified local browser
 EOF
 }
 
@@ -66,7 +67,6 @@ function check_saucectl_variables {
     fi
 }
 
-# Check if saucectl is installed
 function check_saucectl_installed {
     if ! command -v saucectl &> /dev/null; then
         echo "saucectl is not installed. Installing saucectl..."
@@ -75,7 +75,7 @@ function check_saucectl_installed {
     fi
 }
 
-# get dimension from fixture
+# parse dimension from fixture file name
 function get_dimension() {
   dimension=$(basename "$1")
   echo "$dimension"
@@ -88,7 +88,6 @@ function initialize_neos_site() {
 
   ln -s "../${fixture}SitePackage" DistributionPackages/Neos.TestSite
 
-  # TODO: optimize this
   composer reinstall neos/test-nodetypes
   composer reinstall neos/test-site
   # make sure neos is installed even if patching led to the removal (bug)
@@ -121,11 +120,11 @@ function run_tests() {
         cd Packages/Application/Neos.Neos.Ui
 
         if [[ $BROWSER ]]; then
-            yarn run testcafe "$BROWSER" "../../../${fixture}*.e2e.js" --selector-timeout=10000 --assertion-timeout=30000
+            yarn run testcafe "$BROWSER" "../../../${fixture}*.e2e.js" --selector-timeout=10000 --assertion-timeout=30000 || hasFailure=1
         fi
 
         if [[ $USE_SAUCELABS ]]; then
-          saucectl run --config .sauce/config${dimension}.yml
+          saucectl run --config .sauce/config${dimension}.yml || hasFailure=1
         fi
 
         # cd back to the root directory and clean up
@@ -135,14 +134,16 @@ function run_tests() {
 
     rm -rf DistributionPackages
     mv DummyDistributionPackages DistributionPackages
+
+    if [[ $hasFailure -eq 1 ]] ; then
+        exit 1
+    fi
 }
 
-# Parse arguments
 parse_arguments "$@"
 
 # check if incoming parameters are correct
 check_testcafe_browser
 check_saucelabs_setup
 
-# Run the tests
 run_tests

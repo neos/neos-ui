@@ -3,7 +3,7 @@ kind: testcafe
 sauce:
   region: us-west-1
   concurrency: 1 # Controls how many suites are executed at the same time.
-  retries: 3
+  retries: 0
   metadata:
     tags:
       - e2e

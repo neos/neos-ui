@@ -25,8 +25,8 @@ suites:
     screenResolution: "1280x1024"
     smartRetry:
       failedOnly: true
-  - name: "One dimensional Tests in Firefox on MacOS"
-    browserName: "firefox"
+  - name: "One dimensional Tests in Chrome on MacOS"
+    browserName: "chrome"
     src:
       - "Tests/IntegrationTests/Fixtures/1Dimension/*.e2e.js"
     platformName: "macOS 13"

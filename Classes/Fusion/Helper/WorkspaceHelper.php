@@ -17,13 +17,11 @@ use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Security\Context;
 use Neos\Neos\Domain\Service\UserService;
-use Neos\Neos\Domain\Service\WorkspacePublishingService;
 use Neos\Neos\Domain\Service\WorkspaceService;
+use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService as UiWorkspaceService;
 
 /**
  * @internal implementation detail of the Neos Ui to build its initialState {@see \Neos\Neos\Ui\Infrastructure\Configuration\InitialStateProvider}
- *
- * TODO REMOVE
  */
 class WorkspaceHelper implements ProtectedContextAwareInterface
 {
@@ -41,9 +39,9 @@ class WorkspaceHelper implements ProtectedContextAwareInterface
 
     /**
      * @Flow\Inject
-     * @var WorkspacePublishingService
+     * @var UiWorkspaceService
      */
-    protected $workspacePublishingService;
+    protected $uiWorkspaceService;
 
     /**
      * @Flow\Inject
@@ -69,11 +67,11 @@ class WorkspaceHelper implements ProtectedContextAwareInterface
         $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
         $personalWorkspace = $this->workspaceService->getPersonalWorkspaceForUser($contentRepositoryId, $currentUser->getId());
         $personalWorkspacePermissions = $this->workspaceService->getWorkspacePermissionsForUser($contentRepositoryId, $personalWorkspace->workspaceName, $currentUser);
-        $pendingChanges = $this->workspacePublishingService->pendingWorkspaceChanges($contentRepositoryId, $personalWorkspace->workspaceName);
+        $publishableNodes = $this->uiWorkspaceService->getPublishableNodeInfo($personalWorkspace->workspaceName, $contentRepository->id);
         return [
             'name' => $personalWorkspace->workspaceName->value,
-            'totalNumberOfChanges' => $pendingChanges->count(),
-            'publishableNodes' => $pendingChanges->toPublishableNodeInfo($contentRepository, $personalWorkspace->workspaceName),
+            'totalNumberOfChanges' => count($publishableNodes),
+            'publishableNodes' => $publishableNodes,
             'baseWorkspace' => $personalWorkspace->baseWorkspaceName?->value,
             'readOnly' => !($personalWorkspace->baseWorkspaceName !== null && $personalWorkspacePermissions->write),
             'status' => $personalWorkspace->status->value,

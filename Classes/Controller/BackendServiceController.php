@@ -33,6 +33,7 @@ use Neos\Flow\Property\PropertyMapper;
 use Neos\Flow\Security\Context;
 use Neos\Neos\Domain\Service\WorkspaceNameBuilder;
 use Neos\Neos\Domain\Service\WorkspacePublishingService;
+use Neos\Neos\Domain\Service\WorkspaceService;
 use Neos\Neos\FrontendRouting\NodeAddress;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;
@@ -127,6 +128,12 @@ class BackendServiceController extends ActionController
      * @var NodeUriPathSegmentGenerator
      */
     protected $nodeUriPathSegmentGenerator;
+
+    /**
+     * @Flow\Inject
+     * @var WorkspaceService
+     */
+    protected $workspaceService;
 
     /**
      * @Flow\Inject
@@ -390,28 +397,26 @@ class BackendServiceController extends ActionController
 
         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
 
-        $currentAccount = $this->securityContext->getAccount();
-        if ($currentAccount === null) {
+        $user = $this->userService->getBackendUser();
+        if ($user === null) {
             $error = new Error();
             $error->setMessage('No authenticated account');
             $this->feedbackCollection->add($error);
             $this->view->assign('value', $this->feedbackCollection);
             return;
         }
-        $userWorkspaceName = WorkspaceNameBuilder::fromAccountIdentifier(
-            $currentAccount->getAccountIdentifier()
-        );
+        $userWorkspace = $this->workspaceService->getPersonalWorkspaceForUser($contentRepositoryId, $user->getId());
 
         /** @todo send from UI */
         $command = new ChangeTargetWorkspace(
             $contentRepositoryId,
-            $userWorkspaceName,
+            $userWorkspace->workspaceName,
             WorkspaceName::fromString($targetWorkspaceName),
             $nodeAddressFactory->createFromUriString($documentNode)
         );
 
         try {
-            $this->workspacePublishingService->changeBaseWorkspace($contentRepositoryId, $userWorkspaceName, WorkspaceName::fromString($targetWorkspaceName));
+            $this->workspacePublishingService->changeBaseWorkspace($contentRepositoryId, $userWorkspace->workspaceName, WorkspaceName::fromString($targetWorkspaceName));
         } catch (WorkspaceIsNotEmptyException $exception) {
             $error = new Error();
             $error->setMessage(
@@ -430,7 +435,7 @@ class BackendServiceController extends ActionController
             return;
         }
 
-        $subgraph = $contentRepository->getContentGraph($userWorkspaceName)
+        $subgraph = $contentRepository->getContentGraph($userWorkspace->workspaceName)
             ->getSubgraph(
                 $command->documentNode->dimensionSpacePoint,
                 VisibilityConstraints::withoutRestrictions()
@@ -445,7 +450,7 @@ class BackendServiceController extends ActionController
         );
         $this->feedbackCollection->add($success);
 
-        $updateWorkspaceInfo = new UpdateWorkspaceInfo($contentRepositoryId, $userWorkspaceName);
+        $updateWorkspaceInfo = new UpdateWorkspaceInfo($contentRepositoryId, $userWorkspace->workspaceName);
         $this->feedbackCollection->add($updateWorkspaceInfo);
 
         // If current document node doesn't exist in the base workspace,

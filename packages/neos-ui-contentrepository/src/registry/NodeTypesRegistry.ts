@@ -191,6 +191,9 @@ export default class NodeTypesRegistry extends SynchronousRegistry<NodeType> {
         const _properties = Object.values(withId(nodeType.properties || {}));
         const properties = positionalArraySorter(_properties, 'position', 'id');
 
+        const _references = Object.values(withId(nodeType.references || {}));
+        const references = positionalArraySorter(_references, 'position', 'id');
+
         const viewConfiguration = {
             tabs: tabs.map(tab => ({
                 ...tab,
@@ -213,6 +216,19 @@ export default class NodeTypesRegistry extends SynchronousRegistry<NodeType> {
                                     hidden: property.ui?.inspector?.hidden,
                                     helpMessage: property.ui?.help?.message,
                                     helpThumbnail: property.ui?.help?.thumbnail
+                                })
+                            ),
+                        ...references.filter(p => p.ui?.inspector?.group === group.id)
+                                .map(reference => ({
+                                    type: 'editor',
+                                    id: reference.id,
+                                    label: reference.ui?.label,
+                                    editor: reference.ui?.inspector?.editor,
+                                    editorOptions: reference.ui?.inspector?.editorOptions,
+                                    position: reference.ui?.inspector?.position,
+                                    hidden: reference.ui?.inspector?.hidden,
+                                    helpMessage: reference.ui?.help?.message,
+                                    helpThumbnail: reference.ui?.help?.thumbnail
                                 })
                             ),
                         ...views.filter(v => v.group === group.id)

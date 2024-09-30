@@ -18,7 +18,7 @@ class SelectBox_Header extends PureComponent {
         placeholder: PropTypes.string,
         placeholderIcon: PropTypes.string,
         headerIcon: PropTypes.string,
-        showResetButton: PropTypes.bool.isRequired,
+        showResetButton: PropTypes.bool,
         onReset: PropTypes.func,
         onClick: PropTypes.func,
         displayLoadingIndicator: PropTypes.bool,
@@ -54,7 +54,7 @@ class SelectBox_Header extends PureComponent {
 
             return (
                 <span>
-                    <IconButton className={theme.selectBoxHeader__icon} disabled={disabled} icon="times" onClick={onClick}/>
+                    <IconButton id={this.props.id ? `${this.props.id}-btn-reset` : undefined} className={theme.selectBoxHeader__icon} disabled={disabled} icon="times" onClick={onClick}/>
                     <span className={theme.selectBoxHeader__seperator}/>
                 </span>
             );

@@ -72,8 +72,7 @@ class CopyAfter extends AbstractStructuralChange
                 $subject,
                 OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->dimensionSpacePoint),
                 $parentNodeOfPreviousSibling->aggregateId,
-                $succeedingSibling?->aggregateId,
-                null
+                $succeedingSibling?->aggregateId
             );
 
             $contentRepository->handle($command);

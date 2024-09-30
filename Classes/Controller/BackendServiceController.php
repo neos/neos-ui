@@ -176,7 +176,7 @@ class BackendServiceController extends ActionController
 
     /**
      * Apply a set of changes to the system
-     * @psalm-param list<array<string,mixed>> $changes
+     * @phpstan-param list<array<string,mixed>> $changes
      */
     public function changeAction(array $changes): void
     {
@@ -501,7 +501,7 @@ class BackendServiceController extends ActionController
     /**
      * Persists the clipboard node on copy
      *
-     * @psalm-param list<string> $nodes
+     * @phpstan-param list<string> $nodes
      * @return void
      * @throws \Neos\Flow\Property\Exception
      * @throws \Neos\Flow\Security\Exception
@@ -533,7 +533,7 @@ class BackendServiceController extends ActionController
     /**
      * Persists the clipboard node on cut
      *
-     * @psalm-param list<string> $nodes
+     * @phpstan-param list<string> $nodes
      * @throws \Neos\Flow\Property\Exception
      * @throws \Neos\Flow\Security\Exception
      */
@@ -571,7 +571,7 @@ class BackendServiceController extends ActionController
 
     /**
      * Fetches all the node information that can be lazy-loaded
-     * @psalm-param list<string> $nodes
+     * @phpstan-param list<string> $nodes
      */
     public function getAdditionalNodeMetadataAction(array $nodes): void
     {
@@ -619,7 +619,7 @@ class BackendServiceController extends ActionController
     }
 
     /**
-     * @psalm-param list<NodeAddress> $nodes
+     * @phpstan-param list<NodeAddress> $nodes
      */
     public function getPolicyInformationAction(array $nodes): void
     {
@@ -652,7 +652,7 @@ class BackendServiceController extends ActionController
     /**
      * Build and execute a flow query chain
      *
-     * @psalm-param list<array{type: string, payload: array<string|int, mixed>}> $chain
+     * @phpstan-param non-empty-list<array{type: string, payload: array<string|int, mixed>}> $chain
      */
     public function flowQueryAction(array $chain): string
     {
@@ -661,14 +661,16 @@ class BackendServiceController extends ActionController
         $createContext = array_shift($chain);
         $finisher = array_pop($chain);
 
-        $payload = $createContext['payload'] ?? [];
+        // we deduplicate passed nodes here
+        $nodeContextPaths = array_unique(array_column($createContext['payload'], '$node'));
+
         $flowQuery = new FlowQuery(
             array_map(
-                fn ($envelope) => $this->nodeService->findNodeBySerializedNodeAddress(
-                    $envelope['$node'],
+                fn ($nodeContextPath) => $this->nodeService->findNodeBySerializedNodeAddress(
+                    $nodeContextPath,
                     $contentRepositoryId
                 ),
-                $payload
+                $nodeContextPaths
             )
         );
 
@@ -690,7 +692,8 @@ class BackendServiceController extends ActionController
             ),
             'getForTreeWithParents' => $nodeInfoHelper->renderNodesWithParents(
                 array_filter($flowQuery->get()),
-                $this->request
+                $this->request,
+                $finisher['payload']['nodeTypeFilter'] ?? null
             ),
             default => []
         };

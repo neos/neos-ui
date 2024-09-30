@@ -2,6 +2,7 @@ import produce from 'immer';
 import {action as createAction, ActionType} from 'typesafe-actions';
 
 import {actionTypes as system, InitAction, GlobalState} from '../../System';
+import {actionTypes as nodes, Action as NodesAction} from '../../CR/Nodes';
 import {NodeContextPath, SelectionModeTypes} from '@neos-project/neos-ts-interfaces';
 
 import * as selectors from './selectors';
@@ -10,7 +11,7 @@ import {calculateNewFocusedNodes} from '../../CR/Nodes/helpers';
 export interface State extends Readonly<{
     focused: NodeContextPath[];
     toggled: NodeContextPath[];
-    hidden: NodeContextPath[];
+    visible: null | NodeContextPath[];
     intermediate: NodeContextPath[];
     loading: NodeContextPath[];
     errors: NodeContextPath[];
@@ -21,7 +22,7 @@ export interface State extends Readonly<{
 export const defaultState: State = {
     focused: [],
     toggled: [],
-    hidden: [],
+    visible: null,
     intermediate: [],
     loading: [],
     errors: [],
@@ -61,7 +62,7 @@ interface CommenceSearchOptions extends Readonly<{
 }> {}
 const commenceSearch = (contextPath: NodeContextPath, {query, filterNodeType}: CommenceSearchOptions) => createAction(actionTypes.COMMENCE_SEARCH, {contextPath, query, filterNodeType});
 interface SearchResult extends Readonly<{
-    hiddenContextPaths: NodeContextPath[];
+    visibleContextPaths: null | NodeContextPath[];
     toggledContextPaths: NodeContextPath[];
     intermediateContextPaths: NodeContextPath[];
 }> {}
@@ -87,11 +88,44 @@ export type Action = ActionType<typeof actions>;
 //
 // Export the reducer
 //
-export const reducer = (state: State = defaultState, action: InitAction | Action, globalState: GlobalState) => produce(state, draft => {
+export const reducer = (state: State = defaultState, action: InitAction | NodesAction | Action, globalState: GlobalState) => produce(state, draft => {
     switch (action.type) {
         case system.INIT: {
             const contextPath = action.payload.cr.nodes.documentNode || action.payload.cr.nodes.siteNode;
             draft.focused = contextPath ? [contextPath] : [];
+            break;
+        }
+        case nodes.ADD:
+        case nodes.MERGE: {
+            if (state.visible !== null) {
+                const visible = new Set([
+                    ...state.visible,
+                    ...Object.keys(action.payload.nodeMap)
+                ]);
+
+                draft.visible = [...visible];
+            }
+            break;
+        }
+        case nodes.SET_STATE: {
+            if (state.visible !== null) {
+                const visible = new Set([
+                    ...state.visible,
+                    ...Object.keys(action.payload.nodes)
+                ]);
+
+                draft.visible = [...visible];
+            }
+            break;
+        }
+        case nodes.UPDATE_PATH: {
+            if (state.visible !== null) {
+                const visible = new Set(state.visible);
+                visible.delete(action.payload.oldContextPath);
+                visible.add(action.payload.newContextPath);
+
+                draft.visible = [...visible];
+            }
             break;
         }
         case actionTypes.FOCUS: {
@@ -130,7 +164,7 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
             break;
         }
         case actionTypes.SET_SEARCH_RESULT: {
-            draft.hidden = action.payload.hiddenContextPaths;
+            draft.visible = action.payload.visibleContextPaths;
             draft.toggled = action.payload.toggledContextPaths;
             draft.intermediate = action.payload.intermediateContextPaths;
             break;

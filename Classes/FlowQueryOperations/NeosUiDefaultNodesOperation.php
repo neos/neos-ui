@@ -69,10 +69,12 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
     {
         /** @var array<int,mixed> $context */
         $context = $flowQuery->getContext();
+
         /** @var Node $siteNode */
+        $siteNode = $context[0];
         /** @var Node $documentNode */
-        list($siteNode, $documentNode) = $context;
-        /** @var string[] $toggledNodes Node Addresses */
+        $documentNode = $context[1] ?? $siteNode;
+        /** @var string[] $toggledNodes */
         list($baseNodeType, $loadingDepth, $toggledNodes, $clipboardNodesContextPaths) = $arguments;
 
         $contentRepository = $this->contentRepositoryRegistry->get($documentNode->contentRepositoryId);

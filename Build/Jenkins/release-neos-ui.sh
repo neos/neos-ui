@@ -44,7 +44,7 @@ make install
 # acutal release process
 
 # build
-make build-production
+make build-subpackages
 
 # code quality
 make lint

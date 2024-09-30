@@ -67,8 +67,7 @@ class CopyBefore extends AbstractStructuralChange
                 $subject,
                 OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->dimensionSpacePoint),
                 $parentNodeOfSucceedingSibling->aggregateId,
-                $succeedingSibling->aggregateId,
-                null
+                $succeedingSibling->aggregateId
             );
 
             $contentRepository->handle($command);

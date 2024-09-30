@@ -24,7 +24,7 @@ export interface IconTheme {
     readonly 'icon--color-primaryBlue': string;
 }
 
-export interface IconProps extends Omit<FontAwesomeIconProps, 'icon'> {
+export interface IconProps extends Omit<FontAwesomeIconProps, 'icon' | 'ref'> {
     /**
      * We use the react component FortAwesome provides to render icons.
      * we will pass down all props to the component via {...rest} to expose it's api

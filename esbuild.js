@@ -2,12 +2,13 @@ const {sep} = require('path')
 const {compileWithCssVariables} = require('./cssVariables');
 const {cssModules} = require('./cssModules');
 const esbuild = require('esbuild');
-const { version } = require('./package.json')
 
 const isProduction = process.argv.includes('--production');
 const isE2ETesting = process.argv.includes('--e2e-testing');
 const isWatch = process.argv.includes('--watch');
 const isAnalyze = process.argv.includes('--analyze');
+
+const NEOS_UI_VERSION = process.env.NEOS_UI_VERSION ?? (isProduction ? 'production-build' : 'dev')
 
 if (isE2ETesting) {
     console.log('Building for E2E testing');
@@ -31,7 +32,8 @@ const options = {
     legalComments: "linked",
     loader: {
         '.js': 'tsx',
-        '.svg': 'dataurl',
+        '.dataurl.svg': 'dataurl',
+        '.svg': 'text',
         '.vanilla-css': 'css',
         '.woff2': 'file'
     },
@@ -51,13 +53,6 @@ const options = {
                         sideEffects: false
                     }
                 })
-
-                // load ckeditor icons as plain text and not via `.svg: dataurl`
-                // (currently neccessary for the table select handle icon)
-                onLoad({filter: /node_modules\/@ckeditor\/.*\.svg$/}, async ({path}) => ({
-                    contents: (await require('fs/promises').readFile(path)).toString(),
-                    loader: 'text'
-                }))
 
                 // prefix Fontawesome with "neos-" to prevent clashes with customer Fontawesome
                 onLoad({filter: /@fortawesome\/fontawesome-svg-core\/styles\.css$/}, async ({path}) => {
@@ -93,7 +88,7 @@ const options = {
     ],
     define: {
         // we dont declare `global = window` as we want to control everything and notice it, when something is odd
-        NEOS_UI_VERSION: JSON.stringify(isProduction ? `v${version}` : `v${version}-dev`)
+        NEOS_UI_VERSION: JSON.stringify(NEOS_UI_VERSION)
     }
 }
 

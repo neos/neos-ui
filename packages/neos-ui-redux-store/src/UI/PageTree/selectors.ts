@@ -36,7 +36,7 @@ export const getFocused = (state: GlobalState) => {
 export const getToggled = (state: GlobalState) => state?.ui?.pageTree?.toggled;
 export const getLoading = (state: GlobalState) => state?.ui?.pageTree?.loading;
 export const getErrors = (state: GlobalState) => state?.ui?.pageTree?.errors;
-export const getHidden = (state: GlobalState) => state?.ui?.pageTree?.hidden;
+export const getVisible = (state: GlobalState) => state?.ui?.pageTree?.visible;
 export const getIntermediate = (state: GlobalState) => state?.ui?.pageTree?.intermediate;
 
 export const destructiveOperationsAreDisabledForPageTreeSelector = createSelector(

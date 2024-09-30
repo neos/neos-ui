@@ -115,7 +115,7 @@ final class ConflictsFactory
 
         return new Conflict(
             key: $affectedNode
-                ? $affectedNode->nodeAggregateId->value
+                 ? $affectedNode->aggregateId->value
                 : 'command-' . $commandThatFailedDuringRebase->sequenceNumber,
             affectedSite: $affectedSite
                 ? $this->createIconLabelForNode($affectedSite)

@@ -31,7 +31,6 @@ use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\Flow\Mvc\View\JsonView;
 use Neos\Flow\Property\PropertyMapper;
 use Neos\Flow\Security\Context;
-use Neos\Neos\Domain\Service\WorkspaceNameBuilder;
 use Neos\Neos\Domain\Service\WorkspacePublishingService;
 use Neos\Neos\Domain\Service\WorkspaceService;
 use Neos\Neos\FrontendRouting\NodeAddress;

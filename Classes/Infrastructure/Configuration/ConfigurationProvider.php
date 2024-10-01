@@ -88,6 +88,9 @@ final class ConfigurationProvider implements ConfigurationProviderInterface
         ];
     }
 
+    /**
+     * @return array<string,array{name:string,title:string,readonly:bool}>
+     */
     private function getAllowedTargetWorkspaces(ContentRepository $contentRepository): array
     {
         $backendUser = $this->userService->getBackendUser();

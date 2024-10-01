@@ -38,6 +38,11 @@ use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;
 use Neos\Neos\Service\UserService;
 use Neos\Neos\Ui\Application\ChangeTargetWorkspace;
+use Neos\Neos\Ui\Application\DiscardAllChanges;
+use Neos\Neos\Ui\Application\DiscardChangesInDocument;
+use Neos\Neos\Ui\Application\DiscardChangesInSite;
+use Neos\Neos\Ui\Application\PublishChangesInDocument;
+use Neos\Neos\Ui\Application\PublishChangesInSite;
 use Neos\Neos\Ui\Application\ReloadNodes\ReloadNodesQuery;
 use Neos\Neos\Ui\Application\ReloadNodes\ReloadNodesQueryHandler;
 use Neos\Neos\Ui\Application\SyncWorkspace\ConflictsOccurred;
@@ -201,14 +206,16 @@ class BackendServiceController extends ActionController
         try {
             /** @todo send from UI */
             $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
-            $siteNodeAddress = $this->nodeService->deserializeNodeAddress(
+            $command['contentRepositoryId'] = $contentRepositoryId->value;
+            $command['siteId'] = $this->nodeService->deserializeNodeAddress(
                 $command['siteId'],
                 $contentRepositoryId
-            );
+            )->nodeAggregateId->value;
+            $command = PublishChangesInSite::fromArray($command);
             $publishingResult = $this->workspacePublishingService->publishChangesInSite(
-                $contentRepositoryId,
-                $siteNodeAddress->workspaceName,
-                $siteNodeAddress->nodeAggregateId,
+                $command->contentRepositoryId,
+                $command->workspaceName,
+                $command->siteId,
             );
             $this->view->assign('value', [
                 'success' => [
@@ -238,15 +245,18 @@ class BackendServiceController extends ActionController
         try {
             /** @todo send from UI */
             $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
-            $documentNodeAddress = $this->nodeService->deserializeNodeAddress(
+            $command['contentRepositoryId'] = $contentRepositoryId->value;
+            $command['documentId'] = $this->nodeService->deserializeNodeAddress(
                 $command['documentId'],
                 $contentRepositoryId
-            );
+            )->nodeAggregateId->value;
+            $command = PublishChangesInDocument::fromArray($command);
+
             try {
                 $publishingResult = $this->workspacePublishingService->publishChangesInDocument(
-                    $contentRepositoryId,
-                    $documentNodeAddress->workspaceName,
-                    $documentNodeAddress->nodeAggregateId,
+                    $command->contentRepositoryId,
+                    $command->workspaceName,
+                    $command->documentId,
                 );
 
                 $this->view->assign('value', [
@@ -290,9 +300,14 @@ class BackendServiceController extends ActionController
         try {
             /** @todo send from UI */
             $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
-            $workspaceName = WorkspaceName::fromString($command['workspaceName']);
+            $command['contentRepositoryId'] = $contentRepositoryId->value;
+            $command = DiscardAllChanges::fromArray($command);
 
-            $discardingResult = $this->workspacePublishingService->discardAllWorkspaceChanges($contentRepositoryId, $workspaceName);
+            $discardingResult = $this->workspacePublishingService->discardAllWorkspaceChanges(
+                $command->contentRepositoryId,
+                $command->workspaceName
+            );
+
             $this->view->assign('value', [
                 'success' => [
                     'numberOfAffectedChanges' => $discardingResult->numberOfDiscardedChanges
@@ -320,15 +335,17 @@ class BackendServiceController extends ActionController
         try {
             /** @todo send from UI */
             $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
-            $siteNodeAddress = $this->nodeService->deserializeNodeAddress(
+            $command['contentRepositoryId'] = $contentRepositoryId->value;
+            $command['siteId'] = $this->nodeService->deserializeNodeAddress(
                 $command['siteId'],
                 $contentRepositoryId
-            );
+            )->nodeAggregateId->value;
+            $command = DiscardChangesInSite::fromArray($command);
 
             $discardingResult = $this->workspacePublishingService->discardChangesInSite(
-                $contentRepositoryId,
-                $siteNodeAddress->workspaceName,
-                $siteNodeAddress->nodeAggregateId
+                $command->contentRepositoryId,
+                $command->workspaceName,
+                $command->siteId
             );
 
             $this->view->assign('value', [
@@ -358,11 +375,18 @@ class BackendServiceController extends ActionController
         try {
             /** @todo send from UI */
             $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
-            $documentNodeAddress = $this->nodeService->deserializeNodeAddress(
+            $command['contentRepositoryId'] = $contentRepositoryId->value;
+            $command['documentId'] = $this->nodeService->deserializeNodeAddress(
                 $command['documentId'],
                 $contentRepositoryId
+            )->nodeAggregateId->value;
+            $command = DiscardChangesInDocument::fromArray($command);
+
+            $discardingResult = $this->workspacePublishingService->discardChangesInDocument(
+                $command->contentRepositoryId,
+                $command->workspaceName,
+                $command->documentId
             );
-            $discardingResult = $this->workspacePublishingService->discardChangesInDocument($contentRepositoryId, $documentNodeAddress->workspaceName, $documentNodeAddress->nodeAggregateId);
 
             $this->view->assign('value', [
                 'success' => [

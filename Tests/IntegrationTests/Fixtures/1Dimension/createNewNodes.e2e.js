@@ -246,7 +246,7 @@ test('Supports secondary inspector view for element editors', async t => {
     await t
         .click(imageEditor.findReact('IconButton').withProps('icon', 'camera'))
         .switchToIframe(Selector('[name="neos-media-selection-screen"]', {timeout: 2000}))
-        .click(Selector('.neos-thumbnail'));
+        .click(Selector('.asset').withText('neos_primary.png'));
 
     await t.switchToMainWindow();
 

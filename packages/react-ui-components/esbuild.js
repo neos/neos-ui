@@ -71,7 +71,7 @@ async function main() {
         metafile: true,
         loader: {
             '.js': 'tsx',
-            '.svg': 'dataurl',
+            '.svg': 'text',
             '.css': 'copy'
         },
         plugins: [

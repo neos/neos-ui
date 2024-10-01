@@ -108,11 +108,11 @@ test:
 
 ## Executes integration tests on saucelabs.
 test-e2e-saucelabs:
-	bash Tests/IntegrationTests/e2e.sh "saucelabs:Firefox@latest:Windows 10"
+	bash Tests/IntegrationTests/e2e.sh --saucelabs
 
 ## Executes integration tests locally.
 test-e2e:
-	bash Tests/IntegrationTests/e2e.sh chrome:--disable-search-engine-choice-screen
+	bash Tests/IntegrationTests/e2e.sh --browser chrome:--disable-search-engine-choice-screen
 
 ## Executes integration tests locally in a docker-compose setup.
 #

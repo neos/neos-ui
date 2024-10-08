@@ -48,7 +48,7 @@ And on Packagist available via: `neos/neos-ui`
 
 ### Updating
 
-```
+```bash
 composer update neos/neos-ui
 ```
 
@@ -58,13 +58,31 @@ For trying out the new UI, we recommend you to run the regularily released beta 
 However, if you want to stay on bleeding-edge, or want to help out developing, you'll
 need the `8.3.x-dev` release. You can install the latest release using:
 
-```
+```bash
 composer require neos/neos-ui-compiled:8.3.x-dev neos/neos-ui:8.3.x-dev
 ```
 
 ## Contributing
 
 Please follow the respective guides for contributing on OSX and on Linux.
+
+To start developing the Neos Ui you will need a running Neos instance locally.
+You can use 
+* one of your own, local Neos 8.3 instances,
+* create a new one with `composer create-project neos/neos-base-distribution neos-ui-development-instance`,
+* or use the docker compose setup in this repository (see instructions below).
+
+### Setup Source Files and Git
+To install the source files and setup git, run:
+
+```bash
+composer require neos/neos-ui-compiled:8.3.x-dev neos/neos-ui:8.3.x-dev --prefer-source
+```
+
+This will sync the git repository of Neos Ui into `Packages/Application/Neos.Neos.Ui` (this might take a while).
+To push your changes to GitHub you need to fork the Neos Ui and change the git remote to your fork (check with `git remove -v`).
+
+Run `make setup`. To check what commands are executed have a look at the `Makefile` in the root of this repository.
 
 ### on Windows
 
@@ -159,14 +177,19 @@ To setup end-to-end tests locally you have got to do the same things described i
 
 For executing the end to end tests on a Mac with catalina or higher you need to permit screen recording. Open 'System Preferences > Security & Privacy > Privacy > Screen Recording' and check 'TestCafe Browser Tools' in the application list.
 
+```bash
+make test-e2e-docker
+```
+
 #### Local Development with e2e-tests & docker
+
 To speed up the e2e-test workflow/feedback loop you can start the system under test in a docker setup and run the tests against that:
-* `make start-neos-dev-instance` (starts a docker setup with the system under test)
+* `make start-neos-dev-instance` (starts a docker setup with the system under test and keep it running - in the `1Dimension` scenario)
 * The neos dev instance is available at `localhost:8081`
 * To enter the container run `docker compose -f Tests/IntegrationTests/docker-compose.neos-dev-instance.yaml exec php bash`
 * `yarn run testcafe <browser> <testFile> <optional flags>`
-  * for example, this runs all tests in chrome:
-  `yarn run testcafe chrome Tests/IntegrationTests/Fixtures`
+  * for example, this runs all tests in chrome: (NOTE starting with Chrome 127, --disable-search-engine-choice-screen is needed until https://github.com/DevExpress/testcafe/pull/8248 is released)
+  `yarn run testcafe chrome:--disable-search-engine-choice-screen Tests/IntegrationTests/Fixtures/1Dimension`
   * some helpful optional flags are
     * `-T 'sidebars'` - grep tests by pattern and only execute those
     * `--selector-timeout=10000` - if you work on async pieces of the UI then this might help to prevent race conditions 

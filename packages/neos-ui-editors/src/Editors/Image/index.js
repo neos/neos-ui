@@ -63,7 +63,9 @@ export default class ImageEditor extends Component {
                 isAssetLoading: true
             }, () => {
                 this.loadImage = loadImageMetadata(this.props.value.__identity).then(image => {
-                    this.setState({image, isAssetLoading: false});
+                    if (this._isMounted) {
+                        this.setState({image, isAssetLoading: false});
+                    }
                 });
             });
         }
@@ -79,7 +81,9 @@ export default class ImageEditor extends Component {
         const {loadImageMetadata} = backend.get().endpoints;
 
         if (!nextProps.value || !nextProps.value.__identity) {
-            this.setState({image: null});
+            if (this._isMounted) {
+                this.setState({image: null});
+            }
         }
 
         //
@@ -92,14 +96,16 @@ export default class ImageEditor extends Component {
                         image,
                         isAssetLoading: false
                     }, () => {
-                        // When forceCrop option is enabled and we were requested to do the force cropping...
-                        if (this.state.requestOpenImageCropper && $get('crop.aspectRatio.forceCrop', this.props.options)) {
-                            this.handleCloseSecondaryScreen();
-                            this.handleOpenImageCropper();
-                            this.setState({requestOpenImageCropper: false});
-                        } else if (this.state.isImageCropperOpen) {
-                            this.handleCloseSecondaryScreen();
-                            this.handleOpenImageCropper();
+                        if (this._isMounted) {
+                            // When forceCrop option is enabled and we were requested to do the force cropping...
+                            if (this.state.requestOpenImageCropper && $get('crop.aspectRatio.forceCrop', this.props.options)) {
+                                this.handleCloseSecondaryScreen();
+                                this.handleOpenImageCropper();
+                                this.setState({requestOpenImageCropper: false});
+                            } else if (this.state.isImageCropperOpen) {
+                                this.handleCloseSecondaryScreen();
+                                this.handleOpenImageCropper();
+                            }
                         }
                     });
                 }

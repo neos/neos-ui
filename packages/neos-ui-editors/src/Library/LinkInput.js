@@ -275,9 +275,16 @@ export default class LinkInput extends PureComponent {
     }
 
     handleManualSetLink = () => {
-        this.props.onLinkChange(this.state.searchTerm);
+        let {searchTerm} = this.state;
+        // trim tailing whitespace as it can cause issues
+        if (typeof searchTerm === 'string') {
+            searchTerm = searchTerm.trim();
+            this.setState({searchTerm});
+        }
+
+        this.props.onLinkChange(searchTerm);
         this.setState({
-            isEditMode: !this.state.searchTerm
+            isEditMode: !searchTerm
         });
     }
 

@@ -149,10 +149,10 @@ export default class LinkInput extends PureComponent {
     }
 
     handleSearchTermChange = searchTerm => {
-        // trim leading and trailing whitespace as it can cause issues
+        // trim leading whitespace as it can cause issues
         // with the further processing
         if (typeof searchTerm === 'string') {
-            searchTerm = searchTerm.trim()
+            searchTerm = searchTerm.trimStart();
         }
 
         this.setState({searchTerm});

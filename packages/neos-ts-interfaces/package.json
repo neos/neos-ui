@@ -4,6 +4,9 @@
   "description": "Neos domain-related TypeScript interfaces",
   "private": true,
   "main": "src/index.ts",
+  "dependencies": {
+    "@neos-project/neos-ui-i18n": "workspace:*"
+  },
   "devDependencies": {
     "@neos-project/jest-preset-neos-ui": "workspace:*",
     "typescript": "^4.6.4"

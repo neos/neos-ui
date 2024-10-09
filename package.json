@@ -24,6 +24,7 @@
     "@neos-project/eslint-config-neos": "^2.6.1",
     "@typescript-eslint/eslint-plugin": "^5.44.0",
     "@typescript-eslint/parser": "^5.44.0",
+    "cross-fetch": "^4.0.0",
     "editorconfig-checker": "^4.0.2",
     "esbuild": "~0.17.0",
     "eslint": "^8.27.0",

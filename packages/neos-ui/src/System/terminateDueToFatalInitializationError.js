@@ -1,5 +1,4 @@
-import {Logo} from '@neos-project/react-ui-components';
-
+import logoSvg from '@neos-project/react-ui-components/src/Logo/resource/logo.svg';
 import styles from '../Containers/ErrorBoundary/style.module.css';
 
 export function terminateDueToFatalInitializationError(reason) {
@@ -11,8 +10,7 @@ export function terminateDueToFatalInitializationError(reason) {
     document.body.innerHTML = `
         <div class="${styles.container}">
             <div>
-                <Logo />
-                <img style="height: 24px; width: auto;" src='${logo}' alt="Neos" />
+                <span class="${styles.logo}">${logoSvg}</span>
                 <h1 class="${styles.title}">
                     Sorry, but the Neos UI could not be initialized.
                 </h1>

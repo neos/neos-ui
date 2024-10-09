@@ -412,8 +412,6 @@ class BackendServiceController extends ActionController
     {
         $documentNodeAddress = NodeAddress::fromJsonString($documentNode);
 
-        $contentRepository = $this->contentRepositoryRegistry->get($documentNodeAddress->contentRepositoryId);
-
         $user = $this->userService->getBackendUser();
         if ($user === null) {
             $error = new Error();
@@ -422,7 +420,7 @@ class BackendServiceController extends ActionController
             $this->view->assign('value', $this->feedbackCollection);
             return;
         }
-        $userWorkspace = $this->workspaceService->getPersonalWorkspaceForUser($contentRepositoryId, $user->getId());
+        $userWorkspace = $this->workspaceService->getPersonalWorkspaceForUser($documentNodeAddress->contentRepositoryId, $user->getId());
 
         /** @todo send from UI */
         $command = new ChangeTargetWorkspace(
@@ -433,7 +431,7 @@ class BackendServiceController extends ActionController
         );
 
         try {
-            $this->workspacePublishingService->changeBaseWorkspace($contentRepositoryId, $userWorkspace->workspaceName, WorkspaceName::fromString($targetWorkspaceName));
+            $this->workspacePublishingService->changeBaseWorkspace($documentNodeAddress->contentRepositoryId, $userWorkspace->workspaceName, WorkspaceName::fromString($targetWorkspaceName));
         } catch (WorkspaceIsNotEmptyException $exception) {
             $error = new Error();
             $error->setMessage(
@@ -452,6 +450,7 @@ class BackendServiceController extends ActionController
             return;
         }
 
+        $contentRepository = $this->contentRepositoryRegistry->get($documentNodeAddress->contentRepositoryId);
         $subgraph = $contentRepository->getContentGraph($userWorkspace->workspaceName)
             ->getSubgraph(
                 $command->documentNode->dimensionSpacePoint,

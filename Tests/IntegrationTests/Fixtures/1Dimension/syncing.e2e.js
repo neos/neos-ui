@@ -152,7 +152,7 @@ async function chooseDiscardAllAndFinishSynchronization(t) {
     // Choose "Discard All" as resolution strategy
     //
     await t.click(Selector('#neos-SelectResolutionStrategy-SelectBox'));
-    await t.click(Selector('[role="button"]').withText('Discard workspace "user-admin"'));
+    await t.click(Selector('[role="button"]').withText('Discard workspace "admin-admington"'));
     await t.click(Selector('#neos-SelectResolutionStrategy-Accept'));
 
     //

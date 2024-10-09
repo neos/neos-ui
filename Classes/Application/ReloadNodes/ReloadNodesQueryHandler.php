@@ -23,7 +23,6 @@ use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\ActionRequest;
 use Neos\Neos\Domain\Service\NodeTypeNameFactory;
-use Neos\Neos\Domain\Workspace\WorkspaceProvider;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 
@@ -36,9 +35,6 @@ use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 #[Flow\Scope("singleton")]
 final class ReloadNodesQueryHandler
 {
-    #[Flow\Inject]
-    protected WorkspaceProvider $workspaceProvider;
-
     #[Flow\Inject]
     protected ContentRepositoryRegistry $contentRepositoryRegistry;
 

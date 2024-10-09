@@ -19,11 +19,10 @@ use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
-use Neos\Flow\Security\Context;
 use Neos\Neos\Domain\Repository\DomainRepository;
 use Neos\Neos\Domain\Repository\SiteRepository;
 use Neos\Neos\Domain\Service\NodeTypeNameFactory;
-use Neos\Neos\Domain\Service\WorkspaceNameBuilder;
+use Neos\Neos\Domain\Service\WorkspaceService;
 use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\FrontendRouting\NodeUriBuilderFactory;
 use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;
@@ -80,12 +79,6 @@ class BackendController extends ActionController
 
     /**
      * @Flow\Inject
-     * @var Context
-     */
-    protected $securityContext;
-
-    /**
-     * @Flow\Inject
      * @var ConfigurationProviderInterface
      */
     protected $configurationProvider;
@@ -127,6 +120,12 @@ class BackendController extends ActionController
     protected $nodeUriBuilderFactory;
 
     /**
+     * @Flow\Inject
+     * @var WorkspaceService
+     */
+    protected $workspaceService;
+
+    /**
      * Displays the backend interface
      *
      * @param string $node The node that will be displayed on the first tab
@@ -138,23 +137,19 @@ class BackendController extends ActionController
         $contentRepository = $this->contentRepositoryRegistry->get($siteDetectionResult->contentRepositoryId);
 
         $nodeAddress = $node !== null ? NodeAddressFactory::create($contentRepository)->createFromUriString($node) : null;
-        unset($node);
         $user = $this->userService->getBackendUser();
 
         if ($user === null) {
             $this->redirectToUri($this->uriBuilder->uriFor('index', [], 'Login', 'Neos.Neos'));
         }
 
-        $currentAccount = $this->securityContext->getAccount();
-        assert($currentAccount !== null);
-        $workspaceName = WorkspaceNameBuilder::fromAccountIdentifier($currentAccount->getAccountIdentifier());
-
         try {
-            $contentGraph = $contentRepository->getContentGraph($workspaceName);
+            $workspace = $this->workspaceService->getPersonalWorkspaceForUser($siteDetectionResult->contentRepositoryId, $user->getId());
         } catch (WorkspaceDoesNotExist) {
             // todo will cause infinite loop: https://github.com/neos/neos-development-collection/issues/4401
             $this->redirectToUri($this->uriBuilder->uriFor('index', [], 'Login', 'Neos.Neos'));
         }
+        $contentGraph = $contentRepository->getContentGraph($workspace->workspaceName);
 
         $backendControllerInternals = $this->contentRepositoryRegistry->buildService(
             $siteDetectionResult->contentRepositoryId,

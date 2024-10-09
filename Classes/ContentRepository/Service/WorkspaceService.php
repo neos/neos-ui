@@ -11,21 +11,18 @@ namespace Neos\Neos\Ui\ContentRepository\Service;
  * source code.
  */
 
-use Neos\ContentRepository\Core\ContentRepository;
-use Neos\ContentRepository\Core\SharedModel\ContentRepository\ContentRepositoryId;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindClosestNodeFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
-use Neos\Neos\Domain\Service\NodeTypeNameFactory;
-use Neos\Neos\FrontendRouting\NodeAddress;
-use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
+use Neos\ContentRepository\Core\SharedModel\ContentRepository\ContentRepositoryId;
 use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
-use Neos\Neos\Domain\Service\UserService as DomainUserService;
+use Neos\Neos\Domain\Service\NodeTypeNameFactory;
+use Neos\Neos\Domain\Service\WorkspacePublishingService;
+use Neos\Neos\FrontendRouting\NodeAddress;
+use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\PendingChangesProjection\Change;
-use Neos\Neos\PendingChangesProjection\ChangeFinder;
-use Neos\Neos\Service\UserService;
 use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
 
 /**
@@ -44,17 +41,8 @@ class WorkspaceService
     #[Flow\Inject]
     protected ContentRepositoryRegistry $contentRepositoryRegistry;
 
-    /**
-     * @Flow\Inject
-     * @var UserService
-     */
-    protected $userService;
-
-    /**
-     * @Flow\Inject
-     * @var DomainUserService
-     */
-    protected $domainUserService;
+    #[Flow\Inject]
+    protected WorkspacePublishingService $workspacePublishingService;
 
     /**
      * Get all publishable node context paths for a workspace
@@ -64,15 +52,10 @@ class WorkspaceService
     public function getPublishableNodeInfo(WorkspaceName $workspaceName, ContentRepositoryId $contentRepositoryId): array
     {
         $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
-        $workspace = $contentRepository->getWorkspaceFinder()->findOneByName($workspaceName);
-        if (is_null($workspace) || $workspace->baseWorkspaceName === null) {
-            return [];
-        }
-        $changeFinder = $contentRepository->projectionState(ChangeFinder::class);
-        $changes = $changeFinder->findByContentStreamId($workspace->currentContentStreamId);
+        $pendingChanges = $this->workspacePublishingService->pendingWorkspaceChanges($contentRepositoryId, $workspaceName);
         /** @var array{contextPath:string,documentContextPath:string,typeOfChange:int}[] $unpublishedNodes */
         $unpublishedNodes = [];
-        foreach ($changes as $change) {
+        foreach ($pendingChanges as $change) {
             if ($change->removalAttachmentPoint) {
                 $nodeAddress = new NodeAddress(
                     $change->contentStreamId,
@@ -106,7 +89,6 @@ class WorkspaceService
                 if ($node instanceof Node) {
                     $documentNode = $subgraph->findClosestNode($node->aggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_DOCUMENT));
                     if ($documentNode instanceof Node) {
-                        $contentRepository = $this->contentRepositoryRegistry->get($documentNode->contentRepositoryId);
                         $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
                         $unpublishedNodes[] = [
                             'contextPath' => $nodeAddressFactory->createFromNode($node)->serializeForUri(),
@@ -122,44 +104,6 @@ class WorkspaceService
         return array_values(array_filter($unpublishedNodes, function ($item) {
             return (bool)$item;
         }));
-    }
-
-    /**
-     * Get allowed target workspaces for current user
-     *
-     * @return array<string,array<string,mixed>>
-     */
-    public function getAllowedTargetWorkspaces(ContentRepository $contentRepository): array
-    {
-        $user = $this->domainUserService->getCurrentUser();
-
-        $workspacesArray = [];
-        foreach ($contentRepository->getWorkspaceFinder()->findAll() as $workspace) {
-            // FIXME: This check should be implemented through a specialized Workspace Privilege or something similar
-            // Skip workspace not owned by current user
-            if ($workspace->workspaceOwner !== null && $workspace->workspaceOwner !== $user) {
-                continue;
-            }
-            // Skip own personal workspace
-            if ($workspace->workspaceName->value === $this->userService->getPersonalWorkspaceName()) {
-                continue;
-            }
-
-            if ($workspace->isPersonalWorkspace()) {
-                // Skip other personal workspaces
-                continue;
-            }
-
-            $workspaceArray = [
-                'name' => $workspace->workspaceName->jsonSerialize(),
-                'title' => $workspace->workspaceTitle->jsonSerialize(),
-                'description' => $workspace->workspaceDescription->jsonSerialize(),
-                'readonly' => !$this->domainUserService->currentUserCanPublishToWorkspace($workspace)
-            ];
-            $workspacesArray[$workspace->workspaceName->jsonSerialize()] = $workspaceArray;
-        }
-
-        return $workspacesArray;
     }
 
     private function getTypeOfChange(Change $change): int

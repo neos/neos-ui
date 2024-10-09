@@ -14,7 +14,7 @@
     "require": {
       "neos/flow-development-collection": "9.0.x-dev as 9.0",
 
-      "neos/neos-development-collection": "feature/4726-extract-workspace-metadata-and-user-assignment-to-neos-dev as 9.0",
+      "neos/neos-development-collection": "9.0.x-dev as 9.0",
 
       "neos/neos-ui": "9.0.x-dev as 9.0",
       "neos/neos-ui-compiled": "9.0.x-dev as 9.0",

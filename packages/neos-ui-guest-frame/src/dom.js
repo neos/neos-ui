@@ -9,6 +9,7 @@ import style from './style.module.css';
 //
 // Get the guest frame's document object
 //
+/** @returns {Document} */
 export const getGuestFrameDocument = () => {
     const guestFrame = document.getElementsByName('neos-content-main')[0];
     return guestFrame && guestFrame.contentDocument;
@@ -30,14 +31,48 @@ export const getGuestFrameBody = () => getGuestFrameDocument().body;
 //
 // Find a DOM node for the given selector in the guest frame
 //
-export const findInGuestFrame = selector =>
-    getGuestFrameDocument().querySelector(selector);
+export const findInGuestFrame = selector => {
+    let result = getGuestFrameDocument().querySelector(selector);
+
+    if (result) {
+        return result;
+    }
+
+    for (const element of getGuestFrameDocument().querySelectorAll('neos-raw-content')) {
+        /** @type {HTMLElement} */
+        const customElement = element;
+        const {shadowRoot} = customElement;
+        if (!shadowRoot) {
+            continue;
+        }
+
+        result = shadowRoot.querySelector(selector);
+        if (result) {
+            return result;
+        }
+    }
+
+    return null;
+}
 
 //
 // Find all DOM nodes for the given selector in the guest frame
 //
-export const findAllInGuestFrame = selector =>
-    [].slice.call(getGuestFrameDocument().querySelectorAll(selector));
+export const findAllInGuestFrame = selector => {
+    const result = [...getGuestFrameDocument().querySelectorAll(selector)];
+
+    for (const element of getGuestFrameDocument().querySelectorAll('neos-raw-content')) {
+        /** @type {HTMLElement} */
+        const customElement = element;
+        const {shadowRoot} = customElement;
+        if (!shadowRoot) {
+            continue;
+        }
+        result.push(...shadowRoot.querySelectorAll(selector));
+    }
+
+    return result;
+}
 
 //
 // Find all DOM nodes that represent CR nodes in the guest frame

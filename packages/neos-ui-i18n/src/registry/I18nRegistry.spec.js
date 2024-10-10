@@ -178,3 +178,22 @@ test(`
 
     expect(actual).toBe('Singular Translation');
 });
+
+test(`
+    Host > Containers > I18n: should display two translated strings, if two translations
+    were found via short-string.`, () => {
+    const translations = {
+        'Neos_Neos': { // eslint-disable-line quote-props
+            'Main': { // eslint-disable-line quote-props
+                'someLabel': 'The First Translation', // eslint-disable-line quote-props
+                'anotherLabel': 'The Second Translation' // eslint-disable-line quote-props
+            }
+        }
+    };
+
+    const registry = new I18nRegistry();
+    registry.setTranslations(translations);
+    const actual = registry.translate('Neos.Neos:Main:someLabel And Neos.Neos:Main:anotherLabel');
+
+    expect(actual).toBe('The First Translation And The Second Translation');
+});

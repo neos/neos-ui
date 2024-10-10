@@ -34,7 +34,7 @@ createInlineEditor({
     propertyDomNode: document.getElementById('input'),
     propertyName: 'test',
     editorOptions: {
-        autoparagraph: false,
+        isInline: true,
         formatting: {
             h1: true,
             h2: true,

@@ -1,8 +1,13 @@
-.ck.ck-placeholder:before, .ck .ck-placeholder:before {
+.ck.ck-placeholder:after, .ck .ck-placeholder {
+    display: inline-flex;
+}
+
+.ck.ck-placeholder:after, .ck .ck-placeholder:after {
     content: attr(data-placeholder);
-
-    /* See ckeditor/ckeditor5#469. */
     pointer-events: none;
-
     color: #999;
+}
+
+.ck.ck-read-only .ck-placeholder:after {
+    display: none;
 }

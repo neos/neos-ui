@@ -2037,13 +2037,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ckeditor/ckeditor5-engine@npm:^16.0.0":
+"@ckeditor/ckeditor5-engine@npm:16.0.0":
   version: 16.0.0
   resolution: "@ckeditor/ckeditor5-engine@npm:16.0.0"
   dependencies:
     "@ckeditor/ckeditor5-utils": ^16.0.0
     lodash-es: ^4.17.10
   checksum: cabbd74051207e52eab0f76b3911e7862cd845400c35c767b3b006b3bdc70c8e3aa1cac89b7930e611a18d5f71fcd15da769a55fde167fd418f5fc3a50294bb8
+  languageName: node
+  linkType: hard
+
+"@ckeditor/ckeditor5-engine@patch:@ckeditor/ckeditor5-engine@npm:16.0.0#./patches/@ckeditor-ckeditor5-engine-npm-16.0.0-placeholder.patch::locator=root-workspace-0b6124%40workspace%3A.":
+  version: 16.0.0
+  resolution: "@ckeditor/ckeditor5-engine@patch:@ckeditor/ckeditor5-engine@npm%3A16.0.0#./patches/@ckeditor-ckeditor5-engine-npm-16.0.0-placeholder.patch::version=16.0.0&hash=582e01&locator=root-workspace-0b6124%40workspace%3A."
+  dependencies:
+    "@ckeditor/ckeditor5-utils": ^16.0.0
+    lodash-es: ^4.17.10
+  checksum: 0ca241d6d28da9d7104c943d9ff2bf88591eb2e2726189029c3c43f8d59f726a10decc2aeb21db95a7e0242a4fc37fc480270869ca5a2f7d5db381107a385e38
   languageName: node
   linkType: hard
 

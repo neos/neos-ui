@@ -2,6 +2,10 @@
     display: inline-flex;
 }
 
+.ck .ck-placeholder br[data-cke-filler="true"] {
+    display: none;
+}
+
 .ck.ck-placeholder:after, .ck .ck-placeholder:after {
     content: attr(data-placeholder);
     pointer-events: none;

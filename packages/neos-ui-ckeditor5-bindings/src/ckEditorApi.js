@@ -2,6 +2,7 @@ import debounce from 'lodash.debounce';
 import DecoupledEditor from '@ckeditor/ckeditor5-editor-decoupled/src/decouplededitor';
 import {actions} from '@neos-project/neos-ui-redux-store';
 import {cleanupContentBeforeCommit} from './cleanupContentBeforeCommit'
+// FIXME import from @ckeditor/ckeditor5-engine/theme/placeholder.css instead! (Needs build setup configuration)
 import './placeholder.vanilla-css';
 
 let currentEditor = null;

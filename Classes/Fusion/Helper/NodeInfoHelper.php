@@ -358,7 +358,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     {
         // we always want to redirect to the node in the base workspace.
         $contentRepository = $this->contentRepositoryRegistry->get($node->contentRepositoryId);
-        $workspace = $contentRepository->getWorkspaceFinder()->findOneByName($node->workspaceName);
+        $workspace = $contentRepository->findWorkspaceByName($node->workspaceName);
 
         $nodeAddress = NodeAddress::create(
             $node->contentRepositoryId,

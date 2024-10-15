@@ -99,7 +99,7 @@ class UpdateWorkspaceInfo extends AbstractFeedback
     public function serializePayload(ControllerContext $controllerContext)
     {
         $contentRepository = $this->contentRepositoryRegistry->get($this->contentRepositoryId);
-        $workspace = $contentRepository->getWorkspaceFinder()->findOneByName($this->workspaceName);
+        $workspace = $contentRepository->findWorkspaceByName($this->workspaceName);
         if ($workspace === null) {
             return null;
         }

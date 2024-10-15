@@ -98,7 +98,7 @@ final class ConfigurationProvider implements ConfigurationProviderInterface
             return [];
         }
         $result = [];
-        foreach ($contentRepository->getWorkspaceFinder()->findAll() as $workspace) {
+        foreach ($contentRepository->findWorkspaces() as $workspace) {
             $workspaceMetadata = $this->workspaceService->getWorkspaceMetadata($contentRepository->id, $workspace->workspaceName);
             if (!in_array($workspaceMetadata->classification, [WorkspaceClassification::ROOT, WorkspaceClassification::SHARED], true)) {
                 continue;

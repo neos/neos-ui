@@ -20,6 +20,7 @@ use Neos\ContentRepository\Core\Feature\WorkspaceRebase\Dto\RebaseErrorHandlingS
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
 use Neos\ContentRepository\Core\SharedModel\Exception\NodeAggregateCurrentlyDoesNotExist;
 use Neos\ContentRepository\Core\SharedModel\Exception\NodeAggregateDoesCurrentlyNotCoverDimensionSpacePoint;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
 use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\FlowQuery\FlowQuery;
@@ -33,8 +34,6 @@ use Neos\Flow\Property\PropertyMapper;
 use Neos\Flow\Security\Context;
 use Neos\Neos\Domain\Service\WorkspacePublishingService;
 use Neos\Neos\Domain\Service\WorkspaceService;
-use Neos\Neos\FrontendRouting\NodeAddress;
-use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;
 use Neos\Neos\Service\UserService;
 use Neos\Neos\Ui\Application\ChangeTargetWorkspace;
@@ -207,10 +206,9 @@ class BackendServiceController extends ActionController
             /** @todo send from UI */
             $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
             $command['contentRepositoryId'] = $contentRepositoryId->value;
-            $command['siteId'] = $this->nodeService->deserializeNodeAddress(
-                $command['siteId'],
-                $contentRepositoryId
-            )->nodeAggregateId->value;
+            $command['siteId'] = NodeAddress::fromJsonString(
+                $command['siteId']
+            )->aggregateId->value;
             $command = PublishChangesInSite::fromArray($command);
             $publishingResult = $this->workspacePublishingService->publishChangesInSite(
                 $command->contentRepositoryId,
@@ -246,10 +244,9 @@ class BackendServiceController extends ActionController
             /** @todo send from UI */
             $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
             $command['contentRepositoryId'] = $contentRepositoryId->value;
-            $command['documentId'] = $this->nodeService->deserializeNodeAddress(
-                $command['documentId'],
-                $contentRepositoryId
-            )->nodeAggregateId->value;
+            $command['documentId'] =  NodeAddress::fromJsonString(
+                $command['documentId']
+            )->aggregateId->value;
             $command = PublishChangesInDocument::fromArray($command);
 
             try {
@@ -336,10 +333,9 @@ class BackendServiceController extends ActionController
             /** @todo send from UI */
             $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
             $command['contentRepositoryId'] = $contentRepositoryId->value;
-            $command['siteId'] = $this->nodeService->deserializeNodeAddress(
-                $command['siteId'],
-                $contentRepositoryId
-            )->nodeAggregateId->value;
+            $command['siteId'] =  NodeAddress::fromJsonString(
+                $command['siteId']
+            )->aggregateId->value;
             $command = DiscardChangesInSite::fromArray($command);
 
             $discardingResult = $this->workspacePublishingService->discardChangesInSite(
@@ -376,10 +372,9 @@ class BackendServiceController extends ActionController
             /** @todo send from UI */
             $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
             $command['contentRepositoryId'] = $contentRepositoryId->value;
-            $command['documentId'] = $this->nodeService->deserializeNodeAddress(
-                $command['documentId'],
-                $contentRepositoryId
-            )->nodeAggregateId->value;
+            $command['documentId'] =  NodeAddress::fromJsonString(
+                $command['documentId']
+            )->aggregateId->value;
             $command = DiscardChangesInDocument::fromArray($command);
 
             $discardingResult = $this->workspacePublishingService->discardChangesInDocument(
@@ -415,10 +410,7 @@ class BackendServiceController extends ActionController
      */
     public function changeBaseWorkspaceAction(string $targetWorkspaceName, string $documentNode): void
     {
-        $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
-        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
-
-        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
+        $documentNodeAddress = NodeAddress::fromJsonString($documentNode);
 
         $user = $this->userService->getBackendUser();
         if ($user === null) {
@@ -428,18 +420,18 @@ class BackendServiceController extends ActionController
             $this->view->assign('value', $this->feedbackCollection);
             return;
         }
-        $userWorkspace = $this->workspaceService->getPersonalWorkspaceForUser($contentRepositoryId, $user->getId());
+        $userWorkspace = $this->workspaceService->getPersonalWorkspaceForUser($documentNodeAddress->contentRepositoryId, $user->getId());
 
         /** @todo send from UI */
         $command = new ChangeTargetWorkspace(
-            $contentRepositoryId,
+            $documentNodeAddress->contentRepositoryId,
             $userWorkspace->workspaceName,
             WorkspaceName::fromString($targetWorkspaceName),
-            $nodeAddressFactory->createFromUriString($documentNode)
+            $documentNodeAddress
         );
 
         try {
-            $this->workspacePublishingService->changeBaseWorkspace($contentRepositoryId, $userWorkspace->workspaceName, WorkspaceName::fromString($targetWorkspaceName));
+            $this->workspacePublishingService->changeBaseWorkspace($documentNodeAddress->contentRepositoryId, $userWorkspace->workspaceName, WorkspaceName::fromString($targetWorkspaceName));
         } catch (WorkspaceIsNotEmptyException $exception) {
             $error = new Error();
             $error->setMessage(
@@ -458,13 +450,14 @@ class BackendServiceController extends ActionController
             return;
         }
 
+        $contentRepository = $this->contentRepositoryRegistry->get($documentNodeAddress->contentRepositoryId);
         $subgraph = $contentRepository->getContentGraph($userWorkspace->workspaceName)
             ->getSubgraph(
                 $command->documentNode->dimensionSpacePoint,
                 VisibilityConstraints::withoutRestrictions()
             );
 
-        $documentNodeInstance = $subgraph->findNodeById($command->documentNode->nodeAggregateId);
+        $documentNodeInstance = $subgraph->findNodeById($command->documentNode->aggregateId);
         assert($documentNodeInstance !== null);
 
         $success = new Success();
@@ -473,7 +466,7 @@ class BackendServiceController extends ActionController
         );
         $this->feedbackCollection->add($success);
 
-        $updateWorkspaceInfo = new UpdateWorkspaceInfo($contentRepositoryId, $userWorkspace->workspaceName);
+        $updateWorkspaceInfo = new UpdateWorkspaceInfo($command->contentRepositoryId, $userWorkspace->workspaceName);
         $this->feedbackCollection->add($updateWorkspaceInfo);
 
         // If current document node doesn't exist in the base workspace,
@@ -524,13 +517,9 @@ class BackendServiceController extends ActionController
      */
     public function copyNodesAction(array $nodes): void
     {
-        $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
-        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
-        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
-
         /** @var array<int,NodeAddress> $nodeAddresses */
         $nodeAddresses = array_map(
-            fn (string $serializedNodeAddress) => $nodeAddressFactory->createFromUriString($serializedNodeAddress),
+            NodeAddress::fromJsonString(...),
             $nodes
         );
         $this->clipboard->copyNodes($nodeAddresses);
@@ -555,13 +544,9 @@ class BackendServiceController extends ActionController
      */
     public function cutNodesAction(array $nodes): void
     {
-        $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
-        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
-        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
-
-        /** @var array<int,\Neos\Neos\FrontendRouting\NodeAddress> $nodeAddresses */
+        /** @var array<int,NodeAddress> $nodeAddresses */
         $nodeAddresses = array_map(
-            fn (string $serializedNodeAddress) => $nodeAddressFactory->createFromUriString($serializedNodeAddress),
+            NodeAddress::fromJsonString(...),
             $nodes
         );
 
@@ -590,25 +575,22 @@ class BackendServiceController extends ActionController
      */
     public function getAdditionalNodeMetadataAction(array $nodes): void
     {
-        $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
-        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
-        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
-
         $result = [];
         foreach ($nodes as $nodeAddressString) {
-            $nodeAddress = $nodeAddressFactory->createFromUriString($nodeAddressString);
+            $nodeAddress = NodeAddress::fromJsonString($nodeAddressString);
+            $contentRepository = $this->contentRepositoryRegistry->get($nodeAddress->contentRepositoryId);
             $subgraph = $contentRepository->getContentGraph($nodeAddress->workspaceName)->getSubgraph(
                 $nodeAddress->dimensionSpacePoint,
                 VisibilityConstraints::withoutRestrictions()
             );
-            $node = $subgraph->findNodeById($nodeAddress->nodeAggregateId);
+            $node = $subgraph->findNodeById($nodeAddress->aggregateId);
 
             // TODO finish implementation
             /*$otherNodeVariants = array_values(array_filter(array_map(function ($node) {
                 return $this->getCurrentDimensionPresetIdentifiersForNode($node);
             }, $node->getOtherNodeVariants())));*/
             if (!is_null($node)) {
-                $result[$nodeAddress->serializeForUri()] = [
+                $result[$nodeAddress->toJson()] = [
                     // todo reimplement nodePolicyService
                     'policy' => [
                         'disallowedNodeTypes' => [],
@@ -638,18 +620,16 @@ class BackendServiceController extends ActionController
      */
     public function getPolicyInformationAction(array $nodes): void
     {
-        $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
-        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
-
         $result = [];
         foreach ($nodes as $nodeAddress) {
+            $contentRepository = $this->contentRepositoryRegistry->get($nodeAddress->contentRepositoryId);
             $subgraph = $contentRepository->getContentGraph($nodeAddress->workspaceName)->getSubgraph(
                 $nodeAddress->dimensionSpacePoint,
                 VisibilityConstraints::withoutRestrictions()
             );
-            $node = $subgraph->findNodeById($nodeAddress->nodeAggregateId);
+            $node = $subgraph->findNodeById($nodeAddress->aggregateId);
             if (!is_null($node)) {
-                $result[$nodeAddress->serializeForUri()] = [
+                $result[$nodeAddress->toJson()] = [
                     // todo reimplement nodePolicyService
                     'policy' => [
                         'disallowedNodeTypes' => [],
@@ -682,8 +662,7 @@ class BackendServiceController extends ActionController
         $flowQuery = new FlowQuery(
             array_map(
                 fn ($nodeContextPath) => $this->nodeService->findNodeBySerializedNodeAddress(
-                    $nodeContextPath,
-                    $contentRepositoryId
+                    $nodeContextPath
                 ),
                 $nodeContextPaths
             )
@@ -723,16 +702,13 @@ class BackendServiceController extends ActionController
      */
     public function generateUriPathSegmentAction(string $contextNode, string $text): void
     {
-        $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
-        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
-        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
-
-        $contextNodeAddress = $nodeAddressFactory->createFromUriString($contextNode);
+        $contextNodeAddress = NodeAddress::fromJsonString($contextNode);
+        $contentRepository = $this->contentRepositoryRegistry->get($contextNodeAddress->contentRepositoryId);
         $subgraph = $contentRepository->getContentGraph($contextNodeAddress->workspaceName)->getSubgraph(
             $contextNodeAddress->dimensionSpacePoint,
             VisibilityConstraints::withoutRestrictions()
         );
-        $contextNode = $subgraph->findNodeById($contextNodeAddress->nodeAggregateId);
+        $contextNode = $subgraph->findNodeById($contextNodeAddress->aggregateId);
 
         $slug = $this->nodeUriPathSegmentGenerator->generateUriPathSegment($contextNode, $text);
         $this->view->assign('value', $slug);
@@ -795,36 +771,31 @@ class BackendServiceController extends ActionController
         /** @todo send from UI */
         $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
         $query['contentRepositoryId'] = $contentRepositoryId->value;
-        $query['siteId'] = $this->nodeService->deserializeNodeAddress(
-            $query['siteId'],
-            $contentRepositoryId
-        )->nodeAggregateId->value;
-        $query['documentId'] = $this->nodeService->deserializeNodeAddress(
-            $query['documentId'],
-            $contentRepositoryId
-        )->nodeAggregateId->value;
+        $query['siteId'] =  NodeAddress::fromJsonString(
+            $query['siteId']
+        )->aggregateId->value;
+        $query['documentId'] =  NodeAddress::fromJsonString(
+            $query['documentId']
+        )->aggregateId->value;
         $query['ancestorsOfDocumentIds'] = array_map(
             fn (string $nodeAddress) =>
-                $this->nodeService->deserializeNodeAddress(
-                    $nodeAddress,
-                    $contentRepositoryId
-                )->nodeAggregateId->value,
+                 NodeAddress::fromJsonString(
+                     $nodeAddress
+                 )->aggregateId->value,
             $query['ancestorsOfDocumentIds']
         );
         $query['toggledNodesIds'] = array_map(
             fn (string $nodeAddress) =>
-                $this->nodeService->deserializeNodeAddress(
-                    $nodeAddress,
-                    $contentRepositoryId
-                )->nodeAggregateId->value,
+                 NodeAddress::fromJsonString(
+                     $nodeAddress
+                 )->aggregateId->value,
             $query['toggledNodesIds']
         );
         $query['clipboardNodesIds'] = array_map(
             fn (string $nodeAddress) =>
-                $this->nodeService->deserializeNodeAddress(
-                    $nodeAddress,
-                    $contentRepositoryId
-                )->nodeAggregateId->value,
+                 NodeAddress::fromJsonString(
+                     $nodeAddress
+                 )->aggregateId->value,
             $query['clipboardNodesIds']
         );
         $query = ReloadNodesQuery::fromArray($query);

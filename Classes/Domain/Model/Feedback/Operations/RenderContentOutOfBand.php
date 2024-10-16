@@ -15,13 +15,13 @@ declare(strict_types=1);
 namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
 
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
-use Neos\Neos\Domain\Service\RenderingModeService;
-use Neos\Neos\FrontendRouting\NodeAddressFactory;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Fusion\Core\Cache\ContentCache;
 use Neos\Fusion\Exception as FusionException;
+use Neos\Neos\Domain\Service\RenderingModeService;
 use Neos\Neos\Fusion\Helper\CachingHelper;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
@@ -156,10 +156,8 @@ class RenderContentOutOfBand extends AbstractFeedback
     public function serializePayload(ControllerContext $controllerContext): array
     {
         if (!is_null($this->node)) {
-            $contentRepository = $this->contentRepositoryRegistry->get($this->node->contentRepositoryId);
-            $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
             return [
-                'contextPath' => $nodeAddressFactory->createFromNode($this->node)->serializeForUri(),
+                'contextPath' => NodeAddress::fromNode($this->node)->toJson(),
                 'parentDomAddress' => $this->getParentDomAddress(),
                 'siblingDomAddress' => $this->getSiblingDomAddress(),
                 'mode' => $this->getMode(),

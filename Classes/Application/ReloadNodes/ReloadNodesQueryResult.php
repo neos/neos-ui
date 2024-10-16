@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace Neos\Neos\Ui\Application\ReloadNodes;
 
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
 use Neos\Flow\Annotations as Flow;
-use Neos\Neos\FrontendRouting\NodeAddress;
 
 /**
  * The application layer level query result containing all nodes the UI needs
@@ -38,7 +38,7 @@ final readonly class ReloadNodesQueryResult implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return [
-            'documentId' => $this->documentId->serializeForUri(),
+            'documentId' => $this->documentId->toJson(),
             'nodes' => $this->nodes
         ];
     }

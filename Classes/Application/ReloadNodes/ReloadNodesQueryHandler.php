@@ -19,11 +19,11 @@ use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindChildNodesFil
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\NodeType\NodeTypeCriteria;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\ActionRequest;
 use Neos\Neos\Domain\Service\NodeTypeNameFactory;
-use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 
 /**
@@ -148,10 +148,8 @@ final class ReloadNodesQueryHandler
          - but the logic above mirrors the old behavior better.
          https://github.com/neos/neos-ui/issues/3517#issuecomment-2070274053 */
 
-        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
-
         return new ReloadNodesQueryResult(
-            documentId: $nodeAddressFactory->createFromNode($documentNode),
+            documentId: NodeAddress::fromNode($documentNode),
             nodes: $nodeMapBuilder->build()
         );
     }

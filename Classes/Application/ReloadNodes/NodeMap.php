@@ -14,10 +14,8 @@ declare(strict_types=1);
 
 namespace Neos\Neos\Ui\Application\ReloadNodes;
 
-use Neos\ContentRepository\Core\ContentRepository;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\ActionRequest;
-use Neos\Neos\FrontendRouting\NodeAddress;
 use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 
 /**

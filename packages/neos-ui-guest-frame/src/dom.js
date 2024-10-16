@@ -54,14 +54,14 @@ export const findAllPropertiesInGuestFrame = () =>
 //
 // Find all DOM nodes that represent a particular node property in the guest frame
 //
-export const findAllOccurrencesOfNodePropertyInGuestFrame = (contextPath, propertyName) => findAllInGuestFrame(`[data-__neos-editable-node-contextpath="${contextPath}"][data-__neos-property="${propertyName}"]`);
+export const findAllOccurrencesOfNodePropertyInGuestFrame = (contextPath, propertyName) => findAllInGuestFrame(`[data-__neos-editable-node-contextpath="${CSS.escape(contextPath)}"][data-__neos-property="${CSS.escape(propertyName)}"]`);
 
 //
 // Find all DOM nodes that represent CR node properties in the guest frame
 //
 export const findRelativePropertiesInGuestFrame = contentDomNode =>
     [].slice.call(contentDomNode.querySelectorAll(
-        `[data-__neos-property][data-__neos-editable-node-contextpath="${contentDomNode.getAttribute('data-__neos-node-contextpath')}"]`
+        `[data-__neos-property][data-__neos-editable-node-contextpath="${CSS.escape(contentDomNode.getAttribute('data-__neos-node-contextpath'))}"]`
     )).concat(...(
         contentDomNode.hasAttribute('data-__neos-property') ?
             [contentDomNode] : []
@@ -71,9 +71,9 @@ export const findRelativePropertiesInGuestFrame = contentDomNode =>
 // Find a specific DOM node that represents a CR node in the guest frame
 //
 export const findNodeInGuestFrame = (contextPath, fusionPath) => fusionPath ? findInGuestFrame(
-    `[data-__neos-node-contextpath="${contextPath}"][data-__neos-fusion-path="${fusionPath}"]`
+    `[data-__neos-node-contextpath="${CSS.escape(contextPath)}"][data-__neos-fusion-path="${CSS.escape(fusionPath)}"]`
 ) : findInGuestFrame(
-    `[data-__neos-node-contextpath="${contextPath}"]`
+    `[data-__neos-node-contextpath="${CSS.escape(contextPath)}"]`
 );
 
 //
@@ -81,9 +81,9 @@ export const findNodeInGuestFrame = (contextPath, fusionPath) => fusionPath ? fi
 // fusion path in the guest frame
 //
 export const findAllOccurrencesOfNodeInGuestFrame = (contextPath, fusionPath) => fusionPath ? findAllInGuestFrame(
-    `[data-__neos-node-contextpath="${contextPath}"][data-__neos-fusion-path="${fusionPath}"]`
+    `[data-__neos-node-contextpath="${CSS.escape(contextPath)}"][data-__neos-fusion-path="${CSS.escape(fusionPath)}"]`
 ) : findAllInGuestFrame(
-    `[data-__neos-node-contextpath="${contextPath}"]`
+    `[data-__neos-node-contextpath="${CSS.escape(contextPath)}"]`
 );
 
 //

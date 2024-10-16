@@ -14,12 +14,12 @@ namespace Neos\Neos\Ui\FlowQueryOperations;
 
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindAncestorNodesFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindChildNodesFilter;
-use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\NodeType\NodeTypeCriteria;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Eel\FlowQuery\Operations\AbstractOperation;
-use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Flow\Annotations as Flow;
 
 /**
@@ -78,7 +78,6 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
         list($baseNodeType, $loadingDepth, $toggledNodes, $clipboardNodesContextPaths) = $arguments;
 
         $contentRepository = $this->contentRepositoryRegistry->get($documentNode->contentRepositoryId);
-        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
 
         $baseNodeTypeConstraints = NodeTypeCriteria::fromFilterString($baseNodeType);
 
@@ -105,15 +104,14 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
             $loadingDepth,
             $toggledNodes,
             $ancestors,
-            $subgraph,
-            $nodeAddressFactory
+            $subgraph
         ) {
-            $baseNodeAddress = $nodeAddressFactory->createFromNode($baseNode);
+            $baseNodeAddress = NodeAddress::fromNode($baseNode);
 
             if ($level < $loadingDepth || // load all nodes within loadingDepth
                 $loadingDepth === 0 || // unlimited loadingDepth
                 // load toggled nodes
-                in_array($baseNodeAddress->serializeForUri(), $toggledNodes) ||
+                in_array($baseNodeAddress->toJson(), $toggledNodes) ||
                 // load children of all parents of documentNode
                 in_array($baseNode->aggregateId->value, array_map(
                     fn (Node $node): string => $node->aggregateId->value,
@@ -136,9 +134,9 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
         }
 
         foreach ($clipboardNodesContextPaths as $clipboardNodeContextPath) {
-            // TODO: does not work across multiple CRs yet.
-            $clipboardNodeAddress = $nodeAddressFactory->createFromUriString($clipboardNodeContextPath);
-            $clipboardNode = $subgraph->findNodeById($clipboardNodeAddress->nodeAggregateId);
+            // TODO: might not work across multiple CRs yet.
+            $clipboardNodeAddress = NodeAddress::fromJsonString($clipboardNodeContextPath);
+            $clipboardNode = $subgraph->findNodeById($clipboardNodeAddress->aggregateId);
             if ($clipboardNode && !array_key_exists($clipboardNode->aggregateId->value, $nodes)) {
                 $nodes[$clipboardNode->aggregateId->value] = $clipboardNode;
             }

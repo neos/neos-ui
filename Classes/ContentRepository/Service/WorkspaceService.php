@@ -14,14 +14,13 @@ namespace Neos\Neos\Ui\ContentRepository\Service;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindClosestNodeFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
 use Neos\ContentRepository\Core\SharedModel\ContentRepository\ContentRepositoryId;
 use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Domain\Service\NodeTypeNameFactory;
 use Neos\Neos\Domain\Service\WorkspacePublishingService;
-use Neos\Neos\FrontendRouting\NodeAddress;
-use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\PendingChangesProjection\Change;
 use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
 
@@ -57,26 +56,26 @@ class WorkspaceService
         $unpublishedNodes = [];
         foreach ($pendingChanges as $change) {
             if ($change->removalAttachmentPoint) {
-                $nodeAddress = new NodeAddress(
-                    $change->contentStreamId,
+                $nodeAddress = NodeAddress::create(
+                    $contentRepositoryId,
+                    $workspaceName,
                     $change->originDimensionSpacePoint->toDimensionSpacePoint(),
-                    $change->nodeAggregateId,
-                    $workspaceName
+                    $change->nodeAggregateId
                 );
 
                 /**
                  * See {@see Remove::apply} -> Removal Attachment Point == closest document node.
                  */
-                $documentNodeAddress = new NodeAddress(
-                    $change->contentStreamId,
+                $documentNodeAddress = NodeAddress::create(
+                    $contentRepositoryId,
+                    $workspaceName,
                     $change->originDimensionSpacePoint->toDimensionSpacePoint(),
-                    $change->removalAttachmentPoint,
-                    $workspaceName
+                    $change->removalAttachmentPoint
                 );
 
                 $unpublishedNodes[] = [
-                    'contextPath' => $nodeAddress->serializeForUri(),
-                    'documentContextPath' => $documentNodeAddress->serializeForUri(),
+                    'contextPath' => $nodeAddress->toJson(),
+                    'documentContextPath' => $documentNodeAddress->toJson(),
                     'typeOfChange' => $this->getTypeOfChange($change)
                 ];
             } else {
@@ -89,11 +88,9 @@ class WorkspaceService
                 if ($node instanceof Node) {
                     $documentNode = $subgraph->findClosestNode($node->aggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_DOCUMENT));
                     if ($documentNode instanceof Node) {
-                        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
                         $unpublishedNodes[] = [
-                            'contextPath' => $nodeAddressFactory->createFromNode($node)->serializeForUri(),
-                            'documentContextPath' => $nodeAddressFactory->createFromNode($documentNode)
-                                ->serializeForUri(),
+                            'contextPath' => NodeAddress::fromNode($node)->toJson(),
+                            'documentContextPath' => NodeAddress::fromNode($documentNode)->toJson(),
                             'typeOfChange' => $this->getTypeOfChange($change)
                         ];
                     }

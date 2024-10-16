@@ -235,7 +235,7 @@ class BackendController extends ActionController
 
         $workspace = $contentRepository->findWorkspaceByName($nodeAddress->workspaceName);
 
-        // we always want to redirect to the node in the base workspace.
+        // we always want to redirect to the node in the base workspace unless we are on a root workspace in which case we stay on that (currently that will not happen)
         $nodeAddressInBaseWorkspace = NodeAddress::create(
             $nodeAddress->contentRepositoryId,
             $workspace->baseWorkspaceName ?? $nodeAddress->workspaceName,

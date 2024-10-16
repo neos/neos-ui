@@ -12,6 +12,7 @@ namespace Neos\Neos\Ui\Controller;
  * source code.
  */
 
+use Neos\ContentRepository\Core\Feature\SubtreeTagging\Dto\SubtreeTag;
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
 use Neos\ContentRepository\Core\SharedModel\Exception\WorkspaceDoesNotExist;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
@@ -225,9 +226,29 @@ class BackendController extends ActionController
 
         $nodeAddress = NodeAddress::fromJsonString($node);
 
+        $contentRepository = $this->contentRepositoryRegistry->get($nodeAddress->contentRepositoryId);
+
+        $nodeInstance = $contentRepository->getContentGraph($nodeAddress->workspaceName)->getSubgraph(
+            $nodeAddress->dimensionSpacePoint,
+            VisibilityConstraints::withoutRestrictions()
+        )->findNodeById($nodeAddress->aggregateId);
+
+        $workspace = $contentRepository->findWorkspaceByName($nodeAddress->workspaceName);
+
+        // we always want to redirect to the node in the base workspace unless we are on a root workspace in which case we stay on that (currently that will not happen)
+        $nodeAddressInBaseWorkspace = NodeAddress::create(
+            $nodeAddress->contentRepositoryId,
+            $workspace->baseWorkspaceName ?? $nodeAddress->workspaceName,
+            $nodeAddress->dimensionSpacePoint,
+            $nodeAddress->aggregateId
+        );
+
+        $nodeUriBuilder = $this->nodeUriBuilderFactory->forActionRequest($this->request);
+
         $this->redirectToUri(
-            $this->nodeUriBuilderFactory->forActionRequest($this->request)
-                ->uriFor($nodeAddress)
+            !$nodeInstance || $nodeInstance->tags->contain(SubtreeTag::disabled())
+                ? $nodeUriBuilder->previewUriFor($nodeAddressInBaseWorkspace)
+                : $nodeUriBuilder->uriFor($nodeAddressInBaseWorkspace)
         );
     }
 }

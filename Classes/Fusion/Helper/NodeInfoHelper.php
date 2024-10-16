@@ -17,7 +17,6 @@ use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindChildNodesFil
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateClassification;
-use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
@@ -351,16 +350,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
     public function createRedirectToNode(Node $node, ActionRequest $actionRequest): string
     {
-        // we always want to redirect to the node in the base workspace.
-        $contentRepository = $this->contentRepositoryRegistry->get($node->contentRepositoryId);
-        $workspace = $contentRepository->findWorkspaceByName($node->workspaceName);
-
-        $nodeAddress = NodeAddress::create(
-            $node->contentRepositoryId,
-            $workspace->baseWorkspaceName ?? WorkspaceName::forLive(),
-            $node->dimensionSpacePoint,
-            $node->aggregateId
-        );
+        $nodeAddress = NodeAddress::fromNode($node);
 
         $uriBuilder = new UriBuilder();
         $uriBuilder->setRequest($actionRequest);

@@ -12,7 +12,7 @@
 
 declare(strict_types=1);
 
-namespace Neos\Neos\Ui\Application\SyncWorkspace;
+namespace Neos\Neos\Ui\Application\PublishChangesInSite;
 
 use Neos\ContentRepository\Core\Feature\WorkspaceRebase\Exception\WorkspaceRebaseFailed;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
@@ -20,15 +20,17 @@ use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Domain\NodeLabel\NodeLabelGeneratorInterface;
 use Neos\Neos\Domain\Service\WorkspacePublishingService;
 use Neos\Neos\Ui\Application\Shared\ConflictsOccurred;
+use Neos\Neos\Ui\Application\Shared\PublishSucceeded;
 use Neos\Neos\Ui\Infrastructure\ContentRepository\ConflictsFactory;
 
 /**
- * The application layer level command handler to for rebasing the workspace
+ * The application layer level command handler to perform publication of
+ * all changes recorded for a given site
  *
  * @internal for communication within the Neos UI only
  */
 #[Flow\Scope("singleton")]
-final class SyncWorkspaceCommandHandler
+final class PublishChangesInSiteCommandHandler
 {
     #[Flow\Inject]
     protected ContentRepositoryRegistry $contentRepositoryRegistry;
@@ -40,15 +42,23 @@ final class SyncWorkspaceCommandHandler
     protected NodeLabelGeneratorInterface $nodeLabelGenerator;
 
     public function handle(
-        SyncWorkspaceCommand $command
-    ): SyncingSucceeded|ConflictsOccurred {
+        PublishChangesInSiteCommand $command
+    ): PublishSucceeded|ConflictsOccurred {
         try {
-            $this->workspacePublishingService->rebaseWorkspace(
+            $publishingResult = $this->workspacePublishingService->publishChangesInSite(
                 $command->contentRepositoryId,
                 $command->workspaceName,
-                $command->rebaseErrorHandlingStrategy
+                $command->siteId
             );
-            return new SyncingSucceeded();
+
+            $workspace = $this->contentRepositoryRegistry->get($command->contentRepositoryId)->findWorkspaceByName(
+                $command->workspaceName
+            );
+
+            return new PublishSucceeded(
+                numberOfAffectedChanges: $publishingResult->numberOfPublishedChanges,
+                baseWorkspaceName: $workspace?->baseWorkspaceName?->value
+            );
         } catch (WorkspaceRebaseFailed $e) {
             $conflictsFactory = new ConflictsFactory(
                 contentRepository: $this->contentRepositoryRegistry

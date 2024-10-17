@@ -25,6 +25,7 @@ export enum PublishingScope {
 export enum PublishingPhase {
     START,
     ONGOING,
+    CONFLICTS,
     SUCCESS,
     ERROR
 }
@@ -35,6 +36,7 @@ export type State = null | {
     process:
         | { phase: PublishingPhase.START }
         | { phase: PublishingPhase.ONGOING }
+        | { phase: PublishingPhase.CONFLICTS }
         | {
               phase: PublishingPhase.ERROR;
               error: null | AnyError;
@@ -51,6 +53,8 @@ export enum actionTypes {
     STARTED = '@neos/neos-ui/CR/Publishing/STARTED',
     CANCELLED = '@neos/neos-ui/CR/Publishing/CANCELLED',
     CONFIRMED = '@neos/neos-ui/CR/Publishing/CONFIRMED',
+    CONFLICTS_OCCURRED = '@neos/neos-ui/CR/Publishing/CONFLICTS_OCCURRED',
+    CONFLICTS_RESOLVED = '@neos/neos-ui/CR/Publishing/CONFLICTS_RESOLVED',
     FAILED = '@neos/neos-ui/CR/Publishing/FAILED',
     RETRIED = '@neos/neos-ui/CR/Publishing/RETRIED',
     SUCEEDED = '@neos/neos-ui/CR/Publishing/SUCEEDED',
@@ -73,6 +77,16 @@ const cancel = () => createAction(actionTypes.CANCELLED);
  * Confirm the ongoing publish/discard workflow
  */
 const confirm = () => createAction(actionTypes.CONFIRMED);
+
+/**
+ * Signal that conflicts have occurred during the publish/discard operation
+ */
+const conflicts = () => createAction(actionTypes.CONFLICTS_OCCURRED);
+
+/**
+ * Signal that conflicts have been resolved during the publish/discard operation
+ */
+const resolveConflicts = () => createAction(actionTypes.CONFLICTS_RESOLVED);
 
 /**
  * Signal that the ongoing publish/discard workflow has failed
@@ -108,6 +122,8 @@ export const actions = {
     start,
     cancel,
     confirm,
+    conflicts,
+    resolveConflicts,
     fail,
     retry,
     succeed,
@@ -139,6 +155,20 @@ export const reducer = (state: State = defaultState, action: Action): State => {
         case actionTypes.CANCELLED:
             return null;
         case actionTypes.CONFIRMED:
+            return {
+                ...state,
+                process: {
+                    phase: PublishingPhase.ONGOING
+                }
+            };
+        case actionTypes.CONFLICTS_OCCURRED:
+            return {
+                ...state,
+                process: {
+                    phase: PublishingPhase.CONFLICTS
+                }
+            };
+        case actionTypes.CONFLICTS_RESOLVED:
             return {
                 ...state,
                 process: {

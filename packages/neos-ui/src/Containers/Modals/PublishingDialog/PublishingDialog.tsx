@@ -96,6 +96,9 @@ const PublishingDialog: React.FC<PublishingDialogProps> = (props) => {
                     />
             );
 
+        case PublishingPhase.CONFLICTS:
+            return null;
+
         case PublishingPhase.ERROR:
         case PublishingPhase.SUCCESS:
             return (

@@ -69,7 +69,7 @@ export default (routes: Routes) => {
     })).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
-    const publishChangesInSite = (siteId: NodeContextPath, workspaceName: WorkspaceName) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+    const publishChangesInSite = (siteId: NodeContextPath, workspaceName: WorkspaceName, preferredDimensionSpacePoint: null|DimensionCombination) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
         url: routes.ui.service.publishChangesInSite,
         method: 'POST',
         credentials: 'include',
@@ -78,12 +78,12 @@ export default (routes: Routes) => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            command: {siteId, workspaceName}
+            command: {siteId, workspaceName, preferredDimensionSpacePoint}
         })
     })).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
-    const publishChangesInDocument = (documentId: NodeContextPath, workspaceName: WorkspaceName) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+    const publishChangesInDocument = (documentId: NodeContextPath, workspaceName: WorkspaceName, preferredDimensionSpacePoint: null|DimensionCombination) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
         url: routes.ui.service.publishChangesInDocument,
         method: 'POST',
         credentials: 'include',
@@ -92,7 +92,7 @@ export default (routes: Routes) => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            command: {documentId, workspaceName}
+            command: {documentId, workspaceName, preferredDimensionSpacePoint}
         })
     })).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));

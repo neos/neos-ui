@@ -143,12 +143,9 @@ class BackendController extends ActionController
             $this->redirectToUri($this->uriBuilder->uriFor('index', [], 'Login', 'Neos.Neos'));
         }
 
-        try {
-            $workspace = $this->workspaceService->getPersonalWorkspaceForUser($siteDetectionResult->contentRepositoryId, $user->getId());
-        } catch (WorkspaceDoesNotExist) {
-            // todo will cause infinite loop: https://github.com/neos/neos-development-collection/issues/4401
-            $this->redirectToUri($this->uriBuilder->uriFor('index', [], 'Login', 'Neos.Neos'));
-        }
+        $this->workspaceService->createPersonalWorkspaceForUserIfMissing($siteDetectionResult->contentRepositoryId, $user);
+        $workspace = $this->workspaceService->getPersonalWorkspaceForUser($siteDetectionResult->contentRepositoryId, $user->getId());
+
         $contentGraph = $contentRepository->getContentGraph($workspace->workspaceName);
 
         $rootDimensionSpacePoints = $contentRepository->getVariationGraph()->getRootGeneralizations();

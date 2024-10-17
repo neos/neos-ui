@@ -11,8 +11,6 @@ import {
 fixture`Syncing`
     .afterEach(() => checkPropTypes());
 
-fixture.skip`TODO Tests are flaky and create catchup errors rendering following tests also kaput: https://github.com/neos/neos-ui/pull/3769#pullrequestreview-2332466270`;
-
 const contentIframeSelector = Selector('[name="neos-content-main"]', {timeout: 2000});
 
 test('Syncing: Create a conflict state between two editors and choose "Discard all" as a resolution strategy during rebase', async t => {

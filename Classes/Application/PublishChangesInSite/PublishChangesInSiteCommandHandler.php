@@ -18,7 +18,7 @@ use Neos\ContentRepository\Core\Feature\WorkspaceRebase\Exception\WorkspaceRebas
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Domain\NodeLabel\NodeLabelGeneratorInterface;
-use Neos\Neos\Domain\Workspace\WorkspaceProvider;
+use Neos\Neos\Domain\Service\WorkspacePublishingService;
 use Neos\Neos\Ui\Application\Shared\ConflictsOccurred;
 use Neos\Neos\Ui\Application\Shared\PublishSucceeded;
 use Neos\Neos\Ui\Infrastructure\ContentRepository\ConflictsFactory;
@@ -36,7 +36,7 @@ final class PublishChangesInSiteCommandHandler
     protected ContentRepositoryRegistry $contentRepositoryRegistry;
 
     #[Flow\Inject]
-    protected WorkspaceProvider $workspaceProvider;
+    protected WorkspacePublishingService $workspacePublishingService;
 
     #[Flow\Inject]
     protected NodeLabelGeneratorInterface $nodeLabelGenerator;
@@ -45,15 +45,19 @@ final class PublishChangesInSiteCommandHandler
         PublishChangesInSiteCommand $command
     ): PublishSucceeded|ConflictsOccurred {
         try {
-            $workspace = $this->workspaceProvider->provideForWorkspaceName(
+            $publishingResult = $this->workspacePublishingService->publishChangesInSite(
                 $command->contentRepositoryId,
+                $command->workspaceName,
+                $command->siteId
+            );
+
+            $workspace = $this->contentRepositoryRegistry->get($command->contentRepositoryId)->findWorkspaceByName(
                 $command->workspaceName
             );
-            $publishingResult = $workspace->publishChangesInSite($command->siteId);
 
             return new PublishSucceeded(
                 numberOfAffectedChanges: $publishingResult->numberOfPublishedChanges,
-                baseWorkspaceName: $workspace->getCurrentBaseWorkspaceName()?->value
+                baseWorkspaceName: $workspace?->baseWorkspaceName?->value
             );
         } catch (WorkspaceRebaseFailed $e) {
             $conflictsFactory = new ConflictsFactory(

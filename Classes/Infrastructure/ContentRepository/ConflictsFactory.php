@@ -39,9 +39,9 @@ use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindClosestNodeFi
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\Projection\ContentGraph\NodeAggregate;
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
-use Neos\ContentRepository\Core\Projection\Workspace\Workspace;
 use Neos\ContentRepository\Core\SharedModel\Exception\NodeAggregateCurrentlyDoesNotExist;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateId;
+use Neos\ContentRepository\Core\SharedModel\Workspace\Workspace;
 use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Domain\NodeLabel\NodeLabelGeneratorInterface;
@@ -70,8 +70,7 @@ final class ConflictsFactory
     ) {
         $this->nodeTypeManager = $contentRepository->getNodeTypeManager();
 
-        $this->workspace = $contentRepository->getWorkspaceFinder()
-            ->findOneByName($workspaceName);
+        $this->workspace = $contentRepository->findWorkspaceByName($workspaceName);
     }
 
     public function fromWorkspaceRebaseFailed(

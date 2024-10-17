@@ -20,6 +20,7 @@ use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Domain\NodeLabel\NodeLabelGeneratorInterface;
 use Neos\Neos\Domain\Service\WorkspacePublishingService;
 use Neos\Neos\Ui\Application\Shared\ConflictsOccurred;
+use Neos\Neos\Ui\Infrastructure\ContentRepository\ConflictsFactory;
 
 /**
  * The application layer level command handler to for rebasing the workspace

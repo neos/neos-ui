@@ -20,7 +20,7 @@ use Neos\ContentRepository\Core\SharedModel\Exception\NodeAggregateDoesCurrently
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Domain\NodeLabel\NodeLabelGeneratorInterface;
-use Neos\Neos\Domain\Workspace\WorkspaceProvider;
+use Neos\Neos\Domain\Service\WorkspacePublishingService;
 use Neos\Neos\Ui\Application\Shared\ConflictsOccurred;
 use Neos\Neos\Ui\Application\Shared\PublishSucceeded;
 use Neos\Neos\Ui\Controller\TranslationTrait;
@@ -41,7 +41,7 @@ final class PublishChangesInDocumentCommandHandler
     protected ContentRepositoryRegistry $contentRepositoryRegistry;
 
     #[Flow\Inject]
-    protected WorkspaceProvider $workspaceProvider;
+    protected WorkspacePublishingService $workspacePublishingService;
 
     #[Flow\Inject]
     protected NodeLabelGeneratorInterface $nodeLabelGenerator;
@@ -53,15 +53,19 @@ final class PublishChangesInDocumentCommandHandler
         PublishChangesInDocumentCommand $command
     ): PublishSucceeded|ConflictsOccurred {
         try {
-            $workspace = $this->workspaceProvider->provideForWorkspaceName(
+            $publishingResult = $this->workspacePublishingService->publishChangesInDocument(
                 $command->contentRepositoryId,
+                $command->workspaceName,
+                $command->documentId
+            );
+
+            $workspace = $this->contentRepositoryRegistry->get($command->contentRepositoryId)->findWorkspaceByName(
                 $command->workspaceName
             );
-            $publishingResult = $workspace->publishChangesInDocument($command->documentId);
 
             return new PublishSucceeded(
                 numberOfAffectedChanges: $publishingResult->numberOfPublishedChanges,
-                baseWorkspaceName: $workspace->getCurrentBaseWorkspaceName()?->value
+                baseWorkspaceName: $workspace?->baseWorkspaceName?->value
             );
         } catch (NodeAggregateCurrentlyDoesNotExist $e) {
             throw new \RuntimeException(

@@ -13,10 +13,10 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
 
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindChildNodesFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
-use Neos\Flow\Mvc\ActionRequest;
-use Neos\Neos\FrontendRouting\NodeAddressFactory;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Mvc\ActionRequest;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
@@ -115,10 +115,9 @@ class UpdateNodeInfo extends AbstractFeedback
     private function serializeNodeRecursively(Node $node, ActionRequest $actionRequest): array
     {
         $contentRepository = $this->contentRepositoryRegistry->get($node->contentRepositoryId);
-        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
 
         $result = [
-            $nodeAddressFactory->createFromNode($node)->serializeForUri()
+            NodeAddress::fromNode($node)->toJson()
             => $this->nodeInfoHelper->renderNodeWithPropertiesAndChildrenInformation(
                 $node,
                 $actionRequest

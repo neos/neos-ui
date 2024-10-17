@@ -422,7 +422,7 @@ manifest('main', {}, (globalRegistry, {routes}) => {
         const tempNodeInGuest = getGuestFrameDocument().createElement(wrapTagName);
         tempNodeInGuest.innerHTML = renderedContent;
         const contentElement = tempNodeInGuest
-            .querySelector(`[data-__neos-node-contextpath="${contextPath}"]`);
+            .querySelector(`[data-__neos-node-contextpath="${CSS.escape(contextPath)}"]`);
 
         if (!contentElement) {
             console.error(`!!! Content Element (rendered out-of-band) with context path "${contextPath}" not found in returned HTML from server (which you see below) - Reloading the full page!`);
@@ -527,7 +527,7 @@ manifest('main', {}, (globalRegistry, {routes}) => {
         const tempNodeInGuest = getGuestFrameDocument().createElement('div');
         tempNodeInGuest.innerHTML = renderedContent;
         const contentElement = tempNodeInGuest
-            .querySelector(`[data-__neos-node-contextpath="${contextPath}"]`);
+            .querySelector(`[data-__neos-node-contextpath="${CSS.escape(contextPath)}"]`);
 
         if (!contentElement) {
             console.error(`!!! Content Element (reloaded out-of-band) with context path "${contextPath}" not found in returned HTML from server (which you see below) - Reloading the full page!`);

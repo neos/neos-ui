@@ -29,3 +29,7 @@
     flex-wrap: wrap;
     gap: var(--spacing-Half) var(--spacing-Full);
 }
+
+.logo > svg {
+    height: 40px;
+}

@@ -13,8 +13,8 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  */
 
 use Neos\ContentRepository\Core\Feature\NodeMove\Command\MoveNodeAggregate;
-use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\Feature\NodeMove\Dto\RelationDistributionStrategy;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 
 /**
@@ -38,8 +38,7 @@ class MoveInto extends AbstractStructuralChange
         }
 
         return $this->nodeService->findNodeBySerializedNodeAddress(
-            $this->parentContextPath,
-            $this->getSubject()->contentRepositoryId
+            $this->parentContextPath
         );
     }
 

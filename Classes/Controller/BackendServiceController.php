@@ -237,6 +237,14 @@ class BackendServiceController extends ActionController
 
             foreach ($nodeContextPaths as $contextPath) {
                 $node = $this->nodeService->getNodeFromContextPath($contextPath, null, null, true);
+                if ($node === null) {
+                    $error = new Info();
+                    $error->setMessage(sprintf('Could not find node for context path "%s"', $contextPath));
+
+                    $this->feedbackCollection->add($error);
+
+                    continue;
+                }
                 $this->publishingService->publishNode($node, $targetWorkspace);
 
                 if ($node->getNodeType()->isAggregate()) {

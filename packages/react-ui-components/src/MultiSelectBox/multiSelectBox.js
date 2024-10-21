@@ -32,6 +32,11 @@ class MultiSelectBox extends PureComponent {
         disabled: PropTypes.bool,
 
         /**
+         * Allows dragging.
+         */
+        allowDragging: PropTypes.bool,
+
+        /**
          * Additional className wich will be applied
          */
         className: PropTypes.string,
@@ -165,6 +170,7 @@ class MultiSelectBox extends PureComponent {
         optionValueField: 'value',
         dndType: 'multiselect-box-value',
         allowEmpty: true,
+        allowDragging: true,
         ListPreviewElement: SelectBox_Option_SingleLine
     }
 

@@ -189,11 +189,18 @@ class BackendServiceController extends ActionController
     {
         $updateWorkspaceInfo = new UpdateWorkspaceInfo();
         $documentNode = $this->nodeService->getNodeFromContextPath($documentNodeContextPath, null, null, true);
-        $updateWorkspaceInfo->setWorkspace(
-            $documentNode->getContext()->getWorkspace()
-        );
+        if ($documentNode === null) {
+            $error = new Error();
+            $error->setMessage(sprintf('Could not find node for document node context path "%s"', $documentNodeContextPath));
 
-        $this->feedbackCollection->add($updateWorkspaceInfo);
+            $this->feedbackCollection->add($error);
+        } else {
+            $updateWorkspaceInfo->setWorkspace(
+                $documentNode->getContext()->getWorkspace()
+            );
+
+            $this->feedbackCollection->add($updateWorkspaceInfo);
+        }
     }
 
     /**

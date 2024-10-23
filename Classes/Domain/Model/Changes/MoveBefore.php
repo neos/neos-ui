@@ -74,7 +74,7 @@ class MoveBefore extends AbstractStructuralChange
                     $subject->workspaceName,
                     $subject->dimensionSpacePoint,
                     $subject->aggregateId,
-                    RelationDistributionStrategy::STRATEGY_GATHER_ALL,
+                    null,
                     $hasEqualParentNode
                         ? null
                         : $succeedingSiblingParent->aggregateId,

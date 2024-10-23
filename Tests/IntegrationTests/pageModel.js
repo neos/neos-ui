@@ -59,7 +59,7 @@ export class PublishDropDown {
 
     static publishDropdownDiscardAll = ReactSelector('PublishDropDown ContextDropDownContents').find('button').withText('Discard all');
 
-    static publishDropdownPublishAll = ReactSelector('PublishDropDown ShallowDropDownContents').find('button').withText('Publish all');
+    static publishDropdownPublishAll = ReactSelector('PublishDropDown ContextDropDownContents').find('button').withText('Publish all');
 
     static async discardAll() {
         const $discardAllBtn = Selector(this.publishDropdownDiscardAll);

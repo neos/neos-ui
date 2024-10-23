@@ -83,7 +83,7 @@ class MoveInto extends AbstractStructuralChange
                     $subject->workspaceName,
                     $subject->dimensionSpacePoint,
                     $subject->aggregateId,
-                    RelationDistributionStrategy::STRATEGY_GATHER_ALL,
+                    null,
                     $hasEqualParentNode ? null : $parentNode->aggregateId,
                 )
             );

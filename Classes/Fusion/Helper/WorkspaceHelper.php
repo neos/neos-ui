@@ -18,6 +18,7 @@ use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Security\Context;
 use Neos\Neos\Domain\Service\UserService;
 use Neos\Neos\Domain\Service\WorkspaceService;
+use Neos\Neos\Security\Authorization\ContentRepositoryAuthorizationService;
 use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService as UiWorkspaceService;
 
 /**
@@ -56,6 +57,12 @@ class WorkspaceHelper implements ProtectedContextAwareInterface
     protected $workspaceService;
 
     /**
+     * @Flow\Inject
+     * @var ContentRepositoryAuthorizationService
+     */
+    protected $contentRepositoryAuthorizationService;
+
+    /**
      * @return array<string,mixed>
      */
     public function getPersonalWorkspace(ContentRepositoryId $contentRepositoryId): array
@@ -64,9 +71,13 @@ class WorkspaceHelper implements ProtectedContextAwareInterface
         if ($currentUser === null) {
             return [];
         }
+        $authenticatedAccount = $this->securityContext->getAccount();
+        if ($authenticatedAccount === null) {
+            return [];
+        }
         $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
         $personalWorkspace = $this->workspaceService->getPersonalWorkspaceForUser($contentRepositoryId, $currentUser->getId());
-        $personalWorkspacePermissions = $this->workspaceService->getWorkspacePermissionsForUser($contentRepositoryId, $personalWorkspace->workspaceName, $currentUser);
+        $personalWorkspacePermissions = $this->contentRepositoryAuthorizationService->getWorkspacePermissionsForAccount($contentRepositoryId, $personalWorkspace->workspaceName, $authenticatedAccount);
         $publishableNodes = $this->uiWorkspaceService->getPublishableNodeInfo($personalWorkspace->workspaceName, $contentRepository->id);
         return [
             'name' => $personalWorkspace->workspaceName->value,

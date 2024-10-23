@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Neos\Neos\Ui\Infrastructure\ContentRepository\CreationDialog;
 
 use Neos\ContentRepository\Core\ContentRepository;
-use Neos\ContentRepository\Core\Feature\NodeReferencing\Command\SetNodeReferences;
 use Neos\ContentRepository\Core\Feature\NodeReferencing\Dto\NodeReferencesToWrite;
 use Neos\ContentRepository\Core\NodeType\NodeTypeManager;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateIds;
@@ -39,7 +38,7 @@ final class PromotedElementsCreationHandlerFactory implements NodeCreationHandle
                     return $commands;
                 }
                 $propertyValues = $commands->first->initialPropertyValues;
-                $setReferencesCommands = [];
+                $initialReferences = null;
                 foreach ($elements as $elementName => $elementValue) {
                     // handle properties
                     if ($nodeType->hasProperty($elementName)) {
@@ -56,24 +55,19 @@ final class PromotedElementsCreationHandlerFactory implements NodeCreationHandle
                     if ($nodeType->hasReference($elementName)) {
                         assert($elementValue instanceof NodeAggregateIds);
                         $referenceConfiguration = $nodeType->getReferences()[$elementName];
-                        if (
-                            ($referenceConfiguration['ui']['showInCreationDialog'] ?? false) === true
-                        ) {
-                            // a promoted element
-                            $setReferencesCommands[] = SetNodeReferences::create(
-                                $commands->first->workspaceName,
-                                $commands->first->nodeAggregateId,
-                                $commands->first->originDimensionSpacePoint,
-                                ReferenceName::fromString($elementName),
-                                NodeReferencesToWrite::fromNodeAggregateIds($elementValue)
-                            );
+                        if (($referenceConfiguration['ui']['showInCreationDialog'] ?? false) === true) {
+                            $referencesToWriteForCurrentElement = NodeReferencesToWrite::fromNameAndTargets(ReferenceName::fromString($elementName), $elementValue);
+                            $initialReferences = $initialReferences === null ? $referencesToWriteForCurrentElement : $initialReferences->merge($referencesToWriteForCurrentElement);
                         }
                     }
                 }
 
+                if ($initialReferences !== null) {
+                    $commands = $commands->withInitialReferences($initialReferences);
+                }
+
                 return $commands
-                    ->withInitialPropertyValues($propertyValues)
-                    ->withAdditionalCommands(...$setReferencesCommands);
+                    ->withInitialPropertyValues($propertyValues);
             }
         };
     }

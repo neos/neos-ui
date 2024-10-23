@@ -40,20 +40,6 @@ const SETTINGS_WITH_NODE_TREE_PRESETS = {
                         presets: {
                             'default': {
                                 baseNodeType: 'Neos.Neos:Document,!Neos.TestNodeTypes:Document.Blog,!Neos.TestNodeTypes:Document.BlogArticle'
-                            },
-                            'blog': {
-                                ui: {
-                                    icon: 'newspaper-o',
-                                    label: 'Show Blog only'
-                                },
-                                baseNodeType: 'Neos.TestNodeTypes:Document.Blog'
-                            },
-                            'blog-articles': {
-                                ui: {
-                                    icon: 'file-text-o',
-                                    label: 'Show Blog Articles only'
-                                },
-                                baseNodeType: 'Neos.TestNodeTypes:Document.BlogArticle'
                             }
                         }
                     }
@@ -88,7 +74,7 @@ test('Node tree preset "default" removes all blog related nodes and only loads n
 test('Node tree preset "blog" shows nothing but page [🗋 Blog]', async (t) => {
     await t.click('#btn-ToggleDocumentTreeFilter');
     await t.click('#neos-NodeTreeFilter');
-    await t.click(Selector('[role="button"]').withText('Show Blog only'));
+    await t.click(Selector('[role="button"]').withText('Blog'));
 
     await t.expect(Page.treeNode.withExactText('Blog').exists)
         .ok('[🗋 Blog] did not show up after switching to node tree preset "blog".');
@@ -97,7 +83,7 @@ test('Node tree preset "blog" shows nothing but page [🗋 Blog]', async (t) => 
 test('In node tree preset "blog", page [🗋 Blog] has no toggle handle', async (t) => {
     await t.click('#btn-ToggleDocumentTreeFilter');
     await t.click('#neos-NodeTreeFilter');
-    await t.click(Selector('[role="button"]').withText('Show Blog only'));
+    await t.click(Selector('[role="button"]').withText('Blog'));
 
     await t.expect(Page.getToggleChildrenButtonOf('Blog').exists)
         .notOk('[🗋 Blog] has a toggle handle, even though its children do not match the currently set filter in node tree preset "blog".');
@@ -106,7 +92,7 @@ test('In node tree preset "blog", page [🗋 Blog] has no toggle handle', async 
 test('Reloading the node tree while in preset "blog" results in nothing but page [🗋 Blog]', async (t) => {
     await t.click('#btn-ToggleDocumentTreeFilter');
     await t.click('#neos-NodeTreeFilter');
-    await t.click(Selector('[role="button"]').withText('Show Blog only'));
+    await t.click(Selector('[role="button"]').withText('Blog'));
     await t.click('#neos-PageTree-RefreshPageTree');
 
     await t.expect(Page.treeNode.withExactText('Blog').exists)
@@ -116,7 +102,7 @@ test('Reloading the node tree while in preset "blog" results in nothing but page
 test('Node tree preset "blog-articles" shows page [🗋 Blog] and all articles beneath it', async (t) => {
     await t.click('#btn-ToggleDocumentTreeFilter');
     await t.click('#neos-NodeTreeFilter');
-    await t.click(Selector('[role="button"]').withText('Show Blog Articles only'));
+    await t.click(Selector('[role="button"]').withText('Blog Article'));
 
     await t.expect(Page.treeNode.withExactText('Blog').exists)
         .ok('[🗋 Blog] did not show up after switching to node tree preset "blog-articles".');
@@ -141,7 +127,7 @@ test('BUG #3816: Switching back from node tree preset "blog" does not affect loa
 
     await t.click('#btn-ToggleDocumentTreeFilter');
     await t.click('#neos-NodeTreeFilter');
-    await t.click(Selector('[role="button"]').withText('Show Blog only'));
+    await t.click(Selector('[role="button"]').withText('Blog'));
     await t.expect(Page.treeNode.withExactText('Blog').exists)
         .ok('[🗋 Blog] did not show up after switching to node tree preset "blog".');
 
@@ -192,7 +178,7 @@ test('BUG #2583: Searching the document tree does not break expansion in node tr
 test('BUG #2800 1/2: Moving pages before/after in a filtered view does not lead to the disappearance of nodes', async (t) => {
     await t.click('#btn-ToggleDocumentTreeFilter');
     await t.click('#neos-NodeTreeFilter');
-    await t.click(Selector('[role="button"]').withText('Show Blog Articles only'));
+    await t.click(Selector('[role="button"]').withText('Blog Article'));
 
     //
     // Move Blog Article [🗋 Hello World!] before [🗋 Writing Blog Articles considered harmful]
@@ -232,7 +218,7 @@ test('BUG #2800 1/2: Moving pages before/after in a filtered view does not lead 
 test('BUG #2800 2/2: Moving pages into each other in a filtered view does not break expansion', async (t) => {
     await t.click('#btn-ToggleDocumentTreeFilter');
     await t.click('#neos-NodeTreeFilter');
-    await t.click(Selector('[role="button"]').withText('Show Blog Articles only'));
+    await t.click(Selector('[role="button"]').withText('Blog Article'));
 
     //
     // Move Blog Article [🗋 Hello World!] into [🗋 Writing Blog Articles considered harmful]

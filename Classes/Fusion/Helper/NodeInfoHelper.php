@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Neos\Ui\Fusion\Helper;
 
 /*
@@ -200,7 +201,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         }
 
         try {
-            $nodeInfo['uri'] = $this->uri($node, $controllerContext);
+            $nodeInfo['uri'] = $this->createUri($controllerContext, $node);
         } catch (\Neos\Neos\Exception $exception) {
             // Unless there is a serious problem with routes there shouldn't be an exception ever.
             $nodeInfo['uri'] = '';
@@ -401,12 +402,9 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     }
 
     /**
-     * @param NodeInterface $node
-     * @param ControllerContext $controllerContext
-     * @return string
      * @throws \Neos\Neos\Exception
      */
-    public function uri(NodeInterface $node = null, ControllerContext $controllerContext)
+    private function createUri(ControllerContext $controllerContext, ?NodeInterface $node = null): string
     {
         if ($node === null) {
             // This happens when the document node is not published yet
@@ -414,7 +412,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         }
 
         // Create an absolute URI
-        return $this->linkingService->createNodeUri($controllerContext, $node, null, null, true);
+        return $this->linkingService->createNodeUri($controllerContext, $node, null, null, true, overrideDefaultAction: 'edit');
     }
 
     /**

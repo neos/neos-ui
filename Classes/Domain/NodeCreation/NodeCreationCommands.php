@@ -21,6 +21,7 @@ use Neos\ContentRepository\Core\Feature\NodeDuplication\Command\CopyNodesRecursi
 use Neos\ContentRepository\Core\Feature\NodeModification\Command\SetNodeProperties;
 use Neos\ContentRepository\Core\Feature\NodeModification\Dto\PropertyValuesToWrite;
 use Neos\ContentRepository\Core\Feature\NodeReferencing\Command\SetNodeReferences;
+use Neos\ContentRepository\Core\Feature\NodeReferencing\Dto\NodeReferencesToWrite;
 use Neos\ContentRepository\Core\NodeType\NodeTypeManager;
 
 /**
@@ -103,6 +104,14 @@ final readonly class NodeCreationCommands implements \IteratorAggregate
     {
         return new self(
             $this->first->withInitialPropertyValues($newInitialPropertyValues),
+            ...$this->additionalCommands
+        );
+    }
+
+    public function withInitialReferences(NodeReferencesToWrite $newInitialReferences): self
+    {
+        return new self(
+            $this->first->withReferences($newInitialReferences),
             ...$this->additionalCommands
         );
     }

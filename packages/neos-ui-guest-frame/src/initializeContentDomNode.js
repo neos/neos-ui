@@ -8,7 +8,8 @@ import initializePropertyDomNode from './initializePropertyDomNode';
 
 import style from './style.module.css';
 
-export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry, nodes}) => contentDomNode => {
+export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry}) => contentDomNode => {
+    const nodes = store.getState().cr.nodes.byContextPath;
     const contextPath = contentDomNode.getAttribute('data-__neos-node-contextpath');
 
     if (!nodes[contextPath]) {

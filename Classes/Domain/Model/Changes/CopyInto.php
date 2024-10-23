@@ -15,7 +15,6 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
 use Neos\ContentRepository\Core\DimensionSpace\OriginDimensionSpacePoint;
 use Neos\ContentRepository\Core\Feature\NodeDuplication\Command\CopyNodesRecursively;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
-use Neos\ContentRepository\Core\SharedModel\Node\NodeName;
 
 /**
  * @internal These objects internally reflect possible operations made by the Neos.Ui.
@@ -37,7 +36,7 @@ class CopyInto extends AbstractStructuralChange
     {
         if (!isset($this->cachedParentNode)) {
             $this->cachedParentNode = $this->parentContextPath
-                ? $this->nodeService->findNodeBySerializedNodeAddress($this->parentContextPath, $this->getSubject()->contentRepositoryId)
+                ? $this->nodeService->findNodeBySerializedNodeAddress($this->parentContextPath)
                 : null;
         }
 

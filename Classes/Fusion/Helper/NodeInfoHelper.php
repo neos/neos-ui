@@ -17,7 +17,6 @@ use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindChildNodesFil
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateClassification;
-use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
@@ -25,7 +24,6 @@ use Neos\Flow\Mvc\ActionRequest;
 use Neos\Flow\Mvc\Routing\UriBuilder;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\Domain\NodeLabel\NodeLabelGeneratorInterface;
-use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\FrontendRouting\NodeUriBuilderFactory;
 use Neos\Neos\Ui\Domain\Service\NodePropertyConverterService;
 use Neos\Neos\Ui\Domain\Service\UserLocaleService;
@@ -152,7 +150,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             $nodeInfo = array_merge($nodeInfo, $this->getUriInformation($node, $actionRequest));
         }
 
-        $baseNodeType = $nodeTypeFilterOverride ? $nodeTypeFilterOverride : $this->baseNodeType;
+        $baseNodeType = $nodeTypeFilterOverride ?: $this->baseNodeType;
         $nodeInfo['children'] = $this->renderChildrenInformation($node, $baseNodeType);
 
         $this->userLocaleService->switchToUILocale(true);
@@ -186,13 +184,11 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
         $parentNode = $subgraph->findParentNode($node->aggregateId);
 
-        $contentRepository = $this->contentRepositoryRegistry->get($node->contentRepositoryId);
-        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
-        $nodeAddress = $nodeAddressFactory->createFromNode($node);
+        $nodeAddress = NodeAddress::fromNode($node);
 
         return [
-            'contextPath' => $nodeAddress->serializeForUri(),
-            'nodeAddress' => $nodeAddress->serializeForUri(),
+            'contextPath' => $nodeAddress->toJson(),
+            'nodeAddress' => $nodeAddress->toJson(),
             'name' => $node->name?->value ?? '',
             'identifier' => $node->aggregateId->jsonSerialize(),
             'nodeType' => $node->nodeTypeName->value,
@@ -204,7 +200,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
                 CountAncestorNodesFilter::create()
             ),
             'children' => [],
-            'parent' => $parentNode ? $nodeAddressFactory->createFromNode($parentNode)->serializeForUri() : null,
+            'parent' => $parentNode ? NodeAddress::fromNode($parentNode)->toJson() : null,
             'matchesCurrentDimensions' => $node->dimensionSpacePoint->equals($node->originDimensionSpacePoint),
             'lastModificationDateTime' => $node->timestamps->lastModified?->format(\DateTime::ATOM),
             'creationDateTime' => $node->timestamps->created->format(\DateTime::ATOM),
@@ -240,10 +236,9 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         $infos = [];
         foreach ($childNodes as $childNode) {
             $contentRepository = $this->contentRepositoryRegistry->get($childNode->contentRepositoryId);
-            $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
             $infos[] = [
-                'contextPath' => $nodeAddressFactory->createFromNode($childNode)->serializeForUri(),
-                'nodeType' => $childNode->nodeTypeName->value // TODO: DUPLICATED; should NOT be needed!!!
+                'contextPath' => NodeAddress::fromNode($childNode)->toJson(),
+                'nodeType' => $childNode->nodeTypeName->value
             ];
         };
         return $infos;
@@ -336,12 +331,11 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     ): array {
         // does not support multiple CRs here yet
         $contentRepository = $this->contentRepositoryRegistry->get($site->contentRepositoryId);
-        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
 
         return [
-            ($nodeAddressFactory->createFromNode($site)->serializeForUri())
+            (NodeAddress::fromNode($site)->toJson())
             => $this->renderNodeWithPropertiesAndChildrenInformation($site, $actionRequest),
-            ($nodeAddressFactory->createFromNode($documentNode)->serializeForUri())
+            (NodeAddress::fromNode($documentNode)->toJson())
             => $this->renderNodeWithPropertiesAndChildrenInformation($documentNode, $actionRequest)
         ];
     }
@@ -356,16 +350,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
     public function createRedirectToNode(Node $node, ActionRequest $actionRequest): string
     {
-        // we always want to redirect to the node in the base workspace.
-        $contentRepository = $this->contentRepositoryRegistry->get($node->contentRepositoryId);
-        $workspace = $contentRepository->getWorkspaceFinder()->findOneByName($node->workspaceName);
-
-        $nodeAddress = NodeAddress::create(
-            $node->contentRepositoryId,
-            $workspace->baseWorkspaceName ?? WorkspaceName::forLive(),
-            $node->dimensionSpacePoint,
-            $node->aggregateId
-        );
+        $nodeAddress = NodeAddress::fromNode($node);
 
         $uriBuilder = new UriBuilder();
         $uriBuilder->setRequest($actionRequest);
@@ -420,8 +405,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     public function serializedNodeAddress(Node $node): string
     {
         $contentRepository = $this->contentRepositoryRegistry->get($node->contentRepositoryId);
-        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
-        return $nodeAddressFactory->createFromNode($node)->serializeForUri();
+        return NodeAddress::fromNode($node)->toJson();
     }
 
     /**

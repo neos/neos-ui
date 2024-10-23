@@ -18,7 +18,7 @@ use Neos\ContentRepository\Core\Feature\WorkspaceRebase\Exception\WorkspaceRebas
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Domain\NodeLabel\NodeLabelGeneratorInterface;
-use Neos\Neos\Domain\Workspace\WorkspaceProvider;
+use Neos\Neos\Domain\Service\WorkspacePublishingService;
 
 /**
  * The application layer level command handler to for rebasing the workspace
@@ -32,7 +32,7 @@ final class SyncWorkspaceCommandHandler
     protected ContentRepositoryRegistry $contentRepositoryRegistry;
 
     #[Flow\Inject]
-    protected WorkspaceProvider $workspaceProvider;
+    protected WorkspacePublishingService $workspacePublishingService;
 
     #[Flow\Inject]
     protected NodeLabelGeneratorInterface $nodeLabelGenerator;
@@ -40,12 +40,11 @@ final class SyncWorkspaceCommandHandler
     public function handle(SyncWorkspaceCommand $command): void
     {
         try {
-            $workspace = $this->workspaceProvider->provideForWorkspaceName(
+            $this->workspacePublishingService->rebaseWorkspace(
                 $command->contentRepositoryId,
-                $command->workspaceName
+                $command->workspaceName,
+                $command->rebaseErrorHandlingStrategy
             );
-
-            $workspace->rebase($command->rebaseErrorHandlingStrategy);
         } catch (WorkspaceRebaseFailed $e) {
             $conflictsBuilder = Conflicts::builder(
                 contentRepository: $this->contentRepositoryRegistry

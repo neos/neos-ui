@@ -7,7 +7,6 @@ use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Neos\Domain\NodeLabel\NodeLabelGeneratorInterface;
-use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\FrontendRouting\NodeUriBuilderFactory;
 use Neos\Neos\FrontendRouting\Options;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
@@ -114,11 +113,10 @@ class Redirect extends AbstractFeedback
             );
 
         $contentRepository = $this->contentRepositoryRegistry->get($node->contentRepositoryId);
-        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
 
         return [
             'redirectUri' => (string)$redirectUri,
-            'redirectContextPath' => $nodeAddressFactory->createFromNode($node)->serializeForUri(),
+            'redirectContextPath' => NodeAddress::fromNode($node)->toJson(),
         ];
     }
 }

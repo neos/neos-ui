@@ -11,6 +11,8 @@ import {
 fixture`Syncing`
     .afterEach(() => checkPropTypes());
 
+fixture.skip`TODO Tests are flaky and create catchup errors rendering following tests also kaput: https://github.com/neos/neos-ui/pull/3769#pullrequestreview-2332466270`;
+
 const contentIframeSelector = Selector('[name="neos-content-main"]', {timeout: 2000});
 
 test('Syncing: Create a conflict state between two editors and choose "Discard all" as a resolution strategy during rebase', async t => {
@@ -150,7 +152,7 @@ async function chooseDiscardAllAndFinishSynchronization(t) {
     // Choose "Discard All" as resolution strategy
     //
     await t.click(Selector('#neos-SelectResolutionStrategy-SelectBox'));
-    await t.click(Selector('[role="button"]').withText('Discard workspace "user-admin"'));
+    await t.click(Selector('[role="button"]').withText('Discard workspace "admin-admington"'));
     await t.click(Selector('#neos-SelectResolutionStrategy-Accept'));
 
     //

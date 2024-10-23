@@ -15,9 +15,9 @@ declare(strict_types=1);
 namespace Neos\Neos\Ui\Application;
 
 use Neos\ContentRepository\Core\SharedModel\ContentRepository\ContentRepositoryId;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
 use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
 use Neos\Flow\Annotations as Flow;
-use Neos\Neos\FrontendRouting\NodeAddress;
 
 /**
  * The application layer level command DTO to communicate the change of the selected target workspace for publication

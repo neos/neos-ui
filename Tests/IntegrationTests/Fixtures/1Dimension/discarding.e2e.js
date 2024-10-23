@@ -38,7 +38,7 @@ test('Discarding: create multiple nodes nested within each other and then discar
         .expect(ReactSelector('Provider').getReact(({props}) => {
             const reduxState = props.store.getState();
             return reduxState.cr.nodes.documentNode;
-        })).eql('user-admin__eyJsYW5ndWFnZSI6ImVuX1VTIn0=__f676459d-ca77-44bc-aeea-44114814c279', 'After discarding we are back to the main page');
+        })).eql(JSON.stringify({contentRepositoryId:"onedimension",workspaceName:"admin-admington",dimensionSpacePoint:{"language":"en_US"},aggregateId:"f676459d-ca77-44bc-aeea-44114814c279"}), 'After discarding we are back to the main page');
 });
 
 test('Discarding: create a document node and then discard it', async t => {

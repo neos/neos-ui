@@ -11,10 +11,10 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
  * source code.
  */
 
+use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
-use Neos\Neos\FrontendRouting\NodeAddressFactory;
-use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Neos\Domain\Service\NodeTypeNameFactory;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
@@ -91,9 +91,9 @@ class NodeCreated extends AbstractFeedback
         $node = $this->getNode();
         $contentRepository = $this->contentRepositoryRegistry->get($node->contentRepositoryId);
         $nodeType = $contentRepository->getNodeTypeManager()->getNodeType($node->nodeTypeName);
-        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
+
         return [
-            'contextPath' => $nodeAddressFactory->createFromNode($node)->serializeForUri(),
+            'contextPath' => NodeAddress::fromNode($node)->toJson(),
             'identifier' => $node->aggregateId->value,
             'isDocument' => $nodeType?->isOfType(NodeTypeNameFactory::NAME_DOCUMENT)
         ];

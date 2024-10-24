@@ -135,7 +135,7 @@ class NodePropertyConverterService
     private function getProperty(Node $node, string $propertyName): mixed
     {
         if ($propertyName === '_hidden') {
-            return $node->tags->contain(SubtreeTag::fromString('disabled'));
+            return $node->tags->withoutInherited()->contain(SubtreeTag::fromString('disabled'));
         }
 
         $propertyValue = $node->getProperty($propertyName);

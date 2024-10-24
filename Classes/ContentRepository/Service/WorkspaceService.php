@@ -86,8 +86,7 @@ class WorkspaceService
                 } else {
                     // If originDimensionSpacePoint is null, we have a change to the nodeAggregate. All nodes in the
                     // occupied dimensionspacepoints shall be marked as changed.
-                    $originDimensionSpacePoints = $contentRepository
-                        ->getContentGraph($workspaceName)
+                    $originDimensionSpacePoints = $contentGraph
                         ->findNodeAggregateById($change->nodeAggregateId)
                         ?->occupiedDimensionSpacePoints ?: [];
                 }

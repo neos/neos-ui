@@ -2,10 +2,14 @@
 
 exports[`<FontAwesomeIcon/> should render correctly. 1`] = `
 <FontAwesomeIcon
+  beat={false}
+  beatFade={false}
   border={false}
+  bounce={false}
   className="iconClassName fooIconClassName"
+  fade={false}
   fixedWidth={false}
-  flip={null}
+  flip={false}
   icon={
     Array [
       "fas",
@@ -15,14 +19,19 @@ exports[`<FontAwesomeIcon/> should render correctly. 1`] = `
   inverse={false}
   listItem={false}
   mask={null}
+  maskId={null}
   pull={null}
   pulse={false}
   rotation={null}
+  shake={false}
   size="sm"
   spin={false}
+  spinPulse={false}
+  spinReverse={false}
   swapOpacity={false}
   symbol={false}
   title=""
+  titleId={null}
   transform={null}
 />
 `;

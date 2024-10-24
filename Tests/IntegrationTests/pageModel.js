@@ -107,6 +107,7 @@ export class PublishDropDown {
                 timeout: 30000
             });
         await t.click($acknowledgeBtn);
+        await t.wait(2000);
     }
 }
 

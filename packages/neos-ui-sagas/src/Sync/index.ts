@@ -57,7 +57,7 @@ function * waitForConfirmation() {
     return Boolean(confirmed);
 }
 
-const makeSyncPersonalWorkspace = (deps: {
+export const makeSyncPersonalWorkspace = (deps: {
     routes: Routes
 }) => {
     const refreshAfterSyncing = makeRefreshAfterSyncing(deps);
@@ -89,26 +89,43 @@ const makeSyncPersonalWorkspace = (deps: {
     return syncPersonalWorkspace;
 }
 
-const makeResolveConflicts = (deps: {
+export const makeResolveConflicts = (deps: {
     syncPersonalWorkspace: ReturnType<typeof makeSyncPersonalWorkspace>
 }) => {
     const discardAll = makeDiscardAll(deps);
 
     function * resolveConflicts(conflicts: Conflict[]): any {
-        yield put(actions.CR.Syncing.resolve(conflicts));
+        while (true) {
+            yield put(actions.CR.Syncing.resolve(conflicts));
 
-        yield takeEvery<ReturnType<typeof actions.CR.Syncing.selectResolutionStrategy>>(
-            actionTypes.CR.Syncing.RESOLUTION_STARTED,
-            function * resolve({payload: {strategy}}) {
+            const {started}: {
+                cancelled: null | ReturnType<typeof actions.CR.Syncing.cancel>;
+                started: null | ReturnType<typeof actions.CR.Syncing.selectResolutionStrategy>;
+            } = yield race({
+                cancelled: take(actionTypes.CR.Syncing.CANCELLED),
+                started: take(actionTypes.CR.Syncing.RESOLUTION_STARTED)
+            });
+
+            if (started) {
+                const {payload: {strategy}} = started;
+
                 if (strategy === ResolutionStrategy.FORCE) {
                     if (yield * waitForResolutionConfirmation()) {
                         yield * deps.syncPersonalWorkspace(true);
+                        return true;
                     }
-                } else if (strategy === ResolutionStrategy.DISCARD_ALL) {
+
+                    continue;
+                }
+
+                if (strategy === ResolutionStrategy.DISCARD_ALL) {
                     yield * discardAll();
+                    return true;
                 }
             }
-        );
+
+            return false;
+        }
     }
 
     return resolveConflicts;

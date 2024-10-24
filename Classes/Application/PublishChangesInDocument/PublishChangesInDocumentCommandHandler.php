@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Neos.Neos.Ui package.
+ * This file is part of the Neos.Neos package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -12,24 +12,31 @@
 
 declare(strict_types=1);
 
-namespace Neos\Neos\Ui\Application\SyncWorkspace;
+namespace Neos\Neos\Ui\Application\PublishChangesInDocument;
 
 use Neos\ContentRepository\Core\Feature\WorkspaceRebase\Exception\WorkspaceRebaseFailed;
+use Neos\ContentRepository\Core\SharedModel\Exception\NodeAggregateCurrentlyDoesNotExist;
+use Neos\ContentRepository\Core\SharedModel\Exception\NodeAggregateDoesCurrentlyNotCoverDimensionSpacePoint;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Domain\NodeLabel\NodeLabelGeneratorInterface;
 use Neos\Neos\Domain\Service\WorkspacePublishingService;
 use Neos\Neos\Ui\Application\Shared\ConflictsOccurred;
+use Neos\Neos\Ui\Application\Shared\PublishSucceeded;
+use Neos\Neos\Ui\Controller\TranslationTrait;
 use Neos\Neos\Ui\Infrastructure\ContentRepository\ConflictsFactory;
 
 /**
- * The application layer level command handler to for rebasing the workspace
+ * The application layer level command handler to perform publication of
+ * all changes recorded for a given document
  *
  * @internal for communication within the Neos UI only
  */
 #[Flow\Scope("singleton")]
-final class SyncWorkspaceCommandHandler
+final class PublishChangesInDocumentCommandHandler
 {
+    use TranslationTrait;
+
     #[Flow\Inject]
     protected ContentRepositoryRegistry $contentRepositoryRegistry;
 
@@ -39,16 +46,39 @@ final class SyncWorkspaceCommandHandler
     #[Flow\Inject]
     protected NodeLabelGeneratorInterface $nodeLabelGenerator;
 
+    /**
+     * @throws NodeAggregateCurrentlyDoesNotExist
+     */
     public function handle(
-        SyncWorkspaceCommand $command
-    ): SyncingSucceeded|ConflictsOccurred {
+        PublishChangesInDocumentCommand $command
+    ): PublishSucceeded|ConflictsOccurred {
         try {
-            $this->workspacePublishingService->rebaseWorkspace(
+            $publishingResult = $this->workspacePublishingService->publishChangesInDocument(
                 $command->contentRepositoryId,
                 $command->workspaceName,
-                $command->rebaseErrorHandlingStrategy
+                $command->documentId
             );
-            return new SyncingSucceeded();
+
+            $workspace = $this->contentRepositoryRegistry->get($command->contentRepositoryId)->findWorkspaceByName(
+                $command->workspaceName
+            );
+
+            return new PublishSucceeded(
+                numberOfAffectedChanges: $publishingResult->numberOfPublishedChanges,
+                baseWorkspaceName: $workspace?->baseWorkspaceName?->value
+            );
+        } catch (NodeAggregateCurrentlyDoesNotExist $e) {
+            throw new \RuntimeException(
+                $this->getLabel('NodeNotPublishedMissingParentNode'),
+                1705053430,
+                $e
+            );
+        } catch (NodeAggregateDoesCurrentlyNotCoverDimensionSpacePoint $e) {
+            throw new \RuntimeException(
+                $this->getLabel('NodeNotPublishedParentNodeNotInCurrentDimension'),
+                1705053432,
+                $e
+            );
         } catch (WorkspaceRebaseFailed $e) {
             $conflictsFactory = new ConflictsFactory(
                 contentRepository: $this->contentRepositoryRegistry

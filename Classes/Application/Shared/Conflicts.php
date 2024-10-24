@@ -12,29 +12,36 @@
 
 declare(strict_types=1);
 
-namespace Neos\Neos\Ui\Application\SyncWorkspace;
+namespace Neos\Neos\Ui\Application\Shared;
 
 use Neos\Flow\Annotations as Flow;
 
 /**
- * A DTO representing a rebase conflict
- *
  * @internal for communication within the Neos UI only
  */
 #[Flow\Proxy(false)]
-final readonly class Conflict implements \JsonSerializable
+final readonly class Conflicts implements \JsonSerializable, \Countable
 {
-    public function __construct(
-        public ?IconLabel $affectedSite,
-        public ?IconLabel $affectedDocument,
-        public ?IconLabel $affectedNode,
-        public ?TypeOfChange $typeOfChange,
-        public ?ReasonForConflict $reasonForConflict
-    ) {
+    /** @var Conflict[] */
+    private array $items;
+
+    public function __construct(Conflict ...$items)
+    {
+        $this->items = $items;
+    }
+
+    public static function builder(): ConflictsBuilder
+    {
+        return new ConflictsBuilder();
     }
 
     public function jsonSerialize(): mixed
     {
-        return get_object_vars($this);
+        return $this->items;
+    }
+
+    public function count(): int
+    {
+        return count($this->items);
     }
 }

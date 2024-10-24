@@ -32,6 +32,7 @@ export enum ReasonForConflict {
 }
 
 export type Conflict = {
+    key: string;
     affectedNode: null | {
         icon: string;
         label: string;
@@ -49,6 +50,7 @@ export type Conflict = {
 };
 
 export type State = null | {
+    autoAcknowledge: boolean;
     process:
         | { phase: SyncingPhase.START }
         | { phase: SyncingPhase.ONGOING }
@@ -177,8 +179,20 @@ export const reducer = (state: State = defaultState, action: Action): State => {
     if (state === null) {
         if (action.type === actionTypes.STARTED) {
             return {
+                autoAcknowledge: false,
                 process: {
                     phase: SyncingPhase.START
+                }
+            };
+        }
+
+        if (action.type === actionTypes.CONFLICTS_DETECTED) {
+            return {
+                autoAcknowledge: true,
+                process: {
+                    phase: SyncingPhase.CONFLICT,
+                    conflicts: action.payload.conflicts,
+                    strategy: null
                 }
             };
         }
@@ -191,12 +205,14 @@ export const reducer = (state: State = defaultState, action: Action): State => {
             return null;
         case actionTypes.CONFIRMED:
             return {
+                ...state,
                 process: {
                     phase: SyncingPhase.ONGOING
                 }
             };
         case actionTypes.CONFLICTS_DETECTED:
             return {
+                ...state,
                 process: {
                     phase: SyncingPhase.CONFLICT,
                     conflicts: action.payload.conflicts,
@@ -206,6 +222,7 @@ export const reducer = (state: State = defaultState, action: Action): State => {
         case actionTypes.RESOLUTION_STARTED:
             if (state.process.phase === SyncingPhase.CONFLICT) {
                 return {
+                    ...state,
                     process: {
                         ...state.process,
                         phase: SyncingPhase.RESOLVING,
@@ -217,6 +234,7 @@ export const reducer = (state: State = defaultState, action: Action): State => {
         case actionTypes.RESOLUTION_CANCELLED:
             if (state.process.phase === SyncingPhase.RESOLVING) {
                 return {
+                    ...state,
                     process: {
                         ...state.process,
                         phase: SyncingPhase.CONFLICT
@@ -226,12 +244,14 @@ export const reducer = (state: State = defaultState, action: Action): State => {
             return state;
         case actionTypes.RESOLUTION_CONFIRMED:
             return {
+                ...state,
                 process: {
                     phase: SyncingPhase.ONGOING
                 }
             };
         case actionTypes.FAILED:
             return {
+                ...state,
                 process: {
                     phase: SyncingPhase.ERROR,
                     error: action.payload.error
@@ -239,12 +259,18 @@ export const reducer = (state: State = defaultState, action: Action): State => {
             };
         case actionTypes.RETRIED:
             return {
+                ...state,
                 process: {
                     phase: SyncingPhase.ONGOING
                 }
             };
         case actionTypes.SUCEEDED:
+            if (state.autoAcknowledge) {
+                return null;
+            }
+
             return {
+                ...state,
                 process: {
                     phase: SyncingPhase.SUCCESS
                 }

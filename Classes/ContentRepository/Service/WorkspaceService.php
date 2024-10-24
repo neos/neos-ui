@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Neos\Ui\ContentRepository\Service;
 
 /*
@@ -14,8 +15,8 @@ namespace Neos\Neos\Ui\ContentRepository\Service;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindClosestNodeFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
-use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
 use Neos\ContentRepository\Core\SharedModel\ContentRepository\ContentRepositoryId;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
 use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
@@ -55,7 +56,7 @@ class WorkspaceService
         /** @var array{contextPath:string,documentContextPath:string,typeOfChange:int}[] $unpublishedNodes */
         $unpublishedNodes = [];
         foreach ($pendingChanges as $change) {
-            if ($change->removalAttachmentPoint) {
+            if ($change->removalAttachmentPoint && $change->originDimensionSpacePoint !== null) {
                 $nodeAddress = NodeAddress::create(
                     $contentRepositoryId,
                     $workspaceName,
@@ -79,20 +80,32 @@ class WorkspaceService
                     'typeOfChange' => $this->getTypeOfChange($change)
                 ];
             } else {
-                $subgraph = $contentRepository->getContentGraph($workspaceName)->getSubgraph(
-                    $change->originDimensionSpacePoint->toDimensionSpacePoint(),
-                    VisibilityConstraints::withoutRestrictions()
-                );
-                $node = $subgraph->findNodeById($change->nodeAggregateId);
+                if ($change->originDimensionSpacePoint !== null) {
+                    $originDimensionSpacePoints = [$change->originDimensionSpacePoint];
+                } else {
+                    // If originDimensionSpacePoint is null, we have a change to the nodeAggregate. All nodes in the
+                    // occupied dimensionspacepoints shall be marked as changed.
+                    $originDimensionSpacePoints = $contentRepository
+                        ->getContentGraph($workspaceName)
+                        ->findNodeAggregateById($change->nodeAggregateId)
+                        ?->occupiedDimensionSpacePoints ?: [];
+                }
 
-                if ($node instanceof Node) {
-                    $documentNode = $subgraph->findClosestNode($node->aggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_DOCUMENT));
-                    if ($documentNode instanceof Node) {
-                        $unpublishedNodes[] = [
-                            'contextPath' => NodeAddress::fromNode($node)->toJson(),
-                            'documentContextPath' => NodeAddress::fromNode($documentNode)->toJson(),
-                            'typeOfChange' => $this->getTypeOfChange($change)
-                        ];
+                foreach ($originDimensionSpacePoints as $originDimensionSpacePoint) {
+                    $subgraph = $contentRepository->getContentGraph($workspaceName)->getSubgraph(
+                        $originDimensionSpacePoint->toDimensionSpacePoint(),
+                        VisibilityConstraints::withoutRestrictions()
+                    );
+                    $node = $subgraph->findNodeById($change->nodeAggregateId);
+                    if ($node instanceof Node) {
+                        $documentNode = $subgraph->findClosestNode($node->aggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_DOCUMENT));
+                        if ($documentNode instanceof Node) {
+                            $unpublishedNodes[] = [
+                                'contextPath' => NodeAddress::fromNode($node)->toJson(),
+                                'documentContextPath' => NodeAddress::fromNode($documentNode)->toJson(),
+                                'typeOfChange' => $this->getTypeOfChange($change)
+                            ];
+                        }
                     }
                 }
             }

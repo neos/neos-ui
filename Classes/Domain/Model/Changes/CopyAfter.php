@@ -70,7 +70,9 @@ class CopyAfter extends AbstractStructuralChange
                 ),
                 $subject->workspaceName,
                 $subject,
-                OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->dimensionSpacePoint),
+                // NOTE: in order to be able to copy/paste across dimensions, we need to use
+                // the TARGET NODE's DimensionSpacePoint to create the node in the target dimension.
+                OriginDimensionSpacePoint::fromDimensionSpacePoint($previousSibling->dimensionSpacePoint),
                 $parentNodeOfPreviousSibling->aggregateId,
                 $succeedingSibling?->aggregateId
             );

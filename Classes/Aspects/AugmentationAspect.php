@@ -145,6 +145,10 @@ class AugmentationAspect
             return $content;
         }
 
+        if ($this->nodeAuthorizationService->isGrantedToEditNode($node) === false) {
+            return $content;
+        }
+
         $content = $joinPoint->getAdviceChain()->proceed($joinPoint);
 
         $attributes = [
@@ -166,6 +170,6 @@ class AugmentationAspect
         /** @var $contentContext ContentContext */
         $contentContext = $node->getContext();
 
-        return ($contentContext->isInBackend() === true && ($renderCurrentDocumentMetadata === true || $this->nodeAuthorizationService->isGrantedToEditNode($node) === true));
+        return $contentContext->isInBackend() === true || $renderCurrentDocumentMetadata === true;
     }
 }

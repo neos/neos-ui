@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {$get} from 'plow-js';
 
 import {neos} from '@neos-project/neos-ui-decorators';
+import {svgToDataUri} from '@neos-project/utils-helpers';
 import ckeIcons from './icons';
 
 import style from './TableDropDown.module.css';
@@ -40,12 +41,14 @@ export default class TableDropDownButton extends PureComponent {
     }
 
     render() {
+        const iconDataUri = svgToDataUri(ckeIcons[this.props.icon]);
+        console.log({iconDataUri});
         return (
             <DropDown
                 padded={false}
             >
                 <DropDown.Header title={this.props.i18nRegistry.translate(this.props.tooltip)}>
-                    <img style={{verticalAlign: 'text-top'}} src={ckeIcons[this.props.icon]} alt={this.props.i18nRegistry.translate(this.props.tooltip)} />
+                    <img style={{verticalAlign: 'text-top'}} src={iconDataUri} alt={this.props.i18nRegistry.translate(this.props.tooltip)} />
                 </DropDown.Header>
                 <DropDown.Contents className={style.contents} scrollable={false}>
                     {this.props.options.map(item => item.type === 'checkBox' ? (

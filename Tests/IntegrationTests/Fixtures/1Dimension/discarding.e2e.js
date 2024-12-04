@@ -78,7 +78,7 @@ test('Discarding: delete a document node and then discard deletion', async t => 
     await Page.goToPage(pageTitleToDelete);
     await t
         .switchToIframe('[name="neos-content-main"]')
-        .expect(Selector('.test-headline h1').withText(headlineOnDeletedPage).exists).ok('Navigated to the page and see the headline inline')
+        .expect(Selector('.neos-contentcollection').withText(headlineOnDeletedPage).exists).ok('Navigated to the page and see the headline inline')
         .switchToMainWindow();
 
     subSection('Delete that page');

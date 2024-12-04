@@ -1,6 +1,12 @@
 import {Selector} from 'testcafe';
 import {ReactSelector, waitForReact} from 'testcafe-react-selectors';
-import {checkPropTypes, adminUserOnOneDimensionTestSite, editorUserOnOneDimensionTestSite} from './../../utils.js';
+import {
+    checkPropTypes,
+    adminUserOnOneDimensionTestSite,
+    editorUserOnOneDimensionTestSite,
+    typeTextInline,
+    subSection
+} from './../../utils.js';
 import {
     Page,
     PublishDropDown
@@ -10,8 +16,6 @@ import {
 
 fixture`Syncing`
     .afterEach(() => checkPropTypes());
-
-const contentIframeSelector = Selector('[name="neos-content-main"]', {timeout: 2000});
 
 test('Syncing: Create a conflict state between two editors and choose "Discard all" as a resolution strategy during rebase', async t => {
     await prepareContentElementConflictBetweenAdminAndEditor(t);
@@ -137,7 +141,6 @@ async function prepareContentElementConflictBetweenAdminAndEditor(t) {
             .ok('[🗋 Sync Demo #3] cannot be found in the document tree of user "editor".');
     });
 
-
     //
     // Login as "admin" again
     //
@@ -145,20 +148,26 @@ async function prepareContentElementConflictBetweenAdminAndEditor(t) {
         //
         // Create a headline node in [🗋 Sync Demo #3]
         //
+        subSection('Create a headline node in the document');
         await Page.goToPage('Sync Demo #3');
         await t
-            .switchToIframe(contentIframeSelector)
-            .click(Selector('.neos-contentcollection'))
-            .click(Selector('#neos-InlineToolbar-AddNode'))
-            .switchToMainWindow()
+            .switchToMainWindow();
+
+        await openContentTree(t);
+
+        await t
+            .click(Page.treeNode.withText('Content Collection (main)'))
+            .click(Selector('#neos-ContentTree-AddNode'))
             .click(Selector('button#into'))
-            .click(ReactSelector('NodeTypeItem').withProps({nodeType: {label: 'Headline_Test'}}))
-            .switchToIframe(contentIframeSelector)
-            .typeText(Selector('.test-headline h1'), 'Hello from Page "Sync Demo #3"!')
-            .wait(2000)
+            .click(ReactSelector('NodeTypeItem').withProps({nodeType: {label: 'Headline_Test'}}));
+        await Page.waitForIframeLoading(t);
+
+        subSection('Type something inside of it');
+        await typeTextInline(t, Selector('.test-headline [contenteditable="true"]').nth(-1), 'Hello from Page "Sync Demo #3"!');
+        await t
+            .expect(Selector('.neos-contentcollection').withText('Hello from Page "Sync Demo #3"!').exists).ok('Typed headline text exists')
             .switchToMainWindow();
     });
-
 
     //
     // Login as "editor" again
@@ -174,7 +183,6 @@ async function prepareContentElementConflictBetweenAdminAndEditor(t) {
         //
         await PublishDropDown.publishAll();
     });
-
 
     //
     // Login as "admin" again and visit [🗋 Sync Demo #3]
@@ -198,16 +206,24 @@ async function prepareDocumentConflictBetweenAdminAndEditor(t) {
         await createDocumentNode(t, 'Home', 'into', 'This page will be deleted during sync');
         await PublishDropDown.publishAll();
 
+        subSection('Create a headline node in the document');
+        await Page.waitForIframeLoading(t);
+
         await t
-            .switchToIframe(contentIframeSelector)
-            .click(Selector('.neos-contentcollection'))
-            .click(Selector('#neos-InlineToolbar-AddNode'))
-            .switchToMainWindow()
+            .switchToMainWindow();
+
+        await openContentTree(t);
+
+        await t
+            .click(Page.treeNode.withText('Content Collection (main)'))
+            .click(Selector('#neos-ContentTree-AddNode'))
             .click(Selector('button#into'))
-            .click(ReactSelector('NodeTypeItem').withProps({nodeType: {label: 'Headline_Test'}}))
-            .switchToIframe(contentIframeSelector)
-            .doubleClick(Selector('.test-headline h1'))
-            .typeText(Selector('.test-headline h1'), 'This change will not be published.')
+            .click(ReactSelector('NodeTypeItem').withProps({nodeType: {label: 'Headline_Test'}}));
+        await Page.waitForIframeLoading(t);
+
+        subSection('Type something inside of it');
+        await typeTextInline(t, Selector('.test-headline').nth(-1), 'This change will not be published.');
+        await t
             .wait(2000)
             .switchToMainWindow();
     });
@@ -379,4 +395,13 @@ async function assertThatWeAreOnPage(t, pageTitle) {
 async function assertThatWeCannotSeePageInTree(t, pageTitle) {
     await t.expect(Page.treeNode.withExactText(pageTitle).exists)
         .notOk(`[🗋 ${pageTitle}] can still be found in the document tree of user "admin".`);
+}
+
+async function openContentTree(t) {
+    const contentTree = ReactSelector('ToggleContentTree');
+    const isPanelOpen = await contentTree.getReact(({props}) => props.isPanelOpen);
+
+    if (!isPanelOpen) {
+        await t.click(Selector('#neos-ContentTree-ToggleContentTree'));
+    }
 }

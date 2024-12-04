@@ -90,7 +90,7 @@ export async function typeTextInline(t, selector, text, switchToIframe = true) {
             .selectEditableContent(lastEditableElement, lastEditableElement)
             .pressKey(keyList.join(' '));
     } catch (e) {
-        console.log(e);
+        // console.log(e);
     }
 }
 

@@ -154,6 +154,7 @@ async function prepareContentElementConflictBetweenAdminAndEditor(t) {
             .switchToMainWindow();
 
         await openContentTree(t);
+        await openContentTree(t);
 
         await t
             .click(Page.treeNode.withText('Content Collection (main)'))
@@ -400,8 +401,15 @@ async function assertThatWeCannotSeePageInTree(t, pageTitle) {
 async function openContentTree(t) {
     const contentTree = ReactSelector('ToggleContentTree');
     const isPanelOpen = await contentTree.getReact(({props}) => props.isPanelOpen);
+    if (!isPanelOpen) {
+        console.log('Opening content tree');
+    } else {
+        console.log('Content tree is already open');
+    }
 
     if (!isPanelOpen) {
-        await t.click(Selector('#neos-ContentTree-ToggleContentTree'));
+        await t
+            .pressKey('t')
+            .pressKey('c');
     }
 }

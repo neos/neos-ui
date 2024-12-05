@@ -85,12 +85,10 @@ export async function typeTextInline(t, selector, text, textType, switchToIframe
     };
 
     if (!Object.keys(textTypeToTagMap).includes(textType)) {
-        console.warn('Invalid textType, defaulting to "paragraph".');
         textType = 'paragraph';
     }
 
     const tagName = textTypeToTagMap[textType] || '';
-
     try {
         const contentIframeSelector = Selector('[name="neos-content-main"]', {timeout: 2000});
 
@@ -102,7 +100,6 @@ export async function typeTextInline(t, selector, text, textType, switchToIframe
             const element = window.document.querySelector(selector);
             const editor = element.closest('.ck-editor__editable');
             const content = tagName !== '' ? `<${tagName}>${text}</${tagName}>` : text;
-            console.log('content', content);
             editor.ckeditorInstance.data.set(content);
         },
             {dependencies: {selector, text, tagName}}

@@ -17,7 +17,7 @@ test('Can crop an image', async t => {
     // const ckeContent = await Selector('.ck-content p');
     await t
         .click(rteInspectorEditor.findReact('Button'));
-    await typeTextInline(t, '.ck-content p', testContent, false);
+    await typeTextInline(t, '.ck-content p', testContent, '', false);
     await t
         .wait(400)
         .click(Selector('#neos-Inspector-Apply'));

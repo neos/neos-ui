@@ -158,6 +158,8 @@ async function prepareContentElementConflictBetweenAdminAndEditor(t) {
         await t
             .wait(1000)
             .click(Page.treeNode.withText('Content Collection (main)'))
+            .click(Page.treeNode.withText('Content Collection (main)'))
+            .wait(1000)
             .click(Selector('#neos-ContentTree-AddNode'))
             .click(Selector('button#into'))
             .click(ReactSelector('NodeTypeItem').find('button>span>span').withText('Headline_Test'))
@@ -218,6 +220,8 @@ async function prepareDocumentConflictBetweenAdminAndEditor(t) {
         await t
             .wait(1000)
             .click(Page.treeNode.withText('Content Collection (main)'))
+            .click(Page.treeNode.withText('Content Collection (main)'))
+            .wait(1000)
             .click(Selector('#neos-ContentTree-AddNode'))
             .click(Selector('button#into'))
             .click(ReactSelector('NodeTypeItem').find('button>span>span').withText('Headline_Test'));

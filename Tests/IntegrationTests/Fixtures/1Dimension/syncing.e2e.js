@@ -154,17 +154,17 @@ async function prepareContentElementConflictBetweenAdminAndEditor(t) {
             .switchToMainWindow();
 
         await openContentTree(t);
-        await openContentTree(t);
 
         await t
+            .wait(1000)
             .click(Page.treeNode.withText('Content Collection (main)'))
             .click(Selector('#neos-ContentTree-AddNode'))
             .click(Selector('button#into'))
-            .click(ReactSelector('NodeTypeItem').withProps({nodeType: {label: 'Headline_Test'}}));
+            .click(ReactSelector('NodeTypeItem').find('button>span>span').withText('Headline_Test'))
         await Page.waitForIframeLoading(t);
 
         subSection('Type something inside of it');
-        await typeTextInline(t, Selector('.test-headline [contenteditable="true"]').nth(-1), 'Hello from Page "Sync Demo #3"!');
+        await typeTextInline(t, '.test-headline:last-child [contenteditable="true"]', 'Hello from Page "Sync Demo #3"!');
         await t
             .expect(Selector('.neos-contentcollection').withText('Hello from Page "Sync Demo #3"!').exists).ok('Typed headline text exists')
             .switchToMainWindow();
@@ -216,14 +216,15 @@ async function prepareDocumentConflictBetweenAdminAndEditor(t) {
         await openContentTree(t);
 
         await t
+            .wait(1000)
             .click(Page.treeNode.withText('Content Collection (main)'))
             .click(Selector('#neos-ContentTree-AddNode'))
             .click(Selector('button#into'))
-            .click(ReactSelector('NodeTypeItem').withProps({nodeType: {label: 'Headline_Test'}}));
+            .click(ReactSelector('NodeTypeItem').find('button>span>span').withText('Headline_Test'));
         await Page.waitForIframeLoading(t);
 
         subSection('Type something inside of it');
-        await typeTextInline(t, Selector('.test-headline').nth(-1), 'This change will not be published.');
+        await typeTextInline(t, '.test-headline:last-child', 'This change will not be published.');
         await t
             .wait(2000)
             .switchToMainWindow();

@@ -171,7 +171,7 @@ test('Can create content node from inside InlineUI', async t => {
     subSection('Type something inside of it');
     await Page.waitForIframeLoading(t);
 
-    await typeTextInline(t, Selector('.test-headline [contenteditable="true"]').nth(-1), headlineTitle);
+    await typeTextInline(t, '.test-headline:last-child [contenteditable="true"]', headlineTitle);
     await t
         // .selectEditableContent(lastEditableElement, lastEditableElement)
         // .pressKey(headlineTitle.split('').join(' '))
@@ -189,7 +189,7 @@ test('Can create content node from inside InlineUI', async t => {
         .expect(ReactSelector('InlineValidationTooltips').exists).ok('Validation tooltip appeared');
     await t
         .expect(changeRequestLogger.count(() => true)).eql(0, 'No requests were fired with invalid state');
-    await typeTextInline(t, Selector('.test-headline [contenteditable="true"]').nth(-1), 'Some text');
+    await typeTextInline(t, '.test-headline:last-child [contenteditable="true"]', 'Some text');
     await t
         .wait(1600)
         .switchToMainWindow();
@@ -221,7 +221,7 @@ test('Inline CKEditor mode `paragraph: false` works as expected', async t => {
     subSection('Insert text into the inline text and press enter');
 
     await Page.waitForIframeLoading(t);
-    await typeTextInline(t, Selector('.test-inline-headline [contenteditable="true"]').nth(-1), 'Foo Bar\nBun Buz');
+    await typeTextInline(t, '.test-inline-headline:last-child [contenteditable="true"]', 'Foo Bar<br>Bun Buz');
     await t
         .expect(Selector('.neos-contentcollection').withText('Foo Bar').exists).ok('Inserted text exists');
 

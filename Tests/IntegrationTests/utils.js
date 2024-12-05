@@ -75,20 +75,21 @@ export async function beforeEach(t) {
 export async function typeTextInline(t, selector, text, switchToIframe = true) {
     await waitForReact(30000);
     await Page.waitForIframeLoading();
-    const keyList = text.split('').map((char) =>
-        char === ' ' ? 'space' : char === '\n' ? 'enter' : char
-    );
 
     try {
         const contentIframeSelector = Selector('[name="neos-content-main"]', {timeout: 2000});
-        const lastEditableElement = selector;
+
         if (switchToIframe) {
             await t.switchToIframe(contentIframeSelector);
         }
 
-        await t
-            .selectEditableContent(lastEditableElement, lastEditableElement)
-            .pressKey(keyList.join(' '));
+        await t.eval(() => {
+            const element = window.document.querySelector(selector);
+            const editor = element.closest('.ck-editor__editable');
+            editor.ckeditorInstance.data.set(text);
+        },
+            {dependencies: {selector, text}}
+        );
     } catch (e) {
         // console.log(e);
     }

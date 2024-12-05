@@ -14,10 +14,10 @@ test('Can crop an image', async t => {
     await Page.waitForIframeLoading(t);
 
     const rteInspectorEditor = await ReactSelector('InspectorEditorEnvelope').withProps('id', 'rte');
-    const ckeContent = await Selector('.ck-content p');
+    // const ckeContent = await Selector('.ck-content p');
     await t
         .click(rteInspectorEditor.findReact('Button'));
-    await typeTextInline(t, ckeContent, testContent, false);
+    await typeTextInline(t, '.ck-content p', testContent, false);
     await t
         .wait(400)
         .click(Selector('#neos-Inspector-Apply'));

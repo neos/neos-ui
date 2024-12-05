@@ -72,9 +72,24 @@ export async function beforeEach(t) {
 
 // This is a workaround for the fact that the contenteditable element is not directly selectable
 // for more information see https://testcafe.io/documentation/402688/reference/test-api/testcontroller/selecteditablecontent
-export async function typeTextInline(t, selector, text, switchToIframe = true) {
+export async function typeTextInline(t, selector, text, textType, switchToIframe = true) {
     await waitForReact(30000);
     await Page.waitForIframeLoading();
+
+    const textTypeToTagMap = {
+        paragraph: 'p',
+        heading1: 'h1',
+        heading2: 'h2',
+        heading3: 'h3',
+        heading4: 'h4'
+    };
+
+    if (!Object.keys(textTypeToTagMap).includes(textType)) {
+        console.warn('Invalid textType, defaulting to "paragraph".');
+        textType = 'paragraph';
+    }
+
+    const tagName = textTypeToTagMap[textType] || '';
 
     try {
         const contentIframeSelector = Selector('[name="neos-content-main"]', {timeout: 2000});
@@ -86,9 +101,11 @@ export async function typeTextInline(t, selector, text, switchToIframe = true) {
         await t.eval(() => {
             const element = window.document.querySelector(selector);
             const editor = element.closest('.ck-editor__editable');
-            editor.ckeditorInstance.data.set(text);
+            const content = tagName !== '' ? `<${tagName}>${text}</${tagName}>` : text;
+            console.log('content', content);
+            editor.ckeditorInstance.data.set(content);
         },
-            {dependencies: {selector, text}}
+            {dependencies: {selector, text, tagName}}
         );
     } catch (e) {
         // console.log(e);

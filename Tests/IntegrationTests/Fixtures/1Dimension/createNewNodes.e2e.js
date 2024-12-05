@@ -171,7 +171,7 @@ test('Can create content node from inside InlineUI', async t => {
     subSection('Type something inside of it');
     await Page.waitForIframeLoading(t);
 
-    await typeTextInline(t, '.test-headline:last-child [contenteditable="true"]', headlineTitle);
+    await typeTextInline(t, '.test-headline:last-child [contenteditable="true"]', headlineTitle, 'heading1');
     await t
         // .selectEditableContent(lastEditableElement, lastEditableElement)
         // .pressKey(headlineTitle.split('').join(' '))
@@ -189,7 +189,7 @@ test('Can create content node from inside InlineUI', async t => {
         .expect(ReactSelector('InlineValidationTooltips').exists).ok('Validation tooltip appeared');
     await t
         .expect(changeRequestLogger.count(() => true)).eql(0, 'No requests were fired with invalid state');
-    await typeTextInline(t, '.test-headline:last-child [contenteditable="true"]', 'Some text');
+    await typeTextInline(t, '.test-headline:last-child [contenteditable="true"]', 'Some text', 'heading1');
     await t
         .wait(1600)
         .switchToMainWindow();

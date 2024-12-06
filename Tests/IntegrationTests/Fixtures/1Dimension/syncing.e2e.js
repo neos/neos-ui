@@ -406,11 +406,6 @@ async function assertThatWeCannotSeePageInTree(t, pageTitle) {
 async function openContentTree(t) {
     const contentTree = ReactSelector('ToggleContentTree');
     const isPanelOpen = await contentTree.getReact(({props}) => props.isPanelOpen);
-    if (!isPanelOpen) {
-        console.log('Opening content tree');
-    } else {
-        console.log('Content tree is already open');
-    }
 
     if (!isPanelOpen) {
         await t

@@ -124,6 +124,6 @@ export async function clearInlineText(t, selector, switchToIframe = true) {
             .selectEditableContent(lastEditableElement, lastEditableElement)
             .pressKey('ctrl+a delete');
     } catch (e) {
-        console.log(e);
+        // console.log(e);
     }
 }

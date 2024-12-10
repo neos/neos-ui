@@ -42,7 +42,6 @@ export default class TableDropDownButton extends PureComponent {
 
     render() {
         const iconDataUri = svgToDataUri(ckeIcons[this.props.icon]);
-        console.log({iconDataUri});
         return (
             <DropDown
                 padded={false}

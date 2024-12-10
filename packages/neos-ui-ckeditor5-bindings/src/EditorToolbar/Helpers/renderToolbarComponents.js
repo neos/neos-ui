@@ -31,7 +31,7 @@ export default richtextToolbarRegistry => {
                 const restProps = omit(props, ['isVisible', 'isActive']);
                 const isActiveProp = isToolbarItemActive(formattingUnderCursor, inlineEditorOptions)(componentDefinition);
 
-                const finalProps = {
+                let finalProps = {
                     ...restProps,
                     key: index,
                     isActive: isActiveProp,
@@ -40,6 +40,11 @@ export default richtextToolbarRegistry => {
                     formattingUnderCursor,
                     [callbackPropName]: e => e.stopPropagation() || executeCommand(commandName, ...commandArgs)
                 };
+
+                // filter out props that are not needed by the component and lead to a render warning
+                if (commandName === 'code') {
+                    finalProps = omit(finalProps, ['executeCommand', 'formattingUnderCursor']);
+                }
 
                 const Component = component;
 

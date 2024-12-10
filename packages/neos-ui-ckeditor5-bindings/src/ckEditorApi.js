@@ -3,6 +3,7 @@ import DecoupledEditor from '@ckeditor/ckeditor5-editor-decoupled/src/decouplede
 import {actions} from '@neos-project/neos-ui-redux-store';
 import {cleanupContentBeforeCommit} from './cleanupContentBeforeCommit'
 // FIXME import from @ckeditor/ckeditor5-engine/theme/placeholder.css instead! (Needs build setup configuration)
+import './cke-overwrites.vanilla-css';
 import './placeholder.vanilla-css';
 
 let currentEditor = null;

@@ -274,3 +274,5 @@ export interface GlobalRegistry {
     get: <K extends string>(key: K) => K extends 'i18n' ? I18nRegistry :
         K extends 'validators' ? ValidatorRegistry : null;
 }
+
+export type {I18nRegistry} from '@neos-project/neos-ui-i18n';

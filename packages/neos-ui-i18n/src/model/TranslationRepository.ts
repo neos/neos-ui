@@ -14,7 +14,7 @@ import type {TranslationAddress} from './TranslationAddress';
 export type TranslationsDTO = Record<string, Record<string, Record<string, TranslationDTO>>>;
 
 export class TranslationRepository {
-    private _translationsByAddress: Record<string, null | Translation> = {};
+    private translationsByAddress: Record<string, null | Translation> = {};
 
     private constructor(
         private readonly locale: Locale,
@@ -25,8 +25,8 @@ export class TranslationRepository {
         new TranslationRepository(locale, translations);
 
     public findOneByAddress(address: TranslationAddress): null | Translation {
-        if (address.fullyQualified in this._translationsByAddress) {
-            return this._translationsByAddress[address.fullyQualified];
+        if (address.fullyQualified in this.translationsByAddress) {
+            return this.translationsByAddress[address.fullyQualified];
         }
 
         const [packageKey, sourceName, id] = [address.packageKey, address.sourceName, address.id]
@@ -37,7 +37,7 @@ export class TranslationRepository {
         const translation = translationDTO
             ? Translation.fromDTO(this.locale, translationDTO)
             : null;
-        this._translationsByAddress[address.fullyQualified] = translation;
+        this.translationsByAddress[address.fullyQualified] = translation;
 
         return translation;
     }

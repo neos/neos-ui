@@ -138,19 +138,24 @@ jobs:
             # Save the variable to BASH_ENV to be able to access it in the next steps
             echo "export TARGET_BRANCH=$TARGET_BRANCH" >> $BASH_ENV
       - run:
-          name: Use target branch
-          command: |
-            echo "Using target branch: $TARGET_BRANCH"
-      - run:
           name: Prepare and run e2e tests
           no_output_timeout: 30m
           command: |
+            echo "Using target branch: $TARGET_BRANCH"
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             cd /home/circleci/app/Packages/Application/Neos.Neos.Ui
             nvm install
             nvm use
             make test-e2e-saucelabs
+      - run:
+          name: Show testcafe output
+          command: |
+            for file in /home/circleci/app/Data/Logs/saucelabs-artifacts/**/console.log; do
+              echo $file
+              cat $file
+            done
+          when: always
       - store_artifacts:
           path: /home/circleci/app/Data/Logs
       - persist_to_workspace:

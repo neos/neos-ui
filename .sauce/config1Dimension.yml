@@ -8,9 +8,8 @@ sauce:
   retries: 0
   metadata:
     tags:
-      - e2e
       - $TARGET_BRANCH
-    build: $TARGET_BRANCH
+    build: $TARGET_BRANCH $CIRCLE_PR_NUMBER
   tunnel:
     name: "circleci-tunnel"
 testcafe:
@@ -44,7 +43,7 @@ artifacts:
       - sauce-test-report.json
     when: always
     allAttempts: true
-    directory: ../../Data/Logs/saucelabs-artifacts/
+    directory: ../../../Data/Logs/saucelabs-artifacts/
 
 reporters:
   json:

@@ -17,6 +17,8 @@
     "@fortawesome/free-regular-svg-icons": "^6.5.2",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@friendsofreactjs/react-css-themr": "~4.2.0",
+    "@neos-project/framework-observable": "workspace:*",
+    "@neos-project/framework-observable-react": "workspace:*",
     "@neos-project/neos-ts-interfaces": "workspace:*",
     "@neos-project/neos-ui-backend-connector": "workspace:*",
     "@neos-project/neos-ui-ckeditor5-bindings": "workspace:*",

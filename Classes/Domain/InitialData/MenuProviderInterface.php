@@ -25,7 +25,7 @@ use Neos\Flow\Mvc\ActionRequest;
 interface MenuProviderInterface
 {
     /**
-     * @return array<int,array{label:string,icon:string,uri:string,target:string,children:array<int,array{icon:string,label:string,uri:string,position?:string,isActive:bool,target:string,skipI18n:bool}>}>
+     * @return array<int,array{label:string,icon:string,uri:string,children:array<int,array{icon:string,label:string,uri:string,position?:string,isActive:bool,skipI18n:bool}>}>
      */
     public function getMenu(ActionRequest $actionRequest): array;
 }

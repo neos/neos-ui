@@ -20,6 +20,7 @@ import {
     routes,
     serverState,
     menu,
+    user,
     nodeTypes
 } from './System';
 import localStorageMiddleware from './localStorageMiddleware';
@@ -65,8 +66,7 @@ async function main() {
 
     await Promise.all([
         loadNodeTypesSchema(),
-        initializeI18n(),
-        loadImpersonateStatus()
+        initializeI18n()
     ]);
 
     store.dispatch(actions.System.ready());
@@ -104,7 +104,17 @@ function initializeReduxState() {
     const persistedState = localStorage.getItem('persistedState')
         ? JSON.parse(localStorage.getItem('persistedState'))
         : {};
-    const mergedState = merge({}, serverState, persistedState);
+    const mergedState = merge(
+        {},
+        serverState,
+        // QUIRK ALERT:
+        // The `user` state used to be part of `initialState` (a.k.a.
+        // `serverState`) but has been moved to a separate key within
+        // `initialData`. It is still being merged at this point to
+        // keep downstream impact at a minimum.
+        {user},
+        persistedState
+    );
 
     store.dispatch(actions.System.init(mergedState));
 }
@@ -169,22 +179,6 @@ async function loadNodeTypesSchema() {
     const {groups, roles} = nodeTypes;
     nodeTypesRegistry.setGroups(groups);
     nodeTypesRegistry.setRoles(roles);
-}
-
-async function loadImpersonateStatus() {
-    try {
-        const {impersonateStatus} = backend.get().endpoints;
-        const impersonateState = await impersonateStatus();
-        if (impersonateState) {
-            store.dispatch(actions.User.Impersonate.fetchStatus(impersonateState));
-        }
-    } catch (error) {
-        showFlashMessage({
-            id: 'impersonateStatusError',
-            severity: 'error',
-            message: error.message
-        });
-    }
 }
 
 function renderApplication() {

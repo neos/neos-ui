@@ -32,6 +32,5 @@ interface InitialStateProviderInterface
         ActionRequest $actionRequest,
         ?Node $documentNode,
         ?Node $site,
-        User $user,
     ): array;
 }

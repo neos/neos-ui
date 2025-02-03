@@ -19,6 +19,7 @@ use Neos\ContentRepository\Security\Authorization\Privilege\Node\EditNodePrivile
 use Neos\ContentRepository\Security\Authorization\Privilege\Node\EditNodePropertyPrivilege;
 use Neos\ContentRepository\Security\Authorization\Privilege\Node\NodePrivilegeSubject;
 use Neos\ContentRepository\Security\Authorization\Privilege\Node\PropertyAwareNodePrivilegeSubject;
+use Neos\ContentRepository\Security\Authorization\Privilege\Node\ReadNodePrivilege;
 use Neos\ContentRepository\Security\Authorization\Privilege\Node\RemoveNodePrivilege;
 use Neos\Flow\Annotations as Flow;
 use Neos\ContentRepository\Domain\Model\NodeInterface;
@@ -82,6 +83,7 @@ class NodePolicyService
             'disallowedNodeTypes' => $this->getDisallowedNodeTypes($node),
             'canRemove' => $this->canRemoveNode($node),
             'canEdit' => $this->canEditNode($node),
+            'canReadProperties' => $this->canReadProperties($node),
             'disallowedProperties' => $this->getDisallowedProperties($node)
         ];
     }
@@ -98,6 +100,30 @@ class NodePolicyService
 
         return $this->privilegeManager->isGranted(
             NodeTreePrivilege::class,
+            new NodePrivilegeSubject($node)
+        );
+    }
+
+    /**
+     * @param NodeInterface $node
+     * @return bool
+     */
+    public function canReadProperties(NodeInterface $node): bool
+    {
+        // In our current understanding, this canReadProperties check can NEVER return false under normal
+        // Neos UI circumstances, because we test for ReadNodePrivilege.
+        // if a node should be hidden via ReadNodePrivilege, it is not returned from persistence, thus
+        // you would not be able to get the $node instance.
+        //
+        // We left the method in there nevertheless for:
+        // - if users want to override this via AOP
+        // - if somebody would want to create a new PrivilegeType for it (!! node privilege concept changes with Neos 9 !!)
+        if (!isset(self::getUsedPrivilegeClassNames($this->objectManager)[ReadNodePrivilege::class])) {
+            return true;
+        }
+
+        return $this->privilegeManager->isGranted(
+            ReadNodePrivilege::class,
             new NodePrivilegeSubject($node)
         );
     }

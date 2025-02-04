@@ -19,6 +19,14 @@
     }
 }
 
+/*
+    Prevent that the height is defined by neos-svg-inline--fa when it is on the same level
+    like the selectBoxHeaderWithSearchInput__icon
+*/
+:global(.neos-svg-inline--fa).selectBoxHeaderWithSearchInput__icon {
+    height: var(--spacing-GoldenUnit);
+}
+
 .selectBoxHeaderWithSearchInput__icon {
     composes: reset from '../reset.module.css';
     height: var(--spacing-GoldenUnit);

@@ -41,7 +41,11 @@ export default richtextToolbarRegistry => {
                     [callbackPropName]: e => e.stopPropagation() || executeCommand(commandName, ...commandArgs)
                 };
 
-                // filter out props that are not needed by the component and lead to a render warning
+                // Filter out properties that are not needed by the component
+                // and cause render warnings. Specifically for the 'code' command,
+                // we omit 'executeCommand' and 'formattingUnderCursor' as they
+                // are custom properties from Neos and not required by CKEditor's
+                // code plugin.
                 if (commandName === 'code') {
                     finalProps = omit(finalProps, ['executeCommand', 'formattingUnderCursor']);
                 }

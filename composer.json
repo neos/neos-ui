@@ -7,7 +7,7 @@
   ],
   "require": {
     "neos/neos": "^8.3.0",
-    "neos/neos-ui-compiled": "self.version"
+    "neos/neos-ui-compiled": "8.4.x-dev"
   },
   "autoload": {
     "psr-4": {

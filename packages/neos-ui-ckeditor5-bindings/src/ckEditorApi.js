@@ -42,7 +42,7 @@ export const createEditor = store => async options => {
         editorOptions,
         userPreferences,
         globalRegistry,
-        propertyDomNode,
+        propertyDomNode
     });
 
     class NeosEditor extends DecoupledEditor {

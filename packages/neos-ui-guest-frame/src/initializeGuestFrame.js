@@ -115,7 +115,6 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     const currentEditMode = editPreviewModes[editPreviewMode];
 
     // ReadOnly workspaces are handled by ckEditor directly
-    // TODO: this will break other editors, correct?
     if (!currentEditMode || !currentEditMode.isEditingMode) {
         return;
     }

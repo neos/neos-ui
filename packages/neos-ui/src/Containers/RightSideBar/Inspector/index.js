@@ -247,7 +247,7 @@ export default class Inspector extends PureComponent {
             return false;
         }
 
-        return $get(['policy', 'canView'], focusedNode) && !$contains(item.id, 'policy.disallowedProperties', focusedNode);
+        return $get(['policy', 'canRead'], focusedNode) && !$contains(item.id, 'policy.disallowedProperties', focusedNode);
     };
 
     /**

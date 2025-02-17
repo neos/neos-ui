@@ -82,7 +82,7 @@ class NodePolicyService
             'disallowedNodeTypes' => $this->getDisallowedNodeTypes($node),
             'canRemove' => $this->canRemoveNode($node),
             'canEdit' => $this->canEditNode($node),
-            'canView' => $this->canReadNode($node),
+            'canRead' => $this->canReadNode($node),
             'disallowedProperties' => $this->getDisallowedProperties($node)
         ];
     }

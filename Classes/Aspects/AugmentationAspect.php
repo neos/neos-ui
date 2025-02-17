@@ -152,7 +152,6 @@ class AugmentationAspect
             return $content;
         }
 
-        // TODO: this is where we could use a feature flag
         if ($this->nodePolicyService->canReadNode($node) === false) {
             return $content;
         }

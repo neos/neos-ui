@@ -1,11 +1,9 @@
 import {$get, $contains} from 'plow-js';
 
-import {actions} from '@neos-project/neos-ui-redux-store';
+import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {validateElement} from '@neos-project/neos-ui-validators';
 
 import {getGuestFrameWindow, closestContextPathInGuestFrame} from './dom';
-// TODO: this import feels foreign to the rest of neos code, but it feels strange to import the complete selectors object
-import {isWorkspaceReadOnlySelector} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces/selectors';
 
 export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry, nodes}) => propertyDomNode => {
     const guestFrameWindow = getGuestFrameWindow();
@@ -63,7 +61,7 @@ export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry,
         try {
             if (!propertyDomNode.dataset.neosInlineEditorIsInitialized) {
                 const userPreferences = $get('user.preferences', store.getState());
-                const isReadOnly = isWorkspaceReadOnlySelector(store.getState());
+                const isWorkspaceReadOnly = selectors.CR.Workspaces.isWorkspaceReadOnlySelector(store.getState());
 
                 createInlineEditor({
                     propertyDomNode,
@@ -73,9 +71,9 @@ export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry,
                     editorOptions,
                     globalRegistry,
                     userPreferences,
-                    isReadOnly,
+                    isReadOnly: isWorkspaceReadOnly,
                     persistChange: change => {
-                        if (isReadOnly) {
+                        if (isWorkspaceReadOnly) {
                             return;
                         }
 
@@ -84,7 +82,7 @@ export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry,
                         )
                     },
                     onChange: value => {
-                        if (isReadOnly) {
+                        if (isWorkspaceReadOnly) {
                             return;
                         }
 

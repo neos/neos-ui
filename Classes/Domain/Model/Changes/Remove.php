@@ -13,16 +13,21 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  */
 
 use Neos\ContentRepository\Core\DimensionSpace\Exception\DimensionSpacePointNotFound;
-use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindClosestNodeFilter;
-use Neos\ContentRepository\Core\SharedModel\Exception\ContentStreamDoesNotExistYet;
-use Neos\ContentRepository\Core\SharedModel\Node\NodeVariantSelectionStrategy;
 use Neos\ContentRepository\Core\Feature\NodeRemoval\Command\RemoveNodeAggregate;
+use Neos\ContentRepository\Core\Feature\SubtreeTagging\Command\TagSubtree;
+use Neos\ContentRepository\Core\Feature\SubtreeTagging\Dto\SubtreeTag;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindAncestorNodesFilter;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindClosestNodeFilter;
+use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
+use Neos\ContentRepository\Core\SharedModel\Exception\ContentStreamDoesNotExistYet;
 use Neos\ContentRepository\Core\SharedModel\Exception\NodeAggregatesTypeIsAmbiguous;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateId;
-use Neos\Flow\Annotations as Flow;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeVariantSelectionStrategy;
 use Neos\Neos\Domain\Service\NodeTypeNameFactory;
-use Neos\Neos\Fusion\Cache\ContentCacheFlusher;
+use Neos\Neos\PendingChangesProjection\ChangeFinder;
+use Neos\Neos\PendingChangesProjection\Changes;
 use Neos\Neos\Ui\Domain\Model\AbstractChange;
+use Neos\Neos\Ui\Domain\Model\Feedback\Messages\Error;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 
@@ -67,28 +72,101 @@ class Remove extends AbstractChange
             // otherwise we cannot find the parent nodes anymore.
             $this->updateWorkspaceInfo();
 
-            $command = RemoveNodeAggregate::create(
-                $subject->workspaceName,
-                $subject->aggregateId,
-                $subject->dimensionSpacePoint,
-                NodeVariantSelectionStrategy::STRATEGY_ALL_SPECIALIZATIONS,
-            );
-            $removalAttachmentPoint = $this->getRemovalAttachmentPoint();
-            if ($removalAttachmentPoint !== null) {
-                $command = $command->withRemovalAttachmentPoint($removalAttachmentPoint);
+            if ($this->nodeRequiresSoftDeletion()) {
+                $this->softDeleteNode();
+                $contentRepository = $this->contentRepositoryRegistry->get($this->subject->contentRepositoryId);
+                $subgraph = $contentRepository->getContentGraph($this->subject->workspaceName)->getSubgraph($this->subject->dimensionSpacePoint, VisibilityConstraints::withoutRestrictions());
+                $node = $subgraph->findNodeById($this->subject->aggregateId);
+
+                if ($node) {
+                    $updateNodeInfo = new UpdateNodeInfo();
+                    $updateNodeInfo->setNode($node);
+                    $this->feedbackCollection->add($updateNodeInfo);
+                }
+
+                $error = new Error();
+                $error->setMessage(sprintf('Could not remove node %s because its children contain changes. Please publish or discard them first. Node was disabled instead.', $this->subject->aggregateId->value));
+                $this->feedbackCollection->add($error);
+
+                $this->reloadDocument();
+            } else {
+                $this->hardDeleteNode();
+
+                $removeNode = new RemoveNode($subject, $parentNode);
+                $this->feedbackCollection->add($removeNode);
+
+                $updateParentNodeInfo = new UpdateNodeInfo();
+                $updateParentNodeInfo->setNode($parentNode);
+
+                $this->feedbackCollection->add($updateParentNodeInfo);
             }
-
-            $contentRepository = $this->contentRepositoryRegistry->get($subject->contentRepositoryId);
-            $contentRepository->handle($command);
-
-            $removeNode = new RemoveNode($subject, $parentNode);
-            $this->feedbackCollection->add($removeNode);
-
-            $updateParentNodeInfo = new UpdateNodeInfo();
-            $updateParentNodeInfo->setNode($parentNode);
-
-            $this->feedbackCollection->add($updateParentNodeInfo);
         }
+    }
+
+    private function nodeRequiresSoftDeletion(): bool
+    {
+        $contentRepository = $this->contentRepositoryRegistry->get($this->subject->contentRepositoryId);
+        $workspace = $contentRepository->findWorkspaceByName($this->subject->workspaceName);
+
+        $subgraph = $contentRepository->getContentGraph($this->subject->workspaceName)->getSubgraph($this->subject->dimensionSpacePoint, VisibilityConstraints::withoutRestrictions());
+        $baseSubgraph = $contentRepository->getContentGraph($workspace->baseWorkspaceName)->getSubgraph($this->subject->dimensionSpacePoint, VisibilityConstraints::withoutRestrictions());
+
+        /** @var Changes $changes */
+        $changes = $contentRepository->projectionState(ChangeFinder::class)->findByContentStreamId($workspace->currentContentStreamId);
+
+        foreach ($changes as $change) {
+            if ($change->nodeAggregateId->equals($this->subject->aggregateId) && $change->created) {
+                // Case 1. The node was just created and thus might have newly created child nodes or modifications on the node that need to be published first
+                return true;
+            }
+            // todo work across dimensions by taking the correct change dsp
+            if ($change->created || $change->deleted || $change->changed) {
+                if ($subgraph->findAncestorNodes($change->nodeAggregateId, FindAncestorNodesFilter::create())->toNodeAggregateIds()->contain($this->subject->aggregateId)) {
+                    // Case 2. The nodes children were changed
+                    return true;
+                }
+            }
+            // todo this doesnt work if the node was only temporary moved into this tree part once but doesnt reside here anymore today and never has in the base workspace!
+            if ($change->moved) {
+                if ($baseSubgraph->findAncestorNodes($change->nodeAggregateId, FindAncestorNodesFilter::create())->toNodeAggregateIds()->contain($this->subject->aggregateId)) {
+                    // Case 3. The node was moved out of this node
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private function softDeleteNode(): void
+    {
+        $command = TagSubtree::create(
+            $this->subject->workspaceName,
+            $this->subject->aggregateId,
+            $this->subject->dimensionSpacePoint,
+            NodeVariantSelectionStrategy::STRATEGY_ALL_SPECIALIZATIONS,
+            SubtreeTag::disabled()
+        );
+
+        $contentRepository = $this->contentRepositoryRegistry->get($this->subject->contentRepositoryId);
+        $contentRepository->handle($command);
+    }
+
+    private function hardDeleteNode(): void
+    {
+        $command = RemoveNodeAggregate::create(
+            $this->subject->workspaceName,
+            $this->subject->aggregateId,
+            $this->subject->dimensionSpacePoint,
+            NodeVariantSelectionStrategy::STRATEGY_ALL_SPECIALIZATIONS,
+        );
+        $removalAttachmentPoint = $this->getRemovalAttachmentPoint();
+        if ($removalAttachmentPoint !== null) {
+            $command = $command->withRemovalAttachmentPoint($removalAttachmentPoint);
+        }
+
+        $contentRepository = $this->contentRepositoryRegistry->get($this->subject->contentRepositoryId);
+        $contentRepository->handle($command);
     }
 
     private function getRemovalAttachmentPoint(): ?NodeAggregateId

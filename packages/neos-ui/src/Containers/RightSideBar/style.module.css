@@ -6,6 +6,7 @@
     right: unset;
     position: relative;
     background-color: var(--colors-ContrastDarkest);
+    z-index: 1;
 }
 .rightSideBar--isHidden {
     width: 0;

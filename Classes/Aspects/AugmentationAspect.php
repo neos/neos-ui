@@ -152,7 +152,7 @@ class AugmentationAspect
             return $content;
         }
 
-        if ($this->nodePolicyService->canReadNode($node) === false) {
+        if ($this->nodePolicyService->canReadProperties($node) === false) {
             return $content;
         }
 

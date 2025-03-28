@@ -1,14 +1,11 @@
 import React, {PureComponent} from 'react';
+import {ResourceIcon} from '../ResourceIcon';
 
-import logo from './logo.svg';
+import logoSvg from './resource/logo.svg';
 import style from './style.module.css';
 
 export default class Logo extends PureComponent {
     render() {
-        return (
-            <div>
-                <img className={style.logo} src={logo} alt="Neos" />
-            </div>
-        );
+        return <ResourceIcon source={logoSvg} className={style.logo}></ResourceIcon>;
     }
 }

@@ -23,6 +23,7 @@ export default class TextAreaEditor extends PureComponent {
         readonly: false,
         placeholder: '',
         minRows: 2,
+        maxRows: 24,
         expandedRows: 6
     };
 
@@ -42,6 +43,7 @@ export default class TextAreaEditor extends PureComponent {
             readOnly={finalOptions.readonly}
             placeholder={placeholder}
             minRows={finalOptions.minRows}
+            maxRows={finalOptions.maxRows}
             expandedRows={finalOptions.expandedRows}
         />);
     }

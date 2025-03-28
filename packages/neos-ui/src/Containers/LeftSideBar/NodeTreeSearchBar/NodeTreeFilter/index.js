@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {SelectBox} from '@neos-project/react-ui-components';
 
-import {searchOptions} from '@neos-project/neos-ui-editors/src/Editors/SelectBox/SelectBoxHelpers.js';
+import {searchOptions} from '@neos-project/neos-ui-editors/src/Editors/SelectBox/selectBoxHelpers.js';
 
 import style from './style.module.css';
 
@@ -59,6 +59,7 @@ export default class NodeTreeFilter extends PureComponent {
         return (
             <div id="neos-NodeTreeFilter" className={style.searchBar}>
                 <SelectBox
+                    id="neos-NodeTreeFilter-SelectBox"
                     placeholder={label}
                     placeholderIcon={'filter'}
                     onValueChange={onChange}

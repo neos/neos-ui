@@ -42,6 +42,11 @@ export interface TextAreaProps extends Omit<React.InputHTMLAttributes<HTMLTextAr
     readonly minRows?: number;
 
     /**
+     * Optional number to set the maxRows of the TextArea if expanded
+     */
+    readonly maxRows?: number;
+
+    /**
      * Optional number to set the expandedRows of the TextArea if expanded
      */
     readonly expandedRows?: number;
@@ -77,6 +82,7 @@ export class TextArea extends PureComponent<TextAreaProps> {
             theme,
             disabled,
             minRows,
+            maxRows,
             expandedRows,
             value,
             style,
@@ -102,6 +108,7 @@ export class TextArea extends PureComponent<TextAreaProps> {
                 onChange={this.handleValueChange}
                 onClick={this.handleOnClick}
                 minRows={this.state.isFocused ? expandedRows : minRows}
+                maxRows={maxRows}
                 value={value}
                 // @ts-ignore -- WHY: type mismatch even though it shouldn't
                 style={style}

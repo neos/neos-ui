@@ -148,6 +148,12 @@ export default class LinkInput extends PureComponent {
     }
 
     handleSearchTermChange = searchTerm => {
+        // trim leading whitespace as it can cause issues
+        // with the further processing
+        if (typeof searchTerm === 'string') {
+            searchTerm = searchTerm.trimStart();
+        }
+
         this.setState({searchTerm});
 
         if (isUriOrInternalLink(searchTerm)) {
@@ -268,9 +274,16 @@ export default class LinkInput extends PureComponent {
     }
 
     handleManualSetLink = () => {
-        this.props.onLinkChange(this.state.searchTerm);
+        let {searchTerm} = this.state;
+        // trim tailing whitespace as it can cause issues
+        if (typeof searchTerm === 'string') {
+            searchTerm = searchTerm.trim();
+            this.setState({searchTerm});
+        }
+
+        this.props.onLinkChange(searchTerm);
         this.setState({
-            isEditMode: !this.state.searchTerm
+            isEditMode: !searchTerm
         });
     }
 
@@ -296,7 +309,7 @@ export default class LinkInput extends PureComponent {
                     value={''}
                     plainInputMode={isUri(this.state.searchTerm)}
                     onValueChange={this.handleValueChange}
-                    placeholder={this.props.i18nRegistry.translate(this.props?.options?.placeholder || 'Neos.Neos.Ui:Main:ckeditor__toolbar__link__placeholder', 'Paste a link, or search')}
+                    placeholder={this.props.i18nRegistry.translate(this.props?.options?.placeholder || 'Neos.Neos:Main:content.inspector.editors.linkEditor.search', 'Paste a link, or type to search')}
                     displayLoadingIndicator={this.state.isLoading}
                     displaySearchBox={true}
                     setFocus={this.props.setFocus}

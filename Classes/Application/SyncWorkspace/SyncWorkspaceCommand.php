@@ -32,7 +32,7 @@ final readonly class SyncWorkspaceCommand
     public function __construct(
         public ContentRepositoryId $contentRepositoryId,
         public WorkspaceName $workspaceName,
-        public DimensionSpacePoint $preferredDimensionSpacePoint,
+        public ?DimensionSpacePoint $preferredDimensionSpacePoint,
         public RebaseErrorHandlingStrategy $rebaseErrorHandlingStrategy
     ) {
     }

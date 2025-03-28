@@ -9,8 +9,8 @@
  */
 import React from 'react';
 
-import {I18nRegistry, WorkspaceName} from '@neos-project/neos-ts-interfaces';
-import I18n from '@neos-project/neos-ui-i18n';
+import {WorkspaceName} from '@neos-project/neos-ts-interfaces';
+import I18n, {I18nRegistry} from '@neos-project/neos-ui-i18n';
 import {Button, Dialog, Icon} from '@neos-project/react-ui-components';
 import {PublishingPhase} from '@neos-project/neos-ui-redux-store/src/CR/Publishing';
 import {Conflict, ResolutionStrategy} from '@neos-project/neos-ui-redux-store/src/CR/Syncing';
@@ -175,8 +175,8 @@ const DiscardAllConfirmationDialog: React.FC<{
                     />
                 <I18n
                     id="Neos.Neos.Ui:SyncWorkspaceDialog:resolutionStrategy.DISCARD_ALL.confirmation.message"
-                    fallback={`You are about to discard all changes in workspace "${props.workspaceName}". This includes all changes on other sites. Do you wish to proceed? Be careful: This cannot be undone!`}
-                    params={props}
+                    fallback={`You are about to discard all ${props.totalNumberOfChangesInWorkspace} change(s) in workspace "${props.workspaceName}". This includes all changes on other sites. Do you wish to proceed? Be careful: This cannot be undone!`}
+                    params={{numberOfChanges: props.totalNumberOfChangesInWorkspace, workspaceName: props.workspaceName}}
                     />
             </div>
         </Dialog>

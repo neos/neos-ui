@@ -36,10 +36,8 @@ class ContentDimensionsHelper implements ProtectedContextAwareInterface
      */
     public function contentDimensionsByName(ContentRepositoryId $contentRepositoryId): array
     {
-        $contentDimensionHelperInternals = $this->contentRepositoryRegistry->buildService($contentRepositoryId, new ContentDimensionsHelperInternalsFactory());
-        assert($contentDimensionHelperInternals instanceof ContentDimensionsHelperInternals);
-        $contentDimensionSource = $contentDimensionHelperInternals->contentDimensionSource;
-
+        $contentDimensionSource = $this->contentRepositoryRegistry->get($contentRepositoryId)
+            ->getContentDimensionSource();
         $dimensions = $contentDimensionSource->getContentDimensionsOrderedByPriority();
 
         $result = [];
@@ -72,8 +70,8 @@ class ContentDimensionsHelper implements ProtectedContextAwareInterface
      */
     public function allowedPresetsByName(DimensionSpacePoint $dimensions, ContentRepositoryId $contentRepositoryId): array|object
     {
-        $contentDimensionHelperInternals = $this->contentRepositoryRegistry->buildService($contentRepositoryId, new ContentDimensionsHelperInternalsFactory());
-        $contentDimensionSource = $contentDimensionHelperInternals->contentDimensionSource;
+        $contentDimensionSource = $this->contentRepositoryRegistry->get($contentRepositoryId)
+            ->getContentDimensionSource();
 
         // TODO: re-implement this here; currently EVERYTHING is allowed!!
         $allowedPresets = [];

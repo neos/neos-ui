@@ -11,6 +11,7 @@ export {default as DropDown} from './DropDown';
 export {default as Frame} from './Frame';
 export {default as Headline} from './Headline';
 export {default as Icon} from './Icon';
+export {ResourceIcon} from './ResourceIcon';
 export {default as IconButton} from './IconButton';
 export {default as IconButtonDropDown} from './IconButtonDropDown';
 export {default as Label} from './Label';

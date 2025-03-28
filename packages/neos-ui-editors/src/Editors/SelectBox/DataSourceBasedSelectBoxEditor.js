@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {SelectBox, MultiSelectBox} from '@neos-project/react-ui-components';
 import {selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
-import {shouldDisplaySearchBox, searchOptions, processSelectBoxOptions} from './SelectBoxHelpers';
+import {shouldDisplaySearchBox, searchOptions, processSelectBoxOptions} from './selectBoxHelpers';
 import {createSelectBoxValueStringFromPossiblyStrangeNodePropertyValue} from './createSelectBoxValueStringFromPossiblyStrangeNodePropertyValue';
 import PreviewOption from '../../Library/PreviewOption';
 
@@ -129,7 +129,10 @@ export default class DataSourceBasedSelectBoxEditor extends PureComponent {
         const {commit, i18nRegistry, className} = this.props;
         const options = Object.assign({}, this.constructor.defaultOptions, this.props.options);
 
-        const processedSelectBoxOptions = processSelectBoxOptions(i18nRegistry, this.state.selectBoxOptions);
+        const processedValue = options.multiple ? this.valueForMultiSelect : this.valueForSingleSelect;
+
+        // we have to wait till the options are loaded as otherwise everything will be shown as "invalid" and is a mismatch
+        const processedSelectBoxOptions = this.state.isLoading ? [] : processSelectBoxOptions(i18nRegistry, this.state.selectBoxOptions, processedValue);
 
         // Placeholder text must be unescaped in case html entities were used
         const placeholder = options && options.placeholder && i18nRegistry.translate(unescape(options.placeholder));
@@ -139,7 +142,7 @@ export default class DataSourceBasedSelectBoxEditor extends PureComponent {
             return (<MultiSelectBox
                 className={className}
                 options={processedSelectBoxOptions}
-                values={this.valueForMultiSelect}
+                values={processedValue}
                 onValuesChange={commit}
                 loadingLabel={loadingLabel}
                 ListPreviewElement={PreviewOption}
@@ -160,7 +163,7 @@ export default class DataSourceBasedSelectBoxEditor extends PureComponent {
         return (<SelectBox
             className={className}
             options={this.state.searchTerm ? searchOptions(this.state.searchTerm, processedSelectBoxOptions) : processedSelectBoxOptions}
-            value={this.valueForSingleSelect}
+            value={processedValue}
             onValueChange={commit}
             loadingLabel={loadingLabel}
             ListPreviewElement={PreviewOption}

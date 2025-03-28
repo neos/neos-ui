@@ -24,6 +24,7 @@
         factoryClassName: 'Neos\Neos\Ui\Infrastructure\Neos\UriPathSegmentNodeCreationHandlerFactory'
       promotedElements:
         factoryClassName: 'Neos\Neos\Ui\Infrastructure\ContentRepository\CreationDialog\PromotedElementsCreationHandlerFactory'
+    moveNodeStrategy: gatherAll
 
 'Neos.Neos:Content':
   postprocessors:
@@ -34,6 +35,7 @@
     nodeCreationHandlers:
       promotedElements:
         factoryClassName: 'Neos\Neos\Ui\Infrastructure\ContentRepository\CreationDialog\PromotedElementsCreationHandlerFactory'
+    moveNodeStrategy: scatter
 
 'Neos.Neos:ContentCollection':
   ui:

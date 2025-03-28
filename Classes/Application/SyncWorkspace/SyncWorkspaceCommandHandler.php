@@ -17,7 +17,10 @@ namespace Neos\Neos\Ui\Application\SyncWorkspace;
 use Neos\ContentRepository\Core\Feature\WorkspaceRebase\Exception\WorkspaceRebaseFailed;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
-use Neos\Neos\Domain\Workspace\WorkspaceProvider;
+use Neos\Neos\Domain\NodeLabel\NodeLabelGeneratorInterface;
+use Neos\Neos\Domain\Service\WorkspacePublishingService;
+use Neos\Neos\Ui\Application\Shared\ConflictsOccurred;
+use Neos\Neos\Ui\Infrastructure\ContentRepository\ConflictsFactory;
 
 /**
  * The application layer level command handler to for rebasing the workspace
@@ -31,32 +34,32 @@ final class SyncWorkspaceCommandHandler
     protected ContentRepositoryRegistry $contentRepositoryRegistry;
 
     #[Flow\Inject]
-    protected WorkspaceProvider $workspaceProvider;
+    protected WorkspacePublishingService $workspacePublishingService;
 
-    public function handle(SyncWorkspaceCommand $command): void
-    {
+    #[Flow\Inject]
+    protected NodeLabelGeneratorInterface $nodeLabelGenerator;
+
+    public function handle(
+        SyncWorkspaceCommand $command
+    ): SyncingSucceeded|ConflictsOccurred {
         try {
-            $workspace = $this->workspaceProvider->provideForWorkspaceName(
+            $this->workspacePublishingService->rebaseWorkspace(
                 $command->contentRepositoryId,
-                $command->workspaceName
+                $command->workspaceName,
+                $command->rebaseErrorHandlingStrategy
             );
-
-            $workspace->rebase($command->rebaseErrorHandlingStrategy);
+            return new SyncingSucceeded();
         } catch (WorkspaceRebaseFailed $e) {
-            $conflictsBuilder = Conflicts::builder(
+            $conflictsFactory = new ConflictsFactory(
                 contentRepository: $this->contentRepositoryRegistry
                     ->get($command->contentRepositoryId),
+                nodeLabelGenerator: $this->nodeLabelGenerator,
                 workspaceName: $command->workspaceName,
                 preferredDimensionSpacePoint: $command->preferredDimensionSpacePoint
             );
 
-            foreach ($e->commandsThatFailedDuringRebase as $commandThatFailedDuringRebase) {
-                $conflictsBuilder->addCommandThatFailedDuringRebase($commandThatFailedDuringRebase);
-            }
-
-            throw new ConflictsOccurred(
-                $conflictsBuilder->build(),
-                1712832228
+            return new ConflictsOccurred(
+                conflicts: $conflictsFactory->fromWorkspaceRebaseFailed($e)
             );
         }
     }

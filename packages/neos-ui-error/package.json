@@ -5,7 +5,10 @@
   "private": true,
   "main": "./src/index.ts",
   "dependencies": {
+    "@neos-project/framework-observable": "workspace:*",
+    "@neos-project/framework-observable-react": "workspace:*",
     "@neos-project/neos-ui-i18n": "workspace:*",
+    "@neos-project/react-ui-components": "workspace:*",
     "classnames": "^2.2.3",
     "react": "^16.12.0"
   },

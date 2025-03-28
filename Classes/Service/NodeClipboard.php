@@ -11,7 +11,7 @@ namespace Neos\Neos\Ui\Service;
  * source code.
  */
 
-use Neos\Neos\FrontendRouting\NodeAddress;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
 use Neos\Flow\Annotations as Flow;
 
 /**
@@ -44,7 +44,7 @@ class NodeClipboard
     public function copyNodes(array $nodeAddresses): void
     {
         $this->serializedNodeAddresses = array_map(
-            fn (NodeAddress $nodeAddress) => $nodeAddress->serializeForUri(),
+            fn (NodeAddress $nodeAddress) => $nodeAddress->toJson(),
             $nodeAddresses
         );
         $this->mode = self::MODE_COPY;
@@ -53,13 +53,13 @@ class NodeClipboard
     /**
      * Save cut node to clipboard.
      *
-     * @param array<int,\Neos\Neos\FrontendRouting\NodeAddress> $nodeAddresses
+     * @param array<int,NodeAddress> $nodeAddresses
      * @Flow\Session(autoStart=true)
      */
     public function cutNodes(array $nodeAddresses): void
     {
         $this->serializedNodeAddresses = array_map(
-            fn (NodeAddress $nodeAddress) => $nodeAddress->serializeForUri(),
+            fn (NodeAddress $nodeAddress) => $nodeAddress->toJson(),
             $nodeAddresses
         );
         $this->mode = self::MODE_MOVE;

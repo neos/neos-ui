@@ -132,23 +132,25 @@
     right: 0;
     padding-left: 15px;
     height: 2px;
-    visibility: hidden;
-
-    [data-is-drag-happening] & {
-        visibility: visible;
-    }
+    z-index: -1;
 }
 .dropTarget--before {
     top: -5px;
-    z-index: var(--zIndex-SideBar-DropTargetBefore);
     padding-top: 4px;
     padding-bottom: 4px;
+
+    [data-is-drag-happening] & {
+        z-index: var(--zIndex-SideBar-DropTargetBefore);
+    }
 }
 .dropTarget--after {
     bottom: 1px;
-    z-index: var(--zIndex-SideBar-DropTargetAfter);
     padding-top: 6px;
     padding-bottom: 0;
+
+    [data-is-drag-happening] & {
+        z-index: var(--zIndex-SideBar-DropTargetAfter);
+    }
 }
 .dropTarget__inner {
     visibility: hidden;

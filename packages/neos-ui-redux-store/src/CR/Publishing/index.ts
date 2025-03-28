@@ -25,6 +25,7 @@ export enum PublishingScope {
 export enum PublishingPhase {
     START,
     ONGOING,
+    CONFLICTS,
     SUCCESS,
     ERROR
 }
@@ -34,7 +35,11 @@ export type State = null | {
     scope: PublishingScope;
     process:
         | { phase: PublishingPhase.START }
-        | { phase: PublishingPhase.ONGOING }
+        | {
+            phase: PublishingPhase.ONGOING,
+            autoConfirmed: boolean
+          }
+        | { phase: PublishingPhase.CONFLICTS }
         | {
               phase: PublishingPhase.ERROR;
               error: null | AnyError;
@@ -51,6 +56,8 @@ export enum actionTypes {
     STARTED = '@neos/neos-ui/CR/Publishing/STARTED',
     CANCELLED = '@neos/neos-ui/CR/Publishing/CANCELLED',
     CONFIRMED = '@neos/neos-ui/CR/Publishing/CONFIRMED',
+    CONFLICTS_OCCURRED = '@neos/neos-ui/CR/Publishing/CONFLICTS_OCCURRED',
+    CONFLICTS_RESOLVED = '@neos/neos-ui/CR/Publishing/CONFLICTS_RESOLVED',
     FAILED = '@neos/neos-ui/CR/Publishing/FAILED',
     RETRIED = '@neos/neos-ui/CR/Publishing/RETRIED',
     SUCEEDED = '@neos/neos-ui/CR/Publishing/SUCEEDED',
@@ -61,8 +68,8 @@ export enum actionTypes {
 /**
  * Publishes or discards all changes in the given scope
  */
-const start = (mode: PublishingMode, scope: PublishingScope) =>
-    createAction(actionTypes.STARTED, {mode, scope});
+const start = (mode: PublishingMode, scope: PublishingScope, requireConfirmation: boolean) =>
+    createAction(actionTypes.STARTED, {mode, scope, requireConfirmation});
 
 /**
  * Cancel the ongoing publish/discard workflow
@@ -73,6 +80,16 @@ const cancel = () => createAction(actionTypes.CANCELLED);
  * Confirm the ongoing publish/discard workflow
  */
 const confirm = () => createAction(actionTypes.CONFIRMED);
+
+/**
+ * Signal that conflicts have occurred during the publish/discard operation
+ */
+const conflicts = () => createAction(actionTypes.CONFLICTS_OCCURRED);
+
+/**
+ * Signal that conflicts have been resolved during the publish/discard operation
+ */
+const resolveConflicts = () => createAction(actionTypes.CONFLICTS_RESOLVED);
 
 /**
  * Signal that the ongoing publish/discard workflow has failed
@@ -108,6 +125,8 @@ export const actions = {
     start,
     cancel,
     confirm,
+    conflicts,
+    resolveConflicts,
     fail,
     retry,
     succeed,
@@ -126,23 +145,50 @@ export const reducer = (state: State = defaultState, action: Action): State => {
             return {
                 mode: action.payload.mode,
                 scope: action.payload.scope,
-                process: {
+                process: action.payload.requireConfirmation ? {
                     phase: PublishingPhase.START
+                } : {
+                    phase: PublishingPhase.ONGOING,
+                    autoConfirmed: true
                 }
             };
         }
 
         return null;
     }
-
     switch (action.type) {
+        // recursive publishing start, replacing the outer process
+        case actionTypes.STARTED:
+            return {
+                mode: action.payload.mode,
+                scope: action.payload.scope,
+                process: {
+                    phase: PublishingPhase.START
+                }
+            };
         case actionTypes.CANCELLED:
             return null;
         case actionTypes.CONFIRMED:
             return {
                 ...state,
                 process: {
-                    phase: PublishingPhase.ONGOING
+                    phase: PublishingPhase.ONGOING,
+                    autoConfirmed: false
+                }
+            };
+        case actionTypes.CONFLICTS_OCCURRED:
+            return {
+                ...state,
+                process: {
+                    phase: PublishingPhase.CONFLICTS
+                }
+            };
+        case actionTypes.CONFLICTS_RESOLVED:
+            return {
+                ...state,
+                process: {
+                    phase: PublishingPhase.ONGOING,
+                    autoConfirmed: false
                 }
             };
         case actionTypes.FAILED:
@@ -157,7 +203,8 @@ export const reducer = (state: State = defaultState, action: Action): State => {
             return {
                 ...state,
                 process: {
-                    phase: PublishingPhase.ONGOING
+                    phase: PublishingPhase.ONGOING,
+                    autoConfirmed: false
                 }
             };
         case actionTypes.SUCEEDED:

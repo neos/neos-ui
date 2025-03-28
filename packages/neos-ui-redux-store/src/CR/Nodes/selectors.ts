@@ -82,7 +82,7 @@ export const makeGetCollapsibleDocumentNodes = (nodeTypesRegistry: NodeTypesRegi
             if (!node) {
                 throw new Error('This error should never be thrown, it\'s a way to fool TypeScript');
             }
-            const isCollapsible = node.children.some(
+            const isCollapsible = node.children?.some(
                 child => child ? documentSubNodeTypes.includes(child.nodeType) : false
             )
             if (documentSubNodeTypes.includes(node.nodeType) && isCollapsible) {
@@ -115,7 +115,7 @@ export const makeGetCollapsibleContentNodes = (nodeTypesRegistry: NodeTypesRegis
             if (!node) {
                 throw new Error('This error should never be thrown, it\'s a way to fool TypeScript');
             }
-            const isCollapsible = node.children.some(
+            const isCollapsible = node.children?.some(
                 child => child ? contentSubNodeTypes.includes(child.nodeType) : false
             )
             if (contentSubNodeTypes.includes(node.nodeType) && isCollapsible) {
@@ -455,12 +455,25 @@ export const makeCanBeMovedAlongsideSelector = (nodeTypesRegistry: NodeTypesRegi
     (canBeInsertedInto, referenceIsDescendantOfSubject) => canBeInsertedInto && !referenceIsDescendantOfSubject
 );
 
+const makeNodeIsOfCurrentDimension = (_: GlobalState, {subject, reference}: {subject: NodeContextPath | null, reference: NodeContextPath | null}) => {
+    if (subject === null || reference === null) {
+        return false;
+    }
+
+    // todo centralise client side NodeAddress logic
+    const subjectDimension = JSON.parse(subject).dimensionSpacePoint;
+    const referenceDimension = JSON.parse(reference).dimensionSpacePoint;
+
+    return JSON.stringify(subjectDimension) === JSON.stringify(referenceDimension);
+};
+
 export const makeCanBeCopiedSelector = (nodeTypesRegistry: NodeTypesRegistry) => createSelector(
     [
+        makeNodeIsOfCurrentDimension,
         makeCanBeCopiedAlongsideSelector(nodeTypesRegistry),
         makeCanBeCopiedIntoSelector(nodeTypesRegistry)
     ],
-    (canBeInsertedAlongside, canBeInsertedInto) => (canBeInsertedAlongside || canBeInsertedInto)
+    (nodeIsOfCurrentDimension, canBeInsertedAlongside, canBeInsertedInto) => nodeIsOfCurrentDimension && (canBeInsertedAlongside || canBeInsertedInto)
 );
 
 export const makeCanBeMovedSelector = (nodeTypesRegistry: NodeTypesRegistry) => createSelector(

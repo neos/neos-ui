@@ -61,35 +61,33 @@ export default class MultiSelectBox_ListPreviewSortable extends PureComponent {
             options,
             optionValueAccessor
         } = this.props;
-
         const {draggableValues} = this.state;
+        const {DraggableListPreviewElement} = this;
 
         // Sorted options by draggable value ordering
         const draggableOptions = draggableValues.map(value =>
             options.find(option => optionValueAccessor(option) === value)
         ).filter(Boolean);
 
-        return draggableOptions.map(this.renderOption);
-    }
-
-    renderOption = (option, index) => {
-        const {
-            optionValueAccessor
-        } = this.props;
-
-        const {DraggableListPreviewElement} = this;
-
-        return (
-            <DraggableListPreviewElement
-                {...this.props}
-                key={optionValueAccessor(option)}
-                index={index}
-                option={option}
-                onMoveSelectedValue={this.handleMoveSelectedValue}
-                onSelectedValueWasMoved={this.handleSelectedValueWasMoved}
-                onRemoveItem={this.handleRemoveItem}
+        return draggableOptions.map((option, index) => {
+            if (!option) {
+                // if the value doesn't match an option we ignore it.
+                // though we must be careful that the correct `index` is preserved for succeeding entries.
+                // https://github.com/neos/neos-ui/issues/3520#issuecomment-2185969334
+                return '';
+            }
+            return (
+                <DraggableListPreviewElement
+                    {...this.props}
+                    key={optionValueAccessor(option)}
+                    index={index}
+                    option={option}
+                    onMoveSelectedValue={this.handleMoveSelectedValue}
+                    onSelectedValueWasMoved={this.handleSelectedValueWasMoved}
+                    onRemoveItem={this.handleRemoveItem}
                 />
-        );
+            );
+        });
     }
 
     handleMoveSelectedValue = (dragIndex, hoverIndex) => {

@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Neos\Ui\ContentRepository\Service;
 
 /*
@@ -11,21 +12,17 @@ namespace Neos\Neos\Ui\ContentRepository\Service;
  * source code.
  */
 
-use Neos\ContentRepository\Core\ContentRepository;
-use Neos\ContentRepository\Core\SharedModel\ContentRepository\ContentRepositoryId;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindClosestNodeFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
-use Neos\Neos\Domain\Service\NodeTypeNameFactory;
-use Neos\Neos\FrontendRouting\NodeAddress;
-use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
+use Neos\ContentRepository\Core\SharedModel\ContentRepository\ContentRepositoryId;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
 use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
-use Neos\Neos\Domain\Service\UserService as DomainUserService;
+use Neos\Neos\Domain\Service\NodeTypeNameFactory;
+use Neos\Neos\Domain\Service\WorkspacePublishingService;
 use Neos\Neos\PendingChangesProjection\Change;
-use Neos\Neos\PendingChangesProjection\ChangeFinder;
-use Neos\Neos\Service\UserService;
 use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
 
 /**
@@ -44,17 +41,8 @@ class WorkspaceService
     #[Flow\Inject]
     protected ContentRepositoryRegistry $contentRepositoryRegistry;
 
-    /**
-     * @Flow\Inject
-     * @var UserService
-     */
-    protected $userService;
-
-    /**
-     * @Flow\Inject
-     * @var DomainUserService
-     */
-    protected $domainUserService;
+    #[Flow\Inject]
+    protected WorkspacePublishingService $workspacePublishingService;
 
     /**
      * Get all publishable node context paths for a workspace
@@ -64,104 +52,68 @@ class WorkspaceService
     public function getPublishableNodeInfo(WorkspaceName $workspaceName, ContentRepositoryId $contentRepositoryId): array
     {
         $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
-        $workspace = $contentRepository->getWorkspaceFinder()->findOneByName($workspaceName);
-        if (is_null($workspace) || $workspace->baseWorkspaceName === null) {
-            return [];
-        }
-        $changeFinder = $contentRepository->projectionState(ChangeFinder::class);
-        $changes = $changeFinder->findByContentStreamId($workspace->currentContentStreamId);
+        $contentGraph = $contentRepository->getContentGraph($workspaceName);
+        $pendingChanges = $this->workspacePublishingService->pendingWorkspaceChanges($contentRepositoryId, $workspaceName);
         /** @var array{contextPath:string,documentContextPath:string,typeOfChange:int}[] $unpublishedNodes */
         $unpublishedNodes = [];
-        foreach ($changes as $change) {
-            if ($change->removalAttachmentPoint) {
-                $nodeAddress = new NodeAddress(
-                    $change->contentStreamId,
+        foreach ($pendingChanges as $change) {
+            if (method_exists($change, 'getLegacyRemovalAttachmentPoint') && $change->getLegacyRemovalAttachmentPoint() && $change->originDimensionSpacePoint !== null) {
+                // deprecated LegacyRemovalAttachmentPoint handling
+                $nodeAddress = NodeAddress::create(
+                    $contentRepositoryId,
+                    $workspaceName,
                     $change->originDimensionSpacePoint->toDimensionSpacePoint(),
-                    $change->nodeAggregateId,
-                    $workspaceName
+                    $change->nodeAggregateId
                 );
 
                 /**
-                 * See {@see Remove::apply} -> Removal Attachment Point == closest document node.
+                 * See {@see Change::getLegacyRemovalAttachmentPoint()} -> Removal Attachment Point == closest document node.
                  */
-                $documentNodeAddress = new NodeAddress(
-                    $change->contentStreamId,
+                $documentNodeAddress = NodeAddress::create(
+                    $contentRepositoryId,
+                    $workspaceName,
                     $change->originDimensionSpacePoint->toDimensionSpacePoint(),
-                    $change->removalAttachmentPoint,
-                    $workspaceName
+                    $change->getLegacyRemovalAttachmentPoint()
                 );
 
                 $unpublishedNodes[] = [
-                    'contextPath' => $nodeAddress->serializeForUri(),
-                    'documentContextPath' => $documentNodeAddress->serializeForUri(),
+                    'contextPath' => $nodeAddress->toJson(),
+                    'documentContextPath' => $documentNodeAddress->toJson(),
                     'typeOfChange' => $this->getTypeOfChange($change)
                 ];
             } else {
-                $subgraph = $contentRepository->getContentGraph($workspaceName)->getSubgraph(
-                    $change->originDimensionSpacePoint->toDimensionSpacePoint(),
-                    VisibilityConstraints::withoutRestrictions()
-                );
-                $node = $subgraph->findNodeById($change->nodeAggregateId);
+                if ($change->originDimensionSpacePoint !== null) {
+                    $originDimensionSpacePoints = [$change->originDimensionSpacePoint];
+                } else {
+                    // If originDimensionSpacePoint is null, we have a change to the nodeAggregate. All nodes in the
+                    // occupied dimensionspacepoints shall be marked as changed.
+                    $originDimensionSpacePoints = $contentGraph
+                        ->findNodeAggregateById($change->nodeAggregateId)
+                        ?->occupiedDimensionSpacePoints ?: [];
+                }
 
-                if ($node instanceof Node) {
-                    $documentNode = $subgraph->findClosestNode($node->aggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_DOCUMENT));
-                    if ($documentNode instanceof Node) {
-                        $contentRepository = $this->contentRepositoryRegistry->get($documentNode->contentRepositoryId);
-                        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
-                        $unpublishedNodes[] = [
-                            'contextPath' => $nodeAddressFactory->createFromNode($node)->serializeForUri(),
-                            'documentContextPath' => $nodeAddressFactory->createFromNode($documentNode)
-                                ->serializeForUri(),
-                            'typeOfChange' => $this->getTypeOfChange($change)
-                        ];
+                $contentGraph = $contentRepository->getContentGraph($workspaceName);
+                foreach ($originDimensionSpacePoints as $originDimensionSpacePoint) {
+                    $subgraph = $contentGraph->getSubgraph($originDimensionSpacePoint->toDimensionSpacePoint(), VisibilityConstraints::createEmpty());
+                    $node = $subgraph->findNodeById($change->nodeAggregateId);
+                    if ($node instanceof Node) {
+                        $documentNode = $subgraph->findClosestNode($node->aggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_DOCUMENT));
+                        if ($documentNode instanceof Node) {
+                            $unpublishedNodes[] = [
+                                'contextPath' => NodeAddress::fromNode($node)->toJson(),
+                                'documentContextPath' => NodeAddress::fromNode($documentNode)->toJson(),
+                                'typeOfChange' => $this->getTypeOfChange($change)
+                            ];
+                        }
                     }
                 }
             }
         }
 
-        return array_values(array_filter($unpublishedNodes, function ($item) {
-            return (bool)$item;
-        }));
+        return $unpublishedNodes;
     }
 
-    /**
-     * Get allowed target workspaces for current user
-     *
-     * @return array<string,array<string,mixed>>
-     */
-    public function getAllowedTargetWorkspaces(ContentRepository $contentRepository): array
-    {
-        $user = $this->domainUserService->getCurrentUser();
-
-        $workspacesArray = [];
-        foreach ($contentRepository->getWorkspaceFinder()->findAll() as $workspace) {
-            // FIXME: This check should be implemented through a specialized Workspace Privilege or something similar
-            // Skip workspace not owned by current user
-            if ($workspace->workspaceOwner !== null && $workspace->workspaceOwner !== $user) {
-                continue;
-            }
-            // Skip own personal workspace
-            if ($workspace->workspaceName->value === $this->userService->getPersonalWorkspaceName()) {
-                continue;
-            }
-
-            if ($workspace->isPersonalWorkspace()) {
-                // Skip other personal workspaces
-                continue;
-            }
-
-            $workspaceArray = [
-                'name' => $workspace->workspaceName->jsonSerialize(),
-                'title' => $workspace->workspaceTitle->jsonSerialize(),
-                'description' => $workspace->workspaceDescription->jsonSerialize(),
-                'readonly' => !$this->domainUserService->currentUserCanPublishToWorkspace($workspace)
-            ];
-            $workspacesArray[$workspace->workspaceName->jsonSerialize()] = $workspaceArray;
-        }
-
-        return $workspacesArray;
-    }
-
+    // todo remove for now lol :D
     private function getTypeOfChange(Change $change): int
     {
         $result = 0;

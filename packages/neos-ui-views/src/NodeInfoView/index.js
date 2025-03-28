@@ -44,7 +44,7 @@ export default class NodeInfoView extends PureComponent {
             created: node?.creationDateTime,
             lastModification: node?.lastModificationDateTime,
             lastPublication: node?.lastPublicationDateTime,
-            nodeAddress: node?.nodeAddress,
+            nodeAddress: node?.contextPath,
             name: node?.name ?? '/'
         };
 
@@ -70,9 +70,9 @@ export default class NodeInfoView extends PureComponent {
                     <div className={style.nodeInfoView__title}>{i18nRegistry.translate('identifier', 'Identifier', {}, 'Neos.Neos')}</div>
                     <NodeInfoViewContent>{properties.identifier}</NodeInfoViewContent>
                 </li>
-                <li className={style.nodeInfoView__item} title={properties.nodeAddress}>
+                <li className={style.nodeInfoView__item} title={properties.contextPath}>
                     <div className={style.nodeInfoView__title}>{i18nRegistry.translate('nodeAddress', 'Node Address', {}, 'Neos.Neos')}</div>
-                    <NodeInfoViewContent>{properties.nodeAddress}</NodeInfoViewContent>
+                    <NodeInfoViewContent>{properties.contextPath}</NodeInfoViewContent>
                 </li>
                 <li className={style.nodeInfoView__item} title={properties.name}>
                     <div className={style.nodeInfoView__title}>{i18nRegistry.translate('name', 'Name', {}, 'Neos.Neos')}</div>

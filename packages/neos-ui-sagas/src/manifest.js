@@ -16,7 +16,8 @@ import {
     uiInspector,
     uiPageTree,
     uiHotkeys,
-    impersonate
+    impersonate,
+    flashMessages
 } from './index';
 
 manifest('main.sagas', {}, globalRegistry => {
@@ -81,4 +82,6 @@ manifest('main.sagas', {}, globalRegistry => {
     sagasRegistry.set('neos-ui/UI/Hotkeys/handleHotkeys', {saga: uiHotkeys.handleHotkeys});
 
     sagasRegistry.set('neos-ui/UI/Impersonate/impersonateRestore', {saga: impersonate.impersonateRestore});
+
+    sagasRegistry.set('neos-ui/UI/FlashMessages/legacy__redirectReduxFlashMessagesToHighLevelApiCall', {saga: flashMessages.legacy__redirectReduxFlashMessagesToHighLevelApiCall});
 });

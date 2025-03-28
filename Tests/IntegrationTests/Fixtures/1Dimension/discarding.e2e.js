@@ -38,7 +38,7 @@ test('Discarding: create multiple nodes nested within each other and then discar
         .expect(ReactSelector('Provider').getReact(({props}) => {
             const reduxState = props.store.getState();
             return reduxState.cr.nodes.documentNode;
-        })).eql('user-admin__eyJsYW5ndWFnZSI6ImVuX1VTIn0=__f676459d-ca77-44bc-aeea-44114814c279', 'After discarding we are back to the main page');
+        })).eql(JSON.stringify({contentRepositoryId:"onedimension",workspaceName:"admin-admington",dimensionSpacePoint:{"language":"en_US"},aggregateId:"f676459d-ca77-44bc-aeea-44114814c279"}), 'After discarding we are back to the main page');
 });
 
 test('Discarding: create a document node and then discard it', async t => {
@@ -78,7 +78,7 @@ test('Discarding: delete a document node and then discard deletion', async t => 
     await Page.goToPage(pageTitleToDelete);
     await t
         .switchToIframe('[name="neos-content-main"]')
-        .expect(Selector('.test-headline h1').withText(headlineOnDeletedPage).exists).ok('Navigated to the page and see the headline inline')
+        .expect(Selector('.neos-contentcollection').withText(headlineOnDeletedPage).exists).ok('Navigated to the page and see the headline inline')
         .switchToMainWindow();
 
     subSection('Delete that page');

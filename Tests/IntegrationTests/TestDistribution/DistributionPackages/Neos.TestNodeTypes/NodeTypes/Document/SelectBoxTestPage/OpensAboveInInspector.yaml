@@ -10,6 +10,9 @@
       groups:
         test:
           label: Test
+          # move it before the general document meta-data so there is
+          # also space below when opening it in the e2e tests
+          position: start
   properties:
     TextField:
       type: string

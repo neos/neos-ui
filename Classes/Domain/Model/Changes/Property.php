@@ -14,30 +14,30 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 use Neos\ContentRepository\Core\DimensionSpace\Exception\DimensionSpacePointNotFound;
 use Neos\ContentRepository\Core\DimensionSpace\OriginDimensionSpacePoint;
-use Neos\ContentRepository\Core\Feature\NodeDisabling\Command\DisableNodeAggregate;
-use Neos\ContentRepository\Core\Feature\NodeDisabling\Command\EnableNodeAggregate;
 use Neos\ContentRepository\Core\Feature\NodeModification\Command\SetNodeProperties;
 use Neos\ContentRepository\Core\Feature\NodeModification\Dto\PropertyValuesToWrite;
 use Neos\ContentRepository\Core\Feature\NodeReferencing\Command\SetNodeReferences;
+use Neos\ContentRepository\Core\Feature\NodeReferencing\Dto\NodeReferencesForName;
 use Neos\ContentRepository\Core\Feature\NodeReferencing\Dto\NodeReferencesToWrite;
 use Neos\ContentRepository\Core\Feature\NodeTypeChange\Command\ChangeNodeAggregateType;
 use Neos\ContentRepository\Core\Feature\NodeTypeChange\Dto\NodeAggregateTypeChangeChildConstraintConflictResolutionStrategy;
 use Neos\ContentRepository\Core\Feature\NodeVariation\Command\CreateNodeVariant;
+use Neos\ContentRepository\Core\Feature\SubtreeTagging\Command\TagSubtree;
+use Neos\ContentRepository\Core\Feature\SubtreeTagging\Command\UntagSubtree;
+use Neos\ContentRepository\Core\NodeType\NodeType;
 use Neos\ContentRepository\Core\NodeType\NodeTypeName;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\SharedModel\Exception\ContentStreamDoesNotExistYet;
-use Neos\ContentRepository\Core\SharedModel\Exception\NodeAggregatesTypeIsAmbiguous;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateIds;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeVariantSelectionStrategy;
 use Neos\ContentRepository\Core\SharedModel\Node\ReferenceName;
-use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
+use Neos\Neos\Domain\SubtreeTagging\NeosSubtreeTag;
 use Neos\Neos\Ui\Domain\Model\AbstractChange;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadContentOutOfBand;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 use Neos\Neos\Ui\Domain\Model\RenderedNodeDomAddress;
 use Neos\Neos\Ui\Domain\Service\NodePropertyConversionService;
-use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
 
 /**
  * Changes a property on a node
@@ -47,11 +47,6 @@ use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
  */
 class Property extends AbstractChange
 {
-    use NodeTypeWithFallbackProvider;
-
-    #[Flow\Inject]
-    protected ContentRepositoryRegistry $contentRepositoryRegistry;
-
     /**
      * @Flow\Inject
      * @var NodePropertyConversionService
@@ -131,12 +126,14 @@ class Property extends AbstractChange
      */
     public function canApply(): bool
     {
-        if (is_null($this->subject) || is_null($this->subject->nodeType)) {
+        $propertyName = $this->getPropertyName();
+        if (!$propertyName) {
             return false;
         }
-        $nodeType = $this->subject->nodeType;
-        $propertyName = $this->getPropertyName();
-
+        $nodeType = $this->getNodeType($this->subject);
+        if (!$nodeType) {
+            return false;
+        }
         return $nodeType->hasProperty($propertyName) || $nodeType->hasReference($propertyName);
     }
 
@@ -144,25 +141,25 @@ class Property extends AbstractChange
      * Applies this change
      *
      * @throws ContentStreamDoesNotExistYet
-     * @throws NodeAggregatesTypeIsAmbiguous
      * @throws DimensionSpacePointNotFound
      * @throws \Exception
      */
     public function apply(): void
     {
         $subject = $this->subject;
+        $nodeType = $this->getNodeType($subject);
         $propertyName = $this->getPropertyName();
-        if (is_null($subject) || is_null($propertyName) || $this->canApply() === false) {
+        if (is_null($nodeType) || is_null($propertyName) || $this->canApply() === false) {
             return;
         }
 
         match (true) {
-            $this->getNodeType($subject)->hasReference($propertyName) => $this->handleNodeReferenceChange($subject, $propertyName),
+            $nodeType->hasReference($propertyName) => $this->handleNodeReferenceChange($subject, $propertyName),
             // todo create custom 'changes' for these special cases
             // we continue to use the underscore logic in the Neos Ui code base as the JS-client code works this way
-            $propertyName === '_nodeType' => $this->handleNodeTypeChange($subject, $propertyName),
-            $propertyName === '_hidden' => $this->handleHiddenPropertyChange($subject, $propertyName),
-            default => $this->handlePropertyChange($subject, $propertyName)
+            $propertyName === '_nodeType' => $this->handleNodeTypeChange($subject),
+            $propertyName === '_hidden' => $this->handleHiddenPropertyChange($subject),
+            default => $this->handlePropertyChange($subject, $nodeType, $propertyName)
         };
 
         $this->createFeedback($subject);
@@ -197,13 +194,13 @@ class Property extends AbstractChange
         $reloadIfChangedConfigurationPathForReference = sprintf('references.%s.ui.reloadIfChanged', $propertyName);
         if (!$this->getIsInline()
             && (
-                $this->getNodeType($node)->getConfiguration($reloadIfChangedConfigurationPathForProperty)
-                || $this->getNodeType($node)->getConfiguration($reloadIfChangedConfigurationPathForReference)
+                $this->getNodeType($node)?->getConfiguration($reloadIfChangedConfigurationPathForProperty)
+                || $this->getNodeType($node)?->getConfiguration($reloadIfChangedConfigurationPathForReference)
             )
         ) {
             if ($this->getNodeDomAddress() && $this->getNodeDomAddress()->getFusionPath()
                 && $parentNode
-                && $this->getNodeType($parentNode)->isOfType('Neos.Neos:ContentCollection')) {
+                && $this->getNodeType($parentNode)?->isOfType('Neos.Neos:ContentCollection')) {
                 $reloadContentOutOfBand = new ReloadContentOutOfBand();
                 $reloadContentOutOfBand->setNode($node);
                 $reloadContentOutOfBand->setNodeDomAddress($this->getNodeDomAddress());
@@ -217,8 +214,8 @@ class Property extends AbstractChange
         $reloadPageIfChangedConfigurationPathForReference = sprintf('references.%s.ui.reloadPageIfChanged', $propertyName);
         if (!$this->getIsInline()
             && (
-                $this->getNodeType($node)->getConfiguration($reloadPageIfChangedConfigurationPathForProperty)
-                || $this->getNodeType($node)->getConfiguration($reloadPageIfChangedConfigurationPathForReference)
+                $this->getNodeType($node)?->getConfiguration($reloadPageIfChangedConfigurationPathForProperty)
+                || $this->getNodeType($node)?->getConfiguration($reloadPageIfChangedConfigurationPathForReference)
             )
         ) {
             $this->reloadDocument($node);
@@ -242,47 +239,49 @@ class Property extends AbstractChange
                 $subject->workspaceName,
                 $subject->aggregateId,
                 $subject->originDimensionSpacePoint,
-                ReferenceName::fromString($propertyName),
-                NodeReferencesToWrite::fromNodeAggregateIds(NodeAggregateIds::fromArray($destinationNodeAggregateIds))
+                NodeReferencesToWrite::create(
+                    NodeReferencesForName::fromTargets(
+                        ReferenceName::fromString($propertyName),
+                        NodeAggregateIds::fromArray($destinationNodeAggregateIds)
+                    )
+                )
             )
         );
     }
 
-    private function handleHiddenPropertyChange(Node $subject, string $propertyName): void
+    private function handleHiddenPropertyChange(Node $subject): void
     {
-        $value = $this->nodePropertyConversionService->convert(
-            $this->getNodeType($subject)->getPropertyType($propertyName),
-            $this->getValue()
-        );
+        // todo simplify conversion
+        $value = (bool)$this->nodePropertyConversionService->convert('boolean', $this->getValue());
 
         $contentRepository = $this->contentRepositoryRegistry->get($subject->contentRepositoryId);
 
-        $command = EnableNodeAggregate::create(
-            $subject->workspaceName,
-            $subject->aggregateId,
-            $subject->originDimensionSpacePoint->toDimensionSpacePoint(),
-            NodeVariantSelectionStrategy::STRATEGY_ALL_SPECIALIZATIONS
-        );
-
-        if ($value === true) {
-            $command = DisableNodeAggregate::create(
+        $command = match ($value) {
+            false => UntagSubtree::create(
                 $subject->workspaceName,
                 $subject->aggregateId,
                 $subject->originDimensionSpacePoint->toDimensionSpacePoint(),
-                NodeVariantSelectionStrategy::STRATEGY_ALL_SPECIALIZATIONS
-            );
-        }
+                NodeVariantSelectionStrategy::STRATEGY_ALL_SPECIALIZATIONS,
+                NeosSubtreeTag::disabled()
+            ),
+            true => TagSubtree::create(
+                $subject->workspaceName,
+                $subject->aggregateId,
+                $subject->originDimensionSpacePoint->toDimensionSpacePoint(),
+                NodeVariantSelectionStrategy::STRATEGY_ALL_SPECIALIZATIONS,
+                NeosSubtreeTag::disabled()
+            )
+        };
 
         $contentRepository->handle($command);
     }
 
-    private function handleNodeTypeChange(Node $subject, string $propertyName): void
+    private function handleNodeTypeChange(Node $subject): void
     {
         $contentRepository = $this->contentRepositoryRegistry->get($subject->contentRepositoryId);
-        $value = $this->nodePropertyConversionService->convert(
-            $this->getNodeType($subject)->getPropertyType($propertyName),
-            $this->getValue()
-        );
+        // todo simplify conversion
+        /** @var string $value */
+        $value = $this->nodePropertyConversionService->convert('string', $this->getValue());
 
         $contentRepository->handle(
             ChangeNodeAggregateType::create(
@@ -294,11 +293,11 @@ class Property extends AbstractChange
         );
     }
 
-    private function handlePropertyChange(Node $subject, string $propertyName): void
+    private function handlePropertyChange(Node $subject, NodeType $nodeType, string $propertyName): void
     {
         $contentRepository = $this->contentRepositoryRegistry->get($subject->contentRepositoryId);
         $value = $this->nodePropertyConversionService->convert(
-            $this->getNodeType($subject)->getPropertyType($propertyName),
+            $nodeType->getPropertyType($propertyName),
             $this->getValue()
         );
 

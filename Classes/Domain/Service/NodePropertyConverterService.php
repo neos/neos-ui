@@ -36,8 +36,8 @@ use Psr\Log\LoggerInterface;
 /**
  * Creates PropertyMappingConfigurations to map NodeType properties for the Neos interface.
  *
- * THIS IS DIRTY CODE. In the longer run, the neos UI should work DIRECTLY with serialized properties
- * instead of the objects.
+ * This is the for Neos 9 adjusted \Neos\Neos\Service\Mapping\NodePropertyConverterService
+ * In the long run we should refactor the serialization from javascript to php to be simpler an cleaner.
  *
  * @Flow\Scope("singleton")
  * @internal
@@ -135,7 +135,7 @@ class NodePropertyConverterService
     private function getProperty(Node $node, string $propertyName): mixed
     {
         if ($propertyName === '_hidden') {
-            return $node->tags->contain(SubtreeTag::fromString('disabled'));
+            return $node->tags->withoutInherited()->contain(SubtreeTag::fromString('disabled'));
         }
 
         $propertyValue = $node->getProperty($propertyName);

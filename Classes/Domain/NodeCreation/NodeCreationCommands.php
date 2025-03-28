@@ -13,14 +13,11 @@ namespace Neos\Neos\Ui\Domain\NodeCreation;
  */
 
 use Neos\ContentRepository\Core\CommandHandler\CommandInterface;
+use Neos\ContentRepository\Core\CommandHandler\Commands;
 use Neos\ContentRepository\Core\Feature\NodeCreation\Command\CreateNodeAggregateWithNode;
 use Neos\ContentRepository\Core\Feature\NodeCreation\Dto\NodeAggregateIdsByNodePaths;
-use Neos\ContentRepository\Core\Feature\NodeDisabling\Command\DisableNodeAggregate;
-use Neos\ContentRepository\Core\Feature\NodeDisabling\Command\EnableNodeAggregate;
-use Neos\ContentRepository\Core\Feature\NodeDuplication\Command\CopyNodesRecursively;
-use Neos\ContentRepository\Core\Feature\NodeModification\Command\SetNodeProperties;
 use Neos\ContentRepository\Core\Feature\NodeModification\Dto\PropertyValuesToWrite;
-use Neos\ContentRepository\Core\Feature\NodeReferencing\Command\SetNodeReferences;
+use Neos\ContentRepository\Core\Feature\NodeReferencing\Dto\NodeReferencesToWrite;
 use Neos\ContentRepository\Core\NodeType\NodeTypeManager;
 
 /**
@@ -57,17 +54,15 @@ final readonly class NodeCreationCommands implements \IteratorAggregate
     /**
      * Add a list of commands that are executed after the initial created command was run.
      * This allows to create child-nodes and append other allowed commands.
-     *
-     * @var array<int,CreateNodeAggregateWithNode|SetNodeProperties|DisableNodeAggregate|EnableNodeAggregate|SetNodeReferences|CopyNodesRecursively>
      */
-    public array $additionalCommands;
+    public Commands $additionalCommands;
 
     private function __construct(
         CreateNodeAggregateWithNode $first,
-        CreateNodeAggregateWithNode|SetNodeProperties|DisableNodeAggregate|EnableNodeAggregate|SetNodeReferences|CopyNodesRecursively ...$additionalCommands
+        Commands $additionalCommands
     ) {
         $this->first = $first;
-        $this->additionalCommands = array_values($additionalCommands);
+        $this->additionalCommands = $additionalCommands;
     }
 
     /**
@@ -84,6 +79,7 @@ final readonly class NodeCreationCommands implements \IteratorAggregate
         );
         return new self(
             $first->withTetheredDescendantNodeAggregateIds($tetheredDescendantNodeAggregateIds),
+            Commands::createEmpty()
         );
     }
 
@@ -103,14 +99,22 @@ final readonly class NodeCreationCommands implements \IteratorAggregate
     {
         return new self(
             $this->first->withInitialPropertyValues($newInitialPropertyValues),
-            ...$this->additionalCommands
+            $this->additionalCommands
+        );
+    }
+
+    public function withInitialReferences(NodeReferencesToWrite $newInitialReferences): self
+    {
+        return new self(
+            $this->first->withReferences($newInitialReferences),
+            $this->additionalCommands
         );
     }
 
     public function withAdditionalCommands(
-        CreateNodeAggregateWithNode|SetNodeProperties|DisableNodeAggregate|EnableNodeAggregate|SetNodeReferences|CopyNodesRecursively ...$additionalCommands
+        Commands $additionalCommands
     ): self {
-        return new self($this->first, ...$this->additionalCommands, ...$additionalCommands);
+        return new self($this->first, $this->additionalCommands->merge($additionalCommands));
     }
 
     /**

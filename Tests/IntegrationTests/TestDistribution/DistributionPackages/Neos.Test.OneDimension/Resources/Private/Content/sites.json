@@ -1,0 +1,17 @@
+[
+  {
+    "name": "Neos.Test.OneDimension",
+    "nodeName": "neos-test-onedimension",
+    "siteResourcesPackageKey": "Neos.Test.OneDimension",
+    "online": true,
+    "domains": [
+      {
+        "hostname": "onedimension.localhost",
+        "scheme": null,
+        "port": 8081,
+        "active": true,
+        "primary": true
+      }
+    ]
+  }
+]

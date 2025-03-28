@@ -41,6 +41,7 @@ dc exec -T php bash <<-'BASH'
     ./flow flow:cache:warmup
     ./flow doctrine:migrate
     ./flow user:create --username=admin --password=admin --first-name=John --last-name=Doe --roles=Administrator || true
+    ./flow user:create --username=editor --password=editor --first-name=Some --last-name=FooBarEditor --roles=Editor || true
 BASH
 
 echo ""
@@ -58,17 +59,15 @@ dc exec -T php bash <<-BASH
     rm -rf ./TestDistribution/DistributionPackages/Neos.TestSite
     ln -s "../../Fixtures/1Dimension/SitePackage" ./TestDistribution/DistributionPackages/Neos.TestSite
 
-    # TODO: optimize this
     cd TestDistribution
     composer reinstall neos/test-site
     ./flow flow:cache:flush --force
     ./flow flow:cache:warmup
     ./flow configuration:show --path Neos.ContentRepository.contentDimensions
 
-    if ./flow site:list | grep -q 'Node name'; then
-        ./flow site:prune '*'
-    fi
-    ./flow site:import --package-key=Neos.TestSite
+    ./flow cr:setup --content-repository onedimension
+    ./flow site:pruneAll --content-repository onedimension --force --verbose
+    ./flow site:importAll --content-repository onedimension --package-key Neos.Test.OneDimension --verbose
     ./flow resource:publish
 BASH
 
@@ -85,5 +84,5 @@ dc exec -T php bash <<-'BASH'
 
     # enable changes of the Neos.TestNodeTypes outside of the container to appear in the container via sym link to mounted volume
     rm -rf /usr/src/app/TestDistribution/Packages/Application/Neos.TestNodeTypes
-    ln -s /usr/src/neos-ui/Tests/IntegrationTests/SharedNodeTypesPackage/ /usr/src/app/TestDistribution/Packages/Application/Neos.TestNodeTypes
+    ln -s /usr/src/neos-ui/Tests/IntegrationTests/TestDistribution/DistributionPackages/Neos.TestNodeTypes /usr/src/app/TestDistribution/Packages/Application/Neos.TestNodeTypes
 BASH

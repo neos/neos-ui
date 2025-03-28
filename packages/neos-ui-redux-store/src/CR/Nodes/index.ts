@@ -74,16 +74,31 @@ export enum actionTypes {
     SET_STATE = '@neos/neos-ui/CR/Nodes/SET_STATE',
     RELOAD_STATE = '@neos/neos-ui/CR/Nodes/RELOAD_STATE',
     RELOAD_STATE_FINISHED = '@neos/neos-ui/CR/Nodes/RELOAD_STATE_FINISHED',
+    /**
+     * @deprecated `COPY_MULTIPLE` should be used
+     */
     COPY = '@neos/neos-ui/CR/Nodes/COPY',
     COPY_MULTIPLE = '@neos/neos-ui/CR/Nodes/COPY_MULTIPLE',
+    /**
+     * @deprecated `CUT_MULTIPLE` should be used
+     */
     CUT = '@neos/neos-ui/CR/Nodes/CUT',
     CUT_MULTIPLE = '@neos/neos-ui/CR/Nodes/CUT_MULTIPLE',
+    /**
+     * @deprecated `MOVE_MULTIPLE` should be used
+     */
     MOVE = '@neos/neos-ui/CR/Nodes/MOVE',
     MOVE_MULTIPLE = '@neos/neos-ui/CR/Nodes/MOVE_MULTIPLE',
     PASTE = '@neos/neos-ui/CR/Nodes/PASTE',
     COMMIT_PASTE = '@neos/neos-ui/CR/Nodes/COMMIT_PASTE',
+    /**
+     * @deprecated `HIDE_MULTIPLE` should be used
+     */
     HIDE = '@neos/neos-ui/CR/Nodes/HIDE',
     HIDE_MULTIPLE = '@neos/neos-ui/CR/Nodes/HIDE_MULTIPLE',
+    /**
+     * @deprecated `SHOW_MULTIPLE` should be used
+     */
     SHOW = '@neos/neos-ui/CR/Nodes/SHOW',
     SHOW_MULTIPLE = '@neos/neos-ui/CR/Nodes/SHOW_MULTIPLE',
     UPDATE_PATH = '@neos/neos-ui/CR/Nodes/UPDATE_PATH',
@@ -233,6 +248,7 @@ const adoptDataToHost = <T>(object: T): T => JSON.parse(JSON.stringify(object));
 /**
  * Mark a node for copy on paste
  *
+ * @deprecated `copyMultiple` should be used
  * @param {String} contextPath The context path of the node to be copied
  */
 const copy = (contextPath: NodeContextPath) => createAction(actionTypes.COPY, contextPath);
@@ -242,6 +258,7 @@ const copyMultiple = (contextPaths: NodeContextPath[]) => createAction(actionTyp
 /**
  * Mark a node for cut on paste
  *
+ * @deprecated `cutMultiple` should be used
  * @param {String} contextPath The context path of the node to be cut
  */
 const cut = (contextPath: NodeContextPath) => createAction(actionTypes.CUT, contextPath);
@@ -251,6 +268,7 @@ const cutMultiple = (contextPaths: NodeContextPath[]) => createAction(actionType
 /**
  * Move a node
  *
+ * @deprecated `moveMultiple` should be used
  * @param {String} nodeToBeMoved The context path of the node to be moved
  * @param {String} targetNode The context path of the target node
  * @param {String} position "into", "before" or "after"
@@ -284,6 +302,7 @@ const commitPaste = (clipboardMode: ClipboardMode) => createAction(actionTypes.C
 /**
  * Hide the given node draft.documentNode !== action.payload
  *
+ * @deprecated `hideMultiple` should be used
  * @param {String} contextPath The context path of the node to be hidden
  */
 const hide = (contextPath: NodeContextPath) => createAction(actionTypes.HIDE, contextPath);
@@ -293,6 +312,7 @@ const hideMultiple = (contextPaths: NodeContextPath[]) => createAction(actionTyp
 /**
  * Show the given node
  *
+ * @deprecated `showMultiple` should be used
  * @param {String} contextPath The context path of the node to be shown
  */
 const show = (contextPath: NodeContextPath) => createAction(actionTypes.SHOW, contextPath);
@@ -450,10 +470,16 @@ export const reducer = (state: State = defaultState, action: InitAction | EditPr
                 if (!newNode) {
                     throw new Error('This error should never be thrown, it\'s a way to fool TypeScript');
                 }
-                const mergedNode = defaultsDeep({}, newNode, draft.byContextPath[contextPath]);
-                // Force overwrite of children
+                const oldNode = state.byContextPath[contextPath];
+                const mergedNode = defaultsDeep({}, newNode, oldNode);
                 if (newNode.children !== undefined) {
+                    // Force overwrite of children
                     mergedNode.children = newNode.children;
+                } else if (!oldNode) {
+                    // newNode only adds meta info, but oldNode is gone from the store.
+                    // In order to avoid zombie nodes occupying the store, we'll leave
+                    // the node alone in this case.
+                    return;
                 }
                 // Force overwrite of matchesCurrentDimensions
                 if (newNode.matchesCurrentDimensions !== undefined) {

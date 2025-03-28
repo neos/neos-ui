@@ -16,17 +16,15 @@ use Neos\ContentRepository\Core\NodeType\NodeTypeName;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindChildNodesFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Nodes;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateClassification;
-use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
-use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\Ui\ContentRepository\Service\NeosUiNodeService;
 use Neos\Neos\Ui\Domain\Model\AbstractChange;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadDocument;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RenderContentOutOfBand;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 use Neos\Neos\Ui\Domain\Model\RenderedNodeDomAddress;
-use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
 
 /**
  * A change that performs structural actions like moving or creating nodes
@@ -36,11 +34,6 @@ use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
  */
 abstract class AbstractStructuralChange extends AbstractChange
 {
-    use NodeTypeWithFallbackProvider;
-
-    #[Flow\Inject]
-    protected ContentRepositoryRegistry $contentRepositoryRegistry;
-
     /**
      * The node dom address for the parent node of the created node
      */
@@ -109,14 +102,13 @@ abstract class AbstractStructuralChange extends AbstractChange
      */
     public function getSiblingNode(): ?Node
     {
-        if ($this->siblingDomAddress === null || !$this->getSubject()) {
+        if ($this->siblingDomAddress === null) {
             return null;
         }
 
         if ($this->cachedSiblingNode === null) {
             $this->cachedSiblingNode = $this->nodeService->findNodeBySerializedNodeAddress(
-                $this->siblingDomAddress->getContextPath(),
-                $this->getSubject()->contentRepositoryId
+                $this->siblingDomAddress->getContextPath()
             );
         }
 
@@ -149,20 +141,19 @@ abstract class AbstractStructuralChange extends AbstractChange
 
         $this->updateWorkspaceInfo();
 
-        if ($this->getNodeType($node)->isOfType('Neos.Neos:Content')
+        if ($this->getNodeType($node)?->isOfType('Neos.Neos:Content')
             && ($this->getParentDomAddress() || $this->getSiblingDomAddress())) {
             // we can ONLY render out of band if:
             // 1) the parent of our new (or copied or moved) node is a ContentCollection;
             // so we can directly update an element of this content collection
 
-            $contentRepository = $this->contentRepositoryRegistry->get($node->contentRepositoryId);
-            if ($parentNode && $this->getNodeType($parentNode)->isOfType('Neos.Neos:ContentCollection') &&
+            if ($parentNode && $this->getNodeType($parentNode)?->isOfType('Neos.Neos:ContentCollection') &&
                 // 2) the parent DOM address (i.e. the closest RENDERED node in DOM is actually the ContentCollection;
                 // and no other node in between
                 $this->getParentDomAddress() &&
                 $this->getParentDomAddress()->getFusionPath() &&
                 $this->getParentDomAddress()->getContextPath() ===
-                    NodeAddressFactory::create($contentRepository)->createFromNode($parentNode)->serializeForUri()
+                    NodeAddress::fromNode($parentNode)->toJson()
             ) {
                 $renderContentOutOfBand = new RenderContentOutOfBand();
                 $renderContentOutOfBand->setNode($node);
@@ -180,14 +171,14 @@ abstract class AbstractStructuralChange extends AbstractChange
         }
     }
 
-    protected function findChildNodes(Node $node): Nodes
+    final protected function findChildNodes(Node $node): Nodes
     {
         // TODO REMOVE
         return $this->contentRepositoryRegistry->subgraphForNode($node)
             ->findChildNodes($node->aggregateId, FindChildNodesFilter::create());
     }
 
-    protected function isNodeTypeAllowedAsChildNode(Node $parentNode, NodeTypeName $nodeTypeNameToCheck): bool
+    final protected function isNodeTypeAllowedAsChildNode(Node $parentNode, NodeTypeName $nodeTypeNameToCheck): bool
     {
         $nodeTypeManager = $this->contentRepositoryRegistry->get($parentNode->contentRepositoryId)->getNodeTypeManager();
 
@@ -203,7 +194,7 @@ abstract class AbstractStructuralChange extends AbstractChange
             }
             return $parentNodeType->allowsChildNodeType($nodeTypeToCheck);
         }
-
+        assert($parentNode->name !== null); // were tethered
         $subgraph = $this->contentRepositoryRegistry->subgraphForNode($parentNode);
         $grandParentNode = $subgraph->findParentNode($parentNode->aggregateId);
 

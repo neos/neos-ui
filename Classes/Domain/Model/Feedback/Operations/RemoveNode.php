@@ -11,13 +11,12 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
  * source code.
  */
 
+use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
-use Neos\Neos\Domain\NodeLabel\NodeLabelGeneratorInterface;
-use Neos\Neos\FrontendRouting\NodeAddressFactory;
-use Neos\Neos\FrontendRouting\NodeAddress;
-use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\Flow\Mvc\Controller\ControllerContext;
+use Neos\Neos\Domain\NodeLabel\NodeLabelGeneratorInterface;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 
@@ -54,11 +53,8 @@ class RemoveNode extends AbstractFeedback
 
     protected function initializeObject(): void
     {
-        $contentRepository = $this->contentRepositoryRegistry->get($this->node->contentRepositoryId);
-        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
-
-        $this->nodeAddress = $nodeAddressFactory->createFromNode($this->node);
-        $this->parentNodeAddress = $nodeAddressFactory->createFromNode($this->parentNode);
+        $this->nodeAddress = NodeAddress::fromNode($this->node);
+        $this->parentNodeAddress = NodeAddress::fromNode($this->parentNode);
     }
 
     public function getNode(): Node
@@ -110,8 +106,8 @@ class RemoveNode extends AbstractFeedback
     public function serializePayload(ControllerContext $controllerContext)
     {
         return [
-            'contextPath' => $this->nodeAddress->serializeForUri(),
-            'parentContextPath' => $this->parentNodeAddress->serializeForUri()
+            'contextPath' => $this->nodeAddress->toJson(),
+            'parentContextPath' => $this->parentNodeAddress->toJson()
         ];
     }
 }

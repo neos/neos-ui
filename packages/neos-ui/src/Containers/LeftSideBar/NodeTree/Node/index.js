@@ -62,7 +62,7 @@ export default class Node extends PureComponent {
         isActive: PropTypes.bool,
         isFocused: PropTypes.bool,
         toggledNodeContextPaths: PropTypes.array,
-        hiddenContextPaths: PropTypes.array,
+        visibleContextPaths: PropTypes.array,
         intermediateContextPaths: PropTypes.array,
         loadingNodeContextPaths: PropTypes.array,
         errorNodeContextPaths: PropTypes.array,
@@ -223,9 +223,9 @@ export default class Node extends PureComponent {
         return isNodeCollapsed(node, isToggled, rootNode, loadingDepth);
     }
 
-    isHidden() {
-        const {node, hiddenContextPaths} = this.props;
-        return hiddenContextPaths && hiddenContextPaths.includes(node.contextPath);
+    isVisible() {
+        const {node, visibleContextPaths} = this.props;
+        return !Array.isArray(visibleContextPaths) || visibleContextPaths.includes(node.contextPath);
     }
 
     isIntermediate() {
@@ -277,7 +277,7 @@ export default class Node extends PureComponent {
             isWorkspaceReadOnly
         } = this.props;
 
-        if (this.isHidden()) {
+        if (!this.isVisible()) {
             return null;
         }
         const refHandler = div => {
@@ -420,7 +420,7 @@ export const PageTreeNode = withNodeTypeRegistryAndI18nRegistry(connect(
                 isActive: selectors.CR.Nodes.documentNodeContextPathSelector(state) === node.contextPath,
                 isFocused: selectors.UI.PageTree.getAllFocused(state).includes(node.contextPath),
                 toggledNodeContextPaths: selectors.UI.PageTree.getToggled(state),
-                hiddenContextPaths: selectors.UI.PageTree.getHidden(state),
+                visibleContextPaths: selectors.UI.PageTree.getVisible(state),
                 intermediateContextPaths: selectors.UI.PageTree.getIntermediate(state),
                 loadingNodeContextPaths: selectors.UI.PageTree.getLoading(state),
                 errorNodeContextPaths: selectors.UI.PageTree.getErrors(state),

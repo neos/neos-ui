@@ -1,0 +1,17 @@
+-
+  name: 'RemoveAdditionalSettings Command'
+  uriPattern: 'test/remove-additional-settings'
+  defaults:
+    '@package': 'Neos.TestNodeTypes'
+    '@subpackage': 'Application\RemoveAdditionalSettings'
+    '@controller': 'RemoveAdditionalSettings'
+    '@action': 'ignored'
+
+-
+  name: 'WriteAdditionalSettings Command'
+  uriPattern: 'test/write-additional-settings'
+  defaults:
+    '@package': 'Neos.TestNodeTypes'
+    '@subpackage': 'Application\WriteAdditionalSettings'
+    '@controller': 'WriteAdditionalSettings'
+    '@action': 'ignored'

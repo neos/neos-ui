@@ -12,18 +12,20 @@ namespace Neos\Neos\Ui\Controller;
  * source code.
  */
 
-use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
-use Neos\ContentRepository\Core\SharedModel\Exception\WorkspaceDoesNotExist;
+use Neos\ContentRepository\Core\Feature\WorkspaceRebase\Exception\WorkspaceRebaseFailed;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
+use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceStatus;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
-use Neos\Flow\Security\Context;
 use Neos\Neos\Domain\Repository\DomainRepository;
 use Neos\Neos\Domain\Repository\SiteRepository;
 use Neos\Neos\Domain\Service\NodeTypeNameFactory;
-use Neos\Neos\Domain\Service\WorkspaceNameBuilder;
-use Neos\Neos\FrontendRouting\NodeAddressFactory;
+use Neos\Neos\Domain\Service\WorkspacePublishingService;
+use Neos\Neos\Domain\Service\WorkspaceService;
+use Neos\Neos\Domain\SubtreeTagging\NeosSubtreeTag;
+use Neos\Neos\FrontendRouting\NodeUriBuilderFactory;
 use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;
 use Neos\Neos\Service\UserService;
 use Neos\Neos\Ui\Domain\InitialData\ConfigurationProviderInterface;
@@ -78,12 +80,6 @@ class BackendController extends ActionController
 
     /**
      * @Flow\Inject
-     * @var Context
-     */
-    protected $securityContext;
-
-    /**
-     * @Flow\Inject
      * @var ConfigurationProviderInterface
      */
     protected $configurationProvider;
@@ -119,6 +115,30 @@ class BackendController extends ActionController
     protected $initialStateProvider;
 
     /**
+     * @Flow\Inject
+     * @var NodeUriBuilderFactory
+     */
+    protected $nodeUriBuilderFactory;
+
+    /**
+     * @Flow\Inject
+     * @var WorkspaceService
+     */
+    protected $workspaceService;
+
+    /**
+     * @Flow\Inject
+     * @var WorkspacePublishingService
+     */
+    protected $workspacePublishingService;
+
+    /**
+     * @Flow\InjectConfiguration(path="autoSyncPersonalWorkspaces")
+     * @var bool
+     */
+    protected $autoSyncPersonalWorkspaces;
+
+    /**
      * Displays the backend interface
      *
      * @param string $node The node that will be displayed on the first tab
@@ -129,33 +149,36 @@ class BackendController extends ActionController
         $siteDetectionResult = SiteDetectionResult::fromRequest($this->request->getHttpRequest());
         $contentRepository = $this->contentRepositoryRegistry->get($siteDetectionResult->contentRepositoryId);
 
-        $nodeAddress = $node !== null ? NodeAddressFactory::create($contentRepository)->createFromUriString($node) : null;
-        unset($node);
+        $nodeAddress = $node !== null ? NodeAddress::fromJsonString($node) : null;
         $user = $this->userService->getBackendUser();
 
         if ($user === null) {
             $this->redirectToUri($this->uriBuilder->uriFor('index', [], 'Login', 'Neos.Neos'));
         }
 
-        $currentAccount = $this->securityContext->getAccount();
-        $workspaceName = WorkspaceNameBuilder::fromAccountIdentifier($currentAccount->getAccountIdentifier());
-
-        try {
-            $contentGraph = $contentRepository->getContentGraph($workspaceName);
-        } catch (WorkspaceDoesNotExist) {
-            // todo will cause infinite loop: https://github.com/neos/neos-development-collection/issues/4401
-            $this->redirectToUri($this->uriBuilder->uriFor('index', [], 'Login', 'Neos.Neos'));
+        $this->workspaceService->createPersonalWorkspaceForUserIfMissing($siteDetectionResult->contentRepositoryId, $user);
+        $workspace = $this->workspaceService->getPersonalWorkspaceForUser($siteDetectionResult->contentRepositoryId, $user->getId());
+        if (
+            $this->autoSyncPersonalWorkspaces
+            && $workspace->status === WorkspaceStatus::OUTDATED
+            && !$workspace->hasPublishableChanges()
+        ) {
+            try {
+                $this->workspacePublishingService->rebaseWorkspace($siteDetectionResult->contentRepositoryId, $workspace->workspaceName);
+            } catch (WorkspaceRebaseFailed) {
+                // currently we don't have a way to provide this rebase error directly to the neos ui and have it solved.
+                // instead we ignore it and have the editor trigger it again via the sync button.
+            }
         }
 
-        $backendControllerInternals = $this->contentRepositoryRegistry->buildService(
-            $siteDetectionResult->contentRepositoryId,
-            new BackendControllerInternalsFactory()
-        );
-        $defaultDimensionSpacePoint = $backendControllerInternals->getDefaultDimensionSpacePoint();
+        $contentGraph = $contentRepository->getContentGraph($workspace->workspaceName);
 
-        $subgraph = $contentGraph->getSubgraph(
-            $nodeAddress ? $nodeAddress->dimensionSpacePoint : $defaultDimensionSpacePoint,
-            VisibilityConstraints::withoutRestrictions()
+        $rootDimensionSpacePoints = $contentRepository->getVariationGraph()->getRootGeneralizations();
+        $arbitraryRootDimensionSpacePoint = array_shift($rootDimensionSpacePoints);
+
+        $subgraph = $contentRepository->getContentSubgraph(
+            $workspace->workspaceName,
+            $nodeAddress->dimensionSpacePoint ?? $arbitraryRootDimensionSpacePoint,
         );
 
         // we assume that the ROOT node is always stored in the CR as "physical" node; so it is safe
@@ -163,17 +186,19 @@ class BackendController extends ActionController
         $rootNodeAggregate = $contentGraph->findRootNodeAggregateByType(
             NodeTypeNameFactory::forSites()
         );
-        $rootNode = $rootNodeAggregate->getNodeByCoveredDimensionSpacePoint($defaultDimensionSpacePoint);
+        if (!$rootNodeAggregate) {
+            throw new \RuntimeException(sprintf('No sites root node found in content repository "%s", while fetching site node "%s"', $contentRepository->id->value, $siteDetectionResult->siteNodeName->value), 1724849303);
+        }
 
         $siteNode = $subgraph->findNodeByPath(
             $siteDetectionResult->siteNodeName->toNodeName(),
-            $rootNode->aggregateId
+            $rootNodeAggregate->nodeAggregateId
         );
 
         if (!$nodeAddress) {
             $node = $siteNode;
         } else {
-            $node = $subgraph->findNodeById($nodeAddress->nodeAggregateId);
+            $node = $subgraph->findNodeById($nodeAddress->aggregateId);
         }
 
         $this->view->setOption('title', 'Neos CMS');
@@ -212,15 +237,36 @@ class BackendController extends ActionController
      */
     public function redirectToAction(string $node): void
     {
-        $siteDetectionResult = SiteDetectionResult::fromRequest($this->request->getHttpRequest());
-
-        $contentRepository = $this->contentRepositoryRegistry->get($siteDetectionResult->contentRepositoryId);
-
-        $nodeAddress = NodeAddressFactory::create($contentRepository)->createFromUriString($node);
         $this->response->setHttpHeader('Cache-Control', [
             'no-cache',
             'no-store'
         ]);
-        $this->redirect('show', 'Frontend\Node', 'Neos.Neos', ['node' => $nodeAddress]);
+
+        $nodeAddress = NodeAddress::fromJsonString($node);
+
+        $contentRepository = $this->contentRepositoryRegistry->get($nodeAddress->contentRepositoryId);
+
+        $nodeInstance = $contentRepository->getContentSubgraph(
+            $nodeAddress->workspaceName,
+            $nodeAddress->dimensionSpacePoint
+        )->findNodeById($nodeAddress->aggregateId);
+
+        $workspace = $contentRepository->findWorkspaceByName($nodeAddress->workspaceName);
+
+        // we always want to redirect to the node in the base workspace unless we are on a root workspace in which case we stay on that (currently that will not happen)
+        $nodeAddressInBaseWorkspace = NodeAddress::create(
+            $nodeAddress->contentRepositoryId,
+            $workspace->baseWorkspaceName ?? $nodeAddress->workspaceName,
+            $nodeAddress->dimensionSpacePoint,
+            $nodeAddress->aggregateId
+        );
+
+        $nodeUriBuilder = $this->nodeUriBuilderFactory->forActionRequest($this->request);
+
+        $this->redirectToUri(
+            !$nodeInstance || $nodeInstance->tags->contain(NeosSubtreeTag::disabled())
+                ? $nodeUriBuilder->previewUriFor($nodeAddressInBaseWorkspace)
+                : $nodeUriBuilder->uriFor($nodeAddressInBaseWorkspace)
+        );
     }
 }

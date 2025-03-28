@@ -535,6 +535,30 @@
         <source>Collapse All</source>
         <target state="translated">Alles inklappen</target>
       </trans-unit>
+      <trans-unit id="NodeNotPublishedMissingParentNode" xml:space="preserve">
+        <source>Node could not be published, probably because of a missing parentNode. Please check that the parentNode has been published.</source>
+        <target state="translated">De node kon niet worden gepubliceerd. Waarschijnlijk door een ontbrekende parent node. Controleer of de parent node is gepubliceerd.</target>
+      </trans-unit>
+      <trans-unit id="workspaceContainsUnpublishedChanges" xml:space="preserve">
+        <source>Your personal workspace currently contains unpublished changes.
+                In order to switch to a different target workspace you need to either publish or discard pending changes first.
+                </source>
+        <target state="translated">Je persoonlijke workspace bevat niet gepubliceerde wijzigingen.
+Om te wisselen naar een andere worksapce , zul je eerst je wijzingen moeten publiceren of ongedaan moeten maken.
+                </target>
+      </trans-unit>
+      <trans-unit id="invalidValue" xml:space="preserve">
+        <source>Invalid value</source>
+        <target state="translated">Ongeldige waarde</target>
+      </trans-unit>
+      <trans-unit id="NodeNotPublishedParentNodeNotInCurrentDimension" xml:space="preserve">
+        <source>Node could not be published, probably because the parentNode does not exist in the current dimension. Please check that the parentNode has been published.</source>
+        <target state="translated">De node kon niet worden gepubliceerd. Waarschijnlijk omdat de parent node zich niet in de huidige dimensie bevindt. Controleer of de parent node is gepubliceerd.</target>
+      </trans-unit>
+      <trans-unit id="switchedBaseWorkspace" xml:space="preserve">
+        <source>Switched base workspace to "{workspace}".</source>
+        <target state="translated">Base workspace is gewisseld naar "{workspace}".</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

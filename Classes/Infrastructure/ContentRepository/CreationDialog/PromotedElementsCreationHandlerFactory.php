@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Neos\Neos\Ui\Infrastructure\ContentRepository\CreationDialog;
 
 use Neos\ContentRepository\Core\ContentRepository;
-use Neos\ContentRepository\Core\Feature\NodeReferencing\Command\SetNodeReferences;
-use Neos\ContentRepository\Core\Feature\NodeReferencing\Dto\NodeReferencesToWrite;
+use Neos\ContentRepository\Core\Feature\NodeReferencing\Dto\NodeReferencesForName;
 use Neos\ContentRepository\Core\NodeType\NodeTypeManager;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateIds;
 use Neos\ContentRepository\Core\SharedModel\Node\ReferenceName;
@@ -35,9 +34,11 @@ final class PromotedElementsCreationHandlerFactory implements NodeCreationHandle
             public function handle(NodeCreationCommands $commands, NodeCreationElements $elements): NodeCreationCommands
             {
                 $nodeType = $this->nodeTypeManager->getNodeType($commands->first->nodeTypeName);
-
+                if (!$nodeType) {
+                    return $commands;
+                }
                 $propertyValues = $commands->first->initialPropertyValues;
-                $setReferencesCommands = [];
+                $initialReferences = $commands->first->references;
                 foreach ($elements as $elementName => $elementValue) {
                     // handle properties
                     if ($nodeType->hasProperty($elementName)) {
@@ -54,16 +55,12 @@ final class PromotedElementsCreationHandlerFactory implements NodeCreationHandle
                     if ($nodeType->hasReference($elementName)) {
                         assert($elementValue instanceof NodeAggregateIds);
                         $referenceConfiguration = $nodeType->getReferences()[$elementName];
-                        if (
-                            ($referenceConfiguration['ui']['showInCreationDialog'] ?? false) === true
-                        ) {
-                            // a promoted element
-                            $setReferencesCommands[] = SetNodeReferences::create(
-                                $commands->first->workspaceName,
-                                $commands->first->nodeAggregateId,
-                                $commands->first->originDimensionSpacePoint,
-                                ReferenceName::fromString($elementName),
-                                NodeReferencesToWrite::fromNodeAggregateIds($elementValue)
+                        if (($referenceConfiguration['ui']['showInCreationDialog'] ?? false) === true) {
+                            $initialReferences = $initialReferences->withReference(
+                                NodeReferencesForName::fromTargets(
+                                    ReferenceName::fromString($elementName),
+                                    $elementValue
+                                )
                             );
                         }
                     }
@@ -71,7 +68,7 @@ final class PromotedElementsCreationHandlerFactory implements NodeCreationHandle
 
                 return $commands
                     ->withInitialPropertyValues($propertyValues)
-                    ->withAdditionalCommands(...$setReferencesCommands);
+                    ->withInitialReferences($initialReferences);
             }
         };
     }

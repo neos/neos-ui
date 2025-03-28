@@ -18,13 +18,11 @@ use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindAncestorNodes
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindChildNodesFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\NodeType\NodeTypeCriteria;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
-use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\ActionRequest;
 use Neos\Neos\Domain\Service\NodeTypeNameFactory;
-use Neos\Neos\Domain\Workspace\WorkspaceProvider;
-use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 
 /**
@@ -36,9 +34,6 @@ use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 #[Flow\Scope("singleton")]
 final class ReloadNodesQueryHandler
 {
-    #[Flow\Inject]
-    protected WorkspaceProvider $workspaceProvider;
-
     #[Flow\Inject]
     protected ContentRepositoryRegistry $contentRepositoryRegistry;
 
@@ -55,10 +50,7 @@ final class ReloadNodesQueryHandler
     {
         $contentRepository = $this->contentRepositoryRegistry
             ->get($query->contentRepositoryId);
-        $subgraph = $contentRepository->getContentGraph($query->workspaceName)->getSubgraph(
-            $query->dimensionSpacePoint,
-            VisibilityConstraints::withoutRestrictions()
-        );
+        $subgraph = $contentRepository->getContentSubgraph($query->workspaceName, $query->dimensionSpacePoint);
         $baseNodeTypeConstraints = NodeTypeCriteria::fromFilterString($this->baseNodeType);
 
         $documentNode = $subgraph->findNodeById($query->documentId);
@@ -152,10 +144,8 @@ final class ReloadNodesQueryHandler
          - but the logic above mirrors the old behavior better.
          https://github.com/neos/neos-ui/issues/3517#issuecomment-2070274053 */
 
-        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
-
         return new ReloadNodesQueryResult(
-            documentId: $nodeAddressFactory->createFromNode($documentNode),
+            documentId: NodeAddress::fromNode($documentNode),
             nodes: $nodeMapBuilder->build()
         );
     }

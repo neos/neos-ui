@@ -9,8 +9,7 @@
  */
 import React from 'react';
 
-import {I18nRegistry} from '@neos-project/neos-ts-interfaces';
-import I18n from '@neos-project/neos-ui-i18n';
+import I18n, {I18nRegistry} from '@neos-project/neos-ui-i18n';
 import {Icon} from '@neos-project/react-ui-components';
 import {Conflict, ReasonForConflict} from '@neos-project/neos-ui-redux-store/src/CR/Syncing';
 import {TypeOfChange} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces';
@@ -23,9 +22,9 @@ export const ConflictList: React.FC<{
 }> = (props) => {
     return (
         <ul className={style.conflictList}>
-            {props.conflicts.map((conflict, i) => (
+            {props.conflicts.map((conflict) => (
                 <ConflictItem
-                    key={String(i)}
+                    key={conflict.key}
                     conflict={conflict}
                     i18n={props.i18n}
                     />

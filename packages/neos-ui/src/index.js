@@ -10,6 +10,8 @@ import fetchWithErrorHandling from '@neos-project/neos-ui-backend-connector/src/
 import {SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
 import backend from '@neos-project/neos-ui-backend-connector';
 import {handleActions} from '@neos-project/utils-redux';
+import {initializeI18n} from '@neos-project/neos-ui-i18n';
+import {showFlashMessage} from '@neos-project/neos-ui-error';
 
 import {
     appContainer,
@@ -63,7 +65,7 @@ async function main() {
 
     await Promise.all([
         loadNodeTypesSchema(),
-        loadTranslations(),
+        initializeI18n(),
         loadImpersonateStatus()
     ]);
 
@@ -141,7 +143,11 @@ function initializeFetchWithErrorHandling() {
             message = exception.textContent;
         }
 
-        store.dispatch(actions.UI.FlashMessages.add('fetch error', message, 'error'));
+        showFlashMessage({
+            id: 'fetch error',
+            severity: 'error',
+            message
+        });
     });
 }
 
@@ -165,14 +171,6 @@ async function loadNodeTypesSchema() {
     nodeTypesRegistry.setRoles(roles);
 }
 
-async function loadTranslations() {
-    const {getJsonResource} = backend.get().endpoints;
-    const i18nRegistry = globalRegistry.get('i18n');
-    const translations = await getJsonResource(configuration.endpoints.translations);
-
-    i18nRegistry.setTranslations(translations);
-}
-
 async function loadImpersonateStatus() {
     try {
         const {impersonateStatus} = backend.get().endpoints;
@@ -181,7 +179,11 @@ async function loadImpersonateStatus() {
             store.dispatch(actions.User.Impersonate.fetchStatus(impersonateState));
         }
     } catch (error) {
-        store.dispatch(actions.UI.FlashMessages.add('impersonateStatusError', error.message, 'error'));
+        showFlashMessage({
+            id: 'impersonateStatusError',
+            severity: 'error',
+            message: error.message
+        });
     }
 }
 

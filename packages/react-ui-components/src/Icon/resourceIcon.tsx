@@ -13,6 +13,11 @@ export interface ResourceIconProps extends Omit<IconProps, 'theme'> {
     readonly theme?: ResourceIconTheme;
 }
 
+/**
+ * @deprecated please refrain from using resource paths
+ * use the new react-ui-components/ResourceIcon instead.
+ * See also https://github.com/neos/neos-ui/issues/2092
+ */
 class ResourceIcon extends PureComponent<ResourceIconProps> {
     public static readonly defaultProps = defaultProps;
 

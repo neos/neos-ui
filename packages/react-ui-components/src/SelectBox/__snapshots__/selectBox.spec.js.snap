@@ -27,7 +27,6 @@ exports[`<SelectBox/> should render correctly. 1`] = `
       scrollable={true}
       searchBoxLeftToTypeLabel="searchBoxLeftToTypeLabel"
       showDropDownToggle={true}
-      showResetButton={false}
       theme={
         Object {
           "selectBoxHeader": "selectBoxHeaderClassName",

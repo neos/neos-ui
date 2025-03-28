@@ -11,23 +11,20 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
  * source code.
  */
 
+use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
-use Neos\Neos\FrontendRouting\NodeAddressFactory;
-use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Neos\Domain\Service\NodeTypeNameFactory;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
-use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
 
 /**
  * @internal
  */
 class NodeCreated extends AbstractFeedback
 {
-    use NodeTypeWithFallbackProvider;
-
     #[Flow\Inject]
     protected ContentRepositoryRegistry $contentRepositoryRegistry;
 
@@ -93,11 +90,12 @@ class NodeCreated extends AbstractFeedback
     {
         $node = $this->getNode();
         $contentRepository = $this->contentRepositoryRegistry->get($node->contentRepositoryId);
-        $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
+        $nodeType = $contentRepository->getNodeTypeManager()->getNodeType($node->nodeTypeName);
+
         return [
-            'contextPath' => $nodeAddressFactory->createFromNode($node)->serializeForUri(),
+            'contextPath' => NodeAddress::fromNode($node)->toJson(),
             'identifier' => $node->aggregateId->value,
-            'isDocument' => $this->getNodeType($node)->isOfType(NodeTypeNameFactory::NAME_DOCUMENT)
+            'isDocument' => $nodeType?->isOfType(NodeTypeNameFactory::NAME_DOCUMENT)
         ];
     }
 }

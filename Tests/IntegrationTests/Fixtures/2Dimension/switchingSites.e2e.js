@@ -20,7 +20,7 @@ test('Switching from Neos.Test.OneDimension to Neos.Test.TwoDimensions and back'
 
     subSection('Switch to Neos.Test.TwoDimensions via main menu');
     await t.click(Selector('#neos-MenuToggler'));
-    await t.click(Selector('[href*="twodimensions"]'));
+    await t.click(Selector('[href*="twodimensions"] button'));
 
     await t.expect(getUrl()).contains('twodimensions.localhost', 'Switch to Neos.Test.TwoDimensions was successful');
 
@@ -28,7 +28,7 @@ test('Switching from Neos.Test.OneDimension to Neos.Test.TwoDimensions and back'
     await waitForReact(30000);
     await Page.goToPage('Home');
     await t.click(Selector('#neos-MenuToggler'));
-    await t.click(Selector('[href*="onedimension"]'));
+    await t.click(Selector('[href*="onedimension"] button'));
 
     await t.expect(getUrl()).contains('onedimension.localhost', 'Switch to Neos.Test.OneDimension was successful');
 });
@@ -45,7 +45,7 @@ test('Switching from Neos.Test.TwoDimensions to Neos.Test.OneDimension and back'
 
     subSection('Switch to Neos.Test.OneDimension via main menu');
     await t.click(Selector('#neos-MenuToggler'));
-    await t.click(Selector('[href*="onedimension"]'));
+    await t.click(Selector('[href*="onedimension"] button'));
 
     await t.expect(getUrl()).contains('onedimension.localhost', 'Switch to Neos.Test.OneDimension was successful');
 
@@ -53,7 +53,7 @@ test('Switching from Neos.Test.TwoDimensions to Neos.Test.OneDimension and back'
     await waitForReact(30000);
     await Page.goToPage('Home');
     await t.click(Selector('#neos-MenuToggler'));
-    await t.click(Selector('[href*="twodimensions"]'));
+    await t.click(Selector('[href*="twodimensions"] button'));
 
     await t.expect(getUrl()).contains('twodimensions.localhost', 'Switch to Neos.Test.TwoDimensions was successful');
 });

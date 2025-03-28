@@ -15,7 +15,7 @@ import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 
     return (state, {contextPath}) => {
         const clipboardNodesContextPaths = selectors.CR.Nodes.clipboardNodesContextPathsSelector(state);
-        const canBePasted = (clipboardNodesContextPaths.every(clipboardNodeContextPath => {
+        const canBePasted = Boolean(clipboardNodesContextPaths.length && clipboardNodesContextPaths.every(clipboardNodeContextPath => {
             return canBePastedSelector(state, {
                 subject: clipboardNodeContextPath,
                 reference: contextPath

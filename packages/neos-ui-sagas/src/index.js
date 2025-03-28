@@ -12,4 +12,5 @@ export * as uiInspector from './UI/Inspector/index';
 export * as uiPageTree from './UI/PageTree/index';
 export * as uiHotkeys from './UI/Hotkeys/index';
 export * as impersonate from './UI/Impersonate/index';
+export * as flashMessages from './UI/FlashMessages/index';
 export * as sync from './Sync/index';

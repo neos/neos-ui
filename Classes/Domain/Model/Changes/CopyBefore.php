@@ -13,8 +13,10 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  */
 
 use Neos\ContentRepository\Core\DimensionSpace\OriginDimensionSpacePoint;
-use Neos\ContentRepository\Core\Feature\NodeDuplication\Command\CopyNodesRecursively;
-use Neos\ContentRepository\Core\SharedModel\Node\NodeName;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateId;
+use Neos\Neos\Domain\Service\NodeDuplication\NodeAggregateIdMapping;
+use Neos\Neos\Domain\Service\NodeDuplicationService;
+use Neos\Flow\Annotations as Flow;
 
 /**
  * @internal These objects internally reflect possible operations made by the Neos.Ui.
@@ -23,14 +25,14 @@ use Neos\ContentRepository\Core\SharedModel\Node\NodeName;
  */
 class CopyBefore extends AbstractStructuralChange
 {
+    #[Flow\Inject()]
+    protected NodeDuplicationService $nodeDuplicationService;
+
     /**
      * "Subject" is the to-be-copied node; the "sibling" node is the node after which the "Subject" should be copied.
      */
     public function canApply(): bool
     {
-        if (is_null($this->subject)) {
-            return false;
-        }
         $siblingNode = $this->getSiblingNode();
         if (is_null($siblingNode)) {
             return false;
@@ -57,29 +59,29 @@ class CopyBefore extends AbstractStructuralChange
             ? $this->findParentNode($succeedingSibling)
             : null;
         $subject = $this->subject;
-        if ($this->canApply() && !is_null($subject) && !is_null($succeedingSibling)
+        if ($this->canApply() && !is_null($succeedingSibling)
             && !is_null($parentNodeOfSucceedingSibling)
         ) {
-            $contentRepository = $this->contentRepositoryRegistry->get($subject->contentRepositoryId);
-            $command = CopyNodesRecursively::createFromSubgraphAndStartNode(
-                $contentRepository->getContentGraph($subject->workspaceName)->getSubgraph(
-                    $subject->dimensionSpacePoint,
-                    $subject->visibilityConstraints
-                ),
+            if (!$subject->dimensionSpacePoint->equals($succeedingSibling->dimensionSpacePoint)) {
+                throw new \RuntimeException('Copying across dimensions is not supported yet (https://github.com/neos/neos-development-collection/issues/5054)', 1733586265);
+            }
+            $this->nodeDuplicationService->copyNodesRecursively(
+                $subject->contentRepositoryId,
                 $subject->workspaceName,
-                $subject,
-                OriginDimensionSpacePoint::fromDimensionSpacePoint($subject->dimensionSpacePoint),
+                $subject->dimensionSpacePoint,
+                $subject->aggregateId,
+                OriginDimensionSpacePoint::fromDimensionSpacePoint($succeedingSibling->dimensionSpacePoint),
                 $parentNodeOfSucceedingSibling->aggregateId,
                 $succeedingSibling->aggregateId,
-                null
+                NodeAggregateIdMapping::createEmpty()
+                    ->withNewNodeAggregateId($subject->aggregateId, $newlyCreatedNodeId = NodeAggregateId::create())
             );
 
-            $contentRepository->handle($command);
-
             $newlyCreatedNode = $this->contentRepositoryRegistry->subgraphForNode($parentNodeOfSucceedingSibling)
-                ->findNodeById(
-                    $command->nodeAggregateIdMapping->getNewNodeAggregateId($subject->aggregateId)
-                );
+                ->findNodeById($newlyCreatedNodeId);
+            if (!$newlyCreatedNode) {
+                throw new \RuntimeException(sprintf('Node %s was not found after copy.', $newlyCreatedNodeId->value), 1716023308);
+            }
             $this->finish($newlyCreatedNode);
             // NOTE: we need to run "finish" before "addNodeCreatedFeedback"
             // to ensure the new node already exists when the last feedback is processed

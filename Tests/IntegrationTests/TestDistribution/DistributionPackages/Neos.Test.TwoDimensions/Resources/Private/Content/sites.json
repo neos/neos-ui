@@ -1,0 +1,17 @@
+[
+  {
+    "name": "Neos.Test.TwoDimensions",
+    "nodeName": "neos-test-twodimensions",
+    "siteResourcesPackageKey": "Neos.Test.TwoDimensions",
+    "online": true,
+    "domains": [
+      {
+        "hostname": "twodimensions.localhost",
+        "scheme": null,
+        "port": 8081,
+        "active": true,
+        "primary": true
+      }
+    ]
+  }
+]

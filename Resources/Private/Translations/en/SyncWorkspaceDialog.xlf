@@ -54,7 +54,7 @@
         <source>Discard all changes in workspace "{workspaceName}"</source>
       </trans-unit>
       <trans-unit id="resolutionStrategy.DISCARD_ALL.confirmation.message" xml:space="preserve">
-        <source>You are about to discard all changes in workspace "{workspaceName}". This includes all changes on other sites.
+        <source>You are about to discard all {numberOfChanges} change(s) in workspace "{workspaceName}". This includes all changes on other sites.
 
         Do you wish to proceed? Be careful: This cannot be undone!</source>
       </trans-unit>

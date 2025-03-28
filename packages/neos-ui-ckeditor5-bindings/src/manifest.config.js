@@ -97,7 +97,8 @@ export default ckEditorRegistry => {
             ...ckEditorConfiguration,
             // stripTags, because we allow `<p>Edit text here</p>` as placeholder for legacy
             placeholder: placeholder ? stripTags(i18nRegistry.translate(placeholder)) : undefined,
-            language: String(userPreferences?.interfaceLanguage)
+            language: String(userPreferences?.interfaceLanguage),
+            licenseKey: 'GPL'
         };
     });
 

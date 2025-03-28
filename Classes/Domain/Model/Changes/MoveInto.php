@@ -13,8 +13,8 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  */
 
 use Neos\ContentRepository\Core\Feature\NodeMove\Command\MoveNodeAggregate;
-use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\Feature\NodeMove\Dto\RelationDistributionStrategy;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 
 /**
@@ -38,8 +38,7 @@ class MoveInto extends AbstractStructuralChange
         }
 
         return $this->nodeService->findNodeBySerializedNodeAddress(
-            $this->parentContextPath,
-            $this->getSubject()->contentRepositoryId
+            $this->parentContextPath
         );
     }
 
@@ -57,9 +56,6 @@ class MoveInto extends AbstractStructuralChange
      */
     public function canApply(): bool
     {
-        if (is_null($this->subject)) {
-            return false;
-        }
         $parent = $this->getParentNode();
 
         return $parent && $this->isNodeTypeAllowedAsChildNode($parent, $this->subject->nodeTypeName);
@@ -74,7 +70,7 @@ class MoveInto extends AbstractStructuralChange
         $parentNode = $this->getParentNode();
         // "subject" is the to-be-moved node
         $subject = $this->subject;
-        if ($this->canApply() && $parentNode && $subject) {
+        if ($this->canApply() && $parentNode) {
             $otherParent = $this->contentRepositoryRegistry->subgraphForNode($subject)
                 ->findParentNode($subject->aggregateId);
 
@@ -82,12 +78,20 @@ class MoveInto extends AbstractStructuralChange
                     ->equals($parentNode->aggregateId);
 
             $contentRepository = $this->contentRepositoryRegistry->get($subject->contentRepositoryId);
+            $rawMoveNodeStrategy = $this->getNodeType($this->subject)?->getConfiguration('options.moveNodeStrategy');
+            if (!is_string($rawMoveNodeStrategy)) {
+                throw new \RuntimeException(sprintf('NodeType "%s" has an invalid configuration for option "moveNodeStrategy" expected string got %s', $this->subject->nodeTypeName->value, get_debug_type($rawMoveNodeStrategy)), 1732010016);
+            }
+            $moveNodeStrategy = RelationDistributionStrategy::tryFrom($rawMoveNodeStrategy);
+            if ($moveNodeStrategy === null) {
+                throw new \RuntimeException(sprintf('NodeType "%s" has an invalid configuration for option "moveNodeStrategy" got %s', $this->subject->nodeTypeName->value, $rawMoveNodeStrategy), 1732010011);
+            }
             $contentRepository->handle(
                 MoveNodeAggregate::create(
                     $subject->workspaceName,
                     $subject->dimensionSpacePoint,
                     $subject->aggregateId,
-                    RelationDistributionStrategy::STRATEGY_GATHER_ALL,
+                    $moveNodeStrategy,
                     $hasEqualParentNode ? null : $parentNode->aggregateId,
                 )
             );

@@ -45,6 +45,7 @@ const NodeTreeSearchInput = ({
                 />
             {showClear && (
                 <IconButton
+                    id="neos-NodeTreeSearchInput-btn-reset"
                     icon="times"
                     className={style.clearButton}
                     onClick={onClearClick}

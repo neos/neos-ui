@@ -11,14 +11,14 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
  * source code.
  */
 
-use Neos\Neos\Domain\Service\RenderingModeService;
-use Neos\Neos\FrontendRouting\NodeAddressFactory;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Fusion\Core\Cache\ContentCache;
 use Neos\Fusion\Exception as FusionException;
+use Neos\Neos\Domain\Service\RenderingModeService;
 use Neos\Neos\Fusion\Helper\CachingHelper;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
@@ -31,7 +31,7 @@ use Psr\Http\Message\ResponseInterface;
  */
 class ReloadContentOutOfBand extends AbstractFeedback
 {
-    protected ?Node $node = null;
+    protected Node $node;
 
     protected ?RenderedNodeDomAddress $nodeDomAddress;
 
@@ -64,7 +64,7 @@ class ReloadContentOutOfBand extends AbstractFeedback
         $this->node = $node;
     }
 
-    public function getNode(): ?Node
+    public function getNode(): Node
     {
         return $this->node;
     }
@@ -86,7 +86,7 @@ class ReloadContentOutOfBand extends AbstractFeedback
 
     public function getDescription(): string
     {
-        return sprintf('Rendering of node "%s" required.', $this->node?->aggregateId->value);
+        return sprintf('Rendering of node "%s" required.', $this->node->aggregateId->value);
     }
 
     /**
@@ -109,11 +109,9 @@ class ReloadContentOutOfBand extends AbstractFeedback
      */
     public function serializePayload(ControllerContext $controllerContext): array
     {
-        if (!is_null($this->node) && !is_null($this->nodeDomAddress)) {
-            $contentRepository = $this->contentRepositoryRegistry->get($this->node->contentRepositoryId);
-            $nodeAddressFactory = NodeAddressFactory::create($contentRepository);
+        if (!is_null($this->nodeDomAddress)) {
             return [
-                'contextPath' => $nodeAddressFactory->createFromNode($this->node)->serializeForUri(),
+                'contextPath' => NodeAddress::fromNode($this->node)->toJson(),
                 'nodeDomAddress' => $this->nodeDomAddress,
                 'renderedContent' => $this->renderContent($controllerContext)
             ];
@@ -126,29 +124,30 @@ class ReloadContentOutOfBand extends AbstractFeedback
      */
     protected function renderContent(ControllerContext $controllerContext): string
     {
-        if (!is_null($this->node)) {
-            $cacheTags = $this->cachingHelper->nodeTag($this->getNode());
-            foreach ($cacheTags as $tag) {
-                $this->contentCache->flushByTag($tag);
-            }
+        $cacheTags = $this->cachingHelper->nodeTag($this->node);
+        foreach ($cacheTags as $tag) {
+            $this->contentCache->flushByTag($tag);
+        }
 
-            if ($this->nodeDomAddress) {
-                $renderingMode = $this->renderingModeService->findByCurrentUser();
+        if ($this->nodeDomAddress) {
+            $renderingMode = $this->renderingModeService->findByCurrentUser();
 
-                $view = $this->outOfBandRenderingViewFactory->resolveView();
+            $view = $this->outOfBandRenderingViewFactory->resolveView();
+            if (method_exists($view, 'setControllerContext')) {
+                // deprecated
                 $view->setControllerContext($controllerContext);
-                $view->setOption('renderingModeName', $renderingMode->name);
-
-                $view->assign('value', $this->node);
-                $view->setRenderingEntryPoint($this->nodeDomAddress->getFusionPathForContentRendering());
-
-                $content = $view->render();
-                if ($content instanceof ResponseInterface) {
-                    // todo should not happen, as we never render a full Neos.Neos:Page here?
-                    return $content->getBody()->getContents();
-                }
-                return $content->getContents();
             }
+            $view->setOption('renderingModeName', $renderingMode->name);
+
+            $view->assign('value', $this->node);
+            $view->setRenderingEntryPoint($this->nodeDomAddress->getFusionPathForContentRendering());
+
+            $content = $view->render();
+            if ($content instanceof ResponseInterface) {
+                // todo should not happen, as we never render a full Neos.Neos:Page here?
+                return $content->getBody()->getContents();
+            }
+            return $content->getContents();
         }
 
         return '';

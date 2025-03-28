@@ -4,6 +4,7 @@ import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store
 import {isNodeCollapsed} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/helpers';
 
 import backend from '@neos-project/neos-ui-backend-connector';
+import {showFlashMessage} from '@neos-project/neos-ui-error';
 
 export function * watchReloadTree({globalRegistry}) {
     const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
@@ -122,7 +123,11 @@ export function * watchRequestChildrenForContextPath({globalRegistry}) {
             childNodes = yield query.neosUiFilteredChildren(nodeTypeFilter).get();
         } catch (err) {
             yield put(actions.UI.ContentTree.invalidate(contextPath));
-            yield put(actions.UI.FlashMessages.add('loadChildNodesError', err.message, 'error'));
+            showFlashMessage({
+                id: 'loadChildNodesError',
+                severity: 'error',
+                message: err.message
+            });
         }
 
         yield put(actions.UI.ContentTree.setAsLoaded(contextPath));
@@ -150,31 +155,23 @@ export function * watchCurrentDocument({globalRegistry, configuration}) {
             return;
         }
 
-        const state = yield select();
-        const children = state?.cr?.nodes?.byContextPath?.[contextPath]?.children;
-        const childrenAreFullyLoaded = children
-        ?.filter(childEnvelope => nodeTypesRegistry.hasRole(childEnvelope.nodeType, 'content') || nodeTypesRegistry.hasRole(childEnvelope.nodeType, 'contentCollection'))
-        ?.every(
-            childEnvelope => Boolean(state?.cr?.nodes?.byContextPath?.[childEnvelope?.contextPath])
-        ) ?? true;
+        // Always reload the nodes for the current page, when the document node changes.
+        // In the past, the guest frame loaded the latest nodedata from the rendered content, but this has been removed.
+        yield put(actions.UI.ContentTree.setAsLoading(contextPath));
 
-        if (!childrenAreFullyLoaded) {
-            yield put(actions.UI.ContentTree.setAsLoading(contextPath));
+        const nodeTypeFilter = `${nodeTypesRegistry.getRole('contentCollection')},${nodeTypesRegistry.getRole('content')}`;
+        const nodes = yield q([contextPath]).neosUiDefaultNodes(
+            nodeTypeFilter,
+            configuration.structureTree.loadingDepth,
+            [],
+            []
+        ).get();
+        const nodeMap = nodes.reduce((nodeMap, node) => {
+            nodeMap[node?.contextPath] = node;
+            return nodeMap;
+        }, {});
 
-            const nodeTypeFilter = `${nodeTypesRegistry.getRole('contentCollection')},${nodeTypesRegistry.getRole('content')}`;
-            const nodes = yield q([contextPath, contextPath]).neosUiDefaultNodes(
-                nodeTypeFilter,
-                configuration.structureTree.loadingDepth,
-                [],
-                []
-            ).get();
-            const nodeMap = nodes.reduce((nodeMap, node) => {
-                nodeMap[node?.contextPath] = node;
-                return nodeMap;
-            }, {});
-
-            yield put(actions.CR.Nodes.merge(nodeMap));
-            yield put(actions.UI.ContentTree.setAsLoaded(contextPath));
-        }
+        yield put(actions.CR.Nodes.merge(nodeMap));
+        yield put(actions.UI.ContentTree.setAsLoaded(contextPath));
     });
 }

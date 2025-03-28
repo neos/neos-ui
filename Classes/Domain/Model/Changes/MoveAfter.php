@@ -30,9 +30,6 @@ class MoveAfter extends AbstractStructuralChange
      */
     public function canApply(): bool
     {
-        if (is_null($this->subject)) {
-            return false;
-        }
         $sibling = $this->getSiblingNode();
         if (is_null($sibling)) {
             return false;
@@ -58,9 +55,8 @@ class MoveAfter extends AbstractStructuralChange
         $parentNodeOfPreviousSibling = $precedingSibling ? $this->findParentNode($precedingSibling) : null;
         // "subject" is the to-be-moved node
         $subject = $this->subject;
-        $parentNode = $this->subject ? $this->findParentNode($this->subject) : null;
+        $parentNode = $this->findParentNode($this->subject);
         if ($this->canApply()
-            && !is_null($subject)
             && !is_null($precedingSibling)
             && !is_null($parentNodeOfPreviousSibling)
             && !is_null($parentNode)
@@ -75,14 +71,20 @@ class MoveAfter extends AbstractStructuralChange
             $hasEqualParentNode = $parentNode->aggregateId
                 ->equals($parentNodeOfPreviousSibling->aggregateId);
 
-
             $contentRepository = $this->contentRepositoryRegistry->get($subject->contentRepositoryId);
-
+            $rawMoveNodeStrategy = $this->getNodeType($this->subject)?->getConfiguration('options.moveNodeStrategy');
+            if (!is_string($rawMoveNodeStrategy)) {
+                throw new \RuntimeException(sprintf('NodeType "%s" has an invalid configuration for option "moveNodeStrategy" expected string got %s', $this->subject->nodeTypeName->value, get_debug_type($rawMoveNodeStrategy)), 1732010016);
+            }
+            $moveNodeStrategy = RelationDistributionStrategy::tryFrom($rawMoveNodeStrategy);
+            if ($moveNodeStrategy === null) {
+                throw new \RuntimeException(sprintf('NodeType "%s" has an invalid configuration for option "moveNodeStrategy" got %s', $this->subject->nodeTypeName->value, $rawMoveNodeStrategy), 1732010011);
+            }
             $command = MoveNodeAggregate::create(
                 $subject->workspaceName,
                 $subject->dimensionSpacePoint,
                 $subject->aggregateId,
-                RelationDistributionStrategy::STRATEGY_GATHER_ALL,
+                $moveNodeStrategy,
                 $hasEqualParentNode ? null : $parentNodeOfPreviousSibling->aggregateId,
                 $precedingSibling->aggregateId,
                 $succeedingSibling?->aggregateId,

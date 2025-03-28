@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@neos-project/neos-ui-backend-connector": "workspace:*",
+    "@neos-project/neos-ui-error": "workspace:*",
     "@neos-project/neos-ui-extensibility": "workspace:*",
     "@neos-project/neos-ui-guest-frame": "workspace:*",
     "@neos-project/neos-ui-redux-store": "workspace:*",

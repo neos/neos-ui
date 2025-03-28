@@ -11,7 +11,14 @@ export type {
     ECMAScriptError as ClientSideError,
     ServerSideError,
     StringError,
-    AnyError
+    AnyError,
+    Severity
 } from './types';
 
-export {ErrorView} from './ErrorView';
+export {
+    ErrorBoundary,
+    ErrorView,
+    FlashMessages,
+    showFlashMessage,
+    terminateDueToFatalInitializationError
+} from './container';

@@ -16,7 +16,7 @@ const searchOptions = (searchTerm, processedSelectBoxOptions) =>
 }))
 export default class DimensionSelector extends PureComponent {
     static propTypes = {
-        icon: PropTypes.string.isRequired,
+        icon: PropTypes.string,
         dimensionLabel: PropTypes.string.isRequired,
         presets: PropTypes.object.isRequired,
         activePreset: PropTypes.string.isRequired,

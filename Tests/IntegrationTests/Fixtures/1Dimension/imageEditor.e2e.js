@@ -22,7 +22,7 @@ test('Can crop an image', async t => {
     const initialTopOffset = await imageEditor.find('img').getStyleProperty('top');
 
     // Crop the image
-    await t.drag(ReactSelector('ReactCrop'), 50, 50, {offsetX: 5, offsetY: 5});
+    await t.drag(Selector('.ReactCrop'), 50, 50, {offsetX: 5, offsetY: 5});
 
     // Verify that there's no z-index interference between the secondary
     // inspector and the "unapplied changes"-overlay

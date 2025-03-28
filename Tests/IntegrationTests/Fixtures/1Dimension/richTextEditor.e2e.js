@@ -1,6 +1,6 @@
 import {Selector} from 'testcafe';
 import {ReactSelector} from 'testcafe-react-selectors';
-import {beforeEach, checkPropTypes} from './../../utils.js';
+import {beforeEach, checkPropTypes, typeTextInline} from './../../utils.js';
 import {Page} from './../../pageModel';
 
 /* global fixture:true */
@@ -14,11 +14,11 @@ test('Can crop an image', async t => {
     await Page.waitForIframeLoading(t);
 
     const rteInspectorEditor = await ReactSelector('InspectorEditorEnvelope').withProps('id', 'rte');
-    const ckeContent = await Selector('.ck-content p');
+    // const ckeContent = await Selector('.ck-content p');
     await t
         .click(rteInspectorEditor.findReact('Button'));
+    await typeTextInline(t, '.ck-content p', testContent, '', false);
     await t
-        .typeText(ckeContent, testContent)
         .wait(400)
         .click(Selector('#neos-Inspector-Apply'));
     await Page.waitForIframeLoading(t);

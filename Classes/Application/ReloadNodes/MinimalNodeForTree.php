@@ -29,7 +29,7 @@ use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 final readonly class MinimalNodeForTree implements \JsonSerializable
 {
     /**
-     * @param array{nodeAddress:string}&array<string,mixed> $data
+     * @param array{contextPath:string}&array<string,mixed> $data
      */
     private function __construct(private array $data)
     {
@@ -40,7 +40,7 @@ final readonly class MinimalNodeForTree implements \JsonSerializable
         NodeInfoHelper $nodeInfoHelper,
         ActionRequest $actionRequest
     ): ?self {
-        /** @var null|(array{nodeAddress:string}&array<string,mixed>) $data */
+        /** @var null|(array{contextPath:string}&array<string,mixed>) $data */
         $data = $nodeInfoHelper
             ->renderNodeWithMinimalPropertiesAndChildrenInformation(
                 node: $node,
@@ -52,7 +52,7 @@ final readonly class MinimalNodeForTree implements \JsonSerializable
 
     public function getNodeAddressAsString(): string
     {
-        return $this->data['nodeAddress'];
+        return $this->data['contextPath'];
     }
 
     /**

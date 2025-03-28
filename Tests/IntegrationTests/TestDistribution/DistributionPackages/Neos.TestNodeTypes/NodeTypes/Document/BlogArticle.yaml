@@ -1,0 +1,17 @@
+'Neos.TestNodeTypes:Document.BlogArticle':
+  superTypes:
+    'Neos.Neos:Document': true
+
+  ui:
+    icon: file-text-o
+    label: 'Blog Article'
+
+  constraints:
+    nodeTypes:
+      '*': false
+      'Neos.Neos:Document': false
+      'Neos.TestNodeTypes:Document.BlogArticle': true
+
+  childNodes:
+    main:
+      type: 'Neos.Neos:ContentCollection'

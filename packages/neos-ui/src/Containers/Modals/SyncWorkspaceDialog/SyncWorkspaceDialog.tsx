@@ -14,7 +14,8 @@ import {connect} from 'react-redux';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 import {GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
-import {I18nRegistry, WorkspaceName} from '@neos-project/neos-ts-interfaces';
+import type {WorkspaceName} from '@neos-project/neos-ts-interfaces';
+import type {I18nRegistry} from '@neos-project/neos-ui-i18n';
 import {ResolutionStrategy, SyncingPhase, State as SyncingState} from '@neos-project/neos-ui-redux-store/src/CR/Syncing';
 
 import {ConfirmationDialog} from './ConfirmationDialog';
@@ -124,21 +125,18 @@ const SyncWorkspaceDialog: React.FC<SyncWorkspaceDialogProps> = (props) => {
                     />
             );
         case SyncingPhase.RESOLVING:
-            if (props.syncingState.process.strategy === ResolutionStrategy.FORCE) {
-                return (
-                    <ResolutionStrategyConfirmationDialog
-                        workspaceName={props.personalWorkspaceName}
-                        baseWorkspaceName={props.baseWorkspaceName}
-                        totalNumberOfChangesInWorkspace={props.totalNumberOfChangesInWorkspace}
-                        strategy={props.syncingState.process.strategy}
-                        conflicts={props.syncingState.process.conflicts}
-                        i18n={props.i18nRegistry}
-                        onCancelConflictResolution={handleCancelConflictResolution}
-                        onConfirmResolutionStrategy={handleConfirmResolutionStrategy}
-                        />
-                );
-            }
-            return null;
+            return (
+                <ResolutionStrategyConfirmationDialog
+                    workspaceName={props.personalWorkspaceName}
+                    baseWorkspaceName={props.baseWorkspaceName}
+                    totalNumberOfChangesInWorkspace={props.totalNumberOfChangesInWorkspace}
+                    strategy={props.syncingState.process.strategy}
+                    conflicts={props.syncingState.process.conflicts}
+                    i18n={props.i18nRegistry}
+                    onCancelConflictResolution={handleCancelConflictResolution}
+                    onConfirmResolutionStrategy={handleConfirmResolutionStrategy}
+                    />
+            );
         case SyncingPhase.ERROR:
         case SyncingPhase.SUCCESS:
             return (

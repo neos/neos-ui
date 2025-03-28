@@ -91,6 +91,11 @@ Neos:
 
           'CR.Nodes.unfocus': 'u n'
 
+      # If enabled, will automatically synchronize (rebase) personal workspaces when used in the UI
+      # (currently: Neos\Neos\Ui\Controller\BackendController::indexAction())
+      # if necessary (outdated) and possible (no own changes)
+      autoSyncPersonalWorkspaces: true
+
       #################################
       # INTERNAL CONFIG (no API)
       #################################
@@ -136,7 +141,7 @@ Neos:
             personalWorkspace: '${Neos.Ui.Workspace.getPersonalWorkspace(documentNode.contentRepositoryId)}'
         ui:
           contentCanvas:
-            src: '${Neos.Ui.NodeInfo.uri(documentNode, request)}'
+            src: '${Neos.Ui.NodeInfo.previewUri(documentNode, request)}'
             backgroundColor: '${Configuration.setting(''Neos.Neos.Ui.contentCanvas.backgroundColor'')}'
           debugMode: false
           editPreviewMode: '${q(user).property("preferences.preferences")["contentEditing.editPreviewMode"] || Configuration.setting(''Neos.Neos.userInterface.defaultEditPreviewMode'')}'

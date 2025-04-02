@@ -82,7 +82,8 @@ export default class Inspector extends PureComponent {
         secondaryInspectorComponent: null,
         toggledPanels: {},
         viewConfiguration: null,
-        originalViewConfiguration: null
+        originalViewConfiguration: null,
+        propertyFilter: null
     };
 
     configurationIsProcessed = false;
@@ -236,6 +237,13 @@ export default class Inspector extends PureComponent {
         this.props.escape();
     }
 
+    handleFilter = (e) => {
+        const {value} = e.target;
+        this.setState({
+            propertyFilter: value.toLowerCase()
+        });
+    }
+
     closeSecondaryInspectorIfNeeded = () => {
         if (this.state.secondaryInspectorComponent) {
             this.props.closeSecondaryInspector();
@@ -243,15 +251,20 @@ export default class Inspector extends PureComponent {
     }
 
     isPropertyEnabled = item => {
-        const {focusedNode} = this.props;
+        const {propertyFilter} = this.state;
+        if (propertyFilter && item.id.toLowerCase().indexOf(propertyFilter) === -1) {
+            // console.debug('Property not matching filter', item.label, propertyFilter);
+            return false;
+        }
 
         if (item.type !== 'editor') {
             return true;
         }
 
+        const {focusedNode} = this.props;
         if (item?.hidden || (focusedNode?.isAutoCreated === true && item?.id === '_hidden')) {
             // This accounts for the fact that auto-created child nodes cannot
-            // be hidden via the insprector (see: #2282)
+            // be hidden via the inspector (see: #2282)
             return false;
         }
 
@@ -374,6 +387,7 @@ export default class Inspector extends PureComponent {
                     document.body
                 )}
                 <SelectedElement/>
+                <input type="text" placeholder="Filter properties…" onChange={this.handleFilter} />
                 <Tabs
                     className={style.tabs}
                     theme={{
@@ -427,6 +441,7 @@ export default class Inspector extends PureComponent {
                                         this.handlePanelToggle(tab?.id, groupName);
                                     }}
                                     handleInspectorApply={this.handleApply}
+                                    isPropertyEnabled={this.isPropertyEnabled}
                             />);
                         })
                     }

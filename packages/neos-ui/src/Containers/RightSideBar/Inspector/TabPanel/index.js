@@ -16,25 +16,20 @@ export default class TabPanel extends PureComponent {
         renderSecondaryInspector: PropTypes.func.isRequired,
         node: PropTypes.object.isRequired,
         commit: PropTypes.func.isRequired,
-        handleInspectorApply: PropTypes.func
-    };
-
-    isPropertyEnabled = item => {
-        const {node} = this.props;
-
-        if (item.type !== 'editor') {
-            return true;
-        }
-
-        if (item?.hidden) {
-            return false;
-        }
-
-        return node?.policy?.canEdit && !node?.policy?.disallowedProperties?.includes(item.id);
+        handleInspectorApply: PropTypes.func,
+        isPropertyEnabled: PropTypes.func
     };
 
     renderTabPanel = groups => {
-        const {handlePanelToggle, handleInspectorApply, toggledPanels, renderSecondaryInspector, node, commit} = this.props;
+        const {
+            handlePanelToggle,
+            handleInspectorApply,
+            toggledPanels,
+            renderSecondaryInspector,
+            node,
+            commit,
+            isPropertyEnabled
+        } = this.props;
 
         return (
             <Tabs.Panel theme={{panel: style.inspectorTabPanel}}>
@@ -47,7 +42,7 @@ export default class TabPanel extends PureComponent {
                         icon={group?.icon}
                         // Overlay default collapsed state over current state
                         collapsed={Boolean(toggledPanels?.[group?.id]) !== Boolean(group?.collapsed)}
-                        items={group?.items?.filter(this.isPropertyEnabled) ?? []}
+                        items={group?.items?.filter(isPropertyEnabled) ?? []}
                         renderSecondaryInspector={renderSecondaryInspector}
                         node={node}
                         commit={commit}
@@ -58,9 +53,9 @@ export default class TabPanel extends PureComponent {
     }
 
     render() {
-        const {groups} = this.props;
+        const {groups, isPropertyEnabled} = this.props;
 
-        const visibleGroups = groups ? groups.filter(group => group?.items?.some(this.isPropertyEnabled)) : [];
+        const visibleGroups = groups ? groups.filter(group => group?.items?.some(isPropertyEnabled)) : [];
 
         return this.renderTabPanel(visibleGroups);
     }

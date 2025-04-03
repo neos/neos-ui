@@ -5,14 +5,12 @@ import ReactMarkdown from 'react-markdown';
 import omit from 'lodash.omit';
 
 import {Tooltip, Label, Icon} from '@neos-project/react-ui-components';
-import I18n from '@neos-project/neos-ui-i18n';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 import style from './style.module.css';
 
 @neos(globalRegistry => ({
-    editorRegistry: globalRegistry.get('inspector').get('editors'),
-    i18nRegistry: globalRegistry.get('i18n')
+    editorRegistry: globalRegistry.get('inspector').get('editors')
 }))
 export default class EditorEnvelope extends PureComponent {
     state = {
@@ -34,7 +32,6 @@ export default class EditorEnvelope extends PureComponent {
         renderSecondaryInspector: PropTypes.func,
         editor: PropTypes.string.isRequired,
         editorRegistry: PropTypes.object.isRequired,
-        i18nRegistry: PropTypes.object.isRequired,
         validationErrors: PropTypes.array,
         onEnterKey: PropTypes.func,
         helpMessage: PropTypes.string,
@@ -104,7 +101,7 @@ export default class EditorEnvelope extends PureComponent {
 
         return (
             <Label className={style.envelope__label} htmlFor={this.generateIdentifier()}>
-                <I18n id={label}/>
+                {label}
                 {this.renderHelpIcon()}
             </Label>
         );
@@ -126,14 +123,13 @@ export default class EditorEnvelope extends PureComponent {
     }
 
     renderHelpMessage() {
-        const {i18nRegistry, helpMessage, helpThumbnail, label} = this.props;
+        const {helpMessage, helpThumbnail, label} = this.props;
 
-        const translatedHelpMessage = i18nRegistry.translate(helpMessage);
         const helpThumbnailSrc = this.getThumbnailSrc(helpThumbnail);
 
         return (
             <Tooltip renderInline className={style.envelope__helpmessage}>
-                {helpMessage ? <ReactMarkdown children={translatedHelpMessage} linkTarget="_blank" /> : ''}
+                {helpMessage ? <ReactMarkdown children={helpMessage} linkTarget="_blank" /> : ''}
                 {helpThumbnail ? <img alt={label} src={helpThumbnailSrc} className={style.envelope__helpThumbnail} /> : ''}
             </Tooltip>
         );

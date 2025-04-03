@@ -4,6 +4,7 @@ import mapValues from 'lodash.mapvalues';
 import {SynchronousRegistry} from '@neos-project/neos-ui-extensibility/src';
 import positionalArraySorter from '@neos-project/positional-array-sorter/src/positionalArraySorter';
 import {NodeTypeName, NodeType} from '@neos-project/neos-ts-interfaces';
+import {translate} from '@neos-project/neos-ui-i18n'
 
 interface Constraint {
     childNodes: {
@@ -209,12 +210,12 @@ export default class NodeTypesRegistry extends SynchronousRegistry<NodeType> {
                                 .map(property => ({
                                     type: 'editor',
                                     id: property.id,
-                                    label: property.ui?.label,
+                                    label: this.translateLabel(property.ui?.label),
                                     editor: property.ui?.inspector?.editor,
                                     editorOptions: property.ui?.inspector?.editorOptions,
                                     position: property.ui?.inspector?.position,
                                     hidden: property.ui?.inspector?.hidden,
-                                    helpMessage: property.ui?.help?.message,
+                                    helpMessage: this.translateLabel(property.ui?.help?.message),
                                     helpThumbnail: property.ui?.help?.thumbnail
                                 })
                             ),
@@ -222,12 +223,12 @@ export default class NodeTypesRegistry extends SynchronousRegistry<NodeType> {
                                 .map(reference => ({
                                     type: 'editor',
                                     id: reference.id,
-                                    label: reference.ui?.label,
+                                    label: this.translateLabel(reference.ui?.label),
                                     editor: reference.ui?.inspector?.editor,
                                     editorOptions: reference.ui?.inspector?.editorOptions,
                                     position: reference.ui?.inspector?.position,
                                     hidden: reference.ui?.inspector?.hidden,
-                                    helpMessage: reference.ui?.help?.message,
+                                    helpMessage: this.translateLabel(reference.ui?.help?.message),
                                     helpThumbnail: reference.ui?.help?.thumbnail
                                 })
                             ),
@@ -235,11 +236,11 @@ export default class NodeTypesRegistry extends SynchronousRegistry<NodeType> {
                                 .map(property => ({
                                     type: 'view',
                                     id: property.id,
-                                    label: property.label,
+                                    label: this.translateLabel(property.label),
                                     view: property.view,
                                     viewOptions: property.viewOptions,
                                     position: property.position,
-                                    helpMessage: property.helpMessage
+                                    helpMessage: this.translateLabel(property.helpMessage)
                                 })
                             )
                     ], 'position', 'id')
@@ -303,5 +304,17 @@ export default class NodeTypesRegistry extends SynchronousRegistry<NodeType> {
         return Object.keys(propertyDefinitions).some(
             propertyName => propertyDefinitions[propertyName]?.ui?.inlineEditable || false
         );
+    }
+
+    private translateLabel(label: string | undefined): string | undefined {
+        if (!label) {
+            return label;
+        }
+        // The method throws an error if the label is not a valid translation address
+        try {
+            return translate(label, label);
+        } catch {
+            return label;
+        }
     }
 }

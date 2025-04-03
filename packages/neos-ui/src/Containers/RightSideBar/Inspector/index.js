@@ -6,7 +6,7 @@ import mapValues from 'lodash.mapvalues';
 import {connect} from 'react-redux';
 
 import I18n from '@neos-project/neos-ui-i18n';
-import {Bar, Button, Tabs, Icon, Badge} from '@neos-project/react-ui-components';
+import {Bar, Button, Tabs, Icon, Badge, IconButton} from '@neos-project/react-ui-components';
 import debounce from 'lodash.debounce';
 
 import {SecondaryInspector} from '@neos-project/neos-ui-inspector';
@@ -83,7 +83,8 @@ export default class Inspector extends PureComponent {
         toggledPanels: {},
         viewConfiguration: null,
         originalViewConfiguration: null,
-        propertyFilter: null
+        propertyFilter: null,
+        isFilterBarVisible: false
     };
 
     configurationIsProcessed = false;
@@ -244,6 +245,12 @@ export default class Inspector extends PureComponent {
         });
     }
 
+    handleFilterToggle = () => {
+        this.setState({
+            isFilterBarVisible: !this.state.isFilterBarVisible
+        });
+    }
+
     closeSecondaryInspectorIfNeeded = () => {
         if (this.state.secondaryInspectorComponent) {
             this.props.closeSecondaryInspector();
@@ -251,9 +258,10 @@ export default class Inspector extends PureComponent {
     }
 
     isPropertyEnabled = item => {
-        const {propertyFilter} = this.state;
-        if (propertyFilter && item.id.toLowerCase().indexOf(propertyFilter) === -1) {
-            // console.debug('Property not matching filter', item.label, propertyFilter);
+        const {focusedNode, propertyFilter} = this.state;
+
+        // Only show properties that have their label matching the filter
+        if (propertyFilter && item.label.toLowerCase().indexOf(propertyFilter) === -1) {
             return false;
         }
 
@@ -261,7 +269,6 @@ export default class Inspector extends PureComponent {
             return true;
         }
 
-        const {focusedNode} = this.props;
         if (item?.hidden || (focusedNode?.isAutoCreated === true && item?.id === '_hidden')) {
             // This accounts for the fact that auto-created child nodes cannot
             // be hidden via the inspector (see: #2282)
@@ -340,6 +347,12 @@ export default class Inspector extends PureComponent {
             i18nRegistry,
             isWorkspaceReadOnly
         } = this.props;
+        const {
+            isFilterBarVisible,
+            viewConfiguration,
+            secondaryInspectorComponent
+        } = this.state;
+
         if (focusedContentNodesContextPaths.length > 1) {
             return (
                 <div
@@ -372,7 +385,7 @@ export default class Inspector extends PureComponent {
             return this.renderFallback();
         }
 
-        if (!this.state.viewConfiguration?.tabs) {
+        if (!viewConfiguration?.tabs) {
             return this.renderFallback();
         }
 
@@ -386,15 +399,25 @@ export default class Inspector extends PureComponent {
                         />,
                     document.body
                 )}
-                <SelectedElement/>
-                <input type="text" placeholder="Filter properties…" onChange={this.handleFilter} />
+                <div>
+                    <SelectedElement/>
+                    <IconButton
+                        id="btn-ToggleInspectorFilter"
+                        className=""
+                        icon="ellipsis-v"
+                        onClick={this.handleFilterToggle}
+                    />
+                    {isFilterBarVisible && (
+                        <input type="search" placeholder="Filter properties…" onChange={this.handleFilter} />
+                    )}
+                </div>
                 <Tabs
                     className={style.tabs}
                     theme={{
                         tabs__content: style.tabsContent // eslint-disable-line camelcase
                     }}
                     >
-                    {this.state.viewConfiguration?.tabs
+                    {viewConfiguration?.tabs
                         //
                         // Only display tabs, that have groups and these groups have properties
                         //
@@ -456,11 +479,11 @@ export default class Inspector extends PureComponent {
                 </Bar>
                 {
                     shouldShowSecondaryInspector &&
-                    this.state.secondaryInspectorComponent &&
+                    secondaryInspectorComponent &&
                     <SecondaryInspector
                         onClose={this.handleCloseSecondaryInspector}
                         >
-                            {this.state.secondaryInspectorComponent}
+                            {secondaryInspectorComponent}
                     </SecondaryInspector>
                 }
             </div>

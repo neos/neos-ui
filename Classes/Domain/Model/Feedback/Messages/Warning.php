@@ -13,12 +13,15 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Messages;
 
 use Neos\Neos\Ui\Domain\Model\Feedback\AbstractMessageFeedback;
 
+/**
+ * @internal
+ */
 class Warning extends AbstractMessageFeedback
 {
     /**
      * @var string
      */
-    protected $severity = 'Warning';
+    protected $severity = 'WARNING';
 
     /**
      * Get the type identifier

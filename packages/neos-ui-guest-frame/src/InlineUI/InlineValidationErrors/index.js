@@ -1,7 +1,7 @@
 import React, {PureComponent, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$transform} from 'plow-js';
+
 import {selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {Tooltip} from '@neos-project/react-ui-components';
@@ -13,8 +13,8 @@ import {findAllOccurrencesOfNodePropertyInGuestFrame, getAbsolutePositionOfEleme
 @neos(globalRegistry => ({
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
 }))
-@connect($transform({
-    inlineValidationErrors: selectors.CR.Nodes.inlineValidationErrorsSelector
+@connect(state => ({
+    inlineValidationErrors: selectors.CR.Nodes.inlineValidationErrorsSelector(state)
 }))
 export default class InlineValidationTooltips extends PureComponent {
     static propTypes = {

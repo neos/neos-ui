@@ -1,20 +1,43 @@
-import {$get} from 'plow-js';
 import {GlobalState} from '../../System';
 import {createSelector} from 'reselect';
 
 import {siteNodeContextPathSelector, siteNodeSelector, nodesByContextPathSelector} from '../../CR/Nodes/selectors';
 import {isNodeCollapsed} from '../../CR/Nodes/helpers';
+import {NodeContextPath, NodeMap} from '@neos-project/neos-ts-interfaces';
 
-export const getAllFocused = (state: GlobalState) => $get(['ui', 'pageTree', 'focused'], state);
+// contextPath for Neos >= 9.0 is a NodeAddress without hierarchy infos; so we need to traverse the "parent" links.
+function rootlineForNode(contextPath: NodeContextPath, nodesByContextPath: NodeMap): string[] {
+    const node = nodesByContextPath[contextPath];
+    if (node && node.parent) {
+        return [...rootlineForNode(node.parent, nodesByContextPath), node.identifier];
+    }
+    return [];
+}
+
+export const getAllFocused = (state: GlobalState) => state?.ui?.pageTree?.focused;
+export const areFocusedNodesNestedInEachOther = createSelector(
+    [
+        getAllFocused,
+        nodesByContextPathSelector
+    ],
+    (focusedNodesContextPaths, nodesByContextPath) => {
+        const rootlinesOfFocusedNodes = focusedNodesContextPaths.map((contextPath: NodeContextPath) => rootlineForNode(contextPath, nodesByContextPath).join('/'));
+
+        return !rootlinesOfFocusedNodes.every((pathA: string) => {
+            return rootlinesOfFocusedNodes.every((pathB: string) => !(pathB.indexOf(pathA) === 0 && pathA !== pathB));
+        });
+    }
+);
+
 export const getFocused = (state: GlobalState) => {
     const focused = getAllFocused(state);
     return focused && focused[0] ? focused[0] : null;
 };
-export const getToggled = (state: GlobalState) => $get(['ui', 'pageTree', 'toggled'], state);
-export const getLoading = (state: GlobalState) => $get(['ui', 'pageTree', 'loading'], state);
-export const getErrors = (state: GlobalState) => $get(['ui', 'pageTree', 'errors'], state);
+export const getToggled = (state: GlobalState) => state?.ui?.pageTree?.toggled;
+export const getLoading = (state: GlobalState) => state?.ui?.pageTree?.loading;
+export const getErrors = (state: GlobalState) => state?.ui?.pageTree?.errors;
 export const getVisible = (state: GlobalState) => state?.ui?.pageTree?.visible;
-export const getIntermediate = (state: GlobalState) => $get(['ui', 'pageTree', 'intermediate'], state);
+export const getIntermediate = (state: GlobalState) => state?.ui?.pageTree?.intermediate;
 
 export const destructiveOperationsAreDisabledForPageTreeSelector = createSelector(
     [
@@ -39,7 +62,7 @@ export const getIsLoading = createSelector(
 
 export const getUncollapsed = createSelector(
     [
-        (state: GlobalState) => $get(['ui', 'pageTree', 'toggled'], state),
+        (state: GlobalState) => state?.ui?.pageTree?.toggled,
         nodesByContextPathSelector,
         siteNodeSelector,
         (_: GlobalState, {loadingDepth = 0}: any) => loadingDepth

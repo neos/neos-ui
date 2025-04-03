@@ -151,10 +151,6 @@ for further information see https://github.com/neos/neos-ui/pull/3211
     background: var(--colors-Warn);
     opacity: .5;
 }
-.dropDown__item--isDiscarding {
-    opacity: .5;
-}
-
 
 .badge {
     margin-left: var(--spacing-Half);

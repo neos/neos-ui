@@ -1,8 +1,3 @@
-export const getContextString = (uri: string) => {
-    const decodedUri = unescape(uri);
-    const uriParts = decodedUri.split('@');
-    return uriParts ? uriParts[1].split('.')[0] : '';
-};
 
 /**
  *

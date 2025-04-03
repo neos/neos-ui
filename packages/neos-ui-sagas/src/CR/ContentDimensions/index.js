@@ -1,5 +1,4 @@
 import {put, select, race, take, takeLatest, takeEvery, call} from 'redux-saga/effects';
-import {$get} from 'plow-js';
 
 import {actions, actionTypes, selectors} from '@neos-project/neos-ui-redux-store';
 import backend from '@neos-project/neos-ui-backend-connector';
@@ -22,7 +21,7 @@ export function * watchSelectPreset() {
             yield take(actionTypes.CR.ContentDimensions.SELECT_PRESET);
             const targetDimensions = yield select(selectors.CR.ContentDimensions.active);
             const currentContentCanvasNode = yield select(selectors.CR.Nodes.documentNodeSelector);
-            const currentContentCanvasNodeIdentifier = $get('identifier', currentContentCanvasNode);
+            const currentContentCanvasNodeIdentifier = currentContentCanvasNode?.identifier;
 
             const informationAboutNodeInTargetDimension = yield call(ensureNodeInSelectedDimension, {
                 nodeIdentifier: currentContentCanvasNodeIdentifier,
@@ -67,7 +66,9 @@ function * ensureNodeInSelectedDimension({nodeIdentifier, sourceDimensions, targ
         getSingleNode,
         adoptNodeToOtherDimension
     } = backend.get().endpoints;
-    const currentWorkspaceName = yield select($get('cr.workspaces.personalWorkspace.name'));
+    const currentWorkspaceName = yield select(
+        state => state?.cr?.workspaces?.personalWorkspace?.name
+    );
 
     const {
         nodeFound,

@@ -1,9 +1,10 @@
 import merge from 'lodash.merge';
 import mapValues from 'lodash.mapvalues';
-import {$get} from 'plow-js';
+
 import {SynchronousRegistry} from '@neos-project/neos-ui-extensibility/src';
 import positionalArraySorter from '@neos-project/positional-array-sorter/src/positionalArraySorter';
 import {NodeTypeName, NodeType} from '@neos-project/neos-ts-interfaces';
+import {translate} from '@neos-project/neos-ui-i18n'
 
 interface Constraint {
     childNodes: {
@@ -179,17 +180,20 @@ export default class NodeTypesRegistry extends SynchronousRegistry<NodeType> {
 
         const withId = <S>(state: {[propName: string]: S}): {[propName: string]: S & {id: string}} => mapValues(state, (subject, id) => Object.assign({}, subject, {id}));
 
-        const _tabs = Object.values(withId($get(['ui', 'inspector', 'tabs'], nodeType) || {}));
+        const _tabs = Object.values(withId(nodeType.ui?.inspector?.tabs || {}));
         const tabs = positionalArraySorter(_tabs, 'position', 'id');
 
-        const _groups = Object.values(withId($get(['ui', 'inspector', 'groups'], nodeType) || {}));
+        const _groups = Object.values(withId(nodeType.ui?.inspector?.groups || {}));
         const groups = positionalArraySorter(_groups, 'position', 'id');
 
-        const _views = Object.values(withId($get(['ui', 'inspector', 'views'], nodeType) || {}));
+        const _views = Object.values(withId(nodeType.ui?.inspector?.views || {}));
         const views = positionalArraySorter(_views, 'position', 'id');
 
-        const _properties = Object.values(withId($get(['properties'], nodeType) || {}));
+        const _properties = Object.values(withId(nodeType.properties || {}));
         const properties = positionalArraySorter(_properties, 'position', 'id');
+
+        const _references = Object.values(withId(nodeType.references || {}));
+        const references = positionalArraySorter(_references, 'position', 'id');
 
         const viewConfiguration = {
             tabs: tabs.map(tab => ({
@@ -202,28 +206,41 @@ export default class NodeTypesRegistry extends SynchronousRegistry<NodeType> {
                 }).map(group => ({
                     ...group,
                     items: positionalArraySorter([
-                        ...properties.filter(p => $get(['ui', 'inspector', 'group'], p) === group.id)
+                        ...properties.filter(p => p.ui?.inspector?.group === group.id)
                                 .map(property => ({
                                     type: 'editor',
-                                    id: $get(['id'], property),
-                                    label: $get(['ui', 'label'], property),
-                                    editor: $get(['ui', 'inspector', 'editor'], property),
-                                    editorOptions: $get(['ui', 'inspector', 'editorOptions'], property),
-                                    position: $get(['ui', 'inspector', 'position'], property),
-                                    hidden: $get(['ui', 'inspector', 'hidden'], property),
-                                    helpMessage: $get(['ui', 'help', 'message'], property),
-                                    helpThumbnail: $get(['ui', 'help', 'thumbnail'], property)
+                                    id: property.id,
+                                    label: this.translateLabel(property.ui?.label),
+                                    editor: property.ui?.inspector?.editor,
+                                    editorOptions: property.ui?.inspector?.editorOptions,
+                                    position: property.ui?.inspector?.position,
+                                    hidden: property.ui?.inspector?.hidden,
+                                    helpMessage: this.translateLabel(property.ui?.help?.message),
+                                    helpThumbnail: property.ui?.help?.thumbnail
                                 })
                             ),
-                        ...views.filter(v => $get(['group'], v) === group.id)
+                        ...references.filter(p => p.ui?.inspector?.group === group.id)
+                                .map(reference => ({
+                                    type: 'editor',
+                                    id: reference.id,
+                                    label: this.translateLabel(reference.ui?.label),
+                                    editor: reference.ui?.inspector?.editor,
+                                    editorOptions: reference.ui?.inspector?.editorOptions,
+                                    position: reference.ui?.inspector?.position,
+                                    hidden: reference.ui?.inspector?.hidden,
+                                    helpMessage: this.translateLabel(reference.ui?.help?.message),
+                                    helpThumbnail: reference.ui?.help?.thumbnail
+                                })
+                            ),
+                        ...views.filter(v => v.group === group.id)
                                 .map(property => ({
                                     type: 'view',
-                                    id: $get(['id'], property),
-                                    label: $get(['label'], property),
-                                    view: $get(['view'], property),
-                                    viewOptions: $get(['viewOptions'], property),
-                                    position: $get(['position'], property),
-                                    helpMessage: $get(['helpMessage'], property)
+                                    id: property.id,
+                                    label: this.translateLabel(property.label),
+                                    view: property.view,
+                                    viewOptions: property.viewOptions,
+                                    position: property.position,
+                                    helpMessage: this.translateLabel(property.helpMessage)
                                 })
                             )
                     ], 'position', 'id')
@@ -261,7 +278,7 @@ export default class NodeTypesRegistry extends SynchronousRegistry<NodeType> {
             return null;
         }
 
-        const inlineEditorOptions = $get(['properties', propertyName, 'ui', 'inline', 'editorOptions'], nodeType) || {};
+        const inlineEditorOptions = nodeType.properties?.[propertyName]?.ui?.inline?.editorOptions || {};
 
         return merge(defautlInlineEditorOptions, inlineEditorOptions);
     }
@@ -274,18 +291,30 @@ export default class NodeTypesRegistry extends SynchronousRegistry<NodeType> {
             return false;
         }
 
-        if ($get(['ui', 'inlineEditable'], nodeType)) {
+        if (nodeType.ui?.inlineEditable) {
             return true;
         }
 
-        const propertyDefinitions = $get(['properties'], nodeType);
+        const propertyDefinitions = nodeType.properties;
 
         if (!propertyDefinitions) {
             return false;
         }
 
         return Object.keys(propertyDefinitions).some(
-            propertyName => $get([propertyName, 'ui', 'inlineEditable'], propertyDefinitions) || false
+            propertyName => propertyDefinitions[propertyName]?.ui?.inlineEditable || false
         );
+    }
+
+    private translateLabel(label: string | undefined): string | undefined {
+        if (!label) {
+            return label;
+        }
+        // The method throws an error if the label is not a valid translation address
+        try {
+            return translate(label, label);
+        } catch {
+            return label;
+        }
     }
 }

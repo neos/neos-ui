@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 /*
@@ -11,23 +12,34 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
+use InvalidArgumentException;
+use Neos\ContentRepository\Core\Feature\NodeMove\Command\MoveNodeAggregate;
+use Neos\ContentRepository\Core\Feature\NodeMove\Dto\RelationDistributionStrategy;
+use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 
-class MoveAfter extends AbstractMove
+/**
+ * @internal These objects internally reflect possible operations made by the Neos.Ui.
+ *           They are sorely an implementation detail. You should not use them!
+ *           Please look into the php command API of the Neos CR instead.
+ */
+class MoveAfter extends AbstractStructuralChange
 {
     /**
      * "Subject" is the to-be-moved node; the "sibling" node is the node after which the "Subject" should be copied.
-     *
-     * @return boolean
      */
-    public function canApply()
+    public function canApply(): bool
     {
-        $nodeType = $this->getSubject()->getNodeType();
+        $sibling = $this->getSiblingNode();
+        if (is_null($sibling)) {
+            return false;
+        }
+        $parent = $this->findParentNode($sibling);
 
-        return $this->getSiblingNode()->getParent()->isNodeTypeAllowedAsChildNode($nodeType);
+        return $parent && $this->isNodeTypeAllowedAsChildNode($parent, $this->subject->nodeTypeName);
     }
 
-    public function getMode()
+    public function getMode(): string
     {
         return 'after';
     }
@@ -37,28 +49,53 @@ class MoveAfter extends AbstractMove
      *
      * @return void
      */
-    public function apply()
+    public function apply(): void
     {
-        if ($this->canApply()) {
-            $before = self::cloneNodeWithNodeData($this->getSubject());
-            $parent = $before->getParent();
-
-            if ($this->nodeNameAvailableBelowNode($this->getSiblingNode()->getParent(), $this->getSubject())) {
-                $this->getSubject()->moveAfter($this->getSiblingNode());
-            } else {
-                $nodeName = $this->generateUniqueNodeName($this->getSiblingNode()->getParent());
-                $this->getSubject()->moveAfter($this->getSiblingNode(), $nodeName);
+        $precedingSibling = $this->getSiblingNode();
+        $parentNodeOfPreviousSibling = $precedingSibling ? $this->findParentNode($precedingSibling) : null;
+        // "subject" is the to-be-moved node
+        $subject = $this->subject;
+        $parentNode = $this->findParentNode($this->subject);
+        if ($this->canApply()
+            && !is_null($precedingSibling)
+            && !is_null($parentNodeOfPreviousSibling)
+            && !is_null($parentNode)
+        ) {
+            $succeedingSibling = null;
+            try {
+                $succeedingSibling = $this->findChildNodes($parentNodeOfPreviousSibling)->next($precedingSibling);
+            } catch (InvalidArgumentException $e) {
+                // do nothing; $succeedingSibling is null.
             }
+
+            $hasEqualParentNode = $parentNode->aggregateId
+                ->equals($parentNodeOfPreviousSibling->aggregateId);
+
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->contentRepositoryId);
+            $rawMoveNodeStrategy = $this->getNodeType($this->subject)?->getConfiguration('options.moveNodeStrategy');
+            if (!is_string($rawMoveNodeStrategy)) {
+                throw new \RuntimeException(sprintf('NodeType "%s" has an invalid configuration for option "moveNodeStrategy" expected string got %s', $this->subject->nodeTypeName->value, get_debug_type($rawMoveNodeStrategy)), 1732010016);
+            }
+            $moveNodeStrategy = RelationDistributionStrategy::tryFrom($rawMoveNodeStrategy);
+            if ($moveNodeStrategy === null) {
+                throw new \RuntimeException(sprintf('NodeType "%s" has an invalid configuration for option "moveNodeStrategy" got %s', $this->subject->nodeTypeName->value, $rawMoveNodeStrategy), 1732010011);
+            }
+            $command = MoveNodeAggregate::create(
+                $subject->workspaceName,
+                $subject->dimensionSpacePoint,
+                $subject->aggregateId,
+                $moveNodeStrategy,
+                $hasEqualParentNode ? null : $parentNodeOfPreviousSibling->aggregateId,
+                $precedingSibling->aggregateId,
+                $succeedingSibling?->aggregateId,
+            );
+            $contentRepository->handle($command);
 
             $updateParentNodeInfo = new UpdateNodeInfo();
-            $updateParentNodeInfo->setNode($parent);
-            if ($this->baseNodeType) {
-                $updateParentNodeInfo->setBaseNodeType($this->baseNodeType);
-            }
-
+            $updateParentNodeInfo->setNode($parentNodeOfPreviousSibling);
             $this->feedbackCollection->add($updateParentNodeInfo);
 
-            $this->finish($before);
+            $this->finish($subject);
         }
     }
 }

@@ -2,7 +2,6 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import debounce from 'lodash.debounce';
-import {$transform, $get} from 'plow-js';
 import mergeClassNames from 'classnames';
 
 import {neos} from '@neos-project/neos-ui-decorators';
@@ -19,8 +18,8 @@ const searchDelay = 300;
     i18nRegistry: globalRegistry.get('i18n')
 }))
 
-@connect($transform({
-    isSearchBarVisible: $get('ui.leftSideBar.searchBar.isVisible')
+@connect(state => ({
+    isSearchBarVisible: state?.ui?.leftSideBar?.searchBar?.isVisible
 }), {
     toggleSearchBar: actions.UI.LeftSideBar.toggleSearchBar
 })
@@ -48,14 +47,14 @@ class NodeTreeSearchBar extends PureComponent {
 
     handleSearchChange = query => {
         const {rootNode} = this.props;
-        const contextPath = $get('contextPath', rootNode);
+        const contextPath = rootNode?.contextPath;
         this.debouncedCommenceSearch(contextPath, {query: query.trim(), filterNodeType: this.state.filterNodeType});
         this.setState({searchValue: query});
     }
 
     handleFilterChange = filterNodeType => {
         const {rootNode, commenceSearch} = this.props;
-        const contextPath = $get('contextPath', rootNode);
+        const contextPath = rootNode?.contextPath;
         commenceSearch(contextPath, {query: this.state.searchValue.trim(), filterNodeType});
         this.setState({filterNodeType});
     }
@@ -70,7 +69,7 @@ class NodeTreeSearchBar extends PureComponent {
 
     handleClearClick = () => {
         const {commenceSearch, rootNode} = this.props;
-        const contextPath = $get('contextPath', rootNode);
+        const contextPath = rootNode?.contextPath;
         this.setState({
             searchValue: '',
             showClear: false

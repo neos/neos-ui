@@ -1,0 +1,15 @@
+{
+    "name": "neos/test-twodimensions",
+    "description": "A Neos website with two dimensions",
+    "type": "neos-site",
+    "require": {
+        "neos/neos": "*",
+        "neos/neos-ui": "*",
+        "neos/test-nodetypes": "*"
+    },
+    "extra": {
+        "neos": {
+            "package-key": "Neos.Test.TwoDimensions"
+        }
+    }
+}

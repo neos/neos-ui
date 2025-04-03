@@ -14,9 +14,13 @@ namespace Neos\Neos\Ui\Domain\Model;
 
 use Neos\Flow\Mvc\Controller\ControllerContext;
 
+/**
+ * @internal
+ */
 abstract class AbstractFeedback implements FeedbackInterface
 {
-    public function serialize(ControllerContext $controllerContext)
+    /** @return array<string, mixed> */
+    public function serialize(ControllerContext $controllerContext): array
     {
         return [
             'type' => $this->getType(),

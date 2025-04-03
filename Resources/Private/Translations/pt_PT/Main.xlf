@@ -352,21 +352,57 @@
           <target xml:lang="pt-PT" state="translated">Foram descartadas {0} alterações.</target>
         </trans-unit>
       </group>
+      <trans-unit id="errorBoundary.footer" xml:space="preserve">
+        <source>For more information about the error please refer to the JavaScript console.</source>
+        <target state="translated">Para mais informações sobre este erro por favor consulte a consola de JavaScript.</target>
+      </trans-unit>
+      <trans-unit id="InsertModeTitleAfter" xml:space="preserve">
+        <source>below</source>
+        <target state="translated">por baixo</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__h2" xml:space="preserve">
+        <source>Headline 2</source>
+        <target state="translated">Título 2</target>
+      </trans-unit>
+      <trans-unit id="rangeEditorMinimum" xml:space="preserve">
+        <source>Minimum</source>
+        <target state="translated">Mínimo</target>
+      </trans-unit>
+      <trans-unit id="NodeNotPublishedParentNodeNotInCurrentDimension" xml:space="preserve">
+        <source>Node could not be published, probably because the parentNode does not exist in the current dimension. Please check that the parentNode has been published.</source>
+        <target state="translated">O Nó não pode ser publicado, provavelmente por faltar um parente na dimensão atual. Por favor confirme que o parente foi publicado.</target>
+      </trans-unit>
+      <trans-unit id="UI.RightSideBar.tabs.validationErrorTooltip[0]" xml:space="preserve">
+        <source>{tabName} – {amountOfErrors} validation issue</source>
+        <target state="translated">{tabName} – {amountOfErrors} falha de validação</target>
+      </trans-unit>
+      <trans-unit id="UI.RightSideBar.tabs.validationErrorTooltip[1]" xml:space="preserve">
+        <source>{tabName} – {amountOfErrors} validation issues</source>
+        <target state="translated">{tabName} – {amountOfErrors} falhas de validação</target>
+      </trans-unit>
+      <trans-unit id="inspectorMutlipleContentNodesSelectedTooltip" xml:space="preserve">
+        <source>Select a single document in order to be able to edit its properties</source>
+        <target state="translated">Selecione um único documento para alterar as suas propriedades</target>
+      </trans-unit>
+      <trans-unit id="errorBoundary.title" xml:space="preserve">
+        <source>Sorry, but the Neos UI could not recover from this error.</source>
+        <target state="translated">Lamentamos, mas o Neos UI não consegue recuperar deste erro.</target>
+      </trans-unit>
+      <trans-unit id="inspectorMutlipleDocumentNodesSelectedTooltip" xml:space="preserve">
+        <source>Select a single content element in order to be able to edit its properties</source>
+        <target state="translated">Selecione um único elemento de conteúdo para editar as suas propriedades</target>
+      </trans-unit>
+      <trans-unit id="rangeEditorCurrentValue" xml:space="preserve">
+        <source>Current value</source>
+        <target state="translated">Valor atual</target>
+      </trans-unit>
+      <trans-unit id="syncPersonalWorkSpace" xml:space="preserve">
+        <source>Synchronize personal workspace</source>
+        <target state="translated">Sincronizar a Área de Trabalho pessoal</target>
+      </trans-unit>
       <trans-unit id="add" xml:space="preserve">
         <source>Add</source>
         <target state="translated">Adicionar</target>
-      </trans-unit>
-      <trans-unit id="ckeditor__toolbar__style__p" xml:space="preserve">
-        <source>Paragraph</source>
-        <target state="translated">Parágrafo</target>
-      </trans-unit>
-      <trans-unit id="ckeditor__toolbar__style__h1" xml:space="preserve">
-        <source>Headline 1</source>
-        <target state="translated">Título 1</target>
-      </trans-unit>
-      <trans-unit id="ckeditor__toolbar__style__h3" xml:space="preserve">
-        <source>Headline 3</source>
-        <target state="translated">Título 3</target>
       </trans-unit>
       <trans-unit id="above" xml:space="preserve">
         <source>Above</source>
@@ -376,25 +412,9 @@
         <source>Below</source>
         <target state="translated">Por Baixo</target>
       </trans-unit>
-      <trans-unit id="inside" xml:space="preserve">
-        <source>Inside</source>
-        <target state="translated">No Interior</target>
-      </trans-unit>
-      <trans-unit id="InsertModeTitleInto" xml:space="preserve">
-        <source>inside</source>
-        <target state="translated">no interior</target>
-      </trans-unit>
-      <trans-unit id="InsertModeTitleBefore" xml:space="preserve">
-        <source>above</source>
-        <target state="translated">por cima</target>
-      </trans-unit>
-      <trans-unit id="InsertModeTitleAfter" xml:space="preserve">
-        <source>below</source>
-        <target state="translated">por baixo</target>
-      </trans-unit>
-      <trans-unit id="ckeditor__toolbar__style__h4" xml:space="preserve">
-        <source>Headline 4</source>
-        <target state="translated">Título 4</target>
+      <trans-unit id="ckeditor__toolbar__style__h1" xml:space="preserve">
+        <source>Headline 1</source>
+        <target state="translated">Título 1</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__style__h5" xml:space="preserve">
         <source>Headline 5</source>
@@ -416,69 +436,45 @@
         <source>Downloadable</source>
         <target state="translated">Descarregável</target>
       </trans-unit>
+      <trans-unit id="inside" xml:space="preserve">
+        <source>Inside</source>
+        <target state="translated">No Interior</target>
+      </trans-unit>
+      <trans-unit id="InsertModeTitleInto" xml:space="preserve">
+        <source>inside</source>
+        <target state="translated">no interior</target>
+      </trans-unit>
+      <trans-unit id="InsertModeTitleBefore" xml:space="preserve">
+        <source>above</source>
+        <target state="translated">por cima</target>
+      </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__formatOptions" xml:space="preserve">
         <source>Format options</source>
         <target state="translated">Opções de formatação</target>
       </trans-unit>
-      <trans-unit id="UI.RightSideBar.tabs.validationErrorTooltip[0]" xml:space="preserve">
-        <source>{tabName} – {amountOfErrors} validation issue</source>
-        <target state="translated">{tabName} – {amountOfErrors} falha de validação</target>
+      <trans-unit id="ckeditor__toolbar__style__p" xml:space="preserve">
+        <source>Paragraph</source>
+        <target state="translated">Parágrafo</target>
       </trans-unit>
-      <trans-unit id="UI.RightSideBar.tabs.validationErrorTooltip[1]" xml:space="preserve">
-        <source>{tabName} – {amountOfErrors} validation issues</source>
-        <target state="translated">{tabName} – {amountOfErrors} falhas de validação</target>
+      <trans-unit id="ckeditor__toolbar__style__h4" xml:space="preserve">
+        <source>Headline 4</source>
+        <target state="translated">Título 4</target>
       </trans-unit>
-      <trans-unit id="syncUriPathSegment" xml:space="preserve">
-        <source>Syncronize with the title property</source>
-        <target state="translated">Sincronizar com a propriedade "Título"</target>
-      </trans-unit>
-      <trans-unit id="inspectorMutlipleContentNodesSelectedTooltip" xml:space="preserve">
-        <source>Select a single document in order to be able to edit its properties</source>
-        <target state="translated">Selecione um único documento para alterar as suas propriedades</target>
+      <trans-unit id="ckeditor__toolbar__style__h3" xml:space="preserve">
+        <source>Headline 3</source>
+        <target state="translated">Título 3</target>
       </trans-unit>
       <trans-unit id="deleteXNodes" xml:space="preserve">
         <source>Delete {amount} nodes</source>
         <target state="translated">Apagar {amount} nós</target>
       </trans-unit>
-      <trans-unit id="errorBoundary.technicalDetailsCopied" xml:space="preserve">
-        <source>Technical details copied</source>
-        <target state="translated">Os detalhes técnicos foram copiados</target>
+      <trans-unit id="syncUriPathSegment" xml:space="preserve">
+        <source>Syncronize with the title property</source>
+        <target state="translated">Sincronizar com a propriedade "Título"</target>
       </trans-unit>
       <trans-unit id="errorBoundary.reloadUi" xml:space="preserve">
         <source>Reload Neos UI</source>
         <target state="translated">Recarregar Neos UI</target>
-      </trans-unit>
-      <trans-unit id="errorBoundary.title" xml:space="preserve">
-        <source>Sorry, but the Neos UI could not recover from this error.</source>
-        <target state="translated">Lamentamos, mas o Neos UI não consegue recuperar deste erro.</target>
-      </trans-unit>
-      <trans-unit id="errorBoundary.description" xml:space="preserve">
-        <source>Please reload the application, or contact your system administrator with the given details.</source>
-        <target state="translated">Por favor recarregue a aplicação, ou envie ao seu administrador de sistema os detalhes apresentados.</target>
-      </trans-unit>
-      <trans-unit id="errorBoundary.footer" xml:space="preserve">
-        <source>For more information about the error please refer to the JavaScript console.</source>
-        <target state="translated">Para mais informações sobre este erro por favor consulte a consola de JavaScript.</target>
-      </trans-unit>
-      <trans-unit id="collapseAll" xml:space="preserve">
-        <source>Collapse All</source>
-        <target state="translated">Colapsar Tudo</target>
-      </trans-unit>
-      <trans-unit id="copyNodeTypeNameToClipboard" xml:space="preserve">
-        <source>Copy node type to clipboard</source>
-        <target state="translated">Copiar o tipo de nó para a área de transferência</target>
-      </trans-unit>
-      <trans-unit id="ckeditor__toolbar__style__h2" xml:space="preserve">
-        <source>Headline 2</source>
-        <target state="translated">Título 2</target>
-      </trans-unit>
-      <trans-unit id="inspectorMutlipleDocumentNodesSelectedTooltip" xml:space="preserve">
-        <source>Select a single content element in order to be able to edit its properties</source>
-        <target state="translated">Selecione um único elemento de conteúdo para editar as suas propriedades</target>
-      </trans-unit>
-      <trans-unit id="rangeEditorCurrentValue" xml:space="preserve">
-        <source>Current value</source>
-        <target state="translated">Valor atual</target>
       </trans-unit>
       <trans-unit id="nodes" xml:space="preserve">
         <source>nodes</source>
@@ -492,10 +488,6 @@
         <source>content elements selected</source>
         <target state="translated">elementos de conteúdo selecionados</target>
       </trans-unit>
-      <trans-unit id="rangeEditorMinimum" xml:space="preserve">
-        <source>Minimum</source>
-        <target state="translated">Mínimo</target>
-      </trans-unit>
       <trans-unit id="rangeEditorMaximum" xml:space="preserve">
         <source>Maximum</source>
         <target state="translated">Máximo</target>
@@ -503,6 +495,38 @@
       <trans-unit id="errorBoundary.copyTechnicalDetails" xml:space="preserve">
         <source>Copy technical details</source>
         <target state="translated">Copiar detalhes técnicos</target>
+      </trans-unit>
+      <trans-unit id="errorBoundary.technicalDetailsCopied" xml:space="preserve">
+        <source>Technical details copied</source>
+        <target state="translated">Os detalhes técnicos foram copiados</target>
+      </trans-unit>
+      <trans-unit id="errorBoundary.description" xml:space="preserve">
+        <source>Please reload the application, or contact your system administrator with the given details.</source>
+        <target state="translated">Por favor recarregue a aplicação, ou envie ao seu administrador de sistema os detalhes apresentados.</target>
+      </trans-unit>
+      <trans-unit id="NodeNotPublishedMissingParentNode" xml:space="preserve">
+        <source>Node could not be published, probably because of a missing parentNode. Please check that the parentNode has been published.</source>
+        <target state="translated">O Nó não pode ser publicado, provavelmente por faltar um parente. Por favor confirme que o parente foi publicado.</target>
+      </trans-unit>
+      <trans-unit id="switchedBaseWorkspace" xml:space="preserve">
+        <source>Switched base workspace to "{workspace}".</source>
+        <target state="translated">Área de Trabalho mudada para "{workspace}".</target>
+      </trans-unit>
+      <trans-unit id="collapseAll" xml:space="preserve">
+        <source>Collapse All</source>
+        <target state="translated">Colapsar Tudo</target>
+      </trans-unit>
+      <trans-unit id="copyNodeTypeNameToClipboard" xml:space="preserve">
+        <source>Copy node type to clipboard</source>
+        <target state="translated">Copiar o tipo de nó para a área de transferência</target>
+      </trans-unit>
+      <trans-unit id="workspaceContainsUnpublishedChanges" xml:space="preserve">
+        <source>Your personal workspace currently contains unpublished changes.
+                In order to switch to a different target workspace you need to either publish or discard pending changes first.
+                </source>
+        <target state="translated">A sua Área de Trabalho contém alterações não publicadas.
+                De modo a definir uma nova Área de Trabalho deverá publicar ou descartar as alterações pendentes.
+                </target>
       </trans-unit>
       <trans-unit id="invalidValue" xml:space="preserve">
         <source>Invalid value</source>

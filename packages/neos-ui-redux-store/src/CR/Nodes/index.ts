@@ -73,6 +73,7 @@ export enum actionTypes {
     SET_DOCUMENT_NODE = '@neos/neos-ui/CR/Nodes/SET_DOCUMENT_NODE',
     SET_STATE = '@neos/neos-ui/CR/Nodes/SET_STATE',
     RELOAD_STATE = '@neos/neos-ui/CR/Nodes/RELOAD_STATE',
+    RELOAD_STATE_FINISHED = '@neos/neos-ui/CR/Nodes/RELOAD_STATE_FINISHED',
     /**
      * @deprecated `COPY_MULTIPLE` should be used
      */
@@ -234,6 +235,11 @@ const reloadState = ((payload: {
     );
 });
 
+/**
+ * Signals that the node state has been fully reloaded
+ */
+const finishReloadState = () => createAction(actionTypes.RELOAD_STATE_FINISHED);
+
 // This data may be coming from the Guest frame, so we need to re-create it at host/
 // Otherwise we get all "can't execute code from a freed script" errors in Edge,
 // when the guest frame has been navigated away and old guest frame document was destroyed
@@ -349,6 +355,7 @@ export const actions = {
     setDocumentNode,
     setState,
     reloadState,
+    finishReloadState,
     copy,
     copyMultiple,
     cut,
@@ -463,10 +470,16 @@ export const reducer = (state: State = defaultState, action: InitAction | EditPr
                 if (!newNode) {
                     throw new Error('This error should never be thrown, it\'s a way to fool TypeScript');
                 }
-                const mergedNode = defaultsDeep({}, newNode, draft.byContextPath[contextPath]);
-                // Force overwrite of children
+                const oldNode = state.byContextPath[contextPath];
+                const mergedNode = defaultsDeep({}, newNode, oldNode);
                 if (newNode.children !== undefined) {
+                    // Force overwrite of children
                     mergedNode.children = newNode.children;
+                } else if (!oldNode) {
+                    // newNode only adds meta info, but oldNode is gone from the store.
+                    // In order to avoid zombie nodes occupying the store, we'll leave
+                    // the node alone in this case.
+                    return;
                 }
                 // Force overwrite of matchesCurrentDimensions
                 if (newNode.matchesCurrentDimensions !== undefined) {

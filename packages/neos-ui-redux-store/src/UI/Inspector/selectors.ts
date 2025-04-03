@@ -1,5 +1,5 @@
 import {createSelector, defaultMemoize} from 'reselect';
-import {$get} from 'plow-js';
+
 import validate from '@neos-project/neos-ui-validators';
 import {selectors as nodes} from '../../CR/Nodes';
 import {GlobalState} from '../../System';
@@ -15,7 +15,7 @@ import {NodeTypesRegistry, ValidatorRegistry} from '@neos-project/neos-ts-interf
 export const transientValues = createSelector(
     [
         nodes.focusedNodePathSelector,
-        (state: GlobalState) => $get(['ui', 'inspector', 'valuesByNodePath'], state)
+        (state: GlobalState) => state?.ui?.inspector?.valuesByNodePath
     ],
     (focusedNodeContextPath, valuesByNodePath) => focusedNodeContextPath ? valuesByNodePath[focusedNodeContextPath] : {}
 );
@@ -27,9 +27,9 @@ export const isDirty = createSelector(
     transientValues => Boolean(transientValues && (Object.keys(transientValues).length > 0))
 );
 
-export const shouldPromptToHandleUnappliedChanges = (state: GlobalState) => $get(['ui', 'inspector', 'shouldPromptToHandleUnappliedChanges'], state);
+export const shouldPromptToHandleUnappliedChanges = (state: GlobalState) => state?.ui?.inspector?.shouldPromptToHandleUnappliedChanges;
 
-export const shouldShowSecondaryInspector = (state: GlobalState) => $get(['ui', 'inspector', 'secondaryInspectorIsOpen'], state);
+export const shouldShowSecondaryInspector = (state: GlobalState) => state?.ui?.inspector?.secondaryInspectorIsOpen;
 
 const propertiesForValidationSelector = createSelector(
     [

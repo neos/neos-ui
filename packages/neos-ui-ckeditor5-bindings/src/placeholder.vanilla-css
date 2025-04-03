@@ -1,4 +1,4 @@
-.ck.ck-placeholder:after, .ck .ck-placeholder {
+.ck.ck-placeholder:after {
     display: inline-flex;
 }
 

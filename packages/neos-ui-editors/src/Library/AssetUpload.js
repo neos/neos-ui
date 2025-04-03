@@ -1,6 +1,5 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {$get, $transform} from 'plow-js';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 import Dropzone from 'react-dropzone';
@@ -9,9 +8,9 @@ import backend from '@neos-project/neos-ui-backend-connector';
 import style from './style.module.css';
 import {selectors} from '@neos-project/neos-ui-redux-store';
 
-@connect($transform({
-    siteNodePath: $get('cr.nodes.siteNode'),
-    focusedNodePath: selectors.CR.Nodes.focusedNodePathSelector
+@connect(state => ({
+    siteNodePath: state?.cr?.nodes?.siteNode,
+    focusedNodePath: selectors.CR.Nodes.focusedNodePathSelector(state)
 }), null, null, {forwardRef: true})
 export default class AssetUpload extends PureComponent {
     static defaultProps = {

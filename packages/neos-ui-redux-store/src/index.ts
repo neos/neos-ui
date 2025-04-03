@@ -7,21 +7,29 @@ import * as UI from './UI';
 import * as User from './User';
 import * as ServerFeedback from './ServerFeedback';
 
-const all = {Changes, CR, System, UI, User, ServerFeedback};
-
-function typedKeys<T>(o: T) : Array<keyof T> {
-    return Object.keys(o) as Array<keyof T>;
-}
-
 //
 // Export the actionTypes
 //
-export const actionTypes = typedKeys(all).reduce((acc, cur) => ({...acc, [cur]: all[cur].actionTypes}), {});
+export const actionTypes = {
+    Changes: Changes.actionTypes,
+    CR: CR.actionTypes,
+    System: System.actionTypes,
+    UI: UI.actionTypes,
+    User: User.actionTypes,
+    ServerFeedback: ServerFeedback.actionTypes
+} as const;
 
 //
 // Export the actions
 //
-export const actions = typedKeys(all).reduce((acc, cur) => ({...acc, [cur]: all[cur].actions}), {});
+export const actions = {
+    Changes: Changes.actions,
+    CR: CR.actions,
+    System: System.actions,
+    UI: UI.actions,
+    User: User.actions,
+    ServerFeedback: ServerFeedback.actions
+} as const;
 
 //
 // Export the reducer
@@ -38,4 +46,11 @@ export const reducer = combineReducers({
 //
 // Export the selectors
 //
-export const selectors = typedKeys(all).reduce((acc, cur) => ({...acc, [cur]: all[cur].selectors}), {});
+export const selectors = {
+    Changes: Changes.selectors,
+    CR: CR.selectors,
+    System: System.selectors,
+    UI: UI.selectors,
+    User: User.selectors,
+    ServerFeedback: ServerFeedback.selectors
+} as const;

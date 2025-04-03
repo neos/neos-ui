@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 /*
@@ -11,44 +12,49 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
+/**
+ * @internal These objects internally reflect possible operations made by the Neos.Ui.
+ *           They are sorely an implementation detail. You should not use them!
+ *           Please look into the php command API of the Neos CR instead.
+ */
 class CreateAfter extends AbstractCreate
 {
     /**
      * Get the insertion mode (before|after|into) that is represented by this change
-     *
-     * @return string
      */
-    public function getMode()
+    public function getMode(): string
     {
         return 'after';
     }
 
     /**
      * Check if the new node's node type is allowed in the requested position
-     *
-     * @return boolean
      */
-    public function canApply()
+    public function canApply(): bool
     {
-        $parent = $this->getSubject()->getParent();
-        $nodeType = $this->getNodeType();
+        $parent = $this->findParentNode($this->subject);
+        $nodeTypeName = $this->getNodeTypeName();
 
-        return $parent->isNodeTypeAllowedAsChildNode($nodeType);
+        return $parent && $nodeTypeName && $this->isNodeTypeAllowedAsChildNode($parent, $nodeTypeName);
     }
 
     /**
      * Create a new node after the subject
-     *
-     * @return void
      */
-    public function apply()
+    public function apply(): void
     {
-        if ($this->canApply()) {
-            $subject = $this->getSubject();
-            $parent = $subject->getParent();
-            $node = $this->createNode($parent);
+        $parentNode = $this->findParentNode($this->subject);
+        $subject = $this->subject;
+        if ($this->canApply() && !is_null($parentNode)) {
+            $succeedingSibling = null;
+            try {
+                $succeedingSibling = $this->findChildNodes($parentNode)->next($subject);
+            } catch (\InvalidArgumentException $e) {
+                // do nothing; $succeedingSibling is null.
+            }
 
-            $node->moveAfter($subject);
+            $this->createNode($parentNode, $succeedingSibling?->aggregateId);
+
             $this->updateWorkspaceInfo();
         }
     }

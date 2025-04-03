@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Icon from '@neos-project/react-ui-components/src/Icon/';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
-import {$transform, $get} from 'plow-js';
+
 import style from './style.module.css';
 import {neos} from '@neos-project/neos-ui-decorators';
 
@@ -11,8 +11,8 @@ import {neos} from '@neos-project/neos-ui-decorators';
     i18nRegistry: globalRegistry.get('i18n')
 }))
 
-@connect($transform({
-    previewUrl: $get('ui.contentCanvas.previewUrl')
+@connect(state => ({
+    previewUrl: state?.ui?.contentCanvas?.previewUrl
 }))
 export default class PreviewButton extends PureComponent {
     static propTypes = {

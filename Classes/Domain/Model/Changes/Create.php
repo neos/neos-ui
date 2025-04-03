@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 /*
@@ -11,49 +12,45 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
+/**
+ * @internal These objects internally reflect possible operations made by the Neos.Ui.
+ *           They are sorely an implementation detail. You should not use them!
+ *           Please look into the php command API of the Neos CR instead.
+ */
 class Create extends AbstractCreate
 {
-    /**
-     * @param string $parentContextPath
-     */
-    public function setParentContextPath($parentContextPath)
+    public function setParentContextPath(string $parentContextPath): void
     {
         // this method needs to exist; otherwise the TypeConverter breaks.
     }
 
     /**
      * Get the insertion mode (before|after|into) that is represented by this change
-     *
-     * @return string
      */
-    public function getMode()
+    public function getMode(): string
     {
         return 'into';
     }
 
     /**
      * Check if the new node's node type is allowed in the requested position
-     *
-     * @return boolean
      */
-    public function canApply()
+    public function canApply(): bool
     {
         $subject = $this->getSubject();
-        $nodeType = $this->getNodeType();
+        $nodeTypeName = $this->getNodeTypeName();
 
-        return $subject->isNodeTypeAllowedAsChildNode($nodeType);
+        return $nodeTypeName && $this->isNodeTypeAllowedAsChildNode($subject, $nodeTypeName);
     }
 
     /**
      * Create a new node beneath the subject
-     *
-     * @return void
      */
-    public function apply()
+    public function apply(): void
     {
+        $parentNode = $this->getSubject();
         if ($this->canApply()) {
-            $subject = $this->getSubject();
-            $this->createNode($subject);
+            $this->createNode($parentNode, null);
             $this->updateWorkspaceInfo();
         }
     }

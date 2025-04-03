@@ -11,11 +11,10 @@ namespace Neos\Neos\Ui\Exception;
  * source code.
  */
 
-use Neos\ContentRepository\Exception;
-
 /**
  * InvalidNodeCreationHandlerException exception
+ * @internal
  */
-class InvalidNodeCreationHandlerException extends Exception
+class InvalidNodeCreationHandlerException extends \Exception
 {
 }

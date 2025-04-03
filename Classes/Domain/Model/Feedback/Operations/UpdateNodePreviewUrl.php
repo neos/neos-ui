@@ -11,26 +11,45 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
  * source code.
  */
 
-use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
+use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
+use Neos\Neos\Domain\NodeLabel\NodeLabelGeneratorInterface;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 
+/**
+ * @internal
+ */
 class UpdateNodePreviewUrl extends AbstractFeedback
 {
     /**
-     * @var NodeInterface
+     * @var Node
      */
     protected $node;
 
     /**
+     * @Flow\Inject
+     * @var ContentRepositoryRegistry
+     */
+    protected $contentRepositoryRegistry;
+
+    /**
+     * @Flow\Inject
+     * @var NodeLabelGeneratorInterface
+     */
+    protected $nodeLabelGenerator;
+
+    /**
      * Set the node
      *
-     * @param NodeInterface $node
+     * @param Node $node
      * @return void
      */
-    public function setNode(NodeInterface $node)
+    public function setNode(Node $node)
     {
         $this->node = $node;
     }
@@ -38,7 +57,7 @@ class UpdateNodePreviewUrl extends AbstractFeedback
     /**
      * Get the node
      *
-     * @return NodeInterface
+     * @return Node
      */
     public function getNode()
     {
@@ -62,7 +81,7 @@ class UpdateNodePreviewUrl extends AbstractFeedback
      */
     public function getDescription()
     {
-        return sprintf('The "preview URL" of node "%s" has been changed potentially.', $this->getNode()->getLabel());
+        return sprintf('The "preview URL" of node "%s" has been changed potentially.', $this->nodeLabelGenerator->getLabel($this->getNode()));
     }
 
     /**
@@ -76,24 +95,24 @@ class UpdateNodePreviewUrl extends AbstractFeedback
         if (!$feedback instanceof UpdateNodePreviewUrl) {
             return false;
         }
-        return $this->getNode()->getContextPath() === $feedback->getNode()->getContextPath();
+        return $this->getNode()->equals($feedback->getNode());
     }
 
     /**
      * Serialize the payload for this feedback
      *
      * @param ControllerContext $controllerContext
-     * @return array
+     * @return array<string, string>
      */
-    public function serializePayload(ControllerContext $controllerContext)
+    public function serializePayload(ControllerContext $controllerContext): array
     {
         if ($this->node === null) {
             $newPreviewUrl = '';
             $contextPath = '';
         } else {
             $nodeInfoHelper = new NodeInfoHelper();
-            $newPreviewUrl = $nodeInfoHelper->createRedirectToNode($controllerContext, $this->node);
-            $contextPath = $this->node->getContextPath();
+            $newPreviewUrl = $nodeInfoHelper->createRedirectToNode($this->node, $controllerContext->getRequest());
+            $contextPath = NodeAddress::fromNode($this->node)->toJson();
         }
         return [
             'newPreviewUrl' => $newPreviewUrl,

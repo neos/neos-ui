@@ -100,7 +100,7 @@ class StatelessDropDownWrapperWithoutClickOutsideBehavior extends PureComponent<
     }
 
     public render(): JSX.Element {
-        const {id, children, className, theme, style, padded, ...restProps} = this.props;
+        const {children, id, className, theme, style, padded, ...restProps} = this.props;
         const rest = omit(restProps, ['isOpen', 'onToggle', 'onClose']);
         const styleClassName: string = style ? `dropDown--${style}` : '';
         const finalClassName = mergeClassNames(
@@ -114,7 +114,7 @@ class StatelessDropDownWrapperWithoutClickOutsideBehavior extends PureComponent<
         );
 
         return (
-            <div id={id} ref={this.ref} {...rest} className={finalClassName}>
+            <div ref={this.ref} {...rest} id={id} className={finalClassName}>
                 {React.Children.map(
                     children,
                     // @ts-ignore

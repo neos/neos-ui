@@ -352,17 +352,29 @@
           <target xml:lang="fi" state="translated">Hylätty {0} muutosta.</target>
         </trans-unit>
       </group>
-      <trans-unit id="add" xml:space="preserve">
-        <source>Add</source>
-        <target state="translated">Lisää</target>
+      <trans-unit id="workspaceContainsUnpublishedChanges" xml:space="preserve">
+        <source>Your personal workspace currently contains unpublished changes.
+                In order to switch to a different target workspace you need to either publish or discard pending changes first.
+                </source>
+        <target state="translated">Henkilökohtainen työtilasi sisältää tällä hetkellä julkaisemattomia muutoksia.
+                Jos haluat vaihtaa toiseen kohdetyötilaan, sinun on ensin joko julkaistava tai hylättävä odottavat muutokset.
+                </target>
+      </trans-unit>
+      <trans-unit id="errorBoundary.reloadUi" xml:space="preserve">
+        <source>Reload Neos UI</source>
+        <target state="translated">Lataa Neos-käyttöliittymä uudelleen</target>
+      </trans-unit>
+      <trans-unit id="errorBoundary.title" xml:space="preserve">
+        <source>Sorry, but the Neos UI could not recover from this error.</source>
+        <target state="translated">Anteeksi, mutta Neos-käyttöliittymä ei voinut toipua tästä virheestä.</target>
       </trans-unit>
       <trans-unit id="above" xml:space="preserve">
         <source>Above</source>
         <target state="translated">Yllä</target>
       </trans-unit>
-      <trans-unit id="below" xml:space="preserve">
-        <source>Below</source>
-        <target state="translated">Alla</target>
+      <trans-unit id="InsertModeTitleAfter" xml:space="preserve">
+        <source>below</source>
+        <target state="translated">alla</target>
       </trans-unit>
       <trans-unit id="inside" xml:space="preserve">
         <source>Inside</source>
@@ -376,9 +388,9 @@
         <source>above</source>
         <target state="translated">yllä</target>
       </trans-unit>
-      <trans-unit id="InsertModeTitleAfter" xml:space="preserve">
-        <source>below</source>
-        <target state="translated">alla</target>
+      <trans-unit id="below" xml:space="preserve">
+        <source>Below</source>
+        <target state="translated">Alla</target>
       </trans-unit>
       <trans-unit id="ckeditor__toolbar__style__p" xml:space="preserve">
         <source>Paragraph</source>
@@ -408,10 +420,6 @@
         <source>Headline 6</source>
         <target state="translated">Otsikko 6</target>
       </trans-unit>
-      <trans-unit id="ckeditor__toolbar__style__pre" xml:space="preserve">
-        <source>Preformatted</source>
-        <target state="translated">Esimuotoiltu</target>
-      </trans-unit>
       <trans-unit id="ckeditor__toolbar__style__blockquote" xml:space="preserve">
         <source>Blockquote</source>
         <target state="translated">Lohkolainaus</target>
@@ -420,6 +428,22 @@
         <source>Downloadable</source>
         <target state="translated">Ladattavissa</target>
       </trans-unit>
+      <trans-unit id="NodeNotPublishedMissingParentNode" xml:space="preserve">
+        <source>Node could not be published, probably because of a missing parentNode. Please check that the parentNode has been published.</source>
+        <target state="translated">Solmua ei voitu julkaista, luultavasti puuttuvan vanhempisolmun takia. Tarkista, että parentNode on julkaistu.</target>
+      </trans-unit>
+      <trans-unit id="NodeNotPublishedParentNodeNotInCurrentDimension" xml:space="preserve">
+        <source>Node could not be published, probably because the parentNode does not exist in the current dimension. Please check that the parentNode has been published.</source>
+        <target state="translated">Solmua ei voitu julkaista, koska vanhempisolmua ei ole olemassa nykyisessä dimensiossa. Tarkista, että parentNode on julkaistu.</target>
+      </trans-unit>
+      <trans-unit id="errorBoundary.technicalDetailsCopied" xml:space="preserve">
+        <source>Technical details copied</source>
+        <target state="translated">Tekniset yksityiskohdat kopioitu</target>
+      </trans-unit>
+      <trans-unit id="copyNodeTypeNameToClipboard" xml:space="preserve">
+        <source>Copy node type to clipboard</source>
+        <target state="translated">Kopioi solmun tyyppi leikepöydälle</target>
+      </trans-unit>
       <trans-unit id="ckeditor__toolbar__link__formatOptions" xml:space="preserve">
         <source>Format options</source>
         <target state="translated">Muotovaihtoehdot</target>
@@ -427,10 +451,6 @@
       <trans-unit id="UI.RightSideBar.tabs.validationErrorTooltip[0]" xml:space="preserve">
         <source>{tabName} – {amountOfErrors} validation issue</source>
         <target state="translated">{tabName} – {amountOfErrors} vahvistusongelma</target>
-      </trans-unit>
-      <trans-unit id="UI.RightSideBar.tabs.validationErrorTooltip[1]" xml:space="preserve">
-        <source>{tabName} – {amountOfErrors} validation issues</source>
-        <target state="translated">{tabName} – {amountOfErrors} vahvistusongelmaa</target>
       </trans-unit>
       <trans-unit id="syncUriPathSegment" xml:space="preserve">
         <source>Syncronize with the title property</source>
@@ -444,6 +464,38 @@
         <source>content elements selected</source>
         <target state="translated">sisältöelementit valittuina</target>
       </trans-unit>
+      <trans-unit id="rangeEditorCurrentValue" xml:space="preserve">
+        <source>Current value</source>
+        <target state="translated">Nykyinen arvo</target>
+      </trans-unit>
+      <trans-unit id="errorBoundary.description" xml:space="preserve">
+        <source>Please reload the application, or contact your system administrator with the given details.</source>
+        <target state="translated">Lataa sovellus uudelleen tai ota yhteyttä järjestelmänvalvojaan annetuilla yksityistiedoilla.</target>
+      </trans-unit>
+      <trans-unit id="add" xml:space="preserve">
+        <source>Add</source>
+        <target state="translated">Lisää</target>
+      </trans-unit>
+      <trans-unit id="ckeditor__toolbar__style__pre" xml:space="preserve">
+        <source>Preformatted</source>
+        <target state="translated">Esimuotoiltu</target>
+      </trans-unit>
+      <trans-unit id="UI.RightSideBar.tabs.validationErrorTooltip[1]" xml:space="preserve">
+        <source>{tabName} – {amountOfErrors} validation issues</source>
+        <target state="translated">{tabName} – {amountOfErrors} vahvistusongelmaa</target>
+      </trans-unit>
+      <trans-unit id="deleteXNodes" xml:space="preserve">
+        <source>Delete {amount} nodes</source>
+        <target state="translated">Poista {amount} solmua</target>
+      </trans-unit>
+      <trans-unit id="invalidValue" xml:space="preserve">
+        <source>Invalid value</source>
+        <target state="translated">Virheellinen arvo</target>
+      </trans-unit>
+      <trans-unit id="switchedBaseWorkspace" xml:space="preserve">
+        <source>Switched base workspace to "{workspace}".</source>
+        <target state="translated">Vaihdettiin perustyötilaksi "{workspace}".</target>
+      </trans-unit>
       <trans-unit id="documentsSelected" xml:space="preserve">
         <source>documents selected</source>
         <target state="translated">asiakirjat valittuina</target>
@@ -456,41 +508,21 @@
         <source>Select a single content element in order to be able to edit its properties</source>
         <target state="translated">Valitse yksittäinen sisältöelementti, jotta voit muokata sen ominaisuuksia</target>
       </trans-unit>
-      <trans-unit id="deleteXNodes" xml:space="preserve">
-        <source>Delete {amount} nodes</source>
-        <target state="translated">Poista {amount} solmua</target>
-      </trans-unit>
-      <trans-unit id="rangeEditorMaximum" xml:space="preserve">
-        <source>Maximum</source>
-        <target state="translated">Maksimi</target>
-      </trans-unit>
-      <trans-unit id="rangeEditorCurrentValue" xml:space="preserve">
-        <source>Current value</source>
-        <target state="translated">Nykyinen arvo</target>
+      <trans-unit id="syncPersonalWorkSpace" xml:space="preserve">
+        <source>Synchronize personal workspace</source>
+        <target state="translated">Synkronoi henkilökohtainen työtila</target>
       </trans-unit>
       <trans-unit id="rangeEditorMinimum" xml:space="preserve">
         <source>Minimum</source>
         <target state="translated">Minimi</target>
       </trans-unit>
+      <trans-unit id="rangeEditorMaximum" xml:space="preserve">
+        <source>Maximum</source>
+        <target state="translated">Maksimi</target>
+      </trans-unit>
       <trans-unit id="errorBoundary.copyTechnicalDetails" xml:space="preserve">
         <source>Copy technical details</source>
         <target state="translated">Kopioi tekniset yksityiskohdat</target>
-      </trans-unit>
-      <trans-unit id="errorBoundary.technicalDetailsCopied" xml:space="preserve">
-        <source>Technical details copied</source>
-        <target state="translated">Tekniset yksityiskohdat kopioitu</target>
-      </trans-unit>
-      <trans-unit id="errorBoundary.reloadUi" xml:space="preserve">
-        <source>Reload Neos UI</source>
-        <target state="translated">Lataa Neos-käyttöliittymä uudelleen</target>
-      </trans-unit>
-      <trans-unit id="errorBoundary.title" xml:space="preserve">
-        <source>Sorry, but the Neos UI could not recover from this error.</source>
-        <target state="translated">Anteeksi, mutta Neos-käyttöliittymä ei voinut toipua tästä virheestä.</target>
-      </trans-unit>
-      <trans-unit id="errorBoundary.description" xml:space="preserve">
-        <source>Please reload the application, or contact your system administrator with the given details.</source>
-        <target state="translated">Lataa sovellus uudelleen tai ota yhteyttä järjestelmänvalvojaan annetuilla yksityistiedoilla.</target>
       </trans-unit>
       <trans-unit id="errorBoundary.footer" xml:space="preserve">
         <source>For more information about the error please refer to the JavaScript console.</source>
@@ -499,14 +531,6 @@
       <trans-unit id="collapseAll" xml:space="preserve">
         <source>Collapse All</source>
         <target state="translated">Supista kaikki</target>
-      </trans-unit>
-      <trans-unit id="copyNodeTypeNameToClipboard" xml:space="preserve">
-        <source>Copy node type to clipboard</source>
-        <target state="translated">Kopioi solmun tyyppi leikepöydälle</target>
-      </trans-unit>
-      <trans-unit id="invalidValue" xml:space="preserve">
-        <source>Invalid value</source>
-        <target state="translated">Virheellinen arvo</target>
       </trans-unit>
     </body>
   </file>

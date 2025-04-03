@@ -1,9 +1,9 @@
 import {processSelectBoxOptions} from './selectBoxHelpers';
 import {I18nRegistry} from '@neos-project/neos-ts-interfaces';
 
-const fakeI18NRegistry: I18nRegistry = {
+const fakeI18NRegistry = {
     translate: (id) => id ?? ''
-};
+} as I18nRegistry;
 
 describe('processSelectBoxOptions', () => {
     it('transforms an associative array with labels to list of objects', () => {

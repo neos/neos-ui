@@ -75,68 +75,26 @@ function check_saucectl_installed {
     fi
 }
 
-# parse dimension from fixture file name
-function get_dimension() {
-  dimension=$(basename "$1")
-  echo "$dimension"
-}
-
-# Function that gets a fixture as parameter. With the fixture we
-# load the related site package and import the site.
-function initialize_neos_site() {
-  local fixture=$1
-
-  ln -s "../${fixture}SitePackage" DistributionPackages/Neos.TestSite
-
-  composer reinstall neos/test-nodetypes
-  composer reinstall neos/test-site
-  # make sure neos is installed even if patching led to the removal (bug)
-  composer update neos/neos-development-collection
-  ./flow flow:cache:flush --force
-  ./flow flow:cache:warmup
-  ./flow configuration:show --path Neos.ContentRepository.contentDimensions
-
-  if ./flow site:list | grep -q 'Node name'; then
-      ./flow site:prune '*'
-  fi
-  ./flow site:import --package-key=Neos.TestSite
-  ./flow resource:publish
-}
-
 function run_tests() {
     cd ../../..
 
-    rm -rf DummyDistributionPackages || true
-    mv DistributionPackages DummyDistributionPackages
-    mkdir DistributionPackages
+    ./flow cr:setup --content-repository onedimension
+    ./flow site:importall --content-repository onedimension --path ./DistributionPackages/Neos.Test.OneDimension/Resources/Private/Content
 
-    ln -s "../Packages/Application/Neos.Neos.Ui/Tests/IntegrationTests/SharedNodeTypesPackage" DistributionPackages/Neos.TestNodeTypes
+    ./flow cr:setup --content-repository twodimensions
+    ./flow site:importall --content-repository twodimensions --path ./DistributionPackages/Neos.Test.TwoDimensions/Resources/Private/Content
 
-    for fixture in Packages/Application/Neos.Neos.Ui/Tests/IntegrationTests/Fixtures/*/; do
-        dimension=$(get_dimension "$fixture")
-        initialize_neos_site "$fixture"
+    ./flow resource:publish
 
-        # go tp the Neos.Neos.Ui package and run the tests
-        cd Packages/Application/Neos.Neos.Ui
+    cd Packages/Application/Neos.Neos.Ui
 
-        if [[ $BROWSER ]]; then
-            yarn run testcafe "$BROWSER" "../../../${fixture}*.e2e.js" --selector-timeout=10000 --assertion-timeout=30000 || hasFailure=1
-        fi
+    if [[ $BROWSER ]]; then
+        yarn run testcafe "$BROWSER" "Tests/IntegrationTests/Fixtures/*/*.e2e.js" \
+            --selector-timeout=10000 --assertion-timeout=30000
+    fi
 
-        if [[ $USE_SAUCELABS ]]; then
-          saucectl run --config .sauce/config${dimension}.yml || hasFailure=1
-        fi
-
-        # cd back to the root directory and clean up
-        cd ../../..
-        rm -f DistributionPackages/Neos.TestSite
-    done
-
-    rm -rf DistributionPackages
-    mv DummyDistributionPackages DistributionPackages
-
-    if [[ $hasFailure -eq 1 ]] ; then
-        exit 1
+    if [[ $USE_SAUCELABS ]]; then
+      saucectl run --config .sauce/config.yml
     fi
 }
 

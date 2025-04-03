@@ -19,6 +19,7 @@ use Neos\Utility\PositionalArraySorter;
 
 /**
  * @Flow\Scope("singleton")
+ * @internal
  */
 class StyleAndJavascriptInclusionService
 {
@@ -36,43 +37,46 @@ class StyleAndJavascriptInclusionService
 
     /**
      * @Flow\InjectConfiguration(package="Neos.Fusion", path="defaultContext")
-     * @var array
+     * @var array<string, string>
      */
     protected $fusionDefaultEelContext;
 
     /**
      * @Flow\InjectConfiguration(path="configurationDefaultEelContext")
-     * @var array
+     * @var array<string, string>
      */
     protected $additionalEelDefaultContext;
 
     /**
      * @Flow\InjectConfiguration(path="resources.javascript")
-     * @var array
+     * @var array<string, array{resource: string, attributes: array<string, mixed>, position: string}>
      */
     protected $javascriptResources;
 
     /**
      * @Flow\InjectConfiguration(path="resources.stylesheets")
-     * @var array
+     * @var array<string, array{resource: string, attributes: array<string, mixed>, position: string}>
      */
     protected $stylesheetResources;
 
-    public function getHeadScripts()
+    public function getHeadScripts(): string
     {
         return $this->build($this->javascriptResources, function ($uri, $additionalAttributes) {
-            return '<script src="' . $uri . '" ' . $additionalAttributes . '></script>';
+            return '<script src="' . $uri . '" ' . $additionalAttributes . ' defer></script>';
         });
     }
 
-    public function getHeadStylesheets()
+    public function getHeadStylesheets(): string
     {
         return $this->build($this->stylesheetResources, function ($uri, $additionalAttributes) {
             return '<link rel="stylesheet" href="' . $uri . '" ' . $additionalAttributes . '/>';
         });
     }
 
-    protected function build(array $resourceArrayToSort, \Closure $builderForLine)
+    /**
+     * @param array<string, array{resource: string, attributes: array<string, mixed>}> $resourceArrayToSort
+     */
+    protected function build(array $resourceArrayToSort, \Closure $builderForLine): string
     {
         $sortedResources = (new PositionalArraySorter($resourceArrayToSort))->toArray();
 
@@ -92,15 +96,17 @@ class StyleAndJavascriptInclusionService
 
             if (strpos($resourceExpression, 'resource://') === 0) {
                 // Cache breaker
-                $hash = substr(md5_file($resourceExpression), 0, 8);
+                $hash = substr(md5_file($resourceExpression) ?: '', 0, 8);
                 $resourceExpression = $this->resourceManager->getPublicPackageResourceUriByPath($resourceExpression);
             }
             $finalUri = $hash ? $resourceExpression . (str_contains($resourceExpression, '?') ? '&' : '?') . $hash : $resourceExpression;
-            $additionalAttributes = array_merge(
-                // legacy first level 'defer' attribute
-                isset($element['defer']) ? ['defer' => $element['defer']] : [],
-                $element['attributes'] ?? []
-            );
+            $additionalAttributes = $element['attributes'] ?? [];
+
+            // All scripts are deferred by default. This prevents the attribute from
+            // being specified redundantly.
+            if (isset($additionalAttributes['defer'])) {
+                unset($additionalAttributes['defer']);
+            }
             $result .= $builderForLine($finalUri, $this->htmlAttributesArrayToString($additionalAttributes));
         }
         return $result;

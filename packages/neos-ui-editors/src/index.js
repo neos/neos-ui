@@ -14,10 +14,7 @@ import {
     NodeType,
     CodeMirror,
     CKEditor,
-    MasterPlugin,
     AssetEditor,
-    PluginViews,
-    PluginView,
     UriPathSegment
 } from './Editors/index';
 
@@ -53,10 +50,7 @@ export {
     NodeType,
     CodeMirror,
     CKEditor,
-    MasterPlugin,
     AssetEditor,
-    PluginViews,
-    PluginView,
     UriPathSegment,
 
     CodeMirrorWrap,
@@ -88,10 +82,7 @@ export default {
     NodeType,
     CodeMirror,
     CKEditor,
-    MasterPlugin,
     AssetEditor,
-    PluginViews,
-    PluginView,
     UriPathSegment,
 
     CodeMirrorWrap,

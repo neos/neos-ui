@@ -15,6 +15,9 @@ use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 
+/**
+ * @internal
+ */
 abstract class AbstractMessageFeedback extends AbstractFeedback
 {
     /**

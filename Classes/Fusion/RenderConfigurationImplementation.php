@@ -13,9 +13,13 @@ namespace Neos\Neos\Ui\Fusion;
 
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Exception;
+use Neos\Flow\Mvc\ActionRequest;
 use Neos\Fusion\FusionObjects\AbstractFusionObject;
 use Neos\Neos\Ui\Domain\Service\ConfigurationRenderingService;
 
+/**
+ * @internal
+ */
 class RenderConfigurationImplementation extends AbstractFusionObject
 {
     /**
@@ -26,12 +30,12 @@ class RenderConfigurationImplementation extends AbstractFusionObject
 
     /**
      * @Flow\InjectConfiguration()
-     * @var array
+     * @var array<string, mixed>
      */
     protected $settings;
 
     /**
-     * @return array
+     * @return array<string, mixed>
      */
     protected function getContext(): array
     {
@@ -49,14 +53,18 @@ class RenderConfigurationImplementation extends AbstractFusionObject
     /**
      * Appends an item to the given collection
      *
-     * @return array
+     * @return array<string|int, mixed>
      * @throws Exception
      */
     public function evaluate()
     {
         $context = $this->getContext();
         $pathToRender = $this->getPath();
-        $context['controllerContext'] = $this->getruntime()->getControllerContext();
+        $actionRequest = $this->getRuntime()->fusionGlobals->get('request');
+        if (!$actionRequest instanceof ActionRequest) {
+            throw new Exception('The request is expected to be an ActionRequest.', 1706639436);
+        }
+        $context['request'] = $actionRequest;
 
         if (!isset($this->settings[$pathToRender])) {
             throw new Exception('The path "Neos.Neos.Ui.' . $pathToRender . '" was not found in the settings.', 1458814468);

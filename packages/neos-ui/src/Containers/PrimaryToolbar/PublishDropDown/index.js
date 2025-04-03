@@ -1,14 +1,14 @@
 /* eslint-disable complexity */
-import React, {Fragment, PureComponent} from 'react';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
-import {$transform, $get} from 'plow-js';
 
-import {Badge, Icon, CheckBox, Label, DropDown} from '@neos-project/react-ui-components';
+import {Badge, Icon, DropDown} from '@neos-project/react-ui-components';
 
-import I18n from '@neos-project/neos-ui-i18n';
+import I18n, {translate} from '@neos-project/neos-ui-i18n';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
+import {PublishingMode, PublishingScope} from '@neos-project/neos-ui-redux-store/src/CR/Publishing';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 const {publishableNodesSelector, publishableNodesInDocumentSelector, baseWorkspaceSelector, isWorkspaceReadOnlySelector, personalWorkspaceNameSelector} = selectors.CR.Workspaces;
@@ -17,21 +17,17 @@ import AbstractButton from './AbstractButton/index';
 import WorkspaceSelector from './WorkspaceSelector/index';
 import style from './style.module.css';
 
-@connect($transform({
-    isSaving: $get('ui.remote.isSaving'),
-    isPublishing: $get('ui.remote.isPublishing'),
-    isDiscarding: $get('ui.remote.isDiscarding'),
-    publishableNodes: publishableNodesSelector,
-    publishableNodesInDocument: publishableNodesInDocumentSelector,
-    personalWorkspaceName: personalWorkspaceNameSelector,
-    baseWorkspace: baseWorkspaceSelector,
-    isWorkspaceReadOnly: isWorkspaceReadOnlySelector,
-    isAutoPublishingEnabled: $get('user.settings.isAutoPublishingEnabled')
+@connect(state => ({
+    isSaving: state?.ui?.remote?.isSaving,
+    isPublishing: state?.cr?.publishing?.mode === PublishingMode.PUBLISH,
+    publishableNodes: publishableNodesSelector(state),
+    publishableNodesInDocument: publishableNodesInDocumentSelector(state),
+    personalWorkspaceName: personalWorkspaceNameSelector(state),
+    baseWorkspace: baseWorkspaceSelector(state),
+    isWorkspaceReadOnly: isWorkspaceReadOnlySelector(state)
 }), {
-    toggleAutoPublishing: actions.User.Settings.toggleAutoPublishing,
     changeBaseWorkspaceAction: actions.CR.Workspaces.changeBaseWorkspace,
-    publishAction: actions.CR.Workspaces.publish,
-    discardAction: actions.CR.Workspaces.commenceDiscard
+    start: actions.CR.Publishing.start
 })
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')
@@ -41,44 +37,36 @@ export default class PublishDropDown extends PureComponent {
     static propTypes = {
         isSaving: PropTypes.bool,
         isPublishing: PropTypes.bool,
-        isDiscarding: PropTypes.bool,
         isWorkspaceReadOnly: PropTypes.bool,
         publishableNodes: PropTypes.array,
         publishableNodesInDocument: PropTypes.array,
         personalWorkspaceName: PropTypes.string.isRequired,
         baseWorkspace: PropTypes.string.isRequired,
         neos: PropTypes.object.isRequired,
-        isAutoPublishingEnabled: PropTypes.bool,
-        toggleAutoPublishing: PropTypes.func.isRequired,
-        publishAction: PropTypes.func.isRequired,
-        discardAction: PropTypes.func.isRequired,
+        start: PropTypes.func.isRequired,
         changeBaseWorkspaceAction: PropTypes.func.isRequired,
         routes: PropTypes.object,
         i18nRegistry: PropTypes.object.isRequired
     };
 
     handlePublishClick = () => {
-        const {publishableNodesInDocument, publishAction, baseWorkspace} = this.props;
-
-        publishAction(publishableNodesInDocument.map($get('contextPath')), baseWorkspace);
+        const {start} = this.props;
+        start(PublishingMode.PUBLISH, PublishingScope.DOCUMENT, false);
     }
 
     handlePublishAllClick = () => {
-        const {publishableNodes, publishAction, baseWorkspace} = this.props;
-
-        publishAction(publishableNodes.map($get('contextPath')), baseWorkspace);
+        const {start} = this.props;
+        start(PublishingMode.PUBLISH, PublishingScope.SITE, true);
     }
 
     handleDiscardClick = () => {
-        const {publishableNodesInDocument, discardAction} = this.props;
-
-        discardAction(publishableNodesInDocument.map($get('contextPath')));
+        const {start} = this.props;
+        start(PublishingMode.DISCARD, PublishingScope.DOCUMENT, true);
     }
 
     handleDiscardAllClick = () => {
-        const {publishableNodes, discardAction} = this.props;
-
-        discardAction(publishableNodes.map($get('contextPath')));
+        const {start} = this.props;
+        start(PublishingMode.DISCARD, PublishingScope.SITE, true);
     }
 
     render() {
@@ -87,33 +75,25 @@ export default class PublishDropDown extends PureComponent {
             publishableNodesInDocument,
             isSaving,
             isPublishing,
-            isDiscarding,
-            isAutoPublishingEnabled,
             isWorkspaceReadOnly,
-            toggleAutoPublishing,
             baseWorkspace,
             changeBaseWorkspaceAction,
             i18nRegistry,
             neos
         } = this.props;
 
-        const workspaceModuleUri = $get('routes.core.modules.workspaces', neos);
-        const allowedWorkspaces = $get('configuration.allowedTargetWorkspaces', neos);
-        const baseWorkspaceTitle = $get([baseWorkspace, 'title'], allowedWorkspaces);
-        const canPublishLocally = !isSaving && !isPublishing && !isDiscarding && publishableNodesInDocument && (publishableNodesInDocument.length > 0);
-        const canPublishGlobally = !isSaving && !isPublishing && !isDiscarding && publishableNodes && (publishableNodes.length > 0);
+        const workspaceModuleUri = neos?.routes?.core?.modules?.workspace;
+        const allowedWorkspaces = neos?.configuration?.allowedTargetWorkspaces;
+        const baseWorkspaceTitle = allowedWorkspaces?.[baseWorkspace]?.title;
+        const canPublishLocally = !isSaving && !isPublishing && publishableNodesInDocument && (publishableNodesInDocument.length > 0);
+        const canPublishGlobally = !isSaving && !isPublishing && publishableNodes && (publishableNodes.length > 0);
         const changingWorkspaceAllowed = !canPublishGlobally;
-        const autoPublishWrapperClassNames = mergeClassNames({
-            [style.dropDown__item]: true,
-            [style['dropDown__item--noHover']]: true
-        });
         const mainButton = this.getTranslatedMainButton(baseWorkspaceTitle);
         const dropDownBtnClassName = mergeClassNames({
             [style.dropDown__btn]: true,
             [style['dropDown__item--canPublish']]: canPublishGlobally,
             [style['dropDown__item--isPublishing']]: isPublishing,
-            [style['dropDown__item--isSaving']]: isSaving,
-            [style['dropDown__item--isDiscarding']]: isDiscarding
+            [style['dropDown__item--isSaving']]: isSaving
         });
         const publishableNodesInDocumentCount = publishableNodesInDocument ? publishableNodesInDocument.length : 0;
         const publishableNodesCount = publishableNodes ? publishableNodes.length : 0;
@@ -131,7 +111,7 @@ export default class PublishDropDown extends PureComponent {
                 </AbstractButton>
 
                 <DropDown className={style.dropDown}>
-                    {isPublishing || isSaving || isDiscarding ? (
+                    {isPublishing || isSaving ? (
                         <DropDown.Header
                             iconIsOpen={'spinner'}
                             iconIsClosed={'spinner'}
@@ -202,34 +182,13 @@ export default class PublishDropDown extends PureComponent {
                             </AbstractButton>
                         </li>
                         {publishableNodesCount > 0 && (<li className={style.dropDown__item}>
-                            <a id="neos-PublishDropDown-ReviewChanges" href={workspaceModuleUri + '/show?moduleArguments[workspace]=' + this.props.personalWorkspaceName}>
+                            <a id="neos-PublishDropDown-ReviewChanges" href={workspaceModuleUri + '/review?moduleArguments[workspace]=' + this.props.personalWorkspaceName}>
                                 <div className={style.dropDown__iconWrapper}>
                                     <Icon icon="check-circle"/>
                                 </div>
                                 <I18n id="Neos.Neos:Main:reviewChanges" fallback="Review changes"/>
                             </a>
                         </li>)}
-                        <li className={autoPublishWrapperClassNames}>
-                            {
-                                /**
-                                PLEASE NOTE: this additional styleClass is a fix, because react checkboxes inside a react select component are buggy,
-                                for further information see https://github.com/neos/neos-ui/pull/3211
-                                */
-                            }
-                            <Label htmlFor="neos-PublishDropDown-AutoPublish" className={style.dropdownOptionCheckbox}>
-                                <
-// @ts-ignore
-                                CheckBox
-                                    id="neos-PublishDropDown-AutoPublish"
-                                    onChange={toggleAutoPublishing}
-                                    isChecked={isAutoPublishingEnabled}
-                                    className={style.dropdownOptionCheckbox__input}
-                                    />
-                                <span className={style.dropdownOptionCheckbox__label}>
-                                    <I18n id="Neos.Neos:Main:autoPublish" fallback="Auto-Publish"/>
-                                </span>
-                            </Label>
-                        </li>
                         <li className={style.dropDown__item}>
                             <a id="neos-PublishDropDown-Workspaces" href={workspaceModuleUri}>
                                 <div className={style.dropDown__iconWrapper}>
@@ -248,40 +207,22 @@ export default class PublishDropDown extends PureComponent {
         const {
             publishableNodesInDocument,
             isSaving,
-            isPublishing,
-            isDiscarding,
-            isAutoPublishingEnabled
+            isPublishing
         } = this.props;
         const canPublishLocally = publishableNodesInDocument && (publishableNodesInDocument.length > 0);
 
         if (isSaving) {
-            return <I18n id="Neos.Neos:Main:saving" fallback="saving"/>;
+            return translate('Neos.Neos:Main:saving', 'saving');
         }
 
         if (isPublishing) {
-            return <I18n id="Neos.Neos:Main:publishTo" fallback="Publish to" params={{0: baseWorkspaceTitle}}/>;
-        }
-
-        if (isDiscarding) {
-            return 'Discarding...';
-        }
-
-        if (isAutoPublishingEnabled) {
-            if (baseWorkspaceTitle) {
-                return <I18n id="Neos.Neos:Main:autoPublishTo" fallback={'Auto publish to ' + baseWorkspaceTitle} params={{0: baseWorkspaceTitle}}/>;
-            }
-            return <I18n id="Neos.Neos:Main:autoPublish" fallback="Auto publish"/>;
+            return translate('Neos.Neos:Main:publishTo', 'Publish to {0}', [baseWorkspaceTitle]) + ' ...';
         }
 
         if (canPublishLocally) {
-            return <I18n id="Neos.Neos:Main:publishTo" fallback="Publish to" params={{0: baseWorkspaceTitle}}/>;
+            return translate('Neos.Neos:Main:publishTo', 'Publish to {0}', [baseWorkspaceTitle]);
         }
 
-        return (
-            <Fragment>
-                <I18n id="Neos.Neos:Main:published" fallback="Published"/>
-                {(baseWorkspaceTitle ? ' - ' + baseWorkspaceTitle : '')}
-            </Fragment>
-        );
+        return translate('Neos.Neos:Main:published', 'Published') + (baseWorkspaceTitle ? ' - ' + baseWorkspaceTitle : '');
     }
 }

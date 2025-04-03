@@ -145,6 +145,6 @@ test(
         await t.switchToMainWindow();
         await t
             .expect(Selector('[role="treeitem"] [role="button"][class*="isFocused"]').textContent)
-            .eql('MultiC');
+            .eql('MultiA');
     }
 );

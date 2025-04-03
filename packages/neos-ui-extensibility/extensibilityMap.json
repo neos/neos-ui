@@ -4,7 +4,6 @@
     "react-dnd": "@neos-project/neos-ui-extensibility/dist/shims/vendor/react-dnd",
     "react-dnd-html5-backend": "@neos-project/neos-ui-extensibility/dist/shims/vendor/react-dnd-html5-backend",
     "prop-types": "@neos-project/neos-ui-extensibility/dist/shims/vendor/prop-types",
-    "plow-js": "@neos-project/neos-ui-extensibility/dist/shims/vendor/plow-js",
     "classnames": "@neos-project/neos-ui-extensibility/dist/shims/vendor/classnames",
     "react-redux": "@neos-project/neos-ui-extensibility/dist/shims/vendor/react-redux",
     "redux-actions": "@neos-project/neos-ui-extensibility/dist/shims/vendor/redux-actions",

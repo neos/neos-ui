@@ -1,9 +1,10 @@
 import {delay} from 'redux-saga';
 import {takeLatest, put, select, take, race} from 'redux-saga/effects';
-import {$get} from 'plow-js';
+
 import {getGuestFrameDocument} from '@neos-project/neos-ui-guest-frame/src/dom';
 
 import {actionTypes, actions} from '@neos-project/neos-ui-redux-store';
+import {showFlashMessage} from '@neos-project/neos-ui-error';
 
 /**
  * Load newly created page into canvas
@@ -11,9 +12,11 @@ import {actionTypes, actions} from '@neos-project/neos-ui-redux-store';
 export function * watchNodeCreated() {
     yield takeLatest(actionTypes.UI.Remote.DOCUMENT_NODE_CREATED, function * nodeCreated(action) {
         const {contextPath} = action.payload;
-        const node = yield select($get(['cr', 'nodes', 'byContextPath', contextPath]));
+        const node = yield select(
+            state => state?.cr?.nodes?.byContextPath?.[contextPath]
+        );
         yield put(actions.CR.Nodes.setDocumentNode(contextPath));
-        yield put(actions.UI.ContentCanvas.setSrc($get('uri', node)));
+        yield put(actions.UI.ContentCanvas.setSrc(node?.uri));
     });
 }
 /**
@@ -44,7 +47,9 @@ export function * watchStopLoading({globalRegistry, store}) {
 export function * watchReload() {
     yield takeLatest(actionTypes.UI.ContentCanvas.RELOAD, function * (action) {
         const {uri} = action.payload;
-        const currentIframeUrl = yield select($get('ui.contentCanvas.src'));
+        const currentIframeUrl = yield select(
+            state => state?.ui?.contentCanvas?.src
+        );
 
         [].slice.call(document.querySelectorAll(`iframe[name=neos-content-main]`)).forEach(iframe => {
             const iframeWindow = iframe.contentWindow || iframe;
@@ -65,7 +70,9 @@ export function * watchControlOverIFrame() {
     yield take(actionTypes.System.READY);
 
     while (true) { //eslint-disable-line
-        const src = yield select($get('ui.contentCanvas.src'));
+        const src = yield select(
+            state => state?.ui?.contentCanvas?.src
+        );
         const waitForNextAction = yield race([
             take(actionTypes.UI.ContentCanvas.SET_SRC),
             take(actionTypes.UI.ContentCanvas.REQUEST_REGAIN_CONTROL),
@@ -74,7 +81,12 @@ export function * watchControlOverIFrame() {
         const nextAction = Object.keys(waitForNextAction).map(k => waitForNextAction[k])[0];
 
         if (nextAction.type === actionTypes.UI.ContentCanvas.REQUEST_REGAIN_CONTROL) {
-            yield put(actions.UI.FlashMessages.add('iframe access', nextAction.payload.errorMessage, 'error', 5000));
+            showFlashMessage({
+                id: 'iframe access',
+                severity: 'error',
+                message: nextAction.payload.errorMessage,
+                timeout: 5000
+            });
 
             //
             // We need to delay, so that the iframe gets cleared before we load a new src

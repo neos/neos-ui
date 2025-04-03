@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$transform, $get} from 'plow-js';
+
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 import {actions} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
@@ -10,8 +10,8 @@ import style from './style.module.css';
 @neos(globalRegistry => ({
     i18nRegistry: globalRegistry.get('i18n')
 }))
-@connect($transform({
-    isFullScreen: $get('ui.fullScreen.isFullScreen')
+@connect(state => ({
+    isFullScreen: state?.ui?.fullScreen?.isFullScreen
 }), {
     toggleFullScreen: actions.UI.FullScreen.toggle
 })

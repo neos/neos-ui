@@ -11,19 +11,23 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
  * source code.
  */
 
-use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindChildNodesFilter;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Mvc\ActionRequest;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 
+/**
+ * @internal
+ */
 class UpdateNodeInfo extends AbstractFeedback
 {
-    /**
-     * @var NodeInterface
-     */
-    protected $node;
+    protected Node $node;
 
     /**
      * @Flow\Inject
@@ -31,125 +35,99 @@ class UpdateNodeInfo extends AbstractFeedback
      */
     protected $nodeInfoHelper;
 
-    protected $isRecursive = false;
-
-    protected $baseNodeType = null;
-
     /**
-     * Set the baseNodeType
-     *
-     * @param string|null $baseNodeType
+     * @Flow\Inject
+     * @var ContentRepositoryRegistry
      */
+    protected $contentRepositoryRegistry;
+
+    protected bool $isRecursive = false;
+
+    protected ?string $baseNodeType = null;
+
     public function setBaseNodeType(?string $baseNodeType): void
     {
         $this->baseNodeType = $baseNodeType;
     }
 
-    /**
-     * Get the baseNodeType
-     *
-     * @return string|null
-     */
     public function getBaseNodeType(): ?string
     {
         return $this->baseNodeType;
     }
 
-    /**
-     * Set the node
-     *
-     * @param NodeInterface $node
-     * @return void
-     */
-    public function setNode(NodeInterface $node)
+    public function setNode(Node $node): void
     {
         $this->node = $node;
     }
 
     /**
      * Update node infos recursively
-     *
-     * @return void
      */
-    public function recursive()
+    public function recursive(): void
     {
         $this->isRecursive = true;
     }
 
-    /**
-     * Get the node
-     *
-     * @return NodeInterface
-     */
-    public function getNode()
+    public function getNode(): Node
     {
         return $this->node;
     }
 
-    /**
-     * Get the type identifier
-     *
-     * @return string
-     */
-    public function getType()
+    public function getType(): string
     {
         return 'Neos.Neos.Ui:UpdateNodeInfo';
     }
 
-    /**
-     * Get the description
-     *
-     * @return string
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
-        return sprintf('Updated info for node "%s" is available.', $this->getNode()->getContextPath());
+        return sprintf('Updated info for node "%s" is available.', $this->node->aggregateId->value);
     }
 
     /**
      * Checks whether this feedback is similar to another
-     *
-     * @param FeedbackInterface $feedback
-     * @return boolean
      */
-    public function isSimilarTo(FeedbackInterface $feedback)
+    public function isSimilarTo(FeedbackInterface $feedback): bool
     {
         if (!$feedback instanceof UpdateNodeInfo) {
             return false;
         }
 
-        return $this->getNode()->getContextPath() === $feedback->getNode()->getContextPath();
+        return $this->getNode()->equals($feedback->getNode());
     }
 
     /**
      * Serialize the payload for this feedback
      *
-     * @param ControllerContext $controllerContext
-     * @return mixed
+     * @return array<string,mixed>
      */
-    public function serializePayload(ControllerContext $controllerContext)
+    public function serializePayload(ControllerContext $controllerContext): array
     {
         return [
-            'byContextPath' => $this->serializeNodeRecursively($this->getNode(), $controllerContext)
+            'byContextPath' => $this->serializeNodeRecursively($this->node, $controllerContext->getRequest())
         ];
     }
 
     /**
      * Serialize node and all child nodes
      *
-     * @param NodeInterface $node
-     * @param ControllerContext $controllerContext
-     * @return array
+     * @return array<string,?array<string,mixed>>
      */
-    public function serializeNodeRecursively(NodeInterface $node, ControllerContext $controllerContext)
+    private function serializeNodeRecursively(Node $node, ActionRequest $actionRequest): array
     {
+        $contentRepository = $this->contentRepositoryRegistry->get($node->contentRepositoryId);
+
         $result = [
-            $node->getContextPath() => $this->nodeInfoHelper->renderNodeWithPropertiesAndChildrenInformation($node, $controllerContext, $this->baseNodeType)
+            NodeAddress::fromNode($node)->toJson()
+            => $this->nodeInfoHelper->renderNodeWithPropertiesAndChildrenInformation(
+                $node,
+                $actionRequest
+            )
         ];
 
         if ($this->isRecursive === true) {
-            foreach ($node->getChildNodes() as $childNode) {
-                $result = array_merge($result, $this->serializeNodeRecursively($childNode, $controllerContext));
+            $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
+            foreach ($subgraph->findChildNodes($node->aggregateId, FindChildNodesFilter::create()) as $childNode) {
+                $result = array_merge($result, $this->serializeNodeRecursively($childNode, $actionRequest));
             }
         }
 

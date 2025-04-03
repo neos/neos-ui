@@ -1,6 +1,5 @@
 import produce from 'immer';
 import {action as createAction, ActionType} from 'typesafe-actions';
-import {$get} from 'plow-js';
 
 import {actionTypes as system, InitAction} from '../../System';
 
@@ -57,9 +56,9 @@ export type Action = ActionType<typeof actions>;
 export const reducer = (state: State = defaultState, action: InitAction | Action) => produce(state, draft => {
     switch (action.type) {
         case system.INIT: {
-            draft.isHidden = $get(['payload', 'ui', 'leftSideBar', 'isHidden'], action) || false;
-            draft.contentTree.isHidden = $get(['payload', 'ui', 'leftSideBar', 'contentTree', 'isHidden'], action) || false;
-            draft.searchBar.isVisible = $get(['payload', 'ui', 'leftSideBar', 'searchBar', 'isVisible'], action) || false;
+            draft.isHidden = action?.payload?.ui?.leftSideBar?.isHidden || false;
+            draft.contentTree.isHidden = action?.payload?.ui?.leftSideBar?.contentTree?.isHidden || false;
+            draft.searchBar.isVisible = action?.payload?.ui?.leftSideBar?.searchBar?.isVisible || false;
             break;
         }
         case actionTypes.TOGGLE: {

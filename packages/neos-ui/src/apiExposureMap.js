@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import {plow} from './deprecated-plow';
 import classnames from 'classnames';
 import * as reactRedux from 'react-redux';
 import * as reduxActions from 'redux-actions';
@@ -123,7 +122,6 @@ export default {
         React,
         ReactDOM,
         PropTypes,
-        plow,
         classnames,
         reactRedux,
         reduxActions,

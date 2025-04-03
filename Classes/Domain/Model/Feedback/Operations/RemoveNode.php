@@ -11,35 +11,53 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
  * source code.
  */
 
-use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
+use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
+use Neos\Neos\Domain\NodeLabel\NodeLabelGeneratorInterface;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 
+/**
+ * @internal
+ */
 class RemoveNode extends AbstractFeedback
 {
-    /**
-     * @var NodeInterface
-     */
-    protected $node;
+    protected Node $node;
+
+    protected Node $parentNode;
+
+    private NodeAddress $nodeAddress;
+
+    private NodeAddress $parentNodeAddress;
 
     /**
-     * Set the node
-     *
-     * @param NodeInterface $node
-     * @return void
+     * @Flow\Inject
+     * @var NodeLabelGeneratorInterface
      */
-    public function setNode(NodeInterface $node)
+    protected $nodeLabelGenerator;
+
+    /**
+     * @Flow\Inject
+     * @var ContentRepositoryRegistry
+     */
+    protected $contentRepositoryRegistry;
+
+    public function __construct(Node $node, Node $parentNode)
     {
         $this->node = $node;
+        $this->parentNode = $parentNode;
     }
 
-    /**
-     * Get the node
-     *
-     * @return NodeInterface
-     */
-    public function getNode()
+    protected function initializeObject(): void
+    {
+        $this->nodeAddress = NodeAddress::fromNode($this->node);
+        $this->parentNodeAddress = NodeAddress::fromNode($this->parentNode);
+    }
+
+    public function getNode(): Node
     {
         return $this->node;
     }
@@ -59,9 +77,9 @@ class RemoveNode extends AbstractFeedback
      *
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
-        return sprintf('Node "%s" has been removed.', $this->getNode()->getLabel());
+        return sprintf('Node "%s" has been removed.', $this->nodeLabelGenerator->getLabel($this->getNode()));
     }
 
     /**
@@ -76,7 +94,7 @@ class RemoveNode extends AbstractFeedback
             return false;
         }
 
-        return $this->getNode()->getContextPath() === $feedback->getNode()->getContextPath();
+        return $this->getNode()->equals($feedback->getNode());
     }
 
     /**
@@ -88,8 +106,8 @@ class RemoveNode extends AbstractFeedback
     public function serializePayload(ControllerContext $controllerContext)
     {
         return [
-            'contextPath' => $this->getNode()->getContextPath(),
-            'parentContextPath' => $this->getNode()->getParent()->getContextPath()
+            'contextPath' => $this->nodeAddress->toJson(),
+            'parentContextPath' => $this->parentNodeAddress->toJson()
         ];
     }
 }

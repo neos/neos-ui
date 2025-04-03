@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$transform, $get, $contains} from 'plow-js';
+
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 
@@ -14,15 +14,15 @@ import {isEqualSet} from '@neos-project/utils-helpers';
 @neos(globalRegistry => ({
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
 }))
-@connect($transform({
-    focused: $get('cr.nodes.focused'),
-    focusedNode: selectors.CR.Nodes.focusedSelector,
-    focusedNodesContextPaths: selectors.CR.Nodes.focusedNodePathsSelector,
-    shouldScrollIntoView: selectors.UI.ContentCanvas.shouldScrollIntoView,
-    destructiveOperationsAreDisabled: selectors.CR.Nodes.destructiveOperationsAreDisabledSelector,
-    clipboardMode: $get('cr.nodes.clipboardMode'),
-    clipboardNodesContextPaths: selectors.CR.Nodes.clipboardNodesContextPathsSelector,
-    isWorkspaceReadOnly: selectors.CR.Workspaces.isWorkspaceReadOnlySelector
+@connect(state => ({
+    focused: state?.cr?.nodes?.focused,
+    focusedNode: selectors.CR.Nodes.focusedSelector(state),
+    focusedNodesContextPaths: selectors.CR.Nodes.focusedNodePathsSelector(state),
+    shouldScrollIntoView: selectors.UI.ContentCanvas.shouldScrollIntoView(state),
+    destructiveOperationsAreDisabled: selectors.CR.Nodes.destructiveOperationsAreDisabledSelector(state),
+    clipboardMode: state?.cr?.nodes?.clipboardMode,
+    clipboardNodesContextPaths: selectors.CR.Nodes.clipboardNodesContextPathsSelector(state),
+    isWorkspaceReadOnly: selectors.CR.Workspaces.isWorkspaceReadOnlySelector(state)
 }), {
     requestScrollIntoView: actions.UI.ContentCanvas.requestScrollIntoView
 })
@@ -59,13 +59,13 @@ export default class InlineUI extends PureComponent {
         }
 
         const focusedNodeContextPath = focusedNode.contextPath;
-        const isDocument = nodeTypesRegistry.hasRole($get('nodeType', focusedNode), 'document');
+        const isDocument = nodeTypesRegistry.hasRole(focusedNode?.nodeType, 'document');
         const allFocusedNodesAreInClipboard = isEqualSet(focusedNodesContextPaths, clipboardNodesContextPaths);
         const isCut = allFocusedNodesAreInClipboard && clipboardMode === 'Move';
         const isCopied = allFocusedNodesAreInClipboard && clipboardMode === 'Copy';
-        const canBeDeleted = $get('policy.canRemove', this.props.focusedNode) || false;
-        const canBeEdited = $get('policy.canEdit', this.props.focusedNode) || false;
-        const visibilityCanBeToggled = !$contains('_hidden', 'policy.disallowedProperties', this.props.focusedNode);
+        const canBeDeleted = this.props.focusedNode?.policy?.canRemove || false;
+        const canBeEdited = this.props.focusedNode?.policy?.canEdit || false;
+        const visibilityCanBeToggled = !this.props.focusedNode?.policy?.disallowedProperties?.includes('_hidden');
 
         return (
             <div className={style.inlineUi} data-__neos__inline-ui="TRUE">

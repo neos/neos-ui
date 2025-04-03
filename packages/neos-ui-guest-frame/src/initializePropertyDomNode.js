@@ -1,5 +1,3 @@
-import {$get, $contains} from 'plow-js';
-
 import {actions} from '@neos-project/neos-ui-redux-store';
 import {validateElement} from '@neos-project/neos-ui-validators';
 
@@ -21,11 +19,11 @@ export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry,
         return;
     }
 
-    const nodeTypeName = $get([contextPath, 'nodeType'], nodes);
+    const nodeTypeName = nodes?.[contextPath]?.nodeType;
     const nodeType = nodeTypesRegistry.get(nodeTypeName);
     const isInlineEditable = (
-        $get(['properties', propertyName, 'ui', 'inlineEditable'], nodeType) !== false &&
-        !$contains(propertyName, [contextPath, 'policy', 'disallowedProperties'], nodes)
+        nodeType?.properties?.[propertyName]?.ui?.inlineEditable !== false &&
+        !nodes?.[contextPath]?.policy?.disallowedProperties?.includes(propertyName)
     );
 
     if (isInlineEditable) {
@@ -60,7 +58,7 @@ export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry,
 
         try {
             if (!propertyDomNode.dataset.neosInlineEditorIsInitialized) {
-                const userPreferences = $get('user.preferences', store.getState());
+                const userPreferences = store.getState()?.user?.preferences;
 
                 createInlineEditor({
                     propertyDomNode,
@@ -74,7 +72,7 @@ export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry,
                         actions.Changes.persistChanges([change])
                     ),
                     onChange: value => {
-                        const validationResult = validateElement(value, $get(['properties', propertyName], nodeType), globalRegistry.get('validators'));
+                        const validationResult = validateElement(value, nodeType?.properties?.[propertyName], globalRegistry.get('validators'));
                         // Update inline validation errors
                         store.dispatch(
                             actions.CR.Nodes.setInlineValidationErrors(contextPath, propertyName, validationResult)

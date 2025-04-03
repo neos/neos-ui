@@ -17,6 +17,9 @@ use Neos\Flow\I18n\Service as I18nService;
 use Neos\Neos\Domain\Service\UserService;
 use Neos\Neos\Fusion\Helper\NodeLabelToken;
 
+/**
+ * @internal
+ */
 class UserLocaleService
 {
     /**
@@ -41,7 +44,7 @@ class UserLocaleService
     /**
      * The current user's locale (cached for performance)
      *
-     * @var Locale
+     * @var Locale|null
      */
     protected $userLocaleRuntimeCache;
 
@@ -51,9 +54,9 @@ class UserLocaleService
      * For example {@see NodeLabelToken::resolveLabelFromNodeType()} will call the translator which will uses the globally set locale.
      * FIXME we should eliminate hacking the global state and passing the locale differently
      *
-     * @param boolean $reset Reset to remebered locale
+     * @param boolean $reset Reset to remembered locale
      */
-    public function switchToUILocale($reset = false)
+    public function switchToUILocale($reset = false): void
     {
         if ($reset === true) {
             // Reset the locale

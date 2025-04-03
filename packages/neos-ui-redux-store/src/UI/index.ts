@@ -17,38 +17,13 @@ import * as InsertionModeModal from './InsertionModeModal';
 import * as SelectNodeTypeModal from './SelectNodeTypeModal';
 import * as NodeCreationDialog from './NodeCreationDialog';
 import * as NodeVariantCreationDialog from './NodeVariantCreationDialog';
+import * as SyncWorkspaceModal from './SyncWorkspaceModal';
 import * as ContentTree from './ContentTree';
-
-const all = {
-    FlashMessages,
-    FullScreen,
-    KeyboardShortcutModal,
-    LeftSideBar,
-    EditPreviewMode,
-    Drawer,
-    Remote,
-    RightSideBar,
-    AddNodeModal,
-    PageTree,
-    ContentCanvas,
-    Inspector,
-    InsertionModeModal,
-    NodeLinking,
-    SelectNodeTypeModal,
-    NodeCreationDialog,
-    NodeVariantCreationDialog,
-    ContentTree
-};
-
-function typedKeys<T>(o: T) : Array<keyof T> {
-    return Object.keys(o) as Array<keyof T>;
-}
 
 //
 // Export the reducer state shape interface
 //
 export interface State {
-    flashMessages: FlashMessages.State;
     fullScreen: FullScreen.State;
     keyboardShortcutModal: KeyboardShortcutModal.State;
     leftSideBar: LeftSideBar.State;
@@ -64,24 +39,64 @@ export interface State {
     selectNodeTypeModal: SelectNodeTypeModal.State;
     nodeCreationDialog: NodeCreationDialog.State;
     nodeVariantCreationDialog: NodeVariantCreationDialog.State;
+    SyncWorkspaceModal: SyncWorkspaceModal.State;
     contentTree: ContentTree.State;
 }
 
 //
 // Export the actionTypes
 //
-export const actionTypes = typedKeys(all).reduce((acc, cur) => ({...acc, [cur]: all[cur].actionTypes}), {});
+export const actionTypes = {
+    FlashMessages: FlashMessages.actionTypes,
+    FullScreen: FullScreen.actionTypes,
+    KeyboardShortcutModal: KeyboardShortcutModal.actionTypes,
+    LeftSideBar: LeftSideBar.actionTypes,
+    EditPreviewMode: EditPreviewMode.actionTypes,
+    Drawer: Drawer.actionTypes,
+    Remote: Remote.actionTypes,
+    RightSideBar: RightSideBar.actionTypes,
+    AddNodeModal: AddNodeModal.actionTypes,
+    PageTree: PageTree.actionTypes,
+    ContentCanvas: ContentCanvas.actionTypes,
+    Inspector: Inspector.actionTypes,
+    InsertionModeModal: InsertionModeModal.actionTypes,
+    NodeLinking: NodeLinking.actionTypes,
+    SelectNodeTypeModal: SelectNodeTypeModal.actionTypes,
+    NodeCreationDialog: NodeCreationDialog.actionTypes,
+    NodeVariantCreationDialog: NodeVariantCreationDialog.actionTypes,
+    SyncWorkspaceModal: SyncWorkspaceModal.actionTypes,
+    ContentTree: ContentTree.actionTypes
+} as const;
 
 //
 // Export the actions
 //
-export const actions = typedKeys(all).reduce((acc, cur) => ({...acc, [cur]: all[cur].actions}), {});
+export const actions = {
+    FlashMessages: FlashMessages.actions,
+    FullScreen: FullScreen.actions,
+    KeyboardShortcutModal: KeyboardShortcutModal.actions,
+    LeftSideBar: LeftSideBar.actions,
+    EditPreviewMode: EditPreviewMode.actions,
+    Drawer: Drawer.actions,
+    Remote: Remote.actions,
+    RightSideBar: RightSideBar.actions,
+    AddNodeModal: AddNodeModal.actions,
+    PageTree: PageTree.actions,
+    ContentCanvas: ContentCanvas.actions,
+    Inspector: Inspector.actions,
+    InsertionModeModal: InsertionModeModal.actions,
+    NodeLinking: NodeLinking.actions,
+    SelectNodeTypeModal: SelectNodeTypeModal.actions,
+    NodeCreationDialog: NodeCreationDialog.actions,
+    NodeVariantCreationDialog: NodeVariantCreationDialog.actions,
+    SyncWorkspaceModal: SyncWorkspaceModal.actions,
+    ContentTree: ContentTree.actions
+} as const;
 
 //
 // Export the reducer
 //
 export const reducer = combineReducers({
-    flashMessages: FlashMessages.reducer,
     fullScreen: FullScreen.reducer,
     keyboardShortcutModal: KeyboardShortcutModal.reducer,
     leftSideBar: LeftSideBar.reducer,
@@ -97,10 +112,30 @@ export const reducer = combineReducers({
     selectNodeTypeModal: SelectNodeTypeModal.reducer,
     nodeCreationDialog: NodeCreationDialog.reducer,
     nodeVariantCreationDialog: NodeVariantCreationDialog.reducer,
+    SyncWorkspaceModal: SyncWorkspaceModal.reducer,
     contentTree: ContentTree.reducer
 } as any); // TODO: when we update redux, this shouldn't be necessary https://github.com/reduxjs/redux/issues/2709#issuecomment-357328709
 
 //
 // Export the selectors
 //
-export const selectors = typedKeys(all).reduce((acc, cur) => ({...acc, [cur]: all[cur].selectors}), {});
+export const selectors = {
+    FullScreen: FullScreen.selectors,
+    KeyboardShortcutModal: KeyboardShortcutModal.selectors,
+    LeftSideBar: LeftSideBar.selectors,
+    EditPreviewMode: EditPreviewMode.selectors,
+    Drawer: Drawer.selectors,
+    Remote: Remote.selectors,
+    RightSideBar: RightSideBar.selectors,
+    AddNodeModal: AddNodeModal.selectors,
+    PageTree: PageTree.selectors,
+    ContentCanvas: ContentCanvas.selectors,
+    Inspector: Inspector.selectors,
+    InsertionModeModal: InsertionModeModal.selectors,
+    NodeLinking: NodeLinking.selectors,
+    SelectNodeTypeModal: SelectNodeTypeModal.selectors,
+    NodeCreationDialog: NodeCreationDialog.selectors,
+    NodeVariantCreationDialog: NodeVariantCreationDialog.selectors,
+    SyncWorkspaceModal: SyncWorkspaceModal.selectors,
+    ContentTree: ContentTree.selectors
+} as const;

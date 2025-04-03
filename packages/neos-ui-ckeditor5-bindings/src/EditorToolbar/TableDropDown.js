@@ -1,9 +1,9 @@
 import {DropDown, CheckBox, Button} from '@neos-project/react-ui-components';
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {$get} from 'plow-js';
 
 import {neos} from '@neos-project/neos-ui-decorators';
+import {svgToDataUri} from '@neos-project/utils-helpers';
 import ckeIcons from './icons';
 
 import style from './TableDropDown.module.css';
@@ -40,12 +40,14 @@ export default class TableDropDownButton extends PureComponent {
     }
 
     render() {
+        const iconDataUri = svgToDataUri(ckeIcons[this.props.icon]);
+        console.log({iconDataUri});
         return (
             <DropDown
                 padded={false}
             >
                 <DropDown.Header title={this.props.i18nRegistry.translate(this.props.tooltip)}>
-                    <img style={{verticalAlign: 'text-top'}} src={ckeIcons[this.props.icon]} alt={this.props.i18nRegistry.translate(this.props.tooltip)} />
+                    <img style={{verticalAlign: 'text-top'}} src={iconDataUri} alt={this.props.i18nRegistry.translate(this.props.tooltip)} />
                 </DropDown.Header>
                 <DropDown.Contents className={style.contents} scrollable={false}>
                     {this.props.options.map(item => item.type === 'checkBox' ? (
@@ -54,7 +56,7 @@ export default class TableDropDownButton extends PureComponent {
                             className={style.checkBox}
                             onClick={() => this.handleClick(item.commandName)}
                         >
-                            <CheckBox isChecked={$get(item.commandName, this.props.formattingUnderCursor)} />
+                            <CheckBox isChecked={this.props.formattingUnderCursor?.[item.commandName]} />
                             {this.props.i18nRegistry.translate(item.label)}
                         </label>
                     ) : <Button

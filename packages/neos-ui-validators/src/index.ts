@@ -1,4 +1,3 @@
-import {$get} from 'plow-js';
 import {ValidatorRegistry, PropertyConfiguration, ValidatorConfiguration} from '@neos-project/neos-ts-interfaces';
 
 interface ValuesMap {
@@ -50,7 +49,7 @@ const validate = (values: ValuesMap, elementConfigurations: ElementConfiguarions
     const errors: ErrorsMap = {};
     let hasErrors = false;
     Object.keys(elementConfigurations).forEach(elementName => {
-        const elementValue = $get([elementName], values);
+        const elementValue = values?.[elementName];
         const elementConfiguration = elementConfigurations[elementName];
         const elementErrors = validateElement(elementValue, elementConfiguration, validatorRegistry);
         if (elementErrors && elementErrors.length > 0) {

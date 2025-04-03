@@ -1,0 +1,27 @@
+'Neos.TestNodeTypes:Document.PageWithImage':
+  superTypes:
+    'Neos.Neos:Document': true
+  ui:
+    label: PageWithImage_Test
+    icon: icon-file-o
+    position: 100
+  childNodes:
+    main:
+      type: 'Neos.Neos:ContentCollection'
+  properties:
+    image:
+      type: Neos\Media\Domain\Model\ImageInterface
+      ui:
+        label: 'Image'
+        reloadIfChanged: true
+        showInCreationDialog: true
+        inspector:
+          group: 'document'
+          editorOptions:
+            features:
+              crop: true
+            crop:
+              aspectRatio:
+                locked:
+                  width: 1
+                  height: 1

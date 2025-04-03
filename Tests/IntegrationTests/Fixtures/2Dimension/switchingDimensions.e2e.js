@@ -1,14 +1,19 @@
-import {beforeEach, subSection, checkPropTypes} from './../../utils';
+import {subSection, checkPropTypes, getUrl, adminUserOnTwoDimensionsTestSite} from './../../utils';
 import {Selector} from 'testcafe';
-import {ReactSelector} from 'testcafe-react-selectors';
+import {ReactSelector, waitForReact} from 'testcafe-react-selectors';
 import {
-    Page
+    Page, PublishDropDown
 } from './../../pageModel';
 
 /* global fixture:true */
 
 fixture`Switching dimensions`
-    .beforeEach(beforeEach)
+    .beforeEach(async t => {
+        await t.useRole(adminUserOnTwoDimensionsTestSite);
+        await waitForReact(30000);
+        await PublishDropDown.discardAll();
+        await Page.goToPage('Home');
+    })
     .afterEach(() => checkPropTypes());
 
 test('Switching dimensions', async t => {

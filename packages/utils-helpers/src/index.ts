@@ -1,5 +1,3 @@
-import delay from './delay';
-import discover from './discover';
 import isThenable from './isThenable';
 import {stripTags, stripTagsEncoded} from './stripTags';
 import decodeHtml from './decodeHtml';
@@ -10,10 +8,9 @@ import isEmail from './isEmail';
 import {isUri} from './isUri';
 import isEqualSet from './isEqualSet';
 import isNil from './isNil';
+import svgToDataUri from './svgToDataUri';
 
 export {
-    delay,
-    discover,
     decodeHtml,
     getVersion,
     isThenable,
@@ -23,6 +20,7 @@ export {
     isEqualSet,
     stripTags,
     stripTagsEncoded,
+    svgToDataUri,
     cancelIdleCallback,
     requestIdleCallback
 };

@@ -1,7 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$get} from 'plow-js';
 import mergeClassNames from 'classnames';
 
 import {Tree, Icon} from '@neos-project/react-ui-components';
@@ -119,18 +118,12 @@ export default class NodeTree extends PureComponent {
     }
 
     handleDrop = (targetNode, position) => {
-        let {currentlyDraggedNodes} = this.state;
+        const {currentlyDraggedNodes} = this.state;
         const {moveNodes, focus} = this.props;
-
-        if (position === 'after') {
-            // Reverse the order of nodes to keep the correct order after each node is inserted after the target node individually
-            currentlyDraggedNodes = Array.from(currentlyDraggedNodes).reverse();
-        }
-
-        moveNodes(currentlyDraggedNodes, $get('contextPath', targetNode), position);
+        moveNodes(currentlyDraggedNodes, targetNode?.contextPath, position);
         // We need to refocus the tree, so all focus would be reset, because its context paths have changed while moving
         // Could be removed with the new CR
-        focus($get('contextPath', targetNode));
+        focus(targetNode?.contextPath);
 
         this.setState({
             currentlyDraggedNodes: []

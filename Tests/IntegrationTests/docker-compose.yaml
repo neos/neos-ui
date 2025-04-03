@@ -7,11 +7,15 @@ services:
     ports:
       - 8081:8081
     volumes:
+      - app:/usr/src/app
       - composer_cache:/home/circleci/.composer/cache
+      # add Neos Ui root as cached read-only volume that will be later symlinked into TestDistribution/Packages/
+      - ../../.:/usr/src/neos-ui:cached,ro
     environment:
       # Enable GD
       PHP_EXTENSION_GD: 1
       COMPOSER_CACHE_DIR: /home/circleci/.composer/cache
+      DB_HOST: db
 
   db:
     image: mariadb:10.11
@@ -21,4 +25,5 @@ services:
     command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
 
 volumes:
+  app:
   composer_cache:

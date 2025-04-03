@@ -1,3 +1,5 @@
+import type {I18nRegistry} from '@neos-project/neos-ui-i18n';
+
 export type NodeContextPath = string;
 export type FusionPath = string;
 export type NodeTypeName = string;
@@ -101,6 +103,11 @@ export enum SelectionModeTypes {
     RANGE_SELECT = 'RANGE_SELECT'
 }
 
+export enum WorkspaceStatus {
+    UP_TO_DATE = 'UP_TO_DATE',
+    OUTDATED = 'OUTDATED'
+}
+
 export interface ValidatorConfiguration {
     [propName: string]: any;
 }
@@ -137,7 +144,26 @@ export interface PropertyConfiguration {
         [propName: string]: ValidatorConfiguration | undefined;
     };
 }
-
+export interface ReferencesConfiguration {
+    type?: string;
+    ui?: {
+        label?: string;
+        reloadIfChanged?: boolean;
+        inspector?: {
+            hidden?: boolean;
+            editor?: string;
+            editorOptions?: {
+                [propName: string]: any;
+            }
+            group?: string;
+            position?: number | string;
+        };
+        help?: {
+            message?: string;
+            thumbnail?: string;
+        };
+    };
+}
 export interface NodeType {
     name?: string;
     superTypes: {
@@ -210,6 +236,9 @@ export interface NodeType {
     properties?: {
         [propName: string]: PropertyConfiguration | undefined;
     };
+    references?: {
+        [referenceName: string]: ReferencesConfiguration | undefined;
+    };
 }
 
 //
@@ -241,10 +270,9 @@ export interface ValidatorRegistry {
     get: (validatorName: string) => Validator | null;
     set: (validatorName: string, validator: Validator) => void;
 }
-export interface I18nRegistry {
-    translate: (id?: string, fallback?: string, params?: {}, packageKey?: string, sourceName?: string) => string;
-}
 export interface GlobalRegistry {
     get: <K extends string>(key: K) => K extends 'i18n' ? I18nRegistry :
         K extends 'validators' ? ValidatorRegistry : null;
 }
+
+export type {I18nRegistry} from '@neos-project/neos-ui-i18n';

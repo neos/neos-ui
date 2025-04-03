@@ -1,0 +1,33 @@
+#
+# InitialData Providers for booting the UI
+#
+Neos\Neos\Ui\Domain\InitialData\CacheConfigurationVersionProviderInterface:
+  className: Neos\Neos\Ui\Infrastructure\Cache\CacheConfigurationVersionProvider
+
+Neos\Neos\Ui\Domain\InitialData\ConfigurationProviderInterface:
+  className: Neos\Neos\Ui\Infrastructure\Configuration\ConfigurationProvider
+
+Neos\Neos\Ui\Domain\InitialData\FrontendConfigurationProviderInterface:
+  className: Neos\Neos\Ui\Infrastructure\Configuration\FrontendConfigurationProvider
+
+Neos\Neos\Ui\Domain\InitialData\InitialStateProviderInterface:
+  className: Neos\Neos\Ui\Infrastructure\Configuration\InitialStateProvider
+
+Neos\Neos\Ui\Domain\InitialData\MenuProviderInterface:
+  className: Neos\Neos\Ui\Infrastructure\Neos\MenuProvider
+
+Neos\Neos\Ui\Domain\InitialData\NodeTypeGroupsAndRolesProviderInterface:
+  className: Neos\Neos\Ui\Infrastructure\ContentRepository\NodeTypeGroupsAndRolesProvider
+
+Neos\Neos\Ui\Domain\InitialData\RoutesProviderInterface:
+  className: Neos\Neos\Ui\Infrastructure\MVC\RoutesProvider
+
+Neos\Neos\Ui\Infrastructure\Cache\CacheConfigurationVersionProvider:
+  properties:
+    configurationCache:
+      object:
+        factoryObjectName: Neos\Flow\Cache\CacheManager
+        factoryMethodName: getCache
+        arguments:
+          1:
+            value: Neos_Neos_Configuration_Version

@@ -6,6 +6,7 @@ import moveDroppedNodes from './moveDroppedNodes';
 import hideNode from './hideNode';
 import showNode from './showNode';
 import reloadState from './reloadState';
+import {makeReloadNodes} from './reloadNodes';
 
 export {
     addNode,
@@ -15,5 +16,6 @@ export {
     moveDroppedNodes,
     hideNode,
     showNode,
-    reloadState
+    reloadState,
+    makeReloadNodes
 };

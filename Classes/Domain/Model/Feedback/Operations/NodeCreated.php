@@ -11,58 +11,58 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
  * source code.
  */
 
-use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
+use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
-use Neos\Neos\Ui\ContentRepository\Service\NodeService;
+use Neos\Neos\Domain\Service\NodeTypeNameFactory;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
 
+/**
+ * @internal
+ */
 class NodeCreated extends AbstractFeedback
 {
+    #[Flow\Inject]
+    protected ContentRepositoryRegistry $contentRepositoryRegistry;
+
     /**
-     * @var NodeInterface
+     * @var Node
      */
     protected $node;
 
     /**
      * Set the node
-     *
-     * @param NodeInterface $node
-     * @return void
      */
-    public function setNode(NodeInterface $node)
+    public function setNode(Node $node): void
     {
         $this->node = $node;
     }
 
     /**
      * Get the node
-     *
-     * @return NodeInterface
      */
-    public function getNode()
+    public function getNode(): Node
     {
         return $this->node;
     }
 
     /**
      * Get the type identifier
-     *
-     * @return string
      */
-    public function getType()
+    public function getType(): string
     {
         return 'Neos.Neos.Ui:NodeCreated';
     }
 
     /**
      * Get the description
-     *
-     * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
-        return sprintf('Document Node "%s" created.', $this->getNode()->getContextPath());
+        return sprintf('Document Node "%s" created.', $this->getNode()->aggregateId->value);
     }
 
     /**
@@ -77,7 +77,7 @@ class NodeCreated extends AbstractFeedback
             return false;
         }
 
-        return $this->getNode()->getContextPath() === $feedback->getNode()->getContextPath();
+        return $this->getNode()->equals($feedback->getNode());
     }
 
     /**
@@ -88,13 +88,14 @@ class NodeCreated extends AbstractFeedback
      */
     public function serializePayload(ControllerContext $controllerContext)
     {
-        $nodeService = new NodeService();
         $node = $this->getNode();
+        $contentRepository = $this->contentRepositoryRegistry->get($node->contentRepositoryId);
+        $nodeType = $contentRepository->getNodeTypeManager()->getNodeType($node->nodeTypeName);
 
         return [
-            'contextPath' => $node->getContextPath(),
-            'identifier' => $node->getIdentifier(),
-            'isDocument' => $nodeService->isDocument($node)
+            'contextPath' => NodeAddress::fromNode($node)->toJson(),
+            'identifier' => $node->aggregateId->value,
+            'isDocument' => $nodeType?->isOfType(NodeTypeNameFactory::NAME_DOCUMENT)
         ];
     }
 }

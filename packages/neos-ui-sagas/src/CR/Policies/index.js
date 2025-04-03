@@ -1,5 +1,5 @@
 import {select, take, put, fork} from 'redux-saga/effects';
-import {$get} from 'plow-js';
+
 import {actions, actionTypes, selectors} from '@neos-project/neos-ui-redux-store';
 import backend from '@neos-project/neos-ui-backend-connector';
 
@@ -30,11 +30,11 @@ export function * watchNodeInformationChanges() {
         const nodesWithoutAdditionalMetadata = Object.keys(nodeMap).filter(contextPath => {
             const node = selectors.CR.Nodes.nodeByContextPath(state)(contextPath);
 
-            if ($get('properties._removed', node)) {
+            if (node?.properties?._removed) {
                 return false;
             }
 
-            const policyInfo = $get('policy', node);
+            const policyInfo = node?.policy;
             return (!policyInfo);
         });
 

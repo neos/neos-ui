@@ -14,6 +14,10 @@ namespace Neos\Neos\Ui\Fusion\Helper;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
 
+/**
+ * @internal implementation detail of the Neos Ui to build its initialState.
+ *           determines if to use the compiled script resources
+ */
 class StaticResourcesHelper implements ProtectedContextAwareInterface
 {
     /**
@@ -22,7 +26,7 @@ class StaticResourcesHelper implements ProtectedContextAwareInterface
      */
     protected $frontendDevelopmentMode;
 
-    public function compiledResourcePackage()
+    public function compiledResourcePackage(): string
     {
         if ($this->frontendDevelopmentMode) {
             return 'Neos.Neos.Ui';

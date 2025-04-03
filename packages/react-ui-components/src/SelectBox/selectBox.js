@@ -1,7 +1,6 @@
 /* eslint-disable camelcase, react/jsx-pascal-case */
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {$get} from 'plow-js';
 import SelectBox_Option_SingleLine from '../SelectBox_Option_SingleLine';
 import mergeClassNames from 'classnames';
 import isEqual from 'lodash.isequal';
@@ -23,6 +22,11 @@ export default class SelectBox extends PureComponent {
         // Basic Props for core functionality
         // ------------------------------
         /**
+         * DOM id of the select box
+         */
+        id: PropTypes.string,
+
+        /**
          * This prop represents the set of options to be chosen from
          * Each option must have a value and can have a label and an icon.
          */
@@ -42,11 +46,6 @@ export default class SelectBox extends PureComponent {
          * Current value is shown as readonly
          */
         disabled: PropTypes.bool,
-
-        /**
-         * Optional id for the element
-         */
-        id: PropTypes.string,
 
         /**
          * Additional className wich will be applied
@@ -186,7 +185,7 @@ export default class SelectBox extends PureComponent {
     };
 
     getOptionValueAccessor() {
-        return $get([this.props.optionValueField]);
+        return subject => subject?.[this.props.optionValueField];
     }
 
     getSearchTerm() {

@@ -1,0 +1,13 @@
+/**
+* Overwriting CKEditor 5 styles for the general rendering in the Neos UI
+*/
+
+/* hides buggy powered-by logo (credits on https://www.neos.io via "Editor Tools") */
+.ck-powered-by-balloon {
+    display: none;
+}
+
+/* hides bar below neos ui */
+.ck-aria-live-announcer {
+    display: none;
+}

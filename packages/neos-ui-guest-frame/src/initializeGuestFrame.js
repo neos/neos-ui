@@ -1,5 +1,4 @@
 import {put, select, takeEvery} from 'redux-saga/effects';
-import {$get} from 'plow-js';
 
 import {actions, actionTypes, selectors} from '@neos-project/neos-ui-redux-store';
 import {requestIdleCallback} from '@neos-project/utils-helpers';
@@ -61,9 +60,6 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
         return;
     }
 
-    // Load legacy node data scripts from guest frame - remove with Neos 9.0
-    const legacyNodeData = guestFrameWindow['@Neos.Neos.Ui:Nodes'] || {};
-
     // Load all nodedata for nodes in the guest frame and filter duplicates
     const {q} = yield backend.get();
     const nodeContextPathsInGuestFrame = findAllNodesInGuestFrame().map(node => node.getAttribute('data-__neos-node-contextpath'));
@@ -84,7 +80,6 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
 
     const nodes = Object.assign(
         {},
-        legacyNodeData, // Merge legacy node data from the guest frame - remove with Neos 9.0
         fullyLoadedNodesFromContent,
         {
             [documentInformation.metaData.documentNode]: documentInformation.metaData.documentNodeSerialization
@@ -94,13 +89,12 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     // Merge new nodes into the store
     yield put(actions.CR.Nodes.merge(nodes));
 
-    // Remove the legacy inline scripts after initialization - remove with Neos 9.0
-    Array.prototype.forEach.call(guestFrameWindow.document.querySelectorAll('script[data-neos-nodedata]'), element => element.parentElement.removeChild(element));
-
     const state = store.getState();
 
     // Set the current document node to the one that is rendered in the guest frame which might be different from the one that is currently selected in the page tree
-    const currentDocumentNodeContextPath = yield select($get('cr.nodes.documentNode'));
+    const currentDocumentNodeContextPath = yield select(
+        state => state?.cr?.nodes?.documentNode
+    );
     if (currentDocumentNodeContextPath !== documentInformation.metaData.documentNode) {
         yield put(actions.CR.Nodes.setDocumentNode(documentInformation.metaData.documentNode, documentInformation.metaData.siteNode));
     }
@@ -110,7 +104,7 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     // We need to set the src to the actual src of the iframe, and not retrieve it from documentInformation, as it may differ, e.g. contain additional arguments.
     yield put(actions.UI.ContentCanvas.setSrc(guestFrameWindow.document.location.href));
 
-    const editPreviewMode = $get(['ui', 'editPreviewMode'], state);
+    const editPreviewMode = state?.ui?.editPreviewMode;
     const editPreviewModes = globalRegistry.get('frontendConfiguration').get('editPreviewModes');
     const isWorkspaceReadOnly = selectors.CR.Workspaces.isWorkspaceReadOnlySelector(state);
     const currentEditMode = editPreviewModes[editPreviewMode];

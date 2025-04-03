@@ -2,19 +2,26 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {createStore, applyMiddleware, compose} from 'redux';
 import createSagaMiddleware from 'redux-saga';
-import {put, select, all} from 'redux-saga/effects';
 import merge from 'lodash.merge';
-import {$get} from 'plow-js';
 
 import {actions} from '@neos-project/neos-ui-redux-store';
 import {createConsumerApi} from '@neos-project/neos-ui-extensibility';
 import fetchWithErrorHandling from '@neos-project/neos-ui-backend-connector/src/FetchWithErrorHandling';
 import {SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/src/registry';
-import {delay} from '@neos-project/utils-helpers';
 import backend from '@neos-project/neos-ui-backend-connector';
 import {handleActions} from '@neos-project/utils-redux';
+import {initializeI18n} from '@neos-project/neos-ui-i18n';
+import {showFlashMessage} from '@neos-project/neos-ui-error';
 
-import * as system from './System';
+import {
+    appContainer,
+    frontendConfiguration,
+    configuration,
+    routes,
+    serverState,
+    menu,
+    nodeTypes
+} from './System';
 import localStorageMiddleware from './localStorageMiddleware';
 import clipboardMiddleware from './clipboardMiddleware';
 import Root from './Containers/Root';
@@ -48,76 +55,27 @@ require('@neos-project/neos-ui-validators/src/manifest');
 require('@neos-project/neos-ui-i18n/src/manifest');
 require('@neos-project/neos-ui-sagas/src/manifest');
 
-//
-// The main application
-//
-function * application() {
-    const appContainer = yield system.getAppContainer;
+async function main() {
+    initializePlugins();
+    initializeFrontendConfiguration();
+    initializeAdditionalReduxReducers();
+    initializeAdditionalReduxSagas();
+    initializeReduxState();
+    initializeFetchWithErrorHandling();
 
-    //
-    // Initialize Neos JS API
-    //
-    yield system.getNeos;
+    await Promise.all([
+        loadNodeTypesSchema(),
+        initializeI18n(),
+        loadImpersonateStatus()
+    ]);
 
-    //
-    // Load frontend configuration very early, as we want to make it available in manifests
-    //
-    const frontendConfiguration = yield system.getFrontendConfiguration;
+    store.dispatch(actions.System.ready());
 
-    const configuration = yield system.getConfiguration;
+    renderApplication();
+    reloadNodes();
+}
 
-    const routes = yield system.getRoutes;
-
-    //
-    // Initialize extensions
-    //
-    manifests
-        .map(manifest => manifest[Object.keys(manifest)[0]])
-        .forEach(({bootstrap}) => bootstrap(globalRegistry, {store, frontendConfiguration, configuration, routes}));
-
-    const reducers = globalRegistry.get('reducers').getAllAsList().map(element => element.reducer);
-    delegatingReducer.setReducer(handleActions(reducers));
-
-    //
-    // Bootstrap the saga middleware with initial sagas
-    //
-    globalRegistry.get('sagas').getAllAsList().forEach(element => sagaMiddleWare.run(element.saga, {store, globalRegistry, configuration, routes}));
-
-    //
-    // Tell everybody, that we're booting now
-    //
-    store.dispatch(actions.System.boot());
-
-    const {getJsonResource, impersonateStatus} = backend.get().endpoints;
-
-    const groupsAndRoles = yield system.getNodeTypes;
-
-    //
-    // Load json resources
-    //
-    const nodeTypesSchemaPromise = getJsonResource(configuration.endpoints.nodeTypeSchema);
-    const translationsPromise = getJsonResource(configuration.endpoints.translations);
-
-    // Fire multiple async requests in parallel
-    const [nodeTypesSchema, translations] = yield all([nodeTypesSchemaPromise, translationsPromise]);
-    const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
-    Object.keys(nodeTypesSchema.nodeTypes).forEach(nodeTypeName => {
-        nodeTypesRegistry.set(nodeTypeName, {
-            ...nodeTypesSchema.nodeTypes[nodeTypeName],
-            name: nodeTypeName
-        });
-    });
-    nodeTypesRegistry.setConstraints(nodeTypesSchema.constraints);
-    nodeTypesRegistry.setInheritanceMap(nodeTypesSchema.inheritanceMap);
-    nodeTypesRegistry.setGroups(groupsAndRoles.groups);
-    nodeTypesRegistry.setRoles(groupsAndRoles.roles);
-
-    //
-    // Load translations
-    //
-    const i18nRegistry = globalRegistry.get('i18n');
-    i18nRegistry.setTranslations(translations);
-
+function initializeFrontendConfiguration() {
     const frontendConfigurationRegistry = globalRegistry.get('frontendConfiguration');
 
     Object.keys(frontendConfiguration).forEach(key => {
@@ -125,35 +83,33 @@ function * application() {
             ...frontendConfiguration[key]
         });
     });
+}
 
-    //
-    // Hydrate server state
-    // Deep merges state fetched from server with the state saved in the local storage
-    //
-    const serverState = yield system.getServerState;
-    const persistedState = localStorage.getItem('persistedState') ? JSON.parse(localStorage.getItem('persistedState')) : {};
+function initializePlugins() {
+    manifests
+        .map(manifest => manifest[Object.keys(manifest)[0]])
+        .forEach(({bootstrap}) => bootstrap(globalRegistry, {store, frontendConfiguration, configuration, routes}));
+}
+
+function initializeAdditionalReduxReducers() {
+    const reducers = globalRegistry.get('reducers').getAllAsList().map(element => element.reducer);
+    delegatingReducer.setReducer(handleActions(reducers));
+}
+
+function initializeAdditionalReduxSagas() {
+    globalRegistry.get('sagas').getAllAsList().forEach(element => sagaMiddleWare.run(element.saga, {store, globalRegistry, configuration, routes}));
+}
+
+function initializeReduxState() {
+    const persistedState = localStorage.getItem('persistedState')
+        ? JSON.parse(localStorage.getItem('persistedState'))
+        : {};
     const mergedState = merge({}, serverState, persistedState);
-    yield put(actions.System.init(mergedState));
 
-    try {
-        const impersonateState = yield impersonateStatus();
-        if (impersonateState) {
-            yield put(actions.User.Impersonate.fetchStatus(impersonateState));
-        }
-    } catch (error) {
-        store.dispatch(actions.UI.FlashMessages.add('impersonateStatusError', error.message, 'error'));
-    }
+    store.dispatch(actions.System.init(mergedState));
+}
 
-    //
-    // Just make sure that everybody does their initialization homework
-    //
-    yield delay(0);
-
-    //
-    // Inform everybody, that we're ready now
-    //
-    yield put(actions.System.ready());
-
+function initializeFetchWithErrorHandling() {
     fetchWithErrorHandling.registerAuthenticationErrorHandler(() => {
         store.dispatch(actions.System.authenticationTimeout());
     });
@@ -187,14 +143,51 @@ function * application() {
             message = exception.textContent;
         }
 
-        store.dispatch(actions.UI.FlashMessages.add('fetch error', message, 'error'));
+        showFlashMessage({
+            id: 'fetch error',
+            severity: 'error',
+            message
+        });
+    });
+}
+
+async function loadNodeTypesSchema() {
+    const {getJsonResource} = backend.get().endpoints;
+    const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
+
+    const nodeTypesSchema = await getJsonResource(configuration.endpoints.nodeTypeSchema);
+    Object.keys(nodeTypesSchema.nodeTypes).forEach(nodeTypeName => {
+        nodeTypesRegistry.set(nodeTypeName, {
+            ...nodeTypesSchema.nodeTypes[nodeTypeName],
+            name: nodeTypeName
+        });
     });
 
-    const menu = yield system.getMenu;
+    nodeTypesRegistry.setConstraints(nodeTypesSchema.constraints);
+    nodeTypesRegistry.setInheritanceMap(nodeTypesSchema.inheritanceMap);
 
-    //
-    // After everything was initilalized correctly, render the application itself.
-    //
+    const {groups, roles} = nodeTypes;
+    nodeTypesRegistry.setGroups(groups);
+    nodeTypesRegistry.setRoles(roles);
+}
+
+async function loadImpersonateStatus() {
+    try {
+        const {impersonateStatus} = backend.get().endpoints;
+        const impersonateState = await impersonateStatus();
+        if (impersonateState) {
+            store.dispatch(actions.User.Impersonate.fetchStatus(impersonateState));
+        }
+    } catch (error) {
+        showFlashMessage({
+            id: 'impersonateStatusError',
+            severity: 'error',
+            message: error.message
+        });
+    }
+}
+
+function renderApplication() {
     ReactDOM.render(
         <Root
             globalRegistry={globalRegistry}
@@ -205,14 +198,18 @@ function * application() {
             />,
         appContainer
     );
+}
 
-    const siteNodeContextPath = yield select($get('cr.nodes.siteNode'));
-    const documentNodeContextPath = yield select($get('cr.nodes.documentNode'));
-    yield put(actions.CR.Nodes.reloadState({
+function reloadNodes() {
+    const state = store.getState();
+    const siteNodeContextPath = state?.cr?.nodes?.siteNode;
+    const documentNodeContextPath = state?.cr?.nodes?.documentNode;
+
+    store.dispatch(actions.CR.Nodes.reloadState({
         siteNodeContextPath,
         documentNodeContextPath,
         merge: true
     }));
 }
 
-sagaMiddleWare.run(application);
+document.addEventListener('DOMContentLoaded', main);

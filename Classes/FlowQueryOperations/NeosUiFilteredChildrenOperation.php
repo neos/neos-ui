@@ -11,16 +11,20 @@ namespace Neos\Neos\Ui\FlowQueryOperations;
  * source code.
  */
 
-use Neos\Flow\Annotations as Flow;
-use Neos\ContentRepository\Domain\NodeType\NodeTypeConstraintFactory;
-use Neos\ContentRepository\Domain\Projection\Content\TraversableNodeInterface;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindChildNodesFilter;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
+use Neos\ContentRepository\Core\NodeType\NodeTypeConstraintParser;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\NodeType\NodeTypeCriteria;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Eel\FlowQuery\Operations\AbstractOperation;
+use Neos\Flow\Annotations as Flow;
 
 /**
  * "children" operation working on ContentRepository nodes. It iterates over all
  * context elements and returns all child nodes or only those matching
  * the filter expression specified as optional argument.
+ * @internal
  */
 class NeosUiFilteredChildrenOperation extends AbstractOperation
 {
@@ -36,30 +40,30 @@ class NeosUiFilteredChildrenOperation extends AbstractOperation
      *
      * @var integer
      */
-    protected static $priority = 100;
+    protected static $priority = 500;
 
     /**
      * @Flow\Inject
-     * @var NodeTypeConstraintFactory
+     * @var ContentRepositoryRegistry
      */
-    protected $nodeTypeConstraintFactory;
+    protected $contentRepositoryRegistry;
 
     /**
      * {@inheritdoc}
      *
-     * @param array (or array-like object) $context onto which this operation should be applied
+     * @param array<int,mixed> $context (or array-like object) onto which this operation should be applied
      * @return boolean TRUE if the operation can be applied onto the $context, FALSE otherwise
      */
     public function canEvaluate($context)
     {
-        return isset($context[0]) && ($context[0] instanceof TraversableNodeInterface);
+        return isset($context[0]) && ($context[0] instanceof Node);
     }
 
     /**
      * {@inheritdoc}
      *
-     * @param FlowQuery $flowQuery the FlowQuery object
-     * @param array $arguments the arguments for this operation
+     * @param FlowQuery<int,mixed> $flowQuery the FlowQuery object
+     * @param array<int,mixed> $arguments the arguments for this operation
      * @return void
      */
     public function evaluate(FlowQuery $flowQuery, array $arguments)
@@ -67,15 +71,17 @@ class NeosUiFilteredChildrenOperation extends AbstractOperation
         $output = [];
         $outputNodeIdentifiers = [];
 
-        $filter = isset($arguments[0]) ? $arguments[0] : null;
-
-        /** @var TraversableNodeInterface $contextNode */
+        /** @var Node $contextNode */
         foreach ($flowQuery->getContext() as $contextNode) {
-            /** @var TraversableNodeInterface $childNode */
-            foreach ($contextNode->findChildNodes($this->nodeTypeConstraintFactory->parseFilterString($filter)) as $childNode) {
-                if (!isset($outputNodeIdentifiers[(string)$childNode->getNodeAggregateIdentifier()])) {
+            $subgraph = $this->contentRepositoryRegistry->subgraphForNode($contextNode);
+
+            foreach ($subgraph->findChildNodes(
+                $contextNode->aggregateId,
+                FindChildNodesFilter::create(nodeTypes: $arguments[0] ?? null)
+            ) as $childNode) {
+                if (!isset($outputNodeIdentifiers[$childNode->aggregateId->value])) {
                     $output[] = $childNode;
-                    $outputNodeIdentifiers[(string)$childNode->getNodeAggregateIdentifier()] = true;
+                    $outputNodeIdentifiers[$childNode->aggregateId->value] = true;
                 }
             }
         }

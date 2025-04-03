@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
 import style from './style.module.css';
+
 import mapValues from 'lodash.mapvalues';
 import sortBy from 'lodash.sortby';
 import {neos} from '@neos-project/neos-ui-decorators';
@@ -15,7 +16,7 @@ const searchOptions = (searchTerm, processedSelectBoxOptions) =>
 }))
 export default class DimensionSelector extends PureComponent {
     static propTypes = {
-        icon: PropTypes.string.isRequired,
+        icon: PropTypes.string,
         dimensionLabel: PropTypes.string.isRequired,
         presets: PropTypes.object.isRequired,
         activePreset: PropTypes.string.isRequired,

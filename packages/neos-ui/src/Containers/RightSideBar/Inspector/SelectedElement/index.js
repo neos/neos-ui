@@ -1,7 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$get} from 'plow-js';
 
 import {Headline, SelectBox} from '@neos-project/react-ui-components';
 import I18n from '@neos-project/neos-ui-i18n';
@@ -35,19 +34,19 @@ export default class SelectedElement extends PureComponent {
     handleSelectNode = selectedNodeContextPath => {
         const {focusNode, focusedNode} = this.props;
 
-        if (selectedNodeContextPath && selectedNodeContextPath !== $get('contextPath', focusedNode)) {
+        if (selectedNodeContextPath && selectedNodeContextPath !== focusedNode?.contextPath) {
             focusNode(selectedNodeContextPath);
         }
     };
 
     createNodeOption = node => {
         const {nodeTypesRegistry} = this.props;
-        const nodeType = $get('nodeType', node);
+        const nodeType = node?.nodeType;
 
         return {
-            icon: $get('ui.icon', nodeTypesRegistry.get(nodeType)),
-            label: $get('label', node),
-            value: $get('contextPath', node)
+            icon: nodeTypesRegistry.get(nodeType)?.ui?.icon,
+            label: node?.label,
+            value: node?.contextPath
         };
     }
 
@@ -64,7 +63,7 @@ export default class SelectedElement extends PureComponent {
                 <div className={style.content}>
                     <SelectBox
                         options={focusedNodeParentLine.map(this.createNodeOption)}
-                        value={$get('contextPath', focusedNode)}
+                        value={focusedNode?.contextPath}
                         onValueChange={this.handleSelectNode}
                         />
                 </div>

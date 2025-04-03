@@ -2,7 +2,6 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
 import {connect} from 'react-redux';
-import {$transform, $get} from 'plow-js';
 
 import {actions} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
@@ -14,9 +13,9 @@ import {TARGET_WINDOW, TARGET_CONTENT_CANVAS, THRESHOLD_MOUSE_LEAVE} from './con
 @neos(globalRegistry => ({
     containerRegistry: globalRegistry.get('containers')
 }))
-@connect($transform({
-    isHidden: $get('ui.drawer.isHidden'),
-    collapsedMenuGroups: $get('ui.drawer.collapsedMenuGroups')
+@connect(state => ({
+    isHidden: state?.ui?.drawer?.isHidden,
+    collapsedMenuGroups: state?.ui?.drawer?.collapsedMenuGroups
 }), {
     hideDrawer: actions.UI.Drawer.hide,
     toggleMenuGroup: actions.UI.Drawer.toggleMenuGroup,

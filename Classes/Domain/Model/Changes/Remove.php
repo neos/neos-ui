@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 /*
@@ -11,12 +12,20 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
+use Neos\ContentRepository\Core\DimensionSpace\Exception\DimensionSpacePointNotFound;
+use Neos\ContentRepository\Core\Feature\SubtreeTagging\Command\TagSubtree;
+use Neos\ContentRepository\Core\SharedModel\Exception\ContentStreamDoesNotExistYet;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeVariantSelectionStrategy;
+use Neos\Neos\Domain\SubtreeTagging\NeosSubtreeTag;
 use Neos\Neos\Ui\Domain\Model\AbstractChange;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\RemoveNode;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 
 /**
  * Removes a node
+ * @internal These objects internally reflect possible operations made by the Neos.Ui.
+ *           They are sorely an implementation detail. You should not use them!
+ *           Please look into the php command API of the Neos CR instead.
  */
 class Remove extends AbstractChange
 {
@@ -25,7 +34,7 @@ class Remove extends AbstractChange
      *
      * @return boolean
      */
-    public function canApply()
+    public function canApply(): bool
     {
         return true;
     }
@@ -33,23 +42,42 @@ class Remove extends AbstractChange
     /**
      * Applies this change
      *
-     * @return void
+     * @throws ContentStreamDoesNotExistYet
+     * @throws DimensionSpacePointNotFound
      */
-    public function apply()
+    public function apply(): void
     {
+        $subject = $this->subject;
         if ($this->canApply()) {
-            $node = $this->getSubject();
-            $node->remove();
+            $parentNode = $this->findParentNode($subject);
+            if (is_null($parentNode)) {
+                throw new \InvalidArgumentException(
+                    'Cannot apply Remove without a parent on node ' . $subject->aggregateId->value,
+                    1645560717
+                );
+            }
 
+            // we have to schedule and the update workspace info before we actually delete the node;
+            // otherwise we cannot find the parent nodes anymore.
             $this->updateWorkspaceInfo();
 
-            $removeNode = new RemoveNode();
-            $removeNode->setNode($node);
+            // Issuing 'hard' removals via 'RemoveNodeAggregate' on a non-live workspace is not desired in Neos, see SoftRemovedTag
+            $command = TagSubtree::create(
+                $subject->workspaceName,
+                $subject->aggregateId,
+                $subject->dimensionSpacePoint,
+                NodeVariantSelectionStrategy::STRATEGY_ALL_SPECIALIZATIONS,
+                NeosSubtreeTag::removed()
+            );
 
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->contentRepositoryId);
+            $contentRepository->handle($command);
+
+            $removeNode = new RemoveNode($subject, $parentNode);
             $this->feedbackCollection->add($removeNode);
 
             $updateParentNodeInfo = new UpdateNodeInfo();
-            $updateParentNodeInfo->setNode($node->getParent());
+            $updateParentNodeInfo->setNode($parentNode);
 
             $this->feedbackCollection->add($updateParentNodeInfo);
         }

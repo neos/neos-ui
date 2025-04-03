@@ -11,49 +11,47 @@ namespace Neos\Neos\Ui\Fusion\Helper;
  * source code.
  */
 
-use Neos\ContentRepository\Domain\Model\Node;
-use Neos\ContentRepository\Domain\Model\NodeInterface;
-use Neos\ContentRepository\Domain\Service\ContextFactoryInterface;
-use Neos\ContentRepository\Domain\Utility\NodePaths;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\CountAncestorNodesFilter;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindChildNodesFilter;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateClassification;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
-use Neos\Flow\Mvc\Controller\ControllerContext;
+use Neos\Flow\Mvc\ActionRequest;
+use Neos\Flow\Mvc\Routing\UriBuilder;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
-use Neos\Neos\Domain\Service\ContentContext;
-use Neos\Neos\Service\LinkingService;
-use Neos\Neos\Service\Mapping\NodePropertyConverterService;
-use Neos\Neos\TypeConverter\EntityToIdentityConverter;
+use Neos\Neos\Domain\NodeLabel\NodeLabelGeneratorInterface;
+use Neos\Neos\Domain\SubtreeTagging\NeosSubtreeTag;
+use Neos\Neos\FrontendRouting\NodeUriBuilderFactory;
+use Neos\Neos\Ui\Domain\Service\NodePropertyConverterService;
 use Neos\Neos\Ui\Domain\Service\UserLocaleService;
-use Neos\Neos\Ui\Service\NodePolicyService;
+use Neos\Neos\Utility\NodeTypeWithFallbackProvider;
 
 /**
  * @Flow\Scope("singleton")
+ * @internal implementation detail of the Neos Ui to build its initialState.
+ *           and used for rendering node properties for the inline element wrapping from php.
  */
 class NodeInfoHelper implements ProtectedContextAwareInterface
 {
-    /**
-     * @Flow\Inject
-     * @var NodePolicyService
-     */
-    protected $nodePolicyService;
+    use NodeTypeWithFallbackProvider;
+
+    #[Flow\Inject]
+    protected ContentRepositoryRegistry $contentRepositoryRegistry;
+
+    #[Flow\Inject]
+    protected NodeUriBuilderFactory $nodeUriBuilderFactory;
+
+    #[Flow\Inject]
+    protected NodeLabelGeneratorInterface $nodeLabelGenerator;
 
     /**
      * @Flow\Inject
      * @var UserLocaleService
      */
     protected $userLocaleService;
-
-    /**
-     * @Flow\Inject
-     * @var LinkingService
-     */
-    protected $linkingService;
-
-    /**
-     * @Flow\Inject
-     * @var EntityToIdentityConverter
-     */
-    protected $entityToIdentityConverter;
 
     /**
      * @Flow\Inject
@@ -68,22 +66,10 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     protected $nodePropertyConverterService;
 
     /**
-     * @Flow\Inject
-     * @var ContextFactoryInterface
-     */
-    protected $contextFactory;
-
-    /**
      * @Flow\InjectConfiguration(path="userInterface.navigateComponent.nodeTree.presets.default.baseNodeType", package="Neos.Neos")
      * @var string
      */
-    protected $defaultBaseNodeType;
-
-    /**
-     * @Flow\InjectConfiguration(path="userInterface.navigateComponent.nodeTree.loadingDepth", package="Neos.Neos")
-     * @var string
-     */
-    protected $loadingDepth;
+    protected $baseNodeType;
 
     /**
      * @Flow\InjectConfiguration(path="nodeTypeRoles.document", package="Neos.Neos.Ui")
@@ -98,52 +84,40 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     protected $ignoredNodeTypeRole;
 
     /**
-     * @param NodeInterface $node
-     * @param ?ControllerContext $controllerContext
-     * @param bool $omitMostPropertiesForTreeState
-     * @param ?string $nodeTypeFilterOverride
-     * @return array
-     * @deprecated See methods with specific names for different behaviors
+     * @return ?array<string,mixed>
      */
-    public function renderNode(NodeInterface $node, ?ControllerContext $controllerContext = null, $omitMostPropertiesForTreeState = false, $nodeTypeFilterOverride = null)
-    {
-        return ($omitMostPropertiesForTreeState ?
-            $this->renderNodeWithMinimalPropertiesAndChildrenInformation($node, $controllerContext, $nodeTypeFilterOverride) :
-            $this->renderNodeWithPropertiesAndChildrenInformation($node, $controllerContext, $nodeTypeFilterOverride)
-        );
-    }
-
-    /**
-     * @param NodeInterface $node
-     * @param ControllerContext|null $controllerContext
-     * @param ?string $nodeTypeFilterOverride
-     * @return array|null
-     */
-    public function renderNodeWithMinimalPropertiesAndChildrenInformation(NodeInterface $node, ?ControllerContext $controllerContext = null, ?string $nodeTypeFilterOverride = null)
-    {
+    public function renderNodeWithMinimalPropertiesAndChildrenInformation(
+        Node $node,
+        ?ActionRequest $actionRequest = null,
+        ?string $nodeTypeFilterOverride = null
+    ): ?array {
+        /** @todo implement custom node policy service
         if (!$this->nodePolicyService->isNodeTreePrivilegeGranted($node)) {
-            return null;
-        }
+        return null;
+        }*/
         $this->userLocaleService->switchToUILocale();
 
         $nodeInfo = $this->getBasicNodeInformation($node);
         $nodeInfo['properties'] = [
-            // if we are only rendering the tree state, ensure _isHidden is sent to hidden nodes are correctly shown in the tree.
-            '_hidden' => $node->isHidden(),
-            '_hiddenInIndex' => $node->isHiddenInIndex(),
-            '_hiddenBeforeDateTime' => $node->getHiddenBeforeDateTime() instanceof \DateTimeInterface ? $node->getHiddenBeforeDateTime()->format(\DateTime::W3C) : '',
-            '_hiddenAfterDateTime' => $node->getHiddenAfterDateTime() instanceof \DateTimeInterface ? $node->getHiddenAfterDateTime()->format(\DateTime::W3C) : '',
+            // if we are only rendering the tree state,
+            // ensure _isHidden is sent to hidden nodes are correctly shown in the tree.
+            // TODO: we should export this correctly named, but that needs changes throughout the JS code as well.
+            '_hidden' => $node->tags->withoutInherited()->contain(NeosSubtreeTag::disabled()),
+            '_hiddenInIndex' => $node->getProperty('hiddenInMenu'),
+            '_hasTimeableNodeVisibility' =>
+                $node->getProperty('enableAfterDateTime') instanceof \DateTimeInterface
+                || $node->getProperty('disableAfterDateTime') instanceof \DateTimeInterface,
         ];
 
-        if ($controllerContext !== null) {
-            $nodeInfo = array_merge($nodeInfo, $this->getUriInformation($node, $controllerContext));
-            if ($controllerContext->getRequest()->hasArgument('presetBaseNodeType')) {
-                $presetBaseNodeType = $controllerContext->getRequest()->getArgument('presetBaseNodeType');
-            }
+        if ($actionRequest !== null) {
+            $nodeInfo = array_merge($nodeInfo, $this->getUriInformation($node, $actionRequest));
         }
 
-        $baseNodeType = $nodeTypeFilterOverride ? $nodeTypeFilterOverride : (isset($presetBaseNodeType) ? $presetBaseNodeType : $this->defaultBaseNodeType);
-        $nodeTypeFilter = $this->buildNodeTypeFilterString($this->nodeTypeStringsToList($baseNodeType), $this->nodeTypeStringsToList($this->ignoredNodeTypeRole));
+        $baseNodeType = $nodeTypeFilterOverride ?: $this->baseNodeType;
+        $nodeTypeFilter = $this->buildNodeTypeFilterString(
+            $this->nodeTypeStringsToList($baseNodeType),
+            $this->nodeTypeStringsToList($this->ignoredNodeTypeRole)
+        );
 
         $nodeInfo['children'] = $this->renderChildrenInformation($node, $nodeTypeFilter);
 
@@ -153,31 +127,30 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     }
 
     /**
-     * @param NodeInterface $node
-     * @param ControllerContext|null $controllerContext
-     * @param string|null $nodeTypeFilterOverride
-     * @return array|null
+     * @return ?array<string,mixed>
      */
-    public function renderNodeWithPropertiesAndChildrenInformation(NodeInterface $node, ?ControllerContext $controllerContext = null, ?string $nodeTypeFilterOverride = null)
-    {
+    public function renderNodeWithPropertiesAndChildrenInformation(
+        Node $node,
+        ?ActionRequest $actionRequest = null,
+        ?string $nodeTypeFilterOverride = null
+    ): ?array {
+        /** @todo implement custom node policy service
         if (!$this->nodePolicyService->isNodeTreePrivilegeGranted($node)) {
-            return null;
-        }
+        return null;
+        }**/
 
         $this->userLocaleService->switchToUILocale();
 
         $nodeInfo = $this->getBasicNodeInformation($node);
         $nodeInfo['properties'] = $this->nodePropertyConverterService->getPropertiesArray($node);
+        $nodeInfo['tags'] = $node->tags;
         $nodeInfo['isFullyLoaded'] = true;
 
-        if ($controllerContext !== null) {
-            $nodeInfo = array_merge($nodeInfo, $this->getUriInformation($node, $controllerContext));
-            if ($controllerContext->getRequest()->hasArgument('presetBaseNodeType')) {
-                $presetBaseNodeType = $controllerContext->getRequest()->getArgument('presetBaseNodeType');
-            }
+        if ($actionRequest !== null) {
+            $nodeInfo = array_merge($nodeInfo, $this->getUriInformation($node, $actionRequest));
         }
 
-        $baseNodeType = $nodeTypeFilterOverride ?: (isset($presetBaseNodeType) ? $presetBaseNodeType : $this->defaultBaseNodeType);
+        $baseNodeType = $nodeTypeFilterOverride ?: $this->baseNodeType;
         $nodeInfo['children'] = $this->renderChildrenInformation($node, $baseNodeType);
 
         $this->userLocaleService->switchToUILocale(true);
@@ -188,138 +161,158 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     /**
      * Get the "uri" and "previewUri" for the given node
      *
-     * @param NodeInterface $node
-     * @param ControllerContext $controllerContext
-     * @return array
+     * @param Node $node
+     * @return array<string,string>
      */
-    protected function getUriInformation(NodeInterface $node, ControllerContext $controllerContext): array
+    protected function getUriInformation(Node $node, ActionRequest $actionRequest): array
     {
         $nodeInfo = [];
-        if (!$node->getNodeType()->isOfType($this->documentNodeTypeRole)) {
+        if (!$this->getNodeType($node)->isOfType($this->documentNodeTypeRole)) {
             return $nodeInfo;
         }
-
-        try {
-            $nodeInfo['uri'] = $this->uri($node, $controllerContext);
-        } catch (\Neos\Neos\Exception $exception) {
-            // Unless there is a serious problem with routes there shouldn't be an exception ever.
-            $nodeInfo['uri'] = '';
-        }
-
+        $nodeInfo['uri'] = $this->previewUri($node, $actionRequest);
         return $nodeInfo;
     }
 
     /**
      * Get the basic information about a node.
      *
-     * @param NodeInterface $node
-     * @return array
+     * @return array<string,mixed>
      */
-    protected function getBasicNodeInformation(NodeInterface $node): array
+    protected function getBasicNodeInformation(Node $node): array
     {
+        $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
+        $parentNode = $subgraph->findParentNode($node->aggregateId);
+
+        $nodeAddress = NodeAddress::fromNode($node);
+
         return [
-            'contextPath' => $node->getContextPath(),
-            'name' => $node->getName(),
-            'identifier' => $node->getIdentifier(),
-            'nodeType' => $node->getNodeType()->getName(),
-            'label' => $node->getLabel(),
-            'isAutoCreated' => $node->isAutoCreated(),
-            'depth' => $node->getDepth(),
+            // todo rename eventually rename to nodeAddress
+            'contextPath' => $nodeAddress->toJson(),
+            'name' => $node->name?->value ?? '',
+            'identifier' => $node->aggregateId->jsonSerialize(),
+            'nodeType' => $node->nodeTypeName->value,
+            'label' => $this->nodeLabelGenerator->getLabel($node),
+            'isAutoCreated' => $node->classification === NodeAggregateClassification::CLASSIFICATION_TETHERED,
+            // TODO: depth is expensive to calculate; maybe let's get rid of this?
+            'depth' => $subgraph->countAncestorNodes(
+                $node->aggregateId,
+                CountAncestorNodesFilter::create()
+            ),
             'children' => [],
-            // In some rare cases the parent node cannot be resolved properly
-            'parent' => ($node->getParent() ? $node->getParent()->getContextPath() : null),
-            'matchesCurrentDimensions' => ($node instanceof Node && $node->dimensionsAreMatchingTargetDimensionValues())
+            'parent' => $parentNode ? NodeAddress::fromNode($parentNode)->toJson() : null,
+            'matchesCurrentDimensions' => $node->dimensionSpacePoint->equals($node->originDimensionSpacePoint),
+            'lastModificationDateTime' => $node->timestamps->lastModified?->format(\DateTime::ATOM),
+            'creationDateTime' => $node->timestamps->created->format(\DateTime::ATOM),
+            'lastPublicationDateTime' => $node->timestamps->originalLastModified?->format(\DateTime::ATOM)
         ];
     }
 
     /**
      * Get information for all children of the given parent node.
      *
-     * @param NodeInterface $node
+     * @param Node $node
      * @param string $nodeTypeFilterString
-     * @return array
+     * @return array<int,array<string,string>>
      */
-    protected function renderChildrenInformation(NodeInterface $node, string $nodeTypeFilterString): array
+    protected function renderChildrenInformation(Node $node, string $nodeTypeFilterString): array
     {
-        $documentChildNodes = $node->getChildNodes($nodeTypeFilterString);
-        // child nodes for content tree, must not include those nodes filtered out by `baseNodeType`
-        $contentChildNodes = $node->getChildNodes($this->buildContentChildNodeFilterString());
-        $childNodes = array_merge($documentChildNodes, $contentChildNodes);
+        $contentRepository = $this->contentRepositoryRegistry->get($node->contentRepositoryId);
+        $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
 
-        $mapper = static function (NodeInterface $childNode) {
-            return [
-                'contextPath' => $childNode->getContextPath(),
-                'nodeType' => $childNode->getNodeType()->getName()
+        $documentChildNodes = $subgraph->findChildNodes(
+            $node->aggregateId,
+            FindChildNodesFilter::create(nodeTypes: $nodeTypeFilterString)
+        );
+        // child nodes for content tree, must not include those nodes filtered out by `baseNodeType`
+        $contentChildNodes = $subgraph->findChildNodes(
+            $node->aggregateId,
+            FindChildNodesFilter::create(
+                nodeTypes: $this->buildContentChildNodeFilterString()
+            )
+        );
+        $childNodes = $documentChildNodes->merge($contentChildNodes);
+
+        $infos = [];
+        foreach ($childNodes as $childNode) {
+            $contentRepository = $this->contentRepositoryRegistry->get($childNode->contentRepositoryId);
+            $infos[] = [
+                'contextPath' => NodeAddress::fromNode($childNode)->toJson(),
+                'nodeType' => $childNode->nodeTypeName->value
             ];
         };
-
-        return array_map($mapper, $childNodes);
+        return $infos;
     }
 
     /**
-     * @param array $nodes
-     * @param ControllerContext $controllerContext
-     * @param bool $omitMostPropertiesForTreeState
-     * @return array
+     * @param array<int,Node> $nodes
+     * @return array<int,?array<string,mixed>>
      */
-    public function renderNodes(array $nodes, ControllerContext $controllerContext, $omitMostPropertiesForTreeState = false): array
-    {
-        $methodName = $omitMostPropertiesForTreeState ? 'renderNodeWithMinimalPropertiesAndChildrenInformation' : 'renderNodeWithPropertiesAndChildrenInformation';
-        $mapper = function (NodeInterface $node) use ($controllerContext, $methodName) {
-            return $this->$methodName($node, $controllerContext);
+    public function renderNodes(
+        array $nodes,
+        ActionRequest $actionRequest,
+        bool $omitMostPropertiesForTreeState = false
+    ): array {
+        $mapper = function (Node $node) use ($actionRequest, $omitMostPropertiesForTreeState) {
+            return $omitMostPropertiesForTreeState
+                ? $this->renderNodeWithMinimalPropertiesAndChildrenInformation($node, $actionRequest)
+                : $this->renderNodeWithPropertiesAndChildrenInformation($node, $actionRequest);
         };
-
         return array_values(array_filter(array_map($mapper, $nodes)));
     }
 
     /**
-     * @param array $nodes
-     * @param ControllerContext $controllerContext
-     * @param null|string $nodeTypeFilter
-     * @return array
+     * @param array<int,?array<string,mixed>> $nodes
+     * @return array<int,?array<string,mixed>>
      */
-    public function renderNodesWithParents(array $nodes, ControllerContext $controllerContext, ?string $nodeTypeFilter = null): array
+    public function renderNodesWithParents(array $nodes, ActionRequest $actionRequest, ?string $nodeTypeFilter = null): array
     {
         // For search operation we want to include all nodes, not respecting the "baseNodeType" setting
         $baseNodeTypeOverride = $this->documentNodeTypeRole;
         $renderedNodes = [];
 
-        /** @var NodeInterface $node */
+        /** @var Node $node */
         foreach ($nodes as $node) {
-            if (array_key_exists($node->getPath(), $renderedNodes)) {
-                $renderedNodes[$node->getPath()]['matched'] = true;
-            } elseif ($renderedNode = $this->renderNodeWithMinimalPropertiesAndChildrenInformation($node, $controllerContext, $nodeTypeFilter ?? $baseNodeTypeOverride)) {
+            $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
+
+            if (array_key_exists($node->aggregateId->value, $renderedNodes)) {
+                $renderedNodes[$node->aggregateId->value]['matched'] = true;
+            } elseif ($renderedNode = $this->renderNodeWithMinimalPropertiesAndChildrenInformation(
+                $node,
+                $actionRequest,
+                $nodeTypeFilter ?? $baseNodeTypeOverride
+            )) {
                 $renderedNode['matched'] = true;
-                $renderedNodes[$node->getPath()] = $renderedNode;
+                $renderedNodes[$node->aggregateId->value] = $renderedNode;
             } else {
                 continue;
             }
 
-            /* @var $contentContext ContentContext */
-            $contentContext = $node->getContext();
-            $siteNodePath = $contentContext->getCurrentSiteNode()->getPath();
-            $parentNode = $node->getParent();
+            $parentNode = $subgraph->findParentNode($node->aggregateId);
             if ($parentNode === null) {
-                // There are a multitude of reasons why a node might not have a parent and we should ignore these gracefully.
+                // There are a multitude of reasons why a node might not have a parent
+                // and we should ignore these gracefully.
                 continue;
             }
 
-            // we additionally need to check that our parent nodes are underneath the site node; otherwise it might happen that
-            // we try to send the "/sites" node to the UI (which we cannot do, because this does not have an URL)
-            $parentNodeIsUnderneathSiteNode = (strpos($parentNode->getPath(), $siteNodePath) === 0);
-            while ($parentNode->getNodeType()->isOfType($baseNodeTypeOverride) && $parentNodeIsUnderneathSiteNode) {
-                if (array_key_exists($parentNode->getPath(), $renderedNodes)) {
-                    $renderedNodes[$parentNode->getPath()]['intermediate'] = true;
+            while ($this->getNodeType($parentNode)->isOfType($baseNodeTypeOverride)) {
+                if (array_key_exists($parentNode->aggregateId->value, $renderedNodes)) {
+                    $renderedNodes[$parentNode->aggregateId->value]['intermediate'] = true;
                 } else {
-                    $renderedParentNode = $this->renderNodeWithMinimalPropertiesAndChildrenInformation($parentNode, $controllerContext, $baseNodeTypeOverride);
+                    $renderedParentNode = $this->renderNodeWithMinimalPropertiesAndChildrenInformation(
+                        $parentNode,
+                        $actionRequest,
+                        $baseNodeTypeOverride
+                    );
                     if ($renderedParentNode) {
                         $renderedParentNode['intermediate'] = true;
-                        $renderedNodes[$parentNode->getPath()] = $renderedParentNode;
+                        $renderedNodes[$parentNode->aggregateId->value] = $renderedParentNode;
                     }
                 }
-                $parentNode = $parentNode->getParent();
+                $parentNode = $subgraph->findParentNode($parentNode->aggregateId);
                 if ($parentNode === null) {
-                    // There are a multitude of reasons why a node might not have a parent and we should ignore these gracefully.
+                    // There are a multitude of reasons why a node might not have a parent
+                    // and we should ignore these gracefully.
                     break;
                 }
             }
@@ -329,92 +322,42 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     }
 
     /**
-     * @param NodeInterface $documentNode
-     * @param ControllerContext $controllerContext
-     * @return array
+     * @return array<string,array<string,mixed>|null>
      */
-    public function renderDocumentNodeAndChildContent(NodeInterface $documentNode, ControllerContext $controllerContext)
-    {
-        return $this->renderNodeAndChildContent($documentNode, $controllerContext);
-    }
+    public function defaultNodesForBackend(
+        Node $site,
+        Node $documentNode,
+        ActionRequest $actionRequest
+    ): array {
+        // does not support multiple CRs here yet
+        $contentRepository = $this->contentRepositoryRegistry->get($site->contentRepositoryId);
 
-    /**
-     * @param NodeInterface $node
-     * @param ControllerContext $controllerContext
-     * @return array
-     */
-    protected function renderNodeAndChildContent(NodeInterface $node, ControllerContext $controllerContext)
-    {
-        $reducer = function ($nodes, $node) use ($controllerContext) {
-            $nodes = array_merge($nodes, $this->renderNodeAndChildContent($node, $controllerContext));
-
-            return $nodes;
-        };
-
-        return array_reduce($node->getChildNodes($this->buildContentChildNodeFilterString()), $reducer, [$node->getContextPath() => $this->renderNodeWithPropertiesAndChildrenInformation($node, $controllerContext)]);
-    }
-
-    /**
-     * @param NodeInterface $site
-     * @param NodeInterface $documentNode
-     * @param ControllerContext $controllerContext
-     * @return array
-     */
-    public function defaultNodesForBackend(NodeInterface $site, NodeInterface $documentNode, ControllerContext $controllerContext): array
-    {
         return [
-            $site->getContextPath() => $this->renderNodeWithPropertiesAndChildrenInformation($site, $controllerContext),
-            $documentNode->getContextPath() => $this->renderNodeWithPropertiesAndChildrenInformation($documentNode, $controllerContext)
+            (NodeAddress::fromNode($site)->toJson())
+            => $this->renderNodeWithPropertiesAndChildrenInformation($site, $actionRequest),
+            (NodeAddress::fromNode($documentNode)->toJson())
+            => $this->renderNodeWithPropertiesAndChildrenInformation($documentNode, $actionRequest)
         ];
     }
 
-    /**
-     * Creates a URL that will redirect to the given $node in live or base workspace, or returns an empty string if that doesn't exist or is inaccessible
-     *
-     * @param ControllerContext $controllerContext
-     * @param NodeInterface|null $node
-     * @return string
-     */
-    public function createRedirectToNode(ControllerContext $controllerContext, ?NodeInterface $node = null)
+    public function previewUri(Node $node, ActionRequest $actionRequest): string
     {
-        if ($node === null) {
-            return '';
-        }
-        // we always want to redirect to the node in the base workspace.
-        $baseWorkspace = $node->getContext()->getWorkspace(false)->getBaseWorkspace();
-        $baseWorkspaceContextProperties = [
-            'workspaceName' => $baseWorkspace !== null ? $baseWorkspace->getName() : 'live',
-            'invisibleContentShown' => false,
-            'removedContentShown' => false,
-            'inaccessibleContentShown' => false,
-        ];
-        $baseWorkspaceContext = $this->contextFactory->create(array_merge($node->getContext()->getProperties(), $baseWorkspaceContextProperties));
-        $nodeInBaseWorkspace = $baseWorkspaceContext->getNodeByIdentifier($node->getIdentifier());
-        if ($nodeInBaseWorkspace === null || $nodeInBaseWorkspace->isHidden() || !$nodeInBaseWorkspace->getNodeType()->isAggregate()) {
-            return '';
-        }
-        return $controllerContext->getUriBuilder()
-            ->reset()
+        $nodeAddress = NodeAddress::fromNode($node);
+        return (string)$this->nodeUriBuilderFactory
+            ->forActionRequest($actionRequest)
+            ->previewUriFor($nodeAddress);
+    }
+
+    public function createRedirectToNode(Node $node, ActionRequest $actionRequest): string
+    {
+        $nodeAddress = NodeAddress::fromNode($node);
+
+        $uriBuilder = new UriBuilder();
+        $uriBuilder->setRequest($actionRequest);
+        return $uriBuilder
             ->setCreateAbsoluteUri(true)
             ->setFormat('html')
-            ->uriFor('redirectTo', ['node' => $nodeInBaseWorkspace], 'Backend', 'Neos.Neos.Ui');
-    }
-
-    /**
-     * @param ?NodeInterface $node
-     * @param ControllerContext $controllerContext
-     * @return string
-     * @throws \Neos\Neos\Exception
-     */
-    public function uri(?NodeInterface $node = null, ControllerContext $controllerContext)
-    {
-        if ($node === null) {
-            // This happens when the document node is not published yet
-            return '';
-        }
-
-        // Create an absolute URI
-        return $this->linkingService->createNodeUri($controllerContext, $node, null, null, true);
+            ->uriFor('redirectTo', ['node' => $nodeAddress->toJson()], 'Backend', 'Neos.Neos.Ui');
     }
 
     /**
@@ -436,11 +379,10 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     }
 
     /**
-     * @param array $includedNodeTypes
-     * @param array $excludedNodeTypes
-     * @return string
+     * @param array<int,string> $includedNodeTypes
+     * @param array<int,string> $excludedNodeTypes
      */
-    protected function buildNodeTypeFilterString(array $includedNodeTypes, array $excludedNodeTypes)
+    protected function buildNodeTypeFilterString(array $includedNodeTypes, array $excludedNodeTypes): string
     {
         $preparedExcludedNodeTypes = array_map(function ($nodeTypeName) {
             return '!' . $nodeTypeName;
@@ -449,12 +391,20 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         return implode(',', $mergedIncludesAndExcludes);
     }
 
-    /**
-     * @return string
-     */
-    protected function buildContentChildNodeFilterString()
+    protected function buildContentChildNodeFilterString(): string
     {
-        return $this->buildNodeTypeFilterString([], $this->nodeTypeStringsToList($this->documentNodeTypeRole, $this->ignoredNodeTypeRole));
+        return $this->buildNodeTypeFilterString(
+            [],
+            $this->nodeTypeStringsToList(
+                $this->documentNodeTypeRole,
+                $this->ignoredNodeTypeRole
+            )
+        );
+    }
+
+    public function serializedNodeAddress(Node $node): string
+    {
+        return NodeAddress::fromNode($node)->toJson();
     }
 
     /**
@@ -463,6 +413,13 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
      */
     public function allowsCallOfMethod($methodName)
     {
-        return true;
+        // to control what is used in eel we maintain this list.
+        return in_array($methodName, [
+            'serializedNodeAddress',
+            'createRedirectToNode',
+            'renderNodeWithPropertiesAndChildrenInformation',
+            'defaultNodesForBackend',
+            'previewUri'
+        ], true);
     }
 }

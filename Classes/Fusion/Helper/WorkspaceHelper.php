@@ -11,26 +11,38 @@ namespace Neos\Neos\Ui\Fusion\Helper;
  * source code.
  */
 
-use Neos\ContentRepository\Domain\Model\Workspace;
+use Neos\ContentRepository\Core\SharedModel\ContentRepository\ContentRepositoryId;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
-use Neos\Neos\Domain\Service\UserService as DomainUserService;
-use Neos\Neos\Service\UserService;
-use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService;
+use Neos\Flow\Security\Context;
+use Neos\Neos\Domain\Service\UserService;
+use Neos\Neos\Domain\Service\WorkspaceService;
+use Neos\Neos\Security\Authorization\ContentRepositoryAuthorizationService;
+use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService as UiWorkspaceService;
 
+/**
+ * @internal implementation detail of the Neos Ui to build its initialState {@see \Neos\Neos\Ui\Infrastructure\Configuration\InitialStateProvider}
+ */
 class WorkspaceHelper implements ProtectedContextAwareInterface
 {
     /**
      * @Flow\Inject
-     * @var WorkspaceService
+     * @var ContentRepositoryRegistry
      */
-    protected $workspaceService;
+    protected $contentRepositoryRegistry;
 
     /**
      * @Flow\Inject
-     * @var DomainUserService
+     * @var Context
      */
-    protected $domainUserService;
+    protected $securityContext;
+
+    /**
+     * @Flow\Inject
+     * @var UiWorkspaceService
+     */
+    protected $uiWorkspaceService;
 
     /**
      * @Flow\Inject
@@ -39,35 +51,43 @@ class WorkspaceHelper implements ProtectedContextAwareInterface
     protected $userService;
 
     /**
-     * @param Workspace $workspace
-     * @return array
+     * @Flow\Inject
+     * @var WorkspaceService
      */
-    public function getPublishableNodeInfo(Workspace $workspace)
-    {
-        return $this->workspaceService->getPublishableNodeInfo($workspace);
-    }
+    protected $workspaceService;
 
-    public function getPersonalWorkspace()
-    {
-        $personalWorkspace = $this->userService->getPersonalWorkspace();
-        $baseWorkspace = $personalWorkspace->getBaseWorkspace();
+    /**
+     * @Flow\Inject
+     * @var ContentRepositoryAuthorizationService
+     */
+    protected $contentRepositoryAuthorizationService;
 
+    /**
+     * @return array<string,mixed>
+     */
+    public function getPersonalWorkspace(ContentRepositoryId $contentRepositoryId): array
+    {
+        $currentUser = $this->userService->getCurrentUser();
+        if ($currentUser === null) {
+            return [];
+        }
+        $contentRepository = $this->contentRepositoryRegistry->get($contentRepositoryId);
+        $personalWorkspace = $this->workspaceService->getPersonalWorkspaceForUser($contentRepositoryId, $currentUser->getId());
+        $personalWorkspacePermissions = $this->contentRepositoryAuthorizationService->getWorkspacePermissions($contentRepositoryId, $personalWorkspace->workspaceName, $this->securityContext->getRoles(), $currentUser->getId());
+        $publishableNodes = $this->uiWorkspaceService->getPublishableNodeInfo($personalWorkspace->workspaceName, $contentRepository->id);
         return [
-            'name' => $personalWorkspace->getName(),
-            'publishableNodes' => $this->getPublishableNodeInfo($personalWorkspace),
-            'baseWorkspace' => $baseWorkspace->getName(),
-            'readOnly' => !$this->domainUserService->currentUserCanPublishToWorkspace($baseWorkspace)
+            'name' => $personalWorkspace->workspaceName->value,
+            'totalNumberOfChanges' => count($publishableNodes),
+            'publishableNodes' => $publishableNodes,
+            'baseWorkspace' => $personalWorkspace->baseWorkspaceName?->value,
+            'readOnly' => !($personalWorkspace->baseWorkspaceName !== null && $personalWorkspacePermissions->write),
+            'status' => $personalWorkspace->status->value,
         ];
-    }
-
-    public function getAllowedTargetWorkspaces()
-    {
-        return $this->workspaceService->getAllowedTargetWorkspaces();
     }
 
     /**
      * @param string $methodName
-     * @return boolean
+     * @return bool
      */
     public function allowsCallOfMethod($methodName)
     {

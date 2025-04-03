@@ -1,6 +1,5 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {$get} from 'plow-js';
 
 import {Button, Icon, Label} from '@neos-project/react-ui-components';
 import I18n from '@neos-project/neos-ui-i18n';
@@ -26,7 +25,7 @@ export default class CKEditor extends PureComponent {
 
     render() {
         const {label, identifier, className} = this.props;
-        const disabled = $get('options.disabled', this.props);
+        const disabled = this.props?.options?.disabled;
         const handleClick = () => (disabled ? null : this.handleOpenCodeEditor);
 
         return (

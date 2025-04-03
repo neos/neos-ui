@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {$get} from 'plow-js';
+
 import style from './style.module.css';
 import ViewEnvelope from '@neos-project/neos-ui-views/src/ViewEnvelope/index';
 import {neos} from '@neos-project/neos-ui-decorators';
@@ -16,7 +16,7 @@ import {selectors} from '@neos-project/neos-ui-redux-store';
 }))
 @connect((state, {id}) => {
     return state => ({
-        transientValueRaw: $get([id], selectors.UI.Inspector.transientValues(state))
+        transientValueRaw: selectors.UI.Inspector.transientValues(state)?.[id]
     });
 })
 export default class InspectorViewEnvelope extends PureComponent {
@@ -49,7 +49,7 @@ export default class InspectorViewEnvelope extends PureComponent {
         //
         // nodeType needs to be read directly from node
         //
-        const sourceValueRaw = id === '_nodeType' ? $get('nodeType', node) : $get(['properties', id], node);
+        const sourceValueRaw = id === '_nodeType' ? node?.nodeType : node?.properties?.[id];
         const sourceValue = sourceValueRaw;
         const transientValue = transientValueRaw;
 

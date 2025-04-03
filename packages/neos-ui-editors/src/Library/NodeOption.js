@@ -2,7 +2,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import SelectBox_Option_MultiLineWithThumbnail from '@neos-project/react-ui-components/src/SelectBox_Option_MultiLineWithThumbnail';
-import {$get} from 'plow-js';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 @neos(globalRegistry => ({
@@ -24,7 +23,7 @@ export default class NodeOption extends PureComponent {
         const {option, nodeTypesRegistry} = this.props;
         const {label, breadcrumb, nodeType} = option;
         const nodeTypeDefinition = nodeTypesRegistry.getNodeType(nodeType);
-        const icon = $get('ui.icon', nodeTypeDefinition);
+        const icon = nodeTypeDefinition?.ui?.icon;
         return (
             <SelectBox_Option_MultiLineWithThumbnail
                 {...this.props}

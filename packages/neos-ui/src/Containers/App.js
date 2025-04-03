@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$get, $transform} from 'plow-js';
 import mergeClassNames from 'classnames';
 import style from './style.module.css';
 
-import FlashMessages from './FlashMessages/index';
+import {FlashMessages} from '@neos-project/neos-ui-error';
 
 const App = ({globalRegistry, menu, isFullScreen, leftSidebarIsHidden, rightSidebarIsHidden}) => {
     const containerRegistry = globalRegistry.get('containers');
@@ -67,8 +66,8 @@ App.propTypes = {
     rightSidebarIsHidden: PropTypes.bool.isRequired
 };
 
-export default connect($transform({
-    isFullScreen: $get('ui.fullScreen.isFullScreen'),
-    leftSidebarIsHidden: $get('ui.leftSideBar.isHidden'),
-    rightSidebarIsHidden: $get('ui.rightSideBar.isHidden')
+export default connect(state => ({
+    isFullScreen: state?.ui?.fullScreen?.isFullScreen,
+    leftSidebarIsHidden: state?.ui?.leftSideBar?.isHidden,
+    rightSidebarIsHidden: state?.ui?.rightSideBar?.isHidden
 }))(App);

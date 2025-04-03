@@ -1,4 +1,4 @@
-import {getElementInnerText, getElementAttributeValue, getContextString} from './Helpers';
+import {getElementInnerText, getElementAttributeValue} from './Helpers';
 import {isNil} from '@neos-project/utils-helpers';
 import {urlWithParams, encodeAsQueryString} from '@neos-project/utils-helpers/src/urlWithParams';
 
@@ -9,25 +9,27 @@ export interface Routes {
     ui: {
         service: {
             change: string;
-            publish: string;
-            discard: string;
+            publishChangesInSite: string;
+            publishChangesInDocument: string;
+            discardAllChanges: string;
+            discardChangesInSite: string;
+            discardChangesInDocument: string;
             changeBaseWorkspace: string;
+            syncWorkspace: string;
             copyNodes: string;
             cutNodes: string;
             clearClipboard: string;
-            loadTree: string;
             flowQuery: string;
             generateUriPathSegment: string;
             getWorkspaceInfo: string;
             getAdditionalNodeMetadata: string;
+            reloadNodes: string;
         };
     };
     core: {
         content: {
             imageWithMetadata: string;
             createImageVariant: string;
-            loadMasterPlugins: string;
-            loadPluginViews: string;
             uploadAsset: string;
         };
         service: {
@@ -67,8 +69,8 @@ export default (routes: Routes) => {
     })).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
-    const publish = (nodeContextPaths: NodeContextPath[], targetWorkspaceName: WorkspaceName) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
-        url: routes.ui.service.publish,
+    const publishChangesInSite = (siteId: NodeContextPath, workspaceName: WorkspaceName, preferredDimensionSpacePoint: null|DimensionCombination) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+        url: routes.ui.service.publishChangesInSite,
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -76,15 +78,13 @@ export default (routes: Routes) => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            nodeContextPaths,
-            targetWorkspaceName
+            command: {siteId, workspaceName, preferredDimensionSpacePoint}
         })
     })).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
-    const discard = (nodeContextPaths: NodeContextPath[]) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
-        url: routes.ui.service.discard,
-
+    const publishChangesInDocument = (documentId: NodeContextPath, workspaceName: WorkspaceName, preferredDimensionSpacePoint: null|DimensionCombination) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+        url: routes.ui.service.publishChangesInDocument,
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -92,7 +92,49 @@ export default (routes: Routes) => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            nodeContextPaths
+            command: {documentId, workspaceName, preferredDimensionSpacePoint}
+        })
+    })).then(response => fetchWithErrorHandling.parseJson(response))
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+
+    const discardAllChanges = (workspaceName: WorkspaceName) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+        url: routes.ui.service.discardAllChanges,
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'X-Flow-Csrftoken': csrfToken,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            command: {workspaceName}
+        })
+    })).then(response => fetchWithErrorHandling.parseJson(response))
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+
+    const discardChangesInSite = (siteId: NodeContextPath, workspaceName: WorkspaceName) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+        url: routes.ui.service.discardChangesInSite,
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'X-Flow-Csrftoken': csrfToken,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            command: {siteId, workspaceName}
+        })
+    })).then(response => fetchWithErrorHandling.parseJson(response))
+    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+
+    const discardChangesInDocument = (documentId: NodeContextPath, workspaceName: WorkspaceName) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+        url: routes.ui.service.discardChangesInDocument,
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'X-Flow-Csrftoken': csrfToken,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            command: {documentId, workspaceName}
         })
     })).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
@@ -112,6 +154,23 @@ export default (routes: Routes) => {
         })
     })).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+
+    const syncWorkspace = (targetWorkspaceName: WorkspaceName, force: boolean, dimensionSpacePoint: null|DimensionCombination) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+        url: routes.ui.service.syncWorkspace,
+
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'X-Flow-Csrftoken': csrfToken,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            targetWorkspaceName,
+            force,
+            dimensionSpacePoint
+        })
+    })).then(response => fetchWithErrorHandling.parseJson(response))
+        .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
     const copyNodes = (nodes: NodeContextPath[]) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
         url: routes.ui.service.copyNodes,
@@ -189,26 +248,6 @@ export default (routes: Routes) => {
                 adjustments
             }
         })
-    })).then(response => fetchWithErrorHandling.parseJson(response))
-    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
-
-    const loadMasterPlugins = (workspaceName: WorkspaceName, dimensions: DimensionCombination) => fetchWithErrorHandling.withCsrfToken(() => ({
-        url: urlWithParams(routes.core.content.loadMasterPlugins, {workspaceName, dimensions}),
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })).then(response => fetchWithErrorHandling.parseJson(response))
-    .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
-
-    const loadPluginViews = (identifier: string, workspaceName: WorkspaceName, dimensions: DimensionCombination) => fetchWithErrorHandling.withCsrfToken(() => ({
-        url: urlWithParams(routes.core.content.loadPluginViews, {identifier, workspaceName, dimensions}),
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-            'Content-Type': 'application/json'
-        }
     })).then(response => fetchWithErrorHandling.parseJson(response))
     .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
@@ -477,15 +516,15 @@ export default (routes: Routes) => {
                     throw new Error('.node-frontend-uri does not contain a valid href attribut');
                 }
 
-                const nodePath = d.querySelector('.node-path');
-                if (!nodePath) {
-                    throw new Error('.node-path is not found in the result');
+                const nodeContextPathElement = d.querySelector('.node-context-path');
+                if (!nodeContextPathElement) {
+                    throw new Error('.node-context-path is not found in the result');
                 }
 
-                // Hackish way to get context string from uri
-                const contextString = getContextString(nodeFrontendUri);
-                // TODO: Temporary hack due to missing contextPath in the API response
-                const nodeContextPath = `${nodePath.innerHTML}@${contextString}`;
+                const nodeContextPath = nodeContextPathElement.innerHTML.trim();
+                if (!nodeContextPath) {
+                    throw new Error('.node-context-path is empty');
+                }
 
                 return {
                     nodeFound: true,
@@ -656,18 +695,41 @@ export default (routes: Routes) => {
             .then(response => fetchWithErrorHandling.parseJson(response))
             .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
 
+    const reloadNodes = (query: {
+        workspaceName: WorkspaceName;
+        dimensionSpacePoint: DimensionCombination;
+        siteId: NodeContextPath;
+        documentId: NodeContextPath;
+        ancestorsOfDocumentIds: NodeContextPath[];
+        toggledNodesIds: NodeContextPath[];
+        clipboardNodesIds: NodeContextPath[];
+    }) => fetchWithErrorHandling.withCsrfToken(csrfToken => ({
+        url: routes.ui.service.reloadNodes,
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'X-Flow-Csrftoken': csrfToken,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({query})
+    }))
+        .then(response => fetchWithErrorHandling.parseJson(response))
+        .catch(reason => fetchWithErrorHandling.generalErrorHandler(reason));
+
     return {
         loadImageMetadata,
         change,
-        publish,
-        discard,
+        publishChangesInSite,
+        publishChangesInDocument,
+        discardAllChanges,
+        discardChangesInSite,
+        discardChangesInDocument,
         changeBaseWorkspace,
+        syncWorkspace,
         copyNodes,
         cutNodes,
         clearClipboard,
         createImageVariant,
-        loadMasterPlugins,
-        loadPluginViews,
         uploadAsset,
         assetProxyImport,
         assetProxySearch,
@@ -686,6 +748,7 @@ export default (routes: Routes) => {
         tryLogin,
         contentDimensions,
         impersonateStatus,
-        impersonateRestore
+        impersonateRestore,
+        reloadNodes
     };
 };

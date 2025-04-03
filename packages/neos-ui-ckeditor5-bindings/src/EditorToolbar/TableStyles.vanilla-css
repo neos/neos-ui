@@ -163,3 +163,10 @@
     font-weight:700;
     background:#fafafa
 }
+
+/* The type around buttons has been added in CKEditor and has been not implemented yet in
+the neos-ui. We maybe also don't need it at the moment.
+*/
+.ck .ck-widget .ck-widget__type-around__button {
+    display: none;
+}

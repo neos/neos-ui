@@ -1,0 +1,17 @@
+{
+  "name": "@neos-project/neos-ui-error",
+  "version": "",
+  "description": "Dedicated package for handling all kinds of errors in the Neos UI",
+  "private": true,
+  "main": "./src/index.ts",
+  "dependencies": {
+    "@neos-project/framework-observable": "workspace:*",
+    "@neos-project/framework-observable-react": "workspace:*",
+    "@neos-project/neos-ui-i18n": "workspace:*",
+    "@neos-project/react-ui-components": "workspace:*",
+    "classnames": "^2.2.3",
+    "react": "^16.12.0"
+  },
+  "license": "GNU GPLv3",
+  "stableVersion": "8.3.4"
+}

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 /*
@@ -11,92 +12,95 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
-use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Core\Feature\NodeMove\Command\MoveNodeAggregate;
+use Neos\ContentRepository\Core\Feature\NodeMove\Dto\RelationDistributionStrategy;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\UpdateNodeInfo;
 
-class MoveInto extends AbstractMove
+/**
+ * @internal These objects internally reflect possible operations made by the Neos.Ui.
+ *           They are sorely an implementation detail. You should not use them!
+ *           Please look into the php command API of the Neos CR instead.
+ */
+class MoveInto extends AbstractStructuralChange
 {
-    /**
-     * @var string
-     */
-    protected $parentContextPath;
+    protected ?string $parentContextPath;
 
-    /**
-     * @var NodeInterface
-     */
-    protected $cachedParentNode;
-
-    /**
-     * @param string $parentContextPath
-     */
-    public function setParentContextPath($parentContextPath)
+    public function setParentContextPath(string $parentContextPath): void
     {
         $this->parentContextPath = $parentContextPath;
     }
 
+    public function getParentNode(): ?Node
+    {
+        if ($this->parentContextPath === null) {
+            return null;
+        }
+
+        return $this->nodeService->findNodeBySerializedNodeAddress(
+            $this->parentContextPath
+        );
+    }
+
+
     /**
      * Get the insertion mode (before|after|into) that is represented by this change
-     *
-     * @return string
      */
-    public function getMode()
+    public function getMode(): string
     {
         return 'into';
     }
 
     /**
-     * @return NodeInterface
+     * Checks whether this change can be applied to the subject
      */
-    public function getParentNode()
+    public function canApply(): bool
     {
-        if ($this->cachedParentNode === null) {
-            $this->cachedParentNode = $this->nodeService->getNodeFromContextPath(
-                $this->parentContextPath
-            );
-        }
+        $parent = $this->getParentNode();
 
-        return $this->cachedParentNode;
-    }
-
-    /**
-     * "Subject" is the to-be-copied node; the "parent" node is the new parent
-     *
-     * @return boolean
-     */
-    public function canApply()
-    {
-        $nodeType = $this->getSubject()->getNodeType();
-
-        return $this->getParentNode()->isNodeTypeAllowedAsChildNode($nodeType);
+        return $parent && $this->isNodeTypeAllowedAsChildNode($parent, $this->subject->nodeTypeName);
     }
 
     /**
      * Applies this change
-     *
-     * @return void
      */
-    public function apply()
+    public function apply(): void
     {
-        if ($this->canApply()) {
-            $before = self::cloneNodeWithNodeData($this->getSubject());
-            $parent = $before->getParent();
+        // "parentNode" is the node where the $subject should be moved INTO
+        $parentNode = $this->getParentNode();
+        // "subject" is the to-be-moved node
+        $subject = $this->subject;
+        if ($this->canApply() && $parentNode) {
+            $otherParent = $this->contentRepositoryRegistry->subgraphForNode($subject)
+                ->findParentNode($subject->aggregateId);
 
-            if ($this->nodeNameAvailableBelowNode($this->getParentNode(), $this->getSubject())) {
-                $this->getSubject()->moveInto($this->getParentNode());
-            } else {
-                $nodeName = $this->generateUniqueNodeName($this->getParentNode());
-                $this->getSubject()->moveInto($this->getParentNode(), $nodeName);
+            $hasEqualParentNode = $otherParent && $otherParent->aggregateId
+                    ->equals($parentNode->aggregateId);
+
+            $contentRepository = $this->contentRepositoryRegistry->get($subject->contentRepositoryId);
+            $rawMoveNodeStrategy = $this->getNodeType($this->subject)?->getConfiguration('options.moveNodeStrategy');
+            if (!is_string($rawMoveNodeStrategy)) {
+                throw new \RuntimeException(sprintf('NodeType "%s" has an invalid configuration for option "moveNodeStrategy" expected string got %s', $this->subject->nodeTypeName->value, get_debug_type($rawMoveNodeStrategy)), 1732010016);
             }
+            $moveNodeStrategy = RelationDistributionStrategy::tryFrom($rawMoveNodeStrategy);
+            if ($moveNodeStrategy === null) {
+                throw new \RuntimeException(sprintf('NodeType "%s" has an invalid configuration for option "moveNodeStrategy" got %s', $this->subject->nodeTypeName->value, $rawMoveNodeStrategy), 1732010011);
+            }
+            $contentRepository->handle(
+                MoveNodeAggregate::create(
+                    $subject->workspaceName,
+                    $subject->dimensionSpacePoint,
+                    $subject->aggregateId,
+                    $moveNodeStrategy,
+                    $hasEqualParentNode ? null : $parentNode->aggregateId,
+                )
+            );
 
             $updateParentNodeInfo = new UpdateNodeInfo();
-            $updateParentNodeInfo->setNode($parent);
-            if ($this->baseNodeType) {
-                $updateParentNodeInfo->setBaseNodeType($this->baseNodeType);
-            }
-
+            $updateParentNodeInfo->setNode($parentNode);
             $this->feedbackCollection->add($updateParentNodeInfo);
 
-            $this->finish($before);
+            $this->finish($subject);
         }
     }
 }

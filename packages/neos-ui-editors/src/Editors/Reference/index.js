@@ -6,14 +6,13 @@ import createNew from './createNew';
 import NodeOption from '../../Library/NodeOption';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {connect} from 'react-redux';
-import {$transform, $get} from 'plow-js';
 import {actions} from '@neos-project/neos-ui-redux-store';
 
 import {sanitizeOptions} from '../../Library';
 
-@connect($transform({
-    creationDialogIsOpen: $get('ui.nodeCreationDialog.isOpen'),
-    changesInInspector: $get('ui.inspector.valuesByNodePath')
+@connect((state) => ({
+    creationDialogIsOpen: state?.ui?.nodeCreationDialog?.isOpen,
+    changesInInspector: state?.ui?.inspector?.valuesByNodePath
 }), {
     setActiveContentCanvasSrc: actions.UI.ContentCanvas.setSrc
 })

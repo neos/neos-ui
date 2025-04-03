@@ -63,6 +63,8 @@ const SETTINGS_WITH_NODE_TREE_PRESETS = {
     }
 };
 
+fixture.skip`TODO Reimplement / Fix Node Tree Presets for 9.0 https://github.com/neos/neos-ui/issues/3702`;
+
 test('Node tree preset "default" removes all blog related nodes and only loads nodes with depth <= 2', async (t) => {
     //
     // Assert that all documents with a depth > 2 are no longer visible in

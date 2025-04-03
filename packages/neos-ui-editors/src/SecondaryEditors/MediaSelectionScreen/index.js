@@ -1,7 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {neos} from '@neos-project/neos-ui-decorators';
-import {$get} from 'plow-js';
 import {urlWithParams} from '@neos-project/utils-helpers/src/urlWithParams';
 
 import style from './style.module.css';
@@ -30,7 +29,7 @@ class MediaSelectionScreen extends PureComponent {
         if (type === 'images' && !constraints.mediaTypes) {
             constraints = {...constraints, mediaTypes: ['image/*']};
         }
-        const mediaBrowserUri = $get('routes.core.modules.mediaBrowser', neos);
+        const mediaBrowserUri = neos?.routes?.core?.modules?.mediaBrowser;
         return (
             <iframe name="neos-media-selection-screen" src={urlWithParams(mediaBrowserUri + '/assets/index.html', {constraints})} className={style.iframe}/>
         );

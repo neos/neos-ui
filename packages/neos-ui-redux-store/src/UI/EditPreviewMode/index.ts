@@ -1,5 +1,4 @@
 import {action as createAction, ActionType} from 'typesafe-actions';
-import {$get} from 'plow-js';
 
 import {actionTypes as system, InitAction, GlobalState} from '../../System';
 
@@ -32,7 +31,7 @@ export const actions = {
 export const reducer = (state: State = defaultState, action: InitAction | Action) => {
     switch (action.type) {
         case system.INIT: {
-            return $get(['payload', 'ui', 'editPreviewMode'], action) || defaultState;
+            return action?.payload?.ui?.editPreviewMode || defaultState;
         }
         case actionTypes.SET: {
             return action.payload.editPreviewMode;
@@ -47,5 +46,5 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
 // Export the selectors
 //
 export const selectors = {
-    currentEditPreviewMode: (state: GlobalState) => $get(['ui', 'editPreviewMode'], state)
+    currentEditPreviewMode: (state: GlobalState) => state?.ui?.editPreviewMode
 };

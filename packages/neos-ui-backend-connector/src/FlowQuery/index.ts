@@ -1,5 +1,5 @@
 import * as operations from './Operations/index';
-import {$get} from 'plow-js';
+
 import fetchWithErrorHandling from '../FetchWithErrorHandling/index';
 import {Node, NodeContextPath, ContextProperties} from '@neos-project/neos-ts-interfaces';
 import {Routes} from '../Endpoints';
@@ -33,7 +33,7 @@ export const createNodeEnvelope = (node: NodeEnvelope | NodeContextPath) => {
     let contextPath = '';
 
     if (typeof node === 'object') {
-        contextPath = $get(['contextPath'], node) || $get(['$node'], node);
+        contextPath = node?.contextPath || node?.$node;
     } else if (typeof node === 'string') {
         contextPath = node;
     }
@@ -103,8 +103,8 @@ export default (routes: Routes) => {
     //
     const q = (context: ContextProperties | string, ignoreMiddleware: boolean = false) => {
         let finalContext: NodeContextPath[];
-        if (typeof context === 'object' && typeof $get(['contextPath'], context) === 'string') {
-            finalContext = [$get(['contextPath'], context) as string];
+        if (typeof context === 'object' && typeof context?.contextPath === 'string') {
+            finalContext = [context?.contextPath as string];
         } else if (typeof context === 'string') {
             finalContext = [context];
         } else if (Array.isArray(context)) {

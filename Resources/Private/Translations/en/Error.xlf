@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file original="" product-name="Neos.Neos.Ui" source-language="en" datatype="plaintext" target-language="en">
+    <body>
+      <trans-unit id="unknown" xml:space="preserve">
+        <source>An unkown error ocurred.</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

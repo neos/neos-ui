@@ -11,79 +11,48 @@ namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
  * source code.
  */
 
-use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindClosestNodeFilter;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
-use Neos\Neos\Service\LinkingService;
-use Neos\Neos\Ui\ContentRepository\Service\NodeService;
+use Neos\Neos\Domain\Service\NodeTypeNameFactory;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
+use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 
+/**
+ * @internal
+ */
 class ReloadDocument extends AbstractFeedback
 {
-    /**
-     * @var NodeInterface
-     */
-    protected $node;
+    protected ?Node $node = null;
 
-    /**
-     * @Flow\Inject
-     * @var LinkingService
-     */
-    protected $linkingService;
+    #[Flow\Inject]
+    protected ContentRepositoryRegistry $contentRepositoryRegistry;
 
-    /**
-     * @Flow\Inject
-     * @var NodeService
-     */
-    protected $nodeService;
-
-    /**
-     * Get the type identifier
-     *
-     * @return string
-     */
-    public function getType()
+    public function getType(): string
     {
         return 'Neos.Neos.Ui:ReloadDocument';
     }
 
-    /**
-     * Set the node
-     *
-     * @param NodeInterface $node
-     * @return void
-     */
-    public function setNode(NodeInterface $node)
+    public function setNode(Node $node): void
     {
         $this->node = $node;
     }
 
-    /**
-     * Get the node
-     *
-     * @return NodeInterface
-     */
-    public function getNode()
+    public function getNode(): ?Node
     {
         return $this->node;
     }
 
-    /**
-     * Get the description
-     *
-     * @return string
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return sprintf('Reload of current document required.');
     }
 
     /**
      * Checks whether this feedback is similar to another
-     *
-     * @param FeedbackInterface $feedback
-     * @return boolean
      */
     public function isSimilarTo(FeedbackInterface $feedback)
     {
@@ -97,17 +66,21 @@ class ReloadDocument extends AbstractFeedback
     /**
      * Serialize the payload for this feedback
      *
-     * @param ControllerContext $controllerContext
-     * @return mixed
+     * @return array<string,string>
      */
-    public function serializePayload(ControllerContext $controllerContext)
+    public function serializePayload(ControllerContext $controllerContext): array
     {
         if (!$this->node) {
             return [];
         }
-        if ($documentNode = $this->nodeService->getClosestDocument($this->node)) {
+        $nodeInfoHelper = new NodeInfoHelper();
+
+        $documentNode = $this->contentRepositoryRegistry->subgraphForNode($this->node)
+            ->findClosestNode($this->node->aggregateId, FindClosestNodeFilter::create(nodeTypes: NodeTypeNameFactory::NAME_DOCUMENT));
+
+        if ($documentNode) {
             return [
-                'uri' => $this->linkingService->createNodeUri($controllerContext, $documentNode, null, null, true)
+                'uri' => $nodeInfoHelper->previewUri($documentNode, $controllerContext->getRequest())
             ];
         }
 

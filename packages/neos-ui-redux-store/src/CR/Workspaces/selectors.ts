@@ -1,16 +1,19 @@
-import {$get} from 'plow-js';
 import {createSelector} from 'reselect';
 import {documentNodeContextPathSelector} from '../Nodes/selectors';
 import {GlobalState} from '../../System';
 import {NodeContextPath} from '@neos-project/neos-ts-interfaces';
 
-export const personalWorkspaceNameSelector = (state: GlobalState) => $get(['cr', 'workspaces', 'personalWorkspace', 'name'], state);
+export const personalWorkspaceNameSelector = (state: GlobalState) => state?.cr?.workspaces?.personalWorkspace?.name;
 
-export const baseWorkspaceSelector = (state: GlobalState) => $get(['cr', 'workspaces', 'personalWorkspace', 'baseWorkspace'], state);
+export const personalWorkspaceRebaseStatusSelector = (state: GlobalState) => state?.cr?.workspaces?.personalWorkspace?.status;
 
-export const isWorkspaceReadOnlySelector = (state: GlobalState) => $get(['cr', 'workspaces', 'personalWorkspace', 'readOnly'], state) || false;
+export const baseWorkspaceSelector = (state: GlobalState) => state?.cr?.workspaces?.personalWorkspace?.baseWorkspace;
 
-export const publishableNodesSelector = (state: GlobalState) => $get(['cr', 'workspaces', 'personalWorkspace', 'publishableNodes'], state);
+export const isWorkspaceReadOnlySelector = (state: GlobalState) => {
+    return state?.cr?.workspaces?.personalWorkspace?.readOnly || false
+};
+
+export const publishableNodesSelector = (state: GlobalState) => state?.cr?.workspaces?.personalWorkspace?.publishableNodes;
 
 export const publishableNodesInDocumentSelector = createSelector(
     [

@@ -3,8 +3,8 @@
     "description": "Some dummy nodetypes",
     "type": "neos-package",
     "require": {
-        "neos/neos-ui": "*",
-        "neos/fusion-afx": "*"
+        "neos/neos": "*",
+        "neos/neos-ui": "*"
     },
     "extra": {
         "neos": {
@@ -12,8 +12,8 @@
         }
     },
     "autoload": {
-        "psr-4": {
-            "Neos\\TestNodeTypes\\": "Classes"
-        }
+      "psr-4": {
+        "Neos\\TestNodeTypes\\": "Classes"
+      }
     }
 }

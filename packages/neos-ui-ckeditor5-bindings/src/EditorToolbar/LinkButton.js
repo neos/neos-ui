@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {$get, $transform} from 'plow-js';
+
 import LinkInput from '@neos-project/neos-ui-editors/src/Library/LinkInput';
 
 import {IconButton} from '@neos-project/react-ui-components';
@@ -10,8 +10,8 @@ import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 
 import style from './LinkButton.module.css';
 
-@connect($transform({
-    isOpen: selectors.UI.ContentCanvas.isLinkEditorOpen
+@connect(state => ({
+    isOpen: selectors.UI.ContentCanvas.isLinkEditorOpen(state)
 }), {
     toggle: actions.UI.ContentCanvas.toggleLinkEditor
 })
@@ -35,7 +35,7 @@ export default class LinkButton extends PureComponent {
 
     handleLinkButtonClick = () => {
         if (this.props.isOpen) {
-            if ($get('link', this.props.formattingUnderCursor) !== undefined) {
+            if (this.props.formattingUnderCursor?.link !== undefined) {
                 // We need to remove all attributes before unsetting the link
                 this.props.executeCommand('linkTitle', false, false);
                 this.props.executeCommand('linkRelNofollow', false, false);
@@ -87,7 +87,7 @@ export default class LinkButton extends PureComponent {
                 {isOpen ? (
                     <div className={style.linkButton__flyout}>
                         <LinkInput
-                            linkingOptions={$get('linking', inlineEditorOptions)}
+                            linkingOptions={inlineEditorOptions?.linking}
                             linkValue={this.getLinkValue()}
                             linkTitleValue={this.getLinkTitleValue()}
                             linkRelNofollowValue={this.getLinkRelValue()}
@@ -107,22 +107,22 @@ export default class LinkButton extends PureComponent {
     }
 
     getLinkValue() {
-        return $get('link', this.props.formattingUnderCursor) || '';
+        return this.props.formattingUnderCursor?.link || '';
     }
 
     getLinkTitleValue() {
-        return $get('linkTitle', this.props.formattingUnderCursor) || '';
+        return this.props.formattingUnderCursor?.linkTitle || '';
     }
 
     getLinkRelValue() {
-        return $get('linkRelNofollow', this.props.formattingUnderCursor) || false;
+        return this.props.formattingUnderCursor?.linkRelNofollow || false;
     }
 
     getLinkTargetValue() {
-        return $get('linkTargetBlank', this.props.formattingUnderCursor) || false;
+        return this.props.formattingUnderCursor?.linkTargetBlank || false;
     }
 
     getLinkDownloadValue() {
-        return $get('linkDownload', this.props.formattingUnderCursor) || false;
+        return this.props.formattingUnderCursor?.linkDownload || false;
     }
 }

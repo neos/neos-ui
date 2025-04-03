@@ -12,37 +12,38 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
-use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Core\DimensionSpace\OriginDimensionSpacePoint;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateId;
+use Neos\Neos\Domain\Service\NodeDuplication\NodeAggregateIdMapping;
+use Neos\Neos\Domain\Service\NodeDuplicationService;
+use Neos\Flow\Annotations as Flow;
 
-class CopyInto extends AbstractCopy
+/**
+ * @internal These objects internally reflect possible operations made by the Neos.Ui.
+ *           They are sorely an implementation detail. You should not use them!
+ *           Please look into the php command API of the Neos CR instead.
+ */
+class CopyInto extends AbstractStructuralChange
 {
-    /**
-     * @var string
-     */
-    protected $parentContextPath;
+    #[Flow\Inject()]
+    protected NodeDuplicationService $nodeDuplicationService;
 
-    /**
-     * @var NodeInterface
-     */
-    protected $cachedParentNode;
+    protected ?string $parentContextPath;
 
-    /**
-     * @param string $parentContextPath
-     */
-    public function setParentContextPath($parentContextPath)
+    protected ?Node $cachedParentNode = null;
+
+    public function setParentContextPath(string $parentContextPath): void
     {
         $this->parentContextPath = $parentContextPath;
     }
 
-    /**
-     * @return NodeInterface
-     */
-    public function getParentNode()
+    public function getParentNode(): ?Node
     {
-        if ($this->cachedParentNode === null) {
-            $this->cachedParentNode = $this->nodeService->getNodeFromContextPath(
-                $this->parentContextPath
-            );
+        if (!isset($this->cachedParentNode)) {
+            $this->cachedParentNode = $this->parentContextPath
+                ? $this->nodeService->findNodeBySerializedNodeAddress($this->parentContextPath)
+                : null;
         }
 
         return $this->cachedParentNode;
@@ -50,40 +51,51 @@ class CopyInto extends AbstractCopy
 
     /**
      * "Subject" is the to-be-copied node; the "parent" node is the new parent
-     *
-     * @return boolean
      */
-    public function canApply()
+    public function canApply(): bool
     {
-        $nodeType = $this->getSubject()->getNodeType();
+        $parentNode = $this->getParentNode();
 
-        return $this->getParentNode()->isNodeTypeAllowedAsChildNode($nodeType);
+        return $parentNode && $this->isNodeTypeAllowedAsChildNode($parentNode, $this->subject->nodeTypeName);
     }
 
-    public function getMode()
+    public function getMode(): string
     {
         return 'into';
     }
 
     /**
      * Applies this change
-     *
-     * @return void
      */
-    public function apply()
+    public function apply(): void
     {
-        if ($this->canApply()) {
-            $parentNode = $this->getParentNode();
-            $nodeName = $this->generateUniqueNodeName($parentNode);
-            // If the parent node has children, we copy the node after the last child node to prevent the copied nodes
-            // from being mixed with the existing ones due the duplication of their relative indices.
-            if ($parentNode->hasChildNodes()) {
-                $lastChildNode = array_slice($parentNode->getChildNodes(), -1, 1)[0];
-                $node = $this->getSubject()->copyAfter($lastChildNode, $nodeName);
-            } else {
-                $node = $this->getSubject()->copyInto($parentNode, $nodeName);
+        $subject = $this->getSubject();
+        $parentNode = $this->getParentNode();
+        if ($parentNode && $this->canApply()) {
+            if (!$subject->dimensionSpacePoint->equals($parentNode->dimensionSpacePoint)) {
+                throw new \RuntimeException('Copying across dimensions is not supported yet (https://github.com/neos/neos-development-collection/issues/5054)', 1733586265);
             }
-            $this->finish($node);
+            $this->nodeDuplicationService->copyNodesRecursively(
+                $subject->contentRepositoryId,
+                $subject->workspaceName,
+                $subject->dimensionSpacePoint,
+                $subject->aggregateId,
+                OriginDimensionSpacePoint::fromDimensionSpacePoint($parentNode->dimensionSpacePoint),
+                $parentNode->aggregateId,
+                null,
+                NodeAggregateIdMapping::createEmpty()
+                    ->withNewNodeAggregateId($subject->aggregateId, $newlyCreatedNodeId = NodeAggregateId::create())
+            );
+
+            $newlyCreatedNode = $this->contentRepositoryRegistry->subgraphForNode($parentNode)
+                ->findNodeById($newlyCreatedNodeId);
+            if (!$newlyCreatedNode) {
+                throw new \RuntimeException(sprintf('Node %s was not found after copy.', $newlyCreatedNodeId->value), 1716023308);
+            }
+            $this->finish($newlyCreatedNode);
+            // NOTE: we need to run "finish" before "addNodeCreatedFeedback"
+            // to ensure the new node already exists when the last feedback is processed
+            $this->addNodeCreatedFeedback($newlyCreatedNode);
         }
     }
 }

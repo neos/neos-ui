@@ -1,40 +1,52 @@
 <?php
 namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
 
-use Neos\ContentRepository\Domain\Model\NodeInterface;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ControllerContext;
-use Neos\Neos\Service\LinkingService;
+use Neos\Neos\Domain\NodeLabel\NodeLabelGeneratorInterface;
+use Neos\Neos\FrontendRouting\NodeUriBuilderFactory;
+use Neos\Neos\FrontendRouting\Options;
 use Neos\Neos\Ui\Domain\Model\AbstractFeedback;
 use Neos\Neos\Ui\Domain\Model\FeedbackInterface;
-use Neos\Neos\Ui\Fusion\Helper\NodeInfoHelper;
 
+/**
+ * @internal
+ */
 class Redirect extends AbstractFeedback
 {
     /**
-     * @var NodeInterface
+     * @var \Neos\ContentRepository\Core\Projection\ContentGraph\Node
      */
     protected $node;
 
     /**
      * @Flow\Inject
-     * @var NodeInfoHelper
+     * @var ContentRepositoryRegistry
      */
-    protected $nodeInfoHelper;
+    protected $contentRepositoryRegistry;
 
     /**
      * @Flow\Inject
-     * @var LinkingService
+     * @var NodeLabelGeneratorInterface
      */
-    protected $linkingService;
+    protected $nodeLabelGenerator;
+
+    /**
+     * @Flow\Inject
+     * @var NodeUriBuilderFactory
+     */
+    protected $nodeUriBuilderFactory;
 
     /**
      * Set the node
      *
-     * @param NodeInterface $node
+     * @param \Neos\ContentRepository\Core\Projection\ContentGraph\Node $node
      * @return void
      */
-    public function setNode(NodeInterface $node)
+    public function setNode(Node $node)
     {
         $this->node = $node;
     }
@@ -42,7 +54,7 @@ class Redirect extends AbstractFeedback
     /**
      * Get the node
      *
-     * @return NodeInterface
+     * @return Node
      */
     public function getNode()
     {
@@ -66,7 +78,7 @@ class Redirect extends AbstractFeedback
      */
     public function getDescription()
     {
-        return sprintf('Redirect to node "%s".', $this->getNode()->getContextPath());
+        return sprintf('Redirect to node "%s".', $this->nodeLabelGenerator->getLabel($this->getNode()));
     }
 
     /**
@@ -81,23 +93,30 @@ class Redirect extends AbstractFeedback
             return false;
         }
 
-        return $this->getNode()->getContextPath() === $feedback->getNode()->getContextPath();
+        return $this->getNode()->equals($feedback->getNode());
     }
 
     /**
      * Serialize the payload for this feedback
      *
      * @param ControllerContext $controllerContext
-     * @return array
+     * @return array<string, string>
      */
-    public function serializePayload(ControllerContext $controllerContext)
+    public function serializePayload(ControllerContext $controllerContext): array
     {
         $node = $this->getNode();
-        $redirectUri = $this->linkingService->createNodeUri($controllerContext, $node, null, null, true);
+
+        $redirectUri = $this->nodeUriBuilderFactory->forActionRequest($controllerContext->getRequest())
+            ->uriFor(
+                NodeAddress::fromNode($node),
+                Options::createForceAbsolute()
+            );
+
+        $contentRepository = $this->contentRepositoryRegistry->get($node->contentRepositoryId);
 
         return [
-            'redirectUri' => $redirectUri,
-            'redirectContextPath' => $node->getContextPath()
+            'redirectUri' => (string)$redirectUri,
+            'redirectContextPath' => NodeAddress::fromNode($node)->toJson(),
         ];
     }
 }

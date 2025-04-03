@@ -1,0 +1,40 @@
+/*
+ * This file is part of the Neos.Neos.Ui package.
+ *
+ * (c) Contributors of the Neos Project - www.neos.io
+ *
+ * This package is Open Source Software. For the full copyright and license
+ * information, please view the LICENSE file which was distributed with this
+ * source code.
+ */
+.container {
+    background-color: var(--colors-Error);
+    padding: var(--spacing-Full);
+}
+
+.details {
+    margin-top: var(--spacing-Half);
+}
+.details summary {
+    cursor: pointer;
+}
+.details dl {
+    margin: var(--spacing-Quarter) 0 0;
+    display: grid;
+    grid-template-columns: min-content 1fr;
+    padding: var(--spacing-Quarter);
+    background-color: var(--colors-ContrastDarkest);
+}
+.details dd {
+    margin: 0;
+    padding: 0 var(--spacing-Half) 0 0;
+}
+
+.trace {
+    max-height: 200px;
+    grid-column: span 2;
+    overflow: scroll;
+}
+.trace pre {
+    margin: 0;
+}

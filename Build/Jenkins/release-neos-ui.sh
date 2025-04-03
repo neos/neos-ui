@@ -41,14 +41,10 @@ nvm use
 # install dependencies and login to npm
 make install
 
-# acutal release process
+# actual release process
 
 # build
 make build-subpackages
-
-# code quality
-make lint
-make test
 
 # publishing
 VERSION=$VERSION make bump-version

@@ -5,15 +5,11 @@ import {InitAction} from '../../System';
 import {NodeContextPath} from '@neos-project/neos-ts-interfaces';
 
 export interface State extends Readonly<{
-    isSaving: boolean,
-    isPublishing: boolean,
-    isDiscarding: boolean
+    isSaving: boolean
 }> {}
 
 export const defaultState: State = {
-    isSaving: false,
-    isPublishing: false,
-    isDiscarding: false
+    isSaving: false
 };
 
 //
@@ -24,10 +20,6 @@ export enum actionTypes {
     FINISH_SAVING = '@neos/neos-ui/UI/Remote/FINISH_SAVING',
     LOCK_PUBLISHING = '@neos/neos-ui/UI/Remote/LOCK_PUBLISHING',
     UNLOCK_PUBLISHING = '@neos/neos-ui/UI/Remote/UNLOCK_PUBLISHING',
-    START_PUBLISHING = '@neos/neos-ui/UI/Remote/START_PUBLISHING',
-    FINISH_PUBLISHING = '@neos/neos-ui/UI/Remote/FINISH_PUBLISHING',
-    START_DISCARDING = '@neos/neos-ui/UI/Remote/START_DISCARDING',
-    FINISH_DISCARDING = '@neos/neos-ui/UI/Remote/FINISH_DISCARDING',
     DOCUMENT_NODE_CREATED = '@neos/neos-ui/UI/Remote/DOCUMENT_NODE_CREATED'
 }
 
@@ -40,26 +32,6 @@ const startSaving = () => createAction(actionTypes.START_SAVING);
  * Marks that an ongoing saving process has finished.
  */
 const finishSaving = () => createAction(actionTypes.FINISH_SAVING);
-
-/**
- * Marks an ongoing publishing process.
- */
-const startPublishing = () => createAction(actionTypes.START_PUBLISHING);
-
-/**
- * Marks that an ongoing publishing process has finished.
- */
-const finishPublishing = () => createAction(actionTypes.FINISH_PUBLISHING);
-
-/**
- * Marks an ongoing discarding process.
- */
-const startDiscarding = () => createAction(actionTypes.START_DISCARDING);
-
-/**
- * Marks that an ongoing discarding process has finished.
- */
-const finishDiscarding = () => createAction(actionTypes.FINISH_DISCARDING);
 
 /**
  * Marks that an publishing process has been locked.
@@ -84,10 +56,6 @@ export const actions = {
     finishSaving,
     lockPublishing,
     unlockPublishing,
-    startPublishing,
-    finishPublishing,
-    startDiscarding,
-    finishDiscarding,
     documentNodeCreated
 };
 
@@ -112,22 +80,6 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
         }
         case actionTypes.UNLOCK_PUBLISHING: {
             draft.isSaving = false;
-            break;
-        }
-        case actionTypes.START_PUBLISHING: {
-            draft.isPublishing = true;
-            break;
-        }
-        case actionTypes.FINISH_PUBLISHING: {
-            draft.isPublishing = false;
-            break;
-        }
-        case actionTypes.START_DISCARDING: {
-            draft.isDiscarding = true;
-            break;
-        }
-        case actionTypes.FINISH_DISCARDING: {
-            draft.isDiscarding = false;
             break;
         }
     }

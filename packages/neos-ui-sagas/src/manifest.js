@@ -8,6 +8,7 @@ import {
     crNodeOperations,
     crPolicies,
     publish,
+    sync,
     serverFeedback,
     uiContentCanvas,
     uiContentTree,
@@ -15,7 +16,8 @@ import {
     uiInspector,
     uiPageTree,
     uiHotkeys,
-    impersonate
+    impersonate,
+    flashMessages
 } from './index';
 
 manifest('main.sagas', {}, globalRegistry => {
@@ -49,9 +51,9 @@ manifest('main.sagas', {}, globalRegistry => {
     sagasRegistry.set('neos-ui/CR/Policies/watchNodeInformationChanges', {saga: crPolicies.watchNodeInformationChanges});
 
     sagasRegistry.set('neos-ui/Publish/watchChangeBaseWorkspace', {saga: publish.watchChangeBaseWorkspace});
-    sagasRegistry.set('neos-ui/Publish/discardIfConfirmed', {saga: publish.discardIfConfirmed});
-    sagasRegistry.set('neos-ui/Publish/watchPublish', {saga: publish.watchPublish});
-    sagasRegistry.set('neos-ui/Publish/watchToggleAutoPublish', {saga: publish.watchToggleAutoPublish});
+    sagasRegistry.set('neos-ui/Publish/discardIfConfirmed', {saga: publish.watchPublishing});
+
+    sagasRegistry.set('neos-ui/Sync/watchSync', {saga: sync.watchSyncing});
 
     sagasRegistry.set('neos-ui/ServerFeedback/watchServerFeedback', {saga: serverFeedback.watchServerFeedback});
 
@@ -80,4 +82,6 @@ manifest('main.sagas', {}, globalRegistry => {
     sagasRegistry.set('neos-ui/UI/Hotkeys/handleHotkeys', {saga: uiHotkeys.handleHotkeys});
 
     sagasRegistry.set('neos-ui/UI/Impersonate/impersonateRestore', {saga: impersonate.impersonateRestore});
+
+    sagasRegistry.set('neos-ui/UI/FlashMessages/legacy__redirectReduxFlashMessagesToHighLevelApiCall', {saga: flashMessages.legacy__redirectReduxFlashMessagesToHighLevelApiCall});
 });

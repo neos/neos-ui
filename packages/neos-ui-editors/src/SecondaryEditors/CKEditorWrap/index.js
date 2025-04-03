@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import DecoupledEditor from '@ckeditor/ckeditor5-editor-decoupled/src/decouplededitor';
 import debounce from 'lodash.debounce';
 import {connect} from 'react-redux';
-import {$transform, $get} from 'plow-js';
+
 import {neos} from '@neos-project/neos-ui-decorators';
 import {EditorToolbar} from '@neos-project/neos-ui-ckeditor5-bindings/src/EditorToolbar';
 import style from './index.module.css';
@@ -13,8 +13,8 @@ import style from './index.module.css';
         .get('ckEditor5')
         .get('config')
 }))
-@connect($transform({
-    userPreferences: $get('user.preferences')
+@connect(state => ({
+    userPreferences: state?.user?.preferences
 }))
 export default class CKEditorWrap extends PureComponent {
     state = {

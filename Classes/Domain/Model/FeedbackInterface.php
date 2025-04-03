@@ -13,6 +13,9 @@ namespace Neos\Neos\Ui\Domain\Model;
 
 use Neos\Flow\Mvc\Controller\ControllerContext;
 
+/**
+ * @internal
+ */
 interface FeedbackInterface
 {
     /**
@@ -20,9 +23,9 @@ interface FeedbackInterface
      * in AbstractFeedback, but can be overridden to implement fallback logic in case of errors.
      *
      * @param ControllerContext $controllerContext
-     * @return array
+     * @return array<string, mixed>
      */
-    public function serialize(ControllerContext $controllerContext);
+    public function serialize(ControllerContext $controllerContext): array;
 
     /**
      * Get the type identifier

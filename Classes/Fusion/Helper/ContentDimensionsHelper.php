@@ -11,46 +11,88 @@ namespace Neos\Neos\Ui\Fusion\Helper;
  * source code.
  */
 
+use Neos\ContentRepository\Core\Dimension\ContentDimensionId;
+use Neos\ContentRepository\Core\DimensionSpace\AbstractDimensionSpacePoint;
+use Neos\ContentRepository\Core\DimensionSpace\DimensionSpacePoint;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
+use Neos\ContentRepository\Core\SharedModel\ContentRepository\ContentRepositoryId;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
-use Neos\Neos\Domain\Service\ContentDimensionPresetSourceInterface;
 
+/**
+ * @internal implementation detail of the Neos Ui to build its initialState.
+ *           only used in EEL for the configuration Neos.Neos.Ui.initialState.
+ */
 class ContentDimensionsHelper implements ProtectedContextAwareInterface
 {
     /**
      * @Flow\Inject
-     * @var ContentDimensionPresetSourceInterface
+     * @var ContentRepositoryRegistry
      */
-    protected $contentDimensionsPresetSource;
+    protected $contentRepositoryRegistry;
 
     /**
-     * @return array Dimensions indexed by name with presets indexed by name
+     * @return array<string,array<string,mixed>> Dimensions indexed by name with presets indexed by name
      */
-    public function contentDimensionsByName()
+    public function contentDimensionsByName(ContentRepositoryId $contentRepositoryId): array
     {
-        return $this->contentDimensionsPresetSource->getAllPresets();
+        $contentDimensionSource = $this->contentRepositoryRegistry->get($contentRepositoryId)
+            ->getContentDimensionSource();
+        $dimensions = $contentDimensionSource->getContentDimensionsOrderedByPriority();
+
+        $result = [];
+        foreach ($dimensions as $dimension) {
+            $result[$dimension->id->value] = [
+                'label' => $dimension->getConfigurationValue('label'),
+                'icon' => $dimension->getConfigurationValue('icon'),
+
+                # TODO 'default' => $dimension->defaultValue->value,
+                # TODO 'defaultPreset' => $dimension->defaultValue->value,
+                'presets' => []
+            ];
+
+            foreach ($dimension->values as $value) {
+                // TODO: make certain values hidable
+                $result[$dimension->id->value]['presets'][$value->value] = [
+                    // TODO: name, uriSegment!
+                    'values' => [$value->value],
+                    'label' => $value->getConfigurationValue('label'),
+                    'group' => $value->getConfigurationValue('group'),
+                ];
+            }
+        }
+        return $result;
     }
 
     /**
-     * @param array $dimensions Dimension values indexed by dimension name
-     * @return array Allowed preset names for the given dimension combination indexed by dimension name
+     * @param DimensionSpacePoint $dimensions Dimension values indexed by dimension name
+     * @return array<string,array<int,string>>|object Allowed preset names for the given dimension combination indexed by dimension name
      */
-    public function allowedPresetsByName(array $dimensions)
+    public function allowedPresetsByName(DimensionSpacePoint $dimensions, ContentRepositoryId $contentRepositoryId): array|object
     {
+        $contentDimensionSource = $this->contentRepositoryRegistry->get($contentRepositoryId)
+            ->getContentDimensionSource();
+
+        // TODO: re-implement this here; currently EVERYTHING is allowed!!
         $allowedPresets = [];
-        $preselectedDimensionPresets = [];
-        foreach ($dimensions as $dimensionName => $dimensionValues) {
-            $preset = $this->contentDimensionsPresetSource->findPresetByDimensionValues($dimensionName, $dimensionValues);
-            if ($preset !== null) {
-                $preselectedDimensionPresets[$dimensionName] = $preset['identifier'];
+        foreach ($dimensions->coordinates as $dimensionName => $dimensionValue) {
+            $dimension = $contentDimensionSource->getDimension(new ContentDimensionId($dimensionName));
+            if (!is_null($dimension)) {
+                $value = $dimension->getValue($dimensionValue);
+                if ($value !== null) {
+                    $allowedPresets[$dimensionName] = array_keys($dimension->values->values);
+                }
             }
         }
-        foreach ($preselectedDimensionPresets as $dimensionName => $presetName) {
-            $presets = $this->contentDimensionsPresetSource->getAllowedDimensionPresetsAccordingToPreselection($dimensionName, $preselectedDimensionPresets);
-            $allowedPresets[$dimensionName] = array_keys($presets[$dimensionName]['presets']);
-        }
 
-        return $allowedPresets;
+        /** empty arrays must be rendered as `{}` in json for our client code to work */
+        return $allowedPresets === [] ? new \stdClass() : $allowedPresets;
+    }
+
+    /** @return array<string,array<int,string>> */
+    public function dimensionSpacePointArray(AbstractDimensionSpacePoint $dimensionSpacePoint): array
+    {
+        return $dimensionSpacePoint->toLegacyDimensionArray();
     }
 
     /**

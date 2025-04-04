@@ -101,7 +101,7 @@ function * flushInspector(inspectorRegistry) {
     let focusedNodeFusionPath = state?.cr?.nodes?.focused?.fusionPath;
     if (!focusedNodeFusionPath) {
         const focusedDomNode = findNodeInGuestFrame(focusedNode?.contextPath);
-        focusedNodeFusionPath = focusedDomNode && focusedDomNode.getAttribute('data-__neos-fusion-path');
+        focusedNodeFusionPath = focusedDomNode?.fusionPath;
     }
     const transientInspectorValues = getTransientInspectorValues(state);
     const transientInspectorValuesForFocusedNodes = transientInspectorValues?.[focusedNode?.contextPath];

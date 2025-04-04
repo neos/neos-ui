@@ -18,7 +18,7 @@ export const calculateDomAddressesFromMode = (mode, contextNode, fusionPath) => 
         case 'before':
         case 'after': {
             const element = findNodeInGuestFrame(contextNode.contextPath, fusionPath);
-            const parentElement = element ? closestNodeInGuestFrame(element.parentNode) : null;
+            const parentElement = element?.contentDomNode ? closestNodeInGuestFrame(element.contentDomNode.parentNode) : null;
 
             return {
                 siblingDomAddress: {
@@ -26,8 +26,8 @@ export const calculateDomAddressesFromMode = (mode, contextNode, fusionPath) => 
                     fusionPath
                 },
                 parentDomAddress: parentElement ? {
-                    contextPath: parentElement.getAttribute('data-__neos-node-contextpath'),
-                    fusionPath: parentElement.getAttribute('data-__neos-fusion-path')
+                    contextPath: parentElement.nodeAddress,
+                    fusionPath: parentElement.fusionPath
                 } : {
                     contextPath: contextNode.parent,
                     fusionPath: null
@@ -41,8 +41,8 @@ export const calculateDomAddressesFromMode = (mode, contextNode, fusionPath) => 
             return {
                 parentContextPath: contextNode.contextPath,
                 parentDomAddress: {
-                    contextPath: element ? element.getAttribute('data-__neos-node-contextpath') : contextNode.contextPath,
-                    fusionPath: element ? element.getAttribute('data-__neos-fusion-path') : fusionPath
+                    contextPath: element ? element.nodeAddress : contextNode.contextPath,
+                    fusionPath: element ? element.fusionPath : fusionPath
                 }
             };
         }

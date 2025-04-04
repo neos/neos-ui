@@ -14,7 +14,9 @@ import {
     findAllOccurrencesOfNodeInGuestFrame,
     createEmptyContentCollectionPlaceholderIfMissing,
     findAllChildNodes,
-    dispatchCustomEvent
+    dispatchCustomEvent,
+    removeNodeInGuestsFrame,
+    getDomNodesForNodeInGuestFrame
 } from '@neos-project/neos-ui-guest-frame/src/dom';
 import initializeContentDomNode from '@neos-project/neos-ui-guest-frame/src/initializeContentDomNode';
 
@@ -409,24 +411,24 @@ manifest('main', {}, (globalRegistry, {routes}) => {
     //
     serverFeedbackHandlers.set('Neos.Neos.Ui:RenderContentOutOfBand/Main', (feedbackPayload, {store, globalRegistry}) => {
         const {contextPath, renderedContent, parentDomAddress, siblingDomAddress, mode} = feedbackPayload;
-        const parentElement = parentDomAddress && findNodeInGuestFrame(
+        const parentNode = parentDomAddress && findNodeInGuestFrame(
             parentDomAddress.contextPath,
             parentDomAddress.fusionPath
         );
-        const siblingElement = siblingDomAddress && findNodeInGuestFrame(
+        const siblingNode = siblingDomAddress && findNodeInGuestFrame(
             siblingDomAddress.contextPath,
             siblingDomAddress.fusionPath
         );
 
         // We need to create the new DOM nodes from within the iframe document,
-        // because many frameworkds (e.g. CKE, React) use the following checks
+        // because many frameworks (e.g. CKE, React) use the following checks
         // `obj instanceof obj.ownerDocument.defaultView.Node`
         // which would fail if this node was created in Host
-        const wrapTagName = parentElement.tagName ? parentElement.tagName : 'div';
-        const tempNodeInGuest = getGuestFrameDocument().createElement(wrapTagName);
+        // FIXME: Adjust this code to work with the new comments
+        const tempNodeInGuest = getGuestFrameDocument().createElement('div');
         tempNodeInGuest.innerHTML = renderedContent;
-        const contentElement = tempNodeInGuest
-            .querySelector(`[data-__neos-node-contextpath="${CSS.escape(contextPath)}"]`);
+        const contentElement = findNodeInGuestFrame(contextPath, null, tempNodeInGuest);
+        debugger;
 
         if (!contentElement) {
             console.error(`!!! Content Element (rendered out-of-band) with context path "${contextPath}" not found in returned HTML from server (which you see below) - Reloading the full page!`);
@@ -436,13 +438,14 @@ manifest('main', {}, (globalRegistry, {routes}) => {
             return;
         }
 
-        const fusionPath = contentElement.dataset.__neosFusionPath;
-        // Check if an insertion anchor is defined and use this one for appending the childnode
+        // Check if an insertion anchor is defined and use this one for appending the child node
+        // TODO: Move method to dom.js
         const findInsertionParentByAnchor = () => {
-            let insertionParent = parentElement;
-            const insertionAnchors = parentElement.querySelectorAll('[data-__neos-insertion-anchor]');
+            let insertionParent = parentNode.contentDomNode;
+            // TODO: Make the insertion anchor a html comment
+            const insertionAnchors = parentNode.contentDomNode.querySelectorAll('[data-__neos-insertion-anchor]');
             for (const anchorElement of insertionAnchors) {
-                if (closestNodeInGuestFrame(anchorElement).dataset.__neosNodeContextpath === parentElement.dataset.__neosNodeContextpath) {
+                if (closestNodeInGuestFrame(anchorElement).nodeAddress === parentNode.nodeAddress) {
                     insertionParent = anchorElement;
                     break;
                 }
@@ -453,42 +456,51 @@ manifest('main', {}, (globalRegistry, {routes}) => {
 
         const existingElement = findNodeInGuestFrame(
             contextPath,
-            fusionPath
+            contentElement.fusionPath
         );
 
         // Remove duplicate node in case of move action on the same level
         if (existingElement) {
-            existingElement.remove();
+            removeNodeInGuestsFrame(existingElement);
         }
 
+        // FIXME: Adjust this code to work with the new comments
+        const nodesToInsert = getDomNodesForNodeInGuestFrame(contentElement);
         switch (mode) {
             case 'before':
-                siblingElement.parentNode.insertBefore(contentElement, siblingElement);
+                nodesToInsert.forEach(node => {
+                    siblingNode.dataNode.parentNode.insertBefore(node, siblingNode.dataNode);
+                });
                 break;
 
             case 'after':
-                siblingElement.parentNode.insertBefore(contentElement, siblingElement.nextSibling);
+                nodesToInsert.forEach(node => {
+                    siblingNode.dataNode.parentNode.insertBefore(node, siblingNode.endNode.nextSibling);
+                });
                 break;
 
             case 'into':
             default:
-                insertionParent.appendChild(contentElement);
+                nodesToInsert.forEach((node) => {
+                    insertionParent.appendChild(node);
+                });
                 break;
         }
 
-        const children = findAllChildNodes(contentElement);
+        // FIXME: Make it possible to find all child nodes between the start and end comment nodes of a given node. This is necessary if the node has no contentDomNode
+        const childNodes = findAllChildNodes(contentElement.contentDomNode);
 
         const nodes = Object.assign(
             {[contextPath]: selectors.CR.Nodes.byContextPathSelector(contextPath)(store.getState())},
-            ...children.map(el => {
-                const contextPath = el.getAttribute('data-__neos-node-contextpath');
-                return {[contextPath]: selectors.CR.Nodes.byContextPathSelector(contextPath)(store.getState())};
+            ...childNodes.map(({nodeAddress}) => {
+                return {[nodeAddress]: selectors.CR.Nodes.byContextPathSelector(nodeAddress)(store.getState())};
             })
         );
         const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
         const inlineEditorRegistry = globalRegistry.get('inlineEditors');
 
-        const emptyContentCollectionOverlay = parentElement.querySelector(`.${style.addEmptyContentCollectionOverlay}`);
+        // TODO: Check if this still works
+        const emptyContentCollectionOverlay = parentNode.querySelector(`.${style.addEmptyContentCollectionOverlay}`);
         if (emptyContentCollectionOverlay && emptyContentCollectionOverlay.parentElement.children.length > 1) {
             emptyContentCollectionOverlay.remove();
         }
@@ -496,7 +508,7 @@ manifest('main', {}, (globalRegistry, {routes}) => {
         //
         // Initialize the newly rendered node and all nodes that came with it
         //
-        [contentElement, ...children].forEach(
+        [contentElement, ...childNodes].forEach(
             initializeContentDomNode({
                 store,
                 globalRegistry,
@@ -505,7 +517,7 @@ manifest('main', {}, (globalRegistry, {routes}) => {
                 nodes
             })
         );
-        store.dispatch(actions.CR.Nodes.focus(contextPath, fusionPath));
+        store.dispatch(actions.CR.Nodes.focus(contextPath, contentElement.fusionPath));
         store.dispatch(actions.UI.ContentCanvas.requestScrollIntoView(true));
 
         dispatchCustomEvent('Neos.NodeCreated', 'Node was created.', {
@@ -519,21 +531,20 @@ manifest('main', {}, (globalRegistry, {routes}) => {
     //
     serverFeedbackHandlers.set('Neos.Neos.Ui:ReloadContentOutOfBand/Main', async (feedbackPayload, {store, globalRegistry}) => {
         const {contextPath, renderedContent, nodeDomAddress} = feedbackPayload;
-        const domNode = nodeDomAddress && findNodeInGuestFrame(
+        const existingNode = nodeDomAddress && findNodeInGuestFrame(
             nodeDomAddress.contextPath,
             nodeDomAddress.fusionPath
         );
 
         // We need to create the new DOM nodes from within the iframe document,
-        // because many frameworkds (e.g. CKE, React) use the following checks
+        // because many frameworks (e.g. CKE, React) use the following checks
         // `obj instanceof obj.ownerDocument.defaultView.Node`
         // which would fail if this node was created in Host
         const tempNodeInGuest = getGuestFrameDocument().createElement('div');
         tempNodeInGuest.innerHTML = renderedContent;
-        const contentElement = tempNodeInGuest
-            .querySelector(`[data-__neos-node-contextpath="${CSS.escape(contextPath)}"]`);
+        const nodeToInsert = findNodeInGuestFrame(contextPath, null, tempNodeInGuest);
 
-        if (!contentElement) {
+        if (!nodeToInsert) {
             console.error(`!!! Content Element (reloaded out-of-band) with context path "${contextPath}" not found in returned HTML from server (which you see below) - Reloading the full page!`);
             console.log(renderedContent);
 
@@ -541,18 +552,16 @@ manifest('main', {}, (globalRegistry, {routes}) => {
             return;
         }
 
-        const fusionPath = contentElement.dataset.__neosFusionPath;
+        // FIXME: Handle multiple content dom nodes
+        existingNode.dataNode.parentElement.replaceChild(nodeToInsert.contentDomNode, existingNode.contentDomNode);
 
-        domNode.parentElement.replaceChild(contentElement, domNode);
-
-        const children = findAllChildNodes(contentElement);
+        const childNodes = findAllChildNodes(nodeToInsert.contentDomNode);
 
         // in case there are foreign referenced nodes, we need to put them into the store:
         const uninitializedReferencedNodes = [];
-        for (const el of children) {
-            const contextPath = el.getAttribute('data-__neos-node-contextpath');
-            if (!selectors.CR.Nodes.byContextPathSelector(contextPath)(store.getState())) {
-                uninitializedReferencedNodes.push(contextPath);
+        for (const childNode of childNodes) {
+            if (!selectors.CR.Nodes.byContextPathSelector(childNode.nodeAddress)(store.getState())) {
+                uninitializedReferencedNodes.push(childNode.nodeAddress);
             }
         }
         if (uninitializedReferencedNodes.length) {
@@ -570,9 +579,8 @@ manifest('main', {}, (globalRegistry, {routes}) => {
 
         const nodes = Object.assign(
             {[contextPath]: selectors.CR.Nodes.byContextPathSelector(contextPath)(store.getState())},
-            ...children.map(el => {
-                const contextPath = el.getAttribute('data-__neos-node-contextpath');
-                return {[contextPath]: selectors.CR.Nodes.byContextPathSelector(contextPath)(store.getState())};
+            ...childNodes.map(({nodeAddress}) => {
+                return {[nodeAddress]: selectors.CR.Nodes.byContextPathSelector(nodeAddress)(store.getState())};
             })
         );
         const nodeTypesRegistry = globalRegistry.get('@neos-project/neos-ui-contentrepository');
@@ -581,7 +589,7 @@ manifest('main', {}, (globalRegistry, {routes}) => {
         //
         // Initialize the newly rendered node and all nodes that came with it
         //
-        [contentElement, ...children].forEach(
+        [nodeToInsert, ...childNodes].forEach(
             initializeContentDomNode({
                 store,
                 globalRegistry,
@@ -590,7 +598,7 @@ manifest('main', {}, (globalRegistry, {routes}) => {
                 nodes
             })
         );
-        store.dispatch(actions.CR.Nodes.focus(contextPath, fusionPath));
+        store.dispatch(actions.CR.Nodes.focus(contextPath, nodeToInsert.fusionPath));
         store.dispatch(actions.UI.ContentCanvas.requestScrollIntoView(true));
     });
 

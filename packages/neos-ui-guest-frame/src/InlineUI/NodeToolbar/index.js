@@ -45,10 +45,10 @@ export default class NodeToolbar extends PureComponent {
     iframeWindow = getGuestFrameWindow();
 
     updateStickyness = () => {
-        const nodeElement = findNodeInGuestFrame(this.props.contextPath, this.props.fusionPath);
-        if (nodeElement) {
+        const node = findNodeInGuestFrame(this.props.contextPath, this.props.fusionPath);
+        if (node) {
             const {isSticky} = this.state;
-            const {top, bottom} = nodeElement.getBoundingClientRect();
+            const {top, bottom} = node.contentDomNode.getBoundingClientRect();
             const shouldBeSticky = top < 50 && bottom > 0;
 
             if (isSticky !== shouldBeSticky) {
@@ -92,9 +92,9 @@ export default class NodeToolbar extends PureComponent {
     scrollIntoView() {
         // Only scroll into view when triggered from content tree (on focus change)
         if (this.props.shouldScrollIntoView) {
-            const nodeElement = findNodeInGuestFrame(this.props.contextPath, this.props.fusionPath);
-            if (nodeElement && !isElementVisibleInGuestFrame(nodeElement)) {
-                animateScrollToElementInGuestFrame(nodeElement, 100);
+            const node = findNodeInGuestFrame(this.props.contextPath, this.props.fusionPath);
+            if (node?.contentDomNode && !isElementVisibleInGuestFrame(node.contentDomNode)) {
+                animateScrollToElementInGuestFrame(node.contentDomNode, 100);
             }
             this.props.requestScrollIntoView(false);
         }
@@ -132,15 +132,15 @@ export default class NodeToolbar extends PureComponent {
             className: style.toolBar__btnGroup__btn
         };
 
-        const nodeElement = findNodeInGuestFrame(contextPath, fusionPath);
+        const node = findNodeInGuestFrame(contextPath, fusionPath);
 
         // Check if nodeElement exists before accessing its props or if the node toolbar
         // should be invisible e.g. when the workspace is in read only mode
-        if (!nodeElement || !visible) {
+        if (!node || !visible) {
             return null;
         }
 
-        const {top, width, rightAsMeasuredFromRightDocumentBorder} = getAbsolutePositionOfElementInGuestFrame(nodeElement);
+        const {top, width, rightAsMeasuredFromRightDocumentBorder} = getAbsolutePositionOfElementInGuestFrame(node);
 
         // TODO: hardcoded dimensions
         const TOOLBAR_WIDTH = 200;

@@ -39,104 +39,254 @@ export const findInGuestFrame = selector =>
 export const findAllInGuestFrame = selector =>
     [].slice.call(getGuestFrameDocument().querySelectorAll(selector));
 
-//
-// Find all DOM nodes that represent CR nodes in the guest frame
-//
-export const findAllNodesInGuestFrame = () =>
-    findAllInGuestFrame('[data-__neos-node-contextpath]');
+/**
+ * @typedef {Object} NodeInGuestFrame
+ * @property {string} nodeAddress
+ * @property {string} fusionPath
+ * @property {Element} dataNode
+ * @property {HTMLElement|null} contentDomNode
+ * @property {Element} endNode
+ */
+const NODE_START_PREFIX = '__NEOS_UI_NODE_START__';
+const NODE_END_PREFIX = '__NEOS_UI_NODE_END__';
+
+/**
+ * Find all DOM nodes that represent CR nodes in the guest frame
+ * @return {Array<NodeInGuestFrame>}
+ */
+export const findAllNodesInGuestFrame = () => {
+    return loadNodesFromComments();
+}
+
+/**
+ *
+ * @param {NodeInGuestFrame} nodeInGuestFrame
+ * @return {Array<Node>}
+ */
+export const getDomNodesForNodeInGuestFrame = (nodeInGuestFrame) => {
+    const {dataNode, nodeAddress} = nodeInGuestFrame;
+    const nodesToRemove = [dataNode];
+    let node = dataNode.nextSibling;
+    while (node) {
+        nodesToRemove.push(node);
+        if (node.nodeType === Node.COMMENT_NODE && node.nodeValue.indexOf(NODE_END_PREFIX + nodeAddress) === 0) {
+            break;
+        }
+        node = node.nextSibling;
+    }
+    return nodesToRemove;
+}
+
+/**
+ * Remove a DOM nodes that represent a CR node in the guest frame
+ * @param {NodeInGuestFrame} nodeInGuestFrame
+ * @return void
+ */
+export const removeNodeInGuestsFrame = (nodeInGuestFrame) => {
+    getDomNodesForNodeInGuestFrame(nodeInGuestFrame).forEach(node => {
+        node.parentNode.removeChild(node);
+    });
+}
+
+/**
+ * @param {string} filter
+ * @param {Element} parentElement
+ * @return {TreeWalker}
+ */
+const loadNodes = (filter, parentElement) => {
+    const document = getGuestFrameDocument();
+    return document.createTreeWalker(
+        parentElement ? parentElement : document.getRootNode(),
+        NodeFilter.SHOW_COMMENT,
+        {
+            acceptNode: (node) => node.nodeValue.indexOf(filter) === 0 ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP,
+        }
+    );
+}
+
+/**
+ * @param {Node} domNode
+ * @return {NodeInGuestFrame|null}
+ */
+const parseNodeFromComment = (domNode) => {
+    // The content dom node can be null if the node encapsulates other nodes without its own markup
+    // TODO: They might still need some sort of rendering for highlighting, so we might need to create a helper dom element somewhere in the body
+    // FIXME: Now there could be multiple nodes in the guest frame that are not encapsulated by a comment node
+    // FIXME: Ignore comment nodes that are not part of the Neos UI
+    let contentDomNode = domNode.nextSibling;
+    if (contentDomNode.nodeType === Node.COMMENT_NODE) {
+        contentDomNode = null;
+    }
+    let endNode = domNode.nextSibling;
+    while (endNode) {
+        if (endNode.nodeType === Node.COMMENT_NODE && endNode.nodeValue.indexOf(NODE_END_PREFIX) === 0) {
+            break;
+        }
+        endNode = endNode.nextSibling;
+    }
+
+    return {
+        ...JSON.parse(domNode.nodeValue.substring(NODE_START_PREFIX.length)),
+        dataNode: domNode,
+        contentDomNode,
+        endNode,
+    };
+}
+
+/**
+ *
+ * @param {string|null} nodeAddress
+ * @param {string|null} fusionPath
+ * @param {Element|null} parentElement
+ * @return {Array<NodeInGuestFrame>}
+ */
+const loadNodesFromComments = (nodeAddress = null, fusionPath = null, parentElement = null) => {
+    const nodeComments = loadNodes(NODE_START_PREFIX, parentElement);
+    const nodes = [];
+    while (nodeComments.nextNode()) {
+        const {currentNode} = nodeComments;
+        const nodeInGuestFrame = parseNodeFromComment(currentNode);
+        if (!nodeInGuestFrame || (nodeAddress && nodeInGuestFrame.nodeAddress !== nodeAddress) || (fusionPath && nodeInGuestFrame.fusionPath !== fusionPath)) {
+            continue;
+        }
+        nodes.push(nodeInGuestFrame);
+    }
+    return nodes;
+}
 
 //
 // Find all DOM nodes that represent CR node properties in the guest frame
+// TODO: Remove?
 //
-export const findAllPropertiesInGuestFrame = () =>
-    findAllInGuestFrame('[data-__neos-property]');
+export const findAllPropertiesInGuestFrame = () => {
+    return findAllInGuestFrame('[data-__neos-property]');
+}
 
-//
-// Find all DOM nodes that represent a particular node property in the guest frame
-//
-export const findAllOccurrencesOfNodePropertyInGuestFrame = (contextPath, propertyName) => findAllInGuestFrame(`[data-__neos-editable-node-contextpath="${CSS.escape(contextPath)}"][data-__neos-property="${CSS.escape(propertyName)}"]`);
+/**
+ * Find all DOM nodes that represent a particular node property in the guest frame
+ * @param {string} nodeAddress
+ * @param {string} propertyName
+ * @return {NodeInGuestFrame|null}
+ */
+export const findAllOccurrencesOfNodePropertyInGuestFrame = (nodeAddress, propertyName) => {
+    findAllInGuestFrame(`[data-__neos-editable-node-contextpath="${CSS.escape(nodeAddress)}"][data-__neos-property="${CSS.escape(propertyName)}"]`);
+};
 
-//
-// Find all DOM nodes that represent CR node properties in the guest frame
-//
-export const findRelativePropertiesInGuestFrame = contentDomNode =>
-    [].slice.call(contentDomNode.querySelectorAll(
-        `[data-__neos-property][data-__neos-editable-node-contextpath="${CSS.escape(contentDomNode.getAttribute('data-__neos-node-contextpath'))}"]`
+/**
+ * Find all DOM nodes that represent CR node properties in the guest frame
+ * @param {NodeInGuestFrame} node
+ * @return {Array<Element>}
+ */
+export const findRelativePropertiesInGuestFrame = (node) => {
+    return [].slice.call(node.contentDomNode.querySelectorAll(
+        `[data-__neos-property][data-__neos-editable-node-contextpath="${CSS.escape(node.nodeAddress)}"]`
     )).concat(...(
-        contentDomNode.hasAttribute('data-__neos-property') ?
-            [contentDomNode] : []
+        node.contentDomNode.hasAttribute('data-__neos-property') ?
+            [node.contentDomNode] : []
     ));
+}
 
-//
-// Find a specific DOM node that represents a CR node in the guest frame
-//
-export const findNodeInGuestFrame = (contextPath, fusionPath) => fusionPath ? findInGuestFrame(
-    `[data-__neos-node-contextpath="${CSS.escape(contextPath)}"][data-__neos-fusion-path="${CSS.escape(fusionPath)}"]`
-) : findInGuestFrame(
-    `[data-__neos-node-contextpath="${CSS.escape(contextPath)}"]`
-);
-
-//
-// Find all DOM nodes that represent a CR node identified by context path and
-// fusion path in the guest frame
-//
-export const findAllOccurrencesOfNodeInGuestFrame = (contextPath, fusionPath) => fusionPath ? findAllInGuestFrame(
-    `[data-__neos-node-contextpath="${CSS.escape(contextPath)}"][data-__neos-fusion-path="${CSS.escape(fusionPath)}"]`
-) : findAllInGuestFrame(
-    `[data-__neos-node-contextpath="${CSS.escape(contextPath)}"]`
-);
-
-//
-// Find all rendered childnodes beneath a given DOM ndoe
-//
-export const findAllChildNodes = el => [].slice.call(el.querySelectorAll('[data-__neos-node-contextpath]'));
-
-//
-// Find the closest DOM node that represents a CR node relative to the given DOM node
-// in the guest frame
-//
-export const closestNodeInGuestFrame = el => {
-    if (!el || !el.dataset) {
-        // el.dataset is not existing for window.document; and we need to prevent this case from happening.
-        return null;
+/**
+ * Find a specific DOM node that represents a CR node in the guest frame
+ * @param {string|null} nodeAddress
+ * @param {string|null} fusionPath
+ * @param {Element|null} parentElement
+ * @return {NodeInGuestFrame|null}
+ */
+export const findNodeInGuestFrame = (nodeAddress = null, fusionPath = null, parentElement = null) => {
+    const nodes = loadNodesFromComments(nodeAddress, fusionPath, parentElement);
+    if (nodes.length > 0) {
+        return nodes[0];
     }
-
-    return el.dataset.__neosNodeContextpath ? el : closestNodeInGuestFrame(el.parentNode);
+    return null;
 };
 
-//
-// Get the context path from the closest DOM node that represents a CR node relative to the
-// given DOM node in the guest frame
-//
+/**
+ * Find all DOM nodes that represent a CR node identified by context path and
+ * fusion path in the guest frame
+ * @param {string} nodeAddress
+ * @param {string} fusionPath
+ * @return {Array<NodeInGuestFrame>}
+ */
+export const findAllOccurrencesOfNodeInGuestFrame = (nodeAddress, fusionPath) => {
+    return loadNodesFromComments(nodeAddress, fusionPath);
+};
+
+/**
+ * Find all rendered child nodes beneath a given DOM node
+ * @param {Element} el
+ * @return {Array<NodeInGuestFrame>}
+ */
+export const findAllChildNodes = (el) => {
+    if (!el) {
+        return [];
+    }
+    return loadNodesFromComments(null, null, el);
+};
+
+/**
+ * Find the closest DOM node that represents a CR node relative to the given DOM node
+ * in the guest frame
+ * @param {Element} el
+ * @return {NodeInGuestFrame|null}
+ */
+export const closestNodeInGuestFrame = (el) => {
+    if (!el) {
+        return null;
+    }
+    // Find nearest comment node that can be converted to a NodeInGuestFrame
+    // FIXME: Ignore comment nodes that are not part of the Neos UI
+    while (el && el.nodeType !== Node.COMMENT_NODE) {
+        if (!el.previousSibling) {
+            break;
+        }
+        el = el.previousSibling;
+        if (el.nodeType === Node.COMMENT_NODE && el.nodeValue.indexOf(NODE_START_PREFIX) === 0) {
+            return parseNodeFromComment(el);
+        }
+    }
+    return closestNodeInGuestFrame(el.parentNode);
+};
+
+/**
+ * Get the context path from the closest DOM node that represents a CR node relative to the
+ * given DOM node in the guest frame
+ * @param {Element} el
+ * @return {string|null}
+ */
 export const closestContextPathInGuestFrame = el => {
-    const dom = closestNodeInGuestFrame(el);
+    const nodeInGuestFrame = closestNodeInGuestFrame(el);
 
-    if (!dom) {
+    if (!nodeInGuestFrame) {
         return null;
     }
 
-    return dom.dataset.__neosNodeContextpath;
+    return nodeInGuestFrame.nodeAddress;
 };
 
-//
-// Add hidden class to a DOM node that represents a CR node
-//
-export const markNodeAsHidden = contextPath => {
-    const domNode = findNodeInGuestFrame(contextPath);
+/**
+ * Add hidden class to a DOM node that represents a CR node
+ * @param {string} nodeAddress
+ * @return {void}
+ */
+export const markNodeAsHidden = nodeAddress => {
+    const domNode = findNodeInGuestFrame(nodeAddress);
 
     if (domNode) {
-        domNode.classList.add(style.markHiddenNodeAsHidden);
+        domNode.contentDomNode.classList.add(style.markHiddenNodeAsHidden);
     }
 };
 
-//
-// Remove hidden class from a DOM node that represents a CR node
-//
-export const markNodeAsVisible = contextPath => {
-    const domNode = findNodeInGuestFrame(contextPath);
+/**
+ * Remove hidden class from a DOM node that represents a CR node
+ * @param {string} nodeAddress
+ * @return {void}
+ */
+export const markNodeAsVisible = nodeAddress => {
+    const domNode = findNodeInGuestFrame(nodeAddress);
 
     if (domNode) {
-        domNode.classList.remove(style.markHiddenNodeAsHidden);
+        domNode.contentDomNode.classList.remove(style.markHiddenNodeAsHidden);
     }
 };
 
@@ -146,6 +296,7 @@ export const markNodeAsVisible = contextPath => {
 // NOTE: If the element is "big enough" (i.e. more than 20 px), we do not render the placeholder either; as then
 // the user will very likely have created his own rendering.
 export const createEmptyContentCollectionPlaceholderIfMissing = collectionDomNode => {
+    // FIXME: Adjust to NodeInGuestFrame
     if (collectionDomNode) {
         const hasChildNodes = Boolean(
             collectionDomNode.querySelector('[data-__neos-node-contextpath]')
@@ -259,9 +410,9 @@ export const clampElementToDocumentDimensions = (elementDimensions, documentDime
 // width and height of the guest frame (i.e. so that it is fully visible).
 //
 export const getAbsolutePositionOfElementInGuestFrame = element => {
-    if (element && element.getBoundingClientRect) {
+    if (element?.contentDomNode?.getBoundingClientRect) {
         const relativeDocumentDimensions = getGuestFrameDocument().documentElement.getBoundingClientRect();
-        const relativeElementDimensions = element.getBoundingClientRect();
+        const relativeElementDimensions = element.contentDomNode.getBoundingClientRect();
 
         return clampElementToDocumentDimensions(relativeElementDimensions, relativeDocumentDimensions);
     }

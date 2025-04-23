@@ -45,7 +45,8 @@ export const SelectNodeTypeFilter: React.FC<Props> = (props) => {
             return result.success.options.map((option) => ({
                 value: option.value,
                 icon: option.label.icon,
-                label: translate(option.label.label, "")
+                // todo fix translation
+                label: option.label.label
             }));
         }
 

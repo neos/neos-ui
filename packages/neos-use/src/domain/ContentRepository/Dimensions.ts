@@ -7,7 +7,7 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-import { useSelector } from "../Extensibility/Store";
+import { useSelector } from "react-redux";
 
 export function useDimensionValues(): null | Record<string,string[]> {
     const dimensionValues = useSelector(

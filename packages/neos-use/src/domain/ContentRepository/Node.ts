@@ -1,4 +1,4 @@
-import {useSelector} from "../Extensibility";
+import { useSelector } from "react-redux";
 import {Any} from "ts-toolbelt";
 
 export type NodeAggregateId = Any.Type<string, 'NodeAggregateId'>;

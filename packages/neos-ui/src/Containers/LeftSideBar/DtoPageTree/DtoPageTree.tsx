@@ -3,7 +3,7 @@ import {
     useDimensionValues,
     usePersonalWorkspaceName,
     useSelector,
-    useSiteNodeContextPath
+    useSiteNodeAggregateId,
 } from "@neos-project/neos-use";
 import React from "react";
 import {Tree} from "@neos-project/neos-node-tree";
@@ -11,7 +11,7 @@ import {Tree} from "@neos-project/neos-node-tree";
 export const DtoPageTree = () => {
     const workspaceName = usePersonalWorkspaceName();
     const dimensionValues = useDimensionValues();
-    const siteNodeContextPath = useSiteNodeContextPath();
+    const siteNodeAggregateId = useSiteNodeAggregateId();
     const defaultLoadingDepth =
         useConfiguration((c) => c.nodeTree?.loadingDepth) ?? 4;
     const initialSearchTerm =
@@ -19,7 +19,7 @@ export const DtoPageTree = () => {
     const initialNarrowNodeTypeFilter =
         useSelector((state) => state.ui?.pageTree?.filterNodeType) ??
         "";
-    const startingPoint = siteNodeContextPath?.path;
+    const startingPoint = siteNodeAggregateId;
 
     if (!startingPoint) {
         throw new Error(

@@ -47,10 +47,10 @@ final class GetTreeQueryHandler
             contentRepositoryId: $query->contentRepositoryId,
         );
 
-        $rootNode = $nodeService->findNodeByAbsoluteNodePath($query->startingPoint);
+        $rootNode = $nodeService->findNodeById($query->startingPoint);
         if ($rootNode === null) {
-            throw StartingPointWasNotFound::becauseNodeWithGivenPathDoesNotExistInCurrentSubgraph(
-                nodePath: $query->startingPoint,
+            throw StartingPointWasNotFound::becauseNodeWithGivenIdNotExistInCurrentSubgraph(
+                nodeAggregateId: $query->startingPoint,
                 subgraph: $nodeService->subgraph,
             );
         }

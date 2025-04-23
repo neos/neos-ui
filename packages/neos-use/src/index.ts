@@ -9,9 +9,7 @@
  */
 
 export {
-    ContextPath,
-    useSiteNodeContextPath,
-    useDocumentNodeContextPath,
+    useSiteNodeAggregateId,
     useAssetSummary,
     useDimensionValues,
     usePersonalWorkspaceName,

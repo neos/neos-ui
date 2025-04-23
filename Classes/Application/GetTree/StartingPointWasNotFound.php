@@ -16,6 +16,7 @@ namespace Neos\Neos\Ui\Application\GetTree;
 
 use Neos\ContentRepository\Core\Projection\ContentGraph\AbsoluteNodePath;
 use Neos\ContentRepository\Core\Projection\ContentGraph\ContentSubgraphInterface;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateId;
 use Neos\Flow\Annotations as Flow;
 
 /**
@@ -27,6 +28,24 @@ final class StartingPointWasNotFound extends \Exception
     private function __construct(string $message, int $code)
     {
         parent::__construct($message, $code);
+    }
+
+    public static function becauseNodeWithGivenIdNotExistInCurrentSubgraph(
+        NodeAggregateId $nodeAggregateId,
+        ContentSubgraphInterface $subgraph,
+    ): self {
+        return new self(
+            sprintf(
+                'The starting point node id "%s" does not exist in subgraph: %s',
+                $nodeAggregateId->value,
+                json_encode([
+                    'contentRepositoryId' => $subgraph->getContentRepositoryId(),
+                    'workspaceName' => $subgraph->getWorkspaceName(),
+                    'dimensionSpacePoint' => $subgraph->getDimensionSpacePoint(),
+                ], JSON_PRETTY_PRINT),
+            ),
+            1745436877
+        );
     }
 
     public static function becauseNodeWithGivenPathDoesNotExistInCurrentSubgraph(

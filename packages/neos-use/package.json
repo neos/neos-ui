@@ -1,0 +1,14 @@
+{
+    "name": "@neos-project/neos-use",
+    "license": "GPL-3.0-or-later",
+    "version": "",
+    "main": "./src/index.ts",
+    "dependencies": {
+        "react-use": "^16.0.0",
+        "ts-toolbelt": "^9.6.0"
+    },
+    "peerDependencies": {
+        "react": "^16.12.0",
+        "react-redux": "^7.1.3"
+    }
+}

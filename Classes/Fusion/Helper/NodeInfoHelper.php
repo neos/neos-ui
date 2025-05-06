@@ -402,14 +402,18 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
     /**
      * @param ?NodeInterface $node
-     * @param ControllerContext $controllerContext
+     * @param ?ControllerContext $controllerContext
      * @return string
      * @throws \Neos\Neos\Exception
      */
-    public function uri(?NodeInterface $node = null, ControllerContext $controllerContext)
+    public function uri(?NodeInterface $node = null, ?ControllerContext $controllerContext = null)
     {
         if ($node === null) {
             // This happens when the document node is not published yet
+            return '';
+        }
+        if ($controllerContext === null) {
+            // This happens when the controller context is null
             return '';
         }
 

@@ -224,7 +224,7 @@ class NodeTreeBuilder
         return $result;
     }
 
-    protected function isInRootLine(?NodeInterface $haystack = null, NodeInterface $needle)
+    protected function isInRootLine(?NodeInterface $haystack, NodeInterface $needle)
     {
         if ($haystack === null) {
             return false;

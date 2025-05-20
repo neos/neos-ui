@@ -1,9 +1,10 @@
 import {I18nRegistry} from '@neos-project/neos-ts-interfaces';
 import {isNil} from '@neos-project/utils-helpers';
 
-type RawSelectBoxOptions = {value: string, icon?: string; disabled?: boolean; label: string;}[]|{[key: string]: {icon?: string; disabled?: boolean; label: string;}};
+type RawSelectBoxOptions = {value: string, icon?: string; disabled?: boolean; label: string; group?: string;}[]|{[key: string]: {icon?: string; disabled?: boolean; label: string;
+        group?: string;}};
 
-type SelectBoxOptions = {value: string, icon?: string; disabled?: boolean; label: string;}[];
+type SelectBoxOptions = {value: string, icon?: string; disabled?: boolean; label: string; group?: string;}[];
 
 export const shouldDisplaySearchBox = (options: any, processedSelectBoxOptions: SelectBoxOptions) => options.minimumResultsForSearch >= 0 && processedSelectBoxOptions.length >= options.minimumResultsForSearch;
 
@@ -24,6 +25,10 @@ export const processSelectBoxOptions = (i18nRegistry: I18nRegistry, selectBoxOpt
             ...selectBoxOption, // a value in here overrules value based on the key above.
             label: i18nRegistry.translate(selectBoxOption.label)
         };
+
+        if (selectBoxOption.group) {
+            processedSelectBoxOption.group = i18nRegistry.translate(selectBoxOption.group);
+        }
 
         validValues[processedSelectBoxOption.value] = true;
         processedSelectBoxOptions.push(processedSelectBoxOption);

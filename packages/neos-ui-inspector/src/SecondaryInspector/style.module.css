@@ -4,6 +4,7 @@
     background: var(--colors-ContrastDarker);
     border: 1px solid var(--colors-ContrastDark);
     border-bottom-width: 0;
+    overflow-y: auto;
 }
 .secondaryInspector--isElevated {
     z-index: var(--zIndex-SecondaryInspectorElevated);

@@ -78,7 +78,7 @@ You can use
 To install the source files and setup git, run:
 
 ```bash
-composer require neos/neos-ui-compiled:8.4.x-dev neos/neos-ui:8.4.x-dev --prefer-source
+composer require neos/neos-ui-compiled:9.0.x-dev neos/neos-ui:9.0.x-dev --prefer-source
 ```
 
 This will sync the git repository of Neos Ui into `Packages/Application/Neos.Neos.Ui` (this might take a while).
@@ -161,8 +161,8 @@ git checkout 9.0 && git fetch && git reset --hard origin/9.0 && git merge --no-f
 | Command         | Description                   |
 | --------------- | ----------------------------- |
 | `make clean` | delete all node_modules in every subdirectory. |
-| `make build` |  Runs the development build. |
-| `make build-watch` | Watches the source files for changes and runs a build in case. |
+| `make build` |  Runs the development build for neos-ui once. |
+| `make build-watch` | Starts a watcher process, which automatically runs a build for neos-ui, everytime a resource file (like JavaScript and CSS) changes. |
 | `make lint`  | Executes `make lint-js` and `make lint-editorconfig`. |
 | `make lint-js`  | Runs test in all subpackages. |
 | `make lint-editorconfig`  | Tests if all files respect the `.editorconfig`. |

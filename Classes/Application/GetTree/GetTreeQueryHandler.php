@@ -19,7 +19,6 @@ use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateId;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Ui\Application\Shared\TreeNode;
-use Neos\Neos\Ui\Infrastructure\ESCR\LinkableNodeSpecification;
 use Neos\Neos\Ui\Infrastructure\ESCR\NodeSearchSpecification;
 use Neos\Neos\Ui\Infrastructure\ESCR\NodeService;
 use Neos\Neos\Ui\Infrastructure\ESCR\NodeServiceFactory;
@@ -50,16 +49,10 @@ final class GetTreeQueryHandler
             contentRepositoryId: $query->contentRepositoryId,
         );
 
-        $rootNode = match ($query->startingPoint::class) {
-            NodeAggregateId::class => $nodeService->findNodeById($query->startingPoint) ?? throw StartingPointWasNotFound::becauseNodeWithGivenIdNotExistInCurrentSubgraph(
-                nodeAggregateId: $query->startingPoint,
-                subgraph: $nodeService->subgraph,
-            ),
-            AbsoluteNodePath::class => $nodeService->findNodeByAbsoluteNodePath($query->startingPoint) ?? throw StartingPointWasNotFound::becauseNodeWithGivenPathDoesNotExistInCurrentSubgraph(
-                nodePath: $query->startingPoint,
-                subgraph: $nodeService->subgraph,
-            ),
-        };
+        $rootNode = $nodeService->findNodeById($query->startingPoint) ?? throw StartingPointWasNotFound::becauseNodeWithGivenIdNotExistInCurrentSubgraph(
+            nodeAggregateId: $query->startingPoint,
+            subgraph: $nodeService->subgraph,
+        );
 
         return new GetTreeQueryResult(
             root: empty($query->searchTerm) && empty($query->narrowNodeTypeFilter)
@@ -78,12 +71,12 @@ final class GetTreeQueryHandler
             filterString: $query->baseNodeTypeFilter,
         );
         $narrowNodeTypeFilter = $nodeTypeService->createNodeTypeFilterFromFilterString(
-            filterString: $query->narrowNodeTypeFilter,
+            filterString: $query->narrowNodeTypeFilter ?: '',
         );
 
         $matchingNodes = $nodeService->search(
             rootNode: $rootNode,
-            searchTerm: $query->searchTerm,
+            searchTerm: $query->searchTerm ?: '',
             nodeTypeFilter: $narrowNodeTypeFilter,
         );
 
@@ -94,11 +87,6 @@ final class GetTreeQueryHandler
                 narrowNodeTypeFilter: $narrowNodeTypeFilter,
                 searchTerm: $query->searchTerm,
                 nodeService: $nodeService,
-            ),
-            linkableNodeSpecification: new LinkableNodeSpecification(
-                linkableNodeTypes: $nodeTypeService->createNodeTypeFilterFromNodeTypeNames(
-                    nodeTypeNames: $query->linkableNodeTypes,
-                ),
             ),
         );
 
@@ -130,11 +118,6 @@ final class GetTreeQueryHandler
                 narrowNodeTypeFilter: null,
                 searchTerm: null,
                 nodeService: $nodeService,
-            ),
-            linkableNodeSpecification: new LinkableNodeSpecification(
-                linkableNodeTypes: $nodeTypeService->createNodeTypeFilterFromNodeTypeNames(
-                    nodeTypeNames: $query->linkableNodeTypes,
-                ),
             ),
         );
 

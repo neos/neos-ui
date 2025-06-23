@@ -60,6 +60,12 @@ trait NeosUiTrait
         $eventPayload = [];
         foreach ($payloadTable->getHash() as $line) {
             (isset($line['Key']) and is_string($line['Key'])) or throw new \InvalidArgumentException('Key must be set.');
+
+            if (str_starts_with($line['Value'], "'")) {
+                $eventPayload[$line['Key']] = substr($line['Value'], 1, -1);
+                continue;
+            }
+
             $eventPayload[$line['Key']] = json_decode($line['Value'], true, 512, JSON_THROW_ON_ERROR);
         }
 
@@ -77,9 +83,6 @@ trait NeosUiTrait
             echo $contents;
             Assert::fail('Not a json response');
         }
-
-        // echo json_encode(json_decode($contents, true), JSON_PRETTY_PRINT);
-        // die();
 
         Assert::assertJsonStringEqualsJsonString(
             $rawJson->getRaw(),

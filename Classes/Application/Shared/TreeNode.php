@@ -24,14 +24,14 @@ use Neos\Flow\Annotations as Flow;
 final class TreeNode implements \JsonSerializable
 {
     public function __construct(
-        public readonly NodeAggregateId $nodeAggregateIdentifier,
+        public readonly NodeAggregateId $nodeAggregateIdentifier, // todo needs to be NodeAddress
         public readonly string $icon,
         public readonly string $label,
         public readonly string $nodeTypeLabel,
         public readonly bool $isMatchedByFilter,
-        public readonly bool $isLinkable,
         public readonly bool $isDisabled,
         public readonly bool $isHiddenInMenu,
+        // todo rename to hasTimeableNodeVisibility?
         public readonly bool $hasScheduledDisabledState,
         public readonly bool $hasUnloadedChildren,
         public readonly TreeNodes $children

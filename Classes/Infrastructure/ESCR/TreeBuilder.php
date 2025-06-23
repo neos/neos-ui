@@ -35,7 +35,6 @@ final class TreeBuilder
         private readonly NodeService $nodeService,
         private readonly TreeNodeBuilder $rootTreeNodeBuilder,
         private readonly NodeSearchSpecification $nodeSearchSpecification,
-        private readonly LinkableNodeSpecification $linkableNodeSpecification,
     ) {
         $this->treeNodeBuildersByNodeAggregateIdentifier[$rootNode->aggregateId->value] = $rootTreeNodeBuilder;
     }
@@ -148,10 +147,6 @@ final class TreeBuilder
 
         $treeNodeBuilder->setIsMatchedByFilter(
             $this->nodeSearchSpecification->isSatisfiedByNode($node)
-        );
-
-        $treeNodeBuilder->setIsLinkable(
-            $this->linkableNodeSpecification->isSatisfiedByNode($node)
         );
 
         return $treeNodeBuilder;

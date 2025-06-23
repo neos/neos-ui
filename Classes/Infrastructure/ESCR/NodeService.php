@@ -122,14 +122,12 @@ final class NodeService
     public function createTreeBuilderForRootNode(
         Node $rootNode,
         NodeSearchSpecification $nodeSearchSpecification,
-        LinkableNodeSpecification $linkableNodeSpecification,
     ): TreeBuilder {
         return new TreeBuilder(
             rootNode: $rootNode,
             nodeService: $this,
             rootTreeNodeBuilder: $this->createTreeNodeBuilderForNode($rootNode),
             nodeSearchSpecification: $nodeSearchSpecification,
-            linkableNodeSpecification: $linkableNodeSpecification,
         );
     }
 
@@ -143,7 +141,6 @@ final class NodeService
             label: $this->getLabelForNode($node),
             nodeTypeLabel: $nodeType->getLabel(),
             isMatchedByFilter: false,
-            isLinkable: false,
             isDisabled: $node->tags->withoutInherited()->contain(NeosSubtreeTag::disabled()),
             isHiddenInMenu: $node->getProperty('hiddenInMenu') ?? false,
             hasScheduledDisabledState:

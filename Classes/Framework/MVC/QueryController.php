@@ -24,14 +24,7 @@ abstract class QueryController implements ControllerInterface
     public function processRequest(ActionRequest $request): ResponseInterface
     {
         try {
-            // @TODO: It should not be necessary to inject the contentRepositoryId
-            // like this. For the time being, it's the only way though.
             $arguments = $request->getArguments();
-            if (!isset($arguments['contentRepositoryId'])) {
-                $siteDetectionResult = SiteDetectionResult::fromRequest($request->getHttpRequest());
-                $arguments['contentRepositoryId'] = $siteDetectionResult->contentRepositoryId->value;
-            }
-
             $queryResponse = $this->processQuery($arguments);
         } catch (\InvalidArgumentException $e) {
             $queryResponse = QueryResponse::clientError($e);

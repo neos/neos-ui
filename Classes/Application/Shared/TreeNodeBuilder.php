@@ -35,7 +35,6 @@ final class TreeNodeBuilder
         private readonly string $label,
         private readonly string $nodeTypeLabel,
         private bool $isMatchedByFilter,
-        private bool $isLinkable,
         private readonly bool $isDisabled,
         private readonly bool $isHiddenInMenu,
         private readonly bool $hasScheduledDisabledState,
@@ -59,12 +58,6 @@ final class TreeNodeBuilder
     public function setIsMatchedByFilter(bool $value): self
     {
         $this->isMatchedByFilter = $value;
-        return $this;
-    }
-
-    public function setIsLinkable(bool $value): self
-    {
-        $this->isLinkable = $value;
         return $this;
     }
 
@@ -92,7 +85,6 @@ final class TreeNodeBuilder
             label: $this->label,
             nodeTypeLabel: $this->nodeTypeLabel,
             isMatchedByFilter: $this->isMatchedByFilter,
-            isLinkable: $this->isLinkable,
             isDisabled: $this->isDisabled,
             isHiddenInMenu: $this->isHiddenInMenu,
             hasScheduledDisabledState: $this->hasScheduledDisabledState,

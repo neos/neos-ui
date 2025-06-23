@@ -55,10 +55,6 @@ final class GetChildrenForTreeNodeQueryHandler
 
     private function createTreeNodesFromChildrenOfNode(NodeService $nodeService, NodeTypeService $nodeTypeService, Node $node, GetChildrenForTreeNodeQuery $query): TreeNodes
     {
-        $linkableNodeTypesFilter = $nodeTypeService->createNodeTypeFilterFromNodeTypeNames(
-            nodeTypeNames: $query->linkableNodeTypes
-        );
-
         $items = [];
         $nodeTypeCriteria = NodeTypeCriteria::fromFilterString($query->nodeTypeFilter);
 
@@ -66,7 +62,6 @@ final class GetChildrenForTreeNodeQueryHandler
             /** @var Node $childNode */
             $items[] = $nodeService->createTreeNodeBuilderForNode($childNode)
                 ->setIsMatchedByFilter(true)
-                ->setIsLinkable($linkableNodeTypesFilter->isSatisfiedByNode($childNode))
                 ->setHasUnloadedChildren($nodeService->getNumberOfChildNodes($childNode, $nodeTypeCriteria) > 0)
                 ->build();
         }

@@ -114,30 +114,4 @@ final class NodeTypeService
             allowedNodeTypeNames: NodeTypeNames::fromArray($allowedNodeTypeNames)
         );
     }
-
-    public function createNodeTypeFilterFromNodeTypeNames(NodeTypeNames $nodeTypeNames): NodeTypeFilter
-    {
-        $nodeTypeManager = $this->contentRepository->getNodeTypeManager();
-        $isEmpty = $nodeTypeNames->isEmpty();
-
-        $allowedNodeTypeNames = [];
-        foreach ($nodeTypeManager->getNodeTypes(true) as $candidateNodeType) {
-            if ($isEmpty) {
-                $allowedNodeTypeNames[] = $candidateNodeType->name;
-                continue;
-            }
-
-            foreach ($nodeTypeNames as $nodeTypeName) {
-                if ($candidateNodeType->isOfType($nodeTypeName)) {
-                    $allowedNodeTypeNames[] = $candidateNodeType->name;
-                    continue 2;
-                }
-            }
-        }
-
-        return new NodeTypeFilter(
-            nodeTypeCriteria: NodeTypeCriteria::createWithAllowedNodeTypeNames($nodeTypeNames),
-            allowedNodeTypeNames: NodeTypeNames::fromArray($allowedNodeTypeNames)
-        );
-    }
 }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Neos\Neos\Ui\Application\Shared;
 
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateId;
 use Neos\Flow\Annotations as Flow;
 
@@ -30,7 +31,7 @@ final class TreeNodeBuilder
     private array $children = [];
 
     public function __construct(
-        private readonly NodeAggregateId $nodeAggregateId,
+        private readonly NodeAddress $nodeAddress,
         private readonly string $icon,
         private readonly string $label,
         private readonly string $nodeTypeLabel,
@@ -44,7 +45,7 @@ final class TreeNodeBuilder
 
     public function containsNodeTreeByNodeAggregateId(NodeAggregateId $nodeAggregateId): bool
     {
-        if ($this->nodeAggregateId->equals($nodeAggregateId)) {
+        if ($this->nodeAddress->aggregateId->equals($nodeAggregateId)) {
             return true;
         }
         foreach ($this->children as $child) {
@@ -69,9 +70,10 @@ final class TreeNodeBuilder
 
     public function addChild(TreeNodeBuilder $childBuilder): self
     {
-        if (!isset($this->childrenByIdentifier[$childBuilder->nodeAggregateId->value])) {
+        $hash = $childBuilder->nodeAddress->toJson();
+        if (!isset($this->childrenByIdentifier[$hash])) {
             $this->children[] = $childBuilder;
-            $this->childrenByIdentifier[$childBuilder->nodeAggregateId->value] = $childBuilder;
+            $this->childrenByIdentifier[$hash] = $childBuilder;
         }
 
         return $this;
@@ -80,7 +82,7 @@ final class TreeNodeBuilder
     public function build(): TreeNode
     {
         return new TreeNode(
-            nodeAggregateIdentifier: $this->nodeAggregateId,
+            nodeAddress: $this->nodeAddress,
             icon: $this->icon,
             label: $this->label,
             nodeTypeLabel: $this->nodeTypeLabel,

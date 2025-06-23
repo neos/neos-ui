@@ -142,7 +142,7 @@ Feature: GetTreeQuery
                   "isHiddenInMenu": false,
                   "isMatchedByFilter": true,
                   "label": "Homepage site-a",
-                  "nodeAggregateIdentifier": "homepage",
+                  "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"homepage\"}",
                   "nodeTypeLabel": "Home Page Type"
               }
           }
@@ -174,7 +174,7 @@ Feature: GetTreeQuery
                       "isHiddenInMenu": false,
                       "isMatchedByFilter": true,
                       "label": "Homepage site-a",
-                      "nodeAggregateIdentifier": "homepage",
+                      "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"homepage\"}",
                       "nodeTypeLabel": "Home Page Type"
                     }
                   ],
@@ -185,7 +185,7 @@ Feature: GetTreeQuery
                   "isHiddenInMenu": false,
                   "isMatchedByFilter": true,
                   "label": "Neos.Neos:Sites",
-                  "nodeAggregateIdentifier": "sites",
+                  "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"sites\"}",
                   "nodeTypeLabel": ""
               }
           }
@@ -218,7 +218,7 @@ Feature: GetTreeQuery
                            "isHiddenInMenu": false,
                            "isMatchedByFilter": true,
                            "label": "My Node: features",
-                           "nodeAggregateIdentifier": "features",
+                           "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"features\"}",
                            "nodeTypeLabel": "My Document Type"
                        },
                        {
@@ -230,7 +230,7 @@ Feature: GetTreeQuery
                            "isHiddenInMenu": false,
                            "isMatchedByFilter": true,
                            "label": "My Node: search",
-                           "nodeAggregateIdentifier": "search",
+                           "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"search\"}",
                            "nodeTypeLabel": "My Document Type"
                        }
                   ],
@@ -241,7 +241,7 @@ Feature: GetTreeQuery
                   "isHiddenInMenu": false,
                   "isMatchedByFilter": true,
                   "label": "Homepage site-a",
-                  "nodeAggregateIdentifier": "homepage",
+                  "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"homepage\"}",
                   "nodeTypeLabel": "Home Page Type"
               }
           }
@@ -271,7 +271,7 @@ Feature: GetTreeQuery
                   "isHiddenInMenu": false,
                   "isMatchedByFilter": true,
                   "label": "My Node: a1",
-                  "nodeAggregateIdentifier": "feature-a1-default",
+                  "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"feature-a1-default\"}",
                   "nodeTypeLabel": "My Document Type"
               }
           }
@@ -304,7 +304,7 @@ Feature: GetTreeQuery
                               "isHiddenInMenu": false,
                               "isMatchedByFilter": true,
                               "label": "My Node: a1",
-                              "nodeAggregateIdentifier": "feature-a1-default",
+                              "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"feature-a1-default\"}",
                               "nodeTypeLabel": "My Document Type"
                            },{
                               "children": [],
@@ -315,7 +315,7 @@ Feature: GetTreeQuery
                               "isHiddenInMenu": false,
                               "isMatchedByFilter": true,
                               "label": "My Node: a2",
-                              "nodeAggregateIdentifier": "feature-a2-default",
+                              "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"feature-a2-default\"}",
                               "nodeTypeLabel": "My Document Type"
                            }],
                            "hasScheduledDisabledState": false,
@@ -325,7 +325,7 @@ Feature: GetTreeQuery
                            "isHiddenInMenu": false,
                            "isMatchedByFilter": true,
                            "label": "My Node: a",
-                           "nodeAggregateIdentifier": "feature-a-default",
+                           "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"feature-a-default\"}",
                            "nodeTypeLabel": "My Document Type"
                        },
                        {
@@ -337,7 +337,7 @@ Feature: GetTreeQuery
                            "isHiddenInMenu": false,
                            "isMatchedByFilter": true,
                            "label": "My Node: b",
-                           "nodeAggregateIdentifier": "feature-b-disabled",
+                           "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"feature-b-disabled\"}",
                            "nodeTypeLabel": "My Document Type"
                        },
                        {
@@ -350,7 +350,7 @@ Feature: GetTreeQuery
                               "isHiddenInMenu": false,
                               "isMatchedByFilter": true,
                               "label": "My Node: c1",
-                              "nodeAggregateIdentifier": "feature-c1-default",
+                              "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"feature-c1-default\"}",
                               "nodeTypeLabel": "My Document Type"
                            }],
                            "hasScheduledDisabledState": false,
@@ -360,7 +360,7 @@ Feature: GetTreeQuery
                            "isHiddenInMenu": false,
                            "isMatchedByFilter": true,
                            "label": "My Other Node",
-                           "nodeAggregateIdentifier": "feature-c-other-type",
+                           "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"feature-c-other-type\"}",
                            "nodeTypeLabel": "My Other Document Type"
                        },
                        {
@@ -372,7 +372,7 @@ Feature: GetTreeQuery
                            "isHiddenInMenu": false,
                            "isMatchedByFilter": true,
                            "label": "My Node: d",
-                           "nodeAggregateIdentifier": "feature-d-multi-dsp",
+                           "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"feature-d-multi-dsp\"}",
                            "nodeTypeLabel": "My Document Type"
                        }
                    ],
@@ -383,7 +383,7 @@ Feature: GetTreeQuery
                    "isHiddenInMenu": false,
                    "isMatchedByFilter": true,
                    "label": "My Node: features",
-                   "nodeAggregateIdentifier": "features",
+                   "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"features\"}",
                    "nodeTypeLabel": "My Document Type"
               }
           }
@@ -415,7 +415,7 @@ Feature: GetTreeQuery
                            "isHiddenInMenu": false,
                            "isMatchedByFilter": true,
                            "label": "My Other Node",
-                           "nodeAggregateIdentifier": "feature-c-other-type",
+                           "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"feature-c-other-type\"}",
                            "nodeTypeLabel": "My Other Document Type"
                        }
                   ],
@@ -426,7 +426,7 @@ Feature: GetTreeQuery
                   "isHiddenInMenu": false,
                   "isMatchedByFilter": false,
                   "label": "My Node: features",
-                  "nodeAggregateIdentifier": "features",
+                  "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"features\"}",
                   "nodeTypeLabel": "My Document Type"
               }
           }
@@ -448,7 +448,7 @@ Feature: GetTreeQuery
       {
           "success": {
               "root": {
-                  "nodeAggregateIdentifier": "homepage",
+                  "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"de\"},\"aggregateId\":\"homepage\"}",
                   "icon": "globe",
                   "label": "Homepage site-a",
                   "nodeTypeLabel": "Home Page Type",
@@ -459,7 +459,7 @@ Feature: GetTreeQuery
                   "hasUnloadedChildren": false,
                   "children": [
                       {
-                          "nodeAggregateIdentifier": "features",
+                          "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"de\"},\"aggregateId\":\"features\"}",
                           "icon": "my-icon",
                           "label": "My Node: features (de)",
                           "nodeTypeLabel": "My Document Type",
@@ -470,7 +470,7 @@ Feature: GetTreeQuery
                           "hasUnloadedChildren": false,
                           "children": [
                               {
-                                  "nodeAggregateIdentifier": "feature-d-multi-dsp",
+                                  "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"de\"},\"aggregateId\":\"feature-d-multi-dsp\"}",
                                   "icon": "my-icon",
                                   "label": "My Node: d (de)",
                                   "nodeTypeLabel": "My Document Type",
@@ -504,7 +504,7 @@ Feature: GetTreeQuery
         {
           "success": {
               "root": {
-                  "nodeAggregateIdentifier": "search",
+                  "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"search\"}",
                   "icon": "my-icon",
                   "label": "My Node: search",
                   "nodeTypeLabel": "My Document Type",
@@ -515,7 +515,7 @@ Feature: GetTreeQuery
                   "hasUnloadedChildren": false,
                   "children": [
                       {
-                          "nodeAggregateIdentifier": "search-c-other-type",
+                          "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"search-c-other-type\"}",
                           "icon": "my-other-icon",
                           "label": "My Other Node",
                           "nodeTypeLabel": "My Other Document Type",
@@ -527,7 +527,7 @@ Feature: GetTreeQuery
                           "children": []
                       },
                       {
-                          "nodeAggregateIdentifier": "search-a-default",
+                          "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"search-a-default\"}",
                           "icon": "my-icon",
                           "label": "My Node: a",
                           "nodeTypeLabel": "My Document Type",
@@ -538,7 +538,7 @@ Feature: GetTreeQuery
                           "hasUnloadedChildren": false,
                           "children": [
                               {
-                                  "nodeAggregateIdentifier": "search-a2-other-type",
+                                  "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"search-a2-other-type\"}",
                                   "icon": "my-other-icon",
                                   "label": "My Other Node",
                                   "nodeTypeLabel": "My Other Document Type",
@@ -550,7 +550,7 @@ Feature: GetTreeQuery
                                   "children": []
                               },
                               {
-                                  "nodeAggregateIdentifier": "search-a3-other-text",
+                                  "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"search-a3-other-text\"}",
                                   "icon": "my-other-icon",
                                   "label": "My Other Node",
                                   "nodeTypeLabel": "My Other Document Type",
@@ -584,7 +584,7 @@ Feature: GetTreeQuery
         {
           "success": {
               "root": {
-                  "nodeAggregateIdentifier": "search",
+                  "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"search\"}",
                   "icon": "my-icon",
                   "label": "My Node: search",
                   "nodeTypeLabel": "My Document Type",
@@ -595,7 +595,7 @@ Feature: GetTreeQuery
                   "hasUnloadedChildren": false,
                   "children": [
                       {
-                          "nodeAggregateIdentifier": "search-b-with-text",
+                          "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"search-b-with-text\"}",
                           "icon": "my-icon",
                           "label": "My Node: b special text",
                           "nodeTypeLabel": "My Document Type",
@@ -607,7 +607,7 @@ Feature: GetTreeQuery
                           "children": []
                       },
                       {
-                          "nodeAggregateIdentifier": "search-a-default",
+                          "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"search-a-default\"}",
                           "icon": "my-icon",
                           "label": "My Node: a",
                           "nodeTypeLabel": "My Document Type",
@@ -618,7 +618,7 @@ Feature: GetTreeQuery
                           "hasUnloadedChildren": false,
                           "children": [
                               {
-                                  "nodeAggregateIdentifier": "search-a3-other-text",
+                                  "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"search-a3-other-text\"}",
                                   "icon": "my-other-icon",
                                   "label": "My Other Node",
                                   "nodeTypeLabel": "My Other Document Type",
@@ -652,7 +652,7 @@ Feature: GetTreeQuery
         {
           "success": {
               "root": {
-                  "nodeAggregateIdentifier": "search",
+                  "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"search\"}",
                   "icon": "my-icon",
                   "label": "My Node: search",
                   "nodeTypeLabel": "My Document Type",
@@ -663,7 +663,7 @@ Feature: GetTreeQuery
                   "hasUnloadedChildren": false,
                   "children": [
                       {
-                          "nodeAggregateIdentifier": "search-a-default",
+                          "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"search-a-default\"}",
                           "icon": "my-icon",
                           "label": "My Node: a",
                           "nodeTypeLabel": "My Document Type",
@@ -674,7 +674,7 @@ Feature: GetTreeQuery
                           "hasUnloadedChildren": false,
                           "children": [
                               {
-                                  "nodeAggregateIdentifier": "search-a3-other-text",
+                                  "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"search-a3-other-text\"}",
                                   "icon": "my-other-icon",
                                   "label": "My Other Node",
                                   "nodeTypeLabel": "My Other Document Type",
@@ -724,7 +724,7 @@ Feature: GetTreeQuery
                   "isHiddenInMenu": false,
                   "isMatchedByFilter": true,
                   "label": "My Node: a1",
-                  "nodeAggregateIdentifier": "feature-a1-default",
+                  "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"feature-a1-default\"}",
                   "nodeTypeLabel": "My Document Type"
               }
           }
@@ -752,7 +752,7 @@ Feature: GetTreeQuery
       {
         "success": {
             "root": {
-                "nodeAggregateIdentifier": "features",
+                "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"features\"}",
                 "icon": "my-icon",
                 "label": "My Node: features",
                 "nodeTypeLabel": "My Document Type",
@@ -763,7 +763,7 @@ Feature: GetTreeQuery
                 "hasUnloadedChildren": false,
                 "children": [
                     {
-                        "nodeAggregateIdentifier": "feature-a-default",
+                        "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"feature-a-default\"}",
                         "icon": "my-icon",
                         "label": "My Node: a",
                         "nodeTypeLabel": "My Document Type",
@@ -774,7 +774,7 @@ Feature: GetTreeQuery
                         "hasUnloadedChildren": false,
                         "children": [
                             {
-                                "nodeAggregateIdentifier": "feature-a1-default",
+                                "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"feature-a1-default\"}",
                                 "icon": "my-icon",
                                 "label": "My Node: a1",
                                 "nodeTypeLabel": "My Document Type",
@@ -786,7 +786,7 @@ Feature: GetTreeQuery
                                 "children": []
                             },
                             {
-                                "nodeAggregateIdentifier": "feature-a2-default",
+                                "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"feature-a2-default\"}",
                                 "icon": "my-icon",
                                 "label": "My Node: a2",
                                 "nodeTypeLabel": "My Document Type",
@@ -800,7 +800,7 @@ Feature: GetTreeQuery
                         ]
                     },
                     {
-                        "nodeAggregateIdentifier": "feature-b-disabled",
+                        "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"feature-b-disabled\"}",
                         "icon": "my-icon",
                         "label": "My Node: b",
                         "nodeTypeLabel": "My Document Type",
@@ -812,7 +812,7 @@ Feature: GetTreeQuery
                         "children": []
                     },
                     {
-                        "nodeAggregateIdentifier": "feature-c-other-type",
+                        "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"feature-c-other-type\"}",
                         "icon": "my-other-icon",
                         "label": "My Other Node",
                         "nodeTypeLabel": "My Other Document Type",
@@ -824,7 +824,7 @@ Feature: GetTreeQuery
                         "children": []
                     },
                     {
-                        "nodeAggregateIdentifier": "feature-d-multi-dsp",
+                        "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"feature-d-multi-dsp\"}",
                         "icon": "my-icon",
                         "label": "My Node: d",
                         "nodeTypeLabel": "My Document Type",

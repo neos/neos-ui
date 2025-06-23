@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Neos\Neos\Ui\Application\Shared;
 
-use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateId;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
 use Neos\Flow\Annotations as Flow;
 
 /**
@@ -24,7 +24,7 @@ use Neos\Flow\Annotations as Flow;
 final class TreeNode implements \JsonSerializable
 {
     public function __construct(
-        public readonly NodeAggregateId $nodeAggregateIdentifier, // todo needs to be NodeAddress
+        public readonly NodeAddress $nodeAddress,
         public readonly string $icon,
         public readonly string $label,
         public readonly string $nodeTypeLabel,
@@ -40,6 +40,17 @@ final class TreeNode implements \JsonSerializable
 
     public function jsonSerialize(): mixed
     {
-        return get_object_vars($this);
+        return [
+            'nodeAddress' => $this->nodeAddress->toJson(),
+            'icon' => $this->icon,
+            'label' => $this->label,
+            'nodeTypeLabel' => $this->nodeTypeLabel,
+            'isMatchedByFilter' => $this->isMatchedByFilter,
+            'isDisabled' => $this->isDisabled,
+            'isHiddenInMenu' => $this->isHiddenInMenu,
+            'hasScheduledDisabledState' => $this->hasScheduledDisabledState,
+            'hasUnloadedChildren' => $this->hasUnloadedChildren,
+            'children' => $this->children,
+        ];
     }
 }

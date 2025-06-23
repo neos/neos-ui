@@ -28,6 +28,7 @@ use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindSucceedingSib
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\NodeType\NodeTypeCriteria;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Nodes;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateId;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Domain\NodeLabel\NodeLabelGeneratorInterface;
@@ -136,7 +137,7 @@ final class NodeService
         $nodeType = $this->requireNodeTypeByName($node->nodeTypeName);
 
         return new TreeNodeBuilder(
-            nodeAggregateId: $node->aggregateId,
+            nodeAddress: NodeAddress::fromNode($node),
             icon: $nodeType->getConfiguration('ui.icon') ?? 'questionmark',
             label: $this->getLabelForNode($node),
             nodeTypeLabel: $nodeType->getLabel(),

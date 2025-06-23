@@ -1,0 +1,11 @@
+
+default:
+  autoload:
+    '': "%paths.base%/Bootstrap"
+  suites:
+    coreFeatures:
+        paths:
+          - "%paths.base%/Features"
+
+        contexts:
+            - FeatureContext

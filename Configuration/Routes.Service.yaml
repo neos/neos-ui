@@ -123,3 +123,19 @@
     '@controller': 'BackendService'
     '@action': 'reloadNodes'
   httpMethods: ['POST']
+
+-
+  name: 'GetChildrenForTreeNode Query'
+  uriPattern: 'get-children-for-tree-node'
+  defaults:
+    '@subpackage': 'Application\GetChildrenForTreeNode'
+    '@controller': 'GetChildrenForTreeNode'
+    '@action': 'ignored'
+
+-
+  name: 'GetTree Query'
+  uriPattern: 'get-tree'
+  defaults:
+    '@subpackage': 'Application\GetTree'
+    '@controller': 'GetTree'
+    '@action': 'ignored'

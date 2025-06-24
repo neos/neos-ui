@@ -1,4 +1,4 @@
-import React, {PureComponent} from 'react';
+import React, {useState, useCallback, useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
@@ -36,138 +36,99 @@ const decodeLabel = flowright(
     getOrDefault('')
 );
 
-@connect(
-    state => ({
-        isWorkspaceReadOnly: selectors.CR.Workspaces.isWorkspaceReadOnlySelector(state)
-    })
-)
-export default class Node extends PureComponent {
-    state = {
-        shouldScrollIntoView: false
-    };
+const NodeComponent = props => {
+    const {
+        isContentTreeNode,
+        rootNode,
+        loadingDepth,
+        ChildRenderer,
+        node,
+        nodeDndType,
+        nodeTypeRole,
+        currentlyDraggedNodes,
+        hasChildren,
+        isLastChild,
+        childNodes,
+        level,
+        isActive,
+        isFocused,
+        toggledNodeContextPaths,
+        visibleContextPaths,
+        intermediateContextPaths,
+        loadingNodeContextPaths,
+        errorNodeContextPaths,
+        canBeInsertedAlongside,
+        canBeInsertedInto,
+        isNodeDirty,
+        areFocusedNodesNestedInEachOther,
+        isWorkspaceReadOnly,
+        nodeTypesRegistry,
+        i18nRegistry,
+        onNodeToggle,
+        onNodeClick,
+        onNodeFocus,
+        onNodeDrag,
+        onNodeEndDrag,
+        onNodeDrop,
+        focusedNodesContextPaths,
+        filterNodeType,
+        reload
+    } = props;
 
-    static propTypes = {
-        isContentTreeNode: PropTypes.bool,
-        rootNode: PropTypes.object,
-        loadingDepth: PropTypes.number,
-        ChildRenderer: PropTypes.func.isRequired,
-        node: PropTypes.object,
-        nodeDndType: PropTypes.string.isRequired,
-        nodeTypeRole: PropTypes.string,
-        currentlyDraggedNodes: PropTypes.array,
-        hasChildren: PropTypes.bool,
-        isLastChild: PropTypes.bool,
-        childNodes: PropTypes.array,
-        level: PropTypes.number.isRequired,
-        isActive: PropTypes.bool,
-        isFocused: PropTypes.bool,
-        toggledNodeContextPaths: PropTypes.array,
-        visibleContextPaths: PropTypes.array,
-        intermediateContextPaths: PropTypes.array,
-        loadingNodeContextPaths: PropTypes.array,
-        errorNodeContextPaths: PropTypes.array,
-        canBeInsertedAlongside: PropTypes.bool,
-        canBeInsertedInto: PropTypes.bool,
-        isNodeDirty: PropTypes.bool.isRequired,
+    const [shouldScrollIntoView, setShouldScrollIntoView] = useState(false);
+    const domNodeRef = useRef(null);
 
-        areFocusedNodesNestedInEachOther: PropTypes.bool,
-        isWorkspaceReadOnly: PropTypes.bool,
-
-        nodeTypesRegistry: PropTypes.object.isRequired,
-        i18nRegistry: PropTypes.object.isRequired,
-
-        getTreeNode: PropTypes.func,
-        onNodeToggle: PropTypes.func,
-        onNodeClick: PropTypes.func,
-        onNodeFocus: PropTypes.func,
-        onNodeDrag: PropTypes.func,
-        onNodeEndDrag: PropTypes.func,
-        onNodeDrop: PropTypes.func
-    };
-
-    componentDidMount() {
-        // Always request scroll on first render if given node is focused
-        if (this.props.isFocused) {
-            this.setState({
-                shouldScrollIntoView: true
-            });
+    // Always request scroll on first render if given node is focused
+    useEffect(() => {
+        if (isFocused) {
+            setShouldScrollIntoView(true);
         }
-    }
+    }, [isFocused]);
 
-    UNSAFE_componentWillReceiveProps(nextProps) {
-        // If focused node changed
-        if (this.props.isFocused !== nextProps.isFocused) {
-            // And it is the current node
-            if (nextProps.isFocused) {
-                // Request scrolling itself into view
-                this.setState({
-                    shouldScrollIntoView: true
-                });
-            }
-        }
-    }
-
-    componentDidUpdate() {
-        this.scrollFocusedNodeIntoView();
-    }
-
-    scrollFocusedNodeIntoView() {
-        if (this.state.shouldScrollIntoView && this.domNode) {
-            const scrollingElement = findScrollingParent(this.domNode);
+    // Scroll focused node into view
+    useEffect(() => {
+        if (shouldScrollIntoView && domNodeRef.current) {
+            const scrollingElement = findScrollingParent(domNodeRef.current);
             if (scrollingElement) {
-                const nodeTopPosition = this.domNode.getBoundingClientRect().top;
+                const nodeTopPosition = domNodeRef.current.getBoundingClientRect().top;
                 const offset = 50;
                 const scrollingElementPosition = scrollingElement.getBoundingClientRect();
                 const nodeIsNotInView = nodeTopPosition < scrollingElementPosition.top + offset || nodeTopPosition > scrollingElementPosition.bottom - offset;
                 if (nodeIsNotInView) {
                     scrollingElement.scrollIntoView({behavior: 'smooth', block: 'nearest', inline: 'nearest'});
                 }
-                this.setState({
-                    shouldScrollIntoView: false
-                });
+                setShouldScrollIntoView(false);
             }
         }
-    }
+    }, [shouldScrollIntoView]);
 
-    accepts = mode => {
-        const {node, currentlyDraggedNodes, canBeInsertedAlongside, canBeInsertedInto} = this.props;
+    const accepts = useCallback(mode => {
         const canBeInserted = mode === 'into' ? canBeInsertedInto : canBeInsertedAlongside;
-
         return currentlyDraggedNodes.length > 0 && canBeInserted && !currentlyDraggedNodes.includes(getContextPath(node));
-    }
+    }, [node, currentlyDraggedNodes, canBeInsertedAlongside, canBeInsertedInto]);
 
-    handleNodeDrag = () => {
-        const {node, onNodeDrag} = this.props;
-
+    const handleNodeDrag = useCallback(() => {
         onNodeDrag(node);
-    }
+    }, [node, onNodeDrag]);
 
-    handleNodeEndDrag = () => {
-        const {node, onNodeEndDrag} = this.props;
-
+    const handleNodeEndDrag = useCallback(() => {
         onNodeEndDrag(node);
-    }
+    }, [node, onNodeEndDrag]);
 
-    handleNodeDrop = position => {
-        const {node, onNodeDrop} = this.props;
-
+    const handleNodeDrop = useCallback(position => {
         onNodeDrop(node, position);
-    }
+    }, [node, onNodeDrop]);
 
-    getIcon() {
-        const {node, nodeTypesRegistry} = this.props;
+    const getIcon = useCallback(() => {
         const nodeType = node?.nodeType;
-
         return nodeTypesRegistry.get(nodeType)?.ui?.icon;
-    }
+    }, [node, nodeTypesRegistry]);
 
     /**
      * This function will render some additons to the nodetype icon
      * if the page is (currently) hidden
      */
-    getCustomIconComponent() {
-        const {node} = this.props;
-
+    const getCustomIconComponent = useCallback(() => {
         const isDisabled = node?.properties?._hidden;
         const hasTimeableNodeVisibility = node?.properties?._hasTimeableNodeVisibility;
 
@@ -176,7 +137,7 @@ export default class Node extends PureComponent {
 
             return (
                 <span className="fa-layers fa-fw">
-                    <Icon icon={this.getIcon()} />
+                    <Icon icon={getIcon()} />
                     <Icon icon="circle" color={circleColor} transform="shrink-5 down-6 right-4" />
                     <Icon icon="clock" transform="shrink-9 down-6 right-4" />
                 </span>
@@ -185,7 +146,7 @@ export default class Node extends PureComponent {
         if (isDisabled) {
             return (
                 <span className="fa-layers fa-fw">
-                    <Icon icon={this.getIcon()} />
+                    <Icon icon={getIcon()} />
                     <Icon icon="circle" color="error" transform="shrink-3 down-6 right-4" />
                     <Icon icon="times" transform="shrink-7 down-6 right-4" />
                 </span>
@@ -193,171 +154,60 @@ export default class Node extends PureComponent {
         }
 
         return null;
-    }
+    }, [node, getIcon]);
 
-    getNodeTypeLabel() {
-        const {node, nodeTypesRegistry, i18nRegistry} = this.props;
+    const getNodeTypeLabel = useCallback(() => {
         const nodeType = node?.nodeType;
         const nodeTypeLabel = nodeTypesRegistry.get(nodeType)?.ui?.label;
         return i18nRegistry.translate(nodeTypeLabel, nodeTypeLabel);
-    }
+    }, [node, nodeTypesRegistry, i18nRegistry]);
 
-    isFocused() {
-        const {isFocused} = this.props;
-
+    const isFocusedNode = useCallback(() => {
         return isFocused;
-    }
+    }, [isFocused]);
 
-    isActive() {
-        const {isActive, isContentTreeNode} = this.props;
+    const isActiveNode = useCallback(() => {
         if (isContentTreeNode) {
-            return this.isFocused();
+            return isFocusedNode();
         }
         return isActive;
-    }
+    }, [isActive, isContentTreeNode, isFocusedNode]);
 
-    isCollapsed() {
-        const {node, toggledNodeContextPaths, rootNode, loadingDepth} = this.props;
-
+    const isCollapsedNode = useCallback(() => {
         const isToggled = toggledNodeContextPaths.includes(node.contextPath);
         return isNodeCollapsed(node, isToggled, rootNode, loadingDepth);
-    }
+    }, [node, toggledNodeContextPaths, rootNode, loadingDepth]);
 
-    isVisible() {
-        const {node, visibleContextPaths} = this.props;
+    const isVisibleNode = useCallback(() => {
         return !Array.isArray(visibleContextPaths) || visibleContextPaths.includes(node.contextPath);
-    }
+    }, [node, visibleContextPaths]);
 
-    isIntermediate() {
-        const {node, intermediateContextPaths} = this.props;
+    const isIntermediateNode = useCallback(() => {
         return intermediateContextPaths && intermediateContextPaths.includes(node.contextPath);
-    }
+    }, [node, intermediateContextPaths]);
 
-    isLoading() {
-        const {node, loadingNodeContextPaths} = this.props;
-
+    const isLoadingNode = useCallback(() => {
         return loadingNodeContextPaths ? loadingNodeContextPaths.includes(node.contextPath) : false;
-    }
+    }, [node, loadingNodeContextPaths]);
 
-    hasError() {
-        const {node, errorNodeContextPaths} = this.props;
-
+    const hasErrorNode = useCallback(() => {
         return errorNodeContextPaths ? errorNodeContextPaths.includes(node.contextPath) : false;
-    }
+    }, [node, errorNodeContextPaths]);
 
-    getDragAndDropContext() {
+    const getDragAndDropContext = useCallback(() => {
         return {
-            onDrag: this.handleNodeDrag,
-            onEndDrag: this.handleNodeEndDrag,
-            onDrop: this.handleNodeDrop,
-            accepts: this.accepts
+            onDrag: handleNodeDrag,
+            onEndDrag: handleNodeEndDrag,
+            onDrop: handleNodeDrop,
+            accepts
         };
-    }
+    }, [handleNodeDrag, handleNodeEndDrag, handleNodeDrop, accepts]);
 
-    render() {
-        const {
-            ChildRenderer,
-            node,
-            nodeDndType,
-            nodeTypeRole,
-            childNodes,
-            hasChildren,
-            isLastChild,
-            level,
-            onNodeToggle,
-            onNodeClick,
-            onNodeFocus,
-            onNodeDrag,
-            onNodeEndDrag,
-            onNodeDrop,
-            currentlyDraggedNodes,
-            isContentTreeNode,
-            focusedNodesContextPaths,
-            areFocusedNodesNestedInEachOther,
-            isWorkspaceReadOnly
-        } = this.props;
-
-        if (!this.isVisible()) {
-            return null;
-        }
-        const refHandler = div => {
-            this.domNode = div;
-        };
-        const childNodesCount = childNodes.length;
-
-        const labelIdentifier = (isContentTreeNode ? 'content-' : '') + 'treeitem-' + hashSum(node.contextPath) + '-label';
-
-        const directLink = (isContentTreeNode ? undefined : this.createDirectNodeLink());
-
-        const labelTitle = decodeLabel(node?.label) + ' (' + this.getNodeTypeLabel() + ')';
-
-        // Autocreated or we have nested nodes and the node that we are dragging belongs to the selection
-        // For read only workspaces we also forbid drag and drop
-        const dragForbidden = isWorkspaceReadOnly || node.isAutoCreated || (areFocusedNodesNestedInEachOther && focusedNodesContextPaths.includes(node.contextPath));
-
-        return (
-            <Tree.Node aria-expanded={this.isCollapsed() ? 'false' : 'true'} aria-labelledby={labelIdentifier}>
-                <span ref={refHandler}/>
-                <Tree.Node.Header
-                    labelIdentifier={labelIdentifier}
-                    id={node.contextPath}
-                    hasChildren={hasChildren}
-                    nodeDndType={nodeDndType}
-                    isLastChild={isLastChild}
-                    isCollapsed={this.isCollapsed()}
-                    isActive={this.isActive()}
-                    isFocused={this.isFocused()}
-                    isLoading={this.isLoading()}
-                    isDirty={this.props.isNodeDirty}
-                    isHidden={node?.properties?._hidden}
-                    isHiddenInIndex={node?.properties?._hiddenInIndex || this.isIntermediate()}
-                    isDragging={currentlyDraggedNodes.includes(node.contextPath)}
-                    hasError={this.hasError()}
-                    label={decodeLabel(node?.label)}
-                    icon={this.getIcon()}
-                    customIconComponent={this.getCustomIconComponent()}
-                    iconLabel={this.getNodeTypeLabel()}
-                    directLink={directLink}
-                    level={level}
-                    onToggle={this.handleNodeToggle}
-                    onClick={this.handleNodeClick}
-                    dragAndDropContext={this.getDragAndDropContext()}
-                    dragForbidden={dragForbidden}
-                    title={labelTitle}
-                    />
-                {this.isCollapsed() ? null : (
-                    <Tree.Node.Contents>
-                        {childNodes.filter(n => n).map((node, index) =>
-                            <ChildRenderer
-                                ChildRenderer={ChildRenderer}
-                                key={node.contextPath}
-                                node={node}
-                                nodeDndType={nodeDndType}
-                                nodeTypeRole={nodeTypeRole}
-                                onNodeToggle={onNodeToggle}
-                                onNodeClick={onNodeClick}
-                                onNodeFocus={onNodeFocus}
-                                onNodeDrag={onNodeDrag}
-                                onNodeEndDrag={onNodeEndDrag}
-                                onNodeDrop={onNodeDrop}
-                                currentlyDraggedNodes={currentlyDraggedNodes}
-                                isLastChild={index + 1 === childNodesCount}
-                                level={level + 1}
-                                />
-                        )}
-                    </Tree.Node.Contents>
-                )}
-            </Tree.Node>
-        );
-    }
-
-    handleNodeToggle = () => {
-        const {node, onNodeToggle} = this.props;
+    const handleNodeToggleClick = useCallback(() => {
         onNodeToggle(node.contextPath);
-    }
+    }, [node, onNodeToggle]);
 
-    handleNodeClick = e => {
-        const {node, onNodeFocus, onNodeClick, isFocused, reload} = this.props;
+    const handleNodeClickEvent = useCallback(e => {
         const metaKeyPressed = e.metaKey || e.ctrlKey;
         const shiftKeyPressed = e.shiftKey;
         const altKeyPressed = e.altKey;
@@ -368,22 +218,136 @@ export default class Node extends PureComponent {
         }
 
         // Append presetBaseNodeType param to src
-        const srcWithBaseNodeType = this.props.filterNodeType ? urlWithParams(
+        const srcWithBaseNodeType = filterNodeType ? urlWithParams(
             node?.uri,
-            {presetBaseNodeType: this.props.filterNodeType}
+            {presetBaseNodeType: filterNodeType}
         ) : node?.uri;
 
         onNodeFocus(node.contextPath, metaKeyPressed, altKeyPressed, shiftKeyPressed);
         onNodeClick(srcWithBaseNodeType, node.contextPath, metaKeyPressed, altKeyPressed, shiftKeyPressed);
-    }
+    }, [node, onNodeFocus, onNodeClick, isFocused, reload, filterNodeType]);
 
-    createDirectNodeLink = () => {
-        const {node} = this.props;
+    const createDirectNodeLink = useCallback(() => {
         const uri = new URL(window.location.href);
         uri.searchParams.set('node', node.contextPath);
         return uri.toString();
+    }, [node]);
+
+    if (!isVisibleNode()) {
+        return null;
     }
-}
+
+    const childNodesCount = childNodes.length;
+    const labelIdentifier = (isContentTreeNode ? 'content-' : '') + 'treeitem-' + hashSum(node.contextPath) + '-label';
+    const directLink = (isContentTreeNode ? undefined : createDirectNodeLink());
+    const labelTitle = decodeLabel(node?.label) + ' (' + getNodeTypeLabel() + ')';
+
+    // Autocreated or we have nested nodes and the node that we are dragging belongs to the selection
+    // For read only workspaces we also forbid drag and drop
+    const dragForbidden = isWorkspaceReadOnly || node.isAutoCreated || (areFocusedNodesNestedInEachOther && focusedNodesContextPaths.includes(node.contextPath));
+
+    return (
+        <Tree.Node aria-expanded={isCollapsedNode() ? 'false' : 'true'} aria-labelledby={labelIdentifier}>
+            <span ref={domNodeRef}/>
+            <Tree.Node.Header
+                labelIdentifier={labelIdentifier}
+                id={node.contextPath}
+                hasChildren={hasChildren}
+                nodeDndType={nodeDndType}
+                isLastChild={isLastChild}
+                isCollapsed={isCollapsedNode()}
+                isActive={isActiveNode()}
+                isFocused={isFocusedNode()}
+                isLoading={isLoadingNode()}
+                isDirty={isNodeDirty}
+                isHidden={node?.properties?._hidden}
+                isHiddenInIndex={node?.properties?._hiddenInIndex || isIntermediateNode()}
+                isDragging={currentlyDraggedNodes.includes(node.contextPath)}
+                hasError={hasErrorNode()}
+                label={decodeLabel(node?.label)}
+                icon={getIcon()}
+                customIconComponent={getCustomIconComponent()}
+                iconLabel={getNodeTypeLabel()}
+                directLink={directLink}
+                level={level}
+                onToggle={handleNodeToggleClick}
+                onClick={handleNodeClickEvent}
+                dragAndDropContext={getDragAndDropContext()}
+                dragForbidden={dragForbidden}
+                title={labelTitle}
+                />
+            {isCollapsedNode() ? null : (
+                <Tree.Node.Contents>
+                    {childNodes.filter(n => n).map((childNode, index) =>
+                        <ChildRenderer
+                            ChildRenderer={ChildRenderer}
+                            key={childNode.contextPath}
+                            node={childNode}
+                            nodeDndType={nodeDndType}
+                            nodeTypeRole={nodeTypeRole}
+                            onNodeToggle={onNodeToggle}
+                            onNodeClick={onNodeClick}
+                            onNodeFocus={onNodeFocus}
+                            onNodeDrag={onNodeDrag}
+                            onNodeEndDrag={onNodeEndDrag}
+                            onNodeDrop={onNodeDrop}
+                            currentlyDraggedNodes={currentlyDraggedNodes}
+                            isLastChild={index + 1 === childNodesCount}
+                            level={level + 1}
+                            />
+                    )}
+                </Tree.Node.Contents>
+            )}
+        </Tree.Node>
+    );
+};
+
+NodeComponent.propTypes = {
+    isContentTreeNode: PropTypes.bool,
+    rootNode: PropTypes.object,
+    loadingDepth: PropTypes.number,
+    ChildRenderer: PropTypes.func.isRequired,
+    node: PropTypes.object,
+    nodeDndType: PropTypes.string.isRequired,
+    nodeTypeRole: PropTypes.string,
+    currentlyDraggedNodes: PropTypes.array,
+    hasChildren: PropTypes.bool,
+    isLastChild: PropTypes.bool,
+    childNodes: PropTypes.array,
+    level: PropTypes.number.isRequired,
+    isActive: PropTypes.bool,
+    isFocused: PropTypes.bool,
+    toggledNodeContextPaths: PropTypes.array,
+    visibleContextPaths: PropTypes.array,
+    intermediateContextPaths: PropTypes.array,
+    loadingNodeContextPaths: PropTypes.array,
+    errorNodeContextPaths: PropTypes.array,
+    canBeInsertedAlongside: PropTypes.bool,
+    canBeInsertedInto: PropTypes.bool,
+    isNodeDirty: PropTypes.bool.isRequired,
+    areFocusedNodesNestedInEachOther: PropTypes.bool,
+    isWorkspaceReadOnly: PropTypes.bool,
+    nodeTypesRegistry: PropTypes.object.isRequired,
+    i18nRegistry: PropTypes.object.isRequired,
+    getTreeNode: PropTypes.func,
+    onNodeToggle: PropTypes.func,
+    onNodeClick: PropTypes.func,
+    onNodeFocus: PropTypes.func,
+    onNodeDrag: PropTypes.func,
+    onNodeEndDrag: PropTypes.func,
+    onNodeDrop: PropTypes.func,
+    focusedNodesContextPaths: PropTypes.array,
+    filterNodeType: PropTypes.string,
+    reload: PropTypes.func
+};
+
+const Node = connect(
+    state => ({
+        isWorkspaceReadOnly: selectors.CR.Workspaces.isWorkspaceReadOnlySelector(state)
+    })
+)(NodeComponent);
+
+export default Node;
 
 const withNodeTypeRegistryAndI18nRegistry = neos(globalRegistry => ({
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),

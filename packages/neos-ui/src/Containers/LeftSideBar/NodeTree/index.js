@@ -1,4 +1,4 @@
-import React, {PureComponent} from 'react';
+import React, {useState, useCallback} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
@@ -21,36 +21,30 @@ const ConnectedDragLayer = connect((state, {currentlyDraggedNodes}) => {
     };
 })(Tree.DragLayer);
 
-export default class NodeTree extends PureComponent {
-    static propTypes = {
-        ChildRenderer: PropTypes.func,
-        rootNode: PropTypes.object,
-        allowOpeningNodesInNewWindow: PropTypes.bool,
-        nodeTypeRole: PropTypes.string,
-        toggle: PropTypes.func,
-        collapseAll: PropTypes.func,
-        focus: PropTypes.func,
-        requestScrollIntoView: PropTypes.func,
-        setActiveContentCanvasSrc: PropTypes.func,
-        setActiveContentCanvasContextPath: PropTypes.func,
-        moveNodes: PropTypes.func,
-        allCollapsibleNodes: PropTypes.object,
-        loadingDepth: PropTypes.number,
-        i18nRegistry: PropTypes.object.isRequired
-    };
+const NodeTree = props => {
+    const {
+        ChildRenderer,
+        rootNode,
+        toggle,
+        collapseAll,
+        allCollapsibleNodes,
+        loadingDepth,
+        focus,
+        setActiveContentCanvasSrc,
+        setActiveContentCanvasContextPath,
+        requestScrollIntoView,
+        moveNodes,
+        focusedNodesContextPaths,
+        i18nRegistry
+    } = props;
 
-    state = {
-        currentlyDraggedNodes: []
-    };
+    const [currentlyDraggedNodes, setCurrentlyDraggedNodes] = useState([]);
 
-    handleToggle = contextPath => {
-        const {toggle} = this.props;
-
+    const handleToggle = useCallback(contextPath => {
         toggle(contextPath);
-    }
+    }, [toggle]);
 
-    handleCollapseAll = () => {
-        const {collapseAll, allCollapsibleNodes, rootNode, loadingDepth} = this.props
+    const handleCollapseAll = useCallback(() => {
         let nodeContextPaths = []
         const collapsedByDefaultNodesContextPaths = []
 
@@ -66,21 +60,18 @@ export default class NodeTree extends PureComponent {
         // Do not Collapse RootNode
         nodeContextPaths = nodeContextPaths.filter(i => i !== rootNode.contextPath);
         collapseAll(nodeContextPaths, collapsedByDefaultNodesContextPaths);
-    }
+    }, [collapseAll, allCollapsibleNodes, rootNode, loadingDepth]);
 
-    handleFocus = (contextPath, metaKeyPressed, altKeyPressed, shiftKeyPressed) => {
-        const {focus} = this.props;
-
+    const handleFocus = useCallback((contextPath, metaKeyPressed, altKeyPressed, shiftKeyPressed) => {
         if (altKeyPressed) {
             return;
         }
         const selectionMode = shiftKeyPressed ? SelectionModeTypes.RANGE_SELECT : (metaKeyPressed ? SelectionModeTypes.MULTIPLE_SELECT : SelectionModeTypes.SINGLE_SELECT);
 
         focus(contextPath, undefined, selectionMode);
-    }
+    }, [focus]);
 
-    handleClick = (src, contextPath, metaKeyPressed, altKeyPressed, shiftKeyPressed) => {
-        const {setActiveContentCanvasSrc, setActiveContentCanvasContextPath, requestScrollIntoView} = this.props;
+    const handleClick = useCallback((src, contextPath, metaKeyPressed, altKeyPressed, shiftKeyPressed) => {
         if (altKeyPressed) {
             window.open(window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port : '') + window.location.pathname + '?node=' + contextPath);
             return;
@@ -100,82 +91,90 @@ export default class NodeTree extends PureComponent {
         if (setActiveContentCanvasContextPath) {
             setActiveContentCanvasContextPath(contextPath);
         }
-    }
+    }, [requestScrollIntoView, setActiveContentCanvasSrc, setActiveContentCanvasContextPath]);
 
-    handleDrag = node => {
-        this.setState({
-            currentlyDraggedNodes:
-                this.props.focusedNodesContextPaths.includes(node.contextPath) ?
-                    this.props.focusedNodesContextPaths :
-                    [node.contextPath] // moving a node outside of focused nodes
-        });
-    }
+    const handleDrag = useCallback(node => {
+        setCurrentlyDraggedNodes(
+            focusedNodesContextPaths.includes(node.contextPath) ?
+                focusedNodesContextPaths :
+                [node.contextPath] // moving a node outside of focused nodes
+        );
+    }, [focusedNodesContextPaths]);
 
-    handeEndDrag = () => {
-        this.setState({
-            currentlyDraggedNodes: []
-        });
-    }
+    const handleEndDrag = useCallback(() => {
+        setCurrentlyDraggedNodes([]);
+    }, []);
 
-    handleDrop = (targetNode, position) => {
-        const {currentlyDraggedNodes} = this.state;
-        const {moveNodes, focus} = this.props;
+    const handleDrop = useCallback((targetNode, position) => {
         moveNodes(currentlyDraggedNodes, targetNode?.contextPath, position);
         // We need to refocus the tree, so all focus would be reset, because its context paths have changed while moving
         // Could be removed with the new CR
         focus(targetNode?.contextPath);
 
-        this.setState({
-            currentlyDraggedNodes: []
-        });
-    }
+        setCurrentlyDraggedNodes([]);
+    }, [currentlyDraggedNodes, moveNodes, focus]);
 
-    render() {
-        const {rootNode, ChildRenderer, i18nRegistry} = this.props;
-        if (!rootNode) {
-            return (
-                <div className={style.loader}>
-                    <Icon icon="spinner" spin={true} />
-                </div>
-            );
-        }
-
-        const classNames = mergeClassNames({
-            [style.pageTree]: true
-        });
-
+    if (!rootNode) {
         return (
-            <Tree className={classNames}>
-                <button
-                    onClick={this.handleCollapseAll}
-                    className={style.collapseAll}
-                    title={i18nRegistry.translate('Neos.Neos.Ui:Main:collapseAll')}
-                >
-                    <Icon className={style.collapseAllIcon} icon="compress-alt"/>
-                </button>
-                <ConnectedDragLayer
-                    nodeDndType={dndTypes.NODE}
-                    ChildRenderer={ChildRenderer}
-                    currentlyDraggedNodes={this.state.currentlyDraggedNodes}
-                />
-                <ChildRenderer
-                    ChildRenderer={ChildRenderer}
-                    nodeDndType={dndTypes.NODE}
-                    node={rootNode}
-                    level={1}
-                    onNodeToggle={this.handleToggle}
-                    onToggleChildren={this.handleToggleChildren}
-                    onNodeClick={this.handleClick}
-                    onNodeFocus={this.handleFocus}
-                    onNodeDrag={this.handleDrag}
-                    onNodeDrop={this.handleDrop}
-                    onNodeEndDrag={this.handeEndDrag}
-                    currentlyDraggedNodes={this.state.currentlyDraggedNodes}
-                />
-            </Tree>
+            <div className={style.loader}>
+                <Icon icon="spinner" spin={true} />
+            </div>
         );
     }
-}
+
+    const classNames = mergeClassNames({
+        [style.pageTree]: true
+    });
+
+    return (
+        <Tree className={classNames}>
+            <button
+                onClick={handleCollapseAll}
+                className={style.collapseAll}
+                title={i18nRegistry.translate('Neos.Neos.Ui:Main:collapseAll')}
+            >
+                <Icon className={style.collapseAllIcon} icon="compress-alt"/>
+            </button>
+            <ConnectedDragLayer
+                nodeDndType={dndTypes.NODE}
+                ChildRenderer={ChildRenderer}
+                currentlyDraggedNodes={currentlyDraggedNodes}
+            />
+            <ChildRenderer
+                ChildRenderer={ChildRenderer}
+                nodeDndType={dndTypes.NODE}
+                node={rootNode}
+                level={1}
+                onNodeToggle={handleToggle}
+                onNodeClick={handleClick}
+                onNodeFocus={handleFocus}
+                onNodeDrag={handleDrag}
+                onNodeDrop={handleDrop}
+                onNodeEndDrag={handleEndDrag}
+                currentlyDraggedNodes={currentlyDraggedNodes}
+            />
+        </Tree>
+    );
+};
+
+NodeTree.propTypes = {
+    ChildRenderer: PropTypes.func,
+    rootNode: PropTypes.object,
+    allowOpeningNodesInNewWindow: PropTypes.bool,
+    nodeTypeRole: PropTypes.string,
+    toggle: PropTypes.func,
+    collapseAll: PropTypes.func,
+    focus: PropTypes.func,
+    requestScrollIntoView: PropTypes.func,
+    setActiveContentCanvasSrc: PropTypes.func,
+    setActiveContentCanvasContextPath: PropTypes.func,
+    moveNodes: PropTypes.func,
+    allCollapsibleNodes: PropTypes.object,
+    loadingDepth: PropTypes.number,
+    i18nRegistry: PropTypes.object.isRequired
+};
+
+export default NodeTree;
 
 const withNodeTypeRegistryAndI18nRegistry = neos(globalRegistry => ({
     nodeTypesRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository'),

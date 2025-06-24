@@ -204,7 +204,7 @@ export default class ShallowDropDownContents extends PureComponent<ShallowDropDo
         window.removeEventListener('resize', this.recalculateStyle, {capture: true});
     }
 
-    public render(): JSX.Element | null {
+    public render(): any {
         const {
             id,
             className,

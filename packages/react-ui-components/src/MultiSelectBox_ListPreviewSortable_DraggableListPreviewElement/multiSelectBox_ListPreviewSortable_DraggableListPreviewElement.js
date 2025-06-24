@@ -1,8 +1,8 @@
 /* eslint-disable camelcase, react/jsx-pascal-case */
-import React, {PureComponent} from 'react';
+import React, {useRef} from 'react';
 import PropTypes from 'prop-types';
 import mergeClassNames from 'classnames';
-import {DragSource, DropTarget} from 'react-dnd';
+import {useDrag, useDrop} from 'react-dnd';
 
 /**
  * **MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement is an internal implementation detail of MultiSelectBox**, meant to improve code quality.
@@ -42,127 +42,167 @@ const spec = {
     }
 };
 
-@DragSource(({dndType}) => dndType, {
-    beginDrag(props) {
-        return {
-            index: props.index
-        };
-    },
-    canDrag({values, disabled, allowDragging}) {
-        return allowDragging && !disabled && (values && values.length > 1);
-    }
-}, (connect, monitor) => ({
-    connectDragSource: connect.dragSource(),
-    isDragging: monitor.isDragging()
-}))
-@DropTarget(({dndType}) => dndType, spec, connect => ({
-    connectDropTarget: connect.dropTarget()
-}))
-export default class MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement extends PureComponent {
-    static propTypes = {
-        // For explanations of the PropTypes, see MultiSelectBox.js
-        option: PropTypes.shape({
-        }),
-        values: PropTypes.arrayOf(PropTypes.string),
-        disabled: PropTypes.bool,
-        allowDragging: PropTypes.bool,
+const MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement = props => {
+    const {
+        option,
+        disabled,
+        allowDragging,
+        dndType,
+        isDragging,
+        InnerListPreviewElement,
+        theme,
+        values,
+        onRemoveItem,
+        index,
+        IconButton,
+        onItemClick,
+        onMoveSelectedValue,
+        onSelectedValueWasMoved
+    } = props;
 
-        // Drag&Drop specific propTypes
-        dndType: PropTypes.string.isRequired,
-        connectDragSource: PropTypes.func.isRequired,
-        connectDropTarget: PropTypes.func.isRequired,
-        isDragging: PropTypes.bool.isRequired,
+    const nodeRef = useRef(null);
 
-        // API with MultiSelectBox_ListPreviewSortable
-        InnerListPreviewElement: PropTypes.any.isRequired,
-        onMoveSelectedValue: PropTypes.func.isRequired,
-        onSelectedValueWasMoved: PropTypes.func.isRequired,
-        onRemoveItem: PropTypes.func.isRequired,
-        onItemClick: PropTypes.func,
-        index: PropTypes.number.isRequired,
+    const [{isDragging: dragging}, dragRef] = useDrag({
+        type: dndType,
+        item: () => {
+            return {
+                index
+            };
+        },
+        canDrag: () => allowDragging && !disabled && (values && values.length > 1),
+        collect: monitor => ({
+            isDragging: monitor.isDragging()
+        })
+    });
 
-        // Dependency Injection & Theme
-        theme: PropTypes.shape({
-            'selectedOptions__item': PropTypes.string,
-            'selectedOptions__item--draggable': PropTypes.string,
-            'selectedOption__removeButton': PropTypes.string,
-            'selectedOption__moveButton': PropTypes.string
-        }).isRequired,
-        Icon: PropTypes.any.isRequired,
-        IconButton: PropTypes.any.isRequired
-    }
+    const [, dropRef] = useDrop({
+        accept: dndType,
+        hover: (item, monitor) => {
+            const dragIndex = item.index;
+            const hoverIndex = index;
 
-    handleClick = () => {
-        const {onItemClick, option} = this.props;
+            if (dragIndex === hoverIndex) {
+                return;
+            }
 
+            if (!nodeRef.current) {
+                return;
+            }
+
+            const hoverBoundingRect = nodeRef.current.getBoundingClientRect();
+            const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+            const clientOffset = monitor.getClientOffset();
+            const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+
+            if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+                return;
+            }
+
+            if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+                return;
+            }
+
+            onMoveSelectedValue(dragIndex, hoverIndex);
+
+            // Note: we're mutating the monitor item here!
+            // Generally it's better to avoid mutations,
+            // but it's good here for the sake of performance
+            // to avoid expensive index searches.
+            item.index = hoverIndex;
+        },
+        drop: () => {
+            onSelectedValueWasMoved();
+        }
+    });
+
+    const handleClick = () => {
         if (onItemClick) {
             onItemClick(option);
         }
-    }
+    };
 
-    render() {
-        const {
-            option,
-            disabled,
-            allowDragging,
-            connectDragSource,
-            connectDropTarget,
-            isDragging,
-            InnerListPreviewElement,
-            theme,
-            values,
-            onRemoveItem,
-            index,
-            IconButton,
-            onItemClick
-        } = this.props;
+    // TODO Loading State: const {icon, label} = option || {label: `[Loading ${value}]`};
 
-        // TODO Loading State: const {icon, label} = option || {label: `[Loading ${value}]`};
+    const isDraggable = allowDragging && !disabled && (values && values.length > 1);
 
-        const isDraggable = allowDragging && !disabled && (values && values.length > 1);
+    const finalClassNames = mergeClassNames({
+        [theme.selectedOptions__item]: true,
+        [theme['selectedOptions__item--draggable']]: isDraggable
+    });
+    const opacity = dragging ? 0 : 1;
 
-        const finalClassNames = mergeClassNames({
-            [theme.selectedOptions__item]: true,
-            [theme['selectedOptions__item--draggable']]: isDraggable
-        });
-        const opacity = isDragging ? 0 : 1;
+    const handleRemoveItem = () => disabled ? null : onRemoveItem(index);
 
-        const refName = node => {
-            this.node = node;
-        };
+    // Connect the drag and drop refs
+    const dragDropRef = ref => {
+        dragRef(ref);
+        dropRef(ref);
+    };
 
-        const handleRemoveItem = () => disabled ? null : onRemoveItem(index);
-
-        return connectDragSource(connectDropTarget(
-            <li style={{opacity}} ref={refName}>
-                <div className={finalClassNames}>
-                    {isDraggable && (
-                        <IconButton
-                            icon={'grip-lines-vertical'}
-                            className={theme.selectedOption__moveButton}
-                            hoverStyle={'clean'}
-                            />
-                    )}
-                    {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
-                    <div
-                        className={theme.selectedOptions__innerPreview}
-                        onClick={onItemClick ? this.handleClick : null}
-                        role={onItemClick ? 'button' : null}
-                    >
-                        <InnerListPreviewElement
-                            {...this.props}
-                            isHighlighted={false}
-                            option={option}
-                            />
-                    </div>
+    return (
+        <li style={{opacity}} ref={node => {
+            nodeRef.current = node;
+            dragDropRef(node);
+        }}>
+            <div className={finalClassNames}>
+                {isDraggable && (
                     <IconButton
-                        disabled={disabled}
-                        icon={'close'}
-                        onClick={handleRemoveItem}
-                        className={theme.selectedOption__removeButton}
+                        icon={'grip-lines-vertical'}
+                        className={theme.selectedOption__moveButton}
+                        hoverStyle={'clean'}
+                        />
+                )}
+                {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
+                <div
+                    className={theme.selectedOptions__innerPreview}
+                    onClick={onItemClick ? handleClick : null}
+                    role={onItemClick ? 'button' : null}
+                >
+                    <InnerListPreviewElement
+                        {...props}
+                        isHighlighted={false}
+                        option={option}
                         />
                 </div>
-            </li>
-        ));
-    }
-}
+                <IconButton
+                    disabled={disabled}
+                    icon={'close'}
+                    onClick={handleRemoveItem}
+                    className={theme.selectedOption__removeButton}
+                    />
+            </div>
+        </li>
+    );
+};
+
+MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement.propTypes = {
+    // For explanations of the PropTypes, see MultiSelectBox.js
+    option: PropTypes.shape({
+    }),
+    values: PropTypes.arrayOf(PropTypes.string),
+    disabled: PropTypes.bool,
+    allowDragging: PropTypes.bool,
+
+    // Drag&Drop specific propTypes
+    dndType: PropTypes.string.isRequired,
+
+    // API with MultiSelectBox_ListPreviewSortable
+    InnerListPreviewElement: PropTypes.any.isRequired,
+    onMoveSelectedValue: PropTypes.func.isRequired,
+    onSelectedValueWasMoved: PropTypes.func.isRequired,
+    onRemoveItem: PropTypes.func.isRequired,
+    onItemClick: PropTypes.func,
+    index: PropTypes.number.isRequired,
+
+    // Dependency Injection & Theme
+    theme: PropTypes.shape({
+        'selectedOptions__item': PropTypes.string,
+        'selectedOptions__item--draggable': PropTypes.string,
+        'selectedOption__removeButton': PropTypes.string,
+        'selectedOption__moveButton': PropTypes.string
+    }).isRequired,
+    Icon: PropTypes.any.isRequired,
+    IconButton: PropTypes.any.isRequired
+};
+
+export default MultiSelectBox_ListPreviewSortable_DraggableListPreviewElement;

@@ -182,7 +182,7 @@ class DialogWithOverlay extends PureComponent<DialogProps> {
         dialogManager.forget(this.dialog);
     }
 
-    public render(): JSX.Element | null {
+    public render(): any {
         /* eslint-disable @typescript-eslint/no-unused-vars */
         const {
             className,

@@ -14,7 +14,7 @@ import {connect} from 'react-redux';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
 import {neos} from '@neos-project/neos-ui-decorators';
-import {WorkspaceStatus} from '@neos-project/neos-ts-interfaces';
+import {GlobalRegistry, WorkspaceStatus} from '@neos-project/neos-ts-interfaces';
 import type {I18nRegistry} from '@neos-project/neos-ui-i18n';
 import {Button} from '@neos-project/react-ui-components';
 
@@ -40,7 +40,7 @@ type WorkspaceSyncPropsFromNeosGlobals = {
     i18nRegistry: I18nRegistry;
 };
 
-const withNeosGlobals = neos((globalRegistry): WorkspaceSyncPropsFromNeosGlobals => ({
+const withNeosGlobals = neos((globalRegistry: GlobalRegistry): WorkspaceSyncPropsFromNeosGlobals => ({
     i18nRegistry: globalRegistry.get('i18n')
 }));
 

@@ -136,11 +136,6 @@
 .ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected .ck-widget__selection-handle,.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected .ck-widget__selection-handle:hover,.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected:hover .ck-widget__selection-handle,.ck-editor__editable.ck-blurred .ck-widget.ck-widget_selected:hover .ck-widget__selection-handle:hover{
     background:var(--ck-color-widget-blurred-border)
 }
-.ck-editor__editable.ck-editor__nested-editable.ck-editor__editable_selected,
-.ck-editor__editable.ck-editor__nested-editable.ck-editor__nested-editable-focus {
-	border: 2px solid var(--ck-color-focus-border);
-	background-color: var(--ck-color-table-focused-cell-background);
-}
 :root{
     --ck-color-table-focused-cell-background:#f5fafe
 }

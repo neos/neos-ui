@@ -15,12 +15,15 @@ declare(strict_types=1);
 namespace Neos\Neos\Ui\Infrastructure\ESCR;
 
 use Neos\ContentRepository\Core\DimensionSpace\DimensionSpacePoint;
+use Neos\ContentRepository\Core\Projection\ContentGraph\VisibilityConstraints;
 use Neos\ContentRepository\Core\SharedModel\ContentRepository\ContentRepositoryId;
 use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Domain\NodeLabel\NodeLabelGeneratorInterface;
 use Neos\Neos\Domain\SubtreeTagging\NeosVisibilityConstraints;
+use Neos\Neos\PendingChangesProjection\ChangeFinder;
+use Neos\Neos\PendingChangesProjection\ChangeProjection;
 
 /**
  * @internal
@@ -41,17 +44,25 @@ final class NodeServiceFactory
     ): NodeService {
         $contentRepository = $this->contentRepositoryRegistry
             ->get($contentRepositoryId);
-        $subgraph = $contentRepository
-            ->getContentGraph($workspaceName)
+        $contentGraph = $contentRepository->getContentGraph($workspaceName);
+        $subgraph = $contentGraph
             ->getSubgraph(
                 $dimensionSpacePoint,
-                NeosVisibilityConstraints::excludeRemoved()
+                VisibilityConstraints::createEmpty()
             );
+
+        $changeFinder = $contentRepository->projectionState(ChangeFinder::class);
+        $changes = $changeFinder->findByContentStreamId($contentGraph->getContentStreamId());
+        $pendingChanges = NodeChangeStateCollection::create(
+            $changes,
+            $dimensionSpacePoint,
+        );
 
         return new NodeService(
             contentRepository: $contentRepository,
             subgraph: $subgraph,
             nodeLabelGenerator: $this->nodeLabelGenerator,
+            pendingChanges: $pendingChanges,
         );
     }
 }

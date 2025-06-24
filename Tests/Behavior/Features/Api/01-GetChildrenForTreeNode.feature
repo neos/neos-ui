@@ -148,7 +148,10 @@ Feature: GetChildrenForTreeNode
                        "isMatchedByFilter": true,
                        "label": "My Node: features",
                        "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"features\"}",
-                       "nodeTypeLabel": "My Document Type"
+                       "nodeTypeLabel": "My Document Type",
+                       "isCreated": false,
+                       "isModified": false,
+                       "isRemoved": false
                    },
                    {
                        "children": [],
@@ -160,7 +163,10 @@ Feature: GetChildrenForTreeNode
                        "isMatchedByFilter": true,
                        "label": "My Node: linkable",
                        "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"linkable\"}",
-                       "nodeTypeLabel": "My Document Type"
+                       "nodeTypeLabel": "My Document Type",
+                       "isCreated": false,
+                       "isModified": false,
+                       "isRemoved": false
                    }
                ]
           }
@@ -209,7 +215,10 @@ Feature: GetChildrenForTreeNode
                        "isMatchedByFilter": true,
                        "label": "My Node: a",
                        "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"feature-a-multi-dsp\"}",
-                       "nodeTypeLabel": "My Document Type"
+                       "nodeTypeLabel": "My Document Type",
+                       "isCreated": false,
+                       "isModified": false,
+                       "isRemoved": false
                    },
                    {
                        "children": [],
@@ -221,7 +230,10 @@ Feature: GetChildrenForTreeNode
                        "isMatchedByFilter": true,
                        "label": "My Node: b",
                        "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"feature-b-disabled\"}",
-                       "nodeTypeLabel": "My Document Type"
+                       "nodeTypeLabel": "My Document Type",
+                       "isCreated": false,
+                       "isModified": false,
+                       "isRemoved": false
                    },
                    {
                        "children": [],
@@ -233,7 +245,10 @@ Feature: GetChildrenForTreeNode
                        "isMatchedByFilter": true,
                        "label": "My Other Node",
                        "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"feature-c-other-type\"}",
-                       "nodeTypeLabel": "My Other Document Type"
+                       "nodeTypeLabel": "My Other Document Type",
+                       "isCreated": false,
+                       "isModified": false,
+                       "isRemoved": false
                    }
                ]
           }
@@ -264,7 +279,10 @@ Feature: GetChildrenForTreeNode
                        "isMatchedByFilter": true,
                        "label": "My Other Node",
                        "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"feature-c-other-type\"}",
-                       "nodeTypeLabel": "My Other Document Type"
+                       "nodeTypeLabel": "My Other Document Type",
+                       "isCreated": false,
+                       "isModified": false,
+                       "isRemoved": false
                    }
                ]
           }
@@ -295,7 +313,10 @@ Feature: GetChildrenForTreeNode
                        "isMatchedByFilter": true,
                        "label": "My Node: a (de)",
                        "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"de\"},\"aggregateId\":\"feature-a-multi-dsp\"}",
-                       "nodeTypeLabel": "My Document Type"
+                       "nodeTypeLabel": "My Document Type",
+                       "isCreated": false,
+                       "isModified": false,
+                       "isRemoved": false
                    }
                ]
           }
@@ -326,7 +347,10 @@ Feature: GetChildrenForTreeNode
                        "isMatchedByFilter": true,
                        "label": "My Node: a",
                        "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"linkable-a-default\"}",
-                       "nodeTypeLabel": "My Document Type"
+                       "nodeTypeLabel": "My Document Type",
+                       "isCreated": false,
+                       "isModified": false,
+                       "isRemoved": false
                    },
                    {
                        "children": [],
@@ -338,7 +362,10 @@ Feature: GetChildrenForTreeNode
                        "isMatchedByFilter": true,
                        "label": "My Node: b",
                        "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"linkable-b-included\"}",
-                       "nodeTypeLabel": "My Included Document Type"
+                       "nodeTypeLabel": "My Included Document Type",
+                       "isCreated": false,
+                       "isModified": false,
+                       "isRemoved": false
                    },
                    {
                        "children": [],
@@ -350,7 +377,10 @@ Feature: GetChildrenForTreeNode
                        "isMatchedByFilter": true,
                        "label": "My Node: c",
                        "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"linkable-c-excluded\"}",
-                       "nodeTypeLabel": "My Excluded Document Type"
+                       "nodeTypeLabel": "My Excluded Document Type",
+                       "isCreated": false,
+                       "isModified": false,
+                       "isRemoved": false
                    }
                ]
           }

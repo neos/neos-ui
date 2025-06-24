@@ -24,7 +24,6 @@ use Neos\Neos\Ui\Infrastructure\ESCR\NodeService;
 use Neos\Neos\Ui\Infrastructure\ESCR\NodeServiceFactory;
 use Neos\Neos\Ui\Infrastructure\ESCR\NodeTypeService;
 use Neos\Neos\Ui\Infrastructure\ESCR\NodeTypeServiceFactory;
-use Sitegeist\Archaeopteryx\Application\GetTree\StartingPointWasNotFound;
 
 /**
  * @internal

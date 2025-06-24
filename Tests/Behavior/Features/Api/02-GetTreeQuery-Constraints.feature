@@ -54,7 +54,7 @@ Feature: GetTreeQuery Constraints
           "error": {
               "code": 1745436877,
               "message": "The starting point node id \"non-existing\" does not exist in subgraph: {\n    \"contentRepositoryId\": \"default\",\n    \"workspaceName\": \"live\",\n    \"dimensionSpacePoint\": {\n        \"language\": \"en\"\n    }\n}",
-              "type": "Sitegeist\\Archaeopteryx\\Application\\GetTree\\StartingPointWasNotFound"
+              "type": "Neos\\Neos\\Ui\\Application\\GetTree\\StartingPointWasNotFound"
           }
       }
       """

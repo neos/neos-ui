@@ -143,7 +143,10 @@ Feature: GetTreeQuery
                   "isMatchedByFilter": true,
                   "label": "Homepage site-a",
                   "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"homepage\"}",
-                  "nodeTypeLabel": "Home Page Type"
+                  "nodeTypeLabel": "Home Page Type",
+                  "isCreated": false,
+                  "isModified": false,
+                  "isRemoved": false
               }
           }
       }
@@ -175,7 +178,10 @@ Feature: GetTreeQuery
                       "isMatchedByFilter": true,
                       "label": "Homepage site-a",
                       "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"homepage\"}",
-                      "nodeTypeLabel": "Home Page Type"
+                      "nodeTypeLabel": "Home Page Type",
+                      "isCreated": false,
+                      "isModified": false,
+                      "isRemoved": false
                     }
                   ],
                   "hasScheduledDisabledState": false,
@@ -186,7 +192,10 @@ Feature: GetTreeQuery
                   "isMatchedByFilter": true,
                   "label": "Neos.Neos:Sites",
                   "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"sites\"}",
-                  "nodeTypeLabel": ""
+                  "nodeTypeLabel": "",
+                  "isCreated": false,
+                  "isModified": false,
+                  "isRemoved": false
               }
           }
       }
@@ -219,7 +228,10 @@ Feature: GetTreeQuery
                            "isMatchedByFilter": true,
                            "label": "My Node: features",
                            "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"features\"}",
-                           "nodeTypeLabel": "My Document Type"
+                           "nodeTypeLabel": "My Document Type",
+                           "isCreated": false,
+                           "isModified": false,
+                           "isRemoved": false
                        },
                        {
                            "children": [],
@@ -231,7 +243,10 @@ Feature: GetTreeQuery
                            "isMatchedByFilter": true,
                            "label": "My Node: search",
                            "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"search\"}",
-                           "nodeTypeLabel": "My Document Type"
+                           "nodeTypeLabel": "My Document Type",
+                           "isCreated": false,
+                           "isModified": false,
+                           "isRemoved": false
                        }
                   ],
                   "hasScheduledDisabledState": false,
@@ -242,7 +257,10 @@ Feature: GetTreeQuery
                   "isMatchedByFilter": true,
                   "label": "Homepage site-a",
                   "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"homepage\"}",
-                  "nodeTypeLabel": "Home Page Type"
+                  "nodeTypeLabel": "Home Page Type",
+                  "isCreated": false,
+                  "isModified": false,
+                  "isRemoved": false
               }
           }
       }
@@ -272,7 +290,10 @@ Feature: GetTreeQuery
                   "isMatchedByFilter": true,
                   "label": "My Node: a1",
                   "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"feature-a1-default\"}",
-                  "nodeTypeLabel": "My Document Type"
+                  "nodeTypeLabel": "My Document Type",
+                  "isCreated": false,
+                  "isModified": false,
+                  "isRemoved": false
               }
           }
       }
@@ -305,7 +326,10 @@ Feature: GetTreeQuery
                               "isMatchedByFilter": true,
                               "label": "My Node: a1",
                               "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"feature-a1-default\"}",
-                              "nodeTypeLabel": "My Document Type"
+                              "nodeTypeLabel": "My Document Type",
+                              "isCreated": false,
+                              "isModified": false,
+                              "isRemoved": false
                            },{
                               "children": [],
                               "hasScheduledDisabledState": false,
@@ -316,7 +340,10 @@ Feature: GetTreeQuery
                               "isMatchedByFilter": true,
                               "label": "My Node: a2",
                               "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"feature-a2-default\"}",
-                              "nodeTypeLabel": "My Document Type"
+                              "nodeTypeLabel": "My Document Type",
+                              "isCreated": false,
+                              "isModified": false,
+                              "isRemoved": false
                            }],
                            "hasScheduledDisabledState": false,
                            "hasUnloadedChildren": false,
@@ -326,7 +353,10 @@ Feature: GetTreeQuery
                            "isMatchedByFilter": true,
                            "label": "My Node: a",
                            "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"feature-a-default\"}",
-                           "nodeTypeLabel": "My Document Type"
+                           "nodeTypeLabel": "My Document Type",
+                           "isCreated": false,
+                           "isModified": false,
+                           "isRemoved": false
                        },
                        {
                            "children": [],
@@ -338,7 +368,10 @@ Feature: GetTreeQuery
                            "isMatchedByFilter": true,
                            "label": "My Node: b",
                            "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"feature-b-disabled\"}",
-                           "nodeTypeLabel": "My Document Type"
+                           "nodeTypeLabel": "My Document Type",
+                           "isCreated": false,
+                           "isModified": false,
+                           "isRemoved": false
                        },
                        {
                            "children": [{
@@ -351,7 +384,10 @@ Feature: GetTreeQuery
                               "isMatchedByFilter": true,
                               "label": "My Node: c1",
                               "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"feature-c1-default\"}",
-                              "nodeTypeLabel": "My Document Type"
+                              "nodeTypeLabel": "My Document Type",
+                              "isCreated": false,
+                              "isModified": false,
+                              "isRemoved": false
                            }],
                            "hasScheduledDisabledState": false,
                            "hasUnloadedChildren": false,
@@ -361,7 +397,10 @@ Feature: GetTreeQuery
                            "isMatchedByFilter": true,
                            "label": "My Other Node",
                            "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"feature-c-other-type\"}",
-                           "nodeTypeLabel": "My Other Document Type"
+                           "nodeTypeLabel": "My Other Document Type",
+                           "isCreated": false,
+                           "isModified": false,
+                           "isRemoved": false
                        },
                        {
                            "children": [],
@@ -373,7 +412,10 @@ Feature: GetTreeQuery
                            "isMatchedByFilter": true,
                            "label": "My Node: d",
                            "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"feature-d-multi-dsp\"}",
-                           "nodeTypeLabel": "My Document Type"
+                           "nodeTypeLabel": "My Document Type",
+                           "isCreated": false,
+                           "isModified": false,
+                           "isRemoved": false
                        }
                    ],
                    "hasScheduledDisabledState": false,
@@ -384,7 +426,10 @@ Feature: GetTreeQuery
                    "isMatchedByFilter": true,
                    "label": "My Node: features",
                    "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"features\"}",
-                   "nodeTypeLabel": "My Document Type"
+                   "nodeTypeLabel": "My Document Type",
+                   "isCreated": false,
+                   "isModified": false,
+                   "isRemoved": false
               }
           }
       }
@@ -416,7 +461,10 @@ Feature: GetTreeQuery
                            "isMatchedByFilter": true,
                            "label": "My Other Node",
                            "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"feature-c-other-type\"}",
-                           "nodeTypeLabel": "My Other Document Type"
+                           "nodeTypeLabel": "My Other Document Type",
+                           "isCreated": false,
+                           "isModified": false,
+                           "isRemoved": false
                        }
                   ],
                   "hasScheduledDisabledState": false,
@@ -427,7 +475,10 @@ Feature: GetTreeQuery
                   "isMatchedByFilter": false,
                   "label": "My Node: features",
                   "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"features\"}",
-                  "nodeTypeLabel": "My Document Type"
+                  "nodeTypeLabel": "My Document Type",
+                  "isCreated": false,
+                  "isModified": false,
+                  "isRemoved": false
               }
           }
       }
@@ -479,11 +530,20 @@ Feature: GetTreeQuery
                                   "isHiddenInMenu": false,
                                   "hasScheduledDisabledState": false,
                                   "hasUnloadedChildren": false,
-                                  "children": []
+                                  "children": [],
+                                  "isCreated": false,
+                                  "isModified": false,
+                                  "isRemoved": false
                               }
-                          ]
+                          ],
+                          "isCreated": false,
+                          "isModified": false,
+                          "isRemoved": false
                       }
-                  ]
+                  ],
+                  "isCreated": false,
+                  "isModified": false,
+                  "isRemoved": false
               }
           }
       }
@@ -524,7 +584,10 @@ Feature: GetTreeQuery
                           "isHiddenInMenu": false,
                           "hasScheduledDisabledState": false,
                           "hasUnloadedChildren": false,
-                          "children": []
+                          "children": [],
+                          "isCreated": false,
+                          "isModified": false,
+                          "isRemoved": false
                       },
                       {
                           "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"search-a-default\"}",
@@ -547,7 +610,10 @@ Feature: GetTreeQuery
                                   "isHiddenInMenu": false,
                                   "hasScheduledDisabledState": false,
                                   "hasUnloadedChildren": false,
-                                  "children": []
+                                  "children": [],
+                                  "isCreated": false,
+                                  "isModified": false,
+                                  "isRemoved": false
                               },
                               {
                                   "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"search-a3-other-text\"}",
@@ -559,11 +625,20 @@ Feature: GetTreeQuery
                                   "isHiddenInMenu": false,
                                   "hasScheduledDisabledState": false,
                                   "hasUnloadedChildren": false,
-                                  "children": []
+                                  "children": [],
+                                  "isCreated": false,
+                                  "isModified": false,
+                                  "isRemoved": false
                               }
-                          ]
+                          ],
+                          "isCreated": false,
+                          "isModified": false,
+                          "isRemoved": false
                       }
-                  ]
+                  ],
+                  "isCreated": false,
+                  "isModified": false,
+                  "isRemoved": false
               }
           }
         }
@@ -604,7 +679,10 @@ Feature: GetTreeQuery
                           "isHiddenInMenu": false,
                           "hasScheduledDisabledState": false,
                           "hasUnloadedChildren": false,
-                          "children": []
+                          "children": [],
+                          "isCreated": false,
+                          "isModified": false,
+                          "isRemoved": false
                       },
                       {
                           "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"search-a-default\"}",
@@ -627,11 +705,20 @@ Feature: GetTreeQuery
                                   "isHiddenInMenu": false,
                                   "hasScheduledDisabledState": false,
                                   "hasUnloadedChildren": false,
-                                  "children": []
+                                  "children": [],
+                                  "isCreated": false,
+                                  "isModified": false,
+                                  "isRemoved": false
                               }
-                          ]
+                          ],
+                          "isCreated": false,
+                          "isModified": false,
+                          "isRemoved": false
                       }
-                  ]
+                  ],
+                  "isCreated": false,
+                  "isModified": false,
+                  "isRemoved": false
               }
           }
         }
@@ -683,11 +770,20 @@ Feature: GetTreeQuery
                                   "isHiddenInMenu": false,
                                   "hasScheduledDisabledState": false,
                                   "hasUnloadedChildren": false,
-                                  "children": []
+                                  "children": [],
+                                  "isCreated": false,
+                                  "isModified": false,
+                                  "isRemoved": false
                               }
-                          ]
+                          ],
+                          "isCreated": false,
+                          "isModified": false,
+                          "isRemoved": false
                       }
-                  ]
+                  ],
+                  "isCreated": false,
+                  "isModified": false,
+                  "isRemoved": false
               }
           }
         }
@@ -725,7 +821,10 @@ Feature: GetTreeQuery
                   "isMatchedByFilter": true,
                   "label": "My Node: a1",
                   "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"feature-a1-default\"}",
-                  "nodeTypeLabel": "My Document Type"
+                  "nodeTypeLabel": "My Document Type",
+                  "isCreated": false,
+                  "isModified": false,
+                  "isRemoved": false
               }
           }
       }
@@ -783,7 +882,10 @@ Feature: GetTreeQuery
                                 "isHiddenInMenu": false,
                                 "hasScheduledDisabledState": false,
                                 "hasUnloadedChildren": false,
-                                "children": []
+                                "children": [],
+                                "isCreated": false,
+                                "isModified": false,
+                                "isRemoved": false
                             },
                             {
                                 "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"feature-a2-default\"}",
@@ -795,9 +897,15 @@ Feature: GetTreeQuery
                                 "isHiddenInMenu": false,
                                 "hasScheduledDisabledState": false,
                                 "hasUnloadedChildren": false,
-                                "children": []
+                                "children": [],
+                                "isCreated": false,
+                                "isModified": false,
+                                "isRemoved": false
                             }
-                        ]
+                        ],
+                        "isCreated": false,
+                        "isModified": false,
+                        "isRemoved": false
                     },
                     {
                         "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"feature-b-disabled\"}",
@@ -809,7 +917,10 @@ Feature: GetTreeQuery
                         "isHiddenInMenu": false,
                         "hasScheduledDisabledState": false,
                         "hasUnloadedChildren": false,
-                        "children": []
+                        "children": [],
+                        "isCreated": false,
+                        "isModified": false,
+                        "isRemoved": false
                     },
                     {
                         "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"feature-c-other-type\"}",
@@ -821,7 +932,11 @@ Feature: GetTreeQuery
                         "isHiddenInMenu": false,
                         "hasScheduledDisabledState": false,
                         "hasUnloadedChildren": true,
-                        "children": []
+                        "children": [],
+                        "isCreated": false,
+                        "isModified": false,
+                        "isRemoved": false
+
                     },
                     {
                         "nodeAddress": "{\"contentRepositoryId\":\"default\",\"workspaceName\":\"live\",\"dimensionSpacePoint\":{\"language\":\"en\"},\"aggregateId\":\"feature-d-multi-dsp\"}",
@@ -833,9 +948,15 @@ Feature: GetTreeQuery
                         "isHiddenInMenu": false,
                         "hasScheduledDisabledState": false,
                         "hasUnloadedChildren": false,
-                        "children": []
+                        "children": [],
+                        "isCreated": false,
+                        "isModified": false,
+                        "isRemoved": false
                     }
-                ]
+                ],
+                "isCreated": false,
+                "isModified": false,
+                "isRemoved": false
             }
         }
       }

@@ -33,9 +33,11 @@ use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateId;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Domain\NodeLabel\NodeLabelGeneratorInterface;
 use Neos\Neos\Domain\SubtreeTagging\NeosSubtreeTag;
+use Neos\Neos\PendingChangesProjection\Changes;
 use Neos\Neos\Ui\Application\Shared\NodeTypeWasNotFound;
 use Neos\Neos\Ui\Application\Shared\NodeWasNotFound;
 use Neos\Neos\Ui\Application\Shared\TreeNodeBuilder;
+use Neos\Workspace\Ui\ViewModel\PendingChanges;
 
 /**
  * @internal
@@ -46,7 +48,8 @@ final class NodeService
     public function __construct(
         private readonly ContentRepository $contentRepository,
         public readonly ContentSubgraphInterface $subgraph,
-        private readonly NodeLabelGeneratorInterface $nodeLabelGenerator
+        private readonly NodeLabelGeneratorInterface $nodeLabelGenerator,
+        public readonly NodeChangeStateCollection $pendingChanges,
     ) {
     }
 
@@ -88,26 +91,30 @@ final class NodeService
 
     public function findParentNode(Node $node): ?Node
     {
-        return $this->subgraph->findParentNode($node->aggregateId);
+        $parent = $this->subgraph->findParentNode($node->aggregateId);
+        return $parent && $this->filterRemovedNodes($parent) ? $parent : null;
     }
 
     public function findPrecedingSiblingNodes(Node $node): Nodes
     {
         $filter = FindPrecedingSiblingNodesFilter::create();
 
-        return $this->subgraph->findPrecedingSiblingNodes($node->aggregateId, $filter);
+        return $this->subgraph->findPrecedingSiblingNodes($node->aggregateId, $filter)
+                              ->filter(fn (Node $node) => $this->filterRemovedNodes($node));
     }
 
     public function findSucceedingSiblingNodes(Node $node): Nodes
     {
         $filter = FindSucceedingSiblingNodesFilter::create();
 
-        return $this->subgraph->findSucceedingSiblingNodes($node->aggregateId, $filter);
+        return $this->subgraph->findSucceedingSiblingNodes($node->aggregateId, $filter)
+                              ->filter(fn (Node $node) => $this->filterRemovedNodes($node));
     }
 
     public function findNodeByAbsoluteNodePath(AbsoluteNodePath $path): ?Node
     {
-        return $this->subgraph->findNodeByAbsolutePath($path);
+        $node = $this->subgraph->findNodeByAbsolutePath($path);
+        return $node && $this->filterRemovedNodes($node) ? $node : null;
     }
 
     public function search(Node $rootNode, string $searchTerm, NodeTypeFilter $nodeTypeFilter): Nodes
@@ -117,7 +124,8 @@ final class NodeService
             searchTerm: $searchTerm
         );
 
-        return $this->subgraph->findDescendantNodes($rootNode->aggregateId, $filter);
+        return $this->subgraph->findDescendantNodes($rootNode->aggregateId, $filter)
+                              ->filter(fn (Node $node) => $this->filterRemovedNodes($node));
     }
 
     public function createTreeBuilderForRootNode(
@@ -135,6 +143,7 @@ final class NodeService
     public function createTreeNodeBuilderForNode(Node $node): TreeNodeBuilder
     {
         $nodeType = $this->requireNodeTypeByName($node->nodeTypeName);
+        $pendingChange = $this->pendingChanges->findByNodeAggreqateId($node->aggregateId);
 
         return new TreeNodeBuilder(
             nodeAddress: NodeAddress::fromNode($node),
@@ -147,7 +156,10 @@ final class NodeService
             hasScheduledDisabledState:
                 $node->getProperty('enableAfterDateTime') instanceof \DateTimeInterface
                 || $node->getProperty('disableAfterDateTime') instanceof \DateTimeInterface,
-            hasUnloadedChildren: false
+            hasUnloadedChildren: false,
+            isCreated: $pendingChange ? $pendingChange->isCreated : false,
+            isModified: $pendingChange ? $pendingChange->isChanged : false,
+            isRemoved: $pendingChange ? $pendingChange->isDeleted : false,
         );
     }
 
@@ -157,7 +169,8 @@ final class NodeService
             nodeTypes: $nodeTypeCriteria,
         );
 
-        return $this->subgraph->findChildNodes($parentNode->aggregateId, $filter);
+        return $this->subgraph->findChildNodes($parentNode->aggregateId, $filter)
+                              ->filter(fn (Node $node) => $this->filterRemovedNodes($node));
     }
 
     public function getNumberOfChildNodes(Node $parentNode, NodeTypeCriteria $nodeTypeCriteria): int
@@ -174,5 +187,24 @@ final class NodeService
         $filter = FindAncestorNodesFilter::create();
 
         return $this->subgraph->findAncestorNodes($node->aggregateId, $filter);
+    }
+
+    /**
+     * Filter function to remove all nodes that are tagged as removed
+     *    AND do not have the tag assigned directly (deleted as children)
+     *    AND are not in the current changes (other workspaces)
+     */
+    public function filterRemovedNodes(Node $node): bool
+    {
+        if (!$node->tags->contain(NeosSubtreeTag::removed())) {
+            return true;
+        }
+        if ($node->tags->withoutInherited()->contain(NeosSubtreeTag::removed())) {
+            $changeState = $this->pendingChanges->findByNodeAggreqateId($node->aggregateId);
+            if ($changeState instanceof NodeChangeState && $changeState->isDeleted) {
+                return true;
+            }
+        }
+        return false;
     }
 }

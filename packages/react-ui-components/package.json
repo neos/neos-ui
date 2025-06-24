@@ -40,8 +40,8 @@
     "@friendsofreactjs/react-css-themr": "~4.2.0",
     "notosans-fontface": "^1.3.0",
     "prop-types": "^15.5.10",
-    "react": "^16.12.0",
-    "react-dom": "^16.0.0"
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
@@ -83,7 +83,7 @@
     "@types/lodash.merge": "^4.6.6",
     "@types/lodash.omit": "^4.5.7",
     "@types/prop-types": "^15.7.3",
-    "@types/react": "^16.9.17",
+    "@types/react": "^16.14.0",
     "@types/react-dom": "^16.9.4",
     "@types/react-fontawesome": "^1.6.4",
     "@types/react-portal": "^4.0.1",

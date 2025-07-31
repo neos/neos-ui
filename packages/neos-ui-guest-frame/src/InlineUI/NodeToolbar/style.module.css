@@ -8,18 +8,9 @@
     transition: var(--transition-Fast) margin;
 }
 .toolBar__btnGroup {
-    &:before,
-    &:after {
-        content: '';
-        display: table;
-    }
-    &:after {
-        clear: both;
-    }
+    display: flex;
 }
 .toolBar__btnGroup__btn {
-    float: left;
-
     &:hover {
         background-color: var(--colors-PrimaryBlue);
     }

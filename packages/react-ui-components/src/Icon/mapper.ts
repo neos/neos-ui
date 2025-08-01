@@ -1,5 +1,5 @@
 /**
- * Simple mapper from Neos Icon names to Fontawesome 5 icon classes.
+ * Simple mapper from Neos Icon names to Fontawesome 7 icon classes.
  */
 // TODO: create type for this, so we can have autocompletion
 // alternatively just use IconName or even better IconLookup (has IconPrefix & IconName) of FontAwesome typings

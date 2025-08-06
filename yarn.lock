@@ -2670,6 +2670,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ckeditor/ckeditor5-ui@patch:@ckeditor/ckeditor5-ui@npm:44.0.0#./patches/@ckeditor-ckeditor5-ui-npm-44.0.0.patch::locator=root-workspace-0b6124%40workspace%3A.":
+  version: 44.0.0
+  resolution: "@ckeditor/ckeditor5-ui@patch:@ckeditor/ckeditor5-ui@npm%3A44.0.0#./patches/@ckeditor-ckeditor5-ui-npm-44.0.0.patch::version=44.0.0&hash=69931c&locator=root-workspace-0b6124%40workspace%3A."
+  dependencies:
+    "@ckeditor/ckeditor5-core": 44.0.0
+    "@ckeditor/ckeditor5-engine": 44.0.0
+    "@ckeditor/ckeditor5-utils": 44.0.0
+    color-convert: 2.0.1
+    color-parse: 1.4.2
+    lodash-es: 4.17.21
+    vanilla-colorful: 0.7.2
+  checksum: 953066f1a04095d4a6f4324b569bdc71975378ece55e646d2411c14755ac384b17df24e1ca12c540bfd996c49ad02cbd8b2b839a70cbb9118ed5f5ee13a50846
+  languageName: node
+  linkType: hard
+
 "@ckeditor/ckeditor5-undo@npm:44.0.0":
   version: 44.0.0
   resolution: "@ckeditor/ckeditor5-undo@npm:44.0.0"

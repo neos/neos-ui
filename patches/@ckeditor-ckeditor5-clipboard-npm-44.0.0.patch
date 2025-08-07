@@ -1,0 +1,13 @@
+diff --git a/src/dragdrop.js b/src/dragdrop.js
+index 6f62028393c7cd2e9694a9ea72e1285502b1602c..4e16c53baba2a4dbaba0153e6276766b6161f856 100644
+--- a/src/dragdrop.js
++++ b/src/dragdrop.js
+@@ -243,7 +243,7 @@ export default class DragDrop extends Plugin {
+         });
+         // Handler for moving dragged content over the target area.
+         this.listenTo(viewDocument, 'dragging', (evt, data) => {
+-            if (!this.isEnabled) {
++            if (!this.isEnabled || data.dataTransfer.types.includes('application/neos-ui')) {
+                 data.dataTransfer.dropEffect = 'none';
+                 return;
+             }

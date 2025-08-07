@@ -2112,6 +2112,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ckeditor/ckeditor5-clipboard@patch:@ckeditor/ckeditor5-clipboard@npm:44.0.0#./patches/@ckeditor-ckeditor5-clipboard-npm-44.0.0.patch::locator=root-workspace-0b6124%40workspace%3A.":
+  version: 44.0.0
+  resolution: "@ckeditor/ckeditor5-clipboard@patch:@ckeditor/ckeditor5-clipboard@npm%3A44.0.0#./patches/@ckeditor-ckeditor5-clipboard-npm-44.0.0.patch::version=44.0.0&hash=3409a0&locator=root-workspace-0b6124%40workspace%3A."
+  dependencies:
+    "@ckeditor/ckeditor5-core": 44.0.0
+    "@ckeditor/ckeditor5-engine": 44.0.0
+    "@ckeditor/ckeditor5-ui": 44.0.0
+    "@ckeditor/ckeditor5-utils": 44.0.0
+    "@ckeditor/ckeditor5-widget": 44.0.0
+    lodash-es: 4.17.21
+  checksum: e3dd7575eb4ea5ab32db82b10057cdaec46dcd0d919be015127d7acd88f1019648b12474343f7af6e56f46e52045c496414f717c39ccf6b079eecc23ab8d76fe
+  languageName: node
+  linkType: hard
+
 "@ckeditor/ckeditor5-cloud-services@npm:44.0.0":
   version: 44.0.0
   resolution: "@ckeditor/ckeditor5-cloud-services@npm:44.0.0"

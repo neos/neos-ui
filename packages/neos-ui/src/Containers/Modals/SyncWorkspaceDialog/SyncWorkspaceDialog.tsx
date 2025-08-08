@@ -14,7 +14,7 @@ import {connect} from 'react-redux';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 import {GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
-import type {WorkspaceName} from '@neos-project/neos-ts-interfaces';
+import type {GlobalRegistry, WorkspaceName} from '@neos-project/neos-ts-interfaces';
 import type {I18nRegistry} from '@neos-project/neos-ui-i18n';
 import {ResolutionStrategy, SyncingPhase, State as SyncingState} from '@neos-project/neos-ui-redux-store/src/CR/Syncing';
 
@@ -53,7 +53,7 @@ type SyncWorkspaceDialogPropsFromNeosGlobals = {
     i18nRegistry: I18nRegistry;
 };
 
-const withNeosGlobals = neos((globalRegistry): SyncWorkspaceDialogPropsFromNeosGlobals => ({
+const withNeosGlobals = neos((globalRegistry: GlobalRegistry): SyncWorkspaceDialogPropsFromNeosGlobals => ({
     i18nRegistry: globalRegistry.get('i18n')
 }));
 

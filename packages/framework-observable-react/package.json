@@ -6,7 +6,7 @@
   "main": "./src/index.ts",
   "dependencies": {
     "@neos-project/framework-observable": "workspace:*",
-    "react": "^16.12.0"
+    "react": "^16.14.0"
   },
   "license": "GNU GPLv3"
 }

@@ -9,7 +9,7 @@ import * as reduxSagaEffects from 'redux-saga/effects';
 import * as reselect from 'reselect';
 import * as reactCssThemr from '@friendsofreactjs/react-css-themr';
 import * as ReactDND from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
+import {HTML5Backend} from 'react-dnd-html5-backend';
 
 import * as ReactUiComponents from '@neos-project/react-ui-components';
 import * as NeosUiReduxStore from '@neos-project/neos-ui-redux-store';

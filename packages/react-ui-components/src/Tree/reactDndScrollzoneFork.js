@@ -1,15 +1,13 @@
 // This is a vendored fork of react-dnd-scrollzone, as the package itself seems unmaintained
 // https://github.com/azuqua/react-dnd-scrollzone/pull/38#issuecomment-434385410
 
-import React, {Component, createContext} from 'react';
+import React, {Component, createContext, useContext} from 'react';
 import {DndContext} from 'react-dnd';
 import PropTypes from 'prop-types';
 import {findDOMNode} from 'react-dom';
 import throttle from 'lodash.throttle';
 import hoist from 'hoist-non-react-statics';
 import raf from 'raf';
-
-const DragDropContextConsumer = DndContext.Consumer;
 
 function getDisplayName(Component) {
     return (
@@ -37,17 +35,10 @@ function getCoords(evt) {
 
 const DEFAULT_BUFFER = 150;
 
-const useNewContextApi = createContext !== undefined && DragDropContextConsumer !== undefined;
-
 function createDragDropMonitorWrapper(WrappedComponent) {
     return function DragDropMonitorWrapper(props) {
-        return (
-            <DragDropContextConsumer>
-                {({dragDropManager}) =>
-                    <WrappedComponent {...props} dragDropManager={dragDropManager} />
-                }
-            </DragDropContextConsumer>
-        );
+        const { dragDropManager } = useContext(DndContext);
+        return <WrappedComponent {...props} dragDropManager={dragDropManager} />;
     };
 }
 
@@ -112,7 +103,7 @@ export default function createScrollingComponent(WrappedComponent) {
             strengthMultiplier: 30
         };
 
-        static contextTypes = useNewContextApi ? undefined : {
+        static contextTypes = {
             dragDropManager: PropTypes.object
         };
 
@@ -149,7 +140,7 @@ export default function createScrollingComponent(WrappedComponent) {
         }
 
         getDragDropManager() {
-            return useNewContextApi ? this.props.dragDropManager : this.context.dragDropManager;
+            return this.props.dragDropManager || this.context.dragDropManager;
         }
 
         handleEvent = evt => {
@@ -289,10 +280,6 @@ export default function createScrollingComponent(WrappedComponent) {
         }
     }
 
-    if (useNewContextApi) {
-        const DragDropMonitorWrapper = createDragDropMonitorWrapper(ScrollingComponent);
-        return hoist(DragDropMonitorWrapper, WrappedComponent);
-    }
-
-    return hoist(ScrollingComponent, WrappedComponent);
+    const DragDropMonitorWrapper = createDragDropMonitorWrapper(ScrollingComponent);
+    return hoist(DragDropMonitorWrapper, WrappedComponent);
 }

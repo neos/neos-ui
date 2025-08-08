@@ -8,8 +8,8 @@ const buildConfigurationAndGlobalRegistry = defaultMemoize((configuration: {}, g
 
 export interface NeosContextInterface {
     globalRegistry: GlobalRegistry;
-    configuration: {};
-    routes: {};
+    configuration: Record<string, any>;
+    routes: Record<string, any>;
 }
 
 export type NeosInjectedProps<R extends (...args: any[]) => any> = ReturnType<R> & {neos: NeosContextInterface};

@@ -1,10 +1,12 @@
 import debounce from 'lodash.debounce';
 import DecoupledEditor from '@ckeditor/ckeditor5-editor-decoupled/src/decouplededitor';
+import {Template, BodyCollection} from '@ckeditor/ckeditor5-ui/src';
 import {actions} from '@neos-project/neos-ui-redux-store';
 import {cleanupContentBeforeCommit} from './cleanupContentBeforeCommit'
 // FIXME import from @ckeditor/ckeditor5-engine/theme/placeholder.css instead! (Needs build setup configuration)
 import './cke-overwrites.vanilla-css';
 import './placeholder.vanilla-css';
+import {createElement} from "@ckeditor/ckeditor5-utils";
 
 let currentEditor = null;
 let editorConfig = {};
@@ -37,6 +39,49 @@ export const bootstrap = _editorConfig => {
     editorConfig = _editorConfig;
 };
 
+/**
+ * A custom BodyCollection implementation that attaches to the DOM of the guest frame.
+ * This is necessary because the editor runs in a separate iframe and needs to manage its own body
+ */
+class GuestFrameBodyCollection extends BodyCollection {
+    attachToDom() {
+        this._bodyCollectionContainer = new Template({
+            tag: 'div',
+            attributes: {
+                class: [
+                    'ck',
+                    'ck-reset_all',
+                    'ck-body',
+                    'ck-rounded-corners'
+                ],
+                dir: this.locale.uiLanguageDirection,
+                role: 'application'
+            },
+            children: this
+        }).render();
+
+        // Get the current document instance each time
+        const iframe = document.querySelector('[name="neos-content-main"]');
+        const documentForWrapper = iframe?.contentDocument || iframe?.contentWindow?.document;
+
+        // Ensure we have a valid document and it's loaded
+        if (!documentForWrapper || documentForWrapper.readyState === 'loading') {
+            // Wait for document to be ready if it's still loading
+            iframe.addEventListener('load', () => this.attachToDom(), {once: true});
+            return;
+        }
+
+        // Create a shared wrapper if there were none or the previous one got disconnected from DOM
+        if (!BodyCollection._bodyWrapper || !BodyCollection._bodyWrapper.isConnected ||
+            BodyCollection._bodyWrapper.ownerDocument !== documentForWrapper) {
+            BodyCollection._bodyWrapper = createElement(documentForWrapper, 'div', {class: 'ck-body-wrapper'});
+            documentForWrapper.body.appendChild(BodyCollection._bodyWrapper);
+        }
+
+        BodyCollection._bodyWrapper.appendChild(this._bodyCollectionContainer);
+    }
+}
+
 export const createEditor = store => async options => {
     const {propertyDomNode, propertyName, editorOptions, globalRegistry, userPreferences, onChange} = options;
     const ckEditorConfig = editorConfig.configRegistry.getCkeditorConfig({
@@ -53,6 +98,9 @@ export const createEditor = store => async options => {
             // this has to be done after / in the constructor as `create` is async and plugins accessing .neos have to account for this
             // https://github.com/neos/neos-ui/issues/3223
             this.neos = options;
+            // Use our own BodyCollection implementation that works within the guest frame
+            // noinspection JSConstantReassignment
+            this.ui.view.body = new GuestFrameBodyCollection(this.locale);
         }
     }
 

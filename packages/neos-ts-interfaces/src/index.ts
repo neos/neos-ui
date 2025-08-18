@@ -257,6 +257,9 @@ export interface Change extends Readonly<{
 export interface NodeTypesRegistry {
     get: (nodeType: NodeTypeName) => NodeType | null;
     getRole: (roleName: string) => NodeTypeName | null;
+    hasRole: (nodeTypeName: NodeTypeName, roleName: string) => boolean;
+    getAllowedChildNodeTypes: (nodeTypeName: NodeTypeName) => NodeTypeName[];
+    getAllowedGrandChildNodeTypes: (nodeTypeName: NodeTypeName, childNodeName: string) => NodeTypeName[];
     getSubTypesOf: (nodeType: NodeTypeName) => NodeTypeName[];
     getAllowedNodeTypesTakingAutoCreatedIntoAccount: (isSubjectNodeAutocreated: boolean, referenceParentName: string, referenceParentNodeType: NodeTypeName, referenceGrandParentNodeType: NodeTypeName | null, role: string) => NodeTypeName[];
 }

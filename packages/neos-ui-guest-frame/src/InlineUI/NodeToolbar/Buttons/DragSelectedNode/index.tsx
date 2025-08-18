@@ -1,20 +1,29 @@
 import React, {useCallback, useEffect} from 'react';
 // @ts-ignore
 import {connect} from 'react-redux';
+import memoize from 'lodash.memoize';
 
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {translate} from '@neos-project/neos-ui-i18n'
 import {GlobalState} from "@neos-project/neos-ui-redux-store/src/System";
-import {InsertPosition, Node, NodeContextPath, NodeTypesRegistry} from "@neos-project/neos-ts-interfaces";
+import {neos} from "@neos-project/neos-ui-decorators";
+import {
+    InsertPosition,
+    Node,
+    NodeContextPath,
+    NodeTypeName,
+    NodeTypesRegistry
+} from "@neos-project/neos-ts-interfaces";
 import {
     closestContextPathInGuestFrame,
     closestNodeInGuestFrame,
     findNodeInGuestFrame,
     getGuestFrameDocument
 } from '@neos-project/neos-ui-guest-frame/src/dom';
-import {neos} from "@neos-project/neos-ui-decorators";
+
+import style from './style.module.css';
 
 type DragSelectedNodeProps = {
     node: Node;
@@ -26,6 +35,7 @@ type DragSelectedNodeProps = {
     moveNodes: (nodesToBeMoved: NodeContextPath[], targetNode: NodeContextPath, position: InsertPosition) => void;
     canBeInsertedAlongside: (draggedNodeContextPath: NodeContextPath, targetNodeContextPath: NodeContextPath) => boolean;
     canBeInsertedInto: (draggedNodeContextPath: NodeContextPath, targetNodeContextPath: NodeContextPath) => boolean;
+    canBeDragged: (nodeTypeName: NodeTypeName) => boolean;
 }
 
 const DRAG_APPLICATION_ID = 'application/neos-ui';
@@ -54,51 +64,45 @@ const withDraggableContext = (component: React.FC) => withNeosGlobals(
             state: GlobalState
         ) => {
             return {
-                canBeInsertedAlongside: (draggedNodeContextPath: NodeContextPath, targetNodeContextPath: NodeContextPath) => canBeMovedAlongsideSelector(state, {
+                canBeInsertedAlongside: memoize((draggedNodeContextPath: NodeContextPath, targetNodeContextPath: NodeContextPath) => canBeMovedAlongsideSelector(state, {
                     subject: draggedNodeContextPath,
                     reference: targetNodeContextPath,
                     role: 'content',
-                }),
-                canBeInsertedInto: (draggedNodeContextPath: NodeContextPath, targetNodeContextPath: NodeContextPath) => canBeMovedIntoSelector(state, {
+                })),
+                canBeInsertedInto: memoize((draggedNodeContextPath: NodeContextPath, targetNodeContextPath: NodeContextPath) => canBeMovedIntoSelector(state, {
                     subject: draggedNodeContextPath,
                     reference: targetNodeContextPath,
                     role: 'content',
-                }),
+                })),
+                canBeDragged: memoize((nodeTypeName: NodeTypeName) => !nodeTypesRegistry.hasRole(nodeTypeName, 'document')),
             }
         }
     })(component));
 
 const DragSelectedNode: React.FC<DragSelectedNodeProps> = ({
-                                                               className,
-                                                               node,
-                                                               focusedFusionPath,
-                                                               destructiveOperationsAreDisabled,
-                                                               getNodeByContextPath,
-                                                               canBeEdited,
-                                                               moveNodes,
-                                                               canBeInsertedAlongside,
-                                                               canBeInsertedInto,
-                                                           }) => {
+    className,
+    node,
+    focusedFusionPath,
+    destructiveOperationsAreDisabled,
+    getNodeByContextPath,
+    canBeEdited,
+    moveNodes,
+    canBeInsertedAlongside,
+    canBeInsertedInto,
+    canBeDragged,
+}) => {
     const dropIndicatorRef = React.useRef<HTMLDivElement>((() => {
         // FIXME: Use portal or other mechanism to have a single global arrow element or even have it in the host frame
         const guestFrameDocument = getGuestFrameDocument();
-        const guestFrameBody = guestFrameDocument.body;
         let dropIndicatorElement = guestFrameDocument.getElementById('neos-inlineToolbar-dropIndicator');
         if (dropIndicatorElement) {
             return dropIndicatorElement;
         }
         dropIndicatorElement = document.createElement('div');
         dropIndicatorElement.id = 'neos-inlineToolbar-dropIndicator';
-        dropIndicatorElement.style.position = 'fixed';
-        dropIndicatorElement.style.color = 'white';
-        dropIndicatorElement.style.height = 'auto';
-        dropIndicatorElement.style.fontSize = '20px';
-        dropIndicatorElement.style.alignItems = 'center';
-        dropIndicatorElement.style.justifyContent = 'center';
-        dropIndicatorElement.style.zIndex = '9999';
-        dropIndicatorElement.style.pointerEvents = 'none';
-        dropIndicatorElement.style.backgroundColor = 'rgba(53,195,248,0.8)';
-        guestFrameBody.appendChild(dropIndicatorElement);
+        dropIndicatorElement.className = style.nodeDropIndicator;
+        const neosBackendContainer = guestFrameDocument.getElementById('neos-backend-container');
+        neosBackendContainer.appendChild(dropIndicatorElement);
         return dropIndicatorElement;
     })());
 
@@ -106,13 +110,16 @@ const DragSelectedNode: React.FC<DragSelectedNodeProps> = ({
         return null;
     }
 
-    // TODO: Only allow dragging content nodes
     let nodeCanBeDragged = true;
-    let title = 'Drag this node to move it';
+    let title = translate('Neos.Neos.Ui:Main:dragSelectedNode', 'Drag selected node');
 
     switch (true) {
         case node.isAutoCreated:
             title = translate('Neos.Neos.Ui:Main:cannotMoveAutoCreatedNodes', 'Auto-created nodes cannot be moved');
+            nodeCanBeDragged = false;
+            break;
+        case !canBeDragged(node.nodeType):
+            title = translate('Neos.Neos.Ui:Main:cannotMoveNodesOfType', 'This type of node cannot be moved');
             nodeCanBeDragged = false;
             break;
     }
@@ -123,15 +130,13 @@ const DragSelectedNode: React.FC<DragSelectedNodeProps> = ({
         }
         const nodeAddressInGuestFrame = {contextPath: node.contextPath, fusionPath: focusedFusionPath};
         ev.dataTransfer.setData(DRAG_APPLICATION_ID, JSON.stringify(nodeAddressInGuestFrame));
-        ev.dataTransfer.effectAllowed = "move";
-        console.debug('Drag started for node with data:', ev.dataTransfer.getData(DRAG_APPLICATION_ID));
+        ev.dataTransfer.effectAllowed = 'move';
     }, [node.contextPath, focusedFusionPath]);
 
     const handleDragOver = useCallback((ev: React.DragEvent<HTMLElement>) => {
         // Only handle the events which match our intent
         if (!ev.dataTransfer || !ev.dataTransfer.types.includes(DRAG_APPLICATION_ID)) {
-            console.debug('handleDrop: No valid data transfer found');
-            ev.dataTransfer.dropEffect = "none";
+            ev.dataTransfer.dropEffect = 'none';
             dropIndicatorRef.current.style.display = 'none';
             return;
         }
@@ -140,26 +145,28 @@ const DragSelectedNode: React.FC<DragSelectedNodeProps> = ({
         // Get the closest parent element to the currently hovered element which represents a node
         const closestNode = closestNodeInGuestFrame(ev.target) as HTMLElement;
         if (!closestNode) {
-            // console.debug('handleDragOver: No closest context path found', ev.target);
+            ev.dataTransfer.dropEffect = 'none';
+            dropIndicatorRef.current.style.display = 'none';
+            return;
+        }
+
+        // Prevent dropping on the same node
+        const closestContextPath = closestContextPathInGuestFrame(closestNode);
+        const draggedNodeContextPath = node.contextPath;
+        if (closestContextPath === draggedNodeContextPath) {
             ev.dataTransfer.dropEffect = "none";
             dropIndicatorRef.current.style.display = 'none';
             return;
         }
 
-        // Note: dataTransfer.getData is not available in dragOver events
-        // const draggedNodeAddressInGuestFrame = ev.dataTransfer.getData(DRAG_APPLICATION_ID);
-        // if (!draggedNodeAddressInGuestFrame) {
-        //     console.debug('handleDragOver: No dragged node address found: ', draggedNodeAddressInGuestFrame);
-        //     // ev.dataTransfer.dropEffect = "none";
-        //     return;
-        // }
+        // TODO: Optimise this by caching the closest node context path and only recalculating it when necessary
 
-        // Prevent dropping on the same node
-        // const {contextPath: draggedNodeContextPath} = JSON.parse(draggedNodeAddressInGuestFrame);
-        const closestContextPath = closestContextPathInGuestFrame(closestNode);
-        const draggedNodeContextPath = node.contextPath;
-        if (closestContextPath === draggedNodeContextPath) {
-            console.debug('handleDragOver: Dragging over the same node, no action needed');
+        // Calculate if the dragged node can be moved alongside or into the closest node
+        const allowedAlongside = canBeInsertedAlongside(draggedNodeContextPath, closestContextPath);
+        const allowedInside = canBeInsertedInto(draggedNodeContextPath, closestContextPath);
+
+        // Position arrow based on allowed drop positions and offset from the closest node
+        if (!allowedAlongside && !allowedInside) {
             ev.dataTransfer.dropEffect = "none";
             dropIndicatorRef.current.style.display = 'none';
             return;
@@ -168,24 +175,11 @@ const DragSelectedNode: React.FC<DragSelectedNodeProps> = ({
         // Get the Neos node to access properties for the indicator
         const neosNode = getNodeByContextPath(closestContextPath);
 
-        // Calculate if the dragged node can be moved alongside or into the closest node
-        // FIXME: This is probably slow and needs to be cached
-        const allowedAlongside = canBeInsertedAlongside(draggedNodeContextPath, closestContextPath);
-        const allowedInside = canBeInsertedInto(draggedNodeContextPath, closestContextPath);
-
-        // Position arrow based on allowed drop positions and offset from the closest node
-        if (!allowedAlongside && !allowedInside) {
-            console.debug('handleDragOver: Cannot drop node here, neither alongside nor into');
-            ev.dataTransfer.dropEffect = "none";
-            dropIndicatorRef.current.style.display = 'none';
-            return;
-        }
-
         // Calculate insert position based on the allowed positions and the mouse position
         const rect = closestNode.getBoundingClientRect();
         let indicatorOffsetTop = 0;
         let indicatorOffsetLeft = rect.left + INDICATOR_OFFSET;
-        let indicatorHeight = 'auto';
+        let indicatorHeight: string | number = 'auto';
         let indicatorLabel = '';
         if (allowedInside && !allowedAlongside) {
             // Position in the center of the node if dropping into it
@@ -205,7 +199,7 @@ const DragSelectedNode: React.FC<DragSelectedNodeProps> = ({
         }
 
         // Give the feedback that the node can be moved and highlight the target node
-        ev.dataTransfer.dropEffect = "move";
+        ev.dataTransfer.dropEffect = 'move';
         dropIndicatorRef.current.style.display = 'flex';
         dropIndicatorRef.current.style.top = `${indicatorOffsetTop}px`;
         dropIndicatorRef.current.style.left = `${indicatorOffsetLeft}px`;
@@ -218,13 +212,11 @@ const DragSelectedNode: React.FC<DragSelectedNodeProps> = ({
         dropIndicatorRef.current.style.display = 'none';
         // Only handle the events which match our intent
         if (!ev.dataTransfer || !ev.dataTransfer.types.includes(DRAG_APPLICATION_ID)) {
-            console.debug('handleDrop: No valid data transfer found');
             return;
         }
 
         const draggedNodeAddressInGuestFrame = ev.dataTransfer.getData(DRAG_APPLICATION_ID);
         if (!draggedNodeAddressInGuestFrame) {
-            console.debug('handleDrop: No dragged node address found');
             ev.dataTransfer.dropEffect = "none";
             return;
         }
@@ -236,7 +228,6 @@ const DragSelectedNode: React.FC<DragSelectedNodeProps> = ({
         const targetNode = closestNodeInGuestFrame(ev.target);
         const targetNodeContextPath = closestContextPathInGuestFrame(targetNode);
         if (!draggedNodeContextPath || !targetNodeContextPath) {
-            console.debug('handleDrop: No context path or target node found');
             return;
         }
 
@@ -256,8 +247,6 @@ const DragSelectedNode: React.FC<DragSelectedNodeProps> = ({
         }
 
         // Move the node to the target context path based on the drop position
-        console.debug('handleDrop: Dropping node ', draggedNodeContextPath, ' relative to ', targetNodeContextPath);
-        // TODO: Calculate insert position based on the drop position and the target node
         moveNodes(
             [draggedNodeContextPath],
             targetNodeContextPath,
@@ -265,6 +254,7 @@ const DragSelectedNode: React.FC<DragSelectedNodeProps> = ({
         );
 
         // Remove the original node from the DOM
+        // TODO: Verify that the move was successful before removing the node
         const movedNode = findNodeInGuestFrame(draggedNodeContextPath, draggedNodeFusionPath);
         if (movedNode) {
             movedNode.remove();
@@ -274,7 +264,6 @@ const DragSelectedNode: React.FC<DragSelectedNodeProps> = ({
     const handleDragEnd = useCallback(() => {
         // Hide the drop indicator when the drag ends
         dropIndicatorRef.current.style.display = 'none';
-        console.debug('Drag ended');
     }, []);
 
     useEffect(() => {

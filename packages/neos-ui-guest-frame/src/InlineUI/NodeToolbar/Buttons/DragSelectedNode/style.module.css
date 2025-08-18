@@ -1,0 +1,16 @@
+.nodeDropIndicator {
+    position: fixed;
+    color: white;
+    height: auto;
+    font-size: 16px;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    pointer-events: none;
+    padding: 5px;
+    margin: 0;
+    font-family: "Noto Sans", sans-serif;
+    background-color: var(--colors-PrimaryBlue);
+    opacity: 0.8;
+    transition: all 0.1s ease-in-out;
+}

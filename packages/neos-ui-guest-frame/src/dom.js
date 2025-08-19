@@ -10,7 +10,7 @@ import style from './style.module.css';
 // Get the guest frame's document object
 //
 export const getGuestFrameDocument = () => {
-    const guestFrame = document.getElementsByName('neos-content-main')[0];
+    const guestFrame = getGuestFrame();
     return guestFrame && guestFrame.contentDocument;
 };
 
@@ -18,8 +18,15 @@ export const getGuestFrameDocument = () => {
 // Get the guest frame's window object
 //
 export const getGuestFrameWindow = () => {
-    const guestFrame = document.getElementsByName('neos-content-main')[0];
+    const guestFrame = getGuestFrame();
     return guestFrame && guestFrame.contentWindow;
+};
+
+//
+// Get the guest frame
+//
+export const getGuestFrame = () => {
+    return document.getElementsByName('neos-content-main')[0];
 };
 
 //

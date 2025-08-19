@@ -6,7 +6,8 @@ import {cleanupContentBeforeCommit} from './cleanupContentBeforeCommit'
 // FIXME import from @ckeditor/ckeditor5-engine/theme/placeholder.css instead! (Needs build setup configuration)
 import './cke-overwrites.vanilla-css';
 import './placeholder.vanilla-css';
-import {createElement} from "@ckeditor/ckeditor5-utils";
+import {createElement} from '@ckeditor/ckeditor5-utils';
+import {getGuestFrame, getGuestFrameDocument} from '@neos-project/neos-ui-guest-frame/src/dom';
 
 let currentEditor = null;
 let editorConfig = {};
@@ -41,7 +42,8 @@ export const bootstrap = _editorConfig => {
 
 /**
  * A custom BodyCollection implementation that attaches to the DOM of the guest frame.
- * This is necessary because the editor runs in a separate iframe and needs to manage its own body
+ * This is necessary because the editor runs in a separate iframe and needs to manage its own body.
+ * The editor doesn't allow a custom position for the collection currently. See https://github.com/ckeditor/ckeditor5/issues/5319
  */
 class GuestFrameBodyCollection extends BodyCollection {
     attachToDom() {
@@ -60,25 +62,28 @@ class GuestFrameBodyCollection extends BodyCollection {
             children: this
         }).render();
 
-        // Get the current document instance each time
-        const iframe = document.querySelector('[name="neos-content-main"]');
-        const documentForWrapper = iframe?.contentDocument || iframe?.contentWindow?.document;
+        const guestFrame = getGuestFrame();
+        const guestFrameDocument = getGuestFrameDocument();
 
-        // Ensure we have a valid document and it's loaded
-        if (!documentForWrapper || documentForWrapper.readyState === 'loading') {
-            // Wait for document to be ready if it's still loading
-            iframe.addEventListener('load', () => this.attachToDom(), {once: true});
+        if (!guestFrameDocument || guestFrameDocument.readyState === 'loading') {
+            // When we navigate to other documents we need to reattach the body collection after the guest frame is loaded.
+            guestFrame.addEventListener('load', () => this.attachToDom(), {once: true});
             return;
         }
 
         // Create a shared wrapper if there were none or the previous one got disconnected from DOM
-        if (!BodyCollection._bodyWrapper || !BodyCollection._bodyWrapper.isConnected ||
-            BodyCollection._bodyWrapper.ownerDocument !== documentForWrapper) {
-            BodyCollection._bodyWrapper = createElement(documentForWrapper, 'div', {class: 'ck-body-wrapper'});
-            documentForWrapper.body.appendChild(BodyCollection._bodyWrapper);
+        // This wrapper is stored as a static property to ensure it is reused across instances.
+        if (!GuestFrameBodyCollection._bodyWrapper || !GuestFrameBodyCollection._bodyWrapper.isConnected ||
+            GuestFrameBodyCollection._bodyWrapper.ownerDocument !== guestFrameDocument) {
+            GuestFrameBodyCollection._bodyWrapper = createElement(
+                guestFrameDocument,
+                'div',
+                {class: 'ck-body-wrapper'}
+            );
+            guestFrameDocument.body.appendChild(GuestFrameBodyCollection._bodyWrapper);
         }
 
-        BodyCollection._bodyWrapper.appendChild(this._bodyCollectionContainer);
+        GuestFrameBodyCollection._bodyWrapper.appendChild(this._bodyCollectionContainer);
     }
 }
 

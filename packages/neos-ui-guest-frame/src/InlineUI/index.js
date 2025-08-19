@@ -6,6 +6,7 @@ import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 
 import NodeToolbar from './NodeToolbar/index';
+import DragAndDropUi from "./DragAndDropUi";
 
 import style from './style.module.css';
 import InlineValidationErrors from './InlineValidationErrors/index';
@@ -83,6 +84,7 @@ export default class InlineUI extends PureComponent {
                     {...focused}
                     />}
                 <InlineValidationErrors />
+                <DragAndDropUi />
             </div>
         );
     }

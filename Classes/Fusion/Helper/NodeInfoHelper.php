@@ -83,6 +83,18 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     protected $ignoredNodeTypeRole;
 
     /**
+     * @Flow\InjectConfiguration(path="nodeTypeRoles.content", package="Neos.Neos.Ui")
+     * @var string
+     */
+    protected $contentNodeTypeRole;
+
+    /**
+     * @Flow\InjectConfiguration(path="nodeTypeRoles.contentCollection", package="Neos.Neos.Ui")
+     * @var string
+     */
+    protected $contentCollectionNodeTypeRole;
+
+    /**
      * @return ?array<string,mixed>
      */
     public function renderNodeWithMinimalPropertiesAndChildrenInformation(
@@ -214,23 +226,13 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
     {
         $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
 
-        $documentChildNodes = $subgraph->findChildNodes(
-            $node->aggregateId,
-            FindChildNodesFilter::create(nodeTypes: $nodeTypeFilterString)
-        );
+        // Use the combined filter to get all nodes in a single query
+        $combinedFilter = $this->buildCombinedNodeTypeFilter($nodeTypeFilterString, $includeContentChildNodes);
 
-        if ($includeContentChildNodes) {
-            // child nodes for content tree, must not include those nodes filtered out by `baseNodeType`
-            $contentChildNodes = $subgraph->findChildNodes(
-                $node->aggregateId,
-                FindChildNodesFilter::create(
-                    nodeTypes: $this->buildContentChildNodeFilterString()
-                )
-            );
-            $childNodes = $documentChildNodes->merge($contentChildNodes);
-        } else {
-            $childNodes = $documentChildNodes;
-        }
+        $childNodes = $subgraph->findChildNodes(
+            $node->aggregateId,
+            FindChildNodesFilter::create(nodeTypes: $combinedFilter)
+        );
 
         $infos = [];
         foreach ($childNodes as $childNode) {
@@ -375,12 +377,20 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
         return implode(',', $mergedIncludesAndExcludes);
     }
 
-    protected function buildContentChildNodeFilterString(): string
+    /**
+     * Build a combined node type filter string that includes both document nodes
+     * and content child nodes in a single "OR" operation.
+     */
+    protected function buildCombinedNodeTypeFilter(string $nodeTypeFilterString, bool $includeContentChildNodes = true): string
     {
+        $includedNodeTypes = $this->nodeTypeStringsToList($nodeTypeFilterString);
+        if ($includeContentChildNodes) {
+            $includedNodeTypes[]= $this->contentNodeTypeRole;
+            $includedNodeTypes[]= $this->contentCollectionNodeTypeRole;
+        }
         return $this->buildNodeTypeFilterString(
-            [],
+            array_unique($includedNodeTypes),
             $this->nodeTypeStringsToList(
-                $this->documentNodeTypeRole,
                 $this->ignoredNodeTypeRole
             )
         );

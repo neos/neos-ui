@@ -20,7 +20,6 @@ use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\ActionRequest;
-use Neos\Flow\Mvc\Routing\UriBuilder;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\Domain\NodeLabel\NodeLabelGeneratorInterface;
 use Neos\Neos\Domain\SubtreeTagging\NeosSubtreeTag;
@@ -161,8 +160,6 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
     /**
      * Get the "uri" and "previewUri" for the given node
-     *
-     * @param Node $node
      * @return array<string,string>
      */
     protected function getUriInformation(Node $node, ActionRequest $actionRequest): array
@@ -211,9 +208,6 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
     /**
      * Get information for all children of the given parent node.
-     *
-     * @param Node $node
-     * @param string $nodeTypeFilterString
      * @return array<int,array<string,string>>
      */
     protected function renderChildrenInformation(Node $node, string $nodeTypeFilterString, bool $includeContentChildNodes = true): array
@@ -244,7 +238,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
                 'contextPath' => NodeAddress::fromNode($childNode)->toJson(),
                 'nodeType' => $childNode->nodeTypeName->value
             ];
-        };
+        }
         return $infos;
     }
 
@@ -356,9 +350,9 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
      * @param string ...$nodeTypeStrings
      * @return string[]
      */
-    protected function nodeTypeStringsToList(string ...$nodeTypeStrings)
+    protected function nodeTypeStringsToList(string ...$nodeTypeStrings): array
     {
-        $reducer = function ($nodeTypeList, $nodeTypeString) {
+        $reducer = static function ($nodeTypeList, $nodeTypeString) {
             $nodeTypeParts = explode(',', $nodeTypeString);
             foreach ($nodeTypeParts as $nodeTypeName) {
                 $nodeTypeList[] = trim($nodeTypeName);
@@ -376,9 +370,7 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
      */
     protected function buildNodeTypeFilterString(array $includedNodeTypes, array $excludedNodeTypes): string
     {
-        $preparedExcludedNodeTypes = array_map(function ($nodeTypeName) {
-            return '!' . $nodeTypeName;
-        }, $excludedNodeTypes);
+        $preparedExcludedNodeTypes = array_map(static fn ($nodeTypeName) => '!' . $nodeTypeName, $excludedNodeTypes);
         $mergedIncludesAndExcludes = array_merge($includedNodeTypes, $preparedExcludedNodeTypes);
         return implode(',', $mergedIncludesAndExcludes);
     }
@@ -401,9 +393,8 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
     /**
      * @param string $methodName
-     * @return boolean
      */
-    public function allowsCallOfMethod($methodName)
+    public function allowsCallOfMethod($methodName): bool
     {
         // to control what is used in eel we maintain this list.
         return in_array($methodName, [

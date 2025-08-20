@@ -618,8 +618,6 @@ class BackendServiceController extends ActionController
      */
     public function flowQueryAction(array $chain): string
     {
-        $contentRepositoryId = SiteDetectionResult::fromRequest($this->request->getHttpRequest())->contentRepositoryId;
-
         $createContext = array_shift($chain);
         $finisher = array_pop($chain);
 

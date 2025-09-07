@@ -1,0 +1,9 @@
+{
+    "name": "@neos-project/neos-ui-link-editor-error-handling",
+    "license": "GPL-3.0-or-later",
+    "version": "",
+    "main": "./src/index.ts",
+    "dependencies": {
+        "react-error-boundary": "^3.1.3"
+    }
+}

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+    <file original="" product-name="Neos.Neos.Ui" source-language="en" datatype="plaintext" target-language="pl">
+        <body>
+            <!-- Common -->
+            <trans-unit id="title" xml:space="preserve" approved="yes">
+                <source>Mail to</source>
+                <target>Mail do</target>
+            </trans-unit>
+
+            <!-- Recipient -->
+            <trans-unit id="recipient.label" xml:space="preserve" approved="yes">
+                <source>Recipient</source>
+                <target>Odbiorca</target>
+            </trans-unit>
+            <trans-unit id="recipient.placeholder" xml:space="preserve" approved="yes">
+                <source>e.g.: recipient@example.com</source>
+                <target>np.: odbiorca@przyklad.pl</target>
+            </trans-unit>
+            <trans-unit id="recipient.validation.required" xml:space="preserve" approved="yes">
+                <source>Recipient is required</source>
+                <target>Odbiorca jest wymagany</target>
+            </trans-unit>
+            <trans-unit id="recipient.validation.email" xml:space="preserve" approved="yes">
+                <source>Recipient should be a valid E-Mail Address</source>
+                <target>Odbiorca powinien być poprawnym adresem e-mail</target>
+            </trans-unit>
+
+            <!-- Subject -->
+            <trans-unit id="subject.label" xml:space="preserve" approved="yes">
+                <source>Subject (optional)</source>
+                <target>Temat (opcjonalnie)</target>
+            </trans-unit>
+
+            <!-- CC -->
+            <trans-unit id="cc.label" xml:space="preserve" approved="yes">
+                <source>CC (optional)</source>
+                <target>DW (opcjonalnie)</target>
+            </trans-unit>
+            <trans-unit id="cc.placeholder" xml:space="preserve" approved="yes">
+                <source>e.g.: recipient1@example.com, recipient2@example.com, ...</source>
+                <target>np.: odbiorca1@przyklad.pl, odbiorca2@przyklad.pl, ...</target>
+            </trans-unit>
+            <trans-unit id="cc.validation.emaillist" xml:space="preserve" approved="yes">
+                <source>CC should be a comma-separated list of valid E-Mail Addresses</source>
+                <target>DW powinno być listą poprawnych adresów e-mail oddzielonych przecinkami</target>
+            </trans-unit>
+
+            <!-- BCC -->
+            <trans-unit id="bcc.label" xml:space="preserve" approved="yes">
+                <source>BCC (optional)</source>
+                <target>UDW (opcjonalnie)</target>
+            </trans-unit>
+            <trans-unit id="bcc.placeholder" xml:space="preserve" approved="yes">
+                <source>e.g.: recipient1@example.com, recipient2@example.com, ...</source>
+                <target>np.: odbiorca1@przyklad.pl, odbiorca2@przyklad.pl, ...</target>
+            </trans-unit>
+            <trans-unit id="bcc.validation.emaillist" xml:space="preserve" approved="yes">
+                <source>BCC should be a comma-separated list of valid E-Mail Addresses</source>
+                <target>UDW powinno być listą poprawnych adresów e-mail oddzielonych przecinkami</target>
+            </trans-unit>
+
+            <!-- Body -->
+            <trans-unit id="body.label" xml:space="preserve" approved="yes">
+                <source>Body (optional)</source>
+                <target>Treść (opcjonalnie)</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

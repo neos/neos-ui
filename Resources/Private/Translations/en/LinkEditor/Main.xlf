@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+    <file original="" product-name="Neos.Neos.Ui" source-language="en" datatype="plaintext">
+        <body>
+            <!-- Link Button -->
+            <trans-unit id="linkButton.title" xml:space="preserve" approved="yes">
+                <source>Link</source>
+            </trans-unit>
+
+            <!-- Inspector Editor -->
+            <trans-unit id="inspector.create" xml:space="preserve" approved="yes">
+                <source>Create Link</source>
+            </trans-unit>
+            <trans-unit id="inspector.edit" xml:space="preserve" approved="yes">
+                <source>Edit Link</source>
+            </trans-unit>
+            <trans-unit id="inspector.notfound" xml:space="preserve" approved="yes">
+                <source>Could not find an editor suitable for {href}</source>
+            </trans-unit>
+
+            <!-- Dialog -->
+            <trans-unit id="dialog.title" xml:space="preserve" approved="yes">
+                <source>Edit Link</source>
+            </trans-unit>
+            <trans-unit id="dialog.action.cancel" xml:space="preserve" approved="yes">
+                <source>Cancel</source>
+            </trans-unit>
+            <trans-unit id="dialog.action.apply" xml:space="preserve" approved="yes">
+                <source>Apply</source>
+            </trans-unit>
+
+            <!-- Link Options -->
+            <trans-unit id="options.label.anchor" xml:space="preserve" approved="yes">
+                <source>Anchor</source>
+            </trans-unit>
+            <trans-unit id="options.label.title" xml:space="preserve" approved="yes">
+                <source>Title</source>
+            </trans-unit>
+            <trans-unit id="options.label.targetBlank" xml:space="preserve" approved="yes">
+                <source>Open in new window</source>
+            </trans-unit>
+            <trans-unit id="options.label.relNofollow" xml:space="preserve" approved="yes">
+                <source>rel="nofollow"</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

@@ -27,3 +27,39 @@
     'ServiceSubRoutes':
       package: 'Neos.Neos.Ui'
       suffix:  'Service'
+
+-
+  name: 'GetChildrenForTreeNode Query'
+  uriPattern: 'neos/link-editor/get-children-for-tree-node'
+  defaults:
+    '@package': 'Neos.Neos.Ui'
+    '@subpackage': 'LinkEditor\Application\GetChildrenForTreeNode'
+    '@controller': 'GetChildrenForTreeNode'
+    '@action': 'ignored'
+
+-
+  name: 'GetNodeSummary Query'
+  uriPattern: 'neos/link-editor/get-node-summary'
+  defaults:
+    '@package': 'Neos.Neos.Ui'
+    '@subpackage': 'LinkEditor\Application\GetNodeSummary'
+    '@controller': 'GetNodeSummary'
+    '@action': 'ignored'
+
+-
+  name: 'GetNodeTypeFilterOptions Query'
+  uriPattern: 'neos/link-editor/get-node-type-filter-options'
+  defaults:
+    '@package': 'Neos.Neos.Ui'
+    '@subpackage': 'LinkEditor\Application\GetNodeTypeFilterOptions'
+    '@controller': 'GetNodeTypeFilterOptions'
+    '@action': 'ignored'
+
+-
+  name: 'GetTree Query'
+  uriPattern: 'neos/link-editor/get-tree'
+  defaults:
+    '@package': 'Neos.Neos.Ui'
+    '@subpackage': 'LinkEditor\Application\GetTree'
+    '@controller': 'GetTree'
+    '@action': 'ignored'

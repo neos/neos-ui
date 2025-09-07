@@ -1,0 +1,11 @@
+{
+    "name": "@neos-project/neos-ui-link-editor-link-button",
+    "license": "MIT",
+    "version": "",
+    "main": "./src/index.tsx",
+    "dependencies": {
+        "@neos-project/neos-ui-link-editor-core": "workspace:*",
+        "@neos-project/react-ui-components": "workspace:*",
+        "react": "^16.12.0"
+    }
+}

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+    <file original="" product-name="Neos.Neos.Ui" source-language="en" datatype="plaintext" target-language="pl">
+        <body>
+            <!-- Common -->
+            <trans-unit id="title" xml:space="preserve" approved="yes">
+                <source>Web</source>
+                <target>Sieć</target>
+            </trans-unit>
+            <trans-unit id="label.link" xml:space="preserve" approved="yes">
+                <source>Link</source>
+                <target>Link</target>
+            </trans-unit>
+
+            <!-- Protocol -->
+            <trans-unit id="protocol.validation.required" xml:space="preserve" approved="yes">
+                <source>Protocol is required</source>
+                <target>Protokół jest wymagany</target>
+            </trans-unit>
+
+            <!-- URL -->
+            <trans-unit id="urlWithoutProtocol.placeholder" xml:space="preserve" approved="yes">
+                <source>e.g. www.example.com</source>
+                <target>np. www.przyklad.pl</target>
+            </trans-unit>
+            <trans-unit id="urlWithoutProtocol.validation.required" xml:space="preserve" approved="yes">
+                <source>URL is required</source>
+                <target>URL jest wymagany</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

@@ -12,6 +12,9 @@ privilegeTargets:
     'Neos.Neos.Ui:Backend.ServiceAccess':
       matcher: 'method(Neos\Neos\Ui\Controller\BackendServiceController->.*())'
 
+    'Neos.Neos.Ui:LinkEditor.ApiAccess':
+      matcher: 'method(Neos\Neos\Ui\LinkEditor\Application\.*\Controller\.*Controller->processRequest())'
+
   'Neos\Neos\Security\Authorization\Privilege\ModulePrivilege':
 
     'Neos.Neos.Ui:Backend.Module.Content':
@@ -31,4 +34,8 @@ roles:
 
         -
           privilegeTarget: 'Neos.Neos.Ui:Backend.ServiceAccess'
+          permission: GRANT
+
+        -
+          privilegeTarget: 'Neos.Neos.Ui:LinkEditor.ApiAccess'
           permission: GRANT

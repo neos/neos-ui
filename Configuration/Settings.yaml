@@ -21,6 +21,12 @@ Neos:
         dataTypes:
           Neos\Media\Domain\Model\ImageInterface:
             typeConverter: Neos\Media\TypeConverter\ImageInterfaceArrayPresenter
+
+          Neos\Neos\Ui\LinkEditor\Link:
+            # the option `typeConverter` must not be specified here.
+            # from array|string to Link the Neos\Flow\Property\TypeConverter\DenormalizingObjectConverter is used
+            # for Link to array the NodePropertyConverterService natively just works with the JsonSerializable
+            editor: Sitegeist.Archaeopteryx/Inspector/Editors/ValueObjectLinkEditor
       translation:
         autoInclude:
           'Neos.Neos.Ui':
@@ -28,6 +34,7 @@ Neos:
             - Main
             - PublishingDialog
             - SyncWorkspaceDialog
+            - 'LinkEditor/*'
     fusion:
       autoInclude:
         Neos.Neos.Ui: true
@@ -208,6 +215,11 @@ Neos:
                 pattern: ControllerObjectName
                 patternOptions:
                   controllerObjectNamePattern: 'Neos\Neos\Ui\Controller\.*'
+
+              'Neos.Neos.Ui:LinkEditor.ApiControllers':
+                pattern: ControllerObjectName
+                patternOptions:
+                  controllerObjectNamePattern: 'Neos\Neos\Ui\LinkEditor\Application\.*\Controller\.*Controller'
     mvc:
       routes:
         'Neos.Neos.Ui':

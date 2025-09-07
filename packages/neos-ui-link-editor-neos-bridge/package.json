@@ -1,0 +1,10 @@
+{
+    "name": "@neos-project/neos-ui-link-editor-neos-bridge",
+    "license": "GPL-3.0-or-later",
+    "version": "",
+    "main": "./src/index.ts",
+    "dependencies": {
+        "react-use": "^16.1.0",
+        "ts-toolbelt": "^9.6.0"
+    }
+}

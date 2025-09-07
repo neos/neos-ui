@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+    <file original="" product-name="Neos.Neos.Ui" source-language="en" datatype="plaintext" target-language="pl">
+        <body>
+            <!-- Common -->
+            <trans-unit id="title" xml:space="preserve" approved="yes">
+                <source>Document</source>
+                <target>Dokument</target>
+            </trans-unit>
+
+            <trans-unit id="labelOfNonExistingNode" xml:space="preserve" approved="yes">
+                <source>Deleted Node</source>
+                <target>Usunięty węzeł</target>
+            </trans-unit>
+
+            <!-- Identifier -->
+            <trans-unit id="node.validation.required" xml:space="preserve" approved="yes">
+                <source>Node is required</source>
+                <target>Węzeł jest wymagany</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

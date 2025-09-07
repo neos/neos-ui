@@ -51,6 +51,7 @@ require('@neos-project/neos-ui-editors');
 require('@neos-project/neos-ui-views/src/manifest');
 require('@neos-project/neos-ui-guest-frame');
 require('@neos-project/neos-ui-ckeditor5-bindings');
+require('./manifest.link-editor');
 require('@neos-project/neos-ui-validators/src/manifest');
 require('@neos-project/neos-ui-i18n/src/manifest');
 require('@neos-project/neos-ui-sagas/src/manifest');

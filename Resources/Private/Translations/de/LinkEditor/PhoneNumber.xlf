@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+    <file original="" product-name="Neos.Neos.Ui" source-language="en" datatype="plaintext" target-language="de">
+        <body>
+            <trans-unit id="title" xml:space="preserve" approved="yes">
+                <source>Phone Number</source>
+                <target>Telefonnummer</target>
+            </trans-unit>
+            <trans-unit id="phoneNumber.label" xml:space="preserve" approved="yes">
+                <source>Phone Number:</source>
+                <target>Telefonnummer:</target>
+            </trans-unit>
+            <trans-unit id="phoneNumber.placeholder" xml:space="preserve" approved="yes">
+                <source>your phone number without country code</source>
+                <target>Ihre Rufnummer ohne Landesvorwahl</target>
+            </trans-unit>
+            <trans-unit id="phoneNumber.validation.required" xml:space="preserve" approved="yes">
+                <source>A phone number is required</source>
+                <target>Eine Telefonnummer ist erforderlich</target>
+            </trans-unit>
+            <trans-unit id="countryCallingCode.validation.required" xml:space="preserve" approved="yes">
+                <source>Please select a valid country calling code</source>
+                <target>Bitte wählen Sie eine gültige Landesvorwahl</target>
+            </trans-unit>
+            <trans-unit id="phoneNumber.validation.numbersOnly" xml:space="preserve" approved="yes">
+                <source>Please enter only number values without a leading 0</source>
+                <target>Bitte nur Zahlenwerte ohne führende 0 eingeben</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

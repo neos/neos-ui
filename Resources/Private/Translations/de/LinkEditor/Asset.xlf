@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+    <file original="" product-name="Neos.Neos.Ui" source-language="en" datatype="plaintext" target-language="de">
+        <body>
+            <!-- Common -->
+            <trans-unit id="title" xml:space="preserve" approved="yes">
+                <source>Asset</source>
+                <target>Mediendatei</target>
+            </trans-unit>
+
+            <!-- Identifier -->
+            <trans-unit id="identifier.validation.required" xml:space="preserve" approved="yes">
+                <source>Asset is required</source>
+                <target>Mediendatei ist erforderlich</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

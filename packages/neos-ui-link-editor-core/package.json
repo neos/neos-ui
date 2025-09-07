@@ -1,0 +1,20 @@
+{
+    "name": "@neos-project/neos-ui-link-editor-core",
+    "license": "GPL-3.0-or-later",
+    "version": "",
+    "main": "./src/index.ts",
+    "dependencies": {
+        "@neos-project/neos-ui-link-editor-custom-node-tree": "workspace:*",
+        "@neos-project/neos-ui-link-editor-error-handling": "workspace:*",
+        "@neos-project/neos-ui-link-editor-neos-bridge": "workspace:*",
+        "@neos-project/positional-array-sorter": "workspace:*",
+        "@neos-project/react-ui-components": "workspace:*",
+        "final-form": "^4.20.2",
+        "libphonenumber-js": "^1.9.52",
+        "react-final-form": "^6.5.3",
+        "react-use": "^16.1.0",
+        "rxjs": "^6.6.7",
+        "ts-toolbelt": "^9.6.0",
+        "typesafe-actions": "^5.1.0"
+    }
+}

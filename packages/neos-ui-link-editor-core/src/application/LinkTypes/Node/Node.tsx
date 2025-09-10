@@ -14,7 +14,6 @@ import { OptionalDeep } from "ts-toolbelt/out/Object/Optional";
 
 import {
     useConfiguration,
-    useI18n,
 } from "@neos-project/neos-ui-link-editor-neos-bridge";
 import {selectors, useSelector} from '@neos-project/neos-ui-redux-store';
 import { Tree } from "@neos-project/neos-ui-link-editor-custom-node-tree";
@@ -25,6 +24,7 @@ import { Process, Field } from "../../../framework";
 import { getNodeSummary } from "../../../infrastructure/http";
 import {isSuitableFor} from "./NodeSpecification";
 import {useSiteNodeAggregateId} from "./useSiteNodeAggregateId";
+import {translate} from "@neos-project/neos-ui-i18n";
 
 type NodeLinkModel = {
     nodeId: string;
@@ -37,7 +37,6 @@ type NodeLinkOptions = {
 };
 
 const NodePreview: React.FC<{ nodeId: string }> = (props) => {
-    const i18n = useI18n();
     const workspaceName = useSelector(selectors.CR.Workspaces.personalWorkspaceNameSelector);
     const dimensionValues = useSelector(selectors.CR.ContentDimensions.active);
     const fetch__nodeSummary = useAsync(async () => {
@@ -67,7 +66,7 @@ const NodePreview: React.FC<{ nodeId: string }> = (props) => {
         return (
             <IconCard
                 icon="spinner"
-                title={i18n("Neos.Neos.Ui:LinkEditor.Node:loadingPreview")}
+                title={translate("Neos.Neos.Ui:LinkEditor.Node:loadingPreview", '')}
                 subTitle={`node://${props.nodeId}`}
             />
         );
@@ -78,9 +77,7 @@ const NodePreview: React.FC<{ nodeId: string }> = (props) => {
             icon={fetch__nodeSummary.value?.icon ?? "ban"}
             title={
                 fetch__nodeSummary.value?.label ??
-                `[${i18n(
-                    "Neos.Neos.Ui:LinkEditor.Node:labelOfNonExistingNode"
-                )}]`
+                `[${translate("Neos.Neos.Ui:LinkEditor.Node:labelOfNonExistingNode", '')}]`
             }
             subTitle={breadcrumbs ?? `node://${props.nodeId}`}
         />
@@ -111,11 +108,9 @@ export const Node = makeLinkType<NodeLinkModel, NodeLinkOptions>(
         }),
 
         TabHeader: () => {
-            const i18n = useI18n();
-
             return (
                 <IconLabel icon="file">
-                    {i18n("Neos.Neos.Ui:LinkEditor.Node:title")}
+                    {translate("Neos.Neos.Ui:LinkEditor.Node:title", '')}
                 </IconLabel>
             );
         },
@@ -132,7 +127,6 @@ export const Node = makeLinkType<NodeLinkModel, NodeLinkOptions>(
             model: Nullable<NodeLinkModel>;
             options: OptionalDeep<NodeLinkOptions>;
         }) => {
-            const i18n = useI18n();
             const workspaceName = useSelector(selectors.CR.Workspaces.personalWorkspaceNameSelector);
             const dimensionValues = useSelector(selectors.CR.ContentDimensions.active);
             const siteNodeAggregateId = useSiteNodeAggregateId();
@@ -168,9 +162,7 @@ export const Node = makeLinkType<NodeLinkModel, NodeLinkOptions>(
                         // eslint-disable-next-line consistent-return
                         validate={(value) => {
                             if (!value) {
-                                return i18n(
-                                    "Neos.Neos.Ui:LinkEditor.Node:node.validation.required"
-                                );
+                                return translate("Neos.Neos.Ui:LinkEditor.Node:node.validation.required", '');
                             }
                         }}
                     >

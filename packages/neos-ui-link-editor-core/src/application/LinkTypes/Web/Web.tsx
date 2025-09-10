@@ -4,13 +4,12 @@ import {useForm} from 'react-final-form';
 
 import {SelectBox, TextInput} from '@neos-project/react-ui-components';
 
-import {useI18n} from '@neos-project/neos-ui-link-editor-neos-bridge';
-
 import {Process, Field} from '../../../framework';
 import {ILink, makeLinkType} from '../../../domain';
 import {IconCard, IconLabel} from '../../../presentation';
 import { Nullable } from 'ts-toolbelt/out/Union/Nullable';
 import {isSuitableFor} from "./WebSpecification";
+import {translate} from "@neos-project/neos-ui-i18n";
 
 type WebLinkModel = {
     protocol: 'http' | 'https'
@@ -47,11 +46,9 @@ export const Web = makeLinkType<WebLinkModel>('Sitegeist.Archaeopteryx:Web', ({c
     }),
 
     TabHeader: () => {
-        const i18n = useI18n();
-
         return (
             <IconLabel icon="globe">
-                {i18n('Neos.Neos.Ui:LinkEditor.Web:title')}
+                {translate('Neos.Neos.Ui:LinkEditor.Web:title', '')}
             </IconLabel>
         );
     },
@@ -66,13 +63,12 @@ export const Web = makeLinkType<WebLinkModel>('Sitegeist.Archaeopteryx:Web', ({c
     Editor: ({model}: {model: Nullable<WebLinkModel>}) => {
         const [protocol, setProtocol] = useState<string>("");
 
-        const i18n = useI18n();
         const form = useForm();
 
         return (
             <div>
                 <label htmlFor="linkTypeProps.Sitegeist_Archaeopteryx:Web.urlWithoutProtocol">
-                    {i18n('Neos.Neos.Ui:LinkEditor.Web:label.link')}:
+                    {translate('Neos.Neos.Ui:LinkEditor.Web:label.link', '')}:
                 </label>
                 <div style={{ display: 'grid', gridTemplateColumns: '160px 1fr', minWidth: '600px' }}>
                     <Field<string>
@@ -90,7 +86,7 @@ export const Web = makeLinkType<WebLinkModel>('Sitegeist.Archaeopteryx:Web', ({c
                         initialValue={model?.protocol ?? 'https'}
                         validate={value => {
                             if (!value) {
-                                return i18n('Neos.Neos.Ui:LinkEditor.Web:protocol.validation.required');
+                                return translate('Neos.Neos.Ui:LinkEditor.Web:protocol.validation.required', '');
                             }
                         }}
                     >{({input}) => (
@@ -132,14 +128,14 @@ export const Web = makeLinkType<WebLinkModel>('Sitegeist.Archaeopteryx:Web', ({c
                         }}
                         validate={value => {
                             if (!value) {
-                                return i18n('Neos.Neos.Ui:LinkEditor.Web:urlWithoutProtocol.validation.required');
+                                return translate('Neos.Neos.Ui:LinkEditor.Web:urlWithoutProtocol.validation.required', '');
                             }
                         }}
                     >{({input}) => (
                         <TextInput
                             id={input.name}
                             type="text"
-                            placeholder={i18n('Neos.Neos.Ui:LinkEditor.Web:urlWithoutProtocol.placeholder')}
+                            placeholder={translate('Neos.Neos.Ui:LinkEditor.Web:urlWithoutProtocol.placeholder', '')}
                             {...input}
                         />
                     )}</Field>

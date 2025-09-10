@@ -12,9 +12,10 @@ import { useAsync } from "react-use";
 import { VError } from "@neos-project/neos-ui-link-editor-error-handling";
 
 import { SelectBox } from "@neos-project/react-ui-components";
-import { useI18n } from "@neos-project/neos-ui-link-editor-neos-bridge";
+import {useNeos} from "@neos-project/neos-ui-link-editor-neos-bridge";
 
 import { getNodeTypeFilterOptions } from "../infrastructure/http";
+import {translate} from "@neos-project/neos-ui-i18n";
 
 const searchNodeTypeFilterOptions = (
     searchTerm: string,
@@ -36,7 +37,7 @@ interface Props {
 }
 
 export const SelectNodeTypeFilter: React.FC<Props> = (props) => {
-    const i18n = useI18n();
+    const neos = useNeos();
     const [filterTerm, setFilterTerm] = React.useState("");
     const fetch__options = useAsync(async () => {
         const result = await getNodeTypeFilterOptions({
@@ -47,7 +48,7 @@ export const SelectNodeTypeFilter: React.FC<Props> = (props) => {
             return result.success.options.map((option) => ({
                 value: option.value,
                 icon: option.label.icon,
-                label: i18n(option.label.label)
+                label: neos.globalRegistry.get('i18n').translate(option.label.label)
             }));
         }
 
@@ -67,7 +68,7 @@ export const SelectNodeTypeFilter: React.FC<Props> = (props) => {
     return (
         <SelectBox
             disabled={fetch__options.loading || fetch__options.error}
-            placeholder={i18n("Neos.Neos:Main:filter")}
+            placeholder={translate("Neos.Neos:Main:filter", '')}
             placeholderIcon={"filter"}
             onValueChange={props.onChange}
             allowEmpty={true}
@@ -77,10 +78,8 @@ export const SelectNodeTypeFilter: React.FC<Props> = (props) => {
             searchTerm={filterTerm}
             onSearchTermChange={setFilterTerm}
             threshold={0}
-            noMatchesFoundLabel={i18n("Neos.Neos:Main:noMatchesFound")}
-            searchBoxLeftToTypeLabel={i18n(
-                "Neos.Neos:Main:searchBoxLeftToType"
-            )}
+            noMatchesFoundLabel={translate("Neos.Neos:Main:noMatchesFound", '')}
+            searchBoxLeftToTypeLabel={translate("Neos.Neos:Main:searchBoxLeftToType", '')}
         />
     );
 };

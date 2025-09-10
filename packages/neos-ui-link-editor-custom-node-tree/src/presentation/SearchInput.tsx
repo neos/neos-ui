@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import {TextInput, Icon, IconButton} from '@neos-project/react-ui-components';
 
-import {useI18n} from '@neos-project/neos-ui-link-editor-neos-bridge';
+import {translate} from "@neos-project/neos-ui-i18n";
 
 const SearchIcon = styled(Icon)`
     position: absolute;
@@ -39,7 +39,6 @@ interface Props {
 }
 
 export const SearchInput: React.FC<Props> = props => {
-    const i18n = useI18n();
     const latestValue = React.useRef(props.value);
 
     React.useEffect(() => {
@@ -56,7 +55,7 @@ export const SearchInput: React.FC<Props> = props => {
             <StyledTextInput
                 type="search"
                 value={props.value}
-                placeholder={i18n('Neos.Neos:Main:search')}
+                placeholder={translate('Neos.Neos:Main:search', '')}
                 onChange={props.onChange}
             />
             {props.value && (

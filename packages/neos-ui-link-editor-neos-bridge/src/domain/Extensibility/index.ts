@@ -3,5 +3,3 @@ export {useConfiguration} from './Configuration';
 export {useRoutes} from './Routes';
 
 export {useNeos} from './NeosContext';
-
-export {useI18n} from './Translation';

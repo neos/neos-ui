@@ -5,7 +5,7 @@ import {TextInput, CheckBox} from '@neos-project/react-ui-components';
 
 import {ILinkOptions} from '../../domain';
 import {Layout} from '../../presentation';
-import {useI18n} from '@neos-project/neos-ui-link-editor-neos-bridge';
+import {translate} from "@neos-project/neos-ui-i18n";
 
 export const Settings: React.FC<{
     enabledLinkOptions: (keyof ILinkOptions)[]
@@ -16,8 +16,6 @@ export const Settings: React.FC<{
         relNofollow?: boolean
     }
 }> = props => {
-    const i18n = useI18n();
-
     return (
         <Layout.Stack>
             {props.enabledLinkOptions.includes('anchor') || props.enabledLinkOptions.includes('title') ? (
@@ -29,7 +27,7 @@ export const Settings: React.FC<{
                             >
                             {({input}) => (
                                 <label>
-                                    {i18n('Neos.Neos.Ui:LinkEditor.Main:options.label.anchor')}:
+                                    {translate('Neos.Neos.Ui:LinkEditor.Main:options.label.anchor', '')}:
                                     <TextInput type="text" {...input}/>
                                 </label>
                             )}
@@ -42,7 +40,7 @@ export const Settings: React.FC<{
                             >
                             {({input}) => (
                                 <label>
-                                    {i18n('Neos.Neos.Ui:LinkEditor.Main:options.label.title')}:
+                                    {translate('Neos.Neos.Ui:LinkEditor.Main:options.label.title', '')}:
                                     <TextInput type="text" {...input}/>
                                 </label>
                             )}
@@ -61,7 +59,7 @@ export const Settings: React.FC<{
                             {({input}) => (
                                 <label>
                                     <CheckBox onChange={input.onChange} isChecked={input.checked}/>
-                                    {i18n('Neos.Neos.Ui:LinkEditor.Main:options.label.targetBlank')}
+                                    {translate('Neos.Neos.Ui:LinkEditor.Main:options.label.targetBlank', '')}
                                 </label>
                             )}
                         </Field>
@@ -75,7 +73,7 @@ export const Settings: React.FC<{
                             {({input}) => (
                                 <label>
                                     <CheckBox onChange={input.onChange} isChecked={input.checked}/>
-                                    {i18n('Neos.Neos.Ui:LinkEditor.Main:options.label.relNofollow')}
+                                    {translate('Neos.Neos.Ui:LinkEditor.Main:options.label.relNofollow', '')}
                                 </label>
                             )}
                         </Field>

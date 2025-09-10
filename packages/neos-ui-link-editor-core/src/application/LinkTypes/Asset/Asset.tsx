@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import {useAssetSummary, useI18n} from '@neos-project/neos-ui-link-editor-neos-bridge';
+import {useAssetSummary} from '@neos-project/neos-ui-link-editor-neos-bridge';
 
 import {Process, Field} from '../../../framework';
 import {ILink, makeLinkType} from '../../../domain';
@@ -9,6 +9,7 @@ import {ImageCard, IconLabel} from '../../../presentation';
 import {MediaBrowser} from './MediaBrowser';
 import { Nullable } from 'ts-toolbelt/out/Union/Nullable';
 import {isSuitableFor} from "./AssetSpecification";
+import {translate} from "@neos-project/neos-ui-i18n";
 
 type AssetLinkModel = {
     identifier: string
@@ -36,11 +37,9 @@ export const Asset = makeLinkType<AssetLinkModel>('Sitegeist.Archaeopteryx:Asset
     }),
 
     TabHeader: () => {
-        const i18n = useI18n();
-
         return (
             <IconLabel icon="camera">
-                {i18n('Neos.Neos.Ui:LinkEditor.Asset:title')}
+                {translate('Neos.Neos.Ui:LinkEditor.Asset:title', '')}
             </IconLabel>
         );
     },
@@ -61,15 +60,13 @@ export const Asset = makeLinkType<AssetLinkModel>('Sitegeist.Archaeopteryx:Asset
     },
 
     Editor: ({model}: {model: Nullable<AssetLinkModel>}) => {
-        const i18n = useI18n();
-
         return (
             <Field
                 name="identifier"
                 initialValue={model?.identifier}
                 validate={value => {
                     if (!value) {
-                        return i18n('Neos.Neos.Ui:LinkEditor.Asset:identifier.validation.required');
+                        return translate('Neos.Neos.Ui:LinkEditor.Asset:identifier.validation.required', '');
                     }
                 }}
             >{({input}) => (

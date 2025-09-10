@@ -3,7 +3,6 @@ import {useState} from 'react';
 import {useForm} from 'react-final-form';
 
 import {SelectBox} from '@neos-project/react-ui-components';
-import {useI18n} from "@neos-project/neos-ui-link-editor-neos-bridge";
 import {getCountries, getCountryCallingCode, parsePhoneNumber, AsYouType, CountryCode} from 'libphonenumber-js/max'
 
 import {ILink, makeLinkType} from "../../../domain";
@@ -12,6 +11,7 @@ import {IconCard, IconLabel} from "../../../presentation";
 import {Nullable} from 'ts-toolbelt/out/Union/Nullable';
 import {OptionalDeep} from 'ts-toolbelt/out/Object/Optional';
 import {isSuitableFor} from "./PhoneNumberSpecification";
+import {translate} from "@neos-project/neos-ui-i18n";
 
 type PhoneNumberLinkModel = {
     phoneNumber: string,
@@ -46,11 +46,9 @@ export const PhoneNumber = makeLinkType<PhoneNumberLinkModel, PhoneNumberLinkOpt
     },
 
     TabHeader: () => {
-        const i18n = useI18n();
-
         return (
             <IconLabel icon="phone-alt">
-                {i18n('Neos.Neos.Ui:LinkEditor.PhoneNumber:title')}
+                {translate('Neos.Neos.Ui:LinkEditor.PhoneNumber:title', '')}
             </IconLabel>
         );
     },
@@ -71,8 +69,6 @@ export const PhoneNumber = makeLinkType<PhoneNumberLinkModel, PhoneNumberLinkOpt
         const defaultCountryCallingCode: string = model?.countryCallingCode || (options?.defaultCountry ? `+${getCountryCallingCode(options?.defaultCountry).toString()}` : `+${getCountryCallingCode(getCountries()[0]).toString()}`)
 
         const [areaCode, setAreaCode] = useState<string>(defaultCountryCallingCode);
-
-        const i18n = useI18n();
 
         const countryCallingCodes = {} as { [key: string]: { value: string, label: string } };
         options.favoredCountries?.map((country) => {
@@ -111,7 +107,7 @@ export const PhoneNumber = makeLinkType<PhoneNumberLinkModel, PhoneNumberLinkOpt
         return (
             <div>
                 <label htmlFor="linkTypeProps.Sitegeist_Archaeopteryx:PhoneNumber.phoneNumber">
-                    {i18n('Neos.Neos.Ui:LinkEditor.PhoneNumber:phoneNumber.label')}
+                    {translate('Neos.Neos.Ui:LinkEditor.PhoneNumber:phoneNumber.label', '')}
                 </label>
                 <div style={{display: 'grid', gridTemplateColumns: '160px 1fr', minWidth: '600px'}}>
                     <Field<string>
@@ -129,7 +125,7 @@ export const PhoneNumber = makeLinkType<PhoneNumberLinkModel, PhoneNumberLinkOpt
                         validate={
                             (value) => {
                                 if (!value) {
-                                    return i18n('Neos.Neos.Ui:LinkEditor.PhoneNumber:countryCallingCode.validation.required');
+                                    return translate('Neos.Neos.Ui:LinkEditor.PhoneNumber:countryCallingCode.validation.required', '');
                                 }
                             }
                         }
@@ -148,10 +144,10 @@ export const PhoneNumber = makeLinkType<PhoneNumberLinkModel, PhoneNumberLinkOpt
                         initialValue={model?.phoneNumber}
                         validate={value => {
                             if (!value) {
-                                return i18n('Neos.Neos.Ui:LinkEditor.PhoneNumber:phoneNumber.validation.required');
+                                return translate('Neos.Neos.Ui:LinkEditor.PhoneNumber:phoneNumber.validation.required', '');
                             }
                             if (!checkRegex.test(value)) {
-                                return i18n('Neos.Neos.Ui:LinkEditor.PhoneNumber:phoneNumber.validation.numbersOnly');
+                                return translate('Neos.Neos.Ui:LinkEditor.PhoneNumber:phoneNumber.validation.numbersOnly', '');
                             }
                         }}
                     >{({input, meta}) => (
@@ -159,7 +155,7 @@ export const PhoneNumber = makeLinkType<PhoneNumberLinkModel, PhoneNumberLinkOpt
                             label={''}
                             editor={'Neos.Neos/Inspector/Editors/TextFieldEditor'}
                             editorOptions={{
-                                placeholder: i18n('Neos.Neos.Ui:LinkEditor.PhoneNumber:phoneNumber.placeholder')
+                                placeholder: translate('Neos.Neos.Ui:LinkEditor.PhoneNumber:phoneNumber.placeholder', '')
                             }}
                             input={input}
                             meta={meta}

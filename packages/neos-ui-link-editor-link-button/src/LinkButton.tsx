@@ -3,8 +3,8 @@ import * as React from 'react';
 import {IconButton} from '@neos-project/react-ui-components';
 
 import {IEditor} from '@neos-project/neos-ui-link-editor-core';
-import {useI18n} from '@neos-project/neos-ui-link-editor-neos-bridge';
 import { ILinkOptions } from '@neos-project/neos-ui-link-editor-core/src/domain';
+import {translate} from "@neos-project/neos-ui-i18n";
 
 interface Props {
     inlineEditorOptions?: {
@@ -31,7 +31,6 @@ interface Props {
 }
 
 export const createLinkButton = (editor: IEditor) => (props: Props) => {
-    const i18n = useI18n();
     const transactions = editor.transactions;
     const editorOptions = {
         ...props.inlineEditorOptions?.linking?.['Sitegeist.Archaeopteryx'],
@@ -115,7 +114,7 @@ export const createLinkButton = (editor: IEditor) => (props: Props) => {
 
     return (
         <IconButton
-            title={i18n('Neos.Neos.Ui:LinkEditor.Main:linkButton.title')}
+            title={translate('Neos.Neos.Ui:LinkEditor.Main:linkButton.title', '')}
             isActive={Boolean(props.formattingUnderCursor.link)}
             icon={Boolean(props.formattingUnderCursor.link) ? 'unlink' : 'link'}
             onClick={handleLinkButtonClick}

@@ -4,7 +4,6 @@ export {
     useGlobalRegistry,
     useConfiguration,
     useRoutes,
-    useI18n,
 } from "./Extensibility";
 
 export { useAssetSummary } from "./Media";

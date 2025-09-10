@@ -1,7 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import {Button, Icon} from '@neos-project/react-ui-components';
-import {useI18n} from '@neos-project/neos-ui-link-editor-neos-bridge';
 import {
     ILinkType,
     useLinkTypeForHref,
@@ -17,6 +16,7 @@ import {
     resolveSerializedLinkFromValue,
     serializedLinkToILink
 } from "./serialisation";
+import {translate} from "@neos-project/neos-ui-i18n";
 
 export type EditorProps = {
     options?: {
@@ -34,7 +34,6 @@ export const createInspectorEditor = (dataType: LinkDataType, editor: IEditor) =
 
     const reset = () => props.commit('');
 
-    const i18n = useI18n();
     const transactions = editor.transactions;
 
     const serializedLink = resolveSerializedLinkFromValue(props.value, dataType);
@@ -110,13 +109,13 @@ export const createInspectorEditor = (dataType: LinkDataType, editor: IEditor) =
             <Button onClick={editLink}>
                 <Icon icon="plus"/>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                {i18n('Neos.Neos.Ui:LinkEditor.Main:inspector.create')}
+                {translate('Neos.Neos.Ui:LinkEditor.Main:inspector.create', '')}
             </Button>
         );
     } else {
         return (
             <div>
-                {i18n('Neos.Neos.Ui:LinkEditor.Main:inspector.notfound', undefined, {
+                {translate('Neos.Neos.Ui:LinkEditor.Main:inspector.notfound', '', {
                     href: JSON.stringify(serializedLink.value)
                 })}
                 <br/>
@@ -124,7 +123,7 @@ export const createInspectorEditor = (dataType: LinkDataType, editor: IEditor) =
                 <Button onClick={editLink}>
                     <Icon icon="plus"/>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    {i18n('Neos.Neos.Ui:LinkEditor.Main:inspector.create')}
+                    {translate('Neos.Neos.Ui:LinkEditor.Main:inspector.create', '')}
                 </Button>
             </div>
         );
@@ -166,7 +165,6 @@ const InspectorEditorWithLinkType: React.FC<{
     editLink: () => Promise<void>
     reset: () => void
 }> = props => {
-    const i18n = useI18n();
     const {busy, error, result: model} = props.linkType.useResolvedModel(props.link);
     const {Preview, LoadingPreview} = props.linkType;
 
@@ -177,7 +175,7 @@ const InspectorEditorWithLinkType: React.FC<{
     return (
         <Deletable onDelete={props.reset}>
             <SeamlessButton
-                title={i18n('Neos.Neos.Ui:LinkEditor.Main:inspector.edit')}
+                title={translate('Neos.Neos.Ui:LinkEditor.Main:inspector.edit', '')}
                 type="button"
                 onClick={props.editLink}
             >

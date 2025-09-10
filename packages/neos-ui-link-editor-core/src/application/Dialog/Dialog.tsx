@@ -4,7 +4,6 @@ import {useKey} from 'react-use';
 
 import {Button} from '@neos-project/react-ui-components';
 
-import {useI18n} from '@neos-project/neos-ui-link-editor-neos-bridge';
 import {ErrorBoundary} from '@neos-project/neos-ui-link-editor-error-handling';
 
 import {Field} from '../../framework';
@@ -22,9 +21,9 @@ import {LinkEditor} from './LinkEditor';
 import {Settings} from './Settings';
 import {useLatestState} from '@neos-project/framework-observable-react';
 import {useSelector} from '@neos-project/neos-ui-redux-store';
+import {translate} from "@neos-project/neos-ui-i18n";
 
 export const createDialog = (editor: IEditor) => () => {
-    const i18n = useI18n();
     const linkTypes = useLinkTypes();
     const isAuthenticated = useSelector(state => !state.system?.authenticationTimeout);
     const {dismiss, apply, unset} = editor.transactions;
@@ -63,7 +62,7 @@ export const createDialog = (editor: IEditor) => () => {
         return (
             <Modal
                 renderTitle={() => (
-                    <div>{i18n('Neos.Neos.Ui:LinkEditor.Main:dialog.title')}</div>
+                    <div>{translate('Neos.Neos.Ui:LinkEditor.Main:dialog.title', '')}</div>
                 )}
                 renderBody={() => (
                     <Form<ILinkOptions> onSubmit={handleSubmit}>
@@ -86,7 +85,7 @@ export const createDialog = (editor: IEditor) => () => {
                                     renderActions={() => (
                                         <>
                                             <Button onClick={dismiss}>
-                                                {i18n('Neos.Neos.Ui:LinkEditor.Main:dialog.action.cancel')}
+                                                {translate('Neos.Neos.Ui:LinkEditor.Main:dialog.action.cancel', '')}
                                             </Button>
                                             {(!valid || !dirty) && valueWasDeleted ? (
                                                 <Button
@@ -94,7 +93,7 @@ export const createDialog = (editor: IEditor) => () => {
                                                     type="button"
                                                     onClick={unset}
                                                 >
-                                                    {i18n('Neos.Neos.Ui:LinkEditor.Main:dialog.action.apply')}
+                                                    {translate('Neos.Neos.Ui:LinkEditor.Main:dialog.action.apply', '')}
                                                 </Button>
                                             ) : (
                                                 <Button
@@ -102,7 +101,7 @@ export const createDialog = (editor: IEditor) => () => {
                                                     type="submit"
                                                     disabled={!valid || !dirty}
                                                 >
-                                                    {i18n('Neos.Neos.Ui:LinkEditor.Main:dialog.action.apply')}
+                                                    {translate('Neos.Neos.Ui:LinkEditor.Main:dialog.action.apply', '')}
                                                 </Button>
                                             )}
                                         </>

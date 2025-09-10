@@ -1,13 +1,12 @@
 import * as React from 'react';
 
-import {useI18n} from '@neos-project/neos-ui-link-editor-neos-bridge';
-
 import {Process, Field, EditorEnvelope} from '../../../framework';
 import {ILink, makeLinkType} from '../../../domain';
 import {IconCard, Layout, IconLabel} from '../../../presentation';
 import { OptionalDeep } from 'ts-toolbelt/out/Object/Optional';
 import { Nullable } from 'ts-toolbelt/out/Union/Nullable';
 import {isSuitableFor} from "./MailToSpecification";
+import {translate} from "@neos-project/neos-ui-i18n";
 
 const simpleEmailRegex = /^[^\s@]+@[^\s@]+$/;
 
@@ -77,11 +76,9 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('Sitegeist.Ar
     },
 
     TabHeader: () => {
-        const i18n = useI18n();
-
         return (
             <IconLabel icon="envelope">
-                {i18n('Neos.Neos.Ui:LinkEditor.MailTo:title')}
+                {translate('Neos.Neos.Ui:LinkEditor.MailTo:title', '')}
             </IconLabel>
         );
     },
@@ -99,8 +96,6 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('Sitegeist.Ar
     ),
 
     Editor: ({model: email, options}: {model: Nullable<MailToLinkModel>, options: OptionalDeep<MailToOptions>}) => {
-        const i18n = useI18n();
-
         return (
             <Layout.Columns>
                 <Field<string>
@@ -108,17 +103,17 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('Sitegeist.Ar
                     initialValue={email?.recipient}
                     validate={value => {
                         if (!value) {
-                            return i18n('Neos.Neos.Ui:LinkEditor.MailTo:recipient.validation.required');
+                            return translate('Neos.Neos.Ui:LinkEditor.MailTo:recipient.validation.required', '');
                         }
 
                         if (!simpleEmailRegex.test(value)) {
-                            return i18n('Neos.Neos.Ui:LinkEditor.MailTo:recipient.validation.email');
+                            return translate('Neos.Neos.Ui:LinkEditor.MailTo:recipient.validation.email', '');
                         }
                     }}
                 >{({input, meta}) => (
                         <div style={{ gridColumn: '1 / -1' }}>
                             <EditorEnvelope
-                                label={i18n('Neos.Neos.Ui:LinkEditor.MailTo:recipient.label')}
+                                label={translate('Neos.Neos.Ui:LinkEditor.MailTo:recipient.label', '')}
                                 editor={'Neos.Neos/Inspector/Editors/TextFieldEditor'}
                                 input={input}
                                 meta={meta}
@@ -132,7 +127,7 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('Sitegeist.Ar
                     >{({input, meta}) => (
                         <div style={{ gridColumn: '1 / -1' }}>
                             <EditorEnvelope
-                                label={i18n('Neos.Neos.Ui:LinkEditor.MailTo:subject.label')}
+                                label={translate('Neos.Neos.Ui:LinkEditor.MailTo:subject.label', '')}
                                 editor={'Neos.Neos/Inspector/Editors/TextFieldEditor'}
                                 input={input}
                                 meta={meta}
@@ -147,17 +142,17 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('Sitegeist.Ar
                         validate={value => {
                             if (value !== undefined && value !== null) {
                                 if (!value.split(',').every(value => simpleEmailRegex.test(value.trim()))) {
-                                    return i18n('Neos.Neos.Ui:LinkEditor.MailTo:cc.validation.emaillist');
+                                    return translate('Neos.Neos.Ui:LinkEditor.MailTo:cc.validation.emaillist', '');
                                 }
                             }
                         }}
                     >{({input, meta}) => (
                         <div style={{ gridColumn: '1 / -1' }}>
                             <EditorEnvelope
-                                label={i18n('Neos.Neos.Ui:LinkEditor.MailTo:cc.label')}
+                                label={translate('Neos.Neos.Ui:LinkEditor.MailTo:cc.label', '')}
                                 editor={'Neos.Neos/Inspector/Editors/TextFieldEditor'}
                                 editorOptions={{
-                                    placeholder: i18n('Neos.Neos.Ui:LinkEditor.MailTo:cc.placeholder')
+                                    placeholder: translate('Neos.Neos.Ui:LinkEditor.MailTo:cc.placeholder', '')
                                 }}
                                 input={input}
                                 meta={meta}
@@ -172,17 +167,17 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('Sitegeist.Ar
                         validate={value => {
                             if (value !== undefined && value !== null) {
                                 if (!value.split(',').every(value => simpleEmailRegex.test(value.trim()))) {
-                                    return i18n('Neos.Neos.Ui:LinkEditor.MailTo:bcc.validation.emaillist');
+                                    return translate('Neos.Neos.Ui:LinkEditor.MailTo:bcc.validation.emaillist', '');
                                 }
                             }
                         }}
                     >{({input, meta}) => (
                         <div style={{ gridColumn: '1 / -1' }}>
                             <EditorEnvelope
-                                label={i18n('Neos.Neos.Ui:LinkEditor.MailTo:bcc.label')}
+                                label={translate('Neos.Neos.Ui:LinkEditor.MailTo:bcc.label', '')}
                                 editor={'Neos.Neos/Inspector/Editors/TextFieldEditor'}
                                 editorOptions={{
-                                    placeholder: i18n('Neos.Neos.Ui:LinkEditor.MailTo:bcc.placeholder')
+                                    placeholder: translate('Neos.Neos.Ui:LinkEditor.MailTo:bcc.placeholder', '')
                                 }}
                                 input={input}
                                 meta={meta}
@@ -197,7 +192,7 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('Sitegeist.Ar
                     >{({input, meta}) => (
                         <div style={{ gridColumn: '1 / -1' }}>
                             <EditorEnvelope
-                                label={i18n('Neos.Neos.Ui:LinkEditor.MailTo:body.label')}
+                                label={translate('Neos.Neos.Ui:LinkEditor.MailTo:body.label', '')}
                                 editor={'Neos.Neos/Inspector/Editors/TextAreaEditor'}
                                 input={input}
                                 meta={meta}

@@ -1,7 +1,5 @@
 import * as React from 'react';
 
-import {useI18n} from "@neos-project/neos-ui-link-editor-neos-bridge";
-
 import {TextInput} from '@neos-project/react-ui-components';
 
 import {ILink, makeLinkType} from "../../../domain";
@@ -9,6 +7,7 @@ import {Process, Field} from '../../../framework';
 import {IconCard, IconLabel} from "../../../presentation";
 import {Nullable} from 'ts-toolbelt/out/Union/Nullable';
 import {isSuitableFor} from "./CustomLinkSpecification";
+import {translate} from "@neos-project/neos-ui-i18n";
 
 type CustomLinkModel = {
     customLink: string,
@@ -28,11 +27,9 @@ export const CustomLink = makeLinkType<CustomLinkModel>('Sitegeist.Archaeopteryx
     },
 
     TabHeader: () => {
-        const i18n = useI18n();
-
         return (
             <IconLabel icon="">
-                {i18n('Neos.Neos.Ui:LinkEditor.CustomLink:title')}
+                {translate('Neos.Neos.Ui:LinkEditor.CustomLink:title', '')}
             </IconLabel>
         );
     },
@@ -47,12 +44,10 @@ export const CustomLink = makeLinkType<CustomLinkModel>('Sitegeist.Archaeopteryx
     },
 
     Editor: ({model}: { model: Nullable<CustomLinkModel> }) => {
-        const i18n = useI18n();
-
         return (
             <div>
                 <label>
-                    {i18n('Neos.Neos.Ui:LinkEditor.CustomLink:customLink.label')}
+                    {translate('Neos.Neos.Ui:LinkEditor.CustomLink:customLink.label', '')}
                 </label>
                 <div style={{display: 'grid', gridTemplateColumns: '400px 1fr', minWidth: '600px'}}>
                     <Field<string>
@@ -61,7 +56,7 @@ export const CustomLink = makeLinkType<CustomLinkModel>('Sitegeist.Archaeopteryx
                         validate={
                             (value) => {
                                 if (!value) {
-                                    return i18n('Neos.Neos.Ui:LinkEditor.CustomLink:validation.required');
+                                    return translate('Neos.Neos.Ui:LinkEditor.CustomLink:validation.required', '');
                                 }
                             }
                         }
@@ -69,7 +64,7 @@ export const CustomLink = makeLinkType<CustomLinkModel>('Sitegeist.Archaeopteryx
                         <TextInput
                             id={input.name}
                             type="text"
-                            placeHolder={i18n('Neos.Neos.Ui:LinkEditor.CustomLink:customLink.placeholder')}
+                            placeHolder={translate('Neos.Neos.Ui:LinkEditor.CustomLink:customLink.placeholder', '')}
                             {...input}
                         />
                     )}</Field>

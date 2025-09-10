@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {ActionType, getType} from 'typesafe-actions';
-import {BehaviorSubject, Subject} from 'rxjs';
-import {scan, shareReplay} from 'rxjs/operators';
 
 import {ILink, ILinkOptions} from '../Link';
 
 import * as actions from './EditorAction';
+import {createActionObservable, createState} from "@neos-project/framework-observable";
+import {useLatestState} from "@neos-project/framework-observable-react";
 
 export interface IEditorState {
     enabledLinkOptions: (keyof ILinkOptions)[]
@@ -53,14 +53,20 @@ export function editorReducer(
 }
 
 export function createEditor() {
-    const actions$ = new Subject<ActionType<typeof actions>>();
-    const dispatch = (action: ActionType<typeof actions>) => actions$.next(action);
-    const state$ = new BehaviorSubject(initialState);
+    const actions$ = createActionObservable<ActionType<typeof actions>>();
 
-    actions$.pipe(
-        scan(editorReducer, initialState),
-        shareReplay(1)
-    ).subscribe(state$);
+    const dispatch = actions$.next;
+
+    const state$ = createState(initialState);
+
+    actions$.subscribe({
+        next: (action) => state$.update(
+            (current) => editorReducer(
+                current,
+                action
+            )
+        )
+    })
 
     const dismiss = () => dispatch(actions.EditorWasDismissed());
     const unset = () => dispatch(actions.ValueWasUnset());
@@ -75,42 +81,36 @@ export function createEditor() {
                 actions.EditorWasOpened(initialValue, enabledLinkOptions, editorOptions)
             );
 
-            actions$.subscribe(action => {
-                switch (action.type) {
-                    case getType(actions.EditorWasDismissed):
-                        return resolve({change: false});
-                    case getType(actions.ValueWasUnset):
-                        return resolve({change: true, value: null});
-                    case getType(actions.ValueWasApplied):
-                        return resolve({change: true, value: action.payload});
-                    default:
-                        return;
-                }
-            });
+            actions$.subscribe({
+                next: action => {
+                    switch (action.type) {
+                        case getType(actions.EditorWasDismissed):
+                            return resolve({change: false});
+                        case getType(actions.ValueWasUnset):
+                            return resolve({change: true, value: null});
+                        case getType(actions.ValueWasApplied):
+                            return resolve({change: true, value: action.payload});
+                        default:
+                            return;
+                    }
+            }});
         }
     );
 
     return {
-        state$,
-        tx: {dismiss, unset, apply, editLink},
-        initialState
+        state$, // todo do not expose update() because that breaks this abstraction?
+        tx: {dismiss, unset, apply, editLink}
     };
 }
 
 export type IEditor = ReturnType<typeof createEditor>;
 
-export const EditorContext = React.createContext(createEditor());
+export const EditorContext = React.createContext<ReturnType<typeof createEditor>>(undefined as unknown as ReturnType<typeof createEditor>);
 
 export function useEditorState() {
     const {state$} = React.useContext(EditorContext);
-    const [state, setState] = React.useState(state$.getValue());
 
-    React.useEffect(() => {
-        const subscription = state$.subscribe(setState);
-        return () => subscription.unsubscribe();
-    }, [state$]);
-
-    return state;
+    return useLatestState(state$);
 }
 
 export function useEditorTransactions() {

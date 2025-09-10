@@ -4069,7 +4069,6 @@ __metadata:
     libphonenumber-js: ^1.9.52
     react-final-form: ^6.5.3
     react-use: ^16.1.0
-    rxjs: ^6.6.7
     ts-toolbelt: ^9.6.0
     typesafe-actions: ^5.1.0
   languageName: unknown
@@ -4084,7 +4083,6 @@ __metadata:
     "@neos-project/react-ui-components": "workspace:*"
     react: ^16.12.0
     react-use: ^16.1.0
-    rxjs: ^6.6.7
     styled-components: ^5.3.0
     typesafe-actions: ^5.1.0
   languageName: unknown
@@ -15261,7 +15259,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rxjs@npm:^6.4.0, rxjs@npm:^6.6.7":
+"rxjs@npm:^6.4.0":
   version: 6.6.7
   resolution: "rxjs@npm:6.6.7"
   dependencies:

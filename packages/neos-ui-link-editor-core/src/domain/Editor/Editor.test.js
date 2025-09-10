@@ -1,7 +1,7 @@
-import {Subscription} from 'rxjs';
 import {createEditor} from './Editor';
 import {describe, beforeEach, afterEach, it} from "node:test";
 import {equal, deepEqual} from "node:assert/strict";
+import {Subscription} from "@neos-project/framework-observable";
 
 describe('Editor', () => {
     const {state$, tx: {editLink, dismiss, unset, apply}} = createEditor();
@@ -11,8 +11,10 @@ describe('Editor', () => {
     let subscription;
 
     beforeEach(() => {
-        subscription = state$.subscribe(latest => {
-            state = latest;
+        subscription = state$.subscribe({
+            next: latest => {
+                state = latest;
+            }
         });
     });
 
@@ -37,7 +39,7 @@ describe('Editor', () => {
     });
 
     it('unsets links', (_t, done) => {
-        editLink({href: 'http://example.com/'}).then(result => {
+        editLink({href: 'http://unset.com/'}).then(result => {
             equal(state.isOpen, false);
             equal(result.change, true);
             equal(result.value, null);
@@ -46,14 +48,14 @@ describe('Editor', () => {
 
         setImmediate(() => {
             equal(state.isOpen, true);
-            deepEqual(state.initialValue, {href: 'http://example.com/'});
+            deepEqual(state.initialValue, {href: 'http://unset.com/'});
 
             unset();
         });
     });
 
     it('can be dismissed', (_t, done) => {
-        editLink({href: 'http://example.com'}).then(result => {
+        editLink({href: 'http://dismissed.com/'}).then(result => {
             equal(state.isOpen, false);
             equal(result.change, false);
             setImmediate(done);
@@ -61,7 +63,7 @@ describe('Editor', () => {
 
         setImmediate(() => {
             equal(state.isOpen, true);
-            deepEqual(state.initialValue, {href: 'http://example.com'});
+            deepEqual(state.initialValue, {href: 'http://dismissed.com/'});
 
             dismiss();
         });

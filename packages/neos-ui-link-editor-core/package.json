@@ -9,11 +9,12 @@
         "@neos-project/neos-ui-link-editor-neos-bridge": "workspace:*",
         "@neos-project/positional-array-sorter": "workspace:*",
         "@neos-project/react-ui-components": "workspace:*",
+        "@neos-project/framework-observable": "workspace:*",
+        "@neos-project/framework-observable-react": "workspace:*",
         "final-form": "^4.20.2",
         "libphonenumber-js": "^1.9.52",
         "react-final-form": "^6.5.3",
         "react-use": "^16.1.0",
-        "rxjs": "^6.6.7",
         "ts-toolbelt": "^9.6.0",
         "typesafe-actions": "^5.1.0"
     }

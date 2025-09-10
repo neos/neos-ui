@@ -10,7 +10,6 @@
 export { fetchWithErrorHandling } from "./application";
 
 export {
-    useSiteNodeAggregateId,
     useAssetSummary,
     useGlobalRegistry,
     useConfiguration,

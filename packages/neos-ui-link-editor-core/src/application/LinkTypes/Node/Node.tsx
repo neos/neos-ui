@@ -13,7 +13,6 @@ import { Nullable } from "ts-toolbelt/out/Union/Nullable";
 import { OptionalDeep } from "ts-toolbelt/out/Object/Optional";
 
 import {
-    useSiteNodeAggregateId,
     useConfiguration,
     useI18n,
 } from "@neos-project/neos-ui-link-editor-neos-bridge";
@@ -25,6 +24,7 @@ import { IconCard, IconLabel } from "../../../presentation";
 import { Process, Field } from "../../../framework";
 import { getNodeSummary } from "../../../infrastructure/http";
 import {isSuitableFor} from "./NodeSpecification";
+import {useSiteNodeAggregateId} from "./useSiteNodeAggregateId";
 
 type NodeLinkModel = {
     nodeId: string;

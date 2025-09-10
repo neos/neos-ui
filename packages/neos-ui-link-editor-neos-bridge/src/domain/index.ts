@@ -1,6 +1,3 @@
-export {
-    useSiteNodeAggregateId,
-} from "./ContentRepository";
 
 export {
     useNeos,

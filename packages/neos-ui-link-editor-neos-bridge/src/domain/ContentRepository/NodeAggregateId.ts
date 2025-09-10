@@ -7,8 +7,8 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-import { useSelector } from "../Extensibility/Store";
 import {Any} from "ts-toolbelt";
+import {useSelector} from '@neos-project/neos-ui-redux-store';
 
 export type NodeAggregateId = Any.Type<string, 'NodeAggregateId'>;
 

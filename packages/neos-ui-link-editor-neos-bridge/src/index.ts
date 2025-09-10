@@ -17,7 +17,6 @@ export {
     useGlobalRegistry,
     useConfiguration,
     useRoutes,
-    useSelector,
     useI18n,
     useNeos,
 } from "./domain";

@@ -16,10 +16,10 @@ import {
     useSiteNodeAggregateId,
     useConfiguration,
     useI18n,
-    useSelector,
     usePersonalWorkspaceName,
     useDimensionValues,
 } from "@neos-project/neos-ui-link-editor-neos-bridge";
+import {useSelector} from '@neos-project/neos-ui-redux-store';
 import { Tree } from "@neos-project/neos-ui-link-editor-custom-node-tree";
 
 import { ILink, makeLinkType } from "../../../domain";

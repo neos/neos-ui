@@ -7,7 +7,7 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-import { useSelector } from "../Extensibility/Store";
+import {useSelector} from '@neos-project/neos-ui-redux-store';
 
 export function usePersonalWorkspaceName(): null | string {
     const personalWorkspaceName = useSelector(

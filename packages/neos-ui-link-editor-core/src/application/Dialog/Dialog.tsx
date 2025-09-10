@@ -4,7 +4,7 @@ import {useKey} from 'react-use';
 
 import {Button} from '@neos-project/react-ui-components';
 
-import {useI18n, useSelector} from '@neos-project/neos-ui-link-editor-neos-bridge';
+import {useI18n} from '@neos-project/neos-ui-link-editor-neos-bridge';
 import {ErrorBoundary} from '@neos-project/neos-ui-link-editor-error-handling';
 
 import {Field} from '../../framework';
@@ -20,7 +20,8 @@ import {Layout, Form as StyledForm, Modal, Tabs, Deletable as Deletable} from '.
 
 import {LinkEditor} from './LinkEditor';
 import {Settings} from './Settings';
-import {useLatestState} from "@neos-project/framework-observable-react";
+import {useLatestState} from '@neos-project/framework-observable-react';
+import {useSelector} from '@neos-project/neos-ui-redux-store';
 
 export const createDialog = (editor: IEditor) => () => {
     const i18n = useI18n();

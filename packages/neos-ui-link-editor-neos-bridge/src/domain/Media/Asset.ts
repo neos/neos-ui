@@ -1,6 +1,5 @@
 import {useAsync} from 'react-use';
-
-import { endpoints } from '../Backend';
+import backend from '@neos-project/neos-ui-backend-connector';
 
 export interface IAssetSummary {
     label: string
@@ -9,7 +8,11 @@ export interface IAssetSummary {
 
 export function useAssetSummary(assetIdentifier: string) {
     return useAsync(async () => {
-        const result = await endpoints().assetDetail(assetIdentifier);
+        const endpoints = backend.get().endpoints as {
+            assetDetail: (assetIdentifier: string) => Promise<any>
+        };
+
+        const result = await endpoints.assetDetail(assetIdentifier);
         return result as null | IAssetSummary;
     }, [assetIdentifier]);
 }

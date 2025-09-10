@@ -1,7 +1,5 @@
 import * as React from 'react';
 
-import {useAssetSummary} from '@neos-project/neos-ui-link-editor-neos-bridge';
-
 import {Process, Field} from '../../../framework';
 import {ILink, makeLinkType} from '../../../domain';
 import {ImageCard, IconLabel} from '../../../presentation';
@@ -10,6 +8,8 @@ import {MediaBrowser} from './MediaBrowser';
 import { Nullable } from 'ts-toolbelt/out/Union/Nullable';
 import {isSuitableFor} from "./AssetSpecification";
 import {translate} from "@neos-project/neos-ui-i18n";
+import {useAsync} from "react-use";
+import backend from "@neos-project/neos-ui-backend-connector";
 
 type AssetLinkModel = {
     identifier: string
@@ -45,7 +45,10 @@ export const Asset = makeLinkType<AssetLinkModel>('Sitegeist.Archaeopteryx:Asset
     },
 
     Preview: ({model}: {model: AssetLinkModel}) => {
-        const asset = useAssetSummary(model.identifier);
+        const asset = useAsync(() => {
+            const endpoints = backend.get().endpoints;
+            return endpoints.assetDetail(model.identifier);
+        }, [model.identifier]);
 
         if (!asset.value) {
             return null;
@@ -53,8 +56,8 @@ export const Asset = makeLinkType<AssetLinkModel>('Sitegeist.Archaeopteryx:Asset
 
         return (
             <ImageCard
-                label={asset.value?.label}
-                src={asset.value?.preview}
+                label={asset.value.label}
+                src={asset.value.preview}
             />
         );
     },

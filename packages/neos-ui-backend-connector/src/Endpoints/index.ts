@@ -442,7 +442,7 @@ export default (routes: Routes) => {
                 dataType: 'Neos.Media:Asset',
                 loaderUri: 'asset://' + assetIdentifierElement.innerText,
                 label: assetLabelElement.innerText,
-                preview: previewElement.getAttribute('href'),
+                preview: previewElement.getAttribute('href')!,
                 identifier: assetIdentifierElement.innerText
             });
         });

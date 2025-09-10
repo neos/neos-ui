@@ -10,7 +10,6 @@
 export { fetchWithErrorHandling } from "./application";
 
 export {
-    useAssetSummary,
     useGlobalRegistry,
     useConfiguration,
     useRoutes,

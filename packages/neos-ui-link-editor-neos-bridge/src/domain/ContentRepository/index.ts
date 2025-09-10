@@ -9,6 +9,3 @@
  */
 export {useSiteNodeAggregateId} from './NodeAggregateId';
 
-export {useDimensionValues} from './Dimensions';
-
-export {usePersonalWorkspaceName} from './Workspace';

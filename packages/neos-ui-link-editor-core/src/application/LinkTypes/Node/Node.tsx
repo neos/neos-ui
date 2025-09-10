@@ -16,10 +16,8 @@ import {
     useSiteNodeAggregateId,
     useConfiguration,
     useI18n,
-    usePersonalWorkspaceName,
-    useDimensionValues,
 } from "@neos-project/neos-ui-link-editor-neos-bridge";
-import {useSelector} from '@neos-project/neos-ui-redux-store';
+import {selectors, useSelector} from '@neos-project/neos-ui-redux-store';
 import { Tree } from "@neos-project/neos-ui-link-editor-custom-node-tree";
 
 import { ILink, makeLinkType } from "../../../domain";
@@ -40,8 +38,8 @@ type NodeLinkOptions = {
 
 const NodePreview: React.FC<{ nodeId: string }> = (props) => {
     const i18n = useI18n();
-    const workspaceName = usePersonalWorkspaceName();
-    const dimensionValues = useDimensionValues();
+    const workspaceName = useSelector(selectors.CR.Workspaces.personalWorkspaceNameSelector);
+    const dimensionValues = useSelector(selectors.CR.ContentDimensions.active);
     const fetch__nodeSummary = useAsync(async () => {
         if (!workspaceName) {
             return null;
@@ -135,8 +133,8 @@ export const Node = makeLinkType<NodeLinkModel, NodeLinkOptions>(
             options: OptionalDeep<NodeLinkOptions>;
         }) => {
             const i18n = useI18n();
-            const workspaceName = usePersonalWorkspaceName();
-            const dimensionValues = useDimensionValues();
+            const workspaceName = useSelector(selectors.CR.Workspaces.personalWorkspaceNameSelector);
+            const dimensionValues = useSelector(selectors.CR.ContentDimensions.active);
             const siteNodeAggregateId = useSiteNodeAggregateId();
             const defaultLoadingDepth =
                 useConfiguration((c) => c.nodeTree?.loadingDepth) ?? 4;

@@ -12,8 +12,6 @@ export { fetchWithErrorHandling } from "./application";
 export {
     useSiteNodeAggregateId,
     useAssetSummary,
-    useDimensionValues,
-    usePersonalWorkspaceName,
     useGlobalRegistry,
     useConfiguration,
     useRoutes,

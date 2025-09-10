@@ -1,7 +1,5 @@
 export {
     useSiteNodeAggregateId,
-    useDimensionValues,
-    usePersonalWorkspaceName,
 } from "./ContentRepository";
 
 export {

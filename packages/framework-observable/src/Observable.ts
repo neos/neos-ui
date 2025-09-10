@@ -21,15 +21,6 @@ export interface Observable<V> {
 }
 
 /**
- * An ObservablePipeOperation is a function that takes an observable and
- * returns a new observable. It can be passed to any Observable's `pipe`
- * method.
- */
-export interface ObservablePipeOperation<I, O> {
-    (observable: Observable<I>): Observable<O>;
-}
-
-/**
  * Creates an Observable from the given Observer.
  */
 export function createObservable<V>(observer: Observer<V>): Observable<V> {

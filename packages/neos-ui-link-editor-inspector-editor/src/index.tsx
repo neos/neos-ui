@@ -1,17 +1,15 @@
-import * as React from 'react';
 import {SynchronousRegistry} from '@neos-project/neos-ui-extensibility';
 
-import {INeosContextProperties, NeosContext} from '@neos-project/neos-ui-link-editor-neos-bridge';
 import {IEditor} from '@neos-project/neos-ui-link-editor-core';
 
 import {createInspectorEditor} from './InspectorEditor';
 import {LinkDataType} from "./serialisation";
+import {GlobalRegistry} from "@neos-project/neos-ts-interfaces";
 
 export function registerInspectorEditors(
-    neosContextProperties: INeosContextProperties,
+    globalRegistry: GlobalRegistry,
     editor: IEditor
 ): void {
-    const {globalRegistry} = neosContextProperties;
     const inspectorRegistry = globalRegistry.get('inspector');
     if (!inspectorRegistry) {
         console.warn('[Neos.Neos.Ui:LinkEditor]: Could not find inspector registry.');
@@ -27,18 +25,10 @@ export function registerInspectorEditors(
     }
 
     editorsRegistry.set('Sitegeist.Archaeopteryx/Inspector/Editors/ValueObjectLinkEditor', {
-        component: (props: any) => (
-            <NeosContext.Provider value={neosContextProperties}>
-                {React.createElement(createInspectorEditor(LinkDataType.valueObject, editor), props)}
-            </NeosContext.Provider>
-        )
+        component: createInspectorEditor(LinkDataType.valueObject, editor)
     });
 
     editorsRegistry.set('Sitegeist.Archaeopteryx/Inspector/Editors/LinkEditor', {
-        component: (props: any) => (
-            <NeosContext.Provider value={neosContextProperties}>
-                {React.createElement(createInspectorEditor(LinkDataType.string, editor), props)}
-            </NeosContext.Provider>
-        )
+        component: createInspectorEditor(LinkDataType.string, editor)
     });
 }

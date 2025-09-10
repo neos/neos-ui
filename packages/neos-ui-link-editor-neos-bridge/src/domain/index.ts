@@ -4,9 +4,7 @@ export {
     usePersonalWorkspaceName,
 } from "./ContentRepository";
 
-export type { INeosContextProperties, IGlobalRegistry } from "./Extensibility";
 export {
-    NeosContext,
     useNeos,
     useGlobalRegistry,
     useConfiguration,

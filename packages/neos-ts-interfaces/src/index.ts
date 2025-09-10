@@ -271,8 +271,18 @@ export interface ValidatorRegistry {
     set: (validatorName: string, validator: Validator) => void;
 }
 export interface GlobalRegistry {
-    get: <K extends string>(key: K) => K extends 'i18n' ? I18nRegistry :
-        K extends 'validators' ? ValidatorRegistry : null;
+    get: <K extends string>(key: K) =>
+        K extends 'i18n'
+            ? I18nRegistry
+            : K extends 'validators'
+                ? ValidatorRegistry
+                : {
+                    // todo improve typing by using generic Registries here
+                    get: <T>(key: string) => T
+                    getAllAsList: <T>() => T[]
+                    set(key: string, value: any): void
+                } | null;
+    set(key: string, value: any): void
 }
 
 export type {I18nRegistry} from '@neos-project/neos-ui-i18n';

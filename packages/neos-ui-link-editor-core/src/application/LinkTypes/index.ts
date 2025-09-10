@@ -1,5 +1,4 @@
 import {SynchronousRegistry} from '@neos-project/neos-ui-extensibility';
-import {IGlobalRegistry} from '@neos-project/neos-ui-link-editor-neos-bridge';
 
 import {Web} from './Web';
 import {Node} from './Node';
@@ -7,8 +6,9 @@ import {Asset} from './Asset';
 import {MailTo} from './MailTo';
 import { PhoneNumber } from './PhoneNumber';
 import { CustomLink } from './CustomLink';
+import {GlobalRegistry} from "@neos-project/neos-ts-interfaces";
 
-export function registerLinkTypes(globalRegistry: IGlobalRegistry): void {
+export function registerLinkTypes(globalRegistry: GlobalRegistry): void {
     const linkTypeRegistry = new SynchronousRegistry(`
         # Sitegeist.Archaeopteryx LinkType Registry
     `);

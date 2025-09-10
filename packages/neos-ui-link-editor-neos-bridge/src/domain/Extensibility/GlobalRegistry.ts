@@ -1,15 +1,7 @@
 import {useNeos} from './NeosContext';
+import {GlobalRegistry} from "@neos-project/neos-ts-interfaces";
 
-export interface IGlobalRegistry {
-    get(key: string): {
-        get: <T>(key: string) => T
-        getAllAsList: <T>() => T[]
-        set(key: string, value: any): void
-    } | undefined
-    set(key: string, value: any): void
-}
-
-export function useGlobalRegistry(): IGlobalRegistry {
+export function useGlobalRegistry(): GlobalRegistry {
     const neos = useNeos();
     return neos.globalRegistry;
 }

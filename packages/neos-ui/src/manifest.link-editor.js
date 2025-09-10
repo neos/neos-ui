@@ -4,12 +4,11 @@ import {registerLinkTypes, registerDialog, createEditor} from '@neos-project/neo
 import {registerInspectorEditors} from '@neos-project/neos-ui-link-editor-inspector-editor';
 import {registerLinkButton} from '@neos-project/neos-ui-link-editor-link-button';
 
-manifest('link-editor', {}, (globalRegistry, {store, configuration, routes}) => {
+manifest('link-editor', {}, (globalRegistry) => {
     const editor = createEditor();
-    const neosContextProperties = {globalRegistry, store, configuration, routes};
 
     registerLinkTypes(globalRegistry);
-    registerDialog(neosContextProperties, editor);
-    registerInspectorEditors(neosContextProperties, editor);
-    registerLinkButton(neosContextProperties, editor);
+    registerDialog(globalRegistry, editor);
+    registerInspectorEditors(globalRegistry, editor);
+    registerLinkButton(globalRegistry, editor);
 });

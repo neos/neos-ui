@@ -9,12 +9,7 @@
  */
 export { fetchWithErrorHandling } from "./application";
 
-export type {
-    INeosContextProperties,
-    IGlobalRegistry,
-} from "./domain";
 export {
-    NeosContext,
     useSiteNodeAggregateId,
     useAssetSummary,
     useDimensionValues,

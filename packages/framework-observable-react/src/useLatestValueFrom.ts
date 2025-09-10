@@ -28,9 +28,7 @@ export function useLatestValueFrom<V, D>(
     React.useEffect(() => {
         const subscription = observable$.subscribe({
             next: (incomingValue) => {
-                if (incomingValue !== value) {
-                    setValue(incomingValue);
-                }
+                setValue(incomingValue);
             }
         });
 

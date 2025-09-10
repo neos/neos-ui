@@ -64,6 +64,37 @@ describe('Observable', () => {
         expect(subscriber3.next).toHaveBeenNthCalledWith(3, 3);
     });
 
+    test('emit some values and subscribe and subscribe again', () => {
+        const observable$ = createObservable((next) => {
+            next(1);
+            next(2);
+            next(3);
+        });
+
+        const subscriber1 = {
+            next: jest.fn()
+        };
+
+        const subscriber2 = {
+            next: jest.fn()
+        };
+
+        observable$.subscribe(subscriber1);
+
+        expect(subscriber1.next).toHaveBeenCalledTimes(3);
+        expect(subscriber1.next).toHaveBeenNthCalledWith(1, 1);
+        expect(subscriber1.next).toHaveBeenNthCalledWith(2, 2);
+        expect(subscriber1.next).toHaveBeenNthCalledWith(3, 3);
+
+        expect(subscriber2.next).not.toHaveBeenCalled();
+        observable$.subscribe(subscriber2);
+
+        expect(subscriber2.next).toHaveBeenCalledTimes(3);
+        expect(subscriber2.next).toHaveBeenNthCalledWith(1, 1);
+        expect(subscriber2.next).toHaveBeenNthCalledWith(2, 2);
+        expect(subscriber2.next).toHaveBeenNthCalledWith(3, 3);
+    });
+
     test('emit no values, subscribe and unsubscribe', () => {
         const unsubscribe = jest.fn();
         const observable$ = createObservable(() => {

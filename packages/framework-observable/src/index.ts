@@ -12,3 +12,8 @@ export {createObservable} from './Observable';
 
 export type {State} from './State';
 export {createState} from './State';
+
+export type {Subscription} from './Subscription';
+
+export type {ActionObservable} from './ActionObservable';
+export {createActionObservable} from './ActionObservable';

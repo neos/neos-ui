@@ -1,12 +1,12 @@
 import * as React from 'react';
 import {INeosContextProperties, NeosContext} from '@neos-project/neos-ui-link-editor-neos-bridge';
 
-import {createEditor, EditorContext} from '../../domain';
-import {Dialog} from './Dialog';
+import {IEditor} from '../../domain';
+import {createDialog} from './Dialog';
 
 export function registerDialog(
     neosContextProperties: INeosContextProperties,
-    editor: ReturnType<typeof createEditor>
+    editor: IEditor
 ): void {
     const {globalRegistry} = neosContextProperties;
     const containersRegistry = globalRegistry.get('containers');
@@ -15,9 +15,7 @@ export function registerDialog(
         'Modals/Sitegeist.Archaeopteryx',
         (props: any) => (
             <NeosContext.Provider value={neosContextProperties}>
-                <EditorContext.Provider value={editor}>
-                    {React.createElement(Dialog, props)}
-                </EditorContext.Provider>
+                {React.createElement(createDialog(editor), props)}
             </NeosContext.Provider>
         )
     );

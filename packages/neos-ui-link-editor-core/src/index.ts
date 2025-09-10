@@ -5,9 +5,6 @@ export {
     makeLinkType,
     useLinkTypeForHref,
     createEditor,
-    EditorContext,
-    useEditorState,
-    useEditorTransactions
 } from './domain';
 
 export {Deletable} from './presentation';

@@ -8,12 +8,11 @@
  * source code.
  */
 import {createObservable, Observable} from './Observable';
-import {State} from './State';
 
 /**
  * An ActionObservable is a special kind of Observable which allows setting its value from outside.
  *
- * Unlike {@link State} there is no initial default value, and also we don't keep track of the value.
+ * Unlike State there is no initial default value, and also we don't keep track of the value.
  * A new subscriber to the ActionObservable Observable will not receive the last value.
  *
  * Via the `next` method, a ActionObservable's value can be set. When called,

@@ -4,7 +4,7 @@ import {equal, deepEqual} from "node:assert/strict";
 import {Subscription} from "@neos-project/framework-observable";
 
 describe('Editor', () => {
-    const {state$, tx: {editLink, dismiss, unset, apply}} = createEditor();
+    const {state$, transactions: {editLink, dismiss, unset, apply}} = createEditor();
     /** @type IEditorState */
     let state;
     /** @type Subscription */

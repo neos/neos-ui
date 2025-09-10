@@ -3,7 +3,8 @@ import * as React from 'react';
 import {ErrorBoundary} from '@neos-project/neos-ui-link-editor-error-handling';
 
 import {FieldGroup} from '../../framework';
-import {ILink, ILinkType, useEditorState} from '../../domain';
+import {IEditor, ILink, ILinkType} from '../../domain';
+import {useLatestState} from "@neos-project/framework-observable-react";
 
 function useLastNonNull<V>(value: null | V) {
     const valueRef = React.useRef(value);
@@ -16,16 +17,19 @@ function useLastNonNull<V>(value: null | V) {
 }
 
 export const LinkEditor: React.FC<{
+    editor: IEditor
     link: null | ILink
     linkType: ILinkType
 }> = props => (
     <ErrorBoundary>
         {props.link === null ? (
             <LinkEditorWithoutValue
+                editor={props.editor}
                 linkType={props.linkType}
             />
         ) : (
             <LinkEditorWithValue
+                editor={props.editor}
                 link={props.link}
                 linkType={props.linkType}
             />
@@ -34,9 +38,10 @@ export const LinkEditor: React.FC<{
 );
 
 const LinkEditorWithoutValue: React.FC<{
+    editor: IEditor
     linkType: ILinkType
 }> = props => {
-    const {editorOptions} = useEditorState();
+    const {editorOptions} = useLatestState(props.editor.state$);
     const {Editor} = props.linkType;
     const prefix = `linkTypeProps.${props.linkType.id.split('.').join('_')}`;
 
@@ -52,10 +57,11 @@ const LinkEditorWithoutValue: React.FC<{
 }
 
 const LinkEditorWithValue: React.FC<{
+    editor: IEditor
     link: ILink
     linkType: ILinkType
 }> = props => {
-    const {editorOptions} = useEditorState();
+    const {editorOptions} = useLatestState(props.editor.state$);
     const {busy, error, result} = props.linkType.useResolvedModel(props.link);
     const model = useLastNonNull(result);
     const {Editor, LoadingEditor} = props.linkType;

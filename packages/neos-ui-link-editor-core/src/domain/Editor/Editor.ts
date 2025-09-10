@@ -1,11 +1,9 @@
-import * as React from 'react';
 import {ActionType, getType} from 'typesafe-actions';
 
 import {ILink, ILinkOptions} from '../Link';
 
 import * as actions from './EditorAction';
 import {createActionObservable, createState} from "@neos-project/framework-observable";
-import {useLatestState} from "@neos-project/framework-observable-react";
 
 export interface IEditorState {
     enabledLinkOptions: (keyof ILinkOptions)[]
@@ -97,23 +95,10 @@ export function createEditor() {
         }
     );
 
-    return {
+    return Object.freeze({
         state$, // todo do not expose update() because that breaks this abstraction?
-        tx: {dismiss, unset, apply, editLink}
-    };
+        transactions: {dismiss, unset, apply, editLink}
+    });
 }
 
 export type IEditor = ReturnType<typeof createEditor>;
-
-export const EditorContext = React.createContext<ReturnType<typeof createEditor>>(undefined as unknown as ReturnType<typeof createEditor>);
-
-export function useEditorState() {
-    const {state$} = React.useContext(EditorContext);
-
-    return useLatestState(state$);
-}
-
-export function useEditorTransactions() {
-    const {tx} = React.useContext(EditorContext);
-    return tx;
-}

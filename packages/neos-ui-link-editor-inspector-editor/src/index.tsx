@@ -2,7 +2,7 @@ import * as React from 'react';
 import {SynchronousRegistry} from '@neos-project/neos-ui-extensibility';
 
 import {INeosContextProperties, NeosContext} from '@neos-project/neos-ui-link-editor-neos-bridge';
-import {EditorContext, IEditor} from '@neos-project/neos-ui-link-editor-core';
+import {IEditor} from '@neos-project/neos-ui-link-editor-core';
 
 import {createInspectorEditor} from './InspectorEditor';
 import {LinkDataType} from "./serialisation";
@@ -29,9 +29,7 @@ export function registerInspectorEditors(
     editorsRegistry.set('Sitegeist.Archaeopteryx/Inspector/Editors/ValueObjectLinkEditor', {
         component: (props: any) => (
             <NeosContext.Provider value={neosContextProperties}>
-                <EditorContext.Provider value={editor}>
-                    {React.createElement(createInspectorEditor(LinkDataType.valueObject), props)}
-                </EditorContext.Provider>
+                {React.createElement(createInspectorEditor(LinkDataType.valueObject, editor), props)}
             </NeosContext.Provider>
         )
     });
@@ -39,9 +37,7 @@ export function registerInspectorEditors(
     editorsRegistry.set('Sitegeist.Archaeopteryx/Inspector/Editors/LinkEditor', {
         component: (props: any) => (
             <NeosContext.Provider value={neosContextProperties}>
-                <EditorContext.Provider value={editor}>
-                    {React.createElement(createInspectorEditor(LinkDataType.string), props)}
-                </EditorContext.Provider>
+                {React.createElement(createInspectorEditor(LinkDataType.string, editor), props)}
             </NeosContext.Provider>
         )
     });

@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import {IconButton} from '@neos-project/react-ui-components';
 
-import {useEditorTransactions} from '@neos-project/neos-ui-link-editor-core';
+import {IEditor} from '@neos-project/neos-ui-link-editor-core';
 import {useI18n} from '@neos-project/neos-ui-link-editor-neos-bridge';
 import { ILinkOptions } from '@neos-project/neos-ui-link-editor-core/src/domain';
 
@@ -30,9 +30,9 @@ interface Props {
     executeCommand: (command: string, argument?: any, reFocusEditor?: boolean) => void
 }
 
-export const LinkButton: React.FC<Props> = props => {
+export const createLinkButton = (editor: IEditor) => (props: Props) => {
     const i18n = useI18n();
-    const tx = useEditorTransactions();
+    const transactions = editor.transactions;
     const editorOptions = {
         ...props.inlineEditorOptions?.linking?.['Sitegeist.Archaeopteryx'],
         linkTypes: {
@@ -88,7 +88,7 @@ export const LinkButton: React.FC<Props> = props => {
             return enabledLinkOptions;
         })();
 
-        const result = await tx.editLink(link, enabledLinkOptions, editorOptions);
+        const result = await transactions.editLink(link, enabledLinkOptions, editorOptions);
 
         if (result.change) {
             if (result.value === null) {
@@ -111,7 +111,7 @@ export const LinkButton: React.FC<Props> = props => {
             props.executeCommand('undo', undefined, true);
             props.executeCommand('redo', undefined, true);
         }
-    }, [props.executeCommand, props.formattingUnderCursor.link, tx, editorOptions]);
+    }, [props.executeCommand, props.formattingUnderCursor.link, transactions, editorOptions]);
 
     return (
         <IconButton

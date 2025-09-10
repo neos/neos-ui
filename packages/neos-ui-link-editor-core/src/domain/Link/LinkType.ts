@@ -8,7 +8,8 @@ import {useGlobalRegistry} from '@neos-project/neos-ui-link-editor-neos-bridge';
 import {IProcess} from '../../framework';
 
 import {ILink, ILinkOptions} from './Link';
-import {useEditorState} from '../Editor';
+import {IEditor} from '../Editor';
+import {useLatestState} from "@neos-project/framework-observable-react";
 
 interface LinkTypeStaticProps<OptionsType extends object = {}> {
     link?: ILink
@@ -91,9 +92,9 @@ export function useLinkTypeForHref(href: null | string): null | ILinkType {
     return result;
 }
 
-export function useSortedAndFilteredLinkTypes(): ILinkType[] {
+export function useSortedAndFilteredLinkTypes(editor: IEditor): ILinkType[] {
     const linkTypes = useLinkTypes();
-    const {editorOptions} = useEditorState();
+    const {editorOptions} = useLatestState(editor.state$);
 
     const linkTypesAndEditorOptions = linkTypes.map(
         (linkType) => ({

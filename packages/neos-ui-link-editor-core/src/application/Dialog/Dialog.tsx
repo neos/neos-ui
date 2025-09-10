@@ -8,18 +8,26 @@ import {useI18n, useSelector} from '@neos-project/neos-ui-link-editor-neos-bridg
 import {ErrorBoundary} from '@neos-project/neos-ui-link-editor-error-handling';
 
 import {Field} from '../../framework';
-import {ILink, ILinkOptions, useEditorState, useEditorTransactions, useLinkTypes, useLinkTypeForHref, useSortedAndFilteredLinkTypes} from '../../domain';
+import {
+    ILink,
+    ILinkOptions,
+    useLinkTypes,
+    useLinkTypeForHref,
+    useSortedAndFilteredLinkTypes,
+    IEditor
+} from '../../domain';
 import {Layout, Form as StyledForm, Modal, Tabs, Deletable as Deletable} from '../../presentation';
 
 import {LinkEditor} from './LinkEditor';
 import {Settings} from './Settings';
+import {useLatestState} from "@neos-project/framework-observable-react";
 
-export const Dialog: React.FC = () => {
+export const createDialog = (editor: IEditor) => () => {
     const i18n = useI18n();
     const linkTypes = useLinkTypes();
     const isAuthenticated = useSelector(state => !state.system?.authenticationTimeout);
-    const {dismiss, apply, unset} = useEditorTransactions();
-    const {isOpen, initialValue} = useEditorState();
+    const {dismiss, apply, unset} = editor.transactions;
+    const {isOpen, initialValue} = useLatestState(editor.state$);
     const [valueWasDeleted, setValueWasDeleted] = React.useState(false);
     const handleSubmit = React.useCallback((values: any) => {
         const linkType = linkTypes.find(linkType => linkType.id === values.linkTypeId);
@@ -63,11 +71,13 @@ export const Dialog: React.FC = () => {
                                 <StyledForm
                                     renderBody={() => initialValue === null || valueWasDeleted ? (
                                         <DialogWithEmptyValue
+                                            editor={editor}
                                             valid={valid}
                                             onDelete={() => setValueWasDeleted(true)}
                                         />
                                     ) : (
                                         <DialogWithValue
+                                            editor={editor}
                                             value={initialValue}
                                             onDelete={() => setValueWasDeleted(true)}
                                         />
@@ -114,12 +124,13 @@ export const Dialog: React.FC = () => {
 };
 
 const DialogWithEmptyValue: React.FC<{
-    valid: boolean
-    onDelete: () => void
+    editor: IEditor,
+    valid: boolean,
+    onDelete: () => void,
 }> = props => {
     const form = useForm();
-    const {enabledLinkOptions, editorOptions} = useEditorState();
-    const sortedAndFilteredLinkTypes = useSortedAndFilteredLinkTypes();
+    const {enabledLinkOptions, editorOptions} = useLatestState(props.editor.state$);
+    const sortedAndFilteredLinkTypes = useSortedAndFilteredLinkTypes(props.editor);
 
     return (
         <Field name="linkTypeId" initialValue={sortedAndFilteredLinkTypes[0]?.id}>{({input}) => (
@@ -158,6 +169,7 @@ const DialogWithEmptyValue: React.FC<{
 
                             <div style={{ overflow: "auto" }}>
                             <LinkEditor
+                                editor={props.editor}
                                 key={linkType.id}
                                 link={null}
                                 linkType={linkType}
@@ -181,11 +193,12 @@ const DialogWithEmptyValue: React.FC<{
 }
 
 const DialogWithValue: React.FC<{
-    value: ILink
-    onDelete: () => void
+    editor: IEditor,
+    value: ILink,
+    onDelete: () => void,
 }> = props => {
     const form = useForm();
-    const {enabledLinkOptions, editorOptions} = useEditorState();
+    const {enabledLinkOptions, editorOptions} = useLatestState(props.editor.state$);
     const linkType = useLinkTypeForHref(props.value.href)!;
     const {result} = linkType.useResolvedModel(props.value);
     const exitingPreview = linkType.Preview;
@@ -193,7 +206,7 @@ const DialogWithValue: React.FC<{
     const existingModel = (state.valid
         ? state.values.linkTypeProps?.[linkType.id.split('.').join('_')]
         : result) ?? result;
-    const sortedAndFilteredLinkTypes = useSortedAndFilteredLinkTypes();
+    const sortedAndFilteredLinkTypes = useSortedAndFilteredLinkTypes(props.editor);
 
     return (
         <Field name="linkTypeId" initialValue={sortedAndFilteredLinkTypes[0]?.id}>{({input}) => (
@@ -236,6 +249,7 @@ const DialogWithValue: React.FC<{
                             ) : null}
 
                             <LinkEditor
+                                editor={props.editor}
                                 key={linkType.id}
                                 link={linkType.isSuitableFor(props.value) ? props.value : null}
                                 linkType={linkType}

@@ -2,7 +2,12 @@ import * as React from 'react';
 import styled from 'styled-components';
 import {Button, Icon} from '@neos-project/react-ui-components';
 import {useI18n} from '@neos-project/neos-ui-link-editor-neos-bridge';
-import {ILinkType, useLinkTypeForHref, useEditorTransactions, Deletable} from '@neos-project/neos-ui-link-editor-core';
+import {
+    ILinkType,
+    useLinkTypeForHref,
+    Deletable,
+    IEditor
+} from '@neos-project/neos-ui-link-editor-core';
 import {ErrorBoundary, decodeError} from '@neos-project/neos-ui-link-editor-error-handling';
 import {ILink} from '@neos-project/neos-ui-link-editor-core/src/domain';
 import {ILinkOptions} from '@neos-project/neos-ui-link-editor-core/src/domain';
@@ -25,12 +30,12 @@ export type EditorProps = {
     commit(value: any): void;
 };
 
-export const createInspectorEditor = (dataType: LinkDataType) => (props: EditorProps) => {
+export const createInspectorEditor = (dataType: LinkDataType, editor: IEditor) => (props: EditorProps) => {
 
     const reset = () => props.commit('');
 
     const i18n = useI18n();
-    const tx = useEditorTransactions();
+    const transactions = editor.transactions;
 
     const serializedLink = resolveSerializedLinkFromValue(props.value, dataType);
 
@@ -69,7 +74,7 @@ export const createInspectorEditor = (dataType: LinkDataType) => (props: EditorP
     }, [props.options]);
 
     const editLink = React.useCallback(async () => {
-        const result = await tx.editLink(
+        const result = await transactions.editLink(
             serializedLinkToILink(serializedLink),
             enabledLinkOptions,
             props.options ?? {}
@@ -85,7 +90,7 @@ export const createInspectorEditor = (dataType: LinkDataType) => (props: EditorP
                 convertILinkToSerializedLinkValue(result.value, serializedLink.dataType)
             );
         }
-    }, [serializedLink, enabledLinkOptions, tx.editLink, props.options, props.commit, reset]);
+    }, [serializedLink, enabledLinkOptions, transactions.editLink, props.options, props.commit, reset]);
 
     if (linkType) {
         return (

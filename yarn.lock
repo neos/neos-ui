@@ -4064,7 +4064,6 @@ __metadata:
     "@neos-project/framework-observable-react": "workspace:*"
     "@neos-project/neos-ui-link-editor-custom-node-tree": "workspace:*"
     "@neos-project/neos-ui-link-editor-error-handling": "workspace:*"
-    "@neos-project/neos-ui-link-editor-neos-bridge": "workspace:*"
     "@neos-project/positional-array-sorter": "workspace:*"
     "@neos-project/react-ui-components": "workspace:*"
     final-form: ^4.20.2
@@ -4081,7 +4080,6 @@ __metadata:
   resolution: "@neos-project/neos-ui-link-editor-custom-node-tree@workspace:packages/neos-ui-link-editor-custom-node-tree"
   dependencies:
     "@neos-project/neos-ui-link-editor-error-handling": "workspace:*"
-    "@neos-project/neos-ui-link-editor-neos-bridge": "workspace:*"
     "@neos-project/react-ui-components": "workspace:*"
     "@types/styled-components": ^5
     react: ^16.12.0
@@ -4118,15 +4116,6 @@ __metadata:
     "@neos-project/neos-ui-link-editor-core": "workspace:*"
     "@neos-project/react-ui-components": "workspace:*"
     react: ^16.12.0
-  languageName: unknown
-  linkType: soft
-
-"@neos-project/neos-ui-link-editor-neos-bridge@workspace:*, @neos-project/neos-ui-link-editor-neos-bridge@workspace:packages/neos-ui-link-editor-neos-bridge":
-  version: 0.0.0-use.local
-  resolution: "@neos-project/neos-ui-link-editor-neos-bridge@workspace:packages/neos-ui-link-editor-neos-bridge"
-  dependencies:
-    react-use: ^16.1.0
-    ts-toolbelt: ^9.6.0
   languageName: unknown
   linkType: soft
 

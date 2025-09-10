@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useEffect, useRef } from 'react'
 
-import { useGlobalRegistry } from '@neos-project/neos-ui-link-editor-neos-bridge'
+import { globalRegistry } from '@neos-project/neos-ui/globalRegistry'
 import styled from 'styled-components'
 
 interface Props {
@@ -26,7 +26,6 @@ const Container = styled.div`
 `
 
 export const MediaBrowser: React.FC<Props> = (props) => {
-	const globalRegistry = useGlobalRegistry()
 	const containerRef = useRef<HTMLDivElement>(null)
 	const selectionRef = useRef<HTMLElement>(null)
 

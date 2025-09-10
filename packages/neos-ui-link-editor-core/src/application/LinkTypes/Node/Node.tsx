@@ -12,9 +12,7 @@ import { useAsync } from "react-use";
 import { Nullable } from "ts-toolbelt/out/Union/Nullable";
 import { OptionalDeep } from "ts-toolbelt/out/Object/Optional";
 
-import {
-    useConfiguration,
-} from "@neos-project/neos-ui-link-editor-neos-bridge";
+import { configuration } from "@neos-project/neos-ui/configuration";
 import {selectors, useSelector} from '@neos-project/neos-ui-redux-store';
 import { Tree } from "@neos-project/neos-ui-link-editor-custom-node-tree";
 
@@ -130,8 +128,7 @@ export const Node = makeLinkType<NodeLinkModel, NodeLinkOptions>(
             const workspaceName = useSelector(selectors.CR.Workspaces.personalWorkspaceNameSelector);
             const dimensionValues = useSelector(selectors.CR.ContentDimensions.active);
             const siteNodeAggregateId = useSiteNodeAggregateId();
-            const defaultLoadingDepth =
-                useConfiguration((c) => c.nodeTree?.loadingDepth) ?? 4;
+            const defaultLoadingDepth = configuration.nodeTree?.loadingDepth ?? 4;
             const initialSearchTerm =
                 useSelector((state) => state.ui?.pageTree?.query) ?? "";
             const initialNarrowNodeTypeFilter =

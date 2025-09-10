@@ -6,7 +6,7 @@ import * as System from './System';
 import * as UI from './UI';
 import * as User from './User';
 import * as ServerFeedback from './ServerFeedback';
-import {useSelector as useSelectorImplementation} from 'react-redux';
+import {useSelector as useSelectorOriginal} from 'react-redux';
 
 //
 // Export the state interface
@@ -66,4 +66,4 @@ export const selectors = {
     ServerFeedback: ServerFeedback.selectors
 } as const;
 
-export const useSelector: <R>(selector: (state: State) => R) => R = useSelectorImplementation;
+export const useSelector: <R>(selector: (state: State) => R) => R = useSelectorOriginal;

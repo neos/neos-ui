@@ -6,7 +6,6 @@
     "main": "./src/index.ts",
     "dependencies": {
         "@neos-project/neos-ui-link-editor-error-handling": "workspace:*",
-        "@neos-project/neos-ui-link-editor-neos-bridge": "workspace:*",
         "@neos-project/react-ui-components": "workspace:*",
         "@types/styled-components": "^5",
         "react": "^16.12.0",

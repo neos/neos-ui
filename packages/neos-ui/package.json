@@ -3,6 +3,17 @@
   "version": "",
   "description": "Neos CMS UI written in ReactJS and a ton of other fun technology.",
   "private": true,
+  "exports": {
+    "./globalRegistry": {
+      "default": "./globalRegistry.ts"
+    },
+    "./configuration": {
+      "default": "./configuration.ts"
+    },
+    "./src/Containers/style.module.css": {
+      "default": "./src/Containers/style.module.css"
+    }
+  },
   "devDependencies": {
     "@neos-project/debug-reason-for-rendering": "workspace:*",
     "@neos-project/jest-preset-neos-ui": "workspace:*",

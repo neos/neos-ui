@@ -9,7 +9,6 @@
         "@neos-project/framework-observable-react": "workspace:*",
         "@neos-project/neos-ui-link-editor-custom-node-tree": "workspace:*",
         "@neos-project/neos-ui-link-editor-error-handling": "workspace:*",
-        "@neos-project/neos-ui-link-editor-neos-bridge": "workspace:*",
         "@neos-project/positional-array-sorter": "workspace:*",
         "@neos-project/react-ui-components": "workspace:*",
         "final-form": "^4.20.2",

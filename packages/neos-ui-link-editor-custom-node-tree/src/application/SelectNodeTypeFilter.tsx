@@ -12,10 +12,10 @@ import { useAsync } from "react-use";
 import { VError } from "@neos-project/neos-ui-link-editor-error-handling";
 
 import { SelectBox } from "@neos-project/react-ui-components";
-import {useNeos} from "@neos-project/neos-ui-link-editor-neos-bridge";
 
 import { getNodeTypeFilterOptions } from "../infrastructure/http";
 import {translate} from "@neos-project/neos-ui-i18n";
+import {globalRegistry} from "@neos-project/neos-ui/globalRegistry";
 
 const searchNodeTypeFilterOptions = (
     searchTerm: string,
@@ -37,7 +37,6 @@ interface Props {
 }
 
 export const SelectNodeTypeFilter: React.FC<Props> = (props) => {
-    const neos = useNeos();
     const [filterTerm, setFilterTerm] = React.useState("");
     const fetch__options = useAsync(async () => {
         const result = await getNodeTypeFilterOptions({
@@ -48,7 +47,7 @@ export const SelectNodeTypeFilter: React.FC<Props> = (props) => {
             return result.success.options.map((option) => ({
                 value: option.value,
                 icon: option.label.icon,
-                label: neos.globalRegistry.get('i18n').translate(option.label.label)
+                label: globalRegistry.get('i18n').translate(option.label.label)
             }));
         }
 

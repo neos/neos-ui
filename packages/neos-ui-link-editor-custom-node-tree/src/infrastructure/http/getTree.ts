@@ -7,7 +7,7 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-import { fetchWithErrorHandling } from "@neos-project/neos-ui-link-editor-neos-bridge";
+import { fetchWithErrorHandling } from "@neos-project/neos-ui-backend-connector";
 
 import { TreeNodeDTO } from "../../domain";
 

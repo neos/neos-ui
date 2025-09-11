@@ -8,4 +8,3 @@
  * source code.
  */
 export {ErrorBoundary} from './ErrorBoundary';
-export {terminateDueToFatalInitializationError} from './terminateDueToFatalInitializationError';

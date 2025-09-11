@@ -7,6 +7,7 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-export {ErrorBoundary, terminateDueToFatalInitializationError} from './ErrorBoundary';
+export {ErrorBoundary} from './ErrorBoundary';
 export {ErrorView} from './ErrorView';
+export {FatalErrorView, terminateDueToFatalInitializationError} from './FatalErrorView';
 export {FlashMessages, showFlashMessage} from './FlashMessages';

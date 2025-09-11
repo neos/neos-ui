@@ -18,6 +18,7 @@ export type {
 export {
     ErrorBoundary,
     ErrorView,
+    FatalErrorView,
     FlashMessages,
     showFlashMessage,
     terminateDueToFatalInitializationError

@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {Provider} from 'react-redux';
-import {ErrorBoundary} from '@neos-project/neos-ui-error';
+import {ErrorBoundary, FatalErrorView} from '@neos-project/neos-ui-error';
 import {DndProvider} from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import Neos from './Neos/index';
@@ -27,7 +27,7 @@ class Root extends PureComponent {
         const App = containerRegistry.get('App');
 
         return (
-            <ErrorBoundary i18nRegistry={globalRegistry.get('i18n')}>
+            <ErrorBoundary errorFallback={FatalErrorView}>
                 <div className={style.applicationWrapper}>
                     <Provider store={store}>
                         <DndProvider backend={HTML5Backend}>

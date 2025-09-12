@@ -8,7 +8,7 @@ import {MediaBrowser} from './MediaBrowser';
 import { Nullable } from 'ts-toolbelt/out/Union/Nullable';
 import {isSuitableFor} from "./AssetSpecification";
 import {translate} from "@neos-project/neos-ui-i18n";
-import {useAsync} from "react-use";
+import {usePromise} from "@neos-project/framework-promise-react";
 import backend from "@neos-project/neos-ui-backend-connector";
 
 type AssetLinkModel = {
@@ -45,7 +45,7 @@ export const Asset = makeLinkType<AssetLinkModel>('Sitegeist.Archaeopteryx:Asset
     },
 
     Preview: ({model}: {model: AssetLinkModel}) => {
-        const asset = useAsync(() => {
+        const asset = usePromise(() => {
             const endpoints = backend.get().endpoints;
             return endpoints.assetDetail(model.identifier);
         }, [model.identifier]);

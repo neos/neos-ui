@@ -8,7 +8,7 @@
  * source code.
  */
 import * as React from "react";
-import { useAsync } from "react-use";
+import {usePromise} from "@neos-project/framework-promise-react";
 
 import { Tree as NeosTree } from "@neos-project/react-ui-components";
 
@@ -42,7 +42,7 @@ export const Tree: React.FC<Props> = (props) => {
     );
     const [narrowNodeTypeFilter, setNarrowNodeTypeFilter] =
         React.useState<string>(props.initialNarrowNodeTypeFilter ?? "");
-    const fetch__getTree = useAsync(async () => {
+    const fetch__getTree = usePromise(async () => {
         const result = await getTree({
             workspaceName: props.workspaceName,
             dimensionValues: props.dimensionValues,
@@ -95,7 +95,7 @@ export const Tree: React.FC<Props> = (props) => {
             "NodeTree could not be loaded.",
             fetch__getTree.error,
         );
-    } else if (fetch__getTree.loading || !fetch__getTree.value) {
+    } else if (fetch__getTree.isLoading || !fetch__getTree.value) {
         main = <div>Loading...</div>;
     } else {
         main = (

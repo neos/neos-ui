@@ -8,7 +8,7 @@
  * source code.
  */
 import * as React from "react";
-import { useAsync } from "react-use";
+import {usePromise} from "@neos-project/framework-promise-react";
 
 import { SelectBox } from "@neos-project/react-ui-components";
 
@@ -37,7 +37,7 @@ interface Props {
 
 export const SelectNodeTypeFilter: React.FC<Props> = (props) => {
     const [filterTerm, setFilterTerm] = React.useState("");
-    const fetch__options = useAsync(async () => {
+    const fetch__options = usePromise(async () => {
         const result = await getNodeTypeFilterOptions({
             baseNodeTypeFilter: props.baseNodeTypeFilter,
         });
@@ -65,7 +65,7 @@ export const SelectNodeTypeFilter: React.FC<Props> = (props) => {
 
     return (
         <SelectBox
-            disabled={fetch__options.loading || fetch__options.error}
+            disabled={fetch__options.isLoading || fetch__options.error}
             placeholder={translate("Neos.Neos:Main:filter", '')}
             placeholderIcon={"filter"}
             onValueChange={props.onChange}

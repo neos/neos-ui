@@ -8,7 +8,7 @@
  * source code.
  */
 import React from "react";
-import { useAsync } from "react-use";
+import {usePromise} from "@neos-project/framework-promise-react";
 import { Nullable } from "ts-toolbelt/out/Union/Nullable";
 import { OptionalDeep } from "ts-toolbelt/out/Object/Optional";
 
@@ -37,7 +37,7 @@ type NodeLinkOptions = {
 const NodePreview: React.FC<{ nodeId: string }> = (props) => {
     const workspaceName = useSelector(selectors.CR.Workspaces.personalWorkspaceNameSelector);
     const dimensionValues = useSelector(selectors.CR.ContentDimensions.active);
-    const fetch__nodeSummary = useAsync(async () => {
+    const fetch__nodeSummary = usePromise(async () => {
         if (!workspaceName) {
             return null;
         }
@@ -60,7 +60,7 @@ const NodePreview: React.FC<{ nodeId: string }> = (props) => {
         .map(({ label }) => label)
         .join(" > ");
 
-    if (fetch__nodeSummary.loading) {
+    if (fetch__nodeSummary.isLoading) {
         return (
             <IconCard
                 icon="spinner"

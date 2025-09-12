@@ -17,6 +17,7 @@ import {translate} from '@neos-project/neos-ui-i18n';
 
 import styles from './style.module.css';
 import {AnyError} from "../../types";
+import {ErrorView} from "../ErrorView";
 
 const CopyTechnicalDetailsButton = (props: { error: null | AnyError }) => {
     const [hasCopied, setCopied] = React.useState(false);
@@ -58,29 +59,14 @@ const ReloadNeosUiButton = () => {
     </Button>;
 };
 
-export const FatalErrorView = (props: { error: null | AnyError }) => {
+export const FatalErrorView = (props: { error: AnyError }) => {
     return <div className={styles.container}>
         <div>
             <Logo />
             <h1 className={styles.title}>{translate('Neos.Neos.Ui:Main:errorBoundary.title', '')}</h1>
             <p>{translate('Neos.Neos.Ui:Main:errorBoundary.description', '')}</p>
 
-            {props.error instanceof Error &&
-                <>
-                    <p>
-                        Name: {props.error.name || '-'}
-                    </p>
-                    <p>
-                        Message: {props.error.message || '-'}
-                    </p>
-                    <p>Stacktrace:</p>
-                    <pre className={styles.stackTrace}>
-                        <code>
-                            {props.error.stack}
-                        </code>
-                    </pre>
-                </>
-            }
+            <ErrorView error={props.error} />
             <p>{translate('Neos.Neos.Ui:Main:errorBoundary.footer', '')}</p>
 
             <div className={styles.buttonGroup}>

@@ -10,6 +10,7 @@
 import { fetchWithErrorHandling } from "@neos-project/neos-ui-backend-connector";
 
 import { TreeNodeDTO } from "../../domain";
+import {ServerSideError} from "@neos-project/neos-ui-error";
 
 type GetTreeQuery = {
     workspaceName: string;
@@ -30,11 +31,7 @@ type GetTreeQueryResultEnvelope =
           };
       }
     | {
-          error: {
-              type: string;
-              code: number;
-              message: string;
-          };
+          error: ServerSideError;
       };
 
 export async function getTree(

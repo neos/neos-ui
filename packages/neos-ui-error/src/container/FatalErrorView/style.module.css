@@ -17,12 +17,6 @@
 .title {
     line-height: 1;
 }
-.stackTrace {
-    overflow-x: auto;
-    border-top: 1px solid var(--colors-PrimaryBlue);
-    border-bottom: 1px solid var(--colors-PrimaryBlue);
-    padding: var(--spacing-Half) 0;
-}
 
 .buttonGroup {
     display: flex;

@@ -10,6 +10,7 @@
 import { fetchWithErrorHandling } from "@neos-project/neos-ui-backend-connector";
 
 import { NodeTypeFilterOptionDTO } from "../../domain";
+import {ServerSideError} from "@neos-project/neos-ui-error";
 
 type GetNodeTypeFilterOptionsQuery = {
     baseNodeTypeFilter: string;
@@ -22,11 +23,7 @@ type GetNodeTypeFilterOptionsQueryResultEnvelope =
           };
       }
     | {
-          error: {
-              type: string;
-              code: number;
-              message: string;
-          };
+          error: ServerSideError;
       };
 
 export async function getNodeTypeFilterOptions(

@@ -7,7 +7,7 @@ import {
     Deletable,
     IEditor
 } from '@neos-project/neos-ui-link-editor-core';
-import {ErrorBoundary, decodeError} from '@neos-project/neos-ui-link-editor-error-handling';
+import {ErrorBoundary, ErrorView} from '@neos-project/neos-ui-error';
 import {ILink} from '@neos-project/neos-ui-link-editor-core/src/domain';
 import {ILinkOptions} from '@neos-project/neos-ui-link-editor-core/src/domain';
 import {
@@ -93,7 +93,7 @@ export const createInspectorEditor = (dataType: LinkDataType, editor: IEditor) =
 
     if (linkType) {
         return (
-            <ErrorBoundary>
+            <ErrorBoundary errorFallback={ErrorView}>
                 <InspectorEditorWithLinkType
                     key={linkType.id}
                     link={serializedLinkToILink(serializedLink)!}
@@ -169,7 +169,7 @@ const InspectorEditorWithLinkType: React.FC<{
     const {Preview, LoadingPreview} = props.linkType;
 
     if (error) {
-        throw decodeError(error);
+        throw error;
     }
 
     return (

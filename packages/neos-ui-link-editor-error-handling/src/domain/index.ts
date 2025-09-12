@@ -1,1 +1,0 @@
-export {VError} from './verror'

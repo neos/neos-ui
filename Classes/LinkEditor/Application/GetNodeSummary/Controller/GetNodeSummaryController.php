@@ -33,9 +33,9 @@ final class GetNodeSummaryController extends QueryController
             $query = GetNodeSummaryQuery::fromArray($arguments);
             $queryResult = $this->queryHandler->handle($query);
 
-            return QueryResponse::success($queryResult);
+            return QueryResponse::createSuccess($queryResult);
         } catch (NodeWasNotFound $e) {
-            return QueryResponse::clientError($e);
+            return QueryResponse::createServerSideErrorForBadRequest($e);
         }
     }
 }

@@ -4,7 +4,7 @@ import {useKey} from 'react-use';
 
 import {Button} from '@neos-project/react-ui-components';
 
-import {ErrorBoundary} from '@neos-project/neos-ui-link-editor-error-handling';
+import {ErrorBoundary, ErrorView} from '@neos-project/neos-ui-error';
 
 import {Field} from '../../framework';
 import {
@@ -67,7 +67,7 @@ export const createDialog = (editor: IEditor) => () => {
                 renderBody={() => (
                     <Form<ILinkOptions> onSubmit={handleSubmit}>
                         {({handleSubmit, valid, dirty}) => (
-                            <ErrorBoundary>
+                            <ErrorBoundary errorFallback={ErrorView}>
                                 <StyledForm
                                     renderBody={() => initialValue === null || valueWasDeleted ? (
                                         <DialogWithEmptyValue
@@ -157,7 +157,7 @@ const DialogWithEmptyValue: React.FC<{
                                         form.change('linkTypeProps', null);
                                     }}
                                 >
-                                    <ErrorBoundary>
+                                    <ErrorBoundary errorFallback={ErrorView}>
                                         <Preview
                                             model={form.getState().values.linkTypeProps?.[linkType.id.split('.').join('_')]}
                                             options={editorOptions.linkTypes?.[linkType.id] as any ?? {}}
@@ -238,7 +238,7 @@ const DialogWithValue: React.FC<{
                                         form.change('linkTypeProps', null);
                                     }}
                                 >
-                                    <ErrorBoundary>
+                                    <ErrorBoundary errorFallback={ErrorView}>
                                         <Preview
                                             model={model}
                                             options={editorOptions.linkTypes?.[linkType.id] as any ?? {}}

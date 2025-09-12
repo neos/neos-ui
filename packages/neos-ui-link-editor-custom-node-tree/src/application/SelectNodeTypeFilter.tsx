@@ -9,7 +9,6 @@
  */
 import * as React from "react";
 import { useAsync } from "react-use";
-import { VError } from "@neos-project/neos-ui-link-editor-error-handling";
 
 import { SelectBox } from "@neos-project/react-ui-components";
 
@@ -52,10 +51,10 @@ export const SelectNodeTypeFilter: React.FC<Props> = (props) => {
         }
 
         if ("error" in result) {
-            throw new VError(result.error.message);
+            throw result.error;
         }
 
-        throw new VError("Unable to fetch node type filter options");
+        throw new Error("Unable to fetch node type filter options");
     }, [props.baseNodeTypeFilter]);
     const options = React.useMemo(() => {
         return searchNodeTypeFilterOptions(

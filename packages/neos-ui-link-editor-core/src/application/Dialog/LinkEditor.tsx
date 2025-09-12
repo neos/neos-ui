@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import {ErrorBoundary} from '@neos-project/neos-ui-link-editor-error-handling';
+import {ErrorBoundary, ErrorView} from '@neos-project/neos-ui-error';
 
 import {FieldGroup} from '../../framework';
 import {IEditor, ILink, ILinkType} from '../../domain';
@@ -21,7 +21,7 @@ export const LinkEditor: React.FC<{
     link: null | ILink
     linkType: ILinkType
 }> = props => (
-    <ErrorBoundary>
+    <ErrorBoundary errorFallback={ErrorView}>
         {props.link === null ? (
             <LinkEditorWithoutValue
                 editor={props.editor}

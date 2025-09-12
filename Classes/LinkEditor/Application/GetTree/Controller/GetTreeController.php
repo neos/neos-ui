@@ -33,9 +33,9 @@ final class GetTreeController extends QueryController
             $query = GetTreeQuery::fromArray($arguments);
             $queryResult = $this->queryHandler->handle($query);
 
-            return QueryResponse::success($queryResult);
+            return QueryResponse::createSuccess($queryResult);
         } catch (StartingPointWasNotFound $e) {
-            return QueryResponse::clientError($e);
+            return QueryResponse::createServerSideErrorForBadRequest($e);
         }
     }
 }

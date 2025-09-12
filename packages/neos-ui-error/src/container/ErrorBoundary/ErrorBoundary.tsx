@@ -12,7 +12,7 @@ import React from 'react';
 import {AnyError} from "../../types";
 
 export class ErrorBoundary extends React.Component<
-    { children: React.ReactNode, errorFallback: React.FC<{ error: null | AnyError }> },
+    { children: React.ReactNode, errorFallback: React.FC<{ error: AnyError }> },
     { error: any }
 > {
     public state = {error: undefined};

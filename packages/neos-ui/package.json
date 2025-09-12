@@ -10,6 +10,9 @@
     "./configuration": {
       "default": "./configuration.ts"
     },
+    "./systemEnv": {
+      "default": "./systemEnv.ts"
+    },
     "./src/Containers/style.module.css": {
       "default": "./src/Containers/style.module.css"
     }

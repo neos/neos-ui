@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {Object} from 'ts-toolbelt';
-import {VError} from '@neos-project/neos-ui-link-editor-error-handling';
 import positionalArraySorter from '@neos-project/positional-array-sorter';
 
 import {globalRegistry} from '@neos-project/neos-ui/globalRegistry';
@@ -37,7 +36,7 @@ export interface ILinkType<ModelType = any, OptionsType extends object = {}> {
 }
 
 export interface ILinkTypeFactoryApi {
-    createError: (message: string, cause?: Error) => Error
+    createError: (message: string) => Error
 }
 
 export function makeLinkType<ModelType = any, OptionsType extends object = {}>(
@@ -47,8 +46,7 @@ export function makeLinkType<ModelType = any, OptionsType extends object = {}>(
         'supportedLinkOptions' | 'Icon' | 'Title' | 'LoadingPreview' | 'LoadingEditor'
     >
 ): ILinkType<ModelType, OptionsType> {
-    const createError = (message: string, cause?: Error) =>
-        new VError(`[${id}]: ${message}`, cause);
+    const createError = (message: string): Error => new Error(`[${id}]: ${message}`);
     const options = createOptions({createError});
 
     return {

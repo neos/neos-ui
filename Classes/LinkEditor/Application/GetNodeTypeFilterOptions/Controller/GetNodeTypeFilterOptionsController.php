@@ -31,6 +31,6 @@ final class GetNodeTypeFilterOptionsController extends QueryController
         $query = GetNodeTypeFilterOptionsQuery::fromArray($arguments);
         $queryResult = $this->queryHandler->handle($query);
 
-        return QueryResponse::success($queryResult);
+        return QueryResponse::createSuccess($queryResult);
     }
 }

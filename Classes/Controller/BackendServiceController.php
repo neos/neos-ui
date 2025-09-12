@@ -242,6 +242,7 @@ class BackendServiceController extends ActionController
 
             $this->view->assign('value', $result);
         } catch (\Exception $e) {
+            // todo set response code correctly to 500 (which upsets the fetchWithErrorHandling and avoids the error view), deduplicated json object creation, only emit trace in development
             $this->throwableStorage2->logThrowable($e);
             $this->view->assign('value', [
                 'error' => [

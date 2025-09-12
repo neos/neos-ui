@@ -9,15 +9,14 @@
  */
 import * as React from "react";
 import { useAsync } from "react-use";
-import { VError } from "@neos-project/neos-ui-link-editor-error-handling";
 
 import { Tree as NeosTree } from "@neos-project/react-ui-components";
-import { decodeError } from "@neos-project/neos-ui-link-editor-error-handling";
 
 import { TreeNode } from "./TreeNode";
 import { Search } from "./Search";
 import { SelectNodeTypeFilter } from "./SelectNodeTypeFilter";
 import { getTree } from "../infrastructure/http";
+import {NestedError} from "@neos-project/neos-ui-error";
 
 interface Props {
     initialSearchTerm?: string;
@@ -60,10 +59,10 @@ export const Tree: React.FC<Props> = (props) => {
         }
 
         if ("error" in result) {
-            throw new VError(result.error.message);
+            throw result.error;
         }
 
-        throw new VError("Something went wrong while fetching the tree.");
+        throw new Error("Something went wrong while fetching the tree.");
     }, [
         props.workspaceName,
         props.dimensionValues,
@@ -92,9 +91,9 @@ export const Tree: React.FC<Props> = (props) => {
 
     let main;
     if (fetch__getTree.error) {
-        throw new VError(
+        throw NestedError.create(
             "NodeTree could not be loaded.",
-            decodeError(fetch__getTree.error),
+            fetch__getTree.error,
         );
     } else if (fetch__getTree.loading || !fetch__getTree.value) {
         main = <div>Loading...</div>;

@@ -16,11 +16,19 @@ namespace Neos\Neos\Ui\LinkEditor\Framework\MVC;
 
 use Neos\Flow\Mvc\ActionRequest;
 use Neos\Flow\Mvc\Controller\ControllerInterface;
+use Neos\Flow\Utility\Environment;
 use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;
 use Psr\Http\Message\ResponseInterface;
+use Neos\Flow\Annotations as Flow;
 
 abstract class QueryController implements ControllerInterface
 {
+    /**
+     * @Flow\Inject
+     * @var Environment
+     */
+    protected $environment;
+
     public function processRequest(ActionRequest $request): ResponseInterface
     {
         try {
@@ -34,9 +42,9 @@ abstract class QueryController implements ControllerInterface
 
             $queryResponse = $this->processQuery($arguments);
         } catch (\InvalidArgumentException $e) {
-            $queryResponse = QueryResponse::clientError($e);
+            $queryResponse = QueryResponse::createServerSideErrorForBadRequest($e);
         } catch (\Exception $e) {
-            $queryResponse = QueryResponse::serverError($e);
+            $queryResponse = QueryResponse::createServerSideError($e, $this->environment->getContext()->isDevelopment());
         }
 
         return $queryResponse->toHttpResponse();

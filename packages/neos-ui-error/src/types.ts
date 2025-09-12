@@ -13,11 +13,39 @@ export type ServerSideError = {
     class: string;
     code: number;
     message: string;
-    trace: string;
+    trace?: string;
 };
 export type StringError = string;
-export type AnyError = ECMAScriptError | ServerSideError | StringError;
+export type AnyFlatError = ECMAScriptError | ServerSideError | StringError;
+export type AnyError = AnyFlatError | NestedError;
 export type Severity = 'success' | 'error' | 'info' | 'warning';
+
+export class NestedError {
+    private constructor(
+        public readonly error: AnyFlatError,
+        public readonly previous: AnyError,
+    ) {
+    }
+
+    public static create = (error: AnyFlatError, previous: AnyError): NestedError => {
+        if (isNestedError(error)) {
+            // should not happen -> but as types are merely an opinion in js ;)
+            return error;
+        }
+        return new NestedError(error, previous);
+    }
+}
+
+export function flattenError(error: AnyError): AnyFlatError {
+    if (isNestedError(error)) {
+        return error.error;
+    }
+    return error;
+}
+
+export function isNestedError(candidate: unknown): candidate is NestedError {
+    return candidate instanceof NestedError;
+}
 
 export function isECMAScriptError(candidate: unknown): candidate is ECMAScriptError {
     return candidate instanceof Error;
@@ -40,8 +68,11 @@ export function isServerSideError(candidate: unknown): candidate is ServerSideEr
             && typeof (candidate as any).code === 'number'
             && 'message' in candidate
             && typeof (candidate as any).message === 'string'
-            && 'trace' in candidate
-            && typeof (candidate as any).trace === 'string'
+            && (
+                'trace' in candidate
+                    ? typeof (candidate as any).trace === 'string'
+                    : true
+            )
         );
     }
 

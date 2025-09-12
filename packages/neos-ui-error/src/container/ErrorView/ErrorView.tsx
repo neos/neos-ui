@@ -9,24 +9,63 @@
  */
 import React from 'react';
 
-import I18n from '@neos-project/neos-ui-i18n';
+import {translate} from '@neos-project/neos-ui-i18n';
+import {isDevelopmentContext} from '@neos-project/neos-ui/systemEnv';
 
-import {AnyError, isECMAScriptError, isServerSideError, isStringError} from '../../types';
+import {
+    AnyError,
+    AnyFlatError,
+    isECMAScriptError,
+    isNestedError,
+    isServerSideError,
+    isStringError,
+    flattenError,
+} from '../../types';
 
 import style from './style.module.css';
+import {Icon} from "@neos-project/react-ui-components";
 
-export const ErrorView: React.FC<{ error: null | AnyError }> = (props) => {
+export const ErrorView = (props: { error: AnyError }) => {
+    const flatError = flattenError(props.error);
+
     return (
         <div className={style.container}>
-            <ErrorMessage error={props.error} />
+            <div>
+                <Icon icon="exclamation-triangle" /> {getErrorNameLabel(flatError)}
+            </div>
+            <ErrorMessage error={flatError} />
+            {isNestedError(props.error) ? (
+                <NestedErrorChain error={props.error.previous} level={0} />
+            ) : null}
             {isDevelopmentContext() ? (
-                <ErrorDetails error={props.error} />
+                <ErrorDetails error={flatError} />
             ) : null}
         </div>
     );
 };
 
-const ErrorMessage: React.FC<{ error: null | AnyError }> = (props) => {
+const NestedErrorChain: React.FC<{
+    error: AnyError
+    level: number
+}> = props => {
+    const flatError = flattenError(props.error);
+
+    return (
+        <details className={style.details}>
+            <summary>Cause: {getErrorNameLabel(flatError)}</summary>
+
+            <ErrorMessage error={flatError} />
+            {isDevelopmentContext() ? (
+                <ErrorDetails error={flatError} />
+            ) : null}
+            {isNestedError(props.error) && props.level < 10 ? (
+                <NestedErrorChain error={props.error.previous} level={props.level + 1}/>
+            ) : null}
+        </details>
+    );
+}
+
+const ErrorMessage: React.FC<{ error: AnyFlatError }> = (props) => {
     if (isECMAScriptError(props.error)) {
         return (<>{props.error.message}</>);
     }
@@ -39,24 +78,26 @@ const ErrorMessage: React.FC<{ error: null | AnyError }> = (props) => {
         return (<>{props.error}</>);
     }
 
-    return (
-        <I18n
-            id="Neos.Neos.Ui:Error:unknown"
-            fallback="An unkown error ocurred."
-            />
-    );
+    return (<>{translate('Neos.Neos.Ui:Error:unknown', 'An unknown error occurred.')}</>);
 };
 
-const isDevelopmentContext = () => {
-    const env = ((window as any).appContainer?.dataset?.env ?? '') as string;
+const getErrorNameLabel = (error: AnyFlatError) => {
+    if (isECMAScriptError(error)) {
+        return error.name;
+    }
 
-    return (
-        env === 'Development'
-        || env.startsWith('Development/')
-    );
-};
+    if (isStringError(error)) {
+        return 'Error';
+    }
 
-const ErrorDetails: React.FC<{ error: null | AnyError }> = (props) => {
+    if (isServerSideError(error)) {
+        return 'ServerSideError: ' + error.class;
+    }
+
+    return 'Unknown Error';
+}
+
+const ErrorDetails: React.FC<{ error: AnyFlatError }> = (props) => {
     if (isECMAScriptError(props.error)) {
         return (
             <details className={style.details}>
@@ -92,10 +133,14 @@ const ErrorDetails: React.FC<{ error: null | AnyError }> = (props) => {
                     <dt><code>{props.error.class}</code></dt>
                     <dd>Code:</dd>
                     <dt><code>{props.error.code}</code></dt>
-                    <dd>Stacktrace:</dd>
-                    <dt className={style.trace}>
-                        <pre>{props.error.trace}</pre>
-                    </dt>
+                    {
+                        props.error.trace ? (<>
+                            <dd>Stacktrace:</dd>
+                            <dt className={style.trace}>
+                                <pre>{props.error.trace}</pre>
+                            </dt>
+                        </>) : null
+                    }
                 </dl>
             </details>
         );

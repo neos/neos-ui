@@ -24,9 +24,10 @@ use Psr\Http\Message\ResponseInterface;
 #[Flow\Proxy(false)]
 final class QueryResponse
 {
-    private const STATUS_CODE_SUCCESS = 200;
-    private const STATUS_CODE_CLIENT_ERROR = 400;
-    private const STATUS_CODE_SERVER_ERROR = 500;
+    private const STATUS_CODE_OK = 200;
+    private const STATUS_CODE_BAD_REQUEST = 400;
+    /** @phpstan-ignore classConstant.unused */
+    private const STATUS_CODE_INTERNAL_SERVER_ERROR = 500;
 
     private const DISCRIMINATOR_SUCCESS = 'success';
     private const DISCRIMINATOR_ERROR = 'error';
@@ -44,37 +45,39 @@ final class QueryResponse
     /**
      * @param array<mixed>|\JsonSerializable $payload
      */
-    public static function success(array|\JsonSerializable $payload): self
+    public static function createSuccess(array|\JsonSerializable $payload): self
     {
         return new self(
-            statusCode: self::STATUS_CODE_SUCCESS,
+            statusCode: self::STATUS_CODE_OK,
             discriminator: self::DISCRIMINATOR_SUCCESS,
             payload: $payload,
         );
     }
 
-    public static function clientError(\Exception $exception): self
+    public static function createServerSideErrorForBadRequest(\Exception $exception): self
     {
         return new self(
-            statusCode: self::STATUS_CODE_CLIENT_ERROR,
+            statusCode: self::STATUS_CODE_BAD_REQUEST,
             discriminator: self::DISCRIMINATOR_ERROR,
             payload: [
-                'type' => $exception::class,
+                'class' => $exception::class,
                 'code' => $exception->getCode(),
                 'message' => $exception->getMessage(),
             ],
         );
     }
 
-    public static function serverError(\Exception $exception): self
+    public static function createServerSideError(\Exception $exception, bool $includeStackTrace): self
     {
         return new self(
-            statusCode: self::STATUS_CODE_SERVER_ERROR,
+            // todo set response code correctly to 500 (which upsets the fetchWithErrorHandling and avoids the error view)
+            statusCode: self::STATUS_CODE_OK,
             discriminator: self::DISCRIMINATOR_ERROR,
             payload: [
-                'type' => $exception::class,
+                'class' => $exception::class,
                 'code' => $exception->getCode(),
                 'message' => $exception->getMessage(),
+                ...($includeStackTrace ? ['trace' => $exception->getTraceAsString()] : [])
             ],
         );
     }

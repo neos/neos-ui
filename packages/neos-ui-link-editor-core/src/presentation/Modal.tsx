@@ -35,13 +35,15 @@ const StyledDialog = styled(Dialog)`
 
 export const Modal: React.FC<{
     renderTitle(): React.ReactNode
-    renderBody(): React.ReactNode
+    renderBody(): React.ReactNode,
+    onRequestClose(): void,
+    preventClosing: boolean,
 }> = props => ReactDOM.createPortal(
     <StyledDialog
         isOpen={true}
         title={props.renderTitle()}
-        onRequestClose={() => {}}
-        preventClosing
+        onRequestClose={props.onRequestClose}
+        preventClosing={props.preventClosing}
         >
         {props.renderBody()}
     </StyledDialog>,

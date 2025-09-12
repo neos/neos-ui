@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {Form, useForm} from 'react-final-form';
-import {useKey} from 'react-use';
 
 import {Button} from '@neos-project/react-ui-components';
 
@@ -28,6 +27,7 @@ export const createDialog = (editor: IEditor) => () => {
     const isAuthenticated = useSelector(state => !state.system?.authenticationTimeout);
     const {dismiss, apply, unset} = editor.transactions;
     const {isOpen, initialValue} = useLatestState(editor.state$);
+    // this flag is a little faulty as it just indicates that during editing the value was deleted at any point at least once -> but not that it's the last change
     const [valueWasDeleted, setValueWasDeleted] = React.useState(false);
     const handleSubmit = React.useCallback((values: any) => {
         const linkType = linkTypes.find(linkType => linkType.id === values.linkTypeId);
@@ -56,17 +56,17 @@ export const createDialog = (editor: IEditor) => () => {
         }
     }, [linkTypes, valueWasDeleted]);
 
-    useKey('Escape', dismiss);
-
     if (isOpen && isAuthenticated) {
         return (
-            <Modal
-                renderTitle={() => (
-                    <div>{translate('Neos.Neos.Ui:LinkEditor.Main:dialog.title', '')}</div>
-                )}
-                renderBody={() => (
-                    <Form<ILinkOptions> onSubmit={handleSubmit}>
-                        {({handleSubmit, valid, dirty}) => (
+            <Form<ILinkOptions> onSubmit={handleSubmit}>
+                {({handleSubmit, valid, dirty}) => (
+                    <Modal
+                        preventClosing={dirty}
+                        onRequestClose={dismiss}
+                        renderTitle={() => (
+                            <div>{translate('Neos.Neos.Ui:LinkEditor.Main:dialog.title', '')}</div>
+                        )}
+                        renderBody={() => (
                             <ErrorBoundary errorFallback={ErrorView}>
                                 <StyledForm
                                     renderBody={() => initialValue === null || valueWasDeleted ? (
@@ -110,9 +110,9 @@ export const createDialog = (editor: IEditor) => () => {
                                 />
                             </ErrorBoundary>
                         )}
-                    </Form>
+                    />
                 )}
-            />
+            </Form>
         )
     }
 

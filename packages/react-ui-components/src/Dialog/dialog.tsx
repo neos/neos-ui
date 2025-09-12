@@ -30,12 +30,12 @@ export interface DialogProps {
     readonly isOpen: boolean;
 
     /**
-     * An optional handler, which gets called once the user clicks on the close symbol in the top right corner of the Dialog.
+     * An optional handler, which gets called once the user clicks outside the dialog to close it or presses the escape key. If preventClosing is set the dialog will never be requested to be closed.
      */
     readonly onRequestClose?: () => void;
 
     /**
-     * An optional boolean flag to keep the user in the dialog.
+     * An optional boolean flag to keep the dialog open when clicking outside or pressing the escape key.
      */
     readonly preventClosing?: boolean;
 

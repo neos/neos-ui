@@ -8,8 +8,6 @@
  * source code.
  */
 import * as React from "react";
-import { useDebounce } from "react-use";
-
 import { SearchInput } from "../presentation";
 
 interface Props {
@@ -20,14 +18,11 @@ interface Props {
 export const Search: React.FC<Props> = (props) => {
     const [value, setValue] = React.useState(props.initialValue);
     const handleClear = React.useCallback(() => {
-        setValue("");
+        setValue('');
     }, [setValue]);
 
-    useDebounce(
-        () => {
-            props.onChange(value);
-        },
-        300,
+    React.useEffect(
+        () => props.onChange(value),
         [value]
     );
 

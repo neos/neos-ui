@@ -17,6 +17,7 @@ import { Search } from "./Search";
 import { SelectNodeTypeFilter } from "./SelectNodeTypeFilter";
 import { getTree } from "../infrastructure/http";
 import {NestedError} from "@neos-project/neos-ui-error";
+import debounce from 'lodash.debounce';
 
 interface Props {
     initialSearchTerm?: string;
@@ -76,12 +77,11 @@ export const Tree: React.FC<Props> = (props) => {
     const handleTreeNodeClick = React.useCallback((treeNodeId: string) => {
         props.onSelect(treeNodeId);
     }, []);
-    const handleSearchTermChange = React.useCallback(
-        (newSearchTerm: string) => {
-            setSearchTerm(newSearchTerm);
-        },
-        []
-    );
+
+    const handleSearchTermChange = React.useCallback(debounce((newSearchTerm: string) => {
+        setSearchTerm(newSearchTerm);
+    } , 300), []);
+
     const handleNodeTypeFilterChange = React.useCallback(
         (newNodeTypeFilter: string) => {
             setNarrowNodeTypeFilter(newNodeTypeFilter);

@@ -4080,6 +4080,7 @@ __metadata:
   dependencies:
     "@neos-project/react-ui-components": "workspace:*"
     "@types/styled-components": ^5
+    lodash.debounce: ^4.0.8
     react: ^16.12.0
     react-use: ^16.1.0
     styled-components: ^5.3.0
@@ -4880,6 +4881,15 @@ __metadata:
   dependencies:
     "@types/lodash": "*"
   checksum: feea417f71fc4cbdc28a58b0ec18a0f3be99c54011a03abb33b4e2b1348f024ce05b7391bccf1a449acd02d41b5b0be649b4344c12fed3d25b361fe41fceea3f
+  languageName: node
+  linkType: hard
+
+"@types/lodash.debounce@npm:^4.0.8":
+  version: 4.0.9
+  resolution: "@types/lodash.debounce@npm:4.0.9"
+  dependencies:
+    "@types/lodash": "*"
+  checksum: 8183a152e01928e3b97ca773f6ae6038b8695e76493ba8bf6b743ec143948a62294fbc9d49fa4a78b52265b3ba4892ef57534e0c13d04aa0f111671b5a944feb
   languageName: node
   linkType: hard
 
@@ -15218,6 +15228,7 @@ __metadata:
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
     "@neos-project/eslint-config-neos": ^2.6.1
+    "@types/lodash.debounce": ^4.0.8
     "@types/react-redux": ^7.1.3
     "@typescript-eslint/eslint-plugin": ^5.44.0
     "@typescript-eslint/parser": ^5.44.0

@@ -66,7 +66,7 @@ export type State = null | {
         }
         | {
               phase: SyncingPhase.ERROR;
-              error: null | AnyError;
+              error: AnyError;
           }
         | { phase: SyncingPhase.SUCCESS };
 };
@@ -129,7 +129,7 @@ const confirmResolution = () => createAction(actionTypes.RESOLUTION_CONFIRMED);
 /**
  * Signal that the ongoing syncing (rebasing) workflow has failed
  */
-const fail = (error: null | AnyError) =>
+const fail = (error: AnyError) =>
     createAction(actionTypes.FAILED, {error});
 
 /**

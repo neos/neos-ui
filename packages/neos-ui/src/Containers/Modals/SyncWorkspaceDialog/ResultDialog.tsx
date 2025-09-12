@@ -57,7 +57,7 @@ const VARIANTS_BY_SYNCING_PHASE = {
 type Result =
     | {
         phase: SyncingPhase.ERROR;
-        error: null | AnyError;
+        error: AnyError;
     }
     | { phase: SyncingPhase.SUCCESS };
 

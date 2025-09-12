@@ -192,7 +192,7 @@ export function * watchPublishing({routes}: {routes: Routes}) {
             } else if ('error' in result) {
                 yield put(actions.CR.Publishing.fail(result.error));
             } else {
-                yield put(actions.CR.Publishing.fail(null));
+                yield put(actions.CR.Publishing.fail(translate('Neos.Neos.Ui:Error:unknown', 'An unknown error occurred.')));
             }
         }
 

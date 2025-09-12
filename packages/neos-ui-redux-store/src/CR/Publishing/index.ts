@@ -44,7 +44,7 @@ export type State = null | {
         | { phase: PublishingPhase.PARTIAL_PUBLISH_CONFLICTS }
         | {
               phase: PublishingPhase.ERROR;
-              error: null | AnyError;
+              error: AnyError;
           }
         | {
             phase: PublishingPhase.SUCCESS;
@@ -102,7 +102,7 @@ const partialPublishConflict = () => createAction(actionTypes.PARTIAL_PUBLISH_CO
 /**
  * Signal that the ongoing publish/discard workflow has failed
  */
-const fail = (error: null | AnyError) =>
+const fail = (error: AnyError) =>
     createAction(actionTypes.FAILED, {error});
 
 /**

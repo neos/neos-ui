@@ -257,7 +257,7 @@ const ResultDialogVariants = {
 type Result =
     | {
         phase: PublishingPhase.ERROR;
-        error: null | AnyError;
+        error: AnyError;
     }
     | { phase: PublishingPhase.SUCCESS };
 

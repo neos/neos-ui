@@ -1,82 +1,56 @@
 import * as React from 'react';
-import {Field} from 'react-final-form';
 
 import {TextInput, CheckBox} from '@neos-project/react-ui-components';
 
 import {ILinkOptions} from '../../domain';
 import {Layout} from '../../presentation';
 import {translate} from "@neos-project/neos-ui-i18n";
+import {State} from "@neos-project/framework-observable";
+import {FormValues} from "./Dialog";
+import {useLatestState} from "@neos-project/framework-observable-react";
 
 export const Settings: React.FC<{
+    form$: State<FormValues>
     enabledLinkOptions: (keyof ILinkOptions)[]
-    initialValue?: {
-        anchor?: string
-        title?: string
-        targetBlank?: boolean
-        relNofollow?: boolean
-    }
 }> = props => {
+    const form = useLatestState(props.form$);
+
+    const setAnchor = React.useCallback((anchor) => props.form$.update((values) => ({ ...values, dirty: true, options: { ...values.options, anchor } })), [props.form$]);
+    const setTitle = React.useCallback((title) => props.form$.update((values) => ({ ...values, dirty: true, options: { ...values.options, title } })), [props.form$]);
+    const setTargetBlank = React.useCallback((targetBlank) => props.form$.update((values) => ({ ...values, dirty: true, options: { ...values.options, targetBlank } })), [props.form$]);
+    const setRelNofollow = React.useCallback((relNofollow) => props.form$.update((values) => ({ ...values, dirty: true, options: { ...values.options, relNofollow } })), [props.form$]);
+
     return (
         <Layout.Stack>
             {props.enabledLinkOptions.includes('anchor') || props.enabledLinkOptions.includes('title') ? (
                 <Layout.Columns>
                     {props.enabledLinkOptions.includes('anchor') ? (
-                        <Field<string>
-                            name="options.anchor"
-                            initialValue={props.initialValue?.anchor}
-                            >
-                            {({input}) => (
-                                <label>
-                                    {translate('Neos.Neos.Ui:LinkEditor.Main:options.label.anchor', '')}:
-                                    <TextInput type="text" {...input}/>
-                                </label>
-                            )}
-                        </Field>
+                        <label>
+                            {translate('Neos.Neos.Ui:LinkEditor.Main:options.label.anchor', '')}:
+                            <TextInput type="text" value={form.options?.anchor ?? ""} onChange={setAnchor} />
+                        </label>
                     ) : null}
                     {props.enabledLinkOptions.includes('title') ? (
-                        <Field<string>
-                            name="options.title"
-                            initialValue={props.initialValue?.title}
-                            >
-                            {({input}) => (
-                                <label>
-                                    {translate('Neos.Neos.Ui:LinkEditor.Main:options.label.title', '')}:
-                                    <TextInput type="text" {...input}/>
-                                </label>
-                            )}
-                        </Field>
+                        <label>
+                            {translate('Neos.Neos.Ui:LinkEditor.Main:options.label.title', '')}:
+                            <TextInput type="text" value={form.options?.title ?? ""} onChange={setTitle} />
+                        </label>
                     ) : null}
                 </Layout.Columns>
             ) : null}
             {props.enabledLinkOptions.includes('targetBlank') || props.enabledLinkOptions.includes('relNofollow') ? (
                 <Layout.Columns>
                     {props.enabledLinkOptions.includes('targetBlank') ? (
-                        <Field<boolean>
-                            type="checkbox"
-                            name="options.targetBlank"
-                            initialValue={Boolean(props.initialValue?.targetBlank)}
-                            >
-                            {({input}) => (
-                                <label>
-                                    <CheckBox onChange={input.onChange} isChecked={input.checked}/>
-                                    {translate('Neos.Neos.Ui:LinkEditor.Main:options.label.targetBlank', '')}
-                                </label>
-                            )}
-                        </Field>
+                        <label>
+                            <CheckBox onChange={setTargetBlank} isChecked={form.options?.targetBlank ?? false}/>
+                            {translate('Neos.Neos.Ui:LinkEditor.Main:options.label.targetBlank', '')}
+                        </label>
                     ) : null}
                     {props.enabledLinkOptions.includes('relNofollow') ? (
-                        <Field<boolean>
-                            type="checkbox"
-                            name="options.relNofollow"
-                            initialValue={Boolean(props.initialValue?.relNofollow)}
-                            >
-                            {({input}) => (
-                                <label>
-                                    <CheckBox onChange={input.onChange} isChecked={input.checked}/>
-                                    {translate('Neos.Neos.Ui:LinkEditor.Main:options.label.relNofollow', '')}
-                                </label>
-                            )}
-                        </Field>
+                        <label>
+                            <CheckBox onChange={setRelNofollow} isChecked={form.options?.relNofollow ?? false}/>
+                            {translate('Neos.Neos.Ui:LinkEditor.Main:options.label.relNofollow', '')}
+                        </label>
                     ) : null}
                 </Layout.Columns>
             ) : null}

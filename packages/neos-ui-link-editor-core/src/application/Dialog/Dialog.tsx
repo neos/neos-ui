@@ -12,21 +12,39 @@ import {
     useLinkTypes,
     useLinkTypeForHref,
     useSortedAndFilteredLinkTypes,
-    IEditor
+    IEditor,
 } from '../../domain';
-import {Layout, Form as StyledForm, Modal, Tabs, Deletable as Deletable} from '../../presentation';
+import {Layout, Form as StyledForm, Modal, Tabs, Deletable} from '../../presentation';
 
 import {LinkEditor} from './LinkEditor';
 import {Settings} from './Settings';
 import {useLatestState} from '@neos-project/framework-observable-react';
 import {useSelector} from '@neos-project/neos-ui-redux-store';
 import {translate} from "@neos-project/neos-ui-i18n";
+import {createState, State} from "@neos-project/framework-observable";
+
+export type FormValues = {
+    dirty: boolean
+    // values: {
+    //     [id: string]: Record<string, any>
+    // }
+    options: ILinkOptions
+}
 
 export const createDialog = (editor: IEditor) => () => {
     const linkTypes = useLinkTypes();
     const isAuthenticated = useSelector(state => !state.system?.authenticationTimeout);
     const {dismiss, apply, unset} = editor.transactions;
     const {isOpen, initialValue} = useLatestState(editor.state$);
+
+    const form$ = React.useMemo(() => createState({
+        dirty: false,
+        // values: {},
+        options: initialValue?.options
+    } as FormValues), [initialValue]);
+
+    const form = useLatestState(form$);
+
     // this flag is a little faulty as it just indicates that during editing the value was deleted at any point at least once -> but not that it's the last change
     const [valueWasDeleted, setValueWasDeleted] = React.useState(false);
     const handleSubmit = React.useCallback((values: any) => {
@@ -38,14 +56,7 @@ export const createDialog = (editor: IEditor) => () => {
             if (props) {
                 const link = {
                     ...linkType.convertModelToLink(props),
-                    options: values.options
-                        ? (Object.keys(values.options as ILinkOptions) as (keyof ILinkOptions)[])
-                            .filter(key => linkType.supportedLinkOptions.includes(key))
-                            .reduce((obj: ILinkOptions, key) => {
-                                obj[key] = values.options[key];
-                                return obj;
-                            }, {} as ILinkOptions)
-                        : {}
+                    options: linkType.supportedLinkOptions.reduce((carry, key) => ({ ...carry, [key]: key in (form$.current.options ?? {})? form$.current.options[key] : undefined }), {})
                 };
                 apply(link);
                 setValueWasDeleted(false);
@@ -72,12 +83,14 @@ export const createDialog = (editor: IEditor) => () => {
                                     renderBody={() => initialValue === null || valueWasDeleted ? (
                                         <DialogWithEmptyValue
                                             editor={editor}
+                                            form$={form$}
                                             valid={valid}
                                             onDelete={() => setValueWasDeleted(true)}
                                         />
                                     ) : (
                                         <DialogWithValue
                                             editor={editor}
+                                            form$={form$}
                                             value={initialValue}
                                             onDelete={() => setValueWasDeleted(true)}
                                         />
@@ -99,7 +112,7 @@ export const createDialog = (editor: IEditor) => () => {
                                                 <Button
                                                     style="success"
                                                     type="submit"
-                                                    disabled={!valid || !dirty}
+                                                    disabled={!form.dirty && (!valid || !dirty)}
                                                 >
                                                     {translate('Neos.Neos.Ui:LinkEditor.Main:dialog.action.apply', '')}
                                                 </Button>
@@ -125,6 +138,7 @@ export const createDialog = (editor: IEditor) => () => {
 
 const DialogWithEmptyValue: React.FC<{
     editor: IEditor,
+    form$: State<FormValues>
     valid: boolean,
     onDelete: () => void,
 }> = props => {
@@ -177,6 +191,7 @@ const DialogWithEmptyValue: React.FC<{
 
                             {enabledLinkOptions.length && linkType.supportedLinkOptions.length ? (
                                 <Settings
+                                    form$={props.form$}
                                     enabledLinkOptions={enabledLinkOptions.filter(
                                         option => linkType.supportedLinkOptions.includes(option)
                                     )}
@@ -194,6 +209,7 @@ const DialogWithEmptyValue: React.FC<{
 
 const DialogWithValue: React.FC<{
     editor: IEditor,
+    form$: State<FormValues>
     value: ILink,
     onDelete: () => void,
 }> = props => {
@@ -257,7 +273,7 @@ const DialogWithValue: React.FC<{
 
                             {enabledLinkOptions.length && linkType.supportedLinkOptions.length ? (
                                 <Settings
-                                    initialValue={props.value.options}
+                                    form$={props.form$}
                                     enabledLinkOptions={enabledLinkOptions.filter(
                                         option => linkType.supportedLinkOptions.includes(option)
                                     )}

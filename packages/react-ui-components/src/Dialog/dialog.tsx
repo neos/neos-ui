@@ -82,7 +82,7 @@ export interface DialogProps {
     /**
      * An optional css theme to be injected.
      */
-    readonly theme: DialogTheme;
+    readonly theme?: DialogTheme;
 }
 
 const dialogManager = new DialogManager({
@@ -130,11 +130,11 @@ class DialogWithOverlay extends PureComponent<DialogProps> {
         const {title, children, actions, theme, type} = this.props;
 
         const finalClassNameBody = mergeClassNames(
-            theme.dialog__body,
-            this.state.isShaking ? theme['dialog--warn'] : {
-                [theme['dialog--success']]: type === 'success',
-                [theme['dialog--warn']]: type === 'warn',
-                [theme['dialog--error']]: type === 'error'
+            theme!.dialog__body,
+            this.state.isShaking ? theme!['dialog--warn'] : {
+                [theme!['dialog--success']]: type === 'success',
+                [theme!['dialog--warn']]: type === 'warn',
+                [theme!['dialog--error']]: type === 'error'
             },
             'dialog__body'
         );
@@ -142,18 +142,18 @@ class DialogWithOverlay extends PureComponent<DialogProps> {
         return (
             <div
                 ref={this.handleReference}
-                className={theme.dialog__contentsPosition}
+                className={theme!.dialog__contentsPosition}
                 tabIndex={0}
             >
                 <div className={mergeClassNames(
-                    theme.dialog__contents,
-                    this.state.isShaking && theme['dialog--effect__shake']
+                    theme!.dialog__contents,
+                    this.state.isShaking && theme!['dialog--effect__shake']
                 )}>
-                    <div className={theme.dialog__title}>{title}</div>
+                    <div className={theme!.dialog__title}>{title}</div>
                     <div className={finalClassNameBody}>{children}</div>
 
                     {actions && actions.length ? (
-                        <div className={theme.dialog__actions}>
+                        <div className={theme!.dialog__actions}>
                             {React.Children.map(actions, (action, index) => (
                                 <span key={index}>{action}</span>
                             ))}
@@ -200,16 +200,16 @@ class DialogWithOverlay extends PureComponent<DialogProps> {
         /* eslint-enable @typescript-eslint/no-unused-vars */
 
         const sectionClassName = mergeClassNames(
-            theme.dialog,
+            theme!.dialog,
             {
-                [theme['dialog--wide']]: style === 'wide',
-                [theme['dialog--jumbo']]: style === 'jumbo',
-                [theme['dialog--narrow']]: style === 'narrow'
+                [theme!['dialog--wide']]: style === 'wide',
+                [theme!['dialog--jumbo']]: style === 'jumbo',
+                [theme!['dialog--narrow']]: style === 'narrow'
             },
-            this.state.isShaking ? theme['dialog--warn'] : {
-                [theme['dialog--success']]: type === 'success',
-                [theme['dialog--warn']]: type === 'warn',
-                [theme['dialog--error']]: type === 'error'
+            this.state.isShaking ? theme!['dialog--warn'] : {
+                [theme!['dialog--success']]: type === 'success',
+                [theme!['dialog--warn']]: type === 'warn',
+                [theme!['dialog--error']]: type === 'error'
             },
             className,
         );

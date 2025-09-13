@@ -38,7 +38,7 @@ export interface CheckBoxProps extends HTMLInputElementAttributesExceptOnChange 
     /**
      * An optional css theme to be injected.
      */
-    readonly theme: CheckBoxTheme;
+    readonly theme?: CheckBoxTheme;
 }
 
 class CheckBox extends PureComponent<CheckBoxProps> {
@@ -52,16 +52,16 @@ class CheckBox extends PureComponent<CheckBoxProps> {
         } = this.props;
         const finalClassName = mergeClassNames(
             className,
-            theme.checkbox,
+            theme!.checkbox,
             {
-                [theme.checkbox__checked]: isChecked,
-                [theme.checkbox__disabled]: disabled
+                [theme!.checkbox__checked]: isChecked,
+                [theme!.checkbox__disabled]: disabled
             }
         );
         const mirrorClassNames = mergeClassNames(
-            theme.checkbox__inputMirror,
+            theme!.checkbox__inputMirror,
             {
-                [theme['checkbox__inputMirror--active']]: isChecked
+                [theme!['checkbox__inputMirror--active']]: isChecked
             }
         );
 
@@ -69,14 +69,14 @@ class CheckBox extends PureComponent<CheckBoxProps> {
             <div className={finalClassName}>
                 <input
                     {...rest}
-                    className={theme.checkbox__input}
+                    className={theme!.checkbox__input}
                     type="checkbox"
                     checked={isChecked}
                     aria-checked={isChecked}
                     onChange={this.handleChange}
                     disabled={disabled}
                     />
-                {isChecked ? <Icon className={theme.checkbox__icon} icon="check"/> : null}
+                {isChecked ? <Icon className={theme!.checkbox__icon} icon="check"/> : null}
                 <div className={mirrorClassNames}/>
             </div>
         );

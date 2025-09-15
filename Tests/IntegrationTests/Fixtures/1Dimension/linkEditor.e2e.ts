@@ -27,9 +27,13 @@ const OpenLinkEditor = Selector('#neos-LinkEditor').filterVisible();
 //     .switchToMainWindow();
 
 test('Open and close link editor dialog without saving the change', async t => {
+    const LinkStringValue = ReactSelector('EditorEnvelope').withProps({ identifier: 'linkString' }).getReact(({props}) => props.value);
+
     await Page.goToPage('Link editor')
     await t.click(Selector('#neos-ContentTree-ToggleContentTree'));
     await t.click(Page.treeNode.withText('LinkEditor_Test'));
+
+    // after each subSection the state must be reset -> order of these subsections does not matter
 
     subSection('Open and press cancel directly');
     await t.click(LinkStringProperty.withExactText('Create Link'));
@@ -132,15 +136,125 @@ test('Open and close link editor dialog without saving the change', async t => {
     await t.click(OpenLinkEditor.find('[title="Delete Link"]'));
 
     await t.click(Selector('#neos-LinkEditor button').withExactText('Apply'));
-    await t.expect(OpenLinkEditor.withText('Edit Link').exists).notOk();
+    await t.expect(OpenLinkEditor.exists).notOk();
 
     await t.expect(LinkStringProperty.withExactText('Create Link').exists).ok();
 
     // cleanup state (noop)
     await t.click(Selector('#neos-Inspector-Discard').withExactText('Discard'));
+
+    subSection('Open and apply target node, Reopen and edit anchor option');
+    await t.click(LinkStringProperty.withExactText('Create Link'));
+
+    await t.expect(OpenLinkEditor.withText('Edit Link').exists).ok();
+
+    await t.click(LinkEditorNodeTreeItem.withExactText('Link target'));
+    await t.click(Selector('#neos-LinkEditor button').withExactText('Apply'));
+    await t.expect(OpenLinkEditor.exists).notOk();
+
+    await t.expect(LinkStringValue).eql('node://link-target');
+
+    await t.expect(LinkStringProperty.withExactText('Create Link').exists).notOk();
+    await t.click(LinkStringProperty.find('[title="Edit Link"]'));
+
+    await t.expect(OpenLinkEditor.withText('Edit Link').exists).ok();
+
+    // apply button is initially disabled
+    await t.expect(Selector('#neos-LinkEditor button').withExactText('Apply').hasAttribute('disabled')).ok();
+    await t.typeText(Selector('#neos-LinkEditor label').withExactText('Anchor:').find('input'), 'my-anchor')
+
+    await t.click(Selector('#neos-LinkEditor button').withExactText('Apply'));
+    await t.expect(OpenLinkEditor.exists).notOk();
+
+    await t.expect(LinkStringValue).eql('node://link-target#my-anchor');
+
+    // cleanup state
+    await t.click(Selector('#neos-Inspector-Discard').withExactText('Discard'));
+
+    subSection('Open and select target node and anchor switch to web and set link and apply');
+    await t.click(LinkStringProperty.withExactText('Create Link'));
+
+    await t.expect(OpenLinkEditor.withText('Edit Link').exists).ok();
+
+    await t.typeText(Selector('#neos-LinkEditor label').withExactText('Anchor:').find('input'), 'my-anchor');
+    // an anchor alone cannot be applied
+    await t.expect(Selector('#neos-LinkEditor button').withExactText('Apply').hasAttribute('disabled')).ok();
+
+    await t.click(LinkEditorNodeTreeItem.withExactText('Link target'));
+
+    await t.click(Selector('#neos-LinkEditor button').withExactText('Web'));
+
+    await t.expect(Selector('#neos-LinkEditor label').withExactText('Anchor:').find('input').value).eql('my-anchor')
+
+    await t.typeText(Selector('#neos-LinkEditor [id="linkTypeProps.Sitegeist_Archaeopteryx:Web.urlWithoutProtocol"]'), 'www.neos.io')
+
+    await t.click(Selector('#neos-LinkEditor button').withExactText('Apply'));
+    await t.expect(OpenLinkEditor.exists).notOk();
+
+    await t.expect(LinkStringValue).eql('https://www.neos.io#my-anchor');
+
+    // cleanup state
+    await t.click(Selector('#neos-Inspector-Discard').withExactText('Discard'));
+
+    subSection('Open and enter invalid email apply only works after validation');
+    await t.click(LinkStringProperty.withExactText('Create Link'));
+
+    await t.expect(OpenLinkEditor.withText('Edit Link').exists).ok();
+    await t.click(Selector('#neos-LinkEditor button').withExactText('Mail to'));
+
+    // "mail" is not a valid email address
+    await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---Sitegeist-Archaeopteryx-linkTypeProps.Sitegeist_Archaeopteryx:MailTo.recipient"]'), 'mail');
+    await t.expect(Selector('#neos-LinkEditor button').withExactText('Apply').hasAttribute('disabled')).ok();
+
+    await t.expect(OpenLinkEditor.withText('Recipient should be a valid E-Mail Address').exists).ok();
+
+    // turn the text into a valid mail
+    await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---Sitegeist-Archaeopteryx-linkTypeProps.Sitegeist_Archaeopteryx:MailTo.recipient"]'), '@neos.io');
+    await t.expect(OpenLinkEditor.withText('Recipient should be a valid E-Mail Address').exists).notOk();
+
+    await t.click(Selector('#neos-LinkEditor button').withExactText('Apply'));
+    await t.expect(OpenLinkEditor.exists).notOk();
+
+    await t.expect(LinkStringValue).eql('mailto:mail@neos.io');
+
+    // cleanup state
+    await t.click(Selector('#neos-Inspector-Discard').withExactText('Discard'));
+
+    subSection('Open and enter invalid email and apply change in other tab');
+    await t.click(LinkStringProperty.withExactText('Create Link'));
+
+    await t.expect(OpenLinkEditor.withText('Edit Link').exists).ok();
+    await t.click(Selector('#neos-LinkEditor button').withExactText('Mail to'));
+
+    // "mail" is not a valid email address
+    await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---Sitegeist-Archaeopteryx-linkTypeProps.Sitegeist_Archaeopteryx:MailTo.recipient"]'), 'mail');
+    await t.expect(Selector('#neos-LinkEditor button').withExactText('Apply').hasAttribute('disabled')).ok();
+    await t.expect(OpenLinkEditor.withText('Recipient should be a valid E-Mail Address').exists).ok();
+
+    await t.click(Selector('#neos-LinkEditor button').withExactText('Document'));
+    await t.click(LinkEditorNodeTreeItem.withExactText('Link target'));
+
+    // can be applied
+    await t.expect(Selector('#neos-LinkEditor button').withExactText('Apply').hasAttribute('disabled')).notOk();
+
+    // Mail tab is still invalid
+    await t.click(Selector('#neos-LinkEditor button').withExactText('Mail to'));
+    await t.expect(OpenLinkEditor.withText('Recipient should be a valid E-Mail Address').exists).ok();
+    await t.expect(Selector('#neos-LinkEditor button').withExactText('Apply').hasAttribute('disabled')).ok();
+
+    // Apply document selection
+    await t.click(Selector('#neos-LinkEditor button').withExactText('Document'));
+
+    await t.click(Selector('#neos-LinkEditor button').withExactText('Apply'));
+    await t.expect(OpenLinkEditor.exists).notOk();
+
+    await t.expect(LinkStringValue).eql('node://link-target');
+
+    // cleanup state
+    await t.click(Selector('#neos-Inspector-Discard').withExactText('Discard'));
 });
 
-test('Can edit property links via inspector', async t => {
+test('Can edit property links via inspector and save the change', async t => {
     await Page.goToPage('Link editor')
     await t.click(Selector('#neos-ContentTree-ToggleContentTree'));
     await t.click(Page.treeNode.withText('LinkEditor_Test'));
@@ -270,8 +384,23 @@ test('Can edit property links via inspector', async t => {
     await t.expect(Selector('[data-link-editor-string]').innerText).eql(JSON.stringify('node://link-target#my-anchor'))
     await t.switchToMainWindow();
 
-    subSection('Value Object: Select node target with anchor, title, rel, target and save change');
+    subSection('Value Object: Select node target and save change');
     await t.click(LinkObjectProperty.withText('Create Link'));
+
+    await t.expect(OpenLinkEditor.withText('Edit Link').exists).ok();
+
+    await t.click(LinkEditorNodeTreeItem.withExactText('Link target'));
+
+    await t.click(Selector('#neos-LinkEditor button').withExactText('Apply'));
+    await t.click(Selector('#neos-Inspector-Apply').withExactText('Apply'));
+
+    await Page.waitForIframeLoading();
+    await t.switchToIframe('[name="neos-content-main"]');
+    await t.expect(Selector('[data-link-editor-object]').innerText).eql(JSON.stringify({"href":"node://link-target","title":null,"target":null,"rel":[]}))
+    await t.switchToMainWindow();
+
+    subSection('Value Object: Select node target with anchor, title, rel, target and save change');
+    await t.click(LinkObjectProperty.find('[title="Edit Link"]'));
 
     await t.expect(OpenLinkEditor.withText('Edit Link').exists).ok();
 
@@ -309,4 +438,48 @@ test('Can edit property links via inspector', async t => {
     await t.switchToIframe('[name="neos-content-main"]');
     await t.expect(Selector('[data-link-editor-object]').innerText).eql(JSON.stringify({"href":"https://www.neos.io#my-anchor-new","title":"My title","target":"_blank","rel":[]}))
     await t.switchToMainWindow();
+});
+
+test('PageTree search and filter in link editor document selection', async t => {
+    await Page.goToPage('Link editor')
+    await t.click(Selector('#neos-ContentTree-ToggleContentTree'));
+    await t.click(Page.treeNode.withText('LinkEditor_Test'));
+
+    await t.click(LinkStringProperty.withExactText('Create Link'));
+
+    subSection('Search the page tree');
+    const seachTerm = 'Searchme';
+    const notSearchedPage = 'Not searched page';
+    const notSearchedShortcut = 'Not searched shortcut';
+    const searchmePage = 'Searchme page';
+    const searchmeShortcut = 'Searchme shortcut';
+
+    const nodeTreeSearchInput = ReactSelector('Modal SearchInput');
+    const nodeTreeFilter = ReactSelector('Modal SelectNodeTypeFilter');
+    const shortcutFilter = ReactSelector('Modal SelectNodeTypeFilter ContextDropDownContents').find('li').withText('Shortcut');
+    await t
+        .typeText(nodeTreeSearchInput, seachTerm)
+        .expect(LinkEditorNodeTreeItem.withText(seachTerm).count).eql(2, 'Two "Searchme" nodes should be found, one shortcut and one normal page')
+        .expect(LinkEditorNodeTreeItem.withText(notSearchedPage).exists).notOk('Other unsearched page should be hidden ');
+
+    subSection('Set the Shortcut filter');
+    await t
+        .click(nodeTreeFilter)
+        .click(shortcutFilter)
+        .expect(LinkEditorNodeTreeItem.withText(searchmeShortcut).count).eql(1, 'Only one "Searchme" page should be found, of type Shortcut')
+        .expect(LinkEditorNodeTreeItem.withText(searchmePage).exists).notOk('No matching "Shortcut" pages should be hidden')
+        .expect(LinkEditorNodeTreeItem.withText(notSearchedPage).exists).notOk('Other unsearched page should still be hidden');
+
+    subSection('Clear search');
+    const clearSearch = ReactSelector('Modal SearchInput IconButton');
+    await t
+        .click(clearSearch)
+        .expect(LinkEditorNodeTreeItem.withText(notSearchedShortcut).exists).ok('All "Shortcut" pages should be found')
+        .expect(LinkEditorNodeTreeItem.withText(notSearchedPage).exists).notOk('Other unsearched page should still be hidden');
+
+    subSection('Clear filter');
+    const clearFilter = ReactSelector('Modal SelectNodeTypeFilter IconButton');
+    await t
+        .click(clearFilter)
+        .expect(LinkEditorNodeTreeItem.withText(notSearchedPage).exists).ok('Other unsearched page should shown again');
 });

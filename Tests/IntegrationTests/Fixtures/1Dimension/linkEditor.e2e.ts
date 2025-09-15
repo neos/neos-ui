@@ -215,7 +215,7 @@ test('Can edit property links via inspector', async t => {
 
     await Page.waitForIframeLoading();
     await t.switchToIframe('[name="neos-content-main"]');
-    await t.expect(Selector('[data-link-editor-string]').innerText).eql(JSON.stringify('mailto:mail@neos.io?subject=My Subject&body=My Body' + "\n\n" + 'Bye'))
+    await t.expect(Selector('[data-link-editor-string]').innerText).eql(JSON.stringify('mailto:mail@neos.io?subject=My%20Subject&body=My%20Body%0A%0ABye'))
     await t.switchToMainWindow();
 
     subSection('Select phone target and save change');

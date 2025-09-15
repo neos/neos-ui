@@ -48,29 +48,17 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('Sitegeist.Ar
     },
 
     convertModelToLink: (email:MailToLinkModel) => {
-        let href = `mailto:${email.recipient}?`
+        const query = Object.entries({
+                subject: email.subject,
+                cc: email.cc,
+                bcc: email.bcc,
+                body: email.body,
+            })
+            .filter(([_key, value]) => value != null)
+            .map(([key, value]) => `${key}=${encodeURIComponent(value as string)}`)
+            .join('&');
 
-        if (email.subject) {
-            href += `subject=${email.subject}`
-        }
-
-        if (email.cc && !email.subject) {
-            href += `cc=${email.cc}`
-        } else if (email.cc) {
-            href += `&cc=${email.cc}`
-        }
-
-        if (email.bcc && !email.subject && !email.cc) {
-            href += `bcc=${email.bcc}`
-        } else if (email.bcc) {
-            href += `&bcc=${email.bcc}`
-        }
-
-        if (email.body && !email.subject && !email.cc && !email.bcc) {
-            href += `body=${email.body}`
-        } else if (email.body) {
-            href += `&body=${email.body}`
-        }
+        const href = `mailto:${email.recipient}${query ? `?${query}` : ''}`;
 
         return {href};
     },

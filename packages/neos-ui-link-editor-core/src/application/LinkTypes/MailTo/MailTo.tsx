@@ -7,8 +7,7 @@ import { OptionalDeep } from 'ts-toolbelt/out/Object/Optional';
 import { Nullable } from 'ts-toolbelt/out/Union/Nullable';
 import {isSuitableFor} from "./MailToSpecification";
 import {translate} from "@neos-project/neos-ui-i18n";
-
-const simpleEmailRegex = /^[^\s@]+@[^\s@]+$/;
+import {isEmail} from "@neos-project/utils-helpers";
 
 type MailToLinkModel = {
     recipient: string
@@ -94,7 +93,7 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('Sitegeist.Ar
                             return translate('Neos.Neos.Ui:LinkEditor.MailTo:recipient.validation.required', '');
                         }
 
-                        if (!simpleEmailRegex.test(value)) {
+                        if (!isEmail(value)) {
                             return translate('Neos.Neos.Ui:LinkEditor.MailTo:recipient.validation.email', '');
                         }
                     }}
@@ -129,7 +128,7 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('Sitegeist.Ar
                         initialValue={email?.cc}
                         validate={value => {
                             if (value !== undefined && value !== null) {
-                                if (!value.split(',').every(value => simpleEmailRegex.test(value.trim()))) {
+                                if (!value.split(',').every(value => isEmail(value.trim()))) {
                                     return translate('Neos.Neos.Ui:LinkEditor.MailTo:cc.validation.emaillist', '');
                                 }
                             }
@@ -154,7 +153,7 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('Sitegeist.Ar
                         initialValue={email?.bcc}
                         validate={value => {
                             if (value !== undefined && value !== null) {
-                                if (!value.split(',').every(value => simpleEmailRegex.test(value.trim()))) {
+                                if (!value.split(',').every(value => isEmail(value.trim()))) {
                                     return translate('Neos.Neos.Ui:LinkEditor.MailTo:bcc.validation.emaillist', '');
                                 }
                             }

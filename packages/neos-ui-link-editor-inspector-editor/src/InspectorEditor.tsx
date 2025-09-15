@@ -19,6 +19,7 @@ import {
 import {translate} from "@neos-project/neos-ui-i18n";
 
 export type EditorProps = {
+    id?: string
     options?: {
         linkTypes?: Record<string, unknown>,
         anchor?: boolean
@@ -95,6 +96,7 @@ export const createInspectorEditor = (dataType: LinkDataType, editor: IEditor) =
         return (
             <ErrorBoundary errorFallback={ErrorView}>
                 <InspectorEditorWithLinkType
+                    htmlId={props.id}
                     key={linkType.id}
                     link={serializedLinkToILink(serializedLink)!}
                     linkType={linkType}
@@ -106,7 +108,7 @@ export const createInspectorEditor = (dataType: LinkDataType, editor: IEditor) =
         );
     } else if (serializedLink.value === null) {
         return (
-            <Button onClick={editLink}>
+            <Button id={props.id} onClick={editLink}>
                 <Icon icon="plus"/>
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 {translate('Neos.Neos.Ui:LinkEditor.Main:inspector.create', '')}
@@ -159,6 +161,7 @@ const SeamlessButton = styled.button`
 `;
 
 const InspectorEditorWithLinkType: React.FC<{
+    htmlId?: string
     link: ILink
     linkType: ILinkType
     options: any
@@ -173,7 +176,7 @@ const InspectorEditorWithLinkType: React.FC<{
     }
 
     return (
-        <Deletable onDelete={props.reset}>
+        <Deletable id={props.htmlId} onDelete={props.reset}>
             <SeamlessButton
                 title={translate('Neos.Neos.Ui:LinkEditor.Main:inspector.edit', '')}
                 type="button"

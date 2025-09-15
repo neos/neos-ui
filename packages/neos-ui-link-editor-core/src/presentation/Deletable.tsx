@@ -1,25 +1,14 @@
 import * as React from 'react';
-import styled from 'styled-components';
+import styles from './Deletable.module.css';
 
 import {IconButton} from '@neos-project/react-ui-components';
 
-const Container = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 40px;
-    justify-content: stretch;
-    border: 1px solid #3f3f3f;
-    max-width: 420px;
-`;
-
-const StyledIconButton = styled(IconButton)`
-    height: 100%;
-`;
-
 export const Deletable: React.FC<{
+    id?: string
     onDelete(): void
 }> = props => (
-    <Container>
+    <div className={styles.container} id={props.id}>
         <div>{props.children}</div>
-        <StyledIconButton icon="trash" hoverStyle="error" onClick={props.onDelete}/>
-    </Container>
+        <IconButton className={styles.styledButton} icon="trash" hoverStyle="error" title="Delete Link" onClick={props.onDelete}/>
+    </div>
 )

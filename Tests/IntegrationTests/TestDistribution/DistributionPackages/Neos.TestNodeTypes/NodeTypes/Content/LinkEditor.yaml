@@ -1,0 +1,46 @@
+'Neos.TestNodeTypes:Content.LinkEditor':
+  label: "${Neos.Node.labelForNode(node)}"
+  superTypes:
+    'Neos.Neos:Content': true
+  ui:
+    label: LinkEditor_Test
+    icon: icon-link
+    position: 200
+  properties:
+    linkEditable:
+      type: string
+      ui:
+        inlineEditable: true
+        inline:
+          editorOptions:
+            linking:
+              anchor: true
+              title: true
+              relNofollow: true
+              targetBlank: true
+            formatting:
+              a: true
+
+    linkString:
+      type: string
+      ui:
+        label: Link String
+        inspector:
+          group: default
+          editor: Sitegeist.Archaeopteryx/Inspector/Editors/LinkEditor
+          editorOptions:
+            anchor: true
+        reloadIfChanged: true
+
+    linkObject:
+      type: Neos\Neos\Ui\LinkEditor\Link
+      ui:
+        label: Link Object
+        inspector:
+          group: default
+          editorOptions:
+            anchor: true
+            title: true
+            relNofollow: true
+            targetBlank: true
+        reloadIfChanged: true

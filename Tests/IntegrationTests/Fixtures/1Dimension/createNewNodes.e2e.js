@@ -194,19 +194,6 @@ test('Can create content node from inside InlineUI', async t => {
         .wait(1600)
         .switchToMainWindow();
     await t.expect(changeRequestLogger.count(() => true)).eql(1, 'Request fired when field became valid');
-
-    // 'This test is currently failing due to a bug in testcafe regarding the editable content selection'
-    subSection('Skipped: Create a link to node');
-    // const linkTargetPage = 'Link target';
-    // await t
-    //     .doubleClick('.test-headline h1')
-    //     .switchToMainWindow()
-    //     .click(ReactSelector('EditorToolbar LinkButton'))
-    //     .typeText(ReactSelector('EditorToolbar LinkButton TextInput'), linkTargetPage)
-    //     .click(ReactSelector('EditorToolbar ContextDropDownContents NodeOption'))
-    //     .switchToIframe(contentIframeSelector)
-    //     .expect(Selector('.test-headline h1 a').withAttribute('href').exists).ok('Newly inserted link exists')
-    //     .switchToMainWindow();
 });
 
 test('Inline CKEditor mode `paragraph: false` works as expected', async t => {

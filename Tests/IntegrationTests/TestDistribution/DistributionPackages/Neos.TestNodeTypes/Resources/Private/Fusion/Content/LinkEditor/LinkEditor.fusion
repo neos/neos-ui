@@ -1,0 +1,18 @@
+prototype(Neos.TestNodeTypes:Content.LinkEditor) < prototype(Neos.Neos:ContentComponent) {
+    linkEditable = Neos.Neos:Editable {
+        property = 'linkEditable'
+    }
+
+    renderer = afx`
+        <dl>
+            <dd>Link Editable:</dd>
+            <dt data-link-editor-editable>{props.linkEditable}</dt>
+
+            <dd>Link String:</dd>
+            <dt data-link-editor-string>{String.htmlSpecialChars(Json.stringify(node.properties.linkString, ['JSON_UNESCAPED_SLASHES']))}</dt>
+
+            <dd>Link Value Object:</dd>
+            <dt data-link-editor-object>{String.htmlSpecialChars(Json.stringify(node.properties.linkObject, ['JSON_UNESCAPED_SLASHES']))}</dt>
+        </dl>
+    `
+}

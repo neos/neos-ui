@@ -163,6 +163,7 @@ export const TreeNode: React.FC<Props> = (props) => {
                 : children.map((childTreeNode) => (
                       <TreeNode
                           {...props}
+                          key={childTreeNode.nodeAggregateIdentifier}
                           treeNode={childTreeNode}
                           level={props.level + 1}
                       />

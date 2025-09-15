@@ -25,6 +25,11 @@ interface DialogTheme {
 
 export interface DialogProps {
     /**
+     * An optional `id` to attach to the wrapper.
+     */
+    readonly id?: string;
+
+    /**
      * This prop controls the rendered state of the Dialog, when falsy, nothing gets rendered into the DOM.
      */
     readonly isOpen: boolean;
@@ -185,6 +190,7 @@ class DialogWithOverlay extends PureComponent<DialogProps> {
     public render(): JSX.Element | null {
         /* eslint-disable @typescript-eslint/no-unused-vars */
         const {
+            id,
             className,
             title,
             style,
@@ -221,6 +227,7 @@ class DialogWithOverlay extends PureComponent<DialogProps> {
         return createPortal(
             <section
                 {...rest}
+                id={id}
                 className={sectionClassName}
                 role="dialog"
                 tabIndex={0}

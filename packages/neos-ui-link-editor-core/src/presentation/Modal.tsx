@@ -40,6 +40,7 @@ export const Modal: React.FC<{
     preventClosing: boolean,
 }> = props => ReactDOM.createPortal(
     <StyledDialog
+        id="neos-LinkEditor"
         isOpen={true}
         title={props.renderTitle()}
         onRequestClose={props.onRequestClose}

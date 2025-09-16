@@ -103,7 +103,7 @@ export const Node = makeLinkType<NodeLinkModel, NodeLinkOptions>(
             const match = /node:\/\/([^#]*)(#.*)?/.exec(link.href);
 
             if (!match) {
-                throw createError(`Cannot handle href "${link.href}".`);
+                return PromiseState.forError(createError(`Cannot handle href "${link.href}".`));
             }
 
             const nodeId = match[1];

@@ -171,29 +171,31 @@ const InspectorEditorWithLinkType: React.FC<{
     const {isLoading, error, value: model} = props.linkType.useResolvedModel(props.link);
     const {Preview, LoadingPreview} = props.linkType;
 
-    if (error) {
-        throw error;
-    }
-
     return (
         <Deletable id={props.htmlId} onDelete={props.reset}>
-            <SeamlessButton
-                title={translate('Neos.Neos.Ui:LinkEditor.Main:inspector.edit', '')}
-                type="button"
-                onClick={props.editLink}
-            >
-                {isLoading ? (
-                    <LoadingPreview
-                        link={props.link}
-                        options={props.options}
-                    />
-                ) : (
-                    <Preview
-                        model={model}
-                        options={props.options}
-                    />
-                )}
-            </SeamlessButton>
+            {error ? (
+                <ErrorView error={error} />
+            ) : (
+                <SeamlessButton
+                    title={translate('Neos.Neos.Ui:LinkEditor.Main:inspector.edit', '')}
+                    type="button"
+                    onClick={props.editLink}
+                >
+                    {
+                        isLoading ? (
+                            <LoadingPreview
+                                link={props.link}
+                                options={props.options}
+                            />
+                        ) : (
+                            <Preview
+                                model={model}
+                                options={props.options}
+                            />
+                        )
+                    }
+                </SeamlessButton>
+            )}
         </Deletable>
     );
 };

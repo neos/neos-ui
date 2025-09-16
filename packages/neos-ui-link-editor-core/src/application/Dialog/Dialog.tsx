@@ -239,10 +239,6 @@ const DialogWithValue: React.FC<{
     const {enabledLinkOptions, editorOptions} = useLatestState(props.editor.state$);
     const {isLoading, error, value: initialModel} = props.initialLinkType.useResolvedModel(props.initialValue);
 
-    if (error) {
-        throw error;
-    }
-
     const sortedAndFilteredLinkTypes = useSortedAndFilteredLinkTypes(props.editor);
 
     const form$ = React.useMemo(() => createState({
@@ -315,19 +311,23 @@ const DialogWithValue: React.FC<{
                             <Deletable
                                 onDelete={unsetLinkModels}
                             >
-                                <ErrorBoundary errorFallback={ErrorView}>
-                                    {isLoading ? (
-                                        <InitialLoadingPreview
-                                            link={props.initialValue}
-                                            options={editorOptions.linkTypes?.[props.initialLinkType.id] as any ?? {}}
-                                        />
-                                    ) : (
-                                        <InitialPreview
-                                            model={initialModel}
-                                            options={editorOptions.linkTypes?.[props.initialLinkType.id] as any ?? {}}
-                                        />
-                                    )}
-                                </ErrorBoundary>
+                                {error ? (
+                                    <ErrorView error={error} />
+                                ) : (
+                                    <ErrorBoundary errorFallback={ErrorView}>
+                                        {isLoading ? (
+                                            <InitialLoadingPreview
+                                                link={props.initialValue}
+                                                options={editorOptions.linkTypes?.[props.initialLinkType.id] as any ?? {}}
+                                            />
+                                        ) : (
+                                            <InitialPreview
+                                                model={initialModel}
+                                                options={editorOptions.linkTypes?.[props.initialLinkType.id] as any ?? {}}
+                                            />
+                                        )}
+                                    </ErrorBoundary>
+                                )}
                             </Deletable>
                         )}
 

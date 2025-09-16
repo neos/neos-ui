@@ -15,10 +15,10 @@ export const Settings: React.FC<{
 }> = props => {
     const form = useLatestState(props.form$);
 
-    const setAnchor = React.useCallback((anchor) => props.form$.update((values) => ({ ...values, dirty: true, options: { ...values.options, anchor } })), [props.form$]);
-    const setTitle = React.useCallback((title) => props.form$.update((values) => ({ ...values, dirty: true, options: { ...values.options, title } })), [props.form$]);
-    const setTargetBlank = React.useCallback((targetBlank) => props.form$.update((values) => ({ ...values, dirty: true, options: { ...values.options, targetBlank } })), [props.form$]);
-    const setRelNofollow = React.useCallback((relNofollow) => props.form$.update((values) => ({ ...values, dirty: true, options: { ...values.options, relNofollow } })), [props.form$]);
+    const setAnchor = React.useCallback((anchor) => props.form$.update((values) => ({ ...values, isOptionsDirty: true, options: { ...values.options, anchor } })), []);
+    const setTitle = React.useCallback((title) => props.form$.update((values) => ({ ...values, isOptionsDirty: true, options: { ...values.options, title } })), []);
+    const setTargetBlank = React.useCallback((targetBlank) => props.form$.update((values) => ({ ...values, isOptionsDirty: true, options: { ...values.options, targetBlank } })), []);
+    const setRelNofollow = React.useCallback((relNofollow) => props.form$.update((values) => ({ ...values, isOptionsDirty: true, options: { ...values.options, relNofollow } })), []);
 
     return (
         <Layout.Stack>

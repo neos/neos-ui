@@ -11,6 +11,7 @@ import {
     useLinkTypeForHref,
     useSortedAndFilteredLinkTypes,
     IEditor,
+    ILinkType,
 } from '../../domain';
 import {Layout, Form, Modal, Tabs, Deletable} from '../../presentation';
 
@@ -22,7 +23,7 @@ import {createState, State} from "@neos-project/framework-observable";
 import {MutableRefObject} from "react";
 
 export type FormValues = {
-    dirty: boolean
+    isOptionsDirty: boolean
     activeLinkTypeId: string
     options: ILinkOptions
 }
@@ -38,6 +39,8 @@ export const createDialog = (editor: IEditor) => () => {
     const linkModelsRef$ = React.useRef<null | LinkModelStates>(null);
 
     const linkTypes = useLinkTypes();
+
+    const initialLinkType = useLinkTypeForHref(initialValue?.href ?? null);
 
     // this flag is a little faulty as it just indicates that during editing the value was deleted at any point at least once -> but not that it's the last change
     const [valueWasDeleted, setValueWasDeleted] = React.useState(false);
@@ -77,7 +80,7 @@ export const createDialog = (editor: IEditor) => () => {
                 renderBody={() => (
                     <ErrorBoundary errorFallback={ErrorView}>
                         <Form
-                            renderBody={() => initialValue === null || valueWasDeleted ? (
+                            renderBody={() => (initialValue === null || initialLinkType === null) || valueWasDeleted ? (
                                 <DialogWithEmptyValue
                                     formRef$={formRef$}
                                     linkModelsRef$={linkModelsRef$}
@@ -90,7 +93,8 @@ export const createDialog = (editor: IEditor) => () => {
                                     formRef$={formRef$}
                                     linkModelsRef$={linkModelsRef$}
                                     editor={editor}
-                                    value={initialValue}
+                                    initialValue={initialValue}
+                                    initialLinkType={initialLinkType}
                                     onDelete={() => setValueWasDeleted(true)}
                                 />
                             )}
@@ -126,9 +130,14 @@ export const createDialog = (editor: IEditor) => () => {
         )
     }
 
+    // cleanup state
+
     if (valueWasDeleted) {
         setValueWasDeleted(false);
     }
+
+    formRef$.current = null;
+    linkModelsRef$.current = null;
 
     return null;
 };
@@ -144,7 +153,7 @@ const DialogWithEmptyValue: React.FC<{
     const sortedAndFilteredLinkTypes = useSortedAndFilteredLinkTypes(props.editor);
 
     const form$ = React.useMemo(() => createState({
-        dirty: false,
+        isOptionsDirty: false,
         activeLinkTypeId: props.activeLinkTypeId ?? sortedAndFilteredLinkTypes[0].id,
         options: {}
     } as FormValues), []);
@@ -197,7 +206,6 @@ const DialogWithEmptyValue: React.FC<{
                             </Deletable>
                         ) : null}
 
-                        <div style={{ overflow: "auto" }}>
                         <ErrorBoundary errorFallback={ErrorView}>
                             <Editor
                                 model$={model$}
@@ -213,7 +221,6 @@ const DialogWithEmptyValue: React.FC<{
                                 )}
                             />
                         ) : null}
-                        </div>
                     </Layout.Stack>
                 )
             }}
@@ -225,26 +232,26 @@ const DialogWithValue: React.FC<{
     formRef$: MutableRefObject<null | State<FormValues>>
     linkModelsRef$: MutableRefObject<null | LinkModelStates>
     editor: IEditor,
-    value: ILink,
+    initialValue: ILink,
+    initialLinkType: ILinkType,
     onDelete: () => void,
 }> = props => {
     const {enabledLinkOptions, editorOptions} = useLatestState(props.editor.state$);
-    const initialLinkType = useLinkTypeForHref(props.value.href);
     // todo handle busy and error, and use LoadingEditor
-    const {busy, error, result: initialModel} = initialLinkType.useResolvedModel(props.value);
+    const {busy, error, result: initialModel} = props.initialLinkType.useResolvedModel(props.initialValue);
 
     const sortedAndFilteredLinkTypes = useSortedAndFilteredLinkTypes(props.editor);
 
     const form$ = React.useMemo(() => createState({
-        dirty: false,
-        activeLinkTypeId: initialLinkType.id,
-        options: props.value.options
+        isOptionsDirty: false,
+        activeLinkTypeId: props.initialLinkType.id,
+        options: props.initialValue.options
     } as FormValues), []);
 
     const form = useLatestState(form$);
     const setActiveTab = React.useCallback((linkId) => form$.update((values) => ({ ...values, activeLinkTypeId: linkId })), []);
 
-    const linkModels$ = React.useMemo(() => sortedAndFilteredLinkTypes.reduce((carry, value) => ({ ...carry, [value.id]: value.id === initialLinkType.id ? createState(initialModel) : createState(null) }), {} as LinkModelStates), []);
+    const linkModels$ = React.useMemo(() => sortedAndFilteredLinkTypes.reduce((carry, value) => ({ ...carry, [value.id]: value.id === props.initialLinkType.id ? createState(initialModel) : createState(null) }), {} as LinkModelStates), []);
 
     const unsetLinkModels = React.useCallback(() => {
         props.onDelete();
@@ -256,7 +263,7 @@ const DialogWithValue: React.FC<{
     props.formRef$.current = form$;
     props.linkModelsRef$.current = linkModels$;
 
-    const InitialPreview = initialLinkType.Preview;
+    const InitialPreview = props.initialLinkType.Preview;
 
     return (
         <Tabs
@@ -296,7 +303,7 @@ const DialogWithValue: React.FC<{
                                 <ErrorBoundary errorFallback={ErrorView}>
                                     <InitialPreview
                                         model={initialModel}
-                                        options={editorOptions.linkTypes?.[initialLinkType.id] as any ?? {}}
+                                        options={editorOptions.linkTypes?.[props.initialLinkType.id] as any ?? {}}
                                     />
                                 </ErrorBoundary>
                             </Deletable>

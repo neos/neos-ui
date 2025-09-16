@@ -98,34 +98,32 @@ export const createDialog = (editor: IEditor) => () => {
                                     onDelete={() => setValueWasDeleted(true)}
                                 />
                             )}
-                            renderActions={() => (
-                                <>
-                                    <Button onClick={dismiss}>
-                                        {translate('Neos.Neos.Ui:LinkEditor.Main:dialog.action.cancel', '')}
-                                    </Button>
-                                    {valueWasDeleted ? /* todo dont unset if there is a new value now */ (
-                                        <Button
-                                            style="success"
-                                            type="button"
-                                            onClick={unset}
-                                        >
-                                            {translate('Neos.Neos.Ui:LinkEditor.Main:dialog.action.apply', '')}
-                                        </Button>
-                                    ) : (
-                                        <Button
-                                            style="success"
-                                            type="submit"
-                                            disabled={false}
-                                        >
-                                            {translate('Neos.Neos.Ui:LinkEditor.Main:dialog.action.apply', '')}
-                                        </Button>
-                                    )}
-                                </>
-                            )}
-                            onSubmit={handleSubmit}
                         />
                     </ErrorBoundary>
                 )}
+                actions={[
+                    <Button onClick={dismiss}>
+                        {translate('Neos.Neos.Ui:LinkEditor.Main:dialog.action.cancel', '')}
+                    </Button>,
+                    valueWasDeleted ? /* todo dont unset if there is a new value now */ (
+                        <Button
+                            style="success"
+                            type="button"
+                            onClick={unset}
+                        >
+                            {translate('Neos.Neos.Ui:LinkEditor.Main:dialog.action.apply', '')}
+                        </Button>
+                    ) : (
+                        <Button
+                            style="success"
+                            type="submit"
+                            disabled={false}
+                            onClick={handleSubmit}
+                        >
+                            {translate('Neos.Neos.Ui:LinkEditor.Main:dialog.action.apply', '')}
+                        </Button>
+                    )
+                ]}
             />
         )
     }

@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 import styled from 'styled-components';
 
 import {Dialog} from '@neos-project/react-ui-components';
+import {ReactNode} from "react";
 
 //
 // TODO: Dear Reader:
@@ -38,6 +39,7 @@ export const Modal: React.FC<{
     renderBody(): React.ReactNode,
     onRequestClose(): void,
     preventClosing: boolean,
+    actions: ReadonlyArray<ReactNode>;
 }> = props => ReactDOM.createPortal(
     <StyledDialog
         id="neos-LinkEditor"
@@ -45,7 +47,10 @@ export const Modal: React.FC<{
         title={props.renderTitle()}
         onRequestClose={props.onRequestClose}
         preventClosing={props.preventClosing}
-        >
+        style="jumbo"
+        actions={props.actions}
+        autoFocus={true}
+    >
         {props.renderBody()}
     </StyledDialog>,
     document.body

@@ -26,6 +26,8 @@ const options = {
     logLevel: 'info',
     target: 'es2020',
     color: true,
+    splitting: true,
+    format: "esm",
     bundle: true,
     keepNames: isE2ETesting, // for react magic selectors,
     metafile: isAnalyze,

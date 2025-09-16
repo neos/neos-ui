@@ -48,16 +48,18 @@ Neos:
 
         javascript:
           'Neos.Neos.UI:Host':
-           resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/Build/Host.js"}'
-           position: 'start 900'
+            resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/Build/Host.js"}'
+            position: 'start 900'
+            attributes:
+              type: module
 
         stylesheets:
           'Neos.Neos.UI:Host':
             resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/Build/Host.css"}'
             position: 'start 1000'
           'Neos.Neos.UI:HostOnlyStyles':
-           resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/Build/HostOnlyStyles.css"}'
-           position: 'start 900'
+            resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/Build/HostOnlyStyles.css"}'
+            position: 'start 900'
 
       contentCanvas:
         backgroundColor: '#ffffff'

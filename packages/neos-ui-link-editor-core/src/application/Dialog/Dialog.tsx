@@ -237,7 +237,6 @@ const DialogWithValue: React.FC<{
     onDelete: () => void,
 }> = props => {
     const {enabledLinkOptions, editorOptions} = useLatestState(props.editor.state$);
-    // todo handle busy and error, and use LoadingEditor
     const {isLoading, error, value: initialModel} = props.initialLinkType.useResolvedModel(props.initialValue);
 
     if (error) {

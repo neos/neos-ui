@@ -40,7 +40,7 @@ const TabPanel = styled.div`
 `;
 
 interface Props<V> {
-    from: V[]
+    from: ReadonlyArray<V>
     lazy?: boolean
     activeItemKey: string
     getKey(item: V): string

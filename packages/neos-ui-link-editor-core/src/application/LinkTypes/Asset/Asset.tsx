@@ -1,6 +1,5 @@
 import * as React from 'react';
 
-import {Process} from '../../../framework';
 import {ILink, makeLinkType} from '../../../domain';
 import {ImageCard, IconLabel} from '../../../presentation';
 
@@ -8,7 +7,7 @@ import {MediaBrowser} from './MediaBrowser';
 import { Nullable } from 'ts-toolbelt/out/Union/Nullable';
 import {isSuitableFor} from "./AssetSpecification";
 import {translate} from "@neos-project/neos-ui-i18n";
-import {usePromise} from "@neos-project/framework-promise-react";
+import {PromiseState, usePromise} from "@neos-project/framework-promise-react";
 import backend from "@neos-project/neos-ui-backend-connector";
 import {State} from "@neos-project/framework-observable";
 import {useLatestState} from "@neos-project/framework-observable-react";
@@ -35,10 +34,10 @@ export const Asset = makeLinkType<AssetLinkModel>('Sitegeist.Archaeopteryx:Asset
         const match = /asset:\/\/(.*)/.exec(link.href);
 
         if (match) {
-            return Process.success({isDirty: false, identifier: match[1]});
+            return PromiseState.forValue({isDirty: false, identifier: match[1]});
         }
 
-        return Process.error(
+        return PromiseState.forError(
             createError(`Cannot handle href "${link.href}".`)
         );
     },

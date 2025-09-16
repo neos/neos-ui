@@ -238,7 +238,11 @@ const DialogWithValue: React.FC<{
 }> = props => {
     const {enabledLinkOptions, editorOptions} = useLatestState(props.editor.state$);
     // todo handle busy and error, and use LoadingEditor
-    const {busy, error, result: initialModel} = props.initialLinkType.useResolvedModel(props.initialValue);
+    const {isLoading, error, value: initialModel} = props.initialLinkType.useResolvedModel(props.initialValue);
+
+    if (error) {
+        throw error;
+    }
 
     const sortedAndFilteredLinkTypes = useSortedAndFilteredLinkTypes(props.editor);
 
@@ -253,6 +257,17 @@ const DialogWithValue: React.FC<{
 
     const linkModels$ = React.useMemo(() => sortedAndFilteredLinkTypes.reduce((carry, value) => ({ ...carry, [value.id]: value.id === props.initialLinkType.id ? createState(initialModel) : createState(null) }), {} as LinkModelStates), []);
 
+    React.useEffect(() => {
+        if (initialModel !== null) {
+            // set value if it is not set because model was fetched async
+            const model$ = linkModels$[props.initialLinkType.id];
+            if (model$ === null) {
+                return;
+            }
+            model$.update(() => initialModel);
+        }
+    }, [initialModel]);
+
     const unsetLinkModels = React.useCallback(() => {
         props.onDelete();
         for (const linkModel$ of Object.values(linkModels$)) {
@@ -264,6 +279,7 @@ const DialogWithValue: React.FC<{
     props.linkModelsRef$.current = linkModels$;
 
     const InitialPreview = props.initialLinkType.Preview;
+    const InitialLoadingPreview = props.initialLinkType.LoadingPreview;
 
     return (
         <Tabs
@@ -278,7 +294,7 @@ const DialogWithValue: React.FC<{
                 />
             )}
             renderPanel={linkType => {
-                const {Preview, Editor} = linkType;
+                const {Preview, Editor, LoadingEditor} = linkType;
                 const model$ = linkModels$[linkType.id];
 
                 const model = useLatestState(model$);
@@ -301,19 +317,33 @@ const DialogWithValue: React.FC<{
                                 onDelete={unsetLinkModels}
                             >
                                 <ErrorBoundary errorFallback={ErrorView}>
-                                    <InitialPreview
-                                        model={initialModel}
-                                        options={editorOptions.linkTypes?.[props.initialLinkType.id] as any ?? {}}
-                                    />
+                                    {isLoading ? (
+                                        <InitialLoadingPreview
+                                            link={props.initialValue}
+                                            options={editorOptions.linkTypes?.[props.initialLinkType.id] as any ?? {}}
+                                        />
+                                    ) : (
+                                        <InitialPreview
+                                            model={initialModel}
+                                            options={editorOptions.linkTypes?.[props.initialLinkType.id] as any ?? {}}
+                                        />
+                                    )}
                                 </ErrorBoundary>
                             </Deletable>
                         )}
 
                         <ErrorBoundary errorFallback={ErrorView}>
-                            <Editor
-                                model$={model$}
-                                options={editorOptions.linkTypes?.[linkType.id] as any ?? {}}
-                            />
+                            {isLoading && linkType.id === props.initialLinkType.id ? (
+                                <LoadingEditor
+                                    link={props.initialValue}
+                                    options={editorOptions.linkTypes?.[props.initialLinkType.id] as any ?? {}}
+                                />
+                            ) : (
+                                <Editor
+                                    model$={model$}
+                                    options={editorOptions.linkTypes?.[linkType.id] as any ?? {}}
+                                />
+                            )}
                         </ErrorBoundary>
 
                         {enabledLinkOptions.length && linkType.supportedLinkOptions.length ? (

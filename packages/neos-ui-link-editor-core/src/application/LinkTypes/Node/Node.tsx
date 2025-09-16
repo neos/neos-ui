@@ -8,7 +8,7 @@
  * source code.
  */
 import React from "react";
-import {usePromise} from "@neos-project/framework-promise-react";
+import {PromiseState, usePromise} from "@neos-project/framework-promise-react";
 import { Nullable } from "ts-toolbelt/out/Union/Nullable";
 import { OptionalDeep } from "ts-toolbelt/out/Object/Optional";
 
@@ -18,7 +18,6 @@ import { Tree } from "@neos-project/neos-ui-link-editor-custom-node-tree";
 
 import { ILink, makeLinkType } from "../../../domain";
 import { IconCard, IconLabel } from "../../../presentation";
-import { Process } from "../../../framework";
 import { getNodeSummary } from "../../../infrastructure/http";
 import {isSuitableFor} from "./NodeSpecification";
 import {useSiteNodeAggregateId} from "./useSiteNodeAggregateId";
@@ -109,7 +108,7 @@ export const Node = makeLinkType<NodeLinkModel, NodeLinkOptions>(
 
             const nodeId = match[1];
 
-            return Process.success({ isDirty: false, nodeId });
+            return PromiseState.forValue({ isDirty: false, nodeId });
         },
 
         convertModelToLink: ({ nodeId }: NodeLinkModel) => ({

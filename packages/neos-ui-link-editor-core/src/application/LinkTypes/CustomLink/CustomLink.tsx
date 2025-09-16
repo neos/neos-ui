@@ -2,13 +2,13 @@ import * as React from 'react';
 
 import {EditorEnvelope} from '@neos-project/neos-ui-editors/src/index';
 import {ILink, makeLinkType} from "../../../domain";
-import {Process} from '../../../framework';
 import {IconCard, IconLabel} from "../../../presentation";
 import {isSuitableFor} from "./CustomLinkSpecification";
 import {translate} from "@neos-project/neos-ui-i18n";
 import {useLatestState} from "@neos-project/framework-observable-react";
 import {State} from "@neos-project/framework-observable";
 import {Nullable} from "ts-toolbelt/out/Union/Nullable";
+import { PromiseState } from '@neos-project/framework-promise-react';
 
 type CustomLinkModel = {
     isDirty: boolean;
@@ -28,7 +28,7 @@ export const CustomLink = makeLinkType<CustomLinkModel>('Sitegeist.Archaeopteryx
     },
 
     useResolvedModel: (link: ILink) => {
-        return Process.success({
+        return PromiseState.forValue({
             isDirty: false,
             isValid: true,
             customLink: link.href,

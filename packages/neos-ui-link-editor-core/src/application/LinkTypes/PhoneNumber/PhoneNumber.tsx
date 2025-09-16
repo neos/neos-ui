@@ -4,7 +4,6 @@ import {SelectBox} from '@neos-project/react-ui-components';
 import {getCountries, getCountryCallingCode, parsePhoneNumber, AsYouType, CountryCode} from 'libphonenumber-js/max'
 
 import {ILink, makeLinkType} from "../../../domain";
-import {Process} from '../../../framework';
 import {IconCard, IconLabel} from "../../../presentation";
 import {Nullable} from 'ts-toolbelt/out/Union/Nullable';
 import {OptionalDeep} from 'ts-toolbelt/out/Object/Optional';
@@ -14,6 +13,7 @@ import {State} from "@neos-project/framework-observable";
 import {useLatestState} from "@neos-project/framework-observable-react";
 
 import {EditorEnvelope} from '@neos-project/neos-ui-editors/src/index';
+import {PromiseState, usePromise} from '@neos-project/framework-promise-react';
 
 type PhoneNumberLinkModel = {
     isPhoneNumberDirty: boolean
@@ -43,9 +43,16 @@ export const PhoneNumber = makeLinkType<PhoneNumberLinkModel, PhoneNumberLinkOpt
     },
 
     useResolvedModel: (link: ILink) => {
+        const promise = usePromise(() => new Promise(r => setTimeout(r, 1000)), []);
+
+        if (promise.isLoading) {
+            // todo load phonelib async
+            return PromiseState.forLoading();
+        }
+
         const phoneNumber = parsePhoneNumber(link.href.replace('tel:', ''));
         if (phoneNumber) {
-            return Process.success({
+            return PromiseState.forValue({
                 isPhoneNumberDirty: false,
                 isPhoneNumberValid: true,
                 phoneNumber: phoneNumber.number.replace(`+${phoneNumber.countryCallingCode}`, ''),
@@ -54,7 +61,7 @@ export const PhoneNumber = makeLinkType<PhoneNumberLinkModel, PhoneNumberLinkOpt
             });
         }
 
-        return Process.error(
+        return PromiseState.forError(
             createError(`Cannot handle href "${link.href}".`)
         );
     },

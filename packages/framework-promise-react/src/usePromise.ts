@@ -17,17 +17,12 @@
  */
 
 import React from "react";
-
-type UsePromiseEnvelope<R> = {
-    value: R;
-    error: null | Error;
-    isLoading: boolean;
-};
+import {IPromiseState} from "./PromiseState";
 
 export const usePromise = <R>(
     asyncFn: () => Promise<R>,
     deps: any[]
-): UsePromiseEnvelope<R> => {
+): IPromiseState<R> => {
     const [value, setValue] = React.useState<null | R>(null);
     const [error, setError] = React.useState<null | Error>(null);
     const [isLoading, setIsLoading] = React.useState(true);
@@ -66,5 +61,5 @@ export const usePromise = <R>(
         promiseRef.current = promise;
     }, deps);
 
-    return { value, error, isLoading } as UsePromiseEnvelope<R>;
+    return { value, error, isLoading } as IPromiseState<R>;
 };

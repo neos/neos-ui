@@ -168,7 +168,7 @@ const InspectorEditorWithLinkType: React.FC<{
     editLink: () => Promise<void>
     reset: () => void
 }> = props => {
-    const {busy, error, result: model} = props.linkType.useResolvedModel(props.link);
+    const {isLoading, error, value: model} = props.linkType.useResolvedModel(props.link);
     const {Preview, LoadingPreview} = props.linkType;
 
     if (error) {
@@ -182,7 +182,7 @@ const InspectorEditorWithLinkType: React.FC<{
                 type="button"
                 onClick={props.editLink}
             >
-                {busy ? (
+                {isLoading ? (
                     <LoadingPreview
                         link={props.link}
                         options={props.options}
@@ -190,7 +190,6 @@ const InspectorEditorWithLinkType: React.FC<{
                 ) : (
                     <Preview
                         model={model}
-                        link={props.link}
                         options={props.options}
                     />
                 )}

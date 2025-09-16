@@ -17,3 +17,6 @@
  */
 
 export { usePromise } from "./usePromise";
+export type { IPromiseState } from "./PromiseState";
+export * as PromiseState from "./PromiseState";
+

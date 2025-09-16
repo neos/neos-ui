@@ -3,12 +3,12 @@ import { useState } from 'react';
 
 import {SelectBox, TextInput} from '@neos-project/react-ui-components';
 
-import {Process} from '../../../framework';
 import {ILink, makeLinkType} from '../../../domain';
 import {IconCard, IconLabel} from '../../../presentation';
 import { Nullable } from 'ts-toolbelt/out/Union/Nullable';
 import {isSuitableFor} from "./WebSpecification";
 import {translate} from "@neos-project/neos-ui-i18n";
+import { PromiseState } from '@neos-project/framework-promise-react';
 
 type WebLinkModel = {
     protocol: 'http' | 'https'
@@ -29,13 +29,13 @@ export const Web = makeLinkType<WebLinkModel>('Sitegeist.Archaeopteryx:Web', ({c
         if (matches) {
             const [, protocol, urlWithoutProtocol] = matches;
 
-            return Process.success({
+            return PromiseState.forValue({
                 protocol: protocol as 'http' | 'https',
                 urlWithoutProtocol
             });
         }
 
-        return Process.error(
+        return PromiseState.forError(
             createError(`Cannot handle href "${link.href}".`)
         );
     },

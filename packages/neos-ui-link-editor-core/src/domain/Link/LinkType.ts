@@ -4,13 +4,12 @@ import positionalArraySorter from '@neos-project/positional-array-sorter';
 
 import {globalRegistry} from '@neos-project/neos-ui/globalRegistry';
 
-import {IProcess} from '../../framework';
-
 import {ILink, ILinkOptions} from './Link';
 import {IEditor} from '../Editor';
 import {useLatestState} from "@neos-project/framework-observable-react";
 import {State} from "@neos-project/framework-observable";
 import {Nullable} from "ts-toolbelt/out/Union/Nullable";
+import {IPromiseState} from "@neos-project/framework-promise-react";
 
 interface LinkTypeStaticProps<OptionsType extends object = {}> {
     link?: ILink
@@ -26,7 +25,7 @@ export interface ILinkType<ModelType = any, OptionsType extends object = {}> {
     supportedLinkOptions: (keyof ILinkOptions)[]
     isSuitableFor: (link: ILink) => boolean
 
-    useResolvedModel: (link: ILink) => IProcess<ModelType>
+    useResolvedModel: (link: ILink) => IPromiseState<ModelType>
     convertModelToLink: (model: ModelType) => ILink
     isDirty: (model: ModelType) => boolean;
     isValid: (model: ModelType) => boolean;

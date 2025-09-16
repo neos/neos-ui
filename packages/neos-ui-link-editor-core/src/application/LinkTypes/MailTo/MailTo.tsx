@@ -1,6 +1,5 @@
 import * as React from 'react';
 
-import {Process, Field, EditorEnvelope} from '../../../framework';
 import {ILink, makeLinkType} from '../../../domain';
 import {IconCard, Layout, IconLabel} from '../../../presentation';
 import { OptionalDeep } from 'ts-toolbelt/out/Object/Optional';
@@ -8,6 +7,7 @@ import { Nullable } from 'ts-toolbelt/out/Union/Nullable';
 import {isSuitableFor} from "./MailToSpecification";
 import {translate} from "@neos-project/neos-ui-i18n";
 import {isEmail} from "@neos-project/utils-helpers";
+import { PromiseState } from '@neos-project/framework-promise-react';
 
 type MailToLinkModel = {
     recipient: string
@@ -31,13 +31,13 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('Sitegeist.Ar
 
     useResolvedModel:  (link: ILink) => {
         if (!link.href.startsWith('mailto:')) {
-            return Process.error(
+            return PromiseState.forError(
                 createError(`Cannot handle href "${link.href}".`)
             );
         }
         const url = new URL(link.href);
 
-        return Process.success({
+        return PromiseState.forValue({
             recipient: url.pathname,
             subject: url.searchParams.get('subject') ?? undefined,
             cc: url.searchParams.get('cc') ?? undefined,

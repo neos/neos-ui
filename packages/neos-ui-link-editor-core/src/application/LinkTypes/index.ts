@@ -15,8 +15,8 @@ export function registerLinkTypes(globalRegistry: GlobalRegistry): void {
 
     linkTypeRegistry.set(Node.id, Node);
     linkTypeRegistry.set(Asset.id, Asset);
-    linkTypeRegistry.set(Web.id, Web);
-    linkTypeRegistry.set(MailTo.id, MailTo);
+    // linkTypeRegistry.set(Web.id, Web);
+    // linkTypeRegistry.set(MailTo.id, MailTo);
     linkTypeRegistry.set(PhoneNumber.id, PhoneNumber);
     linkTypeRegistry.set(CustomLink.id, CustomLink);
 

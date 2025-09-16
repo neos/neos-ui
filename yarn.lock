@@ -1982,19 +1982,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.10.0, @babel/runtime@npm:^7.15.4, @babel/runtime@npm:^7.9.2":
-  version: 7.28.4
-  resolution: "@babel/runtime@npm:7.28.4"
-  checksum: 934b0a0460f7d06637d93fcd1a44ac49adc33518d17253b5a0b55ff4cb90a45d8fe78bf034b448911dbec7aff2a90b918697559f78d21c99ff8dbadae9565b55
-  languageName: node
-  linkType: hard
-
 "@babel/runtime@npm:^7.23.2":
   version: 7.25.6
   resolution: "@babel/runtime@npm:7.25.6"
   dependencies:
     regenerator-runtime: ^0.14.0
   checksum: ee1a69d3ac7802803f5ee6a96e652b78b8addc28c6a38c725a4ad7d61a059d9e6cb9f6550ed2f63cce67a1bd82e0b1ef66a1079d895be6bfb536a5cfbd9ccc32
+  languageName: node
+  linkType: hard
+
+"@babel/runtime@npm:^7.9.2":
+  version: 7.28.4
+  resolution: "@babel/runtime@npm:7.28.4"
+  checksum: 934b0a0460f7d06637d93fcd1a44ac49adc33518d17253b5a0b55ff4cb90a45d8fe78bf034b448911dbec7aff2a90b918697559f78d21c99ff8dbadae9565b55
   languageName: node
   linkType: hard
 
@@ -4075,9 +4075,7 @@ __metadata:
     "@neos-project/positional-array-sorter": "workspace:*"
     "@neos-project/react-ui-components": "workspace:*"
     "@neos-project/utils-helpers": "workspace:*"
-    final-form: ^4.20.2
     libphonenumber-js: ^1.9.52
-    react-final-form: ^6.5.3
     ts-toolbelt: ^9.6.0
     typesafe-actions: ^5.1.0
   languageName: unknown
@@ -9134,15 +9132,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"final-form@npm:^4.20.2":
-  version: 4.20.10
-  resolution: "final-form@npm:4.20.10"
-  dependencies:
-    "@babel/runtime": ^7.10.0
-  checksum: 92491998d7e284ce47453a54ea94e949aa5852d9307fe8875da9107d2eb966542cbca6f73bd306407eddfbd8d5c8d40cbd6d198358439b5cc4b8c8caea6d8e7b
-  languageName: node
-  linkType: hard
-
 "find-babel-config@npm:^2.0.0":
   version: 2.1.2
   resolution: "find-babel-config@npm:2.1.2"
@@ -14122,18 +14111,6 @@ __metadata:
   peerDependencies:
     react: ">=0.14.0"
   checksum: 6eb86f00a497316fc8699603a1e66a1abdb755b11481d2cfd9e763eeeb4256d8f5638171807856f1f4c4370bcad28707401918db04a8d148a8d9094687d30ef3
-  languageName: node
-  linkType: hard
-
-"react-final-form@npm:^6.5.3":
-  version: 6.5.9
-  resolution: "react-final-form@npm:6.5.9"
-  dependencies:
-    "@babel/runtime": ^7.15.4
-  peerDependencies:
-    final-form: ^4.20.4
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: 2ab79b1b0230545af1b93b324e2ce61992087beda344f762e1c1306867c177ca6258651e992515fa6681a790f94380a388c18e898ffb20468562e62c83c6b289
   languageName: node
   linkType: hard
 

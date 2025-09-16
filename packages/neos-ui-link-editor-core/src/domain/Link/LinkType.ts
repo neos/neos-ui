@@ -9,13 +9,14 @@ import {IProcess} from '../../framework';
 import {ILink, ILinkOptions} from './Link';
 import {IEditor} from '../Editor';
 import {useLatestState} from "@neos-project/framework-observable-react";
+import {State} from "@neos-project/framework-observable";
+import {Nullable} from "ts-toolbelt/out/Union/Nullable";
 
 interface LinkTypeStaticProps<OptionsType extends object = {}> {
     link?: ILink
     options: Object.Partial<OptionsType, 'deep'>
 }
 interface LinkTypeProps<ModelType = any, OptionsType extends object = {}> {
-    link: ILink
     model: ModelType
     options: Object.Partial<OptionsType, 'deep'>
 }
@@ -27,15 +28,21 @@ export interface ILinkType<ModelType = any, OptionsType extends object = {}> {
 
     useResolvedModel: (link: ILink) => IProcess<ModelType>
     convertModelToLink: (model: ModelType) => ILink
+    isDirty: (model: ModelType) => boolean;
+    isValid: (model: ModelType) => boolean;
 
     TabHeader: React.FC<LinkTypeStaticProps<OptionsType>>
     LoadingPreview: React.FC<LinkTypeStaticProps<OptionsType>>
     Preview: React.FC<LinkTypeProps<ModelType, OptionsType>>
     LoadingEditor: React.FC<LinkTypeStaticProps<OptionsType>>
-    Editor: React.FC<Object.Nullable<LinkTypeProps<ModelType, OptionsType>, 'link' | 'model'>>
+    Editor: React.FC<{
+        model$: State<Nullable<ModelType>>
+        options: Object.Partial<OptionsType, 'deep'>
+    }>
 }
 
 export interface ILinkTypeFactoryApi {
+    id: string
     createError: (message: string) => Error
 }
 
@@ -47,7 +54,7 @@ export function makeLinkType<ModelType = any, OptionsType extends object = {}>(
     >
 ): ILinkType<ModelType, OptionsType> {
     const createError = (message: string): Error => new Error(`[${id}]: ${message}`);
-    const options = createOptions({createError});
+    const options = createOptions({createError, id});
 
     return {
         id,

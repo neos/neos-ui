@@ -18,13 +18,16 @@ import { Tree } from "@neos-project/neos-ui-link-editor-custom-node-tree";
 
 import { ILink, makeLinkType } from "../../../domain";
 import { IconCard, IconLabel } from "../../../presentation";
-import { Process, Field } from "../../../framework";
+import { Process } from "../../../framework";
 import { getNodeSummary } from "../../../infrastructure/http";
 import {isSuitableFor} from "./NodeSpecification";
 import {useSiteNodeAggregateId} from "./useSiteNodeAggregateId";
 import {translate} from "@neos-project/neos-ui-i18n";
+import {State} from "@neos-project/framework-observable";
+import {useLatestState} from "@neos-project/framework-observable-react";
 
 type NodeLinkModel = {
+    isDirty: boolean;
     nodeId: string;
 };
 type NodeLinkOptions = {
@@ -89,6 +92,14 @@ export const Node = makeLinkType<NodeLinkModel, NodeLinkOptions>(
 
         isSuitableFor,
 
+        isDirty: (model) => {
+            return model.isDirty;
+        },
+
+        isValid: () => {
+            return true;
+        },
+
         useResolvedModel: (link: ILink) => {
             const match = /node:\/\/([^#]*)(#.*)?/.exec(link.href);
 
@@ -98,7 +109,7 @@ export const Node = makeLinkType<NodeLinkModel, NodeLinkOptions>(
 
             const nodeId = match[1];
 
-            return Process.success({ nodeId });
+            return Process.success({ isDirty: false, nodeId });
         },
 
         convertModelToLink: ({ nodeId }: NodeLinkModel) => ({
@@ -117,14 +128,16 @@ export const Node = makeLinkType<NodeLinkModel, NodeLinkOptions>(
             return <NodePreview nodeId={props.model.nodeId} />;
         },
 
-        // eslint-disable-next-line max-len
         Editor: ({
-            model,
+            model$,
             options,
         }: {
-            model: Nullable<NodeLinkModel>;
+            model$: State<Nullable<NodeLinkModel>>;
             options: OptionalDeep<NodeLinkOptions>;
         }) => {
+            const model = useLatestState(model$);
+            const setNodeId = React.useCallback((nodeId) => model$.update((values) => ({...values, isDirty: true, nodeId})), []);
+
             const workspaceName = useSelector(selectors.CR.Workspaces.personalWorkspaceNameSelector);
             const dimensionValues = useSelector(selectors.CR.ContentDimensions.active);
             const siteNodeAggregateId = useSiteNodeAggregateId();
@@ -153,43 +166,28 @@ export const Node = makeLinkType<NodeLinkModel, NodeLinkOptions>(
                 );
             } else {
                 return (
-                    <Field<null | string>
-                        name="nodeId"
-                        initialValue={model?.nodeId}
-                        // eslint-disable-next-line consistent-return
-                        validate={(value) => {
-                            if (!value) {
-                                return translate("Neos.Neos.Ui:LinkEditor.Node:node.validation.required", '');
-                            }
+                    <Tree
+                        initialSearchTerm={initialSearchTerm}
+                        workspaceName={workspaceName}
+                        dimensionValues={dimensionValues}
+                        startingPoint={startingPoint}
+                        loadingDepth={options.loadingDepth ?? defaultLoadingDepth}
+                        baseNodeTypeFilter={options.baseNodeType ?? "Neos.Neos:Document"}
+                        initialNarrowNodeTypeFilter={
+                            initialNarrowNodeTypeFilter
+                        }
+                        linkableNodeTypes={
+                            options.allowedNodeTypes as
+                                | undefined
+                                | string[]
+                        }
+                        selectedTreeNodeId={model?.nodeId ?? undefined}
+                        options={{
+                            enableSearch: true,
+                            enableNodeTypeFilter: true,
                         }}
-                    >
-                        {({ input }) => (
-                            <Tree
-                                initialSearchTerm={initialSearchTerm}
-                                workspaceName={workspaceName}
-                                dimensionValues={dimensionValues}
-                                startingPoint={startingPoint}
-                                loadingDepth={options.loadingDepth ?? defaultLoadingDepth}
-                                baseNodeTypeFilter={options.baseNodeType ?? "Neos.Neos:Document"}
-                                initialNarrowNodeTypeFilter={
-                                    initialNarrowNodeTypeFilter
-                                }
-                                linkableNodeTypes={
-                                    options.allowedNodeTypes as
-                                        | undefined
-                                        | string[]
-                                }
-                                selectedTreeNodeId={input.value ?? undefined}
-                                options={{
-                                    enableSearch: true,
-                                    enableNodeTypeFilter: true,
-                                }}
-                                onSelect={(nodeId) => {
-                                    input.onChange(nodeId);
-                                }}
-                            />
-                        )}
-                    </Field>
+                        onSelect={setNodeId}
+                    />
                 );
             }
         },

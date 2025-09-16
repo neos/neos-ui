@@ -1,11 +1,9 @@
 import * as React from 'react';
-import {Form, useForm} from 'react-final-form';
 
 import {Button} from '@neos-project/react-ui-components';
 
 import {ErrorBoundary, ErrorView} from '@neos-project/neos-ui-error';
 
-import {Field} from '../../framework';
 import {
     ILink,
     ILinkOptions,
@@ -14,53 +12,54 @@ import {
     useSortedAndFilteredLinkTypes,
     IEditor,
 } from '../../domain';
-import {Layout, Form as StyledForm, Modal, Tabs, Deletable} from '../../presentation';
+import {Layout, Form, Modal, Tabs, Deletable} from '../../presentation';
 
-import {LinkEditor} from './LinkEditor';
 import {Settings} from './Settings';
 import {useLatestState} from '@neos-project/framework-observable-react';
 import {useSelector} from '@neos-project/neos-ui-redux-store';
 import {translate} from "@neos-project/neos-ui-i18n";
 import {createState, State} from "@neos-project/framework-observable";
+import {MutableRefObject} from "react";
 
 export type FormValues = {
     dirty: boolean
-    // values: {
-    //     [id: string]: Record<string, any>
-    // }
+    activeLinkTypeId: string
     options: ILinkOptions
 }
 
+type LinkModelStates = {[linkTypeId: string]: State<any>};
+
 export const createDialog = (editor: IEditor) => () => {
-    const linkTypes = useLinkTypes();
     const isAuthenticated = useSelector(state => !state.system?.authenticationTimeout);
     const {dismiss, apply, unset} = editor.transactions;
     const {isOpen, initialValue} = useLatestState(editor.state$);
 
-    const form$ = React.useMemo(() => createState({
-        dirty: false,
-        // values: {},
-        options: initialValue?.options
-    } as FormValues), [initialValue]);
+    const formRef$ = React.useRef<null | State<FormValues>>(null);
+    const linkModelsRef$ = React.useRef<null | LinkModelStates>(null);
 
-    const form = useLatestState(form$);
+    const linkTypes = useLinkTypes();
 
     // this flag is a little faulty as it just indicates that during editing the value was deleted at any point at least once -> but not that it's the last change
     const [valueWasDeleted, setValueWasDeleted] = React.useState(false);
-    const handleSubmit = React.useCallback((values: any) => {
-        const linkType = linkTypes.find(linkType => linkType.id === values.linkTypeId);
+    const handleSubmit = React.useCallback(() => {
+        const form = formRef$.current?.current;
+        if (!form) {
+            return;
+        }
+
+        const linkType = linkTypes.find(linkType => linkType.id === form.activeLinkTypeId);
 
         if (linkType) {
-            const props = values.linkTypeProps?.[linkType.id.split('.').join('_')];
-
-            if (props) {
-                const link = {
-                    ...linkType.convertModelToLink(props),
-                    options: linkType.supportedLinkOptions.reduce((carry, key) => ({ ...carry, [key]: key in (form$.current.options ?? {})? form$.current.options[key] : undefined }), {})
-                };
-                apply(link);
-                setValueWasDeleted(false);
+            const linkTypeModel = linkModelsRef$.current?.[form.activeLinkTypeId]?.current;
+            if (!linkTypeModel) {
+                return;
             }
+            const link = {
+                ...linkType.convertModelToLink(linkTypeModel),
+                options: linkType.supportedLinkOptions.reduce((carry, key) => ({ ...carry, [key]: form.options?.[key] }), {})
+            };
+            apply(link);
+            setValueWasDeleted(false);
         } else if(valueWasDeleted) {
             unset();
             setValueWasDeleted(false);
@@ -69,63 +68,61 @@ export const createDialog = (editor: IEditor) => () => {
 
     if (isOpen && isAuthenticated) {
         return (
-            <Form<ILinkOptions> onSubmit={handleSubmit}>
-                {({handleSubmit, valid, dirty}) => (
-                    <Modal
-                        preventClosing={dirty}
-                        onRequestClose={dismiss}
-                        renderTitle={() => (
-                            <div>{translate('Neos.Neos.Ui:LinkEditor.Main:dialog.title', '')}</div>
-                        )}
-                        renderBody={() => (
-                            <ErrorBoundary errorFallback={ErrorView}>
-                                <StyledForm
-                                    renderBody={() => initialValue === null || valueWasDeleted ? (
-                                        <DialogWithEmptyValue
-                                            editor={editor}
-                                            form$={form$}
-                                            valid={valid}
-                                            onDelete={() => setValueWasDeleted(true)}
-                                        />
-                                    ) : (
-                                        <DialogWithValue
-                                            editor={editor}
-                                            form$={form$}
-                                            value={initialValue}
-                                            onDelete={() => setValueWasDeleted(true)}
-                                        />
-                                    )}
-                                    renderActions={() => (
-                                        <>
-                                            <Button onClick={dismiss}>
-                                                {translate('Neos.Neos.Ui:LinkEditor.Main:dialog.action.cancel', '')}
-                                            </Button>
-                                            {(!valid || !dirty) && valueWasDeleted ? (
-                                                <Button
-                                                    style="success"
-                                                    type="button"
-                                                    onClick={unset}
-                                                >
-                                                    {translate('Neos.Neos.Ui:LinkEditor.Main:dialog.action.apply', '')}
-                                                </Button>
-                                            ) : (
-                                                <Button
-                                                    style="success"
-                                                    type="submit"
-                                                    disabled={!form.dirty && (!valid || !dirty)}
-                                                >
-                                                    {translate('Neos.Neos.Ui:LinkEditor.Main:dialog.action.apply', '')}
-                                                </Button>
-                                            )}
-                                        </>
-                                    )}
-                                    onSubmit={handleSubmit}
-                                />
-                            </ErrorBoundary>
-                        )}
-                    />
+            <Modal
+                preventClosing={false}
+                onRequestClose={dismiss}
+                renderTitle={() => (
+                    <div>{translate('Neos.Neos.Ui:LinkEditor.Main:dialog.title', '')}</div>
                 )}
-            </Form>
+                renderBody={() => (
+                    <ErrorBoundary errorFallback={ErrorView}>
+                        <Form
+                            renderBody={() => initialValue === null || valueWasDeleted ? (
+                                <DialogWithEmptyValue
+                                    formRef$={formRef$}
+                                    linkModelsRef$={linkModelsRef$}
+                                    editor={editor}
+                                    activeLinkTypeId={formRef$.current?.current?.activeLinkTypeId}
+                                    onDelete={() => setValueWasDeleted(true)}
+                                />
+                            ) : (
+                                <DialogWithValue
+                                    formRef$={formRef$}
+                                    linkModelsRef$={linkModelsRef$}
+                                    editor={editor}
+                                    value={initialValue}
+                                    onDelete={() => setValueWasDeleted(true)}
+                                />
+                            )}
+                            renderActions={() => (
+                                <>
+                                    <Button onClick={dismiss}>
+                                        {translate('Neos.Neos.Ui:LinkEditor.Main:dialog.action.cancel', '')}
+                                    </Button>
+                                    {valueWasDeleted ? /* todo dont unset if there is a new value now */ (
+                                        <Button
+                                            style="success"
+                                            type="button"
+                                            onClick={unset}
+                                        >
+                                            {translate('Neos.Neos.Ui:LinkEditor.Main:dialog.action.apply', '')}
+                                        </Button>
+                                    ) : (
+                                        <Button
+                                            style="success"
+                                            type="submit"
+                                            disabled={false}
+                                        >
+                                            {translate('Neos.Neos.Ui:LinkEditor.Main:dialog.action.apply', '')}
+                                        </Button>
+                                    )}
+                                </>
+                            )}
+                            onSubmit={handleSubmit}
+                        />
+                    </ErrorBoundary>
+                )}
+            />
         )
     }
 
@@ -137,152 +134,191 @@ export const createDialog = (editor: IEditor) => () => {
 };
 
 const DialogWithEmptyValue: React.FC<{
+    formRef$: MutableRefObject<null | State<FormValues>>
+    linkModelsRef$: MutableRefObject<null | LinkModelStates>
     editor: IEditor,
-    form$: State<FormValues>
-    valid: boolean,
+    activeLinkTypeId?: string
     onDelete: () => void,
 }> = props => {
-    const form = useForm();
     const {enabledLinkOptions, editorOptions} = useLatestState(props.editor.state$);
     const sortedAndFilteredLinkTypes = useSortedAndFilteredLinkTypes(props.editor);
 
+    const form$ = React.useMemo(() => createState({
+        dirty: false,
+        activeLinkTypeId: props.activeLinkTypeId ?? sortedAndFilteredLinkTypes[0].id,
+        options: {}
+    } as FormValues), []);
+
+    const form = useLatestState(form$);
+    const setActiveTab = React.useCallback((linkId) => form$.update((values) => ({ ...values, activeLinkTypeId: linkId })), []);
+
+    const linkModels$ = React.useMemo(() => sortedAndFilteredLinkTypes.reduce((carry, value) => ({ ...carry, [value.id]: createState(null) }), {} as LinkModelStates), []);
+
+    const unsetLinkModels = React.useCallback(() => {
+        props.onDelete();
+        for (const linkModel$ of Object.values(linkModels$)) {
+            linkModel$.update(() => null);
+        }
+    }, []);
+
+    props.formRef$.current = form$;
+    props.linkModelsRef$.current = linkModels$;
+
     return (
-        <Field name="linkTypeId" initialValue={sortedAndFilteredLinkTypes[0]?.id}>{({input}) => (
-            <Tabs
-                lazy
-                from={sortedAndFilteredLinkTypes}
-                activeItemKey={input.value}
-                getKey={linkType => linkType.id}
-                renderHeader={({id, TabHeader}) => (
-                    <TabHeader
-                        options={editorOptions.linkTypes?.[id] as any ?? {}}
-                    />
-                )}
-                renderPanel={linkType => {
-                    const {Preview} = linkType;
-                    const model = form.getState().values.linkTypeProps?.[linkType.id.split('.').join('_')];
+        <Tabs
+            lazy
+            from={sortedAndFilteredLinkTypes}
+            activeItemKey={form.activeLinkTypeId}
+            onSwitchTab={setActiveTab}
+            getKey={linkType => linkType.id}
+            renderHeader={({id, TabHeader}) => (
+                <TabHeader
+                    options={editorOptions.linkTypes?.[id] as any ?? {}}
+                />
+            )}
+            renderPanel={linkType => {
+                const {Preview, Editor} = linkType;
+                const model$ = linkModels$[linkType.id];
 
-                    return (
-                        <Layout.Stack>
-                            {props.valid && model ? (
-                                <Deletable
-                                    onDelete={() => {
-                                        props.onDelete();
-                                        form.change('linkTypeProps', null);
-                                    }}
-                                >
-                                    <ErrorBoundary errorFallback={ErrorView}>
-                                        <Preview
-                                            model={form.getState().values.linkTypeProps?.[linkType.id.split('.').join('_')]}
-                                            options={editorOptions.linkTypes?.[linkType.id] as any ?? {}}
-                                            link={{href: ''}}
-                                        />
-                                    </ErrorBoundary>
-                                </Deletable>
-                            ) : null}
+                const model = useLatestState(model$);
 
-                            <div style={{ overflow: "auto" }}>
-                            <LinkEditor
-                                editor={props.editor}
-                                key={linkType.id}
-                                link={null}
-                                linkType={linkType}
+                return (
+                    <Layout.Stack>
+                        {model && linkType.isValid(model) ? (
+                            <Deletable
+                                onDelete={unsetLinkModels}
+                            >
+                                <ErrorBoundary errorFallback={ErrorView}>
+                                    <Preview
+                                        model={model}
+                                        options={editorOptions.linkTypes?.[linkType.id] as any ?? {}}
+                                    />
+                                </ErrorBoundary>
+                            </Deletable>
+                        ) : null}
+
+                        <div style={{ overflow: "auto" }}>
+                        <ErrorBoundary errorFallback={ErrorView}>
+                            <Editor
+                                model$={model$}
+                                options={editorOptions.linkTypes?.[linkType.id] as any ?? {}}
                             />
+                        </ErrorBoundary>
 
-                            {enabledLinkOptions.length && linkType.supportedLinkOptions.length ? (
-                                <Settings
-                                    form$={props.form$}
-                                    enabledLinkOptions={enabledLinkOptions.filter(
-                                        option => linkType.supportedLinkOptions.includes(option)
-                                    )}
-                                />
-                            ) : null}
-                            </div>
-                        </Layout.Stack>
-                    )
-                }}
-                onSwitchTab={input.onChange}
-            />
-        )}</Field>
+                        {enabledLinkOptions.length && linkType.supportedLinkOptions.length ? (
+                            <Settings
+                                form$={form$}
+                                enabledLinkOptions={enabledLinkOptions.filter(
+                                    option => linkType.supportedLinkOptions.includes(option)
+                                )}
+                            />
+                        ) : null}
+                        </div>
+                    </Layout.Stack>
+                )
+            }}
+        />
     );
 }
 
 const DialogWithValue: React.FC<{
+    formRef$: MutableRefObject<null | State<FormValues>>
+    linkModelsRef$: MutableRefObject<null | LinkModelStates>
     editor: IEditor,
-    form$: State<FormValues>
     value: ILink,
     onDelete: () => void,
 }> = props => {
-    const form = useForm();
     const {enabledLinkOptions, editorOptions} = useLatestState(props.editor.state$);
-    const linkType = useLinkTypeForHref(props.value.href)!;
-    const {result} = linkType.useResolvedModel(props.value);
-    const exitingPreview = linkType.Preview;
-    const state = form.getState();
-    const existingModel = (state.valid
-        ? state.values.linkTypeProps?.[linkType.id.split('.').join('_')]
-        : result) ?? result;
+    const initialLinkType = useLinkTypeForHref(props.value.href);
+    // todo handle busy and error, and use LoadingEditor
+    const {busy, error, result: initialModel} = initialLinkType.useResolvedModel(props.value);
+
     const sortedAndFilteredLinkTypes = useSortedAndFilteredLinkTypes(props.editor);
 
+    const form$ = React.useMemo(() => createState({
+        dirty: false,
+        activeLinkTypeId: initialLinkType.id,
+        options: props.value.options
+    } as FormValues), []);
+
+    const form = useLatestState(form$);
+    const setActiveTab = React.useCallback((linkId) => form$.update((values) => ({ ...values, activeLinkTypeId: linkId })), []);
+
+    const linkModels$ = React.useMemo(() => sortedAndFilteredLinkTypes.reduce((carry, value) => ({ ...carry, [value.id]: value.id === initialLinkType.id ? createState(initialModel) : createState(null) }), {} as LinkModelStates), []);
+
+    const unsetLinkModels = React.useCallback(() => {
+        props.onDelete();
+        for (const linkModel$ of Object.values(linkModels$)) {
+            linkModel$.update(() => null);
+        }
+    }, []);
+
+    props.formRef$.current = form$;
+    props.linkModelsRef$.current = linkModels$;
+
+    const InitialPreview = initialLinkType.Preview;
+
     return (
-        <Field name="linkTypeId" initialValue={sortedAndFilteredLinkTypes[0]?.id}>{({input}) => (
-            <Tabs
-                lazy
-                from={sortedAndFilteredLinkTypes}
-                activeItemKey={input.value || linkType.id}
-                getKey={linkType => linkType.id}
-                renderHeader={({id, TabHeader}) => (
-                    <TabHeader
-                        options={editorOptions.linkTypes?.[id] as any ?? {}}
-                    />
-                )}
-                renderPanel={linkType => {
-                    const modelFromState = form.getState().values.linkTypeProps?.[linkType.id.split('.').join('_')]
-                    let Preview = linkType.Preview;
-                    let model = modelFromState;
-                    if (!modelFromState || (linkType.id === 'Sitegeist.Archaeopteryx:Web' && !modelFromState?.urlWithoutProtocol) || (linkType.id === 'Sitegeist.Archaeopteryx:PhoneNumber' && !modelFromState?.phoneNumber) || (linkType.id === 'Sitegeist.Archaeopteryx:CustomLink' && !modelFromState?.CustomLink)) {
-                        Preview = exitingPreview;
-                        model = existingModel;
-                    }
+        <Tabs
+            lazy
+            from={sortedAndFilteredLinkTypes}
+            activeItemKey={form.activeLinkTypeId}
+            onSwitchTab={setActiveTab}
+            getKey={linkType => linkType.id}
+            renderHeader={({id, TabHeader}) => (
+                <TabHeader
+                    options={editorOptions.linkTypes?.[id] as any ?? {}}
+                />
+            )}
+            renderPanel={linkType => {
+                const {Preview, Editor} = linkType;
+                const model$ = linkModels$[linkType.id];
 
-                    return (
-                        <Layout.Stack>
-                            {model ? (
-                                <Deletable
-                                    onDelete={() => {
-                                        props.onDelete();
-                                        form.change('linkTypeProps', null);
-                                    }}
-                                >
-                                    <ErrorBoundary errorFallback={ErrorView}>
-                                        <Preview
-                                            model={model}
-                                            options={editorOptions.linkTypes?.[linkType.id] as any ?? {}}
-                                            link={props.value}
-                                        />
-                                    </ErrorBoundary>
-                                </Deletable>
-                            ) : null}
+                const model = useLatestState(model$);
 
-                            <LinkEditor
-                                editor={props.editor}
-                                key={linkType.id}
-                                link={linkType.isSuitableFor(props.value) ? props.value : null}
-                                linkType={linkType}
+                return (
+                    <Layout.Stack>
+                        {model && linkType.isDirty(model) && linkType.isValid(model) ? (
+                            <Deletable
+                                onDelete={unsetLinkModels}
+                            >
+                                <ErrorBoundary errorFallback={ErrorView}>
+                                    <Preview
+                                        model={model}
+                                        options={editorOptions.linkTypes?.[linkType.id] as any ?? {}}
+                                    />
+                                </ErrorBoundary>
+                            </Deletable>
+                        ) : (
+                            <Deletable
+                                onDelete={unsetLinkModels}
+                            >
+                                <ErrorBoundary errorFallback={ErrorView}>
+                                    <InitialPreview
+                                        model={initialModel}
+                                        options={editorOptions.linkTypes?.[initialLinkType.id] as any ?? {}}
+                                    />
+                                </ErrorBoundary>
+                            </Deletable>
+                        )}
+
+                        <ErrorBoundary errorFallback={ErrorView}>
+                            <Editor
+                                model$={model$}
+                                options={editorOptions.linkTypes?.[linkType.id] as any ?? {}}
                             />
+                        </ErrorBoundary>
 
-                            {enabledLinkOptions.length && linkType.supportedLinkOptions.length ? (
-                                <Settings
-                                    form$={props.form$}
-                                    enabledLinkOptions={enabledLinkOptions.filter(
-                                        option => linkType.supportedLinkOptions.includes(option)
-                                    )}
-                                />
-                            ) : null}
-                        </Layout.Stack>
-                )}}
-                onSwitchTab={input.onChange}
-            />
-        )}</Field>
+                        {enabledLinkOptions.length && linkType.supportedLinkOptions.length ? (
+                            <Settings
+                                form$={form$}
+                                enabledLinkOptions={enabledLinkOptions.filter(
+                                    option => linkType.supportedLinkOptions.includes(option)
+                                )}
+                            />
+                        ) : null}
+                    </Layout.Stack>
+            )}}
+        />
     );
 }

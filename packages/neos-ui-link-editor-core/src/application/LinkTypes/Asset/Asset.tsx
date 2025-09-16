@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import {Process, Field} from '../../../framework';
+import {Process} from '../../../framework';
 import {ILink, makeLinkType} from '../../../domain';
 import {ImageCard, IconLabel} from '../../../presentation';
 
@@ -10,8 +10,11 @@ import {isSuitableFor} from "./AssetSpecification";
 import {translate} from "@neos-project/neos-ui-i18n";
 import {usePromise} from "@neos-project/framework-promise-react";
 import backend from "@neos-project/neos-ui-backend-connector";
+import {State} from "@neos-project/framework-observable";
+import {useLatestState} from "@neos-project/framework-observable-react";
 
 type AssetLinkModel = {
+    isDirty: boolean
     identifier: string
 }
 
@@ -20,11 +23,19 @@ export const Asset = makeLinkType<AssetLinkModel>('Sitegeist.Archaeopteryx:Asset
 
     isSuitableFor,
 
+    isDirty: (model) => {
+        return model.isDirty;
+    },
+
+    isValid: () => {
+        return true;
+    },
+
     useResolvedModel: (link: ILink) => {
         const match = /asset:\/\/(.*)/.exec(link.href);
 
         if (match) {
-            return Process.success({identifier: match[1]});
+            return Process.success({isDirty: false, identifier: match[1]});
         }
 
         return Process.error(
@@ -62,22 +73,15 @@ export const Asset = makeLinkType<AssetLinkModel>('Sitegeist.Archaeopteryx:Asset
         );
     },
 
-    Editor: ({model}: {model: Nullable<AssetLinkModel>}) => {
+    Editor: ({model$}: {model$: State<Nullable<AssetLinkModel>>}) => {
+        const model = useLatestState(model$);
+        const setAsset = React.useCallback((identifier) => model$.update((values) => ({...values, isDirty: true, identifier})), []);
+
         return (
-            <Field
-                name="identifier"
-                initialValue={model?.identifier}
-                validate={value => {
-                    if (!value) {
-                        return translate('Neos.Neos.Ui:LinkEditor.Asset:identifier.validation.required', '');
-                    }
-                }}
-            >{({input}) => (
-                <MediaBrowser
-                    assetIdentifier={input.value}
-                    onSelectAsset={input.onChange}
-                />
-            )}</Field>
+            <MediaBrowser
+                assetIdentifier={model?.identifier ?? null}
+                onSelectAsset={setAsset}
+            />
         );
     }
 }));

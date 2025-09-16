@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { useState } from 'react';
-import {useForm} from 'react-final-form';
 
 import {SelectBox, TextInput} from '@neos-project/react-ui-components';
 
-import {Process, Field} from '../../../framework';
+import {Process} from '../../../framework';
 import {ILink, makeLinkType} from '../../../domain';
 import {IconCard, IconLabel} from '../../../presentation';
 import { Nullable } from 'ts-toolbelt/out/Union/Nullable';

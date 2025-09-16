@@ -1,20 +1,25 @@
 import * as React from 'react';
-import {useState} from 'react';
-import {useForm} from 'react-final-form';
 
 import {SelectBox} from '@neos-project/react-ui-components';
 import {getCountries, getCountryCallingCode, parsePhoneNumber, AsYouType, CountryCode} from 'libphonenumber-js/max'
 
 import {ILink, makeLinkType} from "../../../domain";
-import {Process, Field, EditorEnvelope} from '../../../framework';
+import {Process} from '../../../framework';
 import {IconCard, IconLabel} from "../../../presentation";
 import {Nullable} from 'ts-toolbelt/out/Union/Nullable';
 import {OptionalDeep} from 'ts-toolbelt/out/Object/Optional';
 import {isSuitableFor} from "./PhoneNumberSpecification";
 import {translate} from "@neos-project/neos-ui-i18n";
+import {State} from "@neos-project/framework-observable";
+import {useLatestState} from "@neos-project/framework-observable-react";
+
+import {EditorEnvelope} from '@neos-project/neos-ui-editors/src/index';
 
 type PhoneNumberLinkModel = {
-    phoneNumber: string,
+    isPhoneNumberDirty: boolean
+    isPhoneNumberValid: true | string
+    phoneNumber: string
+    isCountryCallingCodeDirty: boolean
     countryCallingCode: string
 }
 
@@ -23,15 +28,28 @@ type PhoneNumberLinkOptions = {
     favoredCountries: CountryCode[]
 }
 
-export const PhoneNumber = makeLinkType<PhoneNumberLinkModel, PhoneNumberLinkOptions>('Sitegeist.Archaeopteryx:PhoneNumber', ({createError}) => ({
+const VALID_PHONE_NUMBER = /^[1-9][0-9]*$/;
+
+export const PhoneNumber = makeLinkType<PhoneNumberLinkModel, PhoneNumberLinkOptions>('Sitegeist.Archaeopteryx:PhoneNumber', ({createError, id}) => ({
 
     isSuitableFor,
+
+    isDirty: (model) => {
+        return model.isPhoneNumberDirty || model.isCountryCallingCodeDirty;
+    },
+
+    isValid: (model) => {
+        return model.isPhoneNumberValid === true;
+    },
 
     useResolvedModel: (link: ILink) => {
         const phoneNumber = parsePhoneNumber(link.href.replace('tel:', ''));
         if (phoneNumber) {
             return Process.success({
+                isPhoneNumberDirty: false,
+                isPhoneNumberValid: true,
                 phoneNumber: phoneNumber.number.replace(`+${phoneNumber.countryCallingCode}`, ''),
+                isCountryCallingCodeDirty: false,
                 countryCallingCode: `+${phoneNumber.countryCallingCode.toString()}`,
             });
         }
@@ -62,14 +80,21 @@ export const PhoneNumber = makeLinkType<PhoneNumberLinkModel, PhoneNumberLinkOpt
         )
     },
 
-    Editor: ({
-                 model,
-                 options
-             }: { model: Nullable<PhoneNumberLinkModel>, options: OptionalDeep<PhoneNumberLinkOptions> }) => {
-        const defaultCountryCallingCode: string = model?.countryCallingCode || (options?.defaultCountry ? `+${getCountryCallingCode(options?.defaultCountry).toString()}` : `+${getCountryCallingCode(getCountries()[0]).toString()}`)
+    Editor: ({model$, options}: { model$: State<Nullable<PhoneNumberLinkModel>>, options: OptionalDeep<PhoneNumberLinkOptions> }) => {
+        const defaultCountryCallingCode = (options?.defaultCountry ? `+${getCountryCallingCode(options?.defaultCountry).toString()}` : `+${getCountryCallingCode(getCountries()[0]).toString()}`);
 
-        const [areaCode, setAreaCode] = useState<string>(defaultCountryCallingCode);
+        const model = useLatestState(model$);
+        const setCountryCallingCode = React.useCallback((countryCallingCode: string) => model$.update((values) => ({ ...values, countryCallingCode, isCountryCallingCodeDirty: true })), []);
+        const setPhoneNumber = React.useCallback((phoneNumber) => model$.update((values) => ({
+            ...values,
+            phoneNumber,
+            countryCallingCode: values?.countryCallingCode ?? defaultCountryCallingCode,
+            isPhoneNumberValid: !phoneNumber ? translate('Neos.Neos.Ui:LinkEditor.PhoneNumber:phoneNumber.validation.required', '') : (!VALID_PHONE_NUMBER.test(phoneNumber) ? translate('Neos.Neos.Ui:LinkEditor.PhoneNumber:phoneNumber.validation.numbersOnly', '') : true),
+            isPhoneNumberDirty: true
+        })), [])
 
+
+        // todo memo result
         const countryCallingCodes = {} as { [key: string]: { value: string, label: string } };
         options.favoredCountries?.map((country) => {
             if (!countryCallingCodes[`+${getCountryCallingCode(country as CountryCode)}`]) {
@@ -102,65 +127,34 @@ export const PhoneNumber = makeLinkType<PhoneNumberLinkModel, PhoneNumberLinkOpt
                 };
             }
         })
-        const checkRegex = /^[1-9][0-9]*$/;
 
         return (
             <div>
-                <label htmlFor="linkTypeProps.Sitegeist_Archaeopteryx:PhoneNumber.phoneNumber">
+                <label htmlFor={`${id}.phoneNumber`}>
                     {translate('Neos.Neos.Ui:LinkEditor.PhoneNumber:phoneNumber.label', '')}
                 </label>
                 <div style={{display: 'grid', gridTemplateColumns: '160px 1fr', minWidth: '600px'}}>
-                    <Field<string>
-                        name='countryCallingCode'
-                        format={value => {
-                            if (value !== undefined || value !== '') {
-                                setAreaCode(value)
-                            }
-                            if (value === '' || value === undefined) {
-                                useForm().change('linkTypeProps.Sitegeist_Archaeopteryx:PhoneNumber.countryCallingCode', areaCode);
-                            }
-                            return value;
-                        }}
-                        initialValue={areaCode || defaultCountryCallingCode}
-                        validate={
-                            (value) => {
-                                if (!value) {
-                                    return translate('Neos.Neos.Ui:LinkEditor.PhoneNumber:countryCallingCode.validation.required', '');
-                                }
-                            }
-                        }
-                    >{({input}) => (
-                        <div style={{margin: '0.25rem 0 0 0'}}>
-                            <SelectBox
-                                allowEmpty={false}
-                                options={Object.values(countryCallingCodes)}
-                                onValueChange={(newValue: string) => {setAreaCode(newValue); input.onChange(newValue);}}
-                                value={input.value}
-                            />
-                        </div>
-                    )}</Field>
-                    <Field<string>
-                        name="phoneNumber"
-                        initialValue={model?.phoneNumber}
-                        validate={value => {
-                            if (!value) {
-                                return translate('Neos.Neos.Ui:LinkEditor.PhoneNumber:phoneNumber.validation.required', '');
-                            }
-                            if (!checkRegex.test(value)) {
-                                return translate('Neos.Neos.Ui:LinkEditor.PhoneNumber:phoneNumber.validation.numbersOnly', '');
-                            }
-                        }}
-                    >{({input, meta}) => (
+                    <div style={{margin: '0.25rem 0 0 0'}}>
+                        <SelectBox
+                            allowEmpty={false}
+                            options={Object.values(countryCallingCodes)}
+                            onValueChange={setCountryCallingCode}
+                            value={model?.countryCallingCode || defaultCountryCallingCode}
+                        />
+                    </div>
+                    <div>
                         <EditorEnvelope
+                            identifier={`${id}.phoneNumber`}
                             label={''}
                             editor={'Neos.Neos/Inspector/Editors/TextFieldEditor'}
                             editorOptions={{
                                 placeholder: translate('Neos.Neos.Ui:LinkEditor.PhoneNumber:phoneNumber.placeholder', '')
                             }}
-                            input={input}
-                            meta={meta}
+                            validationErrors={model?.isPhoneNumberDirty && model.isPhoneNumberValid !== true ? [model.isPhoneNumberValid] : []}
+                            value={model?.phoneNumber ?? ''}
+                            commit={setPhoneNumber}
                         />
-                    )}</Field>
+                    </div>
                 </div>
             </div>
         );

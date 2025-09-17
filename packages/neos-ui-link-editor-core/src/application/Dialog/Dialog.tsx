@@ -30,9 +30,20 @@ export type FormValues = {
 type LinkModelStates = {[linkTypeId: string]: State<any>};
 
 export const createDialog = (editor: IEditor) => () => {
-    const isAuthenticated = useSelector(state => !state.system?.authenticationTimeout);
-    const {dismiss, apply, unset} = editor.transactions;
     const {isOpen, initialValue} = useLatestState(editor.state$);
+
+    if (isOpen) {
+        return <ActiveLinkEditorDialog editor={editor} initialValue={initialValue} />;
+    }
+
+    return null;
+};
+
+const ActiveLinkEditorDialog: React.FC<{
+    editor: IEditor
+    initialValue: ILink | null
+}> = ({editor, initialValue}) => {
+    const {dismiss, apply, unset} = editor.transactions;
 
     const initialLinkType = useLinkTypeForHref(initialValue?.href ?? null);
 
@@ -63,18 +74,10 @@ export const createDialog = (editor: IEditor) => () => {
 
         const model = linkModels[form.activeLinkTypeId];
 
-        if (!model) {
-            setFormStatus({
-                isDirty: form.isOptionsDirty,
-                isValid: false
-            });
-            return;
-        }
         setFormStatus({
-            isDirty: form.isOptionsDirty || linkType.isDirty(model),
-            isValid: linkType.isValid(model)
+            isDirty: form.isOptionsDirty || (model ? linkType.isDirty(model) : false),
+            isValid: model ? linkType.isValid(model) : false
         });
-        // todo the spread breaks if the count of available link types varies
     }, [form, ...Object.values(linkModels)]);
 
     const unsetLinkModels = React.useCallback(() => {
@@ -84,7 +87,7 @@ export const createDialog = (editor: IEditor) => () => {
         if (initialValue && !form$.current.initialLinkWasDeleted) {
             form$.update((values) => ({ ...values, initialLinkWasDeleted: true }));
         }
-    }, [initialValue]);
+    }, []);
 
     const handleSubmit = React.useCallback(() => {
         const form = form$.current;
@@ -99,7 +102,7 @@ export const createDialog = (editor: IEditor) => () => {
 
         const linkTypeModel = linkModels$[form.activeLinkTypeId]?.current;
 
-        if (linkTypeModel && linkType.isDirty(linkTypeModel) && linkType.isValid(linkTypeModel)) {
+        if (linkTypeModel && (linkType.isDirty(linkTypeModel) || form.isOptionsDirty) && linkType.isValid(linkTypeModel)) {
             const link = {
                 ...linkType.convertModelToLink(linkTypeModel),
                 options: linkType.supportedLinkOptions.reduce((carry, key) => ({ ...carry, [key]: form.options?.[key] }), {})
@@ -107,74 +110,67 @@ export const createDialog = (editor: IEditor) => () => {
             apply(link);
         } else if(form.initialLinkWasDeleted) {
             unset();
+        } else {
+            console.error('NeosUi LinkEditor: Nothing to do, handleSubmit should not have been invoked.');
         }
-    }, [availableLinkTypes]);
+    }, []);
 
-    if (isOpen && isAuthenticated) {
-        return (
-            <Modal
-                preventClosing={formStatus.isDirty}
-                onRequestClose={dismiss}
-                renderTitle={() => (
-                    <div>{translate('Neos.Neos.Ui:LinkEditor.Main:dialog.title', '')} {JSON.stringify(formStatus)}</div>
-                )}
-                renderBody={() => (
-                    <ErrorBoundary errorFallback={ErrorView}>
-                        <Form
-                            renderBody={() => (initialValue === null || initialLinkType === null) || form.initialLinkWasDeleted ? (
-                                <DialogWithEmptyValue
-                                    form$={form$}
-                                    linkModels$={linkModels$}
-                                    editor={editor}
-                                    unsetLinkModels={unsetLinkModels}
-                                    setActiveTab={setActiveTab}
-                                    availableLinkTypes={availableLinkTypes}
-                                />
-                            ) : (
-                                <DialogWithValue
-                                    form$={form$}
-                                    linkModels$={linkModels$}
-                                    editor={editor}
-                                    initialValue={initialValue}
-                                    initialLinkType={initialLinkType}
-                                    unsetLinkModels={unsetLinkModels}
-                                    setActiveTab={setActiveTab}
-                                    availableLinkTypes={availableLinkTypes}
-                                />
-                            )}
-                        />
-                    </ErrorBoundary>
-                )}
-                actions={[
-                    <Button onClick={dismiss}>
-                        {translate('Neos.Neos.Ui:LinkEditor.Main:dialog.action.cancel', '')}
-                    </Button>,
-                    <Button
-                        style="success"
-                        type="submit"
-                        disabled={!form.initialLinkWasDeleted && (!formStatus.isDirty || !formStatus.isValid)}
-                        onClick={handleSubmit}
-                    >
-                        {translate('Neos.Neos.Ui:LinkEditor.Main:dialog.action.apply', '')}
-                    </Button>
-                ]}
-            />
-        )
+    const isAuthenticated = useSelector(state => !state.system?.authenticationTimeout);
+
+    if (!isAuthenticated) {
+        return null;
     }
 
-    // cleanup state
-
-    // form$.update(() => ({
-    //     isOptionsDirty: false,
-    //     activeLinkTypeId: '',
-    //     options: {}
-    // }));
-    // for (const linkModel$ of Object.values(linkModels$)) {
-    //     linkModel$.update(() => null);
-    // }
-
-    return null;
-};
+    return (
+        <Modal
+            preventClosing={formStatus.isDirty}
+            onRequestClose={dismiss}
+            renderTitle={() => (
+                <div>{translate('Neos.Neos.Ui:LinkEditor.Main:dialog.title', '')}</div>
+            )}
+            renderBody={() => (
+                <ErrorBoundary errorFallback={ErrorView}>
+                    <Form
+                        renderBody={() => (initialValue === null || initialLinkType === null) || form.initialLinkWasDeleted ? (
+                            <DialogWithEmptyValue
+                                form$={form$}
+                                linkModels$={linkModels$}
+                                editor={editor}
+                                unsetLinkModels={unsetLinkModels}
+                                setActiveTab={setActiveTab}
+                                availableLinkTypes={availableLinkTypes}
+                            />
+                        ) : (
+                            <DialogWithValue
+                                form$={form$}
+                                linkModels$={linkModels$}
+                                editor={editor}
+                                initialValue={initialValue}
+                                initialLinkType={initialLinkType}
+                                unsetLinkModels={unsetLinkModels}
+                                setActiveTab={setActiveTab}
+                                availableLinkTypes={availableLinkTypes}
+                            />
+                        )}
+                    />
+                </ErrorBoundary>
+            )}
+            actions={[
+                <Button onClick={dismiss}>
+                    {translate('Neos.Neos.Ui:LinkEditor.Main:dialog.action.cancel', '')}
+                </Button>,
+                <Button
+                    style="success"
+                    type="submit"
+                    disabled={!form.initialLinkWasDeleted && (!formStatus.isDirty || !formStatus.isValid)}
+                    onClick={handleSubmit}
+                >
+                    {translate('Neos.Neos.Ui:LinkEditor.Main:dialog.action.apply', '')}
+                </Button>
+            ]}
+        />
+    )
+}
 
 const DialogWithEmptyValue: React.FC<{
     form$: State<FormValues>
@@ -261,12 +257,11 @@ const DialogWithValue: React.FC<{
     React.useEffect(() => {
         if (initialModel !== null) {
             const model$ = props.linkModels$[props.initialLinkType.id];
-            if (model$.current) {
-                return;
+            if (!model$.current) {
+                // update state with initial value once available
+                model$.update(() => initialModel);
+                props.form$.update((values) => ({ ...values, options: props.initialValue.options ?? {}, activeLinkTypeId: props.initialLinkType.id }));
             }
-            // update state with initial value once available
-            model$.update(() => initialModel);
-            props.form$.update((values) => ({ ...values, options: initialModel.options, activeLinkTypeId: props.initialLinkType.id }));
         }
     }, [initialModel]);
 

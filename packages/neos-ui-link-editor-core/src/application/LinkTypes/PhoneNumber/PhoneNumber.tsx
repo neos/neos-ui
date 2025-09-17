@@ -16,11 +16,15 @@ import {EditorEnvelope} from '@neos-project/neos-ui-editors/src/index';
 import {PromiseState, usePromise} from '@neos-project/framework-promise-react';
 
 type PhoneNumberLinkModel = {
-    isPhoneNumberDirty: boolean
-    isPhoneNumberValid: true | string
-    phoneNumber: string
-    isCountryCallingCodeDirty: boolean
-    countryCallingCode: string
+    countryCallingCode: {
+        value: string,
+        isDirty: boolean,
+    }
+    phoneNumber: {
+        value: string,
+        isDirty: boolean,
+        isValid: true | string
+    }
 }
 
 type PhoneNumberLinkOptions = {
@@ -35,11 +39,11 @@ export const PhoneNumber = makeLinkType<PhoneNumberLinkModel, PhoneNumberLinkOpt
     isSuitableFor,
 
     isDirty: (model) => {
-        return model.isPhoneNumberDirty || model.isCountryCallingCodeDirty;
+        return model.countryCallingCode?.isDirty || model.phoneNumber?.isDirty;
     },
 
     isValid: (model) => {
-        return model.isPhoneNumberValid === true;
+        return model.phoneNumber?.isValid === true;
     },
 
     useResolvedModel: (link: ILink) => {
@@ -54,11 +58,15 @@ export const PhoneNumber = makeLinkType<PhoneNumberLinkModel, PhoneNumberLinkOpt
         const phoneNumber = parsePhoneNumber(link.href.replace('tel:', ''));
         if (phoneNumber) {
             return PromiseState.forValue({
-                isPhoneNumberDirty: false,
-                isPhoneNumberValid: true,
-                phoneNumber: phoneNumber.number.replace(`+${phoneNumber.countryCallingCode}`, ''),
-                isCountryCallingCodeDirty: false,
-                countryCallingCode: `+${phoneNumber.countryCallingCode.toString()}`,
+                phoneNumber: {
+                    value: phoneNumber.number.replace(`+${phoneNumber.countryCallingCode}`, ''),
+                    isDirty: false,
+                    isValid: true,
+                },
+                countryCallingCode: {
+                    isDirty: false,
+                    value: `+${phoneNumber.countryCallingCode.toString()}`
+                },
             });
         }
 
@@ -68,7 +76,7 @@ export const PhoneNumber = makeLinkType<PhoneNumberLinkModel, PhoneNumberLinkOpt
     },
 
     convertModelToLink: (model: PhoneNumberLinkModel) => {
-        return {href: `tel:${model.countryCallingCode}${model.phoneNumber}`};
+        return {href: `tel:${model.countryCallingCode.value}${model.phoneNumber.value}`};
     },
 
     TabHeader: () => {
@@ -85,7 +93,7 @@ export const PhoneNumber = makeLinkType<PhoneNumberLinkModel, PhoneNumberLinkOpt
         return (
             <IconCard
                 icon="phone-alt"
-                title={asyncModule.value ? (new (asyncModule.value.AsYouType)()).input(`${model.countryCallingCode}${model.phoneNumber}`) : ''}
+                title={asyncModule.value ? (new (asyncModule.value.AsYouType)()).input(`${model.countryCallingCode.value}${model.phoneNumber.value}`) : ''}
             />
         )
     },
@@ -111,13 +119,15 @@ const PhoneNumberEditor = ({model$, options, id, libphonenumber}: { model$: Stat
     const defaultCountryCallingCode = (options?.defaultCountry ? `+${getCountryCallingCode(options?.defaultCountry).toString()}` : `+${getCountryCallingCode(getCountries()[0]).toString()}`);
 
     const model = useLatestState(model$);
-    const setCountryCallingCode = React.useCallback((countryCallingCode: string) => model$.update((values) => ({ ...values, countryCallingCode, isCountryCallingCodeDirty: true })), []);
+    const setCountryCallingCode = React.useCallback((countryCallingCode: string) => model$.update((values) => ({ ...values, countryCallingCode: { value: countryCallingCode, isDirty: true }})), []);
     const setPhoneNumber = React.useCallback((phoneNumber) => model$.update((values) => ({
         ...values,
-        phoneNumber,
-        countryCallingCode: values?.countryCallingCode ?? defaultCountryCallingCode,
-        isPhoneNumberValid: !phoneNumber ? translate('Neos.Neos.Ui:LinkEditor.PhoneNumber:phoneNumber.validation.required', '') : (!VALID_PHONE_NUMBER.test(phoneNumber) ? translate('Neos.Neos.Ui:LinkEditor.PhoneNumber:phoneNumber.validation.numbersOnly', '') : true),
-        isPhoneNumberDirty: true
+        countryCallingCode: values?.countryCallingCode ?? { value: defaultCountryCallingCode, isDirty: false },
+        phoneNumber: {
+            value: phoneNumber,
+            isValid: !phoneNumber ? translate('Neos.Neos.Ui:LinkEditor.PhoneNumber:phoneNumber.validation.required', '') : (!VALID_PHONE_NUMBER.test(phoneNumber) ? translate('Neos.Neos.Ui:LinkEditor.PhoneNumber:phoneNumber.validation.numbersOnly', '') : true),
+            isDirty: true
+        },
     })), [])
 
     // todo memo result
@@ -165,7 +175,7 @@ const PhoneNumberEditor = ({model$, options, id, libphonenumber}: { model$: Stat
                         allowEmpty={false}
                         options={Object.values(countryCallingCodes)}
                         onValueChange={setCountryCallingCode}
-                        value={model?.countryCallingCode || defaultCountryCallingCode}
+                        value={model?.countryCallingCode?.value || defaultCountryCallingCode}
                     />
                 </div>
                 <div>
@@ -176,8 +186,8 @@ const PhoneNumberEditor = ({model$, options, id, libphonenumber}: { model$: Stat
                         editorOptions={{
                             placeholder: translate('Neos.Neos.Ui:LinkEditor.PhoneNumber:phoneNumber.placeholder', '')
                         }}
-                        validationErrors={model?.isPhoneNumberDirty && model.isPhoneNumberValid !== true ? [model.isPhoneNumberValid] : []}
-                        value={model?.phoneNumber ?? ''}
+                        validationErrors={model?.phoneNumber?.isDirty && model.phoneNumber.isValid !== true ? [model.phoneNumber.isValid] : []}
+                        value={model?.phoneNumber?.value ?? ''}
                         commit={setPhoneNumber}
                     />
                 </div>

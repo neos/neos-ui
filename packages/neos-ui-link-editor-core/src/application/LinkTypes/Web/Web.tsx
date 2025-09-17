@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { useState } from 'react';
 
-import {SelectBox, TextInput} from '@neos-project/react-ui-components';
+import {SelectBox} from '@neos-project/react-ui-components';
 
 import {ILink, makeLinkType} from '../../../domain';
 import {IconCard, IconLabel} from '../../../presentation';
@@ -9,20 +8,34 @@ import { Nullable } from 'ts-toolbelt/out/Union/Nullable';
 import {isSuitableFor} from "./WebSpecification";
 import {translate} from "@neos-project/neos-ui-i18n";
 import { PromiseState } from '@neos-project/framework-promise-react';
+import {EditorEnvelope} from '@neos-project/neos-ui-editors/src/index';
+import {State} from "@neos-project/framework-observable";
+import {useLatestState} from "@neos-project/framework-observable-react";
 
 type WebLinkModel = {
-    protocol: 'http' | 'https'
-    urlWithoutProtocol: string
+    protocol: {
+        value: 'http' | 'https',
+        isDirty: boolean
+    }
+    urlWithoutProtocol: {
+        value: string,
+        isDirty: boolean,
+        isValid: true | string
+    }
 }
 
-function removeHttp(url: string) {
-    return url.replace(/^https?:\/\//, '');
-}
-
-export const Web = makeLinkType<WebLinkModel>('Sitegeist.Archaeopteryx:Web', ({createError}) => ({
+export const Web = makeLinkType<WebLinkModel>('Sitegeist.Archaeopteryx:Web', ({createError, id}) => ({
     supportedLinkOptions: ['anchor', 'title', 'targetBlank', 'relNofollow'],
 
     isSuitableFor,
+
+    isDirty: (model) => {
+        return model.protocol?.isDirty || model.urlWithoutProtocol?.isDirty;
+    },
+
+    isValid: (model) => {
+        return model.urlWithoutProtocol?.isValid === true;
+    },
 
     useResolvedModel: (link: ILink) => {
         const matches = link.href.match(/^(https?):\/\/(.*)$/);
@@ -30,8 +43,15 @@ export const Web = makeLinkType<WebLinkModel>('Sitegeist.Archaeopteryx:Web', ({c
             const [, protocol, urlWithoutProtocol] = matches;
 
             return PromiseState.forValue({
-                protocol: protocol as 'http' | 'https',
-                urlWithoutProtocol
+                protocol: {
+                    isDirty: false,
+                    value: protocol as 'http' | 'https'
+                },
+                urlWithoutProtocol: {
+                    isDirty: false,
+                    isValid: true,
+                    value: urlWithoutProtocol
+                }
             });
         }
 
@@ -41,7 +61,7 @@ export const Web = makeLinkType<WebLinkModel>('Sitegeist.Archaeopteryx:Web', ({c
     },
 
     convertModelToLink:(model: WebLinkModel) => ({
-        href: `${model.protocol}://${removeHttp(model.urlWithoutProtocol)}`
+        href: `${model.protocol.value}://${model.urlWithoutProtocol.value}`
     }),
 
     TabHeader: () => {
@@ -55,44 +75,36 @@ export const Web = makeLinkType<WebLinkModel>('Sitegeist.Archaeopteryx:Web', ({c
     Preview: ({model}: {model: WebLinkModel}) => (
         <IconCard
             icon="external-link"
-            title={`${model.protocol}://${removeHttp(model.urlWithoutProtocol)}`}
+            title={`${model.protocol.value}://${model.urlWithoutProtocol.value}`}
         />
     ),
 
-    Editor: ({model}: {model: Nullable<WebLinkModel>}) => {
-        const [protocol, setProtocol] = useState<string>("");
+    Editor: ({model$}: {model$: State<Nullable<WebLinkModel>>}) => {
+        const model = useLatestState(model$);
 
-        const form = useForm();
+        const setProtocol = React.useCallback((protocol: 'http' | 'https') => model$.update((values) => ({ ...values, protocol: { isDirty: true, value: protocol } })), []);
+        // todo allow pasting / inserting url with protocol split value?
+        const setUrlWithoutProtocol = React.useCallback((urlWithoutProtocol) => model$.update((values) => ({
+            ...values,
+            protocol: values?.protocol ?? { isDirty: false, value: 'https' },
+            urlWithoutProtocol: {
+                isDirty: true,
+                isValid: !urlWithoutProtocol ? translate('Neos.Neos.Ui:LinkEditor.Web:urlWithoutProtocol.validation.required', '') : (/^https?:\/\//.test(urlWithoutProtocol) ? 'Url must be without protocol' : true),
+                value: urlWithoutProtocol
+            }
+        })), [])
 
         return (
             <div>
-                <label htmlFor="linkTypeProps.Sitegeist_Archaeopteryx:Web.urlWithoutProtocol">
+                <label htmlFor={`${id}.urlWithoutProtocol`}>
                     {translate('Neos.Neos.Ui:LinkEditor.Web:label.link', '')}:
                 </label>
                 <div style={{ display: 'grid', gridTemplateColumns: '160px 1fr', minWidth: '600px' }}>
-                    <Field<string>
-                        name="protocol"
-                        format={value => {
-                            if(value !== undefined || value !== ''){
-                                setProtocol(value)
-                            }
-
-                            if(value === undefined){
-                                form.change('linkTypeProps.Sitegeist_Archaeopteryx:Web.protocol', protocol);
-                            }
-                            return value;
-                        }}
-                        initialValue={model?.protocol ?? 'https'}
-                        validate={value => {
-                            if (!value) {
-                                return translate('Neos.Neos.Ui:LinkEditor.Web:protocol.validation.required', '');
-                            }
-                        }}
-                    >{({input}) => (
+                    <div style={{margin: '0.25rem 0 0 0'}}>
                         <SelectBox
-                            onValueChange={input.onChange}
+                            onValueChange={setProtocol}
                             allowEmpty={false}
-                            value={input.value}
+                            value={model?.protocol?.value ?? 'https'}
                             options={[{
                                 value: 'https',
                                 label: 'HTTPS',
@@ -103,41 +115,20 @@ export const Web = makeLinkType<WebLinkModel>('Sitegeist.Archaeopteryx:Web', ({c
                                 icon: 'unlock'
                             }]}
                         />
-                    )}</Field>
-                    <Field<string>
-                        name="urlWithoutProtocol"
-                        initialValue={model?.urlWithoutProtocol}
-                        format={value => {
-                            const matches = value?.match(/^(https?):\/\/(.*)$/);
-                            if (matches) {
-                                const [, , urlWithoutProtocol] = matches;
-                                return urlWithoutProtocol;
-                            }
-                            return value;
-                        }}
-                        parse={value => {
-                            const matches = value?.match(/^(https?):\/\/(.*)$/);
-                            if (matches) {
-                                const [, protocol, urlWithoutProtocol] = matches;
-
-                                form.change('linkTypeProps.Sitegeist_Archaeopteryx:Web.protocol', protocol);
-                                return urlWithoutProtocol;
-                            }
-                            return value;
-                        }}
-                        validate={value => {
-                            if (!value) {
-                                return translate('Neos.Neos.Ui:LinkEditor.Web:urlWithoutProtocol.validation.required', '');
-                            }
-                        }}
-                    >{({input}) => (
-                        <TextInput
-                            id={input.name}
-                            type="text"
-                            placeholder={translate('Neos.Neos.Ui:LinkEditor.Web:urlWithoutProtocol.placeholder', '')}
-                            {...input}
+                    </div>
+                    <div>
+                        <EditorEnvelope
+                            identifier={`${id}.urlWithoutProtocol`}
+                            label={''}
+                            editor={'Neos.Neos/Inspector/Editors/TextFieldEditor'}
+                            editorOptions={{
+                                placeholder: translate('Neos.Neos.Ui:LinkEditor.Web:urlWithoutProtocol.placeholder', '')
+                            }}
+                            validationErrors={model?.urlWithoutProtocol?.isDirty && model.urlWithoutProtocol.isValid !== true ? [model.urlWithoutProtocol.isValid] : []}
+                            value={model?.urlWithoutProtocol?.value ?? ''}
+                            commit={setUrlWithoutProtocol}
                         />
-                    )}</Field>
+                    </div>
                 </div>
             </div>
         );

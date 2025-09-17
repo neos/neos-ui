@@ -22,6 +22,7 @@ import {createState, State} from "@neos-project/framework-observable";
 
 export type FormValues = {
     isOptionsDirty: boolean
+    initialLinkWasDeleted: boolean
     activeLinkTypeId: string
     options: ILinkOptions
 }
@@ -35,13 +36,11 @@ export const createDialog = (editor: IEditor) => () => {
 
     const initialLinkType = useLinkTypeForHref(initialValue?.href ?? null);
 
-    // this flag is a little faulty as it just indicates that during editing the value was deleted at any point at least once -> but not that it's the last change
-    const [valueWasDeleted, setValueWasDeleted] = React.useState(false);
-
     const availableLinkTypes = useSortedAndFilteredLinkTypes(editor);
 
     const form$ = React.useMemo(() => createState({
         isOptionsDirty: false,
+        initialLinkWasDeleted: false,
         activeLinkTypeId: availableLinkTypes[0].id,
         options: {}
     } as FormValues), []);
@@ -79,11 +78,13 @@ export const createDialog = (editor: IEditor) => () => {
     }, [form, ...Object.values(linkModels)]);
 
     const unsetLinkModels = React.useCallback(() => {
-        setValueWasDeleted(true);
         for (const linkModel$ of Object.values(linkModels$)) {
             linkModel$.update(() => null);
         }
-    }, []);
+        if (initialValue && !form$.current.initialLinkWasDeleted) {
+            form$.update((values) => ({ ...values, initialLinkWasDeleted: true }));
+        }
+    }, [initialValue]);
 
     const handleSubmit = React.useCallback(() => {
         const form = form$.current;
@@ -92,23 +93,22 @@ export const createDialog = (editor: IEditor) => () => {
         }
 
         const linkType = availableLinkTypes.find(linkType => linkType.id === form.activeLinkTypeId);
+        if (!linkType) {
+            return; // should not happen
+        }
 
-        if (linkType) {
-            const linkTypeModel = linkModels$[form.activeLinkTypeId]?.current;
-            if (!linkTypeModel) {
-                return;
-            }
+        const linkTypeModel = linkModels$[form.activeLinkTypeId]?.current;
+
+        if (linkTypeModel && linkType.isDirty(linkTypeModel) && linkType.isValid(linkTypeModel)) {
             const link = {
                 ...linkType.convertModelToLink(linkTypeModel),
                 options: linkType.supportedLinkOptions.reduce((carry, key) => ({ ...carry, [key]: form.options?.[key] }), {})
             };
             apply(link);
-            setValueWasDeleted(false);
-        } else if(valueWasDeleted) {
+        } else if(form.initialLinkWasDeleted) {
             unset();
-            setValueWasDeleted(false);
         }
-    }, [availableLinkTypes, valueWasDeleted]);
+    }, [availableLinkTypes]);
 
     if (isOpen && isAuthenticated) {
         return (
@@ -121,7 +121,7 @@ export const createDialog = (editor: IEditor) => () => {
                 renderBody={() => (
                     <ErrorBoundary errorFallback={ErrorView}>
                         <Form
-                            renderBody={() => (initialValue === null || initialLinkType === null) || valueWasDeleted ? (
+                            renderBody={() => (initialValue === null || initialLinkType === null) || form.initialLinkWasDeleted ? (
                                 <DialogWithEmptyValue
                                     form$={form$}
                                     linkModels$={linkModels$}
@@ -149,34 +149,20 @@ export const createDialog = (editor: IEditor) => () => {
                     <Button onClick={dismiss}>
                         {translate('Neos.Neos.Ui:LinkEditor.Main:dialog.action.cancel', '')}
                     </Button>,
-                    valueWasDeleted ? /* todo dont unset if there is a new value now */ (
-                        <Button
-                            style="success"
-                            type="button"
-                            onClick={unset}
-                        >
-                            {translate('Neos.Neos.Ui:LinkEditor.Main:dialog.action.apply', '')}
-                        </Button>
-                    ) : (
-                        <Button
-                            style="success"
-                            type="submit"
-                            disabled={!formStatus.isDirty || !formStatus.isValid}
-                            onClick={handleSubmit}
-                        >
-                            {translate('Neos.Neos.Ui:LinkEditor.Main:dialog.action.apply', '')}
-                        </Button>
-                    )
+                    <Button
+                        style="success"
+                        type="submit"
+                        disabled={!form.initialLinkWasDeleted && (!formStatus.isDirty || !formStatus.isValid)}
+                        onClick={handleSubmit}
+                    >
+                        {translate('Neos.Neos.Ui:LinkEditor.Main:dialog.action.apply', '')}
+                    </Button>
                 ]}
             />
         )
     }
 
     // cleanup state
-
-    if (valueWasDeleted) {
-        setValueWasDeleted(false);
-    }
 
     // form$.update(() => ({
     //     isOptionsDirty: false,

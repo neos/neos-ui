@@ -197,25 +197,17 @@ const DialogWithEmptyValue: React.FC<{
                 />
             )}
             renderPanel={linkType => {
-                const {Preview, Editor} = linkType;
+                const {Editor} = linkType;
                 const model$ = props.linkModels$[linkType.id];
-
-                const model = useLatestState(model$);
 
                 return (
                     <Layout.Stack>
-                        {model && linkType.isValid(model) ? (
-                            <Deletable
-                                onDelete={props.unsetLinkModels}
-                            >
-                                <ErrorBoundary errorFallback={ErrorView}>
-                                    <Preview
-                                        model={model}
-                                        options={editorOptions.linkTypes?.[linkType.id] as any ?? {}}
-                                    />
-                                </ErrorBoundary>
-                            </Deletable>
-                        ) : null}
+                        <PreviewForLinkType
+                            linkType={linkType}
+                            options={editorOptions.linkTypes?.[linkType.id] as any ?? {}}
+                            model$={model$}
+                            onDelete={props.unsetLinkModels}
+                        />
 
                         <ErrorBoundary errorFallback={ErrorView}>
                             <Editor
@@ -281,47 +273,34 @@ const DialogWithValue: React.FC<{
                 />
             )}
             renderPanel={linkType => {
-                const {Preview, Editor, LoadingEditor} = linkType;
+                const {Editor, LoadingEditor} = linkType;
                 const model$ = props.linkModels$[linkType.id];
-
-                const model = useLatestState(model$);
 
                 return (
                     <Layout.Stack>
-                        {model && linkType.isDirty(model) && linkType.isValid(model) ? (
-                            <Deletable
-                                onDelete={props.unsetLinkModels}
-                            >
-                                <ErrorBoundary errorFallback={ErrorView}>
-                                    <Preview
-                                        model={model}
-                                        options={editorOptions.linkTypes?.[linkType.id] as any ?? {}}
-                                    />
-                                </ErrorBoundary>
-                            </Deletable>
-                        ) : (
-                            <Deletable
-                                onDelete={props.unsetLinkModels}
-                            >
-                                {error ? (
+                        <PreviewForLinkType
+                            linkType={linkType}
+                            options={editorOptions.linkTypes?.[linkType.id] as any ?? {}}
+                            model$={model$}
+                            onDelete={props.unsetLinkModels}
+                            fallback={() => (
+                                error ? (
                                     <ErrorView error={error} />
                                 ) : (
-                                    <ErrorBoundary errorFallback={ErrorView}>
-                                        {isLoading ? (
-                                            <InitialLoadingPreview
-                                                link={props.initialValue}
-                                                options={editorOptions.linkTypes?.[props.initialLinkType.id] as any ?? {}}
-                                            />
-                                        ) : (
-                                            <InitialPreview
-                                                model={initialModel}
-                                                options={editorOptions.linkTypes?.[props.initialLinkType.id] as any ?? {}}
-                                            />
-                                        )}
-                                    </ErrorBoundary>
-                                )}
-                            </Deletable>
-                        )}
+                                    isLoading ? (
+                                        <InitialLoadingPreview
+                                            link={props.initialValue}
+                                            options={editorOptions.linkTypes?.[props.initialLinkType.id] as any ?? {}}
+                                        />
+                                    ) : (
+                                        <InitialPreview
+                                            model={initialModel}
+                                            options={editorOptions.linkTypes?.[props.initialLinkType.id] as any ?? {}}
+                                        />
+                                    )
+                                )
+                            )}
+                        />
 
                         <ErrorBoundary errorFallback={ErrorView}>
                             {isLoading && linkType.id === props.initialLinkType.id ? (
@@ -350,3 +329,36 @@ const DialogWithValue: React.FC<{
         />
     );
 }
+
+const PreviewForLinkType: React.FC<{
+    linkType: ILinkType,
+    options: any,
+    model$: State<any>
+    onDelete: () => void,
+    fallback?: () => React.ReactNode
+}> = props => {
+    const {Preview} = props.linkType;
+
+    const model = useLatestState(props.model$);
+
+    return model && props.linkType.isDirty(model) && props.linkType.isValid(model) ? (
+        <Deletable
+            onDelete={props.onDelete}
+        >
+            <ErrorBoundary errorFallback={ErrorView}>
+                <Preview
+                    model={model}
+                    options={props.options}
+                />
+            </ErrorBoundary>
+        </Deletable>
+    ) : (props.fallback ? (
+        <Deletable
+            onDelete={props.onDelete}
+        >
+            <ErrorBoundary errorFallback={ErrorView}>
+                {props.fallback()}
+            </ErrorBoundary>
+        </Deletable>
+    ) : null);
+};

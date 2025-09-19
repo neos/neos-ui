@@ -8,6 +8,7 @@
         "@neos-project/framework-observable": "workspace:*",
         "@neos-project/framework-observable-react": "workspace:*",
         "@neos-project/framework-promise-react": "workspace:*",
+        "@neos-project/neos-ui-editors": "workspace:*",
         "@neos-project/neos-ui-link-editor-custom-node-tree": "workspace:*",
         "@neos-project/positional-array-sorter": "workspace:*",
         "@neos-project/react-ui-components": "workspace:*",

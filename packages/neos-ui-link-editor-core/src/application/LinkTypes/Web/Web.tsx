@@ -24,7 +24,7 @@ type WebLinkModel = {
     }
 }
 
-export const Web = makeLinkType<WebLinkModel>('Sitegeist.Archaeopteryx:Web', ({createError, id}) => ({
+export const Web = makeLinkType<WebLinkModel>('LinkEditor:Web', ({createError, id}) => ({
     supportedLinkOptions: ['anchor', 'title', 'targetBlank', 'relNofollow'],
 
     isSuitableFor,

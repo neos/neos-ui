@@ -26,7 +26,7 @@ Neos:
             # the option `typeConverter` must not be specified here.
             # from array|string to Link the Neos\Flow\Property\TypeConverter\DenormalizingObjectConverter is used
             # for Link to array the NodePropertyConverterService natively just works with the JsonSerializable
-            editor: Sitegeist.Archaeopteryx/Inspector/Editors/ValueObjectLinkEditor
+            editor: Neos.Neos/Inspector/Editors/ValueObjectLinkEditor
       translation:
         autoInclude:
           'Neos.Neos.Ui':

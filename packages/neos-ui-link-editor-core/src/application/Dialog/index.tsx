@@ -10,7 +10,7 @@ export function registerDialog(
     const containersRegistry = globalRegistry.get('containers');
 
     containersRegistry.set(
-        'Modals/Sitegeist.Archaeopteryx',
+        'Modals/LinkEditor',
         createDialog(editor)
     );
 }

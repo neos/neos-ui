@@ -24,11 +24,11 @@ export function registerInspectorEditors(
         return;
     }
 
-    editorsRegistry.set('Sitegeist.Archaeopteryx/Inspector/Editors/ValueObjectLinkEditor', {
+    editorsRegistry.set('Neos.Neos/Inspector/Editors/ValueObjectLinkEditor', {
         component: createInspectorEditor(LinkDataType.valueObject, editor)
     });
 
-    editorsRegistry.set('Sitegeist.Archaeopteryx/Inspector/Editors/LinkEditor', {
+    editorsRegistry.set('Neos.Neos/Inspector/Editors/LinkEditor', {
         component: createInspectorEditor(LinkDataType.string, editor)
     });
 }

@@ -10,7 +10,7 @@ import {GlobalRegistry} from "@neos-project/neos-ts-interfaces";
 
 export function registerLinkTypes(globalRegistry: GlobalRegistry): void {
     const linkTypeRegistry = new SynchronousRegistry(`
-        # Sitegeist.Archaeopteryx LinkType Registry
+        # LinkEditor LinkType Registry
     `);
 
     linkTypeRegistry.set(Node.id, Node);

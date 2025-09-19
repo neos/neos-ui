@@ -13,11 +13,10 @@ interface Props {
             title?: boolean
             relNofollow?: boolean
             targetBlank?: boolean
+            // legacy root level option, linkTypes."LinkEditor:Node".startingPoint should be used instead
             startingPoint?: string
-            'Sitegeist.Archaeopteryx'?: {
-                linkTypes?: {
-                    [key: string]: object
-                }
+            linkTypes?: {
+                [key: string]: object
             }
         }
     }
@@ -33,18 +32,18 @@ interface Props {
 export const createLinkButton = (editor: IEditor) => (props: Props) => {
     const transactions = editor.transactions;
     const editorOptions = {
-        ...props.inlineEditorOptions?.linking?.['Sitegeist.Archaeopteryx'],
         linkTypes: {
-            ...props.inlineEditorOptions?.linking?.['Sitegeist.Archaeopteryx']?.linkTypes
+            ...props.inlineEditorOptions?.linking?.linkTypes,
         }
     };
 
     if (props.inlineEditorOptions?.linking?.startingPoint) {
-        editorOptions.linkTypes['Sitegeist.Archaeopteryx:Node'] = {
-            ...editorOptions.linkTypes['Sitegeist.Archaeopteryx:Node'],
+        // handle legacy root level option
+        editorOptions.linkTypes['LinkEditor:Node'] = {
+            ...editorOptions.linkTypes['LinkEditor:Node'],
             startingPoint:
-                (editorOptions.linkTypes['Sitegeist.Archaeopteryx:Node'] as any).startingPoint
-                ?? props.inlineEditorOptions.linking.startingPoint
+                (editorOptions.linkTypes['LinkEditor:Node'] as any).startingPoint
+                    ?? props.inlineEditorOptions.linking.startingPoint
         };
     }
 

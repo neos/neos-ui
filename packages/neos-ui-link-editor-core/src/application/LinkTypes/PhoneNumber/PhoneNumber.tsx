@@ -34,7 +34,7 @@ type PhoneNumberLinkOptions = {
 
 const VALID_PHONE_NUMBER = /^[1-9][0-9]*$/;
 
-export const PhoneNumber = makeLinkType<PhoneNumberLinkModel, PhoneNumberLinkOptions>('Sitegeist.Archaeopteryx:PhoneNumber', ({createError, id}) => ({
+export const PhoneNumber = makeLinkType<PhoneNumberLinkModel, PhoneNumberLinkOptions>('LinkEditor:PhoneNumber', ({createError, id}) => ({
 
     isSuitableFor,
 

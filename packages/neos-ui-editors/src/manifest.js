@@ -43,9 +43,10 @@ manifest('inspectorEditors', {}, globalRegistry => {
         component: Editors.SelectBox
     });
 
-    editorsRegistry.set('Neos.Neos/Inspector/Editors/LinkEditor', {
-        component: Editors.Link
-    });
+    // todo remove old link editor implementation
+    // editorsRegistry.set('Neos.Neos/Inspector/Editors/LinkEditor', {
+    //     component: Editors.Link
+    // });
 
     editorsRegistry.set('Neos.Neos/Inspector/Editors/RangeEditor', {
         component: Editors.Range

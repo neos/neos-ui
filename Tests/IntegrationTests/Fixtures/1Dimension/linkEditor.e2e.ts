@@ -188,7 +188,7 @@ test('Open and close link editor dialog without saving the change', async t => {
 
     await t.expect(Selector('#neos-LinkEditor label').withExactText('Anchor:').find('input').value).eql('my-anchor')
 
-    await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---Sitegeist.Archaeopteryx:Web.urlWithoutProtocol"]'), 'www.neos.io')
+    await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:Web.urlWithoutProtocol"]'), 'www.neos.io')
 
     await t.click(Selector('#neos-LinkEditor button').withExactText('Apply'));
     await t.expect(OpenLinkEditor.exists).notOk();
@@ -205,13 +205,13 @@ test('Open and close link editor dialog without saving the change', async t => {
     await t.click(Selector('#neos-LinkEditor button').withExactText('Mail to'));
 
     // "mail" is not a valid email address
-    await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---Sitegeist.Archaeopteryx:MailTo.recipient"]'), 'mail');
+    await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:MailTo.recipient"]'), 'mail');
     await t.expect(Selector('#neos-LinkEditor button').withExactText('Apply').hasAttribute('disabled')).ok();
 
     await t.expect(OpenLinkEditor.withText('Recipient should be a valid E-Mail Address').exists).ok();
 
     // turn the text into a valid mail
-    await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---Sitegeist.Archaeopteryx:MailTo.recipient"]'), '@neos.io');
+    await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:MailTo.recipient"]'), '@neos.io');
     await t.expect(OpenLinkEditor.withText('Recipient should be a valid E-Mail Address').exists).notOk();
 
     await t.click(Selector('#neos-LinkEditor button').withExactText('Apply'));
@@ -229,7 +229,7 @@ test('Open and close link editor dialog without saving the change', async t => {
     await t.click(Selector('#neos-LinkEditor button').withExactText('Mail to'));
 
     // "mail" is not a valid email address
-    await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---Sitegeist.Archaeopteryx:MailTo.recipient"]'), 'mail');
+    await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:MailTo.recipient"]'), 'mail');
     await t.expect(Selector('#neos-LinkEditor button').withExactText('Apply').hasAttribute('disabled')).ok();
     await t.expect(OpenLinkEditor.withText('Recipient should be a valid E-Mail Address').exists).ok();
 
@@ -304,7 +304,7 @@ test('Can edit property links via inspector and save the change', async t => {
     await t.expect(OpenLinkEditor.withText('Edit Link').exists).ok();
     await t.click(Selector('#neos-LinkEditor button').withExactText('Web'));
 
-    await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---Sitegeist.Archaeopteryx:Web.urlWithoutProtocol"]'), 'www.neos.io')
+    await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:Web.urlWithoutProtocol"]'), 'www.neos.io')
 
     await t.typeText(Selector('#neos-LinkEditor label').withExactText('Anchor:').find('input'), 'my-anchor')
 
@@ -322,9 +322,9 @@ test('Can edit property links via inspector and save the change', async t => {
     await t.expect(OpenLinkEditor.withText('Edit Link').exists).ok();
     await t.click(Selector('#neos-LinkEditor button').withExactText('Mail to'));
 
-    await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---Sitegeist.Archaeopteryx:MailTo.recipient"]'), 'mail@neos.io')
-    await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---Sitegeist.Archaeopteryx:MailTo.subject"]'), 'My Subject')
-    await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---Sitegeist.Archaeopteryx:MailTo.body"]'), 'My Body' + "\n\n" + 'Bye')
+    await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:MailTo.recipient"]'), 'mail@neos.io')
+    await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:MailTo.subject"]'), 'My Subject')
+    await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:MailTo.body"]'), 'My Body' + "\n\n" + 'Bye')
 
     await t.click(Selector('#neos-LinkEditor button').withExactText('Apply'));
     await t.click(Selector('#neos-Inspector-Apply').withExactText('Apply'));
@@ -343,7 +343,7 @@ test('Can edit property links via inspector and save the change', async t => {
     await t.click(Selector('#neos-LinkEditor [role="button"]').withExactText('AC +247'));
     await t.click(ReactSelector('ContextDropDownContents').find('li').withExactText('DK +45'));
 
-    await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---Sitegeist.Archaeopteryx:PhoneNumber.phoneNumber"]'), '123456789')
+    await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:PhoneNumber.phoneNumber"]'), '123456789')
 
     await t.click(Selector('#neos-LinkEditor button').withExactText('Apply'));
     await t.click(Selector('#neos-Inspector-Apply').withExactText('Apply'));
@@ -359,7 +359,7 @@ test('Can edit property links via inspector and save the change', async t => {
     await t.expect(OpenLinkEditor.withText('Edit Link').exists).ok();
     await t.click(Selector('#neos-LinkEditor button').withExactText('Custom Link'));
 
-    await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---Sitegeist.Archaeopteryx:CustomLink.customLink"]'), 'https://neos.io')
+    await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:CustomLink.customLink"]'), 'https://neos.io')
 
     await t.click(Selector('#neos-LinkEditor button').withExactText('Apply'));
     await t.click(Selector('#neos-Inspector-Apply').withExactText('Apply'));
@@ -430,7 +430,7 @@ test('Can edit property links via inspector and save the change', async t => {
 
     await t.click(Selector('#neos-LinkEditor button').withExactText('Web'));
 
-    await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---Sitegeist.Archaeopteryx:Web.urlWithoutProtocol"]'), 'www.neos.io')
+    await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:Web.urlWithoutProtocol"]'), 'www.neos.io')
 
     await t.typeText(Selector('#neos-LinkEditor label').withExactText('Anchor:').find('input'), '-new')
     await t.click(Selector('#neos-LinkEditor label').withExactText('rel="nofollow"').find('input'))

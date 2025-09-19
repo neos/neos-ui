@@ -16,7 +16,7 @@ type CustomLinkModel = {
     customLink: string;
 }
 
-export const CustomLink = makeLinkType<CustomLinkModel>('Sitegeist.Archaeopteryx:CustomLink', ({id}) => ({
+export const CustomLink = makeLinkType<CustomLinkModel>('LinkEditor:CustomLink', ({id}) => ({
     isSuitableFor,
 
     isDirty: (model) => {

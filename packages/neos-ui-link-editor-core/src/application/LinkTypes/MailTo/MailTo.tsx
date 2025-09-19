@@ -60,7 +60,7 @@ type MailToOptions = {
     }
 }
 
-export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('Sitegeist.Archaeopteryx:MailTo', ({createError, id}) => ({
+export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('LinkEditor:MailTo', ({createError, id}) => ({
     isSuitableFor,
 
     isDirty: (model) => {

@@ -85,7 +85,7 @@ const NodePreview: React.FC<{ nodeId: string }> = (props) => {
 };
 
 export const Node = makeLinkType<NodeLinkModel, NodeLinkOptions>(
-    "Sitegeist.Archaeopteryx:Node",
+    "LinkEditor:Node",
     ({ createError }) => ({
         supportedLinkOptions: ["anchor", "title", "targetBlank", "relNofollow"],
 

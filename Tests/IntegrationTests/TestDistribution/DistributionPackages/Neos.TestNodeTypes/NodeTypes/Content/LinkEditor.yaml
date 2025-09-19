@@ -27,7 +27,7 @@
         label: Link String
         inspector:
           group: default
-          editor: Sitegeist.Archaeopteryx/Inspector/Editors/LinkEditor
+          editor: Neos.Neos/Inspector/Editors/LinkEditor
           editorOptions:
             anchor: true
         reloadIfChanged: true

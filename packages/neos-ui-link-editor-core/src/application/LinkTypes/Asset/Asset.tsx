@@ -17,7 +17,7 @@ type AssetLinkModel = {
     identifier: string
 }
 
-export const Asset = makeLinkType<AssetLinkModel>('Sitegeist.Archaeopteryx:Asset', ({createError}) => ({
+export const Asset = makeLinkType<AssetLinkModel>('LinkEditor:Asset', ({createError}) => ({
     supportedLinkOptions: ['title', 'targetBlank', 'relNofollow'],
 
     isSuitableFor,

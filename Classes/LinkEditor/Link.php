@@ -35,6 +35,7 @@ use Psr\Http\Message\UriInterface;
  *             title: true
  *             targetBlank: true
  *             relNofollow: true
+ *             download: true
  * ```
  *
  * Note that currently the link editor can only handle and write to
@@ -55,7 +56,7 @@ use Psr\Http\Message\UriInterface;
  * TODO move to Neos.Neos because this will be API
  * @Flow\Proxy(false)
  */
-final class Link implements \JsonSerializable
+final readonly class Link implements \JsonSerializable
 {
     /**
      * A selection of frequently used target attribute values
@@ -73,10 +74,11 @@ final class Link implements \JsonSerializable
      * @param array<int, string> $rel
      */
     private function __construct(
-        public readonly UriInterface $href,
-        public readonly ?string $title,
-        public readonly ?string $target,
-        public readonly array $rel
+        public UriInterface $href,
+        public ?string $title,
+        public ?string $target,
+        public array $rel,
+        public bool $download
     ) {
     }
 
@@ -87,7 +89,8 @@ final class Link implements \JsonSerializable
         UriInterface $href,
         ?string $title,
         ?string $target,
-        array $rel
+        array $rel,
+        bool $download,
     ): self {
         $relMap = [];
         foreach ($rel as $value) {
@@ -98,7 +101,8 @@ final class Link implements \JsonSerializable
             $href,
             $title,
             $trimmedTarget !== '' ? strtolower($trimmedTarget) : null,
-            array_keys($relMap)
+            array_keys($relMap),
+            $download
         );
     }
 
@@ -112,6 +116,7 @@ final class Link implements \JsonSerializable
             $array['title'] ?? null,
             $array['target'] ?? null,
             $array['rel'] ?? [],
+            $array['download'] ?? false,
         );
     }
 
@@ -122,6 +127,7 @@ final class Link implements \JsonSerializable
             null,
             null,
             [],
+            false,
         );
     }
 
@@ -131,7 +137,8 @@ final class Link implements \JsonSerializable
             $this->href,
             $title,
             $this->target,
-            $this->rel
+            $this->rel,
+            $this->download,
         );
     }
 
@@ -141,7 +148,8 @@ final class Link implements \JsonSerializable
             $this->href,
             $this->title,
             $target,
-            $this->rel
+            $this->rel,
+            $this->download,
         );
     }
 
@@ -154,7 +162,19 @@ final class Link implements \JsonSerializable
             $this->href,
             $this->title,
             $this->target,
-            $rel
+            $rel,
+            $this->download,
+        );
+    }
+
+    public function withDownload(bool $download): self
+    {
+        return self::create(
+            $this->href,
+            $this->title,
+            $this->target,
+            $this->rel,
+            $download,
         );
     }
 
@@ -165,6 +185,7 @@ final class Link implements \JsonSerializable
             'title' => $this->title,
             'target' => $this->target,
             'rel' => $this->rel,
+            'download' => $this->download,
         ];
     }
 }

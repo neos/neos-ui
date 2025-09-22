@@ -13,6 +13,7 @@ interface Props {
             title?: boolean
             relNofollow?: boolean
             targetBlank?: boolean
+            download?: boolean
             // legacy root level option, linkTypes."LinkEditor:Node".startingPoint should be used instead
             startingPoint?: string
             linkTypes?: {
@@ -25,6 +26,7 @@ interface Props {
         linkTitle?: string
         linkTargetBlank?: boolean
         linkRelNofollow?: boolean,
+        linkDownload?: boolean,
     }
     executeCommand: (command: string, argument?: any, reFocusEditor?: boolean) => void
 }
@@ -57,7 +59,8 @@ export const createLinkButton = (editor: IEditor) => (props: Props) => {
                         anchor,
                         title: props.formattingUnderCursor.linkTitle,
                         targetBlank: props.formattingUnderCursor.linkTargetBlank,
-                        relNofollow: props.formattingUnderCursor.linkRelNofollow
+                        relNofollow: props.formattingUnderCursor.linkRelNofollow,
+                        download: props.formattingUnderCursor.linkDownload,
                     }
                 };
             }
@@ -83,6 +86,10 @@ export const createLinkButton = (editor: IEditor) => (props: Props) => {
                 enabledLinkOptions.push('targetBlank');
             }
 
+            if (props.inlineEditorOptions?.linking?.download) {
+                enabledLinkOptions.push('download');
+            }
+
             return enabledLinkOptions;
         })();
 
@@ -93,11 +100,13 @@ export const createLinkButton = (editor: IEditor) => (props: Props) => {
                 props.executeCommand('linkTitle', false, false);
                 props.executeCommand('linkRelNofollow', false, false);
                 props.executeCommand('linkTargetBlank', false, false);
+                props.executeCommand('linkDownload', false, false);
                 props.executeCommand('unlink', undefined, true);
             } else {
                 props.executeCommand('linkTitle', result.value.options?.title || false, false);
-                props.executeCommand('linkTargetBlank', result.value.options?.targetBlank ?? false, false);
                 props.executeCommand('linkRelNofollow', result.value.options?.relNofollow ?? false, false);
+                props.executeCommand('linkTargetBlank', result.value.options?.targetBlank ?? false, false);
+                props.executeCommand('linkDownload', result.value.options?.download ?? false, false);
 
                 if (result.value.options?.anchor) {
                     props.executeCommand('link', `${result.value.href}#${result.value.options?.anchor}`, true);

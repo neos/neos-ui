@@ -18,6 +18,7 @@
               title: true
               relNofollow: true
               targetBlank: true
+              download: true
             formatting:
               a: true
 
@@ -43,4 +44,5 @@
             title: true
             relNofollow: true
             targetBlank: true
+            download: true
         reloadIfChanged: true

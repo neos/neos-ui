@@ -103,7 +103,8 @@ describe('InspectorEditor: serialisation', () => {
                     anchor: 'tiefseeanker',
                     relNofollow: true,
                     targetBlank: true,
-                    title: 'my title'
+                    title: 'my title',
+                    download: true,
                 }
             }, LinkDataType.string),
             "http://marchenry.de#tiefseeanker"
@@ -200,6 +201,7 @@ describe('InspectorEditor: serialisation', () => {
                 title: undefined,
                 target: undefined,
                 rel: [],
+                download: undefined,
             }}),
             {
                 href: "http://marchenry.de",
@@ -207,7 +209,8 @@ describe('InspectorEditor: serialisation', () => {
                     anchor: undefined,
                     relNofollow: false,
                     targetBlank: undefined,
-                    title: undefined
+                    title: undefined,
+                    download: false,
                 }
             }
         )
@@ -218,6 +221,7 @@ describe('InspectorEditor: serialisation', () => {
                 title: undefined,
                 target: undefined,
                 rel: [],
+                download: false,
             }}),
             {
                 href: "http://marchenry.de",
@@ -225,7 +229,8 @@ describe('InspectorEditor: serialisation', () => {
                     anchor: 'tiefseeanker',
                     relNofollow: false,
                     targetBlank: undefined,
-                    title: undefined
+                    title: undefined,
+                    download: false,
                 }
             }
         )
@@ -236,6 +241,7 @@ describe('InspectorEditor: serialisation', () => {
                     title: 'some title',
                     target: undefined,
                     rel: [],
+                    download: undefined,
                 }}),
             {
                 href: "http://marchenry.de",
@@ -243,7 +249,8 @@ describe('InspectorEditor: serialisation', () => {
                     anchor: undefined,
                     relNofollow: false,
                     targetBlank: undefined,
-                    title: 'some title'
+                    title: 'some title',
+                    download: false,
                 }
             }
         )
@@ -254,6 +261,7 @@ describe('InspectorEditor: serialisation', () => {
                     title: undefined,
                     target: '_self',
                     rel: [],
+                    download: undefined,
                 }}),
             {
                 href: "http://marchenry.de",
@@ -261,7 +269,8 @@ describe('InspectorEditor: serialisation', () => {
                     anchor: undefined,
                     relNofollow: false,
                     targetBlank: false,
-                    title: undefined
+                    title: undefined,
+                    download: false,
                 }
             }
         )
@@ -272,6 +281,7 @@ describe('InspectorEditor: serialisation', () => {
                     title: undefined,
                     target: '_blank',
                     rel: [],
+                    download: undefined,
                 }}),
             {
                 href: "http://marchenry.de",
@@ -279,7 +289,8 @@ describe('InspectorEditor: serialisation', () => {
                     anchor: undefined,
                     relNofollow: false,
                     targetBlank: true,
-                    title: undefined
+                    title: undefined,
+                    download: false,
                 }
             }
         )
@@ -290,6 +301,7 @@ describe('InspectorEditor: serialisation', () => {
                     title: undefined,
                     target: undefined,
                     rel: ['noopener'],
+                    download: undefined,
                 }}),
             {
                 href: "http://marchenry.de",
@@ -297,7 +309,8 @@ describe('InspectorEditor: serialisation', () => {
                     anchor: undefined,
                     relNofollow: false,
                     targetBlank: undefined,
-                    title: undefined
+                    title: undefined,
+                    download: false,
                 }
             }
         )
@@ -308,6 +321,7 @@ describe('InspectorEditor: serialisation', () => {
                     title: undefined,
                     target: undefined,
                     rel: ['nofollow'],
+                    download: undefined,
                 }}),
             {
                 href: "http://marchenry.de",
@@ -315,7 +329,28 @@ describe('InspectorEditor: serialisation', () => {
                     anchor: undefined,
                     relNofollow: true,
                     targetBlank: undefined,
-                    title: undefined
+                    title: undefined,
+                    download: false,
+                }
+            }
+        )
+
+        deepEqual(
+            serializedLinkToILink({dataType: LinkDataType.valueObject, value: {
+                    href: "http://marchenry.de",
+                    title: undefined,
+                    target: undefined,
+                    rel: [],
+                    download: true,
+                }}),
+            {
+                href: "http://marchenry.de",
+                options: {
+                    anchor: undefined,
+                    relNofollow: false,
+                    targetBlank: undefined,
+                    title: undefined,
+                    download: true,
                 }
             }
         )
@@ -329,6 +364,7 @@ describe('InspectorEditor: serialisation', () => {
                 title: undefined,
                 target: undefined,
                 rel: [],
+                download: undefined,
             }
         )
 
@@ -344,6 +380,7 @@ describe('InspectorEditor: serialisation', () => {
                 title: undefined,
                 target: undefined,
                 rel: [],
+                download: undefined,
             }
         )
 
@@ -354,7 +391,8 @@ describe('InspectorEditor: serialisation', () => {
                     anchor: 'tiefseeanker',
                     relNofollow: true,
                     targetBlank: true,
-                    title: 'my title'
+                    title: 'my title',
+                    download: true,
                 }
             }, LinkDataType.valueObject),
             {
@@ -362,6 +400,7 @@ describe('InspectorEditor: serialisation', () => {
                 title: 'my title',
                 target: '_blank',
                 rel: ['nofollow'],
+                download: true,
             }
         )
     });

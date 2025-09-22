@@ -18,7 +18,7 @@ type AssetLinkModel = {
 }
 
 export const Asset = makeLinkType<AssetLinkModel>('LinkEditor:Asset', ({createError}) => ({
-    supportedLinkOptions: ['title', 'targetBlank', 'relNofollow'],
+    supportedLinkOptions: ['title', 'targetBlank', 'relNofollow', 'download'],
 
     isSuitableFor,
 

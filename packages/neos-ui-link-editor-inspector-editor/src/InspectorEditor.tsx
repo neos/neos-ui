@@ -26,6 +26,7 @@ export type EditorProps = {
         title?: boolean
         relNofollow?: boolean
         targetBlank?: boolean
+        download?: boolean
     };
     value: any;
     commit(value: any): void;
@@ -68,6 +69,10 @@ export const createInspectorEditor = (dataType: LinkDataType, editor: IEditor) =
 
         if (props.options?.targetBlank) {
             enabledLinkOptions.push('targetBlank');
+        }
+
+        if (props.options?.download) {
+            enabledLinkOptions.push('download');
         }
 
         return enabledLinkOptions;

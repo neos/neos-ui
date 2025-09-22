@@ -8,4 +8,5 @@ export interface ILinkOptions {
     title?: string
     targetBlank?: boolean
     relNofollow?: boolean
+    download?: boolean
 }

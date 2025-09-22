@@ -25,7 +25,7 @@ type WebLinkModel = {
 }
 
 export const Web = makeLinkType<WebLinkModel>('LinkEditor:Web', ({createError, id}) => ({
-    supportedLinkOptions: ['anchor', 'title', 'targetBlank', 'relNofollow'],
+    supportedLinkOptions: ['anchor', 'title', 'targetBlank', 'relNofollow', 'download'],
 
     isSuitableFor,
 

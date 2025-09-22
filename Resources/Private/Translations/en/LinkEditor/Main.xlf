@@ -42,6 +42,9 @@
             <trans-unit id="options.label.relNofollow" xml:space="preserve" approved="yes">
                 <source>rel="nofollow"</source>
             </trans-unit>
+            <trans-unit id="options.label.download" xml:space="preserve" approved="yes">
+                <source>Download</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>

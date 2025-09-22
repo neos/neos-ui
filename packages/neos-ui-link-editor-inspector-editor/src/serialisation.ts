@@ -8,6 +8,7 @@ export type LinkValueObject = {
     title?: string;
     target?: string;
     rel: string[];
+    download: boolean;
 };
 
 export enum LinkDataType {
@@ -69,6 +70,7 @@ export const serializedLinkToILink = (serializedLink: SerializeableLink): ILink 
                     title: linkValueObject.title || undefined,
                     targetBlank: linkValueObject.target ? linkValueObject.target === '_blank' : undefined,
                     relNofollow: linkValueObject.rel.includes('nofollow'),
+                    download: Boolean(linkValueObject.download),
                 }
             };
         case LinkDataType.string:
@@ -101,6 +103,7 @@ export const convertILinkToSerializedLinkValue = (link: ILink, dataType: LinkDat
                 title: link.options?.title,
                 target: link.options?.targetBlank ? '_blank' : undefined,
                 rel: link.options?.relNofollow ? ['nofollow'] : [],
+                download: link.options?.download
             };
         case LinkDataType.string:
             return href;

@@ -400,7 +400,7 @@ test('Can edit property links via inspector and save the change', async t => {
 
     await Page.waitForIframeLoading();
     await t.switchToIframe('[name="neos-content-main"]');
-    await t.expect(Selector('[data-link-editor-object]').innerText).eql(JSON.stringify({"href":"node://link-target","title":null,"target":null,"rel":[]}))
+    await t.expect(Selector('[data-link-editor-object]').innerText).eql(JSON.stringify({"href":"node://link-target","title":null,"target":null,"rel":[],"download":false}))
     await t.switchToMainWindow();
 
     subSection('Value Object: Select node target with anchor, title, rel, target and save change');
@@ -420,10 +420,10 @@ test('Can edit property links via inspector and save the change', async t => {
 
     await Page.waitForIframeLoading();
     await t.switchToIframe('[name="neos-content-main"]');
-    await t.expect(Selector('[data-link-editor-object]').innerText).eql(JSON.stringify({"href":"node://link-target#my-anchor","title":"My title","target":"_blank","rel":["nofollow"]}))
+    await t.expect(Selector('[data-link-editor-object]').innerText).eql(JSON.stringify({"href":"node://link-target#my-anchor","title":"My title","target":"_blank","rel":["nofollow"],"download":false}))
     await t.switchToMainWindow();
 
-    subSection('Value Object: Select web target with anchor, title, rel, target and save change');
+    subSection('Value Object: Select web target with anchor, title, rel, target, download and save change');
     await t.click(LinkObjectProperty.find('[title="Edit Link"]'));
 
     await t.expect(OpenLinkEditor.withText('Edit Link').exists).ok();
@@ -435,12 +435,14 @@ test('Can edit property links via inspector and save the change', async t => {
     await t.typeText(Selector('#neos-LinkEditor label').withExactText('Anchor:').find('input'), '-new')
     await t.click(Selector('#neos-LinkEditor label').withExactText('rel="nofollow"').find('input'))
 
+    await t.click(Selector('#neos-LinkEditor label').withExactText('Download').find('input'))
+
     await t.click(Selector('#neos-LinkEditor button').withExactText('Apply'));
     await t.click(Selector('#neos-Inspector-Apply').withExactText('Apply'));
 
     await Page.waitForIframeLoading();
     await t.switchToIframe('[name="neos-content-main"]');
-    await t.expect(Selector('[data-link-editor-object]').innerText).eql(JSON.stringify({"href":"https://www.neos.io#my-anchor-new","title":"My title","target":"_blank","rel":[]}))
+    await t.expect(Selector('[data-link-editor-object]').innerText).eql(JSON.stringify({"href":"https://www.neos.io#my-anchor-new","title":"My title","target":"_blank","rel":[],"download":true}))
     await t.switchToMainWindow();
 });
 

@@ -9,7 +9,7 @@ import {State} from "@neos-project/framework-observable";
 import {FormValues} from "./Dialog";
 import {useLatestState} from "@neos-project/framework-observable-react";
 
-export const Settings: React.FC<{
+export const LinkOptions: React.FC<{
     form$: State<FormValues>
     enabledLinkOptions: (keyof ILinkOptions)[]
 }> = props => {
@@ -19,6 +19,7 @@ export const Settings: React.FC<{
     const setTitle = React.useCallback((title) => props.form$.update((values) => ({ ...values, isOptionsDirty: true, options: { ...values.options, title } })), []);
     const setTargetBlank = React.useCallback((targetBlank) => props.form$.update((values) => ({ ...values, isOptionsDirty: true, options: { ...values.options, targetBlank } })), []);
     const setRelNofollow = React.useCallback((relNofollow) => props.form$.update((values) => ({ ...values, isOptionsDirty: true, options: { ...values.options, relNofollow } })), []);
+    const setDownload = React.useCallback((download) => props.form$.update((values) => ({ ...values, isOptionsDirty: true, options: { ...values.options, download } })), []);
 
     return (
         <Layout.Stack>
@@ -38,7 +39,7 @@ export const Settings: React.FC<{
                     ) : null}
                 </Layout.Columns>
             ) : null}
-            {props.enabledLinkOptions.includes('targetBlank') || props.enabledLinkOptions.includes('relNofollow') ? (
+            {props.enabledLinkOptions.includes('targetBlank') || props.enabledLinkOptions.includes('relNofollow') || props.enabledLinkOptions.includes('download') ? (
                 <Layout.Columns>
                     {props.enabledLinkOptions.includes('targetBlank') ? (
                         <label>
@@ -50,6 +51,12 @@ export const Settings: React.FC<{
                         <label>
                             <CheckBox onChange={setRelNofollow} isChecked={form.options?.relNofollow ?? false}/>
                             {translate('Neos.Neos.Ui:LinkEditor.Main:options.label.relNofollow', '')}
+                        </label>
+                    ) : null}
+                    {props.enabledLinkOptions.includes('download') ? (
+                        <label>
+                            <CheckBox onChange={setDownload} isChecked={form.options?.download ?? false}/>
+                            {translate('Neos.Neos.Ui:LinkEditor.Main:options.label.download', '')}
                         </label>
                     ) : null}
                 </Layout.Columns>

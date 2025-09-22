@@ -14,7 +14,7 @@ import {
 } from '../../domain';
 import {Layout, Form, Modal, Tabs, Deletable} from '../../presentation';
 
-import {Settings} from './Settings';
+import {LinkOptions} from './LinkOptions';
 import {useLatestState} from '@neos-project/framework-observable-react';
 import {useSelector} from '@neos-project/neos-ui-redux-store';
 import {translate} from "@neos-project/neos-ui-i18n";
@@ -217,7 +217,7 @@ const DialogWithEmptyValue: React.FC<{
                         </ErrorBoundary>
 
                         {enabledLinkOptions.length && linkType.supportedLinkOptions.length ? (
-                            <Settings
+                            <LinkOptions
                                 form$={props.form$}
                                 enabledLinkOptions={enabledLinkOptions.filter(
                                     option => linkType.supportedLinkOptions.includes(option)
@@ -317,7 +317,7 @@ const DialogWithValue: React.FC<{
                         </ErrorBoundary>
 
                         {enabledLinkOptions.length && linkType.supportedLinkOptions.length ? (
-                            <Settings
+                            <LinkOptions
                                 form$={props.form$}
                                 enabledLinkOptions={enabledLinkOptions.filter(
                                     option => linkType.supportedLinkOptions.includes(option)

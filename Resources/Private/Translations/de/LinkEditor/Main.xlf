@@ -53,6 +53,10 @@
                 <source>rel="nofollow"</source>
                 <target>rel="nofollow"</target>
             </trans-unit>
+            <trans-unit id="options.label.download" xml:space="preserve" approved="yes">
+                <source>Download</source>
+                <target>Herunterladen</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

@@ -4,7 +4,6 @@ import Boolean from './Boolean/index';
 import DateTime from './DateTime/index';
 import Image from './Image/index';
 import SelectBox from './SelectBox/index';
-import Link from './Link/index';
 import Range from './Range/index';
 import Reference from './Reference/index';
 import References from './References/index';
@@ -21,7 +20,6 @@ export {
     DateTime,
     Image,
     SelectBox,
-    Link,
     Range,
     Reference,
     References,

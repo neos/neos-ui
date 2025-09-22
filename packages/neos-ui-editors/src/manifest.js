@@ -3,15 +3,12 @@ import * as Editors from './index';
 import manifest from '@neos-project/neos-ui-extensibility';
 import backend from '@neos-project/neos-ui-backend-connector';
 
-import LinkInputOptions from './Library/LinkInputOptions';
-
 export default Editors.EditorEnvelope;
 
 manifest('inspectorEditors', {}, globalRegistry => {
     const editorsRegistry = globalRegistry.get('inspector').get('editors');
     const secondaryEditorsRegistry = globalRegistry.get('inspector').get('secondaryEditors');
     const saveHooksRegistry = globalRegistry.get('inspector').get('saveHooks');
-    const containerRegistry = globalRegistry.get('containers');
     const {createImageVariant} = backend.get().endpoints;
 
     //
@@ -42,11 +39,6 @@ manifest('inspectorEditors', {}, globalRegistry => {
     editorsRegistry.set('Neos.Neos/Inspector/Editors/SelectBoxEditor', {
         component: Editors.SelectBox
     });
-
-    // todo remove old link editor implementation
-    // editorsRegistry.set('Neos.Neos/Inspector/Editors/LinkEditor', {
-    //     component: Editors.Link
-    // });
 
     editorsRegistry.set('Neos.Neos/Inspector/Editors/RangeEditor', {
         component: Editors.Range
@@ -105,12 +97,6 @@ manifest('inspectorEditors', {}, globalRegistry => {
     secondaryEditorsRegistry.set('Neos.Neos/Inspector/Secondary/Editors/MediaSelectionScreen', {
         component: Editors.MediaSelectionScreen
     });
-
-    //
-    // LinkInput options panel containers.
-    // Feel free to add additional custom options here
-    //
-    containerRegistry.set('LinkInput/OptionsPanel/DefaultLinkInputOptions', LinkInputOptions);
 
     //
     // This hook will create an image variant right before changes to an image

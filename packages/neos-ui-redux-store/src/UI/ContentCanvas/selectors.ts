@@ -6,6 +6,4 @@ export const currentlyEditedPropertyName = (state: GlobalState) => state?.ui?.co
 
 export const formattingUnderCursor = (state: GlobalState) => state?.ui?.contentCanvas?.formattingUnderCursor;
 
-export const isLinkEditorOpen = (state: GlobalState) => state?.ui?.contentCanvas?.isLinkEditorOpen;
-
 export const selectors = {};

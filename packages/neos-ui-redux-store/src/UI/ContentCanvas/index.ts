@@ -19,7 +19,6 @@ export interface State extends Readonly<{
     focusedProperty: string | null;
     backgroundColor: string;
     shouldScrollIntoView: boolean;
-    isLinkEditorOpen: boolean;
 }> {}
 
 export const defaultState: State = {
@@ -31,7 +30,6 @@ export const defaultState: State = {
     focusedProperty: null,
     backgroundColor: '#ffffff',
     shouldScrollIntoView: false,
-    isLinkEditorOpen: false
 };
 
 //
@@ -49,7 +47,6 @@ export enum actionTypes {
     REQUEST_SCROLL_INTO_VIEW = '@neos/neos-ui/UI/ContentCanvas/REQUEST_SCROLL_INTO_VIEW',
     REQUEST_REGAIN_CONTROL = '@neos/neos-ui/UI/ContentCanvas/REQUEST_REGAIN_CONTROL',
     REQUEST_LOGIN = '@neos/neos-ui/UI/ContentCanvas/REQUEST_LOGIN',
-    TOGGLE_LINK_EDITOR = '@neos/neos-ui/UI/ContentCanvas/TOGGLE_LINK_EDITOR'
 }
 
 const setPreviewUrl = (previewUrl: string) => createAction(actionTypes.SET_PREVIEW_URL, previewUrl);
@@ -64,7 +61,6 @@ const requestScrollIntoView = (activate: boolean) => createAction(actionTypes.RE
 // If we have lost controll over the iframe, we need to take action
 const requestRegainControl = (src: string, errorMessage: string) => createAction(actionTypes.REQUEST_REGAIN_CONTROL, {src, errorMessage});
 const requestLogin = () => createAction(actionTypes.REQUEST_LOGIN);
-const toggleLinkEditor = (forceState?: boolean) => createAction(actionTypes.TOGGLE_LINK_EDITOR, forceState);
 
 //
 // Export the actions
@@ -80,7 +76,6 @@ export const actions = {
     requestScrollIntoView,
     requestRegainControl,
     requestLogin,
-    toggleLinkEditor
 };
 
 export type Action = ActionType<typeof actions>;
@@ -105,13 +100,10 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
         }
         case actionTypes.FORMATTING_UNDER_CURSOR: {
             draft.formattingUnderCursor = action.payload;
-            // if new selection doesn't have a link, close the link dialog
-            draft.isLinkEditorOpen = Boolean(action.payload?.link);
             break;
         }
         case actionTypes.SET_CURRENTLY_EDITED_PROPERTY_NAME: {
             draft.currentlyEditedPropertyName = action.payload;
-            draft.isLinkEditorOpen = false;
             break;
         }
         case actionTypes.STOP_LOADING: {
@@ -128,14 +120,6 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
         }
         case actionTypes.REQUEST_REGAIN_CONTROL: {
             draft.src = '';
-            break;
-        }
-        case actionTypes.TOGGLE_LINK_EDITOR: {
-            if (action.payload !== undefined) {
-                draft.isLinkEditorOpen = action.payload;
-            } else {
-                draft.isLinkEditorOpen = !state.isLinkEditorOpen;
-            }
             break;
         }
     }

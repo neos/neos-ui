@@ -26,6 +26,6 @@ export function registerLinkButton(
     richtextToolbarRegistry.set('link', {
         commandName: 'link',
         component: createLinkButton(editor),
-        isVisible: (config: any) => Boolean(config && config.formatting && config.formatting.a)
+        isVisible: (formattingUnderCursor: any) => formattingUnderCursor?.formatting?.a
     });
 }

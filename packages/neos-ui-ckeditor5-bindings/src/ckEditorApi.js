@@ -73,11 +73,6 @@ export const createEditor = store => async options => {
                 handleUserInteractionCallback();
             });
 
-            editor.keystrokes.set('Ctrl+K', (_, cancel) => {
-                store.dispatch(actions.UI.ContentCanvas.toggleLinkEditor());
-                cancel();
-            });
-
             editor.model.document.on('change', () => handleUserInteractionCallback());
             return editor;
         }).catch(e => {

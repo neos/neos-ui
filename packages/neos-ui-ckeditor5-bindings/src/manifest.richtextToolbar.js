@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import omit from 'lodash.omit';
 
 import IconButton from '@neos-project/react-ui-components/src/IconButton/';
-import LinkButton from './EditorToolbar/LinkButton';
 import TableButton from './EditorToolbar/TableButton';
 import TableDropDown from './EditorToolbar/TableDropDown';
 import {neos} from '@neos-project/neos-ui-decorators';
@@ -132,13 +131,6 @@ export default ckEditorRegistry => {
         tooltip: 'Neos.Neos.Ui:Main:ckeditor__toolbar__strikethrough',
         isVisible: editorOptions => editorOptions?.formatting?.strikethrough,
         isActive: formattingUnderCursor => formattingUnderCursor?.strikethrough
-    });
-
-    // Strike-Through
-    richtextToolbar.set('link', {
-        commandName: 'link',
-        component: LinkButton,
-        isVisible: formattingUnderCursor => formattingUnderCursor?.formatting?.a
     });
 
     /**

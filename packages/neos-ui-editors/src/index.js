@@ -7,7 +7,6 @@ import {
     DateTime,
     Image,
     SelectBox,
-    Link,
     Range,
     Reference,
     References,
@@ -29,9 +28,6 @@ import {
 import AssetUpload from './Library/AssetUpload';
 import AssetOption from './Library/AssetOption';
 
-import LinkInput from './Library/LinkInput';
-import LinkOption from './Library/LinkOption';
-
 import NodeOption from './Library/NodeOption';
 
 export {
@@ -43,7 +39,6 @@ export {
     DateTime,
     Image,
     SelectBox,
-    Link,
     Range,
     Reference,
     References,
@@ -61,8 +56,6 @@ export {
 
     AssetUpload,
     AssetOption,
-    LinkInput,
-    LinkOption,
     NodeOption
 };
 
@@ -75,7 +68,6 @@ export default {
     DateTime,
     Image,
     SelectBox,
-    Link,
     Range,
     Reference,
     References,
@@ -93,7 +85,5 @@ export default {
 
     AssetUpload,
     AssetOption,
-    LinkInput,
-    LinkOption,
     NodeOption
 };

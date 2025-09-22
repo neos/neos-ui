@@ -10,7 +10,7 @@
 import {call, put, select} from 'redux-saga/effects';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
-import {GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
+import {GlobalState} from '@neos-project/neos-ui-redux-store';
 import {DimensionCombination, Node, NodeContextPath, NodeMap, WorkspaceName} from '@neos-project/neos-ts-interfaces';
 import {AnyError} from '@neos-project/neos-ui-error';
 import backend from '@neos-project/neos-ui-backend-connector';

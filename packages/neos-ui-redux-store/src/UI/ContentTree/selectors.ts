@@ -1,4 +1,4 @@
-import {GlobalState} from '../../System';
+import {GlobalState} from '../../..';
 
 export const getToggled = (state: GlobalState) => state?.ui?.contentTree?.toggled;
 export const getIsLoading = (state: GlobalState) => state?.ui?.contentTree?.isLoading;

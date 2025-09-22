@@ -1,4 +1,4 @@
-import {GlobalState} from '../../System';
+import {GlobalState} from '../../..';
 
 export const shouldScrollIntoView = (state: GlobalState) => state?.ui?.contentCanvas?.shouldScrollIntoView;
 

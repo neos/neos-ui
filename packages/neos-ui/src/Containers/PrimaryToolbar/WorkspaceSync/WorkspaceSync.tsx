@@ -12,7 +12,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
-import {GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
+import {GlobalState} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
 import {WorkspaceStatus} from '@neos-project/neos-ts-interfaces';
 import type {I18nRegistry} from '@neos-project/neos-ui-i18n';

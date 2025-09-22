@@ -1,6 +1,6 @@
 import {createSelector} from 'reselect';
 import {documentNodeContextPathSelector} from '../Nodes/selectors';
-import {GlobalState} from '../../System';
+import {GlobalState} from '../../..';
 import {NodeContextPath} from '@neos-project/neos-ts-interfaces';
 
 export const personalWorkspaceNameSelector = (state: GlobalState) => state?.cr?.workspaces?.personalWorkspace?.name;

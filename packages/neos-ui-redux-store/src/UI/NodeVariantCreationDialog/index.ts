@@ -1,7 +1,8 @@
 import produce from 'immer';
 import {action as createAction, ActionType} from 'typesafe-actions';
 
-import {InitAction, GlobalState} from '../../System';
+import {InitAction} from '../../System';
+import {GlobalState} from '../..';
 
 export interface State extends Readonly<{
     isOpen: boolean,

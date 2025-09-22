@@ -2,7 +2,7 @@ import {createSelector, defaultMemoize} from 'reselect';
 
 import validate from '@neos-project/neos-ui-validators';
 import {selectors as nodes} from '../../CR/Nodes';
-import {GlobalState} from '../../System';
+import {GlobalState} from '../../..';
 import {NodeTypesRegistry, ValidatorRegistry} from '@neos-project/neos-ts-interfaces';
 
 /**

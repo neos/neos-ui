@@ -1,22 +1,12 @@
 import produce from 'immer';
 import {action as createAction, ActionType} from 'typesafe-actions';
-import {State as UIState} from './../UI/index';
-import {State as UserState} from './../User/index';
-import {State as CRState} from './../CR/index';
+import {GlobalState} from '..';
 
 //
 // Export the subreducer state shape interface
 //
 export interface State {
     readonly authenticationTimeout: boolean;
-}
-
-// TODO: move up when possible
-export interface GlobalState {
-    system: State;
-    user: UserState;
-    cr: CRState;
-    ui: UIState;
 }
 
 export const defaultState: State = {

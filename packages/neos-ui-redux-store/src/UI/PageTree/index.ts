@@ -1,7 +1,8 @@
 import produce from 'immer';
 import {action as createAction, ActionType} from 'typesafe-actions';
 
-import {actionTypes as system, InitAction, GlobalState} from '../../System';
+import {actionTypes as system, InitAction} from '../../System';
+import {GlobalState} from '../..';
 import {actionTypes as nodes, Action as NodesAction} from '../../CR/Nodes';
 import {NodeContextPath, SelectionModeTypes} from '@neos-project/neos-ts-interfaces';
 

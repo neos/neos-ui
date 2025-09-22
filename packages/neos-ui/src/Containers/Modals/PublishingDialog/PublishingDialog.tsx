@@ -12,7 +12,7 @@ import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
-import {GlobalState} from '@neos-project/neos-ui-redux-store/src/System';
+import {GlobalState} from '@neos-project/neos-ui-redux-store';
 import {
     PublishingScope,
     PublishingPhase,

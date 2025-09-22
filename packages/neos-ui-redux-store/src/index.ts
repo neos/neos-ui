@@ -11,7 +11,7 @@ import {useSelector as useSelectorOriginal} from 'react-redux';
 //
 // Export the state interface
 //
-export interface State {
+export interface GlobalState {
     cr: CR.State,
     system: System.State,
     ui: UI.State,
@@ -51,7 +51,7 @@ export const reducer = combineReducers({
     ui: UI.reducer,
     user: User.reducer,
     // NOTE: The plugins reducer is UNPLANNED EXTENSIBILITY, do not modify unless you know what you are doing!
-    plugins: (state: System.GlobalState) => state || {}
+    plugins: (state: GlobalState) => state || {}
 });
 
 //
@@ -66,4 +66,4 @@ export const selectors = {
     ServerFeedback: ServerFeedback.selectors
 } as const;
 
-export const useSelector: <R>(selector: (state: State) => R) => R = useSelectorOriginal;
+export const useSelector: <R>(selector: (state: GlobalState) => R) => R = useSelectorOriginal;

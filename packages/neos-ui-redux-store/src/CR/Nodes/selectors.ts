@@ -1,5 +1,5 @@
 import {createSelector, defaultMemoize} from 'reselect';
-import {GlobalState} from '../../System';
+import {GlobalState} from '../../..';
 import {NodeContextPath, NodeMap, Node, NodeTypeName, ClipboardMode, NodeTypesRegistry} from '@neos-project/neos-ts-interfaces';
 
 export const inlineValidationErrorsSelector = (state: GlobalState) => state?.cr?.nodes?.inlineValidationErrors;

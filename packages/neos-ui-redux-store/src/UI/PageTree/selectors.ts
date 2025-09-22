@@ -1,4 +1,4 @@
-import {GlobalState} from '../../System';
+import {GlobalState} from '../../..';
 import {createSelector} from 'reselect';
 
 import {siteNodeContextPathSelector, siteNodeSelector, nodesByContextPathSelector} from '../../CR/Nodes/selectors';

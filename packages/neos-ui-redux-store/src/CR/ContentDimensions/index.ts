@@ -2,7 +2,8 @@ import produce from 'immer';
 import mapValues from 'lodash.mapvalues';
 import {createSelector} from 'reselect';
 import {action as createAction, ActionType} from 'typesafe-actions';
-import {actionTypes as system, InitAction, GlobalState} from '../../System';
+import {actionTypes as system, InitAction} from '../../System';
+import {GlobalState} from '../..';
 import isEqual from 'lodash.isequal';
 import {DimensionInformation, DimensionCombination, DimensionPresetName, DimensionPresetCombination} from '@neos-project/neos-ts-interfaces';
 

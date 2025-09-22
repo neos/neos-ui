@@ -370,6 +370,9 @@ export default (routes: Routes) => {
             };
         });
 
+    /**
+     * @deprecated can be removed because its unused and uses old XML endpoint
+     */
     const assetSearch = (searchTerm = '') => fetchWithErrorHandling.withCsrfToken(() => ({
         url: urlWithParams(routes.core.service.assets, {searchTerm}),
 
@@ -453,8 +456,6 @@ export default (routes: Routes) => {
      * workspaceName:user-admin
      * dimensions[language][]:en_US
      * contextNode:/sites/neosdemo@user-admin;language=en_US
-     *
-     * !! for options, use selectors.UI.NodeLinking.contextForNodeLinking and start modifying it!
      *
      * returns an array of {label, value} objects
      */
@@ -554,8 +555,6 @@ export default (routes: Routes) => {
      * "params" is an object with:
      * - dimensions
      * - workspaceName
-     *
-     * !! for params, use selectors.UI.NodeLinking.contextForNodeLinking and start modifying it!
      */
     const getSingleNode = (nodeIdentifier: string, params = {}) => parseGetSingleNodeResult(fetchWithErrorHandling.withCsrfToken(() => ({
         url: urlWithParams(`${routes.core.service.nodes}/${nodeIdentifier}`, params),

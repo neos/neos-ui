@@ -7,7 +7,6 @@ import * as LeftSideBar from './LeftSideBar';
 import * as EditPreviewMode from './EditPreviewMode';
 import * as Drawer from './Drawer';
 import * as Remote from './Remote';
-import * as NodeLinking from './NodeLinking';
 import * as RightSideBar from './RightSideBar';
 import * as AddNodeModal from './AddNodeModal';
 import * as PageTree from './PageTree';
@@ -60,7 +59,6 @@ export const actionTypes = {
     ContentCanvas: ContentCanvas.actionTypes,
     Inspector: Inspector.actionTypes,
     InsertionModeModal: InsertionModeModal.actionTypes,
-    NodeLinking: NodeLinking.actionTypes,
     SelectNodeTypeModal: SelectNodeTypeModal.actionTypes,
     NodeCreationDialog: NodeCreationDialog.actionTypes,
     NodeVariantCreationDialog: NodeVariantCreationDialog.actionTypes,
@@ -85,7 +83,6 @@ export const actions = {
     ContentCanvas: ContentCanvas.actions,
     Inspector: Inspector.actions,
     InsertionModeModal: InsertionModeModal.actions,
-    NodeLinking: NodeLinking.actions,
     SelectNodeTypeModal: SelectNodeTypeModal.actions,
     NodeCreationDialog: NodeCreationDialog.actions,
     NodeVariantCreationDialog: NodeVariantCreationDialog.actions,
@@ -132,7 +129,6 @@ export const selectors = {
     ContentCanvas: ContentCanvas.selectors,
     Inspector: Inspector.selectors,
     InsertionModeModal: InsertionModeModal.selectors,
-    NodeLinking: NodeLinking.selectors,
     SelectNodeTypeModal: SelectNodeTypeModal.selectors,
     NodeCreationDialog: NodeCreationDialog.selectors,
     NodeVariantCreationDialog: NodeVariantCreationDialog.selectors,

@@ -48,7 +48,7 @@ manifest('main.dataloaders', {}, globalRegistry => {
             Takes the current context (workspace, dimensions) into account when doing the search, as this is passed in
 
             OPTIONS:
-                - contextForNodeLinking: the current value of "selectors.UI.NodeLinking.contextForNodeLinking", required.
+                - contextForNodeLinking
                 - nodeTypes: an array of node type names; if set, the search is restricted to these node types.
                 - asset: asset === false would disable searching for assets.
                 - node: node === false would disable searching for nodes.

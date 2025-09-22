@@ -11,7 +11,11 @@ export default ({isMulti}) => WrappedComponent => {
         nodeTypeRegistry: globalRegistry.get('@neos-project/neos-ui-contentrepository')
     }))
     @connect(state => ({
-        contextForNodeLinking: selectors.UI.NodeLinking.contextForNodeLinking(state)
+        contextForNodeLinking: {
+            workspaceName: selectors.CR.Workspaces.personalWorkspaceNameSelector(state),
+            contextNode: selectors.CR.Nodes.siteNodeContextPathSelector(state),
+            dimensions: selectors.CR.ContentDimensions.active(state)
+        }
     }))
 
     class ReferenceDataLoader extends PureComponent {

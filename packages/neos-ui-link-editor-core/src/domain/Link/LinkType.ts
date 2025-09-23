@@ -22,6 +22,10 @@ interface LinkTypeProps<ModelType = any, OptionsType extends object = {}> {
 
 export interface ILinkType<ModelType = any, OptionsType extends object = {}> {
     id: string
+
+    icon: string
+    getTitle: () => string
+
     supportedLinkOptions: (keyof ILinkOptions)[]
     isSuitableFor: (link: ILink) => boolean
 
@@ -30,7 +34,6 @@ export interface ILinkType<ModelType = any, OptionsType extends object = {}> {
     isDirty: (model: ModelType) => boolean;
     isValid: (model: ModelType) => boolean;
 
-    TabHeader: React.FC<LinkTypeStaticProps<OptionsType>>
     LoadingPreview: React.FC<LinkTypeStaticProps<OptionsType>>
     Preview: React.FC<LinkTypeProps<ModelType, OptionsType>>
     LoadingEditor: React.FC<LinkTypeStaticProps<OptionsType>>

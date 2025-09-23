@@ -5,6 +5,7 @@ export const Container = styled.div`
 `;
 
 export const Stack = styled.div`
+    margin-top: 16px;
     > * + * {
         margin-top: 16px;
     }

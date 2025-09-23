@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import {ILink, makeLinkType} from '../../../domain';
-import {ImageCard, IconLabel} from '../../../presentation';
+import {ImageCard} from '../../../presentation';
 
 import {MediaBrowser} from './MediaBrowser';
 import { Nullable } from 'ts-toolbelt/out/Union/Nullable';
@@ -18,6 +18,10 @@ type AssetLinkModel = {
 }
 
 export const Asset = makeLinkType<AssetLinkModel>('LinkEditor:Asset', ({createError}) => ({
+    icon: "camera",
+
+    getTitle: () => translate('Neos.Neos.Ui:LinkEditor.Asset:title', ''),
+
     supportedLinkOptions: ['title', 'targetBlank', 'relNofollow', 'download'],
 
     isSuitableFor,
@@ -45,14 +49,6 @@ export const Asset = makeLinkType<AssetLinkModel>('LinkEditor:Asset', ({createEr
     convertModelToLink: (asset: AssetLinkModel) => ({
         href: `asset://${asset.identifier}`
     }),
-
-    TabHeader: () => {
-        return (
-            <IconLabel icon="camera">
-                {translate('Neos.Neos.Ui:LinkEditor.Asset:title', '')}
-            </IconLabel>
-        );
-    },
 
     Preview: ({model}: {model: AssetLinkModel}) => {
         const asset = usePromise(() => {

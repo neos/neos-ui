@@ -184,7 +184,7 @@ test('Open and close link editor dialog without saving the change', async t => {
 
     await t.click(LinkEditorNodeTreeItem.withExactText('Link target'));
 
-    await t.click(Selector('#neos-LinkEditor button').withExactText('Web'));
+    await t.click(Selector('#neos-LinkEditor [role="tab"]').withExactText('Web'));
 
     await t.expect(Selector('#neos-LinkEditor label').withExactText('Anchor:').find('input').value).eql('my-anchor')
 
@@ -202,7 +202,7 @@ test('Open and close link editor dialog without saving the change', async t => {
     await t.click(LinkStringProperty.withExactText('Create Link'));
 
     await t.expect(OpenLinkEditor.withText('Edit Link').exists).ok();
-    await t.click(Selector('#neos-LinkEditor button').withExactText('Mail to'));
+    await t.click(Selector('#neos-LinkEditor [role="tab"]').withExactText('Mail to'));
 
     // "mail" is not a valid email address
     await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:MailTo.recipient"]'), 'mail');
@@ -226,26 +226,26 @@ test('Open and close link editor dialog without saving the change', async t => {
     await t.click(LinkStringProperty.withExactText('Create Link'));
 
     await t.expect(OpenLinkEditor.withText('Edit Link').exists).ok();
-    await t.click(Selector('#neos-LinkEditor button').withExactText('Mail to'));
+    await t.click(Selector('#neos-LinkEditor [role="tab"]').withExactText('Mail to'));
 
     // "mail" is not a valid email address
     await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:MailTo.recipient"]'), 'mail');
     await t.expect(Selector('#neos-LinkEditor button').withExactText('Apply').hasAttribute('disabled')).ok();
     await t.expect(OpenLinkEditor.withText('Recipient should be a valid E-Mail Address').exists).ok();
 
-    await t.click(Selector('#neos-LinkEditor button').withExactText('Document'));
+    await t.click(Selector('#neos-LinkEditor [role="tab"]').withExactText('Document'));
     await t.click(LinkEditorNodeTreeItem.withExactText('Link target'));
 
     // can be applied
     await t.expect(Selector('#neos-LinkEditor button').withExactText('Apply').hasAttribute('disabled')).notOk();
 
     // Mail tab is still invalid
-    await t.click(Selector('#neos-LinkEditor button').withExactText('Mail to'));
+    await t.click(Selector('#neos-LinkEditor [role="tab"]').withExactText('Mail to'));
     await t.expect(OpenLinkEditor.withText('Recipient should be a valid E-Mail Address').exists).ok();
     await t.expect(Selector('#neos-LinkEditor button').withExactText('Apply').hasAttribute('disabled')).ok();
 
     // Apply document selection
-    await t.click(Selector('#neos-LinkEditor button').withExactText('Document'));
+    await t.click(Selector('#neos-LinkEditor [role="tab"]').withExactText('Document'));
 
     await t.click(Selector('#neos-LinkEditor button').withExactText('Apply'));
     await t.expect(OpenLinkEditor.exists).notOk();
@@ -266,9 +266,12 @@ test('Can edit property links via inspector and save the change', async t => {
     await t.expect(Selector('[data-link-editor-object]').innerText).eql(JSON.stringify(null))
     await t.switchToMainWindow();
 
-    subSection('Select node target and save change');
     await t.click(LinkStringProperty.withExactText('Create Link'));
+    await t.expect(Selector('#neos-LinkEditor [role="tab"]').withExactText('Document').getAttribute('aria-selected')).eql('true');
+    await t.expect(Selector('#neos-LinkEditor [role="tab"]').withExactText('Asset').getAttribute('aria-selected')).eql('false');
+    await t.expect(Selector('#neos-LinkEditor [role="tab"]').withExactText('Web').getAttribute('aria-selected')).eql('false');
 
+    subSection('Select node target and save change');
     await t.expect(OpenLinkEditor.withText('Edit Link').exists).ok();
 
     await t.click(LinkEditorNodeTreeItem.withExactText('Link target'));
@@ -281,10 +284,16 @@ test('Can edit property links via inspector and save the change', async t => {
     await t.expect(Selector('[data-link-editor-string]').innerText).eql(JSON.stringify('node://link-target'))
     await t.switchToMainWindow();
 
-    subSection('Select asset target and save change');
+    subSection('Reopen and validate selected node');
     await t.click(LinkStringProperty.find('[title="Edit Link"]'));
+    await t.expect(OpenLinkEditor.withText('Edit Link').exists).ok();
+    await t.expect(Selector('#neos-LinkEditor [role="tab"]').withExactText('Document').getAttribute('aria-selected')).eql('true');
+    await t.expect(LinkEditorNodeTreeItem.withExactText('Link target').parent('[role="button"][class*="_header__data--isActive"]').exists).ok();
+    await t.expect(Selector('#neos-LinkEditor-Preview span').withExactText('Link target').exists).ok();
+    await t.expect(Selector('#neos-LinkEditor-Preview span').withExactText('Home > Link editor > Link target').exists).ok();
 
-    await t.click(Selector('#neos-LinkEditor button').withExactText('Asset'));
+    subSection('Select asset target and save change');
+    await t.click(Selector('#neos-LinkEditor [role="tab"]').withExactText('Asset'));
 
     await t.switchToIframe(Selector('[name="neos-media-selection-screen"]', {timeout: 2000}))
         .click(Selector('.asset').withText('neos_primary.png'))
@@ -298,11 +307,15 @@ test('Can edit property links via inspector and save the change', async t => {
     await t.expect(Selector('[data-link-editor-string]').innerText).eql(JSON.stringify('asset://ee3d239e-48b0-4f99-90be-054301b91792'))
     await t.switchToMainWindow();
 
-    subSection('Select web target with anchor and save change');
+    subSection('Reopen and validate selected asset');
     await t.click(LinkStringProperty.find('[title="Edit Link"]'));
-
     await t.expect(OpenLinkEditor.withText('Edit Link').exists).ok();
-    await t.click(Selector('#neos-LinkEditor button').withExactText('Web'));
+    await t.expect(Selector('#neos-LinkEditor [role="tab"]').withExactText('Asset').getAttribute('aria-selected')).eql('true');
+    await t.expect(Selector('#neos-LinkEditor-Preview span').withExactText('neos_primary.png').exists).ok();
+    await t.expect(Selector('#neos-LinkEditor-Preview img').getAttribute('src')).contains('neos_primary-');
+
+    subSection('Select web target with anchor and save change');
+    await t.click(Selector('#neos-LinkEditor [role="tab"]').withExactText('Web'));
 
     await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:Web.urlWithoutProtocol"]'), 'www.neos.io')
 
@@ -316,11 +329,16 @@ test('Can edit property links via inspector and save the change', async t => {
     await t.expect(Selector('[data-link-editor-string]').innerText).eql(JSON.stringify('https://www.neos.io#my-anchor'))
     await t.switchToMainWindow();
 
-    subSection('Select mail to target and save change');
+    subSection('Reopen and validate selected web link');
     await t.click(LinkStringProperty.find('[title="Edit Link"]'));
-
     await t.expect(OpenLinkEditor.withText('Edit Link').exists).ok();
-    await t.click(Selector('#neos-LinkEditor button').withExactText('Mail to'));
+    await t.expect(Selector('#neos-LinkEditor [role="tab"]').withExactText('Web').getAttribute('aria-selected')).eql('true');
+    await t.expect(Selector('#neos-LinkEditor-Preview span').withExactText('https://www.neos.io').exists).ok();
+    await t.expect(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:Web.urlWithoutProtocol"]').value).eql('www.neos.io')
+    await t.expect(Selector('#neos-LinkEditor label').withExactText('Anchor:').find('input').value).eql('my-anchor')
+
+    subSection('Select mail to target and save change');
+    await t.click(Selector('#neos-LinkEditor [role="tab"]').withExactText('Mail to'));
 
     await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:MailTo.recipient"]'), 'mail@neos.io')
     await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:MailTo.subject"]'), 'My Subject')
@@ -334,11 +352,19 @@ test('Can edit property links via inspector and save the change', async t => {
     await t.expect(Selector('[data-link-editor-string]').innerText).eql(JSON.stringify('mailto:mail@neos.io?subject=My%20Subject&body=My%20Body%0A%0ABye'))
     await t.switchToMainWindow();
 
-    subSection('Select phone target and save change');
+    subSection('Reopen and validate selected web link');
     await t.click(LinkStringProperty.find('[title="Edit Link"]'));
-
     await t.expect(OpenLinkEditor.withText('Edit Link').exists).ok();
-    await t.click(Selector('#neos-LinkEditor button').withExactText('Phone Number'));
+    await t.expect(Selector('#neos-LinkEditor [role="tab"]').withExactText('Mail to').getAttribute('aria-selected')).eql('true');
+    await t.expect(Selector('#neos-LinkEditor-Preview span').withExactText('mail@neos.io').exists).ok();
+    await t.expect(Selector('#neos-LinkEditor-Preview span').withExactText('My Subject My Body Bye').exists).ok();
+
+    await t.expect(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:MailTo.recipient"]').value).eql('mail@neos.io');
+    await t.expect(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:MailTo.subject"]').value).eql('My Subject');
+    await t.expect(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:MailTo.body"]').value).eql('My Body' + "\n\n" + 'Bye');
+
+    subSection('Select phone target and save change');
+    await t.click(Selector('#neos-LinkEditor [role="tab"]').withExactText('Phone Number'));
 
     await t.click(Selector('#neos-LinkEditor [role="button"]').withExactText('AC +247'));
     await t.click(ReactSelector('ContextDropDownContents').find('li').withExactText('DK +45'));
@@ -353,11 +379,17 @@ test('Can edit property links via inspector and save the change', async t => {
     await t.expect(Selector('[data-link-editor-string]').innerText).eql(JSON.stringify('tel:+45123456789'))
     await t.switchToMainWindow();
 
-    subSection('Select custom link target and save change');
+    subSection('Reopen and validate selected phone number');
     await t.click(LinkStringProperty.find('[title="Edit Link"]'));
-
     await t.expect(OpenLinkEditor.withText('Edit Link').exists).ok();
-    await t.click(Selector('#neos-LinkEditor button').withExactText('Custom Link'));
+    await t.expect(Selector('#neos-LinkEditor [role="tab"]').withExactText('Phone Number').getAttribute('aria-selected')).eql('true');
+    await t.expect(Selector('#neos-LinkEditor-Preview span').withExactText('+45 123456789').exists).ok();
+
+    await t.expect(Selector('#neos-LinkEditor [role="button"]').withExactText('DK +45').exists).ok();
+    await t.expect(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:PhoneNumber.phoneNumber"]').value).eql('123456789')
+
+    subSection('Select custom link target and save change');
+    await t.click(Selector('#neos-LinkEditor [role="tab"]').withExactText('Custom Link'));
 
     await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:CustomLink.customLink"]'), 'https://neos.io')
 
@@ -374,7 +406,7 @@ test('Can edit property links via inspector and save the change', async t => {
 
     await t.expect(OpenLinkEditor.withText('Edit Link').exists).ok();
 
-    await t.click(Selector('#neos-LinkEditor button').withExactText('Document'));
+    await t.click(Selector('#neos-LinkEditor [role="tab"]').withExactText('Document'));
 
     await t.click(LinkEditorNodeTreeItem.withExactText('Link target'));
 
@@ -428,7 +460,7 @@ test('Can edit property links via inspector and save the change', async t => {
 
     await t.expect(OpenLinkEditor.withText('Edit Link').exists).ok();
 
-    await t.click(Selector('#neos-LinkEditor button').withExactText('Web'));
+    await t.click(Selector('#neos-LinkEditor [role="tab"]').withExactText('Web'));
 
     await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:Web.urlWithoutProtocol"]'), 'www.neos.io')
 

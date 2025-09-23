@@ -1,13 +1,13 @@
 import * as React from 'react';
 
 import {ILink, makeLinkType} from '../../../domain';
-import {IconCard, Layout, IconLabel} from '../../../presentation';
-import { OptionalDeep } from 'ts-toolbelt/out/Object/Optional';
-import { Nullable } from 'ts-toolbelt/out/Union/Nullable';
+import {IconCard, Layout} from '../../../presentation';
+import {OptionalDeep} from 'ts-toolbelt/out/Object/Optional';
+import {Nullable} from 'ts-toolbelt/out/Union/Nullable';
 import {isSuitableFor} from "./MailToSpecification";
 import {translate} from "@neos-project/neos-ui-i18n";
 import {isEmail} from "@neos-project/utils-helpers";
-import { PromiseState } from '@neos-project/framework-promise-react';
+import {PromiseState} from '@neos-project/framework-promise-react';
 import {State} from "@neos-project/framework-observable";
 import {useLatestState} from "@neos-project/framework-observable-react";
 import {EditorEnvelope} from '@neos-project/neos-ui-editors/src/index';
@@ -61,6 +61,10 @@ type MailToOptions = {
 }
 
 export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('LinkEditor:MailTo', ({createError, id}) => ({
+    icon: "envelope",
+
+    getTitle: () => translate('Neos.Neos.Ui:LinkEditor.MailTo:title', ''),
+
     isSuitableFor,
 
     isDirty: (model) => {
@@ -105,14 +109,6 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('LinkEditor:M
         const href = `mailto:${email.recipient?.value}${query ? `?${query}` : ''}`;
 
         return {href};
-    },
-
-    TabHeader: () => {
-        return (
-            <IconLabel icon="envelope">
-                {translate('Neos.Neos.Ui:LinkEditor.MailTo:title', '')}
-            </IconLabel>
-        );
     },
 
     Preview: ({model: email}: {model: MailToLinkModel}) => (

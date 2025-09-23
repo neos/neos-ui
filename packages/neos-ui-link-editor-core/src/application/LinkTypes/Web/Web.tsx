@@ -3,11 +3,11 @@ import * as React from 'react';
 import {SelectBox} from '@neos-project/react-ui-components';
 
 import {ILink, makeLinkType} from '../../../domain';
-import {IconCard, IconLabel} from '../../../presentation';
-import { Nullable } from 'ts-toolbelt/out/Union/Nullable';
+import {IconCard} from '../../../presentation';
+import {Nullable} from 'ts-toolbelt/out/Union/Nullable';
 import {isSuitableFor} from "./WebSpecification";
 import {translate} from "@neos-project/neos-ui-i18n";
-import { PromiseState } from '@neos-project/framework-promise-react';
+import {PromiseState} from '@neos-project/framework-promise-react';
 import {EditorEnvelope} from '@neos-project/neos-ui-editors/src/index';
 import {State} from "@neos-project/framework-observable";
 import {useLatestState} from "@neos-project/framework-observable-react";
@@ -25,6 +25,10 @@ type WebLinkModel = {
 }
 
 export const Web = makeLinkType<WebLinkModel>('LinkEditor:Web', ({createError, id}) => ({
+    icon: "globe",
+
+    getTitle: () => translate('Neos.Neos.Ui:LinkEditor.Web:title', ''),
+
     supportedLinkOptions: ['anchor', 'title', 'targetBlank', 'relNofollow', 'download'],
 
     isSuitableFor,
@@ -63,14 +67,6 @@ export const Web = makeLinkType<WebLinkModel>('LinkEditor:Web', ({createError, i
     convertModelToLink:(model: WebLinkModel) => ({
         href: `${model.protocol.value}://${model.urlWithoutProtocol.value}`
     }),
-
-    TabHeader: () => {
-        return (
-            <IconLabel icon="globe">
-                {translate('Neos.Neos.Ui:LinkEditor.Web:title', '')}
-            </IconLabel>
-        );
-    },
 
     Preview: ({model}: {model: WebLinkModel}) => (
         <IconCard

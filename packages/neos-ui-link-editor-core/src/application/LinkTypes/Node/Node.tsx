@@ -9,16 +9,16 @@
  */
 import React from "react";
 import {PromiseState, usePromise} from "@neos-project/framework-promise-react";
-import { Nullable } from "ts-toolbelt/out/Union/Nullable";
-import { OptionalDeep } from "ts-toolbelt/out/Object/Optional";
+import {Nullable} from "ts-toolbelt/out/Union/Nullable";
+import {OptionalDeep} from "ts-toolbelt/out/Object/Optional";
 
-import { configuration } from "@neos-project/neos-ui/configuration";
+import {configuration} from "@neos-project/neos-ui/configuration";
 import {selectors, useSelector} from '@neos-project/neos-ui-redux-store';
-import { Tree } from "@neos-project/neos-ui-link-editor-custom-node-tree";
+import {Tree} from "@neos-project/neos-ui-link-editor-custom-node-tree";
 
-import { ILink, makeLinkType } from "../../../domain";
-import { IconCard, IconLabel } from "../../../presentation";
-import { getNodeSummary } from "../../../infrastructure/http";
+import {ILink, makeLinkType} from "../../../domain";
+import {IconCard} from "../../../presentation";
+import {getNodeSummary} from "../../../infrastructure/http";
 import {isSuitableFor} from "./NodeSpecification";
 import {useSiteNodeAggregateId} from "./useSiteNodeAggregateId";
 import {translate} from "@neos-project/neos-ui-i18n";
@@ -84,9 +84,11 @@ const NodePreview: React.FC<{ nodeId: string }> = (props) => {
     );
 };
 
-export const Node = makeLinkType<NodeLinkModel, NodeLinkOptions>(
-    "LinkEditor:Node",
-    ({ createError }) => ({
+export const Node = makeLinkType<NodeLinkModel, NodeLinkOptions>("LinkEditor:Node", ({ createError }) => ({
+        icon: "file",
+
+        getTitle: () => translate('Neos.Neos.Ui:LinkEditor.Node:title', ''),
+
         supportedLinkOptions: ["anchor", "title", "targetBlank", "relNofollow"],
 
         isSuitableFor,
@@ -114,14 +116,6 @@ export const Node = makeLinkType<NodeLinkModel, NodeLinkOptions>(
         convertModelToLink: ({ nodeId }: NodeLinkModel) => ({
             href: `node://${nodeId}`,
         }),
-
-        TabHeader: () => {
-            return (
-                <IconLabel icon="file">
-                    {translate("Neos.Neos.Ui:LinkEditor.Node:title", '')}
-                </IconLabel>
-            );
-        },
 
         Preview: (props: { model: NodeLinkModel }) => {
             return <NodePreview nodeId={props.model.nodeId} />;

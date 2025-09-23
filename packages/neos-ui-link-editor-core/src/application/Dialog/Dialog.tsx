@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import {Button} from '@neos-project/react-ui-components';
+import {Button, Tabs} from '@neos-project/react-ui-components';
 
 import {ErrorBoundary, ErrorView} from '@neos-project/neos-ui-error';
 
@@ -12,7 +12,7 @@ import {
     IEditor,
     ILinkType,
 } from '../../domain';
-import {Layout, Form, Modal, Tabs, Deletable} from '../../presentation';
+import {Layout, Form, Modal, Deletable} from '../../presentation';
 
 import {LinkOptions} from './LinkOptions';
 import {useLatestState} from '@neos-project/framework-observable-react';
@@ -52,8 +52,8 @@ const ActiveLinkEditorDialog: React.FC<{
     const form$ = React.useMemo(() => createState({
         isOptionsDirty: false,
         initialLinkWasDeleted: false,
-        activeLinkTypeId: availableLinkTypes[0].id,
-        options: {}
+        activeLinkTypeId: initialLinkType?.id ?? availableLinkTypes[0].id,
+        options: initialValue?.options ?? {}
     } as FormValues), []);
 
     const setActiveTab = React.useCallback((linkId) => form$.update((values) => ({ ...values, activeLinkTypeId: linkId })), []);
@@ -186,48 +186,47 @@ const DialogWithEmptyValue: React.FC<{
 
     return (
         <Tabs
-            lazy
-            from={props.availableLinkTypes}
-            activeItemKey={form.activeLinkTypeId}
-            onSwitchTab={props.setActiveTab}
-            getKey={linkType => linkType.id}
-            renderHeader={({id, TabHeader}) => (
-                <TabHeader
-                    options={editorOptions.linkTypes?.[id] as any ?? {}}
-                />
-            )}
-            renderPanel={linkType => {
+            activeTab={form.activeLinkTypeId}
+            onActiveTabChange={props.setActiveTab}
+        >
+            {props.availableLinkTypes.map((linkType) => {
                 const {Editor} = linkType;
                 const model$ = props.linkModels$[linkType.id];
+                const options = editorOptions.linkTypes?.[linkType.id] as any ?? {};
 
                 return (
-                    <Layout.Stack>
-                        <PreviewForLinkType
-                            linkType={linkType}
-                            options={editorOptions.linkTypes?.[linkType.id] as any ?? {}}
-                            model$={model$}
-                            onDelete={props.unsetLinkModels}
-                        />
-
-                        <ErrorBoundary errorFallback={ErrorView}>
-                            <Editor
+                    <Tabs.Panel
+                        key={linkType.id}
+                        id={linkType.id}
+                        // menu item props
+                        title={linkType.getTitle()}
+                        icon={linkType.icon}
+                    >
+                        <Layout.Stack>
+                            <PreviewForLinkType
+                                linkType={linkType}
+                                options={options}
                                 model$={model$}
-                                options={editorOptions.linkTypes?.[linkType.id] as any ?? {}}
+                                onDelete={props.unsetLinkModels}
                             />
-                        </ErrorBoundary>
 
-                        {enabledLinkOptions.length && linkType.supportedLinkOptions.length ? (
-                            <LinkOptions
-                                form$={props.form$}
-                                enabledLinkOptions={enabledLinkOptions.filter(
-                                    option => linkType.supportedLinkOptions.includes(option)
-                                )}
-                            />
-                        ) : null}
-                    </Layout.Stack>
+                            <ErrorBoundary errorFallback={ErrorView}>
+                                <Editor model$={model$} options={options} />
+                            </ErrorBoundary>
+
+                            {enabledLinkOptions.length && linkType.supportedLinkOptions.length ? (
+                                <LinkOptions
+                                    form$={props.form$}
+                                    enabledLinkOptions={enabledLinkOptions.filter(
+                                        option => linkType.supportedLinkOptions.includes(option)
+                                    )}
+                                />
+                            ) : null}
+                        </Layout.Stack>
+                    </Tabs.Panel>
                 )
-            }}
-        />
+            })}
+        </Tabs>
     );
 }
 
@@ -252,7 +251,6 @@ const DialogWithValue: React.FC<{
             if (!model$.current) {
                 // update state with initial value once available
                 model$.update(() => initialModel);
-                props.form$.update((values) => ({ ...values, options: props.initialValue.options ?? {}, activeLinkTypeId: props.initialLinkType.id }));
             }
         }
     }, [initialModel]);
@@ -262,71 +260,73 @@ const DialogWithValue: React.FC<{
 
     return (
         <Tabs
-            lazy
-            from={props.availableLinkTypes}
-            activeItemKey={form.activeLinkTypeId}
-            onSwitchTab={props.setActiveTab}
-            getKey={linkType => linkType.id}
-            renderHeader={({id, TabHeader}) => (
-                <TabHeader
-                    options={editorOptions.linkTypes?.[id] as any ?? {}}
-                />
-            )}
-            renderPanel={linkType => {
+            activeTab={form.activeLinkTypeId}
+            onActiveTabChange={props.setActiveTab}
+        >
+            {props.availableLinkTypes.map((linkType) => {
                 const {Editor, LoadingEditor} = linkType;
                 const model$ = props.linkModels$[linkType.id];
 
                 return (
-                    <Layout.Stack>
-                        <PreviewForLinkType
-                            linkType={linkType}
-                            options={editorOptions.linkTypes?.[linkType.id] as any ?? {}}
-                            model$={model$}
-                            onDelete={props.unsetLinkModels}
-                            fallback={() => (
-                                error ? (
-                                    <ErrorView error={error} />
-                                ) : (
-                                    isLoading ? (
-                                        <InitialLoadingPreview
-                                            link={props.initialValue}
-                                            options={editorOptions.linkTypes?.[props.initialLinkType.id] as any ?? {}}
-                                        />
+                    <Tabs.Panel
+                        key={linkType.id}
+                        id={linkType.id}
+                        // menu item props
+                        title={linkType.getTitle()}
+                        icon={linkType.icon}
+                    >
+                        <Layout.Stack>
+                            <PreviewForLinkType
+                                linkType={linkType}
+                                options={editorOptions.linkTypes?.[linkType.id] as any ?? {}}
+                                model$={model$}
+                                onDelete={props.unsetLinkModels}
+                                fallback={() => (
+                                    error ? (
+                                        <ErrorView error={error} />
                                     ) : (
-                                        <InitialPreview
-                                            model={initialModel}
-                                            options={editorOptions.linkTypes?.[props.initialLinkType.id] as any ?? {}}
-                                        />
+                                        isLoading ? (
+                                            <InitialLoadingPreview
+                                                link={props.initialValue}
+                                                options={editorOptions.linkTypes?.[props.initialLinkType.id] as any ?? {}}
+                                            />
+                                        ) : (
+                                            <InitialPreview
+                                                model={initialModel}
+                                                options={editorOptions.linkTypes?.[props.initialLinkType.id] as any ?? {}}
+                                            />
+                                        )
                                     )
-                                )
-                            )}
-                        />
-
-                        <ErrorBoundary errorFallback={ErrorView}>
-                            {isLoading && linkType.id === props.initialLinkType.id ? (
-                                <LoadingEditor
-                                    link={props.initialValue}
-                                    options={editorOptions.linkTypes?.[props.initialLinkType.id] as any ?? {}}
-                                />
-                            ) : (
-                                <Editor
-                                    model$={model$}
-                                    options={editorOptions.linkTypes?.[linkType.id] as any ?? {}}
-                                />
-                            )}
-                        </ErrorBoundary>
-
-                        {enabledLinkOptions.length && linkType.supportedLinkOptions.length ? (
-                            <LinkOptions
-                                form$={props.form$}
-                                enabledLinkOptions={enabledLinkOptions.filter(
-                                    option => linkType.supportedLinkOptions.includes(option)
                                 )}
                             />
-                        ) : null}
-                    </Layout.Stack>
-            )}}
-        />
+
+                            <ErrorBoundary errorFallback={ErrorView}>
+                                {isLoading && linkType.id === props.initialLinkType.id ? (
+                                    <LoadingEditor
+                                        link={props.initialValue}
+                                        options={editorOptions.linkTypes?.[props.initialLinkType.id] as any ?? {}}
+                                    />
+                                ) : (
+                                    <Editor
+                                        model$={model$}
+                                        options={editorOptions.linkTypes?.[linkType.id] as any ?? {}}
+                                    />
+                                )}
+                            </ErrorBoundary>
+
+                            {enabledLinkOptions.length && linkType.supportedLinkOptions.length ? (
+                                <LinkOptions
+                                    form$={props.form$}
+                                    enabledLinkOptions={enabledLinkOptions.filter(
+                                        option => linkType.supportedLinkOptions.includes(option)
+                                    )}
+                                />
+                            ) : null}
+                        </Layout.Stack>
+                    </Tabs.Panel>
+                )
+            })}
+        </Tabs>
     );
 }
 
@@ -343,6 +343,7 @@ const PreviewForLinkType: React.FC<{
 
     return model && props.linkType.isDirty(model) && props.linkType.isValid(model) ? (
         <Deletable
+            id={'neos-LinkEditor-Preview'}
             onDelete={props.onDelete}
         >
             <ErrorBoundary errorFallback={ErrorView}>
@@ -354,6 +355,7 @@ const PreviewForLinkType: React.FC<{
         </Deletable>
     ) : (props.fallback ? (
         <Deletable
+            id={'neos-LinkEditor-Preview'}
             onDelete={props.onDelete}
         >
             <ErrorBoundary errorFallback={ErrorView}>

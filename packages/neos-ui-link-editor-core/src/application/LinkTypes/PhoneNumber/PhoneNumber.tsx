@@ -4,7 +4,7 @@ import {SelectBox} from '@neos-project/react-ui-components';
 import type {CountryCode} from 'libphonenumber-js'
 
 import {ILink, makeLinkType} from "../../../domain";
-import {IconCard, IconLabel} from "../../../presentation";
+import {IconCard} from "../../../presentation";
 import {Nullable} from 'ts-toolbelt/out/Union/Nullable';
 import {OptionalDeep} from 'ts-toolbelt/out/Object/Optional';
 import {isSuitableFor} from "./PhoneNumberSpecification";
@@ -35,6 +35,9 @@ type PhoneNumberLinkOptions = {
 const VALID_PHONE_NUMBER = /^[1-9][0-9]*$/;
 
 export const PhoneNumber = makeLinkType<PhoneNumberLinkModel, PhoneNumberLinkOptions>('LinkEditor:PhoneNumber', ({createError, id}) => ({
+    icon: "phone-alt",
+
+    getTitle: () => translate('Neos.Neos.Ui:LinkEditor.PhoneNumber:title', ''),
 
     isSuitableFor,
 
@@ -77,14 +80,6 @@ export const PhoneNumber = makeLinkType<PhoneNumberLinkModel, PhoneNumberLinkOpt
 
     convertModelToLink: (model: PhoneNumberLinkModel) => {
         return {href: `tel:${model.countryCallingCode.value}${model.phoneNumber.value}`};
-    },
-
-    TabHeader: () => {
-        return (
-            <IconLabel icon="phone-alt">
-                {translate('Neos.Neos.Ui:LinkEditor.PhoneNumber:title', '')}
-            </IconLabel>
-        );
     },
 
     Preview: ({model}: { model: PhoneNumberLinkModel }) => {

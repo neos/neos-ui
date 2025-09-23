@@ -22,7 +22,7 @@ export const Asset = makeLinkType<AssetLinkModel>('LinkEditor:Asset', ({createEr
 
     getTitle: () => translate('Neos.Neos.Ui:LinkEditor.Asset:title', ''),
 
-    supportedLinkOptions: ['title', 'targetBlank', 'relNofollow', 'download'],
+    supportedLinkOptions: ['title', 'anchor', 'targetBlank', 'relNofollow', 'download'],
 
     isSuitableFor,
 

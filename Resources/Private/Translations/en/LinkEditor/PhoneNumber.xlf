@@ -14,9 +14,6 @@
             <trans-unit id="phoneNumber.validation.required" xml:space="preserve" approved="yes">
                 <source>A phone number is required</source>
             </trans-unit>
-            <trans-unit id="countryCallingCode.validation.required" xml:space="preserve" approved="yes">
-                <source>Please select a valid country calling code</source>
-            </trans-unit>
             <trans-unit id="phoneNumber.validation.numbersOnly" xml:space="preserve" approved="yes">
                 <source>Please enter only number values without a leading 0</source>
             </trans-unit>

@@ -49,10 +49,6 @@
                 <source>Open in new window</source>
                 <target>Otwórz w nowym oknie</target>
             </trans-unit>
-            <trans-unit id="options.label.relNofollow" xml:space="preserve" approved="yes">
-                <source>rel="nofollow"</source>
-                <target>rel="nofollow"</target>
-            </trans-unit>
         </body>
     </file>
 </xliff>

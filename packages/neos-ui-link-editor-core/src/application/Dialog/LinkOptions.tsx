@@ -28,13 +28,13 @@ export const LinkOptions: React.FC<{
                     {props.enabledLinkOptions.includes('anchor') ? (
                         <label>
                             {translate('Neos.Neos.Ui:LinkEditor.Main:options.label.anchor', '')}:
-                            <TextInput type="text" value={form.options?.anchor ?? ""} onChange={setAnchor} />
+                            <TextInput type="text" value={form.options?.anchor ?? ""} placeholder={translate('Neos.Neos.Ui:LinkEditor.Main:options.placeholder.anchor', '')} onChange={setAnchor} />
                         </label>
                     ) : null}
                     {props.enabledLinkOptions.includes('title') ? (
                         <label>
                             {translate('Neos.Neos.Ui:LinkEditor.Main:options.label.title', '')}:
-                            <TextInput type="text" value={form.options?.title ?? ""} onChange={setTitle} />
+                            <TextInput type="text" value={form.options?.title ?? ""} placeholder={translate('Neos.Neos.Ui:LinkEditor.Main:options.placeholder.title', '')} onChange={setTitle} />
                         </label>
                     ) : null}
                 </Layout.Columns>

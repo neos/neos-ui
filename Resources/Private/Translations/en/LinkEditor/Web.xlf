@@ -10,11 +10,6 @@
                 <source>Link</source>
             </trans-unit>
 
-            <!-- Protocol -->
-            <trans-unit id="protocol.validation.required" xml:space="preserve" approved="yes">
-                <source>Protocol is required</source>
-            </trans-unit>
-
             <!-- URL -->
             <trans-unit id="urlWithoutProtocol.placeholder" xml:space="preserve" approved="yes">
                 <source>e.g. www.example.com</source>

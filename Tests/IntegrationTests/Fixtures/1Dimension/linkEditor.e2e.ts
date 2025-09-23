@@ -413,7 +413,7 @@ test('Can edit property links via inspector and save the change', async t => {
     await t.typeText(Selector('#neos-LinkEditor label').withExactText('Anchor:').find('input'), 'my-anchor')
     await t.typeText(Selector('#neos-LinkEditor label').withExactText('Title:').find('input'), 'My title')
     await t.click(Selector('#neos-LinkEditor label').withExactText('Open in new window').find('input'))
-    await t.click(Selector('#neos-LinkEditor label').withExactText('rel="nofollow"').find('input'))
+    await t.click(Selector('#neos-LinkEditor label').withExactText('No follow (SEO)').find('input'))
 
     await t.click(Selector('#neos-LinkEditor button').withExactText('Apply'));
     await t.click(Selector('#neos-Inspector-Apply').withExactText('Apply'));
@@ -433,9 +433,9 @@ test('Can edit property links via inspector and save the change', async t => {
     await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:Web.urlWithoutProtocol"]'), 'www.neos.io')
 
     await t.typeText(Selector('#neos-LinkEditor label').withExactText('Anchor:').find('input'), '-new')
-    await t.click(Selector('#neos-LinkEditor label').withExactText('rel="nofollow"').find('input'))
+    await t.click(Selector('#neos-LinkEditor label').withExactText('No follow (SEO)').find('input'))
 
-    await t.click(Selector('#neos-LinkEditor label').withExactText('Download').find('input'))
+    await t.click(Selector('#neos-LinkEditor label').withExactText('Download target').find('input'))
 
     await t.click(Selector('#neos-LinkEditor button').withExactText('Apply'));
     await t.click(Selector('#neos-Inspector-Apply').withExactText('Apply'));

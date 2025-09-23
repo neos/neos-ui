@@ -39,23 +39,31 @@
             <!-- Link Options -->
             <trans-unit id="options.label.anchor" xml:space="preserve" approved="yes">
                 <source>Anchor</source>
-                <target>Anchor</target>
+                <target>Anker</target>
+            </trans-unit>
+            <trans-unit id="options.placeholder.anchor" xml:space="preserve" approved="no">
+                <source>Enter anchor name</source>
+                <target>Anker Name eingeben</target>
             </trans-unit>
             <trans-unit id="options.label.title" xml:space="preserve" approved="yes">
                 <source>Title</source>
                 <target>Titel</target>
+            </trans-unit>
+            <trans-unit id="options.placeholder.title" xml:space="preserve" approved="no">
+                <source>Enter link title</source>
+                <target>Link Titel eingeben</target>
             </trans-unit>
             <trans-unit id="options.label.targetBlank" xml:space="preserve" approved="yes">
                 <source>Open in new window</source>
                 <target>In einem neuen Fenster öffnen</target>
             </trans-unit>
             <trans-unit id="options.label.relNofollow" xml:space="preserve" approved="yes">
-                <source>rel="nofollow"</source>
-                <target>rel="nofollow"</target>
+                <source>No follow (SEO)</source>
+                <target>Nicht folgen (SEO)</target>
             </trans-unit>
             <trans-unit id="options.label.download" xml:space="preserve" approved="yes">
-                <source>Download</source>
-                <target>Herunterladen</target>
+                <source>Download target</source>
+                <target>Ziel herunterladen</target>
             </trans-unit>
         </body>
     </file>

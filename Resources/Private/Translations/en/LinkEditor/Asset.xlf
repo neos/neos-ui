@@ -6,11 +6,6 @@
             <trans-unit id="title" xml:space="preserve" approved="yes">
                 <source>Asset</source>
             </trans-unit>
-
-            <!-- Identifier -->
-            <trans-unit id="identifier.validation.required" xml:space="preserve" approved="yes">
-                <source>Asset is required</source>
-            </trans-unit>
         </body>
     </file>
 </xliff>

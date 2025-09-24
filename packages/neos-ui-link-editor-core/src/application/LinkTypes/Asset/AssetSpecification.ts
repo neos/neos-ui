@@ -1,3 +1,1 @@
-import {ILink} from "../../../domain";
-
-export const isSuitableFor = (link: ILink) => link.href.startsWith('asset://');
+export const isSuitableFor = (link: { href: string }) => link.href.startsWith('asset://');

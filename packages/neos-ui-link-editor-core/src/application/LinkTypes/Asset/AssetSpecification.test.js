@@ -36,14 +36,6 @@ describe('LinkType: Asset', () => {
         equal(isSuitableFor(link), true);
     });
 
-    it('is not satisfied by asset:// links with a hash', () => {
-        const link = {
-            href: 'asset://97c9a6e3-4b50-4559-9f60-b5ad68f25758#section'
-        };
-
-        equal(isSuitableFor(link), false);
-    });
-
     it('is not satisfied by mailto: links', () => {
         const link = {
             href: 'mailto:foo@example.com'

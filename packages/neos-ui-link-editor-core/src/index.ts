@@ -5,6 +5,8 @@ export {
     makeLinkType,
     useLinkTypeForHref,
     createEditor,
+    createHrefWithAnchorForLink,
+    parseBaseHrefAndAnchorFromValue,
 } from './domain';
 
 export {Deletable} from './presentation';

@@ -14,7 +14,7 @@ import {useLatestState} from "@neos-project/framework-observable-react";
 
 type WebLinkModel = {
     protocol: {
-        value: 'http' | 'https',
+        value: 'http' | 'https' | '',
         isDirty: boolean
     }
     urlWithoutProtocol: {
@@ -23,6 +23,26 @@ type WebLinkModel = {
         isValid: true | string
     }
 }
+
+const validateUrlWithoutProtocol = (values: WebLinkModel): WebLinkModel => ({
+    ...values,
+    urlWithoutProtocol: {
+        ...values.urlWithoutProtocol,
+        isValid: (
+            !values.urlWithoutProtocol?.value ? (
+                values.protocol.value !== '' ? translate('Neos.Neos.Ui:LinkEditor.Web:urlWithoutProtocol.validation.required', '') : true
+            ) : (
+                /^https?:\/\//.test(values.urlWithoutProtocol.value) ? (
+                    'Url must be without protocol'
+                ) : (
+                    / |^javascript:/.test(values.urlWithoutProtocol.value) ? (
+                        'Invalid url'
+                    ) : true
+                )
+            )
+        )
+    },
+});
 
 export const Web = makeLinkType<WebLinkModel>('LinkEditor:Web', ({createError, id}) => ({
     icon: "globe",
@@ -46,7 +66,7 @@ export const Web = makeLinkType<WebLinkModel>('LinkEditor:Web', ({createError, i
         if (matches) {
             const [, protocol, urlWithoutProtocol] = matches;
 
-            return PromiseState.forValue({
+            return PromiseState.forValue(validateUrlWithoutProtocol({
                 protocol: {
                     isDirty: false,
                     value: protocol as 'http' | 'https'
@@ -56,39 +76,54 @@ export const Web = makeLinkType<WebLinkModel>('LinkEditor:Web', ({createError, i
                     isValid: true,
                     value: urlWithoutProtocol
                 }
-            });
+            }));
         }
 
-        return PromiseState.forError(
-            createError(`Cannot handle href "${link.href}".`)
-        );
+        return PromiseState.forValue(validateUrlWithoutProtocol({
+            protocol: {
+                isDirty: false,
+                value: ''
+            },
+            urlWithoutProtocol: {
+                isDirty: false,
+                isValid: true,
+                value: link.href
+            },
+        }));
     },
 
-    convertModelToLink:(model: WebLinkModel) => ({
+    convertModelToLink:(model: WebLinkModel) => (model.protocol.value === '' ? {
+        href: model.urlWithoutProtocol.value || ''
+    } : {
         href: `${model.protocol.value}://${model.urlWithoutProtocol.value}`
     }),
 
     Preview: ({model}: {model: WebLinkModel}) => (
         <IconCard
             icon="external-link"
-            title={`${model.protocol.value}://${model.urlWithoutProtocol.value}`}
+            title={model.protocol.value === '' ? model.urlWithoutProtocol?.value || '#' : `${model.protocol.value}://${model.urlWithoutProtocol.value}`}
         />
     ),
 
     Editor: ({model$}: {model$: State<Nullable<WebLinkModel>>}) => {
         const model = useLatestState(model$);
 
-        const setProtocol = React.useCallback((protocol: 'http' | 'https') => model$.update((values) => ({ ...values, protocol: { isDirty: true, value: protocol } })), []);
-        // todo allow pasting / inserting url with protocol split value?
-        const setUrlWithoutProtocol = React.useCallback((urlWithoutProtocol) => model$.update((values) => ({
+        const setProtocol = React.useCallback((protocol: 'http' | 'https' | '') => model$.update((values) => validateUrlWithoutProtocol({
             ...values,
-            protocol: values?.protocol ?? { isDirty: false, value: 'https' },
-            urlWithoutProtocol: {
-                isDirty: true,
-                isValid: !urlWithoutProtocol ? translate('Neos.Neos.Ui:LinkEditor.Web:urlWithoutProtocol.validation.required', '') : (/^https?:\/\//.test(urlWithoutProtocol) ? 'Url must be without protocol' : true),
-                value: urlWithoutProtocol
-            }
-        })), [])
+            protocol: { isDirty: true, value: protocol },
+            urlWithoutProtocol: values?.urlWithoutProtocol ?? { isDirty: false, value: '' },
+        })), []);
+        // todo allow pasting / inserting url with protocol split value?
+        const setUrlWithoutProtocol = React.useCallback((urlWithoutProtocol) => model$.update((values) => {
+            return validateUrlWithoutProtocol({
+                ...values,
+                protocol: values?.protocol ?? { isDirty: false, value: 'https' },
+                urlWithoutProtocol: {
+                    isDirty: true,
+                    value: urlWithoutProtocol
+                }
+            })
+        }), []);
 
         return (
             <div>
@@ -109,6 +144,10 @@ export const Web = makeLinkType<WebLinkModel>('LinkEditor:Web', ({createError, i
                                 value: 'http',
                                 label: 'HTTP',
                                 icon: 'unlock'
+                            }, {
+                                value: '',
+                                label: 'Relative',
+                                icon: 'circle'
                             }]}
                         />
                     </div>
@@ -117,10 +156,10 @@ export const Web = makeLinkType<WebLinkModel>('LinkEditor:Web', ({createError, i
                             identifier={`${id}.urlWithoutProtocol`}
                             label={''}
                             editor={'Neos.Neos/Inspector/Editors/TextFieldEditor'}
-                            editorOptions={{
+                            options={{
                                 placeholder: translate('Neos.Neos.Ui:LinkEditor.Web:urlWithoutProtocol.placeholder', '')
                             }}
-                            validationErrors={model?.urlWithoutProtocol?.isDirty && model.urlWithoutProtocol.isValid !== true ? [model.urlWithoutProtocol.isValid] : []}
+                            validationErrors={model && model.urlWithoutProtocol.isValid !== true ? [model.urlWithoutProtocol.isValid] : []}
                             value={model?.urlWithoutProtocol?.value ?? ''}
                             commit={setUrlWithoutProtocol}
                         />

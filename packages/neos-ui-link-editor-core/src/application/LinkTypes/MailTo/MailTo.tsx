@@ -166,7 +166,7 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('LinkEditor:M
                         identifier={`${id}.recipient`}
                         label={translate('Neos.Neos.Ui:LinkEditor.MailTo:recipient.label', '')}
                         editor={'Neos.Neos/Inspector/Editors/TextFieldEditor'}
-                        editorOptions={{}}
+                        options={{}}
                         validationErrors={(email?.recipient?.isDirty && email?.recipient.isValid !== true) ? [email?.recipient.isValid] : []}
                         value={email?.recipient?.value ?? ''}
                         commit={setRecipient}
@@ -179,7 +179,7 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('LinkEditor:M
                             identifier={`${id}.subject`}
                             label={translate('Neos.Neos.Ui:LinkEditor.MailTo:subject.label', '')}
                             editor={'Neos.Neos/Inspector/Editors/TextFieldEditor'}
-                            editorOptions={{}}
+                            options={{}}
                             validationErrors={(email?.subject?.isDirty && email?.subject.isValid !== true) ? [email?.subject.isValid] : []}
                             value={email?.subject?.value ?? ''}
                             commit={setSubject}
@@ -192,7 +192,7 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('LinkEditor:M
                             identifier={`${id}.cc`}
                             label={translate('Neos.Neos.Ui:LinkEditor.MailTo:cc.label', '')}
                             editor={'Neos.Neos/Inspector/Editors/TextFieldEditor'}
-                            editorOptions={{
+                            options={{
                                 placeholder: translate('Neos.Neos.Ui:LinkEditor.MailTo:cc.placeholder', '')
                             }}
                             validationErrors={(email?.cc?.isDirty && email?.cc.isValid !== true) ? [email?.cc.isValid] : []}
@@ -207,7 +207,7 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('LinkEditor:M
                             identifier={`${id}.bcc`}
                             label={translate('Neos.Neos.Ui:LinkEditor.MailTo:bcc.label', '')}
                             editor={'Neos.Neos/Inspector/Editors/TextFieldEditor'}
-                            editorOptions={{
+                            options={{
                                 placeholder: translate('Neos.Neos.Ui:LinkEditor.MailTo:bcc.placeholder', '')
                             }}
                             validationErrors={(email?.bcc?.isDirty && email?.bcc.isValid !== true) ? [email?.bcc.isValid] : []}

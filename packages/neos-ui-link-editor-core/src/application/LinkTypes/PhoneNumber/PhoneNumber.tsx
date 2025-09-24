@@ -178,7 +178,7 @@ const PhoneNumberEditor = ({model$, options, id, libphonenumber}: { model$: Stat
                         identifier={`${id}.phoneNumber`}
                         label={''}
                         editor={'Neos.Neos/Inspector/Editors/TextFieldEditor'}
-                        editorOptions={{
+                        options={{
                             placeholder: translate('Neos.Neos.Ui:LinkEditor.PhoneNumber:phoneNumber.placeholder', '')
                         }}
                         validationErrors={model?.phoneNumber?.isDirty && model.phoneNumber.isValid !== true ? [model.phoneNumber.isValid] : []}

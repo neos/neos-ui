@@ -284,10 +284,12 @@ test('Open and close link editor dialog without saving the change', async t => {
     await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:MailTo.recipient"]'), 'mail');
     await t.expect(Selector('#neos-LinkEditor button').withExactText('Apply').hasAttribute('disabled')).ok();
 
+    await t.expect(OpenLinkEditor.find('[class*="tooltip--asError"]').exists).ok();
     await t.expect(OpenLinkEditor.withText('Recipient should be a valid E-Mail Address').exists).ok();
 
     // turn the text into a valid mail
     await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:MailTo.recipient"]'), '@neos.io');
+    await t.expect(OpenLinkEditor.find('[class*="tooltip--asError"]').exists).ok();
     await t.expect(OpenLinkEditor.withText('Recipient should be a valid E-Mail Address').exists).notOk();
 
     await t.click(Selector('#neos-LinkEditor button').withExactText('Apply'));
@@ -307,6 +309,7 @@ test('Open and close link editor dialog without saving the change', async t => {
     // "mail" is not a valid email address
     await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:MailTo.recipient"]'), 'mail');
     await t.expect(Selector('#neos-LinkEditor button').withExactText('Apply').hasAttribute('disabled')).ok();
+    await t.expect(OpenLinkEditor.find('[class*="tooltip--asError"]').exists).ok();
     await t.expect(OpenLinkEditor.withText('Recipient should be a valid E-Mail Address').exists).ok();
 
     await t.click(Selector('#neos-LinkEditor [role="tab"]').withExactText('Document'));
@@ -317,6 +320,7 @@ test('Open and close link editor dialog without saving the change', async t => {
 
     // Mail tab is still invalid
     await t.click(Selector('#neos-LinkEditor [role="tab"]').withExactText('Mail to'));
+    await t.expect(OpenLinkEditor.find('[class*="tooltip--asError"]').exists).ok();
     await t.expect(OpenLinkEditor.withText('Recipient should be a valid E-Mail Address').exists).ok();
     await t.expect(Selector('#neos-LinkEditor button').withExactText('Apply').hasAttribute('disabled')).ok();
 
@@ -327,6 +331,132 @@ test('Open and close link editor dialog without saving the change', async t => {
     await t.expect(OpenLinkEditor.exists).notOk();
 
     await t.expect(LinkStringValue).eql('node://link-target');
+
+    // cleanup state
+    await t.click(Selector('#neos-Inspector-Discard').withExactText('Discard'));
+
+    subSection('Open and enter invalid web targets');
+    await t.click(LinkStringProperty.withExactText('Create Link'));
+
+    await t.expect(OpenLinkEditor.withText('Edit Link').exists).ok();
+    await t.click(Selector('#neos-LinkEditor [role="tab"]').withExactText('Web'));
+
+    await t.expect(Selector('#neos-LinkEditor button').withExactText('Apply').hasAttribute('disabled')).ok();
+
+    // anchor cannot be set alone on https link without value
+    await t.typeText(Selector('#neos-LinkEditor label').withExactText('Anchor:').find('input'), 'my-anchor');
+    await t.expect(Selector('#neos-LinkEditor button').withExactText('Apply').hasAttribute('disabled')).ok();
+
+    // valid https url
+    await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:Web.urlWithoutProtocol"]'), 'neos.io')
+    await t.expect(OpenLinkEditor.find('[class*="tooltip--asError"]').exists).notOk();
+    await t.expect(Selector('#neos-LinkEditor button').withExactText('Apply').hasAttribute('disabled')).notOk();
+
+    // empty url is invalid
+    await t.click(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:Web.urlWithoutProtocol"]')).pressKey('ctrl+a delete')
+    await t.expect(OpenLinkEditor.find('[class*="tooltip--asError"]').exists).ok();
+    await t.expect(OpenLinkEditor.withText('URL is required').exists).ok();
+    await t.expect(Selector('#neos-LinkEditor button').withExactText('Apply').hasAttribute('disabled')).ok();
+
+    // switching to relative (no protocol) allows the empty change with anchor
+    await t.click(Selector('#neos-LinkEditor [role="button"]').withExactText('HTTPS'));
+    await t.click(ReactSelector('ContextDropDownContents').find('li').withExactText('Relative'));
+    await t.expect(OpenLinkEditor.find('[class*="tooltip--asError"]').exists).notOk();
+    await t.expect(Selector('#neos-LinkEditor button').withExactText('Apply').hasAttribute('disabled')).notOk();
+
+    // invalid javascript url
+    await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:Web.urlWithoutProtocol"]'), 'javascript:alert()')
+    await t.expect(OpenLinkEditor.find('[class*="tooltip--asError"]').exists).ok();
+    await t.expect(OpenLinkEditor.withText('Invalid url').exists).ok();
+    await t.expect(Selector('#neos-LinkEditor button').withExactText('Apply').hasAttribute('disabled')).ok();
+
+    await t.click(Selector('#neos-LinkEditor button').withExactText('Cancel'));
+    await t.expect(OpenLinkEditor.exists).notOk();
+
+    // cleanup state
+    await t.click(Selector('#neos-Inspector-Discard').withExactText('Discard'));
+
+    subSection('Open and select empty relative web target and apply');
+    await t.click(LinkStringProperty.withExactText('Create Link'));
+
+    await t.expect(OpenLinkEditor.withText('Edit Link').exists).ok();
+    await t.click(Selector('#neos-LinkEditor [role="tab"]').withExactText('Web'));
+
+    await t.expect(Selector('#neos-LinkEditor button').withExactText('Apply').hasAttribute('disabled')).ok();
+
+    await t.click(Selector('#neos-LinkEditor [role="button"]').withExactText('HTTPS'));
+    await t.click(ReactSelector('ContextDropDownContents').find('li').withExactText('Relative'));
+    await t.expect(OpenLinkEditor.find('[class*="tooltip--asError"]').exists).notOk();
+
+    // change can be applied
+    await t.expect(Selector('#neos-LinkEditor button').withExactText('Apply').hasAttribute('disabled')).notOk();
+
+    // no validation errors even if the urlWithoutProtocol was dirty and is unset
+    await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:Web.urlWithoutProtocol"]'), 'some-page')
+    await t.expect(OpenLinkEditor.find('[class*="tooltip--asError"]').exists).notOk();
+    await t.expect(Selector('#neos-LinkEditor button').withExactText('Apply').hasAttribute('disabled')).notOk();
+    await t.click(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:Web.urlWithoutProtocol"]')).pressKey('ctrl+a delete')
+    await t.expect(OpenLinkEditor.find('[class*="tooltip--asError"]').exists).notOk();
+
+    await t.click(Selector('#neos-LinkEditor button').withExactText('Apply'));
+    await t.expect(OpenLinkEditor.exists).notOk();
+
+    await t.expect(LinkStringValue).eql('#');
+
+    // cleanup state
+    await t.click(Selector('#neos-Inspector-Discard').withExactText('Discard'));
+
+    subSection('Open and select empty relative web target with anchor and apply');
+    await t.click(LinkStringProperty.withExactText('Create Link'));
+
+    await t.expect(OpenLinkEditor.withText('Edit Link').exists).ok();
+    await t.click(Selector('#neos-LinkEditor [role="tab"]').withExactText('Web'));
+
+    await t.expect(Selector('#neos-LinkEditor button').withExactText('Apply').hasAttribute('disabled')).ok();
+
+    await t.click(Selector('#neos-LinkEditor [role="button"]').withExactText('HTTPS'));
+    await t.click(ReactSelector('ContextDropDownContents').find('li').withExactText('Relative'));
+
+    await t.expect(Selector('#neos-LinkEditor button').withExactText('Apply').hasAttribute('disabled')).notOk();
+
+    await t.typeText(Selector('#neos-LinkEditor label').withExactText('Anchor:').find('input'), 'my-anchor');
+
+    await t.click(Selector('#neos-LinkEditor button').withExactText('Apply'));
+    await t.expect(OpenLinkEditor.exists).notOk();
+
+    await t.expect(LinkStringValue).eql('#my-anchor');
+
+    // cleanup state
+    await t.click(Selector('#neos-Inspector-Discard').withExactText('Discard'));
+
+    subSection('Open and select empty relative web target apply and reopen to set anchor');
+    await t.click(LinkStringProperty.withExactText('Create Link'));
+
+    await t.expect(OpenLinkEditor.withText('Edit Link').exists).ok();
+    await t.click(Selector('#neos-LinkEditor [role="tab"]').withExactText('Web'));
+
+    await t.expect(Selector('#neos-LinkEditor button').withExactText('Apply').hasAttribute('disabled')).ok();
+
+    await t.click(Selector('#neos-LinkEditor [role="button"]').withExactText('HTTPS'));
+    await t.click(ReactSelector('ContextDropDownContents').find('li').withExactText('Relative'));
+
+    await t.expect(Selector('#neos-LinkEditor button').withExactText('Apply').hasAttribute('disabled')).notOk();
+
+    await t.click(Selector('#neos-LinkEditor button').withExactText('Apply'));
+    await t.expect(OpenLinkEditor.exists).notOk();
+
+    await t.expect(LinkStringValue).eql('#');
+
+    await t.click(LinkStringProperty.find('[title="Edit Link"]'));
+    await t.expect(OpenLinkEditor.withText('Edit Link').exists).ok();
+    await t.expect(Selector('#neos-LinkEditor button').withExactText('Apply').hasAttribute('disabled')).ok();
+
+    await t.typeText(Selector('#neos-LinkEditor label').withExactText('Anchor:').find('input'), 'my-anchor');
+
+    await t.click(Selector('#neos-LinkEditor button').withExactText('Apply'));
+    await t.expect(OpenLinkEditor.exists).notOk();
+
+    await t.expect(LinkStringValue).eql('#my-anchor');
 
     // cleanup state
     await t.click(Selector('#neos-Inspector-Discard').withExactText('Discard'));

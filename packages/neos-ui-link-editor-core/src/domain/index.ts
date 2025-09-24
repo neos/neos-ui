@@ -3,7 +3,9 @@ export {
     makeLinkType,
     useLinkTypes,
     useLinkTypeForHref,
-    useSortedAndFilteredLinkTypes
+    useSortedAndFilteredLinkTypes,
+    createHrefWithAnchorForLink,
+    parseBaseHrefAndAnchorFromValue,
 } from './Link';
 
 export type {IEditor} from './Editor';

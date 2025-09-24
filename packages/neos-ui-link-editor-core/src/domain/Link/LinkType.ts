@@ -27,7 +27,7 @@ export interface ILinkType<ModelType = any, OptionsType extends object = {}> {
     getTitle: () => string
 
     supportedLinkOptions: (keyof ILinkOptions)[]
-    isSuitableFor: (link: ILink) => boolean
+    isSuitableFor: (link: Pick<ILink, 'href'>) => boolean
 
     useResolvedModel: (link: ILink) => IPromiseState<ModelType>
     convertModelToLink: (model: ModelType) => ILink

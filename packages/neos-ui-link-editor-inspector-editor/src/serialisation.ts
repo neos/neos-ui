@@ -1,4 +1,8 @@
-import {ILink} from "@neos-project/neos-ui-link-editor-core/src/domain";
+import {
+    ILink,
+    createHrefWithAnchorForLink,
+    parseBaseHrefAndAnchorFromValue,
+} from "@neos-project/neos-ui-link-editor-core/src/domain";
 
 /**
  * Translates to php's {@see \Neos\Neos\Ui\LinkEditor\Link}
@@ -57,16 +61,17 @@ export const serializedLinkToILink = (serializedLink: SerializeableLink): ILink 
     if (!serializedLink.value) {
         return null;
     }
+
+    let href, anchor;
+
     switch (serializedLink.dataType) {
         case LinkDataType.valueObject:
             const linkValueObject = serializedLink.value;
-
-            const [baseHref, hash] = linkValueObject.href.split('#', 2);
-
+            ({href, anchor} = parseBaseHrefAndAnchorFromValue(linkValueObject.href));
             return {
-                href: baseHref,
+                href,
                 options: {
-                    anchor: hash || undefined,
+                    anchor: anchor || undefined,
                     title: linkValueObject.title || undefined,
                     targetBlank: linkValueObject.target ? linkValueObject.target === '_blank' : undefined,
                     relNofollow: linkValueObject.rel.includes('nofollow'),
@@ -74,12 +79,11 @@ export const serializedLinkToILink = (serializedLink: SerializeableLink): ILink 
                 }
             };
         case LinkDataType.string:
-            const [baseHref2, hash2] = serializedLink.value.split('#', 2);
-
+            ({href, anchor} = parseBaseHrefAndAnchorFromValue(serializedLink.value));
             return {
-                href: baseHref2,
+                href,
                 options: {
-                    anchor: hash2 || undefined,
+                    anchor: anchor || undefined,
                 }
             };
     }
@@ -92,9 +96,7 @@ export const serializedLinkToILink = (serializedLink: SerializeableLink): ILink 
  * Counterpart of {@see serializedLinkToILink}
  */
 export const convertILinkToSerializedLinkValue = (link: ILink, dataType: LinkDataType): any => {
-    const href = link.options?.anchor
-        ? `${link.href}#${link.options.anchor}`
-        : link.href;
+    const href = createHrefWithAnchorForLink(link);
 
     switch (dataType) {
         case LinkDataType.valueObject:

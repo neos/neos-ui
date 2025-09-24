@@ -41,7 +41,7 @@ export const createInspectorEditor = (dataType: LinkDataType, editor: IEditor) =
     const serializedLink = resolveSerializedLinkFromValue(props.value, dataType);
 
     const linkType = useLinkTypeForHref(
-        serializedLink.dataType === LinkDataType.valueObject ? serializedLink.value?.href ?? null : serializedLink.value
+        serializedLinkToILink(serializedLink)?.href ?? null
     );
 
     const enabledLinkOptions = React.useMemo(() => {
@@ -125,18 +125,9 @@ export const createInspectorEditor = (dataType: LinkDataType, editor: IEditor) =
         );
     } else {
         return (
-            <div>
-                {translate('Neos.Neos.Ui:LinkEditor.Main:inspector.notfound', '', {
-                    href: JSON.stringify(serializedLink.value)
-                })}
-                <br/>
-                <br/>
-                <Button onClick={editLink}>
-                    <Icon icon="plus"/>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    {translate('Neos.Neos.Ui:LinkEditor.Main:inspector.create', '')}
-                </Button>
-            </div>
+            <Deletable id={props.id} onDelete={reset}>
+                <ErrorView error={`Could not determine linkType for value ${JSON.stringify(serializedLink.value)}`} />
+            </Deletable>
         );
     }
 };

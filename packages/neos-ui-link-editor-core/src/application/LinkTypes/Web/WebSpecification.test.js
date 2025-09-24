@@ -21,12 +21,36 @@ describe('LinkType: Web', () => {
         equal(isSuitableFor(link), true);
     });
 
-    it('is satisfied by https:// links with a hash', () => {
+    it('is satisfied by relative link', () => {
         const link = {
-            href: 'https://www.example.com#section'
+            href: 'foo/bar'
         };
 
         equal(isSuitableFor(link), true);
+    });
+
+    it('is satisfied by host relative link', () => {
+        const link = {
+            href: '/foo/bar'
+        };
+
+        equal(isSuitableFor(link), true);
+    });
+
+    it('is satisfied by empty relative link', () => {
+        const link = {
+            href: ''
+        };
+
+        equal(isSuitableFor(link), true);
+    });
+
+    it('is not satisfied by javascript: links', () => {
+        const link = {
+            href: 'javascript:'
+        };
+
+        equal(isSuitableFor(link), false);
     });
 
     it('is not satisfied by node:// links', () => {

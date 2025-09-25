@@ -1,8 +1,6 @@
 import * as React from 'react';
 
-import {SelectBox} from '@neos-project/react-ui-components';
-
-import {ILink, makeLinkType} from '../../../domain';
+import {createHrefWithAnchorForLink, ILink, makeLinkType, parseBaseHrefAndAnchorFromValue} from '../../../domain';
 import {IconCard} from '../../../presentation';
 import {Nullable} from 'ts-toolbelt/out/Union/Nullable';
 import {isSuitableFor} from "./WebSpecification";
@@ -13,157 +11,108 @@ import {State} from "@neos-project/framework-observable";
 import {useLatestState} from "@neos-project/framework-observable-react";
 
 type WebLinkModel = {
-    protocol: {
-        value: 'http' | 'https' | '',
-        isDirty: boolean
-    }
-    urlWithoutProtocol: {
+    href: {
         value: string,
         isDirty: boolean,
-        isValid: true | string
+        warning?: string
     }
 }
 
 const validateUrlWithoutProtocol = (values: WebLinkModel): WebLinkModel => ({
     ...values,
-    urlWithoutProtocol: {
-        ...values.urlWithoutProtocol,
-        isValid: (
-            !values.urlWithoutProtocol?.value ? (
-                values.protocol.value !== '' ? translate('Neos.Neos.Ui:LinkEditor.Web:urlWithoutProtocol.validation.required', '') : true
-            ) : (
-                /^https?:\/\//.test(values.urlWithoutProtocol.value) ? (
-                    'Url must be without protocol'
-                ) : (
-                    / |^javascript:/.test(values.urlWithoutProtocol.value) ? (
-                        'Invalid url'
-                    ) : true
-                )
+    href: {
+        ...values.href,
+        warning: (
+            !values.href?.value ? undefined : (
+                values.href.value.includes('javascript:') ? (
+                    'Javascript urls are dangerous huiii buhh!'
+                ) : values.href.value.startsWith('node://') ? (
+                    'Node urls must be entered via the document tab'
+                ) : values.href.value.startsWith('asset://') ? (
+                    'Asset urls must be entered via the asset tab'
+                ) : values.href.value.startsWith('tel:') ? (
+                    'Telephone urls must be entered via the phone tab'
+                ) : values.href.value.startsWith('mailto:') ? (
+                    'Mail urls must be entered via the mail-to tab'
+                ) : values.href.value.trimEnd() === '' ? (
+                    'Spaces are no valid url'
+                ) : undefined
             )
         )
     },
 });
 
-export const Web = makeLinkType<WebLinkModel>('LinkEditor:Web', ({createError, id}) => ({
+export const Web = makeLinkType<WebLinkModel>('LinkEditor:Web', ({id}) => ({
     icon: "globe",
 
     getTitle: () => translate('Neos.Neos.Ui:LinkEditor.Web:title', ''),
 
-    supportedLinkOptions: ['anchor', 'title', 'targetBlank', 'relNofollow', 'download'],
+    supportedLinkOptions: ['title', 'targetBlank', 'relNofollow', 'download'],
 
     isSuitableFor,
 
     isDirty: (model) => {
-        return model.protocol?.isDirty || model.urlWithoutProtocol?.isDirty;
+        return model.href?.isDirty === true;
     },
 
     isValid: (model) => {
-        return model.urlWithoutProtocol?.isValid === true;
+        return model.href && model.href.value.trimEnd() !== '';
     },
 
     useResolvedModel: (link: ILink) => {
-        const matches = link.href.match(/^(https?):\/\/(.*)$/);
-        if (matches) {
-            const [, protocol, urlWithoutProtocol] = matches;
-
-            return PromiseState.forValue(validateUrlWithoutProtocol({
-                protocol: {
-                    isDirty: false,
-                    value: protocol as 'http' | 'https'
-                },
-                urlWithoutProtocol: {
-                    isDirty: false,
-                    isValid: true,
-                    value: urlWithoutProtocol
-                }
-            }));
-        }
-
+        // todo handle url encoding
         return PromiseState.forValue(validateUrlWithoutProtocol({
-            protocol: {
+            href: {
                 isDirty: false,
-                value: ''
-            },
-            urlWithoutProtocol: {
-                isDirty: false,
-                isValid: true,
-                value: link.href
-            },
+                value: createHrefWithAnchorForLink(link)
+            }
         }));
     },
 
-    convertModelToLink:(model: WebLinkModel) => (model.protocol.value === '' ? {
-        href: model.urlWithoutProtocol.value || ''
-    } : {
-        href: `${model.protocol.value}://${model.urlWithoutProtocol.value}`
-    }),
+    convertModelToLink: (model: WebLinkModel) => {
+        // todo handle url encoding
+        const {href, anchor} = parseBaseHrefAndAnchorFromValue(model.href.value);
+
+        return {
+            href,
+            options: {
+                anchor
+            }
+        }
+    },
 
     Preview: ({model}: {model: WebLinkModel}) => (
         <IconCard
             icon="external-link"
-            title={model.protocol.value === '' ? model.urlWithoutProtocol?.value || '#' : `${model.protocol.value}://${model.urlWithoutProtocol.value}`}
+            title={model.href.value || '#'}
         />
     ),
 
     Editor: ({model$}: {model$: State<Nullable<WebLinkModel>>}) => {
         const model = useLatestState(model$);
 
-        const setProtocol = React.useCallback((protocol: 'http' | 'https' | '') => model$.update((values) => validateUrlWithoutProtocol({
+        const setHref = React.useCallback((href) => model$.update((values) => validateUrlWithoutProtocol({
             ...values,
-            protocol: { isDirty: true, value: protocol },
-            urlWithoutProtocol: values?.urlWithoutProtocol ?? { isDirty: false, value: '' },
+            href: { isDirty: true, value: href },
         })), []);
-        // todo allow pasting / inserting url with protocol split value?
-        const setUrlWithoutProtocol = React.useCallback((urlWithoutProtocol) => model$.update((values) => {
-            return validateUrlWithoutProtocol({
-                ...values,
-                protocol: values?.protocol ?? { isDirty: false, value: 'https' },
-                urlWithoutProtocol: {
-                    isDirty: true,
-                    value: urlWithoutProtocol
-                }
-            })
-        }), []);
 
         return (
             <div>
                 <label htmlFor={`${id}.urlWithoutProtocol`}>
                     {translate('Neos.Neos.Ui:LinkEditor.Web:label.link', '')}:
                 </label>
-                <div style={{ display: 'grid', gridTemplateColumns: '160px 1fr', minWidth: '600px' }}>
-                    <div style={{margin: '0.25rem 0 0 0'}}>
-                        <SelectBox
-                            onValueChange={setProtocol}
-                            allowEmpty={false}
-                            value={model?.protocol?.value ?? 'https'}
-                            options={[{
-                                value: 'https',
-                                label: 'HTTPS',
-                                icon: 'lock'
-                            }, {
-                                value: 'http',
-                                label: 'HTTP',
-                                icon: 'unlock'
-                            }, {
-                                value: '',
-                                label: 'Relative',
-                                icon: 'circle'
-                            }]}
-                        />
-                    </div>
-                    <div>
-                        <EditorEnvelope
-                            identifier={`${id}.urlWithoutProtocol`}
-                            label={''}
-                            editor={'Neos.Neos/Inspector/Editors/TextFieldEditor'}
-                            options={{
-                                placeholder: translate('Neos.Neos.Ui:LinkEditor.Web:urlWithoutProtocol.placeholder', '')
-                            }}
-                            validationErrors={model && model.urlWithoutProtocol.isValid !== true ? [model.urlWithoutProtocol.isValid] : []}
-                            value={model?.urlWithoutProtocol?.value ?? ''}
-                            commit={setUrlWithoutProtocol}
-                        />
-                    </div>
+                <div>
+                    <EditorEnvelope
+                        identifier={`${id}.urlWithoutProtocol`}
+                        label={''}
+                        editor={'Neos.Neos/Inspector/Editors/TextFieldEditor'}
+                        options={{
+                            placeholder: translate('Neos.Neos.Ui:LinkEditor.Web:urlWithoutProtocol.placeholder', '')
+                        }}
+                        validationErrors={model?.href?.warning ? [model.href.warning] : []}
+                        value={model?.href?.value ?? ''}
+                        commit={setHref}
+                    />
                 </div>
             </div>
         );

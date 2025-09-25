@@ -103,9 +103,14 @@ const ActiveLinkEditorDialog: React.FC<{
         const linkTypeModel = linkModels$[form.activeLinkTypeId]?.current;
 
         if (linkTypeModel && (linkType.isDirty(linkTypeModel) || form.isOptionsDirty) && linkType.isValid(linkTypeModel)) {
+            const linkFromLinkType = linkType.convertModelToLink(linkTypeModel);
+
             const link = {
-                ...linkType.convertModelToLink(linkTypeModel),
-                options: linkType.supportedLinkOptions.reduce((carry, key) => ({ ...carry, [key]: form.options?.[key] }), {})
+                ...linkFromLinkType,
+                options: {
+                    ...linkFromLinkType.options,
+                    ...linkType.supportedLinkOptions.reduce((carry, key) => ({ ...carry, [key]: form.options?.[key] }), {})
+                }
             };
             apply(link);
         } else if(form.initialLinkWasDeleted) {

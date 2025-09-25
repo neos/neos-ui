@@ -28,11 +28,17 @@ export interface TooltipProps {
      * Whether this tooltip should indicate an error or not
      */
     readonly asError?: boolean;
+
+    /**
+     * Whether this tooltip should indicate a warning or not
+     */
+    readonly asWarning?: boolean;
 }
 
 interface TooltipTheme {
     readonly tooltip: string;
     readonly 'tooltip--asError': string;
+    readonly 'tooltip--asWarning': string;
     readonly 'tooltip--inline': string;
     readonly 'tooltip--arrow': string;
     readonly 'tooltip--inner': string;
@@ -52,12 +58,14 @@ export default class Tooltip extends PureComponent<TooltipProps> {
             theme,
             renderInline,
             asError,
+            asWarning,
             ...rest
         } = this.props;
         const classNames = mergeClassNames(
             theme!.tooltip,
             {
                 [theme!['tooltip--asError']]: asError,
+                [theme!['tooltip--asWarning']]: asWarning,
                 [theme!['tooltip--inline']]: renderInline
             },
             className

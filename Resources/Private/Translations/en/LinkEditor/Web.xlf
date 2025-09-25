@@ -10,13 +10,16 @@
                 <source>Link</source>
             </trans-unit>
 
-            <!-- URL -->
-            <trans-unit id="urlWithoutProtocol.placeholder" xml:space="preserve" approved="yes">
-                <source>e.g. www.example.com</source>
+            <!-- HREF -->
+          <trans-unit id="href.placeholder" xml:space="preserve">
+                <source>Enter or paste a link</source>
             </trans-unit>
-            <trans-unit id="urlWithoutProtocol.validation.required" xml:space="preserve" approved="yes">
-                <source>URL is required</source>
+          <trans-unit id="href.formatAsHttp" xml:space="preserve">
+                <source>Format as http link?</source>
             </trans-unit>
+          <trans-unit id="href.formatOptions" xml:space="preserve">
+                <source>Format options</source>
+          </trans-unit>
         </body>
     </file>
 </xliff>

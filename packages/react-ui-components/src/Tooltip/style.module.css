@@ -24,7 +24,11 @@
 }
 
 .tooltip--asError .tooltip--arrow {
-    border-bottom: var(--spacing-Half) solid var(--colors-Error);
+    border-bottom-color: var(--colors-Error);
+}
+
+.tooltip--asWarning .tooltip--arrow {
+    border-bottom-color: var(--colors-Warn);
 }
 
 .tooltip--inner {
@@ -38,4 +42,7 @@
 
 .tooltip--asError .tooltip--inner {
     background: var(--colors-Error);
+}
+.tooltip--asWarning .tooltip--inner {
+    background: var(--colors-Warn);
 }

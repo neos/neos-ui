@@ -6,19 +6,32 @@ import {Nullable} from 'ts-toolbelt/out/Union/Nullable';
 import {isSuitableFor} from "./WebSpecification";
 import {translate} from "@neos-project/neos-ui-i18n";
 import {PromiseState} from '@neos-project/framework-promise-react';
-import {EditorEnvelope} from '@neos-project/neos-ui-editors/src/index';
 import {State} from "@neos-project/framework-observable";
 import {useLatestState} from "@neos-project/framework-observable-react";
+import {SelectBox, Tooltip} from "@neos-project/react-ui-components";
 
 type WebLinkModel = {
     href: {
         value: string,
         isDirty: boolean,
         warning?: string
+        formattingOptions?: any[]
     }
 }
 
-const validateUrlWithoutProtocol = (values: WebLinkModel): WebLinkModel => ({
+const formattingOptionForLinkWithoutHttpsProtocol = (href: string) => {
+    if (!href.match(/^[\w.-]{2,}\.[\w]{2,10}$/)) {
+        return null;
+    }
+    // looks like domain
+    return {
+        group: translate('Neos.Neos.Ui:LinkEditor.Web:href.formatOptions', ''),
+        label: translate('Neos.Neos.Ui:LinkEditor.Web:href.formatAsHttp', ''),
+        value: `https://${href}`
+    };
+};
+
+const validateHref = (values: WebLinkModel): WebLinkModel => ({
     ...values,
     href: {
         ...values.href,
@@ -61,7 +74,7 @@ export const Web = makeLinkType<WebLinkModel>('LinkEditor:Web', ({id}) => ({
 
     useResolvedModel: (link: ILink) => {
         // todo handle url encoding
-        return PromiseState.forValue(validateUrlWithoutProtocol({
+        return PromiseState.forValue(validateHref({
             href: {
                 isDirty: false,
                 value: createHrefWithAnchorForLink(link)
@@ -91,9 +104,15 @@ export const Web = makeLinkType<WebLinkModel>('LinkEditor:Web', ({id}) => ({
     Editor: ({model$}: {model$: State<Nullable<WebLinkModel>>}) => {
         const model = useLatestState(model$);
 
-        const setHref = React.useCallback((href) => model$.update((values) => validateUrlWithoutProtocol({
+        const setHref = React.useCallback((href) => model$.update((values) => validateHref({
             ...values,
-            href: { isDirty: true, value: href },
+            href: {
+                isDirty: true,
+                formattingOptions: [
+                    formattingOptionForLinkWithoutHttpsProtocol(href)
+                ].filter(Boolean),
+                value: href
+            },
         })), []);
 
         return (
@@ -102,17 +121,24 @@ export const Web = makeLinkType<WebLinkModel>('LinkEditor:Web', ({id}) => ({
                     {translate('Neos.Neos.Ui:LinkEditor.Web:label.link', '')}:
                 </label>
                 <div>
-                    <EditorEnvelope
-                        identifier={`${id}.urlWithoutProtocol`}
-                        label={''}
-                        editor={'Neos.Neos/Inspector/Editors/TextFieldEditor'}
-                        options={{
-                            placeholder: translate('Neos.Neos.Ui:LinkEditor.Web:urlWithoutProtocol.placeholder', '')
-                        }}
-                        validationErrors={model?.href?.warning ? [model.href.warning] : []}
-                        value={model?.href?.value ?? ''}
-                        commit={setHref}
+                    <SelectBox
+                        options={model?.href.formattingOptions ?? []}
+                        optionValueField="value"
+                        value={''}
+                        plainInputMode={!model?.href.formattingOptions?.length}
+                        placeholderIcon={'link'}
+                        onValueChange={setHref}
+                        threshold={0}
+                        placeholder={translate('Neos.Neos.Ui:LinkEditor.Web:href.placeholder', '')}
+                        displaySearchBox={true}
+                        showDropDownToggle={false}
+                        allowEmpty={false}
+                        searchTerm={model?.href?.value ?? ''}
+                        onSearchTermChange={setHref}
                     />
+                    {model?.href?.warning ? (
+                        <Tooltip renderInline asWarning>{model.href.warning}</Tooltip>
+                    ) : null}
                 </div>
             </div>
         );

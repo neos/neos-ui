@@ -1,0 +1,1 @@
+export {useAssetSummary} from './Asset';

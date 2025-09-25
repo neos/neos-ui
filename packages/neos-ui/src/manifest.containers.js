@@ -33,14 +33,14 @@ import UserDropDown from './Containers/Drawer/UserDropDown/index';
 import VersionPanel from './Containers/Drawer/VersionPanel/index';
 
 import LeftSideBar from './Containers/LeftSideBar/index';
-import {PageTreeToolbar, ContentTreeToolbar} from './Containers/LeftSideBar/NodeTreeToolBar/index';
-import {PageTree, ContentTree} from './Containers/LeftSideBar/NodeTree/index';
-import {PageTreeSearchbar} from './Containers/LeftSideBar/NodeTreeSearchBar/index';
+import {ContentTreeToolbar} from './Containers/LeftSideBar/NodeTreeToolBar/index';
+import {ContentTree} from './Containers/LeftSideBar/NodeTree/index';
 
 import ContentCanvas from './Containers/ContentCanvas/index';
 
 import RightSideBar from './Containers/RightSideBar/index';
 import Inspector from './Containers/RightSideBar/Inspector/index';
+import {DtoPageTree} from "./Containers/LeftSideBar/DtoPageTree/DtoPageTree";
 
 manifest('main.containers', {}, globalRegistry => {
     const containerRegistry = globalRegistry.get('containers');
@@ -78,9 +78,11 @@ manifest('main.containers', {}, globalRegistry => {
     containerRegistry.set('Drawer/Bottom/UserDropDown', UserDropDown);
 
     containerRegistry.set('LeftSideBar', LeftSideBar);
-    containerRegistry.set('LeftSideBar/Top/PageTreeToolbar', PageTreeToolbar);
-    containerRegistry.set('LeftSideBar/Top/PageTreeSearchbar', PageTreeSearchbar);
-    containerRegistry.set('LeftSideBar/Top/PageTree', PageTree);
+    // containerRegistry.set('LeftSideBar/Top/PageTreeToolbar', PageTreeToolbar);
+    // containerRegistry.set('LeftSideBar/Top/PageTreeSearchbar', PageTreeSearchbar);
+    // containerRegistry.set('LeftSideBar/Top/PageTree', PageTree);
+    containerRegistry.set('LeftSideBar/Top/DtoPageTree', DtoPageTree);
+
     containerRegistry.set('LeftSideBar/ContentTreeToolbar', ContentTreeToolbar);
     containerRegistry.set('LeftSideBar/Bottom/ContentTree', ContentTree);
 

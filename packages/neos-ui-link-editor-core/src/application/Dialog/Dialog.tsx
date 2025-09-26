@@ -19,6 +19,7 @@ import {useLatestState} from '@neos-project/framework-observable-react';
 import {useSelector} from '@neos-project/neos-ui-redux-store';
 import {translate} from "@neos-project/neos-ui-i18n";
 import {createState, State} from "@neos-project/framework-observable";
+import {pick} from "@neos-project/framework-observable/src/State";
 
 export type FormValues = {
     isOptionsDirty: boolean
@@ -27,7 +28,7 @@ export type FormValues = {
     options: ILinkOptions
 }
 
-type LinkModelStates = {[linkTypeId: string]: State<any>};
+type LinkModelsState = State<{[linkTypeId: string]: any}>;
 
 export const createDialog = (editor: IEditor) => () => {
     const {isOpen, initialValue} = useLatestState(editor.state$);
@@ -60,11 +61,11 @@ const ActiveLinkEditorDialog: React.FC<{
 
     const form = useLatestState(form$);
 
-    const linkModels$ = React.useMemo(() => availableLinkTypes.reduce((carry, value) => ({ ...carry, [value.id]: createState(null) }), {} as LinkModelStates), []);
+    const linkModels$ = React.useMemo(() => createState({}) as LinkModelsState, []);
 
     const [formStatus, setFormStatus] = React.useState<{ isDirty: boolean, isValid: boolean }>({ isDirty: false, isValid: false });
 
-    const linkModels = Object.fromEntries(Object.entries(linkModels$).map(([linkId, linkModel$]) => [linkId, useLatestState(linkModel$)]))
+    const linkModels = useLatestState(linkModels$);
 
     React.useEffect(() => {
         const linkType = availableLinkTypes.find(linkType => linkType.id === form.activeLinkTypeId);
@@ -78,12 +79,10 @@ const ActiveLinkEditorDialog: React.FC<{
             isDirty: form.isOptionsDirty || (model ? linkType.isDirty(model) : false),
             isValid: model ? linkType.isValid(model) : false
         });
-    }, [form, ...Object.values(linkModels)]);
+    }, [form, linkModels]);
 
     const unsetLinkModels = React.useCallback(() => {
-        for (const linkModel$ of Object.values(linkModels$)) {
-            linkModel$.update(() => null);
-        }
+        linkModels$.update(() => ({}));
         if (initialValue && !form$.current.initialLinkWasDeleted) {
             form$.update((values) => ({ ...values, initialLinkWasDeleted: true }));
         }
@@ -100,7 +99,7 @@ const ActiveLinkEditorDialog: React.FC<{
             return; // should not happen
         }
 
-        const linkTypeModel = linkModels$[form.activeLinkTypeId]?.current;
+        const linkTypeModel = linkModels$.current[form.activeLinkTypeId];
 
         if (linkTypeModel && (linkType.isDirty(linkTypeModel) || form.isOptionsDirty) && linkType.isValid(linkTypeModel)) {
             const linkFromLinkType = linkType.convertModelToLink(linkTypeModel);
@@ -179,7 +178,7 @@ const ActiveLinkEditorDialog: React.FC<{
 
 const DialogWithEmptyValue: React.FC<{
     form$: State<FormValues>
-    linkModels$: LinkModelStates
+    linkModels$: LinkModelsState
     editor: IEditor,
     unsetLinkModels: () => void,
     setActiveTab: (linkId: string) => void,
@@ -196,7 +195,7 @@ const DialogWithEmptyValue: React.FC<{
         >
             {props.availableLinkTypes.map((linkType) => {
                 const {Editor} = linkType;
-                const model$ = props.linkModels$[linkType.id];
+                const model$ = React.useMemo(() => pick(props.linkModels$, linkType.id), [props.linkModels$])
                 const options = editorOptions.linkTypes?.[linkType.id] as any ?? {};
 
                 return (
@@ -237,7 +236,7 @@ const DialogWithEmptyValue: React.FC<{
 
 const DialogWithValue: React.FC<{
     form$: State<FormValues>
-    linkModels$: LinkModelStates
+    linkModels$: LinkModelsState
     editor: IEditor,
     initialValue: ILink,
     initialLinkType: ILinkType,
@@ -252,10 +251,12 @@ const DialogWithValue: React.FC<{
 
     React.useEffect(() => {
         if (initialModel !== null) {
-            const model$ = props.linkModels$[props.initialLinkType.id];
-            if (!model$.current) {
+            if (!props.linkModels$.current[props.initialLinkType.id]) {
                 // update state with initial value once available
-                model$.update(() => initialModel);
+                props.linkModels$.update((values) => ({
+                    ...values,
+                    [props.initialLinkType.id]: initialModel
+                }));
             }
         }
     }, [initialModel]);
@@ -270,7 +271,7 @@ const DialogWithValue: React.FC<{
         >
             {props.availableLinkTypes.map((linkType) => {
                 const {Editor, LoadingEditor} = linkType;
-                const model$ = props.linkModels$[linkType.id];
+                const model$ = React.useMemo(() => pick(props.linkModels$, linkType.id), [props.linkModels$])
 
                 return (
                     <Tabs.Panel

@@ -59,3 +59,60 @@ export function createState<V>(initialValue: V): State<V> {
 
     return Object.freeze(state);
 }
+
+export function pick<V extends Record<string, any>, K extends string & keyof V>(state: State<V>, key: K): State<V[K]> {
+    const currentUpperState = state.current;
+    if (currentUpperState === null || typeof currentUpperState !== 'object' || Array.isArray(currentUpperState)) {
+        throw new Error(`Cannot pick key "${key}" from non object value of type ${currentUpperState === null ? 'null' : (Array.isArray(currentUpperState) ? 'array' : typeof currentUpperState)}`);
+    }
+
+    let currentState = state.current[key];
+    const listeners = new Set<(value: V) => void>();
+
+    // todo unsubscribe if no-one is listening?
+    state.subscribe({
+        next(nextUpperState) {
+            const nextState = nextUpperState[key];
+
+            if (currentState !== nextState) {
+                currentState = nextState;
+
+                for (const next of listeners) {
+                    next(nextState);
+                }
+            }
+        }
+    });
+
+    const pickedState: State<V> = {
+        ...createObservable((next) => {
+            listeners.add(next);
+            next(currentState);
+
+            return () => listeners.delete(next);
+        }),
+
+        get current() {
+            return currentState;
+        },
+
+        update(updateFn) {
+            const nextState = updateFn(currentState);
+
+            if (currentState !== nextState) {
+                for (const next of listeners) {
+                    next(nextState);
+                }
+
+                state.update((currentUpperState) => ({
+                    ...currentUpperState,
+                    [key]: nextState
+                }));
+
+                currentState = nextState;
+            }
+        }
+    };
+
+    return Object.freeze(pickedState);
+}

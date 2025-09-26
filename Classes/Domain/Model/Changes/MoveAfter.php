@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 /*
@@ -56,7 +58,8 @@ class MoveAfter extends AbstractStructuralChange
         // "subject" is the to-be-moved node
         $subject = $this->subject;
         $parentNode = $this->findParentNode($this->subject);
-        if ($this->canApply()
+        if (
+            $this->canApply()
             && !is_null($precedingSibling)
             && !is_null($parentNodeOfPreviousSibling)
             && !is_null($parentNode)

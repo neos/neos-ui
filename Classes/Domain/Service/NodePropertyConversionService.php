@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Neos\Ui\Domain\Service;
 
 /*
@@ -169,7 +170,7 @@ class NodePropertyConversionService
 
         return null;
     }
-    
+
     /**
      * Convert raw value to integer
      *

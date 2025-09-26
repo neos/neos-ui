@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 /*
@@ -192,7 +194,8 @@ class Property extends AbstractChange
 
         $reloadIfChangedConfigurationPathForProperty = sprintf('properties.%s.ui.reloadIfChanged', $propertyName);
         $reloadIfChangedConfigurationPathForReference = sprintf('references.%s.ui.reloadIfChanged', $propertyName);
-        if (!$this->getIsInline()
+        if (
+            !$this->getIsInline()
             && (
                 $this->getNodeType($node)?->getConfiguration($reloadIfChangedConfigurationPathForProperty)
                 || $this->getNodeType($node)?->getConfiguration($reloadIfChangedConfigurationPathForReference)
@@ -200,9 +203,11 @@ class Property extends AbstractChange
         ) {
             if (!$this->getNodeDomAddress()) {
                 $this->reloadDocument($node);
-            } elseif ($this->getNodeDomAddress()->getFusionPath()
+            } elseif (
+                $this->getNodeDomAddress()->getFusionPath()
                 && $parentNode
-                && $this->getNodeType($parentNode)?->isOfType('Neos.Neos:ContentCollection')) {
+                && $this->getNodeType($parentNode)?->isOfType('Neos.Neos:ContentCollection')
+            ) {
                 $reloadContentOutOfBand = new ReloadContentOutOfBand();
                 $reloadContentOutOfBand->setNode($node);
                 $reloadContentOutOfBand->setNodeDomAddress($this->getNodeDomAddress());
@@ -214,7 +219,8 @@ class Property extends AbstractChange
 
         $reloadPageIfChangedConfigurationPathForProperty = sprintf('properties.%s.ui.reloadPageIfChanged', $propertyName);
         $reloadPageIfChangedConfigurationPathForReference = sprintf('references.%s.ui.reloadPageIfChanged', $propertyName);
-        if (!$this->getIsInline()
+        if (
+            !$this->getIsInline()
             && (
                 $this->getNodeType($node)?->getConfiguration($reloadPageIfChangedConfigurationPathForProperty)
                 || $this->getNodeType($node)?->getConfiguration($reloadPageIfChangedConfigurationPathForReference)

@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Neos\Ui\Tests\Unit;
 
 use Neos\ContentRepository\Core\NodeType\NodeType;
@@ -149,7 +150,6 @@ class CreationDialogNodeTypePostprocessorTest extends UnitTestCase
         $result = $this->processConfigurationLegacyOnlyOnce($configuration, [], []);
 
         self::assertSame($configuration, $result);
-
     }
 
     /**

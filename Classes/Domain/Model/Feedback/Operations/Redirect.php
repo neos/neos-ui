@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Neos\Ui\Domain\Model\Feedback\Operations;
 
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;

@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 /*
@@ -195,8 +197,10 @@ abstract class AbstractCreate extends AbstractStructuralChange
         NodeType $nodeType,
         ContentRepository $contentRepository
     ): NodeCreationCommands {
-        if (!isset($nodeType->getOptions()['nodeCreationHandlers'])
-            || !is_array($nodeType->getOptions()['nodeCreationHandlers'])) {
+        if (
+            !isset($nodeType->getOptions()['nodeCreationHandlers'])
+            || !is_array($nodeType->getOptions()['nodeCreationHandlers'])
+        ) {
             return $commands;
         }
         foreach ((new PositionalArraySorter($nodeType->getOptions()['nodeCreationHandlers']))->toArray() as $key => $nodeCreationHandlerConfiguration) {

@@ -25,10 +25,15 @@ export function useLatestValueFrom<V, D>(
         defaultValue ?? null
     );
 
+    const valueRef = React.useRef(value);
+    valueRef.current = value;
+
     React.useEffect(() => {
         const subscription = observable$.subscribe({
             next: (incomingValue) => {
-                setValue(incomingValue);
+                if (valueRef.current !== incomingValue) {
+                    setValue(incomingValue);
+                }
             }
         });
 

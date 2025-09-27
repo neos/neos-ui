@@ -35,7 +35,7 @@ const StyledDialog = styled(Dialog)`
 `;
 
 export const Modal: React.FC<{
-    renderTitle(): React.ReactNode
+    title: React.ReactNode
     renderBody(): React.ReactNode,
     onRequestClose(): void,
     preventClosing: boolean,
@@ -44,7 +44,7 @@ export const Modal: React.FC<{
     <StyledDialog
         id="neos-LinkEditor"
         isOpen={true}
-        title={props.renderTitle()}
+        title={props.title}
         onRequestClose={props.onRequestClose}
         preventClosing={props.preventClosing}
         style="jumbo"

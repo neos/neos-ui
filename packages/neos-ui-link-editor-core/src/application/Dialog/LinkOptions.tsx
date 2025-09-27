@@ -5,7 +5,7 @@ import {TextInput, CheckBox} from '@neos-project/react-ui-components';
 import {ILinkOptions} from '../../domain';
 import {Layout} from '../../presentation';
 import {translate} from "@neos-project/neos-ui-i18n";
-import {State} from "@neos-project/framework-observable";
+import {mapState, State} from "@neos-project/framework-observable";
 import {FormValues} from "./Dialog";
 import {useLatestState} from "@neos-project/framework-observable-react";
 
@@ -13,7 +13,8 @@ export const LinkOptions: React.FC<{
     form$: State<FormValues>
     enabledLinkOptions: (keyof ILinkOptions)[]
 }> = props => {
-    const form = useLatestState(props.form$);
+    const formOptions$ = React.useMemo(() => mapState(props.form$, (form) => form.options), []);
+    const formOptions = useLatestState(formOptions$);
 
     const setTitle = React.useCallback((title) => props.form$.update((values) => ({ ...values, isOptionsDirty: true, options: { ...values.options, title } })), []);
     const setTargetBlank = React.useCallback((targetBlank) => props.form$.update((values) => ({ ...values, isOptionsDirty: true, options: { ...values.options, targetBlank } })), []);
@@ -27,7 +28,7 @@ export const LinkOptions: React.FC<{
                     {props.enabledLinkOptions.includes('title') ? (
                         <label>
                             {translate('Neos.Neos.Ui:LinkEditor.Main:options.label.title', '')}:
-                            <TextInput type="text" value={form.options?.title ?? ""} placeholder={translate('Neos.Neos.Ui:LinkEditor.Main:options.placeholder.title', '')} onChange={setTitle} />
+                            <TextInput type="text" value={formOptions?.title ?? ""} placeholder={translate('Neos.Neos.Ui:LinkEditor.Main:options.placeholder.title', '')} onChange={setTitle} />
                         </label>
                     ) : null}
                 </Layout.Columns>
@@ -36,19 +37,19 @@ export const LinkOptions: React.FC<{
                 <Layout.Columns>
                     {props.enabledLinkOptions.includes('targetBlank') ? (
                         <label>
-                            <CheckBox onChange={setTargetBlank} isChecked={form.options?.targetBlank ?? false}/>
+                            <CheckBox onChange={setTargetBlank} isChecked={formOptions?.targetBlank ?? false}/>
                             {translate('Neos.Neos.Ui:LinkEditor.Main:options.label.targetBlank', '')}
                         </label>
                     ) : null}
                     {props.enabledLinkOptions.includes('relNofollow') ? (
                         <label>
-                            <CheckBox onChange={setRelNofollow} isChecked={form.options?.relNofollow ?? false}/>
+                            <CheckBox onChange={setRelNofollow} isChecked={formOptions?.relNofollow ?? false}/>
                             {translate('Neos.Neos.Ui:LinkEditor.Main:options.label.relNofollow', '')}
                         </label>
                     ) : null}
                     {props.enabledLinkOptions.includes('download') ? (
                         <label>
-                            <CheckBox onChange={setDownload} isChecked={form.options?.download ?? false}/>
+                            <CheckBox onChange={setDownload} isChecked={formOptions?.download ?? false}/>
                             {translate('Neos.Neos.Ui:LinkEditor.Main:options.label.download', '')}
                         </label>
                     ) : null}

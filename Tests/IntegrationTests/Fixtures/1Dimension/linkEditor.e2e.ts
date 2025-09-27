@@ -611,6 +611,9 @@ test('Can edit property links via inspector and save the change', async t => {
     await t.click(LinkEditorNodeTreeItem.withExactText('Link target'));
 
     await t.typeText(Selector('#neos-LinkEditor label').withExactText('Anchor:').find('input'), 'my-anchor')
+
+    await t.click(Selector('#neos-LinkEditor-Options'));
+
     await t.typeText(Selector('#neos-LinkEditor label').withExactText('Title:').find('input'), 'My title')
     await t.click(Selector('#neos-LinkEditor label').withExactText('Open in new window').find('input'))
     await t.click(Selector('#neos-LinkEditor label').withExactText('No follow (SEO)').find('input'))

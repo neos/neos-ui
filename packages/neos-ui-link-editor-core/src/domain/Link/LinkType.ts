@@ -4,7 +4,7 @@ import positionalArraySorter from '@neos-project/positional-array-sorter';
 
 import {globalRegistry} from '@neos-project/neos-ui/globalRegistry';
 
-import {ILink, ILinkOptions} from './Link';
+import {ILink} from './Link';
 import {IEditor} from '../Editor';
 import {useLatestState} from "@neos-project/framework-observable-react";
 import {State} from "@neos-project/framework-observable";
@@ -26,7 +26,6 @@ export interface ILinkType<ModelType = any, OptionsType extends object = {}> {
     icon: string
     getTitle: () => string
 
-    supportedLinkOptions: (keyof ILinkOptions)[]
     isSuitableFor: (link: Pick<ILink, 'href'>) => boolean
 
     useResolvedModel: (link: ILink) => IPromiseState<ModelType>
@@ -52,7 +51,7 @@ export function makeLinkType<ModelType = any, OptionsType extends object = {}>(
     id: string,
     createOptions: (factoryApi: ILinkTypeFactoryApi) => Object.Optional<
         Omit<ILinkType<ModelType, OptionsType>, 'id'>,
-        'supportedLinkOptions' | 'Icon' | 'Title' | 'LoadingPreview' | 'LoadingEditor'
+        'Icon' | 'Title' | 'LoadingPreview' | 'LoadingEditor'
     >
 ): ILinkType<ModelType, OptionsType> {
     const createError = (message: string): Error => new Error(`[${id}]: ${message}`);
@@ -60,7 +59,6 @@ export function makeLinkType<ModelType = any, OptionsType extends object = {}>(
 
     return {
         id,
-        supportedLinkOptions: [],
         ...options,
         LoadingPreview: options.LoadingPreview ?? (() => React.createElement(
             'div',

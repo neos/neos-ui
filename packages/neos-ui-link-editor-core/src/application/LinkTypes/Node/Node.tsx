@@ -91,8 +91,6 @@ export const Node = makeLinkType<NodeLinkModel, NodeLinkOptions>("LinkEditor:Nod
 
         getTitle: () => translate('Neos.Neos.Ui:LinkEditor.Node:title', ''),
 
-        supportedLinkOptions: [ "title", "targetBlank", "relNofollow"],
-
         isSuitableFor,
 
         isDirty: (model) => {

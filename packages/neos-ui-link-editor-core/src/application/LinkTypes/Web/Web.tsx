@@ -60,8 +60,6 @@ export const Web = makeLinkType<WebLinkModel>('LinkEditor:Web', ({id}) => ({
 
     getTitle: () => translate('Neos.Neos.Ui:LinkEditor.Web:title', ''),
 
-    supportedLinkOptions: ['title', 'targetBlank', 'relNofollow', 'download'],
-
     isSuitableFor,
 
     isDirty: (model) => {

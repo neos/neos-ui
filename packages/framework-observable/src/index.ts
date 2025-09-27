@@ -15,5 +15,5 @@ export {createState} from './State';
 
 export type {Subscription} from './Subscription';
 
-export type {ActionObservable} from './ActionObservable';
-export {createActionObservable} from './ActionObservable';
+export type {Channel} from './Channel';
+export {createChannel} from './Channel';

@@ -10,24 +10,21 @@
 import {createObservable, Observable} from './Observable';
 
 /**
- * An ActionObservable is a special kind of Observable which allows setting its value from outside.
+ * An Channel is a special kind of Observable which allows setting its value from outside.
  *
- * Unlike State there is no initial default value, and also we don't keep track of the value.
- * A new subscriber to the ActionObservable Observable will not receive the last value.
- *
- * Via the `next` method, a ActionObservable's value can be set. When called,
+ * Via the `next` method, a Channel's value can be set. When called,
  * Subscribers to the state are immediately informed about the new value - and only new values after their registration.
  */
-export interface ActionObservable<V> extends Observable<V> {
+export interface Channel<V> extends Observable<V> {
     next: (nextState: V) => void;
 }
 
 /**
- * Creates a new empty ActionObservable
+ * Creates a new empty Channel
  */
-export function createActionObservable<V>(): ActionObservable<V> {
+export function createChannel<V>(): Channel<V> {
     const listeners = new Set<(value: V) => void>();
-    const actionObservable = {
+    const channel = {
         ...createObservable<V>((next) => {
             listeners.add(next);
 
@@ -41,5 +38,5 @@ export function createActionObservable<V>(): ActionObservable<V> {
         }
     };
 
-    return Object.freeze(actionObservable);
+    return Object.freeze(channel);
 }

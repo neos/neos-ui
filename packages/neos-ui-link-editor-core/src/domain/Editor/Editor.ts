@@ -3,7 +3,7 @@ import {ActionType, getType} from 'typesafe-actions';
 import {ILink, ILinkOptions} from '../Link';
 
 import * as actions from './EditorAction';
-import {createActionObservable, createState} from "@neos-project/framework-observable";
+import {createChannel, createState} from "@neos-project/framework-observable";
 
 export interface IEditorState {
     enabledLinkOptions: (keyof ILinkOptions)[]
@@ -51,7 +51,7 @@ export function editorReducer(
 }
 
 export function createEditor() {
-    const actions$ = createActionObservable<ActionType<typeof actions>>();
+    const actions$ = createChannel<ActionType<typeof actions>>();
 
     const dispatch = actions$.next;
 
@@ -96,7 +96,7 @@ export function createEditor() {
     );
 
     return Object.freeze({
-        state$, // todo do not expose update() because that breaks this abstraction?
+        state$,
         transactions: {dismiss, unset, apply, editLink}
     });
 }

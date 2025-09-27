@@ -7,19 +7,19 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-import {createActionObservable} from './ActionObservable';
+import {createChannel} from './Channel';
 
-describe('ActionObservable', () => {
-    test('subscribe to actionObservable updates: subscriber receives all updates', () => {
-        const actionObservable$ = createActionObservable();
+describe('Channel', () => {
+    test('subscribe to channel updates: subscriber receives all updates', () => {
+        const channel$ = createChannel();
         const subscriber = {
             next: jest.fn()
         };
 
-        actionObservable$.subscribe(subscriber);
-        actionObservable$.next(1);
-        actionObservable$.next(2);
-        actionObservable$.next(3);
+        channel$.subscribe(subscriber);
+        channel$.next(1);
+        channel$.next(2);
+        channel$.next(3);
 
         expect(subscriber.next).toHaveBeenCalledTimes(3);
         expect(subscriber.next).toHaveBeenNthCalledWith(1, 1);
@@ -27,8 +27,8 @@ describe('ActionObservable', () => {
         expect(subscriber.next).toHaveBeenNthCalledWith(3, 3);
     });
 
-    test('subscribe to actionObservable updates: subscriber receives only new values', () => {
-        const actionObservable$ = createActionObservable();
+    test('subscribe to channel updates: subscriber receives only new values', () => {
+        const channel$ = createChannel();
         const subscriber1 = {
             next: jest.fn()
         };
@@ -36,17 +36,17 @@ describe('ActionObservable', () => {
             next: jest.fn()
         };
 
-        actionObservable$.subscribe(subscriber1);
+        channel$.subscribe(subscriber1);
         expect(subscriber1.next).toHaveBeenCalledTimes(0);
 
-        actionObservable$.next(1);
+        channel$.next(1);
         expect(subscriber1.next).toHaveBeenCalledTimes(1);
         expect(subscriber1.next).toHaveBeenNthCalledWith(1, 1);
 
-        actionObservable$.subscribe(subscriber2);
+        channel$.subscribe(subscriber2);
         expect(subscriber2.next).toHaveBeenCalledTimes(0);
 
-        actionObservable$.next(2);
+        channel$.next(2);
         expect(subscriber1.next).toHaveBeenCalledTimes(2);
         expect(subscriber1.next).toHaveBeenNthCalledWith(2, 2);
 

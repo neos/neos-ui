@@ -151,21 +151,21 @@ count$.update((value) => value + 1); // logs: 4
 
 Unlike regular `Observable`s, `State`s are multi-cast. This means that all subscribers receive updates at the same time, and every subscriber only receives updates that are published after the subscription has been registered.
 
-### ActionObservable
+### Channel
 
-An `ActionObservable` is a special `Observable` where its value is set from outside but the value is not tracked. `ActionObservable`s can be created using the `createActionObservable` function like this:
+An `Channel` is a special `Observable` where its value is set from outside but the value is not tracked. `Channel`s can be created using the `createChannel` function like this:
 
 ```typescript
-const clicks$ = createActionObservable<{positionX: Number, positionY: Number}>();
+const clicks$ = createChannel<{positionX: Number, positionY: Number}>();
 ```
 
-Each `ActionObservable` instance has an `next` method that can be used to push new values to the actionObservable observable:
+Each `Channel` instance has an `next` method that can be used to push new values to the channel observable:
 
 ```typescript
 clicks$.next({positionX: 12, positionY: 85});
 ```
 
-When a new subscriber is registered to a `ActionObservable` instance, that subscriber receives values after its registration
+When a new subscriber is registered to a `Channel` instance, that subscriber receives values after its registration
 ```typescript
 clicks$.next({positionX: 1, positionY: 1}); // nothing is logged, nobody has subscribed yet
 
@@ -176,20 +176,20 @@ clicks$.next({positionX: 2, positionY: 3}); // logs 2,3
 
 Unlike regular `Observable`s, `State`s are multi-cast. This means that all subscribers receive updates at the same time, and every subscriber only receives updates that are published after the subscription has been registered.
 
-In combination with the `State` we can implement a full actionObservable-reduce workflow:
+In combination with the `State` we can implement a full action reduce workflow:
 
 ```typescript
-const actions$ = createActionObservable<ActionType<typeof actions>>();
+const actions$ = createChannel<ActionType<typeof actions>>();
 
 const dispatch = actions$.next;
 
 const state$ = createState(initialState);
 
 actions$.subscribe({
-  next: (actionObservable) => state$.update(
+  next: (channel) => state$.update(
     (current) => myReducer(
       current,
-      actionObservable
+      channel
     )
   )
 })

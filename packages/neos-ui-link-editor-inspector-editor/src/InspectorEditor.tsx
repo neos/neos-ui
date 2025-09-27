@@ -22,7 +22,6 @@ export type EditorProps = {
     id?: string
     options?: {
         linkTypes?: Record<string, unknown>,
-        anchor?: boolean
         title?: boolean
         relNofollow?: boolean
         targetBlank?: boolean
@@ -48,15 +47,8 @@ export const createInspectorEditor = (dataType: LinkDataType, editor: IEditor) =
         const enabledLinkOptions: (keyof ILinkOptions)[] = [];
 
         if (serializedLink.dataType === LinkDataType.string) {
-            // the simple type only allows the anchor
-            if (props.options?.anchor) {
-                enabledLinkOptions.push('anchor');
-            }
+            // the simple type does not allow link-options
             return enabledLinkOptions;
-        }
-
-        if (props.options?.anchor) {
-            enabledLinkOptions.push('anchor');
         }
 
         if (props.options?.title) {
@@ -126,7 +118,7 @@ export const createInspectorEditor = (dataType: LinkDataType, editor: IEditor) =
     } else {
         return (
             <Deletable id={props.id} onDelete={reset}>
-                <ErrorView error={`Could not determine linkType for value ${JSON.stringify(serializedLink.value)}`} />
+                <ErrorView error={translate('Neos.Neos.Ui:LinkEditor.Main:inspector.notfound', 'Could not determine link editor for value {href}', { href: JSON.stringify(serializedLink.value) })} />
             </Deletable>
         );
     }

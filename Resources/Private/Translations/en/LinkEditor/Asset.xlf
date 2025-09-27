@@ -6,6 +6,13 @@
             <trans-unit id="title" xml:space="preserve" approved="yes">
                 <source>Asset</source>
             </trans-unit>
+
+            <trans-unit id="anchor.label" xml:space="preserve" approved="yes">
+                  <source>Anchor</source>
+              </trans-unit>
+            <trans-unit id="anchor.placeholder" xml:space="preserve" approved="no">
+                  <source>Enter anchor name</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>

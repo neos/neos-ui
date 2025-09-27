@@ -37,14 +37,6 @@
             </trans-unit>
 
             <!-- Link Options -->
-            <trans-unit id="options.label.anchor" xml:space="preserve" approved="yes">
-                <source>Anchor</source>
-                <target>Anker</target>
-            </trans-unit>
-            <trans-unit id="options.placeholder.anchor" xml:space="preserve" approved="no">
-                <source>Enter anchor name</source>
-                <target>Anker Name eingeben</target>
-            </trans-unit>
             <trans-unit id="options.label.title" xml:space="preserve" approved="yes">
                 <source>Title</source>
                 <target>Titel</target>

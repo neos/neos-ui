@@ -24,10 +24,12 @@ import {useSiteNodeAggregateId} from "./useSiteNodeAggregateId";
 import {translate} from "@neos-project/neos-ui-i18n";
 import {State} from "@neos-project/framework-observable";
 import {useLatestState} from "@neos-project/framework-observable-react";
+import {TextInput} from "@neos-project/react-ui-components";
 
 type NodeLinkModel = {
     isDirty: boolean;
     nodeId: string;
+    anchor: string;
 };
 type NodeLinkOptions = {
     startingPoint: string;
@@ -89,7 +91,7 @@ export const Node = makeLinkType<NodeLinkModel, NodeLinkOptions>("LinkEditor:Nod
 
         getTitle: () => translate('Neos.Neos.Ui:LinkEditor.Node:title', ''),
 
-        supportedLinkOptions: ["anchor", "title", "targetBlank", "relNofollow"],
+        supportedLinkOptions: [ "title", "targetBlank", "relNofollow"],
 
         isSuitableFor,
 
@@ -97,24 +99,25 @@ export const Node = makeLinkType<NodeLinkModel, NodeLinkOptions>("LinkEditor:Nod
             return model.isDirty;
         },
 
-        isValid: () => {
-            return true;
+        isValid: (model) => {
+            return Boolean(model.nodeId);
         },
 
         useResolvedModel: (link: ILink) => {
-            const match = /node:\/\/([^#]*)(#.*)?/.exec(link.href);
+            const match = /node:\/\/([^#]*)(?:#(.*))?/.exec(link.href);
 
             if (!match) {
                 return PromiseState.forError(createError(`Cannot handle href "${link.href}".`));
             }
 
             const nodeId = match[1];
+            const anchor = match[2];
 
-            return PromiseState.forValue({ isDirty: false, nodeId });
+            return PromiseState.forValue({ isDirty: false, nodeId, anchor });
         },
 
-        convertModelToLink: ({ nodeId }: NodeLinkModel) => ({
-            href: `node://${nodeId}`,
+        convertModelToLink: ({ nodeId, anchor }: NodeLinkModel) => ({
+            href: `node://${nodeId}${anchor ? `#${anchor}` : ''}`,
         }),
 
         Preview: (props: { model: NodeLinkModel }) => {
@@ -130,6 +133,7 @@ export const Node = makeLinkType<NodeLinkModel, NodeLinkOptions>("LinkEditor:Nod
         }) => {
             const model = useLatestState(model$);
             const setNodeId = React.useCallback((nodeId) => model$.update((values) => ({...values, isDirty: true, nodeId})), []);
+            const setAnchor = React.useCallback((anchor) => model$.update((values) => ({...values, isDirty: true, anchor})), []);
 
             const workspaceName = useSelector(selectors.CR.Workspaces.personalWorkspaceNameSelector);
             const dimensionValues = useSelector(selectors.CR.ContentDimensions.active);
@@ -158,7 +162,7 @@ export const Node = makeLinkType<NodeLinkModel, NodeLinkOptions>("LinkEditor:Nod
                     "Could not load node tree, because dimensionValues could not be determined."
                 );
             } else {
-                return (
+                return (<>
                     <Tree
                         initialSearchTerm={initialSearchTerm}
                         workspaceName={workspaceName}
@@ -181,7 +185,11 @@ export const Node = makeLinkType<NodeLinkModel, NodeLinkOptions>("LinkEditor:Nod
                         }}
                         onSelect={setNodeId}
                     />
-                );
+                    <label>
+                        {translate('Neos.Neos.Ui:LinkEditor.Node:anchor.label', '')}:
+                        <TextInput type="text" value={model?.anchor ?? ""} placeholder={translate('Neos.Neos.Ui:LinkEditor.Node:anchor.placeholder', '')} onChange={setAnchor} />
+                    </label>
+                </>);
             }
         },
     })

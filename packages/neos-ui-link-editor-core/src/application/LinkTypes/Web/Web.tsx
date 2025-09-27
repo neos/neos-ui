@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import {createHrefWithAnchorForLink, ILink, makeLinkType, parseBaseHrefAndAnchorFromValue} from '../../../domain';
+import {ILink, makeLinkType} from '../../../domain';
 import {IconCard} from '../../../presentation';
 import {Nullable} from 'ts-toolbelt/out/Union/Nullable';
 import {isSuitableFor} from "./WebSpecification";
@@ -77,20 +77,15 @@ export const Web = makeLinkType<WebLinkModel>('LinkEditor:Web', ({id}) => ({
         return PromiseState.forValue(validateHref({
             href: {
                 isDirty: false,
-                value: createHrefWithAnchorForLink(link)
+                value: link.href || '#'
             }
         }));
     },
 
     convertModelToLink: (model: WebLinkModel) => {
         // todo handle url encoding
-        const {href, anchor} = parseBaseHrefAndAnchorFromValue(model.href.value);
-
         return {
-            href,
-            options: {
-                anchor
-            }
+            href: model.href.value,
         }
     },
 
@@ -117,11 +112,12 @@ export const Web = makeLinkType<WebLinkModel>('LinkEditor:Web', ({id}) => ({
 
         return (
             <div>
-                <label htmlFor={`${id}.urlWithoutProtocol`}>
+                <label htmlFor={`__neos__editor__property---${id}.href`}>
                     {translate('Neos.Neos.Ui:LinkEditor.Web:label.link', '')}:
                 </label>
                 <div>
                     <SelectBox
+                        id={`__neos__editor__property---${id}.href`}
                         options={model?.href.formattingOptions ?? []}
                         optionValueField="value"
                         value={''}

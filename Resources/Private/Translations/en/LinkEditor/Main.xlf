@@ -15,7 +15,7 @@
                 <source>Edit Link</source>
             </trans-unit>
             <trans-unit id="inspector.notfound" xml:space="preserve" approved="yes">
-                <source>Could not find an editor suitable for {href}</source>
+                <source>Could not determine link editor for value {href}</source>
             </trans-unit>
 
             <!-- Dialog -->
@@ -31,12 +31,6 @@
 
             <!-- Link Options -->
 
-            <trans-unit id="options.label.anchor" xml:space="preserve" approved="yes">
-                <source>Anchor</source>
-            </trans-unit>
-            <trans-unit id="options.placeholder.anchor" xml:space="preserve" approved="no">
-                <source>Enter anchor name</source>
-            </trans-unit>
             <trans-unit id="options.label.title" xml:space="preserve" approved="yes">
                 <source>Title</source>
             </trans-unit>

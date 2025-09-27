@@ -30,7 +30,7 @@ export interface ILinkType<ModelType = any, OptionsType extends object = {}> {
     isSuitableFor: (link: Pick<ILink, 'href'>) => boolean
 
     useResolvedModel: (link: ILink) => IPromiseState<ModelType>
-    convertModelToLink: (model: ModelType) => ILink
+    convertModelToLink: (model: ModelType) => Pick<ILink, 'href'>
     isDirty: (model: ModelType) => boolean;
     isValid: (model: ModelType) => boolean;
 

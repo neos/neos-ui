@@ -2,18 +2,13 @@ import * as React from 'react';
 
 import {IconButton} from '@neos-project/react-ui-components';
 
-import {
-    createHrefWithAnchorForLink,
-    IEditor,
-    parseBaseHrefAndAnchorFromValue
-} from '@neos-project/neos-ui-link-editor-core';
+import {IEditor} from '@neos-project/neos-ui-link-editor-core';
 import { ILinkOptions } from '@neos-project/neos-ui-link-editor-core/src/domain';
 import {translate} from "@neos-project/neos-ui-i18n";
 
 interface Props {
     inlineEditorOptions?: {
         linking?: {
-            anchor?: boolean
             title?: boolean
             relNofollow?: boolean
             targetBlank?: boolean
@@ -56,11 +51,9 @@ export const createLinkButton = (editor: IEditor) => (props: Props) => {
     const handleLinkButtonClick = React.useCallback(async () => {
         const link = (() => {
             if (props.formattingUnderCursor.link) {
-                const {href, anchor} = parseBaseHrefAndAnchorFromValue(props.formattingUnderCursor.link);
                 return {
-                    href,
+                    href: props.formattingUnderCursor.link,
                     options: {
-                        anchor,
                         title: props.formattingUnderCursor.linkTitle,
                         targetBlank: props.formattingUnderCursor.linkTargetBlank,
                         relNofollow: props.formattingUnderCursor.linkRelNofollow,
@@ -73,10 +66,6 @@ export const createLinkButton = (editor: IEditor) => (props: Props) => {
         })();
         const enabledLinkOptions = (() => {
             const enabledLinkOptions: (keyof ILinkOptions)[] = [];
-
-            if (props.inlineEditorOptions?.linking?.anchor) {
-                enabledLinkOptions.push('anchor');
-            }
 
             if (props.inlineEditorOptions?.linking?.title) {
                 enabledLinkOptions.push('title');
@@ -112,7 +101,7 @@ export const createLinkButton = (editor: IEditor) => (props: Props) => {
                 props.executeCommand('linkTargetBlank', result.value.options?.targetBlank ?? false, false);
                 props.executeCommand('linkDownload', result.value.options?.download ?? false, false);
 
-                props.executeCommand('link', createHrefWithAnchorForLink(result.value), true);
+                props.executeCommand('link', result.value.href, true);
             }
         } else {
             props.executeCommand('undo', undefined, true);

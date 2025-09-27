@@ -1,8 +1,4 @@
-import {
-    ILink,
-    createHrefWithAnchorForLink,
-    parseBaseHrefAndAnchorFromValue,
-} from "@neos-project/neos-ui-link-editor-core/src/domain";
+import {ILink} from "@neos-project/neos-ui-link-editor-core/src/domain";
 
 /**
  * Translates to php's {@see \Neos\Neos\Ui\LinkEditor\Link}
@@ -53,7 +49,6 @@ export const resolveSerializedLinkFromValue = (value: any, linkDataType: LinkDat
 
 /**
  * Convert the {@see SerializeableLink} to the editor representation.
- * For example the anchor field is in the value object encoded into the href, but for editing treated separately.
  *
  * Counterpart of {@see convertILinkToSerializedLinkValue}
  */
@@ -62,16 +57,12 @@ export const serializedLinkToILink = (serializedLink: SerializeableLink): ILink 
         return null;
     }
 
-    let href, anchor;
-
     switch (serializedLink.dataType) {
         case LinkDataType.valueObject:
             const linkValueObject = serializedLink.value;
-            ({href, anchor} = parseBaseHrefAndAnchorFromValue(linkValueObject.href));
             return {
-                href,
+                href: linkValueObject.href,
                 options: {
-                    anchor: anchor || undefined,
                     title: linkValueObject.title || undefined,
                     targetBlank: linkValueObject.target ? linkValueObject.target === '_blank' : undefined,
                     relNofollow: linkValueObject.rel.includes('nofollow'),
@@ -79,35 +70,29 @@ export const serializedLinkToILink = (serializedLink: SerializeableLink): ILink 
                 }
             };
         case LinkDataType.string:
-            ({href, anchor} = parseBaseHrefAndAnchorFromValue(serializedLink.value));
             return {
-                href,
-                options: {
-                    anchor: anchor || undefined,
-                }
+                href: serializedLink.value,
             };
     }
 }
 
 /**
  * Convert the editor representation of the link to the {@see SerializeableLink.value}
- * For example the anchor field is for editing treated separately but in the value object encoded into the href.
  *
  * Counterpart of {@see serializedLinkToILink}
  */
 export const convertILinkToSerializedLinkValue = (link: ILink, dataType: LinkDataType): any => {
-    const href = createHrefWithAnchorForLink(link);
 
     switch (dataType) {
         case LinkDataType.valueObject:
             return {
-                href: href,
+                href: link.href,
                 title: link.options?.title,
                 target: link.options?.targetBlank ? '_blank' : undefined,
                 rel: link.options?.relNofollow ? ['nofollow'] : [],
                 download: link.options?.download
             };
         case LinkDataType.string:
-            return href;
+            return link.href;
     }
 }

@@ -8,10 +8,13 @@
                 <target>Mediendatei</target>
             </trans-unit>
 
-            <!-- Identifier -->
-            <trans-unit id="identifier.validation.required" xml:space="preserve" approved="yes">
-                <source>Asset is required</source>
-                <target>Mediendatei ist erforderlich</target>
+            <trans-unit id="anchor.label" xml:space="preserve" approved="yes">
+                  <source>Anchor</source>
+              <target>Anker</target>
+              </trans-unit>
+              <trans-unit id="anchor.placeholder" xml:space="preserve" approved="no">
+                <source>Enter anchor name</source>
+              <target>Anker Name eingeben</target>
             </trans-unit>
         </body>
     </file>

@@ -15,7 +15,6 @@ export const LinkOptions: React.FC<{
 }> = props => {
     const form = useLatestState(props.form$);
 
-    const setAnchor = React.useCallback((anchor) => props.form$.update((values) => ({ ...values, isOptionsDirty: true, options: { ...values.options, anchor } })), []);
     const setTitle = React.useCallback((title) => props.form$.update((values) => ({ ...values, isOptionsDirty: true, options: { ...values.options, title } })), []);
     const setTargetBlank = React.useCallback((targetBlank) => props.form$.update((values) => ({ ...values, isOptionsDirty: true, options: { ...values.options, targetBlank } })), []);
     const setRelNofollow = React.useCallback((relNofollow) => props.form$.update((values) => ({ ...values, isOptionsDirty: true, options: { ...values.options, relNofollow } })), []);
@@ -23,14 +22,8 @@ export const LinkOptions: React.FC<{
 
     return (
         <Layout.Stack>
-            {props.enabledLinkOptions.includes('anchor') || props.enabledLinkOptions.includes('title') ? (
+            {props.enabledLinkOptions.includes('title') ? (
                 <Layout.Columns>
-                    {props.enabledLinkOptions.includes('anchor') ? (
-                        <label>
-                            {translate('Neos.Neos.Ui:LinkEditor.Main:options.label.anchor', '')}:
-                            <TextInput type="text" value={form.options?.anchor ?? ""} placeholder={translate('Neos.Neos.Ui:LinkEditor.Main:options.placeholder.anchor', '')} onChange={setAnchor} />
-                        </label>
-                    ) : null}
                     {props.enabledLinkOptions.includes('title') ? (
                         <label>
                             {translate('Neos.Neos.Ui:LinkEditor.Main:options.label.title', '')}:

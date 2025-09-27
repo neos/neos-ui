@@ -11,10 +11,12 @@ import {PromiseState, usePromise} from "@neos-project/framework-promise-react";
 import backend from "@neos-project/neos-ui-backend-connector";
 import {State} from "@neos-project/framework-observable";
 import {useLatestState} from "@neos-project/framework-observable-react";
+import {TextInput} from "@neos-project/react-ui-components";
 
 type AssetLinkModel = {
     isDirty: boolean
-    identifier: string
+    identifier: string,
+    anchor: string
 }
 
 export const Asset = makeLinkType<AssetLinkModel>('LinkEditor:Asset', ({createError}) => ({
@@ -22,7 +24,7 @@ export const Asset = makeLinkType<AssetLinkModel>('LinkEditor:Asset', ({createEr
 
     getTitle: () => translate('Neos.Neos.Ui:LinkEditor.Asset:title', ''),
 
-    supportedLinkOptions: ['title', 'anchor', 'targetBlank', 'relNofollow', 'download'],
+    supportedLinkOptions: ['title', 'targetBlank', 'relNofollow', 'download'],
 
     isSuitableFor,
 
@@ -30,24 +32,25 @@ export const Asset = makeLinkType<AssetLinkModel>('LinkEditor:Asset', ({createEr
         return model.isDirty;
     },
 
-    isValid: () => {
-        return true;
+    isValid: (model) => {
+        return Boolean(model.identifier);
     },
 
     useResolvedModel: (link: ILink) => {
-        const match = /asset:\/\/(.*)/.exec(link.href);
+        const match = /asset:\/\/([^#]*)(?:#(.*))?/.exec(link.href);
 
-        if (match) {
-            return PromiseState.forValue({isDirty: false, identifier: match[1]});
+        if (!match) {
+            return PromiseState.forError(createError(`Cannot handle href "${link.href}".`));
         }
 
-        return PromiseState.forError(
-            createError(`Cannot handle href "${link.href}".`)
-        );
+        const identifier = match[1];
+        const anchor = match[2];
+
+        return PromiseState.forValue({ isDirty: false, identifier, anchor });
     },
 
-    convertModelToLink: (asset: AssetLinkModel) => ({
-        href: `asset://${asset.identifier}`
+    convertModelToLink: ({ identifier, anchor }: AssetLinkModel) => ({
+        href: `asset://${identifier}${anchor ? `#${anchor}` : ''}`,
     }),
 
     Preview: ({model}: {model: AssetLinkModel}) => {
@@ -71,13 +74,18 @@ export const Asset = makeLinkType<AssetLinkModel>('LinkEditor:Asset', ({createEr
     Editor: ({model$}: {model$: State<Nullable<AssetLinkModel>>}) => {
         const model = useLatestState(model$);
         const setAsset = React.useCallback((identifier) => model$.update((values) => ({...values, isDirty: true, identifier})), []);
+        const setAnchor = React.useCallback((anchor) => model$.update((values) => ({...values, isDirty: true, anchor})), []);
 
-        return (
+        return (<>
             <MediaBrowser
                 assetIdentifier={model?.identifier ?? null}
                 onSelectAsset={setAsset}
             />
-        );
+            <label>
+                {translate('Neos.Neos.Ui:LinkEditor.Asset:anchor.label', '')}:
+                <TextInput type="text" value={model?.anchor ?? ""} placeholder={translate('Neos.Neos.Ui:LinkEditor.Asset:anchor.placeholder', '')} onChange={setAnchor} />
+            </label>
+        </>);
     }
 }));
 

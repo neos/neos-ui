@@ -66,12 +66,18 @@ export function pick<V extends Record<string, any>, K extends string & keyof V>(
         throw new Error(`Cannot pick key "${key}" from non object value of type ${currentUpperState === null ? 'null' : (Array.isArray(currentUpperState) ? 'array' : typeof currentUpperState)}`);
     }
 
-    let currentState = state.current[key];
+    let currentState = currentUpperState[key];
     const listeners = new Set<(value: V) => void>();
 
-    // todo unsubscribe if no-one is listening?
+    let ignoreUpperStateUpdates: boolean = false;
+
+    // this subscription is not unsubscribed explicitly, but we rely on the garbage collection
     state.subscribe({
         next(nextUpperState) {
+            if (ignoreUpperStateUpdates) {
+                return;
+            }
+
             const nextState = nextUpperState[key];
 
             if (currentState !== nextState) {
@@ -100,16 +106,21 @@ export function pick<V extends Record<string, any>, K extends string & keyof V>(
             const nextState = updateFn(currentState);
 
             if (currentState !== nextState) {
+                currentState = nextState;
+
                 for (const next of listeners) {
                     next(nextState);
                 }
 
-                state.update((currentUpperState) => ({
-                    ...currentUpperState,
-                    [key]: nextState
-                }));
-
-                currentState = nextState;
+                try {
+                    ignoreUpperStateUpdates = true;
+                    state.update((currentUpperState) => ({
+                        ...currentUpperState,
+                        [key]: nextState
+                    }));
+                } finally {
+                    ignoreUpperStateUpdates = false;
+                }
             }
         }
     };

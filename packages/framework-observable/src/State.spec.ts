@@ -193,4 +193,54 @@ describe('Picked State', () => {
         expect(subscriber.next).toHaveBeenNthCalledWith(3, 2);
         expect(subscriber.next).toHaveBeenNthCalledWith(4, 3);
     });
+
+    test('subscribe to picked state updates: subscriber ignores other state updates', () => {
+        const state$ = createState<{a: number, b: number}>({a: 0, b: 0});
+
+        const pickedState$ = pick(state$, 'a');
+
+        const subscriber = {
+            next: jest.fn()
+        };
+
+        pickedState$.subscribe(subscriber);
+        state$.update((value) => ({...value, b: value.b + 1}));
+
+        expect(subscriber.next).toHaveBeenCalledTimes(1);
+        expect(subscriber.next).toHaveBeenNthCalledWith(1, 0);
+    });
+
+    test('subscribe and unsubscribe and resubscribe to picked state updates', () => {
+        const state$ = createState<{a: number}>({a: 0});
+
+        const pickedState$ = pick(state$, 'a');
+
+        const subscriber1 = {
+            next: jest.fn()
+        };
+        const subscriber2 = {
+            next: jest.fn()
+        };
+
+        const subscription1 = pickedState$.subscribe(subscriber1);
+
+        pickedState$.update((value) => value + 1);
+        expect(subscriber1.next).toHaveBeenCalledTimes(2);
+        expect(subscriber1.next).toHaveBeenNthCalledWith(1, 0);
+        expect(subscriber1.next).toHaveBeenNthCalledWith(2, 1);
+
+        subscription1.unsubscribe();
+        // update from outside when no one is listening
+        state$.update((value) => ({a: value.a + 1}));
+        expect(subscriber1.next).toHaveBeenCalledTimes(2);
+        expect(pickedState$.current).toEqual(2);
+
+        // resubscribe
+        pickedState$.subscribe(subscriber2);
+        pickedState$.update((value) => value + 1);
+
+        expect(subscriber2.next).toHaveBeenCalledTimes(2);
+        expect(subscriber2.next).toHaveBeenNthCalledWith(1, 2);
+        expect(subscriber2.next).toHaveBeenNthCalledWith(2, 3);
+    });
 });

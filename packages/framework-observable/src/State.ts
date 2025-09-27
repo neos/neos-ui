@@ -9,6 +9,11 @@
  */
 import {createObservable, Observable} from './Observable';
 
+export interface ReadonlyState<V> extends Observable<V> {
+    readonly current: V;
+}
+
+
 /**
  * A State is a special kind of Observable that keeps track of a value over
  * time.
@@ -21,8 +26,7 @@ import {createObservable, Observable} from './Observable';
  * Via the `update` method, a State's value can be modified. When called,
  * Subscribers to the state are immediately informed about the new value.
  */
-export interface State<V> extends Observable<V> {
-    readonly current: V;
+export interface State<V> extends ReadonlyState<V> {
     update: (updateFn: (current: V) => V) => void;
 }
 
@@ -60,14 +64,14 @@ export function createState<V>(initialValue: V): State<V> {
     return Object.freeze(state);
 }
 
-export function pick<V extends Record<string, any>, K extends string & keyof V>(state: State<V>, key: K): State<V[K]> {
+export function pickState<V extends Record<string, any>, K extends string & keyof V>(state: State<V>, key: K): State<V[K]> {
     const currentUpperState = state.current;
     if (currentUpperState === null || typeof currentUpperState !== 'object' || Array.isArray(currentUpperState)) {
         throw new Error(`Cannot pick key "${key}" from non object value of type ${currentUpperState === null ? 'null' : (Array.isArray(currentUpperState) ? 'array' : typeof currentUpperState)}`);
     }
 
     let currentState = currentUpperState[key];
-    const listeners = new Set<(value: V) => void>();
+    const listeners = new Set<(value: V[K]) => void>();
 
     let ignoreUpperStateUpdates: boolean = false;
 
@@ -90,7 +94,7 @@ export function pick<V extends Record<string, any>, K extends string & keyof V>(
         }
     });
 
-    const pickedState: State<V> = {
+    const pickedState: State<V[K]> = {
         ...createObservable((next) => {
             listeners.add(next);
             next(currentState);
@@ -126,4 +130,39 @@ export function pick<V extends Record<string, any>, K extends string & keyof V>(
     };
 
     return Object.freeze(pickedState);
+}
+
+export function mapState<V, R>(state: State<V>, mapper: (currentState: V) => R): ReadonlyState<R> {
+    let currentState = mapper(state.current);
+    const listeners = new Set<(value: R) => void>();
+
+    // this subscription is not unsubscribed explicitly, but we rely on the garbage collection
+    state.subscribe({
+        next(nextUpperState) {
+            const nextState = mapper(nextUpperState);
+
+            if (currentState !== nextState) {
+                currentState = nextState;
+
+                for (const next of listeners) {
+                    next(nextState);
+                }
+            }
+        }
+    });
+
+    const mappedState: ReadonlyState<R> = {
+        ...createObservable((next) => {
+            listeners.add(next);
+            next(currentState);
+
+            return () => listeners.delete(next);
+        }),
+
+        get current() {
+            return currentState;
+        },
+    };
+
+    return Object.freeze(mappedState);
 }

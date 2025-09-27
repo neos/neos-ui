@@ -7,10 +7,9 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-import type {State} from '@neos-project/framework-observable';
-
 import {useLatestValueFrom} from './useLatestValueFrom';
+import {ReadonlyState} from "@neos-project/framework-observable";
 
-export function useLatestState<V>(state$: State<V>) {
+export function useLatestState<V>(state$: ReadonlyState<V>) {
     return useLatestValueFrom(state$, state$.current);
 }

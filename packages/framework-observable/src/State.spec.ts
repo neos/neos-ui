@@ -7,7 +7,7 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-import {createState, pick} from './State';
+import {createState, mapState, pickState} from './State';
 
 describe('State', () => {
     test('get current value', () => {
@@ -66,30 +66,100 @@ describe('State', () => {
     });
 });
 
+
+describe('Mapped State', () => {
+    test('map from filled object value', () => {
+        const state$ = createState<{a: number}>({a: 0});
+
+        const mappedState$ = mapState(state$, (state) => state.a);
+
+        expect(state$.current).toEqual({a: 0});
+        expect(mappedState$.current).toEqual(0);
+
+        state$.update((value) => ({ a: value.a + 1 }));
+        expect(state$.current).toEqual({ a: 1 });
+        expect(mappedState$.current).toEqual(1);
+
+        state$.update((value) => ({ a: value.a + 1 }));
+        expect(state$.current).toEqual({ a: 2 });
+        expect(mappedState$.current).toEqual(2);
+
+        state$.update((value) => ({ a: value.a + 1 }));
+        expect(state$.current).toEqual({ a: 3 });
+        expect(mappedState$.current).toEqual(3);
+    });
+
+    test('subscribe to mapped state updates: subscriber receives current value immediately', () => {
+        const state$ = createState<{a: number}>({a: 0});
+
+        const mappedState$ = mapState(state$, (state) => state.a);
+
+        const subscriber1 = {
+            next: jest.fn()
+        };
+        const subscriber2 = {
+            next: jest.fn()
+        };
+
+        mappedState$.subscribe(subscriber1);
+        expect(subscriber1.next).toHaveBeenCalledTimes(1);
+        expect(subscriber1.next).toHaveBeenNthCalledWith(1, 0);
+
+        state$.update((value) => ({a: value.a + 1}));
+        state$.update((value) => ({a: value.a + 1}));
+        state$.update((value) => ({a: value.a + 1}));
+
+        mappedState$.subscribe(subscriber2);
+        expect(subscriber2.next).toHaveBeenCalledTimes(1);
+        expect(subscriber2.next).toHaveBeenNthCalledWith(1, 3);
+    });
+
+    test('subscribe to picked state updates: subscriber receives all updates', () => {
+        const state$ = createState<{a: number}>({a: 0});
+
+        const mappedState$ = mapState(state$, (state) => state.a);
+
+        const subscriber = {
+            next: jest.fn()
+        };
+
+        mappedState$.subscribe(subscriber);
+        state$.update((value) => ({a: value.a + 1}));
+        state$.update((value) => ({a: value.a + 1}));
+        state$.update((value) => ({a: value.a + 1}));
+
+        expect(subscriber.next).toHaveBeenCalledTimes(4);
+        expect(subscriber.next).toHaveBeenNthCalledWith(1, 0);
+        expect(subscriber.next).toHaveBeenNthCalledWith(2, 1);
+        expect(subscriber.next).toHaveBeenNthCalledWith(3, 2);
+        expect(subscriber.next).toHaveBeenNthCalledWith(4, 3);
+    });
+});
+
 describe('Picked State', () => {
     test('constraints: pick from non object value', () => {
         const number$ = createState(0);
 
         // @ts-ignore
-        expect(() => pick(number$, 'a')).toThrow('Cannot pick key "a" from non object value of type number');
+        expect(() => pickState(number$, 'a')).toThrow('Cannot pick key "a" from non object value of type number');
 
         const null$ = createState(null);
 
         // @ts-ignore
-        expect(() => pick(null$, 'a')).toThrow('Cannot pick key "a" from non object value of type null');
+        expect(() => pickState(null$, 'a')).toThrow('Cannot pick key "a" from non object value of type null');
 
 
         const list$ = createState([]);
 
         // @ts-ignore
-        expect(() => pick(list$, 'a')).toThrow('Cannot pick key "a" from non object value of type array');
+        expect(() => pickState(list$, 'a')).toThrow('Cannot pick key "a" from non object value of type array');
     });
 
     test('constraints: pick from object value and set from outside to non object', () => {
         const numberOrObject$ = createState<{a?: number} | number>({});
 
         // @ts-expect-error typing already prevents this case but we test this for there is lots of untyped code
-        const pickedState$ = pick(numberOrObject$, 'a');
+        const pickedState$ = pickState(numberOrObject$, 'a');
         expect(pickedState$.current).toEqual(undefined);
 
         // todo
@@ -99,7 +169,7 @@ describe('Picked State', () => {
     test('pick from initially empty object value', () => {
         const state$ = createState<{a?: number}>({});
 
-        const pickedState$ = pick(state$, 'a');
+        const pickedState$ = pickState(state$, 'a');
 
         expect(state$.current).toEqual({});
         expect(pickedState$.current).toEqual(undefined);
@@ -124,7 +194,7 @@ describe('Picked State', () => {
     test('pick from initially filled object value', () => {
         const state$ = createState<{a: number}>({a: 0});
 
-        const pickedState$ = pick(state$, 'a');
+        const pickedState$ = pickState(state$, 'a');
 
         expect(state$.current).toEqual({a: 0});
         expect(pickedState$.current).toEqual(0);
@@ -149,7 +219,7 @@ describe('Picked State', () => {
     test('subscribe to picked state updates: subscriber receives current value immediately', () => {
         const state$ = createState<{a: number}>({a: 0});
 
-        const pickedState$ = pick(state$, 'a');
+        const pickedState$ = pickState(state$, 'a');
 
         const subscriber1 = {
             next: jest.fn()
@@ -175,7 +245,7 @@ describe('Picked State', () => {
     test('subscribe to picked state updates: subscriber receives all updates', () => {
         const state$ = createState<{a: number}>({a: 0});
 
-        const pickedState$ = pick(state$, 'a');
+        const pickedState$ = pickState(state$, 'a');
 
         const subscriber = {
             next: jest.fn()
@@ -197,7 +267,7 @@ describe('Picked State', () => {
     test('subscribe to picked state updates: subscriber ignores other state updates', () => {
         const state$ = createState<{a: number, b: number}>({a: 0, b: 0});
 
-        const pickedState$ = pick(state$, 'a');
+        const pickedState$ = pickState(state$, 'a');
 
         const subscriber = {
             next: jest.fn()
@@ -213,7 +283,7 @@ describe('Picked State', () => {
     test('subscribe and unsubscribe and resubscribe to picked state updates', () => {
         const state$ = createState<{a: number}>({a: 0});
 
-        const pickedState$ = pick(state$, 'a');
+        const pickedState$ = pickState(state$, 'a');
 
         const subscriber1 = {
             next: jest.fn()

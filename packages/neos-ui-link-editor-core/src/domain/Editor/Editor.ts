@@ -3,7 +3,7 @@ import {ActionType, getType} from 'typesafe-actions';
 import {ILink, ILinkOptions} from '../Link';
 
 import * as actions from './EditorAction';
-import {createChannel, createState} from "@neos-project/framework-observable";
+import {createChannel, createState, ReadonlyState} from "@neos-project/framework-observable";
 
 export interface IEditorState {
     enabledLinkOptions: (keyof ILinkOptions)[]
@@ -96,7 +96,7 @@ export function createEditor() {
     );
 
     return Object.freeze({
-        state$,
+        state$: state$ as ReadonlyState<IEditorState>,
         transactions: {dismiss, unset, apply, editLink}
     });
 }

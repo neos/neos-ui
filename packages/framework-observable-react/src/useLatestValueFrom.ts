@@ -11,6 +11,32 @@ import React from 'react';
 
 import type {Observable} from '@neos-project/framework-observable';
 
+function shallowEqual(left: unknown, right: unknown): boolean {
+    if (left === right) {
+        return true;
+    }
+    if (typeof left === "object" && typeof right === "object" && left !== null && right !== null) {
+        if (Array.isArray(left) || Array.isArray(right)) {
+            return false;
+        }
+        const keys1 = Object.keys(left)
+        const keys2 = Object.keys(right)
+
+        if (keys1.length !== keys2.length || !keys1.every(key => keys2.includes(key))) {
+            return false;
+        }
+
+        for (const key of keys1) {
+            // @ts-ignore
+            if (left[key] !== right[key]) {
+                return false;
+            }
+        }
+        return true;
+    }
+    return false;
+}
+
 export function useLatestValueFrom<V>(observable$: Observable<V>): null | V;
 export function useLatestValueFrom<V, D>(
     observable$: Observable<V>,
@@ -31,7 +57,7 @@ export function useLatestValueFrom<V, D>(
     React.useEffect(() => {
         const subscription = observable$.subscribe({
             next: (incomingValue) => {
-                if (valueRef.current !== incomingValue) {
+                if (!shallowEqual(valueRef.current, incomingValue)) {
                     setValue(incomingValue);
                 }
             }

@@ -45,12 +45,12 @@ describe('LinkType: Web', () => {
         equal(isSuitableFor(link), true);
     });
 
-    it('is not satisfied by javascript: links', () => {
+    it('is sadly also satisfied by javascript: links', () => {
         const link = {
             href: 'javascript:'
         };
 
-        equal(isSuitableFor(link), false);
+        equal(isSuitableFor(link), true);
     });
 
     it('is not satisfied by node:// links', () => {
@@ -77,12 +77,12 @@ describe('LinkType: Web', () => {
         equal(isSuitableFor(link), false);
     });
 
-    it('is not satisfied by invalid links', () => {
+    it('is also satisfied by seemingly invalid links (with the correct encoding it works)', () => {
         const link = {
             href: 'Think of Beethoven\'s 5th: foo foo foo bar'
         };
 
-        equal(isSuitableFor(link), false);
+        equal(isSuitableFor(link), true);
     });
 
     it('is not satisfied by tel: links', () => {

@@ -1,0 +1,16 @@
+
+.container {
+    width: calc(-80px - 64px + 100vw);
+    max-width: 1260px;
+
+    & > div {
+        padding: 0;
+    }
+
+    & > iframe {
+        width: calc(100vw - 160px);
+        max-width: 100%;
+        height: calc(100vh - 580px);
+        position: relative;
+    }
+}

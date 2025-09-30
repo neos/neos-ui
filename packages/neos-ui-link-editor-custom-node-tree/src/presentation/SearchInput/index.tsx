@@ -1,36 +1,9 @@
 import * as React from 'react';
-import styled from 'styled-components';
+import styles from './style.module.css'
 
 import {TextInput, Icon, IconButton} from '@neos-project/react-ui-components';
 
 import {translate} from "@neos-project/neos-ui-i18n";
-
-const SearchIcon = styled(Icon)`
-    position: absolute;
-    top: 50%;
-    left: 21px;
-    transform: translate(-50%, -50%);
-`;
-
-const ClearIcon = styled(IconButton)`
-    position: absolute;
-    top: 0;
-    right: 0;
-    color: #000;
-`;
-
-const StyledTextInput = styled(TextInput)`
-    padding-left: 42px;
-
-    &:focus {
-        background: #3f3f3f;
-        color: #fff;
-    }
-`;
-
-const SearchInputContainer = styled.div`
-    position: relative;
-`;
 
 interface Props {
     value: string
@@ -38,6 +11,7 @@ interface Props {
     onClear: () => void
 }
 
+// currently a duplicate of neos-ui/src/Containers/LeftSideBar/NodeTreeSearchBar/NodeTreeSearchInput
 export const SearchInput: React.FC<Props> = props => {
     const latestValue = React.useRef(props.value);
 
@@ -50,20 +24,22 @@ export const SearchInput: React.FC<Props> = props => {
     }, [props.value])
 
     return (
-        <SearchInputContainer>
-            <SearchIcon icon="search"/>
-            <StyledTextInput
+        <div className={styles.searchInputContainer}>
+            <Icon className={styles.searchIcon} icon="search"/>
+            <TextInput
+                className={styles.textInput}
                 type="search"
                 value={props.value}
                 placeholder={translate('Neos.Neos:Main:search', '')}
                 onChange={props.onChange}
             />
             {props.value && (
-                <ClearIcon
+                <IconButton
+                    className={styles.clearIcon}
                     icon="times"
                     onClick={props.onClear}
                 />
             )}
-        </SearchInputContainer>
+        </div>
     )
 };

@@ -1,0 +1,27 @@
+.button {
+    display: block;
+    border: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow: visible;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    line-height: normal;
+    -webkit-font-smoothing: inherit;
+    -moz-osx-font-smoothing: inherit;
+    -webkit-appearance: none;
+    cursor: pointer;
+    filter: brightness(1);
+    transition: filter .2s;
+
+    &:hover {
+        filter: brightness(2) drop-shadow(0 0 1px #aaa);
+    }
+
+    &::-moz-focus-inner {
+        border: 0;
+        padding: 0;
+    }
+}

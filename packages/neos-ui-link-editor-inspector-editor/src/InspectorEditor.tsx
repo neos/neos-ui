@@ -1,5 +1,4 @@
 import * as React from 'react';
-import styled from 'styled-components';
 import {Button, Icon} from '@neos-project/react-ui-components';
 import {
     ILinkType,
@@ -17,6 +16,7 @@ import {
     serializedLinkToILink
 } from "./serialisation";
 import {translate} from "@neos-project/neos-ui-i18n";
+import {SeamlessButton} from "./presentation";
 
 export type EditorProps = {
     id?: string
@@ -126,34 +126,6 @@ export const createInspectorEditor = (dataType: LinkDataType, editor: IEditor) =
     }
 };
 
-const SeamlessButton = styled.button`
-    display: block;
-    border: none;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    overflow: visible;
-    background: transparent;
-    color: inherit;
-    font: inherit;
-    line-height: normal;
-    -webkit-font-smoothing: inherit;
-    -moz-osx-font-smoothing: inherit;
-    -webkit-appearance: none;
-    cursor: pointer;
-    filter: brightness(1);
-    transition: filter .2s;
-
-    &:hover {
-        filter: brightness(2) drop-shadow(0 0 1px #aaa);
-    }
-
-    &::-moz-focus-inner {
-        border: 0;
-        padding: 0;
-    }
-`;
-
 const InspectorEditorWithLinkType: React.FC<{
     htmlId?: string
     disabled?: boolean
@@ -192,7 +164,6 @@ const InspectorEditorWithLinkType: React.FC<{
             ) : (
                 <SeamlessButton
                     title={translate('Neos.Neos.Ui:LinkEditor.Main:inspector.edit', '')}
-                    type="button"
                     onClick={props.editLink}
                 >
                     {

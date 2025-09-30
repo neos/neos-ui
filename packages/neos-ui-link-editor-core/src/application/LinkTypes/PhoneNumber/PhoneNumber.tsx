@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import {SelectBox} from '@neos-project/react-ui-components';
+import {SelectBox, Tooltip} from '@neos-project/react-ui-components';
 import type {CountryCode} from 'libphonenumber-js'
 
 import {ILink, makeLinkType} from "../../../domain";
@@ -12,20 +12,44 @@ import {translate} from "@neos-project/neos-ui-i18n";
 import {State} from "@neos-project/framework-observable";
 import {useLatestState} from "@neos-project/framework-observable-react";
 
-import {EditorEnvelope} from '@neos-project/neos-ui-editors/src/index';
 import {PromiseState, usePromise} from '@neos-project/framework-promise-react';
 
 type PhoneNumberLinkModel = {
-    countryCallingCode: {
-        value: string,
-        isDirty: boolean,
-    }
     phoneNumber: {
-        value: string,
-        isDirty: boolean,
-        isValid: true | string
+        value: string
+        isDirty: boolean
+        warning?: string
+        formattingOptions?: any[]
     }
 }
+
+const formattingOptionsForCountryCode = (phoneNumber: string, libphonenumber: typeof import('./chunk-libphonenumber')) => {
+
+    if (!phoneNumber.startsWith('+')) {
+        return null;
+    }
+
+    if (/^\+\d{1,3} /.test(phoneNumber)) {
+        return null;
+    }
+
+    const searchCharacter = phoneNumber.substring(1, 2).toUpperCase();
+
+    return libphonenumber.getCountries().map(countryCode => {
+        const callingCode = libphonenumber.getCountryCallingCode(countryCode);
+        if (searchCharacter !== '') {
+            if (!countryCode.startsWith(searchCharacter) && !callingCode.startsWith(searchCharacter)) {
+                return null;
+            }
+        }
+
+        return {
+            group: 'Country Codes',
+            label: `${countryCode} +${callingCode}`,
+            value: `+${callingCode} `
+        };
+    });
+};
 
 type PhoneNumberLinkOptions = {
     defaultCountry: CountryCode,
@@ -42,11 +66,11 @@ export const PhoneNumber = makeLinkType<PhoneNumberLinkModel, PhoneNumberLinkOpt
     isSuitableFor,
 
     isDirty: (model) => {
-        return model.countryCallingCode?.isDirty || model.phoneNumber?.isDirty;
+        return model.phoneNumber?.isDirty === true;
     },
 
     isValid: (model) => {
-        return model.phoneNumber?.isValid === true;
+        return model.phoneNumber && model.phoneNumber.value.trimEnd() !== '' && model.phoneNumber.value.trim() !== '+';
     },
 
     useResolvedModel: (link: ILink) => {
@@ -62,14 +86,9 @@ export const PhoneNumber = makeLinkType<PhoneNumberLinkModel, PhoneNumberLinkOpt
         if (phoneNumber) {
             return PromiseState.forValue({
                 phoneNumber: {
-                    value: phoneNumber.number.replace(`+${phoneNumber.countryCallingCode}`, ''),
+                    value: link.href.replace('tel:', ''),
                     isDirty: false,
-                    isValid: true,
-                },
-                countryCallingCode: {
-                    isDirty: false,
-                    value: `+${phoneNumber.countryCallingCode.toString()}`
-                },
+                }
             });
         }
 
@@ -79,7 +98,7 @@ export const PhoneNumber = makeLinkType<PhoneNumberLinkModel, PhoneNumberLinkOpt
     },
 
     convertModelToLink: (model: PhoneNumberLinkModel) => {
-        return {href: `tel:${model.countryCallingCode.value}${model.phoneNumber.value}`};
+        return {href: `tel:${model.phoneNumber.value}`};
     },
 
     Preview: ({model}: { model: PhoneNumberLinkModel }) => {
@@ -88,7 +107,7 @@ export const PhoneNumber = makeLinkType<PhoneNumberLinkModel, PhoneNumberLinkOpt
         return (
             <IconCard
                 icon="phone-alt"
-                title={asyncModule.value ? (new (asyncModule.value.AsYouType)()).input(`${model.countryCallingCode.value}${model.phoneNumber.value}`) : ''}
+                title={asyncModule.value ? (new (asyncModule.value.AsYouType)()).input(`${model.phoneNumber.value}`) : ''}
             />
         )
     },
@@ -109,83 +128,45 @@ export const PhoneNumber = makeLinkType<PhoneNumberLinkModel, PhoneNumberLinkOpt
 }));
 
 const PhoneNumberEditor = ({model$, options, id, libphonenumber}: { model$: State<Nullable<PhoneNumberLinkModel>>, options: OptionalDeep<PhoneNumberLinkOptions>, id: string, libphonenumber: typeof import('./chunk-libphonenumber') }) => {
-    const {getCountries, getCountryCallingCode} = libphonenumber;
-
-    const defaultCountryCallingCode = (options?.defaultCountry ? `+${getCountryCallingCode(options?.defaultCountry).toString()}` : `+${getCountryCallingCode(getCountries()[0]).toString()}`);
 
     const model = useLatestState(model$);
-    const setCountryCallingCode = React.useCallback((countryCallingCode: string) => model$.update((values) => ({ ...values, countryCallingCode: { value: countryCallingCode, isDirty: true }})), []);
     const setPhoneNumber = React.useCallback((phoneNumber) => model$.update((values) => ({
         ...values,
-        countryCallingCode: values?.countryCallingCode ?? { value: defaultCountryCallingCode, isDirty: false },
         phoneNumber: {
             value: phoneNumber,
             isValid: !phoneNumber ? translate('Neos.Neos.Ui:LinkEditor.PhoneNumber:phoneNumber.validation.required', '') : (!VALID_PHONE_NUMBER.test(phoneNumber) ? translate('Neos.Neos.Ui:LinkEditor.PhoneNumber:phoneNumber.validation.numbersOnly', '') : true),
-            isDirty: true
+            isDirty: true,
+            formattingOptions: [
+                ...formattingOptionsForCountryCode(phoneNumber, libphonenumber) ?? []
+            ].filter(Boolean)
         },
     })), [])
-
-    // todo memo result
-    const countryCallingCodes = {} as { [key: string]: { value: string, label: string } };
-    options.favoredCountries?.map((country) => {
-        if (!countryCallingCodes[`+${getCountryCallingCode(country as CountryCode)}`]) {
-            countryCallingCodes[`+${getCountryCallingCode(country as CountryCode)}`] = {
-                value: `+${getCountryCallingCode(country as CountryCode)}`,
-                label: `${country} +${getCountryCallingCode(country as CountryCode)}`
-            };
-        } else {
-            countryCallingCodes[`+${getCountryCallingCode(country as CountryCode)}`] = {
-                value: `+${getCountryCallingCode(country as CountryCode)}`,
-                label: `${countryCallingCodes[`+${getCountryCallingCode(country as CountryCode)}`].label.split(/\s\+/)[0]}, ${country} +${getCountryCallingCode(country as CountryCode)}`
-            };
-        }
-    })
-
-    getCountries().map((country) => {
-        if (options.favoredCountries?.includes(country)) {
-            return;
-        }
-
-        if (!countryCallingCodes[`+${getCountryCallingCode(country)}`]) {
-            countryCallingCodes[`+${getCountryCallingCode(country)}`] = {
-                value: `+${getCountryCallingCode(country)}`,
-                label: `${country} +${getCountryCallingCode(country)}`
-            };
-        } else {
-            countryCallingCodes[`+${getCountryCallingCode(country)}`] = {
-                value: `+${getCountryCallingCode(country)}`,
-                label: `${countryCallingCodes[`+${getCountryCallingCode(country)}`].label.split(/\s\+/)[0]}, ${country} +${getCountryCallingCode(country)}`
-            };
-        }
-    })
 
     return (
         <div>
             <label htmlFor={`${id}.phoneNumber`}>
                 {translate('Neos.Neos.Ui:LinkEditor.PhoneNumber:phoneNumber.label', '')}
             </label>
-            <div style={{display: 'grid', gridTemplateColumns: '160px 1fr', minWidth: '600px'}}>
-                <div style={{margin: '0.25rem 0 0 0'}}>
-                    <SelectBox
-                        allowEmpty={false}
-                        options={Object.values(countryCallingCodes)}
-                        onValueChange={setCountryCallingCode}
-                        value={model?.countryCallingCode?.value || defaultCountryCallingCode}
-                    />
-                </div>
-                <div>
-                    <EditorEnvelope
-                        identifier={`${id}.phoneNumber`}
-                        label={''}
-                        editor={'Neos.Neos/Inspector/Editors/TextFieldEditor'}
-                        options={{
-                            placeholder: translate('Neos.Neos.Ui:LinkEditor.PhoneNumber:phoneNumber.placeholder', '')
-                        }}
-                        validationErrors={model?.phoneNumber?.isDirty && model.phoneNumber.isValid !== true ? [model.phoneNumber.isValid] : []}
-                        value={model?.phoneNumber?.value ?? ''}
-                        commit={setPhoneNumber}
-                    />
-                </div>
+
+            <div>
+                <SelectBox
+                    options={model?.phoneNumber.formattingOptions ?? []}
+                    optionValueField="value"
+                    value={''}
+                    plainInputMode={!model?.phoneNumber.formattingOptions?.length}
+                    placeholderIcon={'phone-alt'}
+                    onValueChange={setPhoneNumber}
+                    threshold={0}
+                    placeholder={translate('Neos.Neos.Ui:LinkEditor.Web:phoneNumber.placeholder', '')}
+                    displaySearchBox={true}
+                    showDropDownToggle={false}
+                    allowEmpty={false}
+                    searchTerm={model?.phoneNumber?.value ?? ''}
+                    onSearchTermChange={setPhoneNumber}
+                />
+                {model?.phoneNumber?.warning ? (
+                    <Tooltip renderInline asWarning>{model.phoneNumber.warning}</Tooltip>
+                ) : null}
             </div>
         </div>
     );

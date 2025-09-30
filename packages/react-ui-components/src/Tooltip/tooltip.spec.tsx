@@ -11,6 +11,7 @@ describe('<ToolTip/>', () => {
         theme: {
             tooltip: 'tooltipClassName',
             'tooltip--asError': 'asErrorClassName',
+            'tooltip--asWarning': 'asWarningClassName',
             'tooltip--inline': 'inlineClassName',
             'tooltip--arrow': 'arrowClassName',
             'tooltip--inner': 'innerClassName'

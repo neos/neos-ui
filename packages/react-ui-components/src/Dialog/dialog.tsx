@@ -52,7 +52,7 @@ export interface DialogProps {
     /**
      * The `type` prop defines the type of the `Dialog`.
      */
-    readonly type: DialogType;
+    readonly type?: DialogType;
 
     /**
      * The `style` prop defines the visual style of the `Dialog`.

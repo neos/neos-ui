@@ -7,7 +7,7 @@ export function registerDialog(
     globalRegistry: GlobalRegistry,
     editor: IEditor
 ): void {
-    const containersRegistry = globalRegistry.get('containers');
+    const containersRegistry = globalRegistry.get('containers')!;
 
     containersRegistry.set(
         'Modals/LinkEditor',

@@ -19,6 +19,7 @@ import {useLatestState} from '@neos-project/framework-observable-react';
 import {useSelector} from '@neos-project/neos-ui-redux-store';
 import {translate} from "@neos-project/neos-ui-i18n";
 import {createState, pickState, mapState, State} from "@neos-project/framework-observable";
+import {PanelProps} from "@neos-project/react-ui-components/types/Tabs/panel";
 
 export type FormValues = {
     isOptionsDirty: boolean
@@ -30,6 +31,9 @@ export type FormValues = {
         [linkTypeId: string]: any
     }
 }
+
+// @ts-ignore "Panel" is not visible to typescript
+const TabsPanel: React.FC<PanelProps> = Tabs.Panel;
 
 export const createDialog = (editor: IEditor) => () => {
     const {isOpen, initialValue} = useLatestState(editor.state$);
@@ -183,7 +187,7 @@ const DialogWithEmptyValue: React.FC<{
                 const options = editorOptions.linkTypes?.[linkType.id] as any ?? {};
 
                 return (
-                    <Tabs.Panel
+                    <TabsPanel
                         key={linkType.id}
                         id={linkType.id}
                         // menu item props
@@ -195,7 +199,7 @@ const DialogWithEmptyValue: React.FC<{
                                 <Editor model$={model$} options={options}/>
                             </ErrorBoundary>
                         </Layout.Stack>
-                    </Tabs.Panel>
+                    </TabsPanel>
                 )
             })}
         </Tabs>
@@ -270,7 +274,7 @@ const DialogWithValue: React.FC<{
                     const model$ = React.useMemo(() => pickState(linkModels$, linkType.id), [linkModels$])
 
                     return (
-                        <Tabs.Panel
+                        <TabsPanel
                             key={linkType.id}
                             id={linkType.id}
                             // menu item props
@@ -293,7 +297,7 @@ const DialogWithValue: React.FC<{
                                 </ErrorBoundary>
 
                             </Layout.Stack>
-                        </Tabs.Panel>
+                        </TabsPanel>
                     )
                 })}
             </Tabs>

@@ -118,8 +118,8 @@ const ActiveLinkEditorDialog: React.FC<{
             title={<div>{translate('Neos.Neos.Ui:LinkEditor.Main:dialog.title', '')}</div>}
             renderBody={() => (
                 <ErrorBoundary errorFallback={ErrorView}>
-                    <Form
-                        renderBody={() => (initialValue === null || initialLinkType === null) || formStatus.initialLinkWasDeleted ? (
+                    <Form>
+                        {(initialValue === null || initialLinkType === null) || formStatus.initialLinkWasDeleted ? (
                             <DialogWithEmptyValue
                                 form$={form$}
                                 editor={editor}
@@ -134,7 +134,7 @@ const ActiveLinkEditorDialog: React.FC<{
                                 availableLinkTypes={availableLinkTypes}
                             />
                         )}
-                    />
+                    </Form>
                 </ErrorBoundary>
             )}
             actions={[

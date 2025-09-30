@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import styled from 'styled-components';
 
 import {Dialog} from '@neos-project/react-ui-components';
 import {ReactNode} from "react";
@@ -15,7 +14,7 @@ import {ReactNode} from "react";
 // This is a **VERY FRAGILE** hack, so please do not copy it. A
 // fix for the native Dialog in Neos UI will follow soon.
 //
-const StyledDialog = styled(Dialog)`
+/*
     z-index: 69;
 
     [class*="_dialog__contentsPosition "],
@@ -32,7 +31,7 @@ const StyledDialog = styled(Dialog)`
     [class$="_dialog__body"] {
         max-height: 80vh;
     }
-`;
+*/
 
 export const Modal: React.FC<{
     title: React.ReactNode
@@ -41,7 +40,7 @@ export const Modal: React.FC<{
     preventClosing: boolean,
     actions: ReadonlyArray<ReactNode>;
 }> = props => ReactDOM.createPortal(
-    <StyledDialog
+    <Dialog
         id="neos-LinkEditor"
         isOpen={true}
         title={props.title}
@@ -52,6 +51,6 @@ export const Modal: React.FC<{
         autoFocus={true}
     >
         {props.renderBody()}
-    </StyledDialog>,
+    </Dialog>,
     document.body
 );

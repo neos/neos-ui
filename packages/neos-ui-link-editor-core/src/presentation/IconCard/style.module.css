@@ -1,0 +1,19 @@
+
+.container {
+    display: grid;
+    grid-gap: 8px;
+    grid-template-columns: 20px 1fr;
+    grid-template-rows: repeat(2, 1fr);
+    background-color: #141414;
+    padding: 8px 16px;
+    min-height: 50px;
+}
+
+.iconWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    grid-column: 1 / span 1;
+    grid-row-start: 1;
+    grid-row-end: span 1;
+}

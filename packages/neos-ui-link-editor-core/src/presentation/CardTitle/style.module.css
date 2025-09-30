@@ -1,0 +1,12 @@
+
+.container {
+    display: flex;
+    align-items: center;
+    line-height: 1;
+    grid-column: 2 / span 1;
+    grid-row-start: 1;
+    grid-row-end: span 1;
+    font-size: 14px;
+    color: #FFF;
+    min-width: 0;
+}

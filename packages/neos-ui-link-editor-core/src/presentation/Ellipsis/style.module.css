@@ -1,8 +1,7 @@
-import styled from 'styled-components';
 
-export const Ellipsis = styled.span`
+.elipsis {
     display: block;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-`;
+}

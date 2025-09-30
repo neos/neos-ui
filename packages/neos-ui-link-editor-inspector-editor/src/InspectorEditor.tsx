@@ -26,6 +26,7 @@ export type EditorProps = {
         relNofollow?: boolean
         targetBlank?: boolean
         download?: boolean
+        disabled?: boolean
     };
     value: any;
     commit(value: any): void;
@@ -99,6 +100,7 @@ export const createInspectorEditor = (dataType: LinkDataType, editor: IEditor) =
                 <InspectorEditorWithLinkType
                     htmlId={props.id}
                     key={linkType.id}
+                    disabled={props.options?.disabled}
                     link={serializedLinkToILink(serializedLink)!}
                     linkType={linkType}
                     options={props.options?.linkTypes?.[linkType.id] ?? {}}
@@ -109,7 +111,7 @@ export const createInspectorEditor = (dataType: LinkDataType, editor: IEditor) =
         );
     } else if (serializedLink.value === null) {
         return (
-            <Button id={props.id} onClick={editLink}>
+            <Button id={props.id} disabled={props.options?.disabled} onClick={editLink}>
                 <Icon icon="plus"/>
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 {translate('Neos.Neos.Ui:LinkEditor.Main:inspector.create', '')}
@@ -154,6 +156,7 @@ const SeamlessButton = styled.button`
 
 const InspectorEditorWithLinkType: React.FC<{
     htmlId?: string
+    disabled?: boolean
     link: ILink
     linkType: ILinkType
     options: any
@@ -162,6 +165,25 @@ const InspectorEditorWithLinkType: React.FC<{
 }> = props => {
     const {isLoading, error, value: model} = props.linkType.useResolvedModel(props.link);
     const {Preview, LoadingPreview} = props.linkType;
+
+    if (props.disabled) {
+        // todo add grey overlay like with disabled button and invalid mouse cursor effect
+        return error ? (
+            <ErrorView error={error} />
+        ) : (
+            isLoading ? (
+                <LoadingPreview
+                    link={props.link}
+                    options={props.options}
+                />
+            ) : (
+                <Preview
+                    model={model}
+                    options={props.options}
+                />
+            )
+        )
+    }
 
     return (
         <Deletable id={props.htmlId} onDelete={props.reset}>

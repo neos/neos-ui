@@ -10,11 +10,11 @@ import {isEmail} from "@neos-project/utils-helpers";
 import {PromiseState} from '@neos-project/framework-promise-react';
 import {State} from "@neos-project/framework-observable";
 import {useLatestState} from "@neos-project/framework-observable-react";
-import {EditorEnvelope} from '@neos-project/neos-ui-editors/src/index';
+import {TextArea, TextInput, Tooltip} from '@neos-project/react-ui-components';
 
 type FormValue<T> = {
     value: T,
-    isValid: string | true,
+    warning?: string,
     isDirty: boolean
 }
 
@@ -25,23 +25,9 @@ function createFormValue<T>(value: T): Nullable<FormValue<T>> {
     return {
         value,
         isDirty: false,
-        isValid: true,
+        warning: undefined,
     }
 }
-
-const makeUpdateFormValue = (valueAsObject: { [name: string]: any }, validator: () => true | string) => {
-    const [[property, value]] = Object.entries(valueAsObject);
-
-    return (values: any) => ({
-        ...values,
-        [property]: {
-            value,
-            isValid: validator(),
-            isDirty: true
-        }
-    })
-}
-
 
 type MailToLinkModel = {
     recipient: FormValue<string>
@@ -49,6 +35,19 @@ type MailToLinkModel = {
     cc?: FormValue<string>
     bcc?: FormValue<string>
     body?: FormValue<string>
+}
+
+function makeUpdateFormValue<K extends keyof MailToLinkModel & string>(valueAsObject: Record<K, any>, validator: () => void | string) {
+    const [[property, value]] = Object.entries(valueAsObject);
+
+    return (values: any) => ({
+        ...values,
+        [property]: {
+            value,
+            warning: validator(),
+            isDirty: true
+        }
+    })
 }
 
 type MailToOptions = {
@@ -72,10 +71,10 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('LinkEditor:M
     },
 
     isValid: (model) => {
-        if (!model.recipient) {
+        if (!model.recipient || model.recipient.value.trim() === '') {
             return false;
         }
-        return Object.values(model).every((value) => value?.isValid === true);
+        return true;
     },
 
     useResolvedModel:  (link: ILink) => {
@@ -132,10 +131,10 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('LinkEditor:M
             if (!isEmail(recipient)) {
                 return translate('Neos.Neos.Ui:LinkEditor.MailTo:recipient.validation.email', '');
             }
-            return true;
+            return;
         })), []);
 
-        const setSubject = React.useCallback((subject) => model$.update(makeUpdateFormValue({subject}, () => true)), []);
+        const setSubject = React.useCallback((subject) => model$.update(makeUpdateFormValue({subject}, () => {})), []);
 
         const setCc = React.useCallback((cc: Nullable<string>) => model$.update(makeUpdateFormValue({cc}, () => {
             if (cc) {
@@ -143,7 +142,7 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('LinkEditor:M
                     return translate('Neos.Neos.Ui:LinkEditor.MailTo:cc.validation.emaillist', '');
                 }
             }
-            return true;
+            return;
         })), []);
 
         const setBcc = React.useCallback((bcc: Nullable<string>) => model$.update(makeUpdateFormValue({bcc}, () => {
@@ -152,79 +151,79 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('LinkEditor:M
                     return translate('Neos.Neos.Ui:LinkEditor.MailTo:bcc.validation.emaillist', '');
                 }
             }
-            return true;
+            return;
         })), []);
 
-        const setBody = React.useCallback((body) => model$.update(makeUpdateFormValue({body}, () => true)), []);
+        const setBody = React.useCallback((body) => model$.update(makeUpdateFormValue({body}, () => {})), []);
 
         const email = useLatestState(model$);
 
         return (
             <Layout.Columns>
                 <div style={{ gridColumn: '1 / -1' }}>
-                    <EditorEnvelope
-                        identifier={`${id}.recipient`}
-                        label={translate('Neos.Neos.Ui:LinkEditor.MailTo:recipient.label', '')}
-                        editor={'Neos.Neos/Inspector/Editors/TextFieldEditor'}
-                        options={{}}
-                        validationErrors={(email?.recipient?.isDirty && email?.recipient.isValid !== true) ? [email?.recipient.isValid] : []}
+                    <label htmlFor={`__neos__editor__property---${id}.recipient`}>{translate('Neos.Neos.Ui:LinkEditor.MailTo:recipient.label', '')}</label>
+                    <TextInput
+                        id={`__neos__editor__property---${id}.recipient`}
                         value={email?.recipient?.value ?? ''}
-                        commit={setRecipient}
+                        onChange={setRecipient}
                     />
+                    {email?.recipient?.isDirty && email?.recipient.warning ? (
+                        <Tooltip renderInline asWarning>{email?.recipient.warning}</Tooltip>
+                    ) : null}
                 </div>
 
                 {options.enabledFields?.subject !== false ? (
                     <div style={{ gridColumn: '1 / -1' }}>
-                        <EditorEnvelope
-                            identifier={`${id}.subject`}
-                            label={translate('Neos.Neos.Ui:LinkEditor.MailTo:subject.label', '')}
-                            editor={'Neos.Neos/Inspector/Editors/TextFieldEditor'}
-                            options={{}}
-                            validationErrors={(email?.subject?.isDirty && email?.subject.isValid !== true) ? [email?.subject.isValid] : []}
+                        <label htmlFor={`__neos__editor__property---${id}.subject`}>{translate('Neos.Neos.Ui:LinkEditor.MailTo:subject.label', '')}</label>
+                        <TextInput
+                            id={`__neos__editor__property---${id}.subject`}
                             value={email?.subject?.value ?? ''}
-                            commit={setSubject}
+                            onChange={setSubject}
                         />
+                        {email?.subject?.isDirty && email?.subject.warning ? (
+                            <Tooltip renderInline asWarning>{email?.subject.warning}</Tooltip>
+                        ) : null}
                     </div>
                 ) : null}
                 {options.enabledFields?.cc !== false ? (
                     <div style={{ gridColumn: '1 / -1' }}>
-                        <EditorEnvelope
-                            identifier={`${id}.cc`}
-                            label={translate('Neos.Neos.Ui:LinkEditor.MailTo:cc.label', '')}
-                            editor={'Neos.Neos/Inspector/Editors/TextFieldEditor'}
-                            options={{
-                                placeholder: translate('Neos.Neos.Ui:LinkEditor.MailTo:cc.placeholder', '')
-                            }}
-                            validationErrors={(email?.cc?.isDirty && email?.cc.isValid !== true) ? [email?.cc.isValid] : []}
+                        <label htmlFor={`__neos__editor__property---${id}.cc`}>{translate('Neos.Neos.Ui:LinkEditor.MailTo:cc.label', '')}</label>
+                        <TextInput
+                            id={`__neos__editor__property---${id}.cc`}
                             value={email?.cc?.value ?? ''}
-                            commit={setCc}
+                            onChange={setCc}
+                            placeholder={translate('Neos.Neos.Ui:LinkEditor.MailTo:cc.placeholder', '')}
                         />
+                        {email?.cc?.isDirty && email?.cc.warning ? (
+                            <Tooltip renderInline asWarning>{email?.cc.warning}</Tooltip>
+                        ) : null}
                     </div>
                 ) : null}
                 {options.enabledFields?.bcc !== false ? (
                     <div style={{ gridColumn: '1 / -1' }}>
-                        <EditorEnvelope
-                            identifier={`${id}.bcc`}
-                            label={translate('Neos.Neos.Ui:LinkEditor.MailTo:bcc.label', '')}
-                            editor={'Neos.Neos/Inspector/Editors/TextFieldEditor'}
-                            options={{
-                                placeholder: translate('Neos.Neos.Ui:LinkEditor.MailTo:bcc.placeholder', '')
-                            }}
-                            validationErrors={(email?.bcc?.isDirty && email?.bcc.isValid !== true) ? [email?.bcc.isValid] : []}
+                        <label htmlFor={`__neos__editor__property---${id}.bcc`}>{translate('Neos.Neos.Ui:LinkEditor.MailTo:bcc.label', '')}</label>
+                        <TextInput
+                            id={`__neos__editor__property---${id}.bcc`}
                             value={email?.bcc?.value ?? ''}
-                            commit={setBcc}
+                            onChange={setBcc}
+                            placeholder={translate('Neos.Neos.Ui:LinkEditor.MailTo:bcc.placeholder', '')}
                         />
+                        {email?.bcc?.isDirty && email?.bcc.warning ? (
+                            <Tooltip renderInline asWarning>{email?.bcc.warning}</Tooltip>
+                        ) : null}
                     </div>
                 ) : null}
                 {options.enabledFields?.body !== false ? (
                     <div style={{ gridColumn: '1 / -1' }}>
-                        <EditorEnvelope
-                            identifier={`${id}.body`}
-                            label={translate('Neos.Neos.Ui:LinkEditor.MailTo:body.label', '')}
-                            editor={'Neos.Neos/Inspector/Editors/TextAreaEditor'}
+                        <label htmlFor={`__neos__editor__property---${id}.body`}>{translate('Neos.Neos.Ui:LinkEditor.MailTo:body.label', '')}</label>
+                        <TextArea
+                            id={`__neos__editor__property---${id}.body`}
                             value={email?.body?.value ?? ''}
-                            commit={setBody}
+                            onChange={setBody}
                         />
+                        {email?.body?.isDirty && email?.body.warning ? (
+                            <Tooltip renderInline asWarning>{email?.body.warning}</Tooltip>
+                        ) : null}
                     </div>
                 ) : null}
             </Layout.Columns>

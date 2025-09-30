@@ -12,6 +12,7 @@ const LinkObjectProperty = Selector('#__neos__editor__property---linkObject');
 const LinkEditorNodeTreeItem = Selector('#neos-LinkEditor [data-neos-integrational-test="tree__item__nodeHeader__itemLabel"]');
 
 const OpenLinkEditor = Selector('#neos-LinkEditor').filterVisible();
+const WarningOrErrorTooltips = OpenLinkEditor.find('[class*="tooltip--as"]');
 
 // Fixme reintroduce test for inline editable linking. With https://github.com/neos/neos-ui/pull/3883 ckeditor got hacky to test via testcafe.
 // 'This test is currently failing due to a bug in testcafe regarding the editable content selection'
@@ -272,22 +273,22 @@ test('Open and close link editor dialog without saving the change', async t => {
     // cleanup state
     await t.click(Selector('#neos-Inspector-Discard').withExactText('Discard'));
 
-    subSection('Open and enter invalid email apply only works after validation');
+    subSection('Open and enter invalid email which shows warnings');
     await t.click(LinkStringProperty.withExactText('Create Link'));
 
     await t.expect(OpenLinkEditor.withText('Edit Link').exists).ok();
     await t.click(Selector('#neos-LinkEditor [role="tab"]').withExactText('Mail to'));
 
-    // "mail" is not a valid email address
+    // "mail" is not a valid email address, we emit a warning but do not prevent apply because validating a full email is almost impossible :D
     await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:MailTo.recipient"]'), 'mail');
-    await t.expect(Selector('#neos-LinkEditor button').withExactText('Apply').hasAttribute('disabled')).ok();
+    await t.expect(Selector('#neos-LinkEditor button').withExactText('Apply').hasAttribute('disabled')).notOk();
 
-    await t.expect(OpenLinkEditor.find('[class*="tooltip--asError"]').exists).ok();
+    await t.expect(WarningOrErrorTooltips.exists).ok();
     await t.expect(OpenLinkEditor.withText('Recipient should be a valid E-Mail Address').exists).ok();
 
     // turn the text into a valid mail
     await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:MailTo.recipient"]'), '@neos.io');
-    await t.expect(OpenLinkEditor.find('[class*="tooltip--asError"]').exists).notOk();
+    await t.expect(WarningOrErrorTooltips.exists).notOk();
     await t.expect(OpenLinkEditor.withText('Recipient should be a valid E-Mail Address').exists).notOk();
 
     await t.click(Selector('#neos-LinkEditor button').withExactText('Apply'));
@@ -304,10 +305,10 @@ test('Open and close link editor dialog without saving the change', async t => {
     await t.expect(OpenLinkEditor.withText('Edit Link').exists).ok();
     await t.click(Selector('#neos-LinkEditor [role="tab"]').withExactText('Mail to'));
 
-    // "mail" is not a valid email address
-    await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:MailTo.recipient"]'), 'mail');
+    // an empty spaced string is not a valid email address
+    await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:MailTo.recipient"]'), '   ');
     await t.expect(Selector('#neos-LinkEditor button').withExactText('Apply').hasAttribute('disabled')).ok();
-    await t.expect(OpenLinkEditor.find('[class*="tooltip--asError"]').exists).ok();
+    await t.expect(WarningOrErrorTooltips.exists).ok();
     await t.expect(OpenLinkEditor.withText('Recipient should be a valid E-Mail Address').exists).ok();
 
     await t.click(Selector('#neos-LinkEditor [role="tab"]').withExactText('Document'));
@@ -318,7 +319,7 @@ test('Open and close link editor dialog without saving the change', async t => {
 
     // Mail tab is still invalid
     await t.click(Selector('#neos-LinkEditor [role="tab"]').withExactText('Mail to'));
-    await t.expect(OpenLinkEditor.find('[class*="tooltip--asError"]').exists).ok();
+    await t.expect(WarningOrErrorTooltips.exists).ok();
     await t.expect(OpenLinkEditor.withText('Recipient should be a valid E-Mail Address').exists).ok();
     await t.expect(Selector('#neos-LinkEditor button').withExactText('Apply').hasAttribute('disabled')).ok();
 
@@ -345,12 +346,12 @@ test('Open and close link editor dialog without saving the change', async t => {
 
     // valid https url
     await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:Web.href"]'), 'neos.io')
-    await t.expect(OpenLinkEditor.find('[class*="tooltip--asError"]').exists).notOk();
+    await t.expect(WarningOrErrorTooltips.exists).notOk();
     await t.expect(Selector('#neos-LinkEditor button').withExactText('Apply').hasAttribute('disabled')).notOk();
 
     // empty url is invalid
     await t.click(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:Web.href"]')).pressKey('ctrl+a delete')
-    // todo await t.expect(OpenLinkEditor.find('[class*="tooltip--asError"]').exists).ok();
+    // todo await t.expect(WarningOrErrorTooltips.exists).ok();
     // todo await t.expect(OpenLinkEditor.withText('URL is required').exists).ok();
     await t.expect(Selector('#neos-LinkEditor button').withExactText('Apply').hasAttribute('disabled')).ok();
 
@@ -459,6 +460,7 @@ test('Can edit property links via inspector and save the change', async t => {
 
     await t.click(LinkEditorNodeTreeItem.withExactText('Link target'));
 
+    await t.expect(WarningOrErrorTooltips.exists).notOk();
     await t.click(Selector('#neos-LinkEditor button').withExactText('Apply'));
     await t.click(Selector('#neos-Inspector-Apply').withExactText('Apply'));
 
@@ -485,6 +487,7 @@ test('Can edit property links via inspector and save the change', async t => {
         .click(Selector('.asset').withText('neos_primary.png'))
         .switchToMainWindow();
 
+    await t.expect(WarningOrErrorTooltips.exists).notOk();
     await t.click(Selector('#neos-LinkEditor button').withExactText('Apply'));
     await t.click(Selector('#neos-Inspector-Apply').withExactText('Apply'));
 
@@ -507,6 +510,7 @@ test('Can edit property links via inspector and save the change', async t => {
     await t.click(Selector('[role="button"]').withExactText('Format as http link?'))
     await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:Web.href"]'), '#my-anchor')
 
+    await t.expect(WarningOrErrorTooltips.exists).notOk();
     await t.click(Selector('#neos-LinkEditor button').withExactText('Apply'));
     await t.click(Selector('#neos-Inspector-Apply').withExactText('Apply'));
 
@@ -529,6 +533,7 @@ test('Can edit property links via inspector and save the change', async t => {
     await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:MailTo.subject"]'), 'My Subject')
     await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:MailTo.body"]'), 'My Body' + "\n\n" + 'Bye')
 
+    await t.expect(WarningOrErrorTooltips.exists).notOk();
     await t.click(Selector('#neos-LinkEditor button').withExactText('Apply'));
     await t.click(Selector('#neos-Inspector-Apply').withExactText('Apply'));
 
@@ -551,11 +556,9 @@ test('Can edit property links via inspector and save the change', async t => {
     subSection('Select phone target and save change');
     await t.click(Selector('#neos-LinkEditor [role="tab"]').withExactText('Phone Number'));
 
-    await t.click(Selector('#neos-LinkEditor [role="button"]').withExactText('AC +247'));
-    await t.click(ReactSelector('ContextDropDownContents').find('li').withExactText('DK +45'));
+    await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:PhoneNumber.phoneNumber"]'), '+45123456789')
 
-    await t.typeText(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:PhoneNumber.phoneNumber"]'), '123456789')
-
+    await t.expect(WarningOrErrorTooltips.exists).notOk();
     await t.click(Selector('#neos-LinkEditor button').withExactText('Apply'));
     await t.click(Selector('#neos-Inspector-Apply').withExactText('Apply'));
 
@@ -568,10 +571,9 @@ test('Can edit property links via inspector and save the change', async t => {
     await t.click(LinkStringProperty.find('[title="Edit Link"]'));
     await t.expect(OpenLinkEditor.withText('Edit Link').exists).ok();
     await t.expect(Selector('#neos-LinkEditor [role="tab"]').withExactText('Phone Number').getAttribute('aria-selected')).eql('true');
-    await t.expect(Selector('#neos-LinkEditor-Preview span').withExactText('+45 123456789').exists).ok();
+    await t.expect(Selector('#neos-LinkEditor-Preview span').withExactText('+45123456789').exists).ok();
 
-    await t.expect(Selector('#neos-LinkEditor [role="button"]').withExactText('DK +45').exists).ok();
-    await t.expect(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:PhoneNumber.phoneNumber"]').value).eql('123456789')
+    await t.expect(Selector('#neos-LinkEditor [id="__neos__editor__property---LinkEditor:PhoneNumber.phoneNumber"]').value).eql('+45123456789')
 
     subSection('Select node target with anchor and save change');
     await t.click(Selector('#neos-LinkEditor [role="tab"]').withExactText('Document'));
@@ -580,6 +582,7 @@ test('Can edit property links via inspector and save the change', async t => {
 
     await t.typeText(Selector('#neos-LinkEditor label').withExactText('Anchor:').find('input'), 'my-anchor')
 
+    await t.expect(WarningOrErrorTooltips.exists).notOk();
     await t.click(Selector('#neos-LinkEditor button').withExactText('Apply'));
     await t.click(Selector('#neos-Inspector-Apply').withExactText('Apply'));
 
@@ -595,6 +598,7 @@ test('Can edit property links via inspector and save the change', async t => {
 
     await t.click(LinkEditorNodeTreeItem.withExactText('Link target'));
 
+    await t.expect(WarningOrErrorTooltips.exists).notOk();
     await t.click(Selector('#neos-LinkEditor button').withExactText('Apply'));
     await t.click(Selector('#neos-Inspector-Apply').withExactText('Apply'));
 
@@ -618,6 +622,7 @@ test('Can edit property links via inspector and save the change', async t => {
     await t.click(Selector('#neos-LinkEditor label').withExactText('Open in new window').find('input'))
     await t.click(Selector('#neos-LinkEditor label').withExactText('No follow (SEO)').find('input'))
 
+    await t.expect(WarningOrErrorTooltips.exists).notOk();
     await t.click(Selector('#neos-LinkEditor button').withExactText('Apply'));
     await t.click(Selector('#neos-Inspector-Apply').withExactText('Apply'));
 
@@ -639,6 +644,7 @@ test('Can edit property links via inspector and save the change', async t => {
 
     await t.click(Selector('#neos-LinkEditor label').withExactText('Download target').find('input'))
 
+    await t.expect(WarningOrErrorTooltips.exists).notOk();
     await t.click(Selector('#neos-LinkEditor button').withExactText('Apply'));
     await t.click(Selector('#neos-Inspector-Apply').withExactText('Apply'));
 

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { TextInput, Tooltip} from '@neos-project/react-ui-components';
+import {TextInput, Tooltip} from '@neos-project/react-ui-components';
 
 import {ILink, makeLinkType} from "../../../domain";
 import {IconCard} from "../../../presentation";
@@ -82,21 +82,18 @@ export const PhoneNumber = makeLinkType<PhoneNumberLinkModel>('LinkEditor:PhoneN
 
         return (
             <div>
-                <label htmlFor={`${id}.phoneNumber`}>
+                <label htmlFor={`__neos__editor__property---${id}.phoneNumber`}>
                     {translate('Neos.Neos.Ui:LinkEditor.PhoneNumber:phoneNumber.label', '')}
                 </label>
-
-                <div>
-                    <TextInput
-                        id={`${id}.phoneNumber`}
-                        value={model?.phoneNumber?.value ?? ''}
-                        onChange={setPhoneNumber}
-                        placeholder={translate('Neos.Neos.Ui:LinkEditor.Web:phoneNumber.placeholder', '')}
-                    />
-                    {model?.phoneNumber?.warning ? (
-                        <Tooltip renderInline asWarning>{model.phoneNumber.warning}</Tooltip>
-                    ) : null}
-                </div>
+                <TextInput
+                    id={`__neos__editor__property---${id}.phoneNumber`}
+                    value={model?.phoneNumber?.value ?? ''}
+                    onChange={setPhoneNumber}
+                    placeholder={translate('Neos.Neos.Ui:LinkEditor.Web:phoneNumber.placeholder', '')}
+                />
+                {model?.phoneNumber?.warning ? (
+                    <Tooltip renderInline asWarning>{model.phoneNumber.warning}</Tooltip>
+                ) : null}
             </div>
         );
     }

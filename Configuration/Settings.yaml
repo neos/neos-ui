@@ -50,8 +50,6 @@ Neos:
           'Neos.Neos.UI:Host':
             resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/Build/Host.js"}'
             position: 'start 900'
-            attributes:
-              type: module
 
         stylesheets:
           'Neos.Neos.UI:Host':

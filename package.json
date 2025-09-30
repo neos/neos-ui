@@ -7,6 +7,7 @@
   "private": true,
   "resolutions": {
     "moment": "^2.30.1",
+    "redux": "4.0.5",
     "vfile-message": "^2.0.2",
     "isemail@3.2.0": "patch:isemail@npm:3.2.0#./patches/isemail-npm-3.2.0-browserified.patch",
     "react-codemirror2@7.2.1": "patch:react-codemirror2@npm:7.2.1#./patches/react-codemirror2-npm-7.2.1-browserified.patch"
@@ -15,7 +16,7 @@
     "lint": "tsc --noemit && stylelint 'packages/*/src/**/*.css' && yarn eslint 'packages/*/src/**/*.{js,jsx,ts,tsx}'",
     "test-jest-legacy": "NODE_ENV=test jest --testMatch '**/packages/*/src/**/*.spec.{js,jsx,ts,tsx}'",
     "test-update-snapshots": "yarn test-jest-legacy -u",
-    "test-node": "node --import=tsx --test packages",
+    "test-node": "echo 'TODO install tsx as dependeny and update esbuild node --import=tsx --test packages'",
     "test": "yarn test-node && yarn test-jest-legacy"
   },
   "engines": {
@@ -39,7 +40,6 @@
     "testcafe": "^3.6.2",
     "testcafe-browser-provider-saucelabs": "^3.0.0",
     "testcafe-react-selectors": "^5.0.3",
-    "tsx": "^4.19.3",
     "typescript": "^4.6.4"
   },
   "workspaces": [

@@ -31,7 +31,7 @@ const formattingOptionForLinkWithoutHttpsProtocol = (href: string) => {
     };
 };
 
-const validateHref = (values: WebLinkModel): WebLinkModel => ({
+const validateModel = (values: WebLinkModel): WebLinkModel => ({
     ...values,
     href: {
         ...values.href,
@@ -72,7 +72,7 @@ export const Web = makeLinkType<WebLinkModel>('LinkEditor:Web', ({id}) => ({
 
     useResolvedModel: (link: ILink) => {
         // todo handle url encoding
-        return PromiseState.forValue(validateHref({
+        return PromiseState.forValue(validateModel({
             href: {
                 isDirty: false,
                 value: link.href || '#'
@@ -97,7 +97,7 @@ export const Web = makeLinkType<WebLinkModel>('LinkEditor:Web', ({id}) => ({
     Editor: ({model$}: {model$: State<Nullable<WebLinkModel>>}) => {
         const model = useLatestState(model$);
 
-        const setHref = React.useCallback((href) => model$.update((values) => validateHref({
+        const setHref = React.useCallback((href) => model$.update((values) => validateModel({
             ...values,
             href: {
                 isDirty: true,

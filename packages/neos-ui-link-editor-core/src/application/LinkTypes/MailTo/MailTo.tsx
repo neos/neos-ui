@@ -18,36 +18,56 @@ type FormValue<T> = {
     isDirty: boolean
 }
 
-function createFormValue<T>(value: T): Nullable<FormValue<T>> {
-    if (value === undefined || value === null) {
-        return undefined;
+const validateRecipient = (recipient: string) => {
+    if (!recipient) {
+        return translate('Neos.Neos.Ui:LinkEditor.MailTo:recipient.validation.required', '');
     }
-    return {
-        value,
-        isDirty: false,
-        warning: undefined,
+    if (!isEmail(recipient)) {
+        return translate('Neos.Neos.Ui:LinkEditor.MailTo:recipient.validation.email', '');
     }
+    return;
 }
 
+const validateCc = (cc: string) => {
+    if (cc) {
+        if (!cc.split(',').every(value => isEmail(value.trim()))) {
+            return translate('Neos.Neos.Ui:LinkEditor.MailTo:cc.validation.emaillist', '');
+        }
+    }
+    return;
+}
+
+const validateBcc = (cc: string) => {
+    if (cc) {
+        if (!cc.split(',').every(value => isEmail(value.trim()))) {
+            return translate('Neos.Neos.Ui:LinkEditor.MailTo:bcc.validation.emaillist', '');
+        }
+    }
+    return;
+}
+
+const validateEmail = (email: MailToLinkModel): MailToLinkModel => ({
+    ...email,
+    recipient: email.recipient ? {
+        ...email.recipient,
+        warning: validateRecipient(email.recipient.value)
+    } : undefined,
+    cc: email.cc ? {
+        ...email.cc,
+        warning: validateCc(email.cc.value)
+    } : undefined,
+    bcc: email.bcc ? {
+        ...email.bcc,
+        warning: validateBcc(email.bcc.value)
+    } : undefined,
+});
+
 type MailToLinkModel = {
-    recipient: FormValue<string>
+    recipient?: FormValue<string>
     subject?: FormValue<string>
     cc?: FormValue<string>
     bcc?: FormValue<string>
     body?: FormValue<string>
-}
-
-function makeUpdateFormValue<K extends keyof MailToLinkModel & string>(valueAsObject: Record<K, any>, validator: () => void | string) {
-    const [[property, value]] = Object.entries(valueAsObject);
-
-    return (values: any) => ({
-        ...values,
-        [property]: {
-            value,
-            warning: validator(),
-            isDirty: true
-        }
-    })
 }
 
 type MailToOptions = {
@@ -85,13 +105,28 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('LinkEditor:M
         }
         const url = new URL(link.href);
 
-        return PromiseState.forValue({
-            recipient: createFormValue(url.pathname)!,
-            subject: createFormValue(url.searchParams.get('subject') ?? undefined),
-            cc: createFormValue(url.searchParams.get('cc') ?? undefined),
-            bcc: createFormValue(url.searchParams.get('bcc') ?? undefined),
-            body: createFormValue(url.searchParams.get('body') ?? undefined)
-        });
+        return PromiseState.forValue(validateEmail({
+            recipient: {
+                value: url.pathname,
+                isDirty: false,
+            },
+            subject: {
+                value: url.searchParams.get('subject') ?? '',
+                isDirty: false,
+            },
+            cc: {
+                value: url.searchParams.get('cc') ?? '',
+                isDirty: false,
+            },
+            bcc: {
+                value: url.searchParams.get('bcc') ?? '',
+                isDirty: false,
+            },
+            body: {
+                value: url.searchParams.get('body') ?? '',
+                isDirty: false,
+            },
+        }));
     },
 
     convertModelToLink: (email: MailToLinkModel) => {
@@ -101,11 +136,11 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('LinkEditor:M
                 bcc: email.bcc?.value,
                 body: email.body?.value,
             })
-            .filter(([_key, value]) => value != null)
+            .filter(([_key, value]) => Boolean(value))
             .map(([key, value]) => `${key}=${encodeURIComponent(value as string)}`)
             .join('&');
 
-        const href = `mailto:${email.recipient?.value}${query ? `?${query}` : ''}`;
+        const href = `mailto:${email.recipient!.value}${query ? `?${query}` : ''}`;
 
         return {href};
     },
@@ -113,7 +148,7 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('LinkEditor:M
     Preview: ({model: email}: {model: MailToLinkModel}) => (
         <IconCard
             icon="envelope"
-            title={email.recipient.value}
+            title={email.recipient!.value}
             subTitle={
                 email.subject || email.body
                     ? `${email.subject?.value ?? ''} ${email.body?.value ?? ''}`.trim()
@@ -123,38 +158,48 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('LinkEditor:M
     ),
 
     Editor: ({model$, options}: {model$: State<Nullable<MailToLinkModel>>, options: OptionalDeep<MailToOptions>}) => {
-
-        const setRecipient = React.useCallback((recipient) => model$.update(makeUpdateFormValue({recipient}, () => {
-            if (!recipient) {
-                return translate('Neos.Neos.Ui:LinkEditor.MailTo:recipient.validation.required', '');
+        const setRecipient = React.useCallback((recipient) => model$.update((previous) => ({
+            ...previous,
+            recipient: {
+                value: recipient,
+                isDirty: true,
+                warning: validateRecipient(recipient)
             }
-            if (!isEmail(recipient)) {
-                return translate('Neos.Neos.Ui:LinkEditor.MailTo:recipient.validation.email', '');
-            }
-            return;
         })), []);
 
-        const setSubject = React.useCallback((subject) => model$.update(makeUpdateFormValue({subject}, () => {})), []);
-
-        const setCc = React.useCallback((cc: Nullable<string>) => model$.update(makeUpdateFormValue({cc}, () => {
-            if (cc) {
-                if (!cc.split(',').every(value => isEmail(value.trim()))) {
-                    return translate('Neos.Neos.Ui:LinkEditor.MailTo:cc.validation.emaillist', '');
-                }
+        const setSubject = React.useCallback((subject) => model$.update((previous) => ({
+            ...previous,
+            subject: {
+                value: subject,
+                isDirty: true,
             }
-            return;
         })), []);
 
-        const setBcc = React.useCallback((bcc: Nullable<string>) => model$.update(makeUpdateFormValue({bcc}, () => {
-            if (bcc) {
-                if (!bcc.split(',').every(value => isEmail(value.trim()))) {
-                    return translate('Neos.Neos.Ui:LinkEditor.MailTo:bcc.validation.emaillist', '');
-                }
+        const setCc = React.useCallback((cc) => model$.update((previous) => ({
+            ...previous,
+            cc: {
+                value: cc,
+                isDirty: true,
+                warning: validateCc(cc)
             }
-            return;
         })), []);
 
-        const setBody = React.useCallback((body) => model$.update(makeUpdateFormValue({body}, () => {})), []);
+        const setBcc = React.useCallback((bcc) => model$.update((previous) => ({
+            ...previous,
+            bcc: {
+                value: bcc,
+                isDirty: true,
+                warning: validateBcc(bcc)
+            }
+        })), []);
+
+        const setBody = React.useCallback((body) => model$.update((previous) => ({
+            ...previous,
+            body: {
+                value: body,
+                isDirty: true,
+            }
+        })), []);
 
         const email = useLatestState(model$);
 
@@ -167,7 +212,7 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('LinkEditor:M
                         value={email?.recipient?.value ?? ''}
                         onChange={setRecipient}
                     />
-                    {email?.recipient?.isDirty && email?.recipient.warning ? (
+                    {email?.recipient?.warning ? (
                         <Tooltip renderInline asWarning>{email?.recipient.warning}</Tooltip>
                     ) : null}
                 </div>
@@ -180,7 +225,7 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('LinkEditor:M
                             value={email?.subject?.value ?? ''}
                             onChange={setSubject}
                         />
-                        {email?.subject?.isDirty && email?.subject.warning ? (
+                        {email?.subject?.warning ? (
                             <Tooltip renderInline asWarning>{email?.subject.warning}</Tooltip>
                         ) : null}
                     </div>
@@ -194,7 +239,7 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('LinkEditor:M
                             onChange={setCc}
                             placeholder={translate('Neos.Neos.Ui:LinkEditor.MailTo:cc.placeholder', '')}
                         />
-                        {email?.cc?.isDirty && email?.cc.warning ? (
+                        {email?.cc?.warning ? (
                             <Tooltip renderInline asWarning>{email?.cc.warning}</Tooltip>
                         ) : null}
                     </div>
@@ -208,7 +253,7 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('LinkEditor:M
                             onChange={setBcc}
                             placeholder={translate('Neos.Neos.Ui:LinkEditor.MailTo:bcc.placeholder', '')}
                         />
-                        {email?.bcc?.isDirty && email?.bcc.warning ? (
+                        {email?.bcc?.warning ? (
                             <Tooltip renderInline asWarning>{email?.bcc.warning}</Tooltip>
                         ) : null}
                     </div>
@@ -221,7 +266,7 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('LinkEditor:M
                             value={email?.body?.value ?? ''}
                             onChange={setBody}
                         />
-                        {email?.body?.isDirty && email?.body.warning ? (
+                        {email?.body?.warning ? (
                             <Tooltip renderInline asWarning>{email?.body.warning}</Tooltip>
                         ) : null}
                     </div>

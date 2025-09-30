@@ -28,8 +28,8 @@ import {TextInput} from "@neos-project/react-ui-components";
 
 type NodeLinkModel = {
     isDirty: boolean;
-    nodeId: string;
-    anchor: string;
+    nodeId?: string;
+    anchor?: string;
 };
 type NodeLinkOptions = {
     startingPoint: string;
@@ -119,7 +119,7 @@ export const Node = makeLinkType<NodeLinkModel, NodeLinkOptions>("LinkEditor:Nod
         }),
 
         Preview: (props: { model: NodeLinkModel }) => {
-            return <NodePreview nodeId={props.model.nodeId} />;
+            return <NodePreview nodeId={props.model.nodeId!} />;
         },
 
         Editor: ({

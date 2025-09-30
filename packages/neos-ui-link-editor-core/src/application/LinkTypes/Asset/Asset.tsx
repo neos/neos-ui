@@ -15,8 +15,8 @@ import {TextInput} from "@neos-project/react-ui-components";
 
 type AssetLinkModel = {
     isDirty: boolean
-    identifier: string,
-    anchor: string
+    identifier?: string,
+    anchor?: string
 }
 
 export const Asset = makeLinkType<AssetLinkModel>('LinkEditor:Asset', ({createError}) => ({
@@ -54,7 +54,7 @@ export const Asset = makeLinkType<AssetLinkModel>('LinkEditor:Asset', ({createEr
     Preview: ({model}: {model: AssetLinkModel}) => {
         const asset = usePromise(() => {
             const endpoints = backend.get().endpoints;
-            return endpoints.assetDetail(model.identifier);
+            return endpoints.assetDetail(model.identifier!);
         }, [model.identifier]);
 
         if (!asset.value) {

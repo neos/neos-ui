@@ -342,7 +342,7 @@ const PreviewForLinkType: React.FC<{
             isOptionsDirty: false,
             showOptions: false,
             options: {},
-            initialLinkWasDeleted: Boolean(props.initialLinkType),
+            initialLinkWasDeleted: values.initialLinkWasDeleted || Boolean(props.initialLinkType),
             linkModels: {}
         }));
     }, []);

@@ -4,7 +4,6 @@ import {ILink, makeLinkType} from '../../../domain';
 import {ImageCard} from '../../../presentation';
 
 import {MediaBrowser} from './MediaBrowser';
-import { Nullable } from 'ts-toolbelt/out/Union/Nullable';
 import {isSuitableFor} from "./AssetSpecification";
 import {translate} from "@neos-project/neos-ui-i18n";
 import {PromiseState, usePromise} from "@neos-project/framework-promise-react";
@@ -69,7 +68,7 @@ export const Asset = makeLinkType<AssetLinkModel>('LinkEditor:Asset', ({createEr
         );
     },
 
-    Editor: ({model$}: {model$: State<Nullable<AssetLinkModel>>}) => {
+    Editor: ({model$}: {model$: State<AssetLinkModel | null>}) => {
         const model = useLatestState(model$);
         const setAsset = React.useCallback((identifier) => model$.update((values) => ({...values, isDirty: true, identifier})), []);
         const setAnchor = React.useCallback((anchor) => model$.update((values) => ({...values, isDirty: true, anchor})), []);

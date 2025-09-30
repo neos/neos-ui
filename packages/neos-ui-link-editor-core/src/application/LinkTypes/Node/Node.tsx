@@ -9,8 +9,6 @@
  */
 import React from "react";
 import {PromiseState, usePromise} from "@neos-project/framework-promise-react";
-import {Nullable} from "ts-toolbelt/out/Union/Nullable";
-import {OptionalDeep} from "ts-toolbelt/out/Object/Optional";
 
 import {configuration} from "@neos-project/neos-ui/configuration";
 import {selectors, useSelector} from '@neos-project/neos-ui-redux-store';
@@ -31,11 +29,12 @@ type NodeLinkModel = {
     nodeId?: string;
     anchor?: string;
 };
+
 type NodeLinkOptions = {
-    startingPoint: string;
-    baseNodeType: string;
-    loadingDepth: number;
-    allowedNodeTypes: string[];
+    startingPoint?: string;
+    baseNodeType?: string;
+    loadingDepth?: number;
+    allowedNodeTypes?: string[];
 };
 
 const NodePreview: React.FC<{ nodeId: string }> = (props) => {
@@ -126,8 +125,8 @@ export const Node = makeLinkType<NodeLinkModel, NodeLinkOptions>("LinkEditor:Nod
             model$,
             options,
         }: {
-            model$: State<Nullable<NodeLinkModel>>;
-            options: OptionalDeep<NodeLinkOptions>;
+            model$: State<NodeLinkModel | null>;
+            options: NodeLinkOptions;
         }) => {
             const model = useLatestState(model$);
             const setNodeId = React.useCallback((nodeId) => model$.update((values) => ({...values, isDirty: true, nodeId})), []);

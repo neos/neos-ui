@@ -2,7 +2,6 @@ import * as React from 'react';
 
 import {ILink, makeLinkType} from '../../../domain';
 import {IconCard} from '../../../presentation';
-import {Nullable} from 'ts-toolbelt/out/Union/Nullable';
 import {isSuitableFor} from "./WebSpecification";
 import {translate} from "@neos-project/neos-ui-i18n";
 import {PromiseState} from '@neos-project/framework-promise-react';
@@ -94,7 +93,7 @@ export const Web = makeLinkType<WebLinkModel>('LinkEditor:Web', ({id}) => ({
         />
     ),
 
-    Editor: ({model$}: {model$: State<Nullable<WebLinkModel>>}) => {
+    Editor: ({model$}: {model$: State<WebLinkModel | null>}) => {
         const model = useLatestState(model$);
 
         const setHref = React.useCallback((href) => model$.update((values) => validateModel({

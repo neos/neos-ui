@@ -4,7 +4,6 @@ import {TextInput, Tooltip} from '@neos-project/react-ui-components';
 
 import {ILink, makeLinkType} from "../../../domain";
 import {IconCard} from "../../../presentation";
-import {Nullable} from 'ts-toolbelt/out/Union/Nullable';
 import {isSuitableFor} from "./PhoneNumberSpecification";
 import {translate} from "@neos-project/neos-ui-i18n";
 import {State} from "@neos-project/framework-observable";
@@ -69,7 +68,7 @@ export const PhoneNumber = makeLinkType<PhoneNumberLinkModel>('LinkEditor:PhoneN
         )
     },
 
-    Editor: ({model$}: { model$: State<Nullable<PhoneNumberLinkModel>> }) => {
+    Editor: ({model$}: { model$: State<PhoneNumberLinkModel | null> }) => {
         const model = useLatestState(model$);
         const setPhoneNumber = React.useCallback((phoneNumber) => model$.update((values) => ({
             ...values,

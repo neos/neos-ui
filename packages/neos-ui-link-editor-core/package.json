@@ -13,7 +13,6 @@
         "@neos-project/positional-array-sorter": "workspace:*",
         "@neos-project/react-ui-components": "workspace:*",
         "@neos-project/utils-helpers": "workspace:*",
-        "ts-toolbelt": "^9.6.0",
         "typesafe-actions": "^5.1.0"
     }
 }

@@ -2,8 +2,6 @@ import * as React from 'react';
 
 import {ILink, makeLinkType} from '../../../domain';
 import {IconCard, Layout} from '../../../presentation';
-import {OptionalDeep} from 'ts-toolbelt/out/Object/Optional';
-import {Nullable} from 'ts-toolbelt/out/Union/Nullable';
 import {isSuitableFor} from "./MailToSpecification";
 import {translate} from "@neos-project/neos-ui-i18n";
 import {isEmail} from "@neos-project/utils-helpers";
@@ -157,7 +155,7 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('LinkEditor:M
         />
     ),
 
-    Editor: ({model$, options}: {model$: State<Nullable<MailToLinkModel>>, options: OptionalDeep<MailToOptions>}) => {
+    Editor: ({model$, options}: {model$: State<MailToLinkModel | null>, options: MailToOptions}) => {
         const setRecipient = React.useCallback((recipient) => model$.update((previous) => ({
             ...previous,
             recipient: {

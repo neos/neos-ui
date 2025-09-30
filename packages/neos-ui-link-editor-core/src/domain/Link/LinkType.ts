@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {Object} from 'ts-toolbelt';
 import positionalArraySorter from '@neos-project/positional-array-sorter';
 
 import {globalRegistry} from '@neos-project/neos-ui/globalRegistry';
@@ -8,16 +7,15 @@ import {ILink} from './Link';
 import {IEditor} from '../Editor';
 import {useLatestState} from "@neos-project/framework-observable-react";
 import {State} from "@neos-project/framework-observable";
-import {Nullable} from "ts-toolbelt/out/Union/Nullable";
 import {IPromiseState} from "@neos-project/framework-promise-react";
 
 interface LinkTypeStaticProps<OptionsType extends object = {}> {
     link?: ILink
-    options: Object.Partial<OptionsType, 'deep'>
+    options: OptionsType
 }
 interface LinkTypeProps<ModelType = any, OptionsType extends object = {}> {
     model: ModelType
-    options: Object.Partial<OptionsType, 'deep'>
+    options: OptionsType
 }
 
 export interface ILinkType<ModelType = any, OptionsType extends object = {}> {
@@ -37,8 +35,8 @@ export interface ILinkType<ModelType = any, OptionsType extends object = {}> {
     Preview: React.FC<LinkTypeProps<ModelType, OptionsType>>
     LoadingEditor: React.FC<LinkTypeStaticProps<OptionsType>>
     Editor: React.FC<{
-        model$: State<Nullable<ModelType>>
-        options: Object.Partial<OptionsType, 'deep'>
+        model$: State<ModelType | null>
+        options: OptionsType
     }>
 }
 
@@ -49,10 +47,7 @@ export interface ILinkTypeFactoryApi {
 
 export function makeLinkType<ModelType = any, OptionsType extends object = {}>(
     id: string,
-    createOptions: (factoryApi: ILinkTypeFactoryApi) => Object.Optional<
-        Omit<ILinkType<ModelType, OptionsType>, 'id'>,
-        'Icon' | 'Title' | 'LoadingPreview' | 'LoadingEditor'
-    >
+    createOptions: (factoryApi: ILinkTypeFactoryApi) => Omit<ILinkType<ModelType, OptionsType>, 'id' | 'LoadingPreview' | 'LoadingEditor'>
 ): ILinkType<ModelType, OptionsType> {
     const createError = (message: string): Error => new Error(`[${id}]: ${message}`);
     const options = createOptions({createError, id});
@@ -60,12 +55,12 @@ export function makeLinkType<ModelType = any, OptionsType extends object = {}>(
     return {
         id,
         ...options,
-        LoadingPreview: options.LoadingPreview ?? (() => React.createElement(
+        LoadingPreview: (options as any).LoadingPreview ?? (() => React.createElement(
             'div',
             {},
             'Loading...'
         )),
-        LoadingEditor: options.LoadingEditor ?? (() => React.createElement(
+        LoadingEditor: (options as any).LoadingEditor ?? (() => React.createElement(
             'div',
             {},
             'Loading...'

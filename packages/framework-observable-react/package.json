@@ -3,11 +3,7 @@
   "version": "",
   "description": "React bindings for @neos-project/framework-observable",
   "private": true,
-  "exports": {
-    ".": {
-      "default": "./src/index.ts"
-    }
-  },
+  "main": "./src/index.ts",
   "dependencies": {
     "@neos-project/framework-observable": "workspace:*",
     "react": "^16.12.0"

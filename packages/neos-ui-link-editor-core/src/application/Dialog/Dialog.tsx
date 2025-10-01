@@ -19,7 +19,7 @@ import {useLatestState} from '@neos-project/framework-observable-react';
 import {useSelector} from '@neos-project/neos-ui-redux-store';
 import {translate} from "@neos-project/neos-ui-i18n";
 import {createState, pickState, mapState, State} from "@neos-project/framework-observable";
-import {PanelProps} from "@neos-project/react-ui-components/types/Tabs/panel";
+import {PanelProps} from "@neos-project/react-ui-components/src/Tabs/panel";
 
 export type FormValues = {
     isOptionsDirty: boolean

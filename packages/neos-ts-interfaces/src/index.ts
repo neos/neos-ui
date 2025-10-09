@@ -71,6 +71,9 @@ export interface Node {
     properties: {
         [propName: string]: any;
     };
+    references: {
+        [referenceName: string]: any;
+    };
     isFullyLoaded: boolean;
     uri: string;
     parent: NodeContextPath;

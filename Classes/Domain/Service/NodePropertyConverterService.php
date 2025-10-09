@@ -165,7 +165,7 @@ class NodePropertyConverterService
     }
 
     /**
-     * Get all properties and references stuff reduced to simple type (no objects) representations in an array
+     * Get all properties information reduced to simple type (no objects) representations in an array
      *
      * @param Node $node
      * @return array<string,mixed>
@@ -181,10 +181,23 @@ class NodePropertyConverterService
 
             $properties[$propertyName] = $this->getProperty($node, $propertyName);
         }
-        foreach ($this->getNodeType($node)->getReferences() as $referenceName => $_) {
-            $properties[$referenceName] = $this->getReference($node, $referenceName);
-        }
         return $properties;
+    }
+
+    /**
+     * Get all references information reduced to simple type (no objects) representations in an array
+     *
+     * @param Node $node
+     * @return array<string,mixed>
+     */
+    public function getReferencesArray(Node $node)
+    {
+        $references = [];
+
+        foreach ($this->getNodeType($node)->getReferences() as $referenceName => $_) {
+            $references[$referenceName] = $this->getReference($node, $referenceName);
+        }
+        return $references;
     }
 
     /**

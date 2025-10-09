@@ -109,7 +109,8 @@ final class ReloadNodesQueryHandler
             $ancestors,
             $subgraph
         ) {
-            if ($level < $this->loadingDepth || // load all nodes within loadingDepth
+            if (
+                $level < $this->loadingDepth || // load all nodes within loadingDepth
                 $this->loadingDepth === 0 || // unlimited loadingDepth
                 // load toggled nodes
                 $query->toggledNodesIds->contain($baseNode->aggregateId) ||
@@ -119,10 +120,12 @@ final class ReloadNodesQueryHandler
                     iterator_to_array($ancestors)
                 ))
             ) {
-                foreach ($subgraph->findChildNodes(
-                    $baseNode->aggregateId,
-                    FindChildNodesFilter::create(nodeTypes: $baseNodeTypeConstraints)
-                ) as $childNode) {
+                foreach (
+                    $subgraph->findChildNodes(
+                        $baseNode->aggregateId,
+                        FindChildNodesFilter::create(nodeTypes: $baseNodeTypeConstraints)
+                    ) as $childNode
+                ) {
                     $nodeMapBuilder->addNode($childNode);
                     $gatherNodesRecursively($nodeMapBuilder, $childNode, $level + 1);
                 }

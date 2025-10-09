@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 /*
@@ -59,7 +61,8 @@ class CopyBefore extends AbstractStructuralChange
             ? $this->findParentNode($succeedingSibling)
             : null;
         $subject = $this->subject;
-        if ($this->canApply() && !is_null($succeedingSibling)
+        if (
+            $this->canApply() && !is_null($succeedingSibling)
             && !is_null($parentNodeOfSucceedingSibling)
         ) {
             if (!$subject->dimensionSpacePoint->equals($succeedingSibling->dimensionSpacePoint)) {

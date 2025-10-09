@@ -108,7 +108,8 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
         ) {
             $baseNodeAddress = NodeAddress::fromNode($baseNode);
 
-            if ($level < $loadingDepth || // load all nodes within loadingDepth
+            if (
+                $level < $loadingDepth || // load all nodes within loadingDepth
                 $loadingDepth === 0 || // unlimited loadingDepth
                 // load toggled nodes
                 in_array($baseNodeAddress->toJson(), $toggledNodes) ||
@@ -118,10 +119,12 @@ class NeosUiDefaultNodesOperation extends AbstractOperation
                     iterator_to_array($ancestors)
                 ))
             ) {
-                foreach ($subgraph->findChildNodes(
-                    $baseNode->aggregateId,
-                    FindChildNodesFilter::create(nodeTypes: $baseNodeTypeConstraints)
-                ) as $childNode) {
+                foreach (
+                    $subgraph->findChildNodes(
+                        $baseNode->aggregateId,
+                        FindChildNodesFilter::create(nodeTypes: $baseNodeTypeConstraints)
+                    ) as $childNode
+                ) {
                     $nodes[$childNode->aggregateId->value] = $childNode;
                     $gatherNodesRecursively($nodes, $childNode, $level + 1);
                 }

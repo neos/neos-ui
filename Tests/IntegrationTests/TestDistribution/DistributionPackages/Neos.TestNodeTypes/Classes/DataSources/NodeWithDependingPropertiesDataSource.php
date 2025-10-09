@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\TestNodeTypes\DataSources;
 
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
@@ -33,7 +34,7 @@ class NodeWithDependingPropertiesDataSource extends AbstractDataSource
         return array_map(
             function ($option) {
                 return [
-                    'label' => 'label_'. $option,
+                    'label' => 'label_' . $option,
                     'value' => $option,
                 ];
             },

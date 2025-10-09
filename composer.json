@@ -10,6 +10,8 @@
     "neos/neos-ui-compiled": "self.version"
   },
   "scripts": {
+    "lint:phpcs": "../../../bin/phpcs --colors",
+    "lint:phpcs:fix": "../../../bin/phpcbf --colors",
     "lint:phpstan": "../../../bin/phpstan analyse"
   },
   "autoload": {

@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<ruleset name="PSR12">
+    <description>The PSR12 coding standard – without line length limitation</description>
+
+    <arg name="extensions" value="php"/>
+
+    <file>./Classes</file>
+    <file>./Tests</file>
+
+    <extensions>php</extensions>
+
+    <rule ref="PSR12">
+        <exclude name="Generic.Files.LineLength.TooLong" />
+    </rule>
+</ruleset>

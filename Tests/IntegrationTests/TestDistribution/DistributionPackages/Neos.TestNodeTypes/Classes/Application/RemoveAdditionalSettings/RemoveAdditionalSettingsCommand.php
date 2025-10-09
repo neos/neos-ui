@@ -19,8 +19,8 @@ use Neos\Flow\Annotations as Flow;
 #[Flow\Proxy(false)]
 final class RemoveAdditionalSettingsCommand
 {
-    public function __construct(
-    ) {
+    public function __construct()
+    {
     }
 
     public static function fromArray(array $array): self

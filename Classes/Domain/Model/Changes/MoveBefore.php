@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Neos\Neos\Ui\Domain\Model\Changes;
 
 /*
@@ -53,7 +55,8 @@ class MoveBefore extends AbstractStructuralChange
         $subject = $this->subject;
         $parentNode = $this->findParentNode($subject);
         $succeedingSiblingParent = $succeedingSibling ? $this->findParentNode($succeedingSibling) : null;
-        if ($this->canApply() && !is_null($succeedingSibling)
+        if (
+            $this->canApply() && !is_null($succeedingSibling)
             && !is_null($parentNode) && !is_null($succeedingSiblingParent)
         ) {
             $precedingSibling = null;

@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Neos\Ui\Fusion\Helper;
 
 /*
@@ -282,12 +283,14 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
 
             if (array_key_exists($node->aggregateId->value, $renderedNodes)) {
                 $renderedNodes[$node->aggregateId->value]['matched'] = true;
-            } elseif ($renderedNode = $this->renderNodeWithMinimalPropertiesAndChildrenInformation(
-                $node,
-                $actionRequest,
-                $nodeTypeFilter ?? $baseNodeTypeOverride,
-                $includeContentChildNodes
-            )) {
+            } elseif (
+                $renderedNode = $this->renderNodeWithMinimalPropertiesAndChildrenInformation(
+                    $node,
+                    $actionRequest,
+                    $nodeTypeFilter ?? $baseNodeTypeOverride,
+                    $includeContentChildNodes
+                )
+            ) {
                 $renderedNode['matched'] = true;
                 $renderedNodes[$node->aggregateId->value] = $renderedNode;
             } else {

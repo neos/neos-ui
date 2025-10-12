@@ -123,7 +123,7 @@ export const Node = makeLinkType<NodeLinkModel, NodeLinkOptions>('LinkEditor:Nod
 
     Editor: ({
         model$,
-        options,
+        options
     }: {
         model$: State<NodeLinkModel | null>;
         options: NodeLinkOptions;

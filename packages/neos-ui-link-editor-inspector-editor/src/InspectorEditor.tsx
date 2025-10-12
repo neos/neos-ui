@@ -108,7 +108,8 @@ export const createInspectorEditor = (dataType: LinkDataType, editor: IEditor) =
                 />
             </ErrorBoundary>
         );
-    } if (serializedLink.value === null) {
+    }
+    if (serializedLink.value === null) {
         return (
             <Button id={props.id} disabled={props.options?.disabled} onClick={editLink}>
                 <Icon icon="plus"/>

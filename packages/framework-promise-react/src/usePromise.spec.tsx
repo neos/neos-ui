@@ -69,6 +69,7 @@ describe('usePromise', () => {
     it('promise reject', (done) => {
         const promise = new Promise((_, reject) => {
             process.nextTick(done);
+            // eslint-disable-next-line prefer-promise-reject-errors
             reject('An error string');
         });
 

@@ -46,6 +46,7 @@ describe('LinkType: Web', () => {
 
     it('is sadly also satisfied by javascript: links', () => {
         const link = {
+            // eslint-disable-next-line no-script-url
             href: 'javascript:'
         };
 

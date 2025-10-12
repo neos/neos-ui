@@ -59,6 +59,7 @@ export const serializedLinkToILink = (serializedLink: SerializeableLink): ILink 
 
     switch (serializedLink.dataType) {
         case LinkDataType.valueObject:
+            // eslint-disable-next-line no-case-declarations
             const linkValueObject = serializedLink.value;
             return {
                 href: linkValueObject.href,

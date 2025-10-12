@@ -23,6 +23,7 @@ const validateRecipient = (recipient: string) => {
     if (!isEmail(recipient)) {
         return translate('Neos.Neos.Ui:LinkEditor.MailTo:recipient.validation.email', '');
     }
+    return undefined;
 }
 
 const validateCc = (cc: string) => {
@@ -31,6 +32,7 @@ const validateCc = (cc: string) => {
             return translate('Neos.Neos.Ui:LinkEditor.MailTo:cc.validation.emaillist', '');
         }
     }
+    return undefined;
 }
 
 const validateBcc = (cc: string) => {
@@ -39,6 +41,7 @@ const validateBcc = (cc: string) => {
             return translate('Neos.Neos.Ui:LinkEditor.MailTo:bcc.validation.emaillist', '');
         }
     }
+    return undefined;
 }
 
 const validateEmail = (email: MailToLinkModel): MailToLinkModel => ({
@@ -131,7 +134,7 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('LinkEditor:M
             bcc: email.bcc?.value,
             body: email.body?.value
         })
-            .filter(([_key, value]) => Boolean(value))
+            .filter(([, value]) => Boolean(value))
             .map(([key, value]) => `${key}=${encodeURIComponent(value as string)}`)
             .join('&');
 

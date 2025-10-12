@@ -11,7 +11,7 @@ interface Props {
 export const ImageCard: React.FC<Props> = props => {
     return (
         <div className={style.container}>
-            <img className={style.image} src={props.src}/>
+            <img alt="" className={style.image} src={props.src}/>
             <CardTitle span={1}>
                 {props.label}
             </CardTitle>

@@ -1,6 +1,5 @@
 import debounce from 'lodash.debounce';
 import DecoupledEditor from '@ckeditor/ckeditor5-editor-decoupled/src/decouplededitor';
-import {actions} from '@neos-project/neos-ui-redux-store';
 import {cleanupContentBeforeCommit} from './cleanupContentBeforeCommit'
 // FIXME import from @ckeditor/ckeditor5-engine/theme/placeholder.css instead! (Needs build setup configuration)
 import './cke-overwrites.vanilla-css';
@@ -37,6 +36,7 @@ export const bootstrap = _editorConfig => {
     editorConfig = _editorConfig;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const createEditor = store => async options => {
     const {propertyDomNode, propertyName, editorOptions, globalRegistry, userPreferences, onChange} = options;
     const ckEditorConfig = editorConfig.configRegistry.getCkeditorConfig({

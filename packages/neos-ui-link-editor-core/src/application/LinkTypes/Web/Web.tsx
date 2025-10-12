@@ -36,6 +36,7 @@ const validateModel = (values: WebLinkModel): WebLinkModel => ({
         ...values.href,
         warning: (
             !values.href?.value ? undefined : (
+                // eslint-disable-next-line no-script-url
                 values.href.value.includes('javascript:') ? (
                     'Javascript urls are dangerous huiii buhh!'
                 ) : values.href.value.startsWith('node://') ? (

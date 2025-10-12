@@ -3,8 +3,8 @@ import * as React from 'react';
 import {IconButton} from '@neos-project/react-ui-components';
 
 import {IEditor} from '@neos-project/neos-ui-link-editor-core';
-import { ILinkOptions } from '@neos-project/neos-ui-link-editor-core/src/domain';
-import {translate} from "@neos-project/neos-ui-i18n";
+import {ILinkOptions} from '@neos-project/neos-ui-link-editor-core/src/domain';
+import {translate} from '@neos-project/neos-ui-i18n';
 
 interface Props {
     inlineEditorOptions?: {
@@ -31,10 +31,10 @@ interface Props {
 }
 
 export const createLinkButton = (editor: IEditor) => (props: Props) => {
-    const transactions = editor.transactions;
+    const {transactions} = editor;
     const editorOptions = {
         linkTypes: {
-            ...props.inlineEditorOptions?.linking?.linkTypes,
+            ...props.inlineEditorOptions?.linking?.linkTypes
         }
     };
 
@@ -57,7 +57,7 @@ export const createLinkButton = (editor: IEditor) => (props: Props) => {
                         title: props.formattingUnderCursor.linkTitle,
                         targetBlank: props.formattingUnderCursor.linkTargetBlank,
                         relNofollow: props.formattingUnderCursor.linkRelNofollow,
-                        download: props.formattingUnderCursor.linkDownload,
+                        download: props.formattingUnderCursor.linkDownload
                     }
                 };
             }
@@ -113,7 +113,7 @@ export const createLinkButton = (editor: IEditor) => (props: Props) => {
         <IconButton
             title={translate('Neos.Neos.Ui:LinkEditor.Main:linkButton.title', '')}
             isActive={Boolean(props.formattingUnderCursor.link)}
-            icon={Boolean(props.formattingUnderCursor.link) ? 'unlink' : 'link'}
+            icon={props.formattingUnderCursor.link ? 'unlink' : 'link'}
             onClick={handleLinkButtonClick}
         />
     );

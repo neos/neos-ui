@@ -2,12 +2,12 @@ import * as React from 'react';
 
 import {ILink, makeLinkType} from '../../../domain';
 import {IconCard, Layout} from '../../../presentation';
-import {isSuitableFor} from "./MailToSpecification";
-import {translate} from "@neos-project/neos-ui-i18n";
-import {isEmail} from "@neos-project/utils-helpers";
+import {isSuitableFor} from './MailToSpecification';
+import {translate} from '@neos-project/neos-ui-i18n';
+import {isEmail} from '@neos-project/utils-helpers';
 import {PromiseState} from '@neos-project/framework-promise-react';
-import {State} from "@neos-project/framework-observable";
-import {useLatestState} from "@neos-project/framework-observable-react";
+import {State} from '@neos-project/framework-observable';
+import {useLatestState} from '@neos-project/framework-observable-react';
 import {TextArea, TextInput, Tooltip} from '@neos-project/react-ui-components';
 
 type FormValue<T> = {
@@ -23,7 +23,6 @@ const validateRecipient = (recipient: string) => {
     if (!isEmail(recipient)) {
         return translate('Neos.Neos.Ui:LinkEditor.MailTo:recipient.validation.email', '');
     }
-    return;
 }
 
 const validateCc = (cc: string) => {
@@ -32,7 +31,6 @@ const validateCc = (cc: string) => {
             return translate('Neos.Neos.Ui:LinkEditor.MailTo:cc.validation.emaillist', '');
         }
     }
-    return;
 }
 
 const validateBcc = (cc: string) => {
@@ -41,7 +39,6 @@ const validateBcc = (cc: string) => {
             return translate('Neos.Neos.Ui:LinkEditor.MailTo:bcc.validation.emaillist', '');
         }
     }
-    return;
 }
 
 const validateEmail = (email: MailToLinkModel): MailToLinkModel => ({
@@ -57,7 +54,7 @@ const validateEmail = (email: MailToLinkModel): MailToLinkModel => ({
     bcc: email.bcc ? {
         ...email.bcc,
         warning: validateBcc(email.bcc.value)
-    } : undefined,
+    } : undefined
 });
 
 type MailToLinkModel = {
@@ -78,7 +75,7 @@ type MailToOptions = {
 }
 
 export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('LinkEditor:MailTo', ({createError, id}) => ({
-    icon: "envelope",
+    icon: 'envelope',
 
     getTitle: () => translate('Neos.Neos.Ui:LinkEditor.MailTo:title', ''),
 
@@ -95,7 +92,7 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('LinkEditor:M
         return true;
     },
 
-    useResolvedModel:  (link: ILink) => {
+    useResolvedModel: (link: ILink) => {
         if (!link.href.startsWith('mailto:')) {
             return PromiseState.forError(
                 createError(`Cannot handle href "${link.href}".`)
@@ -106,34 +103,34 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('LinkEditor:M
         return PromiseState.forValue(validateEmail({
             recipient: {
                 value: url.pathname,
-                isDirty: false,
+                isDirty: false
             },
             subject: {
                 value: url.searchParams.get('subject') ?? '',
-                isDirty: false,
+                isDirty: false
             },
             cc: {
                 value: url.searchParams.get('cc') ?? '',
-                isDirty: false,
+                isDirty: false
             },
             bcc: {
                 value: url.searchParams.get('bcc') ?? '',
-                isDirty: false,
+                isDirty: false
             },
             body: {
                 value: url.searchParams.get('body') ?? '',
-                isDirty: false,
-            },
+                isDirty: false
+            }
         }));
     },
 
     convertModelToLink: (email: MailToLinkModel) => {
         const query = Object.entries({
-                subject: email.subject?.value,
-                cc: email.cc?.value,
-                bcc: email.bcc?.value,
-                body: email.body?.value,
-            })
+            subject: email.subject?.value,
+            cc: email.cc?.value,
+            bcc: email.bcc?.value,
+            body: email.body?.value
+        })
             .filter(([_key, value]) => Boolean(value))
             .map(([key, value]) => `${key}=${encodeURIComponent(value as string)}`)
             .join('&');
@@ -169,7 +166,7 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('LinkEditor:M
             ...previous,
             subject: {
                 value: subject,
-                isDirty: true,
+                isDirty: true
             }
         })), []);
 
@@ -195,7 +192,7 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('LinkEditor:M
             ...previous,
             body: {
                 value: body,
-                isDirty: true,
+                isDirty: true
             }
         })), []);
 
@@ -203,7 +200,7 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('LinkEditor:M
 
         return (
             <Layout.Columns>
-                <div style={{ gridColumn: '1 / -1' }}>
+                <div style={{gridColumn: '1 / -1'}}>
                     <label htmlFor={`__neos__editor__property---${id}.recipient`}>{translate('Neos.Neos.Ui:LinkEditor.MailTo:recipient.label', '')}</label>
                     <TextInput
                         id={`__neos__editor__property---${id}.recipient`}
@@ -216,7 +213,7 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('LinkEditor:M
                 </div>
 
                 {options.enabledFields?.subject !== false ? (
-                    <div style={{ gridColumn: '1 / -1' }}>
+                    <div style={{gridColumn: '1 / -1'}}>
                         <label htmlFor={`__neos__editor__property---${id}.subject`}>{translate('Neos.Neos.Ui:LinkEditor.MailTo:subject.label', '')}</label>
                         <TextInput
                             id={`__neos__editor__property---${id}.subject`}
@@ -229,7 +226,7 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('LinkEditor:M
                     </div>
                 ) : null}
                 {options.enabledFields?.cc !== false ? (
-                    <div style={{ gridColumn: '1 / -1' }}>
+                    <div style={{gridColumn: '1 / -1'}}>
                         <label htmlFor={`__neos__editor__property---${id}.cc`}>{translate('Neos.Neos.Ui:LinkEditor.MailTo:cc.label', '')}</label>
                         <TextInput
                             id={`__neos__editor__property---${id}.cc`}
@@ -243,7 +240,7 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('LinkEditor:M
                     </div>
                 ) : null}
                 {options.enabledFields?.bcc !== false ? (
-                    <div style={{ gridColumn: '1 / -1' }}>
+                    <div style={{gridColumn: '1 / -1'}}>
                         <label htmlFor={`__neos__editor__property---${id}.bcc`}>{translate('Neos.Neos.Ui:LinkEditor.MailTo:bcc.label', '')}</label>
                         <TextInput
                             id={`__neos__editor__property---${id}.bcc`}
@@ -257,7 +254,7 @@ export const MailTo = makeLinkType<MailToLinkModel, MailToOptions>('LinkEditor:M
                     </div>
                 ) : null}
                 {options.enabledFields?.body !== false ? (
-                    <div style={{ gridColumn: '1 / -1' }}>
+                    <div style={{gridColumn: '1 / -1'}}>
                         <label htmlFor={`__neos__editor__property---${id}.body`}>{translate('Neos.Neos.Ui:LinkEditor.MailTo:body.label', '')}</label>
                         <TextArea
                             id={`__neos__editor__property---${id}.body`}

@@ -8,7 +8,7 @@
  * source code.
  */
 import {useLatestValueFrom} from './useLatestValueFrom';
-import {ReadonlyState} from "@neos-project/framework-observable";
+import {ReadonlyState} from '@neos-project/framework-observable';
 
 export function useLatestState<V>(state$: ReadonlyState<V>) {
     return useLatestValueFrom(state$, state$.current);

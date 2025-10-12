@@ -16,7 +16,7 @@
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export { usePromise } from "./usePromise";
-export type { IPromiseState } from "./PromiseState";
-export * as PromiseState from "./PromiseState";
+export {usePromise} from './usePromise';
+export type {IPromiseState} from './PromiseState';
+export * as PromiseState from './PromiseState';
 

@@ -3,7 +3,7 @@ import {SynchronousRegistry} from '@neos-project/neos-ui-extensibility';
 import {IEditor} from '@neos-project/neos-ui-link-editor-core';
 
 import {createLinkButton} from './LinkButton';
-import {GlobalRegistry} from "@neos-project/neos-ts-interfaces";
+import {GlobalRegistry} from '@neos-project/neos-ts-interfaces';
 
 export function registerLinkButton(
     globalRegistry: GlobalRegistry,

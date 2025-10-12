@@ -7,10 +7,10 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-import { fetchWithErrorHandling } from "@neos-project/neos-ui-backend-connector";
+import {fetchWithErrorHandling} from '@neos-project/neos-ui-backend-connector';
 
-import { TreeNodeDTO } from "../../domain";
-import {ServerSideError} from "@neos-project/neos-ui-error";
+import {TreeNodeDTO} from '../../domain';
+import {ServerSideError} from '@neos-project/neos-ui-error';
 
 type GetChildrenForTreeNodeQuery = {
     workspaceName: string;
@@ -35,7 +35,7 @@ export async function getChildrenForTreeNode(
 ): Promise<GetChildrenForTreeNodeQueryResultEnvelope> {
     const searchParams = new URLSearchParams();
 
-    searchParams.set("workspaceName", query.workspaceName);
+    searchParams.set('workspaceName', query.workspaceName);
     for (const [dimensionName, fallbackChain] of Object.entries(
         query.dimensionValues
     )) {
@@ -46,8 +46,8 @@ export async function getChildrenForTreeNode(
             );
         }
     }
-    searchParams.set("treeNodeId", query.treeNodeId);
-    searchParams.set("nodeTypeFilter", query.nodeTypeFilter);
+    searchParams.set('treeNodeId', query.treeNodeId);
+    searchParams.set('nodeTypeFilter', query.nodeTypeFilter);
 
     for (const linkableNodeType of query.linkableNodeTypes ?? []) {
         searchParams.append(`linkableNodeTypes[]`, linkableNodeType);
@@ -57,14 +57,14 @@ export async function getChildrenForTreeNode(
         const response = await fetchWithErrorHandling.withCsrfToken(
             (csrfToken) => ({
                 url:
-                    "/neos/link-editor/get-children-for-tree-node?" +
+                    '/neos/link-editor/get-children-for-tree-node?' +
                     searchParams.toString(),
-                method: "GET",
-                credentials: "include",
+                method: 'GET',
+                credentials: 'include',
                 headers: {
-                    "X-Flow-Csrftoken": csrfToken,
-                    "Content-Type": "application/json",
-                },
+                    'X-Flow-Csrftoken': csrfToken,
+                    'Content-Type': 'application/json'
+                }
             })
         );
 

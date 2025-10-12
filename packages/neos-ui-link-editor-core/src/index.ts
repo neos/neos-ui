@@ -4,7 +4,7 @@ export type {IEditor, ILinkType} from './domain';
 export {
     makeLinkType,
     useLinkTypeForHref,
-    createEditor,
+    createEditor
 } from './domain';
 
 export {Deletable} from './presentation';

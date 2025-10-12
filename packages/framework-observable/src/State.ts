@@ -13,7 +13,6 @@ export interface ReadonlyState<V> extends Observable<V> {
     readonly current: V;
 }
 
-
 /**
  * A State is a special kind of Observable that keeps track of a value over
  * time.
@@ -161,7 +160,7 @@ export function mapState<V, R>(state: State<V>, mapper: (currentState: V) => R):
 
         get current() {
             return currentState;
-        },
+        }
     };
 
     return Object.freeze(mappedState);

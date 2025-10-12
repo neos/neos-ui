@@ -7,14 +7,14 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-import * as React from "react";
-import {usePromise} from "@neos-project/framework-promise-react";
+import * as React from 'react';
+import {usePromise} from '@neos-project/framework-promise-react';
 
-import { SelectBox } from "@neos-project/react-ui-components";
+import {SelectBox} from '@neos-project/react-ui-components';
 
-import { getNodeTypeFilterOptions } from "../infrastructure/http";
-import {translate} from "@neos-project/neos-ui-i18n";
-import {globalRegistry} from "@neos-project/neos-ui/globalRegistry";
+import {getNodeTypeFilterOptions} from '../infrastructure/http';
+import {translate} from '@neos-project/neos-ui-i18n';
+import {globalRegistry} from '@neos-project/neos-ui/globalRegistry';
 
 const searchNodeTypeFilterOptions = (
     searchTerm: string,
@@ -36,13 +36,13 @@ interface Props {
 }
 
 export const SelectNodeTypeFilter: React.FC<Props> = (props) => {
-    const [filterTerm, setFilterTerm] = React.useState("");
+    const [filterTerm, setFilterTerm] = React.useState('');
     const fetch__options = usePromise(async () => {
         const result = await getNodeTypeFilterOptions({
-            baseNodeTypeFilter: props.baseNodeTypeFilter,
+            baseNodeTypeFilter: props.baseNodeTypeFilter
         });
 
-        if ("success" in result) {
+        if ('success' in result) {
             return result.success.options.map((option) => ({
                 value: option.value,
                 icon: option.label.icon,
@@ -50,11 +50,11 @@ export const SelectNodeTypeFilter: React.FC<Props> = (props) => {
             }));
         }
 
-        if ("error" in result) {
+        if ('error' in result) {
             throw result.error;
         }
 
-        throw new Error("Unable to fetch node type filter options");
+        throw new Error('Unable to fetch node type filter options');
     }, [props.baseNodeTypeFilter]);
     const options = React.useMemo(() => {
         return searchNodeTypeFilterOptions(
@@ -66,8 +66,8 @@ export const SelectNodeTypeFilter: React.FC<Props> = (props) => {
     return (
         <SelectBox
             disabled={fetch__options.isLoading || fetch__options.error}
-            placeholder={translate("Neos.Neos:Main:filter", '')}
-            placeholderIcon={"filter"}
+            placeholder={translate('Neos.Neos:Main:filter', '')}
+            placeholderIcon={'filter'}
             onValueChange={props.onChange}
             allowEmpty={true}
             value={props.value}
@@ -76,8 +76,8 @@ export const SelectNodeTypeFilter: React.FC<Props> = (props) => {
             searchTerm={filterTerm}
             onSearchTermChange={setFilterTerm}
             threshold={0}
-            noMatchesFoundLabel={translate("Neos.Neos:Main:noMatchesFound", '')}
-            searchBoxLeftToTypeLabel={translate("Neos.Neos:Main:searchBoxLeftToType", '')}
+            noMatchesFoundLabel={translate('Neos.Neos:Main:noMatchesFound', '')}
+            searchBoxLeftToTypeLabel={translate('Neos.Neos:Main:searchBoxLeftToType', '')}
         />
     );
 };

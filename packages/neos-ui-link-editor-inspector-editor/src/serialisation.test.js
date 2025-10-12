@@ -1,6 +1,6 @@
 import {describe, it} from 'node:test';
 import {deepEqual, equal} from 'node:assert/strict';
-import {convertILinkToSerializedLinkValue, LinkDataType, serializedLinkToILink, resolveSerializedLinkFromValue} from "./serialisation";
+import {convertILinkToSerializedLinkValue, LinkDataType, serializedLinkToILink, resolveSerializedLinkFromValue} from './serialisation';
 
 describe('InspectorEditor: serialisation', () => {
     it('resolveSerializedLinkFromValue for string ', () => {
@@ -24,7 +24,7 @@ describe('InspectorEditor: serialisation', () => {
             resolveSerializedLinkFromValue('http://marchenry.de', LinkDataType.string),
             {
                 dataType: LinkDataType.string,
-                value: "http://marchenry.de"
+                value: 'http://marchenry.de'
             }
         )
 
@@ -32,7 +32,7 @@ describe('InspectorEditor: serialisation', () => {
             resolveSerializedLinkFromValue('http://marchenry.de#tiefseeanker', LinkDataType.string),
             {
                 dataType: LinkDataType.string,
-                value: "http://marchenry.de#tiefseeanker"
+                value: 'http://marchenry.de#tiefseeanker'
             }
         )
     });
@@ -44,57 +44,57 @@ describe('InspectorEditor: serialisation', () => {
         )
 
         equal(
-            serializedLinkToILink({dataType: LinkDataType.string, value: ""}),
+            serializedLinkToILink({dataType: LinkDataType.string, value: ''}),
             null
         )
 
         deepEqual(
-            serializedLinkToILink({dataType: LinkDataType.string, value: "http://marchenry.de"}),
+            serializedLinkToILink({dataType: LinkDataType.string, value: 'http://marchenry.de'}),
             {
-                href: "http://marchenry.de",
+                href: 'http://marchenry.de'
             }
         )
 
         deepEqual(
-            serializedLinkToILink({dataType: LinkDataType.string, value: "http://marchenry.de#tiefseeanker"}),
+            serializedLinkToILink({dataType: LinkDataType.string, value: 'http://marchenry.de#tiefseeanker'}),
             {
-                href: "http://marchenry.de#tiefseeanker",
+                href: 'http://marchenry.de#tiefseeanker'
             }
         )
 
         deepEqual(
-            serializedLinkToILink({dataType: LinkDataType.string, value: "http://marchenry.de/some/path?query=foo#tiefseeanker"}),
+            serializedLinkToILink({dataType: LinkDataType.string, value: 'http://marchenry.de/some/path?query=foo#tiefseeanker'}),
             {
-                href: "http://marchenry.de/some/path?query=foo#tiefseeanker",
+                href: 'http://marchenry.de/some/path?query=foo#tiefseeanker'
             }
         )
     });
 
     it('convertILinkToSerializedLinkValue for string ', () => {
         equal(
-            convertILinkToSerializedLinkValue({href: "http://marchenry.de"}, LinkDataType.string),
-            "http://marchenry.de"
+            convertILinkToSerializedLinkValue({href: 'http://marchenry.de'}, LinkDataType.string),
+            'http://marchenry.de'
         )
 
         equal(
             convertILinkToSerializedLinkValue({
-                href: "http://marchenry.de#tiefseeanker",
+                href: 'http://marchenry.de#tiefseeanker'
             }, LinkDataType.string),
-            "http://marchenry.de#tiefseeanker"
+            'http://marchenry.de#tiefseeanker'
         )
 
         // all other parts are discarded
         equal(
             convertILinkToSerializedLinkValue({
-                href: "http://marchenry.de#tiefseeanker",
+                href: 'http://marchenry.de#tiefseeanker',
                 options: {
                     relNofollow: true,
                     targetBlank: true,
                     title: 'my title',
-                    download: true,
+                    download: true
                 }
             }, LinkDataType.string),
-            "http://marchenry.de#tiefseeanker"
+            'http://marchenry.de#tiefseeanker'
         )
     });
 
@@ -146,30 +146,29 @@ describe('InspectorEditor: serialisation', () => {
             {
                 dataType: LinkDataType.valueObject,
                 value: {
-                    href: "http://marchenry.de"
+                    href: 'http://marchenry.de'
                 }
             }
         )
 
         deepEqual(
             resolveSerializedLinkFromValue({
-                href: "http://marchenry.de#tiefseeanker",
+                href: 'http://marchenry.de#tiefseeanker',
                 title: 'my title',
                 target: '_blank',
-                rel: ['nofollow'],
+                rel: ['nofollow']
             }, LinkDataType.valueObject),
             {
                 dataType: LinkDataType.valueObject,
                 value: {
-                    href: "http://marchenry.de#tiefseeanker",
+                    href: 'http://marchenry.de#tiefseeanker',
                     title: 'my title',
                     target: '_blank',
-                    rel: ['nofollow'],
+                    rel: ['nofollow']
                 }
             }
         )
     });
-
 
     it('serializedLinkToILink for valueObject ', () => {
         equal(
@@ -178,158 +177,158 @@ describe('InspectorEditor: serialisation', () => {
         )
 
         equal(
-            serializedLinkToILink({dataType: LinkDataType.valueObject, value: ""}),
+            serializedLinkToILink({dataType: LinkDataType.valueObject, value: ''}),
             null
         )
 
         deepEqual(
             serializedLinkToILink({dataType: LinkDataType.valueObject, value: {
-                href: "http://marchenry.de",
+                href: 'http://marchenry.de',
                 title: undefined,
                 target: undefined,
                 rel: [],
-                download: undefined,
+                download: undefined
             }}),
             {
-                href: "http://marchenry.de",
+                href: 'http://marchenry.de',
                 options: {
                     relNofollow: false,
                     targetBlank: undefined,
                     title: undefined,
-                    download: false,
+                    download: false
                 }
             }
         )
 
         deepEqual(
             serializedLinkToILink({dataType: LinkDataType.valueObject, value: {
-                href: "http://marchenry.de#tiefseeanker",
+                href: 'http://marchenry.de#tiefseeanker',
                 title: undefined,
                 target: undefined,
                 rel: [],
-                download: false,
+                download: false
             }}),
             {
-                href: "http://marchenry.de#tiefseeanker",
+                href: 'http://marchenry.de#tiefseeanker',
                 options: {
                     relNofollow: false,
                     targetBlank: undefined,
                     title: undefined,
-                    download: false,
+                    download: false
                 }
             }
         )
 
         deepEqual(
             serializedLinkToILink({dataType: LinkDataType.valueObject, value: {
-                    href: "http://marchenry.de",
-                    title: 'some title',
-                    target: undefined,
-                    rel: [],
-                    download: undefined,
-                }}),
+                href: 'http://marchenry.de',
+                title: 'some title',
+                target: undefined,
+                rel: [],
+                download: undefined
+            }}),
             {
-                href: "http://marchenry.de",
+                href: 'http://marchenry.de',
                 options: {
                     relNofollow: false,
                     targetBlank: undefined,
                     title: 'some title',
-                    download: false,
+                    download: false
                 }
             }
         )
 
         deepEqual(
             serializedLinkToILink({dataType: LinkDataType.valueObject, value: {
-                    href: "http://marchenry.de",
-                    title: undefined,
-                    target: '_self',
-                    rel: [],
-                    download: undefined,
-                }}),
+                href: 'http://marchenry.de',
+                title: undefined,
+                target: '_self',
+                rel: [],
+                download: undefined
+            }}),
             {
-                href: "http://marchenry.de",
+                href: 'http://marchenry.de',
                 options: {
                     relNofollow: false,
                     targetBlank: false,
                     title: undefined,
-                    download: false,
+                    download: false
                 }
             }
         )
 
         deepEqual(
             serializedLinkToILink({dataType: LinkDataType.valueObject, value: {
-                    href: "http://marchenry.de",
-                    title: undefined,
-                    target: '_blank',
-                    rel: [],
-                    download: undefined,
-                }}),
+                href: 'http://marchenry.de',
+                title: undefined,
+                target: '_blank',
+                rel: [],
+                download: undefined
+            }}),
             {
-                href: "http://marchenry.de",
+                href: 'http://marchenry.de',
                 options: {
                     relNofollow: false,
                     targetBlank: true,
                     title: undefined,
-                    download: false,
+                    download: false
                 }
             }
         )
 
         deepEqual(
             serializedLinkToILink({dataType: LinkDataType.valueObject, value: {
-                    href: "http://marchenry.de",
-                    title: undefined,
-                    target: undefined,
-                    rel: ['noopener'],
-                    download: undefined,
-                }}),
+                href: 'http://marchenry.de',
+                title: undefined,
+                target: undefined,
+                rel: ['noopener'],
+                download: undefined
+            }}),
             {
-                href: "http://marchenry.de",
+                href: 'http://marchenry.de',
                 options: {
                     relNofollow: false,
                     targetBlank: undefined,
                     title: undefined,
-                    download: false,
+                    download: false
                 }
             }
         )
 
         deepEqual(
             serializedLinkToILink({dataType: LinkDataType.valueObject, value: {
-                    href: "http://marchenry.de",
-                    title: undefined,
-                    target: undefined,
-                    rel: ['nofollow'],
-                    download: undefined,
-                }}),
+                href: 'http://marchenry.de',
+                title: undefined,
+                target: undefined,
+                rel: ['nofollow'],
+                download: undefined
+            }}),
             {
-                href: "http://marchenry.de",
+                href: 'http://marchenry.de',
                 options: {
                     relNofollow: true,
                     targetBlank: undefined,
                     title: undefined,
-                    download: false,
+                    download: false
                 }
             }
         )
 
         deepEqual(
             serializedLinkToILink({dataType: LinkDataType.valueObject, value: {
-                    href: "http://marchenry.de",
-                    title: undefined,
-                    target: undefined,
-                    rel: [],
-                    download: true,
-                }}),
+                href: 'http://marchenry.de',
+                title: undefined,
+                target: undefined,
+                rel: [],
+                download: true
+            }}),
             {
-                href: "http://marchenry.de",
+                href: 'http://marchenry.de',
                 options: {
                     relNofollow: false,
                     targetBlank: undefined,
                     title: undefined,
-                    download: true,
+                    download: true
                 }
             }
         )
@@ -337,45 +336,45 @@ describe('InspectorEditor: serialisation', () => {
 
     it('convertILinkToSerializedLinkValue for value object ', () => {
         deepEqual(
-            convertILinkToSerializedLinkValue({href: "http://marchenry.de"}, LinkDataType.valueObject),
+            convertILinkToSerializedLinkValue({href: 'http://marchenry.de'}, LinkDataType.valueObject),
             {
-                href: "http://marchenry.de",
+                href: 'http://marchenry.de',
                 title: undefined,
                 target: undefined,
                 rel: [],
-                download: undefined,
+                download: undefined
             }
         )
 
         deepEqual(
             convertILinkToSerializedLinkValue({
-                href: "http://marchenry.de#tiefseeanker",
+                href: 'http://marchenry.de#tiefseeanker'
             }, LinkDataType.valueObject),
             {
-                href: "http://marchenry.de#tiefseeanker",
+                href: 'http://marchenry.de#tiefseeanker',
                 title: undefined,
                 target: undefined,
                 rel: [],
-                download: undefined,
+                download: undefined
             }
         )
 
         deepEqual(
             convertILinkToSerializedLinkValue({
-                href: "http://marchenry.de#tiefseeanker",
+                href: 'http://marchenry.de#tiefseeanker',
                 options: {
                     relNofollow: true,
                     targetBlank: true,
                     title: 'my title',
-                    download: true,
+                    download: true
                 }
             }, LinkDataType.valueObject),
             {
-                href: "http://marchenry.de#tiefseeanker",
+                href: 'http://marchenry.de#tiefseeanker',
                 title: 'my title',
                 target: '_blank',
                 rel: ['nofollow'],
-                download: true,
+                download: true
             }
         )
     });

@@ -14,9 +14,9 @@ import {
     LinkDataType,
     resolveSerializedLinkFromValue,
     serializedLinkToILink
-} from "./serialisation";
-import {translate} from "@neos-project/neos-ui-i18n";
-import {SeamlessButton} from "./presentation";
+} from './serialisation';
+import {translate} from '@neos-project/neos-ui-i18n';
+import {SeamlessButton} from './presentation';
 
 export type EditorProps = {
     id?: string
@@ -33,10 +33,9 @@ export type EditorProps = {
 };
 
 export const createInspectorEditor = (dataType: LinkDataType, editor: IEditor) => (props: EditorProps) => {
-
     const reset = () => props.commit('');
 
-    const transactions = editor.transactions;
+    const {transactions} = editor;
 
     const serializedLink = resolveSerializedLinkFromValue(props.value, dataType);
 
@@ -109,7 +108,7 @@ export const createInspectorEditor = (dataType: LinkDataType, editor: IEditor) =
                 />
             </ErrorBoundary>
         );
-    } else if (serializedLink.value === null) {
+    } if (serializedLink.value === null) {
         return (
             <Button id={props.id} disabled={props.options?.disabled} onClick={editLink}>
                 <Icon icon="plus"/>
@@ -117,13 +116,12 @@ export const createInspectorEditor = (dataType: LinkDataType, editor: IEditor) =
                 {translate('Neos.Neos.Ui:LinkEditor.Main:inspector.create', '')}
             </Button>
         );
-    } else {
-        return (
-            <Deletable id={props.id} onDelete={reset}>
-                <ErrorView error={translate('Neos.Neos.Ui:LinkEditor.Main:inspector.notfound', 'Could not determine link editor for value {href}', { href: JSON.stringify(serializedLink.value) })} />
-            </Deletable>
-        );
     }
+    return (
+        <Deletable id={props.id} onDelete={reset}>
+            <ErrorView error={translate('Neos.Neos.Ui:LinkEditor.Main:inspector.notfound', 'Could not determine link editor for value {href}', {href: JSON.stringify(serializedLink.value)})} />
+        </Deletable>
+    );
 };
 
 const InspectorEditorWithLinkType: React.FC<{

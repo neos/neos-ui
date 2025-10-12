@@ -2,12 +2,12 @@ import * as React from 'react';
 
 import {TextInput, Tooltip} from '@neos-project/react-ui-components';
 
-import {ILink, makeLinkType} from "../../../domain";
-import {IconCard} from "../../../presentation";
-import {isSuitableFor} from "./PhoneNumberSpecification";
-import {translate} from "@neos-project/neos-ui-i18n";
-import {State} from "@neos-project/framework-observable";
-import {useLatestState} from "@neos-project/framework-observable-react";
+import {ILink, makeLinkType} from '../../../domain';
+import {IconCard} from '../../../presentation';
+import {isSuitableFor} from './PhoneNumberSpecification';
+import {translate} from '@neos-project/neos-ui-i18n';
+import {State} from '@neos-project/framework-observable';
+import {useLatestState} from '@neos-project/framework-observable-react';
 
 import {PromiseState} from '@neos-project/framework-promise-react';
 
@@ -22,7 +22,7 @@ type PhoneNumberLinkModel = {
 const VALID_PHONE_NUMBER = /^(?:\+[1-9])?[0-9]+$/;
 
 export const PhoneNumber = makeLinkType<PhoneNumberLinkModel>('LinkEditor:PhoneNumber', ({createError, id}) => ({
-    icon: "phone-alt",
+    icon: 'phone-alt',
 
     getTitle: () => translate('Neos.Neos.Ui:LinkEditor.PhoneNumber:title', ''),
 
@@ -50,7 +50,7 @@ export const PhoneNumber = makeLinkType<PhoneNumberLinkModel>('LinkEditor:PhoneN
         return PromiseState.forValue({
             phoneNumber: {
                 value: link.href.replace('tel:', ''),
-                isDirty: false,
+                isDirty: false
             }
         });
     },
@@ -75,8 +75,8 @@ export const PhoneNumber = makeLinkType<PhoneNumberLinkModel>('LinkEditor:PhoneN
             phoneNumber: {
                 value: phoneNumber,
                 warning: !phoneNumber ? translate('Neos.Neos.Ui:LinkEditor.PhoneNumber:phoneNumber.validation.required', '') : (!VALID_PHONE_NUMBER.test(phoneNumber) ? translate('Neos.Neos.Ui:LinkEditor.PhoneNumber:phoneNumber.validation.numbersOnly', '') : undefined),
-                isDirty: true,
-            },
+                isDirty: true
+            }
         })), []);
 
         return (

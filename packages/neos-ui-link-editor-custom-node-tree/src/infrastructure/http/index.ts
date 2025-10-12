@@ -7,6 +7,6 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-export { getChildrenForTreeNode } from "./getChildrenForTreeNode";
-export { getNodeTypeFilterOptions } from "./getNodeTypeFilterOptions";
-export { getTree } from "./getTree";
+export {getChildrenForTreeNode} from './getChildrenForTreeNode';
+export {getNodeTypeFilterOptions} from './getNodeTypeFilterOptions';
+export {getTree} from './getTree';

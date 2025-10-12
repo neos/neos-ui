@@ -29,7 +29,7 @@ export const defaultState: State = {
     isLoading: true,
     focusedProperty: null,
     backgroundColor: '#ffffff',
-    shouldScrollIntoView: false,
+    shouldScrollIntoView: false
 };
 
 //
@@ -75,7 +75,7 @@ export const actions = {
     reload,
     requestScrollIntoView,
     requestRegainControl,
-    requestLogin,
+    requestLogin
 };
 
 export type Action = ActionType<typeof actions>;

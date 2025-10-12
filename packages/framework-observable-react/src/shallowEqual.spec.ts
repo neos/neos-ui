@@ -7,7 +7,7 @@ describe('shallowEqual', () => {
         'foo',
         NaN,
         0,
-        true,
+        true
     ] as const;
 
     test('compare simple primitive values', () => {
@@ -33,13 +33,13 @@ describe('shallowEqual', () => {
     test('compare new object references with first level primitive values', () => {
         expect(shallowEqual(null, {})).toBe(false);
         expect(shallowEqual({}, {})).toBe(true);
-        expect(shallowEqual({ valueA: true }, { valueA: 'a string' })).toBe(false);
-        expect(shallowEqual({ valueA: true }, { valueA: true, valueB: 'a string' })).toBe(false);
-        expect(shallowEqual({ valueA: true, valueB: 'a string' }, { valueA: true })).toBe(false);
-        expect(shallowEqual({ valueA: true, valueB: 1 }, { valueA: true, valueB: 'a string' })).toBe(false);
+        expect(shallowEqual({valueA: true}, {valueA: 'a string'})).toBe(false);
+        expect(shallowEqual({valueA: true}, {valueA: true, valueB: 'a string'})).toBe(false);
+        expect(shallowEqual({valueA: true, valueB: 'a string'}, {valueA: true})).toBe(false);
+        expect(shallowEqual({valueA: true, valueB: 1}, {valueA: true, valueB: 'a string'})).toBe(false);
 
         for (const primitiveValue of PRIMITIVE_VALUES) {
-            expect(shallowEqual({ valueA: primitiveValue }, { valueA: primitiveValue })).toBe(true);
+            expect(shallowEqual({valueA: primitiveValue}, {valueA: primitiveValue})).toBe(true);
         }
     });
 
@@ -52,7 +52,7 @@ describe('shallowEqual', () => {
             }
         };
 
-        expect(shallowEqual({ valueA: SOME_REUSED_OBJECT }, { valueA: SOME_REUSED_OBJECT })).toBe(true);
-        expect(shallowEqual({ valueA: { nested: SOME_REUSED_OBJECT} }, { valueA: { nested: SOME_REUSED_OBJECT} })).toBe(false);
+        expect(shallowEqual({valueA: SOME_REUSED_OBJECT}, {valueA: SOME_REUSED_OBJECT})).toBe(true);
+        expect(shallowEqual({valueA: {nested: SOME_REUSED_OBJECT}}, {valueA: {nested: SOME_REUSED_OBJECT}})).toBe(false);
     });
 });

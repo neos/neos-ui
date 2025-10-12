@@ -7,8 +7,8 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-import * as React from "react";
-import { SearchInput } from "../presentation";
+import * as React from 'react';
+import {SearchInput} from '../presentation';
 
 interface Props {
     initialValue: string;

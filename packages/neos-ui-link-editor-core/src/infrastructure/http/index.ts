@@ -7,4 +7,4 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-export { getNodeSummary } from "./getNodeSummary";
+export {getNodeSummary} from './getNodeSummary';

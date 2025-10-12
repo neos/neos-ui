@@ -1,2 +1,2 @@
 
-export { SeamlessButton } from './SeamlessButton'
+export {SeamlessButton} from './SeamlessButton'

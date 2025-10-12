@@ -1,1 +1,1 @@
-export const isSuitableFor = (link: { href: string }) => link.href.startsWith("node://");
+export const isSuitableFor = (link: { href: string }) => link.href.startsWith('node://');

@@ -1,7 +1,7 @@
 import {createEditor} from './Editor';
-import {describe, beforeEach, afterEach, it} from "node:test";
-import {equal, deepEqual} from "node:assert/strict";
-import {Subscription} from "@neos-project/framework-observable";
+import {describe, beforeEach, afterEach, it} from 'node:test';
+import {equal, deepEqual} from 'node:assert/strict';
+import {Subscription} from '@neos-project/framework-observable';
 
 describe('Editor', () => {
     const {state$, transactions: {editLink, dismiss, unset, apply}} = createEditor();
@@ -69,5 +69,4 @@ describe('Editor', () => {
         });
     });
 });
-
 

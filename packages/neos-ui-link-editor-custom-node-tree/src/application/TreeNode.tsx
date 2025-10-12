@@ -7,12 +7,12 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-import React from "react";
+import React from 'react';
 
-import { Tree as NeosTree, Icon } from "@neos-project/react-ui-components";
+import {Tree as NeosTree, Icon} from '@neos-project/react-ui-components';
 
-import { TreeNodeDTO } from "../domain/TreeNodeDTO";
-import { getChildrenForTreeNode } from "../infrastructure/http";
+import {TreeNodeDTO} from '../domain/TreeNodeDTO';
+import {getChildrenForTreeNode} from '../infrastructure/http';
 
 interface Props {
     workspaceName: string;
@@ -40,8 +40,8 @@ export const TreeNode: React.FC<Props> = (props) => {
     const customIconComponent = React.useMemo(() => {
         if (props.treeNode.hasScheduledDisabledState) {
             const circleColor = props.treeNode.isDisabled
-                ? "error"
-                : "primaryBlue";
+                ? 'error'
+                : 'primaryBlue';
 
             return (
                 <span className="fa-layers fa-fw">
@@ -74,7 +74,7 @@ export const TreeNode: React.FC<Props> = (props) => {
     }, [
         props.treeNode.hasScheduledDisabledState,
         props.treeNode.isDisabled,
-        props.treeNode.icon,
+        props.treeNode.icon
     ]);
     const handleNodeToggle = React.useCallback(async () => {
         if (
@@ -92,11 +92,11 @@ export const TreeNode: React.FC<Props> = (props) => {
                     linkableNodeTypes: props.linkableNodeTypes
                 });
 
-                if ("success" in result) {
+                if ('success' in result) {
                     setChildren(result.success.children);
                 }
 
-                if ("error" in result) {
+                if ('error' in result) {
                     setHasError(true);
                 }
             } catch (_) {
@@ -113,7 +113,7 @@ export const TreeNode: React.FC<Props> = (props) => {
         props.dimensionValues,
         props.treeNode.nodeAggregateIdentifier,
         props.baseNodeTypeFilter,
-        children.length,
+        children.length
     ]);
     const handleNodeClick = React.useCallback(() => {
         if (props.treeNode.isMatchedByFilter && props.treeNode.isLinkable) {
@@ -121,13 +121,13 @@ export const TreeNode: React.FC<Props> = (props) => {
         }
     }, [
         props.treeNode.isMatchedByFilter,
-        props.treeNode.nodeAggregateIdentifier,
+        props.treeNode.nodeAggregateIdentifier
     ]);
 
     return (
         <NeosTree.Node>
             <NeosTree.Node.Header
-                labelIdentifier={"labelIdentifier"}
+                labelIdentifier={'labelIdentifier'}
                 id={props.treeNode.nodeAggregateIdentifier}
                 hasChildren={hasChildren}
                 isLastChild={true}
@@ -148,7 +148,7 @@ export const TreeNode: React.FC<Props> = (props) => {
                 icon={
                     props.treeNode.isLinkable
                         ? props.treeNode.icon
-                        : "fas fa-unlink"
+                        : 'fas fa-unlink'
                 }
                 customIconComponent={customIconComponent}
                 iconLabel={props.treeNode.nodeTypeLabel}
@@ -161,11 +161,11 @@ export const TreeNode: React.FC<Props> = (props) => {
             {isCollapsed
                 ? null
                 : children.map((childTreeNode) => (
-                      <TreeNode
-                          {...props}
-                          key={childTreeNode.nodeAggregateIdentifier}
-                          treeNode={childTreeNode}
-                          level={props.level + 1}
+                    <TreeNode
+                        {...props}
+                        key={childTreeNode.nodeAggregateIdentifier}
+                        treeNode={childTreeNode}
+                        level={props.level + 1}
                       />
                   ))}
         </NeosTree.Node>

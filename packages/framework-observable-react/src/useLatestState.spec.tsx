@@ -1,8 +1,8 @@
 import React from 'react';
 import {render} from 'react-dom';
-import {createState, State} from "@neos-project/framework-observable";
+import {createState, State} from '@neos-project/framework-observable';
 import {act} from 'react-dom/test-utils'
-import {useLatestState} from "./useLatestState";
+import {useLatestState} from './useLatestState';
 
 function TestStateComponent<T>(props: {state$: State<T>}) {
     const value = useLatestState(props.state$);

@@ -3,7 +3,7 @@ import styles from './style.module.css'
 
 import {TextInput, Icon, IconButton} from '@neos-project/react-ui-components';
 
-import {translate} from "@neos-project/neos-ui-i18n";
+import {translate} from '@neos-project/neos-ui-i18n';
 
 interface Props {
     value: string

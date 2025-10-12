@@ -7,16 +7,16 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-import * as React from "react";
-import {usePromise} from "@neos-project/framework-promise-react";
+import * as React from 'react';
+import {usePromise} from '@neos-project/framework-promise-react';
 
-import { Tree as NeosTree } from "@neos-project/react-ui-components";
+import {Tree as NeosTree} from '@neos-project/react-ui-components';
 
-import { TreeNode } from "./TreeNode";
-import { Search } from "./Search";
-import { SelectNodeTypeFilter } from "./SelectNodeTypeFilter";
-import { getTree } from "../infrastructure/http";
-import {NestedError} from "@neos-project/neos-ui-error";
+import {TreeNode} from './TreeNode';
+import {Search} from './Search';
+import {SelectNodeTypeFilter} from './SelectNodeTypeFilter';
+import {getTree} from '../infrastructure/http';
+import {NestedError} from '@neos-project/neos-ui-error';
 import debounce from 'lodash.debounce';
 
 interface Props {
@@ -38,10 +38,10 @@ interface Props {
 
 export const Tree: React.FC<Props> = (props) => {
     const [searchTerm, setSearchTerm] = React.useState<string>(
-        props.initialSearchTerm ?? ""
+        props.initialSearchTerm ?? ''
     );
     const [narrowNodeTypeFilter, setNarrowNodeTypeFilter] =
-        React.useState<string>(props.initialNarrowNodeTypeFilter ?? "");
+        React.useState<string>(props.initialNarrowNodeTypeFilter ?? '');
     const fetch__getTree = usePromise(async () => {
         const result = await getTree({
             workspaceName: props.workspaceName,
@@ -52,18 +52,18 @@ export const Tree: React.FC<Props> = (props) => {
             linkableNodeTypes: props.linkableNodeTypes,
             selectedNodeId: props.selectedTreeNodeId,
             narrowNodeTypeFilter,
-            searchTerm,
+            searchTerm
         });
 
-        if ("success" in result) {
+        if ('success' in result) {
             return result.success;
         }
 
-        if ("error" in result) {
+        if ('error' in result) {
             throw result.error;
         }
 
-        throw new Error("Something went wrong while fetching the tree.");
+        throw new Error('Something went wrong while fetching the tree.');
     }, [
         props.workspaceName,
         props.dimensionValues,
@@ -72,7 +72,7 @@ export const Tree: React.FC<Props> = (props) => {
         props.baseNodeTypeFilter,
         props.linkableNodeTypes,
         narrowNodeTypeFilter,
-        searchTerm,
+        searchTerm
     ]);
     const handleTreeNodeClick = React.useCallback((treeNodeId: string) => {
         props.onSelect(treeNodeId);
@@ -80,7 +80,7 @@ export const Tree: React.FC<Props> = (props) => {
 
     const handleSearchTermChange = React.useCallback(debounce((newSearchTerm: string) => {
         setSearchTerm(newSearchTerm);
-    } , 300), []);
+    }, 300), []);
 
     const handleNodeTypeFilterChange = React.useCallback(
         (newNodeTypeFilter: string) => {
@@ -92,7 +92,7 @@ export const Tree: React.FC<Props> = (props) => {
     let main;
     if (fetch__getTree.error) {
         throw NestedError.create(
-            "NodeTree could not be loaded.",
+            'NodeTree could not be loaded.',
             fetch__getTree.error,
         );
     } else if (fetch__getTree.isLoading || !fetch__getTree.value) {
@@ -118,7 +118,7 @@ export const Tree: React.FC<Props> = (props) => {
     if (props.options?.enableSearch) {
         search = (
             <Search
-                initialValue={props.initialSearchTerm ?? ""}
+                initialValue={props.initialSearchTerm ?? ''}
                 onChange={handleSearchTermChange}
             />
         );
@@ -138,16 +138,16 @@ export const Tree: React.FC<Props> = (props) => {
     return (
         <div
             style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(2, 1fr)",
-                backgroundColor: "#141414",
-                border: "1px solid #3f3f3f",
+                display: 'grid',
+                gridTemplateColumns: 'repeat(2, 1fr)',
+                backgroundColor: '#141414',
+                border: '1px solid #3f3f3f'
             }}
         >
             {search ? (
                 <div
                     style={{
-                        gridColumn: filter ? "1 / span 1" : "1 / span 2",
+                        gridColumn: filter ? '1 / span 1' : '1 / span 2'
                     }}
                 >
                     {search}
@@ -156,7 +156,7 @@ export const Tree: React.FC<Props> = (props) => {
             {filter ? (
                 <div
                     style={{
-                        gridColumn: search ? "2 / span 1" : "1 / span 2",
+                        gridColumn: search ? '2 / span 1' : '1 / span 2'
                     }}
                 >
                     {filter}
@@ -165,12 +165,12 @@ export const Tree: React.FC<Props> = (props) => {
             {main ? (
                 <div
                     style={{
-                        marginTop: "-5px",
-                        borderTop: "1px solid #3f3f3f",
-                        gridColumn: "1 / span 2",
-                        height: "50vh",
-                        maxHeight: "300px",
-                        overflowY: "auto",
+                        marginTop: '-5px',
+                        borderTop: '1px solid #3f3f3f',
+                        gridColumn: '1 / span 2',
+                        height: '50vh',
+                        maxHeight: '300px',
+                        overflowY: 'auto'
                     }}
                 >
                     {main}

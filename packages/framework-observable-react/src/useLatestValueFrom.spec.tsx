@@ -1,7 +1,7 @@
 import React from 'react';
 import {render} from 'react-dom';
-import {createObservable, createState, Observable} from "@neos-project/framework-observable";
-import {useLatestValueFrom} from "./useLatestValueFrom";
+import {createObservable, createState, Observable} from '@neos-project/framework-observable';
+import {useLatestValueFrom} from './useLatestValueFrom';
 import {act} from 'react-dom/test-utils'
 
 function TestObservableComponent<T>(props: {observable$: Observable<T>, defaultValue?: T}) {
@@ -37,7 +37,7 @@ describe('useLatestValueFrom', () => {
         const observable$ = createObservable(() => {});
 
         act(() => {
-            render(<TestObservableComponent observable$={observable$} defaultValue={"default"} />, container);
+            render(<TestObservableComponent observable$={observable$} defaultValue={'default'} />, container);
         });
 
         expect(container.innerHTML).toBe('"default"');
@@ -83,7 +83,6 @@ describe('useLatestValueFrom', () => {
         })
 
         expect(container.innerHTML).toBe('1');
-
 
         act(() => {
             observable$.update(() => 0);

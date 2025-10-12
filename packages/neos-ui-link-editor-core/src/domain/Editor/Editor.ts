@@ -3,7 +3,7 @@ import {ActionType, getType} from 'typesafe-actions';
 import {ILink, ILinkOptions} from '../Link';
 
 import * as actions from './EditorAction';
-import {createChannel, createState, ReadonlyState} from "@neos-project/framework-observable";
+import {createChannel, createState, ReadonlyState} from '@neos-project/framework-observable';
 
 export interface IEditorState {
     enabledLinkOptions: (keyof ILinkOptions)[]
@@ -16,7 +16,7 @@ export interface IEditorState {
         }
     }
     isOpen: boolean
-    initialValue:  null | ILink
+    initialValue: null | ILink
 }
 
 type IEditorResult =
@@ -89,9 +89,9 @@ export function createEditor() {
                         case getType(actions.ValueWasApplied):
                             return resolve({change: true, value: action.payload});
                         default:
-                            return;
                     }
-            }});
+                }
+            });
         }
     );
 

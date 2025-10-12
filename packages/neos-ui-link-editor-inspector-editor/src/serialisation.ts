@@ -1,4 +1,4 @@
-import {ILink} from "@neos-project/neos-ui-link-editor-core/src/domain";
+import {ILink} from '@neos-project/neos-ui-link-editor-core/src/domain';
 
 /**
  * Translates to php's {@see \Neos\Neos\Ui\LinkEditor\Link}
@@ -35,7 +35,7 @@ export type SerializeableLink = {
 export const resolveSerializedLinkFromValue = (value: any, linkDataType: LinkDataType): SerializeableLink => {
     if (linkDataType === LinkDataType.valueObject) {
         // @ts-ignore
-        const linkArray = (typeof value === "object" && value !== null && "href" in value && typeof value.href === "string") ? value as LinkValueObject : null;
+        const linkArray = (typeof value === 'object' && value !== null && 'href' in value && typeof value.href === 'string') ? value as LinkValueObject : null;
         return {
             dataType: linkDataType,
             value: linkArray
@@ -43,7 +43,7 @@ export const resolveSerializedLinkFromValue = (value: any, linkDataType: LinkDat
     }
     return {
         dataType: linkDataType,
-        value: typeof value === "string" ? (value || null) : null
+        value: typeof value === 'string' ? (value || null) : null
     }
 }
 
@@ -66,12 +66,12 @@ export const serializedLinkToILink = (serializedLink: SerializeableLink): ILink 
                     title: linkValueObject.title || undefined,
                     targetBlank: linkValueObject.target ? linkValueObject.target === '_blank' : undefined,
                     relNofollow: linkValueObject.rel.includes('nofollow'),
-                    download: Boolean(linkValueObject.download),
+                    download: Boolean(linkValueObject.download)
                 }
             };
         case LinkDataType.string:
             return {
-                href: serializedLink.value,
+                href: serializedLink.value
             };
     }
 }
@@ -82,7 +82,6 @@ export const serializedLinkToILink = (serializedLink: SerializeableLink): ILink 
  * Counterpart of {@see serializedLinkToILink}
  */
 export const convertILinkToSerializedLinkValue = (link: ILink, dataType: LinkDataType): any => {
-
     switch (dataType) {
         case LinkDataType.valueObject:
             return {

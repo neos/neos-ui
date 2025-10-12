@@ -16,8 +16,8 @@
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import React from "react";
-import {IPromiseState} from "./PromiseState";
+import React from 'react';
+import {IPromiseState} from './PromiseState';
 
 export const usePromise = <R>(
     asyncFn: () => Promise<R>,
@@ -38,12 +38,12 @@ export const usePromise = <R>(
             })
             .catch((error) => {
                 if (promiseRef.current === promise) {
-                    if (typeof error === "string") {
+                    if (typeof error === 'string') {
                         error = new Error(error);
                     } else if (!(error instanceof Error)) {
                         console.error('malformed error:', error);
                         error = new Error(
-                            "An unexpected (and malformed) error has occurred."
+                            'An unexpected (and malformed) error has occurred.'
                         );
                     }
 
@@ -61,5 +61,5 @@ export const usePromise = <R>(
         promiseRef.current = promise;
     }, deps);
 
-    return { value, error, isLoading } as IPromiseState<R>;
+    return {value, error, isLoading} as IPromiseState<R>;
 };

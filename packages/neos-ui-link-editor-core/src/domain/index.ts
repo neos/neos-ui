@@ -3,10 +3,10 @@ export {
     makeLinkType,
     useLinkTypes,
     useLinkTypeForHref,
-    useSortedAndFilteredLinkTypes,
+    useSortedAndFilteredLinkTypes
 } from './Link';
 
 export type {IEditor} from './Editor';
 export {
-    createEditor,
+    createEditor
 } from './Editor';

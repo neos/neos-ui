@@ -1,7 +1,7 @@
 
 import {IEditor} from '../../domain';
 import {createDialog} from './Dialog';
-import {GlobalRegistry} from "@neos-project/neos-ts-interfaces";
+import {GlobalRegistry} from '@neos-project/neos-ts-interfaces';
 
 export function registerDialog(
     globalRegistry: GlobalRegistry,

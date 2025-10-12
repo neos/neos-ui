@@ -19,11 +19,11 @@ import {
     isNestedError,
     isServerSideError,
     isStringError,
-    flattenError,
+    flattenError
 } from '../../types';
 
 import style from './style.module.css';
-import {Icon} from "@neos-project/react-ui-components";
+import {Icon} from '@neos-project/react-ui-components';
 
 export const ErrorView = (props: { error: AnyError }) => {
     const flatError = flattenError(props.error);

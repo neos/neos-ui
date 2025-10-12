@@ -10,16 +10,16 @@ import {
     useLinkTypeForHref,
     useSortedAndFilteredLinkTypes,
     IEditor,
-    ILinkType,
+    ILinkType
 } from '../../domain';
 import {Layout, Form, Deletable} from '../../presentation';
 
 import {LinkOptions} from './LinkOptions';
 import {useLatestState} from '@neos-project/framework-observable-react';
 import {useSelector} from '@neos-project/neos-ui-redux-store';
-import {translate} from "@neos-project/neos-ui-i18n";
-import {createState, pickState, mapState, State} from "@neos-project/framework-observable";
-import {PanelProps} from "@neos-project/react-ui-components/src/Tabs/panel";
+import {translate} from '@neos-project/neos-ui-i18n';
+import {createState, pickState, mapState, State} from '@neos-project/framework-observable';
+import {PanelProps} from '@neos-project/react-ui-components/src/Tabs/panel';
 
 export type FormValues = {
     isOptionsDirty: boolean
@@ -76,7 +76,7 @@ const ActiveLinkEditorDialog: React.FC<{
         return {
             isDirty: form.isOptionsDirty || (model ? linkType.isDirty(model) : false),
             isValid: model ? linkType.isValid(model) : false,
-            initialLinkWasDeleted: form.initialLinkWasDeleted,
+            initialLinkWasDeleted: form.initialLinkWasDeleted
         };
     }), []);
 
@@ -330,7 +330,7 @@ const PreviewForLinkType: React.FC<{
         return {
             activeModel,
             activeLinkType: linkType,
-            showPreviewForEditedActiveLink: showPreviewForEditedActiveLink,
+            showPreviewForEditedActiveLink,
             showOptions: form.showOptions,
             isOptionsDirty: form.isOptionsDirty,
             disableOptions: !form.initialLinkWasDeleted && props.initialLinkType
@@ -359,8 +359,8 @@ const PreviewForLinkType: React.FC<{
         showOptions: !values.showOptions
     })), []);
 
-    return <div style={{marginBottom: "16px"}}>
-        <div style={{display: "flex"}}>
+    return <div style={{marginBottom: '16px'}}>
+        <div style={{display: 'flex'}}>
             {formHeader.showPreviewForEditedActiveLink ? (
                 <Deletable
                     id={'neos-LinkEditor-Preview'}
@@ -384,9 +384,9 @@ const PreviewForLinkType: React.FC<{
                 </Deletable>
             ) : null)}
 
-            <div style={{marginLeft: "auto", alignSelf: "center"}}>
+            <div style={{marginLeft: 'auto', alignSelf: 'center'}}>
                 {(formHeader.showPreviewForEditedActiveLink || props.initialLinkType) ? (
-                    <IconButton id={'neos-LinkEditor-Options'} icon="cogs" style={formHeader.isOptionsDirty ? "warn" : "neutral"} disabled={!enabledLinkOptions.length || formHeader.disableOptions} isActive={formHeader.showOptions} onClick={toggleOptions}/>
+                    <IconButton id={'neos-LinkEditor-Options'} icon="cogs" style={formHeader.isOptionsDirty ? 'warn' : 'neutral'} disabled={!enabledLinkOptions.length || formHeader.disableOptions} isActive={formHeader.showOptions} onClick={toggleOptions}/>
                 ) : null}
             </div>
         </div>

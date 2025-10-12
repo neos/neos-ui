@@ -1,5 +1,5 @@
 import style from './style.module.css';
-import React from "react";
+import React from 'react';
 
 export const Container: React.FC = ({children}) => <div className={style.elipsis}>{children}</div>;
 

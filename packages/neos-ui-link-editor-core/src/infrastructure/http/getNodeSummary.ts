@@ -7,7 +7,7 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-import { fetchWithErrorHandling } from "@neos-project/neos-ui-backend-connector";
+import {fetchWithErrorHandling} from '@neos-project/neos-ui-backend-connector';
 
 type GetNodeSummaryQuery = {
     workspaceName: string;
@@ -40,7 +40,7 @@ export async function getNodeSummary(
 ): Promise<GetNodeSummaryQueryResultEnvelope> {
     const searchParams = new URLSearchParams();
 
-    searchParams.set("workspaceName", query.workspaceName);
+    searchParams.set('workspaceName', query.workspaceName);
     for (const [dimensionName, fallbackChain] of Object.entries(
         query.dimensionValues
     )) {
@@ -51,20 +51,20 @@ export async function getNodeSummary(
             );
         }
     }
-    searchParams.set("nodeId", query.nodeId);
+    searchParams.set('nodeId', query.nodeId);
 
     try {
         const response = await fetchWithErrorHandling.withCsrfToken(
             (csrfToken) => ({
                 url:
-                    "/neos/link-editor/get-node-summary?" +
+                    '/neos/link-editor/get-node-summary?' +
                     searchParams.toString(),
-                method: "GET",
-                credentials: "include",
+                method: 'GET',
+                credentials: 'include',
                 headers: {
-                    "X-Flow-Csrftoken": csrfToken,
-                    "Content-Type": "application/json",
-                },
+                    'X-Flow-Csrftoken': csrfToken,
+                    'Content-Type': 'application/json'
+                }
             })
         );
 

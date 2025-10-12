@@ -16,8 +16,8 @@ import Icon from '@neos-project/react-ui-components/src/Icon';
 import {translate} from '@neos-project/neos-ui-i18n';
 
 import styles from './style.module.css';
-import {AnyError} from "../../types";
-import {ErrorView} from "../ErrorView";
+import {AnyError} from '../../types';
+import {ErrorView} from '../ErrorView';
 
 const CopyTechnicalDetailsButton = (props: { error: null | AnyError }) => {
     const [hasCopied, setCopied] = React.useState(false);

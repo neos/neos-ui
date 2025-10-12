@@ -66,7 +66,6 @@ describe('State', () => {
     });
 });
 
-
 describe('Mapped State', () => {
     test('map from filled object value', () => {
         const state$ = createState<{a: number}>({a: 0});
@@ -76,16 +75,16 @@ describe('Mapped State', () => {
         expect(state$.current).toEqual({a: 0});
         expect(mappedState$.current).toEqual(0);
 
-        state$.update((value) => ({ a: value.a + 1 }));
-        expect(state$.current).toEqual({ a: 1 });
+        state$.update((value) => ({a: value.a + 1}));
+        expect(state$.current).toEqual({a: 1});
         expect(mappedState$.current).toEqual(1);
 
-        state$.update((value) => ({ a: value.a + 1 }));
-        expect(state$.current).toEqual({ a: 2 });
+        state$.update((value) => ({a: value.a + 1}));
+        expect(state$.current).toEqual({a: 2});
         expect(mappedState$.current).toEqual(2);
 
-        state$.update((value) => ({ a: value.a + 1 }));
-        expect(state$.current).toEqual({ a: 3 });
+        state$.update((value) => ({a: value.a + 1}));
+        expect(state$.current).toEqual({a: 3});
         expect(mappedState$.current).toEqual(3);
     });
 
@@ -148,7 +147,6 @@ describe('Picked State', () => {
         // @ts-ignore
         expect(() => pickState(null$, 'a')).toThrow('Cannot pick key "a" from non object value of type null');
 
-
         const list$ = createState([]);
 
         // @ts-ignore
@@ -174,20 +172,20 @@ describe('Picked State', () => {
         expect(state$.current).toEqual({});
         expect(pickedState$.current).toEqual(undefined);
 
-        state$.update((value) => ({ a: (value.a ?? 0) + 1 }));
-        expect(state$.current).toEqual({ a: 1 });
+        state$.update((value) => ({a: (value.a ?? 0) + 1}));
+        expect(state$.current).toEqual({a: 1});
         expect(pickedState$.current).toEqual(1);
 
         pickedState$.update((value) => (value ?? 0) + 1);
-        expect(state$.current).toEqual({ a: 2 });
+        expect(state$.current).toEqual({a: 2});
         expect(pickedState$.current).toEqual(2);
 
-        state$.update((value) => ({ a: (value.a ?? 0) + 1 }));
-        expect(state$.current).toEqual({ a: 3 });
+        state$.update((value) => ({a: (value.a ?? 0) + 1}));
+        expect(state$.current).toEqual({a: 3});
         expect(pickedState$.current).toEqual(3);
 
         pickedState$.update((value) => (value ?? 0) + 1);
-        expect(state$.current).toEqual({ a: 4 });
+        expect(state$.current).toEqual({a: 4});
         expect(pickedState$.current).toEqual(4);
     });
 
@@ -199,20 +197,20 @@ describe('Picked State', () => {
         expect(state$.current).toEqual({a: 0});
         expect(pickedState$.current).toEqual(0);
 
-        state$.update((value) => ({ a: value.a + 1 }));
-        expect(state$.current).toEqual({ a: 1 });
+        state$.update((value) => ({a: value.a + 1}));
+        expect(state$.current).toEqual({a: 1});
         expect(pickedState$.current).toEqual(1);
 
         pickedState$.update((value) => value + 1);
-        expect(state$.current).toEqual({ a: 2 });
+        expect(state$.current).toEqual({a: 2});
         expect(pickedState$.current).toEqual(2);
 
-        state$.update((value) => ({ a: value.a + 1 }));
-        expect(state$.current).toEqual({ a: 3 });
+        state$.update((value) => ({a: value.a + 1}));
+        expect(state$.current).toEqual({a: 3});
         expect(pickedState$.current).toEqual(3);
 
         pickedState$.update((value) => value + 1);
-        expect(state$.current).toEqual({ a: 4 });
+        expect(state$.current).toEqual({a: 4});
         expect(pickedState$.current).toEqual(4);
     });
 

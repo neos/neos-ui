@@ -4,13 +4,13 @@ import {ILink, makeLinkType} from '../../../domain';
 import {ImageCard} from '../../../presentation';
 
 import {MediaBrowser} from './MediaBrowser';
-import {isSuitableFor} from "./AssetSpecification";
-import {translate} from "@neos-project/neos-ui-i18n";
-import {PromiseState, usePromise} from "@neos-project/framework-promise-react";
-import backend from "@neos-project/neos-ui-backend-connector";
-import {State} from "@neos-project/framework-observable";
-import {useLatestState} from "@neos-project/framework-observable-react";
-import {TextInput} from "@neos-project/react-ui-components";
+import {isSuitableFor} from './AssetSpecification';
+import {translate} from '@neos-project/neos-ui-i18n';
+import {PromiseState, usePromise} from '@neos-project/framework-promise-react';
+import backend from '@neos-project/neos-ui-backend-connector';
+import {State} from '@neos-project/framework-observable';
+import {useLatestState} from '@neos-project/framework-observable-react';
+import {TextInput} from '@neos-project/react-ui-components';
 
 type AssetLinkModel = {
     isDirty: boolean
@@ -19,7 +19,7 @@ type AssetLinkModel = {
 }
 
 export const Asset = makeLinkType<AssetLinkModel>('LinkEditor:Asset', ({createError}) => ({
-    icon: "camera",
+    icon: 'camera',
 
     getTitle: () => translate('Neos.Neos.Ui:LinkEditor.Asset:title', ''),
 
@@ -43,16 +43,16 @@ export const Asset = makeLinkType<AssetLinkModel>('LinkEditor:Asset', ({createEr
         const identifier = match[1];
         const anchor = match[2];
 
-        return PromiseState.forValue({ isDirty: false, identifier, anchor });
+        return PromiseState.forValue({isDirty: false, identifier, anchor});
     },
 
-    convertModelToLink: ({ identifier, anchor }: AssetLinkModel) => ({
-        href: `asset://${identifier}${anchor ? `#${anchor}` : ''}`,
+    convertModelToLink: ({identifier, anchor}: AssetLinkModel) => ({
+        href: `asset://${identifier}${anchor ? `#${anchor}` : ''}`
     }),
 
     Preview: ({model}: {model: AssetLinkModel}) => {
         const asset = usePromise(() => {
-            const endpoints = backend.get().endpoints;
+            const {endpoints} = backend.get();
             return endpoints.assetDetail(model.identifier!);
         }, [model.identifier]);
 
@@ -80,7 +80,7 @@ export const Asset = makeLinkType<AssetLinkModel>('LinkEditor:Asset', ({createEr
             />
             <label>
                 {translate('Neos.Neos.Ui:LinkEditor.Asset:anchor.label', '')}:
-                <TextInput type="text" value={model?.anchor ?? ""} placeholder={translate('Neos.Neos.Ui:LinkEditor.Asset:anchor.placeholder', '')} onChange={setAnchor} />
+                <TextInput type="text" value={model?.anchor ?? ''} placeholder={translate('Neos.Neos.Ui:LinkEditor.Asset:anchor.placeholder', '')} onChange={setAnchor} />
             </label>
         </>);
     }

@@ -10,7 +10,7 @@
 import React from 'react';
 
 import type {Observable} from '@neos-project/framework-observable';
-import {shallowEqual} from "./shallowEqual";
+import {shallowEqual} from './shallowEqual';
 
 export function useLatestValueFrom<V>(observable$: Observable<V>): null | V;
 export function useLatestValueFrom<V, D>(

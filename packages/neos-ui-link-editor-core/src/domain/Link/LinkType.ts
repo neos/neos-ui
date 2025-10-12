@@ -5,9 +5,9 @@ import {globalRegistry} from '@neos-project/neos-ui/globalRegistry';
 
 import {ILink} from './Link';
 import {IEditor} from '../Editor';
-import {useLatestState} from "@neos-project/framework-observable-react";
-import {State} from "@neos-project/framework-observable";
-import {IPromiseState} from "@neos-project/framework-promise-react";
+import {useLatestState} from '@neos-project/framework-observable-react';
+import {State} from '@neos-project/framework-observable';
+import {IPromiseState} from '@neos-project/framework-promise-react';
 
 interface LinkTypeStaticProps<OptionsType extends object = {}> {
     link?: ILink
@@ -109,7 +109,7 @@ export function useSortedAndFilteredLinkTypes(editor: IEditor): ILinkType[] {
     )
 
     const filteredLinkTypes = sortedLinkTypesViaEditorOptionsPosition.filter(
-        ({options}) => (options && "enabled" in options) ? options.enabled : true
+        ({options}) => (options && 'enabled' in options) ? options.enabled : true
     )
 
     return filteredLinkTypes.map(

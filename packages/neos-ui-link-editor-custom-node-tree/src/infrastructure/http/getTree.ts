@@ -7,10 +7,10 @@
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-import { fetchWithErrorHandling } from "@neos-project/neos-ui-backend-connector";
+import {fetchWithErrorHandling} from '@neos-project/neos-ui-backend-connector';
 
-import { TreeNodeDTO } from "../../domain";
-import {ServerSideError} from "@neos-project/neos-ui-error";
+import {TreeNodeDTO} from '../../domain';
+import {ServerSideError} from '@neos-project/neos-ui-error';
 
 type GetTreeQuery = {
     workspaceName: string;
@@ -39,7 +39,7 @@ export async function getTree(
 ): Promise<GetTreeQueryResultEnvelope> {
     const searchParams = new URLSearchParams();
 
-    searchParams.set("workspaceName", query.workspaceName);
+    searchParams.set('workspaceName', query.workspaceName);
     for (const [dimensionName, fallbackChain] of Object.entries(
         query.dimensionValues
     )) {
@@ -50,33 +50,33 @@ export async function getTree(
             );
         }
     }
-    searchParams.set("startingPoint", query.startingPoint);
-    searchParams.set("loadingDepth", String(query.loadingDepth));
-    searchParams.set("baseNodeTypeFilter", query.baseNodeTypeFilter);
+    searchParams.set('startingPoint', query.startingPoint);
+    searchParams.set('loadingDepth', String(query.loadingDepth));
+    searchParams.set('baseNodeTypeFilter', query.baseNodeTypeFilter);
 
     for (const linkableNodeType of query.linkableNodeTypes ?? []) {
         searchParams.append(`linkableNodeTypes[]`, linkableNodeType);
     }
 
-    searchParams.set("narrowNodeTypeFilter", query.narrowNodeTypeFilter);
-    searchParams.set("searchTerm", query.searchTerm);
+    searchParams.set('narrowNodeTypeFilter', query.narrowNodeTypeFilter);
+    searchParams.set('searchTerm', query.searchTerm);
 
     if (query.selectedNodeId) {
-        searchParams.set("selectedNodeId", query.selectedNodeId);
+        searchParams.set('selectedNodeId', query.selectedNodeId);
     }
 
     try {
         const response = await fetchWithErrorHandling.withCsrfToken(
             (csrfToken) => ({
                 url:
-                    "/neos/link-editor/get-tree?" +
+                    '/neos/link-editor/get-tree?' +
                     searchParams.toString(),
-                method: "GET",
-                credentials: "include",
+                method: 'GET',
+                credentials: 'include',
                 headers: {
-                    "X-Flow-Csrftoken": csrfToken,
-                    "Content-Type": "application/json",
-                },
+                    'X-Flow-Csrftoken': csrfToken,
+                    'Content-Type': 'application/json'
+                }
             })
         );
 

@@ -1,11 +1,11 @@
 import React from 'react';
 import {render} from 'react-dom';
 import {act} from 'react-dom/test-utils'
-import {usePromise} from "./usePromise";
+import {usePromise} from './usePromise';
 
 function TestPromiseComponent<T>(props: {promise: Promise<T>}) {
     const value = usePromise(() => props.promise, []);
-    return <>{JSON.stringify({value: value.value, error: value.error ? { name: value.error.name, message: value.error.message } : null, isLoading: value.isLoading})}</>;
+    return <>{JSON.stringify({value: value.value, error: value.error ? {name: value.error.name, message: value.error.message} : null, isLoading: value.isLoading})}</>;
 }
 
 function wrapCallbackInAct(callback: (...args: any[]) => any) {
@@ -62,7 +62,7 @@ describe('usePromise', () => {
         expect(container.innerHTML).toBe(JSON.stringify({value: null, error: null, isLoading: true}));
 
         process.nextTick(() => {
-            expect(container.innerHTML).toBe(JSON.stringify({value: "Hello", error: null, isLoading: false}));
+            expect(container.innerHTML).toBe(JSON.stringify({value: 'Hello', error: null, isLoading: false}));
         });
     });
 
@@ -79,7 +79,7 @@ describe('usePromise', () => {
         expect(container.innerHTML).toBe(JSON.stringify({value: null, error: null, isLoading: true}));
 
         process.nextTick(() => {
-            expect(container.innerHTML).toBe(JSON.stringify({value: null, error: { name: 'Error', message: 'An error string' }, isLoading: false}));
+            expect(container.innerHTML).toBe(JSON.stringify({value: null, error: {name: 'Error', message: 'An error string'}, isLoading: false}));
         });
     });
 

@@ -2,12 +2,12 @@ import * as React from 'react';
 
 import {ILink, makeLinkType} from '../../../domain';
 import {IconCard} from '../../../presentation';
-import {isSuitableFor} from "./WebSpecification";
-import {translate} from "@neos-project/neos-ui-i18n";
+import {isSuitableFor} from './WebSpecification';
+import {translate} from '@neos-project/neos-ui-i18n';
 import {PromiseState} from '@neos-project/framework-promise-react';
-import {State} from "@neos-project/framework-observable";
-import {useLatestState} from "@neos-project/framework-observable-react";
-import {SelectBox, Tooltip} from "@neos-project/react-ui-components";
+import {State} from '@neos-project/framework-observable';
+import {useLatestState} from '@neos-project/framework-observable-react';
+import {SelectBox, Tooltip} from '@neos-project/react-ui-components';
 
 type WebLinkModel = {
     href: {
@@ -51,11 +51,11 @@ const validateModel = (values: WebLinkModel): WebLinkModel => ({
                 ) : undefined
             )
         )
-    },
+    }
 });
 
 export const Web = makeLinkType<WebLinkModel>('LinkEditor:Web', ({id}) => ({
-    icon: "globe",
+    icon: 'globe',
 
     getTitle: () => translate('Neos.Neos.Ui:LinkEditor.Web:title', ''),
 
@@ -82,7 +82,7 @@ export const Web = makeLinkType<WebLinkModel>('LinkEditor:Web', ({id}) => ({
     convertModelToLink: (model: WebLinkModel) => {
         // todo handle url encoding
         return {
-            href: model.href.value,
+            href: model.href.value
         }
     },
 
@@ -104,7 +104,7 @@ export const Web = makeLinkType<WebLinkModel>('LinkEditor:Web', ({id}) => ({
                     formattingOptionForLinkWithoutHttpsProtocol(href)
                 ].filter(Boolean),
                 value: href
-            },
+            }
         })), []);
 
         return (

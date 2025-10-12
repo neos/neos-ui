@@ -9,7 +9,7 @@
  */
 import React from 'react';
 
-import {AnyError} from "../../types";
+import {AnyError} from '../../types';
 
 export class ErrorBoundary extends React.Component<
     { children: React.ReactNode, errorFallback: React.FC<{ error: AnyError }> },
@@ -23,7 +23,7 @@ export class ErrorBoundary extends React.Component<
 
     public render(): React.ReactNode {
         if (this.state.error !== undefined) {
-            return React.createElement(this.props.errorFallback, { error: this.state.error })
+            return React.createElement(this.props.errorFallback, {error: this.state.error})
         }
         return this.props.children;
     }

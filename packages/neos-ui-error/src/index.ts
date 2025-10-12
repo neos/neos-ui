@@ -16,7 +16,7 @@ export type {
 } from './types';
 
 export {
-    NestedError,
+    NestedError
 } from './types'
 
 export {

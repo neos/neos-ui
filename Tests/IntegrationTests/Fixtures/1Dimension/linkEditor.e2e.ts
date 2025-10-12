@@ -668,9 +668,9 @@ test('PageTree search and filter in link editor document selection', async t => 
     const searchmePage = 'Searchme page';
     const searchmeShortcut = 'Searchme shortcut';
 
-    const nodeTreeSearchInput = ReactSelector('Modal SearchInput');
-    const nodeTreeFilter = ReactSelector('Modal SelectNodeTypeFilter');
-    const shortcutFilter = ReactSelector('Modal SelectNodeTypeFilter ContextDropDownContents').find('li').withText('Shortcut');
+    const nodeTreeSearchInput = ReactSelector('DialogWithOverlay SearchInput');
+    const nodeTreeFilter = ReactSelector('DialogWithOverlay SelectNodeTypeFilter');
+    const shortcutFilter = ReactSelector('DialogWithOverlay SelectNodeTypeFilter ContextDropDownContents').find('li').withText('Shortcut');
     await t
         .typeText(nodeTreeSearchInput, seachTerm)
         .expect(LinkEditorNodeTreeItem.withText(seachTerm).count).eql(2, 'Two "Searchme" nodes should be found, one shortcut and one normal page')
@@ -685,14 +685,14 @@ test('PageTree search and filter in link editor document selection', async t => 
         .expect(LinkEditorNodeTreeItem.withText(notSearchedPage).exists).notOk('Other unsearched page should still be hidden');
 
     subSection('Clear search');
-    const clearSearch = ReactSelector('Modal SearchInput IconButton');
+    const clearSearch = ReactSelector('DialogWithOverlay SearchInput IconButton');
     await t
         .click(clearSearch)
         .expect(LinkEditorNodeTreeItem.withText(notSearchedShortcut).exists).ok('All "Shortcut" pages should be found')
         .expect(LinkEditorNodeTreeItem.withText(notSearchedPage).exists).notOk('Other unsearched page should still be hidden');
 
     subSection('Clear filter');
-    const clearFilter = ReactSelector('Modal SelectNodeTypeFilter IconButton');
+    const clearFilter = ReactSelector('DialogWithOverlay SelectNodeTypeFilter IconButton');
     await t
         .click(clearFilter)
         .expect(LinkEditorNodeTreeItem.withText(notSearchedPage).exists).ok('Other unsearched page should shown again');

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import {Button, IconButton, Tabs} from '@neos-project/react-ui-components';
+import {Button, IconButton, Tabs, Dialog} from '@neos-project/react-ui-components';
 
 import {ErrorBoundary, ErrorView} from '@neos-project/neos-ui-error';
 
@@ -12,7 +12,7 @@ import {
     IEditor,
     ILinkType,
 } from '../../domain';
-import {Layout, Form, Modal, Deletable} from '../../presentation';
+import {Layout, Form, Deletable} from '../../presentation';
 
 import {LinkOptions} from './LinkOptions';
 import {useLatestState} from '@neos-project/framework-observable-react';
@@ -116,31 +116,14 @@ const ActiveLinkEditorDialog: React.FC<{
     }
 
     return (
-        <Modal
+        <Dialog
+            id="neos-LinkEditor"
+            isOpen={true}
             preventClosing={formStatus.isDirty}
             onRequestClose={dismiss}
             title={<div>{translate('Neos.Neos.Ui:LinkEditor.Main:dialog.title', '')}</div>}
-            renderBody={() => (
-                <ErrorBoundary errorFallback={ErrorView}>
-                    <Form>
-                        {(initialValue === null || initialLinkType === null) || formStatus.initialLinkWasDeleted ? (
-                            <DialogWithEmptyValue
-                                form$={form$}
-                                editor={editor}
-                                availableLinkTypes={availableLinkTypes}
-                            />
-                        ) : (
-                            <DialogWithValue
-                                form$={form$}
-                                editor={editor}
-                                initialValue={initialValue}
-                                initialLinkType={initialLinkType}
-                                availableLinkTypes={availableLinkTypes}
-                            />
-                        )}
-                    </Form>
-                </ErrorBoundary>
-            )}
+            style="wide"
+            autoFocus={true}
             actions={[
                 <Button onClick={dismiss}>
                     {translate('Neos.Neos.Ui:LinkEditor.Main:dialog.action.cancel', '')}
@@ -154,7 +137,27 @@ const ActiveLinkEditorDialog: React.FC<{
                     {translate('Neos.Neos.Ui:LinkEditor.Main:dialog.action.apply', '')}
                 </Button>
             ]}
-        />
+        >
+            <ErrorBoundary errorFallback={ErrorView}>
+                <Form>
+                    {(initialValue === null || initialLinkType === null) || formStatus.initialLinkWasDeleted ? (
+                        <DialogWithEmptyValue
+                            form$={form$}
+                            editor={editor}
+                            availableLinkTypes={availableLinkTypes}
+                        />
+                    ) : (
+                        <DialogWithValue
+                            form$={form$}
+                            editor={editor}
+                            initialValue={initialValue}
+                            initialLinkType={initialLinkType}
+                            availableLinkTypes={availableLinkTypes}
+                        />
+                    )}
+                </Form>
+            </ErrorBoundary>
+        </Dialog>
     )
 }
 

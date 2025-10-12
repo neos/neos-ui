@@ -89,7 +89,7 @@ function run_tests() {
     cd Packages/Application/Neos.Neos.Ui
 
     if [[ $BROWSER ]]; then
-        yarn run testcafe "$BROWSER" "Tests/IntegrationTests/Fixtures/*/*.e2e.js" \
+        yarn run testcafe "$BROWSER" "Tests/IntegrationTests/Fixtures/*/*.e2e.{js,ts}" \
             --selector-timeout=10000 --assertion-timeout=30000
     fi
 

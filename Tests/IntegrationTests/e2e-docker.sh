@@ -77,5 +77,5 @@ echo ""
 echo "#############################################################################"
 echo "# Run E2E tests...                                                          #"
 echo "#############################################################################"
-yarn run testcafe "$1" "$(pwd)/Tests/IntegrationTests/Fixtures/*/*.e2e.js" \
+yarn run testcafe "$1" "$(pwd)/Tests/IntegrationTests/Fixtures/*/*.e2e.{js,ts}" \
     --selector-timeout=10000 --assertion-timeout=30000 --debug-on-fail

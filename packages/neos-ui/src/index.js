@@ -35,7 +35,6 @@ const serverState = getInlinedDataFromBackend('initialState');
 const routes = getInlinedDataFromBackend('routes');
 const menu = getInlinedDataFromBackend('menu');
 
-const configuration = getConfiguration();
 fetchWithErrorHandling.setCsrfToken(csrfToken);
 initializeJsAPI(window, {
     systemEnv,
@@ -92,7 +91,7 @@ async function main() {
 function initializePlugins() {
     manifests
         .map(manifest => manifest[Object.keys(manifest)[0]])
-        .forEach(({bootstrap}) => bootstrap(globalRegistry, {store, frontendConfiguration: getFullPackageFrontendConfiguration(), configuration, routes}));
+        .forEach(({bootstrap}) => bootstrap(globalRegistry, {store, frontendConfiguration: getFullPackageFrontendConfiguration(), configuration: getConfiguration(), routes}));
 }
 
 function initializeAdditionalReduxReducers() {
@@ -101,7 +100,7 @@ function initializeAdditionalReduxReducers() {
 }
 
 function initializeAdditionalReduxSagas() {
-    globalRegistry.get('sagas').getAllAsList().forEach(element => sagaMiddleWare.run(element.saga, {store, globalRegistry, configuration, routes}));
+    globalRegistry.get('sagas').getAllAsList().forEach(element => sagaMiddleWare.run(element.saga, {store, globalRegistry, routes}));
 }
 
 function initializeReduxState() {
@@ -176,7 +175,6 @@ function renderApplication() {
         <Root
             globalRegistry={globalRegistry}
             menu={menu}
-            configuration={configuration}
             routes={routes}
             store={store}
             />,

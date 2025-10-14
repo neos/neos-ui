@@ -21,7 +21,7 @@ library.add(fab, fas, far);
 
 class Root extends PureComponent {
     render() {
-        const {store, globalRegistry, configuration, menu, routes} = this.props;
+        const {store, globalRegistry, menu, routes} = this.props;
 
         const containerRegistry = globalRegistry.get('containers');
         const App = containerRegistry.get('App');
@@ -33,7 +33,6 @@ class Root extends PureComponent {
                         <DndProvider backend={HTML5Backend}>
                             <Neos
                                 globalRegistry={globalRegistry}
-                                configuration={configuration}
                                 routes={routes}
                                 >
                                 <App globalRegistry={globalRegistry} menu={menu}/>

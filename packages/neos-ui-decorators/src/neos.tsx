@@ -1,16 +1,14 @@
 import React from 'react';
 import {defaultMemoize} from 'reselect';
 import type {GlobalRegistry} from '@neos-project/neos-ui-registry';
-import type {Configuration} from '@neos-project/neos-ui-configuration';
 import type {Routes} from '@neos-project/neos-ui-backend-connector';
 
 // We need to memoize configuration and global registry; otherwise a new object is created at every render; leading to
 // LOADS of unnecessary re-draws.
-const buildConfigurationAndGlobalRegistry = defaultMemoize((configuration: {}, globalRegistry: GlobalRegistry, routes: {}) => ({configuration, globalRegistry, routes}));
+const buildGlobalRegistry = defaultMemoize((globalRegistry: GlobalRegistry, routes: {}) => ({globalRegistry, routes}));
 
 export interface NeosContextInterface {
     globalRegistry: GlobalRegistry;
-    configuration: Configuration;
     routes: Routes;
 }
 
@@ -40,7 +38,7 @@ export default <OwnProps extends {}, InjectedProps extends {}> (mapRegistriesToP
                         const registriesToPropsMap = mapRegistriesToProps ? mapRegistriesToProps(context.globalRegistry) : {};
                         return (
                             <WrappedComponent
-                                neos={buildConfigurationAndGlobalRegistry(context.configuration, context.globalRegistry, context.routes)}
+                                neos={buildGlobalRegistry(context.globalRegistry, context.routes)}
                                 {...this.props}
                                 {...registriesToPropsMap}
                                 />

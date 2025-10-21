@@ -15,10 +15,12 @@ declare(strict_types=1);
 namespace Neos\Neos\Ui\ReferencesEditor\Application\GetReferencesSummary;
 
 use GuzzleHttp\Psr7\Uri;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindReferencesFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateId;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
+use Neos\Neos\Domain\SubtreeTagging\NeosVisibilityConstraints;
 use Neos\Neos\Ui\LinkEditor\Infrastructure\ESCR\NodeService;
 use Neos\Neos\Ui\LinkEditor\Infrastructure\ESCR\NodeServiceFactory;
 
@@ -42,9 +44,13 @@ final class GetReferencesSummaryQueryHandler
             dimensionSpacePoint: $query->dimensionSpacePoint,
         );
 
+        $contentRepository = $this->contentRepositoryRegistry->get($query->contentRepositoryId);
+        $subgraph = $contentRepository->getContentGraph($query->workspaceName)->getSubgraph($query->dimensionSpacePoint, NeosVisibilityConstraints::excludeRemoved());
+        $references = $subgraph->findReferences($query->nodeId, FindReferencesFilter::create(referenceName: $query->referenceName));
+
         $referencesSummary = [];
-        foreach ($query->referenceIds as $referenceId) {
-            $referencesNode = $nodeService->requireNodeById(NodeAggregateId::fromString($referenceId));
+        foreach ($references as $reference) {
+            $referencesNode = $reference->node;
             $referenceNodeType = $nodeService->requireNodeTypeByName($referencesNode->nodeTypeName);
 
             $referencesSummary[] = new GetReferencesSummaryQueryResult(
@@ -52,7 +58,8 @@ final class GetReferencesSummaryQueryHandler
                 label: $nodeService->getLabelForNode($referencesNode),
                 uri: new Uri('node://' . $referencesNode->aggregateId->value),
                 breadcrumbs: $this->createBreadcrumbsForNode($nodeService, $referencesNode),
-                hasProperties: false
+                hasProperties: false,
+                properties: $reference->properties
             );
         }
 

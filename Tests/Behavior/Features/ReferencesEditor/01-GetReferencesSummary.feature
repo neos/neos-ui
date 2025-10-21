@@ -32,11 +32,18 @@ Feature: GetReferencesSummary
         icon: "my-icon"
         label: "My Document Type"
       references:
-        myReferences: {}
+        myReferences:
+          properties:
+            test:
+              type: string
 
     'Vendor.Site:NotCustomizedDocument':
+      label: "${Neos.Node.labelForNode(node).prefix('My Node: ').properties('title')}"
       superTypes:
         'Neos.Neos:Document': true
+      ui:
+        icon: "my-icon-b"
+        label: "My Document Type"
     """
     And using identifier "default", I define a content repository
     And I am in content repository "default"
@@ -75,6 +82,12 @@ Feature: GetReferencesSummary
       | sourceOrigin    | {"language":"en"} |
       | targetOrigin    | {"language":"de"} |
 
+    And the command CreateNodeVariant is executed with payload:
+      | Key             | Value             |
+      | nodeAggregateId | "target-b"       |
+      | sourceOrigin    | {"language":"en"} |
+      | targetOrigin    | {"language":"de"} |
+
     And the command SetNodeProperties is executed with payload:
       | Key                       | Value                      |
       | nodeAggregateId           | "features"                 |
@@ -87,6 +100,12 @@ Feature: GetReferencesSummary
       | originDimensionSpacePoint | {"language": "de"}  |
       | propertyValues            | {"title": "a (de)"} |
 
+    And the command SetNodeProperties is executed with payload:
+      | Key                       | Value               |
+      | nodeAggregateId           | "target-b"         |
+      | originDimensionSpacePoint | {"language": "de"}  |
+      | propertyValues            | {"title": "b (de)"} |
+
   Scenario: GetReferencesSummary for feature page without references set
     When I issue the following query to "http://127.0.0.1:8081/neos/references-editor/get-references-summary":
       | Key                 | Value                |
@@ -94,6 +113,7 @@ Feature: GetReferencesSummary
       | workspaceName       | "live"               |
       | dimensionValues     | {"language": ["en"]} |
       | nodeId              | "features"           |
+      | referenceName       | "myReferences"       |
       | referenceIds        | []                   |
     Then I expect the following query response:
       """json
@@ -117,6 +137,7 @@ Feature: GetReferencesSummary
       | workspaceName       | "live"               |
       | dimensionValues     | {"language": ["en"]} |
       | nodeId              | "features"           |
+      | referenceName       | "myReferences"       |
       | referenceIds        | ["target-a"]         |
     Then I expect the following query response:
       """json
@@ -141,7 +162,78 @@ Feature: GetReferencesSummary
                   "icon": "my-icon",
                   "label": "My Node: a",
                   "uri": "node://target-a",
-                  "hasProperties": false
+                  "hasProperties": false,
+                  "properties": null
+                }
+              ]
+          }
+      }
+      """
+
+
+  Scenario: GetReferencesSummary for feature page with multiple references set
+    When the command SetNodeReferences is executed with payload:
+      | Key                             | Value                                                    |
+      | sourceNodeAggregateId           | "features"                                      |
+      | sourceOriginDimensionSpacePoint | {"language": "en"}                                       |
+      | references                      | [{"referenceName": "myReferences", "references": [{"target": "target-a"}, {"target": "target-b", "properties": {"test": "foo"}}]}]|
+
+    When I issue the following query to "http://127.0.0.1:8081/neos/references-editor/get-references-summary":
+      | Key                 | Value                |
+      | contentRepositoryId | "default"            |
+      | workspaceName       | "live"               |
+      | dimensionValues     | {"language": ["en"]} |
+      | nodeId              | "features"           |
+      | referenceName       | "myReferences"       |
+      | referenceIds        | ["target-a", "target-b"]         |
+    Then I expect the following query response:
+      """json
+      {
+          "success": {
+              "references": [
+                {
+                  "breadcrumbs": [
+                    {
+                        "icon": "globe",
+                        "label": "Homepage site-a"
+                    },
+                    {
+                        "icon": "my-icon",
+                        "label": "My Node: features"
+                    },
+                    {
+                        "icon": "my-icon",
+                        "label": "My Node: a"
+                    }
+                  ],
+                  "icon": "my-icon",
+                  "label": "My Node: a",
+                  "uri": "node://target-a",
+                  "hasProperties": false,
+                  "properties": null
+                },
+                {
+                  "breadcrumbs": [
+                    {
+                        "icon": "globe",
+                        "label": "Homepage site-a"
+                    },
+                    {
+                        "icon": "my-icon",
+                        "label": "My Node: features"
+                    },
+                    {
+                        "icon": "my-icon-b",
+                        "label": "My Node: b"
+                    }
+                  ],
+                  "icon": "my-icon-b",
+                  "label": "My Node: b",
+                  "uri": "node://target-b",
+                  "hasProperties": false,
+                  "properties": {
+                    "test": "foo"
+                  }
                 }
               ]
           }

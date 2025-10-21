@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Neos\Neos\Ui\ReferencesEditor\Application\GetReferencesSummary;
 
+use Neos\ContentRepository\Core\Projection\ContentGraph\PropertyCollection;
 use Neos\Flow\Annotations as Flow;
 use Psr\Http\Message\UriInterface;
 
@@ -28,7 +29,8 @@ final class GetReferencesSummaryQueryResult implements \JsonSerializable
         public readonly string $label,
         public readonly UriInterface $uri,
         public readonly Breadcrumbs $breadcrumbs,
-        public readonly bool $hasProperties
+        public readonly bool $hasProperties,
+        public readonly ?PropertyCollection $properties
     ) {
     }
 

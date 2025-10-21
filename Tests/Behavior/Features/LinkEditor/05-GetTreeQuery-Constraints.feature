@@ -56,9 +56,9 @@ Feature: GetTreeQuery Constraints
       """json
       {
           "error": {
+              "class": "Neos\\ContentRepository\\Core\\SharedModel\\Exception\\AbsoluteNodePathIsInvalid",
               "code": 1687207234,
-              "message": "Absolute node paths must serialized beginning with the pattern \"/<My.Package:Root>\" ,\"/sites\" does not",
-              "type": "Neos\\ContentRepository\\Core\\SharedModel\\Exception\\AbsoluteNodePathIsInvalid"
+              "message": "Absolute node paths must serialized beginning with the pattern \"/<My.Package:Root>\" ,\"/sites\" does not"
           }
       }
       """
@@ -80,9 +80,9 @@ Feature: GetTreeQuery Constraints
       """json
       {
           "error": {
+              "class": "Neos\\Neos\\Ui\\LinkEditor\\Application\\GetTree\\StartingPointWasNotFound",
               "code": 1715082893,
-              "message": "The starting point at path \"/<Neos.Neos:Sites>/non-existing\" does not exist in subgraph: {\n    \"contentRepositoryId\": \"default\",\n    \"workspaceName\": \"live\",\n    \"dimensionSpacePoint\": {\n        \"language\": \"en\"\n    }\n}",
-              "type": "Neos\\Neos\\Ui\\LinkEditor\\Application\\GetTree\\StartingPointWasNotFound"
+              "message": "The starting point at path \"/<Neos.Neos:Sites>/non-existing\" does not exist in subgraph: {\n    \"contentRepositoryId\": \"default\",\n    \"workspaceName\": \"live\",\n    \"dimensionSpacePoint\": {\n        \"language\": \"en\"\n    }\n}"
           }
       }
       """
@@ -104,9 +104,9 @@ Feature: GetTreeQuery Constraints
       """json
       {
           "error": {
+              "class": "InvalidArgumentException",
               "code": 1745164594,
-              "message": "Loading depth must not be negative, got -1",
-              "type": "InvalidArgumentException"
+              "message": "Loading depth must not be negative, got -1"
           }
       }
       """

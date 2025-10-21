@@ -88,7 +88,7 @@ Feature: GetReferencesSummary
       | propertyValues            | {"title": "a (de)"} |
 
   Scenario: GetReferencesSummary for feature page without references set
-    When I issue the following query to "http://127.0.0.1:8081/neos/reference-editor/get-references-summary":
+    When I issue the following query to "http://127.0.0.1:8081/neos/references-editor/get-references-summary":
       | Key                 | Value                |
       | contentRepositoryId | "default"            |
       | workspaceName       | "live"               |
@@ -111,7 +111,7 @@ Feature: GetReferencesSummary
       | sourceOriginDimensionSpacePoint | {"language": "en"}                                       |
       | references                      | [{"referenceName": "myReferences", "references": [{"target": "target-a"}]}]|
 
-    When I issue the following query to "http://127.0.0.1:8081/neos/reference-editor/get-references-summary":
+    When I issue the following query to "http://127.0.0.1:8081/neos/references-editor/get-references-summary":
       | Key                 | Value                |
       | contentRepositoryId | "default"            |
       | workspaceName       | "live"               |

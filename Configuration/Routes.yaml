@@ -27,3 +27,12 @@
     'ServiceSubRoutes':
       package: 'Neos.Neos.Ui'
       suffix:  'Service'
+
+-
+  name: 'GetReferencesSummary Query'
+  uriPattern: 'neos/references-editor/get-references-summary'
+  defaults:
+    '@package': 'Neos.Neos.Ui'
+    '@subpackage': 'ReferencesEditor\Application\GetReferencesSummary'
+    '@controller': 'GetReferencesSummary'
+    '@action': 'ignored'

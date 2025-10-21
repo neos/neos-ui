@@ -28,6 +28,7 @@ final class GetReferencesSummaryQueryResult implements \JsonSerializable
         public readonly string $label,
         public readonly UriInterface $uri,
         public readonly Breadcrumbs $breadcrumbs,
+        public readonly bool $hasProperties
     ) {
     }
 

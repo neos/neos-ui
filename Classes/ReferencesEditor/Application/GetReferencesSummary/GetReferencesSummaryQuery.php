@@ -17,6 +17,7 @@ namespace Neos\Neos\Ui\ReferencesEditor\Application\GetReferencesSummary;
 use Neos\ContentRepository\Core\DimensionSpace\DimensionSpacePoint;
 use Neos\ContentRepository\Core\SharedModel\ContentRepository\ContentRepositoryId;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateId;
+use Neos\ContentRepository\Core\SharedModel\Node\ReferenceName;
 use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
 use Neos\Flow\Annotations as Flow;
 
@@ -31,7 +32,7 @@ final class GetReferencesSummaryQuery
         public readonly WorkspaceName $workspaceName,
         public readonly DimensionSpacePoint $dimensionSpacePoint,
         public readonly NodeAggregateId $nodeId,
-        // todo add referenceName
+        public readonly array $referenceIds
     ) {
     }
 
@@ -55,11 +56,17 @@ final class GetReferencesSummaryQuery
         is_string($array['nodeId'])
             or throw new \InvalidArgumentException('Node id must be a string');
 
+        isset($array['referenceIds'])
+            or throw new \InvalidArgumentException('Reference id must be set');
+        is_array($array['referenceIds'])
+            or throw new \InvalidArgumentException('Reference id must be a array');
+
         return new self(
             contentRepositoryId: ContentRepositoryId::fromString($array['contentRepositoryId']),
             workspaceName: WorkspaceName::fromString($array['workspaceName']),
             dimensionSpacePoint: DimensionSpacePoint::fromLegacyDimensionArray($array['dimensionValues'] ?? []),
             nodeId: NodeAggregateId::fromString($array['nodeId']),
+            referenceIds: $array['referenceIds'],
         );
     }
 }

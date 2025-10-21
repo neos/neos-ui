@@ -16,6 +16,8 @@ namespace Neos\Neos\Ui\ReferencesEditor\Application\GetReferencesSummary;
 
 use GuzzleHttp\Psr7\Uri;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateId;
+use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Ui\LinkEditor\Infrastructure\ESCR\NodeService;
 use Neos\Neos\Ui\LinkEditor\Infrastructure\ESCR\NodeServiceFactory;
@@ -29,7 +31,10 @@ final class GetReferencesSummaryQueryHandler
     #[Flow\Inject]
     protected NodeServiceFactory $nodeServiceFactory;
 
-    public function handle(GetReferencesSummaryQuery $query): GetReferencesSummaryQueryResult
+    #[Flow\Inject]
+    protected ContentRepositoryRegistry $contentRepositoryRegistry;
+
+    public function handle(GetReferencesSummaryQuery $query): array
     {
         $nodeService = $this->nodeServiceFactory->create(
             contentRepositoryId: $query->contentRepositoryId,
@@ -37,15 +42,21 @@ final class GetReferencesSummaryQueryHandler
             dimensionSpacePoint: $query->dimensionSpacePoint,
         );
 
-        $node = $nodeService->requireNodeById($query->nodeId);
-        $nodeType = $nodeService->requireNodeTypeByName($node->nodeTypeName);
+        $referencesSummary = [];
+        foreach ($query->referenceIds as $referenceId) {
+            $referencesNode = $nodeService->requireNodeById(NodeAggregateId::fromString($referenceId));
+            $referenceNodeType = $nodeService->requireNodeTypeByName($referencesNode->nodeTypeName);
 
-        return new GetReferencesSummaryQueryResult(
-            icon: $nodeType->getConfiguration('ui.icon') ?? 'questionmark',
-            label: $nodeService->getLabelForNode($node),
-            uri: new Uri('node://' . $node->aggregateId->value),
-            breadcrumbs: $this->createBreadcrumbsForNode($nodeService, $node),
-        );
+            $referencesSummary[] = new GetReferencesSummaryQueryResult(
+                icon: $referenceNodeType->getConfiguration('ui.icon') ?? 'questionmark',
+                label: $nodeService->getLabelForNode($referencesNode),
+                uri: new Uri('node://' . $referencesNode->aggregateId->value),
+                breadcrumbs: $this->createBreadcrumbsForNode($nodeService, $referencesNode),
+                hasProperties: false
+            );
+        }
+
+        return ["references" => $referencesSummary];
     }
 
     private function createBreadcrumbsForNode(NodeService $nodeService, Node $node): Breadcrumbs

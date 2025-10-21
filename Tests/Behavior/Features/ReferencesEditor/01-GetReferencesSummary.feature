@@ -93,13 +93,13 @@ Feature: GetReferencesSummary
       | contentRepositoryId | "default"            |
       | workspaceName       | "live"               |
       | dimensionValues     | {"language": ["en"]} |
-      | nodeId              | "features"            |
-      | referenceName       | "myReferences"       |
+      | nodeId              | "features"           |
+      | referenceIds        | []                   |
     Then I expect the following query response:
       """json
       {
           "success": {
-              "references": [],
+              "references": []
           }
       }
       """
@@ -116,8 +116,8 @@ Feature: GetReferencesSummary
       | contentRepositoryId | "default"            |
       | workspaceName       | "live"               |
       | dimensionValues     | {"language": ["en"]} |
-      | nodeId              | "features"            |
-      | referenceName       | "myReferences"       |
+      | nodeId              | "features"           |
+      | referenceIds        | ["target-a"]         |
     Then I expect the following query response:
       """json
       {

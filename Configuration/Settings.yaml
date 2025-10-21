@@ -236,6 +236,11 @@ Neos:
                 pattern: ControllerObjectName
                 patternOptions:
                   controllerObjectNamePattern: 'Neos\Neos\Ui\LinkEditor\Application\.*\Controller\.*Controller'
+
+              'Neos.Neos.Ui:ReferencesEditor.ApiControllers':
+                pattern: ControllerObjectName
+                patternOptions:
+                  controllerObjectNamePattern: 'Neos\Neos\Ui\ReferencesEditor\Application\.*\Controller\.*Controller'
     mvc:
       routes:
         'Neos.Neos.Ui':

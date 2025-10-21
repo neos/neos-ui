@@ -877,14 +877,6 @@ Feature: GetTreeQuery
       """
 
   Scenario Outline: GetTreeQuery with selectedNodeId
-    Examples:
-      | selectedNodeId       |
-      | "feature-a1-default" |
-      # selectedNodeId not in startingPoint graph (e.g. node was moved out of tree)
-      | "feature-a1"         |
-      # not existing selectedNodeId (e.g. node was deleted)
-      | "not-existing-node"  |
-
     When I issue the following query to "http://127.0.0.1:8081/neos/link-editor/get-tree":
       | Key                  | Value                                       |
       | contentRepositoryId  | "default"                                   |
@@ -919,13 +911,15 @@ Feature: GetTreeQuery
       }
       """
 
-
-  Scenario Outline: GetTreeQuery with selectedNodeId not in depth
     Examples:
       | selectedNodeId       |
       | "feature-a1-default" |
-      | "feature-a2-default" |
+      # selectedNodeId not in startingPoint graph (e.g. node was moved out of tree)
+      | "feature-a1"         |
+      # not existing selectedNodeId (e.g. node was deleted)
+      | "not-existing-node"  |
 
+  Scenario Outline: GetTreeQuery with selectedNodeId not in depth
     When I issue the following query to "http://127.0.0.1:8081/neos/link-editor/get-tree":
       | Key                  | Value                                |
       | contentRepositoryId  | "default"                            |
@@ -1039,3 +1033,8 @@ Feature: GetTreeQuery
         }
       }
       """
+
+      Examples:
+          | selectedNodeId       |
+          | "feature-a1-default" |
+          | "feature-a2-default" |

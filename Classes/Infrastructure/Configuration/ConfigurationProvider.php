@@ -21,7 +21,7 @@ use Neos\Flow\Mvc\Routing\UriBuilder;
 use Neos\Flow\Security\Context as SecurityContext;
 use Neos\Neos\Domain\Model\WorkspaceClassification;
 use Neos\Neos\Domain\Service\WorkspaceService;
-use Neos\Neos\Security\Authorization\ContentRepositoryAuthorizationService;
+use Neos\Neos\Security\Authorization\ContentRepositoryAuthorizationInterface;
 use Neos\Neos\Service\UserService;
 use Neos\Neos\Ui\Domain\InitialData\CacheConfigurationVersionProviderInterface;
 use Neos\Neos\Ui\Domain\InitialData\ConfigurationProviderInterface;
@@ -45,7 +45,7 @@ final class ConfigurationProvider implements ConfigurationProviderInterface
     protected WorkspaceService $workspaceService;
 
     #[Flow\Inject]
-    protected ContentRepositoryAuthorizationService $contentRepositoryAuthorizationService;
+    protected ContentRepositoryAuthorizationInterface $contentRepositoryAuthorizationService;
 
     #[Flow\Inject]
     protected CacheConfigurationVersionProviderInterface $cacheConfigurationVersionProvider;

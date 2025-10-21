@@ -33,7 +33,7 @@ use Neos\Flow\Security\Context;
 use Neos\Neos\Domain\Service\WorkspacePublishingService;
 use Neos\Neos\Domain\Service\WorkspaceService;
 use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;
-use Neos\Neos\Security\Authorization\ContentRepositoryAuthorizationService;
+use Neos\Neos\Security\Authorization\ContentRepositoryAuthorizationInterface;
 use Neos\Neos\Service\UserService;
 use Neos\Neos\Ui\Application\ChangeTargetWorkspace;
 use Neos\Neos\Ui\Application\DiscardAllChanges;
@@ -178,7 +178,7 @@ class BackendServiceController extends ActionController
 
     /**
      * @Flow\Inject
-     * @var ContentRepositoryAuthorizationService
+     * @var ContentRepositoryAuthorizationInterface
      */
     protected $contentRepositoryAuthorizationService;
 
@@ -597,8 +597,9 @@ class BackendServiceController extends ActionController
                 $nodePrivileges = $this->contentRepositoryAuthorizationService->getNodePermissions($node, $this->securityContext->getRoles());
                 $result[$nodeAddress->toJson()] = [
                     'policy' => [
+                        // TODO: support für "create" -> CreateNodeDialog vorfiltern
                         'disallowedNodeTypes' => [], // not implemented for Neos 9.0
-                        'canRemove' => $nodePrivileges->edit,
+                        'canRemove' => $nodePrivileges->remove,
                         'canEdit' => $nodePrivileges->edit,
                         'disallowedProperties' => [] // not implemented for Neos 9.0
                     ]

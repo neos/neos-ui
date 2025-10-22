@@ -1,0 +1,18 @@
+{
+  "name": "@neos-project/neos-ui-references-editor",
+  "license": "GPL-3.0-or-later",
+  "private": true,
+  "version": "",
+  "main": "./src/index.ts",
+  "dependencies": {
+    "@neos-project/framework-observable": "workspace:*",
+    "@neos-project/framework-observable-react": "workspace:*",
+    "@neos-project/framework-promise-react": "workspace:*",
+    "@neos-project/neos-ui-editors": "workspace:*",
+    "@neos-project/neos-ui-link-editor-custom-node-tree": "workspace:*",
+    "@neos-project/positional-array-sorter": "workspace:*",
+    "@neos-project/react-ui-components": "workspace:*",
+    "@neos-project/utils-helpers": "workspace:*",
+    "typesafe-actions": "^5.1.0"
+  }
+}

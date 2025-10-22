@@ -6,12 +6,13 @@ import Image from './Image/index';
 import SelectBox from './SelectBox/index';
 import Range from './Range/index';
 import Reference from './Reference/index';
-import References from './References/index';
+//import References from './References/index';
 import NodeType from './NodeType/index';
 import CodeMirror from './CodeMirror/index';
 import CKEditor from './CKEditor/index';
 import AssetEditor from './AssetEditor/index';
 import UriPathSegment from './UriPathSegment/index';
+import References from '@neos-project/neos-ui-references-editor/src/ReferencesEditor'
 
 export {
     TextField,

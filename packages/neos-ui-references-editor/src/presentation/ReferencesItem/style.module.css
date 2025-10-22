@@ -1,0 +1,36 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--spacing-Half);
+    width: 100%;
+    min-height: var(--spacing-GoldenUnit);
+    padding: var(--spacing-Half) var(--spacing-Full);
+    border-bottom: 1px solid var(--colors-ContrastDark);
+    transition: background-color var(--transition-Default);
+}
+
+.container:hover {
+    background-color: rgba(255, 255, 255, 0.04);
+}
+
+.labelContainer {
+    display: flex;
+    flex-direction: column;
+    min-width: 0; /* allow ellipsis */
+}
+
+.label {
+    font-size: var(--fontSize-Base);
+    line-height: 1.2;
+    color: var(--colors-ContrastBrightest);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.icon {
+    margin-right: var(--spacing-Half);
+    color: var(--colors-ContrastBrighter);
+}
+

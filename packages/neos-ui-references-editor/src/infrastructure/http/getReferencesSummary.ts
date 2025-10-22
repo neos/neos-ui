@@ -1,0 +1,65 @@
+import {DimensionCombination} from '@neos-project/neos-ts-interfaces';
+import {fetchWithErrorHandling} from '@neos-project/neos-ui-backend-connector';
+
+type GetReferencesSummaryQueryResultEnvelope =
+    | {
+        success: {
+            references: {
+                breadcrumbs: {
+                    icon: string;
+                    label: string;
+                }[]
+                icon: string;
+                label: string;
+                uri: string;
+                hasProperties: boolean;
+            }[]
+        }
+    | {
+        error: {
+            type: string;
+            code: number;
+            message: string;
+        };
+    };
+}
+
+export async function getReferencesSummary(workspaceName: string, dimensionValues: DimensionCombination, nodeId: string, referenceIds: []): Promise<GetReferencesSummaryQueryResultEnvelope> {
+    const searchParams = new URLSearchParams();
+    searchParams.set('workspaceName', workspaceName);
+    for (const [dimensionName, fallbackChain] of Object.entries(
+        dimensionValues
+    )) {
+        for (const fallbackValue of fallbackChain) {
+            searchParams.set(
+                `dimensionValues[${dimensionName}][]`,
+                fallbackValue
+            );
+        }
+    }
+    searchParams.set('nodeId', nodeId);
+    referenceIds.forEach((referenceId, i) => {
+        searchParams.set(`referenceIds[${i}]`, referenceId);
+    });
+
+    try {
+        const response = await fetchWithErrorHandling.withCsrfToken(
+            (csrfToken) => ({
+                url:
+                    '/neos/references-editor/get-references-summary?' +
+                    searchParams.toString(),
+                method: 'GET',
+                credentials: 'include',
+                headers: {
+                    'X-Flow-Csrftoken': csrfToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+        );
+
+        return fetchWithErrorHandling.parseJson(response);
+    } catch (error) {
+        fetchWithErrorHandling.generalErrorHandler(error as any);
+        throw error;
+    }
+}

@@ -37,6 +37,28 @@ Feature: GetReferencesSummary
             test:
               type: string
 
+    'Vendor.Site:DocumentWithoutReferenceProperties':
+      label: "${Neos.Node.labelForNode(node).prefix('My Node: ').properties('title')}"
+      superTypes:
+        'Neos.Neos:Document': true
+      ui:
+        icon: "my-icon"
+        label: "My Document Type"
+      references:
+        myReferences: {}
+
+    'Vendor.Site:DocumentWithConstraints':
+      label: "${Neos.Node.labelForNode(node).prefix('My Node: ').properties('title')}"
+      superTypes:
+        'Neos.Neos:Document': true
+      ui:
+        icon: "my-icon"
+        label: "My Document Type"
+      references:
+        myReferences:
+          constraints:
+            maxItems: 1
+
     'Vendor.Site:NotCustomizedDocument':
       label: "${Neos.Node.labelForNode(node).prefix('My Node: ').properties('title')}"
       superTypes:
@@ -63,6 +85,8 @@ Feature: GetReferencesSummary
       | features        | homepage              | Vendor.Site:Document              | {"title": "features"} | {"language": "en"}        |          |
       | target-a        | features              | Vendor.Site:Document              | {"title": "a"}        | {"language": "en"}        |          |
       | target-b        | features              | Vendor.Site:NotCustomizedDocument | {"title": "b"}        | {"language": "en"}        |          |
+      | features-propertyless        | homepage              | Vendor.Site:DocumentWithoutReferenceProperties | {"title": "features-propertyless"}        | {"language": "en"}        |          |
+      | features-constraints        | homepage              | Vendor.Site:DocumentWithConstraints | {"title": "features-constraints"}        | {"language": "en"}        |          |
 
     And the command CreateNodeVariant is executed with payload:
       | Key             | Value             |
@@ -73,6 +97,18 @@ Feature: GetReferencesSummary
     And the command CreateNodeVariant is executed with payload:
       | Key             | Value             |
       | nodeAggregateId | "features"        |
+      | sourceOrigin    | {"language":"en"} |
+      | targetOrigin    | {"language":"de"} |
+
+    And the command CreateNodeVariant is executed with payload:
+      | Key             | Value             |
+      | nodeAggregateId | "features-propertyless"        |
+      | sourceOrigin    | {"language":"en"} |
+      | targetOrigin    | {"language":"de"} |
+
+    And the command CreateNodeVariant is executed with payload:
+      | Key             | Value             |
+      | nodeAggregateId | "features-constraints"        |
       | sourceOrigin    | {"language":"en"} |
       | targetOrigin    | {"language":"de"} |
 
@@ -93,6 +129,18 @@ Feature: GetReferencesSummary
       | nodeAggregateId           | "features"                 |
       | originDimensionSpacePoint | {"language": "de"}         |
       | propertyValues            | {"title": "features (de)"} |
+
+    And the command SetNodeProperties is executed with payload:
+      | Key                       | Value                      |
+      | nodeAggregateId           | "features-propertyless"                 |
+      | originDimensionSpacePoint | {"language": "de"}         |
+      | propertyValues            | {"title": "features-propertyless (de)"} |
+
+    And the command SetNodeProperties is executed with payload:
+      | Key                       | Value                      |
+      | nodeAggregateId           | "features-constraints"                 |
+      | originDimensionSpacePoint | {"language": "de"}         |
+      | propertyValues            | {"title": "features-constraints (de)"} |
 
     And the command SetNodeProperties is executed with payload:
       | Key                       | Value               |
@@ -162,8 +210,13 @@ Feature: GetReferencesSummary
                   "icon": "my-icon",
                   "label": "My Node: a",
                   "uri": "node://target-a",
-                  "hasProperties": false,
-                  "properties": null
+                  "properties": null,
+                  "propertySchema": {
+                    "test": {
+                      "type": "string"
+                    }
+                  },
+                  "constraints": null
                 }
               ]
           }
@@ -209,8 +262,13 @@ Feature: GetReferencesSummary
                   "icon": "my-icon",
                   "label": "My Node: a",
                   "uri": "node://target-a",
-                  "hasProperties": false,
-                  "properties": null
+                  "properties": null,
+                  "propertySchema": {
+                    "test": {
+                      "type": "string"
+                    }
+                  },
+                  "constraints": null
                 },
                 {
                   "breadcrumbs": [
@@ -230,9 +288,110 @@ Feature: GetReferencesSummary
                   "icon": "my-icon-b",
                   "label": "My Node: b",
                   "uri": "node://target-b",
-                  "hasProperties": false,
                   "properties": {
                     "test": "foo"
+                  },
+                  "propertySchema": {
+                    "test": {
+                      "type": "string"
+                    }
+                  },
+                  "constraints": null
+                }
+              ]
+          }
+      }
+      """
+
+  Scenario: GetReferencesSummary for feature page without reference properties with single reference set
+    When the command SetNodeReferences is executed with payload:
+      | Key                             | Value                                                    |
+      | sourceNodeAggregateId           | "features-propertyless"                                      |
+      | sourceOriginDimensionSpacePoint | {"language": "en"}                                       |
+      | references                      | [{"referenceName": "myReferences", "references": [{"target": "target-a"}]}]|
+
+    When I issue the following query to "http://127.0.0.1:8081/neos/references-editor/get-references-summary":
+      | Key                 | Value                |
+      | contentRepositoryId | "default"            |
+      | workspaceName       | "live"               |
+      | dimensionValues     | {"language": ["en"]} |
+      | nodeId              | "features-propertyless"           |
+      | referenceName       | "myReferences"       |
+      | referenceIds        | ["target-a"]         |
+    Then I expect the following query response:
+      """json
+      {
+          "success": {
+              "references": [
+                {
+                  "breadcrumbs": [
+                    {
+                        "icon": "globe",
+                        "label": "Homepage site-a"
+                    },
+                    {
+                        "icon": "my-icon",
+                        "label": "My Node: features"
+                    },
+                    {
+                        "icon": "my-icon",
+                        "label": "My Node: a"
+                    }
+                  ],
+                  "icon": "my-icon",
+                  "label": "My Node: a",
+                  "uri": "node://target-a",
+                  "properties": null,
+                  "propertySchema": null,
+                  "constraints": null
+                }
+              ]
+          }
+      }
+      """
+
+  Scenario: GetReferencesSummary for feature page with constraints with single reference set
+    When the command SetNodeReferences is executed with payload:
+      | Key                             | Value                                                    |
+      | sourceNodeAggregateId           | "features-constraints"                                      |
+      | sourceOriginDimensionSpacePoint | {"language": "en"}                                       |
+      | references                      | [{"referenceName": "myReferences", "references": [{"target": "target-a"}]}]|
+
+    When I issue the following query to "http://127.0.0.1:8081/neos/references-editor/get-references-summary":
+      | Key                 | Value                |
+      | contentRepositoryId | "default"            |
+      | workspaceName       | "live"               |
+      | dimensionValues     | {"language": ["en"]} |
+      | nodeId              | "features-constraints"           |
+      | referenceName       | "myReferences"       |
+      | referenceIds        | ["target-a"]         |
+    Then I expect the following query response:
+      """json
+      {
+          "success": {
+              "references": [
+                {
+                  "breadcrumbs": [
+                    {
+                        "icon": "globe",
+                        "label": "Homepage site-a"
+                    },
+                    {
+                        "icon": "my-icon",
+                        "label": "My Node: features"
+                    },
+                    {
+                        "icon": "my-icon",
+                        "label": "My Node: a"
+                    }
+                  ],
+                  "icon": "my-icon",
+                  "label": "My Node: a",
+                  "uri": "node://target-a",
+                  "properties": null,
+                  "propertySchema": null,
+                  "constraints": {
+                    "maxItems": 1
                   }
                 }
               ]

@@ -29,8 +29,9 @@ final class GetReferencesSummaryQueryResult implements \JsonSerializable
         public readonly string $label,
         public readonly UriInterface $uri,
         public readonly Breadcrumbs $breadcrumbs,
-        public readonly bool $hasProperties,
-        public readonly ?PropertyCollection $properties
+        public readonly ?array $properties,
+        public readonly ?array $propertySchema,
+        public readonly ?array $constraints
     ) {
     }
 
@@ -38,7 +39,6 @@ final class GetReferencesSummaryQueryResult implements \JsonSerializable
     {
         $result = get_object_vars($this);
         $result['uri'] = (string) $result['uri'];
-
         return $result;
     }
 }

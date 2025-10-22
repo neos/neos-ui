@@ -17,7 +17,6 @@ namespace Neos\Neos\Ui\ReferencesEditor\Application\GetReferencesSummary;
 use GuzzleHttp\Psr7\Uri;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindReferencesFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
-use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateId;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Domain\SubtreeTagging\NeosVisibilityConstraints;
@@ -44,6 +43,10 @@ final class GetReferencesSummaryQueryHandler
             dimensionSpacePoint: $query->dimensionSpacePoint,
         );
 
+        $sourceNode = $nodeService->requireNodeById($query->nodeId);
+        $sourceNodeType = $nodeService->requireNodeTypeByName($sourceNode->nodeTypeName);
+        $sourceReferenceSchema = $sourceNodeType->getConfiguration("references." . $query->referenceName->value);
+
         $contentRepository = $this->contentRepositoryRegistry->get($query->contentRepositoryId);
         $subgraph = $contentRepository->getContentGraph($query->workspaceName)->getSubgraph($query->dimensionSpacePoint, NeosVisibilityConstraints::excludeRemoved());
         $references = $subgraph->findReferences($query->nodeId, FindReferencesFilter::create(referenceName: $query->referenceName));
@@ -52,14 +55,14 @@ final class GetReferencesSummaryQueryHandler
         foreach ($references as $reference) {
             $referencesNode = $reference->node;
             $referenceNodeType = $nodeService->requireNodeTypeByName($referencesNode->nodeTypeName);
-
             $referencesSummary[] = new GetReferencesSummaryQueryResult(
                 icon: $referenceNodeType->getConfiguration('ui.icon') ?? 'questionmark',
                 label: $nodeService->getLabelForNode($referencesNode),
                 uri: new Uri('node://' . $referencesNode->aggregateId->value),
                 breadcrumbs: $this->createBreadcrumbsForNode($nodeService, $referencesNode),
-                hasProperties: false,
-                properties: $reference->properties
+                properties: $reference->properties?->serialized()->getPlainValues(),
+                propertySchema: $sourceReferenceSchema["properties"] ?? null,
+                constraints: $sourceReferenceSchema["constraints"] ?? null,
             );
         }
 

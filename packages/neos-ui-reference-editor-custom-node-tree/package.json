@@ -1,0 +1,13 @@
+{
+    "name": "@neos-project/neos-ui-reference-editor-custom-node-tree",
+    "license": "GPL-3.0-or-later",
+    "private": true,
+    "version": "",
+    "main": "./src/index.ts",
+    "dependencies": {
+        "@neos-project/framework-promise-react": "workspace:*",
+        "@neos-project/react-ui-components": "workspace:*",
+        "lodash.debounce": "^4.0.8",
+        "react": "^16.12.0"
+    }
+}

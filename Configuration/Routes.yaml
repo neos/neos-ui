@@ -36,3 +36,12 @@
     '@subpackage': 'ReferencesEditor\Application\GetReferencesSummary'
     '@controller': 'GetReferencesSummary'
     '@action': 'ignored'
+
+-
+  name: 'GetChildrenForTreeNode Query'
+  uriPattern: 'neos/references-editor/get-children-for-tree-node'
+  defaults:
+    '@package': 'Neos.Neos.Ui'
+    '@subpackage': 'ReferencesEditor\Application\GetChildrenForTreeNode'
+    '@controller': 'GetChildrenForTreeNode'
+    '@action': 'ignored'

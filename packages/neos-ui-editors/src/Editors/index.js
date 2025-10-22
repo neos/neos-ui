@@ -12,7 +12,8 @@ import CodeMirror from './CodeMirror/index';
 import CKEditor from './CKEditor/index';
 import AssetEditor from './AssetEditor/index';
 import UriPathSegment from './UriPathSegment/index';
-import References from '@neos-project/neos-ui-references-editor/src/ReferencesEditor'
+// todo remove old and maybe relocate registration?
+import {ReferencesEditor as References} from '@neos-project/neos-ui-references-editor/src/ReferencesEditor'
 
 export {
     TextField,

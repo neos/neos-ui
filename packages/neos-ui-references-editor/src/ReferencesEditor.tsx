@@ -1,12 +1,12 @@
 import React from 'react';
-import {ReferencesList} from './presentation/ReferencesList';
 import {getReferencesSummary} from './infrastructure/http';
 import {usePromise} from '@neos-project/framework-promise-react';
 import {selectors, useSelector} from '@neos-project/neos-ui-redux-store';
+import {ErrorView} from "@neos-project/neos-ui-error";
+import {HoverActions} from "./presentation/HoverActions";
+import {ReferencesItem} from "./presentation/ReferencesItem";
 
-const ReferencesEditor = (props) => {
-    // TODO: props.renderSecondaryInspector ist das was gesucht ist
-    console.log(props);
+export const ReferencesEditor = (props) => {
     const workspaceName = useSelector(selectors.CR.Workspaces.personalWorkspaceNameSelector);
     const dimension = useSelector(selectors.CR.ContentDimensions.active);
     const selectedNodeId = useSelector(selectors.CR.Nodes.focusedSelector);
@@ -21,13 +21,17 @@ const ReferencesEditor = (props) => {
             workspaceName,
             dimension,
             selectedNodeId.identifier,
-            // TODO: Wie komme ich an die Property ran? (blogs)
-            selectedNodeId.properties.blogs,
+            // todo does not work with empty
+            props.value,
             props.identifier
         );
 
         if ('success' in result) {
             return result.success;
+        }
+
+        if ('error' in result) {
+            throw result.error;
         }
 
         return null;
@@ -37,9 +41,19 @@ const ReferencesEditor = (props) => {
         return <div>Loading...</div>;
     }
 
+    if (fetch__referencesSummary.error) {
+        return <ErrorView error={fetch__referencesSummary.error} />;
+    }
+
     return (
-        <ReferencesList references={fetch__referencesSummary.value?.references ?? []}/>
+        <>
+            {(fetch__referencesSummary.value?.references ?? []).map(reference => {
+                return (
+                    <HoverActions key={reference.uri} onEdit={() => {}} onDelete={() => {}}>
+                        <ReferencesItem reference={reference} isDraggable={(fetch__referencesSummary.value?.references?.length ?? 0) > 1}/>
+                    </HoverActions>
+                );
+            })}
+        </>
     );
 };
-
-export default ReferencesEditor;

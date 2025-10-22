@@ -15,14 +15,14 @@ type GetReferencesSummaryQueryResultEnvelope =
                 hasProperties: boolean;
             }[]
         }
-    | {
+    } | {
         error: {
             type: string;
             code: number;
             message: string;
         };
     };
-}
+
 
 export async function getReferencesSummary(workspaceName: string, dimensionValues: DimensionCombination, nodeId: string, referenceIds: [], referenceName: string): Promise<GetReferencesSummaryQueryResultEnvelope> {
     const searchParams = new URLSearchParams();

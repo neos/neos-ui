@@ -5,8 +5,9 @@ import {selectors, useSelector} from '@neos-project/neos-ui-redux-store';
 import {ErrorView} from "@neos-project/neos-ui-error";
 import {HoverActions} from "./presentation/HoverActions";
 import {ReferencesItem} from "./presentation/ReferencesItem";
+import {IEditor} from "./domain";
 
-export const ReferencesEditor = (props) => {
+export const createReferencesEditor = (editor: IEditor) => (props) => {
     const workspaceName = useSelector(selectors.CR.Workspaces.personalWorkspaceNameSelector);
     const dimension = useSelector(selectors.CR.ContentDimensions.active);
     const selectedNodeId = useSelector(selectors.CR.Nodes.focusedSelector);
@@ -37,6 +38,24 @@ export const ReferencesEditor = (props) => {
         return null;
     }, []);
 
+    const onEdit = React.useCallback(async () => {
+        if (!fetch__referencesSummary.value) {
+            return;
+        }
+
+        const result = await editor.transactions.editLink(
+            props.value,
+            // todo flatten structure no references[0]?.!!!!!!!!
+            fetch__referencesSummary.value.references[0]?.constraints ?? {},
+            fetch__referencesSummary.value.references[0]?.propertySchema ?? {},
+        );
+
+        if (result.change) {
+            props.commit(result.value);
+        }
+
+    }, [editor, fetch__referencesSummary]);
+
     if (fetch__referencesSummary.isLoading) {
         return <div>Loading...</div>;
     }
@@ -49,7 +68,7 @@ export const ReferencesEditor = (props) => {
         <>
             {(fetch__referencesSummary.value?.references ?? []).map(reference => {
                 return (
-                    <HoverActions key={reference.uri} onEdit={() => {}} onDelete={() => {}}>
+                    <HoverActions key={reference.uri} onEdit={onEdit} onDelete={() => {}}>
                         <ReferencesItem reference={reference} isDraggable={(fetch__referencesSummary.value?.references?.length ?? 0) > 1}/>
                     </HoverActions>
                 );

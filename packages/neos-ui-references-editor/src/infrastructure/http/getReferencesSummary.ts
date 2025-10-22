@@ -23,7 +23,6 @@ type GetReferencesSummaryQueryResultEnvelope =
         };
     };
 
-
 export async function getReferencesSummary(workspaceName: string, dimensionValues: DimensionCombination, nodeId: string, referenceIds: [], referenceName: string): Promise<GetReferencesSummaryQueryResultEnvelope> {
     const searchParams = new URLSearchParams();
     searchParams.set('workspaceName', workspaceName);
@@ -38,6 +37,10 @@ export async function getReferencesSummary(workspaceName: string, dimensionValue
         }
     }
     searchParams.set('nodeId', nodeId);
+
+    if (referenceIds.length === 0) {
+        searchParams.set('referenceIds[]', '');
+    }
     referenceIds.forEach((referenceId, i) => {
         searchParams.set(`referenceIds[${i}]`, referenceId);
     });

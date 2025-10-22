@@ -35,7 +35,7 @@ final class GetReferencesSummaryQueryHandler
     #[Flow\Inject]
     protected ContentRepositoryRegistry $contentRepositoryRegistry;
 
-    public function handle(GetReferencesSummaryQuery $query): array
+    public function handle(GetReferencesSummaryQuery $query): GetReferencesSummaryQueryResult
     {
         $nodeService = $this->nodeServiceFactory->create(
             contentRepositoryId: $query->contentRepositoryId,
@@ -49,24 +49,26 @@ final class GetReferencesSummaryQueryHandler
 
         $contentRepository = $this->contentRepositoryRegistry->get($query->contentRepositoryId);
         $subgraph = $contentRepository->getContentGraph($query->workspaceName)->getSubgraph($query->dimensionSpacePoint, NeosVisibilityConstraints::excludeRemoved());
-        $references = $subgraph->findReferences($query->nodeId, FindReferencesFilter::create(referenceName: $query->referenceName));
+        $referenceNodes = $subgraph->findReferences($query->nodeId, FindReferencesFilter::create(referenceName: $query->referenceName));
 
-        $referencesSummary = [];
-        foreach ($references as $reference) {
+        $references = [];
+        foreach ($referenceNodes as $reference) {
             $referencesNode = $reference->node;
             $referenceNodeType = $nodeService->requireNodeTypeByName($referencesNode->nodeTypeName);
-            $referencesSummary[] = new GetReferencesSummaryQueryResult(
+            $references[] = new Reference(
                 icon: $referenceNodeType->getConfiguration('ui.icon') ?? 'questionmark',
                 label: $nodeService->getLabelForNode($referencesNode),
                 uri: new Uri('node://' . $referencesNode->aggregateId->value),
                 breadcrumbs: $this->createBreadcrumbsForNode($nodeService, $referencesNode),
                 properties: $reference->properties?->serialized()->getPlainValues(),
-                propertySchema: $sourceReferenceSchema["properties"] ?? null,
-                constraints: $sourceReferenceSchema["constraints"] ?? null,
             );
         }
 
-        return ["references" => $referencesSummary];
+        return new GetReferencesSummaryQueryResult(
+            references: $references,
+            propertySchema: $sourceReferenceSchema["properties"] ?? null,
+            constraints: $sourceReferenceSchema["constraints"] ?? null,
+        );
     }
 
     private function createBreadcrumbsForNode(NodeService $nodeService, Node $node): Breadcrumbs

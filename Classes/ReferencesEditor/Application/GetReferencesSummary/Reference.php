@@ -22,18 +22,21 @@ use Psr\Http\Message\UriInterface;
  * @internal
  */
 #[Flow\Proxy(false)]
-final class GetReferencesSummaryQueryResult implements \JsonSerializable
+final class Reference implements \JsonSerializable
 {
     public function __construct(
-        public readonly array $references,
-        public readonly ?array $propertySchema,
-        public readonly ?array $constraints
+        public readonly string $icon,
+        public readonly string $label,
+        public readonly UriInterface $uri,
+        public readonly Breadcrumbs $breadcrumbs,
+        public readonly ?array $properties
     ) {
     }
 
     public function jsonSerialize(): mixed
     {
         $result = get_object_vars($this);
+        $result['uri'] = (string) $result['uri'];
         return $result;
     }
 }

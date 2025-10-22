@@ -32,8 +32,7 @@ final class GetReferencesSummaryQuery
         public readonly WorkspaceName $workspaceName,
         public readonly DimensionSpacePoint $dimensionSpacePoint,
         public readonly NodeAggregateId $nodeId,
-        public readonly ReferenceName $referenceName,
-        public readonly array $referenceIds
+        public readonly ReferenceName $referenceName
     ) {
     }
 
@@ -62,18 +61,12 @@ final class GetReferencesSummaryQuery
         is_string($array['referenceName'])
             or throw new \InvalidArgumentException('Reference name must be a string');
 
-        isset($array['referenceIds'])
-            or throw new \InvalidArgumentException('Reference id must be set');
-        is_array($array['referenceIds'])
-            or throw new \InvalidArgumentException('Reference id must be a array');
-
         return new self(
             contentRepositoryId: ContentRepositoryId::fromString($array['contentRepositoryId']),
             workspaceName: WorkspaceName::fromString($array['workspaceName']),
             dimensionSpacePoint: DimensionSpacePoint::fromLegacyDimensionArray($array['dimensionValues'] ?? []),
             nodeId: NodeAggregateId::fromString($array['nodeId']),
-            referenceName: ReferenceName::fromString($array['referenceName']),
-            referenceIds: $array['referenceIds'],
+            referenceName: ReferenceName::fromString($array['referenceName'])
         );
     }
 }

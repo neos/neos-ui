@@ -162,11 +162,16 @@ Feature: GetReferencesSummary
       | dimensionValues     | {"language": ["en"]} |
       | nodeId              | "features"           |
       | referenceName       | "myReferences"       |
-      | referenceIds        | []                   |
     Then I expect the following query response:
       """json
       {
           "success": {
+              "propertySchema": {
+                "test": {
+                  "type": "string"
+                }
+              },
+              "constraints": null,
               "references": []
           }
       }
@@ -186,11 +191,16 @@ Feature: GetReferencesSummary
       | dimensionValues     | {"language": ["en"]} |
       | nodeId              | "features"           |
       | referenceName       | "myReferences"       |
-      | referenceIds        | ["target-a"]         |
     Then I expect the following query response:
       """json
       {
           "success": {
+              "propertySchema": {
+                "test": {
+                  "type": "string"
+                }
+              },
+              "constraints": null,
               "references": [
                 {
                   "breadcrumbs": [
@@ -210,13 +220,7 @@ Feature: GetReferencesSummary
                   "icon": "my-icon",
                   "label": "My Node: a",
                   "uri": "node://target-a",
-                  "properties": null,
-                  "propertySchema": {
-                    "test": {
-                      "type": "string"
-                    }
-                  },
-                  "constraints": null
+                  "properties": null
                 }
               ]
           }
@@ -238,11 +242,16 @@ Feature: GetReferencesSummary
       | dimensionValues     | {"language": ["en"]} |
       | nodeId              | "features"           |
       | referenceName       | "myReferences"       |
-      | referenceIds        | ["target-a", "target-b"]         |
     Then I expect the following query response:
       """json
       {
           "success": {
+              "propertySchema": {
+                "test": {
+                  "type": "string"
+                }
+              },
+              "constraints": null,
               "references": [
                 {
                   "breadcrumbs": [
@@ -262,13 +271,7 @@ Feature: GetReferencesSummary
                   "icon": "my-icon",
                   "label": "My Node: a",
                   "uri": "node://target-a",
-                  "properties": null,
-                  "propertySchema": {
-                    "test": {
-                      "type": "string"
-                    }
-                  },
-                  "constraints": null
+                  "properties": null
                 },
                 {
                   "breadcrumbs": [
@@ -290,13 +293,7 @@ Feature: GetReferencesSummary
                   "uri": "node://target-b",
                   "properties": {
                     "test": "foo"
-                  },
-                  "propertySchema": {
-                    "test": {
-                      "type": "string"
-                    }
-                  },
-                  "constraints": null
+                  }
                 }
               ]
           }
@@ -317,11 +314,12 @@ Feature: GetReferencesSummary
       | dimensionValues     | {"language": ["en"]} |
       | nodeId              | "features-propertyless"           |
       | referenceName       | "myReferences"       |
-      | referenceIds        | ["target-a"]         |
     Then I expect the following query response:
       """json
       {
           "success": {
+              "propertySchema": null,
+              "constraints": null,
               "references": [
                 {
                   "breadcrumbs": [
@@ -341,9 +339,7 @@ Feature: GetReferencesSummary
                   "icon": "my-icon",
                   "label": "My Node: a",
                   "uri": "node://target-a",
-                  "properties": null,
-                  "propertySchema": null,
-                  "constraints": null
+                  "properties": null
                 }
               ]
           }
@@ -364,11 +360,14 @@ Feature: GetReferencesSummary
       | dimensionValues     | {"language": ["en"]} |
       | nodeId              | "features-constraints"           |
       | referenceName       | "myReferences"       |
-      | referenceIds        | ["target-a"]         |
     Then I expect the following query response:
       """json
       {
           "success": {
+              "propertySchema": null,
+              "constraints": {
+                "maxItems": 1
+              },
               "references": [
                 {
                   "breadcrumbs": [
@@ -388,11 +387,7 @@ Feature: GetReferencesSummary
                   "icon": "my-icon",
                   "label": "My Node: a",
                   "uri": "node://target-a",
-                  "properties": null,
-                  "propertySchema": null,
-                  "constraints": {
-                    "maxItems": 1
-                  }
+                  "properties": null
                 }
               ]
           }

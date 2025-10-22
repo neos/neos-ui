@@ -1,5 +1,6 @@
 import React from 'react';
 import {ReferencesItem} from '../ReferencesItem'
+import {HoverActions} from '../HoverActions'
 
 interface ReferencesListProps {
     references: {
@@ -18,7 +19,11 @@ export const ReferencesList = (props: ReferencesListProps) => {
     return (
         <>
             {props.references.map(reference => {
-                return <ReferencesItem key={reference.uri} reference={reference} isDraggable={props.references.length > 1}/>
+                return (
+                    <HoverActions key={reference.uri} onEdit={() => {}} onDelete={() => {}}>
+                        <ReferencesItem reference={reference} isDraggable={props.references.length > 1}/>
+                    </HoverActions>
+                );
             })}
         </>
     );

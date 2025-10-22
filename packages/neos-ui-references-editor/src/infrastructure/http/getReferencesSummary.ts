@@ -24,7 +24,7 @@ type GetReferencesSummaryQueryResultEnvelope =
     };
 }
 
-export async function getReferencesSummary(workspaceName: string, dimensionValues: DimensionCombination, nodeId: string, referenceIds: []): Promise<GetReferencesSummaryQueryResultEnvelope> {
+export async function getReferencesSummary(workspaceName: string, dimensionValues: DimensionCombination, nodeId: string, referenceIds: [], referenceName: string): Promise<GetReferencesSummaryQueryResultEnvelope> {
     const searchParams = new URLSearchParams();
     searchParams.set('workspaceName', workspaceName);
     for (const [dimensionName, fallbackChain] of Object.entries(
@@ -41,6 +41,7 @@ export async function getReferencesSummary(workspaceName: string, dimensionValue
     referenceIds.forEach((referenceId, i) => {
         searchParams.set(`referenceIds[${i}]`, referenceId);
     });
+    searchParams.set('referenceName', referenceName);
 
     try {
         const response = await fetchWithErrorHandling.withCsrfToken(

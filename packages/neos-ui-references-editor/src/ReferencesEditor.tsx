@@ -23,6 +23,7 @@ const ReferencesEditor = (props) => {
             selectedNodeId.identifier,
             // TODO: Wie komme ich an die Property ran? (blogs)
             selectedNodeId.properties.blogs,
+            'blogs'
         );
 
         if ('success' in result) {

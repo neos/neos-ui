@@ -1,17 +1,28 @@
 .container {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: stretch; /* allow handle to be full height */
     gap: var(--spacing-Half);
     width: 100%;
-    min-height: var(--spacing-GoldenUnit);
+    /*min-height: var(--spacing-GoldenUnit);*/
     padding: var(--spacing-Half) var(--spacing-Full);
+    padding-left: 0; /* let the handle sit flush at the very left */
     border-bottom: 1px solid var(--colors-ContrastDark);
     transition: background-color var(--transition-Default);
+    min-height: 100px;
 }
 
 .container:hover {
     background-color: rgba(255, 255, 255, 0.04);
+}
+
+.main {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--spacing-Half);
+    width: 100%;
+    padding-left: var(--spacing-Full); /* restore inner left padding for content */
 }
 
 .labelContainer {
@@ -34,3 +45,55 @@
     color: var(--colors-ContrastBrighter);
 }
 
+
+.dragHandle {
+    align-self: stretch; /* make handle area full height of the item */
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    width: 16px; /* slim lane similar to AssetEditor */
+    border-right: 1px solid var(--colors-ContrastDark);
+    cursor: grab;
+    transition: background-color var(--transition-Default), border-color var(--transition-Default), opacity var(--transition-Default);
+}
+
+/* Double vertical grip lines centered in the lane */
+.dragHandle::before {
+    content: '';
+    position: absolute;
+    top: var(--spacing-Full);
+    bottom: var(--spacing-Full);
+    left: 6px; /* center the pair within 16px lane */
+    width: 4px; /* total width covering two 1px lines with 2px gap */
+    background-image: linear-gradient(to right,
+        white 0, white 1px,
+        transparent 1px, transparent 3px,
+        white 3px, white 4px);
+    opacity: .6;
+    pointer-events: none;
+    transition: opacity var(--transition-Default), filter var(--transition-Default);
+}
+
+.container:hover .dragHandle,
+.dragHandle:hover {
+    background-color: rgba(255, 255, 255, 0.04);
+    border-color: var(--colors-ContrastNeutral);
+}
+
+.container:hover .dragHandle::before,
+.dragHandle:hover::before {
+    opacity: 1;
+    filter: brightness(1.2);
+}
+
+.dragHandle:active {
+    cursor: grabbing;
+}
+
+.dragHandleIcon {
+    /* keep IconButton for interaction but hide the glyph to mimic AssetEditor grip */
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}

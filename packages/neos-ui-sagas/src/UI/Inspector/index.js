@@ -104,7 +104,7 @@ function * flushInspector(inspectorRegistry) {
         focusedNodeFusionPath = focusedDomNode && focusedDomNode.getAttribute('data-__neos-fusion-path');
     }
     const transientInspectorValues = getTransientInspectorValues(state);
-    const transientInspectorValuesForFocusedNodes = transientInspectorValues?.[focusedNode?.contextPath];
+    const transientInspectorValuesForFocusedNodes = transientInspectorValues?.[focusedNode?.contextPath] ?? [];
 
     //
     // Accumulate changes to be persisted
@@ -162,6 +162,26 @@ function * flushInspector(inspectorRegistry) {
             }
         }
     }
+
+    for (const transientChange of state?.ui?.inspector?.transientChanges ?? []) {
+        if (transientChange.type === 'Neos.Neos.Ui:Property') {
+            if (transientChange.contextPath === focusedNode?.subject) {
+                changes.push(
+                    {
+                        ...transientChange,
+                        payload: {
+                            ...transientChange.payload,
+                            nodeDomAddress: {
+                                contextPath: focusedNode.contextPath,
+                                fusionPath: focusedNodeFusionPath
+                            }
+                        }
+                    }
+                );
+            }
+        }
+    }
+
     yield put(actions.Changes.persistChanges(changes));
 
     //

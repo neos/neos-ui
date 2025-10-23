@@ -23,9 +23,11 @@ export const transientValues = createSelector(
 
 export const isDirty = createSelector(
     [
+        nodes.focusedNodePathSelector,
+        (state: GlobalState) => state?.ui?.inspector?.transientChanges ?? [],
         transientValues
     ],
-    transientValues => Boolean(transientValues && (Object.keys(transientValues).length > 0))
+    (focusedNodeContextPath, transientChanges, transientValues) => Object.keys(transientValues ?? {}).length > 0 || transientChanges.filter((change) => change.subject === focusedNodeContextPath).length > 0
 );
 
 export const shouldPromptToHandleUnappliedChanges = (state: GlobalState) => state?.ui?.inspector?.shouldPromptToHandleUnappliedChanges;

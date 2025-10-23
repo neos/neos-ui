@@ -239,15 +239,3 @@ export interface NodeType {
         [referenceName: string]: ReferencesConfiguration | undefined;
     };
 }
-
-//
-// Change object from our Changes API
-//
-export interface Change extends Readonly<{
-    type: string;
-    subject: NodeContextPath;
-    payload: {
-        propertyName: string;
-        value: any;
-    };
-}> {}

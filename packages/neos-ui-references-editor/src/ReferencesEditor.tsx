@@ -1,16 +1,19 @@
 import React from 'react';
 import {getReferencesSummary} from './infrastructure/http';
 import {usePromise} from '@neos-project/framework-promise-react';
-import {selectors, useSelector} from '@neos-project/neos-ui-redux-store';
+import {selectors, actions, useSelector} from '@neos-project/neos-ui-redux-store';
 import {ErrorView} from "@neos-project/neos-ui-error";
 import {HoverActions} from "./presentation/HoverActions";
 import {ReferencesItem} from "./presentation/ReferencesItem";
 import {IEditor} from "./domain";
+import {useDispatch} from 'react-redux';
 
 export const createReferencesEditor = (editor: IEditor) => (props) => {
     const workspaceName = useSelector(selectors.CR.Workspaces.personalWorkspaceNameSelector);
     const dimension = useSelector(selectors.CR.ContentDimensions.active);
     const selectedNodeId = useSelector(selectors.CR.Nodes.focusedSelector);
+
+    const dispatch = useDispatch();
 
     const fetch__referencesSummary = usePromise(async () => {
         if (!workspaceName || !dimension || !selectedNodeId?.identifier) {
@@ -51,7 +54,15 @@ export const createReferencesEditor = (editor: IEditor) => (props) => {
         );
 
         if (result.change) {
-            props.commit(result.value);
+            // todo only for testing
+            dispatch(actions.UI.Inspector.commitChange({
+                type: 'Neos.Neos.Ui:Property',
+                subject: selectedNodeId!.contextPath,
+                payload: {
+                   propertyName: 'lol',
+                   value: 'test' + Math.random(),
+               }
+            }));
         }
 
     }, [editor, fetch__referencesSummary]);

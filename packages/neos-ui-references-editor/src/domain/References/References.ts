@@ -3,4 +3,6 @@ export interface IReference {
     properties: any,
 }
 
-export type IReferences = IReference[];
+export interface IReferences {
+    [targetNodeId: string]: IReference
+}

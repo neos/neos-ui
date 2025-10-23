@@ -7,8 +7,8 @@ export const EditorWasOpened = createAction(
     (
         initialValue: null | IReferences,
         constraints: any,
-        schema: any,
-    ) => ({initialValue, constraints, schema})
+        propertySchema: any,
+    ) => ({initialValue, constraints, propertySchema})
 )();
 
 export const EditorWasDismissed = createAction(

@@ -12,8 +12,10 @@ type GetReferencesSummaryQueryResultEnvelope =
                 icon: string;
                 label: string;
                 uri: string;
-                hasProperties: boolean;
-            }[]
+                properties: boolean;
+            }[],
+            propertySchema?: Record<string, any>,
+            constraints?: Record<string, any>,
         }
     } | {
         error: {

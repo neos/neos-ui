@@ -6,7 +6,7 @@ import {IReferences} from "../References";
 
 export interface IEditorState {
     constraints: any,
-    schema: any,
+    propertySchema: any,
     isOpen: boolean,
     initialValue: null | IReferences,
 }
@@ -18,7 +18,7 @@ type IEditorResult =
 
 const initialState: IEditorState = {
     constraints: {},
-    schema: {},
+    propertySchema: {},
     isOpen: false,
     initialValue: null
 };
@@ -62,11 +62,11 @@ export function createEditor() {
     const editLink = (
         initialValue: null | IReferences,
         constraints: any,
-        schema: any,
+        propertySchema: any,
     ) => new Promise<IEditorResult>(
         resolve => {
             dispatch(
-                actions.EditorWasOpened(initialValue, constraints, schema)
+                actions.EditorWasOpened(initialValue, constraints, propertySchema)
             );
 
             actions$.subscribe({

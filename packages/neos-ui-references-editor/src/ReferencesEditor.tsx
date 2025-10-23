@@ -5,7 +5,7 @@ import {selectors, actions, useSelector} from '@neos-project/neos-ui-redux-store
 import {ErrorView} from "@neos-project/neos-ui-error";
 import {HoverActions} from "./presentation/HoverActions";
 import {ReferencesItem} from "./presentation/ReferencesItem";
-import {IEditor} from "./domain";
+import {IEditor, IReferences} from "./domain";
 import {useDispatch} from 'react-redux';
 
 export const createReferencesEditor = (editor: IEditor) => (props) => {
@@ -41,28 +41,41 @@ export const createReferencesEditor = (editor: IEditor) => (props) => {
         return null;
     }, []);
 
+    // todo props.value, should be size of references to fake initial height.
+
     const onEdit = React.useCallback(async () => {
         if (!fetch__referencesSummary.value) {
             return;
         }
 
+        let references: IReferences = {};
+
+        for (const reference of fetch__referencesSummary.value.references) {
+            const nodeId = reference.uri.substring('node://'.length); // todo hack
+            references[nodeId] = {
+                targetNodeId: nodeId,
+                properties: reference.properties
+            }
+        }
+
         const result = await editor.transactions.editLink(
-            props.value,
-            // todo flatten structure no references[0]?.!!!!!!!!
-            fetch__referencesSummary.value.references[0]?.constraints ?? {},
-            fetch__referencesSummary.value.references[0]?.propertySchema ?? {},
+            references,
+            fetch__referencesSummary.value.constraints ?? {},
+            fetch__referencesSummary.value.propertySchema ?? {},
         );
 
         if (result.change) {
+            console.log(result.value);
+
             // todo only for testing
-            dispatch(actions.UI.Inspector.commitChange({
-                type: 'Neos.Neos.Ui:Property',
-                subject: selectedNodeId!.contextPath,
-                payload: {
-                   propertyName: 'lol',
-                   value: 'test' + Math.random(),
-               }
-            }));
+            //dispatch(actions.UI.Inspector.commitChange({
+            //    type: 'Neos.Neos.Ui:Property',
+            //    subject: selectedNodeId!.contextPath,
+            //    payload: {
+            //       propertyName: 'lol',
+            //       value: 'test' + Math.random(),
+            //   }
+            //}));
         }
 
     }, [editor, fetch__referencesSummary]);

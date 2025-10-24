@@ -151,7 +151,10 @@ export class Editor {
             subject: nodeAddress,
             payload: {
                 referenceName,
-                serializedReferences: Object.keys(this.data.transientValues)
+                serializedReferences: Object.values(this.data.transientValues).map((({targetNodeId, properties}) => ({
+                    targetNodeId,
+                    properties
+                })))
             }
         };
     }

@@ -12,10 +12,12 @@ namespace Neos\Neos\Ui\Domain\Model\Changes;
  * source code.
  */
 
+use Neos\ContentRepository\Core\Feature\NodeModification\Dto\PropertyValuesToWrite;
 use Neos\ContentRepository\Core\Feature\NodeReferencing\Command\SetNodeReferences;
 use Neos\ContentRepository\Core\Feature\NodeReferencing\Dto\NodeReferencesForName;
 use Neos\ContentRepository\Core\Feature\NodeReferencing\Dto\NodeReferencesToWrite;
-use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateIds;
+use Neos\ContentRepository\Core\Feature\NodeReferencing\Dto\NodeReferenceToWrite;
+use Neos\ContentRepository\Core\SharedModel\Node\NodeAggregateId;
 use Neos\ContentRepository\Core\SharedModel\Node\ReferenceName;
 use Neos\Neos\Ui\Domain\Model\AbstractChange;
 use Neos\Neos\Ui\Domain\Model\Feedback\Operations\ReloadContentOutOfBand;
@@ -112,15 +114,23 @@ class Reference extends AbstractChange
     {
         $contentRepository = $this->contentRepositoryRegistry->get($this->subject->contentRepositoryId);
 
+        $nodeReferencesToWrite = [];
+        foreach ($this->serializedReferences as $serializedReference) {
+            $nodeReferencesToWrite[] = NodeReferenceToWrite::fromTargetAndProperties(
+                target: NodeAggregateId::fromString($serializedReference['targetNodeId']),
+                properties: PropertyValuesToWrite::fromArray($serializedReference['properties'] ?? [])
+            );
+        }
+
         $contentRepository->handle(
             SetNodeReferences::create(
                 $this->subject->workspaceName,
                 $this->subject->aggregateId,
                 $this->subject->originDimensionSpacePoint,
                 NodeReferencesToWrite::create(
-                    NodeReferencesForName::fromTargets(
+                    NodeReferencesForName::fromReferences(
                         ReferenceName::fromString($this->referenceName),
-                        NodeAggregateIds::fromArray($this->serializedReferences)
+                        $nodeReferencesToWrite
                     )
                 )
             )

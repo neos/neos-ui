@@ -2,18 +2,10 @@ import React from 'react';
 import {Icon, IconButton} from '@neos-project/react-ui-components';
 import style from './style.module.css';
 import {Breadcrumb} from '../Breadcrumb';
+import {IReference} from "../../domain";
 
 interface ReferencesItemProps {
-    reference: {
-        breadcrumbs: {
-            icon: string;
-            label: string;
-        }[]
-        icon: string;
-        label: string;
-        uri: string;
-        hasProperties: boolean;
-    };
+    reference: IReference;
     isDraggable?: boolean;
 }
 

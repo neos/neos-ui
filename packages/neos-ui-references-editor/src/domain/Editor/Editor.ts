@@ -1,5 +1,6 @@
-import {IReferences} from "../References";
+import {IReference, IReferences} from "../References";
 import {Change} from "@neos-project/neos-ui-backend-connector/src/Endpoints/Change";
+import {IReferenceWithProperties} from "../References/References";
 
 export class Editor {
     private constructor(
@@ -10,6 +11,7 @@ export class Editor {
             readonly initialReferencesCount: number;
             readonly initialValues: IReferences;
             readonly transientValues: IReferences;
+            readonly transientReferencePropertyValues: IReferenceWithProperties;
             readonly constraints: any;
             readonly propertySchema: any;
         }
@@ -36,6 +38,23 @@ export class Editor {
         return new Editor({
             ...this.data,
             isReferencePropertyEditingOpen: true,
+            transientReferencePropertyValues: Object.fromEntries(Object.entries(this.data.transientValues ?? this.data.initialValues).map(([targetNodeId, reference]) => [
+                targetNodeId,
+                {
+                    targetNodeId,
+                    properties: reference.properties
+                }
+            ]))
+        })
+    }
+
+    public withRemovedReference(referenceTargetId: string): Editor {
+        const {[referenceTargetId]: _, ...otherReferences} = this.data.transientValues ?? this.data.initialValues;
+
+        return new Editor({
+            ...this.data,
+            isDirty: true,
+            transientValues: otherReferences
         })
     }
 
@@ -43,7 +62,7 @@ export class Editor {
         return new Editor({
             ...this.data,
             isReferencePropertyEditingOpen: false,
-            transientValues: {}
+            transientReferencePropertyValues: {}
         })
     }
 
@@ -52,14 +71,43 @@ export class Editor {
             ...this.data,
             isDirty: true,
             isReferencePropertyEditingOpen: false,
-            initialValues: {...this.data.initialValues, ...this.data.transientValues},
-            transientValues: {}
+            transientValues: Object.entries(this.data.transientValues ?? this.data.initialValues).reduce((carry, [targetNodeId, reference]) => {
+                return {
+                    ...carry,
+                    [targetNodeId]: {
+                        ...reference,
+                        properties: this.data.transientReferencePropertyValues[targetNodeId]
+                    }
+                }
+            }, {}),
+        })
+    }
+
+    public withDiscard(): Editor {
+        return new Editor({
+            isDirty: false,
+            initialValues: this.data.initialValues
         })
     }
 
     public isReferencePropertyEditingOpen(): boolean
     {
         return this.data.isReferencePropertyEditingOpen;
+    }
+
+    public isLoading(): boolean
+    {
+        return !Boolean(this.data.initialValues)
+    }
+
+    public getLoadingReferencesCount(): number
+    {
+        return this.data.initialReferencesCount;
+    }
+
+    public getReferences(): IReferences
+    {
+        return this.data.transientValues ?? this.data.initialValues;
     }
 
     public getChange(nodeAddress: string): Change | null

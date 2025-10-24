@@ -2,6 +2,7 @@ import React from 'react';
 import {getReferencesSummary} from './infrastructure/http';
 import {usePromise} from '@neos-project/framework-promise-react';
 import {actions, selectors, useSelector} from '@neos-project/neos-ui-redux-store';
+import {discardChannel$} from '@neos-project/neos-ui-sagas/src/UI/Inspector';
 import {ErrorView} from "@neos-project/neos-ui-error";
 import {HoverActions} from "./presentation/HoverActions";
 import {ReferencesItem} from "./presentation/ReferencesItem";
@@ -18,7 +19,7 @@ export const createReferencesEditor = () => (props) => {
     const selectedNodeId = useSelector(selectors.CR.Nodes.focusedSelector);
     const dispatch = useDispatch();
 
-    const editor$ = React.useMemo(() => createState(Editor.fromLoadingState(1)), [selectedNodeId, props.identifier]);
+    const editor$ = React.useMemo(() => createState(Editor.fromLoadingState(1)), []);
 
     React.useEffect(() => {
         const subscription = editor$.subscribe({ next: (editor) => {
@@ -26,6 +27,13 @@ export const createReferencesEditor = () => (props) => {
             if (change) {
                 dispatch(actions.UI.Inspector.commitChange(change));
             }
+        }});
+        return subscription.unsubscribe;
+    }, [editor$]);
+
+    React.useEffect(() => {
+        const subscription = discardChannel$.subscribe({ next: () => {
+            editor$.update(editor => editor.withDiscard())
         }});
         return subscription.unsubscribe;
     }, [editor$]);
@@ -54,7 +62,7 @@ export const createReferencesEditor = () => (props) => {
                 const nodeId = reference.uri.substring('node://'.length); // todo hack
                 references[nodeId] = {
                     targetNodeId: nodeId,
-                    properties: reference.properties
+                    ...reference
                 }
             }
 
@@ -78,8 +86,10 @@ export const createReferencesEditor = () => (props) => {
 
     const onEdit = React.useCallback(() => editor$.update(editor => editor.withReferencePropertyEditing()), [editor$]);
 
-    if (fetch__referencesSummary.isLoading) {
-        return <div>Loading...</div>;
+    const onDelete = React.useCallback((referenceTargetId: string) => editor$.update(editor => editor.withRemovedReference(referenceTargetId)), [editor$]);
+
+    if (editor.isLoading()) {
+        return <div>Loading {editor.getLoadingReferencesCount()}...</div>;
     }
 
     if (fetch__referencesSummary.error) {
@@ -88,9 +98,9 @@ export const createReferencesEditor = () => (props) => {
 
     return (
         <>
-            {(fetch__referencesSummary.value?.references ?? []).map(reference => {
+            {Object.values(editor.getReferences()).map(reference => {
                 return (
-                    <HoverActions key={reference.uri} onEdit={onEdit} onDelete={() => {}}>
+                    <HoverActions key={reference.targetNodeId} onEdit={onEdit} onDelete={() => onDelete(reference.targetNodeId)}>
                         <ReferencesItem reference={reference} isDraggable={(fetch__referencesSummary.value?.references?.length ?? 0) > 1}/>
                     </HoverActions>
                 );

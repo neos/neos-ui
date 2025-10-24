@@ -21,7 +21,7 @@ export const createReferencesEditor = () => (props) => {
     const selectedNodeId = useSelector(selectors.CR.Nodes.focusedSelector);
     const dispatch = useDispatch();
 
-    const editor$ = React.useMemo(() => createState(Editor.fromLoadingState(1)), []);
+    const editor$ = React.useMemo(() => createState(Editor.fromLoadingState(props.value.referencesCount)), []);
 
     React.useEffect(() => {
         const subscription = editor$.subscribe({
@@ -57,8 +57,6 @@ export const createReferencesEditor = () => (props) => {
             workspaceName,
             dimension,
             selectedNodeId.identifier,
-            // todo does not work with empty
-            props.value,
             props.identifier
         );
 

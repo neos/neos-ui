@@ -7,6 +7,7 @@ export class Editor {
         private readonly data: {
             readonly isLocked: boolean;
             readonly isReferencePropertyEditingOpen: boolean;
+            readonly selectedReferenceId: string;
             readonly initialReferencesCount: number;
             readonly initialValues: IReferences;
             readonly transientValues: IReferences;
@@ -32,10 +33,11 @@ export class Editor {
         })
     }
 
-    public withReferencePropertyEditing(): Editor {
+    public withReferencePropertyEditing(referenceTargetId: string): Editor {
         return new Editor({
             ...this.data,
             isReferencePropertyEditingOpen: true,
+            selectedReferenceId: referenceTargetId,
             transientReferencePropertyValues: Object.fromEntries(Object.entries(this.data.transientValues ?? this.data.initialValues).map(([targetNodeId, reference]) => [
                 targetNodeId,
                 {
@@ -72,16 +74,35 @@ export class Editor {
                     ...carry,
                     [targetNodeId]: {
                         ...reference,
-                        properties: this.data.transientReferencePropertyValues[targetNodeId]
+                        properties: this.data.transientReferencePropertyValues[targetNodeId].properties
                     }
                 }
             }, {}),
+            transientReferencePropertyValues: {}
+        })
+    }
+
+    public withReferenceProperty(propertyName: string, value: any): Editor {
+        return new Editor({
+            ...this.data,
+            transientReferencePropertyValues: {
+                ...this.data.transientReferencePropertyValues,
+                [this.data.selectedReferenceId]: {
+                    ...this.data.transientReferencePropertyValues[this.data.selectedReferenceId],
+                    properties: {
+                        ...this.data.transientReferencePropertyValues[this.data.selectedReferenceId]?.properties,
+                        [propertyName]: value
+                    }
+                }
+            }
         })
     }
 
     public withDiscard(): Editor {
         return new Editor({
-            initialValues: this.data.initialValues
+            initialValues: this.data.initialValues,
+            constraints: this.data.constraints,
+            propertySchema: this.data.propertySchema,
         })
     }
 
@@ -103,6 +124,16 @@ export class Editor {
     public getReferences(): IReferences
     {
         return this.data.transientValues ?? this.data.initialValues;
+    }
+
+    public getPropertySchema(): any
+    {
+        return this.data.propertySchema ?? {};
+    }
+
+    public getReferencePropertyValue(propertyName: string): any
+    {
+        return this.data.transientReferencePropertyValues[this.data.selectedReferenceId]?.properties?.[propertyName]
     }
 
     public getChange(nodeAddress: string, referenceName: string): Change | null

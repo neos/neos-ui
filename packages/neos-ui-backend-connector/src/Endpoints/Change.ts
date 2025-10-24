@@ -14,6 +14,7 @@ export interface PropertyChange extends Readonly<{
     };
 }> {}
 
+// todo deduplicate qued changed and add isEqual methods and isSubject
 export interface ReferenceChange extends Readonly<{
     type: 'Neos.Neos.Ui:Reference';
     subject: string;

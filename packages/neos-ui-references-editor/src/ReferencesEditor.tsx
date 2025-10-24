@@ -25,6 +25,7 @@ export const createReferencesEditor = () => (props) => {
 
     React.useEffect(() => {
         const subscription = editor$.subscribe({next: (editor) => {
+            console.log(editor)
             const change = editor.getChange(selectedNodeId!.contextPath, props.identifier);
             if (change) {
                 dispatch(actions.UI.Inspector.commitChange(change));
@@ -86,7 +87,7 @@ export const createReferencesEditor = () => (props) => {
 
     // todo props.value, should be size of references to fake initial height.
 
-    const onEdit = React.useCallback(() => editor$.update(editor => editor.withReferencePropertyEditing()), [editor$]);
+    const onEdit = React.useCallback((referenceTargetId: string) => editor$.update(editor => editor.withReferencePropertyEditing(referenceTargetId)), [editor$]);
 
     const onDelete = React.useCallback((referenceTargetId: string) => editor$.update(editor => editor.withRemovedReference(referenceTargetId)), [editor$]);
 
@@ -120,7 +121,7 @@ export const createReferencesEditor = () => (props) => {
         <>
             {Object.values(editor.getReferences()).map(reference => {
                 return (
-                    <HoverActions key={reference.targetNodeId} onEdit={onEdit} onDelete={() => onDelete(reference.targetNodeId)}>
+                    <HoverActions key={reference.targetNodeId} onEdit={() => onEdit(reference.targetNodeId)} onDelete={() => onDelete(reference.targetNodeId)}>
                         <ReferencesItem reference={reference} isDraggable={(fetch__referencesSummary.value?.references?.length ?? 0) > 1}/>
                     </HoverActions>
                 );

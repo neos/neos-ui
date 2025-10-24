@@ -60,7 +60,7 @@ export const ActiveReferenceEditorDialog: React.FC<{
         >
             <ErrorBoundary errorFallback={ErrorView}>
 
-                {Object.entries({}).map(([propertyName, propertyConfiguration]) =>
+                {Object.entries(editor.getPropertySchema()).map(([propertyName, propertyConfiguration]) =>
                     <div key={propertyName} className={''}>
                         <EditorEnvelope
                             identifier={`${propertyName}--reference-dialog`}
@@ -69,15 +69,9 @@ export const ActiveReferenceEditorDialog: React.FC<{
                             helpMessage={propertyConfiguration?.ui?.help?.message || ''}
                             helpThumbnail={propertyConfiguration?.ui?.help?.thumbnail || ''}
                             options={propertyConfiguration?.ui?.editorOptions}
-                            commit={(value) => form$.update(form => ({...form, references: {...form.references, [form.selectedReferenceId]: {
-                                ...form.references[form.selectedReferenceId],
-                                properties: {
-                                    ...form.references[form.selectedReferenceId]?.properties,
-                                    [propertyName]: value
-                                }
-                            }}}))}
+                            commit={(value) => editor$.update(editor => editor.withReferenceProperty(propertyName, value))}
                             validationErrors={[]}
-                            value={form.references[form.selectedReferenceId]?.properties?.[propertyName] ?? ''}
+                            value={editor.getReferencePropertyValue(propertyName) ?? ''}
                         />
                     </div>
                 )}

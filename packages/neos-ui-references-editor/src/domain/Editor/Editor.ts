@@ -1,4 +1,4 @@
-import {IReferences} from '../References';
+import {IReference, IReferences} from '../References';
 import {Change} from '@neos-project/neos-ui-backend-connector/src/Endpoints/Change';
 import {IReferenceWithProperties} from '../References/References';
 
@@ -48,13 +48,13 @@ export class Editor {
         })
     }
 
-    public withAddedReference(referenceTargetId: string, referenceValue: any): Editor {
+    public withAddedReference(reference: IReference): Editor {
         const transientValues = this.data.transientValues ?? this.data.initialValues;
         return new Editor({
             ...this.data,
             transientValues: {
                 ...transientValues,
-                [referenceTargetId]: referenceValue
+                [reference.targetNodeId]: reference
             }
         })
     }

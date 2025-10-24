@@ -20,8 +20,9 @@ export const ReferencesTreeSecondaryEditor = (props: ReferencesTreeSecondaryEdit
         setSelectedTreeNodeIds(array => [...array, nodeId])
         // TODO test values
         const referenceValue = {
+            targetNodeId: nodeId,
             'icon': 'header',
-            'label': 'Welcome to the Neos CMS demo',
+            'label': "Node " + nodeId,
             'uri': 'node://d17caff2-f50c-d30b-b735-9b9216de02e9',
             'breadcrumbs': [
                 {
@@ -41,7 +42,7 @@ export const ReferencesTreeSecondaryEditor = (props: ReferencesTreeSecondaryEdit
         };
         // mock api call for now
         setTimeout(() => {
-            editor$.update(editor => editor.withAddedReference(nodeId, referenceValue));
+            editor$.update(editor => editor.withAddedReference(referenceValue));
         }, 2000);
     }
 

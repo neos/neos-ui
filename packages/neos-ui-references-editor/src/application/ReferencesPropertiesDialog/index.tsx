@@ -38,7 +38,7 @@ export const ReferencesPropertiesDialog: React.FC<{
         <Dialog
             id="neos-ReferencesEditor"
             isOpen={true}
-            preventClosing={false}
+            preventClosing={editor.isReferencePropertyEditingDirty()}
             onRequestClose={dismiss}
             title={<div>{translate('Neos.Neos.Ui:LinkEditor.Main:dialog.title', '')}</div>}
             style="wide"

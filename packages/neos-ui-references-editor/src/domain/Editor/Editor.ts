@@ -36,13 +36,6 @@ export class Editor {
             ...this.data,
             isReferencePropertyEditingOpen: true,
             selectedReferenceId: referenceTargetId,
-            transientReferencePropertyValues: Object.fromEntries(Object.entries(this.data.transientValues ?? this.data.initialValues).map(([targetNodeId, reference]) => [
-                targetNodeId,
-                {
-                    targetNodeId,
-                    properties: reference.properties
-                }
-            ]))
         })
     }
 
@@ -70,11 +63,14 @@ export class Editor {
         return new Editor({
             ...this.data,
             isReferencePropertyEditingOpen: false,
-            transientReferencePropertyValues: {}
+            transientReferencePropertyValues: undefined
         })
     }
 
     public withAppliedReferencePropertyEditing(): Editor {
+        if (!this.data.transientReferencePropertyValues) {
+            throw Error('Fatal invalid state');
+        }
         return new Editor({
             ...this.data,
             isReferencePropertyEditingOpen: false,
@@ -87,19 +83,21 @@ export class Editor {
                     }
                 }
             }, {}),
-            transientReferencePropertyValues: {}
+            transientReferencePropertyValues: undefined
         })
     }
 
     public withReferenceProperty(propertyName: string, value: any): Editor {
+        const transientReferencePropertyValues = this.data.transientReferencePropertyValues ?? this.data.transientValues ?? this.data.initialValues;
+
         return new Editor({
             ...this.data,
             transientReferencePropertyValues: {
-                ...this.data.transientReferencePropertyValues,
+                ...transientReferencePropertyValues,
                 [this.data.selectedReferenceId]: {
-                    ...this.data.transientReferencePropertyValues[this.data.selectedReferenceId],
+                    ...transientReferencePropertyValues[this.data.selectedReferenceId],
                     properties: {
-                        ...this.data.transientReferencePropertyValues[this.data.selectedReferenceId]?.properties,
+                        ...transientReferencePropertyValues[this.data.selectedReferenceId]?.properties,
                         [propertyName]: value
                     }
                 }
@@ -123,6 +121,10 @@ export class Editor {
         return !this.data.initialValues
     }
 
+    public isReferencePropertyEditingDirty(): boolean {
+        return Boolean(this.data.transientReferencePropertyValues)
+    }
+
     public getLoadingReferencesCount(): number {
         return this.data.initialReferencesCount;
     }
@@ -136,7 +138,7 @@ export class Editor {
     }
 
     public getReferencePropertyValue(propertyName: string): any {
-        return this.data.transientReferencePropertyValues[this.data.selectedReferenceId]?.properties?.[propertyName]
+        return (this.data.transientReferencePropertyValues ?? this.data.transientValues ?? this.data.initialValues)[this.data.selectedReferenceId]?.properties?.[propertyName]
     }
 
     public getChange(nodeAddress: string, referenceName: string): Change | null {

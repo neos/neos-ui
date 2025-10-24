@@ -121,6 +121,7 @@ describe('Editor', () => {
 
         expect(editor.isLoading()).toBe(false);
         expect(editor.isReferencePropertyEditingOpen()).toBe(true);
+        expect(editor.isReferencePropertyEditingDirty()).toBe(false);
         expect(Object.keys(editor.getReferences())).toStrictEqual(['myTarget']);
         expect(editor.getChange('nodeid', 'myRef')).toBe(null);
 
@@ -129,10 +130,12 @@ describe('Editor', () => {
         editor = editor.withReferenceProperty('myProperty', 'myPropertyValue');
 
         expect(editor.isReferencePropertyEditingOpen()).toBe(true);
+        expect(editor.isReferencePropertyEditingDirty()).toBe(true);
         expect(editor.getReferencePropertyValue('myProperty')).toBe('myPropertyValue');
 
         editor = editor.withDismissedReferencePropertyEditing();
         expect(editor.isReferencePropertyEditingOpen()).toBe(false);
+        expect(editor.isReferencePropertyEditingDirty()).toBe(false);
         expect(editor.getReferencePropertyValue('myProperty')).toBe(undefined);
         expect(editor.getReferences()).toStrictEqual({
             'myTarget': {
@@ -147,7 +150,7 @@ describe('Editor', () => {
         expect(editor.getChange('nodeid', 'myRef')).toBe(null);
     })
 
-    test('load references and que property change and apply', () => {
+    test('load references and queue property change and apply', () => {
         let editor = Editor.fromLoadingState(2).withReferencesAndConfiguration(
             {
                 'myTarget': {
@@ -179,6 +182,7 @@ describe('Editor', () => {
 
         expect(editor.isLoading()).toBe(false);
         expect(editor.isReferencePropertyEditingOpen()).toBe(true);
+        expect(editor.isReferencePropertyEditingDirty()).toBe(false);
         expect(Object.keys(editor.getReferences())).toStrictEqual(['myTarget']);
         expect(editor.getChange('nodeid', 'myRef')).toBe(null);
 
@@ -187,11 +191,13 @@ describe('Editor', () => {
         editor = editor.withReferenceProperty('myProperty', 'myPropertyValue');
 
         expect(editor.isReferencePropertyEditingOpen()).toBe(true);
+        expect(editor.isReferencePropertyEditingDirty()).toBe(true);
         expect(editor.getReferencePropertyValue('myProperty')).toBe('myPropertyValue');
 
         editor = editor.withAppliedReferencePropertyEditing();
         expect(editor.isReferencePropertyEditingOpen()).toBe(false);
-        expect(editor.getReferencePropertyValue('myProperty')).toBe(undefined);
+        expect(editor.isReferencePropertyEditingDirty()).toBe(false);
+        expect(editor.getReferencePropertyValue('myProperty')).toBe('myPropertyValue');
         expect(editor.getReferences()).toStrictEqual({
             'myTarget': {
                 targetNodeId: 'myTarget',

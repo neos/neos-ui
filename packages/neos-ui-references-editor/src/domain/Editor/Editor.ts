@@ -1,6 +1,6 @@
-import {IReference, IReferences} from "../References";
-import {Change} from "@neos-project/neos-ui-backend-connector/src/Endpoints/Change";
-import {IReferenceWithProperties} from "../References/References";
+import {IReferences} from '../References';
+import {Change} from '@neos-project/neos-ui-backend-connector/src/Endpoints/Change';
+import {IReferenceWithProperties} from '../References/References';
 
 export class Editor {
     private constructor(
@@ -19,9 +19,7 @@ export class Editor {
     }
 
     public static fromLoadingState(initialReferencesCount: number): Editor {
-        return new Editor({
-            initialReferencesCount,
-        })
+        return new Editor({initialReferencesCount})
     }
 
     public withReferencesAndConfiguration(initialValues: IReferences, constraints: any, propertySchema: any): Editor {
@@ -29,7 +27,7 @@ export class Editor {
             ...this.data,
             initialValues,
             constraints,
-            propertySchema,
+            propertySchema
         })
     }
 
@@ -102,42 +100,35 @@ export class Editor {
         return new Editor({
             initialValues: this.data.initialValues,
             constraints: this.data.constraints,
-            propertySchema: this.data.propertySchema,
+            propertySchema: this.data.propertySchema
         })
     }
 
-    public isReferencePropertyEditingOpen(): boolean
-    {
+    public isReferencePropertyEditingOpen(): boolean {
         return this.data.isReferencePropertyEditingOpen;
     }
 
-    public isLoading(): boolean
-    {
-        return !Boolean(this.data.initialValues)
+    public isLoading(): boolean {
+        return !this.data.initialValues
     }
 
-    public getLoadingReferencesCount(): number
-    {
+    public getLoadingReferencesCount(): number {
         return this.data.initialReferencesCount;
     }
 
-    public getReferences(): IReferences
-    {
+    public getReferences(): IReferences {
         return this.data.transientValues ?? this.data.initialValues;
     }
 
-    public getPropertySchema(): any
-    {
+    public getPropertySchema(): any {
         return this.data.propertySchema ?? {};
     }
 
-    public getReferencePropertyValue(propertyName: string): any
-    {
+    public getReferencePropertyValue(propertyName: string): any {
         return this.data.transientReferencePropertyValues[this.data.selectedReferenceId]?.properties?.[propertyName]
     }
 
-    public getChange(nodeAddress: string, referenceName: string): Change | null
-    {
+    public getChange(nodeAddress: string, referenceName: string): Change | null {
         if (this.data.isReferencePropertyEditingOpen) {
             return null;
         }
@@ -149,7 +140,7 @@ export class Editor {
             subject: nodeAddress,
             payload: {
                 referenceName,
-                serializedReferences: Object.keys(this.data.transientValues),
+                serializedReferences: Object.keys(this.data.transientValues)
             }
         };
     }

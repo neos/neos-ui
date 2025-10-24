@@ -2,7 +2,7 @@ import React from 'react';
 import {Icon, IconButton} from '@neos-project/react-ui-components';
 import style from './style.module.css';
 import {Breadcrumb} from '../Breadcrumb';
-import {IReference} from "../../domain";
+import {IReference} from '../../domain';
 
 interface ReferencesItemProps {
     reference: IReference;

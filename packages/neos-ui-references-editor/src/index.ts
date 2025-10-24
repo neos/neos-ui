@@ -1,7 +1,6 @@
 import {GlobalRegistry} from '@neos-project/neos-ts-interfaces';
 import {SynchronousRegistry} from '@neos-project/neos-ui-extensibility';
-import {createReferencesEditor} from "./ReferencesEditor";
-
+import {createReferencesEditor} from './application/ReferencesEditor';
 export {createEditor} from './domain'
 
 export function registerReferenceInspectorEditor(

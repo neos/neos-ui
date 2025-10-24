@@ -9,13 +9,12 @@ import EditorEnvelope from '@neos-project/neos-ui-editors/src/EditorEnvelope/ind
 import {useLatestState} from '@neos-project/framework-observable-react';
 import {useSelector} from '@neos-project/neos-ui-redux-store';
 import {translate} from '@neos-project/neos-ui-i18n';
-import {State} from "@neos-project/framework-observable";
-import {Editor} from "../../domain/Editor/Editor";
+import {State} from '@neos-project/framework-observable';
+import {Editor} from '../../domain/Editor/Editor';
 
-export const ActiveReferenceEditorDialog: React.FC<{
+export const ReferencesPropertiesDialog: React.FC<{
     editor$: State<Editor>
 }> = ({editor$}) => {
-
     // todo use constraints
     // todo lol initialValue is never null?
     const editor = useLatestState(editor$);

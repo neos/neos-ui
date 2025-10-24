@@ -1,19 +1,19 @@
 import React from 'react';
-import {getReferencesSummary} from './infrastructure/http';
+import {getReferencesSummary} from '../../infrastructure/http';
 import {usePromise} from '@neos-project/framework-promise-react';
 import {actions, selectors, useSelector} from '@neos-project/neos-ui-redux-store';
 import {discardChannel$} from '@neos-project/neos-ui-sagas/src/UI/Inspector';
 import {ErrorView} from '@neos-project/neos-ui-error';
-import {HoverActions} from './presentation/HoverActions';
-import {ReferencesItem} from './presentation/ReferencesItem';
-import {IReferences} from './domain';
+import {HoverActions} from '../../presentation/HoverActions';
+import {ReferencesItem} from '../../presentation/ReferencesItem';
+import {IReferences} from '../../domain';
 import {Button} from '@neos-project/react-ui-components';
 import {useDispatch} from 'react-redux';
-import {ActiveReferenceEditorDialog} from './application/ReferencesPropertiesDialog/ReferencesPropertiesDialog';
+import {ReferencesPropertiesDialog} from '../ReferencesPropertiesDialog';
 import {useLatestState} from '@neos-project/framework-observable-react';
 import {createState} from '@neos-project/framework-observable';
-import {Editor} from './domain/Editor/Editor';
-import {Tree} from '../../neos-ui-references-editor-custom-node-tree';
+import {Editor} from '../../domain/Editor/Editor';
+import {ReferencesTreeSecondaryEditor} from '../ReferencesTreeSecondaryEditor';
 
 export const createReferencesEditor = () => (props) => {
     const workspaceName = useSelector(selectors.CR.Workspaces.personalWorkspaceNameSelector);
@@ -24,20 +24,24 @@ export const createReferencesEditor = () => (props) => {
     const editor$ = React.useMemo(() => createState(Editor.fromLoadingState(1)), []);
 
     React.useEffect(() => {
-        const subscription = editor$.subscribe({next: (editor) => {
-            console.log(editor)
-            const change = editor.getChange(selectedNodeId!.contextPath, props.identifier);
-            if (change) {
-                dispatch(actions.UI.Inspector.commitChange(change));
+        const subscription = editor$.subscribe({
+            next: (editor) => {
+                console.log(editor)
+                const change = editor.getChange(selectedNodeId!.contextPath, props.identifier);
+                if (change) {
+                    dispatch(actions.UI.Inspector.commitChange(change));
+                }
             }
-        }});
+        });
         return subscription.unsubscribe;
     }, [editor$]);
 
     React.useEffect(() => {
-        const subscription = discardChannel$.subscribe({next: () => {
-            editor$.update(editor => editor.withDiscard())
-        }});
+        const subscription = discardChannel$.subscribe({
+            next: () => {
+                editor$.update(editor => editor.withDiscard())
+            }
+        });
         return subscription.unsubscribe;
     }, [editor$]);
 
@@ -105,16 +109,12 @@ export const createReferencesEditor = () => (props) => {
             return;
         }
         props.renderSecondaryInspector('identifiersss', () =>
-            <Tree
+            <ReferencesTreeSecondaryEditor
                 workspaceName={workspaceName}
                 dimensionValues={dimension}
                 startingPoint={'/<Neos.Neos:Sites>/'}
-                loadingDepth={4}
-                baseNodeTypeFilter={''}
-                selectedTreeNodeIds={Object.keys(editor.getReferences())}
-                onSelect={function (nodeId: string): void {
-                    console.error('Function not implemented', nodeId);
-                }} />)
+                editor$={editor$}
+            />)
     }
 
     return (
@@ -122,13 +122,13 @@ export const createReferencesEditor = () => (props) => {
             {Object.values(editor.getReferences()).map(reference => {
                 return (
                     <HoverActions key={reference.targetNodeId} onEdit={() => onEdit(reference.targetNodeId)} onDelete={() => onDelete(reference.targetNodeId)}>
-                        <ReferencesItem reference={reference} isDraggable={(fetch__referencesSummary.value?.references?.length ?? 0) > 1}/>
+                        <ReferencesItem reference={reference} isDraggable={(fetch__referencesSummary.value?.references?.length ?? 0) > 1} />
                     </HoverActions>
                 );
             })}
             <Button onClick={openSecondaryEditor}>Neues Item</Button>
             {
-                editor.isReferencePropertyEditingOpen() ? <ActiveReferenceEditorDialog editor$={editor$}/> : null
+                editor.isReferencePropertyEditingOpen() ? <ReferencesPropertiesDialog editor$={editor$} /> : null
             }
         </>
     );

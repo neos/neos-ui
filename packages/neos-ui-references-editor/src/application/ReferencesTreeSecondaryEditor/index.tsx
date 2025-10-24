@@ -2,7 +2,6 @@ import React from 'react';
 import {Tree} from '../../../../neos-ui-references-editor-custom-node-tree'
 import {Editor} from '../../domain/Editor/Editor';
 import {State} from '@neos-project/framework-observable';
-import {useLatestState} from '@neos-project/framework-observable-react';
 
 interface ReferencesTreeSecondaryEditorProps {
     workspaceName: string;
@@ -13,11 +12,41 @@ interface ReferencesTreeSecondaryEditorProps {
 
 export const ReferencesTreeSecondaryEditor = (props: ReferencesTreeSecondaryEditorProps) => {
     const {workspaceName, dimensionValues, startingPoint, editor$} = props;
-    const editor = useLatestState(editor$);
+    const [selectedTreeNodeIds, setSelectedTreeNodeIds] = React.useState<string[]>();
 
-    const onSelectTreeNode = (nodeId: string) => {
+    const onSelectTreeNode = async (nodeId: string) => {
         console.log('select', nodeId);
+        // TODO test values
+        const referenceValue = {
+            'icon': 'header',
+            'label': 'Welcome to the Neos CMS demo',
+            'uri': 'node://d17caff2-f50c-d30b-b735-9b9216de02e9',
+            'breadcrumbs': [
+                {
+                    'icon': 'globe',
+                    'label': 'Home'
+                },
+                {
+                    'icon': 'far fa-folder-open',
+                    'label': 'Teaser area (teaser)'
+                },
+                {
+                    'icon': 'header',
+                    'label': 'Welcome to the Neos CMS demo'
+                }
+            ],
+            'properties': null
+        };
+        editor$.update(editor => editor.withAddedReference(nodeId, referenceValue))
     }
+
+    React.useEffect(() => {
+        const subscription = editor$.subscribe({
+            next: (editor) =>
+                setSelectedTreeNodeIds(Object.keys(editor.getReferences()))
+        });
+        return subscription.unsubscribe;
+    }, [editor$]);
 
     return (
         <Tree
@@ -26,7 +55,7 @@ export const ReferencesTreeSecondaryEditor = (props: ReferencesTreeSecondaryEdit
             startingPoint={startingPoint}
             loadingDepth={4}
             baseNodeTypeFilter={''}
-            selectedTreeNodeIds={Object.keys(editor.getReferences())}
+            selectedTreeNodeIds={selectedTreeNodeIds}
             onSelect={onSelectTreeNode}
         />
     )

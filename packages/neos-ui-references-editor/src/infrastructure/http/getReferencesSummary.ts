@@ -25,7 +25,7 @@ type GetReferencesSummaryQueryResultEnvelope =
         };
     };
 
-export async function getReferencesSummary(workspaceName: string, dimensionValues: DimensionCombination, nodeId: string, referenceIds: [], referenceName: string): Promise<GetReferencesSummaryQueryResultEnvelope> {
+export async function getReferencesSummary(workspaceName: string, dimensionValues: DimensionCombination, nodeId: string, referenceIds: string[], referenceName: string): Promise<GetReferencesSummaryQueryResultEnvelope> {
     const searchParams = new URLSearchParams();
     searchParams.set('workspaceName', workspaceName);
     for (const [dimensionName, fallbackChain] of Object.entries(

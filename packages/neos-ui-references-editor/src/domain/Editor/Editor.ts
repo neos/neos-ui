@@ -55,6 +55,17 @@ export class Editor {
         })
     }
 
+    public withAddedReference(referenceTargetId: string, referenceValue: any): Editor {
+        const transientValues = this.data.transientValues ?? this.data.initialValues;
+        return new Editor({
+            ...this.data,
+            transientValues: {
+                ...transientValues,
+                [referenceTargetId]: referenceValue
+            }
+        })
+    }
+
     public withDismissedReferencePropertyEditing(): Editor {
         return new Editor({
             ...this.data,

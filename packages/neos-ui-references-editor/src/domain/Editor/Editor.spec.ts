@@ -1,4 +1,4 @@
-import {Editor} from "./Editor";
+import {Editor} from './Editor';
 
 describe('Editor', () => {
     test('loading state', () => {
@@ -18,11 +18,13 @@ describe('Editor', () => {
                 'myTarget': {
                     targetNodeId: 'myTarget',
                     properties: null,
-                    label: 'My Target',
-                    breadcrumbs: [],
-                    icon: 'question',
-                    uri: 'node://myTarget'
-                },
+                    presentation: {
+                        label: 'My Target',
+                        breadcrumbs: [],
+                        icon: 'question',
+                        uri: 'node://myTarget'
+                    }
+                }
             },
             {},
             {}
@@ -33,11 +35,13 @@ describe('Editor', () => {
             'myTarget': {
                 targetNodeId: 'myTarget',
                 properties: null,
-                label: 'My Target',
-                breadcrumbs: [],
-                icon: 'question',
-                uri: 'node://myTarget'
-            },
+                presentation: {
+                    label: 'My Target',
+                    breadcrumbs: [],
+                    icon: 'question',
+                    uri: 'node://myTarget'
+                }
+            }
         });
         expect(editor.getPropertySchema()).toStrictEqual({});
         expect(editor.getLoadingReferencesCount()).toBe(1);
@@ -45,25 +49,29 @@ describe('Editor', () => {
         expect(editor.getChange('nodeid', 'myRef')).toBe(null);
     })
 
-    test('load references and que change', () => {
+    test('load references and queue change', () => {
         const editor = Editor.fromLoadingState(2).withReferencesAndConfiguration(
             {
                 'myTarget': {
                     targetNodeId: 'myTarget',
                     properties: null,
-                    label: 'My Target',
-                    breadcrumbs: [],
-                    icon: 'question',
-                    uri: 'node://myTarget'
+                    presentation: {
+                        label: 'My Target',
+                        breadcrumbs: [],
+                        icon: 'question',
+                        uri: 'node://myTarget'
+                    }
                 },
                 'mySecondTarget': {
                     targetNodeId: 'mySecondTarget',
                     properties: null,
-                    label: 'My Target',
-                    breadcrumbs: [],
-                    icon: 'question',
-                    uri: 'node://mySecondTarget'
-                },
+                    presentation: {
+                        label: 'My Target',
+                        breadcrumbs: [],
+                        icon: 'question',
+                        uri: 'node://mySecondTarget'
+                    }
+                }
             },
             {},
             {}
@@ -80,12 +88,12 @@ describe('Editor', () => {
         expect(Object.keys(editorNext.getReferences())).toStrictEqual(['mySecondTarget']);
         expect(editorNext.isReferencePropertyEditingOpen()).toBe(false);
         expect(editorNext.getChange('nodeid', 'myRef')).toStrictEqual({
-            "type": "Neos.Neos.Ui:Reference",
-            "subject": "nodeid",
-            "payload": {
-                "referenceName": "myRef",
-                "serializedReferences": [{"properties": null, "targetNodeId": "mySecondTarget"}]
-            },
+            'type': 'Neos.Neos.Ui:Reference',
+            'subject': 'nodeid',
+            'payload': {
+                'referenceName': 'myRef',
+                'serializedReferences': [{'properties': null, 'targetNodeId': 'mySecondTarget'}]
+            }
         });
     })
 
@@ -95,11 +103,13 @@ describe('Editor', () => {
                 'myTarget': {
                     targetNodeId: 'myTarget',
                     properties: null,
-                    label: 'My Target',
-                    breadcrumbs: [],
-                    icon: 'question',
-                    uri: 'node://myTarget'
-                },
+                    presentation: {
+                        label: 'My Target',
+                        breadcrumbs: [],
+                        icon: 'question',
+                        uri: 'node://myTarget'
+                    }
+                }
             },
             {},
             {
@@ -141,11 +151,13 @@ describe('Editor', () => {
             'myTarget': {
                 targetNodeId: 'myTarget',
                 properties: null,
-                label: 'My Target',
-                breadcrumbs: [],
-                icon: 'question',
-                uri: 'node://myTarget'
-            },
+                presentation: {
+                    label: 'My Target',
+                    breadcrumbs: [],
+                    icon: 'question',
+                    uri: 'node://myTarget'
+                }
+            }
         });
         expect(editor.getChange('nodeid', 'myRef')).toBe(null);
     })
@@ -156,11 +168,13 @@ describe('Editor', () => {
                 'myTarget': {
                     targetNodeId: 'myTarget',
                     properties: null,
-                    label: 'My Target',
-                    breadcrumbs: [],
-                    icon: 'question',
-                    uri: 'node://myTarget'
-                },
+                    presentation: {
+                        label: 'My Target',
+                        breadcrumbs: [],
+                        icon: 'question',
+                        uri: 'node://myTarget'
+                    }
+                }
             },
             {},
             {
@@ -204,19 +218,221 @@ describe('Editor', () => {
                 properties: {
                     'myProperty': 'myPropertyValue'
                 },
-                label: 'My Target',
-                breadcrumbs: [],
-                icon: 'question',
-                uri: 'node://myTarget'
-            },
+                presentation: {
+                    label: 'My Target',
+                    breadcrumbs: [],
+                    icon: 'question',
+                    uri: 'node://myTarget'
+                }
+            }
         });
         expect(editor.getChange('nodeid', 'myRef')).toStrictEqual({
-            "type": "Neos.Neos.Ui:Reference",
-            "subject": "nodeid",
-            "payload": {
-                "referenceName": "myRef",
-                "serializedReferences": [{"properties": {'myProperty': 'myPropertyValue'}, "targetNodeId": "myTarget"}]
+            'type': 'Neos.Neos.Ui:Reference',
+            'subject': 'nodeid',
+            'payload': {
+                'referenceName': 'myRef',
+                'serializedReferences': [{'properties': {'myProperty': 'myPropertyValue'}, 'targetNodeId': 'myTarget'}]
+            }
+        });
+    })
+
+    test('discard with pending changes will not show resolved presentation values', () => {
+        let editor = Editor.fromLoadingState(1).withReferencesAndConfiguration(
+            {
+                'myTarget': {
+                    targetNodeId: 'myTarget',
+                    properties: null,
+                    presentation: {
+                        label: 'My Target',
+                        breadcrumbs: [],
+                        icon: 'question',
+                        uri: 'node://myTarget'
+                    }
+                }
             },
+            {},
+            {}
+        );
+
+        editor = editor.withSelectedTargetNodeId('mySecondTarget');
+        editor = editor.withDiscard();
+        editor = editor.withAddedReferencePresentation({
+            targetNodeId: 'mySecondTarget',
+            properties: null,
+            presentation: {
+                label: 'mySecondTarget',
+                breadcrumbs: [],
+                icon: 'question',
+                uri: 'node://mySecondTarget'
+            }
+        });
+
+        expect(editor.getReferences()).toStrictEqual({
+            'myTarget': {
+                targetNodeId: 'myTarget',
+                properties: null,
+                presentation: {
+                    label: 'My Target',
+                    breadcrumbs: [],
+                    icon: 'question',
+                    uri: 'node://myTarget'
+                }
+            }
+        });
+    })
+
+    test('discard without pending changes will not show resolved presentation values', () => {
+        let editor = Editor.fromLoadingState(1).withReferencesAndConfiguration(
+            {
+                'myTarget': {
+                    targetNodeId: 'myTarget',
+                    properties: null,
+                    presentation: {
+                        label: 'My Target',
+                        breadcrumbs: [],
+                        icon: 'question',
+                        uri: 'node://myTarget'
+                    }
+                }
+            },
+            {},
+            {}
+        );
+
+        editor = editor.withSelectedTargetNodeId('mySecondTarget');
+        editor = editor.withAddedReferencePresentation({
+            targetNodeId: 'mySecondTarget',
+            properties: null,
+            presentation: {
+                label: 'mySecondTarget',
+                breadcrumbs: [],
+                icon: 'question',
+                uri: 'node://mySecondTarget'
+            }
+        });
+        editor = editor.withDiscard();
+
+        expect(editor.getReferences()).toStrictEqual({
+            'myTarget': {
+                targetNodeId: 'myTarget',
+                properties: null,
+                presentation: {
+                    label: 'My Target',
+                    breadcrumbs: [],
+                    icon: 'question',
+                    uri: 'node://myTarget'
+                }
+            }
+        });
+    })
+
+    test('apply with pending changes will show resolved presentation values', () => {
+        let editor = Editor.fromLoadingState(1).withReferencesAndConfiguration(
+            {
+                'myTarget': {
+                    targetNodeId: 'myTarget',
+                    properties: null,
+                    presentation: {
+                        label: 'My Target',
+                        breadcrumbs: [],
+                        icon: 'question',
+                        uri: 'node://myTarget'
+                    }
+                }
+            },
+            {},
+            {}
+        );
+
+        editor = editor.withSelectedTargetNodeId('mySecondTarget');
+        editor = editor.withApply();
+        editor = editor.withAddedReferencePresentation({
+            targetNodeId: 'mySecondTarget',
+            properties: null,
+            presentation: {
+                label: 'mySecondTarget',
+                breadcrumbs: [],
+                icon: 'question',
+                uri: 'node://mySecondTarget'
+            }
+        });
+
+        expect(editor.getReferences()).toStrictEqual({
+            'myTarget': {
+                targetNodeId: 'myTarget',
+                properties: null,
+                presentation: {
+                    label: 'My Target',
+                    breadcrumbs: [],
+                    icon: 'question',
+                    uri: 'node://myTarget'
+                }
+            },
+            'mySecondTarget': {
+                targetNodeId: 'mySecondTarget',
+                properties: null,
+                presentation: {
+                    label: 'mySecondTarget',
+                    breadcrumbs: [],
+                    icon: 'question',
+                    uri: 'node://mySecondTarget'
+                }
+            }
+        });
+    })
+
+    test('apply without pending changes will show resolved presentation values', () => {
+        let editor = Editor.fromLoadingState(1).withReferencesAndConfiguration(
+            {
+                'myTarget': {
+                    targetNodeId: 'myTarget',
+                    properties: null,
+                    presentation: {
+                        label: 'My Target',
+                        breadcrumbs: [],
+                        icon: 'question',
+                        uri: 'node://myTarget'
+                    }
+                }
+            },
+            {},
+            {}
+        );
+
+        editor = editor.withSelectedTargetNodeId('mySecondTarget');
+        editor = editor.withAddedReferencePresentation({
+            targetNodeId: 'mySecondTarget',
+            properties: null,
+            presentation: {
+                label: 'mySecondTarget',
+                breadcrumbs: [],
+                icon: 'question',
+                uri: 'node://mySecondTarget'
+            }
+        });
+        editor = editor.withApply();
+
+        expect(editor.getReferences()).toStrictEqual({
+            'myTarget': {
+                targetNodeId: 'myTarget',
+                properties: null,
+                presentation: {
+                    label: 'My Target',
+                    breadcrumbs: [],
+                    icon: 'question',
+                    uri: 'node://myTarget'
+                }
+            },
+            'mySecondTarget': {
+                targetNodeId: 'mySecondTarget',
+                properties: null,
+                presentation: {
+                    label: 'mySecondTarget',
+                    breadcrumbs: [],
+                    icon: 'question',
+                    uri: 'node://mySecondTarget'
+                }
+            }
         });
     })
 })

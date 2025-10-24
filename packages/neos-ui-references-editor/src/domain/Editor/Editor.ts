@@ -64,9 +64,6 @@ export class Editor {
     }
 
     public withAddedReferencePresentation(reference: IReference): Editor {
-        console.log('transient', this.data.transientValues);
-        console.log('initialValues', this.data.initialValues);
-
         // unapplied changes
         if (this.data.transientValues && Object.keys(this.data.transientValues).includes(reference.targetNodeId)) {
             return new Editor({

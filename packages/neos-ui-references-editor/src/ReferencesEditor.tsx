@@ -110,6 +110,7 @@ export const createReferencesEditor = () => (props) => {
                 startingPoint={'/<Neos.Neos:Sites>/'}
                 loadingDepth={4}
                 baseNodeTypeFilter={''}
+                selectedTreeNodeIds={Object.keys(editor.getReferences())}
                 onSelect={function (nodeId: string): void {
                     console.error('Function not implemented', nodeId);
                 }} />)

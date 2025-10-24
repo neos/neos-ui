@@ -26,9 +26,7 @@ interface Props {
 }
 
 export const TreeNode: React.FC<Props> = (props) => {
-    // TODO
-    const isSelected = false;
-        // props.selectedTreeNodeId === props.treeNode.nodeAggregateIdentifier;
+    const isSelected = props.selectedTreeNodeIds?.includes(props.treeNode.nodeAggregateIdentifier);
     const hasChildren =
         props.treeNode.children.length > 0 ||
         props.treeNode.hasUnloadedChildren;

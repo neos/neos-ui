@@ -105,6 +105,14 @@ export class Editor {
         })
     }
 
+    public withApply(): Editor {
+        return new Editor({
+            initialValues: this.data.transientValues ?? this.data.initialValues,
+            constraints: this.data.constraints,
+            propertySchema: this.data.propertySchema,
+        })
+    }
+
     public withDiscard(): Editor {
         return new Editor({
             initialValues: this.data.initialValues,

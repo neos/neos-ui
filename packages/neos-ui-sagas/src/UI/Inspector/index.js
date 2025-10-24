@@ -18,6 +18,7 @@ const getTransientInspectorValues = state => {
 
 // todo this is a little hacky maybe use the channel as initial entry to emit redux events instead of here in reverse -> should be passed to the editor component
 export const discardChannel$ = createChannel();
+export const applyChannel$ = createChannel();
 
 export function * inspectorSaga({globalRegistry}) {
     yield take(actionTypes.System.READY);
@@ -78,6 +79,7 @@ export function * inspectorSaga({globalRegistry}) {
             // If the user wants to apply his/her changes, let's start that process
             //
             if (nextAction.type === actionTypes.UI.Inspector.APPLY) {
+                applyChannel$.next(undefined);
                 try {
                     //
                     // Persist the inspector changes

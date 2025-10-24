@@ -2,7 +2,7 @@ import React from 'react';
 import {getReferencesSummary} from '../../infrastructure/http';
 import {usePromise} from '@neos-project/framework-promise-react';
 import {actions, selectors, useSelector} from '@neos-project/neos-ui-redux-store';
-import {discardChannel$} from '@neos-project/neos-ui-sagas/src/UI/Inspector';
+import {discardChannel$, applyChannel$} from '@neos-project/neos-ui-sagas/src/UI/Inspector';
 import {ErrorView} from '@neos-project/neos-ui-error';
 import {HoverActions} from '../../presentation/HoverActions';
 import {ReferencesItem} from '../../presentation/ReferencesItem';
@@ -26,11 +26,19 @@ export const createReferencesEditor = () => (props) => {
     React.useEffect(() => {
         const subscription = editor$.subscribe({
             next: (editor) => {
-                console.log(editor)
                 const change = editor.getChange(selectedNodeId!.contextPath, props.identifier);
                 if (change) {
                     dispatch(actions.UI.Inspector.commitChange(change));
                 }
+            }
+        });
+        return subscription.unsubscribe;
+    }, [editor$]);
+
+    React.useEffect(() => {
+        const subscription = applyChannel$.subscribe({
+            next: () => {
+                editor$.update(editor => editor.withApply())
             }
         });
         return subscription.unsubscribe;

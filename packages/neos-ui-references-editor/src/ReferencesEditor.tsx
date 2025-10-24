@@ -1,19 +1,36 @@
 import React from 'react';
 import {getReferencesSummary} from './infrastructure/http';
 import {usePromise} from '@neos-project/framework-promise-react';
-import {selectors, actions, useSelector} from '@neos-project/neos-ui-redux-store';
+import {actions, selectors, useSelector} from '@neos-project/neos-ui-redux-store';
 import {ErrorView} from "@neos-project/neos-ui-error";
 import {HoverActions} from "./presentation/HoverActions";
 import {ReferencesItem} from "./presentation/ReferencesItem";
-import {IEditor, IReferences} from "./domain";
+import {IReferences} from "./domain";
 import {useDispatch} from 'react-redux';
+import {ActiveReferenceEditorDialog} from "./application/ReferencesPropertiesDialog/ReferencesPropertiesDialog";
+import {useLatestState} from "@neos-project/framework-observable-react";
+import {createState} from "@neos-project/framework-observable";
+import {Editor} from "./domain/Editor/Editor";
 
-export const createReferencesEditor = (editor: IEditor) => (props) => {
+export const createReferencesEditor = () => (props) => {
     const workspaceName = useSelector(selectors.CR.Workspaces.personalWorkspaceNameSelector);
     const dimension = useSelector(selectors.CR.ContentDimensions.active);
     const selectedNodeId = useSelector(selectors.CR.Nodes.focusedSelector);
-
     const dispatch = useDispatch();
+
+    const editor$ = React.useMemo(() => createState(Editor.fromLoadingState(1)), [selectedNodeId, props.identifier]);
+
+    React.useEffect(() => {
+        const subscription = editor$.subscribe({ next: (editor) => {
+            const change = editor.getChange(selectedNodeId!.contextPath);
+            if (change) {
+                dispatch(actions.UI.Inspector.commitChange(change));
+            }
+        }});
+        return subscription.unsubscribe;
+    }, [editor$]);
+
+    const editor = useLatestState(editor$);
 
     const fetch__referencesSummary = usePromise(async () => {
         if (!workspaceName || !dimension || !selectedNodeId?.identifier) {
@@ -31,6 +48,22 @@ export const createReferencesEditor = (editor: IEditor) => (props) => {
         );
 
         if ('success' in result) {
+            let references: IReferences = {};
+
+            for (const reference of result.success.references) {
+                const nodeId = reference.uri.substring('node://'.length); // todo hack
+                references[nodeId] = {
+                    targetNodeId: nodeId,
+                    properties: reference.properties
+                }
+            }
+
+            editor$.update(editor => editor.withReferencesAndConfiguration(
+                references,
+                result.success.constraints ?? {},
+                result.success.propertySchema ?? {},
+            ))
+
             return result.success;
         }
 
@@ -43,42 +76,7 @@ export const createReferencesEditor = (editor: IEditor) => (props) => {
 
     // todo props.value, should be size of references to fake initial height.
 
-    const onEdit = React.useCallback(async () => {
-        if (!fetch__referencesSummary.value) {
-            return;
-        }
-
-        let references: IReferences = {};
-
-        for (const reference of fetch__referencesSummary.value.references) {
-            const nodeId = reference.uri.substring('node://'.length); // todo hack
-            references[nodeId] = {
-                targetNodeId: nodeId,
-                properties: reference.properties
-            }
-        }
-
-        const result = await editor.transactions.editLink(
-            references,
-            fetch__referencesSummary.value.constraints ?? {},
-            fetch__referencesSummary.value.propertySchema ?? {},
-        );
-
-        if (result.change) {
-            console.log(result.value);
-
-            // todo only for testing
-            //dispatch(actions.UI.Inspector.commitChange({
-            //    type: 'Neos.Neos.Ui:Property',
-            //    subject: selectedNodeId!.contextPath,
-            //    payload: {
-            //       propertyName: 'lol',
-            //       value: 'test' + Math.random(),
-            //   }
-            //}));
-        }
-
-    }, [editor, fetch__referencesSummary]);
+    const onEdit = React.useCallback(() => editor$.update(editor => editor.withReferencePropertyEditing()), [editor$]);
 
     if (fetch__referencesSummary.isLoading) {
         return <div>Loading...</div>;
@@ -97,6 +95,9 @@ export const createReferencesEditor = (editor: IEditor) => (props) => {
                     </HoverActions>
                 );
             })}
+            {
+                editor.isReferencePropertyEditingOpen() ? <ActiveReferenceEditorDialog editor$={editor$}/> : null
+            }
         </>
     );
 };

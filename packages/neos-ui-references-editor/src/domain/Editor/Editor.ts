@@ -1,92 +1,82 @@
-import {ActionType, getType} from 'typesafe-actions';
-
-import * as actions from './EditorAction';
-import {createChannel, createState, ReadonlyState} from '@neos-project/framework-observable';
 import {IReferences} from "../References";
+import {Change} from "@neos-project/neos-ui-backend-connector/src/Endpoints/Change";
 
-export interface IEditorState {
-    constraints: any,
-    propertySchema: any,
-    isOpen: boolean,
-    initialValue: null | IReferences,
-}
+export class Editor {
+    private constructor(
+        private readonly data: {
+            readonly isLocked: boolean;
+            readonly isDirty: boolean;
+            readonly isReferencePropertyEditingOpen: boolean;
+            readonly initialReferencesCount: number;
+            readonly initialValues: IReferences;
+            readonly transientValues: IReferences;
+            readonly constraints: any;
+            readonly propertySchema: any;
+        }
+    ) {
+    }
 
-type IEditorResult =
-    | {change: true, value: null | IReferences}
-    | {change: false}
-;
+    public static fromLoadingState(initialReferencesCount: number): Editor {
+        return new Editor({
+            initialReferencesCount,
+        })
+    }
 
-const initialState: IEditorState = {
-    constraints: {},
-    propertySchema: {},
-    isOpen: false,
-    initialValue: null
-};
+    public withReferencesAndConfiguration(initialValues: IReferences, constraints: any, propertySchema: any): Editor {
+        return new Editor({
+            ...this.data,
+            isDirty: false,
+            initialValues,
+            constraints,
+            propertySchema,
+        })
+    }
 
-export function editorReducer(
-    state: IEditorState = initialState,
-    action: ActionType<typeof actions>
-): IEditorState {
-    switch (action.type) {
-        case getType(actions.EditorWasOpened):
-            return {
-                ...action.payload,
-                isOpen: true
-            };
-        case getType(actions.EditorWasDismissed):
-        case getType(actions.ValueWasApplied):
-            return initialState;
-        default:
-            return state;
+    public withReferencePropertyEditing(): Editor {
+        return new Editor({
+            ...this.data,
+            isReferencePropertyEditingOpen: true,
+        })
+    }
+
+    public withDismissedReferencePropertyEditing(): Editor {
+        return new Editor({
+            ...this.data,
+            isReferencePropertyEditingOpen: false,
+            transientValues: {}
+        })
+    }
+
+    public withAppliedReferencePropertyEditing(): Editor {
+        return new Editor({
+            ...this.data,
+            isDirty: true,
+            isReferencePropertyEditingOpen: false,
+            initialValues: {...this.data.initialValues, ...this.data.transientValues},
+            transientValues: {}
+        })
+    }
+
+    public isReferencePropertyEditingOpen(): boolean
+    {
+        return this.data.isReferencePropertyEditingOpen;
+    }
+
+    public getChange(nodeAddress: string): Change | null
+    {
+        if (this.data.isReferencePropertyEditingOpen) {
+            return null;
+        }
+        if (!this.data.isDirty) {
+            return null;
+        }
+        return {
+            type: 'Neos.Neos.Ui:Property',
+            subject: nodeAddress,
+            payload: {
+                propertyName: 'lol',
+                value: 'test' + Math.random(),
+            }
+        };
     }
 }
-
-export function createEditor() {
-    const actions$ = createChannel<ActionType<typeof actions>>();
-
-    const dispatch = actions$.next;
-
-    const state$ = createState(initialState);
-
-    actions$.subscribe({
-        next: (action) => state$.update(
-            (current) => editorReducer(
-                current,
-                action
-            )
-        )
-    })
-
-    const dismiss = () => dispatch(actions.EditorWasDismissed());
-    const apply = (value: IReferences) => dispatch(actions.ValueWasApplied(value));
-    const editLink = (
-        initialValue: null | IReferences,
-        constraints: any,
-        propertySchema: any,
-    ) => new Promise<IEditorResult>(
-        resolve => {
-            dispatch(
-                actions.EditorWasOpened(initialValue, constraints, propertySchema)
-            );
-
-            actions$.subscribe({
-                next: action => {
-                    switch (action.type) {
-                        case getType(actions.EditorWasDismissed):
-                            return resolve({change: false});
-                        case getType(actions.ValueWasApplied):
-                            return resolve({change: true, value: action.payload});
-                        default:
-                    }
-                }
-            });
-        }
-    );
-
-    return Object.freeze({
-        state$: state$ as ReadonlyState<IEditorState>,
-        transactions: {dismiss, apply, editLink}
-    });
-}
-
-export type IEditor = ReturnType<typeof createEditor>;

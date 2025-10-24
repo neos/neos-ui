@@ -169,7 +169,7 @@ function * flushInspector(inspectorRegistry) {
     }
 
     for (const transientChange of state?.ui?.inspector?.transientChanges ?? []) {
-        if (transientChange.type === 'Neos.Neos.Ui:Property') {
+        if (transientChange.type === 'Neos.Neos.Ui:Property' || transientChange.type === 'Neos.Neos.Ui:Reference') {
             if (transientChange.contextPath === focusedNode?.subject) {
                 changes.push(
                     {

@@ -6,7 +6,6 @@ export class Editor {
     private constructor(
         private readonly data: {
             readonly isLocked: boolean;
-            readonly isDirty: boolean;
             readonly isReferencePropertyEditingOpen: boolean;
             readonly initialReferencesCount: number;
             readonly initialValues: IReferences;
@@ -27,7 +26,6 @@ export class Editor {
     public withReferencesAndConfiguration(initialValues: IReferences, constraints: any, propertySchema: any): Editor {
         return new Editor({
             ...this.data,
-            isDirty: false,
             initialValues,
             constraints,
             propertySchema,
@@ -53,7 +51,6 @@ export class Editor {
 
         return new Editor({
             ...this.data,
-            isDirty: true,
             transientValues: otherReferences
         })
     }
@@ -69,7 +66,6 @@ export class Editor {
     public withAppliedReferencePropertyEditing(): Editor {
         return new Editor({
             ...this.data,
-            isDirty: true,
             isReferencePropertyEditingOpen: false,
             transientValues: Object.entries(this.data.transientValues ?? this.data.initialValues).reduce((carry, [targetNodeId, reference]) => {
                 return {
@@ -85,7 +81,6 @@ export class Editor {
 
     public withDiscard(): Editor {
         return new Editor({
-            isDirty: false,
             initialValues: this.data.initialValues
         })
     }
@@ -110,20 +105,20 @@ export class Editor {
         return this.data.transientValues ?? this.data.initialValues;
     }
 
-    public getChange(nodeAddress: string): Change | null
+    public getChange(nodeAddress: string, referenceName: string): Change | null
     {
         if (this.data.isReferencePropertyEditingOpen) {
             return null;
         }
-        if (!this.data.isDirty) {
+        if (!this.data.transientValues) {
             return null;
         }
         return {
-            type: 'Neos.Neos.Ui:Property',
+            type: 'Neos.Neos.Ui:Reference',
             subject: nodeAddress,
             payload: {
-                propertyName: 'lol',
-                value: 'test' + Math.random(),
+                referenceName,
+                serializedReferences: Object.keys(this.data.transientValues),
             }
         };
     }

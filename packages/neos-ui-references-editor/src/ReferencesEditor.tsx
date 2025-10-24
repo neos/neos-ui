@@ -23,7 +23,7 @@ export const createReferencesEditor = () => (props) => {
 
     React.useEffect(() => {
         const subscription = editor$.subscribe({ next: (editor) => {
-            const change = editor.getChange(selectedNodeId!.contextPath);
+            const change = editor.getChange(selectedNodeId!.contextPath, props.identifier);
             if (change) {
                 dispatch(actions.UI.Inspector.commitChange(change));
             }

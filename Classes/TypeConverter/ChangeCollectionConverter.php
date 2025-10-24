@@ -21,6 +21,8 @@ use Neos\Neos\Ui\ContentRepository\Service\NeosUiNodeService;
 use Neos\Neos\Ui\Domain\Model\ChangeCollection;
 use Neos\Neos\Ui\Domain\Model\ChangeInterface;
 use Neos\Neos\Ui\Domain\Model\Changes\Property;
+use Neos\Neos\Ui\Domain\Model\Changes\Reference;
+use Neos\Neos\Ui\Domain\Model\RenderedNodeDomAddress;
 use Neos\Utility\ObjectAccess;
 
 /**
@@ -124,10 +126,6 @@ class ChangeCollectionConverter
         }
 
         $changeClass = $this->typeMap[$type];
-        /** @var ChangeInterface $changeClassInstance */
-        $changeClassInstance = $this->objectManager->get($changeClass);
-
-
 
         $subjectContextPath = $changeData['subject'];
         $subject = $this->nodeService->findNodeBySerializedNodeAddress($subjectContextPath);
@@ -136,8 +134,23 @@ class ChangeCollectionConverter
             throw new \RuntimeException('Could not find node for subject "' . $subjectContextPath . '"', 1645657340);
         }
 
+        if ($changeClass === Reference::class) {
+            $change = new Reference(
+                $changeData['payload']['referenceName'],
+                RenderedNodeDomAddress::fromArray($changeData['payload']['nodeDomAddress']),
+                $changeData['payload']['serializedReferences'],
+            );
+
+            $change->setSubject($subject);
+            return $change;
+        }
+
+        /** @var ChangeInterface $changeClassInstance */
+        $changeClassInstance = $this->objectManager->get($changeClass);
+
         $changeClassInstance->setSubject($subject);
 
+        // todo lol remove
         if (isset($changeData['reference']) && method_exists($changeClassInstance, 'setReference')) {
             $referenceContextPath = $changeData['reference'];
             $reference = $this->nodeService->findNodeBySerializedNodeAddress($referenceContextPath);

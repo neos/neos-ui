@@ -12,10 +12,12 @@ interface ReferencesTreeSecondaryEditorProps {
 
 export const ReferencesTreeSecondaryEditor = (props: ReferencesTreeSecondaryEditorProps) => {
     const {workspaceName, dimensionValues, startingPoint, editor$} = props;
-    const [selectedTreeNodeIds, setSelectedTreeNodeIds] = React.useState<string[]>();
+    const [selectedTreeNodeIds, setSelectedTreeNodeIds] = React.useState<string[]>([]);
 
     const onSelectTreeNode = async (nodeId: string) => {
         console.log('select', nodeId);
+        // optimistic selection to show select state in tree
+        setSelectedTreeNodeIds(array => [...array, nodeId])
         // TODO test values
         const referenceValue = {
             'icon': 'header',
@@ -37,7 +39,10 @@ export const ReferencesTreeSecondaryEditor = (props: ReferencesTreeSecondaryEdit
             ],
             'properties': null
         };
-        editor$.update(editor => editor.withAddedReference(nodeId, referenceValue))
+        // mock api call for now
+        setTimeout(() => {
+            editor$.update(editor => editor.withAddedReference(nodeId, referenceValue));
+        }, 2000);
     }
 
     React.useEffect(() => {

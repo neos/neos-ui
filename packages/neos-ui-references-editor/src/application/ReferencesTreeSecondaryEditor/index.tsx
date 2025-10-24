@@ -19,6 +19,7 @@ export const ReferencesTreeSecondaryEditor = (props: ReferencesTreeSecondaryEdit
         console.log('select', nodeId);
         // optimistic selection to show select state in tree
         setSelectedTreeNodeIds(array => [...array, nodeId])
+        editor$.update(editor => editor.withSelectedTargetNodeId(nodeId));
         // TODO test values
         const referenceValue = await new Promise<IReference>((resolve) => {
             resolve({
@@ -47,7 +48,7 @@ export const ReferencesTreeSecondaryEditor = (props: ReferencesTreeSecondaryEdit
         });
         // mock api call for now
         setTimeout(() => {
-            editor$.update(editor => editor.withAddedReference(referenceValue));
+            editor$.update(editor => editor.withAddedReferencePresentation(referenceValue));
         }, 2000);
     }
 

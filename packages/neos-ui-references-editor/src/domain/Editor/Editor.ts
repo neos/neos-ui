@@ -35,7 +35,7 @@ export class Editor {
         return new Editor({
             ...this.data,
             isReferencePropertyEditingOpen: true,
-            selectedReferenceId: referenceTargetId,
+            selectedReferenceId: referenceTargetId
         })
     }
 
@@ -48,15 +48,45 @@ export class Editor {
         })
     }
 
-    public withAddedReference(reference: IReference): Editor {
+    public withSelectedTargetNodeId(targetNodeId: string): Editor {
         const transientValues = this.data.transientValues ?? this.data.initialValues;
         return new Editor({
             ...this.data,
             transientValues: {
                 ...transientValues,
-                [reference.targetNodeId]: reference
+                [targetNodeId]: {
+                    targetNodeId,
+                    properties: undefined,
+                    presentation: undefined
+                }
             }
         })
+    }
+
+    public withAddedReferencePresentation(reference: IReference): Editor {
+        console.log('transient', this.data.transientValues);
+        console.log('initialValues', this.data.initialValues);
+
+        // unapplied changes
+        if (this.data.transientValues && Object.keys(this.data.transientValues).includes(reference.targetNodeId)) {
+            return new Editor({
+                ...this.data,
+                transientValues: {
+                    ...this.data.transientValues,
+                    [reference.targetNodeId]: reference
+                }
+            })
+        }
+        if (this.data.initialValues && Object.keys(this.data.initialValues).includes(reference.targetNodeId)) {
+            return new Editor({
+                ...this.data,
+                initialValues: {
+                    ...this.data.initialValues,
+                    [reference.targetNodeId]: reference
+                }
+            })
+        }
+        return this;
     }
 
     public withDismissedReferencePropertyEditing(): Editor {
@@ -109,7 +139,7 @@ export class Editor {
         return new Editor({
             initialValues: this.data.transientValues ?? this.data.initialValues,
             constraints: this.data.constraints,
-            propertySchema: this.data.propertySchema,
+            propertySchema: this.data.propertySchema
         })
     }
 

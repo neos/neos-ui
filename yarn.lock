@@ -3876,9 +3876,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@neos-project/neos-ui-reference-editor-custom-node-tree@workspace:*, @neos-project/neos-ui-reference-editor-custom-node-tree@workspace:packages/neos-ui-reference-editor-custom-node-tree":
+"@neos-project/neos-ui-references-editor-custom-node-tree@workspace:*, @neos-project/neos-ui-references-editor-custom-node-tree@workspace:packages/neos-ui-references-editor-custom-node-tree":
   version: 0.0.0-use.local
-  resolution: "@neos-project/neos-ui-reference-editor-custom-node-tree@workspace:packages/neos-ui-reference-editor-custom-node-tree"
+  resolution: "@neos-project/neos-ui-references-editor-custom-node-tree@workspace:packages/neos-ui-references-editor-custom-node-tree"
   dependencies:
     "@neos-project/framework-promise-react": "workspace:*"
     "@neos-project/react-ui-components": "workspace:*"
@@ -3896,7 +3896,7 @@ __metadata:
     "@neos-project/framework-promise-react": "workspace:*"
     "@neos-project/neos-ui-editors": "workspace:*"
     "@neos-project/neos-ui-link-editor-custom-node-tree": "workspace:*"
-    "@neos-project/neos-ui-reference-editor-custom-node-tree": "workspace:*"
+    "@neos-project/neos-ui-references-editor-custom-node-tree": "workspace:*"
     "@neos-project/positional-array-sorter": "workspace:*"
     "@neos-project/react-ui-components": "workspace:*"
     "@neos-project/utils-helpers": "workspace:*"

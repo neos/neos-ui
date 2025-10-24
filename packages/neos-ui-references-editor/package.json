@@ -10,7 +10,7 @@
     "@neos-project/framework-promise-react": "workspace:*",
     "@neos-project/neos-ui-editors": "workspace:*",
     "@neos-project/neos-ui-link-editor-custom-node-tree": "workspace:*",
-    "@neos-project/neos-ui-reference-editor-custom-node-tree": "workspace:*",
+    "@neos-project/neos-ui-references-editor-custom-node-tree": "workspace:*",
     "@neos-project/positional-array-sorter": "workspace:*",
     "@neos-project/react-ui-components": "workspace:*",
     "@neos-project/utils-helpers": "workspace:*",

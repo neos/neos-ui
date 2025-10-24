@@ -27,3 +27,19 @@ export interface ReferenceChange extends Readonly<{
         }
     };
 }> {}
+
+export function isSimilarTo(first: Change, second: Change): boolean {
+    if (first.type !== second.type) {
+        return false;
+    }
+    if (first.subject !== second.subject) {
+        return false;
+    }
+    if (first.type === 'Neos.Neos.Ui:Property') {
+        return first.payload.propertyName === second.payload.propertyName;
+    }
+    if (first.type === 'Neos.Neos.Ui:Reference') {
+        return first.payload.referenceName === second.payload.referenceName;
+    }
+    return false;
+}

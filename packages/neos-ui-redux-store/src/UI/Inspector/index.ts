@@ -5,7 +5,7 @@ import {InitAction} from '../../System';
 import {Node, NodeContextPath} from '@neos-project/neos-ts-interfaces';
 
 import * as selectors from './selectors';
-import {Change} from '@neos-project/neos-ui-backend-connector/src/Endpoints/Change';
+import {Change, isSimilarTo} from '@neos-project/neos-ui-backend-connector/src/Endpoints/Change';
 
 export interface State extends Readonly<{
     shouldPromptToHandleUnappliedChanges: boolean;
@@ -113,7 +113,7 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
             break;
         }
         case actionTypes.COMMIT_CHANGE: {
-            draft.transientChanges.push(action.payload.change);
+            draft.transientChanges = [...draft.transientChanges.filter((otherChange) => !isSimilarTo(action.payload.change, otherChange)), action.payload.change];
             break;
         }
         case actionTypes.DISCARD: {

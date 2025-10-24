@@ -18,7 +18,6 @@ export const Breadcrumb = (props: BreadcrumbProps) => {
                 const isLast = index === items.length - 1;
                 return (
                     <span className={style.item} key={`${breadcrumb.label}-${index}`}>
-                        <Icon className={style.breadcrumbIcon} icon={breadcrumb.icon} size="sm"/>
                         <span className={style.label}>{breadcrumb.label}</span>
                         {!isLast && (
                             <Icon className={style.separator} icon="angle-right" size="sm"/>

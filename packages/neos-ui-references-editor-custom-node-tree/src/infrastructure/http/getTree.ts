@@ -18,10 +18,10 @@ type GetTreeQuery = {
     startingPoint: string;
     loadingDepth: number;
     baseNodeTypeFilter: string;
-    linkableNodeTypes?: string[];
+    allowedNodeTypes?: string[];
     narrowNodeTypeFilter: string;
     searchTerm: string;
-    selectedNodeId?: string;
+    selectedNodeIds?: string[];
 };
 
 type GetTreeQueryResultEnvelope =
@@ -54,22 +54,22 @@ export async function getTree(
     searchParams.set('loadingDepth', String(query.loadingDepth));
     searchParams.set('baseNodeTypeFilter', query.baseNodeTypeFilter);
 
-    for (const linkableNodeType of query.linkableNodeTypes ?? []) {
-        searchParams.append(`linkableNodeTypes[]`, linkableNodeType);
+    for (const allowedNodeType of query.allowedNodeTypes ?? []) {
+        searchParams.append(`allowedNodeTypes[]`, allowedNodeType);
     }
 
     searchParams.set('narrowNodeTypeFilter', query.narrowNodeTypeFilter);
     searchParams.set('searchTerm', query.searchTerm);
 
-    if (query.selectedNodeId) {
-        searchParams.set('selectedNodeId', query.selectedNodeId);
+    for (const referenceId of query.selectedNodeIds ?? []) {
+        searchParams.append(`referenceIds[]`, referenceId);
     }
 
     try {
         const response = await fetchWithErrorHandling.withCsrfToken(
             (csrfToken) => ({
                 url:
-                    '/neos/link-editor/get-tree?' +
+                    '/neos/references-editor/get-tree?' +
                     searchParams.toString(),
                 method: 'GET',
                 credentials: 'include',

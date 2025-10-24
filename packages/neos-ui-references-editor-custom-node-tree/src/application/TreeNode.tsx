@@ -18,16 +18,17 @@ interface Props {
     workspaceName: string;
     dimensionValues: Record<string, string[]>;
     baseNodeTypeFilter: string;
-    linkableNodeTypes?: string[];
+    allowedNodeTypes?: string[];
     treeNode: TreeNodeDTO;
-    selectedTreeNodeId?: string;
+    selectedTreeNodeIds?: string[];
     level: number;
     onClick: (treeNodeId: string) => void;
 }
 
 export const TreeNode: React.FC<Props> = (props) => {
-    const isSelected =
-        props.selectedTreeNodeId === props.treeNode.nodeAggregateIdentifier;
+    // TODO
+    const isSelected = false;
+        // props.selectedTreeNodeId === props.treeNode.nodeAggregateIdentifier;
     const hasChildren =
         props.treeNode.children.length > 0 ||
         props.treeNode.hasUnloadedChildren;
@@ -89,7 +90,7 @@ export const TreeNode: React.FC<Props> = (props) => {
                     dimensionValues: props.dimensionValues,
                     treeNodeId: props.treeNode.nodeAggregateIdentifier,
                     nodeTypeFilter: props.baseNodeTypeFilter,
-                    linkableNodeTypes: props.linkableNodeTypes
+                    allowedNodeTypes: props.allowedNodeTypes
                 });
 
                 if ('success' in result) {

@@ -27,8 +27,8 @@ interface Props {
     startingPoint: string;
     loadingDepth: number;
     baseNodeTypeFilter: string;
-    linkableNodeTypes?: string[];
-    selectedTreeNodeId?: string;
+    allowedNodeTypes?: string[];
+    selectedTreeNodeIds?: string[];
     options?: {
         enableSearch?: boolean;
         enableNodeTypeFilter?: boolean;
@@ -49,8 +49,8 @@ export const Tree: React.FC<Props> = (props) => {
             startingPoint: props.startingPoint,
             loadingDepth: props.loadingDepth,
             baseNodeTypeFilter: props.baseNodeTypeFilter,
-            linkableNodeTypes: props.linkableNodeTypes,
-            selectedNodeId: props.selectedTreeNodeId,
+            allowedNodeTypes: props.allowedNodeTypes,
+            selectedNodeIds: props.selectedTreeNodeIds,
             narrowNodeTypeFilter,
             searchTerm
         });
@@ -70,7 +70,7 @@ export const Tree: React.FC<Props> = (props) => {
         props.startingPoint,
         props.loadingDepth,
         props.baseNodeTypeFilter,
-        props.linkableNodeTypes,
+        props.allowedNodeTypes,
         narrowNodeTypeFilter,
         searchTerm
     ]);
@@ -104,9 +104,9 @@ export const Tree: React.FC<Props> = (props) => {
                     workspaceName={props.workspaceName}
                     dimensionValues={props.dimensionValues}
                     baseNodeTypeFilter={props.baseNodeTypeFilter}
-                    linkableNodeTypes={props.linkableNodeTypes}
+                    allowedNodeTypes={props.allowedNodeTypes}
                     treeNode={fetch__getTree.value.root}
-                    selectedTreeNodeId={props.selectedTreeNodeId}
+                    selectedTreeNodeIds={props.selectedTreeNodeIds}
                     level={1}
                     onClick={handleTreeNodeClick}
                 />

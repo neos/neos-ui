@@ -3,15 +3,17 @@ import {getReferencesSummary} from './infrastructure/http';
 import {usePromise} from '@neos-project/framework-promise-react';
 import {actions, selectors, useSelector} from '@neos-project/neos-ui-redux-store';
 import {discardChannel$} from '@neos-project/neos-ui-sagas/src/UI/Inspector';
-import {ErrorView} from "@neos-project/neos-ui-error";
-import {HoverActions} from "./presentation/HoverActions";
-import {ReferencesItem} from "./presentation/ReferencesItem";
-import {IReferences} from "./domain";
+import {ErrorView} from '@neos-project/neos-ui-error';
+import {HoverActions} from './presentation/HoverActions';
+import {ReferencesItem} from './presentation/ReferencesItem';
+import {IReferences} from './domain';
+import {Button} from '@neos-project/react-ui-components';
 import {useDispatch} from 'react-redux';
-import {ActiveReferenceEditorDialog} from "./application/ReferencesPropertiesDialog/ReferencesPropertiesDialog";
-import {useLatestState} from "@neos-project/framework-observable-react";
-import {createState} from "@neos-project/framework-observable";
-import {Editor} from "./domain/Editor/Editor";
+import {ActiveReferenceEditorDialog} from './application/ReferencesPropertiesDialog/ReferencesPropertiesDialog';
+import {useLatestState} from '@neos-project/framework-observable-react';
+import {createState} from '@neos-project/framework-observable';
+import {Editor} from './domain/Editor/Editor';
+import {Tree} from '../../neos-ui-references-editor-custom-node-tree';
 
 export const createReferencesEditor = () => (props) => {
     const workspaceName = useSelector(selectors.CR.Workspaces.personalWorkspaceNameSelector);
@@ -22,7 +24,7 @@ export const createReferencesEditor = () => (props) => {
     const editor$ = React.useMemo(() => createState(Editor.fromLoadingState(1)), []);
 
     React.useEffect(() => {
-        const subscription = editor$.subscribe({ next: (editor) => {
+        const subscription = editor$.subscribe({next: (editor) => {
             const change = editor.getChange(selectedNodeId!.contextPath, props.identifier);
             if (change) {
                 dispatch(actions.UI.Inspector.commitChange(change));
@@ -32,7 +34,7 @@ export const createReferencesEditor = () => (props) => {
     }, [editor$]);
 
     React.useEffect(() => {
-        const subscription = discardChannel$.subscribe({ next: () => {
+        const subscription = discardChannel$.subscribe({next: () => {
             editor$.update(editor => editor.withDiscard())
         }});
         return subscription.unsubscribe;
@@ -56,7 +58,7 @@ export const createReferencesEditor = () => (props) => {
         );
 
         if ('success' in result) {
-            let references: IReferences = {};
+            const references: IReferences = {};
 
             for (const reference of result.success.references) {
                 const nodeId = reference.uri.substring('node://'.length); // todo hack
@@ -96,6 +98,23 @@ export const createReferencesEditor = () => (props) => {
         return <ErrorView error={fetch__referencesSummary.error} />;
     }
 
+    const openSecondaryEditor = () => {
+        if (!dimension) {
+            // TODO handle
+            return;
+        }
+        props.renderSecondaryInspector('identifiersss', () =>
+            <Tree
+                workspaceName={workspaceName}
+                dimensionValues={dimension}
+                startingPoint={'/<Neos.Neos:Sites>/'}
+                loadingDepth={4}
+                baseNodeTypeFilter={''}
+                onSelect={function (nodeId: string): void {
+                    console.error('Function not implemented', nodeId);
+                }} />)
+    }
+
     return (
         <>
             {Object.values(editor.getReferences()).map(reference => {
@@ -105,6 +124,7 @@ export const createReferencesEditor = () => (props) => {
                     </HoverActions>
                 );
             })}
+            <Button onClick={openSecondaryEditor}>Neues Item</Button>
             {
                 editor.isReferencePropertyEditingOpen() ? <ActiveReferenceEditorDialog editor$={editor$}/> : null
             }

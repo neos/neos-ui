@@ -17,7 +17,7 @@ type GetChildrenForTreeNodeQuery = {
     dimensionValues: Record<string, string[]>;
     treeNodeId: string;
     nodeTypeFilter: string;
-    linkableNodeTypes?: string[]
+    allowedNodeTypes?: string[]
 };
 
 type GetChildrenForTreeNodeQueryResultEnvelope =
@@ -49,15 +49,15 @@ export async function getChildrenForTreeNode(
     searchParams.set('treeNodeId', query.treeNodeId);
     searchParams.set('nodeTypeFilter', query.nodeTypeFilter);
 
-    for (const linkableNodeType of query.linkableNodeTypes ?? []) {
-        searchParams.append(`linkableNodeTypes[]`, linkableNodeType);
+    for (const allowedNodeType of query.allowedNodeTypes ?? []) {
+        searchParams.append(`allowedNodeTypes[]`, allowedNodeType);
     }
 
     try {
         const response = await fetchWithErrorHandling.withCsrfToken(
             (csrfToken) => ({
                 url:
-                    '/neos/link-editor/get-children-for-tree-node?' +
+                    '/neos/references-editor/get-children-for-tree-node?' +
                     searchParams.toString(),
                 method: 'GET',
                 credentials: 'include',

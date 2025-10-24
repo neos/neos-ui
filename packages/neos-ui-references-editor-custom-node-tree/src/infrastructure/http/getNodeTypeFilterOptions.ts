@@ -37,7 +37,7 @@ export async function getNodeTypeFilterOptions(
         const response = await fetchWithErrorHandling.withCsrfToken(
             (csrfToken) => ({
                 url:
-                    '/neos/link-editor/get-node-type-filter-options?' +
+                    '/neos/references-editor/get-node-type-filter-options?' +
                     searchParams.toString(),
                 method: 'GET',
                 credentials: 'include',

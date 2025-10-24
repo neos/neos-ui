@@ -116,7 +116,7 @@ export class Editor {
     }
 
     public isReferencePropertyEditingOpen(): boolean {
-        return this.data.isReferencePropertyEditingOpen;
+        return this.data.isReferencePropertyEditingOpen ?? false;
     }
 
     public isLoading(): boolean {
@@ -128,7 +128,7 @@ export class Editor {
     }
 
     public getReferences(): IReferences {
-        return this.data.transientValues ?? this.data.initialValues;
+        return this.data.transientValues ?? this.data.initialValues ?? {};
     }
 
     public getPropertySchema(): any {

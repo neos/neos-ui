@@ -50,7 +50,7 @@ export const ReferencesPropertiesDialog: React.FC<{
                 <Button
                     style="success"
                     type="submit"
-                    disabled={false}
+                    disabled={!editor.isReferencePropertyEditingDirty()}
                     onClick={apply}
                 >
                     {translate('Neos.Neos.Ui:LinkEditor.Main:dialog.action.apply', '')}

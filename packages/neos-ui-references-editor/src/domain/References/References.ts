@@ -1,13 +1,15 @@
 export interface IReference {
     targetNodeId: string,
     properties: any,
-    breadcrumbs: {
+    presentation?: {
+        breadcrumbs: {
+            icon: string;
+            label: string;
+        }[]
         icon: string;
         label: string;
-    }[]
-    icon: string;
-    label: string;
-    uri: string;
+        uri: string;
+    }
 }
 
 export interface IReferences {

@@ -75,7 +75,10 @@ export const createReferencesEditor = () => (props) => {
                 const nodeId = reference.uri.substring('node://'.length); // todo hack
                 references[nodeId] = {
                     targetNodeId: nodeId,
-                    ...reference
+                    properties: reference.properties,
+                    presentation: {
+                        ...reference
+                    }
                 }
             }
 
@@ -134,7 +137,7 @@ export const createReferencesEditor = () => (props) => {
             })}
             <Button onClick={openSecondaryEditor}>Neues Item</Button>
             {
-                editor.isReferencePropertyEditingOpen() ? <ReferencesPropertiesDialog editor$={editor$} /> : null
+                editor.isReferencePropertyEditingOpen() && <ReferencesPropertiesDialog editor$={editor$} />
             }
         </>
     );

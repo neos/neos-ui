@@ -18,11 +18,18 @@ export const ReferencesItem = (props: ReferencesItemProps) => {
                 </div>
             ) : null}
             <div className={style.main}>
-                <Icon className={style.icon} icon={props.reference.icon} size="lg" />
-                <div className={style.labelContainer}>
-                    <span className={style.label}>{props.reference.label}</span>
-                    <Breadcrumb breadcrumbs={props.reference.breadcrumbs}/>
-                </div>
+                {props.reference.presentation ?
+                    <>
+                        <Icon className={style.icon} icon={props.reference.presentation.icon} size="lg" /><div className={style.labelContainer}>
+                            <span className={style.label}>{props.reference.presentation.label}</span>
+                            <Breadcrumb breadcrumbs={props.reference.presentation.breadcrumbs} />
+                        </div>
+                    </>
+                    :
+                    <div className={style.loader}>
+                        <Icon icon="spinner" spin={true} />
+                    </div>
+            }
             </div>
         </div>
     );

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import {Button, Dialog} from '@neos-project/react-ui-components';
+import {Button, Dialog, Icon} from '@neos-project/react-ui-components';
 
 import {ErrorBoundary, ErrorView} from '@neos-project/neos-ui-error';
 
@@ -40,7 +40,7 @@ export const ReferencesPropertiesDialog: React.FC<{
             isOpen={true}
             preventClosing={editor.isReferencePropertyEditingDirty()}
             onRequestClose={dismiss}
-            title={<div>{translate('Neos.Neos.Ui:LinkEditor.Main:dialog.title', '')}</div>}
+            title={<div>Edit Relation Properties <Icon icon='arrows-left-right-to-line' /></div>}
             style="wide"
             autoFocus={true}
             actions={[

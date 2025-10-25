@@ -14,7 +14,7 @@ export const HoverActions: React.FC<PropsWithChildren<HoverActionsProps>> = ({ch
             {children}
             <div className={style.actions}>
                 <IconButton
-                    icon="pencil"
+                    icon="arrows-left-right-to-line"
                     hoverStyle="brand"
                     title="Edit"
                     onClick={onEdit}

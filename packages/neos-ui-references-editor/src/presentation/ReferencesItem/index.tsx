@@ -9,6 +9,7 @@ interface ReferencesItemProps {
     isDraggable?: boolean;
 }
 
+// todo remove?
 export const ReferencesItem = (props: ReferencesItemProps) => {
     return (
         <div className={style.container}>

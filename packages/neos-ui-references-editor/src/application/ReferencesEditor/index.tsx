@@ -2,10 +2,9 @@ import React from 'react';
 import {getReferencesSummary} from '../../infrastructure/http';
 import {usePromise} from '@neos-project/framework-promise-react';
 import {actions, selectors, useSelector} from '@neos-project/neos-ui-redux-store';
-import {discardChannel$, applyChannel$} from '@neos-project/neos-ui-sagas/src/UI/Inspector';
+import {applyChannel$, discardChannel$} from '@neos-project/neos-ui-sagas/src/UI/Inspector';
 import {ErrorView} from '@neos-project/neos-ui-error';
 import {HoverActions} from '../../presentation/HoverActions';
-import {ReferencesItem} from '../../presentation/ReferencesItem';
 import {IReferences} from '../../domain';
 import {Button} from '@neos-project/react-ui-components';
 import {useDispatch} from 'react-redux';
@@ -14,6 +13,7 @@ import {useLatestState} from '@neos-project/framework-observable-react';
 import {createState} from '@neos-project/framework-observable';
 import {Editor} from '../../domain/Editor/Editor';
 import {ReferencesTreeSecondaryEditor} from '../ReferencesTreeSecondaryEditor';
+import {IconCard} from "@neos-project/neos-ui-link-editor-core/src/presentation";
 
 export const createReferencesEditor = () => (props) => {
     const workspaceName = useSelector(selectors.CR.Workspaces.personalWorkspaceNameSelector);
@@ -104,37 +104,53 @@ export const createReferencesEditor = () => (props) => {
 
     const onDelete = React.useCallback((referenceTargetId: string) => editor$.update(editor => editor.withRemovedReference(referenceTargetId)), [editor$]);
 
-    if (editor.isLoading()) {
-        return <div>Loading {editor.getLoadingReferencesCount()}...</div>;
+    const openSecondaryEditor = () => {
+        if (!dimension) {
+            // TODO handle
+            return;
+        }
+        props.renderSecondaryInspector('ReferencesTreeSecondaryEditor', () =>
+            <ReferencesTreeSecondaryEditor
+                workspaceName={workspaceName}
+                dimensionValues={dimension}
+                // todo
+                startingPoint={'/<Neos.Neos:Sites>/'}
+                editor$={editor$}
+            />
+        )
     }
 
     if (fetch__referencesSummary.error) {
         return <ErrorView error={fetch__referencesSummary.error} />;
     }
 
-    const openSecondaryEditor = () => {
-        if (!dimension) {
-            // TODO handle
-            return;
-        }
-        props.renderSecondaryInspector('identifiersss', () =>
-            <ReferencesTreeSecondaryEditor
-                workspaceName={workspaceName}
-                dimensionValues={dimension}
-                startingPoint={'/<Neos.Neos:Sites>/'}
-                editor$={editor$}
-            />)
-    }
-
+    // todo spin true?
     return (
         <>
-            {Object.values(editor.getReferences()).map(reference => {
-                return (
-                    <HoverActions key={reference.targetNodeId} onEdit={() => onEdit(reference.targetNodeId)} onDelete={() => onDelete(reference.targetNodeId)}>
-                        <ReferencesItem reference={reference} isDraggable={(fetch__referencesSummary.value?.references?.length ?? 0) > 1} />
-                    </HoverActions>
-                );
-            })}
+            {
+                editor.isLoading() ? new Array(editor.getLoadingReferencesCount()).fill(undefined).map(() => (
+                    <IconCard
+                        icon={'spinner'}
+                        title={`loading`}
+                        subTitle={`node://${props.nodeId}`}
+                    />)) : Object.values(editor.getReferences()).map(reference => {
+                        return (
+                            reference.presentation
+                                ? <HoverActions key={reference.targetNodeId} onEdit={() => onEdit(reference.targetNodeId)} onDelete={() => onDelete(reference.targetNodeId)}>
+                                    <IconCard
+                                        icon={reference.presentation.icon}
+                                        title={reference.presentation.label}
+                                        subTitle={reference.presentation.breadcrumbs.map(({label}) => label).join(' > ')}
+                                    />
+                                </HoverActions>
+                                : <IconCard
+                                    icon={'spinner'}
+                                    title={`loading`}
+                                    subTitle={`node://${props.nodeId}`}
+                                />
+                        );
+                    })
+            }
             <Button onClick={openSecondaryEditor}>Neues Item</Button>
             {
                 editor.isReferencePropertyEditingOpen() && <ReferencesPropertiesDialog editor$={editor$} />

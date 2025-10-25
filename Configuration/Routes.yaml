@@ -54,3 +54,12 @@
     '@subpackage': 'ReferencesEditor\Application\GetTree'
     '@controller': 'GetTree'
     '@action': 'ignored'
+
+-
+  name: 'GetNodeSummary Query'
+  uriPattern: 'neos/references-editor/get-node-summary'
+  defaults:
+    '@package': 'Neos.Neos.Ui'
+    '@subpackage': 'ReferencesEditor\Application\GetNodeSummary'
+    '@controller': 'GetNodeSummary'
+    '@action': 'ignored'

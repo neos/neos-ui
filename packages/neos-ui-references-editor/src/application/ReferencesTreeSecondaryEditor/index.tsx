@@ -2,7 +2,8 @@ import React from 'react';
 import {Tree} from '../../../../neos-ui-references-editor-custom-node-tree'
 import {Editor} from '../../domain/Editor/Editor';
 import {State} from '@neos-project/framework-observable';
-import {IReference} from '../../domain';
+import {getNodeSummary} from "../../infrastructure/http/getNodeSummary";
+import {useLatestState} from "@neos-project/framework-observable-react";
 
 interface ReferencesTreeSecondaryEditorProps {
     workspaceName: string;
@@ -13,61 +14,33 @@ interface ReferencesTreeSecondaryEditorProps {
 
 export const ReferencesTreeSecondaryEditor = (props: ReferencesTreeSecondaryEditorProps) => {
     const {workspaceName, dimensionValues, startingPoint, editor$} = props;
-    const [selectedTreeNodeIds, setSelectedTreeNodeIds] = React.useState<string[]>([]);
 
     const onSelectTreeNode = async (nodeId: string) => {
-        console.log('select', nodeId);
-        // optimistic selection to show select state in tree
-        setSelectedTreeNodeIds(array => [...array, nodeId])
+        if (editor$.current.getSelectedNodeIds().includes(nodeId)) {
+            // already selected
+            return;
+        }
         editor$.update(editor => editor.withSelectedTargetNodeId(nodeId));
-        // TODO test values
-        const referenceValue = await new Promise<IReference>((resolve) => {
-            resolve({
-                targetNodeId: nodeId,
-                presentation: {
-                    'icon': 'header',
-                    'label': 'Node ' + nodeId,
-                    'uri': 'node://d17caff2-f50c-d30b-b735-9b9216de02e9',
-                    'breadcrumbs': [
-                        {
-                            'icon': 'globe',
-                            'label': 'Home'
-                        },
-                        {
-                            'icon': 'far fa-folder-open',
-                            'label': 'Teaser area (teaser)'
-                        },
-                        {
-                            'icon': 'header',
-                            'label': 'Welcome to the Neos CMS demo'
-                        }
-                    ]
-                },
-                'properties': null
-            });
-        });
-        // mock api call for now
-        setTimeout(() => {
-            editor$.update(editor => editor.withAddedReferencePresentation(referenceValue));
-        }, 2000);
+        const result = await getNodeSummary({nodeId, dimensionValues, workspaceName})
+
+        if ('success' in result) {
+            editor$.update(editor => editor.withAddedReferencePresentation(nodeId, result.success));
+        } else {
+            // todo handle error
+        }
     }
 
-    React.useEffect(() => {
-        const subscription = editor$.subscribe({
-            next: (editor) =>
-                setSelectedTreeNodeIds(Object.keys(editor.getReferences()))
-        });
-        return subscription.unsubscribe;
-    }, [editor$]);
+    const editor = useLatestState(editor$);
 
     return (
         <Tree
             workspaceName={workspaceName}
             dimensionValues={dimensionValues}
             startingPoint={startingPoint}
+            // todo options configurable
             loadingDepth={4}
             baseNodeTypeFilter={''}
-            selectedTreeNodeIds={selectedTreeNodeIds}
+            selectedTreeNodeIds={editor.getSelectedNodeIds()}
             onSelect={onSelectTreeNode}
         />
     )

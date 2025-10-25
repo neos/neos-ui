@@ -50,6 +50,9 @@ export class Editor {
 
     public withSelectedTargetNodeId(targetNodeId: string): Editor {
         const transientValues = this.data.transientValues ?? this.data.initialValues;
+        if (transientValues[targetNodeId]) {
+            return this;
+        }
         return new Editor({
             ...this.data,
             transientValues: {
@@ -63,23 +66,29 @@ export class Editor {
         })
     }
 
-    public withAddedReferencePresentation(reference: IReference): Editor {
+    public withAddedReferencePresentation(targetNodeId: string, referencePresentation: IReference["presentation"]): Editor {
         // unapplied changes
-        if (this.data.transientValues && Object.keys(this.data.transientValues).includes(reference.targetNodeId)) {
+        if (this.data.transientValues && Object.keys(this.data.transientValues).includes(targetNodeId)) {
             return new Editor({
                 ...this.data,
                 transientValues: {
                     ...this.data.transientValues,
-                    [reference.targetNodeId]: reference
+                    [targetNodeId]: {
+                        ...this.data.transientValues[targetNodeId],
+                        presentation: referencePresentation
+                    }
                 }
             })
         }
-        if (this.data.initialValues && Object.keys(this.data.initialValues).includes(reference.targetNodeId)) {
+        if (this.data.initialValues && Object.keys(this.data.initialValues).includes(targetNodeId)) {
             return new Editor({
                 ...this.data,
                 initialValues: {
                     ...this.data.initialValues,
-                    [reference.targetNodeId]: reference
+                    [targetNodeId]: {
+                        ...this.data.initialValues[targetNodeId],
+                        presentation: referencePresentation
+                    }
                 }
             })
         }
@@ -174,6 +183,12 @@ export class Editor {
 
     public getReferencePropertyValue(propertyName: string): any {
         return (this.data.transientReferencePropertyValues ?? this.data.transientValues ?? this.data.initialValues)[this.data.selectedReferenceId]?.properties?.[propertyName]
+    }
+
+    public getSelectedNodeIds(): string[]
+    {
+        // todo memo value
+        return Object.keys(this.data.transientValues ?? this.data.initialValues)
     }
 
     public getChange(nodeAddress: string, referenceName: string): Change | null {

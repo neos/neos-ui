@@ -12,7 +12,8 @@ env:
   GITHUB_TOKEN: ${{ github.token }}
 
 jobs:
-  server-build:
+  build:
+    name: "E2E Tests"
     env:
       FLOW_CONTEXT: Production
       FLOW_PATH_ROOT: ../neos-base-distribution
@@ -92,8 +93,9 @@ jobs:
           composer require --no-update --no-interaction neos/test-twodimensions:@dev
           composer require --no-update --no-interaction neos/test-nodetypes:@dev
 
-      - name: Install Brombeer-sauce
+      - name: Install Sauce connect and CTL
         run: |
+          # https://docs.saucelabs.com/secure-connections/sauce-connect-5/installation/linux/
           curl -L -o sauce-connect.deb https://saucelabs.com/downloads/sauce-connect/5.3.0/sauce-connect_5.3.0.linux_amd64.deb
           sudo dpkg -i sauce-connect.deb
 
@@ -147,9 +149,11 @@ jobs:
           echo 127.0.0.1 onedimension.localhost | sudo tee -a /etc/hosts
           echo 127.0.0.1 twodimensions.localhost | sudo tee -a /etc/hosts
           cd ${FLOW_PATH_ROOT}
+          chmod 777 Web/
           ./flow resource:publish
           ./flow server:run --port 8081 &
           sleep 1
+          curl http://onedimension.localhost:8081/_Resources/Static/Packages/Neos.Neos.Ui/Build/Host.js
 
       - name: Start e2e tunnel (in background)
         run: |
@@ -182,3 +186,7 @@ jobs:
             echo $file
             cat $file
           done
+
+      - name: Setup upterm session
+        if: ${{ failure()  }}
+        uses: owenthereal/action-upterm@v1

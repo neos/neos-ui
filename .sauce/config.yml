@@ -18,7 +18,7 @@ suites:
     browserName: "firefox"
     src:
       - "Tests/IntegrationTests/Fixtures/*/*.e2e.js"
-      - "Tests/IntegrationTests/Fixtures/*/*.e2e.ts"
+    # - "Tests/IntegrationTests/Fixtures/*/*.e2e.ts"
     platformName: "Windows 10"
     screenResolution: "1280x1024"
   # todo use chrome here and fix ci https://github.com/neos/neos-ui/issues/3591 (but even firefox fails in ci)

@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: 'Build and Test'
+    name: 'Lint and Test'
     env:
       FLOW_CONTEXT: Testing
       FLOW_PATH_ROOT: ../neos-base-distribution

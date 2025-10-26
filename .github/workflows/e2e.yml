@@ -104,7 +104,6 @@ jobs:
       - name: Install composer dependencies
         run: |
           cd ${FLOW_PATH_ROOT}
-          composer clear-cache
           composer install --no-interaction --no-progress --prefer-dist
 
       - name: Setup Flow
@@ -127,8 +126,6 @@ jobs:
                 frontendDevelopmentMode: true
           EOF
           ./flow doctrine:migrate
-          ./flow configuration:show --path Neos.Neos.Ui.resources
-          ./flow configuration:show --path Neos.Neos.Ui | grep frontendDevelopmentMode
 
       - name: Setup Testing Neos Sites and Users
         run: |
@@ -152,8 +149,6 @@ jobs:
           chmod 777 Web/
           ./flow resource:publish
           ./flow server:run --port 8081 &
-          sleep 1
-          curl http://onedimension.localhost:8081/_Resources/Static/Packages/Neos.Neos.Ui/Build/Host.js
 
       - name: Start e2e tunnel (in background)
         run: |

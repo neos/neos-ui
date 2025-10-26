@@ -60,12 +60,6 @@ export async function checkPropTypes() {
 }
 
 export async function beforeEach(t) {
-    if (!'isFirstRun' in t.fixtureCtx) {
-        t.fixtureCtx['isFirstRun'] = true;
-        console.log('Document Head contents');
-        console.log(await t.eval(() => document.head.innerHTML));
-        console.log();
-    }
     await t.useRole(adminUserOnOneDimensionTestSite);
     await waitForReact(30000);
     await PublishDropDown.discardAll();

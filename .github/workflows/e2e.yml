@@ -102,7 +102,10 @@ jobs:
       - name: Install composer dependencies
         run: |
           cd ${FLOW_PATH_ROOT}
+          composer clear-cache
           composer install --no-interaction --no-progress --prefer-dist
+          composer show neos/neos-ui
+          ls Packages/Application/Neos.Neos.Ui
 
       - name: Setup Flow
         run: |
@@ -140,9 +143,6 @@ jobs:
 
           ./flow user:create --username=admin --password=admin --first-name=Admin --last-name=Admington --roles=Administrator || true
           ./flow user:create --username=editor --password=editor --first-name=Editor --last-name=McEditworth --roles=Editor || true
-
-      - name: Setup upterm session
-        uses: owenthereal/action-upterm@v1
 
       - name: Start flow server (in background)
         run: |
@@ -186,3 +186,7 @@ jobs:
             echo $file
             cat $file
           done
+
+      - name: Setup upterm session
+        if: ${{ failure()  }}
+        uses: owenthereal/action-upterm@v1

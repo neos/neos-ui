@@ -86,7 +86,7 @@ jobs:
           cd ${FLOW_PATH_ROOT}
           composer config --no-plugins allow-plugins.neos/composer-plugin true
           composer config repositories.package '{ "type": "path", "url": "../neos-ui", "options": { "symlink": false } }'
-          composer config repositories.package '{ "type": "path", "url": "../neos-ui/Tests/IntegrationTests/TestDistribution/DistributionPackages/*", "options": { "symlink": false } }'
+          composer config repositories.testsites '{ "type": "path", "url": "../neos-ui/Tests/IntegrationTests/TestDistribution/DistributionPackages/*", "options": { "symlink": false } }'
           composer require --no-update --no-interaction neos/neos-ui:@dev
           composer require --no-update --no-interaction neos/test-onedimension:@dev
           composer require --no-update --no-interaction neos/test-twodimensions:@dev
@@ -104,8 +104,6 @@ jobs:
           cd ${FLOW_PATH_ROOT}
           composer clear-cache
           composer install --no-interaction --no-progress --prefer-dist
-          composer show neos/neos-ui
-          ls Packages/Application/Neos.Neos.Ui
 
       - name: Setup Flow
         run: |
@@ -149,11 +147,9 @@ jobs:
           echo 127.0.0.1 onedimension.localhost | sudo tee -a /etc/hosts
           echo 127.0.0.1 twodimensions.localhost | sudo tee -a /etc/hosts
           cd ${FLOW_PATH_ROOT}
-          chmod 777 Web/
           ./flow resource:publish
           ./flow server:run --port 8081 &
           sleep 1
-          curl http://onedimension.localhost:8081/_Resources/Static/Packages/Neos.Neos.Ui/Build/Host.js
 
       - name: Start e2e tunnel (in background)
         run: |
@@ -186,7 +182,3 @@ jobs:
             echo $file
             cat $file
           done
-
-      - name: Setup upterm session
-        if: ${{ failure()  }}
-        uses: owenthereal/action-upterm@v1

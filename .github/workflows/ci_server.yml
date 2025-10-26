@@ -1,4 +1,4 @@
-name: CI Server
+name: Server (PHP)
 on:
   workflow_dispatch:
   push:
@@ -7,7 +7,8 @@ on:
     branches: [ main, '[0-9]+.[0-9]' ]
 
 jobs:
-  server-build:
+  build:
+    name: 'Build and Test'
     env:
       FLOW_CONTEXT: Testing
       FLOW_PATH_ROOT: ../neos-base-distribution

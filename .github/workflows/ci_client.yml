@@ -1,4 +1,4 @@
-name: CI Client
+name: Client (JavaScript)
 
 on:
   workflow_dispatch:

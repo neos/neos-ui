@@ -7,7 +7,7 @@ import {actionTypes as editPreviewMode, Action as EditPreviewModeAction} from '.
 import * as selectors from './selectors';
 import {calculateNewFocusedNodes, getNodeOrThrow} from './helpers';
 
-import {FusionPath, NodeContextPath, InsertPosition, NodeMap, ClipboardMode, SelectionModeTypes, NodeTypeName} from '@neos-project/neos-ts-interfaces';
+import {FusionPath, NodeContextPath, InsertPosition, NodeMap, ClipboardMode, SelectionModeTypes, NodeTypeName, Node} from '@neos-project/neos-ts-interfaces';
 
 interface InlineValidationErrors {
     [itemProp: string]: any;
@@ -463,9 +463,9 @@ export const reducer = (state: State = defaultState, action: InitAction | EditPr
                 if (!newNode) {
                     throw new Error('This error should never be thrown, it\'s a way to fool TypeScript');
                 }
-                const mergedNode = defaultsDeep({}, newNode, draft.byContextPath[contextPath]);
+                const mergedNode: Node = defaultsDeep({}, newNode, draft.byContextPath[contextPath]);
                 // Force overwrite of children
-                if (newNode.children !== undefined) {
+                if (newNode.isFullyLoaded && newNode.children !== undefined) {
                     mergedNode.children = newNode.children;
                 }
                 // Force overwrite of matchesCurrentDimensions

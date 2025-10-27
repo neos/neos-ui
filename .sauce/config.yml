@@ -16,6 +16,7 @@ rootDir: ./
 suites:
   - name: "Tests in Firefox on Windows"
     browserName: "firefox"
+    browserVersion: 143
     src:
       - "Tests/IntegrationTests/Fixtures/*/*.e2e.js"
     # - "Tests/IntegrationTests/Fixtures/*/*.e2e.ts"

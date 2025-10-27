@@ -11,6 +11,12 @@ sauce:
     build: Github Run $GITHUB_RUN_ID
 testcafe:
   version: 3.6.2
+npm:
+  registries:
+    - url: https://registry.npmjs.org
+  packages:
+    "testcafe-react-selectors": "5.0.3"
+
 # Controls what files are available in the context of a test run (unless explicitly excluded by .sauceignore).
 rootDir: Tests/IntegrationTests/Fixtures/
 suites:
@@ -28,9 +34,6 @@ suites:
   #     - "./*/*.e2e.{js,ts}"
   #   platformName: "macOS 13"
   #   screenResolution: "1440x900"
-npm:
-  dependencies:
-    - testcafe-react-selectors
 
 # Controls what artifacts to fetch when the suites have finished.
 artifacts:

@@ -149,6 +149,7 @@ jobs:
           chmod 777 Web/
           ./flow resource:publish
           ./flow server:run --port 8081 &
+          sleep 1
 
       - name: Start e2e tunnel (in background)
         run: |

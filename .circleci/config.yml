@@ -1,3 +1,13 @@
+
+#
+# CircleCI is disabled !!!
+#
+# Starting with Neos 9.0 we no longer use CircleCI. This file is to be eventually.
+# But it needs to be kept to allow CircleCI to be active still for Neos 8.x (see error No configuration was found in your project.)
+#
+# Migrate fully to GitHub Actions and abandon CircleCI: https://github.com/neos/neos-ui/issues/4026
+#
+
 version: 2.1
 
 general:
@@ -5,8 +15,6 @@ general:
     only:
       - 8.3
       - 8.4
-
-# disabled starting with Neos 9.0 and to be removed eventually. Kept as we keep the CI hook active for Neos 8.x
 
 jobs:
   noop:

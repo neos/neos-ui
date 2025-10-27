@@ -182,6 +182,8 @@ jobs:
             cat $file
           done
 
-      - name: Setup upterm session
+      - name: Setup ssh session for debugging
         if: ${{ failure()  }}
         uses: owenthereal/action-upterm@v1
+        with:
+          wait-timeout-minutes: 5

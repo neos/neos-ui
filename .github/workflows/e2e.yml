@@ -149,7 +149,6 @@ jobs:
           chmod 777 Web/
           ./flow resource:publish
           ./flow server:run --port 8081 &
-          sleep 1
 
       - name: Start e2e tunnel (in background)
         run: |
@@ -183,8 +182,9 @@ jobs:
             cat $file
           done
 
-      - name: Setup ssh session for debugging
-        if: ${{ failure()  }}
-        uses: owenthereal/action-upterm@v1
-        with:
-          wait-timeout-minutes: 5
+      # enable to debug container (https://upterm.dev)
+      # - name: Setup ssh session for debugging
+      #   if: ${{ failure()  }}
+      #   uses: owenthereal/action-upterm@v1
+      #   with:
+      #     wait-timeout-minutes: 5

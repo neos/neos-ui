@@ -48,15 +48,16 @@ jobs:
           php-version: ${{ matrix.php-version }}
           extensions: mbstring, xml, json, zlib, iconv, intl, pdo_sqlite, mysql
 
-      - id: composer-cache
-        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-        shell: bash
-
-      - uses: actions/cache@v3
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v4
+        timeout-minutes: 30
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
+          path: |
+            ~/.cache/composer
+            ${{ env.FLOW_PATH_ROOT }}/Packages
+          key: php-${{ matrix.php-version }}-neos-${{ matrix.neos-version }}${{ hashFiles('**/composer.json') }}
+          restore-keys: php-${{ matrix.php-version }}-neos-${{ matrix.neos-version }}
 
       - name: Prepare Neos distribution
         run: |

@@ -1,0 +1,2 @@
+# This file instructs sauce to not package any files mentioned here.
+TestDistribution/

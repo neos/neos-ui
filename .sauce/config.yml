@@ -12,20 +12,20 @@ sauce:
 testcafe:
   version: 3.6.2
 # Controls what files are available in the context of a test run (unless explicitly excluded by .sauceignore).
-rootDir: ./
+rootDir: Tests/IntegrationTests/Fixtures/
 suites:
   - name: "Tests in Firefox on Windows"
     browserName: "firefox"
     browserVersion: "latest-1"
     src:
-      - "Tests/IntegrationTests/Fixtures/*/*.e2e.{js,ts}"
+      - "./*/*.e2e.{js,ts}"
     platformName: "Windows 10"
     screenResolution: "1280x1024"
   # todo use chrome here and fix ci https://github.com/neos/neos-ui/issues/3591 (but even firefox fails in ci)
   # - name: "Tests in Firefox on MacOS"
   #   browserName: "firefox"
   #   src:
-  #     - "Tests/IntegrationTests/Fixtures/*/*.e2e.{js,ts}"
+  #     - "./*/*.e2e.{js,ts}"
   #   platformName: "macOS 13"
   #   screenResolution: "1440x900"
 npm:

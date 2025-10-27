@@ -1,3 +1,4 @@
+# lol
 apiVersion: v1alpha
 kind: testcafe
 showConsoleLog: true

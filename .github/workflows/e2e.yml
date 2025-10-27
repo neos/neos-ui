@@ -168,18 +168,34 @@ jobs:
             cat $file
           done
 
+      - name: Assert no flow exceptions
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          cd ${FLOW_PATH_ROOT}
+          if [ ! -d "Data/Logs/Exceptions" ]; then
+            exit 0
+          fi
+
+          for file in Data/Logs/Exceptions/*; do
+            echo $file
+            cat $file
+            echo "\n"
+            echo "\n"
+          done
+
+          exit 1
+
       - name: Show Flow log on failure
-        if: ${{ failure()  }}
+        if: ${{ failure() }}
         shell: bash
         run: |
           cd ${FLOW_PATH_ROOT}
           for file in Data/Logs/*.log; do
             echo $file
             cat $file
-          done
-          for file in Data/Logs/Exceptions/*; do
-            echo $file
-            cat $file
+            echo "\n"
+            echo "\n"
           done
 
       # enable to debug container (https://upterm.dev)

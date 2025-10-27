@@ -1,7 +1,8 @@
 prototype(Neos.TestNodeTypes:Content.Image) < prototype(Neos.Neos:ContentComponent) {
     alternativeText = ${node.properties.alternativeText}
     src = Neos.Neos:ImageUri {
-        asset = ${q(node).property('image')}
+        @if.set = ${this.asset}
+        asset = ${node.properties.image}
     }
 
     renderer = afx`

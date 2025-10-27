@@ -9,6 +9,7 @@ prototype(Neos.TestNodeTypes:Document.Page) < prototype(Neos.Neos:Page) {
         }
         nav = Neos.TestNodeTypes:Navigation
         imageUri = Neos.Neos:ImageUri {
+            @if.set = ${this.asset}
             asset = ${node.properties.image}
             maximumHeight = 100
         }

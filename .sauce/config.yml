@@ -12,8 +12,7 @@ sauce:
 testcafe:
   version: 3.6.2
 npm:
-  registries:
-    - url: https://registry.npmjs.org
+  registry: https://registry.npmjs.org
   packages:
     "testcafe-react-selectors": "5.0.3"
 

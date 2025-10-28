@@ -61,10 +61,10 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version-file: '../${{ env.PACKAGE_FOLDER }}/.nvmrc'
+          node-version-file: '${{ env.PACKAGE_FOLDER }}/.nvmrc'
           cache: 'yarn'
 
-      - name: Install Sauce connect and CTL
+      - name: Setup Sauce connect and CTL
         run: |
           # https://docs.saucelabs.com/secure-connections/sauce-connect-5/installation/linux/
           curl -L -o sauce-connect.deb https://saucelabs.com/downloads/sauce-connect/5.3.0/sauce-connect_5.3.0.linux_amd64.deb

@@ -13,7 +13,7 @@ testcafe:
   version: 3.6.2
 npm:
   registries:
-    - https://registry.npmjs.org
+    - url: https://registry.npmjs.org
   packages:
     "testcafe-react-selectors": "5.0.3"
 

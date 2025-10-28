@@ -72,7 +72,7 @@ jobs:
           key: php-${{ matrix.php-version }}-neos-${{ matrix.neos-version }}-${{ hashFiles('**/composer.json') }}
           restore-keys: php-${{ matrix.php-version }}-neos-${{ matrix.neos-version }}-
 
-      - name: Prepare Neos.Neos.Ui Packages for composer installation
+      - name: Prepare Neos.Neos.Ui Package for composer installation
         run: |
           cd "../${{ env.PACKAGE_FOLDER }}"
           # no "neos/neos-ui-compiled" because this job is just for PHP
@@ -80,11 +80,12 @@ jobs:
           # install also export-ignore'd Test/ directory
           rm .gitattributes
 
-      - name: Install dependencies
+      - name: Install and link composer dependencies
         run: |
           composer config --no-plugins allow-plugins.neos/composer-plugin true
           composer config repositories.package '{ "type": "path", "url": "../${{ env.PACKAGE_FOLDER }}", "options": { "symlink": false } }'
           composer require --no-update --no-interaction neos/neos-ui:@dev
+
           composer install --no-interaction --no-progress --prefer-dist
 
       - name: Linting
@@ -121,17 +122,22 @@ jobs:
           cd Packages/Application/Neos.Neos.Ui
           composer run test:behavioral
 
-      - name: Show log on failure
+      - name: Show Flow logs and exceptions on failure
         if: ${{ failure()  }}
         run: |
-          cat Data/Logs/System_Testing.log
-          for file in Data/Logs/Exceptions/*; do
+          for file in Data/Logs/*.log; do
             echo $file
             cat $file
+            echo "\n"
+            echo "\n"
           done
 
-      - name: Setup ssh session for debugging
-        if: ${{ failure()  }}
-        uses: owenthereal/action-upterm@v1
-        with:
-          wait-timeout-minutes: 5
+          if [ -d "Data/Logs/Exceptions" ]; then
+            echo "Exceptions (Data/Logs/Exceptions)"
+            for file in Data/Logs/Exceptions/*; do
+              echo $file
+              cat $file
+              echo "\n"
+              echo "\n"
+            done
+          fi

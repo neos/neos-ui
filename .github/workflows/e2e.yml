@@ -14,11 +14,16 @@ env:
 jobs:
   build:
     name: "Browser Tests"
+    runs-on: ubuntu-latest
+
     env:
       FLOW_CONTEXT: Production
-      FLOW_PATH_ROOT: ../neos-base-distribution
+      DISTRIBUTION_FOLDER: neos-distribution
+      PACKAGE_FOLDER: Neos.Neos.Ui
 
-    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.DISTRIBUTION_FOLDER }}
 
     strategy:
       fail-fast: false
@@ -44,6 +49,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          path: ${{ env.PACKAGE_FOLDER }}
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -57,16 +64,22 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'yarn'
 
+      - name: Checkout development distribution
+        uses: actions/checkout@v4
+        with:
+          repository: neos/neos-development-distribution
+          ref: ${{ matrix.neos-version }}
+          path: ${{ env.DISTRIBUTION_FOLDER }}
+
       - name: Cache Composer packages
-        id: composer-cache
         uses: actions/cache@v4
         timeout-minutes: 30
         with:
           path: |
             ~/.cache/composer
-            ${{ env.FLOW_PATH_ROOT }}/Packages
-          key: php-${{ matrix.php-version }}-neos-${{ matrix.neos-version }}${{ hashFiles('**/composer.json') }}
-          restore-keys: php-${{ matrix.php-version }}-neos-${{ matrix.neos-version }}
+            ${{ env.DISTRIBUTION_FOLDER }}/Packages
+          key: php-${{ matrix.php-version }}-neos-${{ matrix.neos-version }}-${{ hashFiles('**/composer.json') }}
+          restore-keys: php-${{ matrix.php-version }}-neos-${{ matrix.neos-version }}-
 
       - name: Install npm dependencies
         run: |
@@ -76,23 +89,13 @@ jobs:
         run: |
           make build-e2e-testing
 
-      - name: Prepare Neos distribution
+      - name: Prepare Neos.Neos.Ui Package for composer installation
         run: |
-          cd "../neos-ui"
+          cd "../${{ env.PACKAGE_FOLDER }}"
           # no "neos/neos-ui-compiled" because this job recompiles JS
           composer remove neos/neos-ui-compiled --no-update
           # install also export-ignore'd Test/ and packages/ directory
           rm .gitattributes
-
-          git clone --depth 1 --branch ${{ matrix.neos-version }} https://github.com/neos/neos-development-distribution.git ${FLOW_PATH_ROOT}
-          cd ${FLOW_PATH_ROOT}
-          composer config --no-plugins allow-plugins.neos/composer-plugin true
-          composer config repositories.package '{ "type": "path", "url": "../neos-ui", "options": { "symlink": false } }'
-          composer config repositories.testsites '{ "type": "path", "url": "../neos-ui/Tests/IntegrationTests/TestDistribution/DistributionPackages/*", "options": { "symlink": false } }'
-          composer require --no-update --no-interaction neos/neos-ui:@dev
-          composer require --no-update --no-interaction neos/test-onedimension:@dev
-          composer require --no-update --no-interaction neos/test-twodimensions:@dev
-          composer require --no-update --no-interaction neos/test-nodetypes:@dev
 
       - name: Install Sauce connect and CTL
         run: |
@@ -102,14 +105,20 @@ jobs:
 
           npm install -g saucectl
 
-      - name: Install composer dependencies
+      - name: Install and link composer dependencies
         run: |
-          cd ${FLOW_PATH_ROOT}
+          composer config --no-plugins allow-plugins.neos/composer-plugin true
+          composer config repositories.package '{ "type": "path", "url": "../${{ env.PACKAGE_FOLDER }}", "options": { "symlink": false } }'
+          composer config repositories.testsites '{ "type": "path", "url": "../${{ env.PACKAGE_FOLDER }}/Tests/IntegrationTests/TestDistribution/DistributionPackages/*", "options": { "symlink": false } }'
+          composer require --no-update --no-interaction neos/neos-ui:@dev
+          composer require --no-update --no-interaction neos/test-onedimension:@dev
+          composer require --no-update --no-interaction neos/test-twodimensions:@dev
+          composer require --no-update --no-interaction neos/test-nodetypes:@dev
+
           composer install --no-interaction --no-progress --prefer-dist
 
       - name: Setup Flow
         run: |
-          cd ${FLOW_PATH_ROOT}
           rm -f Configuration/Settings.yaml
           cat <<EOF >> Configuration/Settings.yaml
           Neos:
@@ -126,11 +135,11 @@ jobs:
               Ui:
                 frontendDevelopmentMode: true
           EOF
+          ./flow
           ./flow doctrine:migrate
 
       - name: Setup Testing Neos Sites and Users
         run: |
-          cd ${FLOW_PATH_ROOT}
           ./flow cr:setup --content-repository onedimension
           ./flow site:pruneAll --content-repository onedimension --force --verbose
           ./flow site:importAll --content-repository onedimension --package-key Neos.Test.OneDimension --verbose
@@ -146,7 +155,6 @@ jobs:
         run: |
           echo 127.0.0.1 onedimension.localhost | sudo tee -a /etc/hosts
           echo 127.0.0.1 twodimensions.localhost | sudo tee -a /etc/hosts
-          cd ${FLOW_PATH_ROOT}
           chmod 777 Web/
           ./flow resource:publish
           ./flow server:run --port 8081 &
@@ -157,13 +165,12 @@ jobs:
 
       - name: Run e2e tests
         run: |
-          saucectl run --config .sauce/config.yml --tunnel-name "neos-tunnel" --region "us-west-1" --artifacts.download.directory ${{ env.FLOW_PATH_ROOT }}/Data/Logs/saucelabs-artifacts
+          saucectl run --config .sauce/config.yml --tunnel-name "neos-tunnel" --region "us-west-1" --artifacts.download.directory Data/Logs/saucelabs-artifacts
 
       - name: Show Testcafe output
         if: ${{ always() }}
         shell: bash
         run: |
-          cd ${FLOW_PATH_ROOT}
           for file in Data/Logs/saucelabs-artifacts/**/console.log; do
             echo $file
             cat $file
@@ -173,7 +180,6 @@ jobs:
         if: ${{ always() }}
         shell: bash
         run: |
-          cd ${FLOW_PATH_ROOT}
           if [ ! -d "Data/Logs/Exceptions" ]; then
             exit 0
           fi
@@ -187,11 +193,10 @@ jobs:
 
           exit 1
 
-      - name: Show Flow Logs on failure
+      - name: Show Flow logs on failure
         if: ${{ failure() }}
         shell: bash
         run: |
-          cd ${FLOW_PATH_ROOT}
           for file in Data/Logs/*.log; do
             echo $file
             cat $file

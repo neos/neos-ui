@@ -159,7 +159,7 @@ jobs:
         run: |
           saucectl run --config .sauce/config.yml --tunnel-name "neos-tunnel" --region "us-west-1" --artifacts.download.directory ${{ env.FLOW_PATH_ROOT }}/Data/Logs/saucelabs-artifacts
 
-      - name: Show testcafe output
+      - name: Show Testcafe output
         if: ${{ always() }}
         shell: bash
         run: |
@@ -169,7 +169,7 @@ jobs:
             cat $file
           done
 
-      - name: Assert no flow exceptions
+      - name: Assert no Flow exceptions swallowed
         if: ${{ always() }}
         shell: bash
         run: |
@@ -187,7 +187,7 @@ jobs:
 
           exit 1
 
-      - name: Show Flow log on failure
+      - name: Show Flow Logs on failure
         if: ${{ failure() }}
         shell: bash
         run: |

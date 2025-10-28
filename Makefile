@@ -108,7 +108,7 @@ test:
 
 ## Executes integration tests locally.
 test-e2e:
-	bash Tests/IntegrationTests/e2e.sh --browser chrome
+	bash Tests/IntegrationTests/e2e.sh chrome
 
 ## Executes integration tests locally in a docker-compose setup.
 #

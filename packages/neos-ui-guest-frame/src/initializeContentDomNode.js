@@ -8,20 +8,28 @@ import initializePropertyDomNode from './initializePropertyDomNode';
 
 import style from './style.module.css';
 
-export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry}) => contentDomNode => {
+/**
+ * @param store
+ * @param globalRegistry
+ * @param nodeTypesRegistry
+ * @param inlineEditorRegistry
+ * @return {(function(NodeInGuestFrame): void)|*}
+ * FIXME: Handle multiple content nodes when adding event listeners and classes
+ */
+export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry}) => (node) => {
     const nodes = store.getState().cr.nodes.byContextPath;
-    const contextPath = contentDomNode.getAttribute('data-__neos-node-contextpath');
+    const {contentDomNode, nodeAddress} = node;
 
-    if (!nodes[contextPath]) {
+    if (!nodes[nodeAddress]) {
         // Node is not available in the store yet, so we can't initialize any interaction
-        console.warn(`Node with context path "${contextPath}" is not available in the store yet.`);
+        console.warn(`Node with context path "${nodeAddress}" is not available in the store yet.`);
         return;
     }
 
-    const isHidden = nodes?.[contextPath]?.properties?._hidden;
-    const hasChildren = Boolean(nodes?.[contextPath]?.children);
-    const isInlineEditable = nodeTypesRegistry.isInlineEditable(nodes?.[contextPath]?.nodeType);
-    const matchesCurrentDimensions = !nodes?.[contextPath]?.matchesCurrentDimensions;
+    const isHidden = nodes?.[nodeAddress]?.properties?._hidden;
+    const hasChildren = Boolean(nodes?.[nodeAddress]?.children);
+    const isInlineEditable = nodeTypesRegistry.isInlineEditable(nodes?.[nodeAddress]?.nodeType);
+    const matchesCurrentDimensions = !nodes?.[nodeAddress]?.matchesCurrentDimensions;
 
     if (isHidden) {
         contentDomNode.classList.add(style.markHiddenNodeAsHidden);
@@ -60,7 +68,7 @@ export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry}
         createEmptyContentCollectionPlaceholderIfMissing(contentDomNode);
     }
 
-    findRelativePropertiesInGuestFrame(contentDomNode).forEach(
+    findRelativePropertiesInGuestFrame(node).forEach(
         initializePropertyDomNode({
             store,
             globalRegistry,

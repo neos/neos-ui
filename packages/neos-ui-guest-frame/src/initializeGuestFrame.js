@@ -5,6 +5,7 @@ import {requestIdleCallback} from '@neos-project/utils-helpers';
 
 import initializeContentDomNode from './initializeContentDomNode';
 import {
+    closestNodeInGuestFrame,
     dispatchCustomEvent,
     findAllNodesInGuestFrame,
     findInGuestFrame,
@@ -62,7 +63,7 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
 
     // Load all nodedata for nodes in the guest frame and filter duplicates
     const {q} = yield backend.get();
-    const nodeContextPathsInGuestFrame = findAllNodesInGuestFrame().map(node => node.getAttribute('data-__neos-node-contextpath'));
+    const nodeContextPathsInGuestFrame = findAllNodesInGuestFrame().map(({nodeAddress}) => nodeAddress);
 
     // Filter nodes that are already present in the redux store and duplicates
     const nodesByContextPath = store.getState().cr.nodes.byContextPath;
@@ -124,24 +125,18 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
             domNode.getAttribute &&
             domNode.getAttribute('data-__neos-property')
         );
-        const selectedDomNode = clickPath.find(domNode =>
-            domNode &&
-            domNode.getAttribute &&
-            domNode.getAttribute('data-__neos-node-contextpath')
-        );
+        const selectedDomNode = closestNodeInGuestFrame(event.target);
 
         if (isInsideInlineUi) {
             // Do nothing, everything OK!
         } else if (selectedDomNode) {
-            const contextPath = selectedDomNode.getAttribute('data-__neos-node-contextpath');
-            const fusionPath = selectedDomNode.getAttribute('data-__neos-fusion-path');
             const state = store.getState();
             const focusedNodeContextPath = selectors.CR.Nodes.focusedNodePathSelector(state);
             if (!isInsideEditableProperty) {
                 store.dispatch(actions.UI.ContentCanvas.setCurrentlyEditedPropertyName(''));
             }
-            if (!isInsideEditableProperty || focusedNodeContextPath !== contextPath) {
-                store.dispatch(actions.CR.Nodes.focus(contextPath, fusionPath));
+            if (!isInsideEditableProperty || focusedNodeContextPath !== selectedDomNode.nodeAddress) {
+                store.dispatch(actions.CR.Nodes.focus(selectedDomNode.nodeAddress, selectedDomNode.fusionPath));
             }
         } else {
             store.dispatch(actions.UI.ContentCanvas.setCurrentlyEditedPropertyName(''));
@@ -177,7 +172,7 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
 
         requestIdleCallback(() => {
             // Only of guest frame document did not change in the meantime, we continue initializing the node
-            if (getGuestFrameDocument() === node.ownerDocument) {
+            if (getGuestFrameDocument() === node.contentDomNode.ownerDocument) {
                 initializeCurrentNode(node);
             }
             initializeSubSequentNodes();
@@ -190,7 +185,7 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
     const focusedNode = yield select(selectors.CR.Nodes.focusedNodePathSelector);
     const focusedNodeElement = findNodeInGuestFrame(focusedNode);
     if (focusedNodeElement) {
-        focusedNodeElement.classList.add(style['markActiveNodeAsFocused--focusedNode']);
+        focusedNodeElement.contentDomNode.classList.add(style['markActiveNodeAsFocused--focusedNode']);
         // Request to scroll focused node into view
         yield put(actions.UI.ContentCanvas.requestScrollIntoView(true));
     }
@@ -212,7 +207,7 @@ export default ({globalRegistry, store}) => function * initializeGuestFrame() {
             const nodeElement = findNodeInGuestFrame(contextPath, fusionPath);
 
             if (nodeElement) {
-                nodeElement.classList.add(style['markActiveNodeAsFocused--focusedNode']);
+                nodeElement.contentDomNode.classList.add(style['markActiveNodeAsFocused--focusedNode']);
 
                 const getNodeByContextPathSelector = selectors.CR.Nodes.makeGetNodeByContextPathSelector(contextPath);
                 const node = yield select(getNodeByContextPathSelector);

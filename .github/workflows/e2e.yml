@@ -58,12 +58,6 @@ jobs:
           php-version: ${{ matrix.php-version }}
           extensions: mbstring, xml, json, zlib, iconv, intl, pdo_sqlite, mysql
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'yarn'
-
       - name: Checkout development distribution
         uses: actions/checkout@v4
         with:
@@ -80,14 +74,6 @@ jobs:
             ${{ env.DISTRIBUTION_FOLDER }}/Packages
           key: php-${{ matrix.php-version }}-neos-${{ matrix.neos-version }}-${{ hashFiles('**/composer.json') }}
           restore-keys: php-${{ matrix.php-version }}-neos-${{ matrix.neos-version }}-
-
-      - name: Install npm dependencies
-        run: |
-          make install
-
-      - name: Build for js for e2e
-        run: |
-          make build-e2e-testing
 
       - name: Prepare Neos.Neos.Ui Package for composer installation
         run: |
@@ -116,6 +102,22 @@ jobs:
           composer require --no-update --no-interaction neos/test-nodetypes:@dev
 
           composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: 'Packages/Application/Neos.Neos.Ui/.nvmrc'
+          cache: 'yarn'
+
+      - name: Install npm dependencies
+        run: |
+          cd Packages/Application/Neos.Neos.Ui
+          make install
+
+      - name: Build for js for e2e
+        run: |
+          cd Packages/Application/Neos.Neos.Ui
+          make build-e2e-testing
 
       - name: Setup Flow
         run: |
@@ -165,7 +167,7 @@ jobs:
 
       - name: Run e2e tests
         run: |
-          saucectl run --config .sauce/config.yml --tunnel-name "neos-tunnel" --region "us-west-1" --artifacts.download.directory Data/Logs/saucelabs-artifacts
+          saucectl run --config Packages/Application/Neos.Neos.Ui/.sauce/config.yml --tunnel-name "neos-tunnel" --region "us-west-1" --artifacts.download.directory Data/Logs/saucelabs-artifacts
 
       - name: Show Testcafe output
         if: ${{ always() }}

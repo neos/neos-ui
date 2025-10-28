@@ -2,7 +2,7 @@
 #
 # CircleCI is disabled !!!
 #
-# Starting with Neos 9.0 we no longer use CircleCI. This file is to be eventually.
+# Starting with Neos 9.0 we no longer use CircleCI. This file is to be eventually removed.
 # But it needs to be kept to allow CircleCI to be active still for Neos 8.x (see error No configuration was found in your project.)
 #
 # Migrate fully to GitHub Actions and abandon CircleCI: https://github.com/neos/neos-ui/issues/4026

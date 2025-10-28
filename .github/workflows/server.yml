@@ -46,6 +46,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          path: ${{ env.PACKAGE_FOLDER }}
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -127,3 +129,9 @@ jobs:
             echo $file
             cat $file
           done
+
+      - name: Setup ssh session for debugging
+        if: ${{ failure()  }}
+        uses: owenthereal/action-upterm@v1
+        with:
+          wait-timeout-minutes: 5

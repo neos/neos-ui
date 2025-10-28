@@ -10,6 +10,8 @@ fixture`Create new nodes`
     .afterEach(() => checkPropTypes());
 
 test('Create a text node in a new container element at the correct position', async t => {
+    console.log("hello world")
+
     await t.click(Selector('#neos-ContentTree-ToggleContentTree'));
 
     subSection('Create content collection node');

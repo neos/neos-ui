@@ -58,6 +58,20 @@ jobs:
           php-version: ${{ matrix.php-version }}
           extensions: mbstring, xml, json, zlib, iconv, intl, pdo_sqlite, mysql
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '../${{ env.PACKAGE_FOLDER }}/.nvmrc'
+          cache: 'yarn'
+
+      - name: Install Sauce connect and CTL
+        run: |
+          # https://docs.saucelabs.com/secure-connections/sauce-connect-5/installation/linux/
+          curl -L -o sauce-connect.deb https://saucelabs.com/downloads/sauce-connect/5.3.0/sauce-connect_5.3.0.linux_amd64.deb
+          sudo dpkg -i sauce-connect.deb
+
+          npm install -g saucectl
+
       - name: Checkout development distribution
         uses: actions/checkout@v4
         with:
@@ -83,14 +97,6 @@ jobs:
           # install also export-ignore'd Test/ and packages/ directory
           rm .gitattributes
 
-      - name: Install Sauce connect and CTL
-        run: |
-          # https://docs.saucelabs.com/secure-connections/sauce-connect-5/installation/linux/
-          curl -L -o sauce-connect.deb https://saucelabs.com/downloads/sauce-connect/5.3.0/sauce-connect_5.3.0.linux_amd64.deb
-          sudo dpkg -i sauce-connect.deb
-
-          npm install -g saucectl
-
       - name: Install and link composer dependencies
         run: |
           composer config --no-plugins allow-plugins.neos/composer-plugin true
@@ -102,12 +108,6 @@ jobs:
           composer require --no-update --no-interaction neos/test-nodetypes:@dev
 
           composer install --no-interaction --no-progress --prefer-dist
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: 'Packages/Application/Neos.Neos.Ui/.nvmrc'
-          cache: 'yarn'
 
       - name: Install npm dependencies
         run: |

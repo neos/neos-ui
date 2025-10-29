@@ -18,7 +18,7 @@ use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Security\Context;
 use Neos\Neos\Domain\Service\UserService;
 use Neos\Neos\Domain\Service\WorkspaceService;
-use Neos\Neos\Security\Authorization\ContentRepositoryAuthorizationService;
+use Neos\Neos\Security\Authorization\ContentRepositoryAuthorizationInterface;
 use Neos\Neos\Ui\ContentRepository\Service\WorkspaceService as UiWorkspaceService;
 
 /**
@@ -58,7 +58,7 @@ class WorkspaceHelper implements ProtectedContextAwareInterface
 
     /**
      * @Flow\Inject
-     * @var ContentRepositoryAuthorizationService
+     * @var ContentRepositoryAuthorizationInterface
      */
     protected $contentRepositoryAuthorizationService;
 

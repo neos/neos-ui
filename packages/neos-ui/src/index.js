@@ -30,7 +30,6 @@ import Root from './Containers/Root';
 import apiExposureMap from './apiExposureMap';
 import DelegatingReducer from './DelegatingReducer';
 import {getGlobalRegistry} from '@neos-project/neos-ui-registry';
-import {allowedTargetWorkspacesSelector} from '@neos-project/neos-ui-redux-store/src/CR/Workspaces/selectors';
 
 const serverState = getInlinedDataFromBackend('initialState');
 const routes = getInlinedDataFromBackend('routes');
@@ -173,16 +172,11 @@ async function loadImpersonateStatus() {
 }
 
 function renderApplication() {
-    /**
-     * @deprecated if accessed via neos.configuration.allowedTargetWorkspaces this information now resides in the redux store see selectors.CR.Workspaces.allowedTargetWorkspacesSelector()
-     */
-    const allowedTargetWorkspaces = allowedTargetWorkspacesSelector(store.getState());
-
     ReactDOM.render(
         <Root
             globalRegistry={globalRegistry}
             menu={menu}
-            configuration={{...configuration, allowedTargetWorkspaces}}
+            configuration={configuration}
             routes={routes}
             store={store}
             />,

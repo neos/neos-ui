@@ -38,7 +38,6 @@ export default <OwnProps extends {}, InjectedProps extends {}> (mapRegistriesToP
                             return null;
                         }
                         const registriesToPropsMap = mapRegistriesToProps ? mapRegistriesToProps(context.globalRegistry) : {};
-                        /** @deprecated the injected neos.configuration is deprecated please use import {getConfiguration} from '@neos-project/neos-ui-configuration'; instead, can be removed with Neos 9.1 or later */
                         return (
                             <WrappedComponent
                                 neos={buildConfigurationAndGlobalRegistry(context.configuration, context.globalRegistry, context.routes)}

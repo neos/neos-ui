@@ -463,10 +463,18 @@ export const reducer = (state: State = defaultState, action: InitAction | EditPr
                 if (!newNode) {
                     throw new Error('This error should never be thrown, it\'s a way to fool TypeScript');
                 }
-                const mergedNode: Node = defaultsDeep({}, newNode, draft.byContextPath[contextPath]);
-                // Force overwrite of children
-                if (newNode.isFullyLoaded && newNode.children !== undefined) {
-                    mergedNode.children = newNode.children;
+                const existingNode = draft.byContextPath[contextPath] || {} as Node;
+                const mergedNode: Node = defaultsDeep({}, newNode, existingNode);
+                if (newNode.children !== undefined) {
+                    if (newNode.isFullyLoaded || !existingNode.children) {
+                        mergedNode.children = newNode.children;
+                    } else {
+                        // A non fully loaded node only contains document children, so we need to preserve existing non-document children
+                        mergedNode.children = [
+                            ...existingNode.children.filter(({role}) => role !== 'document'),
+                            ...newNode.children
+                        ];
+                    }
                 }
                 // Force overwrite of matchesCurrentDimensions
                 if (newNode.matchesCurrentDimensions !== undefined) {

@@ -44,6 +44,7 @@ export interface ContextProperties {
 export interface NodeChild {
     contextPath: NodeContextPath;
     nodeType: NodeTypeName;
+    role: 'document' | 'content';
 }
 // TODO: for some reason (probably due to immer) I can not use ReadonlyArray here
 export interface NodeChildren extends Array<NodeChild> {}

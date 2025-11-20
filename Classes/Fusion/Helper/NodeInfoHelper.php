@@ -269,10 +269,11 @@ class NodeInfoHelper implements ProtectedContextAwareInterface
             $childNodes = $documentChildNodes;
         }
 
-        $mapper = static function (NodeInterface $childNode) {
+        $mapper = function (NodeInterface $childNode) {
             return [
                 'contextPath' => $childNode->getContextPath(),
-                'nodeType' => $childNode->getNodeType()->getName()
+                'nodeType' => $childNode->getNodeType()->getName(),
+                'role' => $childNode->getNodeType()->isOfType($this->documentNodeTypeRole) ? 'document' : 'content',
             ];
         };
 

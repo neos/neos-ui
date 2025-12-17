@@ -27,6 +27,7 @@
     "@ckeditor/ckeditor5-table": "47.2.0",
     "@ckeditor/ckeditor5-ui": "47.2.0",
     "@ckeditor/ckeditor5-undo": "47.2.0",
+    "@ckeditor/ckeditor5-upload": "47.2.0",
     "@ckeditor/ckeditor5-utils": "47.2.0",
     "@ckeditor/ckeditor5-widget": "47.2.0",
     "@neos-project/neos-ui-decorators": "workspace:*",

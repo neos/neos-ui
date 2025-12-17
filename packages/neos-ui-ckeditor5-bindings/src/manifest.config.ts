@@ -12,6 +12,7 @@ import {icon} from '@fortawesome/fontawesome-svg-core'
 
 import {DisabledAutoparagraphMode} from './plugins/disabledAutoparagraphMode';
 import {ItalicWithEm} from './plugins/italicWithEm';
+import {ImageUploadAdapterPlugin} from './plugins/imageUpload';
 
 import {Alignment} from '@ckeditor/ckeditor5-alignment';
 import {Autoformat} from '@ckeditor/ckeditor5-autoformat';
@@ -29,6 +30,7 @@ import {
     IconParagraph,
     IconThreeVerticalDots
 } from '@ckeditor/ckeditor5-icons';
+import {Image, ImageUpload, ImageToolbar, ImageCaption, ImageTextAlternative} from '@ckeditor/ckeditor5-image';
 import {Indent} from '@ckeditor/ckeditor5-indent';
 import {List} from '@ckeditor/ckeditor5-list';
 import {Paragraph, ParagraphButtonUI} from '@ckeditor/ckeditor5-paragraph';
@@ -126,12 +128,19 @@ export default (ckEditorRegistry: SynchronousMetaRegistry<unknown>) => {
     config.set('baseConfiguration', (ckEditorConfiguration, {editorOptions, userPreferences, globalRegistry}) => {
         const i18nRegistry = globalRegistry.get('i18n');
         const placeholder = editorOptions?.placeholder;
+
         return {
             ...ckEditorConfiguration,
             // stripTags, because we allow `<p>Edit text here</p>` as placeholder for legacy
             placeholder: placeholder ? stripTags(i18nRegistry.translate(placeholder) || '') : undefined,
             language: String(userPreferences?.interfaceLanguage),
-            licenseKey: 'GPL'
+            licenseKey: 'GPL',
+            image: {
+                upload: {
+                    types: ['jpeg', 'png', 'gif', 'webp'],
+                },
+                toolbar: ['toggleImageCaption', 'imageTextAlternative'],
+            }
         };
     });
 
@@ -169,6 +178,14 @@ export default (ckEditorRegistry: SynchronousMetaRegistry<unknown>) => {
 
     // Toolbar plugins
     config.set('balloonToolbar', addPlugin(BalloonToolbar));
+
+    // Image plugins
+    config.set('neosImageUpload', addPlugin(ImageUploadAdapterPlugin));
+    config.set('image', addPlugin(Image));
+    config.set('imageUpload', addPlugin(ImageUpload));
+    config.set('imageToolbar', addPlugin(ImageToolbar));
+    config.set('imageCaption', addPlugin(ImageCaption));
+    config.set('imageTextAlternative', addPlugin(ImageTextAlternative));
 
     // Table related plugins
     config.set('table', addPlugin(Table, editorOptions => editorOptions?.formatting?.table));

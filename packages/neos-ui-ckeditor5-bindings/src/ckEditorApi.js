@@ -141,6 +141,9 @@ export const createEditor = () => async options => {
         propertyDomNode
     });
 
+    // FIXME: Workaround to let our CKEditor plugins access the store
+    ckEditorConfig.store = store;
+
     class NeosEditor extends DecoupledEditor {
         constructor(...args) {
             super(...args);

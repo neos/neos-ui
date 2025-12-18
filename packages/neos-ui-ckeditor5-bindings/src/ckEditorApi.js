@@ -7,7 +7,8 @@ import {createElement} from '@ckeditor/ckeditor5-utils';
 
 import {cleanupContentBeforeCommit} from './cleanupContentBeforeCommit'
 
-import '@ckeditor/ckeditor5-theme-lark/dist/index.css';
+import './cke-theme.vanilla-css';
+
 import '@ckeditor/ckeditor5-clipboard/dist/index.css';
 import '@ckeditor/ckeditor5-core/dist/index.css';
 import '@ckeditor/ckeditor5-engine/dist/index.css';

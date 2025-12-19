@@ -79,7 +79,7 @@ export class ImageUploadAdapterPlugin extends Plugin {
     }
 
     init() {
-        const store = this.editor.config.get('store');
+        const store = this.editor.neos.store;
         this.editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
             return new ImageUploadAdapter(loader, store);
         };

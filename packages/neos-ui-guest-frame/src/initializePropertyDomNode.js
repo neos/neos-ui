@@ -70,6 +70,7 @@ export default ({store, globalRegistry, nodeTypesRegistry, inlineEditorRegistry,
                     editorOptions,
                     globalRegistry,
                     userPreferences,
+                    store,
                     persistChange: change => store.dispatch(
                         actions.Changes.persistChanges([change])
                     ),

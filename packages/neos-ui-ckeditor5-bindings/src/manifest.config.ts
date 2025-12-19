@@ -134,13 +134,7 @@ export default (ckEditorRegistry: SynchronousMetaRegistry<unknown>) => {
             // stripTags, because we allow `<p>Edit text here</p>` as placeholder for legacy
             placeholder: placeholder ? stripTags(i18nRegistry.translate(placeholder) || '') : undefined,
             language: String(userPreferences?.interfaceLanguage),
-            licenseKey: 'GPL',
-            image: {
-                upload: {
-                    types: ['jpeg', 'png', 'gif', 'webp'],
-                },
-                toolbar: ['toggleImageCaption', 'imageTextAlternative'],
-            }
+            licenseKey: 'GPL'
         };
     });
 
@@ -224,6 +218,9 @@ export default (ckEditorRegistry: SynchronousMetaRegistry<unknown>) => {
             toolbarItems.push('redo');
             toolbarItems.push('|');
         }
+
+        toolbarItems.push('insertImage')
+
         if (hasBlockFormat(editorOptions)) {
             const blockFormatItems = [];
             if (formatting.p) {
@@ -383,6 +380,12 @@ export default (ckEditorRegistry: SynchronousMetaRegistry<unknown>) => {
             },
             style: {
                 definitions: formatting.styleDefinitions || []
+            },
+            image: {
+                upload: {
+                    types: ['jpeg', 'png', 'gif', 'webp'],
+                },
+                toolbar: ['toggleImageCaption', 'imageTextAlternative'],
             }
         })
     });

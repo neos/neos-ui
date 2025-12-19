@@ -1,7 +1,8 @@
-const {sep} = require('path')
 const {compileWithCssVariables} = require('./cssVariables');
 const {cssModules} = require('./cssModules');
 const esbuild = require('esbuild');
+const postCssPlugin = require('@deanc/esbuild-plugin-postcss');
+const postcssMixins = require('postcss-mixins');
 
 const isProduction = process.argv.includes('--production');
 const isE2ETesting = process.argv.includes('--e2e-testing');
@@ -38,6 +39,11 @@ const options = {
         '.woff2': 'file'
     },
     plugins: [
+        postCssPlugin({
+            plugins: [
+                postcssMixins
+            ]
+        }),
         {
             name: 'neos-ui-build',
             setup: ({onLoad}) => {

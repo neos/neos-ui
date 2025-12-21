@@ -252,6 +252,7 @@ Neos:
           providerOptions:
             classNames:
               - Neos\Neos\Ui\LinkEditor\Application\*\Controller\*Controller
+              - Neos\Neos\Ui\ReferencesEditor\Application\*\Controller\*Controller
 
   Fusion:
     defaultContext:

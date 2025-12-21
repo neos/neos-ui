@@ -14,7 +14,7 @@ import {SelectBox} from '@neos-project/react-ui-components';
 
 import {getNodeTypeFilterOptions} from '../infrastructure/http';
 import {translate} from '@neos-project/neos-ui-i18n';
-import {globalRegistry} from '@neos-project/neos-ui/globalRegistry';
+import {getRegistryById} from '@neos-project/neos-ui-registry';
 
 const searchNodeTypeFilterOptions = (
     searchTerm: string,
@@ -46,7 +46,7 @@ export const SelectNodeTypeFilter: React.FC<Props> = (props) => {
             return result.success.options.map((option) => ({
                 value: option.value,
                 icon: option.label.icon,
-                label: globalRegistry.get('i18n').translate(option.label.label)
+                label: getRegistryById('i18n').translate(option.label.label)
             }));
         }
 

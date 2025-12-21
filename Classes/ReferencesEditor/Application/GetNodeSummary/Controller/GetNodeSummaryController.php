@@ -15,27 +15,37 @@ declare(strict_types=1);
 namespace Neos\Neos\Ui\ReferencesEditor\Application\GetNodeSummary\Controller;
 
 use Neos\Flow\Annotations as Flow;
+use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;
+use Neos\Neos\Ui\Infrastructure\MVC\AbstractQueryController;
+use Neos\Neos\Ui\Infrastructure\MVC\QueryResponseHelper;
 use Neos\Neos\Ui\LinkEditor\Application\GetNodeSummary\GetNodeSummaryQuery;
 use Neos\Neos\Ui\LinkEditor\Application\GetNodeSummary\GetNodeSummaryQueryHandler;
 use Neos\Neos\Ui\LinkEditor\Application\Shared\NodeWasNotFound;
-use Neos\Neos\Ui\LinkEditor\Framework\MVC\QueryController;
-use Neos\Neos\Ui\LinkEditor\Framework\MVC\QueryResponse;
+use Psr\Http\Message\ResponseInterface;
 
 #[Flow\Scope("singleton")]
-final class GetNodeSummaryController extends QueryController
+final class GetNodeSummaryController extends AbstractQueryController
 {
     #[Flow\Inject]
     protected GetNodeSummaryQueryHandler $queryHandler;
 
-    public function processQuery(array $arguments): QueryResponse
+    #[Flow\Route('neos/references-editor/get-node-summary')]
+    public function processQueryAction(): ResponseInterface
     {
+        $arguments = $this->request->getArguments();
+        if (!isset($arguments['contentRepositoryId'])) {
+            /** @todo send from UI */
+            $siteDetectionResult = SiteDetectionResult::fromRequest($this->request->getHttpRequest());
+            $arguments['contentRepositoryId'] = $siteDetectionResult->contentRepositoryId->value;
+        }
+
         try {
             $query = GetNodeSummaryQuery::fromArray($arguments);
             $queryResult = $this->queryHandler->handle($query);
 
-            return QueryResponse::createSuccess($queryResult);
+            return QueryResponseHelper::createSuccess($queryResult);
         } catch (NodeWasNotFound $e) {
-            return QueryResponse::createServerSideErrorForBadRequest($e);
+            return QueryResponseHelper::createServerSideErrorForBadRequest($e);
         }
     }
 }

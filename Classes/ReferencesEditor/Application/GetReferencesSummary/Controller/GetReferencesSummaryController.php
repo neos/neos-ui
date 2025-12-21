@@ -15,28 +15,37 @@ declare(strict_types=1);
 namespace Neos\Neos\Ui\ReferencesEditor\Application\GetReferencesSummary\Controller;
 
 use Neos\Flow\Annotations as Flow;
+use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;
+use Neos\Neos\Ui\Infrastructure\MVC\AbstractQueryController;
+use Neos\Neos\Ui\Infrastructure\MVC\QueryResponseHelper;
 use Neos\Neos\Ui\ReferencesEditor\Application\GetReferencesSummary\GetReferencesSummaryQuery;
 use Neos\Neos\Ui\ReferencesEditor\Application\GetReferencesSummary\GetReferencesSummaryQueryHandler;
-// todo unhack me
 use Neos\Neos\Ui\LinkEditor\Application\Shared\NodeWasNotFound;
-use Neos\Neos\Ui\LinkEditor\Framework\MVC\QueryController;
-use Neos\Neos\Ui\LinkEditor\Framework\MVC\QueryResponse;
+use Psr\Http\Message\ResponseInterface;
 
 #[Flow\Scope("singleton")]
-final class GetReferencesSummaryController extends QueryController
+final class GetReferencesSummaryController extends AbstractQueryController
 {
     #[Flow\Inject]
     protected GetReferencesSummaryQueryHandler $queryHandler;
 
-    public function processQuery(array $arguments): QueryResponse
+    #[Flow\Route('neos/references-editor/get-references-summary')]
+    public function processQueryAction(): ResponseInterface
     {
+        $arguments = $this->request->getArguments();
+        if (!isset($arguments['contentRepositoryId'])) {
+            /** @todo send from UI */
+            $siteDetectionResult = SiteDetectionResult::fromRequest($this->request->getHttpRequest());
+            $arguments['contentRepositoryId'] = $siteDetectionResult->contentRepositoryId->value;
+        }
+
         try {
             $query = GetReferencesSummaryQuery::fromArray($arguments);
             $queryResult = $this->queryHandler->handle($query);
 
-            return QueryResponse::createSuccess($queryResult);
+            return QueryResponseHelper::createSuccess($queryResult);
         } catch (NodeWasNotFound $e) {
-            return QueryResponse::createServerSideErrorForBadRequest($e);
+            return QueryResponseHelper::createServerSideErrorForBadRequest($e);
         }
     }
 }

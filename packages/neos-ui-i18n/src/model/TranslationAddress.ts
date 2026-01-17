@@ -24,16 +24,17 @@ export class TranslationAddress {
     }): TranslationAddress =>
         new TranslationAddress(props.id, props.sourceName, props.packageKey, `${props.packageKey}:${props.sourceName}:${props.id}`);
 
-    public static tryFromString = (string: string): TranslationAddress|null => {
-        const parts = string.split(TRANSLATION_ADDRESS_SEPARATOR);
-        if (parts.length !== 3) {
+    public static tryFromString = (value: string): TranslationAddress | null => {
+        const [packageKey, sourceName, ...rest] = value.split(TRANSLATION_ADDRESS_SEPARATOR);
+
+        if (!packageKey || !sourceName || rest.length === 0) {
             return null;
         }
 
-        const [packageKey, sourceName, id] = parts;
+        const id = rest.join(TRANSLATION_ADDRESS_SEPARATOR);
 
-        return new TranslationAddress(id, sourceName, packageKey, string);
-    }
+        return new TranslationAddress(id, sourceName, packageKey, value);
+    };
 
     public static fromString = (string: string): TranslationAddress => {
         const translationAddress = TranslationAddress.tryFromString(string);

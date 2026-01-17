@@ -26,7 +26,11 @@ export class TranslationAddress {
 
     public static tryFromString = (value: string): TranslationAddress | null => {
         const split = value.split(TRANSLATION_ADDRESS_SEPARATOR);
-        if(split.length < 3) return null;
+
+        if (split.length < 3) {
+            return null;
+        }
+
         const [packageKey, sourceName, ...rest] = split;
 
         if (!packageKey || !sourceName || rest.length === 0) {

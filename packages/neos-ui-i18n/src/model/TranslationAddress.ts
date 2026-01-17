@@ -25,7 +25,9 @@ export class TranslationAddress {
         new TranslationAddress(props.id, props.sourceName, props.packageKey, `${props.packageKey}:${props.sourceName}:${props.id}`);
 
     public static tryFromString = (value: string): TranslationAddress | null => {
-        const [packageKey, sourceName, ...rest] = value.split(TRANSLATION_ADDRESS_SEPARATOR);
+        const split = value.split(TRANSLATION_ADDRESS_SEPARATOR);
+        if(split.length < 3) return null;
+        const [packageKey, sourceName, ...rest] = split;
 
         if (!packageKey || !sourceName || rest.length === 0) {
             return null;

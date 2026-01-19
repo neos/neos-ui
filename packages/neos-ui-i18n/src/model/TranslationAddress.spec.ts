@@ -34,6 +34,17 @@ describe('TranslationAddress', () => {
         expect(translationAddress.fullyQualified).toBe('Some.Package:SomeSource:some.transunit.id');
     });
 
+    it('can be created from string with more than one colon', () => {
+        const translationAddress = TranslationAddress.fromString(
+            'Some.Package:SomeSource:some.transunit.id:extra'
+        );
+
+        expect(translationAddress.id).toBe('some.transunit.id:extra');
+        expect(translationAddress.sourceName).toBe('SomeSource');
+        expect(translationAddress.packageKey).toBe('Some.Package');
+        expect(translationAddress.fullyQualified).toBe('Some.Package:SomeSource:some.transunit.id:extra');
+    });
+
     it('throws if given an invalid string', () => {
         expect(() => TranslationAddress.fromString('foo bar'))
             .toThrow(
@@ -53,6 +64,19 @@ describe('TranslationAddress', () => {
         expect(translationAddress?.packageKey).toBe('Some.Package');
         expect(translationAddress?.fullyQualified).toBe('Some.Package:SomeSource:some.transunit.id');
     });
+
+    it('can be trycreated from string with more than one colon', () => {
+        const translationAddress = TranslationAddress.tryFromString(
+            'Some.Package:SomeSource:some.transunit.id:extra'
+        );
+
+        expect(translationAddress).not.toBeNull();
+        expect(translationAddress?.id).toBe('some.transunit.id:extra');
+        expect(translationAddress?.sourceName).toBe('SomeSource');
+        expect(translationAddress?.packageKey).toBe('Some.Package');
+        expect(translationAddress?.fullyQualified).toBe('Some.Package:SomeSource:some.transunit.id:extra');
+    });
+
 
     it('try with invalid string returns null', () => {
         expect(TranslationAddress.tryFromString('foo bar')).toBeNull();

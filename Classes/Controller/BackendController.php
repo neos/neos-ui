@@ -158,6 +158,7 @@ class BackendController extends ActionController
         }
 
         $this->workspaceService->createPersonalWorkspaceForUserIfMissing($siteDetectionResult->contentRepositoryId, $user);
+        $this->workspaceService->activatePersonalWorkspaceForUserIfDeactivated($siteDetectionResult->contentRepositoryId, $user);
         $workspace = $this->workspaceService->getPersonalWorkspaceForUser($siteDetectionResult->contentRepositoryId, $user->getId());
 
         if (

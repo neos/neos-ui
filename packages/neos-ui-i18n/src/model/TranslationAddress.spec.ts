@@ -77,7 +77,6 @@ describe('TranslationAddress', () => {
         expect(translationAddress?.fullyQualified).toBe('Some.Package:SomeSource:some.transunit.id:extra');
     });
 
-
     it('try with invalid string returns null', () => {
         expect(TranslationAddress.tryFromString('foo bar')).toBeNull();
         expect(TranslationAddress.tryFromString('something:')).toBeNull();

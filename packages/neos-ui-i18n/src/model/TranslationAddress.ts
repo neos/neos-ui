@@ -33,11 +33,11 @@ export class TranslationAddress {
 
         const [packageKey, sourceName, ...rest] = split;
 
-        if (!packageKey || !sourceName || rest.length === 0) {
+        const id = rest?.join(TRANSLATION_ADDRESS_SEPARATOR) ?? null;
+
+        if (!packageKey || !sourceName || !id) {
             return null;
         }
-
-        const id = rest.join(TRANSLATION_ADDRESS_SEPARATOR);
 
         return new TranslationAddress(id, sourceName, packageKey, value);
     };

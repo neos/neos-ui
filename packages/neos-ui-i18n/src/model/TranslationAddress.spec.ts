@@ -83,4 +83,15 @@ describe('TranslationAddress', () => {
         // error in placeholder https://github.com/neos/neos-ui/pull/3907
         expect(TranslationAddress.tryFromString('ClientEval: node.properties.tagName')).toBeNull();
     });
+
+    it('try with empty segments returns null', () => {
+        expect(TranslationAddress.tryFromString('::')).toBeNull();
+        expect(TranslationAddress.tryFromString('a::')).toBeNull();
+        expect(TranslationAddress.tryFromString(':a:')).toBeNull();
+        expect(TranslationAddress.tryFromString(':a')).toBeNull();
+        expect(TranslationAddress.tryFromString('::a')).toBeNull();
+
+        expect(TranslationAddress.tryFromString('a:b:')).toBeNull();
+        expect(TranslationAddress.tryFromString('a::b')).toBeNull();
+    });
 });

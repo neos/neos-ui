@@ -12,10 +12,10 @@
     "vfile-message": "^2.0.2",
     "isemail@3.2.0": "patch:isemail@npm:3.2.0#./patches/isemail-npm-3.2.0-browserified.patch",
     "react-codemirror2@7.2.1": "patch:react-codemirror2@npm:7.2.1#./patches/react-codemirror2-npm-7.2.1-browserified.patch",
-    "@ckeditor/ckeditor5-clipboard@47.2.0": "patch:@ckeditor/ckeditor5-clipboard@npm:47.2.0#patches/@ckeditor-ckeditor5-clipboard-npm-47.2.0.patch",
-    "@ckeditor/ckeditor5-utils@47.2.0": "patch:@ckeditor/ckeditor5-utils@npm:47.2.0#patches/@ckeditor-ckeditor5-utils-npm-47.2.0.patch",
-    "@ckeditor/ckeditor5-ui@47.2.0": "patch:@ckeditor/ckeditor5-ui@npm:47.2.0#patches/@ckeditor-ckeditor5-ui-npm-47.2.0.patch",
-    "@ckeditor/ckeditor5-theme-lark@47.2.0": "patch:@ckeditor/ckeditor5-theme-lark@npm:47.2.0#patches/@ckeditor-ckeditor5-theme-lark-npm-47.2.0-08c3286381.patch"
+    "@ckeditor/ckeditor5-clipboard@47.5.0": "patch:@ckeditor/ckeditor5-clipboard@npm:47.5.0#patches/@ckeditor-ckeditor5-clipboard-npm-47.2.0.patch",
+    "@ckeditor/ckeditor5-utils@47.5.0": "patch:@ckeditor/ckeditor5-utils@npm:47.5.0#patches/@ckeditor-ckeditor5-utils-npm-47.2.0.patch",
+    "@ckeditor/ckeditor5-ui@47.5.0": "patch:@ckeditor/ckeditor5-ui@npm:47.5.0#patches/@ckeditor-ckeditor5-ui-npm-47.2.0.patch",
+    "@ckeditor/ckeditor5-theme-lark@47.5.0": "patch:@ckeditor/ckeditor5-theme-lark@npm:47.5.0#patches/@ckeditor-ckeditor5-theme-lark-npm-47.2.0-08c3286381.patch"
   },
   "scripts": {
     "lint": "tsc --noemit && stylelint 'packages/*/src/**/*.css' && yarn eslint 'packages/*/src/**/*.{js,jsx,ts,tsx}'",

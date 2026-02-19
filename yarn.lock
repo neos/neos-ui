@@ -2071,6 +2071,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ckeditor/ckeditor5-clipboard@patch:@ckeditor/ckeditor5-clipboard@npm:47.5.0#patches/@ckeditor-ckeditor5-clipboard-npm-47.2.0.patch::locator=root-workspace-0b6124%40workspace%3A.":
+  version: 47.5.0
+  resolution: "@ckeditor/ckeditor5-clipboard@patch:@ckeditor/ckeditor5-clipboard@npm%3A47.5.0#patches/@ckeditor-ckeditor5-clipboard-npm-47.2.0.patch::version=47.5.0&hash=919404&locator=root-workspace-0b6124%40workspace%3A."
+  dependencies:
+    "@ckeditor/ckeditor5-core": 47.5.0
+    "@ckeditor/ckeditor5-engine": 47.5.0
+    "@ckeditor/ckeditor5-ui": 47.5.0
+    "@ckeditor/ckeditor5-utils": 47.5.0
+    "@ckeditor/ckeditor5-widget": 47.5.0
+    es-toolkit: 1.39.5
+  checksum: cde4822b01cd0fb0ef1d5ee424ac04a231dc06835964d9c9e51908035066ab36779ee8dc1e4dab83ea399d696dff8cc5471645811dbc94da639a808ae06ef047
+  languageName: node
+  linkType: hard
+
 "@ckeditor/ckeditor5-cloud-services@npm:47.5.0":
   version: 47.5.0
   resolution: "@ckeditor/ckeditor5-cloud-services@npm:47.5.0"
@@ -2696,6 +2710,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ckeditor/ckeditor5-theme-lark@patch:@ckeditor/ckeditor5-theme-lark@npm:47.5.0#patches/@ckeditor-ckeditor5-theme-lark-npm-47.2.0-08c3286381.patch::locator=root-workspace-0b6124%40workspace%3A.":
+  version: 47.5.0
+  resolution: "@ckeditor/ckeditor5-theme-lark@patch:@ckeditor/ckeditor5-theme-lark@npm%3A47.5.0#patches/@ckeditor-ckeditor5-theme-lark-npm-47.2.0-08c3286381.patch::version=47.5.0&hash=b87bee&locator=root-workspace-0b6124%40workspace%3A."
+  dependencies:
+    "@ckeditor/ckeditor5-ui": 47.5.0
+  checksum: 30dd6ffd8941af86224bbe06e21c3530decaf2e477d7c7ba8b951adf02949697f1cbfa3fde4bcc576b18a82dcee132c982a3915eb65b9ef392a3c8389e4bb896
+  languageName: node
+  linkType: hard
+
 "@ckeditor/ckeditor5-typing@npm:47.5.0":
   version: 47.5.0
   resolution: "@ckeditor/ckeditor5-typing@npm:47.5.0"
@@ -2723,6 +2746,24 @@ __metadata:
     es-toolkit: 1.39.5
     vanilla-colorful: 0.7.2
   checksum: 203199c33b41466db48184a0f3efd76436ce9c8a8e1029e8599ad682751f0c525cf2758c3d37123afd369624a992e1d6f2865e7e463200a38dd87274e5a5111b
+  languageName: node
+  linkType: hard
+
+"@ckeditor/ckeditor5-ui@patch:@ckeditor/ckeditor5-ui@npm:47.5.0#patches/@ckeditor-ckeditor5-ui-npm-47.2.0.patch::locator=root-workspace-0b6124%40workspace%3A.":
+  version: 47.5.0
+  resolution: "@ckeditor/ckeditor5-ui@patch:@ckeditor/ckeditor5-ui@npm%3A47.5.0#patches/@ckeditor-ckeditor5-ui-npm-47.2.0.patch::version=47.5.0&hash=fb6559&locator=root-workspace-0b6124%40workspace%3A."
+  dependencies:
+    "@ckeditor/ckeditor5-core": 47.5.0
+    "@ckeditor/ckeditor5-editor-multi-root": 47.5.0
+    "@ckeditor/ckeditor5-engine": 47.5.0
+    "@ckeditor/ckeditor5-icons": 47.5.0
+    "@ckeditor/ckeditor5-utils": 47.5.0
+    "@types/color-convert": 2.0.4
+    color-convert: 3.1.0
+    color-parse: 2.0.2
+    es-toolkit: 1.39.5
+    vanilla-colorful: 0.7.2
+  checksum: 5a19a1b022b09442262a47e257c71b8beeaf849ff5bf535763bfa5c90a7ee58bd081effec3e284031e5da09506785c13edc3e555fa15139ed2a33b85537f5a25
   languageName: node
   linkType: hard
 
@@ -2756,6 +2797,16 @@ __metadata:
     "@ckeditor/ckeditor5-ui": 47.5.0
     es-toolkit: 1.39.5
   checksum: 84fab4c9053ef4315c62a606adad643695060f4931a974bd91026b8a9eaafa5d5fae661aa95c8d44c8c58b6b8248cb1ea766da817daf2ab2ab307f9a5d58347b
+  languageName: node
+  linkType: hard
+
+"@ckeditor/ckeditor5-utils@patch:@ckeditor/ckeditor5-utils@npm:47.5.0#patches/@ckeditor-ckeditor5-utils-npm-47.2.0.patch::locator=root-workspace-0b6124%40workspace%3A.":
+  version: 47.5.0
+  resolution: "@ckeditor/ckeditor5-utils@patch:@ckeditor/ckeditor5-utils@npm%3A47.5.0#patches/@ckeditor-ckeditor5-utils-npm-47.2.0.patch::version=47.5.0&hash=1a487d&locator=root-workspace-0b6124%40workspace%3A."
+  dependencies:
+    "@ckeditor/ckeditor5-ui": 47.5.0
+    es-toolkit: 1.39.5
+  checksum: f20c86eef521488a21a83636a9db4c5eb944dce8df992b3bd215cace3ba2549434ea1261271487e58ecb662975cbbbc3e148e1d85c9df2391209d2ed815823b6
   languageName: node
   linkType: hard
 

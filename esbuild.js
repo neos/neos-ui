@@ -93,7 +93,10 @@ const options = {
 }
 
 if (isWatch) {
-    esbuild.context(options).then((ctx) => ctx.watch())
+    (async () => {
+        const ctx = await esbuild.context(options);
+        await ctx.watch();
+    })();
 } else {
     esbuild.build(options).then(result => {
         if (isAnalyze) {

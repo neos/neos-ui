@@ -649,7 +649,7 @@ class BackendServiceController extends ActionController
             'get' => $nodeInfoHelper->renderNodes(array_filter($flowQuery->get()), $this->request),
             'getForTree' => $nodeInfoHelper->renderNodes(
                 array_filter($flowQuery->get()),
-                $this->getControllerContext(),
+                $this->request,
                 $usage === 'PAGE_TREE', // We only need minimal data for the document tree
                 $usage !== 'PAGE_TREE', // Child node are only required for the structure tree
             ),

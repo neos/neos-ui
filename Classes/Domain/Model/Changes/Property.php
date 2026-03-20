@@ -290,7 +290,7 @@ class Property extends AbstractChange
                 $subject->workspaceName,
                 $subject->aggregateId,
                 NodeTypeName::fromString($value),
-                NodeAggregateTypeChangeChildConstraintConflictResolutionStrategy::STRATEGY_DELETE
+                NodeAggregateTypeChangeChildConstraintConflictResolutionStrategy::markWithTag(NeosSubtreeTag::removed())
             )
         );
     }

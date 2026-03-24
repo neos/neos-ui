@@ -59,6 +59,15 @@ jobs:
         with:
           path: ${{ env.PACKAGE_FOLDER }}
 
+      - name: Lol
+        run: |
+          echo "${{ github.event_name }}"
+          echo "${{ github.event.pull_request.head.repo.full_name }}"
+          echo "${{ case(
+            github.event_name == 'pull_request', github.event.pull_request.head.repo.full_name == 'neos/neos-ui', 
+            true
+          ) }}"
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:

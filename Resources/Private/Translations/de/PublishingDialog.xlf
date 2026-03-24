@@ -1,7 +1,311 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file original="Weblate" source-language="en" datatype="plaintext">
+  <file original="" product-name="Neos.Neos.Ui" source-language="en" datatype="plaintext" target-language="de">
     <body>
-      </body>
+      <trans-unit id="publish.all.confirmation.title" xml:space="preserve">
+        <source>Publish all changes in workspace "{scopeTitle}"</source>
+        <target xml:lang="de" state="translated">Alle Änderungen im Arbeitsbereich "{scopeTitle}" veröffentlichen</target>
+      </trans-unit>
+      <trans-unit id="publish.all.confirmation.message" xml:space="preserve">
+        <source>Are you sure that you want to publish all {numberOfChanges} change(s) in workspace "{scopeTitle}"  to workspace "{targetWorkspaceName}"? Be careful: This cannot be undone!</source>
+        <target xml:lang="de" state="translated">Möchten Sie wirklich alle {numberOfChanges} Änderung(en) im Arbeitsbereich "{scopeTitle}" in den Arbeitsbereich "{targetWorkspaceName}" veröffentlichen? Vorsicht: Dies kann nicht rückgängig gemacht werden!</target>
+      </trans-unit>
+      <trans-unit id="publish.all.confirmation.cancel" xml:space="preserve">
+        <source>No, cancel</source>
+        <target xml:lang="de" state="translated">Nein, abbrechen</target>
+      </trans-unit>
+      <trans-unit id="publish.all.confirmation.confirm" xml:space="preserve">
+        <source>Yes, publish</source>
+        <target xml:lang="de" state="translated">Ja, veröffentlichen</target>
+      </trans-unit>
+      <trans-unit id="publish.all.process.title" xml:space="preserve">
+        <source>Publishing all changes in workspace "{scopeTitle}"...</source>
+        <target xml:lang="de" state="translated">Alle Änderungen im Arbeitsbereich "{scopeTitle}" werden veröffentlicht...</target>
+      </trans-unit>
+      <trans-unit id="publish.all.process.message" xml:space="preserve">
+        <source>Please wait while {numberOfChanges} change(s) are being published. This may take a while.</source>
+        <target xml:lang="de" state="translated">Bitte warten Sie, während {numberOfChanges} Änderung(en) veröffentlicht werden. Dies kann einen Moment dauern.</target>
+      </trans-unit>
+      <trans-unit id="publish.all.error.title" xml:space="preserve">
+        <source>Changes in workspace "{scopeTitle}" could not be published</source>
+        <target xml:lang="de" state="translated">Änderungen im Arbeitsbereich "{scopeTitle}" konnten nicht veröffentlicht werden</target>
+      </trans-unit>
+      <trans-unit id="publish.all.error.retry" xml:space="preserve">
+        <source>Try again</source>
+        <target xml:lang="de" state="translated">Erneut versuchen</target>
+      </trans-unit>
+      <trans-unit id="publish.all.error.acknowledge" xml:space="preserve">
+        <source>Cancel</source>
+        <target xml:lang="de" state="translated">Abbrechen</target>
+      </trans-unit>
+      <trans-unit id="publish.all.success.title" xml:space="preserve">
+        <source>All changes in workspace "{scopeTitle}" were published</source>
+        <target xml:lang="de" state="translated">Alle Änderungen im Arbeitsbereich "{scopeTitle}" wurden veröffentlicht</target>
+      </trans-unit>
+      <trans-unit id="publish.all.success.message" xml:space="preserve">
+        <source>All {numberOfChanges} change(s) in workspace "{scopeTitle}" were successfully published to workspace "{targetWorkspaceName}".</source>
+        <target xml:lang="de" state="translated">Alle {numberOfChanges} Änderung(en) im Arbeitsbereich "{scopeTitle}" wurden erfolgreich in den Arbeitsbereich "{targetWorkspaceName}" veröffentlicht.</target>
+      </trans-unit>
+      <trans-unit id="publish.all.success.acknowledge" xml:space="preserve">
+        <source>OK</source>
+        <target xml:lang="de" state="translated">OK</target>
+      </trans-unit>
+      <trans-unit id="publish.site.confirmation.title" xml:space="preserve">
+        <source>Publish all changes in site "{scopeTitle}"</source>
+        <target xml:lang="de" state="translated">Alle Änderungen in der Site "{scopeTitle}" veröffentlichen</target>
+      </trans-unit>
+      <trans-unit id="publish.site.confirmation.message" xml:space="preserve">
+        <source>Are you sure that you want to publish all {numberOfChanges} change(s) in site "{scopeTitle}" from workspace "{sourceWorkspaceName}" to workspace "{targetWorkspaceName}"? Be careful: This cannot be undone!</source>
+        <target xml:lang="de" state="translated">Möchten Sie wirklich alle {numberOfChanges} Änderung(en) in der Site "{scopeTitle}" aus dem Arbeitsbereich "{sourceWorkspaceName}" in den Arbeitsbereich "{targetWorkspaceName}" veröffentlichen? Vorsicht: Dies kann nicht rückgängig gemacht werden!</target>
+      </trans-unit>
+      <trans-unit id="publish.site.confirmation.cancel" xml:space="preserve">
+        <source>No, cancel</source>
+        <target xml:lang="de" state="translated">Nein, abbrechen</target>
+      </trans-unit>
+      <trans-unit id="publish.site.confirmation.confirm" xml:space="preserve">
+        <source>Yes, publish</source>
+        <target xml:lang="de" state="translated">Ja, veröffentlichen</target>
+      </trans-unit>
+      <trans-unit id="publish.site.process.title" xml:space="preserve">
+        <source>Publishing all changes in site "{scopeTitle}"...</source>
+        <target xml:lang="de" state="translated">Alle Änderungen in der Site "{scopeTitle}" werden veröffentlicht...</target>
+      </trans-unit>
+      <trans-unit id="publish.site.process.message" xml:space="preserve">
+        <source>Please wait while {numberOfChanges} change(s) are being published. This may take a while.</source>
+        <target xml:lang="de" state="translated">Bitte warten Sie, während {numberOfChanges} Änderung(en) veröffentlicht werden. Dies kann einen Moment dauern.</target>
+      </trans-unit>
+      <trans-unit id="publish.site.error.title" xml:space="preserve">
+        <source>Changes in site "{scopeTitle}" could not be published</source>
+        <target xml:lang="de" state="translated">Änderungen in der Site "{scopeTitle}" konnten nicht veröffentlicht werden</target>
+      </trans-unit>
+      <trans-unit id="publish.site.error.retry" xml:space="preserve">
+        <source>Try again</source>
+        <target xml:lang="de" state="translated">Erneut versuchen</target>
+      </trans-unit>
+      <trans-unit id="publish.site.error.acknowledge" xml:space="preserve">
+        <source>Cancel</source>
+        <target xml:lang="de" state="translated">Abbrechen</target>
+      </trans-unit>
+      <trans-unit id="publish.site.success.title" xml:space="preserve">
+        <source>Changes in site "{scopeTitle}" were published</source>
+        <target xml:lang="de" state="translated">Änderungen in der Site "{scopeTitle}" wurden veröffentlicht</target>
+      </trans-unit>
+      <trans-unit id="publish.site.success.message" xml:space="preserve">
+        <source>{numberOfChanges} change(s) in site "{scopeTitle}" were successfully published to workspace "{targetWorkspaceName}".</source>
+        <target xml:lang="de" state="translated">{numberOfChanges} Änderung(en) in der Site "{scopeTitle}" wurden erfolgreich in den Arbeitsbereich "{targetWorkspaceName}" veröffentlicht.</target>
+      </trans-unit>
+      <trans-unit id="publish.site.success.acknowledge" xml:space="preserve">
+        <source>OK</source>
+        <target xml:lang="de" state="translated">OK</target>
+      </trans-unit>
+      <trans-unit id="publish.document.confirmation.title" xml:space="preserve">
+        <source>Publish all changes in document "{scopeTitle}"</source>
+        <target xml:lang="de" state="translated">Alle Änderungen im Dokument "{scopeTitle}" veröffentlichen</target>
+      </trans-unit>
+      <trans-unit id="publish.document.confirmation.message" xml:space="preserve">
+        <source>Are you sure that you want to publish all {numberOfChanges} change(s) in document "{scopeTitle}" from workspace "{sourceWorkspaceName}" to workspace "{targetWorkspaceName}"? Be careful: This cannot be undone!</source>
+        <target xml:lang="de" state="translated">Möchten Sie wirklich alle {numberOfChanges} Änderung(en) im Dokument "{scopeTitle}" aus dem Arbeitsbereich "{sourceWorkspaceName}" in den Arbeitsbereich "{targetWorkspaceName}" veröffentlichen? Vorsicht: Dies kann nicht rückgängig gemacht werden!</target>
+      </trans-unit>
+      <trans-unit id="publish.document.confirmation.cancel" xml:space="preserve">
+        <source>No, cancel</source>
+        <target xml:lang="de" state="translated">Nein, abbrechen</target>
+      </trans-unit>
+      <trans-unit id="publish.document.confirmation.confirm" xml:space="preserve">
+        <source>Yes, publish</source>
+        <target xml:lang="de" state="translated">Ja, veröffentlichen</target>
+      </trans-unit>
+      <trans-unit id="publish.document.process.title" xml:space="preserve">
+        <source>Publishing all changes in document "{scopeTitle}"...</source>
+        <target xml:lang="de" state="translated">Alle Änderungen im Dokument "{scopeTitle}" werden veröffentlicht...</target>
+      </trans-unit>
+      <trans-unit id="publish.document.process.message" xml:space="preserve">
+        <source>Please wait while {numberOfChanges} change(s) are being published. This may take a while.</source>
+        <target xml:lang="de" state="translated">Bitte warten Sie, während {numberOfChanges} Änderung(en) veröffentlicht werden. Dies kann einen Moment dauern.</target>
+      </trans-unit>
+      <trans-unit id="publish.document.error.title" xml:space="preserve">
+        <source>Changes in document "{scopeTitle}" could not be published</source>
+        <target xml:lang="de" state="translated">Änderungen im Dokument "{scopeTitle}" konnten nicht veröffentlicht werden</target>
+      </trans-unit>
+      <trans-unit id="publish.document.error.retry" xml:space="preserve">
+        <source>Try again</source>
+        <target xml:lang="de" state="translated">Erneut versuchen</target>
+      </trans-unit>
+      <trans-unit id="publish.document.error.acknowledge" xml:space="preserve">
+        <source>Cancel</source>
+        <target xml:lang="de" state="translated">Abbrechen</target>
+      </trans-unit>
+      <trans-unit id="publish.document.success.title" xml:space="preserve">
+        <source>Changes in document "{scopeTitle}" were published</source>
+        <target xml:lang="de" state="translated">Änderungen im Dokument "{scopeTitle}" wurden veröffentlicht</target>
+      </trans-unit>
+      <trans-unit id="publish.document.success.message" xml:space="preserve">
+        <source>{numberOfChanges} change(s) in document "{scopeTitle}" were sucessfully published to workspace "{targetWorkspaceName}".</source>
+        <target xml:lang="de" state="translated">{numberOfChanges} Änderung(en) im Dokument "{scopeTitle}" wurden erfolgreich in den Arbeitsbereich "{targetWorkspaceName}" veröffentlicht.</target>
+      </trans-unit>
+      <trans-unit id="publish.document.success.acknowledge" xml:space="preserve">
+        <source>OK</source>
+        <target xml:lang="de" state="translated">OK</target>
+      </trans-unit>
+      <trans-unit id="partialConflict.document.confirmation.title" xml:space="preserve">
+        <source>Could not publish changes in document "{scopeTitle}"</source>
+        <target xml:lang="de" state="translated">Änderungen im Dokument "{scopeTitle}" konnten nicht veröffentlicht werden</target>
+      </trans-unit>
+      <trans-unit id="partialConflict.document.confirmation.message" xml:space="preserve">
+        <source>There seem to be dependencies to other documents. Do you want to instead publish all changes in site to workspace "{targetWorkspaceName}"?</source>
+        <target xml:lang="de" state="translated">Es scheint Abhängigkeiten zu anderen Dokumenten zu geben. Möchten Sie stattdessen alle Änderungen in der Site in den Arbeitsbereich "{targetWorkspaceName}" veröffentlichen?</target>
+      </trans-unit>
+      <trans-unit id="partialConflict.document.confirmation.cancel" xml:space="preserve">
+        <source>No, cancel</source>
+        <target xml:lang="de" state="translated">Nein, abbrechen</target>
+      </trans-unit>
+      <trans-unit id="partialConflict.document.confirmation.confirm" xml:space="preserve">
+        <source>Yes, publish all changes in site</source>
+        <target xml:lang="de" state="translated">Ja, alle Änderungen in der Site veröffentlichen</target>
+      </trans-unit>
+      <trans-unit id="discard.all.confirmation.title" xml:space="preserve">
+        <source>Discard all changes in workspace "{scopeTitle}"</source>
+        <target xml:lang="de" state="translated">Alle Änderungen im Arbeitsbereich "{scopeTitle}" verwerfen</target>
+      </trans-unit>
+      <trans-unit id="discard.all.confirmation.message" xml:space="preserve">
+        <source>Are you sure that you want to discard all {numberOfChanges} change(s) in workspace "{scopeTitle}"? Be careful: This cannot be undone!</source>
+        <target xml:lang="de" state="translated">Möchten Sie wirklich alle {numberOfChanges} Änderung(en) im Arbeitsbereich "{scopeTitle}" verwerfen? Vorsicht: Dies kann nicht rückgängig gemacht werden!</target>
+      </trans-unit>
+      <trans-unit id="discard.all.confirmation.cancel" xml:space="preserve">
+        <source>No, cancel</source>
+        <target xml:lang="de" state="translated">Nein, abbrechen</target>
+      </trans-unit>
+      <trans-unit id="discard.all.confirmation.confirm" xml:space="preserve">
+        <source>Yes, discard</source>
+        <target xml:lang="de" state="translated">Ja, verwerfen</target>
+      </trans-unit>
+      <trans-unit id="discard.all.process.title" xml:space="preserve">
+        <source>Discarding all changes in workspace "{scopeTitle}"...</source>
+        <target xml:lang="de" state="translated">Alle Änderungen im Arbeitsbereich "{scopeTitle}" werden verworfen...</target>
+      </trans-unit>
+      <trans-unit id="discard.all.process.message" xml:space="preserve">
+        <source>Please wait while {numberOfChanges} change(s) are being discarded. This may take a while.</source>
+        <target xml:lang="de" state="translated">Bitte warten Sie, während {numberOfChanges} Änderung(en) verworfen werden. Dies kann einen Moment dauern.</target>
+      </trans-unit>
+      <trans-unit id="discard.all.error.title" xml:space="preserve">
+        <source>Changes in workspace "{scopeTitle}" could not be discarded</source>
+        <target xml:lang="de" state="translated">Änderungen im Arbeitsbereich "{scopeTitle}" konnten nicht verworfen werden</target>
+      </trans-unit>
+      <trans-unit id="discard.all.error.retry" xml:space="preserve">
+        <source>Try again</source>
+        <target xml:lang="de" state="translated">Erneut versuchen</target>
+      </trans-unit>
+      <trans-unit id="discard.all.error.acknowledge" xml:space="preserve">
+        <source>Cancel</source>
+        <target xml:lang="de" state="translated">Abbrechen</target>
+      </trans-unit>
+      <trans-unit id="discard.all.success.title" xml:space="preserve">
+        <source>All changes in workspace "{scopeTitle}" were discarded</source>
+        <target xml:lang="de" state="translated">Alle Änderungen im Arbeitsbereich "{scopeTitle}" wurden verworfen</target>
+      </trans-unit>
+      <trans-unit id="discard.all.success.message" xml:space="preserve">
+        <source>All {numberOfChanges} change(s) in workspace "{scopeTitle}" were sucessfully discarded.</source>
+        <target xml:lang="de" state="translated">Alle {numberOfChanges} Änderung(en) im Arbeitsbereich "{scopeTitle}" wurden erfolgreich verworfen.</target>
+      </trans-unit>
+      <trans-unit id="discard.all.success.acknowledge" xml:space="preserve">
+        <source>OK</source>
+        <target xml:lang="de" state="translated">OK</target>
+      </trans-unit>
+      <trans-unit id="discard.site.confirmation.title" xml:space="preserve">
+        <source>Discard all changes in site "{scopeTitle}"</source>
+        <target xml:lang="de" state="translated">Alle Änderungen in der Site "{scopeTitle}" verwerfen</target>
+      </trans-unit>
+      <trans-unit id="discard.site.confirmation.message" xml:space="preserve">
+        <source>Are you sure that you want to discard all {numberOfChanges} change(s) in site "{scopeTitle}" from workspace "{sourceWorkspaceName}"? Be careful: This cannot be undone!</source>
+        <target xml:lang="de" state="translated">Möchten Sie wirklich alle {numberOfChanges} Änderung(en) in der Site "{scopeTitle}" aus dem Arbeitsbereich "{sourceWorkspaceName}" verwerfen? Vorsicht: Dies kann nicht rückgängig gemacht werden!</target>
+      </trans-unit>
+      <trans-unit id="discard.site.confirmation.cancel" xml:space="preserve">
+        <source>No, cancel</source>
+        <target xml:lang="de" state="translated">Nein, abbrechen</target>
+      </trans-unit>
+      <trans-unit id="discard.site.confirmation.confirm" xml:space="preserve">
+        <source>Yes, discard</source>
+        <target xml:lang="de" state="translated">Ja, verwerfen</target>
+      </trans-unit>
+      <trans-unit id="discard.site.process.title" xml:space="preserve">
+        <source>Discarding all changes in site "{scopeTitle}"...</source>
+        <target xml:lang="de" state="translated">Alle Änderungen in der Site "{scopeTitle}" werden verworfen...</target>
+      </trans-unit>
+      <trans-unit id="discard.site.process.message" xml:space="preserve">
+        <source>Please wait while {numberOfChanges} change(s) are being discarded. This may take a while.</source>
+        <target xml:lang="de" state="translated">Bitte warten Sie, während {numberOfChanges} Änderung(en) verworfen werden. Dies kann einen Moment dauern.</target>
+      </trans-unit>
+      <trans-unit id="discard.site.error.title" xml:space="preserve">
+        <source>Changes in site "{scopeTitle}" could not be discarded</source>
+        <target xml:lang="de" state="translated">Änderungen in der Site "{scopeTitle}" konnten nicht verworfen werden</target>
+      </trans-unit>
+      <trans-unit id="discard.site.error.retry" xml:space="preserve">
+        <source>Try again</source>
+        <target xml:lang="de" state="translated">Erneut versuchen</target>
+      </trans-unit>
+      <trans-unit id="discard.site.error.acknowledge" xml:space="preserve">
+        <source>Cancel</source>
+        <target xml:lang="de" state="translated">Abbrechen</target>
+      </trans-unit>
+      <trans-unit id="discard.site.success.title" xml:space="preserve">
+        <source>Changes in site "{scopeTitle}" were discarded</source>
+        <target xml:lang="de" state="translated">Änderungen in der Site "{scopeTitle}" wurden verworfen</target>
+      </trans-unit>
+      <trans-unit id="discard.site.success.message" xml:space="preserve">
+        <source>{numberOfChanges} change(s) were sucessfully discarded.</source>
+        <target xml:lang="de" state="translated">{numberOfChanges} Änderung(en) wurden erfolgreich verworfen.</target>
+      </trans-unit>
+      <trans-unit id="discard.site.success.acknowledge" xml:space="preserve">
+        <source>OK</source>
+        <target xml:lang="de" state="translated">OK</target>
+      </trans-unit>
+      <trans-unit id="discard.document.confirmation.title" xml:space="preserve">
+        <source>Discard all changes in document "{scopeTitle}"</source>
+        <target xml:lang="de" state="translated">Alle Änderungen im Dokument "{scopeTitle}" verwerfen</target>
+      </trans-unit>
+      <trans-unit id="discard.document.confirmation.message" xml:space="preserve">
+        <source>Are you sure that you want to discard all {numberOfChanges} change(s) in document "{scopeTitle}" from workspace "{sourceWorkspaceName}"? Be careful: This cannot be undone!</source>
+        <target xml:lang="de" state="translated">Möchten Sie wirklich alle {numberOfChanges} Änderung(en) im Dokument "{scopeTitle}" aus dem Arbeitsbereich "{sourceWorkspaceName}" verwerfen? Vorsicht: Dies kann nicht rückgängig gemacht werden!</target>
+      </trans-unit>
+      <trans-unit id="discard.document.confirmation.cancel" xml:space="preserve">
+        <source>No, cancel</source>
+        <target xml:lang="de" state="translated">Nein, abbrechen</target>
+      </trans-unit>
+      <trans-unit id="discard.document.confirmation.confirm" xml:space="preserve">
+        <source>Yes, discard</source>
+        <target xml:lang="de" state="translated">Ja, verwerfen</target>
+      </trans-unit>
+      <trans-unit id="discard.document.process.title" xml:space="preserve">
+        <source>Discarding all changes in document "{scopeTitle}"...</source>
+        <target xml:lang="de" state="translated">Alle Änderungen im Dokument "{scopeTitle}" werden verworfen...</target>
+      </trans-unit>
+      <trans-unit id="discard.document.process.message" xml:space="preserve">
+        <source>Please wait while {numberOfChanges} change(s) are being published. This may take a while.</source>
+        <target xml:lang="de" state="translated">Bitte warten Sie, während {numberOfChanges} Änderung(en) verworfen werden. Dies kann einen Moment dauern.</target>
+      </trans-unit>
+      <trans-unit id="discard.document.error.title" xml:space="preserve">
+        <source>Changes in document "{scopeTitle}" could not be discarded</source>
+        <target xml:lang="de" state="translated">Änderungen im Dokument "{scopeTitle}" konnten nicht verworfen werden</target>
+      </trans-unit>
+      <trans-unit id="discard.document.error.retry" xml:space="preserve">
+        <source>Try again</source>
+        <target xml:lang="de" state="translated">Erneut versuchen</target>
+      </trans-unit>
+      <trans-unit id="discard.document.error.acknowledge" xml:space="preserve">
+        <source>Cancel</source>
+        <target xml:lang="de" state="translated">Abbrechen</target>
+      </trans-unit>
+      <trans-unit id="discard.document.success.title" xml:space="preserve">
+        <source>Changes in document "{scopeTitle}" were discarded</source>
+        <target xml:lang="de" state="translated">Änderungen im Dokument "{scopeTitle}" wurden verworfen</target>
+      </trans-unit>
+      <trans-unit id="discard.document.success.message" xml:space="preserve">
+        <source>{numberOfChanges} change(s) were sucessfully discarded.</source>
+        <target xml:lang="de" state="translated">{numberOfChanges} Änderung(en) wurden erfolgreich verworfen.</target>
+      </trans-unit>
+      <trans-unit id="discard.document.success.acknowledge" xml:space="preserve">
+        <source>OK</source>
+        <target xml:lang="de" state="translated">OK</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

@@ -16,7 +16,7 @@ jobs:
     name: "Browser Tests"
     runs-on: ubuntu-latest
 
-    if: github.repository == 'neos/neos-ui'
+    if: ${{ github.repository == 'neos/neos-ui' }}
 
     env:
       FLOW_CONTEXT: Production

@@ -48,8 +48,10 @@ jobs:
 
     steps:
       - name: Assert
+        working-directory: "/"
         run: |
           echo "${{ env.SAUCE_ACCESS_KEY }}"
+          echo "${{ secrets.SAUCE_ACCESS_KEY }}"
           echo "${{ env.SAUCE_USERNAME }}"
           env
 

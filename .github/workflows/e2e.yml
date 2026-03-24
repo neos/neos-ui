@@ -16,7 +16,7 @@ jobs:
     name: "Browser Tests"
     runs-on: ubuntu-latest
 
-    if: ${{ env.SAUCE_ACCESS_KEY != '' }}
+    if: ${{ (env.SAUCE_ACCESS_KEY != '') || true }}
 
     env:
       FLOW_CONTEXT: Production

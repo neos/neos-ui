@@ -16,7 +16,12 @@ jobs:
     name: "Browser Tests"
     runs-on: ubuntu-latest
 
-    if: ${{ github.repository == 'neos/neos-ui' }}
+    # Workaround, only run on prs withing the repo and on branch pushes. Otherwise the sauce secrets are not available. Not even when the secrets were defined in the fork.
+    if: |-
+      ${{ case(
+        github.event_name == 'pull_request', github.event.pull_request.head.repo.full_name == 'neos/neos-ui',
+        true
+      ) }}
 
     env:
       FLOW_CONTEXT: Production

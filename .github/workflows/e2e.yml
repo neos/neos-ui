@@ -7,14 +7,16 @@ on:
     branches: [ '[0-9]+.[0-9]' ]
 
 env:
-  SAUCE_USERNAME: ${{secrets.SAUCE_USERNAME}}
-  SAUCE_ACCESS_KEY: ${{secrets.SAUCE_ACCESS_KEY}}
+  SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
+  SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
   GITHUB_TOKEN: ${{ github.token }}
 
 jobs:
   build:
     name: "Browser Tests"
     runs-on: ubuntu-latest
+
+    if: ${{ secrets.SAUCE_USERNAME && secrets.SAUCE_ACCESS_KEY }}
 
     env:
       FLOW_CONTEXT: Production
@@ -49,8 +51,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        # test
-        if: ${{ env.SAUCE_USERNAME && env.SAUCE_ACCESS_KEY }}
         with:
           path: ${{ env.PACKAGE_FOLDER }}
 

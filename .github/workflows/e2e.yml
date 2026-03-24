@@ -16,6 +16,8 @@ jobs:
     name: "Browser Tests"
     runs-on: ubuntu-latest
 
+    if: github.repository == 'neos/neos-ui'
+
     env:
       FLOW_CONTEXT: Production
       DISTRIBUTION_FOLDER: neos-distribution
@@ -47,29 +49,18 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
-      - name: Assert
-        working-directory: "/"
-        run: |
-          echo "${{ env.SAUCE_ACCESS_KEY }}"
-          echo "${{ secrets.SAUCE_ACCESS_KEY }}"
-          echo "${{ env.SAUCE_USERNAME }}"
-          env
-
       - name: Checkout code
-        if: ${{ env.SAUCE_ACCESS_KEY }}
         uses: actions/checkout@v4
         with:
           path: ${{ env.PACKAGE_FOLDER }}
 
       - name: Setup PHP
-        if: ${{ env.SAUCE_ACCESS_KEY }}
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
           extensions: mbstring, xml, json, zlib, iconv, intl, pdo_sqlite, mysql
 
       - name: Checkout development distribution
-        if: ${{ env.SAUCE_ACCESS_KEY }}
         uses: actions/checkout@v4
         with:
           repository: neos/neos-development-distribution
@@ -77,7 +68,6 @@ jobs:
           path: ${{ env.DISTRIBUTION_FOLDER }}
 
       - name: Setup Node
-        if: ${{ env.SAUCE_ACCESS_KEY }}
         uses: actions/setup-node@v4
         with:
           node-version-file: '${{ env.PACKAGE_FOLDER }}/.nvmrc'
@@ -85,19 +75,16 @@ jobs:
           cache: 'yarn'
 
       - name: Install npm dependencies
-        if: ${{ env.SAUCE_ACCESS_KEY }}
         run: |
           cd "../${{ env.PACKAGE_FOLDER }}"
           make install
 
       - name: Build for js for e2e
-        if: ${{ env.SAUCE_ACCESS_KEY }}
         run: |
           cd "../${{ env.PACKAGE_FOLDER }}"
           make build-e2e-testing
 
       - name: Cache Composer packages
-        if: ${{ env.SAUCE_ACCESS_KEY }}
         uses: actions/cache@v4
         timeout-minutes: 30
         with:
@@ -108,7 +95,6 @@ jobs:
           restore-keys: php-${{ matrix.php-version }}-neos-${{ matrix.neos-version }}-
 
       - name: Prepare Neos.Neos.Ui Package for composer installation
-        if: ${{ env.SAUCE_ACCESS_KEY }}
         run: |
           cd "../${{ env.PACKAGE_FOLDER }}"
           # no "neos/neos-ui-compiled" because this job recompiles JS
@@ -117,7 +103,6 @@ jobs:
           rm .gitattributes
 
       - name: Install and link composer dependencies
-        if: ${{ env.SAUCE_ACCESS_KEY }}
         run: |
           composer config --no-plugins allow-plugins.neos/composer-plugin true
           composer config repositories.package '{ "type": "path", "url": "../${{ env.PACKAGE_FOLDER }}", "options": { "symlink": false } }'
@@ -130,7 +115,6 @@ jobs:
           composer install --no-interaction --no-progress --prefer-dist
 
       - name: Setup Flow
-        if: ${{ env.SAUCE_ACCESS_KEY }}
         run: |
           rm -f Configuration/Settings.yaml
           cat <<EOF >> Configuration/Settings.yaml
@@ -152,7 +136,6 @@ jobs:
           ./flow doctrine:migrate
 
       - name: Setup Testing Neos Sites and Users
-        if: ${{ env.SAUCE_ACCESS_KEY }}
         run: |
           ./flow cr:setup --content-repository onedimension
           ./flow site:pruneAll --content-repository onedimension --force --verbose
@@ -166,7 +149,6 @@ jobs:
           ./flow user:create --username=editor --password=editor --first-name=Editor --last-name=McEditworth --roles=Editor || true
 
       - name: Start flow server (in background)
-        if: ${{ env.SAUCE_ACCESS_KEY }}
         run: |
           echo 127.0.0.1 onedimension.localhost | sudo tee -a /etc/hosts
           echo 127.0.0.1 twodimensions.localhost | sudo tee -a /etc/hosts
@@ -175,7 +157,6 @@ jobs:
           ./flow server:run --port 8081 &
 
       - name: Setup Sauce connect and CTL
-        if: ${{ env.SAUCE_ACCESS_KEY }}
         run: |
           # https://docs.saucelabs.com/secure-connections/sauce-connect-5/installation/linux/
           curl -L -o sauce-connect.deb https://saucelabs.com/downloads/sauce-connect/5.3.0/sauce-connect_5.3.0.linux_amd64.deb
@@ -184,18 +165,16 @@ jobs:
           npm install -g saucectl
 
       - name: Start e2e tunnel (in background)
-        if: ${{ env.SAUCE_ACCESS_KEY }}
         run: |
           sc run --tunnel-name "neos-tunnel" --region "us-west-1" --proxy-localhost allow &
 
       - name: Run e2e tests
-        if: ${{ env.SAUCE_ACCESS_KEY }}
         run: |
           cd Packages/Application/Neos.Neos.Ui
           saucectl run --config .sauce/config.yml --tunnel-name "neos-tunnel" --region "us-west-1" --artifacts.download.directory ../../../Data/Logs/saucelabs-artifacts
 
       - name: Show Testcafe output
-        if: ${{ env.SAUCE_ACCESS_KEY && always() }}
+        if: ${{ always() }}
         shell: bash
         run: |
           for file in Data/Logs/saucelabs-artifacts/**/console.log; do
@@ -204,7 +183,7 @@ jobs:
           done
 
       - name: Assert no Flow exceptions swallowed
-        if: ${{ env.SAUCE_ACCESS_KEY && always() }}
+        if: ${{ always() }}
         shell: bash
         run: |
           if [ ! -d "Data/Logs/Exceptions" ]; then

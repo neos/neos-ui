@@ -60,6 +60,7 @@ jobs:
           path: ${{ env.PACKAGE_FOLDER }}
 
       - name: Lol
+        working-directory: "/"
         run: |
           echo "${{ github.event_name }}"
           echo "${{ github.event.pull_request.head.repo.full_name }}"

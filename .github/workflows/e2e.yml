@@ -50,6 +50,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        # test
         if: ${{ env.SAUCE_USERNAME && env.SAUCE_ACCESS_KEY }}
         with:
           path: ${{ env.PACKAGE_FOLDER }}

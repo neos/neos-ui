@@ -48,9 +48,10 @@ jobs:
 
     steps:
       - name: Assert
-        if: ${{ !env.SAUCE_ACCESS_KEY }}
         run: |
-          echo "Lol"
+          echo "${{ env.SAUCE_ACCESS_KEY }}"
+          echo "${{ env.SAUCE_USERNAME }}"
+          env
 
       - name: Checkout code
         if: ${{ env.SAUCE_ACCESS_KEY }}

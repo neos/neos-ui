@@ -14,7 +14,6 @@ import {neos} from '@neos-project/neos-ui-decorators';
 const {publishableNodesSelector, publishableNodesInDocumentSelector, baseWorkspaceSelector, isWorkspaceReadOnlySelector, personalWorkspaceNameSelector, allowedTargetWorkspacesSelector} = selectors.CR.Workspaces;
 
 import AbstractButton from './AbstractButton/index';
-import WorkspaceSelector from './WorkspaceSelector/index';
 import style from './style.module.css';
 
 @connect(state => ({
@@ -73,7 +72,6 @@ export default class PublishDropDown extends PureComponent {
             isPublishing,
             isWorkspaceReadOnly,
             baseWorkspace,
-            changeBaseWorkspaceAction,
             neos,
             allowedWorkspaces
         } = this.props;
@@ -82,7 +80,6 @@ export default class PublishDropDown extends PureComponent {
         const baseWorkspaceTitle = allowedWorkspaces?.[baseWorkspace]?.title;
         const canPublishLocally = !isSaving && !isPublishing && publishableNodesInDocument && (publishableNodesInDocument.length > 0);
         const canPublishGlobally = !isSaving && !isPublishing && publishableNodes && (publishableNodes.length > 0);
-        const changingWorkspaceAllowed = !canPublishGlobally;
         const mainButton = this.getTranslatedMainButton(baseWorkspaceTitle);
         const dropDownBtnClassName = mergeClassNames({
             [style.dropDown__btn]: true,
@@ -121,17 +118,7 @@ export default class PublishDropDown extends PureComponent {
                             aria-label={translate('Neos.Neos:Main:showPublishOptions', 'Show publishing options')}
                         />
                     )}
-                    <DropDown.Contents
-                        className={style.dropDown__contents}
-                        >
-                        { Object.keys(allowedWorkspaces).length > 1 && <li className={style.dropDown__item}>
-                            <WorkspaceSelector
-                                baseWorkspace={baseWorkspace}
-                                allowedWorkspaces={allowedWorkspaces}
-                                changeBaseWorkspaceAction={changeBaseWorkspaceAction}
-                                changingWorkspaceAllowed={changingWorkspaceAllowed}
-                                />
-                        </li> }
+                    <DropDown.Contents className={style.dropDown__contents}>
                         <li className={style.dropDown__item}>
                             <AbstractButton
                                 id="neos-PublishDropDown-PublishAll"
@@ -218,6 +205,6 @@ export default class PublishDropDown extends PureComponent {
             return translate('Neos.Neos:Main:publishTo', 'Publish to {0}', [baseWorkspaceTitle]);
         }
 
-        return translate('Neos.Neos:Main:published', 'Published') + (baseWorkspaceTitle ? ' - ' + baseWorkspaceTitle : '');
+        return translate('Neos.Neos:Main:published', 'Published');
     }
 }

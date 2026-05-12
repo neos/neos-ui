@@ -38,8 +38,7 @@ class SelectBox_Option_SingleLine extends PureComponent {
             [style.linkedItem]: linkOptions
         });
         const linkClassname = mergeClassNames({
-            [style.dropdownLink]: true,
-            [style.hasIcon]: (Boolean(option.icon || icon))
+            [style.dropdownLink]: true
         });
 
         const previewElementIcon = option.icon ? option.icon : (icon ? icon : null);

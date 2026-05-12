@@ -102,6 +102,6 @@
     }
 
     .dimensionSwitcherDropDown div[role='button'] {
-        padding: 5px 0 5px var(--spacing-Full);
+        padding: 5px 0;
     }
 }

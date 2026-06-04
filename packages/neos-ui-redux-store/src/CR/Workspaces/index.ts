@@ -1,5 +1,5 @@
 import {action as createAction, ActionType} from 'typesafe-actions';
-import {NodeContextPath, WorkspaceStatus} from '@neos-project/neos-ts-interfaces';
+import {NodeContextPath, Workspace, WorkspaceStatus} from '@neos-project/neos-ts-interfaces';
 
 import {WorkspaceName} from '@neos-project/neos-ts-interfaces';
 
@@ -28,11 +28,7 @@ export interface WorkspaceInformation {
     readOnly?: boolean;
     status: WorkspaceStatus;
     allowedTargetWorkspaces: {
-        [name: string]: {
-            name: string
-            title: string
-            readonly: boolean
-        }
+        [name: string]: Workspace;
     }
 }
 

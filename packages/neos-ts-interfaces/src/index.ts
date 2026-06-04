@@ -9,6 +9,12 @@ export type DimensionPresetName = string;
 
 export type DimensionValues = DimensionValue[];
 
+export interface Workspace {
+    name: WorkspaceName;
+    title: string;
+    readonly: boolean;
+}
+
 export interface DimensionCombination {
     [propName: string]: DimensionValues;
 }

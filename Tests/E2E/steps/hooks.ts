@@ -7,5 +7,9 @@ const {AfterScenario} = createBdd();
 AfterScenario(async ({page}) => {
     await logout(page);
 
-    removeAllUsers();
+    try {
+        removeAllUsers();
+    } catch (err) {
+        console.warn('[AfterScenario] removeAllUsers failed — next scenario may see leftover users:', err);
+    }
 });

@@ -107,6 +107,7 @@ class WorkspaceHelper implements ProtectedContextAwareInterface
                 'name' => $workspace->workspaceName->value,
                 'title' => $workspaceMetadata->title->value,
                 'readonly' => !$workspacePermissions->write,
+                'status' => $workspace->status->value,
             ];
         }
         return $result;

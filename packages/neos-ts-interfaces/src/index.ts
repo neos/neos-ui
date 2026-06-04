@@ -13,6 +13,7 @@ export interface Workspace {
     name: WorkspaceName;
     title: string;
     readonly: boolean;
+    status: WorkspaceStatus;
 }
 
 export interface DimensionCombination {

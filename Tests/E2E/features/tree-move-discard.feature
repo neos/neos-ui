@@ -1,7 +1,6 @@
 Feature: Discarding a tree-move change leaves the tree in a consistent state
 
-    Mirrors Tests/IntegrationTests/Fixtures/1Dimension/issue-3184.e2e.js. The
-    underlying issue (neos/neos-ui#3184) was that after moving multiple
+    The underlying issue (neos/neos-ui#3184) was that after moving multiple
     document-tree nodes via drag-and-drop and then discarding the move, the
     tree could enter an inconsistent state — moved nodes vanishing, error
     flash messages, or stale guest-frame content. These scenarios are the

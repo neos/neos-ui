@@ -1,7 +1,6 @@
 Feature: Image editor cropping
 
-    Mirrors Tests/IntegrationTests/Fixtures/1Dimension/imageEditor.e2e.js. The
-    inspector's image editor has a crop tool that opens in the secondary
+    The inspector's image editor has a crop tool that opens in the secondary
     inspector; dragging the crop area updates the small preview thumbnail in
     the property editor (via inline `top` on the cropArea image), and applying
     the change updates the rendered image in the content frame.

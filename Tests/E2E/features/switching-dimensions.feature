@@ -1,6 +1,5 @@
 Feature: Switch between dimensions
 
-    Mirrors Tests/IntegrationTests/Fixtures/{1,2}Dimension/switchingDimensions.e2e.js.
     Switching the language to one not yet covered by the current document opens
     the variant creation dialog; choosing "Create Empty" persists a new variant
     and the tree updates to reflect that dimension's coverage.

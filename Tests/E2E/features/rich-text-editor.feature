@@ -1,7 +1,6 @@
 Feature: Rich text editor
 
-    Mirrors Tests/IntegrationTests/Fixtures/1Dimension/richTextEditor.e2e.js. The
-    inspector RichTextEditor (mapped to the CKEditor inspector component) shows
+    The inspector RichTextEditor (mapped to the CKEditor inspector component) shows
     a "Toggle the editor" button that opens a secondary inspector with a full
     CKEditor instance. Edits committed via Apply are reflected on the rendered
     page in the content iframe.

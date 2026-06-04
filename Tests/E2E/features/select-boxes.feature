@@ -1,7 +1,6 @@
 Feature: SelectBox open-direction and visibility
 
-    Mirrors Tests/IntegrationTests/Fixtures/1Dimension/selectBoxes.e2e.js. The
-    open-direction is decided by `getCalculatedStyleFromProps` in
+    The open-direction is decided by `getCalculatedStyleFromProps` in
     packages/react-ui-components/src/DropDown/contents.tsx — it sets `top` when
     the dropdown opens below, `bottom` when it opens above, and `display: none`
     when the SelectBox is scrolled out of view. We assert the inline styles

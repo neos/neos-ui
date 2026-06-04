@@ -176,16 +176,6 @@ Adding unit tests is fairly simple, just create a file on the same tree level as
 
 Use `it.only(() => {})` and `describe.only(() => {})` if you want to run a specific test and not the whole test suite.
 
-#### Integration tests
-
-To setup end-to-end tests locally you have got to do the same things described in [CircleCI workflow](https://github.com/neos/neos-ui/blob/8.3/.circleci/config.yml), namely take the [test disribution](https://github.com/neos/neos-ui/blob/8.3/Tests/IntegrationTests/TestDistribution/composer.json) and `composer install` in it, put the right branch into Neos.Neos.Ui folder and run webserver and mysql server with the same config as described in the test distribution's [Settings.yaml](https://github.com/neos/neos-ui/blob/8.3/Tests/IntegrationTests/TestDistribution/Configuration/Settings.yaml) (or adjust it).
-
-For executing the end to end tests on a Mac with catalina or higher you need to permit screen recording. Open 'System Preferences > Security & Privacy > Privacy > Screen Recording' and check 'TestCafe Browser Tools' in the application list.
-
-```bash
-make test-e2e-docker
-```
-
 #### E2E tests with Playwright & Docker
 
 E2E tests use [Playwright](https://playwright.dev) with [playwright-bdd](https://vitalets.github.io/playwright-bdd/) for Gherkin scenarios and run against a Dockerised Neos instance — no local Neos installation needed. See [`Tests/E2E/README.md`](./Tests/E2E/README.md) for full details.

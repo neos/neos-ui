@@ -1,7 +1,6 @@
 Feature: Switch between sites via the main menu
 
-    Mirrors Tests/IntegrationTests/Fixtures/2Dimension/switchingSites.e2e.js. The
-    Neos backend's main drawer lists all configured sites; clicking another site
+    The Neos backend's main drawer lists all configured sites; clicking another site
     navigates to that site's hostname while keeping the user logged in.
 
     Background:

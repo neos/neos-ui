@@ -1,7 +1,6 @@
 Feature: Inspector property editing and unapplied changes
 
-    Mirrors Tests/IntegrationTests/Fixtures/1Dimension/inspector.e2e.js — both
-    the page-title editing flow + unapplied-changes dialog branches (test 1)
+    The page-title editing flow + unapplied-changes dialog branches (test 1)
     and the ClientEval dependency between SelectBox properties (test 2).
 
     Background:

@@ -2,7 +2,7 @@ Feature: Discard workspace changes
 
     Discarding throws away the user's pending changes in the personal workspace.
     These scenarios cover discarding both creations and deletions of document
-    and content nodes, mirroring Tests/IntegrationTests/Fixtures/1Dimension/discarding.e2e.js.
+    and content nodes.
 
     Background:
         Given A user with username "admin", password "password" and role "Neos.Neos:Administrator" exists

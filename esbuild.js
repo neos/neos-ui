@@ -1,7 +1,8 @@
-const {sep} = require('path')
 const {compileWithCssVariables} = require('./cssVariables');
 const {cssModules} = require('./cssModules');
 const esbuild = require('esbuild');
+const postCssPlugin = require('@deanc/esbuild-plugin-postcss');
+const postcssMixins = require('postcss-mixins');
 
 const isProduction = process.argv.includes('--production');
 const isE2ETesting = process.argv.includes('--e2e-testing');
@@ -38,22 +39,14 @@ const options = {
         '.woff2': 'file'
     },
     plugins: [
+        postCssPlugin({
+            plugins: [
+                postcssMixins
+            ]
+        }),
         {
             name: 'neos-ui-build',
-            setup: ({onResolve, onLoad, resolve}) => {
-                // exclude CKEditor styles
-                // the filter must match the import statement - and as one usually uses relative paths we cannot look for `@ckeditor` here
-                // we are currently intercepting all `/\.css/` files, as this is the most accurate way and has nearly no impact on performance
-                onResolve({filter: /\.css$/, namespace: 'file'}, ({path, ...options}) => {
-                    if (!options.importer.includes(`${sep}@ckeditor${sep}`)) {
-                        return resolve(path, {...options, namespace: 'noRecurse'})
-                    }
-                    return {
-                        external: true,
-                        sideEffects: false
-                    }
-                })
-
+            setup: ({onLoad}) => {
                 // prefix Fontawesome with "neos-" to prevent clashes with customer Fontawesome
                 onLoad({filter: /@fortawesome\/fontawesome-svg-core\/styles\.css$/}, async ({path}) => {
                     const contents = (await require('fs/promises').readFile(path)).toString();

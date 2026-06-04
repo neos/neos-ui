@@ -69,8 +69,8 @@ manifest('main.containers', {}, globalRegistry => {
     containerRegistry.set('PrimaryToolbar/Right/EditPreviewDropDown', EditPreviewDropDown);
     containerRegistry.set('PrimaryToolbar/Right/DimensionSwitcher', DimensionSwitcher);
     containerRegistry.set('PrimaryToolbar/Right/WorkspaceSelector', WorkspaceSelector);
-    containerRegistry.set('PrimaryToolbar/Right/PublishDropDown', PublishDropDown);
     containerRegistry.set('PrimaryToolbar/Right/WorkspaceSync', WorkspaceSync);
+    containerRegistry.set('PrimaryToolbar/Right/PublishDropDown', PublishDropDown);
 
     containerRegistry.set('SecondaryToolbar', SecondaryToolbar);
     containerRegistry.set('SecondaryToolbar/LoadingIndicator', LoadingIndicator);

@@ -54,7 +54,7 @@ export default class WorkspaceSelector extends PureComponent {
         const workspacesOptions = Object.keys(allowedWorkspaces).map(i => ({
             label: allowedWorkspaces[i]?.title,
             value: allowedWorkspaces[i]?.name
-        }));
+        })).sort((a, b) => a.label.localeCompare(b.label));
         const onWorkspaceSelect = workspaceName => {
             changeBaseWorkspaceAction(workspaceName);
         };

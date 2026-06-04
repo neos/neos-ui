@@ -59,7 +59,7 @@ export default class WorkspaceSelector extends PureComponent {
             label: allowedWorkspaces[i]?.title,
             value: allowedWorkspaces[i]?.name,
             group: allowedWorkspaces[i]?.name === 'live' ? publicWorkspaceGroupLabel : internalWorkspaceGroupLabel,
-            icon: allowedWorkspaces[i]?.readonly ? 'eye': null
+            icon: allowedWorkspaces[i]?.readonly ? 'eye' : null
         })).sort((a, b) => {
             return a.label.localeCompare(b.label);
         });

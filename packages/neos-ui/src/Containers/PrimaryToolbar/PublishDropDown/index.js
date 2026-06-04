@@ -27,7 +27,7 @@ import style from './style.module.css';
     publishableNodes: publishableNodesSelector(state),
     publishableNodesInDocument: publishableNodesInDocumentSelector(state),
     personalWorkspaceName: personalWorkspaceNameSelector(state),
-    isWorkspaceReadOnly: isWorkspaceReadOnlySelector(state),
+    isWorkspaceReadOnly: isWorkspaceReadOnlySelector(state)
 }), {
     changeBaseWorkspaceAction: actions.CR.Workspaces.changeBaseWorkspace,
     start: actions.CR.Publishing.start
@@ -73,7 +73,7 @@ export default class PublishDropDown extends PureComponent {
             isSaving,
             isPublishing,
             isWorkspaceReadOnly,
-            neos,
+            neos
         } = this.props;
 
         const workspaceModuleUri = neos?.routes?.core?.modules?.workspace;

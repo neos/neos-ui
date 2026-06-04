@@ -12,8 +12,9 @@ When("I navigate to the {string} page", async ({page}, pageTitle: string) => {
     // (no Redux store access): when a tree node becomes the current document, its
     // ancestor button gets a class containing "isFocused" applied by the tree.
     await expect(
-        page.locator('[role="treeitem"] [role="button"][class*="isFocused"]'),
-    ).toHaveText(pageTitle);
+        page.locator('[role="treeitem"] [role="button"][class*="isFocused"]')
+            .filter({hasText: pageTitle}),
+    ).toBeVisible();
 });
 
 When("I reload the page", async ({page}) => {

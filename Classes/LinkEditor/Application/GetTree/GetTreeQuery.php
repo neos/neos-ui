@@ -60,6 +60,11 @@ final class GetTreeQuery
         is_string($array['workspaceName'])
             or throw new \InvalidArgumentException('Workspace name must be a string');
 
+        isset($array['dimensionSpacePoint'])
+            or throw new \InvalidArgumentException('Dimension space point must be set');
+        is_string($array['dimensionSpacePoint'])
+            or throw new \InvalidArgumentException('Dimension space point must be an string');
+
         isset($array['startingPoint'])
             or throw new \InvalidArgumentException('Starting point must be set');
         is_string($array['startingPoint'])
@@ -91,7 +96,7 @@ final class GetTreeQuery
         return new self(
             contentRepositoryId: ContentRepositoryId::fromString($array['contentRepositoryId']),
             workspaceName: WorkspaceName::fromString($array['workspaceName']),
-            dimensionSpacePoint: DimensionSpacePoint::fromLegacyDimensionArray($array['dimensionValues'] ?? []),
+            dimensionSpacePoint: DimensionSpacePoint::fromJsonString($array['dimensionSpacePoint']),
             startingPoint: NodeAggregateId::tryFromString($array['startingPoint']) ?? AbsoluteNodePath::fromString($array['startingPoint']),
             loadingDepth: $array['loadingDepth'],
             baseNodeTypeFilter: $array['baseNodeTypeFilter'] ?? '',

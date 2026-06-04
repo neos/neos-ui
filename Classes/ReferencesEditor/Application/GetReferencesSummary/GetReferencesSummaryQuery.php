@@ -51,6 +51,11 @@ final class GetReferencesSummaryQuery
         is_string($array['workspaceName'])
             or throw new \InvalidArgumentException('Workspace name must be a string');
 
+        isset($array['dimensionSpacePoint'])
+            or throw new \InvalidArgumentException('Dimension space point must be set');
+        is_string($array['dimensionSpacePoint'])
+            or throw new \InvalidArgumentException('Dimension space point must be an string');
+
         isset($array['nodeId'])
             or throw new \InvalidArgumentException('Node id must be set');
         is_string($array['nodeId'])
@@ -64,7 +69,7 @@ final class GetReferencesSummaryQuery
         return new self(
             contentRepositoryId: ContentRepositoryId::fromString($array['contentRepositoryId']),
             workspaceName: WorkspaceName::fromString($array['workspaceName']),
-            dimensionSpacePoint: DimensionSpacePoint::fromLegacyDimensionArray($array['dimensionValues'] ?? []),
+            dimensionSpacePoint: DimensionSpacePoint::fromJsonString($array['dimensionSpacePoint']),
             nodeId: NodeAggregateId::fromString($array['nodeId']),
             referenceName: ReferenceName::fromString($array['referenceName'])
         );

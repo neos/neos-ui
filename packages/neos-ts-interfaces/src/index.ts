@@ -7,8 +7,10 @@ export type DimensionName = string;
 export type DimensionValue = string;
 export type DimensionPresetName = string;
 
+/** @deprecated use {@link DimensionSpacePoint} instead */
 export type DimensionValues = DimensionValue[];
 
+/** @deprecated use {@link DimensionSpacePoint} instead */
 export interface DimensionCombination {
     [propName: string]: DimensionValues;
 }

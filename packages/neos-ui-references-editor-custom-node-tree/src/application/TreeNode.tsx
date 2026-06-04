@@ -85,7 +85,7 @@ export const TreeNode: React.FC<Props> = (props) => {
             try {
                 const result = await getChildrenForTreeNode({
                     workspaceName: props.workspaceName,
-                    dimensionValues: props.dimensionValues,
+                    legacyDimensionValues: props.dimensionValues,
                     treeNodeId: props.treeNode.nodeAggregateIdentifier,
                     nodeTypeFilter: props.baseNodeTypeFilter,
                     allowedNodeTypes: props.allowedNodeTypes

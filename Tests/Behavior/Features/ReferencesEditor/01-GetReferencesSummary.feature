@@ -159,7 +159,7 @@ Feature: GetReferencesSummary
       | Key                 | Value                |
       | contentRepositoryId | "default"            |
       | workspaceName       | "live"               |
-      | dimensionValues     | {"language": ["en"]} |
+      | dimensionSpacePoint     | "{\"language\": \"en\"}" |
       | nodeId              | "features"           |
       | referenceName       | "myReferences"       |
     Then I expect the following query response:
@@ -188,7 +188,7 @@ Feature: GetReferencesSummary
       | Key                 | Value                |
       | contentRepositoryId | "default"            |
       | workspaceName       | "live"               |
-      | dimensionValues     | {"language": ["en"]} |
+      | dimensionSpacePoint     | "{\"language\": \"en\"}" |
       | nodeId              | "features"           |
       | referenceName       | "myReferences"       |
     Then I expect the following query response:
@@ -239,7 +239,7 @@ Feature: GetReferencesSummary
       | Key                 | Value                |
       | contentRepositoryId | "default"            |
       | workspaceName       | "live"               |
-      | dimensionValues     | {"language": ["en"]} |
+      | dimensionSpacePoint     | "{\"language\": \"en\"}" |
       | nodeId              | "features"           |
       | referenceName       | "myReferences"       |
     Then I expect the following query response:
@@ -311,7 +311,7 @@ Feature: GetReferencesSummary
       | Key                 | Value                |
       | contentRepositoryId | "default"            |
       | workspaceName       | "live"               |
-      | dimensionValues     | {"language": ["en"]} |
+      | dimensionSpacePoint     | "{\"language\": \"en\"}" |
       | nodeId              | "features-propertyless"           |
       | referenceName       | "myReferences"       |
     Then I expect the following query response:
@@ -357,7 +357,7 @@ Feature: GetReferencesSummary
       | Key                 | Value                |
       | contentRepositoryId | "default"            |
       | workspaceName       | "live"               |
-      | dimensionValues     | {"language": ["en"]} |
+      | dimensionSpacePoint     | "{\"language\": \"en\"}" |
       | nodeId              | "features-constraints"           |
       | referenceName       | "myReferences"       |
     Then I expect the following query response:

@@ -90,7 +90,7 @@ Feature: GetNodeSummary
       | Key                 | Value                |
       | contentRepositoryId | "default"            |
       | workspaceName       | "live"               |
-      | dimensionValues     | {"language": ["en"]} |
+      | dimensionSpacePoint     | "{\"language\": \"en\"}" |
       | nodeId              | "homepage"           |
     Then I expect the following query response:
       """json
@@ -114,7 +114,7 @@ Feature: GetNodeSummary
       | Key                 | Value                |
       | contentRepositoryId | "default"            |
       | workspaceName       | "live"               |
-      | dimensionValues     | {"language": ["en"]} |
+      | dimensionSpacePoint     | "{\"language\": \"en\"}" |
       | nodeId              | "feature-b"          |
     Then I expect the following query response:
       """json
@@ -146,7 +146,7 @@ Feature: GetNodeSummary
       | Key                 | Value                |
       | contentRepositoryId | "default"            |
       | workspaceName       | "live"               |
-      | dimensionValues     | {"language": ["en"]} |
+      | dimensionSpacePoint     | "{\"language\": \"en\"}" |
       | nodeId              | "features"           |
     Then I expect the following query response:
       """json
@@ -174,7 +174,7 @@ Feature: GetNodeSummary
       | Key                 | Value                |
       | contentRepositoryId | "default"            |
       | workspaceName       | "live"               |
-      | dimensionValues     | {"language": ["en"]} |
+      | dimensionSpacePoint     | "{\"language\": \"en\"}" |
       | nodeId              | "sites"           |
     # todo improve Neos' default config for Neos.Neos:Sites node type
     Then I expect the following query response:
@@ -194,7 +194,7 @@ Feature: GetNodeSummary
       | Key                 | Value                |
       | contentRepositoryId | "default"            |
       | workspaceName       | "live"               |
-      | dimensionValues     | {"language": ["de"]} |
+      | dimensionSpacePoint     | "{\"language\": \"de\"}" |
       | nodeId              | "feature-a"          |
     Then I expect the following query response:
       """json

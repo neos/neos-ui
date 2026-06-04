@@ -24,7 +24,7 @@ interface Props {
     initialSearchTerm?: string;
     initialNarrowNodeTypeFilter?: string;
     workspaceName: string;
-    dimensionValues: Record<string, string[]>;
+    legacyDimensionValues: Record<string, string[]>;
     startingPoint: string;
     loadingDepth: number;
     baseNodeTypeFilter: string;
@@ -46,7 +46,7 @@ export const Tree: React.FC<Props> = (props) => {
     const fetch__getTree = usePromise(async () => {
         const result = await getTree({
             workspaceName: props.workspaceName,
-            dimensionValues: props.dimensionValues,
+            legacyDimensionValues: props.legacyDimensionValues,
             startingPoint: props.startingPoint,
             loadingDepth: props.loadingDepth,
             baseNodeTypeFilter: props.baseNodeTypeFilter,
@@ -67,7 +67,7 @@ export const Tree: React.FC<Props> = (props) => {
         throw new Error('Something went wrong while fetching the tree.');
     }, [
         props.workspaceName,
-        props.dimensionValues,
+        props.legacyDimensionValues,
         props.startingPoint,
         props.loadingDepth,
         props.baseNodeTypeFilter,
@@ -103,7 +103,7 @@ export const Tree: React.FC<Props> = (props) => {
             <NeosTree>
                 <TreeNode
                     workspaceName={props.workspaceName}
-                    dimensionValues={props.dimensionValues}
+                    legacyDimensionValues={props.legacyDimensionValues}
                     baseNodeTypeFilter={props.baseNodeTypeFilter}
                     linkableNodeTypes={props.linkableNodeTypes}
                     treeNode={fetch__getTree.value.root}

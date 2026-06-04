@@ -16,7 +16,7 @@ import {getChildrenForTreeNode} from '../infrastructure/http';
 
 interface Props {
     workspaceName: string;
-    dimensionValues: Record<string, string[]>;
+    legacyDimensionValues: Record<string, string[]>;
     baseNodeTypeFilter: string;
     linkableNodeTypes?: string[];
     treeNode: TreeNodeDTO;
@@ -86,7 +86,7 @@ export const TreeNode: React.FC<Props> = (props) => {
             try {
                 const result = await getChildrenForTreeNode({
                     workspaceName: props.workspaceName,
-                    dimensionValues: props.dimensionValues,
+                    legacyDimensionValues: props.legacyDimensionValues,
                     treeNodeId: props.treeNode.nodeAggregateIdentifier,
                     nodeTypeFilter: props.baseNodeTypeFilter,
                     linkableNodeTypes: props.linkableNodeTypes
@@ -110,7 +110,7 @@ export const TreeNode: React.FC<Props> = (props) => {
         }
     }, [
         props.workspaceName,
-        props.dimensionValues,
+        props.legacyDimensionValues,
         props.treeNode.nodeAggregateIdentifier,
         props.baseNodeTypeFilter,
         children.length

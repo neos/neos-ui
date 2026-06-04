@@ -159,7 +159,7 @@ Feature: GetTreeQuery
       | Key                  | Value                       |
       | contentRepositoryId  | "default"                   |
       | workspaceName        | "live"                      |
-      | dimensionValues      | {"language": ["en"]}        |
+      | dimensionSpacePoint      | "{\"language\": \"en\"}"        |
       | startingPoint        | "/<Neos.Neos:Sites>/site-a" |
       | loadingDepth         | 0                           |
       | baseNodeTypeFilter   | ""                          |
@@ -194,7 +194,7 @@ Feature: GetTreeQuery
       | Key                  | Value                |
       | contentRepositoryId  | "default"            |
       | workspaceName        | "live"               |
-      | dimensionValues      | {"language": ["en"]} |
+      | dimensionSpacePoint      | "{\"language\": \"en\"}" |
       | startingPoint        | "/<Neos.Neos:Sites>" |
       | loadingDepth         | 1                    |
       | baseNodeTypeFilter   | ""                   |
@@ -244,7 +244,7 @@ Feature: GetTreeQuery
       | Key                  | Value                |
       | contentRepositoryId  | "default"            |
       | workspaceName        | "live"               |
-      | dimensionValues      | {"language": ["en"]} |
+      | dimensionSpacePoint      | "{\"language\": \"en\"}" |
       # or /<Neos.Neos:Sites>/site-a
       | startingPoint        | "homepage"           |
       | loadingDepth         | 1                    |
@@ -320,7 +320,7 @@ Feature: GetTreeQuery
       | Key                  | Value                                       |
       | contentRepositoryId  | "default"                                   |
       | workspaceName        | "live"                                      |
-      | dimensionValues      | {"language": ["en"]}                        |
+      | dimensionSpacePoint      | "{\"language\": \"en\"}"                        |
       | startingPoint        | "/<Neos.Neos:Sites>/site-a/features/a/leaf" |
       | loadingDepth         | 8                                           |
       | baseNodeTypeFilter   | "Neos.Neos:Document"                        |
@@ -355,7 +355,7 @@ Feature: GetTreeQuery
       | Key                  | Value                                |
       | contentRepositoryId  | "default"                            |
       | workspaceName        | "live"                               |
-      | dimensionValues      | {"language": ["en"]}                 |
+      | dimensionSpacePoint      | "{\"language\": \"en\"}"                 |
       | startingPoint        | "/<Neos.Neos:Sites>/site-a/features" |
       | loadingDepth         | 4                                    |
       | baseNodeTypeFilter   | "Neos.Neos:Document"                 |
@@ -479,7 +479,7 @@ Feature: GetTreeQuery
       | Key                  | Value                                |
       | contentRepositoryId  | "default"                            |
       | workspaceName        | "live"                               |
-      | dimensionValues      | {"language": ["en"]}                 |
+      | dimensionSpacePoint      | "{\"language\": \"en\"}"                 |
       | startingPoint        | "/<Neos.Neos:Sites>/site-a/features" |
       | loadingDepth         | 4                                    |
       | baseNodeTypeFilter   | "Vendor.Site:OtherDocument"          |
@@ -528,7 +528,7 @@ Feature: GetTreeQuery
       | Key                  | Value                       |
       | contentRepositoryId  | "default"                   |
       | workspaceName        | "live"                      |
-      | dimensionValues      | {"language": ["de"]}        |
+      | dimensionSpacePoint      | "{\"language\": \"de\"}"        |
       | startingPoint        | "/<Neos.Neos:Sites>/site-a" |
       | loadingDepth         | 8                           |
       | baseNodeTypeFilter   | "Neos.Neos:Document"        |
@@ -591,7 +591,7 @@ Feature: GetTreeQuery
       | Key                  | Value                                |
       | contentRepositoryId  | "default"                            |
       | workspaceName        | "live"                               |
-      | dimensionValues      | {"language": ["en"]}                 |
+      | dimensionSpacePoint      | "{\"language\": \"en\"}"                 |
       | startingPoint        | "/<Neos.Neos:Sites>/site-a/linkable" |
       | loadingDepth         | 8                                    |
       | baseNodeTypeFilter   | "Neos.Neos:Document"                 |
@@ -666,7 +666,7 @@ Feature: GetTreeQuery
       | Key                  | Value                              |
       | contentRepositoryId  | "default"                          |
       | workspaceName        | "live"                             |
-      | dimensionValues      | {"language": ["en"]}               |
+      | dimensionSpacePoint      | "{\"language\": \"en\"}"               |
       | startingPoint        | "/<Neos.Neos:Sites>/site-a/search" |
       | loadingDepth         | 8                                  |
       | baseNodeTypeFilter   | "Neos.Neos:Document"               |
@@ -756,7 +756,7 @@ Feature: GetTreeQuery
       | Key                  | Value                              |
       | contentRepositoryId  | "default"                          |
       | workspaceName        | "live"                             |
-      | dimensionValues      | {"language": ["en"]}               |
+      | dimensionSpacePoint      | "{\"language\": \"en\"}"               |
       | startingPoint        | "/<Neos.Neos:Sites>/site-a/search" |
       | loadingDepth         | 8                                  |
       | baseNodeTypeFilter   | "Neos.Neos:Document"               |
@@ -832,7 +832,7 @@ Feature: GetTreeQuery
       | Key                  | Value                              |
       | contentRepositoryId  | "default"                          |
       | workspaceName        | "live"                             |
-      | dimensionValues      | {"language": ["en"]}               |
+      | dimensionSpacePoint      | "{\"language\": \"en\"}"               |
       | startingPoint        | "/<Neos.Neos:Sites>/site-a/search" |
       | loadingDepth         | 8                                  |
       | baseNodeTypeFilter   | "Neos.Neos:Document"               |
@@ -895,7 +895,7 @@ Feature: GetTreeQuery
       | Key                  | Value                                       |
       | contentRepositoryId  | "default"                                   |
       | workspaceName        | "live"                                      |
-      | dimensionValues      | {"language": ["en"]}                        |
+      | dimensionSpacePoint      | "{\"language\": \"en\"}"                        |
       | startingPoint        | "/<Neos.Neos:Sites>/site-a/features/a/leaf" |
       | loadingDepth         | 8                                           |
       | baseNodeTypeFilter   | "Neos.Neos:Document"                        |
@@ -938,7 +938,7 @@ Feature: GetTreeQuery
       | Key                  | Value                                |
       | contentRepositoryId  | "default"                            |
       | workspaceName        | "live"                               |
-      | dimensionValues      | {"language": ["en"]}                 |
+      | dimensionSpacePoint  | "{\"language\": \"en\"}"                 |
       | startingPoint        | "/<Neos.Neos:Sites>/site-a/features" |
       | loadingDepth         | 0                                    |
       | baseNodeTypeFilter   | "Neos.Neos:Document"                 |

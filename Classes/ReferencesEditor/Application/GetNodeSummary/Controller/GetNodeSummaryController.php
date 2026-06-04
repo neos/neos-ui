@@ -18,8 +18,8 @@ use Neos\Flow\Annotations as Flow;
 use Neos\Neos\FrontendRouting\SiteDetection\SiteDetectionResult;
 use Neos\Neos\Ui\Infrastructure\MVC\AbstractQueryController;
 use Neos\Neos\Ui\Infrastructure\MVC\QueryResponseHelper;
-use Neos\Neos\Ui\LinkEditor\Application\GetNodeSummary\GetNodeSummaryQuery;
-use Neos\Neos\Ui\LinkEditor\Application\GetNodeSummary\GetNodeSummaryQueryHandler;
+use Neos\Neos\Ui\ReferencesEditor\Application\GetNodeSummary\GetNodeSummaryQuery;
+use Neos\Neos\Ui\ReferencesEditor\Application\GetNodeSummary\GetNodeSummaryQueryHandler;
 use Neos\Neos\Ui\LinkEditor\Application\Shared\NodeWasNotFound;
 use Psr\Http\Message\ResponseInterface;
 

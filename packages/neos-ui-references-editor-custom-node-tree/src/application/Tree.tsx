@@ -45,7 +45,7 @@ export const Tree: React.FC<Props> = (props) => {
     const fetch__getTree = usePromise(async () => {
         const result = await getTree({
             workspaceName: props.workspaceName,
-            dimensionValues: props.dimensionValues,
+            legacyDimensionValues: props.dimensionValues,
             startingPoint: props.startingPoint,
             loadingDepth: props.loadingDepth,
             baseNodeTypeFilter: props.baseNodeTypeFilter,

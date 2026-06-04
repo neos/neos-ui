@@ -129,7 +129,7 @@ Feature: GetChildrenForTreeNode
       | Key                 | Value                |
       | contentRepositoryId | "default"            |
       | workspaceName       | "live"               |
-      | dimensionValues     | {"language": ["en"]} |
+      | dimensionSpacePoint     | "{\"language\": \"en\"}" |
       | treeNodeId          | "homepage"           |
       | nodeTypeFilter      | ""                   |
       | allowedNodeTypes   | []                   |
@@ -174,7 +174,7 @@ Feature: GetChildrenForTreeNode
       | Key                 | Value                 |
       | contentRepositoryId | "default"             |
       | workspaceName       | "live"                |
-      | dimensionValues     | {"language": ["en"]}  |
+      | dimensionSpacePoint     | "{\"language\": \"en\"}"  |
       | treeNodeId          | "feature-a-multi-dsp" |
       | nodeTypeFilter      | ""                    |
       | allowedNodeTypes   | []                    |
@@ -192,7 +192,7 @@ Feature: GetChildrenForTreeNode
       | Key                 | Value                |
       | contentRepositoryId | "default"            |
       | workspaceName       | "live"               |
-      | dimensionValues     | {"language": ["en"]} |
+      | dimensionSpacePoint     | "{\"language\": \"en\"}" |
       | treeNodeId          | "features"           |
       | nodeTypeFilter      | "Neos.Neos:Document" |
       | allowedNodeTypes   | []                   |
@@ -250,7 +250,7 @@ Feature: GetChildrenForTreeNode
       | Key                 | Value                       |
       | contentRepositoryId | "default"                   |
       | workspaceName       | "live"                      |
-      | dimensionValues     | {"language": ["en"]}        |
+      | dimensionSpacePoint     | "{\"language\": \"en\"}"        |
       | treeNodeId          | "features"                  |
       | nodeTypeFilter      | "Vendor.Site:OtherDocument" |
       | allowedNodeTypes   | []                          |
@@ -282,7 +282,7 @@ Feature: GetChildrenForTreeNode
       | Key                 | Value                |
       | contentRepositoryId | "default"            |
       | workspaceName       | "live"               |
-      | dimensionValues     | {"language": ["de"]} |
+      | dimensionSpacePoint     | "{\"language\": \"de\"}" |
       | treeNodeId          | "features"           |
       | nodeTypeFilter      | ""                   |
       | allowedNodeTypes   | []                   |
@@ -314,7 +314,7 @@ Feature: GetChildrenForTreeNode
       | Key                 | Value                           |
       | contentRepositoryId | "default"                       |
       | workspaceName       | "live"                          |
-      | dimensionValues     | {"language": ["en"]}            |
+      | dimensionSpacePoint     | "{\"language\": \"en\"}"            |
       | treeNodeId          | "referenceable"                      |
       | nodeTypeFilter      | "Neos.Neos:Document"            |
       | allowedNodeTypes   | ["Vendor.Site:SpecialReferenceable"] |

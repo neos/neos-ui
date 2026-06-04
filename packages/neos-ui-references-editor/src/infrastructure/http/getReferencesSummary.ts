@@ -1,5 +1,6 @@
-import {DimensionCombination} from '@neos-project/neos-ts-interfaces';
+import {createDimensionSpacePointFromLegacyDimension} from '@neos-project/neos-ui-contentrepository/src/DimensionSpace';
 import {fetchWithErrorHandling} from '@neos-project/neos-ui-backend-connector';
+import {DimensionCombination} from '@neos-project/neos-ts-interfaces';
 
 type GetReferencesSummaryQueryResultEnvelope =
     | {
@@ -25,19 +26,13 @@ type GetReferencesSummaryQueryResultEnvelope =
         };
     };
 
-export async function getReferencesSummary(workspaceName: string, dimensionValues: DimensionCombination, nodeId: string, referenceName: string): Promise<GetReferencesSummaryQueryResultEnvelope> {
+export async function getReferencesSummary(workspaceName: string, legacyDimensionValues: DimensionCombination, nodeId: string, referenceName: string): Promise<GetReferencesSummaryQueryResultEnvelope> {
     const searchParams = new URLSearchParams();
     searchParams.set('workspaceName', workspaceName);
-    for (const [dimensionName, fallbackChain] of Object.entries(
-        dimensionValues
-    )) {
-        for (const fallbackValue of fallbackChain) {
-            searchParams.set(
-                `dimensionValues[${dimensionName}][]`,
-                fallbackValue
-            );
-        }
-    }
+
+    const dimensionSpacePoint = createDimensionSpacePointFromLegacyDimension(legacyDimensionValues);
+
+    searchParams.set('dimensionSpacePoint', JSON.stringify(dimensionSpacePoint));
     searchParams.set('nodeId', nodeId);
 
     searchParams.set('referenceName', referenceName);

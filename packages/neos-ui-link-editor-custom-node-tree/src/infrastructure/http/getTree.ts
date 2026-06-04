@@ -11,10 +11,11 @@ import {fetchWithErrorHandling} from '@neos-project/neos-ui-backend-connector';
 
 import {TreeNodeDTO} from '../../domain';
 import {ServerSideError} from '@neos-project/neos-ui-error';
+import {createDimensionSpacePointFromLegacyDimension} from '@neos-project/neos-ui-contentrepository/src/DimensionSpace';
 
 type GetTreeQuery = {
     workspaceName: string;
-    dimensionValues: Record<string, string[]>;
+    legacyDimensionValues: Record<string, string[]>;
     startingPoint: string;
     loadingDepth: number;
     baseNodeTypeFilter: string;
@@ -38,18 +39,10 @@ export async function getTree(
     query: GetTreeQuery
 ): Promise<GetTreeQueryResultEnvelope> {
     const searchParams = new URLSearchParams();
+    const dimensionSpacePoint = createDimensionSpacePointFromLegacyDimension(query.legacyDimensionValues);
 
     searchParams.set('workspaceName', query.workspaceName);
-    for (const [dimensionName, fallbackChain] of Object.entries(
-        query.dimensionValues
-    )) {
-        for (const fallbackValue of fallbackChain) {
-            searchParams.set(
-                `dimensionValues[${dimensionName}][]`,
-                fallbackValue
-            );
-        }
-    }
+    searchParams.set('dimensionSpacePoint', JSON.stringify(dimensionSpacePoint));
     searchParams.set('startingPoint', query.startingPoint);
     searchParams.set('loadingDepth', String(query.loadingDepth));
     searchParams.set('baseNodeTypeFilter', query.baseNodeTypeFilter);

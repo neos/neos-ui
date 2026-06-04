@@ -44,7 +44,7 @@ Feature: GetTreeQuery Constraints
       | Key                  | Value                |
       | contentRepositoryId  | "default"            |
       | workspaceName        | "live"               |
-      | dimensionValues      | {"language": ["en"]} |
+      | dimensionSpacePoint      | "{\"language\": \"en\"}" |
       | startingPoint        | "/sites"             |
       | loadingDepth         | 0                    |
       | baseNodeTypeFilter   | ""                   |
@@ -68,7 +68,7 @@ Feature: GetTreeQuery Constraints
       | Key                  | Value                             |
       | contentRepositoryId  | "default"                         |
       | workspaceName        | "live"                            |
-      | dimensionValues      | {"language": ["en"]}              |
+      | dimensionSpacePoint      | "{\"language\": \"en\"}"              |
       | startingPoint        | "/<Neos.Neos:Sites>/non-existing" |
       | loadingDepth         | 0                                 |
       | baseNodeTypeFilter   | ""                                |
@@ -92,7 +92,7 @@ Feature: GetTreeQuery Constraints
       | Key                  | Value                       |
       | contentRepositoryId  | "default"                   |
       | workspaceName        | "live"                      |
-      | dimensionValues      | {"language": ["en"]}        |
+      | dimensionSpacePoint      | "{\"language\": \"en\"}"        |
       | startingPoint        | "/<Neos.Neos:Sites>/site-a" |
       | loadingDepth         | -1                          |
       | baseNodeTypeFilter   | ""                          |

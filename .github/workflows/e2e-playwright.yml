@@ -1,4 +1,4 @@
-name: E2E Tests Playwright
+name: E2E Tests
 on:
   workflow_dispatch:
   # Each E2E test run targets a specific Neos version.
@@ -15,7 +15,7 @@ on:
 
 jobs:
   test:
-    name: "Playwright Browser Tests"
+    name: "Browser Tests"
     runs-on: ubuntu-latest
     timeout-minutes: 30
 

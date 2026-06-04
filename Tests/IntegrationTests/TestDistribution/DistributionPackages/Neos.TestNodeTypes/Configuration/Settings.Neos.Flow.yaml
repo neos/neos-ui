@@ -1,6 +1,0 @@
-Neos:
-  Flow:
-    mvc:
-      routes:
-        'Neos.TestNodeTypes':
-          position: 'before Neos.Neos'

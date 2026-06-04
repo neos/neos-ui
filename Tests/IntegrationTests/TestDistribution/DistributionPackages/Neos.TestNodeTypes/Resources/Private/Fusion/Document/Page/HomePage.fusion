@@ -1,1 +1,0 @@
-prototype(Neos.TestNodeTypes:Document.HomePage) < prototype(Neos.TestNodeTypes:Document.Page)

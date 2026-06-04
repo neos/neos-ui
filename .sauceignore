@@ -1,2 +1,0 @@
-# The rootDir for sauce is "IntegrationTests" so we only need to exclude the distribution to ensure a fast upload to sauce
-Tests/IntegrationTests/TestDistribution/

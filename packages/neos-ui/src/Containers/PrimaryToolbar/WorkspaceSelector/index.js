@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import mergeClassNames from 'classnames';
 
+import {translate} from '@neos-project/neos-ui-i18n';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 
 const {
@@ -10,7 +11,7 @@ const {
     baseWorkspaceSelector,
     allowedTargetWorkspacesSelector
 } = selectors.CR.Workspaces;
-import SelectBox from '@neos-project/react-ui-components/src/SelectBox/';
+import {SelectBox} from '@neos-project/react-ui-components';
 import {PublishingMode} from '@neos-project/neos-ui-redux-store/src/CR/Publishing';
 import {neos} from '@neos-project/neos-ui-decorators';
 
@@ -51,10 +52,17 @@ export default class WorkspaceSelector extends PureComponent {
         const canPublishGlobally = !isSaving && !isPublishing && hasUnpublishedNodes;
         const changingWorkspaceAllowed = !canPublishGlobally;
 
+        const publicWorkspaceGroupLabel = translate('Neos.Neos.Ui:Main:publicWorkspaceGroupLabel', 'Public');
+        const internalWorkspaceGroupLabel = translate('Neos.Neos.Ui:Main:internalWorkspaceGroupLabel', 'Internal');
+
         const workspacesOptions = Object.keys(allowedWorkspaces).map(i => ({
             label: allowedWorkspaces[i]?.title,
-            value: allowedWorkspaces[i]?.name
-        })).sort((a, b) => a.label.localeCompare(b.label));
+            value: allowedWorkspaces[i]?.name,
+            group: allowedWorkspaces[i]?.name === 'live' ? publicWorkspaceGroupLabel : internalWorkspaceGroupLabel,
+            icon: allowedWorkspaces[i]?.readonly ? 'eye': null
+        })).sort((a, b) => {
+            return a.label.localeCompare(b.label);
+        });
         const onWorkspaceSelect = workspaceName => {
             changeBaseWorkspaceAction(workspaceName);
         };
@@ -73,6 +81,7 @@ export default class WorkspaceSelector extends PureComponent {
                     value={baseWorkspace}
                     onValueChange={onWorkspaceSelect}
                     disabled={!changingWorkspaceAllowed}
+                    headerIcon="layer-group"
                 />
             ) : ''}
         </div>);

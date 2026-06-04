@@ -11,7 +11,12 @@ import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {PublishingMode, PublishingScope} from '@neos-project/neos-ui-redux-store/src/CR/Publishing';
 import {neos} from '@neos-project/neos-ui-decorators';
 
-const {publishableNodesSelector, publishableNodesInDocumentSelector, baseWorkspaceSelector, isWorkspaceReadOnlySelector, personalWorkspaceNameSelector, allowedTargetWorkspacesSelector} = selectors.CR.Workspaces;
+const {
+    publishableNodesSelector,
+    publishableNodesInDocumentSelector,
+    isWorkspaceReadOnlySelector,
+    personalWorkspaceNameSelector
+} = selectors.CR.Workspaces;
 
 import AbstractButton from './AbstractButton/index';
 import style from './style.module.css';
@@ -22,9 +27,7 @@ import style from './style.module.css';
     publishableNodes: publishableNodesSelector(state),
     publishableNodesInDocument: publishableNodesInDocumentSelector(state),
     personalWorkspaceName: personalWorkspaceNameSelector(state),
-    baseWorkspace: baseWorkspaceSelector(state),
     isWorkspaceReadOnly: isWorkspaceReadOnlySelector(state),
-    allowedWorkspaces: allowedTargetWorkspacesSelector(state)
 }), {
     changeBaseWorkspaceAction: actions.CR.Workspaces.changeBaseWorkspace,
     start: actions.CR.Publishing.start
@@ -38,7 +41,6 @@ export default class PublishDropDown extends PureComponent {
         publishableNodes: PropTypes.array,
         publishableNodesInDocument: PropTypes.array,
         personalWorkspaceName: PropTypes.string.isRequired,
-        baseWorkspace: PropTypes.string.isRequired,
         neos: PropTypes.object.isRequired,
         start: PropTypes.func.isRequired,
         changeBaseWorkspaceAction: PropTypes.func.isRequired
@@ -71,16 +73,13 @@ export default class PublishDropDown extends PureComponent {
             isSaving,
             isPublishing,
             isWorkspaceReadOnly,
-            baseWorkspace,
             neos,
-            allowedWorkspaces
         } = this.props;
 
         const workspaceModuleUri = neos?.routes?.core?.modules?.workspace;
-        const baseWorkspaceTitle = allowedWorkspaces?.[baseWorkspace]?.title;
         const canPublishLocally = !isSaving && !isPublishing && publishableNodesInDocument && (publishableNodesInDocument.length > 0);
         const canPublishGlobally = !isSaving && !isPublishing && publishableNodes && (publishableNodes.length > 0);
-        const mainButton = this.getTranslatedMainButton(baseWorkspaceTitle);
+        const mainButton = this.getTranslatedMainButton();
         const dropDownBtnClassName = mergeClassNames({
             [style.dropDown__btn]: true,
             [style['dropDown__item--canPublish']]: canPublishGlobally,
@@ -185,7 +184,7 @@ export default class PublishDropDown extends PureComponent {
         );
     }
 
-    getTranslatedMainButton(baseWorkspaceTitle = '') {
+    getTranslatedMainButton() {
         const {
             publishableNodesInDocument,
             isSaving,
@@ -198,11 +197,11 @@ export default class PublishDropDown extends PureComponent {
         }
 
         if (isPublishing) {
-            return translate('Neos.Neos:Main:publishTo', 'Publish to {0}', [baseWorkspaceTitle]) + ' ...';
+            return translate('Neos.Neos.Ui:Main:publishing', 'Publishing');
         }
 
         if (canPublishLocally) {
-            return translate('Neos.Neos:Main:publishTo', 'Publish to {0}', [baseWorkspaceTitle]);
+            return translate('Neos.Neos.Ui:Main:publish', 'Publish');
         }
 
         return translate('Neos.Neos:Main:published', 'Published');

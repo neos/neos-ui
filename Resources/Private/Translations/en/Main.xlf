@@ -394,6 +394,18 @@
             <trans-unit id="emptyCollection" xml:space="preserve">
                 <source>Add content</source>
             </trans-unit>
+            <trans-unit id="publish" xml:space="preserve">
+                <source>Publish changes</source>
+            </trans-unit>
+            <trans-unit id="publishing" xml:space="preserve">
+                <source>Publishing…</source>
+            </trans-unit>
+            <trans-unit id="publicWorkspaceGroupLabel" xml:space="preserve">
+                <source>Public</source>
+            </trans-unit>
+            <trans-unit id="internalWorkspaceGroupLabel" xml:space="preserve">
+                <source>Internal</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>

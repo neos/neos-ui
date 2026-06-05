@@ -70,6 +70,9 @@ final class TreeNodeBuilder
 
     public function setHasUnloadedChildren(bool $value): self
     {
+        if ($value && !empty($this->children)) {
+            return $this;
+        }
         $this->hasUnloadedChildren = $value;
         return $this;
     }

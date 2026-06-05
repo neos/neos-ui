@@ -90,7 +90,7 @@ final class GetTreeQuery
         !isset($array['searchTerm']) or is_string($array['searchTerm'])
             or throw new \InvalidArgumentException('Search term must be a string');
 
-        !isset($array['selectedNodeIds']) or is_array($array['selectedNodeIds'])
+        !isset($array['referenceIds']) or is_array($array['referenceIds'])
             or throw new \InvalidArgumentException('Selected node ids must be an array');
 
         return new self(
@@ -103,7 +103,7 @@ final class GetTreeQuery
             allowedNodeTypes: NodeTypeNames::fromStringArray($array['allowedNodeTypes'] ?? []),
             narrowNodeTypeFilter: $array['narrowNodeTypeFilter'] ?? '',
             searchTerm: $array['searchTerm'] ?? '',
-            selectedNodeIds: $array['selectedNodeIds'] ?? null
+            selectedNodeIds: $array['referenceIds'] ?? null
         );
     }
 }

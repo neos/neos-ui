@@ -13,7 +13,7 @@ import {connect} from 'react-redux';
 
 import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 import {GlobalState} from '@neos-project/neos-ui-redux-store';
-import type {WorkspaceName} from '@neos-project/neos-ts-interfaces';
+import type {WorkspaceName, Workspace} from '@neos-project/neos-ts-interfaces';
 import {ResolutionStrategy, SyncingPhase, State as SyncingState} from '@neos-project/neos-ui-redux-store/src/CR/Syncing';
 
 import {ConfirmationDialog} from './ConfirmationDialog';
@@ -26,15 +26,15 @@ type SyncWorkspaceDialogPropsFromReduxState = {
     syncingState: SyncingState;
     personalWorkspaceName: WorkspaceName;
     baseWorkspaceName: WorkspaceName;
+    allowedTargetWorkspaces: Record<string, Workspace>;
     totalNumberOfChangesInWorkspace: number;
 };
 
 const withReduxState = connect((state: GlobalState): SyncWorkspaceDialogPropsFromReduxState => ({
     syncingState: state.cr.syncing,
-    personalWorkspaceName: selectors.CR.Workspaces
-        .personalWorkspaceNameSelector(state),
-    baseWorkspaceName: selectors.CR.Workspaces
-        .baseWorkspaceSelector(state),
+    personalWorkspaceName: selectors.CR.Workspaces.personalWorkspaceNameSelector(state),
+    baseWorkspaceName: selectors.CR.Workspaces.baseWorkspaceSelector(state),
+    allowedTargetWorkspaces: selectors.CR.Workspaces.allowedTargetWorkspacesSelector(state),
     totalNumberOfChangesInWorkspace: state.cr.workspaces.personalWorkspace
         .totalNumberOfChanges
 }), {

@@ -9,7 +9,7 @@
  */
 import {put, call, takeEvery, race, take, select} from 'redux-saga/effects';
 
-import {DimensionCombination, WorkspaceName} from '@neos-project/neos-ts-interfaces';
+import {DimensionCombination, WorkspaceName, WorkspaceStatus} from '@neos-project/neos-ts-interfaces';
 import {AnyError} from '@neos-project/neos-ui-error';
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
 import backend from '@neos-project/neos-ui-backend-connector';
@@ -66,11 +66,16 @@ export const makeSyncPersonalWorkspace = (deps: {
     function * syncPersonalWorkspace(force: boolean) {
         const {syncWorkspace} = backend.get().endpoints;
         const personalWorkspaceName: WorkspaceName = yield select(selectors.CR.Workspaces.personalWorkspaceNameSelector);
+        const personalWorkspaceStatus: WorkspaceStatus = yield select(selectors.CR.Workspaces.personalWorkspaceRebaseStatusSelector);
+        const baseWorkspaceName: WorkspaceName = yield select(selectors.CR.Workspaces.baseWorkspaceSelector);
         const dimensionSpacePoint: null|DimensionCombination = yield select(selectors.CR.ContentDimensions.active);
+
+        // TODO: Don't assume which workspace to sync, but pass somehow as argument to the saga
+        const workspaceNameToSync = personalWorkspaceStatus === WorkspaceStatus.OUTDATED ? personalWorkspaceName : baseWorkspaceName;
 
         try {
             window.addEventListener('beforeunload', handleWindowBeforeUnload);
-            const result: SyncWorkspaceResult = yield call(syncWorkspace, personalWorkspaceName, force, dimensionSpacePoint);
+            const result: SyncWorkspaceResult = yield call(syncWorkspace, workspaceNameToSync, force, dimensionSpacePoint);
             if ('success' in result) {
                 yield * refreshAfterSyncing();
                 yield put(actions.CR.Syncing.succeed());

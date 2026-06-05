@@ -1,0 +1,16 @@
+.selectBox {
+    border-radius: 0;
+}
+.notAllowed {
+    padding: 0 var(--spacing-Full);
+    cursor: not-allowed;
+    opacity: .5;
+}
+
+.workspaceSelector {
+    display: flex;
+    align-items: center;
+}
+.workspaceSelector--isDirty {
+    border-top: 2px solid var(--colors-Warn);
+}

@@ -605,6 +605,22 @@
         <source>More</source>
         <target state="needs-translation" state-qualifier="leveraged-mt">Mehr</target>
       </trans-unit>
+      <trans-unit id="publish" xml:space="preserve">
+        <source>Publish changes</source>
+        <target>Änderungen veröffentlichen</target>
+      </trans-unit>
+      <trans-unit id="publishing" xml:space="preserve">
+        <source>Publishing…</source>
+        <target>Veröffentlichen…</target>
+      </trans-unit>
+      <trans-unit id="publicWorkspaceGroupLabel" xml:space="preserve">
+        <source>Public</source>
+        <target>Öffentlich</target>
+      </trans-unit>
+      <trans-unit id="internalWorkspaceGroupLabel" xml:space="preserve">
+        <source>Internal</source>
+        <target>Intern</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

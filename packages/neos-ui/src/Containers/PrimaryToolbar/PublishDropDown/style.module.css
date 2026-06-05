@@ -7,11 +7,7 @@
 }
 
 .publishBtn {
-    min-width: 212px;
-
-    @media(max-width: 768px) {
-        min-width: auto;
-    }
+    width: auto;
 }
 .dropDown {
     position: static;
@@ -20,6 +16,9 @@
 .dropDown__contents {
     padding: 2px !important;
     background: var(--colors-Success);
+    left: auto;
+    right: 0;
+    width: max-content;
 }
 .dropDown__btn {
     position: absolute;

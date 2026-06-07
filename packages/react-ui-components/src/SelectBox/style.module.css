@@ -1,7 +1,3 @@
-.selectBox__list {
-    padding: 0;
-}
-
 .selectBox {
     composes: reset from  '../reset.module.css', dropDown from './../DropDown/style.css';
     position: relative;

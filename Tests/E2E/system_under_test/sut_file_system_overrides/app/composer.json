@@ -23,6 +23,7 @@
       "neos/test-onedimension": "@dev",
       "neos/test-twodimensions": "@dev",
       "neos/test-nodetypes": "@dev",
+      "neos/test-crinteraction": "@dev",
 
       "cweagans/composer-patches": "^1.7.3"
     },

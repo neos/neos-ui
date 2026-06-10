@@ -1,0 +1,22 @@
+.wrapper {
+    position: relative;
+}
+
+.actions {
+    position: absolute;
+    top: 25px;
+    right: var(--spacing-Full);
+    transform: translateY(-50%);
+    display: inline-flex;
+    gap: var(--spacing-Half);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition-Default), background-color var(--transition-Default);
+}
+
+.wrapper:hover .actions {
+    opacity: 1;
+    pointer-events: auto;
+    background-color: rgba(255, 255, 255, 0.08); /* light gray overlay when visible */
+    padding: var(--spacing-Quarter);
+}

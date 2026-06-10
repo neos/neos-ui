@@ -54,10 +54,15 @@ final class GetNodeSummaryQuery
         is_string($array['nodeId'])
             or throw new \InvalidArgumentException('Node id must be a string');
 
+        isset($array['dimensionSpacePoint'])
+            or throw new \InvalidArgumentException('Dimension space point must be set');
+        is_string($array['dimensionSpacePoint'])
+            or throw new \InvalidArgumentException('Dimension space point must be an string');
+
         return new self(
             contentRepositoryId: ContentRepositoryId::fromString($array['contentRepositoryId']),
             workspaceName: WorkspaceName::fromString($array['workspaceName']),
-            dimensionSpacePoint: DimensionSpacePoint::fromLegacyDimensionArray($array['dimensionValues'] ?? []),
+            dimensionSpacePoint: DimensionSpacePoint::fromJsonString($array['dimensionSpacePoint']),
             nodeId: NodeAggregateId::fromString($array['nodeId']),
         );
     }

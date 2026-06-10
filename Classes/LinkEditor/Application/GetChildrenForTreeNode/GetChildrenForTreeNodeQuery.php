@@ -52,6 +52,11 @@ final class GetChildrenForTreeNodeQuery
         is_string($array['workspaceName'])
             or throw new \InvalidArgumentException('Workspace name must be a string');
 
+        isset($array['dimensionSpacePoint'])
+            or throw new \InvalidArgumentException('Dimension space point must be set');
+        is_string($array['dimensionSpacePoint'])
+            or throw new \InvalidArgumentException('Dimension space point must be an string');
+
         isset($array['treeNodeId'])
             or throw new \InvalidArgumentException('Tree node id must be set');
         is_string($array['treeNodeId'])
@@ -66,7 +71,7 @@ final class GetChildrenForTreeNodeQuery
         return new self(
             contentRepositoryId: ContentRepositoryId::fromString($array['contentRepositoryId']),
             workspaceName: WorkspaceName::fromString($array['workspaceName']),
-            dimensionSpacePoint: DimensionSpacePoint::fromLegacyDimensionArray($array['dimensionValues'] ?? []),
+            dimensionSpacePoint: DimensionSpacePoint::fromJsonString($array['dimensionSpacePoint']),
             treeNodeId: NodeAggregateId::fromString($array['treeNodeId']),
             nodeTypeFilter: $array['nodeTypeFilter'] ?? '',
             linkableNodeTypes: NodeTypeNames::fromStringArray($array['linkableNodeTypes'] ?? []),

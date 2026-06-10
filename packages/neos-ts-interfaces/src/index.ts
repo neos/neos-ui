@@ -7,8 +7,10 @@ export type DimensionName = string;
 export type DimensionValue = string;
 export type DimensionPresetName = string;
 
+/** @deprecated use {@link DimensionSpacePoint} instead */
 export type DimensionValues = DimensionValue[];
 
+/** @deprecated use {@link DimensionSpacePoint} instead */
 export interface DimensionCombination {
     [propName: string]: DimensionValues;
 }
@@ -247,15 +249,3 @@ export interface NodeType {
         [referenceName: string]: ReferencesConfiguration | undefined;
     };
 }
-
-//
-// Change object from our Changes API
-//
-export interface Change extends Readonly<{
-    type: string;
-    subject: NodeContextPath;
-    payload: {
-        propertyName: string;
-        value: any;
-    };
-}> {}

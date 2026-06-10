@@ -1,0 +1,27 @@
+
+.searchIcon {
+    position: absolute;
+    top: 50%;
+    left: 21px;
+    transform: translate(-50%, -50%);
+}
+
+.clearIcon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: #000;
+}
+
+.textInput {
+    padding-left: 42px;
+
+    &:focus {
+        background: #3f3f3f;
+        color: #fff;
+    }
+}
+
+.searchInputContainer {
+    position: relative;
+}

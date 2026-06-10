@@ -1,5 +1,5 @@
 import {action as createAction, ActionType} from 'typesafe-actions';
-import {Change} from '@neos-project/neos-ts-interfaces';
+import {Change} from '@neos-project/neos-ui-backend-connector/src/Endpoints/Change';
 
 export enum actionTypes {
     PERSIST = '@neos/neos-ui/Transient/Changes/PERSIST'

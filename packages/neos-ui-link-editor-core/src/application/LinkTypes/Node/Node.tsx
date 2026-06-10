@@ -56,17 +56,17 @@ type NodeLinkOptions = {
 
 const NodePreview: React.FC<{ nodeId: string, anchor?: string }> = (props) => {
     const workspaceName = useSelector(selectors.CR.Workspaces.personalWorkspaceNameSelector);
-    const dimensionValues = useSelector(selectors.CR.ContentDimensions.active);
+    const legacyDimensionValues = useSelector(selectors.CR.ContentDimensions.active);
     const fetch__nodeSummary = usePromise(async () => {
         if (!workspaceName) {
             return null;
         }
-        if (!dimensionValues) {
+        if (!legacyDimensionValues) {
             return null;
         }
         const result = await getNodeSummary({
             workspaceName,
-            dimensionValues,
+            legacyDimensionValues,
             nodeId: props.nodeId
         });
 
@@ -75,7 +75,7 @@ const NodePreview: React.FC<{ nodeId: string, anchor?: string }> = (props) => {
         }
 
         return null;
-    }, [props.nodeId, workspaceName, dimensionValues]);
+    }, [props.nodeId, workspaceName, legacyDimensionValues]);
     const breadcrumbs = fetch__nodeSummary.value?.breadcrumbs
         .map(({label}) => label)
         .join(' > ');
@@ -157,7 +157,7 @@ export const Node: ILinkType<NodeLinkModel, NodeLinkOptions> = {
         const setNodeId = React.useCallback((nodeId) => model$.update((values) => validateModel({...values, isDirty: true, nodeId})), []);
 
         const workspaceName = useSelector(selectors.CR.Workspaces.personalWorkspaceNameSelector);
-        const dimensionValues = useSelector(selectors.CR.ContentDimensions.active);
+        const legacyDimensionValues = useSelector(selectors.CR.ContentDimensions.active);
         const siteNodeAggregateId = useSiteNodeAggregateId();
         const defaultLoadingDepth = getConfiguration((configuration) => configuration.nodeTree?.loadingDepth ?? 4);
         const initialSearchTerm =
@@ -178,7 +178,7 @@ export const Node: ILinkType<NodeLinkModel, NodeLinkOptions> = {
             throw createError(
                     'Could not load node tree, because workspaceName could not be determined.'
                 );
-        } else if (!dimensionValues) {
+        } else if (!legacyDimensionValues) {
             throw createError(
                     'Could not load node tree, because dimensionValues could not be determined.'
                 );
@@ -186,7 +186,7 @@ export const Node: ILinkType<NodeLinkModel, NodeLinkOptions> = {
             return <Tree
                 initialSearchTerm={initialSearchTerm}
                 workspaceName={workspaceName}
-                dimensionValues={dimensionValues}
+                legacyDimensionValues={legacyDimensionValues}
                 startingPoint={startingPoint}
                 loadingDepth={options.loadingDepth ?? defaultLoadingDepth}
                 baseNodeTypeFilter={options.baseNodeType ?? 'Neos.Neos:Document'}

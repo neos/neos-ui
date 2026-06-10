@@ -1,0 +1,70 @@
+/*
+ * This file is part of the Neos.Neos.Ui package.
+ *
+ * (c) Contributors of the Neos Project - www.neos.io
+ *
+ * This package is Open Source Software. For the full copyright and license
+ * information, please view the LICENSE file which was distributed with this
+ * source code.
+ */
+import {fetchWithErrorHandling} from '@neos-project/neos-ui-backend-connector';
+
+import {TreeNodeDTO} from '../../domain';
+import {ServerSideError} from '@neos-project/neos-ui-error';
+import {createDimensionSpacePointFromLegacyDimension} from '@neos-project/neos-ui-contentrepository/src/DimensionSpace';
+
+type GetChildrenForTreeNodeQuery = {
+    workspaceName: string;
+    legacyDimensionValues: Record<string, string[]>;
+    treeNodeId: string;
+    nodeTypeFilter: string;
+    allowedNodeTypes?: string[]
+};
+
+type GetChildrenForTreeNodeQueryResultEnvelope =
+    | {
+          success: {
+              children: TreeNodeDTO[];
+          };
+      }
+    | {
+          error: ServerSideError;
+      };
+
+export async function getChildrenForTreeNode(
+    query: GetChildrenForTreeNodeQuery
+): Promise<GetChildrenForTreeNodeQueryResultEnvelope> {
+    const searchParams = new URLSearchParams();
+
+    const dimensionSpacePoint = createDimensionSpacePointFromLegacyDimension(query.legacyDimensionValues)
+
+    searchParams.set('workspaceName', query.workspaceName);
+    searchParams.set('dimensionSpacePoint', JSON.stringify(dimensionSpacePoint))
+    searchParams.set('treeNodeId', query.treeNodeId);
+    searchParams.set('nodeTypeFilter', query.nodeTypeFilter);
+
+    for (const allowedNodeType of query.allowedNodeTypes ?? []) {
+        searchParams.append(`allowedNodeTypes[]`, allowedNodeType);
+    }
+
+    try {
+        const response = await fetchWithErrorHandling.withCsrfToken(
+            (csrfToken) => ({
+                url:
+                    '/neos/references-editor/get-children-for-tree-node?' +
+                    searchParams.toString(),
+                method: 'GET',
+                credentials: 'include',
+                headers: {
+                    'X-Flow-Csrftoken': csrfToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+        );
+
+        return fetchWithErrorHandling.parseJson(response);
+    } catch (error) {
+        fetchWithErrorHandling.generalErrorHandler(error as any);
+        throw error;
+    }
+}

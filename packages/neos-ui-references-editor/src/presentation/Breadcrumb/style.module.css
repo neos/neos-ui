@@ -1,0 +1,32 @@
+.container {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    min-width: 0; /* allow children to ellipsis */
+    color: var(--colors-ContrastBright);
+    font-size: var(--fontSize-Small);
+    line-height: 1.2;
+}
+
+.item {
+    display: inline-flex;
+    align-items: center;
+    min-width: 0;
+}
+
+.breadcrumbIcon {
+    margin-right: var(--spacing-Quarter);
+    color: var(--colors-ContrastBrighter);
+}
+
+.label {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.separator {
+    margin: 0 var(--spacing-Quarter);
+    color: var(--colors-ContrastBright);
+    opacity: 0.7;
+}

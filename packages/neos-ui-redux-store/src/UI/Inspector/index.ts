@@ -4,21 +4,25 @@ import {action as createAction, ActionType} from 'typesafe-actions';
 import {InitAction} from '../../System';
 import {Node, NodeContextPath} from '@neos-project/neos-ts-interfaces';
 
-import * as selectors from '../../UI/Inspector/selectors';
+import * as selectors from './selectors';
+import {Change, isSimilarTo} from '@neos-project/neos-ui-backend-connector/src/Endpoints/Change';
+
 export interface State extends Readonly<{
     shouldPromptToHandleUnappliedChanges: boolean;
     secondaryInspectorIsOpen: boolean;
     valuesByNodePath: {
-        [propTypes: string]: {
-            [propTypes: string]: any | undefined;
+        [nodeContextPath: string]: {
+            [propertyId: string]: any | undefined;
         } | undefined;
     };
+    transientChanges: Change[],
 }> {}
 
 export const defaultState: State = {
     shouldPromptToHandleUnappliedChanges: false,
     secondaryInspectorIsOpen: false,
-    valuesByNodePath: {}
+    valuesByNodePath: {},
+    transientChanges: [],
 };
 
 //
@@ -30,6 +34,7 @@ export enum actionTypes {
     // System actions
     //
     COMMIT = '@neos/neos-ui/UI/Inspector/COMMIT',
+    COMMIT_CHANGE = '@neos/neos-ui/UI/Inspector/COMMIT_CHANGE',
     CLEAR = '@neos/neos-ui/UI/Inspector/CLEAR',
 
     //
@@ -53,6 +58,7 @@ interface HookMap extends Readonly<{
     [propName: string]: Hook | undefined;
 }> {}
 const commit = (propertyId: string, value: any, hooks: HookMap | null = null, focusedNode: Node) => createAction(actionTypes.COMMIT, {propertyId, value, hooks, focusedNode});
+const commitChange = (change: Change) => createAction(actionTypes.COMMIT_CHANGE, {change});
 const clear = (focusedNodeContextPath: NodeContextPath) => createAction(actionTypes.CLEAR, {focusedNodeContextPath});
 
 const apply = () => createAction(actionTypes.APPLY);
@@ -69,6 +75,7 @@ const toggleSecondaryInspector = () => createAction(actionTypes.SECONDARY_TOGGLE
 //
 export const actions = {
     commit,
+    commitChange,
     clear,
     apply,
     discard,
@@ -105,14 +112,20 @@ export const reducer = (state: State = defaultState, action: InitAction | Action
             }
             break;
         }
+        case actionTypes.COMMIT_CHANGE: {
+            draft.transientChanges = [...draft.transientChanges.filter((otherChange) => !isSimilarTo(action.payload.change, otherChange)), action.payload.change];
+            break;
+        }
         case actionTypes.DISCARD: {
             draft.shouldPromptToHandleUnappliedChanges = false;
             delete draft.valuesByNodePath[action.payload.focusedNodeContextPath];
+            draft.transientChanges = draft.transientChanges.filter((change) => change.subject !== action.payload.focusedNodeContextPath);
             break;
         }
         case actionTypes.CLEAR: {
             draft.shouldPromptToHandleUnappliedChanges = false;
             delete draft.valuesByNodePath[action.payload.focusedNodeContextPath];
+            draft.transientChanges = draft.transientChanges.filter((change) => change.subject !== action.payload.focusedNodeContextPath);
             break;
         }
         case actionTypes.ESCAPE: {

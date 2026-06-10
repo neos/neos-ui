@@ -2015,6 +2015,34 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@neos-project/neos-ui-references-editor-custom-node-tree@workspace:*, @neos-project/neos-ui-references-editor-custom-node-tree@workspace:packages/neos-ui-references-editor-custom-node-tree":
+  version: 0.0.0-use.local
+  resolution: "@neos-project/neos-ui-references-editor-custom-node-tree@workspace:packages/neos-ui-references-editor-custom-node-tree"
+  dependencies:
+    "@neos-project/framework-promise-react": "workspace:*"
+    "@neos-project/react-ui-components": "workspace:*"
+    lodash.debounce: ^4.0.8
+    react: ^16.12.0
+  languageName: unknown
+  linkType: soft
+
+"@neos-project/neos-ui-references-editor@workspace:packages/neos-ui-references-editor":
+  version: 0.0.0-use.local
+  resolution: "@neos-project/neos-ui-references-editor@workspace:packages/neos-ui-references-editor"
+  dependencies:
+    "@neos-project/framework-observable": "workspace:*"
+    "@neos-project/framework-observable-react": "workspace:*"
+    "@neos-project/framework-promise-react": "workspace:*"
+    "@neos-project/neos-ui-editors": "workspace:*"
+    "@neos-project/neos-ui-link-editor-custom-node-tree": "workspace:*"
+    "@neos-project/neos-ui-references-editor-custom-node-tree": "workspace:*"
+    "@neos-project/positional-array-sorter": "workspace:*"
+    "@neos-project/react-ui-components": "workspace:*"
+    "@neos-project/utils-helpers": "workspace:*"
+    typesafe-actions: ^5.1.0
+  languageName: unknown
+  linkType: soft
+
 "@neos-project/neos-ui-registry@workspace:*, @neos-project/neos-ui-registry@workspace:packages/neos-ui-registry":
   version: 0.0.0-use.local
   resolution: "@neos-project/neos-ui-registry@workspace:packages/neos-ui-registry"

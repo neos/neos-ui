@@ -6,12 +6,14 @@ import Image from './Image/index';
 import SelectBox from './SelectBox/index';
 import Range from './Range/index';
 import Reference from './Reference/index';
-import References from './References/index';
+// import References from './References/index';
 import NodeType from './NodeType/index';
 import CodeMirror from './CodeMirror/index';
 import CKEditor from './CKEditor/index';
 import AssetEditor from './AssetEditor/index';
 import UriPathSegment from './UriPathSegment/index';
+// todo remove old and maybe relocate registration?
+import {ReferencesEditor as References} from '@neos-project/neos-ui-references-editor/src/application/ReferencesEditor';
 
 export {
     TextField,

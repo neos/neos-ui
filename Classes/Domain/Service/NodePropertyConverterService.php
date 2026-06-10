@@ -16,6 +16,7 @@ namespace Neos\Neos\Ui\Domain\Service;
 
 use Neos\ContentRepository\Core\Feature\SubtreeTagging\Dto\SubtreeTag;
 use Neos\ContentRepository\Core\NodeType\NodeType;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\CountReferencesFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindReferencesFilter;
 use Neos\ContentRepository\Core\Projection\ContentGraph\Node;
 use Neos\ContentRepositoryRegistry\ContentRepositoryRegistry;
@@ -100,14 +101,15 @@ class NodePropertyConverterService
     }
 
     /**
+     * todo remove all
      * @return list<string>|string|null
      */
-    private function getReference(Node $node, string $referenceName): array|string|null
+    private function getReferencesCount(Node $node, string $referenceName): int
     {
         $subgraph = $this->contentRepositoryRegistry->subgraphForNode($node);
-        $references = $subgraph->findReferences(
+        return $subgraph->countReferences(
             $node->aggregateId,
-            FindReferencesFilter::create(referenceName: $referenceName)
+            CountReferencesFilter::create(referenceName: $referenceName)
         );
 
         $referenceIdentifiers = [];
@@ -182,7 +184,9 @@ class NodePropertyConverterService
             $properties[$propertyName] = $this->getProperty($node, $propertyName);
         }
         foreach ($this->getNodeType($node)->getReferences() as $referenceName => $_) {
-            $properties[$referenceName] = $this->getReference($node, $referenceName);
+            $properties[$referenceName] = [
+                'referencesCount' => $this->getReferencesCount($node, $referenceName)
+            ];
         }
         return $properties;
     }

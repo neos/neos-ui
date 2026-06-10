@@ -48,9 +48,10 @@ manifest('inspectorEditors', {}, globalRegistry => {
         component: Editors.Reference
     });
 
-    editorsRegistry.set('Neos.Neos/Inspector/Editors/ReferencesEditor', {
-        component: Editors.References
-    });
+    // todo remove fully
+    // editorsRegistry.set('Neos.Neos/Inspector/Editors/ReferencesEditor', {
+    //     component: Editors.References
+    // });
 
     editorsRegistry.set('Neos.Neos/Inspector/Editors/NodeTypeEditor', {
         component: Editors.NodeType

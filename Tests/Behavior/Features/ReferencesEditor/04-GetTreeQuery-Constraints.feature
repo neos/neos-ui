@@ -1,0 +1,112 @@
+Feature: GetTreeQuery Constraints
+
+  Background:
+    Given using the following content dimensions:
+      | Identifier | Values      | Generalizations |
+      | language   | de, en, gsw | gsw->de, en     |
+    And using the following node types:
+    """yaml
+    'Neos.Neos:Sites':
+      superTypes:
+        'Neos.ContentRepository:Root': true
+
+    'Neos.Neos:Content':
+      abstract: true
+
+    'Neos.Neos:Document':
+      abstract: true
+      properties:
+        title:
+          type: string
+
+    'Neos.Neos:Site':
+      superTypes:
+        'Neos.Neos:Document': true
+    """
+    And using identifier "default", I define a content repository
+    And I am in content repository "default"
+    And the command CreateRootWorkspace is executed with payload:
+      | Key                | Value           |
+      | workspaceName      | "live"          |
+      | newContentStreamId | "cs-identifier" |
+    And I am in workspace "live" and dimension space point {"language": "en"}
+    And the command CreateRootNodeAggregateWithNode is executed with payload:
+      | Key             | Value             |
+      | nodeAggregateId | "sites"           |
+      | nodeTypeName    | "Neos.Neos:Sites" |
+
+    And the following CreateNodeAggregateWithNode commands are executed:
+      | nodeAggregateId | parentNodeAggregateId | nodeTypeName   | initialPropertyValues | originDimensionSpacePoint | nodeName |
+      | homepage        | sites                 | Neos.Neos:Site | {"title": "home"}     | {"language": "en"}        | site-a   |
+
+  Scenario: Invalid starting path
+    When I issue the following query to "http://127.0.0.1:8081/neos/references-editor/get-tree":
+      | Key                  | Value                |
+      | contentRepositoryId  | "default"            |
+      | workspaceName        | "live"               |
+      | dimensionSpacePoint      | "{\"language\": \"en\"}" |
+      | startingPoint        | "/sites"             |
+      | loadingDepth         | 0                    |
+      | baseNodeTypeFilter   | ""                   |
+      | allowedNodeTypes    | []                   |
+      | narrowNodeTypeFilter | ""                   |
+      | searchTerm           | ""                   |
+      | selectedNodeId       | null                 |
+    Then I expect the following query response:
+      """json
+      {
+          "error": {
+              "class": "Neos\\ContentRepository\\Core\\SharedModel\\Exception\\AbsoluteNodePathIsInvalid",
+              "code": 1687207234,
+              "message": "Absolute node paths must serialized beginning with the pattern \"/<My.Package:Root>\" ,\"/sites\" does not"
+          }
+      }
+      """
+
+  Scenario: Not existing starting path
+    When I issue the following query to "http://127.0.0.1:8081/neos/references-editor/get-tree":
+      | Key                  | Value                             |
+      | contentRepositoryId  | "default"                         |
+      | workspaceName        | "live"                            |
+      | dimensionSpacePoint      | "{\"language\": \"en\"}"              |
+      | startingPoint        | "/<Neos.Neos:Sites>/non-existing" |
+      | loadingDepth         | 0                                 |
+      | baseNodeTypeFilter   | ""                                |
+      | allowedNodeTypes    | []                                |
+      | narrowNodeTypeFilter | ""                                |
+      | searchTerm           | ""                                |
+      | selectedNodeId       | null                              |
+    Then I expect the following query response:
+      """json
+      {
+          "error": {
+              "class": "Neos\\Neos\\Ui\\ReferencesEditor\\Application\\GetTree\\StartingPointWasNotFound",
+              "code": 1715082893,
+              "message": "The starting point at path \"/<Neos.Neos:Sites>/non-existing\" does not exist in subgraph: {\n    \"contentRepositoryId\": \"default\",\n    \"workspaceName\": \"live\",\n    \"dimensionSpacePoint\": {\n        \"language\": \"en\"\n    }\n}"
+          }
+      }
+      """
+
+  Scenario: Negative loading depth
+    When I issue the following query to "http://127.0.0.1:8081/neos/references-editor/get-tree":
+      | Key                  | Value                       |
+      | contentRepositoryId  | "default"                   |
+      | workspaceName        | "live"                      |
+      | dimensionSpacePoint      | "{\"language\": \"en\"}"        |
+      | startingPoint        | "/<Neos.Neos:Sites>/site-a" |
+      | loadingDepth         | -1                          |
+      | baseNodeTypeFilter   | ""                          |
+      | allowedNodeTypes    | []                          |
+      | narrowNodeTypeFilter | ""                          |
+      | searchTerm           | ""                          |
+      | selectedNodeId       | null                        |
+    Then I expect the following query response:
+      """json
+      {
+          "error": {
+              "class": "InvalidArgumentException",
+              "code": 1745164594,
+              "message": "Loading depth must not be negative, got -1"
+          }
+      }
+      """

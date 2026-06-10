@@ -7,6 +7,7 @@ import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store
 import backend from '@neos-project/neos-ui-backend-connector';
 
 import {applySaveHooksForTransientValue} from '../../Changes/saveHooks';
+import {createChannel} from '@neos-project/framework-observable';
 
 const getFocusedNode = selectors.CR.Nodes.focusedSelector;
 const getTransientInspectorValues = state => {
@@ -14,6 +15,10 @@ const getTransientInspectorValues = state => {
 
     return values;
 };
+
+// todo this is a little hacky maybe use the channel as initial entry to emit redux events instead of here in reverse -> should be passed to the editor component
+export const discardChannel$ = createChannel();
+export const applyChannel$ = createChannel();
 
 export function * inspectorSaga({globalRegistry}) {
     yield take(actionTypes.System.READY);
@@ -66,6 +71,7 @@ export function * inspectorSaga({globalRegistry}) {
             // If the user discarded his/her changes, just continue
             //
             if (nextAction.type === actionTypes.UI.Inspector.DISCARD) {
+                discardChannel$.next(undefined);
                 break;
             }
 
@@ -73,6 +79,7 @@ export function * inspectorSaga({globalRegistry}) {
             // If the user wants to apply his/her changes, let's start that process
             //
             if (nextAction.type === actionTypes.UI.Inspector.APPLY) {
+                applyChannel$.next(undefined);
                 try {
                     //
                     // Persist the inspector changes
@@ -104,7 +111,7 @@ function * flushInspector(inspectorRegistry) {
         focusedNodeFusionPath = focusedDomNode && focusedDomNode.getAttribute('data-__neos-fusion-path');
     }
     const transientInspectorValues = getTransientInspectorValues(state);
-    const transientInspectorValuesForFocusedNodes = transientInspectorValues?.[focusedNode?.contextPath];
+    const transientInspectorValuesForFocusedNodes = transientInspectorValues?.[focusedNode?.contextPath] ?? [];
 
     //
     // Accumulate changes to be persisted
@@ -162,6 +169,26 @@ function * flushInspector(inspectorRegistry) {
             }
         }
     }
+
+    for (const transientChange of state?.ui?.inspector?.transientChanges ?? []) {
+        if (transientChange.type === 'Neos.Neos.Ui:Property' || transientChange.type === 'Neos.Neos.Ui:Reference') {
+            if (transientChange.contextPath === focusedNode?.subject) {
+                changes.push(
+                    {
+                        ...transientChange,
+                        payload: {
+                            ...transientChange.payload,
+                            nodeDomAddress: {
+                                contextPath: focusedNode.contextPath,
+                                fusionPath: focusedNodeFusionPath
+                            }
+                        }
+                    }
+                );
+            }
+        }
+    }
+
     yield put(actions.Changes.persistChanges(changes));
 
     //

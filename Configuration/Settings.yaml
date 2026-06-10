@@ -125,7 +125,7 @@ Neos:
       #################################
       # INTERNAL CONFIG (no API)
       #################################
-      frontendDevelopmentMode: false
+      frontendDevelopmentMode: true
       nodeTypeRoles:
         # The ignored types will never have metadata in the UI, they are invisible to the content module.
         ignored: 'unstructured'
@@ -209,6 +209,7 @@ Neos:
       changes:
         types:
           'Neos.Neos.Ui:Property': Neos\Neos\Ui\Domain\Model\Changes\Property
+          'Neos.Neos.Ui:Reference': Neos\Neos\Ui\Domain\Model\Changes\Reference
           'Neos.Neos.Ui:CreateInto': Neos\Neos\Ui\Domain\Model\Changes\Create
           'Neos.Neos.Ui:CreateBefore': Neos\Neos\Ui\Domain\Model\Changes\CreateBefore
           'Neos.Neos.Ui:CreateAfter': Neos\Neos\Ui\Domain\Model\Changes\CreateAfter
@@ -236,6 +237,11 @@ Neos:
                 pattern: ControllerObjectName
                 patternOptions:
                   controllerObjectNamePattern: 'Neos\Neos\Ui\LinkEditor\Application\.*\Controller\.*Controller'
+
+              'Neos.Neos.Ui:ReferencesEditor.ApiControllers':
+                pattern: ControllerObjectName
+                patternOptions:
+                  controllerObjectNamePattern: 'Neos\Neos\Ui\ReferencesEditor\Application\.*\Controller\.*Controller'
     mvc:
       routes:
         'Neos.Neos.Ui':
@@ -246,6 +252,7 @@ Neos:
           providerOptions:
             classNames:
               - Neos\Neos\Ui\LinkEditor\Application\*\Controller\*Controller
+              - Neos\Neos\Ui\ReferencesEditor\Application\*\Controller\*Controller
 
   Fusion:
     defaultContext:

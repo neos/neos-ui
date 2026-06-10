@@ -31,6 +31,14 @@ class RenderedNodeDomAddress implements \JsonSerializable
      */
     protected $fusionPath;
 
+    public static function fromArray(array $array): self
+    {
+        $me = new self();
+        $me->contextPath = $array['contextPath'];
+        $me->fusionPath = $array['fusionPath'];
+        return $me;
+    }
+
     /**
      * Set the context path
      *

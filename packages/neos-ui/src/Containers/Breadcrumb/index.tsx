@@ -45,20 +45,32 @@ const Breadcrumb: React.FC<{
     }, [focusNode, focusedNode]);
 
     const closestDocumentNodeInParentLineIndex = focusedNodeParentLine
-        .findIndex((node) => nodeTypesRegistry.hasRole(node.nodeType, 'document'));
+        .findIndex((node) => node && nodeTypesRegistry.hasRole(node.nodeType, 'document'));
 
     if (closestDocumentNodeInParentLineIndex !== -1) {
         focusedNodeParentLine = focusedNodeParentLine
             .slice(0, Math.min(2, closestDocumentNodeInParentLineIndex + 1));
     }
+
+    if (!focusedNode || focusedNodeParentLine.length === 0) {
+        return null;
+    }
+
     return (
         <section className={style.breadcrumb}>
             <ol>
                 {focusedNodeParentLine
                     .reverse()
-                    .map((node) => {
+                    .map((node, index) => {
+                        if (!node) {
+                            return (
+                                <li key={index}>
+                                    <Icon icon="question-circle" />
+                                </li>
+                            )
+                        }
                         const nodeType = nodeTypesRegistry.get(node.nodeType);
-                        const isActive = node.contextPath === focusedNode?.contextPath;
+                        const isActive = node.contextPath === focusedNode.contextPath;
                         const labelMaxLength = isActive ? 30 : 15;
                         const label = decodeLabel(node.label).trim();
                         return (

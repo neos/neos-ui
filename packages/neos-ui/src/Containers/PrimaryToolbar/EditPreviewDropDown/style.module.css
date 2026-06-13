@@ -69,6 +69,9 @@
     color: #FFF;
     padding: var(--spacing-Half) var(--spacing-Full);
     margin: 0;
+    display: flex;
+    gap: var(--spacing-Half);
+    align-items: center;
 }
 .dropDown__itemIcon {
     margin-right: .5em;

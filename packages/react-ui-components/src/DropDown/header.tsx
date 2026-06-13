@@ -127,6 +127,7 @@ class ShallowDropDownHeader extends PureComponent<ShallowDropDownHeaderProps> {
                 ref={this.handleReferenceHandler}
                 className={finalClassName}
                 aria-haspopup="true"
+                aria-expanded={isOpen ? 'true' : 'false'}
             >
                 {children}
                 {showDropDownToggle && <Icon icon={iconName} className={theme!.dropDown__chevron} {...iconRest} />}

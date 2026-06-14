@@ -22,12 +22,21 @@
     line-height: var(--spacing-GoldenUnit);
     background: var(--colors-ContrastNeutral);
 
-    &:focus {
+    @media (hover: hover) {
+        &:hover {
+            color: var(--colors-PrimaryBlue);
+        }
+    }
+
+    &:focus-visible {
         outline: 1px solid var(--colors-PrimaryBlue);
     }
 
-    & svg {
+    > svg {
         pointer-events: none;
+        &:first-child{
+            margin-right: var(--spacing-Half);
+        }
     }
 }
 .dropDown__btn--withChevron {

@@ -29,8 +29,7 @@
 
 .listPreviewElement__iconWrapper {
     padding: 0 !important;
-    width: 2em;
     display: inline-block;
     text-align: center;
-    margin-right: 14px;
+    margin-right: var(--spacing-Half);
 }

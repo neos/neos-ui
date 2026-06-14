@@ -18,9 +18,7 @@
         color: var(--colors-PrimaryBlue);
     }
 }
-.dropDown__btnIcon {
-    margin-right: .5em;
-}
+
 .dropDown__currentEditMode {
     @media(max-width: 1024px) {
         display: none;
@@ -70,6 +68,10 @@
 .dropDown__groupHeader {
     color: #FFF;
     padding: var(--spacing-Half) var(--spacing-Full);
+    margin: 0;
+    display: flex;
+    gap: var(--spacing-Half);
+    align-items: center;
 }
 .dropDown__itemIcon {
     margin-right: .5em;

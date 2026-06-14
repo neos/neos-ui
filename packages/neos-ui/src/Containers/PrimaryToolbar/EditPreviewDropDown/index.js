@@ -70,27 +70,31 @@ export default class EditPreviewModeDropDown extends PureComponent {
                         <span className={style.dropDown__currentEditMode}><I18n id={currentEditMode.title}/></span>
                     </DropDown.Header>
                     <DropDown.Contents className={style.dropDown__contents}>
-                        <div className={style.dropDown__groupHeader}>
-                            <Icon className={style.dropDown__btnIcon} icon={'pencil'}/> {i18nRegistry.translate('content.components.editPreviewPanel.modes', 'Editing Modes')}
-                        </div>
-                        <ul>
-                            {editingModes.map(editingMode => (
-                                <li className={style.dropDown__item} key={editingMode.id}>
-                                    <Button
-                                        disabled={editingMode.id === editPreviewMode}
-                                        onClick={this.handleEditPreviewModeClick(editingMode.id)}
-                                        style={editingMode.id === editPreviewMode ? 'brand' : null}
-                                    >
-                                        <I18n id={editingMode.title}/>
-                                    </Button>
-                                </li>
-                            ))}
-                        </ul>
+                        <li>
+                            <p className={style.dropDown__groupHeader}>
+                                <Icon className={style.dropDown__btnIcon} icon={'pencil'}/>
+                                <span>{i18nRegistry.translate('content.components.editPreviewPanel.modes', 'Editing Modes')}</span>
+                            </p>
+                            <ul>
+                                {editingModes.map(editingMode => (
+                                    <li className={style.dropDown__item} key={editingMode.id}>
+                                        <Button
+                                            disabled={editingMode.id === editPreviewMode}
+                                            onClick={this.handleEditPreviewModeClick(editingMode.id)}
+                                            style={editingMode.id === editPreviewMode ? 'brand' : null}
+                                        >
+                                            <I18n id={editingMode.title}/>
+                                        </Button>
+                                    </li>
+                                ))}
+                            </ul>
+                        </li>
                         {previewModes.length > 0 && (
-                            <>
-                                <div className={style.dropDown__groupHeader}>
-                                    <Icon className={style.dropDown__btnIcon} icon={'eye'}/> {i18nRegistry.translate('content.components.editPreviewPanel.previewCentral', 'Preview Central')}
-                                </div>
+                            <li>
+                                <p className={style.dropDown__groupHeader}>
+                                    <Icon className={style.dropDown__btnIcon} icon={'eye'}/>
+                                    <span>{i18nRegistry.translate('content.components.editPreviewPanel.previewCentral', 'Preview Central')}</span>
+                                </p>
                                 <ul>
                                     {previewModes.map(previewMode => (
                                         <li className={style.dropDown__item} key={previewMode.id}>
@@ -104,7 +108,7 @@ export default class EditPreviewModeDropDown extends PureComponent {
                                         </li>
                                     ))}
                                 </ul>
-                            </>
+                            </li>
                         )}
                     </DropDown.Contents>
                 </DropDown>

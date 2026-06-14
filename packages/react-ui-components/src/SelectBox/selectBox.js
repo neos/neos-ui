@@ -236,8 +236,8 @@ export default class SelectBox extends PureComponent {
                 <DropDown.Header id={id ? `${id}-header` : undefined} className={headerClassName} shouldKeepFocusState={false} showDropDownToggle={showDropDownToggle && Boolean(options.length)}>
                     {this.renderHeader()}
                 </DropDown.Header>
-                <DropDown.Contents id={id ? `${id}-contents` : undefined} className={dropDownContentsClassName} scrollable={true}>
-                    {!plainInputMode && <ul className={theme.selectBox__list}>
+                <DropDown.Contents id={id ? `${id}-contents` : undefined} className={dropDownContentsClassName} scrollable={true} wrapperTag='div'>
+                    {!plainInputMode && (
                         <SelectBox_ListPreview
                             {...this.props}
 
@@ -251,7 +251,7 @@ export default class SelectBox extends PureComponent {
                             noMatchesFound={noMatchesFound}
                             searchTerm={searchTerm}
                             />
-                    </ul>}
+                    )}
                 </DropDown.Contents>
             </DropDown.Stateless>
         );
@@ -274,7 +274,7 @@ export default class SelectBox extends PureComponent {
         const searchTerm = this.getSearchTerm();
         const optionValueAccessor = this.getOptionValueAccessor();
 
-        // Compare selected value less strictly: allow loose comparision and deep equality of objects
+        // Compare selected value less strictly: allow loose comparison and deep equality of objects
         const selectedOption = options.find(option => optionValueAccessor(option) == value || isEqual(optionValueAccessor(option), value)); // eslint-disable-line eqeqeq
 
         /* eslint-disable no-eq-null, eqeqeq */ // to check for null or undefined, we cannot use the isNil helper as it's not published to npm

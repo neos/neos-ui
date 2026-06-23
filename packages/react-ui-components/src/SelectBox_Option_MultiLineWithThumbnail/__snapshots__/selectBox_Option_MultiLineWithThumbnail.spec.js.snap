@@ -11,6 +11,7 @@ exports[`<SelectBox_Option_MultiLineWithThumbnail/> should render correctly. 1`]
       "label": "Bar label",
     }
   }
+  theme={Object {}}
 >
   <img
     alt="Foo label"

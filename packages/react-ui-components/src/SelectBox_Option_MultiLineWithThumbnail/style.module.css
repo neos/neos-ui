@@ -1,46 +1,56 @@
 .multiLineWithThumbnail__item {
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: auto min-content 1fr;
     column-gap: var(--spacing-Half);
     align-items: start;
     box-sizing: content-box;
-    background: var(--colors-ContrastDarkest);
+    background-color: var(--colors-ContrastDarkest);
+    padding: 5px var(--spacing-Half) 5px var(--spacing-Full);
 }
 
-.multiLineWithThumbnail__item span {
+.listPreviewElement__iconWrapper {
     grid-column: 2;
     grid-row: 1;
+    margin-right: 0;
+    width: fit-content;
+}
+
+.multiLineWithThumbnail__label {
+    grid-column: 2 / 4;
+    grid-row: 1 / auto;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-
-    &.multiLineWithThumbnail__secondaryLabel {
-        grid-row: 2;
-    }
-
-    &.multiLineWithThumbnail__tertiaryLabel {
-        grid-row: 3;
-    }
 }
 
-.multiLineWithThumbnail__item--multiLine {
-    line-height: 20px;
+.multiLineWithThumbnail__item--withIcon .multiLineWithThumbnail__label {
+    grid-column-start: 3;
 }
 
 .multiLineWithThumbnail__secondaryLabel {
+    grid-column: 2 / 4;
+    grid-row: auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     color: var(--colors-ContrastBright);
     display: block;
     font-size: 12px;
-    text-overflow: ellipsis;
-    overflow: hidden;
 }
 
 .multiLineWithThumbnail__tertiaryLabel {
+    grid-column: 2 / 4;
+    grid-row: auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     color: var(--colors-ContrastBright);
     display: block;
     font-size: 12px;
-    text-overflow: ellipsis;
-    overflow: hidden;
+}
+
+.multiLineWithThumbnail__item--multiLine {
+    line-height: 1.4em;
 }
 
 .multiLineWithThumbnail__image {
@@ -53,14 +63,17 @@
     background-size: 10px 10px;
     background-position: 0 0, 25px 25px;
     background-image: linear-gradient(45deg, #cccccc 25%, transparent 25%, transparent 75%, #cccccc 75%, #cccccc), linear-gradient(45deg, #cccccc 25%, transparent 25%, transparent 75%, #cccccc 75%, #cccccc);
-    margin-right: .75em;
     display: inline-block;
     vertical-align: middle;
     margin-left: calc(var(--spacing-Full) * -1);
     align-self: center;
 }
 
-.multiLineWithThumbnail__item:hover .multiLineWithThumbnail__secondaryLabel,
-.multiLineWithThumbnail__item:hover .multiLineWithThumbnail__tertiaryLabel {
-    color: white;
+.multiLineWithThumbnail__item:hover {
+    background-color: var(--colors-ContrastDarker);
+
+    .multiLineWithThumbnail__secondaryLabel,
+    .multiLineWithThumbnail__tertiaryLabel {
+        color: white;
+    }
 }

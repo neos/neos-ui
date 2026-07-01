@@ -16,6 +16,7 @@ namespace Neos\Neos\Ui\Controller;
 
 use Neos\ContentRepository\Core\DimensionSpace\DimensionSpacePoint;
 use Neos\ContentRepository\Core\Feature\WorkspaceRebase\Dto\RebaseErrorHandlingStrategy;
+use Neos\ContentRepository\Core\Projection\ContentGraph\Filter\FindAncestorNodesFilter;
 use Neos\ContentRepository\Core\SharedModel\Exception\WorkspaceContainsPublishableChanges;
 use Neos\ContentRepository\Core\SharedModel\Node\NodeAddress;
 use Neos\ContentRepository\Core\SharedModel\Workspace\WorkspaceName;
@@ -455,55 +456,53 @@ class BackendServiceController extends ActionController
             return;
         }
 
-        $contentRepository = $this->contentRepositoryRegistry->get($documentNodeAddress->contentRepositoryId);
-        $subgraph = $contentRepository->getContentSubgraph(
-            $userWorkspace->workspaceName,
-            $command->documentNode->dimensionSpacePoint,
-        );
-
-        $documentNodeInstance = $subgraph->findNodeById($command->documentNode->aggregateId);
-        assert($documentNodeInstance !== null);
-
         $success = new Success();
         $success->setMessage(
-            $this->getLabel('switchedBaseWorkspace', ['workspace' => $targetWorkspaceName])
+            $this->getLabel('switchedBaseWorkspace', ['workspace' => $command->targetWorkspaceName->value])
         );
         $this->feedbackCollection->add($success);
 
         $updateWorkspaceInfo = new UpdateWorkspaceInfo($command->contentRepositoryId, $userWorkspace->workspaceName);
         $this->feedbackCollection->add($updateWorkspaceInfo);
 
-        // If current document node doesn't exist in the base workspace,
-        // traverse its parents to find the one that exists
-        // todo ensure that https://github.com/neos/neos-ui/pull/3734 doesnt need to be refixed in Neos 9.0
-        $redirectNode = $documentNodeInstance;
-        while (true) {
-            $redirectNodeInBaseWorkspace = $subgraph->findNodeById($redirectNode->aggregateId);
-            if ($redirectNodeInBaseWorkspace) {
-                break;
-            }
-            $redirectNode = $subgraph->findParentNode($redirectNode->aggregateId);
-            // get parent always returns Node
-            if (!$redirectNode) {
-                throw new \Exception(
-                    sprintf(
-                        'Wasn\'t able to locate any valid node in rootline of node %s in the workspace %s.',
-                        $documentNodeInstance->aggregateId->value,
-                        $targetWorkspaceName
-                    ),
-                    1458814469
-                );
+        $contentRepository = $this->contentRepositoryRegistry->get($command->contentRepositoryId);
+
+        $subgraph = $contentRepository->getContentSubgraph(
+            $command->workspaceName,
+            $command->documentNode->dimensionSpacePoint,
+        );
+
+        $newDocumentNodeToRedirect = $subgraph->findNodeById($command->documentNode->aggregateId);
+
+        if ($newDocumentNodeToRedirect === null) {
+            assert($userWorkspace->baseWorkspaceName !== null);
+            $previousBaseWorkspace = $contentRepository->getContentSubgraph(
+                $userWorkspace->baseWorkspaceName,
+                $command->documentNode->dimensionSpacePoint,
+            );
+
+            $previousAncestorNodes = $previousBaseWorkspace->findAncestorNodes($command->documentNode->aggregateId, FindAncestorNodesFilter::create());
+
+            foreach ($previousAncestorNodes as $previousAncestorNode) {
+                $newDocumentNodeToRedirect = $subgraph->findNodeById($previousAncestorNode->aggregateId);
+                if ($newDocumentNodeToRedirect !== null) {
+                    break;
+                }
             }
         }
 
+        if ($newDocumentNodeToRedirect === null) {
+            throw new \RuntimeException(sprintf('No common ancestor found for %s in new workspace %s', $command->documentNode->aggregateId->value, $command->targetWorkspaceName->value), 1782925562);
+        }
+
         // If current document node exists in the base workspace, then reload, else redirect
-        if ($redirectNode->equals($documentNodeInstance)) {
+        if ($command->documentNode->aggregateId->equals($newDocumentNodeToRedirect->aggregateId)) {
             $reloadDocument = new ReloadDocument();
-            $reloadDocument->setNode($documentNodeInstance);
+            $reloadDocument->setNode($newDocumentNodeToRedirect);
             $this->feedbackCollection->add($reloadDocument);
         } else {
             $redirect = new Redirect();
-            $redirect->setNode($redirectNode);
+            $redirect->setNode($newDocumentNodeToRedirect);
             $this->feedbackCollection->add($redirect);
         }
 

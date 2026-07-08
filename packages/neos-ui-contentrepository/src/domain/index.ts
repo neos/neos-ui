@@ -1,0 +1,1 @@
+export {PropertyScope} from './propertyScope';

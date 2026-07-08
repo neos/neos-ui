@@ -4,6 +4,8 @@
  * The types belong to the source files directly.
  */
 
+import {PropertyScope} from '@neos-project/neos-ui-contentrepository';
+
 // FIXME, these aliases are not good practice.
 // Its still allowed to pass strings around and no type safety is gained and the IDE will not show the name of the type when checking a field but just the resolved primitive.
 // Instead we should use ValueObjects (ES6 Classes) or decide for a typescript "hack" to attach a unique Symbol to the type like: string & { readonly __id: unique symbol };
@@ -120,12 +122,6 @@ export enum SelectionModeTypes {
 export enum WorkspaceStatus {
     UP_TO_DATE = 'UP_TO_DATE',
     OUTDATED = 'OUTDATED'
-}
-
-export enum PropertyScope {
-    NODE = 'node',
-    NODE_AGGREGATE = 'nodeAggregate',
-    SPECIALIZATIONS = 'specializations'
 }
 
 export interface ValidatorConfiguration {

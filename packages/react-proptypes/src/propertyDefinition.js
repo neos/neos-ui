@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
+import {PropertyScope} from '@neos-project/neos-ui-contentrepository';
 
 export default PropTypes.shape({
     type: PropTypes.string.isRequired,
-    scope: PropTypes.oneOf(['node', 'nodeAggregate', 'specializations']),
+    scope: PropTypes.oneOf([PropertyScope.NODE, PropertyScope.NODE_AGGREGATE, PropertyScope.SPECIALIZATIONS]),
     ui: PropTypes.shape({
         label: PropTypes.string,
         help: PropTypes.shape({

@@ -1,7 +1,7 @@
 {
   "name": "@neos-project/neos-ts-interfaces",
   "version": "",
-  "description": "Neos domain-related TypeScript interfaces",
+  "description": "Legacy Neos domain-related TypeScript interfaces",
   "private": true,
   "main": "src/index.ts",
   "dependencies": {

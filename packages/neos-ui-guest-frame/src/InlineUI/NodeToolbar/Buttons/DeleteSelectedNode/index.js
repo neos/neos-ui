@@ -39,9 +39,9 @@ export default class DeleteSelectedNode extends PureComponent {
                 hoverStyle="brand"
                 style="transparent"
                 size="small"
-                title={translate('Neos.Neos:Main:delete')}
+                title={translate('Neos.Neos.Ui:Main:delete')}
             >
-                {translate('Neos.Neos:Main:delete')}
+                {translate('Neos.Neos.Ui:Main:delete')}
                 <Icon icon="trash-alt" />
             </Button>
         );

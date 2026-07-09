@@ -70,7 +70,7 @@ export default class ReferenceEditor extends PureComponent {
             value={value}
             onValueChange={this.handleValueChange}
             onHeaderClick={() => this.handleClick(options[0].uri)}
-            loadingLabel={translate('Neos.Neos:Main:loading')}
+            loadingLabel={translate('Neos.Neos.Ui:Main:loading')}
             displayLoadingIndicator={displayLoadingIndicator}
             showDropDownToggle={false}
             allowEmpty={true}

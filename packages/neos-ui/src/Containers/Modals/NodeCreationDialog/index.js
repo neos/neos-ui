@@ -210,7 +210,7 @@ export default class NodeCreationDialog extends PureComponent {
                 hoverStyle="brand"
                 onClick={this.handleBack}
             >
-                {translate('Neos.Neos:Main:back', 'Back')}
+                {translate('Neos.Neos.Ui:Main:back', 'Back')}
             </Button>
         );
     }

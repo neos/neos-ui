@@ -137,7 +137,7 @@ export default class DataSourceBasedSelectBoxEditor extends PureComponent {
 
         // Placeholder text must be unescaped in case html entities were used
         const placeholder = options && options.placeholder && i18nRegistry.translate(unescape(options.placeholder));
-        const loadingLabel = translate('Neos.Neos:Main:loading', 'Loading');
+        const loadingLabel = translate('Neos.Neos.Ui:Main:loading', 'Loading');
 
         if (options.multiple) {
             return (<MultiSelectBox

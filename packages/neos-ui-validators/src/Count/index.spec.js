@@ -69,7 +69,7 @@ test('[1, 2, 3, 4] should result in an error message for min: 1 max: 3', () => {
 
     expect(actual).not.toBe(null);
     expect(actual.props).toEqual({
-        id: 'Neos.Neos:Main:content.inspector.validators.countValidator.countBetween',
+        id: 'Neos.Neos.Ui:Main:inspector.validators.countValidator.countBetween',
         params: {
             minimum: 1,
             maximum: 3

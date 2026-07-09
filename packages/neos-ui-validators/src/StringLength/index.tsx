@@ -39,13 +39,13 @@ const StringLength = (value: any, validatorOptions: StringLengthOptions) => {
     const stringLength = castedValue.length;
     if (stringLength < minimum || stringLength > maximum) {
         if (minimum > 0 && maximum < 10000) {
-            const label = validatorOptions?.validationErrorMessage ?? 'Neos.Neos:Main:content.inspector.validators.stringLength.outOfBounds';
+            const label = validatorOptions?.validationErrorMessage ?? 'Neos.Neos.Ui:Main:inspector.validators.stringLength.outOfBounds';
             return <I18n id={label} params={{minimum, maximum}}/>;
         }
         if (minimum > 0) {
-            return translate('Neos.Neos:Main:content.inspector.validators.stringLength.smallerThanMinimum', '', {minimum});
+            return translate('Neos.Neos.Ui:Main:inspector.validators.stringLength.smallerThanMinimum', '', {minimum});
         }
-        return translate('Neos.Neos:Main:content.inspector.validators.stringLength.greaterThanMaximum', '', {maximum});
+        return translate('Neos.Neos.Ui:Main:inspector.validators.stringLength.greaterThanMaximum', '', {maximum});
     }
     return null;
 };

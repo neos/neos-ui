@@ -268,7 +268,7 @@ export default class AssetEditor extends PureComponent {
         return (
             <SelectBox
                 optionValueField="identifier"
-                loadingLabel={translate('Neos.Neos:Main:loading')}
+                loadingLabel={translate('Neos.Neos.Ui:Main:loading')}
                 displaySearchBox={this.isFeatureEnabled('mediaBrowser')}
                 ListPreviewElement={AssetOption}
                 placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}
@@ -295,7 +295,7 @@ export default class AssetEditor extends PureComponent {
             <MultiSelectBox
                 dndType={dndTypes.MULTISELECT}
                 optionValueField="identifier"
-                loadingLabel={translate('Neos.Neos:Main:loading')}
+                loadingLabel={translate('Neos.Neos.Ui:Main:loading')}
                 displaySearchBox={this.isFeatureEnabled('mediaBrowser')}
                 ListPreviewElement={AssetOption}
                 placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}

@@ -111,7 +111,7 @@ export default class InsertModeModal extends PureComponent {
                 hoverStyle="brand"
                 onClick={this.handleCancel}
                 >
-                {translate('Neos.Neos:Main:cancel', 'Cancel')}
+                {translate('Neos.Neos.Ui:Main:cancel', 'Cancel')}
             </Button>
         );
     }
@@ -126,7 +126,7 @@ export default class InsertModeModal extends PureComponent {
                 onClick={this.handleApply}
                 className={style.applyBtn}
                 >
-                {translate('Neos.Neos:Main:apply', 'Apply')}
+                {translate('Neos.Neos.Ui:Main:apply', 'Apply')}
             </Button>
         );
     }

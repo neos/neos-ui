@@ -22,7 +22,7 @@ export default class Controls extends PureComponent {
                     style="lighter"
                     onClick={disabled ? null : this.props.onChooseFromMedia}
                     className={style.button}
-                    title={translate('Neos.Neos:Main:media')}
+                    title={translate('Neos.Neos.Ui:Main:media')}
                     disabled={disabled}
                     />}
                 {isUploadEnabled && <IconButton

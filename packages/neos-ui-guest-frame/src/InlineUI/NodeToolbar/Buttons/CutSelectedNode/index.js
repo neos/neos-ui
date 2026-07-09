@@ -43,9 +43,9 @@ export default class CutSelectedNode extends PureComponent {
                 hoverStyle="brand"
                 style="transparent"
                 size="small"
-                title={translate('Neos.Neos:Main:cut')}
+                title={translate('Neos.Neos.Ui:Main:cut')}
             >
-                {translate('Neos.Neos:Main:cut')}
+                {translate('Neos.Neos.Ui:Main:cut')}
                 <Icon icon="cut" />
             </Button>
         );

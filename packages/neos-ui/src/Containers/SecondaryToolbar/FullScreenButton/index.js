@@ -26,16 +26,16 @@ export default class FullScreenButton extends PureComponent {
                 icon="expand"
                 className={style.fullScreenClose}
                 onClick={toggleFullScreen}
-                aria-label={translate('Neos.Neos:Main:deactivateFullscreen', 'Deactivate Fullscreen edit mode')}
-                title={translate('Neos.Neos:Main:deactivateFullscreen', 'Deactivate Fullscreen edit mode')}
+                aria-label={translate('Neos.Neos.Ui:Main:deactivateFullscreen', 'Deactivate Fullscreen edit mode')}
+                title={translate('Neos.Neos.Ui:Main:deactivateFullscreen', 'Deactivate Fullscreen edit mode')}
                 />
             ) : (
                 <IconButton
                     id="neos-FullScreenButton"
                     icon="expand"
                     onClick={toggleFullScreen}
-                    aria-label={translate('Neos.Neos:Main:activateFullscreen', 'Activate Fullscreen edit mode')}
-                    title={translate('Neos.Neos:Main:activateFullscreen', 'Activate Fullscreen edit mode')}
+                    aria-label={translate('Neos.Neos.Ui:Main:activateFullscreen', 'Activate Fullscreen edit mode')}
+                    title={translate('Neos.Neos.Ui:Main:activateFullscreen', 'Activate Fullscreen edit mode')}
                     />
             );
     }

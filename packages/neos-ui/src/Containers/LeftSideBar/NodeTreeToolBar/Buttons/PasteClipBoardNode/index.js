@@ -35,7 +35,7 @@ export default class PasteClipBoardNode extends PureComponent {
                 icon="paste"
                 onClick={this.handleClick}
                 hoverStyle="brand"
-                title={translate('Neos.Neos:Main:paste')}
+                title={translate('Neos.Neos.Ui:Main:paste')}
                 />
         );
     }

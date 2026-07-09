@@ -64,7 +64,7 @@ export default class UnappliedChangesDialog extends PureComponent {
             <div>
                 <Icon icon="exclamation-triangle"/>
                 <span className={style.modalTitle}>
-                    {translate('Neos.Neos:Main:content.inspector.unappliedChangesDialog.header', 'You still have changes. What do you want to do with them?')}
+                    {translate('Neos.Neos.Ui:Main:inspector.unappliedChangesDialog.header', 'You still have changes. What do you want to do with them?')}
                 </span>
             </div>
 
@@ -85,7 +85,7 @@ export default class UnappliedChangesDialog extends PureComponent {
                 className={`${style.button} ${style.discardButton}`}
                 >
                 <Icon icon="ban" className={style.buttonIcon}/>
-                {translate('Neos.Neos:Main:content.inspector.unappliedChangesDialog.button.danger')}
+                {translate('Neos.Neos.Ui:Main:inspector.unappliedChangesDialog.button.danger')}
             </Button>
         );
     }
@@ -100,7 +100,7 @@ export default class UnappliedChangesDialog extends PureComponent {
                 onClick={this.handleResume}
                 className={`${style.button} ${style.resumeButton}`}
                 >
-                {translate('Neos.Neos:Main:content.inspector.unappliedChangesDialog.button.default')}
+                {translate('Neos.Neos.Ui:Main:inspector.unappliedChangesDialog.button.default')}
             </Button>
         );
     }
@@ -119,7 +119,7 @@ export default class UnappliedChangesDialog extends PureComponent {
                 className={`${style.button} ${style.publishButton}`}
                 >
                 <Icon icon="check" className={style.buttonIcon}/>
-                {translate('Neos.Neos:Main:content.inspector.unappliedChangesDialog.button.success')}
+                {translate('Neos.Neos.Ui:Main:inspector.unappliedChangesDialog.button.success')}
             </Button>
         );
     }
@@ -140,7 +140,7 @@ export default class UnappliedChangesDialog extends PureComponent {
                 id="neos-UnappliedChangesDialog"
                 >
                 <div className={style.modalContents}>
-                    {translate('Neos.Neos:Main:content.inspector.unappliedChangesDialog.header', 'You still have changes. What do you want to do with them?')}
+                    {translate('Neos.Neos.Ui:Main:inspector.unappliedChangesDialog.header', 'You still have changes. What do you want to do with them?')}
                 </div>
             </Dialog>
         );

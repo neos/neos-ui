@@ -17,7 +17,7 @@ const NodeTypeFilter = ({onChange, onEnterKey, filterSearchTerm}) => {
         onEnterKey();
     };
 
-    const label = translate('Neos.Neos:Main:filter', 'Filter');
+    const label = translate('Neos.Neos.Ui:Main:filter', 'Filter');
 
     return (
         <div className={style.nodeTypeDialogHeader__filter}>

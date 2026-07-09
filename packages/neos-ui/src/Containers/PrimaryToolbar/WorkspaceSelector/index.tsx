@@ -99,7 +99,7 @@ const WorkspaceSelector: React.FC<WorkspaceSelectorProps> = ({
     return (<div className={classNames} title={title}>
         {anyWorkspacesAvailable ? (
             <SelectBox
-                placeholder={translate('Neos.Neos:Main:filter', 'Filter')}
+                placeholder={translate('Neos.Neos.Ui:Main:filter', 'Filter')}
                 placeholderIcon={'filter'}
                 displaySearchBox
                 searchTerm={filterTerm}

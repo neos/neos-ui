@@ -38,7 +38,7 @@ export default class RefreshPageTree extends PureComponent {
                 onClick={this.handleClick}
                 icon="sync"
                 hoverStyle="brand"
-                title={translate('Neos.Neos:Main:refresh')}
+                title={translate('Neos.Neos.Ui:Main:refresh')}
                 />
         );
     }

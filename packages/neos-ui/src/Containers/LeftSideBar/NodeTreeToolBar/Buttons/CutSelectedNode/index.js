@@ -33,7 +33,7 @@ export default class CutSelectedNode extends PureComponent {
                 onClick={this.handleClick}
                 icon="cut"
                 hoverStyle="brand"
-                title={translate('Neos.Neos:Main:cut')}
+                title={translate('Neos.Neos.Ui:Main:cut')}
                 />
         );
     }

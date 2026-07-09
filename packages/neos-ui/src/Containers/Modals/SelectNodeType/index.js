@@ -185,7 +185,7 @@ export default class SelectNodeType extends PureComponent {
                 hoverStyle="brand"
                 onClick={this.handleCancel}
                 >
-                {translate('Neos.Neos:Main:cancel', 'Cancel')}
+                {translate('Neos.Neos.Ui:Main:cancel', 'Cancel')}
             </Button>
         );
     }

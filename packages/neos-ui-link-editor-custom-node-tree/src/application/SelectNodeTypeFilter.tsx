@@ -66,7 +66,7 @@ export const SelectNodeTypeFilter: React.FC<Props> = (props) => {
     return (
         <SelectBox
             disabled={fetch__options.error}
-            placeholder={translate('Neos.Neos:Main:filter')}
+            placeholder={translate('Neos.Neos.Ui:Main:filter')}
             placeholderIcon={'filter'}
             onValueChange={props.onChange}
             allowEmpty={true}

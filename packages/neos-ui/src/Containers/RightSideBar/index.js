@@ -49,7 +49,7 @@ export default class RightSideBar extends PureComponent {
                 className={style.rightSideBar__toggleBtn}
                 hoverStyle="clean"
                 onClick={this.handleToggle}
-                title={translate('Neos.Neos:Main:toggleInspector')}
+                title={translate('Neos.Neos.Ui:Main:toggleInspector')}
                 />
         );
 

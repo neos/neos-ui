@@ -11,7 +11,7 @@ const EmailAddress = (value: any, validatorOptions: EmailAddressOptions) => {
     if (isNil(value) || value === '') {
         return null;
     }
-    const label = validatorOptions?.validationErrorMessage ?? 'Neos.Neos:Main:content.inspector.validators.emailAddressValidator.invalidEmail';
+    const label = validatorOptions?.validationErrorMessage ?? 'Neos.Neos.Ui:Main:inspector.validators.emailAddressValidator.invalidEmail';
     return isEmail.validate(value) ? null : <I18n id={label}/>;
 };
 

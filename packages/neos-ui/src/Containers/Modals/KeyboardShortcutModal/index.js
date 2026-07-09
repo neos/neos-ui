@@ -41,7 +41,7 @@ class KeyboardShortcutModal extends PureComponent {
                 hoverStyle="brand"
                 onClick={() => this.props.close()}
                 >
-                {translate('Neos.Neos:Main:close', 'Close')}
+                {translate('Neos.Neos.Ui:Main:close', 'Close')}
             </Button>
         );
     }

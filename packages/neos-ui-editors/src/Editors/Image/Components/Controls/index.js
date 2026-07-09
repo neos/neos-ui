@@ -48,7 +48,7 @@ export default class Controls extends PureComponent {
                     style="lighter"
                     onClick={handleChooseFromMedia()}
                     className={style.button}
-                    title={translate('Neos.Neos:Main:media')}
+                    title={translate('Neos.Neos.Ui:Main:media')}
                     disabled={disabled}
                     />
                 }
@@ -70,7 +70,7 @@ export default class Controls extends PureComponent {
                     onClick={handleRemove()}
                     disabled={!onRemove || disabled}
                     className={style.button}
-                    title={translate('Neos.Neos:Main:remove')}
+                    title={translate('Neos.Neos.Ui:Main:remove')}
                     />
             </span>
         );
@@ -89,7 +89,7 @@ export default class Controls extends PureComponent {
                     style="lighter"
                     className={style.cropButton}
                     onClick={handleCrop()}
-                    title={translate('Neos.Neos:Main:crop')}
+                    title={translate('Neos.Neos.Ui:Main:crop')}
                     disabled={disabled}
                     />
             );

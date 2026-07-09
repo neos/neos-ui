@@ -33,10 +33,10 @@ const NumberRange = (value: any, validatorOptions: NumberRangeOptions) => {
     }
 
     if (value.length > 0 && !Number.isSafeInteger(number)) {
-        return translate('Neos.Neos:Main:content.inspector.validators.numberRangeValidator.validNumberExpected');
+        return translate('Neos.Neos.Ui:Main:inspector.validators.numberRangeValidator.validNumberExpected');
     }
     if (number < minimum || number > maximum) {
-        const label = validatorOptions?.validationErrorMessage ?? 'Neos.Neos:Main:content.inspector.validators.numberRangeValidator.numberShouldBeInRange';
+        const label = validatorOptions?.validationErrorMessage ?? 'Neos.Neos.Ui:Main:inspector.validators.numberRangeValidator.numberShouldBeInRange';
         return <I18n id={label} params={{minimum, maximum}}/>;
     }
     return null;

@@ -61,7 +61,7 @@ export default class PasteClipBoardNode extends PureComponent {
                 id="neos-InlineToolbar-PaseClipBoardNode"
                 className={className}
                 onClick={this.handlePasteButtonClick}
-                title={translate('Neos.Neos:Main:paste')}
+                title={translate('Neos.Neos.Ui:Main:paste')}
                 size="small"
                 style="brand"
             >

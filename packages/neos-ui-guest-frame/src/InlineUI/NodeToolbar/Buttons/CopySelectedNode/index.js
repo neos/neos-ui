@@ -38,9 +38,9 @@ export default class CopySelectedNode extends PureComponent {
                 hoverStyle="brand"
                 style="transparent"
                 size="small"
-                title={translate('Neos.Neos:Main:copy')}
+                title={translate('Neos.Neos.Ui:Main:copy')}
             >
-                {translate('Neos.Neos:Main:copy')}
+                {translate('Neos.Neos.Ui:Main:copy')}
                 <Icon icon="far copy" />
             </Button>
         );

@@ -80,7 +80,7 @@ class NodeTreeSearchBar extends PureComponent {
     render() {
         const {isSearchBarVisible} = this.props;
         const {searchValue, searchFocused, filterNodeType} = this.state;
-        const searchLabel = translate('Neos.Neos:Main:search', 'Search');
+        const searchLabel = translate('Neos.Neos.Ui:Main:search', 'Search');
 
         const searchToggleClassName = mergeClassNames({
             [style.searchToggleButton]: true,

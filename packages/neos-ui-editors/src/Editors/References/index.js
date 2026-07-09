@@ -60,7 +60,7 @@ export default class ReferencesEditor extends PureComponent {
             className={className}
             dndType={dndTypes.MULTISELECT}
             optionValueField="identifier"
-            loadingLabel={translate('Neos.Neos:Main:loading')}
+            loadingLabel={translate('Neos.Neos.Ui:Main:loading')}
             displaySearchBox={true}
             ListPreviewElement={NodeOption}
             createNewLabel={translate('Neos.Neos.Ui:Main:createNew')}

@@ -10,7 +10,7 @@
 import React from 'react';
 
 import {translate} from '@neos-project/neos-ui-i18n';
-import {WorkspaceName} from '@neos-project/neos-ts-interfaces';
+import {WorkspaceName} from '@neos-project/neos-ui-contentrepository-model';
 import {Button, Dialog, Icon, SelectBox, SelectBox_Option_MultiLineWithThumbnail} from '@neos-project/react-ui-components';
 import {Conflict, ResolutionStrategy, SyncingPhase} from '@neos-project/neos-ui-redux-store/src/CR/Syncing';
 

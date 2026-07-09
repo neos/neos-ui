@@ -13,7 +13,7 @@ import {connect} from 'react-redux';
 
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {GlobalState} from '@neos-project/neos-ui-redux-store';
-import {WorkspaceStatus} from '@neos-project/neos-ts-interfaces';
+import {WorkspaceStatus} from '@neos-project/neos-ui-contentrepository-model';
 import {translate} from '@neos-project/neos-ui-i18n';
 import {Button} from '@neos-project/react-ui-components';
 

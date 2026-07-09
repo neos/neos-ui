@@ -2,7 +2,7 @@ import produce from 'immer';
 import {action as createAction, ActionType} from 'typesafe-actions';
 
 import {InitAction} from '../../System';
-import {NodeContextPath} from '@neos-project/neos-ts-interfaces';
+import {NodeContextPath} from '@neos-project/neos-ui-contentrepository-model';
 
 export interface State extends Readonly<{
     isSaving: boolean

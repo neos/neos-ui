@@ -5,7 +5,8 @@ import memoize from 'lodash.memoize';
 import {connect} from 'react-redux';
 
 import {translate} from '@neos-project/neos-ui-i18n';
-import {FusionPath, InsertPosition, Node, NodeContextPath} from '@neos-project/neos-ts-interfaces';
+import {FusionPath, InsertPosition} from '@neos-project/neos-ts-interfaces';
+import {Node, NodeContextPath} from '@neos-project/neos-ui-contentrepository-model';
 import {
     closestContextPathInGuestFrame,
     closestNodeInGuestFrame,

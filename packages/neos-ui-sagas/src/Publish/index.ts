@@ -10,7 +10,7 @@
 import {put, call, select, takeEvery, take, race, all} from 'redux-saga/effects';
 
 import {AnyError, showFlashMessage} from '@neos-project/neos-ui-error';
-import {DimensionCombination, NodeContextPath, WorkspaceName} from '@neos-project/neos-ts-interfaces';
+import {DimensionCombination, NodeContextPath, WorkspaceName} from '@neos-project/neos-ui-contentrepository-model';
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
 import {GlobalState} from '@neos-project/neos-ui-redux-store';
 import {FeedbackEnvelope} from '@neos-project/neos-ui-redux-store/src/ServerFeedback';

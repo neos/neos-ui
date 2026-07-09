@@ -1,7 +1,5 @@
 import {action as createAction, ActionType} from 'typesafe-actions';
-import {NodeContextPath, Workspace, WorkspaceStatus} from '@neos-project/neos-ts-interfaces';
-
-import {WorkspaceName} from '@neos-project/neos-ts-interfaces';
+import {NodeContextPath, Workspace, WorkspaceStatus, WorkspaceName} from '@neos-project/neos-ui-contentrepository-model';
 
 import {actionTypes as system, InitAction} from '../../System';
 

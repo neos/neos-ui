@@ -1,7 +1,7 @@
 import {createSelector, defaultMemoize} from 'reselect';
 import {documentNodeContextPathSelector} from '../Nodes/selectors';
 import {GlobalState} from '../../..';
-import {NodeContextPath} from '@neos-project/neos-ts-interfaces';
+import {NodeContextPath} from '@neos-project/neos-ui-contentrepository-model';
 
 export const personalWorkspaceNameSelector = (state: GlobalState) => state?.cr?.workspaces?.personalWorkspace?.name;
 

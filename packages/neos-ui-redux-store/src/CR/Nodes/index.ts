@@ -7,7 +7,8 @@ import {actionTypes as editPreviewMode, Action as EditPreviewModeAction} from '.
 import * as selectors from './selectors';
 import {calculateNewFocusedNodes, getNodeOrThrow} from './helpers';
 
-import {FusionPath, NodeContextPath, InsertPosition, NodeMap, ClipboardMode, SelectionModeTypes, NodeTypeName, Node} from '@neos-project/neos-ts-interfaces';
+import {FusionPath, InsertPosition, ClipboardMode, SelectionModeTypes} from '@neos-project/neos-ts-interfaces';
+import {NodeContextPath, NodeMap, NodeTypeName, Node} from '@neos-project/neos-ui-contentrepository-model';
 
 interface InlineValidationErrors {
     [itemProp: string]: any;

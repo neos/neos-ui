@@ -3,7 +3,8 @@ import {isNil} from '@neos-project/utils-helpers';
 import {urlWithParams, encodeAsQueryString} from '@neos-project/utils-helpers/src/urlWithParams';
 
 import fetchWithErrorHandling from '../FetchWithErrorHandling/index';
-import {Change, NodeContextPath, WorkspaceName, DimensionCombination, DimensionPresetCombination, DimensionName} from '@neos-project/neos-ts-interfaces';
+import {Change} from '@neos-project/neos-ts-interfaces';
+import {NodeContextPath, WorkspaceName, DimensionCombination, DimensionPresetCombination, DimensionName} from '@neos-project/neos-ui-contentrepository-model';
 
 export interface Routes {
     ui: {

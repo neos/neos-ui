@@ -1,4 +1,4 @@
-import {NodeTypeName, NodeContextPath} from '@neos-project/neos-ts-interfaces';
+import {NodeTypeName, NodeContextPath} from '@neos-project/neos-ui-contentrepository-model';
 
 export default () => (baseNodeType: NodeTypeName, loadingDepth: number | undefined, toggledNodes: NodeContextPath[], clipboardNodesContextPaths: NodeContextPath[]) => ({
     type: 'neosUiDefaultNodes',

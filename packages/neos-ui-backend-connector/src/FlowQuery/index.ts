@@ -1,7 +1,7 @@
 import * as operations from './Operations/index';
 
 import fetchWithErrorHandling from '../FetchWithErrorHandling/index';
-import {Node, NodeContextPath, ContextProperties} from '@neos-project/neos-ts-interfaces';
+import {Node, NodeContextPath, ContextProperties} from '@neos-project/neos-ui-contentrepository-model';
 import {Routes} from '../Endpoints';
 
 const isOperation = (operation: any): operation is OperationDescriptor => Boolean(operation && operation.type !== undefined && operation.payload !== undefined);

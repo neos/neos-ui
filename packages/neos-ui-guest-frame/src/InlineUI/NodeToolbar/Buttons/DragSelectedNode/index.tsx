@@ -6,7 +6,7 @@ import IconButton from '@neos-project/react-ui-components/src/IconButton/';
 import {selectors, useSelector} from '@neos-project/neos-ui-redux-store';
 import {translate} from '@neos-project/neos-ui-i18n'
 import {neos} from '@neos-project/neos-ui-decorators';
-import {NodeTypeName} from '@neos-project/neos-ts-interfaces';
+import {NodeTypeName} from '@neos-project/neos-ui-contentrepository-model';
 import {NodeTypesRegistry} from '@neos-project/neos-ui-contentrepository';
 
 import {startDraggingNode} from '../../../DragAndDropUi';

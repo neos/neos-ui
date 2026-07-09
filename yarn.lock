@@ -1709,6 +1709,7 @@ __metadata:
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
     "@neos-project/neos-ts-interfaces": "workspace:*"
+    "@neos-project/neos-ui-contentrepository-model": "workspace:*"
     "@neos-project/utils-helpers": "workspace:*"
     typescript: "npm:^4.6.4"
   languageName: unknown
@@ -1908,6 +1909,7 @@ __metadata:
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
     "@neos-project/neos-ts-interfaces": "workspace:*"
+    "@neos-project/neos-ui-contentrepository-model": "workspace:*"
     "@neos-project/neos-ui-decorators": "workspace:*"
     "@neos-project/neos-ui-extensibility": "workspace:*"
     "@neos-project/neos-ui-guest-frame": "workspace:*"

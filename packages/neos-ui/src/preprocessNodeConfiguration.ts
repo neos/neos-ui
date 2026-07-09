@@ -1,5 +1,5 @@
 import produce from 'immer';
-import {Node, NodeChild} from '@neos-project/neos-ts-interfaces';
+import {Node, NodeChild} from '@neos-project/neos-ui-contentrepository-model';
 
 // FIXME: We do not have better typings for this yet
 type NodeConfiguration = Record<string, any>;

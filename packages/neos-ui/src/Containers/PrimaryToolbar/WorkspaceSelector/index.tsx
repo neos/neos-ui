@@ -7,7 +7,7 @@ import {actions, GlobalState, selectors} from '@neos-project/neos-ui-redux-store
 import {searchOptions} from '@neos-project/neos-ui-editors/src/Editors/SelectBox/selectBoxHelpers.js';
 import {SelectBox} from '@neos-project/react-ui-components';
 import {PublishingMode} from '@neos-project/neos-ui-redux-store/src/CR/Publishing';
-import {Node, Workspace, WorkspaceName} from '@neos-project/neos-ts-interfaces';
+import {Node, Workspace, WorkspaceName} from '@neos-project/neos-ui-contentrepository-model';
 
 const {
     publishableNodesSelector,

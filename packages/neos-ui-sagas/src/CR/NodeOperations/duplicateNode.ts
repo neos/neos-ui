@@ -2,7 +2,8 @@ import {put, select, takeEvery} from 'redux-saga/effects';
 import {ActionType} from 'typesafe-actions';
 
 import {actions, actionTypes, GlobalState, selectors} from '@neos-project/neos-ui-redux-store';
-import {ClipboardMode, InsertPosition, NodeType, Node} from '@neos-project/neos-ts-interfaces';
+import {ClipboardMode, InsertPosition} from '@neos-project/neos-ts-interfaces';
+import {NodeType, Node} from '@neos-project/neos-ui-contentrepository-model';
 import {GlobalRegistry} from '@neos-project/neos-ui-registry';
 
 // @ts-ignore

@@ -2,7 +2,7 @@ import produce from 'immer';
 import {action as createAction, ActionType} from 'typesafe-actions';
 
 import {InitAction} from '../../System';
-import {NodeContextPath} from '@neos-project/neos-ts-interfaces';
+import {NodeContextPath} from '@neos-project/neos-ui-contentrepository-model';
 
 // For some reason this doesn't work:
 // import {actionTypes as NodeActionTypes} from '@neos-project/neos-ui-redux-store/src/CR/Nodes/index'

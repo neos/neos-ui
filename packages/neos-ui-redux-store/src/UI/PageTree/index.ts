@@ -4,7 +4,8 @@ import {action as createAction, ActionType} from 'typesafe-actions';
 import {actionTypes as system, InitAction} from '../../System';
 import {GlobalState} from '../..';
 import {actionTypes as nodes, Action as NodesAction} from '../../CR/Nodes';
-import {NodeContextPath, SelectionModeTypes} from '@neos-project/neos-ts-interfaces';
+import {SelectionModeTypes} from '@neos-project/neos-ts-interfaces';
+import {NodeContextPath} from '@neos-project/neos-ui-contentrepository-model';
 
 import * as selectors from './selectors';
 import {calculateNewFocusedNodes} from '../../CR/Nodes/helpers';

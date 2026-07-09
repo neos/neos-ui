@@ -13,7 +13,7 @@ import {connect} from 'react-redux';
 
 import {selectors, actions} from '@neos-project/neos-ui-redux-store';
 import {GlobalState} from '@neos-project/neos-ui-redux-store';
-import type {WorkspaceName} from '@neos-project/neos-ts-interfaces';
+import type {WorkspaceName} from '@neos-project/neos-ui-contentrepository-model';
 import {ResolutionStrategy, SyncingPhase, State as SyncingState} from '@neos-project/neos-ui-redux-store/src/CR/Syncing';
 
 import {ConfirmationDialog} from './ConfirmationDialog';

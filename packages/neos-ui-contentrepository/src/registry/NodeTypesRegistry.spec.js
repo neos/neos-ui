@@ -127,15 +127,15 @@ test(`"getGroupedNodeTypeList" should return a list of grouped node types.`, () 
 
     nodeTypesRegistry.setGroups({
         general: {
-            label: 'Neos.Neos:Main:nodeTypes.groups.general',
+            label: 'Vendor.Site:Main:nodeTypes.groups.general',
             position: 'start'
         },
         structure: {
-            label: 'Neos.Neos:Main:nodeTypes.groups.structure',
+            label: 'Vendor.Site:Main:nodeTypes.groups.structure',
             position: 100
         },
         plugins: {
-            label: 'Neos.Neos:Main:nodeTypes.groups.plugins',
+            label: 'Vendor.Site:Main:nodeTypes.groups.plugins',
             position: 200
         }
     });
@@ -143,7 +143,7 @@ test(`"getGroupedNodeTypeList" should return a list of grouped node types.`, () 
     expect(nodeTypesRegistry.getGroupedNodeTypeList()).toEqual([
         {
             name: 'general',
-            label: 'Neos.Neos:Main:nodeTypes.groups.general',
+            label: 'Vendor.Site:Main:nodeTypes.groups.general',
             position: 'start',
             nodeTypes: [
                 {
@@ -158,7 +158,7 @@ test(`"getGroupedNodeTypeList" should return a list of grouped node types.`, () 
         },
         {
             name: 'structure',
-            label: 'Neos.Neos:Main:nodeTypes.groups.structure',
+            label: 'Vendor.Site:Main:nodeTypes.groups.structure',
             position: 100,
             nodeTypes: [
                 {
@@ -212,15 +212,15 @@ test(`"getGroupedNodeTypeList" should take the given nodeType filter into accoun
 
     nodeTypesRegistry.setGroups({
         general: {
-            label: 'Neos.Neos:Main:nodeTypes.groups.general',
+            label: 'Vendor.Site:Main:nodeTypes.groups.general',
             position: 'start'
         },
         plugins: {
-            label: 'Neos.Neos:Main:nodeTypes.groups.plugins',
+            label: 'Vendor.Site:Main:nodeTypes.groups.plugins',
             position: 200
         },
         structure: {
-            label: 'Neos.Neos:Main:nodeTypes.groups.structure',
+            label: 'Vendor.Site:Main:nodeTypes.groups.structure',
             position: 100
         }
     });
@@ -229,7 +229,7 @@ test(`"getGroupedNodeTypeList" should take the given nodeType filter into accoun
     ).toEqual([
         {
             name: 'general',
-            label: 'Neos.Neos:Main:nodeTypes.groups.general',
+            label: 'Vendor.Site:Main:nodeTypes.groups.general',
             position: 'start',
             nodeTypes: [
                 {
@@ -244,7 +244,7 @@ test(`"getGroupedNodeTypeList" should take the given nodeType filter into accoun
         },
         {
             name: 'structure',
-            label: 'Neos.Neos:Main:nodeTypes.groups.structure',
+            label: 'Vendor.Site:Main:nodeTypes.groups.structure',
             position: 100,
             nodeTypes: [
                 {
@@ -262,7 +262,7 @@ test(`"getGroupedNodeTypeList" should take the given nodeType filter into accoun
     expect(nodeTypesRegistry.getGroupedNodeTypeList(['Neos.Neos.NodeTypes:Page'])).toEqual([
         {
             name: 'general',
-            label: 'Neos.Neos:Main:nodeTypes.groups.general',
+            label: 'Vendor.Site:Main:nodeTypes.groups.general',
             position: 'start',
             nodeTypes: [
                 {

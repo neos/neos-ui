@@ -49,7 +49,6 @@ export const processSelectBoxOptions = (i18nRegistry: I18nRegistry, selectBoxOpt
         if (!selectBoxOption || !selectBoxOption.label) {
             continue;
         }
-
         const processedSelectBoxOption: SelectBoxOption = {
             value: key,
             ...selectBoxOption, // a value in here overrules value based on the key above.

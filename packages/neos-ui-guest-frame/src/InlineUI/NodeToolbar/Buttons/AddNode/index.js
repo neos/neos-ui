@@ -63,7 +63,7 @@ export default class AddNode extends PureComponent {
                 className={className}
                 disabled={!isAllowedToAddChildOrSiblingNodes}
                 onClick={this.handleCommenceNodeCreation}
-                title={translate('Neos.Neos:Main:createNew')}
+                title={translate('Neos.Neos.Ui:Main:createNew')}
                 size="small"
                 style="brand"
             >

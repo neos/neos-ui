@@ -68,8 +68,8 @@ export default class DimensionSelector extends PureComponent {
                 displaySearchBox={false} // TODO reenable `sortedPresetOptions.length >= 10` but see https://github.com/neos/neos-ui/issues/3495
                 searchOptions={searchOptions(this.state.searchTerm, sortedPresetOptions)}
                 onSearchTermChange={this.handleSearchTermChange}
-                noMatchesFoundLabel={translate('Neos.Neos:Main:noMatchesFound')}
-                searchBoxLeftToTypeLabel={translate('Neos.Neos:Main:searchBoxLeftToType')}
+                noMatchesFoundLabel={translate('Neos.Neos.Ui:Main:noMatchesFound')}
+                searchBoxLeftToTypeLabel={translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
                 threshold={0}
                 ListPreviewElement={DimensionSelectorOption}
                 className={style.dimensionSwitcherDropDown}

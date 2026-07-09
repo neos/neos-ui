@@ -76,8 +76,8 @@ export const SelectNodeTypeFilter: React.FC<Props> = (props) => {
             searchTerm={filterTerm}
             onSearchTermChange={setFilterTerm}
             threshold={0}
-            noMatchesFoundLabel={translate('Neos.Neos:Main:noMatchesFound')}
-            searchBoxLeftToTypeLabel={translate('Neos.Neos:Main:searchBoxLeftToType')}
+            noMatchesFoundLabel={translate('Neos.Neos.Ui:Main:noMatchesFound')}
+            searchBoxLeftToTypeLabel={translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
         />
     );
 };

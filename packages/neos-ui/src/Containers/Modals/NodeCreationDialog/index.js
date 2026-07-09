@@ -220,7 +220,7 @@ export default class NodeCreationDialog extends PureComponent {
 
         return (
             <span>
-                {translate('Neos.Neos:Main:createNew', 'Create new')}&nbsp;
+                {translate('Neos.Neos.Ui:Main:createNew', 'Create new')}&nbsp;
                 <I18n id={label} fallback={label}/>
             </span>
         );
@@ -238,7 +238,7 @@ export default class NodeCreationDialog extends PureComponent {
                 disabled={validationErrors && isDirty}
             >
                 <Icon icon="plus-square" className={style.buttonIcon}/>
-                {translate('Neos.Neos:Main:createNew', 'Create')}
+                {translate('Neos.Neos.Ui:Main:createNew', 'Create')}
             </Button>
         );
     }

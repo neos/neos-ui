@@ -88,9 +88,9 @@ export default class InsertModeModal extends PureComponent {
 
         let label = '';
         if (operationType === actionTypes.CR.Nodes.COPY) {
-            label = translate('Neos.Neos:Main:copy__from__to--title', '', parameters);
+            label = translate('Neos.Neos.Ui:Main:copy__from__to--title', '', parameters);
         } else if (operationType === actionTypes.CR.Nodes.CUT || operationType === actionTypes.CR.Nodes.MOVE) {
-            label = translate('Neos.Neos:Main:move__from__to--title', '', parameters);
+            label = translate('Neos.Neos.Ui:Main:move__from__to--title', '', parameters);
         }
         return (
             <div>
@@ -154,7 +154,7 @@ export default class InsertModeModal extends PureComponent {
                 >
                 <div className={style.modalContents}>
                     <p>
-                        {translate('Neos.Neos:Main:copy__from__to--description', '', {source: this.renderNodeLabel(subjectContextPaths), target: this.renderNodeLabel([referenceContextPath])})}
+                        {translate('Neos.Neos.Ui:Main:copy__from__to--description', '', {source: this.renderNodeLabel(subjectContextPaths), target: this.renderNodeLabel([referenceContextPath])})}
                     </p>
                     <InsertModeSelector
                         mode={this.state.mode}

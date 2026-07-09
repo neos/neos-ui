@@ -63,11 +63,11 @@ export default class ReferencesEditor extends PureComponent {
             loadingLabel={translate('Neos.Neos:Main:loading')}
             displaySearchBox={true}
             ListPreviewElement={NodeOption}
-            createNewLabel={translate('Neos.Neos:Main:createNew')}
+            createNewLabel={translate('Neos.Neos.Ui:Main:createNew')}
             placeholder={i18nRegistry.translate(placeholder)}
             threshold={threshold}
-            noMatchesFoundLabel={translate('Neos.Neos:Main:noMatchesFound')}
-            searchBoxLeftToTypeLabel={translate('Neos.Neos:Main:searchBoxLeftToType')}
+            noMatchesFoundLabel={translate('Neos.Neos.Ui:Main:noMatchesFound')}
+            searchBoxLeftToTypeLabel={translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
             options={sanitizeOptions(options)}
             values={value}
             onValuesChange={this.handleValueChange}

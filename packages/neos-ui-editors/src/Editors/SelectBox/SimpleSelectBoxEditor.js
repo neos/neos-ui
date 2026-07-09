@@ -70,8 +70,8 @@ export default class SimpleSelectBoxEditor extends PureComponent {
                 displaySearchBox={shouldDisplaySearchBox(options, processedSelectBoxOptions)}
                 searchOptions={searchOptions(this.state.searchTerm, processedSelectBoxOptions)}
                 onSearchTermChange={this.handleSearchTermChange}
-                noMatchesFoundLabel={translate('Neos.Neos:Main:noMatchesFound')}
-                searchBoxLeftToTypeLabel={translate('Neos.Neos:Main:searchBoxLeftToType')}
+                noMatchesFoundLabel={translate('Neos.Neos.Ui:Main:noMatchesFound')}
+                searchBoxLeftToTypeLabel={translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
                 threshold={options.threshold}
                 disabled={options.disabled}
             />);
@@ -87,8 +87,8 @@ export default class SimpleSelectBoxEditor extends PureComponent {
             allowEmpty={allowEmpty}
             displaySearchBox={shouldDisplaySearchBox(options, processedSelectBoxOptions)}
             onSearchTermChange={this.handleSearchTermChange}
-            noMatchesFoundLabel={translate('Neos.Neos:Main:noMatchesFound')}
-            searchBoxLeftToTypeLabel={translate('Neos.Neos:Main:searchBoxLeftToType')}
+            noMatchesFoundLabel={translate('Neos.Neos.Ui:Main:noMatchesFound')}
+            searchBoxLeftToTypeLabel={translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
             threshold={options.threshold}
             disabled={options.disabled}
         />);

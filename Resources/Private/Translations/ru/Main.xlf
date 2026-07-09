@@ -292,6 +292,302 @@
           <target xml:lang="ru" state="needs-translation">Discarded {0} changes.</target>
         </trans-unit>
       </group>
-    </body>
+    <trans-unit id="reviewChanges" xml:space="preserve" approved="yes">
+        <source>Review changes</source>
+        <target state="final">Обзор изменений</target>
+      </trans-unit>
+      <trans-unit id="apply" xml:space="preserve" approved="yes">
+        <source>Apply</source>
+        <target state="final">Применить</target>
+      </trans-unit>
+      <trans-unit id="cancel" xml:space="preserve" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Отмена</target>
+      </trans-unit>
+      <trans-unit id="back" xml:space="preserve" approved="yes">
+        <source>Back</source>
+        <target state="final">Назад</target>
+      </trans-unit>
+      <trans-unit id="node" xml:space="preserve" approved="yes">
+        <source>Node</source>
+        <target state="final">Элемент</target>
+      </trans-unit>
+      <trans-unit id="close" xml:space="preserve" approved="yes">
+        <source>Close</source>
+        <target state="final">Закрыть</target>
+      </trans-unit>
+      <trans-unit id="copy" xml:space="preserve" approved="yes">
+        <source>Copy</source>
+        <target state="final">Копировать</target>
+      </trans-unit>
+      <trans-unit id="cut" xml:space="preserve" approved="yes">
+        <source>Cut</source>
+        <target state="final">Вырезать</target>
+      </trans-unit>
+      <trans-unit id="delete" xml:space="preserve" approved="yes">
+        <source>Delete</source>
+        <target state="final">Удалить</target>
+      </trans-unit>
+      <trans-unit id="discard" xml:space="preserve" approved="yes">
+        <source>Discard</source>
+        <target state="final">Сбросить</target>
+      </trans-unit>
+      <trans-unit id="hideUnhide" xml:space="preserve" approved="yes">
+        <source>Hide / Unhide</source>
+        <target state="final">Скрыть / Показать</target>
+      </trans-unit>
+      <trans-unit id="hide" xml:space="preserve" approved="yes">
+        <source>Hide</source>
+        <target state="final">Скрыть</target>
+      </trans-unit>
+      <trans-unit id="unhide" xml:space="preserve" approved="yes">
+        <source>Unhide</source>
+        <target state="final">Показать</target>
+      </trans-unit>
+      <trans-unit id="loading" xml:space="preserve" approved="yes">
+        <source>Loading</source>
+        <target state="final">Загрузка</target>
+      </trans-unit>
+      <trans-unit id="navigate" xml:space="preserve" approved="yes">
+        <source>Navigate</source>
+        <target state="final">Навигировать</target>
+      </trans-unit>
+      <trans-unit id="paste" xml:space="preserve" approved="yes">
+        <source>Paste</source>
+        <target state="final">Вставить</target>
+      </trans-unit>
+      <trans-unit id="password" xml:space="preserve" approved="yes">
+        <source>Password</source>
+        <target state="final">Пароль</target>
+      </trans-unit>
+      <trans-unit id="remove" xml:space="preserve" approved="yes">
+        <source>Remove</source>
+        <target state="final">Удалить</target>
+      </trans-unit>
+      <trans-unit id="refresh" xml:space="preserve" approved="yes">
+        <source>Refresh</source>
+        <target state="final">Обновить</target>
+      </trans-unit>
+      <trans-unit id="search" xml:space="preserve" approved="yes">
+        <source>Search</source>
+        <target state="final">Поиск</target>
+      </trans-unit>
+      <trans-unit id="toggleInspector" xml:space="preserve" approved="yes">
+        <source>Toggle inspector</source>
+        <target state="final">Переключить инспектор</target>
+      </trans-unit>
+      <trans-unit id="username" xml:space="preserve" approved="yes">
+        <source>Username</source>
+        <target state="final">Имя пользователя</target>
+      </trans-unit>
+      <trans-unit id="nodeInfoView.created" xml:space="preserve" approved="yes">
+        <source>Created</source>
+        <target state="final">создано</target>
+      </trans-unit>
+      <trans-unit id="nodeInfoView.lastModification" xml:space="preserve" approved="yes">
+        <source>Last modification</source>
+        <target state="final">Последнее изменение</target>
+      </trans-unit>
+      <trans-unit id="nodeInfoView.lastPublication" xml:space="preserve" approved="yes">
+        <source>Last publication</source>
+        <target state="final">Последняя публикация</target>
+      </trans-unit>
+      <trans-unit id="nodeInfoView.identifier" xml:space="preserve" approved="yes">
+        <source>Identifier</source>
+        <target state="final">Идентификатор</target>
+      </trans-unit>
+      <trans-unit id="nodeInfoView.name" xml:space="preserve" approved="yes">
+        <source>Name</source>
+        <target state="final">Имя</target>
+      </trans-unit>
+      <trans-unit id="filter" xml:space="preserve" approved="yes">
+        <source>Filter</source>
+        <target state="final">Фильтр</target>
+      </trans-unit>
+      <trans-unit id="unavailable" xml:space="preserve" approved="yes">
+        <source>Unavailable</source>
+        <target state="final">Недоступно</target>
+      </trans-unit>
+      <trans-unit id="deleteConfirm" xml:space="preserve" approved="yes">
+        <source>Yes, delete it!</source>
+        <target state="final">Да, удалить!</target>
+      </trans-unit>
+      <trans-unit id="toggleContentTree" xml:space="preserve" approved="yes">
+        <source>Toggle content tree</source>
+        <target state="final">Переключить дерево контента</target>
+      </trans-unit>
+      <trans-unit id="showPublishOptions" xml:space="preserve" approved="yes">
+        <source>Show publish options</source>
+        <target state="final">Показать параметры публикации</target>
+      </trans-unit>
+      <trans-unit id="activateFullscreen" xml:space="preserve" approved="yes">
+        <source>Activate Fullscreen edit mode</source>
+        <target state="final">Включить полноэкранный режим редактирования</target>
+      </trans-unit>
+      <trans-unit id="deactivateFullscreen" xml:space="preserve" approved="yes">
+        <source>Deactivate Fullscreen edit mode</source>
+        <target state="final">Отключить полноэкранный режим редактирования</target>
+      </trans-unit>
+      <trans-unit id="showPreview" xml:space="preserve" approved="yes">
+        <source>Show preview</source>
+        <target state="final">Предварительный просмотр</target>
+      </trans-unit>
+      <trans-unit id="discardAll" xml:space="preserve" approved="yes">
+        <source>Discard all</source>
+        <target state="final">Отменить все</target>
+      </trans-unit>
+      <trans-unit id="publishAll" xml:space="preserve" approved="yes">
+        <source>Publish all</source>
+        <target state="final">Опубликовать все</target>
+      </trans-unit>
+      <trans-unit id="editPreviewDropDown.modes" xml:space="preserve" approved="yes">
+        <source>Editing Modes</source>
+        <target state="final">Режимы редактирования</target>
+      </trans-unit>
+      <trans-unit id="editPreviewDropDown.previewCentral" xml:space="preserve" approved="yes">
+        <source>Preview Central</source>
+        <target state="final">Центр предпросмотра</target>
+      </trans-unit>
+      <trans-unit id="inspector.unappliedChangesDialog.header" xml:space="preserve" approved="yes">
+        <source>You still have changes. What do you want to do with them?</source>
+        <target state="final">Имеются несохраненные изменения. Что с ними делать?</target>
+      </trans-unit>
+      <trans-unit id="inspector.unappliedChangesDialog.button.default" xml:space="preserve" approved="yes">
+        <source>Continue editing</source>
+        <target state="final">Продолжить правку</target>
+      </trans-unit>
+      <trans-unit id="inspector.unappliedChangesDialog.button.danger" xml:space="preserve" approved="yes">
+        <source>Throw away</source>
+        <target state="final">Отклонить</target>
+      </trans-unit>
+      <trans-unit id="inspector.unappliedChangesDialog.button.success" xml:space="preserve" approved="yes">
+        <source>Apply</source>
+        <target state="final">Применить</target>
+      </trans-unit>
+      <trans-unit id="inspector.editors.dateTimeEditor.noDateSet" xml:space="preserve" approved="yes">
+        <source>No date set</source>
+        <target state="final">Дата не установлена</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.stringLength.outOfBounds" xml:space="preserve" approved="yes">
+        <source>The length of this text must be between {minimum} and {maximum} characters.</source>
+        <target state="final">Длина этого текста должна быть между {minimum} и {maximum} символами.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.stringLength.smallerThanMinimum" xml:space="preserve" approved="yes">
+        <source>This field must contain at least {minimum} characters.</source>
+        <target state="final">Это поле должно содержать по крайней мере {minimum} символов.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.stringLength.greaterThanMaximum" xml:space="preserve" approved="yes">
+        <source>This text may not exceed {maximum} characters.</source>
+        <target state="final">Этот текст не может превышать {maximum} символов.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.alphanumericValidator" xml:space="preserve" approved="yes">
+        <source>Only regular characters (a to z, umlauts, ...) and numbers are allowed.</source>
+        <target state="final">Разрешены только латинские(a до z, умлауты, ...) малые буквы и цифры.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.countValidator.notCountable" xml:space="preserve" approved="yes">
+        <source>The given subject was not countable.</source>
+        <target state="final">Содержимое не является исчислимым.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.countValidator.countBetween" xml:space="preserve" approved="yes">
+        <source>The count must be between {minimum} and {maximum}.</source>
+        <target state="final">Количество должно быть между {minimum} и {maximum}.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.dateTimeRangeValidator.invalidDate" xml:space="preserve" approved="yes">
+        <source>The given value was not a valid date.</source>
+        <target state="final">Данное значение не является допустимой датой.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.emailAddressValidator.invalidEmail" xml:space="preserve" approved="yes">
+        <source>Please specify a valid email address.</source>
+        <target state="final">Пожалуйста укажите верный адрес электронной почты.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.floatValidator.validFloatExpected" xml:space="preserve" approved="yes">
+        <source>A valid float number is expected.</source>
+        <target state="final">Ожидается вещественное число.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.integerValidator.aValidIntegerNumberIsExpected" xml:space="preserve" approved="yes">
+        <source>A valid integer number is expected.</source>
+        <target state="final">Ожидается целое число.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.labelValidator.invalidLabel" xml:space="preserve" approved="yes">
+        <source>Only letters, numbers, spaces and certain punctuation marks are expected.</source>
+        <target state="final">Ожидаются только буквы, цифры, пробелы и определенные знаки пунктуации.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.notEmptyValidator.isEmpty" xml:space="preserve" approved="yes">
+        <source>This property is required.</source>
+        <target state="final">Это свойство является обязательным.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.numberRangeValidator.validNumberExpected" xml:space="preserve" approved="yes">
+        <source>A valid number is expected.</source>
+        <target state="final">Ожидается число.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.numberRangeValidator.numberShouldBeInRange" xml:space="preserve" approved="yes">
+        <source>Please enter a valid number between {minimum} and {maximum}</source>
+        <target state="final">Пожалуйста, введите число от {minimum} до {maximum}</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.regularExpressionValidator.patternDoesNotMatch" xml:space="preserve" approved="yes">
+        <source>The given subject did not match the pattern ({pattern})</source>
+        <target state="final">Данное поле не соответствует шаблону ({pattern})</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.stringValidator.stringIsExpected" xml:space="preserve" approved="yes">
+        <source>A valid string is expected.</source>
+        <target state="final">Ожидается строковый тип.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.textValidator.validTextWithoutAnyXMLtagsIsExpected" xml:space="preserve" approved="yes">
+        <source>Valid text without any XML tags is expected.</source>
+        <target state="final">Ожидается текст без XML-тэгов.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.uuidValidator.invalidUuid" xml:space="preserve" approved="yes">
+        <source>The given subject is not a valid UUID.</source>
+        <target state="final">Значение не является допустимым UUID.</target>
+      </trans-unit>
+      <trans-unit id="dimension.createDialog.header" xml:space="preserve" approved="yes">
+        <source>Start with an empty or pre-filled document?</source>
+        <target state="final">Начинать с чистиго листа или с пред-заполненного документа?</target>
+      </trans-unit>
+      <trans-unit id="dimension.createDialog.nodeTypeDoesNotExistInDimension" xml:space="preserve" approved="yes">
+        <source>This {nodeTypeLabel} does not exist yet in {currentDimensionChoiceText}.</source>
+        <target state="final">Этот элемент ({nodeTypeLabel}) еще не существует в пространстве содержимого "{currentDimensionChoiceText}".</target>
+      </trans-unit>
+      <trans-unit id="dimension.createDialog.createEmptyOrCopy" xml:space="preserve" approved="yes">
+        <source>You can create it now, either starting with an empty {nodeTypeLabel} or copying all content from the currently visible {nodeTypeLabel} in {currentDocumentDimensionChoiceText}.</source>
+        <target state="final">Можно создать сейчас, начиная с пустого элемента {nodeTypeLabel} или путём копирования всего содержимого из открытого в данный момент элемента {nodeTypeLabel} в {currentDocumentDimensionChoiceText}.</target>
+      </trans-unit>
+      <trans-unit id="dimension.createDialog.existingAncestorDocuments" xml:space="preserve" approved="yes">
+        <source>Additionally, there are {numberOfNodesMissingInRootline} ancestor documents which do not exist in the chosen variant either, and which will be created as well.</source>
+        <target state="final">В выбранном варианте содержится {numberOfNodesMissingInRootline} не существующих родительских элементов, которые также будут созданы.</target>
+      </trans-unit>
+      <trans-unit id="dimension.createDialog.createEmpty" xml:space="preserve" approved="yes">
+        <source>Create empty</source>
+        <target state="final">Создать пустой</target>
+      </trans-unit>
+      <trans-unit id="dimension.createDialog.createAndCopy" xml:space="preserve" approved="yes">
+        <source>Create and copy</source>
+        <target state="final">Создать и скопировать</target>
+      </trans-unit>
+      <trans-unit id="navigate.deleteNodeDialog.header" xml:space="preserve" approved="yes">
+        <source>Do you really want to delete</source>
+        <target state="final">Вы действительно хотите удалить</target>
+      </trans-unit>
+      <trans-unit id="height" xml:space="preserve" approved="yes">
+        <source>Height</source>
+        <target state="final">Высота</target>
+      </trans-unit>
+      <trans-unit id="media" xml:space="preserve" approved="yes">
+        <source>Media</source>
+        <target state="final">Медиатека</target>
+      </trans-unit>
+      <trans-unit id="crop" xml:space="preserve" approved="yes">
+        <source>Crop</source>
+        <target state="final">Обрезать</target>
+      </trans-unit>
+      <trans-unit id="width" xml:space="preserve" approved="yes">
+        <source>Width</source>
+        <target state="final">Ширина</target>
+      </trans-unit>
+      <trans-unit id="workspaces" xml:space="preserve" approved="yes">
+        <source>Workspaces</source>
+        <target state="final">Рабочие области</target>
+      </trans-unit>
+      </body>
   </file>
 </xliff>

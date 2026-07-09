@@ -539,6 +539,318 @@ Om te wisselen naar een andere worksapce , zul je eerst je wijzingen moeten publ
         <source>Add content</source>
         <target state="translated">Voeg content toe</target>
       </trans-unit>
-    </body>
+    <trans-unit id="reviewChanges" xml:space="preserve" approved="yes">
+        <source>Review changes</source>
+        <target state="final">Controleer wijzigingen</target>
+      </trans-unit>
+      <trans-unit id="apply" xml:space="preserve" approved="no">
+        <source>Apply</source>
+        <target state="translated">Toepassen</target>
+      </trans-unit>
+      <trans-unit id="cancel" xml:space="preserve" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Annuleren</target>
+      </trans-unit>
+      <trans-unit id="back" xml:space="preserve" approved="yes">
+        <source>Back</source>
+        <target state="final">Terug</target>
+      </trans-unit>
+      <trans-unit id="node" xml:space="preserve" approved="yes">
+        <source>Node</source>
+        <target state="final">Node</target>
+      </trans-unit>
+      <trans-unit id="close" xml:space="preserve" approved="yes">
+        <source>Close</source>
+        <target state="final">Sluiten</target>
+      </trans-unit>
+      <trans-unit id="copy" xml:space="preserve" approved="no">
+        <source>Copy</source>
+        <target state="translated">Kopiëren</target>
+      </trans-unit>
+      <trans-unit id="cut" xml:space="preserve" approved="yes">
+        <source>Cut</source>
+        <target state="final">Knippen</target>
+      </trans-unit>
+      <trans-unit id="delete" xml:space="preserve" approved="yes">
+        <source>Delete</source>
+        <target state="final">Verwijderen</target>
+      </trans-unit>
+      <trans-unit id="discard" xml:space="preserve" approved="yes">
+        <source>Discard</source>
+        <target state="final">Verwerpen</target>
+      </trans-unit>
+      <trans-unit id="hideUnhide" xml:space="preserve" approved="yes">
+        <source>Hide / Unhide</source>
+        <target state="final">Verbergen / zichtbaar maken</target>
+      </trans-unit>
+      <trans-unit id="hide" xml:space="preserve" approved="yes">
+        <source>Hide</source>
+        <target state="final">Verbergen</target>
+      </trans-unit>
+      <trans-unit id="unhide" xml:space="preserve" approved="yes">
+        <source>Unhide</source>
+        <target state="final">Zichtbaar maken</target>
+      </trans-unit>
+      <trans-unit id="loading" xml:space="preserve" approved="yes">
+        <source>Loading</source>
+        <target state="final">Aan het laden</target>
+      </trans-unit>
+      <trans-unit id="navigate" xml:space="preserve" approved="yes">
+        <source>Navigate</source>
+        <target state="final">Navigeren</target>
+      </trans-unit>
+      <trans-unit id="paste" xml:space="preserve" approved="yes">
+        <source>Paste</source>
+        <target state="final">Plakken</target>
+      </trans-unit>
+      <trans-unit id="password" xml:space="preserve" approved="yes">
+        <source>Password</source>
+        <target state="final">Wachtwoord</target>
+      </trans-unit>
+      <trans-unit id="remove" xml:space="preserve" approved="yes">
+        <source>Remove</source>
+        <target state="final">Verwijderen</target>
+      </trans-unit>
+      <trans-unit id="refresh" xml:space="preserve" approved="yes">
+        <source>Refresh</source>
+        <target state="final">Vernieuwen</target>
+      </trans-unit>
+      <trans-unit id="search" xml:space="preserve" approved="yes">
+        <source>Search</source>
+        <target state="final">Zoeken</target>
+      </trans-unit>
+      <trans-unit id="toggleInspector" xml:space="preserve" approved="yes">
+        <source>Toggle inspector</source>
+        <target state="final">Inspector verbergen / tonen</target>
+      </trans-unit>
+      <trans-unit id="username" xml:space="preserve" approved="yes">
+        <source>Username</source>
+        <target state="final">Gebruikersnaam</target>
+      </trans-unit>
+      <trans-unit id="nodeInfoView.created" xml:space="preserve">
+        <source>Created</source>
+        <target state="translated">Aangemaakt</target>
+      </trans-unit>
+      <trans-unit id="nodeInfoView.lastModification" xml:space="preserve">
+        <source>Last modification</source>
+        <target state="translated">Laatste aanpassing</target>
+      </trans-unit>
+      <trans-unit id="nodeInfoView.lastPublication" xml:space="preserve">
+        <source>Last publication</source>
+        <target state="translated">Laatste publicatie</target>
+      </trans-unit>
+      <trans-unit id="nodeInfoView.identifier" xml:space="preserve" approved="yes">
+        <source>Identifier</source>
+        <target state="final">Identifier</target>
+      </trans-unit>
+      <trans-unit id="nodeInfoView.name" xml:space="preserve" approved="yes">
+        <source>Name</source>
+        <target state="final">Naam</target>
+      </trans-unit>
+      <trans-unit id="filter" xml:space="preserve">
+        <source>Filter</source>
+        <target state="translated">Filter</target>
+      </trans-unit>
+      <trans-unit id="unavailable" xml:space="preserve">
+        <source>Unavailable</source>
+        <target state="translated">Niet beschikbaar</target>
+      </trans-unit>
+      <trans-unit id="deleteConfirm" xml:space="preserve">
+        <source>Yes, delete it!</source>
+        <target state="translated">Ja, verwijder het!</target>
+      </trans-unit>
+      <trans-unit id="toggleContentTree" xml:space="preserve">
+        <source>Toggle content tree</source>
+        <target state="translated">Schakel inhouds-venster</target>
+      </trans-unit>
+      <trans-unit id="showPublishOptions" xml:space="preserve">
+        <source>Show publish options</source>
+        <target state="translated">Plubliceeropties weergeven</target>
+      </trans-unit>
+      <trans-unit id="activateFullscreen" xml:space="preserve">
+        <source>Activate Fullscreen edit mode</source>
+        <target state="translated">Activeer volledig scherm bewerkingsmodus</target>
+      </trans-unit>
+      <trans-unit id="deactivateFullscreen" xml:space="preserve">
+        <source>Deactivate Fullscreen edit mode</source>
+        <target state="translated">Deactiveer volledig scherm bewerkingsmodus</target>
+      </trans-unit>
+      <trans-unit id="showPreview" xml:space="preserve">
+        <source>Show preview</source>
+        <target state="translated">Voorbeeld weergeven</target>
+      </trans-unit>
+      <trans-unit id="discardAll" xml:space="preserve" approved="yes">
+        <source>Discard all</source>
+        <target state="final">Alles annuleren</target>
+      </trans-unit>
+      <trans-unit id="publishAll" xml:space="preserve" approved="yes">
+        <source>Publish all</source>
+        <target state="final">Alles publiceren</target>
+      </trans-unit>
+      <trans-unit id="editPreviewDropDown.modes" xml:space="preserve" approved="yes">
+        <source>Editing Modes</source>
+        <target state="final">Bewerk modus</target>
+      </trans-unit>
+      <trans-unit id="editPreviewDropDown.previewCentral" xml:space="preserve" approved="yes">
+        <source>Preview Central</source>
+        <target state="final">Voorbeeld overzicht</target>
+      </trans-unit>
+      <trans-unit id="inspector.unappliedChangesDialog.header" xml:space="preserve" approved="yes">
+        <source>You still have changes. What do you want to do with them?</source>
+        <target state="final">Hebt u nog veranderingen. Wat wilt u hiermee doen?</target>
+      </trans-unit>
+      <trans-unit id="inspector.unappliedChangesDialog.button.default" xml:space="preserve" approved="yes">
+        <source>Continue editing</source>
+        <target state="final">Doorgaan met bewerken</target>
+      </trans-unit>
+      <trans-unit id="inspector.unappliedChangesDialog.button.danger" xml:space="preserve" approved="yes">
+        <source>Throw away</source>
+        <target state="final">Weggooien</target>
+      </trans-unit>
+      <trans-unit id="inspector.unappliedChangesDialog.button.success" xml:space="preserve" approved="yes">
+        <source>Apply</source>
+        <target state="final">Pas Toe</target>
+      </trans-unit>
+      <trans-unit id="inspector.editors.dateTimeEditor.noDateSet" xml:space="preserve" approved="yes">
+        <source>No date set</source>
+        <target state="final">Geen datum ingesteld</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.stringLength.outOfBounds" xml:space="preserve">
+        <source>The length of this text must be between {minimum} and {maximum} characters.</source>
+        <target state="translated">De lengte van deze tekst moet minimaal {minimum} en maximaal {maximum} karakters bevatten.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.stringLength.smallerThanMinimum" xml:space="preserve">
+        <source>This field must contain at least {minimum} characters.</source>
+        <target state="translated">Dit veld moet op zijn minst {minimum} karakters bevatten.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.stringLength.greaterThanMaximum" xml:space="preserve">
+        <source>This text may not exceed {maximum} characters.</source>
+        <target state="translated">Deze tekst mag niet langer zijn dan {maximum} karakters.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.alphanumericValidator" xml:space="preserve" approved="no">
+        <source>Only regular characters (a to z, umlauts, ...) and numbers are allowed.</source>
+        <target state="translated">Alleen de karakters a tot en met z en getallen zijn toegestaan.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.countValidator.notCountable" xml:space="preserve" approved="yes">
+        <source>The given subject was not countable.</source>
+        <target state="final">Het gegeven onderwerp is niet telbaar.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.countValidator.countBetween" xml:space="preserve">
+        <source>The count must be between {minimum} and {maximum}.</source>
+        <target state="translated">Het resultaat van de optelsom moet minimaal {minimum} zijn en maximaal {maximum}.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.dateTimeRangeValidator.invalidDate" xml:space="preserve" approved="yes">
+        <source>The given value was not a valid date.</source>
+        <target state="final">De gegeven waarde is geen geldige datum.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.emailAddressValidator.invalidEmail" xml:space="preserve" approved="yes">
+        <source>Please specify a valid email address.</source>
+        <target state="final">Vul een geldig e-mailadres in.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.floatValidator.validFloatExpected" xml:space="preserve" approved="yes">
+        <source>A valid float number is expected.</source>
+        <target state="final">Een geldige float waarde wordt verwacht.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.integerValidator.aValidIntegerNumberIsExpected" xml:space="preserve" approved="yes">
+        <source>A valid integer number is expected.</source>
+        <target state="final">Een geldig integer getal wordt verwacht.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.labelValidator.invalidLabel" xml:space="preserve" approved="yes">
+        <source>Only letters, numbers, spaces and certain punctuation marks are expected.</source>
+        <target state="final">Alleen letters, cijfers, spaties en sommige leestekens worden verwacht.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.notEmptyValidator.isEmpty" xml:space="preserve" approved="yes">
+        <source>This property is required.</source>
+        <target state="final">Dit is een verplicht veld.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.numberRangeValidator.validNumberExpected" xml:space="preserve" approved="yes">
+        <source>A valid number is expected.</source>
+        <target state="final">Een geldig nummer wordt verwacht.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.numberRangeValidator.numberShouldBeInRange" xml:space="preserve">
+        <source>Please enter a valid number between {minimum} and {maximum}</source>
+        <target state="translated">Voer een geldig getal tussen {minimum} en {maximum}</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.regularExpressionValidator.patternDoesNotMatch" xml:space="preserve">
+        <source>The given subject did not match the pattern ({pattern})</source>
+        <target state="translated">Het gegeven onderwerp komt niet overeen met het patroon ({pattern})</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.stringValidator.stringIsExpected" xml:space="preserve" approved="yes">
+        <source>A valid string is expected.</source>
+        <target state="final">Een geldige tekenreeks (string) wordt verwacht.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.textValidator.validTextWithoutAnyXMLtagsIsExpected" xml:space="preserve" approved="yes">
+        <source>Valid text without any XML tags is expected.</source>
+        <target state="final">Geldige tekst zonder XML-tags wordt verwacht.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.uuidValidator.invalidUuid" xml:space="preserve" approved="yes">
+        <source>The given subject is not a valid UUID.</source>
+        <target state="final">De opgegeven waarde is geen geldige UUID.</target>
+      </trans-unit>
+      <trans-unit id="dimension.createDialog.header" xml:space="preserve">
+        <source>Start with an empty or pre-filled document?</source>
+        <target state="translated">Met een leeg of gevuld document starten?</target>
+      </trans-unit>
+      <trans-unit id="dimension.createDialog.nodeTypeDoesNotExistInDimension" xml:space="preserve">
+        <source>This {nodeTypeLabel} does not exist yet in {currentDimensionChoiceText}.</source>
+        <target state="translated">Deze {nodeTypeLabel} bestaat nog niet in {currentDimensionChoiceText}.</target>
+      </trans-unit>
+      <trans-unit id="dimension.createDialog.createEmptyOrCopy" xml:space="preserve">
+        <source>You can create it now, either starting with an empty {nodeTypeLabel} or copying all content from the currently visible {nodeTypeLabel} in {currentDocumentDimensionChoiceText}.</source>
+        <target state="translated">U kunt het nu te maken, hetzij door te beginnen met een leeg {nodeTypeLabel} of door het kopiëren van de volledige inhoud van de huidige zichtbare {nodeTypeLabel} in {currentDocumentDimensionChoiceText}.</target>
+      </trans-unit>
+      <trans-unit id="dimension.createDialog.existingAncestorDocuments" xml:space="preserve">
+        <source>Additionally, there are {numberOfNodesMissingInRootline} ancestor documents which do not exist in the chosen variant either, and which will be created as well.</source>
+        <target state="translated">Tevens zijn er {numberOfNodesMissingInRootline} bovenliggende elementen die in de gekozen variant niet bestaan, deze zullen ook gemaakt worden.</target>
+      </trans-unit>
+      <trans-unit id="dimension.createDialog.createEmpty" xml:space="preserve">
+        <source>Create empty</source>
+        <target state="translated">Leeg document maken</target>
+      </trans-unit>
+      <trans-unit id="dimension.createDialog.createAndCopy" xml:space="preserve">
+        <source>Create and copy</source>
+        <target state="translated">Maak en kopieer</target>
+      </trans-unit>
+      <trans-unit id="navigate.deleteNodeDialog.header" xml:space="preserve" approved="yes">
+        <source>Do you really want to delete</source>
+        <target state="final">Weet je zeker dat je dit wilt verwijderen</target>
+      </trans-unit>
+      <trans-unit id="height" xml:space="preserve" approved="yes">
+        <source>Height</source>
+        <target state="final">Hoogte</target>
+      </trans-unit>
+      <trans-unit id="media" xml:space="preserve" approved="yes">
+        <source>Media</source>
+        <target state="final">Media</target>
+      </trans-unit>
+      <trans-unit id="crop" xml:space="preserve" approved="yes">
+        <source>Crop</source>
+        <target state="final">Bijsnijden</target>
+      </trans-unit>
+      <trans-unit id="width" xml:space="preserve" approved="yes">
+        <source>Width</source>
+        <target state="final">Breedte</target>
+      </trans-unit>
+      <trans-unit id="workspaces" xml:space="preserve" approved="no">
+        <source>Workspaces</source>
+        <target state="translated">Werkruimten</target>
+      </trans-unit>
+      <trans-unit id="documentTree" xml:space="preserve">
+        <source>Document Tree</source>
+        <target state="translated">Documentboom</target>
+      </trans-unit>
+      <trans-unit id="contentTree" xml:space="preserve">
+        <source>Content Tree</source>
+        <target state="translated">Contentboom</target>
+      </trans-unit>
+      <trans-unit id="documentTree" xml:space="preserve">
+        <source>Document Tree</source>
+        <target state="translated">Documentboom</target>
+      </trans-unit>
+      <trans-unit id="contentTree" xml:space="preserve">
+        <source>Content Tree</source>
+        <target state="translated">Contentboom</target>
+      </trans-unit>
+      </body>
   </file>
 </xliff>

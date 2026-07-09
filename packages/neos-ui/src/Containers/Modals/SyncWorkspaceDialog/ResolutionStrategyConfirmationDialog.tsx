@@ -9,7 +9,7 @@
  */
 import React from 'react';
 
-import {WorkspaceName} from '@neos-project/neos-ts-interfaces';
+import {WorkspaceName} from '@neos-project/neos-ui-contentrepository-model';
 import {translate} from '@neos-project/neos-ui-i18n';
 import {Button, Dialog, Icon} from '@neos-project/react-ui-components';
 import {PublishingPhase} from '@neos-project/neos-ui-redux-store/src/CR/Publishing';

@@ -9,7 +9,8 @@ import {
 // @ts-ignore
 } from '@neos-project/neos-ui-guest-frame/src/dom';
 import {neos} from '@neos-project/neos-ui-decorators';
-import {InsertPosition, Node} from '@neos-project/neos-ts-interfaces';
+import {InsertPosition} from '@neos-project/neos-ts-interfaces';
+import {Node} from '@neos-project/neos-ui-contentrepository-model';
 import {NodeTypesRegistry} from '@neos-project/neos-ui-contentrepository';
 import {I18nRegistry} from '@neos-project/neos-ui-i18n';
 

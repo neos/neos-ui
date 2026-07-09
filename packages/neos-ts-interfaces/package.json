@@ -1,7 +1,7 @@
 {
   "name": "@neos-project/neos-ts-interfaces",
   "version": "",
-  "description": "Neos domain-related TypeScript interfaces",
+  "description": "Legacy Neos domain-related TypeScript interfaces",
   "private": true,
   "main": "src/index.ts",
   "dependencies": {
@@ -9,6 +9,7 @@
   },
   "devDependencies": {
     "@neos-project/jest-preset-neos-ui": "workspace:*",
+    "@neos-project/neos-ui-contentrepository-model": "workspace:*",
     "typescript": "^4.6.4"
   },
   "license": "GNU GPLv3"

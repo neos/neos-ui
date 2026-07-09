@@ -6,6 +6,7 @@
   "main": "./src/index.js",
   "devDependencies": {
     "@neos-project/jest-preset-neos-ui": "workspace:*",
+    "@neos-project/neos-ui-contentrepository-model": "workspace:*",
     "typescript": "^4.6.4"
   },
   "peerDependencies": {

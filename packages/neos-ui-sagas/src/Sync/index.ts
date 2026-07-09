@@ -9,7 +9,7 @@
  */
 import {put, call, takeEvery, race, take, select} from 'redux-saga/effects';
 
-import {DimensionCombination, WorkspaceName} from '@neos-project/neos-ts-interfaces';
+import {DimensionCombination, WorkspaceName} from '@neos-project/neos-ui-contentrepository-model';
 import {AnyError} from '@neos-project/neos-ui-error';
 import {actionTypes, actions, selectors} from '@neos-project/neos-ui-redux-store';
 import backend from '@neos-project/neos-ui-backend-connector';

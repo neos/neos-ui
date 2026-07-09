@@ -3,7 +3,7 @@ import mapValues from 'lodash.mapvalues';
 
 import {SynchronousRegistry} from '@neos-project/neos-ui-registry';
 import positionalArraySorter from '@neos-project/positional-array-sorter/src/positionalArraySorter';
-import {NodeTypeName, NodeType} from '@neos-project/neos-ts-interfaces';
+import {NodeTypeName, NodeType} from '@neos-project/neos-ui-contentrepository-model';
 
 interface Constraint {
     childNodes: {

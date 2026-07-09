@@ -5,10 +5,17 @@ import ReactMarkdown from 'react-markdown';
 import omit from 'lodash.omit';
 
 import {Tooltip, Label, Icon} from '@neos-project/react-ui-components';
-import I18n from '@neos-project/neos-ui-i18n';
+import I18n, {translate} from '@neos-project/neos-ui-i18n';
 import {neos} from '@neos-project/neos-ui-decorators';
+import {PropertyScope} from '@neos-project/neos-ui-contentrepository-model';
 
 import style from './style.module.css';
+
+const PropertyScopeTranslations = {
+    [PropertyScope.NODE]: 'Neos.Neos.Ui:Main:propertyScope.node',
+    [PropertyScope.NODE_AGGREGATE]: 'Neos.Neos.Ui:Main:propertyScope.nodeAggregate',
+    [PropertyScope.SPECIALIZATIONS]: 'Neos.Neos.Ui:Main:propertyScope.specializations'
+}
 
 @neos(globalRegistry => ({
     editorRegistry: globalRegistry.get('inspector').get('editors'),
@@ -42,7 +49,7 @@ export default class EditorEnvelope extends PureComponent {
         helpMessage: PropTypes.string,
         helpThumbnail: PropTypes.string,
         highlight: PropTypes.bool,
-        scope: PropTypes.oneOf(['node', 'nodeAggregate', 'specializations']),
+        scope: PropTypes.oneOf([PropertyScope.NODE, PropertyScope.NODE_AGGREGATE, PropertyScope.SPECIALIZATIONS]),
 
         commit: PropTypes.func.isRequired
     };
@@ -164,11 +171,10 @@ export default class EditorEnvelope extends PureComponent {
     }
 
     renderScopeIcon = () => {
-        const {i18nRegistry, scope} = this.props;
+        const {scope} = this.props;
 
-        // TODO: Use enum value here when we refactor the file to typescript
-        if (scope && scope !== 'node') {
-            const translatedScopeHint = i18nRegistry.translate(`Neos.Neos.Ui:Main:propertyScope.${scope}`);
+        if (scope && scope !== PropertyScope.NODE) {
+            const translatedScopeHint = translate(PropertyScopeTranslations[scope]);
 
             return (
                 <span
@@ -186,9 +192,9 @@ export default class EditorEnvelope extends PureComponent {
     }
 
     renderScopeHint() {
-        const {i18nRegistry, scope} = this.props;
+        const {scope} = this.props;
 
-        const translatedScopeHint = i18nRegistry.translate(`Neos.Neos.Ui:Main:propertyScope.${scope}`);
+        const translatedScopeHint = translate(PropertyScopeTranslations[scope]);
 
         return (
             <Tooltip renderInline className={style.envelope__helpmessage}>

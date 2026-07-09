@@ -1,4 +1,4 @@
-import {PropertyConfiguration, ValidatorConfiguration} from '@neos-project/neos-ts-interfaces';
+import {PropertyConfiguration, ValidatorConfiguration} from '@neos-project/neos-ui-contentrepository-model';
 import type {ValidatorRegistry} from './registry';
 
 interface ValuesMap {

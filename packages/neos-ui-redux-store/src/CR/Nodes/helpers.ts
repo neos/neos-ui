@@ -1,4 +1,5 @@
-import {isNode, Node, NodeMap, NodeContextPath, SelectionModeTypes} from '@neos-project/neos-ts-interfaces';
+import {SelectionModeTypes} from '@neos-project/neos-ts-interfaces';
+import {isNode, Node, NodeMap, NodeContextPath} from '@neos-project/neos-ui-contentrepository-model';
 
 //
 // Helper function to determine allowed node types

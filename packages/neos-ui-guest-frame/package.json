@@ -7,6 +7,7 @@
   "devDependencies": {
     "@neos-project/jest-preset-neos-ui": "workspace:*",
     "@neos-project/neos-ts-interfaces": "workspace:*",
+    "@neos-project/neos-ui-contentrepository-model": "workspace:*",
     "@neos-project/neos-ui-decorators": "workspace:*",
     "@neos-project/neos-ui-guest-frame": "workspace:*",
     "@neos-project/neos-ui-redux-store": "workspace:*",

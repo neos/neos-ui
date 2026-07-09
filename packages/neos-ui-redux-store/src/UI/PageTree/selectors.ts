@@ -3,7 +3,7 @@ import {createSelector} from 'reselect';
 
 import {siteNodeContextPathSelector, siteNodeSelector, nodesByContextPathSelector} from '../../CR/Nodes/selectors';
 import {isNodeCollapsed} from '../../CR/Nodes/helpers';
-import {NodeContextPath, NodeMap} from '@neos-project/neos-ts-interfaces';
+import {NodeContextPath, NodeMap} from '@neos-project/neos-ui-contentrepository-model';
 
 // contextPath for Neos >= 9.0 is a NodeAddress without hierarchy infos; so we need to traverse the "parent" links.
 function rootlineForNode(contextPath: NodeContextPath, nodesByContextPath: NodeMap): string[] {

@@ -15,6 +15,7 @@
     "@neos-project/neos-ui-backend-connector": "workspace:*",
     "@neos-project/neos-ui-ckeditor5-bindings": "workspace:*",
     "@neos-project/neos-ui-constants": "workspace:*",
+    "@neos-project/neos-ui-contentrepository-model": "workspace:*",
     "@neos-project/neos-ui-decorators": "workspace:*",
     "@neos-project/neos-ui-extensibility": "workspace:*",
     "@neos-project/neos-ui-i18n": "workspace:*",

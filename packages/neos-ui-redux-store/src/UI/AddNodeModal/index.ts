@@ -2,7 +2,8 @@ import produce from 'immer';
 import {action as createAction, ActionType} from 'typesafe-actions';
 
 import {actionTypes as system, InitAction} from '../../System';
-import {NodeContextPath, FusionPath} from '@neos-project/neos-ts-interfaces';
+import {FusionPath} from '@neos-project/neos-ts-interfaces';
+import {NodeContextPath} from '@neos-project/neos-ui-contentrepository-model';
 
 export interface State extends Readonly<{
     contextPath: NodeContextPath | null;

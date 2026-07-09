@@ -2,7 +2,7 @@ import produce from 'immer';
 import {action as createAction, ActionType} from 'typesafe-actions';
 
 import {InitAction} from '../../System';
-import {Node, NodeContextPath} from '@neos-project/neos-ts-interfaces';
+import {Node, NodeContextPath} from '@neos-project/neos-ui-contentrepository-model';
 
 import * as selectors from '../../UI/Inspector/selectors';
 export interface State extends Readonly<{

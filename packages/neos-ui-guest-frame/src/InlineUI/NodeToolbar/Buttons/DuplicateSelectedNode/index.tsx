@@ -4,7 +4,8 @@ import {connect} from 'react-redux';
 import {Icon, Button} from '@neos-project/react-ui-components';
 import {actions, selectors, useSelector} from '@neos-project/neos-ui-redux-store';
 import {translate} from '@neos-project/neos-ui-i18n';
-import {FusionPath, NodeContextPath} from '@neos-project/neos-ts-interfaces';
+import {FusionPath} from '@neos-project/neos-ts-interfaces';
+import {NodeContextPath} from '@neos-project/neos-ui-contentrepository-model';
 
 type DuplicateSelectNodeProps = {
     className: string;

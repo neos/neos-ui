@@ -2,7 +2,8 @@ import produce from 'immer';
 import {action as createAction, ActionType} from 'typesafe-actions';
 
 import {InitAction} from '../../System';
-import {NodeContextPath, InsertPosition, NodeTypeName} from '@neos-project/neos-ts-interfaces';
+import {InsertPosition} from '@neos-project/neos-ts-interfaces';
+import {NodeContextPath, NodeTypeName} from '@neos-project/neos-ui-contentrepository-model';
 
 const PREFERRED_MODE_DEFAULT = InsertPosition.AFTER;
 

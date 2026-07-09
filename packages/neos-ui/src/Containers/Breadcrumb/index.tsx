@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 
 import {actions, selectors, GlobalState} from '@neos-project/neos-ui-redux-store';
 import {neos} from '@neos-project/neos-ui-decorators';
-import {Node} from '@neos-project/neos-ts-interfaces';
+import {Node} from '@neos-project/neos-ui-contentrepository-model';
 import {NodeTypesRegistry} from '@neos-project/neos-ui-contentrepository';
 import {Button, Icon} from '@neos-project/react-ui-components';
 import {stripTags, decodeHtml} from '@neos-project/utils-helpers';

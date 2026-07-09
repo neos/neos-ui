@@ -94,7 +94,7 @@ export default class InsertModeSelector extends PureComponent {
                         disabled={!enableAlongsideModes}
                         style="lighter"
                         size="small"
-                        title={`${translate('Neos.Neos:Main:insert')} ${translate('Neos.Neos:Main:above')}`}
+                        title={`${translate('Neos.Neos:Main:insert')} ${translate('Neos.Neos.Ui:Main:above')}`}
                     >
                         <ResourceIcon source={createAboveIcon} className={style.iconAlignment}/>
                         {translate('Neos.Neos.Ui:Main:above', 'Above')}
@@ -105,7 +105,7 @@ export default class InsertModeSelector extends PureComponent {
                         disabled={!enableAlongsideModes}
                         style="lighter"
                         size="small"
-                        title={`${translate('Neos.Neos:Main:insert')} ${translate('Neos.Neos:Main:below')}`}
+                        title={`${translate('Neos.Neos:Main:insert')} ${translate('Neos.Neos.Ui:Main:below')}`}
                     >
                         <ResourceIcon source={createBelowIcon} className={style.iconAlignment}/>
                         {translate('Neos.Neos.Ui:Main:below', 'Below')}
@@ -116,7 +116,7 @@ export default class InsertModeSelector extends PureComponent {
                         disabled={!enableIntoMode}
                         style="lighter"
                         size="small"
-                        title={`${translate('Neos.Neos:Main:insert')} ${translate('Neos.Neos:Main:into')}`}
+                        title={`${translate('Neos.Neos:Main:insert')} ${translate('Neos.Neos.Ui:Main:inside')}`}
                     >
                         <ResourceIcon source={createInsideIcon} className={style.iconAlignment}/>
                         {translate('Neos.Neos.Ui:Main:inside', 'Inside')}

@@ -7,7 +7,7 @@ import omit from 'lodash.omit';
 import {Tooltip, Label, Icon} from '@neos-project/react-ui-components';
 import I18n, {translate} from '@neos-project/neos-ui-i18n';
 import {neos} from '@neos-project/neos-ui-decorators';
-import {PropertyScope} from '@neos-project/neos-ui-contentrepository';
+import {PropertyScope} from '@neos-project/neos-ui-contentrepository-model';
 
 import style from './style.module.css';
 

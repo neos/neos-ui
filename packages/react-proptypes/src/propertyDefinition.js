@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import {PropertyScope} from '@neos-project/neos-ui-contentrepository';
+import {PropertyScope} from '@neos-project/neos-ui-contentrepository-model';
 
 export default PropTypes.shape({
     type: PropTypes.string.isRequired,

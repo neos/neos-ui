@@ -1697,6 +1697,7 @@ __metadata:
   resolution: "@neos-project/neos-ts-interfaces@workspace:packages/neos-ts-interfaces"
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
+    "@neos-project/neos-ui-contentrepository-model": "workspace:*"
     "@neos-project/neos-ui-i18n": "workspace:*"
     typescript: "npm:^4.6.4"
   languageName: unknown
@@ -1793,6 +1794,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@neos-project/neos-ui-contentrepository-model@workspace:*, @neos-project/neos-ui-contentrepository-model@workspace:packages/neos-ui-contentrepository-model":
+  version: 0.0.0-use.local
+  resolution: "@neos-project/neos-ui-contentrepository-model@workspace:packages/neos-ui-contentrepository-model"
+  dependencies:
+    typescript: "npm:^4.6.4"
+  languageName: unknown
+  linkType: soft
+
 "@neos-project/neos-ui-contentrepository@workspace:*, @neos-project/neos-ui-contentrepository@workspace:packages/neos-ui-contentrepository":
   version: 0.0.0-use.local
   resolution: "@neos-project/neos-ui-contentrepository@workspace:packages/neos-ui-contentrepository"
@@ -1830,6 +1839,7 @@ __metadata:
     "@neos-project/neos-ui-backend-connector": "workspace:*"
     "@neos-project/neos-ui-ckeditor5-bindings": "workspace:*"
     "@neos-project/neos-ui-constants": "workspace:*"
+    "@neos-project/neos-ui-contentrepository-model": "workspace:*"
     "@neos-project/neos-ui-decorators": "workspace:*"
     "@neos-project/neos-ui-extensibility": "workspace:*"
     "@neos-project/neos-ui-i18n": "workspace:*"
@@ -2163,6 +2173,7 @@ __metadata:
   resolution: "@neos-project/react-proptypes@workspace:packages/react-proptypes"
   dependencies:
     "@neos-project/jest-preset-neos-ui": "workspace:*"
+    "@neos-project/neos-ui-contentrepository-model": "workspace:*"
     typescript: "npm:^4.6.4"
   peerDependencies:
     prop-types: ^15.5.10

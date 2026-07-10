@@ -5,7 +5,7 @@ import mergeClassNames from 'classnames';
 import {translate} from '@neos-project/neos-ui-i18n';
 import {actions, GlobalState, selectors} from '@neos-project/neos-ui-redux-store';
 import {searchOptions} from '@neos-project/neos-ui-editors/src/Editors/SelectBox/selectBoxHelpers.js';
-import {SelectBox} from '@neos-project/react-ui-components';
+import {SelectBox, DropDown, Icon} from '@neos-project/react-ui-components';
 import {PublishingMode} from '@neos-project/neos-ui-redux-store/src/CR/Publishing';
 import {Node, Workspace, WorkspaceName} from '@neos-project/neos-ui-contentrepository-model';
 
@@ -41,14 +41,14 @@ type WorkspaceSelectorProps = {
 }
 
 const WorkspaceSelector: React.FC<WorkspaceSelectorProps> = ({
-                                                                 allowedWorkspaces,
-                                                                 baseWorkspace,
-                                                                 changeBaseWorkspaceAction,
-                                                                 isSaving,
-                                                                 isPublishing,
-                                                                 publishableNodes,
-                                                                 isWorkspaceReadOnly
-                                                             }) => {
+    allowedWorkspaces,
+    baseWorkspace,
+    changeBaseWorkspaceAction,
+    isSaving,
+    isPublishing,
+    publishableNodes,
+    isWorkspaceReadOnly
+}) => {
     const [filterTerm, setFilterTerm] = useState('');
 
     const hasUnpublishedNodes = publishableNodes?.length > 0;
@@ -84,20 +84,22 @@ const WorkspaceSelector: React.FC<WorkspaceSelectorProps> = ({
             changeBaseWorkspaceAction(workspaceName);
         }
     }, [baseWorkspace, changeBaseWorkspaceAction]);
-    const anyWorkspacesAvailable = Object.keys(allowedWorkspaces).length > 1;
 
-    const classNames = mergeClassNames({
-        [style.workspaceSelector]: true,
-        [style['workspaceSelector--isDirty']]: hasUnpublishedNodes,
-        [style['workspaceSelector--isReadOnly']]: isWorkspaceReadOnly
+    const dropDownHeaderStyles = mergeClassNames({
+        [style.dropDown__header]: true,
+        [style['dropDown__header--isDirty']]: hasUnpublishedNodes,
+        [style['dropDown__header--isReadOnly']]: isWorkspaceReadOnly
     });
 
     const title = changingWorkspaceAllowed ?
         translate('Neos.Neos.Ui:Main:workspaceSelectorTitle', 'Select target workspace') :
         translate('Neos.Neos.Ui:Main:workspaceSelectorTitleDisabled', 'Cannot change target workspace while there are unpublished changes');
 
-    return (<div className={classNames} title={title}>
-        {anyWorkspacesAvailable ? (
+    return <DropDown className={style.dropDown}>
+        <DropDown.Header className={dropDownHeaderStyles} title={title}>
+            <Icon icon="layer-group" /><span className={style.dropDown__label}>{baseWorkspace}</span>
+        </DropDown.Header>
+        <DropDown.Contents className={style.dropDown__contents}>
             <SelectBox
                 placeholder={translate('Neos.Neos.Ui:Main:filter', 'Filter')}
                 placeholderIcon={'filter'}
@@ -108,14 +110,14 @@ const WorkspaceSelector: React.FC<WorkspaceSelectorProps> = ({
                 noMatchesFoundLabel={translate('Neos.Neos.Ui:Main:noMatchesFound')}
                 searchBoxLeftToTypeLabel={translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
                 options={searchOptions(filterTerm, workspacesOptions)}
-                value={baseWorkspace}
+                value={null}
                 onValueChange={onWorkspaceSelect}
                 disabled={!changingWorkspaceAllowed}
-                headerIcon="layer-group"
+                headerIcon="filter"
                 theme={style}
             />
-        ) : ''}
-    </div>);
+        </DropDown.Contents>
+    </DropDown>;
 }
 
 export default withReduxState(WorkspaceSelector as any);

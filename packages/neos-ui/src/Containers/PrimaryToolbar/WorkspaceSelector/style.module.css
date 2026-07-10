@@ -1,14 +1,23 @@
-.workspaceSelector {
-    display: flex;
-    align-items: center;
-    /** Make sure that we keep the width when opening the dropdown, as the filter and list have a min-width */
-    width: 255px;
+.dropDown__header {
+    border-top: 2px solid var(--colors-Success);
+    border-radius: 0;
 }
-.workspaceSelector--isDirty {
+.dropDown__header--isDirty {
     border-top: 2px solid var(--colors-Warn);
 }
-.workspaceSelector--isReadOnly {
+.dropDown__header--isReadOnly {
     border-top: 2px solid var(--colors-PrimaryBlue);
+}
+
+.dropDown__contents {
+    /** Make sure that we keep the width when opening the dropdown, as the filter and list have a min-width */
+    min-width: 255px;
+    right: 0;
+    left: unset;
+}
+
+.dropDown__label {
+    padding-inline: 5px;
 }
 
 /* Theme overrides for the selectBox and nested components */

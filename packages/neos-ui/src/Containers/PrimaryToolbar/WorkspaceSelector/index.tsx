@@ -11,6 +11,8 @@ import {DropDown} from './Components/DropDown';
 import style from './style.module.css';
 import {List, ListItem} from "../../../SharedComponents";
 
+const POPOVER_ID = "workspace-selector";
+
 const {
     publishableNodesSelector,
     baseWorkspaceSelector,
@@ -85,7 +87,7 @@ const WorkspaceSelector: React.FC<WorkspaceSelectorProps> = ({
     // todo add title attributes to workspace things
 
     return <DropDown
-        id="workspace-selector"
+        id={POPOVER_ID}
         enabled={changingWorkspaceAllowed}
         buttonTitle={title}
         buttonIcon={<Icon icon="layer-group" padded="right" />}
@@ -101,6 +103,7 @@ const WorkspaceSelector: React.FC<WorkspaceSelectorProps> = ({
                         onClick={createChangeBaseWorkspace(workspace.name)}
                         style={workspace.name === baseWorkspace ? 'brand' : null}
                         className={style.labelEllipsis}
+                        popovertarget={POPOVER_ID}
                     >
                         {workspace.title}
                     </Button>
@@ -117,6 +120,7 @@ const WorkspaceSelector: React.FC<WorkspaceSelectorProps> = ({
                             onClick={createChangeBaseWorkspace(workspace.name)}
                             style={workspace.name === baseWorkspace ? 'brand' : null}
                             className={style.labelEllipsis}
+                            popovertarget={POPOVER_ID}
                         >
                             {workspace.title}
                         </Button>
@@ -134,6 +138,7 @@ const WorkspaceSelector: React.FC<WorkspaceSelectorProps> = ({
                             onClick={createChangeBaseWorkspace(workspace.name)}
                             style={workspace.name === baseWorkspace ? 'brand' : null}
                             className={style.labelEllipsis}
+                            popovertarget={POPOVER_ID}
                         >
                             {workspace.title}
                         </Button>

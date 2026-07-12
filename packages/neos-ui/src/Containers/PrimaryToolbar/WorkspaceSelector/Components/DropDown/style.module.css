@@ -3,6 +3,7 @@
     inset: auto;
     background: var(--colors-ContrastNeutral);
     margin: 0;
+    padding: 2px;
     border: 0;
 }
 

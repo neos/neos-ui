@@ -10,6 +10,7 @@ import {actions, selectors} from '@neos-project/neos-ui-redux-store/src';
 import memoize from 'lodash.memoize';
 import {Icon, DropDown, Button} from '@neos-project/react-ui-components';
 import {getConfiguration} from '@neos-project/neos-ui-configuration';
+import {List, ListItem} from '../../../SharedComponents';
 
 @connect(state => ({
     editPreviewMode: selectors.UI.EditPreviewMode.currentEditPreviewMode(state)
@@ -69,7 +70,7 @@ export default class EditPreviewModeDropDown extends PureComponent {
                         [style['dropDown__btn--isPreviewMode']]: currentEditModeIsPreviewMode
                     })}>
                         <span className={style.dropDown__modeBadge}>
-                            <Icon className={style.dropDown__btnIcon} icon={currentEditModeIsPreviewMode ? 'eye' : 'pencil'}/>
+                            <Icon padded="right" icon={currentEditModeIsPreviewMode ? 'eye' : 'pencil'}/>
                             {currentEditModeIsPreviewMode
                                 ? translate('Neos.Neos.Ui:Main:editPreviewDropDown.previewMode', 'Preview Mode:')
                                 : translate('Neos.Neos.Ui:Main:editPreviewDropDown.editMode', 'Edit Mode:')}
@@ -77,12 +78,9 @@ export default class EditPreviewModeDropDown extends PureComponent {
                         <span className={style.dropDown__currentEditMode}><I18n id={currentEditMode.title}/></span>
                     </DropDown.Header>
                     <DropDown.Contents className={style.dropDown__contents}>
-                        <div className={style.dropDown__groupHeader}>
-                            <Icon className={style.dropDown__btnIcon} icon={'pencil'}/> {translate('Neos.Neos.Ui:Main:editPreviewDropDown.modes', 'Editing Modes')}
-                        </div>
-                        <ul>
+                        <List icon="pencil" label={translate('Neos.Neos.Ui:Main:editPreviewDropDown.modes', 'Editing Modes')}>
                             {editingModes.map(editingMode => (
-                                <li className={style.dropDown__item} key={editingMode.id}>
+                                <ListItem key={editingMode.id}>
                                     <Button
                                         disabled={editingMode.id === editPreviewMode}
                                         onClick={this.handleEditPreviewModeClick(editingMode.id)}
@@ -90,28 +88,23 @@ export default class EditPreviewModeDropDown extends PureComponent {
                                     >
                                         <I18n id={editingMode.title}/>
                                     </Button>
-                                </li>
+                                </ListItem>
                             ))}
-                        </ul>
+                        </List>
                         {previewModes.length > 0 && (
-                            <>
-                                <div className={style.dropDown__groupHeader}>
-                                    <Icon className={style.dropDown__btnIcon} icon={'eye'}/> {translate('Neos.Neos.Ui:Main:editPreviewDropDown.previewCentral', 'Preview Central')}
-                                </div>
-                                <ul>
-                                    {previewModes.map(previewMode => (
-                                        <li className={style.dropDown__item} key={previewMode.id}>
-                                            <Button
-                                                disabled={previewMode.id === editPreviewMode}
-                                                onClick={this.handleEditPreviewModeClick(previewMode.id)}
-                                                style={previewMode.id === editPreviewMode ? 'brand' : null}
-                                            >
-                                                <I18n id={previewMode.title}/>
-                                            </Button>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </>
+                            <List icon="eye" label={translate('Neos.Neos.Ui:Main:editPreviewDropDown.previewCentral', 'Preview Central')}>
+                                {previewModes.map(previewMode => (
+                                    <ListItem key={previewMode.id}>
+                                        <Button
+                                            disabled={previewMode.id === editPreviewMode}
+                                            onClick={this.handleEditPreviewModeClick(previewMode.id)}
+                                            style={previewMode.id === editPreviewMode ? 'brand' : null}
+                                        >
+                                            <I18n id={previewMode.title}/>
+                                        </Button>
+                                    </ListItem>
+                                ))}
+                            </List>
                         )}
                     </DropDown.Contents>
                 </DropDown>

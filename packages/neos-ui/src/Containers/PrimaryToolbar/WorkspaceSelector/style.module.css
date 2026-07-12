@@ -14,6 +14,16 @@
     border-top: 2px solid var(--colors-PrimaryBlue);
 }
 
+.dropDownButton--disabled {
+    /* dont use opacity which would also darken border indicator */
+    opacity: 1!important;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.dropDownButton--disabled svg {
+    color: rgba(255, 255, 255, 0.5);
+}
+
 .labelEllipsis {
     display: inline-block;
     text-overflow: ellipsis;

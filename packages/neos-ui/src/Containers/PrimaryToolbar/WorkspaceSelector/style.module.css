@@ -1,32 +1,15 @@
-.dropDown__header {
-    border-top: 2px solid var(--colors-Success);
-    border-radius: 0;
-}
-.dropDown__header--isDirty {
-    border-top: 2px solid var(--colors-Warn);
-}
-.dropDown__header--isReadOnly {
-    border-top: 2px solid var(--colors-PrimaryBlue);
-}
-
-.dropDown__contents {
+.dropDownContents {
     /** Make sure that we keep the width when opening the dropdown, as the filter and list have a min-width */
     min-width: 255px;
-    right: 0;
-    left: unset;
 }
 
-.dropDown__label {
-    padding-inline: 5px;
+.dropDownButton {
+    border-top: 2px solid var(--colors-Success);
+    background: var(--colors-ContrastDarker);
 }
-
-/* Theme overrides for the selectBox and nested components */
-.selectBox__btn {
-    background-color: transparent;
+.dropDownButton--isDirty {
+    border-top: 2px solid var(--colors-Warn);
 }
-.selectBox__btn:has(> .selectBoxHeaderWithSearchInput) {
-    background-color: var(--colors-ContrastNeutral);
-}
-.listPreviewElement--isDisabled {
-    color: var(--colors-ContrastBrightest);
+.dropDownButton--isReadOnly {
+    border-top: 2px solid var(--colors-PrimaryBlue);
 }

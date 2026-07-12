@@ -5,9 +5,10 @@ import mergeClassNames from 'classnames';
 import {translate} from '@neos-project/neos-ui-i18n';
 import {actions, GlobalState, selectors} from '@neos-project/neos-ui-redux-store';
 import {searchOptions} from '@neos-project/neos-ui-editors/src/Editors/SelectBox/selectBoxHelpers.js';
-import {SelectBox, DropDown, Icon} from '@neos-project/react-ui-components';
+import {SelectBox, Icon} from '@neos-project/react-ui-components';
 import {PublishingMode} from '@neos-project/neos-ui-redux-store/src/CR/Publishing';
 import {Node, Workspace, WorkspaceName} from '@neos-project/neos-ui-contentrepository-model';
+import {DropDown} from './Components/DropDown';
 
 const {
     publishableNodesSelector,
@@ -85,39 +86,42 @@ const WorkspaceSelector: React.FC<WorkspaceSelectorProps> = ({
         }
     }, [baseWorkspace, changeBaseWorkspaceAction]);
 
-    const dropDownHeaderStyles = mergeClassNames({
-        [style.dropDown__header]: true,
-        [style['dropDown__header--isDirty']]: hasUnpublishedNodes,
-        [style['dropDown__header--isReadOnly']]: isWorkspaceReadOnly
+    const dropDownButtonStyles = mergeClassNames({
+        [style.dropDownButton]: true,
+        [style['dropDownButton--isDirty']]: hasUnpublishedNodes,
+        [style['dropDownButton--isReadOnly']]: isWorkspaceReadOnly
     });
 
     const title = changingWorkspaceAllowed ?
         translate('Neos.Neos.Ui:Main:workspaceSelectorTitle', 'Select target workspace') :
         translate('Neos.Neos.Ui:Main:workspaceSelectorTitleDisabled', 'Cannot change target workspace while there are unpublished changes');
 
-    return <DropDown className={style.dropDown}>
-        <DropDown.Header className={dropDownHeaderStyles} title={title}>
-            <Icon icon="layer-group" /><span className={style.dropDown__label}>{baseWorkspace}</span>
-        </DropDown.Header>
-        <DropDown.Contents className={style.dropDown__contents}>
-            <SelectBox
-                placeholder={translate('Neos.Neos.Ui:Main:filter', 'Filter')}
-                placeholderIcon={'filter'}
-                displaySearchBox
-                searchTerm={filterTerm}
-                onSearchTermChange={setFilterTerm}
-                threshold={0}
-                noMatchesFoundLabel={translate('Neos.Neos.Ui:Main:noMatchesFound')}
-                searchBoxLeftToTypeLabel={translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
-                options={searchOptions(filterTerm, workspacesOptions)}
-                value={null}
-                onValueChange={onWorkspaceSelect}
-                disabled={!changingWorkspaceAllowed}
-                headerIcon="filter"
-                theme={style}
-            />
-        </DropDown.Contents>
-    </DropDown>;
+    return <DropDown
+        id="workspace-selector"
+        enabled={changingWorkspaceAllowed}
+        buttonTitle={title}
+        buttonIcon={<Icon icon="layer-group" padded="right" />}
+        buttonLabel={baseWorkspace}
+        buttonClassName={dropDownButtonStyles}
+        dropDownClassName={style.dropDownContents}
+    >
+        <SelectBox
+            placeholder={translate('Neos.Neos.Ui:Main:filter', 'Filter')}
+            placeholderIcon={'filter'}
+            displaySearchBox
+            searchTerm={filterTerm}
+            onSearchTermChange={setFilterTerm}
+            threshold={0}
+            noMatchesFoundLabel={translate('Neos.Neos.Ui:Main:noMatchesFound')}
+            searchBoxLeftToTypeLabel={translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
+            options={searchOptions(filterTerm, workspacesOptions)}
+            value={null}
+            onValueChange={onWorkspaceSelect}
+            disabled={!changingWorkspaceAllowed}
+            headerIcon="filter"
+            theme={style}
+        />
+    </DropDown>
 }
 
 export default withReduxState(WorkspaceSelector as any);

@@ -2,3 +2,7 @@
     color: #FFF;
     padding: var(--spacing-Half) var(--spacing-Full);
 }
+
+.listGroup {
+    margin: 0;
+}

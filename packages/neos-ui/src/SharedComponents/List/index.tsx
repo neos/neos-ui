@@ -3,7 +3,7 @@ import {Icon} from '@neos-project/react-ui-components';
 import style from './style.module.css';
 
 export type ListProps = React.PropsWithChildren<{
-    icon: string,
+    icon?: string,
     label: string,
 }>;
 
@@ -14,8 +14,9 @@ export const List = ({
 }: ListProps) => {
     return <>
         <div className={style.listGroupHeader}>
-            <Icon padded="right" icon={icon}/> {label}
+            {icon ? <Icon padded="right" icon={icon}/> : ''}
+            {label}
         </div>
-        <ul>{children}</ul>
+        <ul className={style.listGroup}>{children}</ul>
     </>
 }

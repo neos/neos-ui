@@ -100,6 +100,7 @@ const WorkspaceSelector: React.FC<WorkspaceSelectorProps> = ({
                         disabled={workspace.name === baseWorkspace}
                         onClick={createChangeBaseWorkspace(workspace.name)}
                         style={workspace.name === baseWorkspace ? 'brand' : null}
+                        className={style.labelEllipsis}
                     >
                         {workspace.title}
                     </Button>
@@ -115,6 +116,7 @@ const WorkspaceSelector: React.FC<WorkspaceSelectorProps> = ({
                             disabled={workspace.name === baseWorkspace}
                             onClick={createChangeBaseWorkspace(workspace.name)}
                             style={workspace.name === baseWorkspace ? 'brand' : null}
+                            className={style.labelEllipsis}
                         >
                             {workspace.title}
                         </Button>
@@ -131,6 +133,7 @@ const WorkspaceSelector: React.FC<WorkspaceSelectorProps> = ({
                             disabled={workspace.name === baseWorkspace}
                             onClick={createChangeBaseWorkspace(workspace.name)}
                             style={workspace.name === baseWorkspace ? 'brand' : null}
+                            className={style.labelEllipsis}
                         >
                             {workspace.title}
                         </Button>

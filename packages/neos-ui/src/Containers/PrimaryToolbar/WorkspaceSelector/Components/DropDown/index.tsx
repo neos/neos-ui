@@ -40,7 +40,7 @@ export const DropDown = ({
             className={cx(style.dropDownButton, buttonClassName)}
         >
             {buttonIcon}
-            {buttonLabel}
+            <span className={style.labelEllipsis}>{buttonLabel}</span>
             <Icon className={style.dropDownOpenerIcon} icon="chevron-down" padded="left"/>
         </Button>
     </>;

@@ -18,6 +18,10 @@
 .dropDownButton {
     /* TODO Dynamic name!!! */
     anchor-name: --neos-Workspace-Selector-anchor;
+
+    /* because of inline block item */
+    display: flex;
+    align-items: center;
 }
 
 .dropDownButton:focus {
@@ -26,4 +30,12 @@
 
 .dropDownContents:popover-open + .dropDownButton .dropDownOpenerIcon {
     transform: rotateX(180deg);
+}
+
+.labelEllipsis {
+    display: inline-block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 255px;
 }

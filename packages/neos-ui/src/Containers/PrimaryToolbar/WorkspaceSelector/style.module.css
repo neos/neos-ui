@@ -13,3 +13,12 @@
 .dropDownButton--isReadOnly {
     border-top: 2px solid var(--colors-PrimaryBlue);
 }
+
+.labelEllipsis {
+    display: inline-block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    /* including padding */
+    max-width: calc(255px + (var(--spacing-Full) * 2));
+}

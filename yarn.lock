@@ -1983,6 +1983,7 @@ __metadata:
   resolution: "@neos-project/neos-ui-link-editor-custom-node-tree@workspace:packages/neos-ui-link-editor-custom-node-tree"
   dependencies:
     "@neos-project/framework-promise-react": "workspace:*"
+    "@neos-project/neos-ui-shared-components": "workspace:*"
     "@neos-project/react-ui-components": "workspace:*"
     lodash.debounce: "npm:^4.0.8"
     react: "npm:^16.12.0"
@@ -2048,6 +2049,14 @@ __metadata:
     redux-saga: "npm:^0.15.0"
     redux-saga-test-plan: "npm:^3.6.0"
     typescript: "npm:^4.6.4"
+  languageName: unknown
+  linkType: soft
+
+"@neos-project/neos-ui-shared-components@workspace:*, @neos-project/neos-ui-shared-components@workspace:packages/neos-ui-shared-components":
+  version: 0.0.0-use.local
+  resolution: "@neos-project/neos-ui-shared-components@workspace:packages/neos-ui-shared-components"
+  dependencies:
+    "@neos-project/neos-ui-i18n": "workspace:*"
   languageName: unknown
   linkType: soft
 
@@ -2123,6 +2132,7 @@ __metadata:
     "@neos-project/neos-ui-redux-store": "workspace:*"
     "@neos-project/neos-ui-registry": "workspace:*"
     "@neos-project/neos-ui-sagas": "workspace:*"
+    "@neos-project/neos-ui-shared-components": "workspace:*"
     "@neos-project/neos-ui-validators": "workspace:*"
     "@neos-project/neos-ui-views": "workspace:*"
     "@neos-project/react-ui-components": "workspace:*"

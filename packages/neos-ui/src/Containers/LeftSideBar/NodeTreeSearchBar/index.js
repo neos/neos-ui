@@ -4,11 +4,10 @@ import {connect} from 'react-redux';
 import debounce from 'lodash.debounce';
 import mergeClassNames from 'classnames';
 
-import {translate} from '@neos-project/neos-ui-i18n';
 import {actions, selectors} from '@neos-project/neos-ui-redux-store';
 
 import {IconButton} from '@neos-project/react-ui-components';
-import NodeTreeSearchInput from './NodeTreeSearchInput/index';
+import {Search} from '@neos-project/neos-ui-shared-components';
 import NodeTreeFilter from './NodeTreeFilter/index';
 import style from './style.module.css';
 
@@ -29,7 +28,6 @@ class NodeTreeSearchBar extends PureComponent {
     }
 
     state = {
-        searchFocused: false,
         searchValue: '',
         filterNodeType: null
     };
@@ -54,24 +52,6 @@ class NodeTreeSearchBar extends PureComponent {
         this.setState({filterNodeType});
     }
 
-    handleSearchFocus = () => {
-        this.setState({searchFocused: true});
-    }
-
-    handleSearchBlur = () => {
-        this.setState({searchFocused: false});
-    }
-
-    handleClearClick = () => {
-        const {commenceSearch, rootNode} = this.props;
-        const contextPath = rootNode?.contextPath;
-        this.setState({
-            searchValue: '',
-            showClear: false
-        });
-        commenceSearch(contextPath, {query: '', filterNodeType: this.state.filterNodeType});
-    }
-
     handleSearchToggle = () => {
         const {toggleSearchBar} = this.props;
         toggleSearchBar();
@@ -79,8 +59,7 @@ class NodeTreeSearchBar extends PureComponent {
 
     render() {
         const {isSearchBarVisible} = this.props;
-        const {searchValue, searchFocused, filterNodeType} = this.state;
-        const searchLabel = translate('Neos.Neos.Ui:Main:search', 'Search');
+        const {searchValue, filterNodeType} = this.state;
 
         const searchToggleClassName = mergeClassNames({
             [style.searchToggleButton]: true,
@@ -97,15 +76,11 @@ class NodeTreeSearchBar extends PureComponent {
                     />
                 {isSearchBarVisible && (
                     <div className={style.searchBar}>
-                        <NodeTreeSearchInput
-                            label={searchLabel}
-                            value={searchValue}
-                            focused={searchFocused}
+                        <Search
+                            id="neos-NodeTreeSearchInput"
+                            initialValue={searchValue}
                             onChange={this.handleSearchChange}
-                            onFocus={this.handleSearchFocus}
-                            onBlur={this.handleSearchBlur}
-                            onClearClick={this.handleClearClick}
-                            />
+                        />
                         <NodeTreeFilter
                             value={filterNodeType}
                             onChange={this.handleFilterChange}

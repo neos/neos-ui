@@ -6,6 +6,7 @@
     "main": "./src/index.ts",
     "dependencies": {
         "@neos-project/framework-promise-react": "workspace:*",
+        "@neos-project/neos-ui-shared-components": "workspace:*",
         "@neos-project/react-ui-components": "workspace:*",
         "lodash.debounce": "^4.0.8",
         "react": "^16.12.0"

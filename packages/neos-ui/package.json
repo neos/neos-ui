@@ -41,6 +41,7 @@
     "@neos-project/neos-ui-redux-store": "workspace:*",
     "@neos-project/neos-ui-registry": "workspace:*",
     "@neos-project/neos-ui-sagas": "workspace:*",
+    "@neos-project/neos-ui-shared-components": "workspace:*",
     "@neos-project/neos-ui-validators": "workspace:*",
     "@neos-project/neos-ui-views": "workspace:*",
     "@neos-project/react-ui-components": "workspace:*",

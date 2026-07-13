@@ -78,7 +78,7 @@ export default class EditPreviewModeDropDown extends PureComponent {
                     </DropDown.Header>
                     <DropDown.Contents className={style.dropDown__contents}>
                         <div className={style.dropDown__groupHeader}>
-                            <Icon className={style.dropDown__btnIcon} icon={'pencil'}/> {translate('Neos.Neos:Main:content.components.editPreviewPanel.modes', 'Editing Modes')}
+                            <Icon className={style.dropDown__btnIcon} icon={'pencil'}/> {translate('Neos.Neos.Ui:Main:editPreviewDropDown.modes', 'Editing Modes')}
                         </div>
                         <ul>
                             {editingModes.map(editingMode => (
@@ -96,7 +96,7 @@ export default class EditPreviewModeDropDown extends PureComponent {
                         {previewModes.length > 0 && (
                             <>
                                 <div className={style.dropDown__groupHeader}>
-                                    <Icon className={style.dropDown__btnIcon} icon={'eye'}/> {translate('Neos.Neos:Main:content.components.editPreviewPanel.previewCentral', 'Preview Central')}
+                                    <Icon className={style.dropDown__btnIcon} icon={'eye'}/> {translate('Neos.Neos.Ui:Main:editPreviewDropDown.previewCentral', 'Preview Central')}
                                 </div>
                                 <ul>
                                     {previewModes.map(previewMode => (

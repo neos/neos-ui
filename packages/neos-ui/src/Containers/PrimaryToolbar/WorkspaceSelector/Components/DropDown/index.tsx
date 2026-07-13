@@ -11,17 +11,19 @@ export type DropDownProps = React.PropsWithChildren<{
     buttonLabel: string,
     buttonClassName?: string,
     dropDownClassName?: string,
+    dropDownIconClassName?: string,
 }>;
 
 export const DropDown = ({
     id,
     enabled,
     dropDownClassName,
+    dropDownIconClassName,
     children,
     buttonIcon,
     buttonTitle,
     buttonLabel,
-    buttonClassName
+    buttonClassName,
 }: DropDownProps) => {
     return <>
         <div
@@ -41,7 +43,7 @@ export const DropDown = ({
         >
             {buttonIcon}
             <span className={style.labelEllipsis}>{buttonLabel}</span>
-            <Icon className={style.dropDownOpenerIcon} icon="chevron-down" padded="left"/>
+            <Icon className={cx(style.dropDownOpenerIcon, dropDownIconClassName)} icon="chevron-down" padded="left"/>
         </Button>
     </>;
 }

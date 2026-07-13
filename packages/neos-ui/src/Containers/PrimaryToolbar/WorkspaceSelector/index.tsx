@@ -95,6 +95,7 @@ const WorkspaceSelector: React.FC<WorkspaceSelectorProps> = ({
         buttonLabel={baseWorkspaceTitle}
         buttonClassName={dropDownButtonStyles}
         dropDownClassName={style.dropDownContents}
+        dropDownIconClassName={style.dropDownIcon}
     >
         <List icon="globe" label={translate('Neos.Neos.Ui:Main:publicWorkspaceGroupLabel', 'Public')}>
             {rootWorkspaces.map(workspace => (

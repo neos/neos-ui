@@ -28,12 +28,11 @@
 }
 
 .dropDownButton--disabled {
-    /* dont use opacity which would also darken border indicator */
+    /* we only apply the opacity to the drodown icon */
     opacity: 1!important;
-    color: rgba(255, 255, 255, 0.5);
 }
 
-.dropDownButton--disabled svg {
+.dropDownButton--disabled .dropDownIcon {
     color: rgba(255, 255, 255, 0.5);
 }
 

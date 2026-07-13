@@ -103,5 +103,6 @@
 
     .dimensionSwitcherDropDown div[role='button'] {
         padding: 5px 0;
+        user-select: none;
     }
 }

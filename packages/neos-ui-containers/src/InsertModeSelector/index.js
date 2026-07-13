@@ -86,7 +86,7 @@ export default class InsertModeSelector extends PureComponent {
         return (
             <div className={style.root}>
                 <span className={style.label}>
-                    {translate('Neos.Neos:Main:insertMode')}&nbsp;
+                    {translate('Neos.Neos.Ui:Main:insertMode')}&nbsp;
                 </span>
                 <ButtonGroup value={mode} onSelect={this.handleSelect} className={style.buttonGroup}>
                     <Button
@@ -94,7 +94,7 @@ export default class InsertModeSelector extends PureComponent {
                         disabled={!enableAlongsideModes}
                         style="lighter"
                         size="small"
-                        title={`${translate('Neos.Neos:Main:insert')} ${translate('Neos.Neos.Ui:Main:above')}`}
+                        title={`${translate('Neos.Neos.Ui:Main:insert')} ${translate('Neos.Neos.Ui:Main:above')}`}
                     >
                         <ResourceIcon source={createAboveIcon} className={style.iconAlignment}/>
                         {translate('Neos.Neos.Ui:Main:above', 'Above')}
@@ -105,7 +105,7 @@ export default class InsertModeSelector extends PureComponent {
                         disabled={!enableAlongsideModes}
                         style="lighter"
                         size="small"
-                        title={`${translate('Neos.Neos:Main:insert')} ${translate('Neos.Neos.Ui:Main:below')}`}
+                        title={`${translate('Neos.Neos.Ui:Main:insert')} ${translate('Neos.Neos.Ui:Main:below')}`}
                     >
                         <ResourceIcon source={createBelowIcon} className={style.iconAlignment}/>
                         {translate('Neos.Neos.Ui:Main:below', 'Below')}
@@ -116,7 +116,7 @@ export default class InsertModeSelector extends PureComponent {
                         disabled={!enableIntoMode}
                         style="lighter"
                         size="small"
-                        title={`${translate('Neos.Neos:Main:insert')} ${translate('Neos.Neos.Ui:Main:inside')}`}
+                        title={`${translate('Neos.Neos.Ui:Main:insert')} ${translate('Neos.Neos.Ui:Main:inside')}`}
                     >
                         <ResourceIcon source={createInsideIcon} className={style.iconAlignment}/>
                         {translate('Neos.Neos.Ui:Main:inside', 'Inside')}

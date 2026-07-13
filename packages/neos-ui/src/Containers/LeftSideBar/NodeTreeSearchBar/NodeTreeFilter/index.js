@@ -33,7 +33,7 @@ export default class NodeTreeFilter extends PureComponent {
 
     render() {
         const {i18nRegistry, nodeTypesRegistry, onChange, value} = this.props;
-        const label = translate('Neos.Neos:Main:filter', 'Filter');
+        const label = translate('Neos.Neos.Ui:Main:filter', 'Filter');
 
         const presets = getConfiguration(configuration => configuration?.nodeTree?.presets);
         let options = Object.keys(presets)
@@ -71,8 +71,8 @@ export default class NodeTreeFilter extends PureComponent {
                     searchTerm={this.state.filterTerm}
                     onSearchTermChange={this.handleFilterTermChange}
                     threshold={0}
-                    noMatchesFoundLabel={translate('Neos.Neos:Main:noMatchesFound')}
-                    searchBoxLeftToTypeLabel={translate('Neos.Neos:Main:searchBoxLeftToType')}
+                    noMatchesFoundLabel={translate('Neos.Neos.Ui:Main:noMatchesFound')}
+                    searchBoxLeftToTypeLabel={translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
                     />
             </div>
         );

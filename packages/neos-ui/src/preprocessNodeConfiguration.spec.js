@@ -30,7 +30,7 @@ describe(`preprocessing NodeConfiguration`, () => {
                     type: 'integer',
                     ui: {
                         editorOptions: {
-                            placeholder: 'Neos.Neos:Main:choose',
+                            placeholder: 'Vendor.Site:Main:choose',
                             values: {
                                 1: {
                                     label: '1'
@@ -53,7 +53,7 @@ describe(`preprocessing NodeConfiguration`, () => {
                     type: 'string',
                     ui: {
                         editorOptions: {
-                            placeholder: 'Neos.Neos:Main:choose',
+                            placeholder: 'Vendor.Site:Main:choose',
                             dataSourceIdentifier: 'data-source-2',
                             dataSourceAdditionalData: {
                                 property: 1
@@ -83,7 +83,7 @@ describe(`preprocessing NodeConfiguration`, () => {
                     type: 'integer',
                     ui: {
                         editorOptions: {
-                            placeholder: 'Neos.Neos:Main:choose',
+                            placeholder: 'Vendor.Site:Main:choose',
                             values: {
                                 1: {
                                     label: '1'
@@ -106,7 +106,7 @@ describe(`preprocessing NodeConfiguration`, () => {
                     type: 'string',
                     ui: {
                         editorOptions: {
-                            placeholder: 'Neos.Neos:Main:choose',
+                            placeholder: 'Vendor.Site:Main:choose',
                             dataSourceIdentifier: 'data-source-2',
                             dataSourceAdditionalData: {
                                 property: 'ClientEval:node.properties.property'
@@ -129,7 +129,7 @@ describe(`preprocessing NodeConfiguration`, () => {
                     type: 'integer',
                     ui: {
                         editorOptions: {
-                            placeholder: 'Neos.Neos:Main:choose',
+                            placeholder: 'Vendor.Site:Main:choose',
                             values: {
                                 1: {
                                     label: '1'
@@ -152,7 +152,7 @@ describe(`preprocessing NodeConfiguration`, () => {
                     type: 'string',
                     ui: {
                         editorOptions: {
-                            placeholder: 'Neos.Neos:Main:choose',
+                            placeholder: 'Vendor.Site:Main:choose',
                             dataSourceIdentifier: 'data-source-2',
                             dataSourceAdditionalData: {
                                 property: 1

@@ -30,7 +30,7 @@ export const SearchInput: React.FC<Props> = props => {
                 className={styles.textInput}
                 type="search"
                 value={props.value}
-                placeholder={translate('Neos.Neos:Main:search')}
+                placeholder={translate('Neos.Neos.Ui:Main:search')}
                 onChange={props.onChange}
             />
             {props.value && (

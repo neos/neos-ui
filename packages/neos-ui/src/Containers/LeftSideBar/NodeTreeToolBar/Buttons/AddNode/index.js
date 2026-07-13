@@ -30,7 +30,7 @@ export default class AddNode extends PureComponent {
                     icon="plus"
                     onClick={this.handleClick}
                     hoverStyle="brand"
-                    title={translate('Neos.Neos:Main:createNew')}
+                    title={translate('Neos.Neos.Ui:Main:createNew')}
                     />
             </span>
         );

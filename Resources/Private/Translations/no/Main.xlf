@@ -292,6 +292,302 @@
           <target xml:lang="no" state="needs-translation">Discarded {0} changes.</target>
         </trans-unit>
       </group>
-    </body>
+    <trans-unit id="reviewChanges" xml:space="preserve">
+        <source>Review changes</source>
+        <target state="translated">Se gjennom endringene</target>
+      </trans-unit>
+      <trans-unit id="apply" xml:space="preserve">
+        <source>Apply</source>
+        <target state="translated">Ta i bruk</target>
+      </trans-unit>
+      <trans-unit id="cancel" xml:space="preserve">
+        <source>Cancel</source>
+        <target state="translated">Avbryt</target>
+      </trans-unit>
+      <trans-unit id="back" xml:space="preserve">
+        <source>Back</source>
+        <target state="translated">Tilbake</target>
+      </trans-unit>
+      <trans-unit id="node" xml:space="preserve">
+        <source>Node</source>
+        <target state="translated">Node</target>
+      </trans-unit>
+      <trans-unit id="close" xml:space="preserve">
+        <source>Close</source>
+        <target state="translated">Lukk</target>
+      </trans-unit>
+      <trans-unit id="copy" xml:space="preserve">
+        <source>Copy</source>
+        <target state="translated">Kopier</target>
+      </trans-unit>
+      <trans-unit id="cut" xml:space="preserve">
+        <source>Cut</source>
+        <target state="translated">Klipp ut</target>
+      </trans-unit>
+      <trans-unit id="delete" xml:space="preserve">
+        <source>Delete</source>
+        <target state="translated">Slett</target>
+      </trans-unit>
+      <trans-unit id="discard" xml:space="preserve">
+        <source>Discard</source>
+        <target state="translated">Forkast</target>
+      </trans-unit>
+      <trans-unit id="hideUnhide" xml:space="preserve">
+        <source>Hide / Unhide</source>
+        <target state="translated">Skjul / Vis</target>
+      </trans-unit>
+      <trans-unit id="hide" xml:space="preserve">
+        <source>Hide</source>
+        <target state="translated">Skjul</target>
+      </trans-unit>
+      <trans-unit id="unhide" xml:space="preserve">
+        <source>Unhide</source>
+        <target state="translated">Opphev skjuling</target>
+      </trans-unit>
+      <trans-unit id="loading" xml:space="preserve">
+        <source>Loading</source>
+        <target state="translated">Laster inn</target>
+      </trans-unit>
+      <trans-unit id="navigate" xml:space="preserve">
+        <source>Navigate</source>
+        <target state="translated">Naviger</target>
+      </trans-unit>
+      <trans-unit id="paste" xml:space="preserve">
+        <source>Paste</source>
+        <target state="translated">Lim inn</target>
+      </trans-unit>
+      <trans-unit id="password" xml:space="preserve">
+        <source>Password</source>
+        <target state="translated">Passord</target>
+      </trans-unit>
+      <trans-unit id="remove" xml:space="preserve">
+        <source>Remove</source>
+        <target state="translated">Fjern</target>
+      </trans-unit>
+      <trans-unit id="refresh" xml:space="preserve">
+        <source>Refresh</source>
+        <target state="translated">Oppdater</target>
+      </trans-unit>
+      <trans-unit id="search" xml:space="preserve">
+        <source>Search</source>
+        <target state="translated">Søk</target>
+      </trans-unit>
+      <trans-unit id="toggleInspector" xml:space="preserve">
+        <source>Toggle inspector</source>
+        <target state="translated">Vis/skjul inspektør</target>
+      </trans-unit>
+      <trans-unit id="username" xml:space="preserve">
+        <source>Username</source>
+        <target state="translated">Brukernavn</target>
+      </trans-unit>
+      <trans-unit id="nodeInfoView.created" xml:space="preserve">
+        <source>Created</source>
+        <target state="translated">Opprettet</target>
+      </trans-unit>
+      <trans-unit id="nodeInfoView.lastModification" xml:space="preserve">
+        <source>Last modification</source>
+        <target state="translated">Sist endret</target>
+      </trans-unit>
+      <trans-unit id="nodeInfoView.lastPublication" xml:space="preserve">
+        <source>Last publication</source>
+        <target state="translated">Sist publisert</target>
+      </trans-unit>
+      <trans-unit id="nodeInfoView.identifier" xml:space="preserve">
+        <source>Identifier</source>
+        <target state="translated">Identifikator</target>
+      </trans-unit>
+      <trans-unit id="nodeInfoView.name" xml:space="preserve">
+        <source>Name</source>
+        <target state="translated">Navn</target>
+      </trans-unit>
+      <trans-unit id="filter" xml:space="preserve">
+        <source>Filter</source>
+        <target state="translated">Filter</target>
+      </trans-unit>
+      <trans-unit id="unavailable" xml:space="preserve">
+        <source>Unavailable</source>
+        <target state="needs-translation">Unavailable</target>
+      </trans-unit>
+      <trans-unit id="deleteConfirm" xml:space="preserve">
+        <source>Yes, delete it!</source>
+        <target state="needs-translation">Yes, delete it!</target>
+      </trans-unit>
+      <trans-unit id="toggleContentTree" xml:space="preserve">
+        <source>Toggle content tree</source>
+        <target state="needs-translation">Toggle content tree</target>
+      </trans-unit>
+      <trans-unit id="showPublishOptions" xml:space="preserve">
+        <source>Show publish options</source>
+        <target state="needs-translation">Show publish options</target>
+      </trans-unit>
+      <trans-unit id="activateFullscreen" xml:space="preserve">
+        <source>Activate Fullscreen edit mode</source>
+        <target state="needs-translation">Activate Fullscreen edit mode</target>
+      </trans-unit>
+      <trans-unit id="deactivateFullscreen" xml:space="preserve">
+        <source>Deactivate Fullscreen edit mode</source>
+        <target state="needs-translation">Deactivate Fullscreen edit mode</target>
+      </trans-unit>
+      <trans-unit id="showPreview" xml:space="preserve">
+        <source>Show preview</source>
+        <target state="needs-translation">Show preview</target>
+      </trans-unit>
+      <trans-unit id="discardAll" xml:space="preserve">
+        <source>Discard all</source>
+        <target state="translated">Forkast alt</target>
+      </trans-unit>
+      <trans-unit id="publishAll" xml:space="preserve">
+        <source>Publish all</source>
+        <target state="translated">Publiser alt</target>
+      </trans-unit>
+      <trans-unit id="editPreviewDropDown.modes" xml:space="preserve">
+        <source>Editing Modes</source>
+        <target state="translated">Redigeringsmoduser</target>
+      </trans-unit>
+      <trans-unit id="editPreviewDropDown.previewCentral" xml:space="preserve">
+        <source>Preview Central</source>
+        <target state="translated">Forhåndsvisningssentral</target>
+      </trans-unit>
+      <trans-unit id="inspector.unappliedChangesDialog.header" xml:space="preserve">
+        <source>You still have changes. What do you want to do with them?</source>
+        <target state="translated">Du har fortsatt endringer. Hva vil du gjøre med dem?</target>
+      </trans-unit>
+      <trans-unit id="inspector.unappliedChangesDialog.button.default" xml:space="preserve">
+        <source>Continue editing</source>
+        <target state="translated">Fortsett redigeringen</target>
+      </trans-unit>
+      <trans-unit id="inspector.unappliedChangesDialog.button.danger" xml:space="preserve">
+        <source>Throw away</source>
+        <target state="translated">Forkast</target>
+      </trans-unit>
+      <trans-unit id="inspector.unappliedChangesDialog.button.success" xml:space="preserve">
+        <source>Apply</source>
+        <target state="translated">Ta i bruk</target>
+      </trans-unit>
+      <trans-unit id="inspector.editors.dateTimeEditor.noDateSet" xml:space="preserve">
+        <source>No date set</source>
+        <target state="translated">Ingen dato</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.stringLength.outOfBounds" xml:space="preserve">
+        <source>The length of this text must be between {minimum} and {maximum} characters.</source>
+        <target state="translated">Lengden på denne teksten må være mellom {{minimum}} og {{maximum}} tegn.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.stringLength.smallerThanMinimum" xml:space="preserve">
+        <source>This field must contain at least {minimum} characters.</source>
+        <target state="translated">Dette feltet må inneholde minst {{minimum}} tegn.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.stringLength.greaterThanMaximum" xml:space="preserve">
+        <source>This text may not exceed {maximum} characters.</source>
+        <target state="translated">Denne teksten kan ikke være lenger enn {{maximum}} tegn.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.alphanumericValidator" xml:space="preserve">
+        <source>Only regular characters (a to z, umlauts, ...) and numbers are allowed.</source>
+        <target state="translated">Bare vanlige tegn (a til å, omlyder, m. fl.) og tall er tillatt.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.countValidator.notCountable" xml:space="preserve">
+        <source>The given subject was not countable.</source>
+        <target state="translated">Verdien var ikke tellbar.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.countValidator.countBetween" xml:space="preserve">
+        <source>The count must be between {minimum} and {maximum}.</source>
+        <target state="translated">Antallet må være mellom {{minimum}} og {{maximum}}.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.dateTimeRangeValidator.invalidDate" xml:space="preserve">
+        <source>The given value was not a valid date.</source>
+        <target state="translated">Den gitte verdien var ikke en gyldig dato.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.emailAddressValidator.invalidEmail" xml:space="preserve">
+        <source>Please specify a valid email address.</source>
+        <target state="translated">Angi en gyldig e-postadresse.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.floatValidator.validFloatExpected" xml:space="preserve">
+        <source>A valid float number is expected.</source>
+        <target state="translated">Verdien må være et gyldig desimaltall.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.integerValidator.aValidIntegerNumberIsExpected" xml:space="preserve">
+        <source>A valid integer number is expected.</source>
+        <target state="translated">Verdien må være et gyldig heltall.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.labelValidator.invalidLabel" xml:space="preserve">
+        <source>Only letters, numbers, spaces and certain punctuation marks are expected.</source>
+        <target state="translated">Bare bokstaver, tall, mellomrom og visse tegn kan brukes.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.notEmptyValidator.isEmpty" xml:space="preserve">
+        <source>This property is required.</source>
+        <target state="translated">Denne verdien er påkrevet.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.numberRangeValidator.validNumberExpected" xml:space="preserve">
+        <source>A valid number is expected.</source>
+        <target state="translated">Verdien må være et gyldig tall.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.numberRangeValidator.numberShouldBeInRange" xml:space="preserve">
+        <source>Please enter a valid number between {minimum} and {maximum}</source>
+        <target state="translated">Angi et tall mellom {{minimum}} og {{maximum}}</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.regularExpressionValidator.patternDoesNotMatch" xml:space="preserve">
+        <source>The given subject did not match the pattern ({pattern})</source>
+        <target state="translated">Verdien samsvarte ikke med mønsteret ({{pattern}})</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.stringValidator.stringIsExpected" xml:space="preserve">
+        <source>A valid string is expected.</source>
+        <target state="translated">Verdien må være en tekst.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.textValidator.validTextWithoutAnyXMLtagsIsExpected" xml:space="preserve">
+        <source>Valid text without any XML tags is expected.</source>
+        <target state="translated">Teksten må være uten XML-tagger.</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.uuidValidator.invalidUuid" xml:space="preserve">
+        <source>The given subject is not a valid UUID.</source>
+        <target state="translated">Verdien er ikke en gyldig UUID.</target>
+      </trans-unit>
+      <trans-unit id="dimension.createDialog.header" xml:space="preserve">
+        <source>Start with an empty or pre-filled document?</source>
+        <target state="translated">Start med et tomt eller forhåndsutfylt dokument?</target>
+      </trans-unit>
+      <trans-unit id="dimension.createDialog.nodeTypeDoesNotExistInDimension" xml:space="preserve">
+        <source>This {nodeTypeLabel} does not exist yet in {currentDimensionChoiceText}.</source>
+        <target state="translated">Denne {nodeTypeLabel} eksisterer ikke ennå i {currentDimensionChoiceText}.</target>
+      </trans-unit>
+      <trans-unit id="dimension.createDialog.createEmptyOrCopy" xml:space="preserve">
+        <source>You can create it now, either starting with an empty {nodeTypeLabel} or copying all content from the currently visible {nodeTypeLabel} in {currentDocumentDimensionChoiceText}.</source>
+        <target state="translated">Du kan opprette den nå, enten ved å starte med en tom {nodeTypeLabel} eller å kopiere innholdet fra den nåværende, synlige {nodeTypeLabel} i {currentDocumentDimensionChoiceText}.</target>
+      </trans-unit>
+      <trans-unit id="dimension.createDialog.existingAncestorDocuments" xml:space="preserve">
+        <source>Additionally, there are {numberOfNodesMissingInRootline} ancestor documents which do not exist in the chosen variant either, and which will be created as well.</source>
+        <target state="translated">I tillegg er det {numberOfNodesMissingInRootline} forgjenger-dokumenter som ikke eksisterer i den valgte varienten heller, som vil opprettes.</target>
+      </trans-unit>
+      <trans-unit id="dimension.createDialog.createEmpty" xml:space="preserve">
+        <source>Create empty</source>
+        <target state="translated">Opprett tom</target>
+      </trans-unit>
+      <trans-unit id="dimension.createDialog.createAndCopy" xml:space="preserve">
+        <source>Create and copy</source>
+        <target state="translated">Opprett og kopier</target>
+      </trans-unit>
+      <trans-unit id="navigate.deleteNodeDialog.header" xml:space="preserve">
+        <source>Do you really want to delete</source>
+        <target state="translated">Ønsker du virkelig å slette</target>
+      </trans-unit>
+      <trans-unit id="height" xml:space="preserve">
+        <source>Height</source>
+        <target state="translated">Høyde</target>
+      </trans-unit>
+      <trans-unit id="media" xml:space="preserve">
+        <source>Media</source>
+        <target state="translated">Media</target>
+      </trans-unit>
+      <trans-unit id="crop" xml:space="preserve">
+        <source>Crop</source>
+        <target state="translated">Beskjær</target>
+      </trans-unit>
+      <trans-unit id="width" xml:space="preserve">
+        <source>Width</source>
+        <target state="translated">Bredde</target>
+      </trans-unit>
+      <trans-unit id="workspaces" xml:space="preserve">
+        <source>Workspaces</source>
+        <target state="translated">Arbeidsområder</target>
+      </trans-unit>
+      </body>
   </file>
 </xliff>

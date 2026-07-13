@@ -26,7 +26,7 @@ export default class HideSelectedNode extends PureComponent {
                 onClick={onClick}
                 icon="eye-slash"
                 hoverStyle="brand"
-                title={translate('Neos.Neos:Main:hideUnhide')}
+                title={translate('Neos.Neos.Ui:Main:hideUnhide')}
                 />
         );
     }

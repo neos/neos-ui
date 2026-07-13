@@ -422,10 +422,10 @@ export default class Inspector extends PureComponent {
                 </Tabs>
                 <Bar position="bottom" className={style.actions}>
                     <Button id="neos-Inspector-Discard" style="lighter" disabled={isDiscardDisabled} onClick={this.handleDiscard} className={`${style.button} ${style.discardButton}`}>
-                        {translate('Neos.Neos:Main:discard', 'discard')}
+                        {translate('Neos.Neos.Ui:Main:discard', 'discard')}
                     </Button>
                     <Button id="neos-Inspector-Apply" style="lighter" disabled={isApplyDisabled || isWorkspaceReadOnly} onClick={this.handleApply} className={`${style.button} ${style.publishButton}`}>
-                        {translate('Neos.Neos:Main:apply', 'apply')}
+                        {translate('Neos.Neos.Ui:Main:apply', 'apply')}
                     </Button>
                 </Bar>
                 {

@@ -61,7 +61,7 @@ class DateTime extends PureComponent {
                 dateOnly={!hasTimeFormat(options.format)}
                 timeOnly={!hasDateFormat(options.format)}
                 is24Hour={hasTimeFormat(options.format) && has24HourFormat(options.format)}
-                placeholder={i18nRegistry.translate(options?.placeholder || 'Neos.Neos:Main:content.inspector.editors.dateTimeEditor.noDateSet')}
+                placeholder={i18nRegistry.translate(options?.placeholder || 'Neos.Neos.Ui:Main:inspector.editors.dateTimeEditor.noDateSet')}
                 todayLabel={translate('Neos.Neos:Main:content.inspector.editors.dateTimeEditor.today', 'Today')}
                 locale={interfaceLanguage}
                 disabled={options.disabled}

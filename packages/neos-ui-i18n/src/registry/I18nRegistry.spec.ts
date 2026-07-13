@@ -13,7 +13,7 @@ import {I18nRegistry} from './I18nRegistry';
 
 beforeAll(() => {
     setupI18n('en-US', 'one,other', {
-        'Neos_Neos': { // eslint-disable-line quote-props
+        'Neos_Neos_Ui': { // eslint-disable-line quote-props
             'Main': { // eslint-disable-line quote-props
                 'someLabel': 'The Translation', // eslint-disable-line quote-props
                 'singularLabelOnly': {
@@ -50,7 +50,7 @@ test(`
     Host > Containers > I18n: should display the translated string, if a translation
     was found via short-string.`, () => {
     const registry = new I18nRegistry('');
-    const actual = registry.translate('Neos.Neos:Main:someLabel');
+    const actual = registry.translate('Neos.Neos.Ui:Main:someLabel');
 
     expect(actual).toBe('The Translation');
 });
@@ -59,7 +59,7 @@ test(`
     Host > Containers > I18n: should display the translated string, if a translation
     was found via full-length prop description.`, () => {
     const registry = new I18nRegistry('');
-    const actual = registry.translate('Neos.Neos:Main:someLabel', undefined, undefined, 'Neos.Neos', 'Main');
+    const actual = registry.translate('Neos.Neos.Ui:Main:someLabel', undefined, undefined, 'Neos.Neos', 'Main');
 
     expect(actual).toBe('The Translation');
 });
@@ -67,7 +67,7 @@ test(`
 test(`
     Host > Containers > I18n: Should display plural when no quantity is defined.`, () => {
     const registry = new I18nRegistry('');
-    const actual = registry.translate('Neos.Neos:Main:pluralLabel', undefined, undefined, 'Neos.Neos', 'Main');
+    const actual = registry.translate('Neos.Neos.Ui:Main:pluralLabel', undefined, undefined, 'Neos.Neos', 'Main');
 
     expect(actual).toBe('Plural Translation');
 });
@@ -75,7 +75,7 @@ test(`
 test(`
     Host > Containers > I18n: Should display plural when quantity is zero.`, () => {
     const registry = new I18nRegistry('');
-    const actual = registry.translate('Neos.Neos:Main:pluralLabel', undefined, undefined, 'Neos.Neos', 'Main', 0);
+    const actual = registry.translate('Neos.Neos.Ui:Main:pluralLabel', undefined, undefined, 'Neos.Neos', 'Main', 0);
 
     expect(actual).toBe('Plural Translation');
 });
@@ -83,7 +83,7 @@ test(`
 test(`
     Host > Containers > I18n: Should display singular when quantity is one.`, () => {
     const registry = new I18nRegistry('');
-    const actual = registry.translate('Neos.Neos:Main:pluralLabel', undefined, undefined, 'Neos.Neos', 'Main', 1);
+    const actual = registry.translate('Neos.Neos.Ui:Main:pluralLabel', undefined, undefined, 'Neos.Neos', 'Main', 1);
 
     expect(actual).toBe('Singular Translation');
 });
@@ -91,7 +91,7 @@ test(`
 test(`
     Host > Containers > I18n: Should display plural when quantity is two.`, () => {
     const registry = new I18nRegistry('');
-    const actual = registry.translate('Neos.Neos:Main:pluralLabel', undefined, undefined, 'Neos.Neos', 'Main', 2);
+    const actual = registry.translate('Neos.Neos.Ui:Main:pluralLabel', undefined, undefined, 'Neos.Neos', 'Main', 2);
 
     expect(actual).toBe('Plural Translation');
 });
@@ -99,7 +99,7 @@ test(`
 test(`
     Host > Containers > I18n: Should display regular language label even when no plural exists and a quantity is defined.`, () => {
     const registry = new I18nRegistry('');
-    const actual = registry.translate('Neos.Neos:Main:someLabel', undefined, undefined, 'Neos.Neos', 'Main', 2);
+    const actual = registry.translate('Neos.Neos.Ui:Main:someLabel', undefined, undefined, 'Neos.Neos', 'Main', 2);
 
     expect(actual).toBe('The Translation');
 });
@@ -107,7 +107,7 @@ test(`
 test(`
     Host > Containers > I18n: Should display singular when quantity is higher but plural label is not defined`, () => {
     const registry = new I18nRegistry('');
-    const actual = registry.translate('Neos.Neos:Main:singularLabelOnly', undefined, undefined, 'Neos.Neos', 'Main', 2);
+    const actual = registry.translate('Neos.Neos.Ui:Main:singularLabelOnly', undefined, undefined, 'Neos.Neos', 'Main', 2);
 
     expect(actual).toBe('Singular Translation');
 });

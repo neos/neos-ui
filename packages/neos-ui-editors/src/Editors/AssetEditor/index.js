@@ -268,7 +268,7 @@ export default class AssetEditor extends PureComponent {
         return (
             <SelectBox
                 optionValueField="identifier"
-                loadingLabel={translate('Neos.Neos:Main:loading')}
+                loadingLabel={translate('Neos.Neos.Ui:Main:loading')}
                 displaySearchBox={this.isFeatureEnabled('mediaBrowser')}
                 ListPreviewElement={AssetOption}
                 placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}
@@ -280,8 +280,8 @@ export default class AssetEditor extends PureComponent {
                 showDropDownToggle={false}
                 allowEmpty={true}
                 onSearchTermChange={this.handleSearchTermChange}
-                noMatchesFoundLabel={translate('Neos.Neos:Main:noMatchesFound')}
-                searchBoxLeftToTypeLabel={translate('Neos.Neos:Main:searchBoxLeftToType')}
+                noMatchesFoundLabel={translate('Neos.Neos.Ui:Main:noMatchesFound')}
+                searchBoxLeftToTypeLabel={translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
                 threshold={this.props?.options?.threshold}
                 disabled={disabled}
             />
@@ -295,7 +295,7 @@ export default class AssetEditor extends PureComponent {
             <MultiSelectBox
                 dndType={dndTypes.MULTISELECT}
                 optionValueField="identifier"
-                loadingLabel={translate('Neos.Neos:Main:loading')}
+                loadingLabel={translate('Neos.Neos.Ui:Main:loading')}
                 displaySearchBox={this.isFeatureEnabled('mediaBrowser')}
                 ListPreviewElement={AssetOption}
                 placeholder={this.props.i18nRegistry.translate(this.props.placeholder)}
@@ -306,8 +306,8 @@ export default class AssetEditor extends PureComponent {
                 searchOptions={this.state.searchOptions}
                 showDropDownToggle={false}
                 onSearchTermChange={this.handleSearchTermChange}
-                noMatchesFoundLabel={translate('Neos.Neos:Main:noMatchesFound')}
-                searchBoxLeftToTypeLabel={translate('Neos.Neos:Main:searchBoxLeftToType')}
+                noMatchesFoundLabel={translate('Neos.Neos.Ui:Main:noMatchesFound')}
+                searchBoxLeftToTypeLabel={translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
                 threshold={this.props?.options?.threshold}
                 disabled={disabled}
             />

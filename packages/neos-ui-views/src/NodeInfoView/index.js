@@ -59,29 +59,29 @@ export default class NodeInfoView extends PureComponent {
         return (
             <ul className={style.nodeInfoView}>
                 <li className={style.nodeInfoView__item} title={new Date(properties.created).toLocaleString()}>
-                    <div className={style.nodeInfoView__title}>{translate('Neos.Neos:Main:created', 'Created')}</div>
+                    <div className={style.nodeInfoView__title}>{translate('Neos.Neos.Ui:Main:nodeInfoView.created', 'Created')}</div>
                     <NodeInfoViewContent>{new Date(properties.created).toLocaleString()}</NodeInfoViewContent>
                 </li>
                 <li className={style.nodeInfoView__item} title={new Date(properties.lastModification).toLocaleString()}>
-                    <div className={style.nodeInfoView__title}>{translate('Neos.Neos:Main:lastModification', 'Last modification')}</div>
-                    <NodeInfoViewContent>{properties.lastModification ? new Date(properties.lastModification).toLocaleString() : translate('Neos.Neos:Main:unavailable', 'unavailable')}</NodeInfoViewContent>
+                    <div className={style.nodeInfoView__title}>{translate('Neos.Neos.Ui:Main:nodeInfoView.lastModification', 'Last modification')}</div>
+                    <NodeInfoViewContent>{properties.lastModification ? new Date(properties.lastModification).toLocaleString() : translate('Neos.Neos.Ui:Main:unavailable', 'unavailable')}</NodeInfoViewContent>
                 </li>
                 <li className={style.nodeInfoView__item} title={new Date(properties.lastPublication).toLocaleString()}>
-                    <div className={style.nodeInfoView__title}>{translate('Neos.Neos:Main:lastPublication', 'Last publication')}</div>
-                    <NodeInfoViewContent>{properties.lastPublication ? new Date(properties.lastPublication).toLocaleString() : translate('Neos.Neos:Main:unavailable', 'unavailable')}</NodeInfoViewContent>
+                    <div className={style.nodeInfoView__title}>{translate('Neos.Neos.Ui:Main:nodeInfoView.lastPublication', 'Last publication')}</div>
+                    <NodeInfoViewContent>{properties.lastPublication ? new Date(properties.lastPublication).toLocaleString() : translate('Neos.Neos.Ui:Main:unavailable', 'unavailable')}</NodeInfoViewContent>
                 </li>
                 <li className={style.nodeInfoView__item} title={properties.identifier}>
-                    <div className={style.nodeInfoView__title}>{translate('Neos.Neos:Main:identifier', 'Identifier')}</div>
+                    <div className={style.nodeInfoView__title}>{translate('Neos.Neos.Ui:Main:nodeInfoView.identifier', 'Identifier')}</div>
                     <NodeInfoViewContent>{properties.identifier}</NodeInfoViewContent>
                 </li>
                 <li className={style.nodeInfoView__item} title={properties.nodeAddress}>
-                    <div className={style.nodeInfoView__title}>{translate('Neos.Neos:Main:nodeAddress', 'Node Address')}</div>
+                    <div className={style.nodeInfoView__title}>{translate('Neos.Neos.Ui:Main:nodeAddress', 'Node Address')}</div>
                     <NodeInfoViewContent>{properties.nodeAddress}</NodeInfoViewContent>
                 </li>
                 {properties.name ? (
                     <li className={style.nodeInfoView__item} title={properties.name}>
-                        <div className={style.nodeInfoView__title}>{translate('Neos.Neos:Main:name', 'Name')}</div>
-                        <NodeInfoViewContent>{properties.name ?? translate('Neos.Neos:Main:unavailable', 'unavailable')}</NodeInfoViewContent>
+                        <div className={style.nodeInfoView__title}>{translate('Neos.Neos.Ui:Main:nodeInfoView.name', 'Name')}</div>
+                        <NodeInfoViewContent>{properties.name ?? translate('Neos.Neos.Ui:Main:unavailable', 'unavailable')}</NodeInfoViewContent>
                     </li>
                 ) : ''}
                 <li className={style.nodeInfoView__item} title={nodeType}>

@@ -137,7 +137,7 @@ export default class DataSourceBasedSelectBoxEditor extends PureComponent {
 
         // Placeholder text must be unescaped in case html entities were used
         const placeholder = options && options.placeholder && i18nRegistry.translate(unescape(options.placeholder));
-        const loadingLabel = translate('Neos.Neos:Main:loading', 'Loading');
+        const loadingLabel = translate('Neos.Neos.Ui:Main:loading', 'Loading');
 
         if (options.multiple) {
             return (<MultiSelectBox
@@ -153,8 +153,8 @@ export default class DataSourceBasedSelectBoxEditor extends PureComponent {
                 displaySearchBox={shouldDisplaySearchBox(options, processedSelectBoxOptions)}
                 searchOptions={searchOptions(this.state.searchTerm, processedSelectBoxOptions)}
                 onSearchTermChange={this.handleSearchTermChange}
-                noMatchesFoundLabel={translate('Neos.Neos:Main:noMatchesFound')}
-                searchBoxLeftToTypeLabel={translate('Neos.Neos:Main:searchBoxLeftToType')}
+                noMatchesFoundLabel={translate('Neos.Neos.Ui:Main:noMatchesFound')}
+                searchBoxLeftToTypeLabel={translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
                 threshold={options.threshold}
                 disabled={options.disabled}
             />);
@@ -173,8 +173,8 @@ export default class DataSourceBasedSelectBoxEditor extends PureComponent {
             allowEmpty={options.allowEmpty}
             displaySearchBox={shouldDisplaySearchBox(options, processedSelectBoxOptions)}
             onSearchTermChange={this.handleSearchTermChange}
-            noMatchesFoundLabel={translate('Neos.Neos:Main:noMatchesFound')}
-            searchBoxLeftToTypeLabel={translate('Neos.Neos:Main:searchBoxLeftToType')}
+            noMatchesFoundLabel={translate('Neos.Neos.Ui:Main:noMatchesFound')}
+            searchBoxLeftToTypeLabel={translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
             threshold={options.threshold}
             disabled={options.disabled}
         />);

@@ -30,8 +30,8 @@ export default class PreviewButton extends PureComponent {
                     href={previewUrl ? previewUrl : ''}
                     target="neosPreview"
                     className={previewButtonClassNames}
-                    aria-label={translate('Neos.Neos:Main:showPreview', 'Show Preview')}
-                    title={translate('Neos.Neos:Main:showPreview', 'Show Preview')}
+                    aria-label={translate('Neos.Neos.Ui:Main:showPreview', 'Show Preview')}
+                    title={translate('Neos.Neos.Ui:Main:showPreview', 'Show Preview')}
                     >
                     <Icon icon="external-link-alt"/>
                 </a>
@@ -43,7 +43,7 @@ export default class PreviewButton extends PureComponent {
                 id="neos-PreviewButton"
                 className={previewButtonClassNames}
                 disabled
-                aria-label={translate('Neos.Neos:Main:showPreview', 'Show Preview')}
+                aria-label={translate('Neos.Neos.Ui:Main:showPreview', 'Show Preview')}
                 >
                 <Icon icon="external-link-alt"/>
             </button>

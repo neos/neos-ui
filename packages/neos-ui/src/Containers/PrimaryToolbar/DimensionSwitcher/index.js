@@ -238,14 +238,14 @@ export default class DimensionSwitcher extends PureComponent {
                                 style="lighter"
                                 className={style.cancelButton}
                             >
-                                {translate('Neos.Neos:Main:cancel', 'Cancel')}
+                                {translate('Neos.Neos.Ui:Main:cancel', 'Cancel')}
                             </Button>
                             <Button
                                 id="neos-DimensionSwitcher-Apply"
                                 onClick={this.handleApplyPresets}
                                 style="brand"
                             >
-                                {translate('Neos.Neos:Main:apply', 'Apply')}
+                                {translate('Neos.Neos.Ui:Main:apply', 'Apply')}
                             </Button>
                         </div>}
                     </DropDown.Contents>

@@ -99,14 +99,14 @@ const WorkspaceSelector: React.FC<WorkspaceSelectorProps> = ({
     return (<div className={classNames} title={title}>
         {anyWorkspacesAvailable ? (
             <SelectBox
-                placeholder={translate('Neos.Neos:Main:filter', 'Filter')}
+                placeholder={translate('Neos.Neos.Ui:Main:filter', 'Filter')}
                 placeholderIcon={'filter'}
                 displaySearchBox
                 searchTerm={filterTerm}
                 onSearchTermChange={setFilterTerm}
                 threshold={0}
-                noMatchesFoundLabel={translate('Neos.Neos:Main:noMatchesFound')}
-                searchBoxLeftToTypeLabel={translate('Neos.Neos:Main:searchBoxLeftToType')}
+                noMatchesFoundLabel={translate('Neos.Neos.Ui:Main:noMatchesFound')}
+                searchBoxLeftToTypeLabel={translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
                 options={searchOptions(filterTerm, workspacesOptions)}
                 value={baseWorkspace}
                 onValueChange={onWorkspaceSelect}

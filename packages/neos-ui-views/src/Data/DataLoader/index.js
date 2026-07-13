@@ -91,7 +91,7 @@ export default () => WrappedComponent => {
             }
 
             if (!this.state.data) {
-                return (<div>{translate('Neos.Neos:Main:loading')}</div>);
+                return (<div>{translate('Neos.Neos.Ui:Main:loading')}</div>);
             }
 
             return (<WrappedComponent data={this.state.data} {...this.props}/>);

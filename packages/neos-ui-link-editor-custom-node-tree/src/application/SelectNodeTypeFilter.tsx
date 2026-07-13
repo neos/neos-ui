@@ -66,7 +66,7 @@ export const SelectNodeTypeFilter: React.FC<Props> = (props) => {
     return (
         <SelectBox
             disabled={fetch__options.error}
-            placeholder={translate('Neos.Neos:Main:filter')}
+            placeholder={translate('Neos.Neos.Ui:Main:filter')}
             placeholderIcon={'filter'}
             onValueChange={props.onChange}
             allowEmpty={true}
@@ -76,8 +76,8 @@ export const SelectNodeTypeFilter: React.FC<Props> = (props) => {
             searchTerm={filterTerm}
             onSearchTermChange={setFilterTerm}
             threshold={0}
-            noMatchesFoundLabel={translate('Neos.Neos:Main:noMatchesFound')}
-            searchBoxLeftToTypeLabel={translate('Neos.Neos:Main:searchBoxLeftToType')}
+            noMatchesFoundLabel={translate('Neos.Neos.Ui:Main:noMatchesFound')}
+            searchBoxLeftToTypeLabel={translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
         />
     );
 };

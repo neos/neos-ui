@@ -18,13 +18,13 @@ describe('TranslationRepository', () => {
 
     it('can find a translation by its translation address', () => {
         const translationRepository = TranslationRepository.fromDTO(locale_en_US, {
-            'Neos_Neos': { // eslint-disable-line quote-props
+            'Neos_Neos_Ui': { // eslint-disable-line quote-props
                 'Main': { // eslint-disable-line quote-props
                     'someLabel': 'The Translation' // eslint-disable-line quote-props
                 }
             }
         });
-        const translationAddressThatCanBeFound = TranslationAddress.fromString('Neos.Neos:Main:someLabel');
+        const translationAddressThatCanBeFound = TranslationAddress.fromString('Neos.Neos.Ui:Main:someLabel');
         const translationAddressThatCannotBeFound = TranslationAddress.fromString('Vendor.Site:Main:someLabel');
 
         expect(translationRepository.findOneByAddress(translationAddressThatCannotBeFound))

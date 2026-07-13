@@ -116,7 +116,7 @@ translate('Neos.Neos.Ui:Main:insert', 'insert');
 
 ```typescript
 translate(
-  'Neos.Neos:Main:workspaces.allChangesInWorkspaceHaveBeenDiscarded',
+  'Neos.Neos.Ui:Main:workspaces.allChangesInWorkspaceHaveBeenDiscarded',
   'All changes from workspace "{0}" have been discarded.',
   ['user-admin']
 );

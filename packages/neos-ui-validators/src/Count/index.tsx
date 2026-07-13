@@ -28,7 +28,7 @@ const Count = (value: any, validatorOptions: CountOptions) => {
     }
 
     if (typeof value !== 'object' || value === null) {
-        return translate('Neos.Neos:Main:content.inspector.validators.countValidator.notCountable');
+        return translate('Neos.Neos.Ui:Main:inspector.validators.countValidator.notCountable');
     }
 
     const {length} = Object.keys(value);
@@ -40,7 +40,7 @@ const Count = (value: any, validatorOptions: CountOptions) => {
     }
 
     if (length < minimum || length > maximum) {
-        const label = validatorOptions?.validationErrorMessage ?? 'content.inspector.validators.countValidator.countBetween';
+        const label = validatorOptions?.validationErrorMessage ?? 'Neos.Neos.Ui:Main:inspector.validators.countValidator.countBetween';
         return <I18n id={label} params={{minimum, maximum}}/>;
     }
 

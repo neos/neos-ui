@@ -49,7 +49,7 @@ const ResizeControls = props => {
     return (
         <div>
             <div className={style.resizeControls__item}>
-                <div className={style.resizeControls__label}>{translate('Neos.Neos:Main:width', 'Width')}:</div>
+                <div className={style.resizeControls__label}>{translate('Neos.Neos.Ui:Main:width', 'Width')}:</div>
                 <div className={style.resizeControls}>
                     <span className={style.resizeControls__before}>
                         <CheckBox
@@ -74,7 +74,7 @@ const ResizeControls = props => {
                 </div>
             </div>
             <div>
-                <div className={style.resizeControls__label}>{translate('Neos.Neos:Main:height', 'Height')}:</div>
+                <div className={style.resizeControls__label}>{translate('Neos.Neos.Ui:Main:height', 'Height')}:</div>
                 <div className={style.resizeControls}>
                     <span className={style.resizeControls__before}>
                         <CheckBox

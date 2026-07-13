@@ -68,7 +68,7 @@ export default class LeftSideBar extends PureComponent {
                 icon={toggleIcon}
                 className={style.leftSideBar__toggleBtn}
                 hoverStyle="clean"
-                title={translate('Neos.Neos:Main:navigate')}
+                title={translate('Neos.Neos.Ui:Main:navigate')}
                 />
         );
 
@@ -76,7 +76,7 @@ export default class LeftSideBar extends PureComponent {
             <React.Fragment>
                 <div role="button" className={style.leftSideBar__header} onClick={this.handleToggle}>
                     {toggle}
-                    {!isHidden && !isFullScreen && translate('Neos.Neos:Main:documentTree', 'Document Tree')}
+                    {!isHidden && !isFullScreen && translate('Neos.Neos.Ui:Main:documentTree', 'Document Tree')}
                 </div>
                 <SideBar
                     position="left"

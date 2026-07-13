@@ -61,16 +61,16 @@ export default class ReferenceEditor extends PureComponent {
             optionValueField="identifier"
             displaySearchBox={true}
             ListPreviewElement={NodeOption}
-            createNewLabel={translate('Neos.Neos:Main:createNew')}
-            noMatchesFoundLabel={translate('Neos.Neos:Main:noMatchesFound')}
-            searchBoxLeftToTypeLabel={translate('Neos.Neos:Main:searchBoxLeftToType')}
+            createNewLabel={translate('Neos.Neos.Ui:Main:createNew')}
+            noMatchesFoundLabel={translate('Neos.Neos.Ui:Main:noMatchesFound')}
+            searchBoxLeftToTypeLabel={translate('Neos.Neos.Ui:Main:searchBoxLeftToType')}
             placeholder={i18nRegistry.translate(this.props.placeholder)}
             threshold={threshold}
             options={sanitizeOptions(options)}
             value={value}
             onValueChange={this.handleValueChange}
             onHeaderClick={() => this.handleClick(options[0].uri)}
-            loadingLabel={translate('Neos.Neos:Main:loading')}
+            loadingLabel={translate('Neos.Neos.Ui:Main:loading')}
             displayLoadingIndicator={displayLoadingIndicator}
             showDropDownToggle={false}
             allowEmpty={true}

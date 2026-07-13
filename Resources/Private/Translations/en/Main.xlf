@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
     <file original="" product-name="Neos.Neos.Ui" source-language="en" datatype="plaintext">
         <body>
             <trans-unit id="editPreviewDropDown.editMode" xml:space="preserve">
@@ -424,6 +424,234 @@
             <trans-unit id="propertyScope.specializations" xml:space="preserve">
                 <source>Changes to this property will affect all specialization variants.</source>
             </trans-unit>
-        </body>
+        <trans-unit id="reviewChanges" xml:space="preserve">
+				<source>Review changes</source>
+			</trans-unit>
+      <trans-unit id="apply" xml:space="preserve">
+				<source>Apply</source>
+			</trans-unit>
+      <trans-unit id="cancel" xml:space="preserve">
+				<source>Cancel</source>
+			</trans-unit>
+      <trans-unit id="back" xml:space="preserve">
+				<source>Back</source>
+			</trans-unit>
+      <trans-unit id="node" xml:space="preserve">
+				<source>Node</source>
+			</trans-unit>
+      <trans-unit id="close" xml:space="preserve">
+				<source>Close</source>
+			</trans-unit>
+      <trans-unit id="copy" xml:space="preserve">
+				<source>Copy</source>
+			</trans-unit>
+      <trans-unit id="cut" xml:space="preserve">
+				<source>Cut</source>
+			</trans-unit>
+      <trans-unit id="delete" xml:space="preserve">
+				<source>Delete</source>
+			</trans-unit>
+      <trans-unit id="discard" xml:space="preserve">
+				<source>Discard</source>
+			</trans-unit>
+      <trans-unit id="hideUnhide" xml:space="preserve">
+				<source>Hide / Unhide</source>
+			</trans-unit>
+      <trans-unit id="hide" xml:space="preserve">
+				<source>Hide</source>
+			</trans-unit>
+      <trans-unit id="unhide" xml:space="preserve">
+				<source>Unhide</source>
+			</trans-unit>
+      <trans-unit id="loading" xml:space="preserve">
+				<source>Loading</source>
+			</trans-unit>
+      <trans-unit id="navigate" xml:space="preserve">
+				<source>Navigate</source>
+			</trans-unit>
+      <trans-unit id="paste" xml:space="preserve">
+				<source>Paste</source>
+			</trans-unit>
+      <trans-unit id="password" xml:space="preserve">
+				<source>Password</source>
+			</trans-unit>
+      <trans-unit id="remove" xml:space="preserve">
+				<source>Remove</source>
+			</trans-unit>
+      <trans-unit id="refresh" xml:space="preserve">
+				<source>Refresh</source>
+			</trans-unit>
+      <trans-unit id="search" xml:space="preserve">
+				<source>Search</source>
+			</trans-unit>
+      <trans-unit id="toggleInspector" xml:space="preserve">
+				<source>Toggle inspector</source>
+			</trans-unit>
+      <trans-unit id="username" xml:space="preserve">
+				<source>Username</source>
+			</trans-unit>
+      <trans-unit id="nodeInfoView.created" xml:space="preserve">
+				<source>Created</source>
+			</trans-unit>
+      <trans-unit id="nodeInfoView.lastModification" xml:space="preserve">
+				<source>Last modification</source>
+			</trans-unit>
+      <trans-unit id="nodeInfoView.lastPublication" xml:space="preserve">
+				<source>Last publication</source>
+			</trans-unit>
+      <trans-unit id="nodeInfoView.identifier" xml:space="preserve">
+				<source>Identifier</source>
+			</trans-unit>
+      <trans-unit id="nodeInfoView.name" xml:space="preserve">
+				<source>Name</source>
+			</trans-unit>
+      <trans-unit id="filter" xml:space="preserve">
+				<source>Filter</source>
+			</trans-unit>
+      <trans-unit id="unavailable" xml:space="preserve">
+				<source>Unavailable</source>
+			</trans-unit>
+      <trans-unit id="deleteConfirm" xml:space="preserve">
+				<source>Yes, delete it!</source>
+			</trans-unit>
+      <trans-unit id="toggleContentTree" xml:space="preserve">
+				<source>Toggle content tree</source>
+			</trans-unit>
+      <trans-unit id="showPublishOptions" xml:space="preserve">
+				<source>Show publish options</source>
+			</trans-unit>
+      <trans-unit id="activateFullscreen" xml:space="preserve">
+				<source>Activate Fullscreen edit mode</source>
+			</trans-unit>
+      <trans-unit id="deactivateFullscreen" xml:space="preserve">
+				<source>Deactivate Fullscreen edit mode</source>
+			</trans-unit>
+      <trans-unit id="showPreview" xml:space="preserve">
+				<source>Show preview</source>
+			</trans-unit>
+      <trans-unit id="discardAll" xml:space="preserve">
+				<source>Discard all</source>
+			</trans-unit>
+      <trans-unit id="publishAll" xml:space="preserve">
+				<source>Publish all</source>
+			</trans-unit>
+      <trans-unit id="editPreviewDropDown.modes" xml:space="preserve">
+				<source>Editing Modes</source>
+			</trans-unit>
+      <trans-unit id="editPreviewDropDown.previewCentral" xml:space="preserve">
+				<source>Preview Central</source>
+			</trans-unit>
+      <trans-unit id="inspector.unappliedChangesDialog.header" xml:space="preserve">
+				<source>You still have changes. What do you want to do with them?</source>
+			</trans-unit>
+      <trans-unit id="inspector.unappliedChangesDialog.button.default" xml:space="preserve">
+				<source>Continue editing</source>
+			</trans-unit>
+      <trans-unit id="inspector.unappliedChangesDialog.button.danger" xml:space="preserve">
+				<source>Throw away</source>
+			</trans-unit>
+      <trans-unit id="inspector.unappliedChangesDialog.button.success" xml:space="preserve">
+				<source>Apply</source>
+			</trans-unit>
+      <trans-unit id="inspector.editors.dateTimeEditor.noDateSet" xml:space="preserve">
+				<source>No date set</source>
+			</trans-unit>
+      <trans-unit id="inspector.validators.stringLength.outOfBounds" xml:space="preserve">
+				<source>The length of this text must be between {minimum} and {maximum} characters.</source>
+			</trans-unit>
+      <trans-unit id="inspector.validators.stringLength.smallerThanMinimum" xml:space="preserve">
+				<source>This field must contain at least {minimum} characters.</source>
+			</trans-unit>
+      <trans-unit id="inspector.validators.stringLength.greaterThanMaximum" xml:space="preserve">
+				<source>This text may not exceed {maximum} characters.</source>
+			</trans-unit>
+      <trans-unit id="inspector.validators.alphanumericValidator" xml:space="preserve">
+				<source>Only regular characters (a to z, umlauts, ...) and numbers are allowed.</source>
+			</trans-unit>
+      <trans-unit id="inspector.validators.countValidator.notCountable" xml:space="preserve">
+				<source>The given subject was not countable.</source>
+			</trans-unit>
+      <trans-unit id="inspector.validators.countValidator.countBetween" xml:space="preserve">
+				<source>The count must be between {minimum} and {maximum}.</source>
+			</trans-unit>
+      <trans-unit id="inspector.validators.dateTimeRangeValidator.invalidDate" xml:space="preserve">
+				<source>The given value was not a valid date.</source>
+			</trans-unit>
+      <trans-unit id="inspector.validators.emailAddressValidator.invalidEmail" xml:space="preserve">
+				<source>Please specify a valid email address.</source>
+			</trans-unit>
+      <trans-unit id="inspector.validators.floatValidator.validFloatExpected" xml:space="preserve">
+				<source>A valid float number is expected.</source>
+			</trans-unit>
+      <trans-unit id="inspector.validators.integerValidator.aValidIntegerNumberIsExpected" xml:space="preserve">
+				<source>A valid integer number is expected.</source>
+			</trans-unit>
+      <trans-unit id="inspector.validators.labelValidator.invalidLabel" xml:space="preserve">
+				<source>Only letters, numbers, spaces and certain punctuation marks are expected.</source>
+			</trans-unit>
+      <trans-unit id="inspector.validators.notEmptyValidator.isEmpty" xml:space="preserve">
+				<source>This property is required.</source>
+			</trans-unit>
+      <trans-unit id="inspector.validators.numberRangeValidator.validNumberExpected" xml:space="preserve">
+				<source>A valid number is expected.</source>
+			</trans-unit>
+      <trans-unit id="inspector.validators.numberRangeValidator.numberShouldBeInRange" xml:space="preserve">
+				<source>Please enter a valid number between {minimum} and {maximum}</source>
+			</trans-unit>
+      <trans-unit id="inspector.validators.regularExpressionValidator.patternDoesNotMatch" xml:space="preserve">
+				<source>The given subject did not match the pattern ({pattern})</source>
+			</trans-unit>
+      <trans-unit id="inspector.validators.stringValidator.stringIsExpected" xml:space="preserve">
+				<source>A valid string is expected.</source>
+			</trans-unit>
+      <trans-unit id="inspector.validators.textValidator.validTextWithoutAnyXMLtagsIsExpected" xml:space="preserve">
+				<source>Valid text without any XML tags is expected.</source>
+			</trans-unit>
+      <trans-unit id="inspector.validators.uuidValidator.invalidUuid" xml:space="preserve">
+				<source>The given subject is not a valid UUID.</source>
+			</trans-unit>
+      <trans-unit id="dimension.createDialog.header" xml:space="preserve">
+				<source>Start with an empty or pre-filled document?</source>
+			</trans-unit>
+      <trans-unit id="dimension.createDialog.nodeTypeDoesNotExistInDimension" xml:space="preserve">
+				<source>This {nodeTypeLabel} does not exist yet in {currentDimensionChoiceText}.</source>
+			</trans-unit>
+      <trans-unit id="dimension.createDialog.createEmptyOrCopy" xml:space="preserve">
+				<source>You can create it now, either starting with an empty {nodeTypeLabel} or copying all content from the currently visible {nodeTypeLabel} in {currentDocumentDimensionChoiceText}.</source>
+			</trans-unit>
+      <trans-unit id="dimension.createDialog.existingAncestorDocuments" xml:space="preserve">
+				<source>Additionally, there are {numberOfNodesMissingInRootline} ancestor documents which do not exist in the chosen variant either, and which will be created as well.</source>
+			</trans-unit>
+      <trans-unit id="dimension.createDialog.createEmpty" xml:space="preserve">
+				<source>Create empty</source>
+			</trans-unit>
+      <trans-unit id="dimension.createDialog.createAndCopy" xml:space="preserve">
+				<source>Create and copy</source>
+			</trans-unit>
+      <trans-unit id="navigate.deleteNodeDialog.header" xml:space="preserve">
+				<source>Do you really want to delete</source>
+			</trans-unit>
+      <trans-unit id="height" xml:space="preserve">
+				<source>Height</source>
+			</trans-unit>
+      <trans-unit id="media" xml:space="preserve">
+				<source>Media</source>
+			</trans-unit>
+      <trans-unit id="crop" xml:space="preserve">
+				<source>Crop</source>
+			</trans-unit>
+      <trans-unit id="width" xml:space="preserve">
+				<source>Width</source>
+			</trans-unit>
+      <trans-unit id="workspaces" xml:space="preserve">
+				<source>Workspaces</source>
+			</trans-unit>
+      <trans-unit id="documentTree" xml:space="preserve">
+				<source>Document Tree</source>
+			</trans-unit>
+      <trans-unit id="contentTree" xml:space="preserve">
+				<source>Content Tree</source>
+			</trans-unit>
+      </body>
     </file>
 </xliff>

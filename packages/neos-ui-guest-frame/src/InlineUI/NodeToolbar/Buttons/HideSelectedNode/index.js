@@ -53,9 +53,9 @@ export default class HideSelectedNode extends PureComponent {
                 hoverStyle="brand"
                 style="transparent"
                 size="small"
-                title={isHidden ? translate('Neos.Neos:Main:unhide') : translate('Neos.Neos:Main:hide')}
+                title={isHidden ? translate('Neos.Neos.Ui:Main:unhide') : translate('Neos.Neos.Ui:Main:hide')}
             >
-                {isHidden ? translate('Neos.Neos:Main:unhide') : translate('Neos.Neos:Main:hide')}
+                {isHidden ? translate('Neos.Neos.Ui:Main:unhide') : translate('Neos.Neos.Ui:Main:hide')}
                 <Icon
                     icon={isHidden ? 'eye' : 'eye-slash'}
                 />

@@ -63,7 +63,7 @@ export default class NodeVariantCreationDialog extends PureComponent {
         return (
             <div>
                 <span className={style.modalTitle}>
-                    {translate('Neos.Neos:Main:content.dimension.createDialog.header', 'Start with an empty or pre-filled document?')}
+                    {translate('Neos.Neos.Ui:Main:dimension.createDialog.header', 'Start with an empty or pre-filled document?')}
                 </span>
             </div>
         );
@@ -77,7 +77,7 @@ export default class NodeVariantCreationDialog extends PureComponent {
                 hoverStyle="brand"
                 onClick={this.handleAbort}
                 >
-                {translate('Neos.Neos:Main:cancel', 'Cancel')}
+                {translate('Neos.Neos.Ui:Main:cancel', 'Cancel')}
             </Button>
         );
     }
@@ -91,7 +91,7 @@ export default class NodeVariantCreationDialog extends PureComponent {
                 hoverStyle="brand"
                 onClick={this.handleCreateEmpty}
                 >
-                {translate('Neos.Neos:Main:content.dimension.createDialog.createEmpty', 'Create empty')}
+                {translate('Neos.Neos.Ui:Main:dimension.createDialog.createEmpty', 'Create empty')}
             </Button>
         );
     }
@@ -105,7 +105,7 @@ export default class NodeVariantCreationDialog extends PureComponent {
                 hoverStyle="brand"
                 onClick={this.handleCreateAndCopy}
                 >
-                {translate('Neos.Neos:Main:content.dimension.createDialog.createAndCopy', 'Create and copy')}
+                {translate('Neos.Neos.Ui:Main:dimension.createDialog.createAndCopy', 'Create and copy')}
             </Button>
         );
     }
@@ -147,15 +147,15 @@ export default class NodeVariantCreationDialog extends PureComponent {
                 >
                 <div className={style.modalContents}>
                     <div>
-                        {translate('Neos.Neos:Main:content.dimension.createDialog.nodeTypeDoesNotExistInDimension', '', i18nParams)}
+                        {translate('Neos.Neos.Ui:Main:dimension.createDialog.nodeTypeDoesNotExistInDimension', '', i18nParams)}
                     </div>
 
                     <div>
-                        {translate('Neos.Neos:Main:content.dimension.createDialog.createEmptyOrCopy', '', i18nParams)}
+                        {translate('Neos.Neos.Ui:Main:dimension.createDialog.createEmptyOrCopy', '', i18nParams)}
                     </div>
                     {numberOfParentNodesToBeCreated > 0 ?
                         <div>
-                            {translate('Neos.Neos:Main:content.dimension.createDialog.existingAncestorDocuments', '', {numberOfNodesMissingInRootline: numberOfParentNodesToBeCreated})}
+                            {translate('Neos.Neos.Ui:Main:dimension.createDialog.existingAncestorDocuments', '', {numberOfNodesMissingInRootline: numberOfParentNodesToBeCreated})}
                         </div> : null
                     }
                 </div>

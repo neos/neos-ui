@@ -32,10 +32,10 @@ export default class ToggleContentTree extends PureComponent {
                     className={style.toggleBtn}
                     icon={isPanelOpen ? 'chevron-circle-down' : 'chevron-circle-up'}
                     hoverStyle="clean"
-                    aria-label={translate('Neos.Neos:Main:toggleContentTree', 'Toggle content tree')}
+                    aria-label={translate('Neos.Neos.Ui:Main:toggleContentTree', 'Toggle content tree')}
                     />
                 <span className={style.toggleLabel}>
-                    {translate('Neos.Neos:Main:contentTree', 'Content Tree')}
+                    {translate('Neos.Neos.Ui:Main:contentTree', 'Content Tree')}
                 </span>
             </div>
         );

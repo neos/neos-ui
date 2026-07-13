@@ -109,12 +109,12 @@ export default class PublishDropDown extends PureComponent {
                             iconRest={{spin: true, transform: 'up-8'}}
                             className={dropDownBtnClassName}
                             disabled
-                            aria-label={translate('Neos.Neos:Main:showPublishOptions', 'Show publishing options')}
+                            aria-label={translate('Neos.Neos.Ui:Main:showPublishOptions', 'Show publishing options')}
                         />
                     ) : (
                         <DropDown.Header
                             className={dropDownBtnClassName}
-                            aria-label={translate('Neos.Neos:Main:showPublishOptions', 'Show publishing options')}
+                            aria-label={translate('Neos.Neos.Ui:Main:showPublishOptions', 'Show publishing options')}
                         />
                     )}
                     <DropDown.Contents className={style.dropDown__contents}>
@@ -128,7 +128,7 @@ export default class PublishDropDown extends PureComponent {
                                 <div className={style.dropDown__iconWrapper}>
                                     <Icon icon="check-double"/>
                                 </div>
-                                {translate('Neos.Neos:Main:publishAll', 'Publish All')}
+                                {translate('Neos.Neos.Ui:Main:publishAll', 'Publish All')}
                                 {publishableNodesCount > 0 && <Badge className={style.badge} label={String(publishableNodesCount)}/>}
                             </AbstractButton>
                         </li>
@@ -144,7 +144,7 @@ export default class PublishDropDown extends PureComponent {
                                 <div className={style.dropDown__iconWrapper}>
                                     <Icon icon="ban"/>
                                 </div>
-                                {translate('Neos.Neos:Main:discard', 'Discard')}
+                                {translate('Neos.Neos.Ui:Main:discard', 'Discard')}
                                 {publishableNodesInDocumentCount > 0 && <Badge className={style.badge} label={String(publishableNodesInDocumentCount)}/>}
                             </AbstractButton>
                         </li>
@@ -158,7 +158,7 @@ export default class PublishDropDown extends PureComponent {
                                 <div className={style.dropDown__iconWrapper}>
                                     <Icon icon="ban"/>
                                 </div>
-                                {translate('Neos.Neos:Main:discardAll', 'Discard All')}
+                                {translate('Neos.Neos.Ui:Main:discardAll', 'Discard All')}
                                 {publishableNodesCount > 0 && <Badge className={style.badge} label={String(publishableNodesCount)}/>}
                             </AbstractButton>
                         </li>
@@ -167,7 +167,7 @@ export default class PublishDropDown extends PureComponent {
                                 <div className={style.dropDown__iconWrapper}>
                                     <Icon icon="check-circle"/>
                                 </div>
-                                {translate('Neos.Neos:Main:reviewChanges', 'Review changes')}
+                                {translate('Neos.Neos.Ui:Main:reviewChanges', 'Review changes')}
                             </a>
                         </li>)}
                         <li className={style.dropDown__item}>
@@ -175,7 +175,7 @@ export default class PublishDropDown extends PureComponent {
                                 <div className={style.dropDown__iconWrapper}>
                                     <Icon icon="layer-group"/>
                                 </div>
-                                {translate('Neos.Neos:Main:workspaces', 'Workspaces')}
+                                {translate('Neos.Neos.Ui:Main:workspaces', 'Workspaces')}
                             </a>
                         </li>
                     </DropDown.Contents>

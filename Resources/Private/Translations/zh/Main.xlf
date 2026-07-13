@@ -292,6 +292,302 @@
           <target xml:lang="zh-CN" state="needs-translation">Discarded {0} changes.</target>
         </trans-unit>
       </group>
-    </body>
+    <trans-unit id="reviewChanges" xml:space="preserve">
+        <source>Review changes</source>
+        <target state="translated">审阅更改</target>
+      </trans-unit>
+      <trans-unit id="apply" xml:space="preserve">
+        <source>Apply</source>
+        <target state="translated">应用</target>
+      </trans-unit>
+      <trans-unit id="cancel" xml:space="preserve">
+        <source>Cancel</source>
+        <target state="translated">取消</target>
+      </trans-unit>
+      <trans-unit id="back" xml:space="preserve">
+        <source>Back</source>
+        <target state="translated">返回</target>
+      </trans-unit>
+      <trans-unit id="node" xml:space="preserve">
+        <source>Node</source>
+        <target state="translated">节点</target>
+      </trans-unit>
+      <trans-unit id="close" xml:space="preserve">
+        <source>Close</source>
+        <target state="translated">关闭</target>
+      </trans-unit>
+      <trans-unit id="copy" xml:space="preserve">
+        <source>Copy</source>
+        <target state="translated">复制</target>
+      </trans-unit>
+      <trans-unit id="cut" xml:space="preserve">
+        <source>Cut</source>
+        <target state="translated">剪切</target>
+      </trans-unit>
+      <trans-unit id="delete" xml:space="preserve">
+        <source>Delete</source>
+        <target state="translated">删除</target>
+      </trans-unit>
+      <trans-unit id="discard" xml:space="preserve">
+        <source>Discard</source>
+        <target state="translated">舍弃</target>
+      </trans-unit>
+      <trans-unit id="hideUnhide" xml:space="preserve">
+        <source>Hide / Unhide</source>
+        <target state="translated">隐藏/显示</target>
+      </trans-unit>
+      <trans-unit id="hide" xml:space="preserve">
+        <source>Hide</source>
+        <target state="translated">隐藏</target>
+      </trans-unit>
+      <trans-unit id="unhide" xml:space="preserve">
+        <source>Unhide</source>
+        <target state="translated">取消隐藏</target>
+      </trans-unit>
+      <trans-unit id="loading" xml:space="preserve">
+        <source>Loading</source>
+        <target state="translated">正在加载...</target>
+      </trans-unit>
+      <trans-unit id="navigate" xml:space="preserve">
+        <source>Navigate</source>
+        <target state="translated">导航</target>
+      </trans-unit>
+      <trans-unit id="paste" xml:space="preserve">
+        <source>Paste</source>
+        <target state="translated">粘贴</target>
+      </trans-unit>
+      <trans-unit id="password" xml:space="preserve">
+        <source>Password</source>
+        <target state="translated">密码</target>
+      </trans-unit>
+      <trans-unit id="remove" xml:space="preserve">
+        <source>Remove</source>
+        <target state="translated">移除</target>
+      </trans-unit>
+      <trans-unit id="refresh" xml:space="preserve">
+        <source>Refresh</source>
+        <target state="translated">刷新</target>
+      </trans-unit>
+      <trans-unit id="search" xml:space="preserve">
+        <source>Search</source>
+        <target state="translated">搜索</target>
+      </trans-unit>
+      <trans-unit id="toggleInspector" xml:space="preserve">
+        <source>Toggle inspector</source>
+        <target state="translated">显示或隐藏属性编辑器</target>
+      </trans-unit>
+      <trans-unit id="username" xml:space="preserve">
+        <source>Username</source>
+        <target state="translated">用户名</target>
+      </trans-unit>
+      <trans-unit id="nodeInfoView.created" xml:space="preserve">
+        <source>Created</source>
+        <target state="translated">已创建</target>
+      </trans-unit>
+      <trans-unit id="nodeInfoView.lastModification" xml:space="preserve">
+        <source>Last modification</source>
+        <target state="translated">最后修改</target>
+      </trans-unit>
+      <trans-unit id="nodeInfoView.lastPublication" xml:space="preserve">
+        <source>Last publication</source>
+        <target state="translated">最后发布</target>
+      </trans-unit>
+      <trans-unit id="nodeInfoView.identifier" xml:space="preserve">
+        <source>Identifier</source>
+        <target state="translated">标识符</target>
+      </trans-unit>
+      <trans-unit id="nodeInfoView.name" xml:space="preserve">
+        <source>Name</source>
+        <target state="translated">姓名</target>
+      </trans-unit>
+      <trans-unit id="filter" xml:space="preserve">
+        <source>Filter</source>
+        <target state="translated">筛选</target>
+      </trans-unit>
+      <trans-unit id="unavailable" xml:space="preserve">
+        <source>Unavailable</source>
+        <target state="translated">不可用</target>
+      </trans-unit>
+      <trans-unit id="deleteConfirm" xml:space="preserve">
+        <source>Yes, delete it!</source>
+        <target state="translated">是, 删掉它!</target>
+      </trans-unit>
+      <trans-unit id="toggleContentTree" xml:space="preserve">
+        <source>Toggle content tree</source>
+        <target state="translated">切换内容树</target>
+      </trans-unit>
+      <trans-unit id="showPublishOptions" xml:space="preserve">
+        <source>Show publish options</source>
+        <target state="translated">显示发布选项</target>
+      </trans-unit>
+      <trans-unit id="activateFullscreen" xml:space="preserve">
+        <source>Activate Fullscreen edit mode</source>
+        <target state="translated">启动全屏编辑模式</target>
+      </trans-unit>
+      <trans-unit id="deactivateFullscreen" xml:space="preserve">
+        <source>Deactivate Fullscreen edit mode</source>
+        <target state="translated">退出全屏编辑模式</target>
+      </trans-unit>
+      <trans-unit id="showPreview" xml:space="preserve">
+        <source>Show preview</source>
+        <target state="translated">显示预览</target>
+      </trans-unit>
+      <trans-unit id="discardAll" xml:space="preserve">
+        <source>Discard all</source>
+        <target state="translated">放弃所有</target>
+      </trans-unit>
+      <trans-unit id="publishAll" xml:space="preserve">
+        <source>Publish all</source>
+        <target state="translated">发布所有</target>
+      </trans-unit>
+      <trans-unit id="editPreviewDropDown.modes" xml:space="preserve">
+        <source>Editing Modes</source>
+        <target state="translated">编辑模式</target>
+      </trans-unit>
+      <trans-unit id="editPreviewDropDown.previewCentral" xml:space="preserve">
+        <source>Preview Central</source>
+        <target state="translated">预览中心</target>
+      </trans-unit>
+      <trans-unit id="inspector.unappliedChangesDialog.header" xml:space="preserve">
+        <source>You still have changes. What do you want to do with them?</source>
+        <target state="translated">你有未保存的变更，你想要?</target>
+      </trans-unit>
+      <trans-unit id="inspector.unappliedChangesDialog.button.default" xml:space="preserve">
+        <source>Continue editing</source>
+        <target state="translated">继续编辑</target>
+      </trans-unit>
+      <trans-unit id="inspector.unappliedChangesDialog.button.danger" xml:space="preserve">
+        <source>Throw away</source>
+        <target state="translated">丢弃</target>
+      </trans-unit>
+      <trans-unit id="inspector.unappliedChangesDialog.button.success" xml:space="preserve">
+        <source>Apply</source>
+        <target state="translated">应用</target>
+      </trans-unit>
+      <trans-unit id="inspector.editors.dateTimeEditor.noDateSet" xml:space="preserve">
+        <source>No date set</source>
+        <target state="translated">没有设置日期</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.stringLength.outOfBounds" xml:space="preserve">
+        <source>The length of this text must be between {minimum} and {maximum} characters.</source>
+        <target state="translated">此文本的长度必须介于 {{minimum}} 和 {{maximum}} 个字符之间。</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.stringLength.smallerThanMinimum" xml:space="preserve">
+        <source>This field must contain at least {minimum} characters.</source>
+        <target state="translated">此字段必须包含至少 {{minimum}} 字符。</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.stringLength.greaterThanMaximum" xml:space="preserve">
+        <source>This text may not exceed {maximum} characters.</source>
+        <target state="translated">此文本可能不超过 {{maximum}} 个字符。</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.alphanumericValidator" xml:space="preserve">
+        <source>Only regular characters (a to z, umlauts, ...) and numbers are allowed.</source>
+        <target state="translated">只允许字母和数字</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.countValidator.notCountable" xml:space="preserve">
+        <source>The given subject was not countable.</source>
+        <target state="translated">给定的主题不是可数的。</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.countValidator.countBetween" xml:space="preserve">
+        <source>The count must be between {minimum} and {maximum}.</source>
+        <target state="translated">该计数必须 {{minimum}} 和 {{maximum}} 之间。</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.dateTimeRangeValidator.invalidDate" xml:space="preserve">
+        <source>The given value was not a valid date.</source>
+        <target state="translated">给定的值不是有效的日期。</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.emailAddressValidator.invalidEmail" xml:space="preserve">
+        <source>Please specify a valid email address.</source>
+        <target state="translated">请指定一个有效的电子邮件地址。</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.floatValidator.validFloatExpected" xml:space="preserve">
+        <source>A valid float number is expected.</source>
+        <target state="translated">要求有效的浮点数字</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.integerValidator.aValidIntegerNumberIsExpected" xml:space="preserve">
+        <source>A valid integer number is expected.</source>
+        <target state="translated">要求有效的整数。</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.labelValidator.invalidLabel" xml:space="preserve">
+        <source>Only letters, numbers, spaces and certain punctuation marks are expected.</source>
+        <target state="translated">要求只有字母、 数字、 空格和某些标点符号。</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.notEmptyValidator.isEmpty" xml:space="preserve">
+        <source>This property is required.</source>
+        <target state="translated">此属性是必需的。</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.numberRangeValidator.validNumberExpected" xml:space="preserve">
+        <source>A valid number is expected.</source>
+        <target state="translated">要求一个有效的数字。</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.numberRangeValidator.numberShouldBeInRange" xml:space="preserve">
+        <source>Please enter a valid number between {minimum} and {maximum}</source>
+        <target state="translated">请输入一个有效号码 {{minimum}} 和 {{maximum}} 之间</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.regularExpressionValidator.patternDoesNotMatch" xml:space="preserve">
+        <source>The given subject did not match the pattern ({pattern})</source>
+        <target state="translated">给定的主题不匹配模式 ({{pattern}})</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.stringValidator.stringIsExpected" xml:space="preserve">
+        <source>A valid string is expected.</source>
+        <target state="translated">要求有效的字符串。</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.textValidator.validTextWithoutAnyXMLtagsIsExpected" xml:space="preserve">
+        <source>Valid text without any XML tags is expected.</source>
+        <target state="translated">要求没有任何 XML 标签有效文本。</target>
+      </trans-unit>
+      <trans-unit id="inspector.validators.uuidValidator.invalidUuid" xml:space="preserve">
+        <source>The given subject is not a valid UUID.</source>
+        <target state="translated">给定的标题不是一个有效的 UUID。</target>
+      </trans-unit>
+      <trans-unit id="dimension.createDialog.header" xml:space="preserve">
+        <source>Start with an empty or pre-filled document?</source>
+        <target state="translated">要使用空的或预填写的问档吗？</target>
+      </trans-unit>
+      <trans-unit id="dimension.createDialog.nodeTypeDoesNotExistInDimension" xml:space="preserve">
+        <source>This {nodeTypeLabel} does not exist yet in {currentDimensionChoiceText}.</source>
+        <target state="translated">在 {currentDimensionChoiceText} 中不存在 {nodeTypeLabel}</target>
+      </trans-unit>
+      <trans-unit id="dimension.createDialog.createEmptyOrCopy" xml:space="preserve">
+        <source>You can create it now, either starting with an empty {nodeTypeLabel} or copying all content from the currently visible {nodeTypeLabel} in {currentDocumentDimensionChoiceText}.</source>
+        <target state="translated">你可以现在通过打开一个空的{nodeTypeLabel} 或者从复制当前在{currentDocumentDimensionChoiceText} 中显示的{nodeTypeLabel} 里的所有内容来创建它。</target>
+      </trans-unit>
+      <trans-unit id="dimension.createDialog.existingAncestorDocuments" xml:space="preserve">
+        <source>Additionally, there are {numberOfNodesMissingInRootline} ancestor documents which do not exist in the chosen variant either, and which will be created as well.</source>
+        <target state="translated">另外，还有 {numberOfNodesMissingInRootline} 的父系文件，在选定的变量中没有，继续将会创建。</target>
+      </trans-unit>
+      <trans-unit id="dimension.createDialog.createEmpty" xml:space="preserve">
+        <source>Create empty</source>
+        <target state="translated">创建空的</target>
+      </trans-unit>
+      <trans-unit id="dimension.createDialog.createAndCopy" xml:space="preserve">
+        <source>Create and copy</source>
+        <target state="translated">创建副本</target>
+      </trans-unit>
+      <trans-unit id="navigate.deleteNodeDialog.header" xml:space="preserve">
+        <source>Do you really want to delete</source>
+        <target state="translated">你真的想要删除吗</target>
+      </trans-unit>
+      <trans-unit id="height" xml:space="preserve">
+        <source>Height</source>
+        <target state="translated">高度</target>
+      </trans-unit>
+      <trans-unit id="media" xml:space="preserve">
+        <source>Media</source>
+        <target state="translated">多媒体</target>
+      </trans-unit>
+      <trans-unit id="crop" xml:space="preserve">
+        <source>Crop</source>
+        <target state="translated">剪切</target>
+      </trans-unit>
+      <trans-unit id="width" xml:space="preserve">
+        <source>Width</source>
+        <target state="translated">宽度</target>
+      </trans-unit>
+      <trans-unit id="workspaces" xml:space="preserve">
+        <source>Workspaces</source>
+        <target state="translated">工作区</target>
+      </trans-unit>
+      </body>
   </file>
 </xliff>

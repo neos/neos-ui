@@ -41,7 +41,7 @@ export default class CopySelectedNode extends PureComponent {
                 onClick={this.handleClick}
                 icon="far copy"
                 hoverStyle="brand"
-                title={translate('Neos.Neos:Main:copy')}
+                title={translate('Neos.Neos.Ui:Main:copy')}
                 />
         );
     }

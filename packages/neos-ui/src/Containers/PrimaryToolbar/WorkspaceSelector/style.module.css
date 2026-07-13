@@ -13,7 +13,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    content: "";
+    content: '';
     width: 100%;
     height: 2px;
     background: var(--colors-Success);
@@ -34,7 +34,7 @@
 }
 
 .dropDownButton--disabled .dropDownIcon {
-    color: rgba(255, 255, 255, 0.5);
+    opacity: .5;
 }
 
 .labelEllipsis {

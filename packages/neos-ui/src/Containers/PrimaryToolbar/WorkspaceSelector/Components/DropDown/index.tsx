@@ -1,7 +1,7 @@
 import style from './style.module.css';
 import cx from 'classnames';
-import {Button, Icon} from "@neos-project/react-ui-components";
-import * as React from "react";
+import {Button, Icon} from '@neos-project/react-ui-components';
+import * as React from 'react';
 
 export type DropDownProps = React.PropsWithChildren<{
     id: string,
@@ -23,7 +23,7 @@ export const DropDown = ({
     buttonIcon,
     buttonTitle,
     buttonLabel,
-    buttonClassName,
+    buttonClassName
 }: DropDownProps) => {
     return <>
         <div

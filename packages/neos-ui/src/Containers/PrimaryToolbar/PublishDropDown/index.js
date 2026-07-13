@@ -21,7 +21,6 @@ const {
     personalWorkspaceNameSelector
 } = selectors.CR.Workspaces;
 
-
 @connect(state => ({
     isSaving: state?.ui?.remote?.isSaving,
     isPublishing: state?.cr?.publishing?.mode === PublishingMode.PUBLISH,

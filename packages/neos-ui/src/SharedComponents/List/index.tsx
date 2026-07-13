@@ -10,7 +10,7 @@ export type ListProps = React.PropsWithChildren<{
 export const List = ({
     children,
     icon,
-    label,
+    label
 }: ListProps) => {
     return <>
         <div className={style.listGroupHeader}>

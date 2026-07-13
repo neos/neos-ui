@@ -9,9 +9,9 @@ import {PublishingMode} from '@neos-project/neos-ui-redux-store/src/CR/Publishin
 import {Node, Workspace, WorkspaceName} from '@neos-project/neos-ui-contentrepository-model';
 import {DropDown} from './Components/DropDown';
 import style from './style.module.css';
-import {List, ListItem} from "../../../SharedComponents";
+import {List, ListItem} from '../../../SharedComponents';
 
-const POPOVER_ID = "workspace-selector";
+const POPOVER_ID = 'workspace-selector';
 
 const {
     publishableNodesSelector,
@@ -78,7 +78,7 @@ const WorkspaceSelector: React.FC<WorkspaceSelectorProps> = ({
         [style.dropDownButton]: true,
         [style['dropDownButton--isDirty']]: hasUnpublishedNodes || isSaving,
         [style['dropDownButton--isReadOnly']]: isWorkspaceReadOnly,
-        [style['dropDownButton--disabled']]: !changingWorkspaceAllowed,
+        [style['dropDownButton--disabled']]: !changingWorkspaceAllowed
     });
 
     const title = changingWorkspaceAllowed ?

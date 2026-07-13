@@ -11,9 +11,6 @@
     color: white;
     cursor: pointer;
 }
-.btn--disabled {
-    opacity: .5;
-}
 .btn--notAllowed {
     &[disabled] {
         cursor: not-allowed;

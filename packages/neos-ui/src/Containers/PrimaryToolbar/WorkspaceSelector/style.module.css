@@ -6,6 +6,7 @@
 .dropDownButton {
     border-top: 2px solid var(--colors-Success);
     background: var(--colors-ContrastDarker);
+    margin-right: 1px !important;
 }
 .dropDownButton--isDirty {
     border-top-color: var(--colors-Warn);

@@ -16,22 +16,22 @@ namespace Neos\TestNodeTypes\Application\RemoveAdditionalSettings\Controller;
 
 use GuzzleHttp\Psr7\Response;
 use Neos\Flow\Annotations as Flow;
-use Neos\Flow\Mvc\ActionRequest;
-use Neos\Flow\Mvc\Controller\ControllerInterface;
+use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\TestNodeTypes\Application\RemoveAdditionalSettings\RemoveAdditionalSettingsCommand;
 use Neos\TestNodeTypes\Application\RemoveAdditionalSettings\RemoveAdditionalSettingsCommandHandler;
 use Psr\Http\Message\ResponseInterface;
 
 #[Flow\Scope("singleton")]
-final class RemoveAdditionalSettingsController implements ControllerInterface
+final class RemoveAdditionalSettingsController extends ActionController
 {
     #[Flow\Inject]
     protected RemoveAdditionalSettingsCommandHandler $commandHandler;
 
-    public function processRequest(ActionRequest $request): ResponseInterface
+    #[Flow\Route('test/remove-additional-settings')]
+    public function handleAction(): ResponseInterface
     {
         try {
-            $command = RemoveAdditionalSettingsCommand::fromArray($request->getArguments());
+            $command = RemoveAdditionalSettingsCommand::fromArray($this->request->getArguments());
             $this->commandHandler->handle($command);
             return new Response(status: 200, headers: ['Content-Type' => 'application/json'], body: json_encode(
                 ['success' => true],

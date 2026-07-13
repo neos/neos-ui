@@ -12,26 +12,26 @@
 
 declare(strict_types=1);
 
-namespace Neos\TestNodeTypes\Application\WriteAdditionalSettings\Controller;
+namespace Neos\TestNodeTypes\Application\CreateUser\Controller;
 
 use GuzzleHttp\Psr7\Response;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ActionController;
-use Neos\TestNodeTypes\Application\WriteAdditionalSettings\WriteAdditionalSettingsCommand;
-use Neos\TestNodeTypes\Application\WriteAdditionalSettings\WriteAdditionalSettingsCommandHandler;
+use Neos\TestNodeTypes\Application\CreateUser\CreateUserCommand;
+use Neos\TestNodeTypes\Application\CreateUser\CreateUserCommandHandler;
 use Psr\Http\Message\ResponseInterface;
 
 #[Flow\Scope("singleton")]
-final class WriteAdditionalSettingsController extends ActionController
+final class CreateUsersController extends ActionController
 {
     #[Flow\Inject]
-    protected WriteAdditionalSettingsCommandHandler $commandHandler;
+    protected CreateUserCommandHandler $commandHandler;
 
-    #[Flow\Route('test/write-additional-settings')]
+    #[Flow\Route('test/create-user')]
     public function handleAction(): ResponseInterface
     {
         try {
-            $command = WriteAdditionalSettingsCommand::fromArray($this->request->getArguments());
+            $command = CreateUserCommand::fromArray($this->request->getArguments());
             $this->commandHandler->handle($command);
             return new Response(status: 200, headers: ['Content-Type' => 'application/json'], body: json_encode(
                 ['success' => true],

@@ -1,5 +1,6 @@
 import {createBdd} from "playwright-bdd";
-import {logout, removeAllUsers} from "../helpers/system";
+import {logout} from "../helpers/system";
+import {removeAllUsers} from "../helpers/test-api";
 
 const {AfterScenario} = createBdd();
 
@@ -7,9 +8,5 @@ const {AfterScenario} = createBdd();
 AfterScenario(async ({page}) => {
     await logout(page);
 
-    try {
-        removeAllUsers();
-    } catch (err) {
-        console.warn('[AfterScenario] removeAllUsers failed — next scenario may see leftover users:', err);
-    }
+    await removeAllUsers();
 });

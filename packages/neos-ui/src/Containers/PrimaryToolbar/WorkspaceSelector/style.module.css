@@ -8,10 +8,10 @@
     background: var(--colors-ContrastDarker);
 }
 .dropDownButton--isDirty {
-    border-top: 2px solid var(--colors-Warn);
+    border-top-color: var(--colors-Warn);
 }
 .dropDownButton--isReadOnly {
-    border-top: 2px solid var(--colors-PrimaryBlue);
+    border-top-color: var(--colors-PrimaryBlue);
 }
 
 .dropDownButton--disabled {

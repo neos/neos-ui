@@ -76,7 +76,7 @@ const WorkspaceSelector: React.FC<WorkspaceSelectorProps> = ({
 
     const dropDownButtonStyles = mergeClassNames({
         [style.dropDownButton]: true,
-        [style['dropDownButton--isDirty']]: hasUnpublishedNodes,
+        [style['dropDownButton--isDirty']]: hasUnpublishedNodes || isSaving,
         [style['dropDownButton--isReadOnly']]: isWorkspaceReadOnly,
         [style['dropDownButton--disabled']]: !changingWorkspaceAllowed,
     });

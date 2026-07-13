@@ -103,7 +103,7 @@ const WorkspaceSelector: React.FC<WorkspaceSelectorProps> = ({
                     <Button
                         disabled={workspace.name === baseWorkspace}
                         onClick={createChangeBaseWorkspace(workspace.name)}
-                        style={workspace.name === baseWorkspace ? 'brand' : null}
+                        style={workspace.name === baseWorkspace ? 'brand' : undefined}
                         className={style.labelEllipsis}
                         popovertarget={POPOVER_ID}
                     >
@@ -120,7 +120,7 @@ const WorkspaceSelector: React.FC<WorkspaceSelectorProps> = ({
                         <Button
                             disabled={workspace.name === baseWorkspace}
                             onClick={createChangeBaseWorkspace(workspace.name)}
-                            style={workspace.name === baseWorkspace ? 'brand' : null}
+                            style={workspace.name === baseWorkspace ? 'brand' : undefined}
                             className={style.labelEllipsis}
                             popovertarget={POPOVER_ID}
                         >
@@ -138,7 +138,7 @@ const WorkspaceSelector: React.FC<WorkspaceSelectorProps> = ({
                         <Button
                             disabled={workspace.name === baseWorkspace}
                             onClick={createChangeBaseWorkspace(workspace.name)}
-                            style={workspace.name === baseWorkspace ? 'brand' : null}
+                            style={workspace.name === baseWorkspace ? 'brand' : undefined}
                             className={style.labelEllipsis}
                             popovertarget={POPOVER_ID}
                         >

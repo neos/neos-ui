@@ -4,15 +4,27 @@
 }
 
 .dropDownButton {
-    border-top: 2px solid var(--colors-Success);
+    position: relative;
     background: var(--colors-ContrastDarker);
     margin-right: 1px !important;
 }
-.dropDownButton--isDirty {
-    border-top-color: var(--colors-Warn);
+.dropDownButton::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: "";
+    width: 100%;
+    height: 2px;
+    background: var(--colors-Success);
 }
-.dropDownButton--isReadOnly {
-    border-top-color: var(--colors-PrimaryBlue);
+.dropDownButton:not(.dropDownButton--disabled):hover::before {
+    display: none;
+}
+.dropDownButton--isDirty::before {
+    background: var(--colors-Warn);
+}
+.dropDownButton--isReadOnly::before {
+    background: var(--colors-PrimaryBlue);
 }
 
 .dropDownButton--disabled {

@@ -89,12 +89,16 @@ jobs:
         working-directory: Tests/E2E
         run: npm run test
 
+      - name: Grab Neos SUT logs
+        run: docker compose -f Tests/E2E/system_under_test/docker-compose.yaml cp neos:/app/Data/Logs /tmp/system_under_test-logs
+
       # Upload the self-contained Playwright report (with screenshots and videos) for debugging.
-      # If we really, really need - we can also upload the raw test results, but for now we do not.
       - name: Upload Playwright report
         uses: actions/upload-artifact@v7
         if: ${{ always() }}
         with:
           name: playwright-report
-          path: Tests/E2E/playwright-report/
+          path: |
+            Tests/E2E/playwright-report/
+            /tmp/system_under_test-logs/
           retention-days: 10

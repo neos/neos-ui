@@ -26,19 +26,6 @@
     display: flex;
 }
 
-.secondaryToolbar__previewBadge {
-    display: flex;
-    align-items: center;
-    padding: var(--spacing-Quarter) var(--spacing-Half);
-    margin-bottom: -1px;
-
-    background-color: var(--colors-PrimaryBlue);
-
-    color: var(--colors-ContrastBrightest);
-    font-size: var(--fontSize-Base);
-    white-space: nowrap;
-}
-
 .dimensionCategory__icon {
     margin-right: .5em;
 }

@@ -64,11 +64,11 @@ export default class EditPreviewModeDropDown extends PureComponent {
         return (
             <div className={style.wrapper}>
                 <DropDown className={style.dropDown}>
-                    <DropDown.Header className={style.dropDown__btn}>
-                        <span className={mergeClassNames({
-                            [style.dropDown__modeBadge]: true,
-                            [style['dropDown__modeBadge--isPreviewMode']]: currentEditModeIsPreviewMode
-                        })}>
+                    <DropDown.Header className={mergeClassNames({
+                        [style.dropDown__btn]: true,
+                        [style['dropDown__btn--isPreviewMode']]: currentEditModeIsPreviewMode
+                    })}>
+                        <span className={style.dropDown__modeBadge}>
                             <Icon className={style.dropDown__btnIcon} icon={currentEditModeIsPreviewMode ? 'eye' : 'pencil'}/>
                             {currentEditModeIsPreviewMode
                                 ? translate('Neos.Neos.Ui:Main:editPreviewDropDown.previewMode', 'Preview Mode:')

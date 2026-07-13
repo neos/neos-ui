@@ -28,7 +28,6 @@ import LoadingIndicator from './Containers/SecondaryToolbar/LoadingIndicator/ind
 import KeyboardShortcutButton from './Containers/SecondaryToolbar/KeyboardShortcutButton/index';
 import PreviewButton from './Containers/SecondaryToolbar/PreviewButton/index';
 import FullScreenButton from './Containers/SecondaryToolbar/FullScreenButton/index';
-import PreviewBadge from './Containers/SecondaryToolbar/PreviewBadge/index';
 
 import Drawer from './Containers/Drawer/index';
 import UserDropDown from './Containers/Drawer/UserDropDown/index';
@@ -66,7 +65,6 @@ manifest('main.containers', {}, globalRegistry => {
     containerRegistry.set('PrimaryToolbar/Left/MenuToggler', MenuToggler);
     containerRegistry.set('PrimaryToolbar/Left/Brand', Brand);
     containerRegistry.set('PrimaryToolbar/Right/KeyboardShortcutButton', KeyboardShortcutButton);
-    containerRegistry.set('PrimaryToolbar/Right/EditPreviewDropDown', EditPreviewDropDown);
     containerRegistry.set('PrimaryToolbar/Right/DimensionSwitcher', DimensionSwitcher);
     containerRegistry.set('PrimaryToolbar/Right/WorkspaceSelector', WorkspaceSelector);
     containerRegistry.set('PrimaryToolbar/Right/WorkspaceSync', WorkspaceSync);
@@ -78,7 +76,7 @@ manifest('main.containers', {}, globalRegistry => {
     containerRegistry.set('SecondaryToolbar/Right/InlineEditorToolbar', InlineEditorToolbar);
     containerRegistry.set('SecondaryToolbar/Right/PreviewButton', PreviewButton);
     containerRegistry.set('SecondaryToolbar/Right/FullScreenButton', FullScreenButton);
-    containerRegistry.set('SecondaryToolbar/Right/PreviewBadge', PreviewBadge);
+    containerRegistry.set('SecondaryToolbar/Right/EditPreviewDropDown', EditPreviewDropDown);
 
     containerRegistry.set('Drawer', Drawer);
     containerRegistry.set('Drawer/Bottom/UserDropDown', UserDropDown);

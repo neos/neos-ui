@@ -3,7 +3,6 @@ E2E_DIR = $(CURDIR)
 
 .SILENT:
 .PHONY: setup setup-sut setup-test \
-	generate-bdd-files \
 	test test-ui \
 	start-sut log-sut enter-sut sut-down
 
@@ -24,13 +23,7 @@ setup-test:
 	if [ -s "$$NVM_DIR" ]; then \
 		. "$$NVM_DIR/nvm.sh" && echo "${GREEN}Found nvm on system -> using it to install nodejs!${RESET}" && nvm install; \
 	fi && \
-	npm install && npx playwright install --with-deps && \
-	echo "" && echo "${GREEN}generate BDD files from feature files${RESET}" && npm run generate-tests
-
-# generate BDD files from feature files
-generate-bdd-files:
-	echo "${GREEN}generate BDD files from feature files${RESET}"; \
-	cd $(E2E_DIR) && npm run generate-tests
+	npm install && npx playwright install --with-deps
 
 ## Run all E2E tests (playwright auto-starts SUT, tears it down afterwards).
 test:

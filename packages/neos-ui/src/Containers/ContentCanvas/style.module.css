@@ -21,6 +21,7 @@
     margin-left: auto;
     margin-right: auto;
     transition: var(--transition-Default)  ease width, var(--transition-Default)  ease height;
+    border-top: 1px solid var(--colors-ContrastDark);
 }
 .contentCanvas__itemWrapper--isPreviewMode {
     border: 5px solid var(--colors-PrimaryBlue);

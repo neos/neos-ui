@@ -87,8 +87,8 @@ export default class ImageCropper extends PureComponent {
     componentDidMount() {
         //
         // Calculate and set maximum height for the cropped image
-        // The upper toolbars (the publish tool bar and ckeditor bar) are each 41px
-        const upperToolbarHeights = 41 + 41;
+        // The upper toolbars (the primary toolbar and secondary toolbar) are 41px / 40px
+        const upperToolbarHeights = 41 + 40;
         const secondaryEditorHeight = window.innerHeight - upperToolbarHeights;
         const toolbarStyles = getComputedStyle(this.toolbarNode);
         const toolbarFullHeight = parseInt(toolbarStyles.height, 10) + parseInt(toolbarStyles['margin-top'], 10) + parseInt(toolbarStyles['margin-bottom'], 10);

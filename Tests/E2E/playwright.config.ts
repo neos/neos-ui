@@ -1,9 +1,6 @@
 import {defineConfig, devices} from "@playwright/test";
 import {defineBddConfig} from "playwright-bdd";
 
-// Extension point: To run with other Configurations (default is Production/E2E-SUT)
-const {FLOW_CONTEXT, REUSE_EXISTING_SUT} = process.env;
-
 const testDir = defineBddConfig({
     features: "features/**/*.feature",
     steps: "steps/**/*.ts",
@@ -30,14 +27,10 @@ export default defineConfig({
         screenshot: 'only-on-failure',
         video: 'on-first-retry'
     },
-    globalTeardown: "./global-teardown.ts",
     webServer: {
-        // No `--build`: the image (`neos-ui-e2e-sut:9.0`) is built once by CI
-        // (or by `make setup-sut` locally) and re-used here.
-        // After editing the Dockerfile: Re-run `make setup-sut` to pick up the changes.
-        command: `echo "starting system under test with context ${FLOW_CONTEXT}"; FLOW_CONTEXT=${FLOW_CONTEXT} docker compose -f ./system_under_test/docker-compose.yaml up`,
+        command: `echo "Neos not running please start via 'make start-sut'"; exit 1;`,
         url: "http://localhost:8081/",
-        reuseExistingServer: Boolean(REUSE_EXISTING_SUT),
+        reuseExistingServer: true,
         timeout: 600_000,
         stdout: "pipe",
         stderr: "pipe",

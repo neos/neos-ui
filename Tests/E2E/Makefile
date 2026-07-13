@@ -25,17 +25,17 @@ setup-test:
 	fi && \
 	npm install && npx playwright install --with-deps
 
-## Run all E2E tests (playwright auto-starts SUT, tears it down afterwards).
+## Start SUT containers in the background.
+start-sut:
+	docker compose -f $(NEOS_COMPOSE) up -d --build
+
+## Run all E2E tests
 test:
 	cd $(E2E_DIR) && npm run test
 
-## Open the Playwright interactive UI. Requires the SUT to be running — start it first with `make start-sut`.
+## Open the Playwright interactive UI.
 test-ui:
-	cd $(E2E_DIR) && REUSE_EXISTING_SUT=1 npm run test -- --ui
-
-## Start SUT containers in the background (skips test run). Handy for debugging and testing manually during development.
-start-sut:
-	docker compose -f $(NEOS_COMPOSE) up -d --build
+	cd $(E2E_DIR) && npm run test -- --ui
 
 ## Follow logs of the running SUT.
 log-sut:

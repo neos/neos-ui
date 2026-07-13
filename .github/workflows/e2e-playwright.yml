@@ -81,6 +81,10 @@ jobs:
           echo "127.0.0.1 onedimension.localhost" | sudo tee -a /etc/hosts
           echo "127.0.0.1 twodimensions.localhost" | sudo tee -a /etc/hosts
 
+      - name: Start Neos SUT
+        working-directory: Tests/E2E
+        run: make start-sut
+
       - name: Run Playwright tests
         working-directory: Tests/E2E
         run: npm run test

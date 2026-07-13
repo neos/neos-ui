@@ -1,8 +1,6 @@
 .wrapper {
     position: relative;
     vertical-align: top;
-    /* Move down to cover the 1px border bottom of the secondary toolbar */
-    bottom: -1px;
 }
 .dropDown {
     position: static;
@@ -10,15 +8,12 @@
 }
 .dropDown__btn {
     position: relative;
-    height: calc(var(--spacing-GoldenUnit) + 1px);
+    height: var(--spacing-GoldenUnit);
     border: 0;
     background-color: var(--colors-ContrastDarker);
     text-align: right;
     border-radius: 0;
     user-select: none;
-    /* Increase size to connect button with blue border around the guest frame to cover the 1px border bottom of the secondary toolbar */
-    margin-bottom: -1px;
-    margin-top: -1px;
 }
 .dropDown__btn--isPreviewMode {
     background-color: var(--colors-PrimaryBlue);

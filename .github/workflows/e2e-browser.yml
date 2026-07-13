@@ -83,7 +83,7 @@ jobs:
 
       - name: Start Neos SUT
         working-directory: Tests/E2E
-        run: docker compose -f Tests/E2E/system_under_test/docker-compose.yaml up --wait
+        run: docker compose -f system_under_test/docker-compose.yaml up --wait
 
       - name: Run Playwright tests
         working-directory: Tests/E2E
@@ -91,7 +91,8 @@ jobs:
 
       - name: Grab Neos SUT logs
         if: ${{ always() }}
-        run: docker compose -f Tests/E2E/system_under_test/docker-compose.yaml cp neos:/app/Data/Logs /tmp/system_under_test-logs
+        working-directory: Tests/E2E
+        run: docker compose -f system_under_test/docker-compose.yaml cp neos:/app/Data/Logs /tmp/system_under_test-logs
 
       # Upload the self-contained Playwright report (with screenshots and videos) for debugging.
       - name: Upload Playwright report

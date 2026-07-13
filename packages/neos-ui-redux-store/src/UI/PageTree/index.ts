@@ -43,7 +43,8 @@ export enum actionTypes {
     REQUEST_CHILDREN = '@neos/neos-ui/UI/PageTree/REQUEST_CHILDREN',
     COMMENCE_SEARCH = '@neos/neos-ui/UI/PageTree/COMMENCE_SEARCH',
     SET_SEARCH_RESULT = '@neos/neos-ui/UI/PageTree/SET_SEARCH_RESULT',
-    COLLAPSE_ALL = '@neos/neos-ui/UI/PageTree/COLLAPSE_ALL'
+    COLLAPSE_ALL = '@neos/neos-ui/UI/PageTree/COLLAPSE_ALL',
+    RELOAD_TREE = '@neos/neos-ui/UI/PageTree/RELOAD_TREE'
 }
 
 const focus = (contextPath: NodeContextPath, _: undefined, selectionMode: SelectionModeTypes = SelectionModeTypes.SINGLE_SELECT) => createAction(actionTypes.FOCUS, {contextPath, selectionMode});
@@ -56,6 +57,7 @@ const collapseAll = (
     nodeContextPaths: NodeContextPath[],
     collapsedByDefaultNodeContextPaths: NodeContextPath[]
 ) => createAction(actionTypes.COLLAPSE_ALL, {nodeContextPaths, collapsedByDefaultNodeContextPaths});
+const reloadTree = (contextPath: NodeContextPath) => createAction(actionTypes.RELOAD_TREE, {contextPath});
 
 interface CommenceSearchOptions extends Readonly<{
     query: string;
@@ -81,7 +83,8 @@ export const actions = {
     requestChildren,
     commenceSearch,
     setSearchResult,
-    collapseAll
+    collapseAll,
+    reloadTree
 };
 
 export type Action = ActionType<typeof actions>;

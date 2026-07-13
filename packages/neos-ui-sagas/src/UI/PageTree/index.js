@@ -240,3 +240,33 @@ export function * watchSearch() {
         yield put(actions.UI.PageTree.setAsLoaded(contextPath));
     });
 }
+
+export function * watchReloadTree() {
+    yield takeEvery(actionTypes.UI.PageTree.RELOAD_TREE, function * reloadTree(action) {
+        const {contextPath} = action.payload;
+        const {q} = backend.get();
+        const clipboardNodesContextPaths = yield select(selectors.CR.Nodes.clipboardNodesContextPathsSelector);
+        const toggledNodes = yield select(state => state?.ui?.pageTree?.toggled);
+
+        yield put(actions.UI.PageTree.setAsLoading(contextPath));
+        let nodes = [];
+        try {
+            nodes = yield q(contextPath).neosUiDefaultNodes(
+                getConfiguration(configuration => configuration.nodeTree.presets.default.baseNodeType),
+                getConfiguration(configuration => configuration.nodeTree.loadingDepth),
+                toggledNodes,
+                clipboardNodesContextPaths
+            ).getForTree('PAGE_TREE');
+        } catch (err) {
+            yield put(actions.UI.PageTree.invalidate(contextPath));
+            showFlashMessage({id: 'reloadTreeError', severity: 'error', message: err.message});
+            return;
+        }
+        const nodeMap = nodes.reduce((map, node) => {
+            map[node?.contextPath] = node;
+            return map;
+        }, {});
+        yield put(actions.CR.Nodes.merge(nodeMap));
+        yield put(actions.UI.PageTree.setAsLoaded(contextPath));
+    });
+}

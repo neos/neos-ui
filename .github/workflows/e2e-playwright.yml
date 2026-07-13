@@ -34,7 +34,7 @@ jobs:
         run: make install
 
       - name: Build Neos UI
-        run: make build
+        run: make build-e2e-testing
 
       - name: Setup Node for E2E tests
         uses: actions/setup-node@v6
@@ -83,13 +83,14 @@ jobs:
 
       - name: Start Neos SUT
         working-directory: Tests/E2E
-        run: make start-sut
+        run: docker compose -f Tests/E2E/system_under_test/docker-compose.yaml up --wait
 
       - name: Run Playwright tests
         working-directory: Tests/E2E
         run: npm run test
 
       - name: Grab Neos SUT logs
+        if: ${{ always() }}
         run: docker compose -f Tests/E2E/system_under_test/docker-compose.yaml cp neos:/app/Data/Logs /tmp/system_under_test-logs
 
       # Upload the self-contained Playwright report (with screenshots and videos) for debugging.

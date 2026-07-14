@@ -2,6 +2,7 @@
     max-width: 320px;
     width: auto;
     margin-right: 1px;
+    user-select: none;
 }
 
 .dropDown__header {

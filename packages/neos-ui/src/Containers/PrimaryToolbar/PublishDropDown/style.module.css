@@ -6,9 +6,6 @@
     height: var(--spacing-GoldenUnit);
 }
 
-.publishBtn {
-    width: auto;
-}
 .dropDown {
     position: static;
     width: auto;
@@ -35,6 +32,11 @@
     text-align: center;
     vertical-align: top;
     cursor: pointer;
+    user-select: none;
+
+    &:hover {
+        background: var(--colors-SuccessHover);
+    }
 }
 
 .dropDown__iconWrapper {
